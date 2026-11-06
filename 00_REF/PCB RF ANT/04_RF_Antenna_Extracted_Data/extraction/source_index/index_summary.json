@@ -1,0 +1,18 @@
+{
+  "built_at_utc": "2026-11-06T21:11:53.101280+00:00",
+  "counts": {
+    "pdf_pages_indexed": 8443,
+    "pdf_text_characters": 22052954,
+    "pdf_sources_indexed": 208,
+    "zip_sources_inventoried": 14,
+    "exe_archives_preserved_not_executed": 1,
+    "html_sources_indexed": 15,
+    "archive_files_inventoried": 343,
+    "low_or_empty_text_pdf_pages": 106,
+    "fts_antenna_query_hits": 3925,
+    "source_catalog_records": 241
+  },
+  "scope": "All acquired standalone PDF and HTML text layers indexed; all acquired ZIP and derived Qorvo ZIP member names inventoried. No OCR, CAD geometry interpretation or RF performance validation is implied.",
+  "page_number_convention": "pdf_page is physical PDF page starting at 1, not the printed page label.",
+  "low_text_note": "Blank covers, figures, drawings and scanned pages can have little or no extractable text. The original PDF remains authoritative; these flags do not mean the original is corrupt."
+}

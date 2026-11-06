@@ -1,0 +1,643 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="readthedocs-addons-api-version" content="1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ports &mdash; openEMS 0.37.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6ddebc91" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=29b1acb9"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <script src="../../_static/js/versions.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="NF2FF" href="nf2ff.html" />
+    <link rel="prev" title="openEMS" href="openEMS.html" /> 
+<script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="openems" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/python/openEMS/ports.html" /><meta name="readthedocs-http-status" content="200" /></head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            openEMS
+              <img src="../../_static/openEMS.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="switch-menus">
+                <div class="version-switch"></div>
+                <div class="language-switch"></div>
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorials/index.html">Python Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../octave/Tutorials/index.html">Octave/Matlab Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../postproc/index.html">Post-Processing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../python.html">Python Interface</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../CSXCAD/CSXCAD_API.html">CSXCAD Python Interface</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="openEMS_API.html">openEMS Python Interface</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="openEMS.html">openEMS</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nf2ff.html">NF2FF</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sar.html">SAR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="automesh.html">Automatic Meshing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.html">Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compare.html">Comparing Results</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../octave/octave.html">Octave/Matlab Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../more.html">Learn More</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog/index.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development/index.html">Development</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">openEMS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../python.html">Python Interface</a></li>
+          <li class="breadcrumb-item"><a href="openEMS_API.html">openEMS Python Interface</a></li>
+      <li class="breadcrumb-item active">Ports</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/python/openEMS/ports.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ports">
+<span id="id1"></span><h1>Ports<a class="headerlink" href="#ports" title="Link to this heading"></a></h1>
+<span class="target" id="module-openEMS.ports"></span><section id="port-base-class">
+<h2>Port (Base Class)<a class="headerlink" href="#port-base-class" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="openEMS.ports.Port">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">openEMS.ports.</span></span><span class="sig-name descname"><span class="pre">Port</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">CSX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_nr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excite</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openEMS.ports.Port" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The port base class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>CSX</strong> – Continuous Structure</p></li>
+<li><p><strong>port_nr</strong> – int – port number, must be unique among all ports with the
+same PortNamePrefix, as openEMS writes each port probe to a file named
+after the port number</p></li>
+<li><p><strong>R</strong> – float – port reference impedance, e.g. 50 (Ohms)</p></li>
+<li><p><strong>stop</strong> (<em>start</em><em>,</em>) – (3,) array – Start/Stop box coordinates</p></li>
+<li><p><strong>p_dir</strong> – int – port direction</p></li>
+<li><p><strong>excite</strong> – float – port excitation amplitude</p></li>
+<li><p><strong>priority</strong> – int – priority of all contained primtives</p></li>
+<li><p><strong>PortNamePrefix</strong> – str – a prefix for all ports-names</p></li>
+<li><p><strong>delay</strong> – float – a positive delay value to e.g. emulate a phase shift</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="openEMS.ports.Port.CalcPort">
+<span class="sig-name descname"><span class="pre">CalcPort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_impedance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_plane_shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pulse'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openEMS.ports.Port.CalcPort" title="Link to this definition"></a></dt>
+<dd><p>Post-process this port: read its probe files and separate the total
+voltage and current into incident and reflected waves. Run it after
+the simulation, once per port, before reading any of the results.</p>
+<p>The results are attributes of the port: <cite>uf_inc</cite>, <cite>uf_ref</cite>, <cite>uf_tot</cite>
+and the matching <cite>if_*</cite> currents in the frequency domain, <cite>ut_*</cite> and
+<cite>it_*</cite> in the time domain (incident and reflected only for a scalar
+reference impedance), and the powers <cite>P_inc</cite>, <cite>P_ref</cite> and <cite>P_acc</cite>.
+S-parameters follow from the ratios, e.g.
+<code class="docutils literal notranslate"><span class="pre">s11</span> <span class="pre">=</span> <span class="pre">port[0].uf_ref</span> <span class="pre">/</span> <span class="pre">port[0].uf_inc</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sim_path</strong> – str – simulation directory holding the probe files</p></li>
+<li><p><strong>freq</strong> – array – frequencies to evaluate</p></li>
+<li><p><strong>ref_impedance</strong> – float or array – reference impedance to
+normalize to, e.g. 50. Defaults to the port resistance for a
+lumped port, or the extracted line impedance for a transmission
+line or waveguide port.</p></li>
+<li><p><strong>ref_plane_shift</strong> – float – move the reference plane by this
+distance in drawing units (transmission line and waveguide ports)</p></li>
+<li><p><strong>signal_type</strong> – str – ‘pulse’ (default) or ‘periodic’</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="openEMS.ports.Port.ReadUIData">
+<span class="sig-name descname"><span class="pre">ReadUIData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pulse'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openEMS.ports.Port.ReadUIData" title="Link to this definition"></a></dt>
+<dd><p>Read the voltage and current probe files this port wrote and sum them
+into the total voltage and current, in the time domain (<cite>ut_tot</cite>,
+<cite>it_tot</cite>) and the frequency domain (<cite>uf_tot</cite>, <cite>if_tot</cite>). Called by
+<a class="reference internal" href="#openEMS.ports.Port.CalcPort" title="openEMS.ports.Port.CalcPort"><code class="xref py py-meth docutils literal notranslate"><span class="pre">CalcPort()</span></code></a>; call it directly only to inspect the raw probe data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sim_path</strong> – str – simulation directory holding the probe files</p></li>
+<li><p><strong>freq</strong> – array – frequencies to evaluate</p></li>
+<li><p><strong>signal_type</strong> – str – ‘pulse’ (default) or ‘periodic’, see
+<a class="reference internal" href="utilities.html#openEMS.utilities.DFT_time2freq" title="openEMS.utilities.DFT_time2freq"><code class="xref py py-func docutils literal notranslate"><span class="pre">openEMS.utilities.DFT_time2freq()</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="openEMS.ports.Port.SetEnabled">
+<span class="sig-name descname"><span class="pre">SetEnabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openEMS.ports.Port.SetEnabled" title="Link to this definition"></a></dt>
+<dd><p>Enable or disable this port’s excitation, so the same structure can be
+run once per active port without rebuilding it. A passive port still
+records what arrives at it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>val</strong> – bool – True to excite from this port</p>
+</dd>
+</dl>
+<p>Raises an exception when enabling a port that was created with
+<code class="docutils literal notranslate"><span class="pre">excite=0</span></code> and therefore has no excitation to enable.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="lumped-port">
+<h2>Lumped Port<a class="headerlink" href="#lumped-port" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="openEMS.ports.LumpedPort">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">openEMS.ports.</span></span><span class="sig-name descname"><span class="pre">LumpedPort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">CSX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_nr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openEMS.ports.LumpedPort" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openEMS.ports.Port" title="openEMS.ports.Port"><code class="xref py py-class docutils literal notranslate"><span class="pre">Port</span></code></a></p>
+<p>The lumped port.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#openEMS.ports.Port" title="openEMS.ports.Port"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Port</span></code></a></dt><dd></dd>
+</dl>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="openEMS.ports.LumpedPort.CalcPort">
+<span class="sig-name descname"><span class="pre">CalcPort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_impedance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_plane_shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pulse'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openEMS.ports.LumpedPort.CalcPort" title="Link to this definition"></a></dt>
+<dd><p>As <a class="reference internal" href="#openEMS.ports.Port.CalcPort" title="openEMS.ports.Port.CalcPort"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Port.CalcPort()</span></code></a>, with the reference impedance defaulting to
+the port resistance <cite>R</cite>. A lumped port has no reference plane to move,
+so <cite>ref_plane_shift</cite> is ignored.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="msl-port">
+<h2>MSL Port<a class="headerlink" href="#msl-port" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="openEMS.ports.MSLPort">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">openEMS.ports.</span></span><span class="sig-name descname"><span class="pre">MSLPort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">CSX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_nr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metal_prop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prop_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openEMS.ports.MSLPort" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openEMS.ports.Port" title="openEMS.ports.Port"><code class="xref py py-class docutils literal notranslate"><span class="pre">Port</span></code></a></p>
+<p>The microstrip transmission line port.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>prop_dir</strong> – int/str – direction of propagation</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#openEMS.ports.Port" title="openEMS.ports.Port"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Port</span></code></a></dt><dd></dd>
+</dl>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="openEMS.ports.MSLPort.ReadUIData">
+<span class="sig-name descname"><span class="pre">ReadUIData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pulse'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openEMS.ports.MSLPort.ReadUIData" title="Link to this definition"></a></dt>
+<dd><p>As <a class="reference internal" href="#openEMS.ports.Port.ReadUIData" title="openEMS.ports.Port.ReadUIData"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Port.ReadUIData()</span></code></a>, but the total voltage and current are taken
+from the probe at the measurement plane rather than summed over all
+probes; the other probes are used to separate the traveling waves.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="waveguide-port">
+<h2>Waveguide Port<a class="headerlink" href="#waveguide-port" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="openEMS.ports.WaveguidePort">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">openEMS.ports.</span></span><span class="sig-name descname"><span class="pre">WaveguidePort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">CSX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_nr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E_WG_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">H_WG_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excite_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E_WG_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">H_WG_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_origin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openEMS.ports.WaveguidePort" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openEMS.ports.Port" title="openEMS.ports.Port"><code class="xref py py-class docutils literal notranslate"><span class="pre">Port</span></code></a></p>
+<p>Base class for any waveguide port.</p>
+<p>The mode shape can be supplied either as analytic expressions (E_WG_func /
+H_WG_func) or as an HDF5 mode file (E_WG_file / H_WG_file).  Exactly one
+of the two sources must be provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>exc_dir</strong><span class="classifier">int or str</span></dt><dd><p>Propagation direction of the waveguide (0/’x’, 1/’y’, 2/’z’).</p>
+</dd>
+<dt><strong>E_WG_func</strong><span class="classifier">list of str or None</span></dt><dd><p>Electric field mode profile as a list of three fparser expressions,
+one per Cartesian component.  Use <code class="docutils literal notranslate"><span class="pre">None</span></code> when supplying a mode file.</p>
+</dd>
+<dt><strong>H_WG_func</strong><span class="classifier">list of str or None</span></dt><dd><p>Magnetic field mode profile as a list of three fparser expressions.
+Use <code class="docutils literal notranslate"><span class="pre">None</span></code> when supplying a mode file.</p>
+</dd>
+<dt><strong>kc</strong><span class="classifier">float</span></dt><dd><p>Cut-off wavenumber of the mode in drawing units (e.g. pi/a for TE10).
+Used by <a class="reference internal" href="#openEMS.ports.Port.CalcPort" title="openEMS.ports.Port.CalcPort"><code class="xref py py-meth docutils literal notranslate"><span class="pre">CalcPort()</span></code></a> to compute the propagation constant beta and
+the analytic waveguide impedance.</p>
+</dd>
+<dt><strong>E_WG_file</strong><span class="classifier">str or None</span></dt><dd><p>Path to an HDF5 file containing the electric field mode profile.
+Required when E_WG_func / H_WG_func are <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt><strong>H_WG_file</strong><span class="classifier">str or None</span></dt><dd><p>Path to an HDF5 file containing the magnetic field mode profile.
+Required when E_WG_func / H_WG_func are <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt><strong>local_origin</strong><span class="classifier">array-like, ‘corner’, ‘center’, or None</span></dt><dd><p>Coordinate origin used when evaluating mode functions or looking up
+mode file data, given as a <strong>Cartesian</strong> point for any mesh type.
+Coordinates are converted to Cartesian and shifted by this amount, and
+only then are <code class="docutils literal notranslate"><span class="pre">x</span></code>/<code class="docutils literal notranslate"><span class="pre">y</span></code>/<code class="docutils literal notranslate"><span class="pre">z</span></code>/<code class="docutils literal notranslate"><span class="pre">rho</span></code>/<code class="docutils literal notranslate"><span class="pre">a</span></code>/<code class="docutils literal notranslate"><span class="pre">r</span></code>/<code class="docutils literal notranslate"><span class="pre">t</span></code> derived, so
+that <code class="docutils literal notranslate"><span class="pre">rho</span></code> and <code class="docutils literal notranslate"><span class="pre">a</span></code> are measured from this point.  Both the
+excitation and the two mode-match probes receive the same origin, which
+is what keeps the excited and the probed mode identical.  Shorthands:
+<code class="docutils literal notranslate"><span class="pre">'corner'</span></code> resolves to <code class="docutils literal notranslate"><span class="pre">min(start,</span> <span class="pre">stop)</span></code> per axis; <code class="docutils literal notranslate"><span class="pre">'center'</span></code>
+resolves to the midpoint.  Because they derive from <code class="docutils literal notranslate"><span class="pre">start</span></code>/<code class="docutils literal notranslate"><span class="pre">stop</span></code>,
+which are given in mesh coordinates, the shorthands are Cartesian-mesh
+only – on a cylindrical mesh pass an explicit vector (<code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">z]</span></code>
+keeps the mode centered on the mesh axis).  Default <code class="docutils literal notranslate"><span class="pre">None</span></code> means no
+shift (global coordinates are used as-is).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#openEMS.ports.Port" title="openEMS.ports.Port"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Port</span></code></a>, <a class="reference internal" href="#openEMS.ports.RectWGPort" title="openEMS.ports.RectWGPort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RectWGPort</span></code></a></dt><dd></dd>
+</dl>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="openEMS.ports.WaveguidePort.CalcPort">
+<span class="sig-name descname"><span class="pre">CalcPort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_impedance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_plane_shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pulse'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ZL</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openEMS.ports.WaveguidePort.CalcPort" title="Link to this definition"></a></dt>
+<dd><p>As <a class="reference internal" href="#openEMS.ports.Port.CalcPort" title="openEMS.ports.Port.CalcPort"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Port.CalcPort()</span></code></a>, but the propagation constant <cite>beta</cite> and the
+wave impedance <cite>ZL</cite> are calculated analytically from the mode’s cutoff
+wavenumber, and the S-parameters are normalized to <cite>ZL</cite> unless
+<cite>ref_impedance</cite> is given.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ZL</strong> – float – override the analytic wave impedance</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="rect-waveguide-port">
+<h2>Rect Waveguide Port<a class="headerlink" href="#rect-waveguide-port" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="openEMS.ports.RectWGPort">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">openEMS.ports.</span></span><span class="sig-name descname"><span class="pre">RectWGPort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">CSX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_nr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_origin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'corner'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openEMS.ports.RectWGPort" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openEMS.ports.WaveguidePort" title="openEMS.ports.WaveguidePort"><code class="xref py py-class docutils literal notranslate"><span class="pre">WaveguidePort</span></code></a></p>
+<p>Rectangular waveguide port with automatic TE mode profile generation.</p>
+<p>Constructs the analytic TE_mn mode functions (Pozar, Microwave Engineering)
+and forwards them to <a class="reference internal" href="#openEMS.ports.WaveguidePort" title="openEMS.ports.WaveguidePort"><code class="xref py py-class docutils literal notranslate"><span class="pre">WaveguidePort</span></code></a>.  Only TE modes are currently
+supported.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>a</strong><span class="classifier">float</span></dt><dd><p>Waveguide width in metres (dimension along the first transverse axis).</p>
+</dd>
+<dt><strong>b</strong><span class="classifier">float</span></dt><dd><p>Waveguide height in metres (dimension along the second transverse axis).</p>
+</dd>
+<dt><strong>mode_name</strong><span class="classifier">str</span></dt><dd><p>Four-character mode string, e.g. <code class="docutils literal notranslate"><span class="pre">'TE10'</span></code> or <code class="docutils literal notranslate"><span class="pre">'TE11'</span></code>.</p>
+</dd>
+<dt><strong>local_origin</strong><span class="classifier">array-like, ‘corner’, ‘center’, or None</span></dt><dd><p>Defaults to <code class="docutils literal notranslate"><span class="pre">'corner'</span></code> so that the generated mode functions, which
+are defined relative to the lower-left corner of the port, are
+evaluated correctly regardless of where the port is placed in the mesh.
+See <a class="reference internal" href="#openEMS.ports.WaveguidePort" title="openEMS.ports.WaveguidePort"><code class="xref py py-class docutils literal notranslate"><span class="pre">WaveguidePort</span></code></a> for the full description.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#openEMS.ports.Port" title="openEMS.ports.Port"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Port</span></code></a>, <a class="reference internal" href="#openEMS.ports.WaveguidePort" title="openEMS.ports.WaveguidePort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WaveguidePort</span></code></a></dt><dd></dd>
+</dl>
+</div>
+</dd></dl>
+
+</section>
+<section id="circular-waveguide-port">
+<h2>Circular Waveguide Port<a class="headerlink" href="#circular-waveguide-port" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="openEMS.ports.CircWGPort">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">openEMS.ports.</span></span><span class="sig-name descname"><span class="pre">CircWGPort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">CSX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_nr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pol_ang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_origin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'center'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openEMS.ports.CircWGPort" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openEMS.ports.WaveguidePort" title="openEMS.ports.WaveguidePort"><code class="xref py py-class docutils literal notranslate"><span class="pre">WaveguidePort</span></code></a></p>
+<p>Circular waveguide port with analytic TE mode profile.</p>
+<p>Generates Bessel-function mode functions (Pozar 3rd ed.) and forwards
+them to <a class="reference internal" href="#openEMS.ports.WaveguidePort" title="openEMS.ports.WaveguidePort"><code class="xref py py-class docutils literal notranslate"><span class="pre">WaveguidePort</span></code></a>.  Only TE modes with the listed (n, m)
+indices are supported.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>exc_dir</strong><span class="classifier">int or str</span></dt><dd><p>Propagation direction: 0/’x’, 1/’y’, or 2/’z’.  The mode functions
+are expressed in the two transverse Cartesian coordinates, so all
+three directions are supported.</p>
+</dd>
+<dt><strong>radius</strong><span class="classifier">float</span></dt><dd><p>Waveguide radius in metres.</p>
+</dd>
+<dt><strong>mode_name</strong><span class="classifier">str</span></dt><dd><p>Four-character TE mode string, e.g. <code class="docutils literal notranslate"><span class="pre">'TE11'</span></code> or <code class="docutils literal notranslate"><span class="pre">'TE21'</span></code>.</p>
+</dd>
+<dt><strong>pol_ang</strong><span class="classifier">float, optional</span></dt><dd><p>Polarisation angle in radians (0 = horizontal, pi/2 = vertical).</p>
+</dd>
+<dt><strong>local_origin</strong><span class="classifier">array-like, ‘corner’, or ‘center’, optional</span></dt><dd><p>Forwarded to <a class="reference internal" href="#openEMS.ports.WaveguidePort" title="openEMS.ports.WaveguidePort"><code class="xref py py-class docutils literal notranslate"><span class="pre">WaveguidePort</span></code></a>.  Defaults to <code class="docutils literal notranslate"><span class="pre">'center'</span></code> so
+that the mode functions are evaluated relative to the port midpoint.
+Ignored on a cylindrical mesh, see the notes below.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#openEMS.ports.Port" title="openEMS.ports.Port"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Port</span></code></a>, <a class="reference internal" href="#openEMS.ports.WaveguidePort" title="openEMS.ports.WaveguidePort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WaveguidePort</span></code></a>, <a class="reference internal" href="#openEMS.ports.RectWGPort" title="openEMS.ports.RectWGPort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RectWGPort</span></code></a></dt><dd></dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p>On a <strong>cylindrical</strong> mesh the mode profile is used in its native
+(rho, a, z) form and the propagation direction must be <code class="docutils literal notranslate"><span class="pre">'z'</span></code>.  <code class="docutils literal notranslate"><span class="pre">rho</span></code>
+and <code class="docutils literal notranslate"><span class="pre">a</span></code> are then the mesh coordinates themselves, already measured from
+the mesh axis = the waveguide axis, so no <code class="docutils literal notranslate"><span class="pre">local_origin</span></code> shift is
+applied (the port box spans the full 0..2*pi in <code class="docutils literal notranslate"><span class="pre">a</span></code>, whose midpoint is
+not a point on the axis).  On a Cartesian mesh the profile is converted
+to the two transverse Cartesian components and masked to <code class="docutils literal notranslate"><span class="pre">rho</span> <span class="pre">&lt;</span> <span class="pre">radius</span></code>.</p>
+<p>Supported modes and their Bessel zeros p’_nm (zeros of J_n’):</p>
+<blockquote>
+<div><p>TE01 3.832  TE11 1.841  TE21 3.054
+TE02 7.016  TE12 5.331  TE22 6.706
+TE03 10.174 TE13 8.536  TE23 9.970</p>
+</div></blockquote>
+<p>For each propagation direction the two transverse Cartesian coordinates
+(u, v) are determined by <code class="docutils literal notranslate"><span class="pre">ny_P</span> <span class="pre">=</span> <span class="pre">(exc_ny+1)%3</span></code> and
+<code class="docutils literal notranslate"><span class="pre">ny_PP</span> <span class="pre">=</span> <span class="pre">(exc_ny+2)%3</span></code>.  The transverse radius and angle are then
+<code class="docutils literal notranslate"><span class="pre">rho_t</span> <span class="pre">=</span> <span class="pre">sqrt(u²+v²)</span></code> and <code class="docutils literal notranslate"><span class="pre">a_t</span> <span class="pre">=</span> <span class="pre">atan2(v,</span> <span class="pre">u)</span></code>, which replace the
+xy-plane built-ins <code class="docutils literal notranslate"><span class="pre">rho</span></code> and <code class="docutils literal notranslate"><span class="pre">a</span></code> used in earlier versions.</p>
+</dd></dl>
+
+</section>
+<section id="coaxial-port">
+<h2>Coaxial Port<a class="headerlink" href="#coaxial-port" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="openEMS.ports.CoaxialPort">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">openEMS.ports.</span></span><span class="sig-name descname"><span class="pre">CoaxialPort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">CSX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_nr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pec_prop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mat_prop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prop_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_o</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_os</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openEMS.ports.CoaxialPort" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openEMS.ports.Port" title="openEMS.ports.Port"><code class="xref py py-class docutils literal notranslate"><span class="pre">Port</span></code></a></p>
+<p>Coaxial transmission line port.</p>
+<p>Creates the coaxial geometry (inner conductor, outer shell, optional
+dielectric fill), voltage/current probes for the differential TL method,
+and an optional weighted radial-field excitation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>pec_prop</strong><span class="classifier">CSProperties</span></dt><dd><p>Metal property for the inner conductor and outer shell.</p>
+</dd>
+<dt><strong>mat_prop</strong><span class="classifier">CSProperties or None</span></dt><dd><p>Dielectric property for the filling between the conductors.  Pass
+<code class="docutils literal notranslate"><span class="pre">None</span></code> for an air-filled coaxial line.</p>
+</dd>
+<dt><strong>prop_dir</strong><span class="classifier">int or str</span></dt><dd><p>Direction of wave propagation (0/1/2 or ‘x’/’y’/’z’).</p>
+</dd>
+<dt><strong>r_i</strong><span class="classifier">float</span></dt><dd><p>Inner conductor radius in drawing units.</p>
+</dd>
+<dt><strong>r_o</strong><span class="classifier">float</span></dt><dd><p>Outer conductor inner radius in drawing units.</p>
+</dd>
+<dt><strong>r_os</strong><span class="classifier">float</span></dt><dd><p>Outer conductor outer radius in drawing units.</p>
+</dd>
+<dt><strong>excite</strong><span class="classifier">float, optional</span></dt><dd><p>Excitation amplitude of the transverse E-field profile.  Set to 0
+(default) for a passive port.</p>
+</dd>
+<dt><strong>FeedShift</strong><span class="classifier">float, optional</span></dt><dd><p>Distance in drawing units to shift the excitation from <code class="docutils literal notranslate"><span class="pre">start</span></code>.</p>
+</dd>
+<dt><strong>Feed_R</strong><span class="classifier">float, optional</span></dt><dd><p>Lumped port resistance.  Default is <code class="docutils literal notranslate"><span class="pre">numpy.inf</span></code> (open).  Only 0
+(short/metal termination) and <code class="docutils literal notranslate"><span class="pre">inf</span></code> (open) are currently supported.</p>
+</dd>
+<dt><strong>MeasPlaneShift</strong><span class="classifier">float, optional</span></dt><dd><p>Distance in drawing units from <code class="docutils literal notranslate"><span class="pre">start</span></code> to the measurement plane.
+Default is the midpoint of the port.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#openEMS.ports.Port" title="openEMS.ports.Port"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Port</span></code></a>, <a class="reference internal" href="#openEMS.ports.MSLPort" title="openEMS.ports.MSLPort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MSLPort</span></code></a></dt><dd></dd>
+</dl>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="openEMS.ports.CoaxialPort.ReadUIData">
+<span class="sig-name descname"><span class="pre">ReadUIData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pulse'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openEMS.ports.CoaxialPort.ReadUIData" title="Link to this definition"></a></dt>
+<dd><p>As <a class="reference internal" href="#openEMS.ports.Port.ReadUIData" title="openEMS.ports.Port.ReadUIData"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Port.ReadUIData()</span></code></a>, taking the total voltage and current from
+the probe at the measurement plane.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="stripline-port">
+<h2>Stripline Port<a class="headerlink" href="#stripline-port" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="openEMS.ports.StripLinePort">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">openEMS.ports.</span></span><span class="sig-name descname"><span class="pre">StripLinePort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">CSX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_nr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metal_prop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prop_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openEMS.ports.StripLinePort" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openEMS.ports.Port" title="openEMS.ports.Port"><code class="xref py py-class docutils literal notranslate"><span class="pre">Port</span></code></a></p>
+<p>Stripline transmission line port.</p>
+<p>Creates the stripline metal, symmetric voltage probes (above and below the
+strip toward the upper and lower ground planes), current probes spanning the
+full strip width, and an optional symmetric excitation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>metal_prop</strong><span class="classifier">CSProperties</span></dt><dd><p>Metal property for the stripline conductor.</p>
+</dd>
+<dt><strong>prop_dir</strong><span class="classifier">int or str</span></dt><dd><p>Direction of wave propagation (0/1/2 or ‘x’/’y’/’z’).</p>
+</dd>
+<dt><strong>exc_dir</strong><span class="classifier">int or str or (3,) array</span></dt><dd><p>E-field direction (must have exactly one non-zero component).</p>
+</dd>
+<dt><strong>height</strong><span class="classifier">float</span></dt><dd><p>Distance from the strip to each ground plane, in drawing units.</p>
+</dd>
+<dt><strong>excite</strong><span class="classifier">bool or float, optional</span></dt><dd><p>Set to True (or non-zero) to enable the port excitation.</p>
+</dd>
+<dt><strong>FeedShift</strong><span class="classifier">float, optional</span></dt><dd><p>Excitation shift from <code class="docutils literal notranslate"><span class="pre">start</span></code> in drawing units.</p>
+</dd>
+<dt><strong>Feed_R</strong><span class="classifier">float, optional</span></dt><dd><p>Lumped resistance in Ohms.  Default <code class="docutils literal notranslate"><span class="pre">inf</span></code> (open).</p>
+</dd>
+<dt><strong>MeasPlaneShift</strong><span class="classifier">float, optional</span></dt><dd><p>Measurement plane distance from <code class="docutils literal notranslate"><span class="pre">start</span></code> in drawing units.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#openEMS.ports.Port" title="openEMS.ports.Port"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Port</span></code></a>, <a class="reference internal" href="#openEMS.ports.MSLPort" title="openEMS.ports.MSLPort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MSLPort</span></code></a>, <a class="reference internal" href="#openEMS.ports.CPWPort" title="openEMS.ports.CPWPort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CPWPort</span></code></a></dt><dd></dd>
+</dl>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="openEMS.ports.StripLinePort.ReadUIData">
+<span class="sig-name descname"><span class="pre">ReadUIData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pulse'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openEMS.ports.StripLinePort.ReadUIData" title="Link to this definition"></a></dt>
+<dd><p>As <a class="reference internal" href="#openEMS.ports.Port.ReadUIData" title="openEMS.ports.Port.ReadUIData"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Port.ReadUIData()</span></code></a>, taking the total voltage and current from
+the probe at the measurement plane.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="coplanar-waveguide-port">
+<h2>Coplanar Waveguide Port<a class="headerlink" href="#coplanar-waveguide-port" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="openEMS.ports.CPWPort">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">openEMS.ports.</span></span><span class="sig-name descname"><span class="pre">CPWPort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">CSX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_nr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metal_prop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prop_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gap_width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openEMS.ports.CPWPort" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openEMS.ports.Port" title="openEMS.ports.Port"><code class="xref py py-class docutils literal notranslate"><span class="pre">Port</span></code></a></p>
+<p>Coplanar waveguide (CPW) port.</p>
+<p>Creates the CPW metal, gap-spanning voltage probes (left and right gaps),
+current probes, and an optional symmetric excitation across the two gaps.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>metal_prop</strong><span class="classifier">CSProperties</span></dt><dd><p>Metal property for the CPW conductor.</p>
+</dd>
+<dt><strong>prop_dir</strong><span class="classifier">int or str</span></dt><dd><p>Direction of wave propagation (0/1/2 or ‘x’/’y’/’z’).</p>
+</dd>
+<dt><strong>exc_dir</strong><span class="classifier">int or str</span></dt><dd><p>E-field direction across the gaps (0/1/2 or ‘x’/’y’/’z’), i.e. the
+width direction of the CPW. The CPW plane is normal to the cross
+product of <code class="docutils literal notranslate"><span class="pre">prop_dir</span></code> and <code class="docutils literal notranslate"><span class="pre">exc_dir</span></code>.</p>
+</dd>
+<dt><strong>gap_width</strong><span class="classifier">float</span></dt><dd><p>Width of each CPW gap in drawing units.</p>
+</dd>
+<dt><strong>excite</strong><span class="classifier">bool or float, optional</span></dt><dd><p>Enable port excitation.</p>
+</dd>
+<dt><strong>FeedShift</strong><span class="classifier">float, optional</span></dt><dd><p>Excitation shift from <code class="docutils literal notranslate"><span class="pre">start</span></code>.</p>
+</dd>
+<dt><strong>Feed_R</strong><span class="classifier">float, optional</span></dt><dd><p>Lumped resistance in Ohms (applied to each gap as 2*R).</p>
+</dd>
+<dt><strong>MeasPlaneShift</strong><span class="classifier">float, optional</span></dt><dd><p>Measurement plane distance from <code class="docutils literal notranslate"><span class="pre">start</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#openEMS.ports.Port" title="openEMS.ports.Port"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Port</span></code></a>, <a class="reference internal" href="#openEMS.ports.MSLPort" title="openEMS.ports.MSLPort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MSLPort</span></code></a>, <a class="reference internal" href="#openEMS.ports.StripLinePort" title="openEMS.ports.StripLinePort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StripLinePort</span></code></a></dt><dd></dd>
+</dl>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="openEMS.ports.CPWPort.ReadUIData">
+<span class="sig-name descname"><span class="pre">ReadUIData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pulse'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openEMS.ports.CPWPort.ReadUIData" title="Link to this definition"></a></dt>
+<dd><p>As <a class="reference internal" href="#openEMS.ports.Port.ReadUIData" title="openEMS.ports.Port.ReadUIData"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Port.ReadUIData()</span></code></a>, taking the total voltage and current from
+the probe at the measurement plane.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="curve-port">
+<h2>Curve Port<a class="headerlink" href="#curve-port" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="openEMS.ports.CurvePort">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">openEMS.ports.</span></span><span class="sig-name descname"><span class="pre">CurvePort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">CSX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_nr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openEMS.ports.CurvePort" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openEMS.ports.Port" title="openEMS.ports.Port"><code class="xref py py-class docutils literal notranslate"><span class="pre">Port</span></code></a></p>
+<p>One-dimensional curve-based lumped port.</p>
+<p>Creates a single-cell lumped port aligned with the nearest mesh edge.
+When <code class="docutils literal notranslate"><span class="pre">start</span></code> and <code class="docutils literal notranslate"><span class="pre">stop</span></code> span more than one mesh cell, PEC curves are
+added to connect the user coordinates to the one-cell port location at the
+midpoint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>R</strong><span class="classifier">float</span></dt><dd><p>Port reference impedance in Ohms.</p>
+</dd>
+<dt><strong>excite</strong><span class="classifier">bool or float, optional</span></dt><dd><p>Enable port excitation.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#openEMS.ports.Port" title="openEMS.ports.Port"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Port</span></code></a>, <a class="reference internal" href="#openEMS.ports.LumpedPort" title="openEMS.ports.LumpedPort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LumpedPort</span></code></a></dt><dd></dd>
+</dl>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="openEMS.ports.CurvePort.CalcPort">
+<span class="sig-name descname"><span class="pre">CalcPort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sim_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_impedance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_plane_shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pulse'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#openEMS.ports.CurvePort.CalcPort" title="Link to this definition"></a></dt>
+<dd><p>As <a class="reference internal" href="#openEMS.ports.Port.CalcPort" title="openEMS.ports.Port.CalcPort"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Port.CalcPort()</span></code></a>, with the reference impedance defaulting to
+the port resistance <cite>R</cite>. A curve port has no reference plane to move,
+so <cite>ref_plane_shift</cite> is ignored.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="openEMS.html" class="btn btn-neutral float-left" title="openEMS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="nf2ff.html" class="btn btn-neutral float-right" title="NF2FF" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2026, Thorsten Liebig.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,356 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="readthedocs-addons-api-version" content="1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calibration &mdash; scikit-rf Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <script src="../_static/js/versions.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="De-embedding" href="Deembedding.html" />
+    <link rel="prev" title="Circuits" href="Circuit.html" />
+  <script type="text/javascript">
+	  var _gaq = _gaq || [];
+	    _gaq.push(['_setAccount', 'UA-29068876-1']);
+		  _gaq.push(['_trackPageview']);
+
+		    (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+					    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+						  })();
+
+  </script>
+
+<script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="scikit-rf" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/tutorials/Calibration.html" /><meta name="readthedocs-http-status" content="200" /></head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            scikit-rf
+          </a>
+              <div class="switch-menus">
+                <div class="version-switch"></div>
+                <div class="language-switch"></div>
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Frequency_units.html">Configuring frequency units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Networks.html">Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Connecting_Networks.html">Connecting Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Plotting.html">Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NetworkSet.html">NetworkSet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Circuit.html">Circuits</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Calibration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Creating-a-Calibration">Creating a Calibration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#One-Port-Example">One-Port Example</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Concise-One-port">Concise One-port</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Two-port-Calibrations">Two-port Calibrations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Switch-terms">Switch-terms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Using-one-port-ideals-in-two-port-Calibration">Using one-port ideals in two-port Calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SOLT-Example">SOLT Example</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Saving-and-Recalling-a-Calibration">Saving and Recalling a Calibration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#References">References</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Deembedding.html">De-embedding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Q-Factor.html">Quality Factors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Media.html">Media</a></li>
+<li class="toctree-l2"><a class="reference internal" href="VectorFitting.html">Vector Fitting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="VectorFittingParametric.html">Parametric Vector Fitting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="VirtualInstruments.html">Virtual Instruments</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing to scikit-rf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citations_ack/acknowledging.html">Acknowledging or Citing scikit-rf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citations_ack/citations.html">Publications using or citing scikit-rf</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">scikit-rf</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Tutorials</a></li>
+      <li class="breadcrumb-item active">Calibration</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/Calibration.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<p>Download This Notebook: <a class="reference download internal" download="" href="../_downloads/7e74b599edffbc95d46b39c8bf333006/Calibration.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Calibration.ipynb</span></code></a></p>
+<section id="Calibration">
+<h1>Calibration<a class="headerlink" href="#Calibration" title="Link to this heading"></a></h1>
+<section id="Introduction">
+<h2>Introduction<a class="headerlink" href="#Introduction" title="Link to this heading"></a></h2>
+<p>This tutorial describes how to use <strong>scikit-rf</strong> to calibrate data taken from a VNA. For an introduction to VNA calibration see this article by Rumiantsev and Ridler [1]., for an outline of different calibration algorithms see Doug Ryttings presentation [2]. If you like to read books, then you may want to checkout [3].</p>
+<p>What follows are examples of how to calibrate a device under test (DUT), assuming you have measured an acceptable set of standards, and have a corresponding set ideal responses. This may be referred to as <em>offline</em> calibration, because it is not occurring onboard the VNA itself. One benefit of this technique is that it provides maximum flexibility for non-conventional calibrations, and preserves all raw data.</p>
+<p>There are many calibration algorithms implemented in scikit-rf. The choice between them depends of the media, the available calibration standards and the desired trade-off between accuracy and effort. The calibration algorithms available in scikit-rf are listed in the <a class="reference internal" href="../api/calibration/index.html"><span class="doc">Calibration</span></a> API’s page.</p>
+</section>
+<section id="Creating-a-Calibration">
+<h2>Creating a Calibration<a class="headerlink" href="#Creating-a-Calibration" title="Link to this heading"></a></h2>
+<p>Calibrations are performed through a <a class="reference internal" href="../api/calibration/index.html"><span class="doc">Calibration</span></a> class. In General, <a class="reference internal" href="../api/calibration/index.html"><span class="doc">Calibration</span></a> objects require two arguments:</p>
+<ul class="simple">
+<li><p>a list of measured <code class="docutils literal notranslate"><span class="pre">Network</span></code>’s</p></li>
+<li><p>a list of ideal <code class="docutils literal notranslate"><span class="pre">Network</span></code>’s</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">Network</span></code> elements in each list must all be similar (same number of ports, frequency info, etc) and must be aligned to each other, meaning the first element of ideals list must correspond to the first element of measured list. Self calibration algorithms, such as TRL, do not require predefined ideal responses.</p>
+</section>
+<section id="One-Port-Example">
+<h2>One-Port Example<a class="headerlink" href="#One-Port-Example" title="Link to this heading"></a></h2>
+<p>This example code is written to be instructive, not concise. To construct a one-port calibration you need to have measured at least three standards and have their known <em>ideal</em> responses in the form of <code class="docutils literal notranslate"><span class="pre">Network</span></code>s. These <code class="docutils literal notranslate"><span class="pre">Network</span></code> can be created from touchstone files, a format all modern VNA’s support.</p>
+<p>In the following script the measured and ideal touchstone files for a conventional short-open-load (SOL) calkit are in folders <code class="docutils literal notranslate"><span class="pre">measured/</span></code> and <code class="docutils literal notranslate"><span class="pre">ideal/</span></code>, respectively. These are used to create a <code class="docutils literal notranslate"><span class="pre">OnePort</span></code> Calibration and correct a measured DUT</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>import skrf as rf
+from skrf.calibration import OnePort
+
+## created necessary data for Calibration class
+
+# a list of Network types, holding 'ideal' responses
+my_ideals = [\
+        rf.Network('ideal/short.s1p'),
+        rf.Network('ideal/open.s1p'),
+        rf.Network('ideal/load.s1p'),
+        ]
+
+# a list of Network types, holding 'measured' responses
+my_measured = [\
+        rf.Network('measured/short.s1p'),
+        rf.Network('measured/open.s1p'),
+        rf.Network('measured/load.s1p'),
+        ]
+
+## create a Calibration instance
+cal = OnePort(\
+        ideals = my_ideals,
+        measured = my_measured,
+        )
+
+
+## run, and apply calibration to a DUT
+
+# run calibration algorithm
+cal.run()
+
+# apply it to a dut
+dut = rf.Network('my_dut.s1p')
+dut_caled = cal.apply_cal(dut)
+dut_caled.name =  dut.name + ' corrected'
+
+# plot results
+dut_caled.plot_s_db()
+# save results
+dut_caled.write_touchstone()
+</pre></div>
+</div>
+<section id="Concise-One-port">
+<h3>Concise One-port<a class="headerlink" href="#Concise-One-port" title="Link to this heading"></a></h3>
+<p>This example achieves the same task as the one above except in a more concise <em>programmatic</em> way.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>import skrf as rf
+from skrf.calibration import OnePort
+
+my_ideals = rf.io.load_all_touchstones('ideals/')
+my_measured = rf.io.load_all_touchstones('measured/')
+
+
+## create a Calibration instance
+cal = OnePort(\
+    ideals = [my_ideals[k] for k in ['short','open','load']],
+    measured = [my_measured[k] for k in ['short','open','load']],
+    )
+
+## what you do with 'cal' may  may be similar to above example
+</pre></div>
+</div>
+</section>
+</section>
+<section id="Two-port-Calibrations">
+<h2>Two-port Calibrations<a class="headerlink" href="#Two-port-Calibrations" title="Link to this heading"></a></h2>
+<p>Naturally, two-port calibration is more involved than one-port. <strong>skrf</strong> supports a few different two-port algorithms. The traditional <code class="docutils literal notranslate"><span class="pre">SOLT</span></code> algorithm uses the 12-term error model. This algorithms is straightforward, and similar to the OnePort example.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">EightTerm</span></code> calibration is based on the algorithm described in [4], by R.A.Speciale. It can be constructed from any number of standards, providing that some fundamental constraints are met. In short, you need three two-port standards; one must be transmissive, and one must provide a known impedance and be reflective. Note, that the word <em>8-term</em> is used in the literature to describe a specific error model used by a variety of calibration algorithms, like TRL, LRM, etc. The
+<code class="docutils literal notranslate"><span class="pre">EightTerm</span></code> class, is an implementation of the algorithm cited above, which does not use any self-calibration.</p>
+<p>One important detail of using the 8-term error model formulation is that switch-terms may need to be measured in order to achieve a high quality calibration (thanks to Dylan Williams for pointing this out). These are described next.</p>
+<section id="Switch-terms">
+<h3>Switch-terms<a class="headerlink" href="#Switch-terms" title="Link to this heading"></a></h3>
+<p>Originally described by Roger Marks[5], switch-terms account for the fact that the 8-term (aka <em>error-box</em> ) model is overly simplified. The two error networks change slightly depending on which port is being excited. This is due to the internal switch within the VNA. Hence, switch terms describe the imperfect load when the source is switch to the other port.</p>
+<p>Switch terms can be directly measured with a low insertion loss transmissive standard (like a thru) connected between the cables connected to the instrument ports. Sometime, a custom measurement configuration is available on the VNA itself.</p>
+<p><strong>skrf</strong> has support for measuring switch terms in the <code class="docutils literal notranslate"><span class="pre">skrf.vi.vna</span></code> module, see the HP8510’s <code class="docutils literal notranslate"><span class="pre">skrf.vi.vna.hp.HP8510C.get_switch_terms</span></code>, or PNA’s <code class="docutils literal notranslate"><span class="pre">skrf.vi.vna.keysight.get_switch_terms</span></code> . Without switch-term measurements, your calibration quality will vary depending on properties of you VNA.</p>
+</section>
+<section id="Using-one-port-ideals-in-two-port-Calibration">
+<h3>Using one-port ideals in two-port Calibration<a class="headerlink" href="#Using-one-port-ideals-in-two-port-Calibration" title="Link to this heading"></a></h3>
+<p>Commonly, you have data for ideal data for reflective standards in the form of one-port touchstone files (ie <code class="docutils literal notranslate"><span class="pre">.s1p</span></code>). To use this with skrf’s two-port calibration method you need to create a two-port network that is a composite of the two networks. The function <code class="docutils literal notranslate"><span class="pre">skrf.network.two_port_reflect</span></code> does this</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>short = rf.Network('ideals/short.s1p')
+shorts = rf.network.two_port_reflect(short, short)
+</pre></div>
+</div>
+</section>
+<section id="SOLT-Example">
+<h3>SOLT Example<a class="headerlink" href="#SOLT-Example" title="Link to this heading"></a></h3>
+<p>Two-port calibration is accomplished in an identical way to one-port, except all the standards are two-port networks. This is even true of reflective and load standards (S21=S12=0). So if you measure reflective or load standards you should measure two of them simultaneously, and store information in a two-port. For example, connect a short to port-1 and a short to port-2, and save a two-port measurement as ‘short,short.s2p’ or similar.</p>
+<p>Alternatively, for a <code class="docutils literal notranslate"><span class="pre">SOLT</span></code>, <code class="docutils literal notranslate"><span class="pre">TwelveTerm</span></code>, or <code class="docutils literal notranslate"><span class="pre">EightTerm</span></code> calibration, it’s also acceptable to measure one port at a time while leaving the other unused port open. Later, two one-port networks can be combined to a two-port network using <code class="docutils literal notranslate"><span class="pre">skrf.network.two_port_reflect</span></code>, explained above.</p>
+<p>By default, no isolation calibration takes place. For reflective and even load standards, <span class="math notranslate nohighlight">\(S_{21}\)</span> and <span class="math notranslate nohighlight">\(S_{12}\)</span> are ignored. If isolation calibration is needed, one must explicitly tell scikit-rf to do so. Specifically, an optional parameter <code class="docutils literal notranslate"><span class="pre">isolation</span></code> is used for this purpose. To calibrate isolation, set this parameter to a two-port network, representing the measurement result with loads on both ports.</p>
+<p>It should be noted that the less common (but still <a class="reference internal" href="../api/calibration/generated/skrf.calibration.calibration.SixteenTerm.html"><span class="doc">supported</span></a> <code class="docutils literal notranslate"><span class="pre">SixteenTerm</span></code> calibration is a notable exception: this calibration is specifically designed to eliminate port leakages better than the standard <code class="docutils literal notranslate"><span class="pre">SOLT</span></code> model. Measuring a combination of standards at both port simultaneously is <em>required</em>.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>import skrf as rf
+from skrf.calibration import SOLT
+
+
+
+# a list of Network types, holding 'ideal' responses
+my_ideals = [
+    rf.Network('ideal/short, short.s2p'),
+    rf.Network('ideal/open, open.s2p'),
+    rf.Network('ideal/load, load.s2p'),
+    rf.Network('ideal/thru.s2p'),
+    ]
+
+# a list of Network types, holding 'measured' responses
+my_measured = [
+    rf.Network('measured/short, short.s2p'),
+    rf.Network('measured/open, open.s2p'),
+    rf.Network('measured/load, load.s2p'),
+    rf.Network('measured/thru.s2p'),
+    ]
+
+
+## create a SOLT instance
+cal = SOLT(
+    ideals = my_ideals,
+    measured = my_measured,
+    rf.Network('measured/load, load.s2p'),
+    # isolation calibration is optional, it can be removed.
+    )
+
+
+## run, and apply calibration to a DUT
+
+# run calibration algorithm
+cal.run()
+
+# apply it to a dut
+dut = rf.Network('my_dut.s2p')
+dut_caled = cal.apply_cal(dut)
+
+# plot results
+dut_caled.plot_s_db()
+# save results
+dut_caled.write_touchstone()
+</pre></div>
+</div>
+</section>
+</section>
+<section id="Saving-and-Recalling-a-Calibration">
+<h2>Saving and Recalling a Calibration<a class="headerlink" href="#Saving-and-Recalling-a-Calibration" title="Link to this heading"></a></h2>
+<p><a class="reference internal" href="../api/calibration/index.html"><span class="doc">Calibration</span></a>’s can be written-to and read-from disk using the temporary storage container of pickles. Writing can be accomplished by using <code class="docutils literal notranslate"><span class="pre">Calibration.write</span></code>, or <code class="docutils literal notranslate"><span class="pre">rf.io.write()</span></code>, and reading is done with <code class="docutils literal notranslate"><span class="pre">rf.io.read()</span></code>. Since these functions rely on pickling, they are not recommended for long-term data storage. Currently there is no way to achieve long term storage of a Calibration object, other than saving the script used to generate it.</p>
+</section>
+<section id="References">
+<h2>References<a class="headerlink" href="#References" title="Link to this heading"></a></h2>
+<div id="link_ref1"><p>[1] <a class="reference external" href="http://anlage.umd.edu/Microwave%20Measurements%20for%20Personal%20Web%20Site/Rumiantsev%20VNA%20Calibration%20IEEE%20Mag%20June%202008%20page%2086.pdf">Andrej Rumiantsev and Nick Ridler, “VNA Calibration”, IEEE Microwave Magazine 2008</a></p>
+</div><div id="link_ref2"><p>[2] <a class="reference external" href="http://emlab.uiuc.edu/ece451/appnotes/Rytting_NAModels.pdf">Doug Rytting, “Network Analyzer, Error Models and Calibration Methods”</a></p>
+</div><div id="link_ref3"><p>[3] J. P. Dunsmore, “Handbook of microwave component measurements: with advanced vna techniques”. Hoboken, N.J: Wiley, 2012.</p>
+</div><div id="link_ref4"><p>[4] R.A. Speciale, “A Generalization of the TSD Network-Analyzer Calibration Procedure, Covering n-Port Scattering-Parameter Measurements, Affected by Leakage Errors,” Microwave Theory and Techniques, IEEE Transactions on , vol.25, no.12, pp. 1100- 1115, Dec 1977. URL: <a class="reference external" href="http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=1129282&amp;isnumber=25047">http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=1129282&amp;isnumber=25047</a></p>
+</div><div id="link_ref5"><p>[5] Roger B. Marks, “Formulations of the Basic Vector Network Analyzer Error Model including Switch-Terms,” ARFTG Conference Digest-Fall, 50th , vol.32, no., pp.115-126, Dec. 1997. URL: <a class="reference external" href="http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=4119948&amp;isnumber=4119931">http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=4119948&amp;isnumber=4119931</a></p>
+</div><div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Circuit.html" class="btn btn-neutral float-left" title="Circuits" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Deembedding.html" class="btn btn-neutral float-right" title="De-embedding" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, scikit-rf team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

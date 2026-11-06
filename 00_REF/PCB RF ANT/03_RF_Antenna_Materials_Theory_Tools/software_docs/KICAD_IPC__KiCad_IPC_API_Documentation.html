@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr" itemscope itemtype="http://schema.org/Article">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.166.0">
+    <meta name="generator" content="Relearn 6.0.0">
+    <meta name="description" content="Control a running KiCad instance from plugins or external applications.">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="KiCad IPC API | Developer Documentation | KiCad">
+    <meta name="twitter:description" content="Control a running KiCad instance from plugins or external applications.">
+    <meta property="og:url" content="/en/apis-and-binding/ipc-api/index.html">
+    <meta property="og:site_name" content="Developer Documentation | KiCad">
+    <meta property="og:title" content="KiCad IPC API | Developer Documentation | KiCad">
+    <meta property="og:description" content="Control a running KiCad instance from plugins or external applications.">
+    <meta property="og:locale" content="en-US">
+    <meta property="og:type" content="website">
+    <meta itemprop="name" content="KiCad IPC API | Developer Documentation | KiCad">
+    <meta itemprop="description" content="Control a running KiCad instance from plugins or external applications.">
+    <meta itemprop="datePublished" content="2024-02-06T10:30:00+10:00">
+    <meta itemprop="dateModified" content="2026-09-17T21:46:38-04:00">
+    <meta itemprop="wordCount" content="566">
+    <title>KiCad IPC API | Developer Documentation | KiCad</title>
+    <link href="/en/apis-and-binding/ipc-api/index.xml" rel="alternate" type="application/rss+xml" title="KiCad IPC API | Developer Documentation | KiCad">    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+
+    <link href="/webfonts/fa-solid-900.woff2" rel="preload" as="font" type="font/woff2" crossorigin>
+    <link href="/css/fontawesome-all.min.css?1792338197" rel="stylesheet">
+    <link href="/css/nucleus.css?1792338197" rel="stylesheet">
+    <link href="/css/auto-complete.css?1792338197" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/css/auto-complete.css?1792338197" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar.min.css?1792338197" rel="stylesheet">
+    <link href="/css/fonts.css?1792338197" rel="stylesheet">
+    <link href="/css/theme.css?1792338197" rel="stylesheet">
+    <script>
+      (() => {
+        const urls = {"auto":"/css/theme-auto.css?1792338197","zen-dark":"/css/theme-zen-dark.css?1792338197","zen-light":"/css/theme-zen-light.css?1792338197"};
+        const fallback = "auto";
+        const key = 'dev-docs-theme';
+        window.relearn = window.relearn || {};
+        window.relearn.variantStorageKey = key;
+        let saved;
+        try {
+          saved = localStorage.getItem(key);
+        } catch (_) {}
+        const href = Object.prototype.hasOwnProperty.call(urls, saved) ? urls[saved] : urls[fallback];
+        document.write('<link href="' + href.replace(/&/g, '&amp;').replace(/"/g, '&quot;') + '" rel="stylesheet" id="R-variant-style">');
+      })();
+    </script>
+    <noscript><link href="/css/theme-auto.css?1792338197" rel="stylesheet" id="R-variant-style"></noscript>
+    <link href="/css/chroma-auto.css?1792338197" rel="stylesheet" id="R-variant-chroma-style">
+    <link href="/css/variant.css?1792338197" rel="stylesheet">
+    <link href="/css/print.css?1792338197" rel="stylesheet" media="print">
+    <script src="/js/variant.js?1792338197"></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.relBasePath='..\/..\/..';
+      window.relearn.relBaseUri='..\/..\/..';
+      window.relearn.absBaseUri='';
+      window.index_js_url="/en/index.search.js";
+      // variant stuff
+      window.variants && variants.init( [ 'auto', 'zen-light', 'zen-dark' ] );
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+    </script>
+<link href="/css/asciidoctor.css?1792338197" rel="stylesheet">
+
+
+<style type="text/css">@font-face {font-family:'Open Sans';font-style:normal;font-weight:400;src:url(/cf-fonts/v/open-sans/5.2.7/cyrillic-ext/wght/normal.woff2);unicode-range:U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:400;src:url(/cf-fonts/v/open-sans/5.2.7/symbols/wght/normal.woff2);unicode-range:U+0001-000C,U+000E-001F,U+007F-009F,U+20DD-20E0,U+20E2-20E4,U+2150-218F,U+2190,U+2192,U+2194-2199,U+21AF,U+21E6-21F0,U+21F3,U+2218-2219,U+2299,U+22C4-22C6,U+2300-243F,U+2440-244A,U+2460-24FF,U+25A0-27BF,U+2800-28FF,U+2921-2922,U+2981,U+29BF,U+29EB,U+2B00-2BFF,U+4DC0-4DFF,U+FFF9-FFFB,U+10140-1018E,U+10190-1019C,U+101A0,U+101D0-101FD,U+102E0-102FB,U+10E60-10E7E,U+1D2C0-1D2D3,U+1D2E0-1D37F,U+1F000-1F0FF,U+1F100-1F1AD,U+1F1E6-1F1FF,U+1F30D-1F30F,U+1F315,U+1F31C,U+1F31E,U+1F320-1F32C,U+1F336,U+1F378,U+1F37D,U+1F382,U+1F393-1F39F,U+1F3A7-1F3A8,U+1F3AC-1F3AF,U+1F3C2,U+1F3C4-1F3C6,U+1F3CA-1F3CE,U+1F3D4-1F3E0,U+1F3ED,U+1F3F1-1F3F3,U+1F3F5-1F3F7,U+1F408,U+1F415,U+1F41F,U+1F426,U+1F43F,U+1F441-1F442,U+1F444,U+1F446-1F449,U+1F44C-1F44E,U+1F453,U+1F46A,U+1F47D,U+1F4A3,U+1F4B0,U+1F4B3,U+1F4B9,U+1F4BB,U+1F4BF,U+1F4C8-1F4CB,U+1F4D6,U+1F4DA,U+1F4DF,U+1F4E3-1F4E6,U+1F4EA-1F4ED,U+1F4F7,U+1F4F9-1F4FB,U+1F4FD-1F4FE,U+1F503,U+1F507-1F50B,U+1F50D,U+1F512-1F513,U+1F53E-1F54A,U+1F54F-1F5FA,U+1F610,U+1F650-1F67F,U+1F687,U+1F68D,U+1F691,U+1F694,U+1F698,U+1F6AD,U+1F6B2,U+1F6B9-1F6BA,U+1F6BC,U+1F6C6-1F6CF,U+1F6D3-1F6D7,U+1F6E0-1F6EA,U+1F6F0-1F6F3,U+1F6F7-1F6FC,U+1F700-1F7FF,U+1F800-1F80B,U+1F810-1F847,U+1F850-1F859,U+1F860-1F887,U+1F890-1F8AD,U+1F8B0-1F8BB,U+1F8C0-1F8C1,U+1F900-1F90B,U+1F93B,U+1F946,U+1F984,U+1F996,U+1F9E9,U+1FA00-1FA6F,U+1FA70-1FA7C,U+1FA80-1FA89,U+1FA8F-1FAC6,U+1FACE-1FADC,U+1FADF-1FAE9,U+1FAF0-1FAF8,U+1FB00-1FBFF;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:400;src:url(/cf-fonts/v/open-sans/5.2.7/latin-ext/wght/normal.woff2);unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:400;src:url(/cf-fonts/v/open-sans/5.2.7/greek/wght/normal.woff2);unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:400;src:url(/cf-fonts/v/open-sans/5.2.7/hebrew/wght/normal.woff2);unicode-range:U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:400;src:url(/cf-fonts/v/open-sans/5.2.7/math/wght/normal.woff2);unicode-range:U+0302-0303,U+0305,U+0307-0308,U+0310,U+0312,U+0315,U+031A,U+0326-0327,U+032C,U+032F-0330,U+0332-0333,U+0338,U+033A,U+0346,U+034D,U+0391-03A1,U+03A3-03A9,U+03B1-03C9,U+03D1,U+03D5-03D6,U+03F0-03F1,U+03F4-03F5,U+2016-2017,U+2034-2038,U+203C,U+2040,U+2043,U+2047,U+2050,U+2057,U+205F,U+2070-2071,U+2074-208E,U+2090-209C,U+20D0-20DC,U+20E1,U+20E5-20EF,U+2100-2112,U+2114-2115,U+2117-2121,U+2123-214F,U+2190,U+2192,U+2194-21AE,U+21B0-21E5,U+21F1-21F2,U+21F4-2211,U+2213-2214,U+2216-22FF,U+2308-230B,U+2310,U+2319,U+231C-2321,U+2336-237A,U+237C,U+2395,U+239B-23B7,U+23D0,U+23DC-23E1,U+2474-2475,U+25AF,U+25B3,U+25B7,U+25BD,U+25C1,U+25CA,U+25CC,U+25FB,U+266D-266F,U+27C0-27FF,U+2900-2AFF,U+2B0E-2B11,U+2B30-2B4C,U+2BFE,U+3030,U+FF5B,U+FF5D,U+1D400-1D7FF,U+1EE00-1EEFF;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:400;src:url(/cf-fonts/v/open-sans/5.2.7/cyrillic/wght/normal.woff2);unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:400;src:url(/cf-fonts/v/open-sans/5.2.7/vietnamese/wght/normal.woff2);unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:400;src:url(/cf-fonts/v/open-sans/5.2.7/latin/wght/normal.woff2);unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:400;src:url(/cf-fonts/v/open-sans/5.2.7/greek-ext/wght/normal.woff2);unicode-range:U+1F00-1FFF;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:500;src:url(/cf-fonts/v/open-sans/5.2.7/hebrew/wght/normal.woff2);unicode-range:U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:500;src:url(/cf-fonts/v/open-sans/5.2.7/math/wght/normal.woff2);unicode-range:U+0302-0303,U+0305,U+0307-0308,U+0310,U+0312,U+0315,U+031A,U+0326-0327,U+032C,U+032F-0330,U+0332-0333,U+0338,U+033A,U+0346,U+034D,U+0391-03A1,U+03A3-03A9,U+03B1-03C9,U+03D1,U+03D5-03D6,U+03F0-03F1,U+03F4-03F5,U+2016-2017,U+2034-2038,U+203C,U+2040,U+2043,U+2047,U+2050,U+2057,U+205F,U+2070-2071,U+2074-208E,U+2090-209C,U+20D0-20DC,U+20E1,U+20E5-20EF,U+2100-2112,U+2114-2115,U+2117-2121,U+2123-214F,U+2190,U+2192,U+2194-21AE,U+21B0-21E5,U+21F1-21F2,U+21F4-2211,U+2213-2214,U+2216-22FF,U+2308-230B,U+2310,U+2319,U+231C-2321,U+2336-237A,U+237C,U+2395,U+239B-23B7,U+23D0,U+23DC-23E1,U+2474-2475,U+25AF,U+25B3,U+25B7,U+25BD,U+25C1,U+25CA,U+25CC,U+25FB,U+266D-266F,U+27C0-27FF,U+2900-2AFF,U+2B0E-2B11,U+2B30-2B4C,U+2BFE,U+3030,U+FF5B,U+FF5D,U+1D400-1D7FF,U+1EE00-1EEFF;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:500;src:url(/cf-fonts/v/open-sans/5.2.7/symbols/wght/normal.woff2);unicode-range:U+0001-000C,U+000E-001F,U+007F-009F,U+20DD-20E0,U+20E2-20E4,U+2150-218F,U+2190,U+2192,U+2194-2199,U+21AF,U+21E6-21F0,U+21F3,U+2218-2219,U+2299,U+22C4-22C6,U+2300-243F,U+2440-244A,U+2460-24FF,U+25A0-27BF,U+2800-28FF,U+2921-2922,U+2981,U+29BF,U+29EB,U+2B00-2BFF,U+4DC0-4DFF,U+FFF9-FFFB,U+10140-1018E,U+10190-1019C,U+101A0,U+101D0-101FD,U+102E0-102FB,U+10E60-10E7E,U+1D2C0-1D2D3,U+1D2E0-1D37F,U+1F000-1F0FF,U+1F100-1F1AD,U+1F1E6-1F1FF,U+1F30D-1F30F,U+1F315,U+1F31C,U+1F31E,U+1F320-1F32C,U+1F336,U+1F378,U+1F37D,U+1F382,U+1F393-1F39F,U+1F3A7-1F3A8,U+1F3AC-1F3AF,U+1F3C2,U+1F3C4-1F3C6,U+1F3CA-1F3CE,U+1F3D4-1F3E0,U+1F3ED,U+1F3F1-1F3F3,U+1F3F5-1F3F7,U+1F408,U+1F415,U+1F41F,U+1F426,U+1F43F,U+1F441-1F442,U+1F444,U+1F446-1F449,U+1F44C-1F44E,U+1F453,U+1F46A,U+1F47D,U+1F4A3,U+1F4B0,U+1F4B3,U+1F4B9,U+1F4BB,U+1F4BF,U+1F4C8-1F4CB,U+1F4D6,U+1F4DA,U+1F4DF,U+1F4E3-1F4E6,U+1F4EA-1F4ED,U+1F4F7,U+1F4F9-1F4FB,U+1F4FD-1F4FE,U+1F503,U+1F507-1F50B,U+1F50D,U+1F512-1F513,U+1F53E-1F54A,U+1F54F-1F5FA,U+1F610,U+1F650-1F67F,U+1F687,U+1F68D,U+1F691,U+1F694,U+1F698,U+1F6AD,U+1F6B2,U+1F6B9-1F6BA,U+1F6BC,U+1F6C6-1F6CF,U+1F6D3-1F6D7,U+1F6E0-1F6EA,U+1F6F0-1F6F3,U+1F6F7-1F6FC,U+1F700-1F7FF,U+1F800-1F80B,U+1F810-1F847,U+1F850-1F859,U+1F860-1F887,U+1F890-1F8AD,U+1F8B0-1F8BB,U+1F8C0-1F8C1,U+1F900-1F90B,U+1F93B,U+1F946,U+1F984,U+1F996,U+1F9E9,U+1FA00-1FA6F,U+1FA70-1FA7C,U+1FA80-1FA89,U+1FA8F-1FAC6,U+1FACE-1FADC,U+1FADF-1FAE9,U+1FAF0-1FAF8,U+1FB00-1FBFF;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:500;src:url(/cf-fonts/v/open-sans/5.2.7/cyrillic-ext/wght/normal.woff2);unicode-range:U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:500;src:url(/cf-fonts/v/open-sans/5.2.7/greek/wght/normal.woff2);unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:500;src:url(/cf-fonts/v/open-sans/5.2.7/greek-ext/wght/normal.woff2);unicode-range:U+1F00-1FFF;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:500;src:url(/cf-fonts/v/open-sans/5.2.7/latin/wght/normal.woff2);unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:500;src:url(/cf-fonts/v/open-sans/5.2.7/latin-ext/wght/normal.woff2);unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:500;src:url(/cf-fonts/v/open-sans/5.2.7/vietnamese/wght/normal.woff2);unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:500;src:url(/cf-fonts/v/open-sans/5.2.7/cyrillic/wght/normal.woff2);unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:600;src:url(/cf-fonts/v/open-sans/5.2.7/latin/wght/normal.woff2);unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:600;src:url(/cf-fonts/v/open-sans/5.2.7/symbols/wght/normal.woff2);unicode-range:U+0001-000C,U+000E-001F,U+007F-009F,U+20DD-20E0,U+20E2-20E4,U+2150-218F,U+2190,U+2192,U+2194-2199,U+21AF,U+21E6-21F0,U+21F3,U+2218-2219,U+2299,U+22C4-22C6,U+2300-243F,U+2440-244A,U+2460-24FF,U+25A0-27BF,U+2800-28FF,U+2921-2922,U+2981,U+29BF,U+29EB,U+2B00-2BFF,U+4DC0-4DFF,U+FFF9-FFFB,U+10140-1018E,U+10190-1019C,U+101A0,U+101D0-101FD,U+102E0-102FB,U+10E60-10E7E,U+1D2C0-1D2D3,U+1D2E0-1D37F,U+1F000-1F0FF,U+1F100-1F1AD,U+1F1E6-1F1FF,U+1F30D-1F30F,U+1F315,U+1F31C,U+1F31E,U+1F320-1F32C,U+1F336,U+1F378,U+1F37D,U+1F382,U+1F393-1F39F,U+1F3A7-1F3A8,U+1F3AC-1F3AF,U+1F3C2,U+1F3C4-1F3C6,U+1F3CA-1F3CE,U+1F3D4-1F3E0,U+1F3ED,U+1F3F1-1F3F3,U+1F3F5-1F3F7,U+1F408,U+1F415,U+1F41F,U+1F426,U+1F43F,U+1F441-1F442,U+1F444,U+1F446-1F449,U+1F44C-1F44E,U+1F453,U+1F46A,U+1F47D,U+1F4A3,U+1F4B0,U+1F4B3,U+1F4B9,U+1F4BB,U+1F4BF,U+1F4C8-1F4CB,U+1F4D6,U+1F4DA,U+1F4DF,U+1F4E3-1F4E6,U+1F4EA-1F4ED,U+1F4F7,U+1F4F9-1F4FB,U+1F4FD-1F4FE,U+1F503,U+1F507-1F50B,U+1F50D,U+1F512-1F513,U+1F53E-1F54A,U+1F54F-1F5FA,U+1F610,U+1F650-1F67F,U+1F687,U+1F68D,U+1F691,U+1F694,U+1F698,U+1F6AD,U+1F6B2,U+1F6B9-1F6BA,U+1F6BC,U+1F6C6-1F6CF,U+1F6D3-1F6D7,U+1F6E0-1F6EA,U+1F6F0-1F6F3,U+1F6F7-1F6FC,U+1F700-1F7FF,U+1F800-1F80B,U+1F810-1F847,U+1F850-1F859,U+1F860-1F887,U+1F890-1F8AD,U+1F8B0-1F8BB,U+1F8C0-1F8C1,U+1F900-1F90B,U+1F93B,U+1F946,U+1F984,U+1F996,U+1F9E9,U+1FA00-1FA6F,U+1FA70-1FA7C,U+1FA80-1FA89,U+1FA8F-1FAC6,U+1FACE-1FADC,U+1FADF-1FAE9,U+1FAF0-1FAF8,U+1FB00-1FBFF;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:600;src:url(/cf-fonts/v/open-sans/5.2.7/latin-ext/wght/normal.woff2);unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:600;src:url(/cf-fonts/v/open-sans/5.2.7/vietnamese/wght/normal.woff2);unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:600;src:url(/cf-fonts/v/open-sans/5.2.7/greek/wght/normal.woff2);unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:600;src:url(/cf-fonts/v/open-sans/5.2.7/cyrillic/wght/normal.woff2);unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:600;src:url(/cf-fonts/v/open-sans/5.2.7/cyrillic-ext/wght/normal.woff2);unicode-range:U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:600;src:url(/cf-fonts/v/open-sans/5.2.7/math/wght/normal.woff2);unicode-range:U+0302-0303,U+0305,U+0307-0308,U+0310,U+0312,U+0315,U+031A,U+0326-0327,U+032C,U+032F-0330,U+0332-0333,U+0338,U+033A,U+0346,U+034D,U+0391-03A1,U+03A3-03A9,U+03B1-03C9,U+03D1,U+03D5-03D6,U+03F0-03F1,U+03F4-03F5,U+2016-2017,U+2034-2038,U+203C,U+2040,U+2043,U+2047,U+2050,U+2057,U+205F,U+2070-2071,U+2074-208E,U+2090-209C,U+20D0-20DC,U+20E1,U+20E5-20EF,U+2100-2112,U+2114-2115,U+2117-2121,U+2123-214F,U+2190,U+2192,U+2194-21AE,U+21B0-21E5,U+21F1-21F2,U+21F4-2211,U+2213-2214,U+2216-22FF,U+2308-230B,U+2310,U+2319,U+231C-2321,U+2336-237A,U+237C,U+2395,U+239B-23B7,U+23D0,U+23DC-23E1,U+2474-2475,U+25AF,U+25B3,U+25B7,U+25BD,U+25C1,U+25CA,U+25CC,U+25FB,U+266D-266F,U+27C0-27FF,U+2900-2AFF,U+2B0E-2B11,U+2B30-2B4C,U+2BFE,U+3030,U+FF5B,U+FF5D,U+1D400-1D7FF,U+1EE00-1EEFF;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:600;src:url(/cf-fonts/v/open-sans/5.2.7/greek-ext/wght/normal.woff2);unicode-range:U+1F00-1FFF;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:600;src:url(/cf-fonts/v/open-sans/5.2.7/hebrew/wght/normal.woff2);unicode-range:U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:700;src:url(/cf-fonts/v/open-sans/5.2.7/symbols/wght/normal.woff2);unicode-range:U+0001-000C,U+000E-001F,U+007F-009F,U+20DD-20E0,U+20E2-20E4,U+2150-218F,U+2190,U+2192,U+2194-2199,U+21AF,U+21E6-21F0,U+21F3,U+2218-2219,U+2299,U+22C4-22C6,U+2300-243F,U+2440-244A,U+2460-24FF,U+25A0-27BF,U+2800-28FF,U+2921-2922,U+2981,U+29BF,U+29EB,U+2B00-2BFF,U+4DC0-4DFF,U+FFF9-FFFB,U+10140-1018E,U+10190-1019C,U+101A0,U+101D0-101FD,U+102E0-102FB,U+10E60-10E7E,U+1D2C0-1D2D3,U+1D2E0-1D37F,U+1F000-1F0FF,U+1F100-1F1AD,U+1F1E6-1F1FF,U+1F30D-1F30F,U+1F315,U+1F31C,U+1F31E,U+1F320-1F32C,U+1F336,U+1F378,U+1F37D,U+1F382,U+1F393-1F39F,U+1F3A7-1F3A8,U+1F3AC-1F3AF,U+1F3C2,U+1F3C4-1F3C6,U+1F3CA-1F3CE,U+1F3D4-1F3E0,U+1F3ED,U+1F3F1-1F3F3,U+1F3F5-1F3F7,U+1F408,U+1F415,U+1F41F,U+1F426,U+1F43F,U+1F441-1F442,U+1F444,U+1F446-1F449,U+1F44C-1F44E,U+1F453,U+1F46A,U+1F47D,U+1F4A3,U+1F4B0,U+1F4B3,U+1F4B9,U+1F4BB,U+1F4BF,U+1F4C8-1F4CB,U+1F4D6,U+1F4DA,U+1F4DF,U+1F4E3-1F4E6,U+1F4EA-1F4ED,U+1F4F7,U+1F4F9-1F4FB,U+1F4FD-1F4FE,U+1F503,U+1F507-1F50B,U+1F50D,U+1F512-1F513,U+1F53E-1F54A,U+1F54F-1F5FA,U+1F610,U+1F650-1F67F,U+1F687,U+1F68D,U+1F691,U+1F694,U+1F698,U+1F6AD,U+1F6B2,U+1F6B9-1F6BA,U+1F6BC,U+1F6C6-1F6CF,U+1F6D3-1F6D7,U+1F6E0-1F6EA,U+1F6F0-1F6F3,U+1F6F7-1F6FC,U+1F700-1F7FF,U+1F800-1F80B,U+1F810-1F847,U+1F850-1F859,U+1F860-1F887,U+1F890-1F8AD,U+1F8B0-1F8BB,U+1F8C0-1F8C1,U+1F900-1F90B,U+1F93B,U+1F946,U+1F984,U+1F996,U+1F9E9,U+1FA00-1FA6F,U+1FA70-1FA7C,U+1FA80-1FA89,U+1FA8F-1FAC6,U+1FACE-1FADC,U+1FADF-1FAE9,U+1FAF0-1FAF8,U+1FB00-1FBFF;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:700;src:url(/cf-fonts/v/open-sans/5.2.7/greek/wght/normal.woff2);unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:700;src:url(/cf-fonts/v/open-sans/5.2.7/hebrew/wght/normal.woff2);unicode-range:U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:700;src:url(/cf-fonts/v/open-sans/5.2.7/latin-ext/wght/normal.woff2);unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:700;src:url(/cf-fonts/v/open-sans/5.2.7/cyrillic/wght/normal.woff2);unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:700;src:url(/cf-fonts/v/open-sans/5.2.7/vietnamese/wght/normal.woff2);unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:700;src:url(/cf-fonts/v/open-sans/5.2.7/greek-ext/wght/normal.woff2);unicode-range:U+1F00-1FFF;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:700;src:url(/cf-fonts/v/open-sans/5.2.7/cyrillic-ext/wght/normal.woff2);unicode-range:U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:700;src:url(/cf-fonts/v/open-sans/5.2.7/latin/wght/normal.woff2);unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:700;src:url(/cf-fonts/v/open-sans/5.2.7/math/wght/normal.woff2);unicode-range:U+0302-0303,U+0305,U+0307-0308,U+0310,U+0312,U+0315,U+031A,U+0326-0327,U+032C,U+032F-0330,U+0332-0333,U+0338,U+033A,U+0346,U+034D,U+0391-03A1,U+03A3-03A9,U+03B1-03C9,U+03D1,U+03D5-03D6,U+03F0-03F1,U+03F4-03F5,U+2016-2017,U+2034-2038,U+203C,U+2040,U+2043,U+2047,U+2050,U+2057,U+205F,U+2070-2071,U+2074-208E,U+2090-209C,U+20D0-20DC,U+20E1,U+20E5-20EF,U+2100-2112,U+2114-2115,U+2117-2121,U+2123-214F,U+2190,U+2192,U+2194-21AE,U+21B0-21E5,U+21F1-21F2,U+21F4-2211,U+2213-2214,U+2216-22FF,U+2308-230B,U+2310,U+2319,U+231C-2321,U+2336-237A,U+237C,U+2395,U+239B-23B7,U+23D0,U+23DC-23E1,U+2474-2475,U+25AF,U+25B3,U+25B7,U+25BD,U+25C1,U+25CA,U+25CC,U+25FB,U+266D-266F,U+27C0-27FF,U+2900-2AFF,U+2B0E-2B11,U+2B30-2B4C,U+2BFE,U+3030,U+FF5B,U+FF5D,U+1D400-1D7FF,U+1EE00-1EEFF;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:800;src:url(/cf-fonts/v/open-sans/5.2.7/cyrillic/wght/normal.woff2);unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:800;src:url(/cf-fonts/v/open-sans/5.2.7/cyrillic-ext/wght/normal.woff2);unicode-range:U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:800;src:url(/cf-fonts/v/open-sans/5.2.7/latin/wght/normal.woff2);unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:800;src:url(/cf-fonts/v/open-sans/5.2.7/greek/wght/normal.woff2);unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:800;src:url(/cf-fonts/v/open-sans/5.2.7/latin-ext/wght/normal.woff2);unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:800;src:url(/cf-fonts/v/open-sans/5.2.7/symbols/wght/normal.woff2);unicode-range:U+0001-000C,U+000E-001F,U+007F-009F,U+20DD-20E0,U+20E2-20E4,U+2150-218F,U+2190,U+2192,U+2194-2199,U+21AF,U+21E6-21F0,U+21F3,U+2218-2219,U+2299,U+22C4-22C6,U+2300-243F,U+2440-244A,U+2460-24FF,U+25A0-27BF,U+2800-28FF,U+2921-2922,U+2981,U+29BF,U+29EB,U+2B00-2BFF,U+4DC0-4DFF,U+FFF9-FFFB,U+10140-1018E,U+10190-1019C,U+101A0,U+101D0-101FD,U+102E0-102FB,U+10E60-10E7E,U+1D2C0-1D2D3,U+1D2E0-1D37F,U+1F000-1F0FF,U+1F100-1F1AD,U+1F1E6-1F1FF,U+1F30D-1F30F,U+1F315,U+1F31C,U+1F31E,U+1F320-1F32C,U+1F336,U+1F378,U+1F37D,U+1F382,U+1F393-1F39F,U+1F3A7-1F3A8,U+1F3AC-1F3AF,U+1F3C2,U+1F3C4-1F3C6,U+1F3CA-1F3CE,U+1F3D4-1F3E0,U+1F3ED,U+1F3F1-1F3F3,U+1F3F5-1F3F7,U+1F408,U+1F415,U+1F41F,U+1F426,U+1F43F,U+1F441-1F442,U+1F444,U+1F446-1F449,U+1F44C-1F44E,U+1F453,U+1F46A,U+1F47D,U+1F4A3,U+1F4B0,U+1F4B3,U+1F4B9,U+1F4BB,U+1F4BF,U+1F4C8-1F4CB,U+1F4D6,U+1F4DA,U+1F4DF,U+1F4E3-1F4E6,U+1F4EA-1F4ED,U+1F4F7,U+1F4F9-1F4FB,U+1F4FD-1F4FE,U+1F503,U+1F507-1F50B,U+1F50D,U+1F512-1F513,U+1F53E-1F54A,U+1F54F-1F5FA,U+1F610,U+1F650-1F67F,U+1F687,U+1F68D,U+1F691,U+1F694,U+1F698,U+1F6AD,U+1F6B2,U+1F6B9-1F6BA,U+1F6BC,U+1F6C6-1F6CF,U+1F6D3-1F6D7,U+1F6E0-1F6EA,U+1F6F0-1F6F3,U+1F6F7-1F6FC,U+1F700-1F7FF,U+1F800-1F80B,U+1F810-1F847,U+1F850-1F859,U+1F860-1F887,U+1F890-1F8AD,U+1F8B0-1F8BB,U+1F8C0-1F8C1,U+1F900-1F90B,U+1F93B,U+1F946,U+1F984,U+1F996,U+1F9E9,U+1FA00-1FA6F,U+1FA70-1FA7C,U+1FA80-1FA89,U+1FA8F-1FAC6,U+1FACE-1FADC,U+1FADF-1FAE9,U+1FAF0-1FAF8,U+1FB00-1FBFF;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:800;src:url(/cf-fonts/v/open-sans/5.2.7/math/wght/normal.woff2);unicode-range:U+0302-0303,U+0305,U+0307-0308,U+0310,U+0312,U+0315,U+031A,U+0326-0327,U+032C,U+032F-0330,U+0332-0333,U+0338,U+033A,U+0346,U+034D,U+0391-03A1,U+03A3-03A9,U+03B1-03C9,U+03D1,U+03D5-03D6,U+03F0-03F1,U+03F4-03F5,U+2016-2017,U+2034-2038,U+203C,U+2040,U+2043,U+2047,U+2050,U+2057,U+205F,U+2070-2071,U+2074-208E,U+2090-209C,U+20D0-20DC,U+20E1,U+20E5-20EF,U+2100-2112,U+2114-2115,U+2117-2121,U+2123-214F,U+2190,U+2192,U+2194-21AE,U+21B0-21E5,U+21F1-21F2,U+21F4-2211,U+2213-2214,U+2216-22FF,U+2308-230B,U+2310,U+2319,U+231C-2321,U+2336-237A,U+237C,U+2395,U+239B-23B7,U+23D0,U+23DC-23E1,U+2474-2475,U+25AF,U+25B3,U+25B7,U+25BD,U+25C1,U+25CA,U+25CC,U+25FB,U+266D-266F,U+27C0-27FF,U+2900-2AFF,U+2B0E-2B11,U+2B30-2B4C,U+2BFE,U+3030,U+FF5B,U+FF5D,U+1D400-1D7FF,U+1EE00-1EEFF;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:800;src:url(/cf-fonts/v/open-sans/5.2.7/greek-ext/wght/normal.woff2);unicode-range:U+1F00-1FFF;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:800;src:url(/cf-fonts/v/open-sans/5.2.7/vietnamese/wght/normal.woff2);unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;font-display:swap;}@font-face {font-family:'Open Sans';font-style:normal;font-weight:800;src:url(/cf-fonts/v/open-sans/5.2.7/hebrew/wght/normal.woff2);unicode-range:U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F;font-display:swap;}</style>
+<script src="/js/anchor.min.min.df98c2b3890bad99a4e84d7291ccfdc13e26c9b948d326cf359437e409c02508.js" integrity="sha256-35jCs4kLrZmk6E1ykcz9wT4myblI0ybPNZQ35AnAJQg="></script>
+
+
+  </head>
+  <body class="mobile-support html disableInlineCopyToClipboard" data-url="/en/apis-and-binding/ipc-api/index.html"><header class="dev-site-header">
+  <nav class="dev-nav" aria-label="Primary navigation">
+    <a class="dev-brand" href="/en/" aria-label="KiCad Developer Documentation home">
+      <img src="/img/kicad_logo_small.png" alt="KiCad">
+      <span class="dev-brand-divider" aria-hidden="true"></span>
+      <span class="dev-brand-section">Developer Documentation</span>
+    </a>
+    <div class="dev-nav-actions">
+      <div class="dev-nav-links" id="dev-nav-links">
+        <a href="/en/getting-started/">Getting Started</a>
+        <a href="/en/build/">Build</a>
+        <a href="/en/apis-and-binding/" aria-current="page">API</a>
+        <a href="/en/rules-guidelines/">Guidelines</a>
+        <a class="dev-external-link" href="https://www.kicad.org/">KiCad.org <span aria-hidden="true">&#8599;</span></a>
+      </div>
+      <button class="dev-theme-toggle" type="button" aria-label="Switch to dark mode" data-light-label="Switch to light mode" data-dark-label="Switch to dark mode" aria-pressed="false">
+        <svg class="dev-theme-icon dev-theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.4 15.2A8.5 8.5 0 0 1 8.8 3.6 8.5 8.5 0 1 0 20.4 15.2Z"/></svg>
+        <svg class="dev-theme-icon dev-theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.5"/><path d="M12 2v2.2M12 19.8V22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M2 12h2.2M19.8 12H22M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6"/></svg>
+      </button>
+      <button class="dev-nav-toggle" type="button" aria-expanded="false" aria-controls="dev-nav-links" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+    <div id="R-body">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+            <div class="topbar-button topbar-button-toc" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="Table of Contents (CTRL&#43;ALT&#43;t)"><i class="fa-fw fas fa-list-alt"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper"><nav class="TableOfContents">
+  <ul>
+    <li><a href="#_kicad_ipc_api">KiCad IPC API</a>
+      <ul>
+        <li><a href="#_overall_design_principles">Overall Design Principles</a></li>
+        <li><a href="#_detailed_information">Detailed information</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" aria-label="Parent pages" itemscope itemtype="http://schema.org/BreadcrumbList"><li
+            itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><a itemprop="item" href="/en/apis-and-binding/index.html"><span itemprop="name">APIs and Bindings</span></a><meta itemprop="position" content="1"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+				
+            <div class="topbar-button topbar-button-edit" data-content-empty="disable" data-width-s="area-more" data-width-m="show" data-width-l="show"><a class="topbar-control" href="https://gitlab.com/kicad/services/kicad-dev-docs/-/edit/master/content/apis-and-binding/ipc-api/_index.en.adoc" target="_blank" title="Edit (CTRL&#43;ALT&#43;w)"><i class="fa-fw fas fa-pen"></i></a>
+            </div>
+
+
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable default" tabindex="-1">
+        <div class="flex-block-wrapper">
+
+          <article class="default">
+            <header class="headline">
+            </header>
+
+<h1 id="kicad-ipc-api">KiCad IPC API</h1>
+
+
+<div class="sect1">
+<h2 id="_kicad_ipc_api">KiCad IPC API</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The IPC API is an interface that can be used to remotely control a running instance of KiCad. This
+can be used to implement KiCad plug-ins as well as to interface KiCad with external software. The
+API is currently under development, with the plan of stabilizing the first version for KiCad 9.0.</p>
+</div>
+<div class="sect2">
+<h3 id="_overall_design_principles">Overall Design Principles</h3>
+<div class="paragraph">
+<p>The KiCad API is implemented using Protocol Buffers to define the structure and contents of
+messages, and NNG to transport messages between processes using UNIX sockets.  This implementation
+supports all supported KiCad platforms, including Windows, macOS, and many Linux/BSD variants.
+Each running KiCad instance acts as a server when the API is enabled, and plugins and other
+applications act as clients which open connections to KiCad.</p>
+</div>
+<div class="paragraph">
+<p>KiCad is an event-driven GUI application, and like most other such applications, it operates a
+single thread that handles all events (background worker threads are used for certain computations
+to improve performance).  While the API server itself is decoupled from the rest of KiCad, API
+events are handled like any other form of user input, and thus are synchronous.  This is an
+important difference from other APIs that users may be used to (for example, APIs for web services)
+which are often asynchronous to some extent.  In practice, this means a few things must be kept in
+mind:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The KiCad user may be doing something with the application that blocks the API, in order to
+prevent out-of-order event issues and to prevent third-party software from disrupting the user.
+This means that API clients need to anticipate that API messages may sometimes timeout or fail
+because KiCad is busy, and should have a facility to retry requests.</p>
+</li>
+<li>
+<p>An application should not open multiple connections to KiCad at the same time.  While the
+underlying transport layer supports this, KiCad itself will force an ordering of handling API
+requests and so there is no advantage to doing so.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The API surface described by Protocol Buffers messages (&#34;protobufs&#34;) is stable following the
+<a href="https://protobuf.dev/programming-guides/dos-donts/">best practices</a> described by the Protocol
+Buffers team.  In general, this means that new versions of KiCad may introduce new messages and
+fields, but will not modify the meaning of existing messages and fields.  Items in the API may be
+deprecated over time; deprecated messages and fields will be supported for at least one major
+version of KiCad after the deprecation is announced.</p>
+</div>
+<div class="paragraph">
+<p>Plugins developed for the IPC API are launched in standalone processes that then communicate with
+the KiCad process that launched them.  Environment variables are used to inform the plugin about
+the IPC socket path and a unique identifier for the running KiCad instance.  This allows multiple
+instances of KiCad to run side-by-side and launch plugins that can communicate with the correct
+instance.  Third-party software that is not launched as a KiCad plugin can also communicate with
+any running KiCad instance, however it is up to the third-party software to decide how (and if) to
+handle the case of multiple running KiCad instances.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_detailed_information">Detailed information</h3>
+<div class="paragraph">
+<p>The <a href="./for-kicad-developers/">For KiCad Developers</a> section contains information on the
+technical implementation of the API on the C++ side, and guidelines for modifying and extending the
+API.  Please read this section before working on contributions that touch the API.</p>
+</div>
+<div class="paragraph">
+<p>The <a href="./for-addon-developers/">For Add-on Developers</a> section contain information for users of
+the API.  Please read this section if you are interested in developing KiCad plugins or interfaces
+with third-party software.</p>
+</div>
+</div>
+</div>
+</div>
+
+            <footer class="footline"><i class='fa-fw fas fa-calendar'></i> Last Modified <time datetime="2026-09-17">2026-09-17</time>
+            </footer>
+          </article>
+        </div>
+        <aside class="dev-page-toc" aria-label="On this page">
+          <p class="dev-page-toc-title">On this page</p>
+          <nav class="TableOfContents">
+  <ul>
+    <li><a href="#_kicad_ipc_api">KiCad IPC API</a>
+      <ul>
+        <li><a href="#_overall_design_principles">Overall Design Principles</a></li>
+        <li><a href="#_detailed_information">Detailed information</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+        </aside>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="">
+      <div id="R-header-topbar"></div>
+      <div id="R-header-wrapper">
+        <div id="R-header">
+<a id="logo" href="/en/">
+  Browse documentation
+</a>
+
+        </div>
+
+        <search><form action="/en/search.html" method="get">
+          <div class="searchbox">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+        <script>
+          var contentLangs=['en'];
+        </script>
+        <script src="/js/auto-complete.js?1792338197" defer></script>
+        <script src="/js/lunr/lunr.min.js?1792338197" defer></script>
+        <script src="/js/lunr/lunr.stemmer.support.min.js?1792338197" defer></script>
+        <script src="/js/lunr/lunr.multi.min.js?1792338197" defer></script>
+        <script src="/js/lunr/lunr.en.min.js?1792338197" defer></script>
+        <script src="/js/search.js?1792338197" defer></script>
+      </div>
+      <div id="R-homelinks" class="">
+        <hr class="padding">
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div id="R-topics">
+          <ul class="enlarge morespace collapsible-menu">
+          <li data-nav-id="/en/getting-started/index.html" class=""><a class="padding" href="/en/getting-started/index.html"><i class='fas fa-chevron-right'></i> Getting Started</a></li>
+          <li data-nav-id="/en/build/index.html" class=""><a class="padding" href="/en/build/index.html"><i class='fas fa-chevron-right'></i> Build</a><ul id="R-subsections-bdd393b738955977f172dded363c25a7" class="morespace collapsible-menu">
+          <li data-nav-id="/en/build/getting-started/index.html" class=""><a class="padding" href="/en/build/getting-started/index.html">Getting Started</a></li>
+          <li data-nav-id="/en/build/linux/index.html" class=""><a class="padding" href="/en/build/linux/index.html">Linux</a></li>
+          <li data-nav-id="/en/build/macos/index.html" class=""><a class="padding" href="/en/build/macos/index.html">macOS</a></li>
+          <li data-nav-id="/en/build/windows-msys2/index.html" class=""><a class="padding" href="/en/build/windows-msys2/index.html">Windows (MSYS2)</a></li>
+          <li data-nav-id="/en/build/windows-msvc/index.html" class=""><a class="padding" href="/en/build/windows-msvc/index.html">Windows (Visual Studio)</a></li>
+          <li data-nav-id="/en/build/compile-options/index.html" class=""><a class="padding" href="/en/build/compile-options/index.html">Build Options</a></li></ul></li>
+          <li data-nav-id="/en/rules-guidelines/index.html" class=""><a class="padding" href="/en/rules-guidelines/index.html"><i class='fas fa-chevron-right'></i> Rules and Guidelines</a><ul id="R-subsections-956d249dcf18ba08bb833e2e82c63cda" class="morespace collapsible-menu">
+          <li data-nav-id="/en/rules-guidelines/code-style/index.html" class=""><a class="padding" href="/en/rules-guidelines/code-style/index.html">Code Style Policy</a></li>
+          <li data-nav-id="/en/rules-guidelines/commit/index.html" class=""><a class="padding" href="/en/rules-guidelines/commit/index.html">Commit Message Format Policy</a></li>
+          <li data-nav-id="/en/rules-guidelines/code-contribution/index.html" class=""><a class="padding" href="/en/rules-guidelines/code-contribution/index.html">Code Contribution Policy</a></li>
+          <li data-nav-id="/en/rules-guidelines/release-policy/index.html" class=""><a class="padding" href="/en/rules-guidelines/release-policy/index.html">Stable Release Policy</a></li>
+          <li data-nav-id="/en/rules-guidelines/code-policy/index.html" class=""><a class="padding" href="/en/rules-guidelines/code-policy/index.html">Code Design Guidelines</a></li>
+          <li data-nav-id="/en/rules-guidelines/icon-design/index.html" class=""><a class="padding" href="/en/rules-guidelines/icon-design/index.html">Icon Design Guidelines</a></li>
+          <li data-nav-id="/en/rules-guidelines/culture/index.html" class=""><a class="padding" href="/en/rules-guidelines/culture/index.html">KiCad Developer Culture</a></li>
+          <li data-nav-id="/en/rules-guidelines/ui/index.html" class=""><a class="padding" href="/en/rules-guidelines/ui/index.html">User Interface Policy</a></li>
+          <li data-nav-id="/en/rules-guidelines/anti-patterns/index.html" class=""><a class="padding" href="/en/rules-guidelines/anti-patterns/index.html">Anti-Patterns</a></li>
+          <li data-nav-id="/en/rules-guidelines/tool-generated-content/index.html" class=""><a class="padding" href="/en/rules-guidelines/tool-generated-content/index.html">Tool-Generated Content Policy</a></li></ul></li>
+          <li data-nav-id="/en/components/index.html" class=""><a class="padding" href="/en/components/index.html"><i class='fas fa-chevron-right'></i> Components</a><ul id="R-subsections-142a9ac67e174f7317eb93a337efb04b" class="morespace collapsible-menu">
+          <li data-nav-id="/en/components/settings/index.html" class=""><a class="padding" href="/en/components/settings/index.html">Settings Framework</a></li>
+          <li data-nav-id="/en/components/tool-framework/index.html" class=""><a class="padding" href="/en/components/tool-framework/index.html">Tool Framework</a></li>
+          <li data-nav-id="/en/components/plugins/index.html" class=""><a class="padding" href="/en/components/plugins/index.html">Plugins Framework</a></li>
+          <li data-nav-id="/en/components/testing/index.html" class=""><a class="padding" href="/en/components/testing/index.html">Testing</a></li>
+          <li data-nav-id="/en/components/sexpr/index.html" class=""><a class="padding" href="/en/components/sexpr/index.html">S-Expressions</a></li></ul></li>
+          <li data-nav-id="/en/apis-and-binding/index.html" class="parent "><a class="padding" href="/en/apis-and-binding/index.html"><i class='fas fa-chevron-right'></i> APIs and Bindings</a><ul id="R-subsections-7870bee2c59d2bb242c319c90d9726e4" class="morespace collapsible-menu">
+          <li data-nav-id="/en/apis-and-binding/ipc-api/index.html" class="active parent alwaysopen"><a class="padding" href="/en/apis-and-binding/ipc-api/index.html">KiCad IPC API</a><ul id="R-subsections-ed5b2da821f3220a5c71c1731fe2f6dc" class="morespace collapsible-menu">
+          <li data-nav-id="/en/apis-and-binding/ipc-api/for-kicad-developers/index.html" class=""><a class="padding" href="/en/apis-and-binding/ipc-api/for-kicad-developers/index.html">For KiCad Developers</a></li>
+          <li data-nav-id="/en/apis-and-binding/ipc-api/for-addon-developers/index.html" class=""><a class="padding" href="/en/apis-and-binding/ipc-api/for-addon-developers/index.html">For Add-on Developers</a></li></ul></li>
+          <li data-nav-id="/en/apis-and-binding/http-libraries/index.html" class=""><a class="padding" href="/en/apis-and-binding/http-libraries/index.html">HTTP Libraries</a></li>
+          <li data-nav-id="/en/apis-and-binding/pcbnew/index.html" class=""><a class="padding" href="/en/apis-and-binding/pcbnew/index.html">PCB Python Bindings</a></li></ul></li>
+          <li data-nav-id="/en/source-doxygen/index.html" class=""><a class="padding" href="/en/source-doxygen/index.html"><i class='fas fa-chevron-right'></i> Source Code Docs</a></li>
+          <li data-nav-id="/en/translation/index.html" class=""><a class="padding" href="/en/translation/index.html"><i class='fas fa-chevron-right'></i> Translation</a></li>
+          <li data-nav-id="/en/addons/index.html" class=""><a class="padding" href="/en/addons/index.html"><i class='fas fa-chevron-right'></i> KiCad Addons</a></li>
+          <li data-nav-id="/en/file-formats/index.html" class=""><a class="padding" href="/en/file-formats/index.html"><i class='fas fa-chevron-right'></i> File Formats</a><ul id="R-subsections-e58c4269404432a95057e6d20defbb8e" class="morespace collapsible-menu">
+          <li data-nav-id="/en/file-formats/sexpr-intro/index.html" class=""><a class="padding" href="/en/file-formats/sexpr-intro/index.html">S-Expression Format</a></li>
+          <li data-nav-id="/en/file-formats/sexpr-footprint/index.html" class=""><a class="padding" href="/en/file-formats/sexpr-footprint/index.html">Footprint Library File Format</a></li>
+          <li data-nav-id="/en/file-formats/sexpr-pcb/index.html" class=""><a class="padding" href="/en/file-formats/sexpr-pcb/index.html">Board File Format</a></li>
+          <li data-nav-id="/en/file-formats/sexpr-symbol-lib/index.html" class=""><a class="padding" href="/en/file-formats/sexpr-symbol-lib/index.html">Symbol Library File Format</a></li>
+          <li data-nav-id="/en/file-formats/sexpr-schematic/index.html" class=""><a class="padding" href="/en/file-formats/sexpr-schematic/index.html">Schematic File Format</a></li>
+          <li data-nav-id="/en/file-formats/sexpr-worksheet/index.html" class=""><a class="padding" href="/en/file-formats/sexpr-worksheet/index.html">Work Sheet File Format</a></li>
+          <li data-nav-id="/en/file-formats/legacy-4-to-6/index.html" class=""><a class="padding" href="/en/file-formats/legacy-4-to-6/index.html"><i class='fas fa-chevron-right'></i> Legacy Formats (4.0 up to 6.0)</a></li>
+          <li data-nav-id="/en/file-formats/legacy-pcb/index.html" class=""><a class="padding" href="/en/file-formats/legacy-pcb/index.html">Legacy Board Format (pre 4.0)</a></li></ul></li>
+          <li data-nav-id="/en/import-formats/index.html" class=""><a class="padding" href="/en/import-formats/index.html"><i class='fas fa-chevron-right'></i> Import Formats</a><ul id="R-subsections-e297a8b349e3a279edabc9ed662428eb" class="morespace collapsible-menu">
+          <li data-nav-id="/en/import-formats/allegro/index.html" class=""><a class="padding" href="/en/import-formats/allegro/index.html">Allegro</a></li>
+          <li data-nav-id="/en/import-formats/altium/index.html" class=""><a class="padding" href="/en/import-formats/altium/index.html">Altium</a></li>
+          <li data-nav-id="/en/import-formats/cadstar/index.html" class=""><a class="padding" href="/en/import-formats/cadstar/index.html">CADSTAR</a></li>
+          <li data-nav-id="/en/import-formats/eagle/index.html" class=""><a class="padding" href="/en/import-formats/eagle/index.html">Eagle</a></li>
+          <li data-nav-id="/en/import-formats/easyeda/index.html" class=""><a class="padding" href="/en/import-formats/easyeda/index.html">EasyEDA</a></li>
+          <li data-nav-id="/en/import-formats/fabmaster/index.html" class=""><a class="padding" href="/en/import-formats/fabmaster/index.html">Fabmaster</a></li>
+          <li data-nav-id="/en/import-formats/geda/index.html" class=""><a class="padding" href="/en/import-formats/geda/index.html">gEDA / Lepton EDA</a></li>
+          <li data-nav-id="/en/import-formats/ltspice/index.html" class=""><a class="padding" href="/en/import-formats/ltspice/index.html">LTspice</a></li>
+          <li data-nav-id="/en/import-formats/pcad/index.html" class=""><a class="padding" href="/en/import-formats/pcad/index.html">P-CAD</a></li>
+          <li data-nav-id="/en/import-formats/pads/index.html" class=""><a class="padding" href="/en/import-formats/pads/index.html">PADS</a></li></ul></li>
+          </ul>
+        </div>
+        <div id="R-shortcuts">
+          <div class="nav-title padding">More</div>
+          <ul class="space">
+            <li><a class="padding" href="https://gitlab.com/kicad/services/kicad-dev-docs"><i class='fab fa-fw fa-gitlab'></i> GitLab repo</a></li>
+          </ul>
+        </div>
+        <div class="padding footermargin footerLangSwitch footerVisitedLinks footerFooter showLangSwitch"></div>
+        <div id="R-menu-footer">
+          <hr class="padding footerLangSwitch footerVisitedLinks footerFooter showLangSwitch">
+          <div id="R-prefooter" class="footerLangSwitch footerVisitedLinks showLangSwitch">
+            <ul>
+              <li id="R-select-language-container" class="footerLangSwitch showLangSwitch">
+                <div class="padding menu-control">
+                  <i class="fa-fw fas fa-language"></i>
+                  <span>&nbsp;</span>
+                  <div class="control-style">
+                    <label class="a11y-only" for="R-select-language">Language</label>
+                    <select id="R-select-language" onchange="location = this.querySelector( this.value ).dataset.url;">
+                      <option id="R-select-language-en" value="#R-select-language-en" data-url="/en/apis-and-binding/ipc-api/index.html" lang="en-US" selected>English</option>
+                    </select>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+              </li>
+              <li class="footerVisitedLinks">
+                <div class="padding menu-control">
+                  <i class="fa-fw fas fa-history"></i>
+                  <span>&nbsp;</span>
+                  <div class="control-style">
+                    <button onclick="clearHistory();">Clear History</button>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div id="R-footer" class="footerFooter">
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <script src="/js/clipboard.min.js?1792338197" defer></script>
+    <script src="/js/perfect-scrollbar.min.js?1792338197" defer></script>
+    <script src="/js/d3/d3-color.min.js?1792338197" defer></script>
+    <script src="/js/d3/d3-dispatch.min.js?1792338197" defer></script>
+    <script src="/js/d3/d3-drag.min.js?1792338197" defer></script>
+    <script src="/js/d3/d3-ease.min.js?1792338197" defer></script>
+    <script src="/js/d3/d3-interpolate.min.js?1792338197" defer></script>
+    <script src="/js/d3/d3-selection.min.js?1792338197" defer></script>
+    <script src="/js/d3/d3-timer.min.js?1792338197" defer></script>
+    <script src="/js/d3/d3-transition.min.js?1792338197" defer></script>
+    <script src="/js/d3/d3-zoom.min.js?1792338197" defer></script>
+    <script src="/js/js-yaml.min.js?1792338197" defer></script>
+    <script src="/js/mermaid.min.js?1792338197" defer></script>
+    <script>
+      window.themeUseMermaid = JSON.parse("{}");
+    </script>
+    <script src="/js/theme.js?1792338197" defer></script><script>
+anchors.add();
+(() => {
+  const navToggle = document.querySelector('.dev-nav-toggle');
+  const navLinks = document.querySelector('.dev-nav-links');
+  const themeToggle = document.querySelector('.dev-theme-toggle');
+  const systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+  const isDark = () => {
+    const variant = window.variants?.getVariant() || 'auto';
+    return variant === 'auto' ? systemTheme.matches : variant === 'zen-dark';
+  };
+  const syncThemeToggle = () => {
+    const dark = isDark();
+    const label = dark ? themeToggle.dataset.lightLabel : themeToggle.dataset.darkLabel;
+    themeToggle.setAttribute('aria-pressed', String(dark));
+    themeToggle.setAttribute('aria-label', label);
+    themeToggle.title = label;
+  };
+
+  themeToggle?.addEventListener('click', () => {
+    window.variants?.changeVariant(isDark() ? 'zen-light' : 'zen-dark');
+    syncThemeToggle();
+  });
+  systemTheme.addEventListener?.('change', syncThemeToggle);
+  if (themeToggle) syncThemeToggle();
+
+  navToggle?.addEventListener('click', () => {
+    navToggle.setAttribute('aria-expanded', String(navLinks.classList.toggle('is-open')));
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && navLinks?.classList.contains('is-open')) {
+      navLinks.classList.remove('is-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      navToggle.focus();
+    }
+  });
+})();
+(() => {
+  const tocRail = document.querySelector('.dev-page-toc');
+  const scroller = document.querySelector('#R-body-inner');
+  if (!tocRail || !scroller) return;
+
+  const entries = [...tocRail.querySelectorAll('a[href^="#"]')]
+    .map((link) => {
+      const target = document.getElementById(decodeURIComponent(link.hash.slice(1)));
+      return target ? { link, target } : null;
+    })
+    .filter(Boolean);
+  if (!entries.length) return;
+
+  let frame = 0;
+  let activeLink;
+  const update = () => {
+    frame = 0;
+    const threshold = scroller.getBoundingClientRect().top + Math.min(120, scroller.clientHeight / 4);
+    let current = entries[0];
+    for (const entry of entries) {
+      if (entry.target.getBoundingClientRect().top <= threshold) current = entry;
+      else break;
+    }
+    if (scroller.scrollHeight > scroller.clientHeight + 4 && scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 4) {
+      current = entries[entries.length - 1];
+    }
+    if (current.link === activeLink) return;
+
+    activeLink?.removeAttribute('aria-current');
+    current.link.setAttribute('aria-current', 'location');
+    activeLink = current.link;
+
+    if (getComputedStyle(tocRail).display === 'none') return;
+    const linkRect = current.link.getBoundingClientRect();
+    const railRect = tocRail.getBoundingClientRect();
+    if (linkRect.bottom > railRect.bottom - 12) {
+      tocRail.scrollTop += linkRect.bottom - railRect.bottom + 12;
+    } else if (linkRect.top < railRect.top + 12) {
+      tocRail.scrollTop += linkRect.top - railRect.top - 12;
+    }
+  };
+  const schedule = () => {
+    if (!frame) frame = requestAnimationFrame(update);
+  };
+  scroller.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('hashchange', schedule);
+  window.addEventListener('resize', schedule);
+  window.addEventListener('load', schedule, { once: true });
+  schedule();
+})();
+</script>
+
+  </body>
+</html>

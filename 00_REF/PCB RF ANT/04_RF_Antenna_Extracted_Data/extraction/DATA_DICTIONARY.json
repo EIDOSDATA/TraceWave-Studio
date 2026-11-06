@@ -1,0 +1,1678 @@
+[
+  {
+    "dataset": "materials",
+    "field": "record_id",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "source_id",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "manufacturer",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "material",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "material_form",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "data_scope",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "construction",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 87,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "glass_style",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 275,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "glass_type",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 1762,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "ply_count",
+    "observed_types": [
+      "float"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 1932,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "resin_content_percent",
+    "observed_types": [
+      "float"
+    ],
+    "unit_if_fixed": "%",
+    "null_or_missing_count": 95,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "availability",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 2831,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "core_type",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 2108,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "core_label",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 2956,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "prepreg_label",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 2992,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "thickness_mm",
+    "observed_types": [
+      "float"
+    ],
+    "unit_if_fixed": "mm",
+    "null_or_missing_count": 44,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "thickness_inch",
+    "observed_types": [
+      "float"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 2820,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "thickness_mil",
+    "observed_types": [
+      "float"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 1572,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "thickness_um",
+    "observed_types": [
+      "float"
+    ],
+    "unit_if_fixed": "µm",
+    "null_or_missing_count": 1972,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "thickness_basis",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 44,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "nominal_thickness_mm",
+    "observed_types": [
+      "float"
+    ],
+    "unit_if_fixed": "mm",
+    "null_or_missing_count": 2432,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "nominal_thickness_mil",
+    "observed_types": [
+      "float"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 2624,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "frequency_hz",
+    "observed_types": [
+      "float"
+    ],
+    "unit_if_fixed": "Hz",
+    "null_or_missing_count": 13,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "frequency_min_hz",
+    "observed_types": [
+      "float"
+    ],
+    "unit_if_fixed": "Hz",
+    "null_or_missing_count": 3147,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "frequency_max_hz",
+    "observed_types": [
+      "float"
+    ],
+    "unit_if_fixed": "Hz",
+    "null_or_missing_count": 3147,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "dk",
+    "observed_types": [
+      "float"
+    ],
+    "unit_if_fixed": "dimensionless",
+    "null_or_missing_count": 4,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "dk_tolerance_abs",
+    "observed_types": [
+      "float"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 3145,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "dk_kind",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "df",
+    "observed_types": [
+      "float"
+    ],
+    "unit_if_fixed": "dimensionless",
+    "null_or_missing_count": 14,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "dk_test_method",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 334,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "df_test_method",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 348,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "direction",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 3128,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "test_condition",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 3156,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "temperature_c",
+    "observed_types": [
+      "int"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 3146,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "copper_condition",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 3155,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "source_revision",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "source_sha256",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "source_filename",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "source_url",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "source_locator",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "evidence_ids",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "value_status",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "requires_review",
+    "observed_types": [
+      "bool"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "record_flags",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "notes",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 2,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "materials",
+    "field": "source_relative_path",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "material_auxiliary",
+    "field": "source_id",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "material_auxiliary",
+    "field": "source_sha256",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "material_auxiliary",
+    "field": "source_revision",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "material_auxiliary",
+    "field": "source_filename",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "material_auxiliary",
+    "field": "source_url",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "material_auxiliary",
+    "field": "kind",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "material_auxiliary",
+    "field": "source_locator",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "material_auxiliary",
+    "field": "evidence_id",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "material_auxiliary",
+    "field": "data",
+    "observed_types": [
+      "dict"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "material_auxiliary",
+    "field": "notes",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "material_auxiliary",
+    "field": "auxiliary_id",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "material_auxiliary",
+    "field": "source_relative_path",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "geometry_id",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "source_id",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "source_title",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "variant_title",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "topology",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "source_relative_path",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "source_sha256",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "source_doi",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 24,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "source_url",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "source_evidence",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "target_frequency_hz",
+    "observed_types": [
+      "float"
+    ],
+    "unit_if_fixed": "Hz",
+    "null_or_missing_count": 12,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "target_bands_hz",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": "Hz",
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "parameters",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "substrate",
+    "observed_types": [
+      "dict"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "ground",
+    "observed_types": [
+      "dict"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "feed_and_matching",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "keepout",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "applicability",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "source_reported_validation",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "extraction_status",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "performance_verification",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "independent_em_or_measurement_performed",
+    "observed_types": [
+      "bool"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "automatic_cad_generation_ready",
+    "observed_types": [
+      "bool"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "missing_information",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "source_conflicts",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "equations",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "notes",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "rendered_evidence",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "embedded_sources",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 30,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometries",
+    "field": "cad_geometry_evidence",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 30,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometry_parameters",
+    "field": "name",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometry_parameters",
+    "field": "source_symbol",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometry_parameters",
+    "field": "value",
+    "observed_types": [
+      "float",
+      "int"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometry_parameters",
+    "field": "unit",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometry_parameters",
+    "field": "category",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometry_parameters",
+    "field": "physical_pdf_page",
+    "observed_types": [
+      "int"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 25,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometry_parameters",
+    "field": "locator",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometry_parameters",
+    "field": "condition",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometry_parameters",
+    "field": "extraction_method",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometry_parameters",
+    "field": "evidence_status",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometry_parameters",
+    "field": "source_id",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometry_parameters",
+    "field": "geometry_id",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometry_parameters",
+    "field": "normalized_value",
+    "observed_types": [
+      "float",
+      "int"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometry_parameters",
+    "field": "normalized_unit",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometry_parameters",
+    "field": "parameter_id",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometry_parameters",
+    "field": "variant_title",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometry_parameters",
+    "field": "topology",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometry_parameters",
+    "field": "extraction_status",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometry_parameters",
+    "field": "source_relative_path",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometry_parameters",
+    "field": "source_sha256",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometry_parameters",
+    "field": "derivation_status",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 323,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "geometry_parameters",
+    "field": "embedded_source",
+    "observed_types": [
+      "dict"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 323,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "conditions",
+    "field": "condition_id",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "conditions",
+    "field": "name",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "conditions",
+    "field": "antenna_families",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "conditions",
+    "field": "statement_ko",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "conditions",
+    "field": "required_inputs",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "conditions",
+    "field": "sources",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "conditions",
+    "field": "evidence_class",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "conditions",
+    "field": "program_action_ko",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "conditions",
+    "field": "limitations_ko",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "conditions",
+    "field": "numeric_constraints",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "conditions",
+    "field": "universal_acceptance_threshold",
+    "observed_types": [],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 47,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "validation_methods",
+    "field": "method_id",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "validation_methods",
+    "field": "name",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "validation_methods",
+    "field": "antenna_families",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "validation_methods",
+    "field": "required_inputs",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "validation_methods",
+    "field": "procedure_ko",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "validation_methods",
+    "field": "output_fields",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "validation_methods",
+    "field": "sources",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "validation_methods",
+    "field": "evidence_class",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "validation_methods",
+    "field": "acceptance_basis_ko",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "validation_methods",
+    "field": "source_scoped_targets",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "validation_methods",
+    "field": "default_pass_fail_threshold",
+    "observed_types": [],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 26,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "validation_methods",
+    "field": "limitations_ko",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "model_formulas",
+    "field": "model_id",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "model_formulas",
+    "field": "name",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "model_formulas",
+    "field": "expression",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 1,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "model_formulas",
+    "field": "variables",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "model_formulas",
+    "field": "sources",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "model_formulas",
+    "field": "origin",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "model_formulas",
+    "field": "applicability_ko",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "model_formulas",
+    "field": "exclusions_ko",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "model_formulas",
+    "field": "validity_domain",
+    "observed_types": [
+      "list"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "model_formulas",
+    "field": "implementation_status",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "model_formulas",
+    "field": "notes_ko",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "model_formulas",
+    "field": "source_numeric_example",
+    "observed_types": [],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 19,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "source_coverage",
+    "field": "source_id",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "source_coverage",
+    "field": "title",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "source_coverage",
+    "field": "collection_group",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "source_coverage",
+    "field": "acquisition_status",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "source_coverage",
+    "field": "format",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 3,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "source_coverage",
+    "field": "source_sha256",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 3,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "source_coverage",
+    "field": "source_relative_path",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 3,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "source_coverage",
+    "field": "index_status",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "source_coverage",
+    "field": "indexed_pages_or_html_documents",
+    "observed_types": [
+      "int"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "source_coverage",
+    "field": "low_text_pages",
+    "observed_types": [
+      "int"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "source_coverage",
+    "field": "archive_member_files",
+    "observed_types": [
+      "int"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "source_coverage",
+    "field": "geometry_records",
+    "observed_types": [
+      "int"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "source_coverage",
+    "field": "geometry_parameter_records",
+    "observed_types": [
+      "int"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "source_coverage",
+    "field": "material_records",
+    "observed_types": [
+      "int"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "source_coverage",
+    "field": "material_auxiliary_records",
+    "observed_types": [
+      "int"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "source_coverage",
+    "field": "condition_records",
+    "observed_types": [
+      "int"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "source_coverage",
+    "field": "validation_method_records",
+    "observed_types": [
+      "int"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "source_coverage",
+    "field": "model_formula_records",
+    "observed_types": [
+      "int"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "source_coverage",
+    "field": "extraction_status",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "source_coverage",
+    "field": "material_review_status",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 210,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "source_coverage",
+    "field": "material_review_note",
+    "observed_types": [
+      "str"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 210,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "source_coverage",
+    "field": "whole_document_manually_extracted",
+    "observed_types": [
+      "bool"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 0,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  },
+  {
+    "dataset": "source_coverage",
+    "field": "replacement_coverage",
+    "observed_types": [
+      "dict"
+    ],
+    "unit_if_fixed": null,
+    "null_or_missing_count": 238,
+    "note_ko": "원문에 없거나 적용되지 않은 값은 null/빈칸. 상세 의미는 도메인 README와 source locator 참조."
+  }
+]

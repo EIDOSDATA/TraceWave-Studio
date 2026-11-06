@@ -1,0 +1,43 @@
+{
+  "dataset_version": "1.0.0",
+  "edition_kst": "2026-11-07",
+  "built_at_utc": "2026-11-06T21:20:03.188061+00:00",
+  "source_catalog_records": 241,
+  "acquired_originals": 238,
+  "acquired_academic_sources": 74,
+  "pdf_sources": 208,
+  "pdf_pages_indexed": 8443,
+  "html_sources_indexed": 15,
+  "geometry_records": 31,
+  "geometry_numeric_parameters": 348,
+  "geometry_records_with_numbers": 29,
+  "geometry_source_count": 23,
+  "material_frequency_condition_records": 3160,
+  "material_numeric_source_count": 22,
+  "material_auxiliary_records": 41,
+  "material_sources_reviewed": 31,
+  "conditions": 47,
+  "validation_methods": 26,
+  "model_records": 19,
+  "usable_model_expressions": 18,
+  "deliberately_blocked_model_records": 1,
+  "sources_with_curated_numeric_or_rule_records": 75,
+  "geometry_status_counts": {
+    "analytical_starting_point": 1,
+    "dimensioned_reference": 12,
+    "source_conflict_requires_review": 4,
+    "partial_numeric_dimensions": 10,
+    "published_tool_example": 1,
+    "topology_only_no_dimensioned_design": 1,
+    "requirements_only_no_geometry": 1,
+    "partial_cad_geometry_extracted": 1
+  },
+  "independently_simulated_or_measured_antennas": 0,
+  "automatically_production_ready_CAD_designs": 0,
+  "missing_original_ids": [
+    "TI_CC1110_IFA_CAD",
+    "BOOK_ORFANIDIS_EWA",
+    "KEYSIGHT_NETWORK_BASICS"
+  ],
+  "scope_note_ko": "확보 원문 전체를 제공하고 PDF/HTML 텍스트를 전부 색인함. 구조화 수치·조건은 source_coverage에 명시한 선별 범위의 v1이며 모든 문헌·도면의 전수 추출이나 독립 성능 검증이 아님."
+}

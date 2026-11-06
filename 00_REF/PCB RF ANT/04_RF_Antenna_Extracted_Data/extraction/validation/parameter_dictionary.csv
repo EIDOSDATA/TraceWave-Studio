@@ -1,0 +1,17 @@
+﻿parameter,unit,group,note_ko
+frequency_hz,Hz,design input,주파수 및 채널 범위를 명시
+trace_width_m,m,geometry,PCB 도체 선폭
+substrate_height_m,m,stackup,전체 PCB 두께와 급전선-접지 거리 구분
+epsilon_r,1,material,측정 주파수·방법·방향·공차와 함께 보관
+tan_delta,1,material,주파수와 재질 시험 조건 필수
+conductivity_s_per_m,S/m,material,도체 또는 openEMS kappa 모델 구분
+s11_complex,1 complex,measurement,주파수·z0·기준면과 결합
+radiation_efficiency,1,radiation,P_rad/P_accepted
+total_efficiency,1,radiation,mismatch 포함 여부와 feed-loss 기준면 명시
+gain,1 or dBi,radiation,선형 값과 dBi 값 별도 필드
+group_delay_s,s,time domain,주파수·방향·단일/안테나 쌍 기준 명시
+coil_L_h,H,NFC,등가회로 및 측정 주파수 명시
+coil_R_ohm,ohm,NFC,직렬/병렬 등가 및 측정 불확도 명시
+coil_Q,1,NFC,bare coil/loaded channel Q 구분
+chip_impedance,ohm complex,UHF RFID,전력·주파수·패키지·접합 의존
+coverage_factor,1,uncertainty,값 및 해석 근거 별도 입력

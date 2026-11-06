@@ -1,0 +1,1953 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="MEEP Developers" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Tutorial/Adjoint Solver - MEEP Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../css/extra.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Tutorial/Adjoint Solver";
+        var mkdocs_page_input_path = "Python_Tutorials/Adjoint_Solver.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+<script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="meep" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/Python_Tutorials/Adjoint_Solver/" /><meta name="readthedocs-http-status" content="200" /></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> MEEP Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Manual</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../Introduction/">Introduction</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../Download/">Download</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../FAQ/">FAQ</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../Installation/">Installation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../Build_From_Source/">Build From Source</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../Acknowledgements/">Acknowledgements</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../License_and_Copyright/">License and Copyright</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Features</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Materials/">Materials</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Subpixel_Smoothing/">Subpixel Smoothing</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Exploiting_Symmetry/">Exploiting Symmetry</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Perfectly_Matched_Layer/">Perfectly Matched Layers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Parallel_Meep/">Parallel Meep</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Synchronizing_the_Magnetic_and_Electric_Fields/">Synchronizing the Magnetic and Electric Fields</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Mode_Decomposition/">Mode Decomposition</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Field_Functions/">Field Functions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../The_Run_Function_Is_Not_A_Loop/">The Run Function is Not a Loop</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Yee_Lattice/">Yee Lattice</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Units_and_Nonlinearity/">Units and Nonlinearity</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../2d_Cell_Special_kz/">2d Cell with Out-of-Plane Wavevector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Eigensolver_Math/">Frequency-Domain Eigensolver</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Python Interface</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../Python_User_Interface/">User Interface</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Python_Developer_Information/">Developer Information</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Basics/">Tutorial/Basics</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Cylindrical_Coordinates/">Tutorial/Cylindrical Coordinates</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Resonant_Modes_and_Transmission_in_a_Waveguide_Cavity/">Tutorial/Resonant Modes and Transmission in a Waveguide Cavity</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Material_Dispersion/">Tutorial/Material Dispersion</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Third_Harmonic_Generation/">Tutorial/Third Harmonic Generation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Near_to_Far_Field_Spectra/">Tutorial/Near-to-Far Field Spectra</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Local_Density_of_States/">Tutorial/Local Density of States</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Optical_Forces/">Tutorial/Optical Forces</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Gyrotropic_Media/">Tutorial/Gyrotropic Media</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Multilevel_Atomic_Susceptibility/">Tutorial/Multilevel Atomic Susceptibility</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Frequency_Domain_Solver/">Tutorial/Frequency-Domain Solver</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Eigenmode_Source/">Tutorial/Eigenmode Source</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Custom_Source/">Tutorial/Custom Source</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Mode_Decomposition/">Tutorial/Mode Decomposition</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../GDS_Import/">Tutorial/GDS Import</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Tutorial/Adjoint Solver</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#broadband-waveguide-mode-converter-with-minimum-feature-size">Broadband Waveguide Mode Converter with Minimum Feature Size</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#derivatives-with-respect-to-shape-parameters">Derivatives with Respect to Shape Parameters</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#shape-optimization-of-a-multilayer-stack">Shape Optimization of a Multilayer Stack</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#compact-notebook-tutorials-of-basic-features">Compact Notebook Tutorials of Basic Features</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Scheme Interface</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Scheme_User_Interface/">User Interface</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Scheme_Tutorials/Basics/">Tutorial/Basics</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Scheme_Tutorials/Cylindrical_Coordinates/">Tutorial/Cylindrical Coordinates</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Scheme_Tutorials/Resonant_Modes_and_Transmission_in_a_Waveguide_Cavity/">Tutorial/Resonant Modes and Transmission in a Waveguide Cavity</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Scheme_Tutorials/Material_Dispersion/">Tutorial/Material Dispersion</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Scheme_Tutorials/Third_Harmonic_Generation/">Tutorial/Third Harmonic Generation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Scheme_Tutorials/Near_to_Far_Field_Spectra/">Tutorial/Near-to-Far Field Spectra</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Scheme_Tutorials/Local_Density_of_States/">Tutorial/Local Density of States</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Scheme_Tutorials/Optical_Forces/">Tutorial/Optical Forces</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Scheme_Tutorials/Gyrotropic_Media/">Tutorial/Gyrotropic Media</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Scheme_Tutorials/Multilevel_Atomic_Susceptibility/">Tutorial/Multilevel Atomic Susceptibility</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Scheme_Tutorials/Frequency_Domain_Solver/">Tutorial/Frequency-Domain Solver</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Scheme_Tutorials/Eigenmode_Source/">Tutorial/Eigenmode Source</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Scheme_Tutorials/Custom_Source/">Tutorial/Custom Source</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Scheme_Tutorials/Mode_Decomposition/">Tutorial/Mode Decomposition</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Scheme_Tutorials/Casimir_Forces/">Tutorial/Casimir Forces</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Guile_and_Scheme_Information/">Guile and Scheme Information</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">C++ Interface</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../C%2B%2B_Developer_Information/">Developer Information</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Chunks_and_Symmetry/">Chunks and Symmetry</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../C%2B%2B_Tutorial/">Tutorial/Basics</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">MEEP Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Python Interface</li>
+      <li class="breadcrumb-item active">Tutorial/Adjoint Solver</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/NanoComp/meep/edit/master/doc/docs/Python_Tutorials/Adjoint_Solver.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <hr />
+<h1 id="adjoint-solver">Adjoint Solver<a class="headerlink" href="#adjoint-solver" title="Permanent link">#</a></h1>
+<hr />
+<p>Meep contains an adjoint-solver module for efficiently computing the
+gradient of an arbitrary function of the mode coefficients
+(<span class="arithmatex">\(S\)</span>-parameters), DFT fields, local density of states (LDOS), and
+"far" fields with respect to <span class="arithmatex">\(\varepsilon\)</span> on a discrete spatial grid
+(a <a href="../../Python_User_Interface/#materialgrid"><code>MaterialGrid</code></a> class
+object) at multiple frequencies over a broad bandwidth. Regardless of
+the number of degrees of freedom for the grid points, just <strong>two</strong>
+distinct timestepping runs are required. The first run is the
+"forward" calculation to compute the objective function and the DFT
+fields of the design region. The second run is the "adjoint"
+calculation to compute the gradient of the objective function with
+respect to the design variables. The adjoint run involves a special
+type of current source distribution used to compute the DFT fields of
+the design region. The gradient is computed in post processing using
+the DFT fields from the forward and adjoint runs. The gradient
+calculation is fully automated. The theoretical and computational
+details of the adjoint-solver module are described in this
+publication:</p>
+<ul>
+<li>A. M. Hammond, A. Oskooi, M. Chen, Z. Lin, S. G. Johnson, and
+  S. E. Ralph, “<a href="https://doi.org/10.1364/OE.442074">High-performance hybrid time/frequency-domain
+  topology optimization for large-scale photonics inverse
+  design</a>,” <em>Optics Express</em>,
+  vol. 30, no. 3, pp. 4467–4491 (2022).</li>
+</ul>
+<p>Much of the functionality of the adjoint solver is implemented in
+Python using <a href="https://github.com/HIPS/autograd">autograd</a> as well as
+<a href="https://github.com/google/jax">JAX</a>.</p>
+<p>The adjoint solver supports inverse design and <a href="https://en.wikipedia.org/wiki/Topology_optimization">topology
+optimization</a> by
+providing the functionality to wrap an optimization library around the
+gradient computation. The adjoint solver also supports enforcing
+minimum feature sizes on the optimal design in 1D (line width and
+spacing) and 2D (arbitrary-shaped holes and islands). This is
+demonstrated in several tutorials below.</p>
+<div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#adjoint-solver">Adjoint Solver</a><ul>
+<li><a href="#broadband-waveguide-mode-converter-with-minimum-feature-size">Broadband Waveguide Mode Converter with Minimum Feature Size</a></li>
+<li><a href="#derivatives-with-respect-to-shape-parameters">Derivatives with Respect to Shape Parameters</a></li>
+<li><a href="#shape-optimization-of-a-multilayer-stack">Shape Optimization of a Multilayer Stack</a></li>
+<li><a href="#compact-notebook-tutorials-of-basic-features">Compact Notebook Tutorials of Basic Features</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="broadband-waveguide-mode-converter-with-minimum-feature-size">Broadband Waveguide Mode Converter with Minimum Feature Size<a class="headerlink" href="#broadband-waveguide-mode-converter-with-minimum-feature-size" title="Permanent link">#</a></h2>
+<p>This example demonstrates some of the advanced functionality of the
+adjoint solver including worst-case (minimax) optimization across
+multiple wavelengths, multiple objective functions, and design
+constraints on the minimum line width and line spacing. The design
+problem involves a broadband waveguide mode converter in 2D with
+minimum feature size. This is based on <a href="https://doi.org/10.1021/acsphotonics.2c00313">M.F. Schubert et al., ACS
+Photonics, Vol. 9, pp. 2327-36,
+(2022)</a>.</p>
+<p>The mode converter must satisfy two separate design objectives: (1)
+minimize the reflectance <span class="arithmatex">\(R\)</span> into the fundamental mode of the input
+port (<span class="arithmatex">\(S_{11}\)</span>) and (2) maximize the transmittance <span class="arithmatex">\(T\)</span> into the
+second-order mode of the output port (<span class="arithmatex">\(S_{21}\)</span>). There are different
+ways to define this multi-objective and multi-wavelength
+optimization. The approach taken here is <em>worst-case</em> optimization
+whereby we minimize the maximum (the worst case) of <span class="arithmatex">\(R\)</span> and <span class="arithmatex">\(1-T\)</span>
+across six wavelengths in the <span class="arithmatex">\(O\)</span>-band for telecommunications. This is
+known as <em>minimax</em> optimization. The fundamental mode launched from
+the input port has <span class="arithmatex">\(E_z\)</span> polarization given a 2D cell in the <span class="arithmatex">\(xy\)</span>
+plane.</p>
+<p>The challenge with minimax optimization is that the <span class="arithmatex">\(\max\)</span> objective
+function is not everywhere differentiable. This property would seem to
+preclude the use of gradient-based optimization algorithms for this
+problem which involves twelve independent functions (<span class="arithmatex">\(R\)</span> and <span class="arithmatex">\(1-T\)</span> for
+each of six wavelengths). Fortunately, there is a workaround: the
+problem can be reformulated as a differentiable problem using a
+so-called "epigraph" formulation: introducing a new "dummy"
+optimization variable <span class="arithmatex">\(t\)</span> and adding each independent function
+<span class="arithmatex">\(f_k(x)\)</span> as a new nonlinear constraint <span class="arithmatex">\(t \ge f_k(x)\)</span>. See the <a href="https://nlopt.readthedocs.io/en/latest/NLopt_Introduction/#equivalent-formulations-of-optimization-problems">NLopt
+documentation</a>
+for an overview of this approach. (Note: this tutorial example requires NLopt <a href="https://github.com/stevengj/nlopt/releases/tag/v2.7.0">version 2.7.0</a> or higher.) The minimax/epigraph approach is
+also covered in the <a href="https://nbviewer.org/github/NanoComp/meep/blob/master/python/examples/adjoint_optimization/06-Near2Far-Epigraph.ipynb">near-to-far field
+tutorial</a>.</p>
+<p>In this example, we use a minimum feature size of 150 nm for the
+linewidth <em>and</em> linespacing. The implementation of these constraints
+in the adjoint-solver module is based on <a href="https://doi.org/10.1364/OE.431188">A.M. Hammond et al., Optics
+Express, Vol. 29, pp. 23916-38
+(2021)</a>.</p>
+<p>There are six important items to highlight in the set up of this
+optimization problem:</p>
+<ol>
+<li>
+<p>The lengthscale constraint is activated only in the final epoch. It
+   is often helpful to binarize the design using a large <span class="arithmatex">\(\beta\)</span> value
+   for the projection operator (hyperbolic tangent) before this final
+   epoch. This is because the lengthscale constraint forces
+   binarization which could induce large changes in an initial
+   grayscale design and thus irrevocably spoil the performance of the
+   final design. Note that regardless of the value of <span class="arithmatex">\(\beta\)</span>,
+   projecting the design weights <span class="arithmatex">\(u\)</span> will produce grayscale values
+   between 0 and 1 whenever <span class="arithmatex">\(u \approx \eta \pm \frac{1}{\beta}\)</span>.</p>
+</li>
+<li>
+<p>The initial value of the epigraph variable of the final epoch (in
+  which the minimum feature size constraint is imposed) should take
+  into account the value of the constraint itself. This ensures a
+  feasible starting point for the <a href="https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/#mma-method-of-moving-asymptotes-and-ccsa">method of moving asymptotes (MMA)
+  optimization
+  algorithm</a>,
+  (which is based on the conservative convex separable approximation
+  (CCSA) algorithm).</p>
+</li>
+<li>
+<p>The edge of the design region is padded by a filter radius (rather
+  than e.g., a single pixel) to produce measured minimum feature sizes
+  of the final design that are consistent with the imposed constraint.</p>
+</li>
+<li>
+<p>The hyperparameters of the feature-size constraint function
+  (<code>a1</code>, <code>b1</code>, and <code>c0</code> in the <code>glc</code> function of the script below), need to
+  be chosen carefully to produce final designs which do not
+  significantly degrade the performance of the unconstrained designs
+  at the start of the final epoch.</p>
+</li>
+<li>
+<p>Damping of the design weights is used for the early epochs in which
+  the <span class="arithmatex">\(\beta\)</span> parameter of the projection function is small (&lt; ~50) and
+  the design is mostly grayscale in order to induce binarization.</p>
+</li>
+<li>
+<p>The subpixel-smoothing feature of the <a href="../../Python_User_Interface/#materialgrid"><code>MaterialGrid</code></a>
+  is necessary whenever the <span class="arithmatex">\(\beta\)</span> parameter of the projection function
+  is large (&gt; ~50) and thus the design is binary (or nearly so). Without
+  subpixel smoothing, then the gradients are nearly zero
+ except for <span class="arithmatex">\(u \approx \eta \pm 1/\beta\)</span> where the derivatives
+ and second derivatives blow up, causing optimization algorithms to break down. When subpixel
+  smoothing is enabled (<code>do_averaging=True</code>), the weights are projected
+  <em>internally</em> using the <code>beta</code> parameter. For this reason, any
+  preprocessing (i.e., mapping) of the weights outside of the <code>MaterialGrid</code>
+  should apply only a filter to the weights but must not perform any
+  projection.</p>
+</li>
+</ol>
+<p>A schematic of the final design and the simulation layout is shown
+below. The minimum feature size of the final design, measured using a
+<a href="https://github.com/NanoComp/photonics-opt-testbed/tree/main/ruler">ruler</a>,
+is 165 nm. This value is consistent with the imposed constraint since
+it is approximately within one design pixel (10 nm).</p>
+<p><img alt="" src="../../images/mode_converter_sim_layout.png#center" /></p>
+<p>A plot of the reflectance and transmittance spectrum in linear and log
+(dB) scales of the final design is shown below. The worst-case
+reflectance is -17.7 dB at a wavelength of 1.295 μm. The worst-case
+transmittance is -2.1 dB at a wavelength of 1.265 μm.</p>
+<p><img alt="" src="../../images/mode_converter_refl_tran_spectra.png#center" /></p>
+<p>A plot of the objective-function history (worst case or maximum value
+across the six wavelengths) for this design is also shown. The
+"spikes" present in the plot are a normal feature of
+nonlinear-optimization algorithms. The algorithm may take too large a
+step which turns out to make the objective function worse. This means
+the algorithm then has to "backtrack" and take a smaller step. This
+occurs in the CCSA algorithm by increasing a penalty term. Also, even
+though the worst-case objective function is constant during most of
+the first epoch which may indicate the optimizer is making no
+progress, in fact the optimizer is working to improve the objective
+function at the other (non worst-case) wavelengths.</p>
+<p><img alt="" src="../../images/mode_converter_objfunc_hist.png#center" /></p>
+<p>Finally, here are additional designs generated using constraints on
+the minimum feature size of 50 nm, 70 nm, 90 nm, and 225 nm. The
+designs with smaller minimum feature sizes are clearly distinguishable
+from the designs with the larger ones.</p>
+<p><img alt="" src="../../images/mode_converter_designs.png#center" /></p>
+<p>The table below shows a comparison of the imposed constraint on the
+minimum feature size of the optimizer versus the measured minimum
+linewidth and linespacing for the five designs presented in this
+tutorial. There is fairly consistent agreement in the constraint and
+measured values except for the design with the largest minimum feature
+size (225 nm vs. 277 nm). For cases in which the measured minimum
+feature size is significantly <em>larger</em> than the constraint used in the
+optimization, this could be an indication that the final design can be
+improved by a better choice of the hyperparameters in the feature-size
+constraint function. Generally, one should expect the constraint and
+measured values to agree within a length of about one to two
+design-region pixels (10 nm, in this example).</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">constraint (nm)</th>
+<th style="text-align: center;">measured linewidth (nm)</th>
+<th style="text-align: center;">measured linespacing (nm)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">50</td>
+<td style="text-align: center;">85</td>
+<td style="text-align: center;">60</td>
+</tr>
+<tr>
+<td style="text-align: center;">70</td>
+<td style="text-align: center;">103</td>
+<td style="text-align: center;">85</td>
+</tr>
+<tr>
+<td style="text-align: center;">90</td>
+<td style="text-align: center;">109</td>
+<td style="text-align: center;">134</td>
+</tr>
+<tr>
+<td style="text-align: center;">150</td>
+<td style="text-align: center;">221</td>
+<td style="text-align: center;">165</td>
+</tr>
+<tr>
+<td style="text-align: center;">225</td>
+<td style="text-align: center;">277</td>
+<td style="text-align: center;">681</td>
+</tr>
+</tbody>
+</table>
+<p>Finally, a plot of the worst-case reflectance and transmittance versus
+the imposed constraint on the minimum feature size is shown below for
+the five designs. The general trend of decreasing performance (i.e.,
+increasing reflectance and decreasing transmittance) with increasing
+minimum feature size is evident.</p>
+<p><img alt="" src="../../images/mode_converter_worst_case_refl_tran.png#center" /></p>
+<p>The script is
+<a href="https://github.com/NanoComp/meep/tree/master/python/examples/adjoint_optimization/mode_converter.py">python/examples/adjoint_optimization/mode_converter.py</a>. The runtime of this script using three cores of an Intel Xeon at 2.0 GHz is approximately 14 hours.</p>
+<pre><code class="language-py">from typing import List, NamedTuple, Tuple
+
+from autograd import numpy as npa, tensor_jacobian_product, grad
+import matplotlib.pyplot as plt
+import meep as mp
+import meep.adjoint as mpa
+import nlopt
+import numpy as np
+
+
+RESOLUTION_UM = 50
+WAVELENGTH_MIN_UM = 1.26
+WAVELENGTH_MAX_UM = 1.30
+WAVEGUIDE_UM = mp.Vector3(3.0, 0.4, 0)
+PADDING_UM = 0.6
+PML_UM = 1.0
+DESIGN_WAVELENGTHS_UM = (1.265, 1.270, 1.275, 1.285, 1.290, 1.295)
+DESIGN_REGION_UM = mp.Vector3(1.6, 1.6, mp.inf)
+DESIGN_REGION_RESOLUTION_UM = int(2 * RESOLUTION_UM)
+NX_DESIGN_GRID = int(DESIGN_REGION_UM.x * DESIGN_REGION_RESOLUTION_UM) + 1
+NY_DESIGN_GRID = int(DESIGN_REGION_UM.y * DESIGN_REGION_RESOLUTION_UM) + 1
+MIN_LENGTH_UM = 0.15
+SIGMOID_THRESHOLD_INTRINSIC = 0.5
+SIGMOID_THRESHOLD_EROSION = 0.75
+SIGMOID_THRESHOLD_DILATION = 1 - SIGMOID_THRESHOLD_EROSION
+MODE_SYMMETRY = mp.ODD_Z
+SILICON = mp.Medium(index=3.5)
+SILICON_DIOXIDE = mp.Medium(index=1.5)
+
+cell_um = mp.Vector3(
+    PML_UM + WAVEGUIDE_UM.x + DESIGN_REGION_UM.x + WAVEGUIDE_UM.x + PML_UM,
+    PML_UM + PADDING_UM + DESIGN_REGION_UM.y + PADDING_UM + PML_UM,
+    0,
+)
+filter_radius_um = mpa.get_conic_radius_from_eta_e(
+    MIN_LENGTH_UM, SIGMOID_THRESHOLD_EROSION
+)
+frequency_min = 1 / WAVELENGTH_MAX_UM
+frequency_max = 1 / WAVELENGTH_MIN_UM
+frequency_center = 0.5 * (frequency_min + frequency_max)
+frequency_width = frequency_max - frequency_min
+pml_layers = [mp.PML(thickness=PML_UM)]
+frequencies = [1 / wavelength_um for wavelength_um in DESIGN_WAVELENGTHS_UM]
+num_wavelengths = len(DESIGN_WAVELENGTHS_UM)
+src_pt = mp.Vector3(-0.5 * cell_um.x + PML_UM, 0, 0)
+refl_pt = mp.Vector3(-0.5 * cell_um.x + PML_UM + 0.5 * WAVEGUIDE_UM.x)
+tran_pt = mp.Vector3(0.5 * cell_um.x - PML_UM - 0.5 * WAVEGUIDE_UM.x)
+stop_cond = mp.stop_when_fields_decayed(50, mp.Ez, refl_pt, 1e-6)
+
+
+def str_from_list(list_: List[float]) -&gt; str:
+    return &quot;[&quot; + &quot;, &quot;.join(f&quot;{val:.4f}&quot; for val in list_) + &quot;]&quot;
+
+
+def border_masks() -&gt; Tuple[np.ndarray, np.ndarray]:
+    &quot;&quot;&quot;Return border masks for the design region.
+
+    The masks are used to prevent violations on constraints on the
+    minimum feature size at the boundaries of the design region.
+
+    Returns:
+      A 2-tuple of 2D arrays for border masks for Si and SiO2.
+    &quot;&quot;&quot;
+    x_grid = np.linspace(
+        -DESIGN_REGION_UM.x / 2,
+        DESIGN_REGION_UM.x / 2,
+        NX_DESIGN_GRID,
+    )
+    y_grid = np.linspace(
+        -DESIGN_REGION_UM.y / 2,
+        DESIGN_REGION_UM.y / 2,
+        NY_DESIGN_GRID,
+    )
+    xy_grid_x, xy_grid_y = np.meshgrid(
+        x_grid,
+        y_grid,
+        sparse=True,
+        indexing=&quot;ij&quot;,
+    )
+
+    left_waveguide_port = (xy_grid_x &lt;= -DESIGN_REGION_UM.x / 2 + filter_radius_um) &amp; (
+        np.abs(xy_grid_y) &lt;= WAVEGUIDE_UM.y / 2
+    )
+    right_waveguide_port = (xy_grid_x &gt;= DESIGN_REGION_UM.x / 2 - filter_radius_um) &amp; (
+        np.abs(xy_grid_y) &lt;= WAVEGUIDE_UM.y / 2
+    )
+    silicon_mask = left_waveguide_port | right_waveguide_port
+
+    border_mask = (
+        (xy_grid_x &lt;= -DESIGN_REGION_UM.x / 2 + filter_radius_um)
+        | (xy_grid_x &gt;= DESIGN_REGION_UM.x / 2 - filter_radius_um)
+        | (xy_grid_y &lt;= -DESIGN_REGION_UM.y / 2 + filter_radius_um)
+        | (xy_grid_y &gt;= DESIGN_REGION_UM.y / 2 - filter_radius_um)
+    )
+    silicon_dioxide_mask = border_mask.copy()
+    silicon_dioxide_mask[silicon_mask] = False
+
+    return silicon_mask, silicon_dioxide_mask
+
+
+def filter_and_project(
+    weights: np.ndarray, sigmoid_threshold: float, sigmoid_bias: float
+) -&gt; np.ndarray:
+    &quot;&quot;&quot;A differentiable function to filter and project the design weights.
+
+    Args:
+      weights: design weights as a flattened (1D) array.
+      sigmoid_threshold: erosion/dilation parameter for the projection.
+      sigmoid_bias: bias parameter for the projection. 0 is no projection.
+
+    Returns:
+      The mapped design weights as a 1D array.
+    &quot;&quot;&quot;
+    silicon_mask, silicon_dioxide_mask = border_masks()
+
+    weights_masked = npa.where(
+        silicon_mask.flatten(),
+        1,
+        npa.where(
+            silicon_dioxide_mask.flatten(),
+            0,
+            weights,
+        ),
+    )
+
+    weights_filtered = mpa.conic_filter(
+        weights_masked,
+        filter_radius_um,
+        DESIGN_REGION_UM.x,
+        DESIGN_REGION_UM.y,
+        DESIGN_REGION_RESOLUTION_UM,
+    )
+
+    if sigmoid_bias == 0:
+        return weights_filtered.flatten()
+    else:
+        weights_projected = mpa.tanh_projection(
+            weights_filtered,
+            sigmoid_bias,
+            sigmoid_threshold,
+        )
+        return weights_projected.flatten()
+
+
+def obj_func(epigraph_and_weights: np.ndarray, grad: np.ndarray) -&gt; float:
+    &quot;&quot;&quot;Objective function for the epigraph formulation.
+
+    Args:
+      epigraph_and_weights: 1D array containing epigraph variable (first
+        element) and design weights (remaining elements).
+      grad: the gradient as a flattened (1D) array, modified in place.
+
+    Returns:
+      The scalar epigraph variable.
+    &quot;&quot;&quot;
+    epigraph = epigraph_and_weights[0]
+
+    if grad.size &gt; 0:
+        grad[0] = 1
+        grad[1:] = 0
+
+    return epigraph
+
+
+def epigraph_constraint(
+    result: np.ndarray,
+    epigraph_and_weights: np.ndarray,
+    gradient: np.ndarray,
+    sigmoid_threshold: float,
+    sigmoid_bias: float,
+    use_epsavg: bool,
+) -&gt; None:
+    &quot;&quot;&quot;Constraint function for the epigraph formulation.
+
+    Args:
+      result: evaluation of this constraint function, modified in place.
+      epigraph_and_weights: 1D array containing the epigraph variable (first
+        element) and design weights (remaining elements).
+      gradient: the Jacobian matrix with dimensions (1 + NX_DESIGN_GRID *
+        NY_DESIGN_GRID, 2 * num. wavelengths), modified in place.
+      sigmoid_threshold: erosion/dilation parameter for projection.
+      sigmoid_bias: bias parameter for projection.
+      use_epsavg: whether to use subpixel smoothing.
+    &quot;&quot;&quot;
+    epigraph = epigraph_and_weights[0]
+    weights = epigraph_and_weights[1:]
+
+    obj_val, grad = opt(
+        [
+            filter_and_project(
+                weights, sigmoid_threshold, 0 if use_epsavg else sigmoid_bias
+            )
+        ]
+    )
+
+    reflectance = obj_val[0]
+    transmittance = obj_val[1]
+    obj_val_merged = np.concatenate((reflectance, transmittance))
+    obj_val_merged_str = str_from_list(obj_val_merged)
+
+    grad_reflectance = grad[0]
+    grad_transmittance = grad[1]
+    grad = np.zeros((NX_DESIGN_GRID * NY_DESIGN_GRID, 2 * num_wavelengths))
+    grad[:, :num_wavelengths] = grad_reflectance
+    grad[:, num_wavelengths:] = grad_transmittance
+
+    # Backpropagate the gradients through the filter and project function.
+    for k in range(2 * num_wavelengths):
+        grad[:, k] = tensor_jacobian_product(filter_and_project, 0)(
+            weights,
+            sigmoid_threshold,
+            sigmoid_bias,
+            grad[:, k],
+        )
+
+    if gradient.size &gt; 0:
+        gradient[:, 0] = -1  # gradient w.r.t. epigraph variable
+        gradient[:, 1:] = grad.T  # gradient w.r.t. each frequency objective
+
+    result[:] = np.real(obj_val_merged) - epigraph
+
+    objfunc_history.append(np.real(obj_val_merged))
+    epivar_history.append(epigraph)
+
+    print(
+        f&quot;iteration:, {cur_iter[0]:3d}, sigmoid_bias: {sigmoid_bias:2d}, &quot;
+        f&quot;epigraph: {epigraph:.5f}, obj. func.: {obj_val_merged_str}, &quot;
+        f&quot;epigraph constraint: {str_from_list(result)}&quot;
+    )
+
+    cur_iter[0] = cur_iter[0] + 1
+
+
+def line_width_and_spacing_constraint(
+    result: np.ndarray,
+    epigraph_and_weights: np.ndarray,
+    gradient: np.ndarray,
+    sigmoid_bias: float,
+) -&gt; float:
+    &quot;&quot;&quot;Constraint function for the minimum line width and spacing.
+
+    Args:
+      result: evaluation of this constraint function, modified in place.
+      epigraph_and_weights: 1D array containing epigraph variable (first
+        element) and design weights (remaining elements).
+      gradient: the Jacobian matrix, modified in place.
+      sigmoid_bias: bias parameter for projection.
+
+    Returns:
+      The value of the constraint function (a scalar).
+    &quot;&quot;&quot;
+    epigraph = epigraph_and_weights[0]
+    weights = epigraph_and_weights[1:]
+    a1 = 1e-3  # hyper parameter (primary)
+    b1 = 0  # hyper parameter (secondary)
+    gradient[:, 0] = -a1
+
+    filter_func = lambda a: mpa.conic_filter(
+        a.reshape(NX_DESIGN_GRID, NY_DESIGN_GRID),
+        filter_radius_um,
+        DESIGN_REGION_UM.x,
+        DESIGN_REGION_UM.y,
+        DESIGN_REGION_RESOLUTION_UM,
+    )
+
+    threshold_func = lambda a: mpa.tanh_projection(
+        a, sigmoid_bias, SIGMOID_THRESHOLD_INTRINSIC
+    )
+
+    # hyper parameter (constant factor and exponent)
+    c0 = 1e7 * (filter_radius_um * 1 / RESOLUTION_UM) ** 4
+
+    M1 = lambda a: mpa.constraint_solid(
+        a, c0, SIGMOID_THRESHOLD_EROSION, filter_func, threshold_func, 1
+    )
+    M2 = lambda a: mpa.constraint_void(
+        a, c0, SIGMOID_THRESHOLD_DILATION, filter_func, threshold_func, 1
+    )
+
+    g1 = grad(M1)(weights)
+    g2 = grad(M2)(weights)
+
+    result[0] = M1(weights) - a1 * epigraph - b1
+    result[1] = M2(weights) - a1 * epigraph - b1
+
+    gradient[0, 1:] = g1.flatten()
+    gradient[1, 1:] = g2.flatten()
+
+    t1 = (M1(weights) - b1) / a1
+    t2 = (M2(weights) - b1) / a1
+
+    print(f&quot;line_width_and_spacing_constraint:, {result[0]}, {result[1]}, {t1}, {t2}&quot;)
+
+    return max(t1, t2)
+
+
+def straight_waveguide() -&gt; (np.ndarray, NamedTuple):
+    &quot;&quot;&quot;Computes the DFT fields from the mode source in a straight waveguide.
+
+    The DFT fields are used as normalization of the reflectance measurement
+    during the optimization.
+
+    Returns:
+      A 2-tuple consisting of (1) a 1D array of DFT fields and (2) the DFT
+      fields object returned by `meep.get_flux_data`.
+    &quot;&quot;&quot;
+    sources = [
+        mp.EigenModeSource(
+            src=mp.GaussianSource(frequency_center, fwidth=frequency_width),
+            size=mp.Vector3(0, cell_um.y, 0),
+            center=src_pt,
+            eig_band=1,
+            eig_parity=MODE_SYMMETRY,
+        )
+    ]
+
+    geometry = [
+        mp.Block(
+            size=mp.Vector3(mp.inf, WAVEGUIDE_UM.y, mp.inf),
+            center=mp.Vector3(),
+            material=SILICON,
+        )
+    ]
+
+    sim = mp.Simulation(
+        resolution=RESOLUTION_UM,
+        default_material=SILICON_DIOXIDE,
+        cell_size=cell_um,
+        sources=sources,
+        geometry=geometry,
+        boundary_layers=pml_layers,
+        k_point=mp.Vector3(),
+    )
+
+    refl_mon = sim.add_mode_monitor(
+        frequencies,
+        mp.ModeRegion(center=refl_pt, size=mp.Vector3(0, cell_um.y, 0)),
+        yee_grid=True,
+    )
+
+    sim.run(until_after_sources=stop_cond)
+
+    res = sim.get_eigenmode_coefficients(
+        refl_mon,
+        [1],
+        eig_parity=MODE_SYMMETRY,
+    )
+
+    coeffs = res.alpha
+    input_flux = np.abs(coeffs[0, :, 0]) ** 2
+    input_flux_data = sim.get_flux_data(refl_mon)
+
+    return input_flux, input_flux_data
+
+
+def mode_converter_optimization(
+    input_flux: np.ndarray,
+    input_flux_data: NamedTuple,
+    use_damping: bool,
+    use_epsavg: bool,
+    sigmoid_bias: float,
+) -&gt; mpa.OptimizationProblem:
+    &quot;&quot;&quot;Sets up the adjoint optimization of the waveguide mode converter.
+
+    Args:
+      input_flux: 1D array of DFT fields from the normalization run.
+      input_flux_data: DFT fields object returned by `meep.get_flux_data`.
+      use_damping: whether to use the damping feature of `MaterialGrid`.
+      use_epsavg: whether to use subpixel smoothing in `MaterialGrid`.
+
+    Returns:
+      A `meep.adjoint.OptimizationProblem` class object.
+    &quot;&quot;&quot;
+    matgrid = mp.MaterialGrid(
+        mp.Vector3(NX_DESIGN_GRID, NY_DESIGN_GRID, 0),
+        SILICON_DIOXIDE,
+        SILICON,
+        weights=np.ones((NX_DESIGN_GRID, NY_DESIGN_GRID)),
+        beta=sigmoid_bias if use_epsavg else 0,
+        do_averaging=True if use_epsavg else False,
+        damping=0.02 * 2 * np.pi * frequency_center if use_damping else 0,
+    )
+
+    matgrid_region = mpa.DesignRegion(
+        matgrid,
+        volume=mp.Volume(center=mp.Vector3(), size=DESIGN_REGION_UM),
+    )
+
+    matgrid_geometry = [
+        mp.Block(
+            center=matgrid_region.center,
+            size=matgrid_region.size,
+            material=matgrid,
+        )
+    ]
+
+    geometry = [
+        mp.Block(
+            center=mp.Vector3(),
+            size=mp.Vector3(mp.inf, WAVEGUIDE_UM.y, mp.inf),
+            material=SILICON,
+        )
+    ]
+
+    geometry += matgrid_geometry
+
+    sources = [
+        mp.EigenModeSource(
+            src=mp.GaussianSource(frequency_center, fwidth=frequency_width),
+            size=mp.Vector3(0, cell_um.y, 0),
+            center=src_pt,
+            eig_band=1,
+            eig_parity=MODE_SYMMETRY,
+        ),
+    ]
+
+    sim = mp.Simulation(
+        resolution=RESOLUTION_UM,
+        default_material=SILICON_DIOXIDE,
+        cell_size=cell_um,
+        sources=sources,
+        geometry=geometry,
+        boundary_layers=pml_layers,
+        k_point=mp.Vector3(),
+    )
+
+    obj_list = [
+        mpa.EigenmodeCoefficient(
+            sim,
+            mp.Volume(
+                center=refl_pt,
+                size=mp.Vector3(0, cell_um.y, 0),
+            ),
+            1,
+            forward=False,
+            eig_parity=MODE_SYMMETRY,
+            subtracted_dft_fields=input_flux_data,
+        ),
+        mpa.EigenmodeCoefficient(
+            sim,
+            mp.Volume(
+                center=tran_pt,
+                size=mp.Vector3(0, cell_um.y, 0),
+            ),
+            2,
+            eig_parity=MODE_SYMMETRY,
+        ),
+    ]
+
+    def J1(refl_mon, tran_mon):
+        return npa.power(npa.abs(refl_mon), 2) / input_flux
+
+    def J2(refl_mon, tran_mon):
+        return 1 - npa.power(npa.abs(tran_mon), 2) / input_flux
+
+    opt = mpa.OptimizationProblem(
+        simulation=sim,
+        objective_functions=[J1, J2],
+        objective_arguments=obj_list,
+        design_regions=[matgrid_region],
+        frequencies=frequencies,
+    )
+
+    return opt
+
+
+if __name__ == &quot;__main__&quot;:
+    input_flux, input_flux_data = straight_waveguide()
+
+    silicon_mask, silicon_dioxide_mask = border_masks()
+
+    num_weights = NX_DESIGN_GRID * NY_DESIGN_GRID
+
+    # Initial design weights (arbitrary constant value).
+    epigraph_and_weights = np.ones((num_weights,)) * 0.5
+    epigraph_and_weights[silicon_mask.flatten()] = 1.0
+    epigraph_and_weights[silicon_dioxide_mask.flatten()] = 0.0
+
+    # Lower and upper bounds for design weights.
+    weights_lower_bound = np.zeros((num_weights,))
+    weights_lower_bound[silicon_mask.flatten()] = 1.0
+    weights_upper_bound = np.ones((num_weights,))
+    weights_upper_bound[silicon_dioxide_mask.flatten()] = 0.0
+
+    # Insert epigraph variable with arbitrary initial value and bounds into the
+    # design array. The actual value is determined by the objective and
+    # constraint functions below.
+    epigraph_and_weights = np.insert(epigraph_and_weights, 0, 1.2)
+    weights_lower_bound = np.insert(weights_lower_bound, 0, -np.inf)
+    weights_upper_bound = np.insert(weights_upper_bound, 0, +np.inf)
+
+    objfunc_history = []
+    epivar_history = []
+    cur_iter = [0]
+
+    # Threshold beta above which to use subpixel smoothing.
+    sigmoid_bias_threshold = 64
+
+    sigmoid_biases = [8, 16, 32, 64, 128, 256]
+    max_evals = [80, 80, 100, 120, 120, 100]
+    epigraph_tolerance = np.array([1e-4] * 2 * num_wavelengths)  # R, 1-T
+    tolerance_width_and_spacing = np.array([1e-8] * 2)  # line width, line spacing
+
+    for sigmoid_bias, max_eval in zip(sigmoid_biases, max_evals):
+        solver = nlopt.opt(nlopt.LD_CCSAQ, num_weights + 1)
+        solver.set_lower_bounds(weights_lower_bound)
+        solver.set_upper_bounds(weights_upper_bound)
+        solver.set_min_objective(obj_func)
+        solver.set_maxeval(max_eval)
+        solver.set_param(&quot;dual_ftol_rel&quot;, 1e-7)
+        solver.add_inequality_mconstraint(
+            lambda result_, epigraph_and_weights_, grad_: epigraph_constraint(
+                result_,
+                epigraph_and_weights_,
+                grad_,
+                SIGMOID_THRESHOLD_INTRINSIC,
+                sigmoid_bias,
+                False if sigmoid_bias &lt; sigmoid_bias_threshold else True,
+            ),
+            epigraph_tolerance,
+        )
+        solver.set_param(&quot;verbosity&quot;, 1)
+
+        if sigmoid_bias &lt; sigmoid_bias_threshold:
+            use_epsavg = False
+        else:
+            use_epsavg = True
+
+        opt = mode_converter_optimization(
+            input_flux,
+            input_flux_data,
+            True,  # use_damping
+            use_epsavg,
+            sigmoid_bias,
+        )
+
+        # Apply the constraint for the minimum line width and spacing only in
+        # the final epoch to an initial binary design from the previous epoch.
+        if sigmoid_bias == sigmoid_biases[-1]:
+            line_width_and_spacing = np.zeros(2)
+            grad_line_width_and_spacing = np.zeros((2, num_weights + 1))
+            linewidth_constraint_val = line_width_and_spacing_constraint(
+                line_width_and_spacing,
+                epigraph_and_weights,
+                grad_line_width_and_spacing,
+                sigmoid_bias,
+            )
+            solver.add_inequality_mconstraint(
+                lambda result_, epigraph_and_weights_, grad_: line_width_and_spacing_constraint(
+                    result_,
+                    epigraph_and_weights_,
+                    grad_,
+                    sigmoid_bias,
+                ),
+                tolerance_width_and_spacing,
+            )
+
+        # Execute a single forward run before the start of each epoch and
+        # manually set the initial epigraph variable to slightly larger than
+        # the largest value of the objective function over the six wavelengths
+        # and the lengthscale constraint (final epoch only).
+        epigraph_initial = opt(
+            [
+                filter_and_project(
+                    epigraph_and_weights[1:],
+                    SIGMOID_THRESHOLD_INTRINSIC,
+                    sigmoid_bias if sigmoid_bias &lt; sigmoid_bias_threshold else 0,
+                ),
+            ],
+            need_gradient=False,
+        )
+        epigraph_initial = np.concatenate(
+            (epigraph_initial[0][0], epigraph_initial[0][1])
+        )
+
+        epigraph_and_weights[0] = np.max(epigraph_initial)
+        fraction_max_epigraph = 0.05
+        if sigmoid_bias == sigmoid_biases[-1]:
+            epigraph_and_weights[0] = (1 + fraction_max_epigraph) * max(
+                epigraph_and_weights[0], linewidth_constraint_val
+            )
+        print(
+            f&quot;epigraph-calibration:, {sigmoid_bias}, &quot;
+            f&quot;{str_from_list(epigraph_initial)}, {epigraph_and_weights[0]}&quot;
+        )
+
+        epigraph_and_weights[:] = solver.optimize(epigraph_and_weights)
+
+        optimal_design_weights = filter_and_project(
+            epigraph_and_weights[1:],
+            SIGMOID_THRESHOLD_INTRINSIC,
+            sigmoid_bias,
+        ).reshape(NX_DESIGN_GRID, NY_DESIGN_GRID)
+
+        # Save the unmapped weights and a bitmap image of the design weights
+        # at the end of each epoch.
+        fig, ax = plt.subplots()
+        ax.imshow(
+            optimal_design_weights,
+            cmap=&quot;binary&quot;,
+            interpolation=&quot;none&quot;,
+        )
+        ax.set_axis_off()
+        if mp.am_master():
+            fig.savefig(
+                f&quot;optimal_design_beta{sigmoid_bias}.png&quot;,
+                dpi=150,
+                bbox_inches=&quot;tight&quot;,
+            )
+            # Save the final (unmapped) design as a 2D array in CSV format
+            np.savetxt(
+                f&quot;unmapped_design_weights_beta{sigmoid_bias}.csv&quot;,
+                epigraph_and_weights[1:].reshape(NX_DESIGN_GRID, NY_DESIGN_GRID),
+                fmt=&quot;%4.2f&quot;,
+                delimiter=&quot;,&quot;,
+            )
+
+    # Save important optimization parameters and output for post processing.
+    np.savez(
+        &quot;optimal_design.npz&quot;,
+        RESOLUTION_UM=RESOLUTION_UM,
+        DESIGN_WAVELENGTHS_UM=DESIGN_WAVELENGTHS_UM,
+        WAVEGUIDE_UM=WAVEGUIDE_UM,
+        PADDING_UM=PADDING_UM,
+        PML_UM=PML_UM,
+        DESIGN_REGION_UM=DESIGN_REGION_UM,
+        DESIGN_REGION_RESOLUTION_UM=DESIGN_REGION_RESOLUTION_UM,
+        NX_DESIGN_GRID=NX_DESIGN_GRID,
+        NY_DESIGN_GRID=NY_DESIGN_GRID,
+        MIN_LENGTH_UM=MIN_LENGTH_UM,
+        sigmoid_biases=sigmoid_biases,
+        max_eval=max_eval,
+        objfunc_history=objfunc_history,
+        epivar_history=epivar_history,
+        epigraph_variable=epigraph_and_weights[0],
+        unmapped_design_weights=epigraph_and_weights[1:],
+        optimal_design_weights=optimal_design_weights,
+    )
+</code></pre>
+<h2 id="derivatives-with-respect-to-shape-parameters">Derivatives with Respect to Shape Parameters<a class="headerlink" href="#derivatives-with-respect-to-shape-parameters" title="Permanent link">#</a></h2>
+<p>It is also possible to compute the derivative of the Meep outputs with respect to a geometric parameter via a <a href="https://en.wikipedia.org/wiki/Level_set">level-set</a> formulation (an <a href="https://en.wikipedia.org/wiki/Implicit_function">implicit-function</a> representation of a material discontinuity) using the density-based adjoint solver. This is useful for applications involving <a href="https://en.wikipedia.org/wiki/Shape_optimization">shape optimization</a> of explicitly parameterized geometries.</p>
+<p>As a demonstration, we will compute the derivative of the diffraction efficiency of the first transmitted order with <span class="arithmatex">\(\mathcal{S}\)</span> polarization (electric field out of the plane, i.e. <span class="arithmatex">\(E_z\)</span>) of a 1D binary grating with respect to the grating height. The accuracy of the adjoint derivative is validated using a brute-force finite-difference approximation.</p>
+<p>The calculation of the diffraction efficiency involves <a href="../../Python_User_Interface/#mode-decomposition">mode decomposition</a> of planewaves which is described in <a href="../Mode_Decomposition/#transmissive-diffraction-spectrum-for-planewave-at-normal-incidence">Tutorial/Transmissive Diffraction Spectrum for Planewave at Normal Incidence</a>. An important aspect of setting up this simulation is specifying a diffraction order (planewave) in 2D using the <code>meep.adjoint.EigenmodeCoefficient</code> object. This involves three components: (1) the wavevector via the <code>kpoint_func</code> parameter, (2) the polarization via the <code>eig_parity</code> parameter, and (3) the <code>eig_vol</code> parameter must be set to have a <em>length of one pixel in the periodic direction</em>. The latter is necessary for MPB to correctly interpret the wavevector in the Cartesian basis rather than the reciprocal-lattice basis defined by the grating period.</p>
+<p>Calculating the derivative of the diffraction efficiency (<span class="arithmatex">\(F\)</span>) with respect to the grating height (<span class="arithmatex">\(h\)</span>) involves using the chain rule to obtain a product of two derivatives (Jacobians): (1) <span class="arithmatex">\(\partial F / \partial \rho\)</span> and (2) <span class="arithmatex">\(\partial \rho / \partial h\)</span>, where <span class="arithmatex">\(\rho\)</span> are the density weights (2D grid of <span class="arithmatex">\(N_x \times N_y = N\)</span> points) used to represent the binary grating as a level set. (1) is the adjoint gradient computed by Meep. (2) requires the level set to be <em>smoothed</em> to ensure that the derivative <span class="arithmatex">\(\partial \rho / \partial h\)</span> exists. (2) is implemented in Autograd using a custom vector–Jacobian product (vJP) which is used as part of reverse-mode differentiation (backpropagation) to compute <span class="arithmatex">\(\partial F / \partial h\)</span>. An overview of this calculation is shown below.</p>
+<p><img alt="" src="../../images/levelset_gradient_backpropagation.png#center" /></p>
+<p>The derivative <span class="arithmatex">\(\partial \rho / \partial h\)</span> can be approximated by a finite difference using a one-pixel perturbation applied to the grating height; this is computationally convenient because it greatly simplifies the construction of <span class="arithmatex">\(\rho(h)\)</span> as explained below. A finite difference involves two function evaluations of <span class="arithmatex">\(\rho(h)\)</span>, but the cost for this is usually negligible since it involves no Meep simulations. However, in cases when there are a large number of shape parameters and a dense design grid, the cost of the finite differences can be non negligible: <span class="arithmatex">\(M\)</span> shape parameters require <span class="arithmatex">\(M\)</span> finite differences each involving <span class="arithmatex">\(N\)</span> grid points. The construction of <span class="arithmatex">\(\rho(h)\)</span> involves two steps: first, constructing a simple binary image <span class="arithmatex">\(b(h)\)</span> at a high resolution; and second, smoothing <span class="arithmatex">\(b(h)\)</span> into a continuous level-set function <span class="arithmatex">\(\rho(h)\)</span>. This smoothing of the image can be performed using a number of different methods including a <a href="https://en.wikipedia.org/wiki/Signed_distance_function">signed-distance function</a> or convolution filter. In this example, the smoothing is based simply on downsampling the image from a high-resolution grid (10<span class="arithmatex">\(\times\)</span> the resolution of the simulation grid) to the lower-resolution simulation grid using bilinear interpolation, which leads to "gray" pixels at the boundaries between materials in a way that changes continuously with <span class="arithmatex">\(h\)</span>. Only these boundary pixels have nonzero derivatives in the Jacobian <span class="arithmatex">\(\partial\rho/\partial h\)</span> in this case. This calculation is summarized in the schematic below.</p>
+<p><img alt="" src="../../images/levelset_jacobian_matrix.png#center" /></p>
+<p>A schematic of the simulation layout showing the design region containing the grating is shown below. The adjoint gradient <span class="arithmatex">\(\partial F / \partial \rho\)</span> computed by Meep at a resolution of 400 pixels/<span class="arithmatex">\(\mu\)</span>m is shown next to this schematic.</p>
+<p><img alt="" src="../../images/levelset_adjoint_gradient.png#center" /></p>
+<p>The simulation script is in <a href="https://github.com/NanoComp/meep/tree/master/python/examples/adjoint_optimization/binary_grating_levelset.py">python/examples/adjoint_optimization/binary_grating_levelset.py</a>. Running this script at five different resolutions produces the output below for the derivative computed using the finite difference and the adjoint derivative as well as the relative error from these two results.</p>
+<pre><code>RESOLUTION_UM = 50
+deriv:, -0.02535355 (finite difference), -0.01469133 (adjoint), 0.420542 (error)
+
+RESOLUTION_UM = 100
+deriv:, -0.00604817 (finite difference), -0.00473221 (adjoint), 0.217580 (error)
+
+RESOLUTION_UM = 200
+deriv:, -0.00284452 (finite difference), -0.00252470 (adjoint), 0.112432 (error)
+
+RESOLUTION_UM = 400
+deriv:, -0.00140221 (finite difference), -0.00132065 (adjoint), 0.058165 (error)
+
+RESOLUTION_UM = 800
+deriv:, -0.00069606 (finite difference), -0.00067547 (adjoint), 0.029583 (error)
+</code></pre>
+<p>A logarithmic plot of the relative error vs. grid resolution based on these results demonstrates linear convergence. This is expected for fields right on the boundary of a discontinuous interface.</p>
+<p>Currently, we recommend using this procedure only for the <span class="arithmatex">\(\mathcal{S}\)</span> (<span class="arithmatex">\(E_z\)</span>) polarization, since for the <span class="arithmatex">\(\mathcal{P}\)</span> polarization (electric field in the <span class="arithmatex">\(xy\)</span> plane), there appear to be large discretization errors in the adjoint gradient which <a href="https://github.com/NanoComp/meep/pull/2792#issuecomment-2171942477">we are currently investigating</a>. This is why this demonstration only involved the <span class="arithmatex">\(\mathcal{S}\)</span> polarization.</p>
+<p><img alt="" src="../../images/levelset_adjoint_gradient_error_vs_resolution.png#center" /></p>
+<pre><code class="language-py">from enum import Enum
+from typing import Callable, Tuple
+
+from autograd.extend import primitive, defvjp
+from autograd import numpy as npa
+from autograd import tensor_jacobian_product
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+import matplotlib.pyplot as plt
+import meep as mp
+import meep.adjoint as mpa
+import numpy as np
+from scipy.interpolate import RegularGridInterpolator
+
+
+RESOLUTION_UM = 100
+WAVELENGTH_UM = 0.53
+GRATING_PERIOD_UM = 1.28
+GRATING_HEIGHT_UM = 0.52
+GRATING_DUTY_CYCLE = 0.65
+GRATING_HEIGHT_PERTURBATION_UM = 1.0 / RESOLUTION_UM
+DIFFRACTION_ORDER = 1
+SUBSTRATE_UM = 1.5
+PML_UM = 1.0
+AIR_UM = 1.0
+N_GLASS = 1.5
+DESIGN_REGION_RESOLUTION_UM = 10 * RESOLUTION_UM
+
+Polarization = Enum(&quot;Polarization&quot;, &quot;S P&quot;)
+
+design_region_size = mp.Vector3(
+    GRATING_HEIGHT_UM + GRATING_HEIGHT_PERTURBATION_UM, GRATING_PERIOD_UM, 0
+)
+nx_design_grid = int(design_region_size.x * DESIGN_REGION_RESOLUTION_UM) + 1
+ny_design_grid = int(design_region_size.y * DESIGN_REGION_RESOLUTION_UM) + 1
+nx_sim_grid = int(design_region_size.x * RESOLUTION_UM) + 1
+ny_sim_grid = int(design_region_size.y * RESOLUTION_UM) + 1
+
+DEBUG_OUTPUT = False
+
+
+def design_region_to_meshgrid(nx: int, ny: int) -&gt; Tuple[np.ndarray, np.ndarray]:
+    &quot;&quot;&quot;Returns the 2D coordinates of the meshgrid for the design region.
+
+    Args:
+      nx, ny: the number of grid points in the x and y directions, respectively.
+
+    Returns:
+      The coordinates of the x and y grid points (2D arrays) as a 2-tuple.
+    &quot;&quot;&quot;
+
+    xcoord = np.linspace(-0.5 * design_region_size.x, +0.5 * design_region_size.x, nx)
+    ycoord = np.linspace(-0.5 * design_region_size.y, +0.5 * design_region_size.y, ny)
+    xv, yv = np.meshgrid(xcoord, ycoord, indexing=&quot;ij&quot;)
+
+    return xv, yv
+
+
+@primitive
+def levelset_and_smoothing(grating_height_um: float) -&gt; np.ndarray:
+    &quot;&quot;&quot;Returns the density weights for a binary grating as a levelset.
+
+    Args:
+      grating_height_um: the height of the grating.
+
+    Returns:
+      The density weights as a flattened (1D) array.
+    &quot;&quot;&quot;
+
+    xv, yv = design_region_to_meshgrid(nx_design_grid, ny_design_grid)
+    weights = np.where(
+        np.abs(yv) &lt;= 0.5 * GRATING_DUTY_CYCLE * GRATING_PERIOD_UM,
+        np.where(xv &lt;= xv[0][0] + grating_height_um, 1, 0),
+        0,
+    )
+    xcoord = np.linspace(
+        -0.5 * design_region_size.x, +0.5 * design_region_size.x, nx_design_grid
+    )
+    ycoord = np.linspace(
+        -0.5 * design_region_size.y, +0.5 * design_region_size.y, ny_design_grid
+    )
+    interp = RegularGridInterpolator((xcoord, ycoord), weights)
+
+    # Smooth the design weights by downsampling from the design grid
+    # to the simulation grid using bilinear interpolation.
+    sim_grid_xv, sim_grid_yv = design_region_to_meshgrid(nx_sim_grid, ny_sim_grid)
+    smoothed_weights = interp((sim_grid_xv, sim_grid_yv))
+
+    if DEBUG_OUTPUT:
+        fig, ax = plt.subplots()
+        im = ax.imshow(
+            np.transpose(smoothed_weights),
+            cmap=&quot;binary&quot;,
+            interpolation=&quot;none&quot;,
+            aspect=&quot;equal&quot;,
+        )
+        ax.set_title(r&quot;$\rho_{smooth-levelset}(h)$&quot;)
+        divider = make_axes_locatable(ax)
+        cax = divider.append_axes(&quot;right&quot;, size=&quot;5%&quot;, pad=0.05)
+        fig.colorbar(im, cax=cax)
+        if mp.am_master():
+            fig.savefig(&quot;smoothed_levelset.png&quot;, dpi=150, bbox_inches=&quot;tight&quot;)
+
+    return smoothed_weights.flatten()
+
+
+def levelset_and_smoothing_vjp(
+    ans: np.ndarray,
+    grating_height_um: float,
+) -&gt; Callable[[np.ndarray], np.ndarray]:
+    &quot;&quot;&quot;Returns a function for computing the vector-Jacobian product.
+
+       The Jacobian is computed manually using a finite difference.
+
+    Args:
+      ans: the design weights for the smoothed grating (no perturbation).
+      grating_height_um: the height of the grating.
+
+    Returns:
+      An anonymous function for computing the vector-Jacobian product.
+    &quot;&quot;&quot;
+
+    xv, yv = design_region_to_meshgrid(nx_design_grid, ny_design_grid)
+    weights = np.where(
+        np.abs(yv) &lt;= 0.5 * GRATING_DUTY_CYCLE * GRATING_PERIOD_UM,
+        np.where(
+            xv &lt;= xv[0][0] + grating_height_um + GRATING_HEIGHT_PERTURBATION_UM, 1, 0
+        ),
+        0,
+    )
+    xcoord = np.linspace(
+        -0.5 * design_region_size.x, +0.5 * design_region_size.x, nx_design_grid
+    )
+    ycoord = np.linspace(
+        -0.5 * design_region_size.y, +0.5 * design_region_size.y, ny_design_grid
+    )
+    interp = RegularGridInterpolator((xcoord, ycoord), weights)
+
+    # Smooth the design weights by downsampling from the design grid
+    # to the simulation grid using bilinear interpolation.
+    xv_sim_grid, yv_sim_grid = design_region_to_meshgrid(nx_sim_grid, ny_sim_grid)
+    smoothed_weights = interp((xv_sim_grid, yv_sim_grid))
+    smoothed_weights = smoothed_weights.flatten()
+
+    jacobian = (smoothed_weights - ans) / GRATING_HEIGHT_PERTURBATION_UM
+
+    if DEBUG_OUTPUT:
+        fig, ax = plt.subplots()
+        im = ax.imshow(
+            np.transpose(jacobian.reshape(nx_sim_grid, ny_sim_grid)),
+            cmap=&quot;inferno&quot;,
+            interpolation=&quot;none&quot;,
+            aspect=&quot;equal&quot;,
+        )
+        ax.set_title(r&quot;$\partial \rho_{smooth-levelset} / \partial h$&quot;)
+        divider = make_axes_locatable(ax)
+        cax = divider.append_axes(&quot;right&quot;, size=&quot;5%&quot;, pad=0.05)
+        fig.colorbar(im, cax=cax)
+        if mp.am_master():
+            fig.savefig(&quot;gradient_smooth_levelset.png&quot;, dpi=150, bbox_inches=&quot;tight&quot;)
+
+    return lambda g: np.tensordot(g, jacobian, axes=1)
+
+
+def grating_1d(pol: Polarization) -&gt; mpa.OptimizationProblem:
+    &quot;&quot;&quot;Sets up the adjoint optimization of a 1D grating.
+
+    Args:
+      pol: the polarization state (S or P).
+
+    Returns:
+      A meep.adjoint.OptimizationProblem object for the simulation.
+    &quot;&quot;&quot;
+
+    frequency = 1 / WAVELENGTH_UM
+    pml_layers = [mp.PML(direction=mp.X, thickness=PML_UM)]
+    glass = mp.Medium(index=N_GLASS)
+    size_x_um = (
+        PML_UM
+        + SUBSTRATE_UM
+        + GRATING_HEIGHT_UM
+        + GRATING_HEIGHT_PERTURBATION_UM
+        + AIR_UM
+        + PML_UM
+    )
+    size_y_um = GRATING_PERIOD_UM
+    cell_size = mp.Vector3(size_x_um, size_y_um, 0)
+    k_point = mp.Vector3()
+
+    if pol.name == &quot;S&quot;:
+        eig_parity = mp.ODD_Z
+        src_cmpt = mp.Ez
+    else:
+        eig_parity = mp.EVEN_Z
+        src_cmpt = mp.Hz
+
+    src_pt = mp.Vector3(-0.5 * size_x_um + PML_UM, 0, 0)
+    sources = [
+        mp.Source(
+            mp.GaussianSource(frequency, fwidth=0.1 * frequency),
+            component=src_cmpt,
+            center=src_pt,
+            size=mp.Vector3(0, size_y_um, 0),
+        )
+    ]
+
+    matgrid = mp.MaterialGrid(
+        mp.Vector3(nx_sim_grid, ny_sim_grid),
+        mp.air,
+        glass,
+        weights=np.ones((nx_sim_grid, ny_sim_grid)),
+        do_averaging=False,
+    )
+
+    matgrid_region = mpa.DesignRegion(
+        matgrid,
+        volume=mp.Volume(
+            center=mp.Vector3(
+                (-0.5 * size_x_um + PML_UM + SUBSTRATE_UM + 0.5 * design_region_size.x),
+                0,
+                0,
+            ),
+            size=design_region_size,
+        ),
+    )
+
+    geometry = [
+        mp.Block(
+            material=glass,
+            size=mp.Vector3(PML_UM + SUBSTRATE_UM, mp.inf, mp.inf),
+            center=mp.Vector3(-0.5 * size_x_um + 0.5 * (PML_UM + SUBSTRATE_UM), 0, 0),
+        ),
+        mp.Block(
+            material=matgrid,
+            size=matgrid_region.size,
+            center=matgrid_region.center,
+        ),
+    ]
+
+    sim = mp.Simulation(
+        resolution=RESOLUTION_UM,
+        cell_size=cell_size,
+        boundary_layers=pml_layers,
+        k_point=k_point,
+        sources=sources,
+        geometry=geometry,
+    )
+
+    tran_pt = mp.Vector3(0.5 * size_x_um - PML_UM, 0, 0)
+
+    kdiff = mp.Vector3(
+        (frequency**2 - (DIFFRACTION_ORDER / GRATING_PERIOD_UM) ** 2) ** 0.5,
+        DIFFRACTION_ORDER / GRATING_PERIOD_UM,
+        0,
+    )
+
+    obj_args = [
+        mpa.EigenmodeCoefficient(
+            sim,
+            mp.Volume(
+                center=tran_pt,
+                size=mp.Vector3(0, size_y_um, 0),
+            ),
+            mode=1,
+            kpoint_func=lambda *not_used: kdiff,
+            eig_parity=eig_parity,
+            eig_vol=mp.Volume(center=tran_pt, size=mp.Vector3(0, 1 / RESOLUTION_UM, 0)),
+        ),
+    ]
+
+    def obj_func(mode_coeff):
+        return npa.abs(mode_coeff) ** 2
+
+    opt = mpa.OptimizationProblem(
+        simulation=sim,
+        objective_functions=obj_func,
+        objective_arguments=obj_args,
+        design_regions=[matgrid_region],
+        frequencies=[frequency],
+    )
+
+    return opt
+
+
+if __name__ == &quot;__main__&quot;:
+    # Only the S polarization is supported (for now).
+    opt = grating_1d(Polarization.S)
+
+    smoothed_design_weights = levelset_and_smoothing(GRATING_HEIGHT_UM)
+
+    obj_val_unperturbed, grad_unperturbed = opt(
+        [smoothed_design_weights], need_gradient=True
+    )
+
+    if DEBUG_OUTPUT:
+        fig, ax = plt.subplots()
+        im = ax.imshow(
+            np.transpose(grad_unperturbed.reshape(nx_sim_grid, ny_sim_grid)),
+            cmap=&quot;inferno&quot;,
+            interpolation=&quot;none&quot;,
+            aspect=&quot;equal&quot;,
+        )
+        ax.set_title(r&quot;$\partial F / \partial \rho_{smooth-levelset}$&quot;)
+        divider = make_axes_locatable(ax)
+        cax = divider.append_axes(&quot;right&quot;, size=&quot;5%&quot;, pad=0.05)
+        fig.colorbar(im, cax=cax)
+        if mp.am_master():
+            fig.savefig(
+                &quot;gradient_wrt_smoothed_design_weights.png&quot;, dpi=150, bbox_inches=&quot;tight&quot;
+            )
+
+        fig, ax = plt.subplots()
+        opt.plot2D(init_opt=False, ax=ax)
+        if mp.am_master():
+            fig.savefig(&quot;sim_layout.png&quot;, dpi=150, bbox_inches=&quot;tight&quot;)
+
+    defvjp(levelset_and_smoothing, levelset_and_smoothing_vjp)
+    grad_backprop = tensor_jacobian_product(levelset_and_smoothing, 0)(
+        GRATING_HEIGHT_UM,
+        grad_unperturbed,
+    )
+
+    perturbed_design_weights = levelset_and_smoothing(
+        GRATING_HEIGHT_UM + GRATING_HEIGHT_PERTURBATION_UM
+    )
+    perturbed_design_weights = perturbed_design_weights.flatten()
+
+    obj_val_perturbed, _ = opt([perturbed_design_weights], need_gradient=False)
+
+    adj_directional_deriv = GRATING_HEIGHT_PERTURBATION_UM * grad_backprop
+    fnd_directional_deriv = obj_val_perturbed[0] - obj_val_unperturbed[0]
+    rel_err = abs(
+        (fnd_directional_deriv - adj_directional_deriv) / fnd_directional_deriv
+    )
+    print(
+        f&quot;deriv:, {fnd_directional_deriv:.8f} (finite difference), &quot;
+        f&quot;{adj_directional_deriv:.8f} (adjoint), {rel_err:.6f} (error)&quot;
+    )
+</code></pre>
+<h2 id="shape-optimization-of-a-multilayer-stack">Shape Optimization of a Multilayer Stack<a class="headerlink" href="#shape-optimization-of-a-multilayer-stack" title="Permanent link">#</a></h2>
+<p>We extend the demonstration of the shape derivative from the previous tutorial to perform shape optimization of a multilayer stack over a broad bandwidth. The 1D design problem is shown in the schematic below and involves finding the layer thicknesses for a fixed number of layers (9) which minimize the integrated field intensity <span class="arithmatex">\(\int |E_x|^2\)</span> using a <code>FourierFields</code> objective function. (This is equivalent to minimizing absorption if <span class="arithmatex">\(\varepsilon\)</span> had a small imaginary part, and is related but not precisely equivalent to minimizing transmission or maximizing reflection.)  In particular, we minimize the worst case (largest) of the intensities at two wavelengths: <span class="arithmatex">\(\lambda_1\)</span> = 0.95 μm and <span class="arithmatex">\(\lambda_2\)</span> = 1.05 μm, to roughly emulate a broadband problem.</p>
+<p>The stack consists of two materials of alternating refractive index <span class="arithmatex">\(n_A\)</span> = 1.3 and <span class="arithmatex">\(n_B\)</span> = 1.0. The layers are arranged as <span class="arithmatex">\(n_A\)</span>, <span class="arithmatex">\(n_B\)</span>, <span class="arithmatex">\(n_A\)</span>, <span class="arithmatex">\(n_B\)</span>, ..., <span class="arithmatex">\(n_A\)</span>. The semi-infinite regions to the left and right of the stack are vacuum.</p>
+<p><img alt="" src="../../images/multilayer_stack_shape_opt.png#center" /></p>
+<p>A reference design to compare our results against is a <a href="https://en.wikipedia.org/wiki/Distributed_Bragg_reflector">quarter-wavelength stack</a>. The mean wavelength of <span class="arithmatex">\(\lambda_1\)</span> and <span class="arithmatex">\(\lambda_2\)</span> is <span class="arithmatex">\(\lambda\)</span> = 1.0 μm for which the quarter-wavelength layer thicknesses are <span class="arithmatex">\(\lambda / (4 n_A)\)</span> = 0.19 μm and <span class="arithmatex">\(\lambda / (4 n_B)\)</span> = 0.25 μm. These values are used to specify upper and lower bounds for the layer thicknesses. This is important given the non-convex nature of this particular design problem. The transmittance for <span class="arithmatex">\(\lambda_1\)</span>, <span class="arithmatex">\(\lambda_2\)</span>, and <span class="arithmatex">\(\lambda\)</span> = 1.0 μm for the quarter-wavelength stack at <span class="arithmatex">\(\lambda\)</span> = 1.0 μm are 0.2925, 0.2865, and 0.2522, respectively. Note that this relatively large transmission is due to the index contrast of 1.3. For comparison, the transmittance for a quarter-wavelength stack at <span class="arithmatex">\(\lambda\)</span> = 1.0 μm with nine layers for a larger index contrast of 3.5 is 1e-5.</p>
+<p>The worst-case optimization is implemented using the <a href="https://nlopt.readthedocs.io/en/latest/NLopt_Introduction/#equivalent-formulations-of-optimization-problems">epigraph formulation</a> and the Conservative Convex Separable Approximation (CCSA) algorithm. The optimization is run ten times with random initial designs from which the local optimum with the smallest objective value is chosen. For the run involving the best design, a plot of the objective function vs. iteration number for the two wavelengths is shown below. Also included in this plot is the epigraph variable. These results demonstrate that the performance of the stack is limited by that of the shorter wavelength <span class="arithmatex">\(\lambda_1\)</span>, so the <span class="arithmatex">\(\lambda_2\)</span> performance does not directly affect the result. We observed this trend for various local optima. The optimizer converges to the local optimum after 13 iterations. The nine layer thicknesses of this design are (in μm): 0.1822, 0.2369, 0.1822, 0.2369, 0.1822, 0.2369, 0.1910, 0.2504, 0.1931. Since these are 1D simulations, the runtime for each design iteration is generally fast (about ten seconds using a single core of an Intel Xeon i7-7700K CPU @ 4.20GHz).</p>
+<p>In some cases (not shown), the optimizer may take some steps that make things <em>worse</em> during the early iterations. This is a common phenomenon in many algorithms — initially, the optimizer takes steps that are too large and then has to backtrack. After a few iterations, the algorithm has more information about a "good" step size.</p>
+<p><img alt="" src="../../images/multilayer_opt_obj_func_history.png#center" /></p>
+<p>Finally, a plot of <span class="arithmatex">\(|E_x|^2\)</span> in the stack (design region) normalized by the fields from the quarter-wavelength stack at <span class="arithmatex">\(\lambda\)</span> = 1.0 μm is shown below. The plot shows that while the DFT fields for each of the two wavelengths are decaying through the stack, the transmittance values are different: T(<span class="arithmatex">\(\lambda_1\)</span> = 0.95 μm) = 0.2574 vs. T(<span class="arithmatex">\(\lambda_2\)</span> = 1.05 μm) = 0.3734. Note that the magnitude of <span class="arithmatex">\(|E_x|^2\)</span> at the right edge of the stack is larger for <span class="arithmatex">\(\lambda_2\)</span> = 1.05 μm than <span class="arithmatex">\(\lambda_1\)</span> = 0.95 μm. This is consistent with the transmittance being larger for <span class="arithmatex">\(\lambda_2\)</span> = 1.05 than for <span class="arithmatex">\(\lambda_1\)</span> = 0.95 μm.</p>
+<p><img alt="" src="../../images/broadband_field_decay_in_multilayer_stack.png#center" /></p>
+<p>The script is <a href="https://github.com/NanoComp/meep/tree/master/python/examples/adjoint_optimization/multilayer_opt.py">python/examples/adjoint_optimization/multilayer_opt.py</a>.</p>
+<pre><code class="language-py">import copy
+from typing import Callable, List, Tuple
+
+from autograd.extend import primitive, defvjp
+from autograd import numpy as npa
+from autograd import tensor_jacobian_product
+import meep as mp
+import meep.adjoint as mpa
+import nlopt
+import numpy as np
+
+
+RESOLUTION_UM = 800
+AIR_UM = 1.0
+PML_UM = 1.0
+NUM_LAYERS = 9
+N_LAYER = (1.0, 1.3)
+LAYER_PERTURBATION_UM = 1.0 / RESOLUTION_UM
+DESIGN_WAVELENGTHS_UM = (0.95, 1.05)
+MAX_LAYER_UM = max(DESIGN_WAVELENGTHS_UM) / (4 * min(N_LAYER))
+DESIGN_REGION_RESOLUTION_UM = 10 * RESOLUTION_UM
+DESIGN_REGION_UM = mp.Vector3(0, 0, NUM_LAYERS * MAX_LAYER_UM)
+NZ_DESIGN_GRID = int(DESIGN_REGION_UM.z * DESIGN_REGION_RESOLUTION_UM) + 1
+NZ_SIM_GRID = int(DESIGN_REGION_UM.z * RESOLUTION_UM) + 1
+MAX_OPT_ITERATIONS = 30
+NUM_OPT_REPEAT = 10
+
+num_wavelengths = len(DESIGN_WAVELENGTHS_UM)
+frequencies = [1 / wavelength_um for wavelength_um in DESIGN_WAVELENGTHS_UM]
+
+
+def str_from_list(list_: List[float]) -&gt; str:
+    return &quot;[&quot; + &quot;, &quot;.join(f&quot;{val:.4f}&quot; for val in list_) + &quot;]&quot;
+
+
+def design_region_to_grid(nz: int) -&gt; np.ndarray:
+    &quot;&quot;&quot;Returns the coordinates of the 1D grid for the design region.
+
+    Args:
+      nz: number of grid points.
+
+    Returns:
+      The 1D coordinates of the grid points.
+    &quot;&quot;&quot;
+    z_grid = np.linspace(
+        -0.5 * DESIGN_REGION_UM.z,
+        0.5 * DESIGN_REGION_UM.z,
+        nz
+    )
+
+    return z_grid
+
+
+@primitive
+def levelset_and_smoothing(layer_thickness_um: np.ndarray) -&gt; np.ndarray:
+    &quot;&quot;&quot;Returns the density weights for a multilayer stack as a levelset.
+
+    Args:
+      layer_thickness_um: thickness of each layer in the stack.
+
+    Returns:
+      The density weights as a flattened (1D) array.
+    &quot;&quot;&quot;
+    air_padding_um = 0.5 * (DESIGN_REGION_UM.z - np.sum(layer_thickness_um))
+
+    weights = np.zeros(NZ_DESIGN_GRID)
+
+    # Air padding at left edge
+    z_start = 0
+    z_end = int(air_padding_um * DESIGN_REGION_RESOLUTION_UM)
+    weights[z_start:z_end] = 0
+
+    z_start = z_end
+    for j in range(NUM_LAYERS):
+        z_end = z_start + int(layer_thickness_um[j] * DESIGN_REGION_RESOLUTION_UM)
+        weights[z_start:z_end] = 1 if (j % 2 == 0) else 0
+        z_start = z_end
+
+    # Air padding at right edge
+    z_end = z_start + int(air_padding_um * DESIGN_REGION_RESOLUTION_UM)
+    weights[z_start:z_end] = 0
+
+    # Smooth the design weights by downsampling from the design grid
+    # to the simulation grid using bilinear interpolation.
+    z_sim_grid = design_region_to_grid(NZ_SIM_GRID)
+    z_design_grid = design_region_to_grid(NZ_DESIGN_GRID)
+    smoothed_weights = np.interp(z_sim_grid, z_design_grid, weights)
+
+    return smoothed_weights.flatten()
+
+
+def levelset_and_smoothing_vjp(
+        ans: np.ndarray,
+        layer_thickness_um: np.ndarray
+) -&gt; Callable[[np.ndarray], np.ndarray]:
+    &quot;&quot;&quot;Returns a function for computing the vector-Jacobian product.&quot;&quot;&quot;
+
+    total_layer_thickness_um = np.sum(layer_thickness_um)
+    air_padding_um = 0.5 * (DESIGN_REGION_UM.z - total_layer_thickness_um)
+
+    jacobian = np.zeros((NZ_SIM_GRID, NUM_LAYERS))
+
+    z_design_grid = design_region_to_grid(NZ_DESIGN_GRID)
+    z_sim_grid = design_region_to_grid(NZ_SIM_GRID)
+
+    for i in range(NUM_LAYERS):
+        weights = np.zeros(NZ_DESIGN_GRID)
+
+        # Air padding at left edge
+        z_start = 0
+        z_end = int(air_padding_um * DESIGN_REGION_RESOLUTION_UM)
+        weights[z_start:z_end] = 0
+
+        z_start = z_end
+        for j in range(NUM_LAYERS):
+            layer_um = layer_thickness_um[j]
+            if j == i:
+                layer_um += LAYER_PERTURBATION_UM
+            z_end = z_start + int(layer_um * DESIGN_REGION_RESOLUTION_UM)
+            weights[z_start:z_end] = 1 if (j % 2 == 0) else 0
+            z_start = z_end
+
+        # Air padding at right edge
+        z_end = z_start + int(air_padding_um * DESIGN_REGION_RESOLUTION_UM)
+        weights[z_start:z_end] = 0
+
+        # Smooth the design weights by downsampling from the design grid
+        # to the simulation grid using bilinear interpolation.
+        smoothed_weights = np.interp(z_sim_grid, z_design_grid, weights)
+
+        jacobian[:, i] = (smoothed_weights - ans) / LAYER_PERTURBATION_UM
+
+    return lambda g: np.tensordot(g, jacobian, axes=1)
+
+
+def multilayer_stack() -&gt; mpa.OptimizationProblem:
+    &quot;&quot;&quot;Sets up the adjoint optimization of a multilayer stack.
+
+    Returns:
+      A `meep.adjoint.Optimization` callable object.
+    &quot;&quot;&quot;
+    pml_layers = [mp.PML(thickness=PML_UM)]
+
+    size_z_um = PML_UM + AIR_UM + DESIGN_REGION_UM.z + AIR_UM + PML_UM
+    cell_size = mp.Vector3(0, 0, size_z_um)
+
+    frequency_center = np.mean(frequencies)
+
+    # Set source bandwidth to be larger than the range of design wavelengths.
+    frequency_width = 1.2 * (np.max(frequencies) - np.min(frequencies))
+
+    src_cmpt = mp.Ex
+    src_pt = mp.Vector3(0, 0, -0.5 * size_z_um + PML_UM)
+    sources = [
+        mp.Source(
+            mp.GaussianSource(frequency_center, fwidth=frequency_width),
+            component=src_cmpt,
+            center=src_pt,
+        )
+    ]
+
+    mat_1 = mp.Medium(index=N_LAYER[0])
+    mat_2 = mp.Medium(index=N_LAYER[1])
+
+    matgrid = mp.MaterialGrid(
+        mp.Vector3(0, 0, NZ_SIM_GRID),
+        mat_1,
+        mat_2,
+        weights=np.ones(NZ_SIM_GRID),
+        do_averaging=False
+    )
+
+    matgrid_region = mpa.DesignRegion(
+        matgrid,
+        volume=mp.Volume(
+            center=mp.Vector3(),
+            size=DESIGN_REGION_UM
+        ),
+    )
+
+    geometry = [
+        mp.Block(
+            material=matgrid,
+            size=matgrid_region.size,
+            center=matgrid_region.center
+        )
+    ]
+
+    sim = mp.Simulation(
+        resolution=RESOLUTION_UM,
+        cell_size=cell_size,
+        dimensions=1,
+        boundary_layers=pml_layers,
+        sources=sources,
+        geometry=geometry
+    )
+
+    obj_args = [
+        mpa.FourierFields(
+            sim,
+            volume=matgrid_region.volume,
+            component=mp.Ex,
+            yee_grid=True
+        )
+    ]
+
+    def obj_func(dft_ex: np.ndarray) -&gt; Tuple[float]:
+        &quot;&quot;&quot;Objective function for the optimization.
+
+        Args:
+          dft_ex: the discrete Fourier-transformed Ex fields as a 2D array of
+            dimension (num_wavelengths, NX_DESIGN_GRID * NY_DESIGN_GRID).
+
+        Returns:
+          A tuple of the log of the integrals of Ex in the stack for each
+          wavelength.
+        &quot;&quot;&quot;
+        return npa.log(npa.sum(npa.absolute(dft_ex)**2, axis=1))
+
+    opt = mpa.OptimizationProblem(
+        simulation=sim,
+        objective_functions=obj_func,
+        objective_arguments=obj_args,
+        design_regions=[matgrid_region],
+        frequencies=frequencies
+    )
+
+    return opt
+
+
+def obj_func(
+        epigraph_and_layer_thickness_um: np.ndarray,
+        grad: np.ndarray
+) -&gt; float:
+    &quot;&quot;&quot;Objective function for the epigraph formulation.
+
+    Args:
+      epigraph_and_layer_thickness_um: 1D array containing epigraph variable
+        (first element) and design weights (remaining elements).
+      grad: the gradient as a flattened (1D) array, modified in place.
+
+    Returns:
+      The scalar epigraph variable.
+    &quot;&quot;&quot;
+    epigraph = epigraph_and_layer_thickness_um[0]
+
+    if grad.size &gt; 0:
+        grad[0] = 1
+        grad[1:] = 0
+
+    return epigraph
+
+
+def epigraph_constraint(
+        result: float,
+        epigraph_and_layer_thickness_um: np.ndarray,
+        gradient: np.ndarray
+) -&gt; None:
+    &quot;&quot;&quot;Constraint function for the epigraph formulation.
+
+    Args:
+      result: evaluation of the constraint function, modified in place.
+      epigraph_and_layer_thickness_um: 1D array containing the epigraph variable
+        (first element) and the layer thicknesses (remaining elements).
+      gradient: the Jacobian matrix with dimensions (num_wavelengths,
+        1 + NUM_LAYERS), modified in place.
+    &quot;&quot;&quot;
+    epigraph = epigraph_and_layer_thickness_um[0]
+    layer_thickness_um = epigraph_and_layer_thickness_um[1:]
+    design_weights = levelset_and_smoothing(layer_thickness_um)
+
+    obj_val, grad = opt([design_weights])
+
+    # Backpropagate the gradients through the levelset construction function.
+    grad_backpropagate = np.zeros((NUM_LAYERS, num_wavelengths))
+    defvjp(levelset_and_smoothing, levelset_and_smoothing_vjp)
+    for k in range(num_wavelengths):
+        grad_backpropagate[:, k] = tensor_jacobian_product(levelset_and_smoothing, 0)(
+            layer_thickness_um,
+            grad[:, k]
+        )
+
+    # TODO (oskooi): determine why factor of 0.5 is necessary for correctness.
+    grad_backpropagate = 0.5 * grad_backpropagate
+
+    if gradient.size &gt; 0:
+        gradient[:, 0] = -1  # gradient w.r.t. epigraph variable
+        gradient[:, 1:] = grad_backpropagate.T
+
+    result[:] = obj_val - epigraph
+
+    print(
+        f&quot;iteration:, {current_iteration[0]:2d}, {str_from_list(result)}, &quot;
+        f&quot;{str_from_list(layer_thickness_um)}&quot;
+    )
+
+    obj_func_history.append(obj_val)
+    epigraph_variable_history.append(epigraph)
+    current_iteration[0] += 1
+
+
+if __name__ == &quot;__main__&quot;:
+    opt = multilayer_stack()
+
+    # Specify lower and upper bounds for layer thicknesses based on layer
+    # thicknesses for a quarter-wavelength stack at the mean frequency.
+    mean_wavelength_um = 1 / np.mean(1 / np.array(DESIGN_WAVELENGTHS_UM))
+    mean_layer_thickness_um = np.zeros(2)
+    mean_layer_thickness_um[0] = mean_wavelength_um / (4 * N_LAYER[0])
+    mean_layer_thickness_um[1] = mean_wavelength_um / (4 * N_LAYER[1])
+    layer_thickness_um_lower_bound = np.zeros(NUM_LAYERS)
+    layer_thickness_um_upper_bound = np.zeros(NUM_LAYERS)
+    fraction_thickness = 0.08
+    layer_thickness_um_lower_bound[0::2] = ((1 - fraction_thickness) *
+                                            mean_layer_thickness_um[1])
+    layer_thickness_um_upper_bound[0::2] = ((1 + fraction_thickness) *
+                                            mean_layer_thickness_um[1])
+    layer_thickness_um_lower_bound[1::2] = ((1 - fraction_thickness) *
+                                            mean_layer_thickness_um[0])
+    layer_thickness_um_upper_bound[1::2] = ((1 + fraction_thickness) *
+                                            mean_layer_thickness_um[0])
+
+    # Insert bounds for the epigraph variable.
+    epigraph_and_layer_thickness_um_lower_bound = np.insert(
+        layer_thickness_um_lower_bound, 0, 0
+    )
+    epigraph_and_layer_thickness_um_upper_bound = np.insert(
+        layer_thickness_um_upper_bound, 0, np.inf
+    )
+    epigraph_tolerance = [0.1] * num_wavelengths
+
+    min_obj_val = np.inf
+    min_epigraph_and_layer_thickness_um = np.zeros(NUM_LAYERS + 1)
+    obj_func_history = []
+    epigraph_variable_history = []
+
+    for j in range(NUM_OPT_REPEAT):
+        rng = np.random.RandomState()
+        layer_thickness_um = (
+            layer_thickness_um_lower_bound + rng.rand(NUM_LAYERS) *
+            (layer_thickness_um_upper_bound - layer_thickness_um_lower_bound)
+        )
+
+        # Execute a single forward run before the start of the optimization and
+        # set the initial epigraph variable to slightly larger than the
+        # largest value of the objective function over the wavelengths.
+        design_weights = levelset_and_smoothing(layer_thickness_um)
+        epigraph, _ = opt(
+            [design_weights],
+            need_gradient=False
+        )
+        fraction_max_epigraph = 0.2
+        epigraph_initial = (1 + fraction_max_epigraph) * np.amax(epigraph)
+        epigraph_and_layer_thickness_um_upper_bound[0] = epigraph_initial
+
+        epigraph_and_layer_thickness_um = np.concatenate(
+            (
+                [epigraph_initial],
+                layer_thickness_um
+            )
+        )
+
+        solver = nlopt.opt(nlopt.LD_CCSAQ, NUM_LAYERS + 1)
+        solver.set_lower_bounds(epigraph_and_layer_thickness_um_lower_bound)
+        solver.set_upper_bounds(epigraph_and_layer_thickness_um_upper_bound)
+        solver.set_min_objective(obj_func)
+        solver.set_maxeval(MAX_OPT_ITERATIONS)
+        solver.add_inequality_mconstraint(
+            epigraph_constraint,
+            epigraph_tolerance
+        )
+        solver.set_ftol_rel(0.02)
+
+        obj_func_history[:] = []
+        epigraph_variable_history[:] = []
+        current_iteration = [0]
+
+        epigraph_and_layer_thickness_um = solver.optimize(
+            epigraph_and_layer_thickness_um
+        )
+        optimal_obj_val = solver.last_optimum_value()
+        return_code = solver.last_optimize_result()
+
+        print(f&quot;optimal_obj_val:, {j:2d}, {optimal_obj_val}, {return_code}&quot;)
+        print(
+            f&quot;optimal_layer_thickness_um:, {j:2d}, &quot;
+            f&quot;{str_from_list(epigraph_and_layer_thickness_um[1:])}&quot;
+        )
+
+        if optimal_obj_val &lt; min_obj_val:
+            min_obj_val = optimal_obj_val
+            min_epigraph_and_layer_thickness_um = epigraph_and_layer_thickness_um
+            min_obj_func_history = copy.deepcopy(obj_func_history)
+            min_epigraph_variable_history = copy.deepcopy(epigraph_variable_history)
+
+
+    # Save important optimization parameters and output for post processing.
+    np.savez(
+        &quot;optimal_design.npz&quot;,
+        RESOLUTION_UM=RESOLUTION_UM,
+        AIR_UM=AIR_UM,
+        PML_UM=PML_UM,
+        NUM_LAYERS=NUM_LAYERS,
+        N_LAYER=N_LAYER,
+        DESIGN_WAVELENGTHS_UM=DESIGN_WAVELENGTHS_UM,
+        MAX_LAYER_UM=MAX_LAYER_UM,
+        DESIGN_REGION_UM=DESIGN_REGION_UM,
+        DESIGN_REGION_RESOLUTION_UM=DESIGN_REGION_RESOLUTION_UM,
+        NZ_DESIGN_GRID=NZ_DESIGN_GRID,
+        NZ_SIM_GRID=NZ_SIM_GRID,
+        MAX_OPT_ITERATIONS=MAX_OPT_ITERATIONS,
+        epigraph_and_layer_thickness_um_lower_bound=epigraph_and_layer_thickness_um_lower_bound,
+        epigraph_and_layer_thickness_um_upper_bound=epigraph_and_layer_thickness_um_upper_bound,
+        obj_func_history=min_obj_func_history,
+        epigraph_variable_history=min_epigraph_variable_history,
+        epigraph_variable=min_epigraph_and_layer_thickness_um[0],
+        layer_thickness_um=min_epigraph_and_layer_thickness_um[1:],
+        epigraph_tolerance=epigraph_tolerance,
+        optimal_obj_val=min_obj_val
+    )
+</code></pre>
+<h2 id="compact-notebook-tutorials-of-basic-features">Compact Notebook Tutorials of Basic Features<a class="headerlink" href="#compact-notebook-tutorials-of-basic-features" title="Permanent link">#</a></h2>
+<p>As an alternative to the first tutorial which combined multiple
+features into a single demonstration, there are six notebook tutorials
+that demonstrate various basic features of the adjoint solver.</p>
+<ul>
+<li>
+<p><a href="https://nbviewer.jupyter.org/github/NanoComp/meep/blob/master/python/examples/adjoint_optimization/01-Introduction.ipynb">Introduction</a></p>
+</li>
+<li>
+<p><a href="https://nbviewer.jupyter.org/github/NanoComp/meep/blob/master/python/examples/adjoint_optimization/02-Waveguide_Bend.ipynb">Waveguide Bend Optimization</a></p>
+</li>
+<li>
+<p><a href="https://nbviewer.jupyter.org/github/NanoComp/meep/blob/master/python/examples/adjoint_optimization/03-Filtered_Waveguide_Bend.ipynb">Filtering and Thresholding Design Parameters and Broadband Objective Functions</a></p>
+</li>
+<li>
+<p><a href="https://nbviewer.jupyter.org/github/NanoComp/meep/blob/master/python/examples/adjoint_optimization/04-Splitter.ipynb">Design of a Symmetric Broadband Splitter</a></p>
+</li>
+<li>
+<p><a href="https://nbviewer.jupyter.org/github/NanoComp/meep/blob/master/python/examples/adjoint_optimization/05-Near2Far.ipynb">Metalens Optimization with Near2Far</a></p>
+</li>
+<li>
+<p><a href="https://nbviewer.jupyter.org/github/NanoComp/meep/blob/master/python/examples/adjoint_optimization/06-Near2Far-Epigraph.ipynb">Near2Far Optimization with Epigraph Formulation</a></p>
+</li>
+<li>
+<p><a href="https://nbviewer.jupyter.org/github/NanoComp/meep/blob/master/python/examples/adjoint_optimization/07-Connectivity-Constraint.ipynb">Connectivity Constraint</a></p>
+</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../GDS_Import/" class="btn btn-neutral float-left" title="Tutorial/GDS Import"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../Scheme_User_Interface/" class="btn btn-neutral float-right" title="User Interface">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../javascripts/mathjax.js"></script>
+      <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

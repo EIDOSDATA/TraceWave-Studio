@@ -1,0 +1,61 @@
+{
+  "status": "PROPOSED_PROGRAM_SCHEMA_NOT_PUBLISHED_REFERENCE_DIMENSIONS",
+  "common_inputs": [
+    "frequency_bands_hz",
+    "substrate_stackup",
+    "frequency_dependent_epsilon_complex",
+    "copper_thickness_and_roughness",
+    "board_outline_xy",
+    "ground_polygons_per_layer",
+    "feed_port_and_reference_plane",
+    "matching_components",
+    "soldermask",
+    "enclosure_and_battery_geometry",
+    "manufacturing_tolerances"
+  ],
+  "open_arc_monopole_inputs": [
+    "board_radius_mm",
+    "trace_centerline_radius_mm",
+    "start_angle_deg",
+    "sweep_angle_deg",
+    "trace_width_mm",
+    "open_tip_geometry",
+    "feed_transition_geometry",
+    "ground_cutback_polygon",
+    "ground_tip_clearance_mm"
+  ],
+  "ifa_inputs": [
+    "radiating_branch_segments",
+    "shorting_branch_geometry",
+    "feed_branch_geometry",
+    "feed_short_spacing",
+    "ground_edge",
+    "layer_connections"
+  ],
+  "nfc_inputs": [
+    "outer_width_mm",
+    "outer_length_mm",
+    "turn_count",
+    "track_width_mm",
+    "track_gap_mm",
+    "corner_radius_mm",
+    "layer_count",
+    "interlayer_bridge_and_overlap_area",
+    "target_inductance_h",
+    "reader_or_tag_chip_model"
+  ],
+  "uwb_extra_outputs": [
+    "complex_S11_over_band",
+    "efficiency_over_band",
+    "realized_gain_3d",
+    "group_delay_vs_orientation",
+    "impulse_response",
+    "fidelity_factor"
+  ],
+  "blocked_shortcuts": [
+    "Inferring Nordic beacon radius from image",
+    "Treating a closed ring/disc as an open arc",
+    "Selecting contradictory source values without resolving conditions",
+    "Claiming matching alone verifies radiation efficiency"
+  ]
+}

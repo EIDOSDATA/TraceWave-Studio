@@ -1,0 +1,41 @@
+{
+  "checks": "Source file opens, SHA256, unique geometry IDs, numeric parameter type, unit/symbol presence, physical page bounds; selected figure labels visually checked.",
+  "errors": [],
+  "source_performance_reproduced": false,
+  "summary": {
+    "geometry_records": 31,
+    "numeric_parameter_rows": 348,
+    "distinct_sources": 23,
+    "status_counts": {
+      "analytical_starting_point": 1,
+      "dimensioned_reference": 12,
+      "source_conflict_requires_review": 4,
+      "partial_numeric_dimensions": 10,
+      "published_tool_example": 1,
+      "topology_only_no_dimensioned_design": 1,
+      "requirements_only_no_geometry": 1,
+      "partial_cad_geometry_extracted": 1
+    },
+    "machine_ready_cad_layouts": 0,
+    "independently_validated_antennas": 0
+  },
+  "review_required_geometry_ids": [
+    "G004",
+    "G005",
+    "G020",
+    "G021"
+  ],
+  "additional_cad_pending": [
+    {
+      "source_id": "NORDIC_PCA20006_CAD",
+      "geometry_id": "G031",
+      "status": "partial_cad_geometry_extracted",
+      "reason": "Arc/stub/selected copper-edge and body-circle geometry extracted; full net/ground/stackup reconstruction remains."
+    },
+    {
+      "source_id": "QORVO_WB001_002_003_CAD",
+      "status": "cad_acquired_geometry_reconstruction_pending",
+      "reason": "CAD packages exist but dimensions/topology not reconstructed in this extraction pass."
+    }
+  ]
+}

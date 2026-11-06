@@ -1,0 +1,1482 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="readthedocs-addons-api-version" content="1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Networks &mdash; scikit-rf Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <script src="../_static/js/versions.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Connecting Networks" href="Connecting_Networks.html" />
+    <link rel="prev" title="Configuring frequency units" href="Frequency_units.html" />
+  <script type="text/javascript">
+	  var _gaq = _gaq || [];
+	    _gaq.push(['_setAccount', 'UA-29068876-1']);
+		  _gaq.push(['_trackPageview']);
+
+		    (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+					    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+						  })();
+
+  </script>
+
+<script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="scikit-rf" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/tutorials/Networks.html" /><meta name="readthedocs-http-status" content="200" /></head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            scikit-rf
+          </a>
+              <div class="switch-menus">
+                <div class="version-switch"></div>
+                <div class="language-switch"></div>
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Frequency_units.html">Configuring frequency units</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Networks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Creating-Networks">Creating Networks</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Creating-Network-from-Touchstone-file">Creating Network from Touchstone file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Creating-Network-from-s-parameters">Creating Network from s-parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#From-z-parameters">From z-parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#From-other-network-parameters:-Y,-ABCD,-H,-T">From other network parameters: Y, ABCD, H, T</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Basic-Properties">Basic Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Slicing">Slicing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Plotting">Plotting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Arithmetic-Operations">Arithmetic Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Comparison-of-Network">Comparison of Network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Cascading-and-De-embedding">Cascading and De-embedding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Connecting-Multi-ports">Connecting Multi-ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Port-names">Port names</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Connecting-by-name">Connecting by name</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Names-follow-the-ports">Names follow the ports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Mixed-mode">Mixed mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Duplicate-names">Duplicate names</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Interpolation-and-Concatenation">Interpolation and Concatenation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Reading-and-Writing">Reading and Writing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Other-Parameters">Other Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#References">References</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Connecting_Networks.html">Connecting Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Plotting.html">Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NetworkSet.html">NetworkSet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Circuit.html">Circuits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Calibration.html">Calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Deembedding.html">De-embedding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Q-Factor.html">Quality Factors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Media.html">Media</a></li>
+<li class="toctree-l2"><a class="reference internal" href="VectorFitting.html">Vector Fitting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="VectorFittingParametric.html">Parametric Vector Fitting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="VirtualInstruments.html">Virtual Instruments</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing to scikit-rf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citations_ack/acknowledging.html">Acknowledging or Citing scikit-rf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citations_ack/citations.html">Publications using or citing scikit-rf</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">scikit-rf</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Tutorials</a></li>
+      <li class="breadcrumb-item active">Networks</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/Networks.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<p>Download This Notebook: <a class="reference download internal" download="" href="../_downloads/812604a65fe3a83abf7742f9efe3da41/Networks.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Networks.ipynb</span></code></a></p>
+<section id="Networks">
+<h1>Networks<a class="headerlink" href="#Networks" title="Link to this heading"></a></h1>
+<section id="Introduction">
+<h2>Introduction<a class="headerlink" href="#Introduction" title="Link to this heading"></a></h2>
+<p>This tutorial gives an overview of the microwave network analysis features of <strong>skrf</strong>. For this tutorial, and the rest of the scikit-rf documentation, it is assumed that <strong>skrf</strong> has been imported as <code class="docutils literal notranslate"><span class="pre">rf</span></code>. Whether or not you follow this convention in your own code is up to you.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">skrf</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">rf</span>
+</pre></div>
+</div>
+</div>
+<p>If this produces an import error, please see <a class="reference internal" href="Installation.html"><span class="doc">Installation</span></a>.</p>
+</section>
+<section id="Creating-Networks">
+<h2>Creating Networks<a class="headerlink" href="#Creating-Networks" title="Link to this heading"></a></h2>
+<p><strong>skrf</strong> provides an object for a N-port microwave <a class="reference internal" href="../api/network.html"><span class="doc">Network</span></a>. A <a class="reference internal" href="../api/network.html"><span class="doc">Network</span></a> can be created in a number of ways:</p>
+<ul class="simple">
+<li><p>from a Touchstone file</p></li>
+<li><p>from S-parameters</p></li>
+<li><p>from Z-parameters</p></li>
+<li><p>from other RF parameters (Y, ABCD, T, etc.)</p></li>
+</ul>
+<p>Some examples for each situation is given below.</p>
+<section id="Creating-Network-from-Touchstone-file">
+<h3>Creating Network from Touchstone file<a class="headerlink" href="#Creating-Network-from-Touchstone-file" title="Link to this heading"></a></h3>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Touchstone_file">Touchstone file</a> (<code class="docutils literal notranslate"><span class="pre">.sNp</span></code> files, with <code class="docutils literal notranslate"><span class="pre">N</span></code> being the number of ports) is a <em>de facto</em> standard to export N-port network parameter data and noise data of linear active devices, passive filters, passive devices, or interconnect networks. Creating a Network from a Touchstone file is simple:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">skrf</span><span class="w"> </span><span class="kn">import</span> <span class="n">Frequency</span><span class="p">,</span> <span class="n">Network</span>
+
+<span class="n">ring_slot</span> <span class="o">=</span> <span class="n">Network</span><span class="p">(</span><span class="s1">'data/ring slot.s2p'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Note that some software, such as ANSYS HFSS, add additional information to the Touchstone standard, such as comments, simulation parameters, Port Impedance or Gamma (wavenumber). These data are also imported if detected.</p>
+<p>A short description of the network will be printed out if entered onto the command line</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ring_slot</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2-Port Network: &#39;ring slot&#39;,  75.0-110.0 GHz, 201 pts, z0=[50.+0.j 50.+0.j]
+</pre></div></div>
+</div>
+</section>
+<section id="Creating-Network-from-s-parameters">
+<h3>Creating Network from s-parameters<a class="headerlink" href="#Creating-Network-from-s-parameters" title="Link to this heading"></a></h3>
+<p>Networks can also be created by directly passing values for the <code class="docutils literal notranslate"><span class="pre">frequency</span></code>, <code class="docutils literal notranslate"><span class="pre">s</span></code>-parameters (and optionally the port impedance <code class="docutils literal notranslate"><span class="pre">z0</span></code>).</p>
+<p>The scattering matrix of a N-port Network is expected to be a Numpy array of shape <code class="docutils literal notranslate"><span class="pre">(nb_f,</span> <span class="pre">N,</span> <span class="pre">N)</span></code>, where <code class="docutils literal notranslate"><span class="pre">nb_f</span></code> is the number of frequency points and <code class="docutils literal notranslate"><span class="pre">N</span></code> the number of ports of the network.</p>
+<p><img alt="23feb174d7d14425a403f069f5e7644d" class="no-scaled-link" src="../_images/arrays_s_vs_f.svg" width="300" /></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># dummy 2-port network from Frequency and s-parameters</span>
+<span class="n">freq</span> <span class="o">=</span> <span class="n">Frequency</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="s1">'ghz'</span><span class="p">)</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">101</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">101</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1"># random complex numbers</span>
+<span class="c1"># if not passed, will assume z0=50. name is optional but it's a good practice.</span>
+<span class="n">ntwk</span> <span class="o">=</span> <span class="n">Network</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'random values 2-port'</span><span class="p">)</span>
+<span class="n">ntwk</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2-Port Network: &#39;random values 2-port&#39;,  1.0-10.0 GHz, 101 pts, z0=[50.+0.j 50.+0.j]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ntwk</span><span class="o">.</span><span class="n">plot_s_db</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_Networks_15_0.png" src="../_images/tutorials_Networks_15_0.png" />
+</div>
+</div>
+<p>Often, s-parameters are stored in separate arrays. In such case, one needs to forge the s-matrix:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># let's assume we have separate arrays for the frequency and s-parameters</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span> <span class="c1"># in GHz</span>
+<span class="n">S11</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">S12</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">S21</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">S22</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="c1"># Before creating the scikit-rf Network object, one must forge the Frequency and S-matrix:</span>
+<span class="n">freq2</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">Frequency</span><span class="o">.</span><span class="n">from_f</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">'GHz'</span><span class="p">)</span>
+
+<span class="c1"># forging S-matrix as shape (nb_f, 2, 2)</span>
+<span class="c1"># there is probably smarter way, but less explicit for the purpose of this example:</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+<span class="n">s</span><span class="p">[:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">S11</span>
+<span class="n">s</span><span class="p">[:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">S12</span>
+<span class="n">s</span><span class="p">[:,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">S21</span>
+<span class="n">s</span><span class="p">[:,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">S22</span>
+
+<span class="c1"># constructing Network object</span>
+<span class="n">ntw</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">Network</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">freq2</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">ntw</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2-Port Network: &#39;&#39;,  1.0-4.0 GHz, 4 pts, z0=[50.+0.j 50.+0.j]
+</pre></div></div>
+</div>
+<p>If necessary, the characteristic impedance can be passed as a scalar (same for all frequencies), as a list or an array:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ntw2</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">Network</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">z0</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'same z0 for all ports'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ntw2</span><span class="p">)</span>
+<span class="n">ntw3</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">Network</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">z0</span><span class="o">=</span><span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">'different z0 for each port'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ntw3</span><span class="p">)</span>
+<span class="n">ntw4</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">Network</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">z0</span><span class="o">=</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">)),</span> <span class="n">name</span><span class="o">=</span><span class="s1">'different z0 for each frequencies and ports'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ntw4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2-Port Network: &#39;same z0 for all ports&#39;,  1.0-10.0 GHz, 101 pts, z0=[25.+0.j 25.+0.j]
+2-Port Network: &#39;different z0 for each port&#39;,  1.0-10.0 GHz, 101 pts, z0=[20.+0.j 30.+0.j]
+2-Port Network: &#39;different z0 for each frequencies and ports&#39;,  1.0-10.0 GHz, 101 pts, z0=[0.78793375+0.j 0.98447722+0.j]
+</pre></div></div>
+</div>
+</section>
+<section id="From-z-parameters">
+<h3>From z-parameters<a class="headerlink" href="#From-z-parameters" title="Link to this heading"></a></h3>
+<p>As networks are also defined from their Z-parameters, there is <code class="docutils literal notranslate"><span class="pre">from_z()</span></code> method of the Network:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1-port network example</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">freq</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">10</span><span class="n">j</span><span class="p">)</span>  <span class="c1"># replicate z=10j for all frequencies</span>
+
+<span class="n">ntw</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">Network</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ntw</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1-Port Network: &#39;&#39;,  1.0-10.0 GHz, 101 pts, z0=[50.+0.j]
+</pre></div></div>
+</div>
+</section>
+<section id="From-other-network-parameters:-Y,-ABCD,-H,-T">
+<h3>From other network parameters: Y, ABCD, H, T<a class="headerlink" href="#From-other-network-parameters:-Y,-ABCD,-H,-T" title="Link to this heading"></a></h3>
+<p>It is also possible to generate Networks from other kind of RF parameters: <a class="reference external" href="https://en.wikipedia.org/wiki/Two-port_network#Admittance_parameters_(y-parameters)">Y</a>, <a class="reference external" href="https://en.wikipedia.org/wiki/Two-port_network#ABCD-parameters">ABCD</a>, <a class="reference external" href="https://en.wikipedia.org/wiki/Two-port_network#Hybrid_parameters_(h-parameters)">H</a> or <a class="reference external" href="https://en.wikipedia.org/wiki/Two-port_network#Scattering_transfer_parameters_(T-parameters)">T</a> using the <code class="docutils literal notranslate"><span class="pre">y=</span></code>, <code class="docutils literal notranslate"><span class="pre">a=</span></code>, <code class="docutils literal notranslate"><span class="pre">h=</span></code> or <code class="docutils literal notranslate"><span class="pre">t=</span></code> parameters
+respectively when creating a <code class="docutils literal notranslate"><span class="pre">Network</span></code>.</p>
+<p>For example, the <a class="reference external" href="https://en.wikipedia.org/wiki/Two-port_network#ABCD-parameters">ABCD parameters</a> of a series-impedance is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\left[
+\begin{array}{cc}
+1 &amp; Z \\
+0 &amp; 1
+\end{array}
+\right]\end{split}\]</div>
+<p>so the associated Network can be created like:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">abcd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span>
+              <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">abcd</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">freq</span><span class="p">),</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">ntw</span> <span class="o">=</span> <span class="n">Network</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ntw</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2-Port Network: &#39;&#39;,  1.0-10.0 GHz, 101 pts, z0=[50.+0.j 50.+0.j]
+</pre></div></div>
+</div>
+<p>Note that convenience functions are also available for converting some parameters into another if required:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>from:nbsphinx-math:<cite>to</cite></p></th>
+<th class="head"><p>S</p></th>
+<th class="head"><p>Z</p></th>
+<th class="head"><p>Y</p></th>
+<th class="head"><p>ABCD</p></th>
+<th class="head"><p>T</p></th>
+<th class="head"><p>H</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>S</p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">s2z</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">s2y</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">s2a</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">s2t</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">s2h</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Z</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">z2s</span></code></p></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">z2y</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">z2a</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">z2t</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">z2h</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Y</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">y2s</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">y2z</span></code></p></td>
+<td></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">y2t</span></code></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>ABCD</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">a2s</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">a2z</span></code></p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>T</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">t2s</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">t2z</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">t2y</span></code></p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>H</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">h2s</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">h2z</span></code></p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># example: converting a -&gt; s</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">a2s</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="c1"># checking that these S-params are the same</span>
+<span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">ntw</span><span class="o">.</span><span class="n">s</span> <span class="o">==</span> <span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+np.True_
+</pre></div></div>
+</div>
+</section>
+</section>
+<section id="Basic-Properties">
+<h2>Basic Properties<a class="headerlink" href="#Basic-Properties" title="Link to this heading"></a></h2>
+<p>The basic attributes of a microwave <a class="reference internal" href="../api/network.html"><span class="doc">Network</span></a> are provided by the following properties :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Network.s</span></code> : Scattering Parameter matrix.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Network.z0</span></code> : Port Characteristic Impedance matrix.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Network.frequency</span></code> : Frequency Object.</p></li>
+</ul>
+<p>The <a class="reference internal" href="../api/network.html"><span class="doc">Network</span></a> object has numerous other properties and methods. If you are using IPython, then these properties and methods can be ‘tabbed’ out on the command line.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>In [1]: ring_slot.s&lt;TAB&gt;
+ring_slot.line.s              ring_slot.s_arcl         ring_slot.s_im
+ring_slot.line.s11            ring_slot.s_arcl_unwrap  ring_slot.s_mag
+...
+</pre></div>
+</div>
+<p>All of the network parameters are represented internally as complex <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>. The s-parameters are of shape <code class="docutils literal notranslate"><span class="pre">(nfreq,</span> <span class="pre">nport,</span> <span class="pre">nport)</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">ring_slot</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(201, 2, 2)
+</pre></div></div>
+</div>
+</section>
+<section id="Slicing">
+<h2>Slicing<a class="headerlink" href="#Slicing" title="Link to this heading"></a></h2>
+<p>You can slice the <code class="docutils literal notranslate"><span class="pre">Network.s</span></code> attribute any way you want.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ring_slot</span><span class="o">.</span><span class="n">s</span><span class="p">[:</span><span class="mi">11</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># get first 10 values of S21</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([0.6134571 +0.36678139j, 0.6218194 +0.36403169j,
+       0.63024301+0.36109574j, 0.63872415+0.3579682j ,
+       0.64725874+0.35464377j, 0.65584238+0.35111711j,
+       0.66447037+0.34738295j, 0.6731377 +0.34343602j,
+       0.68183901+0.33927115j, 0.69056862+0.33488321j,
+       0.6993205 +0.3302672j ])
+</pre></div></div>
+</div>
+<p>Slicing by frequency can also be done directly on Network objects like so</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ring_slot</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span> <span class="c1">#  Network for the first 10 frequency points</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2-Port Network: &#39;ring slot_subset&#39;,  75.0-76.575 GHz, 10 pts, z0=[50.+0.j 50.+0.j]
+</pre></div></div>
+</div>
+<p>or with a human friendly string,</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ring_slot</span><span class="p">[</span><span class="s1">'80-90ghz'</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2-Port Network: &#39;ring slot&#39;,  80.075-90.05 GHz, 58 pts, z0=[50.+0.j 50.+0.j]
+</pre></div></div>
+</div>
+<p>Notice that slicing directly on a Network <strong>returns a Network</strong>. So, a nice way to express slicing in both dimensions is</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ring_slot</span><span class="o">.</span><span class="n">s11</span><span class="p">[</span><span class="s1">'80-90ghz'</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1-Port Network: &#39;ring slot&#39;,  80.075-90.05 GHz, 58 pts, z0=[50.+0.j]
+</pre></div></div>
+</div>
+</section>
+<section id="Plotting">
+<h2>Plotting<a class="headerlink" href="#Plotting" title="Link to this heading"></a></h2>
+<p>Amongst other things, the methods of the <a class="reference internal" href="../api/network.html"><span class="doc">Network</span></a> class provide convenient ways to plot components of the network parameters,</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Network.plot_s_db</span></code> : plot magnitude of s-parameters in log scale</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Network.plot_s_deg</span></code> : plot phase of s-parameters in degrees</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Network.plot_s_smith</span></code> : plot complex s-parameters on Smith Chart</p></li>
+<li><p>…</p></li>
+</ul>
+<p>If you would like to use skrf’s plot styling,</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="n">rf</span><span class="o">.</span><span class="n">stylely</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>To plot all four s-parameters of the <code class="docutils literal notranslate"><span class="pre">ring_slot</span></code> on the Smith Chart.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ring_slot</span><span class="o">.</span><span class="n">plot_s_smith</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_Networks_45_0.png" src="../_images/tutorials_Networks_45_0.png" />
+</div>
+</div>
+<p>Combining this with the slicing features,</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Ring Slot $S_</span><span class="si">{21}</span><span class="s1">$'</span><span class="p">)</span>
+
+<span class="n">ring_slot</span><span class="o">.</span><span class="n">s11</span><span class="o">.</span><span class="n">plot_s_db</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">'Full Band Response'</span><span class="p">)</span>
+<span class="n">ring_slot</span><span class="o">.</span><span class="n">s11</span><span class="p">[</span><span class="s1">'82-90ghz'</span><span class="p">]</span><span class="o">.</span><span class="n">plot_s_db</span><span class="p">(</span><span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">'Band of Interest'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_Networks_47_0.png" src="../_images/tutorials_Networks_47_0.png" />
+</div>
+</div>
+<p>For more detailed information about plotting see <a class="reference internal" href="Plotting.html"><span class="doc">Plotting</span></a>.</p>
+</section>
+<section id="Arithmetic-Operations">
+<h2>Arithmetic Operations<a class="headerlink" href="#Arithmetic-Operations" title="Link to this heading"></a></h2>
+<p>Element-wise mathematical operations on the scattering parameter matrices are accessible through overloaded operators. To illustrate their usage, load a couple Networks stored in the <code class="docutils literal notranslate"><span class="pre">data</span></code> module.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">skrf.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">wr2p2_delayshort</span> <span class="k">as</span> <span class="n">delayshort</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">skrf.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">wr2p2_short</span> <span class="k">as</span> <span class="n">short</span>
+
+<span class="n">short</span> <span class="o">-</span> <span class="n">delayshort</span>
+<span class="n">short</span> <span class="o">+</span> <span class="n">delayshort</span>
+<span class="n">short</span> <span class="o">*</span> <span class="n">delayshort</span>
+<span class="n">short</span> <span class="o">/</span> <span class="n">delayshort</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1-Port Network: &#39;wr2p2,short&#39;,  330.0-500.0 GHz, 201 pts, z0=[50.+0.j]
+</pre></div></div>
+</div>
+<p>All of these operations return <a class="reference internal" href="../api/network.html"><span class="doc">Network</span></a> types. For example, to plot the complex difference between <code class="docutils literal notranslate"><span class="pre">short</span></code> and <code class="docutils literal notranslate"><span class="pre">delay_short</span></code>,</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">difference</span> <span class="o">=</span> <span class="p">(</span><span class="n">short</span> <span class="o">-</span> <span class="n">delayshort</span><span class="p">)</span>
+<span class="n">difference</span><span class="o">.</span><span class="n">plot_s_mag</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">'Mag of difference'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_Networks_52_0.png" src="../_images/tutorials_Networks_52_0.png" />
+</div>
+</div>
+<p>Another common application is calculating the phase difference using the division operator,</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">delayshort</span><span class="o">/</span><span class="n">short</span><span class="p">)</span><span class="o">.</span><span class="n">plot_s_deg</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">'Detrended Phase'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_Networks_54_0.png" src="../_images/tutorials_Networks_54_0.png" />
+</div>
+</div>
+<p>Linear operators can also be used with scalars or an <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> that have the same length as the <a class="reference internal" href="../api/network.html"><span class="doc">Network</span></a>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hopen</span> <span class="o">=</span> <span class="p">(</span><span class="n">short</span><span class="o">*-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">hopen</span><span class="o">.</span><span class="n">s</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span><span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([[[1.-0.j]],
+
+       [[1.-0.j]],
+
+       [[1.-0.j]]])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rando</span> <span class="o">=</span>  <span class="n">hopen</span> <span class="o">*</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">hopen</span><span class="p">))</span>
+<span class="n">rando</span><span class="o">.</span><span class="n">s</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span><span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([[[0.26460475+0.j]],
+
+       [[0.82743788+0.j]],
+
+       [[0.36568375+0.j]]])
+</pre></div></div>
+</div>
+</section>
+<section id="Comparison-of-Network">
+<h2>Comparison of Network<a class="headerlink" href="#Comparison-of-Network" title="Link to this heading"></a></h2>
+<p>Comparison operators also work with networks:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">short</span> <span class="o">==</span> <span class="n">delayshort</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+False
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">short</span> <span class="o">!=</span> <span class="n">delayshort</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+True
+</pre></div></div>
+</div>
+</section>
+<section id="Cascading-and-De-embedding">
+<h2>Cascading and De-embedding<a class="headerlink" href="#Cascading-and-De-embedding" title="Link to this heading"></a></h2>
+<p>Cascading and de-embeding 2-port Networks can also be done through operators. The <code class="docutils literal notranslate"><span class="pre">cascade</span></code> function can be called through the power operator, <code class="docutils literal notranslate"><span class="pre">**</span></code>. To calculate a new network which is the cascaded connection of the two individual Networks <code class="docutils literal notranslate"><span class="pre">line</span></code> and <code class="docutils literal notranslate"><span class="pre">short</span></code>,</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">short</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">wr2p2_short</span>
+<span class="n">line</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">wr2p2_line</span>
+<span class="n">delayshort</span> <span class="o">=</span> <span class="n">line</span> <span class="o">**</span> <span class="n">short</span>
+</pre></div>
+</div>
+</div>
+<p>De-embedding can be accomplished by cascading the <em>inverse</em> of a network. The inverse of a network is accessed through the property <code class="docutils literal notranslate"><span class="pre">Network.inv</span></code>. To de-embed the <code class="docutils literal notranslate"><span class="pre">short</span></code> from <code class="docutils literal notranslate"><span class="pre">delay_short</span></code>,</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">short_2</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">inv</span> <span class="o">**</span> <span class="n">delayshort</span>
+
+<span class="n">short_2</span> <span class="o">==</span> <span class="n">short</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+True
+</pre></div></div>
+</div>
+<p>The cascading operator also works for to 2N-port Networks. This is illustrated in <a class="reference internal" href="../examples/networktheory/Balanced%20Network%20De-embedding.html"><span class="doc">this example on balanced Networks</span></a>. For example, assuming you want to cascade three 4-port Network <code class="docutils literal notranslate"><span class="pre">ntw1</span></code>, <code class="docutils literal notranslate"><span class="pre">ntw2</span></code> and <code class="docutils literal notranslate"><span class="pre">ntw3</span></code>, you can use: <code class="docutils literal notranslate"><span class="pre">resulting_ntw</span> <span class="pre">=</span> <span class="pre">ntw1</span> <span class="pre">**</span> <span class="pre">ntw2</span> <span class="pre">**</span> <span class="pre">ntw3</span></code>. Note that the port scheme assumed by the <code class="docutils literal notranslate"><span class="pre">**</span></code> cascading operator with 4-port networks is:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>   ntw1    ntw2    ntw3
+  +----+  +----+  +----+
+0-|0  2|--|0  2|--|0  2|-2
+1-|1  3|--|1  3|--|1  3|-3
+  +----+  +----+  +----+
+</pre></div>
+</div>
+<p>More documentation on Connecting Network is available here: <a class="reference internal" href="Connecting_Networks.html"><span class="doc">Connecting Networks</span></a>.</p>
+</section>
+<section id="Connecting-Multi-ports">
+<h2>Connecting Multi-ports<a class="headerlink" href="#Connecting-Multi-ports" title="Link to this heading"></a></h2>
+<p><strong>skrf</strong> supports the connection of arbitrary ports of N-port networks. It accomplishes this using an algorithm called sub-network growth<a class="reference internal" href="#References"><span class="std std-ref">[1]</span></a>, available through the function <code class="docutils literal notranslate"><span class="pre">connect()</span></code>.</p>
+<p>As an example, terminating one port of an ideal 3-way splitter can be done like so,</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tee</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">tee</span>
+<span class="n">tee</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+3-Port Network: &#39;tee&#39;,  330.0-500.0 GHz, 201 pts, z0=[50.+0.j 50.+0.j 50.+0.j]
+</pre></div></div>
+</div>
+<p>To connect port <code class="docutils literal notranslate"><span class="pre">1</span></code> of the tee, to port <code class="docutils literal notranslate"><span class="pre">0</span></code> of the delay short,</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">terminated_tee</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">tee</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">delayshort</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">terminated_tee</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2-Port Network: &#39;tee&#39;,  330.0-500.0 GHz, 201 pts, z0=[50.+0.j 50.+0.j]
+</pre></div></div>
+</div>
+<p>Note that this function takes into account port impedances. If two connected ports have different port impedances, an appropriate impedance mismatch is inserted.</p>
+<p>More information on connecting Networks is available here: <a class="reference internal" href="Connecting_Networks.html"><span class="doc">connecting Networks</span></a>.</p>
+<p>For advanced connections between many arbitrary N-port Networks, the <code class="docutils literal notranslate"><span class="pre">Circuit</span></code> object is more relevant since it allows defining explicitly the connections between ports and Networks. For more information, please refer to the <a class="reference internal" href="Circuit.html"><span class="doc">Circuit documentation</span></a>.</p>
+</section>
+<section id="Port-names">
+<h2>Port names<a class="headerlink" href="#Port-names" title="Link to this heading"></a></h2>
+<p>The ports of a <a class="reference internal" href="../api/network.html"><span class="doc">Network</span></a> can be given names with <code class="docutils literal notranslate"><span class="pre">Network.port_names</span></code>. A named port can then be used anywhere a port index is accepted, and the names follow the ports they describe through operations which reorder, drop or combine ports.</p>
+<div class="admonition note">
+<p class="admonition-title fa fa-exclamation-circle">Version note</p>
+<p>Port names can only be used this way in versions after 2.0.1. In version 2.0.1 and earlier, Network.port_names is a plain attribute which most operations do not keep up to date, and it cannot be used to address a port.</p>
+</div>
+<p>Names are given either when the <a class="reference internal" href="../api/network.html"><span class="doc">Network</span></a> is created, or by assigning to the property afterwards. There has to be a name for every port.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">freq</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">Frequency</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">'GHz'</span><span class="p">)</span>
+<span class="n">media</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">media</span><span class="o">.</span><span class="n">DefinedGammaZ0</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span> <span class="n">z0_port</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+
+<span class="n">amp</span> <span class="o">=</span> <span class="n">media</span><span class="o">.</span><span class="n">attenuator</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'amp'</span><span class="p">)</span>
+<span class="n">amp</span><span class="o">.</span><span class="n">port_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'in'</span><span class="p">,</span> <span class="s1">'out'</span><span class="p">]</span>
+<span class="n">amp</span><span class="o">.</span><span class="n">port_names</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;in&#39;, &#39;out&#39;]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">freq</span><span class="o">.</span><span class="n">npoints</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+<span class="n">s</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">3</span> <span class="o">/</span> <span class="mi">20</span><span class="p">)</span>
+
+<span class="n">pad</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">Network</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'pad'</span><span class="p">,</span> <span class="n">port_names</span><span class="o">=</span><span class="p">[</span><span class="s1">'rf_in'</span><span class="p">,</span> <span class="s1">'rf_out'</span><span class="p">])</span>
+<span class="n">pad</span><span class="o">.</span><span class="n">port_names</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;rf_in&#39;, &#39;rf_out&#39;]
+</pre></div></div>
+</div>
+<p>A <a class="reference internal" href="../api/network.html"><span class="doc">Network</span></a> without named ports has <code class="docutils literal notranslate"><span class="pre">port_names</span></code> set to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">media</span><span class="o">.</span><span class="n">attenuator</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">port_names</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+None
+</pre></div></div>
+</div>
+<section id="Connecting-by-name">
+<h3>Connecting by name<a class="headerlink" href="#Connecting-by-name" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">connect()</span></code> takes a port name in place of a port index and the output <code class="docutils literal notranslate"><span class="pre">Network</span></code> keeps the names of the ports which are left over.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cascade</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">amp</span><span class="p">,</span> <span class="s1">'out'</span><span class="p">,</span> <span class="n">pad</span><span class="p">,</span> <span class="s1">'rf_in'</span><span class="p">)</span>
+<span class="n">cascade</span><span class="o">.</span><span class="n">port_names</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;in&#39;, &#39;rf_out&#39;]
+</pre></div></div>
+</div>
+<p>This is the same connection as the one made by indices, names are just another way of selecting a port.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cascade</span> <span class="o">==</span> <span class="n">rf</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">amp</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">pad</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+True
+</pre></div></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">innerconnect()</span></code>, <code class="docutils literal notranslate"><span class="pre">parallelconnect()</span></code>, <code class="docutils literal notranslate"><span class="pre">subnetwork()</span></code> and <code class="docutils literal notranslate"><span class="pre">renumber()</span></code> accept names the same way.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tee</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">tee</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tee</span><span class="o">.</span><span class="n">port_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'sum'</span><span class="p">,</span> <span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">]</span>
+
+<span class="n">tee</span><span class="o">.</span><span class="n">subnetwork</span><span class="p">([</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'sum'</span><span class="p">])</span><span class="o">.</span><span class="n">port_names</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;a&#39;, &#39;sum&#39;]
+</pre></div></div>
+</div>
+<p>In <code class="docutils literal notranslate"><span class="pre">renumber()</span></code> a name refers to the port which currently carries it, so the call below swaps the ports named <code class="docutils literal notranslate"><span class="pre">sum</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tee</span><span class="o">.</span><span class="n">renumbered</span><span class="p">([</span><span class="s1">'sum'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">],</span> <span class="p">[</span><span class="s1">'b'</span><span class="p">,</span> <span class="s1">'sum'</span><span class="p">])</span><span class="o">.</span><span class="n">port_names</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;b&#39;, &#39;a&#39;, &#39;sum&#39;]
+</pre></div></div>
+</div>
+</section>
+<section id="Names-follow-the-ports">
+<h3>Names follow the ports<a class="headerlink" href="#Names-follow-the-ports" title="Link to this heading"></a></h3>
+<p>A one-port taken out of a network is either a reflection coefficient, which is one of the ports and keeps its name, or a transmission coefficient, which is not any single port of the network and therefore has no name.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">amp</span><span class="o">.</span><span class="n">s11</span><span class="o">.</span><span class="n">port_names</span><span class="p">)</span> <span class="c1"># port 'in'</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">amp</span><span class="o">.</span><span class="n">s22</span><span class="o">.</span><span class="n">port_names</span><span class="p">)</span> <span class="c1"># port 'out'</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">amp</span><span class="o">.</span><span class="n">s21</span><span class="o">.</span><span class="n">port_names</span><span class="p">)</span> <span class="c1"># neither port</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;in&#39;]
+[&#39;out&#39;]
+None
+</pre></div></div>
+</div>
+<p>The same one-ports can be picked out by name instead of by number.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">amp</span><span class="p">[</span><span class="s1">'in'</span><span class="p">,</span> <span class="s1">'in'</span><span class="p">]</span><span class="o">.</span><span class="n">port_names</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;in&#39;]
+</pre></div></div>
+</div>
+</section>
+<section id="Mixed-mode">
+<h3>Mixed mode<a class="headerlink" href="#Mixed-mode" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">se2gmm()</span></code> replaces pairs of single ended ports with a differential and a common mode port. Each new port is named after the pair it is made of, so the names stay unique and say where the port came from.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">line_p</span> <span class="o">=</span> <span class="n">media</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s1">'deg'</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'p'</span><span class="p">)</span>
+<span class="n">line_n</span> <span class="o">=</span> <span class="n">media</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="s1">'deg'</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'n'</span><span class="p">)</span>
+
+<span class="n">pair</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">concat_ports</span><span class="p">([</span><span class="n">line_p</span><span class="p">,</span> <span class="n">line_n</span><span class="p">],</span> <span class="n">port_order</span><span class="o">=</span><span class="s1">'second'</span><span class="p">)</span>
+<span class="n">pair</span><span class="o">.</span><span class="n">port_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'in+'</span><span class="p">,</span> <span class="s1">'in-'</span><span class="p">,</span> <span class="s1">'out+'</span><span class="p">,</span> <span class="s1">'out-'</span><span class="p">]</span>
+<span class="n">pair</span><span class="o">.</span><span class="n">port_names</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;in+&#39;, &#39;in-&#39;, &#39;out+&#39;, &#39;out-&#39;]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mm</span> <span class="o">=</span> <span class="n">pair</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">mm</span><span class="o">.</span><span class="n">se2gmm</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">mm</span><span class="o">.</span><span class="n">port_names</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;d(in+,in-)&#39;, &#39;d(out+,out-)&#39;, &#39;c(in+,in-)&#39;, &#39;c(out+,out-)&#39;]
+</pre></div></div>
+</div>
+<p>The differential insertion loss is then addressable by name.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mm</span><span class="p">[</span><span class="s1">'d(in+,in-)'</span><span class="p">,</span> <span class="s1">'d(out+,out-)'</span><span class="p">]</span><span class="o">.</span><span class="n">s_db</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([-0.13297082, -0.13297082, -0.13297082, -0.13297082, -0.13297082,
+       -0.13297082, -0.13297082, -0.13297082, -0.13297082, -0.13297082,
+       -0.13297082])
+</pre></div></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">gmm2se()</span></code> reverses the conversion and restores the single ended names.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mm</span><span class="o">.</span><span class="n">gmm2se</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">mm</span><span class="o">.</span><span class="n">port_names</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;in+&#39;, &#39;in-&#39;, &#39;out+&#39;, &#39;out-&#39;]
+</pre></div></div>
+</div>
+</section>
+<section id="Duplicate-names">
+<h3>Duplicate names<a class="headerlink" href="#Duplicate-names" title="Link to this heading"></a></h3>
+<p>Several ports may share a name, which happens for instance when a Touchstone file names them that way, or when <code class="docutils literal notranslate"><span class="pre">connect()</span></code> joins two networks which both have a port called <code class="docutils literal notranslate"><span class="pre">in</span></code>. Such a name cannot be used to address a port, since it does not identify one, and those ports have to be given by index instead.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">amp2</span> <span class="o">=</span> <span class="n">amp</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">amp2</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'amp2'</span>
+
+<span class="c1"># the two ports named 'out' are the ones consumed, both 'in' ports are left</span>
+<span class="n">back_to_back</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">amp</span><span class="p">,</span> <span class="s1">'out'</span><span class="p">,</span> <span class="n">amp2</span><span class="p">,</span> <span class="s1">'out'</span><span class="p">)</span>
+<span class="n">back_to_back</span><span class="o">.</span><span class="n">port_names</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;in&#39;, &#39;in&#39;]
+</pre></div></div>
+</div>
+<p>Asking for a port by an ambiguous name raises rather than silently returning the first match.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="n">back_to_back</span><span class="p">[</span><span class="s1">'in'</span><span class="p">,</span> <span class="s1">'in'</span><span class="p">]</span>
+<span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Port name &#39;in&#39; is ambiguous, network has ports [&#39;in&#39;, &#39;in&#39;]. Use the port index instead
+</pre></div></div>
+</div>
+</section>
+</section>
+<section id="Interpolation-and-Concatenation">
+<h2>Interpolation and Concatenation<a class="headerlink" href="#Interpolation-and-Concatenation" title="Link to this heading"></a></h2>
+<p>A common need is to change the number of frequency points of a <a class="reference internal" href="../api/network.html"><span class="doc">Network</span></a>. To use the operators and cascading functions the networks involved must have matching frequencies, for instance. If two networks have different frequency information, then an error will be raised,</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">skrf.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">wr2p2_line1</span> <span class="k">as</span> <span class="n">line1</span>
+
+<span class="n">line1</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2-Port Network: &#39;wr2p2,line1&#39;,  330.0-500.0 GHz, 101 pts, z0=[50.+0.j 50.+0.j]
+</pre></div></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>line1+line
+
+---------------------------------------------------------------------------
+IndexError                                Traceback (most recent call last)
+&lt;ipython-input-49-82040f7eab08&gt; in &lt;module&gt;()
+----&gt; 1 line1+line
+
+/home/alex/code/scikit-rf/skrf/network.py in __add__(self, other)
+    500
+    501         if isinstance(other, Network):
+--&gt; 502             self.__compatible_for_scalar_operation_test(other)
+    503             result.s = self.s + other.s
+    504         else:
+
+/home/alex/code/scikit-rf/skrf/network.py in __compatible_for_scalar_operation_test(self, other)
+    701         '''
+    702         if other.frequency  != self.frequency:
+--&gt; 703             raise IndexError('Networks must have same frequency. See `Network.interpolate`')
+    704
+    705         if other.s.shape != self.s.shape:
+
+IndexError: Networks must have same frequency. See `Network.interpolate`
+</pre></div>
+</div>
+<p>This problem can be solved by interpolating one of Networks along the frequency axis using <code class="docutils literal notranslate"><span class="pre">Network.resample</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">line1</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="mi">201</span><span class="p">)</span>
+<span class="n">line1</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2-Port Network: &#39;wr2p2,line1&#39;,  330.0-500.0 GHz, 201 pts, z0=[50.+0.j 50.+0.j]
+</pre></div></div>
+</div>
+<p>And now we can do things</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">line1</span> <span class="o">+</span> <span class="n">line</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2-Port Network: &#39;wr2p2,line1&#39;,  330.0-500.0 GHz, 201 pts, z0=[50.+0.j 50.+0.j]
+</pre></div></div>
+</div>
+<p>You can also interpolate from a <code class="docutils literal notranslate"><span class="pre">Frequency</span></code> object. For example,</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">line</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">line1</span><span class="o">.</span><span class="n">frequency</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2-Port Network: &#39;wr2p2,line&#39;,  330.0-500.0 GHz, 201 pts, z0=[50.+0.j 50.+0.j]
+</pre></div></div>
+</div>
+<p>A related application is the need to combine Networks which cover different frequency ranges. Two Networks can be concatenated (aka stitched) together using <code class="docutils literal notranslate"><span class="pre">stitch</span></code>, which concatenates networks along their frequency axis. To combine a WR-2.2 Network with a WR-1.5 Network,</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">skrf.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">wr1p5_line</span><span class="p">,</span> <span class="n">wr2p2_line</span>
+
+<span class="n">big_line</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">stitch</span><span class="p">(</span><span class="n">wr2p2_line</span><span class="p">,</span> <span class="n">wr1p5_line</span><span class="p">)</span>
+<span class="n">big_line</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/docs/checkouts/readthedocs.org/user_builds/scikit-rf/checkouts/latest/skrf/frequency.py:287: InvalidFrequencyWarning: Frequency values are not monotonously increasing!
+To get rid of the invalid values call `drop_non_monotonic_increasing`
+  temp_freq.check_monotonic_increasing()
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2-Port Network: &#39;wr2p2,line&#39;,  330.0-750.0 GHz, 402 pts, z0=[50.+0.j 50.+0.j]
+</pre></div></div>
+</div>
+</section>
+<section id="Reading-and-Writing">
+<h2>Reading and Writing<a class="headerlink" href="#Reading-and-Writing" title="Link to this heading"></a></h2>
+<p>For long term data storage, <strong>skrf</strong> has support for reading and partial support for writing <a class="reference external" href="http://en.wikipedia.org/wiki/Touchstone_file">touchstone file format</a>. Reading is accomplished with the Network initializer as shown above, and writing with the method <code class="docutils literal notranslate"><span class="pre">Network.write_touchstone()</span></code>.</p>
+<p>For <strong>temporary</strong> data storage, <strong>skrf</strong> object can be <a class="reference external" href="http://docs.python.org/2/library/pickle.html">pickled</a> with the functions <code class="docutils literal notranslate"><span class="pre">skrf.io.general.read</span></code> and <code class="docutils literal notranslate"><span class="pre">skrf.io.general.write</span></code>. The reason to use temporary pickles over touchstones is that they store all attributes of a network, while touchstone files only store partial information.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rf</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">'data/myline.ntwk'</span><span class="p">,</span><span class="n">line</span><span class="p">)</span> <span class="c1"># write out Network using pickle</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ntwk</span> <span class="o">=</span> <span class="n">Network</span><span class="p">(</span><span class="s1">'data/myline.ntwk'</span><span class="p">)</span> <span class="c1"># read Network using pickle</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Pickling methods can’t support long term data storage because they require the structure of the object being written to remain unchanged. something that cannot be guaranteed in future versions of skrf.  (see <a class="reference external" href="http://docs.python.org/2/library/pickle.html">http://docs.python.org/2/library/pickle.html</a>)</p>
+</div>
+<p>Frequently there is an entire directory of files that need to be analyzed. <code class="docutils literal notranslate"><span class="pre">rf.read_all</span></code> creates Networks from all files in a directory quickly. To load all <strong>skrf</strong> files in the <code class="docutils literal notranslate"><span class="pre">data/</span></code> directory which contain the string <code class="docutils literal notranslate"><span class="pre">'wr2p2'</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[52]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dict_o_ntwks</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_all</span><span class="p">(</span><span class="n">rf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">pwd</span><span class="p">,</span> <span class="n">contains</span> <span class="o">=</span> <span class="s1">'wr2p2'</span><span class="p">)</span>
+<span class="n">dict_o_ntwks</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[52]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;wr2p2,delayshort&#39;: 1-Port Network: &#39;wr2p2,delayshort&#39;,  330.0-500.0 GHz, 201 pts, z0=[50.+0.j],
+ &#39;wr2p2,line&#39;: 2-Port Network: &#39;wr2p2,line&#39;,  330.0-500.0 GHz, 201 pts, z0=[50.+0.j 50.+0.j],
+ &#39;wr2p2,line1&#39;: 2-Port Network: &#39;wr2p2,line1&#39;,  330.0-500.0 GHz, 101 pts, z0=[50.+0.j 50.+0.j],
+ &#39;wr2p2,short&#39;: 1-Port Network: &#39;wr2p2,short&#39;,  330.0-500.0 GHz, 201 pts, z0=[50.+0.j]}
+</pre></div></div>
+</div>
+<p>Other times you know the list of files that need to be analyzed. <code class="docutils literal notranslate"><span class="pre">rf.read_all</span></code> also accepts a files parameter. This example file list contains only files within the same directory, but you can store files however your application would benefit from.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[53]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="n">dict_o_ntwks_files</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_all</span><span class="p">(</span>
+    <span class="n">files</span><span class="o">=</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">pwd</span><span class="p">,</span> <span class="n">test_file</span><span class="p">)</span> <span class="k">for</span> <span class="n">test_file</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'ntwk1.s2p'</span><span class="p">,</span> <span class="s1">'ntwk2.s2p'</span><span class="p">]]</span>
+<span class="p">)</span>
+<span class="n">dict_o_ntwks_files</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[53]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;ntwk1&#39;: 2-Port Network: &#39;ntwk1&#39;,  1.0-10.0 GHz, 91 pts, z0=[50.+0.j 50.+0.j]}
+</pre></div></div>
+</div>
+</section>
+<section id="Other-Parameters">
+<h2>Other Parameters<a class="headerlink" href="#Other-Parameters" title="Link to this heading"></a></h2>
+<p>This tutorial focuses on s-parameters, but other network representations are available as well. Impedance and Admittance Parameters can be accessed through the parameters <code class="docutils literal notranslate"><span class="pre">Network.z</span></code> and <code class="docutils literal notranslate"><span class="pre">Network.y</span></code>, respectively. Scalar components of complex parameters, such as <code class="docutils literal notranslate"><span class="pre">Network.z_re</span></code>, <code class="docutils literal notranslate"><span class="pre">Network.z_im</span></code> and plotting methods are available as well.</p>
+<p>Other parameters are only available for 2-port networks, such as wave cascading parameters (<code class="docutils literal notranslate"><span class="pre">Network.t</span></code>), and ABCD-parameters (<code class="docutils literal notranslate"><span class="pre">Network.a</span></code>) or Hybrid parameters (<code class="docutils literal notranslate"><span class="pre">Network.h</span></code>).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ring_slot</span><span class="o">.</span><span class="n">z</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span><span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([[[0.88442687+28.15350224j, 0.94703504+30.46757222j],
+        [0.94703504+30.46757222j, 1.0434417 +43.45766805j]],
+
+       [[0.91624901+28.72415928j, 0.98188607+31.09594438j],
+        [0.98188607+31.09594438j, 1.08168411+44.17642274j]],
+
+       [[0.94991736+29.31694632j, 1.01876516+31.74874257j],
+        [1.01876516+31.74874257j, 1.12215451+44.92215712j]]])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ring_slot</span><span class="o">.</span><span class="n">plot_z_im</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_Networks_123_0.png" src="../_images/tutorials_Networks_123_0.png" />
+</div>
+</div>
+</section>
+<section id="References">
+<h2>References<a class="headerlink" href="#References" title="Link to this heading"></a></h2>
+<p>[1] Compton, R.C.; , “Perspectives in microwave circuit analysis,” Circuits and Systems, 1989., Proceedings of the 32nd Midwest Symposium on , vol., no., pp.716-718 vol.2, 14-16 Aug 1989. URL: <a class="reference external" href="http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=101955&amp;isnumber=3167">http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=101955&amp;isnumber=3167</a></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Frequency_units.html" class="btn btn-neutral float-left" title="Configuring frequency units" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Connecting_Networks.html" class="btn btn-neutral float-right" title="Connecting Networks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, scikit-rf team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

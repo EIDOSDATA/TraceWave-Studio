@@ -1,0 +1,598 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="readthedocs-addons-api-version" content="1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mesh &mdash; openEMS 0.37.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=6ddebc91" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=29b1acb9"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+      <script src="../_static/tabs.js?v=3030b3cb"></script>
+    <script src="../_static/js/theme.js"></script>
+    <script src="../_static/js/versions.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Cylindrical FDTD" href="cylindrical_fdtd.html" />
+    <link rel="prev" title="Numerical Method" href="numerical_method.html" /> 
+<script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="openems" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/concepts/mesh.html" /><meta name="readthedocs-http-status" content="200" /></head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            openEMS
+              <img src="../_static/openEMS.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="switch-menus">
+                <div class="version-switch"></div>
+                <div class="language-switch"></div>
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python/openEMS/Tutorials/index.html">Python Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../octave/Tutorials/index.html">Octave/Matlab Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Concepts</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="numerical_method.html">Numerical Method</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Mesh</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#coordinate-system">Coordinate System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-a-mesh">Create a Mesh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mesh-resolution">Mesh Resolution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rule">1/3-2/3 Rule</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#courant-friedrichs-lewy-cfl-criterion">Courant-Friedrichs-Lewy (CFL) Criterion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#yee-cells">Yee cells</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sampling-artifacts">Sampling Artifacts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bibliography">Bibliography</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cylindrical_fdtd.html">Cylindrical FDTD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling.html">Modeling Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="properties.html">Properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="primitives.html">Primitives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="disc_material.html">Discrete (Voxelized) Material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dispersive.html">Dispersive Materials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumped.html">Lumped Element Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bc.html">Boundary Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ports.html">Ports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="excitations.html">Excitation Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signals.html">Signal Waveforms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="probes.html">Probes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulation.html">Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dump.html">Field Dump</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nf2ff.html">Near-Field to Far-Field Transformation (NF2FF)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sar.html">Specific Absorption Rate (SAR)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model_io.html">Saving, Loading &amp; Interoperability</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../postproc/index.html">Post-Processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python/python.html">Python Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../octave/octave.html">Octave/Matlab Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../more.html">Learn More</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog/index.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/index.html">Development</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">openEMS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Concepts</a></li>
+      <li class="breadcrumb-item active">Mesh</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/concepts/mesh.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mesh">
+<span id="concept-mesh"></span><h1>Mesh<a class="headerlink" href="#mesh" title="Link to this heading"></a></h1>
+<p>A mesh partitions the continuous 3D box into discrete rectangular
+cuboids, called Yee cells. Yee cells are the basic unit in the
+computation of electromagnetic field. The mesh quality is crucial
+for simulation correctness, accuracy and performance.</p>
+<section id="coordinate-system">
+<h2>Coordinate System<a class="headerlink" href="#coordinate-system" title="Link to this heading"></a></h2>
+<section id="cartesian">
+<h3>Cartesian<a class="headerlink" href="#cartesian" title="Link to this heading"></a></h3>
+<p>By default, openEMS uses the standard Cartesian mesh in conventional
+FDTD algorithm. A non-uniform mesh is supported as an improvement to
+save computational resources, by allowing the use of fine mesh sizes
+only around small features in the structure.</p>
+</section>
+<section id="cylindrical">
+<h3>Cylindrical<a class="headerlink" href="#cylindrical" title="Link to this heading"></a></h3>
+<p>As an extension of the FDTD algorithm, openEMS also supports meshing
+in cylindrical coordinates, useful for simulating round structures
+without the “staircasing” error. The cylindrical mesh can be uniform
+or non-uniform, just like the Cartesian mesh above. See
+<a class="reference internal" href="cylindrical_fdtd.html#concept-cylindrical-fdtd"><span class="std std-ref">Cylindrical FDTD</span></a> for why this matters, the coordinate
+singularity it introduces at the origin, and how “subgridding”
+addresses it.</p>
+</section>
+</section>
+<section id="create-a-mesh">
+<h2>Create a Mesh<a class="headerlink" href="#create-a-mesh" title="Link to this heading"></a></h2>
+<section id="obtain-the-mesh-object">
+<h3>Obtain the Mesh Object<a class="headerlink" href="#obtain-the-mesh-object" title="Link to this heading"></a></h3>
+<p>To create a mesh, use the <a class="reference internal" href="../python/CSXCAD/CSXCAD.html#CSXCAD.ContinuousStructure.GetGrid" title="CSXCAD.ContinuousStructure.GetGrid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GetGrid()</span></code></a>
+method to obtain the <code class="docutils literal notranslate"><span class="pre">mesh</span></code> object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Python</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">CSXCAD</span>
+<span class="n">csx</span> <span class="o">=</span> <span class="n">CSXCAD</span><span class="o">.</span><span class="n">ContinuousStructure</span><span class="p">()</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">csx</span><span class="o">.</span><span class="n">GetGrid</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="unit-of-measurement">
+<h3>Unit of Measurement<a class="headerlink" href="#unit-of-measurement" title="Link to this heading"></a></h3>
+<p>All CSXCAD <a class="reference internal" href="primitives.html#concept-primitives"><span class="std std-ref">Primitives</span></a> such as lines, planes or solids are
+created using unitless numerical coordinates, without specifying
+their physical unit of measurements. To use a model meaningfully,
+a dimensionless model must be associated with a <em>physical</em> unit of
+measurement, which is achieved by assign a physical unit to the mesh
+via <a class="reference internal" href="../python/CSXCAD/CSRectGrid.html#CSXCAD.CSRectGrid.CSRectGrid.SetDeltaUnit" title="CSXCAD.CSRectGrid.CSRectGrid.SetDeltaUnit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SetDeltaUnit()</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">unit</span> <span class="o">=</span> <span class="mf">1e-3</span>  <span class="c1"># in this example, use 1 mm as the unit</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">SetDeltaUnit</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>By default, the mesh coordinates have a physical unit of meter.
+This is rarely desirable since most 3D models for RF devices are
+drawn in millimeters or micrometers.</p>
+</section>
+<section id="adding-mesh-lines">
+<h3>Adding Mesh Lines<a class="headerlink" href="#adding-mesh-lines" title="Link to this heading"></a></h3>
+<p>A mesh is a list of line positions per axis, in drawing units. Lines can be
+set as a whole or added one group at a time; both are needed in practice, since
+a structure is usually meshed by first laying down a background grid and then
+adding the lines that specific features require.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-T2N0YXZl" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-0-T2N0YXZl" name="T2N0YXZl" role="tab" tabindex="0">Octave</button><button aria-controls="panel-0-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-0-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-0-T2N0YXZl" class="sphinx-tabs-panel code-tab group-tab" id="panel-0-T2N0YXZl" name="T2N0YXZl" role="tabpanel" tabindex="0"><div class="highlight-octave notranslate"><div class="highlight"><pre><span></span><span class="c">% the mesh is a plain struct with one vector per axis</span>
+<span class="nb">mesh</span><span class="p">.</span><span class="n">x</span> <span class="p">=</span> <span class="o">-</span><span class="mi">100</span> <span class="p">:</span> <span class="n">res</span> <span class="p">:</span> <span class="mi">100</span><span class="p">;</span>
+<span class="nb">mesh</span><span class="p">.</span><span class="n">y</span> <span class="p">=</span> <span class="o">-</span><span class="mi">100</span> <span class="p">:</span> <span class="n">res</span> <span class="p">:</span> <span class="mi">100</span><span class="p">;</span>
+
+<span class="c">% add the lines a feature needs, e.g. a sheet at z = 0</span>
+<span class="nb">mesh</span><span class="p">.</span><span class="n">z</span> <span class="p">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">50</span> <span class="mi">0</span> <span class="mi">50</span><span class="p">];</span>
+
+<span class="c">% hand the mesh to CSXCAD</span>
+<span class="n">csx</span> <span class="p">=</span> <span class="n">DefineRectGrid</span><span class="p">(</span><span class="n">csx</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="nb">mesh</span><span class="p">);</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-UHl0aG9u" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-0-UHl0aG9u" name="UHl0aG9u" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">csx</span><span class="o">.</span><span class="n">GetGrid</span><span class="p">()</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">SetDeltaUnit</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span>
+
+<span class="n">mesh</span><span class="o">.</span><span class="n">SetLines</span><span class="p">(</span><span class="s1">'x'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span> <span class="o">+</span> <span class="n">res</span><span class="p">,</span> <span class="n">res</span><span class="p">))</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">SetLines</span><span class="p">(</span><span class="s1">'y'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span> <span class="o">+</span> <span class="n">res</span><span class="p">,</span> <span class="n">res</span><span class="p">))</span>
+
+<span class="c1"># add the lines a feature needs, e.g. a sheet at z = 0</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">SetLines</span><span class="p">(</span><span class="s1">'z'</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">])</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">AddLine</span><span class="p">(</span><span class="s1">'z'</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></div>
+<p><a class="reference internal" href="../python/CSXCAD/CSRectGrid.html#CSXCAD.CSRectGrid.CSRectGrid.SetLines" title="CSXCAD.CSRectGrid.CSRectGrid.SetLines"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SetLines()</span></code></a> replaces the lines of an axis,
+<a class="reference internal" href="../python/CSXCAD/CSRectGrid.html#CSXCAD.CSRectGrid.CSRectGrid.AddLine" title="CSXCAD.CSRectGrid.CSRectGrid.AddLine"><code class="xref py py-meth docutils literal notranslate"><span class="pre">AddLine()</span></code></a> adds to them; both sort the
+result and drop duplicates, so lines may be given in any order. Read them back
+with <a class="reference internal" href="../python/CSXCAD/CSRectGrid.html#CSXCAD.CSRectGrid.CSRectGrid.GetLines" title="CSXCAD.CSRectGrid.CSRectGrid.GetLines"><code class="xref py py-meth docutils literal notranslate"><span class="pre">GetLines()</span></code></a>, which is the usual way to
+place something at the edge of the simulation box.</p>
+</section>
+<section id="smoothing">
+<h3>Smoothing<a class="headerlink" href="#smoothing" title="Link to this heading"></a></h3>
+<p>The lines placed so far are the ones the geometry demands; the gaps between
+them are usually too large. Smoothing fills each gap with additional lines,
+respecting a maximum resolution and a maximum ratio between neighboring cell
+sizes:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-T2N0YXZl" aria-selected="true" class="sphinx-tabs-tab code-tab group-tab" id="tab-1-T2N0YXZl" name="T2N0YXZl" role="tab" tabindex="0">Octave</button><button aria-controls="panel-1-UHl0aG9u" aria-selected="false" class="sphinx-tabs-tab code-tab group-tab" id="tab-1-UHl0aG9u" name="UHl0aG9u" role="tab" tabindex="-1">Python</button></div><div aria-labelledby="tab-1-T2N0YXZl" class="sphinx-tabs-panel code-tab group-tab" id="panel-1-T2N0YXZl" name="T2N0YXZl" role="tabpanel" tabindex="0"><div class="highlight-octave notranslate"><div class="highlight"><pre><span></span><span class="c">% fill the gaps in all three directions, max. cell size "res",</span>
+<span class="c">% grading ratio 1.5</span>
+<span class="nb">mesh</span> <span class="p">=</span> <span class="n">SmoothMesh</span><span class="p">(</span><span class="nb">mesh</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">);</span>
+
+<span class="n">csx</span> <span class="p">=</span> <span class="n">DefineRectGrid</span><span class="p">(</span><span class="n">csx</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="nb">mesh</span><span class="p">);</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-UHl0aG9u" class="sphinx-tabs-panel code-tab group-tab" hidden="true" id="panel-1-UHl0aG9u" name="UHl0aG9u" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mesh</span><span class="o">.</span><span class="n">SmoothMeshLines</span><span class="p">(</span><span class="s1">'all'</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></div>
+<p>In Matlab/Octave, <code class="docutils literal notranslate"><span class="pre">SmoothMesh</span></code> picks between <code class="docutils literal notranslate"><span class="pre">SmoothMeshLines</span></code>,
+<code class="docutils literal notranslate"><span class="pre">SmoothMeshLines2</span></code> and <code class="docutils literal notranslate"><span class="pre">RecursiveSmoothMesh</span></code> per axis, and takes an
+<code class="docutils literal notranslate"><span class="pre">allowed_max_ratio</span></code> to bound the grading. The Python
+<a class="reference internal" href="../python/CSXCAD/CSRectGrid.html#CSXCAD.CSRectGrid.CSRectGrid.SmoothMeshLines" title="CSXCAD.CSRectGrid.CSRectGrid.SmoothMeshLines"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SmoothMeshLines()</span></code></a> implements the first of
+those.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">ratio</span></code> argument steers how lines are distributed within one gap, but
+it is not enforced as a post-condition: a gap next to a much finer cell can
+still end up with a jump larger than <code class="docutils literal notranslate"><span class="pre">ratio</span></code>. After smoothing, check the
+result — <code class="docutils literal notranslate"><span class="pre">AnalyseMesh(lines)</span></code> in Matlab/Octave reports the smallest and
+largest cell of one axis and the worst grading ratio it contains.</p>
+</div>
+<p>Fixed lines must survive smoothing, which is what the <code class="docutils literal notranslate"><span class="pre">highres</span></code> trick in the
+<a class="reference internal" href="#mesh-1-3-2-3"><span class="std std-ref">1/3-2/3 rule</span></a> below is about: smoothing never subdivides
+an interval that is already smaller than <code class="docutils literal notranslate"><span class="pre">max_res</span></code>.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>In some transmission line solvers, the unit of measurement is arbitrary
+as long as the correct ratio is preserved. However, this is not true for
+full-wave electromagnetic simulations: a signal’s frequency, speed, and
+wavelength are related to each other. If an incorrect physical unit is
+used for the mesh, simulation initialization failures or numerical
+problems may be encountered by accidentally simulating a structure 1000x
+larger than the intended wavelength.</p>
+</div>
+</section>
+</section>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
+<p>In general, the mesh must satisfy four requirements:</p>
+<ol class="arabic simple">
+<li><p><strong>Frequency Resolution</strong>. Its interval must be small enough to resolve the
+shortest wavelength (highest
+frequency component) of the signal, so that electromagnetic field details are
+not missed. Thus, we need several cells per wavelength.</p></li>
+<li><p><strong>Spatial Resolution</strong>. Its interval must be small enough to resolve the
+shapes of the simulated
+structure, so that small details of the structure are not missed. Thus, we
+need at least a few cells around the important shapes (such as a metal
+trace) of the structure. openEMS uses a rectilinear mesh with variable
+spacing. To save time, only use a fine mesh interval around details on
+a structure; use a coarse mesh for the rest.</p></li>
+<li><p><strong>Smoothness</strong>. Its interval should change smoothly, not by a sudden jump.
+It’s recommended that the mesh spacing vary by no more than a factor of
+1.5 between adjacent lines.</p></li>
+<li><p><strong>1/3-2/3 Rule</strong>. The edges of a conductor have singularities with strong
+electric field. To improve FDTD accuracy, ideally, around the metal edge,
+the metal should occupy 1/3 of a cell, while the vacuum or insulator
+occupies 2/3 of a cell. More on that later.</p></li>
+</ol>
+<p>In addition to the algorithmic requirements, a mesh should also satisfy the
+following technical requirements on alignments.</p>
+<ol class="arabic simple">
+<li><p><strong>Zero Thickness Plane Alignment.</strong> Zero-thickness 2D objects including
+metal plates (<a class="reference internal" href="../octave/autogenerated/CSXCAD/materials.html#AddMetal" title="AddMetal"><code class="xref py py-func docutils literal notranslate"><span class="pre">AddMetal()</span></code></a>) and Thin Conducting Sheet
+(<a class="reference internal" href="../octave/autogenerated/CSXCAD/materials.html#AddConductingSheet" title="AddConductingSheet"><code class="xref py py-func docutils literal notranslate"><span class="pre">AddConductingSheet()</span></code></a>) must align to an exact mesh line, otherwise
+these objects can’t be simulated and will be ignored by the simulator.</p></li>
+<li><p><strong>Port Alignment.</strong> On each axis, a port must either be one-dimensional
+and aligned to a mesh line, or two-dimensional and crosses (or overlaps)
+with two mesh lines (a single mesh cell). Otherwise it can’t be simulated.</p></li>
+</ol>
+</section>
+<section id="mesh-resolution">
+<h2>Mesh Resolution<a class="headerlink" href="#mesh-resolution" title="Link to this heading"></a></h2>
+<p>As a rule of thumb, we want a mesh resolution of at least:</p>
+<div class="math notranslate nohighlight">
+\[l_\mathrm{cell} \le \dfrac{1}{10} \lambda\]</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is the same “1/10 wavelength” rule of thumb used for
+determining whether transmission line effects are significant in a
+distributed circuit.</p>
+</div>
+<p>The relationship between wavelength and frequency is:</p>
+<div class="math notranslate nohighlight">
+\[\lambda = \frac{v}{f_\mathrm{max}}\]</div>
+<p>in which <span class="math notranslate nohighlight">\(\lambda\)</span> is the wavelength of the electromagnetic wave
+in meters, <span class="math notranslate nohighlight">\(v\)</span> is the speed of light in a medium, in meters per second,
+and <span class="math notranslate nohighlight">\(f_\mathrm{max}\)</span> is the highest frequency component of the signals
+used in simulation.</p>
+<p>The speed of light in a medium is given by:</p>
+<div class="math notranslate nohighlight">
+\[v = \frac{c_0}{\sqrt{\epsilon_r\mu_r}}\]</div>
+<p>in which <span class="math notranslate nohighlight">\(c_0\)</span> is the speed of light in vacuum, <span class="math notranslate nohighlight">\(\epsilon_r\)</span>
+is the relative permittivity of the medium (in engineering, it’s sometimes
+also denoted as a material’s dielectric constant <span class="math notranslate nohighlight">\(D_k = \epsilon_r\)</span>).
+The <span class="math notranslate nohighlight">\(\mu_r\)</span> term is the medium’s relative permeability, which is
+usually omitted in engineering for the purpose of signal transmission.
+Most dielectrics (like plastics or fiberglass) in cables are non-magnetic -
+unless one is dealing with inductors or circulators.</p>
+<p>In vacuum, <span class="math notranslate nohighlight">\(\epsilon_r = 1\)</span> and <span class="math notranslate nohighlight">\(\mu_r = 1\)</span> exactly.</p>
+<p>According to the above rule of thumb, the mesh line spacing can be calculated
+as a function of frequency, permittivity, and permeability. It’s only a rule
+of thumb, potentially, a finer mesh line interval is needed to increase the
+spatial resolution around important structures, a coarser mesh line interval
+may be desirable to increase simulation speed around unimportant regions:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">openEMS.physical_constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">C0</span>
+
+<span class="c1"># in this example, use 1 mm as the unit</span>
+<span class="n">unit</span> <span class="o">=</span> <span class="mf">1e-3</span>
+
+<span class="c1"># highest excitation signal frequency</span>
+<span class="n">f_max</span> <span class="o">=</span> <span class="mf">10e9</span>
+<span class="n">epsilon_r</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">mu_r</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">C0</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">epsilon_r</span> <span class="o">*</span> <span class="n">mu_r</span><span class="p">)</span>
+<span class="n">wavelength</span> <span class="o">=</span> <span class="n">v</span> <span class="o">/</span> <span class="n">f_max</span> <span class="o">/</span> <span class="n">unit</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">wavelength</span> <span class="o">/</span> <span class="mi">10</span>
+</pre></div>
+</div>
+</section>
+<section id="rule">
+<span id="mesh-1-3-2-3"></span><h2>1/3-2/3 Rule<a class="headerlink" href="#rule" title="Link to this heading"></a></h2>
+<p>In FDTD, a fundamental error source is the singularities around metal
+edges, which have strong electric fields that are difficult to calculate
+properly. Even when the mesh line and metal edge are aligned exactly,
+the simulation accuracy is degraded unnecessarily - increasing the
+mesh resolution is inefficient and ineffective. It’s wasteful and
+only has a marginal effect.</p>
+<p>To mitigate this technical limitation, the mesh should be intentionally
+misaligned with metal edges. For the best results, we introduce additional
+cells with different sizes around the edge, creating a non-uniform
+rectilinear mesh with variable spacing. Around the metal edge, the metal
+occupies 1/3 of a cell, while the vacuum or insulator occupies 2/3 of a
+cell. This is known as the <strong>1/3-2/3 rule</strong>.</p>
+<section id="smoothing-problem-and-workaround">
+<h3>Smoothing Problem and Workaround<a class="headerlink" href="#smoothing-problem-and-workaround" title="Link to this heading"></a></h3>
+<p>The interval between the 1/3 and 2/3 mesh lines (i.e. the length of the
+cell) is <code class="docutils literal notranslate"><span class="pre">highres</span></code>, which is smaller than the base interval <code class="docutils literal notranslate"><span class="pre">res</span></code> by a
+factor of 1.5. This is a workaround: If the same mesh resolution is
+used for all cells, when we later smooth the mesh,
+<a class="reference internal" href="../python/CSXCAD/CSRectGrid.html#CSXCAD.CSRectGrid.CSRectGrid.SmoothMeshLines" title="CSXCAD.CSRectGrid.CSRectGrid.SmoothMeshLines"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SmoothMeshLines()</span></code></a> may add additional mesh
+lines within our handcrafted cells, effectively undoing the 1/3-2/3 rule.
+Using the <cite>highres</cite> interval works around the problem, since
+<a class="reference internal" href="../python/CSXCAD/CSRectGrid.html#CSXCAD.CSRectGrid.CSRectGrid.SmoothMeshLines" title="CSXCAD.CSRectGrid.CSRectGrid.SmoothMeshLines"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SmoothMeshLines()</span></code></a> is not allowed to
+subdivide an interval smaller than <code class="docutils literal notranslate"><span class="pre">res</span></code>. A factor of 1.5 is recommended.</p>
+</section>
+</section>
+<section id="courant-friedrichs-lewy-cfl-criterion">
+<h2>Courant-Friedrichs-Lewy (CFL) Criterion<a class="headerlink" href="#courant-friedrichs-lewy-cfl-criterion" title="Link to this heading"></a></h2>
+<p>In general, the CFL criterion governs the stability of FDTD
+calculations. It states that the simulation timestep can’t be
+larger than:</p>
+<div class="math notranslate nohighlight">
+\[\Delta t \le
+\frac{1}{v\sqrt{
+{1 \over {\Delta x^2}} + {1 \over {\Delta y^2}} + {1 \over {\Delta z^2}}
+}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(v\)</span> is the wave speed, <span class="math notranslate nohighlight">\(\Delta x\)</span>,
+<span class="math notranslate nohighlight">\(\Delta y\)</span>, <span class="math notranslate nohighlight">\(\Delta z\)</span> are the distances between mesh
+lines.</p>
+<p>This creates a peculiar limitation: to resolve the smallest mesh
+cell, one must use a small timestep regardless of frequency.</p>
+<p>Even for simulations at low frequencies, as long as the simulated
+structure has small features (i.e. mesh distance is short), we
+must use very small timesteps, advancing the simulation only a few
+nanoseconds per iteration. Under 100 MHz, at the bottom of the VHF
+band or in the HF band, the required number of iterations becomes
+impractically large. This means openEMS (and other textbook
+FDTD solvers with explicit timestepping) is unsuitable if there’s a
+large mismatch between the signal wavelength and the physical size
+of the structure, such as a 10 cm circuit board operating at 1
+MHz, where the wavelength is 300 m in vacuum.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In openEMS, you only need to define an appropriate mesh.
+There’s no need to calculate the required timestep size,
+By default, openEMS uses a modified timestep criterion
+named <em>Rennings2</em> (not CFL) to improve timestep selection
+in non-uniform meshes. But the general limitation still
+applies.</p>
+<p><cite>Rennings2</cite> is derived in an unpublished PhD thesis <a class="footnote-reference brackets" href="#id4" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> (not
+available online). For an abridged description, see research
+publication <a class="footnote-reference brackets" href="#id5" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.</p>
+<p>If you really need small cells
+(e.g. to resolve important features of your structure) you
+will have to live with long execution times, or perhaps FDTD is
+not the right method for your problem. As a workaround, one may
+also try extracting the circuit parameters using a higher signal
+frequency, then using those equivalent-circuit parameters in a
+low-frequency simulation with a general-purpose linear circuit
+simulator.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>To switch the timestep algorithm between <em>CFL</em> and <em>Rennings2</em>,
+use <a class="reference internal" href="../python/openEMS/openEMS.html#openEMS.openEMS.SetTimeStepMethod" title="openEMS.openEMS.SetTimeStepMethod"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SetTimeStepMethod()</span></code></a>. To tune a
+marginally stable simulation, timestep can be reduced manually
+via <a class="reference internal" href="../python/openEMS/openEMS.html#openEMS.openEMS.SetTimeStepFactor" title="openEMS.openEMS.SetTimeStepFactor"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SetTimeStepFactor()</span></code></a>.</p>
+</div>
+</section>
+<section id="yee-cells">
+<h2>Yee cells<a class="headerlink" href="#yee-cells" title="Link to this heading"></a></h2>
+<p>In the Finite-Difference Time-Domain (FDTD) algorithm, the continuous 3D box
+is partitioned into cuboids in the 3D space. They form the basic unit of
+electromagnetic calculations. These cells are known as Yee cells (named
+after Kane S. Yee’s 1966 algorithm).</p>
+<p>Since the Yee cells are created in a unique “staggered” arrangement at the
+heart of the algorithm, they have some unintuitive properties, which are
+responsible for sampling artifacts. They must be understood to
+use FDTD successfully for simulations at intermediate and advanced levels.</p>
+<p>For simplicity, let’s consider the FDTD algorithm along a 1D line <a class="footnote-reference brackets" href="#id6" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>.
+The 1D line is discretized into two meshes: the electric and the magnetic field
+meshes. The electric mesh is also known as the <em>primary mesh</em>, the magnetic
+mesh is known as the <em>secondary mesh</em> (or <em>dual mesh</em>).</p>
+<p>Internally, these fields are stored in two separate 1D arrays in
+a computer. Each array element is indexed by the computer as <code class="docutils literal notranslate"><span class="pre">E[0]</span></code>,
+<code class="docutils literal notranslate"><span class="pre">E[1]</span></code>, <code class="docutils literal notranslate"><span class="pre">E[2]</span></code>, <code class="docutils literal notranslate"><span class="pre">E[3]</span></code> …, and <code class="docutils literal notranslate"><span class="pre">H[0]</span></code>, <code class="docutils literal notranslate"><span class="pre">H[1]</span></code>, <code class="docutils literal notranslate"><span class="pre">H[2]</span></code>,
+<code class="docutils literal notranslate"><span class="pre">H[3]</span></code>, …</p>
+<figure class="align-default" id="id7">
+<a class="with-border reference internal image-reference" href="../_images/single-array-1d.svg"><img alt="../_images/single-array-1d.svg" class="with-border" src="../_images/single-array-1d.svg" style="width: 49%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Internal representation of the Yee mesh in a computer.</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>But the <em>physical meaning</em> of these values is different from their indices.
+Physically, they represent an implicit single array. In this array, all
+<code class="docutils literal notranslate"><span class="pre">E[idx]</span></code> elements represent the exact electric field value located exactly
+at a mesh line, such as <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">0</span></code> and <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">1</span></code>. On the other hand,
+each <code class="docutils literal notranslate"><span class="pre">H[idx]</span></code> element represents the field value in the middle of two
+neighboring <code class="docutils literal notranslate"><span class="pre">E</span></code> mesh lines. The element <code class="docutils literal notranslate"><span class="pre">H[0]</span></code> represents <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">0.5</span></code>
+between <code class="docutils literal notranslate"><span class="pre">E[0]</span> <span class="pre">(x</span> <span class="pre">=</span> <span class="pre">0)</span></code> and <code class="docutils literal notranslate"><span class="pre">E[1]</span> <span class="pre">(x</span> <span class="pre">=</span> <span class="pre">1)</span></code>, not <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">1.0</span></code>.</p>
+<figure class="align-default" id="id8">
+<a class="with-border reference internal image-reference" href="../_images/yee-1d.svg"><img alt="../_images/yee-1d.svg" class="with-border" src="../_images/yee-1d.svg" style="width: 60%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Physical interpretation of the meaning of both meshes. They
+implicitly represent a single staggered mesh, where the primary
+mesh computes the electric field at exactly a mesh line, while
+the secondary grid computes the magnetic field between two
+neighboring mesh lines.
+Note that
+the electric and magnetic fields are vectors orthogonal to each
+other (right-hand rule).</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>2D and 3D Yee cells follow the same arrangement, and are constructed
+by generalizing all arrays to 2 and 3 dimensions, forming two nested
+grids (“staggered grids”) in space. All numerical values are also
+generalized to 2 or 3 components (i.e. for all <code class="docutils literal notranslate"><span class="pre">(i,</span> <span class="pre">j,</span> <span class="pre">k)</span></code> there
+exists <code class="docutils literal notranslate"><span class="pre">Ex,</span> <span class="pre">Ey,</span> <span class="pre">Ez</span></code>).</p>
+<p>This staggered grid is Yee’s key insight that enables a straightforward
+<em>leapfrog</em> method to simulate the Maxwell’s curl equations, by computing
+the left-hand side from the right-hand side.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\nabla \times \mathbf{E} &amp;= - \frac{\partial\mathbf B}{\partial t} \\
+\nabla \times \mathbf{B} &amp;= \mu_0\varepsilon_0 \frac{\partial\mathbf E}{\partial t}
+\end{aligned}\end{split}\]</div>
+<p>By numerically differentiating the two neighboring electric cells, the magnetic
+cell is re-calculated to the next step, and vice versa. This process
+is called <em>time-marching</em>, because every update moves the simulation forward in time.</p>
+</section>
+<section id="sampling-artifacts">
+<h2>Sampling Artifacts<a class="headerlink" href="#sampling-artifacts" title="Link to this heading"></a></h2>
+<p>The staggered grid of FDTD is a powerful solution, but with the peculiar feature
+that the magnetic field is never known exactly at the same point in space or time
+as the electric field, it always lags by a half-interval, which is responsible
+to the following limitations.</p>
+<p>When using raw voltage or current probes, or running field dumps, users must be
+aware which placement strategy or interpolation method is used.</p>
+<section id="spatial-artifacts">
+<h3>Spatial Artifacts<a class="headerlink" href="#spatial-artifacts" title="Link to this heading"></a></h3>
+<p>Only the electric field is known at an exact mesh line. The magnetic field
+cell is known at a position with a half-step offset (<code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">+</span> <span class="pre">0.5</span></code>). It’s
+located in the middle of the two mesh lines. All mesh lines, coordinates, and
+CSXCAD visualization are based on the primary mesh. Current probes placed at
+a mesh line is automatically snapped to the nearest secondary mesh line. Thus,
+naive current probe placements create a slight error due to this misalignment.</p>
+<p>To reduce this error, place a voltage probe on an exact mesh line (such as
+<code class="docutils literal notranslate"><span class="pre">U(x,</span> <span class="pre">t)</span></code>), and two current probes half-way to the left and right of the
+voltage probe (such as <code class="docutils literal notranslate"><span class="pre">I(x</span> <span class="pre">-</span> <span class="pre">dx</span> <span class="pre">/</span> <span class="pre">2,</span> <span class="pre">t)</span></code>, <code class="docutils literal notranslate"><span class="pre">I(x</span> <span class="pre">+</span> <span class="pre">dx</span> <span class="pre">/</span> <span class="pre">2,</span> <span class="pre">t)</span></code>), and
+average both readings in post-processing to interpolate for <code class="docutils literal notranslate"><span class="pre">I(x)</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If Port-based excitations are used (for simple use cases), openEMS
+automatically handles this low-level technical detail by correctly placing
+the voltage and current probes and performing spatial interpolation.</p>
+</div>
+</section>
+<section id="temporal-artifacts">
+<h3>Temporal Artifacts<a class="headerlink" href="#temporal-artifacts" title="Link to this heading"></a></h3>
+<p>Only the electric field is known at an exact timestep, the magnetic field
+is known with a half-timestep offset (<code class="docutils literal notranslate"><span class="pre">t</span> <span class="pre">+</span> <span class="pre">0.5</span></code>). When probing both voltages
+and currents, or dumping both electric and magnetic fields, users must explicitly
+take this simulation artifact into account.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Since temporal interpolation is unsupported, analyzing both physical quantities
+at the same timestep is difficult, and best be avoided without a strong FDTD
+background.</p>
+</div>
+</section>
+</section>
+<section id="bibliography">
+<h2>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading"></a></h2>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Andreas Rennings, Elektromagnetische Zeitbereichssimulationen innovativer
+Antennen auf Basis von Metamaterialien. PhD Thesis, University of Duisburg-Essen,
+2008, pp. 76, eq. 4.77</p>
+</aside>
+<aside class="footnote brackets" id="id5" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>Andreas Rennings et al.,
+<a class="reference external" href="https://www.researchgate.net/publication/227133697_Equivalent_Circuit_EC_FDTD_Method_for_Dispersive_Materials_Derivation_Stability_Criteria_and_Application_Examples">Equivalent Circuit (EC) FDTD Method for Dispersive Materials: Derivation,
+Stability Criteria and Application Examples</a>, Time Domain Methods in Electrodynamics.</p>
+</aside>
+<aside class="footnote brackets" id="id6" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">3</a><span class="fn-bracket">]</span></span>
+<p>John B. Schneider. <a class="reference external" href="https://eecs.wsu.edu/~schneidj/ufdtd/index.php">Understanding the FDTD Method</a>,
+Chapter 3, page 36.</p>
+</aside>
+</aside>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../python/openEMS/Tutorials/MSL_NotchFilter.html#tutorial-msl-notchfilter"><span class="std std-ref">Microstrip Notch Filter</span></a> — demonstrates non-uniform meshing and the
+1/3-2/3 rule on a practical microstrip structure.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="numerical_method.html" class="btn btn-neutral float-left" title="Numerical Method" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cylindrical_fdtd.html" class="btn btn-neutral float-right" title="Cylindrical FDTD" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2026, Thorsten Liebig.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

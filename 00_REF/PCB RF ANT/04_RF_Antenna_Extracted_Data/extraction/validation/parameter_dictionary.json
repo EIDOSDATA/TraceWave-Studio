@@ -1,0 +1,106 @@
+{
+  "schema_version": "rf-antenna-extraction/1.0",
+  "dataset_kind": "parameter_dictionary",
+  "source_page_numbering": "1-based physical PDF page; HTML uses named section, no invented page number",
+  "source_language": "English",
+  "extraction_language": "Korean",
+  "record_count": 16,
+  "records": [
+    {
+      "parameter": "frequency_hz",
+      "unit": "Hz",
+      "group": "design input",
+      "note_ko": "주파수 및 채널 범위를 명시"
+    },
+    {
+      "parameter": "trace_width_m",
+      "unit": "m",
+      "group": "geometry",
+      "note_ko": "PCB 도체 선폭"
+    },
+    {
+      "parameter": "substrate_height_m",
+      "unit": "m",
+      "group": "stackup",
+      "note_ko": "전체 PCB 두께와 급전선-접지 거리 구분"
+    },
+    {
+      "parameter": "epsilon_r",
+      "unit": "1",
+      "group": "material",
+      "note_ko": "측정 주파수·방법·방향·공차와 함께 보관"
+    },
+    {
+      "parameter": "tan_delta",
+      "unit": "1",
+      "group": "material",
+      "note_ko": "주파수와 재질 시험 조건 필수"
+    },
+    {
+      "parameter": "conductivity_s_per_m",
+      "unit": "S/m",
+      "group": "material",
+      "note_ko": "도체 또는 openEMS kappa 모델 구분"
+    },
+    {
+      "parameter": "s11_complex",
+      "unit": "1 complex",
+      "group": "measurement",
+      "note_ko": "주파수·z0·기준면과 결합"
+    },
+    {
+      "parameter": "radiation_efficiency",
+      "unit": "1",
+      "group": "radiation",
+      "note_ko": "P_rad/P_accepted"
+    },
+    {
+      "parameter": "total_efficiency",
+      "unit": "1",
+      "group": "radiation",
+      "note_ko": "mismatch 포함 여부와 feed-loss 기준면 명시"
+    },
+    {
+      "parameter": "gain",
+      "unit": "1 or dBi",
+      "group": "radiation",
+      "note_ko": "선형 값과 dBi 값 별도 필드"
+    },
+    {
+      "parameter": "group_delay_s",
+      "unit": "s",
+      "group": "time domain",
+      "note_ko": "주파수·방향·단일/안테나 쌍 기준 명시"
+    },
+    {
+      "parameter": "coil_L_h",
+      "unit": "H",
+      "group": "NFC",
+      "note_ko": "등가회로 및 측정 주파수 명시"
+    },
+    {
+      "parameter": "coil_R_ohm",
+      "unit": "ohm",
+      "group": "NFC",
+      "note_ko": "직렬/병렬 등가 및 측정 불확도 명시"
+    },
+    {
+      "parameter": "coil_Q",
+      "unit": "1",
+      "group": "NFC",
+      "note_ko": "bare coil/loaded channel Q 구분"
+    },
+    {
+      "parameter": "chip_impedance",
+      "unit": "ohm complex",
+      "group": "UHF RFID",
+      "note_ko": "전력·주파수·패키지·접합 의존"
+    },
+    {
+      "parameter": "coverage_factor",
+      "unit": "1",
+      "group": "uncertainty",
+      "note_ko": "값 및 해석 근거 별도 입력"
+    }
+  ]
+}

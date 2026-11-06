@@ -1,0 +1,110 @@
+﻿geometry_id,source_id,physical_pdf_page,locator,note,embedded_source,rendered_page_image,source_relative_path
+G001,NORDIC_NWP008,1,§3,,,,files/Printed_antenna_geometry/NORDIC_NWP008__nWP008_4_printed_monopole_antenna_for_2.45_GHz.pdf
+G001,NORDIC_NWP008,2,§3–4,,,,files/Printed_antenna_geometry/NORDIC_NWP008__nWP008_4_printed_monopole_antenna_for_2.45_GHz.pdf
+G001,NORDIC_NWP008,3,Figure 1 / tuning,,,,files/Printed_antenna_geometry/NORDIC_NWP008__nWP008_4_printed_monopole_antenna_for_2.45_GHz.pdf
+G002,TI_AN043_SWRA117,1,Introduction,,,,files/Printed_antenna_geometry/TI_AN043_SWRA117__AN043_Small_Size_2.4_GHz_PCB_Antenna.pdf
+G002,TI_AN043_SWRA117,3,§4,,,,files/Printed_antenna_geometry/TI_AN043_SWRA117__AN043_Small_Size_2.4_GHz_PCB_Antenna.pdf
+G002,TI_AN043_SWRA117,4,Figure 3 / Table 1,,,,files/Printed_antenna_geometry/TI_AN043_SWRA117__AN043_Small_Size_2.4_GHz_PCB_Antenna.pdf
+G002,TI_AN043_SWRA117,5,§5.1,,,,files/Printed_antenna_geometry/TI_AN043_SWRA117__AN043_Small_Size_2.4_GHz_PCB_Antenna.pdf
+G003,TI_DN007_SWRU120,2,Figure 1-1 / Table 1-1 / §1,,,,files/Printed_antenna_geometry/TI_DN007_SWRU120__DN007_2.4_GHz_Inverted-F_Antenna.pdf
+G003,TI_DN007_SWRU120,3,§2,,,,files/Printed_antenna_geometry/TI_DN007_SWRU120__DN007_2.4_GHz_Inverted-F_Antenna.pdf
+G004,TI_DN023_SWRA228,3,§3.1,,,,files/Printed_antenna_geometry/TI_DN023_SWRA228__DN023_868_MHz_915_MHz_and_955_MHz_Inverted-F_Antenna.pdf
+G004,TI_DN023_SWRA228,4,Figure 2 / Table 1 and paragraph,,,,files/Printed_antenna_geometry/TI_DN023_SWRA228__DN023_868_MHz_915_MHz_and_955_MHz_Inverted-F_Antenna.pdf
+G004,TI_DN023_SWRA228,10,Figure 12,,,,files/Printed_antenna_geometry/TI_DN023_SWRA228__DN023_868_MHz_915_MHz_and_955_MHz_Inverted-F_Antenna.pdf
+G004,TI_DN023_SWRA228,10,§4.2,,,,files/Printed_antenna_geometry/TI_DN023_SWRA228__DN023_868_MHz_915_MHz_and_955_MHz_Inverted-F_Antenna.pdf
+G005,TI_DN023_SWRA228,3,§3.1,,,,files/Printed_antenna_geometry/TI_DN023_SWRA228__DN023_868_MHz_915_MHz_and_955_MHz_Inverted-F_Antenna.pdf
+G005,TI_DN023_SWRA228,4,Figure 2 / Table 1 and paragraph,,,,files/Printed_antenna_geometry/TI_DN023_SWRA228__DN023_868_MHz_915_MHz_and_955_MHz_Inverted-F_Antenna.pdf
+G005,TI_DN023_SWRA228,11,Figure 13,,,,files/Printed_antenna_geometry/TI_DN023_SWRA228__DN023_868_MHz_915_MHz_and_955_MHz_Inverted-F_Antenna.pdf
+G005,TI_DN023_SWRA228,10,§4.2,,,,files/Printed_antenna_geometry/TI_DN023_SWRA228__DN023_868_MHz_915_MHz_and_955_MHz_Inverted-F_Antenna.pdf
+G006,TI_DN024_SWRA227,3,§3–3.1,,,,files/Printed_antenna_geometry/TI_DN024_SWRA227__DN024_868_MHz_915_MHz_and_955_MHz_Monopole_PCB_Antenna.pdf
+G006,TI_DN024_SWRA227,4,Figure 2 / Table 1,,,,files/Printed_antenna_geometry/TI_DN024_SWRA227__DN024_868_MHz_915_MHz_and_955_MHz_Monopole_PCB_Antenna.pdf
+G006,TI_DN024_SWRA227,5,§4,,,,files/Printed_antenna_geometry/TI_DN024_SWRA227__DN024_868_MHz_915_MHz_and_955_MHz_Monopole_PCB_Antenna.pdf
+G007,TI_DN004_SWRA118,1,Introduction,,,,files/Printed_antenna_geometry/TI_DN004_SWRA118__DN004_Folded_Dipole_Antenna_for_CC25xx.pdf
+G007,TI_DN004_SWRA118,3,Figure 2 / Table 1 / §3,,,,files/Printed_antenna_geometry/TI_DN004_SWRA118__DN004_Folded_Dipole_Antenna_for_CC25xx.pdf
+G007,TI_DN004_SWRA118,13,Table 3,,,,files/Printed_antenna_geometry/TI_DN004_SWRA118__DN004_Folded_Dipole_Antenna_for_CC25xx.pdf
+G008,SILABS_AN1088,3,Figure 2.1 / §2.1,,,evidence/SILABS_AN1088_p003.png,files/Printed_antenna_geometry/SILABS_AN1088__AN1088_Designing_with_an_Inverted-F_2.4_GHz_PCB_Antenna.pdf
+G008,SILABS_AN1088,4,Figure 2.2,,,,files/Printed_antenna_geometry/SILABS_AN1088__AN1088_Designing_with_an_Inverted-F_2.4_GHz_PCB_Antenna.pdf
+G008,SILABS_AN1088,5,§3.1,,,,files/Printed_antenna_geometry/SILABS_AN1088__AN1088_Designing_with_an_Inverted-F_2.4_GHz_PCB_Antenna.pdf
+G009,SILABS_AN1088,3,Figure 2.1 / §2.1,,,evidence/SILABS_AN1088_p003.png,files/Printed_antenna_geometry/SILABS_AN1088__AN1088_Designing_with_an_Inverted-F_2.4_GHz_PCB_Antenna.pdf
+G009,SILABS_AN1088,4,Figure 2.2,,,,files/Printed_antenna_geometry/SILABS_AN1088__AN1088_Designing_with_an_Inverted-F_2.4_GHz_PCB_Antenna.pdf
+G009,SILABS_AN1088,5,§3.1,,,,files/Printed_antenna_geometry/SILABS_AN1088__AN1088_Designing_with_an_Inverted-F_2.4_GHz_PCB_Antenna.pdf
+G010,ST_AN5129,4,Figure 2,,,evidence/ST_AN5129_p004.png,files/Printed_antenna_geometry/ST_AN5129__AN5129_Guidelines_for_meander_design_using_low-cost_PCB_antennae_with_2.4_G.pdf
+G010,ST_AN5129,5,Figure 3 / Table 1,,,,files/Printed_antenna_geometry/ST_AN5129__AN5129_Guidelines_for_meander_design_using_low-cost_PCB_antennae_with_2.4_G.pdf
+G010,ST_AN5129,6,Figures 4–5,,,,files/Printed_antenna_geometry/ST_AN5129__AN5129_Guidelines_for_meander_design_using_low-cost_PCB_antennae_with_2.4_G.pdf
+G010,ST_AN5129,7,Figures 6–7,,,,files/Printed_antenna_geometry/ST_AN5129__AN5129_Guidelines_for_meander_design_using_low-cost_PCB_antennae_with_2.4_G.pdf
+G011,ST_AN5434,5,Figure 3,,,evidence/ST_AN5434_p005.png,files/Printed_antenna_geometry/ST_AN5434__AN5434_Guidelines_for_on-board_antenna_reference_designs_for_STM32WB_WBA_MC.pdf
+G011,ST_AN5434,2,§1,,,,files/Printed_antenna_geometry/ST_AN5434__AN5434_Guidelines_for_on-board_antenna_reference_designs_for_STM32WB_WBA_MC.pdf
+G011,ST_AN5434,3,§2,,,,files/Printed_antenna_geometry/ST_AN5434__AN5434_Guidelines_for_on-board_antenna_reference_designs_for_STM32WB_WBA_MC.pdf
+G011,ST_AN5434,5,§3.2.1,,,evidence/ST_AN5434_p005.png,files/Printed_antenna_geometry/ST_AN5434__AN5434_Guidelines_for_on-board_antenna_reference_designs_for_STM32WB_WBA_MC.pdf
+G011,ST_AN5434,21,§4,,,,files/Printed_antenna_geometry/ST_AN5434__AN5434_Guidelines_for_on-board_antenna_reference_designs_for_STM32WB_WBA_MC.pdf
+G011,ST_AN5434,36,Conclusion / Table 2,,,,files/Printed_antenna_geometry/ST_AN5434__AN5434_Guidelines_for_on-board_antenna_reference_designs_for_STM32WB_WBA_MC.pdf
+G012,ST_AN5434,8,Figure 8,,,evidence/ST_AN5434_p008.png,files/Printed_antenna_geometry/ST_AN5434__AN5434_Guidelines_for_on-board_antenna_reference_designs_for_STM32WB_WBA_MC.pdf
+G012,ST_AN5434,2,§1,,,,files/Printed_antenna_geometry/ST_AN5434__AN5434_Guidelines_for_on-board_antenna_reference_designs_for_STM32WB_WBA_MC.pdf
+G012,ST_AN5434,3,§2,,,,files/Printed_antenna_geometry/ST_AN5434__AN5434_Guidelines_for_on-board_antenna_reference_designs_for_STM32WB_WBA_MC.pdf
+G012,ST_AN5434,5,§3.2.1,,,evidence/ST_AN5434_p005.png,files/Printed_antenna_geometry/ST_AN5434__AN5434_Guidelines_for_on-board_antenna_reference_designs_for_STM32WB_WBA_MC.pdf
+G012,ST_AN5434,21,§4,,,,files/Printed_antenna_geometry/ST_AN5434__AN5434_Guidelines_for_on-board_antenna_reference_designs_for_STM32WB_WBA_MC.pdf
+G012,ST_AN5434,36,Conclusion / Table 2,,,,files/Printed_antenna_geometry/ST_AN5434__AN5434_Guidelines_for_on-board_antenna_reference_designs_for_STM32WB_WBA_MC.pdf
+G013,ST_AN5434,11,Figure 13,,,evidence/ST_AN5434_p011.png,files/Printed_antenna_geometry/ST_AN5434__AN5434_Guidelines_for_on-board_antenna_reference_designs_for_STM32WB_WBA_MC.pdf
+G013,ST_AN5434,2,§1,,,,files/Printed_antenna_geometry/ST_AN5434__AN5434_Guidelines_for_on-board_antenna_reference_designs_for_STM32WB_WBA_MC.pdf
+G013,ST_AN5434,3,§2,,,,files/Printed_antenna_geometry/ST_AN5434__AN5434_Guidelines_for_on-board_antenna_reference_designs_for_STM32WB_WBA_MC.pdf
+G013,ST_AN5434,5,§3.2.1,,,evidence/ST_AN5434_p005.png,files/Printed_antenna_geometry/ST_AN5434__AN5434_Guidelines_for_on-board_antenna_reference_designs_for_STM32WB_WBA_MC.pdf
+G013,ST_AN5434,21,§4,,,,files/Printed_antenna_geometry/ST_AN5434__AN5434_Guidelines_for_on-board_antenna_reference_designs_for_STM32WB_WBA_MC.pdf
+G013,ST_AN5434,36,Conclusion / Table 2,,,,files/Printed_antenna_geometry/ST_AN5434__AN5434_Guidelines_for_on-board_antenna_reference_designs_for_STM32WB_WBA_MC.pdf
+G014,ST_AN5434,13,Figure 18,,,evidence/ST_AN5434_p013.png,files/Printed_antenna_geometry/ST_AN5434__AN5434_Guidelines_for_on-board_antenna_reference_designs_for_STM32WB_WBA_MC.pdf
+G014,ST_AN5434,2,§1,,,,files/Printed_antenna_geometry/ST_AN5434__AN5434_Guidelines_for_on-board_antenna_reference_designs_for_STM32WB_WBA_MC.pdf
+G014,ST_AN5434,3,§2,,,,files/Printed_antenna_geometry/ST_AN5434__AN5434_Guidelines_for_on-board_antenna_reference_designs_for_STM32WB_WBA_MC.pdf
+G014,ST_AN5434,5,§3.2.1,,,evidence/ST_AN5434_p005.png,files/Printed_antenna_geometry/ST_AN5434__AN5434_Guidelines_for_on-board_antenna_reference_designs_for_STM32WB_WBA_MC.pdf
+G014,ST_AN5434,21,§4,,,,files/Printed_antenna_geometry/ST_AN5434__AN5434_Guidelines_for_on-board_antenna_reference_designs_for_STM32WB_WBA_MC.pdf
+G014,ST_AN5434,36,Conclusion / Table 2,,,,files/Printed_antenna_geometry/ST_AN5434__AN5434_Guidelines_for_on-board_antenna_reference_designs_for_STM32WB_WBA_MC.pdf
+G015,RENESAS_AN_B027,6,§4,,,,files/BLE_printed_antenna_synthesis/RENESAS_AN_B027__AN-B-027_Designing_Printed_Antennas_for_Bluetooth_Low_Energy.pdf
+G015,RENESAS_AN_B027,7,Figure 3 / legend,,,evidence/RENESAS_AN_B027_p007.png,files/BLE_printed_antenna_synthesis/RENESAS_AN_B027__AN-B-027_Designing_Printed_Antennas_for_Bluetooth_Low_Energy.pdf
+G015,RENESAS_AN_B027,8,Figure 4 / §4.1.1,,,,files/BLE_printed_antenna_synthesis/RENESAS_AN_B027__AN-B-027_Designing_Printed_Antennas_for_Bluetooth_Low_Energy.pdf
+G015,RENESAS_AN_B027,9,Figures 6–7,,,,files/BLE_printed_antenna_synthesis/RENESAS_AN_B027__AN-B-027_Designing_Printed_Antennas_for_Bluetooth_Low_Energy.pdf
+G016,RENESAS_AN_B027,6,§4,,,,files/BLE_printed_antenna_synthesis/RENESAS_AN_B027__AN-B-027_Designing_Printed_Antennas_for_Bluetooth_Low_Energy.pdf
+G016,RENESAS_AN_B027,10,Figure 8 / legend,,,evidence/RENESAS_AN_B027_p010.png,files/BLE_printed_antenna_synthesis/RENESAS_AN_B027__AN-B-027_Designing_Printed_Antennas_for_Bluetooth_Low_Energy.pdf
+G016,RENESAS_AN_B027,11,Figure 9 / §4.2.1,,,,files/BLE_printed_antenna_synthesis/RENESAS_AN_B027__AN-B-027_Designing_Printed_Antennas_for_Bluetooth_Low_Energy.pdf
+G016,RENESAS_AN_B027,12,Figures 11–12,,,,files/BLE_printed_antenna_synthesis/RENESAS_AN_B027__AN-B-027_Designing_Printed_Antennas_for_Bluetooth_Low_Energy.pdf
+G017,RENESAS_AN_B027,16,Figure 18 / §4.4,,,,files/BLE_printed_antenna_synthesis/RENESAS_AN_B027__AN-B-027_Designing_Printed_Antennas_for_Bluetooth_Low_Energy.pdf
+G017,RENESAS_AN_B027,17,Figure 19 / §4.4.1,,,,files/BLE_printed_antenna_synthesis/RENESAS_AN_B027__AN-B-027_Designing_Printed_Antennas_for_Bluetooth_Low_Energy.pdf
+G017,RENESAS_AN_B027,18,Figures 21–22,,,,files/BLE_printed_antenna_synthesis/RENESAS_AN_B027__AN-B-027_Designing_Printed_Antennas_for_Bluetooth_Low_Energy.pdf
+G018,PAPER-059,2,Antenna design / Figure 1,,,,files/uwb_ring/PAPER-059__Printed_circular_ring_monopole_antennas.pdf
+G018,PAPER-059,2,Analysis and discussion,,,,files/uwb_ring/PAPER-059__Printed_circular_ring_monopole_antennas.pdf
+G018,PAPER-059,3,Figures 3–5,,,,files/uwb_ring/PAPER-059__Printed_circular_ring_monopole_antennas.pdf
+G019,PAPER-063,1,Figure 1 / §II,,,evidence/PAPER-063_p001.png,files/uwb_disc/PAPER-063__Study_of_a_printed_circular_disc_monopole_antenna_for_UWB_systems.pdf
+G019,PAPER-063,2,Figure 2 / §II–III,,,,files/uwb_disc/PAPER-063__Study_of_a_printed_circular_disc_monopole_antenna_for_UWB_systems.pdf
+G020,PAPER-065,2,§2 / Figures 1–2,,,,files/uwb_parametric/PAPER-065__Printed_Newton_s_egg_curved_monopole_antenna_for_ultrawideband_applications.pdf
+G020,PAPER-065,3,§2.1 / Equation 1,,,evidence/PAPER-065_p003.png,files/uwb_parametric/PAPER-065__Printed_Newton_s_egg_curved_monopole_antenna_for_ultrawideband_applications.pdf
+G020,PAPER-065,4,Equations 3–5 / Tables 1–2,,,,files/uwb_parametric/PAPER-065__Printed_Newton_s_egg_curved_monopole_antenna_for_ultrawideband_applications.pdf
+G021,PAPER-023,2,§II / Figure 1b,,,evidence/PAPER-023_p002.png,files/curved_monopole/PAPER-023__Circular_Ring_Open-Ended_Monopole_Antenna_with_Strip_for_WLAN_Dual-Band_Ope.pdf
+G021,PAPER-023,3,§II.C–D / final parameter paragraph,,,evidence/PAPER-023_p003.png,files/curved_monopole/PAPER-023__Circular_Ring_Open-Ended_Monopole_Antenna_with_Strip_for_WLAN_Dual-Band_Ope.pdf
+G021,PAPER-023,1,Abstract,,,,files/curved_monopole/PAPER-023__Circular_Ring_Open-Ended_Monopole_Antenna_with_Strip_for_WLAN_Dual-Band_Ope.pdf
+G022,PAPER-030,4,§2.1 / Table 1,,,,files/wifi_multiband/PAPER-030__Miniaturized_Antenna_Design_for_Wi-Fi_6E_Wi-Fi_7_Applications.pdf
+G022,PAPER-030,5,Table 1 continued / Figure 1,,,,files/wifi_multiband/PAPER-030__Miniaturized_Antenna_Design_for_Wi-Fi_6E_Wi-Fi_7_Applications.pdf
+G022,PAPER-030,1,Abstract,,,,files/wifi_multiband/PAPER-030__Miniaturized_Antenna_Design_for_Wi-Fi_6E_Wi-Fi_7_Applications.pdf
+G023,PAPER-031,3,Figure 1,,,,files/wifi_multiband/PAPER-031__Compact_Asymmetric_T-Feed_Closed-Slot_Antennas_for_2.4_5_6_GHz_WiFi-7_MIMO_.pdf
+G023,PAPER-031,4,Figure 2 / antenna description,,,,files/wifi_multiband/PAPER-031__Compact_Asymmetric_T-Feed_Closed-Slot_Antennas_for_2.4_5_6_GHz_WiFi-7_MIMO_.pdf
+G023,PAPER-031,5,measured results discussion,,,,files/wifi_multiband/PAPER-031__Compact_Asymmetric_T-Feed_Closed-Slot_Antennas_for_2.4_5_6_GHz_WiFi-7_MIMO_.pdf
+G024,PAPER-050,12,Table 3,,,,files/gnss/PAPER-050__Microstrip_Patch_Antenna_for_GNSS_Applications.pdf
+G024,PAPER-050,13,Figure 4 / §4,,,evidence/PAPER-050_p013.png,files/gnss/PAPER-050__Microstrip_Patch_Antenna_for_GNSS_Applications.pdf
+G024,PAPER-050,3,future validation discussion,,,,files/gnss/PAPER-050__Microstrip_Patch_Antenna_for_GNSS_Applications.pdf
+G025,NXP_UM11232,3,"Figure 1, coil geometry panel",,,evidence/NXP_UM11232_p003.png,files/NFC_synthesis_tool/NXP_UM11232__UM11232_NFC_Antenna_Design_Tool_User_Manual.pdf
+G025,NXP_UM11232,14,Table 1,,,,files/NFC_synthesis_tool/NXP_UM11232__UM11232_NFC_Antenna_Design_Tool_User_Manual.pdf
+G025,NXP_UM11232,15,Table 1 continued,,,,files/NFC_synthesis_tool/NXP_UM11232__UM11232_NFC_Antenna_Design_Tool_User_Manual.pdf
+G026,NXP_AN11180,11,§4.1 / Figure 8,,,,files/UHF_RFID_antenna_references/NXP_AN11180__AN11180_UCODE_I2C_PCB_antenna_reference_designs.pdf
+G026,NXP_AN11180,12,Figure 9,,,evidence/NXP_AN11180_p012.png,files/UHF_RFID_antenna_references/NXP_AN11180__AN11180_UCODE_I2C_PCB_antenna_reference_designs.pdf
+G026,NXP_AN11180,13,§4.2,,,,files/UHF_RFID_antenna_references/NXP_AN11180__AN11180_UCODE_I2C_PCB_antenna_reference_designs.pdf
+G027,ADI_AN4302,1,Printed Circuit Board Loop or Whip Antenna,,,,files/Sub-GHz_printed_loop_and_curved_monopole/ADI_AN4302__Application_Note_4302_Small_Antennas_for_300MHz_to_450MHz_Transmitters.pdf
+G027,ADI_AN4302,2,Figure 1 / opening paragraph,,,,files/Sub-GHz_printed_loop_and_curved_monopole/ADI_AN4302__Application_Note_4302_Small_Antennas_for_300MHz_to_450MHz_Transmitters.pdf
+G027,ADI_AN4302,5,matching section,,,,files/Sub-GHz_printed_loop_and_curved_monopole/ADI_AN4302__Application_Note_4302_Small_Antennas_for_300MHz_to_450MHz_Transmitters.pdf
+G028,QORVO_APH007,3,Table 1,,,,files/UWB_antenna_design/QORVO_APH007__APH007_Antenna_Selection_Design_Guide_for_DW1000.pdf
+G028,QORVO_APH007,5,§4.6–4.8,,,,files/UWB_antenna_design/QORVO_APH007__APH007_Antenna_Selection_Design_Guide_for_DW1000.pdf
+G029,PAPER-066,98,§4.2.1,,,evidence/PAPER-066_p098.png,files/uwb_thesis/PAPER-066__Antenna_Study_and_Design_for_Ultra_Wideband_Communication_Applications.pdf
+G029,PAPER-066,99,Figure 4.20 / optimal design paragraph,,,evidence/PAPER-066_p099.png,files/uwb_thesis/PAPER-066__Antenna_Study_and_Design_for_Ultra_Wideband_Communication_Applications.pdf
+G029,PAPER-066,100,Figure 4.22,,,,files/uwb_thesis/PAPER-066__Antenna_Study_and_Design_for_Ultra_Wideband_Communication_Applications.pdf
+G029,PAPER-066,101,§4.2.1 results,,,,files/uwb_thesis/PAPER-066__Antenna_Study_and_Design_for_Ultra_Wideband_Communication_Applications.pdf
+G030,PAPER-066,133,§5.2,,,evidence/PAPER-066_p133.png,files/uwb_thesis/PAPER-066__Antenna_Study_and_Design_for_Ultra_Wideband_Communication_Applications.pdf
+G030,PAPER-066,134,Figure 5.2,,,evidence/PAPER-066_p134.png,files/uwb_thesis/PAPER-066__Antenna_Study_and_Design_for_Ultra_Wideband_Communication_Applications.pdf
+G030,PAPER-066,136,Table 5-A,,,evidence/PAPER-066_p136.png,files/uwb_thesis/PAPER-066__Antenna_Study_and_Design_for_Ultra_Wideband_Communication_Applications.pdf
+G030,PAPER-066,139,Table 5-B,,,,files/uwb_thesis/PAPER-066__Antenna_Study_and_Design_for_Ultra_Wideband_Communication_Applications.pdf
+G031,NORDIC_PCA20006_CAD,,nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Schematic_Layout pdf files/PCA20006_Schematic_And_PCB.pdf : embedded physical PDF pages 1–3,Top-level source is ZIP. Pages refer only to the embedded four-page PDF.,"{""archive_member"": ""nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Schematic_Layout pdf files/PCA20006_Schematic_And_PCB.pdf"", ""sha256"": ""e328c2c6d9192b326db2289ae6d473780f08fd696e7eb268521bcfa1ab2fb8c9"", ""page_count"": 4, ""pages_used"": [1, 2, 3]}",,files/Reference_CAD/NORDIC_PCA20006_CAD__nRF51822_Bluetooth_Smart_Beacon_Kit_PCA20006_PCB400059_hardware_files.zip
+G031,NORDIC_PCA20006_CAD,,GTL D10 arc / feed stub and GM1 body reference arc,See per-parameter Gerber line ranges and member hashes; dimensions are computed from 2.4-format inch coordinates.,,,files/Reference_CAD/NORDIC_PCA20006_CAD__nRF51822_Bluetooth_Smart_Beacon_Kit_PCA20006_PCB400059_hardware_files.zip

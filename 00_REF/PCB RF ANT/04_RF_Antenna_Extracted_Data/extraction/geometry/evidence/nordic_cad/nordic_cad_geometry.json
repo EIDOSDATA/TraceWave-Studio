@@ -1,0 +1,423 @@
+{
+  "source_id": "NORDIC_PCA20006_CAD",
+  "hardware_revision": "1.0.0",
+  "pcb": "400059",
+  "inner_zip_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0.zip",
+  "arc": {
+    "center_mm": [
+      0.0,
+      0.0
+    ],
+    "start_mm": [
+      -2.64668,
+      8.72744
+    ],
+    "end_mm": [
+      -7.045959999999999,
+      -5.788659999999999
+    ],
+    "radius_mm": 9.119930042275543,
+    "trace_width_mm": 1.27,
+    "start_angle_deg": 106.87043102934852,
+    "ccw_sweep_deg": 112.53463398648967
+  },
+  "numeric_facts": [
+    {
+      "name": "arc_center_x",
+      "value": 0,
+      "unit": "mm",
+      "source_symbol": "Xstart+I",
+      "cad_evidence": {
+        "archive_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GTL",
+        "member_sha256": "1225766196a9608ba1d97deaa6b9dbde399878344e190951474a2e41ce01d292",
+        "gerber_line_start": 705,
+        "gerber_line_end": 708,
+        "coordinate_format": "FSLAX24Y24; MOIN; G75"
+      },
+      "derivation_status": "computed_from_exact_cad_coordinates",
+      "condition": ""
+    },
+    {
+      "name": "arc_center_y",
+      "value": 0,
+      "unit": "mm",
+      "source_symbol": "Ystart+J",
+      "cad_evidence": {
+        "archive_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GTL",
+        "member_sha256": "1225766196a9608ba1d97deaa6b9dbde399878344e190951474a2e41ce01d292",
+        "gerber_line_start": 705,
+        "gerber_line_end": 708,
+        "coordinate_format": "FSLAX24Y24; MOIN; G75"
+      },
+      "derivation_status": "computed_from_exact_cad_coordinates",
+      "condition": ""
+    },
+    {
+      "name": "arc_start_x",
+      "value": -2.64668,
+      "unit": "mm",
+      "source_symbol": "X-1042",
+      "cad_evidence": {
+        "archive_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GTL",
+        "member_sha256": "1225766196a9608ba1d97deaa6b9dbde399878344e190951474a2e41ce01d292",
+        "gerber_line_start": 705,
+        "gerber_line_end": 708,
+        "coordinate_format": "FSLAX24Y24; MOIN; G75"
+      },
+      "derivation_status": "exact_cad_coordinate_or_aperture",
+      "condition": ""
+    },
+    {
+      "name": "arc_start_y",
+      "value": 8.72744,
+      "unit": "mm",
+      "source_symbol": "Y3436",
+      "cad_evidence": {
+        "archive_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GTL",
+        "member_sha256": "1225766196a9608ba1d97deaa6b9dbde399878344e190951474a2e41ce01d292",
+        "gerber_line_start": 705,
+        "gerber_line_end": 708,
+        "coordinate_format": "FSLAX24Y24; MOIN; G75"
+      },
+      "derivation_status": "exact_cad_coordinate_or_aperture",
+      "condition": ""
+    },
+    {
+      "name": "arc_end_x",
+      "value": -7.045959999999999,
+      "unit": "mm",
+      "source_symbol": "X-2774",
+      "cad_evidence": {
+        "archive_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GTL",
+        "member_sha256": "1225766196a9608ba1d97deaa6b9dbde399878344e190951474a2e41ce01d292",
+        "gerber_line_start": 705,
+        "gerber_line_end": 708,
+        "coordinate_format": "FSLAX24Y24; MOIN; G75"
+      },
+      "derivation_status": "exact_cad_coordinate_or_aperture",
+      "condition": ""
+    },
+    {
+      "name": "arc_end_y",
+      "value": -5.788659999999999,
+      "unit": "mm",
+      "source_symbol": "Y-2279",
+      "cad_evidence": {
+        "archive_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GTL",
+        "member_sha256": "1225766196a9608ba1d97deaa6b9dbde399878344e190951474a2e41ce01d292",
+        "gerber_line_start": 705,
+        "gerber_line_end": 708,
+        "coordinate_format": "FSLAX24Y24; MOIN; G75"
+      },
+      "derivation_status": "exact_cad_coordinate_or_aperture",
+      "condition": ""
+    },
+    {
+      "name": "arc_trace_width",
+      "value": 1.27,
+      "unit": "mm",
+      "source_symbol": "ADD10C,0.0500 inch",
+      "cad_evidence": {
+        "archive_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GTL",
+        "member_sha256": "1225766196a9608ba1d97deaa6b9dbde399878344e190951474a2e41ce01d292",
+        "gerber_line_start": 8,
+        "gerber_line_end": 8,
+        "coordinate_format": "FSLAX24Y24; MOIN; G75"
+      },
+      "derivation_status": "exact_cad_coordinate_or_aperture",
+      "condition": ""
+    },
+    {
+      "name": "arc_centerline_radius",
+      "value": 9.119930042275543,
+      "unit": "mm",
+      "source_symbol": "hypot(I=1042,J=-3436)*0.00254",
+      "cad_evidence": {
+        "archive_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GTL",
+        "member_sha256": "1225766196a9608ba1d97deaa6b9dbde399878344e190951474a2e41ce01d292",
+        "gerber_line_start": 705,
+        "gerber_line_end": 708,
+        "coordinate_format": "FSLAX24Y24; MOIN; G75"
+      },
+      "derivation_status": "computed_from_exact_cad_coordinates",
+      "condition": "Use start-center radius; endpoint quantization produces 0.001041 mm discrepancy."
+    },
+    {
+      "name": "arc_start_angle",
+      "value": 106.87043102934852,
+      "unit": "degree",
+      "source_symbol": "atan2(3436,-1042)",
+      "cad_evidence": {
+        "archive_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GTL",
+        "member_sha256": "1225766196a9608ba1d97deaa6b9dbde399878344e190951474a2e41ce01d292",
+        "gerber_line_start": 705,
+        "gerber_line_end": 708,
+        "coordinate_format": "FSLAX24Y24; MOIN; G75"
+      },
+      "derivation_status": "computed_from_exact_cad_coordinates",
+      "condition": "Measured CCW from +X in native Gerber coordinates."
+    },
+    {
+      "name": "arc_ccw_sweep",
+      "value": 112.53463398648967,
+      "unit": "degree",
+      "source_symbol": "G03 start/end/center",
+      "cad_evidence": {
+        "archive_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GTL",
+        "member_sha256": "1225766196a9608ba1d97deaa6b9dbde399878344e190951474a2e41ce01d292",
+        "gerber_line_start": 705,
+        "gerber_line_end": 708,
+        "coordinate_format": "FSLAX24Y24; MOIN; G75"
+      },
+      "derivation_status": "computed_from_exact_cad_coordinates",
+      "condition": ""
+    },
+    {
+      "name": "arc_centerline_length_only",
+      "value": 17.91245355263092,
+      "unit": "mm",
+      "source_symbol": "r*sweep_radians",
+      "cad_evidence": {
+        "archive_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GTL",
+        "member_sha256": "1225766196a9608ba1d97deaa6b9dbde399878344e190951474a2e41ce01d292",
+        "gerber_line_start": 705,
+        "gerber_line_end": 708,
+        "coordinate_format": "FSLAX24Y24; MOIN; G75"
+      },
+      "derivation_status": "computed_from_exact_cad_coordinates",
+      "condition": "Arc only; not total electrical path or full radiator including feed stub/pads."
+    },
+    {
+      "name": "feed_stub_start_x",
+      "value": -6.969759999999999,
+      "unit": "mm",
+      "source_symbol": "X-2744",
+      "cad_evidence": {
+        "archive_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GTL",
+        "member_sha256": "1225766196a9608ba1d97deaa6b9dbde399878344e190951474a2e41ce01d292",
+        "gerber_line_start": 712,
+        "gerber_line_end": 713,
+        "coordinate_format": "FSLAX24Y24; MOIN; G75"
+      },
+      "derivation_status": "exact_cad_coordinate_or_aperture",
+      "condition": ""
+    },
+    {
+      "name": "feed_stub_start_y",
+      "value": -5.842,
+      "unit": "mm",
+      "source_symbol": "Y-2300",
+      "cad_evidence": {
+        "archive_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GTL",
+        "member_sha256": "1225766196a9608ba1d97deaa6b9dbde399878344e190951474a2e41ce01d292",
+        "gerber_line_start": 712,
+        "gerber_line_end": 713,
+        "coordinate_format": "FSLAX24Y24; MOIN; G75"
+      },
+      "derivation_status": "exact_cad_coordinate_or_aperture",
+      "condition": ""
+    },
+    {
+      "name": "feed_stub_end_x",
+      "value": -5.0546,
+      "unit": "mm",
+      "source_symbol": "X-1990",
+      "cad_evidence": {
+        "archive_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GTL",
+        "member_sha256": "1225766196a9608ba1d97deaa6b9dbde399878344e190951474a2e41ce01d292",
+        "gerber_line_start": 712,
+        "gerber_line_end": 713,
+        "coordinate_format": "FSLAX24Y24; MOIN; G75"
+      },
+      "derivation_status": "exact_cad_coordinate_or_aperture",
+      "condition": ""
+    },
+    {
+      "name": "feed_stub_end_y",
+      "value": -5.842,
+      "unit": "mm",
+      "source_symbol": "modal Y-2300",
+      "cad_evidence": {
+        "archive_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GTL",
+        "member_sha256": "1225766196a9608ba1d97deaa6b9dbde399878344e190951474a2e41ce01d292",
+        "gerber_line_start": 712,
+        "gerber_line_end": 713,
+        "coordinate_format": "FSLAX24Y24; MOIN; G75"
+      },
+      "derivation_status": "exact_cad_coordinate_or_aperture",
+      "condition": ""
+    },
+    {
+      "name": "feed_stub_centerline_length",
+      "value": 1.9151599999999993,
+      "unit": "mm",
+      "source_symbol": "abs(-1990+2744)*0.00254",
+      "cad_evidence": {
+        "archive_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GTL",
+        "member_sha256": "1225766196a9608ba1d97deaa6b9dbde399878344e190951474a2e41ce01d292",
+        "gerber_line_start": 712,
+        "gerber_line_end": 713,
+        "coordinate_format": "FSLAX24Y24; MOIN; G75"
+      },
+      "derivation_status": "computed_from_exact_cad_coordinates",
+      "condition": "Stroke overlaps the arc end; centerline endpoints are not coincident."
+    },
+    {
+      "name": "body_reference_arc_radius",
+      "value": 9.999508053379426,
+      "unit": "mm",
+      "source_symbol": "hypot(995,3809)*0.00254",
+      "cad_evidence": {
+        "archive_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GM1",
+        "member_sha256": "ef4045a313aed01197fa205b1a100f91263c42b18d34b065b519155fddfa468b",
+        "gerber_line_start": 129,
+        "gerber_line_end": 131,
+        "coordinate_format": "FSLAX24Y24; MOIN; G75"
+      },
+      "derivation_status": "computed_from_exact_cad_coordinates",
+      "condition": "One GM1 outline arc. Whole outline includes tabs and connector extension."
+    },
+    {
+      "name": "body_reference_circle_diameter",
+      "value": 19.99901610675885,
+      "unit": "mm",
+      "source_symbol": "2*body_reference_arc_radius",
+      "cad_evidence": {
+        "archive_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GM1",
+        "member_sha256": "ef4045a313aed01197fa205b1a100f91263c42b18d34b065b519155fddfa468b",
+        "gerber_line_start": 129,
+        "gerber_line_end": 131,
+        "coordinate_format": "FSLAX24Y24; MOIN; G75"
+      },
+      "derivation_status": "computed_from_exact_cad_coordinates",
+      "condition": "Approximately 20 mm body; not the full board bounding box."
+    },
+    {
+      "name": "adjacent_top_copper_arc_centerline_radius",
+      "value": 5.951219999999999,
+      "unit": "mm",
+      "source_symbol": "GTL D11 start X0Y2343",
+      "cad_evidence": {
+        "archive_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GTL",
+        "member_sha256": "1225766196a9608ba1d97deaa6b9dbde399878344e190951474a2e41ce01d292",
+        "gerber_line_start": 716,
+        "gerber_line_end": 719,
+        "coordinate_format": "FSLAX24Y24; MOIN; G75"
+      },
+      "derivation_status": "computed_from_exact_cad_coordinates",
+      "condition": "Copper arc only; Gerber has no electrical net labels, so its net is not independently reconstructed."
+    },
+    {
+      "name": "adjacent_top_copper_arc_width",
+      "value": 0.1524,
+      "unit": "mm",
+      "source_symbol": "ADD11C,0.0060 inch",
+      "cad_evidence": {
+        "archive_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GTL",
+        "member_sha256": "1225766196a9608ba1d97deaa6b9dbde399878344e190951474a2e41ce01d292",
+        "gerber_line_start": 9,
+        "gerber_line_end": 9,
+        "coordinate_format": "FSLAX24Y24; MOIN; G75"
+      },
+      "derivation_status": "exact_cad_coordinate_or_aperture",
+      "condition": ""
+    },
+    {
+      "name": "bottom_copper_boundary_point_x",
+      "value": -5.971539999999999,
+      "unit": "mm",
+      "source_symbol": "X-2351Y0D01",
+      "cad_evidence": {
+        "archive_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GBL",
+        "member_sha256": "7620c8a3d0a23c9bbeedd7ca13966d3ab7f6e6659d4e977562c5689fed9ec976",
+        "gerber_line_start": 271,
+        "gerber_line_end": 271,
+        "coordinate_format": "FSLAX24Y24; MOIN; G75"
+      },
+      "derivation_status": "exact_cad_coordinate_or_aperture",
+      "condition": "Single exact polygon vertex, not a fitted global ground radius."
+    },
+    {
+      "name": "bottom_copper_boundary_point_y",
+      "value": 0,
+      "unit": "mm",
+      "source_symbol": "X-2351Y0D01",
+      "cad_evidence": {
+        "archive_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GBL",
+        "member_sha256": "7620c8a3d0a23c9bbeedd7ca13966d3ab7f6e6659d4e977562c5689fed9ec976",
+        "gerber_line_start": 271,
+        "gerber_line_end": 271,
+        "coordinate_format": "FSLAX24Y24; MOIN; G75"
+      },
+      "derivation_status": "exact_cad_coordinate_or_aperture",
+      "condition": ""
+    },
+    {
+      "name": "gerber_coordinate_step",
+      "value": 0.0025399999999999997,
+      "unit": "mm",
+      "source_symbol": "4 fractional inch digits",
+      "cad_evidence": {
+        "archive_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GTL",
+        "member_sha256": "1225766196a9608ba1d97deaa6b9dbde399878344e190951474a2e41ce01d292",
+        "gerber_line_start": 1,
+        "gerber_line_end": 2,
+        "coordinate_format": "FSLAX24Y24; MOIN; G75"
+      },
+      "derivation_status": "exact_cad_coordinate_or_aperture",
+      "condition": ""
+    },
+    {
+      "name": "series_matching_inductance",
+      "value": 2.2,
+      "unit": "nH",
+      "source_symbol": "L1",
+      "cad_evidence": {
+        "archive_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Schematic_Layout pdf files/PCA20006_Schematic_And_PCB.pdf",
+        "member_sha256": "e328c2c6d9192b326db2289ae6d473780f08fd696e7eb268521bcfa1ab2fb8c9",
+        "embedded_physical_pdf_page": 1,
+        "embedded_pdf_page_count": 4
+      },
+      "derivation_status": "embedded_pdf_reported",
+      "condition": "Series from RF node to ANT in this revision only; not a universal value."
+    },
+    {
+      "name": "shunt_matching_capacitance",
+      "value": 1.2,
+      "unit": "pF",
+      "source_symbol": "C4",
+      "cad_evidence": {
+        "archive_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Schematic_Layout pdf files/PCA20006_Schematic_And_PCB.pdf",
+        "member_sha256": "e328c2c6d9192b326db2289ae6d473780f08fd696e7eb268521bcfa1ab2fb8c9",
+        "embedded_physical_pdf_page": 1,
+        "embedded_pdf_page_count": 4
+      },
+      "derivation_status": "embedded_pdf_reported",
+      "condition": "RF node to ground before L1; BAL-NRF02D3 balun is upstream."
+    }
+  ],
+  "qa": {
+    "command_checks_passed": true,
+    "arc_endpoint_radius_difference_mm": 0.0010410245716876432,
+    "coordinate_step_mm": 0.0025399999999999997,
+    "endpoint_radius_difference_less_than_one_coordinate_step": true,
+    "reference_pdf_visual_crosscheck": "Physical p.2 top copper shows arc open at top and connected to L1-side stub at bottom; p.3 shows bottom copper keepout.",
+    "electrical_or_em_validation": false
+  },
+  "embedded_reference_pdf": {
+    "archive_member": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Schematic_Layout pdf files/PCA20006_Schematic_And_PCB.pdf",
+    "sha256": "e328c2c6d9192b326db2289ae6d473780f08fd696e7eb268521bcfa1ab2fb8c9",
+    "page_count": 4,
+    "pages_used": [
+      1,
+      2,
+      3
+    ]
+  },
+  "limitations": [
+    "Partial CAD extraction, not a whole-board netlist reconstruction.",
+    "No board thickness/Dk/Df/copper thickness claimed from these Gerbers.",
+    "GM1 has tabs and connector protrusion; only one body reference radius is reported.",
+    "No global minimum copper clearance is inferred from one inner arc or polygon vertex."
+  ]
+}

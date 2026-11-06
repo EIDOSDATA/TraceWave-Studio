@@ -1,0 +1,224 @@
+{
+  "status": "passed",
+  "checks": [
+    "All referenced source IDs acquired",
+    "Source hashes agree with catalog",
+    "All physical PDF page citations within source page bounds",
+    "Unique record identifiers",
+    "Finite numeric values and positive frequencies",
+    "No material interpolation/extrapolation",
+    "Null universal pass/fail defaults retained",
+    "SQLite integrity and foreign keys",
+    "SQLite row counts equal canonical JSON"
+  ],
+  "counts": {
+    "dataset_version": "1.0.0",
+    "edition_kst": "2026-11-07",
+    "built_at_utc": "2026-11-06T21:20:03.188061+00:00",
+    "source_catalog_records": 241,
+    "acquired_originals": 238,
+    "acquired_academic_sources": 74,
+    "pdf_sources": 208,
+    "pdf_pages_indexed": 8443,
+    "html_sources_indexed": 15,
+    "geometry_records": 31,
+    "geometry_numeric_parameters": 348,
+    "geometry_records_with_numbers": 29,
+    "geometry_source_count": 23,
+    "material_frequency_condition_records": 3160,
+    "material_numeric_source_count": 22,
+    "material_auxiliary_records": 41,
+    "material_sources_reviewed": 31,
+    "conditions": 47,
+    "validation_methods": 26,
+    "model_records": 19,
+    "usable_model_expressions": 18,
+    "deliberately_blocked_model_records": 1,
+    "sources_with_curated_numeric_or_rule_records": 75,
+    "geometry_status_counts": {
+      "analytical_starting_point": 1,
+      "dimensioned_reference": 12,
+      "source_conflict_requires_review": 4,
+      "partial_numeric_dimensions": 10,
+      "published_tool_example": 1,
+      "topology_only_no_dimensioned_design": 1,
+      "requirements_only_no_geometry": 1,
+      "partial_cad_geometry_extracted": 1
+    },
+    "independently_simulated_or_measured_antennas": 0,
+    "automatically_production_ready_CAD_designs": 0,
+    "missing_original_ids": [
+      "TI_CC1110_IFA_CAD",
+      "BOOK_ORFANIDIS_EWA",
+      "KEYSIGHT_NETWORK_BASICS"
+    ],
+    "scope_note_ko": "확보 원문 전체를 제공하고 PDF/HTML 텍스트를 전부 색인함. 구조화 수치·조건은 source_coverage에 명시한 선별 범위의 v1이며 모든 문헌·도면의 전수 추출이나 독립 성능 검증이 아님."
+  },
+  "scientific_validation": "No independent EM simulation, PCB fabrication, VNA or OTA measurement was performed.",
+  "low_or_empty_text_pages": 106,
+  "source_conflicts_preserved": [
+    "G004",
+    "G005",
+    "G020",
+    "G021"
+  ],
+  "material_issues": [
+    {
+      "source_id": "PANASONIC_R_5725S",
+      "pdf_physical_page": 3,
+      "source_row": 12,
+      "issue": "PDF vector fragments split a frequency column",
+      "action": "Recovered original printed value from full physical cell bounding box",
+      "original_extracted_cells": [
+        "3",
+        ".93",
+        ""
+      ],
+      "recovered_text": "3.93",
+      "bbox": [
+        325.77478790283203,
+        262.9640706380208,
+        387.33709716796875,
+        278.24009195963544
+      ]
+    },
+    {
+      "source_id": "PANASONIC_R_5725S",
+      "pdf_physical_page": 4,
+      "source_row": 11,
+      "issue": "PDF vector fragments split a frequency column",
+      "action": "Recovered original printed value from full physical cell bounding box",
+      "original_extracted_cells": [
+        "4",
+        ".14",
+        ""
+      ],
+      "recovered_text": "4.14",
+      "bbox": [
+        325.8460693359375,
+        251.55513509114584,
+        387.2803421020508,
+        265.4652069091797
+      ]
+    },
+    {
+      "source_id": "PANASONIC_R_5725S",
+      "pdf_physical_page": 5,
+      "source_row": 13,
+      "issue": "PDF vector fragments split a frequency column",
+      "action": "Recovered original printed value from full physical cell bounding box",
+      "original_extracted_cells": [
+        "3.8",
+        "5",
+        ""
+      ],
+      "recovered_text": "3.85",
+      "bbox": [
+        327.7291030883789,
+        256.40938568115234,
+        365.9928009033203,
+        269.51983133951825
+      ]
+    },
+    {
+      "source_id": "PANASONIC_R_5725S",
+      "pdf_physical_page": 6,
+      "source_row": 11,
+      "issue": "PDF vector fragments split a frequency column",
+      "action": "Recovered original printed value from full physical cell bounding box",
+      "original_extracted_cells": [
+        "4.0",
+        "2"
+      ],
+      "recovered_text": "4.02",
+      "bbox": [
+        328.21785736083984,
+        250.37518819173178,
+        366.53139343261716,
+        264.50632629394534
+      ]
+    },
+    {
+      "source_id": "PANASONIC_R_5725S",
+      "pdf_physical_page": 7,
+      "source_row": 11,
+      "issue": "PDF vector fragments split a frequency column",
+      "action": "Recovered original printed value from full physical cell bounding box",
+      "original_extracted_cells": [
+        "",
+        "3.3",
+        "8"
+      ],
+      "recovered_text": "3.38",
+      "bbox": [
+        332.30796813964844,
+        256.45301310221356,
+        400.15513610839844,
+        270.6305046081543
+      ]
+    },
+    {
+      "source_id": "PANASONIC_R_5725S",
+      "pdf_physical_page": 7,
+      "table": 1,
+      "source_row": 9,
+      "property": "dk",
+      "frequency_hz": 1000000.0,
+      "raw_value": "3,56",
+      "action": "Decimal comma interpreted as decimal separator; raw value retained in evidence."
+    },
+    {
+      "source_id": "PANASONIC_R_5725S",
+      "pdf_physical_page": 8,
+      "source_row": 11,
+      "issue": "PDF vector fragments split a frequency column",
+      "action": "Recovered original printed value from full physical cell bounding box",
+      "original_extracted_cells": [
+        "",
+        "3.36"
+      ],
+      "recovered_text": "3.36",
+      "bbox": [
+        365.2337646484375,
+        259.39129638671875,
+        411.61734771728516,
+        273.7083320617676
+      ]
+    },
+    {
+      "source_id": "PANASONIC_R_5725S",
+      "pdf_physical_page": 8,
+      "source_row": 12,
+      "issue": "PDF vector fragments split a frequency column",
+      "action": "Recovered original printed value from full physical cell bounding box",
+      "original_extracted_cells": [
+        "",
+        null
+      ],
+      "recovered_text": "3.30",
+      "bbox": [
+        365.2337646484375,
+        273.7083320617676,
+        411.61734771728516,
+        289.0263977050781
+      ]
+    },
+    {
+      "source_id": "ROGERS_RO47_DS",
+      "issue": "RO4730G3 2.5 GHz Df source inconsistency",
+      "pdf_physical_pages": [
+        1,
+        2
+      ],
+      "prose_p1_df": 0.0022,
+      "table_p2_merged_cell_df": 0.0028,
+      "action": "Dataset uses the explicit property table and marks the record for vendor confirmation. No silent reconciliation."
+    },
+    {
+      "source_id": "PAPER-065",
+      "issue": "Cross-reference supplied by geometry extraction: source paper reports tan delta 0.018 on physical p2 but 0.18 at 1 GHz in Djordjevic-Sarkar description on p3.",
+      "action": "No paper-derived generic FR-4 point is imported into this manufacturer dataset. Preserve the paper conflict in geometry evidence."
+    }
+  ],
+  "errors": []
+}

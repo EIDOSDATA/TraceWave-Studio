@@ -1,0 +1,419 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="readthedocs-addons-api-version" content="1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Impedance Matching &mdash; scikit-rf Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <script src="../../_static/js/versions.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Calibration With Three Receivers" href="../metrology/Calibration%20With%20Three%20Receivers.html" />
+    <link rel="prev" title="Working with Complex Characteristic Impedance" href="../networktheory/Working%20with%20Complex%20Characteristic%20Impedances.html" />
+  <script type="text/javascript">
+	  var _gaq = _gaq || [];
+	    _gaq.push(['_setAccount', 'UA-29068876-1']);
+		  _gaq.push(['_trackPageview']);
+
+		    (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+					    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+						  })();
+
+  </script>
+
+<script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="scikit-rf" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/examples/matching/Impedance%20Matching.html" /><meta name="readthedocs-http-status" content="200" /></head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            scikit-rf
+          </a>
+              <div class="switch-menus">
+                <div class="version-switch"></div>
+                <div class="language-switch"></div>
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#network-theory">Network Theory</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#matching">Matching</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Impedance Matching</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Matching-with-Lumped-Elements">Matching with Lumped Elements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Single-Stub-Matching">Single-Stub Matching</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#metrology-and-calibration">Metrology and Calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#networksets">NetworkSets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#plotting">Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#circuit">Circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#mixed-mode">Mixed Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#vector-fitting">Vector Fitting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#parametric-vector-fitting">Parametric Vector Fitting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#q-factor">Q-factor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#taper">Taper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#instrument-control">Instrument Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#interactive">Interactive</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing to scikit-rf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citations_ack/acknowledging.html">Acknowledging or Citing scikit-rf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citations_ack/citations.html">Publications using or citing scikit-rf</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">scikit-rf</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Examples</a></li>
+      <li class="breadcrumb-item active">Impedance Matching</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/examples/matching/Impedance Matching.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Impedance-Matching">
+<h1>Impedance Matching<a class="headerlink" href="#Impedance-Matching" title="Link to this heading"></a></h1>
+<section id="Introduction">
+<h2>Introduction<a class="headerlink" href="#Introduction" title="Link to this heading"></a></h2>
+<p>The general problem is illustrated by the figure below: a generator with an internal impedance <span class="math notranslate nohighlight">\(Z_S\)</span> delivers a power to a passive load <span class="math notranslate nohighlight">\(Z_L\)</span>, through a 2-ports matching network. This problem is commonly named as “the double matching problem”. Impedance matching is important for the following reasons:</p>
+<ul class="simple">
+<li><p>maximizing the power transfer. Maximum power is delivered to the load when the generator <em>and</em> the load are matched to the line and power loss in the line minimized</p></li>
+<li><p>improving signal-to-noise ratio of the system</p></li>
+<li><p>reducing amplitude and phase errors</p></li>
+<li><p>reducing reflected power toward generator</p></li>
+</ul>
+<p><img alt="4877b4c666e949c7890dcf5dffdd7377" src="../../_images/Impedance_matching_general.svg" /></p>
+<p>As long as the load impedance <span class="math notranslate nohighlight">\(Z_L\)</span> has a real positive part, a matching network can always be found. Many choices are available and the examples below only describe a few. The examples are taken from the D.Pozar book “Microwave Engineering”, 4th edition.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">skrf</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">rf</span>
+
+<span class="n">rf</span><span class="o">.</span><span class="n">stylely</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Matching-with-Lumped-Elements">
+<h2>Matching with Lumped Elements<a class="headerlink" href="#Matching-with-Lumped-Elements" title="Link to this heading"></a></h2>
+<p>To begin, let’s assume that the matching network is lossless and the feeding line characteristic impedance is <span class="math notranslate nohighlight">\(Z_0\)</span>:</p>
+<p><img alt="fbaa106ca3134b06907d7367c42d706e" src="../../_images/Impedance_matching_lumped1.svg" /></p>
+<p>The simplest type of matching network is the “L” network, which uses two reactive elements to match an arbitrary load impedance. Two possible configuration exist and are illustrated by the figures below. In either configurations, the reactive elements can be inductive of capacitive, depending on the load impedance.</p>
+<p><img alt="99305f88fb15477ca367f434476f474f" src="../../_images/Impedance_matching_lumped2.svg" /> <img alt="ffa25b0c34404aad9ad51f2153fa1c65" src="../../_images/Impedance_matching_lumped3.svg" /></p>
+<p>Let’s assume the load is <span class="math notranslate nohighlight">\(Z_L = 200 - 100j \Omega\)</span> for a line <span class="math notranslate nohighlight">\(Z_0=100\Omega\)</span> at the frequency of 500 MHz.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Z_L</span> <span class="o">=</span> <span class="mi">200</span> <span class="o">-</span> <span class="mi">100</span><span class="n">j</span>
+<span class="n">Z_0</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">f_0_str</span> <span class="o">=</span> <span class="s1">'500MHz'</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s define the <code class="docutils literal notranslate"><span class="pre">Frequency</span></code> and load <code class="docutils literal notranslate"><span class="pre">Network</span></code>:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># frequency band centered on the frequency of interest</span>
+<span class="n">frequency</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">Frequency</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span> <span class="n">npoints</span><span class="o">=</span><span class="mi">401</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">'MHz'</span><span class="p">)</span>
+<span class="c1"># transmission line Media</span>
+<span class="n">line</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">media</span><span class="o">.</span><span class="n">DefinedGammaZ0</span><span class="p">(</span><span class="n">frequency</span><span class="o">=</span><span class="n">frequency</span><span class="p">,</span> <span class="n">z0</span><span class="o">=</span><span class="n">Z_0</span><span class="p">)</span>
+<span class="c1"># load Network</span>
+<span class="n">load</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">rf</span><span class="o">.</span><span class="n">tlineFunctions</span><span class="o">.</span><span class="n">zl_2_Gamma0</span><span class="p">(</span><span class="n">Z_0</span><span class="p">,</span> <span class="n">Z_L</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<p>We are searching for a L-C Network corresponding to the first configuration above: <img alt="b9e7961c5f0c4cd998a26c9fb26aca22" src="../../_images/Impedance_matching_lumped4.svg" /></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">matching_network_LC_1</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
+    <span class="s1">' L and C in nH and pF'</span>
+    <span class="k">return</span> <span class="n">line</span><span class="o">.</span><span class="n">inductor</span><span class="p">(</span><span class="n">L</span><span class="o">*</span><span class="mf">1e-9</span><span class="p">)</span><span class="o">**</span><span class="n">line</span><span class="o">.</span><span class="n">shunt_capacitor</span><span class="p">(</span><span class="n">C</span><span class="o">*</span><span class="mf">1e-12</span><span class="p">)</span><span class="o">**</span><span class="n">load</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">matching_network_LC_2</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
+    <span class="s1">' L and C in nH and pF'</span>
+    <span class="k">return</span> <span class="n">line</span><span class="o">.</span><span class="n">capacitor</span><span class="p">(</span><span class="n">C</span><span class="o">*</span><span class="mf">1e-12</span><span class="p">)</span><span class="o">**</span><span class="n">line</span><span class="o">.</span><span class="n">shunt_inductor</span><span class="p">(</span><span class="n">L</span><span class="o">*</span><span class="mf">1e-9</span><span class="p">)</span><span class="o">**</span><span class="n">load</span>
+</pre></div>
+</div>
+</div>
+<p>Finding the set of inductance <span class="math notranslate nohighlight">\(L\)</span> and the capacitance <span class="math notranslate nohighlight">\(C\)</span> which matches the load is an optimization problem. The <code class="docutils literal notranslate"><span class="pre">scipy</span></code> package provides the necessary optimization function(s) for that:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">minimize</span>
+
+<span class="c1"># initial guess values</span>
+<span class="n">L0</span> <span class="o">=</span> <span class="mi">10</span> <span class="c1"># nH</span>
+<span class="n">C0</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># pF</span>
+<span class="n">x0</span> <span class="o">=</span> <span class="p">(</span><span class="n">L0</span><span class="p">,</span> <span class="n">C0</span><span class="p">)</span>
+<span class="c1"># bounds</span>
+<span class="n">L_minmax</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="c1">#nH</span>
+<span class="n">C_minmax</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="c1"># pF</span>
+
+<span class="c1"># the objective functions minimize the return loss at the target frequency f_0</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">optim_fun_1</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f0</span><span class="o">=</span><span class="n">f_0_str</span><span class="p">):</span>
+    <span class="n">_ntw</span> <span class="o">=</span> <span class="n">matching_network_LC_1</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">_ntw</span><span class="p">[</span><span class="n">f_0_str</span><span class="p">]</span><span class="o">.</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">optim_fun_2</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f0</span><span class="o">=</span><span class="n">f_0_str</span><span class="p">):</span>
+    <span class="n">_ntw</span> <span class="o">=</span> <span class="n">matching_network_LC_2</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">_ntw</span><span class="p">[</span><span class="n">f_0_str</span><span class="p">]</span><span class="o">.</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res1</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">optim_fun_1</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="n">L_minmax</span><span class="p">,</span> <span class="n">C_minmax</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Optimum found for LC network 1: L=</span><span class="si">{</span><span class="n">res1</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1"> nH and C=</span><span class="si">{</span><span class="n">res1</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1"> pF'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Optimum found for LC network 1: L=38.98484015555227 nH and C=0.9227738237298321 pF
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res2</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">optim_fun_2</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="n">L_minmax</span><span class="p">,</span> <span class="n">C_minmax</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Optimum found for LC network 2: L=</span><span class="si">{</span><span class="n">res2</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1"> nH and C=</span><span class="si">{</span><span class="n">res2</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1"> pF'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Optimum found for LC network 2: L=46.13869161615916 nH and C=2.598989336748551 pF
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ntw1</span> <span class="o">=</span> <span class="n">matching_network_LC_1</span><span class="p">(</span><span class="o">*</span><span class="n">res1</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+<span class="n">ntw2</span> <span class="o">=</span> <span class="n">matching_network_LC_2</span><span class="p">(</span><span class="o">*</span><span class="n">res2</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ntw1</span><span class="o">.</span><span class="n">plot_s_mag</span><span class="p">(</span><span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'LC network 1'</span><span class="p">)</span>
+<span class="n">ntw2</span><span class="o">.</span><span class="n">plot_s_mag</span><span class="p">(</span><span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'LC network 2'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(0.0, 0.8742937659028248)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/examples_matching_Impedance_Matching_15_1.png" src="../../_images/examples_matching_Impedance_Matching_15_1.png" />
+</div>
+</div>
+</section>
+<section id="Single-Stub-Matching">
+<h2>Single-Stub Matching<a class="headerlink" href="#Single-Stub-Matching" title="Link to this heading"></a></h2>
+<p>Matching can be made with a piece of open-ended or shorted transmission line ( <em>stub</em> ), connected either in parallel ( <em>shunt</em> ) or in series. In the example below, a matching network is realized from a shorted transmission line of length (<span class="math notranslate nohighlight">\(\theta_{stub}\)</span>) connected in parallel, in association with a series transmission line (<span class="math notranslate nohighlight">\(\theta_{line}\)</span>). Let’s assume a load impedance <span class="math notranslate nohighlight">\(Z_L=60 - 80j\)</span> connected to a 50 Ohm transmission line.</p>
+<p><img alt="2edb38e8cb0344258150378d24d5906e" src="../../_images/Impedance_matching_stub1.svg" /></p>
+<p>Let’s match this load at 2 GHz:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Z_L</span> <span class="o">=</span> <span class="mi">60</span> <span class="o">-</span> <span class="mi">80</span><span class="n">j</span>
+<span class="n">Z_0</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">f_0_str</span> <span class="o">=</span> <span class="s1">'2GHz'</span>
+<span class="c1"># Frequency, wavenumber and transmission line media</span>
+<span class="n">freq</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">Frequency</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">npoints</span><span class="o">=</span><span class="mi">301</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">'GHz'</span><span class="p">)</span>
+<span class="n">beta</span> <span class="o">=</span> <span class="n">freq</span><span class="o">.</span><span class="n">w</span><span class="o">/</span><span class="n">rf</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">c</span>
+<span class="n">line</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">media</span><span class="o">.</span><span class="n">DefinedGammaZ0</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">beta</span><span class="p">,</span> <span class="n">z0</span><span class="o">=</span><span class="n">Z_0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">resulting_network</span><span class="p">(</span><span class="n">theta_delay</span><span class="p">,</span> <span class="n">theta_stub</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Return a loaded single stub matching network</span>
+
+<span class="sd">    NB: theta_delay and theta_stub lengths are in deg</span>
+<span class="sd">    """</span>
+    <span class="n">delay_load</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">delay_load</span><span class="p">(</span><span class="n">rf</span><span class="o">.</span><span class="n">tlineFunctions</span><span class="o">.</span><span class="n">zl_2_Gamma0</span><span class="p">(</span><span class="n">Z_0</span><span class="p">,</span> <span class="n">Z_L</span><span class="p">),</span> <span class="n">theta_delay</span><span class="p">)</span>
+    <span class="n">shunted_stub</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">shunt_delay_short</span><span class="p">(</span><span class="n">theta_stub</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">shunted_stub</span> <span class="o">**</span> <span class="n">delay_load</span>
+</pre></div>
+</div>
+</div>
+<p>Optimize the matching network variables <code class="docutils literal notranslate"><span class="pre">theta_delay</span></code> and <code class="docutils literal notranslate"><span class="pre">theta_stub</span></code> to match the resulting 1-port network (<span class="math notranslate nohighlight">\(|S|=0\)</span>)</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">minimize</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">optim_fun</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">resulting_network</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">)[</span><span class="n">f_0_str</span><span class="p">]</span><span class="o">.</span><span class="n">s_mag</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
+<span class="n">x0</span> <span class="o">=</span> <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">bnd</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">optim_fun</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="n">bnd</span><span class="p">,</span> <span class="n">bnd</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Optimum found for: theta_delay=</span><span class="si">{</span><span class="n">res</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1"> deg and theta_stub=</span><span class="si">{</span><span class="n">res</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1"> deg'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Optimum found for: theta_delay=39.8 deg and theta_stub=34.2 deg
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Optimized network at f0</span>
+<span class="n">ntw</span> <span class="o">=</span> <span class="n">resulting_network</span><span class="p">(</span><span class="o">*</span><span class="n">res</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+<span class="n">ntw</span><span class="o">.</span><span class="n">plot_s_db</span><span class="p">(</span><span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/examples_matching_Impedance_Matching_21_0.png" src="../../_images/examples_matching_Impedance_Matching_21_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../networktheory/Working%20with%20Complex%20Characteristic%20Impedances.html" class="btn btn-neutral float-left" title="Working with Complex Characteristic Impedance" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../metrology/Calibration%20With%20Three%20Receivers.html" class="btn btn-neutral float-right" title="Calibration With Three Receivers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, scikit-rf team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

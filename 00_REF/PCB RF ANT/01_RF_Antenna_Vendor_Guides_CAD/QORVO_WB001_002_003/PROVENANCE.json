@@ -1,0 +1,63 @@
+{
+  "source_id": "QORVO_WB001_002_003_CAD",
+  "source_url": "https://www.qorvo.com/products/r/ra006747",
+  "source_sha256": "650fc4e3efe1cffd7cb18af6fcb9600f5e5b8cce291aae9e20b73f1b6b8b36e1",
+  "method": "Static extraction of embedded CAB using libarchive; no execution of vendor EXE",
+  "cab_offset": 169400,
+  "cab_bytes": 2866224,
+  "files": [
+    {
+      "name": "WB001.zip",
+      "relative_path": "derived/QORVO_WB001_002_003/WB001.zip",
+      "bytes": 1213565,
+      "sha256": "518db9c08364348a29f5f945f7bed2578266c7169cd2ae861f6484ddd4f3f29d",
+      "archive_entry_count": 9,
+      "archive_sample": [
+        "WB001/",
+        "WB001/collateral/",
+        "WB001/collateral/WB001 Hardware Build Instruction.pdf",
+        "WB001/DXF/",
+        "WB001/DXF/TAG_DecaWave_WB001_btm_layer.dxf",
+        "WB001/DXF/TAG_DecaWave_WB001_top_layer.dxf",
+        "WB001/Gerbers/",
+        "WB001/Gerbers/TAG_DecaWave_WB001_btm_layer.gbr",
+        "WB001/Gerbers/TAG_DecaWave_WB001_top_layer.gbr"
+      ]
+    },
+    {
+      "name": "WB002.zip",
+      "relative_path": "derived/QORVO_WB001_002_003/WB002.zip",
+      "bytes": 1468469,
+      "sha256": "6b35848c20855b39a8c0910d2f81b8eaadbe857ca46610a5f52985af5ad4ef18",
+      "archive_entry_count": 11,
+      "archive_sample": [
+        "WB002/",
+        "WB002/collateral/",
+        "WB002/collateral/WB002 Hardware Build  Instruction.pdf",
+        "WB002/collateral/WB002-Product-Brief.pdf",
+        "WB002/DXF/",
+        "WB002/DXF/WB002_MAN_BTM.dxf",
+        "WB002/DXF/WB002_MAN_TOP.dxf",
+        "WB002/Gerbers/",
+        "WB002/Gerbers/DecaWave_WB002_bottom_layer.grb",
+        "WB002/Gerbers/DecaWave_WB002_outline.grb",
+        "WB002/Gerbers/DecaWave_WB002_top_layer.grb"
+      ]
+    },
+    {
+      "name": "WB003.zip",
+      "relative_path": "derived/QORVO_WB001_002_003/WB003.zip",
+      "bytes": 191667,
+      "sha256": "2b31dfc905f148d4fbee25625f11de24f1d613020fbba40ecd85fc478f82973d",
+      "archive_entry_count": 6,
+      "archive_sample": [
+        "WB003/",
+        "WB003/DXF_Files/",
+        "WB003/DXF_Files/WB003_MiniHoe_dxf.zip",
+        "WB003/Gerber_Files/",
+        "WB003/Gerber_Files/Mini-Hoe_Antenna_Gerbers.zip",
+        "WB003/WB003-Product-Brief.pdf"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "conditions": 47,
+  "validation_methods": 26,
+  "model_formulas": 19,
+  "unique_sources": 33,
+  "formula_rows_with_null_expression": 1,
+  "all_default_acceptance_thresholds_null": true,
+  "all_constraints_opt_in": true,
+  "all_source_files_located": true,
+  "physical_pdf_page_bounds_checked": true,
+  "inspection_notes": "Hammerstad p1, Marrocco p2, Yee p2 visually checked. Remaining source extraction used embedded PDF text and saved HTML sections."
+}

@@ -1,0 +1,110 @@
+{
+  "source_id": "NORDIC_PCA20006_CAD",
+  "source_relative_path": "files/Reference_CAD/NORDIC_PCA20006_CAD__nRF51822_Bluetooth_Smart_Beacon_Kit_PCA20006_PCB400059_hardware_files.zip",
+  "outer_sha256": "de2dbf4b9c8c660efe9c92d716ec161728dde018a801b5ccb1bfdd0d88a55a8a",
+  "inner_archive_name": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0.zip",
+  "inner_archive_sha256": "de83d749b10f9f77fc493df293c544782d3ad4624bdfe98fac328da6fdf889db",
+  "geometry_extraction_status": "partial_cad_geometry_extracted_no_photo_dimensions",
+  "entries": [
+    {
+      "path": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Altium Designer files/400059.PcbDoc",
+      "bytes": 1966080,
+      "sha256": "ec6c833bec97f6b17db50f419533ab0f222d40fb25309ca6442213c663b910f0"
+    },
+    {
+      "path": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Altium Designer files/pca20006.IntLib",
+      "bytes": 550912,
+      "sha256": "ad9ab265b5b29346e81c8bcdfa896fbf3fc52d195966057404d030a11314bdf3"
+    },
+    {
+      "path": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Altium Designer files/pca20006.PrjPCB",
+      "bytes": 52435,
+      "sha256": "60158c12db1bf0071e9ce8a53ee48ecffaed84eb8646f39c6a6e672bff653338"
+    },
+    {
+      "path": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Altium Designer files/pca20006.SchDoc",
+      "bytes": 344576,
+      "sha256": "fd49a9b92b306ecde0cc08375b5b31791b50cd281ba552165453c89020dbef23"
+    },
+    {
+      "path": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/ASSEMBLY/400059_Assembly_Drawing.pdf",
+      "bytes": 168548,
+      "sha256": "20e50243690cc330201817744456e6c3ef9fd6e71443ad3fb108d60f0f445aba"
+    },
+    {
+      "path": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/BOM/PCA20006_BOM.xls",
+      "bytes": 35328,
+      "sha256": "ebf65634082b678d0021b3cac4ca85f58387e88d08212ce24504e7a95b8c95a5"
+    },
+    {
+      "path": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/DRILL/400059.DRL",
+      "bytes": 588,
+      "sha256": "486f970d0ec0a9ba356f0bfe721a8abd56708715189863f331a1ae0673e19971"
+    },
+    {
+      "path": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/DRILL/400059.DRR",
+      "bytes": 1050,
+      "sha256": "c221598194471e015b73068daff3fd8613bd03d1e71b89bfac464b3e44518704"
+    },
+    {
+      "path": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/DRILL/400059.TXT",
+      "bytes": 722,
+      "sha256": "e6ff3e152fc88cb4a8a09a1131a2481d625bc9868ebb768e98118ccc7e00ebae"
+    },
+    {
+      "path": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GBL",
+      "bytes": 9691,
+      "sha256": "7620c8a3d0a23c9bbeedd7ca13966d3ab7f6e6659d4e977562c5689fed9ec976"
+    },
+    {
+      "path": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GBO",
+      "bytes": 6109,
+      "sha256": "4a4ab096e729fa69e21618abb870fad37db32a203d4d50c581baa828d749e73e"
+    },
+    {
+      "path": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GBP",
+      "bytes": 5210,
+      "sha256": "e3c207d4b1431fe30e9cda83dd6fa8caf87b654ba27067f2a96f7014baf55c16"
+    },
+    {
+      "path": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GBS",
+      "bytes": 5387,
+      "sha256": "76726f703f780b89bc40d1ebb3a9aabe96eb72171014d6582cc87df663f0db65"
+    },
+    {
+      "path": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GM1",
+      "bytes": 5592,
+      "sha256": "ef4045a313aed01197fa205b1a100f91263c42b18d34b065b519155fddfa468b"
+    },
+    {
+      "path": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GTL",
+      "bytes": 24281,
+      "sha256": "1225766196a9608ba1d97deaa6b9dbde399878344e190951474a2e41ce01d292"
+    },
+    {
+      "path": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GTO",
+      "bytes": 84310,
+      "sha256": "c78bc419731d206a760eb555724ff76758087629013301037fdae1339402a310"
+    },
+    {
+      "path": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GTP",
+      "bytes": 5607,
+      "sha256": "5d3d34390a99f3ffd356276231c20f6c5cec4e718b5a2d5841008228cafaeea0"
+    },
+    {
+      "path": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/GERBER/400059.GTS",
+      "bytes": 8156,
+      "sha256": "2ffcafb9600a32e81d5accb08cb2968b7fd0cbcb1e4fded9fe394d9b107fbded"
+    },
+    {
+      "path": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Production files/PICK_PLACE/400059_Pick_And_Place.txt",
+      "bytes": 3666,
+      "sha256": "0642cc9cc308689c0a71aa1f61f6cde8f225f54a3b2edef4f4faf47d890b8177"
+    },
+    {
+      "path": "nRF51822 Bluetooth Smart Beacon Kit - Hardware files 1_0_0/PCA20006-nRF51822 Beacon Reference Board 1_0_0/Schematic_Layout pdf files/PCA20006_Schematic_And_PCB.pdf",
+      "bytes": 1369035,
+      "sha256": "e328c2c6d9192b326db2289ae6d473780f08fd696e7eb268521bcfa1ab2fb8c9"
+    }
+  ]
+}
