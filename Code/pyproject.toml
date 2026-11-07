@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tracewave-studio"
+version = "0.1.0.dev0"
+description = "TraceWave Studio application service foundations"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+rfad = "rfad.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
