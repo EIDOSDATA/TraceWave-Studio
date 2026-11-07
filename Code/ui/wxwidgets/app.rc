@@ -1,0 +1,4 @@
+/** @brief Windows 공용 컨트롤과 모니터별 DPI 선언을 포함한다. */
+#define wxUSE_RC_MANIFEST 1
+#define wxUSE_DPI_AWARE_MANIFEST 2
+#include <wx/msw/wx.rc>

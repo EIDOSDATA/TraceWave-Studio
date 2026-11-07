@@ -4,6 +4,8 @@
 
 ## 시스템 구성
 
+재부팅 뒤 시작할 명령과 후속 작업 순서는 [재부팅 후 개발 재개](docs/reboot_resume.md)에 정리했다.
+
 ```mermaid
 flowchart TD
     GUI["Windows C++ wxWidgets GUI"] -->|"JSON-RPC / NDJSON"| APP["Python application service"]
@@ -19,7 +21,7 @@ flowchart TD
     POST --> STORE
 ```
 
-위 그림은 승인된 목표 구조다. 현재 환경 진단, 스칼라 단위와 미정값, 정규 직렬화, 프로젝트 생성/이름/설명/매개변수 명령, 저장 기준점과 불변 스냅샷을 구현했다. CAD 형상/solver/GUI와 전체 물리 프로젝트 편집은 아직 구현하지 않았다.
+위 그림은 승인된 목표 구조다. 현재 환경 진단, 단위/미정값, 제한 표현식과 의존 그래프, 기판/적층/재료/선/원호/net/단일 포트 데이터, 목적별 입력 검사, 프로젝트 명령/저장/불변 스냅샷을 구현했다. 최소 wxWidgets GUI를 별도 서비스에 연결하는 개발 profile도 제공한다. 제품 CAD adapter, openEMS 계산과 2D/3D 설계 편집 화면은 후속이다.
 
 | 구성 | 역할 | 배치 |
 | --- | --- | --- |
@@ -36,15 +38,17 @@ R1은 Windows 11 x64 wxMSW와 로컬 WSL2 worker를 우선한다. Linux native/h
 
 ## 현재 실행 방법
 
-현재 구현은 Python 3.12 표준 라이브러리만 사용한다. 아래 명령은 `Code`에서 실행한다. 현재 PATH의 Python 환경을 조회하며 전역 패키지 설치나 WSL 배포판 설치를 자동 수행하지 않는다.
+서비스 구현은 Python 3.12 표준 라이브러리만 사용한다. 아래 명령은 `Code`에서 실행한다. `tools/setup_python.ps1`은 서비스 .venv와 별도 .venv-cad를 구성한다. [Python 환경](docs/python_environment.md), [wxWidgets 빌드/실행](ui/wxwidgets/README.md), [WSL 재개 절차](docs/wsl_environment.md)를 참고한다. WSL 설치 시 Windows가 재부팅 필요를 보고했으며 Linux/openEMS는 아직 실행 검증하지 못했다.
 
 ```powershell
 $env:PYTHONPATH = 'src'
-python -X utf8 -m rfad doctor --output .local/runtime-doctor.json
-python -X utf8 -m unittest discover -s tests -v
-python -X utf8 -m rfad serve
-python -X utf8 -m rfad serve --workspace .local/projects-workspace
+.venv/Scripts/python.exe -X utf8 -m rfad doctor --output .local/runtime-doctor.json
+.venv/Scripts/python.exe -X utf8 -m unittest discover -s tests -v
+.venv/Scripts/python.exe -X utf8 -m rfad serve
+.venv/Scripts/python.exe -X utf8 -m rfad serve --workspace .local/projects-workspace
 ```
+
+GUI 빌드 후 `$env:RFAD_GUI_EXE`에 실행 파일의 절대 경로를 지정하면 실제 GUI 시험도 함께 실행한다. 현재 Windows에서 전체 166개 시험과 CAD 환경 STEP 왕복을 통과했다. 자세한 실행 근거와 미검증 범위는 [개발 상태](docs/development_status.md)에 있다.
 
 Linux에서 같은 기초 코드를 시험할 때는 다음 명령을 사용한다. Linux 실제 실행 증거는 아직 없다.
 
@@ -60,9 +64,9 @@ PYTHONPATH=src python3 -m rfad serve
 {"jsonrpc":"2.0","id":"hello-1","method":"capabilities.get","params":{"contract_version":"rfad.api/2.0","context":{},"input":{}}}
 ```
 
-숫자/읽기 전용 규칙은 [초기 구현 계약](docs/bootstrap_contract.md), 프로젝트 명령과 저장/스냅샷의 사용법 및 제한은 [프로젝트 저장 계약](docs/project_persistence.md)에 있다. 조회 성공은 GUI/CAD/해석 검증 완료가 아니다. 허용한 명령 이외의 변경은 오류로 거부한다. `doctor`의 종료 코드 0은 진단 보고서 생성 성공이며 모든 의존성 준비 완료를 뜻하지 않는다.
+숫자/읽기 전용 규칙은 [초기 구현 계약](docs/bootstrap_contract.md), 프로젝트 명령과 저장/스냅샷은 [프로젝트 저장 계약](docs/project_persistence.md), 표현식/객체 필드와 검사는 [설계 데이터](docs/design_data.md)에 있다. 조회 성공은 GUI/CAD/해석 검증 완료가 아니다. 허용한 명령 이외의 변경은 오류로 거부한다. `doctor`의 종료 코드 0은 진단 보고서 생성 성공이며 모든 의존성 준비 완료를 뜻하지 않는다.
 
-`pyproject.toml`은 향후 가상환경에서 편집 설치할 수 있는 패키지 메타데이터다. 배포용 의존성 잠금은 아직 없으며 현재 코드는 설치 없이 위 명령으로 실행/시험했다. 로컬 환경 경로와 실행 파일 해시를 포함하는 보고서, cache와 빌드 출력은 `.local/`, `build/`에 두고 Git에서 제외한다.
+`pyproject.toml`로 서비스 가상환경에 editable 설치한다. `runtime_profiles/`에는 검증한 Windows 개발 의존성의 버전/해시와 WSL의 미완료 상태를 기록한다. 제품 배포용 manifest와 라이선스 고지 검증은 후속이다. 로컬 환경 경로와 실행 파일 해시를 포함하는 보고서, cache와 빌드 출력은 `.local/`, `build/`에 두고 Git에서 제외한다.
 
 ## 구현 순서
 

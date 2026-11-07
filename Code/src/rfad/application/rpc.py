@@ -8,6 +8,8 @@ from typing import BinaryIO, TextIO
 
 from rfad import __version__
 from rfad.domain.errors import ProjectError
+from rfad.domain.project import COMMANDS, SCHEMA_VERSION, LEGACY_SCHEMA_VERSION
+from rfad.domain.expressions import ENGINE_VERSION
 
 CONTRACT_VERSION = "rfad.api/2.0"
 MAX_FRAME_BYTES = 64 * 1024
@@ -18,8 +20,11 @@ APPLICATION_ERRORS = {
     "E_VERSION": 1001, "E_RESOURCE": 1002, "E_SCHEMA": 1003,
     "E_CONFLICT": 1004, "E_IDEMPOTENCY_EXPIRED": 1005, "E_DISK": 1006,
     "E_HASH": 1007, "E_UNSUPPORTED": 1008, "E_UNIT": 1009,
+    "E_EXPR_DOMAIN": 1010, "E_EXPR_CYCLE": 1011,
+    "E_GEOMETRY": 1012, "E_PORT": 1013, "E_CONNECTIVITY": 1014,
+    "E_MATERIAL_UNKNOWN": 1015, "E_MATERIAL_RANGE": 1016,
 }
-PROJECT_MUTATIONS = {"project.open", "project.apply_command", "project.save", "snapshot.create", "job.cancel"}
+PROJECT_MUTATIONS = {"project.open", "project.apply_command", "project.save", "snapshot.create", "design.validate", "job.cancel"}
 
 
 def capabilities(service=None) -> dict:
@@ -58,13 +63,16 @@ def capabilities(service=None) -> dict:
         result["methods"].update({name: {"status": "implemented", "api_id": api_id} for name, api_id in (
             ("project.open", "API-002"), ("project.apply_command", "API-003"),
             ("project.save", "API-004"), ("snapshot.create", "API-005"),
+            ("design.validate", "API-006"),
             ("job.status", "API-015"), ("job.cancel", "API-014"),
         )})
         result["project_profile"] = {
-            "schema_version": "rfad.project/0.1", "open_modes": ["create", "open", "recover"],
-            "commands": ["metadata.rename", "metadata.describe", "parameter.set", "parameter.remove"],
+            "schema_version": SCHEMA_VERSION, "readable_schema_versions": [LEGACY_SCHEMA_VERSION, SCHEMA_VERSION],
+            "expression_engine": ENGINE_VERSION, "open_modes": ["create", "open", "recover"],
+            "commands": list(COMMANDS),
             "max_document_bytes": 32768, "mutating_batch": False, "mutating_notification": False,
             "scope": "workspace-local versioned projects; no native workers",
+            "design_validation": {"profile": "rfad.design/0.1", "purposes": ["geometry", "step", "em"], "source": "draft_revision", "max_returned_diagnostics": 64},
         }
         result["features"][0]["status"] = "implemented"
     return result

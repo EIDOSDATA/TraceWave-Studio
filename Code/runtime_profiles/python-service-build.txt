@@ -1,0 +1,3 @@
+# Windows x64, CPython 3.12. pip 설치 계획의 wheel SHA256을 고정한다.
+# 버전 변경 시 의존성을 다시 해결하고 실제 호환성을 검증한다.
+setuptools==80.9.0 --hash=sha256:062d34222ad13e0cc312a4c02d73f059e86a4acbfbdea8f8f76b28c99f306922

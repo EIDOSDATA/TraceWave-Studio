@@ -1,0 +1,41 @@
+{
+  "schema": "rfad.runtime.wsl/0.1",
+  "profile_id": "wsl-development",
+  "recorded_at": "2026-11-07",
+  "purpose": "development_only",
+  "host": "Windows 11",
+  "observed_wsl_version": "2.7.11",
+  "distribution": {
+    "name": "TraceWave-Dev",
+    "source": "Ubuntu-24.04",
+    "wsl_generation": 2,
+    "install_path_relative_to_code": ".local/wsl/TraceWave-Dev",
+    "registered": false,
+    "execution_verified": false
+  },
+  "status": "windows_restart_required_before_distribution_setup",
+  "last_install_attempt": {
+    "exit_code": 0,
+    "result": "windows_restart_requested_distribution_not_registered",
+    "success_is_not_inferred_from_exit_code": true
+  },
+  "solver": {
+    "name": "openEMS",
+    "installed": false,
+    "version": null,
+    "commit": null,
+    "python_bindings_verified": false,
+    "reference_case_verified": false,
+    "headless_only": true,
+    "qt_allowed": false,
+    "qt_dependency_audit_completed": false,
+    "appcsxcad_enabled": false,
+    "qcsxcad_enabled": false
+  },
+  "references": [
+    "https://learn.microsoft.com/en-us/windows/wsl/install",
+    "https://learn.microsoft.com/en-us/windows/wsl/basic-commands",
+    "https://docs.openems.de/en/latest/install/requirements.html",
+    "https://docs.openems.de/en/latest/install/clone-build-install.html"
+  ]
+}

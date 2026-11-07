@@ -12,6 +12,7 @@ from uuid import UUID, uuid4
 from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.domain.errors import ProjectError
 from rfad.domain.project import apply_command, new_project, validate_project
+from rfad.domain.design import preflight_design
 from rfad.storage.journal import Journal
 
 RETENTION_SECONDS = 7 * 24 * 60 * 60
@@ -21,7 +22,7 @@ MAX_JOBS = 512
 MAX_PROJECTS = 32
 MAX_SNAPSHOTS = 1024
 TERMINAL = {"completed", "failed", "cancelled", "interrupted"}
-ASYNC_METHODS = {"project.open", "project.save", "snapshot.create"}
+ASYNC_METHODS = {"project.open", "project.save", "snapshot.create", "design.validate"}
 MUTATION_METHODS = ASYNC_METHODS | {"project.apply_command", "job.cancel"}
 
 
@@ -196,6 +197,13 @@ class ProjectService:
             _fields(data, {"expected_revision", "command_id", "type", "payload"})
             _uuid(data["expected_revision"])
             _uuid(data["command_id"])
+        elif method == "design.validate":
+            _fields(context, {"project_id"})
+            _uuid(context["project_id"])
+            _fields(data, {"expected_revision", "purpose", "profile"})
+            _uuid(data["expected_revision"])
+            if data["purpose"] not in ("geometry", "step", "em") or data["profile"] != "rfad.design/0.1":
+                raise ProjectError("E_UNSUPPORTED", "초기 설계 검증은 rfad.design/0.1의 geometry/step/em 목적을 지원합니다.")
         elif method in {"project.save", "snapshot.create"}:
             _fields(context, {"project_id"})
             _uuid(context["project_id"])
@@ -387,6 +395,16 @@ class ProjectService:
         raw = self.journal.read_artifact(job["captured"])
         document = json.loads(raw.decode("utf-8"))
         validate_project(document)
+        if method == "design.validate":
+            diagnostics = preflight_design(document, data["purpose"])
+            return {
+                "revision_id": document["revision_id"], "revision_hash": canonical_hash(document),
+                "purpose": data["purpose"], "profile": data["profile"],
+                "input_status": "blocked" if diagnostics else "valid",
+                "diagnostics": diagnostics[:64], "diagnostic_count": len(diagnostics),
+                "diagnostics_truncated": len(diagnostics) > 64,
+                "solver_ready": False,
+            }
         if method == "project.save":
             current = self._load(project)
             if current["revision_id"] != document["revision_id"]:

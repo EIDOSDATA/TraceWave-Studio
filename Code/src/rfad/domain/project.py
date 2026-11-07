@@ -1,8 +1,4 @@
-"""! @brief 초기 프로젝트 원본과 제한된 명령의 불변 개정 규칙을 제공한다.
-
-@details 이 profile은 이름, 설명과 스칼라 parameter만 편집한다. 형상, 물성,
-표현식과 해석 설정의 임의 쓰기를 허용하지 않으며 실제 계산을 수행하지 않는다.
-"""
+"""! @brief 프로젝트, 표현식과 초기 설계 데이터의 불변 개정 규칙을 제공한다."""
 
 from copy import deepcopy
 from datetime import datetime, timezone
@@ -11,9 +7,12 @@ from uuid import UUID, uuid4
 
 from rfad.domain.errors import ProjectError
 from rfad.domain.units import Quantity, QuantityError
+from rfad.domain.parameter_graph import evaluate_parameters, expression_record, restore_parameter_command
+from rfad.domain.design import apply_design_command, validate_design
 
 
-SCHEMA_VERSION = "rfad.project/0.1"
+SCHEMA_VERSION = "rfad.project/0.2"
+LEGACY_SCHEMA_VERSION = "rfad.project/0.1"
 MAX_PARAMETERS = 128
 _EMPTY_COLLECTIONS = (
     "geometry", "materials", "ports", "stackup", "nets", "connections", "targets",
@@ -27,6 +26,9 @@ _PROJECT_FIELDS = {
 }
 _QUANTITY_FIELDS = {"value_si", "dimension", "display_unit", "status", "source_refs"}
 _IDENTITY = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
+_DESIGN_COLLECTIONS = {"geometry", "materials", "ports", "stackup", "nets"}
+DESIGN_COMMANDS = tuple(prefix + suffix for prefix in ("material", "layer", "net", "geometry", "port") for suffix in (".set", ".remove")) + ("board.set",)
+COMMANDS = ("metadata.rename", "metadata.describe", "parameter.set", "parameter.set_expression", "parameter.remove", *DESIGN_COMMANDS)
 
 
 def _fail(code: str, message: str, field: str) -> None:
@@ -172,8 +174,9 @@ def validate_project(document: dict) -> None:
     """
     if type(document) is not dict:
         _fail("E_SCHEMA", "프로젝트는 object여야 합니다.", "project")
-    if document.get("schema_version") != SCHEMA_VERSION:
+    if document.get("schema_version") not in (SCHEMA_VERSION, LEGACY_SCHEMA_VERSION):
         _fail("E_VERSION", "지원하지 않는 프로젝트 schema입니다.", "schema_version")
+    legacy = document["schema_version"] == LEGACY_SCHEMA_VERSION
     _fields(document, _PROJECT_FIELDS, "project")
     project_id = _uuid(document["project_id"], "project_id")
     revision_id = _uuid(document["revision_id"], "revision_id")
@@ -222,7 +225,10 @@ def validate_project(document: dict) -> None:
     names = set()
     for parameter_id, parameter in parameters.items():
         _uuid(parameter_id, "parameters")
-        _fields(parameter, {"id", "name", "quantity"}, "parameters." + parameter_id)
+        fields = {"id", "name", "quantity"}
+        if not legacy and type(parameter) is dict and "expression" in parameter:
+            fields.add("expression")
+        _fields(parameter, fields, "parameters." + parameter_id)
         if parameter["id"] != parameter_id or parameter_id in ids:
             _fail("E_SCHEMA", "매개변수 UUID가 key와 다르거나 충돌합니다.", "parameters." + parameter_id)
         ids.add(parameter_id)
@@ -234,13 +240,18 @@ def validate_project(document: dict) -> None:
         _quantity(quantity, "parameters." + parameter_id + ".quantity")
         if quantity["value_si"] is not None and type(quantity["value_si"]) is not float:
             _fail("E_SCHEMA", "저장된 SI 스칼라는 float64여야 합니다.", "parameters." + parameter_id + ".quantity.value_si")
-    if document["board"] is not None:
+    if legacy and document["board"] is not None:
         _fail("E_UNSUPPORTED", "기판 형상 편집은 아직 지원하지 않습니다.", "board")
     for field in _EMPTY_COLLECTIONS:
+        if not legacy and field in _DESIGN_COLLECTIONS:
+            continue
         if type(document[field]) is not list:
             _fail("E_SCHEMA", "미구현 컬렉션은 빈 목록이어야 합니다.", field)
         if document[field]:
             _fail("E_UNSUPPORTED", "해당 컬렉션의 의미 모델은 아직 지원하지 않습니다.", field)
+    if not legacy:
+        evaluate_parameters(parameters)
+        validate_design(document)
     if type(document["extensions"]) is not dict:
         _fail("E_SCHEMA", "extensions는 object여야 합니다.", "extensions")
     _extension_json(document["extensions"], "extensions")
@@ -266,6 +277,7 @@ def apply_command(document: dict, command: dict, expected_revision: str) -> tupl
         _fail("E_SCHEMA", "명령 type은 문자열이어야 합니다.", "command.type")
     payload = command["payload"]
     result = deepcopy(document)
+    result["schema_version"] = SCHEMA_VERSION
     if command_type in ("metadata.rename", "metadata.describe"):
         field = "name" if command_type == "metadata.rename" else "description"
         _fields(payload, {field}, "command.payload")
@@ -274,27 +286,41 @@ def apply_command(document: dict, command: dict, expected_revision: str) -> tupl
         result["metadata"][field] = payload[field]
         changed_ids = [result["project_id"]]
         invalidation_set = ["revision", "exports.metadata"]
-    elif command_type in ("parameter.set", "parameter.remove"):
+    elif command_type in ("parameter.set", "parameter.set_expression", "parameter.remove"):
         required = {"id", "name", "quantity"} if command_type == "parameter.set" else {"id"}
+        if command_type == "parameter.set_expression":
+            required = {"id", "name", "expression", "bindings", "dimension", "display_unit"}
         _fields(payload, required, "command.payload")
         parameter_id = _uuid(payload["id"], "command.payload.id")
         previous = result["parameters"].get(parameter_id)
         if previous is None:
             inverse = {"type": "parameter.remove", "payload": {"id": parameter_id}}
         else:
-            inverse = {"type": "parameter.set", "payload": deepcopy(previous)}
+            inverse = restore_parameter_command(previous)
         if command_type == "parameter.set":
             name = _text(payload["name"], "command.payload.name")
             quantity = _quantity(payload["quantity"], "command.payload.quantity")
             result["parameters"][parameter_id] = {"id": parameter_id, "name": name, "quantity": quantity}
+        elif command_type == "parameter.set_expression":
+            name = _text(payload["name"], "command.payload.name")
+            record = expression_record(payload["expression"], payload["bindings"])
+            try:
+                quantity = Quantity.missing(payload["dimension"], payload["display_unit"]).to_dict()
+            except (QuantityError, ValueError, TypeError) as error:
+                _fail("E_UNIT", str(error), "command.payload.dimension")
+            result["parameters"][parameter_id] = {"id": parameter_id, "name": name, "quantity": quantity, "expression": record}
         else:
             if previous is None:
                 _fail("E_SCHEMA", "제거할 매개변수가 없습니다.", "command.payload.id")
             del result["parameters"][parameter_id]
         changed_ids = [parameter_id]
         invalidation_set = ["revision", "geometry", "physics", "network", "metrics", "assessment", "exports"]
+    elif command_type in DESIGN_COMMANDS:
+        changed_ids, invalidation_set, inverse = apply_design_command(result, command_type, payload)
     else:
         _fail("E_UNSUPPORTED", "지원하지 않는 프로젝트 명령입니다.", "command.type")
+    derived_changes = evaluate_parameters(result["parameters"], update=True)
+    changed_ids = list(dict.fromkeys([*changed_ids, *derived_changes]))
     result["parent_revision_ids"] = [document["revision_id"]]
     result["revision_id"] = str(uuid4())
     previous_time = _timestamp(document["metadata"]["modified_at"], "metadata.modified_at")

@@ -1,0 +1,419 @@
+{
+  "schema_version": "rfad.project/0.2",
+  "project_id": "00000000-0000-0000-0000-0000000003e8",
+  "revision_id": "00000000-0000-0000-0000-0000000003e9",
+  "parent_revision_ids": [],
+  "metadata": {
+    "name": "Initial IFA baseline - incomplete",
+    "description": "25번 DEC-D0-005와 21번 초기 IFA 기준의 미완성 입력. 40 x 60 mm, 완성 1 mm, 양면 동박 35 um 목표. 0.93 mm 유전체 잔여값은 마스크를 분리하지 않은 산술 가정이며 실제 코어 두께가 아니다. 실제 물성, 마스크/제작 조건, 안테나/접지/급전/단락 상세 형상, 포트 연결과 측정 조건은 미확정. 저장/표현식 검증용이며 CAD, 제조 또는 전자기 해석 합격 사례가 아니다.",
+    "created_at": "2026-11-07T00:00:00+00:00",
+    "modified_at": "2026-11-07T00:00:00+00:00"
+  },
+  "frames": {
+    "world": {
+      "id": "00000000-0000-0000-0000-0000000007d0",
+      "parent_frame_id": null,
+      "handedness": "right",
+      "translation_si": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    "board": {
+      "id": "00000000-0000-0000-0000-0000000007d1",
+      "parent_frame_id": "00000000-0000-0000-0000-0000000007d0",
+      "handedness": "right",
+      "translation_si": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    }
+  },
+  "parameters": {
+    "00000000-0000-0000-0000-000000000bb8": {
+      "id": "00000000-0000-0000-0000-000000000bb8",
+      "name": "board_width",
+      "quantity": {
+        "value_si": 0.04,
+        "dimension": "length",
+        "display_unit": "mm",
+        "status": "user_entered",
+        "source_refs": []
+      }
+    },
+    "00000000-0000-0000-0000-000000000bb9": {
+      "id": "00000000-0000-0000-0000-000000000bb9",
+      "name": "board_length",
+      "quantity": {
+        "value_si": 0.06,
+        "dimension": "length",
+        "display_unit": "mm",
+        "status": "user_entered",
+        "source_refs": []
+      }
+    },
+    "00000000-0000-0000-0000-000000000bba": {
+      "id": "00000000-0000-0000-0000-000000000bba",
+      "name": "finished_thickness",
+      "quantity": {
+        "value_si": 0.001,
+        "dimension": "length",
+        "display_unit": "mm",
+        "status": "user_entered",
+        "source_refs": []
+      }
+    },
+    "00000000-0000-0000-0000-000000000bbb": {
+      "id": "00000000-0000-0000-0000-000000000bbb",
+      "name": "copper_thickness",
+      "quantity": {
+        "value_si": 3.5e-05,
+        "dimension": "length",
+        "display_unit": "um",
+        "status": "user_entered",
+        "source_refs": []
+      }
+    },
+    "00000000-0000-0000-0000-000000000bbe": {
+      "id": "00000000-0000-0000-0000-000000000bbe",
+      "name": "target_frequency_min",
+      "quantity": {
+        "value_si": 2400000000.0,
+        "dimension": "frequency",
+        "display_unit": "GHz",
+        "status": "user_entered",
+        "source_refs": []
+      }
+    },
+    "00000000-0000-0000-0000-000000000bbf": {
+      "id": "00000000-0000-0000-0000-000000000bbf",
+      "name": "target_frequency_max",
+      "quantity": {
+        "value_si": 2483500000.0,
+        "dimension": "frequency",
+        "display_unit": "GHz",
+        "status": "user_entered",
+        "source_refs": []
+      }
+    },
+    "00000000-0000-0000-0000-000000000bc0": {
+      "id": "00000000-0000-0000-0000-000000000bc0",
+      "name": "initial_design_frequency",
+      "quantity": {
+        "value_si": 2450000000.0,
+        "dimension": "frequency",
+        "display_unit": "GHz",
+        "status": "user_entered",
+        "source_refs": []
+      }
+    },
+    "00000000-0000-0000-0000-000000000bc1": {
+      "id": "00000000-0000-0000-0000-000000000bc1",
+      "name": "diagnostic_frequency_min",
+      "quantity": {
+        "value_si": 2000000000.0,
+        "dimension": "frequency",
+        "display_unit": "GHz",
+        "status": "user_entered",
+        "source_refs": []
+      }
+    },
+    "00000000-0000-0000-0000-000000000bc2": {
+      "id": "00000000-0000-0000-0000-000000000bc2",
+      "name": "diagnostic_frequency_max",
+      "quantity": {
+        "value_si": 3000000000.0,
+        "dimension": "frequency",
+        "display_unit": "GHz",
+        "status": "user_entered",
+        "source_refs": []
+      }
+    },
+    "00000000-0000-0000-0000-000000000bc3": {
+      "id": "00000000-0000-0000-0000-000000000bc3",
+      "name": "nominal_reference_impedance",
+      "quantity": {
+        "value_si": 50.0,
+        "dimension": "impedance",
+        "display_unit": "ohm",
+        "status": "user_entered",
+        "source_refs": []
+      }
+    },
+    "00000000-0000-0000-0000-000000000bc4": {
+      "id": "00000000-0000-0000-0000-000000000bc4",
+      "name": "antenna_region_depth",
+      "quantity": {
+        "value_si": 0.01,
+        "dimension": "length",
+        "display_unit": "mm",
+        "status": "user_entered",
+        "source_refs": []
+      }
+    },
+    "00000000-0000-0000-0000-000000000bc5": {
+      "id": "00000000-0000-0000-0000-000000000bc5",
+      "name": "ground_region_depth",
+      "quantity": {
+        "value_si": 0.05,
+        "dimension": "length",
+        "display_unit": "mm",
+        "status": "user_entered",
+        "source_refs": []
+      }
+    },
+    "00000000-0000-0000-0000-000000000bbc": {
+      "id": "00000000-0000-0000-0000-000000000bbc",
+      "name": "nominal_dielectric_residual",
+      "quantity": {
+        "value_si": 0.00093,
+        "dimension": "length",
+        "display_unit": "mm",
+        "status": "user_entered",
+        "source_refs": []
+      },
+      "expression": {
+        "text": "finished_thickness - 2 * copper_thickness",
+        "bindings": {
+          "finished_thickness": "00000000-0000-0000-0000-000000000bba",
+          "copper_thickness": "00000000-0000-0000-0000-000000000bbb"
+        },
+        "dependencies": [
+          "00000000-0000-0000-0000-000000000bba",
+          "00000000-0000-0000-0000-000000000bbb"
+        ],
+        "engine_version": "rfad.expression/0.1"
+      }
+    },
+    "00000000-0000-0000-0000-000000000bbd": {
+      "id": "00000000-0000-0000-0000-000000000bbd",
+      "name": "nominal_top_copper_z",
+      "quantity": {
+        "value_si": 0.000965,
+        "dimension": "length",
+        "display_unit": "mm",
+        "status": "user_entered",
+        "source_refs": []
+      },
+      "expression": {
+        "text": "finished_thickness - copper_thickness",
+        "bindings": {
+          "finished_thickness": "00000000-0000-0000-0000-000000000bba",
+          "copper_thickness": "00000000-0000-0000-0000-000000000bbb"
+        },
+        "dependencies": [
+          "00000000-0000-0000-0000-000000000bba",
+          "00000000-0000-0000-0000-000000000bbb"
+        ],
+        "engine_version": "rfad.expression/0.1"
+      }
+    }
+  },
+  "board": {
+    "id": "00000000-0000-0000-0000-000000000fa0",
+    "frame_id": "00000000-0000-0000-0000-0000000007d1",
+    "outline": {
+      "kind": "rectangle",
+      "width": {
+        "parameter_id": "00000000-0000-0000-0000-000000000bb8"
+      },
+      "height": {
+        "parameter_id": "00000000-0000-0000-0000-000000000bb9"
+      }
+    },
+    "thickness_convention": "finished"
+  },
+  "extensions": {},
+  "geometry": [],
+  "materials": [
+    {
+      "id": "00000000-0000-0000-0000-000000001388",
+      "name": "FR-4 candidate - properties missing",
+      "model": "isotropic_constant",
+      "epsilon_r": {
+        "value_si": null,
+        "dimension": "dimensionless",
+        "display_unit": "1",
+        "status": "missing",
+        "source_refs": []
+      },
+      "tan_delta": {
+        "value_si": null,
+        "dimension": "dimensionless",
+        "display_unit": "1",
+        "status": "missing",
+        "source_refs": []
+      },
+      "conductivity": {
+        "value_si": null,
+        "dimension": "conductivity",
+        "display_unit": "S/m",
+        "status": "missing",
+        "source_refs": []
+      },
+      "validity_hz": {
+        "min": {
+          "value_si": null,
+          "dimension": "frequency",
+          "display_unit": "Hz",
+          "status": "missing",
+          "source_refs": []
+        },
+        "max": {
+          "value_si": null,
+          "dimension": "frequency",
+          "display_unit": "Hz",
+          "status": "missing",
+          "source_refs": []
+        }
+      },
+      "source_refs": [],
+      "assumptions": [
+        "재료 이름은 후보 분류다. 실제 제조사/등급/물성 및 유효 대역이 입력되지 않았다.",
+        "완성 두께의 솔더마스크 포함 범위와 실제 층별 두께는 후속 확정한다."
+      ]
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000001389",
+      "name": "Copper candidate - properties missing",
+      "model": "isotropic_constant",
+      "epsilon_r": {
+        "value_si": null,
+        "dimension": "dimensionless",
+        "display_unit": "1",
+        "status": "missing",
+        "source_refs": []
+      },
+      "tan_delta": {
+        "value_si": null,
+        "dimension": "dimensionless",
+        "display_unit": "1",
+        "status": "missing",
+        "source_refs": []
+      },
+      "conductivity": {
+        "value_si": null,
+        "dimension": "conductivity",
+        "display_unit": "S/m",
+        "status": "missing",
+        "source_refs": []
+      },
+      "validity_hz": {
+        "min": {
+          "value_si": null,
+          "dimension": "frequency",
+          "display_unit": "Hz",
+          "status": "missing",
+          "source_refs": []
+        },
+        "max": {
+          "value_si": null,
+          "dimension": "frequency",
+          "display_unit": "Hz",
+          "status": "missing",
+          "source_refs": []
+        }
+      },
+      "source_refs": [],
+      "assumptions": [
+        "재료 이름은 후보 분류다. 실제 제조사/등급/물성 및 유효 대역이 입력되지 않았다.",
+        "완성 두께의 솔더마스크 포함 범위와 실제 층별 두께는 후속 확정한다."
+      ]
+    }
+  ],
+  "ports": [],
+  "stackup": [
+    {
+      "id": "00000000-0000-0000-0000-000000001770",
+      "name": "Nominal bottom copper",
+      "role": "conductor",
+      "order": 0,
+      "z_min": {
+        "value_si": 0.0,
+        "dimension": "length",
+        "display_unit": "mm",
+        "status": "user_entered",
+        "source_refs": []
+      },
+      "thickness": {
+        "parameter_id": "00000000-0000-0000-0000-000000000bbb"
+      },
+      "material_id": "00000000-0000-0000-0000-000000001389"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000001771",
+      "name": "Nominal dielectric residual - mask not separated",
+      "role": "dielectric",
+      "order": 1,
+      "z_min": {
+        "parameter_id": "00000000-0000-0000-0000-000000000bbb"
+      },
+      "thickness": {
+        "parameter_id": "00000000-0000-0000-0000-000000000bbc"
+      },
+      "material_id": "00000000-0000-0000-0000-000000001388"
+    },
+    {
+      "id": "00000000-0000-0000-0000-000000001772",
+      "name": "Nominal top copper",
+      "role": "conductor",
+      "order": 2,
+      "z_min": {
+        "parameter_id": "00000000-0000-0000-0000-000000000bbd"
+      },
+      "thickness": {
+        "parameter_id": "00000000-0000-0000-0000-000000000bbb"
+      },
+      "material_id": "00000000-0000-0000-0000-000000001389"
+    }
+  ],
+  "nets": [],
+  "connections": [],
+  "targets": [],
+  "networks": [],
+  "environment": [],
+  "analysis_definitions": [],
+  "optimization_studies": [],
+  "measurement_sets": [],
+  "manufacturing_profiles": [],
+  "export_profiles": [],
+  "source_references": [],
+  "assumptions": [],
+  "validation_profiles": []
+}

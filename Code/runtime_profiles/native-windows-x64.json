@@ -1,0 +1,48 @@
+{
+  "schema": "rfad.runtime.native/0.1",
+  "profile_id": "native-windows-x64",
+  "recorded_at": "2026-11-07",
+  "purpose": "development_only",
+  "platform": "windows-x64",
+  "language_standard": "C++17",
+  "validated_tools": {
+    "cmake": "4.3.2",
+    "ninja": "1.13.2",
+    "cxx": "MinGW-w64 GCC 16.1.0 UCRT MCF"
+  },
+  "qt_allowed": false,
+  "mandatory_commercial_components": false,
+  "license_review": "internal_inventory_only_release_audit_pending",
+  "dependencies": [
+    {
+      "name": "wxWidgets",
+      "version": "3.2.12",
+      "license": "wxWindows Library Licence",
+      "license_source": ".local/deps/wxWidgets-3.2.12/docs/licence.txt",
+      "url": "https://github.com/wxWidgets/wxWidgets/releases/download/v3.2.12/wxWidgets-3.2.12.tar.bz2",
+      "sha256": "a62719bb5e1dcc41c1a6fc1eecd499c7ee8521f70402c7b1bb3342a1e16344e0",
+      "download_path": ".local/deps/wxWidgets-3.2.12.tar.bz2",
+      "source_path": ".local/deps/wxWidgets-3.2.12"
+    },
+    {
+      "name": "nlohmann-json",
+      "version": "3.12.0",
+      "license": "MIT",
+      "license_source": ".local/deps/json-3.12.0/nlohmann/json.hpp",
+      "license_url": "https://github.com/nlohmann/json/blob/v3.12.0/LICENSE.MIT",
+      "url": "https://raw.githubusercontent.com/nlohmann/json/v3.12.0/single_include/nlohmann/json.hpp",
+      "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+      "download_path": ".local/deps/json-3.12.0/nlohmann/json.hpp",
+      "source_path": ".local/deps/json-3.12.0"
+    }
+  ],
+  "wx_bundled_link_inventory": [
+    {"name": "PCRE2", "link": "static archive wxregexu", "license_source": ".local/deps/wxWidgets-3.2.12/3rdparty/pcre/LICENCE"},
+    {"name": "zlib", "link": "static archive wxzlib", "license_source": ".local/deps/wxWidgets-3.2.12/src/zlib/LICENSE"},
+    {"name": "IJG JPEG", "link": "static archive wxjpeg", "license_source": ".local/deps/wxWidgets-3.2.12/src/jpeg/README"},
+    {"name": "libpng", "link": "static archive wxpng", "license_source": ".local/deps/wxWidgets-3.2.12/src/png/LICENSE"},
+    {"name": "libtiff", "link": "static archive wxtiff", "license_source": ".local/deps/wxWidgets-3.2.12/src/tiff/COPYRIGHT"},
+    {"name": "NanoSVG", "link": "header in wx core", "license_source": ".local/deps/wxWidgets-3.2.12/3rdparty/nanosvg/LICENSE.txt"}
+  ],
+  "compiler_runtime_review": "GCC, MinGW, MCF and winpthreads runtime notices and final binary inventory remain release-audit items"
+}

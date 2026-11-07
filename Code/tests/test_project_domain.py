@@ -168,7 +168,7 @@ class ProjectDomainTests(unittest.TestCase):
     def test_unsupported_schema_unknown_fields_and_geometry_are_rejected(self):
         """! @brief 미래 schema나 미구현 물리 원본을 현재 계약으로 쓰지 않는다."""
         original = new_project("원본")
-        cases = (("schema_version", "rfad.project/9", "E_VERSION"), ("unexpected", True, "E_SCHEMA"), ("geometry", [{"kind": "arc"}], "E_UNSUPPORTED"), ("board", {}, "E_UNSUPPORTED"))
+        cases = (("schema_version", "rfad.project/9", "E_VERSION"), ("unexpected", True, "E_SCHEMA"), ("geometry", [{"kind": "arc"}], "E_SCHEMA"), ("board", {}, "E_SCHEMA"))
         for field, value, error_code in cases:
             modified = deepcopy(original)
             modified[field] = value

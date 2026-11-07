@@ -1,6 +1,6 @@
 # 초기 구현 계약 0.1
 
-이 문서는 승인된 3.4의 일부를 구체화한 첫 개발 기록이다. 전체 schema/API/VT 완료 명세가 아니다. 구현 언어는 Python 3.12이며 stdlib만 사용한다. 향후 native 의존성 조합은 실제 호환성 검증 후 고정한다.
+이 문서는 승인된 3.4의 일부를 구체화한 첫 개발 기록이다. 전체 schema/API/VT 완료 명세가 아니다. 구현 언어는 Python 3.12이며 stdlib만 사용한다. 분리한 native/CAD 환경은 [Python 환경](python_environment.md)과 [wxWidgets GUI](../ui/wxwidgets/README.md)를 따른다.
 
 이하 읽기 전용 API 설명은 `--workspace` 없는 bootstrap/0.1 profile에 적용한다. 후속 구현한 프로젝트 명령과 영속 저장은 [프로젝트 저장 계약 0.2](project_persistence.md)를 따른다.
 
@@ -13,7 +13,7 @@
 - user_entered/source_default/estimated는 명시한 유한 숫자를 요구한다.
 - missing/not_applicable/unsupported는 None만 허용한다. 미정값은 0이나 FR-4 대표 상수로 치환하지 않는다.
 - bool, 문자열 숫자, NaN/Infinity, 변환 overflow와 0으로 소실되는 underflow를 거부한다. 음의 0은 0.0으로 정규화한다.
-- conflicting 후보/선택 근거, 표현식, ComplexQuantity, 불확도/conditions와 물성 모델은 후속이다. 현재 conflicting 생성은 오류다.
+- conflicting 후보/선택 근거, ComplexQuantity와 불확도/conditions는 후속이다. 표현식과 초기 물성 모델은 [설계 데이터 0.2](design_data.md)에서 제공한다. 현재 conflicting 생성은 오류다.
 - 이 타입은 값의 양수 조건, 실제 재료 유효 대역, 주파수 grid 또는 물리적 타당성 전체를 검사하지 않는다.
 
 ## 정규 직렬화
@@ -30,7 +30,7 @@
 - root depth=0, 자식 값마다 depth+1, 최대 depth=64다.
 - `canonical_hash`는 `b'rfad.canonical/1.0\n' + canonical_bytes(value)`의 SHA256 소문자 hex다.
 
-이 codec 자체는 snapshot/revision 생성이나 cache key의 물리 subset 선정을 구현하지 않는다. 해당 계약은 후속 작업이다.
+이 codec 자체는 snapshot/revision 생성이나 cache key의 물리 subset 선정을 구현하지 않는다. revision과 snapshot 적용은 [프로젝트 저장 계약](project_persistence.md)에 구현했고 물리 cache subset은 후속이다.
 
 ## 읽기 전용 API-001
 
