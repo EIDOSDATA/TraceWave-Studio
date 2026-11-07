@@ -1,6 +1,6 @@
 # RFAD 02 - 원본 검토와 병합 기록
 
-개정: 3.0 / 2026-11-07 KST / 상태: 사용자 검토용 설계안
+개정: 3.4 / 2026-11-07 KST / 상태: 설계 기준선 승인 / 개발: 착수 전
 
 - **문서 역할:** 두 원본의 차이, 누락, 충돌, 채택 근거를 재현하는 병합 감사 문서
 - **관련 문서:** [범위 결정](01_RFAD_설계_결정과_범위.md), [최종 요구](03_RFAD_사용자_요구사항.md), [데이터 모델](08_RFAD_데이터_모델과_파일_형식.md), [검증](14_RFAD_검증과_수용_기준.md), [추적](17_RFAD_요구사항_추적표.md), [출처](18_RFAD_출처와_근거.md)
@@ -49,11 +49,11 @@ A는 수집 자료의 원문 위치와 추출 레코드, 원호 비콘의 원본
 
 ## 3. 범위, 우선순위, 물리 의미 결정
 
-단계 변경은 이번 구현 기준의 설계 판단이며 사용자가 특정 OS, 라이선스, 정확도 값을 승인했다는 주장으로 쓰지 않는다. 현재 보존된 원본 문장과 AC는 RFAD 03에서 유지한다. 이전 JSON의 `baseline_A`, `original_requirement`, `original_acceptance_criteria` 필드는 과거 구조 설명이며 현재 파일이 존재한다는 의미가 아니다.
+이전 단계 조정은 설계 판단이며 과거 사용자 승인으로 소급하지 않는다. 3.2에서 사용자가 확정한 플랫폼과 초기 성능 목표는 RFAD 25의 결정 기록을 적용하며 실제 정확도나 시험 합격으로 확대하지 않는다. 현재 보존된 원본 문장과 AC는 RFAD 03에서 유지한다. 이전 JSON의 `baseline_A`, `original_requirement`, `original_acceptance_criteria` 필드는 과거 구조 설명이며 현재 파일이 존재한다는 의미가 아니다.
 
 | 항목 | 채택 범위와 이유 |
 | --- | --- |
-| [NFR-001](03_RFAD_사용자_요구사항.md#req-nfr-001) | R1 지원 목표는 Windows 11 x64 UI + local WSL2 Linux worker, Linux x86_64 UI + native worker이다. Linux worker는 R0 첫 검증 환경이며 Windows/WSL2 전송, 취소, 문자 경로, 패키징 통과가 R1 출시 gate이다. native Windows openEMS는 별도 검증 없이는 지원 완료로 표시하지 않는다. |
+| [NFR-001](03_RFAD_사용자_요구사항.md#req-nfr-001) | R1 첫 사용자 출시는 Windows 11 x64 wxMSW GUI + 로컬 WSL2 Linux worker를 대상으로 한다. Linux native/headless worker의 R0 기준 검증과 Windows/WSL2 전송, 취소, 문자 경로, 패키징의 R1 출시 gate는 유지한다. Linux wxGTK GUI는 후속 출시로 이관하며 정확한 릴리스는 미정이다. native Windows openEMS는 별도 검증 없이는 지원 완료로 표시하지 않는다. |
 | [SYN-001](03_RFAD_사용자_요구사항.md#req-syn-001) | R1은 원호 모노폴, IFA를 우선한 초기 형상과 출처 기반 후보 비교를 제공한다. 임의 형상 편집 가능, 합성식 제공, EM 검증 완료를 별도 capability로 관리한다. UWB, 배열, NFC, RFID까지 한 합성식의 자동 설계 범위로 확대하지 않는다. B::TGT-006의 제약 완화 설명은 R2이다. |
 | [CAD-003](03_RFAD_사용자_요구사항.md#req-cad-003) | R1은 단위 있는 파라미터식, 범위, 경계, 간격 및 제조 제약이다. B::GEO-003의 미구속/과구속을 진단하는 완전한 2D 기하 구속 솔버는 S/R2이며, 이를 R1 필수로 숨겨 승격하지 않는다. |
 | [CAD-007](03_RFAD_사용자_요구사항.md#req-cad-007) | R1은 선언한 STEP/기계 객체 가져오기와 배치, 재질 지정, 손실 목록이다. 대규모 조립 수리, 고급 단순화는 CAD-008 R2이다. STEP를 읽는 기능과 내보내는 기능은 각각 검수한다. |
@@ -89,7 +89,7 @@ B도 수치 기준을 보편 보증이 아닌 초기 제안으로 제시했다. 
 | NP-01 | tauCAD / tau2D: 대표 fixture 길이, 위치 오차 0.001 mm 이하 | `proposed_benchmark_profile` | R0에서 모델 크기, 최소 특징, 원본 좌표 정밀도, 독립 reader를 정한 후 허용오차를 고정한다. tauCAD, tau2D, taufab는 별개이다. |
 | NP-02 | 메시 수렴: 최소 3수준, 마지막 f_res 변화 <=1%, max \|DeltaS_complex\|<=0.02 | `proposed_benchmark_profile` | 보편 물리 정확도 기준이 아니다. 공진 대응, 동일 기준면, 대역 샘플, 경계/시간 종료 민감도와 함께 benchmark별로 사전 확정한다. |
 | NP-03 | 방사 지표 수렴: 최대 realized gain 차이 <=0.5 dB, 효율 차이 <=2%p | `proposed_benchmark_profile` | 패턴 방향, null, 좌표, 전력 기준을 함께 확인한다. 수렴과 실측 일치는 별도 gate이다. |
-| NP-04 | UI 응답: 직접 조작 피드백 <=200 ms | `proposed_benchmark_profile` | 하드웨어, 프로젝트 크기, 관찰 구간, 입력 이벤트를 정한 R0 benchmark로 검수한다. solver 계산 시간 약속이 아니다. |
+| NP-04 | 원문 B의 UI 응답 제안: 직접 조작 피드백 <=200 ms | `historical_proposal_current_perf_profile_adopted` | 원문 제안 이력이며 현재 초기 목표는 RFAD 24의 PERF-001~010, 기준 host/fixture를 따른다. 입력 지연, frame time, 취소 ACK를 구분하며 solver 계산 시간이나 최소 사양을 보증하지 않는다. |
 | NP-05 | 합성 적층 fixture: 0.035+1.530+0.035=1.600 mm, 마스크 제외 | `adopted_exact_synthetic_fixture` | 지정 fixture의 정의적 기대값으로 채택한다. 실제 제품의 명목 두께, 동박, 마스크 기본값으로 사용하지 않는다. |
 | NP-06 | 합성 전력 fixture: Pinc=1W, Pref=0.25W, Prad=0.60W -> Pacc=.75W, etarad=80%, etatotal=60% | `adopted_definition_fixture` | 수동 단일포트와 명시된 전력 규약에서 후처리 정의를 검수한다. multiport에 그대로 적용하지 않는다. |
 | NP-07 | 동박과 2D 검정선: 18/35/70um; 도면 10mm 및 AT06 50mm | `adopted_configurable_synthetic_fixtures` | 서로 다른 fixture 입력을 보존한다. 실제 제조 허용치, 동박 기본값, 출력 크기 보편값이 아니다. |
@@ -112,7 +112,7 @@ B도 수치 기준을 보편 보증이 아닌 초기 제안으로 제시했다. 
 | [B-S29 ,  CENOS RF 공식 문서와 FAQ](https://cenos-platform.com/documentation/radio-frequency/) | CENOS RF 공식 문서는 FEM, STEP/IGES/Gerber X2 입력, FreeCAD geometry, parameter study, mesh, frequency sweep, Touchstone을 설명한다. | FAQ는 사용자를 대신한 안테나/코일 설계 생성 기능이 아니라고 명시한다. STEP/Gerber geometry 출력과 일반 합성기는 확인하지 않았다. 현재 모듈별 상용 계약 조건은 별도 확인 필요하다. |
 | [B-S31 ,  Taoglas Antenna Integrator](https://www.taoglas.com/taoglas-antenna-integrator./) | Taoglas Antenna Integrator는 보드 형상, 기존 안테나 배치, 회전, metal block, keepout을 지원하며 공식 안내에 STEP/PDF/DXF/ZIP images 내보내기를 명시한다. | 카탈로그 안테나 배치 및 제출 후 성능 보고 서비스 흐름이다. 임의 PCB 패턴 합성 또는 로컬 상호작용 전체파 solver라는 근거는 확인하지 않았다. 제출, 서비스 실행은 하지 않았다. |
 
-새 프로젝트를 열거했다고 구현 의존성을 추가한 것은 아니다. 기본 구현 경로는 별도 아키텍처 문서의 Python core와 Avalonia/wxWidgets GUI 후보, CAD adapter, openEMS, KiCad 및 네트워크 후처리 계약을 따른다. 라이선스, 배포, 코드 재사용은 파일별 및 구성요소별 검토 대상이며 외부 프로세스라는 이유만으로 의무가 사라진다고 가정하지 않는다.
+새 프로젝트를 열거했다고 구현 의존성을 추가한 것은 아니다. 기본 구현 경로는 별도 아키텍처 문서의 Python core와 사용자 결정으로 선정한 C++ wxWidgets GUI, CAD adapter, openEMS, KiCad 및 네트워크 후처리 계약을 따른다. 라이선스, 배포, 코드 재사용은 파일별 및 구성요소별 검토 대상이며 외부 프로세스라는 이유만으로 의무가 사라진다고 가정하지 않는다.
 
 <a id="b-crosswalk"></a>
 ## 6. B 128개 전체 대응표
@@ -317,7 +317,7 @@ B도 수치 기준을 보편 보증이 아닌 초기 제안으로 제시했다. 
 | <a id="b-nfr-002"></a>`B::NFR-002` | 실패와 취소 시 데이터 보존 ,  M/R1 | [NFR-004](03_RFAD_사용자_요구사항.md#req-nfr-004), [JOB-002](03_RFAD_사용자_요구사항.md#req-job-002) | solver crash, 취소, 디스크 부족 시 원설계, 완료 결과를 보존하고 부분 파일을 최종 산출물로 내보내지 않는다. |
 | <a id="b-nfr-003"></a>`B::NFR-003` | 자동 저장과 중단 후 복구 ,  M/R1 | [PRJ-006](03_RFAD_사용자_요구사항.md#req-prj-006), [JOB-004](03_RFAD_사용자_요구사항.md#req-job-004) | 자동 저장, 복구 사본, 편집 이력과 실행 취소를 연결하여 유효 상태로 되돌릴 수 있게 한다. |
 | <a id="b-nfr-004"></a>`B::NFR-004` | 응답성과 성능 검수 ,  M/R1 | [NFR-003](03_RFAD_사용자_요구사항.md#req-nfr-003) | 장시간 해석과 UI thread를 분리하고 응답성은 고정 하드웨어, 모델의 별도 benchmark로 검수한다. |
-| <a id="b-nfr-005"></a>`B::NFR-005` | 지원 플랫폼과 한국어 사용성 ,  S/R1 | [NFR-001](03_RFAD_사용자_요구사항.md#req-nfr-001), [PRJ-010](03_RFAD_사용자_요구사항.md#req-prj-010) | Windows 11 UI/WSL2와 Linux native 두 목표 조합 및 한국어, 키보드, 배율을 단계별 gate로 선언한다. Windows 단독 우선 제안을 두 R1 지원 조합과 단계별 검증 gate로 조정한다. |
+| <a id="b-nfr-005"></a>`B::NFR-005` | 지원 플랫폼과 한국어 사용성 ,  S/R1 | [NFR-001](03_RFAD_사용자_요구사항.md#req-nfr-001), [PRJ-010](03_RFAD_사용자_요구사항.md#req-prj-010) | 3.2 사용자 결정에 따라 첫 사용자 출시는 Windows 11 x64 wxMSW/로컬 WSL2로 한정한다. Linux native/headless worker 검증은 유지하고 Linux wxGTK GUI는 후속 출시로 이관한다(릴리스 미정). 한국어, 키보드, 배율 검수와 원본 B 문장은 유지하며 현재 채택 정책은 RFAD 03을 따른다. |
 | <a id="b-nfr-006"></a>`B::NFR-006` | 로컬 사용과 외부 전송 제어 ,  S/R1 | [NFR-002](03_RFAD_사용자_요구사항.md#req-nfr-002), [JOB-007](03_RFAD_사용자_요구사항.md#req-job-007) | 핵심 로컬/offline 작업과 선택 원격 전송을 분리하고 설계 데이터가 자동으로 외부에 전송되지 않게 한다. |
 | <a id="b-nfr-007"></a>`B::NFR-007` | 호환성과 업데이트 관리 ,  M/R1 | [NFR-005](03_RFAD_사용자_요구사항.md#req-nfr-005), [INT-005](03_RFAD_사용자_요구사항.md#req-int-005) | 의존 버전, 파일 migration, 읽기 전용 복구와 원본 보존을 업데이트 호환성 계약에 통합한다. |
 | <a id="b-nfr-008"></a>`B::NFR-008` | 해석 경로와 라이선스 조건 안내 ,  M/R1 | [INT-005](03_RFAD_사용자_요구사항.md#req-int-005), [INT-001](03_RFAD_사용자_요구사항.md#req-int-001), [NFR-007](03_RFAD_사용자_요구사항.md#req-nfr-007) | solver 설치, 기능, 라이선스, 실행 경로를 진단하고 미설치/계약 미확인 기능을 동작하는 것으로 표시하지 않는다. |
@@ -336,8 +336,12 @@ B도 수치 기준을 보편 보증이 아닌 초기 제안으로 제시했다. 
 | --- | --- | --- |
 | 현재 없는 A JSON과 레지스트리가 존재하는 것처럼 서술됨 | 역사적 병합 기록과 현재 본문을 구분하고 파일 가용성을 명시 | 원본 A를 복구할 경우 보존 문장과 재대조 |
 | 요구 수준의 VT 연결이 개별 AC 검수를 대신할 수 있음 | RFAD 17에 모든 AC의 주 시험과 고유 subcase 및 필수 증거를 지정 | 구현 후 실제 실행 증거 연결 |
-| GUI 근거에 Qt API가 구현 의무처럼 남음 | Qt를 채택 경로에서 제외하고 GUI 중립 명령/undo 계약 유지 | RFAD 24의 wxWidgets/Avalonia 동등 비교 |
+| GUI 근거와 현재 선택이 혼재함 | C++ wxWidgets 선정 확정, Qt 제외, GUI 중립 명령/undo 계약 유지 | RFAD 24의 wxWidgets 통합/성능 검증; selected_pending_validation |
 | 기본 템플릿과 물리 검증 범위가 혼재함 | R1 필수는 원호/평면 IFA, 패치 초기식은 조건부 보조 경로 | 지원 범위와 승인된 시험 조합 확인 |
-| 메모리와 응답성에 대한 설계 책임이 모호함 | DES-URS-004와 FN 공통 자원 계약으로 프로세스/데이터 소유권과 예산을 명시 | 수치 예산은 RFAD 24의 사전 고정 절차 |
+| 메모리와 응답성에 대한 설계 책임이 모호함 | DES-URS-004와 FN 공통 자원 계약으로 소유권/예산을 명시하고 일반 편집 60 fps, 대형 장면 30 fps 목표 반영 | PERF-001~010, 기준 host/fixture를 초기 목표로 채택; 세부 기준은 RFAD 24가 관리, 실측 전 |
 
-이 개정은 요구/AC를 삭제하거나 우선순위를 낮추는 승인이 아니다. 추가 설계조건과 미결 사항은 RFAD 25에서 사용자가 검토할 수 있도록 관리한다.
+3.2에는 기존 C++ wxWidgets 선정과 60/30 fps 목표에 더해 RFAD 24의 PERF-001~010, 기준 host/fixture의 초기 목표 채택, Windows 11/WSL2 첫 출시, R1 원호/IFA 단일 포트 및 실제 출력/측정/스윕 범위 유지, 완전한 참조 계산 사례 후 물성 완비 IFA 검증, 내부 검증용 배포 우선을 반영했다. Linux GUI는 후속 출시이며 정확한 릴리스는 미정이다. 원호의 R1 검증을 생략하지 않고 G031은 기하 전용으로 유지한다. 유료 GUI 부품 비필수 방침도 유지하며 외부 공개/상용/소스 공개는 후속 결정이다. 선정 상태는 selected_pending_validation, 성능은 미측정이고 3.2 당시 정확한 시험 장비/보드 조건은 미정이었다. 당시 결정은 D0 전체 승인이나 개발 착수 지시가 아니었으며 기존 요구/AC의 ID와 전문은 보존한다. 상세 결정과 미결 사항은 RFAD 25에서 관리한다.
+
+3.3은 사용자가 채택한 최초 IFA 초기 검증 기준을 [21번 IFA 초기 검증 기준](21_RFAD_사례와_계약.md#ifa-initial-baseline)에 반영한다. 대역/외형/적층 목표/급전은 채택 상태로 옮기고 실제 재료 물성, 상세 제조와 측정 조건은 후속 확정으로 남긴다. 물성은 사용자 입력/자료 선택 변수이며 미정값의 자동 주입 금지, 가정값과 실물 근거의 구분을 유지한다. 이 변경은 기존 요구/AC 전문, R1 원호 범위, 검증 순서나 개발 착수 상태를 바꾸지 않는다.
+
+2026-11-07 후속 사용자 지시로 3.4 문서 전체가 설계 기준선으로 승인되었다. 이번 승인 반영은 상태/인계 기록의 최신화이며 기존 요구/AC와 단계, GUI/성능 및 IFA 초기 조건을 바꾸지 않는다. 승인 대상 파일과 잔여 조건은 [25번](25_RFAD_문서_검토와_승인.md#baseline-approval)에 기록한다. 문서 커밋/푸시는 승인되었으며 제품 개발 착수 지시는 별도로 남는다.

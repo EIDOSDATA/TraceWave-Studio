@@ -1,6 +1,6 @@
 # 기존 자료, 변수 사전, 원문 근거 연계 설계
 
-개정: 3.0 / 2026-11-07 KST / 상태: 사용자 검토용 설계안
+개정: 3.4 / 2026-11-07 KST / 상태: 설계 기준선 승인 / 개발: 착수 전
 
 ## 1. 현재 존재하는 기준 자료
 
@@ -28,6 +28,8 @@
 
 원본 `typical_not_guaranteed`, `requires_review`, 미확인, 누락, 추정, 자료의 조건부 적용 flag를 도메인의 status/provenance로 매핑한다. 원문 mm/inch 반올림 차이는 그대로 보존하고 적용 단위, 선택 근거를 기록한다. Dk의 시험법이 construction 표에서 반복되지 않았으면 일반 datasheet의 시험법을 모든 행에 무조건 채우지 않는다.
 
+유전율, 손실과 전도도 등은 사용자가 직접 입력하거나 조건을 확인한 재료 레코드에서 선택하는 변수다. 최초 IFA 기준의 FR-4 표기는 재료 계열을 선택한 것이며 특정 제품의 Dk/Df를 정한 것이 아니다. 사용자가 선택한 값의 snapshot, 주파수/온도/시험법/출처 및 추정 상태를 유지하고, 자료 갱신 시 기존 실행의 값을 소급 변경하지 않는다. 실제 재료 미확정 상태의 편집/저장과 명시적 가정 모델의 탐색 범위는 [08번 데이터 모델](08_RFAD_데이터_모델과_파일_형식.md)을 따른다.
+
 ## 3. 데이터 충돌과 사례
 
 - TI DN023의 L6 등 서로 다른 문맥의 치수는 하나의 정답으로 덮어쓰지 않는다. 원형상/개조/주파수 조건을 붙인다.
@@ -43,6 +45,8 @@
 G031은 Nordic PCA20006 원본 Gerber에서 추출한 원호 geometry fixture다. 중심선 반지름 약 9.119930 mm, 선폭 1.27 mm, 시작각 약106.870431 deg, CCW 전개각 약112.534634 deg, 원호 중심선 길이 약17.912454 mm 등의 값은 해당 원문과 grid precision에 종속한다. 전체 기판 외곽에는 원형 본체 이외의 tab이 있으므로 body reference diameter와 실제 outline을 구분한다.
 
 full stackup/ground/environment가 완비된 RF 성능 재현 프로젝트라고 취급하지 않는다. feed stroke와 원호의 겹침, 끝점 quantization, actual net 연결을 보존한다. 이 fixture의 geometry 변환 검증과 별도 canonical antenna의 EM, 실측 검증을 분리한다. 물성, 배터리 조건을 임의 설정한 예제를 원본 비콘의 성능으로 표시하지 않는다.
+
+R1 검증은 완전한 참조 계산 사례를 먼저 확인한 뒤 물성이 완비된 단일포트 IFA를 첫 제품 사례로 진행하고, 원호 단일포트도 별도로 검증한다. 최초 IFA의 대역/외형/적층 목표/급전은 [21번 IFA 초기 검증 기준](21_RFAD_사례와_계약.md#ifa-initial-baseline)로 채택했다. 실제 재료 물성과 상세 제작/측정 조건은 후속 확정한다. 이 초기 기준은 G031 또는 벤더 원본의 재현 조건이 아니며 모든 프로젝트의 강제 기본값도 아니다. 현존 source나 G031의 치수를 자동 기본값으로 삼아 미정 물성을 채우지 않는다. R1의 Windows 11 x64 wxMSW/local WSL2 내부 검증용 배포에서도 기하 재현과 전력/방사 성능 검증의 증거 수준을 분리한다.
 
 ## 5. 템플릿 승격
 
@@ -317,7 +321,7 @@ PAR ID는 입력 의미를 식별한다. 같은 layer, port, object, environment
 
 단위가 바뀌어도 저장 SI 값은 보존한다. 동일 물리량에 공급된 table/model/scalar 중 실제 소비한 표현을 기록하고, 다른 정의를 자동 우선순위로 골라 숨기지 않는다. 복소 수는 RFAD 08의 명시적 표현을 사용하며 NaN/Inf를 JSON 숫자로 저장하지 않는다. 허용되지 않는 수치와 미계산 지표는 값 없이 상태와 원인을 남긴다. 조건부 필수 입력은 선택 기능의 validation profile이 결정하며 숨겨진 입력창의 기본값으로 채우지 않는다.
 
-GUI 및 실행 자원의 cache 한도, concurrency, IPC payload, 메모리 예산, startup/latency 기준은 안테나 물리 PAR 수에 합산하지 않는 runtime 정책이다. [GUI 성능 계약](24_RFAD_GUI_선정과_성능_설계.md)과 실행 manifest에 버전으로 기록하고 화면 상태 변경을 raw EM 물리 hash와 분리한다. geometry/material/port가 바뀌면 해당 물리 snapshot과 파생 결과 의존성을 갱신한다.
+GUI 및 실행 자원의 cache 한도, concurrency, IPC payload, 메모리 예산, startup/latency 기준은 안테나 물리 PAR 수에 합산하지 않는 runtime 정책이다. [GUI 성능 계약](24_RFAD_GUI_선정과_성능_설계.md)의 PERF-001~010과 기준 host/fixture는 초기 목표로 채택되었으며 정확한 CPU/GPU와 실행 manifest는 아직 정하지 않았다. 이를 최소사양 보장이나 실측 합격으로 표시하지 않는다. 계약과 실행 manifest에 버전을 기록하고 화면 상태 변경을 raw EM 물리 hash와 분리한다. geometry/material/port가 바뀌면 해당 물리 snapshot과 파생 결과 의존성을 갱신한다.
 
 ## 10. 큰 자료의 검색과 가져오기
 

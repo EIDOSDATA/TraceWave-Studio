@@ -1,6 +1,6 @@
 # 안테나 계열별 형상 생성, 초기 합성, 검증 계약
 
-개정: 3.0 / 2026-11-07 KST / 상태: 사용자 검토용 설계안
+개정: 3.4 / 2026-11-07 KST / 상태: 설계 기준선 승인 / 개발: 착수 전
 
 ## 1. 세 가지 서로 다른 기능
 
@@ -24,7 +24,9 @@
 
 빈 환경, ground, material을 고정된 숨은 기본값으로 채워 verified template를 만들지 않는다. 합성 결과는 원본을 변경하지 않는 candidate patch이며 사용자가 선택한 뒤 project command로 commit한다.
 
-위 status 단어들은 하나의 순차 enum이 아니다. geometry/seed 지원 여부, 입력 완비, 실행, 수렴 및 측정 증거를 별도 필드로 저장하고 각 필드에 snapshot, 적용 범위와 evidence ID를 연결한다. 문헌에서 측정된 원본과 사용자가 재료/크기를 변경한 파생 candidate가 같은 measured 배지를 공유하지 않는다. generator/seed가 현재 구현되었다는 뜻도 아니며 개발 승인 전에는 모두 설계 계약이다.
+최초 검증 사례의 입력도 사용자 편집과 저장 대상이며 제품의 강제 기본값이 아니다. 물성이 unknown인 geometry를 편집/저장할 수 있고, 필수 물리 항목을 모두 명시적 가정으로 채운 모델은 가정이 표시된 탐색에 사용할 수 있다. 필수값 누락을 자동 보완하거나 가정 모델을 실물 검증 완료로 표시하지 않는다.
+
+위 status 단어들은 하나의 순차 enum이 아니다. geometry/seed 지원 여부, 입력 완비, 실행, 수렴 및 측정 증거를 별도 필드로 저장하고 각 필드에 snapshot, 적용 범위와 evidence ID를 연결한다. 문헌에서 측정된 원본과 사용자가 재료/크기를 변경한 파생 candidate가 같은 measured 배지를 공유하지 않는다. generator/seed가 현재 구현되었다는 뜻도 아니며 현재는 승인된 설계 계약이며 제품 구현과 실행 검증은 별도 개발 착수 지시 후 수행한다.
 
 ## 3. 계열별 계약
 
@@ -66,6 +68,8 @@ IFA는 open radiator뿐 아니라 feed와 ground short가 있는 topology로 정
 
 초기 길이 계산은 EQ-004의 seed이며 meander 인접 구간의 결합, finite ground, battery, substrate 때문에 actual resonance와 다를 수 있다. reference template를 크기 비율로 변경할 때 copper width/gap/ground/stackup도 함께 scale할지 각 parameter별로 명시한다. 전부 고정된 재질에서 길이 하나를 scale하는 사례와 완전 기하학적 scaling은 같은 조건이 아니다.
 
+최초 단일포트 IFA coupon은 [채택된 초기 기준](21_RFAD_사례와_계약.md#ifa-initial-baseline)을 단일 상세 원본으로 사용한다. 해당 대역/보드/적층 목표는 이 검증 사례의 출발 조건이며 모든 IFA 프로젝트에 고정하지 않는다. 실제 방사체/short/feed 치수, ground polygon과 재료 물성이 완비되기 전에는 geometry/seed 단계로 유지한다. TI의 원문 형상은 참고이며 변경된 보드의 공진/정합이나 원문 측정 성능의 재현을 보증하지 않는다.
+
 ## 6. 직사각형 patch 초기화
 
 EQ-041의 기본 rectangular TM10 근사를 이용할 때 f, epsilon_r, h, ground와 feed 가정을 기록한다. W->epsilon_eff->fringing DeltaL->effective length->physical L 순서로 초기값을 만든다. 실제 feed 위치/inset/connector와 유한 ground, soldermask, 손실, enclosure는 후속 모델에 포함해 정합을 조정한다. 이 초기식만으로 circular/dualband/CP/corner-trim patch를 자동 생성하지 않는다.
@@ -90,6 +94,8 @@ template 자체의 지원 범위를 넘는 scale/재질/board shape는 unverifie
 
 ## 9. 원문과 회귀 기준
 
-source-backed geometry는 현재 확보된 원본과 [자료 통합](20_RFAD_참고_자료_통합.md)의 source/parameter/location을 대조한다. 과거 `data/extracted/geometry/geometries.json` 경로는 현재 저장소에 없는 산출물이므로 실행 입력으로 가정하지 않는다. 개발 승인 후 importer가 확보된 자료와 누락 자료를 구별해 registry를 생성해야 한다. template별 runtime regression에는 parameter inputs, expected topology, analytic dimension checks, generated region/solid checks, source envelope, full-wave evidence를 구분한다. field/efficiency 비교에 필요한 물리 정보가 빠진 레코드는 geometry-only로 유지한다. 형상 library가 많다는 이유만으로 모든 계열의 성능을 검증했다고 발표하지 않는다.
+초기 검증 순서는 완전한 기하/물성/급전/환경/수치조건과 비교 기준을 갖춘 참조 계산 사례, 이어서 물성이 완비된 단일 포트 IFA다. R1 원호의 전력/방사와 출력 검증도 유지한다. G031은 기하 재현 전용이며 미정 물성을 채운 RF 기준 사례로 취급하지 않는다. 최초 IFA의 목표 대역, 보드와 적층의 초기 목표는 [21번 문서](21_RFAD_사례와_계약.md#ifa-initial-baseline)에 채택되었고, 정확한 재료 물성과 제작/측정 세부는 후속 확정한다. 이 순서는 별도 개발 착수 지시 후 수행할 계획이며 현재 시험 완료를 뜻하지 않는다.
 
-계열별 최소 반례는 원호 0/전체 회전과 끝단 gap, IFA short 제거, patch의 무효 L/재료 범위, slot의 구리/빈 영역 반전, spiral의 arm 간 단락, flex의 층 교차, 배열의 port permutation이다. 이는 기존 VT에 연결할 시험 설계이며 수행 기록이 아니다. 사용자 승인 뒤 각 card의 지원 envelope와 반례를 검증한 범위만 승격한다.
+source-backed geometry는 현재 확보된 원본과 [자료 통합](20_RFAD_참고_자료_통합.md)의 source/parameter/location을 대조한다. 과거 `data/extracted/geometry/geometries.json` 경로는 현재 저장소에 없는 산출물이므로 실행 입력으로 가정하지 않는다. 별도 개발 착수 지시 후 importer가 확보된 자료와 누락 자료를 구별해 registry를 생성해야 한다. template별 runtime regression에는 parameter inputs, expected topology, analytic dimension checks, generated region/solid checks, source envelope, full-wave evidence를 구분한다. field/efficiency 비교에 필요한 물리 정보가 빠진 레코드는 geometry-only로 유지한다. 형상 library가 많다는 이유만으로 모든 계열의 성능을 검증했다고 발표하지 않는다.
+
+계열별 최소 반례는 원호 0/전체 회전과 끝단 gap, IFA short 제거, patch의 무효 L/재료 범위, slot의 구리/빈 영역 반전, spiral의 arm 간 단락, flex의 층 교차, 배열의 port permutation이다. 이는 기존 VT에 연결할 시험 설계이며 수행 기록이 아니다. 별도 개발 착수 지시 뒤 각 card의 지원 envelope와 반례를 검증한 범위만 승격한다.

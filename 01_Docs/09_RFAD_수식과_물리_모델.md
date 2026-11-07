@@ -1,6 +1,6 @@
 # RFAD 09 - 수식과 물리 모델
 
-개정: 3.0 / 2026-11-07 KST / 상태: 사용자 검토용 설계안
+개정: 3.4 / 2026-11-07 KST / 상태: 설계 기준선 승인 / 개발: 착수 전
 역할: 계산 규약, 수식의 정의역, 출력, 한계, 구현 위임과 검증 벡터의 기준
 상태: **design baseline with open verification gates** - 구현, EM 실행, 실측 합격을 뜻하지 않는다.
 
@@ -838,7 +838,7 @@ $$
 
 **출력:** `S_DUT` [1 complex] - deembeddednetwork; `transform_log` [structured] - orderedoperations.
 
-**근사 등급, 단계:** `exact_network_operation_given_fixture` ,  R1. **구현/위임:** scikit-rf cascade/inv/calibration withconditioningchecks.
+**근사 등급, 단계:** `exact_network_operation_given_fixture` ,  R1은 기본 네트워크 정의와 검증된 단순 변환, 고급 fixture de-embedding/calibration은 R2. **구현/위임:** 해당 단계에서 검증된 scikit-rf cascade/inv/calibration과 conditioning check. 최초 IFA의 R1 기본 비교는 동일 SMA 기준면을 사용한다.
 
 **근거:** [SKRF_NETWORKS](https://scikit-rf.readthedocs.io/en/latest/tutorials/Networks.html) - Cascading and De-embedding; [SCIKIT_RF_CIRCUIT](https://scikit-rf.readthedocs.io/en/latest/tutorials/Circuit.html) - Arbitrary N-port circuit; unique Network/port connections; [TI_AN058_SWRA161](https://www.ti.com/lit/pdf/swra161) 물리 p.4,5,6,20,23,24,25,26 - section 3.1-3.4 initial lengths and wave conventions; calibration/matching/OTA.
 
@@ -936,7 +936,7 @@ $$
 
 **한계, 예외:** 가중점수는 설계 정책이며 물리 법칙이 아니다. 계산하지 않은 대역을 자동 pass시키지 않는다. 보간, surrogate 예상점을 실제 검증된 지점으로 처리하지 않는다.
 
-**입력:** `Fk` [declarednormalized metrics] - minimizationobjective vector; `gj,sj` [sameconstraintunits] - constraintandscale; `wj,p` [1] - explicitpolicy.
+**입력:** `Fk` [declarednormalized metrics] - minimizationobjective vector; `gj,sj` [sameconstraintunits] - constraintandscale; `wj,p` [1] - explicitpolicy. 정규화와 penalty의 정의역은 s_j>0, w_j>=0, p>0이며 유한값을 요구한다.
 
 **출력:** `feasible` [bool] - geometry/material/numericandgoalconstraints; `Pareto_set` [candidateids] - nondominatedvalidcandidates.
 

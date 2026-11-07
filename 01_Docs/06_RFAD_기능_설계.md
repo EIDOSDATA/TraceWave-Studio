@@ -1,6 +1,6 @@
 # RFAD 06 - 기능 상세 설계
 
-개정: 3.0 / 2026-11-07 KST / 상태: 사용자 검토용 설계안
+개정: 3.4 / 2026-11-07 KST / 상태: 설계 기준선 승인 / 개발: 착수 전
 
 관련 문서: [요구사항](03_RFAD_사용자_요구사항.md), [UI](05_RFAD_화면과_사용자_경험_설계.md), [아키텍처](07_RFAD_소프트웨어_아키텍처.md), [데이터 모델](08_RFAD_데이터_모델과_파일_형식.md), [수학, 물리](09_RFAD_수식과_물리_모델.md), [계산 파이프라인](10_RFAD_연산_파이프라인.md), [solver 계약](11_RFAD_해석기_어댑터_계약.md), [CAD, EDA 출력](12_RFAD_도면과_제조_파일_출력.md), [최적화, 측정](13_RFAD_최적화와_측정.md), [검증](14_RFAD_검증과_수용_기준.md).
 
@@ -49,11 +49,11 @@
 
 JobState와 독립 유효성 축은 RFAD 04 section 6을 따른다. `transport_state=connected/disconnected/reconnecting`와 모델 관계 `stale`을 JobState enum으로 저장하지 않는다. 출력 상태는 `ExportStatus=preview_only/generated_unverified/verified_profile/failed`이며 `verified_profile`에는 실제 검증한 profile, reader, 허용오차, 범위가 필요하다.
 
-API-013은 `TaskPlan.kind=em_prepare/em_analysis/cad_build/export/study/instrument_acquisition/data_processing`을 받는다. EM 실행은 의도 설정을 고정한 AnalysisPlan에서 준비를 수행한 후, PreparationArtifact와 실제 native/mesh/consumption을 봉인한 별도 PreparedPlan을 만든다. 새 준비값을 원래 AnalysisPlan에 덧써 hash를 유지하지 않는다. `em_prepare`는 AnalysisPlan을 받아 준비 작업을 수행하고 `em_analysis`만 PreparedPlan을 필수로 받는다. `data_processing`은 import.preview, network.derive, metrics.evaluate, measurement.align 등의 긴 데이터 작업에 사용한다. operation_method와 입력 artifact/version으로 작업을 구분하고 동일 scheduler의 TaskRef, 취소, 상태 계약을 적용한다. EM PreparedPlan은 요구하지 않는다. 다른 작업은 자기 종류의 prerequisites를 검사한다. API 프로토콜 `rfad.api/2.0`과 이 문서의 개정 3.0은 별개 버전이다.
+API-013은 `TaskPlan.kind=em_prepare/em_analysis/cad_build/export/study/instrument_acquisition/data_processing`을 받는다. EM 실행은 의도 설정을 고정한 AnalysisPlan에서 준비를 수행한 후, PreparationArtifact와 실제 native/mesh/consumption을 봉인한 별도 PreparedPlan을 만든다. 새 준비값을 원래 AnalysisPlan에 덧써 hash를 유지하지 않는다. `em_prepare`는 AnalysisPlan을 받아 준비 작업을 수행하고 `em_analysis`만 PreparedPlan을 필수로 받는다. `data_processing`은 import.preview, network.derive, metrics.evaluate, measurement.align 등의 긴 데이터 작업에 사용한다. operation_method와 입력 artifact/version으로 작업을 구분하고 동일 scheduler의 TaskRef, 취소, 상태 계약을 적용한다. EM PreparedPlan은 요구하지 않는다. 다른 작업은 자기 종류의 prerequisites를 검사한다. API 프로토콜 `rfad.api/2.0`과 이 문서의 개정 3.4는 별개 버전이다.
 
 ### 1.6 데이터 소유권과 자원 예산
 
-이 절은 DES-URS-004/005의 구현 설계 계약이다. 수치 예산은 RFAD 24의 동일 fixture와 대상 장비에서 사전 고정하며 아래 정책의 존재를 실제 성능 측정으로 보지 않는다.
+이 절은 DES-URS-004/005의 구현 설계 계약이다. RFAD 24의 PERF-001~010 예산, 기준 host와 fixture를 초기 목표로 채택하며 일반 편집 60 fps/대형 장면 30 fps를 유지한다. 상세 측정/판정 기준은 RFAD 24를 따른다. 실제 CPU/GPU/driver 등 실행 manifest는 미정이며 초기 목표 채택을 최소 사양 보장이나 실측 합격으로 보지 않는다.
 
 | 데이터/작업 | 소유권과 전달 | 한도 도달과 해제 |
 | --- | --- | --- |
@@ -68,13 +68,19 @@ API-013은 `TaskPlan.kind=em_prepare/em_analysis/cad_build/export/study/instrume
 
 ### 1.7 요청 취소, 재접속, 오래된 응답
 
-제출 재전송은 동일 request_key와 동일 payload hash일 때 기존 job을 조회한다. 같은 key에 다른 payload가 오면 충돌로 거부한다. request_key의 보존 기간은 job 기록의 유지 정책과 같거나 더 길며 기간이 지난 요청은 자동 재제출하지 않고 사용자에게 새 실행 여부를 보여준다.
+제출 재전송은 동일 request_key와 동일 payload hash일 때 기존 job을 조회한다. 같은 key에 다른 payload가 오면 충돌로 거부한다. request_key/receipt의 보존과 만료는 RFAD 11의 idempotency_policy를 따른다. 장기 보존되는 job 기록과 receipt의 7일 보존을 동일시하지 않는다. 만료 요청은 자동 재제출하지 않고 authoritative 상태와 원 작업을 조회한 뒤 사용자 의사에 따른 명시적 새 명령으로만 재접수한다.
 
 조회 응답은 project/revision/dataset/request ID를 포함한다. 사용자가 더 최신 조건으로 이동한 뒤 도착한 응답은 원래 cache에 저장할 수 있으나 현재 뷰를 덮어쓰지 않는다. 화면 조회 취소와 solver 작업 취소를 분리한다. 연결이 끊긴 동안 GUI는 종료를 추정하지 않고 재접속 후 job snapshot과 마지막 수신 sequence 이후 사건을 요청한다.
 
-준비 작업의 기본 전이는 `draft -> validating -> planned -> queued -> preparing -> completed`, EM 실행은 `draft -> validating -> planned -> queued -> running -> postprocessing -> completed`이다. 실패/취소/중단 분기는 RFAD 04의 kind별 전이표를 따른다. 준비 완료와 해석 완료를 같은 결과로 표시하지 않는다. `data_processing`은 공통 접수 검사를 거쳐 `queued -> running -> completed`로 진행하며 필요한 경우 running과 completed 사이에 postprocessing을 둔다.
+준비 작업의 기본 전이는 `draft -> validating -> planned -> queued -> preparing -> completed`, EM의 `solve_and_postprocess`는 `draft -> validating -> planned -> queued -> running -> postprocessing -> completed`이다. `postprocess_only`는 완결 raw를 확인한 뒤 running을 생략하고 queued에서 postprocessing으로 진행한다. 실패/취소/중단 분기는 RFAD 04의 kind별 전이표를 따른다. 준비 완료와 해석 완료를 같은 결과로 표시하지 않는다. `data_processing`은 공통 접수 검사를 거쳐 `queued -> running -> completed`로 진행하며 필요한 경우 running과 completed 사이에 postprocessing을 둔다.
 
 취소는 접수 확인, cooperative 요청, 정책상 유예, 해당 job이 소유한 프로세스 트리의 종료 확인, 부분 artifact 정리 순서로 진행한다. GUI는 취소 명령을 비동기로 보내며 끝나기 전에 cancelled를 확정하지 않는다. 원격/WSL 경계에서 실제 종료를 확인할 수 없으면 RFAD 04의 interrupted 및 마지막 확인 시각을 보존하고 후속 상태를 조회한다. 실행 여부 미확인을 성공이나 취소로 단정하지 않으며 unknown을 별도 JobState로 추가하지 않는다. 기한과 escalation 정책은 adapter capability 및 사전 합의한 운영 profile에 기록한다.
+
+### 1.8 승인된 초기 기능과 검증 순서
+
+R1은 원호/IFA 중심 단일 포트, 물성/급전/환경, 실제 2D/STEP/CAM, 기본 측정/스윕 및 전력/방사 검증을 유지한다. 데이터 구조의 n-port 지원과 실제 첫 출시의 단일 포트 검증 범위는 구별한다. 완전한 참조 계산 사례를 검증한 뒤 물성이 완비된 단일 포트 IFA로 진행하며 원호의 R1 검증은 생략하지 않는다. G031은 기하 전용 fixture다. 첫 IFA는 [채택한 초기 기준 조건](21_RFAD_사례와_계약.md#ifa-initial-baseline)을 사용하며 실제 Dk/Df/재료, 층별 적층, 제작과 측정 조건은 후속 확정한다. 초기값은 해당 fixture의 시작 조건이고 제품 상수나 해석 pass가 아니다.
+
+이 순서와 범위를 포함한 3.4 전체 설계 기준선은 승인 완료이며 개발 착수 지시는 별도로 남는다. 제품 구현, 도구 설치, GUI/solver/실측 시험은 별도 착수 지시 전 수행하지 않는다.
 
 ## 2. 프로젝트, 입력, 자료
 
@@ -313,15 +319,15 @@ API-013은 `TaskPlan.kind=em_prepare/em_analysis/cad_build/export/study/instrume
 **수식**: 없음 - 출처, 물리조건 matching
 **근거**: `ISOLA_ASTRA_DKDF`, `ISOLA_FR408HR_DKDF`, `ROGERS_RO4000_DS`
 
-- **입력:** material source/construction, lot/revision, test method/frequency/temperature/direction, Dk type, paired Dk/Df and uncertainty, target layer, frequency, scenario.
+- **입력:** 사용자가 입력하거나 검토한 라이브러리에서 선택한 material source/construction, lot/revision, test method/frequency/temperature/direction, Dk type, paired Dk/Df and uncertainty, target layer, frequency, scenario, 명시적 assumptions. epsilon_r/tan_delta/conductivity와 층 두께는 변경 가능한 입력이며 상태/유효성은 [물성 입력 계약](08_RFAD_데이터_모델과_파일_형식.md#material-input-contract)을 따른다.
 - **검사, 처리:** 정확 조건 matching -> 미정/다른 construction/시험법 충돌 분류 -> 사용자 선택 또는 허용 보간 정책 적용 -> project-local immutable material snapshot 생성. bulk/design/process/effective 값은 다른 semantic kind다.
 - **출력:** 선택 원자료와 사용값, 출처, 범위, 보간/추정 flag, conflict decision record, 관련 layers. 같은 품명만으로 Dk와 다른 표의 Df를 결합하지 않는다.
-- **실패, 변경영향:** 필요한 Df가 없으면 missing이며 자동0이 아니다. 라이브러리 update는 기존 snapshot을 바꾸지 않는다. 사용값 변경을 명시 commit할 때만 solver/material/판정의 의존성이 갱신된다.
+- **실패, 변경영향:** 필요한 Df가 없으면 missing이며 자동0이 아니다. 미정 물성을 저장하고 기하를 편집할 수 있지만 필수값 미정 상태로 EM을 실행하지 않는다. 명시적 가정/추정 모델을 사용한 탐색 계산은 지원 범위에서 허용하며 입력 provenance와 실제 검증 상태를 구분한다. 라이브러리 update는 기존 snapshot을 바꾸지 않는다. 사용값 변경을 명시 commit할 때만 solver/material/판정의 의존성이 갱신된다.
 
 <a id="FN-015"></a>
 ### FN-015 재료 분산, 손실, 텐서, 도체 표현 변환
 
-**단계**: R1 - 손실, PEC/지원 유한도체, 전달값; R2 - 분산 fit, 이방성, 거칠기 등 adapter 검증이 필요한 확장.
+**단계**: R1 - 명시한 유효 대역 안의 지원 상수 물성 모델, 손실, PEC/지원 유한도체, 전달값; R2 - 주파수 곡선/분산 fit, 이방성, 거칠기 등 adapter 검증이 필요한 확장.
 
 **연결 요구**: `PHY-027`, `PHY-028`, `PHY-029`, `PHY-030`, `PHY-031`, `PHY-032`, `PHY-033`, `PHY-034`, `PHY-051`
 **B 보강**: `B::MAT-003`, `B::MAT-005`, `B::MAT-008`, `B::MAT-009`, `B::MAT-010`
@@ -854,18 +860,18 @@ API-013은 `TaskPlan.kind=em_prepare/em_analysis/cad_build/export/study/instrume
 <a id="FN-046"></a>
 ### FN-046 GUI, CLI 일치, 로컬, WSL, 선택 원격 운영
 
-**단계**: R1 - 공통 명령 경로, Linux 및 Windows+WSL2 출시 게이트, 오프라인; R2 - 공개 batch API/CLI 확장, R3 - 선택 원격/HPC.
+**단계**: R1 - 공통 명령 경로, Windows 11 x64 wxMSW GUI + 로컬 WSL2 worker 출시 gate, 오프라인. Linux native/headless worker의 R0 기준 검증 유지. Linux wxGTK GUI는 후속 출시(정확한 릴리스 미정); R2 - 공개 batch API/CLI 확장, R3 - 선택 원격/HPC.
 
 **연결 요구**: `PRJ-010`, `INT-004`, `INT-005`, `INT-006`, `JOB-007`, `NFR-001`, `NFR-002`, `NFR-003`, `NFR-006`, `NFR-007`
 **B 보강**: `B::OPT-008`, `B::NFR-005`, `B::NFR-006`, `B::NFR-007`, `B::NFR-008`
 **화면**: `UI-14`, `UI-23`
 **API**: `API-001`, `API-002`, `API-003`, `API-013`, `API-014`, `API-015`, `API-028`, `API-029`, `API-026`
 **수식**: 없음 - transport, 명령 라우팅, 실행 정책
-**설계 근거**: `DES-URS-003`, `DES-URS-004`, RFAD 24의 GUI 비교 및 RFAD 07의 프로세스 경계
+**설계 근거**: `DES-URS-003`, `DES-URS-004`, RFAD 24의 wxWidgets 통합/성능 검증 및 RFAD 07의 프로세스 경계
 
-- **GUI 선택 경계:** wxWidgets C++를 우선 평가하고 Avalonia C#과 비교한다. 이는 낮은 메모리 사용 가능성에 대한 가설이며 실제 측정 전 우위를 확정하지 않는다. Qt는 신규 GUI 구현과 배포 경로에서 제외한다. GUI toolkit은 canonical 데이터나 worker 계약에 침투하지 않으며 선택 절차는 RFAD 24/25를 따른다.
-- **자원/응답 계약:** 표와 트리의 가상화, 보이는 결과의 범위 조회, 입력 이벤트 합치기, 비동기 작업, 메모리/로그/표시 버퍼 한도를 적용한다. 기능별 상세 정책은 1.6/1.7절을 따른다. CPU-bound 전처리와 전체 파일 parse를 GUI 이벤트 스레드에서 수행하지 않는다.
-- **입력:** same typed commands as GUI, project/plan IDs, runtime profile(local Linux/Windows UI+WSL2), worker transport/path mapping, resource limits, optional remote destination/transfer selection.
+- **GUI 구현 경계:** 사용자 결정에 따라 C++ wxWidgets를 사용한다. 선정 상태는 selected_pending_validation이며 기능/성능은 아직 미검증이다. Qt는 신규 GUI 구현과 배포 경로에서 제외한다. 유료 GUI 부품을 필수로 사용하지 않으며 이 정책은 유료 부품 일체 금지나 제품 무료 배포 결정과 구별한다. 우선 내부 검증용으로 배포하며 외부 공개/상용/소스 공개 방침은 후속 결정이다. GUI toolkit은 canonical 데이터나 worker 계약에 침투하지 않는다. RFAD 24의 GUI-SPIKE-001~007은 별도 개발 착수 지시 후 수행할 wxWidgets 통합/성능 검증이다.
+- **자원/응답 계약:** 일반 편집 60 fps, 대형 장면 30 fps를 목표로 하며 F1/F2 및 PERF-006의 기준은 RFAD 24를 따른다. PERF-001~010과 기준 host/fixture는 초기 목표로 채택했으며 실측 달성, 최소 사양 보장 또는 개발 착수를 뜻하지 않는다. 표와 트리의 가상화, 보이는 결과의 범위 조회, 입력 이벤트 합치기, 비동기 작업, 메모리/로그/표시 버퍼 한도를 적용한다. 기능별 상세 정책은 1.6/1.7절을 따른다. CPU-bound 전처리와 전체 파일 parse를 GUI 이벤트 스레드에서 수행하지 않는다.
+- **입력:** same typed commands as GUI, project/plan IDs, runtime profile(Windows 11 wxMSW UI+WSL2, Linux native/headless 검증 worker), worker transport/path mapping, resource limits, optional remote destination/transfer selection.
 - **검사, 처리:** capabilities handshake -> schema/version/path/permissions 검사 -> 동일 domain command dispatch -> structured progress/status/error 반환. GUI가 실행한 작업과 CLI가 실행한 작업은 같은 snapshot/hash/validation pipeline을 사용한다. 한국어 UI의 명령, 상태, 오류를 접근 가능한 이름과 키보드 명령으로 노출하고, 포커스, 선택, 숫자와 단위 표시는 UI-01의 계약을 따른다.
 - **출력:** batch-readable results, exit mapping, logs, artifacts, runtime/version/transport metadata. offline은 설치된 자료/solver 범위에서 동작하며 external download가 필요한 기능과 구분한다.
 - **실패, 변경영향:** 한글/공백 경로, WSL 변환, worker 종료, 취소, 인증정보 누출을 출시 gate에서 검증한다. remote는 전송 대상/파일 manifest와 정책을 명시하며 자동 업로드하지 않는다. plugin/import script를 일반 data open과 함께 실행하지 않는다. 아직 검증하지 않은 OS, GPU, solver를 supported로 광고하지 않는다.
@@ -893,7 +899,7 @@ API-013은 `TaskPlan.kind=em_prepare/em_analysis/cad_build/export/study/instrume
 - 도메인 함수에서 물리량, 전력, wave 정의를 결정하고 화면/보고서에서 다른 공식을 중복 구현하지 않는다. EQ ID와 알고리즘 버전을 결과에 연결한다.
 - external circuit, 목표, 표시 변경에 대한 cache 재사용과 physical/solver 변경 무효화를 서로 다른 시험으로 확인한다.
 - UI error banner만으로 유효성을 관리하지 않는다. 같은 invalid state가 API/CLI, 파일, 보고서에도 나타나야 한다.
-- 검증 절차, 성능 목표, 지원 matrix는 [RFAD 14](14_RFAD_검증과_수용_기준.md)의 실제 시험 결과로 갱신한다. 현재 문서는 구현할 계약이며 완료 주장이나 승인 기록이 아니다.
+- 실제 검증 결과와 확인된 지원 matrix는 [RFAD 14](14_RFAD_검증과_수용_기준.md)의 시험 증거로 갱신한다. 채택한 성능 목표를 시험 결과에 맞춰 자동 완화하지 않으며 목표 변경은 RFAD 25의 설계 변경 결정으로 관리한다. 현재 문서는 승인된 설계 계약이며 구현/시험 완료를 주장하지 않는다. 설계 승인 기록은 RFAD 25에서 관리한다.
 
 ## 9. 근거
 

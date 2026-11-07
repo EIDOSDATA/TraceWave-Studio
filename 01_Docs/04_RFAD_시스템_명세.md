@@ -1,6 +1,6 @@
 # 시스템 명세와 동작 계약
 
-개정: 3.0 / 2026-11-07 KST / 상태: 사용자 검토용 설계안
+개정: 3.4 / 2026-11-07 KST / 상태: 설계 기준선 승인 / 개발: 착수 전
 
 ## 1. 경계와 규범
 
@@ -111,7 +111,7 @@ completed는 요구된 산출물의 게시 완료다. 수렴, 물리 정확도, 
 | E_SCHEMA / E_VERSION | 구조 또는 호환 버전 불일치 | 읽기 전용 열기/지원 migration 안내 |
 | E_UNIT / E_EXPR_CYCLE | 차원/표현식 오류 | 해당 필드 위치와 참조 cycle 반환 |
 | E_GEOMETRY / E_CONNECTIVITY | 무효 shape/단선/단락 | 객체 선택, 오류 경계 표시 |
-| E_MATERIAL_UNKNOWN / E_MATERIAL_RANGE | 물성 미정/유효대역 이탈 | source 선택/검증된 model로 변경 |
+| E_MATERIAL_UNKNOWN / E_MATERIAL_RANGE | 해당 계산의 필수 물성 미정/유효대역 이탈 | 사용자 명시 입력/자료 선택 또는 지원 범위의 모델로 수정. 명시적 가정은 실제 재료 검증과 구분 |
 | E_UNSUPPORTED | adapter 미지원 | 지원 alternative와 변경 영향 제시 |
 | E_PORT / E_REFERENCE_PLANE | 급전/기준면 정의 오류 | 매핑 보완 또는 profile 변경 |
 | E_RESOURCE / E_DISK | 자원 부족 | 추정과 사용량 비교, 실행 예산 수정 |
@@ -125,7 +125,9 @@ completed는 요구된 산출물의 게시 완료다. 수렴, 물리 정확도, 
 
 ## 8. 성능과 자원
 
-성능 예산의 단일 기준은 [24번](24_RFAD_GUI_선정과_성능_설계.md)이다. UI 입력 반응, 작업 접수 ACK, native 완료, cold/warm 시작, private commit/working set/GPU를 따로 측정한다. B의 200 ms는 전체 해석시간이나 모든 이벤트의 일괄 보장값이 아니다.
+성능 예산의 단일 기준은 [24번](24_RFAD_GUI_선정과_성능_설계.md)이며 PERF-001..010과 현재 기준 host/fixture를 초기 목표로 채택했다. 기준 host는 Windows 11 x64, 물리 4코어 이상, RAM 16 GiB, SSD, 내장 GPU, 1920x1080이다. 정확한 CPU/GPU/driver 등은 실행 manifest에서 고정하며 초기 목표 채택은 실측 합격이나 최소 사양 보장이 아니다. UI 입력 반응, 작업 접수 ACK, native 완료, cold/warm 시작, private commit/working set/GPU를 따로 측정한다. B의 200 ms는 전체 해석시간이나 모든 이벤트의 일괄 보장값이 아니다.
+
+확정한 C++ wxWidgets GUI의 PERF-006은 연속 조작 중 F1 일반 2D 편집/표 스크롤/일반 3D 100000 triangle에서 60 fps, F2 대형 3D 1000000 triangle에서 30 fps를 목표로 한다. 프레임 시간 p95는 각각 `<=1000/60 ms`, `<=1000/30 ms`이며 fixture와 측정 조건은 24를 따른다. idle redraw를 60 fps로 강제하지 않는다. 자원/지연 예산을 포함한 3.4 설계 기준선은 승인되었으며 실제 성능 검증과 개발 착수는 별도다.
 
 | ID | 계약 | 실패 또는 한계 처리 |
 | --- | --- | --- |
@@ -146,3 +148,7 @@ completed는 요구된 산출물의 게시 완료다. 수렴, 물리 정확도, 
 - 검증: [수용시험](14_RFAD_검증과_수용_기준.md).
 
 이 장의 상태, 오류, transaction, cache 방침은 본 제품의 설계 결정이다. 외부 표준의 요구와 동일하다고 주장하지 않는다. JSON-RPC message envelope만 [공식 2.0 규격](https://www.jsonrpc.org/specification)을 따른다.
+
+## 물성 입력과 최초 IFA 기준의 상태
+
+물성 미정은 프로젝트 저장과 기하 편집 자체의 오류가 아니다. 해당 계산에 필요한 값이 빠졌을 때 준비/실행을 차단하며, FR-4 명칭이나 최초 IFA 치수로 유전율/손실을 자동 생성하지 않는다. 사용자가 명시한 가정값으로 필수 입력을 완비하면 지원 범위에서 탐색할 수 있으나 실물과 일치하거나 measured라고 표시하지 않는다. 상세 상태와 provenance는 [08번 데이터 모델](08_RFAD_데이터_모델과_파일_형식.md), 사용자 채택 초기 조건과 남은 실물 입력은 [21번 IFA 초기 검증 기준](21_RFAD_사례와_계약.md#ifa-initial-baseline)을 따른다.

@@ -1,0 +1,43 @@
+{
+  "design_revision": "3.4",
+  "document_count": 26,
+  "local_links_checked": 4168,
+  "counts": {
+    "requirements": 141,
+    "acceptance": 404,
+    "ui": 24,
+    "fn": 46,
+    "api": 30,
+    "eq": 41,
+    "vt": 30,
+    "par": 162
+  },
+  "original_b_preserved": true,
+  "original_b_sha256": "e32c11b68c0f47ac8fbe562b813fc709d7678bc0d1357dedcb0f367f58ac777f",
+  "requirements_normalized_equal": true,
+  "acceptance_normalized_equal": true,
+  "original_b_exact_snapshot_bytes": true,
+  "original_b_note": "개정 전 작업 파일 snapshot과 바이트 동일 여부를 검사. 원본 B는 편집 대상에서 제외.",
+  "ac_parser_counts": {
+    "before": 404,
+    "after": 404
+  },
+  "issues": [],
+  "table_warnings": [],
+  "baseline_id": "RFAD-D0-3.4",
+  "approval_state": "approved",
+  "development_state": "not_started",
+  "product_tests_state": "not_run",
+  "requirements_and_ac_verbatim_preserved": true,
+  "trace_rows_exact_preserved": 407,
+  "math_blocks_preserved": true,
+  "performance_contract_rows_preserved": true,
+  "ifa_initial_baseline_preserved": true,
+  "original_b_git_diff_empty": true,
+  "original_b_raw_bytes_preserved": true,
+  "git_diff_whitespace_check": "passed",
+  "manifest_document_count": 27,
+  "manifest_hashes_verified": true,
+  "reviewed_archive_documents_match_preapproval_snapshot": true,
+  "review_scope": "Numbered Markdown 00-25 and README; original B unchanged. Cross-document consistency, approval state, original stable IDs, links, tables, fences and input/verification boundaries. No product implementation or runtime/physics experiment."
+}

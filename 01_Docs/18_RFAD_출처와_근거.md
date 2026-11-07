@@ -1,6 +1,6 @@
 # 출처, 근거, 검토 수준
 
-개정: 3.0 / 2026-11-07 KST / 상태: 사용자 검토용 설계안
+개정: 3.4 / 2026-11-07 KST / 상태: 설계 기준선 승인 / 개발: 착수 전
 
 이 문서는 최종 설계가 어떤 자료와 판단을 사용했는지 설명한다. 공식 문서에서 API가 존재함을 확인한 것, 식을 유도, 대조한 것, 프로그램을 실행한 것, 실제 안테나를 측정한 것은 서로 다른 증거이다. 이번 작업에서 RFAD 제품 실행, 전체파 해석, 제작, 실측 검증을 수행하지 않았다.
 
@@ -39,7 +39,7 @@
 
 | Source ID | 문서 | 최종 설계에서의 사용 범위 |
 | --- | --- | --- |
-| F-SYS01 | [Qt for Python 공식 문서](https://doc.qt.io/qtforpython-6/) | 이전 기술 검토의 역사 자료. 현재 GUI는 wxWidgets 또는 Avalonia만 검토하며 Qt/PySide6는 채택 후보에서 제외한다. |
+| F-SYS01 | [Qt for Python 공식 문서](https://doc.qt.io/qtforpython-6/) | 이전 기술 검토의 역사 자료. 현재 GUI는 C++ wxWidgets로 확정되었으며 Qt/PySide6는 제외한다. |
 | F-SYS02 | [CadQuery Introduction](https://cadquery.readthedocs.io/en/latest/intro.html) | Python CAD 모델링 및 STEP 경로 후보. RFAD의 얇은 동박, via 재열기 시험은 별도. |
 | F-SYS03 | [JSON-RPC 2.0 Specification](https://www.jsonrpc.org/specification) | 요청, 응답, notification envelope. TaskPlan과 artifact 계약은 RFAD 자체 명세. |
 | F-SYS04 | [openEMS Python solver API](https://docs.openems.de/en/latest/python/openEMS/openEMS.html) | solver 생성, 시간 종료, 실행 API. 실제 binary profile과 정상 동작은 후속 계약시험. |
@@ -322,7 +322,9 @@
 
 ## GUI 재검토의 추가 근거
 
-Avalonia/wxWidgets/renderer/.NET의 공식 자료와 선택 조건은 [GUI 선정과 성능 설계](24_RFAD_GUI_선정과_성능_설계.md)에 기록한다. 기존 Qt source ID는 역사 근거로만 보존하며 현재 GUI 후보에서 Qt와 PySide6는 제외한다.
+C++ wxWidgets의 채택 및 통합/성능 검증 계약은 [GUI 선정과 성능 설계](24_RFAD_GUI_선정과_성능_설계.md)에 기록한다. Avalonia/.NET와 기존 Qt source ID는 과거 기술 비교의 역사 자료로 보존하며 현재 채택 기술로 해석하지 않는다. Qt와 PySide6는 제외한다. GUI 기술, 일반 편집 60 fps/대형 장면 30 fps를 포함한 PERF-001~010/기준 host/fixture의 초기 목표 채택, 유료 GUI 부품 비필수 방침의 근거는 사용자 후속 지시다. 공식 자료의 기능 설명이나 과거 비교가 최소사양 보장이나 실측 합격을 증명하지는 않는다.
+
+R1 Windows 11 x64 wxMSW/local WSL2 우선, Linux wxGTK GUI 후속 출시, 원호/IFA 단일포트 범위 및 내부 검증용 배포 우선도 사용자 결정으로 기록한다. Linux native/headless worker 기본 검증은 R0에서 유지하며 후속 Linux GUI의 출시 버전은 미정이다. 완전한 참조 계산 사례 이후 물성 완비 단일포트 IFA를 첫 제품 사례로 검증하고 R1 원호 검증도 수행한다. 최초 IFA 대역/보드 외형/적층 목표/급전은 3.3에서 [21번 IFA 초기 검증 기준](21_RFAD_사례와_계약.md#ifa-initial-baseline)로 채택했다. 실제 재료 물성과 상세 제작/측정 조건, 정확한 CPU/GPU 실행 manifest 및 외부 공개/상용/소스 공개 방침은 후속 확정한다. 이 선택의 근거를 외부 자료의 제품 성능 보증으로 바꾸지 않는다.
 
 ## 7. 3.0 문서 검토에서 직접 확인한 공식 근거
 
@@ -343,17 +345,30 @@ Avalonia/wxWidgets/renderer/.NET의 공식 자료와 선택 조건은 [GUI 선�
 
 기록에는 source ID, 실제 URL/로컬 상대 경로, 확인 시각, 원문 개정, locator, 확인한 문장 또는 항목, 사용한 주장, 미확인 범위가 필요하다. 권리 상태가 미정인 원문은 기본 배포 대상에서 제외하며 사용자의 로컬 참조와 citation은 유지한다. 레코드 수나 hash 일치로 수식, 물성 또는 안테나 성능의 타당성을 대신 증명하지 않는다.
 
-## 9. GUI 후보와 성능 측정의 추가 출처
+## 9. GUI 채택 및 과거 비교 검토의 추가 출처
 
-아래 ID는 3.0 GUI 문서 검토에서 추가한 별도 색인이다. 5절의 이전 250개 ID 수에 섞지 않는다. 확인일은 2026-11-07 KST이며 구체적인 채택 근거와 한계는 [RFAD 24](24_RFAD_GUI_선정과_성능_설계.md)를 따른다. 공식 문서 확인은 동등 기능 prototype 실행이나 메모리/지연 합격을 뜻하지 않는다.
+아래 ID는 3.0 GUI 문서 검토에서 추가한 별도 색인이다. 5절의 이전 250개 ID 수에 섞지 않는다. 확인일은 2026-11-07 KST이며 3.1에서 C++ wxWidgets가 확정되었다. 현재 채택 근거와 한계는 [RFAD 24](24_RFAD_GUI_선정과_성능_설계.md)를 따른다. GUI-AVA-*와 GUI-DOTNET-AOT는 과거 비교 검토 자료이며 현재 제품의 채택이나 구현 의존성을 뜻하지 않는다. 공식 문서 확인은 prototype 실행이나 메모리/지연/frame 합격을 뜻하지 않는다. 기술 상태는 `selected_pending_validation`이다. 3.2의 성능 초기 목표 채택, 3.4 전체 문서 기준선 승인 완료, 실제 검증 미실행 및 개발 착수 전 상태를 구분한다.
 
 | Source ID | 공식 자료 | 사용할 근거와 제한 |
 | --- | --- | --- |
 | GUI-WX-OVERVIEW | [wxWidgets 소개](https://wxwidgets.org/about/) | native control과 플랫폼 구성. 명칭만으로 낮은 메모리나 빠른 응답을 판정하지 않음 |
 | GUI-WX-LICENSE | [wxWidgets 라이선스](https://wxwidgets.org/about/licence/) | 채택 버전과 배포 구성의 조건 검토. 실제 배포 승인은 별도 |
-| GUI-AVA-ARCH | [Avalonia 플랫폼 아키텍처](https://docs.avaloniaui.net/docs/fundamentals/cross-platform-architecture) | 렌더링/플랫폼 계층과 후보 구성. worker/renderer 비용을 포함한 실측 필요 |
-| GUI-AVA-PERF | [Avalonia 성능 문제](https://docs.avaloniaui.net/troubleshooting/app-performance-issues) | virtualization과 성능 검토. TreeDataGrid는 무료 core와 별도인 Avalonia Pro 조건을 확인 |
-| GUI-AVA-AOT | [Avalonia Native AOT](https://docs.avaloniaui.net/docs/deployment/native-aot) | AOT 적용 제약과 빌드 경로. startup/메모리 개선은 실제 후보에서 측정 |
-| GUI-AVA-LICENSE | [Avalonia FAQ](https://avaloniaui.net/faq/) | MIT core와 상용 control/서비스 구분. 필요한 control의 비용과 배포 권리를 별도 기록 |
-| GUI-DOTNET-AOT | [.NET Native AOT](https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/) | runtime 배포 및 제한. JIT/AOT를 같은 비용으로 가정하지 않음 |
+| GUI-AVA-ARCH | [Avalonia 플랫폼 아키텍처](https://docs.avaloniaui.net/docs/fundamentals/cross-platform-architecture) | 과거 비교 검토: 렌더링/플랫폼 계층. 현재 채택 기술 아님 |
+| GUI-AVA-PERF | [Avalonia 성능 문제](https://docs.avaloniaui.net/troubleshooting/app-performance-issues) | 과거 비교 검토: virtualization, TreeDataGrid의 Avalonia Pro 조건. 현재 제품 의존성 아님 |
+| GUI-AVA-AOT | [Avalonia Native AOT](https://docs.avaloniaui.net/docs/deployment/native-aot) | 과거 비교 검토: AOT 적용 제약과 빌드 경로. 실제 RFAD 성능 미측정, 현재 채택 기술 아님 |
+| GUI-AVA-LICENSE | [Avalonia FAQ](https://avaloniaui.net/faq/) | 과거 비교 검토: MIT core와 상용 control/서비스 구분. 현재 배포 구성 아님 |
+| GUI-DOTNET-AOT | [.NET Native AOT](https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/) | 과거 비교 검토: runtime 배포와 JIT/AOT 제약. 현재 GUI runtime 의존성 아님 |
 | GUI-WIN-MEMORY | [PROCESS_MEMORY_COUNTERS_EX](https://learn.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-process_memory_counters_ex) | working set과 private commit 측정 의미. GUI 단독 수치로 전체 프로세스 비용을 대신하지 않음 |
+
+## 10. 최초 IFA 초기 검증 기준의 근거
+
+확인일은 2026-11-07 KST이다. 아래는 사용자에게 추천하기 전 공식 자료의 해당 내용을 확인한 기록이며 제작/solver/실측 결과가 아니다. 별도 색인의 4개 ID는 과거 250개 출처 수에 합산하지 않는다.
+
+| Source ID | 공식 자료와 확인 위치 | 사용할 근거와 제한 |
+| --- | --- | --- |
+| IFA-TI-DN007 | [TI SWRU120D, 2.4-GHz Inverted F Antenna](https://www.ti.com/lit/an/swru120d/swru120d.pdf), 1~2쪽 | 25.7 x 7.5 mm는 접지를 제외한 안테나 영역이고 측정 조건은 1 mm FR-4. 접지/재료/두께/주변 구조의 영향과 정합망 권고. 이번 40 x 60 mm 보드의 성능 보증이나 동일 재현본 근거가 아님 |
+| IFA-TI-AN043 | [TI SWRA117D, Small Size 2.4 GHz PCB Antenna](https://www.ti.com/lit/an/swra117d/swra117d.pdf), 3쪽 및 5~6쪽 | 50 ohm/2.4 GHz 대역 정합 목표의 사례, 작은 보드에서 coax 배치 및 ground 영향. 원문의 MIFA와 이번 단순 IFA를 동일 형상으로 간주하지 않으며 원문 변동 수치를 허용오차로 복사하지 않음 |
+| IFA-SILABS-AN1088 | [Silicon Labs AN1088](https://www.silabs.com/documents/public/application-notes/an1088-designing-with-pcb-antenna.pdf), 2~6쪽 | 원자료 4층 보드, feed/short/keepout/mask와 ground 조건. 14 mil 선폭은 0.008 inch 상부 유전체 조건이므로 이번 2층 보드에 자동 적용하지 않음 |
+| IFA-KEYSIGHT-PLANE | [Keysight Removing Unwanted Effects from the Measurement](https://helpfiles.keysight.com/csg/N1930xB/ToolsAndUtilities/Removing_Unwanted_Effects_from_the_Measurement.html), Port Rotation/Extension 및 De-embedding | 기준면 이동과 fixture의 손실/위상/불일치 제거를 구분. 검증된 모델 또는 S-parameter가 필요하며 케이블 외부의 방사 결합까지 제거한 증거는 아님 |
+
+2.400~2.4835 GHz, 폭 40 x 길이 60 mm, 안테나 영역 40 x 10 mm, 접지 외곽 40 x 50 mm, 2층 FR-4 완성 1.0 mm/각 동박 35 um, 50 ohm SMA와 초기 측정 계획은 사용자가 채택한 독자 검증 보드의 초기 기준이다. 공개 설계의 실측 결과를 승계하지 않는다. 물성은 사용자 입력/자료 선택 변수이며 실제 재료, 제조사와 상세 측정 조건은 미정이다. 상세 단일 기준은 [21번](21_RFAD_사례와_계약.md#ifa-initial-baseline), 결정 기록은 [25번](25_RFAD_문서_검토와_승인.md)을 따른다.

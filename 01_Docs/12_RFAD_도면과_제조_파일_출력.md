@@ -1,14 +1,18 @@
 # 2D, STEP, EDA, 제조 출력 상세 설계
 
-개정: 3.0 / 2026-11-07 KST / 상태: 사용자 검토용 설계안
+개정: 3.4 / 2026-11-07 KST / 상태: 설계 기준선 승인 / 개발: 착수 전
 
 관련 문서: [아키텍처](07_RFAD_소프트웨어_아키텍처.md), [수식](09_RFAD_수식과_물리_모델.md), [검증](14_RFAD_검증과_수용_기준.md).
+
+R1은 Windows 11 x64 wxMSW GUI와 local WSL2 Linux worker를 우선하며 원호/IFA 단일포트의 실제 2D/STEP/CAM 출력을 모두 검수한다. Linux native/headless worker의 기본 계산 검증은 R0에서 유지하고 Linux wxGTK GUI 수용은 출시 버전 미정의 후속 범위다. 내부 검증용 package를 먼저 준비하되 제조 출력의 형상/단위/연결 검수를 줄이지 않는다. 3.4 전체 문서 기준선은 승인 완료다. 외부 공개/상용/소스 공개 방침과 개발 착수 지시는 별도로 남는다.
 
 ## 1. 공통 생성 순서
 
 snapshot 고정 -> 표현식 평가 -> analytic primitive -> planar region/Boolean -> 연결, DRC -> physical layer solid -> format projection -> 임시 파일 생성 -> 별도 reader 재입력 -> 비교, manifest 발행 순으로 처리한다. 표시 mesh, solver mesh, DXF/Gerber chord approximation은 서로 다른 허용오차다.
 
 원호는 중심선 반지름, signed sweep, width로 정의하고 양쪽 offset을 계산한다(EQ-001/002). join/cap과 겹치는 feed segment는 Boolean union 후 도체 영역과 connectivity를 계산한다. 원호 길이+급전선 길이를 겹침 고려 없이 물리적 전기 길이로 단정하지 않는다. undercut/측벽/도금은 실제로 선택한 fabrication model만 반영한다.
+
+최초 IFA 보드의 채택 치수, 명목 적층, mask/실장과 측정 경계는 [최초 IFA 검증 기준](21_RFAD_사례와_계약.md#ifa-initial-baseline)을 단일 기준으로 참조한다. ground envelope는 실제 ground copper의 완성 형상과 구분하고 안테나 허용 영역을 임의의 실제 패턴으로 채우지 않는다. feed/short 및 via, SMA와 pi 부품의 정확한 형상/연결을 후속 입력으로 고정한다. IFA의 의도한 short 경로를 일반 배선 short 오류와 혼동하지 않는다.
 
 ## 2. tolerance 세 종류와 budget
 
@@ -19,6 +23,8 @@ snapshot 고정 -> 표현식 평가 -> analytic primitive -> planar region/Boole
 | taufab | 실제 PCB 제작 치수 변동 | 제조사/공정 profile |
 
 tauCAD=0.001 mm 등 B의 값은 기준 PCB에서 검증할 초기 후보다. kernel tolerance, source grid, 최소 gap, 동박 thickness, writer precision을 함께 검토한다. import된 G031은 원본 grid와 endpoint quantization이 있으므로 원문 재현 허용오차와 writer왕복 오차를 한 값으로 덮지 않는다. tauCAD가 gap이나 copper thickness를 소실시킬 정도이면 export를 차단하거나 사용자가 명시한 더 높은 정밀도 profile을 적용한다.
+
+[24번](24_RFAD_GUI_선정과_성능_설계.md)의 PERF-001~010 및 기준 host/fixture 초기 목표 채택은 GUI/실행 성능 계약이다. 이 결정은 B 원문의 CAD/제조 허용오차를 자동 승인하거나 최소사양 보장/실측 합격을 선언한 것이 아니다.
 
 곡선 chord error, coordinate quantization, Boolean tolerance가 누적되는 budget을 남긴다. 단순 모든 오차를 무조건 더하는 conservative check와 실제 roundtrip 측정 결과를 구분한다. topology 보존은 작은 좌표 오차 여부와 별도로 검사한다.
 
@@ -42,6 +48,8 @@ PDF 인쇄의 '페이지에 맞춤' 결과는 프로그램이 제어하지 않�
 6. mask/coating, 부품, 배터리/케이스의 포함은 export preview와 assembly hierarchy에 표시한다.
 
 별도 body 이름은 stable ID와 역할을 포함하고 assembly 이름 변경과 의미 mapping이 독립적이어야 한다. copper body를 substrate와 fusion해 재질 구분을 잃는 옵션은 RF physical profile에서 허용하지 않는다. 여러 net body의 fusion도 connectivity 보고와 별개 선택이며 기본은 분리다.
+
+최초 IFA의 완성 보드 두께와 층별 finished copper 목표는 core/mask의 실제 두께를 확정한 값이 아니다. 완성 두께를 core 두께로 등치하거나 미정 mask를 무시해 core를 자동 역산하지 않는다. 21번의 mask 포함 및 안테나 영역 silkscreen 제외 조건과 실제 제조사의 두께 정의/공차를 대조한 뒤 물리 적층을 확정한다. 실제 Dk/Df/전도도 등 RF 물성이 미정이어도 정의된 geometry는 저장할 수 있지만, 필수 제작 형상/적층이 미정이면 제조 전달 완료나 해당 physical profile 검증 완료로 표시하지 않는다. 명시적 가정으로 만든 탐색 모델과 출력은 실제 제작 입력 및 물리 검증 결과와 구분한다.
 
 ### 4.2 STEP schema
 

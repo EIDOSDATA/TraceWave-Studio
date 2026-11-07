@@ -1,6 +1,6 @@
 # 해석기 어댑터, API, 실행 계약
 
-개정: 3.0 / 2026-11-07 KST / 상태: 사용자 검토용 설계안
+개정: 3.4 / 2026-11-07 KST / 상태: 설계 기준선 승인 / 개발: 착수 전
 
 관련 문서: [아키텍처](07_RFAD_소프트웨어_아키텍처.md), [수식](09_RFAD_수식과_물리_모델.md), [검증](14_RFAD_검증과_수용_기준.md).
 
@@ -8,11 +8,13 @@
 
 이 문서는 application service API와 worker protocol, 최초 openEMS adapter가 주고받을 의미를 정의한다. 함수명은 RFAD 내부 계약이며 아래 이름이 외부 라이브러리에 이미 존재한다고 주장하지 않는다. 외부 openEMS의 확인 API는 7절에 별도로 적는다.
 
+Linux native/headless worker의 R0 계약 검증을 유지하고 R1 사용자 경로는 Windows 11 x64 wxMSW GUI와 로컬 WSL2 Linux worker로 검증한다. Linux wxGTK GUI는 후속 출시 대상으로 버전이 미정이며 worker의 R0 검증과 별도다. 이 경로 채택은 설치, prototype 제작 또는 시험 실행의 착수 승인이 아니다.
+
 ## 2. 공통 message envelope
 
 transport framing은 UTF-8 NDJSON. 각 JSON message는 JSON-RPC 2.0을 따른다. request의 `params`에는 `contract_version`, `context`, `input`을 사용한다. mutation/작업 접수에는 `request_key`를 넣고 같은 key+같은 payload는 같은 결과를 반환한다. 다른 payload로 key를 재사용하면 E_CONFLICT다.
 
-request_key의 authority와 epoch는 capabilities.get의 idempotency_policy에서 받는다. server가 발급한 `request_key_epoch`의 신규 접수 유효기간은 최대 7일이며 client가 연장하지 못한다. 최초 접수 전에 key, method, project/catalog scope, expected revision, canonical payload hash, job/result ref와 receipt `accepted_at/expires_at`을 durable journal에 기록한다. receipt의 보관 기간은 최초 접수부터 7일이다. 기존 receipt가 있으면 epoch의 신규 접수 기간이 끝났어도 해당 expires_at까지 같은 결과를 돌려준다. receipt가 없고 epoch가 만료되었거나 인식되지 않으면 E_IDEMPOTENCY_EXPIRED를 반환한다. 이 순서로 오래된 key가 새 작업으로 잘못 접수되는 것을 막는다. 재접속/재시도는 원 key와 epoch를 그대로 사용하며 timeout을 이유로 key를 교체하지 않는다. 만료 후에는 authoritative 상태/원 작업 결과를 조회하고 사용자 재접수 의사를 확인한 별도 명령만 새 key를 사용한다. 보관 기간과 epoch 정책은 wire handshake에서 고정하는 설계 제안이다.
+request_key의 authority와 epoch는 capabilities.get의 idempotency_policy에서 받는다. server가 발급한 `request_key_epoch`의 신규 접수 유효기간은 최대 7일이며 client가 연장하지 못한다. 최초 접수 전에 key, method, project/catalog scope, expected revision, canonical payload hash, job/result ref와 receipt `accepted_at/expires_at`을 durable journal에 기록한다. receipt의 보관 기간은 최초 접수부터 7일이다. 기존 receipt가 있으면 epoch의 신규 접수 기간이 끝났어도 해당 expires_at까지 같은 결과를 돌려준다. receipt가 없고 epoch가 만료되었거나 인식되지 않으면 E_IDEMPOTENCY_EXPIRED를 반환한다. 이 순서로 오래된 key가 새 작업으로 잘못 접수되는 것을 막는다. 재접속/재시도는 원 key와 epoch를 그대로 사용하며 timeout을 이유로 key를 교체하지 않는다. 만료 후에는 authoritative 상태/원 작업 결과를 조회하고 사용자 재접수 의사를 확인한 별도 명령만 새 key를 사용한다. 보관 기간과 epoch 정책은 wire handshake에서 고정하는 승인된 초기 설계 정책이다.
 
 mutation과 job 접수는 journal 용량 및 recovery record를 먼저 확보하고 commit 후 ACK한다. 용량을 확보하지 못하면 E_RESOURCE로 거부하며 실행부터 시작하지 않는다. key와 receipt는 실제 변경/job 접수와 같은 원자적 commit 경계를 사용한다. 재시작 후에도 동일한 응답을 복구할 수 있어야 한다.
 
@@ -35,13 +37,13 @@ mutation과 job 접수는 journal 용량 및 recovery record를 먼저 확보하
 
 source: [JSON-RPC 2.0 공식 규격](https://www.jsonrpc.org/specification). framing, request_key, artifact semantics는 본 설계의 추가 계약이다.
 
-문서 개정 3.0과 wire의 `contract_version=rfad.api/2.0`은 서로 다른 버전이다. 구현 전에 schema revision과 capabilities handshake로 지원 필드/limits를 협상한다. 모르는 필수 필드를 무시하거나 의미가 달라진 payload를 같은 계약으로 소비하지 않는다.
+문서 개정 3.4와 wire의 `contract_version=rfad.api/2.0`은 서로 다른 버전이다. 구현 전에 schema revision과 capabilities handshake로 지원 필드/limits를 협상한다. 모르는 필수 필드를 무시하거나 의미가 달라진 payload를 같은 계약으로 소비하지 않는다.
 
 metadata frame의 최대 크기는 1 MiB이며 control frame은 64 KiB 이내로 제한하고 우선 처리한다. binary field/mesh/전체 로그를 NDJSON이나 base64로 실어 보내지 않는다. 큰 데이터는 ArtifactRef와 shape/dtype/단위/ROI로 참조하고 08의 무결성 및 파일 수명 계약을 따른다. 길이 제한은 JSON 전체를 메모리에 올리기 전에 적용한다. stdout에는 protocol만, native stdout/stderr에는 별도 로그 채널을 사용한다. UI 로그는 최대 10 Hz로 일괄 전달하고 최근 10000행의 bounded tail을 유지한다. 원 로그는 용량 정책을 가진 파일에 보존하며 tail 생략량을 표시한다. pending response/event queue도 유한하게 두고 읽기 지연 시 backpressure를 적용한다. control 우선순위가 긴 frame 쓰기에 막히지 않도록 별도 control queue/transport 또는 작은 frame 단위의 fair scheduling을 사용한다. 이 수치는 [아키텍처](07_RFAD_소프트웨어_아키텍처.md)의 설계 예산이며 측정 완료값이 아니다.
 
 ## 3. operation 목록
 
-API 표의 snapshot은 immutable ID+hash, artifact는 manifest로 검증한 ArtifactRef다. 아래 작업형 method는 항상 접수 시 TaskRef(job_id, state, events_cursor)를 반환하고 완료 event에 operation_result와 아래 표의 최종 output refs를 전달한다. 처리 시간이 짧거나 cache hit이어도 반환형을 바꾸지 않는다. 동기 query/명령은 작은 결과를 직접 반환하며 result.open은 metadata/ROI 조회로 유지한다. 이 비동기 분류도 아직 구현 전인 wire 2.0 설계안이며 설치본 호환 완료를 주장하지 않는다.
+API 표의 snapshot은 immutable ID+hash, artifact는 manifest로 검증한 ArtifactRef다. 아래 작업형 method는 항상 접수 시 TaskRef(job_id, state, events_cursor)를 반환하고 완료 event에 operation_result와 아래 표의 최종 output refs를 전달한다. 처리 시간이 짧거나 cache hit이어도 반환형을 바꾸지 않는다. 동기 query/명령은 작은 결과를 직접 반환하며 result.open은 metadata/ROI 조회로 유지한다. 이 비동기 분류도 아직 구현 전인 승인된 wire 2.0 설계 계약이며 설치본 호환 완료를 주장하지 않는다.
 
 | 호출 분류 | API ID | TaskPlan.kind 또는 응답 |
 | --- | --- | --- |
@@ -140,7 +142,7 @@ preflight 순서:
 7. capability와 필수 observables 매칭.
 8. immutable plan 생성, 선택 근사와 unresolved non-blocking 조건 기록.
 
-mandatory 오류는 실행 차단한다. 단순 missing source provenance는 물리값이 사용자 지정으로 명시된 exploratory run에서 warning일 수 있지만, 검증된 material 상태로 승격하지 않는다.
+mandatory 오류는 실행 차단한다. 물성의 값/모델/조건 및 입력 상태는 [물성 입력 계약](08_RFAD_데이터_모델과_파일_형식.md#material-input-contract)을 따른다. 필수값 unknown과 출처 미확인을 구분한다. 필수 물리값은 명시해야 하며 FR-4 명칭이나 fixture만으로 epsilon_r/tan_delta/conductivity/층 두께를 채우지 않는다. 사용자가 값과 assumptions, 유효 대역, 온도 및 출처의 미확인 상태를 명시한 지원 모델의 exploratory run은 허용할 수 있다. 단순 missing source provenance는 그 경우 warning일 수 있지만 입력/계산 완료를 검증된 material 또는 제작/실측 검증으로 승격하지 않는다. R1 상수 모델의 유효 대역 검사와 R2 주파수 곡선/분산 fit 범위를 유지하고 실제 소비값, 근사, 가정은 AnalysisPlan/PreparationArtifact/PreparedPlan 및 결과에 연결한다.
 
 ## 6. mesh와 수치 계획
 
@@ -190,6 +192,8 @@ power ledger의 DUT 경계와 native source/port termination 위치를 명시한
 ## 9. adapter 계약시험과 지원 승격
 
 doctor->analytic port/network fixture->geometry/unit fixture->lossy material fixture->radiating canonical fixture->mesh/boundary convergence->external CAD/measurement 비교 순으로 증거를 쌓는다. 각 시험은 snapshot/native input/hash/toolchain을 남긴다. 특정 port/material 조합이 실패해도 다른 검증 조합을 삭제할 필요는 없지만 전체 backend를 '모든 기능 지원'으로 표시해서는 안 된다.
+
+별도 개발 착수 지시 후 완전한 입력과 비교 기준을 갖춘 참조 계산 사례를 먼저 검증하고, 이어 물성/급전/환경이 완비된 단일 포트 IFA에 적용한다. R1 원호 검증도 유지하며 각 사례의 전력 수지, 방사량과 수렴 증거를 확인한다. G031은 기하 fixture로만 사용한다. 최초 IFA의 목표 대역/보드/적층 초기 목표는 [21번 초기 기준](21_RFAD_사례와_계약.md#ifa-initial-baseline)을 따르고 정확한 재료 물성과 실제 제작/측정 조건은 후속 확정한다. 누락값을 임의로 채우지 않는다.
 
 최초 구현에서 반환 값은 실제 계산 결과 또는 명확한 unsupported/failure다. 유사한 예제 파일의 결과를 복사해 실제 현재 모델의 결과처럼 제공하는 fallback은 허용하지 않는다.
 

@@ -1,6 +1,6 @@
 # 데이터 모델, 단위, 저장 형식 명세
 
-개정: 3.0 / 2026-11-07 KST / 상태: 사용자 검토용 설계안
+개정: 3.4 / 2026-11-07 KST / 상태: 설계 기준선 승인 / 개발: 착수 전
 
 관련 문서: [아키텍처](07_RFAD_소프트웨어_아키텍처.md), [수식](09_RFAD_수식과_물리_모델.md), [검증](14_RFAD_검증과_수용_기준.md).
 
@@ -86,9 +86,18 @@
 
 surface/face ID는 `{entity_id, semantic_role, construction_feature}`로 참조한다. CAD face index와 exporter entity number는 해당 projection의 mapping에만 저장한다. model rebuild 후 포트 face를 찾을 수 없으면 자동으로 '가장 가까운 face'에 붙이지 않고 E_PORT를 반환한다.
 
+<a id="material-input-contract"></a>
 ### 5.2 Layer와 MaterialModel
 
 Layer는 `role=conductor|dielectric|coating|adhesive|air`, ordering, z bounds, physical thickness, material ID/version, region coverage, manufacturing construction을 갖는다. z bounds와 thickness 둘 다 저장할 경우 한쪽을 authoritative로 지정하고 나머지는 derived로 계산한다. 별도로 입력해 불일치한 값을 동시에 적용하지 않는다.
+
+`epsilon_r`, `tan_delta`, `conductivity`(domain sigma), 층 두께 등은 사용자가 입력하거나 검토한 라이브러리에서 프로젝트로 불러오는 변수이며 제품 상수가 아니다. `FR-4`라는 분류명이나 fixture 선택만으로 Dk=4.4, 손실 0 또는 실제 두께를 채우지 않는다. UI의 unknown/미정은 해당 Quantity의 `status=missing`, `value_si=null`로 저장할 수 있고 기하 편집/저장은 계속 허용한다. 각 연산은 필요한 필드만 검사하며 필수 물리값이 미정인 EM 계산은 차단한다.
+
+사용자가 탐색 목적으로 명시한 가정/추정 물성 모델은 선택한 adapter의 지원 범위에서 사용할 수 있다. 입력값과 모델, assumptions, provenance, 적용 주파수 범위, 온도 조건 및 출처의 가용/미확인 상태를 함께 저장한다. 온도가 미확인이면 그 상태를 보존하며 온도값이 필요한 모델에 임의 실온을 넣지 않는다. `user_entered`, `source_default`, `estimated`는 입력의 경로/상태이며 ValidationEvidence의 검증 상태가 아니다. 라이브러리 값을 검토해 선택했다는 사실이나 가정 계산의 완료만으로 실제 재료, 제작 또는 실측 검증을 통과한 것으로 표시하지 않는다.
+
+R1에서 지원하는 상수 물성 모델도 해당 프로젝트에 입력한 값과 명시된 유효 대역을 가진다. 모든 FR-4 또는 모든 주파수에 통용되는 상수가 아니다. R2의 주파수 곡선/분산 fit 범위는 유지하며, 곡선을 저장할 수 있다는 이유만으로 R1 adapter가 전체 곡선을 소비한다고 주장하지 않는다.
+
+[첫 IFA 기준 조건](21_RFAD_사례와_계약.md#ifa-initial-baseline)의 대역/외형/2층 FR-4/완성 두께/동박/급전은 해당 fixture의 명시적 시작값이다. 제품 전체의 고정값이나 새 프로젝트의 강제 기본값으로 재사용하지 않는다. 완성 두께 1.0 mm와 각 동박 35 um만으로 실제 코어 두께/마스크 포함 범위를 확정하지 않는다. 층별 값을 계산해 사용하는 경우 가정과 포함 범위를 명시하고 실제 적층/제작/측정 조건과 분리한다. 실제 Dk/Df와 재료 조건은 후속 입력이며 fixture 채택은 해석 pass가 아니다.
 
 MaterialModel에는 원본 data와 solver용 evaluated model을 분리한다. 원본: Dk/Df 또는 epsilon*/mu*/sigma, 시험/설계값 구분, frequency/temperature/orientation/lot/measurement method, uncertainty/source. evaluated model: type, coefficients, domain, fitting residual, passivity check, loss partition, adapter version. `tan_delta`에서 `sigma(f_ref)`로 바꾸는 narrowband 모델은 원본 tan_delta의 전체 대역 동일 모델이 아니다. 독립 DC conductivity와 dielectric loss를 합칠 때 의미가 겹치는지 검사한다.
 
@@ -169,7 +178,7 @@ canonical encoding의 규범 구현은 application service 하나다. UTF-8, 정
 
 integer count/index는 범위가 있는 정수로 저장한다. 언어 사이에서 정확히 보존하지 못하는 큰 정수 식별자는 decimal string으로 표현한다. GUI는 hash를 다시 계산하지 않고 snapshot UUID/revision/hash를 함께 받아 응답이 현재 요청과 일치하는지 검사한다. UTF-8 경로/이름 원문을 임의 정규화해 외부 파일을 같은 것으로 합치지 않는다.
 
-설정의 우선순위는 명시적인 job override > project에 고정한 profile > versioned application default다. 물리값에는 숨은 global default를 적용하지 않는다. 실행 직전 모든 resolved 설정과 출처를 PreparedPlan에 고정하고, UI 개인 설정은 물리 hash에 넣지 않는다. 프로젝트를 다른 PC에서 열어도 기존 물성/version은 자동 갱신되지 않는다.
+설정의 우선순위는 명시적인 job override > project에 고정한 profile > versioned application default다. 물리값에는 숨은 global default를 적용하지 않는다. 실행 직전 모든 resolved 설정과 출처를 PreparedPlan에 고정하고, UI 개인 설정은 물리 hash에 넣지 않는다. 프로젝트를 다른 PC에서 열어도 기존 물성/version은 자동 갱신되지 않는다. 물성의 값/모델/유효 범위/가정과 provenance는 실행 snapshot에 함께 고정한다. 실제 solver 소비값이나 근사 유효성이 달라지면 해당 solver projection/raw key를 갱신한다. 출처 설명만 보강하고 소비값/모델이 같을 때의 raw 재사용은 RFAD 07/10의 기존 해시 계약을 따르며, 새 provenance만으로 이전 결과의 검증 등급을 올리지 않는다.
 
 ## 12. 배열의 수명과 부분 읽기
 

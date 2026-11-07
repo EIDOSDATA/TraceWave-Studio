@@ -1,6 +1,6 @@
 # RFAD 10 - 계산 파이프라인
 
-개정: 3.0 / 2026-11-07 KST / 상태: 사용자 검토용 설계안
+개정: 3.4 / 2026-11-07 KST / 상태: 설계 기준선 승인 / 개발: 착수 전
 역할: 입력에서 CAD, EM, 회로, 지표, 공차, 측정, 출력까지의 실행 순서와 유효성 전파
 상태: **design baseline with open verification gates** - 구현, EM 실행, 실측 합격을 뜻하지 않는다.
 
@@ -69,9 +69,11 @@ analytic centerline, width, cap/join, Boolean result와 net/layer/terminal graph
 
 ### P4 - 재료와 급전의 실제 소비값
 
+물성값은 사용자 입력 또는 검토한 라이브러리 선택에서 오며 제품 상수가 아니다. [물성 입력 계약](08_RFAD_데이터_모델과_파일_형식.md#material-input-contract)에 따라 필수값 미정이면 P4에서 계산을 차단하되 기하 편집/저장은 허용한다. 사용자가 명시한 가정/추정 모델이 지원 범위와 유효 대역을 만족하면 탐색 계산을 진행할 수 있다. 값/모델/assumptions/provenance와 주파수/온도/출처 상태를 snapshot 및 plan에 고정하고 결과까지 전달한다. 입력 경로와 실행 완료를 실제 재료/제작/실측 검증으로 승격하지 않는다.
+
 Dk/Df는 제조사, 등급, construction, 방향, 온도, 시험법, frequency 조건으로 선택한다. 모르는 Df=0, unknown thickness=기본값 같은 조용한 대체를 하지 않는다. design/process Dk와 measured/typical/보증값을 구분한다. layer별 mask, coverlay, 접착층, 도금, ferrite, 주변 플라스틱 및 도체 양면 roughness는 실제 범위와 모델을 가진다.
 
-단일 fref의 tan_delta->kappa는 EQ-008의 narrowband equivalent다. kappa를 일정하게 두면 일반적으로 tan_delta가 1/f 형태로 변한다. 광대역은 raw material curves에서 검증된 passive dispersion fit을 만들고 다음 순서를 수행한다.
+단일 fref의 tan_delta->kappa는 EQ-008의 narrowband equivalent다. kappa를 일정하게 두면 일반적으로 tan_delta가 1/f 형태로 변한다. R1의 지원 상수 물성도 입력값과 유효 대역을 선언한다. 주파수 곡선/분산 fit은 R2 범위를 유지하며, 해당 기능이 활성화된 광대역 경로는 raw material curves에서 검증된 passive dispersion fit을 만들고 다음 순서를 수행한다.
 
 1. 원 측정 조건과 data band를 고정한다.
 2. model family, 차수, weights, 제약과 optimizer seed를 기록한다.

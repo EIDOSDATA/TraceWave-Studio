@@ -1,14 +1,14 @@
 # RFAD 14 - 검증과 사용자 수용시험
 
-개정: 3.0 / 2026-11-07 KST / 상태: 사용자 검토용 설계안
+개정: 3.4 / 2026-11-07 KST / 상태: 설계 기준선 승인 / 개발: 착수 전
 역할: 구현 이후 수행할 시험 명세, A/B 인수 시나리오 대응, 검증 단계와 출시에 필요한 증거
-상태: **design baseline with open verification gates** - 구현, EM 실행, 실측 합격을 뜻하지 않는다.
+상태: **approved design baseline with open verification gates** - D0 문서 승인은 완료되었으며 구현, EM 실행, 실측 합격을 뜻하지 않는다.
 
 관련 문서: [요구사항](03_RFAD_사용자_요구사항.md), [수식](09_RFAD_수식과_물리_모델.md), [파이프라인](10_RFAD_연산_파이프라인.md), [추적표](17_RFAD_요구사항_추적표.md), [GUI 성능 계약](24_RFAD_GUI_선정과_성능_설계.md).
 
 ## 1. 상태와 검증의 의미
 
-이 문서는 **시험 명세**이다. VT-001~030 전체의 제품 수용 합격은 아직 없다. 현재 저장소에는 RFAD 제품의 실행 증거와 시험 결과가 없으며, 과거 문서의 R0 상태나 테스트 개수를 현재 합격으로 인용하지 않는다. A의 137개 요구와 신규 AUG 4개, A의 인수 시나리오 12개와 B의 18개를 검사 항목에 연결했으며, 이는 구현 완료, 합격, full-wave 정확도 검증을 뜻하지 않는다. 각 요구의 실제 assertion과 적용 단계는 AC ID별 evidence로 보존해야 한다. 현재 없는 파생 registry의 requirement_checks를 실행 증거로 간주하지 않는다. 문서의 모든 현재 상태는 `specified_not_executed`이다.
+이 문서는 **시험 명세**이다. VT-001~030 전체의 제품 수용 합격은 아직 없다. 현재 저장소에는 RFAD 제품의 실행 증거와 시험 결과가 없으며, 과거 문서의 R0 상태나 테스트 개수를 현재 합격으로 인용하지 않는다. A의 137개 요구와 신규 AUG 4개, A의 인수 시나리오 12개와 B의 18개를 검사 항목에 연결했으며, 이는 구현 완료, 합격, full-wave 정확도 검증을 뜻하지 않는다. 각 요구의 실제 assertion과 적용 단계는 AC ID별 evidence로 보존해야 한다. 현재 없는 파생 registry의 requirement_checks를 실행 증거로 간주하지 않는다. 문서의 모든 현재 시험 상태는 `specified_not_executed`이다. C++ wxWidgets 채택과 일반 편집 60 fps/대형 장면 30 fps는 사용자가 확정한 설계 기준이며, GUI 기술 상태 `selected_pending_validation`과 실제 시험 합격을 구분한다.
 
 ### 1.0 요구별 assertion과 suite 판정
 
@@ -17,6 +17,8 @@
 각 assertion은 입력/fixture 버전, 요구와 AC ID, 적용 capability, 독립 expected 근거, actual, 단위, 비교식, 허용오차 profile 버전, 실행 시각, 도구 버전, 증거 경로와 hash, 상태를 가진다. 상태는 `specified_not_executed`, `passed`, `failed`, `blocked`, `not_applicable`로 구분한다. `not_applicable`에는 해당 릴리스의 명시적 범위와 근거를 기록하며 기능 합격 수에 포함하지 않는다. 필수 assertion이 미실행/차단/실패이면 suite 전체를 passed로 표시하지 않는다. 범위를 줄여 출시하는 경우 새로운 범위 선언과 제외 이유가 필요하며 원 요구의 전체 완료 상태는 유지하지 않는다.
 
 같은 suite에 R1과 R2/R3의 subcase가 섞여 있을 수 있다. R1에서는 약속된 실제 기능과 미래 기능의 unsupported/unknown 표시를 검사한다. **미지원 표시 검사를 통과한 사실은 R2/R3 실제 기능의 수용조건을 충족하지 않는다.** 선행 suite도 동일 release/capability의 subcase에 한정해 적용한다.
+
+현재 R1 제품 수용 범위는 Windows 11 x64 wxMSW GUI와 local WSL2 Linux worker, 원호/IFA 단일포트, 물성/급전/환경, 실제 2D/STEP/CAM, 기본 측정/스윕 및 전력/방사 검증이다. 완전한 참조 계산 사례를 먼저 검증한 뒤 물성 완비 단일포트 IFA를 첫 제품 사례로 진행하며 R1 원호 검증도 별도로 수행한다. 최초 IFA의 대역/외형/명목 적층과 초기 측정 계획은 [채택된 초기 기준](21_RFAD_사례와_계약.md#ifa-initial-baseline)을 따르며 실제 물성/세부 형상/제작/측정 조건은 후속 고정한다. G031은 기하 전용이다. Linux native/headless worker 기본 계산은 R0에서 검증하되 Linux wxGTK GUI 제품 수용은 출시 버전 미정의 후속 범위로 분리한다. 초기 배포는 내부 검증용이며 3.4 전체 문서 기준선은 승인 완료이며 외부 공개/상용/소스 공개 결정과 개발 착수 지시는 별도로 남는다.
 
 ### 1.1 독립된 검증 층
 
@@ -32,6 +34,8 @@
 | 제품 승인 | 특정 목표와 시험/제조 조건을 충족했는가? | 승인된 target, 외부 시험, 제조/측정 증거 | 자동 KC/FCC/SAR 인증 |
 
 한 층의 합격이 위의 모든 층을 자동 통과시키지 않는다. 구조화된 상태는 [RFAD 04](04_RFAD_시스템_명세.md), 근거 승격 규칙은 [RFAD 20](20_RFAD_참고_자료_통합.md)에 따른다.
+
+미결 기술 입력은 [25번 미결 항목 처리 기준](25_RFAD_문서_검토와_승인.md#remaining-decision-policy)에 따라 해당 시험 전에 고정한다. 정확한 장비/버전이나 실물 물성이 아직 없다는 사실은 모든 구현 작업의 중단 사유가 아니지만, 그 증거가 필요한 subcase를 통과로 표시할 수는 없다. 시험 수치/판정 규칙은 독립 근거와 불확도에 따라 실행 전에 정하고 결과를 본 뒤 조용히 완화하지 않는다.
 
 ## 2. fixture와 oracle 원칙
 
@@ -70,7 +74,7 @@ G031의 좌표는 원본 Gerber의 정밀도와 residual을 가진다. 계산된
 
 ### 3.2 B 문서의 잠정 benchmark profile
 
-아래 값은 B section 8.3의 **초기 제안**을 보존한 것이다. RFAD는 삭제하지도 보편 필수치로 승격하지도 않는다. R0에서 구체적인 fixture, 비교 domain, hardware, 목표에 맞는 profile을 승인해야 실제 pass/fail에 사용한다.
+아래 값은 B section 8.3의 **초기 제안**을 보존한 것이다. RFAD는 삭제하지도 보편 필수치로 승격하지도 않는다. R0에서 구체적인 fixture, 비교 domain, hardware, 목표에 맞는 profile을 승인해야 실제 pass/fail에 사용한다. 이 역사적 제안과 별도로 24번 PERF-001~010, 기준 host와 fixture는 사용자 후속 결정으로 현재 초기 목표에 채택되었다. 그 채택이 B의 CAD/물리 허용오차까지 자동 승인하거나 실측 합격으로 바꾸지는 않는다.
 
 | profile | 후보 값 | 의미와 미확정 사항 |
 |---|---|---|
@@ -87,6 +91,21 @@ CAD의 tauCAD, 2D export의 tau2D, 제조 공정의 taufab는 별도 변수이�
 ### 3.3 프로젝트, 측정 목표
 
 S11 threshold, band coverage, gain/efficiency/axial-ratio/ECC mask, range, delay, Q, coupling 목표는 사용자가 선택한 제품 목적과 근거를 갖는다. 모든 BLE=-10 dB, 모든 UWB=특정 delay ripple처럼 프로토콜 이름으로 임의 고정하지 않는다. 제조/측정 uncertainty를 포함한 합격 판정은 profile version과 decision rule을 보존한다. 참조: [JCGM 100:2008 section 5.2/section 7](https://www.bipm.org/documents/20126/2071204/JCGM_100_2008_E.pdf).
+
+### 3.4 최초 IFA 초기 기준의 수용 경계
+
+상세 명목값과 미정 입력은 [21번 최초 IFA 검증 기준](21_RFAD_사례와_계약.md#ifa-initial-baseline)에서 단일 관리한다. 이 기준은 사용자가 채택했으며 시험은 모두 미실행이다. 완전한 참조 계산 사례를 먼저 검증하는 순서와 별도 개발 착수 지시 조건을 유지한다.
+
+| 검수 항목 | 판정 계약 |
+| --- | --- |
+| 초기 입력 | passive 단일포트, 채택된 board/ground envelope/antenna 영역, 명목 적층과 초기 실장을 저장한다. envelope와 seed는 실제 완성 형상이 아니다. 정확한 형상/물성/제작 조건의 미정 상태를 보존한다 |
+| 정합 목표 | SMA 기준면에서 2.400~2.4835 GHz의 S11_dB <= -10 dB를 평가한다. 2.45 GHz seed와 2.0~3.0 GHz 진단 sweep을 전 대역 합격 조건으로 혼동하지 않는다. band edge/grid/미평가 구간과 불확도 판정 규칙을 고정한다 |
+| 기준면 | R1 기본은 50 ohm SMA mating plane이며 connector/급전선을 DUT에 포함한다. de-embedding을 R1 새 필수 기능으로 요구하지 않는다. 다른 plane의 결과는 R2 검증 capability 또는 provenance가 완비된 외부 보정 자료에 한해 같은 plane끼리 비교한다 |
+| 전력/정확도 | 정합 목표는 안테나 설계 목표이며 solver 정확도 오차 한계가 아니다. S11_dB <= -10 dB를 방사효율 90%로 해석하지 않는다. native 결과의 1 W 정규화와 VNA 0 dBm 초기 설정을 구분한다 |
+| 실제 시료/측정 | 동일 사양 3개는 초기 시료 계획이다. VNA 정합 비교와 OTA 방사 비교의 준비/실행/판정을 각각 기록한다. OTA 미정은 VNA 결과를 무효화하지 않지만 효율/패턴/이득의 실측 검증 완료를 허용하지 않는다. 각 측정에 필요한 제작/교정/cable/jig/불확도와 결과가 없으면 해당 판정을 미평가로 유지 |
+| 미정 입력 처리 | 물성이 미정이어도 geometry 편집/저장은 허용한다. 필수 입력을 명시적 가정으로 완성한 계산은 탐색 결과이며 물리 검증 완료가 아니다. 없는 물성/실측값으로 미정 입력을 채우지 않는다 |
+
+연결 시험은 topology VT-003, 실제 출력 VT-007/008/009, 기준면/교정 VT-010, 전력 VT-012, 케이블/환경 VT-017 및 독립 정확도 VT-030이다. 작은 검증 보드의 결과를 RF IC/배터리/케이스가 추가된 실제품의 합격으로 확대하지 않는다.
 
 ## 4. 기존 인수 시나리오의 통합 매핑
 
@@ -194,6 +213,8 @@ AUG-001 -> [VT-024](#VT-024), AUG-002 -> [VT-023](#VT-023), AUG-003 -> [VT-025](
 **단계:** R1. **현재 상태:** 시험 명세, 미실행.
 
 **설정:** IFA 정상 fixture와 short 제거/단선/층별 keepout 위반 fixture; 원호 모노폴, 폐환 loop, ground slot의 동일 시각 형상 대비 사례.
+
+최초 IFA에는 [채택된 초기 기준](21_RFAD_사례와_계약.md#ifa-initial-baseline)을 적용한다. short arm, feed arm과 ground의 실제 연결을 검사하며 의도된 short 경로의 DC 도통만으로 급전 오류를 판정하지 않는다. 세부 패턴/feed 폭/short via가 미정인 envelope를 완성된 topology로 표시하지 않는다.
 
 **절차**
 
@@ -390,14 +411,16 @@ AUG-001 -> [VT-024](#VT-024), AUG-002 -> [VT-023](#VT-023), AUG-003 -> [VT-025](
 
 ### VT-010 - VNA 기준면, 포트, 보정
 
-**단계:** R1; 복소/modal ports R2. **현재 상태:** 시험 명세, 미실행.
+**단계:** R1 기본 가져오기/기준면 검사; 고급 fixture 보정과 복소/modal ports R2. **현재 상태:** 시험 명세, 미실행.
 
 **설정:** 포트 순서, Z0, reference plane이 다른 두 Touchstone와 원시 측정 CSV; known line/fixture, calibration metadata; 선택 장비 adapter의 기록 재생 fixture.
+
+최초 IFA는 [21번](21_RFAD_사례와_계약.md#ifa-initial-baseline)의 SMA 기본 기준면에 connector/급전선과 초기 pi 실장 상태를 포함한다. VNA 0 dBm 초기 설정, 실제 교정값과 DUT 수용전력을 구분한다. 다른 plane으로 이동하는 고급 보정은 R2의 검증된 capability에서 수행한다. 외부 보정 자료는 원시/보정 파일, 도구/버전, fixture 근거, 변환 순서, 교정/기준면과 불확도 provenance가 있어야 비교 대상으로 삼는다. 동일 plane과 보정 근거가 없는 정량 비교는 차단하며 R1 SMA 기준 비교에 고급 보정 구현을 추가로 요구하지 않는다.
 
 **절차**
 
 1. 원시 파일을 불변 보관하고 문법, 복소 형식, 단위, 포트 수를 검증한다.
-2. port reorder/renormalize/plane shift/deembedding을 각각 독립 파생 연산으로 실행한다.
+2. port reorder/renormalize/plane shift는 해당 AC 단계와 검증된 capability 범위에서 독립 파생 연산으로 검사한다. 고급 fixture de-embedding은 R2 검수로 분리하고 R1 기본 가져오기에서는 외부 보정 자료의 provenance와 기준면 일치를 확인한다.
 3. 측정 기준면과 simulation plane을 맞추기 전, 후 비교를 만든다.
 
 **합격 판정**
@@ -473,6 +496,7 @@ AUG-001 -> [VT-024](#VT-024), AUG-002 -> [VT-023](#VT-023), AUG-003 -> [VT-025](
 - field export에 amplitude/time convention, units, coords, phase가 포함된다.
 - 에너지 residual이나 eta>1을 clipping해 통과시키지 않는다.
 - 일부 미계산 대역을 연속대역 성능 충족으로 판정하지 않는다.
+- 최초 IFA의 native 1 W 정규화는 검증된 채널/파 정의와 동일 기준면에서 적용한다. VNA 0 dBm 설정을 1 W 입력이나 DUT 수용전력으로 대신하지 않는다. 정합 목표 통과와 방사효율/solver 정확도 합격을 분리한다.
 
 **실패 유도:** 모든 native output에 일괄sqrt(2) 적용; S 변환sqrt(2); 다른 포트 출력 전력을 방사로 분류; RMS Poynting에추가1/2.
 
@@ -621,6 +645,8 @@ AUG-001 -> [VT-024](#VT-024), AUG-002 -> [VT-023](#VT-023), AUG-003 -> [VT-025](
 **단계:** R1; flex/body 등 모델별 R2/R3. **현재 상태:** 시험 명세, 미실행.
 
 **설정:** bare PCB와 case/battery/cable/hand 또는대체환경 geometry; 각 scenario 좌표, 재질, 거리, 온도, 부하 정의; 제조시료와 조립시료의 measurement metadata.
+
+최초 IFA 초기 보드에는 RF IC/배터리/케이스가 없으며 SMA/coax와 지그의 실제 배치는 후속 고정한다. 초기 보드의 반복 측정과 케이블 배치에 따른 민감도를 구별하고, 실제품 환경은 별도 snapshot과 해당 환경 fixture로 검증한다. 최초 bare 보드의 결과가 PHY-081 등 R1 조립/사용 환경 검증을 대체하지 않으며 이 검증을 일괄 R2/R3로 미루지 않는다.
 
 **절차**
 
@@ -967,7 +993,7 @@ AUG-001 -> [VT-024](#VT-024), AUG-002 -> [VT-023](#VT-023), AUG-003 -> [VT-025](
 1. 키보드만으로 open->edit->validate->run->export 핵심흐름을 수행한다.
 2. 보드/물성/급전/solver 누락을 만들고 단계 안내와 오류 focus를 확인한다.
 3. 동일 entity를2D/3D/table에서 선택하고 거리/각도를 측정한다.
-4. [GUI 성능 계약](24_RFAD_GUI_선정과_성능_설계.md)의 동등 기능 release prototype과 workload로 입력 p95/p99 latency, frame time, cold/warm startup, 전체 프로세스 working set/private commit 및 GPU memory를 측정한다. acknowledgment, 화면 반영, 계산 완료를 각각 기록한다.
+4. [GUI 성능 계약](24_RFAD_GUI_선정과_성능_설계.md)의 C++ wxWidgets Release 통합 prototype과 고정 workload로 입력 p95/p99 latency, frame time, cold/warm startup, 전체 프로세스 working set/private commit 및 GPU memory를 측정한다. acknowledgment, 화면 반영, 계산 완료를 각각 기록한다.
 5. 원호, IFA, UWB 예제를 새 사용자 역할로 따라가고 실패 사례, 출력 검사를 확인한다.
 
 **합격 판정**
@@ -976,7 +1002,8 @@ AUG-001 -> [VT-024](#VT-024), AUG-002 -> [VT-023](#VT-023), AUG-003 -> [VT-025](
 - quick default의 출처, 적용조건을 보고 advanced 값과 같은 canonical model로 연결된다.
 - 단순 프로토콜 이름이 재료, 공진, 최적 성능을 자동 결정하지 않는다.
 - 한국어 UI와 영문 기술명, 단위가 잘리거나 모순되지 않는다.
-- wxWidgets와 Avalonia 후보는 [GUI 성능 계약](24_RFAD_GUI_선정과_성능_설계.md)의 같은 입력/renderer/worker 조건으로 비교한다. Qt는 후보에서 제외한다. 성능 예산은 사용자 검토용 제안이며 측정값과 승인값을 구분한다.
+- R1 C++ wxMSW GUI와 local WSL2 Linux worker를 [GUI 성능 계약](24_RFAD_GUI_선정과_성능_설계.md)의 고정 조건으로 통합 검증한다. 일반 편집 F1은 2D/표 scroll/100,000 triangle의 일반 3D를 포함하고, 대형 장면 F2는 1,000,000 triangle이다. 일반 편집 60 fps, 대형 장면 30 fps를 유지하며 PERF-006의 frame time p95 <= 1000/60 ms 및 <= 1000/30 ms로 각각 검사한다. PERF-001~010과 기준 host/fixture는 모두 초기 목표로 채택되었다. 정확한 CPU/GPU와 실행 manifest는 후속 시험에서 고정하며 목표 채택을 실측 합격이나 최소사양 보장으로 표시하지 않는다.
+- 입력이나 화면 변경이 없는 idle 상태에서 60 fps 강제 redraw loop를 돌리지 않는다. 유료 GUI 부품을 필수 의존성으로 요구하지 않는 배포를 검수한다. 이는 유료 부품의 모든 사용 금지나 제품 무료 배포를 뜻하지 않는다. Avalonia 비교와 Qt 채택은 현재 검증 범위에 포함하지 않는다.
 - 각 예제의 기대 형상, 입력조건, evidence state, 실패 이유가 재현 가능하게 제공된다.
 
 **실패 유도:** keyboardtrap; hover/color-only error; quickmode가숨겨진값덮어쓰기; render화면에잘못된unit.
@@ -987,20 +1014,20 @@ AUG-001 -> [VT-024](#VT-024), AUG-002 -> [VT-023](#VT-023), AUG-003 -> [VT-025](
 
 **연결 gate:** [GAP-012](01_RFAD_설계_결정과_범위.md#GAP-012).
 
-**수치 기준:** `BP-UI-CANDIDATE`; 합성 기대값과 잠정 제안치를 구별한다.
+**수치 기준:** RFAD 24의 PERF-001~010과 기준 host/fixture를 채택된 초기 목표로 적용한다. 측정은 아직 미실행이다. `BP-UI-CANDIDATE`는 원문 200 ms 제안의 이력이며 현재 PERF 계약을 대체하지 않는다.
 
 <a id="VT-029"></a>
 
 ### VT-029 - 실행환경, RMS 변환, 재현
 
-**단계:** R0/R1; additional solvers/API automation R2; remote R3. **현재 상태:** 시험 명세, 미실행.
+**단계:** Linux native/headless worker 기본 계산 R0, Windows 11 x64 wxMSW/local WSL2 제품 수용 R1; Linux wxGTK GUI는 출시 버전 미정의 후속 범위; additional solvers/API automation R2; remote R3. **현재 상태:** 시험 명세, 미실행.
 
-**설정:** Linux native와 Windows11+WSL2 지원대상 environment manifests; solver/CAD/library absent, wrongversion, capability mismatch fixtures; GUI/CLI 동일 canonical project+seed; wxWidgets/Avalonia 중 선정한 GUI와 worker를 포함한 실제 배포; 교체 adapter와 중립 schema open/save.
+**설정:** R0 Linux native/headless worker와 R1 Windows 11 x64 wxMSW/local WSL2의 별도 environment manifests; solver/CAD/library absent, wrongversion, capability mismatch fixtures; Windows GUI/CLI 동일 canonical project+seed; 내부 검증용 실제 배포; 교체 adapter와 중립 schema open/save. 후속 Linux wxGTK GUI는 출시 범위/버전 결정 후 독립 수용 fixture를 고정한다.
 
 **절차**
 
 1. dependency discovery와 pinned-version report를 검사한다.
-2. 같은 project를 GUI와 batch에서 생성/해석/출력한다.
+2. R0 Linux native/headless worker의 기본 계산과 R1 Windows GUI/batch의 동일 project 생성/해석/출력을 각각 검사한다. worker 기본 검증을 Linux GUI 수용시험으로 대체하지 않는다.
 3. 다른 backend로 import할 때 material/port/mesh/normalization mapping 차이를 비교한다.
 4. 중립 schema migration, immutable snapshots, cache keys를 검사한다.
 5. 네트워크를 차단한 설치 완료 환경에서 편집, 로컬 해석, 출력을 실행하고 SBOM와 버전별 license 원문을 검사한다.
@@ -1009,12 +1036,12 @@ AUG-001 -> [VT-024](#VT-024), AUG-002 -> [VT-023](#VT-023), AUG-003 -> [VT-025](
 
 - 미설치 solver에서도 가능한 편집/출력 범위와 불가능한 계산을 명확히 보여준다.
 - zero solver 상태에 valid computed result를 생성하지 않는다.
-- Linux/WindowsWSL 배포 각각 capability와 재현 gate를 통과해야 R1 지원표시를 한다.
+- R1 Windows 11 x64 wxMSW GUI/local WSL2 조합은 해당 capability와 재현 gate를 통과해야 지원 표시를 한다. Linux native/headless worker의 R0 기본 검증 증거를 별도로 보존한다. Linux wxGTK GUI는 후속 출시의 독립 수용 전까지 지원 완료로 표시하지 않으며 자동으로 R2에 배정하지 않는다.
 - 두 solver 비교는 지원 시 R2 별도 fixture를 실제 실행하며 단순 adapter interface만으로 완료되지 않는다.
 - 물리 변경, external network 변경, display 변경의 cache 범위가 계약대로 분리된다.
 - 문서화된 중립 프로젝트가 특정 GUI/상용solver 전용 format 없이 열린다.
 - 온라인 프로파일/자료 갱신을 제외한 약속된 핵심 기능이 offline으로 실행된다.
-- 실제 배포별 라이선스 의무 검토와 지원 platform별 benchmark evidence가 기록된다.
+- 내부 검증용 실제 배포의 라이선스 의무 검토와 해당 platform의 benchmark evidence가 기록된다. 내부 배포 검증을 외부 공개/상용/소스 공개 방침의 결정으로 확대하지 않는다.
 
 **실패 유도:** missingbackend자동성공; 미지원재질silentfallback; OS제외로그누락; displayunit으로rawhash변경; 용량예측을보장메모리로표시.
 
@@ -1044,6 +1071,7 @@ AUG-001 -> [VT-024](#VT-024), AUG-002 -> [VT-023](#VT-023), AUG-003 -> [VT-025](
 - 수식 arithmetic 통과나 numerical convergence만으로 physical accuracy를 승인하지 않는다.
 - 완전하지 않은 G031 reference로 방사성능 재현 pass를 만들지 않는다.
 - 기능별 허용오차는 출처, benchmark, measurement uncertainty, 사용목표에서 승인된다.
+- 최초 IFA의 S11_dB <= -10 dB는 설계 목표다. 시뮬레이션-측정의 일치 판정에는 별도 오차/불확도 규칙이 필요하며 동일 사양 3개 초기 시료만으로 생산 수율이나 일반적인 효율 합격을 선언하지 않는다. 명시적 가정으로 완성한 탐색 모델은 실제 물성/제작/측정 검증으로 승격하지 않는다.
 - lossyMIMO, UWB timing, NFC operatingvolume, RFID chip-transfer의 검증을 singleS11로 대체하지 않는다.
 - 기능확장(SAR, EMC, nonlinear, thermal 등)은 별도 입력/solver/검증이 없으면 미지원 상태다.
 
@@ -1061,7 +1089,7 @@ AUG-001 -> [VT-024](#VT-024), AUG-002 -> [VT-023](#VT-023), AUG-003 -> [VT-025](
 
 각 실행 결과는 test ID/version, AC/subcase ID, actual runtime, fixture/input hash, expected/actual, metric별 tolerance와 판정, 실패 원인, evidence artifact, 검토 상태를 저장한다. 테스트 runner가 통과했다는 사실과 사용자가 제품 설계를 승인했다는 사실을 분리한다. pass는 선언한 범위의 필수 assertion을 모두 실제 실행하여 충족했을 때만 기록한다. 제외한 assertion은 not_applicable 사유와 축소된 출시 범위에 남기며 원 suite 전체 또는 원 요구 전체를 통과한 것으로 합산하지 않는다.
 
-R0는 versions, 단위, CAD, 포트, native normalization, 재료 mapping, known circuit, 공식 EM benchmark의 재현 envelope를 먼저 고정한다. Linux worker 검증을 Windows 11+WSL2 배포 시험으로 대신하지 않으며 각 지원 runtime의 evidence가 필요하다. R1 범위의 기능은 그 범위에서 실제 동작, 실패 복구, 교환, 현실적 benchmark를 확인한 뒤 출시한다. R2/R3는 해당 물리 모드/adapter의 실검증을 추가한다.
+R0는 versions, 단위, CAD, 포트, native normalization, 재료 mapping, known circuit, 완전한 참조 계산 사례의 재현 envelope를 먼저 고정한다. Linux native/headless worker 기본 검증과 Windows 11 x64 wxMSW/local WSL2 제품 배포 시험은 별도 evidence가 필요하다. R1에서는 물성 완비 단일포트 IFA와 원호의 실제 동작, 전력/방사, 수렴, 실패 복구와 교환을 확인하고 내부 검증용 배포를 우선한다. Linux wxGTK GUI는 출시 버전 미정의 후속 수용으로 분리하며 R2/R3의 전문 물리/adapter 검증과 자동으로 같은 단계에 넣지 않는다.
 
 ### 6.1 unresolved gate와 최소 폐쇄 증거
 
@@ -1069,9 +1097,9 @@ R0는 versions, 단위, CAD, 포트, native normalization, 재료 mapping, known
 |---|---|---|
 | GAP-003 native normalization | 실제 pinned native 채널별 amplitude/FFT/time/r 규약, known-power/phase fixture | VT-021/012/029 |
 | GAP-004 material, 도체 | native epsilon(f)/mu(f) mapping, sheet/volume/PEC/roughness의 적용 envelope와 손실 비교 | VT-004/006/030 |
-| GAP-006 G031 환경 | 완전한 ground, stackup, ports, 실장환경 원본과 필요한 별도 성능 benchmark | VT-001/030 |
+| GAP-006 G031 환경 | 원본 비콘의 RF 재현을 주장하려면 완전한 ground/stackup/port/실장환경 원문 증거가 필요. 별도 원호/IFA는 완전한 독립 fixture로 검증하며 원본 조건 미확인 시 G031은 기하 전용으로 유지 | VT-001/030 |
 | GAP-009 실측 | 교정, fixture, 환경, 시료 반복성과 uncertainty를 갖춘 독립 측정 | VT-010/017/030 |
-| GAP-012 잠정 threshold | fixture/metric/domain/hardware별 승인된 tolerance/profile | VT-011/028/030 |
+| GAP-012 threshold와 검증 profile | CAD/물리 tolerance의 근거 및 fixture/metric/domain별 profile. 채택된 GUI PERF 초기 목표는 정확한 실행 manifest와 실제 측정 증거 필요 | VT-011/028/030 |
 | GAP-013 복합 급전/파 정의 | CPW, stripline, differential/modal, complex Z0의 adapter와 interconnect oracle 비교 | VT-010/022/029 |
 | GAP-014 UWB | pair H, time origin, pulse weighting, delay calibration의 독립 비교 | VT-013/030 |
 | GAP-015 lossy MIMO | coherent embedded-field basis, loaded termination, loss/ECC의 독립 power/pattern 비교 | VT-015/022/030 |
@@ -1082,8 +1110,8 @@ R0는 versions, 단위, CAD, 포트, native normalization, 재료 mapping, known
 
 사용자 명시 요구와 [병합된 요구](03_RFAD_사용자_요구사항.md)가 기능 목적이다. A/B 인수 문서는 검수 시나리오의 근거이며 B의 잠정 숫자는 별도 profile이다. 물리식, API 정의는 primary source와 고정 버전 contract fixture로 확인한다. 제조사 예제의 mesh/종료값, 실측 수치를 범용 합격선으로 확대하지 않는다.
 
-본 문서의 추가 시험 VT-020~030과 부정 입력 시험은 설계자가 제안한 검증 정책이다. 현재 기준은 [수식](09_RFAD_수식과_물리_모델.md), [요구별 AC 추적표](17_RFAD_요구사항_추적표.md), 본문의 suite 계약이다. 기계판독 수식/시험 registry는 후속 구현에서 이 문서의 ID와 의미를 보존하여 만들 산출물이며 현재 파일이나 실행 증거로 간주하지 않는다.
+본 문서의 추가 시험 VT-020~030과 부정 입력 시험은 승인된 3.4 기준선에 포함된 검증 정책이다. 현재 기준은 [수식](09_RFAD_수식과_물리_모델.md), [요구별 AC 추적표](17_RFAD_요구사항_추적표.md), 본문의 suite 계약이다. 기계판독 수식/시험 registry는 후속 구현에서 이 문서의 ID와 의미를 보존하여 만들 산출물이며 현재 파일이나 실행 증거로 간주하지 않는다.
 
-## GUI 후보 선택 시험
+## wxWidgets 통합 및 성능 검증
 
-GUI-SPIKE-001..007은 [GUI 선정과 성능 설계](24_RFAD_GUI_선정과_성능_설계.md)의 동등 기능 비교와 자원/응답 계약을 따른다. VT-028은 사용자 조작과 응답성, VT-018은 취소와 복구, VT-029는 실제 OS/runtime 배포 재현을 담당한다. SPIKE 결과에는 관련 VT와 AC subcase를 연결하고 같은 측정 artifact의 재사용 범위를 명시한다. 단일 창 표시, 설치 성공, 빈 화면의 메모리 수치만으로 어느 suite도 전체 통과시키지 않는다.
+GUI-SPIKE-001..007 ID는 유지하며 C++ wxWidgets의 통합, 성능, 수명과 배포 검증에 사용한다. 세부 계약은 [GUI 선정과 성능 설계](24_RFAD_GUI_선정과_성능_설계.md)를 따른다. VT-028은 사용자 조작과 응답성, VT-018은 취소와 복구, VT-029는 실제 OS/runtime 배포 재현을 담당한다. SPIKE 결과에는 관련 VT와 AC subcase를 연결하고 같은 측정 artifact의 재사용 범위를 명시한다. 단일 창 표시, 설치 성공, 빈 화면의 메모리 수치만으로 어느 suite도 전체 통과시키지 않는다. 현재 GUI는 `selected_pending_validation`이며, 기술 확정은 D0 전체 승인이나 개발 착수 승인을 뜻하지 않는다.

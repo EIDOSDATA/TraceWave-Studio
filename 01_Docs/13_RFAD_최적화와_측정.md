@@ -1,6 +1,6 @@
 # 최적화, 정합, 공차, 실측 연계 설계
 
-개정: 3.0 / 2026-11-07 KST / 상태: 사용자 검토용 설계안
+개정: 3.4 / 2026-11-07 KST / 상태: 설계 기준선 승인 / 개발: 착수 전
 
 ## 1. 기능 경계
 
@@ -35,7 +35,7 @@ candidate별 `invalid_geometry`, `unsupported`, `solver_failed`, `nonconverged`,
 
 R2 단일 목적/가중 목적은 SciPy differential evolution adapter를 우선 검증 대상으로 한다. global optimum 보증으로 표현하지 않는다. 다중 목적은 비지배 archive와 pymoo NSGA-II adapter를 후보로 고정하고 동일 budget, feasibility 계약을 적용한다. 설치/버전/라이선스와 알고리즘 fixture를 통과한 것만 활성화한다. 공식 근거: [SciPy differential_evolution](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.differential_evolution.html), [pymoo NSGA-II](https://pymoo.org/algorithms/moo/nsga2.html).
 
-현재 공개 SciPy API의 rng/seed 호환, updating, workers, integrality와 polish 옵션을 선택 버전에 고정한다. 정수와 범주형 변수는 다르므로 부품명/category를 임의 연속 숫자로 바꾸어 거리를 해석하지 않는다. 지원한 열거 또는 mixed-variable adapter를 사용한다. 초기 population, polishing, 재시도 및 최종 재검증도 evaluation/time 예산에 포함하고 예산 소진 시 추가 실행을 제출하지 않는다. 기본 polishing은 비활성 제안이며 필요 시 계획에서 비용을 따로 예약한다. 비동기 완료 순서가 탐색을 바꾸므로 seed 외에 candidate 생성/반영 순서와 RNG 상태를 저장한다. 같은 seed만으로 병렬 solver의 bitwise 결과를 보장하지 않는다.
+현재 공개 SciPy API의 rng/seed 호환, updating, workers, integrality와 polish 옵션을 선택 버전에 고정한다. 정수와 범주형 변수는 다르므로 부품명/category를 임의 연속 숫자로 바꾸어 거리를 해석하지 않는다. 지원한 열거 또는 mixed-variable adapter를 사용한다. 초기 population, polishing, 재시도 및 최종 재검증도 evaluation/time 예산에 포함하고 예산 소진 시 추가 실행을 제출하지 않는다. 기본 polishing은 비활성 초기 정책이며 필요 시 계획에서 비용을 따로 예약한다. 비동기 완료 순서가 탐색을 바꾸므로 seed 외에 candidate 생성/반영 순서와 RNG 상태를 저장한다. 같은 seed만으로 병렬 solver의 bitwise 결과를 보장하지 않는다.
 
 optimizer는 후보 생성만 맡고 실제 evaluation은 공통 pipeline을 호출한다. geometry validity->manufacturing constraints->capability->raw cache->EM->network/field->metrics->target 순서다. raw mesh/PML 설정을 후보마다 자동 변경해 결과 비교 조건을 섞지 않는다. 설계 크기 변화로 mesh 정책을 다시 평가한 경우 실제 cell 수와 convergence 수준을 후보에 남긴다.
 
@@ -77,7 +77,19 @@ R2 기본 경로는 명시적 corner set, independent distributions, 검증된 c
 
 정렬 chain은 파일 해석->포트 순열/극성->정규화 변환->검증된 fixture de-embedding/plane shift->좌표/위상 중심 정렬->주파수 grid 비교 순으로 명시한다. 이 순서는 데이터의 native definition에 따라 달라질 수 있으므로 실제 적용 연산 순서를 artifact에 기록한다. 단순 curve shift로 좋은 일치를 만들고 fixture 보정으로 표시하지 않는다.
 
+이 chain의 모든 보정을 R1 필수 기능으로 요구하지 않는다. 해당 AC의 단계와 검증된 capability에서 제공하는 연산만 적용하며 고급 fixture de-embedding은 R2 범위다. 외부 도구에서 보정한 자료를 가져올 때에는 원시/보정 파일, 도구/버전, fixture 모델/측정, 변환 순서, 교정과 기준면 및 불확도 근거를 provenance로 보존한다. 보정 근거가 없으면 해당 정량 비교를 검증 완료로 표시하지 않는다.
+
 주파수 interpolation은 complex 데이터에 수행하고 magnitude/phase 처리법, unwrap mask, 유효 대역을 남긴다. off-grid 비교에서는 원시 계산점/측정점과 보간점을 구분한다. model과 measurement의 케이블/배터리/케이스 조건이 다르면 차이를 먼저 보여준다.
+
+### 8.1 최초 IFA 검증 보드의 채택 기준
+
+상세 입력과 미정 항목의 단일 기준은 [최초 IFA 검증 기준](21_RFAD_사례와_계약.md#ifa-initial-baseline)이다. 초기 정합 목표는 2.400~2.4835 GHz에서 S11_dB <= -10 dB이며 2.45 GHz는 초기 형상 탐색 기준 주파수, 2.0~3.0 GHz는 진단 sweep 범위다. band edge를 실제 표본에 포함하고 grid/IFBW 및 불확도 판정 규칙은 측정 전에 고정한다. 진단 sweep 전 구간에 정합 목표를 자동 확장하지 않는다. 정합 목표 충족과 solver의 예측 정확도 검증은 별도 판정이다.
+
+초기 비교 기준면은 50 ohm SMA mating plane이며 connector와 PCB 급전선 및 초기 pi 실장 상태를 DUT에 포함한다. R1 최초 보드는 이 동일 기준면에서 비교하며 de-embedding 구현을 새 선행조건으로 추가하지 않는다. 안테나 급전점만 포함한 시뮬레이션과 SMA에서 측정한 값을 직접 비교하지 않는다. 다른 기준면 결과는 R2의 검증된 고급 보정 capability 또는 위 provenance를 갖춘 외부 보정 자료가 있을 때만 별도로 비교하며 원시 SMA 기준 결과를 보존한다. 케이블 배치가 만든 외부 결합/방사 효과를 기준면 이동만으로 제거했다고 표시하지 않는다.
+
+VNA 0 dBm은 채택된 초기 장비 설정이고 보드에 실제 수용된 전력이나 native solver의 1 W 정규화와 같지 않다. 실제 장비/교정, cable/jig 배치, 주파수 grid/IFBW, 불확도와 OTA 절차는 아직 정하지 않았다. 동일 사양 3개 시료는 초기 반복 검증 계획이며 제작 완료나 생산 수율의 근거가 아니다. 시료별 식별자, 실제 제작 치수/물성, 연결과 케이블 배치를 기록한다. RF IC/배터리/케이스가 없는 초기 보드의 결과를 실제품 환경의 성능으로 확대하지 않는다.
+
+실제 Dk/Df, core/mask/동박 모델과 공차가 미정이면 geometry 편집/저장은 가능하다. 명시적 가정으로 필수 입력을 모두 갖춘 탐색 모델을 만들 수는 있으나 가정과 `estimated` 등 08번의 기존 상태 및 근거를 기록하고 물리 검증 완료로 표시하지 않는다. 없는 물성이나 측정 결과를 만들어 채우지 않으며 제작/측정 절차의 미정 항목도 초기 기준 채택만으로 완료 처리하지 않는다. 현재는 문서 기준만 채택되었고 개발/설치/prototype/실험은 별도 착수 지시 전까지 수행하지 않는다.
 
 ## 9. 모델 보정과 독립 검증
 
@@ -85,7 +97,7 @@ R2 기본 경로는 명시적 corner set, independent distributions, 검증된 c
 
 목적함수는 complex residual의 실수/허수, 단위, noise floor와 weighting을 선언한다. 깊은 S11 null에서 dB 차이가 발산하거나 phase가 미정인 구간은 사전 mask로 처리하고 사후에 좋은 구간만 골라내지 않는다. 측정 공분산을 쓰는 경우 단위와 PSD를 검사하며 특이 행렬을 무조건 역행렬로 바꾸지 않는다. 같은 시료의 인접 주파수는 상관될 수 있으므로 holdout frequency만 분리한 결과를 독립 시제품 검증과 같은 수준으로 표시하지 않는다. 가능하면 시료/조립/환경 단위로 훈련과 검증을 분리하고 선택에 사용한 데이터를 최종 독립 검증에 재사용하지 않는다.
 
-VNA S11 비교는 정합 관련 검증이다. 방사 효율, 패턴, 절대 이득에 필요한 OTA/기준안테나/전력 교정 조건을 별도로 저장한다. UWB는 Tx/Rx pair와 propagation/reference plane, NFC는 loaded coil/position, RFID는 chip state/power, AoA는 phase/manifold 조건의 전용 검증을 사용한다.
+VNA S11 비교는 정합 관련 검증이다. 방사 효율, 패턴, 절대 이득에 필요한 OTA/기준안테나/전력 교정 조건을 별도로 저장한다. 각 측정 종류에 필요한 절차를 별도로 확정하며 OTA 미정만으로 유효한 VNA 정합 비교를 무효화하지 않는다. R1 기본 측정 파일 비교와 불확도 근거 기록은 R2 OTA 전문 처리/불확도 분석 기능/모델 보정이나 R3 직접 장비 연결을 기다리지 않는다. 측정 전에는 불확도 산정 방법과 판정 규칙을 정하고 실제 반복성 등 측정에서 얻는 수치 근거는 합격 판정 전에 확정한다. UWB는 Tx/Rx pair와 propagation/reference plane, NFC는 loaded coil/position, RFID는 chip state/power, AoA는 phase/manifold 조건의 전용 검증을 사용한다.
 
 ## 10. surrogate, 역설계, AI
 
