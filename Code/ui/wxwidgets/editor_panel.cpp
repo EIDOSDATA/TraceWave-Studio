@@ -1,6 +1,8 @@
 #include "editor_panel.h"
+#include <wx/checklst.h>
 
 #include <algorithm>
+#include <cmath>
 #include <stdexcept>
 
 wxDEFINE_EVENT(wxEVT_RFAD_EDITOR_CHANGED, wxCommandEvent);
@@ -36,11 +38,12 @@ EditorPanel::EditorPanel(wxWindow* parent)
 }
 
 /** @brief 필드 형식과 선택 목록을 그대로 사용하며 도메인 계산을 수행하지 않는다. */
-void EditorPanel::SetFields(const Json& fields, const Json& selection)
+void EditorPanel::SetFields(const Json& fields, const Json& selection, const Json& coordinateChoices)
 {
     Freeze();
     m_fields.clear();
     m_selection = selection;
+    m_coordinateChoices = coordinateChoices;
     m_diagnosticField.clear();
     m_layout->Clear(true);
     m_diagnostic = new wxStaticText(this, wxID_ANY, wxEmptyString);
@@ -94,6 +97,27 @@ void EditorPanel::SetFields(const Json& fields, const Json& selection)
             {
                 UpdateModes();
                 NotifyChanged();
+            });
+        }
+        else if (editor == "multichoice")
+        {
+            auto* choice = new wxCheckListBox(rowPanel, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 100)));
+            for (const auto& item : descriptor.at("choices"))
+            {
+                choice->Append(Display(item.at("label").get<std::string>()));
+            }
+            control = choice;
+            choice->Bind(wxEVT_CHECKLISTBOX, [this](wxCommandEvent&)
+            {
+                NotifyChanged();
+            });
+        }
+        else if (editor == "coordinate_table")
+        {
+            control = new wxButton(rowPanel, wxID_ANY, Display("좌표 편집"));
+            control->Bind(wxEVT_BUTTON, [this, key](wxCommandEvent&)
+            {
+                EditCoordinates(key);
             });
         }
         else if (editor == "bool")
@@ -239,6 +263,39 @@ Json EditorPanel::ReadValue(const Field& field) const
         }
         return field.descriptor.at("choices").at(static_cast<std::size_t>(index)).at("value");
     }
+    if (editor == "multichoice")
+    {
+        auto* choice = static_cast<wxCheckListBox*>(field.control);
+        Json checked = Json::array();
+        const auto& choices = field.descriptor.at("choices");
+        for (std::size_t index = 0; index < choices.size(); ++index)
+        {
+            if (choice->IsChecked(static_cast<unsigned int>(index)))
+            {
+                checked.push_back(choices[index].at("value"));
+            }
+        }
+        Json result = Json::array();
+        for (const auto& original : field.descriptor.at("value"))
+        {
+            if (std::find(checked.begin(), checked.end(), original) != checked.end())
+            {
+                result.push_back(original);
+            }
+        }
+        for (const auto& value : checked)
+        {
+            if (std::find(result.begin(), result.end(), value) == result.end())
+            {
+                result.push_back(value);
+            }
+        }
+        return result;
+    }
+    if (editor == "coordinate_table")
+    {
+        return field.coordinateValue;
+    }
     if (editor == "bool")
     {
         return static_cast<wxCheckBox*>(field.control)->GetValue();
@@ -297,6 +354,55 @@ void EditorPanel::WriteValue(Field& field, const Json& value)
             ++index;
         }
     }
+    else if (editor == "multichoice")
+    {
+        if (!value.is_array())
+        {
+            throw std::runtime_error("다중 참조 선택값은 목록이어야 합니다.");
+        }
+        auto* choice = static_cast<wxCheckListBox*>(field.control);
+        Json selected = Json::array();
+        const auto& choices = field.descriptor.at("choices");
+        for (std::size_t index = 0; index < choices.size(); ++index)
+        {
+            const auto& id = choices[index].at("value");
+            const bool checked = std::find(value.begin(), value.end(), id) != value.end();
+            choice->Check(static_cast<unsigned int>(index), checked);
+            if (checked)
+            {
+                selected.push_back(id);
+            }
+        }
+        if (selected.size() != value.size())
+        {
+            throw std::runtime_error("다중 참조에 중복되거나 선택 목록에 없는 식별자가 있습니다.");
+        }
+    }
+    else if (editor == "coordinate_table")
+    {
+        if (!value.is_array() || value.size() < 3 || value.size() > 64)
+        {
+            throw std::runtime_error("좌표 표의 점 수가 지원 범위를 벗어났습니다.");
+        }
+        for (const auto& point : value)
+        {
+            if (!point.is_array() || point.size() != 2)
+            {
+                throw std::runtime_error("좌표 표에는 점마다 두 좌표가 필요합니다.");
+            }
+            for (const auto& coordinate : point)
+            {
+                const std::string mode = coordinate.at("mode");
+                if ((mode != "value" && mode != "missing" && mode != "parameter") || !coordinate.at("value").is_string() ||
+                    !coordinate.at("parameter_id").is_string() || !coordinate.at("unit").is_string())
+                {
+                    throw std::runtime_error("좌표 표의 입력 방식이나 값 형식이 유효하지 않습니다.");
+                }
+            }
+        }
+        field.coordinateValue = value;
+        static_cast<wxButton*>(field.control)->SetLabel(Display("좌표 " + std::to_string(value.size()) + "점 편집"));
+    }
     else if (editor == "bool")
     {
         static_cast<wxCheckBox*>(field.control)->SetValue(value.get<bool>());
@@ -334,6 +440,173 @@ void EditorPanel::WriteValue(Field& field, const Json& value)
             field.descriptor.value("display_value", value) : value;
         static_cast<wxTextCtrl*>(field.control)->ChangeValue(Display(Text(displayValue)));
     }
+}
+
+/** @brief 많은 꼭짓점을 작은 DTO로 유지하고 값/미정/변수 참조를 셀마다 구분한다. */
+void EditorPanel::EditCoordinates(const std::string& key, const std::function<void(wxGrid&, wxDialog&)>& opened)
+{
+    Field& field = m_fields.at(key);
+    if (field.descriptor.value("readonly", false))
+    {
+        return;
+    }
+    wxDialog dialog(this, wxID_ANY, Display(field.descriptor.at("label").get<std::string>() + " 좌표"),
+        wxDefaultPosition, FromDIP(wxSize(940, 480)), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+    auto* layout = new wxBoxSizer(wxVERTICAL);
+    layout->Add(new wxStaticText(&dialog, wxID_ANY, Display("각 좌표의 입력 방식을 고르세요. 숫자는 옆에 표시한 단위를 사용합니다.\n단위는 읽기 전용이며 미정값을 계산값으로 채우지 않습니다. 참조는 목록에서 선택합니다.\n꼭짓점 수는 유지하고 변경 적용 전까지 초안으로 보존합니다.")), 0, wxEXPAND | wxALL, 10);
+    auto* grid = new wxGrid(&dialog, wxID_ANY);
+    grid->CreateGrid(static_cast<int>(field.coordinateValue.size()), 8);
+    const char* labels[] = {"X 입력", "X 값", "단위", "X 참조", "Y 입력", "Y 값", "단위", "Y 참조"};
+    const wxString modeLabels[] = {Display("직접 입력"), Display("미정"), Display("매개변수 참조")};
+    const std::string modes[] = {"value", "missing", "parameter"};
+    wxArrayString modeChoices;
+    for (const auto& mode : modeLabels)
+    {
+        modeChoices.Add(mode);
+    }
+    wxArrayString parameterLabels;
+    parameterLabels.Add(Display("선택 없음"));
+    std::vector<std::string> parameterIds{std::string()};
+    for (const auto& choice : m_coordinateChoices)
+    {
+        const std::string id = choice.at("value");
+        if (!id.empty())
+        {
+            parameterIds.push_back(id);
+            parameterLabels.Add(Display(choice.at("label").get<std::string>() + " / " + id));
+        }
+    }
+    for (int column = 0; column < 8; ++column)
+    {
+        grid->SetColLabelValue(column, Display(labels[column]));
+        grid->SetColSize(column, FromDIP(column % 4 == 3 ? 215 : (column % 4 == 2 ? 45 : 115)));
+    }
+    grid->SetRowLabelSize(FromDIP(38));
+    auto updateMode = [grid, modeLabels](int row, int base)
+    {
+        const wxString mode = grid->GetCellValue(row, base);
+        grid->SetReadOnly(row, base + 1, mode != modeLabels[0]);
+        grid->SetReadOnly(row, base + 2, true);
+        grid->SetReadOnly(row, base + 3, mode != modeLabels[2]);
+        grid->SetCellBackgroundColour(row, base + 1, mode == modeLabels[0] ? *wxWHITE : wxColour(238, 240, 243));
+        grid->SetCellBackgroundColour(row, base + 2, wxColour(238, 240, 243));
+        grid->SetCellBackgroundColour(row, base + 3, mode == modeLabels[2] ? *wxWHITE : wxColour(238, 240, 243));
+    };
+    for (int row = 0; row < grid->GetNumberRows(); ++row)
+    {
+        for (int axis = 0; axis < 2; ++axis)
+        {
+            const int base = axis * 4;
+            const auto& coordinate = field.coordinateValue.at(row).at(axis);
+            const std::string mode = coordinate.at("mode");
+            grid->SetCellEditor(row, base, new wxGridCellChoiceEditor(modeChoices, false));
+            grid->SetCellValue(row, base, modeLabels[mode == "value" ? 0 : (mode == "missing" ? 1 : 2)]);
+            grid->SetCellValue(row, base + 1, Display(coordinate.at("value")));
+            grid->SetCellValue(row, base + 2, Display(coordinate.at("unit")));
+            grid->SetCellEditor(row, base + 3, new wxGridCellChoiceEditor(parameterLabels, false));
+            const std::string reference = coordinate.at("parameter_id");
+            const auto found = std::find(parameterIds.begin(), parameterIds.end(), reference);
+            if (found == parameterIds.end())
+            {
+                throw std::runtime_error("좌표 참조가 현재 매개변수 목록에 없습니다.");
+            }
+            grid->SetCellValue(row, base + 3, parameterLabels[static_cast<std::size_t>(std::distance(parameterIds.begin(), found))]);
+            updateMode(row, base);
+        }
+    }
+    grid->Bind(wxEVT_GRID_CELL_CHANGED, [updateMode](wxGridEvent& event)
+    {
+        if (event.GetCol() % 4 == 0)
+        {
+            updateMode(event.GetRow(), event.GetCol());
+        }
+        event.Skip();
+    });
+    layout->Add(grid, 1, wxEXPAND | wxLEFT | wxRIGHT, 10);
+    layout->Add(dialog.CreateSeparatedButtonSizer(wxOK | wxCANCEL), 0, wxEXPAND | wxALL, 10);
+    dialog.SetSizer(layout);
+    if (opened)
+    {
+        opened(*grid, dialog);
+    }
+    while (dialog.ShowModal() == wxID_OK)
+    {
+        grid->SaveEditControlValue();
+        Json value = field.coordinateValue;
+        bool valid = true;
+        for (int row = 0; row < grid->GetNumberRows() && valid; ++row)
+        {
+            for (int axis = 0; axis < 2; ++axis)
+            {
+                const int base = axis * 4;
+                const wxString modeLabel = grid->GetCellValue(row, base);
+                const int modeIndex = modeLabel == modeLabels[0] ? 0 : (modeLabel == modeLabels[1] ? 1 : 2);
+                auto& coordinate = value.at(row).at(axis);
+                coordinate["mode"] = modes[modeIndex];
+                if (modeIndex == 0)
+                {
+                    double number = 0;
+                    const wxString text = grid->GetCellValue(row, base + 1);
+                    valid = text.ToDouble(&number) && std::isfinite(number);
+                    coordinate["value"] = Utf8(text);
+                    coordinate["parameter_id"] = "";
+                }
+                else if (modeIndex == 1)
+                {
+                    coordinate["value"] = "";
+                    coordinate["parameter_id"] = "";
+                }
+                else
+                {
+                    const int selected = parameterLabels.Index(grid->GetCellValue(row, base + 3));
+                    valid = selected > 0;
+                    if (valid)
+                    {
+                        coordinate["parameter_id"] = parameterIds.at(static_cast<std::size_t>(selected));
+                    }
+                }
+                if (!valid)
+                {
+                    grid->SetGridCursor(row, base + (modeIndex == 0 ? 1 : 3));
+                    grid->MakeCellVisible(row, base);
+                    break;
+                }
+            }
+        }
+        if (!valid)
+        {
+            wxMessageBox(Display("직접 입력에는 유한한 숫자를, 참조에는 목록의 매개변수를 지정하세요."), Display("좌표 입력"), wxOK | wxICON_WARNING, &dialog);
+            grid->SetFocus();
+            continue;
+        }
+        WriteValue(field, value);
+        NotifyChanged();
+        return;
+    }
+}
+
+/** @brief 실제 좌표 대화상자의 grid와 확인 버튼 이벤트를 smoke에서 검사한다. */
+void EditorPanel::EditCoordinateCellForSmoke(const std::string& key, int point, int axis, const std::string& value)
+{
+    EditCoordinates(key, [point, axis, value](wxGrid& grid, wxDialog& dialog)
+    {
+        if (point < 0 || point >= grid.GetNumberRows() || axis < 0 || axis > 1)
+        {
+            throw std::runtime_error("좌표 표 smoke 셀 범위를 벗어났습니다.");
+        }
+        dialog.CallAfter([&grid, &dialog, point, axis, value]()
+        {
+            const int base = axis * 4;
+            grid.SetCellValue(point, base, Display("직접 입력"));
+            grid.SetCellValue(point, base + 1, Display(value));
+            wxGridEvent changed(grid.GetId(), wxEVT_GRID_CELL_CHANGED, &grid, point, base);
+            grid.GetEventHandler()->ProcessEvent(changed);
+            wxWindow* accept = dialog.FindWindow(wxID_OK);
+            wxCommandEvent clicked(wxEVT_BUTTON, wxID_OK);
+            clicked.SetEventObject(accept);
+            accept->GetEventHandler()->ProcessEvent(clicked);
+        });
+    });
 }
 
 /** @brief 실제 폼 컨트롤을 사용하여 개발 smoke 입력을 설정한다. */
@@ -407,6 +680,14 @@ std::string EditorPanel::ResolveDiagnosticField(const std::string& path) const
     if (m_fields.count(key) != 0)
     {
         return key;
+    }
+    for (const auto& item : m_fields)
+    {
+        if (item.second.descriptor.at("editor") == "coordinate_table" &&
+            key.compare(0, item.first.size() + 1, item.first + ".") == 0)
+        {
+            return item.first;
+        }
     }
     for (const auto& suffix : {".value", ".parameter_id", ".mode"})
     {

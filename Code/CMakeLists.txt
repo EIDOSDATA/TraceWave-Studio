@@ -74,7 +74,7 @@ set_target_properties(tracewave_gui PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE
 include(CTest)
 if(BUILD_TESTING)
     add_executable(tracewave_canvas_geometry_tests tests/canvas_geometry_test.cpp)
-    target_include_directories(tracewave_canvas_geometry_tests PRIVATE ui/wxwidgets)
+    target_include_directories(tracewave_canvas_geometry_tests PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
     set_target_properties(tracewave_canvas_geometry_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
     add_test(NAME canvas_geometry COMMAND tracewave_canvas_geometry_tests)
     add_executable(tracewave_display_mesh_tests tests/display_mesh_test.cpp)

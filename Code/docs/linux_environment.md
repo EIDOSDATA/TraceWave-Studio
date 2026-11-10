@@ -71,7 +71,7 @@ Python 의존성 15개는 Linux x86_64/CPython 3.12 wheel 버전과 SHA256으로
 
 이 도구는 전용 일반 사용자를 준비하고 설치 전 Qt 유입을 검사한다. 기존 source commit이나 tracked 파일이 달라졌으면 자동 checkout/덮어쓰기를 수행하지 않는다. CMake가 자동 포함하는 미추적 localConfig.cmake도 거부한다. Python 패키지는 고정 wheel 해시를 사용하고 native C++/Python 바인딩을 빌드한다. 이미 검증한 VTK가 있으면 `--skip-vtk-build`로 재사용하며, 이때도 빌드 보고서의 원본 식별과 실제 전체 공유 라이브러리 해시/의존성을 검사한다. 로그는 `.local/wsl/setup-openems.log`다. 기존 배포를 지우거나 WSL 기본값을 바꾸지 않는다.
 
-빌드 완료와 import 성공은 계산 검증과 별개다. 실제 수치 검사는 [도파관 참조 검사](openems_reference.md)를 따른다. 이후 도파관 제품 solver adapter와 서비스 실행/취소/결과 저장을 연결했다. GUI 해석 실행/결과 화면, NF2FF, IFA와 원호, 정식 수렴/실측 검증은 후속이다.
+빌드 완료와 import 성공은 계산 검증과 별개다. 실제 수치 검사는 [도파관 참조 검사](openems_reference.md)를 따른다. 이후 도파관 제품 solver adapter와 서비스 실행/취소/결과 저장, [사용자 PCB 단일 포트](pcb_solver_contract.md) 및 Windows GUI 해석/결과 화면을 연결했다. NF2FF, 실제 IFA/원형 원호의 정식 수렴/실측 검증과 Linux GUI는 후속이다.
 
 ## WSL 설치 단계 실행 기록
 

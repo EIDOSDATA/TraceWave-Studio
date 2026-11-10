@@ -117,11 +117,11 @@ class DesignTests(unittest.TestCase):
         self.assertTrue(any(item["code"] == "E_MATERIAL_RANGE" for item in diagnostics))
 
     def test_complete_input_does_not_claim_solver_or_connectivity_verification(self) -> None:
-        """! @brief 입력이 완비되어도 미구현 해석 기능을 합격시키지 않는다."""
+        """! @brief 입력 검사는 빠진 급전 좌표를 보고하며 solver 미구현 오류를 만들지 않는다."""
         document = build_design(known_material=True)
         diagnostics = preflight_design(document, "em")
-        self.assertEqual([item["code"] for item in diagnostics], ["E_UNSUPPORTED"])
-        self.assertEqual(diagnostics[0]["field_paths"], ["solver_adapter"])
+        self.assertEqual([item["code"] for item in diagnostics], ["E_PORT"])
+        self.assertTrue(diagnostics[0]["field_paths"][0].endswith(".excitation_box"))
 
     def test_material_range_does_not_cover_port_band(self) -> None:
         """! @brief 물성 대역 밖으로 외삽하는 입력은 EM 준비 단계에서 차단한다."""
@@ -306,7 +306,7 @@ class DesignTests(unittest.TestCase):
     def test_unsupported_geometry_and_material_do_not_silently_downgrade(self) -> None:
         """! @brief 미지원 primitive와 물성 모델을 유사 모델로 대신하지 않는다."""
         geometry = deepcopy(self.document["geometry"][0])
-        geometry["kind"] = "via"
+        geometry["kind"] = "spline_path"
         self.assert_rejected("geometry.set", {"geometry": geometry}, "E_UNSUPPORTED")
         material = deepcopy(self.document["materials"][0])
         material["model"] = "anisotropic"
@@ -353,7 +353,7 @@ class DesignTests(unittest.TestCase):
             for field in ("epsilon_r", "tan_delta", "conductivity"):
                 self.assertIsNone(material[field]["value_si"])
         codes = {item["code"] for item in preflight_design(document, "em")}
-        self.assertTrue({"E_GEOMETRY", "E_PORT", "E_MATERIAL_UNKNOWN", "E_UNSUPPORTED"}.issubset(codes))
+        self.assertTrue({"E_GEOMETRY", "E_PORT", "E_MATERIAL_UNKNOWN"}.issubset(codes))
         copper = parameters["copper_thickness"]
         command = {"command_id": identity(9000), "type": "parameter.set", "payload": {"id": copper["id"], "name": copper["name"], "quantity": quantity(40, "um")}}
         updated, changed, _, _ = apply_command(document, command, document["revision_id"])

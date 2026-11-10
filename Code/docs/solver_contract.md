@@ -1,12 +1,14 @@
 # WSL2 openEMS worker 계약
 
-갱신일: 2026-11-11 KST. 승인 기준선 RFAD-D0-3.4의 API-011/012/013/014/015/016을 제한된 `rfad.openems.rect-waveguide/0.1` profile로 연결한다. `01_Docs`의 승인 기록은 변경하지 않는다.
+갱신일: 2026-11-11 KST. 승인 기준선 RFAD-D0-3.4의 API-011/012/013/014/015/016을 도파관 참조 `rfad.openems.rect-waveguide/0.1`과 사용자 PCB `rfad.openems.pcb-single-port/0.1` profile로 연결한다. `01_Docs`의 승인 기록은 변경하지 않는다. 사용자 PCB의 상세 입력/근사/제한은 [PCB 해석 계약](pcb_solver_contract.md)을 따른다.
 
 ## 현재 지원 범위
 
 별도의 빈 참조 프로젝트를 스냅샷으로 봉인하고, 명시적 진공/PEC 직사각 도파관을 계산한다. 크기는 20 x 10 x 80 mm, TE10 입력과 반대 방향 수동 포트, 측정면 z=15/65 mm, Gaussian 중심 10 GHz, 평가 대역 9.5~10.5 GHz의 31점이다. 격자는 최대 1.0 또는 0.75 mm, 양 끝 PML 8 cells, 최대 20000 steps, 종료 에너지 1e-7, CPU thread 2개로 고정한다.
 
-설계 형상/매개변수/재료/포트가 있는 프로젝트를 이 참조 형상으로 조용히 대체하지 않고 접수를 거절한다. 사용자 안테나, IFA, 원호의 EM 모델, NF2FF, 이득/효율/절대 전력은 아직 지원하지 않는다. 진공과 PEC는 이 사례에서 명시한 조건이며 미정 사용자 물성의 기본값이 아니다.
+도파관 profile은 설계 형상/매개변수/재료/포트가 있는 프로젝트를 이 참조 형상으로 조용히 대체하지 않고 접수를 거절한다. 별도의 PCB profile은 사각/원형 기판, 선/원호, 구멍을 가진 접지 polygon, 원형/회전 사각 pad, 중공 도금 관통 PTH via와 명시적 물성을 소비한다. 단일 lumped 포트는 동일 sheet 면의 x/y gap 또는 서로 다른 sheet 사이 z gap을 사용하며 S11/VSWR/입력 임피던스를 계산한다. IFA의 접지/단락부/방사체가 같은 net인 경우도 실제 형상과 열린 gap을 검사한다. 도체/급전의 상세 의미는 [도체와 IFA 확장](copper_features.md)을 따른다.
+
+실행 가능한 IFA 도체 모델과 실물 검증은 구분한다. 실제 SMA launch, 정합 부품/마스크/케이블과 측정 기준면은 아직 완성하지 않았으며 정식 IFA 격자/경계/시간 수렴과 실측 대조도 후속이다. NF2FF, 이득/효율/절대 전력은 현재 결과에 포함하지 않는다. 진공과 PEC는 도파관 사례에서 명시한 조건이며 미정 사용자 물성의 기본값이 아니다.
 
 ## 서비스 흐름
 
@@ -14,14 +16,16 @@
 
 | 메서드 | input | 결과 |
 | --- | --- | --- |
-| solver.plan | snapshot: {snapshot_id, content_hash}, analysis_profile, runtime_profile, grid_mm | queued TaskRef. 완료 시 analysis_plan: {plan_id, content_hash, artifact}, model_report, resource_estimate |
+| solver.plan | snapshot: {snapshot_id, content_hash}, analysis_profile, runtime_profile, 도파관 grid_mm 또는 PCB settings | queued TaskRef. 완료 시 analysis_plan: {plan_id, content_hash, artifact}, model_report, resource_estimate |
 | solver.prepare | analysis_plan: {plan_id, content_hash}, budget: {timeout_seconds} | queued TaskRef. 완료 시 prepared_plan: {prepared_plan_id, content_hash, artifact}, preparation_artifact, 실제 mesh_statistics |
 | job.submit | task_plan: {kind: em_analysis, prepared_plan: {prepared_plan_id, content_hash}, execution_mode}, budget | queued TaskRef. 완료 시 artifact_id, normalized_result 파일 참조, assessment |
 | job.cancel | job_id, 선택적 reason. context는 빈 object | 취소 의도와 현재 상태. 실제 guest 종료 확인 후 cancelled |
 | job.status | job_id, 선택적 cursor. context는 빈 object | 영속 state/events 및 게시 완료 artifact 참조 |
 | result.open | artifact_id, 선택적 selection: all/normalized/raw | 작은 metadata와 파일 참조. 계산을 시작하지 않음 |
+| solver.latest | 빈 input | 최근 완료 해석 참조. 실패/취소 결과로 대체하지 않음 |
+| solver.samples | artifact_id | 최대 201점의 주파수/S11 dB/VSWR/복소 임피던스 표시 DTO와 원본 SnapshotRef |
 
-plan/prepare/submit/result.open의 context에는 project_id를 지정한다. analysis_profile은 `rfad.openems.rect-waveguide/0.1`, runtime_profile은 `openems-wsl-reference/0.1`이다. timeout_seconds는 0 초 초과 300 초 이하이고 검증 CLI는 120 초를 사용한다.
+plan/prepare/submit/result.open/solver.latest/solver.samples의 context에는 project_id를 지정한다. analysis_profile은 위 두 profile 중 하나이며 runtime_profile은 공통 `openems-wsl-reference/0.1`이다. timeout_seconds는 0 초 초과 300 초 이하이고 검증 CLI는 120 초를 사용한다. latest/samples는 `rfad.solver-view/0.1` 개발 확장이며 새 정식 API 번호를 만들지 않는다. 조회는 solver 환경 없이 가능하고 계산을 시작하지 않는다.
 
 execution_mode는 `solve_and_postprocess` 또는 `postprocess_only`다. 후처리 전용에는 동일한 PreparedPlan으로 완료된 `raw_result_id`를 추가한다. 원시 파일/manifest가 없거나 봉인이 다르면 실패한다. solver를 자동으로 다시 실행하지 않는다. 변환 규약은 이 profile 버전에 고정하며 임의 conversion profile은 지원하지 않는다.
 
@@ -31,9 +35,13 @@ AnalysisPlan은 원본 스냅샷, 참조 사례, 단위, 포트 방향/기준면
 
 prepare는 실제 CSXCAD 격자와 openEMS XML을 만들며 FDTD를 실행하지 않는다. XML, 실제 격자선/통계, 소비한 조건, 단위/정규화, 실제 runtime 관측을 PreparationArtifact에 기록한다. host는 파일 hash와 보고의 일치, 포트 측정면/격자/단위/소스 조건을 검증한 후 별도 UUID/hash의 PreparedPlan을 게시한다. 원래 AnalysisPlan을 수정하지 않는다.
 
-analysis는 준비 단계의 동일 XML 바이트를 native openEMS CLI에 직접 전달한다. 모델을 다시 생성하지 않는다. 종료 후 4개 시간 probe, 2개 native 통계, native.log, 입력 XML과 raw manifest를 보존한다. postprocess_only는 이 원시 파일을 검증하고 DFT만 다시 계산한다.
+PCB의 polygon은 구멍을 유지하는 면 분할로 전달한다. 동박은 유한 전도도/실제 두께의 conducting sheet이고 via는 유한 전도도와 상대 유전율을 입력받는 중공 체적 도체다. finished bore와 도금 두께를 사용하며 미정 tool bore를 제조 확정값으로 채우지 않는다. CAD의 실제 동박 외면 span과 EM의 유전체 접면 sheet span 차이는 계획/소비 보고서에 남긴다.
 
-정규화는 `exp(-j*2*pi*f*t)`, `2*dt*sum(...)` pulse Fourier 규약을 사용한다. V*s/A*s 채널에서 S11/S21과 U/I를 구하며 RMS 전력으로 변환하지 않는다. 기준 임피던스는 주파수별 진공 TE10 모드 임피던스다. 한 포트만 여기하므로 완전한 2-port S 행렬을 계산했다고 표시하지 않는다. 자세한 해석식/판정 기준은 [참조 검사](openems_reference.md)를 따른다.
+native 준비에서는 실제 CSXCAD 재료 우선순위를 Yee 전기 edge 중심에서 평가해 도체/패드/비아의 소실 또는 접속 변화와 급전 gap 침범을 검사한다. `yee_connectivity_checked=true`는 이 격자 표현 검사이고 `operator_coefficients_checked=false`를 유지한다. solver의 최종 계수, 전류 연속성 수렴이나 RF 정확도를 독립 검증했다는 뜻은 아니다.
+
+analysis는 준비 단계의 동일 XML 바이트를 native openEMS CLI에 직접 전달한다. 모델을 다시 생성하지 않는다. 종료 후 도파관은 4개, PCB는 2개 시간 probe를 보존하고 공통으로 2개 native 통계, native.log, 입력 XML과 raw manifest를 보존한다. postprocess_only는 이 원시 파일을 검증하고 DFT만 다시 계산한다.
+
+정규화는 `exp(-j*2*pi*f*t)`, `2*dt*sum(...)` pulse Fourier 규약을 사용하며 RMS 전력으로 변환하지 않는다. 도파관에서는 S11/S21과 U/I를 구하고 기준 임피던스로 주파수별 진공 TE10 모드 임피던스를 사용한다. 한 포트만 여기하므로 완전한 2-port S 행렬을 계산했다고 표시하지 않는다. 자세한 참조 해석식/판정 기준은 [참조 검사](openems_reference.md)를 따른다. PCB에서는 사용자가 명시한 실수 lumped 저항을 기준으로 S11/VSWR와 U/I를 계산한다. 물리 정확도 판정은 `computed_unvalidated`다.
 
 준비 상태는 queued -> preparing -> completed, 해석은 queued -> running -> postprocessing -> completed다. 후처리 전용은 running을 생략한다. 실패/취소가 이전 완료 결과를 덮지 않으며 terminal 상태는 먼저 게시한 결과가 유지된다. NDJSON에는 큰 배열 대신 {uri, sha256, bytes} 파일 참조를 반환한다.
 
@@ -76,4 +84,6 @@ $env:RFAD_TEST_WSL = '1'
 wsl.exe -d TraceWave-Dev -u tracewave --cd '/mnt/c/Users/eidos/GitHub/TraceWave Studio/Code' --exec /usr/bin/env PYTHONPATH=src RFAD_OPENEMS_NATIVE=1 /home/tracewave/rfad-runtime/openems-venv/bin/python -B -m unittest discover -s tests -p test_openems_adapter.py -v
 ```
 
-GUI의 현재 `해석 입력 검사` 버튼은 draft 입력 검사다. 이번 변경은 서비스/API/CLI의 도파관 worker 연결이며 GUI 해석 실행/결과 그래프, 사용자 형상 투영/급전/물성, 단일 포트 IFA와 NF2FF는 후속이다.
+GUI의 `해석 입력 검사`는 draft 누락 검사로 유지한다. `-OpenEmsWsl`로 시작한 GUI는 별도의 해석 설정/실행/취소와 S11/VSWR/임피던스 그래프를 제공한다. polygon/pad/via의 생성/속성/표시와 명시적 급전 조건은 같은 원본 명령과 불변 스냅샷을 사용한다. [PCB 실행 검사](pcb_solver_contract.md#검증과-후속-범위)는 원형 선/원호 사례에 더해 별도의 IFA 급전 및 PTH fixture를 선택할 수 있다. fixture의 물성과 도금 치수는 명시적 실행 가정이며 승인된 초기 IFA의 미정 제작 조건을 덮어쓰지 않는다.
+
+다음 단계는 단일 포트 IFA의 정식 수렴, 실제 물성/급전/측정 조건 대조다. 이어 원형 PCB/원호의 물리 검증과 NF2FF/방사 결과를 확장한다. 결과의 `computed_unvalidated` 상태를 유지하고 실행 완료나 시간 에너지 종료만으로 안테나 성능 합격을 주장하지 않는다.

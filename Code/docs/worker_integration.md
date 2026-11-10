@@ -2,7 +2,7 @@
 
 검토일: 2026-11-11 KST
 
-별도 호스트 CAD worker와 제품 서비스의 접수/실행/게시를 연결했다. WSL의 고정 openEMS 환경에는 guest supervisor와 제한된 도파관 adapter를 연결했으며 [해석 worker 계약](solver_contract.md)에서 범위를 구분한다. 승인 기준선 RFAD-D0-3.4의 04, 07, 11, 12번을 유지하며 현재 CAD profile의 상세 범위는 [CAD/STEP 계약](cad_contract.md)에 있다.
+별도 호스트 CAD worker와 제품 서비스의 접수/실행/게시를 연결했다. WSL의 고정 openEMS 환경에는 guest supervisor와 도파관/사용자 PCB adapter를 연결했으며 [해석 worker 계약](solver_contract.md)에서 범위를 구분한다. 승인 기준선 RFAD-D0-3.4의 04, 07, 11, 12번을 유지하며 현재 CAD profile의 상세 범위는 [CAD/STEP 계약](cad_contract.md)에 있다.
 
 ## 현재 실행 구조
 
@@ -19,7 +19,7 @@ GUI의 STEP 출력/3D 갱신은 편집 입력 적용, 불변 snapshot 접수, CA
 1. 접수 transaction에서 등록된 SnapshotRef와 원본 hash를 대조한다. 정규 기하 입력, runtime manifest, worker 진입점과 제품 Python 소스 묶음을 불변 artifact로 봉인하고 run UUID/nonce, CAD 슬롯 예약, queued event를 함께 확정한다.
 2. journal 잠금 밖에서 실행 식별을 재검증하고 새 staging에 입력/runtime/소스를 복사한다. worker는 실제 소비한 staged 입력과 소스 hash, Python/운영체제/CPU와 설치 패키지 버전을 확인한다. 기존 `__pycache__`와 출력 cache를 재사용하지 않는다.
 3. native 감독기가 자신이 시작한 프로세스와 출력 stream을 소유한다. Windows에서는 KILL_ON_JOB_CLOSE Job Object를 연결한 후 stdin 시작 메시지를 전달한다. POSIX에서는 소유 process group을 회수한다. 입력은 봉인된 정규 JSON이며 원본 프로젝트 파일을 native worker가 직접 열지 않는다.
-4. native 작업은 명시적 mm/deg 변환으로 유전체와 선/원호 도체를 생성한다. 실제 AP242 schema/단위, stable body 이름과 원본 UUID 대응, validity/체적/외곽/중심/두께/단면을 별도 OCCT reader로 확인한다. substrate와 copper는 서로 병합하지 않는다. STEP/B-rep 저장 뒤 동일 body에서 별도 표시 mesh를 만든다.
+4. native 작업은 명시적 mm/deg 변환으로 사각/원형 유전체, 선/원호, 구멍을 가진 polygon, 원형/회전 사각 pad와 중공 PTH barrel을 생성한다. substrate와 관통 도체에 실제 drill을 적용하고 명시적 양끝 pad 접속을 검사한다. 실제 AP242 schema/단위, stable body 이름과 원본 UUID 대응, validity/체적/외곽/중심/두께/단면/구멍과 via 접속을 별도 OCCT reader로 확인한다. substrate와 copper는 서로 병합하지 않으며 barrel은 별도 body로 유지한다. STEP/B-rep 저장 뒤 동일 body에서 별도 표시 mesh를 만든다.
 5. 프로세스 종료와 출력 닫힘을 확인한 뒤 host가 wrapper schema/run/nonce/input hash, 필수 파일, 실제 STEP header와 sidecar의 snapshot/원본 의미/hash를 다시 검증한다. mesh의 입력/원본 UUID 대응, 유한 좌표와 색인/상한도 확인한다. 닫힌 파일을 streaming hash/복사/fsync/재읽기로 봉인하고 작은 manifest를 마지막에 생성한다.
 6. 짧은 게시 transaction에서 실행 nonce와 현재 상태를 다시 확인한다. artifact 참조와 completed event를 함께 확정하며 원본 프로젝트를 변경하지 않는다. 완료 전 staging/미게시 파일을 정상 결과로 노출하지 않는다.
 
@@ -39,14 +39,16 @@ workspace당 CAD 실행은 하나다. queued 취소는 실행 전에 cancelled�
 
 ## 검증 상태와 한계
 
-시험은 fake worker의 정상/실패/timeout/출력 폭주/취소/프로세스 회수, 장시간 실행 중 편집/저장 응답, nonce/취소 경합/재시작 예약, 봉인 오류와 미완성 산출물 비공개를 다룬다. 실제 서비스-CAD 프로세스 시험은 한글/공백 경로, snapshot 고정, 실제 AP242/B-rep 재열기와 원본 sidecar/hash를 확인한다. native 기하 시험은 signed sweep/완전 원환, 얇은 도체, 같은 net Boolean과 별도 body 중첩, 큰 좌표/작은 원호 및 거의 닫힌 cap의 지원 경계를 포함한다. 최신 실행 수치와 근거는 [개발 상태](development_status.md), 재현 명령은 [CAD/STEP 계약](cad_contract.md#검증-재현)에 기록한다.
+시험은 fake worker의 정상/실패/timeout/출력 폭주/취소/프로세스 회수, 장시간 실행 중 편집/저장 응답, nonce/취소 경합/재시작 예약, 봉인 오류와 미완성 산출물 비공개를 다룬다. 실제 서비스-CAD 프로세스 시험은 한글/공백 경로, snapshot 고정, 실제 AP242/B-rep 재열기와 원본 sidecar/hash를 확인한다. native 기하 시험은 signed sweep/완전 원환, 얇은 도체, 같은 net Boolean과 별도 body 중첩, 큰 좌표/작은 원호 및 거의 닫힌 cap의 지원 경계를 포함한다. 추가 도체 시험은 polygon의 구멍, 회전 pad, PTH 중공/drill/span/명시적 pad 접속과 잘못된 net/적층의 차단을 확인한다. 최신 실행 수치와 근거는 [개발 상태](development_status.md), 재현 명령은 [CAD/STEP 계약](cad_contract.md#검증-재현)에 기록한다.
 
-같은 Open CASCADE kernel의 별도 reader이므로 `kernel_independent=false`이며 결과는 내부 기하 profile의 `generated_unverified`다. 미정 RF 물성과 원래 parameter binding은 sidecar에 보존한다. 미정 기하 치수/층 위치/두께는 출력 전에 차단하고 임의 FR4나 코어 두께를 채우지 않는다. 제조 전달, 독립 수신 CAD, 실제 급전/접속과 RF 정확도는 별도 검증이 필요하다.
+같은 Open CASCADE kernel의 별도 reader이므로 `kernel_independent=false`이며 결과는 내부 기하 profile의 `generated_unverified`다. 미정 RF 물성과 원래 parameter binding은 sidecar에 보존한다. 미정 기하 치수/층 위치/두께는 출력 전에 차단하고 임의 FR4나 코어 두께를 채우지 않는다. 미정 tool bore도 원본에 유지하고 finished bore와 도금으로 구성한 모델 drill 근거를 구분한다. 형상 접속 검사는 구현했지만 제조 전달, 독립 수신 CAD, 실제 SMA/실장 급전과 RF 정확도는 별도 검증이 필요하다. 상세 제한은 [도체와 IFA 확장](copper_features.md)을 따른다.
 
 ## WSL solver 연결
 
-WSL guest supervisor와 도파관 adapter는 별도 [해석 worker 계약](solver_contract.md)으로 구현했다. SnapshotRef, 불변 AnalysisPlan, 실제 준비 XML/격자/소비 보고와 독립 PreparedPlan을 연결한다. 준비는 FDTD를 실행하지 않고 analysis는 준비 XML을 그대로 사용한다. 완료한 raw만 사용하는 후처리 전용 모드도 있다.
+WSL guest supervisor와 도파관/PCB adapter는 별도 [해석 worker 계약](solver_contract.md)으로 구현했다. SnapshotRef, 불변 AnalysisPlan, 실제 준비 XML/격자/소비 보고와 독립 PreparedPlan을 연결한다. 준비는 FDTD를 실행하지 않고 analysis는 준비 XML을 그대로 사용한다. 완료한 raw만 사용하는 후처리 전용 모드도 있다.
 
 Linux ext4 staging, run UUID/nonce/heartbeat, detached supervisor/watchdog와 실제 guest 종료 확인을 사용한다. wsl.exe launcher 종료를 guest 종료로 추정하지 않는다. 접속 단절/lease 만료/감독기 사망, 취소/timeout/출력 상한과 재접속을 실제 프로세스로 시험했다. 결과 파일 hash/종료 로그/통계/정규화/출처를 검증한 뒤 journal에 게시한다. 유지보수 CLI는 이전 interrupted 실행의 취소/종료만 확인하고 원시 해석을 재개하지 않는다.
 
-작은 진공 PEC 도파관 참조 검증을 기반으로 단일 포트 IFA와 원호로 확장한다. 사용자 형상/물성/급전 모델, NF2FF, 정식 mesh/경계/시간 수렴 및 실측, 전체 앱 메모리와 60/30 fps 예산은 후속 검증이다.
+작은 진공 PEC 도파관 참조 검증에 이어 [사용자 PCB profile](pcb_solver_contract.md)의 사각/원형 기판, 선/원호/접지 polygon/pad/PTH via와 GUI 실행/결과를 연결했다. IFA의 접지/급전선/단락부와 열린 단일 급전 gap을 명시적으로 소비하며 동일 면의 x/y 또는 층 사이 z 방향 급전을 지원한다. sheet/체적 via의 물성과 기하 근사는 계획/소비 보고서에 남기고 실제 Yee 전기 edge에서 재료 우선순위와 접속 표현을 확인한다. 이 검사는 최종 solver 계수나 RF 정확도 검증을 뜻하지 않는다.
+
+다음은 단일 포트 IFA의 정식 mesh/경계/시간 수렴과 실제 물성/제작/측정 조건 대조다. SMA launch와 정합 부품의 기생 효과, NF2FF/방사 결과, 독립 수신 CAD, 전체 앱 메모리와 60/30 fps 예산도 후속이다. 현재 실행 fixture의 성공을 실물 IFA 검증으로 승격하지 않는다.

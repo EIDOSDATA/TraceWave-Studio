@@ -6,7 +6,7 @@
 
 제품 개발 영역은 `C:/Users/eidos/GitHub/TraceWave Studio/Code`다. 승인 기준선은 RFAD-D0-3.4, 커밋 `6ebeda156e9d31b893bf69046550f5df9b16dc64`다. 01_Docs와 승인 records는 변경하지 않았다. 기준선의 착수 전 표기는 당시 승인 기록이며 현재 상태는 R0 기초 구현 진행이다.
 
-wxWidgets, Windows 11+WSL2 우선, Linux GUI 후속, 원호/IFA, 내부 검증 배포와 60/30 fps 초기 목표를 유지한다. WSL 개발 환경과 작은 해석 참조 사례 검증, GUI 선택 속성/영속 undo/redo와 wxAUI 기반 2D 편집 다음으로 별도 호스트 CAD worker와 Open CASCADE 형상/AP242 STEP 출력을 연결했다. 이어 GUI STEP 출력/작업 취소/완료 결과 복원과 wxGLCanvas 3D 형상 보기를 구현했다. WSL2 guest supervisor와 도파관 solver adapter의 준비/실행/취소/결과 저장 및 독립 후처리도 연결했다.
+wxWidgets, Windows 11+WSL2 우선, Linux GUI 후속, 원호/IFA, 내부 검증 배포와 60/30 fps 초기 목표를 유지한다. WSL 개발 환경과 작은 해석 참조 사례 검증, GUI 선택 속성/영속 undo/redo와 wxAUI 기반 2D 편집 다음으로 별도 호스트 CAD worker와 Open CASCADE 형상/AP242 STEP 출력을 연결했다. 이어 GUI STEP 출력/작업 취소/완료 결과 복원과 wxGLCanvas 3D 형상 보기를 구현했다. WSL2 guest supervisor와 도파관 solver adapter의 준비/실행/취소/결과 저장 및 독립 후처리도 연결했다. 이어 원형 PCB 외형을 저장/편집/CAD/EM에 연결하고 사용자 PCB의 제한된 단일 포트 해석과 GUI 실행/결과 그래프를 추가했다. 접지 polygon/빈 영역, 패드, 중공 도금 비아와 IFA의 실제 급전/단락 도체 모델도 같은 명령/저장/GUI/CAD/EM 경로로 확장했다.
 
 ## 구현 현황
 
@@ -14,19 +14,20 @@ wxWidgets, Windows 11+WSL2 우선, Linux GUI 후속, 원호/IFA, 내부 검증 �
 | --- | --- | --- |
 | 단위와 정규 직렬화 | SI Quantity, 미정 상태, 출처, 제한 JSON codec/hash | 복소수, 불확도, 충돌 후보, 물리 cache subset |
 | 표현식 | 전용 parser, 차원/정의역 검사, UUID bindings, 의존 그래프 재계산, 순환 차단. Windows/Linux 49개 수식과 그래프/IFA 캐시 비교 통과 | 다른 CPU/엔진 조합과 추가 수식의 계산 캐시 호환 검증 |
-| 실제 설계 데이터 | 기판, 적층, 재료, net, 선/원호, 단일 lumped port. 참조 무결성과 역명령 | 패드/비아/polygon, 실제 급전/접속 판정 |
+| 실제 설계 데이터 | 사각/원형 기판, 적층, 재료, net, 선/원호/구멍 포함 polygon/패드/비아, 단일 lumped port와 명시적 급전 좌표. 참조 무결성과 역명령 | 일반 접속 엔진과 제조 DRC, blind/buried via |
 | 목적별 입력 검사 | API-006 draft revision의 geometry/step/em, 고정 입력 TaskRef, 누락 진단 | snapshot 입력, 제조/물리 profile, solver 지원 검증 |
 | 명령/저장/스냅샷 | revision/receipt 원자 게시, 재시작, crash 경계. 0.1 읽기 및 새 개정 0.2 전환. 영속 undo/redo와 history head 보호 | 이력 grouping/임의 이동, 독립 archive/import, GC, 정전 내구성 |
 | Python 환경 | 서비스 .venv와 별도 .venv-cad, 44개 CAD 패키지 버전/wheel SHA256 고정 | 배포 패키지와 전체 라이선스 검증 |
 | CAD 환경 smoke | CadQuery 2.8.0/cadquery-ocp 7.9.3.1.1 박스 AP214 export/reimport의 초기 호환성 기록 | 배포 환경과 독립 수신 CAD 검증 |
-| CAD 기하와 STEP | 불변 snapshot을 mm로 투영, 직사각 유전체와 양수 두께 선/원호 고체, 같은 층/net/재료 병합과 원본 UUID mapping, AP242 실제 schema/단위와 별도 OCCT reader 재입력, B-rep/원본 sidecar | 독립 kernel 수신 CAD, pad/via/hole/polygon, 제조 및 RF 검증. 현재 내부 기하 profile은 generated_unverified |
+| CAD 기하와 STEP | 불변 snapshot을 mm로 투영, 사각/원형 유전체와 양수 두께 선/원호/영역/패드, 실제 drill과 중공 PTH barrel. 같은 층/net/재료 병합과 UUID mapping, AP242 schema/단위와 별도 OCCT reader 재입력, B-rep/sidecar | 독립 kernel 수신 CAD, 제조 및 RF 검증. 내부 기하 profile은 generated_unverified |
 | CAD worker와 API | 호스트 설정의 별도 프로세스, 입력/runtime/소스 묶음 봉인, 실행 중 편집/저장/조회, 취소/timeout/출력 제한, nonce와 파일 streaming 봉인/원자 게시. API-008/023/024 비동기 TaskRef와 STEP CLI, cad.latest 완료 참조 조회 | CAD outcome_unknown 수동 조정 API, 자동 GC/cache |
-| GUI 작업 공간 | C++ wxMSW/wxAUI의 탐색/중앙 2D와 3D 탭/속성/문제/로그/CAD 출력 배치, 패널 복원, 안정 ID 선택 동기화, 한글 속성과 입력 상태, 매개변수/표현식/UUID 결합, 영속 Ctrl+Z/Y/Shift+Z | 재료/net/포트 생성 UI, 해석 결과/비교/제조 출력 작업 공간, DPI/접근성과 전체 앱 성능 측정 |
+| GUI 작업 공간 | C++ wxMSW/wxAUI의 탐색/중앙 2D와 3D 탭/속성/문제/로그/CAD 출력 배치, 패널 복원, 안정 ID 선택 동기화, 한글 속성과 입력 상태, 매개변수/표현식/UUID 결합, 영속 Ctrl+Z/Y/Shift+Z, 재료/net/단일 포트 생성 | 결과 비교/제조 출력 작업 공간, DPI/접근성과 전체 앱 성능 측정 |
 | GUI STEP와 3D | 적용 후 불변 snapshot 접수, CAD 중 편집/저장, 취소와 출력 폴더, 이전 개정 표시 및 재열기 완료 결과 복원. 실제 OCCT 고체에서 생성한 표시 mesh의 background hash/경계 검사, 지연 wxGLCanvas 생성, 회전/이동/확대/선택, 오류 시 context 재생성 재시도 | LOD, 실제 GPU reset/DPI/도킹 복구 수용, 대형 장면/성능 예산, 독립 CAD와 제조/RF 판정 |
-| 2D 직접 편집 | 기판/미정 도체층/미정 유전체층 생성, 두 점 선분, 중심/시작/끝 방향 원호와 Shift CW, 수치 좌표 생성, 선택/이동/삭제, preview와 단일 명령 commit, fit/zoom/pan | 마우스 스냅, endpoint 편집/회전/미러/구속/Boolean/고급 도면, 정밀도와 최종 시각 수용 |
-| GUI 입력 검사 | 명시적 EM 입력 검사, 문제 목록과 객체/필드 이동, 이전 revision 진단 이동 거절 | 실제 연결/제조/solver 지원 검증과 실행 작업 패널 |
-| WSL/openEMS 환경 | Ubuntu 24.04.5 WSL2 실행, Linux 서비스 및 표현식 비교 통과. Qt 없는 openEMS 0.37.0/CSXCAD 0.7.0 빌드와 두 격자 도파관 참조 검사 통과 | IFA/NF2FF와 정식 수렴/정확도 검증 |
-| WSL solver와 결과 | AnalysisPlan/PreparationArtifact/PreparedPlan, 준비 XML의 실제 CLI 실행, 종료 확인 뒤 raw/정규화/출처 봉인, 독립 후처리와 result.open. ext4 staging, supervisor/watchdog, nonce/lease/재접속/취소, unknown 예약과 유지보수 CLI | 사용자 형상/물성/급전 투영, GUI 해석 실행/결과, 공개 수동 조정, cache/GC, IFA/NF2FF와 정식 수렴 |
+| 2D 직접 편집 | 사각/원형 기판과 미정 도체층/미정 유전체층 생성, 두 점 선분, 중심/시작/끝 방향 원호와 Shift CW, 수치 좌표 생성, 선택/이동/삭제, preview와 단일 명령 commit, fit/zoom/pan | 마우스 스냅, endpoint 편집/회전/미러/구속/Boolean/고급 도면, 정밀도와 최종 시각 수용 |
+| GUI 입력 검사 | 명시적 EM 입력 검사, 문제 목록과 객체/필드 이동, 이전 revision 진단 이동 거절 | 일반 접속/제조 DRC와 정식 물리 검증 |
+| WSL/openEMS 환경 | Ubuntu 24.04.5 WSL2 실행, Linux 서비스 및 표현식 비교 통과. Qt 없는 openEMS 0.37.0/CSXCAD 0.7.0 빌드와 두 격자 도파관 참조 검사 통과 | NF2FF, 실측/독립 solver 정확도 검증 |
+| WSL solver와 결과 | AnalysisPlan/PreparationArtifact/PreparedPlan, 봉인 XML 실행과 raw/정규화/출처, 독립 후처리. ext4 staging, supervisor/watchdog, nonce/lease/재접속/취소. 사각/원형 PCB 선/원호/접지 polygon/패드/PTH, 유한 도체, x/y/z gap 급전, IFA short 연결과 Yee edge 검사, GUI S11/VSWR/임피던스 | 공개 수동 조정, cache/GC, SMA/실장 급전, NF2FF와 실측 |
+| IFA 수치 안정성 | 명시적 시험 입력의 3단계 격자/3단계 경계/2단계 시간 종료 비교, 고정 물리 PML 두께와 graded air, 공개 API 실행/재개/독립 재판정, JSON/CSV/비교 그림 | 아래 실제 검증 기록의 범위만 수용. GUI 다중 결과 비교, 국부 특징/곡선/PML 셀 수 민감도, 제조/실측 정확도 |
 
 서비스는 rfad.api/2.0, workspace profile은 rfad.projects/0.2, 새 문서는 rfad.project/0.2다. 세부 계약은 [저장](project_persistence.md), [설계 데이터](design_data.md), [선택 속성](editor_contract.md), [2D 표시/편집](canvas_contract.md), [CAD/STEP](cad_contract.md), [worker 실행](worker_integration.md), [기초 계약](bootstrap_contract.md)을 따른다. 전체 API나 R0/R1 완료를 주장하지 않는다.
 
@@ -138,14 +139,89 @@ Windows 스킵은 별도 CAD 환경의 native 단위 시험 9개, Linux native o
 
 검증한 코드/감독기 hash와 상세 근거는 `runtime_profiles/openems-worker-wsl.json`에 기록한다. 게스트 staging/로그/raw와 미게시 자료는 자동 삭제하지 않는다. 이번 결과는 작은 진공 PEC 도파관의 제한된 제품 경로 검증이며 IFA/NF2FF, 정식 수렴, 손실 재료/급전/제작 및 측정, 임의 코드 보안 격리, 60/30 fps와 전체 메모리 수용을 입증하지 않는다.
 
+## 원형 PCB와 사용자 해석 연결 검증 (2026-11-11)
+
+원형 PCB를 중심/반지름 수량과 UUID 매개변수 참조로 저장하고 생성/속성 편집/undo/redo/저장/스냅샷/2D 표시에 연결했다. 원호 패턴과 외형은 독립이며 접지나 패턴을 자동 생성하지 않는다. Open CASCADE는 정확한 원통 유전체와 기존 선/원호 도체 고체를 만들고 실제 원 외곽 밖의 폭/끝단을 거절한다. STEP 재입력과 표시 mesh에서도 원형을 유지한다. [원형 외곽 계약](circular_board.md)에 상세 의미와 한계를 기록한다.
+
+`rfad.openems.pcb-single-port/0.1`은 사용자 사각/원형 기판, 유전체 물성, 동박 전도도/두께, 선/원호와 동일 sheet 면의 명시적 단일 급전을 소비한다. 곡선 polygon 오차와 sheet/유전체 손실 근사를 계획에 기록하고 native polygon의 단자 접촉, 열린 급전 간극 전체 및 다른 net/재료 도체의 접촉을 검사한다. 상세 범위는 [PCB 해석 계약](pcb_solver_contract.md)을 따른다. 단일 포트 IFA의 검증 완료를 주장하지 않는다.
+
+GUI에 원형 기판, 재료/net/포트 생성, 해석 조건/실행/취소, S11/VSWR/복소 임피던스 그래프를 추가했다. `launch_gui.ps1 -OpenEmsWsl`로 활성화하며, 접수 시 스냅샷 고정, 실행 중 편집/저장, 이전 개정 표시, 취소/실패 후 기존 결과 유지와 재시작 복원을 제공한다. `solver.latest`와 `solver.samples`는 solver 환경 없이 조회하며 계산을 다시 실행하지 않는다.
+
+입력 점검과 계획의 필수 물성 목록을 공유해 금속 sheet가 쓰지 않는 유전율/손실을 요구하지 않는다. 실제 급전 좌표 누락을 안내하고, 일반 입력이 완비되면 `input_status=valid`, `solver_ready=false`, `validation_scope=input_only`를 반환한다. 후속 계획 검증이 필요하다는 이유로 항상 E_UNSUPPORTED를 추가하던 이전 동작을 제거했다. 입력 통과와 물리 수용을 구분한다.
+
+| 최종 검증 | 통과 / 스킵 | 실행 시간 | 로컬 로그 |
+| --- | --- | --- | --- |
+| Windows 전체 회귀, 실제 GUI/CAD/WSL transport 포함 | 393 / 28 (421개 수집) | 235.575초 | .local/pcb-windows-final-tests.log |
+| Linux 서비스 전체 회귀 | 389 / 32 (421개 수집) | 140.609초 | .local/pcb-linux-final-tests.log |
+| 실제 PCB 4개와 기존 도파관 adapter 6개 | 10 / 0 | 34.223초 | .local/pcb-and-waveguide-native-current-tests.log |
+| 원형 기판/실제 native CAD | 10 / 0 | 4.318초 | .local/circular-board-native-current-tests.log |
+| wxWidgets native CTest | 2 / 0 | 0.42초 | .local/pcb-gui-ctest.log |
+
+환경 전용 시험은 해당 환경에서 별도로 실행한다. Windows 스킵은 Linux process group/native openEMS 및 별도 CAD 환경의 단위 시험이며 Linux 스킵은 Windows GUI/CAD/transport와 별도 native 환경의 시험이다. 최종 전체 Windows 시험에는 원형+원호의 실제 GUI 해석과 빈 원형 보드의 필수 입력 차단도 포함된다. Release 빌드 성공 후 같은 바이너리로 실행했다.
+
+공개 JSON-RPC 검증 도구 `tools/verify_pcb_worker.py`는 명시적 시험 fixture를 공개 생성/편집 명령으로 구성하고 계획/준비/실행/독립 후처리/실행 중 편집/취소/재시작을 검증했다. 최종 실행은 33.594초였으며 `.local/pcb-worker-verification/service-final`과 `report-final.json`에 보존했다. 반지름 8 mm 원형 PCB와 원호를 포함한 8~12 GHz의 31점 계산에서 native 격자점 90972개, 1085 step, 종료 에너지 감쇠 40.33 dB를 관측했다. 재후처리 표본/raw의 완전 일치와 실제 guest 종료 확인, 이전 결과 보존, solver 없는 재시작 조회도 통과했다. 시험 속도를 제품 성능 예산 합격으로 간주하지 않는다.
+
+실제 native 시험은 S11/입력 임피던스를 공식 LumpedPort.CalcPort와 rel/abs 1e-10 범위에서 대조했고 종료 조건 미달을 실패로 처리했다. 공개 결과는 `computed_unvalidated`, `physics_validated=false`다. 에너지 종료 조건 충족은 정식 격자 수렴이나 실제 안테나의 정확도를 입증하지 않는다. fixture의 물성은 명시적 시험 가정이며 승인 IFA의 미정 물성을 확정하지 않았다.
+
+초기 전체 회귀에서는 도파관 전용 capability 문자열을 기대하던 시험 1개가 실패해 사용자 PCB 지원 계약에 맞게 갱신했다. 첫 공개 API 취소 검증은 staging 전 guest 조회 시점의 시험 도구 오류를 수정했으며 해당 작업의 취소/슬롯 반환을 확인한 뒤 새 workspace로 다시 실행했다. 실패 로그와 이전 workspace도 보존했다. 당시 소스/GUI 바이너리/로그 hash와 제한은 `runtime_profiles/pcb-worker-wsl.json`에 기록했고 공개 API에서 캡처한 모든 제품 Python 소스 hash가 당시 검증 소스와 같음을 확인했다. 이 hash는 SolverRuntime과 동일하게 UTF-8 텍스트의 줄바꿈을 정규화한 바이트 기준이며 원본 CRLF 파일 바이트 hash와 구분한다.
+
+## 접지 polygon, 패드, 비아와 IFA 급전 확장 (2026-11-11)
+
+planar_region의 outer/holes, 원형/회전 사각 pad, 명시적 패드 참조를 가진 중공 through-PTH via를 도메인과 명령/저장/스냅샷/undo/redo에 추가했다. GUI 생성/선택/이동과 다각형 좌표 표, 비아 패드 다중 선택을 연결했다. 미정 드릴/도금 치수는 null/미정으로 보존한다. 자세한 의미와 한계는 [도체와 IFA 모델](copper_features.md)을 따른다.
+
+CAD는 실제 층 두께와 polygon 빈 영역, 드릴 제거 및 중공 도금 barrel을 생성한다. EM은 polygon 구멍, sheet pad와 finite-conductivity volume via를 소비한다. 실제 IFA의 접지/급전선/패드/단락부를 분리된 원본 객체로 유지하며 같은 net인 급전도 허용한다. x/y/z 축 gap과 형상 연결, 실제 CSXCAD 재료 우선순위에 따른 Yee 전기 edge 연결을 검사한다. 최종 solver 계수와 물리 정확도의 독립 검증을 의미하지 않는다.
+
+독립 검토에서 최대 64점/8holes의 매개변수 선택지 중복으로 DTO 상한을 넘는 문제, 극단 좌표의 mm 환산 실패로 편집이 막히는 문제, 비아가 먼저 검사될 때 잘못된 pad 층 참조가 일반 예외가 되는 문제를 재현하고 수정했다. 공통 coordinate_choices와 셀별 mm/m 표시, 참조 선행 검증을 회귀 시험에 추가했다. CAD와 EM의 알려진 tool bore 관계, 최외측 conductor 관통 조건도 일치시켰다.
+
+| 최종 검증 | 통과 / 스킵 | 실행 시간 | 로컬 로그 |
+| --- | --- | --- | --- |
+| Windows 전체, 실제 GUI/CAD/WSL transport 포함 | 429 / 41 (470개 수집) | 326.108초 | .local/copper-windows-final-tests.log |
+| Linux 서비스 전체 | 423 / 47 (470개 수집) | 237.283초 | .local/copper-linux-final-tests.log |
+| 별도 native CAD와 원형/도체 투영 | 47 / 0 | 18.707초 | .local/copper-cad-final-tests.log |
+| 실제 PCB/IFA/PTH/z-port 및 도파관, 계획/접촉 | 44 / 0 | 214.828초 | .local/pcb-ifa-pth-final-reviewed.log |
+| 최종 좌표 대화상자/신규 도체 GUI | 2 / 0 | 42.817초 | .local/primitives-gui-tests.log |
+| wxWidgets native CTest | 2 / 0 | 0.06초 | .local/primitives-gui-ctest.log |
+
+실패/오류는 없다. 전체 회귀의 스킵은 OS 또는 별도 native 환경 전용 시험이다. native CAD/openEMS는 표의 별도 환경에서 실제 실행했고 Windows 전체에는 신규 GUI 시험도 포함했다. Release 빌드가 성공했으며 표의 시간은 병행 검증의 관찰값으로 성능 예산 판정에 사용하지 않는다.
+
+`fixtures/ifa_feed_smoke.json`을 공개 명령으로 생성하고 WSL 준비/실행/결과 조회/후처리/실행 중 편집/취소/재시작을 검증했다. 40 x 60 mm의 접지 polygon/hole/pad/feed/short 모델, 2.4~2.4835 GHz 51점에서 native 격자점 639693개, 4495 step, 종료 에너지 감쇠 41.03 dB를 관측했다. 재후처리의 표본/raw 일치, 실제 취소 종료와 이전 결과 보존, solver 없는 재시작 조회를 모두 통과했다. 전체 도구 실행은 156.250초이며 `.local/ifa-worker-verification/report-final.json`과 해당 workspace에 보존했다.
+
+별도 `fixtures/pth_worker_smoke.json`에서도 같은 공개 서비스 흐름과 실제 취소/복원을 통과했다(90.375초). 근거는 `.local/pth-worker-verification/report-final.json`이다. 작은 PTH 시험의 0.6 mm 완성 구멍/0.1 mm 도금/0.8 mm tool bore는 명시적 시험 가정이다. IFA의 0.93 mm 코어/35 um 동박/유전율 4.2/손실 0.018 역시 실행 가정으로만 사용하며 승인 초기 입력의 미정 물성/제작 조건은 확정하지 않았다.
+
+공개 CAD `export.build -> job.status/cad.latest`에서 PTH/회전 패드와 IFA 접지/hole/pad의 두 사례도 통과했다(33.562초). 6개 파일 해시, snapshot/source mapping, 표시 mesh, 별도 프로세스의 STEP/B-rep 재입력 및 CAD 런타임 없는 재시작을 확인했다. PTH는 4 solids/2048 triangles, IFA는 2 solids/1032 triangles이며 실제 구멍과 두께를 유지했다. 근거는 `.local/cad-copper-public-b456a29e4b/report.json`이다. 재입력 kernel은 같은 OCCT이므로 독립 kernel 수용은 아니다. `result.open`은 현재 solver 전용이며 CAD 조회는 cad.latest를 사용한다.
+
+소스/바이너리/로그/fixture 해시와 두 공개 해석의 runtime 일치를 `runtime_profiles/copper-ifa-worker-wsl.json`에 기록했다. 실행에서 캡처한 39개 Python 소스가 해당 검증 당시 소스와 일치함을 확인했다. 과거 `pcb-worker-wsl.json`은 당시 검증 이력으로 유지한다. 현재 결과는 computed_unvalidated다. SMA/실장/케이블/디임베딩, 정식 격자/경계 수렴, 얇은 비아 도금의 skin-depth 손실, NF2FF/이득/효율/측정 및 60/30 fps 수용은 후속이다.
+
+## 단일 포트 IFA 수치 안정성 검증 (2026-11-11)
+
+[IFA 수렴 연구](ifa_convergence.md)에 격자 0.5/0.45/0.4 mm, 경계 padding 90/96/102 mm와 에너지 종료 1e-5/1e-6을 독립 비교하는 CLI를 추가했다. 8개 비교 행이 6개 고유 계산을 공유하며, 전체 계획을 먼저 검증한다. 기판 내부의 세밀한 격자와 외부 graded air를 분리하고 PML8의 물리 두께를 48 mm로 고정했다. 기존 150만 격자점 상한은 유지했다. 실제 생성 격자에서 외곽/PML 시작면/셀 폭과 공통 비-PML 구간을 검사한다.
+
+동일 스냅샷/물리 입력/주파수/실행 출처에서 복소 S11과 반사 최소점 bracket을 비교한다. 최초 2~3 GHz 연구는 6개 계산을 완료했지만 최소점이 대역 끝에 있어 전체 not_established로 보존했다. 별도 입력과 2.1 GHz 손실 기준을 명시한 1.6~2.6 GHz 연구의 6개 계산은 격자/경계/시간 종료 모두 초기 fixture 기준을 통과했다. 두 연구는 서로 다른 Gaussian/손실 기준을 사용하므로 하나의 비교 계열로 섞지 않았다.
+
+두 번째 연구의 마지막 쌍에서 max abs(Delta S11_complex)는 격자 0.0041424481, 경계 0.0001808572, 시간 종료 0.0008264866이다. 반사 최소점은 1.920 GHz 표본, bracket [1.915, 1.925] GHz이며 보수적 이동 상한 0.5222%가 1% 이하다. 이는 2.4 GHz 정합 목표 달성이나 X=Im(Z)=0 공진/실측 정확도 검증이 아니다. fine 기본 run의 2.4 GHz S11은 약 -2.177 dB다. 모든 원래 결과는 computed_unvalidated를 유지한다.
+
+실제 두 연구에서 재판정/재개 후 각각 봉인 파일 54개와 journal 작업 21개가 유지되고 추가 FDTD가 없음을 확인했다. 독립 검토에서 발견한 PML 위치/폭 변화 누락을 수정하고 기존 자료를 현재 판정기로 재평가했다. 새 검사는 두 연구의 수치와 판정 상태를 바꾸지 않았으며 과거 immutable 판정도 보존했다. native 실행 이후 변경된 제품 소스는 FDTD가 호출하지 않는 순수 비교기 convergence.py뿐이다. 나머지 캡처된 40개 소스는 그대로이며 실행 당시 identity와 최종 판정기 identity를 [검증 기록](../runtime_profiles/ifa-convergence-wsl.json)에 구분한다. 이전 runtime identity의 --resume은 현재 소스를 섞지 않고 거절하며 완료 자료의 --reassess-only는 지원한다.
+
+JSON/CSV와 PNG/SVG 비교 그림을 생성하고 그림을 확인했다. 현재 수렴 연구는 CLI와 재사용 가능한 서비스 계층 비교기로 제공하며 GUI 다중 결과 비교 화면은 후속이다. 국부 특징 전체의 refinement, Richardson 차수, 곡선/PML 셀 수 민감도, NF2FF/전력/이득/효율, 실제 재료/제작/SMA/측정 및 60/30 fps 수용을 이 결과로 대신하지 않는다.
+
+| 최종 검증 | 통과 / 스킵 | 실행 시간 | 로컬 로그 |
+| --- | --- | --- | --- |
+| Windows 전체, 실제 GUI/CAD/WSL transport 포함 | 472 / 42 (514개 수집) | 317.259초 | .local/ifa-windows-final-tests.log |
+| Linux 서비스 전체 | 466 / 48 (514개 수집) | 191.089초 | .local/ifa-linux-final-tests.log |
+| 실제 native PCB/IFA/PTH/z-port, 도파관과 graded mesh | 22 / 0 | 172.145초 | .local/ifa-native-final-tests.log |
+| 비교기/PML 독립 조건/실행 도구 | 36 / 0 | 1.059초 | .local/ifa-comparison-final-tests.log |
+
+최종 회귀는 실패/오류 없이 통과했다. 스킵은 OS 또는 별도 native 환경 전용 시험이다. 470개 이전 전체 시험에 비교기 24개, 실제 격자를 이용한 경계 독립 조건 5개, graded mesh 8개와 도구 7개를 추가했다. 5개 독립 조건 회귀의 응답은 합성 값이며 FDTD 정확도 증거로 세지 않는다. 이번 단계에서 GUI/CAD 구현 소스는 추가 변경하지 않았고, 같은 GUI 실행 파일을 전체 Windows 시험에서 사용했다. 실행 시간은 병행 검증 관찰값이며 성능 예산 판정이 아니다.
+
 ## 다음 구현
 
 재부팅 직후 실행할 명령과 단계별 완료 기준은 [재부팅 후 개발 재개](reboot_resume.md)를 따른다.
 
-1. [해석 worker 계약](solver_contract.md)의 도파관 검증을 기반으로 사용자 형상/적층/재료/급전의 solver 투영과 단일 포트 IFA 참조 검증을 진행한다. GUI 실행/취소/결과 그래프와 명시적 준비 계획 표시도 연결한다.
-2. 재료/net/포트 생성 UI, 실제 급전/접속 검증과 독립 수신 CAD 재열기 증거를 추가한다. 필요한 pad/via/hole/polygon을 명시적 의미 모델과 함께 확장한다.
-3. 3D LOD와 실제 GPU reset/DPI/도킹 복구 검증, 마우스 스냅/치수 도구/endpoint 드래그를 확장한다. 결과 작업 공간은 solver adapter와 함께 진행한다.
-4. 승인 순서대로 완전한 참조 계산, 단일 포트 IFA, 원호의 openEMS 모델과 NF2FF 결과를 검증한다.
-5. 사용자 보드 입력, 실제 재료/제작/측정 조건과 성능 예산을 검증하고 내부 검증 패키지로 묶는다.
+1. [IFA 수치 안정성 연구](ifa_convergence.md)의 반사 최소점과 목표 대역 차이를 바탕으로 2.4 GHz IFA 패턴 치수/급전 위치를 조정한다. 변경한 물리 snapshot은 새 연구로 계산하고, 국부 특징/곡선 근사/PML 셀 수 민감도를 필요한 순서로 추가한다.
+2. 사용자 재료/제작 조건과 SMA launch/실장/케이블 기준면을 명시한다. 독립 참조 계산과 VNA 교정/지그/시료 조건을 확보하여 임피던스와 S11의 실측 정확도를 검증한다.
+3. NF2FF 경계, 방사 패턴, 이득/효율과 전력 수지를 구현하고 참조 사례로 검증한다. 원형 PCB/원호에도 별도 격자/경계 연구와 독립 수신 CAD 재열기 증거를 추가한다.
+4. GUI 다중 결과 비교와 수렴 연구/준비 계획 검토 화면, 마우스 스냅/치수 도구/endpoint 드래그를 확장한다. 3D LOD와 실제 GPU reset/DPI/도킹 복구를 검증한다.
+5. 일반 60 fps/대형 30 fps, 전체 프로세스 메모리, 시작/응답 시간과 취소/복구를 측정한다. 라이선스 고지와 재현 가능한 내부 검증 패키지를 준비한다.
+6. 같은 명령/작업/결과 계약에 MCP 서버와 EDA adapter를 연결하고 단위/좌표계/재료/net/port 의미 mapping과 요청 멱등성을 검증한다.
 
-GUI와 자동화는 같은 서비스를 공유한다. MCP 서버 자체와 다른 EDA의 의미 mapping은 후속이다. solver 실행은 도파관 참조 profile로 제한하여 연결했다. 물성은 사용자 입력이며 임의 FR4 대표값으로 대체하지 않는다. 초기 IFA 1 mm 완성 두께에서 구리 두께를 뺀 잔여값을 실제 코어 두께 확정값으로 취급하지 않는다.
+GUI와 자동화는 같은 서비스를 공유한다. MCP 서버 자체와 다른 EDA의 의미 mapping은 후속이다. solver 실행은 도파관 참조 및 제한된 사용자 PCB 단일 포트 profile로 연결했다. 물성은 사용자 입력이며 임의 FR4 대표값으로 대체하지 않는다. 초기 IFA 1 mm 완성 두께에서 구리 두께를 뺀 잔여값을 실제 코어 두께 확정값으로 취급하지 않는다.

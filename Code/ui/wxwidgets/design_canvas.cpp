@@ -139,16 +139,34 @@ void DesignCanvas::SetScene(const Json& scene)
     std::set<std::string> layers;
     std::set<std::string> identities;
     const Json& board = scene.at("board");
-    bool hasBoard = !board.is_null() && !board.at("width").is_null() && !board.at("height").is_null();
+    if (!board.is_null() && board.value("kind", "rectangle") != "rectangle" && board.value("kind", "rectangle") != "circle")
+    {
+        throw std::runtime_error("지원하지 않는 기판 외곽 표시 형식입니다.");
+    }
+    const bool circular = !board.is_null() && board.value("kind", "rectangle") == "circle";
+    bool hasBoard = !board.is_null() && (circular ?
+        (!board.at("radius").is_null() && board.at("center").is_array() && board.at("center").size() == 2 &&
+            !board.at("center").at(0).is_null() && !board.at("center").at(1).is_null()) :
+        (!board.at("width").is_null() && !board.at("height").is_null()));
     double boardWidth = 0.0;
     double boardHeight = 0.0;
+    double boardRadius = 0.0;
+    Point boardCenter(0.0, 0.0);
     std::size_t rangeOmissions = 0;
     if (hasBoard)
     {
         try
         {
-            boardWidth = Positive(board.at("width"));
-            boardHeight = Positive(board.at("height"));
+            if (circular)
+            {
+                boardCenter = ReadPoint(board.at("center"));
+                boardRadius = Positive(board.at("radius"));
+            }
+            else
+            {
+                boardWidth = Positive(board.at("width"));
+                boardHeight = Positive(board.at("height"));
+            }
         }
         catch (const DisplayRangeError&)
         {
@@ -174,7 +192,7 @@ void DesignCanvas::SetScene(const Json& scene)
             shape.label = item.value("label", shape.id);
             shape.layer = item.at("layer_id").get<std::string>();
             shape.role = item.value("role", std::string("conductor"));
-            shape.width = Positive(item.at("width"));
+            shape.width = (shape.kind == "line_path" || shape.kind == "arc_path") ? Positive(item.at("width")) : 0.0;
             shape.movable = item.value("movable", false);
             if (shape.id.empty() || !identities.insert(shape.id).second || !layers.count(shape.layer))
             {
@@ -202,9 +220,113 @@ void DesignCanvas::SetScene(const Json& scene)
                 }
                 shape.startAngle = CanvasGeometry::NormalizeDegrees(shape.startAngle);
             }
+            else if (shape.kind == "planar_region")
+            {
+                Json rings = Json::array({item.at("outer")});
+                if (!item.at("holes").is_array() || item.at("holes").size() > 8)
+                {
+                    throw std::runtime_error("표시 다각형의 구멍 목록이 유효하지 않습니다.");
+                }
+                for (const auto& hole : item.at("holes"))
+                {
+                    rings.push_back(hole);
+                }
+                std::size_t vertices = 0;
+                for (const auto& ring : rings)
+                {
+                    if (!ring.is_array() || ring.size() < 3 || (vertices += ring.size()) > 64)
+                    {
+                        throw std::runtime_error("표시 다각형은 폐곡선마다 3점 이상, 전체 64점 이하여야 합니다.");
+                    }
+                    std::vector<Point> points;
+                    for (const auto& point : ring)
+                    {
+                        points.push_back(ReadPoint(point));
+                    }
+                    shape.rings.push_back(std::move(points));
+                }
+            }
+            else if (shape.kind == "pad")
+            {
+                shape.center = ReadPoint(item.at("center"));
+                if (!item.at("size").is_array() || item.at("size").size() != 2)
+                {
+                    throw std::runtime_error("패드 크기는 폭과 높이 두 값이어야 합니다.");
+                }
+                const double width = Positive(item.at("size").at(0)), height = Positive(item.at("size").at(1));
+                const double rotation = item.at("rotation").get<double>();
+                if (!std::isfinite(rotation))
+                {
+                    throw std::runtime_error("패드 회전은 유한한 각도여야 합니다.");
+                }
+                if (item.at("pad_shape") == "circle")
+                {
+                    if (width != height)
+                    {
+                        throw std::runtime_error("원형 패드의 두 지름이 일치하지 않습니다.");
+                    }
+                    shape.radius = width / 2.0;
+                }
+                else if (item.at("pad_shape") == "rectangle")
+                {
+                    std::vector<Point> corners;
+                    for (const auto& point : CanvasGeometry::RectanglePoints(GeometryPoint(shape.center), width, height, rotation))
+                    {
+                        if (!CanvasGeometry::Valid(point))
+                        {
+                            throw DisplayRangeError("회전 패드 외곽이 표시 좌표 범위를 초과했습니다.");
+                        }
+                        corners.emplace_back(point.x, point.y);
+                    }
+                    shape.rings.push_back(std::move(corners));
+                }
+                else
+                {
+                    throw std::runtime_error("지원하지 않는 패드 외곽입니다.");
+                }
+            }
+            else if (shape.kind == "via")
+            {
+                shape.center = ReadPoint(item.at("center"));
+                for (const auto& layer : item.at("span_layer_ids"))
+                {
+                    const std::string identity = layer.get<std::string>();
+                    if (!layers.count(identity))
+                    {
+                        throw std::runtime_error("비아 범위가 존재하지 않는 층을 참조합니다.");
+                    }
+                    shape.spanLayers.insert(identity);
+                }
+                const auto& hole = item.at("finished_hole_diameter");
+                const auto& plating = item.at("plating_thickness");
+                const auto& toolHole = item.at("tool_hole_diameter");
+                shape.incomplete = hole.is_null() || plating.is_null() || toolHole.is_null();
+                shape.holeRadius = hole.is_null() ? 0.0 : Positive(hole) / 2.0;
+                shape.radius = shape.holeRadius;
+                if (!plating.is_null())
+                {
+                    const double thickness = Positive(plating);
+                    if (!hole.is_null())
+                    {
+                        shape.radius += thickness;
+                    }
+                }
+                if (!toolHole.is_null())
+                {
+                    Positive(toolHole);
+                }
+            }
             else
             {
                 throw std::runtime_error("지원하지 않는 2D 표시 형상입니다.");
+            }
+            if ((shape.kind == "via" || shape.kind == "pad") && shape.rings.empty() && shape.radius > 0.0 &&
+                (std::abs(shape.center.m_x) + shape.radius > CanvasGeometry::MaxCoordinate ||
+                    std::abs(shape.center.m_y) + shape.radius > CanvasGeometry::MaxCoordinate ||
+                    shape.center.m_x - shape.radius >= shape.center.m_x + shape.radius ||
+                    shape.center.m_y - shape.radius >= shape.center.m_y + shape.radius))
+            {
+                throw DisplayRangeError("패드/비아 외곽이 표시 범위 또는 좌표 정밀도를 벗어났습니다.");
             }
             shapes.push_back(std::move(shape));
         }
@@ -216,11 +338,22 @@ void DesignCanvas::SetScene(const Json& scene)
     CancelGesture();
     m_pendingId.clear();
     m_pendingOffset = Point(0.0, 0.0);
+    std::stable_sort(shapes.begin(), shapes.end(), [](const Shape& left, const Shape& right)
+    {
+        auto order = [](const Shape& shape)
+        {
+            return shape.kind == "planar_region" ? 0 : (shape.kind == "pad" ? 2 : (shape.kind == "via" ? 3 : 1));
+        };
+        return order(left) < order(right);
+    });
     m_shapes = std::move(shapes);
     m_layers = std::move(layers);
     m_hasBoard = hasBoard;
     m_boardWidth = boardWidth;
     m_boardHeight = boardHeight;
+    m_circularBoard = circular;
+    m_boardCenter = boardCenter;
+    m_boardRadius = boardRadius;
     m_omissionCount = scene.contains("omissions") && scene.at("omissions").is_array() ? scene.at("omissions").size() : 0;
     m_rangeOmissionCount = rangeOmissions;
     if (FindShape(m_selection) == nullptr)
@@ -348,8 +481,15 @@ void DesignCanvas::FitView()
     };
     if (m_hasBoard)
     {
-        include(0.0, 0.0, 0.0);
-        include(m_boardWidth, m_boardHeight, 0.0);
+        if (m_circularBoard)
+        {
+            include(m_boardCenter.m_x, m_boardCenter.m_y, m_boardRadius);
+        }
+        else
+        {
+            include(0.0, 0.0, 0.0);
+            include(m_boardWidth, m_boardHeight, 0.0);
+        }
     }
     for (const Shape& shape : m_shapes)
     {
@@ -362,7 +502,7 @@ void DesignCanvas::FitView()
             include(shape.start.m_x, shape.start.m_y, shape.width / 2.0);
             include(shape.end.m_x, shape.end.m_y, shape.width / 2.0);
         }
-        else
+        else if (shape.kind == "arc_path")
         {
             const auto first = CanvasGeometry::ArcPoint(GeometryPoint(shape.center), shape.radius, shape.startAngle);
             const auto last = CanvasGeometry::ArcPoint(GeometryPoint(shape.center), shape.radius, shape.startAngle + shape.sweepAngle);
@@ -376,6 +516,20 @@ void DesignCanvas::FitView()
                     include(point.x, point.y, shape.width / 2.0);
                 }
             }
+        }
+        else if (!shape.rings.empty())
+        {
+            for (const auto& ring : shape.rings)
+            {
+                for (const auto& point : ring)
+                {
+                    include(point.m_x, point.m_y, 0.0);
+                }
+            }
+        }
+        else
+        {
+            include(shape.center.m_x, shape.center.m_y, shape.radius);
         }
     }
     if (!std::isfinite(left))
@@ -453,6 +607,13 @@ const DesignCanvas::Shape* DesignCanvas::FindShape(const std::string& identity) 
 
 bool DesignCanvas::Visible(const Shape& shape) const
 {
+    if (shape.kind == "via" && !shape.spanLayers.empty())
+    {
+        return std::any_of(shape.spanLayers.begin(), shape.spanLayers.end(), [this](const std::string& layer)
+        {
+            return m_hiddenLayers.count(layer) == 0;
+        });
+    }
     return m_hiddenLayers.count(shape.layer) == 0;
 }
 
@@ -478,6 +639,22 @@ bool DesignCanvas::Renderable(const Shape& shape, const Point& offset) const
         return std::isfinite(start.m_x) && std::isfinite(start.m_y) && std::isfinite(end.m_x) && std::isfinite(end.m_y) &&
             std::max({std::abs(start.m_x), std::abs(start.m_y), std::abs(end.m_x), std::abs(end.m_y)}) <= MaximumClipCoordinate;
     }
+    if (!shape.rings.empty())
+    {
+        for (const auto& ring : shape.rings)
+        {
+            for (const auto& point : ring)
+            {
+                const Point pixel = PixelPoint(point, offset);
+                if (!std::isfinite(pixel.m_x) || !std::isfinite(pixel.m_y) ||
+                    std::max(std::abs(pixel.m_x), std::abs(pixel.m_y)) > MaximumNativeCoordinate)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
     const Point center = PixelPoint(shape.center, offset);
     const double extent = shape.radius * m_pixelsPerMm + width / 2.0;
     return std::isfinite(extent) && std::isfinite(center.m_x) && std::isfinite(center.m_y) &&
@@ -495,9 +672,33 @@ std::string DesignCanvas::HitTest(const wxPoint& point) const
             continue;
         }
         const double tolerance = shape->width / 2.0 + FromDIP(6) / m_pixelsPerMm;
-        const double distance = shape->kind == "line_path" ?
-            CanvasGeometry::SegmentDistance(GeometryPoint(world), GeometryPoint(shape->start), GeometryPoint(shape->end)) :
-            CanvasGeometry::ArcDistance(GeometryPoint(world), GeometryPoint(shape->center), shape->radius, shape->startAngle, shape->sweepAngle);
+        double distance = 0.0;
+        if (shape->kind == "line_path")
+        {
+            distance = CanvasGeometry::SegmentDistance(GeometryPoint(world), GeometryPoint(shape->start), GeometryPoint(shape->end));
+        }
+        else if (shape->kind == "arc_path")
+        {
+            distance = CanvasGeometry::ArcDistance(GeometryPoint(world), GeometryPoint(shape->center), shape->radius, shape->startAngle, shape->sweepAngle);
+        }
+        else if (!shape->rings.empty())
+        {
+            std::vector<std::vector<CanvasGeometry::Point>> rings;
+            for (const auto& ring : shape->rings)
+            {
+                std::vector<CanvasGeometry::Point> points;
+                for (const auto& vertex : ring)
+                {
+                    points.push_back(GeometryPoint(vertex));
+                }
+                rings.push_back(std::move(points));
+            }
+            distance = CanvasGeometry::RegionDistance(GeometryPoint(world), rings);
+        }
+        else
+        {
+            distance = std::max(0.0, Distance(world, shape->center) - shape->radius);
+        }
         if (distance <= tolerance)
         {
             return shape->id;
@@ -605,12 +806,77 @@ bool DesignCanvas::DrawShape(wxDC& dc, const Shape& shape, const Point& offset, 
         path.MoveToPoint(start.x, start.y);
         path.AddLineToPoint(end.x, end.y);
     }
-    else
+    else if (shape.kind == "arc_path")
     {
         const Point center = PixelPoint(shape.center, offset);
         path.AddArc(center.m_x, center.m_y, shape.radius * m_pixelsPerMm,
             -shape.startAngle * CanvasGeometry::Pi / 180.0,
             -(shape.startAngle + shape.sweepAngle) * CanvasGeometry::Pi / 180.0, shape.sweepAngle < 0.0);
+    }
+    else if (!shape.rings.empty())
+    {
+        for (const auto& ring : shape.rings)
+        {
+            const Point first = PixelPoint(ring.front(), offset);
+            path.MoveToPoint(first.m_x, first.m_y);
+            for (std::size_t index = 1; index < ring.size(); ++index)
+            {
+                const Point point = PixelPoint(ring[index], offset);
+                path.AddLineToPoint(point.m_x, point.m_y);
+            }
+            path.CloseSubpath();
+        }
+    }
+    else
+    {
+        const Point center = PixelPoint(shape.center, offset);
+        const double radius = shape.radius * m_pixelsPerMm;
+        if (radius > 0.0)
+        {
+            path.AddCircle(center.m_x, center.m_y, radius);
+            if (shape.kind == "via" && shape.holeRadius > 0 && shape.holeRadius < shape.radius)
+            {
+                path.AddCircle(center.m_x, center.m_y, shape.holeRadius * m_pixelsPerMm);
+            }
+        }
+        if (shape.kind == "via" && shape.incomplete)
+        {
+            wxGraphicsPath marker = graphics->CreatePath();
+            const double half = FromDIP(5);
+            marker.MoveToPoint(center.m_x - half, center.m_y);
+            marker.AddLineToPoint(center.m_x + half, center.m_y);
+            marker.MoveToPoint(center.m_x, center.m_y - half);
+            marker.AddLineToPoint(center.m_x, center.m_y + half);
+            graphics->SetPen(wxPen(highlight ? wxColour(36, 141, 225) : wxColour(105, 113, 121), FromDIP(2), wxPENSTYLE_SHORT_DASH));
+            graphics->StrokePath(marker);
+        }
+    }
+    if (shape.kind != "line_path" && shape.kind != "arc_path")
+    {
+        if (highlight)
+        {
+            graphics->SetPen(wxPen(wxColour(36, 141, 225), FromDIP(5)));
+            graphics->StrokePath(path);
+        }
+        graphics->SetPen(wxPen(colour, FromDIP(1)));
+        graphics->SetBrush(wxBrush(colour));
+        if (shape.kind == "via" && (shape.incomplete || shape.holeRadius >= shape.radius))
+        {
+            graphics->StrokePath(path);
+        }
+        else
+        {
+            graphics->DrawPath(path, wxODDEVEN_RULE);
+        }
+        if (shape.kind == "via" && shape.holeRadius > 0.0)
+        {
+            const Point center = PixelPoint(shape.center, offset);
+            const double radius = shape.holeRadius * m_pixelsPerMm;
+            graphics->SetPen(*wxTRANSPARENT_PEN);
+            graphics->SetBrush(wxBrush(wxColour(250, 251, 253)));
+            graphics->DrawEllipse(center.m_x - radius, center.m_y - radius, radius * 2.0, radius * 2.0);
+        }
+        return true;
     }
     const double width = std::max(shape.width * m_pixelsPerMm, 1.0);
     if (highlight)
@@ -635,11 +901,20 @@ void DesignCanvas::OnPaint(wxPaintEvent&)
     DrawGrid(dc);
     if (m_hasBoard)
     {
-        const wxPoint leftTop = WorldToScreen(Point(0.0, m_boardHeight));
-        const wxPoint rightBottom = WorldToScreen(Point(m_boardWidth, 0.0));
+        const wxPoint leftTop = WorldToScreen(m_circularBoard ?
+            Point(m_boardCenter.m_x - m_boardRadius, m_boardCenter.m_y + m_boardRadius) : Point(0.0, m_boardHeight));
+        const wxPoint rightBottom = WorldToScreen(m_circularBoard ?
+            Point(m_boardCenter.m_x + m_boardRadius, m_boardCenter.m_y - m_boardRadius) : Point(m_boardWidth, 0.0));
         dc.SetPen(wxPen(wxColour(105, 153, 117), FromDIP(2)));
         dc.SetBrush(wxBrush(wxColour(232, 243, 235), wxBRUSHSTYLE_BDIAGONAL_HATCH));
-        dc.DrawRectangle(wxRect(leftTop, rightBottom));
+        if (m_circularBoard)
+        {
+            dc.DrawEllipse(wxRect(leftTop, rightBottom));
+        }
+        else
+        {
+            dc.DrawRectangle(wxRect(leftTop, rightBottom));
+        }
     }
     const wxColour colours[] = {wxColour(189, 109, 36), wxColour(117, 87, 173), wxColour(27, 144, 138), wxColour(177, 74, 96)};
     std::size_t nativeOmissions = m_rangeOmissionCount;

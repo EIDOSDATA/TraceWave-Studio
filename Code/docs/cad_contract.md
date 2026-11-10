@@ -2,6 +2,8 @@
 
 초기 구현일: 2026-11-10 KST
 
+도체 영역/패드/관통 비아 확장일: 2026-11-11 KST
+
 승인 기준선 RFAD-D0-3.4의 07, 08, 11, 12번을 따른다. GUI/서비스와 native CAD worker를 분리하고 봉인된 snapshot에서 파생 형상을 만든다. 현재 profile은 내부 검증용 기계 형상이며 제조 전달, RF 검증이나 R1 전체 완료를 의미하지 않는다. 원본 기준선 문서는 변경하지 않는다.
 
 ## 불변 입력
@@ -16,13 +18,16 @@
 
 | 항목 | 현재 규칙 |
 | --- | --- |
-| 외형 | board 원점 (0, 0)의 양수 너비/높이를 가진 직사각형 |
+| 외형 | board 원점 (0, 0)의 직사각형 또는 명시적 중심/반지름의 원형 |
 | 좌표계 | 오른손 world/board의 항등 translation/rotation. 미지원 회전/반사는 차단 |
 | 단위 | 원본 m/rad, kernel mm/deg. scale_to_kernel=1000, inverse_scale=0.001 |
 | 적층 | order/z 순서, 명시적 z_min과 양수 두께. dielectric 또는 conductor |
-| 유전체 | 실제 위치/두께가 있는 층이 최소 하나 필요. 지정한 직사각 외형의 solid |
-| 도체 | 양수 finished thickness의 line_path/arc_path. 선폭을 가진 원형 끝단 profile |
+| 유전체 | 실제 위치/두께가 있는 층이 최소 하나 필요. 사각 외형의 box 또는 원형 외형의 정확 cylinder solid |
+| 도체 | 양수 finished thickness의 line_path/arc_path, planar_region, pad, 명시적 중공 through-PTH via |
 | 원호 | 중심선 반지름, 시작 각도, signed sweep 유지. 양수 CCW, 음수 CW, 한 바퀴까지 |
+| 영역 | straight-edge outer와 명시적 holes. 비볼록 허용, 원본 winding 보존, 실제 inner wire로 압출 |
+| 패드 | circle 또는 회전 rectangle, 실제 소속 동박 층의 두께. 화면용 추가 높이 없음 |
+| 비아 | 최하/최상 conductor 사이의 실제 중공 annular barrel과 drill 제거, 명시적 양단 pad/net |
 | 포함 | include_in_export=false인 형상은 생략하고 안정 ID와 사유를 기록 |
 | 물성 | 실제 RF 물성 미정은 원본 그대로 보존. 기하 계산에 쓰지 않으며 FR4 상수를 채우지 않음 |
 | 병합 | 같은 층/같은 명시적 net/같은 유효 재료만 병합 대상. 원본 UUID 대응은 유지 |
@@ -30,7 +35,19 @@
 
 conductor 층이 있다고 전체 board를 copper로 채우지 않는다. 해당 층의 명시적 패턴만 출력한다. bare board는 유전체 형상만 출력할 수 있다. 기판 두께나 층간 간격을 채우는 임의 코어도 생성하지 않는다. native 생성 후 원형 끝단까지 기판 외형 안에 있는지 확인하며, 밖으로 나온 패턴은 자동으로 자르지 않고 이 profile에서 차단한다. 제조사별 최소 가장자리 간격과 공정 DRC는 별도 검증 대상이다.
 
-coating/adhesive/air는 coverage의 의미가 아직 정의되지 않아 이 profile에서 차단한다. mask를 전체 표면에 임의로 채우거나 유전체 두께에서 역산하지 않는다. pad/via/hole/slot/polygon, 변형 기판, 부품/케이스는 현재 도메인과 이 profile의 지원 범위 밖이다. unsupported를 다른 단순 형상으로 대체하지 않는다.
+coating/adhesive/air는 coverage의 의미가 아직 정의되지 않아 이 profile에서 차단한다. mask를 전체 표면에 임의로 채우거나 유전체 두께에서 역산하지 않는다. blind/buried/microvia, filled via, 독립 NPTH/slot, 변형 기판, 부품/케이스는 현재 이 profile의 지원 범위 밖이다. unsupported를 다른 단순 형상으로 대체하지 않는다.
+
+### 영역, 패드와 PTH 입력
+
+원본 수량과 객체 계약은 [도체 기능 계약](copper_features.md)을 따른다. CAD 투영은 `planar_region.outer_mm/holes_mm`, `pad.center_mm/size_mm/rotation_deg`, `via.center_mm/finished_hole_diameter_mm/plating_thickness_mm/tool_hole_diameter_mm`를 사용한다. 영역은 외곽과 모든 hole을 합해 64점, 최대 8 holes이며 반복 닫힘점을 넣지 않는다. 실제 압출을 위한 wire 방향만 파생하고 원본 점 순서와 Quantity/parameter binding은 바꾸지 않는다. 자기교차, 경계 접촉, 중첩 holes, 최소 변 길이 또는 경계 간격 미달을 조용히 치유하지 않는다.
+
+circle pad의 size 두 값은 같은 지름이다. rectangle은 중심과 width/height, CCW 회전을 사용한다. 각 pad는 한 conductor 층에 속하며 여러 층의 패드는 별도 객체로 만든다. 패드를 만들었다는 이유로 mask/paste, 부품이나 자동 net을 만들지 않는다.
+
+via의 `layer_id`는 시작 conductor, `end_layer_id`는 끝 conductor다. 초기 CAD는 적층의 최하/최상 conductor를 잇는 through-PTH만 지원하며 양끝 conductor 바깥에 추가 적층이 있으면 차단한다. 같은 명시적 net과 같은 유효 material 참조를 가진 pad 2~8개를 참조하고 양 끝에 실제 pad가 있어야 한다. 유효 재료는 원본 material_ref 또는 소속 층의 material_id이며, 미정 RF 물성을 채우지 않는다. pad에는 outer barrel보다 최소 1e-5 mm 큰 연속 annular 접속 여유가 필요하다. 이 수치는 CAD 수치 경계이며 제조사의 annular-ring 설계 규칙을 대신하지 않는다.
+
+finished bore 반지름을 r, 명시 plating 두께를 t로 읽고 outer barrel 반지름 r+t의 drill 공간을 유전체와 해당 도체에서 제거한다. 그 공간에 내부 반지름 r, 외부 반지름 r+t인 중공 barrel만 넣는다. tool bore가 미정이면 null을 보존하고 modeled drill의 산술 근거를 sidecar에 기록한다. 알려진 tool bore가 `finished bore + 2 * plating`과 CAD 허용오차 이내로 맞지 않으면 이 초기 profile에서는 차단한다. 이는 제조 보정/공차 모델을 자동 확정하는 기능이 아니다.
+
+fill은 명시적 `none`만 지원한다. 자동 copper fill, antipad, thermal relief, pad 생성 또는 외곽 clipping은 하지 않는다. 겹치거나 접한 drill, 사라지는 원본 body, 비아 범위/패드 접속 불일치는 실패다. drill로 잘린 다른 net 또는 다른 유효 재료의 도체가 barrel에 닿으면 E_CONNECTIVITY로 차단한다.
 
 ## 수치와 자원 경계
 
@@ -45,20 +62,26 @@ coating/adhesive/air는 coverage의 의미가 아직 정의되지 않아 이 pro
 | 시작 각도 절댓값 상한 | 1e6 deg |
 | 원호 회전량 절댓값 하한 | 1e-6 deg |
 | 포함 도체 패턴 수 | 최대 128개 |
+| region 점/holes | 외곽과 holes 합계 64점, 최대 8 holes |
+| via pad 참조 | 최대 8개, 양끝 층의 실제 pad 최소 2개 |
 
 미정 보드 치수, 층 위치와 두께는 접수 전에 차단한다. 도체 폭/좌표/반지름에 대한 UUID 매개변수 참조는 봉인된 원본의 Quantity에서 평가하며 sidecar에서는 원래 binding을 보존한다. 표시 mesh나 선분 근사로 원호를 대체하지 않는다. 접촉/중복/짧은 간격과 Boolean 결과의 topology는 native 단계에서도 확인해야 한다.
 
 고정된 profile_definition과 tolerance_mm을 입력에 함께 기록한다. 동시 실행은 workspace당 CAD 한 개, 기본 실행 제한은 120초다. 출력은 파일별 64 MiB/전체 128 MiB/16개, stdout+stderr는 전체 1 MiB와 각각 마지막 16 KiB를 보존한다. 출력 파일은 0.1초마다 검사하므로 검사 사이 일시적 상한 초과는 가능하다. 최종 봉인에서도 크기/hash를 다시 검사한다. 프로세스 메모리와 시작 시간/편집 fps 예산은 아직 실측 수용하지 않았으며 OS 메모리 hard limit을 구현한 것으로 간주하지 않는다.
 
-부분 원호가 180 deg를 넘고 끝단 간 chord 간격이 선폭과 최소 간격 이하이면 round cap이 자기 중첩할 수 있어 명시적으로 차단한다. 완전한 +360/-360 deg는 cap 없는 ring으로 지원한다. 같은 net이어도 다른 층 또는 다른 유효 재료의 body는 자동 병합하지 않으며, 그 사이 도체 접촉은 현재 profile에서 미지원으로 차단한다. 의도된 via나 다층 접속으로 추정하지 않는다.
+부분 원호가 180 deg를 넘고 끝단 간 chord 간격이 선폭과 최소 간격 이하이면 round cap이 자기 중첩할 수 있어 명시적으로 차단한다. 완전한 +360/-360 deg는 cap 없는 ring으로 지원한다. 같은 net이어도 다른 층 또는 다른 유효 재료의 body는 자동 병합하지 않는다. 명시적 via가 drill한 같은 net/같은 재료 도체와 barrel의 실제 접면만 다층 접속으로 허용하며, 그 외 다층 접촉은 미지원으로 차단한다.
 
 ## 결과와 검증의 범위
 
 STEP의 body 이름과 sidecar의 안정 UUID mapping, source snapshot/run/profile, 실제 schema/단위, 파일 SHA256을 결합한다. substrate와 copper를 병합해 재료 구분을 없애지 않는다. 파일/sidecar가 같은 basename이라는 이유만으로 대응시키지 않는다.
 
+barrel은 `via_barrel_<UUID>` 별도 body이며 source_entity_ids에 via를 기록한다. display mesh의 기존 단일 layer_id는 start layer anchor로 유지하고 sidecar의 `layer_ids`, `layer_id_semantics`, `vertical_span_mm`, pad_ids가 실제 다층 범위를 명시한다. drilled body의 drill_source_ids와 원본 via를 함께 보존한다. 같은 층의 region/pad가 union되어도 명시적 pad 참조를 잃지 않는다. STEP 생성 전과 재입력 후 모두 annular hole, 양끝 pad 접촉과 다른 body 부피 중첩을 검사한다.
+
 실제 writer/reader와 kernel 버전, shape validity, solid count, bbox/volume/center 및 단위 비교를 기록한다. 같은 Open CASCADE kernel에서 다른 reader 경로로 재열어도 kernel 독립 검증으로 표시하지 않는다. 외부 수신 CAD의 선택/측정/숨김, 제조 공정과 RF 정확도 검증은 후속이다. 초기 기계 형상은 `generated_unverified` 상태를 유지하며 생성/재입력 성공을 `verified_profile` 제조 패키지로 승격하지 않는다.
 
 현재 순수 projection 시험은 snapshot 불일치/원본 변경/미정 필수 치수/unsupported coverage/좌표 변환/작은 두께와 층간 간격/원호 내부 반지름/큰 좌표/형상 수 상한을 차단하고, mm 변환/방향/재료 미정/원본 binding과 포함 제외를 보존하는지 확인한다. worker와 실제 native 출력 검증 결과는 [개발 상태](development_status.md)에 기록한다.
+
+`test_cad_copper_features.py`는 신규 projection 4건과 실제 CAD 9건을 포함한다. 비볼록 영역/holes와 winding, 회전 pad의 실제 두께, 원본 문서부터 STEP까지의 PTH, substrate/pad drill 체적, hollow barrel 단면, 접지 영역과 pad union의 접속, tool 미정 보존, 다른 net 접촉 및 잘못된 기하 거부를 확인한다. 격리 `.venv-cad`에서 13건 모두 통과했으며 같은 OCCT kernel의 교환 검사이다. 제조 또는 RF 정확도 합격으로 승격하지 않는다.
 
 ## 표시 mesh와 3D 화면
 

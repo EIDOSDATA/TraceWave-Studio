@@ -73,7 +73,7 @@ std::wstring ServiceClient::Quote(const std::wstring& argument)
 }
 
 bool ServiceClient::Start(const std::wstring& python, const std::wstring& source, const std::wstring& workspace,
-    std::string& error, const std::wstring& cadPython)
+    std::string& error, const std::wstring& cadPython, bool openEmsWsl)
 {
     Stop();
     SECURITY_ATTRIBUTES security{sizeof(SECURITY_ATTRIBUTES), nullptr, TRUE};
@@ -114,6 +114,10 @@ bool ServiceClient::Start(const std::wstring& python, const std::wstring& source
     if (!cadPython.empty())
     {
         command += L" --cad-python " + Quote(cadPython);
+    }
+    if (openEmsWsl)
+    {
+        command += L" --openems-wsl";
     }
     PROCESS_INFORMATION process{};
     const BOOL created = CreateProcessW(python.c_str(), command.data(), nullptr, nullptr, TRUE,

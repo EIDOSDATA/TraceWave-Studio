@@ -565,6 +565,8 @@ class ProjectService:
                 "diagnostics": diagnostics[:64], "diagnostic_count": len(diagnostics),
                 "diagnostics_truncated": len(diagnostics) > 64,
                 "solver_ready": False,
+                "validation_scope": "input_only",
+                "next_validation": "solver.plan" if data["purpose"] == "em" else ("geometry.build" if data["purpose"] == "geometry" else "export.preview"),
             }
         if method == "project.save":
             current = self._load(project)

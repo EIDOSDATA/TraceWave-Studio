@@ -26,7 +26,7 @@ public:
 
     /** @brief 셸을 거치지 않고 호스트가 지정한 서비스/CAD Python과 작업 영역으로 서비스를 시작한다. */
     bool Start(const std::wstring& python, const std::wstring& source, const std::wstring& workspace,
-        std::string& error, const std::wstring& cadPython = L"");
+        std::string& error, const std::wstring& cadPython = L"", bool openEmsWsl = false);
     /** @brief 한 프레임을 제한된 쓰기 큐에 넣고 즉시 반환한다. */
     bool Send(const std::string& frame);
     /** @brief GUI가 현재 도착한 메시지를 제한된 개수만 가져온다. */

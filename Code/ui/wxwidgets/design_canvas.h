@@ -54,6 +54,10 @@ private:
         double startAngle = 0.0;
         double sweepAngle = 0.0;
         double width = 0.0;
+        std::vector<std::vector<wxPoint2DDouble>> rings;
+        std::set<std::string> spanLayers;
+        double holeRadius = 0.0;
+        bool incomplete = false;
         bool movable = false;
     };
 
@@ -87,6 +91,9 @@ private:
     bool m_hasBoard = false;
     double m_boardWidth = 0.0;
     double m_boardHeight = 0.0;
+    bool m_circularBoard = false;
+    wxPoint2DDouble m_boardCenter{0.0, 0.0};
+    double m_boardRadius = 0.0;
     wxPoint2DDouble m_viewCenter{0.0, 0.0};
     double m_pixelsPerMm = 8.0;
     std::string m_selection;

@@ -1,0 +1,31 @@
+{
+  "schema": "rfad.ifa-convergence-study/0.1",
+  "id": "ifa-local-gap-grid-boundary-2026-11/0.1",
+  "description": "Same explicit-assumption IFA snapshot at 2-3 GHz. Mesh, PML distance and time-termination studies are independent. Numerical stability only; no SMA, measured accuracy or target-band acceptance.",
+  "fixture": "ifa_feed_smoke.json",
+  "acceptance_profile": {
+    "id": "ifa-local-gap-candidate-np02/0.1",
+    "minimum_levels": 3,
+    "max_resonance_relative_shift": 0.01,
+    "max_s11_complex_delta": 0.02
+  },
+  "base_settings": {
+    "frequency_hz": {"start": 2000000000, "stop": 3000000000, "count": 201},
+    "grid_mm": 0.4,
+    "air_padding_mm": 102,
+    "curve_tolerance_mm": 0.025,
+    "max_timesteps": 100000,
+    "end_criterion": 0.00001,
+    "mesh_policy": {"kind": "graded_air", "air_cell_mm": 6, "growth_ratio": 1.5}
+  },
+  "cases": [
+    {"label": "mesh_coarse", "axis": "mesh", "overrides": {"grid_mm": 0.5}},
+    {"label": "mesh_medium", "axis": "mesh", "overrides": {"grid_mm": 0.45}},
+    {"label": "mesh_fine", "axis": "mesh", "overrides": {"grid_mm": 0.4}},
+    {"label": "boundary_near", "axis": "boundary", "overrides": {"air_padding_mm": 90}},
+    {"label": "boundary_middle", "axis": "boundary", "overrides": {"air_padding_mm": 96}},
+    {"label": "boundary_far", "axis": "boundary", "overrides": {"air_padding_mm": 102}},
+    {"label": "termination_base", "axis": "termination", "overrides": {"end_criterion": 0.00001}},
+    {"label": "termination_tight", "axis": "termination", "overrides": {"end_criterion": 0.000001}}
+  ]
+}

@@ -80,7 +80,8 @@ def capabilities(service=None) -> dict:
         result["methods"].update({name: {"status": "implemented", "extension_profile": "rfad.editor/0.1"} for name in ("editor.get", "editor.apply", "project.undo", "project.redo")})
         result["editor_profile"] = {"profile": "rfad.editor/0.1", "source": "draft_revision", "history_limit": 128, "history_persistent": True, "full_document_returned": False, "max_dto_bytes": 61440}
         result["methods"].update({name: {"status": "implemented", "extension_profile": "rfad.canvas/0.1"} for name in ("canvas.get", "canvas.apply")})
-        result["canvas_profile"] = {"profile": "rfad.canvas/0.1", "source": "draft_revision", "unit": "mm", "angle_unit": "deg", "operations": ["create_board", "create_layer", "create_dielectric_layer", "create_line", "create_arc", "translate", "remove"], "full_document_returned": False, "max_dto_bytes": 61440}
+        result["canvas_profile"] = {"profile": "rfad.canvas/0.1", "source": "draft_revision", "unit": "mm", "angle_unit": "deg", "operations": ["create_board", "create_circular_board", "create_layer", "create_dielectric_layer", "create_line", "create_arc", "create_polygon", "create_pad", "create_via", "translate", "remove"], "full_document_returned": False, "max_dto_bytes": 61440}
+        result["project_profile"]["geometry_kinds"] = ["line_path", "arc_path", "planar_region", "pad", "via"]
         result["methods"]["cad.latest"] = {"status": "implemented", "extension_profile": "rfad.cad-view/0.1"}
         result["methods"].update({name: {"status": "implemented", "api_id": api_id, "extension_profile": "rfad.step.mechanical/0.1"} for name, api_id in (("geometry.build", "API-008"), ("export.preview", "API-023"), ("export.build", "API-024"))})
         result["cad_profile"] = {"profile": "rfad.step.mechanical/0.1", "runtime_configured": service.cad.runtime is not None,
@@ -92,9 +93,17 @@ def capabilities(service=None) -> dict:
         result["features"][1]["status"] = "implemented"
         result["methods"].update({name: {"status": "implemented", "api_id": api_id, "extension_profile": "rfad.openems.rect-waveguide/0.1"} for name, api_id in (("solver.plan", "API-011"), ("solver.prepare", "API-012"), ("job.submit", "API-013"), ("result.open", "API-016"))})
         result["solver_profile"] = {"profile": "rfad.openems.rect-waveguide/0.1", "runtime_configured": service.solver.runtime is not None,
-            "source": "immutable_empty_reference_snapshot", "native_slots": 1, "execution": "wsl2_guest_supervisor",
+            "source": "immutable_snapshot", "native_slots": 1, "execution": "wsl2_guest_supervisor",
             "execution_modes": ["solve_and_postprocess", "postprocess_only"], "resume_supported": False,
-            "antenna_supported": False, "nf2ff_supported": False, "max_file_bytes": 67108864, "max_package_bytes": 134217728}
+            "antenna_supported": True, "antenna_profile": "rfad.openems.pcb-single-port/0.1", "antenna_physics_validated": False,
+            "board_outlines": ["rectangle", "circle"], "nf2ff_supported": False, "max_file_bytes": 67108864, "max_package_bytes": 134217728}
+        result["solver_profile"]["profiles"] = ["rfad.openems.rect-waveguide/0.1", "rfad.openems.pcb-single-port/0.1"]
+        result["solver_profile"]["profile_scopes"] = {
+            "rfad.openems.rect-waveguide/0.1": "empty_reference_project_only",
+            "rfad.openems.pcb-single-port/0.1": "user_pcb_single_port_computed_unvalidated",
+        }
+        result["methods"].update({name: {"status": "implemented", "extension_profile": "rfad.solver-view/0.1"} for name in ("solver.latest", "solver.samples")})
+        result["editor_profile"]["create_selections"] = ["new_parameter", "new_material", "new_net", "new_port"]
         result["project_profile"]["job_kinds"].extend(["em_prepare", "em_analysis"])
         result["features"][2]["status"] = "implemented"
     return result
@@ -152,7 +161,7 @@ def _dispatch(request: object, service=None) -> dict | None:
         return _error(None, -32600, "Invalid Request")
     notification = "id" not in request
     method = request["method"]
-    if service is not None and method in PROJECT_MUTATIONS | {"job.status", "editor.get", "canvas.get", "cad.latest", "result.open"}:
+    if service is not None and method in PROJECT_MUTATIONS | {"job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples"}:
         if notification and method in PROJECT_MUTATIONS:
             return None
         try:
@@ -167,6 +176,10 @@ def _dispatch(request: object, service=None) -> dict | None:
                 result = service.cad_latest(params)
             elif method == "result.open":
                 result = service.solver.result_open(params)
+            elif method == "solver.latest":
+                result = service.solver.latest(params)
+            elif method == "solver.samples":
+                result = service.solver.samples(params)
             else:
                 result = service.mutate(method, params)
             response = {"jsonrpc": "2.0", "id": request_id, "result": result}

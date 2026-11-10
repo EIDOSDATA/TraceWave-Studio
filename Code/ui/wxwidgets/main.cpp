@@ -7,6 +7,7 @@
 #include <wx/aui/aui.h>
 #include <wx/listctrl.h>
 #include <wx/listbox.h>
+#include <wx/checklst.h>
 #include <wx/notebook.h>
 #include <wx/spinctrl.h>
 #include <nlohmann/json.hpp>
@@ -28,6 +29,8 @@
 #include "editor_panel.h"
 #include "design_canvas.h"
 #include "model_view.h"
+#include "solver_chart.h"
+#include "polygon_input.h"
 
 using Json = nlohmann::json;
 using Clock = std::chrono::steady_clock;
@@ -81,8 +84,14 @@ struct Options
     bool smoke = false;
     bool editorSmoke = false;
     bool canvasSmoke = false;
+    bool primitivesSmoke = false;
+    bool coordinatesSmoke = false;
     bool cadSmoke = false;
     bool cadExpectFailure = false;
+    bool openEmsWsl = false;
+    bool solverSmoke = false;
+    bool solverExpectFailure = false;
+    wxString solverSettings;
 };
 
 enum
@@ -97,6 +106,12 @@ enum
     IdRedo,
     IdRefresh,
     IdBoard,
+    IdCircularBoard,
+    IdNewMaterial,
+    IdNewNet,
+    IdNewPort,
+    IdRunSolver,
+    IdCancelSolver,
     IdLayer,
     IdDielectric,
     IdExportStep,
@@ -110,6 +125,10 @@ enum
     IdLine,
     IdArc,
     IdCoordinates,
+    IdPolygon,
+    IdCirclePad,
+    IdRectanglePad,
+    IdVia,
     IdFit,
     IdDeleteShape,
     IdValidate,
@@ -186,14 +205,26 @@ private:
         bar->Append(menu, Display("프로젝트"));
         bar->Append(edit, Display("편집"));
         auto* design = new wxMenu;
-        design->Append(IdBoard, Display("기판 만들기"));
+        design->Append(IdBoard, Display("직사각 기판 만들기"));
+        design->Append(IdCircularBoard, Display("원형 기판 만들기"));
+        design->Append(IdNewMaterial, Display("재료 추가"));
+        design->Append(IdNewNet, Display("네트 추가"));
+        design->Append(IdNewPort, Display("급전 포트 추가"));
         design->Append(IdLayer, Display("도체층 추가"));
         design->Append(IdDielectric, Display("유전체층 추가"));
         design->AppendSeparator();
         design->Append(IdCoordinates, Display("좌표로 선 / 원호 추가"));
+        design->Append(IdPolygon, Display("다각형 도체 면 추가"));
+        design->Append(IdCirclePad, Display("원형 패드 추가"));
+        design->Append(IdRectanglePad, Display("직사각 패드 추가"));
+        design->Append(IdVia, Display("도금 비아 추가"));
         design->Append(IdDeleteShape, Display("선택 형상 삭제"));
         design->Append(IdValidate, Display("해석 입력 검사"));
         bar->Append(design, Display("설계"));
+        auto* analysis = new wxMenu;
+        analysis->Append(IdRunSolver, Display("설정 및 해석 실행"));
+        analysis->Append(IdCancelSolver, Display("해석 작업 취소"));
+        bar->Append(analysis, Display("해석"));
         auto* view = new wxMenu;
         view->Append(IdResetLayout, Display("기본 패널 배치 복원"));
         view->Append(IdFit, Display("전체 형상 맞춤"));
@@ -256,7 +287,8 @@ private:
         AddTool(center, drawingTools, IdDeleteShape, "삭제");
         centerSizer->Add(drawingTools, 0, wxEXPAND | wxALL, 4);
         auto* context = new wxBoxSizer(wxHORIZONTAL);
-        AddTool(center, context, IdBoard, "기판");
+        AddTool(center, context, IdBoard, "사각 기판");
+        AddTool(center, context, IdCircularBoard, "원형 기판");
         AddTool(center, context, IdLayer, "도체층");
         AddTool(center, context, IdDielectric, "유전체층");
         context->Add(new wxStaticText(center, wxID_ANY, Display("활성 층")), 0, wxALIGN_CENTER_VERTICAL | wxLEFT, 6);
@@ -291,6 +323,7 @@ private:
         modelSizer->Add(m_modelHint, 0, wxEXPAND | wxALL, 6);
         modelPanel->SetSizer(modelSizer);
         m_views->AddPage(modelPanel, Display("3D 형상"));
+        BuildSolverInterface();
         m_manager->AddPane(m_views, wxAuiPaneInfo().Name("canvas").Caption(Display("설계 / mm")).CenterPane().PaneBorder(false));
 
         m_properties = new wxPanel(this);
@@ -352,6 +385,7 @@ private:
         m_defaultLayout = m_manager->SavePerspective();
         BindCanvas();
         BindCad();
+        BindSolver();
         m_name->Bind(wxEVT_TEXT, [this](wxCommandEvent&)
         {
             UpdateDraftState();
@@ -509,6 +543,167 @@ private:
         return false;
     }
 
+    /** @brief 빈 줄로 구멍을 구분하는 정확한 수치 입력을 단일 생성 명령으로 보낸다. */
+    void AddPolygon()
+    {
+        if (m_busy || m_activeLayer.empty() || !ConfirmDiscard())
+        {
+            return;
+        }
+        wxDialog dialog(this, wxID_ANY, Display("다각형 도체 면 / mm"), wxDefaultPosition, FromDIP(wxSize(500, 440)), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+        auto* layout = new wxBoxSizer(wxVERTICAL);
+        auto* help = new wxStaticText(&dialog, wxID_ANY, Display("한 줄에 x, y를 입력하세요. 첫 묶음은 외곽, 빈 줄 다음은 구멍입니다.\n마지막 점을 반복하지 않습니다. 총 64점 / 구멍 최대 8개.\n접지 역할, 네트와 재료는 생성 후 속성에서 지정합니다."));
+        layout->Add(help, 0, wxEXPAND | wxALL, 12);
+        auto* input = new wxTextCtrl(&dialog, wxID_ANY, Display(m_polygonDraft), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
+        layout->Add(input, 1, wxEXPAND | wxLEFT | wxRIGHT, 12);
+        layout->Add(dialog.CreateSeparatedButtonSizer(wxOK | wxCANCEL), 0, wxEXPAND | wxALL, 10);
+        dialog.SetSizer(layout);
+        while (dialog.ShowModal() == wxID_OK)
+        {
+            try
+            {
+                const std::string text = Utf8(input->GetValue());
+                Json values = ParsePolygonInput(text);
+                values["id"] = Uuid();
+                values["layer_id"] = m_activeLayer;
+                m_polygonDraft = text;
+                CanvasCommand("create_polygon", values);
+                return;
+            }
+            catch (const std::exception& error)
+            {
+                wxMessageBox(Display(error.what()), Display("다각형 좌표"), wxOK | wxICON_WARNING, &dialog);
+                input->SetFocus();
+            }
+        }
+    }
+
+    /** @brief 원형/회전 사각 패드의 실제 치수를 명시하고 물성을 추정하지 않는다. */
+    void AddPad(bool circle)
+    {
+        if (m_busy || m_activeLayer.empty() || !ConfirmDiscard())
+        {
+            return;
+        }
+        Json values = Json::object();
+        std::vector<NumericField> fields{{"x", "중심 X (mm)", 0}, {"y", "중심 Y (mm)", 0},
+            {"width", circle ? "지름 (mm)" : "폭 (mm)", 2}};
+        if (!circle)
+        {
+            fields.push_back({"height", "높이 (mm)", 2});
+            fields.push_back({"rotation", "반시계 회전 (deg)", 0});
+        }
+        if (AskNumbers(circle ? "원형 패드 치수" : "직사각 패드 치수", fields, values))
+        {
+            CanvasCommand("create_pad", Json{{"id", Uuid()}, {"layer_id", m_activeLayer}, {"pad_shape", circle ? "circle" : "rectangle"},
+                {"center", Json::array({values.at("x"), values.at("y")})}, {"width_mm", values.at("width")},
+                {"height_mm", circle ? values.at("width") : values.at("height")}, {"rotation_deg", circle ? Json(0.0) : values.at("rotation")}});
+        }
+    }
+
+    /** @brief 비아의 층 범위와 제작 치수를 입력하며 비운 치수는 미정으로 보존한다. */
+    void AddVia()
+    {
+        if (m_busy || m_activeLayer.empty() || !ConfirmDiscard())
+        {
+            return;
+        }
+        wxDialog dialog(this, wxID_ANY, Display("도금 비아 / mm"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+        auto* layout = new wxBoxSizer(wxVERTICAL);
+        layout->Add(new wxStaticText(&dialog, wxID_ANY, Display("시작은 활성 도체층입니다. 적층 순서상 뒤에 있는 끝 도체층을 선택하세요.\n완성 구멍/도금/공구 구멍은 서로 다른 값입니다. 빈칸은 미정입니다.\n패드와 도금 물성은 자동으로 생성하지 않습니다.")), 0, wxEXPAND | wxALL, 12);
+        auto* form = new wxFlexGridSizer(2, 8, 8);
+        form->AddGrowableCol(1);
+        form->Add(new wxStaticText(&dialog, wxID_ANY, Display("끝 도체층")), 0, wxALIGN_CENTER_VERTICAL);
+        auto* endLayer = new wxChoice(&dialog, wxID_ANY);
+        std::vector<std::string> layerIds;
+        bool afterStart = false;
+        for (const auto& layer : m_scene.at("layers"))
+        {
+            if (layer.at("id") == m_activeLayer)
+            {
+                afterStart = true;
+            }
+            else if (afterStart && layer.at("role") == "conductor")
+            {
+                layerIds.push_back(layer.at("id"));
+                endLayer->Append(Display(layer.at("label")));
+            }
+        }
+        form->Add(endLayer, 1, wxEXPAND);
+        const std::vector<std::pair<std::string, std::string>> names{{"x", "중심 X (mm)"}, {"y", "중심 Y (mm)"},
+            {"finished_hole_diameter_mm", "완성 구멍 지름 (mm)"}, {"plating_thickness_mm", "도금 두께 (mm)"},
+            {"tool_hole_diameter_mm", "공구 구멍 지름 (mm)"}};
+        std::map<std::string, wxTextCtrl*> fields;
+        for (const auto& name : names)
+        {
+            form->Add(new wxStaticText(&dialog, wxID_ANY, Display(name.second)), 0, wxALIGN_CENTER_VERTICAL);
+            auto* input = new wxTextCtrl(&dialog, wxID_ANY, name.first == "x" || name.first == "y" ? "0" : "");
+            fields[name.first] = input;
+            form->Add(input, 1, wxEXPAND);
+        }
+        layout->Add(form, 0, wxEXPAND | wxLEFT | wxRIGHT, 12);
+        layout->Add(new wxStaticText(&dialog, wxID_ANY, Display("연결 패드 (미선택 초안 허용, 물리 검증 전 명시 필요)")), 0, wxEXPAND | wxALL, 12);
+        auto* pads = new wxCheckListBox(&dialog, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(400, 100)));
+        std::vector<std::string> padIds;
+        for (const auto& shape : m_scene.at("shapes"))
+        {
+            if (shape.at("kind") == "pad")
+            {
+                padIds.push_back(shape.at("id"));
+                pads->Append(Display(shape.at("label")));
+            }
+        }
+        layout->Add(pads, 1, wxEXPAND | wxLEFT | wxRIGHT, 12);
+        layout->Add(dialog.CreateSeparatedButtonSizer(wxOK | wxCANCEL), 0, wxEXPAND | wxALL, 10);
+        dialog.SetSizerAndFit(layout);
+        while (dialog.ShowModal() == wxID_OK)
+        {
+            if (endLayer->GetSelection() == wxNOT_FOUND)
+            {
+                wxMessageBox(Display("끝 도체층을 선택하세요. 목록이 비어 있으면 적층 순서가 앞선 층을 활성화하거나 도체층을 추가하세요."), Display("비아 층 범위"), wxOK | wxICON_WARNING, &dialog);
+                endLayer->SetFocus();
+                continue;
+            }
+            Json values{{"id", Uuid()}, {"layer_id", m_activeLayer}, {"end_layer_id", layerIds.at(endLayer->GetSelection())}, {"pad_ids", Json::array()}};
+            bool valid = true;
+            for (const auto& field : fields)
+            {
+                wxString text = field.second->GetValue();
+                text.Trim(true).Trim(false);
+                if (text.empty() && field.first != "x" && field.first != "y")
+                {
+                    values[field.first] = nullptr;
+                    continue;
+                }
+                double number = 0;
+                if (!text.ToDouble(&number) || !std::isfinite(number))
+                {
+                    wxMessageBox(Display("좌표에는 유한한 숫자를 입력하세요. 제작 치수의 빈칸은 미정으로 유지합니다."), Display("비아 입력"), wxOK | wxICON_WARNING, &dialog);
+                    field.second->SetFocus();
+                    valid = false;
+                    break;
+                }
+                values[field.first] = number;
+            }
+            if (!valid)
+            {
+                continue;
+            }
+            values["center"] = Json::array({values.at("x"), values.at("y")});
+            values.erase("x");
+            values.erase("y");
+            for (std::size_t index = 0; index < padIds.size(); ++index)
+            {
+                if (pads->IsChecked(static_cast<unsigned int>(index)))
+                {
+                    values["pad_ids"].push_back(padIds[index]);
+                }
+            }
+            CanvasCommand("create_via", values);
+            return;
+        }
+    }
+
     void BindCanvas()
     {
         m_canvas->onStatus = [this](const std::string& message)
@@ -625,6 +820,28 @@ private:
         {
             if (!m_busy && ConfirmDiscard())
             {
+                Json values{{"center_x_mm", 0.0}, {"center_y_mm", 0.0}, {"radius_mm", 30.0}};
+                if (AskNumbers("원형 기판 외형 / mm", {{"center_x_mm", "중심 X (mm)", 0}, {"center_y_mm", "중심 Y (mm)", 0}, {"radius_mm", "반지름 (mm)", 30}}, values))
+                {
+                    values["id"] = Uuid();
+                    CanvasCommand("create_circular_board", values);
+                }
+            }
+        }, IdCircularBoard);
+        for (const auto& object : std::vector<std::pair<int, std::string>>{{IdNewMaterial, "new_material"}, {IdNewNet, "new_net"}, {IdNewPort, "new_port"}})
+        {
+            Bind(wxEVT_MENU, [this, kind = object.second](wxCommandEvent&)
+            {
+                if (!m_busy && ConfirmDiscard())
+                {
+                    SelectObject(Json{{"kind", kind}, {"id", Uuid()}});
+                }
+            }, object.first);
+        }
+        Bind(wxEVT_MENU, [this](wxCommandEvent&)
+        {
+            if (!m_busy && ConfirmDiscard())
+            {
                 const wxString name = wxGetTextFromUser(Display("도체층 이름. 위치/두께/재료는 미정으로 생성합니다."), Display("도체층 추가"), "Top Copper", this);
                 if (!name.empty())
                 {
@@ -647,6 +864,22 @@ private:
         {
             AddCoordinates();
         }, IdCoordinates);
+        Bind(wxEVT_MENU, [this](wxCommandEvent&)
+        {
+            AddPolygon();
+        }, IdPolygon);
+        Bind(wxEVT_MENU, [this](wxCommandEvent&)
+        {
+            AddPad(true);
+        }, IdCirclePad);
+        Bind(wxEVT_MENU, [this](wxCommandEvent&)
+        {
+            AddPad(false);
+        }, IdRectanglePad);
+        Bind(wxEVT_MENU, [this](wxCommandEvent&)
+        {
+            AddVia();
+        }, IdVia);
         Bind(wxEVT_MENU, [this](wxCommandEvent&)
         {
             if (!m_busy && m_selection.value("kind", "") == "geometry" && ConfirmDiscard())
@@ -684,7 +917,7 @@ private:
                     return;
                 }
             }
-            Log("해당 객체가 없습니다. 기판/도체층을 먼저 만들고 속성을 입력하세요. 재료/급전 객체 생성 UI는 후속입니다.");
+            Log("해당 객체가 없습니다. 설계 메뉴에서 기판, 재료 또는 급전 포트를 추가하세요.");
         });
         m_problems->Bind(wxEVT_LIST_ITEM_ACTIVATED, [this](wxListEvent& event)
         {
@@ -701,7 +934,7 @@ private:
             [this, operation, values, completed](const Json& result)
         {
             m_revision = result.at("new_revision");
-            const std::string kind = operation == "create_board" ? "board" :
+            const std::string kind = (operation == "create_board" || operation == "create_circular_board") ? "board" :
                 ((operation == "create_layer" || operation == "create_dielectric_layer") ? "layer" : "geometry");
             const Json selection = operation == "remove" ? Json{{"kind", "project"}, {"id", m_project}} : Json{{"kind", kind}, {"id", values.at("id")}};
             RefreshEditor(selection, [this, completed]()
@@ -827,7 +1060,7 @@ private:
         const std::string count = std::to_string(m_diagnosticCount) + "개" +
             (m_diagnosticsTruncated ? " 중 " + std::to_string(m_diagnostics.size()) + "개 표시" : "");
         m_problemSummary->SetLabel(Display(m_problemRevision.empty() ? "입력 검사를 실행하지 않았습니다." :
-            (stale ? "이전 설계의 검사 결과입니다. 다시 검사하세요." : "해석 입력 문제 " + count + " / 해석 기능 연결은 후속입니다.")));
+            (stale ? "이전 설계의 검사 결과입니다. 다시 검사하세요." : "해석 입력 문제 " + count + " / 해석 메뉴에서 준비와 실행을 별도로 요청하세요.")));
         m_bottom->SetPageText(0, Display("문제 " + std::to_string(m_diagnosticCount)));
     }
 
@@ -1328,18 +1561,448 @@ private:
         });
     }
 
+    /** @brief 해석 작업 상태와 결과 그래프를 기존 설계 탭과 분리하여 구성한다. */
+    void BuildSolverInterface()
+    {
+        auto* panel = new wxPanel(m_views);
+        auto* layout = new wxBoxSizer(wxVERTICAL);
+        auto* tools = new wxBoxSizer(wxHORIZONTAL);
+        AddTool(panel, tools, IdRunSolver, "설정 및 해석 실행");
+        AddTool(panel, tools, IdCancelSolver, "해석 취소");
+        m_solverMetric = new wxChoice(panel, wxID_ANY);
+        for (const auto* name : {"S11 (dB)", "VSWR", "Z (ohm): Re / Im"})
+        {
+            m_solverMetric->Append(name);
+        }
+        m_solverMetric->SetSelection(0);
+        tools->Add(m_solverMetric, 0, wxALL | wxALIGN_CENTER_VERTICAL, 4);
+        layout->Add(tools, 0, wxEXPAND | wxALL, 4);
+        m_solverStatus = new wxStaticText(panel, wxID_ANY, Display("해석 환경 연결을 확인하고 있습니다."));
+        layout->Add(m_solverStatus, 0, wxEXPAND | wxALL, 6);
+        m_solverViewState = new wxStaticText(panel, wxID_ANY, Display("결과 없음 / 단일 포트 PCB 계산 / IFA 및 방사 정확도 검증 전"));
+        layout->Add(m_solverViewState, 0, wxEXPAND | wxLEFT | wxRIGHT, 6);
+        m_solverChart = new SolverChart(panel);
+        layout->Add(m_solverChart, 1, wxEXPAND | wxALL, 4);
+        m_solverDetails = new wxTextCtrl(panel, wxID_ANY, wxEmptyString, wxDefaultPosition, FromDIP(wxSize(-1, 110)), wxTE_MULTILINE | wxTE_READONLY);
+        layout->Add(m_solverDetails, 0, wxEXPAND | wxALL, 6);
+        panel->SetSizer(layout);
+        m_views->AddPage(panel, Display("해석 결과"));
+    }
+
+    void BindSolver()
+    {
+        Bind(wxEVT_MENU, [this](wxCommandEvent&)
+        {
+            ConfigureSolver();
+        }, IdRunSolver);
+        Bind(wxEVT_MENU, [this](wxCommandEvent&)
+        {
+            CancelSolver();
+        }, IdCancelSolver);
+        m_solverMetric->Bind(wxEVT_CHOICE, [this](wxCommandEvent& event)
+        {
+            m_solverChart->SetMetric(event.GetSelection());
+        });
+    }
+
+    /** @brief 해석 조건은 사용자가 확인한 입력이며 보드 물성을 대신 생성하지 않는다. */
+    void ConfigureSolver()
+    {
+        if (m_busy || !m_solverConfigured || m_project.empty() || m_solverActive || m_solverRestoring)
+        {
+            return;
+        }
+        Json values = m_solverDraft;
+        if (!AskNumbers("PCB 해석 조건 / 재료와 급전은 선택 속성에서 입력", {
+            {"start_hz", "시작 주파수 (Hz)", 2.4e9}, {"stop_hz", "끝 주파수 (Hz)", 2.4835e9},
+            {"count", "주파수 표본 수 (정수)", 101}, {"grid_mm", "최대 격자 간격 (mm)", 1.0},
+            {"air_padding_mm", "외부 공기 여유 (mm)", 30.0}, {"curve_tolerance_mm", "곡선 근사 허용오차 (mm)", 0.05},
+            {"max_timesteps", "최대 시간 단계 (정수)", 30000}, {"end_criterion", "종료 에너지 비율", 1e-5}}, values))
+        {
+            return;
+        }
+        for (const auto* key : {"count", "max_timesteps"})
+        {
+            const double value = values.at(key);
+            if (value != std::floor(value) || value < 1 || value > 10000000)
+            {
+                wxMessageBox(Display("표본 수와 최대 시간 단계에는 양의 정수를 입력하세요."), Display("해석 조건"), wxOK | wxICON_WARNING, this);
+                return;
+            }
+        }
+        m_solverDraft = values;
+        m_solverSettings = Json{{"frequency_hz", Json{{"start", values.at("start_hz")}, {"stop", values.at("stop_hz")}, {"count", static_cast<int>(values.at("count").get<double>())}}},
+            {"grid_mm", values.at("grid_mm")}, {"air_padding_mm", values.at("air_padding_mm")}, {"curve_tolerance_mm", values.at("curve_tolerance_mm")},
+            {"max_timesteps", static_cast<int>(values.at("max_timesteps").get<double>())}, {"end_criterion", values.at("end_criterion")}};
+        StartSolver();
+    }
+
+    void SolverStatus(const std::string& state, const std::string& message)
+    {
+        m_solverState = state;
+        m_solverStatus->SetLabel(Display(message));
+        m_solverStatus->GetParent()->Layout();
+        m_solverDetails->AppendText(Display(state + ": " + message + "\n"));
+        if (m_solverDetails->GetLastPosition() > 24000)
+        {
+            m_solverDetails->Remove(0, m_solverDetails->GetLastPosition() - 16000);
+        }
+    }
+
+    /** @brief 스냅샷부터 해석까지 별도 작업으로 추적하여 편집과 저장을 계속 허용한다. */
+    void StartSolver()
+    {
+        if (m_busy || m_project.empty() || !m_solverConfigured || m_solverActive || m_solverRestoring)
+        {
+            return;
+        }
+        if (HasDraft())
+        {
+            ApplyCurrent([this]()
+            {
+                StartSolver();
+            });
+            return;
+        }
+        m_canvas->CancelGesture();
+        m_solverActive = true;
+        m_solverCancelRequested = false;
+        m_views->SetSelection(2);
+        SubmitSolverPhase("snapshot", "snapshot.create", Json{{"expected_revision", m_revision}, {"description", "GUI PCB 해석 입력"}});
+    }
+
+    void SubmitSolverPhase(const std::string& phase, const std::string& method, const Json& input)
+    {
+        m_solverPhase = phase;
+        SolverStatus("accepting", phase + " 작업을 접수하고 있습니다. 입력은 스냅샷으로 고정됩니다.");
+        UpdateControls();
+        Send(method, input, true, Context(), [this](const Json& accepted)
+        {
+            m_solverJob = accepted.at("job_id");
+            m_solverPolling = false;
+            m_solverLastPoll = Clock::time_point{};
+            SolverStatus("queued", m_solverPhase + " 대기 중. 편집과 저장을 계속할 수 있습니다.");
+            UpdateControls();
+            if (m_solverCancelRequested)
+            {
+                m_solverCancelRequested = false;
+                CancelSolver();
+            }
+        }, [this](const Json& error)
+        {
+            SolverRejected(error);
+        });
+    }
+
+    void SolverRejected(const Json& error)
+    {
+        m_solverActive = false;
+        m_solverJob.clear();
+        m_solverPolling = false;
+        SolverStatus("failed", "해석 실패: " + DiagnosticMessage(error));
+        m_views->SetSelection(2);
+        UpdateControls();
+    }
+
+    /** @brief 취소 요청 뒤에는 다음 단계로 자동 진행하지 않는다. */
+    void CancelSolver()
+    {
+        if (!m_solverActive || m_solverCancelRequested)
+        {
+            return;
+        }
+        m_solverCancelRequested = true;
+        SolverStatus("cancel_requested", "취소 요청 중. 실제 WSL worker 종료 확인을 기다립니다.");
+        UpdateControls();
+        if (!m_solverJob.empty())
+        {
+            Send("job.cancel", Json{{"job_id", m_solverJob}, {"reason", "GUI 해석 작업 취소"}}, true, Json::object(), [](const Json&)
+            {
+            }, [this](const Json& error)
+            {
+                m_solverCancelRequested = false;
+                SolverStatus("cancel_error", "취소 요청을 확인하지 못했습니다: " + DiagnosticMessage(error));
+                UpdateControls();
+            });
+        }
+    }
+
+    void PollSolver(Clock::time_point now)
+    {
+        UpdateSolverView();
+        if (m_solverJob.empty() || m_solverPolling || !m_connected || now - m_solverLastPoll < std::chrono::milliseconds(250))
+        {
+            return;
+        }
+        m_solverPolling = true;
+        m_solverLastPoll = now;
+        const std::string job = m_solverJob;
+        Send("job.status", Json{{"job_id", job}}, false, Json::object(), [this, job](const Json& status)
+        {
+            m_solverPolling = false;
+            if (m_solverJob != job)
+            {
+                return;
+            }
+            const std::string state = status.at("state");
+            if (state == "completed")
+            {
+                m_solverJob.clear();
+                if (m_solverCancelRequested)
+                {
+                    m_solverActive = false;
+                    SolverStatus("cancelled", "취소 요청 이후 단계 실행을 멈췄습니다. 기존 결과는 보존했습니다.");
+                    UpdateControls();
+                    return;
+                }
+                SolverPhaseComplete(status.at("events").back().at("operation_result"));
+            }
+            else if (state == "failed" || state == "cancelled" || state == "interrupted")
+            {
+                m_solverJob.clear();
+                m_solverActive = false;
+                const auto terminal = status.at("events").back();
+                const std::string reason = DiagnosticMessage(terminal.value("error", Json::object()));
+                SolverStatus(state, state == "cancelled" ? "해석이 취소되었습니다. 기존 결과는 보존했습니다." :
+                    "해석 중단: " + reason + (terminal.value("outcome_unknown", false) ? " / guest 종료 확인 필요, 자동 재실행하지 않음" : ""));
+                UpdateControls();
+            }
+            else if (state != m_solverState)
+            {
+                SolverStatus(state, m_solverPhase + " / " + state + " / 편집 및 저장 가능");
+            }
+        }, [this](const Json& error)
+        {
+            m_solverPolling = false;
+            SolverStatus("query_error", "해석 상태 조회 실패: " + DiagnosticMessage(error));
+        });
+    }
+
+    void SolverPhaseComplete(const Json& result)
+    {
+        if (m_solverPhase == "snapshot")
+        {
+            m_solverSnapshot = result;
+            SubmitSolverPhase("plan", "solver.plan", Json{{"snapshot", Json{{"snapshot_id", result.at("snapshot_id")}, {"content_hash", result.at("content_hash")}}},
+                {"analysis_profile", "rfad.openems.pcb-single-port/0.1"}, {"runtime_profile", "openems-wsl-reference/0.1"}, {"settings", m_solverSettings}});
+        }
+        else if (m_solverPhase == "plan")
+        {
+            const auto& plan = result.at("analysis_plan");
+            m_solverPlan = plan;
+            m_solverDetails->AppendText(Display("계획: " + plan.at("plan_id").get<std::string>() + "\n"));
+            SubmitSolverPhase("prepare", "solver.prepare", Json{{"analysis_plan", Json{{"plan_id", plan.at("plan_id")}, {"content_hash", plan.at("content_hash")}}},
+                {"budget", Json{{"timeout_seconds", 300}}}});
+        }
+        else if (m_solverPhase == "prepare")
+        {
+            const auto& prepared = result.at("prepared_plan");
+            m_solverPrepared = prepared;
+            SubmitSolverPhase("analysis", "job.submit", Json{{"task_plan", Json{{"kind", "em_analysis"}, {"prepared_plan", Json{{"prepared_plan_id", prepared.at("prepared_plan_id")}, {"content_hash", prepared.at("content_hash")}}},
+                {"execution_mode", "solve_and_postprocess"}}}, {"budget", Json{{"timeout_seconds", 300}}}});
+        }
+        else
+        {
+            m_solverActive = false;
+            AcceptSolver(result, true);
+        }
+    }
+
+    void AcceptSolver(const Json& result, bool show)
+    {
+        const std::string project = m_project;
+        const std::string artifact = result.at("artifact_id");
+        m_solverRestoring = true;
+        UpdateControls();
+        Send("result.open", Json{{"artifact_id", artifact}}, false, Context(), [this, project, artifact, result, show](const Json& view)
+        {
+            if (project != m_project)
+            {
+                m_solverRestoring = false;
+                return;
+            }
+            Send("solver.samples", Json{{"artifact_id", artifact}}, false, Context(), [this, project, result, view, show](const Json& samples)
+            {
+                m_solverRestoring = false;
+                if (project != m_project || samples.at("snapshot").at("project_id") != m_project)
+                {
+                    throw std::runtime_error("해석 표시 결과가 선택 프로젝트와 다릅니다.");
+                }
+                m_solverChart->SetResult(samples);
+                m_solverSamples = samples;
+                m_solverResult = result;
+                SolverStatus("completed", "계산 결과를 열었습니다. 사용자 안테나의 물리 정확도 검증과 구분합니다.");
+                for (const auto& file : view.at("files"))
+                {
+                    m_solverDetails->AppendText(Display(file.at("uri").get<std::string>() + "\n"));
+                }
+                if (show)
+                {
+                    m_views->SetSelection(2);
+                }
+                UpdateSolverView();
+                UpdateControls();
+            }, [this](const Json& error)
+            {
+                m_solverRestoring = false;
+                SolverRejected(error);
+            });
+        }, [this](const Json& error)
+        {
+            m_solverRestoring = false;
+            SolverRejected(error);
+        });
+    }
+
+    void RestoreSolver()
+    {
+        m_solverRestoring = true;
+        Send("solver.latest", Json::object(), false, Context(), [this](const Json& response)
+        {
+            m_solverRestoring = false;
+            if (response.contains("result") && !response.at("result").is_null())
+            {
+                AcceptSolver(response.at("result"), false);
+            }
+            UpdateControls();
+        }, [this](const Json& error)
+        {
+            m_solverRestoring = false;
+            Log("이전 해석 결과 조회 실패: " + DiagnosticMessage(error));
+            UpdateControls();
+        });
+    }
+
+    void UpdateSolverView()
+    {
+        if (m_solverSamples.empty())
+        {
+            return;
+        }
+        const bool stale = m_solverSamples.at("snapshot").at("revision_id") != m_revision;
+        const std::string label = (stale ? "이전 설계의 결과 / " : "현재 적용 설계의 결과 / ") +
+            std::to_string(m_solverChart->SampleCount()) + "개 주파수 / IFA 및 NF2FF 정확도 검증 전";
+        if (m_solverViewState->GetLabel() != Display(label))
+        {
+            m_solverViewState->SetLabel(Display(label));
+        }
+    }
+
+    /** @brief 실제 GUI 작업 사슬과 결과 유지/재열기를 정해진 입력으로 검증한다. */
+    void SolverSmokeTick()
+    {
+        if (!m_options.solverSmoke || m_busy || m_solverRestoring || m_cadRestoring || !m_connected || m_finishing)
+        {
+            return;
+        }
+        if (m_solverSmokeStage == 1)
+        {
+            if (m_scene.at("board").is_null())
+            {
+                m_solverSmokeStage = 8;
+                CanvasCommand("create_circular_board", Json{{"id", Uuid()}, {"center_x_mm", -5.0}, {"center_y_mm", 7.0}, {"radius_mm", 20.0}}, [this]()
+                {
+                    CanvasAssert(m_scene.at("board").at("kind") == "circle" && m_scene.at("board").at("center") == Json::array({-5.0, 7.0}) &&
+                        m_scene.at("board").at("radius") == 20.0, "Circular board DTO differs from the submitted geometry.");
+                    m_solverChecks.push_back("circular_board_created");
+                    m_solverSmokeStage = 1;
+                });
+                return;
+            }
+            if (!m_options.solverSettings.empty())
+            {
+                std::ifstream stream(std::filesystem::path(m_options.solverSettings.ToStdWstring()), std::ios::binary);
+                m_solverSettings = Json::parse(stream);
+            }
+            else
+            {
+                m_solverSettings = Json{{"frequency_hz", Json{{"start", 2.4e9}, {"stop", 2.4835e9}, {"count", 31}}}, {"grid_mm", 1.0},
+                    {"air_padding_mm", 30.0}, {"curve_tolerance_mm", 0.05}, {"max_timesteps", 30000}, {"end_criterion", 1e-5}};
+            }
+            if (m_scene.at("board").value("kind", "rectangle") == "circle")
+            {
+                m_canvas->FitView();
+                m_solverChecks.push_back("circular_board_display");
+            }
+            m_solverSmokeStage = 2;
+            StartSolver();
+        }
+        else if (m_solverSmokeStage == 2 && m_options.solverExpectFailure && !m_solverActive && m_solverState == "failed")
+        {
+            CanvasAssert(m_solverResult.empty() && m_solverChart->SampleCount() == 0, "Invalid physics input produced a result.");
+            m_solverChecks.push_back("invalid_physics_not_published");
+            m_solverSmokeStage = 7;
+            FinishSmoke(true, "");
+        }
+        else if (m_solverSmokeStage == 2 && !m_options.solverExpectFailure && m_solverActive && m_solverPhase == "analysis")
+        {
+            CanvasAssert(m_tools.at(IdSave)->IsEnabled() && m_tools.at(IdCancelSolver)->IsEnabled(), "Solver blocked save or cancel.");
+            m_solverChecks.push_back("editing_enabled_during_solver");
+            m_solverSmokeStage = 3;
+            m_description->SetValue(Display("해석 실행 중 편집/저장 검증"));
+            ApplyCurrent([this]()
+            {
+                SaveProject();
+            });
+        }
+        else if (m_solverSmokeStage == 3 && !m_solverActive && m_solverState == "completed" && m_solverChart->RenderedFrames() > 0)
+        {
+            CanvasAssert(m_solverSamples.at("snapshot").at("revision_id") != m_revision && m_editor.at("saved_revision") == m_revision,
+                "Solver snapshot changed or concurrent save failed.");
+            CanvasAssert(m_solverChart->SampleCount() >= 3, "No solver samples displayed.");
+            m_solverChecks.push_back("snapshot_fixed_and_stale_label");
+            m_solverChecks.push_back("bounded_results_rendered");
+            m_solverChecks.push_back("save_during_solver");
+            m_solverFirstResult = m_solverResult.at("artifact_id");
+            m_solverMetric->SetSelection(2);
+            m_solverChart->SetMetric(2);
+            m_solverSmokeStage = 4;
+            StartSolver();
+        }
+        else if (m_solverSmokeStage == 4 && !m_solverJob.empty())
+        {
+            m_solverSmokeStage = 5;
+            CancelSolver();
+        }
+        else if (m_solverSmokeStage == 5 && !m_solverActive && m_solverState == "cancelled")
+        {
+            CanvasAssert(m_solverResult.at("artifact_id") == m_solverFirstResult, "Cancel removed prior solver result.");
+            m_solverChecks.push_back("cancel_preserves_previous_result");
+            m_solverSmokeStage = 6;
+            m_connected = false;
+            m_transportFailed = false;
+            m_restarting = true;
+            BeginShutdown();
+        }
+        else if (m_solverSmokeStage == 6 && !m_solverSamples.empty())
+        {
+            CanvasAssert(m_serviceSessions == 2 && m_solverResult.at("artifact_id") == m_solverFirstResult, "Solver result was not restored.");
+            m_solverChecks.push_back("restart_restores_result");
+            m_solverSmokeStage = 7;
+            FinishSmoke(true, "");
+        }
+        if (!m_options.solverExpectFailure && !m_solverActive && m_solverState == "failed")
+        {
+            FinishSmoke(false, Utf8(m_solverStatus->GetLabel()));
+        }
+    }
+
     void UpdateControls()
     {
         const bool ready = m_connected && !m_busy;
         const bool opened = ready && !m_project.empty();
         const bool cadRunning = m_cadPreparing || !m_cadJob.empty();
-        const bool canSwitch = ready && !cadRunning && !m_cadRestoring && !m_modelView->IsLoading();
+        const bool canSwitch = ready && !cadRunning && !m_solverActive && !m_solverRestoring && !m_cadRestoring && !m_modelView->IsLoading();
         GetMenuBar()->Enable(IdCreate, canSwitch);
         GetMenuBar()->Enable(IdOpen, canSwitch);
         GetMenuBar()->Enable(IdSave, opened);
         GetMenuBar()->Enable(IdSnapshot, opened);
         GetMenuBar()->Enable(IdRefresh, opened && canSwitch);
         GetMenuBar()->Enable(IdNewParameter, opened);
+        for (const int id : {IdNewMaterial, IdNewNet, IdNewPort})
+        {
+            GetMenuBar()->Enable(id, opened);
+        }
         const Json history = m_editor.value("history", Json::object());
         GetMenuBar()->Enable(IdUndo, opened && history.value("can_undo", false));
         GetMenuBar()->Enable(IdRedo, opened && history.value("can_redo", false));
@@ -1350,6 +2013,10 @@ private:
         const bool board = m_scene.contains("board") && !m_scene.at("board").is_null();
         const bool synchronized = m_scene.value("revision_id", "") == m_revision;
         const bool drawing = opened && synchronized && board && !m_activeLayer.empty();
+        for (const int id : {IdPolygon, IdCirclePad, IdRectanglePad, IdVia})
+        {
+            GetMenuBar()->Enable(id, drawing);
+        }
         for (const auto& item : m_tools)
         {
             bool enabled = opened;
@@ -1361,7 +2028,7 @@ private:
             {
                 enabled = opened && history.value(item.first == IdUndo ? "can_undo" : "can_redo", false);
             }
-            else if (item.first == IdBoard)
+            else if (item.first == IdBoard || item.first == IdCircularBoard)
             {
                 enabled = opened && !board;
             }
@@ -1389,14 +2056,22 @@ private:
             {
                 enabled = !m_cadResult.empty();
             }
+            else if (item.first == IdRunSolver)
+            {
+                enabled = opened && m_solverConfigured && !m_solverActive && !m_solverRestoring;
+            }
+            else if (item.first == IdCancelSolver)
+            {
+                enabled = m_connected && m_solverActive && !m_solverCancelRequested;
+            }
             else if (item.first == IdFit3D || item.first == IdTop3D || item.first == IdIso3D)
             {
                 enabled = m_modelView->HasMesh();
             }
             item.second->Enable(enabled);
         }
-        for (const int id : {IdBoard, IdLayer, IdDielectric, IdCoordinates, IdDeleteShape, IdValidate,
-            IdExportStep, IdBuild3D, IdCancelCad, IdOutputFolder})
+        for (const int id : {IdBoard, IdCircularBoard, IdLayer, IdDielectric, IdCoordinates, IdDeleteShape, IdValidate,
+            IdExportStep, IdBuild3D, IdCancelCad, IdOutputFolder, IdRunSolver, IdCancelSolver})
         {
             GetMenuBar()->Enable(id, m_tools.at(id)->IsEnabled());
         }
@@ -1501,6 +2176,11 @@ private:
             {
                 CadStatus("disconnected", "CAD 서비스 연결이 끊겼습니다. 완료 여부를 추정하지 않습니다. 재열기 후 보존된 결과를 확인하세요.");
             }
+            m_solverPolling = false;
+            if (m_solverActive)
+            {
+                SolverStatus("disconnected", "해석 서비스 연결이 끊겼습니다. guest 종료와 완료 여부를 추정하지 않으며 자동 재실행하지 않습니다.");
+            }
         }
         SetStatusText(Display(disconnected ? "서비스 연결 끊김" : "작업 실패"), 0);
         if (m_cadPreparing)
@@ -1524,7 +2204,7 @@ private:
         m_busy = true;
         UpdateControls();
         std::string error;
-        if (!m_client.Start(m_options.python.ToStdWstring(), m_options.source.ToStdWstring(), m_options.workspace.ToStdWstring(), error, m_options.cadPython.ToStdWstring()))
+        if (!m_client.Start(m_options.python.ToStdWstring(), m_options.source.ToStdWstring(), m_options.workspace.ToStdWstring(), error, m_options.cadPython.ToStdWstring(), m_options.openEmsWsl))
         {
             Failure(error, true);
             return;
@@ -1540,6 +2220,8 @@ private:
             ++m_serviceSessions;
             m_connected = true;
             m_cadConfigured = result.value("cad_profile", Json::object()).value("runtime_configured", false);
+            m_solverConfigured = result.value("solver_profile", Json::object()).value("runtime_configured", false);
+            SolverStatus("idle", m_solverConfigured ? "WSL openEMS 준비됨. 물성 및 급전 위치를 명시한 설계를 사용합니다." : "해석 환경 미연결. launch_gui.ps1 -OpenEmsWsl로 실행하세요.");
             CadStatus("idle", m_cadConfigured ? "준비됨. STEP 출력은 현재 적용된 설계의 스냅샷을 사용합니다." :
                 "CAD 환경이 연결되지 않았습니다. launch_gui.ps1 -CadPython으로 CAD Python 경로를 지정하세요.");
             m_busy = false;
@@ -1549,6 +2231,18 @@ private:
             if (m_options.cadSmoke || !m_options.openProject.empty())
             {
                 OpenProject("open", Utf8(m_options.openProject));
+            }
+            else if (m_options.primitivesSmoke)
+            {
+                if (m_primitivesStage == 21 || m_primitivesStage == 106)
+                {
+                    OpenProject("open", m_smokePath);
+                }
+                else
+                {
+                    m_smokePath = "projects/primitives-" + Uuid();
+                    OpenProject("create", m_smokePath, "GUI 면 패드 비아 검증");
+                }
             }
             else if (m_options.canvasSmoke)
             {
@@ -1604,8 +2298,10 @@ private:
             params["request_key_epoch"] = m_epoch;
         }
         Json request{{"jsonrpc", "2.0"}, {"id", id}, {"method", method}, {"params", params}};
-        const bool foreground = method != "cad.latest" && method != "job.cancel" &&
-            !(method == "job.status" && input.value("job_id", "") == m_cadJob);
+        const bool foreground = method != "cad.latest" && method != "solver.latest" && method != "solver.samples" && method != "result.open" && method != "job.cancel" &&
+            method != "solver.plan" && method != "solver.prepare" && method != "job.submit" &&
+            !(method == "snapshot.create" && input.value("description", "") == "GUI PCB 해석 입력") &&
+            !(method == "job.status" && (input.value("job_id", "") == m_cadJob || input.value("job_id", "") == m_solverJob));
         m_pending.emplace(id, Pending{Clock::now(), std::move(success), std::move(failure), foreground});
         if (!m_client.Send(request.dump()))
         {
@@ -1630,9 +2326,9 @@ private:
 
     void OpenProject(const std::string& mode, const std::string& path, const std::string& name = "")
     {
-        if (m_cadPreparing || !m_cadJob.empty() || m_modelView->IsLoading() || m_cadRestoring)
+        if (m_cadPreparing || !m_cadJob.empty() || m_modelView->IsLoading() || m_cadRestoring || m_solverActive || m_solverRestoring)
         {
-            Log("CAD 작업 또는 3D 파일 읽기가 끝난 뒤 프로젝트를 전환하세요.");
+            Log("CAD/해석 작업 또는 결과 읽기가 끝난 뒤 프로젝트를 전환하세요.");
             return;
         }
         m_canvas->CancelGesture();
@@ -1654,6 +2350,11 @@ private:
                 m_modelView->Clear();
                 m_cadResult = Json::object();
                 m_displayResult = Json::object();
+                m_solverChart->Clear();
+                m_solverResult = Json::object();
+                m_solverSamples = Json::object();
+                m_solverViewState->SetLabel(Display("결과 없음 / 단일 포트 PCB 계산 / IFA 및 방사 정확도 검증 전"));
+                SolverStatus("idle", "선택한 프로젝트의 완료 결과를 조회합니다.");
                 m_problemRevision.clear();
                 m_diagnostics = Json::array();
                 m_diagnosticCount = 0;
@@ -1662,11 +2363,26 @@ private:
                 {
                     Ready("프로젝트를 열었습니다.");
                     RestoreCad();
-                    if (m_options.cadSmoke)
+                    RestoreSolver();
+                    if (m_options.solverSmoke)
+                    {
+                        if (m_solverSmokeStage == 0)
+                        {
+                            m_solverSmokeStage = 1;
+                        }
+                    }
+                    else if (m_options.cadSmoke)
                     {
                         if (m_cadSmokeStage == 0)
                         {
                             m_cadSmokeStage = 1;
+                        }
+                    }
+                    else if (m_options.primitivesSmoke)
+                    {
+                        if (m_primitivesStage == 0)
+                        {
+                            m_primitivesStage = 1;
                         }
                     }
                     else if (m_options.canvasSmoke)
@@ -1833,10 +2549,11 @@ private:
                 selectedLabel = item.at("label").get<std::string>();
             }
         }
-        if (m_selection.at("kind") == "new_parameter")
+        if (m_selection.at("kind").get<std::string>().rfind("new_", 0) == 0)
         {
-            selectedLabel = "새 매개변수";
-            selected = m_tree->AppendItem(categories.at("parameter"), Display(selectedLabel), -1, -1, new SelectionData(m_selection));
+            const std::string kind = m_selection.at("kind").get<std::string>().substr(4);
+            selectedLabel = kind == "parameter" ? "새 매개변수" : (kind == "material" ? "새 재료" : (kind == "net" ? "새 네트" : "새 급전 포트"));
+            selected = m_tree->AppendItem(categories.at(kind), Display(selectedLabel), -1, -1, new SelectionData(m_selection));
         }
         m_tree->Expand(root);
         if (m_tree->GetItemParent(selected).IsOk())
@@ -1849,7 +2566,7 @@ private:
         const bool metadata = m_selection.at("kind") == "project";
         m_metadataPanel->Show(metadata);
         m_editorPanel->Show(!metadata);
-        m_editorPanel->SetFields(m_editor.at("selection").at("fields"), m_editor.at("selection"));
+        m_editorPanel->SetFields(m_editor.at("selection").at("fields"), m_editor.at("selection"), m_editor.value("coordinate_choices", Json::array()));
         m_properties->Layout();
         m_refreshing = false;
         UpdateDraftState();
@@ -1885,7 +2602,7 @@ private:
             Failure(error.what());
             return;
         }
-        if (values.empty() && m_selection.at("kind") != "new_parameter")
+        if (values.empty() && m_selection.at("kind").get<std::string>().rfind("new_", 0) != 0)
         {
             completed();
             return;
@@ -1893,9 +2610,9 @@ private:
         m_busy = true;
         UpdateControls();
         Json target = m_selection;
-        if (target.at("kind") == "new_parameter")
+        if (target.at("kind").get<std::string>().rfind("new_", 0) == 0)
         {
-            target["kind"] = "parameter";
+            target["kind"] = target.at("kind").get<std::string>().substr(4);
         }
         Send("editor.apply", Json{{"expected_revision", m_revision}, {"command_id", Uuid()},
             {"selection", m_selection}, {"values", values}}, true, Context(),
@@ -2208,6 +2925,262 @@ private:
         }
     }
 
+    /** @brief 새로운 면/패드/비아를 실제 선택과 드래그 및 속성 명령으로 검증한다. */
+    void PrimitivesSmokeTick()
+    {
+        if (!m_options.primitivesSmoke || m_busy || m_cadRestoring || m_solverRestoring || !m_connected || m_finishing || m_primitivesStage == 0)
+        {
+            return;
+        }
+        auto create = [this](int next, const std::string& operation, const Json& values)
+        {
+            m_primitivesStage = next;
+            CanvasCommand(operation, values);
+        };
+        if (m_primitivesStage == 1)
+        {
+            create(2, "create_circular_board", Json{{"id", Uuid()}, {"center_x_mm", 0}, {"center_y_mm", 0}, {"radius_mm", 35}});
+        }
+        else if (m_primitivesStage == 2)
+        {
+            m_primitivesLayerA = Uuid();
+            create(3, "create_layer", Json{{"id", m_primitivesLayerA}, {"name", "Top"}});
+        }
+        else if (m_primitivesStage == 3 && m_options.coordinatesSmoke)
+        {
+            Json outer = Json::array();
+            for (int index = 0; index < 64; ++index)
+            {
+                const double angle = index * 2.0 * 3.14159265358979323846 / 64;
+                outer.push_back(Json::array({10.0 * std::cos(angle), 10.0 * std::sin(angle)}));
+            }
+            m_primitivesPolygon = Uuid();
+            create(101, "create_polygon", Json{{"id", m_primitivesPolygon}, {"layer_id", m_primitivesLayerA}, {"outer", outer}, {"holes", Json::array()}});
+        }
+        else if (m_primitivesStage == 3)
+        {
+            m_primitivesLayerB = Uuid();
+            create(4, "create_layer", Json{{"id", m_primitivesLayerB}, {"name", "Bottom"}});
+        }
+        else if (m_primitivesStage == 4)
+        {
+            Json values = ParsePolygonInput("-20,-20\n20,-20\n20,20\n-20,20\n\n-4,-4\n4,-4\n4,4\n-4,4\n");
+            m_primitivesPolygon = Uuid();
+            values["id"] = m_primitivesPolygon;
+            values["layer_id"] = m_primitivesLayerA;
+            create(5, "create_polygon", values);
+        }
+        else if (m_primitivesStage == 5 || m_primitivesStage == 6 || m_primitivesStage == 7)
+        {
+            const bool rectangle = m_primitivesStage == 6;
+            const std::string id = Uuid();
+            if (rectangle)
+            {
+                m_primitivesRectangle = id;
+            }
+            else
+            {
+                m_primitivesPads.push_back(id);
+            }
+            create(m_primitivesStage + 1, "create_pad", Json{{"id", id}, {"layer_id", m_primitivesStage == 7 ? m_primitivesLayerB : m_primitivesLayerA},
+                {"pad_shape", rectangle ? "rectangle" : "circle"}, {"center", Json::array({rectangle ? -10.0 : 10.0, 0.0})},
+                {"width_mm", 4.0}, {"height_mm", rectangle ? 2.0 : 4.0}, {"rotation_deg", rectangle ? 45.0 : 0.0}});
+        }
+        else if (m_primitivesStage == 8 || m_primitivesStage == 9)
+        {
+            const bool missing = m_primitivesStage == 8;
+            const std::string id = Uuid();
+            if (missing)
+            {
+                m_primitivesMissingVia = id;
+            }
+            else
+            {
+                m_primitivesVia = id;
+            }
+            create(m_primitivesStage + 1, "create_via", Json{{"id", id}, {"layer_id", m_primitivesLayerA}, {"end_layer_id", m_primitivesLayerB},
+                {"center", Json::array({missing ? -10.0 : 10.0, missing ? 10.0 : 0.0})},
+                {"finished_hole_diameter_mm", missing ? Json(nullptr) : Json(0.8)}, {"plating_thickness_mm", missing ? Json(nullptr) : Json(0.1)},
+                {"tool_hole_diameter_mm", missing ? Json(nullptr) : Json(1.0)}, {"pad_ids", missing ? Json::array() : m_primitivesPads}});
+        }
+        else if (m_primitivesStage == 10)
+        {
+            CanvasAssert(m_scene.at("shapes").size() == 6, "Primitive creation omitted display objects.");
+            m_canvas->FitView();
+            m_canvas->SetTool("select");
+            CanvasAssert(m_canvas->HitTest(m_canvas->WorldToScreen(wxPoint2DDouble(0, 0))).empty(), "Polygon hole was filled or selectable.");
+            CanvasAssert(m_canvas->HitTest(m_canvas->WorldToScreen(wxPoint2DDouble(0, 15))) == m_primitivesPolygon, "Polygon interior is not selectable.");
+            CanvasAssert(CanvasShape(m_primitivesVia).at("span_layer_ids").size() == 2, "Via layer span is incomplete.");
+            CanvasAssert(CanvasShape(m_primitivesMissingVia).at("finished_hole_diameter").is_null(), "Missing via diameter was fabricated.");
+            m_primitivesChecks.push_back("polygon_holes_and_pad_via_display");
+            CanvasAssert(m_editorPanel->FieldValue("pad_ids").size() == 2 && !HasDraft(), "Via pad references were not read without changing order.");
+            m_editorPanel->SetFieldValue("pad_ids", Json::array({m_primitivesPads.at(0)}));
+            m_primitivesStage = 23;
+            ApplyCurrent([]()
+            {
+            });
+        }
+        else if (m_primitivesStage == 23)
+        {
+            CanvasAssert(m_editorPanel->FieldValue("pad_ids").size() == 1, "Via pad multichoice edit did not persist.");
+            m_primitivesStage = 24;
+            History("project.undo", [this]()
+            {
+                SelectObject(Json{{"kind", "geometry"}, {"id", m_primitivesVia}});
+            });
+        }
+        else if (m_primitivesStage == 24)
+        {
+            CanvasAssert(m_editorPanel->FieldValue("pad_ids").size() == 2, "Via pad reference undo failed.");
+            m_primitivesChecks.push_back("via_pad_multichoice_and_undo");
+            m_primitivesStage = 11;
+            CanvasClick(-10, 0);
+        }
+        else if (m_primitivesStage == 11)
+        {
+            CanvasAssert(m_selection.at("id") == m_primitivesRectangle && m_canvas->Selection() == m_primitivesRectangle, "Rotated pad selection did not reach properties.");
+            m_editorPanel->SetFieldValue("center.0.value", "-9");
+            m_primitivesStage = 12;
+            ApplyCurrent([]()
+            {
+            });
+        }
+        else if (m_primitivesStage == 12)
+        {
+            CanvasAssert(CanvasShape(m_primitivesRectangle).at("center").at(0) == -9.0, "Pad property edit did not reach canvas.");
+            m_primitivesChecks.push_back("rotated_pad_selection_and_properties");
+            m_primitivesOriginalPolygon = CanvasShape(m_primitivesPolygon);
+            m_canvasUndoBefore = m_editor.at("history").at("undo_count");
+            m_primitivesStage = 13;
+            CanvasMouse(wxEVT_LEFT_DOWN, 0, 15, true);
+            CanvasMouse(wxEVT_MOTION, 2, 16, true);
+            CanvasMouse(wxEVT_LEFT_UP, 2, 16);
+        }
+        else if (m_primitivesStage == 13)
+        {
+            const Json polygon = CanvasShape(m_primitivesPolygon);
+            const double dx = polygon.at("outer").at(0).at(0).get<double>() + 20.0;
+            CanvasAssert(std::abs(dx - 2) < 0.25 && std::abs(polygon.at("holes").at(0).at(0).at(0).get<double>() + 4.0 - dx) < 1e-8,
+                "Polygon drag failed to move its hole with its outline.");
+            CanvasAssert(m_editor.at("history").at("undo_count").get<int>() == m_canvasUndoBefore + 1, "Polygon drag produced several history commands.");
+            m_primitivesMovedPolygon = polygon;
+            m_primitivesStage = 14;
+            History("project.undo");
+        }
+        else if (m_primitivesStage == 14)
+        {
+            CanvasAssert(CanvasShape(m_primitivesPolygon) == m_primitivesOriginalPolygon, "Polygon undo lost its hole.");
+            m_primitivesStage = 15;
+            History("project.redo");
+        }
+        else if (m_primitivesStage == 15)
+        {
+            CanvasAssert(CanvasShape(m_primitivesPolygon) == m_primitivesMovedPolygon, "Polygon redo failed.");
+            m_primitivesChecks.push_back("polygon_drag_single_command_and_history");
+            m_canvas->SetLayerVisible(m_primitivesLayerA, false);
+            CanvasAssert(m_canvas->HitTest(m_canvas->WorldToScreen(wxPoint2DDouble(10, 0))) == m_primitivesVia, "Via disappeared on its visible end layer.");
+            m_canvas->SetLayerVisible(m_primitivesLayerB, false);
+            CanvasAssert(m_canvas->HitTest(m_canvas->WorldToScreen(wxPoint2DDouble(10, 0))).empty(), "Fully hidden via remained selectable.");
+            m_canvas->SetLayerVisible(m_primitivesLayerA, true);
+            m_canvas->SetLayerVisible(m_primitivesLayerB, true);
+            m_primitivesChecks.push_back("via_visibility_uses_full_layer_span");
+            m_primitivesStage = 16;
+            SelectObject(Json{{"kind", "geometry"}, {"id", m_primitivesMissingVia}});
+        }
+        else if (m_primitivesStage == 16)
+        {
+            CanvasAssert(m_editorPanel->FieldValue("finished_hole_diameter.mode") == "missing", "Via missing input mode was lost.");
+            m_editorPanel->SetFieldValue("plating_thickness.mode", "value");
+            m_editorPanel->SetFieldValue("plating_thickness.unit", "mm");
+            m_editorPanel->SetFieldValue("plating_thickness.value", "0.1");
+            m_primitivesStage = 17;
+            ApplyCurrent([]()
+            {
+            });
+        }
+        else if (m_primitivesStage == 17)
+        {
+            const Json via = CanvasShape(m_primitivesMissingVia);
+            CanvasAssert(via.at("finished_hole_diameter").is_null() && via.at("tool_hole_diameter").is_null() && via.at("plating_thickness") == 0.1,
+                "Via editing fabricated missing manufacturing inputs.");
+            m_primitivesStage = 18;
+            History("project.undo");
+        }
+        else if (m_primitivesStage == 18)
+        {
+            CanvasAssert(CanvasShape(m_primitivesMissingVia).at("plating_thickness").is_null(), "Via undo did not restore missing input.");
+            m_primitivesChecks.push_back("via_missing_inputs_edit_and_undo");
+            m_primitivesSavedShapes = m_scene.at("shapes");
+            m_primitivesStage = 19;
+            SaveProject();
+        }
+        else if (m_primitivesStage == 19)
+        {
+            CanvasAssert(m_savedRevision == m_revision, "Primitive save did not settle.");
+            m_primitivesStage = 20;
+            Snapshot();
+        }
+        else if (m_primitivesStage == 20)
+        {
+            CanvasAssert(!m_snapshot.empty(), "Primitive snapshot was not created.");
+            m_primitivesStage = 21;
+            m_connected = false;
+            m_transportFailed = false;
+            m_restarting = true;
+            BeginShutdown();
+        }
+        else if (m_primitivesStage == 101)
+        {
+            Json coordinates = m_editorPanel->FieldValue("outer");
+            CanvasAssert(coordinates.size() == 64 && !HasDraft(), "A 64-point coordinate table changed source or exceeded the DTO.");
+            m_primitivesStage = 102;
+            m_busy = true;
+            m_editorPanel->EditCoordinateCellForSmoke("outer", 0, 0, "11");
+            m_busy = false;
+            ApplyCurrent([]()
+            {
+            });
+        }
+        else if (m_primitivesStage == 102)
+        {
+            CanvasAssert(CanvasShape(m_primitivesPolygon).at("outer").at(0).at(0) == 11.0 && m_editorPanel->FieldValue("outer").size() == 64,
+                "Coordinate table edit did not preserve all vertices.");
+            m_primitivesChecks.push_back("64_point_coordinate_table_edit");
+            m_primitivesStage = 103;
+            History("project.undo");
+        }
+        else if (m_primitivesStage == 103)
+        {
+            CanvasAssert(CanvasShape(m_primitivesPolygon).at("outer").at(0).at(0) == 10.0, "Coordinate table undo failed.");
+            m_primitivesChecks.push_back("coordinate_table_undo");
+            m_primitivesSavedShapes = m_scene.at("shapes");
+            m_primitivesStage = 104;
+            SaveProject();
+        }
+        else if (m_primitivesStage == 104)
+        {
+            CanvasAssert(m_savedRevision == m_revision, "Coordinate table save failed.");
+            m_primitivesStage = 105;
+            Snapshot();
+        }
+        else if (m_primitivesStage == 105)
+        {
+            m_primitivesStage = 106;
+            m_connected = false;
+            m_transportFailed = false;
+            m_restarting = true;
+            BeginShutdown();
+        }
+        else if (m_primitivesStage == 21 || m_primitivesStage == 106)
+        {
+            CanvasAssert(m_serviceSessions == 2 && m_scene.at("shapes") == m_primitivesSavedShapes && m_editor.at("saved_revision") == m_revision,
+                "Primitive source or missing inputs changed after reopening.");
+            m_primitivesChecks.push_back("save_snapshot_restart_preserves_primitives");
+            m_primitivesStage = 22;
+            FinishSmoke(true, "");
+        }
+    }
+
     /** @brief 도킹 창과 선/원호의 입력, 선택, 이동, 이력 및 재시작을 통합 검사한다. */
     void CanvasSmokeNext()
     {
@@ -2513,7 +3486,7 @@ private:
 
     void OnTimer(wxTimerEvent&)
     {
-        if (m_finishing || m_restarting || m_closing)
+        if ((m_finishing && !m_waitingClose) || m_restarting || m_closing)
         {
             return;
         }
@@ -2592,7 +3565,15 @@ private:
             }
             const auto now = Clock::now();
             PollCad(now);
+            PollSolver(now);
             CadSmokeTick();
+            SolverSmokeTick();
+            PrimitivesSmokeTick();
+            if (m_waitingClose && ((!m_solverActive && m_cadJob.empty() && !m_cadPreparing) || now >= m_closeDeadline))
+            {
+                Close();
+                return;
+            }
             if (m_restarting || m_finishing)
             {
                 return;
@@ -2626,7 +3607,7 @@ private:
                     }
                 });
             }
-            if (m_options.smoke && now - m_started > std::chrono::seconds(m_options.cadSmoke ? 180 : 60))
+            if (m_options.smoke && now - m_started > std::chrono::seconds(m_options.solverSmoke ? 600 : (m_options.cadSmoke ? 180 : 60)))
             {
                 FinishSmoke(false, "GUI smoke timeout");
             }
@@ -2650,7 +3631,10 @@ private:
             {"snapshot_id", m_snapshot}, {"service_sessions", m_serviceSessions},
             {"editor_stage", m_editorStage}, {"editor_checks", m_editorChecks},
             {"canvas_stage", m_canvasStage}, {"canvas_checks", m_canvasChecks},
+            {"primitives_stage", m_primitivesStage}, {"primitives_checks", m_primitivesChecks},
             {"cad_stage", m_cadSmokeStage}, {"cad_checks", m_cadChecks}, {"cad_result", m_cadResult},
+            {"solver_stage", m_solverSmokeStage}, {"solver_checks", m_solverChecks}, {"solver_result", m_solverResult},
+            {"solver_sample_count", m_solverChart->SampleCount()}, {"solver_frames", m_solverChart->RenderedFrames()},
             {"mesh_triangles", m_modelView->TriangleCount()}, {"mesh_bodies", m_modelView->BodyCount()},
             {"rendered_frames", m_modelView->RenderedFrameCount()}, {"renderer", m_modelView->RendererDescription()},
             {"ux_checks", m_uxChecks}, {"editor_ui_state", m_editState}, {"apply_enabled", m_apply->IsEnabled()},
@@ -2676,14 +3660,29 @@ private:
         });
     }
 
-    void OnClose(wxCloseEvent&)
+    void OnClose(wxCloseEvent& event)
     {
         if (m_closing)
         {
             return;
         }
-        if (!m_finishing && !m_options.smoke && !ConfirmDiscard())
+        if (!m_waitingClose && !m_finishing && !m_options.smoke && !ConfirmDiscard())
         {
+            if (event.CanVeto())
+            {
+                event.Veto();
+            }
+            return;
+        }
+        if (!m_waitingClose && m_connected && (m_solverActive || m_cadPreparing || !m_cadJob.empty()) && event.CanVeto())
+        {
+            m_waitingClose = true;
+            m_closeDeadline = Clock::now() + std::chrono::seconds(30);
+            CancelSolver();
+            CancelCad();
+            SetStatusText(Display("작업 취소와 실제 종료를 확인한 뒤 창을 닫습니다."), 0);
+            Disable();
+            event.Veto();
             return;
         }
         m_closing = true;
@@ -2738,6 +3737,30 @@ private:
     }
 
     Options m_options;
+    SolverChart* m_solverChart = nullptr;
+    wxChoice* m_solverMetric = nullptr;
+    wxStaticText* m_solverStatus = nullptr;
+    wxStaticText* m_solverViewState = nullptr;
+    wxTextCtrl* m_solverDetails = nullptr;
+    bool m_solverConfigured = false;
+    bool m_solverActive = false;
+    bool m_solverCancelRequested = false;
+    bool m_solverPolling = false;
+    bool m_solverRestoring = false;
+    std::string m_solverJob;
+    std::string m_solverPhase;
+    std::string m_solverState = "idle";
+    std::string m_solverFirstResult;
+    Clock::time_point m_solverLastPoll{};
+    Json m_solverDraft = Json::object();
+    Json m_solverSettings = Json::object();
+    Json m_solverSnapshot = Json::object();
+    Json m_solverPlan = Json::object();
+    Json m_solverPrepared = Json::object();
+    Json m_solverResult = Json::object();
+    Json m_solverSamples = Json::object();
+    Json m_solverChecks = Json::array();
+    int m_solverSmokeStage = 0;
     wxAuiManager* m_manager = nullptr;
     wxString m_defaultLayout;
     std::map<int, wxButton*> m_tools;
@@ -2781,6 +3804,19 @@ private:
     bool m_diagnosticsTruncated = false;
     Json m_lineDraft = Json::object();
     Json m_arcDraft = Json::object();
+    std::string m_polygonDraft;
+    int m_primitivesStage = 0;
+    std::string m_primitivesLayerA;
+    std::string m_primitivesLayerB;
+    std::string m_primitivesPolygon;
+    std::string m_primitivesRectangle;
+    std::string m_primitivesVia;
+    std::string m_primitivesMissingVia;
+    Json m_primitivesPads = Json::array();
+    Json m_primitivesOriginalPolygon;
+    Json m_primitivesMovedPolygon;
+    Json m_primitivesSavedShapes;
+    Json m_primitivesChecks = Json::array();
     int m_canvasStage = 0;
     int m_canvasUndoBefore = 0;
     bool m_canvasAwaitSelection = false;
@@ -2810,6 +3846,8 @@ private:
     bool m_finishing = false;
     bool m_restarting = false;
     bool m_closing = false;
+    bool m_waitingClose = false;
+    Clock::time_point m_closeDeadline{};
     bool m_refreshing = false;
     bool m_updatingDraft = false;
     int m_smokeStage = 0;
@@ -2848,10 +3886,16 @@ public:
         parser.AddOption("", "source", "rfad source directory");
         parser.AddOption("", "workspace", "Project workspace directory");
         parser.AddOption("", "cad-python", "Isolated CAD Python executable path");
+        parser.AddSwitch("", "openems-wsl", "Enable fixed WSL openEMS runtime");
+        parser.AddSwitch("", "solver-smoke-test", "Run PCB solver GUI workflow and exit");
+        parser.AddSwitch("", "solver-expect-failure", "Verify missing PCB physics inputs are rejected");
+        parser.AddOption("", "solver-settings", "Explicit solver smoke settings JSON path");
         parser.AddOption("", "open-project", "Registered project path relative to workspace");
         parser.AddSwitch("", "smoke-test", "Run GUI/service smoke test and exit");
         parser.AddSwitch("", "editor-smoke-test", "Run editor/undo/restart smoke test and exit");
         parser.AddSwitch("", "canvas-smoke-test", "Run 2D mouse/command/history/restart smoke test and exit");
+        parser.AddSwitch("", "primitives-smoke-test", "Run polygon/pad/via input/display/history/restart smoke test and exit");
+        parser.AddSwitch("", "coordinate-table-smoke-test", "Run 64-point coordinate table edit/history/restart smoke test and exit");
         parser.AddSwitch("", "cad-smoke-test", "Run CAD export/view/cancel/restart smoke test and exit");
         parser.AddSwitch("", "cad-expect-failure", "Verify invalid CAD input without publishing output");
         parser.AddOption("", "smoke-report", "Smoke JSON output path");
@@ -2869,9 +3913,15 @@ public:
         parser.Found("smoke-report", &options.smokeReport);
         options.editorSmoke = parser.Found("editor-smoke-test");
         options.canvasSmoke = parser.Found("canvas-smoke-test");
+        options.coordinatesSmoke = parser.Found("coordinate-table-smoke-test");
+        options.primitivesSmoke = parser.Found("primitives-smoke-test") || options.coordinatesSmoke;
         options.cadSmoke = parser.Found("cad-smoke-test");
         options.cadExpectFailure = parser.Found("cad-expect-failure");
-        options.smoke = parser.Found("smoke-test") || options.editorSmoke || options.canvasSmoke || options.cadSmoke;
+        options.openEmsWsl = parser.Found("openems-wsl");
+        options.solverSmoke = parser.Found("solver-smoke-test");
+        options.solverExpectFailure = parser.Found("solver-expect-failure");
+        parser.Found("solver-settings", &options.solverSettings);
+        options.smoke = parser.Found("smoke-test") || options.editorSmoke || options.canvasSmoke || options.primitivesSmoke || options.cadSmoke || options.solverSmoke;
         if (options.python.empty() || options.source.empty() || options.workspace.empty())
         {
             wxMessageBox(Display("--python, --source, --workspace 경로를 지정하십시오."), Display("실행 설정"), wxOK | wxICON_ERROR);

@@ -23,7 +23,7 @@ flowchart TD
     POST --> STORE
 ```
 
-위 그림은 승인된 목표 구조다. 현재 환경 진단, 단위/미정값, 제한 표현식과 의존 그래프, 기판/적층/재료/선/원호/net/단일 포트 데이터, 목적별 입력 검사, 프로젝트 명령/저장/불변 스냅샷을 구현했다. wxWidgets GUI에서 매개변수/표현식과 설계 속성을 편집하고 기판/미정 도체층/유전체층/선/원호를 생성한다. 중앙 2D 캔버스의 선택/이동/삭제도 같은 서비스 명령과 영속 undo/redo를 사용한다. GUI의 STEP 출력과 3D 갱신은 불변 스냅샷을 별도 호스트 CAD worker에 전달한다. Open CASCADE 고체와 AP242 STEP/B-rep를 생성하고 같은 고체에서 파생한 표시용 mesh를 wxGLCanvas로 표시한다. WSL2 guest supervisor와 openEMS 도파관 adapter를 연결해 불변 계획/준비 XML/실행/취소/원시 결과 저장 및 독립 후처리를 구현했다. 사용자 안테나 모델과 GUI 해석 결과 화면은 후속이다. [해석 worker 계약](docs/solver_contract.md)을 참고한다.
+위 그림은 승인된 목표 구조다. 현재 환경 진단, 단위/미정값, 제한 표현식과 의존 그래프, 기판/적층/재료/선/원호/net/단일 포트 데이터, 목적별 입력 검사, 프로젝트 명령/저장/불변 스냅샷을 구현했다. wxWidgets GUI에서 매개변수/표현식과 설계 속성을 편집하고 사각/원형 기판, 미정 도체층/유전체층, 선/원호, 재료/net/단일 포트를 생성한다. 중앙 2D 캔버스의 선택/이동/삭제도 같은 서비스 명령과 영속 undo/redo를 사용한다. GUI의 STEP 출력과 3D 갱신은 불변 스냅샷을 별도 호스트 CAD worker에 전달한다. Open CASCADE 고체와 AP242 STEP/B-rep를 생성하고 같은 고체에서 파생한 표시용 mesh를 wxGLCanvas로 표시한다. WSL2 guest supervisor와 openEMS 도파관 adapter를 연결해 불변 계획/준비 XML/실행/취소/원시 결과 저장 및 독립 후처리를 구현했다. 이어 사각/원형 PCB의 사용자 물성/선/원호/단일 급전 투영과 GUI 해석 실행/취소/S11/VSWR/임피던스 그래프를 연결했다. 접지 polygon/빈 영역, 원형/회전 패드, 중공 PTH와 IFA 급전선/단락부를 저장/GUI/CAD/해석에 연결했다. 실제 IFA 정확도와 NF2FF는 후속이다. [해석 worker 계약](docs/solver_contract.md)과 [도체/급전 확장](docs/copper_features.md)을 참고한다.
 
 속성 화면은 미적용 입력, 적용 후 저장 필요, 저장됨을 구분한다. 한글 속성 이름, 값과 단위의 같은 행 배치, 입력 방식별 표시, 상세 식별자 접기와 오류 필드 이동을 제공한다. 현재 구현과 승인된 최종 화면 방향의 구분은 [GUI의 UX 구현 방향](ui/wxwidgets/README.md#ux-구현-방향)을 따른다.
 
@@ -34,8 +34,8 @@ flowchart TD
 | C++ wxWidgets GUI | 프로젝트 트리, 속성 입력, 2D/3D 표시, 선택, 결과와 작업 상태 | `ui/wxwidgets/` |
 | Python 서비스 | 원본 도메인, 입력 검증, 명령, revision, hash를 단일 기준으로 관리 | `src/rfad/domain/`, `src/rfad/application/` |
 | 저장과 작업 관리 | 단일 writer journal, 불변 snapshot, 자료 처리/CAD 작업의 별도 실행, 취소/복구와 파일 봉인 | `src/rfad/storage/`, `application/projects.py`, `application/cad_jobs.py`, `application/native_process.py` |
-| CAD/EDA worker | 현재 직사각 유전체와 선/원호 고체, AP242 STEP/B-rep 및 원본 의미 sidecar. 제조 출력은 후속 | `src/rfad/adapters/cad/`, `tools/cad_worker.py`; EDA adapter는 후속 |
-| EM worker | WSL2 도파관 참조의 계획/준비/실행/취소/결과 봉인 및 원시 후처리 | `src/rfad/adapters/solvers/openems/`, `application/solver_jobs.py`, `application/wsl_process.py`, `tools/openems_worker.py`, `tools/wsl_supervisor.py` |
+| CAD/EDA worker | 사각/원형 유전체와 선/원호/polygon/pad/중공 PTH 고체, AP242 STEP/B-rep 및 원본 의미 sidecar. 제조 출력은 후속 | `src/rfad/adapters/cad/`, `tools/cad_worker.py`; EDA adapter는 후속 |
+| EM worker | WSL2 도파관 참조와 사용자 PCB 단일 포트의 계획/준비/실행/취소/결과 봉인 및 원시 후처리 | `src/rfad/adapters/solvers/openems/`, `application/solver_jobs.py`, `application/wsl_process.py`, `tools/openems_worker.py`, `tools/wsl_supervisor.py` |
 | 후처리와 CLI | 결과 계산, 측정 비교, 동일 서비스의 자동화 | 후속 `physics/`, `adapters/networks/`; 현재 `cli/` |
 
 GUI 안에 Python이나 solver를 내장하지 않는다. GUI에는 표시용 데이터의 파일 참조와 안정된 객체 ID를 전달하고 CAD B-rep와 큰 결과 배열은 worker/파일에 둔다. 표시 mesh의 파일 읽기/SHA256 확인/해석은 GUI의 별도 thread에서 수행하며 같은 검증 바이트를 소비한다. wxGLCanvas는 형상을 열 때 생성한다. 시작할 때 CAD/NumPy/solver 전체를 로드하지 않는다. 단위/물리식/원본 정규 해시를 GUI에서 중복 구현하지 않는다.
@@ -61,6 +61,14 @@ $env:PYTHONPATH = 'src'
 GUI 빌드 후 `$env:RFAD_GUI_EXE`에 실행 파일의 절대 경로를 지정하면 실제 GUI 시험도 함께 실행한다. 2026-11-10 2D 경계 보완본의 Windows 전체 227개가 스킵 없이 76.152초에 통과했다. Linux는 227개 중 220개 통과/Windows GUI 7개 스킵으로 30.312초였고 native CTest `canvas_geometry` 1개도 0.13초에 통과했다. 이후 실제 창에서 확인한 도구막대/DPI 배치 보완과 GUI 재검증 근거는 [개발 상태](docs/development_status.md)를 따른다. 편집 계약은 [선택 속성과 실행 취소](docs/editor_contract.md), [2D 표시와 직접 편집](docs/canvas_contract.md)에 있다.
 
 GUI는 `.\tools\launch_gui.ps1`로 실행한다. 설치된 `.venv-cad`가 있으면 자동 연결하며 다른 환경은 `-CadPython <실행 파일 경로>`로 지정한다. CAD 환경이 없어도 편집/저장과 과거 완료 결과 조회는 사용할 수 있다. `설계 > 유전체층 추가`와 도체층의 속성에서 실제 z 위치와 양수 두께를 입력한 뒤 상단 `STEP 출력` 또는 `3D 형상 > 3D 갱신`을 사용한다. 새 층의 물성과 치수는 미정으로 시작하며 자동 보정하지 않는다.
+
+원형 PCB는 `설계 > 원형 기판 만들기`에서 중심/반지름을 지정한다. 외형은 구리 패턴과 독립이며 접지면을 자동 생성하지 않는다. 유전체의 유전율/손실/전도도, 동박의 전도도/두께, 실제 net과 급전 좌표는 사용자가 입력한다. [원형 기판](docs/circular_board.md)과 [PCB 해석 모델/제한](docs/pcb_solver_contract.md)을 참고한다.
+
+WSL 해석을 활성화하려면 다음 명령을 사용한다. GUI에서 해석 조건을 설정하고 실행하면 입력 스냅샷을 고정해 준비/계산하며 S11/VSWR/임피던스를 표시한다. 실행 중 편집/저장과 취소, 이전 결과 유지 및 재시작 복원을 지원한다. 계산 결과는 물리 정확도 미검증 상태이고 실제 IFA/NF2FF 검증은 후속이다.
+
+```powershell
+.\tools\launch_gui.ps1 -OpenEmsWsl
+```
 
 STEP 출력은 미적용 폼 입력을 먼저 적용하고 해당 개정을 스냅샷으로 고정한다. CAD 실행 중에도 편집/저장할 수 있으며 `CAD 출력` 탭에서 상태, 취소와 출력 폴더를 확인한다. 현재 개정과 다른 3D는 이전 설계임을 표시한다. 재열기는 해당 프로젝트의 마지막 게시 완료 결과를 복원하며 취소/실패가 이전 결과를 지우지 않는다. 3D의 드래그는 회전, Shift/가운데 버튼 드래그는 이동, 휠은 확대/축소다. 상세 조작과 제한은 [GUI 설명](ui/wxwidgets/README.md#step-출력과-3d-형상)에 있다.
 
@@ -96,8 +104,12 @@ PYTHONPATH=src python3 -m rfad serve
 
 1. WBS-002/003: 실제 환경과 의존성 조합, 단위/표현식/ID/명령/저장/snapshot 계약을 구축한다.
 2. 최소 명령과 표시 데이터 계약이 갖춰지면 wxWidgets 창과 편집 흐름을 병행한다.
-3. 연결한 선/원호/유전체 CAD와 GUI STEP/3D 기반에서 재료/net/포트 입력 UI, 실제 접속/급전, 독립 수신 CAD 검증과 표시 LOD/실제 GPU context 복구 검증을 확장한다. 제조 파일은 별도 profile로 구현한다.
-4. WSL solver 도파관 참조 검증을 기반으로 사용자 형상/재료/급전 모델과 GUI 작업/결과 화면을 연결하고 단일 포트 IFA, 이어 원호 검증을 진행한다.
+3. 사각/원형 기판과 선/원호에 접지 polygon/패드/중공 도금 비아를 연결했다. GUI 생성/편집과 CAD/STEP/표시를 기반으로 독립 수신 CAD 검증과 표시 LOD/실제 GPU context 복구 검증을 확장한다. 제조 파일은 별도 profile로 구현한다.
+4. 연결한 사용자 PCB solver와 GUI 실행/취소/S11/VSWR/임피던스 그래프를 기반으로 단일 포트 IFA, 이어 원형 PCB/원호의 물리 검증과 NF2FF를 진행한다.
 5. 측정 파일 비교, 수렴/정확도 판정, 취소/복구, 전체 앱 성능을 검증하여 R1 내부 패키지로 묶는다.
 
 한 단계의 기초 시험 통과를 R0/R1 전체 완료로 확대하지 않는다. 설계 근거는 [07 아키텍처](../01_Docs/07_RFAD_소프트웨어_아키텍처.md), [15 구현 계획](../01_Docs/15_RFAD_구현_계획.md), [24 GUI와 성능](../01_Docs/24_RFAD_GUI_선정과_성능_설계.md)을 따른다.
+
+접지 polygon의 빈 영역, 패드와 PTH 비아, IFA의 급전선/단락부/접지 연결 및 x/y/z 단일 gap 포트를 추가했다. [도체와 IFA 모델](docs/copper_features.md)에 저장/편집/CAD/해석의 의미와 제한을 기록한다. 실행 fixture의 물성과 제작 치수는 시험 가정이며 승인 IFA의 미정 물성을 확정하지 않는다. SMA/실장 모델, 방사/실측과 일반 형상의 정확도 검증은 후속이다.
+
+격자/경계/시간 종료 조건은 [IFA 수렴 연구](docs/ifa_convergence.md)의 별도 도구로 비교한다. 기판 내부 격자와 PML 물리 두께를 분리하고 동일 snapshot의 복소 S11/반사 최소점/임피던스 변화를 기록한다. 계산 완료, 수치 안정성, 목표 대역 정합과 실측 정확도는 별도 상태다. 기존 결과를 변경하지 않고 원본 artifact와 판정기 출처를 가진 비교 기록을 보존한다.

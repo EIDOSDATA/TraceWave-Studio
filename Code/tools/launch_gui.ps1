@@ -3,12 +3,14 @@
 @param Workspace 비어 있으면 Code/.local/gui-workspace를 사용한다.
 @param Python 비어 있으면 Code/.venv/Scripts/python.exe를 사용한다.
 @param CadPython 비어 있으면 존재하는 Code/.venv-cad/Scripts/python.exe를 사용하며 없으면 CAD 없이 실행한다.
+@param OpenEmsWsl 설치/감사된 고정 WSL openEMS 런타임을 명시적으로 연결한다.
 #>
 [CmdletBinding()]
 param(
     [string]$Workspace = '',
     [string]$Python = '',
-    [string]$CadPython = ''
+    [string]$CadPython = '',
+    [switch]$OpenEmsWsl
 )
 
 $ErrorActionPreference = 'Stop'
@@ -50,6 +52,10 @@ $guiArguments = @(
 if (-not [string]::IsNullOrWhiteSpace($CadPython))
 {
     $guiArguments += @('--cad-python', [System.IO.Path]::GetFullPath($CadPython))
+}
+if ($OpenEmsWsl)
+{
+    $guiArguments += '--openems-wsl'
 }
 # @brief pipeline으로 GUI 프로세스 종료까지 기다려 실제 종료 코드를 읽는다.
 & $guiExecutable @guiArguments | Out-Null

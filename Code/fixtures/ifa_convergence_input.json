@@ -1,0 +1,852 @@
+{
+  "schema": "rfad.pcb-runtime-fixture/0.1",
+  "case_kind": "ifa_feed",
+  "description": "40x60 mm exploratory IFA geometry. epsilon_r=4.2, tan_delta=0.018, 0.93 mm core and 35 um copper are explicit test assumptions. Ideal local gap feed, no SMA/launch/mask or assembly model. Not a tuned or validated antenna. Separate numerical-study assumption: ideal lumped port validity explicitly set to 1.6-2.6 GHz to bracket the observed reflection minimum. No measured connector bandwidth claim.",
+  "document": {
+    "schema_version": "rfad.project/0.2",
+    "project_id": "e93527de-ee25-4c00-ac0d-660edf1ecc9a",
+    "revision_id": "d7633f64-39fc-4add-b474-8936129aceb7",
+    "parent_revision_ids": [],
+    "metadata": {
+      "name": "IFA reflection-minimum numerical study; explicit ideal-port assumptions",
+      "description": "40x60 mm exploratory IFA geometry. epsilon_r=4.2, tan_delta=0.018, 0.93 mm core and 35 um copper are explicit test assumptions. Ideal local gap feed, no SMA/launch/mask or assembly model. Not a tuned or validated antenna. Separate numerical-study assumption: ideal lumped port validity explicitly set to 1.6-2.6 GHz to bracket the observed reflection minimum. No measured connector bandwidth claim.",
+      "created_at": "2026-11-10T22:18:49.603711+00:00",
+      "modified_at": "2026-11-10T22:18:49.603711+00:00"
+    },
+    "frames": {
+      "world": {
+        "id": "80e5dd44-b5f3-4efd-b758-e203cb55c7ab",
+        "parent_frame_id": null,
+        "handedness": "right",
+        "translation_si": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "board": {
+        "id": "6fdd7346-7fd1-4924-becd-7d134d6670f5",
+        "parent_frame_id": "80e5dd44-b5f3-4efd-b758-e203cb55c7ab",
+        "handedness": "right",
+        "translation_si": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      }
+    },
+    "parameters": {},
+    "board": {
+      "id": "51cf1b19-34c3-4b4d-8ad1-742012fa834c",
+      "frame_id": "6fdd7346-7fd1-4924-becd-7d134d6670f5",
+      "outline": {
+        "kind": "rectangle",
+        "width": {
+          "value_si": 0.04,
+          "dimension": "length",
+          "display_unit": "mm",
+          "status": "user_entered",
+          "source_refs": [
+            "test-only-explicit-assumption"
+          ]
+        },
+        "height": {
+          "value_si": 0.06,
+          "dimension": "length",
+          "display_unit": "mm",
+          "status": "user_entered",
+          "source_refs": [
+            "test-only-explicit-assumption"
+          ]
+        }
+      },
+      "thickness_convention": "finished"
+    },
+    "extensions": {},
+    "geometry": [
+      {
+        "frame_id": "6fdd7346-7fd1-4924-becd-7d134d6670f5",
+        "layer_id": "e4638f10-c579-49f5-bc39-55a065b32eea",
+        "material_ref": "b6ff1075-c48b-48f7-9f45-29f3a6a4d5d0",
+        "source_ref": "test-only-explicit-assumption",
+        "include_in_em": true,
+        "include_in_export": true,
+        "net_id": "8470f28b-a037-419e-a9e8-af4beeabd4d0",
+        "id": "483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+        "kind": "planar_region",
+        "role": "ground",
+        "outer": [
+          [
+            {
+              "value_si": 0.0,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": [
+                "test-only-explicit-assumption"
+              ]
+            },
+            {
+              "value_si": 0.0,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": [
+                "test-only-explicit-assumption"
+              ]
+            }
+          ],
+          [
+            {
+              "value_si": 0.04,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": [
+                "test-only-explicit-assumption"
+              ]
+            },
+            {
+              "value_si": 0.0,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": [
+                "test-only-explicit-assumption"
+              ]
+            }
+          ],
+          [
+            {
+              "value_si": 0.04,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": [
+                "test-only-explicit-assumption"
+              ]
+            },
+            {
+              "value_si": 0.05,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": [
+                "test-only-explicit-assumption"
+              ]
+            }
+          ],
+          [
+            {
+              "value_si": 0.0,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": [
+                "test-only-explicit-assumption"
+              ]
+            },
+            {
+              "value_si": 0.05,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": [
+                "test-only-explicit-assumption"
+              ]
+            }
+          ]
+        ],
+        "holes": [
+          [
+            [
+              {
+                "value_si": 0.03,
+                "dimension": "length",
+                "display_unit": "mm",
+                "status": "user_entered",
+                "source_refs": [
+                  "test-only-explicit-assumption"
+                ]
+              },
+              {
+                "value_si": 0.01,
+                "dimension": "length",
+                "display_unit": "mm",
+                "status": "user_entered",
+                "source_refs": [
+                  "test-only-explicit-assumption"
+                ]
+              }
+            ],
+            [
+              {
+                "value_si": 0.034,
+                "dimension": "length",
+                "display_unit": "mm",
+                "status": "user_entered",
+                "source_refs": [
+                  "test-only-explicit-assumption"
+                ]
+              },
+              {
+                "value_si": 0.01,
+                "dimension": "length",
+                "display_unit": "mm",
+                "status": "user_entered",
+                "source_refs": [
+                  "test-only-explicit-assumption"
+                ]
+              }
+            ],
+            [
+              {
+                "value_si": 0.034,
+                "dimension": "length",
+                "display_unit": "mm",
+                "status": "user_entered",
+                "source_refs": [
+                  "test-only-explicit-assumption"
+                ]
+              },
+              {
+                "value_si": 0.014,
+                "dimension": "length",
+                "display_unit": "mm",
+                "status": "user_entered",
+                "source_refs": [
+                  "test-only-explicit-assumption"
+                ]
+              }
+            ],
+            [
+              {
+                "value_si": 0.03,
+                "dimension": "length",
+                "display_unit": "mm",
+                "status": "user_entered",
+                "source_refs": [
+                  "test-only-explicit-assumption"
+                ]
+              },
+              {
+                "value_si": 0.014,
+                "dimension": "length",
+                "display_unit": "mm",
+                "status": "user_entered",
+                "source_refs": [
+                  "test-only-explicit-assumption"
+                ]
+              }
+            ]
+          ]
+        ]
+      },
+      {
+        "frame_id": "6fdd7346-7fd1-4924-becd-7d134d6670f5",
+        "layer_id": "e4638f10-c579-49f5-bc39-55a065b32eea",
+        "material_ref": "b6ff1075-c48b-48f7-9f45-29f3a6a4d5d0",
+        "source_ref": "test-only-explicit-assumption",
+        "include_in_em": true,
+        "include_in_export": true,
+        "net_id": "8470f28b-a037-419e-a9e8-af4beeabd4d0",
+        "id": "4ae807f7-0e5f-43f6-a7b2-c4203bb80fb4",
+        "kind": "line_path",
+        "role": "radiator",
+        "start": [
+          {
+            "value_si": 0.005,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          },
+          {
+            "value_si": 0.057,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          }
+        ],
+        "end": [
+          {
+            "value_si": 0.031,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          },
+          {
+            "value_si": 0.057,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          }
+        ],
+        "width": {
+          "value_si": 0.001,
+          "dimension": "length",
+          "display_unit": "mm",
+          "status": "user_entered",
+          "source_refs": [
+            "test-only-explicit-assumption"
+          ]
+        }
+      },
+      {
+        "frame_id": "6fdd7346-7fd1-4924-becd-7d134d6670f5",
+        "layer_id": "e4638f10-c579-49f5-bc39-55a065b32eea",
+        "material_ref": "b6ff1075-c48b-48f7-9f45-29f3a6a4d5d0",
+        "source_ref": "test-only-explicit-assumption",
+        "include_in_em": true,
+        "include_in_export": true,
+        "net_id": "8470f28b-a037-419e-a9e8-af4beeabd4d0",
+        "id": "6442ae11-5c6e-4deb-a44e-5e683f69083c",
+        "kind": "line_path",
+        "role": "feed",
+        "start": [
+          {
+            "value_si": 0.009000000000000001,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          },
+          {
+            "value_si": 0.0525,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          }
+        ],
+        "end": [
+          {
+            "value_si": 0.009000000000000001,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          },
+          {
+            "value_si": 0.057,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          }
+        ],
+        "width": {
+          "value_si": 0.001,
+          "dimension": "length",
+          "display_unit": "mm",
+          "status": "user_entered",
+          "source_refs": [
+            "test-only-explicit-assumption"
+          ]
+        }
+      },
+      {
+        "frame_id": "6fdd7346-7fd1-4924-becd-7d134d6670f5",
+        "layer_id": "e4638f10-c579-49f5-bc39-55a065b32eea",
+        "material_ref": "b6ff1075-c48b-48f7-9f45-29f3a6a4d5d0",
+        "source_ref": "test-only-explicit-assumption",
+        "include_in_em": true,
+        "include_in_export": true,
+        "net_id": "8470f28b-a037-419e-a9e8-af4beeabd4d0",
+        "id": "8523d17e-8a81-4054-ab55-e449146549a1",
+        "kind": "pad",
+        "role": "feed",
+        "pad_shape": "rectangle",
+        "center": [
+          {
+            "value_si": 0.009000000000000001,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          },
+          {
+            "value_si": 0.053,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          }
+        ],
+        "size": [
+          {
+            "value_si": 0.002,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          },
+          {
+            "value_si": 0.002,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          }
+        ],
+        "rotation": {
+          "value_si": 0.0,
+          "dimension": "angle",
+          "display_unit": "deg",
+          "status": "user_entered",
+          "source_refs": [
+            "test-only-explicit-assumption"
+          ]
+        }
+      },
+      {
+        "frame_id": "6fdd7346-7fd1-4924-becd-7d134d6670f5",
+        "layer_id": "e4638f10-c579-49f5-bc39-55a065b32eea",
+        "material_ref": "b6ff1075-c48b-48f7-9f45-29f3a6a4d5d0",
+        "source_ref": "test-only-explicit-assumption",
+        "include_in_em": true,
+        "include_in_export": true,
+        "net_id": "8470f28b-a037-419e-a9e8-af4beeabd4d0",
+        "id": "9fba8f18-1eb6-408c-ac83-f85eca05c52a",
+        "kind": "line_path",
+        "role": "short",
+        "start": [
+          {
+            "value_si": 0.005,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          },
+          {
+            "value_si": 0.0495,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          }
+        ],
+        "end": [
+          {
+            "value_si": 0.005,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          },
+          {
+            "value_si": 0.057,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          }
+        ],
+        "width": {
+          "value_si": 0.001,
+          "dimension": "length",
+          "display_unit": "mm",
+          "status": "user_entered",
+          "source_refs": [
+            "test-only-explicit-assumption"
+          ]
+        }
+      }
+    ],
+    "materials": [
+      {
+        "id": "8689527a-22cd-421f-a92c-36b8d3000a51",
+        "name": "Explicit test substrate",
+        "model": "isotropic_constant",
+        "epsilon_r": {
+          "value_si": 4.2,
+          "dimension": "dimensionless",
+          "display_unit": "1",
+          "status": "user_entered",
+          "source_refs": [
+            "test-only-explicit-assumption"
+          ]
+        },
+        "tan_delta": {
+          "value_si": 0.018,
+          "dimension": "dimensionless",
+          "display_unit": "1",
+          "status": "user_entered",
+          "source_refs": [
+            "test-only-explicit-assumption"
+          ]
+        },
+        "conductivity": {
+          "value_si": 0.0,
+          "dimension": "conductivity",
+          "display_unit": "S/m",
+          "status": "user_entered",
+          "source_refs": [
+            "test-only-explicit-assumption"
+          ]
+        },
+        "validity_hz": {
+          "min": {
+            "value_si": 1000000000.0,
+            "dimension": "frequency",
+            "display_unit": "GHz",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          },
+          "max": {
+            "value_si": 20000000000.0,
+            "dimension": "frequency",
+            "display_unit": "GHz",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          }
+        },
+        "source_refs": [
+          "test-only-explicit-assumption"
+        ],
+        "assumptions": [
+          "Not actual board material; only native interface verification"
+        ]
+      },
+      {
+        "id": "b6ff1075-c48b-48f7-9f45-29f3a6a4d5d0",
+        "name": "Explicit test conductor",
+        "model": "isotropic_constant",
+        "epsilon_r": {
+          "value_si": 1.0,
+          "dimension": "dimensionless",
+          "display_unit": "1",
+          "status": "user_entered",
+          "source_refs": [
+            "test-only-explicit-assumption"
+          ]
+        },
+        "tan_delta": {
+          "value_si": 0.0,
+          "dimension": "dimensionless",
+          "display_unit": "1",
+          "status": "user_entered",
+          "source_refs": [
+            "test-only-explicit-assumption"
+          ]
+        },
+        "conductivity": {
+          "value_si": 58000000.0,
+          "dimension": "conductivity",
+          "display_unit": "S/m",
+          "status": "user_entered",
+          "source_refs": [
+            "test-only-explicit-assumption"
+          ]
+        },
+        "validity_hz": {
+          "min": {
+            "value_si": 1000000000.0,
+            "dimension": "frequency",
+            "display_unit": "GHz",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          },
+          "max": {
+            "value_si": 20000000000.0,
+            "dimension": "frequency",
+            "display_unit": "GHz",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          }
+        },
+        "source_refs": [
+          "test-only-explicit-assumption"
+        ],
+        "assumptions": [
+          "Finite conducting sheet test assumption"
+        ]
+      }
+    ],
+    "ports": [
+      {
+        "id": "5fde8fba-d2ec-4e09-9388-7e85d24c07ec",
+        "name": "Explicit test gap",
+        "kind": "lumped",
+        "positive_geometry_id": "8523d17e-8a81-4054-ab55-e449146549a1",
+        "reference_geometry_id": "483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+        "resistance": {
+          "value_si": 50.0,
+          "dimension": "impedance",
+          "display_unit": "ohm",
+          "status": "user_entered",
+          "source_refs": [
+            "test-only-explicit-assumption"
+          ]
+        },
+        "reference_plane": "ideal local antenna gap; no SMA or launch deembedding",
+        "polarity": 1,
+        "direction": [
+          0,
+          1,
+          0
+        ],
+        "validity_hz": {
+          "min": {
+            "value_si": 1600000000.0,
+            "dimension": "frequency",
+            "display_unit": "GHz",
+            "status": "user_entered",
+            "source_refs": []
+          },
+          "max": {
+            "value_si": 2600000000.0,
+            "dimension": "frequency",
+            "display_unit": "GHz",
+            "status": "user_entered",
+            "source_refs": []
+          }
+        },
+        "excitation_box": {
+          "start": [
+            {
+              "value_si": 0.009000000000000001,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": [
+                "test-only-explicit-assumption"
+              ]
+            },
+            {
+              "value_si": 0.05,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": [
+                "test-only-explicit-assumption"
+              ]
+            },
+            {
+              "value_si": 0.000965,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": [
+                "test-only-explicit-assumption"
+              ]
+            }
+          ],
+          "stop": [
+            {
+              "value_si": 0.009000000000000001,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": [
+                "test-only-explicit-assumption"
+              ]
+            },
+            {
+              "value_si": 0.052000000000000005,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": [
+                "test-only-explicit-assumption"
+              ]
+            },
+            {
+              "value_si": 0.000965,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": [
+                "test-only-explicit-assumption"
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "stackup": [
+      {
+        "id": "66c044b8-1b96-4efb-b94a-810b54a5637e",
+        "name": "Explicit lower copper; no automatic ground fill",
+        "role": "conductor",
+        "order": 0,
+        "z_min": {
+          "value_si": 0.0,
+          "dimension": "length",
+          "display_unit": "mm",
+          "status": "user_entered",
+          "source_refs": [
+            "test-only-explicit-assumption"
+          ]
+        },
+        "thickness": {
+          "value_si": 3.5e-05,
+          "dimension": "length",
+          "display_unit": "um",
+          "status": "user_entered",
+          "source_refs": [
+            "test-only-explicit-assumption"
+          ]
+        },
+        "material_id": "b6ff1075-c48b-48f7-9f45-29f3a6a4d5d0"
+      },
+      {
+        "id": "e4a4695c-615a-4ac4-9314-3ee8d1166436",
+        "name": "Test dielectric",
+        "role": "dielectric",
+        "order": 1,
+        "z_min": {
+          "value_si": 3.5000000000000004e-05,
+          "dimension": "length",
+          "display_unit": "mm",
+          "status": "user_entered",
+          "source_refs": [
+            "test-only-explicit-assumption"
+          ]
+        },
+        "thickness": {
+          "value_si": 0.00093,
+          "dimension": "length",
+          "display_unit": "mm",
+          "status": "user_entered",
+          "source_refs": [
+            "test-only-explicit-assumption"
+          ]
+        },
+        "material_id": "8689527a-22cd-421f-a92c-36b8d3000a51"
+      },
+      {
+        "id": "e4638f10-c579-49f5-bc39-55a065b32eea",
+        "name": "Test outer conductor",
+        "role": "conductor",
+        "order": 2,
+        "z_min": {
+          "value_si": 0.000965,
+          "dimension": "length",
+          "display_unit": "mm",
+          "status": "user_entered",
+          "source_refs": [
+            "test-only-explicit-assumption"
+          ]
+        },
+        "thickness": {
+          "value_si": 3.5e-05,
+          "dimension": "length",
+          "display_unit": "um",
+          "status": "user_entered",
+          "source_refs": [
+            "test-only-explicit-assumption"
+          ]
+        },
+        "material_id": "b6ff1075-c48b-48f7-9f45-29f3a6a4d5d0"
+      }
+    ],
+    "nets": [
+      {
+        "id": "8470f28b-a037-419e-a9e8-af4beeabd4d0",
+        "name": "IFA continuous DC conductor including short and ground"
+      }
+    ],
+    "connections": [],
+    "targets": [],
+    "networks": [],
+    "environment": [],
+    "analysis_definitions": [],
+    "optimization_studies": [],
+    "measurement_sets": [],
+    "manufacturing_profiles": [],
+    "export_profiles": [],
+    "source_references": [],
+    "assumptions": [],
+    "validation_profiles": []
+  },
+  "settings": {
+    "frequency_hz": {
+      "start": 1600000000,
+      "stop": 2600000000,
+      "count": 201
+    },
+    "grid_mm": 0.5,
+    "air_padding_mm": 8.0,
+    "curve_tolerance_mm": 0.025,
+    "max_timesteps": 50000,
+    "end_criterion": 0.0001
+  }
+}

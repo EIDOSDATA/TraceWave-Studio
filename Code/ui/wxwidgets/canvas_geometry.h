@@ -2,6 +2,8 @@
 
 #include <algorithm>
 #include <cmath>
+#include <limits>
+#include <vector>
 
 /** @brief 물리 계산과 독립적인 2D 표시 좌표의 거리와 각도 연산이다. */
 namespace CanvasGeometry
@@ -57,6 +59,64 @@ inline double SegmentDistance(Point point, Point start, Point end)
     }
     const double fraction = std::clamp(((point.x - start.x) * dx + (point.y - start.y) * dy) / lengthSquared, 0.0, 1.0);
     return std::hypot(point.x - (start.x + fraction * dx), point.y - (start.y + fraction * dy));
+}
+
+/** @brief 단순 폐곡선의 내부를 판정하며 마지막 정점을 첫 점으로 자동 연결한다. */
+inline bool RingContains(Point point, const std::vector<Point>& ring)
+{
+    bool inside = false;
+    if (ring.size() < 3)
+    {
+        return false;
+    }
+    for (std::size_t i = 0, j = ring.size() - 1; i < ring.size(); j = i++)
+    {
+        const Point a = ring[j], b = ring[i];
+        if ((a.y > point.y) != (b.y > point.y) &&
+            point.x < a.x + (point.y - a.y) * (b.x - a.x) / (b.y - a.y))
+        {
+            inside = !inside;
+        }
+    }
+    return inside;
+}
+
+/** @brief 외곽과 구멍을 가진 면의 구리 영역까지 거리를 구한다. */
+inline double RegionDistance(Point point, const std::vector<std::vector<Point>>& rings)
+{
+    double distance = std::numeric_limits<double>::infinity();
+    if (rings.empty())
+    {
+        return distance;
+    }
+    bool inside = RingContains(point, rings.front());
+    for (std::size_t index = 0; index < rings.size(); ++index)
+    {
+        const auto& ring = rings[index];
+        if (index > 0 && RingContains(point, ring))
+        {
+            inside = false;
+        }
+        for (std::size_t i = 0; i < ring.size(); ++i)
+        {
+            distance = std::min(distance, SegmentDistance(point, ring[i], ring[(i + 1) % ring.size()]));
+        }
+    }
+    return inside ? 0.0 : distance;
+}
+
+/** @brief 직사각 패드의 중심/크기/회전을 표시 정점 네 개로 변환한다. */
+inline std::vector<Point> RectanglePoints(Point center, double width, double height, double degrees)
+{
+    const double angle = NormalizeDegrees(degrees) * Pi / 180.0;
+    const double cosine = std::cos(angle), sine = std::sin(angle);
+    std::vector<Point> result;
+    for (const Point corner : {Point{-width / 2, -height / 2}, Point{width / 2, -height / 2},
+        Point{width / 2, height / 2}, Point{-width / 2, height / 2}})
+    {
+        result.push_back({center.x + corner.x * cosine - corner.y * sine, center.y + corner.x * sine + corner.y * cosine});
+    }
+    return result;
 }
 
 /** @brief 원호의 실제 각도 구간과 양 끝을 포함하여 선택 거리를 구한다. */

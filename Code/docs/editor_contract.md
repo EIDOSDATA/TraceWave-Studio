@@ -8,13 +8,13 @@
 
 `editor.get`은 읽기 전용이다. params는 contract_version/context/input이며 context에는 project_id, input에는 expected_revision과 선택적인 selection을 전달한다. selection은 `{"kind":"parameter","id":"UUID"}` 형태다. 선택을 생략하면 프로젝트 속성을 반환한다. 존재하지 않는 객체, 잘못된 종류와 stale revision은 오류다. 조회로 revision이나 명령 접수 이력을 바꾸지 않는다.
 
-응답은 profile/project_id/revision_id/saved_revision, metadata의 이름/설명, history, items와 selection이다. items는 kind/id/label만 포함하고 selection은 해당 객체의 fields만 포함한다. 전체 원본, 모든 매개변수 계산 캐시, CAD 형상과 solver 배열을 반복 전송하지 않는다. 현재 DTO는 UTF-8 JSON 60 KiB 상한을 넘으면 요청 ID를 보존한 E_RESOURCE를 반환한다. 대형 목록 paging과 공유 choices table은 후속이다.
+응답은 profile/project_id/revision_id/saved_revision, metadata의 이름/설명, history, items와 selection이다. items는 kind/id/label만 포함하고 selection은 해당 객체의 fields만 포함한다. 전체 원본, 모든 매개변수 계산 캐시, CAD 형상과 solver 배열을 반복 전송하지 않는다. 현재 DTO는 UTF-8 JSON 60 KiB 상한을 넘으면 요청 ID를 보존한 E_RESOURCE를 반환한다. 다각형 좌표 표의 길이 매개변수 선택지는 top-level coordinate_choices에서 한 번만 전달한다. 대형 목록 paging은 후속이다.
 
-각 field는 key/label/editor/value/choices/readonly를 가진다. editor는 text/choice/bool/bindings다. choice는 전송 value와 표시 label을 구분하며 이름을 객체 참조 키로 사용하지 않는다. bindings는 표현식 변수 이름과 안정 UUID를 연결하는 사전이고 choices는 참조 가능한 매개변수의 ID와 이름이다.
+각 field는 key/label/editor/value/choices/readonly를 가진다. editor는 text/choice/bool/bindings/coordinate_table/multichoice다. choice는 전송 value와 표시 label을 구분하며 이름을 객체 참조 키로 사용하지 않는다. bindings는 표현식 변수 이름과 안정 UUID를 연결하는 사전이고 choices는 참조 가능한 매개변수의 ID와 이름이다. coordinate_table은 outer 또는 holes.N의 고정 행 목록이며 각 x/y 셀은 mode/value/parameter_id/unit 문자열을 가진다. 읽기 전용 unit은 보통 mm, 환산 overflow 시 m다. 변경하지 않은 셀의 원본 Quantity와 결합을 보존한다. multichoice는 중복 없는 pad UUID 목록이며 잘못된 참조는 거절한다.
 
 선택지의 label과 읽기 전용 상태/형식/모델 표시는 한국어 사용자 용어를 사용한다. 읽기 전용 필드의 선택적 display_value는 화면 표시용이고, value 및 choices의 value는 기존 API 원문과 안정 ID를 유지한다. GUI는 display_value를 명령 입력으로 보내지 않는다. id/frame_id에는 advanced=true를 표시해 상세 정보로 분리할 수 있다. 일부 필드의 선택적 help는 입력 방식, 단위 변경, 변수 결합과 미정값의 의미를 설명한다. 이 표시 메타데이터는 편집 권한이나 원본 저장 의미를 바꾸지 않는다.
 
-현재 종류는 project, parameter, board, material, layer, net, geometry, port다. 새 매개변수는 명시적인 new_parameter와 새 UUID로 기본 폼을 조회한다. 기본은 미정 길이/mm이고 숫자나 재료 물성을 만들지 않는다. 생성 후 같은 ID를 parameter로 조회한다. 새 기판/재료/적층/형상/포트 생성과 삭제 UI는 후속이며 기존 도메인 명령은 유지한다.
+현재 종류는 project, parameter, board, material, layer, net, geometry, port다. new_parameter/new_material/new_net/new_port와 새 UUID로 생성 폼을 조회한다. 물성/유효 대역/급전 저항과 위치는 미정이며 조회만으로 원본을 생성하지 않는다. 새 포트는 기판과 두 개 이상의 도체 형상이 필요하고 양극/기준 도체를 사용자가 선택해야 한다. 현재 생성 UI는 단일 포트만 지원한다. 생성 적용 후 같은 ID의 실제 종류로 조회한다. 기판/적층/선/원호 생성과 형상 삭제는 [2D 계약](canvas_contract.md)을 따른다.
 
 ## 값 편집
 
@@ -30,7 +30,7 @@
 - 객체 ID/형식/좌표계/고정 모델과 출처/가정 목록은 현재 읽기 전용이다. 알 수 없는 필드와 readonly 변경은 거부한다. 출처/가정 기록 편집 전용 UI는 후속이다.
 - 표시 단위로의 환산이 float64 표현 범위를 벗어나면 원본을 변경하지 않고 SI 표시와 안내를 제공한다. 이름 변경 등 다른 속성 편집은 계속 가능하다.
 
-기존 객체의 기판 크기, 재료 물성/유효 대역, 적층 역할/순서/위치/두께/재료, 네트 이름, 선/원호의 좌표/폭/역할/참조와 포함 여부, 포트의 도체/저항/기준면/방향/대역을 편집한다. 방향 벡터는 현재 성분을 정수로 저장했어도 유한 실수 입력을 허용한다. 실제 도메인 검증에서 겹친 적층, 잘못된 반지름, 순환 수식, 참조 오류 등을 차단한다. 오류에는 field_path 또는 기존 도메인 진단 위치를 유지한다.
+기존 객체의 기판 치수와 원형 중심/반지름, 재료 물성/유효 대역, 적층 역할/순서/위치/두께/재료, 네트 이름, 선/원호의 좌표/폭/역할/참조와 포함 여부, 포트의 도체/저항/기준면/방향/대역과 excitation_box 시작/끝 3D 좌표를 편집한다. 방향 벡터는 현재 성분을 정수로 저장했어도 유한 실수 입력을 허용한다. 기존 포트에 excitation_box가 없어도 조회로 원본에 추가하지 않으며 좌표 입력 시에만 명시적으로 생성한다. 도메인 저장 가능성과 특정 solver의 급전 지원은 별개다. 실제 도메인 검증에서 겹친 적층, 잘못된 반지름, 순환 수식, 참조 오류 등을 차단한다. 오류에는 field_path 또는 기존 도메인 진단 위치를 유지한다.
 
 ## 영속 실행 취소와 다시 실행
 
@@ -48,4 +48,4 @@
 
 서비스 시험은 미정 입력, 이름 변경 시 원본/출처 보존, 단위만 변경, 값과 단위 동시 변경, inactive/readonly/비유한 입력 거부, 의존 수식 재계산과 순환 실패, 원자적 metadata 편집, undo/redo 재시작/재전송/분기, 저장 기준점 보존, 게시 실패, 구형 이력 복원과 보존 상한을 포함한다. 실제 stdio 프로세스 시험은 서비스 재시작과 불변 스냅샷까지 연결한다.
 
-이 profile은 속성 편집과 명령 이력을 구현한다. 2D 직접 그리기/drag, 사용자 undo grouping, CAD worker, 제품 solver 실행, IFA/NF2FF와 전체 GUI 성능 예산은 후속 단계다. WSL의 독립 도파관 참조 검사 통과를 제품 solver 연결 완료로 확대하지 않는다.
+이 profile은 속성 편집과 명령 이력을 구현한다. 2D 직접 편집, CAD worker와 제한된 사용자 PCB solver는 별도 계약으로 연결되며 이 DTO 자체가 물리 검증 결과는 아니다. 사용자 undo grouping, 실제 IFA/NF2FF 검증과 전체 GUI 성능 예산 수용은 후속이다.

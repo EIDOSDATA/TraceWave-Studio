@@ -117,6 +117,169 @@ def _arc(cq, shape: dict, layer: dict):
     return cq.Solid.extrudeLinear(wire, [], (0.0, 0.0, height))
 
 
+def _loop_area(points):
+    """! @brief 큰 원점의 상쇄 오차를 줄여 polygon의 signed 면적을 계산한다."""
+    origin = points[0]
+    return sum((a[0] - origin[0]) * (b[1] - origin[1]) - (b[0] - origin[0]) * (a[1] - origin[1])
+               for a, b in zip(points, points[1:] + points[:1])) / 2
+
+
+def _region(cq, shape, layer):
+    """! @brief 선분 경계와 명시적 holes를 실제 OCCT inner wire로 압출한다."""
+    from rfad.domain.planar import validate_region
+
+    field = "geometry." + shape["id"]
+    outer = [list(_point(point, field + ".outer")) for point in shape["outer_mm"]]
+    holes = [[list(_point(point, field + ".holes")) for point in loop] for loop in shape["holes_mm"]]
+    validate_region(outer, holes, field)
+    for loop in [outer, *holes]:
+        _require(all(math.dist(a, b) >= 1e-5 for a, b in zip(loop, loop[1:] + loop[:1])),
+                 "영역 경계의 변이 최소 형상 길이보다 짧습니다.", field=field)
+    z = layer["z_min_mm"]
+    def wire(points, positive):
+        oriented = points if (_loop_area(points) > 0) == positive else list(reversed(points))
+        return cq.Wire.makePolygon([(x, y, z) for x, y in oriented], close=True)
+    outer_wire, inner_wires = wire(outer, True), [wire(hole, False) for hole in holes]
+    for index, boundary in enumerate([outer_wire, *inner_wires]):
+        for other in [outer_wire, *inner_wires][index + 1:]:
+            _require(boundary.distance(other) >= 1e-5, "영역 경계 간격이 CAD 최소 형상보다 작습니다.", field=field)
+    for loop in [outer, *holes]:
+        edges = [cq.Edge.makeLine((a[0], a[1], z), (b[0], b[1], z)) for a, b in zip(loop, loop[1:] + loop[:1])]
+        for index, edge in enumerate(edges):
+            for other_index in range(index + 2, len(edges)):
+                if index == 0 and other_index == len(edges) - 1:
+                    continue
+                _require(edge.distance(edges[other_index]) >= 1e-5, "영역의 좁은 간격 또는 연결 폭이 CAD 최소 형상보다 작습니다.", field=field)
+    solid = cq.Solid.extrudeLinear(outer_wire, inner_wires, (0, 0, layer["thickness_mm"]))
+    area = abs(_loop_area(outer)) - sum(abs(_loop_area(hole)) for hole in holes)
+    _require(area >= 1e-10, "도체 영역의 면적이 CAD 최소 형상보다 작습니다.", field=field)
+    return solid, area
+
+
+def _pad(cq, shape, layer):
+    """! @brief 실제 층 두께만 사용하는 원형/회전 사각 패드를 생성한다."""
+    field = "geometry." + shape["id"]
+    cx, cy = _point(shape["center_mm"], field + ".center")
+    sizes = shape["size_mm"]
+    _require(type(sizes) is list and len(sizes) == 2, "패드에는 두 치수가 필요합니다.", field=field + ".size")
+    width, height = [_number(value, field + ".size", positive=True) for value in sizes]
+    rotation = _number(shape["rotation_deg"], field + ".rotation")
+    z, thickness = layer["z_min_mm"], layer["thickness_mm"]
+    if shape["pad_shape"] == "circle":
+        _require(math.isclose(width, height, rel_tol=0, abs_tol=1e-9), "원형 패드의 두 지름이 다릅니다.", field=field + ".size")
+        return cq.Solid.makeCylinder(width / 2, thickness, (cx, cy, z)), math.pi * (width / 2) ** 2
+    _require(shape["pad_shape"] == "rectangle", "지원하지 않는 패드 외형입니다.", code="E_UNSUPPORTED", field=field)
+    solid = cq.Solid.makeBox(width, height, thickness, (cx - width / 2, cy - height / 2, z))
+    return solid.rotate((cx, cy, z), (cx, cy, z + 1), math.remainder(rotation, 360)), width * height
+
+
+def _planar_solid(cq, source, layer):
+    """! @brief 원본 도체별 정확한 고체와 독립 산술 면적을 반환한다."""
+    kind = source["kind"]
+    if kind == "planar_region":
+        return _region(cq, source, layer)
+    if kind == "pad":
+        return _pad(cq, source, layer)
+    _require(kind in ("line_path", "arc_path"), "해당 CAD 형상은 지원하지 않습니다.", code="E_UNSUPPORTED")
+    if kind == "line_path":
+        area = math.dist(source["start_mm"], source["end_mm"]) * source["width_mm"] + math.pi * (source["width_mm"] / 2) ** 2
+        return _line(cq, source, layer), area
+    area = source["radius_mm"] * source["width_mm"] * math.radians(abs(source["sweep_angle_deg"]))
+    if abs(source["sweep_angle_deg"]) != 360:
+        area += math.pi * (source["width_mm"] / 2) ** 2
+    return _arc(cq, source, layer), area
+
+
+def _inside_outline(cq, solid, board, z_min, thickness, tolerance, field):
+    """! @brief 실제 생성 고체를 기판 외곽과 비교하며 자동 clipping을 금지한다."""
+    box = solid.BoundingBox()
+    if board.get("kind", "rectangle") == "circle":
+        cx, cy = board["center_mm"]
+        coverage = cq.Solid.makeCylinder(board["radius_mm"] + tolerance, thickness + 2 * tolerance, (cx, cy, z_min - tolerance))
+        outside = solid.cut(coverage)
+        _require(outside.isValid(), "원형 기판 외곽의 Boolean 포함 검증이 실패했습니다.", field=field)
+        contained = not outside.Solids() or outside.Volume() <= 1e-18
+    else:
+        contained = box.xmin >= -tolerance and box.ymin >= -tolerance and box.xmax <= board["width_mm"] + tolerance and box.ymax <= board["height_mm"] + tolerance
+    _require(contained, "도체 또는 비아 drill이 기판 외곽을 벗어납니다. 자동 절개하지 않습니다.", field=field)
+
+
+def _material(source, layer):
+    """! @brief 명시한 도체 재료 override 또는 원본 층의 재료 참조만 사용한다."""
+    return source["material_ref"] if source["material_ref"] is not None else layer["material_id"]
+
+
+def _via_records(cq, projection, layers, planar):
+    """! @brief through-PTH의 실제 span, 중공 barrel과 명시적 양단 패드 접속을 검증한다."""
+    conductors = sorted((layer for layer in layers.values() if layer["role"] == "conductor"), key=lambda layer: layer["z_min_mm"])
+    records = []
+    for source in projection["shapes"]:
+        if source["kind"] != "via":
+            continue
+        field = "geometry." + source["id"]
+        _require(len(conductors) >= 2 and {source["layer_id"], source["end_layer_id"]} == {conductors[0]["id"], conductors[-1]["id"]},
+                 "초기 CAD 비아는 최하/최상 conductor 층 사이의 관통 PTH만 지원합니다.", code="E_UNSUPPORTED", field=field)
+        _require(source["fill"] == "none" and source["net_id"] is not None, "관통 비아에는 미충진 상태와 명시적 net이 필요합니다.", code="E_CONNECTIVITY", field=field)
+        pads = source["pad_ids"]
+        _require(type(pads) is list and 2 <= len(pads) <= 8 and len(set(pads)) == len(pads), "비아 양 끝의 고유 pad 참조 2~8개가 필요합니다.", code="E_CONNECTIVITY", field=field + ".pad_ids")
+        cx, cy = _point(source["center_mm"], field + ".center")
+        inner = _number(source["finished_hole_diameter_mm"], field + ".finished_hole_diameter", positive=True) / 2
+        plating = _number(source["plating_thickness_mm"], field + ".plating_thickness", positive=True)
+        outer = inner + plating
+        tool = source["tool_hole_diameter_mm"]
+        if tool is not None:
+            _require(math.isclose(_number(tool, field + ".tool_hole_diameter", positive=True), 2 * outer, rel_tol=0, abs_tol=projection["tolerance_mm"]),
+                     "tool bore와 finished bore/plating의 관계가 초기 CAD profile과 다릅니다.", code="E_UNSUPPORTED", field=field)
+        low = conductors[0]["z_min_mm"]
+        high = conductors[-1]["z_min_mm"] + conductors[-1]["thickness_mm"]
+        span = high - low
+        _require(all(layer["z_min_mm"] >= low and layer["z_min_mm"] + layer["thickness_mm"] <= high for layer in layers.values()),
+                 "초기 관통 PTH의 양 끝 conductor 밖에 추가 적층이 있습니다.", code="E_UNSUPPORTED", field=field)
+        drill = cq.Solid.makeCylinder(outer, span, (cx, cy, low))
+        _inside_outline(cq, drill, projection["board"], low, span, projection["tolerance_mm"], field)
+        outer_wire = cq.Wire.makeCircle(outer, (cx, cy, low), (0, 0, 1))
+        inner_wire = cq.Wire.makeCircle(inner, (cx, cy, low), (0, 0, 1))
+        barrel = cq.Solid.extrudeLinear(outer_wire, [inner_wire], (0, 0, span))
+        _require(math.isclose(barrel.Volume(), math.pi * (outer ** 2 - inner ** 2) * span, rel_tol=1e-7, abs_tol=1e-18),
+                 "실제 비아 barrel의 체적이 중공 원통과 다릅니다.", field=field)
+        material = _material(source, layers[source["layer_id"]])
+        pad_layers = set()
+        for identity in pads:
+            _require(identity in planar and planar[identity][0]["kind"] == "pad", "비아가 참조한 출력 pad 형상이 없습니다.", code="E_CONNECTIVITY", field=field + ".pad_ids")
+            pad, solid = planar[identity]
+            layer = layers[pad["layer_id"]]
+            _require(pad["net_id"] == source["net_id"] and _material(pad, layer) == material,
+                     "비아와 명시적 pad의 net 또는 재료가 다릅니다.", code="E_CONNECTIVITY", field=field + ".pad_ids")
+            _require(low <= layer["z_min_mm"] and layer["z_min_mm"] + layer["thickness_mm"] <= high,
+                     "비아 pad가 실제 barrel 범위를 벗어납니다.", code="E_CONNECTIVITY", field=field)
+            coverage = cq.Solid.makeCylinder(outer + 1e-5, layer["thickness_mm"], (cx, cy, layer["z_min_mm"]))
+            outside = coverage.cut(solid)
+            _require(outside.isValid() and (not outside.Solids() or outside.Volume() <= 1e-18),
+                     "비아의 명시적 pad에 양의 annular 접속 여유가 없습니다.", code="E_CONNECTIVITY", field=field + ".pad_ids")
+            pad_layers.add(layer["id"])
+        _require({conductors[0]["id"], conductors[-1]["id"]} <= pad_layers, "관통 비아 양 끝에 명시적 pad가 필요합니다.", code="E_CONNECTIVITY", field=field)
+        for previous in records:
+            _require(drill.distance(previous["drill"]) > projection["tolerance_mm"],
+                     "겹치거나 접한 비아 drill은 초기 CAD profile에서 지원하지 않습니다.", code="E_UNSUPPORTED", field=field)
+        records.append({"source": source, "drill": drill, "shape": barrel, "material_id": material,
+                        "z_min_mm": low, "z_max_mm": high, "outer_radius_mm": outer, "inner_radius_mm": inner,
+                        "layer_ids": [layer["id"] for layer in conductors]})
+    return records
+
+
+def _drilled(solid, records):
+    """! @brief 명시적 관통 PTH의 실제 outer barrel 공간을 해당 body에서 제거한다."""
+    sources = []
+    for record in records:
+        common = solid.intersect(record["drill"])
+        _require(common.isValid(), "비아 drill 교집합 계산이 실패했습니다.")
+        if common.Volume() > 1e-18:
+            solid = solid.cut(record["drill"])
+            _require(solid.isValid() and bool(solid.Solids()), "drill 후 원본 도체 또는 유전체가 사라지거나 유효하지 않습니다.")
+            sources.append(record["source"]["id"])
+    return solid, sources
+
+
 def _metrics(shape) -> dict:
     """! @brief 비교용 부피, 중심, 경계와 닫힌 고체 수를 mm 단위로 측정한다."""
     solids = shape.Solids()
@@ -144,56 +307,77 @@ def _make_bodies(cq, projection: dict) -> list[dict]:
     _require(len(layers) == len(projection["layers"]) and len(layers) <= 64,
              "중복 층 또는 지원 상한을 넘는 층이 있습니다.")
     board = projection["board"]
-    width = _number(board["width_mm"], "board.outline.width", positive=True)
-    height = _number(board["height_mm"], "board.outline.height", positive=True)
+    circular = board.get("kind", "rectangle") == "circle"
+    _require(board.get("kind", "rectangle") in ("rectangle", "circle"), "해당 기판 외곽은 지원하지 않습니다.", code="E_UNSUPPORTED")
+    if circular:
+        center = [_number(value, "board.outline.center") for value in board["center_mm"]]
+        _require(len(center) == 2, "원형 기판 중심에는 두 좌표가 필요합니다.")
+        radius = _number(board["radius_mm"], "board.outline.radius", positive=True)
+    else:
+        width = _number(board["width_mm"], "board.outline.width", positive=True)
+        height = _number(board["height_mm"], "board.outline.height", positive=True)
     bodies = []
     for layer in layers.values():
         _number(layer["z_min_mm"], "stackup." + layer["id"] + ".z_min")
         _number(layer["thickness_mm"], "stackup." + layer["id"] + ".thickness", positive=True)
         _require(layer["role"] in ("dielectric", "conductor"), "해당 층 역할의 CAD coverage를 지원하지 않습니다.", code="E_UNSUPPORTED")
         if layer["role"] == "dielectric":
-            solid = cq.Solid.makeBox(width, height, layer["thickness_mm"], (0.0, 0.0, layer["z_min_mm"]))
+            solid = (cq.Solid.makeCylinder(radius, layer["thickness_mm"], (center[0], center[1], layer["z_min_mm"])) if circular
+                     else cq.Solid.makeBox(width, height, layer["thickness_mm"], (0.0, 0.0, layer["z_min_mm"])))
             bodies.append({"id": layer["id"], "name": "dielectric_" + layer["id"], "role": "dielectric",
                            "layer_id": layer["id"], "net_id": None, "material_id": layer["material_id"],
                            "source_entity_ids": [board["id"], layer["id"]], "shape": solid})
-    groups = {}
+    groups, planar = {}, {}
     _require(len(projection["shapes"]) <= 128, "초기 CAD 형상 상한 128개를 초과했습니다.", code="E_RESOURCE")
+    _require(len({source["id"] for source in projection["shapes"]}) == len(projection["shapes"]), "CAD 원본 도체 식별자가 중복되었습니다.")
     for source in projection["shapes"]:
         layer = layers.get(source["layer_id"])
         _require(layer is not None and layer["role"] == "conductor", "도체 형상이 conductor 층에 연결되지 않았습니다.")
-        _require(source["kind"] in ("line_path", "arc_path"), "해당 CAD 형상은 지원하지 않습니다.", code="E_UNSUPPORTED")
-        solid = _line(cq, source, layer) if source["kind"] == "line_path" else _arc(cq, source, layer)
+        if source["kind"] == "via":
+            continue
+        solid, expected_area = _planar_solid(cq, source, layer)
         stats = _metrics(solid)
-        if source["kind"] == "line_path":
-            expected_area = math.dist(source["start_mm"], source["end_mm"]) * source["width_mm"] + math.pi * (source["width_mm"] / 2.0) ** 2
-        else:
-            expected_area = source["radius_mm"] * source["width_mm"] * math.radians(abs(source["sweep_angle_deg"]))
-            if abs(source["sweep_angle_deg"]) != 360.0:
-                expected_area += math.pi * (source["width_mm"] / 2.0) ** 2
         expected_volume = expected_area * layer["thickness_mm"]
         _require(math.isclose(stats["volume_mm3"], expected_volume, rel_tol=1e-7, abs_tol=1e-18),
                  "CAD 수치 정밀도로 analytic 원본의 체적을 보존하지 못했습니다.", field="geometry." + source["id"])
-        box = stats["bbox_mm"]
-        tolerance = projection["tolerance_mm"]
-        _require(box[0] >= -tolerance and box[1] >= -tolerance and box[3] <= width + tolerance and box[4] <= height + tolerance,
-                 "도체가 기판 외곽을 벗어납니다. 이 profile은 임의 절개 또는 잘라내기를 하지 않습니다.", field="geometry." + source["id"])
-        material = source["material_ref"] if source["material_ref"] is not None else layer["material_id"]
+        _inside_outline(cq, solid, board, layer["z_min_mm"], layer["thickness_mm"], projection["tolerance_mm"], "geometry." + source["id"])
+        planar[source["id"]] = (source, solid)
+    vias = _via_records(cq, projection, layers, planar)
+    for body in bodies:
+        body["shape"], drill_ids = _drilled(body["shape"], vias)
+        if drill_ids:
+            body["source_entity_ids"] += sorted(drill_ids)
+            body["drill_source_ids"] = sorted(drill_ids)
+    for source, original in planar.values():
+        solid, drill_ids = _drilled(original, vias)
+        material = _material(source, layers[source["layer_id"]])
         key = (source["layer_id"], source["net_id"], material, None if source["net_id"] is not None else source["id"])
-        groups.setdefault(key, []).append((source["id"], solid))
+        groups.setdefault(key, []).append((source["id"], solid, drill_ids))
     for (layer_id, net_id, material, _), members in sorted(groups.items(), key=lambda pair: str(pair[0])):
-        ids = sorted(identity for identity, _ in members)
+        ids = sorted(identity for identity, _, _ in members)
         solid = members[0][1]
-        for _, other in members[1:]:
+        for _, other, _ in members[1:]:
             solid = solid.fuse(other)
         identity = ids[0] if len(ids) == 1 else str(uuid5(NAMESPACE_URL, "rfad/cad/" + "/".join(ids)))
         bodies.append({"id": identity, "name": "conductor_" + identity, "role": "conductor",
                        "layer_id": layer_id, "net_id": net_id, "material_id": material,
+                       "drill_source_ids": sorted({value for _, _, drilling in members for value in drilling}),
                        "source_entity_ids": ids, "shape": solid})
+    for via in vias:
+        source = via["source"]
+        bodies.append({"id": source["id"], "name": "via_barrel_" + source["id"], "role": "conductor",
+                       "layer_id": source["layer_id"], "layer_ids": via["layer_ids"], "layer_id_semantics": "start_layer_anchor",
+                       "net_id": source["net_id"], "material_id": via["material_id"], "feature_kind": "via_barrel",
+                       "source_entity_ids": [source["id"]], "pad_ids": deepcopy(source["pad_ids"]),
+                       "vertical_span_mm": [via["z_min_mm"], via["z_max_mm"]], "finished_hole_diameter_mm": 2 * via["inner_radius_mm"],
+                       "modeled_drill_diameter_mm": 2 * via["outer_radius_mm"], "tool_hole_diameter_mm": source["tool_hole_diameter_mm"],
+                       "drill_basis": "finished_hole_diameter_plus_twice_plating", "fill": "none", "shape": via["shape"]})
     _require(bool(bodies), "내보낼 CAD 고체가 없습니다.")
     tolerance = projection["tolerance_mm"]
     for body in bodies:
         body["metrics"] = _metrics(body["shape"])
     _check_pairs(bodies, tolerance)
+    _check_via_contacts(bodies, tolerance)
     return sorted(bodies, key=lambda body: body["name"])
 
 
@@ -209,8 +393,24 @@ def _check_pairs(bodies: list[dict], tolerance: float) -> None:
             _require(abs(common.Volume()) <= tolerance ** 3,
                      "서로 다른 도체 또는 유전체 body의 부피가 중첩합니다.", code="E_CONNECTIVITY")
             if body["role"] == other["role"] == "conductor":
-                _require(body["shape"].distance(other["shape"]) > tolerance,
-                         "분리된 net 또는 미지정 net의 도체가 접촉하거나 CAD 허용오차보다 가깝습니다.", code="E_CONNECTIVITY")
+                via_contact = ((body.get("feature_kind") == "via_barrel" and body["id"] in other.get("drill_source_ids", []))
+                               or (other.get("feature_kind") == "via_barrel" and other["id"] in body.get("drill_source_ids", [])))
+                compatible = body["net_id"] is not None and body["net_id"] == other["net_id"] and body["material_id"] == other["material_id"]
+                _require((via_contact and compatible) or body["shape"].distance(other["shape"]) > tolerance,
+                         "분리된 net/재료 또는 미지정 net의 도체가 접촉하거나 CAD 허용오차보다 가깝습니다.", code="E_CONNECTIVITY")
+
+
+def _check_via_contacts(bodies, tolerance):
+    """! @brief 생성과 재입력 모두에서 명시적 via-pad 연결이 실제 접면으로 남았는지 확인한다."""
+    for barrel in bodies:
+        if barrel.get("feature_kind") != "via_barrel":
+            continue
+        _require(barrel["metrics"]["through_hole_count"] == 1 and barrel["metrics"]["solid_count"] == 1,
+                 "관통 비아의 실제 중공 단면 또는 연결 성분이 다릅니다.", code="E_CONNECTIVITY")
+        for identity in barrel["pad_ids"]:
+            matches = [body for body in bodies if body["role"] == "conductor" and body.get("feature_kind") != "via_barrel" and identity in body["source_entity_ids"]]
+            _require(len(matches) == 1 and barrel["shape"].distance(matches[0]["shape"]) <= tolerance,
+                     "STEP 기하에서 명시적 via-pad 접속이 끊어졌습니다.", code="E_CONNECTIVITY")
 
 
 def _write_step(bodies: list[dict], path: Path, tolerance: float) -> None:
@@ -311,8 +511,8 @@ def _compare(expected: dict, actual: dict, tolerance: float) -> dict:
     return {"status": "passed_same_kernel", "kernel_independent": False, "reader": "OCP STEPCAFControl_Reader",
             "linear_tolerance_mm": tolerance, "relative_volume_tolerance": 1e-7, "bodies": comparisons,
             "body_overlap_checked_before_and_after": True,
-            "not_evaluated": ["independent CAD kernel", "manufacturing DRC", "RF accuracy", "ports and intended net connectivity",
-                              "drilled holes/vias/slots", "assembly placement", "source color preservation"]}
+            "not_evaluated": ["independent CAD kernel", "manufacturing DRC", "RF accuracy", "full intended net connectivity",
+                              "blind/buried vias and slots", "assembly placement", "source color preservation"]}
 
 
 def _file(path: Path, role: str, media_type: str) -> dict:
@@ -409,7 +609,10 @@ def build_package(projection: dict, output_dir: Path) -> dict:
     restored_shapes = _read_step_shapes(paths["model.step"])
     restored = {name: _metrics(shape) for name, shape in restored_shapes.items()}
     validation = _compare(expected, restored, tolerance)
-    _check_pairs([{**body, "shape": restored_shapes[body["name"]], "metrics": restored[body["name"]]} for body in bodies], tolerance)
+    restored_bodies = [{**body, "shape": restored_shapes[body["name"]], "metrics": restored[body["name"]]} for body in bodies]
+    _check_pairs(restored_bodies, tolerance)
+    _check_via_contacts(restored_bodies, tolerance)
+    validation["explicit_via_pad_contacts_checked_before_and_after"] = True
     compound = cq.Compound.makeCompound([body["shape"] for body in bodies])
     _require(compound.exportBrep(str(paths["model.brep"])), "B-rep 파일 저장이 실패했습니다.", code="E_DISK")
     _write_display_mesh(bodies, projection, paths["mesh.json"])

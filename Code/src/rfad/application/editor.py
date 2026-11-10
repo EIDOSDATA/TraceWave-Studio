@@ -26,6 +26,10 @@ LABELS = {
     "sweep_angle": "회전 각도", "positive_geometry_id": "양극 도체", "reference_geometry_id": "기준 도체",
     "resistance": "기준 저항", "reference_plane": "기준면", "polarity": "극성", "direction": "방향",
     "source_refs": "출처 기록", "assumptions": "가정 기록",
+    "excitation_box": "급전 영역", "stop": "끝점",
+    "outer": "외곽 꼭짓점", "holes": "비어 있는 영역", "pad_shape": "패드 형태", "size": "패드 치수", "rotation": "회전각",
+    "end_layer_id": "도착 층", "finished_hole_diameter": "완성 구멍 지름", "plating_thickness": "도금 두께",
+    "tool_hole_diameter": "제작 드릴 지름", "fill": "구멍 충진", "pad_ids": "연결 패드",
 }
 VALUE_LABELS = {
     "length": "길이", "frequency": "주파수", "time": "시간", "angle": "각도",
@@ -34,8 +38,9 @@ VALUE_LABELS = {
     "missing": "미정", "not_applicable": "해당 없음", "unsupported": "미지원", "conflicting": "값 충돌",
     "conductor": "도체", "dielectric": "유전체", "coating": "코팅", "adhesive": "접착층", "air": "공기층",
     "radiator": "방사체", "ground": "접지", "feed": "급전", "short": "단락부",
-    "rectangle": "직사각형", "line_path": "선 패턴", "arc_path": "원호 패턴", "lumped": "집중소자 포트",
+    "rectangle": "직사각형", "circle": "원형", "line_path": "선 패턴", "arc_path": "원호 패턴", "lumped": "집중소자 포트",
     "isotropic_constant": "등방성 상수 모델", "finished": "완성 두께",
+    "planar_region": "면 패턴", "pad": "패드", "via": "도금 비아", "none": "충진 없음",
     "material": "재료", "layer": "적층", "net": "네트", "geometry": "형상", "port": "포트",
 }
 FIELD_HELP = {
@@ -71,7 +76,7 @@ def selected_object(document: dict, selection: dict) -> tuple[str, dict]:
     kind, identity = selection["kind"], _uuid(selection["id"])
     if kind == "project" and identity == document["project_id"]:
         return kind, {"name": document["metadata"]["name"], "description": document["metadata"]["description"]}
-    if kind == "new_parameter":
+    if kind in {"new_parameter", "new_material", "new_net", "new_port"}:
         used = {document["project_id"], document["revision_id"], *document["parent_revision_ids"], *document["parameters"]}
         used.update(frame["id"] for frame in document["frames"].values())
         used.update(item["id"] for collection in COLLECTIONS.values() for item in document[collection])
@@ -79,7 +84,25 @@ def selected_object(document: dict, selection: dict) -> tuple[str, dict]:
             used.add(document["board"]["id"])
         if identity in used:
             _fail("새 식별자가 기존 객체와 충돌합니다.", "selection.id", "E_CONFLICT")
-        return kind, {"id": identity, "name": "", "quantity": Quantity.missing("length", "mm").to_dict()}
+        if kind == "new_parameter":
+            return kind, {"id": identity, "name": "", "quantity": Quantity.missing("length", "mm").to_dict()}
+        if kind == "new_net":
+            return kind, {"id": identity, "name": ""}
+        frequency_range = {key: Quantity.missing("frequency", "GHz").to_dict() for key in ("min", "max")}
+        if kind == "new_material":
+            return kind, {"id": identity, "name": "", "model": "isotropic_constant",
+                "epsilon_r": Quantity.missing("dimensionless", "1").to_dict(),
+                "tan_delta": Quantity.missing("dimensionless", "1").to_dict(),
+                "conductivity": Quantity.missing("conductivity", "S/m").to_dict(),
+                "validity_hz": frequency_range, "source_refs": [], "assumptions": []}
+        if document["board"] is None or len(document["geometry"]) < 2:
+            _fail("포트를 생성하려면 기판과 서로 다른 도체 패턴 두 개가 필요합니다.", "ports", "E_PORT")
+        if document["ports"]:
+            _fail("현재 단일 포트만 지원합니다. 기존 포트 속성을 편집하십시오.", "ports", "E_PORT")
+        return kind, {"id": identity, "name": "", "kind": "lumped", "positive_geometry_id": "", "reference_geometry_id": "",
+            "resistance": Quantity.missing("impedance", "ohm").to_dict(), "reference_plane": "집중 포트의 급전 영역",
+            "polarity": 1, "direction": [1.0, 0.0, 0.0], "validity_hz": frequency_range,
+            "excitation_box": {key: [Quantity.missing("length", "mm").to_dict() for _ in range(3)] for key in ("start", "stop")}}
     if kind == "parameter" and identity in document["parameters"]:
         return kind, document["parameters"][identity]
     if kind == "board" and document["board"] is not None and document["board"]["id"] == identity:
@@ -87,6 +110,8 @@ def selected_object(document: dict, selection: dict) -> tuple[str, dict]:
     if type(kind) is str and kind in COLLECTIONS:
         for item in document[COLLECTIONS[kind]]:
             if item["id"] == identity:
+                if kind == "port" and "excitation_box" not in item:
+                    return kind, {**deepcopy(item), "excitation_box": {key: [Quantity.missing("length", "mm").to_dict() for _ in range(3)] for key in ("start", "stop")}}
                 return kind, item
     _fail("선택한 객체가 없거나 지원하지 않는 종류입니다.", "selection", "E_CONFLICT")
 
@@ -100,7 +125,7 @@ def _field(key: str, label: str, value, *, editor="text", choices=None, readonly
     """! @brief 원본 저장 형태와 독립적인 하나의 화면 필드를 만든다."""
     result = {"key": key, "label": label, "editor": editor, "value": value, "choices": choices or [], "readonly": readonly}
     name = key.rsplit(".", 1)[-1]
-    if readonly and name in ("status", "kind", "model", "thickness_convention"):
+    if readonly and name in ("status", "kind", "model", "thickness_convention", "fill", "pad_shape"):
         result["display_value"] = VALUE_LABELS.get(value, value)
     if name in ("id", "frame_id"):
         result["advanced"] = True
@@ -152,6 +177,56 @@ def _quantity_fields(document: dict, value: dict, key: str, label: str) -> list[
     return result
 
 
+def _coordinate_table(document, points, key):
+    """! @brief 다각형 64점도 전송 상한 안에 머물도록 좌표 상태를 작은 표로 투영한다."""
+    rows = []
+    for index, point in enumerate(points):
+        row = []
+        for axis, value in enumerate(point):
+            quantity = resolve_scalar(document, value, "length", f"{key}.{index}.{axis}")
+            reference = value.get("parameter_id", "")
+            unit = "mm"
+            try:
+                number = "" if quantity.value_si is None else repr(quantity.as_unit("mm"))
+            except QuantityError:
+                number, unit = repr(quantity.value_si), "m"
+            row.append({"mode": "parameter" if reference else ("missing" if quantity.value_si is None else "value"),
+                        "value": number, "parameter_id": reference, "unit": unit})
+        rows.append(row)
+    return rows
+
+
+def _edited_coordinate_table(document, original, incoming, key):
+    """! @brief 표에서 명시적으로 바꾼 좌표만 적용하고 나머지 단위/출처/결합을 보존한다."""
+    displayed = _coordinate_table(document, original, key)
+    if type(incoming) is not list or len(incoming) != len(original):
+        _fail("좌표 표에서는 꼭짓점 개수를 바꿀 수 없습니다.", key)
+    result = deepcopy(original)
+    for index, row in enumerate(incoming):
+        if type(row) is not list or len(row) != 2:
+            _fail("각 점은 x/y 두 좌표여야 합니다.", key)
+        for axis, cell in enumerate(row):
+            field = f"{key}.{index}.{axis}"
+            if (type(cell) is not dict or set(cell) != {"mode", "value", "parameter_id", "unit"}
+                    or any(type(value) is not str for value in cell.values()) or cell["mode"] not in {"value", "missing", "parameter"}):
+                _fail("좌표 입력 방식과 숫자/매개변수 선택을 확인하십시오.", field)
+            if cell["unit"] != displayed[index][axis]["unit"]:
+                _fail("좌표 표의 표시 단위는 읽기 전용입니다.", field + ".unit")
+            if cell == displayed[index][axis]:
+                continue
+            value = original[index][axis]
+            quantity = resolve_scalar(document, value, "length", field)
+            if cell["mode"] == "parameter":
+                reference = {"parameter_id": _uuid(cell["parameter_id"])}
+                resolve_scalar(document, reference, "length", field)
+                result[index][axis] = reference
+            elif cell["mode"] == "missing":
+                result[index][axis] = Quantity(None, "length", quantity.display_unit, "missing", quantity.source_refs).to_dict()
+            else:
+                result[index][axis] = Quantity.from_value(_number(cell["value"], field), cell["unit"], source_refs=quantity.source_refs).to_dict()
+    return result
+
+
 def fields_for(document: dict, selection: dict) -> list[dict]:
     """! @brief 선택 객체의 현재 지원 속성만 표시하고 원본 provenance는 읽기 전용으로 보존한다."""
     kind, obj = selected_object(document, selection)
@@ -183,20 +258,30 @@ def fields_for(document: dict, selection: dict) -> list[dict]:
                 for name, child in value.items():
                     walk(child, [*path, name], [*labels, LABELS.get(name, name)])
         elif type(value) is list:
-            if path[-1] in ("source_refs", "assumptions"):
+            if path[-1] == "outer" or (len(path) >= 2 and path[-2] == "holes"):
+                fields.append(_field(key, label, _coordinate_table(document, value, key), editor="coordinate_table"))
+            elif path[-1] in ("source_refs", "assumptions"):
                 fields.append(_field(key, label, "\n".join(value), readonly=True))
+            elif path[-1] == "pad_ids":
+                layer_names = {layer["id"]: layer["name"] for layer in document["stackup"]}
+                choices = [_choice(item["id"], _object_label(item) + " / " + layer_names[item["layer_id"]])
+                           for item in document["geometry"] if item["kind"] == "pad"]
+                fields.append(_field(key, label, deepcopy(value), editor="multichoice", choices=choices))
             else:
+                coordinate = len(value) <= 3 and all(type(item) is not list for item in value)
                 for index, child in enumerate(value):
-                    walk(child, [*path, str(index)], [*labels, "xyz"[index]])
+                    walk(child, [*path, str(index)], [*labels, "xyz"[index] if coordinate else str(index + 1)])
         else:
             name = path[-1]
-            readonly = name in ("id", "kind", "frame_id", "model", "thickness_convention")
+            readonly = name in ("id", "kind", "frame_id", "model", "thickness_convention", "fill", "pad_shape")
             choices = None
-            references = {"material_id": "materials", "material_ref": "materials", "net_id": "nets", "layer_id": "stackup", "positive_geometry_id": "geometry", "reference_geometry_id": "geometry"}
+            references = {"material_id": "materials", "material_ref": "materials", "net_id": "nets", "layer_id": "stackup", "end_layer_id": "stackup", "positive_geometry_id": "geometry", "reference_geometry_id": "geometry"}
             if name in references:
                 choices = [_choice(item["id"], _object_label(item)) for item in document[references[name]]]
                 if name in ("material_id", "material_ref", "net_id"):
                     choices.insert(0, _choice("", "선택 없음"))
+                elif kind == "new_port" and name in ("positive_geometry_id", "reference_geometry_id"):
+                    choices.insert(0, _choice("", "도체를 선택하십시오"))
             elif name == "role":
                 choices = [_choice(item) for item in (("conductor", "dielectric", "coating", "adhesive", "air") if kind == "layer" else ("radiator", "ground", "feed", "short", "conductor"))]
             elif name == "polarity":
@@ -225,6 +310,8 @@ def build_dto(document: dict, saved_revision: str, history: dict, selection: dic
     result = {"profile": PROFILE, "project_id": document["project_id"], "revision_id": document["revision_id"], "saved_revision": saved_revision,
               "metadata": {key: document["metadata"][key] for key in ("name", "description")}, "history": history, "items": items,
               "selection": {**selected, "fields": selected_fields}}
+    if any(field["editor"] == "coordinate_table" for field in selected_fields):
+        result["coordinate_choices"] = _parameter_choices(document, "length")
     if len(json.dumps(result, ensure_ascii=False).encode("utf-8")) > MAX_DTO_BYTES:
         _fail("선택 속성 DTO가 초기 전송 크기 상한을 초과합니다.", "selection", "E_RESOURCE")
     return result
@@ -285,13 +372,20 @@ def edit_command(document: dict, selection: dict, changes: dict) -> dict:
         elif field["editor"] == "bindings":
             if type(value) is not dict or any(type(alias) is not str or type(target) is not str for alias, target in value.items()):
                 _fail("변수 결합은 이름과 매개변수 ID의 사전이어야 합니다.", key)
+        elif field["editor"] == "multichoice":
+            if (type(value) is not list or any(type(item) is not str for item in value)
+                    or len(set(value)) != len(value) or not set(value) <= {item["value"] for item in field["choices"]}):
+                _fail("중복 없이 표시된 패드를 선택하십시오.", key)
+        elif field["editor"] == "coordinate_table":
+            if type(value) is not list:
+                _fail("좌표 표의 점 목록이 필요합니다.", key)
         elif type(value) is not str:
             _fail("편집 필드는 문자열이어야 합니다.", key)
         if field["editor"] == "choice" and value not in {item["value"] for item in field["choices"]}:
             _fail("허용된 선택지를 사용하십시오.", key)
         values[key] = deepcopy(value)
     changed = {key for key in changes if changes[key] != descriptors[key]["value"]}
-    if not changed and kind != "new_parameter":
+    if not changed and not kind.startswith("new_"):
         _fail("변경된 속성이 없습니다.", "values", "E_CONFLICT")
     if kind == "project":
         return {"type": "metadata.set", "payload": {key: values[key] for key in ("name", "description")}}
@@ -337,8 +431,12 @@ def edit_command(document: dict, selection: dict, changes: dict) -> dict:
                 return _edited_quantity(value, document, values, key, raw["dimension"], changed)
             return {name: update(child, [*path, name]) for name, child in value.items()}
         if type(value) is list:
+            if descriptors.get(key, {}).get("editor") == "coordinate_table":
+                return _edited_coordinate_table(document, value, values[key], key) if key in changed else value
             if path[-1] in ("source_refs", "assumptions"):
                 return value
+            if path[-1] == "pad_ids":
+                return deepcopy(values[key]) if key in changed else value
             return [update(child, [*path, str(index)]) for index, child in enumerate(value)]
         if key not in changed:
             return value
@@ -356,6 +454,10 @@ def edit_command(document: dict, selection: dict, changes: dict) -> dict:
         return edited
 
     obj = update(obj, [])
-    if obj == original:
+    if kind == "port" and "excitation_box" not in next(item for item in document["ports"] if item["id"] == selection["id"]):
+        if not any(key.startswith("excitation_box.") for key in changed):
+            obj.pop("excitation_box", None)
+    if obj == original and not kind.startswith("new_"):
         _fail("원본을 변경하지 않는 입력입니다.", "values", "E_CONFLICT")
+    kind = kind.removeprefix("new_")
     return {"type": kind + ".set", "payload": {kind: obj}}

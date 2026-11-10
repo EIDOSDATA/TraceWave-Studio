@@ -6,6 +6,7 @@
 #include <nlohmann/json.hpp>
 
 #include <map>
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -16,7 +17,8 @@ class EditorPanel final : public wxScrolledWindow
 {
 public:
     explicit EditorPanel(wxWindow* parent);
-    void SetFields(const nlohmann::json& fields, const nlohmann::json& selection = nlohmann::json::object());
+    void SetFields(const nlohmann::json& fields, const nlohmann::json& selection = nlohmann::json::object(),
+        const nlohmann::json& coordinateChoices = nlohmann::json::array());
     nlohmann::json Changes() const;
     bool IsDirty() const;
     void SetFieldValue(const std::string& key, const nlohmann::json& value);
@@ -25,6 +27,7 @@ public:
     bool IsFieldVisible(const std::string& key) const;
     const std::string& DiagnosticField() const;
     const std::string& InputNotice() const;
+    void EditCoordinateCellForSmoke(const std::string& key, int point, int axis, const std::string& value);
 
 private:
     struct Field
@@ -35,16 +38,19 @@ private:
         wxPanel* row = nullptr;
         wxSizer* section = nullptr;
         wxStaticText* label = nullptr;
+        nlohmann::json coordinateValue = nlohmann::json::array();
     };
 
     nlohmann::json ReadValue(const Field& field) const;
     void WriteValue(Field& field, const nlohmann::json& value);
+    void EditCoordinates(const std::string& key, const std::function<void(wxGrid&, wxDialog&)>& opened = {});
     void UpdateModes();
     void NotifyChanged();
     void UpdateInputNotice();
     std::string ResolveDiagnosticField(const std::string& path) const;
     std::map<std::string, Field> m_fields;
     nlohmann::json m_selection = nlohmann::json::object();
+    nlohmann::json m_coordinateChoices = nlohmann::json::array();
     wxBoxSizer* m_layout = nullptr;
     wxStaticText* m_diagnostic = nullptr;
     wxStaticText* m_inputNotice = nullptr;

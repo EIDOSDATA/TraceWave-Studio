@@ -38,6 +38,9 @@ def profile_definition() -> dict:
         "min_feature_mm": MIN_FEATURE_MM,
         "max_shapes": MAX_SHAPES,
         "tolerance_mm": TOLERANCE_MM,
+        "region_boundary": "straight_segments_with_explicit_holes",
+        "pad_shapes": ["circle", "rectangle"],
+        "via_model": "through_plated_hollow_barrel_with_explicit_pads",
     }
 
 
@@ -127,8 +130,16 @@ def build_cad_input(document: dict, snapshot_ref: dict, profile: str = PROFILE) 
         _fail("E_GEOMETRY", "CAD 출력에는 명시적 기판 외형이 필요합니다.", "board")
     _check_frame(document, board["frame_id"], "board.frame_id")
     outline = board["outline"]
-    if outline["kind"] != "rectangle":
-        _fail("E_UNSUPPORTED", "현재 CAD profile은 직사각 기판만 지원합니다.", "board.outline.kind")
+    if outline["kind"] == "circle":
+        projected_board = {"id": board["id"], "kind": "circle",
+                           "center_mm": _point(document, outline["center"], "board.outline.center"),
+                           "radius_mm": _length(document, outline["radius"], "board.outline.radius", positive=True)}
+        if any(abs(coordinate) + projected_board["radius_mm"] > MAX_COORDINATE_MM for coordinate in projected_board["center_mm"]):
+            _fail("E_GEOMETRY", "원형 기판 외곽이 CAD 좌표 상한을 벗어났습니다.", "board.outline")
+    else:
+        projected_board = {"id": board["id"],
+                           "width_mm": _length(document, outline["width"], "board.outline.width", positive=True),
+                           "height_mm": _length(document, outline["height"], "board.outline.height", positive=True)}
     result = {
         "schema": INPUT_SCHEMA,
         "profile": PROFILE,
@@ -147,11 +158,7 @@ def build_cad_input(document: dict, snapshot_ref: dict, profile: str = PROFILE) 
             "translation_mm": [0.0, 0.0, 0.0],
             "rotation": deepcopy(document["frames"]["board"]["rotation"]),
         },
-        "board": {
-            "id": board["id"],
-            "width_mm": _length(document, outline["width"], "board.outline.width", positive=True),
-            "height_mm": _length(document, outline["height"], "board.outline.height", positive=True),
-        },
+        "board": projected_board,
         "layers": [], "shapes": [], "omissions": [],
         "source_semantics": deepcopy(document),
     }
@@ -189,7 +196,8 @@ def build_cad_input(document: dict, snapshot_ref: dict, profile: str = PROFILE) 
         field = "geometry." + geometry["id"]
         _check_frame(document, geometry["frame_id"], field + ".frame_id")
         shape = {key: deepcopy(geometry[key]) for key in ("id", "kind", "layer_id", "net_id", "role", "frame_id", "material_ref", "source_ref")}
-        shape["width_mm"] = _length(document, geometry["width"], field + ".width", positive=True)
+        if geometry["kind"] in ("line_path", "arc_path"):
+            shape["width_mm"] = _length(document, geometry["width"], field + ".width", positive=True)
         if geometry["kind"] == "line_path":
             shape["start_mm"] = _point(document, geometry["start"], field + ".start")
             shape["end_mm"] = _point(document, geometry["end"], field + ".end")
@@ -208,7 +216,32 @@ def build_cad_input(document: dict, snapshot_ref: dict, profile: str = PROFILE) 
                 _fail("E_GEOMETRY", "원호의 내부 반지름이 CAD 최소 형상 치수보다 작습니다.", field + ".width")
             if shape["radius_mm"] * math.radians(abs(shape["sweep_angle_deg"])) < MIN_FEATURE_MM:
                 _fail("E_GEOMETRY", "원호 중심선 길이가 CAD 최소 형상 치수보다 작습니다.", field + ".sweep_angle")
+        elif geometry["kind"] == "planar_region":
+            shape["outer_mm"] = [_point(document, point, field + f".outer[{index}]") for index, point in enumerate(geometry["outer"])]
+            shape["holes_mm"] = [[_point(document, point, field + f".holes[{hole_index}][{index}]")
+                                   for index, point in enumerate(hole)] for hole_index, hole in enumerate(geometry["holes"])]
+            for loop in [shape["outer_mm"], *shape["holes_mm"]]:
+                if any(math.dist(a, b) < MIN_FEATURE_MM for a, b in zip(loop, loop[1:] + loop[:1])):
+                    _fail("E_GEOMETRY", "영역 경계의 변 길이가 CAD 최소 형상 치수보다 작습니다.", field)
+        elif geometry["kind"] == "pad":
+            shape.update(pad_shape=geometry["pad_shape"], center_mm=_point(document, geometry["center"], field + ".center"),
+                         size_mm=[_length(document, value, field + f".size[{index}]", positive=True) for index, value in enumerate(geometry["size"])],
+                         rotation_deg=_scalar(document, geometry["rotation"], "angle", "deg", field + ".rotation"))
+            if abs(shape["rotation_deg"]) > MAX_START_ANGLE_DEG:
+                _fail("E_GEOMETRY", "패드 회전이 CAD의 안정적인 각도 범위를 벗어났습니다.", field + ".rotation")
+        elif geometry["kind"] == "via":
+            shape.update(center_mm=_point(document, geometry["center"], field + ".center"), end_layer_id=geometry["end_layer_id"],
+                         finished_hole_diameter_mm=_length(document, geometry["finished_hole_diameter"], field + ".finished_hole_diameter", positive=True),
+                         plating_thickness_mm=_length(document, geometry["plating_thickness"], field + ".plating_thickness", positive=True),
+                         fill=geometry["fill"], pad_ids=deepcopy(geometry["pad_ids"]))
+            tool = resolve_scalar(document, geometry["tool_hole_diameter"], "length", field + ".tool_hole_diameter")
+            shape["tool_hole_diameter_mm"] = None if tool.value_si is None else _length(document, geometry["tool_hole_diameter"], field + ".tool_hole_diameter", positive=True)
+            derived = shape["finished_hole_diameter_mm"] + 2 * shape["plating_thickness_mm"]
+            if shape["tool_hole_diameter_mm"] is not None and not math.isclose(shape["tool_hole_diameter_mm"], derived, rel_tol=0, abs_tol=TOLERANCE_MM):
+                _fail("E_UNSUPPORTED", "초기 CAD 비아는 tool bore = finished bore + 2 * plating 조건만 지원합니다.", field + ".tool_hole_diameter")
+            if len(shape["pad_ids"]) < 2 or geometry["net_id"] is None:
+                _fail("E_CONNECTIVITY", "관통 비아에는 명시적 net과 양 끝의 pad 참조가 필요합니다.", field)
         else:
-            _fail("E_UNSUPPORTED", "현재 CAD profile은 선과 원호 패턴만 지원합니다.", field + ".kind")
+            _fail("E_UNSUPPORTED", "현재 CAD profile이 지원하지 않는 도체 형상입니다.", field + ".kind")
         result["shapes"].append(shape)
     return result

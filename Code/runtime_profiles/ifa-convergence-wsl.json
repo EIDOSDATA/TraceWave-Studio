@@ -1,0 +1,4809 @@
+{
+  "schema": "rfad.verification.ifa-convergence/0.1",
+  "validated_at": "2026-11-10T23:43:14.347015+00:00",
+  "status": "executed_and_assessed_physics_unvalidated",
+  "design_baseline": "RFAD-D0-3.4",
+  "runtime_identity": {
+    "code_files": [
+      {
+        "bytes": 1854,
+        "path": "tools/openems_worker.py",
+        "sha256": "a71e56e21aff057f4b673dd43131e22da3bdf4698099ec124946e65b152e582f"
+      },
+      {
+        "bytes": 110,
+        "path": "src/rfad/__init__.py",
+        "sha256": "637407b3c13a348c03d6a167d2a90e3703c4fc70a421cd9918075c0463d81097"
+      },
+      {
+        "bytes": 2265,
+        "path": "src/rfad/__main__.py",
+        "sha256": "4f765b683dd28c7a8ff8bec1fe846039c34664c024ceccdadf0a40f4bac1b92a"
+      },
+      {
+        "bytes": 102,
+        "path": "src/rfad/adapters/__init__.py",
+        "sha256": "e4be3b367495a970767105766bbd0895df057c4a53a3a39087bfe316171d0837"
+      },
+      {
+        "bytes": 99,
+        "path": "src/rfad/adapters/cad/__init__.py",
+        "sha256": "031a455542eba8f6df8c996b243a3210041b80cbb40b04208f0c639469e3df83"
+      },
+      {
+        "bytes": 42470,
+        "path": "src/rfad/adapters/cad/native.py",
+        "sha256": "c6cb541b173baa1f1178435f35e11dd7a629776072af6d66043b4833e9e04b6c"
+      },
+      {
+        "bytes": 73,
+        "path": "src/rfad/adapters/solvers/__init__.py",
+        "sha256": "64a5e0f0c806546fe9b2dab2f2394a02b77fb76afd1ff88a0979157ddd96bf5a"
+      },
+      {
+        "bytes": 77,
+        "path": "src/rfad/adapters/solvers/openems/__init__.py",
+        "sha256": "975618264c1614c71937b4baa15138f7aca694e4700ec4df2d8a67100ee90c61"
+      },
+      {
+        "bytes": 27680,
+        "path": "src/rfad/adapters/solvers/openems/native.py",
+        "sha256": "2ac0e46f88de23fa8b222d22fac4f13f79e502cef6dbb67b0c180fd6df71f22f"
+      },
+      {
+        "bytes": 16193,
+        "path": "src/rfad/adapters/solvers/openems/pcb.py",
+        "sha256": "fd80933f9933bac4261f8e6d817e37dd8d6ee29ac0d8373474f552f3d83d8463"
+      },
+      {
+        "bytes": 8774,
+        "path": "src/rfad/adapters/solvers/openems/pcb_mesh.py",
+        "sha256": "7edf8206be603296ab8fa57b2377c61d22bb51a9b0e436db9cc7d9db94020130"
+      },
+      {
+        "bytes": 6517,
+        "path": "src/rfad/adapters/solvers/openems/reference.py",
+        "sha256": "e3bdb5aa463aa971a62cde5f466827b2423d895285dea595d2be81417f282951"
+      },
+      {
+        "bytes": 325,
+        "path": "src/rfad/application/__init__.py",
+        "sha256": "883e15b18f72a85626c6634d255886596dc1bf71ae64b8aebb9b5c32b3896bc7"
+      },
+      {
+        "bytes": 16071,
+        "path": "src/rfad/application/cad.py",
+        "sha256": "54e295d3f22dc7d4ee07dab0e584d99507df1e1cc54278ba4d471d1cf108dc26"
+      },
+      {
+        "bytes": 26737,
+        "path": "src/rfad/application/cad_jobs.py",
+        "sha256": "6b1e586e98d50354b2d37407bc2bb3ebb594a003a27e894b247bdda29cfaf9c0"
+      },
+      {
+        "bytes": 5534,
+        "path": "src/rfad/application/canonical.py",
+        "sha256": "f3b263089ad802d6924aea481c46a890e9baa7297bb5daef659394b1ef2be420"
+      },
+      {
+        "bytes": 18449,
+        "path": "src/rfad/application/canvas.py",
+        "sha256": "5b4d34afa804d3443fe697a8da96aee268972ef9f3c92089f5e583000559d9c7"
+      },
+      {
+        "bytes": 19018,
+        "path": "src/rfad/application/convergence.py",
+        "sha256": "f17a5f8fd627e3fc732866c90c7d6ecb7e3c53fd08fb18283df1bab414991374"
+      },
+      {
+        "bytes": 5261,
+        "path": "src/rfad/application/display_mesh.py",
+        "sha256": "06325f60b351904c6833e317f27f1ff0a6dfd982acbf15c02cf3c91cdcc0049c"
+      },
+      {
+        "bytes": 30358,
+        "path": "src/rfad/application/editor.py",
+        "sha256": "9703280b9153c7a156106b70cd3aad2236bbe6c755335ce60dc960790dd7ffb4"
+      },
+      {
+        "bytes": 20662,
+        "path": "src/rfad/application/native_process.py",
+        "sha256": "5f1b625eee607ab5a21fe304827f89542bc5fdb7fd1ede2b89c469088497badf"
+      },
+      {
+        "bytes": 15097,
+        "path": "src/rfad/application/pcb_contacts.py",
+        "sha256": "3a5eddd3f269712c07c40e5906c81be0095381f3af32bfaf495c89fa948aa595"
+      },
+      {
+        "bytes": 8256,
+        "path": "src/rfad/application/pcb_mesh.py",
+        "sha256": "90907c24d2529c5640cebcfe09fa5047756662e783a49b4d3098443276ab29a1"
+      },
+      {
+        "bytes": 47513,
+        "path": "src/rfad/application/pcb_solver.py",
+        "sha256": "77ecaff4650bcc75154182e6e2f12b2d00d5b7424c4d92e95a08e1317cce57cb"
+      },
+      {
+        "bytes": 36695,
+        "path": "src/rfad/application/projects.py",
+        "sha256": "22db5a024b17a257eeb5a7abc3d8fdabfbf13d0bbb5c22d63f40b4aa8ec4ced4"
+      },
+      {
+        "bytes": 15705,
+        "path": "src/rfad/application/rpc.py",
+        "sha256": "c0b4558fc399ba5cc41bbce78ea436d318ea69e5c12980916e5ecb2c8679187e"
+      },
+      {
+        "bytes": 18428,
+        "path": "src/rfad/application/solver.py",
+        "sha256": "eecc64140af223a070e4ba7c5820c9db0553ecde53dfd5623d1fb9fc41f65e89"
+      },
+      {
+        "bytes": 50380,
+        "path": "src/rfad/application/solver_jobs.py",
+        "sha256": "d1771ce54b3eeccf0736a6293086bf74bc5f6189d58f085bf260e54a7234af7b"
+      },
+      {
+        "bytes": 18901,
+        "path": "src/rfad/application/wsl_process.py",
+        "sha256": "5f9ef1de2d89dae37b6f84109ff408806733aa21cf41320a2b2ae8467296900c"
+      },
+      {
+        "bytes": 96,
+        "path": "src/rfad/cli/__init__.py",
+        "sha256": "5ffd0914ed2f6746b578e0d30eabda8bd5b306c5a368ec8ec0dd87b3a669aa1b"
+      },
+      {
+        "bytes": 11085,
+        "path": "src/rfad/cli/doctor.py",
+        "sha256": "80be1ab1fc4d387178f6b70cc4a1241b21c793d33648660c443ce9a3946139fb"
+      },
+      {
+        "bytes": 239,
+        "path": "src/rfad/domain/__init__.py",
+        "sha256": "f7905c21d7293db23c8736b154cfa4e737b28788376ae2314c73e75259356e67"
+      },
+      {
+        "bytes": 34865,
+        "path": "src/rfad/domain/design.py",
+        "sha256": "61a4e9fea5370dde3a538c4670e0fc7defc85594e5d6b7d49b6a341ead39e511"
+      },
+      {
+        "bytes": 1059,
+        "path": "src/rfad/domain/errors.py",
+        "sha256": "e8dc2d8e54fd71ca35af28d538c214687cdefeba035443aeeaee992cc55697d6"
+      },
+      {
+        "bytes": 20082,
+        "path": "src/rfad/domain/expressions.py",
+        "sha256": "4387895d32e28e838db10a1e7b0c9d2c2f5a2f5c4d8e64386ad02b0ed46c1bb5"
+      },
+      {
+        "bytes": 5343,
+        "path": "src/rfad/domain/parameter_graph.py",
+        "sha256": "3afa704b61fe6cce2f64d175df455e227604223eab90c71166f957d5f24e4b36"
+      },
+      {
+        "bytes": 8072,
+        "path": "src/rfad/domain/planar.py",
+        "sha256": "a5fb63c7bfb7f1813917404095b696ab6e70eb71d7f0059508dbae31024e5e3f"
+      },
+      {
+        "bytes": 18549,
+        "path": "src/rfad/domain/project.py",
+        "sha256": "7dbfb298ad0543b716236b92ede8d7953e51b83056f7922076efccf54c84ea3e"
+      },
+      {
+        "bytes": 8754,
+        "path": "src/rfad/domain/units.py",
+        "sha256": "f02c8095e7ae3b8022ac3d7718363d1cbffdd6b876506122ecd259cf4cda2247"
+      },
+      {
+        "bytes": 152,
+        "path": "src/rfad/storage/__init__.py",
+        "sha256": "ca4c257ab77186c72310cd6e4b1ae31e30f97b41d0ca4075b5760ad672a2e270"
+      },
+      {
+        "bytes": 24021,
+        "path": "src/rfad/storage/journal.py",
+        "sha256": "324f2e69b768e893b5e02fc24273754ec0ad3ca4641ee2d589a3b9479dfe555b"
+      }
+    ],
+    "manifest_sha256": "538c7d75a7820f2ee0a6d48fb0d9f3687c6a10c66c09962398dfd4dd2dbd7a9c",
+    "runtime_profile": "openems-wsl-reference/0.1",
+    "transport": {
+      "distribution": "TraceWave-Dev",
+      "guest_root": "/home/tracewave/rfad-runtime/worker-runs",
+      "lease_seconds": 10.0,
+      "protocol": "rfad.wsl-supervisor/0.1",
+      "python": "/home/tracewave/rfad-runtime/openems-venv/bin/python",
+      "supervisor_sha256": "743f3eef350da6018b7291820cdaeb782ccfb5bb0ae28c69456fb566ff5dff2b",
+      "user": "tracewave"
+    }
+  },
+  "captured_sources_match_current": false,
+  "native_model_and_worker_sources_match_current": true,
+  "post_execution_source_changes": [
+    {
+      "captured": {
+        "bytes": 19018,
+        "path": "src/rfad/application/convergence.py",
+        "sha256": "f17a5f8fd627e3fc732866c90c7d6ecb7e3c53fd08fb18283df1bab414991374"
+      },
+      "current": {
+        "path": "src/rfad/application/convergence.py",
+        "bytes": 20955,
+        "sha256": "0150f4d1b348c6f4fa262614174e66627f7f6e2c6564073cf1e6e8ead36993e8"
+      }
+    }
+  ],
+  "post_execution_reassessment": "Only the pure comparison evaluator was strengthened after native runs and resume checks; both studies were reassessed from sealed artifacts with a new immutable evaluator record. No solver/geometry/mesh/worker code changed.",
+  "source_hash_basis": "UTF-8 text with universal-newline normalization, matching SolverRuntime",
+  "studies": [
+    {
+      "name": "initial_2_to_3_ghz",
+      "report": {
+        "path": ".local/ifa-convergence-final/report.json",
+        "bytes": 58634,
+        "sha256": "d46dc34226b1d6de1138af1da39bb9b25ec26ebb0e812f93904a6e87e5d965ff"
+      },
+      "study": {
+        "path": "fixtures/ifa_convergence_study.json",
+        "bytes": 1567,
+        "sha256": "d966b289eb7c27df7b4ee7aaae70f754ee396da394060d49ea7b4238210db2fe"
+      },
+      "fixture": {
+        "path": "fixtures/ifa_feed_smoke.json",
+        "bytes": 25491,
+        "sha256": "7e578f72a2c85ffb89c18da374fb4680f9a433f519d787991064fb280da569a1"
+      },
+      "study_hash": "4e7f331568d61950592d5c44f89dae3012bc02e586db0f25223a9bc3475ca8a6",
+      "fixture_hash": "61cc963138cbbdd4a103b8cded3bb826d117bc1663adbd541a80b466ebb5d6be",
+      "unique_native_runs": 6,
+      "comparison_rows": 8,
+      "assessment": {
+        "acceptance_profile": {
+          "id": "ifa-local-gap-candidate-np02/0.1",
+          "max_resonance_relative_shift": 0.01,
+          "max_s11_complex_delta": 0.02,
+          "minimum_levels": 3
+        },
+        "limitations": [
+          "Explicit benchmark thresholds; not universal RF acceptance criteria",
+          "Same runtime and source only; no independent solver or measurement validation",
+          "Resonance is a sampled magnitude minimum with a conservative bracket; no interpolated precision",
+          "No target-band matching, NF2FF, gain or efficiency acceptance"
+        ],
+        "numerical_stability": {
+          "anchors": {
+            "labels": [
+              "mesh_fine",
+              "boundary_far",
+              "termination_base"
+            ],
+            "status": "matched"
+          },
+          "axes": {
+            "boundary": {
+              "artifacts": [
+                {
+                  "artifact": {
+                    "artifact_id": "51bf1fa7-8c8f-4499-9bf2-5e7793d24e79",
+                    "bytes": 175148,
+                    "sha256": "19a34f908a66d3896c899d5436980cedef2bf474ab3a8f9069b794ca00e60ce0",
+                    "uri": "solver-artifacts/5cabc8bd-ca4e-42b2-8565-b2078f2bc9e6/normalized.json"
+                  },
+                  "label": "boundary_near"
+                },
+                {
+                  "artifact": {
+                    "artifact_id": "6cc2f8e2-c22a-4349-86ca-24196f318e2a",
+                    "bytes": 175219,
+                    "sha256": "b06008dfb868a7d1bcebbcda9fa65e63c74f4d86fc3edeb33689e704790bcb49",
+                    "uri": "solver-artifacts/fe310e37-1fe5-4735-a8cb-80bb36872254/normalized.json"
+                  },
+                  "label": "boundary_middle"
+                },
+                {
+                  "artifact": {
+                    "artifact_id": "230ddaba-13d2-4680-9a92-9ef662366b23",
+                    "bytes": 175332,
+                    "sha256": "816bce5a2a688adb9c68008bd2f5cbe57087ea456ddbdc3dc9eb909560b60156",
+                    "uri": "solver-artifacts/ebcda913-29e7-4bf9-acff-66545b323165/normalized.json"
+                  },
+                  "label": "boundary_far"
+                }
+              ],
+              "final_pair": {
+                "acceptance_profile": {
+                  "id": "ifa-local-gap-candidate-np02/0.1",
+                  "max_resonance_relative_shift": 0.01,
+                  "max_s11_complex_delta": 0.02,
+                  "minimum_levels": 3
+                },
+                "changed_settings": [
+                  "air_padding_mm"
+                ],
+                "complex_s11_passed": true,
+                "grid_comparison": {
+                  "board_axes_match": {
+                    "x": true,
+                    "y": true,
+                    "z": true
+                  },
+                  "common_non_pml_axes_match": {
+                    "x": true,
+                    "y": true,
+                    "z": true
+                  },
+                  "domain_axes_expand": {
+                    "x": true,
+                    "y": true,
+                    "z": true
+                  },
+                  "passed": true,
+                  "pml_cell_count_matches": true,
+                  "pml_cell_width_axes_match": {
+                    "x": true,
+                    "y": true,
+                    "z": true
+                  },
+                  "pml_interface_axes_expand": {
+                    "x": true,
+                    "y": true,
+                    "z": true
+                  },
+                  "pml_passed": true,
+                  "pml_width_absolute_tolerance_mm": 1e-09
+                },
+                "left_label": "boundary_middle",
+                "metrics": {
+                  "max_impedance_complex_delta_ohm": 0.020967956459174656,
+                  "max_s11_complex_delta": 0.00017435405712947202,
+                  "max_s11_db_delta": 0.003276694855360418,
+                  "s11_db_undefined_pair_count": 0,
+                  "worst_s11_frequency_hz": 2000000000.0
+                },
+                "physics_validated": false,
+                "resonance": {
+                  "bracket_max_relative_shift": null,
+                  "left": {
+                    "interior_minimum_count": 0,
+                    "reason": "no_unique_interior_global_minimum",
+                    "status": "not_established"
+                  },
+                  "right": {
+                    "interior_minimum_count": 0,
+                    "reason": "no_unique_interior_global_minimum",
+                    "status": "not_established"
+                  },
+                  "sampled_relative_shift": null,
+                  "status": "not_established"
+                },
+                "right_label": "boundary_far",
+                "sample_count": 201,
+                "source_assessments": [
+                  {
+                    "converged": true,
+                    "finite_samples": true,
+                    "physics_validated": false,
+                    "status": "computed_unvalidated"
+                  },
+                  {
+                    "converged": true,
+                    "finite_samples": true,
+                    "physics_validated": false,
+                    "status": "computed_unvalidated"
+                  }
+                ],
+                "status": "not_established",
+                "study_issues": []
+              },
+              "issues": [],
+              "level_count": 3,
+              "minimum_levels": 3,
+              "pairs": [
+                {
+                  "acceptance_profile": {
+                    "id": "ifa-local-gap-candidate-np02/0.1",
+                    "max_resonance_relative_shift": 0.01,
+                    "max_s11_complex_delta": 0.02,
+                    "minimum_levels": 3
+                  },
+                  "changed_settings": [
+                    "air_padding_mm"
+                  ],
+                  "complex_s11_passed": true,
+                  "grid_comparison": {
+                    "board_axes_match": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "common_non_pml_axes_match": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "domain_axes_expand": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "passed": true,
+                    "pml_cell_count_matches": true,
+                    "pml_cell_width_axes_match": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "pml_interface_axes_expand": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "pml_passed": true,
+                    "pml_width_absolute_tolerance_mm": 1e-09
+                  },
+                  "left_label": "boundary_near",
+                  "metrics": {
+                    "max_impedance_complex_delta_ohm": 0.02225503424099191,
+                    "max_s11_complex_delta": 0.00018512612253693882,
+                    "max_s11_db_delta": 0.002787976052750274,
+                    "s11_db_undefined_pair_count": 0,
+                    "worst_s11_frequency_hz": 2000000000.0
+                  },
+                  "physics_validated": false,
+                  "resonance": {
+                    "bracket_max_relative_shift": null,
+                    "left": {
+                      "interior_minimum_count": 0,
+                      "reason": "no_unique_interior_global_minimum",
+                      "status": "not_established"
+                    },
+                    "right": {
+                      "interior_minimum_count": 0,
+                      "reason": "no_unique_interior_global_minimum",
+                      "status": "not_established"
+                    },
+                    "sampled_relative_shift": null,
+                    "status": "not_established"
+                  },
+                  "right_label": "boundary_middle",
+                  "sample_count": 201,
+                  "source_assessments": [
+                    {
+                      "converged": true,
+                      "finite_samples": true,
+                      "physics_validated": false,
+                      "status": "computed_unvalidated"
+                    },
+                    {
+                      "converged": true,
+                      "finite_samples": true,
+                      "physics_validated": false,
+                      "status": "computed_unvalidated"
+                    }
+                  ],
+                  "status": "not_established",
+                  "study_issues": []
+                },
+                {
+                  "acceptance_profile": {
+                    "id": "ifa-local-gap-candidate-np02/0.1",
+                    "max_resonance_relative_shift": 0.01,
+                    "max_s11_complex_delta": 0.02,
+                    "minimum_levels": 3
+                  },
+                  "changed_settings": [
+                    "air_padding_mm"
+                  ],
+                  "complex_s11_passed": true,
+                  "grid_comparison": {
+                    "board_axes_match": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "common_non_pml_axes_match": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "domain_axes_expand": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "passed": true,
+                    "pml_cell_count_matches": true,
+                    "pml_cell_width_axes_match": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "pml_interface_axes_expand": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "pml_passed": true,
+                    "pml_width_absolute_tolerance_mm": 1e-09
+                  },
+                  "left_label": "boundary_middle",
+                  "metrics": {
+                    "max_impedance_complex_delta_ohm": 0.020967956459174656,
+                    "max_s11_complex_delta": 0.00017435405712947202,
+                    "max_s11_db_delta": 0.003276694855360418,
+                    "s11_db_undefined_pair_count": 0,
+                    "worst_s11_frequency_hz": 2000000000.0
+                  },
+                  "physics_validated": false,
+                  "resonance": {
+                    "bracket_max_relative_shift": null,
+                    "left": {
+                      "interior_minimum_count": 0,
+                      "reason": "no_unique_interior_global_minimum",
+                      "status": "not_established"
+                    },
+                    "right": {
+                      "interior_minimum_count": 0,
+                      "reason": "no_unique_interior_global_minimum",
+                      "status": "not_established"
+                    },
+                    "sampled_relative_shift": null,
+                    "status": "not_established"
+                  },
+                  "right_label": "boundary_far",
+                  "sample_count": 201,
+                  "source_assessments": [
+                    {
+                      "converged": true,
+                      "finite_samples": true,
+                      "physics_validated": false,
+                      "status": "computed_unvalidated"
+                    },
+                    {
+                      "converged": true,
+                      "finite_samples": true,
+                      "physics_validated": false,
+                      "status": "computed_unvalidated"
+                    }
+                  ],
+                  "status": "not_established",
+                  "study_issues": []
+                }
+              ],
+              "status": "not_established"
+            },
+            "mesh": {
+              "artifacts": [
+                {
+                  "artifact": {
+                    "artifact_id": "e81576e5-d6e6-478d-8a3c-e2f8f0c77ba5",
+                    "bytes": 173208,
+                    "sha256": "0e86a230ebb758c79b3bc60d0368e720af8920c1c38f3f24e75e795f0d593c60",
+                    "uri": "solver-artifacts/b4f696af-8c62-441b-a61c-f556c532c70b/normalized.json"
+                  },
+                  "label": "mesh_coarse"
+                },
+                {
+                  "artifact": {
+                    "artifact_id": "332cee88-4e44-48ba-af8a-0f8f416dd40e",
+                    "bytes": 177167,
+                    "sha256": "676956ab66aca48e235ca2cf581e78e0270067cde76b30592fd55f6a0b84ecfc",
+                    "uri": "solver-artifacts/129f46ed-c5b4-4cc7-83fd-e2c95e6e6125/normalized.json"
+                  },
+                  "label": "mesh_medium"
+                },
+                {
+                  "artifact": {
+                    "artifact_id": "230ddaba-13d2-4680-9a92-9ef662366b23",
+                    "bytes": 175332,
+                    "sha256": "816bce5a2a688adb9c68008bd2f5cbe57087ea456ddbdc3dc9eb909560b60156",
+                    "uri": "solver-artifacts/ebcda913-29e7-4bf9-acff-66545b323165/normalized.json"
+                  },
+                  "label": "mesh_fine"
+                }
+              ],
+              "final_pair": {
+                "acceptance_profile": {
+                  "id": "ifa-local-gap-candidate-np02/0.1",
+                  "max_resonance_relative_shift": 0.01,
+                  "max_s11_complex_delta": 0.02,
+                  "minimum_levels": 3
+                },
+                "changed_settings": [
+                  "grid_mm"
+                ],
+                "complex_s11_passed": true,
+                "grid_comparison": {
+                  "outer_boundary_axes_match": {
+                    "x": true,
+                    "y": true,
+                    "z": true
+                  },
+                  "passed": true,
+                  "pml_cell_count_matches": true,
+                  "pml_cell_width_axes_match": {
+                    "x": true,
+                    "y": true,
+                    "z": true
+                  },
+                  "pml_interface_axes_match": {
+                    "x": true,
+                    "y": true,
+                    "z": true
+                  },
+                  "pml_passed": true,
+                  "pml_width_absolute_tolerance_mm": 1e-09
+                },
+                "left_label": "mesh_medium",
+                "metrics": {
+                  "max_impedance_complex_delta_ohm": 0.5056359533589121,
+                  "max_s11_complex_delta": 0.002126812981639143,
+                  "max_s11_db_delta": 0.04561790970731572,
+                  "s11_db_undefined_pair_count": 0,
+                  "worst_s11_frequency_hz": 2900000000.0
+                },
+                "physics_validated": false,
+                "resonance": {
+                  "bracket_max_relative_shift": null,
+                  "left": {
+                    "interior_minimum_count": 0,
+                    "reason": "no_unique_interior_global_minimum",
+                    "status": "not_established"
+                  },
+                  "right": {
+                    "interior_minimum_count": 0,
+                    "reason": "no_unique_interior_global_minimum",
+                    "status": "not_established"
+                  },
+                  "sampled_relative_shift": null,
+                  "status": "not_established"
+                },
+                "right_label": "mesh_fine",
+                "sample_count": 201,
+                "source_assessments": [
+                  {
+                    "converged": true,
+                    "finite_samples": true,
+                    "physics_validated": false,
+                    "status": "computed_unvalidated"
+                  },
+                  {
+                    "converged": true,
+                    "finite_samples": true,
+                    "physics_validated": false,
+                    "status": "computed_unvalidated"
+                  }
+                ],
+                "status": "not_established",
+                "study_issues": []
+              },
+              "issues": [],
+              "level_count": 3,
+              "minimum_levels": 3,
+              "pairs": [
+                {
+                  "acceptance_profile": {
+                    "id": "ifa-local-gap-candidate-np02/0.1",
+                    "max_resonance_relative_shift": 0.01,
+                    "max_s11_complex_delta": 0.02,
+                    "minimum_levels": 3
+                  },
+                  "changed_settings": [
+                    "grid_mm"
+                  ],
+                  "complex_s11_passed": false,
+                  "grid_comparison": {
+                    "outer_boundary_axes_match": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "passed": true,
+                    "pml_cell_count_matches": true,
+                    "pml_cell_width_axes_match": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "pml_interface_axes_match": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "pml_passed": true,
+                    "pml_width_absolute_tolerance_mm": 1e-09
+                  },
+                  "left_label": "mesh_coarse",
+                  "metrics": {
+                    "max_impedance_complex_delta_ohm": 9.78927253782925,
+                    "max_s11_complex_delta": 0.06327773648155197,
+                    "max_s11_db_delta": 0.9751550760236789,
+                    "s11_db_undefined_pair_count": 0,
+                    "worst_s11_frequency_hz": 2385000000.0
+                  },
+                  "physics_validated": false,
+                  "resonance": {
+                    "bracket_max_relative_shift": null,
+                    "left": {
+                      "interior_minimum_count": 0,
+                      "reason": "no_unique_interior_global_minimum",
+                      "status": "not_established"
+                    },
+                    "right": {
+                      "interior_minimum_count": 0,
+                      "reason": "no_unique_interior_global_minimum",
+                      "status": "not_established"
+                    },
+                    "sampled_relative_shift": null,
+                    "status": "not_established"
+                  },
+                  "right_label": "mesh_medium",
+                  "sample_count": 201,
+                  "source_assessments": [
+                    {
+                      "converged": true,
+                      "finite_samples": true,
+                      "physics_validated": false,
+                      "status": "computed_unvalidated"
+                    },
+                    {
+                      "converged": true,
+                      "finite_samples": true,
+                      "physics_validated": false,
+                      "status": "computed_unvalidated"
+                    }
+                  ],
+                  "status": "failed",
+                  "study_issues": []
+                },
+                {
+                  "acceptance_profile": {
+                    "id": "ifa-local-gap-candidate-np02/0.1",
+                    "max_resonance_relative_shift": 0.01,
+                    "max_s11_complex_delta": 0.02,
+                    "minimum_levels": 3
+                  },
+                  "changed_settings": [
+                    "grid_mm"
+                  ],
+                  "complex_s11_passed": true,
+                  "grid_comparison": {
+                    "outer_boundary_axes_match": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "passed": true,
+                    "pml_cell_count_matches": true,
+                    "pml_cell_width_axes_match": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "pml_interface_axes_match": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "pml_passed": true,
+                    "pml_width_absolute_tolerance_mm": 1e-09
+                  },
+                  "left_label": "mesh_medium",
+                  "metrics": {
+                    "max_impedance_complex_delta_ohm": 0.5056359533589121,
+                    "max_s11_complex_delta": 0.002126812981639143,
+                    "max_s11_db_delta": 0.04561790970731572,
+                    "s11_db_undefined_pair_count": 0,
+                    "worst_s11_frequency_hz": 2900000000.0
+                  },
+                  "physics_validated": false,
+                  "resonance": {
+                    "bracket_max_relative_shift": null,
+                    "left": {
+                      "interior_minimum_count": 0,
+                      "reason": "no_unique_interior_global_minimum",
+                      "status": "not_established"
+                    },
+                    "right": {
+                      "interior_minimum_count": 0,
+                      "reason": "no_unique_interior_global_minimum",
+                      "status": "not_established"
+                    },
+                    "sampled_relative_shift": null,
+                    "status": "not_established"
+                  },
+                  "right_label": "mesh_fine",
+                  "sample_count": 201,
+                  "source_assessments": [
+                    {
+                      "converged": true,
+                      "finite_samples": true,
+                      "physics_validated": false,
+                      "status": "computed_unvalidated"
+                    },
+                    {
+                      "converged": true,
+                      "finite_samples": true,
+                      "physics_validated": false,
+                      "status": "computed_unvalidated"
+                    }
+                  ],
+                  "status": "not_established",
+                  "study_issues": []
+                }
+              ],
+              "status": "not_established"
+            },
+            "termination": {
+              "artifacts": [
+                {
+                  "artifact": {
+                    "artifact_id": "230ddaba-13d2-4680-9a92-9ef662366b23",
+                    "bytes": 175332,
+                    "sha256": "816bce5a2a688adb9c68008bd2f5cbe57087ea456ddbdc3dc9eb909560b60156",
+                    "uri": "solver-artifacts/ebcda913-29e7-4bf9-acff-66545b323165/normalized.json"
+                  },
+                  "label": "termination_base"
+                },
+                {
+                  "artifact": {
+                    "artifact_id": "a2fed421-4d3c-4ffd-9f43-e7cb1af91184",
+                    "bytes": 175325,
+                    "sha256": "d769705702af5f4c189aaf9a55c47c0acf2d39b612460165a682814bf63d9434",
+                    "uri": "solver-artifacts/dec8d9c6-2523-419e-8a1d-3bd2c99eb55a/normalized.json"
+                  },
+                  "label": "termination_tight"
+                }
+              ],
+              "final_pair": {
+                "acceptance_profile": {
+                  "id": "ifa-local-gap-candidate-np02/0.1",
+                  "max_resonance_relative_shift": 0.01,
+                  "max_s11_complex_delta": 0.02,
+                  "minimum_levels": 3
+                },
+                "changed_settings": [
+                  "end_criterion"
+                ],
+                "complex_s11_passed": true,
+                "left_label": "termination_base",
+                "metrics": {
+                  "max_impedance_complex_delta_ohm": 0.0816257015800893,
+                  "max_s11_complex_delta": 0.0006781502202648916,
+                  "max_s11_db_delta": 0.012329099985573855,
+                  "s11_db_undefined_pair_count": 0,
+                  "worst_s11_frequency_hz": 2000000000.0
+                },
+                "physics_validated": false,
+                "resonance": {
+                  "bracket_max_relative_shift": null,
+                  "left": {
+                    "interior_minimum_count": 0,
+                    "reason": "no_unique_interior_global_minimum",
+                    "status": "not_established"
+                  },
+                  "right": {
+                    "interior_minimum_count": 0,
+                    "reason": "no_unique_interior_global_minimum",
+                    "status": "not_established"
+                  },
+                  "sampled_relative_shift": null,
+                  "status": "not_established"
+                },
+                "right_label": "termination_tight",
+                "sample_count": 201,
+                "source_assessments": [
+                  {
+                    "converged": true,
+                    "finite_samples": true,
+                    "physics_validated": false,
+                    "status": "computed_unvalidated"
+                  },
+                  {
+                    "converged": true,
+                    "finite_samples": true,
+                    "physics_validated": false,
+                    "status": "computed_unvalidated"
+                  }
+                ],
+                "status": "not_established",
+                "study_issues": []
+              },
+              "issues": [],
+              "level_count": 2,
+              "minimum_levels": 2,
+              "pairs": [
+                {
+                  "acceptance_profile": {
+                    "id": "ifa-local-gap-candidate-np02/0.1",
+                    "max_resonance_relative_shift": 0.01,
+                    "max_s11_complex_delta": 0.02,
+                    "minimum_levels": 3
+                  },
+                  "changed_settings": [
+                    "end_criterion"
+                  ],
+                  "complex_s11_passed": true,
+                  "left_label": "termination_base",
+                  "metrics": {
+                    "max_impedance_complex_delta_ohm": 0.0816257015800893,
+                    "max_s11_complex_delta": 0.0006781502202648916,
+                    "max_s11_db_delta": 0.012329099985573855,
+                    "s11_db_undefined_pair_count": 0,
+                    "worst_s11_frequency_hz": 2000000000.0
+                  },
+                  "physics_validated": false,
+                  "resonance": {
+                    "bracket_max_relative_shift": null,
+                    "left": {
+                      "interior_minimum_count": 0,
+                      "reason": "no_unique_interior_global_minimum",
+                      "status": "not_established"
+                    },
+                    "right": {
+                      "interior_minimum_count": 0,
+                      "reason": "no_unique_interior_global_minimum",
+                      "status": "not_established"
+                    },
+                    "sampled_relative_shift": null,
+                    "status": "not_established"
+                  },
+                  "right_label": "termination_tight",
+                  "sample_count": 201,
+                  "source_assessments": [
+                    {
+                      "converged": true,
+                      "finite_samples": true,
+                      "physics_validated": false,
+                      "status": "computed_unvalidated"
+                    },
+                    {
+                      "converged": true,
+                      "finite_samples": true,
+                      "physics_validated": false,
+                      "status": "computed_unvalidated"
+                    }
+                  ],
+                  "status": "not_established",
+                  "study_issues": []
+                }
+              ],
+              "status": "not_established"
+            }
+          },
+          "issues": [],
+          "status": "not_established"
+        },
+        "physics_validated": false,
+        "schema": "rfad.numerical-stability-study/0.1",
+        "source_assessments": [
+          {
+            "assessment": {
+              "converged": true,
+              "finite_samples": true,
+              "physics_validated": false,
+              "status": "computed_unvalidated"
+            },
+            "axis": "mesh",
+            "label": "mesh_coarse"
+          },
+          {
+            "assessment": {
+              "converged": true,
+              "finite_samples": true,
+              "physics_validated": false,
+              "status": "computed_unvalidated"
+            },
+            "axis": "mesh",
+            "label": "mesh_medium"
+          },
+          {
+            "assessment": {
+              "converged": true,
+              "finite_samples": true,
+              "physics_validated": false,
+              "status": "computed_unvalidated"
+            },
+            "axis": "mesh",
+            "label": "mesh_fine"
+          },
+          {
+            "assessment": {
+              "converged": true,
+              "finite_samples": true,
+              "physics_validated": false,
+              "status": "computed_unvalidated"
+            },
+            "axis": "boundary",
+            "label": "boundary_near"
+          },
+          {
+            "assessment": {
+              "converged": true,
+              "finite_samples": true,
+              "physics_validated": false,
+              "status": "computed_unvalidated"
+            },
+            "axis": "boundary",
+            "label": "boundary_middle"
+          },
+          {
+            "assessment": {
+              "converged": true,
+              "finite_samples": true,
+              "physics_validated": false,
+              "status": "computed_unvalidated"
+            },
+            "axis": "boundary",
+            "label": "boundary_far"
+          },
+          {
+            "assessment": {
+              "converged": true,
+              "finite_samples": true,
+              "physics_validated": false,
+              "status": "computed_unvalidated"
+            },
+            "axis": "termination",
+            "label": "termination_base"
+          },
+          {
+            "assessment": {
+              "converged": true,
+              "finite_samples": true,
+              "physics_validated": false,
+              "status": "computed_unvalidated"
+            },
+            "axis": "termination",
+            "label": "termination_tight"
+          }
+        ]
+      },
+      "runs": [
+        {
+          "settings": {
+            "air_padding_mm": 102,
+            "curve_tolerance_mm": 0.025,
+            "end_criterion": 1e-06,
+            "frequency_hz": {
+              "count": 201,
+              "start": 2000000000,
+              "stop": 3000000000
+            },
+            "grid_mm": 0.4,
+            "max_timesteps": 100000,
+            "mesh_policy": {
+              "air_cell_mm": 6,
+              "growth_ratio": 1.5,
+              "kind": "graded_air"
+            }
+          },
+          "artifact_id": "a2fed421-4d3c-4ffd-9f43-e7cb1af91184",
+          "normalized_result": {
+            "bytes": 175325,
+            "sha256": "d769705702af5f4c189aaf9a55c47c0acf2d39b612460165a682814bf63d9434",
+            "uri": "solver-artifacts/dec8d9c6-2523-419e-8a1d-3bd2c99eb55a/normalized.json"
+          },
+          "native_statistics": {
+            "iterations": 8473,
+            "native_cells": 1432800,
+            "raw_values": [
+              1432800.0,
+              5.804653702162359e-13,
+              8473.0,
+              4.918283081842167e-09,
+              214.831116,
+              56510037.40072737
+            ],
+            "timestep_seconds": 5.804653702162359e-13
+          },
+          "termination": {
+            "evidence": [
+              "60.00",
+              "8473",
+              "60.24"
+            ],
+            "exact_endcriterion_schedule": true,
+            "iterations": 8473,
+            "reported_decay_db": 60.24,
+            "reported_zero_energy": false,
+            "status": "end_criterion_reached",
+            "target_energy_ratio": 1e-06
+          },
+          "source_assessment": {
+            "converged": true,
+            "finite_samples": true,
+            "physics_validated": false,
+            "status": "computed_unvalidated"
+          },
+          "minimum_sample": {
+            "frequency_hz": 2000000000.0,
+            "impedance_ohm": [
+              54.61285297994335,
+              33.18186149298509
+            ],
+            "s11": [
+              0.13147486676206338,
+              0.27548508479931183
+            ],
+            "s11_db": -10.306881418913164,
+            "vswr": 1.8787341041598857,
+            "vswr_status": "defined"
+          },
+          "mesh_policy_report": {
+            "air_cell_mm": 6,
+            "air_cells_per_minimum_wavelength": 13.324109244444443,
+            "air_growth_postcondition_checked": true,
+            "axes": {
+              "x": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000017812,
+                "axis_max_adjacent_ratio": 1.6000000000000014,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.25,
+                "outer_boundary_mm": [
+                  -102.0,
+                  142.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  40.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  54.0,
+                  54.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -54.0,
+                  94.0
+                ]
+              },
+              "y": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000017313,
+                "axis_max_adjacent_ratio": 1.5000000000017313,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.33333333333300175,
+                "outer_boundary_mm": [
+                  -102.0,
+                  162.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  60.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  54.0,
+                  54.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -54.0,
+                  114.0
+                ]
+              },
+              "z": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000026732,
+                "axis_max_adjacent_ratio": 1.5000000000026732,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.30999999999999994,
+                "outer_boundary_mm": [
+                  -102.0,
+                  103.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  1.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  54.0,
+                  54.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -54.0,
+                  55.0
+                ]
+              }
+            },
+            "growth_ratio": 1.5,
+            "highest_excitation_frequency_hz": 3750000000.0,
+            "interior_critical_intervals_unchanged": true,
+            "interior_growth_postcondition_enforced": false,
+            "kind": "graded_air",
+            "padding_extension_preserves_common_lines": true,
+            "padding_reference": "physical_board_outer_face_to_outer_boundary",
+            "pml_cells_per_end": 8,
+            "pml_thickness_mm": 48,
+            "schema": "rfad.pcb-mesh-policy/0.1",
+            "vacuum_wavelength_mm": 79.94465546666666
+          },
+          "elapsed_seconds": 235.75
+        },
+        {
+          "settings": {
+            "air_padding_mm": 90,
+            "curve_tolerance_mm": 0.025,
+            "end_criterion": 1e-05,
+            "frequency_hz": {
+              "count": 201,
+              "start": 2000000000,
+              "stop": 3000000000
+            },
+            "grid_mm": 0.4,
+            "max_timesteps": 100000,
+            "mesh_policy": {
+              "air_cell_mm": 6,
+              "growth_ratio": 1.5,
+              "kind": "graded_air"
+            }
+          },
+          "artifact_id": "51bf1fa7-8c8f-4499-9bf2-5e7793d24e79",
+          "normalized_result": {
+            "bytes": 175148,
+            "sha256": "19a34f908a66d3896c899d5436980cedef2bf474ab3a8f9069b794ca00e60ce0",
+            "uri": "solver-artifacts/5cabc8bd-ca4e-42b2-8565-b2078f2bc9e6/normalized.json"
+          },
+          "native_statistics": {
+            "iterations": 7328,
+            "native_cells": 1252680,
+            "raw_values": [
+              1252680.0,
+              5.804653702162359e-13,
+              7328.0,
+              4.253650232944577e-09,
+              177.342259,
+              51762276.46902817
+            ],
+            "timestep_seconds": 5.804653702162359e-13
+          },
+          "termination": {
+            "evidence": [
+              "50.00",
+              "7328",
+              "50.43"
+            ],
+            "exact_endcriterion_schedule": true,
+            "iterations": 7328,
+            "reported_decay_db": 50.43,
+            "reported_zero_energy": false,
+            "status": "end_criterion_reached",
+            "target_energy_ratio": 1e-05
+          },
+          "source_assessment": {
+            "converged": true,
+            "finite_samples": true,
+            "physics_validated": false,
+            "status": "computed_unvalidated"
+          },
+          "minimum_sample": {
+            "frequency_hz": 2000000000.0,
+            "impedance_ohm": [
+              54.5070824426663,
+              33.12676435138471
+            ],
+            "s11": [
+              0.1304925396145781,
+              0.27561738466635516
+            ],
+            "s11_db": -10.315485943939384,
+            "vswr": 1.8774822963799818,
+            "vswr_status": "defined"
+          },
+          "mesh_policy_report": {
+            "air_cell_mm": 6,
+            "air_cells_per_minimum_wavelength": 13.324109244444443,
+            "air_growth_postcondition_checked": true,
+            "axes": {
+              "x": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000017812,
+                "axis_max_adjacent_ratio": 1.6000000000000014,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.25,
+                "outer_boundary_mm": [
+                  -90.0,
+                  130.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  40.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  42.0,
+                  42.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -42.0,
+                  82.0
+                ]
+              },
+              "y": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000017313,
+                "axis_max_adjacent_ratio": 1.5000000000017313,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.33333333333300175,
+                "outer_boundary_mm": [
+                  -90.0,
+                  150.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  60.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  42.0,
+                  42.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -42.0,
+                  102.0
+                ]
+              },
+              "z": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000026732,
+                "axis_max_adjacent_ratio": 1.5000000000026732,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.30999999999999994,
+                "outer_boundary_mm": [
+                  -90.0,
+                  91.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  1.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  42.0,
+                  42.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -42.0,
+                  43.0
+                ]
+              }
+            },
+            "growth_ratio": 1.5,
+            "highest_excitation_frequency_hz": 3750000000.0,
+            "interior_critical_intervals_unchanged": true,
+            "interior_growth_postcondition_enforced": false,
+            "kind": "graded_air",
+            "padding_extension_preserves_common_lines": true,
+            "padding_reference": "physical_board_outer_face_to_outer_boundary",
+            "pml_cells_per_end": 8,
+            "pml_thickness_mm": 48,
+            "schema": "rfad.pcb-mesh-policy/0.1",
+            "vacuum_wavelength_mm": 79.94465546666666
+          },
+          "elapsed_seconds": 196.60999999999967
+        },
+        {
+          "settings": {
+            "air_padding_mm": 102,
+            "curve_tolerance_mm": 0.025,
+            "end_criterion": 1e-05,
+            "frequency_hz": {
+              "count": 201,
+              "start": 2000000000,
+              "stop": 3000000000
+            },
+            "grid_mm": 0.45,
+            "max_timesteps": 100000,
+            "mesh_policy": {
+              "air_cell_mm": 6,
+              "growth_ratio": 1.5,
+              "kind": "graded_air"
+            }
+          },
+          "artifact_id": "332cee88-4e44-48ba-af8a-0f8f416dd40e",
+          "normalized_result": {
+            "bytes": 177167,
+            "sha256": "676956ab66aca48e235ca2cf581e78e0270067cde76b30592fd55f6a0b84ecfc",
+            "uri": "solver-artifacts/129f46ed-c5b4-4cc7-83fd-e2c95e6e6125/normalized.json"
+          },
+          "native_statistics": {
+            "iterations": 7328,
+            "native_cells": 1252080,
+            "raw_values": [
+              1252080.0,
+              5.797421905234722e-13,
+              7328.0,
+              4.248350772156004e-09,
+              191.417436,
+              47933158.18941384
+            ],
+            "timestep_seconds": 5.797421905234722e-13
+          },
+          "termination": {
+            "evidence": [
+              "50.00",
+              "7328",
+              "50.36"
+            ],
+            "exact_endcriterion_schedule": true,
+            "iterations": 7328,
+            "reported_decay_db": 50.36,
+            "reported_zero_energy": false,
+            "status": "end_criterion_reached",
+            "target_energy_ratio": 1e-05
+          },
+          "source_assessment": {
+            "converged": true,
+            "finite_samples": true,
+            "physics_validated": false,
+            "status": "computed_unvalidated"
+          },
+          "minimum_sample": {
+            "frequency_hz": 2000000000.0,
+            "impedance_ohm": [
+              54.495287620858925,
+              33.317616652585
+            ],
+            "s11": [
+              0.13132902008080824,
+              0.2769698745763891
+            ],
+            "s11_db": -10.27058734722951,
+            "vswr": 1.8840399889732808,
+            "vswr_status": "defined"
+          },
+          "mesh_policy_report": {
+            "air_cell_mm": 6,
+            "air_cells_per_minimum_wavelength": 13.324109244444443,
+            "air_growth_postcondition_checked": true,
+            "axes": {
+              "x": {
+                "air_and_interface_max_adjacent_ratio": 1.500000000001739,
+                "axis_max_adjacent_ratio": 1.739130434784002,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.25,
+                "outer_boundary_mm": [
+                  -102.0,
+                  142.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  40.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  54.0,
+                  54.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -54.0,
+                  94.0
+                ]
+              },
+              "y": {
+                "air_and_interface_max_adjacent_ratio": 1.500000000001739,
+                "axis_max_adjacent_ratio": 1.500000000001739,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.33333333333300175,
+                "outer_boundary_mm": [
+                  -102.0,
+                  162.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  60.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  54.0,
+                  54.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -54.0,
+                  114.0
+                ]
+              },
+              "z": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000026732,
+                "axis_max_adjacent_ratio": 1.5000000000026732,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.30999999999999994,
+                "outer_boundary_mm": [
+                  -102.0,
+                  103.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  1.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  54.0,
+                  54.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -54.0,
+                  55.0
+                ]
+              }
+            },
+            "growth_ratio": 1.5,
+            "highest_excitation_frequency_hz": 3750000000.0,
+            "interior_critical_intervals_unchanged": true,
+            "interior_growth_postcondition_enforced": false,
+            "kind": "graded_air",
+            "padding_extension_preserves_common_lines": true,
+            "padding_reference": "physical_board_outer_face_to_outer_boundary",
+            "pml_cells_per_end": 8,
+            "pml_thickness_mm": 48,
+            "schema": "rfad.pcb-mesh-policy/0.1",
+            "vacuum_wavelength_mm": 79.94465546666666
+          },
+          "elapsed_seconds": 209.07800000000043
+        },
+        {
+          "settings": {
+            "air_padding_mm": 102,
+            "curve_tolerance_mm": 0.025,
+            "end_criterion": 1e-05,
+            "frequency_hz": {
+              "count": 201,
+              "start": 2000000000,
+              "stop": 3000000000
+            },
+            "grid_mm": 0.5,
+            "max_timesteps": 100000,
+            "mesh_policy": {
+              "air_cell_mm": 6,
+              "growth_ratio": 1.5,
+              "kind": "graded_air"
+            }
+          },
+          "artifact_id": "e81576e5-d6e6-478d-8a3c-e2f8f0c77ba5",
+          "normalized_result": {
+            "bytes": 173208,
+            "sha256": "0e86a230ebb758c79b3bc60d0368e720af8920c1c38f3f24e75e795f0d593c60",
+            "uri": "solver-artifacts/b4f696af-8c62-441b-a61c-f556c532c70b/normalized.json"
+          },
+          "native_statistics": {
+            "iterations": 4256,
+            "native_cells": 902205,
+            "raw_values": [
+              902205.0,
+              9.985100575567398e-13,
+              4256.0,
+              4.249658804961484e-09,
+              64.597517,
+              59441672.96708944
+            ],
+            "timestep_seconds": 9.985100575567398e-13
+          },
+          "termination": {
+            "evidence": [
+              "50.00",
+              "4256",
+              "51.11"
+            ],
+            "exact_endcriterion_schedule": true,
+            "iterations": 4256,
+            "reported_decay_db": 51.11,
+            "reported_zero_energy": false,
+            "status": "end_criterion_reached",
+            "target_energy_ratio": 1e-05
+          },
+          "source_assessment": {
+            "converged": true,
+            "finite_samples": true,
+            "physics_validated": false,
+            "status": "computed_unvalidated"
+          },
+          "minimum_sample": {
+            "frequency_hz": 2000000000.0,
+            "impedance_ohm": [
+              54.9027464013564,
+              29.46905002422332
+            ],
+            "s11": [
+              0.11646047146023235,
+              0.24820199144548266
+            ],
+            "s11_db": -11.239712227802375,
+            "vswr": 1.7554528707288946,
+            "vswr_status": "defined"
+          },
+          "mesh_policy_report": {
+            "air_cell_mm": 6,
+            "air_cells_per_minimum_wavelength": 13.324109244444443,
+            "air_growth_postcondition_checked": true,
+            "axes": {
+              "x": {
+                "air_and_interface_max_adjacent_ratio": 1.500000000001739,
+                "axis_max_adjacent_ratio": 1.500000000001739,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.5,
+                "outer_boundary_mm": [
+                  -102.0,
+                  142.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  40.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  54.0,
+                  54.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -54.0,
+                  94.0
+                ]
+              },
+              "y": {
+                "air_and_interface_max_adjacent_ratio": 1.500000000001739,
+                "axis_max_adjacent_ratio": 1.500000000001739,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.5,
+                "outer_boundary_mm": [
+                  -102.0,
+                  162.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  60.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  54.0,
+                  54.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -54.0,
+                  114.0
+                ]
+              },
+              "z": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000005762,
+                "axis_max_adjacent_ratio": 1.5000000000005762,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.46499999999999997,
+                "outer_boundary_mm": [
+                  -102.0,
+                  103.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  1.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  54.0,
+                  54.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -54.0,
+                  55.0
+                ]
+              }
+            },
+            "growth_ratio": 1.5,
+            "highest_excitation_frequency_hz": 3750000000.0,
+            "interior_critical_intervals_unchanged": true,
+            "interior_growth_postcondition_enforced": false,
+            "kind": "graded_air",
+            "padding_extension_preserves_common_lines": true,
+            "padding_reference": "physical_board_outer_face_to_outer_boundary",
+            "pml_cells_per_end": 8,
+            "pml_thickness_mm": 48,
+            "schema": "rfad.pcb-mesh-policy/0.1",
+            "vacuum_wavelength_mm": 79.94465546666666
+          },
+          "elapsed_seconds": 83.29699999999957
+        },
+        {
+          "settings": {
+            "air_padding_mm": 102,
+            "curve_tolerance_mm": 0.025,
+            "end_criterion": 1e-05,
+            "frequency_hz": {
+              "count": 201,
+              "start": 2000000000,
+              "stop": 3000000000
+            },
+            "grid_mm": 0.4,
+            "max_timesteps": 100000,
+            "mesh_policy": {
+              "air_cell_mm": 6,
+              "growth_ratio": 1.5,
+              "kind": "graded_air"
+            }
+          },
+          "artifact_id": "230ddaba-13d2-4680-9a92-9ef662366b23",
+          "normalized_result": {
+            "bytes": 175332,
+            "sha256": "816bce5a2a688adb9c68008bd2f5cbe57087ea456ddbdc3dc9eb909560b60156",
+            "uri": "solver-artifacts/ebcda913-29e7-4bf9-acff-66545b323165/normalized.json"
+          },
+          "native_statistics": {
+            "iterations": 7328,
+            "native_cells": 1432800,
+            "raw_values": [
+              1432800.0,
+              5.804653702162359e-13,
+              7328.0,
+              4.253650232944577e-09,
+              192.788892,
+              54461428.20303153
+            ],
+            "timestep_seconds": 5.804653702162359e-13
+          },
+          "termination": {
+            "evidence": [
+              "50.00",
+              "7328",
+              "50.36"
+            ],
+            "exact_endcriterion_schedule": true,
+            "iterations": 7328,
+            "reported_decay_db": 50.36,
+            "reported_zero_energy": false,
+            "status": "end_criterion_reached",
+            "target_energy_ratio": 1e-05
+          },
+          "source_assessment": {
+            "converged": true,
+            "finite_samples": true,
+            "physics_validated": false,
+            "status": "computed_unvalidated"
+          },
+          "minimum_sample": {
+            "frequency_hz": 2000000000.0,
+            "impedance_ohm": [
+              54.54906161245579,
+              33.13093589438764
+            ],
+            "s11": [
+              0.13079792389223974,
+              0.27544463640947675
+            ],
+            "s11_db": -10.316205256936826,
+            "vswr": 1.877377754364854,
+            "vswr_status": "defined"
+          },
+          "mesh_policy_report": {
+            "air_cell_mm": 6,
+            "air_cells_per_minimum_wavelength": 13.324109244444443,
+            "air_growth_postcondition_checked": true,
+            "axes": {
+              "x": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000017812,
+                "axis_max_adjacent_ratio": 1.6000000000000014,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.25,
+                "outer_boundary_mm": [
+                  -102.0,
+                  142.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  40.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  54.0,
+                  54.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -54.0,
+                  94.0
+                ]
+              },
+              "y": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000017313,
+                "axis_max_adjacent_ratio": 1.5000000000017313,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.33333333333300175,
+                "outer_boundary_mm": [
+                  -102.0,
+                  162.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  60.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  54.0,
+                  54.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -54.0,
+                  114.0
+                ]
+              },
+              "z": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000026732,
+                "axis_max_adjacent_ratio": 1.5000000000026732,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.30999999999999994,
+                "outer_boundary_mm": [
+                  -102.0,
+                  103.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  1.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  54.0,
+                  54.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -54.0,
+                  55.0
+                ]
+              }
+            },
+            "growth_ratio": 1.5,
+            "highest_excitation_frequency_hz": 3750000000.0,
+            "interior_critical_intervals_unchanged": true,
+            "interior_growth_postcondition_enforced": false,
+            "kind": "graded_air",
+            "padding_extension_preserves_common_lines": true,
+            "padding_reference": "physical_board_outer_face_to_outer_boundary",
+            "pml_cells_per_end": 8,
+            "pml_thickness_mm": 48,
+            "schema": "rfad.pcb-mesh-policy/0.1",
+            "vacuum_wavelength_mm": 79.94465546666666
+          },
+          "elapsed_seconds": 216.42199999999957
+        },
+        {
+          "settings": {
+            "air_padding_mm": 96,
+            "curve_tolerance_mm": 0.025,
+            "end_criterion": 1e-05,
+            "frequency_hz": {
+              "count": 201,
+              "start": 2000000000,
+              "stop": 3000000000
+            },
+            "grid_mm": 0.4,
+            "max_timesteps": 100000,
+            "mesh_policy": {
+              "air_cell_mm": 6,
+              "growth_ratio": 1.5,
+              "kind": "graded_air"
+            }
+          },
+          "artifact_id": "6cc2f8e2-c22a-4349-86ca-24196f318e2a",
+          "normalized_result": {
+            "bytes": 175219,
+            "sha256": "b06008dfb868a7d1bcebbcda9fa65e63c74f4d86fc3edeb33689e704790bcb49",
+            "uri": "solver-artifacts/fe310e37-1fe5-4735-a8cb-80bb36872254/normalized.json"
+          },
+          "native_statistics": {
+            "iterations": 7328,
+            "native_cells": 1341176,
+            "raw_values": [
+              1341176.0,
+              5.804653702162359e-13,
+              7328.0,
+              4.253650232944577e-09,
+              182.591651,
+              53825778.3100937
+            ],
+            "timestep_seconds": 5.804653702162359e-13
+          },
+          "termination": {
+            "evidence": [
+              "50.00",
+              "7328",
+              "50.39"
+            ],
+            "exact_endcriterion_schedule": true,
+            "iterations": 7328,
+            "reported_decay_db": 50.39,
+            "reported_zero_energy": false,
+            "status": "end_criterion_reached",
+            "target_energy_ratio": 1e-05
+          },
+          "source_assessment": {
+            "converged": true,
+            "finite_samples": true,
+            "physics_validated": false,
+            "status": "computed_unvalidated"
+          },
+          "minimum_sample": {
+            "frequency_hz": 2000000000.0,
+            "impedance_ohm": [
+              54.52826304992455,
+              33.1335957806085
+            ],
+            "s11": [
+              0.13066929161590787,
+              0.2755623354949583
+            ],
+            "s11_db": -10.314747237370456,
+            "vswr": 1.8775896738966218,
+            "vswr_status": "defined"
+          },
+          "mesh_policy_report": {
+            "air_cell_mm": 6,
+            "air_cells_per_minimum_wavelength": 13.324109244444443,
+            "air_growth_postcondition_checked": true,
+            "axes": {
+              "x": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000017812,
+                "axis_max_adjacent_ratio": 1.6000000000000014,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.25,
+                "outer_boundary_mm": [
+                  -96.0,
+                  136.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  40.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  48.0,
+                  48.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -48.0,
+                  88.0
+                ]
+              },
+              "y": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000017313,
+                "axis_max_adjacent_ratio": 1.5000000000017313,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.33333333333300175,
+                "outer_boundary_mm": [
+                  -96.0,
+                  156.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  60.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  48.0,
+                  48.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -48.0,
+                  108.0
+                ]
+              },
+              "z": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000026732,
+                "axis_max_adjacent_ratio": 1.5000000000026732,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.30999999999999994,
+                "outer_boundary_mm": [
+                  -96.0,
+                  97.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  1.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  48.0,
+                  48.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -48.0,
+                  49.0
+                ]
+              }
+            },
+            "growth_ratio": 1.5,
+            "highest_excitation_frequency_hz": 3750000000.0,
+            "interior_critical_intervals_unchanged": true,
+            "interior_growth_postcondition_enforced": false,
+            "kind": "graded_air",
+            "padding_extension_preserves_common_lines": true,
+            "padding_reference": "physical_board_outer_face_to_outer_boundary",
+            "pml_cells_per_end": 8,
+            "pml_thickness_mm": 48,
+            "schema": "rfad.pcb-mesh-policy/0.1",
+            "vacuum_wavelength_mm": 79.94465546666666
+          },
+          "elapsed_seconds": 202.40700000000015
+        }
+      ],
+      "immutable_assessment": {
+        "path": ".local/ifa-convergence-final/report.assessments/955706ab-79b2-4bd7-bd4d-bc3a7a52ec04.json",
+        "bytes": 18251,
+        "sha256": "e21ddd876a47b3127170d1eb5fef4e5e1eeaaba58f79d89c8f214dd7ca867447"
+      },
+      "samples_csv": {
+        "path": ".local/ifa-convergence-final/report.samples.csv",
+        "bytes": 240331,
+        "sha256": "31c2afdfb58e429f071564b76908370b5374df9761085a0be25be68cff0a4612"
+      },
+      "plots": [
+        {
+          "path": ".local/ifa-convergence-final/comparison.png",
+          "bytes": 231398,
+          "sha256": "85afb089dd703fae22bf8bdc1349776653f49ece1c5ff5d0d14a566ff5350b60"
+        },
+        {
+          "path": ".local/ifa-convergence-final/comparison.svg",
+          "bytes": 126109,
+          "sha256": "bcd0e7c3b0b9d669eaf1aa85aecc7086b7c1b1a23ae47ee9d2c29b3394f334fc"
+        }
+      ],
+      "reassessment_evidence": {
+        "status": "passed",
+        "assessment_unchanged": true,
+        "result_references_unchanged": true,
+        "csv_unchanged": true,
+        "immutable_assessment_history_incremented": true,
+        "sealed_files_checked": 54,
+        "job_count_before_resume": 21,
+        "resume_reused_without_new_jobs": true,
+        "job_count_after_resume": 21
+      },
+      "post_guard_reassessment_evidence": {
+        "status": "passed",
+        "native_runs_and_csv_unchanged": true,
+        "numeric_metrics_and_decision_unchanged": true,
+        "previous_assessments_preserved": true,
+        "new_mesh_and_boundary_pml_guards_passed": true,
+        "assessment": {
+          "bytes": 18251,
+          "path": "report.assessments/955706ab-79b2-4bd7-bd4d-bc3a7a52ec04.json",
+          "sha256": "e21ddd876a47b3127170d1eb5fef4e5e1eeaaba58f79d89c8f214dd7ca867447"
+        }
+      }
+    },
+    {
+      "name": "bracketed_1_6_to_2_6_ghz",
+      "report": {
+        "path": ".local/ifa-resonance-convergence-final/report.json",
+        "bytes": 59735,
+        "sha256": "1321dab63bc52e5b49558927059d22b450fbbce82bbedca7fcd0171b6fae1f88"
+      },
+      "study": {
+        "path": "fixtures/ifa_convergence_resonance_study.json",
+        "bytes": 2123,
+        "sha256": "01679b384f8d4c98cfb6969b310940f15c79fc4996ea74484bec6e6640ad911b"
+      },
+      "fixture": {
+        "path": "fixtures/ifa_convergence_input.json",
+        "bytes": 25759,
+        "sha256": "67ed825b850739a1723f0aad3a623ac272f7e8881db194235d168218f16f0301"
+      },
+      "study_hash": "c67328076387648b706123612e32b4651ce0623e8ec5487c6beebbb26a5ba65a",
+      "fixture_hash": "98883837606543de1e9a9133c12867b9b3557879cb9fc554f078fb76f0c7189f",
+      "unique_native_runs": 6,
+      "comparison_rows": 8,
+      "assessment": {
+        "acceptance_profile": {
+          "id": "ifa-local-gap-candidate-np02/0.1",
+          "max_resonance_relative_shift": 0.01,
+          "max_s11_complex_delta": 0.02,
+          "minimum_levels": 3
+        },
+        "limitations": [
+          "Explicit benchmark thresholds; not universal RF acceptance criteria",
+          "Same runtime and source only; no independent solver or measurement validation",
+          "Resonance is a sampled magnitude minimum with a conservative bracket; no interpolated precision",
+          "No target-band matching, NF2FF, gain or efficiency acceptance"
+        ],
+        "numerical_stability": {
+          "anchors": {
+            "labels": [
+              "mesh_fine",
+              "boundary_far",
+              "termination_base"
+            ],
+            "status": "matched"
+          },
+          "axes": {
+            "boundary": {
+              "artifacts": [
+                {
+                  "artifact": {
+                    "artifact_id": "cbe61998-a8ea-447a-b993-2a022afd8ee5",
+                    "bytes": 175707,
+                    "sha256": "945587cf8f2bbd03a125c1e2d7b6afb326fa44230564d6fe7850080d08ed4d97",
+                    "uri": "solver-artifacts/5e43b856-568b-4824-ab3b-5a4d1820537f/normalized.json"
+                  },
+                  "label": "boundary_near"
+                },
+                {
+                  "artifact": {
+                    "artifact_id": "4e3cbd2b-4c6a-4b58-991a-e2e5b0aaf68e",
+                    "bytes": 175779,
+                    "sha256": "3c099b214083b314e46930a153b2bb4bc0aa9fc24e32a9531a7cfaebd43fd62d",
+                    "uri": "solver-artifacts/40f1a8fe-94a2-44bd-aaa8-b5415d7c7196/normalized.json"
+                  },
+                  "label": "boundary_middle"
+                },
+                {
+                  "artifact": {
+                    "artifact_id": "5a1380c9-6375-4294-aa5e-23861eccab4a",
+                    "bytes": 175840,
+                    "sha256": "773f0bd9781b828d7c612af4144280f19c0c93b9fe62b4db9655634536ce81a8",
+                    "uri": "solver-artifacts/e142da11-f24d-4e24-835c-98b6a1aa5943/normalized.json"
+                  },
+                  "label": "boundary_far"
+                }
+              ],
+              "final_pair": {
+                "acceptance_profile": {
+                  "id": "ifa-local-gap-candidate-np02/0.1",
+                  "max_resonance_relative_shift": 0.01,
+                  "max_s11_complex_delta": 0.02,
+                  "minimum_levels": 3
+                },
+                "changed_settings": [
+                  "air_padding_mm"
+                ],
+                "complex_s11_passed": true,
+                "grid_comparison": {
+                  "board_axes_match": {
+                    "x": true,
+                    "y": true,
+                    "z": true
+                  },
+                  "common_non_pml_axes_match": {
+                    "x": true,
+                    "y": true,
+                    "z": true
+                  },
+                  "domain_axes_expand": {
+                    "x": true,
+                    "y": true,
+                    "z": true
+                  },
+                  "passed": true,
+                  "pml_cell_count_matches": true,
+                  "pml_cell_width_axes_match": {
+                    "x": true,
+                    "y": true,
+                    "z": true
+                  },
+                  "pml_interface_axes_expand": {
+                    "x": true,
+                    "y": true,
+                    "z": true
+                  },
+                  "pml_passed": true,
+                  "pml_width_absolute_tolerance_mm": 1e-09
+                },
+                "left_label": "boundary_middle",
+                "metrics": {
+                  "max_impedance_complex_delta_ohm": 0.0739404271456274,
+                  "max_s11_complex_delta": 0.00018085721259261466,
+                  "max_s11_db_delta": 0.005757821557866194,
+                  "s11_db_undefined_pair_count": 0,
+                  "worst_s11_frequency_hz": 1940000000.0
+                },
+                "physics_validated": false,
+                "resonance": {
+                  "bracket_max_relative_shift": 0.005221932114882533,
+                  "left": {
+                    "bracket_hz": [
+                      1915000000.0,
+                      1925000000.0
+                    ],
+                    "frequency_hz": 1920000000.0,
+                    "s11_magnitude": 0.2550386403222527,
+                    "sample_index": 64,
+                    "status": "bracketed"
+                  },
+                  "right": {
+                    "bracket_hz": [
+                      1915000000.0,
+                      1925000000.0
+                    ],
+                    "frequency_hz": 1920000000.0,
+                    "s11_magnitude": 0.2551797703468705,
+                    "sample_index": 64,
+                    "status": "bracketed"
+                  },
+                  "sampled_relative_shift": 0.0,
+                  "status": "passed"
+                },
+                "right_label": "boundary_far",
+                "sample_count": 201,
+                "source_assessments": [
+                  {
+                    "converged": true,
+                    "finite_samples": true,
+                    "physics_validated": false,
+                    "status": "computed_unvalidated"
+                  },
+                  {
+                    "converged": true,
+                    "finite_samples": true,
+                    "physics_validated": false,
+                    "status": "computed_unvalidated"
+                  }
+                ],
+                "status": "established",
+                "study_issues": []
+              },
+              "issues": [],
+              "level_count": 3,
+              "minimum_levels": 3,
+              "pairs": [
+                {
+                  "acceptance_profile": {
+                    "id": "ifa-local-gap-candidate-np02/0.1",
+                    "max_resonance_relative_shift": 0.01,
+                    "max_s11_complex_delta": 0.02,
+                    "minimum_levels": 3
+                  },
+                  "changed_settings": [
+                    "air_padding_mm"
+                  ],
+                  "complex_s11_passed": true,
+                  "grid_comparison": {
+                    "board_axes_match": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "common_non_pml_axes_match": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "domain_axes_expand": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "passed": true,
+                    "pml_cell_count_matches": true,
+                    "pml_cell_width_axes_match": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "pml_interface_axes_expand": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "pml_passed": true,
+                    "pml_width_absolute_tolerance_mm": 1e-09
+                  },
+                  "left_label": "boundary_near",
+                  "metrics": {
+                    "max_impedance_complex_delta_ohm": 0.07681348278446412,
+                    "max_s11_complex_delta": 0.00019173052780115308,
+                    "max_s11_db_delta": 0.006437457733229124,
+                    "s11_db_undefined_pair_count": 0,
+                    "worst_s11_frequency_hz": 1940000000.0
+                  },
+                  "physics_validated": false,
+                  "resonance": {
+                    "bracket_max_relative_shift": 0.005221932114882533,
+                    "left": {
+                      "bracket_hz": [
+                        1915000000.0,
+                        1925000000.0
+                      ],
+                      "frequency_hz": 1920000000.0,
+                      "s11_magnitude": 0.2548535680003852,
+                      "sample_index": 64,
+                      "status": "bracketed"
+                    },
+                    "right": {
+                      "bracket_hz": [
+                        1915000000.0,
+                        1925000000.0
+                      ],
+                      "frequency_hz": 1920000000.0,
+                      "s11_magnitude": 0.2550386403222527,
+                      "sample_index": 64,
+                      "status": "bracketed"
+                    },
+                    "sampled_relative_shift": 0.0,
+                    "status": "passed"
+                  },
+                  "right_label": "boundary_middle",
+                  "sample_count": 201,
+                  "source_assessments": [
+                    {
+                      "converged": true,
+                      "finite_samples": true,
+                      "physics_validated": false,
+                      "status": "computed_unvalidated"
+                    },
+                    {
+                      "converged": true,
+                      "finite_samples": true,
+                      "physics_validated": false,
+                      "status": "computed_unvalidated"
+                    }
+                  ],
+                  "status": "established",
+                  "study_issues": []
+                },
+                {
+                  "acceptance_profile": {
+                    "id": "ifa-local-gap-candidate-np02/0.1",
+                    "max_resonance_relative_shift": 0.01,
+                    "max_s11_complex_delta": 0.02,
+                    "minimum_levels": 3
+                  },
+                  "changed_settings": [
+                    "air_padding_mm"
+                  ],
+                  "complex_s11_passed": true,
+                  "grid_comparison": {
+                    "board_axes_match": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "common_non_pml_axes_match": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "domain_axes_expand": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "passed": true,
+                    "pml_cell_count_matches": true,
+                    "pml_cell_width_axes_match": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "pml_interface_axes_expand": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "pml_passed": true,
+                    "pml_width_absolute_tolerance_mm": 1e-09
+                  },
+                  "left_label": "boundary_middle",
+                  "metrics": {
+                    "max_impedance_complex_delta_ohm": 0.0739404271456274,
+                    "max_s11_complex_delta": 0.00018085721259261466,
+                    "max_s11_db_delta": 0.005757821557866194,
+                    "s11_db_undefined_pair_count": 0,
+                    "worst_s11_frequency_hz": 1940000000.0
+                  },
+                  "physics_validated": false,
+                  "resonance": {
+                    "bracket_max_relative_shift": 0.005221932114882533,
+                    "left": {
+                      "bracket_hz": [
+                        1915000000.0,
+                        1925000000.0
+                      ],
+                      "frequency_hz": 1920000000.0,
+                      "s11_magnitude": 0.2550386403222527,
+                      "sample_index": 64,
+                      "status": "bracketed"
+                    },
+                    "right": {
+                      "bracket_hz": [
+                        1915000000.0,
+                        1925000000.0
+                      ],
+                      "frequency_hz": 1920000000.0,
+                      "s11_magnitude": 0.2551797703468705,
+                      "sample_index": 64,
+                      "status": "bracketed"
+                    },
+                    "sampled_relative_shift": 0.0,
+                    "status": "passed"
+                  },
+                  "right_label": "boundary_far",
+                  "sample_count": 201,
+                  "source_assessments": [
+                    {
+                      "converged": true,
+                      "finite_samples": true,
+                      "physics_validated": false,
+                      "status": "computed_unvalidated"
+                    },
+                    {
+                      "converged": true,
+                      "finite_samples": true,
+                      "physics_validated": false,
+                      "status": "computed_unvalidated"
+                    }
+                  ],
+                  "status": "established",
+                  "study_issues": []
+                }
+              ],
+              "status": "established"
+            },
+            "mesh": {
+              "artifacts": [
+                {
+                  "artifact": {
+                    "artifact_id": "b5ad61af-24bb-42db-b9bb-6a31dae03232",
+                    "bytes": 173786,
+                    "sha256": "f309cb23b6e74e18185af1fb8c0de0a718de11dccabdf5ab6112bcd550fc9ff9",
+                    "uri": "solver-artifacts/ad54bca5-4e51-4c58-b2e3-55dea1767faf/normalized.json"
+                  },
+                  "label": "mesh_coarse"
+                },
+                {
+                  "artifact": {
+                    "artifact_id": "9aea7efd-2bd7-4121-a87e-f01d2b42d617",
+                    "bytes": 177720,
+                    "sha256": "16a87ec2a41df6b9f616510c8eade298298b1dcea20ed616f2102461ee26b4ad",
+                    "uri": "solver-artifacts/351ed408-7796-48e2-9bbe-45243b84555b/normalized.json"
+                  },
+                  "label": "mesh_medium"
+                },
+                {
+                  "artifact": {
+                    "artifact_id": "5a1380c9-6375-4294-aa5e-23861eccab4a",
+                    "bytes": 175840,
+                    "sha256": "773f0bd9781b828d7c612af4144280f19c0c93b9fe62b4db9655634536ce81a8",
+                    "uri": "solver-artifacts/e142da11-f24d-4e24-835c-98b6a1aa5943/normalized.json"
+                  },
+                  "label": "mesh_fine"
+                }
+              ],
+              "final_pair": {
+                "acceptance_profile": {
+                  "id": "ifa-local-gap-candidate-np02/0.1",
+                  "max_resonance_relative_shift": 0.01,
+                  "max_s11_complex_delta": 0.02,
+                  "minimum_levels": 3
+                },
+                "changed_settings": [
+                  "grid_mm"
+                ],
+                "complex_s11_passed": true,
+                "grid_comparison": {
+                  "outer_boundary_axes_match": {
+                    "x": true,
+                    "y": true,
+                    "z": true
+                  },
+                  "passed": true,
+                  "pml_cell_count_matches": true,
+                  "pml_cell_width_axes_match": {
+                    "x": true,
+                    "y": true,
+                    "z": true
+                  },
+                  "pml_interface_axes_match": {
+                    "x": true,
+                    "y": true,
+                    "z": true
+                  },
+                  "pml_passed": true,
+                  "pml_width_absolute_tolerance_mm": 1e-09
+                },
+                "left_label": "mesh_medium",
+                "metrics": {
+                  "max_impedance_complex_delta_ohm": 3.0337429134372664,
+                  "max_s11_complex_delta": 0.004142448096995212,
+                  "max_s11_db_delta": 0.06307790619797338,
+                  "s11_db_undefined_pair_count": 0,
+                  "worst_s11_frequency_hz": 1600000000.0
+                },
+                "physics_validated": false,
+                "resonance": {
+                  "bracket_max_relative_shift": 0.005221932114882533,
+                  "left": {
+                    "bracket_hz": [
+                      1915000000.0,
+                      1925000000.0
+                    ],
+                    "frequency_hz": 1920000000.0,
+                    "s11_magnitude": 0.25701057350420314,
+                    "sample_index": 64,
+                    "status": "bracketed"
+                  },
+                  "right": {
+                    "bracket_hz": [
+                      1915000000.0,
+                      1925000000.0
+                    ],
+                    "frequency_hz": 1920000000.0,
+                    "s11_magnitude": 0.2551797703468705,
+                    "sample_index": 64,
+                    "status": "bracketed"
+                  },
+                  "sampled_relative_shift": 0.0,
+                  "status": "passed"
+                },
+                "right_label": "mesh_fine",
+                "sample_count": 201,
+                "source_assessments": [
+                  {
+                    "converged": true,
+                    "finite_samples": true,
+                    "physics_validated": false,
+                    "status": "computed_unvalidated"
+                  },
+                  {
+                    "converged": true,
+                    "finite_samples": true,
+                    "physics_validated": false,
+                    "status": "computed_unvalidated"
+                  }
+                ],
+                "status": "established",
+                "study_issues": []
+              },
+              "issues": [],
+              "level_count": 3,
+              "minimum_levels": 3,
+              "pairs": [
+                {
+                  "acceptance_profile": {
+                    "id": "ifa-local-gap-candidate-np02/0.1",
+                    "max_resonance_relative_shift": 0.01,
+                    "max_s11_complex_delta": 0.02,
+                    "minimum_levels": 3
+                  },
+                  "changed_settings": [
+                    "grid_mm"
+                  ],
+                  "complex_s11_passed": false,
+                  "grid_comparison": {
+                    "outer_boundary_axes_match": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "passed": true,
+                    "pml_cell_count_matches": true,
+                    "pml_cell_width_axes_match": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "pml_interface_axes_match": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "pml_passed": true,
+                    "pml_width_absolute_tolerance_mm": 1e-09
+                  },
+                  "left_label": "mesh_coarse",
+                  "metrics": {
+                    "max_impedance_complex_delta_ohm": 20.082219562350247,
+                    "max_s11_complex_delta": 0.06341933452959671,
+                    "max_s11_db_delta": 0.9858396142117343,
+                    "s11_db_undefined_pair_count": 0,
+                    "worst_s11_frequency_hz": 2380000000.0
+                  },
+                  "physics_validated": false,
+                  "resonance": {
+                    "bracket_max_relative_shift": 0.01305483028720622,
+                    "left": {
+                      "bracket_hz": [
+                        1930000000.0,
+                        1940000000.0
+                      ],
+                      "frequency_hz": 1935000000.0,
+                      "s11_magnitude": 0.24038803450849702,
+                      "sample_index": 67,
+                      "status": "bracketed"
+                    },
+                    "reason": "frequency_resolution_cannot_bound_resonance_shift",
+                    "right": {
+                      "bracket_hz": [
+                        1915000000.0,
+                        1925000000.0
+                      ],
+                      "frequency_hz": 1920000000.0,
+                      "s11_magnitude": 0.25701057350420314,
+                      "sample_index": 64,
+                      "status": "bracketed"
+                    },
+                    "sampled_relative_shift": 0.0078125,
+                    "status": "not_established"
+                  },
+                  "right_label": "mesh_medium",
+                  "sample_count": 201,
+                  "source_assessments": [
+                    {
+                      "converged": true,
+                      "finite_samples": true,
+                      "physics_validated": false,
+                      "status": "computed_unvalidated"
+                    },
+                    {
+                      "converged": true,
+                      "finite_samples": true,
+                      "physics_validated": false,
+                      "status": "computed_unvalidated"
+                    }
+                  ],
+                  "status": "failed",
+                  "study_issues": []
+                },
+                {
+                  "acceptance_profile": {
+                    "id": "ifa-local-gap-candidate-np02/0.1",
+                    "max_resonance_relative_shift": 0.01,
+                    "max_s11_complex_delta": 0.02,
+                    "minimum_levels": 3
+                  },
+                  "changed_settings": [
+                    "grid_mm"
+                  ],
+                  "complex_s11_passed": true,
+                  "grid_comparison": {
+                    "outer_boundary_axes_match": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "passed": true,
+                    "pml_cell_count_matches": true,
+                    "pml_cell_width_axes_match": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "pml_interface_axes_match": {
+                      "x": true,
+                      "y": true,
+                      "z": true
+                    },
+                    "pml_passed": true,
+                    "pml_width_absolute_tolerance_mm": 1e-09
+                  },
+                  "left_label": "mesh_medium",
+                  "metrics": {
+                    "max_impedance_complex_delta_ohm": 3.0337429134372664,
+                    "max_s11_complex_delta": 0.004142448096995212,
+                    "max_s11_db_delta": 0.06307790619797338,
+                    "s11_db_undefined_pair_count": 0,
+                    "worst_s11_frequency_hz": 1600000000.0
+                  },
+                  "physics_validated": false,
+                  "resonance": {
+                    "bracket_max_relative_shift": 0.005221932114882533,
+                    "left": {
+                      "bracket_hz": [
+                        1915000000.0,
+                        1925000000.0
+                      ],
+                      "frequency_hz": 1920000000.0,
+                      "s11_magnitude": 0.25701057350420314,
+                      "sample_index": 64,
+                      "status": "bracketed"
+                    },
+                    "right": {
+                      "bracket_hz": [
+                        1915000000.0,
+                        1925000000.0
+                      ],
+                      "frequency_hz": 1920000000.0,
+                      "s11_magnitude": 0.2551797703468705,
+                      "sample_index": 64,
+                      "status": "bracketed"
+                    },
+                    "sampled_relative_shift": 0.0,
+                    "status": "passed"
+                  },
+                  "right_label": "mesh_fine",
+                  "sample_count": 201,
+                  "source_assessments": [
+                    {
+                      "converged": true,
+                      "finite_samples": true,
+                      "physics_validated": false,
+                      "status": "computed_unvalidated"
+                    },
+                    {
+                      "converged": true,
+                      "finite_samples": true,
+                      "physics_validated": false,
+                      "status": "computed_unvalidated"
+                    }
+                  ],
+                  "status": "established",
+                  "study_issues": []
+                }
+              ],
+              "status": "established"
+            },
+            "termination": {
+              "artifacts": [
+                {
+                  "artifact": {
+                    "artifact_id": "5a1380c9-6375-4294-aa5e-23861eccab4a",
+                    "bytes": 175840,
+                    "sha256": "773f0bd9781b828d7c612af4144280f19c0c93b9fe62b4db9655634536ce81a8",
+                    "uri": "solver-artifacts/e142da11-f24d-4e24-835c-98b6a1aa5943/normalized.json"
+                  },
+                  "label": "termination_base"
+                },
+                {
+                  "artifact": {
+                    "artifact_id": "040cc80f-edd5-4ab3-af8e-d0807ac127d4",
+                    "bytes": 175853,
+                    "sha256": "26618d95a63cfb1d6621bd3432c87d83f204ff9c9207da193cece00b77de0742",
+                    "uri": "solver-artifacts/0197d8a4-cbc0-4e8a-b75f-98cd3d72d167/normalized.json"
+                  },
+                  "label": "termination_tight"
+                }
+              ],
+              "final_pair": {
+                "acceptance_profile": {
+                  "id": "ifa-local-gap-candidate-np02/0.1",
+                  "max_resonance_relative_shift": 0.01,
+                  "max_s11_complex_delta": 0.02,
+                  "minimum_levels": 3
+                },
+                "changed_settings": [
+                  "end_criterion"
+                ],
+                "complex_s11_passed": true,
+                "left_label": "termination_base",
+                "metrics": {
+                  "max_impedance_complex_delta_ohm": 0.6005028521225821,
+                  "max_s11_complex_delta": 0.0008264865944490979,
+                  "max_s11_db_delta": 0.01602838070475876,
+                  "s11_db_undefined_pair_count": 0,
+                  "worst_s11_frequency_hz": 1600000000.0
+                },
+                "physics_validated": false,
+                "resonance": {
+                  "bracket_max_relative_shift": 0.005221932114882533,
+                  "left": {
+                    "bracket_hz": [
+                      1915000000.0,
+                      1925000000.0
+                    ],
+                    "frequency_hz": 1920000000.0,
+                    "s11_magnitude": 0.2551797703468705,
+                    "sample_index": 64,
+                    "status": "bracketed"
+                  },
+                  "right": {
+                    "bracket_hz": [
+                      1915000000.0,
+                      1925000000.0
+                    ],
+                    "frequency_hz": 1920000000.0,
+                    "s11_magnitude": 0.25562907812024366,
+                    "sample_index": 64,
+                    "status": "bracketed"
+                  },
+                  "sampled_relative_shift": 0.0,
+                  "status": "passed"
+                },
+                "right_label": "termination_tight",
+                "sample_count": 201,
+                "source_assessments": [
+                  {
+                    "converged": true,
+                    "finite_samples": true,
+                    "physics_validated": false,
+                    "status": "computed_unvalidated"
+                  },
+                  {
+                    "converged": true,
+                    "finite_samples": true,
+                    "physics_validated": false,
+                    "status": "computed_unvalidated"
+                  }
+                ],
+                "status": "established",
+                "study_issues": []
+              },
+              "issues": [],
+              "level_count": 2,
+              "minimum_levels": 2,
+              "pairs": [
+                {
+                  "acceptance_profile": {
+                    "id": "ifa-local-gap-candidate-np02/0.1",
+                    "max_resonance_relative_shift": 0.01,
+                    "max_s11_complex_delta": 0.02,
+                    "minimum_levels": 3
+                  },
+                  "changed_settings": [
+                    "end_criterion"
+                  ],
+                  "complex_s11_passed": true,
+                  "left_label": "termination_base",
+                  "metrics": {
+                    "max_impedance_complex_delta_ohm": 0.6005028521225821,
+                    "max_s11_complex_delta": 0.0008264865944490979,
+                    "max_s11_db_delta": 0.01602838070475876,
+                    "s11_db_undefined_pair_count": 0,
+                    "worst_s11_frequency_hz": 1600000000.0
+                  },
+                  "physics_validated": false,
+                  "resonance": {
+                    "bracket_max_relative_shift": 0.005221932114882533,
+                    "left": {
+                      "bracket_hz": [
+                        1915000000.0,
+                        1925000000.0
+                      ],
+                      "frequency_hz": 1920000000.0,
+                      "s11_magnitude": 0.2551797703468705,
+                      "sample_index": 64,
+                      "status": "bracketed"
+                    },
+                    "right": {
+                      "bracket_hz": [
+                        1915000000.0,
+                        1925000000.0
+                      ],
+                      "frequency_hz": 1920000000.0,
+                      "s11_magnitude": 0.25562907812024366,
+                      "sample_index": 64,
+                      "status": "bracketed"
+                    },
+                    "sampled_relative_shift": 0.0,
+                    "status": "passed"
+                  },
+                  "right_label": "termination_tight",
+                  "sample_count": 201,
+                  "source_assessments": [
+                    {
+                      "converged": true,
+                      "finite_samples": true,
+                      "physics_validated": false,
+                      "status": "computed_unvalidated"
+                    },
+                    {
+                      "converged": true,
+                      "finite_samples": true,
+                      "physics_validated": false,
+                      "status": "computed_unvalidated"
+                    }
+                  ],
+                  "status": "established",
+                  "study_issues": []
+                }
+              ],
+              "status": "established"
+            }
+          },
+          "issues": [],
+          "status": "established"
+        },
+        "physics_validated": false,
+        "schema": "rfad.numerical-stability-study/0.1",
+        "source_assessments": [
+          {
+            "assessment": {
+              "converged": true,
+              "finite_samples": true,
+              "physics_validated": false,
+              "status": "computed_unvalidated"
+            },
+            "axis": "mesh",
+            "label": "mesh_coarse"
+          },
+          {
+            "assessment": {
+              "converged": true,
+              "finite_samples": true,
+              "physics_validated": false,
+              "status": "computed_unvalidated"
+            },
+            "axis": "mesh",
+            "label": "mesh_medium"
+          },
+          {
+            "assessment": {
+              "converged": true,
+              "finite_samples": true,
+              "physics_validated": false,
+              "status": "computed_unvalidated"
+            },
+            "axis": "mesh",
+            "label": "mesh_fine"
+          },
+          {
+            "assessment": {
+              "converged": true,
+              "finite_samples": true,
+              "physics_validated": false,
+              "status": "computed_unvalidated"
+            },
+            "axis": "boundary",
+            "label": "boundary_near"
+          },
+          {
+            "assessment": {
+              "converged": true,
+              "finite_samples": true,
+              "physics_validated": false,
+              "status": "computed_unvalidated"
+            },
+            "axis": "boundary",
+            "label": "boundary_middle"
+          },
+          {
+            "assessment": {
+              "converged": true,
+              "finite_samples": true,
+              "physics_validated": false,
+              "status": "computed_unvalidated"
+            },
+            "axis": "boundary",
+            "label": "boundary_far"
+          },
+          {
+            "assessment": {
+              "converged": true,
+              "finite_samples": true,
+              "physics_validated": false,
+              "status": "computed_unvalidated"
+            },
+            "axis": "termination",
+            "label": "termination_base"
+          },
+          {
+            "assessment": {
+              "converged": true,
+              "finite_samples": true,
+              "physics_validated": false,
+              "status": "computed_unvalidated"
+            },
+            "axis": "termination",
+            "label": "termination_tight"
+          }
+        ]
+      },
+      "runs": [
+        {
+          "settings": {
+            "air_padding_mm": 102,
+            "curve_tolerance_mm": 0.025,
+            "end_criterion": 1e-05,
+            "frequency_hz": {
+              "count": 201,
+              "start": 1600000000,
+              "stop": 2600000000
+            },
+            "grid_mm": 0.4,
+            "max_timesteps": 100000,
+            "mesh_policy": {
+              "air_cell_mm": 6,
+              "growth_ratio": 1.5,
+              "kind": "graded_air"
+            }
+          },
+          "artifact_id": "5a1380c9-6375-4294-aa5e-23861eccab4a",
+          "normalized_result": {
+            "bytes": 175840,
+            "sha256": "773f0bd9781b828d7c612af4144280f19c0c93b9fe62b4db9655634536ce81a8",
+            "uri": "solver-artifacts/e142da11-f24d-4e24-835c-98b6a1aa5943/normalized.json"
+          },
+          "native_statistics": {
+            "iterations": 8190,
+            "native_cells": 1432800,
+            "raw_values": [
+              1432800.0,
+              5.804653702162359e-13,
+              8190.0,
+              4.754011382070972e-09,
+              207.749122,
+              56484628.60892379
+            ],
+            "timestep_seconds": 5.804653702162359e-13
+          },
+          "termination": {
+            "evidence": [
+              "50.00",
+              "8190",
+              "50.40"
+            ],
+            "exact_endcriterion_schedule": true,
+            "iterations": 8190,
+            "reported_decay_db": 50.4,
+            "reported_zero_energy": false,
+            "status": "end_criterion_reached",
+            "target_energy_ratio": 1e-05
+          },
+          "source_assessment": {
+            "converged": true,
+            "finite_samples": true,
+            "physics_validated": false,
+            "status": "computed_unvalidated"
+          },
+          "minimum_sample": {
+            "frequency_hz": 1920000000.0,
+            "impedance_ohm": [
+              68.75066128467807,
+              24.61991505540969
+            ],
+            "s11": [
+              0.19260406939960006,
+              0.16739291396291425
+            ],
+            "s11_db": -11.863075155048916,
+            "vswr": 1.6852117066307677,
+            "vswr_status": "defined"
+          },
+          "mesh_policy_report": {
+            "air_cell_mm": 6,
+            "air_cells_per_minimum_wavelength": 15.862034814814814,
+            "air_growth_postcondition_checked": true,
+            "axes": {
+              "x": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000017812,
+                "axis_max_adjacent_ratio": 1.6000000000000014,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.25,
+                "outer_boundary_mm": [
+                  -102.0,
+                  142.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  40.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  54.0,
+                  54.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -54.0,
+                  94.0
+                ]
+              },
+              "y": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000017313,
+                "axis_max_adjacent_ratio": 1.5000000000017313,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.33333333333300175,
+                "outer_boundary_mm": [
+                  -102.0,
+                  162.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  60.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  54.0,
+                  54.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -54.0,
+                  114.0
+                ]
+              },
+              "z": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000026732,
+                "axis_max_adjacent_ratio": 1.5000000000026732,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.30999999999999994,
+                "outer_boundary_mm": [
+                  -102.0,
+                  103.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  1.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  54.0,
+                  54.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -54.0,
+                  55.0
+                ]
+              }
+            },
+            "growth_ratio": 1.5,
+            "highest_excitation_frequency_hz": 3150000000.0,
+            "interior_critical_intervals_unchanged": true,
+            "interior_growth_postcondition_enforced": false,
+            "kind": "graded_air",
+            "padding_extension_preserves_common_lines": true,
+            "padding_reference": "physical_board_outer_face_to_outer_boundary",
+            "pml_cells_per_end": 8,
+            "pml_thickness_mm": 48,
+            "schema": "rfad.pcb-mesh-policy/0.1",
+            "vacuum_wavelength_mm": 95.17220888888889
+          },
+          "elapsed_seconds": 227.14100000000053
+        },
+        {
+          "settings": {
+            "air_padding_mm": 90,
+            "curve_tolerance_mm": 0.025,
+            "end_criterion": 1e-05,
+            "frequency_hz": {
+              "count": 201,
+              "start": 1600000000,
+              "stop": 2600000000
+            },
+            "grid_mm": 0.4,
+            "max_timesteps": 100000,
+            "mesh_policy": {
+              "air_cell_mm": 6,
+              "growth_ratio": 1.5,
+              "kind": "graded_air"
+            }
+          },
+          "artifact_id": "cbe61998-a8ea-447a-b993-2a022afd8ee5",
+          "normalized_result": {
+            "bytes": 175707,
+            "sha256": "945587cf8f2bbd03a125c1e2d7b6afb326fa44230564d6fe7850080d08ed4d97",
+            "uri": "solver-artifacts/5e43b856-568b-4824-ab3b-5a4d1820537f/normalized.json"
+          },
+          "native_statistics": {
+            "iterations": 8190,
+            "native_cells": 1252680,
+            "raw_values": [
+              1252680.0,
+              5.804653702162359e-13,
+              8190.0,
+              4.754011382070972e-09,
+              198.965356,
+              51563997.90524336
+            ],
+            "timestep_seconds": 5.804653702162359e-13
+          },
+          "termination": {
+            "evidence": [
+              "50.00",
+              "8190",
+              "50.49"
+            ],
+            "exact_endcriterion_schedule": true,
+            "iterations": 8190,
+            "reported_decay_db": 50.49,
+            "reported_zero_energy": false,
+            "status": "end_criterion_reached",
+            "target_energy_ratio": 1e-05
+          },
+          "source_assessment": {
+            "converged": true,
+            "finite_samples": true,
+            "physics_validated": false,
+            "status": "computed_unvalidated"
+          },
+          "minimum_sample": {
+            "frequency_hz": 1920000000.0,
+            "impedance_ohm": [
+              68.70871923961717,
+              24.586819337155465
+            ],
+            "s11": [
+              0.19225282715803807,
+              0.16729970583437534
+            ],
+            "s11_db": -11.874185636480421,
+            "vswr": 1.6840362029688063,
+            "vswr_status": "defined"
+          },
+          "mesh_policy_report": {
+            "air_cell_mm": 6,
+            "air_cells_per_minimum_wavelength": 15.862034814814814,
+            "air_growth_postcondition_checked": true,
+            "axes": {
+              "x": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000017812,
+                "axis_max_adjacent_ratio": 1.6000000000000014,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.25,
+                "outer_boundary_mm": [
+                  -90.0,
+                  130.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  40.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  42.0,
+                  42.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -42.0,
+                  82.0
+                ]
+              },
+              "y": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000017313,
+                "axis_max_adjacent_ratio": 1.5000000000017313,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.33333333333300175,
+                "outer_boundary_mm": [
+                  -90.0,
+                  150.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  60.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  42.0,
+                  42.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -42.0,
+                  102.0
+                ]
+              },
+              "z": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000026732,
+                "axis_max_adjacent_ratio": 1.5000000000026732,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.30999999999999994,
+                "outer_boundary_mm": [
+                  -90.0,
+                  91.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  1.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  42.0,
+                  42.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -42.0,
+                  43.0
+                ]
+              }
+            },
+            "growth_ratio": 1.5,
+            "highest_excitation_frequency_hz": 3150000000.0,
+            "interior_critical_intervals_unchanged": true,
+            "interior_growth_postcondition_enforced": false,
+            "kind": "graded_air",
+            "padding_extension_preserves_common_lines": true,
+            "padding_reference": "physical_board_outer_face_to_outer_boundary",
+            "pml_cells_per_end": 8,
+            "pml_thickness_mm": 48,
+            "schema": "rfad.pcb-mesh-policy/0.1",
+            "vacuum_wavelength_mm": 95.17220888888889
+          },
+          "elapsed_seconds": 218.64099999999962
+        },
+        {
+          "settings": {
+            "air_padding_mm": 102,
+            "curve_tolerance_mm": 0.025,
+            "end_criterion": 1e-05,
+            "frequency_hz": {
+              "count": 201,
+              "start": 1600000000,
+              "stop": 2600000000
+            },
+            "grid_mm": 0.5,
+            "max_timesteps": 100000,
+            "mesh_policy": {
+              "air_cell_mm": 6,
+              "growth_ratio": 1.5,
+              "kind": "graded_air"
+            }
+          },
+          "artifact_id": "b5ad61af-24bb-42db-b9bb-6a31dae03232",
+          "normalized_result": {
+            "bytes": 173786,
+            "sha256": "f309cb23b6e74e18185af1fb8c0de0a718de11dccabdf5ab6112bcd550fc9ff9",
+            "uri": "solver-artifacts/ad54bca5-4e51-4c58-b2e3-55dea1767faf/normalized.json"
+          },
+          "native_statistics": {
+            "iterations": 4740,
+            "native_cells": 902205,
+            "raw_values": [
+              902205.0,
+              9.985100575567398e-13,
+              4740.0,
+              4.732937672818947e-09,
+              117.855682,
+              36285494.49147475
+            ],
+            "timestep_seconds": 9.985100575567398e-13
+          },
+          "termination": {
+            "evidence": [
+              "50.00",
+              "4740",
+              "50.84"
+            ],
+            "exact_endcriterion_schedule": true,
+            "iterations": 4740,
+            "reported_decay_db": 50.84,
+            "reported_zero_energy": false,
+            "status": "end_criterion_reached",
+            "target_energy_ratio": 1e-05
+          },
+          "source_assessment": {
+            "converged": true,
+            "finite_samples": true,
+            "physics_validated": false,
+            "status": "computed_unvalidated"
+          },
+          "minimum_sample": {
+            "frequency_hz": 1935000000.0,
+            "impedance_ohm": [
+              66.25738912836054,
+              23.41829898363578
+            ],
+            "s11": [
+              0.1733805561252737,
+              0.1665100294052859
+            ],
+            "s11_db": -12.381743069181454,
+            "vswr": 1.6329232435219874,
+            "vswr_status": "defined"
+          },
+          "mesh_policy_report": {
+            "air_cell_mm": 6,
+            "air_cells_per_minimum_wavelength": 15.862034814814814,
+            "air_growth_postcondition_checked": true,
+            "axes": {
+              "x": {
+                "air_and_interface_max_adjacent_ratio": 1.500000000001739,
+                "axis_max_adjacent_ratio": 1.500000000001739,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.5,
+                "outer_boundary_mm": [
+                  -102.0,
+                  142.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  40.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  54.0,
+                  54.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -54.0,
+                  94.0
+                ]
+              },
+              "y": {
+                "air_and_interface_max_adjacent_ratio": 1.500000000001739,
+                "axis_max_adjacent_ratio": 1.500000000001739,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.5,
+                "outer_boundary_mm": [
+                  -102.0,
+                  162.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  60.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  54.0,
+                  54.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -54.0,
+                  114.0
+                ]
+              },
+              "z": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000005762,
+                "axis_max_adjacent_ratio": 1.5000000000005762,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.46499999999999997,
+                "outer_boundary_mm": [
+                  -102.0,
+                  103.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  1.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  54.0,
+                  54.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -54.0,
+                  55.0
+                ]
+              }
+            },
+            "growth_ratio": 1.5,
+            "highest_excitation_frequency_hz": 3150000000.0,
+            "interior_critical_intervals_unchanged": true,
+            "interior_growth_postcondition_enforced": false,
+            "kind": "graded_air",
+            "padding_extension_preserves_common_lines": true,
+            "padding_reference": "physical_board_outer_face_to_outer_boundary",
+            "pml_cells_per_end": 8,
+            "pml_thickness_mm": 48,
+            "schema": "rfad.pcb-mesh-policy/0.1",
+            "vacuum_wavelength_mm": 95.17220888888889
+          },
+          "elapsed_seconds": 138.09299999999985
+        },
+        {
+          "settings": {
+            "air_padding_mm": 102,
+            "curve_tolerance_mm": 0.025,
+            "end_criterion": 1e-06,
+            "frequency_hz": {
+              "count": 201,
+              "start": 1600000000,
+              "stop": 2600000000
+            },
+            "grid_mm": 0.4,
+            "max_timesteps": 100000,
+            "mesh_policy": {
+              "air_cell_mm": 6,
+              "growth_ratio": 1.5,
+              "kind": "graded_air"
+            }
+          },
+          "artifact_id": "040cc80f-edd5-4ab3-af8e-d0807ac127d4",
+          "normalized_result": {
+            "bytes": 175853,
+            "sha256": "26618d95a63cfb1d6621bd3432c87d83f204ff9c9207da193cece00b77de0742",
+            "uri": "solver-artifacts/0197d8a4-cbc0-4e8a-b75f-98cd3d72d167/normalized.json"
+          },
+          "native_statistics": {
+            "iterations": 9282,
+            "native_cells": 1432800,
+            "raw_values": [
+              1432800.0,
+              5.804653702162359e-13,
+              9282.0,
+              5.387879566347102e-09,
+              258.504565,
+              51446865.55148456
+            ],
+            "timestep_seconds": 5.804653702162359e-13
+          },
+          "termination": {
+            "evidence": [
+              "60.00",
+              "9282",
+              "60.53"
+            ],
+            "exact_endcriterion_schedule": true,
+            "iterations": 9282,
+            "reported_decay_db": 60.53,
+            "reported_zero_energy": false,
+            "status": "end_criterion_reached",
+            "target_energy_ratio": 1e-06
+          },
+          "source_assessment": {
+            "converged": true,
+            "finite_samples": true,
+            "physics_validated": false,
+            "status": "computed_unvalidated"
+          },
+          "minimum_sample": {
+            "frequency_hz": 1920000000.0,
+            "impedance_ohm": [
+              68.75694871332605,
+              24.69015835671927
+            ],
+            "s11": [
+              0.19283336135066187,
+              0.167813945579057
+            ],
+            "s11_db": -11.847794923505383,
+            "vswr": 1.6868325202029786,
+            "vswr_status": "defined"
+          },
+          "mesh_policy_report": {
+            "air_cell_mm": 6,
+            "air_cells_per_minimum_wavelength": 15.862034814814814,
+            "air_growth_postcondition_checked": true,
+            "axes": {
+              "x": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000017812,
+                "axis_max_adjacent_ratio": 1.6000000000000014,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.25,
+                "outer_boundary_mm": [
+                  -102.0,
+                  142.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  40.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  54.0,
+                  54.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -54.0,
+                  94.0
+                ]
+              },
+              "y": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000017313,
+                "axis_max_adjacent_ratio": 1.5000000000017313,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.33333333333300175,
+                "outer_boundary_mm": [
+                  -102.0,
+                  162.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  60.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  54.0,
+                  54.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -54.0,
+                  114.0
+                ]
+              },
+              "z": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000026732,
+                "axis_max_adjacent_ratio": 1.5000000000026732,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.30999999999999994,
+                "outer_boundary_mm": [
+                  -102.0,
+                  103.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  1.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  54.0,
+                  54.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -54.0,
+                  55.0
+                ]
+              }
+            },
+            "growth_ratio": 1.5,
+            "highest_excitation_frequency_hz": 3150000000.0,
+            "interior_critical_intervals_unchanged": true,
+            "interior_growth_postcondition_enforced": false,
+            "kind": "graded_air",
+            "padding_extension_preserves_common_lines": true,
+            "padding_reference": "physical_board_outer_face_to_outer_boundary",
+            "pml_cells_per_end": 8,
+            "pml_thickness_mm": 48,
+            "schema": "rfad.pcb-mesh-policy/0.1",
+            "vacuum_wavelength_mm": 95.17220888888889
+          },
+          "elapsed_seconds": 283.8600000000006
+        },
+        {
+          "settings": {
+            "air_padding_mm": 96,
+            "curve_tolerance_mm": 0.025,
+            "end_criterion": 1e-05,
+            "frequency_hz": {
+              "count": 201,
+              "start": 1600000000,
+              "stop": 2600000000
+            },
+            "grid_mm": 0.4,
+            "max_timesteps": 100000,
+            "mesh_policy": {
+              "air_cell_mm": 6,
+              "growth_ratio": 1.5,
+              "kind": "graded_air"
+            }
+          },
+          "artifact_id": "4e3cbd2b-4c6a-4b58-991a-e2e5b0aaf68e",
+          "normalized_result": {
+            "bytes": 175779,
+            "sha256": "3c099b214083b314e46930a153b2bb4bc0aa9fc24e32a9531a7cfaebd43fd62d",
+            "uri": "solver-artifacts/40f1a8fe-94a2-44bd-aaa8-b5415d7c7196/normalized.json"
+          },
+          "native_statistics": {
+            "iterations": 8190,
+            "native_cells": 1341176,
+            "raw_values": [
+              1341176.0,
+              5.804653702162359e-13,
+              8190.0,
+              4.754011382070972e-09,
+              212.069146,
+              51795518.80687066
+            ],
+            "timestep_seconds": 5.804653702162359e-13
+          },
+          "termination": {
+            "evidence": [
+              "50.00",
+              "8190",
+              "50.43"
+            ],
+            "exact_endcriterion_schedule": true,
+            "iterations": 8190,
+            "reported_decay_db": 50.43,
+            "reported_zero_energy": false,
+            "status": "end_criterion_reached",
+            "target_energy_ratio": 1e-05
+          },
+          "source_assessment": {
+            "converged": true,
+            "finite_samples": true,
+            "physics_validated": false,
+            "status": "computed_unvalidated"
+          },
+          "minimum_sample": {
+            "frequency_hz": 1920000000.0,
+            "impedance_ohm": [
+              68.72680350489001,
+              24.608324601203574
+            ],
+            "s11": [
+              0.19242386106007942,
+              0.1673850822270451
+            ],
+            "s11_db": -11.867880312307367,
+            "vswr": 1.684703003743916,
+            "vswr_status": "defined"
+          },
+          "mesh_policy_report": {
+            "air_cell_mm": 6,
+            "air_cells_per_minimum_wavelength": 15.862034814814814,
+            "air_growth_postcondition_checked": true,
+            "axes": {
+              "x": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000017812,
+                "axis_max_adjacent_ratio": 1.6000000000000014,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.25,
+                "outer_boundary_mm": [
+                  -96.0,
+                  136.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  40.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  48.0,
+                  48.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -48.0,
+                  88.0
+                ]
+              },
+              "y": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000017313,
+                "axis_max_adjacent_ratio": 1.5000000000017313,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.33333333333300175,
+                "outer_boundary_mm": [
+                  -96.0,
+                  156.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  60.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  48.0,
+                  48.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -48.0,
+                  108.0
+                ]
+              },
+              "z": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000026732,
+                "axis_max_adjacent_ratio": 1.5000000000026732,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.30999999999999994,
+                "outer_boundary_mm": [
+                  -96.0,
+                  97.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  1.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  48.0,
+                  48.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -48.0,
+                  49.0
+                ]
+              }
+            },
+            "growth_ratio": 1.5,
+            "highest_excitation_frequency_hz": 3150000000.0,
+            "interior_critical_intervals_unchanged": true,
+            "interior_growth_postcondition_enforced": false,
+            "kind": "graded_air",
+            "padding_extension_preserves_common_lines": true,
+            "padding_reference": "physical_board_outer_face_to_outer_boundary",
+            "pml_cells_per_end": 8,
+            "pml_thickness_mm": 48,
+            "schema": "rfad.pcb-mesh-policy/0.1",
+            "vacuum_wavelength_mm": 95.17220888888889
+          },
+          "elapsed_seconds": 231.48400000000038
+        },
+        {
+          "settings": {
+            "air_padding_mm": 102,
+            "curve_tolerance_mm": 0.025,
+            "end_criterion": 1e-05,
+            "frequency_hz": {
+              "count": 201,
+              "start": 1600000000,
+              "stop": 2600000000
+            },
+            "grid_mm": 0.45,
+            "max_timesteps": 100000,
+            "mesh_policy": {
+              "air_cell_mm": 6,
+              "growth_ratio": 1.5,
+              "kind": "graded_air"
+            }
+          },
+          "artifact_id": "9aea7efd-2bd7-4121-a87e-f01d2b42d617",
+          "normalized_result": {
+            "bytes": 177720,
+            "sha256": "16a87ec2a41df6b9f616510c8eade298298b1dcea20ed616f2102461ee26b4ad",
+            "uri": "solver-artifacts/351ed408-7796-48e2-9bbe-45243b84555b/normalized.json"
+          },
+          "native_statistics": {
+            "iterations": 8190,
+            "native_cells": 1252080,
+            "raw_values": [
+              1252080.0,
+              5.797421905234722e-13,
+              8190.0,
+              4.748088540387237e-09,
+              176.093448,
+              58233485.21178369
+            ],
+            "timestep_seconds": 5.797421905234722e-13
+          },
+          "termination": {
+            "evidence": [
+              "50.00",
+              "8190",
+              "50.28"
+            ],
+            "exact_endcriterion_schedule": true,
+            "iterations": 8190,
+            "reported_decay_db": 50.28,
+            "reported_zero_energy": false,
+            "status": "end_criterion_reached",
+            "target_energy_ratio": 1e-05
+          },
+          "source_assessment": {
+            "converged": true,
+            "finite_samples": true,
+            "physics_validated": false,
+            "status": "computed_unvalidated"
+          },
+          "minimum_sample": {
+            "frequency_hz": 1920000000.0,
+            "impedance_ohm": [
+              68.69003922471366,
+              24.946337028285033
+            ],
+            "s11": [
+              0.19311419088242565,
+              0.1695916984194258
+            ],
+            "s11_db": -11.800980185508742,
+            "vswr": 1.691828347319441,
+            "vswr_status": "defined"
+          },
+          "mesh_policy_report": {
+            "air_cell_mm": 6,
+            "air_cells_per_minimum_wavelength": 15.862034814814814,
+            "air_growth_postcondition_checked": true,
+            "axes": {
+              "x": {
+                "air_and_interface_max_adjacent_ratio": 1.500000000001739,
+                "axis_max_adjacent_ratio": 1.739130434784002,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.25,
+                "outer_boundary_mm": [
+                  -102.0,
+                  142.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  40.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  54.0,
+                  54.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -54.0,
+                  94.0
+                ]
+              },
+              "y": {
+                "air_and_interface_max_adjacent_ratio": 1.500000000001739,
+                "axis_max_adjacent_ratio": 1.500000000001739,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.33333333333300175,
+                "outer_boundary_mm": [
+                  -102.0,
+                  162.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  60.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  54.0,
+                  54.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -54.0,
+                  114.0
+                ]
+              },
+              "z": {
+                "air_and_interface_max_adjacent_ratio": 1.5000000000026732,
+                "axis_max_adjacent_ratio": 1.5000000000026732,
+                "axis_max_cell_mm": 6.0,
+                "axis_min_cell_mm": 0.30999999999999994,
+                "outer_boundary_mm": [
+                  -102.0,
+                  103.0
+                ],
+                "physical_bounds_mm": [
+                  0.0,
+                  1.0
+                ],
+                "pml_cell_widths_mm": [
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ],
+                  [
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0,
+                    6.0
+                  ]
+                ],
+                "pml_clearance_mm": [
+                  54.0,
+                  54.0
+                ],
+                "pml_inner_boundary_mm": [
+                  -54.0,
+                  55.0
+                ]
+              }
+            },
+            "growth_ratio": 1.5,
+            "highest_excitation_frequency_hz": 3150000000.0,
+            "interior_critical_intervals_unchanged": true,
+            "interior_growth_postcondition_enforced": false,
+            "kind": "graded_air",
+            "padding_extension_preserves_common_lines": true,
+            "padding_reference": "physical_board_outer_face_to_outer_boundary",
+            "pml_cells_per_end": 8,
+            "pml_thickness_mm": 48,
+            "schema": "rfad.pcb-mesh-policy/0.1",
+            "vacuum_wavelength_mm": 95.17220888888889
+          },
+          "elapsed_seconds": 194.92199999999957
+        }
+      ],
+      "immutable_assessment": {
+        "path": ".local/ifa-resonance-convergence-final/report.assessments/98008564-a69f-4483-b7d6-ff34325a5e90.json",
+        "bytes": 19036,
+        "sha256": "4ed3ceb8fe88d3ae88382588055fe2bf4b94d9945191ed9734214b2bddebba68"
+      },
+      "samples_csv": {
+        "path": ".local/ifa-resonance-convergence-final/report.samples.csv",
+        "bytes": 240568,
+        "sha256": "66edc41d4872b635dc84ad1fe18184889f0efd762ab804576b9b5a42b2f5f598"
+      },
+      "plots": [
+        {
+          "path": ".local/ifa-resonance-convergence-final/comparison.png",
+          "bytes": 265236,
+          "sha256": "f0831b4d6a71b7ac0669e6d9ff04d6a39766cdbb21f2d77bfb5f45a8aacba527"
+        },
+        {
+          "path": ".local/ifa-resonance-convergence-final/comparison.svg",
+          "bytes": 132909,
+          "sha256": "e9b66b1647c69ba3f25495a3347b10cad8f787f1dfc43bf861235cbceb7bdf63"
+        }
+      ],
+      "reassessment_evidence": {
+        "status": "passed",
+        "assessment_unchanged": true,
+        "result_references_unchanged": true,
+        "csv_unchanged": true,
+        "immutable_assessment_history_incremented": true,
+        "sealed_files_checked": 54,
+        "job_count_before_resume": 21,
+        "resume_reused_without_new_jobs": true,
+        "job_count_after_resume": 21
+      },
+      "post_guard_reassessment_evidence": {
+        "status": "passed",
+        "native_runs_and_csv_unchanged": true,
+        "numeric_metrics_and_decision_unchanged": true,
+        "previous_assessments_preserved": true,
+        "new_mesh_and_boundary_pml_guards_passed": true,
+        "assessment": {
+          "bytes": 19036,
+          "path": "report.assessments/98008564-a69f-4483-b7d6-ff34325a5e90.json",
+          "sha256": "4ed3ceb8fe88d3ae88382588055fe2bf4b94d9945191ed9734214b2bddebba68"
+        }
+      }
+    }
+  ],
+  "test_runs": [
+    {
+      "name": "windows_full",
+      "collected": 514,
+      "passed": 472,
+      "skipped": 42,
+      "elapsed_seconds": 317.259,
+      "log": {
+        "path": ".local/ifa-windows-final-tests.log",
+        "bytes": 121641,
+        "sha256": "bb38769de43ff1090e157b2faade16695e9649e9f47cd126baf8a4cf3d1a89d4"
+      }
+    },
+    {
+      "name": "linux_full",
+      "collected": 514,
+      "passed": 466,
+      "skipped": 48,
+      "elapsed_seconds": 191.089,
+      "log": {
+        "path": ".local/ifa-linux-final-tests.log",
+        "bytes": 122225,
+        "sha256": "d0dfb7b9007831db193ac04a64c5c4f0a13cd357b314908f304da7b218a438f1"
+      }
+    },
+    {
+      "name": "native_openems_regression",
+      "collected": 22,
+      "passed": 22,
+      "skipped": 0,
+      "elapsed_seconds": 172.145,
+      "log": {
+        "path": ".local/ifa-native-final-tests.log",
+        "bytes": 5637,
+        "sha256": "8129b6b050d22d215f6103ecf6e1e5915621313845409083bd4914b7e98f262f"
+      }
+    },
+    {
+      "name": "comparison_and_runner",
+      "collected": 36,
+      "passed": 36,
+      "skipped": 0,
+      "elapsed_seconds": 1.059,
+      "log": {
+        "path": ".local/ifa-comparison-final-tests.log",
+        "bytes": 7433,
+        "sha256": "af2218a0ca029d37fefa9f91ec1de7e4d365ce6866e66b5b2b1d0a1a0d68ede5"
+      }
+    }
+  ],
+  "tool_files": [
+    {
+      "path": "tools/verify_ifa_convergence.py",
+      "bytes": 19665,
+      "sha256": "90328c916054ad0469e64fd268e3c7068ae2ac5fb46b79cd7847d17b1a0ccd05"
+    },
+    {
+      "path": "tools/plot_ifa_convergence.py",
+      "bytes": 4294,
+      "sha256": "0115487aee8fbe9ac757b31674e35c63c8c2ffa40b9c8cb906465b0d337e4242"
+    }
+  ],
+  "diagnostic_window_survey": {
+    "path": ".local/ifa-window-diagnostic.json",
+    "bytes": 493599,
+    "sha256": "722af82e8d81ccb35c2dc6a4ff1b937df5697176821cb1a18697dd0af6608eaf"
+  },
+  "gui_source_changed": false,
+  "limitations": [
+    "Fixture-only numerical acceptance; not universal RF accuracy or complete VT-011 acceptance.",
+    "Resonance metric tracks a sampled S11 magnitude minimum, not an independently established Im(Z)=0 resonance.",
+    "The two frequency studies have different explicit port validity, Gaussian excitation and dielectric loss reference; never mixed in one series.",
+    "Material and fabrication values remain explicit test assumptions; no SMA, cable, mask or measured manufacturing model.",
+    "PML cell count, curved-boundary approximation, operator coefficients, NF2FF, gain and efficiency have not been accepted by this study.",
+    "No target-band matching acceptance, measurement correlation, independent solver or 60/30 fps/memory acceptance."
+  ]
+}

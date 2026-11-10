@@ -366,9 +366,18 @@ def postprocess(stage: Path, request: dict, inputs: dict[str, Path], runtime: di
 def execute(request: dict, stage: Path) -> dict:
     """! @brief 검증한 계획의 단계 하나만 실행하고 봉인 대상 파일을 반환한다."""
     from rfad.application.solver import validate_reference_plan
+    from rfad.application.pcb_solver import PROFILE as PCB_PROFILE, validate_pcb_plan
 
     require(request.get('schema') == 'rfad.openems-worker/0.1' and request.get('phase') in ('prepare', 'analysis', 'postprocess_only'), 'worker 요청 버전 또는 단계가 올바르지 않습니다.', 'E_INVALID_ARGUMENT')
-    validate_reference_plan(request['analysis_plan'])
+    pcb_profile = request['analysis_plan'].get('analysis_profile') == PCB_PROFILE
+    if pcb_profile:
+        from . import pcb
+
+        validate_pcb_plan(request['analysis_plan'])
+        prepare_phase, solve_phase, postprocess_phase = pcb.prepare, pcb.solve, pcb.postprocess
+    else:
+        validate_reference_plan(request['analysis_plan'])
+        prepare_phase, solve_phase, postprocess_phase = prepare, solve, postprocess
     require(request['analysis_plan']['runtime_identity'] == request['runtime'], '요청 runtime이 AnalysisPlan에서 고정한 runtime과 다릅니다.', 'E_HASH')
     inputs = input_index(stage, request.get('input_files', []))
     runtime = verify_runtime(stage, request['runtime'])
@@ -379,14 +388,14 @@ def execute(request: dict, stage: Path) -> dict:
               'analysis_plan_id': request['analysis_plan']['plan_id']}
     if phase == 'prepare':
         write_json(stage / 'progress.json', {'phase': 'preparing'})
-        result['preparation'], result['files'] = prepare(stage, request['analysis_plan'], runtime)
+        result['preparation'], result['files'] = prepare_phase(stage, request['analysis_plan'], runtime)
     else:
         manifest = None
         files = []
         if phase == 'analysis':
             write_json(stage / 'progress.json', {'phase': 'running'})
-            manifest, files = solve(stage, request, inputs, runtime)
+            manifest, files = solve_phase(stage, request, inputs, runtime)
         write_json(stage / 'progress.json', {'phase': 'postprocessing'})
-        result['result'], post_files = postprocess(stage, request, inputs, runtime, manifest)
+        result['result'], post_files = postprocess_phase(stage, request, inputs, runtime, manifest)
         result['files'] = files + post_files
     return result
