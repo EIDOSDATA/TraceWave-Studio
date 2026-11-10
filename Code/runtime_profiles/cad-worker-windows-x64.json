@@ -1,0 +1,107 @@
+{
+  "schema": "rfad.runtime.cad-worker/0.1",
+  "profile_id": "cad-worker-windows-x64",
+  "recorded_at": "2026-11-10",
+  "purpose": "internal_development",
+  "geometry_profile": "rfad.step.mechanical/0.1",
+  "implementation_status": "implemented_subset",
+  "runtime_lock": "python-cad-windows-x64",
+  "actual_runtime": {
+    "cadquery": "2.8.0",
+    "cadquery_ocp": "7.9.3.1.1",
+    "ocp": "7.9.3.1",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26300-SP0"
+  },
+  "step_schema": "AP242_MANAGED_MODEL_BASED_3D_ENGINEERING_MIM_LF {1 0 10303 442 1 1 4 }",
+  "unit": "mm",
+  "qt_allowed": false,
+  "mandatory_commercial_components": false,
+  "ownership": "separate host process; Windows Job Object established before stdin handshake",
+  "input": "registered immutable snapshot, sealed projection and cache-free staged Python source",
+  "publication": "streamed immutable files and final manifest; artifact refs and terminal event share one journal transaction",
+  "limits": {
+    "native_slots": 1,
+    "default_timeout_seconds": 120,
+    "max_file_bytes": 67108864,
+    "max_package_bytes": 134217728,
+    "max_stream_bytes": 1048576,
+    "stream_tail_bytes": 16384,
+    "file_monitor_seconds": 0.1,
+    "file_monitor_overshoot_possible": true,
+    "memory_hard_limit_enforced": false
+  },
+  "recovery": "unknown native outcome remains interrupted with resource reservation; no automatic retry or public reconcile API",
+  "output_status": "generated_unverified",
+  "kernel_independent": false,
+  "manufacturing_verified": false,
+  "physics_verified": false,
+  "performance_budget_verified": false,
+  "windows_regression": {
+    "tests_discovered": 303,
+    "tests_passed": 294,
+    "tests_skipped": 9,
+    "elapsed_seconds": 205.771,
+    "log_relative_to_code": ".local/gui-cad-windows-tests.log",
+    "skip_reason": "Nine native CAD geometry/mesh tests run separately in the pinned CAD Python environment"
+  },
+  "linux_service_supervisor_regression": {
+    "tests_discovered": 303,
+    "tests_passed": 282,
+    "tests_skipped": 21,
+    "elapsed_seconds": 149.587,
+    "log_relative_to_code": ".local/gui-cad-linux-tests.log",
+    "skip_reason": "Nine native CAD tests, two Windows CAD process tests, nine Windows GUI tests and one Windows Job Object test"
+  },
+  "native_geometry_tests": {
+    "tests_discovered": 9,
+    "tests_passed": 9,
+    "tests_skipped": 0,
+    "elapsed_seconds": 4.217,
+    "log_relative_to_code": ".local/cad-mesh-native-tests.log"
+  },
+  "example_report_relative_to_code": ".local/cad-worker-verification/latest.json",
+  "source_and_evidence_hashes_relative_to_code": ".local/gui-cad-verification.json",
+  "remaining": [
+    "other-kernel receiving CAD verification",
+    "WSL solver worker",
+    "pads/vias/drills/coating and nonidentity placement",
+    "intended electrical connectivity and manufacturing DRC",
+    "public unknown-outcome reconciliation and garbage collection",
+    "memory/startup/frame budgets",
+    "release license/package audit"
+  ],
+  "verification_history": [
+    {
+      "phase": "host_cad_step",
+      "windows_regression": {
+        "tests_discovered": 287,
+        "tests_passed": 279,
+        "tests_skipped": 8,
+        "elapsed_seconds": 148.984,
+        "log_relative_to_code": ".local/cad-windows-tests.log",
+        "skip_reason": "Eight native geometry tests run separately in the pinned CAD Python environment"
+      },
+      "linux_service_supervisor_regression": {
+        "tests_discovered": 287,
+        "tests_passed": 269,
+        "tests_skipped": 18,
+        "elapsed_seconds": 81.977,
+        "log_relative_to_code": ".local/cad-linux-tests.log",
+        "skip_reason": "Eight native CAD tests, two configured Windows CAD process tests, seven Windows GUI tests and one Windows Job Object parent-crash test"
+      },
+      "native_geometry_tests": {
+        "tests_discovered": 8,
+        "tests_passed": 8,
+        "tests_skipped": 0,
+        "elapsed_seconds": 3.184,
+        "log_relative_to_code": ".local/cad-native-tests.log"
+      },
+      "cli_report_relative_to_code": ".local/cad-worker-verification/cli-fafc6d6d-2de3-4934-8f3b-b650345c9b89.json",
+      "source_and_evidence_hashes_relative_to_code": ".local/cad-verification.json"
+    }
+  ],
+  "gui_profile": "gui-cad-windows-x64",
+  "display_mesh_schema": "rfad.display-mesh/0.1",
+  "published_artifact_count": 6
+}

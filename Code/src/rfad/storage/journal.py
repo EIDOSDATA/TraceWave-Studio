@@ -362,6 +362,55 @@ class Journal:
             raise ProjectError("E_HASH", "불변 파일의 크기 또는 SHA256이 일치하지 않습니다.")
         return payload
 
+    def seal_file(self, relative_path: str, source: Path, *, expected_sha256: str, expected_bytes: int, limit: int = 64 * 1024 * 1024) -> dict:
+        """! @brief 종료된 worker 파일을 스트리밍 검증하여 새 불변 경로로 봉인한다.
+
+        @details 큰 복사 중 journal 잠금을 잡지 않는다. 호출자는 worker가 종료하고
+        파일을 닫았음을 확인하고 이 호출이 끝날 때까지 journal 수명을 소유한다.
+        참조는 반환 후 별도 transaction으로 게시해야 하며 실패한 파일은 미게시다.
+        """
+        if type(expected_bytes) is not int or not 0 < expected_bytes <= limit or type(expected_sha256) is not str or _HASH.fullmatch(expected_sha256) is None:
+            raise ProjectError("E_RESOURCE", "봉인할 파일의 크기 또는 SHA256이 유효하지 않습니다.")
+        source = Path(source)
+        _check_path_parts(source)
+        with self._mutex:
+            self._ensure_open()
+            path = self._safe_path(relative_path)
+            self._check_space(expected_bytes)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            _check_path_parts(path)
+        temporary = path.with_name(path.name + "." + str(uuid4()) + ".partial")
+        try:
+            digest = hashlib.sha256()
+            count = 0
+            with source.open("rb") as incoming, temporary.open("xb") as outgoing:
+                while chunk := incoming.read(1024 * 1024):
+                    count += len(chunk)
+                    if count > expected_bytes:
+                        raise ProjectError("E_HASH", "worker 파일이 선언한 크기를 초과했습니다.")
+                    digest.update(chunk)
+                    outgoing.write(chunk)
+                outgoing.flush()
+                os.fsync(outgoing.fileno())
+            if count != expected_bytes or digest.hexdigest() != expected_sha256:
+                raise ProjectError("E_HASH", "worker 파일의 크기 또는 SHA256이 일치하지 않습니다.")
+            _check_path_parts(path)
+            # @brief 배타적 hard link로 기존 정상 artifact를 덮어쓰지 않는다.
+            os.link(temporary, path)
+            self._flush_directory(path.parent)
+            actual = hashlib.sha256()
+            with path.open("rb") as stream:
+                while chunk := stream.read(1024 * 1024):
+                    actual.update(chunk)
+            if actual.hexdigest() != expected_sha256:
+                raise ProjectError("E_HASH", "봉인한 파일의 재읽기 검증이 실패했습니다.")
+            return {"uri": relative_path, "sha256": expected_sha256, "bytes": expected_bytes}
+        except OSError as error:
+            raise ProjectError("E_DISK", "worker 파일을 불변 경로에 봉인하지 못했습니다.") from error
+        finally:
+            if temporary.exists():
+                temporary.unlink()
+
     def read_artifact(self, reference: dict) -> bytes:
         """! @brief 외부 artifact 참조를 검증해 읽고 journal 내부 URI는 거부한다."""
         with self._mutex:

@@ -23,8 +23,10 @@ APPLICATION_ERRORS = {
     "E_EXPR_DOMAIN": 1010, "E_EXPR_CYCLE": 1011,
     "E_GEOMETRY": 1012, "E_PORT": 1013, "E_CONNECTIVITY": 1014,
     "E_MATERIAL_UNKNOWN": 1015, "E_MATERIAL_RANGE": 1016,
+    "E_SOLVER": 1017, "E_MISSING_ARTIFACT": 1018,
 }
-PROJECT_MUTATIONS = {"project.open", "project.apply_command", "project.save", "snapshot.create", "design.validate", "job.cancel"}
+PROJECT_MUTATIONS = {"project.open", "project.apply_command", "editor.apply", "canvas.apply", "project.undo", "project.redo", "project.save", "snapshot.create", "design.validate", "job.cancel", "geometry.build", "export.build", "export.preview"}
+PROJECT_MUTATIONS.update({"solver.plan", "solver.prepare", "job.submit"})
 
 
 def capabilities(service=None) -> dict:
@@ -71,10 +73,30 @@ def capabilities(service=None) -> dict:
             "expression_engine": ENGINE_VERSION, "open_modes": ["create", "open", "recover"],
             "commands": list(COMMANDS),
             "max_document_bytes": 32768, "mutating_batch": False, "mutating_notification": False,
-            "scope": "workspace-local versioned projects; no native workers",
+            "scope": "workspace-local versioned projects and optional isolated host CAD worker",
             "design_validation": {"profile": "rfad.design/0.1", "purposes": ["geometry", "step", "em"], "source": "draft_revision", "max_returned_diagnostics": 64},
         }
         result["features"][0]["status"] = "implemented"
+        result["methods"].update({name: {"status": "implemented", "extension_profile": "rfad.editor/0.1"} for name in ("editor.get", "editor.apply", "project.undo", "project.redo")})
+        result["editor_profile"] = {"profile": "rfad.editor/0.1", "source": "draft_revision", "history_limit": 128, "history_persistent": True, "full_document_returned": False, "max_dto_bytes": 61440}
+        result["methods"].update({name: {"status": "implemented", "extension_profile": "rfad.canvas/0.1"} for name in ("canvas.get", "canvas.apply")})
+        result["canvas_profile"] = {"profile": "rfad.canvas/0.1", "source": "draft_revision", "unit": "mm", "angle_unit": "deg", "operations": ["create_board", "create_layer", "create_dielectric_layer", "create_line", "create_arc", "translate", "remove"], "full_document_returned": False, "max_dto_bytes": 61440}
+        result["methods"]["cad.latest"] = {"status": "implemented", "extension_profile": "rfad.cad-view/0.1"}
+        result["methods"].update({name: {"status": "implemented", "api_id": api_id, "extension_profile": "rfad.step.mechanical/0.1"} for name, api_id in (("geometry.build", "API-008"), ("export.preview", "API-023"), ("export.build", "API-024"))})
+        result["cad_profile"] = {"profile": "rfad.step.mechanical/0.1", "runtime_configured": service.cad.runtime is not None,
+            "source": "immutable_snapshot", "native_slots": 1, "execution": "separate_host_process",
+            "step_schema": "AP242", "result_status": "generated_unverified", "kernel_independent": False,
+            "manufacturing_verified": False, "physics_verified": False, "resume_supported": False,
+            "max_file_bytes": 67108864, "max_package_bytes": 134217728}
+        result["project_profile"]["job_kinds"] = ["data_processing", "cad_build", "export"]
+        result["features"][1]["status"] = "implemented"
+        result["methods"].update({name: {"status": "implemented", "api_id": api_id, "extension_profile": "rfad.openems.rect-waveguide/0.1"} for name, api_id in (("solver.plan", "API-011"), ("solver.prepare", "API-012"), ("job.submit", "API-013"), ("result.open", "API-016"))})
+        result["solver_profile"] = {"profile": "rfad.openems.rect-waveguide/0.1", "runtime_configured": service.solver.runtime is not None,
+            "source": "immutable_empty_reference_snapshot", "native_slots": 1, "execution": "wsl2_guest_supervisor",
+            "execution_modes": ["solve_and_postprocess", "postprocess_only"], "resume_supported": False,
+            "antenna_supported": False, "nf2ff_supported": False, "max_file_bytes": 67108864, "max_package_bytes": 134217728}
+        result["project_profile"]["job_kinds"].extend(["em_prepare", "em_analysis"])
+        result["features"][2]["status"] = "implemented"
     return result
 
 
@@ -130,12 +152,23 @@ def _dispatch(request: object, service=None) -> dict | None:
         return _error(None, -32600, "Invalid Request")
     notification = "id" not in request
     method = request["method"]
-    if service is not None and method in PROJECT_MUTATIONS | {"job.status"}:
+    if service is not None and method in PROJECT_MUTATIONS | {"job.status", "editor.get", "canvas.get", "cad.latest", "result.open"}:
         if notification and method in PROJECT_MUTATIONS:
             return None
         try:
             params = request.get("params")
-            result = service.status(params) if method == "job.status" else service.mutate(method, params)
+            if method == "job.status":
+                result = service.status(params)
+            elif method == "editor.get":
+                result = service.editor_state(params)
+            elif method == "canvas.get":
+                result = service.canvas_state(params)
+            elif method == "cad.latest":
+                result = service.cad_latest(params)
+            elif method == "result.open":
+                result = service.solver.result_open(params)
+            else:
+                result = service.mutate(method, params)
             response = {"jsonrpc": "2.0", "id": request_id, "result": result}
         except ProjectError as error:
             response = _error(request_id, APPLICATION_ERRORS.get(error.code, 1099), error.message, error.code)

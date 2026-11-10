@@ -2,11 +2,13 @@
 @brief Code 폴더의 개발용 Python과 소스를 명시하여 GUI 창을 실행한다.
 @param Workspace 비어 있으면 Code/.local/gui-workspace를 사용한다.
 @param Python 비어 있으면 Code/.venv/Scripts/python.exe를 사용한다.
+@param CadPython 비어 있으면 존재하는 Code/.venv-cad/Scripts/python.exe를 사용하며 없으면 CAD 없이 실행한다.
 #>
 [CmdletBinding()]
 param(
     [string]$Workspace = '',
-    [string]$Python = ''
+    [string]$Python = '',
+    [string]$CadPython = ''
 )
 
 $ErrorActionPreference = 'Stop'
@@ -28,11 +30,27 @@ if (-not (Test-Path -LiteralPath $Python -PathType Leaf))
 {
     throw 'Prepare the Python environment first or pass -Python with its executable path.'
 }
+if ([string]::IsNullOrWhiteSpace($CadPython))
+{
+    $defaultCadPython = Join-Path $codeRoot '.venv-cad/Scripts/python.exe'
+    if (Test-Path -LiteralPath $defaultCadPython -PathType Leaf)
+    {
+        $CadPython = $defaultCadPython
+    }
+}
+elseif (-not (Test-Path -LiteralPath $CadPython -PathType Leaf))
+{
+    throw 'Prepare the CAD environment first or pass -CadPython with its executable path.'
+}
 $guiArguments = @(
     '--python', [System.IO.Path]::GetFullPath($Python),
     '--source', (Join-Path $codeRoot 'src'),
     '--workspace', [System.IO.Path]::GetFullPath($Workspace)
 )
+if (-not [string]::IsNullOrWhiteSpace($CadPython))
+{
+    $guiArguments += @('--cad-python', [System.IO.Path]::GetFullPath($CadPython))
+}
 # @brief pipeline으로 GUI 프로세스 종료까지 기다려 실제 종료 코드를 읽는다.
 & $guiExecutable @guiArguments | Out-Null
 if ($null -ne $LASTEXITCODE -and $LASTEXITCODE -ne 0)

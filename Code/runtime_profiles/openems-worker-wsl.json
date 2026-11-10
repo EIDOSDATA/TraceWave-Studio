@@ -1,0 +1,375 @@
+{
+  "schema": "rfad.verification.openems-worker/0.1",
+  "status": "passed_limited_reference",
+  "validated_at": "2026-11-10T20:26:43.971150+00:00",
+  "design_baseline": "RFAD-D0-3.4",
+  "analysis_profile": "rfad.openems.rect-waveguide/0.1",
+  "runtime_identity": {
+    "code_files": [
+      {
+        "bytes": 1854,
+        "path": "tools/openems_worker.py",
+        "sha256": "a71e56e21aff057f4b673dd43131e22da3bdf4698099ec124946e65b152e582f"
+      },
+      {
+        "bytes": 110,
+        "path": "src/rfad/__init__.py",
+        "sha256": "637407b3c13a348c03d6a167d2a90e3703c4fc70a421cd9918075c0463d81097"
+      },
+      {
+        "bytes": 2265,
+        "path": "src/rfad/__main__.py",
+        "sha256": "4f765b683dd28c7a8ff8bec1fe846039c34664c024ceccdadf0a40f4bac1b92a"
+      },
+      {
+        "bytes": 102,
+        "path": "src/rfad/adapters/__init__.py",
+        "sha256": "e4be3b367495a970767105766bbd0895df057c4a53a3a39087bfe316171d0837"
+      },
+      {
+        "bytes": 99,
+        "path": "src/rfad/adapters/cad/__init__.py",
+        "sha256": "031a455542eba8f6df8c996b243a3210041b80cbb40b04208f0c639469e3df83"
+      },
+      {
+        "bytes": 28316,
+        "path": "src/rfad/adapters/cad/native.py",
+        "sha256": "8c6894eac795e2717662314817e3d8737ef5b5c19b52a6bc14177a837c4c8557"
+      },
+      {
+        "bytes": 73,
+        "path": "src/rfad/adapters/solvers/__init__.py",
+        "sha256": "64a5e0f0c806546fe9b2dab2f2394a02b77fb76afd1ff88a0979157ddd96bf5a"
+      },
+      {
+        "bytes": 77,
+        "path": "src/rfad/adapters/solvers/openems/__init__.py",
+        "sha256": "975618264c1614c71937b4baa15138f7aca694e4700ec4df2d8a67100ee90c61"
+      },
+      {
+        "bytes": 27201,
+        "path": "src/rfad/adapters/solvers/openems/native.py",
+        "sha256": "6bea898c81cacea788ae71fb28c5a9bba0498889150bdbf21b98606f31818bc3"
+      },
+      {
+        "bytes": 6517,
+        "path": "src/rfad/adapters/solvers/openems/reference.py",
+        "sha256": "e3bdb5aa463aa971a62cde5f466827b2423d895285dea595d2be81417f282951"
+      },
+      {
+        "bytes": 325,
+        "path": "src/rfad/application/__init__.py",
+        "sha256": "883e15b18f72a85626c6634d255886596dc1bf71ae64b8aebb9b5c32b3896bc7"
+      },
+      {
+        "bytes": 12557,
+        "path": "src/rfad/application/cad.py",
+        "sha256": "51629cafa6e578643409070f929ed53624b36b5ac2e077cef4c15a36b4e9d9bd"
+      },
+      {
+        "bytes": 26737,
+        "path": "src/rfad/application/cad_jobs.py",
+        "sha256": "6b1e586e98d50354b2d37407bc2bb3ebb594a003a27e894b247bdda29cfaf9c0"
+      },
+      {
+        "bytes": 5534,
+        "path": "src/rfad/application/canonical.py",
+        "sha256": "f3b263089ad802d6924aea481c46a890e9baa7297bb5daef659394b1ef2be420"
+      },
+      {
+        "bytes": 12974,
+        "path": "src/rfad/application/canvas.py",
+        "sha256": "138cfe649f543d2c2704750364873087ff077e3991d574379382ea2ce19ba7b3"
+      },
+      {
+        "bytes": 5261,
+        "path": "src/rfad/application/display_mesh.py",
+        "sha256": "06325f60b351904c6833e317f27f1ff0a6dfd982acbf15c02cf3c91cdcc0049c"
+      },
+      {
+        "bytes": 22868,
+        "path": "src/rfad/application/editor.py",
+        "sha256": "34cad422d01eb960fffa32d3b120413d241149b83c6cecf6665fefffa499aa5b"
+      },
+      {
+        "bytes": 20662,
+        "path": "src/rfad/application/native_process.py",
+        "sha256": "5f1b625eee607ab5a21fe304827f89542bc5fdb7fd1ede2b89c469088497badf"
+      },
+      {
+        "bytes": 36489,
+        "path": "src/rfad/application/projects.py",
+        "sha256": "f8f85454c0d83af135dba2467dacabc3451fff636a51597b5066b7ed73af37b8"
+      },
+      {
+        "bytes": 14529,
+        "path": "src/rfad/application/rpc.py",
+        "sha256": "1248422a060f6b211f748325e6e0dcafdd44566e9e8ccc27d99e734665e52841"
+      },
+      {
+        "bytes": 18428,
+        "path": "src/rfad/application/solver.py",
+        "sha256": "eecc64140af223a070e4ba7c5820c9db0553ecde53dfd5623d1fb9fc41f65e89"
+      },
+      {
+        "bytes": 43038,
+        "path": "src/rfad/application/solver_jobs.py",
+        "sha256": "b90ff80d17ec5324088a9cd3da3ae5c09f00ebf33e5476eebe3d36429a816008"
+      },
+      {
+        "bytes": 18901,
+        "path": "src/rfad/application/wsl_process.py",
+        "sha256": "5f9ef1de2d89dae37b6f84109ff408806733aa21cf41320a2b2ae8467296900c"
+      },
+      {
+        "bytes": 96,
+        "path": "src/rfad/cli/__init__.py",
+        "sha256": "5ffd0914ed2f6746b578e0d30eabda8bd5b306c5a368ec8ec0dd87b3a669aa1b"
+      },
+      {
+        "bytes": 11085,
+        "path": "src/rfad/cli/doctor.py",
+        "sha256": "80be1ab1fc4d387178f6b70cc4a1241b21c793d33648660c443ce9a3946139fb"
+      },
+      {
+        "bytes": 239,
+        "path": "src/rfad/domain/__init__.py",
+        "sha256": "f7905c21d7293db23c8736b154cfa4e737b28788376ae2314c73e75259356e67"
+      },
+      {
+        "bytes": 26759,
+        "path": "src/rfad/domain/design.py",
+        "sha256": "66498cac02c2f178abb7e22f33d3002434183a507c17ba194d7cc2d486a6fe2d"
+      },
+      {
+        "bytes": 1059,
+        "path": "src/rfad/domain/errors.py",
+        "sha256": "e8dc2d8e54fd71ca35af28d538c214687cdefeba035443aeeaee992cc55697d6"
+      },
+      {
+        "bytes": 20082,
+        "path": "src/rfad/domain/expressions.py",
+        "sha256": "4387895d32e28e838db10a1e7b0c9d2c2f5a2f5c4d8e64386ad02b0ed46c1bb5"
+      },
+      {
+        "bytes": 5343,
+        "path": "src/rfad/domain/parameter_graph.py",
+        "sha256": "3afa704b61fe6cce2f64d175df455e227604223eab90c71166f957d5f24e4b36"
+      },
+      {
+        "bytes": 18549,
+        "path": "src/rfad/domain/project.py",
+        "sha256": "7dbfb298ad0543b716236b92ede8d7953e51b83056f7922076efccf54c84ea3e"
+      },
+      {
+        "bytes": 8754,
+        "path": "src/rfad/domain/units.py",
+        "sha256": "f02c8095e7ae3b8022ac3d7718363d1cbffdd6b876506122ecd259cf4cda2247"
+      },
+      {
+        "bytes": 152,
+        "path": "src/rfad/storage/__init__.py",
+        "sha256": "ca4c257ab77186c72310cd6e4b1ae31e30f97b41d0ca4075b5760ad672a2e270"
+      },
+      {
+        "bytes": 24021,
+        "path": "src/rfad/storage/journal.py",
+        "sha256": "324f2e69b768e893b5e02fc24273754ec0ad3ca4641ee2d589a3b9479dfe555b"
+      }
+    ],
+    "manifest_sha256": "538c7d75a7820f2ee0a6d48fb0d9f3687c6a10c66c09962398dfd4dd2dbd7a9c",
+    "runtime_profile": "openems-wsl-reference/0.1",
+    "transport": {
+      "distribution": "TraceWave-Dev",
+      "guest_root": "/home/tracewave/rfad-runtime/worker-runs",
+      "lease_seconds": 10.0,
+      "protocol": "rfad.wsl-supervisor/0.1",
+      "python": "/home/tracewave/rfad-runtime/openems-venv/bin/python",
+      "supervisor_sha256": "743f3eef350da6018b7291820cdaeb782ccfb5bb0ae28c69456fb566ff5dff2b",
+      "user": "tracewave"
+    }
+  },
+  "evidence": {
+    "report": ".local/openems-worker-verification/report-final.json",
+    "report_sha256": "b23d7def7a6a6236367fa05adb95dbf66b6536bb2e74c13941609d01564fc1e2",
+    "workspace": ".local/openems-worker-verification/service-final",
+    "command": "tools/verify_openems_worker.py --workspace .local/openems-worker-verification/service-final --report .local/openems-worker-verification/report-final.json --exercise-cancel",
+    "verification_cli_sha256": "e99fe07f438a98058d2a3a8a3aa61bc229698f40a3c99585e993d7cf69ae417b"
+  },
+  "service_verification": {
+    "elapsed_seconds": 67.95300000000861,
+    "result_open_after_restart_identical": true,
+    "cancellation": {
+      "guest_state": "cancelled",
+      "job_id": "0c845f0b-e49d-4f02-b81b-dbc0e5641753",
+      "state": "cancelled",
+      "states": [
+        "queued",
+        "running",
+        "cancel_requested",
+        "cancelled"
+      ],
+      "termination_confirmed": true
+    },
+    "grid_comparison": {
+      "metrics": {
+        "max_grid_impedance_relative_delta": 0.003112996956515394,
+        "max_grid_transmission_amplitude_delta": 1.7403728244325123e-05
+      },
+      "passed": true
+    },
+    "cases": [
+      {
+        "grid_mm": 1.0,
+        "artifact_id": "32391d4d-6ab6-4de6-95f2-c33b7b41c0c7",
+        "assessment": {
+          "metrics": {
+            "max_group_delay_relative_error": 0.0010704408812629573,
+            "max_impedance_relative_error": 0.006161201937818015,
+            "max_reflection_amplitude": 0.0030716618783026366,
+            "max_transmission_amplitude_error": 1.9406064992066874e-05
+          },
+          "passed": true
+        },
+        "termination": {
+          "evidence": [
+            "70.00",
+            "4305",
+            "71.24"
+          ],
+          "exact_endcriterion_schedule": true,
+          "iterations": 4305,
+          "reported_decay_db": 71.24,
+          "reported_zero_energy": false,
+          "status": "end_criterion_reached",
+          "target_energy_ratio": 1e-07
+        },
+        "states": {
+          "analysis": [
+            "queued",
+            "running",
+            "postprocessing",
+            "completed"
+          ],
+          "postprocess_only": [
+            "queued",
+            "postprocessing",
+            "completed"
+          ],
+          "prepare": [
+            "queued",
+            "preparing",
+            "completed"
+          ]
+        },
+        "postprocess_samples_identical": true,
+        "postprocess_raw_manifest_identical": true,
+        "qt_found": false
+      },
+      {
+        "grid_mm": 0.75,
+        "artifact_id": "4f9ca128-98a2-4988-bc66-e1e1a41642b9",
+        "assessment": {
+          "metrics": {
+            "max_group_delay_relative_error": 0.0006512293749496578,
+            "max_impedance_relative_error": 0.0051522072341474425,
+            "max_reflection_amplitude": 0.0025703590211171383,
+            "max_transmission_amplitude_error": 1.9910594260985626e-05
+          },
+          "passed": true
+        },
+        "termination": {
+          "evidence": [
+            "70.00",
+            "6003",
+            "71.28"
+          ],
+          "exact_endcriterion_schedule": true,
+          "iterations": 6003,
+          "reported_decay_db": 71.28,
+          "reported_zero_energy": false,
+          "status": "end_criterion_reached",
+          "target_energy_ratio": 1e-07
+        },
+        "states": {
+          "analysis": [
+            "queued",
+            "running",
+            "postprocessing",
+            "completed"
+          ],
+          "postprocess_only": [
+            "queued",
+            "postprocessing",
+            "completed"
+          ],
+          "prepare": [
+            "queued",
+            "preparing",
+            "completed"
+          ]
+        },
+        "postprocess_samples_identical": true,
+        "postprocess_raw_manifest_identical": true,
+        "qt_found": false
+      }
+    ]
+  },
+  "regression_tests": [
+    {
+      "environment": "Windows service with GUI, CAD worker and WSL transport",
+      "discovered": 365,
+      "passed": 348,
+      "skipped": 17,
+      "seconds": 245.58,
+      "log": ".local/openems-worker-windows-tests.log"
+    },
+    {
+      "environment": "Linux service",
+      "discovered": 365,
+      "passed": 341,
+      "skipped": 24,
+      "seconds": 144.747,
+      "log": ".local/openems-worker-linux-tests.log"
+    },
+    {
+      "environment": "Linux guest supervisor final additional coverage",
+      "discovered": 12,
+      "passed": 12,
+      "skipped": 0,
+      "seconds": 19.407,
+      "log": ".local/openems-worker-guest-final-tests.log"
+    },
+    {
+      "environment": "Linux native openEMS final",
+      "discovered": 6,
+      "passed": 6,
+      "skipped": 0,
+      "seconds": 25.21,
+      "log": ".local/openems-worker-native-final-tests.log"
+    },
+    {
+      "environment": "Windows WSL transport final including launcher reconnect",
+      "discovered": 12,
+      "passed": 12,
+      "skipped": 0,
+      "seconds": 10.122,
+      "log": ".local/openems-worker-host-final-tests.log"
+    }
+  ],
+  "scope": {
+    "user_antenna": false,
+    "ifa": false,
+    "nf2ff": false,
+    "formal_convergence": false,
+    "fabrication_or_measurement": false,
+    "gui_solver_controls": false,
+    "performance_budget_qualified": false
+  },
+  "notes": [
+    "Full regression discovered the earlier seven guest cases; the final guest suite adds five ownership/termination cases and is listed separately.",
+    "Windows skips native CAD unit tests, Linux-only native openEMS and guest tests. Linux skips Windows GUI/CAD integrations, native CAD unit tests, opt-in native openEMS and Windows WSL transport.",
+    "Reference preparation does not run FDTD; analysis consumes sealed XML; postprocess_only preserves original raw and normalized samples.",
+    "Session/nonce supervision is for fixed trusted workers, not an arbitrary-code security sandbox."
+  ]
+}

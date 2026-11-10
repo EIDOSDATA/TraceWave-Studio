@@ -1,8 +1,29 @@
-# Windows 최소 GUI
+# Windows GUI와 2D/3D 설계 보기
 
-이 GUI는 승인된 wxWidgets 구성을 처음 실행해 보는 개발용 진입점이다. C++ 창에서 별도의 Python 프로젝트 서비스에 연결한다. 프로젝트 생성, 열기, 이름과 설명 변경, 저장, 스냅샷을 실제 명령으로 처리한다. 프로젝트 트리에 매개변수와 초기 설계 데이터 목록을 표시한다.
+이 GUI는 승인된 wxWidgets 구성을 사용하는 개발용 편집 화면이다. C++ 창에서 별도의 Python 프로젝트 서비스에 연결한다. 프로젝트 생성, 열기, 이름과 설명 변경, 저장, 스냅샷을 실제 명령으로 처리한다. 기판/미정 도체층/유전체층/선/원호를 생성하며 트리, 2D 캔버스와 속성이 안정 ID로 같은 객체를 선택한다. 기존 기판/재료/적층/네트/선/원호/포트의 수치 속성도 편집한다.
 
-CAD 편집 화면, OCCT viewport, 매개변수 입력 편집기, openEMS 실행과 결과 표시는 후속 구현이다. GUI 이벤트 루프와 저장 흐름의 smoke 통과는 일반 편집 60 fps, 대형 장면 30 fps 또는 메모리 예산 통과를 의미하지 않는다.
+매개변수 추가, 숫자/미정/표현식 입력, 변수와 매개변수 결합, 서버에 보존되는 실행 취소/다시 실행을 제공한다. wxAUI의 탐색/2D/3D/속성/문제/로그/CAD 출력 배치와 명시적 해석 입력 검사를 연결했다. STEP 출력 버튼은 별도 CAD worker의 AP242 출력에 연결되고 3D 탭은 실제 OCCT 고체에서 파생한 표시용 삼각형을 wxGLCanvas로 그린다. 재료/net/포트 생성 UI와 제품 openEMS 실행/결과 표시는 남는다. GUI 이벤트 루프와 기능 시험 통과는 일반 편집 60 fps, 대형 장면 30 fps 또는 메모리 예산 통과를 의미하지 않는다.
+
+## UX 구현 방향
+
+화면의 기준은 승인된 [05 화면과 사용자 경험 설계](../../../01_Docs/05_RFAD_화면과_사용자_경험_설계.md)다. 원래 사용 흐름과 비교 자료는 [23 추가 요구사항 원본](../../../01_Docs/23_RFAD_원본_추가_요구사항.md), 자료별 검토 수준과 채택 근거는 [18 출처와 근거](../../../01_Docs/18_RFAD_출처와_근거.md)에 보존한다. 과거의 도구 문서 비교와 현재 제품의 실행 검증은 구분한다.
+
+05번의 목표는 상단 프로젝트/저장 상태, 왼쪽 작업/객체 트리, 중앙 2D/3D/표/그래프, 오른쪽 선택 속성, 하단 문제/작업/로그의 작업 공간이다. 현재 wxAUI로 탐색/중앙 2D와 3D 탭/선택 속성/문제/로그/CAD 출력을 배치하고 `보기 > 기본 패널 배치 복원`을 제공한다. 해석 작업 관리와 결과/비교/제조 출력 작업 공간은 후속이다. 기능별 작업 공간은 사용 맥락에 따라 열며 모든 화면을 동시에 배치하는 구성을 목표로 삼지 않는다.
+
+현재 속성 편집에는 다음 행동을 구현했다.
+
+- 미적용 입력, 적용됨(저장 필요), 저장됨을 구분하고 프로젝트 이름을 표시한다. 프로젝트/설계/저장 개정 식별자는 tooltip의 상세 정보로 제공한다.
+- 한글 속성/선택지와 읽기 전용 표시값을 사용한다. 화면에 보이는 표현과 API의 원래 value/UUID는 분리하여 저장값을 바꾸지 않는다.
+- 값과 단위를 같은 행에 놓고 입력 방식에서 사용하지 않는 표현식/변수 결합/참조 선택을 숨긴다. 미정 입력은 숫자로 채우지 않으며, 표현식과 참조의 적용된 값은 읽기 전용으로 표시한다.
+- ID와 좌표계 같은 상세 필드는 접어두고 필요할 때 펼친다. 입력 도움말은 관련 컨트롤의 tooltip으로 제공한다.
+- 서비스 진단의 객체 UUID를 선택 객체와 대응시키고 한글 필드 이름으로 오류를 표시하며 입력 위치로 초점을 이동한다.
+- 실행 취소는 Ctrl+Z, 다시 실행은 Ctrl+Y와 승인된 Ctrl+Shift+Z를 지원한다.
+
+2D 작업 공간에는 기판/패턴/재료/급전/입력 검사 접근 동작, 선/원호 생성, 이동/삭제와 수치 좌표 입력을 연결했다. 새 도체층과 유전체층의 위치/두께/재료는 미정으로 보존한다. `해석 입력 검사` 문제 목록은 관련 객체/필드로 이동하며 이전 revision의 진단이면 재검사를 안내한다. 단계 접근 버튼이 있어도 재료/급전 생성과 실제 solver 실행이 구현되었다는 뜻은 아니다.
+
+이 범위의 자동 시험은 아래 기록을 따른다. DPI별 최종 배치, 키보드/IME 전체 흐름, 최종 화면의 시각 수용과 60/30 fps는 별도 검증이 필요하다. 화면 시안은 목표 구성의 검토 자료이며 구현된 창이나 실제 계산 결과의 증거와 구분한다.
+
+[완성형 UI 시안과 wxWidgets 구현 대응](../../docs/ui_concept.md)은 별도 개발 보조자료로 관리한다. 단위만 바꾼 입력은 적용 후 숫자가 환산된다는 안내와 원래 값/단위를 보여준다. 표현식이나 참조의 기존 숫자는 마지막 적용값이며 미적용 초안의 계산 결과로 표시하지 않는다.
 
 ## 개발 환경과 빌드
 
@@ -16,7 +37,7 @@ Code 폴더에서 실행한다.
 
 스크립트는 고정한 wxWidgets 3.2.12와 nlohmann/json 3.12.0을 준비하고 SHA256을 검사한다. 이미 추출한 wxWidgets 폴더는 재사용한다. 수정된 의존성 소스까지 검증하는 기능은 없으므로 검증 빌드에서는 새로 추출한 원본 소스를 사용해야 한다. 컴파일러와 CMake는 PATH에서 제공해야 하며 스크립트가 설치하거나 업데이트하지 않는다.
 
-wxWidgets는 core/base를 정적으로 연결하며 webview, media, OpenGL, STC, ribbon은 이 초기 프로필에서 제외한다. MinGW의 C++/thread runtime DLL은 설치된 컴파일러 폴더에서 실행 파일 옆으로 복사한다. Qt와 필수 유료 GUI 부품은 사용하지 않는다.
+wxWidgets는 core/base/aui/gl을 정적으로 연결한다. 3D는 wxGLCanvas와 Windows OpenGL(opengl32), 표시 파일 SHA256은 Windows BCrypt를 사용한다. webview, media, STC, ribbon은 제외한다. CAD Python의 기존 44개 고정 패키지 환경은 유지하며 GUI에 OCCT나 Python을 내장하지 않는다. MinGW의 C++/thread runtime DLL은 설치된 컴파일러 폴더에서 실행 파일 옆으로 복사한다. Qt와 필수 유료 GUI 부품은 사용하지 않는다.
 
 의존성이 이미 준비된 경우 다음 명령도 사용할 수 있다. 이 방법은 runtime DLL을 복사하지 않으므로 컴파일러의 bin이 PATH에 있어야 한다.
 
@@ -35,21 +56,61 @@ cmake --build --preset windows-release --parallel 4
 
 Code 폴더를 기준으로 모든 경로를 절대 경로로 전달한다. Python과 source 경로는 GUI와 서비스를 별도로 교체할 수 있도록 명시한다. 개발용 `.venv`는 프로젝트의 Python 환경 설정 절차로 준비한다.
 
+실행 도우미는 `.venv-cad/Scripts/python.exe`가 있으면 CAD 환경도 연결한다. 다른 설치는 `-CadPython <경로>`로 지정한다. 기본 CAD 환경이 없으면 편집/저장은 계속 사용할 수 있고 새 CAD 출력은 비활성화된다. 과거 게시 완료된 mesh의 복원에는 CAD Python을 다시 실행하지 않는다. 프로젝트 파일이 실행 환경이나 worker 코드를 선택하지 않는다.
+
 ```powershell
 $codeRoot = (Get-Location).Path
 $guiArguments = @(
     '--python', (Join-Path $codeRoot '.venv/Scripts/python.exe'),
     '--source', (Join-Path $codeRoot 'src'),
-    '--workspace', (Join-Path $codeRoot '.local/gui-workspace')
+    '--workspace', (Join-Path $codeRoot '.local/gui-workspace'),
+    '--cad-python', (Join-Path $codeRoot '.venv-cad/Scripts/python.exe')
 )
 & (Join-Path $codeRoot 'build/windows-release/bin/tracewave_gui.exe') @guiArguments
 ```
 
+CAD 환경 없이 직접 실행할 때는 `--cad-python` 항목을 생략한다. `--open-project projects/이름`을 추가하면 같은 workspace의 등록 프로젝트를 바로 연다.
+
 `프로젝트` 메뉴에서 새 프로젝트를 만들고 속성을 변경한 뒤 `변경 적용`을 누른다. `저장`은 현재 개정을 저장 기준점으로 지정하고 `스냅샷 만들기`는 불변 프로젝트 사본을 만든다. 열기는 같은 작업 영역에 등록된 `projects/이름` 경로를 받는다. 기존 파일을 임의로 가져오는 가져오기 기능은 아직 없다.
+
+`편집` 메뉴의 `매개변수 추가`에서 이름, 입력 방식, 물리 차원과 단위를 지정한다. 표현식 방식에서는 원문과 변수 결합 표를 사용한다. 참조 대상은 목록에서 고르며 GUI가 UUID를 결합 값으로 전달한다. 현재 입력 방식에 사용하지 않는 편집 필드는 숨기고 적용된 계산값은 읽기 전용으로 구분한다. 단위만 바꾸면 실제 SI 값은 유지되며 값과 단위를 함께 바꾸면 새 입력으로 해석한다.
+
+`Ctrl+Z`와 `Ctrl+Y` 또는 `Ctrl+Shift+Z`는 서비스의 영속 실행 취소/다시 실행을 요청한다. 이름과 설명은 한 번에 적용되므로 한 번의 실행 취소로 돌아간다. 미적용 입력이 있는 상태에서 선택 변경/열기/이력 이동/종료를 요청하면 확인한다. 저장과 스냅샷은 먼저 현재 입력을 적용하며 검증 실패 시 기존 원본과 폼 입력을 유지한다. `F5`는 현재 저장소 상태를 다시 읽는다. 사용자 프로젝트 파일에 직접 쓰지 않는다.
+
+## 2D 편집과 입력 검사
+
+1. `설계 > 기판 만들기`에서 폭/길이를 mm로 입력하고 `도체층 추가` 또는 `유전체층 추가`에서 층 이름을 지정한다. 새 층의 z 위치/두께/재료는 미정이며 물리 입력은 속성에서 별도로 지정한다. 유전체층을 만들었다는 이유로 대표 FR4 물성이나 코어 두께를 채우지 않는다.
+2. 활성 도체층과 선폭을 고른다. `선` 도구는 시작점/끝점 두 번 클릭으로 생성한다. `원호` 도구는 중심/시작점/끝 방향 순서로 클릭한다. 원호 반지름은 중심과 시작점 사이 거리이며 마지막 클릭은 끝 방향을 정한다. 기본은 CCW, Shift는 CW다.
+3. 정확한 수치가 필요하면 `좌표 입력`을 연다. 원호 도구를 선택한 상태에서는 중심/반지름/시작각/signed sweep/선폭을 입력하고 다른 상태에서는 선분의 양 끝 좌표와 선폭을 입력한다. 좌표는 mm, 각도는 deg이며 음수 sweep은 CW다.
+4. 선택 도구로 클릭하거나 드래그하여 이동한다. 드래그 중에는 임시 그림만 갱신하며 놓을 때 명령 하나로 확정한다. `Delete`는 선택 형상 삭제, `Esc`는 진행 중 입력 취소다. 좌표가 매개변수에 결합된 형상은 직접 이동하지 않고 속성에서 수정한다.
+5. 휠은 확대/축소, 가운데 버튼은 보기 이동, `보기 > 전체 형상 맞춤`은 전체 형상에 맞춘다. 현재 그리드는 표시 전용이며 마우스 스냅은 미구현이다. 보기와 그리드/층 숨김은 EM/export 포함 여부를 바꾸지 않는다.
+6. `해석 입력 검사`로 현재 revision의 EM 입력 누락을 확인한다. 문제를 활성화하면 관련 객체/필드로 이동한다. 설계를 바꾼 뒤 이전 진단의 위치 이동은 거절하며 다시 검사해야 한다. 검사 완료는 solver 실행이나 RF 성능 합격이 아니다.
+
+2D 표시는 [canvas.get/canvas.apply 계약](../../docs/canvas_contract.md)을 따른다. 원본의 미정값을 임의 숫자로 채우지 않으며 기판 외곽과 선/원호를 구분한다. 마우스 스냅, endpoint 편집, 회전/미러, 일반 구속/Boolean, 고급 도면과 해석 결과는 후속이다.
+
+## STEP 출력과 3D 형상
+
+서비스의 `export.preview` (API-023), `geometry.build` (API-008), `export.build` (API-024)는 불변 snapshot 기반 비동기 TaskRef다. 상단 `STEP 출력`은 export.build, `3D 형상 > 3D 갱신`은 geometry.build에 연결한다. 현재 두 동작은 같은 기계 형상 패키지를 생성한다. 적용 전 폼 입력은 먼저 검증/적용하고 새 snapshot으로 고정한다. 잘못된 입력은 원본과 폼을 보존한 채 실패하며 CAD를 시작하지 않는다.
+
+별도 호스트 Open CASCADE worker가 실제 두께의 선/원호 도체와 직사각 유전체를 생성한다. 결과는 workspace의 `projects/<이름>/artifacts/<run_id>/`에 model.step, model.brep, mesh.json, sidecar.json, validation.json, manifest.json의 6개 파일로 게시한다. 하단 `CAD 출력`에서 진행 상태와 결과 경로를 확인하고 `출력 폴더 열기`로 접근한다. 임의 외부 경로로 복사/덮어쓰는 기능은 아직 제공하지 않는다. 완료 전 staging 파일은 출력으로 표시하지 않는다.
+
+CAD 접수 후에는 2D 편집과 저장을 계속할 수 있다. `작업 취소`는 취소 요청 뒤 실제 worker 종료 확인까지 기다린다. 실패/취소는 이전 정상 출력과 표시 형상을 보존한다. 실행 중 프로젝트 전환은 막으며 종료 시 소유한 CAD 프로세스도 회수한다. 현재 개정과 다른 snapshot의 3D는 `이전 설계의 형상`으로 표시하고 그 선택으로 현재 속성을 변경하지 않는다. 프로젝트를 다시 열면 `cad.latest`가 같은 프로젝트의 마지막 게시 완료 참조를 복원한다. 이전 버전의 mesh 없는 STEP 패키지는 출력 파일 참조만 복원할 수 있다.
+
+3D는 첫 파일을 열 때 wxGLCanvas를 생성한다. worker가 실제 고체에서 tessellation한 표시 mesh만 사용하며 STEP/B-rep의 정확 원호를 삼각형으로 대체하지 않는다. GUI background에서 파일 상한, 경로, SHA256, snapshot/run, 객체 ID, 유한 좌표와 triangle index를 확인한 같은 바이트를 렌더링한다. 초기 표시 상한은 100000 triangles, 300000 vertices, 16 MiB다. 드래그는 회전, Shift/가운데 버튼 드래그는 이동, 휠은 확대/축소, `전체 보기` 또는 F는 맞춤이다. `위에서`/`입체 보기`를 제공하고 현재 개정의 body 선택은 안정 source ID로 속성과 연결한다. 보기 조작은 원본 개정을 바꾸지 않는다.
+
+새 도체층/유전체층의 z 위치 또는 두께가 미정이면 CAD 출력은 차단된다. 속성에서 실제 위치와 양수 두께를 입력하고 패턴이 기판 안에 있도록 구성한다. 유전율/손실/전도도 등 RF 물성 미정은 sidecar에 보존하며 임의 값으로 채우지 않는다. 표시용 float 변환 뒤 퇴화/방향 뒤집힘 또는 허용 범위를 넘는 변 길이 왜곡은 3D 오류로 처리하고 이전 정상 장면을 유지한다. 이 검사는 이미 게시한 STEP의 정밀 기하나 원본을 바꾸지 않는다.
+
+OpenGL 생성/표시 실패는 3D 오류로 표시하며 프로젝트 편집/저장과 STEP 결과 접근은 유지한다. 기존 장면과 canvas가 있는 오류 상태에서는 `전체 보기`로 wxGLContext 재생성과 이전 장면의 재표시를 시도한다. 최초 context 생성에 실패해 canvas가 없으면 `3D 갱신`으로 다시 시도한다. 이는 제한된 복구 경로이며 실제 GPU reset, 여러 DPI와 도킹 조합의 복구 수용 시험을 통과했다는 뜻은 아니다. LOD, 대형 장면과 성능 예산 검증도 후속이다.
+
+[개발 CLI](../../README.md#현재-실행-방법)의 `tools/export_step.py`도 유지한다. CLI를 별도로 실행할 때는 GUI 입력을 적용/저장하고 같은 workspace의 GUI/서비스를 정상 종료한다. CLI는 등록된 현재 영속 개정으로 새 스냅샷을 만들거나 기존 SnapshotRef를 받으며 화면에만 남은 미적용 초안을 읽지 않는다.
+
+AP242 실제 schema/단위와 이름/형상 재입력 확인은 같은 OCCT kernel에서 수행한다. 결과 상태는 내부 기하 검증용 `generated_unverified`이며 제조, 독립 kernel 또는 RF 합격을 표시하지 않는다. 지원 형상과 실패 조건은 [CAD/STEP 계약](../../docs/cad_contract.md), 프로세스 취소/복구는 [worker 연결 경계](../../docs/worker_integration.md)를 따른다.
 
 ## 연결과 실패 처리
 
 - C++ GUI는 모델 계산이나 프로젝트 파일 저장 규칙을 복제하지 않고 `rfad.api/2.0` 명령을 호출한다.
+- `rfad.editor/0.1`의 작은 선택 DTO를 조회하고 변경 필드만 전송한다. 수식/단위/물성 검증은 서비스가 소유하며 오류 위치와 메시지를 표시한다. 전체 설계 원본을 매 편집마다 다시 받지 않는다.
+- `rfad.canvas/0.1`의 mm/deg 표시 DTO와 원본 UUID를 사용한다. 생성/이동/삭제는 expected_revision을 고정한 명령 하나로 보내며 stale 또는 실패 응답에서 부분 원본을 게시하지 않는다. 좌표 참조를 직접 이동으로 리터럴로 바꾸지 않는다.
 - 셸 없이 명시한 Python 실행 파일을 시작한다. 공백, 한글과 따옴표를 포함한 경로는 Windows 인수 규칙에 따라 인코딩한다.
 - stdin writer와 stdout/stderr reader는 별도 thread다. UI thread는 주기적으로 도착한 응답만 처리하며 pipe read/write를 기다리지 않는다.
 - stdout 프레임은 최대 64 KiB, 송신/수신/로그 큐는 각각 최대 64개, GUI pending request는 최대 16개다. stdout 큐 초과와 잘못된 프레임은 연결 오류로 표시한다.
@@ -67,7 +128,29 @@ $env:RFAD_GUI_EXE = (Join-Path (Get-Location).Path 'build/windows-release/bin/tr
 
 시험은 실제 wxWidgets 이벤트 루프와 Python 프로세스를 실행한다. 한글/공백 경로에서 프로젝트 생성, 이름/설명 변경, 저장, 스냅샷, 서비스 종료/재시작, 재열기 후 내용과 저장 개정 일치를 검사한다. stderr 폭주, 과대 stdout 프레임, 서비스 조기 종료, 없는 Python 실행 파일도 검사한다. `RFAD_GUI_EXE`를 지정하지 않은 Python 기본 시험에서는 이 GUI 시험만 건너뛴다.
 
+추가 편집 시험은 실제 폼 컨트롤과 같은 처리 경로로 매개변수 생성, UUID 결합 표현식, 의존 재계산, 0 나눗셈 오류의 입력/개정 보존, undo/redo와 재시작을 확인한다. `--editor-smoke-test --smoke-report <절대 JSON 경로>`로 별도 실행할 수 있다. 성공 시 editor_stage=11과 실제 통과한 editor_checks를 기록한다. 속성 편집 버전의 전체 GUI 시험은 6개였다.
+
+2D 시험은 `--canvas-smoke-test --smoke-report <절대 JSON 경로>`를 사용한다. 2D 버전의 전체 GUI 7개에 포함되며 성공 시 canvas_stage=15와 canvas_checks 14개를 기록한다. 검사 항목은 도킹, Esc 취소, 두 점 선분, 원호와 hit testing, 선택 동기화, 드래그 단일 명령, undo/redo, 속성의 장면 반영, 거절 후 선택 복원, 삭제/취소, 표시 제한, 보기의 원본 불변성, 입력 검사와 실제 해석 구분, 저장/스냅샷/재시작이다. 테스트가 합성한 wx 이벤트의 성공과 실제 화면 시각 확인은 별도로 기록한다.
+
 GUI에 `--smoke-test --smoke-report <절대 JSON 경로>`를 추가하면 같은 정상 흐름을 실행하고 60초 안에 성공/실패 보고서를 남긴다. 정상은 종료 코드 0, 흐름 실패는 2, 보고서 쓰기 실패는 3이다. 보고서는 `physics_tested=false`, `frame_budget_tested=false`를 명시한다.
+
+GUI CAD 통합 시험은 별도 CAD 환경도 지정한다.
+
+```powershell
+$env:RFAD_CAD_PYTHON = (Resolve-Path '.venv-cad/Scripts/python.exe').Path
+.\.venv\Scripts\python.exe -X utf8 -m unittest discover -s tests -p test_gui_cad_process.py -v
+ctest --preset windows-release
+```
+
+CAD smoke는 `--cad-smoke-test --open-project projects/이름 --smoke-report <절대 JSON 경로>`로 사전에 등록한 기하 fixture를 사용한다. 적용 전 입력, 실행 중 편집/저장, 고정 snapshot과 이전 개정 표시, 실제 GL frame, 취소 후 이전 결과 보존, 서비스 재시작 후 결과 복원을 확인하도록 구성했다. `--cad-expect-failure`는 미정 필수 기하 입력을 정상 출력으로 게시하지 않는 경로다. CAD smoke의 자체 제한 시간은 180초다. CTest에는 표시 mesh 경계/hash/경로와 카메라/picking의 C++ 시험이 포함된다. 최종 실행 수치와 확인 범위는 [개발 기록](../../docs/development_status.md)의 GUI STEP/3D 검증 문단을 따른다. 기능 시험만으로 성능 예산이나 모든 GPU/DPI 조합의 수용을 판정하지 않는다.
+
+2026-11-10 속성 화면 UX 보완본의 Windows 전체 207개 시험이 48.800초에 스킵 없이 통과했다. Linux는 207개 중 201개 통과, Windows GUI 6개 스킵이며 19.513초였다. 전체 로그는 `Code/.local/ux-windows-tests.log`, `Code/.local/ux-linux-tests.log`다. 이후 단위 변경 초안 안내와 마지막 적용값 라벨을 보완하고 관련 GUI 6개를 13.780초에 다시 통과했다. 최종 로그는 `Code/.local/ux-gui-final.log`다. 편집 smoke는 기존 editor_checks 7개와 상태/모드/오류 위치/단위 안내의 ux_checks 14개를 검증한다.
+
+위 속성 화면 버전의 초기 시각 점검 후 여백/초점 처리를 수정했다. 당시 이어진 화면 자동화는 사용자의 Esc 입력으로 중단했으며 수정 후 시각 확인을 완료하지 못했다. 이는 이후 2D 작업 공간의 시각 확인과 구분하는 과거 기록이다.
+
+wxAUI/2D 작업 공간 초기 버전의 실제 GUI 7개는 22.337초에 통과했다. 미정 보드 치수, 큰 좌표와 표시 범위를 보완한 뒤 Windows 전체 227개가 스킵 없이 76.152초에 통과했고 Linux는 227개 중 220개 통과/Windows GUI 7개 스킵으로 30.312초였다. 로그는 `Code/.local/canvas-windows-tests.log`, `Code/.local/canvas-linux-tests.log`다. native CTest `canvas_geometry` 1개도 0.13초에 통과했다.
+
+실제 창에서 발견한 도구막대 높이와 DPI 초기 창 크기, 입력 검사 진단의 한국어 본문 연결과 전체/표시 건수 안내를 보완했다. 최종 Release 빌드 후 GUI 7개가 25.908초에 통과했고 실제 창의 배치/기판/선/원호/선택 속성/문제 위치 이동도 확인했다. 로그는 `Code/.local/canvas-gui-final.log`다. 현재 디스플레이의 제한된 시각 확인이며 전체 DPI/IME 및 성능 수용 시험은 후속이다. 자세한 근거는 [개발 기록](../../docs/development_status.md)에 기록한다.
 
 ## 의존성과 배포 범위
 

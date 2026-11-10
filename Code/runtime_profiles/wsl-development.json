@@ -1,7 +1,7 @@
 {
   "schema": "rfad.runtime.wsl/0.1",
   "profile_id": "wsl-development",
-  "recorded_at": "2026-11-07",
+  "recorded_at": "2026-11-10",
   "purpose": "development_only",
   "host": "Windows 11",
   "observed_wsl_version": "2.7.11",
@@ -10,32 +10,252 @@
     "source": "Ubuntu-24.04",
     "wsl_generation": 2,
     "install_path_relative_to_code": ".local/wsl/TraceWave-Dev",
-    "registered": false,
-    "execution_verified": false
+    "registered": true,
+    "execution_verified": true,
+    "observed_release": "Ubuntu 24.04.5 LTS",
+    "observed_kernel": "6.18.33.2-microsoft-standard-WSL2",
+    "development_user": "tracewave",
+    "runtime_root": "/home/tracewave/rfad-runtime"
   },
-  "status": "windows_restart_required_before_distribution_setup",
+  "status": "linux_service_and_headless_reference_verified",
   "last_install_attempt": {
     "exit_code": 0,
-    "result": "windows_restart_requested_distribution_not_registered",
+    "result": "distribution_registered_and_execution_verified",
     "success_is_not_inferred_from_exit_code": true
   },
   "solver": {
     "name": "openEMS",
-    "installed": false,
-    "version": null,
-    "commit": null,
-    "python_bindings_verified": false,
-    "reference_case_verified": false,
+    "installed": true,
+    "version": "0.37.0",
+    "commit": "305df56aa7df4d2f18c687083f484a96f9a22610",
+    "python_bindings_verified": true,
+    "reference_case_verified": true,
     "headless_only": true,
     "qt_allowed": false,
-    "qt_dependency_audit_completed": false,
+    "qt_dependency_audit_completed": true,
     "appcsxcad_enabled": false,
-    "qcsxcad_enabled": false
+    "qcsxcad_enabled": false,
+    "source_meta_commit": "974294ba7d812ef5a46a4760593057aee7ce6866",
+    "csxcad_version": "0.7.0",
+    "product_adapter_tested": false,
+    "ifa_tested": false,
+    "nf2ff_tested": false,
+    "formal_convergence_tested": false
   },
   "references": [
     "https://learn.microsoft.com/en-us/windows/wsl/install",
     "https://learn.microsoft.com/en-us/windows/wsl/basic-commands",
     "https://docs.openems.de/en/latest/install/requirements.html",
     "https://docs.openems.de/en/latest/install/clone-build-install.html"
-  ]
+  ],
+  "service_verification": {
+    "python": "3.12.3",
+    "tests_discovered": 303,
+    "tests_passed": 282,
+    "tests_skipped": 21,
+    "skip_reason": "Nine native CAD tests, two Windows CAD process tests, nine Windows GUI tests and one Windows Job Object test",
+    "elapsed_seconds": 149.587,
+    "expression_portability": "49 expressions, UUID graph and IFA cache exactly match Windows 3.12.10 corpus",
+    "expression_result_hash": "0f4dbed713765fce0094011f4850699ecc08d9d9d8aceb7eaf48167fa0838d3b",
+    "log_relative_to_code": ".local/gui-cad-linux-tests.log",
+    "expression_report_relative_to_code": ".local/portability/linux-editor-check.json"
+  },
+  "windows_regression": {
+    "tests_discovered": 303,
+    "tests_passed": 294,
+    "tests_skipped": 9,
+    "elapsed_seconds": 205.771,
+    "log_relative_to_code": ".local/gui-cad-windows-tests.log",
+    "skip_reason": "Nine native CAD geometry/mesh tests run separately in the pinned CAD Python environment"
+  },
+  "reference_verification": {
+    "case_version": "rfad.reference.rect-waveguide/0.1",
+    "checked_at_utc": "2026-11-10T09:10:06.466529+00:00",
+    "report_relative_to_code": ".local/wsl/openems-reference.json",
+    "report_sha256": "e6dae8e74f468aa3b78e056c41cd5810027827da3891f35fa9c8057296c91718",
+    "checker_sha256": "523c086f1f66879d22ce71820fd35187c89140d658c1f3d5cc875df13c7d6679",
+    "status": "passed",
+    "grids": [
+      {
+        "target_cell_mm": 1.0,
+        "iterations": 4305,
+        "elapsed_seconds": 1.7116905580001003,
+        "metrics": {
+          "max_reflection_amplitude": 0.003071662136913104,
+          "max_transmission_amplitude_error": 1.9406065113636295e-05,
+          "max_impedance_relative_error": 0.006161201937818015,
+          "max_group_delay_relative_error": 0.0010704408811905708
+        }
+      },
+      {
+        "target_cell_mm": 0.75,
+        "iterations": 6003,
+        "elapsed_seconds": 2.746078681999961,
+        "metrics": {
+          "max_reflection_amplitude": 0.002570359258663606,
+          "max_transmission_amplitude_error": 1.9910594620031752e-05,
+          "max_impedance_relative_error": 0.005152207234147202,
+          "max_group_delay_relative_error": 0.000651229374547535
+        }
+      }
+    ],
+    "grid_comparison": {
+      "passed": true,
+      "metrics": {
+        "max_grid_transmission_amplitude_delta": 1.740372850078664e-05,
+        "max_grid_impedance_relative_delta": 0.003112996956515368
+      }
+    }
+  },
+  "native_audit": {
+    "checked_at_utc": "2026-11-10T09:12:24.673785+00:00",
+    "status": "passed",
+    "report_relative_to_code": ".local/wsl/native-audit.json",
+    "report_sha256": "5b8f487c451ff00d8cd05c40cec009644634b67010254af0f85b2b2cda9f75f2",
+    "native_files": 58,
+    "vtk_libraries": 41,
+    "qt_found": false
+  },
+  "windows_gui_followup": {
+    "tests_discovered": 7,
+    "tests_passed": 7,
+    "tests_skipped": 0,
+    "elapsed_seconds": 25.908,
+    "log_relative_to_code": ".local/canvas-gui-final.log",
+    "reason": "Final Release GUI regression after toolbar/DPI, Korean diagnostic body, diagnostic count and canvas guidance fixes",
+    "editor_checks": 7,
+    "ux_checks": 14,
+    "canvas_checks": 14,
+    "physics_tested": false,
+    "frame_budget_tested": false
+  },
+  "verification_history": [
+    {
+      "recorded_at": "2026-11-10",
+      "phase": "property_editor_ux",
+      "service_verification": {
+        "python": "3.12.3",
+        "tests_discovered": 207,
+        "tests_passed": 201,
+        "tests_skipped": 6,
+        "skip_reason": "Windows-only GUI process tests",
+        "elapsed_seconds": 19.513,
+        "expression_portability": "49 expressions, UUID graph and IFA cache exactly match Windows 3.12.10 corpus",
+        "expression_result_hash": "0f4dbed713765fce0094011f4850699ecc08d9d9d8aceb7eaf48167fa0838d3b",
+        "log_relative_to_code": ".local/ux-linux-tests.log",
+        "expression_report_relative_to_code": ".local/portability/linux-editor-check.json"
+      },
+      "windows_regression": {
+        "tests_discovered": 207,
+        "tests_passed": 207,
+        "tests_skipped": 0,
+        "elapsed_seconds": 48.8,
+        "log_relative_to_code": ".local/ux-windows-tests.log"
+      },
+      "windows_gui_followup": {
+        "tests_discovered": 6,
+        "tests_passed": 6,
+        "tests_skipped": 0,
+        "elapsed_seconds": 13.78,
+        "log_relative_to_code": ".local/ux-gui-final.log",
+        "reason": "Unit draft notice and last applied value label after full regression",
+        "editor_checks": 7,
+        "ux_checks": 14
+      }
+    },
+    {
+      "recorded_at": "2026-11-10",
+      "phase": "canvas_2d",
+      "windows_regression": {
+        "tests_discovered": 227,
+        "tests_passed": 227,
+        "tests_skipped": 0,
+        "elapsed_seconds": 76.152,
+        "log_relative_to_code": ".local/canvas-windows-tests.log"
+      },
+      "service_verification": {
+        "python": "3.12.3",
+        "tests_discovered": 227,
+        "tests_passed": 220,
+        "tests_skipped": 7,
+        "skip_reason": "Windows-only GUI process tests",
+        "elapsed_seconds": 30.312,
+        "expression_portability": "49 expressions, UUID graph and IFA cache exactly match Windows 3.12.10 corpus",
+        "expression_result_hash": "0f4dbed713765fce0094011f4850699ecc08d9d9d8aceb7eaf48167fa0838d3b",
+        "log_relative_to_code": ".local/canvas-linux-tests.log",
+        "expression_report_relative_to_code": ".local/portability/linux-editor-check.json"
+      },
+      "windows_gui_followup": {
+        "tests_discovered": 7,
+        "tests_passed": 7,
+        "tests_skipped": 0,
+        "elapsed_seconds": 25.908,
+        "log_relative_to_code": ".local/canvas-gui-final.log",
+        "reason": "Final Release GUI regression after toolbar/DPI, Korean diagnostic body, diagnostic count and canvas guidance fixes",
+        "editor_checks": 7,
+        "ux_checks": 14,
+        "canvas_checks": 14,
+        "physics_tested": false,
+        "frame_budget_tested": false
+      }
+    },
+    {
+      "recorded_at": "2026-11-10",
+      "phase": "host_cad_step",
+      "windows_regression": {
+        "tests_discovered": 287,
+        "tests_passed": 279,
+        "tests_skipped": 8,
+        "elapsed_seconds": 148.984,
+        "log_relative_to_code": ".local/cad-windows-tests.log",
+        "skip_reason": "Eight native geometry tests run separately in the pinned CAD Python environment"
+      },
+      "service_verification": {
+        "python": "3.12.3",
+        "tests_discovered": 287,
+        "tests_passed": 269,
+        "tests_skipped": 18,
+        "skip_reason": "Eight native CAD tests, two configured Windows CAD process tests, seven Windows GUI tests and one Windows Job Object parent-crash test",
+        "elapsed_seconds": 81.977,
+        "expression_portability": "49 expressions, UUID graph and IFA cache exactly match Windows 3.12.10 corpus",
+        "expression_result_hash": "0f4dbed713765fce0094011f4850699ecc08d9d9d8aceb7eaf48167fa0838d3b",
+        "log_relative_to_code": ".local/cad-linux-tests.log",
+        "expression_report_relative_to_code": ".local/portability/linux-editor-check.json"
+      },
+      "native_ctest": {
+        "test_name": "canvas_geometry",
+        "platform": "windows-x64",
+        "tests_discovered": 1,
+        "tests_passed": 1,
+        "tests_skipped": 0,
+        "elapsed_seconds": 0.13,
+        "log_relative_to_code": "build/windows-release/Testing/Temporary/LastTest.log"
+      }
+    }
+  ],
+  "native_ctest": {
+    "test_names": [
+      "canvas_geometry",
+      "display_mesh"
+    ],
+    "platform": "windows-x64",
+    "tests_discovered": 2,
+    "tests_passed": 2,
+    "tests_skipped": 0,
+    "elapsed_seconds": 0.26,
+    "log_relative_to_code": ".local/gui-cad-ctest.log"
+  },
+  "regression_scope": {
+    "service_and_gui_workflows_tested": true,
+    "native_canvas_geometry_tested": true,
+    "product_solver_physics_tested": false,
+    "frame_budget_tested": false,
+    "memory_budget_tested": false,
+    "startup_budget_tested": false,
+    "release_qualification_completed": false,
+    "host_cad_worker_tested": true,
+    "gui_step_and_display_mesh_tested": true
+  },
+  "cad_worker_profile": "cad-worker-windows-x64",
+  "gui_cad_profile": "gui-cad-windows-x64"
 }

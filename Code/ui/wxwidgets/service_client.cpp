@@ -72,7 +72,8 @@ std::wstring ServiceClient::Quote(const std::wstring& argument)
     return result;
 }
 
-bool ServiceClient::Start(const std::wstring& python, const std::wstring& source, const std::wstring& workspace, std::string& error)
+bool ServiceClient::Start(const std::wstring& python, const std::wstring& source, const std::wstring& workspace,
+    std::string& error, const std::wstring& cadPython)
 {
     Stop();
     SECURITY_ATTRIBUTES security{sizeof(SECURITY_ATTRIBUTES), nullptr, TRUE};
@@ -110,6 +111,10 @@ bool ServiceClient::Start(const std::wstring& python, const std::wstring& source
     startup.hStdError = childLog;
     const std::wstring bootstrap = L"import sys,runpy;sys.path.insert(0,sys.argv.pop(1));runpy.run_module('rfad',run_name='__main__')";
     std::wstring command = Quote(python) + L" -X utf8 -u -c " + Quote(bootstrap) + L" " + Quote(source) + L" serve --workspace " + Quote(workspace);
+    if (!cadPython.empty())
+    {
+        command += L" --cad-python " + Quote(cadPython);
+    }
     PROCESS_INFORMATION process{};
     const BOOL created = CreateProcessW(python.c_str(), command.data(), nullptr, nullptr, TRUE,
         CREATE_NO_WINDOW | CREATE_SUSPENDED, nullptr, nullptr, &startup, &process);

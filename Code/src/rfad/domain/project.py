@@ -28,7 +28,7 @@ _QUANTITY_FIELDS = {"value_si", "dimension", "display_unit", "status", "source_r
 _IDENTITY = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
 _DESIGN_COLLECTIONS = {"geometry", "materials", "ports", "stackup", "nets"}
 DESIGN_COMMANDS = tuple(prefix + suffix for prefix in ("material", "layer", "net", "geometry", "port") for suffix in (".set", ".remove")) + ("board.set",)
-COMMANDS = ("metadata.rename", "metadata.describe", "parameter.set", "parameter.set_expression", "parameter.remove", *DESIGN_COMMANDS)
+COMMANDS = ("metadata.rename", "metadata.describe", "metadata.set", "parameter.set", "parameter.set_expression", "parameter.remove", *DESIGN_COMMANDS)
 
 
 def _fail(code: str, message: str, field: str) -> None:
@@ -278,7 +278,15 @@ def apply_command(document: dict, command: dict, expected_revision: str) -> tupl
     payload = command["payload"]
     result = deepcopy(document)
     result["schema_version"] = SCHEMA_VERSION
-    if command_type in ("metadata.rename", "metadata.describe"):
+    if command_type == "metadata.set":
+        _fields(payload, {"name", "description"}, "command.payload")
+        _text(payload["name"], "command.payload.name")
+        _text(payload["description"], "command.payload.description", empty=True, max_chars=4096)
+        inverse = {"type": command_type, "payload": {key: result["metadata"][key] for key in ("name", "description")}}
+        result["metadata"].update(payload)
+        changed_ids = [result["project_id"]]
+        invalidation_set = ["revision", "exports.metadata"]
+    elif command_type in ("metadata.rename", "metadata.describe"):
         field = "name" if command_type == "metadata.rename" else "description"
         _fields(payload, {field}, "command.payload")
         _text(payload[field], "command.payload." + field, empty=field == "description", max_chars=256 if field == "name" else 4096)

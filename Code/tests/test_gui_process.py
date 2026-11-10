@@ -18,7 +18,7 @@ _SOURCE = Path(__file__).resolve().parents[1] / "src"
 class GuiProcessTests(unittest.TestCase):
     """! @brief 실제 wx 이벤트 루프에서 저장 복구와 비정상 pipe 응답을 확인한다."""
 
-    def run_gui(self, directory: Path, *, source: Path = _SOURCE, python: Path | None = None) -> tuple[int, dict]:
+    def run_gui(self, directory: Path, *, source: Path = _SOURCE, python: Path | None = None, editor: bool = False, canvas: bool = False) -> tuple[int, dict]:
         """! @brief 공백과 한글이 포함된 작업 영역으로 smoke를 실행하고 결과를 읽는다."""
         report = directory / "한글 결과 smoke.json"
         startup = subprocess.STARTUPINFO()
@@ -28,7 +28,7 @@ class GuiProcessTests(unittest.TestCase):
         process = subprocess.run(
             [str(Path(_GUI).resolve()), "--python", str(python or Path(sys.executable)),
              "--source", str(source), "--workspace", str(directory / "한글 작업 영역"),
-             "--smoke-test", "--smoke-report", str(report)],
+             "--canvas-smoke-test" if canvas else ("--editor-smoke-test" if editor else "--smoke-test"), "--smoke-report", str(report)],
             stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
             timeout=90, startupinfo=startup, check=False,
         )
@@ -58,6 +58,54 @@ class GuiProcessTests(unittest.TestCase):
         self.assertEqual(result["service_sessions"], 2)
         self.assertEqual(result["revision_id"], result["saved_revision"])
         self.assertTrue(result["snapshot_id"])
+        self.assertFalse(result["physics_tested"])
+        self.assertFalse(result["frame_budget_tested"])
+
+    def test_editor_controls_expression_error_history_and_restart(self):
+        """! @brief 실제 속성 폼에서 의존식 편집, 오류 보존과 서버 이력 재시작을 확인한다."""
+        with TemporaryDirectory(prefix="rfad GUI 편집 ") as temporary:
+            code, result = self.run_gui(Path(temporary), editor=True)
+        self.assertEqual(code, 0, result)
+        self.assertTrue(result["passed"], result)
+        self.assertEqual(result["editor_stage"], 11)
+        self.assertEqual(result["service_sessions"], 2)
+        self.assertEqual(result["revision_id"], result["saved_revision"])
+        self.assertTrue(result["snapshot_id"])
+        self.assertEqual(set(result["editor_checks"]), {
+            "parameter_created", "expression_bound", "dependency_recalculated",
+            "invalid_input_preserved", "undo_recalculated", "redo_recalculated", "restart_preserved",
+        })
+        self.assertEqual(set(result["ux_checks"]), {
+            "saved_state", "redo_aliases_registered", "blank_parameter_apply_disabled",
+            "missing_value_hidden", "expression_fields_visible", "expression_error_localized",
+            "unnamed_parameter_apply_disabled", "draft_state_and_apply_enabled",
+            "applied_state_and_apply_disabled", "unchanged_input_apply_disabled",
+            "unit_change_explained",
+            "rejected_draft_stays_editable", "saved_after_apply", "saved_after_restart",
+        })
+        self.assertEqual(result["editor_ui_state"], "saved")
+        self.assertFalse(result["apply_enabled"])
+        self.assertFalse(result["physics_tested"])
+        self.assertFalse(result["frame_budget_tested"])
+
+    def test_canvas_mouse_line_arc_drag_properties_history_and_restart(self):
+        """! @brief 실제 마우스 처리기와 서비스에서 선/원호의 편집 및 복구를 확인한다."""
+        with TemporaryDirectory(prefix="rfad GUI 2D ") as temporary:
+            code, result = self.run_gui(Path(temporary), canvas=True)
+        self.assertEqual(code, 0, result)
+        self.assertTrue(result["passed"], result)
+        self.assertEqual(result["canvas_stage"], 15)
+        self.assertEqual(result["service_sessions"], 2)
+        self.assertEqual(result["revision_id"], result["saved_revision"])
+        self.assertTrue(result["snapshot_id"])
+        self.assertEqual(set(result["canvas_checks"]), {
+            "docking_shell", "escape_cancels_preview", "two_click_line",
+            "three_click_arc_and_hit_test", "selection_sync", "drag_one_command",
+            "drag_undo_redo", "property_to_canvas", "delete_undo", "save_snapshot_restart",
+            "input_check_not_simulation",
+            "display_limits_preserve_valid_shapes", "view_controls_do_not_edit",
+            "rejected_gesture_restores_selection",
+        })
         self.assertFalse(result["physics_tested"])
         self.assertFalse(result["frame_budget_tested"])
 

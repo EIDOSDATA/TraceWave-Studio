@@ -6,6 +6,8 @@
 
 재부팅 뒤 시작할 명령과 후속 작업 순서는 [재부팅 후 개발 재개](docs/reboot_resume.md)에 정리했다.
 
+목표 화면 배치와 구현 범위를 구분한 [완성형 UI 시안](docs/ui_concept.md)도 함께 관리한다.
+
 ```mermaid
 flowchart TD
     GUI["Windows C++ wxWidgets GUI"] -->|"JSON-RPC / NDJSON"| APP["Python application service"]
@@ -21,24 +23,30 @@ flowchart TD
     POST --> STORE
 ```
 
-위 그림은 승인된 목표 구조다. 현재 환경 진단, 단위/미정값, 제한 표현식과 의존 그래프, 기판/적층/재료/선/원호/net/단일 포트 데이터, 목적별 입력 검사, 프로젝트 명령/저장/불변 스냅샷을 구현했다. 최소 wxWidgets GUI를 별도 서비스에 연결하는 개발 profile도 제공한다. 제품 CAD adapter, openEMS 계산과 2D/3D 설계 편집 화면은 후속이다.
+위 그림은 승인된 목표 구조다. 현재 환경 진단, 단위/미정값, 제한 표현식과 의존 그래프, 기판/적층/재료/선/원호/net/단일 포트 데이터, 목적별 입력 검사, 프로젝트 명령/저장/불변 스냅샷을 구현했다. wxWidgets GUI에서 매개변수/표현식과 설계 속성을 편집하고 기판/미정 도체층/유전체층/선/원호를 생성한다. 중앙 2D 캔버스의 선택/이동/삭제도 같은 서비스 명령과 영속 undo/redo를 사용한다. GUI의 STEP 출력과 3D 갱신은 불변 스냅샷을 별도 호스트 CAD worker에 전달한다. Open CASCADE 고체와 AP242 STEP/B-rep를 생성하고 같은 고체에서 파생한 표시용 mesh를 wxGLCanvas로 표시한다. WSL2 guest supervisor와 openEMS 도파관 adapter를 연결해 불변 계획/준비 XML/실행/취소/원시 결과 저장 및 독립 후처리를 구현했다. 사용자 안테나 모델과 GUI 해석 결과 화면은 후속이다. [해석 worker 계약](docs/solver_contract.md)을 참고한다.
+
+속성 화면은 미적용 입력, 적용 후 저장 필요, 저장됨을 구분한다. 한글 속성 이름, 값과 단위의 같은 행 배치, 입력 방식별 표시, 상세 식별자 접기와 오류 필드 이동을 제공한다. 현재 구현과 승인된 최종 화면 방향의 구분은 [GUI의 UX 구현 방향](ui/wxwidgets/README.md#ux-구현-방향)을 따른다.
+
+작업 공간은 wxAUI로 탐색, 2D 편집/3D 형상 탭, 속성, 문제/로그/CAD 출력을 배치한다. 선은 시작/끝 클릭, 원호는 중심/시작/끝 방향 클릭으로 만들며 Shift로 CW를 선택한다. 정확한 좌표와 원호 각도는 `좌표 입력` 대화상자에서 지정한다. 현재 그리드는 표시만 제공하고 마우스 스냅은 구현하지 않았다. `해석 입력 검사`는 현재 revision의 누락 입력과 수정 위치를 보여주며 실제 solver 실행이나 RF 성능 판정을 수행하지 않는다.
 
 | 구성 | 역할 | 배치 |
 | --- | --- | --- |
 | C++ wxWidgets GUI | 프로젝트 트리, 속성 입력, 2D/3D 표시, 선택, 결과와 작업 상태 | `ui/wxwidgets/` |
 | Python 서비스 | 원본 도메인, 입력 검증, 명령, revision, hash를 단일 기준으로 관리 | `src/rfad/domain/`, `src/rfad/application/` |
-| 저장과 작업 관리 | 단일 writer journal, 불변 snapshot, 초기 자료 처리 작업/취소/복구 | 현재 `src/rfad/storage/`, `application/projects.py`; native 작업은 후속 |
-| CAD/EDA worker | 같은 설계에서 CAD 형상, STEP, 2D 및 제조 출력 생성 | 후속 `src/rfad/adapters/cad/`, `eda/` |
-| EM worker | 고정한 입력으로 openEMS 실행과 정규화 | 후속 `src/rfad/adapters/solvers/openems/` |
+| 저장과 작업 관리 | 단일 writer journal, 불변 snapshot, 자료 처리/CAD 작업의 별도 실행, 취소/복구와 파일 봉인 | `src/rfad/storage/`, `application/projects.py`, `application/cad_jobs.py`, `application/native_process.py` |
+| CAD/EDA worker | 현재 직사각 유전체와 선/원호 고체, AP242 STEP/B-rep 및 원본 의미 sidecar. 제조 출력은 후속 | `src/rfad/adapters/cad/`, `tools/cad_worker.py`; EDA adapter는 후속 |
+| EM worker | WSL2 도파관 참조의 계획/준비/실행/취소/결과 봉인 및 원시 후처리 | `src/rfad/adapters/solvers/openems/`, `application/solver_jobs.py`, `application/wsl_process.py`, `tools/openems_worker.py`, `tools/wsl_supervisor.py` |
 | 후처리와 CLI | 결과 계산, 측정 비교, 동일 서비스의 자동화 | 후속 `physics/`, `adapters/networks/`; 현재 `cli/` |
 
-GUI 안에 Python이나 solver를 내장하지 않는다. GUI에는 표시용 데이터와 안정된 객체 ID를 전달하고 CAD B-rep와 큰 결과 배열은 worker/파일에 둔다. 시작할 때 CAD/NumPy/solver 전체를 로드하지 않는다. 단위/물리식/해시를 GUI에서 중복 구현하지 않는다.
+GUI 안에 Python이나 solver를 내장하지 않는다. GUI에는 표시용 데이터의 파일 참조와 안정된 객체 ID를 전달하고 CAD B-rep와 큰 결과 배열은 worker/파일에 둔다. 표시 mesh의 파일 읽기/SHA256 확인/해석은 GUI의 별도 thread에서 수행하며 같은 검증 바이트를 소비한다. wxGLCanvas는 형상을 열 때 생성한다. 시작할 때 CAD/NumPy/solver 전체를 로드하지 않는다. 단위/물리식/원본 정규 해시를 GUI에서 중복 구현하지 않는다.
+
+CAD는 양수 두께와 명시적 z 위치를 사용하고 원호를 선분으로 근사하지 않는다. substrate/copper는 별도 body이며 같은 층/net/재료의 도체만 병합한다. 실제 STEP schema와 mm 단위, 안정 body 이름, 체적/중심/외곽/두께/단면을 재입력으로 확인한다. 같은 OCCT kernel의 reader이므로 독립 kernel 검증은 아니며 결과는 내부 기하 검증용 `generated_unverified`다. 미정 RF 물성은 원본 sidecar에 보존하지만 미정 필수 기하 치수는 출력 전에 차단한다. 상세 범위는 [CAD/STEP 계약](docs/cad_contract.md), 실행과 복구는 [worker 연결 경계](docs/worker_integration.md)를 따른다.
 
 R1은 Windows 11 x64 wxMSW와 로컬 WSL2 worker를 우선한다. Linux native/headless worker의 R0 검증은 유지하고 Linux GUI는 후속이다. Qt 계열은 사용하지 않으며 유료 GUI 부품을 필수로 요구하지 않는다. 일반 60 fps/대형 30 fps 및 전체 프로세스 메모리 목표는 아직 실측 전이다.
 
 ## 현재 실행 방법
 
-서비스 구현은 Python 3.12 표준 라이브러리만 사용한다. 아래 명령은 `Code`에서 실행한다. `tools/setup_python.ps1`은 서비스 .venv와 별도 .venv-cad를 구성한다. [Python 환경](docs/python_environment.md), [wxWidgets 빌드/실행](ui/wxwidgets/README.md), [WSL 재개 절차](docs/wsl_environment.md)를 참고한다. WSL 설치 시 Windows가 재부팅 필요를 보고했으며 Linux/openEMS는 아직 실행 검증하지 못했다.
+서비스 구현은 Python 3.12 표준 라이브러리만 사용한다. 아래 명령은 `Code`에서 실행한다. `tools/setup_python.ps1`은 서비스 .venv와 별도 .venv-cad를 구성한다. [Python 환경](docs/python_environment.md), [wxWidgets 빌드/실행](ui/wxwidgets/README.md), [WSL 재개 절차](docs/wsl_environment.md)를 참고한다. 재부팅 후 전용 Ubuntu 24.04 배포 실행과 Linux 서비스 시험을 완료했다. 해석 환경의 구성/검증 상태는 [Linux 환경](docs/linux_environment.md)을 따른다.
 
 ```powershell
 $env:PYTHONPATH = 'src'
@@ -48,9 +56,25 @@ $env:PYTHONPATH = 'src'
 .venv/Scripts/python.exe -X utf8 -m rfad serve --workspace .local/projects-workspace
 ```
 
-GUI 빌드 후 `$env:RFAD_GUI_EXE`에 실행 파일의 절대 경로를 지정하면 실제 GUI 시험도 함께 실행한다. 현재 Windows에서 전체 166개 시험과 CAD 환경 STEP 왕복을 통과했다. 자세한 실행 근거와 미검증 범위는 [개발 상태](docs/development_status.md)에 있다.
+고정 WSL 도파관 worker는 `serve --workspace .local/openems-worker-workspace --openems-wsl`로 연결한다. `tools/verify_openems_worker.py --workspace .local/openems-worker-verification/manual-001 --report .local/openems-worker-verification/manual-001.json --exercise-cancel`은 두 격자의 실제 준비/해석/후처리/저장/재열기/취소를 검증한다. 기존 Qt 없는 WSL 설치와 native 감사 파일이 필요하며 [지원 API와 범위](docs/solver_contract.md)를 따른다. GUI의 해석 입력 검사 버튼과 사용자 안테나 해석은 이 참조 실행과 구분한다.
 
-Linux에서 같은 기초 코드를 시험할 때는 다음 명령을 사용한다. Linux 실제 실행 증거는 아직 없다.
+GUI 빌드 후 `$env:RFAD_GUI_EXE`에 실행 파일의 절대 경로를 지정하면 실제 GUI 시험도 함께 실행한다. 2026-11-10 2D 경계 보완본의 Windows 전체 227개가 스킵 없이 76.152초에 통과했다. Linux는 227개 중 220개 통과/Windows GUI 7개 스킵으로 30.312초였고 native CTest `canvas_geometry` 1개도 0.13초에 통과했다. 이후 실제 창에서 확인한 도구막대/DPI 배치 보완과 GUI 재검증 근거는 [개발 상태](docs/development_status.md)를 따른다. 편집 계약은 [선택 속성과 실행 취소](docs/editor_contract.md), [2D 표시와 직접 편집](docs/canvas_contract.md)에 있다.
+
+GUI는 `.\tools\launch_gui.ps1`로 실행한다. 설치된 `.venv-cad`가 있으면 자동 연결하며 다른 환경은 `-CadPython <실행 파일 경로>`로 지정한다. CAD 환경이 없어도 편집/저장과 과거 완료 결과 조회는 사용할 수 있다. `설계 > 유전체층 추가`와 도체층의 속성에서 실제 z 위치와 양수 두께를 입력한 뒤 상단 `STEP 출력` 또는 `3D 형상 > 3D 갱신`을 사용한다. 새 층의 물성과 치수는 미정으로 시작하며 자동 보정하지 않는다.
+
+STEP 출력은 미적용 폼 입력을 먼저 적용하고 해당 개정을 스냅샷으로 고정한다. CAD 실행 중에도 편집/저장할 수 있으며 `CAD 출력` 탭에서 상태, 취소와 출력 폴더를 확인한다. 현재 개정과 다른 3D는 이전 설계임을 표시한다. 재열기는 해당 프로젝트의 마지막 게시 완료 결과를 복원하며 취소/실패가 이전 결과를 지우지 않는다. 3D의 드래그는 회전, Shift/가운데 버튼 드래그는 이동, 휠은 확대/축소다. 상세 조작과 제한은 [GUI 설명](ui/wxwidgets/README.md#step-출력과-3d-형상)에 있다.
+
+개발 CLI도 유지한다. 아래 명령은 등록된 프로젝트의 현재 영속 개정에서 새 스냅샷을 만들고 STEP 패키지를 생성한다. CLI를 별도로 실행할 때는 GUI 입력을 적용/저장하고 같은 workspace를 사용하는 GUI/서비스를 닫는다. `--report`에는 기존 파일과 다른 새 경로를 지정한다.
+
+```powershell
+.\.venv\Scripts\python.exe -X utf8 tools/export_step.py --workspace .local/gui-workspace --project "projects/내 설계" --cad-python .venv-cad/Scripts/python.exe --report .local/step-result-001.json
+```
+
+기존 스냅샷을 사용하려면 `--project` 대신 `--snapshot-file`에 `snapshot.create`가 반환한 SnapshotRef JSON을 지정한다. 일반 프로젝트 JSON 파일을 받는 가져오기 기능이 아니다. 결과는 workspace의 `projects/<이름>/artifacts/<run_id>/`에 model.step, model.brep, mesh.json, sidecar.json, validation.json, manifest.json의 6개 파일로 보존한다. 표시 mesh는 STEP를 대체하지 않으며 현재 100000 triangles/300000 vertices/16 MiB 상한을 적용한다. LOD, 대형 장면과 60/30 fps 합격은 아직 검증하지 않았다.
+
+지속 실행하는 서비스는 `serve --workspace .local/gui-workspace --cad-python .venv-cad/Scripts/python.exe`로 CAD 환경을 지정한다. `export.preview` (API-023), `geometry.build` (API-008), `export.build` (API-024)는 모두 비동기 TaskRef를 반환하고 `job.status`로 결과를 조회한다. 긴 CAD 실행과 파일 봉인은 편집/저장 transaction 밖에서 처리한다. 실제 CAD worker 시험은 서비스 환경에 `RFAD_CAD_PYTHON`을 지정하며 native 기하 시험은 `.venv-cad`에서 별도로 실행한다. 명령과 최신 시험 결과는 [CAD/STEP 계약](docs/cad_contract.md#검증-재현), [개발 상태](docs/development_status.md)를 참고한다.
+
+Linux에서 같은 기초 코드를 시험할 때는 다음 명령을 사용한다. Linux 서비스의 실제 시험과 Windows/Linux 표현식 비교 기록은 [Linux 환경](docs/linux_environment.md)에 있다. Windows GUI 시험은 Linux에서 제외한다.
 
 ```sh
 PYTHONPATH=src python3 -m unittest discover -s tests -v
@@ -66,14 +90,14 @@ PYTHONPATH=src python3 -m rfad serve
 
 숫자/읽기 전용 규칙은 [초기 구현 계약](docs/bootstrap_contract.md), 프로젝트 명령과 저장/스냅샷은 [프로젝트 저장 계약](docs/project_persistence.md), 표현식/객체 필드와 검사는 [설계 데이터](docs/design_data.md)에 있다. 조회 성공은 GUI/CAD/해석 검증 완료가 아니다. 허용한 명령 이외의 변경은 오류로 거부한다. `doctor`의 종료 코드 0은 진단 보고서 생성 성공이며 모든 의존성 준비 완료를 뜻하지 않는다.
 
-`pyproject.toml`로 서비스 가상환경에 editable 설치한다. `runtime_profiles/`에는 검증한 Windows 개발 의존성의 버전/해시와 WSL의 미완료 상태를 기록한다. 제품 배포용 manifest와 라이선스 고지 검증은 후속이다. 로컬 환경 경로와 실행 파일 해시를 포함하는 보고서, cache와 빌드 출력은 `.local/`, `build/`에 두고 Git에서 제외한다.
+`pyproject.toml`로 서비스 가상환경에 editable 설치한다. `runtime_profiles/`에는 Windows/Linux 개발 의존성의 버전/해시와 실제 검증 상태를 기록한다. 제품 배포용 manifest와 라이선스 고지 검증은 후속이다. 로컬 환경 경로와 실행 파일 해시를 포함하는 보고서, cache와 빌드 출력은 `.local/`, `build/`에 두고 Git에서 제외한다.
 
 ## 구현 순서
 
 1. WBS-002/003: 실제 환경과 의존성 조합, 단위/표현식/ID/명령/저장/snapshot 계약을 구축한다.
 2. 최소 명령과 표시 데이터 계약이 갖춰지면 wxWidgets 창과 편집 흐름을 병행한다.
-3. 원호/IFA 의미 모델, CAD 형상과 STEP/제조 파일의 독립 재열기를 연결한다.
-4. 해석기의 완전한 참조 계산을 먼저 검증한 뒤 단일 포트 IFA, 이어 원호 검증을 진행한다.
+3. 연결한 선/원호/유전체 CAD와 GUI STEP/3D 기반에서 재료/net/포트 입력 UI, 실제 접속/급전, 독립 수신 CAD 검증과 표시 LOD/실제 GPU context 복구 검증을 확장한다. 제조 파일은 별도 profile로 구현한다.
+4. WSL solver 도파관 참조 검증을 기반으로 사용자 형상/재료/급전 모델과 GUI 작업/결과 화면을 연결하고 단일 포트 IFA, 이어 원호 검증을 진행한다.
 5. 측정 파일 비교, 수렴/정확도 판정, 취소/복구, 전체 앱 성능을 검증하여 R1 내부 패키지로 묶는다.
 
 한 단계의 기초 시험 통과를 R0/R1 전체 완료로 확대하지 않는다. 설계 근거는 [07 아키텍처](../01_Docs/07_RFAD_소프트웨어_아키텍처.md), [15 구현 계획](../01_Docs/15_RFAD_구현_계획.md), [24 GUI와 성능](../01_Docs/24_RFAD_GUI_선정과_성능_설계.md)을 따른다.

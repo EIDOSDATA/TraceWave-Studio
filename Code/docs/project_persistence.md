@@ -1,6 +1,6 @@
 # 프로젝트 명령, 저장과 스냅샷 0.2
 
-이 구현은 RFAD-D0-3.4의 API-002~006, FN-001/002, SYS-036, PRJ-006/007, NFR-004 및 VT-018 일부를 구체화한다. 현재 이름/설명, 리터럴/표현식 매개변수, 기판/재료/적층/선/원호/net/단일 포트와 목적별 입력 검사를 지원한다. 필드는 [설계 데이터 0.2](design_data.md)를 따른다. 전체 CAD 형식, 범용 migration, 모든 undo/redo UI와 전체 VT-018 완료를 뜻하지 않는다.
+이 구현은 RFAD-D0-3.4의 API-002~006, FN-001/002, SYS-036, PRJ-006/007, NFR-004 및 VT-018 일부를 구체화한다. 현재 이름/설명, 리터럴/표현식 매개변수, 기판/재료/적층/선/원호/net/단일 포트와 목적별 입력 검사를 지원한다. 필드는 [설계 데이터 0.2](design_data.md)를 따른다. 선택 속성 편집과 영속 undo/redo는 [편집 확장 profile](editor_contract.md)로 연결했다. 전체 CAD 형식, 범용 migration, 임의 이력 이동과 전체 VT-018 완료를 뜻하지 않는다.
 
 ## 실행과 지원 범위
 
@@ -18,6 +18,8 @@ python -X utf8 -m rfad serve --workspace .local/projects-workspace
 | capabilities.get | 지원 메서드/명령/schema/limits와 영속 epoch | 작은 직접 응답 |
 | project.open | create/open/recover, workspace에 등록된 프로젝트 | queued TaskRef, 이후 terminal event.operation_result |
 | project.apply_command | metadata, parameter/표현식, board, material/layer/net/geometry/port 명령 | new_revision, revision_hash, changed_ids, invalidation_set |
+| editor.get / editor.apply | 선택 객체 DTO 조회와 표시 단위의 속성 입력. 개발용 확장 | 선택 필드 또는 기존 명령과 같은 변경 결과 |
+| project.undo / project.redo | 개정과 영속 이력에 결합된 역명령/원명령 적용. 개발용 확장 | 새 revision과 history 상태 |
 | project.save | 현재 프로젝트의 명시적 저장 기준점 지정 | queued TaskRef, 이후 saved_revision/checksum/artifact |
 | snapshot.create | 접수 당시 revision의 별도 불변 사본 | queued TaskRef, 이후 SnapshotRef |
 | design.validate | 접수 당시 draft revision의 geometry/step/em 입력 검사 | queued TaskRef, 이후 보고서. solver_ready=false |
@@ -42,6 +44,8 @@ project.apply_command의 context는 project_id, input은 expected_revision/comma
 
 같은 epoch/key/payload는 같은 결과 또는 TaskRef를 반환한다. 같은 키의 다른 method/context/input은 E_CONFLICT다. 동일 command_id를 새로운 request_key로 다시 적용하는 것도 거부한다. 무변경 재전송은 새 디스크 commit을 만들지 않는다.
 
+metadata.set은 이름과 설명을 한 명령으로 적용한다. 일반 명령과 편집 확장의 변경 모두 프로젝트별 최근 128개 원명령 이력을 갱신한다. undo/redo는 과거 revision 포인터를 덮어쓰지 않고 새 revision을 게시하며 저장 기준점과 스냅샷을 유지한다. 이력 head와 현재 revision이 다르면 차단한다. 세부 호환성과 제한은 [편집 계약](editor_contract.md)을 따른다.
+
 epoch의 신규 접수 기간과 receipt 보존 기간은 각각 7일이다. 기존 receipt를 먼저 검사하므로 epoch가 끝나도 해당 receipt 자체의 expires_at 전까지 재조회할 수 있다. receipt가 없고 epoch가 만료/미인식이면 E_IDEMPOTENCY_EXPIRED다. 만료 뒤에는 원 작업/프로젝트를 조회하고 명시적으로 새 요청 여부를 정한다.
 
 ## 비동기 자료 처리
@@ -51,6 +55,8 @@ open/save/snapshot/design.validate는 실제 background thread에서 순차 실�
 save/snapshot/design.validate는 접수 때 검증한 revision의 artifact를 붙잡는다. snapshot과 design.validate는 이후 편집이 발생해도 그 입력으로 생성한다. save는 완료 시 현재 revision이 바뀌었다면 E_CONFLICT로 실패하여 저장 기준점을 되돌리지 않는다.
 
 취소와 완료는 journal의 같은 writer 경계에서 경쟁한다. 실제 파일 transaction이 진행되는 동안에는 중간 상태를 다른 writer가 변경하지 않는다. 파일 작업이 시작되기 전에 취소되면 실행하지 않고 cancelled로 확정한다. 먼저 completed/failed가 게시되면 늦은 취소는 그 terminal을 반환한다. native/WSL 프로세스 취소 구현으로 확대 해석하지 않는다.
+
+장시간 solver는 이 파일 작업 transaction 안에서 호출하지 않는다. 별도 SolverCoordinator가 [해석 worker 계약](solver_contract.md)의 불변 접수/WSL 실행/결과 게시를 처리한다. guest 종료 확인 전에는 취소 완료나 자원 반환을 확정하지 않는다.
 
 재시작 시 queued는 다시 처리할 수 있다. running은 완료를 입증하지 못하므로 interrupted로 남기며 자동 성공/재실행하지 않는다. 정상 동작 중 epoch 갱신은 실행 중인 작업 상태를 바꾸지 않는다. 종료는 현재 파일 transaction을 마친 뒤 worker와 writer lock을 해제한다.
 
@@ -83,7 +89,7 @@ workspace/
 
 게시 전 실패는 이전 pointer와 정상 상태를 유지한다. 미게시 파일은 남을 수 있으나 결과로 노출하지 않는다. 게시 뒤 ACK 전에 실패했다면 오류에 `details.committed=true`를 남기며 동일 request_key로 확정 결과를 재조회한다. 읽을 때마다 pointer/manifest/payload와 프로젝트 artifact hash를 확인한다. 손상된 파일을 조용히 재생성하거나 덮어쓰지 않는다.
 
-Windows에서 파일 fsync, 같은 volume 교체, 실제 프로세스 강제 종료와 OS lock 해제를 시험했다. 정전/하드웨어 쓰기 cache 장애의 완전한 내구성과 Linux 실행은 아직 검증하지 않았다. [Python 파일 교체/동기화](https://docs.python.org/3.12/library/os.html), [Windows 파일 잠금](https://docs.python.org/3.12/library/msvcrt.html#msvcrt.locking)을 사용한다.
+Windows에서 파일 fsync, 같은 volume 교체, 실제 프로세스 강제 종료와 OS lock 해제를 시험했다. WSL Linux의 ext4 임시 저장소에서도 저장/잠금/복구 시험을 통과했다. 정전/하드웨어 쓰기 cache 장애의 완전한 내구성은 아직 검증하지 않았다. [Python 파일 교체/동기화](https://docs.python.org/3.12/library/os.html), [Windows 파일 잠금](https://docs.python.org/3.12/library/msvcrt.html#msvcrt.locking)을 사용한다.
 
 ## 제한과 데이터 보존
 

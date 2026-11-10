@@ -18,19 +18,27 @@ def main(argv: list[str] | None = None) -> int:
     from pathlib import Path
     serve_parser = argparse.ArgumentParser(prog="rfad serve")
     serve_parser.add_argument("--workspace", type=Path, help="프로젝트 journal을 관리할 작업 영역")
+    serve_parser.add_argument("--cad-python", type=Path, help="격리 CAD worker의 고정 Python 실행 파일")
+    serve_parser.add_argument("--openems-wsl", action="store_true", help="TraceWave-Dev의 검증된 openEMS 참조 worker 사용")
     options = serve_parser.parse_args(remainder)
     from rfad.application.rpc import serve
     import sys
 
     if options.workspace is None:
+        if options.cad_python is not None or options.openems_wsl:
+            serve_parser.error("native worker 설정에는 --workspace가 필요합니다.")
         return serve(sys.stdin.buffer, sys.stdout.buffer, sys.stderr)
     from rfad.application.projects import ProjectService
     from rfad.domain.errors import ProjectError
+    from rfad.application.cad_jobs import CadRuntime
+    from rfad.application.solver_jobs import SolverRuntime
     try:
-        with ProjectService(options.workspace) as service:
+        runtime = None if options.cad_python is None else CadRuntime(options.cad_python)
+        solver_runtime = SolverRuntime() if options.openems_wsl else None
+        with ProjectService(options.workspace, cad_runtime=runtime, solver_runtime=solver_runtime) as service:
             return serve(sys.stdin.buffer, sys.stdout.buffer, sys.stderr, service)
-    except ProjectError as error:
-        print(f"{error.code}: {error.message}", file=sys.stderr)
+    except (ProjectError, OSError, ValueError) as error:
+        print(f"{getattr(error, 'code', 'E_SCHEMA')}: {error}", file=sys.stderr)
         return 1
 
 
