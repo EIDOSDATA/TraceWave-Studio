@@ -28,7 +28,7 @@
 | solver.samples | artifact_id | 최대 201점의 주파수/S11 dB/VSWR/복소 임피던스 표시 DTO와 원본 SnapshotRef |
 | solver.radiation | artifact_id, 선택적 frequency_index/theta_offset/theta_limit | 봉인된 NF2FF의 최대 5개 theta 행과 지표. 128 KiB 이하의 읽기 전용 페이지 |
 
-plan/prepare/submit/result.open/solver.latest/solver.samples/solver.radiation의 context에는 project_id를 지정한다. analysis_profile은 위 두 profile 중 하나이며 runtime_profile은 공통 `openems-wsl-reference/0.1`이다. timeout_seconds는 0 초 초과 300 초 이하이고 검증 CLI는 120 초를 사용한다. latest/samples는 `rfad.solver-view/0.1` 개발 확장이며 새 정식 API 번호를 만들지 않는다. 조회는 solver 환경 없이 가능하고 계산을 시작하지 않는다.
+plan/prepare/submit/result.open/solver.latest/solver.samples/solver.radiation의 context에는 project_id를 지정한다. analysis_profile은 위 두 profile 중 하나이며 runtime_profile은 공통 `openems-wsl-reference/0.1`이다. 기본 plan의 timeout_seconds는 0 초 초과 300 초 이하이고 기존 참조 검증 CLI는 120 초를 사용한다. [명시적 PCB 손실 정밀 profile](ro4350b_loss_refinement.md)만 표준 900초/심화 1800초까지 허용하며 등록 plan의 상한을 접수 때 다시 검사한다. latest/samples는 `rfad.solver-view/0.1` 개발 확장이며 새 정식 API 번호를 만들지 않는다. 조회는 solver 환경 없이 가능하고 계산을 시작하지 않는다.
 
 execution_mode는 `solve_and_postprocess` 또는 `postprocess_only`다. 후처리 전용에는 동일한 PreparedPlan으로 완료된 `raw_result_id`를 추가한다. 원시 파일/manifest가 없거나 봉인이 다르면 실패한다. solver를 자동으로 다시 실행하지 않는다. 변환 규약은 이 profile 버전에 고정하며 임의 conversion profile은 지원하지 않는다.
 

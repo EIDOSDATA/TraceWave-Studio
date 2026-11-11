@@ -117,7 +117,8 @@ def execute_phase(service, report, report_path, entry, phase, method, data, cont
             raise RuntimeError(json.dumps(response["error"], ensure_ascii=False))
         record["task"] = response["result"]
         save_report(report_path, report)
-    deadline = time.monotonic() + 420
+    # @brief 확장 native 예산을 상위 조회 한도가 먼저 끊지 않게 하며 전송/종료 확인 여유는 유한하게 둔다.
+    deadline = time.monotonic() + max(420, data.get("budget", {}).get("timeout_seconds", 300) + 120)
     while time.monotonic() < deadline:
         status = call(service, "job.status", {"job_id": record["task"]["job_id"]})
         if status["state"] in {"completed", "failed", "cancelled", "interrupted"}:

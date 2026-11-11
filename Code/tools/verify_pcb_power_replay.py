@@ -27,7 +27,8 @@ def run(report_path, proof_path):
     """! @brief 실패한 후처리를 자동 교체하지 않고 동일 키의 재조회만 허용한다."""
     report = json.loads(report_path.read_bytes())
     require(report.get("status") in {"completed", "completed_with_blocked_cases"}, "완료한 전력 연구가 필요합니다.")
-    completed = {key: row for key, row in report["runs"].items() if row["status"] == "completed"}
+    completed = {key: row for key, row in report["runs"].items()
+                 if row["status"] == "completed" and row.get("source_kind") != "verified_existing_raw"}
     require(bool(completed), "재후처리할 완료 손실 결과가 없습니다.")
     workspace = Path(report["workspace"])
     if proof_path.exists():
@@ -42,6 +43,11 @@ def run(report_path, proof_path):
     views, sealed = {}, {}
     with ProjectService(workspace, solver_runtime=runtime, auto_run=True) as service:
         before = native_jobs(service.journal.read())
+        # @brief 별도 producer에서 재사용한 기준을 포함해 기존 등록 결과의 봉인도 모두 보존한다.
+        for stored in service.journal.read()["solver_results"].values():
+            for item in stored["files"]:
+                ref = item["artifact"]
+                sealed[ref["uri"]] = ref
         for key, row in completed.items():
             load_result(service, row, subject)
             view = call(service, "result.open", {"artifact_id": row["artifact_id"]}, subject["context"])

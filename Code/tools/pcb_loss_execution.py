@@ -31,11 +31,14 @@ def blocked_job(service, entry):
 def execute_case(service, report, path, entry, subject):
     """! @brief 같은 요청 키를 재조회하며 실패한 계산의 대체 시도를 만들지 않는다."""
     started = time.monotonic()
+    from rfad.application.pcb_compute import limits
+
+    budget = {"timeout_seconds": limits(entry["settings"])["max_wall_time_seconds"]}
     prepared = execute_phase(service, report, path, entry, "prepare", "solver.prepare", {
-        "analysis_plan": {name: entry["analysis_plan"][name] for name in ("plan_id", "content_hash")}, "budget": {"timeout_seconds": 300}}, subject["context"])
+        "analysis_plan": {name: entry["analysis_plan"][name] for name in ("plan_id", "content_hash")}, "budget": budget}, subject["context"])
     solved = execute_phase(service, report, path, entry, "analysis", "job.submit", {
         "task_plan": {"kind": "em_analysis", "prepared_plan": {name: prepared["prepared_plan"][name] for name in ("prepared_plan_id", "content_hash")}, "execution_mode": "solve_and_postprocess"},
-        "budget": {"timeout_seconds": 300}}, subject["context"])
+        "budget": budget}, subject["context"])
     opened = call(service, "result.open", {"artifact_id": solved["artifact_id"]}, subject["context"])
     roles = {item["role"]: item for item in opened["files"]}
     entry.update(status="completed", artifact_id=solved["artifact_id"], elapsed_seconds=time.monotonic() - started,

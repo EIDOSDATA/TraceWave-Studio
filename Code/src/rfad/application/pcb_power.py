@@ -44,8 +44,11 @@ def recording(case, lines):
     points = math.prod(b - a + 1 for a, b in zip(starts, stops))
     # @brief 세 벡터/복소 float32/세 dump와 주파수, HDF 및 기존 방사 파일의 여유를 선계산한다.
     estimated = points * 3 * 8 * len(case["radiation_recording"]["frequency_hz"]) * 3
-    if estimated > 48 * 1024 * 1024:
-        fail("E_RESOURCE", "독립 손실 필드 기록의 48 MiB 초기 예산을 초과했습니다.", "settings.power_balance")
+    from rfad.application.pcb_compute import limits
+
+    maximum = limits(case["settings"]).get("max_loss_field_bytes", 48 * 1024 * 1024)
+    if estimated > maximum:
+        fail("E_RESOURCE", f"독립 손실 필드 기록의 {maximum // (1024 * 1024)} MiB 예산을 초과했습니다.", "settings.power_balance")
     result = {"schema": "rfad.pcb-loss-recording/0.1", "start_indices": starts, "stop_indices": stops,
             "start_mm": [lines[axis][i] for axis, i in zip("xyz", starts)],
             "stop_mm": [lines[axis][i] for axis, i in zip("xyz", stops)],

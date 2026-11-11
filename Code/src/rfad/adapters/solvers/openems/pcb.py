@@ -141,7 +141,8 @@ def solve(stage, request, inputs, runtime):
     raw.mkdir()
     shutil.copyfile(inputs["native_input"], raw / "pcb.xml")
     require(file_identity(inputs["native_input"]) == file_identity(raw / "pcb.xml"), "준비 XML 복사본의 해시가 다릅니다.", "E_HASH")
-    command = [str(EXECUTABLE), "pcb.xml", "--engine=multithreaded", "--numThreads=2", "--dump-statistics", "--exact-endcriteria"]
+    threads = request["analysis_plan"]["case"]["num_threads"]
+    command = [str(EXECUTABLE), "pcb.xml", "--engine=multithreaded", "--numThreads=" + str(threads), "--dump-statistics", "--exact-endcriteria"]
     started, mapped = time.monotonic(), set()
     with (raw / "native.log").open("xb") as stream:
         child = subprocess.Popen(command, cwd=raw, stdin=subprocess.DEVNULL, stdout=stream, stderr=subprocess.STDOUT)
@@ -149,7 +150,7 @@ def solve(stage, request, inputs, runtime):
             while child.poll() is None:
                 mapped.update(_mapped_files(child.pid))
                 require((raw / "native.log").stat().st_size <= MAX_FILE_BYTES, "native 로그 상한을 초과했습니다.", "E_RESOURCE")
-                time.sleep(0.02)
+                time.sleep(0.1)
         finally:
             if child.poll() is None:
                 child.kill()
@@ -159,6 +160,8 @@ def solve(stage, request, inputs, runtime):
     actual = _validate_mapped(sorted(mapped), {f["path"]: {key: f[key] for key in ("bytes", "sha256")} for f in runtime["native_files"]})
     require(any("libopenEMS" in f["path"] for f in actual), "실제 native 로딩을 확인하지 못했습니다.", "E_VERSION")
     stats, termination = statistics_and_termination(raw, request["analysis_plan"])
+    require("openEMS - fixed number of threads: " + str(threads) + "\n" in (raw / "native.log").read_text(encoding="utf-8"),
+            "native 스레드 요청의 로그 근거가 다릅니다.", "E_HASH")
     require(stats["native_cells"] == prep["mesh_statistics"]["native_grid_points"], "실제 native cell 수가 준비 격자와 다릅니다.")
     files = [descriptor(stage, raw / name, "raw/" + name) for name in raw_names(request["analysis_plan"])]
     execution = {"command": command, "elapsed_seconds": time.monotonic() - started, "exit_code": child.returncode, "loaded_native_files": actual,
@@ -194,6 +197,8 @@ def normalize_probes(raw, plan):
 
 def postprocess(stage, request, inputs, runtime, manifest=None):
     """! @brief 봉인된 원시 데이터만 후처리하며 solver를 재실행하지 않는다."""
+    postprocess_started = time.monotonic()
+    timings = {}
     prep = _check_preparation(request, inputs)
     validate_preparation(request["analysis_plan"], prep)
     files = []
@@ -229,14 +234,20 @@ def postprocess(stage, request, inputs, runtime, manifest=None):
     if "radiation_recording" in request["analysis_plan"]["case"]:
         from .pcb_radiation import postprocess as postprocess_radiation
 
+        started = time.monotonic()
         result["radiation_summary"], radiation_files = postprocess_radiation(stage, request["analysis_plan"], raw)
+        timings["radiation_seconds"] = time.monotonic() - started
         files.extend(radiation_files)
     if "loss_recording" in request["analysis_plan"]["case"]:
         from .pcb_absorption import postprocess as postprocess_absorption
 
         radiation = json.loads((stage / "output/radiation.json").read_bytes())
+        started = time.monotonic()
         result["power_balance"], loss_file = postprocess_absorption(stage, request["analysis_plan"], raw, radiation, result["native_statistics"])
+        timings["loss_seconds"] = time.monotonic() - started
         files.append(loss_file)
+    timings["total_seconds"] = time.monotonic() - postprocess_started
+    provenance["postprocess_timings"] = timings
     validate_result(request["analysis_plan"], result, request["prepared_plan"])
     write_json(stage / "output/normalized.json", result)
     write_json(stage / "output/provenance.json", provenance)

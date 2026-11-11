@@ -53,8 +53,8 @@ def validate_solver_input(method, context, data):
         require_fields(data, {"analysis_plan", "budget"} if method == "solver.prepare" else {"task_plan", "budget"})
         require_fields(data["budget"], {"timeout_seconds"})
         timeout = data["budget"]["timeout_seconds"]
-        if type(timeout) not in (float, int) or not math.isfinite(timeout) or not 0 < timeout <= 300:
-            raise ProjectError("E_RESOURCE", "실행 제한은 0초 초과 300초 이하여야 합니다.")
+        if type(timeout) not in (float, int) or not math.isfinite(timeout) or not 0 < timeout <= 1800:
+            raise ProjectError("E_RESOURCE", "실행 제한은 0초 초과 1800초 이하이며 해당 불변 계획의 예산 이하여야 합니다.")
         if method == "solver.prepare":
             validate_reference(data["analysis_plan"], "plan_id")
         else:

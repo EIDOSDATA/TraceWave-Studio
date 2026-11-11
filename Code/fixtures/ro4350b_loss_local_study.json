@@ -1,0 +1,131 @@
+{
+  "schema": "rfad.pcb-loss-study/0.1",
+  "id": "ro4350b-local-loss-refinement-final/0.1",
+  "fixture": "ro4350b_convergence_input.json",
+  "description": "Prespecified local 4/5/6 levels after correcting the caller wait limit; unchanged physical model, 2% loss criterion and explicit 900 s budget. Prior interrupted attempt is preserved.",
+  "acceptance_profile": {
+    "id": "independent-loss-initial/0.1",
+    "minimum_levels": 3,
+    "max_relative_delta": 0.02,
+    "absolute_fraction_floor": 1e-05
+  },
+  "cases": [
+    {
+      "label": "refined-local-1",
+      "axis": "local_mesh",
+      "settings": {
+        "frequency_hz": {
+          "start": 2400000000,
+          "stop": 2483500000,
+          "count": 201
+        },
+        "grid_mm": 0.4,
+        "air_padding_mm": 90,
+        "curve_tolerance_mm": 0.025,
+        "max_timesteps": 100000,
+        "end_criterion": 1e-05,
+        "mesh_policy": {
+          "kind": "graded_air",
+          "air_cell_mm": 6,
+          "growth_ratio": 1.5
+        },
+        "radiation": {
+          "frequency_hz": [
+            2400000000,
+            2441750000,
+            2483500000
+          ],
+          "theta_step_deg": 5,
+          "phi_step_deg": 5,
+          "box_clearance_mm": 30
+        },
+        "power_balance": {
+          "max_relative_residual": 0.03
+        },
+        "compute_profile": {
+          "kind": "loss_refinement/0.1",
+          "num_threads": 4
+        },
+        "feature_subdivisions": 4
+      }
+    },
+    {
+      "label": "refined-local-2",
+      "axis": "local_mesh",
+      "settings": {
+        "frequency_hz": {
+          "start": 2400000000,
+          "stop": 2483500000,
+          "count": 201
+        },
+        "grid_mm": 0.4,
+        "air_padding_mm": 90,
+        "curve_tolerance_mm": 0.025,
+        "max_timesteps": 100000,
+        "end_criterion": 1e-05,
+        "mesh_policy": {
+          "kind": "graded_air",
+          "air_cell_mm": 6,
+          "growth_ratio": 1.5
+        },
+        "radiation": {
+          "frequency_hz": [
+            2400000000,
+            2441750000,
+            2483500000
+          ],
+          "theta_step_deg": 5,
+          "phi_step_deg": 5,
+          "box_clearance_mm": 30
+        },
+        "power_balance": {
+          "max_relative_residual": 0.03
+        },
+        "compute_profile": {
+          "kind": "loss_refinement/0.1",
+          "num_threads": 4
+        },
+        "feature_subdivisions": 5
+      }
+    },
+    {
+      "label": "refined-local-3",
+      "axis": "local_mesh",
+      "settings": {
+        "frequency_hz": {
+          "start": 2400000000,
+          "stop": 2483500000,
+          "count": 201
+        },
+        "grid_mm": 0.4,
+        "air_padding_mm": 90,
+        "curve_tolerance_mm": 0.025,
+        "max_timesteps": 100000,
+        "end_criterion": 1e-05,
+        "mesh_policy": {
+          "kind": "graded_air",
+          "air_cell_mm": 6,
+          "growth_ratio": 1.5
+        },
+        "radiation": {
+          "frequency_hz": [
+            2400000000,
+            2441750000,
+            2483500000
+          ],
+          "theta_step_deg": 5,
+          "phi_step_deg": 5,
+          "box_clearance_mm": 30
+        },
+        "power_balance": {
+          "max_relative_residual": 0.03
+        },
+        "compute_profile": {
+          "kind": "loss_refinement/0.1",
+          "num_threads": 4
+        },
+        "feature_subdivisions": 6
+      }
+    }
+  ]
+}

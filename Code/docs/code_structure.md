@@ -10,6 +10,10 @@ PCB의 선택적 [독립 손실/전력 수지](pcb_power_balance.md)는 `applica
 
 [손실 정밀도/PTH](pcb_loss_precision.md)는 `pcb_loss_partition.py`의 native QuarterCell 기여율과 sheet edge 배정, `pcb_loss_components.py`의 분할/해상도 계약, `pcb_loss_convergence.py`의 개별 성분 비교, `pcb_loss_study.py`의 단일 수치 축 검사로 분리한다. CLI 연구는 공개 plan/prepare/submit/result.open만 사용하며 미정 물성을 수정하지 않는다. 일반 연구의 작은 DTO에는 손실 비교의 최악 변화 성분만 요약하고 불변 판정에는 전체 성분을 보존한다. 별도 `tools/loss_recalculation.py`와 `loss_recalculation_native.py`는 원래 필드 생산자와 새 후처리 소스를 나눠 기록하는 검증 전용 도구이며 원본을 변경하거나 FDTD를 재실행하지 않는다.
 
+[RO4350B 후속 연구](ro4350b_loss_refinement.md)는 `application/pcb_compute.py`에서 기본/명시적 확장 예산을 관리한다. 접수 조정기가 plan의 시간 상한을 검증하고 native 실행기는 계획의 스레드 수를 소비한다. `pcb_loss_box.py`는 native 단일 Box를 확인한 경우에만 QuarterCell 배열 가속을 담당하며 일반 재료 조회를 삭제하지 않는다. 비용 비교는 `tools/benchmark_pcb_loss_partition.py`에서 봉인한 같은 필드와 두 경로를 대조한다.
+
+`tools/verify_ro_loss_followup.py`는 심화 연구에서 세 비교 계획을 먼저 준비하고, 동일 실제 XML/물리 입력을 증명한 기준 raw 하나만 재사용한다. 생산자와 비교 계획을 분리하고 `source_kind`와 별도 연구 schema로 출처를 보존한다. 새 native 실행은 나머지 두 조건뿐이며 일반 제품의 자동 cache로 적용하지 않는다. `derive_loss_study_axis.py`도 완료한 사전 고정 축만 별도 조회하며 원래 미완료 연구를 완료로 바꾸지 않는다.
+
 [일반 프로젝트 연구](project_studies.md)는 `project_study_contract.py`의 입력/전체 계획, `project_study_commands.py`의 원자 생성/제어, `project_studies.py`의 상태 전이와 `project_study_results.py`의 봉인 조회/비교로 분리한다. wxWidgets는 `project_study_model.*`의 순수 입력/표시 정책, `project_study_dialog.*`와 `project_study_form.cpp`의 위젯/수명, `studio_study.cpp`의 서비스 연결로 구성한다. 연구가 없는 동안 조정기는 이벤트를 기다리며 journal을 주기적으로 다시 읽지 않는다.
 
 wxWidgets View + Presentation Model + Service Gateway 구성을 사용한다. wxWidgets의 위젯과 이벤트는 화면 계층에 두고, 해석 단계/조회/입력 표시 정책은 위젯 없이 검사할 수 있는 객체에 둔다. 원본 도메인 모델은 Python 서비스가 소유한다. 별도 MVVM 프레임워크나 유료 부품을 추가하지 않는다.

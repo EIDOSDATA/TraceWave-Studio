@@ -11,6 +11,7 @@ from rfad.application.pcb_contacts import validate_native_contacts
 from rfad.application.pcb_geometry import (MAX_POLYGON_POINTS, fail, scalar, length, point,
                                             shape_polygons, distance_to_shape, _inside_board)
 from rfad.application.pcb_mesh import mesh_lines, policy_report
+from rfad.application.pcb_compute import limits as compute_limits
 from rfad.application.pcb_results import normalization_contract
 from rfad.domain.design import material_input_fields, resolve_scalar
 from rfad.domain.material_models import TOTAL_TAN_DELTA_MODEL
@@ -266,7 +267,7 @@ def project_pcb(document, settings):
         fail("E_GEOMETRY", "최소 모델 파장당 10개 격자 초기 기준을 충족하지 못했습니다.", "settings.grid_mm")
     case = {"source": "user_project", "board": board, "layers": layers, "shapes": shapes, "vias": vias, "connectivity": connectivity, "materials": list(materials.consumed.values()),
             "port": port, "settings": deepcopy(settings), "frequency_hz": deepcopy(frequency), "excitation": excitation,
-            "native_length_unit": "mm", "delta_unit_m": 0.001, "coordinate_round_decimals_mm": 12, "boundary_conditions": ["PML_8"] * 6, "num_threads": 2,
+            "native_length_unit": "mm", "delta_unit_m": 0.001, "coordinate_round_decimals_mm": 12, "boundary_conditions": ["PML_8"] * 6, "num_threads": compute_limits(settings)["num_threads"],
             "stop_criteria": {"max_timesteps": settings["max_timesteps"], "energy_decay": settings["end_criterion"], "exact_end_criteria": True}}
     lines = mesh_lines(case)
     if "mesh_policy" in settings:
@@ -292,6 +293,6 @@ def project_pcb(document, settings):
                                                 "PTH uses explicit finite-kappa hollow volume; RF skin depth loss accuracy is unvalidated"],
                              "unsupported_observables": ["absolute_power", "full_s_matrix"] if radiation is not None else ["NF2FF", "gain", "efficiency", "absolute_power", "full_s_matrix"]},
             "resource_estimate": {"kind": "initial_estimate_not_measured", "estimated_grid_points": cells,
-                                  "estimated_memory_bytes": 128 * 1024 * 1024 + cells * 160 + (losses["estimated_field_bytes"] * 2 if losses else 0), "max_wall_time_seconds": 300,
+                                  "estimated_memory_bytes": 128 * 1024 * 1024 + cells * 160 + (losses["estimated_field_bytes"] * 2 if losses else 0), "max_wall_time_seconds": compute_limits(settings)["max_wall_time_seconds"],
                                   "max_output_bytes": 128 * 1024 * 1024, "max_artifact_bytes": 64 * 1024 * 1024},
             "validation_policy": {"scope": "numerical_execution_only", "formal_convergence_tested": False, "measurement_validated": False}}

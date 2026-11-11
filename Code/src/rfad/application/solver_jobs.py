@@ -108,6 +108,8 @@ class SolverCoordinator:
             validate_pcb_plan(plan)
         else:
             validate_reference_plan(plan)
+        if method != "solver.plan" and data["budget"]["timeout_seconds"] > plan["resource_estimate"]["max_wall_time_seconds"]:
+            raise ProjectError("E_RESOURCE", "요청한 실행 시간이 해당 불변 계획의 예산을 초과했습니다.")
         if plan["runtime_identity"] != self.runtime.identity:
             raise ProjectError("E_VERSION", "계획을 작성한 런타임과 현재 실행 설정이 다릅니다.")
         base = project["path"] + "/solver-inputs/" + run_id

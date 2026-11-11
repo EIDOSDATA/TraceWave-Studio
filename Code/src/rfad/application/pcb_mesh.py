@@ -139,6 +139,9 @@ def policy_report(case, lines):
 def mesh_lines(case):
     """! @brief 외곽과 유전체 경계/port gap을 보존하는 제한된 Cartesian 격자를 만든다."""
     board, settings = case["board"], case["settings"]
+    from rfad.application.pcb_compute import limits
+
+    maximum = limits(settings)["max_grid_points"]
     bounds = board["bounds_mm"]
     z = [v for layer in case["layers"] for v in (layer["z_min_mm"], layer["z_min_mm"] + layer["thickness_mm"])]
     dielectric = [layer for layer in case["layers"] if layer["role"] == "dielectric"]
@@ -192,7 +195,7 @@ def mesh_lines(case):
         if len(points) < 19 or sum(v < inner_lower for v in points) < 9 or sum(v > inner_upper for v in points) < 9:
             fail("E_GEOMETRY", "PML 8 cells와 모델 사이의 공기 격자가 부족합니다.", "mesh")
         total *= len(points)
-        if total > MAX_GRID_POINTS:
-            fail("E_RESOURCE", "초기 PCB profile의 실제 격자점 상한 1500000을 초과했습니다.", "mesh")
+        if total > maximum:
+            fail("E_RESOURCE", f"PCB profile의 실제 격자점 상한 {maximum}을 초과했습니다.", "mesh")
         result["xyz"[axis]] = points
     return result

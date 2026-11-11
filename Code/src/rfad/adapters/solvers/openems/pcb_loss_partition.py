@@ -10,6 +10,14 @@ PARTITION_METHOD = "quarter_cell_volume_and_native_sheet_override/0.1"
 
 
 def material_partition(csx, case, lines, indices, sheet):
+    """! @brief 증명 가능한 box만 벡터화하고 나머지는 native 표본 경로로 계산한다."""
+    from .pcb_loss_box import box_partition
+
+    accelerated = box_partition(csx, case, lines, indices, sheet)
+    return accelerated if accelerated is not None else sampled_material_partition(csx, case, lines, indices, sheet)
+
+
+def sampled_material_partition(csx, case, lines, indices, sheet):
     """! @brief solver와 같은 네 quarter-cell 표본/면적 가중치로 재료 기여율을 만든다.
 
     @details 체적 평균은 MATERIAL만 조회하며 sheet 점유 검사는 별도의 MATERIAL|METAL
