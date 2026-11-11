@@ -5,7 +5,7 @@ import unittest
 from uuid import uuid4
 
 from rfad.domain.errors import ProjectError
-from rfad.domain.project import apply_command, new_project, validate_project
+from rfad.domain.project import SCHEMA_VERSION, apply_command, new_project, validate_project
 from rfad.domain.units import Quantity
 
 
@@ -82,7 +82,7 @@ class ParameterGraphTests(unittest.TestCase):
         validate_project(legacy)
         updated = apply(legacy, "metadata.rename", {"name": "새 개정"})[0]
         self.assertEqual(legacy, before)
-        self.assertEqual(updated["schema_version"], "rfad.project/0.2")
+        self.assertEqual(updated["schema_version"], SCHEMA_VERSION)
         self.assertEqual(updated["parent_revision_ids"], [legacy["revision_id"]])
 
     def test_parameter_reference_controls_board_and_blocks_invalid_size(self):

@@ -10,6 +10,7 @@ from rfad.application.project_repository import ProjectRepository
 from rfad.domain.design import preflight_design
 from rfad.domain.errors import ProjectError
 from rfad.domain.project import new_project
+from rfad.domain.targets import target_input_status
 
 
 class ProjectOperations:
@@ -69,6 +70,7 @@ class ProjectOperations:
             "document": document,
             "saved_revision": self.repository.saved_revision(project),
             "diagnostics": [],
+            "target_input_statuses": [target_input_status(item) for item in document["targets"]],
         }
 
     @staticmethod

@@ -8,7 +8,8 @@ from typing import BinaryIO, TextIO
 
 from rfad import __version__
 from rfad.domain.errors import ProjectError
-from rfad.domain.project import COMMANDS, SCHEMA_VERSION, LEGACY_SCHEMA_VERSION
+from rfad.domain.project import COMMANDS, SCHEMA_VERSION, READABLE_SCHEMA_VERSIONS
+from rfad.domain.targets import TARGET_PROFILE, MAX_TARGETS, MAX_SAMPLES, METRICS
 from rfad.domain.expressions import ENGINE_VERSION
 from rfad.application.catalog_api import METHODS as CATALOG_METHODS
 from rfad.application.catalog_api import describe as describe_catalog, query as query_catalog
@@ -75,12 +76,15 @@ def capabilities(service=None, catalog=None) -> dict:
             ("job.status", "API-015"), ("job.cancel", "API-014"),
         )})
         result["project_profile"] = {
-            "schema_version": SCHEMA_VERSION, "readable_schema_versions": [LEGACY_SCHEMA_VERSION, SCHEMA_VERSION],
+            "schema_version": SCHEMA_VERSION, "readable_schema_versions": list(READABLE_SCHEMA_VERSIONS),
             "expression_engine": ENGINE_VERSION, "open_modes": ["create", "open", "recover"],
             "commands": [name for name in COMMANDS if name != "pcb_stackup.apply"],
             "max_document_bytes": MAX_DOCUMENT_BYTES, "mutating_batch": False, "mutating_notification": False,
             "scope": "workspace-local versioned projects and optional isolated host CAD worker",
             "design_validation": {"profile": "rfad.design/0.1", "purposes": ["geometry", "step", "em"], "source": "draft_revision", "max_returned_diagnostics": 64},
+            "target_input": {"profile": TARGET_PROFILE, "max_targets": MAX_TARGETS, "max_samples_per_target": MAX_SAMPLES,
+                             "physical_modes": ["radiating_rf"], "metrics": list(METRICS), "sampling": ["linear", "explicit"],
+                             "evaluation_supported": False, "changes_solver_settings": False, "presets_supported": False},
         }
         result["features"][0]["status"] = "implemented"
         result["methods"].update({name: {"status": "implemented", "extension_profile": "rfad.editor/0.1"} for name in ("editor.get", "editor.apply", "project.undo", "project.redo")})

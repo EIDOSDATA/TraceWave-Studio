@@ -1,0 +1,707 @@
+[
+  {
+    "id": "FN-001",
+    "implementation_status": "partial",
+    "implemented": "ProjectOperations.open은 workspace 안 projects/이름의 create/open/recover와 원본 해시 검사, 서비스 재시작 후 재열기를 제공한다. 0.1/0.2/0.3을 읽으며 기존 원본과 snapshot을 보존하고 변경 복제본만 0.3 새 개정으로 승격하여 변환 기록을 남긴다.",
+    "gaps": [
+      "copy 모드, 외부 프로젝트/archive 가져오기와 새 project ID 발급이 없다.",
+      "recover는 등록된 현재 문서를 여는 경로이며 복구 후보 선택/검사 보고서가 없다.",
+      "범용 migration graph, 백업/rollback 보고서와 read-only open 정책은 미구현이다."
+    ],
+    "code": [
+      "src/rfad/application/project_contract.py",
+      "src/rfad/application/project_operations.py",
+      "src/rfad/application/project_repository.py",
+      "src/rfad/domain/project.py"
+    ],
+    "tests": [
+      "tests/test_project_service.py::ProjectServiceTests.test_create_apply_save_reopen_after_service_restart",
+      "tests/test_parameter_graph.py::ParameterGraphTests.test_old_schema_remains_unchanged_and_upgrades_on_copy",
+      "tests/test_targets.py"
+    ],
+    "evidence": [
+      "docs/project_persistence.md",
+      "docs/target_contract.md"
+    ],
+    "next_steps": [
+      3,
+      12
+    ],
+    "contract_notes": [
+      "project_contract.validate_project_request는 create/open/recover만 허용한다. 시험명 upgrades_on_copy의 copy는 Python 원본 복제이며 project.open copy 지원이 아니다."
+    ]
+  },
+  {
+    "id": "FN-002",
+    "implementation_status": "partial",
+    "implemented": "expected_revision, command_id, 영수증, 역명령과 새 revision을 journal transaction으로 게시한다. 저장 기준점, 독립 snapshot ID/hash와 영속 undo/redo를 보존한다.",
+    "gaps": [
+      "artifact별 regenerated/stale/unchanged와 물리 입력 동등성에 따른 정밀 무효화가 미완성이다.",
+      "공통 묶음 편집 및 영속 이력 확장 정책은 현재 제한 명령/128 undo/2048 command 예산을 넘어 별도 정의가 필요하다."
+    ],
+    "code": [
+      "src/rfad/application/project_history.py",
+      "src/rfad/application/project_operations.py",
+      "src/rfad/storage/journal.py",
+      "src/rfad/domain/project.py"
+    ],
+    "tests": [
+      "tests/test_project_service.py::ProjectServiceTests.test_snapshot_stays_sealed_after_edit_and_save",
+      "tests/test_project_service.py::ProjectServiceTests.test_failed_publish_does_not_commit_command_or_receipt",
+      "tests/test_editor_service.py::EditorServiceTests.test_undo_redo_replay_restart_and_branch_preserve_saved_baseline"
+    ],
+    "evidence": [
+      "docs/project_persistence.md",
+      "docs/editor_contract.md"
+    ],
+    "next_steps": [
+      3,
+      12
+    ],
+    "contract_notes": [
+      "현재 invalidation_set은 계층 이름의 보수적 목록이다. parameter.set은 표시 단위/이름 변경에도 geometry/physics 등을 무효화한다. 원시 결과 삭제는 하지 않지만 최적 재사용 구현과 같지 않다."
+    ]
+  },
+  {
+    "id": "FN-003",
+    "implementation_status": "partial",
+    "implemented": "제한 문법 표현식, SI 차원 검사, UUID 변수 결합, 의존 그래프/순환 검출, 유한 값/정의역 검사와 출처/estimated 전파가 구현됐다.",
+    "gaps": [
+      "사용자 설정 bound와 정수/범주형 설계 변수 제약을 저장하는 공통 계약이 없다.",
+      "표시 단위만 바꿀 때 물리/solver hash가 유지되는 별도 의미 hash와 계층별 무효화 검증이 남는다."
+    ],
+    "code": [
+      "src/rfad/domain/expressions.py",
+      "src/rfad/domain/parameter_graph.py",
+      "src/rfad/domain/units.py",
+      "src/rfad/domain/project.py"
+    ],
+    "tests": [
+      "tests/test_expressions.py",
+      "tests/test_parameter_graph.py",
+      "tests/test_editor_service.py::EditorServiceTests.test_display_unit_only_preserves_si_and_provenance_and_explicit_value_is_converted"
+    ],
+    "evidence": [
+      "docs/design_data.md"
+    ],
+    "next_steps": [
+      3,
+      6
+    ],
+    "contract_notes": [
+      "표시 단위 시험은 SI 값/출처 보존을 확인한다. 이 시험을 solver 입력 hash 불변이나 cache 재사용 합격으로 확대하지 않는다."
+    ]
+  },
+  {
+    "id": "FN-004",
+    "implementation_status": "partial",
+    "implemented": "rfad.target/0.1은 최대32개 사용자 목표의 대역/표본/port/Z0/출처와 S11/방사효율/전체효율/비율대역폭 한계를 target.set/remove로 저장한다. 0.3 개정, 저장/재열기/snapshot/영속 undo/redo를 연결하고 미정 입력과 not_evaluated를 구분한다.",
+    "gaps": [
+      "지역/원문/version을 보존하는 통신 프리셋과 목표 편집 GUI가 없다.",
+      "관측 방향/편파/실현 이득/크기 및 제조 제약, parameter 참조와 필요한 데이터 사전 도출은 후속이다.",
+      "MetricRecord/Assessment 실제 평가와 개정 간 자동 raw 재사용은 미구현이다."
+    ],
+    "code": [
+      "src/rfad/domain/targets.py",
+      "src/rfad/domain/project.py",
+      "src/rfad/application/project_history.py",
+      "src/rfad/application/project_operations.py",
+      "src/rfad/application/rpc.py",
+      "src/rfad/application/solver.py"
+    ],
+    "tests": [
+      "tests/test_targets.py"
+    ],
+    "evidence": [
+      "docs/target_contract.md"
+    ],
+    "next_steps": [
+      3,
+      4,
+      5,
+      7
+    ],
+    "contract_notes": [
+      "0.1/0.2는 비어 있지 않은 targets를 거부하며 기존 봉인 원본은 변경하지 않는다. 목표 입력은 solver 주파수/물성/port 저항을 변경하지 않고 geometry/physics/network 무효화를 추가하지 않는다.",
+      "target_input_statuses는 missing_target/not_evaluated와 누락 조건을 제공하며 합격 판정을 만들지 않는다. 기존 고정 연구 acceptance_profile은 제품 목표와 별개다."
+    ]
+  },
+  {
+    "id": "FN-005",
+    "implementation_status": "partial",
+    "implemented": "정리한 PCB source package의 manifest/hash/관측 schema를 확인해 SQLite를 원자 구축하고 페이지 조회한다. 선택한 관측은 프로젝트에 원문/출처/결정으로 보존한다.",
+    "gaps": [
+      "API-009 import.preview/API-010 import.commit의 범용 staging, target와 catalog revision 충돌 처리가 없다.",
+      "PCB 이외 geometry/template 자료의 importer와 변경/중복/상충 preview가 필요하다."
+    ],
+    "code": [
+      "src/rfad/catalog/build.py",
+      "src/rfad/catalog/source.py",
+      "src/rfad/catalog/service.py",
+      "src/rfad/application/catalog_api.py",
+      "src/rfad/domain/pcb_selection_evidence.py"
+    ],
+    "tests": [
+      "tests/test_catalog_build.py",
+      "tests/test_catalog_api.py",
+      "tests/test_pcb_selection_service.py"
+    ],
+    "evidence": [
+      "runtime_profiles/pcb-catalog.json",
+      "runtime_profiles/pcb-selection.json"
+    ],
+    "next_steps": [
+      3,
+      10
+    ],
+    "contract_notes": [
+      "catalog API는 read_only이며 프로젝트 선택 적용은 pcb.selection 확장 경로다. offline catalog build를 승인된 범용 import API로 표시하지 않는다."
+    ]
+  },
+  {
+    "id": "FN-006",
+    "implementation_status": "not_implemented",
+    "implemented": "PCB 재료/적층 검색은 존재하지만 안테나 TemplateCard 카탈로그는 없다.",
+    "gaps": [
+      "원호/IFA family/topology/parameter/port recipe와 source/evidence별 지원 플래그를 저장해야 한다.",
+      "catalog.templates preview/commit, version 검색 및 기존 생성 설계를 바꾸지 않는 적용 명령이 필요하다."
+    ],
+    "code": [
+      "src/rfad/application/catalog_api.py",
+      "src/rfad/catalog/schema.py",
+      "src/rfad/application/rpc.py"
+    ],
+    "tests": [],
+    "evidence": [
+      "docs/pcb_catalog_contract.md"
+    ],
+    "next_steps": [
+      3,
+      4
+    ],
+    "contract_notes": [
+      "재료 카탈로그의 제조업체 stackup template와 안테나 형상 template은 다른 의미다. 사용자 실행 script 확장은 R2다."
+    ]
+  },
+  {
+    "id": "FN-007",
+    "implementation_status": "not_implemented",
+    "implemented": "기본 선/원호/IFA 구성 도체와 테스트 fixture는 있으나 제품용 초기 합성/문헌 복제/후보 생성 API-007은 없다.",
+    "gaps": [
+      "선택 template와 목표/공간/고정 변수로 후보 patch를 만드는 서비스가 필요하다.",
+      "EQ/원자료/가정/유효 영역과 topology/공간 실패를 후보에 기록해야 한다.",
+      "초기 추정과 실제 정합/공진 검증 상태를 독립적으로 저장해야 한다."
+    ],
+    "code": [
+      "src/rfad/application/canvas.py",
+      "src/rfad/application/rpc.py"
+    ],
+    "tests": [],
+    "evidence": [
+      "docs/copper_features.md",
+      "docs/ifa_convergence.md"
+    ],
+    "next_steps": [
+      3,
+      4,
+      9
+    ],
+    "contract_notes": [
+      "tests/test_pcb_ifa.py의 ifa_document는 명시적 시험 가정 fixture다. 실제 납품 입력이나 제품 seed synthesizer로 승격하지 않는다."
+    ]
+  },
+  {
+    "id": "FN-008",
+    "implementation_status": "partial",
+    "implemented": "line_path/arc_path/planar_region(holes)/pad/via 원본과 수량/매개변수 결합, 생성/이동/삭제 및 2D DTO를 제공한다. CAD는 analytic 원호와 같은 net의 물리 union을 지원한다. 공통 라이트 표면/도킹/간격과 좁은 도구 영역의 줄바꿈을 실제 wxWidgets 작업 공간에 적용했다.",
+    "gaps": [
+      "사용자 평면 Boolean/offset/회전/미러 명령과 결과 subentity 대응이 없다.",
+      "스냅/끝점/연관 치수와 영역 길이/면적/최소 gap의 공통 조회를 보강해야 한다."
+    ],
+    "code": [
+      "src/rfad/domain/design.py",
+      "src/rfad/domain/planar.py",
+      "src/rfad/application/canvas.py",
+      "src/rfad/adapters/cad/geometry.py",
+      "ui/wxwidgets/studio_theme.h",
+      "ui/wxwidgets/studio_theme.cpp",
+      "ui/wxwidgets/studio_layout.cpp"
+    ],
+    "tests": [
+      "tests/test_canvas_service.py",
+      "tests/test_copper_design.py",
+      "tests/test_planar.py",
+      "tests/test_cad_native.py"
+    ],
+    "evidence": [
+      "docs/canvas_contract.md",
+      "runtime_profiles/copper-ifa-worker-wsl.json",
+      "docs/studio_gui_design.md"
+    ],
+    "next_steps": [
+      3,
+      4
+    ],
+    "contract_notes": [
+      "CAD writer 내부 union은 사용자가 편집 가능한 Boolean graph 명령과 같지 않다. 매개변수 결합된 형상의 직접 이동 거절은 결합 보존 규칙이다."
+    ]
+  },
+  {
+    "id": "FN-009",
+    "implementation_status": "partial",
+    "implemented": "기본 양수/참조/자기교차 검사, native polygon의 급전 접촉/단락, sheet/PTH 연결 성분과 IFA short 관계를 검사한다.",
+    "gaps": [
+      "expected connectivity graph와 제조업체 width/gap/edge/hole/annular profile 검사 서비스가 없다.",
+      "issue별 측정값/허용값/위치와 미평가 규칙, 공간 index와 사용자 제약 모델이 필요하다."
+    ],
+    "code": [
+      "src/rfad/domain/design.py",
+      "src/rfad/domain/planar.py",
+      "src/rfad/application/pcb_contacts.py",
+      "src/rfad/application/pcb_selection_review.py"
+    ],
+    "tests": [
+      "tests/test_pcb_contacts.py",
+      "tests/test_planar.py",
+      "tests/test_copper_design.py"
+    ],
+    "evidence": [
+      "docs/copper_features.md"
+    ],
+    "next_steps": [
+      3,
+      4,
+      8,
+      10
+    ],
+    "contract_notes": [
+      "pcb_contacts는 제한된 solver polygon 접촉 검사이며 완전한 제조 DRC가 아니다. connections/manufacturing_profiles는 현재 빈 collection만 허용한다."
+    ]
+  },
+  {
+    "id": "FN-010",
+    "implementation_status": "not_implemented",
+    "implemented": "CAD worker의 자체 STEP 재입력은 구현됐으나 사용자 외부 CAD/EDA 파일을 편집 가능한 프로젝트로 가져오는 서비스는 없다.",
+    "gaps": [
+      "KiCad/Gerber와 기본 외부 STEP reader, 지원 entity inventory와 단위/층/net/origin mapping preview가 필요하다.",
+      "source hash 재검사, 손실/미지원 보고와 project.geometry 원자 적용 명령을 연결해야 한다."
+    ],
+    "code": [
+      "src/rfad/application/rpc.py",
+      "src/rfad/adapters/cad/step_io.py"
+    ],
+    "tests": [],
+    "evidence": [
+      "docs/cad_contract.md"
+    ],
+    "next_steps": [
+      3,
+      10
+    ],
+    "contract_notes": [
+      "자체 STEP 검수용 read_step은 외부 CAD import 서비스가 아니다. import.preview/import.commit은 capabilities에서 제공하지 않는다."
+    ]
+  },
+  {
+    "id": "FN-011",
+    "implementation_status": "partial",
+    "implemented": "정렬된 층의 z/두께/재료와 미정값, polygon hole, 원형/사각 pad 및 명시적 중공 PTH의 도금/홀/패드 참조를 저장하고 CAD/제한 EM에 투영한다.",
+    "gaps": [
+      "mask/coating coverage/opening, 일반 NPTH/slot과 기본 assembly 형상의 공통 의미가 필요하다.",
+      "제조 두께/도금/공칭 포함 범위와 허용 공차를 연결하는 제작 profile 및 전 범위 검수가 남는다."
+    ],
+    "code": [
+      "src/rfad/domain/design.py",
+      "src/rfad/application/pcb_selection_layers.py",
+      "src/rfad/adapters/cad/bodies.py",
+      "src/rfad/application/pcb_projection.py"
+    ],
+    "tests": [
+      "tests/test_copper_design.py",
+      "tests/test_cad_copper_features.py",
+      "tests/test_pcb_ifa.py",
+      "tests/test_pcb_selection_service.py"
+    ],
+    "evidence": [
+      "runtime_profiles/copper-ifa-worker-wsl.json",
+      "runtime_profiles/pcb-selection.json"
+    ],
+    "next_steps": [
+      3,
+      8,
+      10
+    ],
+    "contract_notes": [
+      "coating/adhesive/air 역할의 저장 허용과 CAD/EM 투영 지원은 다르다. CAD는 해당 역할을 거절한다. 총두께에서 미정 코어/마스크를 임의 역산하지 않는다."
+    ]
+  },
+  {
+    "id": "FN-012",
+    "implementation_status": "partial",
+    "implemented": "불변 snapshot을 mm CAD DTO로 바꿔 OCCT에서 분리 고체/원호/같은 net union/중공 PTH를 생성하고 stable body map과 제한 표시 mesh를 제공한다.",
+    "gaps": [
+      "외부 부품 assembly/배치/변환과 표면층/슬롯 등 선언할 R1 physical profile을 확장해야 한다.",
+      "대형 표시 LOD와 100만 triangle 경로, 전체 topology/조립 독립 검수가 남는다."
+    ],
+    "code": [
+      "src/rfad/application/cad.py",
+      "src/rfad/adapters/cad/native.py",
+      "src/rfad/adapters/cad/bodies.py",
+      "src/rfad/adapters/cad/display.py",
+      "src/rfad/application/display_mesh.py"
+    ],
+    "tests": [
+      "tests/test_cad_native.py",
+      "tests/test_cad_projection.py",
+      "tests/test_display_mesh.py"
+    ],
+    "evidence": [
+      "runtime_profiles/gui-cad-windows-x64.json",
+      "runtime_profiles/cad-worker-windows-x64.json"
+    ],
+    "next_steps": [
+      3,
+      4,
+      10,
+      12
+    ],
+    "contract_notes": [
+      "물리 BREP/표시 mesh/solver polygon의 tolerance와 의미를 공유하지 않는다. 현재 board transform은 거절되므로 좌표계 필드 존재만으로 assembly 지원을 주장하지 않는다."
+    ]
+  },
+  {
+    "id": "FN-013",
+    "implementation_status": "not_implemented",
+    "implemented": "현재 board/shape의 표시/해석/출력 포함 플래그는 있으나 환경 scenario와 외부 STEP 배치 기능은 없다.",
+    "gaps": [
+      "environment collection의 물체/재료/rigid transform와 baseline+delta schema 및 명령이 필요하다.",
+      "기본 하우징/배터리/케이블 포함 범위, 접촉과 scenario별 solver 정의를 검증해야 한다."
+    ],
+    "code": [
+      "src/rfad/domain/project.py",
+      "src/rfad/application/cad.py",
+      "src/rfad/application/pcb_projection.py"
+    ],
+    "tests": [
+      "tests/test_cad_projection.py::CadProjectionTests.test_unsupported_coverage_and_transforms_are_explicitly_rejected"
+    ],
+    "evidence": [
+      "docs/cad_contract.md"
+    ],
+    "next_steps": [
+      3,
+      8,
+      9,
+      11
+    ],
+    "contract_notes": [
+      "환경/assembly는 R1 기본 범위를 유지한다. 팬텀/굽힘/배열 전문 물리를 기본 R1 환경으로 추정하지 않는다."
+    ]
+  },
+  {
+    "id": "FN-014",
+    "implementation_status": "partial",
+    "implemented": "직접 입력과 제조업체 적층/소재 선택, 같은 원문 층 Dk/Df/두께 제안, source/hash/결정 사유/수정값 snapshot과 카탈로그 없는 재열기를 구현했다.",
+    "gaps": [
+      "lot/방향/온도/시험법/불확도를 소비하는 범용 material condition matching과 충돌 결정 UI를 보강해야 한다.",
+      "지원 자료의 construction/주파수 조건을 사용 목적에 맞춰 선택하는 계약을 물성 모델/target에 연결해야 한다."
+    ],
+    "code": [
+      "src/rfad/application/pcb_selection.py",
+      "src/rfad/catalog/material_selection.py",
+      "src/rfad/catalog/stackup_match.py",
+      "src/rfad/catalog/stackup_suggestions.py",
+      "src/rfad/domain/pcb_selection_evidence.py"
+    ],
+    "tests": [
+      "tests/test_pcb_selection_service.py",
+      "tests/test_stackup_match.py",
+      "tests/test_material_model_selection.py"
+    ],
+    "evidence": [
+      "runtime_profiles/pcb-selection-gui.json",
+      "runtime_profiles/stackup-suggestions.json",
+      "runtime_profiles/capacity-and-followup.json"
+    ],
+    "next_steps": [
+      3,
+      4,
+      5
+    ],
+    "contract_notes": [
+      "원문 조건 보존과 모든 조건의 자동 적합성 판정은 다르다. 원문 미정값과 실제 납품 물성은 유지하며 가정 모델 선택을 별도 결정으로 기록한다."
+    ]
+  },
+  {
+    "id": "FN-015",
+    "implementation_status": "partial",
+    "implemented": "등방 상수 및 total tan_delta 유전체 모델, band-center kappa 환산과 소비/미소비 물성을 기록한다. sheet 도체와 PTH 체적 도체의 독립 손실 계산을 제공한다.",
+    "gaps": [
+      "R1로 선언할 유한 도체/PEC 범위와 전력/손실 정확도 근거를 확정해야 한다.",
+      "RO4350B 국부 방사 도체 변화 2.788446%와 GHz PTH skin depth의 독립 검증이 남는다."
+    ],
+    "code": [
+      "src/rfad/domain/material_models.py",
+      "src/rfad/application/pcb_projection.py",
+      "src/rfad/adapters/solvers/openems/pcb_absorption.py"
+    ],
+    "tests": [
+      "tests/test_material_loss_models.py",
+      "tests/test_material_model_selection.py",
+      "tests/test_pcb_loss_convergence.py"
+    ],
+    "evidence": [
+      "runtime_profiles/jlc-ro4350b-exploratory.json",
+      "runtime_profiles/pcb-loss-precision.json",
+      "runtime_profiles/ro4350b-loss-refinement.json"
+    ],
+    "next_steps": [
+      8
+    ],
+    "contract_notes": [
+      "총 Df 모델은 독립 conductivity를 소비하지 않으며 원본 null은 유지한다. 일정 kappa를 광대역 일정 tan_delta로 표시하지 않는다. 분산/텐서/거칠기는 R2 검증 전 미지원이다."
+    ]
+  },
+  {
+    "id": "FN-016",
+    "implementation_status": "partial",
+    "implemented": "단일 lumped port의 도체 참조, 양의 실수 저항, 방향/대역/기준면 문자열과 명시적 gap을 저장한다. x/y/z 1D gap의 실제 native 접촉과 정규화를 검사한다.",
+    "gaps": [
+      "유한 폭/면적 포트, typed 기준면/좌표 변환, source/load와 복소 부하 데이터 보존이 필요하다.",
+      "SMA/connector/launch 포함 모델과 물리 기준면을 별도 객체/지원 profile로 정의하고 검증해야 한다."
+    ],
+    "code": [
+      "src/rfad/domain/design.py",
+      "src/rfad/application/pcb_projection.py",
+      "src/rfad/application/pcb_contacts.py",
+      "src/rfad/application/pcb_results.py",
+      "src/rfad/adapters/solvers/openems/pcb_ports.py"
+    ],
+    "tests": [
+      "tests/test_design.py",
+      "tests/test_pcb_contacts.py",
+      "tests/test_pcb_ifa.py"
+    ],
+    "evidence": [
+      "runtime_profiles/copper-ifa-worker-wsl.json",
+      "docs/ro4350b_loss_refinement.md"
+    ],
+    "next_steps": [
+      3,
+      5,
+      8,
+      9
+    ],
+    "contract_notes": [
+      "project_port는 횡방향 폭이 0인 1D gap만 지원하고 유한 box를 거절한다. 현재 reference_plane 문자열만으로 서로 다른 기준면 결과의 동등성을 판단하지 않는다."
+    ]
+  },
+  {
+    "id": "FN-017",
+    "implementation_status": "not_implemented",
+    "implemented": "해석 포트의 S11/임피던스/전력은 계산하지만 외부 RLC network graph와 raw EM 결합 서비스는 없다.",
+    "gaps": [
+      "networks schema/명령과 API-017 network.derive를 구현해야 한다.",
+      "주파수/Z0/기준면 검사, 회로 손실/조건수, raw 부모 참조와 파생 결과 identity가 필요하다.",
+      "field basis가 없는 경우 정합 후 방사/효율을 미평가로 반환하는 조건을 정해야 한다."
+    ],
+    "code": [
+      "src/rfad/domain/project.py",
+      "src/rfad/application/rpc.py",
+      "src/rfad/application/pcb_results.py"
+    ],
+    "tests": [],
+    "evidence": [
+      "docs/pcb_solver_contract.md"
+    ],
+    "next_steps": [
+      5,
+      7,
+      8
+    ],
+    "contract_notes": [
+      "단일 포트 native lumped 저항은 사용자 외부 RLC 정합망이 아니다. networks는 비어 있지 않으면 현재 거절한다."
+    ]
+  },
+  {
+    "id": "FN-018",
+    "implementation_status": "deferred",
+    "implemented": "R2 정합 구조/부품 합성과 R3 tuner 상태는 현재 제품에 구현하지 않았다.",
+    "gaps": [
+      "R1 FN-017 기본 외부 회로 및 이후 검증된 부품/탐색 기반을 선행한다.",
+      "자동 정합 합성/BOM/실장 상태는 후속 단계의 전용 검증과 함께 구현한다."
+    ],
+    "code": [
+      "src/rfad/application/rpc.py"
+    ],
+    "tests": [],
+    "evidence": [],
+    "next_steps": [],
+    "contract_notes": [
+      "R1 기본 RLC는 FN-017에서 먼저 구현하며 FN-018 전체를 R1 필수로 끌어오지 않는다."
+    ]
+  },
+  {
+    "id": "FN-040",
+    "implementation_status": "not_implemented",
+    "implemented": "화면 캔버스와 수치 그래프 도구는 있으나 연관 기술 도면 PDF/SVG/DXF 제품 출력이 없다.",
+    "gaps": [
+      "snapshot에서 도면 뷰/연관 치수/축척/검정선을 생성하고 drawing/fabrication_geometry 채널을 분리해야 한다.",
+      "단위/양자화/원호 chord tolerance와 FN-043 reader 검수를 구현해야 한다."
+    ],
+    "code": [
+      "src/rfad/application/rpc.py",
+      "src/rfad/application/canvas.py"
+    ],
+    "tests": [],
+    "evidence": [
+      "docs/canvas_contract.md"
+    ],
+    "next_steps": [
+      4,
+      10
+    ],
+    "contract_notes": [
+      "검증 그래프를 SVG로 저장하는 개발 도구는 치수 도면/FN-040 출력 기능이 아니다."
+    ]
+  },
+  {
+    "id": "FN-041",
+    "implementation_status": "partial",
+    "implemented": "AP242 고체 STEP, 원본 snapshot/재료/net/port sidecar, stable body map과 파일 hash를 생성하고 OCP reader로 다시 확인한다.",
+    "gaps": [
+      "실제 수신 CAD/version별 재열기, 선택/측정/조립 검수가 남는다.",
+      "mask/표면층/외부 부품/슬롯 등 지원 profile 확장과 포함/생략 정책의 검수가 필요하다."
+    ],
+    "code": [
+      "src/rfad/adapters/cad/native.py",
+      "src/rfad/adapters/cad/step_io.py",
+      "src/rfad/application/cad_artifacts.py",
+      "src/rfad/application/cad.py"
+    ],
+    "tests": [
+      "tests/test_cad_native.py",
+      "tests/test_cad_copper_features.py",
+      "tests/test_gui_cad_process.py"
+    ],
+    "evidence": [
+      "runtime_profiles/cad-worker-windows-x64.json",
+      "runtime_profiles/gui-cad-windows-x64.json"
+    ],
+    "next_steps": [
+      10
+    ],
+    "contract_notes": [
+      "현재 status=generated_unverified, kernel_independent=false다. 동일 OCCT reader와 독립 산술 기대값 통과를 수신 CAD 또는 제조 검증으로 승격하지 않는다."
+    ]
+  },
+  {
+    "id": "FN-042",
+    "implementation_status": "not_implemented",
+    "implemented": "PCB 기하/net/적층과 STEP 출력 기반은 있으나 KiCad/Gerber/Excellon/Job 제조 교환 경로는 없다.",
+    "gaps": [
+      "선언한 보드/footprint/CAM profile과 단위/층/net/PTH/NPTH/slot mapping 및 writer/reader가 필요하다.",
+      "zone refill과 최소 gap/thermal/clearance 변화를 확인하는 DRC/roundtrip을 연결해야 한다."
+    ],
+    "code": [
+      "src/rfad/application/rpc.py",
+      "src/rfad/domain/design.py"
+    ],
+    "tests": [],
+    "evidence": [
+      "docs/cad_contract.md"
+    ],
+    "next_steps": [
+      10
+    ],
+    "contract_notes": [
+      "R1 기본 Job/DRC와 R2 정합 BOM/실장 변형, R3 추가 형식은 별도 범위다. 제조 미정 입력이 있는 파일을 verified_profile로 발행하지 않는다."
+    ]
+  },
+  {
+    "id": "FN-043",
+    "implementation_status": "partial",
+    "implemented": "STEP의 schema/단위/이름/solid/bbox/중심/체적/단면/홀/두께와 중첩을 같은 kernel reader로 검사한다.",
+    "gaps": [
+      "독립 수신 reader 및 2D/CAM 경로, critical gap/연결/net topology와 bounded boundary 차이의 검사가 필요하다.",
+      "공개 API-025 export.verify와 reader/version/tolerance provenance별 상태를 제공해야 한다."
+    ],
+    "code": [
+      "src/rfad/adapters/cad/step_io.py",
+      "src/rfad/application/rpc.py"
+    ],
+    "tests": [
+      "tests/test_cad_native.py",
+      "tests/test_cad_copper_features.py"
+    ],
+    "evidence": [
+      "runtime_profiles/cad-worker-windows-x64.json"
+    ],
+    "next_steps": [
+      10
+    ],
+    "contract_notes": [
+      "step_io 비교는 passed_same_kernel이며 not_evaluated에 독립 kernel/제조 DRC/전체 의도 net/슬롯/assembly가 명시돼 있다."
+    ]
+  },
+  {
+    "id": "FN-044",
+    "implementation_status": "partial",
+    "implemented": "도파관/PCB/방사/전력/손실 연구의 machine-readable 판정과 runtime evidence가 있고 실행/미확립/실측 미검증을 구분한다.",
+    "gaps": [
+      "사용자 프로젝트의 요구-FN-VT evidence join과 통합 검토 보고서/PDF 생성, source promotion을 구현해야 한다.",
+      "목표/측정/출력 변경에 따라 파생 보고서와 검증 범위를 갱신하는 제품 계약이 필요하다."
+    ],
+    "code": [
+      "src/rfad/application/convergence.py",
+      "src/rfad/application/pcb_loss_convergence.py",
+      "src/rfad/application/project_study_results.py",
+      "tools/verify_ro_loss_followup.py"
+    ],
+    "tests": [
+      "tests/test_convergence.py",
+      "tests/test_pcb_loss_convergence.py",
+      "tests/test_project_studies.py"
+    ],
+    "evidence": [
+      "runtime_profiles/ro4350b-loss-refinement.json",
+      "runtime_profiles/project-studies.json"
+    ],
+    "next_steps": [
+      7,
+      8,
+      11,
+      12
+    ],
+    "contract_notes": [
+      "현재 개발자가 작성한 runtime_profiles와 고정 CLI 검증 보고서는 범용 제품 보고서/인증 승격 기능이 아니다. 미확립 손실/제작/측정 unknown은 그대로 추적한다."
+    ]
+  },
+  {
+    "id": "FN-045",
+    "implementation_status": "not_implemented",
+    "implemented": "workspace journal/snapshot/결과 봉인은 있으나 선택 프로젝트를 이동 가능한 archive로 묶고 새 환경에서 복구하는 API-026은 없다.",
+    "gaps": [
+      "snapshot 기준 참조 closure, 선택 raw 포함/제외, 라이선스/비밀/경로/용량 검사와 패키지 원자 발행이 필요하다.",
+      "safe import/손상/누락/외부 자료 권리 처리와 새 workspace 재열기 검수가 필요하다."
+    ],
+    "code": [
+      "src/rfad/storage/journal.py",
+      "src/rfad/storage/sealed_files.py",
+      "src/rfad/application/rpc.py",
+      "tools/build_internal_bundle.py"
+    ],
+    "tests": [],
+    "evidence": [
+      "runtime_profiles/internal-validation-bundle.json",
+      "docs/project_persistence.md"
+    ],
+    "next_steps": [
+      12,
+      13
+    ],
+    "contract_notes": [
+      "build_internal_bundle은 src/tools/ui/tests 등 개발 배포 묶음이며 사용자 프로젝트를 명시적으로 제외한다. 이를 FN-045 프로젝트 archive 완료로 계산하지 않는다."
+    ]
+  }
+]

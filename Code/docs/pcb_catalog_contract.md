@@ -2,7 +2,7 @@
 
 작성일: 2026-11-11 KST. 승인 기준선: RFAD-D0-3.4. 구현 profile: `rfad.catalog/0.1`, 변환 규칙: `rfad.catalog.import/1`.
 
-이 문서는 [PCB 재료 카탈로그 설계](pcb_material_catalog.md)의 중립 모델, 오프라인 변환, 읽기 전용 검색과 상세 조회를 정의한다. 기존 사용자 직접 입력과 프로젝트 schema `rfad.project/0.2`는 유지한다. 후속으로 구현한 프로젝트 소유 출처 사본, 적층 초안/미리보기와 원자적 적용은 [PCB 선택 계약](pcb_selection_contract.md)을 따른다. 연결한 wxWidgets 제조업체 검색과 선택은 [화면 사용법](pcb_selection_gui.md)을 따른다.
+이 문서는 [PCB 재료 카탈로그 설계](pcb_material_catalog.md)의 중립 모델, 오프라인 변환, 읽기 전용 검색과 상세 조회를 정의한다. 기존 사용자 직접 입력과 카탈로그 데이터 의미는 유지한다. 현재 프로젝트 쓰기는 `rfad.project/0.3`이고 기존 0.1/0.2 원본은 보존하여 읽는다. 프로젝트 소유 출처 사본, 적층 초안/미리보기와 원자적 적용은 [PCB 선택 계약](pcb_selection_contract.md)을 따른다. 연결한 wxWidgets 제조업체 검색과 선택은 [화면 사용법](pcb_selection_gui.md)을 따른다.
 
 ## 모듈과 데이터 경계
 

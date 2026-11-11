@@ -11,10 +11,12 @@ from rfad.domain.parameter_graph import evaluate_parameters, expression_record, 
 from rfad.domain.design import apply_design_command, validate_design
 from rfad.domain.pcb_selection import validate_project_selection
 from rfad.domain.pcb_selection_command import apply_stackup_command
+from rfad.domain.targets import TARGET_COMMANDS, apply_target_command, validate_targets
 
 
-SCHEMA_VERSION = "rfad.project/0.2"
+SCHEMA_VERSION = "rfad.project/0.3"
 LEGACY_SCHEMA_VERSION = "rfad.project/0.1"
+READABLE_SCHEMA_VERSIONS = (LEGACY_SCHEMA_VERSION, "rfad.project/0.2", SCHEMA_VERSION)
 MAX_PARAMETERS = 128
 _EMPTY_COLLECTIONS = (
     "geometry", "materials", "ports", "stackup", "nets", "connections", "targets",
@@ -30,7 +32,7 @@ _QUANTITY_FIELDS = {"value_si", "dimension", "display_unit", "status", "source_r
 _IDENTITY = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
 _DESIGN_COLLECTIONS = {"geometry", "materials", "ports", "stackup", "nets"}
 DESIGN_COMMANDS = tuple(prefix + suffix for prefix in ("material", "layer", "net", "geometry", "port") for suffix in (".set", ".remove")) + ("board.set",)
-COMMANDS = ("metadata.rename", "metadata.describe", "metadata.set", "parameter.set", "parameter.set_expression", "parameter.remove", "pcb_stackup.apply", *DESIGN_COMMANDS)
+COMMANDS = ("metadata.rename", "metadata.describe", "metadata.set", "parameter.set", "parameter.set_expression", "parameter.remove", "pcb_stackup.apply", *DESIGN_COMMANDS, *TARGET_COMMANDS)
 
 
 def _fail(code: str, message: str, field: str) -> None:
@@ -176,7 +178,7 @@ def validate_project(document: dict) -> None:
     """
     if type(document) is not dict:
         _fail("E_SCHEMA", "프로젝트는 object여야 합니다.", "project")
-    if document.get("schema_version") not in (SCHEMA_VERSION, LEGACY_SCHEMA_VERSION):
+    if document.get("schema_version") not in READABLE_SCHEMA_VERSIONS:
         _fail("E_VERSION", "지원하지 않는 프로젝트 schema입니다.", "schema_version")
     legacy = document["schema_version"] == LEGACY_SCHEMA_VERSION
     _fields(document, _PROJECT_FIELDS, "project")
@@ -247,6 +249,8 @@ def validate_project(document: dict) -> None:
     for field in _EMPTY_COLLECTIONS:
         if not legacy and field in _DESIGN_COLLECTIONS:
             continue
+        if document["schema_version"] == SCHEMA_VERSION and field == "targets":
+            continue
         if type(document[field]) is not list:
             _fail("E_SCHEMA", "미구현 컬렉션은 빈 목록이어야 합니다.", field)
         if document[field]:
@@ -254,6 +258,8 @@ def validate_project(document: dict) -> None:
     if not legacy:
         evaluate_parameters(parameters)
         validate_design(document)
+    if document["schema_version"] == SCHEMA_VERSION:
+        validate_targets(document)
     if type(document["extensions"]) is not dict:
         _fail("E_SCHEMA", "extensions는 object여야 합니다.", "extensions")
     _extension_json(document["extensions"], "extensions")
@@ -328,6 +334,8 @@ def apply_command(document: dict, command: dict, expected_revision: str) -> tupl
         invalidation_set = ["revision", "geometry", "physics", "network", "metrics", "assessment", "exports"]
     elif command_type == "pcb_stackup.apply":
         changed_ids, invalidation_set, inverse = apply_stackup_command(result, payload)
+    elif command_type in TARGET_COMMANDS:
+        changed_ids, invalidation_set, inverse = apply_target_command(result, command_type, payload)
     elif command_type in DESIGN_COMMANDS:
         changed_ids, invalidation_set, inverse = apply_design_command(result, command_type, payload)
     else:

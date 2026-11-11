@@ -16,7 +16,7 @@ from rfad.application.canonical import (
     canonical_hash,
 )
 from rfad.domain.errors import ProjectError
-from rfad.domain.project import SCHEMA_VERSION, validate_project
+from rfad.domain.project import READABLE_SCHEMA_VERSIONS, validate_project
 
 
 PROFILE = "rfad.openems.rect-waveguide/0.1"
@@ -90,7 +90,7 @@ def _snapshot(snapshot: object) -> None:
         _uuid(snapshot[key], "snapshot." + key)
     if len({snapshot[key] for key in ("snapshot_id", "project_id", "revision_id")}) != 3:
         _fail("E_SCHEMA", "스냅샷/프로젝트/개정 식별자는 서로 달라야 합니다.", "snapshot.snapshot_id")
-    if snapshot["schema_version"] != SCHEMA_VERSION:
+    if snapshot["schema_version"] not in READABLE_SCHEMA_VERSIONS:
         _fail("E_VERSION", "지원하지 않는 프로젝트 스키마입니다.", "snapshot.schema_version")
     if snapshot["canonical_version"] != CANONICAL_VERSION:
         _fail("E_VERSION", "지원하지 않는 정규 직렬화 버전입니다.", "snapshot.canonical_version")

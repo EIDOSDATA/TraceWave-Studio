@@ -2,7 +2,7 @@
 
 기록일: 2026-11-10 KST
 
-`rfad.editor/0.1`은 승인된 서비스 중심 모델을 연결하는 개발용 확장 profile이다. `editor.get`, `editor.apply`, `project.undo`, `project.redo`를 capabilities에 확장으로 공개하며 정식 API 번호를 새로 부여하지 않는다. 프로젝트 저장 형식은 기존 `rfad.project/0.2`를 유지하고 0.1 읽기 호환도 유지한다.
+`rfad.editor/0.1`은 승인된 서비스 중심 모델을 연결하는 개발용 확장 profile이다. `editor.get`, `editor.apply`, `project.undo`, `project.redo`를 capabilities에 확장으로 공개하며 정식 API 번호를 새로 부여하지 않는다. 현재 프로젝트 쓰기는 `rfad.project/0.3`이며 0.1/0.2 원본 읽기 호환을 유지한다. 기존 선택 속성의 의미는 유지하고, 0.3의 [목표 입력 API](target_contract.md)는 목표 편집 GUI와 별도 범위다.
 
 ## DTO 조회
 

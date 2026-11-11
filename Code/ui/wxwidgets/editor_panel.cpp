@@ -1,5 +1,6 @@
 #include "editor_panel.h"
 #include "coordinate_editor_dialog.h"
+#include "studio_theme.h"
 #include <wx/checklst.h>
 
 #include <algorithm>
@@ -33,6 +34,7 @@ std::string Text(const Json& value)
 EditorPanel::EditorPanel(wxWindow* parent)
     : wxScrolledWindow(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxVSCROLL)
 {
+    StudioTheme::BindSurface(*this);
     SetScrollRate(0, 12);
     m_layout = new wxBoxSizer(wxVERTICAL);
     SetSizer(m_layout);
@@ -75,11 +77,12 @@ void EditorPanel::SetFields(const Json& fields, const Json& selection, const Jso
             new wxStaticText(rowPanel, wxID_ANY, Display(descriptor.at("label").get<std::string>()));
         if (!paired)
         {
+            StudioTheme::BindSurface(*rowPanel);
             label->Wrap(FromDIP(145));
             label->SetMinSize(wxSize(FromDIP(150), -1));
             row->Add(label, 0, wxTOP | wxRIGHT, FromDIP(4));
             rowPanel->SetSizer(row);
-            m_layout->Add(rowPanel, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(6));
+            m_layout->Add(rowPanel, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::InputGap));
         }
         auto* input = new wxBoxSizer(wxVERTICAL);
         row->Add(input, paired ? 0 : 1, wxEXPAND | (paired ? wxLEFT : 0), paired ? FromDIP(6) : 0);

@@ -1,6 +1,6 @@
 # PCB 선택 출처, 적층 미리보기와 원자적 적용 계약
 
-작성일: 2026-11-11 KST. 승인 기준선: RFAD-D0-3.4. API profile은 `rfad.pcb-selection/0.1`이며 프로젝트 선택 저장은 0.1 및 공유 근거 0.2를 지원한다. 프로젝트 본체는 `rfad.project/0.2`, 공개 RPC envelope는 `rfad.api/2.0`을 유지한다.
+작성일: 2026-11-11 KST. 호환 정보 갱신: 2026-11-12 KST. 승인 기준선: RFAD-D0-3.4. API profile은 `rfad.pcb-selection/0.1`이며 프로젝트 선택 저장은 0.1 및 공유 근거 0.2를 지원한다. 현재 프로젝트 본체 쓰기는 `rfad.project/0.3`이며 기존 0.1/0.2 원본 읽기와 PCB 선택 확장은 유지한다. 공개 RPC envelope는 `rfad.api/2.0`이다.
 
 이 구현은 [PCB 재료 카탈로그 설계](pcb_material_catalog.md)의 선택 근거 저장, 적층 초안, 변경 미리보기와 일괄 적용을 연결한다. [읽기 전용 카탈로그](pcb_catalog_contract.md)를 사용해도 프로젝트 변경은 별도의 명시적 적용 요청으로 수행한다. wxWidgets 화면 조작은 [PCB 선택 화면](pcb_selection_gui.md)을 따른다. 범용 EDA 가져오기와 새 CAD/solver 물리 모델은 이 변경 범위에 포함하지 않는다.
 

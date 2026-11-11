@@ -1,4 +1,4 @@
-# 표현식과 설계 데이터 0.2
+# 표현식과 설계 데이터
 
 RFAD-D0-3.4의 단위, 매개변수, 설계 원본과 목적별 입력 검증을 구현하는 초기 profile이다. 서비스가 원본의 의미 검증을 소유한다. 이 문서의 설계 데이터 계층은 CAD B-rep나 openEMS를 직접 실행하지 않으며, 불변 스냅샷을 받는 별도 [CAD worker](cad_contract.md)와 [PCB solver](pcb_solver_contract.md)가 실제 형상/접속/계산을 검사한다. 제조 합격과 RF 정확도 검증은 별도다.
 
@@ -6,7 +6,7 @@ wxWidgets의 선택 속성 폼은 [편집 확장](editor_contract.md)을 통해 
 
 ## 저장 형식과 호환성
 
-새 프로젝트는 `rfad.project/0.2`로 생성한다. 기존 `rfad.project/0.1` 원본과 스냅샷은 그대로 읽고 검증한다. 기존 문서에 명령을 적용하면 복제본만 0.2로 바꾸고 새로운 revision을 생성한다. 이전 revision 파일, snapshot 바이트와 hash는 다시 쓰지 않는다. 미래 버전과 알 수 없는 핵심 필드는 거부한다. 범용 migration 또는 독립 프로젝트 import 기능은 아직 없다.
+새 프로젝트는 `rfad.project/0.3`으로 생성한다. 기존 `rfad.project/0.1`과 `rfad.project/0.2` 원본과 스냅샷은 그대로 읽고 검증한다. 기존 문서에 명령을 적용하면 복제본만 0.3으로 바꾸고 새로운 revision과 변환 기록을 생성한다. 이전 revision 파일, snapshot 바이트와 hash는 다시 쓰지 않는다. 0.3은 [목표 입력](target_contract.md)을 추가하며 기존 설계/표현식/PCB 선택의 의미를 유지한다. 미래 버전과 알 수 없는 핵심 필드는 거부한다. 범용 migration 또는 독립 프로젝트 import 기능은 아직 없다.
 
 현재 매개변수 128개, 설계 객체 합계 256개 및 프로젝트 512 KiB 제한이 함께 적용된다. 256개는 파일 크기와 무관하게 보장되는 수용량이 아니다. 대형 편집 성능 예산을 검증한 profile이 아니다.
 

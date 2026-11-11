@@ -56,13 +56,17 @@ class ProjectHistory:
             "new_revision": document["revision_id"], "inverse_command": inverse,
             "command": command, "previous_artifact": deepcopy(project["revisions"][old["revision_id"]]),
         }
+        migration = None
+        if old["schema_version"] != document["schema_version"]:
+            migration = {"from": old["schema_version"], "to": document["schema_version"], "original_revision": old["revision_id"]}
+            state["commands"][command_id]["schema_migration"] = migration
         project["revisions"][document["revision_id"]] = reference
         project["history"]["head_revision"] = document["revision_id"]
         if record_history:
             history = project["history"]
             history["undo"] = [*history["undo"], command_id][-limit:]
             history["redo"] = []
-        return {
+        response = {
             "project_id": document["project_id"],
             "new_revision": document["revision_id"],
             "revision_hash": canonical_hash(document),
@@ -70,6 +74,9 @@ class ProjectHistory:
             "invalidation_set": invalidation,
             "history": self.status(project, limit=limit),
         }
+        if migration is not None:
+            response["schema_migration"] = deepcopy(migration)
+        return response
 
     @staticmethod
     def check_head(project: dict, revision: str) -> None:

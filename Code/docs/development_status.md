@@ -10,6 +10,31 @@
 
 제품 개발 영역은 `C:/Users/eidos/GitHub/TraceWave Studio/Code`다. 승인 기준선은 RFAD-D0-3.4, 커밋 `6ebeda156e9d31b893bf69046550f5df9b16dc64`다. 01_Docs와 승인 records는 변경하지 않았다. 기준선의 착수 전 표기는 당시 승인 기록이며 현재 상태는 R0 기초 구현 진행이다.
 
+## 요구 대조, 목표 입력과 Studio 기반 (2026-11-12)
+
+직전 RO4350B 후속 연구와 완료 계획은 `47c96c70f7d07cd71a4cacffd3a977ec8c5485fd`로 커밋하여 origin/main에 푸시했다. 이후 완료 계획 2번의 [구현 대조](implementation_audit.md)를 작성했다. 승인 요구 141개, AC 404개, 검수 subcase 407개, FN 46개, VT/API 각 30개 및 추가 설계/성능/GUI 조건 22개를 실제 코드/시험/남은 범위와 연결했다. 기존 단위시험의 성공을 전체 수용 합격으로 확대하지 않으며 승인 원문은 보존한다.
+
+[공통 계약](shared_contracts.md)은 원본/버전/명령/작업/결과/연구/출처/출력의 소유권과 미정 상태를 구분한다. 감사 도구는 파일/시험 심볼/본문 hash 외에도 중복/누락 ID, 요구-AC-VT와 subcase 단계, API capability 연결의 오류를 차단한다. 최초 감사 23개 부분 구현/13개 미구현/10개 후속에서 목표 입력 추가 후 24/12/10으로 갱신했으며 이 숫자는 완료율이 아니다.
+
+3번의 첫 범위인 [목표 입력](target_contract.md)은 여러 대역, 명시 주파수 표본, port/Z0, S11/방사효율/전체효율/비율대역폭 한계를 저장한다. 목표별 UUID/개정/출처와 미정 상태를 보존하며 기존 원자 명령, 영속 undo/redo, 저장/재시작/재열기/snapshot을 재사용한다. 프로젝트 쓰기는 0.3, 읽기는 0.1/0.2/0.3이다. 기존 원본/봉인 hash는 유지하고 첫 편집의 새 개정에만 변환 기록을 남긴다. 목표 입력은 항상 미평가이며 solver 주파수/물성/포트 저항을 자동 변경하지 않는다. 목표 GUI/프리셋/편파/제약/평가와 자동 raw 재사용은 후속이다.
+
+4번의 일부로 [Studio GUI 디자인](studio_gui_design.md)의 라이트 표면/글자/도킹/간격을 `studio_theme.*`로 분리하여 실제 화면에 적용했다. native 입력과 기존 물리 색상을 유지하며 편집/3D/해석 도구는 좁은 영역에서 줄바꿈한다. 활성 층과 선폭/단위는 각각 한 묶음으로 표시한다. 완성 목표 [v2 시안](ui_concept.md)을 별도로 보존하며 시안의 형상/치수/상태를 실제 검증값으로 사용하지 않는다. 전체 작업 탭/아이콘/다크/정밀 편집과 전체 DPI/IME/성능 수용은 아직 남아 있다.
+
+| 이번 확인 | 결과 | 시간 |
+| --- | --- | --- |
+| Windows 서비스 전체 회귀 | 818개 수집, 731개 통과, 87개 환경 스킵, 실패/오류 0. 새 목표 시험 13개 포함 | 447.493초 |
+| 요구 추적 감사 도구 | 위 전체 수집 이후 추가한 별도 12개 시험, 모두 통과. 중복/누락/잘못된 참조와 산출물 변조 차단 | 시험 본문 0.722초, 실행기 포함 1.125초 |
+| 현재 공통 계약 집중 확인 | 앞서 수행한 19개 통과. 명령/원자성/작업 상태/연구 복구/실행 중단 계약 | 26.781초 |
+| wxWidgets Release/CTest | Release 빌드 성공, CTest 9개 통과 | CTest 1.04초 |
+| 실제 GUI 프로세스 | 18개 수집, 14개 통과, CAD/WSL 환경 4개 스킵, 실패/오류 0 | 117.284초 |
+| 실제 화면 확인 | 독립 작업 공간 신규 프로젝트, 약 1346 x 853 및 987 x 723 창의 도구 줄바꿈/단위 묶음/해석 탭 확인 후 종료 | 현재 디스플레이 조건의 부분 검수 |
+
+검증 로그/소스/빌드/문서 hash와 범위는 [이번 검증 기록](../runtime_profiles/development-contracts.json)에 남긴다. 전체 회귀와 별도 감사 시험은 수집 시점이 달라 합격 수를 소급 수정하지 않는다. 기존 실제 0.2 계획 9개/준비 3개/정규 결과 3개의 독립 읽기 검토에서도 오류 없이 원본 19개 파일의 hash가 유지됐다. 해당 검토는 새 FDTD/실물 시험이 아니다.
+
+다음 템플릿 구현의 [설계](template_design.md)도 정리했다. 기존 IFA/원형 smoke의 합성 물성을 제품 기본값으로 사용하지 않고, 선택한 보드/적층과 명시 치수를 원본으로 하여 출처가 있는 기하 후보를 한 번의 명령으로 적용하는 방향이다. 이 문서는 후속 설계이며 해당 서비스가 구현됐다는 뜻은 아니다.
+
+RO4350B 방사 도체 2.788446%의 2% 미확립, GHz PTH 물리 정확도 미확립과 실제 제작/측정 미정값은 유지한다. 이번 명령/표시 변경을 위해 새 native FDTD를 실행하거나 기준을 완화하지 않았다.
+
 ## RO4350B 도체 손실의 후속 정밀 연구 (2026-11-12)
 
 [후속 연구 계약](ro4350b_loss_refinement.md)에 명시적 확장 예산, 재료 분할 가속과 초기 2% 재검증을 추가했다. 기본 PCB의 1500000 격자점/300초/2스레드는 보존하고, 독립 손실을 기록하는 명시적 profile만 표준 2400000 격자점/900초 또는 심화 3000000/1800초와 지정 스레드를 사용한다. 손실 필드는 기본/표준 48 MiB, 심화 96 MiB이며 단일 파일 64 MiB/패키지 128 MiB는 유지한다. 상위 CLI의 420초 고정 대기도 max(420, 요청 예산+120)으로 보완했다. 기본 계획의 301초 요청 거절, 900초 요청의 접수/취소와 500초 완료 판독을 검증했다.
@@ -79,7 +104,8 @@ wxWidgets, Windows 11+WSL2 우선, Linux GUI 후속, 원호/IFA, 내부 검증 �
 | 표현식 | 전용 parser, 차원/정의역 검사, UUID bindings, 의존 그래프 재계산, 순환 차단. Windows/Linux 49개 수식과 그래프/IFA 캐시 비교 통과 | 다른 CPU/엔진 조합과 추가 수식의 계산 캐시 호환 검증 |
 | 실제 설계 데이터 | 사각/원형 기판, 적층, 재료, net, 선/원호/구멍 포함 polygon/패드/비아, 단일 lumped port와 명시적 급전 좌표. 참조 무결성과 역명령 | 일반 접속 엔진과 제조 DRC, blind/buried via |
 | 목적별 입력 검사 | API-006 draft revision의 geometry/step/em, 고정 입력 TaskRef, 누락 진단 | snapshot 입력, 제조/물리 profile, solver 지원 검증 |
-| 명령/저장/스냅샷 | revision/receipt 원자 게시, 재시작, crash 경계. 0.1 읽기 및 새 개정 0.2 전환. 영속 undo/redo와 history head 보호 | 이력 grouping/임의 이동, 독립 archive/import, GC, 정전 내구성 |
+| 명령/저장/스냅샷 | revision/receipt 원자 게시, 재시작, crash 경계. 0.1/0.2 원본과 봉인 유지, 첫 변경의 새 0.3 개정과 변환 기록. 영속 undo/redo와 history head 보호 | 이력 grouping/임의 이동, 독립 archive/import, GC, 정전 내구성 |
+| 목표 대역 입력 | target.set/remove, 다중 대역/주파수 표본/port/Z0와 4개 지표 한계, 목표별 개정/출처/미정 및 미평가 표시 | GUI/프리셋/관측/편파/제약, MetricRecord/Assessment 평가와 일반 raw 재사용 |
 | Python 환경 | 서비스 .venv와 별도 .venv-cad, 44개 CAD 패키지 버전/wheel SHA256 고정 | 배포 패키지와 전체 라이선스 검증 |
 | CAD 환경 smoke | CadQuery 2.8.0/cadquery-ocp 7.9.3.1.1 박스 AP214 export/reimport의 초기 호환성 기록 | 배포 환경과 독립 수신 CAD 검증 |
 | CAD 기하와 STEP | 불변 snapshot을 mm로 투영, 사각/원형 유전체와 양수 두께 선/원호/영역/패드, 실제 drill과 중공 PTH barrel. 같은 층/net/재료 병합과 UUID mapping, AP242 schema/단위와 별도 OCCT reader 재입력, B-rep/sidecar | 독립 kernel 수신 CAD, 제조 및 RF 검증. 내부 기하 profile은 generated_unverified |
@@ -97,7 +123,7 @@ wxWidgets, Windows 11+WSL2 우선, Linux GUI 후속, 원호/IFA, 내부 검증 �
 | 유전체 손실 모델 | 기존 합산 모델 보존, 명시적 총 Df 모델 추가. 독립 전도도 미정/비소비 보존과 중심 주파수 kappa 환산, 실제 native 양성 대조군 통과 | 광대역 분산/방향별 모델, 실제 시료 물성 및 모델 오차 검증 |
 | 카탈로그 PCB 통합 | JLC0206의 CAD/STEP/미정 RF 입력 차단 기록 유지. 별도 RO4350B 탐색 모델에서 같은 snapshot의 CAD/STEP/openEMS/재후처리/결과 재열기 통과 | 실제 제작 적층/동박/급전 확인, RO4350B의 복소 S 변화는 충족했으나 내부 공진 비교와 전체 수렴은 미확립. 제조/측정 검증 필요 |
 
-서비스는 rfad.api/2.0, workspace profile은 rfad.projects/0.2, 새 문서는 rfad.project/0.2다. 세부 계약은 [저장](project_persistence.md), [설계 데이터](design_data.md), [선택 속성](editor_contract.md), [2D 표시/편집](canvas_contract.md), [CAD/STEP](cad_contract.md), [worker 실행](worker_integration.md), [기초 계약](bootstrap_contract.md)을 따른다. 전체 API나 R0/R1 완료를 주장하지 않는다.
+서비스는 rfad.api/2.0, workspace profile은 rfad.projects/0.2, 새 프로젝트 문서는 rfad.project/0.3이다. 0.1/0.2 원본과 snapshot 읽기는 유지한다. 세부 계약은 [저장](project_persistence.md), [설계 데이터](design_data.md), [목표 입력](target_contract.md), [선택 속성](editor_contract.md), [2D 표시/편집](canvas_contract.md), [CAD/STEP](cad_contract.md), [worker 실행](worker_integration.md), [기초 계약](bootstrap_contract.md)을 따른다. 전체 API나 R0/R1 완료를 주장하지 않는다.
 
 ## 개발 환경 결과
 

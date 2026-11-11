@@ -1,37 +1,41 @@
 /** @file @brief 주 창의 solver 책임을 구현한다. */
 #include "studio_internal.h"
 #include "radiation_dialog.h"
+#include "studio_theme.h"
+#include <wx/wrapsizer.h>
 
 /** @brief 해석 작업 상태와 결과 그래프를 기존 설계 탭과 분리하여 구성한다. */
 void StudioFrame::BuildSolverInterface()
 {
     auto* panel = new wxPanel(m_views);
+    StudioTheme::BindSurface(*panel);
     auto* layout = new wxBoxSizer(wxVERTICAL);
-    auto* tools = new wxBoxSizer(wxHORIZONTAL);
+    auto* tools = new wxWrapSizer(wxHORIZONTAL);
     AddTool(panel, tools, IdRunSolver, "설정 및 해석 실행");
     AddTool(panel, tools, IdCancelSolver, "해석 취소");
     m_recordRadiation = new wxCheckBox(panel, wxID_ANY, Display("NF2FF 기록"));
-    tools->Add(m_recordRadiation, 0, wxALL | wxALIGN_CENTER_VERTICAL, 4);
+    tools->Add(m_recordRadiation, 0, wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(StudioTheme::Space));
     AddTool(panel, tools, IdRadiation, "방사 패턴 조회");
     AddTool(panel, tools, IdProjectStudy, "프로젝트 연구");
-    layout->Add(tools, 0, wxEXPAND | wxALL, 4);
+    layout->Add(tools, 0, wxEXPAND | wxALL, FromDIP(StudioTheme::Space));
     m_solverMetric = new wxChoice(panel, wxID_ANY);
     for (const auto* name : {"S11 (dB)", "VSWR", "Z (ohm): Re / Im"})
     {
         m_solverMetric->Append(name);
     }
     m_solverMetric->SetSelection(0);
-    layout->Add(m_solverMetric, 0, wxLEFT | wxRIGHT | wxBOTTOM, 8);
+    layout->Add(m_solverMetric, 0, wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::InputGap));
     m_solverStatus = new wxStaticText(panel, wxID_ANY, Display("해석 환경 연결을 확인하고 있습니다."));
-    layout->Add(m_solverStatus, 0, wxEXPAND | wxALL, 6);
+    layout->Add(m_solverStatus, 0, wxEXPAND | wxALL, FromDIP(StudioTheme::InputGap));
     m_solverViewState =
         new wxStaticText(panel, wxID_ANY, Display("결과 없음 / 단일 포트 PCB 계산 / IFA 및 방사 정확도 검증 전"));
-    layout->Add(m_solverViewState, 0, wxEXPAND | wxLEFT | wxRIGHT, 6);
+    StudioTheme::BindSecondary(*m_solverViewState);
+    layout->Add(m_solverViewState, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(StudioTheme::InputGap));
     m_solverChart = new SolverChart(panel);
-    layout->Add(m_solverChart, 1, wxEXPAND | wxALL, 4);
+    layout->Add(m_solverChart, 1, wxEXPAND | wxALL, FromDIP(StudioTheme::Space));
     m_solverDetails = new wxTextCtrl(panel, wxID_ANY, wxEmptyString, wxDefaultPosition, FromDIP(wxSize(-1, 110)),
                                      wxTE_MULTILINE | wxTE_READONLY);
-    layout->Add(m_solverDetails, 0, wxEXPAND | wxALL, 6);
+    layout->Add(m_solverDetails, 0, wxEXPAND | wxALL, FromDIP(StudioTheme::InputGap));
     panel->SetSizer(layout);
     m_views->AddPage(panel, Display("해석 결과"));
 }

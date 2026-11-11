@@ -14,7 +14,7 @@ from rfad.domain.pcb_selection import EXTENSION_KEY, SELECTION_SCHEMA, state_has
 from rfad.domain.pcb_selection_command import apply_stackup_command
 from rfad.domain.pcb_selection_evidence import encoded
 from rfad.domain.pcb_selection_history import preserve_selection_history
-from rfad.domain.project import apply_command, new_project, validate_project
+from rfad.domain.project import SCHEMA_VERSION, apply_command, new_project, validate_project
 from test_design import build_design, identity, quantity, unknown
 
 
@@ -170,7 +170,7 @@ class PcbSelectionDomainTests(unittest.TestCase):
             apply_stackup_command(self.document, invalid)
 
     def test_legacy_read_is_unchanged_and_command_promotes_to_current_schema(self):
-        """! @brief 0.1 원본을 암묵 변경하지 않고 새 명령 개정만 0.2로 승격한다."""
+        """! @brief 0.1 원본을 암묵 변경하지 않고 새 명령 개정만 현재 스키마로 승격한다."""
         legacy = new_project("과거 프로젝트")
         legacy["schema_version"] = "rfad.project/0.1"
         before = deepcopy(legacy)
@@ -179,7 +179,7 @@ class PcbSelectionDomainTests(unittest.TestCase):
         payload = {"materials": [], "stackup": [], "ports": [], "selection": selection(legacy)}
         updated, _, _, inverse = apply_command(legacy, command("pcb_stackup.apply", payload), legacy["revision_id"])
         self.assertEqual(legacy, before)
-        self.assertEqual(updated["schema_version"], "rfad.project/0.2")
+        self.assertEqual(updated["schema_version"], SCHEMA_VERSION)
         self.assertEqual(inverse["payload"]["selection"], None)
 
     def test_published_evidence_hash_pointer_and_value_are_checked(self):

@@ -1,6 +1,6 @@
 # 코드 구조와 유지보수 규칙
 
-갱신일: 2026-11-11 KST
+갱신일: 2026-11-12 KST
 
 승인 설계 RFAD-D0-3.4를 유지한 구조 정리다. 공개 JSON-RPC, 프로젝트 저장 schema, 도메인 명령과 물리 모델의 의미를 새 GUI 계층에서 복제하지 않는다. 기능을 찾기 쉽게 파일을 분리하면서 상태와 결과의 소유자도 명시한다.
 
@@ -34,6 +34,7 @@ flowchart LR
 | --- | --- | --- |
 | 진입점 | `ui/wxwidgets/main.cpp`, `app_options.h` | 실행 옵션 확인과 주 창 생성 |
 | 화면 조립 | `studio_frame.*`, `studio_layout.cpp`, `studio_controls.cpp` | 위젯 수명, 화면 배치와 명령 활성화 |
+| 공통 화면 스타일 | `studio_theme.*` | 물리 색과 분리한 라이트 표면/글자/도킹/DIP 토큰, 고대비 OS 색 및 시스템 색 변경 반영 |
 | 기능별 화면 연결 | `studio_project.cpp`, `studio_editing.cpp`, `studio_drawing.cpp`, `studio_geometry_dialogs.cpp`, `studio_validation.cpp` | 프로젝트/편집/그리기/진단의 이벤트 연결과 DTO 표시 |
 | CAD/해석 표시 | `studio_cad.cpp`, `studio_solver.cpp` | 서비스 명령 접수와 화면 반영. 도메인 계산은 서비스에 위임 |
 | 비동기 통신 | `async_state.*`, `studio_session.cpp`, `service_client.*` | 요청 식별/콜백 회수/대기 상한/timeout, 작업 조회, 프로세스와 파이프 |
@@ -60,6 +61,8 @@ StudioFrame은 화면 사이의 연결과 서비스 DTO 캐시를 유지한다. 
 - 서버 `job_state.py`는 허용 전이를 명시하고 완료 상태 역행, 취소 요청 뒤 완료 승격과 event 식별 필드 덮어쓰기를 거절한다. 명시적 사용자 취소는 cancelled, 서비스 종료로 결과를 게시하지 않은 경우는 interrupted로 구분한다. 실제 종료가 확인되면 예약을 해제하고, 불명 상태는 예약을 유지한다. CAD 프로세스 회수와 WSL lease/outcome_unknown 처리는 각 coordinator의 별도 책임으로 남긴다.
 
 ## 서비스와 worker 구성
+
+사용자 목표 입력은 `domain/targets.py`가 대역/표본/지표/참조/미정값을 검증하고 목표 개정과 역명령을 만든다. `project.py`는 프로젝트 0.3과 0.1/0.2 읽기 호환을 관리하며 `ProjectHistory`/`RequestLedger`가 기존 원자 게시를 그대로 사용한다. 목표별로 별도 저장소나 작업 상태머신을 만들지 않는다. `target_input_status`는 입력 상태만 제공하고 solver 설정이나 성능 판정을 생성하지 않는다.
 
 | 경계 | 모듈 | 책임 |
 | --- | --- | --- |

@@ -10,6 +10,7 @@ from uuid import uuid4
 from rfad.application.projects import ProjectService
 from rfad.application.rpc import handle_frame
 from rfad.domain.errors import ProjectError
+from rfad.domain.project import SCHEMA_VERSION
 from rfad.domain.units import Quantity
 from test_design import build_design
 
@@ -125,7 +126,7 @@ class ProjectDesignTests(unittest.TestCase):
         response = handle_frame(json.dumps(hello).encode(), self.service)["result"]
         self.assertIn("design.validate", response["methods"])
         self.assertIn("parameter.set_expression", response["project_profile"]["commands"])
-        self.assertEqual(response["project_profile"]["schema_version"], "rfad.project/0.2")
+        self.assertEqual(response["project_profile"]["schema_version"], SCHEMA_VERSION)
         payload = {"id": str(uuid4()), "name": "잘못된 계산", "expression": "sqrt(-1) * 1 mm", "bindings": {}, "dimension": "length", "display_unit": "mm"}
         request = {"jsonrpc": "2.0", "id": 2, "method": "project.apply_command", "params": self.request({"expected_revision": self.revision, "command_id": str(uuid4()), "type": "parameter.set_expression", "payload": payload})}
         error = handle_frame(json.dumps(request).encode(), self.service)["error"]

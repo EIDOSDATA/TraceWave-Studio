@@ -74,6 +74,7 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/studio_smoke_events.cpp
     ui/wxwidgets/studio_frame.cpp
     ui/wxwidgets/studio_layout.cpp
+    ui/wxwidgets/studio_theme.cpp
     ui/wxwidgets/study_report_dialog.cpp
     ui/wxwidgets/study_report_model.cpp
     ui/wxwidgets/project_study_dialog.cpp
