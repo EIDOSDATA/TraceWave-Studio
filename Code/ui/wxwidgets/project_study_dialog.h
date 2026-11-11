@@ -15,7 +15,8 @@ class wxStaticText;
 class wxTextCtrl;
 class wxFlexGridSizer;
 
-using StudyGateway = std::function<void(const std::string&, const Json&, bool, std::function<void(const Json&)>, std::function<void(const Json&)>)>;
+using StudyGateway = std::function<void(const std::string&, const Json&, bool, std::function<void(const Json&)>,
+                                        std::function<void(const Json&)>)>;
 
 /** @brief 서비스가 소유한 연구 상태를 표시하며 native 작업을 직접 실행하지 않는다. */
 class ProjectStudyDialog final : public wxDialog
@@ -26,9 +27,18 @@ public:
     void SetSpecification(const Json& specification);
     void CreateStudy();
     void Command(const std::string& action);
-    const Json& CurrentView() const { return m_view; }
-    bool Pending() const { return m_pending; }
-    const std::string& LastError() const { return m_lastError; }
+    const Json& CurrentView() const
+    {
+        return m_view;
+    }
+    bool Pending() const
+    {
+        return m_pending;
+    }
+    const std::string& LastError() const
+    {
+        return m_lastError;
+    }
     /** @brief 전송 종료를 작업 취소/완료로 추정하지 않고 읽기 전용으로 전환한다. */
     void ServiceDisconnected(const std::string& message);
 
@@ -40,7 +50,7 @@ private:
     void ReadSelected(bool loadFields = false);
     void Render(const Json& view);
     void UpdateControls();
-    Json Draft() const;
+    Json Draft(bool newStudy = false) const;
 
     StudyGateway m_gateway;
     std::function<void()> m_closed;

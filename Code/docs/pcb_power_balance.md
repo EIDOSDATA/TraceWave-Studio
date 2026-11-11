@@ -8,9 +8,11 @@
 
 PCB worker 설정에 `power_balance: {"max_relative_residual": 0.03}`을 명시한다. 방사 설정이 함께 있어야 하고 방사 주파수는 같은 실행의 직접 포트 표본이어야 한다. 보간으로 전력 수지를 채우지 않는다. 잔차 기준은 계산 전 정하며 지원 범위는 0.0001~0.1이다. 이 기능을 생략한 기존 계획의 구조, 원시 파일 목록과 직접 입력 동작은 유지한다.
 
-최초 지원은 planar 유한 전도 sheet와 상수 등가 전도도 유전체다. 사각/원형 외형과 기존 선/원호/pad/polygon의 native 재료 우선순위를 따른다. PTH 체적 도체의 독립 분할은 아직 지원하지 않으며 해당 옵션과 via를 함께 요청하면 계획 단계에서 거절한다. PEC로 대체하거나 via 손실을 0으로 게시하지 않는다.
+최초 지원은 planar 유한 전도 sheet와 상수 등가 전도도 유전체였다. 이후 [개별 손실 정밀도와 PTH 분할](pcb_loss_precision.md)을 추가했다. 새 계산은 sheet가 대체하지 않은 edge의 native QuarterCell 체적 기여율로 유전체/PTH를 나누고, sheet edge는 정렬한 E*rotH 전체를 배정하여 중복을 막는다. 사각/원형 외형과 기존 선/원호/pad/polygon의 native 우선순위를 따르며 PEC로 대체하거나 via 손실을 0으로 게시하지 않는다. 아래 실제 고정 검증은 최초 planar 버전의 역사적 기록이다.
 
 ## 독립 적분
+
+이 절은 최초 planar 검증의 기록 방식이다. 현재 계산의 QuarterCell 재료 분할, native sheet의 재료 계수 대체와 PTH 합계는 [후속 정밀도 계약](pcb_loss_precision.md)을 따른다. 아래의 원래 검증 표/실행 기록은 재작성하지 않는다.
 
 기판/적층의 경계를 감싸는 작은 영역에 무보간 `dump_mode=0`의 FD E(10), 전도 J(12), 전체 전류 rotH(13)를 기록한다. [공식 dump 계약](https://docs.openems.de/en/latest/python/CSXCAD/CSProperties/CSPropDumpBox.html)을 따른다. 유전체 경계에서 node 보간한 필드를 사용하면 불연속 성분이 섞일 수 있으므로 원래 Yee 전기 edge를 사용한다. PML은 포함하지 않는다.
 
@@ -70,7 +72,7 @@ $env:PYTHONPATH='src;tests;tools'
 
 ## 남은 범위
 
-PTH 독립 체적 분할, 기록 거리/각도 수준을 포함한 3축 연구 GUI 행렬, 독립 solver 대조와 실제 제조/측정 자료 대조는 남는다. 국부 skin depth/곡선 및 기록 종료 오차를 이 초기 수지 확인으로 모두 검증한 것으로 취급하지 않는다. 실제 납품 유전율/손실/전도도, 마스크/표면처리, SMA/케이블/교정 기준면과 측정 불확도는 미정으로 유지한다.
+PTH의 GHz skin depth 정밀도, 기록 거리/각도 수준을 포함한 3축 연구 GUI 행렬, 독립 solver 대조와 실제 제조/측정 자료 대조는 남는다. 후속 분할/수치 축 연구는 [손실 정밀도](pcb_loss_precision.md)를 따른다. 국부 skin depth/곡선 및 기록 종료 오차를 이 초기 수지 확인으로 모두 검증한 것으로 취급하지 않는다. 실제 납품 유전율/손실/전도도, 마스크/표면처리, SMA/케이블/교정 기준면과 측정 불확도는 미정으로 유지한다.
 
 ## 실제 검증 기록
 

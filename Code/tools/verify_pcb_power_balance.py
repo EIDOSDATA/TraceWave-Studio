@@ -33,7 +33,7 @@ def load_result(service, entry, subject):
     roles = {item["role"]: item for item in opened["files"]}
     require(opened["artifact_id"] == entry["artifact_id"] and len(roles) == len(opened["files"]), "전력 결과의 식별자 또는 파일 역할이 중복되었습니다.")
     for item in opened["files"]:
-        service.journal.read_artifact(reference(item))
+        service.journal.verify_file(reference(item))
     normalized = json.loads(service.journal.read_artifact(entry["normalized_result"]))
     plan = normalized["provenance"]["analysis_plan"]
     validate_pcb_plan(plan)

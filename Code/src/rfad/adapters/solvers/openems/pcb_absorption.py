@@ -8,7 +8,9 @@ from xml.etree import ElementTree
 
 from rfad.application.pcb_mesh import mesh_lines
 from rfad.application.pcb_power import SCHEMA, NAMES, balance_rows, validate_result
+from rfad.application.pcb_loss_components import via_resolution
 from .native import require, write_json, descriptor
+from .pcb_loss_partition import PARTITION_METHOD, material_partition, partition_work
 
 
 def create_dumps(csx, recording):
@@ -135,14 +137,24 @@ def postprocess(stage, plan, raw, radiation, statistics):
         require(not csx.ReadFromXML(str(geometry)), "봉인한 native 기하를 손실 분할에 읽을 수 없습니다.")
     partition, counts = sheet_partition(csx, case, lines, indices)
     weights = [edge_weights(lines, indices, direction) for direction in range(3)]
-    losses = [integrate_fields(*read_fields(raw, recording, lines, index), weights, partition, frequency,
-                               statistics["timestep_seconds"], case["shapes"]) for index, frequency in enumerate(recording["frequency_hz"])]
+    material = material_partition(csx, case, lines, indices, partition)
+    calculated = [partition_work(*read_fields(raw, recording, lines, index), weights, partition, frequency,
+                                 statistics["timestep_seconds"], case["shapes"], material)
+                  for index, frequency in enumerate(recording["frequency_hz"])]
+    losses = [item[0] for item in calculated]
     threshold = case["settings"]["power_balance"]["max_relative_residual"]
     rows = balance_rows(recording, radiation, losses, threshold)
     result = {"schema": SCHEMA, "analysis_plan_id": plan["plan_id"], "recording": recording,
               "frequencies": rows, "max_relative_residual": threshold,
               "full_energy_closure": "within_initial_numerical_budget" if all(row["status"] == "within_initial_numerical_budget" for row in rows) else "requires_review",
               "integration": {"method": recording["method"], "sheet_edge_counts": counts,
+                              "partition_method": PARTITION_METHOD,
+                              "volume_material_averaging": "native_quarter_cell_material_only",
+                              "sheet_material_current_excluded": True,
+                              "sheet_coefficient_model": "native_ade_overrides_ec_g_c",
+                              "frequency_audits": [item[1] for item in calculated],
+                              "via_edge_counts": [{"entity_id": piece["entity_id"], "count": len(piece["indices"])} for piece in material[1] if piece["kind"] == "via"],
+                              "via_resolution": via_resolution(case, lines),
                               "rotH_timestamp_correction": "exp(-j*pi*f*dt)/cos(pi*f*dt)",
                               "displacement_current": "reactive_real_work_zero_for_completed_fourier_spectrum",
                               "source_resistor_excluded": True, "pml_excluded": True},

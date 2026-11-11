@@ -21,35 +21,44 @@ void ProjectStudyDialog::ServiceDisconnected(const std::string& message)
     UpdateControls();
 }
 
-ProjectStudyDialog::ProjectStudyDialog(wxWindow* parent, const Json& context, StudyGateway gateway, std::function<void()> closed)
+ProjectStudyDialog::ProjectStudyDialog(wxWindow* parent, const Json& context, StudyGateway gateway,
+                                       std::function<void()> closed)
     : wxDialog(parent, wxID_ANY, Display("프로젝트 연구 / 격자와 방사·손실"), wxDefaultPosition, wxDefaultSize,
-               wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER), m_gateway(std::move(gateway)), m_closed(std::move(closed)),
-      m_context(context), m_basis(context.at("initial_specification")), m_timer(this)
+               wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER),
+      m_gateway(std::move(gateway)), m_closed(std::move(closed)), m_context(context),
+      m_basis(context.at("initial_specification")), m_timer(this)
 {
     Build();
     SetSpecification(m_basis);
-    Bind(wxEVT_CLOSE_WINDOW, [this](wxCloseEvent&)
-    {
-        m_closing = true;
-        m_timer.Stop();
-        if (m_closed)
-        {
-            m_closed();
-        }
-        Destroy();
-    });
-    Bind(wxEVT_TIMER, [this](wxTimerEvent&)
-    {
-        if (!m_pending && !m_selected.empty())
-        {
-            ReadSelected();
-        }
-    });
+    Bind(wxEVT_CLOSE_WINDOW,
+         [this](wxCloseEvent&)
+         {
+             m_closing = true;
+             m_timer.Stop();
+             if (m_closed)
+             {
+                 m_closed();
+             }
+             Destroy();
+         });
+    Bind(wxEVT_TIMER,
+         [this](wxTimerEvent&)
+         {
+             if (!m_pending && !m_selected.empty())
+             {
+                 ReadSelected();
+             }
+         });
     m_timer.Start(1000);
-    CallAfter([this]() { ReloadStudies(); });
+    CallAfter(
+        [this]()
+        {
+            ReloadStudies();
+        });
 }
 
-void ProjectStudyDialog::Call(const std::string& method, const Json& input, bool mutation, std::function<void(const Json&)> completed)
+void ProjectStudyDialog::Call(const std::string& method, const Json& input, bool mutation,
+                              std::function<void(const Json&)> completed)
 {
     if (m_pending || m_closing || m_disconnected)
     {
@@ -58,38 +67,41 @@ void ProjectStudyDialog::Call(const std::string& method, const Json& input, bool
     m_pending = true;
     UpdateControls();
     wxWeakRef<ProjectStudyDialog> self(this);
-    m_gateway(method, input, mutation, [self, completed = std::move(completed)](const Json& result)
-    {
-        if (!self || self->m_closing)
+    m_gateway(
+        method, input, mutation,
+        [self, completed = std::move(completed)](const Json& result)
         {
-            return;
-        }
-        self->m_pending = false;
-        completed(result);
-        if (self && !self->m_closing)
-        {
-            self->UpdateControls();
-        }
-    }, [self](const Json& error)
-    {
-        if (self && !self->m_closing)
-        {
+            if (!self || self->m_closing)
+            {
+                return;
+            }
             self->m_pending = false;
-            self->m_lastError = DiagnosticMessage(error);
-            self->m_status->SetLabel(Display(self->m_lastError));
-            self->UpdateControls();
-        }
-    });
+            completed(result);
+            if (self && !self->m_closing)
+            {
+                self->UpdateControls();
+            }
+        },
+        [self](const Json& error)
+        {
+            if (self && !self->m_closing)
+            {
+                self->m_pending = false;
+                self->m_lastError = DiagnosticMessage(error);
+                self->m_status->SetLabel(Display(self->m_lastError));
+                self->UpdateControls();
+            }
+        });
 }
 
-Json ProjectStudyDialog::Draft() const
+Json ProjectStudyDialog::Draft(bool newStudy) const
 {
     Studio::StudyFields fields;
     for (const auto& field : m_fields)
     {
         fields[field.first] = Utf8(field.second->GetValue());
     }
-    return Studio::StudySpecification(m_basis, fields, m_radiation->GetValue(), m_losses->GetValue());
+    return Studio::StudySpecification(m_basis, fields, m_radiation->GetValue(), m_losses->GetValue(), newStudy);
 }
 
 void ProjectStudyDialog::SetSpecification(const Json& specification)
@@ -108,68 +120,73 @@ void ProjectStudyDialog::SetSpecification(const Json& specification)
 
 void ProjectStudyDialog::ReloadStudies()
 {
-    Call("study.context", Json::object(), false, [this](const Json& context)
-    {
-        m_context = context;
-        Call("study.list", Json::object(), false, [this](const Json& result)
-        {
-            m_studies = result.at("studies");
-            m_choice->Clear();
-            int selected = wxNOT_FOUND;
-            for (std::size_t i = 0; i < m_studies.size(); ++i)
-            {
-                const auto& study = m_studies.at(i);
-                m_choice->Append(Display(study.at("name").get<std::string>() + " / " + Studio::StudyStatus(study.at("state"))));
-                if (study.at("study_id") == m_selected)
-                {
-                    selected = static_cast<int>(i);
-                }
-            }
-            if (selected == wxNOT_FOUND && !m_studies.empty())
-            {
-                selected = 0;
-                m_selected = m_studies.at(0).at("study_id");
-            }
-            m_choice->SetSelection(selected);
-            if (selected != wxNOT_FOUND)
-            {
-                ReadSelected(m_view.empty() || m_view.value("study_id", std::string()) != m_selected);
-            }
-        });
-    });
+    Call("study.context", Json::object(), false,
+         [this](const Json& context)
+         {
+             m_context = context;
+             Call("study.list", Json::object(), false,
+                  [this](const Json& result)
+                  {
+                      m_studies = result.at("studies");
+                      m_choice->Clear();
+                      int selected = wxNOT_FOUND;
+                      for (std::size_t i = 0; i < m_studies.size(); ++i)
+                      {
+                          const auto& study = m_studies.at(i);
+                          m_choice->Append(Display(study.at("name").get<std::string>() + " / " +
+                                                   Studio::StudyStatus(study.at("state"))));
+                          if (study.at("study_id") == m_selected)
+                          {
+                              selected = static_cast<int>(i);
+                          }
+                      }
+                      if (selected == wxNOT_FOUND && !m_studies.empty())
+                      {
+                          selected = 0;
+                          m_selected = m_studies.at(0).at("study_id");
+                      }
+                      m_choice->SetSelection(selected);
+                      if (selected != wxNOT_FOUND)
+                      {
+                          ReadSelected(m_view.empty() || m_view.value("study_id", std::string()) != m_selected);
+                      }
+                  });
+         });
 }
 
 void ProjectStudyDialog::ReadSelected(bool loadFields)
 {
     const std::string identity = m_selected;
-    Call("study.get", Json{{"study_id", identity}}, false, [this, identity, loadFields](const Json& result)
-    {
-        if (identity != m_selected || result.at("study_id") != identity)
-        {
-            return;
-        }
-        m_view = result;
-        if (loadFields)
-        {
-            SetSpecification(result.at("specification"));
-        }
-        Render(result);
-    });
+    Call("study.get", Json{{"study_id", identity}}, false,
+         [this, identity, loadFields](const Json& result)
+         {
+             if (identity != m_selected || result.at("study_id") != identity)
+             {
+                 return;
+             }
+             m_view = result;
+             if (loadFields)
+             {
+                 SetSpecification(result.at("specification"));
+             }
+             Render(result);
+         });
 }
 
 void ProjectStudyDialog::CreateStudy()
 {
     try
     {
-        const Json specification = Draft();
+        const Json specification = Draft(true);
         m_lastError.clear();
-        Call("study.create", Json{{"expected_revision", m_context.at("revision_id")}, {"specification", specification}}, true,
+        Call("study.create", Json{{"expected_revision", m_context.at("revision_id")}, {"specification", specification}},
+             true,
              [this](const Json& created)
-        {
-            m_selected = created.at("study_id");
-            m_status->SetLabel(Display("원본 스냅샷과 조건을 저장했습니다. 선택 연구 실행으로 시작하십시오."));
-            ReloadStudies();
-        });
+             {
+                 m_selected = created.at("study_id");
+                 m_status->SetLabel(Display("원본 스냅샷과 조건을 저장했습니다. 선택 연구 실행으로 시작하십시오."));
+                 ReloadStudies();
+             });
     }
     catch (const std::exception& error)
     {
@@ -184,12 +201,13 @@ void ProjectStudyDialog::Command(const std::string& action)
     {
         return;
     }
-    Call("study." + action, Json{{"study_id", m_selected}}, true, [this](const Json&)
-    {
-        m_lastError.clear();
-        m_pages->SetSelection(3);
-        ReadSelected();
-    });
+    Call("study." + action, Json{{"study_id", m_selected}}, true,
+         [this](const Json&)
+         {
+             m_lastError.clear();
+             m_pages->SetSelection(3);
+             ReadSelected();
+         });
 }
 
 void ProjectStudyDialog::Render(const Json& view)
@@ -197,7 +215,8 @@ void ProjectStudyDialog::Render(const Json& view)
     const int selected = m_choice->GetSelection();
     if (selected != wxNOT_FOUND)
     {
-        m_choice->SetString(selected, Display(view.at("name").get<std::string>() + " / " + Studio::StudyStatus(view.at("state"))));
+        m_choice->SetString(
+            selected, Display(view.at("name").get<std::string>() + " / " + Studio::StudyStatus(view.at("state"))));
     }
     m_status->SetLabel(Display(Studio::StudyStatus(view.at("state")) + " / " + view.value("message", std::string())));
     m_cases->DeleteAllItems();

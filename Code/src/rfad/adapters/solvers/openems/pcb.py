@@ -34,6 +34,8 @@ def prepare(stage, plan, runtime):
     output.mkdir()
     csx = CSXCAD.ContinuousStructure()
     solver = openEMS.openEMS(NrTS=settings["max_timesteps"], EndCriteria=settings["end_criterion"])
+    # @brief 독립 재료 분할은 pinned engine의 QuarterCell 평균을 명시적으로 사용한다.
+    solver.SetCellConstantMaterial(False)
     solver.SetCSX(csx)
     solver.SetGaussExcite(case["excitation"]["center_hz"], case["excitation"]["width_hz"])
     solver.SetBoundaryCond(case["boundary_conditions"])

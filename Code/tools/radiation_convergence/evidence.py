@@ -37,7 +37,7 @@ def load_cases(service, report, definitions):
             require(reference(roles["normalized_result"]) == entry["normalized_result"], "등록한 정규화 결과 참조가 바뀌었습니다.")
             require(reference(roles["radiation_result"]) == entry["radiation_result"], "등록한 방사 필드 참조가 바뀌었습니다.")
             for item in opened["files"]:
-                service.journal.read_artifact(reference(item))
+                service.journal.verify_file(reference(item))
             normalized = json.loads(service.journal.read_artifact(entry["normalized_result"]))
             radiation = json.loads(service.journal.read_artifact(entry["radiation_result"]))
             plan = normalized["provenance"]["analysis_plan"]

@@ -59,13 +59,17 @@ def atomic(path, value):
 
 
 def read_json(path, maximum=256 * 1024):
-    """! @brief 제어 파일의 크기와 파일 유형을 제한한다."""
-    path = Path(path)
-    info = path.lstat()
-    if not stat.S_ISREG(info.st_mode) or info.st_nlink != 1 or info.st_size > maximum:
-        raise ValueError("unsafe control file")
-    with path.open("rb") as stream:
-        raw = stream.read(maximum + 1)
+    """! @brief 경로 교체와 경합하지 않게 열린 inode의 유형/크기를 검사하고 읽는다."""
+    descriptor = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0))
+    try:
+        info = os.fstat(descriptor)
+        # @brief atomic replace가 이전 inode를 unlink한 경우 nlink=0은 정상이다. 다중 링크는 거절한다.
+        if not stat.S_ISREG(info.st_mode) or info.st_nlink not in (0, 1) or info.st_size > maximum:
+            raise ValueError("unsafe control file")
+        with os.fdopen(descriptor, "rb", closefd=False) as stream:
+            raw = stream.read(maximum + 1)
+    finally:
+        os.close(descriptor)
     if len(raw) > maximum:
         raise ValueError("control file limit")
     return json.loads(raw)
@@ -352,7 +356,7 @@ def daemon(payload):
     os.environ["RFAD_WSL_RUN_TOKEN"] = payload["nonce"]
     cancel = threading.Event()
     finished = threading.Event()
-    reason = {"value": ""}
+    reason = {"value": "", "control_error": ""}
     watchdog_process = None
     worker_pid = None
     for number in (signal.SIGTERM, signal.SIGINT, signal.SIGHUP):
@@ -386,8 +390,9 @@ def daemon(payload):
                         publish(path, phase=phase)
                 except FileNotFoundError:
                     pass
-        except Exception:
+        except Exception as error:
             reason["value"] = "control_failed"
+            reason["control_error"] = type(error).__name__ + ": " + str(error)[:1024]
             cancel.set()
 
     def started(information):
@@ -428,7 +433,7 @@ def daemon(payload):
         # @brief run_native는 원래 process group을 회수하며 전체 실행 후손은 별도로 확인한다.
         confirmed = _terminate_owned(worker_pid, payload["nonce"])
         publish(path, state=state if confirmed else "failed", termination_confirmed=confirmed, outcome_unknown=not confirmed,
-                native=result, reason=reason["value"])
+                native=result, reason=reason["value"], control_error=reason["control_error"])
     except Exception as error:
         unknown = bool(getattr(error, "details", {}).get("outcome_unknown"))
         confirmed = not unknown and worker_pid is None
@@ -439,7 +444,7 @@ def daemon(payload):
             except Exception as cleanup_error:
                 recovery_error = str(cleanup_error)[:2048]
         publish(path, state="failed", termination_confirmed=confirmed, outcome_unknown=not confirmed,
-                error=str(error)[:2048], recovery_error=recovery_error, reason=reason["value"])
+                error=str(error)[:2048], recovery_error=recovery_error, reason=reason["value"], control_error=reason["control_error"])
     finally:
         finished.set()
         thread.join(timeout=1)

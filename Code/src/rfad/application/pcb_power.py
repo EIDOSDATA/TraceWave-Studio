@@ -30,8 +30,6 @@ def recording(case, lines):
     """! @brief 물체 주위 한 격자 여유의 무보간 Yee 전기 edge를 기록한다."""
     if "power_balance" not in case["settings"]:
         return None
-    if case.get("vias"):
-        fail("E_UNSUPPORTED", "현재 독립 손실 분할은 planar sheet와 유전체를 지원합니다. PTH 체적 분할은 후속입니다.", "settings.power_balance")
     bounds = [*case["board"]["bounds_mm"],
               [min(layer["z_min_mm"] for layer in case["layers"]),
                max(layer["z_min_mm"] + layer["thickness_mm"] for layer in case["layers"])]]
@@ -48,7 +46,7 @@ def recording(case, lines):
     estimated = points * 3 * 8 * len(case["radiation_recording"]["frequency_hz"]) * 3
     if estimated > 48 * 1024 * 1024:
         fail("E_RESOURCE", "독립 손실 필드 기록의 48 MiB 초기 예산을 초과했습니다.", "settings.power_balance")
-    return {"schema": "rfad.pcb-loss-recording/0.1", "start_indices": starts, "stop_indices": stops,
+    result = {"schema": "rfad.pcb-loss-recording/0.1", "start_indices": starts, "stop_indices": stops,
             "start_mm": [lines[axis][i] for axis, i in zip("xyz", starts)],
             "stop_mm": [lines[axis][i] for axis, i in zip("xyz", stops)],
             "primitive_start_mm": [lines[axis][i] + (lines[axis][i + 1] - lines[axis][i]) * 0.25 for axis, i in zip("xyz", starts)],
@@ -56,6 +54,9 @@ def recording(case, lines):
             "frequency_hz": case["radiation_recording"]["frequency_hz"], "dump_mode": 0,
             "dump_types": [10, 12, 13], "estimated_field_bytes": estimated,
             "method": "yee_edge_e_j_and_sheet_e_roth", "volume_conductor_supported": False}
+    if case.get("vias"):
+        result.update(schema="rfad.pcb-loss-recording/0.2", method="quarter_cell_volume_and_native_sheet_override/0.1", volume_conductor_supported=True)
+    return result
 
 
 def raw_names(plan):
@@ -76,7 +77,8 @@ def balance_rows(recording, radiation, losses, threshold):
             fail("E_SOLVER", "독립 전력 수지의 전력은 유한하고 수용 전력은 양수여야 합니다.")
         residual = accepted - radiated - dielectric - conductor
         fraction = residual / accepted
-        passed = abs(fraction) <= threshold and dielectric >= 0 and conductor >= 0 and all(item["loss_w_s2"] >= 0 for item in loss["sheet_components"])
+        components = [*loss["sheet_components"], *loss.get("via_components", []), *loss.get("dielectric_components", [])]
+        passed = abs(fraction) <= threshold and dielectric >= 0 and conductor >= 0 and all(item["loss_w_s2"] >= 0 for item in components)
         rows.append({"frequency_hz": field["frequency_hz"], "incident_power_w_s2": incident,
                      "reflected_power_w_s2": incident - accepted, "accepted_power_w_s2": accepted,
                      "radiated_power_w_s2": radiated, **loss,
@@ -105,10 +107,20 @@ def validate_result(plan, result, radiation):
                                                or not math.isfinite(item["loss_w_s2"]) for item in components)
                 or {item.get("entity_id") for item in components} != {shape["id"] for shape in plan["case"]["shapes"]}
                 or len(components) != len(plan["case"]["shapes"])
-                or not math.isclose(math.fsum(item["loss_w_s2"] for item in components), row.get("conductor_loss_w_s2", math.nan), rel_tol=1e-10, abs_tol=0)):
+                or not math.isclose(math.fsum(item["loss_w_s2"] for item in components), row.get("sheet_loss_w_s2", row.get("conductor_loss_w_s2", math.nan)), rel_tol=1e-10, abs_tol=0)):
             fail("E_HASH", "도체별 독립 손실 분할의 합계/원본 식별자가 다릅니다.")
-        losses.append({key: row[key] for key in ("dielectric_loss_w_s2", "conductor_loss_w_s2", "sheet_components")})
+        keys = ["dielectric_loss_w_s2", "conductor_loss_w_s2", "sheet_components"]
+        if "via_components" in row or plan["case"].get("vias"):
+            from rfad.application.pcb_loss_components import validate_components
+
+            validate_components(plan, row)
+            keys += ["sheet_loss_w_s2", "via_loss_w_s2", "via_components", "dielectric_components"]
+        losses.append({key: row[key] for key in keys})
     expected = balance_rows(recording, radiation, losses, threshold)
+    if any("via_components" in row for row in rows) or plan["case"].get("vias"):
+        from rfad.application.pcb_loss_components import validate_audit
+
+        validate_audit(plan, result)
     if rows != expected or result.get("max_relative_residual") != threshold or result.get("full_energy_closure") != (
             "within_initial_numerical_budget" if all(row["status"] == "within_initial_numerical_budget" for row in expected) else "requires_review"):
         fail("E_HASH", "독립 손실의 합계/잔차 또는 초기 수치 판정이 다릅니다.")

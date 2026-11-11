@@ -417,6 +417,34 @@ class Journal:
             self._ensure_open()
             return self._read_artifact(reference)
 
+    def verify_file(self, reference: dict) -> None:
+        """! @brief 메타데이터 읽기 상한은 유지하며 큰 봉인 파일의 전체 바이트를 스트리밍 확인한다."""
+        from rfad.storage.sealed_files import verify, validate_reference
+
+        validate_reference(reference)
+        with self._mutex:
+            self._ensure_open()
+            path = self._safe_path(reference["uri"])
+        verify(path, reference)
+
+    def copy_artifact(self, reference: dict, relative_path: str) -> None:
+        """! @brief 같은 workspace의 새 staging 경로에 64 MiB 이하 원시 입력을 유한 버퍼로 복제한다.
+
+        @details 호출자는 복사 완료까지 journal 수명을 소유한다. 큰 IO 동안 상태 mutex는 잡지 않는다.
+        """
+        from rfad.storage.sealed_files import copy as copy_file, validate_reference
+
+        validate_reference(reference)
+        with self._mutex:
+            self._ensure_open()
+            source = self._safe_path(reference["uri"])
+            destination = self._safe_path(relative_path)
+            self._check_space(reference["bytes"])
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            _check_path_parts(destination)
+        copy_file(source, destination, reference)
+        self._flush_directory(destination.parent)
+
     def close(self) -> None:
         """! @brief writer 잠금을 해제한다. 파일을 삭제하거나 commit을 되돌리지 않는다."""
         with self._mutex:

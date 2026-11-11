@@ -23,12 +23,30 @@ int main(int argc, char** argv)
         Check(argc == 3, "two fixture paths required");
         std::ifstream powerFile(argv[1]), radiationFile(argv[2]);
         const Json power = Json::parse(powerFile), radiation = Json::parse(radiationFile);
-        Json specification{{"name", "원본 보존 연구"}, {"grid_levels_mm", power.at("grid_levels_mm")},
-            {"settings", power.at("settings")}, {"radiation_profile", radiation.at("acceptance_profile")},
-            {"port_profile", Json{{"id", "test"}, {"minimum_levels", 3}, {"max_s11_complex_delta", 0.02}, {"max_resonance_relative_shift", 0.01}}}};
+        Json specification{{"name", "원본 보존 연구"},
+                           {"grid_levels_mm", power.at("grid_levels_mm")},
+                           {"settings", power.at("settings")},
+                           {"radiation_profile", radiation.at("acceptance_profile")},
+                           {"port_profile", Json{{"id", "test"},
+                                                 {"minimum_levels", 3},
+                                                 {"max_s11_complex_delta", 0.02},
+                                                 {"max_resonance_relative_shift", 0.01}}}};
         specification["settings"]["curve_tolerance_mm"] = 0.012345678901234;
         auto fields = Studio::StudyDraft(specification);
-        Check(Studio::StudySpecification(specification, fields, true, true) == specification, "draft lost source numeric precision");
+        Check(Studio::StudySpecification(specification, fields, true, true) == specification,
+              "draft lost source numeric precision");
+        const Json copied = Studio::StudySpecification(specification, fields, true, true, true);
+        Check(copied.contains("loss_profile") && copied.at("loss_profile").at("max_relative_delta") == 0.02,
+              "new study copy missed explicit loss criterion");
+        Check(!specification.contains("loss_profile"), "historical study modified by new criterion");
+        Json extended = specification;
+        extended["settings"]["feature_subdivisions"] = 3;
+        extended["loss_profile"] = Json{{"id", "loss-test"},
+                                        {"minimum_levels", 3},
+                                        {"max_relative_delta", 0.02},
+                                        {"absolute_fraction_floor", 1e-5}};
+        Check(Studio::StudySpecification(extended, Studio::StudyDraft(extended), true, true) == extended,
+              "loss precision conditions changed");
         for (const auto* invalid : {"NaN", "1 trailing", "", "inf"})
         {
             auto wrong = fields;
@@ -65,16 +83,27 @@ int main(int argc, char** argv)
         view["runtime_matches"] = false;
         Check(!Studio::StudyActionAllowed(view, "resume", false), "changed runtime resumed");
         Json row{{"frequency_hz", 2.4e9}, {"status", "requires_review"}, {"relative_residual", -0.01}};
-        for (const auto* key : {"incident_power_w_s2", "reflected_power_w_s2", "accepted_power_w_s2", "radiated_power_w_s2", "dielectric_loss_w_s2", "conductor_loss_w_s2"})
+        for (const auto* key : {"incident_power_w_s2", "reflected_power_w_s2", "accepted_power_w_s2",
+                                "radiated_power_w_s2", "dielectric_loss_w_s2", "conductor_loss_w_s2"})
         {
             row[key] = 1e-24;
         }
         row["residual_w_s2"] = -1e-26;
-        view.update(Json{{"name", "검증"}, {"source_revision_matches_current", false}, {"assessment", nullptr},
-                         {"cases", Json::array({Json{{"grid_mm", 0.4}, {"phase", "done"}, {"power_balance", Json{{"frequencies", Json::array({row})}}}}})}});
+        row["sheet_loss_w_s2"] = 9e-25;
+        row["via_loss_w_s2"] = 1e-25;
+        view.update(Json{{"name", "검증"},
+                         {"source_revision_matches_current", false},
+                         {"assessment", nullptr},
+                         {"cases", Json::array({Json{{"grid_mm", 0.4},
+                                                     {"phase", "done"},
+                                                     {"power_balance", Json{{"frequencies", Json::array({row})}}}}})}});
         const auto text = Studio::StudySummary(view);
-        Check(text.find("W*s^2") != std::string::npos && text.find("-1e-26") != std::string::npos, "power unit or signed residual lost");
-        Check(text.find("이전 개정") != std::string::npos && text.find("실제 납품 물성") != std::string::npos, "source/unknown status missing");
+        Check(text.find("W*s^2") != std::string::npos && text.find("-1e-26") != std::string::npos,
+              "power unit or signed residual lost");
+        Check(text.find("이전 개정") != std::string::npos && text.find("실제 납품 물성") != std::string::npos,
+              "source/unknown status missing");
+        Check(text.find("PTH 비아") != std::string::npos && text.find("1e-25") != std::string::npos,
+              "independent barrel power missing");
         std::cout << "Project study presentation checks passed\n";
         return 0;
     }

@@ -44,7 +44,7 @@ class PowerToolTests(unittest.TestCase):
             """! @brief 실제 journal의 바이트/해시 실패를 모사한다."""
             raise ProjectError("E_HASH", "변경된 원시 필드")
 
-        service = SimpleNamespace(journal=SimpleNamespace(read_artifact=rejected))
+        service = SimpleNamespace(journal=SimpleNamespace(read_artifact=rejected, verify_file=rejected))
         with patch.object(tool, "call", return_value=opened), self.assertRaisesRegex(ProjectError, "변경된 원시"):
             tool.load_result(service, {"artifact_id": "expected"}, {"context": {}})
 

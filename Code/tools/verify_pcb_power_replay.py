@@ -26,7 +26,9 @@ def native_jobs(state):
 def run(report_path, proof_path):
     """! @brief 실패한 후처리를 자동 교체하지 않고 동일 키의 재조회만 허용한다."""
     report = json.loads(report_path.read_bytes())
-    require(report.get("status") == "completed", "완료한 전력 연구가 필요합니다.")
+    require(report.get("status") in {"completed", "completed_with_blocked_cases"}, "완료한 전력 연구가 필요합니다.")
+    completed = {key: row for key, row in report["runs"].items() if row["status"] == "completed"}
+    require(bool(completed), "재후처리할 완료 손실 결과가 없습니다.")
     workspace = Path(report["workspace"])
     if proof_path.exists():
         proof = json.loads(proof_path.read_bytes())
@@ -36,11 +38,11 @@ def run(report_path, proof_path):
     runtime = SolverRuntime()
     require(runtime.identity == report["runtime_identity"], "현재 worker가 원래 전력 연구와 다릅니다.")
     subject = report["subject"]
-    entry = report["runs"][str(report["manifest"]["grid_levels_mm"][-1])]
+    entry = max(completed.values(), key=lambda row: row["power_balance"]["recording"]["estimated_field_bytes"])
     views, sealed = {}, {}
     with ProjectService(workspace, solver_runtime=runtime, auto_run=True) as service:
         before = native_jobs(service.journal.read())
-        for key, row in report["runs"].items():
+        for key, row in completed.items():
             load_result(service, row, subject)
             view = call(service, "result.open", {"artifact_id": row["artifact_id"]}, subject["context"])
             views[key] = view
@@ -55,12 +57,12 @@ def run(report_path, proof_path):
         after = native_jobs(service.journal.read())
         require(before == after, "후처리 중 native 실행 요청이 추가되었습니다.")
         for ref in sealed.values():
-            service.journal.read_artifact(ref)
+            service.journal.verify_file(ref)
         proof.update(native_job_ids_before=before, native_job_ids_after=after, original_sealed_files=len(sealed),
                      original_files_unchanged=True, independent_loss_identical=True, repeated_artifact_id=repeated["artifact_id"])
     with ProjectService(workspace, auto_run=False) as reopened:
         require(native_jobs(reopened.journal.read()) == before, "solver 없는 재열기에서 native 작업이 바뀌었습니다.")
-        for key, row in report["runs"].items():
+        for key, row in completed.items():
             require(call(reopened, "result.open", {"artifact_id": row["artifact_id"]}, subject["context"]) == views[key], "해석기 없는 재열기 결과가 다릅니다.")
             load_result(reopened, row, subject)
     proof.update(status="passed", restored_without_solver=True, physics_validated=False)

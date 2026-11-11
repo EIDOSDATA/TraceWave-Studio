@@ -6,6 +6,7 @@ import json
 from rfad.application.canonical import canonical_bytes
 from rfad.application.convergence import compare_samples
 from rfad.application.pcb_power import validate_result as validate_power
+from rfad.application.pcb_loss_convergence import assess_losses
 from rfad.application.pcb_radiation import validate_result as validate_radiation
 from rfad.application.radiation_comparison import compare_cases, power_audit
 from rfad.domain.errors import ProjectError
@@ -53,11 +54,12 @@ def assessment(service, study):
     radiation = comparisons[-1].get("radiation", {}).get("status", "not_evaluated") if comparisons and enough else "not_established"
     budget = power_audit(records[-1][0], records[-1][1], spec["radiation_profile"]) if records[-1][1] is not None else None
     balance = records[-1][2]["full_energy_closure"] if records[-1][2] is not None else "not_evaluated"
+    losses = assess_losses([item[2] for item in records], spec["loss_profile"]) if "loss_profile" in spec and all(item[2] is not None for item in records) else None
     return {"schema": "rfad.project-study-assessment/0.1", "study_id": study["study_id"], "snapshot": study["snapshot"],
             "definition": study["definition"], "case_result_ids": [case["result_id"] for case in study["cases"]],
             "scope": "mesh_axis_only", "minimum_levels_met": enough,
             "port_stability": port, "radiation_mesh_stability": radiation, "comparisons": comparisons,
-            "reference_radiation_budget": budget, "reference_energy_closure": balance,
+            "reference_radiation_budget": budget, "reference_energy_closure": balance, "individual_loss_stability": losses,
             "all_axes_convergence": "not_evaluated", "physics_validated": False,
             "fabrication_validated": False, "measurement_validated": False}
 
@@ -74,7 +76,7 @@ def view(service, state, study):
             _, _, power = read_case(service, study, case)
             if power is not None:
                 row["power_balance"] = {key: deepcopy(power[key]) for key in ("full_energy_closure", "max_relative_residual", "power_unit")}
-                row["power_balance"]["frequencies"] = [{key: deepcopy(value) for key, value in item.items() if key != "sheet_components"}
+                row["power_balance"]["frequencies"] = [{key: deepcopy(value) for key, value in item.items() if key not in {"sheet_components", "via_components", "dielectric_components"}}
                                                            for item in power["frequencies"]]
         rows.append(row)
     job = state["jobs"].get(study.get("current_job_id"))
@@ -92,6 +94,12 @@ def view(service, state, study):
         if (result["assessment"].get("study_id") != study["study_id"] or result["assessment"].get("snapshot") != study["snapshot"]
                 or result["assessment"].get("definition") != study["definition"]):
             raise ProjectError("E_HASH", "격자 판정의 연구/원본 참조가 다릅니다.")
+        losses = result["assessment"].get("individual_loss_stability")
+        if losses is not None:
+            for comparison in losses["comparisons"]:
+                components = comparison.pop("components")
+                worst = max(components, key=lambda item: item["absolute_fraction_delta"] / item["allowed_fraction_delta"])
+                comparison.update(component_count=len(components), worst_component=worst)
     if len(canonical_bytes(result)) > 60 * 1024:
         raise ProjectError("E_RESOURCE", "연구 표시 자료가 60 KiB를 초과했습니다.")
     return result

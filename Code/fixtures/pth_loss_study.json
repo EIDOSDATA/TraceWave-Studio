@@ -1,0 +1,116 @@
+{
+  "schema": "rfad.pcb-loss-study/0.1",
+  "id": "pth-independent-loss-partition/0.1",
+  "fixture": "pth_worker_smoke.json",
+  "description": "Explicit hollow bulk-copper execution fixture only. Global mesh stability does not resolve GHz skin depth; fabrication/material/measurement remain unconfirmed.",
+  "acceptance_profile": {
+    "id": "independent-loss-initial/0.1",
+    "minimum_levels": 3,
+    "max_relative_delta": 0.02,
+    "absolute_fraction_floor": 1e-05
+  },
+  "cases": [
+    {
+      "label": "pth-mesh-0",
+      "axis": "mesh",
+      "settings": {
+        "frequency_hz": {
+          "start": 10000000000.0,
+          "stop": 11000000000.0,
+          "count": 51
+        },
+        "grid_mm": 0.5,
+        "air_padding_mm": 30,
+        "curve_tolerance_mm": 0.01,
+        "max_timesteps": 200000,
+        "end_criterion": 1e-05,
+        "mesh_policy": {
+          "kind": "graded_air",
+          "air_cell_mm": 1.5,
+          "growth_ratio": 1.5
+        },
+        "radiation": {
+          "frequency_hz": [
+            10000000000.0,
+            10500000000.0,
+            11000000000.0
+          ],
+          "theta_step_deg": 15,
+          "phi_step_deg": 15,
+          "box_clearance_mm": 6
+        },
+        "power_balance": {
+          "max_relative_residual": 0.03
+        }
+      }
+    },
+    {
+      "label": "pth-mesh-1",
+      "axis": "mesh",
+      "settings": {
+        "frequency_hz": {
+          "start": 10000000000.0,
+          "stop": 11000000000.0,
+          "count": 51
+        },
+        "grid_mm": 0.45,
+        "air_padding_mm": 30,
+        "curve_tolerance_mm": 0.01,
+        "max_timesteps": 200000,
+        "end_criterion": 1e-05,
+        "mesh_policy": {
+          "kind": "graded_air",
+          "air_cell_mm": 1.5,
+          "growth_ratio": 1.5
+        },
+        "radiation": {
+          "frequency_hz": [
+            10000000000.0,
+            10500000000.0,
+            11000000000.0
+          ],
+          "theta_step_deg": 15,
+          "phi_step_deg": 15,
+          "box_clearance_mm": 6
+        },
+        "power_balance": {
+          "max_relative_residual": 0.03
+        }
+      }
+    },
+    {
+      "label": "pth-mesh-2",
+      "axis": "mesh",
+      "settings": {
+        "frequency_hz": {
+          "start": 10000000000.0,
+          "stop": 11000000000.0,
+          "count": 51
+        },
+        "grid_mm": 0.4,
+        "air_padding_mm": 30,
+        "curve_tolerance_mm": 0.01,
+        "max_timesteps": 200000,
+        "end_criterion": 1e-05,
+        "mesh_policy": {
+          "kind": "graded_air",
+          "air_cell_mm": 1.5,
+          "growth_ratio": 1.5
+        },
+        "radiation": {
+          "frequency_hz": [
+            10000000000.0,
+            10500000000.0,
+            11000000000.0
+          ],
+          "theta_step_deg": 15,
+          "phi_step_deg": 15,
+          "box_clearance_mm": 6
+        },
+        "power_balance": {
+          "max_relative_residual": 0.03
+        }
+      }
+    }
+  ]
+}

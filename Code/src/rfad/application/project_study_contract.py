@@ -8,6 +8,7 @@ from rfad.application.pcb_solver import build_pcb_plan, validate_settings
 from rfad.application.solver_requests import require_fields, require_uuid
 from rfad.application.radiation_study import validate_profile
 from rfad.application.radiation_study_guards import plan_guards
+from rfad.application.pcb_loss_convergence import initial_profile as loss_profile, validate_profile as validate_loss_profile
 from rfad.domain.errors import ProjectError
 
 
@@ -24,6 +25,7 @@ def initial_specification():
                          "grid_mm": 0.4, "air_padding_mm": 90, "curve_tolerance_mm": 0.025,
                          "max_timesteps": 100000, "end_criterion": 1e-5,
                          "mesh_policy": {"kind": "graded_air", "air_cell_mm": 6, "growth_ratio": 1.5}},
+            "loss_profile": loss_profile(),
             "port_profile": {"id": "project-mesh-initial/0.1", "minimum_levels": 3,
                              "max_s11_complex_delta": 0.02, "max_resonance_relative_shift": 0.01},
             "radiation_profile": {"id": "project-radiation-mesh-initial/0.1", "minimum_levels": 3,
@@ -36,7 +38,9 @@ def initial_specification():
 
 def validate_specification(spec):
     """! @brief 계산 완료와 수렴 판정을 구분하며 모든 설정/기준을 생성 시 고정한다."""
-    require_fields(spec, {"name", "grid_levels_mm", "settings", "port_profile", "radiation_profile"})
+    require_fields(spec, {"name", "grid_levels_mm", "settings", "port_profile", "radiation_profile"}, {"loss_profile"})
+    if "loss_profile" in spec:
+        validate_loss_profile(spec["loss_profile"])
     if type(spec["name"]) is not str or not 1 <= len(spec["name"].strip()) <= 120:
         raise ProjectError("E_SCHEMA", "연구 이름은 1~120자여야 합니다.")
     levels = spec["grid_levels_mm"]

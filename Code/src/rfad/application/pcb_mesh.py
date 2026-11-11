@@ -124,12 +124,16 @@ def policy_report(case, lines):
                       "air_and_interface_max_adjacent_ratio": max(max(a / b, b / a) for a, b in air_pairs),
                       "axis_max_adjacent_ratio": max(max(a / b, b / a) for a, b in zip(steps, steps[1:]))}
     highest_excitation = case["excitation"]["center_hz"] + case["excitation"]["width_hz"]
-    return {"schema": "rfad.pcb-mesh-policy/0.1", **policy, "padding_reference": "physical_board_outer_face_to_outer_boundary",
+    report = {"schema": "rfad.pcb-mesh-policy/0.1", **policy, "padding_reference": "physical_board_outer_face_to_outer_boundary",
             "pml_cells_per_end": 8, "pml_thickness_mm": 8 * policy["air_cell_mm"], "padding_extension_preserves_common_lines": True,
             "air_growth_postcondition_checked": True, "interior_critical_intervals_unchanged": True,
             "interior_growth_postcondition_enforced": False,
             "highest_excitation_frequency_hz": highest_excitation, "vacuum_wavelength_mm": 299792458.0 / highest_excitation * 1000,
             "air_cells_per_minimum_wavelength": 299792458.0 / highest_excitation * 1000 / policy["air_cell_mm"], "axes": axes}
+    if "feature_subdivisions" in settings:
+        report.update(feature_subdivisions=settings["feature_subdivisions"],
+                      interior_critical_intervals_unchanged=settings["feature_subdivisions"] == 1)
+    return report
 
 
 def mesh_lines(case):
@@ -177,7 +181,9 @@ def mesh_lines(case):
                 if gap > 1e-9:
                     fail("E_GEOMETRY", "격자 임계선 사이 간격이 너무 작습니다.", "mesh")
                 continue
-            count = math.ceil(gap / settings["grid_mm"])
+            count = max(math.ceil(gap / settings["grid_mm"]), settings.get("feature_subdivisions", 1))
+            if gap / count < 1e-4:
+                fail("E_GEOMETRY", "임계 구간 분할 후 최소 격자 간격이 0.0001 mm보다 작습니다.", "settings.feature_subdivisions")
             points.extend(left + gap * i / count for i in range(count))
         points.append(critical_positions[-1])
         points = sorted(set(round(v, 12) for v in points))

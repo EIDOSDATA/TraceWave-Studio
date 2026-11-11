@@ -107,20 +107,32 @@ Studio::StudyFields Studio::StudyDraft(const Json& specification)
     const auto policy = settings.value("mesh_policy", Json{{"air_cell_mm", 6}, {"growth_ratio", 1.5}});
     fields["air_cell_mm"] = InputFormat(policy.at("air_cell_mm"));
     fields["growth_ratio"] = InputFormat(policy.at("growth_ratio"));
-    const auto radiation = settings.value("radiation", Json{{"frequency_hz", Json::array({frequency.at("start"),
-        (frequency.at("start").get<double>() + frequency.at("stop").get<double>()) / 2, frequency.at("stop")})},
-        {"theta_step_deg", 15}, {"phi_step_deg", 15}, {"box_clearance_mm", 30}});
+    const auto radiation = settings.value(
+        "radiation", Json{{"frequency_hz",
+                           Json::array({frequency.at("start"),
+                                        (frequency.at("start").get<double>() + frequency.at("stop").get<double>()) / 2,
+                                        frequency.at("stop")})},
+                          {"theta_step_deg", 15},
+                          {"phi_step_deg", 15},
+                          {"box_clearance_mm", 30}});
     fields["frequencies"] = List(radiation.at("frequency_hz"));
     for (const auto* key : {"theta_step_deg", "phi_step_deg", "box_clearance_mm"})
     {
         fields[key] = InputFormat(radiation.at(key));
     }
-    fields["max_relative_residual"] = InputFormat(settings.value("power_balance", Json{{"max_relative_residual", 0.03}}).at("max_relative_residual"));
+    fields["max_relative_residual"] =
+        InputFormat(settings.value("power_balance", Json{{"max_relative_residual", 0.03}}).at("max_relative_residual"));
+    fields["feature_subdivisions"] = InputFormat(settings.value("feature_subdivisions", Json(1)));
+    const auto losses =
+        specification.value("loss_profile", Json{{"max_relative_delta", 0.02}, {"absolute_fraction_floor", 1e-5}});
+    fields["loss_max_relative_delta"] = InputFormat(losses.at("max_relative_delta"));
+    fields["loss_absolute_fraction_floor"] = InputFormat(losses.at("absolute_fraction_floor"));
     for (const auto* key : {"max_s11_complex_delta", "max_resonance_relative_shift"})
     {
         fields[std::string("port_") + key] = InputFormat(specification.at("port_profile").at(key));
     }
-    for (auto it = specification.at("radiation_profile").begin(); it != specification.at("radiation_profile").end(); ++it)
+    for (auto it = specification.at("radiation_profile").begin(); it != specification.at("radiation_profile").end();
+         ++it)
     {
         if (it.key() != "id" && it.key() != "minimum_levels")
         {
@@ -130,7 +142,8 @@ Studio::StudyFields Studio::StudyDraft(const Json& specification)
     return fields;
 }
 
-Json Studio::StudySpecification(const Json& basis, const StudyFields& fields, bool radiation, bool losses)
+Json Studio::StudySpecification(const Json& basis, const StudyFields& fields, bool radiation, bool losses,
+                                bool newStudy)
 {
     Json result = basis;
     result["name"] = fields.at("name");
@@ -141,13 +154,22 @@ Json Studio::StudySpecification(const Json& basis, const StudyFields& fields, bo
     }
     auto& settings = result["settings"];
     settings["grid_mm"] = result.at("grid_levels_mm").back();
-    settings["frequency_hz"] = Json{{"start", Number(fields.at("start"))}, {"stop", Number(fields.at("stop"))}, {"count", Integer(fields.at("count"))}};
+    settings["frequency_hz"] = Json{{"start", Number(fields.at("start"))},
+                                    {"stop", Number(fields.at("stop"))},
+                                    {"count", Integer(fields.at("count"))}};
     for (const auto* key : {"air_padding_mm", "curve_tolerance_mm", "end_criterion"})
     {
         settings[key] = Number(fields.at(key));
     }
     settings["max_timesteps"] = Integer(fields.at("max_timesteps"));
-    settings["mesh_policy"] = Json{{"kind", "graded_air"}, {"air_cell_mm", Number(fields.at("air_cell_mm"))}, {"growth_ratio", Number(fields.at("growth_ratio"))}};
+    const int subdivisions = Integer(fields.at("feature_subdivisions"));
+    if (settings.contains("feature_subdivisions") || subdivisions != 1)
+    {
+        settings["feature_subdivisions"] = subdivisions;
+    }
+    settings["mesh_policy"] = Json{{"kind", "graded_air"},
+                                   {"air_cell_mm", Number(fields.at("air_cell_mm"))},
+                                   {"growth_ratio", Number(fields.at("growth_ratio"))}};
     settings.erase("radiation");
     settings.erase("power_balance");
     if (losses && !radiation)
@@ -157,12 +179,22 @@ Json Studio::StudySpecification(const Json& basis, const StudyFields& fields, bo
     if (radiation)
     {
         settings["radiation"] = Json{{"frequency_hz", Numbers(fields.at("frequencies"))},
-            {"theta_step_deg", Integer(fields.at("theta_step_deg"))}, {"phi_step_deg", Integer(fields.at("phi_step_deg"))},
-            {"box_clearance_mm", Number(fields.at("box_clearance_mm"))}};
+                                     {"theta_step_deg", Integer(fields.at("theta_step_deg"))},
+                                     {"phi_step_deg", Integer(fields.at("phi_step_deg"))},
+                                     {"box_clearance_mm", Number(fields.at("box_clearance_mm"))}};
     }
     if (losses)
     {
         settings["power_balance"] = Json{{"max_relative_residual", Number(fields.at("max_relative_residual"))}};
+    }
+    const double relative = Number(fields.at("loss_max_relative_delta"));
+    const double floor = Number(fields.at("loss_absolute_fraction_floor"));
+    if (result.contains("loss_profile") || relative != 0.02 || floor != 1e-5 || (newStudy && losses))
+    {
+        result["loss_profile"] =
+            result.value("loss_profile", Json{{"id", "independent-loss-initial/0.1"}, {"minimum_levels", 3}});
+        result["loss_profile"]["max_relative_delta"] = relative;
+        result["loss_profile"]["absolute_fraction_floor"] = floor;
     }
     for (const auto* key : {"max_s11_complex_delta", "max_resonance_relative_shift"})
     {
@@ -180,11 +212,24 @@ Json Studio::StudySpecification(const Json& basis, const StudyFields& fields, bo
 
 std::string Studio::StudyStatus(const std::string& state)
 {
-    const std::map<std::string, std::string> labels{{"ready", "실행 전"}, {"running", "실행 중"}, {"resuming", "재개 확인 중"},
-        {"cancel_requested", "종료 확인 중"}, {"cancelled", "취소됨"}, {"interrupted", "중단됨"}, {"blocked", "진행 차단"},
-        {"completed", "계산 완료"}, {"failed", "실패"}, {"prepare", "준비"}, {"solve", "해석"}, {"done", "완료"},
-        {"passed", "초기 기준 충족"}, {"established", "초기 기준 충족"}, {"not_established", "미확립"},
-        {"not_evaluated", "미평가"}, {"within_initial_numerical_budget", "초기 수지 기준 충족"}, {"requires_review", "검토 필요"}};
+    const std::map<std::string, std::string> labels{{"ready", "실행 전"},
+                                                    {"running", "실행 중"},
+                                                    {"resuming", "재개 확인 중"},
+                                                    {"cancel_requested", "종료 확인 중"},
+                                                    {"cancelled", "취소됨"},
+                                                    {"interrupted", "중단됨"},
+                                                    {"blocked", "진행 차단"},
+                                                    {"completed", "계산 완료"},
+                                                    {"failed", "실패"},
+                                                    {"prepare", "준비"},
+                                                    {"solve", "해석"},
+                                                    {"done", "완료"},
+                                                    {"passed", "초기 기준 충족"},
+                                                    {"established", "초기 기준 충족"},
+                                                    {"not_established", "미확립"},
+                                                    {"not_evaluated", "미평가"},
+                                                    {"within_initial_numerical_budget", "초기 수지 기준 충족"},
+                                                    {"requires_review", "검토 필요"}};
     const auto found = labels.find(state);
     return found == labels.end() ? state : found->second;
 }
@@ -208,18 +253,22 @@ bool Studio::StudyActionAllowed(const Json& view, const std::string& action, boo
     {
         return state == "ready";
     }
-    return action == "resume" && (state == "cancelled" || state == "interrupted" || state == "failed" || state == "blocked");
+    return action == "resume" &&
+           (state == "cancelled" || state == "interrupted" || state == "failed" || state == "blocked");
 }
 
 std::string Studio::StudySummary(const Json& view)
 {
     std::ostringstream output;
     output << "연구: " << view.at("name").get<std::string>() << " / " << StudyStatus(view.at("state")) << '\n'
-           << (view.value("source_revision_matches_current", false) ? "현재 설계와 동일한 개정" : "이전 개정의 고정 결과") << '\n'
+           << (view.value("source_revision_matches_current", false) ? "현재 설계와 동일한 개정"
+                                                                    : "이전 개정의 고정 결과")
+           << '\n'
            << view.value("message", std::string()) << "\n\n전력 단위: W*s^2 / 절대 W 값 미정\n";
     if (!view.value("runtime_matches", false))
     {
-        output << "현재 해석 환경이 미연결이거나 원래 worker와 다릅니다. 결과 조회만 가능하며 실행/재개는 차단합니다.\n";
+        output
+            << "현재 해석 환경이 미연결이거나 원래 worker와 다릅니다. 결과 조회만 가능하며 실행/재개는 차단합니다.\n";
     }
     for (const auto& row : view.at("cases"))
     {
@@ -232,13 +281,23 @@ std::string Studio::StudySummary(const Json& view)
         for (const auto& power : row.at("power_balance").at("frequencies"))
         {
             output << Format(power.at("frequency_hz")) << " Hz: " << StudyStatus(power.at("status")) << '\n';
-            for (const auto& entry : std::vector<std::pair<std::string, std::string>>{
-                {"입사", "incident_power_w_s2"}, {"반사", "reflected_power_w_s2"}, {"수용", "accepted_power_w_s2"},
-                {"방사", "radiated_power_w_s2"}, {"유전체", "dielectric_loss_w_s2"}, {"도체", "conductor_loss_w_s2"}, {"부호 있는 잔차", "residual_w_s2"}})
+            for (const auto& entry :
+                 std::vector<std::pair<std::string, std::string>>{{"입사", "incident_power_w_s2"},
+                                                                  {"반사", "reflected_power_w_s2"},
+                                                                  {"수용", "accepted_power_w_s2"},
+                                                                  {"방사", "radiated_power_w_s2"},
+                                                                  {"유전체", "dielectric_loss_w_s2"},
+                                                                  {"도체", "conductor_loss_w_s2"},
+                                                                  {"부호 있는 잔차", "residual_w_s2"}})
             {
                 output << "  " << entry.first << ": " << Format(power.at(entry.second)) << '\n';
             }
             output << "  상대 잔차: " << Format(power.at("relative_residual")) << '\n';
+            if (power.contains("via_loss_w_s2"))
+            {
+                output << "  평면 도체: " << Format(power.at("sheet_loss_w_s2"))
+                       << " / PTH 비아: " << Format(power.at("via_loss_w_s2")) << '\n';
+            }
         }
     }
     if (!view.at("assessment").is_null())
@@ -247,12 +306,18 @@ std::string Studio::StudySummary(const Json& view)
         output << "\n포트 격자 안정성: " << StudyStatus(value.at("port_stability"))
                << "\n방사 격자 안정성: " << StudyStatus(value.at("radiation_mesh_stability"))
                << "\n기준 전력 수지: " << StudyStatus(value.at("reference_energy_closure")) << '\n';
+        if (value.contains("individual_loss_stability") && !value.at("individual_loss_stability").is_null())
+        {
+            output << "개별 유전체 / 도체 / 비아 손실 안정성: "
+                   << StudyStatus(value.at("individual_loss_stability").at("status")) << '\n';
+        }
         if (!value.at("reference_radiation_budget").is_null())
         {
-            output << "기준 방사 전력 예산: " << StudyStatus(value.at("reference_radiation_budget").at("status")) << '\n';
+            output << "기준 방사 전력 예산: " << StudyStatus(value.at("reference_radiation_budget").at("status"))
+                   << '\n';
         }
     }
-    output << "\n격자 한 축의 연구입니다. 전체 세 축 수렴과 개별 손실의 정밀 수렴은 별도입니다.\n"
+    output << "\n격자 한 축의 설정 안정성입니다. 전체 세 축 수렴, skin depth 및 연속체 정확도는 별도입니다.\n"
               "실제 납품 물성, 제작/측정 조건은 미정이며 실물 성능 합격이 아닙니다.";
     return output.str();
 }

@@ -69,7 +69,7 @@ def stage_solver_job(journal, runtime, job):
         relative = "input/" + item["path"].removeprefix("output/")
         target = stage / relative
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_bytes(journal.read_artifact(item["artifact"]))
+        journal.copy_artifact(item["artifact"], target.relative_to(journal.root).as_posix())
         request["input_files"].append({"path": relative, "role": item["role"], "sha256": item["sha256"], "bytes": item["bytes"]})
     (stage / "request.json").write_bytes(canonical_bytes(request))
     return stage, request

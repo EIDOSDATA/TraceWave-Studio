@@ -25,7 +25,7 @@ PROFILE = "rfad.openems.pcb-single-port/0.1"
 def validate_settings(settings):
     """! @brief 공개 설정을 명시적이고 유한한 범위로 한정한다."""
     keys = {"frequency_hz", "grid_mm", "air_padding_mm", "curve_tolerance_mm", "max_timesteps", "end_criterion"}
-    if type(settings) is not dict or not keys <= set(settings) or set(settings) - keys - {"mesh_policy", "radiation", "power_balance"}:
+    if type(settings) is not dict or not keys <= set(settings) or set(settings) - keys - {"mesh_policy", "radiation", "power_balance", "feature_subdivisions"}:
         fail("E_SCHEMA", "PCB 해석 설정의 필수 필드가 다릅니다.", "settings")
     frequency = settings["frequency_hz"]
     if type(frequency) is not dict or set(frequency) != {"start", "stop", "count"}:
@@ -45,6 +45,8 @@ def validate_settings(settings):
         fail("E_GEOMETRY", "공기 여백은 격자의 10배 이상, 곡선 근사 오차는 격자의 절반 이하여야 합니다.", "settings")
     if type(settings["max_timesteps"]) is not int or not 1000 <= settings["max_timesteps"] <= 200000:
         fail("E_RESOURCE", "최대 time step은 1000~200000입니다.", "settings.max_timesteps")
+    if "feature_subdivisions" in settings and (type(settings["feature_subdivisions"]) is not int or not 1 <= settings["feature_subdivisions"] <= 8):
+        fail("E_RESOURCE", "임계 구간의 최소 분할 수는 1~8의 정수여야 합니다.", "settings.feature_subdivisions")
     if "mesh_policy" in settings:
         validate_policy(settings)
     from rfad.application.pcb_radiation import validate_settings as validate_radiation_settings

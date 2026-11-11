@@ -57,7 +57,7 @@ def stored_case():
              "analysis_plan": {"plan_id": plan["plan_id"], "content_hash": canonical_hash(plan), "artifact": plan_ref}}
     report = {"runs": {case["settings_hash"]: entry}, "runtime_identity": plan["runtime_identity"],
               "subject": {"snapshot": plan["snapshot"], "context": {"project_id": plan["snapshot"]["project_id"]}}}
-    return case, report, {"artifact_id": "original", "files": files}, SimpleNamespace(journal=SimpleNamespace(read_artifact=read)), blobs
+    return case, report, {"artifact_id": "original", "files": files}, SimpleNamespace(journal=SimpleNamespace(read_artifact=read, verify_file=read)), blobs
 
 
 class RadiationConvergenceToolTests(unittest.TestCase):
