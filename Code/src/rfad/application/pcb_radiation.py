@@ -1,6 +1,7 @@
 """! @brief 사용자 PCB의 선택적 NF2FF 입력과 공기 기록 상자 계약을 정의한다."""
 
 from copy import deepcopy
+from bisect import bisect_left, bisect_right
 import math
 
 from rfad.application.pcb_geometry import fail
@@ -17,7 +18,8 @@ def validate_settings(settings):
         if "radiation" in settings:
             fail("E_SCHEMA", "방사 설정은 명시적 객체여야 합니다.", "settings.radiation")
         return
-    if type(value) is not dict or set(value) != {"frequency_hz", "theta_step_deg", "phi_step_deg"}:
+    required = {"frequency_hz", "theta_step_deg", "phi_step_deg"}
+    if type(value) is not dict or not required <= set(value) or set(value) - required - {"box_clearance_mm"}:
         fail("E_SCHEMA", "방사 주파수와 theta/phi 간격이 필요합니다.", "settings.radiation")
     frequencies = value["frequency_hz"]
     band = settings["frequency_hz"]
@@ -28,6 +30,10 @@ def validate_settings(settings):
     for key in ("theta_step_deg", "phi_step_deg"):
         if type(value[key]) is not int or value[key] not in (5, 10, 15, 30):
             fail("E_RESOURCE", "방사 각도 간격은 5/10/15/30 degree를 지원합니다.", "settings.radiation." + key)
+    if "box_clearance_mm" in value:
+        distance = value["box_clearance_mm"]
+        if type(distance) not in (int, float) or not 0 < distance <= 150:
+            fail("E_RESOURCE", "기록 상자 거리는 명시적 양수이며 150 mm 이하여야 합니다.", "settings.radiation.box_clearance_mm")
 
 
 def recording(case, lines):
@@ -36,21 +42,33 @@ def recording(case, lines):
         return None
     z = [v for layer in case["layers"] for v in (layer["z_min_mm"], layer["z_min_mm"] + layer["thickness_mm"])]
     physical = [*case["board"]["bounds_mm"], [min(z), max(z)]]
+    value = case["settings"]["radiation"]
+    clearance = value.get("box_clearance_mm")
     low, high = [], []
     for axis, bounds in zip("xyz", physical):
         values = lines[axis]
-        if len(values) <= 22 or not values[10] < bounds[0] or not values[-11] > bounds[1]:
+        first, last = 10, len(values) - 11
+        if clearance is not None:
+            first = bisect_right(values, round(bounds[0] - clearance, 12)) - 1
+            last = bisect_left(values, round(bounds[1] + clearance, 12))
+        if (len(values) <= 22 or first < 10 or last > len(values) - 11
+                or first >= last or not values[first] < bounds[0] or not values[last] > bounds[1]):
             fail("E_GEOMETRY", "NF2FF 폐곡면과 기판 및 PML 사이에 공기 격자가 부족합니다. 공기 여백을 늘리십시오.", "settings.air_padding_mm")
-        low.append(values[10])
-        high.append(values[-11])
-    value = case["settings"]["radiation"]
-    return {"schema": "rfad.nf2ff-recording/0.1", "name": NAME, "start_mm": low, "stop_mm": high,
+        low.append(values[first])
+        high.append(values[last])
+    result = {"schema": "rfad.nf2ff-recording/0.1", "name": NAME, "start_mm": low, "stop_mm": high,
             "center_m": [(a + b) * 0.0005 for a, b in zip(low, high)], "radius_m": 1.0,
             "frequency_hz": deepcopy(value["frequency_hz"]),
             "theta_deg": list(range(0, 181, value["theta_step_deg"])),
             "phi_deg": list(range(0, 360, value["phi_step_deg"])),
             "pml_separation_cells": 2, "surrounding_medium": "vacuum",
             "field_recording": "frequency_domain", "physics_validated": False}
+    if clearance is not None:
+        result.update(box_clearance_request_mm=clearance, phase_center_policy="physical_board_center",
+                      center_m=[(a + b) * 0.0005 for a, b in physical],
+                      actual_clearance_mm=[[a - lo, hi - b] for (a, b), lo, hi in zip(physical, low, high)],
+                      pml_clearance_mm=[[lo - lines[axis][8], lines[axis][-9] - hi] for axis, lo, hi in zip("xyz", low, high)])
+    return result
 
 
 def surface_names(plan):

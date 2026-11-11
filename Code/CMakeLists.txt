@@ -75,6 +75,7 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/studio_frame.cpp
     ui/wxwidgets/studio_layout.cpp
     ui/wxwidgets/study_report_dialog.cpp
+    ui/wxwidgets/study_report_model.cpp
     ui/wxwidgets/studio_geometry_dialogs.cpp
     ui/wxwidgets/studio_drawing.cpp
     ui/wxwidgets/studio_validation.cpp
@@ -119,6 +120,15 @@ set_target_properties(tracewave_gui PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE
 
 include(CTest)
 if(BUILD_TESTING)
+    add_executable(tracewave_study_report_tests tests/study_report_model_test.cpp ui/wxwidgets/study_report_model.cpp)
+    target_include_directories(tracewave_study_report_tests PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
+    set_target_properties(tracewave_study_report_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
+    if(MSVC)
+        target_compile_options(tracewave_study_report_tests PRIVATE /W4 /utf-8)
+    else()
+        target_compile_options(tracewave_study_report_tests PRIVATE -Wall -Wextra -Wpedantic -finput-charset=UTF-8 -fexec-charset=UTF-8)
+    endif()
+    add_test(NAME study_report COMMAND tracewave_study_report_tests)
     add_executable(tracewave_radiation_pattern_tests tests/radiation_pattern_test.cpp)
     target_include_directories(tracewave_radiation_pattern_tests PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
     set_target_properties(tracewave_radiation_pattern_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")

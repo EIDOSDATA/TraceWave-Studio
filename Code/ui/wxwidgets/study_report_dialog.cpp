@@ -1,5 +1,6 @@
 /** @file @brief 기존 서비스가 계산한 수렴 연구 보고서를 표시한다. */
 #include "study_report_dialog.h"
+#include "study_report_model.h"
 
 #include <wx/wx.h>
 #include <wx/filedlg.h>
@@ -8,7 +9,6 @@
 #include <filesystem>
 #include <fstream>
 #include <stdexcept>
-#include <sstream>
 
 namespace
 {
@@ -16,34 +16,6 @@ namespace
 wxString Text(const std::string& value)
 {
     return wxString::FromUTF8(value);
-}
-
-/** @brief 판정기의 상태만 번역하고 새로운 수렴 판정을 계산하지 않는다. */
-std::string Status(const std::string& value)
-{
-    if (value == "established" || value == "passed")
-    {
-        return "충족";
-    }
-    if (value == "failed")
-    {
-        return "미충족";
-    }
-    return "미확립";
-}
-
-/** @brief 비교 축을 사용자가 읽을 수 있는 이름으로 표시한다. */
-std::string Axis(const std::string& value)
-{
-    if (value == "mesh")
-    {
-        return "격자";
-    }
-    if (value == "boundary")
-    {
-        return "경계 거리";
-    }
-    return "시간 종료";
 }
 }
 
@@ -64,11 +36,7 @@ void ShowStudyReport(wxWindow* parent)
         }
         std::ifstream stream(path);
         const auto report = nlohmann::json::parse(stream);
-        if (report.at("schema") != "rfad.ifa-convergence-run/0.1" || !report.at("cases").is_array() ||
-            report.at("cases").size() > 18 || report.at("status") != "completed")
-        {
-            throw std::runtime_error("완료된 수렴 연구 보고서가 필요합니다.");
-        }
+        const auto view = Studio::PresentStudyReport(report);
         wxDialog dialog(parent, wxID_ANY, Text("수렴 연구와 결과 비교"), wxDefaultPosition,
                         parent->FromDIP(wxSize(960, 640)), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
         auto* sizer = new wxBoxSizer(wxVERTICAL);
@@ -79,23 +47,17 @@ void ShowStudyReport(wxWindow* parent)
         sizer->Add(notice, 0, wxEXPAND | wxALL, 10);
         auto* table = new wxListCtrl(&dialog, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT);
         int column = 0;
-        for (const auto* label : {"사례", "비교 축", "격자 mm", "공기 여백 mm", "종료 기준", "주파수 GHz"})
+        for (const auto& label : view.columns)
         {
             table->InsertColumn(column++, Text(label), wxLIST_FORMAT_LEFT, dialog.FromDIP(145));
         }
-        for (const auto& entry : report.at("cases"))
+        for (const auto& values : view.rows)
         {
-            const auto& settings = entry.at("settings");
-            const long row = table->InsertItem(table->GetItemCount(), Text(entry.at("label").get<std::string>()));
-            table->SetItem(row, 1, Text(Axis(entry.at("axis").get<std::string>())));
-            table->SetItem(row, 2, Text(settings.at("grid_mm").dump()));
-            table->SetItem(row, 3, Text(settings.at("air_padding_mm").dump()));
-            table->SetItem(row, 4, Text(settings.at("end_criterion").dump()));
-            const auto& frequency = settings.at("frequency_hz");
-            table->SetItem(row, 5,
-                           wxString::Format("%.4f .. %.4f (%d)", frequency.at("start").get<double>() / 1e9,
-                                            frequency.at("stop").get<double>() / 1e9,
-                                            frequency.at("count").get<int>()));
+            const long row = table->InsertItem(table->GetItemCount(), Text(values.front()));
+            for (std::size_t index = 1; index < values.size(); ++index)
+            {
+                table->SetItem(row, static_cast<int>(index), Text(values[index]));
+            }
         }
         table->SetColumnWidth(0, dialog.FromDIP(155));
         table->SetColumnWidth(1, dialog.FromDIP(100));
@@ -104,25 +66,7 @@ void ShowStudyReport(wxWindow* parent)
         table->SetColumnWidth(4, dialog.FromDIP(100));
         table->SetColumnWidth(5, dialog.FromDIP(235));
         sizer->Add(table, 1, wxEXPAND | wxLEFT | wxRIGHT, 10);
-        const auto& stability = report.at("assessment").at("numerical_stability");
-        std::ostringstream summary;
-        summary << "전체 수치 안정성: " << Status(stability.at("status").get<std::string>()) << "\n\n";
-        for (const auto* axis : {"mesh", "boundary", "termination"})
-        {
-            const auto& result = stability.at("axes").at(axis);
-            summary << Axis(axis) << ": " << Status(result.at("status").get<std::string>()) << '\n';
-            if (result.contains("final_pair") && result.at("final_pair").is_object())
-            {
-                const auto& pair = result.at("final_pair");
-                summary << "  마지막 복소 S11 최대 변화: " << pair.at("metrics").at("max_s11_complex_delta")
-                        << " (기준 " << pair.at("acceptance_profile").at("max_s11_complex_delta") << ")\n";
-                summary << "  공진 위치 비교: " << Status(pair.at("resonance").at("status").get<std::string>()) << '\n';
-            }
-            summary << '\n';
-        }
-        summary << "공진 미확립은 내부 공진 표본/대응 여부를 연구 결과에서 확인해야 합니다.\n"
-                   "전체 대역 정합과 제조/실측 정확도는 별도 검증 항목입니다.";
-        auto* assessment = new wxTextCtrl(&dialog, wxID_ANY, Text(summary.str()), wxDefaultPosition,
+        auto* assessment = new wxTextCtrl(&dialog, wxID_ANY, Text(view.summary), wxDefaultPosition,
                                           dialog.FromDIP(wxSize(-1, 220)), wxTE_MULTILINE | wxTE_READONLY | wxHSCROLL);
         sizer->Add(assessment, 1, wxEXPAND | wxALL, 10);
         sizer->Add(dialog.CreateButtonSizer(wxOK), 0, wxALIGN_RIGHT | wxALL, 10);

@@ -1,0 +1,3378 @@
+{
+  "schema": "rfad.verification.pcb-radiation-convergence/0.1",
+  "verified_at": "2026-11-11T10:41:23.687922+00:00",
+  "baseline_commit": "cdb5b12d7b708b70ae0dbfdf9333e1bff2f575c9",
+  "design_baseline": "RFAD-D0-3.4",
+  "scope": "RO4350B exploratory single-port IFA, three specified target-band frequencies, sampled numerical stability only",
+  "status": "numerical_stability_established_physics_unvalidated",
+  "study": {
+    "acceptance_profile": {
+      "id": "pcb-radiation-initial-numerical-budget/0.1",
+      "max_directivity_delta_db": 0.1,
+      "max_efficiency_delta": 0.02,
+      "max_gain_delta_db": 0.1,
+      "max_passivity_excess": 0.01,
+      "max_pattern_delta": 0.02,
+      "max_port_balance_relative_error": 1e-08,
+      "max_radiated_relative_delta": 0.02,
+      "max_s11_complex_delta": 0.02,
+      "max_sphere_relative_error": 0.03,
+      "minimum_levels": 3
+    },
+    "base_settings": {
+      "air_padding_mm": 90,
+      "curve_tolerance_mm": 0.025,
+      "end_criterion": 1e-05,
+      "frequency_hz": {
+        "count": 201,
+        "start": 2400000000,
+        "stop": 2483500000
+      },
+      "grid_mm": 0.4,
+      "max_timesteps": 100000,
+      "mesh_policy": {
+        "air_cell_mm": 6,
+        "growth_ratio": 1.5,
+        "kind": "graded_air"
+      },
+      "radiation": {
+        "box_clearance_mm": 30,
+        "frequency_hz": [
+          2400000000,
+          2441750000,
+          2483500000
+        ],
+        "phi_step_deg": 5,
+        "theta_step_deg": 5
+      }
+    },
+    "cases": [
+      {
+        "axis": "mesh",
+        "label": "mesh_coarse",
+        "overrides": {
+          "grid_mm": 0.5
+        }
+      },
+      {
+        "axis": "mesh",
+        "label": "mesh_medium",
+        "overrides": {
+          "grid_mm": 0.45
+        }
+      },
+      {
+        "axis": "mesh",
+        "label": "mesh_fine",
+        "overrides": {
+          "grid_mm": 0.4
+        }
+      },
+      {
+        "axis": "box",
+        "label": "box_near",
+        "overrides": {
+          "box_clearance_mm": 18
+        }
+      },
+      {
+        "axis": "box",
+        "label": "box_middle",
+        "overrides": {
+          "box_clearance_mm": 24
+        }
+      },
+      {
+        "axis": "box",
+        "label": "box_far",
+        "overrides": {
+          "box_clearance_mm": 30
+        }
+      },
+      {
+        "axis": "angle",
+        "label": "angle_coarse",
+        "overrides": {
+          "phi_step_deg": 30,
+          "theta_step_deg": 30
+        }
+      },
+      {
+        "axis": "angle",
+        "label": "angle_medium",
+        "overrides": {
+          "phi_step_deg": 15,
+          "theta_step_deg": 15
+        }
+      },
+      {
+        "axis": "angle",
+        "label": "angle_fine",
+        "overrides": {
+          "phi_step_deg": 5,
+          "theta_step_deg": 5
+        }
+      }
+    ],
+    "description": "Same RO4350B exploratory IFA snapshot. Independent recording distance, angular sampling and interior mesh studies with fixed PML and phase center. Initial numerical budgets only. Delivered properties and fabrication/measurement conditions remain unconfirmed.",
+    "fixture": "ro4350b_convergence_input.json",
+    "id": "ro4350b-ifa-radiation-target-band-20261111/0.1",
+    "schema": "rfad.pcb-radiation-study/0.1"
+  },
+  "study_hash": "d2d451064cd2d61a3c75c2886adc61387ecd41e30e5129c8dbf36a0141934f82",
+  "fixture": {
+    "path": "fixtures/ro4350b_convergence_input.json",
+    "bytes": 31440,
+    "sha256": "237a1a07051f74c349943abf3103a27abfa4dadbf5494fff1f92cda84912aa87"
+  },
+  "fixture_hash": "d72a106efa69f88c5460b161ea81032e647a7215e0c7cbd81a6995ad1d586fec",
+  "subject": {
+    "context": {
+      "project_id": "58f0afac-4d32-4a59-8231-e9e39833fe1c"
+    },
+    "project_path": "projects/pcb-37e8e7164011",
+    "snapshot": {
+      "artifact": {
+        "bytes": 30581,
+        "sha256": "03260bf9baf30916842eab601e79339914ec84febe16e3c5e521f1554bfdbf20",
+        "uri": "projects/pcb-37e8e7164011/snapshots/a60666a5-b299-4b8b-8f09-bceaae3ba136/4dfc1591-6f20-4fc4-accd-5e5f97ed0bd5/project.json"
+      },
+      "canonical_version": "rfad.canonical/1.0",
+      "content_hash": "7dbcb69426737d3bb40648c165bbb248aaa533d4e23010c18a553a63202a2cf0",
+      "description": "명시적 탐색 물성의 방사 수렴 연구; 제작 및 실측 미검증",
+      "project_id": "58f0afac-4d32-4a59-8231-e9e39833fe1c",
+      "revision_id": "a60666a5-b299-4b8b-8f09-bceaae3ba136",
+      "schema_version": "rfad.project/0.2",
+      "sealed_at": 1794391552.2574298,
+      "snapshot_id": "4dfc1591-6f20-4fc4-accd-5e5f97ed0bd5",
+      "validation_state": "not_evaluated"
+    }
+  },
+  "cases": [
+    {
+      "artifact": {
+        "artifact_id": "9d857f97-3472-41d2-82aa-4ee9ba8790e2",
+        "normalized": {
+          "bytes": 241639,
+          "sha256": "fc3b126eeac03be9277e9b5bb577f50150058b65184092dd8acf304dbdf0d5c9",
+          "uri": "solver-artifacts/952d4cbb-5c70-4c5a-893e-b0860d8d9a15/normalized.json"
+        },
+        "radiation": {
+          "bytes": 1072540,
+          "sha256": "8b17852222bce443ceeaa2a28cd51ba7a9b65860471db4f272c6d5360aeda5eb",
+          "uri": "solver-artifacts/952d4cbb-5c70-4c5a-893e-b0860d8d9a15/radiation.json"
+        }
+      },
+      "axis": "mesh",
+      "label": "mesh_coarse",
+      "settings": {
+        "air_padding_mm": 90,
+        "curve_tolerance_mm": 0.025,
+        "end_criterion": 1e-05,
+        "frequency_hz": {
+          "count": 201,
+          "start": 2400000000,
+          "stop": 2483500000
+        },
+        "grid_mm": 0.5,
+        "max_timesteps": 100000,
+        "mesh_policy": {
+          "air_cell_mm": 6,
+          "growth_ratio": 1.5,
+          "kind": "graded_air"
+        },
+        "radiation": {
+          "box_clearance_mm": 30,
+          "frequency_hz": [
+            2400000000,
+            2441750000,
+            2483500000
+          ],
+          "phi_step_deg": 5,
+          "theta_step_deg": 5
+        }
+      },
+      "settings_hash": "ccd28614748ead725320e91ce0c37778ee3298ea19df7d71e76dbfe4e0347625"
+    },
+    {
+      "artifact": {
+        "artifact_id": "2958219e-55c6-4aca-ba88-1f517b2d2b5e",
+        "normalized": {
+          "bytes": 245454,
+          "sha256": "339b3df515ef6e2bc6b3e6814477ab4e805546cdb9c3d75ae1641ca152852f47",
+          "uri": "solver-artifacts/56013f7d-d6ed-4e57-9f08-4bb89ae70791/normalized.json"
+        },
+        "radiation": {
+          "bytes": 1072821,
+          "sha256": "2b8536af81cbd0b805987372acbb509e9d22f3f7b308b7e7feba0c6c4c3a0159",
+          "uri": "solver-artifacts/56013f7d-d6ed-4e57-9f08-4bb89ae70791/radiation.json"
+        }
+      },
+      "axis": "mesh",
+      "label": "mesh_medium",
+      "settings": {
+        "air_padding_mm": 90,
+        "curve_tolerance_mm": 0.025,
+        "end_criterion": 1e-05,
+        "frequency_hz": {
+          "count": 201,
+          "start": 2400000000,
+          "stop": 2483500000
+        },
+        "grid_mm": 0.45,
+        "max_timesteps": 100000,
+        "mesh_policy": {
+          "air_cell_mm": 6,
+          "growth_ratio": 1.5,
+          "kind": "graded_air"
+        },
+        "radiation": {
+          "box_clearance_mm": 30,
+          "frequency_hz": [
+            2400000000,
+            2441750000,
+            2483500000
+          ],
+          "phi_step_deg": 5,
+          "theta_step_deg": 5
+        }
+      },
+      "settings_hash": "e6fdb762e057f38292b3097b4b900724244fec7d27f5103d1fd4cef0168608cc"
+    },
+    {
+      "artifact": {
+        "artifact_id": "2548ae0c-07c8-4fc6-9153-a8ae50e3c8f3",
+        "normalized": {
+          "bytes": 243602,
+          "sha256": "38fe9e199d71a12725b193592a8f58a6e547cfa0406c234d2cc81b8531e83436",
+          "uri": "solver-artifacts/893f89c0-8774-4bda-8409-59091b437968/normalized.json"
+        },
+        "radiation": {
+          "bytes": 1073099,
+          "sha256": "60aa675440dbee2f24e871f61f108cbe973aabcc5980026f4f78201e22c3d87e",
+          "uri": "solver-artifacts/893f89c0-8774-4bda-8409-59091b437968/radiation.json"
+        }
+      },
+      "axis": "mesh",
+      "label": "mesh_fine",
+      "settings": {
+        "air_padding_mm": 90,
+        "curve_tolerance_mm": 0.025,
+        "end_criterion": 1e-05,
+        "frequency_hz": {
+          "count": 201,
+          "start": 2400000000,
+          "stop": 2483500000
+        },
+        "grid_mm": 0.4,
+        "max_timesteps": 100000,
+        "mesh_policy": {
+          "air_cell_mm": 6,
+          "growth_ratio": 1.5,
+          "kind": "graded_air"
+        },
+        "radiation": {
+          "box_clearance_mm": 30,
+          "frequency_hz": [
+            2400000000,
+            2441750000,
+            2483500000
+          ],
+          "phi_step_deg": 5,
+          "theta_step_deg": 5
+        }
+      },
+      "settings_hash": "69b58cb951b4337860df20837b9b4a60d0ad662f4a75c129353474e7353aa004"
+    },
+    {
+      "artifact": {
+        "artifact_id": "7a7479f5-7957-4f2a-b795-897446ed477f",
+        "normalized": {
+          "bytes": 243608,
+          "sha256": "fbcc480ece0702c34e5fe16d58972b8aca68fc3965730f9f1f2ec7f352331fad",
+          "uri": "solver-artifacts/8b34d46f-0809-4d55-b3ea-0e7e3da231b8/normalized.json"
+        },
+        "radiation": {
+          "bytes": 1072923,
+          "sha256": "93edb69bb5b1a5bd82c56fc292b2fe08720757ac01b6c24d0558d14a8487a1b9",
+          "uri": "solver-artifacts/8b34d46f-0809-4d55-b3ea-0e7e3da231b8/radiation.json"
+        }
+      },
+      "axis": "box",
+      "label": "box_near",
+      "settings": {
+        "air_padding_mm": 90,
+        "curve_tolerance_mm": 0.025,
+        "end_criterion": 1e-05,
+        "frequency_hz": {
+          "count": 201,
+          "start": 2400000000,
+          "stop": 2483500000
+        },
+        "grid_mm": 0.4,
+        "max_timesteps": 100000,
+        "mesh_policy": {
+          "air_cell_mm": 6,
+          "growth_ratio": 1.5,
+          "kind": "graded_air"
+        },
+        "radiation": {
+          "box_clearance_mm": 18,
+          "frequency_hz": [
+            2400000000,
+            2441750000,
+            2483500000
+          ],
+          "phi_step_deg": 5,
+          "theta_step_deg": 5
+        }
+      },
+      "settings_hash": "00feae279dc1a3e51a535d795fc0371a597f8d46bc7b3f4b9da8f554f4c67029"
+    },
+    {
+      "artifact": {
+        "artifact_id": "a6149119-89a6-4ee6-868c-946a68b53cf1",
+        "normalized": {
+          "bytes": 243612,
+          "sha256": "1270cf65c339e88ddf3f1c6dcdc6882da2248d87375cec79e06e709d91be3d0e",
+          "uri": "solver-artifacts/b7b5ad8a-1583-4785-8d4c-a0e982eda24a/normalized.json"
+        },
+        "radiation": {
+          "bytes": 1072715,
+          "sha256": "bd7297ea4626f0c6178c7b0e639d8743aa4266b0ad136a7c85e7af2293dbd8f2",
+          "uri": "solver-artifacts/b7b5ad8a-1583-4785-8d4c-a0e982eda24a/radiation.json"
+        }
+      },
+      "axis": "box",
+      "label": "box_middle",
+      "settings": {
+        "air_padding_mm": 90,
+        "curve_tolerance_mm": 0.025,
+        "end_criterion": 1e-05,
+        "frequency_hz": {
+          "count": 201,
+          "start": 2400000000,
+          "stop": 2483500000
+        },
+        "grid_mm": 0.4,
+        "max_timesteps": 100000,
+        "mesh_policy": {
+          "air_cell_mm": 6,
+          "growth_ratio": 1.5,
+          "kind": "graded_air"
+        },
+        "radiation": {
+          "box_clearance_mm": 24,
+          "frequency_hz": [
+            2400000000,
+            2441750000,
+            2483500000
+          ],
+          "phi_step_deg": 5,
+          "theta_step_deg": 5
+        }
+      },
+      "settings_hash": "e39dfdb7a0b0313610866ebe164a63e9ebf71763f634ade5ed26f010a21e5c77"
+    },
+    {
+      "artifact": {
+        "artifact_id": "2548ae0c-07c8-4fc6-9153-a8ae50e3c8f3",
+        "normalized": {
+          "bytes": 243602,
+          "sha256": "38fe9e199d71a12725b193592a8f58a6e547cfa0406c234d2cc81b8531e83436",
+          "uri": "solver-artifacts/893f89c0-8774-4bda-8409-59091b437968/normalized.json"
+        },
+        "radiation": {
+          "bytes": 1073099,
+          "sha256": "60aa675440dbee2f24e871f61f108cbe973aabcc5980026f4f78201e22c3d87e",
+          "uri": "solver-artifacts/893f89c0-8774-4bda-8409-59091b437968/radiation.json"
+        }
+      },
+      "axis": "box",
+      "label": "box_far",
+      "settings": {
+        "air_padding_mm": 90,
+        "curve_tolerance_mm": 0.025,
+        "end_criterion": 1e-05,
+        "frequency_hz": {
+          "count": 201,
+          "start": 2400000000,
+          "stop": 2483500000
+        },
+        "grid_mm": 0.4,
+        "max_timesteps": 100000,
+        "mesh_policy": {
+          "air_cell_mm": 6,
+          "growth_ratio": 1.5,
+          "kind": "graded_air"
+        },
+        "radiation": {
+          "box_clearance_mm": 30,
+          "frequency_hz": [
+            2400000000,
+            2441750000,
+            2483500000
+          ],
+          "phi_step_deg": 5,
+          "theta_step_deg": 5
+        }
+      },
+      "settings_hash": "69b58cb951b4337860df20837b9b4a60d0ad662f4a75c129353474e7353aa004"
+    },
+    {
+      "artifact": {
+        "artifact_id": "8c58d325-237c-4abd-acde-b2190b661a0f",
+        "normalized": {
+          "bytes": 242637,
+          "sha256": "6287ad18960eda79a96f417eb3044ed239803e1e2f61bb7f9e488f5373355849",
+          "uri": "solver-artifacts/11b07679-b387-4d38-81be-40db1159fc3c/normalized.json"
+        },
+        "radiation": {
+          "bytes": 36702,
+          "sha256": "8a276d306948990d7cdc582db27b73bccdd246391f0c9d3495dd31a3ee650180",
+          "uri": "solver-artifacts/11b07679-b387-4d38-81be-40db1159fc3c/radiation.json"
+        }
+      },
+      "axis": "angle",
+      "label": "angle_coarse",
+      "settings": {
+        "air_padding_mm": 90,
+        "curve_tolerance_mm": 0.025,
+        "end_criterion": 1e-05,
+        "frequency_hz": {
+          "count": 201,
+          "start": 2400000000,
+          "stop": 2483500000
+        },
+        "grid_mm": 0.4,
+        "max_timesteps": 100000,
+        "mesh_policy": {
+          "air_cell_mm": 6,
+          "growth_ratio": 1.5,
+          "kind": "graded_air"
+        },
+        "radiation": {
+          "box_clearance_mm": 30,
+          "frequency_hz": [
+            2400000000,
+            2441750000,
+            2483500000
+          ],
+          "phi_step_deg": 30,
+          "theta_step_deg": 30
+        }
+      },
+      "settings_hash": "718aa148387d447b1dbede67fed5cad06398d0d3ef89b0076441cb41879e7209"
+    },
+    {
+      "artifact": {
+        "artifact_id": "11779538-3f28-45ba-adb2-22fceab75941",
+        "normalized": {
+          "bytes": 242835,
+          "sha256": "34f9f16d188de0dae7574b77190b43622ee754d31fda375d6a4971b33dd56f8a",
+          "uri": "solver-artifacts/6f38c9ec-ae97-40a2-85af-f38643642341/normalized.json"
+        },
+        "radiation": {
+          "bytes": 128428,
+          "sha256": "8e275362b0f6211ad1328a35dcaea494ac3dfa4125813f20a3a0230871c3485b",
+          "uri": "solver-artifacts/6f38c9ec-ae97-40a2-85af-f38643642341/radiation.json"
+        }
+      },
+      "axis": "angle",
+      "label": "angle_medium",
+      "settings": {
+        "air_padding_mm": 90,
+        "curve_tolerance_mm": 0.025,
+        "end_criterion": 1e-05,
+        "frequency_hz": {
+          "count": 201,
+          "start": 2400000000,
+          "stop": 2483500000
+        },
+        "grid_mm": 0.4,
+        "max_timesteps": 100000,
+        "mesh_policy": {
+          "air_cell_mm": 6,
+          "growth_ratio": 1.5,
+          "kind": "graded_air"
+        },
+        "radiation": {
+          "box_clearance_mm": 30,
+          "frequency_hz": [
+            2400000000,
+            2441750000,
+            2483500000
+          ],
+          "phi_step_deg": 15,
+          "theta_step_deg": 15
+        }
+      },
+      "settings_hash": "6a03777f4a7d8a9bd474d8a3a88b5dc1ec3c48ddb35d28b439a5fe6615e29182"
+    },
+    {
+      "artifact": {
+        "artifact_id": "2548ae0c-07c8-4fc6-9153-a8ae50e3c8f3",
+        "normalized": {
+          "bytes": 243602,
+          "sha256": "38fe9e199d71a12725b193592a8f58a6e547cfa0406c234d2cc81b8531e83436",
+          "uri": "solver-artifacts/893f89c0-8774-4bda-8409-59091b437968/normalized.json"
+        },
+        "radiation": {
+          "bytes": 1073099,
+          "sha256": "60aa675440dbee2f24e871f61f108cbe973aabcc5980026f4f78201e22c3d87e",
+          "uri": "solver-artifacts/893f89c0-8774-4bda-8409-59091b437968/radiation.json"
+        }
+      },
+      "axis": "angle",
+      "label": "angle_fine",
+      "settings": {
+        "air_padding_mm": 90,
+        "curve_tolerance_mm": 0.025,
+        "end_criterion": 1e-05,
+        "frequency_hz": {
+          "count": 201,
+          "start": 2400000000,
+          "stop": 2483500000
+        },
+        "grid_mm": 0.4,
+        "max_timesteps": 100000,
+        "mesh_policy": {
+          "air_cell_mm": 6,
+          "growth_ratio": 1.5,
+          "kind": "graded_air"
+        },
+        "radiation": {
+          "box_clearance_mm": 30,
+          "frequency_hz": [
+            2400000000,
+            2441750000,
+            2483500000
+          ],
+          "phi_step_deg": 5,
+          "theta_step_deg": 5
+        }
+      },
+      "settings_hash": "69b58cb951b4337860df20837b9b4a60d0ad662f4a75c129353474e7353aa004"
+    }
+  ],
+  "unique_runs": [
+    {
+      "settings_hash": "00feae279dc1a3e51a535d795fc0371a597f8d46bc7b3f4b9da8f554f4c67029",
+      "settings": {
+        "air_padding_mm": 90,
+        "curve_tolerance_mm": 0.025,
+        "end_criterion": 1e-05,
+        "frequency_hz": {
+          "count": 201,
+          "start": 2400000000,
+          "stop": 2483500000
+        },
+        "grid_mm": 0.4,
+        "max_timesteps": 100000,
+        "mesh_policy": {
+          "air_cell_mm": 6,
+          "growth_ratio": 1.5,
+          "kind": "graded_air"
+        },
+        "radiation": {
+          "box_clearance_mm": 18,
+          "frequency_hz": [
+            2400000000,
+            2441750000,
+            2483500000
+          ],
+          "phi_step_deg": 5,
+          "theta_step_deg": 5
+        }
+      },
+      "analysis_plan": {
+        "artifact": {
+          "bytes": 58794,
+          "sha256": "9ebfc691141507fd69484814c5a6a77b06fbeb5689322adb23c93888eaf6eb10",
+          "uri": "solver-artifacts/32b1a59c-cc97-4c42-82b1-ee45d974130f/analysis-plan.json"
+        },
+        "content_hash": "6b126d11c1770324e76e252f693bac892097ee81ada0b11bc8f017c6c4a6af9b",
+        "plan_id": "00135573-9250-4aa2-a82f-6bbc9f389bc9"
+      },
+      "artifact_id": "7a7479f5-7957-4f2a-b795-897446ed477f",
+      "normalized_result": {
+        "bytes": 243608,
+        "sha256": "fbcc480ece0702c34e5fe16d58972b8aca68fc3965730f9f1f2ec7f352331fad",
+        "uri": "solver-artifacts/8b34d46f-0809-4d55-b3ea-0e7e3da231b8/normalized.json"
+      },
+      "radiation_result": {
+        "bytes": 1072923,
+        "sha256": "93edb69bb5b1a5bd82c56fc292b2fe08720757ac01b6c24d0558d14a8487a1b9",
+        "uri": "solver-artifacts/8b34d46f-0809-4d55-b3ea-0e7e3da231b8/radiation.json"
+      },
+      "elapsed_seconds": 243.92200000000048,
+      "native_statistics": {
+        "iterations": 7254,
+        "native_cells": 1224210,
+        "raw_values": [
+          1224210.0,
+          5.814301903741892e-13,
+          7254.0,
+          4.217694600974368e-09,
+          201.708198,
+          44026070.4723563
+        ],
+        "timestep_seconds": 5.814301903741892e-13
+      },
+      "termination": {
+        "evidence": [
+          "50.00",
+          "7254",
+          "51.40"
+        ],
+        "exact_endcriterion_schedule": true,
+        "iterations": 7254,
+        "reported_decay_db": 51.4,
+        "reported_zero_energy": false,
+        "status": "end_criterion_reached",
+        "target_energy_ratio": 1e-05
+      },
+      "physics_validated": false
+    },
+    {
+      "settings_hash": "69b58cb951b4337860df20837b9b4a60d0ad662f4a75c129353474e7353aa004",
+      "settings": {
+        "air_padding_mm": 90,
+        "curve_tolerance_mm": 0.025,
+        "end_criterion": 1e-05,
+        "frequency_hz": {
+          "count": 201,
+          "start": 2400000000,
+          "stop": 2483500000
+        },
+        "grid_mm": 0.4,
+        "max_timesteps": 100000,
+        "mesh_policy": {
+          "air_cell_mm": 6,
+          "growth_ratio": 1.5,
+          "kind": "graded_air"
+        },
+        "radiation": {
+          "box_clearance_mm": 30,
+          "frequency_hz": [
+            2400000000,
+            2441750000,
+            2483500000
+          ],
+          "phi_step_deg": 5,
+          "theta_step_deg": 5
+        }
+      },
+      "analysis_plan": {
+        "artifact": {
+          "bytes": 58794,
+          "sha256": "4b0e788e6cb796e80cbc01384caa9afb981b18d62f9a40841ad8c4a2ff081f40",
+          "uri": "solver-artifacts/1df9a819-6773-43e8-a35b-73b36ea2400b/analysis-plan.json"
+        },
+        "content_hash": "77ab1bd14066df9f42c7b4fe80afa2a48582748d87bf1045bb209c9d2ce43e31",
+        "plan_id": "c0372870-eb59-45b7-9014-0248ef017442"
+      },
+      "artifact_id": "2548ae0c-07c8-4fc6-9153-a8ae50e3c8f3",
+      "normalized_result": {
+        "bytes": 243602,
+        "sha256": "38fe9e199d71a12725b193592a8f58a6e547cfa0406c234d2cc81b8531e83436",
+        "uri": "solver-artifacts/893f89c0-8774-4bda-8409-59091b437968/normalized.json"
+      },
+      "radiation_result": {
+        "bytes": 1073099,
+        "sha256": "60aa675440dbee2f24e871f61f108cbe973aabcc5980026f4f78201e22c3d87e",
+        "uri": "solver-artifacts/893f89c0-8774-4bda-8409-59091b437968/radiation.json"
+      },
+      "elapsed_seconds": 208.5,
+      "native_statistics": {
+        "iterations": 7254,
+        "native_cells": 1224210,
+        "raw_values": [
+          1224210.0,
+          5.814301903741892e-13,
+          7254.0,
+          4.217694600974368e-09,
+          171.625085,
+          51743131.48919926
+        ],
+        "timestep_seconds": 5.814301903741892e-13
+      },
+      "termination": {
+        "evidence": [
+          "50.00",
+          "7254",
+          "51.40"
+        ],
+        "exact_endcriterion_schedule": true,
+        "iterations": 7254,
+        "reported_decay_db": 51.4,
+        "reported_zero_energy": false,
+        "status": "end_criterion_reached",
+        "target_energy_ratio": 1e-05
+      },
+      "physics_validated": false
+    },
+    {
+      "settings_hash": "6a03777f4a7d8a9bd474d8a3a88b5dc1ec3c48ddb35d28b439a5fe6615e29182",
+      "settings": {
+        "air_padding_mm": 90,
+        "curve_tolerance_mm": 0.025,
+        "end_criterion": 1e-05,
+        "frequency_hz": {
+          "count": 201,
+          "start": 2400000000,
+          "stop": 2483500000
+        },
+        "grid_mm": 0.4,
+        "max_timesteps": 100000,
+        "mesh_policy": {
+          "air_cell_mm": 6,
+          "growth_ratio": 1.5,
+          "kind": "graded_air"
+        },
+        "radiation": {
+          "box_clearance_mm": 30,
+          "frequency_hz": [
+            2400000000,
+            2441750000,
+            2483500000
+          ],
+          "phi_step_deg": 15,
+          "theta_step_deg": 15
+        }
+      },
+      "analysis_plan": {
+        "artifact": {
+          "bytes": 58536,
+          "sha256": "cc44739df92e216e0b25281de6d13e4c2b5866754e3fd04801859f8d3f94c637",
+          "uri": "solver-artifacts/2b7b73e2-a231-4c44-88b2-82cf49b2fb09/analysis-plan.json"
+        },
+        "content_hash": "f10b3be23246963afd6bfb89635acd42a8ae1b0a709c935a6867bef4a3c5bcdd",
+        "plan_id": "cd136944-893b-4b8a-aa27-f4df9c82ce20"
+      },
+      "artifact_id": "11779538-3f28-45ba-adb2-22fceab75941",
+      "normalized_result": {
+        "bytes": 242835,
+        "sha256": "34f9f16d188de0dae7574b77190b43622ee754d31fda375d6a4971b33dd56f8a",
+        "uri": "solver-artifacts/6f38c9ec-ae97-40a2-85af-f38643642341/normalized.json"
+      },
+      "radiation_result": {
+        "bytes": 128428,
+        "sha256": "8e275362b0f6211ad1328a35dcaea494ac3dfa4125813f20a3a0230871c3485b",
+        "uri": "solver-artifacts/6f38c9ec-ae97-40a2-85af-f38643642341/radiation.json"
+      },
+      "elapsed_seconds": 209.35900000000038,
+      "native_statistics": {
+        "iterations": 7254,
+        "native_cells": 1224210,
+        "raw_values": [
+          1224210.0,
+          5.814301903741892e-13,
+          7254.0,
+          4.217694600974368e-09,
+          170.258859,
+          52158339.32024647
+        ],
+        "timestep_seconds": 5.814301903741892e-13
+      },
+      "termination": {
+        "evidence": [
+          "50.00",
+          "7254",
+          "51.40"
+        ],
+        "exact_endcriterion_schedule": true,
+        "iterations": 7254,
+        "reported_decay_db": 51.4,
+        "reported_zero_energy": false,
+        "status": "end_criterion_reached",
+        "target_energy_ratio": 1e-05
+      },
+      "physics_validated": false
+    },
+    {
+      "settings_hash": "718aa148387d447b1dbede67fed5cad06398d0d3ef89b0076441cb41879e7209",
+      "settings": {
+        "air_padding_mm": 90,
+        "curve_tolerance_mm": 0.025,
+        "end_criterion": 1e-05,
+        "frequency_hz": {
+          "count": 201,
+          "start": 2400000000,
+          "stop": 2483500000
+        },
+        "grid_mm": 0.4,
+        "max_timesteps": 100000,
+        "mesh_policy": {
+          "air_cell_mm": 6,
+          "growth_ratio": 1.5,
+          "kind": "graded_air"
+        },
+        "radiation": {
+          "box_clearance_mm": 30,
+          "frequency_hz": [
+            2400000000,
+            2441750000,
+            2483500000
+          ],
+          "phi_step_deg": 30,
+          "theta_step_deg": 30
+        }
+      },
+      "analysis_plan": {
+        "artifact": {
+          "bytes": 58470,
+          "sha256": "1d8264bafbe3574472765e721149bfbe92c6edb68d0e0163494056bc96c34bb3",
+          "uri": "solver-artifacts/61ad8640-3967-4825-a389-4dc3057f5e84/analysis-plan.json"
+        },
+        "content_hash": "17a2820a6304394a40283dd903f605c9139dc48f684ab9fe81b45c1b72f5f4a7",
+        "plan_id": "305ee9f4-ad07-43a9-a852-a68d7fc82984"
+      },
+      "artifact_id": "8c58d325-237c-4abd-acde-b2190b661a0f",
+      "normalized_result": {
+        "bytes": 242637,
+        "sha256": "6287ad18960eda79a96f417eb3044ed239803e1e2f61bb7f9e488f5373355849",
+        "uri": "solver-artifacts/11b07679-b387-4d38-81be-40db1159fc3c/normalized.json"
+      },
+      "radiation_result": {
+        "bytes": 36702,
+        "sha256": "8a276d306948990d7cdc582db27b73bccdd246391f0c9d3495dd31a3ee650180",
+        "uri": "solver-artifacts/11b07679-b387-4d38-81be-40db1159fc3c/radiation.json"
+      },
+      "elapsed_seconds": 226.13999999999942,
+      "native_statistics": {
+        "iterations": 7254,
+        "native_cells": 1224210,
+        "raw_values": [
+          1224210.0,
+          5.814301903741892e-13,
+          7254.0,
+          4.217694600974368e-09,
+          186.351989,
+          47654008.88745008
+        ],
+        "timestep_seconds": 5.814301903741892e-13
+      },
+      "termination": {
+        "evidence": [
+          "50.00",
+          "7254",
+          "51.40"
+        ],
+        "exact_endcriterion_schedule": true,
+        "iterations": 7254,
+        "reported_decay_db": 51.4,
+        "reported_zero_energy": false,
+        "status": "end_criterion_reached",
+        "target_energy_ratio": 1e-05
+      },
+      "physics_validated": false
+    },
+    {
+      "settings_hash": "ccd28614748ead725320e91ce0c37778ee3298ea19df7d71e76dbfe4e0347625",
+      "settings": {
+        "air_padding_mm": 90,
+        "curve_tolerance_mm": 0.025,
+        "end_criterion": 1e-05,
+        "frequency_hz": {
+          "count": 201,
+          "start": 2400000000,
+          "stop": 2483500000
+        },
+        "grid_mm": 0.5,
+        "max_timesteps": 100000,
+        "mesh_policy": {
+          "air_cell_mm": 6,
+          "growth_ratio": 1.5,
+          "kind": "graded_air"
+        },
+        "radiation": {
+          "box_clearance_mm": 30,
+          "frequency_hz": [
+            2400000000,
+            2441750000,
+            2483500000
+          ],
+          "phi_step_deg": 5,
+          "theta_step_deg": 5
+        }
+      },
+      "analysis_plan": {
+        "artifact": {
+          "bytes": 58772,
+          "sha256": "36cac84af1cff921d63546d8158d31e611ed162d85d42ca8410785d49714e0d5",
+          "uri": "solver-artifacts/a80f7113-5631-404d-856f-24e9818ba3c4/analysis-plan.json"
+        },
+        "content_hash": "32d144784989cf2e2d7799e7e4417b4eff55d38b82463e32d8fabd7f8f130a64",
+        "plan_id": "59f1767d-68a7-4272-b694-9602e8d9499f"
+      },
+      "artifact_id": "9d857f97-3472-41d2-82aa-4ee9ba8790e2",
+      "normalized_result": {
+        "bytes": 241639,
+        "sha256": "fc3b126eeac03be9277e9b5bb577f50150058b65184092dd8acf304dbdf0d5c9",
+        "uri": "solver-artifacts/952d4cbb-5c70-4c5a-893e-b0860d8d9a15/normalized.json"
+      },
+      "radiation_result": {
+        "bytes": 1072540,
+        "sha256": "8b17852222bce443ceeaa2a28cd51ba7a9b65860471db4f272c6d5360aeda5eb",
+        "uri": "solver-artifacts/952d4cbb-5c70-4c5a-893e-b0860d8d9a15/radiation.json"
+      },
+      "elapsed_seconds": 103.17199999999866,
+      "native_statistics": {
+        "iterations": 4805,
+        "native_cells": 813603,
+        "raw_values": [
+          813603.0,
+          8.75820105553934e-13,
+          4805.0,
+          4.208315607186653e-09,
+          67.089306,
+          58271021.83766814
+        ],
+        "timestep_seconds": 8.75820105553934e-13
+      },
+      "termination": {
+        "evidence": [
+          "50.00",
+          "4805",
+          "51.44"
+        ],
+        "exact_endcriterion_schedule": true,
+        "iterations": 4805,
+        "reported_decay_db": 51.44,
+        "reported_zero_energy": false,
+        "status": "end_criterion_reached",
+        "target_energy_ratio": 1e-05
+      },
+      "physics_validated": false
+    },
+    {
+      "settings_hash": "e39dfdb7a0b0313610866ebe164a63e9ebf71763f634ade5ed26f010a21e5c77",
+      "settings": {
+        "air_padding_mm": 90,
+        "curve_tolerance_mm": 0.025,
+        "end_criterion": 1e-05,
+        "frequency_hz": {
+          "count": 201,
+          "start": 2400000000,
+          "stop": 2483500000
+        },
+        "grid_mm": 0.4,
+        "max_timesteps": 100000,
+        "mesh_policy": {
+          "air_cell_mm": 6,
+          "growth_ratio": 1.5,
+          "kind": "graded_air"
+        },
+        "radiation": {
+          "box_clearance_mm": 24,
+          "frequency_hz": [
+            2400000000,
+            2441750000,
+            2483500000
+          ],
+          "phi_step_deg": 5,
+          "theta_step_deg": 5
+        }
+      },
+      "analysis_plan": {
+        "artifact": {
+          "bytes": 58794,
+          "sha256": "8cb654c75927b6419d7dfb4ce3512411dbde660b8e05b57c4e4f24a28801f60c",
+          "uri": "solver-artifacts/7ad677a6-5ddb-4b22-a307-79782f67e78c/analysis-plan.json"
+        },
+        "content_hash": "c03d4c7d451ee6eeae4cb470be8c76a21235038db4af0f83f4961208e0a09769",
+        "plan_id": "7b1136d8-7010-4e7b-98c2-93a67a750c06"
+      },
+      "artifact_id": "a6149119-89a6-4ee6-868c-946a68b53cf1",
+      "normalized_result": {
+        "bytes": 243612,
+        "sha256": "1270cf65c339e88ddf3f1c6dcdc6882da2248d87375cec79e06e709d91be3d0e",
+        "uri": "solver-artifacts/b7b5ad8a-1583-4785-8d4c-a0e982eda24a/normalized.json"
+      },
+      "radiation_result": {
+        "bytes": 1072715,
+        "sha256": "bd7297ea4626f0c6178c7b0e639d8743aa4266b0ad136a7c85e7af2293dbd8f2",
+        "uri": "solver-artifacts/b7b5ad8a-1583-4785-8d4c-a0e982eda24a/radiation.json"
+      },
+      "elapsed_seconds": 245.76600000000144,
+      "native_statistics": {
+        "iterations": 7254,
+        "native_cells": 1224210,
+        "raw_values": [
+          1224210.0,
+          5.814301903741892e-13,
+          7254.0,
+          4.217694600974368e-09,
+          198.780216,
+          44674563.28752556
+        ],
+        "timestep_seconds": 5.814301903741892e-13
+      },
+      "termination": {
+        "evidence": [
+          "50.00",
+          "7254",
+          "51.40"
+        ],
+        "exact_endcriterion_schedule": true,
+        "iterations": 7254,
+        "reported_decay_db": 51.4,
+        "reported_zero_energy": false,
+        "status": "end_criterion_reached",
+        "target_energy_ratio": 1e-05
+      },
+      "physics_validated": false
+    },
+    {
+      "settings_hash": "e6fdb762e057f38292b3097b4b900724244fec7d27f5103d1fd4cef0168608cc",
+      "settings": {
+        "air_padding_mm": 90,
+        "curve_tolerance_mm": 0.025,
+        "end_criterion": 1e-05,
+        "frequency_hz": {
+          "count": 201,
+          "start": 2400000000,
+          "stop": 2483500000
+        },
+        "grid_mm": 0.45,
+        "max_timesteps": 100000,
+        "mesh_policy": {
+          "air_cell_mm": 6,
+          "growth_ratio": 1.5,
+          "kind": "graded_air"
+        },
+        "radiation": {
+          "box_clearance_mm": 30,
+          "frequency_hz": [
+            2400000000,
+            2441750000,
+            2483500000
+          ],
+          "phi_step_deg": 5,
+          "theta_step_deg": 5
+        }
+      },
+      "analysis_plan": {
+        "artifact": {
+          "bytes": 58791,
+          "sha256": "a6539bf3418e0ba1667e94102405aa0d058fea12d290b86d773e1cae8f6e0a10",
+          "uri": "solver-artifacts/30600fe7-4361-487a-afe4-21de462d0804/analysis-plan.json"
+        },
+        "content_hash": "1b4de512f4fe3dd56199b7d87305e1745a3b6a3e9a214ff5b4c5c81da09f698e",
+        "plan_id": "e68dba3c-0311-4702-a99d-ba54aa302296"
+      },
+      "artifact_id": "2958219e-55c6-4aca-ba88-1f517b2d2b5e",
+      "normalized_result": {
+        "bytes": 245454,
+        "sha256": "339b3df515ef6e2bc6b3e6814477ab4e805546cdb9c3d75ae1641ca152852f47",
+        "uri": "solver-artifacts/56013f7d-d6ed-4e57-9f08-4bb89ae70791/normalized.json"
+      },
+      "radiation_result": {
+        "bytes": 1072821,
+        "sha256": "2b8536af81cbd0b805987372acbb509e9d22f3f7b308b7e7feba0c6c4c3a0159",
+        "uri": "solver-artifacts/56013f7d-d6ed-4e57-9f08-4bb89ae70791/radiation.json"
+      },
+      "elapsed_seconds": 195.21899999999914,
+      "native_statistics": {
+        "iterations": 7285,
+        "native_cells": 1066271,
+        "raw_values": [
+          1066271.0,
+          5.803952465011193e-13,
+          7285.0,
+          4.228179370760654e-09,
+          162.086497,
+          47923697.40090071
+        ],
+        "timestep_seconds": 5.803952465011193e-13
+      },
+      "termination": {
+        "evidence": [
+          "50.00",
+          "7285",
+          "51.26"
+        ],
+        "exact_endcriterion_schedule": true,
+        "iterations": 7285,
+        "reported_decay_db": 51.26,
+        "reported_zero_energy": false,
+        "status": "end_criterion_reached",
+        "target_energy_ratio": 1e-05
+      },
+      "physics_validated": false
+    }
+  ],
+  "recorded_unique_case_seconds": 1432.0779999999995,
+  "assessment": {
+    "absolute_power_w": null,
+    "acceptance_profile": {
+      "id": "pcb-radiation-initial-numerical-budget/0.1",
+      "max_directivity_delta_db": 0.1,
+      "max_efficiency_delta": 0.02,
+      "max_gain_delta_db": 0.1,
+      "max_passivity_excess": 0.01,
+      "max_pattern_delta": 0.02,
+      "max_port_balance_relative_error": 1e-08,
+      "max_radiated_relative_delta": 0.02,
+      "max_s11_complex_delta": 0.02,
+      "max_sphere_relative_error": 0.03,
+      "minimum_levels": 3
+    },
+    "fabrication_validated": false,
+    "measurement_validated": false,
+    "numerical_stability": {
+      "axes": {
+        "angle": {
+          "comparisons": [
+            {
+              "common_angle_count": 84,
+              "frequencies": [
+                {
+                  "checks": {
+                    "directivity": true,
+                    "efficiency": true,
+                    "gain": true,
+                    "pattern": true,
+                    "radiated": true
+                  },
+                  "frequency_hz": 2400000000,
+                  "metrics": {
+                    "directivity_delta_db": 0.0,
+                    "efficiency_delta": 0.0,
+                    "gain_delta_db": 0.0,
+                    "pattern_max_delta": 0.0,
+                    "radiated_relative_delta": 0.0,
+                    "realized_gain_delta_db": 0.0
+                  },
+                  "passed": true
+                },
+                {
+                  "checks": {
+                    "directivity": true,
+                    "efficiency": true,
+                    "gain": true,
+                    "pattern": true,
+                    "radiated": true
+                  },
+                  "frequency_hz": 2441750000,
+                  "metrics": {
+                    "directivity_delta_db": 0.0,
+                    "efficiency_delta": 0.0,
+                    "gain_delta_db": 0.0,
+                    "pattern_max_delta": 0.0,
+                    "radiated_relative_delta": 0.0,
+                    "realized_gain_delta_db": 0.0
+                  },
+                  "passed": true
+                },
+                {
+                  "checks": {
+                    "directivity": true,
+                    "efficiency": true,
+                    "gain": true,
+                    "pattern": true,
+                    "radiated": true
+                  },
+                  "frequency_hz": 2483500000,
+                  "metrics": {
+                    "directivity_delta_db": 0.0,
+                    "efficiency_delta": 0.0,
+                    "gain_delta_db": 0.0,
+                    "pattern_max_delta": 0.0,
+                    "radiated_relative_delta": 0.0,
+                    "realized_gain_delta_db": 0.0
+                  },
+                  "passed": true
+                }
+              ],
+              "guards": {
+                "actual_mesh_fixed": true,
+                "both_angle_steps_refine": true,
+                "fixed_outer_domain_and_pml_interfaces": true,
+                "fixed_pml_cell_widths": true,
+                "nested_angle_nodes": true,
+                "passed": true,
+                "recording_planes_fixed": true,
+                "same_phase_center_radius_frequencies": true,
+                "same_snapshot_source_runtime": true
+              },
+              "interpolation_used": false,
+              "left": "angle_coarse",
+              "max_s11_complex_delta": 0.0,
+              "physics_validated": false,
+              "right": "angle_medium",
+              "status": "passed"
+            },
+            {
+              "common_angle_count": 312,
+              "frequencies": [
+                {
+                  "checks": {
+                    "directivity": true,
+                    "efficiency": true,
+                    "gain": true,
+                    "pattern": true,
+                    "radiated": true
+                  },
+                  "frequency_hz": 2400000000,
+                  "metrics": {
+                    "directivity_delta_db": 0.011281496641046829,
+                    "efficiency_delta": 0.0,
+                    "gain_delta_db": 0.011281496641046829,
+                    "pattern_max_delta": 0.00259428548659435,
+                    "radiated_relative_delta": 0.0,
+                    "realized_gain_delta_db": 0.011281496641046995
+                  },
+                  "passed": true
+                },
+                {
+                  "checks": {
+                    "directivity": true,
+                    "efficiency": true,
+                    "gain": true,
+                    "pattern": true,
+                    "radiated": true
+                  },
+                  "frequency_hz": 2441750000,
+                  "metrics": {
+                    "directivity_delta_db": 0.007072711701017198,
+                    "efficiency_delta": 0.0,
+                    "gain_delta_db": 0.007072711701017198,
+                    "pattern_max_delta": 0.0016272738601965653,
+                    "radiated_relative_delta": 0.0,
+                    "realized_gain_delta_db": 0.007072711701017698
+                  },
+                  "passed": true
+                },
+                {
+                  "checks": {
+                    "directivity": true,
+                    "efficiency": true,
+                    "gain": true,
+                    "pattern": true,
+                    "radiated": true
+                  },
+                  "frequency_hz": 2483500000,
+                  "metrics": {
+                    "directivity_delta_db": 0.007229746184542307,
+                    "efficiency_delta": 0.0,
+                    "gain_delta_db": 0.007229746184542307,
+                    "pattern_max_delta": 0.0016632644366731952,
+                    "radiated_relative_delta": 0.0,
+                    "realized_gain_delta_db": 0.007229746184542751
+                  },
+                  "passed": true
+                }
+              ],
+              "guards": {
+                "actual_mesh_fixed": true,
+                "both_angle_steps_refine": true,
+                "fixed_outer_domain_and_pml_interfaces": true,
+                "fixed_pml_cell_widths": true,
+                "nested_angle_nodes": true,
+                "passed": true,
+                "recording_planes_fixed": true,
+                "same_phase_center_radius_frequencies": true,
+                "same_snapshot_source_runtime": true
+              },
+              "interpolation_used": false,
+              "left": "angle_medium",
+              "max_s11_complex_delta": 0.0,
+              "physics_validated": false,
+              "right": "angle_fine",
+              "status": "passed"
+            }
+          ],
+          "decision_rule": "last_adjacent_pair_after_minimum_levels",
+          "finest_case": "angle_fine",
+          "level_count": 3,
+          "status": "established"
+        },
+        "box": {
+          "comparisons": [
+            {
+              "common_angle_count": 2664,
+              "frequencies": [
+                {
+                  "checks": {
+                    "directivity": true,
+                    "efficiency": true,
+                    "gain": true,
+                    "pattern": true,
+                    "radiated": true
+                  },
+                  "frequency_hz": 2400000000,
+                  "metrics": {
+                    "directivity_delta_db": 0.01608983806108588,
+                    "efficiency_delta": 1.8939280921337343e-07,
+                    "gain_delta_db": 0.016090670561329734,
+                    "pattern_max_delta": 0.0033527627199388954,
+                    "radiated_relative_delta": 1.9169024668295e-07,
+                    "realized_gain_delta_db": 0.01609067056133029
+                  },
+                  "passed": true
+                },
+                {
+                  "checks": {
+                    "directivity": true,
+                    "efficiency": true,
+                    "gain": true,
+                    "pattern": true,
+                    "radiated": true
+                  },
+                  "frequency_hz": 2441750000,
+                  "metrics": {
+                    "directivity_delta_db": 0.017183746925973686,
+                    "efficiency_delta": 7.02944015135154e-05,
+                    "gain_delta_db": 0.01687458036529721,
+                    "pattern_max_delta": 0.0034240099544950997,
+                    "radiated_relative_delta": 7.118569756463834e-05,
+                    "realized_gain_delta_db": 0.01687458036529671
+                  },
+                  "passed": true
+                },
+                {
+                  "checks": {
+                    "directivity": true,
+                    "efficiency": true,
+                    "gain": true,
+                    "pattern": true,
+                    "radiated": true
+                  },
+                  "frequency_hz": 2483500000,
+                  "metrics": {
+                    "directivity_delta_db": 0.0180792002266581,
+                    "efficiency_delta": 0.0002081396895073917,
+                    "gain_delta_db": 0.017162301277333647,
+                    "pattern_max_delta": 0.0035741145275202113,
+                    "radiated_relative_delta": 0.00021110150019155628,
+                    "realized_gain_delta_db": 0.017162301277333314
+                  },
+                  "passed": true
+                }
+              ],
+              "guards": {
+                "actual_mesh_fixed": true,
+                "all_recording_faces_expand": true,
+                "angles_fixed": true,
+                "fixed_outer_domain_and_pml_interfaces": true,
+                "fixed_pml_cell_widths": true,
+                "passed": true,
+                "requested_distance_increases": true,
+                "same_phase_center_radius_frequencies": true,
+                "same_snapshot_source_runtime": true
+              },
+              "interpolation_used": false,
+              "left": "box_near",
+              "max_s11_complex_delta": 0.0,
+              "physics_validated": false,
+              "right": "box_middle",
+              "status": "passed"
+            },
+            {
+              "common_angle_count": 2664,
+              "frequencies": [
+                {
+                  "checks": {
+                    "directivity": true,
+                    "efficiency": true,
+                    "gain": true,
+                    "pattern": true,
+                    "radiated": true
+                  },
+                  "frequency_hz": 2400000000,
+                  "metrics": {
+                    "directivity_delta_db": 0.015039003494863756,
+                    "efficiency_delta": 7.634730734251693e-05,
+                    "gain_delta_db": 0.01470339623519612,
+                    "pattern_max_delta": 0.0036299902381377036,
+                    "radiated_relative_delta": 7.727344157478192e-05,
+                    "realized_gain_delta_db": 0.014703396235196065
+                  },
+                  "passed": true
+                },
+                {
+                  "checks": {
+                    "directivity": true,
+                    "efficiency": true,
+                    "gain": true,
+                    "pattern": true,
+                    "radiated": true
+                  },
+                  "frequency_hz": 2441750000,
+                  "metrics": {
+                    "directivity_delta_db": 0.015705664181983714,
+                    "efficiency_delta": 0.00015009727001791262,
+                    "gain_delta_db": 0.01504543754865928,
+                    "pattern_max_delta": 0.0038018753565498553,
+                    "radiated_relative_delta": 0.00015201124550859866,
+                    "realized_gain_delta_db": 0.015045437548659613
+                  },
+                  "passed": true
+                },
+                {
+                  "checks": {
+                    "directivity": true,
+                    "efficiency": true,
+                    "gain": true,
+                    "pattern": true,
+                    "radiated": true
+                  },
+                  "frequency_hz": 2483500000,
+                  "metrics": {
+                    "directivity_delta_db": 0.01601004868651179,
+                    "efficiency_delta": 0.00033233856671543993,
+                    "gain_delta_db": 0.014545626229932385,
+                    "pattern_max_delta": 0.004017985480950892,
+                    "radiated_relative_delta": 0.00033713888774513,
+                    "realized_gain_delta_db": 0.01454562622993305
+                  },
+                  "passed": true
+                }
+              ],
+              "guards": {
+                "actual_mesh_fixed": true,
+                "all_recording_faces_expand": true,
+                "angles_fixed": true,
+                "fixed_outer_domain_and_pml_interfaces": true,
+                "fixed_pml_cell_widths": true,
+                "passed": true,
+                "requested_distance_increases": true,
+                "same_phase_center_radius_frequencies": true,
+                "same_snapshot_source_runtime": true
+              },
+              "interpolation_used": false,
+              "left": "box_middle",
+              "max_s11_complex_delta": 0.0,
+              "physics_validated": false,
+              "right": "box_far",
+              "status": "passed"
+            }
+          ],
+          "decision_rule": "last_adjacent_pair_after_minimum_levels",
+          "finest_case": "box_far",
+          "level_count": 3,
+          "status": "established"
+        },
+        "mesh": {
+          "comparisons": [
+            {
+              "common_angle_count": 2664,
+              "frequencies": [
+                {
+                  "checks": {
+                    "directivity": true,
+                    "efficiency": true,
+                    "gain": false,
+                    "pattern": true,
+                    "radiated": false
+                  },
+                  "frequency_hz": 2400000000,
+                  "metrics": {
+                    "directivity_delta_db": 0.0036629236787057984,
+                    "efficiency_delta": 0.0010576654132538055,
+                    "gain_delta_db": 0.008309165912318672,
+                    "pattern_max_delta": 0.002470139239916347,
+                    "radiated_relative_delta": 0.1319792145647638,
+                    "realized_gain_delta_db": 0.21810641257538643
+                  },
+                  "passed": false
+                },
+                {
+                  "checks": {
+                    "directivity": true,
+                    "efficiency": true,
+                    "gain": false,
+                    "pattern": true,
+                    "radiated": false
+                  },
+                  "frequency_hz": 2441750000,
+                  "metrics": {
+                    "directivity_delta_db": 0.003758898710732872,
+                    "efficiency_delta": 0.0012743203606959685,
+                    "gain_delta_db": 0.0093597992839074,
+                    "pattern_max_delta": 0.0026845402457836842,
+                    "radiated_relative_delta": 0.1351473248767332,
+                    "realized_gain_delta_db": 0.23404286165814883
+                  },
+                  "passed": false
+                },
+                {
+                  "checks": {
+                    "directivity": true,
+                    "efficiency": true,
+                    "gain": false,
+                    "pattern": true,
+                    "radiated": false
+                  },
+                  "frequency_hz": 2483500000,
+                  "metrics": {
+                    "directivity_delta_db": 0.00423763943530675,
+                    "efficiency_delta": 0.0015419431027521302,
+                    "gain_delta_db": 0.011025601876012647,
+                    "pattern_max_delta": 0.0029534284670496014,
+                    "radiated_relative_delta": 0.1377013123083978,
+                    "realized_gain_delta_db": 0.24733132971794247
+                  },
+                  "passed": false
+                }
+              ],
+              "guards": {
+                "actual_grid_points_increase": true,
+                "angles_fixed": true,
+                "fixed_outer_domain_and_pml_interfaces": true,
+                "fixed_pml_cell_widths": true,
+                "grid_setting_refines": true,
+                "passed": true,
+                "recording_planes_fixed": true,
+                "same_phase_center_radius_frequencies": true,
+                "same_snapshot_source_runtime": true
+              },
+              "interpolation_used": false,
+              "left": "mesh_coarse",
+              "max_s11_complex_delta": 0.035903111976110395,
+              "physics_validated": false,
+              "right": "mesh_medium",
+              "status": "failed"
+            },
+            {
+              "common_angle_count": 2664,
+              "frequencies": [
+                {
+                  "checks": {
+                    "directivity": true,
+                    "efficiency": true,
+                    "gain": true,
+                    "pattern": true,
+                    "radiated": true
+                  },
+                  "frequency_hz": 2400000000,
+                  "metrics": {
+                    "directivity_delta_db": 0.0007625203609937792,
+                    "efficiency_delta": 0.00015589184914732712,
+                    "gain_delta_db": 7.727903239729272e-05,
+                    "pattern_max_delta": 0.0003496574958145038,
+                    "radiated_relative_delta": 0.0011807978802085809,
+                    "realized_gain_delta_db": 0.0021217113697124534
+                  },
+                  "passed": true
+                },
+                {
+                  "checks": {
+                    "directivity": true,
+                    "efficiency": true,
+                    "gain": true,
+                    "pattern": true,
+                    "radiated": true
+                  },
+                  "frequency_hz": 2441750000,
+                  "metrics": {
+                    "directivity_delta_db": 0.000517799430903576,
+                    "efficiency_delta": 0.0002135764193287315,
+                    "gain_delta_db": 0.00042162010499069424,
+                    "pattern_max_delta": 0.00042082271754340095,
+                    "radiated_relative_delta": 0.0015211356073597147,
+                    "realized_gain_delta_db": 0.0038468843931679375
+                  },
+                  "passed": true
+                },
+                {
+                  "checks": {
+                    "directivity": true,
+                    "efficiency": true,
+                    "gain": true,
+                    "pattern": true,
+                    "radiated": true
+                  },
+                  "frequency_hz": 2483500000,
+                  "metrics": {
+                    "directivity_delta_db": 0.00016773039521655875,
+                    "efficiency_delta": 0.0003366380239820943,
+                    "gain_delta_db": 0.001315634029778412,
+                    "pattern_max_delta": 0.00047905193662622914,
+                    "radiated_relative_delta": 0.0018911810883853967,
+                    "realized_gain_delta_db": 0.00580734246389325
+                  },
+                  "passed": true
+                }
+              ],
+              "guards": {
+                "actual_grid_points_increase": true,
+                "angles_fixed": true,
+                "fixed_outer_domain_and_pml_interfaces": true,
+                "fixed_pml_cell_widths": true,
+                "grid_setting_refines": true,
+                "passed": true,
+                "recording_planes_fixed": true,
+                "same_phase_center_radius_frequencies": true,
+                "same_snapshot_source_runtime": true
+              },
+              "interpolation_used": false,
+              "left": "mesh_medium",
+              "max_s11_complex_delta": 0.001275758910035722,
+              "physics_validated": false,
+              "right": "mesh_fine",
+              "status": "passed"
+            }
+          ],
+          "decision_rule": "last_adjacent_pair_after_minimum_levels",
+          "finest_case": "mesh_fine",
+          "level_count": 3,
+          "status": "established"
+        }
+      },
+      "status": "established"
+    },
+    "physics_validated": false,
+    "power_balance": {
+      "cases": [
+        {
+          "absolute_power_w": null,
+          "axis": "mesh",
+          "frequencies": [
+            {
+              "accepted_power_w_s2": 1.0252784845010496e-27,
+              "frequency_hz": 2400000000,
+              "incident_power_w_s2": 1.7896950172621977e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 1.1122165420576827e-29,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 0.0,
+              "radiated_power_w_s2": 1.0141563190804728e-27,
+              "reflected_power_w_s2": 7.644165327611482e-28,
+              "sphere_power_w_s2": 1.0191400894790594e-27,
+              "sphere_relative_error": 0.004914203367687321,
+              "status": "within_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            },
+            {
+              "accepted_power_w_s2": 9.152896100049986e-28,
+              "frequency_hz": 2441750000,
+              "incident_power_w_s2": 1.7990585787080144e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 1.0299948918827632e-29,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 2.991001052823765e-16,
+              "radiated_power_w_s2": 9.04989661086171e-28,
+              "reflected_power_w_s2": 8.837689687030163e-28,
+              "sphere_power_w_s2": 9.094962868963834e-28,
+              "sphere_relative_error": 0.004979753917634285,
+              "status": "within_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            },
+            {
+              "accepted_power_w_s2": 8.03266632199284e-28,
+              "frequency_hz": 2483500000,
+              "incident_power_w_s2": 1.7895592883730487e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 1.0195192972302315e-29,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 1.5034389019598621e-16,
+              "radiated_power_w_s2": 7.9307143922698165e-28,
+              "reflected_power_w_s2": 9.862926561737644e-28,
+              "sphere_power_w_s2": 7.970846465841081e-28,
+              "sphere_relative_error": 0.005060335246769455,
+              "status": "within_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            }
+          ],
+          "full_energy_closure": "not_evaluated",
+          "independent_volume_and_conductor_loss_integral": "not_evaluated",
+          "label": "mesh_coarse",
+          "physics_validated": false,
+          "power_unit": "W*s^2",
+          "scope": "port_wave_identity_sphere_integral_and_passivity_budget",
+          "status": "passed"
+        },
+        {
+          "absolute_power_w": null,
+          "axis": "mesh",
+          "frequencies": [
+            {
+              "accepted_power_w_s2": 8.909156601073865e-28,
+              "frequency_hz": 2400000000,
+              "incident_power_w_s2": 1.6321253215287284e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 1.0606895465046501e-29,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 0.0,
+              "radiated_power_w_s2": 8.8030876464234e-28,
+              "reflected_power_w_s2": 7.412096614213419e-28,
+              "sphere_power_w_s2": 8.846524456324012e-28,
+              "sphere_relative_error": 0.0049342698431793855,
+              "status": "within_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            },
+            {
+              "accepted_power_w_s2": 7.926122051750325e-28,
+              "frequency_hz": 2441750000,
+              "incident_power_w_s2": 1.6406495884743965e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 9.929475825758959e-30,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 3.279789993432392e-16,
+              "radiated_power_w_s2": 7.826827293492736e-28,
+              "reflected_power_w_s2": 8.480373832993645e-28,
+              "sphere_power_w_s2": 7.866075209538531e-28,
+              "sphere_relative_error": 0.005014537126483691,
+              "status": "within_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            },
+            {
+              "accepted_power_w_s2": 6.937392206443113e-28,
+              "frequency_hz": 2483500000,
+              "incident_power_w_s2": 1.6319738118872397e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 9.874759353194787e-30,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 1.648612883311112e-16,
+              "radiated_power_w_s2": 6.838644612911165e-28,
+              "reflected_power_w_s2": 9.382345912429282e-28,
+              "sphere_power_w_s2": 6.873486141407474e-28,
+              "sphere_relative_error": 0.005094800281115457,
+              "status": "within_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            }
+          ],
+          "full_energy_closure": "not_evaluated",
+          "independent_volume_and_conductor_loss_integral": "not_evaluated",
+          "label": "mesh_medium",
+          "physics_validated": false,
+          "power_unit": "W*s^2",
+          "scope": "port_wave_identity_sphere_integral_and_passivity_budget",
+          "status": "passed"
+        },
+        {
+          "absolute_power_w": null,
+          "axis": "mesh",
+          "frequencies": [
+            {
+              "accepted_power_w_s2": 8.900040849067908e-28,
+              "frequency_hz": 2400000000,
+              "incident_power_w_s2": 1.63128111636561e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 1.0734786987669517e-29,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 0.0,
+              "radiated_power_w_s2": 8.792692979191213e-28,
+              "reflected_power_w_s2": 7.41277031458819e-28,
+              "sphere_power_w_s2": 8.835832114989003e-28,
+              "sphere_relative_error": 0.0049062483928283196,
+              "status": "within_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            },
+            {
+              "accepted_power_w_s2": 7.915777416697895e-28,
+              "frequency_hz": 2441750000,
+              "incident_power_w_s2": 1.639801119407205e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 1.008557888939458e-29,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 2.1876580191434216e-16,
+              "radiated_power_w_s2": 7.814921627803949e-28,
+              "reflected_power_w_s2": 8.482233777374159e-28,
+              "sphere_power_w_s2": 7.853842911811211e-28,
+              "sphere_relative_error": 0.0049803805925305745,
+              "status": "within_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            },
+            {
+              "accepted_power_w_s2": 6.926637781078711e-28,
+              "frequency_hz": 2483500000,
+              "incident_power_w_s2": 1.6311300380888155e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 1.009262835296723e-29,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 2.1992876011741996e-16,
+              "radiated_power_w_s2": 6.825711497549039e-28,
+              "reflected_power_w_s2": 9.38466259980944e-28,
+              "sphere_power_w_s2": 6.860283850585666e-28,
+              "sphere_relative_error": 0.005065018210781532,
+              "status": "within_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            }
+          ],
+          "full_energy_closure": "not_evaluated",
+          "independent_volume_and_conductor_loss_integral": "not_evaluated",
+          "label": "mesh_fine",
+          "physics_validated": false,
+          "power_unit": "W*s^2",
+          "scope": "port_wave_identity_sphere_integral_and_passivity_budget",
+          "status": "passed"
+        },
+        {
+          "absolute_power_w": null,
+          "axis": "box",
+          "frequencies": [
+            {
+              "accepted_power_w_s2": 8.900040849067908e-28,
+              "frequency_hz": 2400000000,
+              "incident_power_w_s2": 1.63128111636561e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 1.0667006132636942e-29,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 0.0,
+              "radiated_power_w_s2": 8.793370787741539e-28,
+              "reflected_power_w_s2": 7.41277031458819e-28,
+              "sphere_power_w_s2": 8.791765386240498e-28,
+              "sphere_relative_error": 0.00018256952194923892,
+              "status": "within_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            },
+            {
+              "accepted_power_w_s2": 7.915777416697895e-28,
+              "frequency_hz": 2441750000,
+              "incident_power_w_s2": 1.639801119407205e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 9.91112174776084e-30,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 2.1876580191434216e-16,
+              "radiated_power_w_s2": 7.8166661992202865e-28,
+              "reflected_power_w_s2": 8.482233777374159e-28,
+              "sphere_power_w_s2": 7.815759995306435e-28,
+              "sphere_relative_error": 0.00011593227736169488,
+              "status": "within_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            },
+            {
+              "accepted_power_w_s2": 6.926637781078711e-28,
+              "frequency_hz": 2483500000,
+              "incident_power_w_s2": 1.6311300380888155e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 9.718258642026805e-30,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 2.1992876011741996e-16,
+              "radiated_power_w_s2": 6.829455194658443e-28,
+              "reflected_power_w_s2": 9.38466259980944e-28,
+              "sphere_power_w_s2": 6.8294755238785345e-28,
+              "sphere_relative_error": 2.976697190598521e-06,
+              "status": "within_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            }
+          ],
+          "full_energy_closure": "not_evaluated",
+          "independent_volume_and_conductor_loss_integral": "not_evaluated",
+          "label": "box_near",
+          "physics_validated": false,
+          "power_unit": "W*s^2",
+          "scope": "port_wave_identity_sphere_integral_and_passivity_budget",
+          "status": "passed"
+        },
+        {
+          "absolute_power_w": null,
+          "axis": "box",
+          "frequencies": [
+            {
+              "accepted_power_w_s2": 8.900040849067908e-28,
+              "frequency_hz": 2400000000,
+              "incident_power_w_s2": 1.63128111636561e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 1.0666837572263083e-29,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 0.0,
+              "radiated_power_w_s2": 8.793372473345277e-28,
+              "reflected_power_w_s2": 7.41277031458819e-28,
+              "sphere_power_w_s2": 8.818991185635507e-28,
+              "sphere_relative_error": 0.00291341147755153,
+              "status": "within_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            },
+            {
+              "accepted_power_w_s2": 7.915777416697895e-28,
+              "frequency_hz": 2441750000,
+              "incident_power_w_s2": 1.639801119407205e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 9.966765231362983e-30,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 2.1876580191434216e-16,
+              "radiated_power_w_s2": 7.816109764384265e-28,
+              "reflected_power_w_s2": 8.482233777374159e-28,
+              "sphere_power_w_s2": 7.839852865594472e-28,
+              "sphere_relative_error": 0.0030377133799216753,
+              "status": "within_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            },
+            {
+              "accepted_power_w_s2": 6.926637781078711e-28,
+              "frequency_hz": 2483500000,
+              "incident_power_w_s2": 1.6311300380888155e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 9.862429465735146e-30,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 2.1992876011741996e-16,
+              "radiated_power_w_s2": 6.82801348642136e-28,
+              "reflected_power_w_s2": 9.38466259980944e-28,
+              "sphere_power_w_s2": 6.849849051094615e-28,
+              "sphere_relative_error": 0.0031979381289563673,
+              "status": "within_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            }
+          ],
+          "full_energy_closure": "not_evaluated",
+          "independent_volume_and_conductor_loss_integral": "not_evaluated",
+          "label": "box_middle",
+          "physics_validated": false,
+          "power_unit": "W*s^2",
+          "scope": "port_wave_identity_sphere_integral_and_passivity_budget",
+          "status": "passed"
+        },
+        {
+          "absolute_power_w": null,
+          "axis": "box",
+          "frequencies": [
+            {
+              "accepted_power_w_s2": 8.900040849067908e-28,
+              "frequency_hz": 2400000000,
+              "incident_power_w_s2": 1.63128111636561e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 1.0734786987669517e-29,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 0.0,
+              "radiated_power_w_s2": 8.792692979191213e-28,
+              "reflected_power_w_s2": 7.41277031458819e-28,
+              "sphere_power_w_s2": 8.835832114989003e-28,
+              "sphere_relative_error": 0.0049062483928283196,
+              "status": "within_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            },
+            {
+              "accepted_power_w_s2": 7.915777416697895e-28,
+              "frequency_hz": 2441750000,
+              "incident_power_w_s2": 1.639801119407205e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 1.008557888939458e-29,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 2.1876580191434216e-16,
+              "radiated_power_w_s2": 7.814921627803949e-28,
+              "reflected_power_w_s2": 8.482233777374159e-28,
+              "sphere_power_w_s2": 7.853842911811211e-28,
+              "sphere_relative_error": 0.0049803805925305745,
+              "status": "within_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            },
+            {
+              "accepted_power_w_s2": 6.926637781078711e-28,
+              "frequency_hz": 2483500000,
+              "incident_power_w_s2": 1.6311300380888155e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 1.009262835296723e-29,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 2.1992876011741996e-16,
+              "radiated_power_w_s2": 6.825711497549039e-28,
+              "reflected_power_w_s2": 9.38466259980944e-28,
+              "sphere_power_w_s2": 6.860283850585666e-28,
+              "sphere_relative_error": 0.005065018210781532,
+              "status": "within_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            }
+          ],
+          "full_energy_closure": "not_evaluated",
+          "independent_volume_and_conductor_loss_integral": "not_evaluated",
+          "label": "box_far",
+          "physics_validated": false,
+          "power_unit": "W*s^2",
+          "scope": "port_wave_identity_sphere_integral_and_passivity_budget",
+          "status": "passed"
+        },
+        {
+          "absolute_power_w": null,
+          "axis": "angle",
+          "frequencies": [
+            {
+              "accepted_power_w_s2": 8.900040849067908e-28,
+              "frequency_hz": 2400000000,
+              "incident_power_w_s2": 1.63128111636561e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 1.0734786987669517e-29,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 0.0,
+              "radiated_power_w_s2": 8.792692979191213e-28,
+              "reflected_power_w_s2": 7.41277031458819e-28,
+              "sphere_power_w_s2": 8.523660220070999e-28,
+              "sphere_relative_error": 0.030597310716626525,
+              "status": "outside_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            },
+            {
+              "accepted_power_w_s2": 7.915777416697895e-28,
+              "frequency_hz": 2441750000,
+              "incident_power_w_s2": 1.639801119407205e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 1.008557888939458e-29,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 2.1876580191434216e-16,
+              "radiated_power_w_s2": 7.814921627803949e-28,
+              "reflected_power_w_s2": 8.482233777374159e-28,
+              "sphere_power_w_s2": 7.580428431784509e-28,
+              "sphere_relative_error": 0.030005828233153252,
+              "status": "outside_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            },
+            {
+              "accepted_power_w_s2": 6.926637781078711e-28,
+              "frequency_hz": 2483500000,
+              "incident_power_w_s2": 1.6311300380888155e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 1.009262835296723e-29,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 2.1992876011741996e-16,
+              "radiated_power_w_s2": 6.825711497549039e-28,
+              "reflected_power_w_s2": 9.38466259980944e-28,
+              "sphere_power_w_s2": 6.625174360032587e-28,
+              "sphere_relative_error": 0.029379667978709733,
+              "status": "within_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            }
+          ],
+          "full_energy_closure": "not_evaluated",
+          "independent_volume_and_conductor_loss_integral": "not_evaluated",
+          "label": "angle_coarse",
+          "physics_validated": false,
+          "power_unit": "W*s^2",
+          "scope": "port_wave_identity_sphere_integral_and_passivity_budget",
+          "status": "failed"
+        },
+        {
+          "absolute_power_w": null,
+          "axis": "angle",
+          "frequencies": [
+            {
+              "accepted_power_w_s2": 8.900040849067908e-28,
+              "frequency_hz": 2400000000,
+              "incident_power_w_s2": 1.63128111636561e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 1.0734786987669517e-29,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 0.0,
+              "radiated_power_w_s2": 8.792692979191213e-28,
+              "reflected_power_w_s2": 7.41277031458819e-28,
+              "sphere_power_w_s2": 8.765702678863806e-28,
+              "sphere_relative_error": 0.0030696284279778893,
+              "status": "within_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            },
+            {
+              "accepted_power_w_s2": 7.915777416697895e-28,
+              "frequency_hz": 2441750000,
+              "incident_power_w_s2": 1.639801119407205e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 1.008557888939458e-29,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 2.1876580191434216e-16,
+              "radiated_power_w_s2": 7.814921627803949e-28,
+              "reflected_power_w_s2": 8.482233777374159e-28,
+              "sphere_power_w_s2": 7.792378191663534e-28,
+              "sphere_relative_error": 0.002884665670889115,
+              "status": "within_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            },
+            {
+              "accepted_power_w_s2": 6.926637781078711e-28,
+              "frequency_hz": 2483500000,
+              "incident_power_w_s2": 1.6311300380888155e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 1.009262835296723e-29,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 2.1992876011741996e-16,
+              "radiated_power_w_s2": 6.825711497549039e-28,
+              "reflected_power_w_s2": 9.38466259980944e-28,
+              "sphere_power_w_s2": 6.807390403898771e-28,
+              "sphere_relative_error": 0.002684129508967163,
+              "status": "within_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            }
+          ],
+          "full_energy_closure": "not_evaluated",
+          "independent_volume_and_conductor_loss_integral": "not_evaluated",
+          "label": "angle_medium",
+          "physics_validated": false,
+          "power_unit": "W*s^2",
+          "scope": "port_wave_identity_sphere_integral_and_passivity_budget",
+          "status": "passed"
+        },
+        {
+          "absolute_power_w": null,
+          "axis": "angle",
+          "frequencies": [
+            {
+              "accepted_power_w_s2": 8.900040849067908e-28,
+              "frequency_hz": 2400000000,
+              "incident_power_w_s2": 1.63128111636561e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 1.0734786987669517e-29,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 0.0,
+              "radiated_power_w_s2": 8.792692979191213e-28,
+              "reflected_power_w_s2": 7.41277031458819e-28,
+              "sphere_power_w_s2": 8.835832114989003e-28,
+              "sphere_relative_error": 0.0049062483928283196,
+              "status": "within_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            },
+            {
+              "accepted_power_w_s2": 7.915777416697895e-28,
+              "frequency_hz": 2441750000,
+              "incident_power_w_s2": 1.639801119407205e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 1.008557888939458e-29,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 2.1876580191434216e-16,
+              "radiated_power_w_s2": 7.814921627803949e-28,
+              "reflected_power_w_s2": 8.482233777374159e-28,
+              "sphere_power_w_s2": 7.853842911811211e-28,
+              "sphere_relative_error": 0.0049803805925305745,
+              "status": "within_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            },
+            {
+              "accepted_power_w_s2": 6.926637781078711e-28,
+              "frequency_hz": 2483500000,
+              "incident_power_w_s2": 1.6311300380888155e-27,
+              "independent_absorption_power_w_s2": null,
+              "inferred_loss_w_s2": 1.009262835296723e-29,
+              "passivity_excess_fraction": 0.0,
+              "port_wave_relative_residual": 2.1992876011741996e-16,
+              "radiated_power_w_s2": 6.825711497549039e-28,
+              "reflected_power_w_s2": 9.38466259980944e-28,
+              "sphere_power_w_s2": 6.860283850585666e-28,
+              "sphere_relative_error": 0.005065018210781532,
+              "status": "within_initial_numerical_budget",
+              "strict_passivity_status": "nonnegative_loss"
+            }
+          ],
+          "full_energy_closure": "not_evaluated",
+          "independent_volume_and_conductor_loss_integral": "not_evaluated",
+          "label": "angle_fine",
+          "physics_validated": false,
+          "power_unit": "W*s^2",
+          "scope": "port_wave_identity_sphere_integral_and_passivity_budget",
+          "status": "passed"
+        }
+      ],
+      "full_energy_closure": "not_evaluated",
+      "independent_absorption_integral": "not_evaluated",
+      "reference_case": "mesh_fine",
+      "status": "passed"
+    },
+    "power_unit": "W*s^2",
+    "schema": "rfad.pcb-radiation-convergence/0.1",
+    "source_settings": [
+      {
+        "axis": "mesh",
+        "label": "mesh_coarse",
+        "settings": {
+          "air_padding_mm": 90,
+          "curve_tolerance_mm": 0.025,
+          "end_criterion": 1e-05,
+          "frequency_hz": {
+            "count": 201,
+            "start": 2400000000,
+            "stop": 2483500000
+          },
+          "grid_mm": 0.5,
+          "max_timesteps": 100000,
+          "mesh_policy": {
+            "air_cell_mm": 6,
+            "growth_ratio": 1.5,
+            "kind": "graded_air"
+          },
+          "radiation": {
+            "box_clearance_mm": 30,
+            "frequency_hz": [
+              2400000000,
+              2441750000,
+              2483500000
+            ],
+            "phi_step_deg": 5,
+            "theta_step_deg": 5
+          }
+        }
+      },
+      {
+        "axis": "mesh",
+        "label": "mesh_medium",
+        "settings": {
+          "air_padding_mm": 90,
+          "curve_tolerance_mm": 0.025,
+          "end_criterion": 1e-05,
+          "frequency_hz": {
+            "count": 201,
+            "start": 2400000000,
+            "stop": 2483500000
+          },
+          "grid_mm": 0.45,
+          "max_timesteps": 100000,
+          "mesh_policy": {
+            "air_cell_mm": 6,
+            "growth_ratio": 1.5,
+            "kind": "graded_air"
+          },
+          "radiation": {
+            "box_clearance_mm": 30,
+            "frequency_hz": [
+              2400000000,
+              2441750000,
+              2483500000
+            ],
+            "phi_step_deg": 5,
+            "theta_step_deg": 5
+          }
+        }
+      },
+      {
+        "axis": "mesh",
+        "label": "mesh_fine",
+        "settings": {
+          "air_padding_mm": 90,
+          "curve_tolerance_mm": 0.025,
+          "end_criterion": 1e-05,
+          "frequency_hz": {
+            "count": 201,
+            "start": 2400000000,
+            "stop": 2483500000
+          },
+          "grid_mm": 0.4,
+          "max_timesteps": 100000,
+          "mesh_policy": {
+            "air_cell_mm": 6,
+            "growth_ratio": 1.5,
+            "kind": "graded_air"
+          },
+          "radiation": {
+            "box_clearance_mm": 30,
+            "frequency_hz": [
+              2400000000,
+              2441750000,
+              2483500000
+            ],
+            "phi_step_deg": 5,
+            "theta_step_deg": 5
+          }
+        }
+      },
+      {
+        "axis": "box",
+        "label": "box_near",
+        "settings": {
+          "air_padding_mm": 90,
+          "curve_tolerance_mm": 0.025,
+          "end_criterion": 1e-05,
+          "frequency_hz": {
+            "count": 201,
+            "start": 2400000000,
+            "stop": 2483500000
+          },
+          "grid_mm": 0.4,
+          "max_timesteps": 100000,
+          "mesh_policy": {
+            "air_cell_mm": 6,
+            "growth_ratio": 1.5,
+            "kind": "graded_air"
+          },
+          "radiation": {
+            "box_clearance_mm": 18,
+            "frequency_hz": [
+              2400000000,
+              2441750000,
+              2483500000
+            ],
+            "phi_step_deg": 5,
+            "theta_step_deg": 5
+          }
+        }
+      },
+      {
+        "axis": "box",
+        "label": "box_middle",
+        "settings": {
+          "air_padding_mm": 90,
+          "curve_tolerance_mm": 0.025,
+          "end_criterion": 1e-05,
+          "frequency_hz": {
+            "count": 201,
+            "start": 2400000000,
+            "stop": 2483500000
+          },
+          "grid_mm": 0.4,
+          "max_timesteps": 100000,
+          "mesh_policy": {
+            "air_cell_mm": 6,
+            "growth_ratio": 1.5,
+            "kind": "graded_air"
+          },
+          "radiation": {
+            "box_clearance_mm": 24,
+            "frequency_hz": [
+              2400000000,
+              2441750000,
+              2483500000
+            ],
+            "phi_step_deg": 5,
+            "theta_step_deg": 5
+          }
+        }
+      },
+      {
+        "axis": "box",
+        "label": "box_far",
+        "settings": {
+          "air_padding_mm": 90,
+          "curve_tolerance_mm": 0.025,
+          "end_criterion": 1e-05,
+          "frequency_hz": {
+            "count": 201,
+            "start": 2400000000,
+            "stop": 2483500000
+          },
+          "grid_mm": 0.4,
+          "max_timesteps": 100000,
+          "mesh_policy": {
+            "air_cell_mm": 6,
+            "growth_ratio": 1.5,
+            "kind": "graded_air"
+          },
+          "radiation": {
+            "box_clearance_mm": 30,
+            "frequency_hz": [
+              2400000000,
+              2441750000,
+              2483500000
+            ],
+            "phi_step_deg": 5,
+            "theta_step_deg": 5
+          }
+        }
+      },
+      {
+        "axis": "angle",
+        "label": "angle_coarse",
+        "settings": {
+          "air_padding_mm": 90,
+          "curve_tolerance_mm": 0.025,
+          "end_criterion": 1e-05,
+          "frequency_hz": {
+            "count": 201,
+            "start": 2400000000,
+            "stop": 2483500000
+          },
+          "grid_mm": 0.4,
+          "max_timesteps": 100000,
+          "mesh_policy": {
+            "air_cell_mm": 6,
+            "growth_ratio": 1.5,
+            "kind": "graded_air"
+          },
+          "radiation": {
+            "box_clearance_mm": 30,
+            "frequency_hz": [
+              2400000000,
+              2441750000,
+              2483500000
+            ],
+            "phi_step_deg": 30,
+            "theta_step_deg": 30
+          }
+        }
+      },
+      {
+        "axis": "angle",
+        "label": "angle_medium",
+        "settings": {
+          "air_padding_mm": 90,
+          "curve_tolerance_mm": 0.025,
+          "end_criterion": 1e-05,
+          "frequency_hz": {
+            "count": 201,
+            "start": 2400000000,
+            "stop": 2483500000
+          },
+          "grid_mm": 0.4,
+          "max_timesteps": 100000,
+          "mesh_policy": {
+            "air_cell_mm": 6,
+            "growth_ratio": 1.5,
+            "kind": "graded_air"
+          },
+          "radiation": {
+            "box_clearance_mm": 30,
+            "frequency_hz": [
+              2400000000,
+              2441750000,
+              2483500000
+            ],
+            "phi_step_deg": 15,
+            "theta_step_deg": 15
+          }
+        }
+      },
+      {
+        "axis": "angle",
+        "label": "angle_fine",
+        "settings": {
+          "air_padding_mm": 90,
+          "curve_tolerance_mm": 0.025,
+          "end_criterion": 1e-05,
+          "frequency_hz": {
+            "count": 201,
+            "start": 2400000000,
+            "stop": 2483500000
+          },
+          "grid_mm": 0.4,
+          "max_timesteps": 100000,
+          "mesh_policy": {
+            "air_cell_mm": 6,
+            "growth_ratio": 1.5,
+            "kind": "graded_air"
+          },
+          "radiation": {
+            "box_clearance_mm": 30,
+            "frequency_hz": [
+              2400000000,
+              2441750000,
+              2483500000
+            ],
+            "phi_step_deg": 5,
+            "theta_step_deg": 5
+          }
+        }
+      }
+    ]
+  },
+  "preflight_guards": [
+    {
+      "actual_grid_points_increase": true,
+      "angles_fixed": true,
+      "axis": "mesh",
+      "fixed_outer_domain_and_pml_interfaces": true,
+      "fixed_pml_cell_widths": true,
+      "grid_setting_refines": true,
+      "left": "mesh_coarse",
+      "passed": true,
+      "recording_planes_fixed": true,
+      "right": "mesh_medium",
+      "same_phase_center_radius_frequencies": true,
+      "same_snapshot_source_runtime": true
+    },
+    {
+      "actual_grid_points_increase": true,
+      "angles_fixed": true,
+      "axis": "mesh",
+      "fixed_outer_domain_and_pml_interfaces": true,
+      "fixed_pml_cell_widths": true,
+      "grid_setting_refines": true,
+      "left": "mesh_medium",
+      "passed": true,
+      "recording_planes_fixed": true,
+      "right": "mesh_fine",
+      "same_phase_center_radius_frequencies": true,
+      "same_snapshot_source_runtime": true
+    },
+    {
+      "actual_mesh_fixed": true,
+      "all_recording_faces_expand": true,
+      "angles_fixed": true,
+      "axis": "box",
+      "fixed_outer_domain_and_pml_interfaces": true,
+      "fixed_pml_cell_widths": true,
+      "left": "box_near",
+      "passed": true,
+      "requested_distance_increases": true,
+      "right": "box_middle",
+      "same_phase_center_radius_frequencies": true,
+      "same_snapshot_source_runtime": true
+    },
+    {
+      "actual_mesh_fixed": true,
+      "all_recording_faces_expand": true,
+      "angles_fixed": true,
+      "axis": "box",
+      "fixed_outer_domain_and_pml_interfaces": true,
+      "fixed_pml_cell_widths": true,
+      "left": "box_middle",
+      "passed": true,
+      "requested_distance_increases": true,
+      "right": "box_far",
+      "same_phase_center_radius_frequencies": true,
+      "same_snapshot_source_runtime": true
+    },
+    {
+      "actual_mesh_fixed": true,
+      "axis": "angle",
+      "both_angle_steps_refine": true,
+      "fixed_outer_domain_and_pml_interfaces": true,
+      "fixed_pml_cell_widths": true,
+      "left": "angle_coarse",
+      "nested_angle_nodes": true,
+      "passed": true,
+      "recording_planes_fixed": true,
+      "right": "angle_medium",
+      "same_phase_center_radius_frequencies": true,
+      "same_snapshot_source_runtime": true
+    },
+    {
+      "actual_mesh_fixed": true,
+      "axis": "angle",
+      "both_angle_steps_refine": true,
+      "fixed_outer_domain_and_pml_interfaces": true,
+      "fixed_pml_cell_widths": true,
+      "left": "angle_medium",
+      "nested_angle_nodes": true,
+      "passed": true,
+      "recording_planes_fixed": true,
+      "right": "angle_fine",
+      "same_phase_center_radius_frequencies": true,
+      "same_snapshot_source_runtime": true
+    }
+  ],
+  "worker_identity": {
+    "code_files": [
+      {
+        "bytes": 1854,
+        "path": "tools/openems_worker.py",
+        "sha256": "a71e56e21aff057f4b673dd43131e22da3bdf4698099ec124946e65b152e582f"
+      },
+      {
+        "bytes": 110,
+        "path": "src/rfad/__init__.py",
+        "sha256": "637407b3c13a348c03d6a167d2a90e3703c4fc70a421cd9918075c0463d81097"
+      },
+      {
+        "bytes": 2818,
+        "path": "src/rfad/__main__.py",
+        "sha256": "354888f3b9a8851b80520b2876cc77d3c09e666f4e04f8221eb7c0e218a36af3"
+      },
+      {
+        "bytes": 102,
+        "path": "src/rfad/adapters/__init__.py",
+        "sha256": "e4be3b367495a970767105766bbd0895df057c4a53a3a39087bfe316171d0837"
+      },
+      {
+        "bytes": 99,
+        "path": "src/rfad/adapters/cad/__init__.py",
+        "sha256": "031a455542eba8f6df8c996b243a3210041b80cbb40b04208f0c639469e3df83"
+      },
+      {
+        "bytes": 10106,
+        "path": "src/rfad/adapters/cad/bodies.py",
+        "sha256": "3888b329266ef6e69e51009b3800561347aafbd74e3bfdfd619fe40a343f341a"
+      },
+      {
+        "bytes": 3442,
+        "path": "src/rfad/adapters/cad/display.py",
+        "sha256": "f9dcca816110978ff318a17c2136cda9d973ded99e129fa260a4805eba4ff949"
+      },
+      {
+        "bytes": 16629,
+        "path": "src/rfad/adapters/cad/geometry.py",
+        "sha256": "48305c116a58ab5a8dc0941c2574fcbf3739f05177c2e2eddf8865fb702e5445"
+      },
+      {
+        "bytes": 6831,
+        "path": "src/rfad/adapters/cad/native.py",
+        "sha256": "ce449003671876da7b324f7a9462518e4df9b7d3ace88d0f5f4b5623fec334cd"
+      },
+      {
+        "bytes": 6569,
+        "path": "src/rfad/adapters/cad/step_io.py",
+        "sha256": "a3b4e77091966ca809c92b735188c027b919f64ff4beedd4f6bd9b4bf4c86494"
+      },
+      {
+        "bytes": 73,
+        "path": "src/rfad/adapters/solvers/__init__.py",
+        "sha256": "64a5e0f0c806546fe9b2dab2f2394a02b77fb76afd1ff88a0979157ddd96bf5a"
+      },
+      {
+        "bytes": 77,
+        "path": "src/rfad/adapters/solvers/openems/__init__.py",
+        "sha256": "975618264c1614c71937b4baa15138f7aca694e4700ec4df2d8a67100ee90c61"
+      },
+      {
+        "bytes": 27680,
+        "path": "src/rfad/adapters/solvers/openems/native.py",
+        "sha256": "2ac0e46f88de23fa8b222d22fac4f13f79e502cef6dbb67b0c180fd6df71f22f"
+      },
+      {
+        "bytes": 16419,
+        "path": "src/rfad/adapters/solvers/openems/pcb.py",
+        "sha256": "33921fc5f15e4ea71d210811f79ecc9d87414fbbfad2164e5fe109bf89d0442c"
+      },
+      {
+        "bytes": 8774,
+        "path": "src/rfad/adapters/solvers/openems/pcb_mesh.py",
+        "sha256": "7edf8206be603296ab8fa57b2377c61d22bb51a9b0e436db9cc7d9db94020130"
+      },
+      {
+        "bytes": 986,
+        "path": "src/rfad/adapters/solvers/openems/pcb_ports.py",
+        "sha256": "b100fbe0365c56d39c12a067982bae3b3f2d92fee0092fa378a2040b3fa4d6d6"
+      },
+      {
+        "bytes": 3194,
+        "path": "src/rfad/adapters/solvers/openems/pcb_radiation.py",
+        "sha256": "6fe7c1a493783b97dd53c48e0a0899db59bb985a8fd693df8e870710ea4b96f5"
+      },
+      {
+        "bytes": 6517,
+        "path": "src/rfad/adapters/solvers/openems/reference.py",
+        "sha256": "e3bdb5aa463aa971a62cde5f466827b2423d895285dea595d2be81417f282951"
+      },
+      {
+        "bytes": 325,
+        "path": "src/rfad/application/__init__.py",
+        "sha256": "883e15b18f72a85626c6634d255886596dc1bf71ae64b8aebb9b5c32b3896bc7"
+      },
+      {
+        "bytes": 16071,
+        "path": "src/rfad/application/cad.py",
+        "sha256": "54e295d3f22dc7d4ee07dab0e584d99507df1e1cc54278ba4d471d1cf108dc26"
+      },
+      {
+        "bytes": 6437,
+        "path": "src/rfad/application/cad_artifacts.py",
+        "sha256": "5291bee8f431f3793daebc6d84538f3d527e93523026d2c7d05ceefbc7ff0f44"
+      },
+      {
+        "bytes": 17178,
+        "path": "src/rfad/application/cad_jobs.py",
+        "sha256": "49004db60d22fe8eea44479192185415ff5488b9a99405f637e3d916a784800a"
+      },
+      {
+        "bytes": 3805,
+        "path": "src/rfad/application/cad_runtime.py",
+        "sha256": "41e028c00ca6932ed888a357bbfd8a6bc9c4f7c759331e9098a36c8a4a4a6e40"
+      },
+      {
+        "bytes": 5534,
+        "path": "src/rfad/application/canonical.py",
+        "sha256": "f3b263089ad802d6924aea481c46a890e9baa7297bb5daef659394b1ef2be420"
+      },
+      {
+        "bytes": 18449,
+        "path": "src/rfad/application/canvas.py",
+        "sha256": "5b4d34afa804d3443fe697a8da96aee268972ef9f3c92089f5e583000559d9c7"
+      },
+      {
+        "bytes": 4129,
+        "path": "src/rfad/application/catalog_api.py",
+        "sha256": "7be29a5e0e924fa591e0f9c2198649b05aeca0c789f518048969e9431266ccad"
+      },
+      {
+        "bytes": 20955,
+        "path": "src/rfad/application/convergence.py",
+        "sha256": "0150f4d1b348c6f4fa262614174e66627f7f6e2c6564073cf1e6e8ead36993e8"
+      },
+      {
+        "bytes": 5261,
+        "path": "src/rfad/application/display_mesh.py",
+        "sha256": "06325f60b351904c6833e317f27f1ff0a6dfd982acbf15c02cf3c91cdcc0049c"
+      },
+      {
+        "bytes": 30453,
+        "path": "src/rfad/application/editor.py",
+        "sha256": "41cc264e04b5eb9b53c498becc5d6553d30c119d1480717473fadd6400739c63"
+      },
+      {
+        "bytes": 2384,
+        "path": "src/rfad/application/job_state.py",
+        "sha256": "cefaff8cb314d8e023b7abf89bd9a72ceb67bcf6515f92861dfc5746a47da142"
+      },
+      {
+        "bytes": 4965,
+        "path": "src/rfad/application/mcp.py",
+        "sha256": "9042a72767d7395af9f51b0d9452d34bd85e8f1e6650c5288e187dd6ef78d920"
+      },
+      {
+        "bytes": 20662,
+        "path": "src/rfad/application/native_process.py",
+        "sha256": "5f1b625eee607ab5a21fe304827f89542bc5fdb7fd1ede2b89c469088497badf"
+      },
+      {
+        "bytes": 15097,
+        "path": "src/rfad/application/pcb_contacts.py",
+        "sha256": "3a5eddd3f269712c07c40e5906c81be0095381f3af32bfaf495c89fa948aa595"
+      },
+      {
+        "bytes": 8841,
+        "path": "src/rfad/application/pcb_geometry.py",
+        "sha256": "fcf37f157251bce8a71a78290c3ea0b97c1459c113598eb918b9e662c547eca1"
+      },
+      {
+        "bytes": 12002,
+        "path": "src/rfad/application/pcb_mesh.py",
+        "sha256": "ed14ba4c91e586b058db1314d2cc7109ac6b830b991e1ec782e7145d500a987d"
+      },
+      {
+        "bytes": 23029,
+        "path": "src/rfad/application/pcb_projection.py",
+        "sha256": "49600453716cb3b5e5bcffa20fad9101857111d07f58bd9666cace06f93a52d8"
+      },
+      {
+        "bytes": 9091,
+        "path": "src/rfad/application/pcb_radiation.py",
+        "sha256": "d585c089dbdaef7d69568468a3ae6ed1e870eb25fe62f0c7f24a3d825dec97a0"
+      },
+      {
+        "bytes": 11860,
+        "path": "src/rfad/application/pcb_results.py",
+        "sha256": "bbfb19886a837412c6220638fd6fafee4eda6b1363f2873a4ebe493974086806"
+      },
+      {
+        "bytes": 8695,
+        "path": "src/rfad/application/pcb_selection.py",
+        "sha256": "1c0dbc49c0ddd11f2255c680eea5477080b262dfd5a347463fc6d071a7df9cf8"
+      },
+      {
+        "bytes": 5744,
+        "path": "src/rfad/application/pcb_selection_build.py",
+        "sha256": "3cdb2388b936294cbfe604552763006c6dbe8005dc9df89a00db8f29e283c974"
+      },
+      {
+        "bytes": 3029,
+        "path": "src/rfad/application/pcb_selection_context.py",
+        "sha256": "fbc11df1836d434561e35b94175ad38f8d812614baf4527759f9a9cae8034813"
+      },
+      {
+        "bytes": 5764,
+        "path": "src/rfad/application/pcb_selection_contract.py",
+        "sha256": "4a9552fed1cc7aa483e965107d8373cebc6f1000541452117be252b162422d84"
+      },
+      {
+        "bytes": 8104,
+        "path": "src/rfad/application/pcb_selection_layers.py",
+        "sha256": "dc572a76f534ac39163083854451e69d6b879ee74c9ad294322de078e9741294"
+      },
+      {
+        "bytes": 7534,
+        "path": "src/rfad/application/pcb_selection_review.py",
+        "sha256": "fc6d8df7b412a263e2ac45646cbef60a689e5ad1e521ac7d6a13452c3a58485c"
+      },
+      {
+        "bytes": 5964,
+        "path": "src/rfad/application/pcb_solver.py",
+        "sha256": "d9096806c6b594a9f5042c232a4577ddaeb3358c3bff51470388a7981c48c552"
+      },
+      {
+        "bytes": 5026,
+        "path": "src/rfad/application/project_contract.py",
+        "sha256": "86f26c1d85e8bbd5bbabf16e86639ef254a3246b925ff2786de12e94fedbb6ed"
+      },
+      {
+        "bytes": 6937,
+        "path": "src/rfad/application/project_history.py",
+        "sha256": "6c7514c679fb3b4f145fac53ae05961f7742b1e18bb6ed9468c58a1f797a605a"
+      },
+      {
+        "bytes": 6318,
+        "path": "src/rfad/application/project_operations.py",
+        "sha256": "81b2b3ac056ab30abf982457d3dcde6b7a879d42eb7449798ecde93512bdf5fa"
+      },
+      {
+        "bytes": 2864,
+        "path": "src/rfad/application/project_repository.py",
+        "sha256": "f70a2541e1519c56fa93d8f1d43dfab2d41e75081df7cfcbbbe382325ac7e179"
+      },
+      {
+        "bytes": 21402,
+        "path": "src/rfad/application/projects.py",
+        "sha256": "467dc0798a340dfb1b3eb7dd60c996d27a6cb9be2a96c52b770157070eb63afe"
+      },
+      {
+        "bytes": 2169,
+        "path": "src/rfad/application/radiation.py",
+        "sha256": "c8fe3b44d4e24ec7b4d2a8adf659030e16ebc56afa44842cc66f6b71e165a184"
+      },
+      {
+        "bytes": 2975,
+        "path": "src/rfad/application/radiation_assessment.py",
+        "sha256": "297528793354159a7872c5e6f5d50135bb2f219adb41e588623d2a26d2cd56a2"
+      },
+      {
+        "bytes": 7678,
+        "path": "src/rfad/application/radiation_comparison.py",
+        "sha256": "0aa7e258f41a82a74e3af3d17ec1706582e000a71c5fc23926a6ad006c8a5e1c"
+      },
+      {
+        "bytes": 3827,
+        "path": "src/rfad/application/radiation_queries.py",
+        "sha256": "5889cd01230439d7650d7f9a5dccfafbb9a3e84d816709a13e21971f7aa158aa"
+      },
+      {
+        "bytes": 5443,
+        "path": "src/rfad/application/radiation_study.py",
+        "sha256": "36e4f7944c57db51af7c037fe4498aea160030d94afd2c9968fca72a55f9993c"
+      },
+      {
+        "bytes": 3505,
+        "path": "src/rfad/application/radiation_study_guards.py",
+        "sha256": "6cd9a14a488e672d164ed8301486b817c3fd1e221da41fba19cd9eb99cac14db"
+      },
+      {
+        "bytes": 4858,
+        "path": "src/rfad/application/request_ledger.py",
+        "sha256": "59bfcdedaa6a5bbca8f3437a1b8e19477f91dfc4024f3c672d75a705d0355e02"
+      },
+      {
+        "bytes": 18561,
+        "path": "src/rfad/application/rpc.py",
+        "sha256": "6e4696c5bb5a3b4a02d0bd35e48e09a2824e9df312be53c351c190c0cc1a0bdd"
+      },
+      {
+        "bytes": 18428,
+        "path": "src/rfad/application/solver.py",
+        "sha256": "eecc64140af223a070e4ba7c5820c9db0553ecde53dfd5623d1fb9fc41f65e89"
+      },
+      {
+        "bytes": 14531,
+        "path": "src/rfad/application/solver_artifacts.py",
+        "sha256": "4231df934048b134197f793d9518d9249c11910725307e05cd37dc3c6528f203"
+      },
+      {
+        "bytes": 24673,
+        "path": "src/rfad/application/solver_jobs.py",
+        "sha256": "bccf83076e326d8b5ee3bbf3d6000890dd1443e46bca48c27ec4d491847586b7"
+      },
+      {
+        "bytes": 5802,
+        "path": "src/rfad/application/solver_queries.py",
+        "sha256": "8b9f63d88447084e4384f2ac4e47543893a070b8b780ee4eafe85db625f52905"
+      },
+      {
+        "bytes": 3889,
+        "path": "src/rfad/application/solver_requests.py",
+        "sha256": "d6f62b88651e3b0cda8fd083c6c6f40e691bef4c615b8216bcdb21f5037a4c10"
+      },
+      {
+        "bytes": 4866,
+        "path": "src/rfad/application/solver_runtime.py",
+        "sha256": "445afa15151a905bdaefe51cc56945477356fe92b51f9b13ec5647c782441683"
+      },
+      {
+        "bytes": 21646,
+        "path": "src/rfad/application/wsl_process.py",
+        "sha256": "4d7cef0fb4d571fb5fa8bd110093553d719a8b085dd619eed344cff2bf06be0d"
+      },
+      {
+        "bytes": 116,
+        "path": "src/rfad/catalog/__init__.py",
+        "sha256": "f493ee69507a2eeef854f4cdbc3bfd482829ab5b34338743b71c84cb807b7de8"
+      },
+      {
+        "bytes": 19438,
+        "path": "src/rfad/catalog/build.py",
+        "sha256": "0b838211c01c105b68fbcf9247759362896b9217fdfe35cd8156f95b1e4475ef"
+      },
+      {
+        "bytes": 10360,
+        "path": "src/rfad/catalog/material_selection.py",
+        "sha256": "2f3eedf37db13b7132d42b2e3d0fbca190b08f644d4ab21f2238e65e434d7036"
+      },
+      {
+        "bytes": 3340,
+        "path": "src/rfad/catalog/models.py",
+        "sha256": "30f285ea3bc597d35fd72a3e200170c862522f240dc3fa0c70f73d62f216961b"
+      },
+      {
+        "bytes": 3301,
+        "path": "src/rfad/catalog/native.py",
+        "sha256": "d505114664c66861b6a79c039f73b3ac6656ffcdf627df8ecab2b8fac536219e"
+      },
+      {
+        "bytes": 8038,
+        "path": "src/rfad/catalog/native_common.py",
+        "sha256": "556902f3e45bb71255451d2437546f0265ff26a9adf1662872d13905a2dbbc68"
+      },
+      {
+        "bytes": 5063,
+        "path": "src/rfad/catalog/native_jlc.py",
+        "sha256": "fe662a96a35bd3a0e2d4c1b261c7cf78cb17d6a903ff8b680e17977e9e3c1c2c"
+      },
+      {
+        "bytes": 2413,
+        "path": "src/rfad/catalog/native_pcbway.py",
+        "sha256": "c13777b1c66e342540fb71d15c9427f0844c6ab9d9533f9fac202a88f5b4d7ae"
+      },
+      {
+        "bytes": 3353,
+        "path": "src/rfad/catalog/native_we.py",
+        "sha256": "f6904f5c87d8a146154a71a553af755d5412cbcb34c6c9971d50b3e4777ea036"
+      },
+      {
+        "bytes": 6098,
+        "path": "src/rfad/catalog/properties.py",
+        "sha256": "67d01c6d83bf3bb2d1139e733490d577f7e5d67450e034a73ec8296dff121e56"
+      },
+      {
+        "bytes": 8214,
+        "path": "src/rfad/catalog/query.py",
+        "sha256": "06e567696122f285083d8f772ef53abf2f0c429f8d192d003d90d478ac461a24"
+      },
+      {
+        "bytes": 18240,
+        "path": "src/rfad/catalog/repository.py",
+        "sha256": "671d6c25ea6bdfa0fe895d390948c8a04fbb87473e737e55938191e7474a7206"
+      },
+      {
+        "bytes": 4959,
+        "path": "src/rfad/catalog/review.py",
+        "sha256": "71a7bc5883805428f01798bcb734055cec7da6e9e6bd29ff775c8007d176b1ff"
+      },
+      {
+        "bytes": 4856,
+        "path": "src/rfad/catalog/schema.py",
+        "sha256": "a9d77e4bcf796bc568b9fb65c5a6a47c3bee96dcbffc543a2304a8aa99e95d40"
+      },
+      {
+        "bytes": 15074,
+        "path": "src/rfad/catalog/selection_reader.py",
+        "sha256": "e5ad72c0eb5a5852852a7be33230d8bac9dfda25ed121df9929483198bfe2d2d"
+      },
+      {
+        "bytes": 2956,
+        "path": "src/rfad/catalog/selection_rules.py",
+        "sha256": "37765b18688473294ebf92483c85382ccf2c61124e53eb7edcc50519557bae52"
+      },
+      {
+        "bytes": 7525,
+        "path": "src/rfad/catalog/service.py",
+        "sha256": "2eca3ffec08fa28db2dfb16c05bcdc0013ee959529eb77a9dc23d3a29e4efbe3"
+      },
+      {
+        "bytes": 13011,
+        "path": "src/rfad/catalog/source.py",
+        "sha256": "fca01aad58763398caf269f4ba1ed81a0100a20ba9cde89a0f3a3c7742906a21"
+      },
+      {
+        "bytes": 4466,
+        "path": "src/rfad/catalog/stackup_draft.py",
+        "sha256": "5287aa8998194bab02ead2b3a488e192d065f560fdf77462e2f7bd0e5d62a073"
+      },
+      {
+        "bytes": 5533,
+        "path": "src/rfad/catalog/stackup_draft_common.py",
+        "sha256": "8e188553f62f111f1539a560388a4756f494d0b933de40a667c77095d4de32c4"
+      },
+      {
+        "bytes": 4478,
+        "path": "src/rfad/catalog/stackup_draft_jlc.py",
+        "sha256": "ff554c07fbc41db3c87cbbf3d5b79bfab7c6722b29b21d336920ad99cba64eb2"
+      },
+      {
+        "bytes": 4801,
+        "path": "src/rfad/catalog/stackup_draft_jlc_evidence.py",
+        "sha256": "a5ae02821a305a206442a0b3515808ad9b782f681b883df15f08fd74cc1c026c"
+      },
+      {
+        "bytes": 4295,
+        "path": "src/rfad/catalog/stackup_draft_pcbway.py",
+        "sha256": "0e7ab15707fc1a2bee8b4baae7ca835c20eae68526ce26b50c4848c0264214c0"
+      },
+      {
+        "bytes": 8820,
+        "path": "src/rfad/catalog/stackup_match.py",
+        "sha256": "db0145bd241904fb830fefebb1c3ba43d2d765203fedaa74d884fb8fcdc62ab8"
+      },
+      {
+        "bytes": 4080,
+        "path": "src/rfad/catalog/stackup_suggestions.py",
+        "sha256": "5e99df25a0815217a1aaa8705082e33188c98b4cdd30ec83363d839c35940b84"
+      },
+      {
+        "bytes": 4144,
+        "path": "src/rfad/catalog/suggested_properties.py",
+        "sha256": "04db8bf74380a8f4f3f579ca0226a7716733062bf1a3f32cf0590b56689a90f0"
+      },
+      {
+        "bytes": 96,
+        "path": "src/rfad/cli/__init__.py",
+        "sha256": "5ffd0914ed2f6746b578e0d30eabda8bd5b306c5a368ec8ec0dd87b3a669aa1b"
+      },
+      {
+        "bytes": 4917,
+        "path": "src/rfad/cli/catalog.py",
+        "sha256": "098cd24482fcb1037263772fa82599b1e1ca6a4863ea879f00229c6e72b60272"
+      },
+      {
+        "bytes": 11085,
+        "path": "src/rfad/cli/doctor.py",
+        "sha256": "80be1ab1fc4d387178f6b70cc4a1241b21c793d33648660c443ce9a3946139fb"
+      },
+      {
+        "bytes": 239,
+        "path": "src/rfad/domain/__init__.py",
+        "sha256": "f7905c21d7293db23c8736b154cfa4e737b28788376ae2314c73e75259356e67"
+      },
+      {
+        "bytes": 35468,
+        "path": "src/rfad/domain/design.py",
+        "sha256": "56d6ba6792abf5da5b636f19dc8072442e75a28428f01fc1304bfc8ae3f9c24a"
+      },
+      {
+        "bytes": 1059,
+        "path": "src/rfad/domain/errors.py",
+        "sha256": "e8dc2d8e54fd71ca35af28d538c214687cdefeba035443aeeaee992cc55697d6"
+      },
+      {
+        "bytes": 20082,
+        "path": "src/rfad/domain/expressions.py",
+        "sha256": "4387895d32e28e838db10a1e7b0c9d2c2f5a2f5c4d8e64386ad02b0ed46c1bb5"
+      },
+      {
+        "bytes": 1604,
+        "path": "src/rfad/domain/material_models.py",
+        "sha256": "7447b0b5fedb971a31b1fd41f81219249a324e2d44da6fe2e7269a8efd1a2fa9"
+      },
+      {
+        "bytes": 5343,
+        "path": "src/rfad/domain/parameter_graph.py",
+        "sha256": "3afa704b61fe6cce2f64d175df455e227604223eab90c71166f957d5f24e4b36"
+      },
+      {
+        "bytes": 3673,
+        "path": "src/rfad/domain/pcb_evidence_pool.py",
+        "sha256": "8ad93e1638b3f5a343acee606ed75ffc581dc725072a31c26b60b3e90ec843ea"
+      },
+      {
+        "bytes": 12252,
+        "path": "src/rfad/domain/pcb_selection.py",
+        "sha256": "2607f41e26d5a1623914486996e76ca9f69d031f1f074184bda658451e8665e9"
+      },
+      {
+        "bytes": 2800,
+        "path": "src/rfad/domain/pcb_selection_command.py",
+        "sha256": "62c6cceefc63dc87cb75489edc6c48522a125155de70962d0b92051b92328742"
+      },
+      {
+        "bytes": 10053,
+        "path": "src/rfad/domain/pcb_selection_evidence.py",
+        "sha256": "b017b5ecdc9dfc1aea5a0e6baf054600f7f5f6c7af580d2759455b5619572ab6"
+      },
+      {
+        "bytes": 2796,
+        "path": "src/rfad/domain/pcb_selection_history.py",
+        "sha256": "ea6b7a818036a81429dbd6da95bdff1d00aa4a54d4d5a32cfb66df7200da389b"
+      },
+      {
+        "bytes": 8072,
+        "path": "src/rfad/domain/planar.py",
+        "sha256": "a5fb63c7bfb7f1813917404095b696ab6e70eb71d7f0059508dbae31024e5e3f"
+      },
+      {
+        "bytes": 18878,
+        "path": "src/rfad/domain/project.py",
+        "sha256": "caedbf39e5e8db6ccdfce432746f137fad23b303b0db894175bd5727857991d4"
+      },
+      {
+        "bytes": 292,
+        "path": "src/rfad/domain/resource_limits.py",
+        "sha256": "5d239cfeadec9cd39028e90fdaae7e710d7954c3077ec764fa0fda4665f24916"
+      },
+      {
+        "bytes": 8754,
+        "path": "src/rfad/domain/units.py",
+        "sha256": "f02c8095e7ae3b8022ac3d7718363d1cbffdd6b876506122ecd259cf4cda2247"
+      },
+      {
+        "bytes": 152,
+        "path": "src/rfad/storage/__init__.py",
+        "sha256": "ca4c257ab77186c72310cd6e4b1ae31e30f97b41d0ca4075b5760ad672a2e270"
+      },
+      {
+        "bytes": 24021,
+        "path": "src/rfad/storage/journal.py",
+        "sha256": "324f2e69b768e893b5e02fc24273754ec0ad3ca4641ee2d589a3b9479dfe555b"
+      }
+    ],
+    "manifest_sha256": "538c7d75a7820f2ee0a6d48fb0d9f3687c6a10c66c09962398dfd4dd2dbd7a9c",
+    "runtime_profile": "openems-wsl-reference/0.1",
+    "transport": {
+      "distribution": "TraceWave-Dev",
+      "guest_root": "/home/tracewave/rfad-runtime/worker-runs",
+      "lease_seconds": 10.0,
+      "protocol": "rfad.wsl-supervisor/0.1",
+      "python": "/home/tracewave/rfad-runtime/openems-venv/bin/python",
+      "supervisor_sha256": "743f3eef350da6018b7291820cdaeb782ccfb5bb0ae28c69456fb566ff5dff2b",
+      "user": "tracewave"
+    }
+  },
+  "all_111_current_worker_sources_match_native": true,
+  "manufacturing_materials_preserved": [
+    {
+      "name": "실제 납품 물성 미확정: JLC 동박",
+      "epsilon_r": null,
+      "tan_delta": null,
+      "conductivity": null
+    },
+    {
+      "name": "실제 납품 물성 미확정: RO4350B",
+      "epsilon_r": null,
+      "tan_delta": null,
+      "conductivity": null
+    }
+  ],
+  "measurement_validated": false,
+  "fabrication_validated": false,
+  "physics_validated": false,
+  "absolute_power_w": null,
+  "independent_absorption_integral": "not_evaluated",
+  "full_energy_closure": "not_evaluated",
+  "windows_full": {
+    "collected": 736,
+    "passed": 668,
+    "skipped": 68,
+    "failed": 0,
+    "elapsed_seconds": 390.939,
+    "log": {
+      "path": ".local/pcb-radiation-convergence/windows-regression.log",
+      "bytes": 180928,
+      "sha256": "ce387daa0498776cfae7855199509fb04586532a64ff277db902d7f6a9e0a1bb"
+    }
+  },
+  "final_contract_tests": {
+    "collected": 32,
+    "passed": 32,
+    "skipped": 0,
+    "failed": 0,
+    "elapsed_seconds": 4.98,
+    "log": {
+      "path": ".local/pcb-radiation-convergence/final-contract-tests.log",
+      "bytes": 8624,
+      "sha256": "3ec4ca6db29cae49683a89388c1c78f73d098717c23a2ea68de864d291ff1f2a"
+    }
+  },
+  "full_suite_timing_note": "The final coordinate and immutable-plot-reference guards were added after the full suite; final contract tests and actual HDF5/plot checks cover them.",
+  "gui_regression": {
+    "collected": 17,
+    "passed": 13,
+    "skipped": 4,
+    "failed": 0,
+    "elapsed_seconds": 148.661,
+    "log": {
+      "path": ".local/pcb-radiation-convergence/gui-regression.log",
+      "bytes": 4780,
+      "sha256": "2c537461547123f57357644a7bc1973a37dde5cdf2e10cf902436774a278064a"
+    }
+  },
+  "gui_timing_note": "Five-significant-digit display was refined after GUI regression; final CTest and visual review cover final GUI binary.",
+  "ctest": {
+    "collected": 8,
+    "passed": 8,
+    "skipped": 0,
+    "failed": 0,
+    "elapsed_seconds": 0.36,
+    "log": {
+      "path": ".local/pcb-radiation-convergence/ctest-final.log",
+      "bytes": 954,
+      "sha256": "f274e18fef24c1a33ad9da08477f47d4a2796b4da6bfd9b1e765187c5a658885"
+    }
+  },
+  "face_audit": {
+    "report": {
+      "path": ".local/pcb-radiation-convergence/face-audit.json",
+      "bytes": 80261,
+      "sha256": "300956a8118c1a5589e3b5b6aeea883a57cd06c9e66798bf1cf9375b50f8522a"
+    },
+    "cases": 7,
+    "faces": 84,
+    "fdtd_executed": false,
+    "coordinate_absolute_tolerance_m": 1e-12,
+    "frequency_relative_tolerance": 1e-06
+  },
+  "reassessment": {
+    "proof": {
+      "path": ".local/pcb-radiation-convergence/reassessment-proof.json",
+      "bytes": 292,
+      "sha256": "df9624fa697e04a07f7eb76ba98d31f2e7091462a395a5b0978007a7797db195"
+    },
+    "result": {
+      "status": "passed",
+      "native_jobs_before": 7,
+      "native_jobs_after": 7,
+      "all_jobs_unchanged": true,
+      "immutable_files_unchanged": 224,
+      "assessment_identical": true,
+      "csv_identical": true,
+      "immutable_assessments_preserved": 3,
+      "current_worker_files_verified": 111
+    },
+    "without_solver_log": {
+      "path": ".local/pcb-radiation-convergence/reassessment.log",
+      "bytes": 252,
+      "sha256": "640bd0657d6bb12f7729874a5d6e9c415fa154b0e2acf62472e7e854b4145fb6"
+    },
+    "completed_resume_log": {
+      "path": ".local/pcb-radiation-convergence/resume.log",
+      "bytes": 252,
+      "sha256": "640bd0657d6bb12f7729874a5d6e9c415fa154b0e2acf62472e7e854b4145fb6"
+    }
+  },
+  "artifacts": {
+    "report": {
+      "path": ".local/pcb-radiation-convergence/report.json",
+      "bytes": 93147,
+      "sha256": "e4a318513cb80e076bb2e9fd93d6b7051739babf4a269e2c59722fc83b8858f3"
+    },
+    "csv": {
+      "path": ".local/pcb-radiation-convergence/report.power.csv",
+      "bytes": 7094,
+      "sha256": "366f21e3f3213b1d9ce267af7bf04eda0721591f68d1984c845accb33d14dd83"
+    },
+    "png": {
+      "path": ".local/pcb-radiation-convergence/convergence-comparison.png",
+      "bytes": 294461,
+      "sha256": "3ce9e23b16b94c9536f61057eb16bb08cdb732dd74d8d3831eefc6bdb1db8f1a"
+    },
+    "svg": {
+      "path": ".local/pcb-radiation-convergence/convergence-comparison.svg",
+      "bytes": 209396,
+      "sha256": "0946df2358b89a6076e4c84df17b850a19e886f997d24de253bd5f3e70a534a8"
+    },
+    "assessment_history": [
+      {
+        "bytes": 109686,
+        "path": "report.assessments/e0ef6c7b-9c48-49d2-b045-c2026c81e661.json",
+        "sha256": "cc8bf13be95a9c580e18e59f636b0943b9c8091ffd0b83f6bbb26b71651c5290"
+      },
+      {
+        "bytes": 109686,
+        "path": "report.assessments/e7dc914d-2660-46fe-86fb-5cf660023104.json",
+        "sha256": "e1c64e22e32579b59aac9109815fea1ea3bc1d6602e31b56278be489e37ef2a0"
+      },
+      {
+        "bytes": 109686,
+        "path": "report.assessments/096be272-3261-419c-bc2d-034f2b52f0d2.json",
+        "sha256": "3af581d6c329cbd6bc97f7f90e4dd5067ae25f979499d6f663e245fcaae3d8d3"
+      }
+    ]
+  },
+  "visual_qa": {
+    "all_nine_cases_visible": true,
+    "three_axes_and_power_visible": true,
+    "unknown_fabrication_measurement_and_full_energy_closure_visible": true,
+    "five_significant_digit_display": true,
+    "test_windows_closed": true,
+    "all_dpi_monitors_tested": false
+  },
+  "limitations": [
+    "Single exploratory fixture and three frequencies; no general PCB acceptance",
+    "Common-node comparisons do not prove continuous-angle null/lobe accuracy",
+    "Port wave identity is not an independent absorption integral",
+    "S11 target remains unmet",
+    "General parameterized-project study creation GUI pending",
+    "Original physical fabrication/measurement values remain unconfirmed"
+  ],
+  "gui_binary": {
+    "path": "build/windows-release/bin/tracewave_gui.exe",
+    "bytes": 18301176,
+    "sha256": "9d6fa0ddc37cd6fcf23f9985212927463fecfe6fec5541ee0585c37ab6614e27"
+  },
+  "implementation_files": [
+    {
+      "path": "CMakePresets.json",
+      "bytes": 1047,
+      "sha256": "d07abd85c3bf9940edeee7fd81634243d10154d3f911ebca44363c2abd2385e7"
+    },
+    {
+      "path": "fixtures/pcb_radiation_convergence_study.json",
+      "bytes": 2135,
+      "sha256": "0d0cc9dc0bda67424c89540d9c36b2d7cccf1ad52cb7bf0c0baf21970ea9ddcb"
+    },
+    {
+      "path": "src/rfad/application/pcb_radiation.py",
+      "bytes": 9091,
+      "sha256": "d585c089dbdaef7d69568468a3ae6ed1e870eb25fe62f0c7f24a3d825dec97a0"
+    },
+    {
+      "path": "src/rfad/application/radiation_assessment.py",
+      "bytes": 2975,
+      "sha256": "297528793354159a7872c5e6f5d50135bb2f219adb41e588623d2a26d2cd56a2"
+    },
+    {
+      "path": "src/rfad/application/radiation_comparison.py",
+      "bytes": 7678,
+      "sha256": "0aa7e258f41a82a74e3af3d17ec1706582e000a71c5fc23926a6ad006c8a5e1c"
+    },
+    {
+      "path": "src/rfad/application/radiation_study.py",
+      "bytes": 5443,
+      "sha256": "36e4f7944c57db51af7c037fe4498aea160030d94afd2c9968fca72a55f9993c"
+    },
+    {
+      "path": "src/rfad/application/radiation_study_guards.py",
+      "bytes": 3505,
+      "sha256": "6cd9a14a488e672d164ed8301486b817c3fd1e221da41fba19cd9eb99cac14db"
+    },
+    {
+      "path": "tests/study_report_model_test.cpp",
+      "bytes": 3105,
+      "sha256": "79651b6a15312b80cfaafbd86744234a57fcce8243d8440c92d144e43d72e14c"
+    },
+    {
+      "path": "tests/test_radiation_convergence.py",
+      "bytes": 12273,
+      "sha256": "d4b16496167fac147b240fd3cc4b5fd979e6454647c1c78f637f422d24610637"
+    },
+    {
+      "path": "tests/test_radiation_convergence_tool.py",
+      "bytes": 8951,
+      "sha256": "087497e702fca855ef96bb6d8378c9d531f462edf262bbcb2aba5dcbbfec54f6"
+    },
+    {
+      "path": "tools/plot_pcb_radiation_convergence.py",
+      "bytes": 5318,
+      "sha256": "5e31e68d8e8d4413ed892e7ffce56b86165c87c31feba549235bd77cb7772c95"
+    },
+    {
+      "path": "tools/radiation_convergence/__init__.py",
+      "bytes": 84,
+      "sha256": "bcd6701a51f8c1a2c1a6be8f12460f596e944812d1fb19cb3504c437fecab2ce"
+    },
+    {
+      "path": "tools/radiation_convergence/evidence.py",
+      "bytes": 6808,
+      "sha256": "283f7efb5bdb8c1f0c709d062b1cff778860ad02c5dc7c99bf2226bbc69de889"
+    },
+    {
+      "path": "tools/verify_pcb_radiation_convergence.py",
+      "bytes": 11508,
+      "sha256": "e1003cdf45c0bf4994c3af650cb2679d9465b85649d231e1f290685aea1f6815"
+    },
+    {
+      "path": "tools/verify_pcb_radiation_faces.py",
+      "bytes": 6221,
+      "sha256": "f79120192a8271645b771178321956bc7c7c97de3b1a0f2327a4f50714c6ffa7"
+    },
+    {
+      "path": "ui/wxwidgets/study_report_dialog.cpp",
+      "bytes": 3571,
+      "sha256": "f9fad54b0216f0d07d7e51dca26669e7ca1ab52400aec381a5fb86476e831f6d"
+    },
+    {
+      "path": "ui/wxwidgets/study_report_model.cpp",
+      "bytes": 7571,
+      "sha256": "0b5ef4ee5e51fdb68be129a56ca04860b1096b1ce8c2708eeafbadcaad375867"
+    },
+    {
+      "path": "ui/wxwidgets/study_report_model.h",
+      "bytes": 569,
+      "sha256": "927329236f670898237c7d8c00afd24a4d961ba45a8e6781431b5082e9ce4904"
+    }
+  ],
+  "build_inputs": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 10680,
+      "sha256": "4f1c32a79e2180bfcfa80447698bb3ac2f3bf8eae5d1247dae198f828714c9a6"
+    },
+    {
+      "path": "CMakePresets.json",
+      "bytes": 1047,
+      "sha256": "d07abd85c3bf9940edeee7fd81634243d10154d3f911ebca44363c2abd2385e7"
+    },
+    {
+      "path": ".clang-format",
+      "bytes": 611,
+      "sha256": "a7652a67522cde834abbf0a002a00edc5e4826a1e0ca3751ef4629966bd494c6"
+    }
+  ]
+}
