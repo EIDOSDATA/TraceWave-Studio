@@ -5,6 +5,7 @@ from copy import deepcopy
 from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.application.pcb_selection_build import compose
 from rfad.application.pcb_selection_contract import PROFILE, bounded, read_envelope, validate_input
+from rfad.application.pcb_selection_context import context_for, layer_rows
 from rfad.application.pcb_selection_review import describe_changes, input_checks, issue, review_references
 from rfad.application.project_contract import MAX_DOCUMENT_BYTES
 from rfad.catalog.models import CatalogError, canonical_json
@@ -63,6 +64,7 @@ class PcbSelectionCoordinator:
                   "selection_id": data["selection_id"], "preview_hash": digest,
                   "can_apply": not any(item["severity"] == "blocker" for item in issues), "readiness": "not_assessed",
                   "candidate": {key: candidate[key] for key in ("materials", "stackup", "ports")},
+                  "candidate_layers": layer_rows(candidate),
                   "changes": describe_changes(document, candidate, moved), "source_draft": draft,
                   "catalog": payload["selection"]["catalog"], "decisions": payload["selection"]["decisions"],
                   "evidence_ids": [entry["id"] for entry in payload["selection"]["evidence"]],
@@ -79,6 +81,13 @@ class PcbSelectionCoordinator:
         context, data = read_envelope(params)
         validate_input("pcb.selection.preview", context, data)
         return self._preview(self.service.journal.read(), context, data)[0]
+
+    def context(self, params):
+        """! @brief 화면의 명시적 UUID 대응과 단면 표시용 현재 개정을 읽는다."""
+        context, data = read_envelope(params)
+        validate_input("pcb.selection.context", context, data)
+        project = self.service.repository.project(self.service.journal.read(), context)
+        return context_for(self.service.repository.load(project))
 
     def apply(self, state, context, data):
         """! @brief 같은 영수증 transaction에서 미리보기를 재검증하고 한 명령을 게시한다."""

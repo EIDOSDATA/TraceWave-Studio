@@ -8,7 +8,12 @@ void StudioSmokeDriver::OnConnected()
     {
         return;
     }
-    if (m_frame.m_options.cadSmoke || !m_frame.m_options.openProject.empty())
+    if (m_frame.m_options.pcbSmoke)
+    {
+        m_smokePath = "projects/pcb-" + Uuid();
+        m_frame.OpenProject("create", m_smokePath, "GUI PCB 선택 검증");
+    }
+    else if (m_frame.m_options.cadSmoke || !m_frame.m_options.openProject.empty())
     {
         m_frame.OpenProject("open", Utf8(m_frame.m_options.openProject));
     }
@@ -64,7 +69,15 @@ void StudioSmokeDriver::OnConnected()
 
 void StudioSmokeDriver::OnOpened()
 {
-    if (m_frame.m_options.solverSmoke)
+    if (m_frame.m_options.pcbSmoke)
+    {
+        if (m_pcbStage == 0)
+        {
+            m_pcbStage = 1;
+            m_pcbStarted = Clock::now();
+        }
+    }
+    else if (m_frame.m_options.solverSmoke)
     {
         if (m_solverSmokeStage == 0)
         {
@@ -117,7 +130,11 @@ void StudioSmokeDriver::OnOpened()
 
 void StudioSmokeDriver::OnSaved()
 {
-    if (m_frame.m_options.canvasSmoke && m_canvasStage == 12)
+    if (m_frame.m_options.pcbSmoke && m_pcbStage == 31)
+    {
+        m_pcbStage = 32;
+    }
+    else if (m_frame.m_options.canvasSmoke && m_canvasStage == 12)
     {
         m_canvasStage = 13;
         m_frame.Snapshot();

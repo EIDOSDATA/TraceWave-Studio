@@ -16,6 +16,7 @@
 #include "analysis_workflow.h"
 
 class StudioSmokeDriver;
+class PcbSelectionDialog;
 class SolverChart;
 class DesignCanvas;
 class ModelView;
@@ -52,6 +53,10 @@ private:
 
     /** @brief 프로젝트 메타데이터와 선택 객체의 서비스 기반 입력 폼을 구성한다. */
     void BuildInterface();
+    /** @brief 기존 입력을 적용한 뒤 PCB 자료 검색과 적층 검토 화면을 연다. */
+    void OpenPcbSelection();
+    /** @brief 응답 처리 타이머가 반환한 뒤 별도 이벤트에서 모달 화면을 표시한다. */
+    void ShowPcbSelection(const Json& context);
     /** @brief 메뉴와 도구 버튼이 같은 명령 처리기를 사용하도록 연결한다. */
     void AddTool(wxWindow* parent, wxSizer* sizer, int id, const std::string& label);
     /** @brief 키보드만으로 좌표를 지정하며 유한 수치의 판정 후 서비스에 전달한다. */
@@ -180,6 +185,10 @@ private:
     Studio::JobTracker m_solverTask;
     Studio::AnalysisWorkflow m_solverWorkflow;
     Options m_options;
+    PcbSelectionDialog* m_pcbDialog = nullptr;
+    bool m_closeAfterPcb = false;
+    bool m_forceCloseAfterPcb = false;
+    bool m_pcbSelectionSupported = false;
     SolverChart* m_solverChart = nullptr;
     wxChoice* m_solverMetric = nullptr;
     wxStaticText* m_solverStatus = nullptr;

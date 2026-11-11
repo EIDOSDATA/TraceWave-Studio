@@ -2,7 +2,7 @@
 
 작성일: 2026-11-11 KST. 승인 기준선: RFAD-D0-3.4. 구현 profile: `rfad.catalog/0.1`, 변환 규칙: `rfad.catalog.import/1`.
 
-이 문서는 [PCB 재료 카탈로그 설계](pcb_material_catalog.md)의 중립 모델, 오프라인 변환, 읽기 전용 검색과 상세 조회를 정의한다. 기존 사용자 직접 입력과 프로젝트 schema `rfad.project/0.2`는 유지한다. 후속으로 구현한 프로젝트 소유 출처 사본, 적층 초안/미리보기와 원자적 적용은 [PCB 선택 계약](pcb_selection_contract.md)을 따른다. GUI 제조업체 선택 화면은 아직 연결하지 않았다.
+이 문서는 [PCB 재료 카탈로그 설계](pcb_material_catalog.md)의 중립 모델, 오프라인 변환, 읽기 전용 검색과 상세 조회를 정의한다. 기존 사용자 직접 입력과 프로젝트 schema `rfad.project/0.2`는 유지한다. 후속으로 구현한 프로젝트 소유 출처 사본, 적층 초안/미리보기와 원자적 적용은 [PCB 선택 계약](pcb_selection_contract.md)을 따른다. 연결한 wxWidgets 제조업체 검색과 선택은 [화면 사용법](pcb_selection_gui.md)을 따른다.
 
 ## 모듈과 데이터 경계
 
@@ -28,6 +28,8 @@
 | `native_evidence` | 페이지 envelope, audit 등 복원과 검토에 필요한 보조 원문 |
 
 제품명/적층명 그룹 수는 고유 소재 수나 제작 가능한 기판 수가 아니다. 원시 template와 정규 적층의 연결도 공개 라벨 관계이며 실물 구조의 동등성을 승인하지 않는다. JLC custom/placeholder 460개도 원시 template로 보존한다.
+
+`native_templates` 검색/상세에는 연결된 표기 그룹의 `stackup_label`, `layer_count`, `nominal_thickness_mm`를 작은 요약으로 추가했다. 공개 적층명도 `query`의 리터럴 부분 문자열 검색에 포함한다. 연결이 없으면 세 필드는 null이며 목록에서 제외하지 않는다. 원래 template 키/ID, 원문과 해시를 유지한다. 목록마다 추가 요청을 만들지 않고 한 번의 LEFT JOIN 조회로 처리하며 문자열 축약, 안정 ID 순서, 페이지와 48 KiB 응답 제한을 유지한다. DB schema/import 버전은 그대로이므로 기존 DB 재구축은 필요 없다.
 
 원래 필드의 미제공, `null`, boolean, 정수, 실수, 문자열, 배열을 `raw_json`과 SHA-256으로 보존한다. JavaScript의 안전 정수 범위를 넘는 원시 ID도 JSON 문자열 조각 안에 유지한다. 클라이언트가 숫자 정밀도를 잃는 파서로 이를 다시 해석하지 않도록 해야 한다. 검색용 숫자 열과 표시 DTO는 파생 자료이며 원문을 대체하지 않는다.
 

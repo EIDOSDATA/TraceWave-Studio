@@ -9,10 +9,12 @@ struct Options
     wxString source;
     wxString workspace;
     wxString cadPython;
+    wxString catalog;
     wxString openProject;
     wxString smokeReport;
     bool smoke = false;
     bool editorSmoke = false;
+    bool pcbSmoke = false;
     bool canvasSmoke = false;
     bool primitivesSmoke = false;
     bool coordinatesSmoke = false;

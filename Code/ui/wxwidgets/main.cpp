@@ -17,6 +17,7 @@ public:
         parser.AddOption("", "source", "rfad source directory");
         parser.AddOption("", "workspace", "Project workspace directory");
         parser.AddOption("", "cad-python", "Isolated CAD Python executable path");
+        parser.AddOption("", "catalog", "Read-only PCB catalog SQLite path");
         parser.AddSwitch("", "openems-wsl", "Enable fixed WSL openEMS runtime");
         parser.AddSwitch("", "solver-smoke-test", "Run PCB solver GUI workflow and exit");
         parser.AddSwitch("", "solver-expect-failure", "Verify missing PCB physics inputs are rejected");
@@ -24,6 +25,7 @@ public:
         parser.AddOption("", "open-project", "Registered project path relative to workspace");
         parser.AddSwitch("", "smoke-test", "Run GUI/service smoke test and exit");
         parser.AddSwitch("", "editor-smoke-test", "Run editor/undo/restart smoke test and exit");
+        parser.AddSwitch("", "pcb-selection-smoke-test", "Run PCB catalog selection and preview workflow and exit");
         parser.AddSwitch("", "canvas-smoke-test", "Run 2D mouse/command/history/restart smoke test and exit");
         parser.AddSwitch("", "primitives-smoke-test",
                          "Run polygon/pad/via input/display/history/restart smoke test and exit");
@@ -42,9 +44,11 @@ public:
         parser.Found("source", &options.source);
         parser.Found("workspace", &options.workspace);
         parser.Found("cad-python", &options.cadPython);
+        parser.Found("catalog", &options.catalog);
         parser.Found("open-project", &options.openProject);
         parser.Found("smoke-report", &options.smokeReport);
         options.editorSmoke = parser.Found("editor-smoke-test");
+        options.pcbSmoke = parser.Found("pcb-selection-smoke-test");
         options.canvasSmoke = parser.Found("canvas-smoke-test");
         options.coordinatesSmoke = parser.Found("coordinate-table-smoke-test");
         options.primitivesSmoke = parser.Found("primitives-smoke-test") || options.coordinatesSmoke;
@@ -55,7 +59,7 @@ public:
         options.solverExpectFailure = parser.Found("solver-expect-failure");
         parser.Found("solver-settings", &options.solverSettings);
         options.smoke = parser.Found("smoke-test") || options.editorSmoke || options.canvasSmoke ||
-                        options.primitivesSmoke || options.cadSmoke || options.solverSmoke;
+                        options.primitivesSmoke || options.cadSmoke || options.solverSmoke || options.pcbSmoke;
         if (options.python.empty() || options.source.empty() || options.workspace.empty())
         {
             wxMessageBox(Display("--python, --source, --workspace 경로를 지정하십시오."), Display("실행 설정"),
@@ -65,7 +69,8 @@ public:
         }
         if (!wxFileName(options.python).IsAbsolute() || !wxFileName(options.source).IsAbsolute() ||
             !wxFileName(options.workspace).IsAbsolute() ||
-            (!options.cadPython.empty() && !wxFileName(options.cadPython).IsAbsolute()))
+            (!options.cadPython.empty() && !wxFileName(options.cadPython).IsAbsolute()) ||
+            (!options.catalog.empty() && !wxFileName(options.catalog).IsAbsolute()))
         {
             wxMessageBox(Display("실행 경로는 절대 경로로 지정하십시오."), Display("실행 설정"), wxOK | wxICON_ERROR);
             ExitCode = 2;

@@ -181,7 +181,9 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
             return None
         try:
             params = request.get("params")
-            if method == "pcb.selection.preview":
+            if method == "pcb.selection.context":
+                result = service.pcb_selection.context(params)
+            elif method == "pcb.selection.preview":
                 result = service.pcb_selection.preview(params)
             elif method == "pcb.selection.get":
                 result = service.pcb_selection.get(params)

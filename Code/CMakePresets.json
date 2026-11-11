@@ -18,7 +18,7 @@
     {
       "name": "windows-release",
       "configurePreset": "windows-release",
-      "targets": ["tracewave_gui", "tracewave_canvas_geometry_tests", "tracewave_display_mesh_tests"]
+      "targets": ["tracewave_gui", "tracewave_canvas_geometry_tests", "tracewave_display_mesh_tests", "tracewave_gui_presentation_tests", "tracewave_gui_state_tests", "tracewave_pcb_selection_tests"]
     }
   ],
   "testPresets": [

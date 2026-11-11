@@ -142,7 +142,18 @@ class CatalogRepository:
         columns.append("substr(c.raw_sha256,1,65) AS raw_sha256")
         if entity in ("native_templates", "native_components"):
             columns.append("substr(c.flags_json,1,8193) AS flags_json")
+        if entity == "native_templates":
+            columns.extend(("substr(s.label,1," + str(MAX_TEXT_CHARACTERS + 1) + ") AS stackup_label",
+                            "s.layer_count AS layer_count", "s.nominal_thickness_mm AS nominal_thickness_mm"))
         return ",".join(columns)
+
+    @staticmethod
+    def _source(entity: str) -> str:
+        """! @brief 기존 연결의 작은 공개 표기만 결합하고 연결 없는 원시 적층도 유지한다."""
+        source = entity + " c"
+        if entity == "native_templates":
+            source += " LEFT JOIN stackups s ON s.stackup_id=c.stackup_id"
+        return source
 
     @staticmethod
     def _where(request: SearchQuery) -> tuple[str, list]:
@@ -178,9 +189,11 @@ class CatalogRepository:
                 conditions.append("c." + ("df_frequency_ghz" if prop == "df" else "frequency_ghz") + "=?")
                 parameters.append(frequency)
         if request.query:
-            conditions.append("(" + " OR ".join("c." + column + " LIKE ? ESCAPE '\\'"
-                                                for column in SEARCH_COLUMNS[request.entity]) + ")")
-            parameters.extend(["%" + escape_like(request.query) + "%"] * len(SEARCH_COLUMNS[request.entity]))
+            columns = ["c." + column for column in SEARCH_COLUMNS[request.entity]]
+            if request.entity == "native_templates":
+                columns.append("s.label")
+            conditions.append("(" + " OR ".join(column + " LIKE ? ESCAPE '\\'" for column in columns) + ")")
+            parameters.extend(["%" + escape_like(request.query) + "%"] * len(columns))
         return (" WHERE " + " AND ".join(conditions) if conditions else ""), parameters
 
     def _rows(self, connection: sqlite3.Connection, entity: str, rows: list) -> list[dict]:
@@ -192,13 +205,16 @@ class CatalogRepository:
             if type(item["id"]) is not str or not 1 <= len(item["id"]) <= 1024:
                 raise CatalogError("E_SCHEMA", "카탈로그 항목의 식별자가 올바르지 않습니다.")
             item["truncated_fields"] = []
-            for field in TEXT_COLUMNS[entity]:
+            text_columns = TEXT_COLUMNS[entity] + (("stackup_label",) if entity == "native_templates" else ())
+            number_columns = NUMBER_COLUMNS.get(entity, ()) + (
+                ("layer_count", "nominal_thickness_mm") if entity == "native_templates" else ())
+            for field in text_columns:
                 if item[field] is not None and type(item[field]) is not str:
                     raise CatalogError("E_SCHEMA", "카탈로그 문자열 열의 타입이 올바르지 않습니다.", details={"field": field})
                 if field != IDS[entity] and isinstance(item[field], str) and len(item[field]) > MAX_TEXT_CHARACTERS:
                     item[field] = item[field][:MAX_TEXT_CHARACTERS]
                     item["truncated_fields"].append(field)
-            for field in NUMBER_COLUMNS.get(entity, ()):
+            for field in number_columns:
                 value = item[field]
                 if value is not None and (type(value) not in (int, float) or not math.isfinite(value)):
                     raise CatalogError("E_SCHEMA", "카탈로그 수치 열의 타입이 올바르지 않습니다.", details={"field": field})
@@ -237,8 +253,8 @@ class CatalogRepository:
             self._check_revision(metadata, request.catalog_id)
             where, parameters = self._where(request)
             order = "c.template_id,c.component_order,c.component_id" if request.entity == "native_components" else "c." + IDS[request.entity]
-            rows = connection.execute("SELECT " + self._selection(request.entity) + " FROM " + request.entity
-                                      + " c" + where + " ORDER BY " + order + " LIMIT ? OFFSET ?",
+            rows = connection.execute("SELECT " + self._selection(request.entity) + " FROM " + self._source(request.entity)
+                                      + where + " ORDER BY " + order + " LIMIT ? OFFSET ?",
                                       parameters + [request.limit + 1, request.offset]).fetchall()
             return metadata, self._rows(connection, request.entity, rows)
 
@@ -249,7 +265,7 @@ class CatalogRepository:
             properties = ",substr(c.properties_json,1,8193) AS properties_json" if request.entity == "observations" else ""
             row = connection.execute("SELECT " + self._selection(request.entity) + properties
                                      + ",length(c.raw_json) AS raw_length,substr(c.raw_json,?,?) AS raw_fragment FROM "
-                                     + request.entity + " c WHERE c." + IDS[request.entity] + "=?",
+                                     + self._source(request.entity) + " WHERE c." + IDS[request.entity] + "=?",
                                      (request.raw_offset + 1, request.raw_limit, request.identifier)).fetchone()
             if row is None:
                 raise CatalogError("E_RESOURCE", "요청한 카탈로그 항목이 없습니다.")

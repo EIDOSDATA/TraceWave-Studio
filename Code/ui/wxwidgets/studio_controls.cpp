@@ -3,7 +3,7 @@
 
 void StudioFrame::UpdateControls()
 {
-    const bool ready = m_connected && !m_busy;
+    const bool ready = m_connected && !m_busy && m_pcbDialog == nullptr;
     const bool opened = ready && !m_project.empty();
     const bool cadRunning = m_cadPreparing || !m_cadTask.Id().empty();
     const bool canSwitch = ready && !cadRunning && !m_solverWorkflow.Active() && !m_solverRestoring &&
@@ -14,6 +14,7 @@ void StudioFrame::UpdateControls()
     GetMenuBar()->Enable(IdSnapshot, opened);
     GetMenuBar()->Enable(IdRefresh, opened && canSwitch);
     GetMenuBar()->Enable(IdNewParameter, opened);
+    GetMenuBar()->Enable(IdPcbSelection, opened && m_pcbSelectionSupported);
     for (const int id : {IdNewMaterial, IdNewNet, IdNewPort})
     {
         GetMenuBar()->Enable(id, opened);
@@ -50,6 +51,10 @@ void StudioFrame::UpdateControls()
         else if (item.first == IdLayer || item.first == IdDielectric)
         {
             enabled = opened && board;
+        }
+        else if (item.first == IdPcbSelection)
+        {
+            enabled = opened && m_pcbSelectionSupported;
         }
         else if (item.first == IdLine || item.first == IdArc || item.first == IdCoordinates)
         {

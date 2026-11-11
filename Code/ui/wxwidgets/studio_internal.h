@@ -52,6 +52,7 @@ enum
     IdBoard,
     IdCircularBoard,
     IdNewMaterial,
+    IdPcbSelection,
     IdNewNet,
     IdNewPort,
     IdRunSolver,

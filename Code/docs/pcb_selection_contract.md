@@ -2,7 +2,7 @@
 
 작성일: 2026-11-11 KST. 승인 기준선: RFAD-D0-3.4. API 확장과 프로젝트 선택 확장은 `rfad.pcb-selection/0.1`이다. 프로젝트 본체는 `rfad.project/0.2`, 공개 RPC envelope는 `rfad.api/2.0`을 유지한다.
 
-이 구현은 [PCB 재료 카탈로그 설계](pcb_material_catalog.md)의 선택 근거 저장, 적층 초안, 변경 미리보기와 일괄 적용을 연결한다. [읽기 전용 카탈로그](pcb_catalog_contract.md)를 사용해도 프로젝트 변경은 별도의 명시적 적용 요청으로 수행한다. wxWidgets의 제조업체 선택 창, 범용 EDA 가져오기, 새 CAD/solver 물리 모델을 구현한 것은 아니다.
+이 구현은 [PCB 재료 카탈로그 설계](pcb_material_catalog.md)의 선택 근거 저장, 적층 초안, 변경 미리보기와 일괄 적용을 연결한다. [읽기 전용 카탈로그](pcb_catalog_contract.md)를 사용해도 프로젝트 변경은 별도의 명시적 적용 요청으로 수행한다. wxWidgets 화면 조작은 [PCB 선택 화면](pcb_selection_gui.md)을 따른다. 범용 EDA 가져오기와 새 CAD/solver 물리 모델은 이 변경 범위에 포함하지 않는다.
 
 ## 모듈과 적용 경계
 
@@ -14,7 +14,7 @@
 | `application/pcb_selection*.py` | 요청 계약, UUID 대응, 후보 구성, 포트/참조 검토, 미리보기 해시와 공개 API |
 | `domain/pcb_selection*.py` | 알려진 프로젝트 확장 검증, 채택 당시 기록, 원자 명령과 역명령 |
 
-기판 외형, 패턴 geometry와 nets는 보존한다. 선택 기능은 기판 자체나 안테나, 접지면, 비아, 포트를 생성하지 않는다. 기판이 없는 프로젝트에도 선택 초안을 저장할 수 있으며, CAD/EM을 실행하려면 기존 `board.set` 명령 등으로 기판을 정의한다. 자료의 Dk 변경만으로 패턴 치수를 합성하거나 목표 주파수에 정합하지 않는다.
+기판 외형, 패턴 geometry와 nets는 보존한다. 선택 기능은 기판 자체나 안테나, 접지면, 비아, 포트를 생성하지 않는다. 층을 적용하려면 먼저 기존 `board.set` 명령 또는 GUI 기판 생성으로 외형을 정의한다. 기판이 없는 프로젝트에서도 자료 조회와 후보 미리보기는 가능하지만 층을 포함한 적용은 기존 문서 검사에서 차단한다. 자료의 Dk 변경만으로 패턴 치수를 합성하거나 목표 주파수에 정합하지 않는다.
 
 `can_apply: true`는 프로젝트에 이 후보를 저장할 수 있다는 뜻이다. 미정 두께나 물성을 포함한 설계 초안도 저장할 수 있다. `readiness`는 `not_assessed`, `input_checks.solver_ready`는 `false`를 유지한다. CAD 생성, STEP 출력과 해석 계획/실행은 기존의 별도 검사를 거친다.
 
@@ -27,8 +27,11 @@
 | `pcb.selection.preview` | `expected_revision`, `selection_id`, `specification` | 후보, 변경 ID, 출처 초안, 검토 사유, `preview_hash`, `can_apply` |
 | `pcb.selection.apply` | preview 입력 전체와 `preview_hash`, `command_id` | 동기 명령 결과, `new_revision`, `revision_hash`, `history`, `selection_id`, `preview_hash` |
 | `pcb.selection.get` | 빈 객체 | 저장된 선택/출처, 현재 개정, 적용 이후 변경 여부와 달라진 선택 필드 |
+| `pcb.selection.context` | 빈 객체 | 현재 개정, 층/재료/포트의 작은 표시 목록, mm 치수와 매개변수 연결 여부 |
 
-세 요청 모두 `context: {"project_id": "현재 프로젝트 UUID"}`를 사용한다. preview/get의 params는 정확히 `contract_version`, `context`, `input`이다. apply는 여기에 `request_key`와 `request_key_epoch`를 포함하는 기존 mutation envelope를 사용한다. JSON-RPC 요청에는 응답 ID도 필요하다.
+네 요청 모두 `context: {"project_id": "현재 프로젝트 UUID"}`를 사용한다. preview/get/context의 params는 정확히 `contract_version`, `context`, `input`이다. apply는 여기에 `request_key`와 `request_key_epoch`를 포함하는 기존 mutation envelope를 사용한다. JSON-RPC 요청에는 응답 ID도 필요하다.
+
+`context`는 카탈로그 없이 현재 문서만 읽고 저장이나 이력을 변경하지 않는다. 치수는 서비스에서 단위를 해석하여 mm로 반환하며 미정값은 null을 유지한다. `parameter_bound`는 값이 매개변수에 연결되어 있음을 알린다. 기존 층 유지 경로는 표시 숫자를 다시 원본 값으로 쓰지 않는다. preview의 `candidate_layers`도 같은 표시 DTO를 사용하며 GUI에서 별도로 z를 누적하지 않는다. 원문 전체나 geometry를 context에 복사하지 않으며 기존 응답 상한을 적용한다.
 
 preview는 프로젝트 revision, journal과 receipt를 변경하지 않는다. apply는 미리보기를 다시 계산한 뒤 기존 writer transaction에서 하나의 `pcb_stackup.apply` 명령으로 적용한다. 이 내부 명령을 `project.apply_command`로 직접 보내 우회할 수 없다. 한 번의 undo/redo는 재료, 적층, 포트 좌표와 선택 확장을 함께 복원한다.
 

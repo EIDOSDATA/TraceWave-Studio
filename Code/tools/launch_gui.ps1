@@ -4,12 +4,16 @@
 @param Python 비어 있으면 Code/.venv/Scripts/python.exe를 사용한다.
 @param CadPython 비어 있으면 존재하는 Code/.venv-cad/Scripts/python.exe를 사용하며 없으면 CAD 없이 실행한다.
 @param OpenEmsWsl 설치/감사된 고정 WSL openEMS 런타임을 명시적으로 연결한다.
+@param Catalog 읽기 전용 PCB SQLite 경로이며 비우면 존재하는 로컬 개발 카탈로그를 사용한다.
+@param NoCatalog 로컬 기본 카탈로그 연결을 생략한다. 직접 입력과 저장된 출처 조회는 유지한다.
 #>
 [CmdletBinding()]
 param(
     [string]$Workspace = '',
     [string]$Python = '',
     [string]$CadPython = '',
+    [string]$Catalog = '',
+    [switch]$NoCatalog,
     [switch]$OpenEmsWsl
 )
 
@@ -49,6 +53,21 @@ $guiArguments = @(
     '--source', (Join-Path $codeRoot 'src'),
     '--workspace', [System.IO.Path]::GetFullPath($Workspace)
 )
+if (-not $NoCatalog)
+{
+    if ([string]::IsNullOrWhiteSpace($Catalog))
+    {
+        $defaultCatalog = Join-Path $codeRoot '.local/pcb-catalog/catalog.sqlite'
+        if (Test-Path -LiteralPath $defaultCatalog -PathType Leaf)
+        {
+            $Catalog = $defaultCatalog
+        }
+    }
+    if (-not [string]::IsNullOrWhiteSpace($Catalog))
+    {
+        $guiArguments += @('--catalog', [System.IO.Path]::GetFullPath($Catalog))
+    }
+}
 if (-not [string]::IsNullOrWhiteSpace($CadPython))
 {
     $guiArguments += @('--cad-python', [System.IO.Path]::GetFullPath($CadPython))

@@ -10,7 +10,7 @@ from rfad.domain.errors import ProjectError
 
 PROFILE = "rfad.pcb-selection/0.1"
 MAX_RESULT_BYTES = 48 * 1024
-READ_METHODS = frozenset({"pcb.selection.preview", "pcb.selection.get"})
+READ_METHODS = frozenset({"pcb.selection.preview", "pcb.selection.get", "pcb.selection.context"})
 MUTATION_METHODS = frozenset({"pcb.selection.apply"})
 
 
@@ -62,7 +62,7 @@ def validate_input(method, context, value):
     """! @brief 적용 입력에 미리보기 해시와 기존 명령 ID를 요구한다."""
     _fields(context, {"project_id"})
     _uuid(context["project_id"])
-    if method == "pcb.selection.get":
+    if method in {"pcb.selection.get", "pcb.selection.context"}:
         _fields(value, set())
         return
     required = {"expected_revision", "selection_id", "specification"}

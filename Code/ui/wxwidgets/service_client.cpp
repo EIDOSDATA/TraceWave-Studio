@@ -23,7 +23,8 @@ void Close(HANDLE& handle)
 void RememberThread(std::atomic<HANDLE>& target)
 {
     HANDLE handle = nullptr;
-    DuplicateHandle(GetCurrentProcess(), GetCurrentThread(), GetCurrentProcess(), &handle, 0, FALSE, DUPLICATE_SAME_ACCESS);
+    DuplicateHandle(GetCurrentProcess(), GetCurrentThread(), GetCurrentProcess(), &handle, 0, FALSE,
+                    DUPLICATE_SAME_ACCESS);
     target.store(handle);
 }
 
@@ -73,15 +74,15 @@ std::wstring ServiceClient::Quote(const std::wstring& argument)
 }
 
 bool ServiceClient::Start(const std::wstring& python, const std::wstring& source, const std::wstring& workspace,
-    std::string& error, const std::wstring& cadPython, bool openEmsWsl)
+                          std::string& error, const std::wstring& cadPython, bool openEmsWsl,
+                          const std::wstring& catalog)
 {
     Stop();
     SECURITY_ATTRIBUTES security{sizeof(SECURITY_ATTRIBUTES), nullptr, TRUE};
     HANDLE childInput = nullptr;
     HANDLE childOutput = nullptr;
     HANDLE childLog = nullptr;
-    if (!CreatePipe(&childInput, &m_input, &security, 0) ||
-        !CreatePipe(&m_output, &childOutput, &security, 0) ||
+    if (!CreatePipe(&childInput, &m_input, &security, 0) || !CreatePipe(&m_output, &childOutput, &security, 0) ||
         !CreatePipe(&m_log, &childLog, &security, 0))
     {
         error = "Cannot create service pipes.";
@@ -92,8 +93,7 @@ bool ServiceClient::Start(const std::wstring& python, const std::wstring& source
         return false;
     }
     if (!SetHandleInformation(m_input, HANDLE_FLAG_INHERIT, 0) ||
-        !SetHandleInformation(m_output, HANDLE_FLAG_INHERIT, 0) ||
-        !SetHandleInformation(m_log, HANDLE_FLAG_INHERIT, 0))
+        !SetHandleInformation(m_output, HANDLE_FLAG_INHERIT, 0) || !SetHandleInformation(m_log, HANDLE_FLAG_INHERIT, 0))
     {
         error = "Cannot restrict pipe handle inheritance.";
         Close(childInput);
@@ -109,8 +109,10 @@ bool ServiceClient::Start(const std::wstring& python, const std::wstring& source
     startup.hStdInput = childInput;
     startup.hStdOutput = childOutput;
     startup.hStdError = childLog;
-    const std::wstring bootstrap = L"import sys,runpy;sys.path.insert(0,sys.argv.pop(1));runpy.run_module('rfad',run_name='__main__')";
-    std::wstring command = Quote(python) + L" -X utf8 -u -c " + Quote(bootstrap) + L" " + Quote(source) + L" serve --workspace " + Quote(workspace);
+    const std::wstring bootstrap =
+        L"import sys,runpy;sys.path.insert(0,sys.argv.pop(1));runpy.run_module('rfad',run_name='__main__')";
+    std::wstring command = Quote(python) + L" -X utf8 -u -c " + Quote(bootstrap) + L" " + Quote(source) +
+                           L" serve --workspace " + Quote(workspace);
     if (!cadPython.empty())
     {
         command += L" --cad-python " + Quote(cadPython);
@@ -119,9 +121,13 @@ bool ServiceClient::Start(const std::wstring& python, const std::wstring& source
     {
         command += L" --openems-wsl";
     }
+    if (!catalog.empty())
+    {
+        command += L" --catalog " + Quote(catalog);
+    }
     PROCESS_INFORMATION process{};
     const BOOL created = CreateProcessW(python.c_str(), command.data(), nullptr, nullptr, TRUE,
-        CREATE_NO_WINDOW | CREATE_SUSPENDED, nullptr, nullptr, &startup, &process);
+                                        CREATE_NO_WINDOW | CREATE_SUSPENDED, nullptr, nullptr, &startup, &process);
     const DWORD createError = created ? ERROR_SUCCESS : GetLastError();
     Close(childInput);
     Close(childOutput);
@@ -136,7 +142,8 @@ bool ServiceClient::Start(const std::wstring& python, const std::wstring& source
     m_job = CreateJobObjectW(nullptr, nullptr);
     JOBOBJECT_EXTENDED_LIMIT_INFORMATION limits{};
     limits.BasicLimitInformation.LimitFlags = JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE;
-    if (m_job == nullptr || !SetInformationJobObject(m_job, JobObjectExtendedLimitInformation, &limits, sizeof(limits)) ||
+    if (m_job == nullptr ||
+        !SetInformationJobObject(m_job, JobObjectExtendedLimitInformation, &limits, sizeof(limits)) ||
         !AssignProcessToJobObject(m_job, m_process))
     {
         error = "Cannot isolate Python service process.";
@@ -288,7 +295,11 @@ void ServiceClient::WriteLoop()
         std::string frame;
         {
             std::unique_lock<std::mutex> guard(m_mutex);
-            m_ready.wait(guard, [this]() { return m_stopping || !m_outgoing.empty(); });
+            m_ready.wait(guard,
+                         [this]()
+                         {
+                             return m_stopping || !m_outgoing.empty();
+                         });
             if (m_stopping)
             {
                 return;
@@ -300,7 +311,9 @@ void ServiceClient::WriteLoop()
         while (offset < frame.size() && !m_stopping)
         {
             DWORD written = 0;
-            if (!WriteFile(m_input, frame.data() + offset, static_cast<DWORD>(frame.size() - offset), &written, nullptr) || written == 0)
+            if (!WriteFile(m_input, frame.data() + offset, static_cast<DWORD>(frame.size() - offset), &written,
+                           nullptr) ||
+                written == 0)
             {
                 Fail("Cannot write to Python service.");
                 return;

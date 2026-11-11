@@ -1,5 +1,6 @@
 /** @file @brief 주 창의 lifecycle 책임을 구현한다. */
 #include "studio_internal.h"
+#include "pcb_selection_dialog.h"
 
 void StudioFrame::Failure(const std::string& message, bool disconnected)
 {
@@ -9,6 +10,10 @@ void StudioFrame::Failure(const std::string& message, bool disconnected)
     m_jobComplete = {};
     if (disconnected)
     {
+        if (m_pcbDialog != nullptr)
+        {
+            m_pcbDialog->ServiceDisconnected(message);
+        }
         m_requests.Clear();
         m_connected = false;
         m_cadPreparing = false;
@@ -52,6 +57,25 @@ void StudioFrame::OnClose(wxCloseEvent& event)
 {
     if (m_closing)
     {
+        return;
+    }
+    /** @brief 스택 소유 대화상자가 반환되기 전에 부모와 자식을 파괴하지 않는다. */
+    if (m_pcbDialog != nullptr)
+    {
+        const bool force = !event.CanVeto();
+        if (force)
+        {
+            m_pcbDialog->ServiceDisconnected("프로그램 종료 요청으로 적용 결과를 다시 확인해야 합니다.");
+        }
+        if (m_pcbDialog->Close(force))
+        {
+            m_closeAfterPcb = true;
+            m_forceCloseAfterPcb = force;
+        }
+        if (event.CanVeto())
+        {
+            event.Veto();
+        }
         return;
     }
     if (!m_waitingClose && !m_finishing && !m_options.smoke && !ConfirmDiscard())
@@ -117,6 +141,7 @@ void StudioFrame::OnShutdown(wxThreadEvent&)
     m_shutdown.join();
     if (m_closing)
     {
+        m_smoke->OnPcbShutdownComplete();
         Destroy();
     }
     else

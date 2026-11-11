@@ -1,11 +1,17 @@
 /** @file @brief 주 창의 smoke_report 책임을 구현한다. */
 #include "studio_internal.h"
+#include "pcb_selection_dialog.h"
 
 void StudioSmokeDriver::FinishSmoke(bool passed, const std::string& error)
 {
     if (m_frame.m_finishing)
     {
         return;
+    }
+    if (m_frame.m_pcbDialog != nullptr)
+    {
+        m_frame.m_pcbDialog->ServiceDisconnected(error.empty() ? "GUI 시험을 종료합니다." : error);
+        m_frame.m_pcbDialog->Close();
     }
     m_frame.m_finishing = true;
     ExitCode = passed ? 0 : 2;
@@ -23,6 +29,11 @@ void StudioSmokeDriver::FinishSmoke(bool passed, const std::string& error)
                 {"canvas_checks", m_canvasChecks},
                 {"primitives_stage", m_primitivesStage},
                 {"primitives_checks", m_primitivesChecks},
+                {"pcb_stage", m_pcbStage},
+                {"pcb_checks", m_pcbChecks},
+                {"pcb_ticks", m_pcbTicks},
+                {"pcb_request_ticks", m_pcbRequestTicks},
+                {"pcb_project_path", m_frame.m_options.pcbSmoke ? m_smokePath : ""},
                 {"cad_stage", m_cadSmokeStage},
                 {"cad_checks", m_cadChecks},
                 {"cad_result", m_frame.m_cadResult},
@@ -56,9 +67,12 @@ void StudioSmokeDriver::FinishSmoke(bool passed, const std::string& error)
             ExitCode = 3;
         }
     }
-    m_frame.CallAfter(
-        [this]()
-        {
-            m_frame.Close();
-        });
+    if (!m_frame.m_closing)
+    {
+        m_frame.CallAfter(
+            [this]()
+            {
+                m_frame.Close();
+            });
+    }
 }

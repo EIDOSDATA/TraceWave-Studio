@@ -31,6 +31,8 @@ flowchart LR
 | 장면 모델 | `canvas_scene.*`, `canvas_viewport.*`, `canvas_geometry.h` | 표시 DTO 해석, 객체 ID 색인, 경계/hit 검사, 좌표 변환 |
 | 화면 그리기/입력 | `canvas_renderer.*`, `canvas_gesture.h`, `design_canvas.*` | paint 단위 renderer, 배타적 입력 상태와 wx 이벤트 변환 |
 | 속성 폼 | `editor_presentation.*`, `coordinate_editor_dialog.*`, `editor_panel.*` | 값/모드별 표시 정책, 좌표 표 대화상자, 위젯 생성과 이벤트 |
+| PCB 선택 상태 | `pcb_selection_model.*`, `pcb_selection_model_data.*` | 위젯 없는 요청 세대, 초안, 개정 고정, 미리보기와 적용 상태 |
+| PCB 선택 화면 | `pcb_selection_dialog.*`, `pcb_selection_view.cpp`, `pcb_selection_layers.cpp`, `pcb_selection_materials.cpp`, `pcb_selection_review.cpp`, `studio_pcb.cpp` | 검색, 층/급전/물성 입력, 단면 검토, 대화상자 수명과 서비스 연결 |
 | 실제 GUI 시험 | `studio_smoke.h`, `studio_smoke_*.cpp` | smoke 옵션의 시나리오/검사 상태. 제품 작업 객체에서 시험용 필드 분리 |
 
 StudioFrame은 화면 사이의 연결과 서비스 DTO 캐시를 유지한다. 같은 클래스를 여러 파일로 나눈 부분은 화면 구성과 이벤트 연결이며, 재사용 상태/정책은 RequestDispatcher, JobTracker, AnalysisWorkflow, CanvasScene, EditorPresentation으로 실제 분리했다. StudioSmokeDriver만 시험을 위해 주 창의 private 위젯에 접근한다. 서비스/도메인은 시험 운전자나 wxWidgets를 참조하지 않는다.
@@ -43,6 +45,7 @@ StudioFrame은 화면 사이의 연결과 서비스 DTO 캐시를 유지한다. 
 - JobTracker는 일반 작업/CAD/해석의 조회 중 여부와 간격을 공통으로 관리한다. 이전 job의 지연 응답은 새 job의 조회 잠금까지 해제할 수 없다. 큐 거부와 조회 오류도 조회 상태를 회수하여 영구 정지를 피한다.
 - AnalysisWorkflow는 시작한 개정과 설정을 고정하고, 올바른 단계의 완료 자료만 다음 명령으로 바꾼다. 취소 의도와 취소 전달 중 상태를 분리한다. 전달 실패 후 재시도할 수 있어도 다음 단계로 자동 진행하지 않는다.
 - CAD/WSL 작업의 실제 종료 확인은 서버 coordinator가 맡는다. GUI의 취소 버튼이나 전송 단절을 실제 프로세스 종료로 취급하지 않는다.
+- PcbSelectionModel은 검색/초안/미리보기 요청 세대를 비교하여 늦은 응답을 버린다. 입력을 변경하면 기존 미리보기를 무효화하고, 검토한 사양과 해시만 적용한다. 결과가 불명확한 적용 실패는 Stale로 잠가 재조회하도록 한다. 닫힌 대화상자의 응답은 약한 참조와 종료 상태로 폐기한다.
 - 서버 `job_state.py`는 허용 전이를 명시하고 완료 상태 역행, 취소 요청 뒤 완료 승격과 event 식별 필드 덮어쓰기를 거절한다. 명시적 사용자 취소는 cancelled, 서비스 종료로 결과를 게시하지 않은 경우는 interrupted로 구분한다. 실제 종료가 확인되면 예약을 해제하고, 불명 상태는 예약을 유지한다. CAD 프로세스 회수와 WSL lease/outcome_unknown 처리는 각 coordinator의 별도 책임으로 남긴다.
 
 ## 서비스와 worker 구성

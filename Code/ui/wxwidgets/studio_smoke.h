@@ -5,6 +5,7 @@
 #include <string>
 
 class StudioFrame;
+class PcbSelectionDialog;
 
 /** @brief 명시적 smoke 옵션에서만 실제 화면과 서비스를 구동하는 통합 시험 운전자다. */
 class StudioSmokeDriver final
@@ -33,6 +34,10 @@ public:
     void CanvasAssert(bool condition, const std::string& message) const;
     /** @brief 실제 화면 이벤트와 결과를 검증한다. */
     void PrimitivesSmokeTick();
+    /** @brief 실제 PCB 대화상자와 서비스의 선택, 검토, 적용 및 이력을 검증한다. */
+    void PcbSmokeTick();
+    /** @brief 부모 종료 요청 뒤 모달 반환과 서비스 회수 완료를 확인하고 보고한다. */
+    void OnPcbShutdownComplete();
     /** @brief 실제 화면 이벤트와 결과를 검증한다. */
     void CanvasSmokeNext();
     /** @brief 실제 화면 이벤트와 결과를 검증한다. */
@@ -52,7 +57,30 @@ public:
     void OnSelected();
 
 private:
+    /** @brief 원형 보드와 기존 패턴 참조를 시험의 시작 상태로 만든다. */
+    void PcbSmokePrepare();
+    /** @brief 실제 대화상자 컨트롤에 이벤트를 보내고 비동기 결과를 관찰한다. */
+    void PcbSmokeDialog(PcbSelectionDialog& dialog);
+    /** @brief 실제 재료 폼에서 물성별 출처와 직접 입력 이유를 독립적으로 지정한다. */
+    void PcbSmokeMaterial(PcbSelectionDialog& dialog);
+    /** @brief 닫힌 대화상자의 적용 결과, 이력과 저장 후 재열기를 검증한다. */
+    void PcbSmokeHistory();
     StudioFrame& m_frame;
+    int m_pcbStage = 0;
+    int m_pcbTicks = 0;
+    int m_pcbRequestTicks = 0;
+    int m_pcbUndoBefore = 0;
+    Clock::time_point m_pcbStarted{};
+    std::string m_pcbLayer;
+    std::string m_pcbPattern;
+    std::string m_pcbExistingLabel;
+    std::string m_pcbBeforeRevision;
+    Json m_pcbOriginalBoard;
+    Json m_pcbOriginalPattern;
+    Json m_pcbOriginalLayers;
+    Json m_pcbAppliedLayers;
+    Json m_pcbExpectedMaterial;
+    Json m_pcbChecks = Json::array();
     std::string m_solverFirstResult;
     Json m_solverChecks = Json::array();
     int m_solverSmokeStage = 0;

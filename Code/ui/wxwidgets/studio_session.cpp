@@ -12,7 +12,7 @@ void StudioFrame::Connect()
     std::string error;
     if (!m_client.Start(m_options.python.ToStdWstring(), m_options.source.ToStdWstring(),
                         m_options.workspace.ToStdWstring(), error, m_options.cadPython.ToStdWstring(),
-                        m_options.openEmsWsl))
+                        m_options.openEmsWsl, m_options.catalog.ToStdWstring()))
     {
         Failure(error, true);
         return;
@@ -27,6 +27,8 @@ void StudioFrame::Connect()
              }
              m_epoch = result.at("idempotency_policy").at("request_key_epoch").get<std::string>();
              m_connected = true;
+             m_pcbSelectionSupported = result.contains("pcb_selection_profile") &&
+                                       result.value("methods", Json::object()).contains("pcb.selection.context");
              m_cadConfigured = result.value("cad_profile", Json::object()).value("runtime_configured", false);
              m_solverConfigured = result.value("solver_profile", Json::object()).value("runtime_configured", false);
              SolverStatus("idle", m_solverConfigured
@@ -73,8 +75,9 @@ void StudioFrame::Send(const std::string& method, const Json& input, bool mutati
         return;
     }
     const bool foreground =
-        method != "cad.latest" && method != "solver.latest" && method != "solver.samples" && method != "result.open" &&
-        method != "job.cancel" && method != "solver.plan" && method != "solver.prepare" && method != "job.submit" &&
+        method.rfind("catalog.", 0) != 0 && method.rfind("pcb.selection.", 0) != 0 && method != "cad.latest" &&
+        method != "solver.latest" && method != "solver.samples" && method != "result.open" && method != "job.cancel" &&
+        method != "solver.plan" && method != "solver.prepare" && method != "job.submit" &&
         !(method == "snapshot.create" && input.value("description", "") == "GUI PCB 해석 입력") &&
         !(method == "job.status" &&
           (input.value("job_id", "") == m_cadTask.Id() || input.value("job_id", "") == m_solverTask.Id()));
@@ -185,6 +188,7 @@ void StudioFrame::OnTimer(wxTimerEvent&)
         m_smoke->CadSmokeTick();
         m_smoke->SolverSmokeTick();
         m_smoke->PrimitivesSmokeTick();
+        m_smoke->PcbSmokeTick();
         if (m_waitingClose &&
             ((!m_solverWorkflow.Active() && m_cadTask.Id().empty() && !m_cadPreparing) || now >= m_closeDeadline))
         {

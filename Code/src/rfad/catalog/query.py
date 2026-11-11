@@ -112,7 +112,7 @@ def _revision(data: dict, offset: int) -> str | None:
 
 
 def parse_search(value: object) -> SearchQuery:
-    """! @brief 개체별 지원 조건과 명시적인 Dk/Df 주파수 의미를 검사한다."""
+    """! @brief 개체별 조건을 검사하며 query는 원시 적층에 연결된 공개 표기도 검색한다."""
     data = _fields(value, {"entity"}, {"filters", "query", "limit", "offset", "catalog_id"})
     entity = _entity(data["entity"])
     filters = data.get("filters", {})
