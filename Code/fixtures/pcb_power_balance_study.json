@@ -1,0 +1,41 @@
+{
+  "schema": "rfad.pcb-power-study/0.1",
+  "id": "ro4350b-ifa-independent-loss-initial/0.1",
+  "fixture": "ro4350b_convergence_input.json",
+  "description": "Independent E/J volume and E/rotH sheet work, same exploratory model. Actual fabrication and measurement remain unconfirmed.",
+  "grid_levels_mm": [
+    0.5,
+    0.45,
+    0.4
+  ],
+  "settings": {
+    "frequency_hz": {
+      "start": 2400000000,
+      "stop": 2483500000,
+      "count": 201
+    },
+    "grid_mm": 0.4,
+    "air_padding_mm": 90,
+    "curve_tolerance_mm": 0.025,
+    "max_timesteps": 100000,
+    "end_criterion": 1e-05,
+    "mesh_policy": {
+      "kind": "graded_air",
+      "air_cell_mm": 6,
+      "growth_ratio": 1.5
+    },
+    "radiation": {
+      "frequency_hz": [
+        2400000000,
+        2441750000,
+        2483500000
+      ],
+      "theta_step_deg": 5,
+      "phi_step_deg": 5,
+      "box_clearance_mm": 30
+    },
+    "power_balance": {
+      "max_relative_residual": 0.03
+    }
+  }
+}

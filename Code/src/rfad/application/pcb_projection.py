@@ -276,6 +276,11 @@ def project_pcb(document, settings):
     radiation = recording(case, lines)
     if radiation is not None:
         case["radiation_recording"] = radiation
+    from rfad.application.pcb_power import recording as loss_recording
+
+    losses = loss_recording(case, lines)
+    if losses is not None:
+        case["loss_recording"] = losses
     cells = math.prod(len(values) for values in lines.values())
     return {"case": case,
             "normalization": normalization_contract(port, radiation=radiation is not None),
@@ -287,6 +292,6 @@ def project_pcb(document, settings):
                                                 "PTH uses explicit finite-kappa hollow volume; RF skin depth loss accuracy is unvalidated"],
                              "unsupported_observables": ["absolute_power", "full_s_matrix"] if radiation is not None else ["NF2FF", "gain", "efficiency", "absolute_power", "full_s_matrix"]},
             "resource_estimate": {"kind": "initial_estimate_not_measured", "estimated_grid_points": cells,
-                                  "estimated_memory_bytes": 128 * 1024 * 1024 + cells * 160, "max_wall_time_seconds": 300,
+                                  "estimated_memory_bytes": 128 * 1024 * 1024 + cells * 160 + (losses["estimated_field_bytes"] * 2 if losses else 0), "max_wall_time_seconds": 300,
                                   "max_output_bytes": 128 * 1024 * 1024, "max_artifact_bytes": 64 * 1024 * 1024},
             "validation_policy": {"scope": "numerical_execution_only", "formal_convergence_tested": False, "measurement_validated": False}}

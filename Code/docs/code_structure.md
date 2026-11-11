@@ -6,6 +6,8 @@
 
 ## GUI 구성 방식
 
+PCB의 선택적 [독립 손실/전력 수지](pcb_power_balance.md)는 `application/pcb_power.py`의 입력/합계 검증과 `adapters/solvers/openems/pcb_absorption.py`의 native 필드 적분으로 분리한다. worker 조립기는 기능을 호출하고 원시 manifest/별도 산출물 검증은 기존 공통 계층에서 수행한다. GUI 계층에 물리 계산을 복제하지 않는다.
+
 wxWidgets View + Presentation Model + Service Gateway 구성을 사용한다. wxWidgets의 위젯과 이벤트는 화면 계층에 두고, 해석 단계/조회/입력 표시 정책은 위젯 없이 검사할 수 있는 객체에 둔다. 원본 도메인 모델은 Python 서비스가 소유한다. 별도 MVVM 프레임워크나 유료 부품을 추가하지 않는다.
 
 ```mermaid

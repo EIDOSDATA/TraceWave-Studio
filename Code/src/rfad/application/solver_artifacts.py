@@ -117,6 +117,9 @@ def check_solver_result(journal, job, result, files):
     raw_roles = {"raw/" + name for name in raw_names}
     radiation = pcb and "radiation_recording" in captured["analysis_plan"]["case"]
     radiation_roles = {"radiation_result", "radiation_native"} if radiation else set()
+    loss_recording = pcb and "loss_recording" in captured["analysis_plan"]["case"]
+    if loss_recording:
+        radiation_roles.add("power_balance_result")
     if roles.keys() != raw_roles | {"raw_manifest", "normalized_result", "provenance"} | radiation_roles:
         raise ProjectError("E_MISSING_ARTIFACT", "해석 결과의 필수 원시 파일이 없습니다.")
     manifest = json.loads(journal.read_artifact(roles["raw_manifest"]["artifact"]))
@@ -179,6 +182,13 @@ def check_solver_result(journal, job, result, files):
             validate_radiation(captured["analysis_plan"], field)
             if result["radiation_summary"] != summary(field):
                 raise ProjectError("E_HASH", "방사 요약과 봉인 필드 산출물이 다릅니다.")
+            if loss_recording:
+                from rfad.application.pcb_power import validate_result as validate_power
+
+                balance = json.loads(journal.read_artifact(roles["power_balance_result"]["artifact"]))
+                validate_power(captured["analysis_plan"], balance, field)
+                if result.get("power_balance") != balance:
+                    raise ProjectError("E_HASH", "독립 전력 수지와 별도 봉인 산출물이 다릅니다.")
         return
     assessment = assess_samples(samples)
     observed_assessment = result.get("assessment", {})

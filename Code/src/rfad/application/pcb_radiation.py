@@ -81,8 +81,9 @@ def surface_names(plan):
 def raw_names(plan):
     """! @brief 기존 포트 원시 계약을 유지하며 선택한 경우에만 기록 면을 추가한다."""
     from rfad.application.pcb_results import RAW_NAMES
+    from rfad.application.pcb_power import raw_names as loss_names
 
-    return (*RAW_NAMES, *surface_names(plan))
+    return (*RAW_NAMES, *surface_names(plan), *loss_names(plan))
 
 
 def _number(value):

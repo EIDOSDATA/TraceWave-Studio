@@ -85,6 +85,10 @@ def prepare(stage, plan, runtime):
         from .pcb_radiation import create_box
 
         create_box(csx, case["radiation_recording"])
+    if "loss_recording" in case:
+        from .pcb_absorption import create_dumps
+
+        create_dumps(csx, case["loss_recording"])
     xml = output / "pcb.xml"
     solver.Write2XML(str(xml))
     observed = {axis: [float(value) for value in grid.GetLines(axis)] for axis in "xyz"}
@@ -225,6 +229,12 @@ def postprocess(stage, request, inputs, runtime, manifest=None):
 
         result["radiation_summary"], radiation_files = postprocess_radiation(stage, request["analysis_plan"], raw)
         files.extend(radiation_files)
+    if "loss_recording" in request["analysis_plan"]["case"]:
+        from .pcb_absorption import postprocess as postprocess_absorption
+
+        radiation = json.loads((stage / "output/radiation.json").read_bytes())
+        result["power_balance"], loss_file = postprocess_absorption(stage, request["analysis_plan"], raw, radiation, result["native_statistics"])
+        files.append(loss_file)
     validate_result(request["analysis_plan"], result, request["prepared_plan"])
     write_json(stage / "output/normalized.json", result)
     write_json(stage / "output/provenance.json", provenance)

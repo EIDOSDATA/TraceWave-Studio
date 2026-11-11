@@ -43,6 +43,8 @@
 
 ## 전력 수지의 범위
 
+아래 내용은 독립 손실 필드를 기록하지 않은 기존 방사 연구의 범위다. 이후 추가한 [독립 흡수 손실과 전체 전력 수지](pcb_power_balance.md)는 별도 명시적 옵션과 새 원시 기록을 사용한다. 이전 결과의 미평가 상태를 소급하여 합격으로 바꾸지 않는다.
+
 같은 직접 포트 주파수에서 `Pref=Pinc*abs(S11)^2`와 `Pinc-Pref-Paccepted` 잔차를 확인한다. 이는 파동 분해의 항등식 검사이며 독립적인 체적 에너지 보존 검증이 아니다. 포트 주파수를 보간하여 수지를 채우지 않는다.
 
 원방 필드에서는 `r^2/(2*Z0)*integral((abs(E_theta)^2+abs(E_phi)^2)*sin(theta), dtheta*dphi)`를 native Prad와 비교한다. theta는 사다리꼴, phi는 마지막-처음 구간까지 주기 합으로 처리한다. phi=360을 중복하지 않는다. [openEMS 임피던스 정의](https://github.com/thliebig/openEMS/blob/master/python/openEMS/physical_constants.py)와 [native field/power 규약](https://github.com/thliebig/openEMS/blob/master/nf2ff/nf2ff_calc.cpp)을 따른다. 현재 펄스 Fourier peak 스펙트럼에 1/2를 적용하며 승인 EQ-016의 RMS 필드에 추가 1/2를 곱하는 계산이 아니다.

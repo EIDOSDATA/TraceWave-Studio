@@ -1,0 +1,1969 @@
+{
+  "schema": "rfad.verification.pcb-power-balance/0.1",
+  "status": "passed_initial_numerical_budget",
+  "design_baseline": "RFAD-D0-3.4",
+  "baseline_commit": "bfe87ab9a5f3e4e8e1d399c468b004171632c49d",
+  "validated_at": "2026-11-11T11:27:22.310237+00:00",
+  "scope": "independent_planar_sheet_and_dielectric_loss_same_native_run",
+  "manifest": {
+    "description": "Independent E/J volume and E/rotH sheet work, same exploratory model. Actual fabrication and measurement remain unconfirmed.",
+    "fixture": "ro4350b_convergence_input.json",
+    "grid_levels_mm": [
+      0.5,
+      0.45,
+      0.4
+    ],
+    "id": "ro4350b-ifa-independent-loss-initial/0.1",
+    "schema": "rfad.pcb-power-study/0.1",
+    "settings": {
+      "air_padding_mm": 90,
+      "curve_tolerance_mm": 0.025,
+      "end_criterion": 1e-05,
+      "frequency_hz": {
+        "count": 201,
+        "start": 2400000000,
+        "stop": 2483500000
+      },
+      "grid_mm": 0.4,
+      "max_timesteps": 100000,
+      "mesh_policy": {
+        "air_cell_mm": 6,
+        "growth_ratio": 1.5,
+        "kind": "graded_air"
+      },
+      "power_balance": {
+        "max_relative_residual": 0.03
+      },
+      "radiation": {
+        "box_clearance_mm": 30,
+        "frequency_hz": [
+          2400000000,
+          2441750000,
+          2483500000
+        ],
+        "phi_step_deg": 5,
+        "theta_step_deg": 5
+      }
+    }
+  },
+  "fixture_hash": "d72a106efa69f88c5460b161ea81032e647a7215e0c7cbd81a6995ad1d586fec",
+  "runtime_identity": {
+    "code_files": [
+      {
+        "bytes": 1854,
+        "path": "tools/openems_worker.py",
+        "sha256": "a71e56e21aff057f4b673dd43131e22da3bdf4698099ec124946e65b152e582f"
+      },
+      {
+        "bytes": 110,
+        "path": "src/rfad/__init__.py",
+        "sha256": "637407b3c13a348c03d6a167d2a90e3703c4fc70a421cd9918075c0463d81097"
+      },
+      {
+        "bytes": 2818,
+        "path": "src/rfad/__main__.py",
+        "sha256": "354888f3b9a8851b80520b2876cc77d3c09e666f4e04f8221eb7c0e218a36af3"
+      },
+      {
+        "bytes": 102,
+        "path": "src/rfad/adapters/__init__.py",
+        "sha256": "e4be3b367495a970767105766bbd0895df057c4a53a3a39087bfe316171d0837"
+      },
+      {
+        "bytes": 99,
+        "path": "src/rfad/adapters/cad/__init__.py",
+        "sha256": "031a455542eba8f6df8c996b243a3210041b80cbb40b04208f0c639469e3df83"
+      },
+      {
+        "bytes": 10106,
+        "path": "src/rfad/adapters/cad/bodies.py",
+        "sha256": "3888b329266ef6e69e51009b3800561347aafbd74e3bfdfd619fe40a343f341a"
+      },
+      {
+        "bytes": 3442,
+        "path": "src/rfad/adapters/cad/display.py",
+        "sha256": "f9dcca816110978ff318a17c2136cda9d973ded99e129fa260a4805eba4ff949"
+      },
+      {
+        "bytes": 16629,
+        "path": "src/rfad/adapters/cad/geometry.py",
+        "sha256": "48305c116a58ab5a8dc0941c2574fcbf3739f05177c2e2eddf8865fb702e5445"
+      },
+      {
+        "bytes": 6831,
+        "path": "src/rfad/adapters/cad/native.py",
+        "sha256": "ce449003671876da7b324f7a9462518e4df9b7d3ace88d0f5f4b5623fec334cd"
+      },
+      {
+        "bytes": 6569,
+        "path": "src/rfad/adapters/cad/step_io.py",
+        "sha256": "a3b4e77091966ca809c92b735188c027b919f64ff4beedd4f6bd9b4bf4c86494"
+      },
+      {
+        "bytes": 73,
+        "path": "src/rfad/adapters/solvers/__init__.py",
+        "sha256": "64a5e0f0c806546fe9b2dab2f2394a02b77fb76afd1ff88a0979157ddd96bf5a"
+      },
+      {
+        "bytes": 77,
+        "path": "src/rfad/adapters/solvers/openems/__init__.py",
+        "sha256": "975618264c1614c71937b4baa15138f7aca694e4700ec4df2d8a67100ee90c61"
+      },
+      {
+        "bytes": 27680,
+        "path": "src/rfad/adapters/solvers/openems/native.py",
+        "sha256": "2ac0e46f88de23fa8b222d22fac4f13f79e502cef6dbb67b0c180fd6df71f22f"
+      },
+      {
+        "bytes": 16945,
+        "path": "src/rfad/adapters/solvers/openems/pcb.py",
+        "sha256": "d1c0206e283fbc71f93f29704bdddeb334c9da5504776debef2b5bdedf45ac65"
+      },
+      {
+        "bytes": 9959,
+        "path": "src/rfad/adapters/solvers/openems/pcb_absorption.py",
+        "sha256": "6ec7bf631c26aadd1cc7344a5f777a764bdb215fd24c53849d66ca6ceb2eeb63"
+      },
+      {
+        "bytes": 8774,
+        "path": "src/rfad/adapters/solvers/openems/pcb_mesh.py",
+        "sha256": "7edf8206be603296ab8fa57b2377c61d22bb51a9b0e436db9cc7d9db94020130"
+      },
+      {
+        "bytes": 986,
+        "path": "src/rfad/adapters/solvers/openems/pcb_ports.py",
+        "sha256": "b100fbe0365c56d39c12a067982bae3b3f2d92fee0092fa378a2040b3fa4d6d6"
+      },
+      {
+        "bytes": 3194,
+        "path": "src/rfad/adapters/solvers/openems/pcb_radiation.py",
+        "sha256": "6fe7c1a493783b97dd53c48e0a0899db59bb985a8fd693df8e870710ea4b96f5"
+      },
+      {
+        "bytes": 6517,
+        "path": "src/rfad/adapters/solvers/openems/reference.py",
+        "sha256": "e3bdb5aa463aa971a62cde5f466827b2423d895285dea595d2be81417f282951"
+      },
+      {
+        "bytes": 325,
+        "path": "src/rfad/application/__init__.py",
+        "sha256": "883e15b18f72a85626c6634d255886596dc1bf71ae64b8aebb9b5c32b3896bc7"
+      },
+      {
+        "bytes": 16071,
+        "path": "src/rfad/application/cad.py",
+        "sha256": "54e295d3f22dc7d4ee07dab0e584d99507df1e1cc54278ba4d471d1cf108dc26"
+      },
+      {
+        "bytes": 6437,
+        "path": "src/rfad/application/cad_artifacts.py",
+        "sha256": "5291bee8f431f3793daebc6d84538f3d527e93523026d2c7d05ceefbc7ff0f44"
+      },
+      {
+        "bytes": 17178,
+        "path": "src/rfad/application/cad_jobs.py",
+        "sha256": "49004db60d22fe8eea44479192185415ff5488b9a99405f637e3d916a784800a"
+      },
+      {
+        "bytes": 3805,
+        "path": "src/rfad/application/cad_runtime.py",
+        "sha256": "41e028c00ca6932ed888a357bbfd8a6bc9c4f7c759331e9098a36c8a4a4a6e40"
+      },
+      {
+        "bytes": 5534,
+        "path": "src/rfad/application/canonical.py",
+        "sha256": "f3b263089ad802d6924aea481c46a890e9baa7297bb5daef659394b1ef2be420"
+      },
+      {
+        "bytes": 18449,
+        "path": "src/rfad/application/canvas.py",
+        "sha256": "5b4d34afa804d3443fe697a8da96aee268972ef9f3c92089f5e583000559d9c7"
+      },
+      {
+        "bytes": 4129,
+        "path": "src/rfad/application/catalog_api.py",
+        "sha256": "7be29a5e0e924fa591e0f9c2198649b05aeca0c789f518048969e9431266ccad"
+      },
+      {
+        "bytes": 20955,
+        "path": "src/rfad/application/convergence.py",
+        "sha256": "0150f4d1b348c6f4fa262614174e66627f7f6e2c6564073cf1e6e8ead36993e8"
+      },
+      {
+        "bytes": 5261,
+        "path": "src/rfad/application/display_mesh.py",
+        "sha256": "06325f60b351904c6833e317f27f1ff0a6dfd982acbf15c02cf3c91cdcc0049c"
+      },
+      {
+        "bytes": 30453,
+        "path": "src/rfad/application/editor.py",
+        "sha256": "41cc264e04b5eb9b53c498becc5d6553d30c119d1480717473fadd6400739c63"
+      },
+      {
+        "bytes": 2384,
+        "path": "src/rfad/application/job_state.py",
+        "sha256": "cefaff8cb314d8e023b7abf89bd9a72ceb67bcf6515f92861dfc5746a47da142"
+      },
+      {
+        "bytes": 4965,
+        "path": "src/rfad/application/mcp.py",
+        "sha256": "9042a72767d7395af9f51b0d9452d34bd85e8f1e6650c5288e187dd6ef78d920"
+      },
+      {
+        "bytes": 20662,
+        "path": "src/rfad/application/native_process.py",
+        "sha256": "5f1b625eee607ab5a21fe304827f89542bc5fdb7fd1ede2b89c469088497badf"
+      },
+      {
+        "bytes": 15097,
+        "path": "src/rfad/application/pcb_contacts.py",
+        "sha256": "3a5eddd3f269712c07c40e5906c81be0095381f3af32bfaf495c89fa948aa595"
+      },
+      {
+        "bytes": 8841,
+        "path": "src/rfad/application/pcb_geometry.py",
+        "sha256": "fcf37f157251bce8a71a78290c3ea0b97c1459c113598eb918b9e662c547eca1"
+      },
+      {
+        "bytes": 12002,
+        "path": "src/rfad/application/pcb_mesh.py",
+        "sha256": "ed14ba4c91e586b058db1314d2cc7109ac6b830b991e1ec782e7145d500a987d"
+      },
+      {
+        "bytes": 7855,
+        "path": "src/rfad/application/pcb_power.py",
+        "sha256": "438de1a0de1590d29a18508f2acde28fe06312e25ab21aa802f3ff2eff786b42"
+      },
+      {
+        "bytes": 23266,
+        "path": "src/rfad/application/pcb_projection.py",
+        "sha256": "7386cbdb28506005f2e9ca95397ac2846afc0119228f18fb5f79ebe45fa6361f"
+      },
+      {
+        "bytes": 9177,
+        "path": "src/rfad/application/pcb_radiation.py",
+        "sha256": "1255fb06d6e0a39de51a2aea909c8886d11a00aec466c9694eb75b9397d09b5b"
+      },
+      {
+        "bytes": 12045,
+        "path": "src/rfad/application/pcb_results.py",
+        "sha256": "a4632b586e5a6f1b4341d9cdd1527a519918d8b03a7f7128e2559e29c57aebfb"
+      },
+      {
+        "bytes": 8695,
+        "path": "src/rfad/application/pcb_selection.py",
+        "sha256": "1c0dbc49c0ddd11f2255c680eea5477080b262dfd5a347463fc6d071a7df9cf8"
+      },
+      {
+        "bytes": 5744,
+        "path": "src/rfad/application/pcb_selection_build.py",
+        "sha256": "3cdb2388b936294cbfe604552763006c6dbe8005dc9df89a00db8f29e283c974"
+      },
+      {
+        "bytes": 3029,
+        "path": "src/rfad/application/pcb_selection_context.py",
+        "sha256": "fbc11df1836d434561e35b94175ad38f8d812614baf4527759f9a9cae8034813"
+      },
+      {
+        "bytes": 5764,
+        "path": "src/rfad/application/pcb_selection_contract.py",
+        "sha256": "4a9552fed1cc7aa483e965107d8373cebc6f1000541452117be252b162422d84"
+      },
+      {
+        "bytes": 8104,
+        "path": "src/rfad/application/pcb_selection_layers.py",
+        "sha256": "dc572a76f534ac39163083854451e69d6b879ee74c9ad294322de078e9741294"
+      },
+      {
+        "bytes": 7534,
+        "path": "src/rfad/application/pcb_selection_review.py",
+        "sha256": "fc6d8df7b412a263e2ac45646cbef60a689e5ad1e521ac7d6a13452c3a58485c"
+      },
+      {
+        "bytes": 6108,
+        "path": "src/rfad/application/pcb_solver.py",
+        "sha256": "0ee300dcf37fc98444c059875724de4792657903541080d219c0ed842dda2f92"
+      },
+      {
+        "bytes": 5026,
+        "path": "src/rfad/application/project_contract.py",
+        "sha256": "86f26c1d85e8bbd5bbabf16e86639ef254a3246b925ff2786de12e94fedbb6ed"
+      },
+      {
+        "bytes": 6937,
+        "path": "src/rfad/application/project_history.py",
+        "sha256": "6c7514c679fb3b4f145fac53ae05961f7742b1e18bb6ed9468c58a1f797a605a"
+      },
+      {
+        "bytes": 6318,
+        "path": "src/rfad/application/project_operations.py",
+        "sha256": "81b2b3ac056ab30abf982457d3dcde6b7a879d42eb7449798ecde93512bdf5fa"
+      },
+      {
+        "bytes": 2864,
+        "path": "src/rfad/application/project_repository.py",
+        "sha256": "f70a2541e1519c56fa93d8f1d43dfab2d41e75081df7cfcbbbe382325ac7e179"
+      },
+      {
+        "bytes": 21402,
+        "path": "src/rfad/application/projects.py",
+        "sha256": "467dc0798a340dfb1b3eb7dd60c996d27a6cb9be2a96c52b770157070eb63afe"
+      },
+      {
+        "bytes": 2169,
+        "path": "src/rfad/application/radiation.py",
+        "sha256": "c8fe3b44d4e24ec7b4d2a8adf659030e16ebc56afa44842cc66f6b71e165a184"
+      },
+      {
+        "bytes": 2975,
+        "path": "src/rfad/application/radiation_assessment.py",
+        "sha256": "297528793354159a7872c5e6f5d50135bb2f219adb41e588623d2a26d2cd56a2"
+      },
+      {
+        "bytes": 7678,
+        "path": "src/rfad/application/radiation_comparison.py",
+        "sha256": "0aa7e258f41a82a74e3af3d17ec1706582e000a71c5fc23926a6ad006c8a5e1c"
+      },
+      {
+        "bytes": 3827,
+        "path": "src/rfad/application/radiation_queries.py",
+        "sha256": "5889cd01230439d7650d7f9a5dccfafbb9a3e84d816709a13e21971f7aa158aa"
+      },
+      {
+        "bytes": 5443,
+        "path": "src/rfad/application/radiation_study.py",
+        "sha256": "36e4f7944c57db51af7c037fe4498aea160030d94afd2c9968fca72a55f9993c"
+      },
+      {
+        "bytes": 3505,
+        "path": "src/rfad/application/radiation_study_guards.py",
+        "sha256": "6cd9a14a488e672d164ed8301486b817c3fd1e221da41fba19cd9eb99cac14db"
+      },
+      {
+        "bytes": 4858,
+        "path": "src/rfad/application/request_ledger.py",
+        "sha256": "59bfcdedaa6a5bbca8f3437a1b8e19477f91dfc4024f3c672d75a705d0355e02"
+      },
+      {
+        "bytes": 18561,
+        "path": "src/rfad/application/rpc.py",
+        "sha256": "6e4696c5bb5a3b4a02d0bd35e48e09a2824e9df312be53c351c190c0cc1a0bdd"
+      },
+      {
+        "bytes": 18428,
+        "path": "src/rfad/application/solver.py",
+        "sha256": "eecc64140af223a070e4ba7c5820c9db0553ecde53dfd5623d1fb9fc41f65e89"
+      },
+      {
+        "bytes": 15163,
+        "path": "src/rfad/application/solver_artifacts.py",
+        "sha256": "0626a1f2c5ff05d0a1a8ffc6b25254998d9ca3c0ce541ca25f019c1852784ee7"
+      },
+      {
+        "bytes": 24673,
+        "path": "src/rfad/application/solver_jobs.py",
+        "sha256": "bccf83076e326d8b5ee3bbf3d6000890dd1443e46bca48c27ec4d491847586b7"
+      },
+      {
+        "bytes": 5802,
+        "path": "src/rfad/application/solver_queries.py",
+        "sha256": "8b9f63d88447084e4384f2ac4e47543893a070b8b780ee4eafe85db625f52905"
+      },
+      {
+        "bytes": 3889,
+        "path": "src/rfad/application/solver_requests.py",
+        "sha256": "d6f62b88651e3b0cda8fd083c6c6f40e691bef4c615b8216bcdb21f5037a4c10"
+      },
+      {
+        "bytes": 4866,
+        "path": "src/rfad/application/solver_runtime.py",
+        "sha256": "445afa15151a905bdaefe51cc56945477356fe92b51f9b13ec5647c782441683"
+      },
+      {
+        "bytes": 21646,
+        "path": "src/rfad/application/wsl_process.py",
+        "sha256": "4d7cef0fb4d571fb5fa8bd110093553d719a8b085dd619eed344cff2bf06be0d"
+      },
+      {
+        "bytes": 116,
+        "path": "src/rfad/catalog/__init__.py",
+        "sha256": "f493ee69507a2eeef854f4cdbc3bfd482829ab5b34338743b71c84cb807b7de8"
+      },
+      {
+        "bytes": 19438,
+        "path": "src/rfad/catalog/build.py",
+        "sha256": "0b838211c01c105b68fbcf9247759362896b9217fdfe35cd8156f95b1e4475ef"
+      },
+      {
+        "bytes": 10360,
+        "path": "src/rfad/catalog/material_selection.py",
+        "sha256": "2f3eedf37db13b7132d42b2e3d0fbca190b08f644d4ab21f2238e65e434d7036"
+      },
+      {
+        "bytes": 3340,
+        "path": "src/rfad/catalog/models.py",
+        "sha256": "30f285ea3bc597d35fd72a3e200170c862522f240dc3fa0c70f73d62f216961b"
+      },
+      {
+        "bytes": 3301,
+        "path": "src/rfad/catalog/native.py",
+        "sha256": "d505114664c66861b6a79c039f73b3ac6656ffcdf627df8ecab2b8fac536219e"
+      },
+      {
+        "bytes": 8038,
+        "path": "src/rfad/catalog/native_common.py",
+        "sha256": "556902f3e45bb71255451d2437546f0265ff26a9adf1662872d13905a2dbbc68"
+      },
+      {
+        "bytes": 5063,
+        "path": "src/rfad/catalog/native_jlc.py",
+        "sha256": "fe662a96a35bd3a0e2d4c1b261c7cf78cb17d6a903ff8b680e17977e9e3c1c2c"
+      },
+      {
+        "bytes": 2413,
+        "path": "src/rfad/catalog/native_pcbway.py",
+        "sha256": "c13777b1c66e342540fb71d15c9427f0844c6ab9d9533f9fac202a88f5b4d7ae"
+      },
+      {
+        "bytes": 3353,
+        "path": "src/rfad/catalog/native_we.py",
+        "sha256": "f6904f5c87d8a146154a71a553af755d5412cbcb34c6c9971d50b3e4777ea036"
+      },
+      {
+        "bytes": 6098,
+        "path": "src/rfad/catalog/properties.py",
+        "sha256": "67d01c6d83bf3bb2d1139e733490d577f7e5d67450e034a73ec8296dff121e56"
+      },
+      {
+        "bytes": 8214,
+        "path": "src/rfad/catalog/query.py",
+        "sha256": "06e567696122f285083d8f772ef53abf2f0c429f8d192d003d90d478ac461a24"
+      },
+      {
+        "bytes": 18240,
+        "path": "src/rfad/catalog/repository.py",
+        "sha256": "671d6c25ea6bdfa0fe895d390948c8a04fbb87473e737e55938191e7474a7206"
+      },
+      {
+        "bytes": 4959,
+        "path": "src/rfad/catalog/review.py",
+        "sha256": "71a7bc5883805428f01798bcb734055cec7da6e9e6bd29ff775c8007d176b1ff"
+      },
+      {
+        "bytes": 4856,
+        "path": "src/rfad/catalog/schema.py",
+        "sha256": "a9d77e4bcf796bc568b9fb65c5a6a47c3bee96dcbffc543a2304a8aa99e95d40"
+      },
+      {
+        "bytes": 15074,
+        "path": "src/rfad/catalog/selection_reader.py",
+        "sha256": "e5ad72c0eb5a5852852a7be33230d8bac9dfda25ed121df9929483198bfe2d2d"
+      },
+      {
+        "bytes": 2956,
+        "path": "src/rfad/catalog/selection_rules.py",
+        "sha256": "37765b18688473294ebf92483c85382ccf2c61124e53eb7edcc50519557bae52"
+      },
+      {
+        "bytes": 7525,
+        "path": "src/rfad/catalog/service.py",
+        "sha256": "2eca3ffec08fa28db2dfb16c05bcdc0013ee959529eb77a9dc23d3a29e4efbe3"
+      },
+      {
+        "bytes": 13011,
+        "path": "src/rfad/catalog/source.py",
+        "sha256": "fca01aad58763398caf269f4ba1ed81a0100a20ba9cde89a0f3a3c7742906a21"
+      },
+      {
+        "bytes": 4466,
+        "path": "src/rfad/catalog/stackup_draft.py",
+        "sha256": "5287aa8998194bab02ead2b3a488e192d065f560fdf77462e2f7bd0e5d62a073"
+      },
+      {
+        "bytes": 5533,
+        "path": "src/rfad/catalog/stackup_draft_common.py",
+        "sha256": "8e188553f62f111f1539a560388a4756f494d0b933de40a667c77095d4de32c4"
+      },
+      {
+        "bytes": 4478,
+        "path": "src/rfad/catalog/stackup_draft_jlc.py",
+        "sha256": "ff554c07fbc41db3c87cbbf3d5b79bfab7c6722b29b21d336920ad99cba64eb2"
+      },
+      {
+        "bytes": 4801,
+        "path": "src/rfad/catalog/stackup_draft_jlc_evidence.py",
+        "sha256": "a5ae02821a305a206442a0b3515808ad9b782f681b883df15f08fd74cc1c026c"
+      },
+      {
+        "bytes": 4295,
+        "path": "src/rfad/catalog/stackup_draft_pcbway.py",
+        "sha256": "0e7ab15707fc1a2bee8b4baae7ca835c20eae68526ce26b50c4848c0264214c0"
+      },
+      {
+        "bytes": 8820,
+        "path": "src/rfad/catalog/stackup_match.py",
+        "sha256": "db0145bd241904fb830fefebb1c3ba43d2d765203fedaa74d884fb8fcdc62ab8"
+      },
+      {
+        "bytes": 4080,
+        "path": "src/rfad/catalog/stackup_suggestions.py",
+        "sha256": "5e99df25a0815217a1aaa8705082e33188c98b4cdd30ec83363d839c35940b84"
+      },
+      {
+        "bytes": 4144,
+        "path": "src/rfad/catalog/suggested_properties.py",
+        "sha256": "04db8bf74380a8f4f3f579ca0226a7716733062bf1a3f32cf0590b56689a90f0"
+      },
+      {
+        "bytes": 96,
+        "path": "src/rfad/cli/__init__.py",
+        "sha256": "5ffd0914ed2f6746b578e0d30eabda8bd5b306c5a368ec8ec0dd87b3a669aa1b"
+      },
+      {
+        "bytes": 4917,
+        "path": "src/rfad/cli/catalog.py",
+        "sha256": "098cd24482fcb1037263772fa82599b1e1ca6a4863ea879f00229c6e72b60272"
+      },
+      {
+        "bytes": 11085,
+        "path": "src/rfad/cli/doctor.py",
+        "sha256": "80be1ab1fc4d387178f6b70cc4a1241b21c793d33648660c443ce9a3946139fb"
+      },
+      {
+        "bytes": 239,
+        "path": "src/rfad/domain/__init__.py",
+        "sha256": "f7905c21d7293db23c8736b154cfa4e737b28788376ae2314c73e75259356e67"
+      },
+      {
+        "bytes": 35468,
+        "path": "src/rfad/domain/design.py",
+        "sha256": "56d6ba6792abf5da5b636f19dc8072442e75a28428f01fc1304bfc8ae3f9c24a"
+      },
+      {
+        "bytes": 1059,
+        "path": "src/rfad/domain/errors.py",
+        "sha256": "e8dc2d8e54fd71ca35af28d538c214687cdefeba035443aeeaee992cc55697d6"
+      },
+      {
+        "bytes": 20082,
+        "path": "src/rfad/domain/expressions.py",
+        "sha256": "4387895d32e28e838db10a1e7b0c9d2c2f5a2f5c4d8e64386ad02b0ed46c1bb5"
+      },
+      {
+        "bytes": 1604,
+        "path": "src/rfad/domain/material_models.py",
+        "sha256": "7447b0b5fedb971a31b1fd41f81219249a324e2d44da6fe2e7269a8efd1a2fa9"
+      },
+      {
+        "bytes": 5343,
+        "path": "src/rfad/domain/parameter_graph.py",
+        "sha256": "3afa704b61fe6cce2f64d175df455e227604223eab90c71166f957d5f24e4b36"
+      },
+      {
+        "bytes": 3673,
+        "path": "src/rfad/domain/pcb_evidence_pool.py",
+        "sha256": "8ad93e1638b3f5a343acee606ed75ffc581dc725072a31c26b60b3e90ec843ea"
+      },
+      {
+        "bytes": 12252,
+        "path": "src/rfad/domain/pcb_selection.py",
+        "sha256": "2607f41e26d5a1623914486996e76ca9f69d031f1f074184bda658451e8665e9"
+      },
+      {
+        "bytes": 2800,
+        "path": "src/rfad/domain/pcb_selection_command.py",
+        "sha256": "62c6cceefc63dc87cb75489edc6c48522a125155de70962d0b92051b92328742"
+      },
+      {
+        "bytes": 10053,
+        "path": "src/rfad/domain/pcb_selection_evidence.py",
+        "sha256": "b017b5ecdc9dfc1aea5a0e6baf054600f7f5f6c7af580d2759455b5619572ab6"
+      },
+      {
+        "bytes": 2796,
+        "path": "src/rfad/domain/pcb_selection_history.py",
+        "sha256": "ea6b7a818036a81429dbd6da95bdff1d00aa4a54d4d5a32cfb66df7200da389b"
+      },
+      {
+        "bytes": 8072,
+        "path": "src/rfad/domain/planar.py",
+        "sha256": "a5fb63c7bfb7f1813917404095b696ab6e70eb71d7f0059508dbae31024e5e3f"
+      },
+      {
+        "bytes": 18878,
+        "path": "src/rfad/domain/project.py",
+        "sha256": "caedbf39e5e8db6ccdfce432746f137fad23b303b0db894175bd5727857991d4"
+      },
+      {
+        "bytes": 292,
+        "path": "src/rfad/domain/resource_limits.py",
+        "sha256": "5d239cfeadec9cd39028e90fdaae7e710d7954c3077ec764fa0fda4665f24916"
+      },
+      {
+        "bytes": 8754,
+        "path": "src/rfad/domain/units.py",
+        "sha256": "f02c8095e7ae3b8022ac3d7718363d1cbffdd6b876506122ecd259cf4cda2247"
+      },
+      {
+        "bytes": 152,
+        "path": "src/rfad/storage/__init__.py",
+        "sha256": "ca4c257ab77186c72310cd6e4b1ae31e30f97b41d0ca4075b5760ad672a2e270"
+      },
+      {
+        "bytes": 24021,
+        "path": "src/rfad/storage/journal.py",
+        "sha256": "324f2e69b768e893b5e02fc24273754ec0ad3ca4641ee2d589a3b9479dfe555b"
+      }
+    ],
+    "manifest_sha256": "538c7d75a7820f2ee0a6d48fb0d9f3687c6a10c66c09962398dfd4dd2dbd7a9c",
+    "runtime_profile": "openems-wsl-reference/0.1",
+    "transport": {
+      "distribution": "TraceWave-Dev",
+      "guest_root": "/home/tracewave/rfad-runtime/worker-runs",
+      "lease_seconds": 10.0,
+      "protocol": "rfad.wsl-supervisor/0.1",
+      "python": "/home/tracewave/rfad-runtime/openems-venv/bin/python",
+      "supervisor_sha256": "743f3eef350da6018b7291820cdaeb782ccfb5bb0ae28c69456fb566ff5dff2b",
+      "user": "tracewave"
+    }
+  },
+  "current_worker_sources_match_all_native_runs": true,
+  "source_count": 113,
+  "tool_test_and_manifest_sources": [
+    {
+      "path": "tools/verify_pcb_power_balance.py",
+      "bytes": 13450,
+      "sha256": "106fbb94bb46f521f811e4780aefd7ceb655f9a248357c26e86403734c72e89d"
+    },
+    {
+      "path": "tools/verify_pcb_power_replay.py",
+      "bytes": 4964,
+      "sha256": "e57b63c37aaa8264c8b787479ff51b52f5ee4f12ffc8eb59a2855991a2670a67"
+    },
+    {
+      "path": "tests/test_pcb_power.py",
+      "bytes": 6335,
+      "sha256": "b1ec780455871d54c76a53990cd90f8c9bc62152941175b3a948ef162293ead8"
+    },
+    {
+      "path": "tests/test_pcb_power_integrals.py",
+      "bytes": 6333,
+      "sha256": "cac8a6a6bf042d37987dafa384d905d5032e817a46106e2c37a0b072bc3f4e91"
+    },
+    {
+      "path": "tests/test_pcb_power_tool.py",
+      "bytes": 2881,
+      "sha256": "d0b8d02db5836b9bd51f9bceaec4ccabaed66f1fb6b0e3e0c3f865420d0f2e56"
+    },
+    {
+      "path": "fixtures/pcb_power_balance_study.json",
+      "bytes": 1010,
+      "sha256": "39663466511f19a63d1f04721fb89746582676db652622b93bc9c5ab0d119c1c"
+    },
+    {
+      "path": "docs/pcb_power_balance.md",
+      "bytes": 12063,
+      "sha256": "cc2f5f3e6fd11b3b243ac278179623bfcb488ede3c41d7f46b955f9a486932e4"
+    }
+  ],
+  "cases": [
+    {
+      "grid_mm": 0.5,
+      "artifact_id": "a73812c0-9c38-4b82-bd9b-99f7066752dc",
+      "analysis_plan": {
+        "artifact": {
+          "bytes": 59692,
+          "sha256": "460f5e8e11caf52e6113a2328087599c9b6198afc30c467de3f450fe9f7cc969",
+          "uri": "solver-artifacts/fc33c4b4-ff9e-4a80-ad1c-4abaa4f6ec00/analysis-plan.json"
+        },
+        "content_hash": "6be61eb0586e5fe534999a9701dd6cb48c360b6096e722a6f998fb09cccd0f1f",
+        "plan_id": "44df28d2-ccf9-41d9-9afb-65295e641552"
+      },
+      "normalized_result": {
+        "bytes": 249299,
+        "sha256": "fd06b5da7ab6c62e693f949a2bf21041f16da318ea92d350e5dc48570b86a74d",
+        "uri": "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/normalized.json"
+      },
+      "power_balance_result": {
+        "bytes": 4143,
+        "sha256": "d4a25e9229faedb770532b3268336d7ab0c7f0ad09e396b5faa03bdfa71c304f",
+        "uri": "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/power_balance.json"
+      },
+      "elapsed_seconds": 120.35999999999876,
+      "native_statistics": {
+        "iterations": 4805,
+        "native_cells": 813603,
+        "raw_values": [
+          813603.0,
+          8.75820105553934e-13,
+          4805.0,
+          4.208315607186653e-09,
+          87.988731,
+          44430262.49577346
+        ],
+        "timestep_seconds": 8.75820105553934e-13
+      },
+      "termination": {
+        "evidence": [
+          "50.00",
+          "4805",
+          "51.44"
+        ],
+        "exact_endcriterion_schedule": true,
+        "iterations": 4805,
+        "reported_decay_db": 51.44,
+        "reported_zero_energy": false,
+        "status": "end_criterion_reached",
+        "target_energy_ratio": 1e-05
+      },
+      "power_balance": {
+        "absolute_power_w": null,
+        "analysis_plan_id": "44df28d2-ccf9-41d9-9afb-65295e641552",
+        "fabrication_validated": false,
+        "frequencies": [
+          {
+            "accepted_power_w_s2": 1.0252784845010496e-27,
+            "conductor_loss_w_s2": 6.283691763816076e-30,
+            "dielectric_loss_w_s2": 6.51659132839898e-30,
+            "frequency_hz": 2400000000,
+            "incident_power_w_s2": 1.7896950172621977e-27,
+            "independent_absorption_power_w_s2": 1.2800283092215056e-29,
+            "inferred_loss_w_s2": 1.1122165420576827e-29,
+            "radiated_power_w_s2": 1.0141563190804728e-27,
+            "reflected_power_w_s2": 7.644165327611481e-28,
+            "relative_residual": -0.0016367432819531784,
+            "residual_w_s2": -1.678117671638229e-30,
+            "sheet_components": [
+              {
+                "entity_id": "483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+                "loss_w_s2": 1.3926765932993321e-30
+              },
+              {
+                "entity_id": "4ae807f7-0e5f-43f6-a7b2-c4203bb80fb4",
+                "loss_w_s2": 3.1259409577054535e-30
+              },
+              {
+                "entity_id": "6442ae11-5c6e-4deb-a44e-5e683f69083c",
+                "loss_w_s2": 9.549382365466422e-31
+              },
+              {
+                "entity_id": "8523d17e-8a81-4054-ab55-e449146549a1",
+                "loss_w_s2": 5.41264728112996e-31
+              },
+              {
+                "entity_id": "9fba8f18-1eb6-408c-ac83-f85eca05c52a",
+                "loss_w_s2": 2.688712481516523e-31
+              }
+            ],
+            "status": "within_initial_numerical_budget"
+          },
+          {
+            "accepted_power_w_s2": 9.152896100049986e-28,
+            "conductor_loss_w_s2": 6.0729894470728106e-30,
+            "dielectric_loss_w_s2": 5.967420636345774e-30,
+            "frequency_hz": 2441750000,
+            "incident_power_w_s2": 1.7990585787080144e-27,
+            "independent_absorption_power_w_s2": 1.2040410083418584e-29,
+            "inferred_loss_w_s2": 1.0299948918827632e-29,
+            "radiated_power_w_s2": 9.04989661086171e-28,
+            "reflected_power_w_s2": 8.837689687030158e-28,
+            "relative_residual": -0.001901541485411866,
+            "residual_w_s2": -1.7404611645909526e-30,
+            "sheet_components": [
+              {
+                "entity_id": "483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+                "loss_w_s2": 1.3247894087710965e-30
+              },
+              {
+                "entity_id": "4ae807f7-0e5f-43f6-a7b2-c4203bb80fb4",
+                "loss_w_s2": 2.977749503503917e-30
+              },
+              {
+                "entity_id": "6442ae11-5c6e-4deb-a44e-5e683f69083c",
+                "loss_w_s2": 9.6363697277081e-31
+              },
+              {
+                "entity_id": "8523d17e-8a81-4054-ab55-e449146549a1",
+                "loss_w_s2": 5.431545588980638e-31
+              },
+              {
+                "entity_id": "9fba8f18-1eb6-408c-ac83-f85eca05c52a",
+                "loss_w_s2": 2.6365900312892327e-31
+              }
+            ],
+            "status": "within_initial_numerical_budget"
+          },
+          {
+            "accepted_power_w_s2": 8.03266632199284e-28,
+            "conductor_loss_w_s2": 5.7864959618666996e-30,
+            "dielectric_loss_w_s2": 5.381241284040468e-30,
+            "frequency_hz": 2483500000,
+            "incident_power_w_s2": 1.7895592883730487e-27,
+            "independent_absorption_power_w_s2": 1.1167737245907168e-29,
+            "inferred_loss_w_s2": 1.0195192972302315e-29,
+            "radiated_power_w_s2": 7.9307143922698165e-28,
+            "reflected_power_w_s2": 9.862926561737646e-28,
+            "relative_residual": -0.00121073655324397,
+            "residual_w_s2": -9.725442736048529e-31,
+            "sheet_components": [
+              {
+                "entity_id": "483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+                "loss_w_s2": 1.2403579968833106e-30
+              },
+              {
+                "entity_id": "4ae807f7-0e5f-43f6-a7b2-c4203bb80fb4",
+                "loss_w_s2": 2.7925834393348177e-30
+              },
+              {
+                "entity_id": "6442ae11-5c6e-4deb-a44e-5e683f69083c",
+                "loss_w_s2": 9.533630127485781e-31
+              },
+              {
+                "entity_id": "8523d17e-8a81-4054-ab55-e449146549a1",
+                "loss_w_s2": 5.3408268960947375e-31
+              },
+              {
+                "entity_id": "9fba8f18-1eb6-408c-ac83-f85eca05c52a",
+                "loss_w_s2": 2.6610882329051914e-31
+              }
+            ],
+            "status": "within_initial_numerical_budget"
+          }
+        ],
+        "full_energy_closure": "within_initial_numerical_budget",
+        "integration": {
+          "displacement_current": "reactive_real_work_zero_for_completed_fourier_spectrum",
+          "method": "yee_edge_e_j_and_sheet_e_roth",
+          "pml_excluded": true,
+          "rotH_timestamp_correction": "exp(-j*pi*f*dt)/cos(pi*f*dt)",
+          "sheet_edge_counts": [
+            16068,
+            264,
+            41,
+            22,
+            65
+          ],
+          "source_resistor_excluded": true
+        },
+        "max_relative_residual": 0.03,
+        "measurement_validated": false,
+        "physics_validated": false,
+        "power_unit": "W*s^2",
+        "recording": {
+          "dump_mode": 0,
+          "dump_types": [
+            10,
+            12,
+            13
+          ],
+          "estimated_field_bytes": 11025720,
+          "frequency_hz": [
+            2400000000,
+            2441750000,
+            2483500000
+          ],
+          "method": "yee_edge_e_j_and_sheet_e_roth",
+          "primitive_start_mm": [
+            -0.43308270676724997,
+            -0.43308270676724997,
+            -0.24689521633375
+          ],
+          "primitive_stop_mm": [
+            40.43308270676725,
+            60.43308270676725,
+            1.07889521633375
+          ],
+          "schema": "rfad.pcb-loss-recording/0.1",
+          "start_indices": [
+            18,
+            18,
+            19
+          ],
+          "start_mm": [
+            -0.577443609023,
+            -0.577443609023,
+            -0.340860288445
+          ],
+          "stop_indices": [
+            100,
+            140,
+            23
+          ],
+          "stop_mm": [
+            40.577443609023,
+            60.577443609023,
+            1.172860288445
+          ],
+          "volume_conductor_supported": false
+        },
+        "schema": "rfad.pcb-power-balance/0.1"
+      },
+      "raw_manifest_files": [
+        {
+          "bytes": 4786,
+          "media_type": "text/plain",
+          "path": "output/raw/port_ut_1",
+          "role": "raw/port_ut_1",
+          "sha256": "020358df35313d9e2801023a1ed8855ea3553f2bd71666623c450f1ae651093c"
+        },
+        {
+          "bytes": 4812,
+          "media_type": "text/plain",
+          "path": "output/raw/port_it_1",
+          "role": "raw/port_it_1",
+          "sha256": "b9c6a69d92cbd9b1ca5057f6bd9c22178eca480bf552e47eda4ab71c7dfe8f2e"
+        },
+        {
+          "bytes": 206,
+          "media_type": "text/plain",
+          "path": "output/raw/openEMS_stats.txt",
+          "role": "raw/openEMS_stats.txt",
+          "sha256": "f68f9c454d0008d7f4bf9b7f8c8410aa1a4ea387cb8f5a4dab9e1616a259b860"
+        },
+        {
+          "bytes": 756,
+          "media_type": "text/plain",
+          "path": "output/raw/openEMS_run_stats.txt",
+          "role": "raw/openEMS_run_stats.txt",
+          "sha256": "81c0e3751356517946ee5b7c3deeefd1a10b87ee7e02515eccf2ae7aed11134f"
+        },
+        {
+          "bytes": 3683,
+          "media_type": "text/plain",
+          "path": "output/raw/native.log",
+          "role": "raw/native.log",
+          "sha256": "ecb260b6b6b6d7867d1083caaef2f6e809cbf416a9108453ebade410d1641105"
+        },
+        {
+          "bytes": 19741,
+          "media_type": "application/xml",
+          "path": "output/raw/pcb.xml",
+          "role": "raw/pcb.xml",
+          "sha256": "fb14361193caba491025d9e4a55fa3d5845ae34e840c84b90d24ecd93329ec1a"
+        },
+        {
+          "bytes": 256464,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_E_0.h5",
+          "role": "raw/pcb_nf2ff_E_0.h5",
+          "sha256": "a2f934abc56345abb577ee8d296e5cea472c6fe8ccfc343f243e2eb6143f1172"
+        },
+        {
+          "bytes": 256464,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_E_1.h5",
+          "role": "raw/pcb_nf2ff_E_1.h5",
+          "sha256": "e4f13599af3c759ff391943e6040b1d501f2a3bae510cac864b9bf74b847a560"
+        },
+        {
+          "bytes": 190224,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_E_2.h5",
+          "role": "raw/pcb_nf2ff_E_2.h5",
+          "sha256": "6a1cd1babdbb1683ea70e0cd0c2b285d73aab1a1971d880a2d73dc70a5fb90f4"
+        },
+        {
+          "bytes": 190224,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_E_3.h5",
+          "role": "raw/pcb_nf2ff_E_3.h5",
+          "sha256": "1ae365eba3dd0fb3d554e71a7695ca2a447fcdabcc42ea2c4eff5138dc32b9fc"
+        },
+        {
+          "bytes": 1017072,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_E_4.h5",
+          "role": "raw/pcb_nf2ff_E_4.h5",
+          "sha256": "1fe2cd8fc21db6cc75e1040f3b550ae37241b6145542f15ee88523f3125bc697"
+        },
+        {
+          "bytes": 1017072,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_E_5.h5",
+          "role": "raw/pcb_nf2ff_E_5.h5",
+          "sha256": "0da8edc408e32e771f621fe2aa56194564bdc7c1e3923cf6666881ebf3c759c1"
+        },
+        {
+          "bytes": 256464,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_H_0.h5",
+          "role": "raw/pcb_nf2ff_H_0.h5",
+          "sha256": "5b49506a5de12d8afbcca54a7e8adf3e90a83a2dbde691af4d1e1ba8c9f6a708"
+        },
+        {
+          "bytes": 256464,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_H_1.h5",
+          "role": "raw/pcb_nf2ff_H_1.h5",
+          "sha256": "e60bfe21dde734ec89a09804bf4f3777ae72d6bc47ec9b2d2adf928435c303b7"
+        },
+        {
+          "bytes": 190224,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_H_2.h5",
+          "role": "raw/pcb_nf2ff_H_2.h5",
+          "sha256": "a031d792a662781c80101c51e4361de31099b2e28980e8427567f10a6ccf1271"
+        },
+        {
+          "bytes": 190224,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_H_3.h5",
+          "role": "raw/pcb_nf2ff_H_3.h5",
+          "sha256": "8facafa0051af70ed1440505d64ee75e95cb780fdd0a8cdf668780945b4e1a8e"
+        },
+        {
+          "bytes": 1017072,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_H_4.h5",
+          "role": "raw/pcb_nf2ff_H_4.h5",
+          "sha256": "3effd399be5e58d41db57d896c6c27e6c8d3e04208783699cd299be33807f693"
+        },
+        {
+          "bytes": 1017072,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_H_5.h5",
+          "role": "raw/pcb_nf2ff_H_5.h5",
+          "sha256": "0c81cf58daf374c533587d9a876215d7901cf7361fd364fca317aff435037452"
+        },
+        {
+          "bytes": 3701520,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_loss_E.h5",
+          "role": "raw/pcb_loss_E.h5",
+          "sha256": "b715c18261e5cd3e33145662360d823a56252db5321dbf47ccb3bcda4f1b035c"
+        },
+        {
+          "bytes": 3701520,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_loss_J.h5",
+          "role": "raw/pcb_loss_J.h5",
+          "sha256": "1299da13fb0641501a859d9f591c7735ca93e2f791b52584b401b5789d4b917c"
+        },
+        {
+          "bytes": 3701520,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_loss_rotH.h5",
+          "role": "raw/pcb_loss_rotH.h5",
+          "sha256": "faf30f900bb22fdf6530569e041508cb253136b324eadd96e9b2f553b9f84dcf"
+        }
+      ]
+    },
+    {
+      "grid_mm": 0.45,
+      "artifact_id": "563b396d-1f40-4572-af22-549968151ec3",
+      "analysis_plan": {
+        "artifact": {
+          "bytes": 59711,
+          "sha256": "cadd4a8a7228c48e2dbbcc5e9425505eefcdf52e406d05a2aa92ab0fcbf42244",
+          "uri": "solver-artifacts/ae0fbcd1-93c3-4fc6-ad6c-7807e7ad6238/analysis-plan.json"
+        },
+        "content_hash": "1f1b24a8e3949d8fd7c4f60c96daeee2e60de43a675ddeb25c2eb6925603e17c",
+        "plan_id": "344f9cfb-4c35-422c-ae02-c4d8dfed5b29"
+      },
+      "normalized_result": {
+        "bytes": 253129,
+        "sha256": "b7bd00c96e22031d2166d1ac257b9c0d14ca5258fddbd59a501777cebfc6ef13",
+        "uri": "solver-artifacts/41ef9c9f-2454-4d41-b14b-63f973d7af57/normalized.json"
+      },
+      "power_balance_result": {
+        "bytes": 4141,
+        "sha256": "34a8ea1fe01eacecf10ce9b7e4b0aec12a6e9d2a434e516bc1f0379fe22063ac",
+        "uri": "solver-artifacts/41ef9c9f-2454-4d41-b14b-63f973d7af57/power_balance.json"
+      },
+      "elapsed_seconds": 215.40600000000086,
+      "native_statistics": {
+        "iterations": 7285,
+        "native_cells": 1066271,
+        "raw_values": [
+          1066271.0,
+          5.803952465011193e-13,
+          7285.0,
+          4.228179370760654e-09,
+          177.27929,
+          43816647.92881335
+        ],
+        "timestep_seconds": 5.803952465011193e-13
+      },
+      "termination": {
+        "evidence": [
+          "50.00",
+          "7285",
+          "51.26"
+        ],
+        "exact_endcriterion_schedule": true,
+        "iterations": 7285,
+        "reported_decay_db": 51.26,
+        "reported_zero_energy": false,
+        "status": "end_criterion_reached",
+        "target_energy_ratio": 1e-05
+      },
+      "power_balance": {
+        "absolute_power_w": null,
+        "analysis_plan_id": "344f9cfb-4c35-422c-ae02-c4d8dfed5b29",
+        "fabrication_validated": false,
+        "frequencies": [
+          {
+            "accepted_power_w_s2": 8.909156601073865e-28,
+            "conductor_loss_w_s2": 6.358900142336275e-30,
+            "dielectric_loss_w_s2": 5.718197572465491e-30,
+            "frequency_hz": 2400000000,
+            "incident_power_w_s2": 1.6321253215287284e-27,
+            "independent_absorption_power_w_s2": 1.2077097714801765e-29,
+            "inferred_loss_w_s2": 1.0606895465046501e-29,
+            "radiated_power_w_s2": 8.8030876464234e-28,
+            "reflected_power_w_s2": 7.412096614213419e-28,
+            "relative_residual": -0.0016502148470238518,
+            "residual_w_s2": -1.4702022497552648e-30,
+            "sheet_components": [
+              {
+                "entity_id": "483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+                "loss_w_s2": 1.4080852981338946e-30
+              },
+              {
+                "entity_id": "4ae807f7-0e5f-43f6-a7b2-c4203bb80fb4",
+                "loss_w_s2": 2.965848866110365e-30
+              },
+              {
+                "entity_id": "6442ae11-5c6e-4deb-a44e-5e683f69083c",
+                "loss_w_s2": 1.1477469583291368e-30
+              },
+              {
+                "entity_id": "8523d17e-8a81-4054-ab55-e449146549a1",
+                "loss_w_s2": 5.830033128369969e-31
+              },
+              {
+                "entity_id": "9fba8f18-1eb6-408c-ac83-f85eca05c52a",
+                "loss_w_s2": 2.542157069258813e-31
+              }
+            ],
+            "status": "within_initial_numerical_budget"
+          },
+          {
+            "accepted_power_w_s2": 7.926122051750325e-28,
+            "conductor_loss_w_s2": 6.144277903373801e-30,
+            "dielectric_loss_w_s2": 5.222298545235218e-30,
+            "frequency_hz": 2441750000,
+            "incident_power_w_s2": 1.6406495884743965e-27,
+            "independent_absorption_power_w_s2": 1.1366576448609019e-29,
+            "inferred_loss_w_s2": 9.929475825758959e-30,
+            "radiated_power_w_s2": 7.826827293492736e-28,
+            "reflected_power_w_s2": 8.48037383299364e-28,
+            "relative_residual": -0.001813119471876799,
+            "residual_w_s2": -1.43710062285006e-30,
+            "sheet_components": [
+              {
+                "entity_id": "483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+                "loss_w_s2": 1.3396778029656943e-30
+              },
+              {
+                "entity_id": "4ae807f7-0e5f-43f6-a7b2-c4203bb80fb4",
+                "loss_w_s2": 2.818202107058889e-30
+              },
+              {
+                "entity_id": "6442ae11-5c6e-4deb-a44e-5e683f69083c",
+                "loss_w_s2": 1.1530370453908212e-30
+              },
+              {
+                "entity_id": "8523d17e-8a81-4054-ab55-e449146549a1",
+                "loss_w_s2": 5.824032657154837e-31
+              },
+              {
+                "entity_id": "9fba8f18-1eb6-408c-ac83-f85eca05c52a",
+                "loss_w_s2": 2.509576822429127e-31
+              }
+            ],
+            "status": "within_initial_numerical_budget"
+          },
+          {
+            "accepted_power_w_s2": 6.937392206443113e-28,
+            "conductor_loss_w_s2": 5.854756817024728e-30,
+            "dielectric_loss_w_s2": 4.7000260991522964e-30,
+            "frequency_hz": 2483500000,
+            "incident_power_w_s2": 1.6319738118872397e-27,
+            "independent_absorption_power_w_s2": 1.0554782916177024e-29,
+            "inferred_loss_w_s2": 9.874759353194787e-30,
+            "radiated_power_w_s2": 6.838644612911165e-28,
+            "reflected_power_w_s2": 9.382345912429285e-28,
+            "relative_residual": -0.0009802293754570558,
+            "residual_w_s2": -6.800235629822379e-31,
+            "sheet_components": [
+              {
+                "entity_id": "483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+                "loss_w_s2": 1.2551851687431638e-30
+              },
+              {
+                "entity_id": "4ae807f7-0e5f-43f6-a7b2-c4203bb80fb4",
+                "loss_w_s2": 2.63816911672229e-30
+              },
+              {
+                "entity_id": "6442ae11-5c6e-4deb-a44e-5e683f69083c",
+                "loss_w_s2": 1.1365573715607558e-30
+              },
+              {
+                "entity_id": "8523d17e-8a81-4054-ab55-e449146549a1",
+                "loss_w_s2": 5.704309341824994e-31
+              },
+              {
+                "entity_id": "9fba8f18-1eb6-408c-ac83-f85eca05c52a",
+                "loss_w_s2": 2.5441422581601945e-31
+              }
+            ],
+            "status": "within_initial_numerical_budget"
+          }
+        ],
+        "full_energy_closure": "within_initial_numerical_budget",
+        "integration": {
+          "displacement_current": "reactive_real_work_zero_for_completed_fourier_spectrum",
+          "method": "yee_edge_e_j_and_sheet_e_roth",
+          "pml_excluded": true,
+          "rotH_timestamp_correction": "exp(-j*pi*f*dt)/cos(pi*f*dt)",
+          "sheet_edge_counts": [
+            22554,
+            463,
+            102,
+            58,
+            126
+          ],
+          "source_resistor_excluded": true
+        },
+        "max_relative_residual": 0.03,
+        "measurement_validated": false,
+        "physics_validated": false,
+        "power_unit": "W*s^2",
+        "recording": {
+          "dump_mode": 0,
+          "dump_types": [
+            10,
+            12,
+            13
+          ],
+          "estimated_field_bytes": 15816600,
+          "frequency_hz": [
+            2400000000,
+            2441750000,
+            2483500000
+          ],
+          "method": "yee_edge_e_j_and_sheet_e_roth",
+          "primitive_start_mm": [
+            -0.43308270676724997,
+            -0.43308270676724997,
+            -0.24689521633375
+          ],
+          "primitive_stop_mm": [
+            40.43308270676725,
+            60.43308270676725,
+            1.07889521633375
+          ],
+          "schema": "rfad.pcb-loss-recording/0.1",
+          "start_indices": [
+            18,
+            18,
+            19
+          ],
+          "start_mm": [
+            -0.577443609023,
+            -0.577443609023,
+            -0.340860288445
+          ],
+          "stop_indices": [
+            118,
+            162,
+            23
+          ],
+          "stop_mm": [
+            40.577443609023,
+            60.577443609023,
+            1.172860288445
+          ],
+          "volume_conductor_supported": false
+        },
+        "schema": "rfad.pcb-power-balance/0.1"
+      },
+      "raw_manifest_files": [
+        {
+          "bytes": 4758,
+          "media_type": "text/plain",
+          "path": "output/raw/port_ut_1",
+          "role": "raw/port_ut_1",
+          "sha256": "daeef794faee238bbb2000ddcbe76c3cd01d330433bf101d06111a6f8ebc4529"
+        },
+        {
+          "bytes": 4780,
+          "media_type": "text/plain",
+          "path": "output/raw/port_it_1",
+          "role": "raw/port_it_1",
+          "sha256": "9ee6bce42952fb48507003987ea80bf6eb3e651676b5e8ae4f562dd2f1cb9ab3"
+        },
+        {
+          "bytes": 208,
+          "media_type": "text/plain",
+          "path": "output/raw/openEMS_stats.txt",
+          "role": "raw/openEMS_stats.txt",
+          "sha256": "adf0fbec8dd385af3811d50fef046a54d914032dd82df152d055ef63e59872ec"
+        },
+        {
+          "bytes": 1518,
+          "media_type": "text/plain",
+          "path": "output/raw/openEMS_run_stats.txt",
+          "role": "raw/openEMS_run_stats.txt",
+          "sha256": "a70b133b939cde4d99b4a6e7ddc5ec2f6e8e9803bda54a80ada7b7fc858351ed"
+        },
+        {
+          "bytes": 5960,
+          "media_type": "text/plain",
+          "path": "output/raw/native.log",
+          "role": "raw/native.log",
+          "sha256": "ef1a78b81b33b8f64d00b7e73290eafba73ea5014138a9bed0f39ec76abb67bd"
+        },
+        {
+          "bytes": 21785,
+          "media_type": "application/xml",
+          "path": "output/raw/pcb.xml",
+          "role": "raw/pcb.xml",
+          "sha256": "7da9fd2a569c87626fb1fd09462f6e2b861c323f27a291113d1891bcecd54367"
+        },
+        {
+          "bytes": 292896,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_E_0.h5",
+          "role": "raw/pcb_nf2ff_E_0.h5",
+          "sha256": "d2fd6951a85ad4a561e23dc2a42c5c34273bf3e364c5a49afb9df23047ee1433"
+        },
+        {
+          "bytes": 292896,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_E_1.h5",
+          "role": "raw/pcb_nf2ff_E_1.h5",
+          "sha256": "15bd79e8704638c26e0c4f9c3b52eca47c0715eb879a473b6d9dd290f136f2c5"
+        },
+        {
+          "bytes": 220032,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_E_2.h5",
+          "role": "raw/pcb_nf2ff_E_2.h5",
+          "sha256": "9b3e66ff834932b96fa4df88dfc65c9d63c255153c375146adb494a4177835b1"
+        },
+        {
+          "bytes": 220032,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_E_3.h5",
+          "role": "raw/pcb_nf2ff_E_3.h5",
+          "sha256": "1410d6690d0daa688872e57036451fb40f510fb2240b15d5491d88c949a91642"
+        },
+        {
+          "bytes": 1385336,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_E_4.h5",
+          "role": "raw/pcb_nf2ff_E_4.h5",
+          "sha256": "46617256d658c783a371390e739d735af542209d56b69fb95594f326e36f32cc"
+        },
+        {
+          "bytes": 1385336,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_E_5.h5",
+          "role": "raw/pcb_nf2ff_E_5.h5",
+          "sha256": "a1dd99ea155d96d5b1f1724c6e18911eee551a87a8a4e02c85c1e45de53f9d62"
+        },
+        {
+          "bytes": 292896,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_H_0.h5",
+          "role": "raw/pcb_nf2ff_H_0.h5",
+          "sha256": "194fc020ae63f1f7dbe15d3a06b8c47d9e4546c92ac310b33153ec1744211cc3"
+        },
+        {
+          "bytes": 292896,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_H_1.h5",
+          "role": "raw/pcb_nf2ff_H_1.h5",
+          "sha256": "d7e1577184c59e9a586bf45d87102923e1e5ada09e37c608c3e0877683b66245"
+        },
+        {
+          "bytes": 220032,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_H_2.h5",
+          "role": "raw/pcb_nf2ff_H_2.h5",
+          "sha256": "95957e703d6728baf649d7b5a92285b725cc32de72d162071055643fadea30f4"
+        },
+        {
+          "bytes": 220032,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_H_3.h5",
+          "role": "raw/pcb_nf2ff_H_3.h5",
+          "sha256": "dcc004ee43171d02da39b2ef855cbee794f15dd482d3471622fd82796c382e68"
+        },
+        {
+          "bytes": 1385336,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_H_4.h5",
+          "role": "raw/pcb_nf2ff_H_4.h5",
+          "sha256": "b16d7d085409298e19d320be06c38e2dceec1c0a86af7056209fa0995ab7c2cc"
+        },
+        {
+          "bytes": 1385336,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_H_5.h5",
+          "role": "raw/pcb_nf2ff_H_5.h5",
+          "sha256": "0be3c87a26f373cb4d9179048445db81a012fb01d3a9979593d13255da35fb90"
+        },
+        {
+          "bytes": 5298480,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_loss_E.h5",
+          "role": "raw/pcb_loss_E.h5",
+          "sha256": "bf6204e09489d0a78abcac2e1772a4f5d0436d49fed5a37e18d39291dd3d0d0a"
+        },
+        {
+          "bytes": 5298480,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_loss_J.h5",
+          "role": "raw/pcb_loss_J.h5",
+          "sha256": "6efc54cacbd531c551f71c1e958d92ffa53be9ef7f4456a6fe08c57f80c91990"
+        },
+        {
+          "bytes": 5298480,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_loss_rotH.h5",
+          "role": "raw/pcb_loss_rotH.h5",
+          "sha256": "5f80b9bfc4b6d00d9174105e05db668031c0ef70302fb7bd45d5c2bbf210d45c"
+        }
+      ]
+    },
+    {
+      "grid_mm": 0.4,
+      "artifact_id": "ceb192ab-25f1-4eaa-aa5b-1e4e93c5f060",
+      "analysis_plan": {
+        "artifact": {
+          "bytes": 59713,
+          "sha256": "215445ca8b7c57db98be569264f1f29675247a3f27af00bc6bbe311b3af56fca",
+          "uri": "solver-artifacts/b55276c7-ceae-47c5-af90-30071163770e/analysis-plan.json"
+        },
+        "content_hash": "33ec41c7e06146ea8da6c91450f4dcb1baac2669c7b180ebcb29a2460a21de80",
+        "plan_id": "9c757a2b-b243-4bd2-9559-3a8553ab1423"
+      },
+      "normalized_result": {
+        "bytes": 251276,
+        "sha256": "abe6015b964e131cdcfc27b63884a734a2e81ea1ea326a8988b66e5fd647313b",
+        "uri": "solver-artifacts/41beb310-caba-47cb-97f7-b334bfa571ed/normalized.json"
+      },
+      "power_balance_result": {
+        "bytes": 4142,
+        "sha256": "c31068b78553bcb276e40db31292a1df20aaf221cda84540830e88c9cc0e9512",
+        "uri": "solver-artifacts/41beb310-caba-47cb-97f7-b334bfa571ed/power_balance.json"
+      },
+      "elapsed_seconds": 230.25,
+      "native_statistics": {
+        "iterations": 7254,
+        "native_cells": 1224210,
+        "raw_values": [
+          1224210.0,
+          5.814301903741892e-13,
+          7254.0,
+          4.217694600974368e-09,
+          186.652179,
+          47577367.6341598
+        ],
+        "timestep_seconds": 5.814301903741892e-13
+      },
+      "termination": {
+        "evidence": [
+          "50.00",
+          "7254",
+          "51.40"
+        ],
+        "exact_endcriterion_schedule": true,
+        "iterations": 7254,
+        "reported_decay_db": 51.4,
+        "reported_zero_energy": false,
+        "status": "end_criterion_reached",
+        "target_energy_ratio": 1e-05
+      },
+      "power_balance": {
+        "absolute_power_w": null,
+        "analysis_plan_id": "9c757a2b-b243-4bd2-9559-3a8553ab1423",
+        "fabrication_validated": false,
+        "frequencies": [
+          {
+            "accepted_power_w_s2": 8.900040849067908e-28,
+            "conductor_loss_w_s2": 6.585216654772061e-30,
+            "dielectric_loss_w_s2": 5.7431688693318876e-30,
+            "frequency_hz": 2400000000,
+            "incident_power_w_s2": 1.63128111636561e-27,
+            "independent_absorption_power_w_s2": 1.2328385524103948e-29,
+            "inferred_loss_w_s2": 1.0734786987669517e-29,
+            "radiated_power_w_s2": 8.792692979191213e-28,
+            "reflected_power_w_s2": 7.41277031458819e-28,
+            "relative_residual": -0.0017905519350524413,
+            "residual_w_s2": -1.5935985364344316e-30,
+            "sheet_components": [
+              {
+                "entity_id": "483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+                "loss_w_s2": 1.4116569457410136e-30
+              },
+              {
+                "entity_id": "4ae807f7-0e5f-43f6-a7b2-c4203bb80fb4",
+                "loss_w_s2": 3.149566696252301e-30
+              },
+              {
+                "entity_id": "6442ae11-5c6e-4deb-a44e-5e683f69083c",
+                "loss_w_s2": 1.1590398318304172e-30
+              },
+              {
+                "entity_id": "8523d17e-8a81-4054-ab55-e449146549a1",
+                "loss_w_s2": 5.965164773555865e-31
+              },
+              {
+                "entity_id": "9fba8f18-1eb6-408c-ac83-f85eca05c52a",
+                "loss_w_s2": 2.684367035927425e-31
+              }
+            ],
+            "status": "within_initial_numerical_budget"
+          },
+          {
+            "accepted_power_w_s2": 7.915777416697895e-28,
+            "conductor_loss_w_s2": 6.359505338867376e-30,
+            "dielectric_loss_w_s2": 5.24379553376198e-30,
+            "frequency_hz": 2441750000,
+            "incident_power_w_s2": 1.639801119407205e-27,
+            "independent_absorption_power_w_s2": 1.1603300872629357e-29,
+            "inferred_loss_w_s2": 1.008557888939458e-29,
+            "radiated_power_w_s2": 7.814921627803949e-28,
+            "reflected_power_w_s2": 8.482233777374155e-28,
+            "relative_residual": -0.001917337872630457,
+            "residual_w_s2": -1.5177219832347756e-30,
+            "sheet_components": [
+              {
+                "entity_id": "483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+                "loss_w_s2": 1.3422893568872162e-30
+              },
+              {
+                "entity_id": "4ae807f7-0e5f-43f6-a7b2-c4203bb80fb4",
+                "loss_w_s2": 2.9923045176288935e-30
+              },
+              {
+                "entity_id": "6442ae11-5c6e-4deb-a44e-5e683f69083c",
+                "loss_w_s2": 1.163924653201266e-30
+              },
+              {
+                "entity_id": "8523d17e-8a81-4054-ab55-e449146549a1",
+                "loss_w_s2": 5.958820382750777e-31
+              },
+              {
+                "entity_id": "9fba8f18-1eb6-408c-ac83-f85eca05c52a",
+                "loss_w_s2": 2.6510477287492303e-31
+              }
+            ],
+            "status": "within_initial_numerical_budget"
+          },
+          {
+            "accepted_power_w_s2": 6.926637781078711e-28,
+            "conductor_loss_w_s2": 6.056835498448606e-30,
+            "dielectric_loss_w_s2": 4.71831253613974e-30,
+            "frequency_hz": 2483500000,
+            "incident_power_w_s2": 1.6311300380888155e-27,
+            "independent_absorption_power_w_s2": 1.0775148034588347e-29,
+            "inferred_loss_w_s2": 1.009262835296723e-29,
+            "radiated_power_w_s2": 6.825711497549039e-28,
+            "reflected_power_w_s2": 9.384662599809443e-28,
+            "relative_residual": -0.0009853549488115774,
+            "residual_w_s2": -6.825196816211152e-31,
+            "sheet_components": [
+              {
+                "entity_id": "483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+                "loss_w_s2": 1.2569166576348135e-30
+              },
+              {
+                "entity_id": "4ae807f7-0e5f-43f6-a7b2-c4203bb80fb4",
+                "loss_w_s2": 2.800622653569271e-30
+              },
+              {
+                "entity_id": "6442ae11-5c6e-4deb-a44e-5e683f69083c",
+                "loss_w_s2": 1.1467977134077568e-30
+              },
+              {
+                "entity_id": "8523d17e-8a81-4054-ab55-e449146549a1",
+                "loss_w_s2": 5.8359506385303515e-31
+              },
+              {
+                "entity_id": "9fba8f18-1eb6-408c-ac83-f85eca05c52a",
+                "loss_w_s2": 2.6890340998372914e-31
+              }
+            ],
+            "status": "within_initial_numerical_budget"
+          }
+        ],
+        "full_energy_closure": "within_initial_numerical_budget",
+        "integration": {
+          "displacement_current": "reactive_real_work_zero_for_completed_fourier_spectrum",
+          "method": "yee_edge_e_j_and_sheet_e_roth",
+          "pml_excluded": true,
+          "rotH_timestamp_correction": "exp(-j*pi*f*dt)/cos(pi*f*dt)",
+          "sheet_edge_counts": [
+            26745,
+            498,
+            111,
+            58,
+            133
+          ],
+          "source_resistor_excluded": true
+        },
+        "max_relative_residual": 0.03,
+        "measurement_validated": false,
+        "physics_validated": false,
+        "power_unit": "W*s^2",
+        "recording": {
+          "dump_mode": 0,
+          "dump_types": [
+            10,
+            12,
+            13
+          ],
+          "estimated_field_bytes": 18599760,
+          "frequency_hz": [
+            2400000000,
+            2441750000,
+            2483500000
+          ],
+          "method": "yee_edge_e_j_and_sheet_e_roth",
+          "primitive_start_mm": [
+            -0.28079058699674997,
+            -0.43308270676724997,
+            -0.24689521633375
+          ],
+          "primitive_stop_mm": [
+            40.43308270676725,
+            60.2800339925535,
+            1.07889521633375
+          ],
+          "schema": "rfad.pcb-loss-recording/0.1",
+          "start_indices": [
+            19,
+            18,
+            19
+          ],
+          "start_mm": [
+            -0.374387449329,
+            -0.577443609023,
+            -0.340860288445
+          ],
+          "stop_indices": [
+            127,
+            175,
+            23
+          ],
+          "stop_mm": [
+            40.577443609023,
+            60.373378656738,
+            1.172860288445
+          ],
+          "volume_conductor_supported": false
+        },
+        "schema": "rfad.pcb-power-balance/0.1"
+      },
+      "raw_manifest_files": [
+        {
+          "bytes": 4743,
+          "media_type": "text/plain",
+          "path": "output/raw/port_ut_1",
+          "role": "raw/port_ut_1",
+          "sha256": "b9aa858e3b1e4ebb52ea345305dcfd9f2b274e13c0d4e99bac9688ec30f84ba0"
+        },
+        {
+          "bytes": 4785,
+          "media_type": "text/plain",
+          "path": "output/raw/port_it_1",
+          "role": "raw/port_it_1",
+          "sha256": "e6f6529d0db57bffde9c56a2cc5620c77fc5bf2d72796ff7327b1a95d3ccc1a1"
+        },
+        {
+          "bytes": 208,
+          "media_type": "text/plain",
+          "path": "output/raw/openEMS_stats.txt",
+          "role": "raw/openEMS_stats.txt",
+          "sha256": "2e86b13e7ee48be71dff6dd255161e73caee3ca0c20a49491c45a2784d867e5a"
+        },
+        {
+          "bytes": 1549,
+          "media_type": "text/plain",
+          "path": "output/raw/openEMS_run_stats.txt",
+          "role": "raw/openEMS_run_stats.txt",
+          "sha256": "93d1e003ad34c9ecd97f655eeeb650574bc64673e735275e39f2682763b44301"
+        },
+        {
+          "bytes": 6066,
+          "media_type": "text/plain",
+          "path": "output/raw/native.log",
+          "role": "raw/native.log",
+          "sha256": "bacf0a1485c871c712a7ed27b058b586d3c59e20ce9507f6dd03f6e3900d9a03"
+        },
+        {
+          "bytes": 20816,
+          "media_type": "application/xml",
+          "path": "output/raw/pcb.xml",
+          "role": "raw/pcb.xml",
+          "sha256": "22c4da1237acdbe72c4989208b704ad3cbade285a8394f0defe584c1fa2968a9"
+        },
+        {
+          "bytes": 316080,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_E_0.h5",
+          "role": "raw/pcb_nf2ff_E_0.h5",
+          "sha256": "d5aa771b36ee9eb68b3ea6f59d560317125e36d5b39ed84b12424ba14199c6db"
+        },
+        {
+          "bytes": 316080,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_E_1.h5",
+          "role": "raw/pcb_nf2ff_E_1.h5",
+          "sha256": "75a67db2c08be1eecf9e7ba111fb9b8c3e3fbfe7f129b36deb79b4e5ffc927f2"
+        },
+        {
+          "bytes": 234936,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_E_2.h5",
+          "role": "raw/pcb_nf2ff_E_2.h5",
+          "sha256": "7967781a06c431bb35c7614586ac76bdeadb6b13fbf30afb54fba12c30605219"
+        },
+        {
+          "bytes": 234936,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_E_3.h5",
+          "role": "raw/pcb_nf2ff_E_3.h5",
+          "sha256": "3bd346240c028d452fcc69249e28b6e9295c0258a6bc5d0a28c1bee0b6a4a06f"
+        },
+        {
+          "bytes": 1616784,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_E_4.h5",
+          "role": "raw/pcb_nf2ff_E_4.h5",
+          "sha256": "2f145e69cf3f0d564f3679f60c46d73fff386be8e4bdbe94a1d5eda660430589"
+        },
+        {
+          "bytes": 1616784,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_E_5.h5",
+          "role": "raw/pcb_nf2ff_E_5.h5",
+          "sha256": "9c078cb4283a9d2c0ed849382c55291441c25760ebab4cc3387780a007e59495"
+        },
+        {
+          "bytes": 316080,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_H_0.h5",
+          "role": "raw/pcb_nf2ff_H_0.h5",
+          "sha256": "e8c807516d8448470889f89feef90bf5c6b7888c3ff11799bc29a8af6a9240f4"
+        },
+        {
+          "bytes": 316080,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_H_1.h5",
+          "role": "raw/pcb_nf2ff_H_1.h5",
+          "sha256": "420d1e97cee5c02d30cb91438e7b028f6fcc99dc5f6828452313e0860a207b5a"
+        },
+        {
+          "bytes": 234936,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_H_2.h5",
+          "role": "raw/pcb_nf2ff_H_2.h5",
+          "sha256": "68bc1abd947ca0bdd0fbe24cdbb1a6ea57e1e26fb4d76484c4f6b6be3b3dcbce"
+        },
+        {
+          "bytes": 234936,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_H_3.h5",
+          "role": "raw/pcb_nf2ff_H_3.h5",
+          "sha256": "305f4ac8f3d8ddba5b4920919be9ee6a23ce972212e1ab3e4267965363c9aa9c"
+        },
+        {
+          "bytes": 1616784,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_H_4.h5",
+          "role": "raw/pcb_nf2ff_H_4.h5",
+          "sha256": "92281f8eaa39013b1de318627cedcb16256fd124d2ad88be6f69bf6f1fc1aa5c"
+        },
+        {
+          "bytes": 1616784,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_H_5.h5",
+          "role": "raw/pcb_nf2ff_H_5.h5",
+          "sha256": "f5499e68e86e476aa83d0cb0db97bdf934dc074f26184f56bd7249f85b98db2a"
+        },
+        {
+          "bytes": 6228968,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_loss_E.h5",
+          "role": "raw/pcb_loss_E.h5",
+          "sha256": "3039d7f0183dbacca42ad1324323773bb0421de92a678e1c1e103eeb7f5f2f9b"
+        },
+        {
+          "bytes": 6228968,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_loss_J.h5",
+          "role": "raw/pcb_loss_J.h5",
+          "sha256": "1789109d05cb33c16838233f5c465c96195c44657041daac90c3830aa6d96fbc"
+        },
+        {
+          "bytes": 6228968,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_loss_rotH.h5",
+          "role": "raw/pcb_loss_rotH.h5",
+          "sha256": "cc6faa4be2a42c5e08cd0d6ccec737b9f1e15050222c03187cb2516a7b223875"
+        }
+      ]
+    }
+  ],
+  "max_absolute_relative_residual": 0.001917337872630457,
+  "unique_native_case_elapsed_seconds": 566.0159999999996,
+  "replay": {
+    "status": "passed",
+    "native_job_ids_before": [
+      "243fe013-8239-4c49-9acd-a15434c2a077",
+      "32802a4b-226a-42cb-ad3d-93941fe1bcc9",
+      "ec17c8ac-1196-4ce9-b06d-8d7cc95f57ec"
+    ],
+    "native_job_ids_after": [
+      "243fe013-8239-4c49-9acd-a15434c2a077",
+      "32802a4b-226a-42cb-ad3d-93941fe1bcc9",
+      "ec17c8ac-1196-4ce9-b06d-8d7cc95f57ec"
+    ],
+    "original_sealed_files": 81,
+    "original_files_unchanged": true,
+    "independent_loss_identical": true,
+    "restored_without_solver": true,
+    "repeated_artifact_id": "fd2df344-0c3e-4e71-afe2-d4222802d695"
+  },
+  "resume_and_reassessment": {
+    "passed": true,
+    "csv_bytes_identical": true,
+    "native_job_ids_unchanged": true,
+    "immutable_assessment": {
+      "path": ".local/pcb-power-balance/report.assessments/57e3d4c619697b8246715b2928e732b149d7615f0009572b060225c0d36ce9ae.json",
+      "bytes": 45516,
+      "sha256": "26da385a1175e70ac6808374a70ad556d61ddbfea41e56b57b7b0b43b8b0be85"
+    }
+  },
+  "tests": {
+    "windows_regression": {
+      "collected": 748,
+      "passed": 676,
+      "skipped": 72,
+      "elapsed_seconds": 387.587,
+      "log": {
+        "path": ".local/pcb-power-balance/windows-regression.log",
+        "bytes": 184072,
+        "sha256": "d63d17227229b17347d7d253a3b975640a7ce51ad21cf73438786cb95d5fee55"
+      }
+    },
+    "final_contract_tests": {
+      "collected": 10,
+      "passed": 10,
+      "skipped": 0,
+      "elapsed_seconds": 0.104,
+      "log": {
+        "path": ".local/pcb-power-balance/final-contract-tests.log",
+        "bytes": 2457,
+        "sha256": "8acd6872241a973c63b006396303b6655185b0e119e3e320b4bf39e008255508"
+      }
+    },
+    "native_integrals": {
+      "collected": 6,
+      "passed": 6,
+      "skipped": 0,
+      "elapsed_seconds": 0.264,
+      "log": {
+        "path": ".local/pcb-power-balance/native-integral-tests.log",
+        "bytes": 1620,
+        "sha256": "6a67423769c990905658f5e0c7c6b4f8d92cd8db5af5665ff116ffd478beec03"
+      }
+    },
+    "ctest": {
+      "passed": 8,
+      "skipped": 0,
+      "elapsed_seconds": 0.38,
+      "log": {
+        "path": ".local/pcb-power-balance/ctest.log",
+        "bytes": 954,
+        "sha256": "7b741daf623c155d7112b2b5b0b677388e42fcdc0b0d34ffb688b2347429d07e"
+      }
+    }
+  },
+  "artifacts": [
+    {
+      "path": ".local/pcb-power-balance/report.json",
+      "bytes": 41242,
+      "sha256": "cb75b0066b079fb47bb4a6b508155ca06cab6f3fde6f081c7bd31512a08ba70d"
+    },
+    {
+      "path": ".local/pcb-power-balance/report.power.csv",
+      "bytes": 2466,
+      "sha256": "b0085c3f428ba56de80570d170a3be6e0330caac83a9991b85c1dfdf9c11fc84"
+    },
+    {
+      "path": ".local/pcb-power-balance/replay-proof.json",
+      "bytes": 17111,
+      "sha256": "1f1e4e093a1d6a52c9f90adfd9b5983ec5eacc957d42eef7fdfd909155fe0ad5"
+    },
+    {
+      "path": ".local/pcb-power-balance/replay.log",
+      "bytes": 120,
+      "sha256": "fa56757036cf48d9743f727a5d27d21686e5d4ea0dc7257ccf6c1d570064b5e6"
+    },
+    {
+      "path": ".local/pcb-power-balance/reassess-final.log",
+      "bytes": 535,
+      "sha256": "1cfd3830d12599e4e09bed12f832599121253415df8fd0e52619ebedd4a889d4"
+    },
+    {
+      "path": ".local/pcb-power-balance/resume-final.log",
+      "bytes": 535,
+      "sha256": "1cfd3830d12599e4e09bed12f832599121253415df8fd0e52619ebedd4a889d4"
+    },
+    {
+      "path": ".local/pcb-power-balance/native-source-audit.txt",
+      "bytes": 797,
+      "sha256": "4fca643be7492c3a280ae34df275a56bcfa1bd0082d44ee925e3d7fbf8e57773"
+    }
+  ],
+  "actual_delivered_properties": [
+    {
+      "id": "136f185b-1fc4-4e80-af16-a7c69521df0e",
+      "name": "실제 납품 물성 미확정: JLC 동박",
+      "epsilon_r": null,
+      "tan_delta": null,
+      "conductivity": null
+    },
+    {
+      "id": "6c5d3b75-119b-4d93-a425-fda386bda49e",
+      "name": "실제 납품 물성 미확정: RO4350B",
+      "epsilon_r": null,
+      "tan_delta": null,
+      "conductivity": null
+    }
+  ],
+  "native_source": {
+    "commit": "305df56aa7df4d2f18c687083f484a96f9a22610",
+    "audit": {
+      "path": ".local/pcb-power-balance/native-source-audit.txt",
+      "bytes": 797,
+      "sha256": "4fca643be7492c3a280ae34df275a56bcfa1bd0082d44ee925e3d7fbf8e57773"
+    }
+  },
+  "development_attempt": {
+    "separate_failed_native_postprocess_run_id": "be02142e-2e09-4f26-9692-b6863ce528db",
+    "retained": true,
+    "diagnostic_trimmed_fields_used_as_acceptance_evidence": false,
+    "final_three_cases_regenerated_with_corrected_worker": true
+  },
+  "power_unit": "W*s^2",
+  "absolute_power_w": null,
+  "physics_validated": false,
+  "fabrication_validated": false,
+  "measurement_validated": false,
+  "limitations": [
+    "initial_3_percent_energy_closure_not_individual_loss_precision_acceptance",
+    "no_PTH_volume_partition",
+    "no_independent_solver_or_measurement_comparison",
+    "actual_delivered_properties_and_fabrication_measurement_remain_unconfirmed",
+    "no_dedicated_power_study_GUI_in_this_step",
+    "continuous_geometry_skin_depth_and_time_truncation_accuracy_not_fully_validated"
+  ]
+}

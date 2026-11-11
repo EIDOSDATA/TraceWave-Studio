@@ -130,6 +130,8 @@ def validate_result(plan, result, prepared_plan=None):
             elif type(actual) not in (int, float) or not math.isclose(expected, actual, rel_tol=1e-10, abs_tol=1e-12):
                 fail("E_HASH", "복소 결과와 표시용 VSWR/dB가 다릅니다.")
     validate_radiation_summary(plan, result)
+    if ("loss_recording" in plan["case"]) != ("power_balance" in result):
+        fail("E_HASH", "독립 손실을 요청한 계획과 전력 수지 결과의 존재가 다릅니다.")
     expected_assessment = {"status": "computed_unvalidated", "physics_validated": False, "converged": True, "finite_samples": True}
     if result.get("assessment") != expected_assessment or result.get("termination", {}).get("status") != "end_criterion_reached":
         fail("E_SOLVER", "PCB 계산 완료와 물리 검증 합격을 구분해야 합니다.")
