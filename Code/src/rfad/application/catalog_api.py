@@ -4,7 +4,7 @@ from rfad.domain.errors import ProjectError
 
 
 PROFILE = "rfad.catalog/0.1"
-METHODS = frozenset({"catalog.status", "catalog.search", "catalog.get", "catalog.stackup_draft"})
+METHODS = frozenset({"catalog.status", "catalog.search", "catalog.get", "catalog.stackup_draft", "catalog.stackup_suggestions"})
 
 
 def _service(catalog):
@@ -50,15 +50,28 @@ def query(method: str, params: object, catalog=None) -> dict:
             return service.search(params["input"])
         if method == "catalog.get":
             return service.get(params["input"])
-        if method == "catalog.stackup_draft":
+        if method in ("catalog.stackup_draft", "catalog.stackup_suggestions"):
             from rfad.application.pcb_selection_build import source_draft
             from rfad.application.pcb_selection_contract import bounded, validate_source
             from rfad.catalog.selection_reader import SelectionReader
 
             source = params["input"]
+            if method == "catalog.stackup_suggestions":
+                if "source" not in source or set(source) - {"source", "offset", "limit"}:
+                    raise ProjectError("E_SCHEMA", "적층 제안에는 source와 선택적 offset, limit만 허용합니다.")
+                source = source["source"]
             validate_source(source)
+            if source is None:
+                raise ProjectError("E_SCHEMA", "적층 조회에는 명시적인 출처가 필요합니다.")
             with SelectionReader(service.repository.database, source["catalog_id"]) as reader:
-                return bounded(source_draft(reader, source))
+                draft = source_draft(reader, source)
+                if method == "catalog.stackup_suggestions":
+                    from rfad.catalog.stackup_suggestions import build_stackup_suggestions
+
+                    return bounded(build_stackup_suggestions(reader, source, draft,
+                                                             offset=params["input"].get("offset", 0),
+                                                             limit=params["input"].get("limit", 8)))
+                return bounded(draft)
         raise ProjectError("E_UNSUPPORTED", "지원하지 않는 카탈로그 조회입니다.")
     except CatalogError as error:
         raise ProjectError(error.code, error.message, details=error.details) from error

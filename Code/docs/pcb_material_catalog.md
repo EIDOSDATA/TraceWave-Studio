@@ -125,7 +125,7 @@ GUI는 현재 View + Presentation Model + Service Gateway 패턴을 유지한다
 
 권장 모듈은 카탈로그 읽기 저장소, 조건 검색, 관측 검증, 적층 변환, 적용 미리보기, 프로젝트 변경 명령으로 나눈다. `StudioFrame`에 자료 파서나 제조사별 예외를 추가하지 않는다. 업체별 원문 파서는 오프라인 데이터 빌드 단계에 두고 런타임은 검토된 중립 모델만 소비한다.
 
-검색/상세는 `catalog.search/get`, 적층 초안은 `catalog.stackup_draft`, 프로젝트 미리보기/출처 조회/적용은 `pcb.selection.preview/get/apply`로 나눈다. 적용은 기존 `expected_revision`, `command_id`, request key와 검토한 `preview_hash`를 사용하고 재료/층/참조를 한 번에 검증한다. 내부 `pcb_stackup.apply` 한 명령과 기존 journal을 사용하므로 일부 층만 게시되지 않으며 한 번의 undo로 복원한다. 세부 계약은 [PCB 선택 API](pcb_selection_contract.md)에 있다.
+검색/상세는 `catalog.search/get`, 적층 초안은 `catalog.stackup_draft`, 같은 적층의 두께/Dk/Df 제안은 `catalog.stackup_suggestions`, 프로젝트 미리보기/출처 조회/적용은 `pcb.selection.preview/get/apply`로 나눈다. 제안은 출처와 원문 층의 정확한 대응을 검사하며, 이름이 비슷한 다른 재질이나 주파수의 값을 대입하지 않는다. 적용은 기존 `expected_revision`, `command_id`, request key와 검토한 `preview_hash`를 사용하고 재료/층/참조를 한 번에 검증한다. 내부 `pcb_stackup.apply` 한 명령과 기존 journal을 사용하므로 일부 층만 게시되지 않으며 한 번의 undo로 복원한다. 세부 계약은 [PCB 선택 API](pcb_selection_contract.md)에 있다.
 
 카탈로그 전체 JSON/PDF/HTML을 GUI 시작 시 메모리에 올리지 않는다. 오프라인 자료 빌드에서 읽기 전용 SQLite 인덱스를 생성하고 서비스가 검색 결과와 선택 행을 페이지 단위로 읽는다. 후속 적용 단계에서는 선택된 자료의 작은 사본을 프로젝트에 저장한다. 이 인덱스는 재생성 가능한 파생물이며 원문을 보존한다. native CAD/openEMS import를 카탈로그 검색 경로에 추가하지 않는다.
 

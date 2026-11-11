@@ -1,6 +1,7 @@
 /** @file @brief 카탈로그 검색과 읽기 전용 근거 요약 화면을 구성한다. */
 #include "pcb_selection_dialog.h"
 #include "pcb_selection_view_support.h"
+#include "pcb_suggestion_model.h"
 #include <wx/button.h>
 #include <wx/choice.h>
 #include <wx/combobox.h>
@@ -85,8 +86,8 @@ void PcbSelectionDialog::BuildInterface()
 {
     auto* layout = new wxBoxSizer(wxVERTICAL);
     auto* heading = new wxStaticText(this, wxID_ANY,
-                                     Display("공개 적층을 고르거나 직접 구성한 뒤 변경 내용을 검토하세요. 빈칸은 "
-                                             "미정이며 물성을 자동으로 채우지 않습니다."));
+                                     Display("적층과 대응 물성을 함께 확인한 뒤 제안을 사용하거나 직접 입력하세요. "
+                                             "미정값과 근사가 필요한 값은 구분해 표시합니다."));
     layout->Add(heading, 0, wxEXPAND | wxALL, FromDIP(12));
     m_notebook = new wxNotebook(this, wxID_ANY);
     m_notebook->SetName("pcb.notebook");
@@ -167,7 +168,7 @@ wxPanel* PcbSelectionDialog::BuildCatalogPage()
     m_next = new wxButton(panel, wxID_ANY, Display("다음"));
     m_next->SetName("pcb.next");
     m_pageLabel = new wxStaticText(panel, wxID_ANY, Display("검색 전"));
-    m_useSource = new wxButton(panel, wxID_ANY, Display("선택 자료로 적층 초안 만들기"));
+    m_useSource = new wxButton(panel, wxID_ANY, Display("선택 적층과 물성 제안 보기"));
     m_useSource->SetName("pcb.use_source");
     paging->Add(m_previous, 0, wxRIGHT, FromDIP(6));
     paging->Add(m_next, 0, wxRIGHT, FromDIP(12));
@@ -325,6 +326,10 @@ void PcbSelectionDialog::SelectResult(long index)
     {
         return;
     }
+    if (m_model.CurrentStage() == Studio::PcbSelectionModel::Stage::LoadingDraft)
+    {
+        m_model.Invalidate();
+    }
     m_selected = m_searchResult.at("items").at(static_cast<std::size_t>(index));
     m_selectedCatalog = m_searchResult.at("catalog_id");
     m_selectedEntity = m_searchResult.at("entity");
@@ -407,30 +412,48 @@ void PcbSelectionDialog::UseSource()
         }
         const Json source = {
             {"catalog_id", m_selectedCatalog}, {"entity", m_selectedEntity}, {"id", m_selected.at("id")}};
+        ++m_suggestionRevision;
+        m_suggestionLoading = false;
         const auto token = m_model.BeginRequest("draft");
-        SetStatus("출처에 명시된 구성으로 층 초안을 만들고 있습니다.");
+        SetStatus("선택한 적층의 두께와 연결 가능한 물성 자료를 확인하고 있습니다.");
         UpdateControls();
         wxWeakRef<PcbSelectionDialog> weak(this);
         m_gateway(
-            "catalog.stackup_draft", source, false,
-            [weak, token, source](const Json& draft)
+            "catalog.stackup_suggestions", Json{{"source", source}}, false,
+            [weak, token, source](const Json& response)
             {
-                if (!weak || weak->m_closed || weak->m_disconnected ||
-                    !weak->m_model.SelectSource(token, source, draft))
+                if (!weak || weak->m_closed || weak->m_disconnected || !weak->m_model.IsCurrent(token))
                 {
                     return;
                 }
-                weak->m_source = source;
-                weak->m_catalogId = source.at("catalog_id");
-                weak->m_manual = false;
-                weak->PopulateLayers(weak->m_model.LayerRows(), false);
-                weak->m_notebook->SetSelection(1);
-                std::string message = "출처 초안을 불러왔습니다. 기존 층 연결, 미정 두께와 물성을 확인하세요.";
-                for (const auto& issue : draft.at("issues"))
+                try
                 {
-                    message += "\n- " + DiagnosticMessage(issue);
+                    Studio::PcbSuggestions::Validate(source, response);
+                    const auto& draft = response.at("draft");
+                    if (!weak->m_model.SelectSource(token, source, draft))
+                    {
+                        return;
+                    }
+                    weak->m_source = source;
+                    weak->m_catalogId = source.at("catalog_id");
+                    weak->m_manual = false;
+                    weak->PopulateLayers(weak->m_model.LayerRows(), false);
+                    weak->PopulateSuggestions(response);
+                    weak->m_notebook->SetSelection(1);
+                    std::string message =
+                        "적층과 물성 제안을 불러왔습니다. 제안은 확인 후 사용하며 기존 직접 입력은 유지됩니다.";
+                    if (!draft.at("issues").empty())
+                    {
+                        message += "\n확인할 사항 " + std::to_string(draft.at("issues").size()) +
+                                   "개는 제안 상세와 변경 미리보기에서 확인하세요.";
+                    }
+                    weak->SetStatus(message);
                 }
-                weak->SetStatus(message);
+                catch (const std::exception& error)
+                {
+                    weak->m_model.Fail(token, {{"message_ko", error.what()}});
+                    weak->SetStatus(error.what());
+                }
                 weak->UpdateControls();
             },
             [weak, token](const Json& error)

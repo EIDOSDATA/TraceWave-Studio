@@ -79,7 +79,7 @@ CLI 검색 입력은 JSON 파일로 전달할 수 있다.
 
 ## API와 페이지 계약
 
-기존 `rfad.api/2.0`에 `catalog.status`, `catalog.search`, `catalog.get` 확장 메서드를 추가했다. `capabilities.get.catalog_profile`에서 지원 범위와 현재 상태를 읽는다. 모두 읽기 전용이고 프로젝트 context, request_key, job, revision을 만들지 않는다. 별도 MCP 서버 자체를 추가한 것은 아니며 자동화/향후 MCP adapter가 같은 조회 경계를 사용할 수 있다.
+기존 `rfad.api/2.0`에 `catalog.status`, `catalog.search`, `catalog.get`, `catalog.stackup_draft`, `catalog.stackup_suggestions` 확장 메서드를 제공한다. `capabilities.get.catalog_profile`에서 지원 범위와 현재 상태를 읽는다. 모두 읽기 전용이고 프로젝트 context, request_key, job, revision을 만들지 않는다. 별도 MCP 서버 자체를 추가한 것은 아니며 자동화/향후 MCP adapter가 같은 조회 경계를 사용할 수 있다.
 
 ```json
 {
@@ -136,6 +136,8 @@ CLI 검색 입력은 JSON 파일로 전달할 수 있다.
 
 실측 결과와 코드 식별자는 [개발 상태](development_status.md) 및 `runtime_profiles/pcb-catalog.json`에 기록한다. 원문 패키지의 모든 문서를 재배포해도 된다는 권리 승인을 포함하지 않는다. 현재는 내부 검증용 자료 경로와 파생 DB를 사용한다.
 
-## 다음 연결 단계
+## 적층과 물성 제안 연결
 
-`catalog.stackup_draft`와 `pcb.selection.preview/get/apply`를 추가했다. 전자는 기존 빈 context의 읽기 전용 카탈로그 API이고, 후자는 workspace의 프로젝트 개정/영수증/undo를 사용한다. `rfad.pcb-stackup-draft/0.1`과 프로젝트 확장 `rfad.pcb-selection/0.1`의 필드, 제한과 실행 예시는 [PCB 선택 계약](pcb_selection_contract.md)에 있다. 다음 단계는 wxWidgets 기판 설정의 직접 입력/소재/제조업체 선택과 미리보기 화면, 선택된 실제 2층 재료의 CAD/solver 통합 검증이다.
+`catalog.stackup_draft`는 기존 적층 초안을 그대로 반환한다. `catalog.stackup_suggestions`는 `{source, offset?, limit?}`를 받아 같은 초안과 현재 페이지의 두께/Dk/Df 제안을 함께 반환한다. 기본 페이지는 8개 층이며 바이트 제한으로 더 적게 반환할 수 있다. 다음 페이지는 `next_offset`을 사용하고 이전 페이지는 클라이언트의 실제 방문 이력으로 돌아간다. 같은 적층/출처/원문 층으로 연결된 관측만 제안하며 근사나 미정값을 숫자로 자동 확정하지 않는다.
+
+wxWidgets 기판 설정은 제안 조회와 명시적 수용을 연결하며 기존 직접 입력을 유지한다. 최종 `pcb.selection.preview/get/apply`는 workspace의 프로젝트 개정/영수증/undo를 사용한다. 필드와 제한은 [PCB 선택 계약](pcb_selection_contract.md), 사용 흐름은 [GUI](pcb_selection_gui.md), 저장된 재료의 CAD/solver 연결은 [통합 검증](catalog_pcb_integration.md)을 따른다. 제안 조회의 성공은 제조/해석 가능 판정과 다르다.

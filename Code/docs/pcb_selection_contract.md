@@ -11,6 +11,8 @@
 | `catalog/selection_reader.py` | 같은 카탈로그 개정의 제한된 읽기, 실제 원문 해시 검사, 출처 사본과 부분사본 수집 |
 | `catalog/material_selection.py`, `selection_rules.py` | Dk/Df 독립 선택, 명시적 사용자 입력과 미정값, 조건 및 근사 이유 보존 |
 | `catalog/stackup_draft*.py` | 업체별 원시 구성에서 검토 가능한 층 초안과 미정/차단 사유 생성 |
+| `catalog/stackup_match.py` | 같은 적층/출처/원문 층의 관측만 정확하게 대응. 이름 또는 가까운 주파수만으로 연결하지 않음 |
+| `catalog/stackup_suggestions.py`, `suggested_properties.py` | 두께와 Dk/Df의 페이지별 제안, 공개값/미정/모호성/근사 필요 구분 및 명시적 수용용 재료 입력 |
 | `application/pcb_selection*.py` | 요청 계약, UUID 대응, 후보 구성, 포트/참조 검토, 미리보기 해시와 공개 API |
 | `domain/pcb_selection*.py` | 알려진 프로젝트 확장 검증, 채택 당시 기록, 원자 명령과 역명령 |
 
@@ -36,6 +38,40 @@
 preview는 프로젝트 revision, journal과 receipt를 변경하지 않는다. apply는 미리보기를 다시 계산한 뒤 기존 writer transaction에서 하나의 `pcb_stackup.apply` 명령으로 적용한다. 이 내부 명령을 `project.apply_command`로 직접 보내 우회할 수 없다. 한 번의 undo/redo는 재료, 적층, 포트 좌표와 선택 확장을 함께 복원한다.
 
 apply는 별도 job이 아닌 동기 변경 명령이다. `project.open`, `project.save`, `snapshot.create`의 기존 queued job 계약과 구분한다. mutation notification과 mutation batch는 실행하지 않는다.
+
+## 제조업체 적층과 물성의 함께 제안
+
+`catalog.stackup_suggestions`는 `context: {}`인 읽기 전용 카탈로그 API다. `input`은 `{source: {catalog_id, entity, id}, offset?, limit?}`이며 `entity`는 `native_templates` 또는 `observations`다. `offset`은 0부터 시작하고 `limit`은 기본 8, 허용 범위 1~8이다. 부울/문자열을 페이지 수치로 변환하지 않는다. 카탈로그 개정, 선택 원문과 층 관계를 다시 검사하고 응답은 48 KiB 이내로 제한한다. 숫자나 원문을 줄여 예산을 맞추지 않으며 필요한 경우 반환 행수를 줄이고 실제 `next_offset`을 알려준다.
+
+응답 schema는 `rfad.pcb-stackup-suggestions/0.1`이다. `source`, 전체 `draft`, 현재 페이지의 `layers`, `issues`, `readiness: not_assessed`, `offset`, `total_count`, `returned_count`, `next_offset`, `limited_by_bytes`를 반환한다. `next_offset`이 null이면 마지막 페이지다. GUI의 이전 페이지는 실제 방문한 오프셋 이력으로 이동한다. 조회나 페이지 이동만으로 프로젝트, 사용자 폼 또는 기존 적용 미리보기를 변경하지 않는다.
+
+각 제안 행은 `layer_key`, `name`, `role`, `thickness_mm`, `thickness_state`, `thickness_basis`, `properties`, `material_spec`, `notes`를 가진다. 두께는 기존 적층 초안의 값과 범위를 그대로 사용하며 `source_value`와 `unresolved`로 구분한다. 코어에 동박이 포함되는지 불명확한 값이나 압착 후 여러 층의 합계를 개별 두께로 만들지 않는다. 완성 동박 두께와 기판 공칭 두께의 미정 상태도 유지한다.
+
+| Dk/Df 제안 상태 | 의미와 수용 동작 |
+| --- | --- |
+| `published` | 해당 적층의 같은 층과 연결된 단일 공개값. 시험 조건을 별도로 표시하며 사용자가 제안을 수용하면 기존 `catalog` 선택으로 전달 |
+| `missing` | 해당 물성이 없거나 수치로 쓸 수 없음. 값과 입력을 미정으로 유지 |
+| `ambiguous` | 복수 관측 또는 원문 충돌. 첫 후보를 자동 선택하지 않고 사용자 검토 필요 |
+| `approximation_required` | 범위/최대값/한정자 또는 모델 조건 때문에 직접적인 상수 채택이 부적절함. `value`는 null이고 `reported_value`/`reported_limits`는 원문 참고 표시만 제공. 근사값과 이유를 직접 입력해야 함 |
+| `unsupported` | 자동 대응을 지원하지 않거나 원문 관계가 맞지 않음. 다른 제품의 값을 대체하지 않음 |
+
+JLCPCB는 카탈로그 적층/출처, 공개 template ID, 구성행 순번, 재질 형식/이름, 원문 파일과 위치, native Dk를 함께 확인한다. PCBWay는 같은 적층/출처와 원문 table 행 및 재질 형식/Dk를 확인한다. 명시적으로 지원하는 OSH Park 2층 관측은 그 관측 자체만 사용한다. 사용자 정의 JLC template과 불완전한 WE 적층은 다른 공개 적층의 물성을 빌리지 않는다. 같은 업체, 비슷한 재질 이름, 가까운 주파수라는 이유로 자동 연결하는 규칙은 없다.
+
+유전체의 `material_spec`은 새 재료를 위한 기존 선택 입력이다. 공개 Df를 총 전기 손실로 쓰는 `isotropic_constant_total_tan_delta`와 이유를 명시하고, 독립 전도도와 모델 적용 대역은 미정으로 둔다. Dk/Df의 주파수, 방법, 방향은 독립 표시하며 원문 시험 주파수를 적용 대역으로 자동 확장하지 않는다. 원래 전체 관측과 출처는 제안을 수용한 뒤 기존 preview/apply 경로에서 프로젝트 소유 근거로 저장한다. 제안 응답 자체는 제조나 해석 승인이 아니다.
+
+현재 전체 자료의 JLCPCB/PCBWay 대응 관측은 Dk가 있어도 Df가 미정이다. 따라서 이 자료를 선택하면 Dk 공개값과 Df 미정이 함께 표시된다. RO4350B 탐색 모델처럼 다른 자료에 근거한 명시적 근사는 별도 사용자 입력으로 유지하고, 업체명이나 제품명만으로 기존 탐색 가정을 기본값에 복사하지 않는다.
+
+조회 가능한 제안과 프로젝트에 한 번에 적용 가능한 범위도 구분한다. 12 KiB 출처 근거와 32 KiB 프로젝트 상한은 유지한다. 실제 대표 JLC 4층/PCBWay 4층에서 모든 유전체 물성을 함께 채택하면 원문 사본 합계가 12 KiB를 초과하여 적용이 거절된다. 값을 숨기거나 출처를 생략해 적용하지 않으며, 선택 범위를 줄이거나 직접 입력을 사용해야 한다. 전체 자료 검사와 대표 적용 결과는 [개발 상태](development_status.md)를 따른다.
+
+전체 카탈로그의 모든 native template과 OSH Park 관측 기반 적층 후보를 검사하는 명령은 다음과 같다. 모든 제안 페이지를 이어 층 순서/누락/중복과 미정값을 확인하고, 자원 한계는 기존 초안 API에서도 같은 입력으로 재현되는지 분리한다. 보고서는 새 경로만 허용하며 DB는 읽기 전용으로 열고 변경 전후 해시를 비교한다.
+
+```powershell
+$reportPath = Join-Path (Get-Location).Path ('.local/stackup-suggestions/all-catalog-' + [guid]::NewGuid().ToString('N') + '.json')
+.\.venv\Scripts\python.exe -X utf8 tools/verify_stackup_suggestions.py `
+  --database '.local/pcb-catalog/catalog.sqlite' --report $reportPath
+```
+
+시험과 자료 한계를 포함한 실행 요약은 [적층 제안 검증 기록](../runtime_profiles/stackup-suggestions.json)에 보존한다.
 
 ## specification 입력
 

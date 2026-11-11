@@ -199,6 +199,13 @@ void PcbSelectionDialog::UpdateControls()
     m_previous->Enable(editable && m_pageOffsets.size() > 1);
     m_next->Enable(editable && m_searchResult.value("has_more", false));
     m_useSource->Enable(editable && !m_selected.is_null());
+    const bool loadingDraft = m_model.CurrentStage() == Studio::PcbSelectionModel::Stage::LoadingDraft;
+    m_useSuggestion->Enable(
+        editable && !loadingDraft && !m_suggestionLoading && m_suggestionIndex >= 0 && !m_suggestionData.is_null() &&
+        !m_suggestionData.at("layers").at(static_cast<std::size_t>(m_suggestionIndex)).at("material_spec").is_null());
+    const bool pageReady = editable && !loadingDraft && !m_suggestionLoading && !m_suggestionData.is_null();
+    m_suggestionPrevious->Enable(pageReady && m_suggestionOffsets.size() > 1);
+    m_suggestionNext->Enable(pageReady && !m_suggestionData.at("next_offset").is_null());
     m_addLayer->Enable(editable && m_manual && m_layers->GetNumberRows() < 32);
     m_removeLayer->Enable(editable && m_manual && m_layers->GetNumberRows() > 1);
     m_previewButton->Enable(editable);

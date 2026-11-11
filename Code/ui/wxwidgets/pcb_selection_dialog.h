@@ -21,6 +21,7 @@ class wxNotebook;
 class wxPanel;
 class wxStaticText;
 class wxTextCtrl;
+class wxBoxSizer;
 
 /** @brief 공개 서비스 요청만 전달하며 프로젝트와 카탈로그 경로를 직접 열지 않는다. */
 using DialogGateway = std::function<void(const std::string&, const Json&, bool, std::function<void(const Json&)>,
@@ -81,6 +82,12 @@ private:
     void AttachObservation(std::size_t property);
     void ClearObservation(std::size_t property);
     void MaterialChanged();
+    /** @brief 출처에 대응하는 읽기 전용 제안과 명시적 채택 동작을 층 화면에 연결한다. */
+    void BuildSuggestions(wxPanel* panel, wxBoxSizer* layout);
+    void PopulateSuggestions(const Json& response);
+    void SelectSuggestion(long index);
+    void UseSuggestion();
+    void LoadSuggestionPage(int offset);
 
     Studio::PcbSelectionModel m_model;
     DialogGateway m_gateway;
@@ -93,10 +100,13 @@ private:
     Json m_selected = nullptr;
     Json m_sectionLayers = Json::array();
     Json m_searchResult = Json::object();
+    Json m_suggestionData = nullptr;
+    Json m_materialProposalDisplays = Json::object();
     std::string m_catalogId;
     std::string m_selectedCatalog;
     std::string m_selectedEntity;
     std::vector<int> m_pageOffsets{0};
+    std::vector<int> m_suggestionOffsets{0};
     std::vector<std::string> m_layerIds;
     std::vector<std::string> m_layerLabels;
     std::vector<std::string> m_materialValues;
@@ -104,6 +114,7 @@ private:
     std::vector<std::string> m_materialReplaceIds;
     std::uint64_t m_filterRevision = 0;
     std::uint64_t m_detailRevision = 0;
+    std::uint64_t m_suggestionRevision = 0;
     unsigned int m_materialCounter = 0;
     bool m_loading = false;
     bool m_manual = false;
@@ -111,7 +122,9 @@ private:
     bool m_applying = false;
     bool m_disconnected = false;
     bool m_materialDirty = false;
+    bool m_suggestionLoading = false;
     int m_materialIndex = -1;
+    long m_suggestionIndex = -1;
 
     wxNotebook* m_notebook = nullptr;
     wxChoice* m_entity = nullptr;
@@ -132,6 +145,7 @@ private:
     wxButton* m_removeLayer = nullptr;
     wxListBox* m_materials = nullptr;
     wxTextCtrl* m_materialName = nullptr;
+    wxStaticText* m_materialModel = nullptr;
     wxChoice* m_replaceMaterial = nullptr;
     std::array<PropertyControls, 3> m_properties;
     wxTextCtrl* m_bandMin = nullptr;
@@ -144,4 +158,10 @@ private:
     wxButton* m_previewButton = nullptr;
     wxButton* m_applyButton = nullptr;
     wxButton* m_cancelButton = nullptr;
+    wxListCtrl* m_suggestions = nullptr;
+    wxTextCtrl* m_suggestionDetail = nullptr;
+    wxButton* m_useSuggestion = nullptr;
+    wxButton* m_suggestionPrevious = nullptr;
+    wxButton* m_suggestionNext = nullptr;
+    wxStaticText* m_suggestionPage = nullptr;
 };

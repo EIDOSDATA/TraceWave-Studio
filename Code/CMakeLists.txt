@@ -62,10 +62,12 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/coordinate_editor_dialog.cpp
     ui/wxwidgets/pcb_selection_model.cpp
     ui/wxwidgets/pcb_selection_model_data.cpp
+    ui/wxwidgets/pcb_suggestion_model.cpp
     ui/wxwidgets/pcb_selection_dialog.cpp
     ui/wxwidgets/pcb_selection_view.cpp
     ui/wxwidgets/pcb_selection_layers.cpp
     ui/wxwidgets/pcb_selection_materials.cpp
+    ui/wxwidgets/pcb_selection_suggestions.cpp
     ui/wxwidgets/pcb_selection_review.cpp
     ui/wxwidgets/studio_pcb.cpp
     ui/wxwidgets/studio_smoke_pcb.cpp
@@ -118,6 +120,16 @@ if(BUILD_TESTING)
     endif()
     set_target_properties(tracewave_pcb_selection_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
     add_test(NAME pcb_selection COMMAND tracewave_pcb_selection_tests)
+    add_executable(tracewave_pcb_suggestion_tests tests/pcb_suggestion_model_test.cpp
+        ui/wxwidgets/pcb_suggestion_model.cpp ui/wxwidgets/pcb_selection_model_data.cpp)
+    target_include_directories(tracewave_pcb_suggestion_tests PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
+    if(MSVC)
+        target_compile_options(tracewave_pcb_suggestion_tests PRIVATE /W4 /utf-8)
+    else()
+        target_compile_options(tracewave_pcb_suggestion_tests PRIVATE -Wall -Wextra -Wpedantic -finput-charset=UTF-8 -fexec-charset=UTF-8)
+    endif()
+    set_target_properties(tracewave_pcb_suggestion_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
+    add_test(NAME pcb_suggestions COMMAND tracewave_pcb_suggestion_tests)
     add_executable(tracewave_gui_presentation_tests tests/gui_presentation_test.cpp
         ui/wxwidgets/canvas_scene.cpp ui/wxwidgets/canvas_viewport.cpp ui/wxwidgets/editor_presentation.cpp)
     target_include_directories(tracewave_gui_presentation_tests PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")

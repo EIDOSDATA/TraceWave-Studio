@@ -160,6 +160,26 @@ class SelectionReader:
         """! @brief 선택한 물성 관측 한 행을 반환한다."""
         return self._read("observations", record_id)
 
+    def stackup_observations(self, stackup_id: str, publisher: str, source_id: str) -> list[dict]:
+        """! @brief 같은 적층과 발행자 및 출처의 관측만 제한된 색인 조회로 읽는다.
+
+        @details 전체 행을 검색하거나 이름 유사도로 대체하지 않는다. 원문 해시와
+        읽기 예산은 개별 observation 조회와 같은 검사를 거친다.
+        """
+        if self._connection is None:
+            raise CatalogError("E_CONFLICT", "선택 reader를 context manager 안에서 사용하십시오.")
+        if any(type(value) is not str or not 1 <= len(value) <= 256
+               for value in (stackup_id, publisher, source_id)):
+            raise CatalogError("E_SCHEMA", "적층 관측 조회의 명시적인 식별자가 필요합니다.")
+        rows = self._connection.execute(
+            "SELECT record_id FROM observations INDEXED BY observations_stackup "
+            "WHERE stackup_id=? AND publisher=? AND source_id=? ORDER BY record_id LIMIT ?",
+            (stackup_id, publisher, source_id, MAX_READ_ROWS + 1),
+        ).fetchall()
+        if len(rows) > MAX_READ_ROWS:
+            raise CatalogError("E_RESOURCE", "선택한 적층의 관측 개수 상한을 초과했습니다.")
+        return [self.observation(row[0]) for row in rows]
+
     def source(self, source_id: str) -> dict:
         """! @brief 원문 파일을 다시 열지 않고 당시 출처 메타데이터를 반환한다."""
         return self._read("sources", source_id)

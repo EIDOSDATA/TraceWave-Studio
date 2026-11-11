@@ -41,6 +41,7 @@ wxPanel* PcbSelectionDialog::BuildLayersPage()
                                  Display("아래에서 위 순서입니다. 빈 두께는 미정이며 이후 층 위치도 미정입니다. 기존 "
                                          "패턴을 유지하려면 층 연결을 직접 선택하세요.")),
                 0, wxEXPAND | wxALL, FromDIP(10));
+    BuildSuggestions(panel, layout);
     auto* actions = new wxBoxSizer(wxHORIZONTAL);
     m_manualButton = new wxButton(panel, wxID_ANY, Display("층 목록 직접 편집"));
     m_manualButton->SetName("pcb.manual");

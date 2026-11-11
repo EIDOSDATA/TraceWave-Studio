@@ -64,6 +64,9 @@ wxPanel* PcbSelectionDialog::BuildMaterialsPage()
     m_replaceMaterial->SetSelection(0);
     identity->Add(m_replaceMaterial, 1, wxEXPAND);
     fields->Add(identity, 0, wxEXPAND | wxBOTTOM, FromDIP(10));
+    m_materialModel = new wxStaticText(form, wxID_ANY, Display("손실 모델: 기존 상수 모델 (Df와 독립 전도도)"));
+    m_materialModel->SetName("pcb.material_model");
+    fields->Add(m_materialModel, 0, wxEXPAND | wxBOTTOM, FromDIP(10));
     for (std::size_t index = 0; index < m_properties.size(); ++index)
     {
         auto& property = m_properties[index];
@@ -216,6 +219,7 @@ void PcbSelectionDialog::NewMaterial(bool discard)
     m_materialIndex = -1;
     m_materials->DeselectAll();
     m_materialName->ChangeValue(wxString());
+    m_materialModel->SetLabel(Display("손실 모델: 기존 상수 모델 (Df와 독립 전도도)"));
     m_replaceMaterial->SetSelection(0);
     for (auto& property : m_properties)
     {
@@ -259,6 +263,11 @@ void PcbSelectionDialog::LoadMaterial(int index)
     m_materials->SetSelection(index);
     const auto& material = m_materialSpecs.at(static_cast<std::size_t>(index));
     m_materialName->ChangeValue(Display(material.at("name")));
+    const std::string model = material.value("model", std::string("isotropic_constant"));
+    m_materialModel->SetLabel(Display(model == "isotropic_constant_total_tan_delta"
+                                          ? "손실 모델: Df로 총 손실 지정 (유전체 전도도는 추가 가산하지 않음)"
+                                          : "손실 모델: 기존 상수 모델 (Df와 독립 전도도)"));
+    m_materialModel->SetToolTip(Display(material.value("model_reason", std::string())));
     const std::string key = material.at("key");
     const std::string replacement = m_materialIds.value(key, std::string());
     const auto mapped = std::find(m_materialReplaceIds.begin(), m_materialReplaceIds.end(), replacement);
@@ -277,6 +286,16 @@ void PcbSelectionDialog::LoadMaterial(int index)
         controls.catalogId = controls.recordId.empty() ? "" : m_catalogId;
         controls.source->SetLabel(
             Display(controls.recordId.empty() ? "연결한 관측 없음" : "자료 ID: " + controls.recordId));
+        if (m_materialProposalDisplays.contains(key) && mode == "catalog" && field < 2)
+        {
+            const auto& property = m_materialProposalDisplays.at(key).at(PropertyFields[field]);
+            if (property.at("record_id") == controls.recordId)
+            {
+                controls.value->ChangeValue(PcbView::Number(property.at("value")));
+                controls.source->SetLabel(Display("공개값 / " + controls.recordId));
+                controls.source->SetToolTip(Display(property.at("reason")));
+            }
+        }
     }
     const auto& band = material.at("validity_hz");
     m_bandMin->ChangeValue(PcbView::Number(band.at("min")));
@@ -296,6 +315,17 @@ bool PcbSelectionDialog::SaveMaterial()
                         : m_materialSpecs.at(static_cast<std::size_t>(m_materialIndex)).at("key").get<std::string>()},
             {"name", PcbView::Reason(m_materialName->GetValue(), "재료 이름")},
             {"properties", Json::object()}};
+        if (m_materialIndex >= 0)
+        {
+            const auto& previous = m_materialSpecs.at(static_cast<std::size_t>(m_materialIndex));
+            for (const char* field : {"model", "model_reason"})
+            {
+                if (previous.contains(field))
+                {
+                    material[field] = previous.at(field);
+                }
+            }
+        }
         for (std::size_t index = 0; index < m_properties.size(); ++index)
         {
             const auto& property = m_properties[index];
@@ -380,6 +410,8 @@ void PcbSelectionDialog::RemoveMaterial()
         return;
     }
     m_materialIds.erase(m_materialSpecs.at(static_cast<std::size_t>(m_materialIndex)).at("key").get<std::string>());
+    m_materialProposalDisplays.erase(
+        m_materialSpecs.at(static_cast<std::size_t>(m_materialIndex)).at("key").get<std::string>());
     m_materialSpecs.erase(m_materialSpecs.begin() + m_materialIndex);
     m_materials->Delete(m_materialIndex);
     NewMaterial(true);

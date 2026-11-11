@@ -184,8 +184,11 @@ void StudioSmokeDriver::PcbSmokeDialog(PcbSelectionDialog& dialog)
                                                   !decision.at("reason").get<std::string>().empty(),
                                               "재열기한 물성의 선택값이나 이유가 다릅니다.");
                                  const bool published = field == "epsilon_r" && !m_frame.m_options.catalog.empty();
-                                 CanvasAssert(decision.at("basis") == (published ? "published" : "user_assumption"),
-                                              "Dk 관측과 사용자 가정의 출처 구분이 바뀌었습니다.");
+                                 const bool override = field == "tan_delta" && !m_frame.m_options.catalog.empty();
+                                 CanvasAssert(
+                                     decision.at("basis") ==
+                                         (published ? "published" : (override ? "user_override" : "user_assumption")),
+                                     "Dk 관측과 사용자 가정의 출처 구분이 바뀌었습니다.");
                                  if (published)
                                  {
                                      CanvasAssert(decision.at("source_pointer") == "/dk" &&
@@ -271,7 +274,78 @@ void StudioSmokeDriver::PcbSmokeDialog(PcbSelectionDialog& dialog)
     {
         CanvasAssert(!dialog.m_model.Draft().is_null() && dialog.m_layers->GetNumberRows() == 3,
                      "선택 자료가 세 물리 층의 검토용 초안으로 표시되지 않았습니다.");
+        CanvasAssert(dialog.m_suggestions->GetItemCount() == 3 && dialog.m_materialSpecs.empty() &&
+                         dialog.m_suggestionData.at("layers").at(1).at("properties").at("epsilon_r").at("state") ==
+                             "published" &&
+                         dialog.m_suggestionData.at("layers").at(1).at("properties").at("tan_delta").at("state") ==
+                             "missing",
+                     "적층 물성 제안이 공개 Dk와 미정 Df를 구분하지 않거나 조회만으로 채택되었습니다.");
+        dialog.m_materialName->SetValue(Display("페이지 조회 중 작성한 입력"));
+        EditPcbCell(dialog.m_layers, 1, 2, "1.51");
+        EditPcbCell(dialog.m_layers, 1, 3, "페이지 조회 입력 보존 시험");
+        dialog.LoadSuggestionPage(1);
+        m_pcbStage = 12;
+    }
+    else if (m_pcbStage == 12 && !requestPending)
+    {
+        CanvasAssert(dialog.m_suggestionData.at("offset") == 1 && dialog.m_suggestions->GetItemCount() == 2 &&
+                         dialog.m_materialName->GetValue() == Display("페이지 조회 중 작성한 입력") &&
+                         dialog.m_materialDirty && dialog.m_layers->GetCellValue(1, 2) == "1.51",
+                     "제안 페이지 조회가 기존 층 또는 미반영 재료 입력을 변경했습니다.");
+        dialog.m_suggestions->SetItemState(0, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
+        wxListEvent suggestion(wxEVT_LIST_ITEM_SELECTED, dialog.m_suggestions->GetId());
+        suggestion.SetIndex(0);
+        suggestion.SetEventObject(dialog.m_suggestions);
+        dialog.m_suggestions->GetEventHandler()->ProcessEvent(suggestion);
+        ClickPcbButton(dialog.m_useSuggestion);
+        CanvasAssert(dialog.m_materialDirty && dialog.m_materialSpecs.empty() &&
+                         dialog.m_materialName->GetValue() == Display("페이지 조회 중 작성한 입력"),
+                     "제안 채택이 미반영 재료 입력을 덮어썼습니다.");
+        ClickPcbButton(PcbButton(dialog, "pcb.discard_material"));
+        ClickPcbButton(dialog.m_useSuggestion);
+        CanvasAssert(dialog.m_materialSpecs.size() == 1 &&
+                         dialog.m_materialSpecs.at(0).at("properties").at("tan_delta").at("mode") == "missing" &&
+                         dialog.m_materialSpecs.at(0).at("validity_hz").at("min").is_null() &&
+                         dialog.m_materialSpecs.at(0).at("validity_hz").at("max").is_null() &&
+                         dialog.m_materialSpecs.at(0).at("model") == "isotropic_constant_total_tan_delta",
+                     "제안 사용이 미정 물성이나 적용 대역을 임의로 채웠거나 손실 모델을 누락했습니다.");
+        const Json selected = dialog.m_materialSpecs;
+        ClickPcbButton(dialog.m_useSuggestion);
+        CanvasAssert(dialog.m_materialSpecs == selected, "제안 중복 채택이 기존 재료를 덮어썼습니다.");
+        m_pcbChecks.push_back("stackup_suggestions_published_and_missing");
+        m_pcbChecks.push_back("explicit_suggestion_use_preserves_missing_and_model");
+        m_pcbChecks.push_back("suggestion_duplicate_does_not_overwrite");
         m_pcbChecks.push_back("search_controls_and_source_selection");
+        m_pcbChecks.push_back("suggestion_page_preserves_dirty_input_and_layers");
+        ClickPcbButton(dialog.m_suggestionPrevious);
+        m_pcbStage = 13;
+    }
+    else if (m_pcbStage == 13 && !requestPending)
+    {
+        CanvasAssert(dialog.m_suggestionData.at("offset") == 0 && dialog.m_suggestions->GetItemCount() == 3 &&
+                         dialog.m_materialSpecs.size() == 1 && dialog.m_layers->GetCellValue(1, 2) == "1.51" &&
+                         dialog.ReadLayerRows().at(1).at("material_id") == dialog.m_materialSpecs.at(0).at("key"),
+                     "이전 제안 페이지로 이동하며 채택한 재료 연결 또는 직접 입력 두께가 변경되었습니다.");
+        m_pcbChecks.push_back("suggestion_previous_page_preserves_material_assignment");
+        dialog.LoadSuggestionPage(2);
+        m_pcbStage = 14;
+    }
+    else if (m_pcbStage == 14 && !requestPending)
+    {
+        CanvasAssert(dialog.m_suggestionData.at("offset") == 2 && dialog.m_suggestions->GetItemCount() == 1,
+                     "제안의 마지막 동박 페이지만 조회하지 못했습니다.");
+        dialog.LoadMaterial(0);
+        CanvasAssert(dialog.m_properties[0].value->GetValue() == "4.5" && !dialog.m_properties[0].value->IsEnabled() &&
+                         dialog.m_materialProposalDisplays.size() == 1 && !dialog.m_materialDirty,
+                     "제안 페이지 이동 후 이미 채택한 재료의 공개값 표시가 사라졌습니다.");
+        m_pcbChecks.push_back("accepted_suggestion_display_survives_page_change");
+        ClickPcbButton(dialog.m_suggestionPrevious);
+        m_pcbStage = 15;
+    }
+    else if (m_pcbStage == 15 && !requestPending)
+    {
+        CanvasAssert(dialog.m_suggestionData.at("offset") == 0 && dialog.m_materialSpecs.size() == 1,
+                     "채택 재료를 보존한 채 이전 제안 페이지로 돌아오지 못했습니다.");
         m_pcbStage = 16;
     }
     else if (m_pcbStage == 16)
@@ -313,6 +387,12 @@ void StudioSmokeDriver::PcbSmokeDialog(PcbSelectionDialog& dialog)
                          m_pcbExpectedMaterial.at("conductivity").at("value_si") == 0.0 &&
                          dialog.m_model.CandidateLayers().at(1).at("material_id") == m_pcbExpectedMaterial.at("id"),
                      "Dk/Df/전도도 폼 또는 유전체 재료 연결의 DTO 변환이 다릅니다.");
+        if (!m_frame.m_options.catalog.empty())
+        {
+            CanvasAssert(m_pcbExpectedMaterial.at("model") == "isotropic_constant_total_tan_delta",
+                         "제안 재료를 직접 수정한 뒤 손실 모델이 변경되었습니다.");
+            m_pcbChecks.push_back("suggestion_model_preserved_after_manual_edit");
+        }
         if (m_pcbStage == 17)
         {
             m_pcbChecks.push_back("material_layer_assignment_preview");
@@ -358,17 +438,24 @@ void StudioSmokeDriver::PcbSmokeDialog(PcbSelectionDialog& dialog)
 void StudioSmokeDriver::PcbSmokeMaterial(PcbSelectionDialog& dialog)
 {
     dialog.m_notebook->SetSelection(2);
-    ClickPcbButton(PcbButton(dialog, "pcb.new_material"));
-    dialog.m_materialName->SetValue(Display("GUI 검증 유전체"));
     const bool catalog = !m_frame.m_options.catalog.empty();
+    if (catalog)
+    {
+        dialog.LoadMaterial(0);
+    }
+    else
+    {
+        ClickPcbButton(PcbButton(dialog, "pcb.new_material"));
+    }
+    dialog.m_materialName->SetValue(Display("GUI 검증 유전체"));
     ChoosePcbValue(dialog.m_properties[0].mode, catalog ? 1 : 2);
     if (catalog)
     {
         ClickPcbButton(PcbButton(dialog, "pcb.epsilon_r.attach"));
         CanvasAssert(dialog.m_properties[0].recordId == "PCB056952",
                      "검색에서 고른 Dk 관측이 재료 폼에 연결되지 않았습니다.");
-        CanvasAssert(dialog.m_properties[1].recordId.empty() && dialog.m_properties[1].mode->GetSelection() == 0,
-                     "Dk 관측 선택이 Df의 출처나 채택 상태를 자동으로 바꿨습니다.");
+        CanvasAssert(dialog.m_properties[1].recordId == "PCB056952" && dialog.m_properties[1].mode->GetSelection() == 0,
+                     "적층의 Df 미제공 기록이 없어지거나 Dk 관측 선택이 미정 상태를 바꿨습니다.");
     }
     else
     {

@@ -48,7 +48,7 @@ class GuiPcbSelectionTests(unittest.TestCase):
         program = "import json, runpy, time\nfrom rfad.application import rpc\n_original = rpc.handle_frame\n"
         program += "def delayed(frame, service=None, catalog=None):\n"
         program += "    request = json.loads(frame)\n"
-        program += "    if isinstance(request, dict) and request.get('method') in ('catalog.search', 'catalog.stackup_draft', 'pcb.selection.preview'):\n"
+        program += "    if isinstance(request, dict) and request.get('method') in ('catalog.search', 'catalog.stackup_draft', 'catalog.stackup_suggestions', 'pcb.selection.preview'):\n"
         program += "        time.sleep(0.4)\n"
         program += "    return _original(frame, service, catalog)\n"
         program += "rpc.handle_frame = delayed\n"
@@ -109,7 +109,12 @@ class GuiPcbSelectionTests(unittest.TestCase):
         result = self.run_gui(catalog=True)
         self.assert_common_checks(result)
         self.assertTrue({"search_controls_and_source_selection", "late_search_response_ignored",
-                         "close_during_request_and_reopen", "material_form_catalog_dk_user_df_conductivity"}
+                         "close_during_request_and_reopen", "material_form_catalog_dk_user_df_conductivity",
+                         "stackup_suggestions_published_and_missing", "explicit_suggestion_use_preserves_missing_and_model",
+                         "suggestion_duplicate_does_not_overwrite", "suggestion_model_preserved_after_manual_edit",
+                         "suggestion_page_preserves_dirty_input_and_layers",
+                         "suggestion_previous_page_preserves_material_assignment",
+                         "accepted_suggestion_display_survives_page_change"}
                         <= set(result["pcb_checks"]), result)
 
     def test_direct_input_without_catalog(self):

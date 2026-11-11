@@ -32,6 +32,7 @@ flowchart LR
 | 화면 그리기/입력 | `canvas_renderer.*`, `canvas_gesture.h`, `design_canvas.*` | paint 단위 renderer, 배타적 입력 상태와 wx 이벤트 변환 |
 | 속성 폼 | `editor_presentation.*`, `coordinate_editor_dialog.*`, `editor_panel.*` | 값/모드별 표시 정책, 좌표 표 대화상자, 위젯 생성과 이벤트 |
 | PCB 선택 상태 | `pcb_selection_model.*`, `pcb_selection_model_data.*` | 위젯 없는 요청 세대, 초안, 개정 고정, 미리보기와 적용 상태 |
+| 적층 물성 제안 | `pcb_suggestion_model.*`, `pcb_selection_suggestions.cpp` | 같은 출처/층의 제안 검사, 기존 입력 보호, 페이지 및 명시적 재료 연결 |
 | PCB 선택 화면 | `pcb_selection_dialog.*`, `pcb_selection_view.cpp`, `pcb_selection_layers.cpp`, `pcb_selection_materials.cpp`, `pcb_selection_review.cpp`, `studio_pcb.cpp` | 검색, 층/급전/물성 입력, 단면 검토, 대화상자 수명과 서비스 연결 |
 | 실제 GUI 시험 | `studio_smoke.h`, `studio_smoke_*.cpp` | smoke 옵션의 시나리오/검사 상태. 제품 작업 객체에서 시험용 필드 분리 |
 
@@ -58,6 +59,7 @@ StudioFrame은 화면 사이의 연결과 서비스 DTO 캐시를 유지한다. 
 | 카탈로그 adapter/조회 | `catalog/native*.py`, `query.py`, `repository.py` | 업체별 원시 자료 보존, 허용 필터와 읽기 트랜잭션/페이지/상한 |
 | PCB 선택 근거/물성 | `catalog/selection_reader.py`, `selection_rules.py`, `material_selection.py` | 같은 개정의 제한된 원문 사본, Dk/Df 독립 채택과 사용자 가정 |
 | 제조업체 적층 초안 | `catalog/stackup_draft*.py` | JLCPCB/PCBWay/관측별 물리 층 변환, 미정값과 수동 구성 사유 |
+| 적층과 물성 대응 | `catalog/stackup_match.py`, `suggested_properties.py`, `stackup_suggestions.py` | 적층/출처/원문 층의 정확한 연결, 공개값과 미정/근사 분리, 제한된 제안 페이지 |
 | PCB 적용 조정 | `application/pcb_selection*.py` | 요청 계약, 후보 조립, 층/급전 참조 검사, 미리보기 해시와 단일 writer 적용 |
 | PCB 저장 계약 | `domain/pcb_selection*.py` | 버전이 있는 출처 확장, 현재 참조에 필요한 이전 출처, 원자 명령과 역명령 |
 | 재료 손실 계약 | `domain/material_models.py` | 명시적 모델 검증과 목적별 소비 물성. 총 Df 모델의 독립 전도도 미소비 및 도체 적용 거절 |
