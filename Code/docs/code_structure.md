@@ -53,6 +53,10 @@ StudioFrame은 화면 사이의 연결과 서비스 DTO 캐시를 유지한다. 
 | 카탈로그 facade | `catalog/service.py`, `application/catalog_api.py`, `cli/catalog.py` | 프로젝트 변경과 독립된 읽기 전용 자료 검색/상세, 선택적 DB 설정 |
 | 카탈로그 자료 | `catalog/models.py`, `properties.py`, `source.py`, `build.py`, `schema.py`, `review.py` | 안정 ID/물성 조건, 원본 검증과 오프라인 원자적 SQLite 변환 |
 | 카탈로그 adapter/조회 | `catalog/native*.py`, `query.py`, `repository.py` | 업체별 원시 자료 보존, 허용 필터와 읽기 트랜잭션/페이지/상한 |
+| PCB 선택 근거/물성 | `catalog/selection_reader.py`, `selection_rules.py`, `material_selection.py` | 같은 개정의 제한된 원문 사본, Dk/Df 독립 채택과 사용자 가정 |
+| 제조업체 적층 초안 | `catalog/stackup_draft*.py` | JLCPCB/PCBWay/관측별 물리 층 변환, 미정값과 수동 구성 사유 |
+| PCB 적용 조정 | `application/pcb_selection*.py` | 요청 계약, 후보 조립, 층/급전 참조 검사, 미리보기 해시와 단일 writer 적용 |
+| PCB 저장 계약 | `domain/pcb_selection*.py` | 버전이 있는 출처 확장, 현재 참조에 필요한 이전 출처, 원자 명령과 역명령 |
 | 요청 규칙 | `project_contract.py`, `request_ledger.py` | 입력 형태/상한/경로, epoch와 receipt의 멱등성 |
 | 프로젝트 데이터 | `project_repository.py`, `project_history.py`, `project_operations.py` | 불변 문서 저장, 명령/undo/redo, 열기/저장/snapshot/검사 |
 | 작업 조정 | `solver_jobs.py`, `cad_jobs.py`, `job_state.py` | 작업 접수/실행/취소/게시 및 명시적 상태 전이 |

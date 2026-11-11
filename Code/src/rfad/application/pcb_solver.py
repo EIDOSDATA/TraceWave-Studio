@@ -17,6 +17,7 @@ from rfad.application.pcb_results import (RAW_NAMES, normalization_contract, rea
                                          check_termination, validate_preparation, validate_result)
 from rfad.application.solver import _snapshot, _runtime, _uuid
 from rfad.domain.project import validate_project
+from rfad.domain.pcb_selection import EXTENSION_KEY as PCB_SELECTION_EXTENSION
 
 PROFILE = "rfad.openems.pcb-single-port/0.1"
 
@@ -56,7 +57,7 @@ def _payload(document, snapshot, runtime, settings):
     validate_settings(settings)
     if snapshot["content_hash"] != canonical_hash(document) or any(snapshot[key] != document[key] for key in ("project_id", "revision_id", "schema_version")):
         fail("E_HASH", "PCB 원본과 스냅샷 참조가 다릅니다.", "snapshot")
-    if document["extensions"]:
+    if document["extensions"].keys() - {PCB_SELECTION_EXTENSION}:
         fail("E_UNSUPPORTED", "의미를 해석하지 않은 확장이 있는 PCB는 실행할 수 없습니다.", "extensions")
     identity = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
     if any(frame["rotation"] != identity or frame["translation_si"] != [0.0, 0.0, 0.0] or frame["handedness"] != "right" for frame in document["frames"].values()):

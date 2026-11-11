@@ -21,6 +21,8 @@ from rfad.application.project_history import ProjectHistory
 from rfad.application.project_operations import ProjectOperations
 from rfad.application.project_repository import ProjectRepository
 from rfad.application.request_ledger import RequestLedger
+from rfad.application.pcb_selection import PcbSelectionCoordinator
+from rfad.application.pcb_selection_contract import MUTATION_METHODS as PCB_SELECTION_MUTATIONS
 from rfad.domain.errors import ProjectError
 from rfad.storage.journal import Journal
 
@@ -29,7 +31,7 @@ ASYNC_METHODS = {
 } | CAD_METHODS | SOLVER_METHODS
 MUTATION_METHODS = ASYNC_METHODS | {
     "project.apply_command", "editor.apply", "canvas.apply", "project.undo", "project.redo", "job.cancel",
-}
+} | PCB_SELECTION_MUTATIONS
 
 
 class ProjectService:
@@ -44,6 +46,7 @@ class ProjectService:
         fault_hook=None,
         cad_runtime: CadRuntime | None = None,
         solver_runtime: SolverRuntime | None = None,
+        catalog_database: Path | None = None,
     ):
         """! @brief 저장소를 열고 이전에 실행 중이던 작업을 명시적으로 중단 처리한다."""
         self.workspace = Path(os.path.abspath(workspace))
@@ -62,6 +65,7 @@ class ProjectService:
         self.history = ProjectHistory(self.repository)
         self.operations = ProjectOperations(self.repository, self._now)
         self.requests = RequestLedger(self.journal, self._now)
+        self.pcb_selection = PcbSelectionCoordinator(self, catalog_database)
         try:
             self._initialize()
             if auto_run:
@@ -164,7 +168,9 @@ class ProjectService:
 
     def _preflight(self, method: str, context: dict, data: dict) -> None:
         """! @brief 기능별 요청 계약에 따라 접수 가능 여부를 검사한다."""
-        if method in CAD_METHODS | {"export.preview"}:
+        if method in PCB_SELECTION_MUTATIONS:
+            self.pcb_selection.validate_input(method, context, data)
+        elif method in CAD_METHODS | {"export.preview"}:
             self.cad.validate_input(method, context, data)
         elif method in SOLVER_METHODS:
             self.solver.validate_input(method, context, data)
@@ -185,7 +191,11 @@ class ProjectService:
         """! @brief 영수증과 동일한 transaction에서 기능별 명령을 실행한다."""
         self._preflight(method, context, data)
         if method == "project.apply_command":
+            if data["type"] == "pcb_stackup.apply":
+                raise ProjectError("E_UNSUPPORTED", "적층 적용은 pcb.selection.preview와 pcb.selection.apply를 사용하십시오.")
             return self._apply(state, context, data)
+        elif method == "pcb.selection.apply":
+            return self.pcb_selection.apply(state, context, data)
         elif method in {"editor.apply", "canvas.apply"}:
             project = self._project(state, context)
             document = self._load(project)

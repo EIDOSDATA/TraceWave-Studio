@@ -28,7 +28,8 @@ wxWidgets, Windows 11+WSL2 우선, Linux GUI 후속, 원호/IFA, 내부 검증 �
 | WSL/openEMS 환경 | Ubuntu 24.04.5 WSL2 실행, Linux 서비스 및 표현식 비교 통과. Qt 없는 openEMS 0.37.0/CSXCAD 0.7.0 빌드와 두 격자 도파관 참조 검사 통과 | NF2FF, 실측/독립 solver 정확도 검증 |
 | WSL solver와 결과 | AnalysisPlan/PreparationArtifact/PreparedPlan, 봉인 XML 실행과 raw/정규화/출처, 독립 후처리. ext4 staging, supervisor/watchdog, nonce/lease/재접속/취소. 사각/원형 PCB 선/원호/접지 polygon/패드/PTH, 유한 도체, x/y/z gap 급전, IFA short 연결과 Yee edge 검사, GUI S11/VSWR/임피던스 | 공개 수동 조정, cache/GC, SMA/실장 급전, NF2FF와 실측 |
 | IFA 수치 안정성 | 명시적 시험 입력의 3단계 격자/3단계 경계/2단계 시간 종료 비교, 고정 물리 PML 두께와 graded air, 공개 API 실행/재개/독립 재판정, JSON/CSV/비교 그림 | 아래 실제 검증 기록의 범위만 수용. GUI 다중 결과 비교, 국부 특징/곡선/PML 셀 수 민감도, 제조/실측 정확도 |
-| PCB 카탈로그 | 전체 정리 관측/원시 적층의 중립 모델, 오프라인 SQLite 변환과 검토 사유, 읽기 전용 검색/상세 CLI 및 JSON-RPC, 원문 타입/출처/해시와 페이지 보존 | 구조화 출처의 프로젝트 저장, 적층 미리보기/원자적 적용, wxWidgets 선택 UI와 실제 CAD/EM 채택 검증 |
+| PCB 카탈로그 | 전체 정리 관측/원시 적층의 중립 모델, 오프라인 SQLite 변환과 검토 사유, 읽기 전용 검색/상세 CLI 및 JSON-RPC, 원문 타입/출처/해시와 페이지 보존 | 카탈로그 갱신/배포 범위와 GUI 페이지 검색 |
+| PCB 선택/적층 적용 | 프로젝트 소유 원문 사본과 사용자 수정값, 필요한 이전 출처 보존, Dk/Df 독립 선택, 업체별 적층 초안, 변경/참조/급전 검토와 한 번의 적용/undo. 기존 직접 입력 유지 | wxWidgets 선택/단면/변경 미리보기와 선택한 실제 재료의 CAD/EM 실행 검증. 초안 저장은 제조/RF 승인과 구분 |
 
 서비스는 rfad.api/2.0, workspace profile은 rfad.projects/0.2, 새 문서는 rfad.project/0.2다. 세부 계약은 [저장](project_persistence.md), [설계 데이터](design_data.md), [선택 속성](editor_contract.md), [2D 표시/편집](canvas_contract.md), [CAD/STEP](cad_contract.md), [worker 실행](worker_integration.md), [기초 계약](bootstrap_contract.md)을 따른다. 전체 API나 R0/R1 완료를 주장하지 않는다.
 
@@ -282,7 +283,36 @@ CAD의 기존 25개 함수 AST와 PCB 5개 사례의 계획 정규 payload(plan_
 
 원본 패키지 전체 검사에서는 manifest의 2,998개 파일과 자료 참조를 확인했고 내용 불일치는 보고되지 않았다. 다만 `Excel/PCB제작업체/~$PCBWay__PCB_적층.xlsx` 소유자 잠금 파일이 manifest 밖의 추가 파일로 검출되어 엄격한 패키지 검사 종료 코드는 1이었다. 이 임시 파일은 삭제하지 않았다. 카탈로그 변환은 manifest에 선언된 자료만 소비했고 전수 대조를 통과했다. 원본 패키지와 승인 01_Docs는 수정하지 않았다.
 
-다음 작업은 구조화된 선택 출처/사용자 수정값의 프로젝트 소유 사본과 버전 계약, 원자적 적층 적용 및 미리보기, wxWidgets 기판 설정의 순서다. 직접 입력을 유지하며 원형/사각 외곽과 패턴/층/비아/포트 참조를 검증한다. 검색 성공을 제작 가능 또는 solver 준비 완료로 바꾸지 않는다.
+이후 구현한 프로젝트 소유 출처, 업체별 적층 초안과 원자 적용은 [PCB 선택 계약](pcb_selection_contract.md)을 따른다. 다음은 wxWidgets 기판 설정의 직접 입력/소재/제조업체 선택과 단면/변경 미리보기 연결이다. 검색 또는 저장 성공을 제작 가능이나 solver 준비 완료로 바꾸지 않는다.
+
+### PCB 선택 출처와 적층 적용 검증
+
+카탈로그 구현을 `e22f29b`로 커밋한 뒤 다음 세 범위를 추가했다. 선택한 자료/개정/조건/원문 해시와 사용자 채택값을 프로젝트에 보존하고, 제조업체별 적층을 명시적 미정값을 가진 초안으로 변환하며, 기존 층/패턴/비아/급전 참조를 검사한 뒤 하나의 명령으로 적용한다. `rfad.project/0.2`와 기존 직접 편집을 유지하며, 선택 계약만 버전이 있는 알려진 확장으로 저장한다.
+
+출처 보존, 변환기, 후보 조립/참조 검토, API 조정과 도메인 명령은 별도 모듈이다. 현재 객체가 참조하는 이전 선택의 출처도 비재귀 history로 보존한다. 과거 출처를 포함한 전체 근거 12 KiB, 프로젝트 32 KiB와 응답 48 KiB 제한은 유지한다. JLC의 원본 필드 사본을 묶어 중복 metadata를 줄였으며 필요한 판단 근거와 원문 타입/포인터/해시는 보존한다.
+
+| 검사 | 결과와 범위 |
+| --- | --- |
+| 새 기능 회귀 | 55개 통과, 28.874초. 출처/물성 12개, 적층 변환 16개, 도메인 17개, 실제 서비스 10개 |
+| 전체 제조업체 초안 | 3,399개를 58.078초에 검사. 초안 생성 2,326개, 수동 구성 필요 250개, 명시적 크기 제한 823개, 예상 밖 오류 0개 |
+| 초안 근거의 도메인 검증 | 반환된 2,576개 모두 raw hash/origin/안정 ID/12 KiB 검증 통과. DB 전후 SHA-256 동일 |
+| 우선 층수 | JLCPCB 2층 22/22개, JLCPCB 4층 427/427개, PCBWay 4층 112/112개 초안 생성 성공. 저장/제작/해석 가능 수와 구분 |
+| 대표 프로젝트 적용 | JLC2/JLC4/PCBWay4/OSH2의 적용, 저장, snapshot, undo/redo, 카탈로그 없는 재열기/영수증 재전송, CAD 입력 변환 통과. WE 유전체 부분집합은 수동 구성 차단 확인 |
+| 실제 문서 예제 | 문서에서 추출한 CLI stdio 예제를 실행해 can_apply=true, solver_ready=false, 선택 저장을 확인 |
+
+소스를 고정한 Windows 전체 회귀는 636개 수집, 591개 통과, 45개 환경 조건 스킵으로 432.941초에 완료했다. 기존 GUI 실행 파일과 분리 CAD worker 통합을 포함한다. 서비스 환경 안에서 직접 CAD kernel을 import하는 시험, Linux process group 및 명시적으로 활성화해야 하는 WSL/openEMS 시험은 스킵했다. 이번 변경으로 WSL의 실제 RF 계산이나 IFA 수렴 연구를 다시 실행한 것은 아니다. 전체 로그는 `.local/pcb-selection/full-tests.log`다.
+
+미정 두께 이후 z는 미정으로 전파한다. 알려진 치수는 SI에서 누적하여 mm 왕복 환산이 만드는 가짜 층 중첩을 방지한다. 기존 층을 명시적으로 대응하지 않아 패턴/패드/비아 참조가 끊기면 적용을 차단한다. 층의 z/두께가 바뀌어 영향을 받는 기존 급전 상자는 명시적 좌표와 이유를 요구하며, 알려진 sheet 접면과 다른 z는 차단한다. 좌표가 미정이면 저장 가능 여부와 후속 해석 준비 여부를 구분한다.
+
+대표 사례의 빈 두께에는 검증 도구 전용 가정을 명시했다. 해당 수치는 실제 제작 기준이나 IFA 물성이 아니다. CAD 입력 변환/기존 해석 계획 호환 시험은 이 카탈로그 재료의 새 STEP 왕복 또는 FDTD 계산을 뜻하지 않는다. 원문 00_REF, 승인 01_Docs와 기존 IFA fixture는 변경하지 않았다.
+
+```powershell
+$env:PYTHONPATH = 'src'
+.\.venv\Scripts\python.exe -X utf8 tools/verify_pcb_stackup_drafts.py --database .local/pcb-catalog/catalog.sqlite --report .local/pcb-selection/stackup-coverage-new.json
+.\.venv\Scripts\python.exe -X utf8 tools/verify_pcb_selection.py --database .local/pcb-catalog/catalog.sqlite --report .local/pcb-selection/representative-new.json
+```
+
+두 도구는 기존 보고서를 덮어쓰지 않는다. 최종 보고서와 소스 해시는 `runtime_profiles/pcb-selection.json`에 기록한다. GUI 제조업체 선택과 층 단면/변경 미리보기, 선택한 실제 재료의 CAD/solver 실행 검증은 후속이다.
 
 재부팅 직후 실행할 명령과 단계별 완료 기준은 [재부팅 후 개발 재개](reboot_resume.md)를 따른다.
 

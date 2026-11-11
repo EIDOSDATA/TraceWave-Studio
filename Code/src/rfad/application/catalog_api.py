@@ -4,7 +4,7 @@ from rfad.domain.errors import ProjectError
 
 
 PROFILE = "rfad.catalog/0.1"
-METHODS = frozenset({"catalog.status", "catalog.search", "catalog.get"})
+METHODS = frozenset({"catalog.status", "catalog.search", "catalog.get", "catalog.stackup_draft"})
 
 
 def _service(catalog):
@@ -50,6 +50,15 @@ def query(method: str, params: object, catalog=None) -> dict:
             return service.search(params["input"])
         if method == "catalog.get":
             return service.get(params["input"])
+        if method == "catalog.stackup_draft":
+            from rfad.application.pcb_selection_build import source_draft
+            from rfad.application.pcb_selection_contract import bounded, validate_source
+            from rfad.catalog.selection_reader import SelectionReader
+
+            source = params["input"]
+            validate_source(source)
+            with SelectionReader(service.repository.database, source["catalog_id"]) as reader:
+                return bounded(source_draft(reader, source))
         raise ProjectError("E_UNSUPPORTED", "지원하지 않는 카탈로그 조회입니다.")
     except CatalogError as error:
         raise ProjectError(error.code, error.message, details=error.details) from error

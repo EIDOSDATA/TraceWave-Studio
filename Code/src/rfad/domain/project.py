@@ -9,6 +9,8 @@ from rfad.domain.errors import ProjectError
 from rfad.domain.units import Quantity, QuantityError
 from rfad.domain.parameter_graph import evaluate_parameters, expression_record, restore_parameter_command
 from rfad.domain.design import apply_design_command, validate_design
+from rfad.domain.pcb_selection import validate_project_selection
+from rfad.domain.pcb_selection_command import apply_stackup_command
 
 
 SCHEMA_VERSION = "rfad.project/0.2"
@@ -28,7 +30,7 @@ _QUANTITY_FIELDS = {"value_si", "dimension", "display_unit", "status", "source_r
 _IDENTITY = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
 _DESIGN_COLLECTIONS = {"geometry", "materials", "ports", "stackup", "nets"}
 DESIGN_COMMANDS = tuple(prefix + suffix for prefix in ("material", "layer", "net", "geometry", "port") for suffix in (".set", ".remove")) + ("board.set",)
-COMMANDS = ("metadata.rename", "metadata.describe", "metadata.set", "parameter.set", "parameter.set_expression", "parameter.remove", *DESIGN_COMMANDS)
+COMMANDS = ("metadata.rename", "metadata.describe", "metadata.set", "parameter.set", "parameter.set_expression", "parameter.remove", "pcb_stackup.apply", *DESIGN_COMMANDS)
 
 
 def _fail(code: str, message: str, field: str) -> None:
@@ -255,6 +257,7 @@ def validate_project(document: dict) -> None:
     if type(document["extensions"]) is not dict:
         _fail("E_SCHEMA", "extensions는 object여야 합니다.", "extensions")
     _extension_json(document["extensions"], "extensions")
+    validate_project_selection(document)
 
 
 def apply_command(document: dict, command: dict, expected_revision: str) -> tuple[dict, list[str], list[str], dict]:
@@ -323,6 +326,8 @@ def apply_command(document: dict, command: dict, expected_revision: str) -> tupl
             del result["parameters"][parameter_id]
         changed_ids = [parameter_id]
         invalidation_set = ["revision", "geometry", "physics", "network", "metrics", "assessment", "exports"]
+    elif command_type == "pcb_stackup.apply":
+        changed_ids, invalidation_set, inverse = apply_stackup_command(result, payload)
     elif command_type in DESIGN_COMMANDS:
         changed_ids, invalidation_set, inverse = apply_design_command(result, command_type, payload)
     else:

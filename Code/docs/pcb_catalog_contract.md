@@ -2,7 +2,7 @@
 
 작성일: 2026-11-11 KST. 승인 기준선: RFAD-D0-3.4. 구현 profile: `rfad.catalog/0.1`, 변환 규칙: `rfad.catalog.import/1`.
 
-이번 구현은 [PCB 재료 카탈로그 설계](pcb_material_catalog.md)의 첫 묶음인 중립 모델, 오프라인 변환, 읽기 전용 검색과 상세 조회다. 기존 사용자 직접 입력, 프로젝트 schema `rfad.project/0.2`, 저장/undo/redo/스냅샷은 유지한다. GUI 제조업체 선택, 선택 출처의 프로젝트 저장과 적층 일괄 적용은 다음 묶음이다.
+이 문서는 [PCB 재료 카탈로그 설계](pcb_material_catalog.md)의 중립 모델, 오프라인 변환, 읽기 전용 검색과 상세 조회를 정의한다. 기존 사용자 직접 입력과 프로젝트 schema `rfad.project/0.2`는 유지한다. 후속으로 구현한 프로젝트 소유 출처 사본, 적층 초안/미리보기와 원자적 적용은 [PCB 선택 계약](pcb_selection_contract.md)을 따른다. GUI 제조업체 선택 화면은 아직 연결하지 않았다.
 
 ## 모듈과 데이터 경계
 
@@ -37,7 +37,7 @@
 
 관측 상세의 `properties`는 Dk/Df 각각의 단일값/범위/한정자/원문 문자열과 주파수/시험법을 제공한다. 값 종류는 `scalar`, `range`, `scalar_and_range`, `qualified`, `text_only`, `missing`이다. 무차원 값의 단위는 `1`이고 주파수는 보고된 GHz 및 단순 환산 Hz를 함께 제공한다.
 
-공통 `frequency_ghz`와 `method`는 record 조건으로 보존한다. Df 전용 조건은 `df_frequency_ghz`, `df_method`가 있을 때만 채운다. 공통 조건을 Df의 별도 시험 조건으로 복사하지 않는다. 별도 Df 조건이 없는 행도 원문과 record 조건을 확인할 수 있다. 원문 조건이 맞는지 결정하는 선택 단계는 후속이다.
+공통 `frequency_ghz`와 `method`는 record 조건으로 보존한다. Df 전용 조건은 `df_frequency_ghz`, `df_method`가 있을 때만 채운다. 공통 조건을 Df의 별도 시험 조건으로 복사하지 않는다. 별도 Df 조건이 없는 행도 원문과 record 조건을 확인할 수 있다. 선택 API는 Dk/Df를 각각 지정하고 서로 다른 조건과 미정 조건을 검토 사유로 반환한다.
 
 범위의 중간값, 다른 주파수의 보간값, 누락된 손실의 0, 기본 FR-4 상수나 실제 제조 두께를 생성하지 않는다. 검색과 상세는 항상 `readiness: not_assessed`를 반환한다. 자료의 원래 `simulation_ready` 표기도 원문 메타데이터일 뿐 현재 solver 승인으로 사용하지 않는다.
 
@@ -136,4 +136,4 @@ CLI 검색 입력은 JSON 파일로 전달할 수 있다.
 
 ## 다음 연결 단계
 
-먼저 SelectionDraft와 ProjectMaterialSelection의 버전 계약을 정의한다. 관측/조건/출처의 프로젝트 소유 사본, 선택 이유, 사용자 override와 미정값을 저장하고 명시적 migration/roundtrip을 검증한다. 이어 변경 미리보기, 층/패턴/비아/포트 참조 검사를 포함한 원자적 적용 명령과 undo/redo를 추가한다. 그다음 wxWidgets 기판 설정에 직접 입력/소재/제조업체 선택을 연결한다. 지원 가능한 명확한 2층 사례부터 CAD/solver까지 검증한다.
+`catalog.stackup_draft`와 `pcb.selection.preview/get/apply`를 추가했다. 전자는 기존 빈 context의 읽기 전용 카탈로그 API이고, 후자는 workspace의 프로젝트 개정/영수증/undo를 사용한다. `rfad.pcb-stackup-draft/0.1`과 프로젝트 확장 `rfad.pcb-selection/0.1`의 필드, 제한과 실행 예시는 [PCB 선택 계약](pcb_selection_contract.md)에 있다. 다음 단계는 wxWidgets 기판 설정의 직접 입력/소재/제조업체 선택과 미리보기 화면, 선택된 실제 2층 재료의 CAD/solver 통합 검증이다.

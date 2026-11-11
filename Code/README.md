@@ -4,7 +4,7 @@
 
 구현 파일별 책임과 상태 처리 규칙은 [코드 구조](docs/code_structure.md)에 정리했다. GUI의 표시/입력 정책과 비동기 상태, 프로젝트 저장/이력과 worker 산출물 처리를 별도 모듈로 관리한다.
 
-수집한 PCB 물성/적층 자료는 [카탈로그 조회 계약](docs/pcb_catalog_contract.md)에 따라 오프라인 SQLite로 변환하고 업체/제품/적층/물성 조건별로 검색한다. 읽기 전용 CLI/JSON-RPC와 원문 상세 조회를 구현했으며 기존 직접 입력은 유지한다. GUI 제조업체 선택, 구조화 출처의 프로젝트 저장과 적층 일괄 적용은 [후속 연결 설계](docs/pcb_material_catalog.md)에 따른다.
+수집한 PCB 물성/적층 자료는 [카탈로그 조회 계약](docs/pcb_catalog_contract.md)에 따라 오프라인 SQLite로 변환하고 업체/제품/적층/물성 조건별로 검색한다. [PCB 선택과 적층 적용](docs/pcb_selection_contract.md)은 프로젝트 소유 출처 사본, 개별 물성 선택/사용자 수정값, 업체별 적층 초안과 원자적 적용 API를 제공한다. 기존 직접 입력은 유지하며 wxWidgets 제조업체 선택 화면은 다음 단계다.
 
 ## 시스템 구성
 

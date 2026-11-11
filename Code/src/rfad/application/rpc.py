@@ -12,6 +12,7 @@ from rfad.domain.project import COMMANDS, SCHEMA_VERSION, LEGACY_SCHEMA_VERSION
 from rfad.domain.expressions import ENGINE_VERSION
 from rfad.application.catalog_api import METHODS as CATALOG_METHODS
 from rfad.application.catalog_api import describe as describe_catalog, query as query_catalog
+from rfad.application.pcb_selection_contract import READ_METHODS as PCB_SELECTION_READS, MUTATION_METHODS as PCB_SELECTION_MUTATIONS
 
 CONTRACT_VERSION = "rfad.api/2.0"
 MAX_FRAME_BYTES = 64 * 1024
@@ -29,6 +30,7 @@ APPLICATION_ERRORS = {
 }
 PROJECT_MUTATIONS = {"project.open", "project.apply_command", "editor.apply", "canvas.apply", "project.undo", "project.redo", "project.save", "snapshot.create", "design.validate", "job.cancel", "geometry.build", "export.build", "export.preview"}
 PROJECT_MUTATIONS.update({"solver.plan", "solver.prepare", "job.submit"})
+PROJECT_MUTATIONS.update(PCB_SELECTION_MUTATIONS)
 
 
 def capabilities(service=None, catalog=None) -> dict:
@@ -73,7 +75,7 @@ def capabilities(service=None, catalog=None) -> dict:
         result["project_profile"] = {
             "schema_version": SCHEMA_VERSION, "readable_schema_versions": [LEGACY_SCHEMA_VERSION, SCHEMA_VERSION],
             "expression_engine": ENGINE_VERSION, "open_modes": ["create", "open", "recover"],
-            "commands": list(COMMANDS),
+            "commands": [name for name in COMMANDS if name != "pcb_stackup.apply"],
             "max_document_bytes": 32768, "mutating_batch": False, "mutating_notification": False,
             "scope": "workspace-local versioned projects and optional isolated host CAD worker",
             "design_validation": {"profile": "rfad.design/0.1", "purposes": ["geometry", "step", "em"], "source": "draft_revision", "max_returned_diagnostics": 64},
@@ -108,6 +110,12 @@ def capabilities(service=None, catalog=None) -> dict:
         result["editor_profile"]["create_selections"] = ["new_parameter", "new_material", "new_net", "new_port"]
         result["project_profile"]["job_kinds"].extend(["em_prepare", "em_analysis"])
         result["features"][2]["status"] = "implemented"
+    if service is not None:
+        result["methods"].update({name: {"status": "implemented", "extension_profile": "rfad.pcb-selection/0.1"}
+                                  for name in sorted(PCB_SELECTION_READS | PCB_SELECTION_MUTATIONS)})
+        result["pcb_selection_profile"] = {"profile": "rfad.pcb-selection/0.1", "preview_required": True,
+                                            "atomic_apply": True, "source_copies_in_project": True,
+                                            "project_schema": SCHEMA_VERSION, "max_result_bytes": 49152}
     result["catalog_profile"] = describe_catalog(catalog)
     result["methods"].update({
         name: {"status": "implemented", "extension_profile": "rfad.catalog/0.1"}
@@ -168,12 +176,16 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
         return _error(None, -32600, "Invalid Request")
     notification = "id" not in request
     method = request["method"]
-    if service is not None and method in PROJECT_MUTATIONS | {"job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples"}:
+    if service is not None and method in PROJECT_MUTATIONS | PCB_SELECTION_READS | {"job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples"}:
         if notification and method in PROJECT_MUTATIONS:
             return None
         try:
             params = request.get("params")
-            if method == "job.status":
+            if method == "pcb.selection.preview":
+                result = service.pcb_selection.preview(params)
+            elif method == "pcb.selection.get":
+                result = service.pcb_selection.get(params)
+            elif method == "job.status":
                 result = service.status(params)
             elif method == "editor.get":
                 result = service.editor_state(params)

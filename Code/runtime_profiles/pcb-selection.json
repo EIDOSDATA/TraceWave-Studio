@@ -1,0 +1,1045 @@
+{
+  "schema": "rfad.verification.pcb-selection/0.1",
+  "validated_at": "2026-11-11T04:29:59.353627+00:00",
+  "baseline_commit": "e22f29b241640d55bba76254d71cb9a29d34190a",
+  "design_baseline": "RFAD-D0-3.4",
+  "status": "passed",
+  "project_schema": "rfad.project/0.2",
+  "selection_profile": "rfad.pcb-selection/0.1",
+  "draft_profile": "rfad.pcb-stackup-draft/0.1",
+  "catalog_id": "catalog:28b81a2a83c358bb5d62e7d03f99ab7008cc1561b19cd04689e112443c78d733",
+  "database": {
+    "path": ".local/pcb-catalog/catalog.sqlite",
+    "bytes": 503283712,
+    "sha256": "b6ae102c4f6cf9643af6347d6a9f3ea6543689443e0fbe9d3a30cdb9f0e01f92"
+  },
+  "database_unchanged": true,
+  "selection_tests": {
+    "collected": 55,
+    "passed": 55,
+    "elapsed_seconds": 28.874
+  },
+  "windows_full": {
+    "collected": 636,
+    "passed": 591,
+    "skipped": 45,
+    "elapsed_seconds": 432.941,
+    "gui_executable": "build/windows-release/bin/tracewave_gui.exe",
+    "cad_worker_python": ".venv-cad/Scripts/python.exe",
+    "skip_scope": "in-process CAD kernel, Linux process groups and opt-in WSL/openEMS; actual RF not rerun"
+  },
+  "all_native_drafts": {
+    "template_count": 3399,
+    "counts": {
+      "converted_draft": 2326,
+      "manual_blocker": 250,
+      "resource_limit": 823,
+      "unexpected_error": 0
+    },
+    "publishers": {
+      "JLCPCB": {
+        "resource_limit": 667,
+        "converted_draft": 2184,
+        "manual_blocker": 75
+      },
+      "PCBWay": {
+        "resource_limit": 156,
+        "converted_draft": 142
+      },
+      "Wurth Elektronik": {
+        "manual_blocker": 175
+      }
+    },
+    "counts_by_publisher_layer": [
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 10,
+        "counts": {
+          "converted_draft": 245,
+          "resource_limit": 33,
+          "manual_blocker": 5
+        },
+        "max_success_evidence_bytes": 12145
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 12,
+        "counts": {
+          "resource_limit": 83,
+          "converted_draft": 58
+        },
+        "max_success_evidence_bytes": 12288
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 14,
+        "counts": {
+          "resource_limit": 62,
+          "converted_draft": 22
+        },
+        "max_success_evidence_bytes": 11924
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 16,
+        "counts": {
+          "resource_limit": 77
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 18,
+        "counts": {
+          "resource_limit": 42
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 2,
+        "counts": {
+          "converted_draft": 22
+        },
+        "max_success_evidence_bytes": 5164
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 20,
+        "counts": {
+          "resource_limit": 17
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 22,
+        "counts": {
+          "resource_limit": 18
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 24,
+        "counts": {
+          "resource_limit": 16
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 26,
+        "counts": {
+          "resource_limit": 15
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 28,
+        "counts": {
+          "resource_limit": 14
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 30,
+        "counts": {
+          "resource_limit": 14
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 32,
+        "counts": {
+          "resource_limit": 20
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 34,
+        "counts": {
+          "resource_limit": 11
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 36,
+        "counts": {
+          "resource_limit": 9
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 38,
+        "counts": {
+          "resource_limit": 9
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 4,
+        "counts": {
+          "converted_draft": 427
+        },
+        "max_success_evidence_bytes": 8736
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 40,
+        "counts": {
+          "resource_limit": 8
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 42,
+        "counts": {
+          "resource_limit": 8
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 44,
+        "counts": {
+          "resource_limit": 8
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 46,
+        "counts": {
+          "resource_limit": 6
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 48,
+        "counts": {
+          "resource_limit": 5
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 50,
+        "counts": {
+          "resource_limit": 4
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 52,
+        "counts": {
+          "resource_limit": 3
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 54,
+        "counts": {
+          "resource_limit": 3
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 56,
+        "counts": {
+          "resource_limit": 2
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 58,
+        "counts": {
+          "resource_limit": 2
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 6,
+        "counts": {
+          "converted_draft": 636,
+          "manual_blocker": 66
+        },
+        "max_success_evidence_bytes": 11579
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 60,
+        "counts": {
+          "resource_limit": 1
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 62,
+        "counts": {
+          "resource_limit": 1
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 64,
+        "counts": {
+          "resource_limit": 2
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": 8,
+        "counts": {
+          "converted_draft": 487,
+          "manual_blocker": 4,
+          "resource_limit": 1
+        },
+        "max_success_evidence_bytes": 11849
+      },
+      {
+        "publisher": "JLCPCB",
+        "layer_count": null,
+        "counts": {
+          "converted_draft": 287,
+          "resource_limit": 173
+        },
+        "max_success_evidence_bytes": 12255
+      },
+      {
+        "publisher": "PCBWay",
+        "layer_count": 10,
+        "counts": {
+          "resource_limit": 33
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "PCBWay",
+        "layer_count": 12,
+        "counts": {
+          "resource_limit": 12
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "PCBWay",
+        "layer_count": 14,
+        "counts": {
+          "resource_limit": 6
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "PCBWay",
+        "layer_count": 16,
+        "counts": {
+          "resource_limit": 6
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "PCBWay",
+        "layer_count": 18,
+        "counts": {
+          "resource_limit": 6
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "PCBWay",
+        "layer_count": 4,
+        "counts": {
+          "converted_draft": 112
+        },
+        "max_success_evidence_bytes": 11283
+      },
+      {
+        "publisher": "PCBWay",
+        "layer_count": 6,
+        "counts": {
+          "resource_limit": 44,
+          "converted_draft": 30
+        },
+        "max_success_evidence_bytes": 12164
+      },
+      {
+        "publisher": "PCBWay",
+        "layer_count": 8,
+        "counts": {
+          "resource_limit": 49
+        },
+        "max_success_evidence_bytes": 0
+      },
+      {
+        "publisher": "Wurth Elektronik",
+        "layer_count": null,
+        "counts": {
+          "manual_blocker": 175
+        },
+        "max_success_evidence_bytes": 3359
+      }
+    ],
+    "domain_evidence_validated_count": 2576,
+    "elapsed_seconds": 58.078
+  },
+  "representative_projects": {
+    "elapsed_seconds": 9.75,
+    "physical_validation_state": "not_validated",
+    "cases": [
+      {
+        "label": "JLC2",
+        "source": {
+          "catalog_id": "catalog:28b81a2a83c358bb5d62e7d03f99ab7008cc1561b19cd04689e112443c78d733",
+          "entity": "native_templates",
+          "id": "native_template:1bf6669c9f6b68f170fb327b1aacbea48a7c3ba6db3c4763bc7247236b3f6da5"
+        },
+        "draft_layers": 3,
+        "draft_issues": [
+          {
+            "code": "copper_inclusion_unresolved",
+            "severity": "warning",
+            "message": "유전체 수치에 동박이 포함되는지 확정할 수 없어 두께를 미정으로 남겼습니다.",
+            "layer_keys": [
+              "component:0:dielectric"
+            ]
+          },
+          {
+            "code": "copper_finished_thickness_unknown",
+            "severity": "warning",
+            "message": "코어 양면 구리 수치는 근거로 남겼으나 완성 도체 두께로 자동 채택하지 않았습니다.",
+            "layer_keys": [
+              "component:0:top",
+              "component:0:bottom"
+            ]
+          },
+          {
+            "code": "material_properties_unselected",
+            "severity": "warning",
+            "message": "Dk, Df와 전도도는 자동 채택하지 않았습니다. 재료 조건을 별도로 선택하십시오.",
+            "layer_keys": []
+          },
+          {
+            "code": "finished_thickness_unverified",
+            "severity": "warning",
+            "message": "원문 공칭 두께를 완성 기판 두께로 확정하지 않았습니다. 제조 조건을 확인하십시오.",
+            "layer_keys": []
+          }
+        ],
+        "unresolved_thicknesses": 3,
+        "original_preview_can_apply": true,
+        "original_preview_bytes": 11174,
+        "completed_preview_bytes": 11559,
+        "issues": [
+          {
+            "code": "copper_inclusion_unresolved",
+            "severity": "warning",
+            "message": "유전체 수치에 동박이 포함되는지 확정할 수 없어 두께를 미정으로 남겼습니다.",
+            "layer_keys": [
+              "component:0:dielectric"
+            ]
+          },
+          {
+            "code": "copper_finished_thickness_unknown",
+            "severity": "warning",
+            "message": "코어 양면 구리 수치는 근거로 남겼으나 완성 도체 두께로 자동 채택하지 않았습니다.",
+            "layer_keys": [
+              "component:0:top",
+              "component:0:bottom"
+            ]
+          },
+          {
+            "code": "material_properties_unselected",
+            "severity": "warning",
+            "message": "Dk, Df와 전도도는 자동 채택하지 않았습니다. 재료 조건을 별도로 선택하십시오.",
+            "layer_keys": []
+          },
+          {
+            "code": "finished_thickness_unverified",
+            "severity": "warning",
+            "message": "원문 공칭 두께를 완성 기판 두께로 확정하지 않았습니다. 제조 조건을 확인하십시오.",
+            "layer_keys": []
+          },
+          {
+            "code": "nominal_thickness_scope_requires_review",
+            "severity": "warning",
+            "message": "공칭 두께와 모델 층 합계의 포함 범위/공차는 별도로 확인해야 합니다. 차이를 층에 자동 배분하지 않습니다.",
+            "nominal_mm": 1.6,
+            "modeled_mm": 0.47000000000000003,
+            "difference_mm": -1.1300000000000001
+          }
+        ],
+        "status": "passed",
+        "evidence_count": 2,
+        "catalog_free_reopen": true,
+        "save_snapshot_undo_redo": true,
+        "cad_input_layers": 3,
+        "rf_simulation_executed": false,
+        "source_semantics_preserved": true
+      },
+      {
+        "label": "JLC4",
+        "source": {
+          "catalog_id": "catalog:28b81a2a83c358bb5d62e7d03f99ab7008cc1561b19cd04689e112443c78d733",
+          "entity": "native_templates",
+          "id": "native_template:009d4afd600cfdd128292be7f9b1c7e9e1b42d8f6f8d8cf348d91da82fe239d0"
+        },
+        "draft_layers": 9,
+        "draft_issues": [
+          {
+            "code": "copper_finished_thickness_unknown",
+            "severity": "warning",
+            "message": "원문의 동박 수치는 보존했으나 도금 후 완성 두께인지 확인되지 않았습니다.",
+            "layer_keys": [
+              "component:0"
+            ]
+          },
+          {
+            "code": "copper_finished_thickness_unknown",
+            "severity": "warning",
+            "message": "코어 양면 구리 수치는 근거로 남겼으나 완성 도체 두께로 자동 채택하지 않았습니다.",
+            "layer_keys": [
+              "component:3:top",
+              "component:3:bottom"
+            ]
+          },
+          {
+            "code": "copper_finished_thickness_unknown",
+            "severity": "warning",
+            "message": "원문의 동박 수치는 보존했으나 도금 후 완성 두께인지 확인되지 않았습니다.",
+            "layer_keys": [
+              "component:6"
+            ]
+          },
+          {
+            "code": "material_properties_unselected",
+            "severity": "warning",
+            "message": "Dk, Df와 전도도는 자동 채택하지 않았습니다. 재료 조건을 별도로 선택하십시오.",
+            "layer_keys": []
+          },
+          {
+            "code": "finished_thickness_unverified",
+            "severity": "warning",
+            "message": "원문 공칭 두께를 완성 기판 두께로 확정하지 않았습니다. 제조 조건을 확인하십시오.",
+            "layer_keys": []
+          }
+        ],
+        "unresolved_thicknesses": 4,
+        "original_preview_can_apply": true,
+        "original_preview_bytes": 22492,
+        "completed_preview_bytes": 23202,
+        "issues": [
+          {
+            "code": "copper_finished_thickness_unknown",
+            "severity": "warning",
+            "message": "원문의 동박 수치는 보존했으나 도금 후 완성 두께인지 확인되지 않았습니다.",
+            "layer_keys": [
+              "component:0"
+            ]
+          },
+          {
+            "code": "copper_finished_thickness_unknown",
+            "severity": "warning",
+            "message": "코어 양면 구리 수치는 근거로 남겼으나 완성 도체 두께로 자동 채택하지 않았습니다.",
+            "layer_keys": [
+              "component:3:top",
+              "component:3:bottom"
+            ]
+          },
+          {
+            "code": "copper_finished_thickness_unknown",
+            "severity": "warning",
+            "message": "원문의 동박 수치는 보존했으나 도금 후 완성 두께인지 확인되지 않았습니다.",
+            "layer_keys": [
+              "component:6"
+            ]
+          },
+          {
+            "code": "material_properties_unselected",
+            "severity": "warning",
+            "message": "Dk, Df와 전도도는 자동 채택하지 않았습니다. 재료 조건을 별도로 선택하십시오.",
+            "layer_keys": []
+          },
+          {
+            "code": "finished_thickness_unverified",
+            "severity": "warning",
+            "message": "원문 공칭 두께를 완성 기판 두께로 확정하지 않았습니다. 제조 조건을 확인하십시오.",
+            "layer_keys": []
+          },
+          {
+            "code": "nominal_thickness_scope_requires_review",
+            "severity": "warning",
+            "message": "공칭 두께와 모델 층 합계의 포함 범위/공차는 별도로 확인해야 합니다. 차이를 층에 자동 배분하지 않습니다.",
+            "nominal_mm": 1.0,
+            "modeled_mm": 0.906,
+            "difference_mm": -0.09399999999999997
+          }
+        ],
+        "status": "passed",
+        "evidence_count": 2,
+        "catalog_free_reopen": true,
+        "save_snapshot_undo_redo": true,
+        "cad_input_layers": 9,
+        "rf_simulation_executed": false,
+        "source_semantics_preserved": true
+      },
+      {
+        "label": "PCBWay4",
+        "source": {
+          "catalog_id": "catalog:28b81a2a83c358bb5d62e7d03f99ab7008cc1561b19cd04689e112443c78d733",
+          "entity": "native_templates",
+          "id": "native_template:04c59e7ce48ab62cc4ca2409a7bc1a08e8a84d0bf9563d6cffda5b90b7969239"
+        },
+        "draft_layers": 7,
+        "draft_issues": [
+          {
+            "code": "copper_finished_thickness_unknown",
+            "severity": "warning",
+            "message": "동박 원문 수치는 보존했으나 도금량 또는 완성 두께로 환산하지 않았습니다.",
+            "layer_keys": [
+              "component:0"
+            ]
+          },
+          {
+            "code": "copper_finished_thickness_unknown",
+            "severity": "warning",
+            "message": "동박 원문 수치는 보존했으나 도금량 또는 완성 두께로 환산하지 않았습니다.",
+            "layer_keys": [
+              "component:2"
+            ]
+          },
+          {
+            "code": "shared_lamination_total_unallocated",
+            "severity": "warning",
+            "message": "여러 행의 압착 합계를 개별 층 두께로 나누거나 반복 적용하지 않았습니다.",
+            "layer_keys": [
+              "component:3"
+            ]
+          },
+          {
+            "code": "copper_finished_thickness_unknown",
+            "severity": "warning",
+            "message": "동박 원문 수치는 보존했으나 도금량 또는 완성 두께로 환산하지 않았습니다.",
+            "layer_keys": [
+              "component:4"
+            ]
+          },
+          {
+            "code": "copper_finished_thickness_unknown",
+            "severity": "warning",
+            "message": "동박 원문 수치는 보존했으나 도금량 또는 완성 두께로 환산하지 않았습니다.",
+            "layer_keys": [
+              "component:6"
+            ]
+          },
+          {
+            "code": "material_properties_unselected",
+            "severity": "warning",
+            "message": "Dk, Df와 전도도는 자동 채택하지 않았습니다. 재료 조건을 별도로 선택하십시오.",
+            "layer_keys": []
+          },
+          {
+            "code": "finished_thickness_unverified",
+            "severity": "warning",
+            "message": "원문 공칭 두께를 완성 기판 두께로 확정하지 않았습니다. 제조 조건을 확인하십시오.",
+            "layer_keys": []
+          }
+        ],
+        "unresolved_thicknesses": 5,
+        "original_preview_can_apply": true,
+        "original_preview_bytes": 19787,
+        "completed_preview_bytes": 20570,
+        "issues": [
+          {
+            "code": "copper_finished_thickness_unknown",
+            "severity": "warning",
+            "message": "동박 원문 수치는 보존했으나 도금량 또는 완성 두께로 환산하지 않았습니다.",
+            "layer_keys": [
+              "component:0"
+            ]
+          },
+          {
+            "code": "copper_finished_thickness_unknown",
+            "severity": "warning",
+            "message": "동박 원문 수치는 보존했으나 도금량 또는 완성 두께로 환산하지 않았습니다.",
+            "layer_keys": [
+              "component:2"
+            ]
+          },
+          {
+            "code": "shared_lamination_total_unallocated",
+            "severity": "warning",
+            "message": "여러 행의 압착 합계를 개별 층 두께로 나누거나 반복 적용하지 않았습니다.",
+            "layer_keys": [
+              "component:3"
+            ]
+          },
+          {
+            "code": "copper_finished_thickness_unknown",
+            "severity": "warning",
+            "message": "동박 원문 수치는 보존했으나 도금량 또는 완성 두께로 환산하지 않았습니다.",
+            "layer_keys": [
+              "component:4"
+            ]
+          },
+          {
+            "code": "copper_finished_thickness_unknown",
+            "severity": "warning",
+            "message": "동박 원문 수치는 보존했으나 도금량 또는 완성 두께로 환산하지 않았습니다.",
+            "layer_keys": [
+              "component:6"
+            ]
+          },
+          {
+            "code": "material_properties_unselected",
+            "severity": "warning",
+            "message": "Dk, Df와 전도도는 자동 채택하지 않았습니다. 재료 조건을 별도로 선택하십시오.",
+            "layer_keys": []
+          },
+          {
+            "code": "finished_thickness_unverified",
+            "severity": "warning",
+            "message": "원문 공칭 두께를 완성 기판 두께로 확정하지 않았습니다. 제조 조건을 확인하십시오.",
+            "layer_keys": []
+          },
+          {
+            "code": "nominal_thickness_scope_requires_review",
+            "severity": "warning",
+            "message": "공칭 두께와 모델 층 합계의 포함 범위/공차는 별도로 확인해야 합니다. 차이를 층에 자동 배분하지 않습니다.",
+            "nominal_mm": 1.6,
+            "modeled_mm": 0.911,
+            "difference_mm": -0.6890000000000001
+          }
+        ],
+        "status": "passed",
+        "evidence_count": 9,
+        "catalog_free_reopen": true,
+        "save_snapshot_undo_redo": true,
+        "cad_input_layers": 7,
+        "rf_simulation_executed": false,
+        "source_semantics_preserved": true
+      },
+      {
+        "label": "WE",
+        "source": {
+          "catalog_id": "catalog:28b81a2a83c358bb5d62e7d03f99ab7008cc1561b19cd04689e112443c78d733",
+          "entity": "native_templates",
+          "id": "native_template:00bff43ad4ab2ead6ed8abaa1493e3934e2580164b4d7e9062a306933678b4cf"
+        },
+        "draft_layers": 0,
+        "draft_issues": [
+          {
+            "code": "incomplete_native_layer_set",
+            "severity": "blocker",
+            "message": "WE 원자료는 유전체 행의 부분집합입니다. 완전한 도체 및 영역 순서를 직접 정의하십시오.",
+            "layer_keys": []
+          },
+          {
+            "code": "prefix_cross_layer_fields_present",
+            "severity": "blocker",
+            "message": "다른 층의 숫자 접두 필드가 혼입된 원자료가 있어 자동 층 속성으로 사용하지 않았습니다.",
+            "layer_keys": []
+          },
+          {
+            "code": "material_properties_unselected",
+            "severity": "warning",
+            "message": "Dk, Df와 전도도는 자동 채택하지 않았습니다. 재료 조건을 별도로 선택하십시오.",
+            "layer_keys": []
+          },
+          {
+            "code": "finished_thickness_unverified",
+            "severity": "warning",
+            "message": "원문 공칭 두께를 완성 기판 두께로 확정하지 않았습니다. 제조 조건을 확인하십시오.",
+            "layer_keys": []
+          }
+        ],
+        "unresolved_thicknesses": 0,
+        "original_preview_can_apply": false,
+        "original_preview_bytes": 5469,
+        "status": "manual_layout_required"
+      },
+      {
+        "label": "OSH2",
+        "source": {
+          "catalog_id": "catalog:28b81a2a83c358bb5d62e7d03f99ab7008cc1561b19cd04689e112443c78d733",
+          "entity": "observations",
+          "id": "PCB056952"
+        },
+        "draft_layers": 3,
+        "draft_issues": [
+          {
+            "code": "copper_finished_thickness_unknown",
+            "severity": "warning",
+            "message": "이 관측에는 동박의 완성 두께가 없어 미정으로 남겼습니다.",
+            "layer_keys": [
+              "top",
+              "bottom"
+            ]
+          },
+          {
+            "code": "material_properties_unselected",
+            "severity": "warning",
+            "message": "Dk, Df와 전도도는 자동 채택하지 않았습니다. 재료 조건을 별도로 선택하십시오.",
+            "layer_keys": []
+          },
+          {
+            "code": "finished_thickness_unverified",
+            "severity": "warning",
+            "message": "원문 공칭 두께를 완성 기판 두께로 확정하지 않았습니다. 제조 조건을 확인하십시오.",
+            "layer_keys": []
+          }
+        ],
+        "unresolved_thicknesses": 2,
+        "original_preview_can_apply": true,
+        "original_preview_bytes": 11966,
+        "completed_preview_bytes": 12278,
+        "issues": [
+          {
+            "code": "W_SOURCE_CONDITIONS_INCOMPLETE",
+            "severity": "warning",
+            "field": "epsilon_r",
+            "message": "원문 주파수, 시험법 또는 방향에 미정 조건이 있습니다. 다른 물성의 조건으로 채우지 않았습니다."
+          },
+          {
+            "code": "W_USER_DEFINED_MODEL_BAND",
+            "severity": "warning",
+            "field": "validity_hz",
+            "message": "적용 대역은 사용자의 상수 모델 가정이며 원문의 보증 대역을 확장한 것이 아닙니다."
+          },
+          {
+            "code": "copper_finished_thickness_unknown",
+            "severity": "warning",
+            "message": "이 관측에는 동박의 완성 두께가 없어 미정으로 남겼습니다.",
+            "layer_keys": [
+              "top",
+              "bottom"
+            ]
+          },
+          {
+            "code": "material_properties_unselected",
+            "severity": "warning",
+            "message": "Dk, Df와 전도도는 자동 채택하지 않았습니다. 재료 조건을 별도로 선택하십시오.",
+            "layer_keys": []
+          },
+          {
+            "code": "finished_thickness_unverified",
+            "severity": "warning",
+            "message": "원문 공칭 두께를 완성 기판 두께로 확정하지 않았습니다. 제조 조건을 확인하십시오.",
+            "layer_keys": []
+          }
+        ],
+        "status": "passed",
+        "evidence_count": 2,
+        "catalog_free_reopen": true,
+        "save_snapshot_undo_redo": true,
+        "cad_input_layers": 3,
+        "rf_simulation_executed": false,
+        "source_semantics_preserved": true
+      }
+    ]
+  },
+  "scope": [
+    "project-owned source copies and overrides",
+    "bounded history for referenced previous source copies",
+    "manufacturer stackup draft conversion",
+    "revision-bound preview and atomic apply with undo/redo",
+    "manual input, circular outline and pattern/via/port references preserved"
+  ],
+  "not_validated": [
+    "wxWidgets catalog selection UI",
+    "new material RF accuracy or manufacturer feasibility",
+    "new representative material STEP round trip or FDTD execution",
+    "60/30 fps and total process performance budgets"
+  ],
+  "reports": [
+    {
+      "path": ".local/pcb-selection/selection-tests.log",
+      "bytes": 14802,
+      "sha256": "6e69e69e03cf322666c9dbd258c282229f33026d05838445f605eb8a1d590d79"
+    },
+    {
+      "path": ".local/pcb-selection/full-tests.log",
+      "bytes": 151780,
+      "sha256": "5f56b06f1b818ec58bf15d1718af33cbdf0d06cd5d8dbb122fd8189e45ab60fe"
+    },
+    {
+      "path": ".local/pcb-selection/stackup-coverage-final.json",
+      "bytes": 1632990,
+      "sha256": "d21952199e1f16323515decfaae6879dd062fbc6265afae9d43140ada0846a10"
+    },
+    {
+      "path": ".local/pcb-selection/representative-final.json",
+      "bytes": 18285,
+      "sha256": "868fe2b94fcddc46c28a9037626b17bb8d0fac3f2e7eefdf31bf19a36bbab585"
+    },
+    {
+      "path": ".local/pcb-selection-doc-check/verification.json",
+      "bytes": 1223,
+      "sha256": "34126a6fa81e6983f43ccddb6e27fcc9b339aeaaed1b3ba7c847203400c751ae"
+    }
+  ],
+  "code_files": [
+    {
+      "path": "src/rfad/__main__.py",
+      "bytes": 2818,
+      "sha256": "354888f3b9a8851b80520b2876cc77d3c09e666f4e04f8221eb7c0e218a36af3"
+    },
+    {
+      "path": "src/rfad/application/catalog_api.py",
+      "bytes": 2948,
+      "sha256": "5b5fc08ed6a79d1da18d8cafb04188b49da9df58acf4d8d832766f4f6dde2517"
+    },
+    {
+      "path": "src/rfad/application/pcb_selection.py",
+      "bytes": 8040,
+      "sha256": "1cb8e6a01372d0e7c0e125762759b43b94a1b6d2714272bb76ff0b2cdf5bb01a"
+    },
+    {
+      "path": "src/rfad/application/pcb_selection_build.py",
+      "bytes": 5389,
+      "sha256": "f2f8b03ec24cd45de1a53c60a94e17085fc0d1da1b1f95ccd498215e45779150"
+    },
+    {
+      "path": "src/rfad/application/pcb_selection_contract.py",
+      "bytes": 5561,
+      "sha256": "8c1de181ee5cba69cc3ffafaf5b3dde72f7a2f7ffd4856fa6fa605ee7b76bcdd"
+    },
+    {
+      "path": "src/rfad/application/pcb_selection_layers.py",
+      "bytes": 8104,
+      "sha256": "dc572a76f534ac39163083854451e69d6b879ee74c9ad294322de078e9741294"
+    },
+    {
+      "path": "src/rfad/application/pcb_selection_review.py",
+      "bytes": 7534,
+      "sha256": "fc6d8df7b412a263e2ac45646cbef60a689e5ad1e521ac7d6a13452c3a58485c"
+    },
+    {
+      "path": "src/rfad/application/pcb_solver.py",
+      "bytes": 5883,
+      "sha256": "c7f2072be99d2955df14a3b7783b031020222587f1f99b808c499ecae6e16bd7"
+    },
+    {
+      "path": "src/rfad/application/projects.py",
+      "bytes": 21819,
+      "sha256": "9824ba7cd27028638fcc45660dd829e15f8a69e5b20dfadb3a9087dbe4e5c81d"
+    },
+    {
+      "path": "src/rfad/application/rpc.py",
+      "bytes": 17651,
+      "sha256": "396b894cbf4f47d34cda041c412546f5f00ab81ef1b4ed602289a1eda80a4556"
+    },
+    {
+      "path": "src/rfad/catalog/material_selection.py",
+      "bytes": 9648,
+      "sha256": "b598fd6ac328a10b957c34fe8c94668f497b535ddee990caa67157ecd0956271"
+    },
+    {
+      "path": "src/rfad/catalog/selection_reader.py",
+      "bytes": 13727,
+      "sha256": "2f0bea40663231d9319fa95b014d949ed2fd50c8153e7922578802ff3746acf3"
+    },
+    {
+      "path": "src/rfad/catalog/selection_rules.py",
+      "bytes": 2956,
+      "sha256": "37765b18688473294ebf92483c85382ccf2c61124e53eb7edcc50519557bae52"
+    },
+    {
+      "path": "src/rfad/catalog/stackup_draft.py",
+      "bytes": 4466,
+      "sha256": "5287aa8998194bab02ead2b3a488e192d065f560fdf77462e2f7bd0e5d62a073"
+    },
+    {
+      "path": "src/rfad/catalog/stackup_draft_common.py",
+      "bytes": 5533,
+      "sha256": "8e188553f62f111f1539a560388a4756f494d0b933de40a667c77095d4de32c4"
+    },
+    {
+      "path": "src/rfad/catalog/stackup_draft_jlc.py",
+      "bytes": 4478,
+      "sha256": "ff554c07fbc41db3c87cbbf3d5b79bfab7c6722b29b21d336920ad99cba64eb2"
+    },
+    {
+      "path": "src/rfad/catalog/stackup_draft_jlc_evidence.py",
+      "bytes": 4801,
+      "sha256": "a5ae02821a305a206442a0b3515808ad9b782f681b883df15f08fd74cc1c026c"
+    },
+    {
+      "path": "src/rfad/catalog/stackup_draft_pcbway.py",
+      "bytes": 4295,
+      "sha256": "0e7ab15707fc1a2bee8b4baae7ca835c20eae68526ce26b50c4848c0264214c0"
+    },
+    {
+      "path": "src/rfad/domain/pcb_selection.py",
+      "bytes": 11533,
+      "sha256": "7c9db53e09baea6f898edf713c2b6ea057ac0b4659596a1fc106f5d7c7513623"
+    },
+    {
+      "path": "src/rfad/domain/pcb_selection_command.py",
+      "bytes": 2800,
+      "sha256": "62c6cceefc63dc87cb75489edc6c48522a125155de70962d0b92051b92328742"
+    },
+    {
+      "path": "src/rfad/domain/pcb_selection_evidence.py",
+      "bytes": 9987,
+      "sha256": "7fc3273e3f6a24aac488f67eb5d4fa787c71f730e5680795c8e914d7fe4ff778"
+    },
+    {
+      "path": "src/rfad/domain/pcb_selection_history.py",
+      "bytes": 2639,
+      "sha256": "03a38233b5eee766438cb344f978513901b0a6f4b2e3dbf4416484a615805a98"
+    },
+    {
+      "path": "src/rfad/domain/project.py",
+      "bytes": 18878,
+      "sha256": "caedbf39e5e8db6ccdfce432746f137fad23b303b0db894175bd5727857991d4"
+    },
+    {
+      "path": "tests/test_catalog_selection.py",
+      "bytes": 17616,
+      "sha256": "de7f0a6a1bf7754ab0ea8050b1cdf713527afa9065848036e1dc8b3a216d958a"
+    },
+    {
+      "path": "tests/test_catalog_stackup_draft.py",
+      "bytes": 16673,
+      "sha256": "b03495ae2fdc06f100acc4db56e5120a549d193ac660d8f96e0cb3fb702c0998"
+    },
+    {
+      "path": "tests/test_pcb_selection_domain.py",
+      "bytes": 24393,
+      "sha256": "4d36325d606c6118c2fc012e4848fdaf07474d736a5789939aed3129876df283"
+    },
+    {
+      "path": "tests/test_pcb_selection_service.py",
+      "bytes": 20818,
+      "sha256": "5ccd1c0658926b4d2b7de8a8fad1f1eb511564a3adbf32214e68dca9d8a1d515"
+    },
+    {
+      "path": "tools/verify_pcb_selection.py",
+      "bytes": 9712,
+      "sha256": "73211521ff22f6f61d0104c1992a5b9e642385cce2f31cebc8a5bd93372f861e"
+    },
+    {
+      "path": "tools/verify_pcb_stackup_drafts.py",
+      "bytes": 9302,
+      "sha256": "9779901657bb303fa719549e433f2c923b7fd5f7448a79304d434ee7ce8360bb"
+    }
+  ]
+}

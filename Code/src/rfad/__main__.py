@@ -46,7 +46,8 @@ def main(argv: list[str] | None = None) -> int:
     try:
         runtime = None if options.cad_python is None else CadRuntime(options.cad_python)
         solver_runtime = SolverRuntime() if options.openems_wsl else None
-        with ProjectService(options.workspace, cad_runtime=runtime, solver_runtime=solver_runtime) as service:
+        with ProjectService(options.workspace, cad_runtime=runtime, solver_runtime=solver_runtime,
+                            catalog_database=options.catalog) as service:
             return serve(sys.stdin.buffer, sys.stdout.buffer, sys.stderr, service, catalog)
     except (ProjectError, OSError, ValueError) as error:
         print(f"{getattr(error, 'code', 'E_SCHEMA')}: {error}", file=sys.stderr)
