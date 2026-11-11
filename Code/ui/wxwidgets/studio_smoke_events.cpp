@@ -69,7 +69,14 @@ void StudioSmokeDriver::OnConnected()
 
 void StudioSmokeDriver::OnOpened()
 {
-    if (m_frame.m_options.pcbSmoke)
+    if (m_frame.m_options.studySmoke)
+    {
+        if (m_studyStage == 0)
+        {
+            m_studyStage = 1;
+        }
+    }
+    else if (m_frame.m_options.pcbSmoke)
     {
         if (m_pcbStage == 0)
         {

@@ -46,6 +46,8 @@ void StudioFrame::BuildInterface()
     analysis->Append(IdRunSolver, Display("설정 및 해석 실행"));
     analysis->Append(IdCancelSolver, Display("해석 작업 취소"));
     analysis->Append(IdRadiation, Display("방사 패턴 조회"));
+    analysis->Append(IdProjectStudy, Display("프로젝트 연구 / 격자·방사·손실"));
+    Bind(wxEVT_MENU, [this](wxCommandEvent&) { OpenProjectStudy(); }, IdProjectStudy);
     const int studyReportId = wxWindow::NewControlId();
     analysis->Append(studyReportId, Display("수렴 연구 보고서 비교"));
     Bind(

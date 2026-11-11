@@ -1,5 +1,7 @@
 # WSL2 openEMS worker 계약
 
+여러 격자 사례의 순차 실행/취소/재개는 [일반 프로젝트 연구](project_studies.md)가 이 계약의 준비/실행 작업을 그대로 조정한다. 연구 수준 재개는 완료 단계를 재사용하는 기능이며 native FDTD checkpoint 재개를 뜻하지 않는다. study.* API와 GUI는 같은 snapshot/고정 worker 및 기존 단일 슬롯을 사용한다.
+
 갱신일: 2026-11-11 KST. 승인 기준선 RFAD-D0-3.4의 API-011/012/013/014/015/016을 도파관 참조 `rfad.openems.rect-waveguide/0.1`과 사용자 PCB `rfad.openems.pcb-single-port/0.1` profile로 연결한다. `01_Docs`의 승인 기록은 변경하지 않는다. 사용자 PCB의 상세 입력/근사/제한은 [PCB 해석 계약](pcb_solver_contract.md)을 따른다.
 
 ## 현재 지원 범위

@@ -104,11 +104,12 @@ def _result(result):
                  "시간 상한/실제 종료 단계가 유효하지 않습니다.")
         _require(termination["status"] == "end_criterion_reached" and termination["exact_endcriterion_schedule"] is True
                  and termination["target_energy_ratio"] == settings["end_criterion"], "명시적 에너지 종료 근거가 다릅니다.")
+        # @brief 격자별 손실 dump 인덱스/크기는 관측 영역이며 전기적 물리 입력의 차이가 아니다.
         identity = {"snapshot": plan["snapshot"], "source_semantics": plan["source_semantics"],
                     "normalization": result["normalization"], "runtime_identity": plan["runtime_identity"],
                     "observed_runtime": result["provenance"]["runtime"], "analysis_profile": plan["analysis_profile"],
                     "runtime_profile": plan["runtime_profile"], "model_report": plan["model_report"],
-                    "physics": {key: value for key, value in plan["case"].items() if key not in {"settings", "stop_criteria", "mesh_policy_report"}}}
+                    "physics": {key: value for key, value in plan["case"].items() if key not in {"settings", "stop_criteria", "mesh_policy_report", "loss_recording"}}}
         return {"frequencies": frequencies, "s11": reflections, "impedance": impedances, "identity": identity,
                 "plan": plan, "settings": settings, "lines": lines, "native_cells": count, "pml": pml}
     except (KeyError, TypeError, IndexError, OverflowError) as error:

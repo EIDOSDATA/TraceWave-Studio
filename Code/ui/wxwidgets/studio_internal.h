@@ -58,6 +58,7 @@ enum
     IdRunSolver,
     IdCancelSolver,
     IdRadiation,
+    IdProjectStudy,
     IdLayer,
     IdDielectric,
     IdExportStep,

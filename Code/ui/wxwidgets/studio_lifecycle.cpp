@@ -1,6 +1,7 @@
 /** @file @brief 주 창의 lifecycle 책임을 구현한다. */
 #include "studio_internal.h"
 #include "pcb_selection_dialog.h"
+#include "project_study_dialog.h"
 
 void StudioFrame::Failure(const std::string& message, bool disconnected)
 {
@@ -10,6 +11,10 @@ void StudioFrame::Failure(const std::string& message, bool disconnected)
     m_jobComplete = {};
     if (disconnected)
     {
+        if (m_studyDialog != nullptr)
+        {
+            m_studyDialog->ServiceDisconnected(message);
+        }
         if (m_pcbDialog != nullptr)
         {
             m_pcbDialog->ServiceDisconnected(message);
@@ -58,6 +63,10 @@ void StudioFrame::OnClose(wxCloseEvent& event)
     if (m_closing)
     {
         return;
+    }
+    if (m_studyDialog != nullptr)
+    {
+        m_studyDialog->Close();
     }
     /** @brief 스택 소유 대화상자가 반환되기 전에 부모와 자식을 파괴하지 않는다. */
     if (m_pcbDialog != nullptr)

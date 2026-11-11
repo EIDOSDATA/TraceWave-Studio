@@ -23,6 +23,8 @@ from rfad.application.project_repository import ProjectRepository
 from rfad.application.request_ledger import RequestLedger
 from rfad.application.pcb_selection import PcbSelectionCoordinator
 from rfad.application.pcb_selection_contract import MUTATION_METHODS as PCB_SELECTION_MUTATIONS
+from rfad.application.project_studies import StudyCoordinator
+from rfad.application.project_study_contract import MUTATIONS as STUDY_MUTATIONS
 from rfad.domain.errors import ProjectError
 from rfad.storage.journal import Journal
 
@@ -31,7 +33,7 @@ ASYNC_METHODS = {
 } | CAD_METHODS | SOLVER_METHODS
 MUTATION_METHODS = ASYNC_METHODS | {
     "project.apply_command", "editor.apply", "canvas.apply", "project.undo", "project.redo", "job.cancel",
-} | PCB_SELECTION_MUTATIONS
+} | PCB_SELECTION_MUTATIONS | STUDY_MUTATIONS
 
 
 class ProjectService:
@@ -57,6 +59,7 @@ class ProjectService:
         self._worker_error = None
         self.cad = CadCoordinator(self, cad_runtime)
         self.solver = SolverCoordinator(self, solver_runtime)
+        self.studies = StudyCoordinator(self)
         self.journal = Journal(self.workspace, {
             "schema_version": "rfad.workspace/0.1", "epochs": {}, "projects": {},
             "paths": {}, "receipts": {}, "jobs": {}, "snapshots": {}, "commands": {},
@@ -74,6 +77,7 @@ class ProjectService:
                 self._wake.set()
                 self.cad.start()
                 self.solver.start()
+                self.studies.start()
         except BaseException:
             self.close()
             raise
@@ -90,6 +94,7 @@ class ProjectService:
         """! @brief 실행 중인 원자적 작업을 마친 뒤 종료한다."""
         self._stop.set()
         self._wake.set()
+        self.studies.close()
         self.cad.close()
         self.solver.close()
         if self._thread is not None:
@@ -111,6 +116,10 @@ class ProjectService:
             """! @brief 기존 개정과 작업을 보존하면서 복구 및 epoch 발급을 함께 게시한다."""
             if state.get("schema_version") != "rfad.workspace/0.1":
                 raise ProjectError("E_VERSION", "지원하지 않는 작업 영역 버전입니다.")
+            if recover:
+                self.studies.recover(state)
+            else:
+                state.setdefault("studies", {})
             for name in ("analysis_plans", "prepared_plans", "solver_results"):
                 state.setdefault(name, {})
             self.history.restore(state, limit=MAX_HISTORY)
@@ -168,7 +177,11 @@ class ProjectService:
 
     def _preflight(self, method: str, context: dict, data: dict) -> None:
         """! @brief 기능별 요청 계약에 따라 접수 가능 여부를 검사한다."""
-        if method in PCB_SELECTION_MUTATIONS:
+        if method in STUDY_MUTATIONS:
+            from rfad.application.project_study_contract import validate_input
+
+            validate_input(method, context, data)
+        elif method in PCB_SELECTION_MUTATIONS:
             self.pcb_selection.validate_input(method, context, data)
         elif method in CAD_METHODS | {"export.preview"}:
             self.cad.validate_input(method, context, data)
@@ -185,12 +198,15 @@ class ProjectService:
         self._wake.set()
         self.cad.wake.set()
         self.solver.wake.set()
+        self.studies.wake.set()
         return result
 
     def _dispatch_mutation(self, state: dict, method: str, context: dict, data: dict) -> dict:
         """! @brief 영수증과 동일한 transaction에서 기능별 명령을 실행한다."""
         self._preflight(method, context, data)
-        if method == "project.apply_command":
+        if method in STUDY_MUTATIONS:
+            return self.studies.admit(state, method, context, data)
+        elif method == "project.apply_command":
             if data["type"] == "pcb_stackup.apply":
                 raise ProjectError("E_UNSUPPORTED", "적층 적용은 pcb.selection.preview와 pcb.selection.apply를 사용하십시오.")
             return self._apply(state, context, data)

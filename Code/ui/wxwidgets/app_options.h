@@ -24,4 +24,7 @@ struct Options
     bool solverSmoke = false;
     bool solverExpectFailure = false;
     wxString solverSettings;
+    bool studySmoke = false;
+    bool studyExpectFailure = false;
+    wxString studySpecification;
 };

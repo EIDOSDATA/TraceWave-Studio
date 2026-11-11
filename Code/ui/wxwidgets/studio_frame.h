@@ -33,6 +33,7 @@ class wxListCtrl;
 class wxSpinCtrlDouble;
 class wxTreeCtrl;
 class wxPanel;
+class ProjectStudyDialog;
 class wxThreadEvent;
 
 /** @brief 표시와 이벤트 연결을 맡고 작업 진행은 독립 상태 객체에 위임하는 주 창이다. */
@@ -54,6 +55,8 @@ private:
 
     /** @brief 프로젝트 메타데이터와 선택 객체의 서비스 기반 입력 폼을 구성한다. */
     void BuildInterface();
+    /** @brief 현재 프로젝트의 원본을 보존하는 연구 설정/진행 창을 연다. */
+    void OpenProjectStudy();
     /** @brief 기존 입력을 적용한 뒤 PCB 자료 검색과 적층 검토 화면을 연다. */
     void OpenPcbSelection();
     /** @brief 응답 처리 타이머가 반환한 뒤 별도 이벤트에서 모달 화면을 표시한다. */
@@ -189,6 +192,8 @@ private:
     Studio::AnalysisWorkflow m_solverWorkflow;
     Options m_options;
     PcbSelectionDialog* m_pcbDialog = nullptr;
+    ProjectStudyDialog* m_studyDialog = nullptr;
+    bool m_studySupported = false;
     bool m_closeAfterPcb = false;
     bool m_forceCloseAfterPcb = false;
     bool m_pcbSelectionSupported = false;

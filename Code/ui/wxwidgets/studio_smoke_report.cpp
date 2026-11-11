@@ -1,6 +1,7 @@
 /** @file @brief 주 창의 smoke_report 책임을 구현한다. */
 #include "studio_internal.h"
 #include "pcb_selection_dialog.h"
+#include "project_study_dialog.h"
 
 void StudioSmokeDriver::FinishSmoke(bool passed, const std::string& error)
 {
@@ -14,6 +15,10 @@ void StudioSmokeDriver::FinishSmoke(bool passed, const std::string& error)
         m_frame.m_pcbDialog->Close();
     }
     m_frame.m_finishing = true;
+    if (m_frame.m_studyDialog != nullptr)
+    {
+        m_frame.m_studyDialog->Close();
+    }
     ExitCode = passed ? 0 : 2;
     Json report{{"schema_version", "rfad.gui-smoke/0.1"},
                 {"passed", passed},
@@ -38,6 +43,9 @@ void StudioSmokeDriver::FinishSmoke(bool passed, const std::string& error)
                 {"cad_checks", m_cadChecks},
                 {"cad_result", m_frame.m_cadResult},
                 {"solver_stage", m_solverSmokeStage},
+                {"study_stage", m_studyStage},
+                {"study_checks", m_studyChecks},
+                {"study_view", m_studyView},
                 {"solver_checks", m_solverChecks},
                 {"solver_result", m_frame.m_solverResult},
                 {"solver_sample_count", m_frame.m_solverChart->SampleCount()},

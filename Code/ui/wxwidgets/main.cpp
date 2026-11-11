@@ -22,6 +22,9 @@ public:
         parser.AddSwitch("", "solver-smoke-test", "Run PCB solver GUI workflow and exit");
         parser.AddSwitch("", "solver-expect-failure", "Verify missing PCB physics inputs are rejected");
         parser.AddOption("", "solver-settings", "Explicit solver smoke settings JSON path");
+        parser.AddSwitch("", "study-smoke-test", "Run project study GUI workflow and exit");
+        parser.AddSwitch("", "study-expect-failure", "Expect study source preflight rejection");
+        parser.AddOption("", "study-specification", "Explicit study smoke specification JSON path");
         parser.AddOption("", "open-project", "Registered project path relative to workspace");
         parser.AddSwitch("", "smoke-test", "Run GUI/service smoke test and exit");
         parser.AddSwitch("", "editor-smoke-test", "Run editor/undo/restart smoke test and exit");
@@ -58,8 +61,11 @@ public:
         options.solverSmoke = parser.Found("solver-smoke-test");
         options.solverExpectFailure = parser.Found("solver-expect-failure");
         parser.Found("solver-settings", &options.solverSettings);
+        options.studySmoke = parser.Found("study-smoke-test");
+        options.studyExpectFailure = parser.Found("study-expect-failure");
+        parser.Found("study-specification", &options.studySpecification);
         options.smoke = parser.Found("smoke-test") || options.editorSmoke || options.canvasSmoke ||
-                        options.primitivesSmoke || options.cadSmoke || options.solverSmoke || options.pcbSmoke;
+                        options.primitivesSmoke || options.cadSmoke || options.solverSmoke || options.pcbSmoke || options.studySmoke;
         if (options.python.empty() || options.source.empty() || options.workspace.empty())
         {
             wxMessageBox(Display("--python, --source, --workspace 경로를 지정하십시오."), Display("실행 설정"),

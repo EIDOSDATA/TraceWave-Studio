@@ -13,6 +13,7 @@ void StudioFrame::BuildSolverInterface()
     m_recordRadiation = new wxCheckBox(panel, wxID_ANY, Display("NF2FF 기록"));
     tools->Add(m_recordRadiation, 0, wxALL | wxALIGN_CENTER_VERTICAL, 4);
     AddTool(panel, tools, IdRadiation, "방사 패턴 조회");
+    AddTool(panel, tools, IdProjectStudy, "프로젝트 연구");
     layout->Add(tools, 0, wxEXPAND | wxALL, 4);
     m_solverMetric = new wxChoice(panel, wxID_ANY);
     for (const auto* name : {"S11 (dB)", "VSWR", "Z (ohm): Re / Im"})

@@ -1,5 +1,7 @@
 # 사용자 PCB의 독립 흡수 손실과 전체 전력 수지
 
+일반 프로젝트에서 이 기록/전력을 설정하고 조회하는 [연구 GUI](project_studies.md)를 연결했다. 아래 고정 CLI 검증은 당시 원본으로 유지하며 GUI는 현재 프로젝트의 매개변수/출처를 보존한 별도 연구를 만든다.
+
 설계 기준선 RFAD-D0-3.4의 PHY-054, EQ-015, EQ-016을 따른다. 승인 원문과 실제 납품 물성/제작/측정 조건은 변경하지 않는다. 기존에 사용자가 허용한 RO4350B 탐색 모델에서 소프트웨어와 수치 경로를 검증한다. 계산의 독립 적분, 선택한 잔차 한계의 충족, 실제 제품 정확도는 별개 상태다.
 
 ## 선택적 입력과 호환성
@@ -51,7 +53,7 @@ relative_residual = residual / Paccepted
 - `solver_artifacts.py`: 원시 파일과 별도 `power_balance_result`의 봉인/계획 연결 검증.
 - `tools/verify_pcb_power_balance.py`: 공개 snapshot/plan/prepare/submit/result.open 경로의 고정 검증 CLI와 CSV.
 
-요청한 실행만 `pcb_loss_E.h5`, `pcb_loss_J.h5`, `pcb_loss_rotH.h5`를 원시 manifest에 추가한다. 별도 `power_balance.json`과 정규화 결과의 `power_balance`는 동일해야 한다. 후처리 전용 실행도 봉인된 세 필드를 사용하며 FDTD를 다시 시작하지 않는다. 해석기 없는 서비스에서도 `result.open`으로 조회할 수 있다. 현재 GUI 연구 편집기와 이 전용 보고서의 시각 표시는 후속이다.
+요청한 실행만 `pcb_loss_E.h5`, `pcb_loss_J.h5`, `pcb_loss_rotH.h5`를 원시 manifest에 추가한다. 별도 `power_balance.json`과 정규화 결과의 `power_balance`는 동일해야 한다. 후처리 전용 실행도 봉인된 세 필드를 사용하며 FDTD를 다시 시작하지 않는다. 해석기 없는 서비스에서도 `result.open`으로 조회할 수 있다. 일반 프로젝트의 손실 설정과 전력 표시는 [연구 GUI](project_studies.md)에서 제공하며 이 고정 CLI 보고서의 원본은 유지한다.
 
 HDF의 primary 격자, 좌표(1e-12 m), 주파수(상대 1e-6), component/x/y/z 크기와 유한성을 확인한다. native dump의 outward snap과 XML 좌표 반올림을 고려해 primitive는 목표 격자의 안쪽에 놓고 실제 HDF가 계획한 격자와 일치하는지 검사한다. 손실 필드의 초기 기록 예산은 48 MiB이며 기존 64 MiB 파일/128 MiB 패키지 상한도 유지한다. 예상 worker 메모리에 필드 누산/후처리 비용을 추가한다.
 
@@ -68,7 +70,7 @@ $env:PYTHONPATH='src;tests;tools'
 
 ## 남은 범위
 
-PTH 독립 체적 분할, 일반 프로젝트의 연구 생성 GUI, 독립 solver 대조와 실제 제조/측정 자료 대조는 남는다. 국부 skin depth/곡선 및 기록 종료 오차를 이 초기 수지 확인으로 모두 검증한 것으로 취급하지 않는다. 실제 납품 유전율/손실/전도도, 마스크/표면처리, SMA/케이블/교정 기준면과 측정 불확도는 미정으로 유지한다.
+PTH 독립 체적 분할, 기록 거리/각도 수준을 포함한 3축 연구 GUI 행렬, 독립 solver 대조와 실제 제조/측정 자료 대조는 남는다. 국부 skin depth/곡선 및 기록 종료 오차를 이 초기 수지 확인으로 모두 검증한 것으로 취급하지 않는다. 실제 납품 유전율/손실/전도도, 마스크/표면처리, SMA/케이블/교정 기준면과 측정 불확도는 미정으로 유지한다.
 
 ## 실제 검증 기록
 

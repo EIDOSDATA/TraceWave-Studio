@@ -8,6 +8,8 @@
 
 PCB의 선택적 [독립 손실/전력 수지](pcb_power_balance.md)는 `application/pcb_power.py`의 입력/합계 검증과 `adapters/solvers/openems/pcb_absorption.py`의 native 필드 적분으로 분리한다. worker 조립기는 기능을 호출하고 원시 manifest/별도 산출물 검증은 기존 공통 계층에서 수행한다. GUI 계층에 물리 계산을 복제하지 않는다.
 
+[일반 프로젝트 연구](project_studies.md)는 `project_study_contract.py`의 입력/전체 계획, `project_study_commands.py`의 원자 생성/제어, `project_studies.py`의 상태 전이와 `project_study_results.py`의 봉인 조회/비교로 분리한다. wxWidgets는 `project_study_model.*`의 순수 입력/표시 정책, `project_study_dialog.*`와 `project_study_form.cpp`의 위젯/수명, `studio_study.cpp`의 서비스 연결로 구성한다. 연구가 없는 동안 조정기는 이벤트를 기다리며 journal을 주기적으로 다시 읽지 않는다.
+
 wxWidgets View + Presentation Model + Service Gateway 구성을 사용한다. wxWidgets의 위젯과 이벤트는 화면 계층에 두고, 해석 단계/조회/입력 표시 정책은 위젯 없이 검사할 수 있는 객체에 둔다. 원본 도메인 모델은 Python 서비스가 소유한다. 별도 MVVM 프레임워크나 유료 부품을 추가하지 않는다.
 
 ```mermaid

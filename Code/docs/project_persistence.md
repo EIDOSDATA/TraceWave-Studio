@@ -1,5 +1,7 @@
 # 프로젝트 명령, 저장과 스냅샷 0.2
 
+[일반 프로젝트 연구](project_studies.md)의 정의/진행은 프로젝트 원본과 분리한 workspace의 studies 목록과 불변 파일로 보존한다. 기존 workspace에는 목록을 추가하고 프로젝트 schema/명령/현재 revision/저장 기준/undo/redo는 변경하지 않는다. 생성은 원본 snapshot과 설정/전체 계획을 같은 transaction으로 등록하며 request key 영수증을 재사용한다. 재시작 시 미완료 연구는 중단으로 표시하고 자동으로 새 solver 작업을 만들지 않는다.
+
 이 구현은 RFAD-D0-3.4의 API-002~006, FN-001/002, SYS-036, PRJ-006/007, NFR-004 및 VT-018 일부를 구체화한다. 현재 이름/설명, 리터럴/표현식 매개변수, 기판/재료/적층/선/원호/net/단일 포트와 목적별 입력 검사를 지원한다. 필드는 [설계 데이터 0.2](design_data.md)를 따른다. 선택 속성 편집과 영속 undo/redo는 [편집 확장 profile](editor_contract.md)로 연결했다. 전체 CAD 형식, 범용 migration, 임의 이력 이동과 전체 VT-018 완료를 뜻하지 않는다.
 
 ## 실행과 지원 범위

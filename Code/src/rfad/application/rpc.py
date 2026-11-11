@@ -13,6 +13,7 @@ from rfad.domain.expressions import ENGINE_VERSION
 from rfad.application.catalog_api import METHODS as CATALOG_METHODS
 from rfad.application.catalog_api import describe as describe_catalog, query as query_catalog
 from rfad.application.pcb_selection_contract import READ_METHODS as PCB_SELECTION_READS, MUTATION_METHODS as PCB_SELECTION_MUTATIONS
+from rfad.application.project_study_contract import READS as STUDY_READS, MUTATIONS as STUDY_MUTATIONS
 
 CONTRACT_VERSION = "rfad.api/2.0"
 from rfad.domain.resource_limits import MAX_FRAME_BYTES, MAX_DOCUMENT_BYTES, MAX_SELECTION_RESULT_BYTES
@@ -31,6 +32,7 @@ APPLICATION_ERRORS = {
 PROJECT_MUTATIONS = {"project.open", "project.apply_command", "editor.apply", "canvas.apply", "project.undo", "project.redo", "project.save", "snapshot.create", "design.validate", "job.cancel", "geometry.build", "export.build", "export.preview"}
 PROJECT_MUTATIONS.update({"solver.plan", "solver.prepare", "job.submit"})
 PROJECT_MUTATIONS.update(PCB_SELECTION_MUTATIONS)
+PROJECT_MUTATIONS.update(STUDY_MUTATIONS)
 
 
 def capabilities(service=None, catalog=None) -> dict:
@@ -111,6 +113,10 @@ def capabilities(service=None, catalog=None) -> dict:
         }
         result["methods"].update({name: {"status": "implemented", "extension_profile": "rfad.solver-view/0.1"} for name in ("solver.latest", "solver.samples")})
         result["methods"]["solver.radiation"] = {"status": "implemented", "extension_profile": "rfad.radiation-chart/0.1"}
+        result["methods"].update({name: {"status": "implemented", "extension_profile": "rfad.project-study/0.1"} for name in STUDY_READS | STUDY_MUTATIONS})
+        result["study_profile"] = {"profile": "rfad.project-study/0.1", "source": "immutable_original_project_snapshot",
+                                   "max_studies": 32, "max_cases": 6, "resume_supported": True,
+                                   "automatic_restart": False, "scope": "mesh_axis_with_optional_radiation_and_loss"}
         result["editor_profile"]["create_selections"] = ["new_parameter", "new_material", "new_net", "new_port"]
         result["project_profile"]["job_kinds"].extend(["em_prepare", "em_analysis"])
         result["features"][2]["status"] = "implemented"
@@ -182,12 +188,14 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
         return _error(None, -32600, "Invalid Request")
     notification = "id" not in request
     method = request["method"]
-    if service is not None and method in PROJECT_MUTATIONS | PCB_SELECTION_READS | {"job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
+    if service is not None and method in PROJECT_MUTATIONS | PCB_SELECTION_READS | STUDY_READS | {"job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
         if notification and method in PROJECT_MUTATIONS:
             return None
         try:
             params = request.get("params")
-            if method == "pcb.selection.context":
+            if method in STUDY_READS:
+                result = service.studies.read(method, params)
+            elif method == "pcb.selection.context":
                 result = service.pcb_selection.context(params)
             elif method == "pcb.selection.preview":
                 result = service.pcb_selection.preview(params)

@@ -6,7 +6,7 @@ void StudioFrame::UpdateControls()
     const bool ready = m_connected && !m_busy && m_pcbDialog == nullptr;
     const bool opened = ready && !m_project.empty();
     const bool cadRunning = m_cadPreparing || !m_cadTask.Id().empty();
-    const bool canSwitch = ready && !cadRunning && !m_solverWorkflow.Active() && !m_solverRestoring &&
+    const bool canSwitch = ready && m_studyDialog == nullptr && !cadRunning && !m_solverWorkflow.Active() && !m_solverRestoring &&
                            !m_cadRestoring && !m_modelView->IsLoading();
     GetMenuBar()->Enable(IdCreate, canSwitch);
     GetMenuBar()->Enable(IdOpen, canSwitch);
@@ -15,6 +15,7 @@ void StudioFrame::UpdateControls()
     GetMenuBar()->Enable(IdRefresh, opened && canSwitch);
     GetMenuBar()->Enable(IdNewParameter, opened);
     GetMenuBar()->Enable(IdPcbSelection, opened && m_pcbSelectionSupported);
+    GetMenuBar()->Enable(IdProjectStudy, opened && m_studySupported);
     for (const int id : {IdNewMaterial, IdNewNet, IdNewPort})
     {
         GetMenuBar()->Enable(id, opened);
@@ -87,6 +88,10 @@ void StudioFrame::UpdateControls()
         else if (item.first == IdRadiation)
         {
             enabled = opened && !m_solverSamples.empty() && m_solverSamples.at("metadata").contains("radiation_summary");
+        }
+        else if (item.first == IdProjectStudy)
+        {
+            enabled = opened && m_studySupported;
         }
         else if (item.first == IdFit3D || item.first == IdTop3D || item.first == IdIso3D)
         {

@@ -20,6 +20,8 @@ public:
     void CadSmokeTick();
     /** @brief 실제 화면 이벤트와 결과를 검증한다. */
     void SolverSmokeTick();
+    /** @brief 일반 프로젝트 연구의 실제 화면/취소/재개/재연결을 확인한다. */
+    void StudySmokeTick();
     /** @brief 실제 화면 이벤트와 결과를 검증한다. */
     void EditorSmokeNext();
     /** @brief 실제 화면 이벤트와 결과를 검증한다. */
@@ -86,6 +88,9 @@ private:
     std::string m_solverFirstResult;
     Json m_solverChecks = Json::array();
     int m_solverSmokeStage = 0;
+    int m_studyStage = 0;
+    Json m_studyChecks = Json::array();
+    Json m_studyView = Json::object();
     wxWeakRef<RadiationDialog> m_radiationDialog;
     bool m_radiationChecked = false;
     bool m_cadErrorProbeSeen = false;

@@ -27,6 +27,7 @@ void StudioFrame::Connect()
              }
              m_epoch = result.at("idempotency_policy").at("request_key_epoch").get<std::string>();
              m_connected = true;
+             m_studySupported = result.value("methods", Json::object()).contains("study.context");
              m_pcbSelectionSupported = result.contains("pcb_selection_profile") &&
                                        result.value("methods", Json::object()).contains("pcb.selection.context");
              m_cadConfigured = result.value("cad_profile", Json::object()).value("runtime_configured", false);
@@ -75,7 +76,7 @@ void StudioFrame::Send(const std::string& method, const Json& input, bool mutati
         return;
     }
     const bool foreground =
-        method.rfind("catalog.", 0) != 0 && method.rfind("pcb.selection.", 0) != 0 && method != "cad.latest" &&
+        method.rfind("catalog.", 0) != 0 && method.rfind("pcb.selection.", 0) != 0 && method.rfind("study.", 0) != 0 && method != "cad.latest" &&
         method != "solver.latest" && method != "solver.samples" && method != "result.open" && method != "job.cancel" &&
         method != "solver.plan" && method != "solver.prepare" && method != "job.submit" &&
         !(method == "snapshot.create" && input.value("description", "") == "GUI PCB 해석 입력") &&
@@ -187,6 +188,7 @@ void StudioFrame::OnTimer(wxTimerEvent&)
         PollSolver(now);
         m_smoke->CadSmokeTick();
         m_smoke->SolverSmokeTick();
+        m_smoke->StudySmokeTick();
         m_smoke->PrimitivesSmokeTick();
         m_smoke->PcbSmokeTick();
         if (m_waitingClose &&
@@ -237,7 +239,7 @@ void StudioFrame::OnTimer(wxTimerEvent&)
                 });
         }
         if (m_options.smoke &&
-            now - m_started > std::chrono::seconds(m_options.solverSmoke ? 600 : (m_options.cadSmoke ? 180 : 60)))
+            now - m_started > std::chrono::seconds(m_options.studySmoke ? 1200 : (m_options.solverSmoke ? 600 : (m_options.cadSmoke ? 180 : 60))))
         {
             m_smoke->FinishSmoke(false, "GUI smoke timeout");
         }
