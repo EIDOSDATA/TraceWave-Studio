@@ -52,3 +52,5 @@ $env:RFAD_GUI_EXE = (Resolve-Path 'build/windows-release/bin/tracewave_gui.exe')
 실제 프로세스 시험은 작은 검증용 카탈로그로 검색/선택/입력/미리보기/적용, 기존 객체 보존, 이력과 재열기를 검사한다. DB 미설정과 지연 응답도 별도 검사한다. fixture 물성과 두께는 UI 시험용이며 실제 제작 기준이 아니다. 전체 자료의 변환/원자 적용 근거는 이전 [선택 검증 기록](../runtime_profiles/pcb-selection.json)에 보존한다. 최신 GUI 검증 수치와 제한은 [개발 상태](development_status.md)를 따른다.
 
 최종 GUI는 적용 중 부모 닫기 보류와 조회 중 부모 종료의 안전한 순서도 검사한다. 실제 전체 DB의 검색/물성/층 적용도 별도 workspace에서 통과했다. 실행 근거와 정확한 소스/바이너리는 [GUI 검증 기록](../runtime_profiles/pcb-selection-gui.json)에 기록한다.
+
+선택 후 저장한 프로젝트는 기존 STEP/해석 버튼과 같은 공개 API로 실행된다. [카탈로그 PCB 통합 검증](catalog_pcb_integration.md)의 도구는 같은 불변 스냅샷에서 CAD 생성, STEP, openEMS와 결과 재열기를 검사한다. JLC0206 검증 후보는 치수에 근거가 있어 CAD를 완료했지만 미정 손실/전도도/적용 대역 때문에 EM 실행은 차단된다. 검증 도구도 GUI도 이 값을 자동 보충하지 않는다.

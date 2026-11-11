@@ -1,0 +1,236 @@
+{
+  "schema": "rfad.verification.catalog-pcb-integration/0.1",
+  "recorded_at": "2026-11-11T06:13:24.452799+00:00",
+  "baseline_commit": "e589503d335a818ae5ac3d8dba87b97076c30bc9",
+  "design_baseline": "RFAD-D0-3.4",
+  "status": "integration_verified_manufacturer_em_needs_inputs",
+  "product_api_and_schema_changed": false,
+  "product_python_and_gui_changed": false,
+  "regression": {
+    "collected": 161,
+    "passed": 157,
+    "skipped": 4,
+    "failed": 0,
+    "elapsed_seconds": 67.453,
+    "log": {
+      "path": ".local/catalog-pcb-integration/regression.log",
+      "bytes": 40817,
+      "sha256": "3843988507ada7f0b3311ed9f38d908677e81dcdf3a65b463d507c183c80fb71"
+    },
+    "skip_scope": [
+      "separate actual catalog query",
+      "separate native CAD",
+      "separate native solver",
+      "separate native CAD+solver"
+    ]
+  },
+  "dedicated_native": {
+    "cad_unittest": {
+      "tests": 3,
+      "passed": 3,
+      "elapsed_seconds": 22.579,
+      "scope": "2 projection/input cases plus 1 actual CAD case"
+    },
+    "single_copper_solver": {
+      "tests": 1,
+      "passed": 1,
+      "elapsed_seconds": 43.968,
+      "sample_count": 31
+    },
+    "two_copper_full_chain": {
+      "tests": 1,
+      "passed": 1,
+      "elapsed_seconds": 136.123,
+      "runner_seconds": 132.31300000000192,
+      "sample_count": 51,
+      "native_statistics": {
+        "iterations": 4495,
+        "native_cells": 639693,
+        "raw_values": [
+          639693.0,
+          9.394884471983598e-13,
+          4495.0,
+          4.223000570156627e-09,
+          73.150327,
+          39308368.84707296
+        ],
+        "timestep_seconds": 9.394884471983598e-13
+      },
+      "termination": {
+        "evidence": [
+          "40.00",
+          "4495",
+          "41.03"
+        ],
+        "exact_endcriterion_schedule": true,
+        "iterations": 4495,
+        "reported_decay_db": 41.03,
+        "reported_zero_energy": false,
+        "status": "end_criterion_reached",
+        "target_energy_ratio": 0.0001
+      },
+      "assessment": {
+        "converged": true,
+        "finite_samples": true,
+        "physics_validated": false,
+        "status": "computed_unvalidated"
+      },
+      "qt_found": false,
+      "same_snapshot_for_cad_and_solver": true,
+      "postprocess_samples_identical": true,
+      "restored_without_catalog_or_workers": true,
+      "project_unchanged": true,
+      "manufactured_pcb_tested": false
+    }
+  },
+  "jlc0206": {
+    "catalog_record": "PCB040237",
+    "catalog_template": "native_template:3945cd94afe2d81e4bc7fe9d41c52b96bb1cc133fe0f5f6fdfae3081c53ef2a8",
+    "supplier_material_guaranteed": false,
+    "scope": "engineering calculator candidate plus published nominal two-layer 1 oz copper option",
+    "nominal_board_mm": 0.6,
+    "core_mm": 0.5,
+    "nominal_copper_mm": 0.035,
+    "raw_core_cladding_mm": 0.03,
+    "modeled_total_mm": 0.57,
+    "dk": 4.48,
+    "dk_frequency_known": false,
+    "em_status": "needs_inputs",
+    "em_diagnostic_count": 9,
+    "fdtd_executed": false,
+    "cad_operations": [
+      {
+        "method": "geometry.build",
+        "body_count": 3,
+        "native_reopen": {
+          "body_count": 3,
+          "brep_solids": 3,
+          "brep_valid": true,
+          "kernel_independent": false,
+          "reader": "OCP STEPCAFControl_Reader",
+          "status": "passed_same_kernel"
+        }
+      },
+      {
+        "method": "export.build",
+        "body_count": 3,
+        "native_reopen": {
+          "body_count": 3,
+          "brep_solids": 3,
+          "brep_valid": true,
+          "kernel_independent": false,
+          "reader": "OCP STEPCAFControl_Reader",
+          "status": "passed_same_kernel"
+        }
+      }
+    ],
+    "restored_without_catalog_or_workers": true,
+    "project_unchanged": true,
+    "source_urls": [
+      "https://jlcpcb.com/capabilities/pcb-capabilities",
+      "https://jlcpcb.com/resources/custom-pcb",
+      "https://jlcpcb.com/help/article/jlcpcb-copper-weight"
+    ]
+  },
+  "final_cli": {
+    "exit_code": 3,
+    "mode": "inspect",
+    "status": "needs_inputs",
+    "report_published_atomically": true
+  },
+  "evidence": {
+    "jlc_input": {
+      "path": ".local/catalog-pcb-integration/jlc0206-input.json",
+      "bytes": 19244,
+      "sha256": "f47cd868f8bbde35081465c30304e49417c476404dac31bf5ded51dbed0a14e7"
+    },
+    "jlc_cad_and_blocking": {
+      "path": ".local/catalog-pcb-integration/jlc0206-integration.json",
+      "bytes": 61187,
+      "sha256": "396d6c8ce45471e4a5d10a920351e5ffd0913e3d476eaf5df9909ed1f1a20188"
+    },
+    "jlc_final_cli": {
+      "path": ".local/catalog-pcb-integration/jlc0206-inspection-final.json",
+      "bytes": 24781,
+      "sha256": "bb68ca8bc4c1c6cc9b788eb34954d3d0758294f16ea07edc4f38912ee0a3056d"
+    },
+    "synthetic_single_copper": {
+      "path": ".local/verification/catalog-solver-native-b84f63d2d1e04eeb931a50e5d9c79854/verification.json",
+      "bytes": 27149,
+      "sha256": "890a4a968a6063a259a0ec1ec7a93e8dc4a26ac8afbeebcb8b2d011695251694"
+    },
+    "synthetic_two_copper": {
+      "path": ".local/catalog-pcb-integration/synthetic-full-2768a74b063846f8ae5e890fde019288/report.json",
+      "bytes": 75884,
+      "sha256": "6f42d7a0b177f09232952c88b2808fd86405602c24ac283021fe68ff2e791d6e"
+    }
+  },
+  "final_tool_and_test_files": [
+    {
+      "path": "tests/test_catalog_pcb_cad.py",
+      "bytes": 6447,
+      "sha256": "90aed1aa15e33f200ac2c4ad769662febbd2f65fabfdc89741989bb52b9e1003"
+    },
+    {
+      "path": "tests/test_catalog_pcb_integration.py",
+      "bytes": 7525,
+      "sha256": "e0bfd81c008b088661f9f959133a94c7507c53e2927cc21369c7cd756547e47a"
+    },
+    {
+      "path": "tests/test_catalog_pcb_solver.py",
+      "bytes": 11202,
+      "sha256": "9b31dd1da676876a191f41706806427167c9aa6f4f65c98d6d4d4cbf08a16a84"
+    },
+    {
+      "path": "tests/test_catalog_pcb_solver_native.py",
+      "bytes": 11281,
+      "sha256": "7c6dfa6c0a35e1f363b3c28dff4c6f8d6fe79a3e9a12200e77cf2d6cc21ddd2b"
+    },
+    {
+      "path": "tests/test_jlc_catalog_verification.py",
+      "bytes": 6868,
+      "sha256": "a9ef94471a20262beb1117a46bf76d02a4979e0ddaff35202e20ee75e2941d46"
+    },
+    {
+      "path": "tools/catalog_pcb_verification/__init__.py",
+      "bytes": 107,
+      "sha256": "11750ebcd6693f2eca93f3fa9265ba51d8dbc33f1013a54e66ff5ae5f212f07b"
+    },
+    {
+      "path": "tools/catalog_pcb_verification/cad.py",
+      "bytes": 13084,
+      "sha256": "e9fb8fbd472f60efe9d7f3d8758acecf1c4dfe657d8d67ade15d4488cd2b1098"
+    },
+    {
+      "path": "tools/catalog_pcb_verification/common.py",
+      "bytes": 3336,
+      "sha256": "1c6f4a20889e506d64f890aea7227902a487691163f6bc298359d140024cd59c"
+    },
+    {
+      "path": "tools/catalog_pcb_verification/runner.py",
+      "bytes": 7063,
+      "sha256": "969a298bb529d21d4573a2d4700566444cae3c5a2a563c2e573b2c73360433b8"
+    },
+    {
+      "path": "tools/catalog_pcb_verification/solver.py",
+      "bytes": 10489,
+      "sha256": "9392e0b08d336792495deaae90ab2de52919934d88542226d1f00cdf5bdeed76"
+    },
+    {
+      "path": "tools/create_jlc_catalog_verification.py",
+      "bytes": 15347,
+      "sha256": "bf585188b115f8f224549ab5aca12236ded1da83b726cc9cb4b8d579670914ef"
+    },
+    {
+      "path": "tools/verify_catalog_pcb.py",
+      "bytes": 1962,
+      "sha256": "f5361e99341cf5342876da8fdbc1d59ff07d2e071604cafb07c1bc46b81e2c30"
+    }
+  ],
+  "limitations": [
+    "Native execution evidence does not validate physical accuracy, manufacturing or independent CAD kernels.",
+    "Native runs precede final report publication and mode-filtering changes; final regression and actual inspect CLI cover those changes.",
+    "Neither two-copper fixture contains automatic lower-layer copper fill.",
+    "Actual JLC RF needs explicit applicable material loss/conductivity/band and port band; no missing values were supplied."
+  ]
+}

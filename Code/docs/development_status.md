@@ -29,7 +29,8 @@ wxWidgets, Windows 11+WSL2 우선, Linux GUI 후속, 원호/IFA, 내부 검증 �
 | WSL solver와 결과 | AnalysisPlan/PreparationArtifact/PreparedPlan, 봉인 XML 실행과 raw/정규화/출처, 독립 후처리. ext4 staging, supervisor/watchdog, nonce/lease/재접속/취소. 사각/원형 PCB 선/원호/접지 polygon/패드/PTH, 유한 도체, x/y/z gap 급전, IFA short 연결과 Yee edge 검사, GUI S11/VSWR/임피던스 | 공개 수동 조정, cache/GC, SMA/실장 급전, NF2FF와 실측 |
 | IFA 수치 안정성 | 명시적 시험 입력의 3단계 격자/3단계 경계/2단계 시간 종료 비교, 고정 물리 PML 두께와 graded air, 공개 API 실행/재개/독립 재판정, JSON/CSV/비교 그림 | 아래 실제 검증 기록의 범위만 수용. GUI 다중 결과 비교, 국부 특징/곡선/PML 셀 수 민감도, 제조/실측 정확도 |
 | PCB 카탈로그 | 전체 정리 관측/원시 적층의 중립 모델, 오프라인 SQLite 변환과 검토 사유, 읽기 전용 검색/상세 CLI 및 JSON-RPC, 원문 타입/출처/해시와 페이지 보존 | 카탈로그 갱신/배포 범위와 GUI 페이지 검색 |
-| PCB 선택/적층 적용 | 프로젝트 소유 원문 사본과 사용자 수정값, 필요한 이전 출처 보존, Dk/Df 독립 선택, 업체별 적층 초안, 변경/참조/급전 검토와 한 번의 적용/undo. 기존 직접 입력 유지 | wxWidgets 선택/단면/변경 미리보기와 선택한 실제 재료의 CAD/EM 실행 검증. 초안 저장은 제조/RF 승인과 구분 |
+| PCB 선택/적층 적용 | 프로젝트 소유 출처와 사용자 수정값, Dk/Df 독립 선택, 업체별 초안/층/급전 대응, wxWidgets 검색/단면/변경 미리보기, 원자 적용/undo. 기존 직접 입력 유지 | 업체 주문/실측 조건 확정. 초안 저장은 제조/RF 승인과 구분 |
+| 카탈로그 PCB 통합 | JLC0206 후보의 실제 CAD/STEP/mesh 재입력과 미정 RF 입력 차단. 명시적 시험 물성의 2층 IFA에서 같은 snapshot의 CAD/openEMS/재후처리/결과 재열기 통과 | JLC 후보의 손실/전도도/적용 대역 확정 후 실제 EM 계산 및 별도 수렴/물리 검증 |
 
 서비스는 rfad.api/2.0, workspace profile은 rfad.projects/0.2, 새 문서는 rfad.project/0.2다. 세부 계약은 [저장](project_persistence.md), [설계 데이터](design_data.md), [선택 속성](editor_contract.md), [2D 표시/편집](canvas_contract.md), [CAD/STEP](cad_contract.md), [worker 실행](worker_integration.md), [기초 계약](bootstrap_contract.md)을 따른다. 전체 API나 R0/R1 완료를 주장하지 않는다.
 
@@ -350,3 +351,21 @@ View, 위젯 없는 PcbSelectionModel, StudioFrame 서비스 연결을 분리했
 전체 회귀 뒤 추가한 C++ 종료 보호와 세부 진단 표시를 재빌드하여 GUI 전체를 다시 검증했다. 최종 PCB GUI 시험에는 적용 중 부모 닫기 보류, 조회 중 부모 닫기 후 모달 반환/서비스 thread 회수/timer 종료 검사가 포함된다. 전체 회귀 때와 최종 GUI의 실행 파일 해시는 별도로 기록했고 Python 제품 소스 94개는 고정 이후 동일함을 확인했다. 수정한 C++ 27개 파일의 clang-format 검사와 git diff 공백 검사도 통과했다.
 
 로그는 `.local/pcb-selection-gui`에 있으며 소스/실행 파일/로그 해시, 원자료 불변과 시각 확인 범위는 [GUI 검증 기록](../runtime_profiles/pcb-selection-gui.json)에 보존했다. 전체 시험의 스킵은 서비스 환경 안의 CAD kernel, Linux process group, 별도 활성화 WSL/native RF 및 실제 DB 지정 시험이다. 실제 DB 지정 조회는 별도 19개 실행으로 확인했다. 이번에 새 RF 계산, IFA 수렴, 제조/측정 대조와 성능 예산 검증을 수행한 것은 아니다. 원문 자료와 승인 설계 및 기존 IFA fixture는 변경하지 않았다.
+
+## 카탈로그 PCB의 CAD/해석 통합 검증 (2026-11-11)
+
+저장된 선택 PCB를 편집하지 않고 같은 snapshot의 형상/STEP/해석과 결과 재열기를 검증하는 도구를 기능별로 추가했다. API와 저장 schema, wxWidgets 및 제품 worker 코드는 유지한다. 입력 검사, CAD/STEP, 실제 openEMS, 독립 후처리와 카탈로그/worker 없는 재시작은 [통합 검증 문서](catalog_pcb_integration.md)를 따른다.
+
+사용자가 업체 선택을 위임한 JLCPCB에서 순수 코어 두께가 명확한 JLC0206 계산기 후보를 선택했다. 코어 0.500 mm, 공개 2층 1 oz 외층 명목 사양 각 0.035 mm로 모델 합계는 0.570 mm다. 공칭 0.600 mm와 원문 코어 동박 0.030 mm는 보존하고 차이를 자동 배분하지 않았다. 이 계산기 후보의 NP-155F 표기를 현재 주문 재질 보증으로 간주하지 않는다. 실제 CAD 작업 두 개와 STEP/BREP 재입력, mesh/출처/hash 및 재열기를 통과했다. Dk 4.48만 원문에서 채택했고 Df/전도도/재료 및 포트 대역의 미정 9개 입력을 보존하여 실제 JLC EM은 `needs_inputs`로 차단했다.
+
+별도 양성 대조군은 기존 `ifa_feed_smoke.json`의 명시적 물성과 치수를 합성 카탈로그에 보존한다. 두 동박층을 정의한 같은 snapshot으로 실제 CAD/STEP, WSL openEMS와 원시 자료 재후처리, 결과 재열기를 통과했다. 639,693 cells와 4,495 steps에서 에너지 종료 조건을 충족했고 주파수 표본 51개가 재후처리와 일치했다. 두 사례 모두 하부 동박층에 자동 접지면을 만들지 않는다. 제조사 재료나 안테나 정확도 검증으로 표시하지 않으며 `computed_unvalidated`, `physics_validated=false`를 유지한다.
+
+| 검증 | 결과 | 실행 시간 |
+| --- | --- | --- |
+| 카탈로그/선택/CAD 투영/PCB solver/새 도구 관련 회귀 | 161개 수집, 157개 통과, 4개 조건부 스킵, 실패 0 | 67.453초 |
+| 격리 CAD 지정 새 시험 | 3개 통과. 2개 입력/투영 검사와 1개 실제 CAD/STEP/재열기 | 22.579초 |
+| 기존 원형 fixture의 실제 solver 양성 대조군 | 1개 통과, 31개 표본, 재후처리/재열기 | 43.968초 |
+| 2층 IFA의 실제 CAD와 solver 전체 경로 | 1개 통과, 51개 표본, 같은 snapshot과 원본 불변 | 136.123초 |
+| 실제 JLC 후보의 CAD 및 RF 누락 차단 | CAD 작업 2개 통과, 실제 EM 미실행, 재열기 통과 | 17.359초 |
+
+회귀의 스킵은 별도 실제 DB 조회 1개와 위의 native 사례 3개다. 기존 전체 GUI 시험 결과를 이번 변경의 전체 회귀로 재표시하지 않았다. 보고서 원자 게시와 inspect의 native 런타임 배제는 최종 회귀 및 실제 JLC inspect CLI(입력 부족 종료 코드 3)로 확인했다. 원본 프로젝트와 자료 DB, fixture를 변경하지 않았으며 승인 문서도 유지했다. 보고서/소스 해시와 범위는 [검증 기록](../runtime_profiles/catalog-pcb-integration.json)에 있다.

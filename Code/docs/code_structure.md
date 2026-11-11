@@ -82,6 +82,8 @@ StudioFrame은 화면 사이의 연결과 서비스 DTO 캐시를 유지한다. 
 
 ## 추가 변경 규칙
 
+카탈로그 PCB 통합 검증은 제품의 공개 API를 사용하는 `tools/catalog_pcb_verification/`에 둔다. `common.py`는 RPC/대기/봉인 자료 읽기와 원자 보고서 게시, `cad.py`는 형상/STEP/mesh와 재입력, `solver.py`는 계획/준비/계산/후처리/재열기, `runner.py`는 입력 검사와 같은 snapshot의 단계 실행을 담당한다. `tools/verify_catalog_pcb.py`는 CLI만 구성한다. 실제 JLC 입력을 재현하는 도구는 시험 물성을 먼저 제거한 후 출처로 확인한 치수와 Dk만 선택하며, 제품의 재료 기본값을 변경하지 않는다.
+
 1. 새 기능은 원본 domain, application orchestration, 외부 adapter, presentation 중 책임을 먼저 정한다. 여러 책임의 동작을 진입점이나 주 창에 모두 추가하지 않는다.
 2. 화면의 입력 정책과 상태 전이는 가능한 한 wx 없는 객체로 두고, 외부 프로세스/파일 I/O는 명시적 경계에 둔다. GUI에 물리 공식/도메인 해시의 별도 구현을 만들지 않는다.
 3. 상태 필드를 늘릴 때 허용 조합과 전이를 먼저 정한다. 진행 단계는 enum/명시적 상태표, 독립적인 취소 의도/전송 상태는 별도 값으로 표현한다.

@@ -16,7 +16,9 @@
 
 2026-11-11 추가 자료 정리: `00_REF/PCB RF ANT/05_PCB_Dielectric_Data_2026`의 57,340개 관측과 공식 원문을 정리하고 회사별 엑셀을 제공했다. [PCB 재료 카탈로그 설계](pcb_material_catalog.md)에 직접 입력/소재/제조업체 선택, 구조화 출처와 원자적 적층 적용 순서를 기록했다. 이 작업은 자료와 설계 문서에 한정했으며 제품 코드/프로젝트 schema/solver 입력은 변경하지 않았다. 카탈로그 기능 구현을 시작할 때 이 문서와 자료의 검토 사유를 먼저 확인한다.
 
-PCB 선택 기능은 카탈로그 SQLite 조회에 이어 선택 출처/사용자 수정값 저장, 업체별 적층 초안과 원자적 적용/undo까지 서비스 API로 구현했다. [PCB 선택 계약](pcb_selection_contract.md)의 stdio 예제와 `tools/verify_pcb_selection.py`로 확인할 수 있다. [카탈로그 조회 계약](pcb_catalog_contract.md)의 명령으로 `.local/pcb-catalog/catalog.sqlite` 상태를 확인한다. 새 checkout에는 DB가 없으므로 원문 패키지로 build를 실행한다. 이번 선택 API 추가는 DB schema/import 버전을 변경하지 않으므로 정상 DB는 재구축할 필요가 없다. wxWidgets의 직접 입력/소재/제조업체 선택과 단면/변경 미리보기를 연결했다. [화면 사용법](pcb_selection_gui.md)에 따라 GUI를 재빌드하고 실행한다. 다음은 사용자가 실제 채택한 2층 자료와 물성으로 CAD/solver 통합 검증을 수행하는 것이다.
+PCB 선택 기능은 카탈로그 SQLite 조회에 이어 선택 출처/사용자 수정값 저장, 업체별 적층 초안과 원자적 적용/undo까지 서비스 API로 구현했다. [PCB 선택 계약](pcb_selection_contract.md)의 stdio 예제와 `tools/verify_pcb_selection.py`로 확인할 수 있다. [카탈로그 조회 계약](pcb_catalog_contract.md)의 명령으로 `.local/pcb-catalog/catalog.sqlite` 상태를 확인한다. 새 checkout에는 DB가 없으므로 원문 패키지로 build를 실행한다. 이번 선택 API 추가는 DB schema/import 버전을 변경하지 않으므로 정상 DB는 재구축할 필요가 없다. wxWidgets의 직접 입력/소재/제조업체 선택과 단면/변경 미리보기를 연결했다. [화면 사용법](pcb_selection_gui.md)에 따라 GUI를 재빌드하고 실행한다. CAD/solver 통합 검증의 현재 결과와 JLC 미정 입력은 아래 추가 기록을 따른다.
+
+2026-11-11 카탈로그 통합 후 현재 우선순위: 사용자가 업체 선택을 위임한 JLCPCB의 JLC0206 계산기 후보를 선정했다. 공개 명목 적층의 CAD/STEP/mesh와 worker 없는 재열기는 통과했고, 실제 RF 물성의 미정 9개 입력은 보존했다. 별도 명시적 시험 물성의 2층 IFA는 실제 openEMS와 재후처리/재열기까지 통과했다. 다음은 JLC 후보의 재료 손실/전도도/모델 적용 대역과 급전 대역을 근거로 확정한 뒤 동일 도구의 `full`을 실행하는 일이다. 재현 방법과 증거 구분은 [카탈로그 PCB 통합 검증](catalog_pcb_integration.md)을 따른다. 실제 공급 재질 확인과 측정/물리 검증은 계산기 후보 선택만으로 완료되지 않는다.
 
 ## 최초 재부팅 전 저장한 상태
 
