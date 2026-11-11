@@ -21,7 +21,7 @@ def main() -> int:
     root = Path(__file__).resolve().parent
     sys.path.insert(0, str(root / "src"))
     from rfad.application.canonical import canonical_bytes
-    from rfad.application.cad_jobs import CadRuntime, file_hash
+    from rfad.application.cad_runtime import CadRuntime, file_hash
     from rfad.domain.errors import ProjectError
 
     result = {"schema": "rfad.cad-worker-result/0.1", "run_id": request["run_id"],

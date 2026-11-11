@@ -1,0 +1,13 @@
+# @brief 소스 편집 시 UTF-8과 공백 네 칸을 기본으로 사용한다.
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 4
+tab_width = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{cpp,h,hpp,py}]
+end_of_line = lf

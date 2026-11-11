@@ -177,7 +177,7 @@ class WslGuestTests(unittest.TestCase):
         self.start(self.detached_worker(), timeout=0.3)
         ready = self.wait_worker()
         result = self.wait_terminal()
-        self.assertEqual(result["state"], "timeout")
+        self.assertEqual(result["state"], "timeout", result)
         self.assertTrue(result["termination_confirmed"])
         self.assert_dead(ready["child"])
 
@@ -218,15 +218,15 @@ class WslGuestTests(unittest.TestCase):
         """! @brief guest 시간 상한과 heartbeat 중단이 각각 실제 종료를 일으킨다."""
         self.start("time.sleep(30)\n", timeout=0.3)
         result = self.wait_terminal()
-        self.assertEqual(result["state"], "timeout")
+        self.assertEqual(result["state"], "timeout", result)
         self.assertTrue(result["termination_confirmed"])
 
     def test_heartbeat_loss_reaps_group(self):
         """! @brief host 사망을 흉내 낸 lease 만료 후 종료 증거와 원인을 보존한다."""
         self.start("time.sleep(30)\n", lease=0.25)
         result = self.wait_terminal(heartbeat=False)
-        self.assertEqual(result["state"], "cancelled")
-        self.assertEqual(result["reason"], "lease_expired")
+        self.assertEqual(result["state"], "cancelled", result)
+        self.assertEqual(result["reason"], "lease_expired", result)
         self.assertTrue(result["termination_confirmed"])
 
     def test_supervisor_death_watchdog_reaps_owned_tree(self):

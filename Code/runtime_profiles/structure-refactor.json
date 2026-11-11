@@ -1,0 +1,831 @@
+{
+  "schema": "rfad.verification.structure-refactor/0.1",
+  "validated_at": "2026-11-11T00:25:47.458078+00:00",
+  "baseline_commit": "091e9cf34d31bc20c9ffa3923356b958c6e0141c",
+  "design_baseline": "RFAD-D0-3.4",
+  "status": "passed",
+  "public_api_and_project_schema_changed": false,
+  "physics_algorithm_changed": false,
+  "test_runs": [
+    {
+      "name": "windows_full",
+      "collected": 530,
+      "passed": 488,
+      "skipped": 42,
+      "elapsed_seconds": 323.585,
+      "log": {
+        "path": ".local/refactor-windows-final-tests.log",
+        "bytes": 126002,
+        "sha256": "834a667ac1227b6f673699e804f07d92b28d8503f15a4355eecea9806d3bd460"
+      }
+    },
+    {
+      "name": "linux_full",
+      "collected": 530,
+      "passed": 482,
+      "skipped": 48,
+      "elapsed_seconds": 156.181,
+      "log": {
+        "path": ".local/refactor-linux-final-tests.log",
+        "bytes": 126586,
+        "sha256": "d5d0754959f17bb856639512d7c92d2abad306dd5d894c509a3d4c32d38b887f"
+      }
+    },
+    {
+      "name": "cad_native",
+      "collected": 47,
+      "passed": 47,
+      "skipped": 0,
+      "elapsed_seconds": 10.24,
+      "log": {
+        "path": ".local/refactor-cad-native-tests.log",
+        "bytes": 12527,
+        "sha256": "32f6d9b8328aaf4c605f033780789b929e2bb67ec8b3c780490987a030a510a3"
+      }
+    },
+    {
+      "name": "openems_native",
+      "collected": 22,
+      "passed": 22,
+      "skipped": 0,
+      "elapsed_seconds": 190.013,
+      "log": {
+        "path": ".local/refactor-pcb-native-tests.log",
+        "bytes": 5637,
+        "sha256": "8f0dc0ecfa1886fcb7738b71c0020ccd4d5e817831886fcc77da952d3c8d2c6f"
+      }
+    },
+    {
+      "name": "solver_shutdown_and_state",
+      "collected": 31,
+      "passed": 31,
+      "skipped": 0,
+      "elapsed_seconds": 63.3,
+      "log": {
+        "path": ".local/refactor-solver-lifecycle-final-tests.log",
+        "bytes": 8094,
+        "sha256": "1045248b8f94a93f9532a3eafb8edfb0746cbb7bfb0098ac39bc25b4522190e6"
+      }
+    },
+    {
+      "name": "wsl_guest_isolated",
+      "collected": 12,
+      "passed": 12,
+      "skipped": 0,
+      "elapsed_seconds": 19.254,
+      "log": {
+        "path": ".local/refactor-wsl-guest-service-final-tests.log",
+        "bytes": 2881,
+        "sha256": "0a2392695e2ed64fcedf3c6c8f99764e7fcd45ae1b4823b8313f10a0dd5c4faa"
+      }
+    }
+  ],
+  "ctest": {
+    "passed": 4,
+    "failed": 0,
+    "log": {
+      "path": ".local/refactor-ctest-final.log",
+      "bytes": 557,
+      "sha256": "10bd450568f90f2714400ffeaf79a8513f34fb2510df5196d839e075358c3582"
+    }
+  },
+  "gui_build": {
+    "path": ".local/refactor-gui-final-style-build.log",
+    "bytes": 2428,
+    "sha256": "2b841454e4ea80e67b20cfa25ab40139f2cdb972901c8a96933a1b545a7a1f0c"
+  },
+  "gui_binary": {
+    "path": "build/windows-release/bin/tracewave_gui.exe",
+    "bytes": 16893590,
+    "sha256": "f1547888f14e970e5c1c621d2228ff96650bb98bc83c4ace0c0f49545785a24e"
+  },
+  "source_hash_basis": "UTF-8 text, BOM excluded, universal-newline normalization",
+  "validated_source_files": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 6493,
+      "sha256": "80dd537f815c4b6938aef0e6b5f04804b8a89836274b481e43ad4da3384e4ec1"
+    },
+    {
+      "path": "src/rfad/__init__.py",
+      "bytes": 110,
+      "sha256": "637407b3c13a348c03d6a167d2a90e3703c4fc70a421cd9918075c0463d81097"
+    },
+    {
+      "path": "src/rfad/__main__.py",
+      "bytes": 2265,
+      "sha256": "4f765b683dd28c7a8ff8bec1fe846039c34664c024ceccdadf0a40f4bac1b92a"
+    },
+    {
+      "path": "src/rfad/adapters/__init__.py",
+      "bytes": 102,
+      "sha256": "e4be3b367495a970767105766bbd0895df057c4a53a3a39087bfe316171d0837"
+    },
+    {
+      "path": "src/rfad/adapters/cad/__init__.py",
+      "bytes": 99,
+      "sha256": "031a455542eba8f6df8c996b243a3210041b80cbb40b04208f0c639469e3df83"
+    },
+    {
+      "path": "src/rfad/adapters/cad/bodies.py",
+      "bytes": 10106,
+      "sha256": "3888b329266ef6e69e51009b3800561347aafbd74e3bfdfd619fe40a343f341a"
+    },
+    {
+      "path": "src/rfad/adapters/cad/display.py",
+      "bytes": 3442,
+      "sha256": "f9dcca816110978ff318a17c2136cda9d973ded99e129fa260a4805eba4ff949"
+    },
+    {
+      "path": "src/rfad/adapters/cad/geometry.py",
+      "bytes": 16629,
+      "sha256": "48305c116a58ab5a8dc0941c2574fcbf3739f05177c2e2eddf8865fb702e5445"
+    },
+    {
+      "path": "src/rfad/adapters/cad/native.py",
+      "bytes": 6831,
+      "sha256": "ce449003671876da7b324f7a9462518e4df9b7d3ace88d0f5f4b5623fec334cd"
+    },
+    {
+      "path": "src/rfad/adapters/cad/step_io.py",
+      "bytes": 6569,
+      "sha256": "a3b4e77091966ca809c92b735188c027b919f64ff4beedd4f6bd9b4bf4c86494"
+    },
+    {
+      "path": "src/rfad/adapters/solvers/__init__.py",
+      "bytes": 73,
+      "sha256": "64a5e0f0c806546fe9b2dab2f2394a02b77fb76afd1ff88a0979157ddd96bf5a"
+    },
+    {
+      "path": "src/rfad/adapters/solvers/openems/__init__.py",
+      "bytes": 77,
+      "sha256": "975618264c1614c71937b4baa15138f7aca694e4700ec4df2d8a67100ee90c61"
+    },
+    {
+      "path": "src/rfad/adapters/solvers/openems/native.py",
+      "bytes": 27680,
+      "sha256": "2ac0e46f88de23fa8b222d22fac4f13f79e502cef6dbb67b0c180fd6df71f22f"
+    },
+    {
+      "path": "src/rfad/adapters/solvers/openems/pcb.py",
+      "bytes": 16193,
+      "sha256": "fd80933f9933bac4261f8e6d817e37dd8d6ee29ac0d8373474f552f3d83d8463"
+    },
+    {
+      "path": "src/rfad/adapters/solvers/openems/pcb_mesh.py",
+      "bytes": 8774,
+      "sha256": "7edf8206be603296ab8fa57b2377c61d22bb51a9b0e436db9cc7d9db94020130"
+    },
+    {
+      "path": "src/rfad/adapters/solvers/openems/reference.py",
+      "bytes": 6517,
+      "sha256": "e3bdb5aa463aa971a62cde5f466827b2423d895285dea595d2be81417f282951"
+    },
+    {
+      "path": "src/rfad/application/__init__.py",
+      "bytes": 325,
+      "sha256": "883e15b18f72a85626c6634d255886596dc1bf71ae64b8aebb9b5c32b3896bc7"
+    },
+    {
+      "path": "src/rfad/application/cad.py",
+      "bytes": 16071,
+      "sha256": "54e295d3f22dc7d4ee07dab0e584d99507df1e1cc54278ba4d471d1cf108dc26"
+    },
+    {
+      "path": "src/rfad/application/cad_artifacts.py",
+      "bytes": 6438,
+      "sha256": "2ca670179c64d31844467fc2b2b1d1bc88abef2773d7553fcedb187334807106"
+    },
+    {
+      "path": "src/rfad/application/cad_jobs.py",
+      "bytes": 17178,
+      "sha256": "49004db60d22fe8eea44479192185415ff5488b9a99405f637e3d916a784800a"
+    },
+    {
+      "path": "src/rfad/application/cad_runtime.py",
+      "bytes": 3806,
+      "sha256": "40031475f5dd58288eef59154d23ab578cf71f3c31d998aa6e05ac0858955eaa"
+    },
+    {
+      "path": "src/rfad/application/canonical.py",
+      "bytes": 5534,
+      "sha256": "f3b263089ad802d6924aea481c46a890e9baa7297bb5daef659394b1ef2be420"
+    },
+    {
+      "path": "src/rfad/application/canvas.py",
+      "bytes": 18449,
+      "sha256": "5b4d34afa804d3443fe697a8da96aee268972ef9f3c92089f5e583000559d9c7"
+    },
+    {
+      "path": "src/rfad/application/convergence.py",
+      "bytes": 20955,
+      "sha256": "0150f4d1b348c6f4fa262614174e66627f7f6e2c6564073cf1e6e8ead36993e8"
+    },
+    {
+      "path": "src/rfad/application/display_mesh.py",
+      "bytes": 5261,
+      "sha256": "06325f60b351904c6833e317f27f1ff0a6dfd982acbf15c02cf3c91cdcc0049c"
+    },
+    {
+      "path": "src/rfad/application/editor.py",
+      "bytes": 30358,
+      "sha256": "9703280b9153c7a156106b70cd3aad2236bbe6c755335ce60dc960790dd7ffb4"
+    },
+    {
+      "path": "src/rfad/application/job_state.py",
+      "bytes": 2384,
+      "sha256": "cefaff8cb314d8e023b7abf89bd9a72ceb67bcf6515f92861dfc5746a47da142"
+    },
+    {
+      "path": "src/rfad/application/native_process.py",
+      "bytes": 20662,
+      "sha256": "5f1b625eee607ab5a21fe304827f89542bc5fdb7fd1ede2b89c469088497badf"
+    },
+    {
+      "path": "src/rfad/application/pcb_contacts.py",
+      "bytes": 15097,
+      "sha256": "3a5eddd3f269712c07c40e5906c81be0095381f3af32bfaf495c89fa948aa595"
+    },
+    {
+      "path": "src/rfad/application/pcb_geometry.py",
+      "bytes": 8841,
+      "sha256": "fcf37f157251bce8a71a78290c3ea0b97c1459c113598eb918b9e662c547eca1"
+    },
+    {
+      "path": "src/rfad/application/pcb_mesh.py",
+      "bytes": 12002,
+      "sha256": "ed14ba4c91e586b058db1314d2cc7109ac6b830b991e1ec782e7145d500a987d"
+    },
+    {
+      "path": "src/rfad/application/pcb_projection.py",
+      "bytes": 21422,
+      "sha256": "dde99605582ad8de0ef7146b6bfb77dbc73b5cc444cd129894d00b3ffd54b05e"
+    },
+    {
+      "path": "src/rfad/application/pcb_results.py",
+      "bytes": 10526,
+      "sha256": "396e0eb1a574b1c13f54ae48992c1931aa4780b2ee1a8fcc14b391d9865f826f"
+    },
+    {
+      "path": "src/rfad/application/pcb_solver.py",
+      "bytes": 5682,
+      "sha256": "77893571a4a18a8cc6eb3f70d666cec7162a78ced7f4064d6e888202262a5d5f"
+    },
+    {
+      "path": "src/rfad/application/project_contract.py",
+      "bytes": 4998,
+      "sha256": "7b14e7e9fc079e13f6de8773df0a7338618d07835f5dd75622fa69a709372694"
+    },
+    {
+      "path": "src/rfad/application/project_history.py",
+      "bytes": 6937,
+      "sha256": "6c7514c679fb3b4f145fac53ae05961f7742b1e18bb6ed9468c58a1f797a605a"
+    },
+    {
+      "path": "src/rfad/application/project_operations.py",
+      "bytes": 6318,
+      "sha256": "81b2b3ac056ab30abf982457d3dcde6b7a879d42eb7449798ecde93512bdf5fa"
+    },
+    {
+      "path": "src/rfad/application/project_repository.py",
+      "bytes": 2863,
+      "sha256": "bf26125cb23e8c4f412fc0bb8a1f72ebb2b77994fe7345a022d9bcbffd22a3b5"
+    },
+    {
+      "path": "src/rfad/application/projects.py",
+      "bytes": 20669,
+      "sha256": "5044cce82a84443b32e411da947ba7d142cd37a0157e25adcde1ffe738df03dd"
+    },
+    {
+      "path": "src/rfad/application/request_ledger.py",
+      "bytes": 4858,
+      "sha256": "59bfcdedaa6a5bbca8f3437a1b8e19477f91dfc4024f3c672d75a705d0355e02"
+    },
+    {
+      "path": "src/rfad/application/rpc.py",
+      "bytes": 15705,
+      "sha256": "c0b4558fc399ba5cc41bbce78ea436d318ea69e5c12980916e5ecb2c8679187e"
+    },
+    {
+      "path": "src/rfad/application/solver.py",
+      "bytes": 18428,
+      "sha256": "eecc64140af223a070e4ba7c5820c9db0553ecde53dfd5623d1fb9fc41f65e89"
+    },
+    {
+      "path": "src/rfad/application/solver_artifacts.py",
+      "bytes": 13422,
+      "sha256": "42b27e6a4f1d4f4ab08a7ffc34f56470d5dd0e28a5857723b4439d7b406ab74b"
+    },
+    {
+      "path": "src/rfad/application/solver_jobs.py",
+      "bytes": 24190,
+      "sha256": "912e161298d9539107c00638b873813c53017e9c8ec372b45610244f075c5196"
+    },
+    {
+      "path": "src/rfad/application/solver_queries.py",
+      "bytes": 5803,
+      "sha256": "3a6b9b8788fb2cc182d233c89dbc784055ee149626fb66f44c48d44943eb6efb"
+    },
+    {
+      "path": "src/rfad/application/solver_requests.py",
+      "bytes": 3890,
+      "sha256": "8393ae77b244b8db619d7b90180ee83eeee1495ca41344c96b4d85cebb71b7ba"
+    },
+    {
+      "path": "src/rfad/application/solver_runtime.py",
+      "bytes": 4867,
+      "sha256": "5fcbecd822ed84a12ffb0857fc73d5471ca55309ce4e43759b17474fbc7f7a59"
+    },
+    {
+      "path": "src/rfad/application/wsl_process.py",
+      "bytes": 18901,
+      "sha256": "5f9ef1de2d89dae37b6f84109ff408806733aa21cf41320a2b2ae8467296900c"
+    },
+    {
+      "path": "src/rfad/cli/__init__.py",
+      "bytes": 96,
+      "sha256": "5ffd0914ed2f6746b578e0d30eabda8bd5b306c5a368ec8ec0dd87b3a669aa1b"
+    },
+    {
+      "path": "src/rfad/cli/doctor.py",
+      "bytes": 11085,
+      "sha256": "80be1ab1fc4d387178f6b70cc4a1241b21c793d33648660c443ce9a3946139fb"
+    },
+    {
+      "path": "src/rfad/domain/__init__.py",
+      "bytes": 239,
+      "sha256": "f7905c21d7293db23c8736b154cfa4e737b28788376ae2314c73e75259356e67"
+    },
+    {
+      "path": "src/rfad/domain/design.py",
+      "bytes": 34865,
+      "sha256": "61a4e9fea5370dde3a538c4670e0fc7defc85594e5d6b7d49b6a341ead39e511"
+    },
+    {
+      "path": "src/rfad/domain/errors.py",
+      "bytes": 1059,
+      "sha256": "e8dc2d8e54fd71ca35af28d538c214687cdefeba035443aeeaee992cc55697d6"
+    },
+    {
+      "path": "src/rfad/domain/expressions.py",
+      "bytes": 20082,
+      "sha256": "4387895d32e28e838db10a1e7b0c9d2c2f5a2f5c4d8e64386ad02b0ed46c1bb5"
+    },
+    {
+      "path": "src/rfad/domain/parameter_graph.py",
+      "bytes": 5343,
+      "sha256": "3afa704b61fe6cce2f64d175df455e227604223eab90c71166f957d5f24e4b36"
+    },
+    {
+      "path": "src/rfad/domain/planar.py",
+      "bytes": 8072,
+      "sha256": "a5fb63c7bfb7f1813917404095b696ab6e70eb71d7f0059508dbae31024e5e3f"
+    },
+    {
+      "path": "src/rfad/domain/project.py",
+      "bytes": 18549,
+      "sha256": "7dbfb298ad0543b716236b92ede8d7953e51b83056f7922076efccf54c84ea3e"
+    },
+    {
+      "path": "src/rfad/domain/units.py",
+      "bytes": 8754,
+      "sha256": "f02c8095e7ae3b8022ac3d7718363d1cbffdd6b876506122ecd259cf4cda2247"
+    },
+    {
+      "path": "src/rfad/storage/__init__.py",
+      "bytes": 152,
+      "sha256": "ca4c257ab77186c72310cd6e4b1ae31e30f97b41d0ca4075b5760ad672a2e270"
+    },
+    {
+      "path": "src/rfad/storage/journal.py",
+      "bytes": 24021,
+      "sha256": "324f2e69b768e893b5e02fc24273754ec0ad3ca4641ee2d589a3b9479dfe555b"
+    },
+    {
+      "path": "ui/wxwidgets/analysis_workflow.cpp",
+      "bytes": 4015,
+      "sha256": "6b11d1ed8f438f84247ec42e41553cb3acd41233f87dc3af463913bed9b8aa3d"
+    },
+    {
+      "path": "ui/wxwidgets/analysis_workflow.h",
+      "bytes": 1745,
+      "sha256": "14100ed33af8db925b31cf52f04da7960aeb0d3ed0733ce8a86061d3fd5b0e30"
+    },
+    {
+      "path": "ui/wxwidgets/app_options.h",
+      "bytes": 694,
+      "sha256": "bc52889599f99b7a5fd9f54a8914605ce80f49c512afb6ef546ee3af587af759"
+    },
+    {
+      "path": "ui/wxwidgets/async_state.cpp",
+      "bytes": 3732,
+      "sha256": "0d0b95429ad9856ad979317723f781cf36f82f55ec7af399eccf10c27ea9a477"
+    },
+    {
+      "path": "ui/wxwidgets/async_state.h",
+      "bytes": 2826,
+      "sha256": "dbfc7968ad476bcebb19f382dc9e901e65a686aad768df5d4396b17b4b7c8184"
+    },
+    {
+      "path": "ui/wxwidgets/canvas_geometry.h",
+      "bytes": 6537,
+      "sha256": "25cb135f6274b06277d94af409df22629d14b40952333003ea4394a72647e37d"
+    },
+    {
+      "path": "ui/wxwidgets/canvas_gesture.h",
+      "bytes": 1328,
+      "sha256": "1d9422c7b333aeb7faacc8164b4c7fb31d5b31e446c4740ee157f66c1bbfefa0"
+    },
+    {
+      "path": "ui/wxwidgets/canvas_renderer.cpp",
+      "bytes": 8146,
+      "sha256": "6a8856314aa0cfbcdfbc4504b674c173100ffa8b3961df276a4850707002ca8f"
+    },
+    {
+      "path": "ui/wxwidgets/canvas_renderer.h",
+      "bytes": 773,
+      "sha256": "5a5f159a042f62f11b0ad9bc8e06235c399523f085747287ff1f9dc0c37eaa97"
+    },
+    {
+      "path": "ui/wxwidgets/canvas_scene.cpp",
+      "bytes": 15863,
+      "sha256": "c3ff632b5ffeb1774f08ffdaa7028d37998ff75f8e9cb1ec7c1c0daf64ec076f"
+    },
+    {
+      "path": "ui/wxwidgets/canvas_scene.h",
+      "bytes": 1896,
+      "sha256": "22ce007df287b0893f003a9ac062426eeaf68bf51512d8193387359d0444f252"
+    },
+    {
+      "path": "ui/wxwidgets/canvas_viewport.cpp",
+      "bytes": 2483,
+      "sha256": "0f06e0280847c47b5d277083c32745dc4ba1d2e8b6afcba2692c2dff10b31d06"
+    },
+    {
+      "path": "ui/wxwidgets/canvas_viewport.h",
+      "bytes": 486,
+      "sha256": "c430b5eeaa4f9ab25b3722f01c27e43a04dfb32f29e47654927e25fe48bcabf4"
+    },
+    {
+      "path": "ui/wxwidgets/coordinate_editor_dialog.cpp",
+      "bytes": 7268,
+      "sha256": "b48aa039a67ddb3af18875da5c03408a4ee746e4fb07b45366f34ad1b738eac4"
+    },
+    {
+      "path": "ui/wxwidgets/coordinate_editor_dialog.h",
+      "bytes": 841,
+      "sha256": "a57da2e0f0f208b1ba61fd04bc7dc277e8fef95418f8247a0bd92804c068dc15"
+    },
+    {
+      "path": "ui/wxwidgets/design_canvas.cpp",
+      "bytes": 20843,
+      "sha256": "c9281dda620cc05c3a8617621eabffc1e99b695179c9ef4613b18132b94b9806"
+    },
+    {
+      "path": "ui/wxwidgets/design_canvas.h",
+      "bytes": 3099,
+      "sha256": "ae0e083bea53a8daf3bd05b9bfe12691c68e6057eabb721791061252c8be5b2f"
+    },
+    {
+      "path": "ui/wxwidgets/display_mesh.h",
+      "bytes": 18490,
+      "sha256": "3574d1211bebe3aa665c769751d222db75a08d239cab9f32d2e5f841caf14f4a"
+    },
+    {
+      "path": "ui/wxwidgets/editor_panel.cpp",
+      "bytes": 23130,
+      "sha256": "26c70105e073f8adbd14a96b23b582d83d9b5f9a0180db04e5d0813926e7e458"
+    },
+    {
+      "path": "ui/wxwidgets/editor_panel.h",
+      "bytes": 2401,
+      "sha256": "1f01e7a2b1ac3047e954c71e05fcce1c795187f5da728937618ac91748708c3a"
+    },
+    {
+      "path": "ui/wxwidgets/editor_presentation.cpp",
+      "bytes": 7704,
+      "sha256": "512d6522c4ccb0faf66bdb8b7b2baf282b7db8fab6eeb7f2079a48b6cf003069"
+    },
+    {
+      "path": "ui/wxwidgets/editor_presentation.h",
+      "bytes": 899,
+      "sha256": "76adc1a30b5b09830ee736d198c967399f03772cd9ed30d2cb8d8b5a5405642b"
+    },
+    {
+      "path": "ui/wxwidgets/main.cpp",
+      "bytes": 4532,
+      "sha256": "9fb31cbc1def754d854c22964cdeebf06b08030cda8be8a9fff6b61fa87ea4b7"
+    },
+    {
+      "path": "ui/wxwidgets/model_view.cpp",
+      "bytes": 19701,
+      "sha256": "7bd26c30e34d94a8a296b0a1df0c62c5cbaf3476c8fe3d68834077ef1d85075c"
+    },
+    {
+      "path": "ui/wxwidgets/model_view.h",
+      "bytes": 1312,
+      "sha256": "0f43707c2335d19de0a04ace1e92d95f0b1fcd43cb0cc5f641d9250e35036ac2"
+    },
+    {
+      "path": "ui/wxwidgets/polygon_input.h",
+      "bytes": 2180,
+      "sha256": "8a8dd40eb773087389ca0f504226ab987698cfee2e49c1d953a0056832586185"
+    },
+    {
+      "path": "ui/wxwidgets/service_client.cpp",
+      "bytes": 11340,
+      "sha256": "6e6f4ec0eb46fba56e5cc23d45ef3b04a3c638543441b853e3e5ecd627cfd7e4"
+    },
+    {
+      "path": "ui/wxwidgets/service_client.h",
+      "bytes": 2248,
+      "sha256": "6a51e12d56df1f0aa7cdac9b17a6c0a05e158ed9f4c84372b28a40fb71d35eb7"
+    },
+    {
+      "path": "ui/wxwidgets/solver_chart.h",
+      "bytes": 6688,
+      "sha256": "7030282a112f1339c9d7bb859832803bbdb396a6163c4ff1d3712546b6323584"
+    },
+    {
+      "path": "ui/wxwidgets/studio_cad.cpp",
+      "bytes": 14848,
+      "sha256": "ff6ae174e3e1cc78e3b603d83535a327b353a354c703b9c6de5b681c05b806d0"
+    },
+    {
+      "path": "ui/wxwidgets/studio_controls.cpp",
+      "bytes": 6990,
+      "sha256": "ca63b5924e4978b091f0e79cdc01b8a97b96af4319267cf8436fcc999050f481"
+    },
+    {
+      "path": "ui/wxwidgets/studio_drawing.cpp",
+      "bytes": 11664,
+      "sha256": "6d983faf8e6a9950ff14380afeaa7ee99c299b519858b200afd38578adec3eea"
+    },
+    {
+      "path": "ui/wxwidgets/studio_editing.cpp",
+      "bytes": 7339,
+      "sha256": "b06d21a8819c7f7cabce440a9152576503d34b5a81028c8df4f22241f405c025"
+    },
+    {
+      "path": "ui/wxwidgets/studio_frame.cpp",
+      "bytes": 1172,
+      "sha256": "0bfc5f76eab842596e400fddcc033027d4d1558aa8222c27cafe1c2961012684"
+    },
+    {
+      "path": "ui/wxwidgets/studio_frame.h",
+      "bytes": 13186,
+      "sha256": "68997acf1536844b48da11b109fde7141e962b5c50076355f2ecde4b50f2f798"
+    },
+    {
+      "path": "ui/wxwidgets/studio_geometry_dialogs.cpp",
+      "bytes": 12265,
+      "sha256": "c4eb3c57fb1acbea65d2c059e54a5703b8c961834ffa6503aac3053223d66c00"
+    },
+    {
+      "path": "ui/wxwidgets/studio_internal.h",
+      "bytes": 1763,
+      "sha256": "1da73714df673fd177a4f29dbf8c625712adf2aa65e45117ed28c76d39ead688"
+    },
+    {
+      "path": "ui/wxwidgets/studio_layout.cpp",
+      "bytes": 18287,
+      "sha256": "49bcb324dfdb350be2ea52790244c9109e4dddbea8e37989d3abd00ba99c4328"
+    },
+    {
+      "path": "ui/wxwidgets/studio_lifecycle.cpp",
+      "bytes": 3304,
+      "sha256": "d8061ca043a312836f8c4f04b89675d07e55cec28d8290161834e75adebd5975"
+    },
+    {
+      "path": "ui/wxwidgets/studio_project.cpp",
+      "bytes": 6897,
+      "sha256": "aedb56796ad78a507a6516ec6f728b66c3c00d484b89beb3d4cc7b426126420c"
+    },
+    {
+      "path": "ui/wxwidgets/studio_session.cpp",
+      "bytes": 9560,
+      "sha256": "352553cf88ba8e76c8639de2219f5a99acbb15c6ff10e1503708eab1a9f53686"
+    },
+    {
+      "path": "ui/wxwidgets/studio_smoke.h",
+      "bytes": 3899,
+      "sha256": "176dd3d146593a9b830807437481d16c5ac7e6407aaddb73d01e514ef1158a0a"
+    },
+    {
+      "path": "ui/wxwidgets/studio_smoke_canvas.cpp",
+      "bytes": 13003,
+      "sha256": "42a3fc0386ae44f3027a69c2b19fba259e4ce10f0905ef140d4057742ba00538"
+    },
+    {
+      "path": "ui/wxwidgets/studio_smoke_editor.cpp",
+      "bytes": 12432,
+      "sha256": "baec18019c0f8ad6ac045765eeb596bcc77b91f1931d34dc21d0498ead893612"
+    },
+    {
+      "path": "ui/wxwidgets/studio_smoke_events.cpp",
+      "bytes": 4984,
+      "sha256": "ff3090b6aa49768e3db916cfd0df7104718ca3b8f365826c67661482a76c0797"
+    },
+    {
+      "path": "ui/wxwidgets/studio_smoke_primitives.cpp",
+      "bytes": 13429,
+      "sha256": "6ba74ecaaee10a262ffe819f7fa80bbc8032965ecb420f3ba64c8e457147c043"
+    },
+    {
+      "path": "ui/wxwidgets/studio_smoke_report.cpp",
+      "bytes": 2665,
+      "sha256": "a2d0b89e09d64abfbef9847687bb2814791c3c2776fb3665d28ce8f2962a20a6"
+    },
+    {
+      "path": "ui/wxwidgets/studio_smoke_workers.cpp",
+      "bytes": 11826,
+      "sha256": "b94d7e12abbd3952147888594ed6bc85ae75054b1e36fe321e0383626a4ed28c"
+    },
+    {
+      "path": "ui/wxwidgets/studio_solver.cpp",
+      "bytes": 13866,
+      "sha256": "1c84141b0831e25999e9e5185496d8808491451a7e1d08951c4a6179f3d58eb0"
+    },
+    {
+      "path": "ui/wxwidgets/studio_support.cpp",
+      "bytes": 1544,
+      "sha256": "0f082562d03be93a488d13f14610df530c5de18ef2b4676f1adf2812ca7f174b"
+    },
+    {
+      "path": "ui/wxwidgets/studio_support.h",
+      "bytes": 588,
+      "sha256": "36a910f10179731c6e1d6cbb3426ae23b53cebbacf178b0138df13732e96ec72"
+    },
+    {
+      "path": "ui/wxwidgets/studio_types.h",
+      "bytes": 205,
+      "sha256": "e23a51b7d27adf9524a10440b63503c633922b470983915623bd349c810a6816"
+    },
+    {
+      "path": "ui/wxwidgets/studio_validation.cpp",
+      "bytes": 4713,
+      "sha256": "f40fea6d763ee0939bf419186d683e0a70d27ccf19be21ace8b5ab0206f0c33c"
+    }
+  ],
+  "sources_unchanged_during_final_checks": true,
+  "responsibility_split_sizes": [
+    {
+      "path": "ui/wxwidgets/main.cpp",
+      "before_lines": 3951,
+      "after_lines": 87
+    },
+    {
+      "path": "ui/wxwidgets/design_canvas.cpp",
+      "before_lines": 1275,
+      "after_lines": 689
+    },
+    {
+      "path": "ui/wxwidgets/editor_panel.cpp",
+      "before_lines": 896,
+      "after_lines": 620
+    },
+    {
+      "path": "src/rfad/application/projects.py",
+      "before_lines": 599,
+      "after_lines": 407
+    },
+    {
+      "path": "src/rfad/application/solver_jobs.py",
+      "before_lines": 697,
+      "after_lines": 366
+    },
+    {
+      "path": "src/rfad/application/cad_jobs.py",
+      "before_lines": 393,
+      "after_lines": 271
+    },
+    {
+      "path": "src/rfad/adapters/cad/native.py",
+      "before_lines": 642,
+      "after_lines": 100
+    },
+    {
+      "path": "src/rfad/application/pcb_solver.py",
+      "before_lines": 632,
+      "after_lines": 86
+    }
+  ],
+  "physics_parity": {
+    "status": "passed",
+    "pcb_plan_payloads": [
+      {
+        "name": "rectangle_arc",
+        "canonical_payload_sha256": "2564fd31ef78f8b69f79b91c44e87ed7e1b66e089c8cbefedae9d285649a7a94",
+        "exact_match": true
+      },
+      {
+        "name": "circle_arc",
+        "canonical_payload_sha256": "3d0f2ccbeb547a52af54b1cb76a98738e76568d9254a66542a8e8a675b80e93a",
+        "exact_match": true
+      },
+      {
+        "name": "ifa_feed_smoke",
+        "canonical_payload_sha256": "25a3c1d24db484934ca6d4003f75fb9aa489af81934578eba11d09590a8cc0df",
+        "exact_match": true
+      },
+      {
+        "name": "pth_worker_smoke",
+        "canonical_payload_sha256": "ae471620a811b79cacf8fc1d8e4ea1cbfd51b37b6d506bc56a0482ed7bf1733a",
+        "exact_match": true
+      },
+      {
+        "name": "ifa_convergence_input",
+        "canonical_payload_sha256": "269337ba66de52320cda6bf2f344290661d3dd2bfdd99cedca57a5b35637a8f0",
+        "exact_match": true
+      }
+    ],
+    "cad_functions_with_identical_ast": 25,
+    "physics_algorithm_changed": false
+  },
+  "format_check": {
+    "tool": "clang-format 22.1.8",
+    "files_checked": 31,
+    "passed": true
+  },
+  "limitations": [
+    "Line counts describe responsibility extraction, not a universal quality threshold.",
+    "Geometry/physical projection parity and native regression do not establish new measured RF accuracy.",
+    "60/30 fps, application memory budget and numerical convergence are not newly qualified by this refactor.",
+    "Historical IFA source identities and immutable results remain historical; new source cannot silently resume those runs.",
+    "Native geometry/solver tests preceded the final coordinator shutdown fix; final lifecycle and platform suites cover that fix."
+  ],
+  "unreproduced_timing_observation": {
+    "test": "test_wsl_guest.WslGuestTests.test_timeout_and_host_death_lease_expiry",
+    "observed": "One parallel Linux run returned cancelled instead of timeout; original assertion did not include the reason.",
+    "cause": "not_determined",
+    "production_code_or_deadlines_changed": false,
+    "diagnostics_added": "Failure assertion includes complete terminal result.",
+    "isolated_timeout_and_lease_repetitions": 12,
+    "isolated_repetitions_passed": true,
+    "diagnostic_log": {
+      "path": ".local/refactor-wsl-timeout-diagnostic.log",
+      "bytes": 22935,
+      "sha256": "f2bfbb1b3acce2f6e615c5941cee3fd963d83b709598d1299b3de21fac7daeeb"
+    },
+    "failed_run_log": {
+      "path": ".local/refactor-linux-timeout-interim-tests.log",
+      "bytes": 127252,
+      "sha256": "85c8ee1ed75297211453457a7260447964934623eeddf6447612e6a308871588"
+    },
+    "final_linux_suite": "Run alone after the Windows and native suites completed."
+  },
+  "resolved_intermediate_findings": [
+    "Restored the internal result-verification facade seam after the first Linux run exposed six subtest errors.",
+    "Separated user cancel_requested from confirmed service shutdown and unknown termination before final full suites.",
+    "GUI cancellation intent survives delivery retry, and stale cancel/query responses cannot modify a new job.",
+    "Queue rejection invokes failure handling without leaving a polling latch stuck."
+  ],
+  "post_validation_formatting": {
+    "change": "Removed redundant blank lines at EOF only; validated_source_files retains the original tested source identities.",
+    "verification": "Full AST including source locations is identical for all six files; the other 107 source identities are unchanged.",
+    "files": [
+      {
+        "path": "src/rfad/application/cad_artifacts.py",
+        "tested_sha256": "2ca670179c64d31844467fc2b2b1d1bc88abef2773d7553fcedb187334807106",
+        "final_sha256": "5291bee8f431f3793daebc6d84538f3d527e93523026d2c7d05ceefbc7ff0f44",
+        "final_bytes": 6437,
+        "ast_including_locations_unchanged": true
+      },
+      {
+        "path": "src/rfad/application/cad_runtime.py",
+        "tested_sha256": "40031475f5dd58288eef59154d23ab578cf71f3c31d998aa6e05ac0858955eaa",
+        "final_sha256": "41e028c00ca6932ed888a357bbfd8a6bc9c4f7c759331e9098a36c8a4a4a6e40",
+        "final_bytes": 3805,
+        "ast_including_locations_unchanged": true
+      },
+      {
+        "path": "src/rfad/application/solver_artifacts.py",
+        "tested_sha256": "42b27e6a4f1d4f4ab08a7ffc34f56470d5dd0e28a5857723b4439d7b406ab74b",
+        "final_sha256": "68a393a957228297617fab6c4d1e4c3749e4f8c3fc8912a0d336537d41650971",
+        "final_bytes": 13421,
+        "ast_including_locations_unchanged": true
+      },
+      {
+        "path": "src/rfad/application/solver_queries.py",
+        "tested_sha256": "3a6b9b8788fb2cc182d233c89dbc784055ee149626fb66f44c48d44943eb6efb",
+        "final_sha256": "8b9f63d88447084e4384f2ac4e47543893a070b8b780ee4eafe85db625f52905",
+        "final_bytes": 5802,
+        "ast_including_locations_unchanged": true
+      },
+      {
+        "path": "src/rfad/application/solver_requests.py",
+        "tested_sha256": "8393ae77b244b8db619d7b90180ee83eeee1495ca41344c96b4d85cebb71b7ba",
+        "final_sha256": "d6f62b88651e3b0cda8fd083c6c6f40e691bef4c615b8216bcdb21f5037a4c10",
+        "final_bytes": 3889,
+        "ast_including_locations_unchanged": true
+      },
+      {
+        "path": "src/rfad/application/solver_runtime.py",
+        "tested_sha256": "5fcbecd822ed84a12ffb0857fc73d5471ca55309ce4e43759b17474fbc7f7a59",
+        "final_sha256": "445afa15151a905bdaefe51cc56945477356fe92b51f9b13ec5647c782441683",
+        "final_bytes": 4866,
+        "ast_including_locations_unchanged": true
+      }
+    ]
+  }
+}

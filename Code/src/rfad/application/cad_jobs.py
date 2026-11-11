@@ -1,79 +1,20 @@
-"""! @brief 불변 CAD 입력, 격리 실행과 짧은 결과 게시를 연결한다."""
+"""! @brief CAD 작업의 접수, 격리 실행과 취소/게시 수명을 조정한다."""
 
 from copy import deepcopy
-import hashlib
 import json
-import math
 from pathlib import Path
-import re
 import threading
 from uuid import UUID, uuid4
 
 from rfad.application.cad import PROFILE, build_cad_input
-from rfad.application.canonical import canonical_bytes, canonical_hash
-from rfad.application.display_mesh import MAX_MESH_BYTES, validate_display_mesh
+from rfad.application.canonical import canonical_bytes
+from rfad.application.cad_runtime import CODE_ROOT, CadRuntime, file_hash
+from rfad.application.cad_artifacts import MAX_FILE_BYTES, MAX_PACKAGE_BYTES, seal_cad_outputs
 from rfad.application.native_process import run_native
 from rfad.domain.errors import ProjectError
 
-
-CODE_ROOT = Path(__file__).resolve().parents[3]
 CAD_METHODS = {"geometry.build", "export.build"}
-MAX_FILE_BYTES = 64 * 1024 * 1024
-MAX_PACKAGE_BYTES = 128 * 1024 * 1024
 MAX_RESULT_BYTES = 256 * 1024
-OUTPUTS = {"model.step": "step", "model.brep": "brep", "sidecar.json": "sidecar", "validation.json": "validation", "mesh.json": "display_mesh"}
-
-
-def file_hash(path: Path) -> str:
-    """! @brief 큰 native 파일도 일정 크기의 버퍼로 해시한다."""
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        while chunk := stream.read(1024 * 1024):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
-class CadRuntime:
-    """! @brief API 입력으로 변경할 수 없는 호스트 CAD 실행 설정이다."""
-
-    def __init__(self, python: Path, *, manifest: Path | None = None, entry: Path | None = None, timeout_seconds: float = 120.0):
-        """! @brief 실행 파일과 고정 설치 명세를 확인하고 실행 식별을 봉인한다."""
-        self.python = Path(python).resolve(strict=True)
-        self.manifest = (manifest or CODE_ROOT / "runtime_profiles/python-cad-windows-x64.json").resolve(strict=True)
-        self.entry = (entry or CODE_ROOT / "tools/cad_worker.py").resolve(strict=True)
-        if not self.python.is_file() or not self.entry.is_file() or not math.isfinite(timeout_seconds) or not 0 < timeout_seconds <= 600:
-            raise ProjectError("E_SCHEMA", "CAD 실행 설정 또는 시간 제한이 유효하지 않습니다.")
-        self.timeout_seconds = timeout_seconds
-        self.entry_bytes = self.entry.read_bytes()
-        source_files = {path.relative_to(CODE_ROOT).as_posix(): path.read_bytes().decode("utf-8") for path in sorted((CODE_ROOT / "src/rfad").rglob("*.py"))}
-        self.source_bytes = canonical_bytes(source_files)
-        if len(self.source_bytes) > 2 * 1024 * 1024 or len(source_files) > 128:
-            raise ProjectError("E_RESOURCE", "CAD worker 소스 묶음이 지원 상한을 초과했습니다.")
-        self.manifest_bytes = self.manifest.read_bytes()
-        if len(self.manifest_bytes) > 128 * 1024:
-            raise ProjectError("E_RESOURCE", "CAD 런타임 명세가 너무 큽니다.")
-        manifest_data = json.loads(self.manifest_bytes)
-        if manifest_data.get("schema") != "rfad.runtime.python/0.1" or manifest_data.get("qt_allowed") is not False:
-            raise ProjectError("E_VERSION", "Qt 없는 고정 CAD 런타임 명세가 필요합니다.")
-        self.identity = {
-            "profile_id": manifest_data["profile_id"],
-            "manifest_sha256": hashlib.sha256(self.manifest_bytes).hexdigest(),
-            "python_sha256": file_hash(self.python), "entry_sha256": hashlib.sha256(self.entry_bytes).hexdigest(),
-            "source_sha256": hashlib.sha256(canonical_bytes({name: hashlib.sha256(text.encode("utf-8")).hexdigest() for name, text in source_files.items()})).hexdigest(),
-        }
-
-    @staticmethod
-    def source_hash() -> str:
-        """! @brief 실제 worker가 읽는 제품 Python 소스 묶음을 식별한다."""
-        records = {path.relative_to(CODE_ROOT).as_posix(): file_hash(path) for path in sorted((CODE_ROOT / "src/rfad").rglob("*.py"))}
-        return hashlib.sha256(canonical_bytes(records)).hexdigest()
-
-    def verify(self, identity: dict) -> None:
-        """! @brief 접수 뒤 실행 파일이나 소스가 바뀌었으면 자동 실행하지 않는다."""
-        current = {**self.identity, "python_sha256": file_hash(self.python), "entry_sha256": file_hash(self.entry),
-                   "manifest_sha256": file_hash(self.manifest), "source_sha256": self.source_hash()}
-        if current != identity:
-            raise ProjectError("E_VERSION", "접수한 CAD 런타임 또는 구현이 변경되었습니다. 새 작업으로 요청하십시오.")
 
 
 class CadCoordinator:
@@ -103,7 +44,8 @@ class CadCoordinator:
         self.cancel.set()
         self.wake.set()
         if self.thread is not None:
-            self.thread.join()
+            if self.thread.ident is not None:
+                self.thread.join()
             self.thread = None
 
     @staticmethod
@@ -284,73 +226,9 @@ class CadCoordinator:
         return result.get("package", result), process, output
 
     def _seal(self, job: dict, package: dict, output: Path) -> list[dict]:
-        """! @brief 닫힌 필수 파일을 검증하고 마지막에 패키지 manifest를 만든다."""
-        if package.get("schema") != "rfad.cad-package/0.1" or package.get("status") != "generated_unverified":
-            raise ProjectError("E_HASH", "CAD 패키지 계약 또는 검증 상태가 다릅니다.")
-        files = package.get("files")
-        if type(files) is not list or len(files) != len(OUTPUTS) or {item.get("path") for item in files} != set(OUTPUTS):
-            raise ProjectError("E_HASH", "CAD 필수 파일 목록이 다르거나 중복되었습니다.")
-        if any(type(item.get("bytes")) is not int or not 0 < item["bytes"] <= MAX_FILE_BYTES for item in files) or sum(item["bytes"] for item in files) > MAX_PACKAGE_BYTES:
-            raise ProjectError("E_RESOURCE", "CAD 패키지 파일 크기가 상한을 초과했습니다.")
-        if package.get("profile") != PROFILE or package.get("source_snapshot") != job["snapshot"]:
-            raise ProjectError("E_HASH", "CAD 패키지의 원본 스냅샷 또는 출력 profile이 다릅니다.")
-        for name in ("body_count", "solid_count"):
-            if type(package.get(name)) is not int or not 0 < package[name] <= 256:
-                raise ProjectError("E_HASH", "CAD 결과의 body/solid 개수가 유효하지 않습니다.")
-        self._validate_package_contents(job, package, files)
-        state = self.service.journal.read()
-        project = state["projects"][job["context"]["project_id"]]
-        base = project["path"] + "/artifacts/" + job["run_id"]
-        artifacts = []
-        for item in files:
-            if item.get("role") != OUTPUTS[item["path"]]:
-                raise ProjectError("E_HASH", "CAD 산출물의 역할이 다릅니다.")
-            path = self.service.journal._safe_path("cad-staging/" + job["run_id"] + "/output/" + item["path"])
-            reference = self.service.journal.seal_file(base + "/" + item["path"], path, expected_sha256=item["sha256"], expected_bytes=item["bytes"])
-            artifacts.append({**reference, "artifact_id": str(uuid4()), "role": item["role"], "media_type": item["media_type"],
-                              "producer": "rfad.cad/0.1", "run_id": job["run_id"], "snapshot_id": job["snapshot"]["snapshot_id"],
-                              "profile_id": PROFILE, "status": "generated_unverified"})
-        manifest = {"schema": "rfad.cad-manifest/0.1", "run_id": job["run_id"], "snapshot": job["snapshot"],
-                    "input_sha256": job["cad"]["input"]["sha256"], "runtime": job["cad"]["runtime"],
-                    "status": "generated_unverified", "artifacts": artifacts}
-        manifest_ref = self.service.journal.put_immutable(base + "/manifest.json", canonical_bytes(manifest))
-        return [*artifacts, {**manifest_ref, "artifact_id": str(uuid4()), "role": "manifest", "media_type": "application/json",
-                            "producer": "rfad.cad/0.1", "run_id": job["run_id"], "snapshot_id": job["snapshot"]["snapshot_id"],
-                            "profile_id": PROFILE, "status": "generated_unverified"}]
+        """! @brief 검증된 CAD 파일을 게시 전 불변 저장소로 봉인한다."""
+        return seal_cad_outputs(self.service.journal, job, package, output)
 
-    def _validate_package_contents(self, job: dict, package: dict, files: list[dict]) -> None:
-        """! @brief 요청 옵션과 무관하게 실제 STEP 헤더 및 sidecar 결합을 검사한다."""
-        base = "cad-staging/" + job["run_id"] + "/output/"
-        def read_small(name, limit):
-            with self.service.journal._safe_path(base + name).open("rb") as stream:
-                raw = stream.read(limit + 1)
-            if len(raw) > limit:
-                raise ProjectError("E_RESOURCE", "CAD 메타데이터 파일이 상한을 초과했습니다.")
-            expected = next(item for item in files if item["path"] == name)
-            if len(raw) != expected["bytes"] or hashlib.sha256(raw).hexdigest() != expected["sha256"]:
-                raise ProjectError("E_HASH", "CAD 메타데이터가 선언한 파일 hash와 다릅니다.")
-            return json.loads(raw)
-        sidecar = read_small("sidecar.json", 1024 * 1024)
-        validation = read_small("validation.json", 1024 * 1024)
-        if (sidecar.get("schema") != "rfad.step-sidecar/0.1" or sidecar.get("snapshot") != job["snapshot"]
-                or sidecar.get("profile") != PROFILE or sidecar.get("run_id") != job["run_id"]
-                or sidecar.get("projection_sha256") != job["cad"]["input"]["sha256"]
-                or sidecar.get("unit") != "mm" or sidecar.get("status") != "generated_unverified"
-                or canonical_hash(sidecar.get("source_semantics")) != job["snapshot"]["content_hash"]):
-            raise ProjectError("E_HASH", "STEP sidecar가 원본 또는 현재 실행 파일에 결합되지 않았습니다.")
-        embedded = {item["path"]: item for item in sidecar.get("files", [])}
-        if embedded != {item["path"]: item for item in files if item["path"] != "sidecar.json"}:
-            raise ProjectError("E_HASH", "STEP sidecar가 실제 파일 목록과 다릅니다.")
-        if (validation.get("status") != "passed_same_kernel" or validation.get("kernel_independent") is not False
-                or sidecar.get("verification") != validation or len(sidecar.get("body_map", [])) != package["body_count"]):
-            raise ProjectError("E_HASH", "CAD 재입력 검증 근거 또는 body mapping이 다릅니다.")
-        mesh = read_small("mesh.json", MAX_MESH_BYTES)
-        validate_display_mesh(mesh, snapshot=job["snapshot"], run_id=job["run_id"], body_map=sidecar["body_map"])
-        with self.service.journal._safe_path(base + "model.step").open("rb") as stream:
-            header = stream.read(65536).decode("ascii")
-        match = re.search(r"FILE_SCHEMA\s*\(\s*\(\s*'([^']+)'\s*\)\s*\)", header)
-        if match is None or match.group(1) != package.get("step_schema") or sidecar.get("step_schema") != match.group(1) or not match.group(1).startswith("AP242_MANAGED_MODEL_BASED_3D_ENGINEERING"):
-            raise ProjectError("E_HASH", "실제 STEP schema가 AP242 profile과 다릅니다.")
 
     def _finish(self, original: dict, *, artifacts=None, package=None, process=None, error=None) -> None:
         """! @brief 늦은 실행 결과를 거부하고 상태와 artifact 참조를 함께 게시한다."""

@@ -3,6 +3,11 @@
 #include <wx/wx.h>
 #include <wx/geometry.h>
 #include <nlohmann/json.hpp>
+#include "canvas_scene.h"
+#include "canvas_viewport.h"
+#include "canvas_gesture.h"
+
+class CanvasRenderer;
 
 #include <functional>
 #include <set>
@@ -40,26 +45,7 @@ public:
     std::function<void(const std::string&)> onStatus;
 
 private:
-    struct Shape
-    {
-        std::string id;
-        std::string kind;
-        std::string label;
-        std::string layer;
-        std::string role;
-        wxPoint2DDouble start;
-        wxPoint2DDouble end;
-        wxPoint2DDouble center;
-        double radius = 0.0;
-        double startAngle = 0.0;
-        double sweepAngle = 0.0;
-        double width = 0.0;
-        std::vector<std::vector<wxPoint2DDouble>> rings;
-        std::set<std::string> spanLayers;
-        double holeRadius = 0.0;
-        bool incomplete = false;
-        bool movable = false;
-    };
+    using Shape = CanvasScene::Shape;
 
     void OnPaint(wxPaintEvent& event);
     void OnLeftDown(wxMouseEvent& event);
@@ -73,27 +59,17 @@ private:
     void OnSize(wxSizeEvent& event);
     void Status(const std::string& message);
     void ReleaseOwnedCapture();
-    void DrawGrid(wxDC& dc) const;
-    bool DrawShape(wxDC& dc, const Shape& shape, const wxPoint2DDouble& offset,
-        const wxColour& colour, bool highlight) const;
-    void DrawPreview(wxDC& dc) const;
+    void DrawPreview(wxDC& dc, CanvasRenderer& renderer) const;
     bool Visible(const Shape& shape) const;
     bool Renderable(const Shape& shape, const wxPoint2DDouble& offset = wxPoint2DDouble(0.0, 0.0)) const;
-    wxPoint2DDouble PixelPoint(const wxPoint2DDouble& point, const wxPoint2DDouble& offset) const;
+    CanvasViewport Viewport() const;
     const Shape* FindShape(const std::string& identity) const;
     Shape ArcPreview(bool clockwise) const;
     void CommitDrawing(bool clockwise);
     void Emit(const Json& action);
 
-    std::vector<Shape> m_shapes;
-    std::set<std::string> m_layers;
+    CanvasScene::Model m_scene;
     std::set<std::string> m_hiddenLayers;
-    bool m_hasBoard = false;
-    double m_boardWidth = 0.0;
-    double m_boardHeight = 0.0;
-    bool m_circularBoard = false;
-    wxPoint2DDouble m_boardCenter{0.0, 0.0};
-    double m_boardRadius = 0.0;
     wxPoint2DDouble m_viewCenter{0.0, 0.0};
     double m_pixelsPerMm = 8.0;
     std::string m_selection;
@@ -103,10 +79,7 @@ private:
     bool m_editingEnabled = true;
     bool m_showGrid = true;
     bool m_fitted = false;
-    bool m_panning = false;
-    bool m_selecting = false;
-    bool m_drawingClick = false;
-    bool m_dragging = false;
+    CanvasGestureState m_gesture;
     bool m_clockwise = false;
     wxPoint m_mouseDown;
     wxPoint m_panLast;
@@ -116,6 +89,4 @@ private:
     std::vector<wxPoint2DDouble> m_points;
     std::string m_pendingId;
     wxPoint2DDouble m_pendingOffset{0.0, 0.0};
-    std::size_t m_omissionCount = 0;
-    std::size_t m_rangeOmissionCount = 0;
 };

@@ -213,6 +213,43 @@ JSON/CSV와 PNG/SVG 비교 그림을 생성하고 그림을 확인했다. 현재
 
 최종 회귀는 실패/오류 없이 통과했다. 스킵은 OS 또는 별도 native 환경 전용 시험이다. 470개 이전 전체 시험에 비교기 24개, 실제 격자를 이용한 경계 독립 조건 5개, graded mesh 8개와 도구 7개를 추가했다. 5개 독립 조건 회귀의 응답은 합성 값이며 FDTD 정확도 증거로 세지 않는다. 이번 단계에서 GUI/CAD 구현 소스는 추가 변경하지 않았고, 같은 GUI 실행 파일을 전체 Windows 시험에서 사용했다. 실행 시간은 병행 검증 관찰값이며 성능 예산 판정이 아니다.
 
+## 코드 구조와 상태 처리 정리 (2026-11-11)
+
+집중된 주 창/서비스/worker를 [코드 구조](code_structure.md)의 책임별 모듈로 분리했다. GUI는 wxWidgets View + Presentation Model + Service Gateway를 사용한다. 진입점은 옵션과 창 생성만 수행하고, 화면 연결, 순수 표시/입력 정책, 요청 관리, 작업 조회, 해석 단계와 실제 GUI 시험 상태를 분리했다. Python 공개 API와 프로젝트 저장 schema는 유지한다.
+
+| 기존 집중 파일 | 정리 전 | 정리 후 | 분리한 책임 |
+| --- | --- | --- | --- |
+| ui/wxwidgets/main.cpp | 3951줄 | 87줄 | 기능별 화면 연결, 비동기 상태, smoke 시나리오 |
+| ui/wxwidgets/design_canvas.cpp | 1275줄 | 689줄 | scene/viewport/renderer/gesture |
+| ui/wxwidgets/editor_panel.cpp | 896줄 | 620줄 | 폼 표시 정책과 좌표 대화상자 |
+| application/projects.py | 599줄 | 407줄 | 계약/저장소/이력/파일 작업/receipt |
+| application/solver_jobs.py | 697줄 | 366줄 | runtime/요청/산출물/조회 |
+| application/cad_jobs.py | 393줄 | 271줄 | runtime과 산출물 |
+| adapters/cad/native.py | 642줄 | 100줄 | 기하/고체 집계/STEP 교환/표시 |
+| application/pcb_solver.py | 632줄 | 86줄 | 투영/도체 기하/격자/결과 검증 |
+
+줄 수는 책임 이동의 관찰값이며 품질의 단독 판정 기준이 아니다. 서비스 원본을 GUI에서 다시 계산하지 않으며, 상태 처리는 위젯 없이 검사한다. 장면 ID 색인과 polygon 좌표, paint 단위 graphics context를 재사용하고 이력 복원의 중복 읽기/색인 생성을 줄였다. `.clang-format`과 `.editorconfig`로 Allman/공백 4칸/UTF-8 편집 규칙을 추가했다.
+
+추가 검토에서 부분 시작 실패 시 thread/writer 회수, captured 문서의 정규 바이트 확인, 알 수 없는 자료 작업의 snapshot fallthrough를 보강했다. GUI 취소 의도와 전달 중 상태를 분리해 전송 실패 후 자동 단계 진행을 차단했고, 이전 job의 지연 응답과 요청 큐 포화가 새 작업/조회 상태를 손상하지 않도록 처리했다. 서버의 명시적 사용자 취소와 서비스 종료를 구분하며, 종료 미확인 작업의 예약과 기존 완료 결과는 보존한다.
+
+CAD의 기존 25개 함수 AST와 PCB 5개 사례의 계획 정규 payload(plan_id 제외)가 정리 전과 같음을 확인했다. 형상/전자기 알고리즘을 변경하거나 과거 IFA 수치 안정성 기록을 새 소스로 재작성하지 않았다. 새 source identity로 과거 native 연구를 조용히 재개하지 않으며, 기존 완료 결과의 재판정 또는 새 workspace를 사용한다. 성능 예산 합격과 실측 정확도는 별도 검증이다.
+
+| 최종 검증 | 통과 / 스킵 | 실행 시간 | 로컬 로그 |
+| --- | --- | --- | --- |
+| Windows 전체, 재빌드 GUI/CAD/WSL transport 포함 | 488 / 42 (530개 수집) | 323.585초 | .local/refactor-windows-final-tests.log |
+| Linux 서비스 전체, 단독 실행 | 482 / 48 (530개 수집) | 156.181초 | .local/refactor-linux-final-tests.log |
+| 실제 native CAD | 47 / 0 | 10.240초 | .local/refactor-cad-native-tests.log |
+| 실제 native PCB/IFA/PTH/z-port/openEMS | 22 / 0 | 190.013초 | .local/refactor-pcb-native-tests.log |
+| 최종 solver 종료/상태/수명 경계 | 31 / 0 | 63.300초 | .local/refactor-solver-lifecycle-final-tests.log |
+| 같은 Linux 환경의 guest 독립 검사 | 12 / 0 | 19.254초 | .local/refactor-wsl-guest-service-final-tests.log |
+| CTest: 표시 정책/상태/2D 기하/표시 mesh | 4 / 0 | 0.22초 | .local/refactor-ctest-final.log |
+
+최종 표의 실행은 모두 실패/오류 없이 통과했다. Windows/Linux의 스킵은 OS 또는 별도 native 환경 전용 시험이다. 514개에서 작업 상태/부분 시작 실패/프로젝트 경계/종료 경계 회귀 16개를 추가했다. 실제 GUI 입력/2D/3D/CAD/해석/취소/재시작도 Windows 전체에 포함된다. 113개 제품 소스와 GUI 바이너리/로그 hash, 물리 투영 동일성 및 범위는 [구조 정리 검증 기록](../runtime_profiles/structure-refactor.json)에 보존했다. 새 2개 CTest는 wx 없이 표시 정책과 비동기 상태를 검증하며 기존 2개 검사도 유지한다.
+
+중간 Linux 실행에서 기존 결과 검증의 내부 연결 함수 누락을 6개 subtest 오류로 확인해 호환 위임을 복원했다. 독립 검토가 찾은 서비스 종료 전이도 수정 후 전체 검증에 포함했다. 다른 병행 Linux 실행에서는 시간 제한 시험 한 번이 timeout 대신 cancelled를 반환했다. 원래 assertion에 원인이 없어 정확한 원인은 미확정이다. 운영 코드/제한값은 바꾸지 않았고 실패 시 전체 terminal 응답을 남기도록 시험 진단만 추가했다. 같은 timeout/lease 조건 12회와 같은 interpreter의 guest 전체 12개, 이후 Linux 전체 단독 실행은 통과했다. 최초 실패와 반복 진단 로그를 보존했으며 이 현상을 재현 또는 해결했다고 단정하지 않는다.
+
+커밋 직전 신규 Python 파일 6개의 파일 끝 중복 빈 줄만 제거했다. 위치 정보를 포함한 AST가 원 시험 소스와 같음을 확인했고, 나머지 107개 제품 소스는 해시가 일치한다. 검증 기록은 실제 시험 당시 해시를 보존하고 빈 줄 정리 전후의 해시를 별도로 기록한다.
+
 ## 다음 구현
 
 재부팅 직후 실행할 명령과 단계별 완료 기준은 [재부팅 후 개발 재개](reboot_resume.md)를 따른다.

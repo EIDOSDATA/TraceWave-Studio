@@ -55,6 +55,32 @@ endif()
 
 add_executable(tracewave_gui WIN32
     ui/wxwidgets/main.cpp
+    ui/wxwidgets/canvas_scene.cpp
+    ui/wxwidgets/canvas_viewport.cpp
+    ui/wxwidgets/canvas_renderer.cpp
+    ui/wxwidgets/editor_presentation.cpp
+    ui/wxwidgets/coordinate_editor_dialog.cpp
+    ui/wxwidgets/studio_smoke_events.cpp
+    ui/wxwidgets/studio_frame.cpp
+    ui/wxwidgets/studio_layout.cpp
+    ui/wxwidgets/studio_geometry_dialogs.cpp
+    ui/wxwidgets/studio_drawing.cpp
+    ui/wxwidgets/studio_validation.cpp
+    ui/wxwidgets/studio_cad.cpp
+    ui/wxwidgets/studio_solver.cpp
+    ui/wxwidgets/studio_controls.cpp
+    ui/wxwidgets/studio_session.cpp
+    ui/wxwidgets/studio_project.cpp
+    ui/wxwidgets/studio_editing.cpp
+    ui/wxwidgets/studio_lifecycle.cpp
+    ui/wxwidgets/studio_smoke_editor.cpp
+    ui/wxwidgets/studio_smoke_canvas.cpp
+    ui/wxwidgets/studio_smoke_primitives.cpp
+    ui/wxwidgets/studio_smoke_workers.cpp
+    ui/wxwidgets/studio_smoke_report.cpp
+    ui/wxwidgets/studio_support.cpp
+    ui/wxwidgets/async_state.cpp
+    ui/wxwidgets/analysis_workflow.cpp
     ui/wxwidgets/editor_panel.cpp
     ui/wxwidgets/design_canvas.cpp
     ui/wxwidgets/model_view.cpp
@@ -73,6 +99,16 @@ set_target_properties(tracewave_gui PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE
 
 include(CTest)
 if(BUILD_TESTING)
+    add_executable(tracewave_gui_presentation_tests tests/gui_presentation_test.cpp
+        ui/wxwidgets/canvas_scene.cpp ui/wxwidgets/canvas_viewport.cpp ui/wxwidgets/editor_presentation.cpp)
+    target_include_directories(tracewave_gui_presentation_tests PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
+    set_target_properties(tracewave_gui_presentation_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
+    add_test(NAME gui_presentation COMMAND tracewave_gui_presentation_tests)
+    add_executable(tracewave_gui_state_tests tests/gui_state_test.cpp
+        ui/wxwidgets/async_state.cpp ui/wxwidgets/analysis_workflow.cpp)
+    target_include_directories(tracewave_gui_state_tests PRIVATE "${RFAD_JSON_INCLUDE_DIR}")
+    set_target_properties(tracewave_gui_state_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
+    add_test(NAME gui_state COMMAND tracewave_gui_state_tests)
     add_executable(tracewave_canvas_geometry_tests tests/canvas_geometry_test.cpp)
     target_include_directories(tracewave_canvas_geometry_tests PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
     set_target_properties(tracewave_canvas_geometry_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")

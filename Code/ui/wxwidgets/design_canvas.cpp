@@ -1,8 +1,8 @@
 #include "design_canvas.h"
 #include "canvas_geometry.h"
+#include "canvas_renderer.h"
 
 #include <wx/dcbuffer.h>
-#include <wx/graphics.h>
 
 #include <algorithm>
 #include <cmath>
@@ -18,18 +18,8 @@ using Json = nlohmann::json;
 constexpr double MinimumScale = 0.0001;
 constexpr double MaximumScale = 1000000.0;
 constexpr double MinimumLength = 1e-9;
-constexpr double MaximumNativeCoordinate = 1.0e6;
-constexpr double MaximumClipCoordinate = 1.0e12;
 
-/** @brief 원본이 잘못된 경우와 현재 화면의 표시 범위를 초과한 경우를 구분한다. */
-class DisplayRangeError final : public std::runtime_error
-{
-public:
-    explicit DisplayRangeError(const char* message) : std::runtime_error(message)
-    {
-    }
-};
-
+/** @brief 표시 계층 경계에서 UTF-8 문자열을 wx 문자열로 바꾼다. */
 wxString Display(const std::string& value)
 {
     return wxString::FromUTF8(value.data(), value.size());
@@ -40,50 +30,19 @@ CanvasGeometry::Point GeometryPoint(const Point& point)
     return {point.m_x, point.m_y};
 }
 
+CanvasGeometry::Point GeometryPoint(CanvasGeometry::Point point)
+{
+    return point;
+}
+
 bool Valid(const Point& point)
 {
     return CanvasGeometry::Valid(GeometryPoint(point));
 }
 
-Point ReadPoint(const Json& value)
+Json Coordinates(const CanvasGeometry::Point& point)
 {
-    if (!value.is_array() || value.size() != 2 || !value[0].is_number() || !value[1].is_number())
-    {
-        throw std::runtime_error("표시 좌표는 두 숫자의 배열이어야 합니다.");
-    }
-    const Point point(value[0].get<double>(), value[1].get<double>());
-    if (!std::isfinite(point.m_x) || !std::isfinite(point.m_y))
-    {
-        throw std::runtime_error("표시 좌표는 유한해야 합니다.");
-    }
-    if (!Valid(point))
-    {
-        throw DisplayRangeError("현재 캔버스의 좌표 표시 범위를 초과했습니다.");
-    }
-    return point;
-}
-
-double Positive(const Json& value)
-{
-    if (!value.is_number())
-    {
-        throw std::runtime_error("표시 치수는 숫자여야 합니다.");
-    }
-    const double number = value.get<double>();
-    if (!std::isfinite(number) || number <= 0.0)
-    {
-        throw std::runtime_error("표시 치수가 유한한 양수 범위를 벗어났습니다.");
-    }
-    if (number > CanvasGeometry::MaxCoordinate)
-    {
-        throw DisplayRangeError("현재 캔버스의 치수 표시 범위를 초과했습니다.");
-    }
-    return number;
-}
-
-Json Coordinates(const Point& point)
-{
-    return Json::array({point.m_x, point.m_y});
+    return Json::array({point.x, point.y});
 }
 
 Point Subtract(const Point& left, const Point& right)
@@ -135,232 +94,16 @@ DesignCanvas::~DesignCanvas()
 /** @brief 전체 표시 DTO를 검증한 뒤 교체하여 부분 해석된 화면을 남기지 않는다. */
 void DesignCanvas::SetScene(const Json& scene)
 {
-    std::vector<Shape> shapes;
-    std::set<std::string> layers;
-    std::set<std::string> identities;
-    const Json& board = scene.at("board");
-    if (!board.is_null() && board.value("kind", "rectangle") != "rectangle" && board.value("kind", "rectangle") != "circle")
-    {
-        throw std::runtime_error("지원하지 않는 기판 외곽 표시 형식입니다.");
-    }
-    const bool circular = !board.is_null() && board.value("kind", "rectangle") == "circle";
-    bool hasBoard = !board.is_null() && (circular ?
-        (!board.at("radius").is_null() && board.at("center").is_array() && board.at("center").size() == 2 &&
-            !board.at("center").at(0).is_null() && !board.at("center").at(1).is_null()) :
-        (!board.at("width").is_null() && !board.at("height").is_null()));
-    double boardWidth = 0.0;
-    double boardHeight = 0.0;
-    double boardRadius = 0.0;
-    Point boardCenter(0.0, 0.0);
-    std::size_t rangeOmissions = 0;
-    if (hasBoard)
-    {
-        try
-        {
-            if (circular)
-            {
-                boardCenter = ReadPoint(board.at("center"));
-                boardRadius = Positive(board.at("radius"));
-            }
-            else
-            {
-                boardWidth = Positive(board.at("width"));
-                boardHeight = Positive(board.at("height"));
-            }
-        }
-        catch (const DisplayRangeError&)
-        {
-            hasBoard = false;
-            ++rangeOmissions;
-        }
-    }
-    for (const auto& layer : scene.at("layers"))
-    {
-        layers.insert(layer.at("id").get<std::string>());
-    }
-    if (!scene.at("shapes").is_array() || scene.at("shapes").size() > 4096)
-    {
-        throw std::runtime_error("초기 캔버스 표시 객체 수를 초과했습니다.");
-    }
-    for (const auto& item : scene.at("shapes"))
-    {
-        try
-        {
-            Shape shape;
-            shape.id = item.at("id").get<std::string>();
-            shape.kind = item.at("kind").get<std::string>();
-            shape.label = item.value("label", shape.id);
-            shape.layer = item.at("layer_id").get<std::string>();
-            shape.role = item.value("role", std::string("conductor"));
-            shape.width = (shape.kind == "line_path" || shape.kind == "arc_path") ? Positive(item.at("width")) : 0.0;
-            shape.movable = item.value("movable", false);
-            if (shape.id.empty() || !identities.insert(shape.id).second || !layers.count(shape.layer))
-            {
-                throw std::runtime_error("표시 객체의 식별자 또는 층 참조가 유효하지 않습니다.");
-            }
-            if (shape.kind == "line_path")
-            {
-                shape.start = ReadPoint(item.at("start"));
-                shape.end = ReadPoint(item.at("end"));
-                if (Distance(shape.start, shape.end) == 0.0)
-                {
-                    throw std::runtime_error("0 길이 선을 표시할 수 없습니다.");
-                }
-            }
-            else if (shape.kind == "arc_path")
-            {
-                shape.center = ReadPoint(item.at("center"));
-                shape.radius = Positive(item.at("radius"));
-                shape.startAngle = item.at("start_angle").get<double>();
-                shape.sweepAngle = item.at("sweep_angle").get<double>();
-                if (!std::isfinite(shape.startAngle) || !std::isfinite(shape.sweepAngle) ||
-                    shape.sweepAngle == 0.0 || std::abs(shape.sweepAngle) > 360.0 + 1e-10)
-                {
-                    throw std::runtime_error("표시 원호의 각도 구간이 유효하지 않습니다.");
-                }
-                shape.startAngle = CanvasGeometry::NormalizeDegrees(shape.startAngle);
-            }
-            else if (shape.kind == "planar_region")
-            {
-                Json rings = Json::array({item.at("outer")});
-                if (!item.at("holes").is_array() || item.at("holes").size() > 8)
-                {
-                    throw std::runtime_error("표시 다각형의 구멍 목록이 유효하지 않습니다.");
-                }
-                for (const auto& hole : item.at("holes"))
-                {
-                    rings.push_back(hole);
-                }
-                std::size_t vertices = 0;
-                for (const auto& ring : rings)
-                {
-                    if (!ring.is_array() || ring.size() < 3 || (vertices += ring.size()) > 64)
-                    {
-                        throw std::runtime_error("표시 다각형은 폐곡선마다 3점 이상, 전체 64점 이하여야 합니다.");
-                    }
-                    std::vector<Point> points;
-                    for (const auto& point : ring)
-                    {
-                        points.push_back(ReadPoint(point));
-                    }
-                    shape.rings.push_back(std::move(points));
-                }
-            }
-            else if (shape.kind == "pad")
-            {
-                shape.center = ReadPoint(item.at("center"));
-                if (!item.at("size").is_array() || item.at("size").size() != 2)
-                {
-                    throw std::runtime_error("패드 크기는 폭과 높이 두 값이어야 합니다.");
-                }
-                const double width = Positive(item.at("size").at(0)), height = Positive(item.at("size").at(1));
-                const double rotation = item.at("rotation").get<double>();
-                if (!std::isfinite(rotation))
-                {
-                    throw std::runtime_error("패드 회전은 유한한 각도여야 합니다.");
-                }
-                if (item.at("pad_shape") == "circle")
-                {
-                    if (width != height)
-                    {
-                        throw std::runtime_error("원형 패드의 두 지름이 일치하지 않습니다.");
-                    }
-                    shape.radius = width / 2.0;
-                }
-                else if (item.at("pad_shape") == "rectangle")
-                {
-                    std::vector<Point> corners;
-                    for (const auto& point : CanvasGeometry::RectanglePoints(GeometryPoint(shape.center), width, height, rotation))
-                    {
-                        if (!CanvasGeometry::Valid(point))
-                        {
-                            throw DisplayRangeError("회전 패드 외곽이 표시 좌표 범위를 초과했습니다.");
-                        }
-                        corners.emplace_back(point.x, point.y);
-                    }
-                    shape.rings.push_back(std::move(corners));
-                }
-                else
-                {
-                    throw std::runtime_error("지원하지 않는 패드 외곽입니다.");
-                }
-            }
-            else if (shape.kind == "via")
-            {
-                shape.center = ReadPoint(item.at("center"));
-                for (const auto& layer : item.at("span_layer_ids"))
-                {
-                    const std::string identity = layer.get<std::string>();
-                    if (!layers.count(identity))
-                    {
-                        throw std::runtime_error("비아 범위가 존재하지 않는 층을 참조합니다.");
-                    }
-                    shape.spanLayers.insert(identity);
-                }
-                const auto& hole = item.at("finished_hole_diameter");
-                const auto& plating = item.at("plating_thickness");
-                const auto& toolHole = item.at("tool_hole_diameter");
-                shape.incomplete = hole.is_null() || plating.is_null() || toolHole.is_null();
-                shape.holeRadius = hole.is_null() ? 0.0 : Positive(hole) / 2.0;
-                shape.radius = shape.holeRadius;
-                if (!plating.is_null())
-                {
-                    const double thickness = Positive(plating);
-                    if (!hole.is_null())
-                    {
-                        shape.radius += thickness;
-                    }
-                }
-                if (!toolHole.is_null())
-                {
-                    Positive(toolHole);
-                }
-            }
-            else
-            {
-                throw std::runtime_error("지원하지 않는 2D 표시 형상입니다.");
-            }
-            if ((shape.kind == "via" || shape.kind == "pad") && shape.rings.empty() && shape.radius > 0.0 &&
-                (std::abs(shape.center.m_x) + shape.radius > CanvasGeometry::MaxCoordinate ||
-                    std::abs(shape.center.m_y) + shape.radius > CanvasGeometry::MaxCoordinate ||
-                    shape.center.m_x - shape.radius >= shape.center.m_x + shape.radius ||
-                    shape.center.m_y - shape.radius >= shape.center.m_y + shape.radius))
-            {
-                throw DisplayRangeError("패드/비아 외곽이 표시 범위 또는 좌표 정밀도를 벗어났습니다.");
-            }
-            shapes.push_back(std::move(shape));
-        }
-        catch (const DisplayRangeError&)
-        {
-            ++rangeOmissions;
-        }
-    }
+    CanvasScene::Model parsed = CanvasScene::Model::Parse(scene);
     CancelGesture();
     m_pendingId.clear();
     m_pendingOffset = Point(0.0, 0.0);
-    std::stable_sort(shapes.begin(), shapes.end(), [](const Shape& left, const Shape& right)
-    {
-        auto order = [](const Shape& shape)
-        {
-            return shape.kind == "planar_region" ? 0 : (shape.kind == "pad" ? 2 : (shape.kind == "via" ? 3 : 1));
-        };
-        return order(left) < order(right);
-    });
-    m_shapes = std::move(shapes);
-    m_layers = std::move(layers);
-    m_hasBoard = hasBoard;
-    m_boardWidth = boardWidth;
-    m_boardHeight = boardHeight;
-    m_circularBoard = circular;
-    m_boardCenter = boardCenter;
-    m_boardRadius = boardRadius;
-    m_omissionCount = scene.contains("omissions") && scene.at("omissions").is_array() ? scene.at("omissions").size() : 0;
-    m_rangeOmissionCount = rangeOmissions;
+    m_scene = std::move(parsed);
     if (FindShape(m_selection) == nullptr)
     {
         m_selection.clear();
     }
-    if (!m_fitted && (m_hasBoard || !m_shapes.empty()))
+    if (!m_fitted && (m_scene.hasBoard || !m_scene.shapes.empty()))
     {
         FitView();
     }
@@ -464,81 +207,8 @@ void DesignCanvas::SetGridVisible(bool visible)
 void DesignCanvas::FitView()
 {
     CancelGesture();
-    double left = std::numeric_limits<double>::infinity();
-    double bottom = left;
-    double right = -left;
-    double top = -left;
-    auto include = [&](double x, double y, double padding)
-    {
-        if (!std::isfinite(x) || !std::isfinite(y) || !std::isfinite(padding))
-        {
-            return;
-        }
-        left = std::min(left, x - padding);
-        right = std::max(right, x + padding);
-        bottom = std::min(bottom, y - padding);
-        top = std::max(top, y + padding);
-    };
-    if (m_hasBoard)
-    {
-        if (m_circularBoard)
-        {
-            include(m_boardCenter.m_x, m_boardCenter.m_y, m_boardRadius);
-        }
-        else
-        {
-            include(0.0, 0.0, 0.0);
-            include(m_boardWidth, m_boardHeight, 0.0);
-        }
-    }
-    for (const Shape& shape : m_shapes)
-    {
-        if (!Visible(shape))
-        {
-            continue;
-        }
-        if (shape.kind == "line_path")
-        {
-            include(shape.start.m_x, shape.start.m_y, shape.width / 2.0);
-            include(shape.end.m_x, shape.end.m_y, shape.width / 2.0);
-        }
-        else if (shape.kind == "arc_path")
-        {
-            const auto first = CanvasGeometry::ArcPoint(GeometryPoint(shape.center), shape.radius, shape.startAngle);
-            const auto last = CanvasGeometry::ArcPoint(GeometryPoint(shape.center), shape.radius, shape.startAngle + shape.sweepAngle);
-            include(first.x, first.y, shape.width / 2.0);
-            include(last.x, last.y, shape.width / 2.0);
-            for (double angle : {0.0, 90.0, 180.0, 270.0})
-            {
-                if (CanvasGeometry::InSweep(angle, shape.startAngle, shape.sweepAngle))
-                {
-                    const auto point = CanvasGeometry::ArcPoint(GeometryPoint(shape.center), shape.radius, angle);
-                    include(point.x, point.y, shape.width / 2.0);
-                }
-            }
-        }
-        else if (!shape.rings.empty())
-        {
-            for (const auto& ring : shape.rings)
-            {
-                for (const auto& point : ring)
-                {
-                    include(point.m_x, point.m_y, 0.0);
-                }
-            }
-        }
-        else
-        {
-            include(shape.center.m_x, shape.center.m_y, shape.radius);
-        }
-    }
-    if (!std::isfinite(left))
-    {
-        left = -20.0;
-        right = 20.0;
-        bottom = -20.0;
-        top = 20.0;
-    }
+    const auto bounds = m_scene.VisibleBounds(m_hiddenLayers);
+    const double left = bounds.left, bottom = bounds.bottom, right = bounds.right, top = bounds.top;
     m_viewCenter = Point(std::clamp((left + right) / 2.0, -CanvasGeometry::MaxCoordinate, CanvasGeometry::MaxCoordinate),
         std::clamp((bottom + top) / 2.0, -CanvasGeometry::MaxCoordinate, CanvasGeometry::MaxCoordinate));
     const wxSize size = GetClientSize();
@@ -562,10 +232,7 @@ void DesignCanvas::CancelGesture()
 {
     const bool changed = HasGesture();
     m_points.clear();
-    m_selecting = false;
-    m_drawingClick = false;
-    m_dragging = false;
-    m_panning = false;
+    m_gesture.Reset();
     m_dragOffset = Point(0.0, 0.0);
     ReleaseOwnedCapture();
     if (changed)
@@ -580,125 +247,50 @@ wxPoint DesignCanvas::WorldToScreen(const Point& point) const
     {
         throw std::runtime_error("유효하지 않은 화면 변환 좌표입니다.");
     }
-    const wxSize size = GetClientSize();
-    const double x = size.x / 2.0 + (point.m_x - m_viewCenter.m_x) * m_pixelsPerMm;
-    const double y = size.y / 2.0 - (point.m_y - m_viewCenter.m_y) * m_pixelsPerMm;
-    return wxPoint(static_cast<int>(std::llround(std::clamp(x, -1e7, 1e7))),
-        static_cast<int>(std::llround(std::clamp(y, -1e7, 1e7))));
+    const auto pixel = Viewport().Project(GeometryPoint(point));
+    return wxPoint(static_cast<int>(std::llround(std::clamp(pixel.x, -1e7, 1e7))),
+        static_cast<int>(std::llround(std::clamp(pixel.y, -1e7, 1e7))));
 }
 
 Point DesignCanvas::ScreenToWorld(const wxPoint& point) const
 {
-    const wxSize size = GetClientSize();
-    return Point(std::clamp(m_viewCenter.m_x + (point.x - size.x / 2.0) / m_pixelsPerMm,
-        -CanvasGeometry::MaxCoordinate, CanvasGeometry::MaxCoordinate),
-        std::clamp(m_viewCenter.m_y - (point.y - size.y / 2.0) / m_pixelsPerMm,
-        -CanvasGeometry::MaxCoordinate, CanvasGeometry::MaxCoordinate));
+    const auto world = Viewport().Unproject({static_cast<double>(point.x), static_cast<double>(point.y)});
+    return Point(world.x, world.y);
 }
 
 const DesignCanvas::Shape* DesignCanvas::FindShape(const std::string& identity) const
 {
-    const auto found = std::find_if(m_shapes.begin(), m_shapes.end(), [&](const Shape& shape)
-    {
-        return shape.id == identity;
-    });
-    return found == m_shapes.end() ? nullptr : &*found;
+    return m_scene.Find(identity);
 }
 
 bool DesignCanvas::Visible(const Shape& shape) const
 {
-    if (shape.kind == "via" && !shape.spanLayers.empty())
-    {
-        return std::any_of(shape.spanLayers.begin(), shape.spanLayers.end(), [this](const std::string& layer)
-        {
-            return m_hiddenLayers.count(layer) == 0;
-        });
-    }
-    return m_hiddenLayers.count(shape.layer) == 0;
+    return CanvasScene::Visible(shape, m_hiddenLayers);
 }
 
-Point DesignCanvas::PixelPoint(const Point& point, const Point& offset) const
+CanvasViewport DesignCanvas::Viewport() const
 {
     const wxSize size = GetClientSize();
-    return Point(size.x / 2.0 + (point.m_x + offset.m_x - m_viewCenter.m_x) * m_pixelsPerMm,
-        size.y / 2.0 - (point.m_y + offset.m_y - m_viewCenter.m_y) * m_pixelsPerMm);
+    return {size.x, size.y, GeometryPoint(m_viewCenter), m_pixelsPerMm};
 }
 
-/** @brief float 기반 native renderer에 넘길 수 없는 원호와 폭은 선택에서도 제외한다. */
 bool DesignCanvas::Renderable(const Shape& shape, const Point& offset) const
 {
-    const double width = shape.width * m_pixelsPerMm;
-    if (!std::isfinite(width) || width > MaximumNativeCoordinate)
-    {
-        return false;
-    }
-    if (shape.kind == "line_path")
-    {
-        const Point start = PixelPoint(shape.start, offset);
-        const Point end = PixelPoint(shape.end, offset);
-        return std::isfinite(start.m_x) && std::isfinite(start.m_y) && std::isfinite(end.m_x) && std::isfinite(end.m_y) &&
-            std::max({std::abs(start.m_x), std::abs(start.m_y), std::abs(end.m_x), std::abs(end.m_y)}) <= MaximumClipCoordinate;
-    }
-    if (!shape.rings.empty())
-    {
-        for (const auto& ring : shape.rings)
-        {
-            for (const auto& point : ring)
-            {
-                const Point pixel = PixelPoint(point, offset);
-                if (!std::isfinite(pixel.m_x) || !std::isfinite(pixel.m_y) ||
-                    std::max(std::abs(pixel.m_x), std::abs(pixel.m_y)) > MaximumNativeCoordinate)
-                {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-    const Point center = PixelPoint(shape.center, offset);
-    const double extent = shape.radius * m_pixelsPerMm + width / 2.0;
-    return std::isfinite(extent) && std::isfinite(center.m_x) && std::isfinite(center.m_y) &&
-        std::max(std::abs(center.m_x), std::abs(center.m_y)) + extent <= MaximumNativeCoordinate;
+    return Viewport().Renderable(shape, GeometryPoint(offset));
 }
 
 /** @brief 실제 선분과 원호 구간까지의 거리로 위에 그린 객체를 먼저 선택한다. */
 std::string DesignCanvas::HitTest(const wxPoint& point) const
 {
     const Point world = ScreenToWorld(point);
-    for (auto shape = m_shapes.rbegin(); shape != m_shapes.rend(); ++shape)
+    for (auto shape = m_scene.shapes.rbegin(); shape != m_scene.shapes.rend(); ++shape)
     {
         if (!Visible(*shape) || !Renderable(*shape))
         {
             continue;
         }
         const double tolerance = shape->width / 2.0 + FromDIP(6) / m_pixelsPerMm;
-        double distance = 0.0;
-        if (shape->kind == "line_path")
-        {
-            distance = CanvasGeometry::SegmentDistance(GeometryPoint(world), GeometryPoint(shape->start), GeometryPoint(shape->end));
-        }
-        else if (shape->kind == "arc_path")
-        {
-            distance = CanvasGeometry::ArcDistance(GeometryPoint(world), GeometryPoint(shape->center), shape->radius, shape->startAngle, shape->sweepAngle);
-        }
-        else if (!shape->rings.empty())
-        {
-            std::vector<std::vector<CanvasGeometry::Point>> rings;
-            for (const auto& ring : shape->rings)
-            {
-                std::vector<CanvasGeometry::Point> points;
-                for (const auto& vertex : ring)
-                {
-                    points.push_back(GeometryPoint(vertex));
-                }
-                rings.push_back(std::move(points));
-            }
-            distance = CanvasGeometry::RegionDistance(GeometryPoint(world), rings);
-        }
-        else
-        {
-            distance = std::max(0.0, Distance(world, shape->center) - shape->radius);
-        }
+        const double distance = CanvasScene::DistanceTo(*shape, GeometryPoint(world));
         if (distance <= tolerance)
         {
             return shape->id;
@@ -714,14 +306,14 @@ std::string DesignCanvas::Selection() const
 
 bool DesignCanvas::HasGesture() const
 {
-    return !m_points.empty() || m_selecting || m_drawingClick || m_dragging || m_panning;
+    return !m_points.empty() || m_gesture.Active();
 }
 
 std::size_t DesignCanvas::DisplayOmissionCount() const
 {
-    return m_omissionCount + m_rangeOmissionCount + static_cast<std::size_t>(std::count_if(m_shapes.begin(), m_shapes.end(), [&](const Shape& shape)
+    return m_scene.omissionCount + m_scene.rangeOmissionCount + static_cast<std::size_t>(std::count_if(m_scene.shapes.begin(), m_scene.shapes.end(), [&](const Shape& shape)
     {
-        const Point offset = m_dragging && shape.id == m_selection ? m_dragOffset :
+        const Point offset = m_gesture.Dragging() && shape.id == m_selection ? m_dragOffset :
             (shape.id == m_pendingId ? m_pendingOffset : Point(0.0, 0.0));
         return Visible(shape) && !Renderable(shape, offset);
     }));
@@ -735,199 +327,26 @@ void DesignCanvas::Status(const std::string& message)
     }
 }
 
-void DesignCanvas::DrawGrid(wxDC& dc) const
-{
-    const wxSize size = GetClientSize();
-    const Point low = ScreenToWorld(wxPoint(0, size.y));
-    const Point high = ScreenToWorld(wxPoint(size.x, 0));
-    if (m_showGrid)
-    {
-        double step = std::pow(10.0, std::floor(std::log10(50.0 / m_pixelsPerMm)));
-        if (step * m_pixelsPerMm < 20.0)
-        {
-            step *= 5.0;
-        }
-        else if (step * m_pixelsPerMm < 35.0)
-        {
-            step *= 2.0;
-        }
-        dc.SetPen(wxPen(wxColour(230, 234, 239), 1));
-        const double startX = std::ceil(low.m_x / step) * step;
-        const double startY = std::ceil(low.m_y / step) * step;
-        for (int i = 0; i < 400 && startX + i * step <= high.m_x; ++i)
-        {
-            const int x = WorldToScreen(Point(startX + i * step, 0.0)).x;
-            dc.DrawLine(x, 0, x, size.y);
-        }
-        for (int i = 0; i < 400 && startY + i * step <= high.m_y; ++i)
-        {
-            const int y = WorldToScreen(Point(0.0, startY + i * step)).y;
-            dc.DrawLine(0, y, size.x, y);
-        }
-    }
-    const wxPoint origin = WorldToScreen(Point(0.0, 0.0));
-    dc.SetPen(wxPen(wxColour(151, 163, 176), 1));
-    if (origin.x >= 0 && origin.x <= size.x)
-    {
-        dc.DrawLine(origin.x, 0, origin.x, size.y);
-    }
-    if (origin.y >= 0 && origin.y <= size.y)
-    {
-        dc.DrawLine(0, origin.y, size.x, origin.y);
-    }
-    dc.SetTextForeground(wxColour(94, 107, 121));
-    dc.DrawText("X / mm", std::max(2, size.x - FromDIP(60)), std::clamp(origin.y + 4, 2, std::max(2, size.y - FromDIP(22))));
-    dc.DrawText("Y / mm", std::clamp(origin.x + 4, 2, std::max(2, size.x - FromDIP(60))), FromDIP(4));
-}
-
-/** @brief Y-up 좌표를 화면으로 변환하고 원호는 부호 있는 곡선으로 그린다. */
-bool DesignCanvas::DrawShape(wxDC& dc, const Shape& shape, const Point& offset, const wxColour& colour, bool highlight) const
-{
-    if (!Renderable(shape, offset))
-    {
-        return false;
-    }
-    std::unique_ptr<wxGraphicsContext> graphics(wxGraphicsContext::CreateFromUnknownDC(dc));
-    if (!graphics)
-    {
-        return false;
-    }
-    graphics->Clip(0, 0, GetClientSize().x, GetClientSize().y);
-    wxGraphicsPath path = graphics->CreatePath();
-    if (shape.kind == "line_path")
-    {
-        CanvasGeometry::Point start = GeometryPoint(PixelPoint(shape.start, offset));
-        CanvasGeometry::Point end = GeometryPoint(PixelPoint(shape.end, offset));
-        const double padding = std::max(1.0, shape.width * m_pixelsPerMm) / 2.0 + FromDIP(8);
-        if (!CanvasGeometry::ClipSegment(start, end, -padding, -padding, GetClientSize().x + padding, GetClientSize().y + padding))
-        {
-            return true;
-        }
-        path.MoveToPoint(start.x, start.y);
-        path.AddLineToPoint(end.x, end.y);
-    }
-    else if (shape.kind == "arc_path")
-    {
-        const Point center = PixelPoint(shape.center, offset);
-        path.AddArc(center.m_x, center.m_y, shape.radius * m_pixelsPerMm,
-            -shape.startAngle * CanvasGeometry::Pi / 180.0,
-            -(shape.startAngle + shape.sweepAngle) * CanvasGeometry::Pi / 180.0, shape.sweepAngle < 0.0);
-    }
-    else if (!shape.rings.empty())
-    {
-        for (const auto& ring : shape.rings)
-        {
-            const Point first = PixelPoint(ring.front(), offset);
-            path.MoveToPoint(first.m_x, first.m_y);
-            for (std::size_t index = 1; index < ring.size(); ++index)
-            {
-                const Point point = PixelPoint(ring[index], offset);
-                path.AddLineToPoint(point.m_x, point.m_y);
-            }
-            path.CloseSubpath();
-        }
-    }
-    else
-    {
-        const Point center = PixelPoint(shape.center, offset);
-        const double radius = shape.radius * m_pixelsPerMm;
-        if (radius > 0.0)
-        {
-            path.AddCircle(center.m_x, center.m_y, radius);
-            if (shape.kind == "via" && shape.holeRadius > 0 && shape.holeRadius < shape.radius)
-            {
-                path.AddCircle(center.m_x, center.m_y, shape.holeRadius * m_pixelsPerMm);
-            }
-        }
-        if (shape.kind == "via" && shape.incomplete)
-        {
-            wxGraphicsPath marker = graphics->CreatePath();
-            const double half = FromDIP(5);
-            marker.MoveToPoint(center.m_x - half, center.m_y);
-            marker.AddLineToPoint(center.m_x + half, center.m_y);
-            marker.MoveToPoint(center.m_x, center.m_y - half);
-            marker.AddLineToPoint(center.m_x, center.m_y + half);
-            graphics->SetPen(wxPen(highlight ? wxColour(36, 141, 225) : wxColour(105, 113, 121), FromDIP(2), wxPENSTYLE_SHORT_DASH));
-            graphics->StrokePath(marker);
-        }
-    }
-    if (shape.kind != "line_path" && shape.kind != "arc_path")
-    {
-        if (highlight)
-        {
-            graphics->SetPen(wxPen(wxColour(36, 141, 225), FromDIP(5)));
-            graphics->StrokePath(path);
-        }
-        graphics->SetPen(wxPen(colour, FromDIP(1)));
-        graphics->SetBrush(wxBrush(colour));
-        if (shape.kind == "via" && (shape.incomplete || shape.holeRadius >= shape.radius))
-        {
-            graphics->StrokePath(path);
-        }
-        else
-        {
-            graphics->DrawPath(path, wxODDEVEN_RULE);
-        }
-        if (shape.kind == "via" && shape.holeRadius > 0.0)
-        {
-            const Point center = PixelPoint(shape.center, offset);
-            const double radius = shape.holeRadius * m_pixelsPerMm;
-            graphics->SetPen(*wxTRANSPARENT_PEN);
-            graphics->SetBrush(wxBrush(wxColour(250, 251, 253)));
-            graphics->DrawEllipse(center.m_x - radius, center.m_y - radius, radius * 2.0, radius * 2.0);
-        }
-        return true;
-    }
-    const double width = std::max(shape.width * m_pixelsPerMm, 1.0);
-    if (highlight)
-    {
-        wxGraphicsPenInfo halo(wxColour(36, 141, 225), width + FromDIP(5));
-        halo.Cap(wxCAP_ROUND);
-        graphics->SetPen(graphics->CreatePen(halo));
-        graphics->StrokePath(path);
-    }
-    wxGraphicsPenInfo pen(colour, width);
-    pen.Cap(wxCAP_ROUND);
-    graphics->SetPen(graphics->CreatePen(pen));
-    graphics->StrokePath(path);
-    return true;
-}
-
 void DesignCanvas::OnPaint(wxPaintEvent&)
 {
     wxAutoBufferedPaintDC dc(this);
     dc.SetBackground(wxBrush(wxColour(250, 251, 253)));
     dc.Clear();
-    DrawGrid(dc);
-    if (m_hasBoard)
-    {
-        const wxPoint leftTop = WorldToScreen(m_circularBoard ?
-            Point(m_boardCenter.m_x - m_boardRadius, m_boardCenter.m_y + m_boardRadius) : Point(0.0, m_boardHeight));
-        const wxPoint rightBottom = WorldToScreen(m_circularBoard ?
-            Point(m_boardCenter.m_x + m_boardRadius, m_boardCenter.m_y - m_boardRadius) : Point(m_boardWidth, 0.0));
-        dc.SetPen(wxPen(wxColour(105, 153, 117), FromDIP(2)));
-        dc.SetBrush(wxBrush(wxColour(232, 243, 235), wxBRUSHSTYLE_BDIAGONAL_HATCH));
-        if (m_circularBoard)
-        {
-            dc.DrawEllipse(wxRect(leftTop, rightBottom));
-        }
-        else
-        {
-            dc.DrawRectangle(wxRect(leftTop, rightBottom));
-        }
-    }
+    CanvasRenderer renderer(*this, dc, Viewport());
+    renderer.DrawGrid(m_showGrid);
+    renderer.DrawBoard(m_scene);
     const wxColour colours[] = {wxColour(189, 109, 36), wxColour(117, 87, 173), wxColour(27, 144, 138), wxColour(177, 74, 96)};
-    std::size_t nativeOmissions = m_rangeOmissionCount;
-    for (const Shape& shape : m_shapes)
+    std::size_t nativeOmissions = m_scene.rangeOmissionCount;
+    for (const Shape& shape : m_scene.shapes)
     {
         if (!Visible(shape))
         {
             continue;
         }
-        const auto layer = m_layers.find(shape.layer);
-        const std::size_t index = static_cast<std::size_t>(std::distance(m_layers.begin(), layer)) % 4;
+        const auto layer = m_scene.layers.find(shape.layer);
+        const std::size_t index = static_cast<std::size_t>(std::distance(m_scene.layers.begin(), layer)) % 4;
         Point offset(0.0, 0.0);
-        if (m_dragging && shape.id == m_selection)
+        if (m_gesture.Dragging() && shape.id == m_selection)
         {
             offset = m_dragOffset;
         }
@@ -935,17 +354,17 @@ void DesignCanvas::OnPaint(wxPaintEvent&)
         {
             offset = m_pendingOffset;
         }
-        if (!DrawShape(dc, shape, offset, colours[index], shape.id == m_selection))
+        if (!renderer.DrawShape(shape, GeometryPoint(offset), colours[index], shape.id == m_selection))
         {
             ++nativeOmissions;
         }
     }
-    DrawPreview(dc);
+    DrawPreview(dc, renderer);
     dc.SetTextForeground(wxColour(73, 86, 103));
     dc.DrawText(Display("2D 설계 / mm"), FromDIP(10), FromDIP(10));
-    if (m_omissionCount > 0)
+    if (m_scene.omissionCount > 0)
     {
-        dc.DrawText(Display("표시 생략 " + std::to_string(m_omissionCount) + "개"), FromDIP(10), FromDIP(30));
+        dc.DrawText(Display("표시 생략 " + std::to_string(m_scene.omissionCount) + "개"), FromDIP(10), FromDIP(30));
     }
     if (nativeOmissions > 0)
     {
@@ -957,16 +376,16 @@ DesignCanvas::Shape DesignCanvas::ArcPreview(bool clockwise) const
 {
     Shape arc;
     arc.kind = "arc_path";
-    arc.center = m_points.at(0);
+    arc.center = GeometryPoint(m_points.at(0));
     arc.radius = Distance(m_points.at(0), m_points.at(1));
-    arc.startAngle = CanvasGeometry::NormalizeDegrees(std::atan2(m_points[1].m_y - arc.center.m_y,
-        m_points[1].m_x - arc.center.m_x) * 180.0 / CanvasGeometry::Pi);
+    arc.startAngle = CanvasGeometry::NormalizeDegrees(std::atan2(m_points[1].m_y - arc.center.y,
+        m_points[1].m_x - arc.center.x) * 180.0 / CanvasGeometry::Pi);
     arc.sweepAngle = CanvasGeometry::SweepDegrees(GeometryPoint(arc.center), GeometryPoint(m_points[1]), GeometryPoint(m_cursor), clockwise);
     arc.width = m_strokeWidth;
     return arc;
 }
 
-void DesignCanvas::DrawPreview(wxDC& dc) const
+void DesignCanvas::DrawPreview(wxDC& dc, CanvasRenderer& renderer) const
 {
     if (m_points.empty())
     {
@@ -982,10 +401,10 @@ void DesignCanvas::DrawPreview(wxDC& dc) const
     {
         Shape line;
         line.kind = "line_path";
-        line.start = m_points[0];
-        line.end = m_cursor;
+        line.start = GeometryPoint(m_points[0]);
+        line.end = GeometryPoint(m_cursor);
         line.width = m_strokeWidth;
-        DrawShape(dc, line, Point(0.0, 0.0), wxColour(64, 148, 209), false);
+        renderer.DrawShape(line, {0.0, 0.0}, wxColour(64, 148, 209), false);
     }
     else if (m_tool == "arc" && m_points.size() == 2)
     {
@@ -993,7 +412,7 @@ void DesignCanvas::DrawPreview(wxDC& dc) const
         dc.DrawLine(first, WorldToScreen(m_points[1]));
         if (std::abs(arc.sweepAngle) > 1e-10)
         {
-            DrawShape(dc, arc, Point(0.0, 0.0), wxColour(64, 148, 209), false);
+            renderer.DrawShape(arc, {0.0, 0.0}, wxColour(64, 148, 209), false);
         }
     }
 }
@@ -1001,7 +420,7 @@ void DesignCanvas::DrawPreview(wxDC& dc) const
 void DesignCanvas::OnLeftDown(wxMouseEvent& event)
 {
     SetFocus();
-    if (!m_editingEnabled || m_panning)
+    if (!m_editingEnabled || m_gesture.Panning())
     {
         return;
     }
@@ -1010,18 +429,17 @@ void DesignCanvas::OnLeftDown(wxMouseEvent& event)
     m_clockwise = event.ShiftDown();
     if (m_tool != "select")
     {
-        if (m_drawingLayer.empty() || !m_layers.count(m_drawingLayer) || m_hiddenLayers.count(m_drawingLayer))
+        if (m_drawingLayer.empty() || !m_scene.layers.count(m_drawingLayer) || m_hiddenLayers.count(m_drawingLayer))
         {
             Status("표시 중인 그리기 층을 먼저 선택하세요.");
             return;
         }
-        m_drawingClick = true;
+        m_gesture.BeginDrawing();
     }
     else
     {
         m_selection = HitTest(m_mouseDown);
-        m_selecting = true;
-        m_dragging = false;
+        m_gesture.BeginSelection();
         m_dragAnchor = m_cursor;
         m_dragOffset = Point(0.0, 0.0);
     }
@@ -1040,9 +458,9 @@ void DesignCanvas::OnLeftUp(wxMouseEvent& event)
         return;
     }
     m_cursor = ScreenToWorld(event.GetPosition());
-    if (m_drawingClick)
+    if (m_gesture.DrawingClick())
     {
-        m_drawingClick = false;
+        m_gesture.Reset();
         ReleaseOwnedCapture();
         if (GetClientRect().Contains(event.GetPosition()))
         {
@@ -1050,22 +468,21 @@ void DesignCanvas::OnLeftUp(wxMouseEvent& event)
         }
         return;
     }
-    if (!m_selecting)
+    if (!m_gesture.Selecting())
     {
         return;
     }
-    const bool translate = m_dragging;
+    const bool translate = m_gesture.Dragging();
     const std::string identity = m_selection;
     const Point offset = Subtract(m_cursor, m_dragAnchor);
-    m_selecting = false;
-    m_dragging = false;
+    m_gesture.Reset();
     m_dragOffset = Point(0.0, 0.0);
     ReleaseOwnedCapture();
     if (translate && Valid(offset) && Distance(offset, Point(0.0, 0.0)) > MinimumLength)
     {
         m_pendingId = identity;
         m_pendingOffset = offset;
-        Emit(Json{{"type", "translate"}, {"id", identity}, {"delta", Coordinates(offset)}});
+        Emit(Json{{"type", "translate"}, {"id", identity}, {"delta", Coordinates(GeometryPoint(offset))}});
     }
     else if (onSelection)
     {
@@ -1095,7 +512,7 @@ void DesignCanvas::CommitDrawing(bool clockwise)
             return;
         }
         const Json action{{"type", "create_line"}, {"layer_id", m_drawingLayer}, {"width", m_strokeWidth},
-            {"start", Coordinates(m_points[0])}, {"end", Coordinates(m_cursor)}};
+            {"start", Coordinates(GeometryPoint(m_points[0]))}, {"end", Coordinates(GeometryPoint(m_cursor))}};
         m_points.clear();
         Emit(action);
     }
@@ -1112,7 +529,7 @@ void DesignCanvas::CommitDrawing(bool clockwise)
     else
     {
         const Shape arc = ArcPreview(clockwise);
-        if (Distance(arc.center, m_cursor) <= MinimumLength || std::abs(arc.sweepAngle) <= 1e-10)
+        if (Distance(m_points.at(0), m_cursor) <= MinimumLength || std::abs(arc.sweepAngle) <= 1e-10)
         {
             Status("중심이나 시작 방향과 다른 끝 방향을 선택하세요.");
             return;
@@ -1142,7 +559,7 @@ void DesignCanvas::OnMotion(wxMouseEvent& event)
     const wxPoint point = event.GetPosition();
     m_cursor = ScreenToWorld(point);
     m_clockwise = event.ShiftDown();
-    if (m_panning)
+    if (m_gesture.Panning())
     {
         const wxPoint movement = point - m_panLast;
         m_viewCenter.m_x = std::clamp(m_viewCenter.m_x - movement.x / m_pixelsPerMm, -CanvasGeometry::MaxCoordinate, CanvasGeometry::MaxCoordinate);
@@ -1150,14 +567,14 @@ void DesignCanvas::OnMotion(wxMouseEvent& event)
         m_panLast = point;
         Refresh(false);
     }
-    else if (m_editingEnabled && m_selecting && !m_selection.empty())
+    else if (m_editingEnabled && m_gesture.Selecting() && !m_selection.empty())
     {
         const Shape* shape = FindShape(m_selection);
         const wxPoint distance = point - m_mouseDown;
         if (shape != nullptr && shape->movable &&
-            (m_dragging || std::hypot(static_cast<double>(distance.x), static_cast<double>(distance.y)) >= FromDIP(3)))
+            (m_gesture.Dragging() || std::hypot(static_cast<double>(distance.x), static_cast<double>(distance.y)) >= FromDIP(3)))
         {
-            m_dragging = true;
+            m_gesture.BeginDrag();
             m_dragOffset = Subtract(m_cursor, m_dragAnchor);
             Refresh(false);
         }
@@ -1174,11 +591,11 @@ void DesignCanvas::OnMotion(wxMouseEvent& event)
 
 void DesignCanvas::OnMiddleDown(wxMouseEvent& event)
 {
-    if (m_selecting || m_drawingClick)
+    if (m_gesture.Selecting() || m_gesture.DrawingClick())
     {
         CancelGesture();
     }
-    m_panning = true;
+    m_gesture.BeginPan();
     m_panLast = event.GetPosition();
     SetFocus();
     if (!HasCapture())
@@ -1189,9 +606,9 @@ void DesignCanvas::OnMiddleDown(wxMouseEvent& event)
 
 void DesignCanvas::OnMiddleUp(wxMouseEvent&)
 {
-    if (m_panning)
+    if (m_gesture.Panning())
     {
-        m_panning = false;
+        m_gesture.Reset();
         ReleaseOwnedCapture();
     }
 }
@@ -1203,7 +620,7 @@ void DesignCanvas::OnWheel(wxMouseEvent& event)
     {
         return;
     }
-    if (m_selecting || m_drawingClick)
+    if (m_gesture.Selecting() || m_gesture.DrawingClick())
     {
         CancelGesture();
     }
@@ -1254,10 +671,7 @@ void DesignCanvas::OnKeyDown(wxKeyEvent& event)
 
 void DesignCanvas::OnCaptureLost(wxMouseCaptureLostEvent&)
 {
-    m_selecting = false;
-    m_drawingClick = false;
-    m_dragging = false;
-    m_panning = false;
+    m_gesture.Reset();
     m_points.clear();
     m_dragOffset = Point(0.0, 0.0);
     Status("입력 초점을 잃어 진행 중인 제스처를 취소했습니다.");
@@ -1266,7 +680,7 @@ void DesignCanvas::OnCaptureLost(wxMouseCaptureLostEvent&)
 
 void DesignCanvas::OnSize(wxSizeEvent& event)
 {
-    if (m_selecting || m_drawingClick || m_panning)
+    if (m_gesture.Selecting() || m_gesture.DrawingClick() || m_gesture.Panning())
     {
         CancelGesture();
     }

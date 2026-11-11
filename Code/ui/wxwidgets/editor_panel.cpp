@@ -1,4 +1,5 @@
 #include "editor_panel.h"
+#include "coordinate_editor_dialog.h"
 #include <wx/checklst.h>
 
 #include <algorithm>
@@ -450,138 +451,12 @@ void EditorPanel::EditCoordinates(const std::string& key, const std::function<vo
     {
         return;
     }
-    wxDialog dialog(this, wxID_ANY, Display(field.descriptor.at("label").get<std::string>() + " 좌표"),
-        wxDefaultPosition, FromDIP(wxSize(940, 480)), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
-    auto* layout = new wxBoxSizer(wxVERTICAL);
-    layout->Add(new wxStaticText(&dialog, wxID_ANY, Display("각 좌표의 입력 방식을 고르세요. 숫자는 옆에 표시한 단위를 사용합니다.\n단위는 읽기 전용이며 미정값을 계산값으로 채우지 않습니다. 참조는 목록에서 선택합니다.\n꼭짓점 수는 유지하고 변경 적용 전까지 초안으로 보존합니다.")), 0, wxEXPAND | wxALL, 10);
-    auto* grid = new wxGrid(&dialog, wxID_ANY);
-    grid->CreateGrid(static_cast<int>(field.coordinateValue.size()), 8);
-    const char* labels[] = {"X 입력", "X 값", "단위", "X 참조", "Y 입력", "Y 값", "단위", "Y 참조"};
-    const wxString modeLabels[] = {Display("직접 입력"), Display("미정"), Display("매개변수 참조")};
-    const std::string modes[] = {"value", "missing", "parameter"};
-    wxArrayString modeChoices;
-    for (const auto& mode : modeLabels)
+    CoordinateEditorDialog dialog(this, field.descriptor, field.coordinateValue, m_coordinateChoices);
+    const auto value = dialog.Edit(opened);
+    if (value)
     {
-        modeChoices.Add(mode);
-    }
-    wxArrayString parameterLabels;
-    parameterLabels.Add(Display("선택 없음"));
-    std::vector<std::string> parameterIds{std::string()};
-    for (const auto& choice : m_coordinateChoices)
-    {
-        const std::string id = choice.at("value");
-        if (!id.empty())
-        {
-            parameterIds.push_back(id);
-            parameterLabels.Add(Display(choice.at("label").get<std::string>() + " / " + id));
-        }
-    }
-    for (int column = 0; column < 8; ++column)
-    {
-        grid->SetColLabelValue(column, Display(labels[column]));
-        grid->SetColSize(column, FromDIP(column % 4 == 3 ? 215 : (column % 4 == 2 ? 45 : 115)));
-    }
-    grid->SetRowLabelSize(FromDIP(38));
-    auto updateMode = [grid, modeLabels](int row, int base)
-    {
-        const wxString mode = grid->GetCellValue(row, base);
-        grid->SetReadOnly(row, base + 1, mode != modeLabels[0]);
-        grid->SetReadOnly(row, base + 2, true);
-        grid->SetReadOnly(row, base + 3, mode != modeLabels[2]);
-        grid->SetCellBackgroundColour(row, base + 1, mode == modeLabels[0] ? *wxWHITE : wxColour(238, 240, 243));
-        grid->SetCellBackgroundColour(row, base + 2, wxColour(238, 240, 243));
-        grid->SetCellBackgroundColour(row, base + 3, mode == modeLabels[2] ? *wxWHITE : wxColour(238, 240, 243));
-    };
-    for (int row = 0; row < grid->GetNumberRows(); ++row)
-    {
-        for (int axis = 0; axis < 2; ++axis)
-        {
-            const int base = axis * 4;
-            const auto& coordinate = field.coordinateValue.at(row).at(axis);
-            const std::string mode = coordinate.at("mode");
-            grid->SetCellEditor(row, base, new wxGridCellChoiceEditor(modeChoices, false));
-            grid->SetCellValue(row, base, modeLabels[mode == "value" ? 0 : (mode == "missing" ? 1 : 2)]);
-            grid->SetCellValue(row, base + 1, Display(coordinate.at("value")));
-            grid->SetCellValue(row, base + 2, Display(coordinate.at("unit")));
-            grid->SetCellEditor(row, base + 3, new wxGridCellChoiceEditor(parameterLabels, false));
-            const std::string reference = coordinate.at("parameter_id");
-            const auto found = std::find(parameterIds.begin(), parameterIds.end(), reference);
-            if (found == parameterIds.end())
-            {
-                throw std::runtime_error("좌표 참조가 현재 매개변수 목록에 없습니다.");
-            }
-            grid->SetCellValue(row, base + 3, parameterLabels[static_cast<std::size_t>(std::distance(parameterIds.begin(), found))]);
-            updateMode(row, base);
-        }
-    }
-    grid->Bind(wxEVT_GRID_CELL_CHANGED, [updateMode](wxGridEvent& event)
-    {
-        if (event.GetCol() % 4 == 0)
-        {
-            updateMode(event.GetRow(), event.GetCol());
-        }
-        event.Skip();
-    });
-    layout->Add(grid, 1, wxEXPAND | wxLEFT | wxRIGHT, 10);
-    layout->Add(dialog.CreateSeparatedButtonSizer(wxOK | wxCANCEL), 0, wxEXPAND | wxALL, 10);
-    dialog.SetSizer(layout);
-    if (opened)
-    {
-        opened(*grid, dialog);
-    }
-    while (dialog.ShowModal() == wxID_OK)
-    {
-        grid->SaveEditControlValue();
-        Json value = field.coordinateValue;
-        bool valid = true;
-        for (int row = 0; row < grid->GetNumberRows() && valid; ++row)
-        {
-            for (int axis = 0; axis < 2; ++axis)
-            {
-                const int base = axis * 4;
-                const wxString modeLabel = grid->GetCellValue(row, base);
-                const int modeIndex = modeLabel == modeLabels[0] ? 0 : (modeLabel == modeLabels[1] ? 1 : 2);
-                auto& coordinate = value.at(row).at(axis);
-                coordinate["mode"] = modes[modeIndex];
-                if (modeIndex == 0)
-                {
-                    double number = 0;
-                    const wxString text = grid->GetCellValue(row, base + 1);
-                    valid = text.ToDouble(&number) && std::isfinite(number);
-                    coordinate["value"] = Utf8(text);
-                    coordinate["parameter_id"] = "";
-                }
-                else if (modeIndex == 1)
-                {
-                    coordinate["value"] = "";
-                    coordinate["parameter_id"] = "";
-                }
-                else
-                {
-                    const int selected = parameterLabels.Index(grid->GetCellValue(row, base + 3));
-                    valid = selected > 0;
-                    if (valid)
-                    {
-                        coordinate["parameter_id"] = parameterIds.at(static_cast<std::size_t>(selected));
-                    }
-                }
-                if (!valid)
-                {
-                    grid->SetGridCursor(row, base + (modeIndex == 0 ? 1 : 3));
-                    grid->MakeCellVisible(row, base);
-                    break;
-                }
-            }
-        }
-        if (!valid)
-        {
-            wxMessageBox(Display("직접 입력에는 유한한 숫자를, 참조에는 목록의 매개변수를 지정하세요."), Display("좌표 입력"), wxOK | wxICON_WARNING, &dialog);
-            grid->SetFocus();
-            continue;
-        }
-        WriteValue(field, value);
+        WriteValue(field, *value);
         NotifyChanged();
-        return;
     }
 }
 
@@ -622,82 +497,23 @@ Json EditorPanel::FieldValue(const std::string& key) const
     return ReadValue(m_fields.at(key));
 }
 
+/** @brief 가용 상태 계산 중 동일 컨트롤을 반복 읽지 않는 일회성 입력 스냅샷이다. */
+EditorPresentation::Fields EditorPanel::PresentationFields() const
+{
+    EditorPresentation::Fields result;
+    for (const auto& item : m_fields)
+    {
+        result.emplace(item.first, EditorPresentation::Field{&item.second.descriptor,
+            EditorPresentation::RequiresCurrentValue(item.first) ? ReadValue(item.second) : Json(),
+            item.second.control->IsThisEnabled()});
+    }
+    return result;
+}
+
 /** @brief 선택 객체와 일치하는 진단 경로만 화면 필드에 연결한다. */
 std::string EditorPanel::ResolveDiagnosticField(const std::string& path) const
 {
-    std::string key;
-    for (const char character : path)
-    {
-        if (character == '[')
-        {
-            key += '.';
-        }
-        else if (character != ']')
-        {
-            key += character;
-        }
-    }
-    if (key.compare(0, 7, "values.") == 0)
-    {
-        key.erase(0, 7);
-    }
-    const std::string kind = m_selection.value("kind", "");
-    const std::string identity = m_selection.value("id", "");
-    const std::map<std::string, std::string> collections = {
-        {"parameter", "parameters"}, {"new_parameter", "parameters"}, {"material", "materials"},
-        {"layer", "stackup"}, {"geometry", "geometry"}, {"port", "ports"}, {"net", "nets"}
-    };
-    auto collection = collections.find(kind);
-    std::vector<std::string> prefixes;
-    if (collection != collections.end() && !identity.empty())
-    {
-        prefixes.push_back(collection->second + "." + identity + ".");
-        if (kind == "parameter" || kind == "new_parameter")
-        {
-            prefixes.push_back("parameters.input.");
-        }
-    }
-    if (kind == "board")
-    {
-        prefixes.push_back("board.");
-    }
-    for (const auto& prefix : prefixes)
-    {
-        if (key.compare(0, prefix.size(), prefix) == 0)
-        {
-            key.erase(0, prefix.size());
-            break;
-        }
-    }
-    if (key == "quantity.value_si")
-    {
-        key = "value";
-    }
-    else if (key == "quantity.display_unit")
-    {
-        key = "unit";
-    }
-    if (m_fields.count(key) != 0)
-    {
-        return key;
-    }
-    for (const auto& item : m_fields)
-    {
-        if (item.second.descriptor.at("editor") == "coordinate_table" &&
-            key.compare(0, item.first.size() + 1, item.first + ".") == 0)
-        {
-            return item.first;
-        }
-    }
-    for (const auto& suffix : {".value", ".parameter_id", ".mode"})
-    {
-        const auto found = m_fields.find(key + suffix);
-        if (found != m_fields.end() && found->second.control->IsThisEnabled())
-        {
-            return found->first;
-        }
-    }
-    return "";
+    return EditorPresentation::ResolveDiagnosticField(path, m_selection, PresentationFields());
 }
 
 /** @brief 오류 설명은 사용자 용어로 표시하고 원래 경로는 상세 tooltip에 보존한다. */
@@ -733,81 +549,21 @@ std::string EditorPanel::ShowDiagnostic(const std::string& field, const std::str
 /** @brief 숨긴 고급 정보와 사용하지 않는 입력은 보이지 않으며 평가값은 읽기 전용으로 남긴다. */
 void EditorPanel::UpdateModes()
 {
+    const auto fields = PresentationFields();
     std::map<wxPanel*, bool> visibleRows;
     for (auto& item : m_fields)
     {
-        bool enabled = !item.second.descriptor.value("readonly", false);
-        bool visible = !item.second.descriptor.value("advanced", false) || m_details->GetValue();
-        if (item.first.size() >= 12 && item.first.substr(item.first.size() - 12) == "display_note" &&
-            item.second.descriptor.at("value") == "")
-        {
-            visible = false;
-        }
-        const auto parameterMode = m_fields.find("mode");
-        if (parameterMode != m_fields.end())
-        {
-            const std::string mode = ReadValue(parameterMode->second).get<std::string>();
-            if (item.first == "value")
-            {
-                enabled = enabled && mode == "value";
-                visible = visible && mode != "missing";
-            }
-            else if (item.first == "expression" || item.first == "bindings")
-            {
-                enabled = enabled && mode == "expression";
-                visible = visible && mode == "expression";
-            }
-        }
-        const std::size_t separator = item.first.rfind('.');
-        if (separator != std::string::npos)
-        {
-            const std::string prefix = item.first.substr(0, separator);
-            const std::string suffix = item.first.substr(separator + 1);
-            const auto modeField = m_fields.find(prefix + ".mode");
-            if (modeField != m_fields.end())
-            {
-                const std::string mode = ReadValue(modeField->second).get<std::string>();
-                if (suffix == "value")
-                {
-                    enabled = enabled && mode == "value";
-                    visible = visible && mode != "missing";
-                }
-                else if (suffix == "unit")
-                {
-                    enabled = enabled && mode != "parameter";
-                }
-                else if (suffix == "parameter_id")
-                {
-                    enabled = enabled && mode == "parameter";
-                    visible = visible && mode == "parameter";
-                }
-            }
-        }
-        item.second.control->Enable(enabled);
-        item.second.section->ShowItems(visible);
-        visibleRows[item.second.row] = visibleRows[item.second.row] || visible;
+        const auto state = EditorPresentation::Evaluate(item.first, fields, m_details->GetValue());
+        item.second.control->Enable(state.enabled);
+        item.second.section->ShowItems(state.visible);
+        visibleRows[item.second.row] = visibleRows[item.second.row] || state.visible;
         for (wxWindow* auxiliary : item.second.auxiliaries)
         {
-            auxiliary->Enable(enabled);
+            auxiliary->Enable(state.enabled);
         }
-    }
-    for (const auto& item : m_fields)
-    {
-        const std::string& key = item.first;
-        const bool rootValue = key == "value";
-        if (!rootValue && (key.size() <= 6 || key.substr(key.size() - 6) != ".value"))
+        const std::string label = EditorPresentation::ValueLabel(item.first, fields);
+        if (!label.empty())
         {
-            continue;
-        }
-        const std::string prefix = rootValue ? "" : key.substr(0, key.size() - 5);
-        const auto unit = m_fields.find(prefix + "unit");
-        const auto mode = m_fields.find(prefix + "mode");
-        if (unit != m_fields.end() && mode != m_fields.end())
-        {
-            const std::string inputMode = ReadValue(mode->second).get<std::string>();
-            const std::string label = inputMode == "missing" ? unit->second.descriptor.at("label").get<std::string>() :
-                ((rootValue && inputMode == "expression" ? std::string("마지막 적용값") :
-                    item.second.descriptor.at("label").get<std::string>() + (inputMode == "parameter" ? " (마지막 적용값)" : "")) + " / 단위");
             item.second.label->SetLabel(Display(label));
             item.second.label->Wrap(FromDIP(145));
         }
@@ -850,39 +606,7 @@ const std::string& EditorPanel::DiagnosticField() const
 /** @brief 단위만 변경할 때 원래 숫자를 새 단위의 물리값으로 오해하지 않도록 안내한다. */
 void EditorPanel::UpdateInputNotice()
 {
-    std::vector<std::string> notices;
-    for (const auto& item : m_fields)
-    {
-        const std::string& key = item.first;
-        const bool rootUnit = key == "unit";
-        if (!rootUnit && (key.size() <= 5 || key.substr(key.size() - 5) != ".unit"))
-        {
-            continue;
-        }
-        const std::string prefix = rootUnit ? "" : key.substr(0, key.size() - 4);
-        const auto number = m_fields.find(prefix + "value");
-        const auto mode = m_fields.find(prefix + "mode");
-        if (number == m_fields.end() || mode == m_fields.end() ||
-            ReadValue(item.second) == item.second.descriptor.at("value"))
-        {
-            continue;
-        }
-        const std::string inputMode = ReadValue(mode->second).get<std::string>();
-        const std::string original = Text(number->second.descriptor.at("value"));
-        if (original.empty() || inputMode == "missing" || inputMode == "parameter" ||
-            (inputMode == "value" && ReadValue(number->second) != number->second.descriptor.at("value")))
-        {
-            continue;
-        }
-        notices.push_back(number->second.descriptor.at("label").get<std::string>() +
-            ": 단위만 변경한 숫자는 적용 후 환산됩니다. 마지막 적용값: " + original + " " +
-            Text(item.second.descriptor.at("value")) + ". 값도 함께 수정하면 새 값과 단위를 사용합니다.");
-    }
-    m_inputNoticeText = notices.empty() ? "" : notices.front();
-    if (notices.size() > 1)
-    {
-        m_inputNoticeText += " 같은 상태의 다른 항목 " + std::to_string(notices.size() - 1) + "개.";
-    }
+    m_inputNoticeText = EditorPresentation::InputNotice(PresentationFields());
     m_inputNotice->SetLabel(Display(m_inputNoticeText));
     m_inputNotice->Wrap(std::max(200, GetClientSize().GetWidth() - FromDIP(20)));
     m_inputNotice->Show(!m_inputNoticeText.empty());

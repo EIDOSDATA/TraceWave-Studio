@@ -4,6 +4,9 @@ from functools import lru_cache
 import math
 
 from rfad.domain.errors import ProjectError
+from rfad.application.pcb_geometry import _bounds, fail
+
+MAX_GRID_POINTS = 1500000
 
 
 def _fail(message, field="settings.mesh_policy"):
@@ -127,3 +130,63 @@ def policy_report(case, lines):
             "interior_growth_postcondition_enforced": False,
             "highest_excitation_frequency_hz": highest_excitation, "vacuum_wavelength_mm": 299792458.0 / highest_excitation * 1000,
             "air_cells_per_minimum_wavelength": 299792458.0 / highest_excitation * 1000 / policy["air_cell_mm"], "axes": axes}
+
+
+def mesh_lines(case):
+    """! @brief 외곽과 유전체 경계/port gap을 보존하는 제한된 Cartesian 격자를 만든다."""
+    board, settings = case["board"], case["settings"]
+    bounds = board["bounds_mm"]
+    z = [v for layer in case["layers"] for v in (layer["z_min_mm"], layer["z_min_mm"] + layer["thickness_mm"])]
+    dielectric = [layer for layer in case["layers"] if layer["role"] == "dielectric"]
+    # @brief 동박은 sheet이므로 동박 두께를 별도 Yee 간격으로 강제하지 않는다.
+    critical = [[bounds[i][0], bounds[i][1]] for i in range(2)] + [[v for layer in dielectric for v in (layer["z_min_mm"], layer["z_min_mm"] + layer["thickness_mm"])]]
+    for shape in case["shapes"]:
+        for axis, extent in enumerate(_bounds(shape)):
+            critical[axis].extend(extent)
+        critical[2].append(shape["sheet_z_mm"])
+        if shape["kind"] == "planar_region":
+            for loop in [shape["outer_mm"], *shape["holes_mm"]]:
+                for axis in range(2):
+                    critical[axis].extend(p[axis] for p in loop)
+                    critical[axis].append((min(p[axis] for p in loop) + max(p[axis] for p in loop)) / 2)
+        elif shape["kind"] == "pad":
+            for axis in range(2):
+                critical[axis].append(shape["center_mm"][axis])
+    for via in case.get("vias", []):
+        # @brief 얇은 실제 배럴을 임의로 굵게 만들지 않고 내/중앙/외 반지름을 국부 격자선으로 보존한다.
+        inner, outer = via["inner_radius_mm"], via["outer_radius_mm"]
+        for axis in range(2):
+            center = via["center_mm"][axis]
+            critical[axis].extend(center + sign * r for sign in (-1, 1) for r in (inner, (inner + outer) / 2, outer))
+            critical[axis].append(center)
+        critical[2].extend((via["z_min_mm"], (via["z_min_mm"] + via["z_max_mm"]) / 2, via["z_max_mm"]))
+    for axis in range(3):
+        critical[axis].extend([case["port"]["start_mm"][axis], case["port"]["stop_mm"][axis], (case["port"]["start_mm"][axis] + case["port"]["stop_mm"][axis]) / 2])
+    result = {}
+    total = 1
+    for axis, positions in enumerate(critical):
+        lower, upper = (bounds[axis] if axis < 2 else [min(z), max(z)])
+        padding = settings["air_padding_mm"]
+        inner_lower, inner_upper = min(positions), max(positions)
+        graded = settings.get("mesh_policy")
+        critical_positions = sorted(set(positions if graded else positions + [lower - padding, upper + padding]))
+        points = []
+        for left, right in zip(critical_positions, critical_positions[1:]):
+            gap = right - left
+            if gap < 1e-4:
+                if gap > 1e-9:
+                    fail("E_GEOMETRY", "격자 임계선 사이 간격이 너무 작습니다.", "mesh")
+                continue
+            count = math.ceil(gap / settings["grid_mm"])
+            points.extend(left + gap * i / count for i in range(count))
+        points.append(critical_positions[-1])
+        points = sorted(set(round(v, 12) for v in points))
+        if graded:
+            points = graded_axis(points, [lower, upper], padding, graded["air_cell_mm"], graded["growth_ratio"])
+        if len(points) < 19 or sum(v < inner_lower for v in points) < 9 or sum(v > inner_upper for v in points) < 9:
+            fail("E_GEOMETRY", "PML 8 cells와 모델 사이의 공기 격자가 부족합니다.", "mesh")
+        total *= len(points)
+        if total > MAX_GRID_POINTS:
+            fail("E_RESOURCE", "초기 PCB profile의 실제 격자점 상한 1500000을 초과했습니다.", "mesh")
+        result["xyz"[axis]] = points
+    return result

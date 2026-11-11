@@ -4,6 +4,7 @@
 #include <wx/scrolwin.h>
 #include <wx/grid.h>
 #include <nlohmann/json.hpp>
+#include "editor_presentation.h"
 
 #include <map>
 #include <functional>
@@ -47,6 +48,7 @@ private:
     void UpdateModes();
     void NotifyChanged();
     void UpdateInputNotice();
+    EditorPresentation::Fields PresentationFields() const;
     std::string ResolveDiagnosticField(const std::string& path) const;
     std::map<std::string, Field> m_fields;
     nlohmann::json m_selection = nlohmann::json::object();

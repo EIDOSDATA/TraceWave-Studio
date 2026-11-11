@@ -15,6 +15,7 @@ import sys
 import tempfile
 import threading
 import unittest
+from unittest.mock import patch
 from uuid import uuid4
 
 from rfad.adapters.solvers.openems.native import RAW_NAMES, descriptor
@@ -405,6 +406,79 @@ class SolverJobTests(unittest.TestCase):
                 self.assertEqual(status["artifacts"], [])
                 self.assertFalse(self.job(task)["solver"]["resource_reserved"])
         self.assertEqual(self.service.journal.read()["prepared_plans"], {})
+
+    def test_transport_cancel_without_user_request_is_interrupted(self):
+        """! @brief 외부에서 확인된 종료를 사용자 취소로 가장하거나 활성 상태로 남기지 않는다."""
+        prepared = self.prepared()
+        prior = self.complete("job.submit", self.analysis_input(prepared))
+        self.transport.mode = "cancelled"
+        for data in (self.analysis_input(prepared), self.analysis_input(prepared, raw_result_id=prior["artifact_id"])):
+            task = self.service.mutate("job.submit", self.request(data))
+            self.assertTrue(self.service.solver.run_next())
+            job = self.job(task)
+            self.assertEqual(job["state"], "interrupted", job)
+            self.assertFalse(job["solver"]["resource_reserved"])
+            self.assertTrue(job["events"][-1]["termination_confirmed"])
+            self.assertFalse(job["events"][-1]["outcome_unknown"])
+            self.assertEqual(len(self.service.journal.read()["solver_results"]), 1)
+
+    def test_service_close_reaps_preparation_and_preserves_confirmed_interruption(self):
+        """! @brief 실제 조정기 스레드 종료는 취소 요청이 없는 preparing을 확정 중단으로 보존한다."""
+        planned = self.complete("solver.plan", self.plan_input())["analysis_plan"]
+        self.transport.mode = "block"
+        task = self.service.mutate("solver.prepare", self.request({
+            "analysis_plan": {key: planned[key] for key in ("plan_id", "content_hash")},
+            "budget": {"timeout_seconds": 120.0},
+        }))
+        self.service.solver.start()
+        self.assertTrue(self.transport.started.wait(3.0))
+        errors = []
+        def close_service():
+            """! @brief 닫기 스레드의 예외를 시험 본문에서 확인한다."""
+            try:
+                self.service.close()
+            except Exception as error:
+                errors.append(error)
+        closer = threading.Thread(target=close_service)
+        self.runners.append(closer)
+        closer.start()
+        self.assertTrue(self.service.solver.stop.wait(3.0))
+        self.transport.mode = "cancelled"
+        self.transport.release.set()
+        closer.join(8.0)
+        self.assertFalse(closer.is_alive())
+        self.assertEqual(errors, [])
+        self.service = ProjectService(self.workspace, auto_run=False, solver_runtime=self.runtime)
+        job = self.job(task)
+        self.assertEqual(job["state"], "interrupted", job)
+        self.assertFalse(job["solver"]["resource_reserved"])
+        self.assertTrue(job["events"][-1]["termination_confirmed"])
+        self.assertFalse(job["events"][-1]["outcome_unknown"])
+        self.assertEqual(self.service.journal.read()["prepared_plans"], {})
+
+    def test_stop_after_sealing_preserves_prior_result_without_publication(self):
+        """! @brief 파일 봉인 뒤 종료/취소 Event가 도착해도 완료 결과를 새로 게시하지 않는다."""
+        prepared = self.prepared()
+        prior = self.complete("job.submit", self.analysis_input(prepared))
+        original_seal = self.service.solver._seal
+        for signal in (self.service.solver.stop, self.service.solver.cancel):
+            self.service.solver.stop.clear()
+            self.service.solver.cancel.clear()
+            task = self.service.mutate("job.submit", self.request(self.analysis_input(prepared)))
+            def seal_then_stop(*args):
+                """! @brief 봉인 완료와 원자 게시 사이의 종료 경쟁을 재현한다."""
+                result = original_seal(*args)
+                signal.set()
+                return result
+            with patch.object(self.service.solver, "_seal", side_effect=seal_then_stop):
+                self.assertTrue(self.service.solver.run_next())
+            job = self.job(task)
+            self.assertEqual(job["state"], "interrupted", job)
+            self.assertFalse(job["solver"]["resource_reserved"])
+            self.assertTrue(job["events"][-1]["termination_confirmed"])
+            self.assertFalse(job["events"][-1]["outcome_unknown"])
+            self.assertNotIn("operation_result", job["events"][-1])
+            self.assertEqual(set(self.service.journal.read()["solver_results"]), {prior["artifact_id"]})
 
     def test_budget_is_explicit_finite_and_within_plan_limit(self):
         """! @brief wall-clock 예산은 300초 이내의 명시적인 유한 양수만 허용한다."""

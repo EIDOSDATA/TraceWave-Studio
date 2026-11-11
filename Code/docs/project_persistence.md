@@ -32,6 +32,22 @@ project.open의 copy, 외부 독립 프로젝트 import, 다른 target으로 저
 
 ## 명령과 재전송
 
+구현은 공개 `ProjectService`를 유지하면서 책임별 객체를 조합한다. 저장 schema와 JSON-RPC 응답은 이 분할로 변경하지 않는다.
+
+| 모듈 | 책임 |
+| --- | --- |
+| [projects.py](../src/rfad/application/projects.py) | 공개 API, 기능별 명령 분배, 자료 처리 worker 수명과 CAD/solver 연결 |
+| [project_contract.py](../src/rfad/application/project_contract.py) | 요청 필드/UUID/경로 검증과 초기 저장 예산 |
+| [project_repository.py](../src/rfad/application/project_repository.py) | 실제 소비할 불변 바이트와 문서 검증, 새 revision 저장, 프로젝트 참조 조회 |
+| [project_history.py](../src/rfad/application/project_history.py) | 명령/역명령, 이력 head, undo/redo와 구버전 이력 복원 |
+| [project_operations.py](../src/rfad/application/project_operations.py) | open/save/snapshot 및 입력 검사 작업의 실행 |
+| [request_ledger.py](../src/rfad/application/request_ledger.py) | epoch와 receipt, 같은 키 재전송 및 원자 접수 |
+| [job_state.py](../src/rfad/application/job_state.py) | 허용한 작업 상태 전이와 단조 증가 event 기록 |
+
+Repository/History/Operations는 별도 journal transaction을 중첩해 열지 않는다. RequestLedger가 명령 실행 callback과 receipt 기록을 같은 transaction으로 감싸므로 파일을 나누어도 명령과 ACK의 원자적 경계는 유지된다. 런타임 monkeypatch나 mixin으로 메서드를 조립하지 않는다. 기존 worker가 사용하는 `_load`/`_project`/`_event` 등의 연결 메서드는 명시적 위임으로 유지한다.
+
+과거 이력이 없는 프로젝트만 한 번의 명령 색인으로 복원하고, 각 현재 revision은 한 번 읽어 검증한다. 현재 문서와 접수 시 captured 문서는 같은 canonical/hash 검사를 거친다. 지원하지 않는 자료 처리 작업은 E_UNSUPPORTED로 실패하며 snapshot 분기로 흘러가지 않는다. coordinator 시작 도중 실패해도 이미 시작된 자료 처리 thread를 종료하고 writer lock을 반환한다.
+
 변경/접수 params에는 `contract_version`, `context`, `input`, `request_key`, `request_key_epoch`를 넣는다. wire 버전은 `rfad.api/2.0`이다. epoch는 capabilities.get에서 얻은 실제 UUID를 사용한다.
 
 project.apply_command의 context는 project_id, input은 expected_revision/command_id/type/payload다. parameter.set의 payload는 id/name/quantity다. quantity.value_si는 이미 SI 값이므로 표시 단위의 배율을 다시 곱하지 않는다. command_id와 parameter id는 정규 UUID 문자열이다.

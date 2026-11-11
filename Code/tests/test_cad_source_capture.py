@@ -66,7 +66,7 @@ class CadSourceCaptureTests(unittest.TestCase):
             with self.subTest(with_cache=with_cache), TemporaryDirectory(prefix="rfad 소스 봉인 ") as directory:
                 root = Path(directory)
                 original = root / "원본 코드"
-                with patch("rfad.application.cad_jobs.CODE_ROOT", original):
+                with patch("rfad.application.cad_runtime.CODE_ROOT", original):
                     runtime = self.make_runtime(original, with_cache)
                     original_caches = {path: path.read_bytes() for path in original.rglob("*.pyc")}
                     self.assertEqual(bool(original_caches), with_cache)
@@ -103,7 +103,7 @@ class CadSourceCaptureTests(unittest.TestCase):
         with TemporaryDirectory(prefix="rfad 소스 손상 ") as directory:
             root = Path(directory)
             original = root / "원본 코드"
-            with patch("rfad.application.cad_jobs.CODE_ROOT", original):
+            with patch("rfad.application.cad_runtime.CODE_ROOT", original):
                 runtime = self.make_runtime(original, True)
                 with ProjectService(root / "작업 공간", cad_runtime=runtime, auto_run=False) as service:
                     document, snapshot = register_fixture(service)

@@ -1,0 +1,24 @@
+#pragma once
+
+#include "canvas_viewport.h"
+#include <wx/wx.h>
+#include <wx/graphics.h>
+#include <memory>
+
+/** @brief 한 paint의 graphics context를 재사용하고 위젯 상태와 독립적으로 장면을 그린다. */
+class CanvasRenderer final
+{
+public:
+    CanvasRenderer(wxWindow& window, wxDC& dc, CanvasViewport viewport);
+    void DrawGrid(bool visible);
+    void DrawBoard(const CanvasScene::Model& scene);
+    bool DrawShape(const CanvasScene::Shape& shape, CanvasGeometry::Point offset, const wxColour& colour, bool highlight);
+
+private:
+    wxPoint WorldToScreen(CanvasGeometry::Point point) const;
+    int FromDIP(int value) const;
+    wxWindow& m_window;
+    wxDC& m_dc;
+    CanvasViewport m_viewport;
+    std::unique_ptr<wxGraphicsContext> m_graphics;
+};

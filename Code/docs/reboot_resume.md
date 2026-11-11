@@ -12,6 +12,8 @@
 
 이후 구멍을 가진 접지 polygon, 원형/회전 사각 pad, 명시적 중공 관통 PTH via와 IFA의 접지/급전선/단락부를 원본/GUI/CAD/EM에 연결했다. 단일 포트는 동일 sheet 면의 x/y gap과 층 사이 z gap을 지원한다. 고정 IFA fixture의 격자/경계 거리/시간 종료 연구를 실제 실행했고, 1.6~2.6 GHz의 별도 연구에서 초기 기준의 수치 안정성을 확인했다. 현재 우선 작업은 실제 물성/급전/측정 조건과 2.4 GHz 정합 설계, 국부 특징/곡선/PML의 추가 검증, GUI 수렴 비교, NF2FF와 독립 수신 CAD 검증이다. 실물 SMA launch/정합 부품의 기생 효과는 아직 포함하지 않았다. 2D 스냅/치수/endpoint, 3D LOD와 실제 GPU reset/DPI/도킹 복구 및 성능 실측도 남는다. 아래 첫 작업은 새 PC나 배포 미등록 상태에서의 재개 절차로 유지한다. Linux 근거는 [Linux 환경](linux_environment.md), CAD 범위는 [CAD/STEP 계약](cad_contract.md), 도체 모델은 [도체와 IFA 확장](copper_features.md)에 있다.
 
+코드 구조 정리에서는 주 창 진입점, 화면별 이벤트 연결, 순수 표시/작업 상태와 통합 시험을 분리했다. 프로젝트 서비스와 CAD/solver도 책임별 모듈로 분리했으며 공개 API/저장 schema는 유지한다. 새 기능을 추가할 위치와 검증 규칙은 [코드 구조](code_structure.md)를 먼저 확인한다. 최신 회귀 결과는 [개발 상태](development_status.md)에 기록한다.
+
 ## 최초 재부팅 전 저장한 상태
 
 - 표현식/의존 그래프, 초기 설계 데이터, 프로젝트 명령/저장/스냅샷과 목적별 입력 검사를 구현했다.
