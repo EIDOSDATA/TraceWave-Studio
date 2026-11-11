@@ -1,0 +1,446 @@
+{
+  "schema": "rfad.jlc-ro4350b-exploratory-verification/0.1",
+  "recorded_at": "2026-11-11T07:05:21.522806+00:00",
+  "baseline_commit": "6124e0fe2a3761dce290f560c4b2b5d111c06d7b",
+  "design_baseline": "RFAD-D0-3.4",
+  "status": "passed_exploratory_integration",
+  "user_authorized_source_based_approximations": true,
+  "manufacturer_properties_fully_confirmed": false,
+  "manufacturing_validated": false,
+  "physics_validated": false,
+  "formal_convergence_tested": false,
+  "candidate": {
+    "fabricator": "JLCPCB",
+    "laminate": "Rogers RO4350B",
+    "copper_layer_count": 2,
+    "core_nominal_mm": 0.762,
+    "each_copper_nominal_mm": 0.035,
+    "modeled_total_mm": 0.832,
+    "finished_candidate_nominal_mm": 0.9,
+    "order_mapping_verified": false,
+    "original_approved_ifa_baseline_changed": false
+  },
+  "exploratory_model": {
+    "core_model": "isotropic_constant_total_tan_delta",
+    "dk_original_band_ghz": [
+      8,
+      40
+    ],
+    "df_original_frequency_ghz": 2.5,
+    "df_original_temperature_c": 23,
+    "df_original_axis": "Z",
+    "copper_reference": "100% IACS at 20 C; not JLC measured foil",
+    "consumed_materials": [
+      {
+        "assumptions": [
+          "model: 공개 Df를 총 전기 손실로 표현한다. 독립 전도도는 미정으로 보존하고 추가 가산하지 않음",
+          "epsilon_r: Design Dk 3.66의 원문 8~40 GHz 조건을 보존하고 2.4 GHz 좁은 대역에 등방성 상수로 근사. 실측 확정값 아님",
+          "tan_delta: 23 C/Z 방향 2.5 GHz의 typical Df를 2.4 GHz 좁은 대역에 근사. Dk와 동일 시험 조건이 아님",
+          "conductivity: 원본 미정값을 보존하며 이 모델에서 소비하지 않음",
+          "validity_hz: 사용자가 허용한 2.400~2.4835 GHz 탐색 상수 모델 대역이며 제조사 보증/측정 대역이 아님"
+        ],
+        "consumed_properties": [
+          "epsilon_r",
+          "tan_delta"
+        ],
+        "consumption_models": [
+          "dielectric"
+        ],
+        "epsilon_r": 3.66,
+        "id": "8689527a-22cd-421f-a92c-36b8d3000a51",
+        "loss_partition": "total_electric_loss_from_tan_delta_no_separate_conductivity",
+        "model": "isotropic_constant_total_tan_delta",
+        "name": "탐색 RO4350B: Design Dk/총 Df 근사",
+        "source_refs": [
+          "evidence:6dabd8b39c892c7b4d4f4fd841b854361e03cf408960019807f902a44e21fc00",
+          "evidence:839b5d0d09d802845b691a100375869370c78f16537c0ee9d2cca8a9f61b22d0"
+        ],
+        "tan_delta": 0.0031,
+        "unconsumed_properties": [
+          "conductivity"
+        ],
+        "validity_hz": {
+          "max": 2483500000.0,
+          "min": 2400000000.0
+        }
+      },
+      {
+        "assumptions": [
+          "model: 유한 전도 sheet의 기준 구리 모델이며 JLC 완성 동박의 측정값이 아님",
+          "epsilon_r: 원본 미정값을 보존하며 이 모델에서 소비하지 않음",
+          "tan_delta: 원본 미정값을 보존하며 이 모델에서 소비하지 않음",
+          "conductivity: 100% IACS 20 C 표준 저항률의 역수 58 MS/m를 기준 구리로 선택함. JLC 제공값 아님: https://nvlpubs.nist.gov/nistpubs/Legacy/circ/nbscircular31e2.pdf",
+          "validity_hz: 사용자가 허용한 2.400~2.4835 GHz 탐색 상수 모델 대역이며 제조사 보증/측정 대역이 아님"
+        ],
+        "conductivity_s_per_m": 58000000.0,
+        "consumed_properties": [
+          "conductivity"
+        ],
+        "consumption_models": [
+          "conducting_sheet"
+        ],
+        "id": "b6ff1075-c48b-48f7-9f45-29f3a6a4d5d0",
+        "name": "탐색 기준 구리: 100% IACS / 20 C",
+        "source_refs": [],
+        "unconsumed_properties": [
+          "epsilon_r",
+          "tan_delta"
+        ],
+        "validity_hz": {
+          "max": 2483500000.0,
+          "min": 2400000000.0
+        }
+      }
+    ],
+    "dielectric_layer": {
+      "epsilon_r": 3.66,
+      "id": "e4a4695c-615a-4ac4-9314-3ee8d1166436",
+      "kappa_s_per_m": 0.0015412481697104049,
+      "loss_approximation": "constant_kappa_from_total_tan_delta_at_band_center_not_broadband_constant_tan_delta",
+      "loss_model": "isotropic_constant_total_tan_delta",
+      "loss_partition": "total_electric_loss_from_tan_delta_no_separate_conductivity",
+      "loss_reference_frequency_hz": 2441750000.0,
+      "material_id": "8689527a-22cd-421f-a92c-36b8d3000a51",
+      "role": "dielectric",
+      "thickness_mm": 0.762,
+      "z_min_mm": 0.035
+    },
+    "omissions": [
+      "soldermask",
+      "ENIG nickel/gold layers",
+      "copper roughness",
+      "anisotropy",
+      "dielectric dispersion",
+      "SMA launch and cable",
+      "fabrication tolerances"
+    ]
+  },
+  "input_integrity": {
+    "actual_material_count": 2,
+    "actual_material_ids": [
+      "e23317ca-485a-4995-9408-6c4f91a38502",
+      "7cd3ff7f-32e7-4ab2-8432-cdcb87b2fb71"
+    ],
+    "actual_properties_preserved_missing": true,
+    "actual_materials_unused_by_stackup": true,
+    "source_hashes": {
+      "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\pcb-catalog\\catalog.sqlite": "b6ae102c4f6cf9643af6347d6a9f3ea6543689443e0fbe9d3a30cdb9f0e01f92",
+      "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\fixtures\\ifa_feed_smoke.json": "7e578f72a2c85ffb89c18da374fb4680f9a433f519d787991064fb280da569a1",
+      "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\fixtures\\manufacturing\\jlc_ro4350b_candidate.json": "48c38c19f19b2420965b85896fcbc3c49b2da7a13fcee268fdceb219a8bf8bb9"
+    },
+    "snapshot": {
+      "artifact": {
+        "bytes": 30671,
+        "sha256": "fcd97a20685ca8b4d3de96e7e49fcfee446225f0dbe7936c3a5a54bad6850eba",
+        "uri": "projects/pcb-a7a754f9d017/snapshots/f44e1902-f677-431d-8fdd-4b32ab7d3c93/d21e333f-3dc8-443a-85b0-f76b0cb69f7e/project.json"
+      },
+      "canonical_version": "rfad.canonical/1.0",
+      "content_hash": "fcb5f8a1cb11366256e0cfd5cf458860b29e2460bf8d63724eb5b1bf9effae3c",
+      "description": "카탈로그 2층 PCB CAD/해석 통합 검증 원본",
+      "project_id": "ec2ac045-4fd7-4cb8-a33f-19e6e7c79819",
+      "revision_id": "f44e1902-f677-431d-8fdd-4b32ab7d3c93",
+      "schema_version": "rfad.project/0.2",
+      "sealed_at": 1794379901.7990944,
+      "snapshot_id": "d21e333f-3dc8-443a-85b0-f76b0cb69f7e",
+      "validation_state": "not_evaluated"
+    },
+    "same_snapshot_for_cad_and_solver": true,
+    "executed_worker_source_files_match_current": 96,
+    "worker_source_hash_rule": "UTF-8 text with universal newline normalization, matching SolverRuntime.sources"
+  },
+  "regression": {
+    "windows": {
+      "collected": 685,
+      "passed": 618,
+      "skipped": 67,
+      "failures": 0,
+      "elapsed_seconds": 364.51,
+      "log": {
+        "path": ".local/manufacturing-source-review/full-tests.log",
+        "bytes": 167126,
+        "sha256": "592d7e4412c34fe885fb41da6593d03c1d605d13816430a68eec9b094801cd62"
+      },
+      "scope": "CAD/WSL/GUI environment-gated tests skipped; dedicated native and GUI runs recorded separately"
+    },
+    "focused_models": {
+      "passed": 55,
+      "elapsed_seconds": 27.476,
+      "log": {
+        "path": ".local/manufacturing-source-review/model-tests.log",
+        "bytes": 14696,
+        "sha256": "284b56b3cd7415ccb3b320ab35cc25e1550e2275e0c93297132d7fe1ffe27f02"
+      }
+    },
+    "gui_selection": {
+      "passed": 3,
+      "elapsed_seconds": 33.525,
+      "log": {
+        "path": ".local/manufacturing-source-review/gui-selection-tests.log",
+        "bytes": 893,
+        "sha256": "6d69229c8def5dd5c803a8bae3cc96c32d26a3c59e4607cd2bcb6deb1e11230b"
+      },
+      "executable": {
+        "path": "build/windows-release/bin/tracewave_gui.exe",
+        "bytes": 17919602,
+        "sha256": "1edd99b7f5eab8e22f1612ca2de01d62a851db9441337e6245598272555bfb16"
+      },
+      "cpp_rebuilt_this_change": false
+    }
+  },
+  "native_total_loss_control": {
+    "scope": "synthetic_catalog_explicit_ifa_total_tan_delta_model_only",
+    "passed": 1,
+    "elapsed_seconds": 169.218,
+    "report": {
+      "path": ".local/manufacturing-source-review/native-control/total-tan-delta-dfaf4c66e4a04d7f9ad89a21ebc06d9e/report.json",
+      "bytes": 77255,
+      "sha256": "b5aae04c00b99cbb5101b848a7e94d35e1d34fe24f68d5f41e239ad90166d8ec"
+    },
+    "log": {
+      "path": ".local/manufacturing-source-review/native-total-loss-warm.log",
+      "bytes": 428,
+      "sha256": "965e9966ece164dfe7216b3a07781dc00e0ed18c92e07f33daac7d5740e5a9b6"
+    },
+    "material_loss_checks": {
+      "epsilon_r_consumed": 4.2,
+      "native_xml_kappa_s_per_m": 0.01026955,
+      "native_xml_sha256": "c74f01905724a972599b4456dae0385dc58d8fc1909b958ee915d934fe5c6ce7",
+      "planned_kappa_s_per_m": 0.010269554171523585,
+      "reference_frequency_hz": 2441750000.0,
+      "separate_conductivity_consumed": false,
+      "source_conductivity_still_missing": true,
+      "status": "passed",
+      "total_tan_delta_consumed": 0.018
+    }
+  },
+  "ro4350b_full_chain": {
+    "status": "passed",
+    "elapsed_seconds": 136.73399999999674,
+    "cad_operation_count": 2,
+    "cad_body_count": 2,
+    "step": {
+      "artifact_id": "794ed94d-f722-450d-b767-cad8c54f5114",
+      "bytes": 165093,
+      "media_type": "model/step",
+      "producer": "rfad.cad/0.1",
+      "profile_id": "rfad.step.mechanical/0.1",
+      "role": "step",
+      "run_id": "ef31ae8a-d0ff-41b9-a413-b6032b656102",
+      "sha256": "b32cc1bebc83ebd9e905d6c23669e671d91df9916c0009cd8513e6cdd661fcaf",
+      "snapshot_id": "d21e333f-3dc8-443a-85b0-f76b0cb69f7e",
+      "status": "generated_unverified",
+      "uri": "projects/pcb-a7a754f9d017/artifacts/ef31ae8a-d0ff-41b9-a413-b6032b656102/model.step"
+    },
+    "native_statistics": {
+      "iterations": 4805,
+      "native_cells": 639693,
+      "raw_values": [
+        639693.0,
+        8.754056105341008e-13,
+        4805.0,
+        4.206323958616354e-09,
+        78.646818,
+        39082634.78631774
+      ],
+      "timestep_seconds": 8.754056105341008e-13
+    },
+    "native_grid_points": 639693,
+    "yee_interval_cells": 612864,
+    "termination": {
+      "evidence": [
+        "40.00",
+        "4805",
+        "42.08"
+      ],
+      "exact_endcriterion_schedule": true,
+      "iterations": 4805,
+      "reported_decay_db": 42.08,
+      "reported_zero_energy": false,
+      "status": "end_criterion_reached",
+      "target_energy_ratio": 0.0001
+    },
+    "sample_count": 51,
+    "minimum_s11_sample": {
+      "frequency_hz": 2400000000.0,
+      "impedance_ohm": [
+        29.109747352199655,
+        60.01385251322001
+      ],
+      "s11": [
+        0.19767109477825776,
+        0.6086588593274287
+      ],
+      "s11_db": -3.8770423741094517,
+      "vswr": 4.554825839881013,
+      "vswr_status": "defined"
+    },
+    "matching_or_radiation_pass_asserted": false,
+    "assessment": {
+      "converged": true,
+      "finite_samples": true,
+      "physics_validated": false,
+      "status": "computed_unvalidated"
+    },
+    "project_unchanged": true,
+    "postprocess_samples_identical": true,
+    "restored_without_catalog_or_workers": true,
+    "qt_found": false,
+    "settings": {
+      "air_padding_mm": 8.0,
+      "curve_tolerance_mm": 0.025,
+      "end_criterion": 0.0001,
+      "frequency_hz": {
+        "count": 51,
+        "start": 2400000000.0,
+        "stop": 2483500000.0
+      },
+      "grid_mm": 0.5,
+      "max_timesteps": 50000
+    }
+  },
+  "cold_start_limitation": {
+    "original_failed_attempt": {
+      "path": ".local/manufacturing-source-review/native-control/total-tan-delta-7c40ce7af0524ffa85a28dc482832c10/report.json",
+      "bytes": 89337,
+      "sha256": "6f8298bb378353283fc4f7a40b4041d26ef38c47ce5549b486a243c4be611777"
+    },
+    "log": {
+      "path": ".local/manufacturing-source-review/native-total-loss.log",
+      "bytes": 46725,
+      "sha256": "191656fec65e9d58f7ab6eaa93fbb81fc2ce65bb7750e4787c8601457c088e6b"
+    },
+    "phase": "prepare_before_FDTD",
+    "state": "interrupted",
+    "outcome_unknown": true,
+    "termination_confirmed_in_report": false,
+    "observed_condition": "10 second start control timeout during cold WSL startup/source staging; guest had partial source copy and no control.json or worker",
+    "successful_retest_condition": "explicit WSL warmup and bounded 900 second keepalive",
+    "keepalive_stopped": true,
+    "automatic_cold_start_recovery_fixed": false,
+    "original_failure_preserved": true
+  },
+  "evidence": [
+    {
+      "path": ".local/manufacturing-source-review/ro4350b-input.json",
+      "bytes": 4633,
+      "sha256": "fcb9954d304ad11ed5869c16657baba30990a02c081eabde7c820e64a6746bbf"
+    },
+    {
+      "path": ".local/manufacturing-source-review/ro4350b-integration.json",
+      "bytes": 86417,
+      "sha256": "1ccb239742152582ec1072245661ef544bc6bfa5fe71366f9e33a59411afe73b"
+    },
+    {
+      "path": ".local/manufacturing-source-review/Rogers_RO4000.pdf",
+      "bytes": 872600,
+      "sha256": "51b920d81356884d6924e608ead6f8555ce1bd2ac635ebd255102d040e6afd0d"
+    }
+  ],
+  "final_product_python_files": {
+    "src/rfad/__init__.py": "637407b3c13a348c03d6a167d2a90e3703c4fc70a421cd9918075c0463d81097",
+    "src/rfad/__main__.py": "354888f3b9a8851b80520b2876cc77d3c09e666f4e04f8221eb7c0e218a36af3",
+    "src/rfad/adapters/__init__.py": "e4be3b367495a970767105766bbd0895df057c4a53a3a39087bfe316171d0837",
+    "src/rfad/adapters/cad/__init__.py": "031a455542eba8f6df8c996b243a3210041b80cbb40b04208f0c639469e3df83",
+    "src/rfad/adapters/cad/bodies.py": "f8529b328d9f666e3036946110e2871ff88d807e62789d0be66d24be408236f5",
+    "src/rfad/adapters/cad/display.py": "41f4e966ea731bf7d4da8f52022b4ce04f1d04360d5b843330fd58330eb6138b",
+    "src/rfad/adapters/cad/geometry.py": "590f44b8ce1bcabbdc6923047f9861d9129f0ba285a7575ed71ce35a64b3d6fb",
+    "src/rfad/adapters/cad/native.py": "a483616d46c25d7576ee7abd066f192d1cf64ee9de2aee310f92f1fa329a39e6",
+    "src/rfad/adapters/cad/step_io.py": "04c3399eca90cbc64fe980cd41e30b3b79c5e5a38ec4655b6b3cb367ba60961e",
+    "src/rfad/adapters/solvers/__init__.py": "577eedd7515dd8eac979114fc3726fda756389b669ca011786971969f9189c39",
+    "src/rfad/adapters/solvers/openems/__init__.py": "3cc22439f0d1dfb1ec9261bbc784bc575df4a41ec559937018172e8c65f252ca",
+    "src/rfad/adapters/solvers/openems/native.py": "fe05fecdb65bc3b0f7edba43a1d136e32bcd94b2701821601c3192b7e5f196e3",
+    "src/rfad/adapters/solvers/openems/pcb.py": "fd80933f9933bac4261f8e6d817e37dd8d6ee29ac0d8373474f552f3d83d8463",
+    "src/rfad/adapters/solvers/openems/pcb_mesh.py": "7edf8206be603296ab8fa57b2377c61d22bb51a9b0e436db9cc7d9db94020130",
+    "src/rfad/adapters/solvers/openems/reference.py": "d67995bd8189dc17af290b2b148a4041cf6830d69035f1cd4d237f727435f779",
+    "src/rfad/application/__init__.py": "883e15b18f72a85626c6634d255886596dc1bf71ae64b8aebb9b5c32b3896bc7",
+    "src/rfad/application/cad.py": "54e295d3f22dc7d4ee07dab0e584d99507df1e1cc54278ba4d471d1cf108dc26",
+    "src/rfad/application/cad_artifacts.py": "5291bee8f431f3793daebc6d84538f3d527e93523026d2c7d05ceefbc7ff0f44",
+    "src/rfad/application/cad_jobs.py": "846e7c75155d4915f3985cbbbfda6332869bb10c83d883f1d7eb0ee1afa19085",
+    "src/rfad/application/cad_runtime.py": "41e028c00ca6932ed888a357bbfd8a6bc9c4f7c759331e9098a36c8a4a4a6e40",
+    "src/rfad/application/canonical.py": "f3b263089ad802d6924aea481c46a890e9baa7297bb5daef659394b1ef2be420",
+    "src/rfad/application/canvas.py": "5b4d34afa804d3443fe697a8da96aee268972ef9f3c92089f5e583000559d9c7",
+    "src/rfad/application/catalog_api.py": "5b5fc08ed6a79d1da18d8cafb04188b49da9df58acf4d8d832766f4f6dde2517",
+    "src/rfad/application/convergence.py": "0150f4d1b348c6f4fa262614174e66627f7f6e2c6564073cf1e6e8ead36993e8",
+    "src/rfad/application/display_mesh.py": "06325f60b351904c6833e317f27f1ff0a6dfd982acbf15c02cf3c91cdcc0049c",
+    "src/rfad/application/editor.py": "41cc264e04b5eb9b53c498becc5d6553d30c119d1480717473fadd6400739c63",
+    "src/rfad/application/job_state.py": "cefaff8cb314d8e023b7abf89bd9a72ceb67bcf6515f92861dfc5746a47da142",
+    "src/rfad/application/native_process.py": "5f1b625eee607ab5a21fe304827f89542bc5fdb7fd1ede2b89c469088497badf",
+    "src/rfad/application/pcb_contacts.py": "3a5eddd3f269712c07c40e5906c81be0095381f3af32bfaf495c89fa948aa595",
+    "src/rfad/application/pcb_geometry.py": "d7d33d48af538a5676d1fcd6d4c242f2d66eb96c3d8a71cd620088e4af4e6a10",
+    "src/rfad/application/pcb_mesh.py": "fdf6bf0da9bbdf720745423428895a48ededb85acfdeaa32a5cba5ef4de974a3",
+    "src/rfad/application/pcb_projection.py": "8ab1d5fe268a728637e88d89def4e61bbeb4b050fb17b090cfc2c876a739a649",
+    "src/rfad/application/pcb_results.py": "0b7c2e498a25d04bc8aeb77f73e8cdb145bcb246464fd4519d74ab82de172ea5",
+    "src/rfad/application/pcb_selection.py": "55c6c0f09d897c3249c7ff9249b43641fe7d0c80211c75a12be4bf460643729e",
+    "src/rfad/application/pcb_selection_build.py": "3cdb2388b936294cbfe604552763006c6dbe8005dc9df89a00db8f29e283c974",
+    "src/rfad/application/pcb_selection_context.py": "fbc11df1836d434561e35b94175ad38f8d812614baf4527759f9a9cae8034813",
+    "src/rfad/application/pcb_selection_contract.py": "4acb97abc2e86f5757797ee6bf657a4a182b52cbd34d69f5d8864765ebb536ec",
+    "src/rfad/application/pcb_selection_layers.py": "dc572a76f534ac39163083854451e69d6b879ee74c9ad294322de078e9741294",
+    "src/rfad/application/pcb_selection_review.py": "fc6d8df7b412a263e2ac45646cbef60a689e5ad1e521ac7d6a13452c3a58485c",
+    "src/rfad/application/pcb_solver.py": "c7f2072be99d2955df14a3b7783b031020222587f1f99b808c499ecae6e16bd7",
+    "src/rfad/application/project_contract.py": "c688acc2f9d84dcfa9391d7ef3b8838d5276c99d345568bb4064b074589f3ecb",
+    "src/rfad/application/project_history.py": "7a8617965840f8b4d7ee293826a3e9e6a64d956bf7dcbf8116d1325b4cc8764d",
+    "src/rfad/application/project_operations.py": "399d2124434b0ce9da01ed99ab4b0d6a5e0a2fa4d68fc2c4c8572df5c3c773b5",
+    "src/rfad/application/project_repository.py": "8cce28fb173f945b31018b9dc106875ab6c9164098fcdf8c2126d254a48c9d29",
+    "src/rfad/application/projects.py": "9824ba7cd27028638fcc45660dd829e15f8a69e5b20dfadb3a9087dbe4e5c81d",
+    "src/rfad/application/request_ledger.py": "a49d5336aff07b3263dd9630690d6b62447648b35f2f6097e5463f41907ea9a5",
+    "src/rfad/application/rpc.py": "cb485a755ff032108a533de1620498c79b9ce7fc8e07178767b1cf7267065d45",
+    "src/rfad/application/solver.py": "eecc64140af223a070e4ba7c5820c9db0553ecde53dfd5623d1fb9fc41f65e89",
+    "src/rfad/application/solver_artifacts.py": "68a393a957228297617fab6c4d1e4c3749e4f8c3fc8912a0d336537d41650971",
+    "src/rfad/application/solver_jobs.py": "9374ecca31c28a2067a398ab4fd1269be0620d3115b547a28b1e9feb04c345f3",
+    "src/rfad/application/solver_queries.py": "8b9f63d88447084e4384f2ac4e47543893a070b8b780ee4eafe85db625f52905",
+    "src/rfad/application/solver_requests.py": "d6f62b88651e3b0cda8fd083c6c6f40e691bef4c615b8216bcdb21f5037a4c10",
+    "src/rfad/application/solver_runtime.py": "445afa15151a905bdaefe51cc56945477356fe92b51f9b13ec5647c782441683",
+    "src/rfad/application/wsl_process.py": "5f9ef1de2d89dae37b6f84109ff408806733aa21cf41320a2b2ae8467296900c",
+    "src/rfad/catalog/__init__.py": "f493ee69507a2eeef854f4cdbc3bfd482829ab5b34338743b71c84cb807b7de8",
+    "src/rfad/catalog/build.py": "0b838211c01c105b68fbcf9247759362896b9217fdfe35cd8156f95b1e4475ef",
+    "src/rfad/catalog/material_selection.py": "2f3eedf37db13b7132d42b2e3d0fbca190b08f644d4ab21f2238e65e434d7036",
+    "src/rfad/catalog/models.py": "30f285ea3bc597d35fd72a3e200170c862522f240dc3fa0c70f73d62f216961b",
+    "src/rfad/catalog/native.py": "d505114664c66861b6a79c039f73b3ac6656ffcdf627df8ecab2b8fac536219e",
+    "src/rfad/catalog/native_common.py": "556902f3e45bb71255451d2437546f0265ff26a9adf1662872d13905a2dbbc68",
+    "src/rfad/catalog/native_jlc.py": "fe662a96a35bd3a0e2d4c1b261c7cf78cb17d6a903ff8b680e17977e9e3c1c2c",
+    "src/rfad/catalog/native_pcbway.py": "c13777b1c66e342540fb71d15c9427f0844c6ab9d9533f9fac202a88f5b4d7ae",
+    "src/rfad/catalog/native_we.py": "f6904f5c87d8a146154a71a553af755d5412cbcb34c6c9971d50b3e4777ea036",
+    "src/rfad/catalog/properties.py": "67d01c6d83bf3bb2d1139e733490d577f7e5d67450e034a73ec8296dff121e56",
+    "src/rfad/catalog/query.py": "06e567696122f285083d8f772ef53abf2f0c429f8d192d003d90d478ac461a24",
+    "src/rfad/catalog/repository.py": "671d6c25ea6bdfa0fe895d390948c8a04fbb87473e737e55938191e7474a7206",
+    "src/rfad/catalog/review.py": "71a7bc5883805428f01798bcb734055cec7da6e9e6bd29ff775c8007d176b1ff",
+    "src/rfad/catalog/schema.py": "a9d77e4bcf796bc568b9fb65c5a6a47c3bee96dcbffc543a2304a8aa99e95d40",
+    "src/rfad/catalog/selection_reader.py": "2f0bea40663231d9319fa95b014d949ed2fd50c8153e7922578802ff3746acf3",
+    "src/rfad/catalog/selection_rules.py": "37765b18688473294ebf92483c85382ccf2c61124e53eb7edcc50519557bae52",
+    "src/rfad/catalog/service.py": "2eca3ffec08fa28db2dfb16c05bcdc0013ee959529eb77a9dc23d3a29e4efbe3",
+    "src/rfad/catalog/source.py": "fca01aad58763398caf269f4ba1ed81a0100a20ba9cde89a0f3a3c7742906a21",
+    "src/rfad/catalog/stackup_draft.py": "5287aa8998194bab02ead2b3a488e192d065f560fdf77462e2f7bd0e5d62a073",
+    "src/rfad/catalog/stackup_draft_common.py": "8e188553f62f111f1539a560388a4756f494d0b933de40a667c77095d4de32c4",
+    "src/rfad/catalog/stackup_draft_jlc.py": "ff554c07fbc41db3c87cbbf3d5b79bfab7c6722b29b21d336920ad99cba64eb2",
+    "src/rfad/catalog/stackup_draft_jlc_evidence.py": "a5ae02821a305a206442a0b3515808ad9b782f681b883df15f08fd74cc1c026c",
+    "src/rfad/catalog/stackup_draft_pcbway.py": "0e7ab15707fc1a2bee8b4baae7ca835c20eae68526ce26b50c4848c0264214c0",
+    "src/rfad/cli/__init__.py": "5ffd0914ed2f6746b578e0d30eabda8bd5b306c5a368ec8ec0dd87b3a669aa1b",
+    "src/rfad/cli/catalog.py": "098cd24482fcb1037263772fa82599b1e1ca6a4863ea879f00229c6e72b60272",
+    "src/rfad/cli/doctor.py": "80be1ab1fc4d387178f6b70cc4a1241b21c793d33648660c443ce9a3946139fb",
+    "src/rfad/domain/__init__.py": "f7905c21d7293db23c8736b154cfa4e737b28788376ae2314c73e75259356e67",
+    "src/rfad/domain/design.py": "56d6ba6792abf5da5b636f19dc8072442e75a28428f01fc1304bfc8ae3f9c24a",
+    "src/rfad/domain/errors.py": "e8dc2d8e54fd71ca35af28d538c214687cdefeba035443aeeaee992cc55697d6",
+    "src/rfad/domain/expressions.py": "4387895d32e28e838db10a1e7b0c9d2c2f5a2f5c4d8e64386ad02b0ed46c1bb5",
+    "src/rfad/domain/material_models.py": "7447b0b5fedb971a31b1fd41f81219249a324e2d44da6fe2e7269a8efd1a2fa9",
+    "src/rfad/domain/parameter_graph.py": "3afa704b61fe6cce2f64d175df455e227604223eab90c71166f957d5f24e4b36",
+    "src/rfad/domain/pcb_selection.py": "47fb9c72455a7a86250ed620f0492fbac58b45fe09a45075a65394fd6694a4ea",
+    "src/rfad/domain/pcb_selection_command.py": "62c6cceefc63dc87cb75489edc6c48522a125155de70962d0b92051b92328742",
+    "src/rfad/domain/pcb_selection_evidence.py": "7fc3273e3f6a24aac488f67eb5d4fa787c71f730e5680795c8e914d7fe4ff778",
+    "src/rfad/domain/pcb_selection_history.py": "03a38233b5eee766438cb344f978513901b0a6f4b2e3dbf4416484a615805a98",
+    "src/rfad/domain/planar.py": "a5fb63c7bfb7f1813917404095b696ab6e70eb71d7f0059508dbae31024e5e3f",
+    "src/rfad/domain/project.py": "caedbf39e5e8db6ccdfce432746f137fad23b303b0db894175bd5727857991d4",
+    "src/rfad/domain/units.py": "f02c8095e7ae3b8022ac3d7718363d1cbffdd6b876506122ecd259cf4cda2247",
+    "src/rfad/storage/__init__.py": "ca4c257ab77186c72310cd6e4b1ae31e30f97b41d0ca4075b5760ad672a2e270",
+    "src/rfad/storage/journal.py": "324f2e69b768e893b5e02fc24273754ec0ad3ca4641ee2d589a3b9479dfe555b"
+  },
+  "final_tool_and_test_files": {
+    "tools/create_jlc_ro4350b_verification.py": "f8b10f2cc287b5a1f69d8e6883b19e968da040ec2e3bd51415cf7afb2d726368",
+    "tools/manufacturing_verification/__init__.py": "72bc865c8b3b09559c66d9a17ef3ccffadf0b74eb44677043d2b1e5e8a455bff",
+    "tools/manufacturing_verification/jlc_ro4350b.py": "3421b0f45e7bec3ddde17866dff48b4c9cc084390c3f799cc391feac221209f0",
+    "tests/test_jlc_ro4350b_verification.py": "a48903314288488944b42a99af85b7182c82e3591d8ef7d469cbbc7da2d02380",
+    "tests/test_material_loss_models.py": "4aa9a1342566e00f72a2b4a370b8d62b7067bb627e503181ca0d5805583493b2",
+    "tests/test_material_model_selection.py": "65c71c544ab1ff1867a624944a54a8b0b62a2e3ab683b237e807fb308f95e3e5",
+    "tests/test_material_loss_models_native.py": "067e4cc0fbd7b5203a2f0d8d9a2cfac1c04c78ed19f483a10b5f861d887fdde4",
+    "fixtures/manufacturing/jlc_ro4350b_candidate.json": "48c38c19f19b2420965b85896fcbc3c49b2da7a13fcee268fdceb219a8bf8bb9"
+  }
+}

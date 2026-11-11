@@ -5,6 +5,7 @@ import math
 import re
 
 from rfad.domain.design import _uuid, resolve_scalar
+from rfad.domain.material_models import MATERIAL_MODELS
 from rfad.domain.pcb_selection_evidence import MAX_EVIDENCE_BYTES, decode, encoded, fail, fields, pointer, read_pointer, sha256, text, validate_evidence
 
 
@@ -15,7 +16,7 @@ QUANTITY_FIELDS = {
                   "validity_hz.min": "frequency", "validity_hz.max": "frequency"},
     "stackup": {"thickness": "length", "z_min": "length"},
 }
-TARGET_FIELDS = {"materials": set(QUANTITY_FIELDS["materials"]),
+TARGET_FIELDS = {"materials": set(QUANTITY_FIELDS["materials"]) | {"model"},
                  "stackup": {"thickness", "z_min", "role", "material_id", "name"}, "ports": {"excitation_box"}}
 
 
@@ -42,6 +43,10 @@ def _catalog(value: object) -> None:
 def _adopted_value(target: dict, value: object, field: str) -> bool:
     """! @brief 채택 당시 값의 차원과 미정 상태를 현재 프로젝트 참조 없이 검사한다."""
     collection, name = target["collection"], target["field"]
+    if collection == "materials" and name == "model":
+        if type(value) is not str or value not in MATERIAL_MODELS:
+            fail("E_SCHEMA", "채택한 재료 손실 모델이 올바르지 않습니다.", field)
+        return False
     dimension = QUANTITY_FIELDS.get(collection, {}).get(name)
     if value is None:
         return True

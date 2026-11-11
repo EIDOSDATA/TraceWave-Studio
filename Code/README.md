@@ -4,7 +4,9 @@
 
 구현 파일별 책임과 상태 처리 규칙은 [코드 구조](docs/code_structure.md)에 정리했다. GUI의 표시/입력 정책과 비동기 상태, 프로젝트 저장/이력과 worker 산출물 처리를 별도 모듈로 관리한다.
 
-수집한 PCB 물성/적층 자료는 [카탈로그 조회 계약](docs/pcb_catalog_contract.md)에 따라 오프라인 SQLite로 변환하고 업체/제품/적층/물성 조건별로 검색한다. [PCB 선택과 적층 적용](docs/pcb_selection_contract.md)은 프로젝트 소유 출처 사본, 개별 물성 선택/사용자 수정값, 업체별 적층 초안과 원자적 적용 API를 제공한다. 기존 직접 입력은 유지하며 wxWidgets 제조업체 선택 화면은 다음 단계다.
+수집한 PCB 물성/적층 자료는 [카탈로그 조회 계약](docs/pcb_catalog_contract.md)에 따라 오프라인 SQLite로 변환하고 업체/제품/적층/물성 조건별로 검색한다. [PCB 선택과 적층 적용](docs/pcb_selection_contract.md)은 프로젝트 소유 출처 사본, 개별 물성 선택/사용자 수정값, 업체별 적층 초안과 원자적 적용 API를 제공한다. 기존 직접 입력과 wxWidgets 제조업체 검색/선택/적층 미리보기를 지원한다.
+
+[JLC 제작 후보와 탐색 모델](docs/jlc_manufacturing_selection.md)은 RO4350B 2층의 공식 자료, 미정 납품 물성과 별도 근사 입력을 구분한다. 출처 기반 탐색 모델의 CAD/STEP/openEMS/결과 재열기를 검증했으며 제조 및 측정 정확도는 후속이다. [재료 손실 모델](docs/material_loss_models.md)은 총 Df와 독립 전도도의 중복 가산을 방지하는 명시적 모델 선택을 설명한다.
 
 ## 시스템 구성
 

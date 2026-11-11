@@ -62,6 +62,8 @@ apply는 별도 job이 아닌 동기 변경 명령이다. `project.open`, `proje
 
 각 `materials` 항목은 `{key, name, properties, validity_hz}`다. 외부 spec에는 재료 UUID를 직접 넣지 않는다. `properties`에는 `epsilon_r`, `tan_delta`, `conductivity`를 모두 명시한다.
 
+손실 모델을 명시하려면 선택 항목에 `model`과 `model_reason`을 함께 추가한다. 지원 값은 기존 `isotropic_constant`와 유전체 전용 `isotropic_constant_total_tan_delta`다. 모델과 이유는 채택 결정 및 가정에 보존하고 undo/redo와 재열기에 포함한다. 생략한 기존 요청은 이전과 같은 모델/결과를 유지한다. 이미 총 Df 모델인 재료를 기존 ID에 대응하여 수정할 때는 모델을 생략할 수 없다. 구형 GUI 입력으로 손실 모델이 암묵적으로 초기화되는 것을 막기 위한 조건이다. 현재 모델 선택은 공개 API에서 지원하며 GUI 속성은 모델 이름을 표시한다.
+
 | 선택 | 정확한 형식 | 결과 |
 | --- | --- | --- |
 | 공개값 | `{mode: "catalog", record_id, reason}` | Dk는 원문의 `dk`, Df는 `df`에서만 선택. Quantity 상태는 `source_default` |

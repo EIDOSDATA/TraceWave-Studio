@@ -6,6 +6,7 @@ from uuid import UUID
 from rfad.catalog.models import CatalogError, canonical_json
 from rfad.catalog.selection_reader import SelectionReader
 from rfad.catalog.selection_rules import adoption_blocks, conditions, incomplete_conditions
+from rfad.domain.material_models import LEGACY_MODEL, MATERIAL_MODELS
 from rfad.domain.units import Quantity
 
 
@@ -109,7 +110,12 @@ def build_material(spec: dict, reader: SelectionReader | None) -> dict:
     @param reader 같은 카탈로그 개정을 읽는 선택 reader이다. 완전 수동 입력은 None을 허용한다.
     @return key, material, decisions, issues를 반환한다. 근거는 공유 reader에 중복 없이 누적한다.
     """
-    _fields(spec, {"key", "id", "name", "properties", "validity_hz"})
+    _fields(spec, {"key", "id", "name", "properties", "validity_hz"}, {"model", "model_reason"})
+    if ("model" in spec) != ("model_reason" in spec):
+        raise CatalogError("E_SCHEMA", "손실 모델을 선택할 때 모델과 이유를 함께 지정하십시오.")
+    model = spec.get("model", LEGACY_MODEL)
+    if type(model) is not str or model not in MATERIAL_MODELS:
+        raise CatalogError("E_UNSUPPORTED", "지원하지 않는 재료 손실 모델입니다.")
     key = _text(spec["key"], "key", 128)
     identity = _text(spec["id"], "id", 36)
     try:
@@ -121,9 +127,13 @@ def build_material(spec: dict, reader: SelectionReader | None) -> dict:
     _fields(spec["properties"], set(PROPERTY_FIELDS))
     validity = _fields(spec["validity_hz"], {"min", "max", "reason"})
     validity_reason = _text(validity["reason"], "validity_hz.reason")
-    material = {"id": identity, "name": name, "model": "isotropic_constant",
+    material = {"id": identity, "name": name, "model": model,
                 "source_refs": [], "assumptions": [], "validity_hz": {}}
     decisions, issues, records = [], [], {}
+    if "model" in spec:
+        model_reason = _text(spec["model_reason"], "model_reason")
+        decisions.append(_decision(identity, "model", "user_assumption", model, model_reason))
+        material["assumptions"].append("model: " + model_reason)
     for field in PROPERTY_FIELDS:
         value, decision, record, warnings = _property(field, spec["properties"][field], identity, reader)
         material[field] = value

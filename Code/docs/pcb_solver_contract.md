@@ -12,7 +12,7 @@
 
 ## 물성 및 급전 모델
 
-- 유전체는 isotropic_constant 모델이다. 사용자의 전도도에 대역 중심 주파수의 `2*pi*f*epsilon0*epsilon_r*tan_delta`를 더한 상수 손실 전도도를 사용한다. stop/start는 2 이하이며 물성 유효 대역이 전체 평가 대역을 포함해야 한다. 광대역 분산 모델은 후속이다.
+- 기존 유전체 `isotropic_constant`는 사용자의 독립 전도도에 대역 중심 주파수의 `2*pi*f*epsilon0*epsilon_r*tan_delta`를 더한다. 두 항이 같은 손실을 중복 표현하지 않는다는 입력 가정이 필요하다. 새 `isotropic_constant_total_tan_delta`는 총 Df만 등가 전도도로 변환하며 원본 전도도를 소비하지 않는다. 두 모델 모두 stop/start는 2 이하이고 명시한 적용 대역이 전체 평가 대역을 포함해야 한다. 상수 kappa는 중심에서만 입력 Df와 일치하며 광대역 분산 모델은 후속이다. 상세는 [재료 손실 모델](material_loss_models.md)을 따른다.
 - 동박은 인접 유전체 경계면으로 투영한 `AddConductingSheet`다. 사용자가 입력한 전도도와 실제 두께를 모두 전달하며 두께를 0으로 버리거나 PEC로 교체하지 않는다. 기하학적 체적 동박과 동일한 모델은 아니므로 sheet 위치/두께/전도도 및 근사 내용을 계획과 소비 보고서에 기록한다.
 - 포트에는 양극/기준 도체 UUID, 저항, 기준면 설명, 유효 대역, 방향/극성 및 `excitation_box.start/stop`의 3D Quantity가 필요하다. 동일 sheet 면의 x/y 또는 서로 다른 sheet 면의 z 축 방향 1차원 gap, 극성 +1을 지원한다. 시작점은 기준 도체, 끝점은 양극 도체에 닿아야 한다. 모든 gap은 실제 Yee edge 두 개 이상으로 표현해야 하며 x/y gap은 설정 grid_mm의 두 배 이상이어야 한다. z gap은 양끝과 중간의 local mesh line을 추가해 검사한다. 임의 위치의 기본 포트를 만들지 않는다. 같은 net인 IFA도 실제 열린 gap과 접지/단락부/방사체의 연결이 맞으면 허용한다.
 - native polygon에서도 단자 접촉과 열린 gap의 도체 침범을 검사한다. 다른 net 또는 재료의 접촉과 허용 오차 이내 간격은 보수적으로 거절한다. 이는 초기 형상 검사이며 최종 제조 DRC, 전류 경로 수용이나 일반적인 접속 엔진을 대신하지 않는다.

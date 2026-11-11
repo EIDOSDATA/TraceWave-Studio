@@ -11,6 +11,7 @@ from rfad.catalog.material_selection import build_material
 from rfad.catalog.selection_reader import SelectionReader
 from rfad.catalog.stackup_draft import build_observation_draft, build_stackup_draft
 from rfad.domain.errors import ProjectError
+from rfad.domain.material_models import LEGACY_MODEL
 from rfad.domain.pcb_selection import EXTENSION_KEY, SELECTION_SCHEMA, state_hash
 from rfad.domain.pcb_selection_history import preserve_selection_history
 from rfad.domain.project import SCHEMA_VERSION
@@ -31,7 +32,7 @@ def materials_from_specs(document, selection_id, spec, reader):
     mapping = spec.get("material_ids", {})
     keys, used, decisions, issues = {}, set(), [], []
     for item in spec["materials"]:
-        _fields(item, {"key", "name", "properties", "validity_hz"})
+        _fields(item, {"key", "name", "properties", "validity_hz"}, {"model", "model_reason"})
         key = text(item["key"], "materials.key", maximum=128)
         if key in keys:
             raise ProjectError("E_SCHEMA", "선택 재료 key가 중복됩니다.")
@@ -44,6 +45,8 @@ def materials_from_specs(document, selection_id, spec, reader):
             raise ProjectError("E_CONFLICT", "이미 사용한 선택 ID입니다. 새 ID 또는 기존 재료 대응을 명시하십시오.")
         if identity in used:
             raise ProjectError("E_SCHEMA", "하나의 재료를 여러 선택에 대응할 수 없습니다.")
+        if identity in materials and materials[identity]["model"] != LEGACY_MODEL and "model" not in item:
+            raise ProjectError("E_SCHEMA", "기존 재료의 손실 모델과 선택 이유를 명시하십시오. 기본 모델로 자동 변경하지 않습니다.")
         selected = build_material({**item, "id": identity}, reader)
         materials[identity] = selected["material"]
         decisions.extend(selected["decisions"])

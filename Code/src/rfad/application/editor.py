@@ -40,6 +40,7 @@ VALUE_LABELS = {
     "radiator": "방사체", "ground": "접지", "feed": "급전", "short": "단락부",
     "rectangle": "직사각형", "circle": "원형", "line_path": "선 패턴", "arc_path": "원호 패턴", "lumped": "집중소자 포트",
     "isotropic_constant": "등방성 상수 모델", "finished": "완성 두께",
+    "isotropic_constant_total_tan_delta": "등방성 상수 모델 (Df로 총 손실 지정)",
     "planar_region": "면 패턴", "pad": "패드", "via": "도금 비아", "none": "충진 없음",
     "material": "재료", "layer": "적층", "net": "네트", "geometry": "형상", "port": "포트",
 }

@@ -30,7 +30,8 @@ wxWidgets, Windows 11+WSL2 우선, Linux GUI 후속, 원호/IFA, 내부 검증 �
 | IFA 수치 안정성 | 명시적 시험 입력의 3단계 격자/3단계 경계/2단계 시간 종료 비교, 고정 물리 PML 두께와 graded air, 공개 API 실행/재개/독립 재판정, JSON/CSV/비교 그림 | 아래 실제 검증 기록의 범위만 수용. GUI 다중 결과 비교, 국부 특징/곡선/PML 셀 수 민감도, 제조/실측 정확도 |
 | PCB 카탈로그 | 전체 정리 관측/원시 적층의 중립 모델, 오프라인 SQLite 변환과 검토 사유, 읽기 전용 검색/상세 CLI 및 JSON-RPC, 원문 타입/출처/해시와 페이지 보존 | 카탈로그 갱신/배포 범위와 GUI 페이지 검색 |
 | PCB 선택/적층 적용 | 프로젝트 소유 출처와 사용자 수정값, Dk/Df 독립 선택, 업체별 초안/층/급전 대응, wxWidgets 검색/단면/변경 미리보기, 원자 적용/undo. 기존 직접 입력 유지 | 업체 주문/실측 조건 확정. 초안 저장은 제조/RF 승인과 구분 |
-| 카탈로그 PCB 통합 | JLC0206 후보의 실제 CAD/STEP/mesh 재입력과 미정 RF 입력 차단. 명시적 시험 물성의 2층 IFA에서 같은 snapshot의 CAD/openEMS/재후처리/결과 재열기 통과 | JLC 후보의 손실/전도도/적용 대역 확정 후 실제 EM 계산 및 별도 수렴/물리 검증 |
+| 유전체 손실 모델 | 기존 합산 모델 보존, 명시적 총 Df 모델 추가. 독립 전도도 미정/비소비 보존과 중심 주파수 kappa 환산, 실제 native 양성 대조군 통과 | 광대역 분산/방향별 모델, 실제 시료 물성 및 모델 오차 검증 |
+| 카탈로그 PCB 통합 | JLC0206의 CAD/STEP/미정 RF 입력 차단 기록 유지. 별도 RO4350B 탐색 모델에서 같은 snapshot의 CAD/STEP/openEMS/재후처리/결과 재열기 통과 | 실제 제작 적층/동박/급전 확인, RO4350B 모델의 격자/경계 수렴과 제조/측정 검증 |
 
 서비스는 rfad.api/2.0, workspace profile은 rfad.projects/0.2, 새 문서는 rfad.project/0.2다. 세부 계약은 [저장](project_persistence.md), [설계 데이터](design_data.md), [선택 속성](editor_contract.md), [2D 표시/편집](canvas_contract.md), [CAD/STEP](cad_contract.md), [worker 실행](worker_integration.md), [기초 계약](bootstrap_contract.md)을 따른다. 전체 API나 R0/R1 완료를 주장하지 않는다.
 
@@ -317,12 +318,13 @@ $env:PYTHONPATH = 'src'
 
 재부팅 직후 실행할 명령과 단계별 완료 기준은 [재부팅 후 개발 재개](reboot_resume.md)를 따른다.
 
-1. [IFA 수치 안정성 연구](ifa_convergence.md)의 반사 최소점과 목표 대역 차이를 바탕으로 2.4 GHz IFA 패턴 치수/급전 위치를 조정한다. 변경한 물리 snapshot은 새 연구로 계산하고, 국부 특징/곡선 근사/PML 셀 수 민감도를 필요한 순서로 추가한다.
-2. 사용자 재료/제작 조건과 SMA launch/실장/케이블 기준면을 명시한다. 독립 참조 계산과 VNA 교정/지그/시료 조건을 확보하여 임피던스와 S11의 실측 정확도를 검증한다.
-3. NF2FF 경계, 방사 패턴, 이득/효율과 전력 수지를 구현하고 참조 사례로 검증한다. 원형 PCB/원호에도 별도 격자/경계 연구와 독립 수신 CAD 재열기 증거를 추가한다.
+1. WSL cold boot의 준비 확인과 제한 시간/복구를 보강한다. 이번에 관찰한 10초 start control timeout을 수동 예열로만 피하지 않고, 재부팅 직후 실행과 취소/오류 보고를 재현해 검증한다. 이미 완료한 RO4350B 통합 실행은 보존한다.
+2. [RO4350B 제작 후보](jlc_manufacturing_selection.md)의 실제 주문 적층, 완성 동박, 마스크/ENIG와 급전 조건을 확인한다. 출처 기반 탐색 모델과 실제 납품 재료의 미정 상태를 계속 분리하고, SMA/실장/케이블 기준면 및 VNA 교정/지그/시료 조건을 정한다.
+3. RO4350B 탐색 모델을 별도 연구로 고정하고 2.4 GHz IFA 패턴/급전을 조정한다. 기존 [IFA 수치 안정성 연구](ifa_convergence.md)를 이 새 모델의 수렴 근거로 전용하지 않는다. 격자/경계/종료와 국부 특징/곡선/PML 셀 수 민감도, 독립 참조 및 실측 대조를 순서대로 확인한다.
 4. GUI 다중 결과 비교와 수렴 연구/준비 계획 검토 화면, 마우스 스냅/치수 도구/endpoint 드래그를 확장한다. 3D LOD와 실제 GPU reset/DPI/도킹 복구를 검증한다.
-5. 일반 60 fps/대형 30 fps, 전체 프로세스 메모리, 시작/응답 시간과 취소/복구를 측정한다. 라이선스 고지와 재현 가능한 내부 검증 패키지를 준비한다.
-6. 같은 명령/작업/결과 계약에 MCP 서버와 EDA adapter를 연결하고 단위/좌표계/재료/net/port 의미 mapping과 요청 멱등성을 검증한다.
+5. NF2FF 경계, 방사 패턴, 이득/효율과 전력 수지를 구현하고 참조 사례로 검증한다. 원형 PCB/원호에도 별도 격자/경계 연구와 독립 수신 CAD 재열기 증거를 추가한다.
+6. 일반 60 fps/대형 30 fps, 전체 프로세스 메모리, 시작/응답 시간과 취소/복구를 측정한다. 라이선스 고지와 재현 가능한 내부 검증 패키지를 준비한다.
+7. 같은 명령/작업/결과 계약에 MCP 서버와 EDA adapter를 연결하고 단위/좌표계/재료/net/port 의미 mapping과 요청 멱등성을 검증한다.
 
 GUI와 자동화는 같은 서비스를 공유한다. MCP 서버 자체와 다른 EDA의 의미 mapping은 후속이다. solver 실행은 도파관 참조 및 제한된 사용자 PCB 단일 포트 profile로 연결했다. 물성은 사용자 입력이며 임의 FR4 대표값으로 대체하지 않는다. 초기 IFA 1 mm 완성 두께에서 구리 두께를 뺀 잔여값을 실제 코어 두께 확정값으로 취급하지 않는다.
 
@@ -369,3 +371,26 @@ View, 위젯 없는 PcbSelectionModel, StudioFrame 서비스 연결을 분리했
 | 실제 JLC 후보의 CAD 및 RF 누락 차단 | CAD 작업 2개 통과, 실제 EM 미실행, 재열기 통과 | 17.359초 |
 
 회귀의 스킵은 별도 실제 DB 조회 1개와 위의 native 사례 3개다. 기존 전체 GUI 시험 결과를 이번 변경의 전체 회귀로 재표시하지 않았다. 보고서 원자 게시와 inspect의 native 런타임 배제는 최종 회귀 및 실제 JLC inspect CLI(입력 부족 종료 코드 3)로 확인했다. 원본 프로젝트와 자료 DB, fixture를 변경하지 않았으며 승인 문서도 유지했다. 보고서/소스 해시와 범위는 [검증 기록](../runtime_profiles/catalog-pcb-integration.json)에 있다.
+
+## JLC RO4350B 탐색 모델과 전체 경로 검증 (2026-11-11)
+
+제조사 자료 조사 후 JLCPCB 고주파 서비스의 RO4350B 30 mil 코어를 후속 후보로 기록했다. 사용자가 출처와 근사임을 구분하는 탐색 모델을 허용하여, 원본 카탈로그의 관측과 실제 납품 물성이 미정인 재료 2개를 보존한 새 프로젝트를 만들었다. [제작 후보와 출처](jlc_manufacturing_selection.md), [손실 모델의 의미](material_loss_models.md), [최종 runtime 기록](../runtime_profiles/jlc-ro4350b-exploratory.json)을 함께 확인한다. 위 JLC0206의 `needs_inputs`와 과거 CAD 검증 기록은 이 새 모델로 대체하지 않는다.
+
+탐색 유전체는 Design Dk 3.66의 원문 8~40 GHz 조건과 Df 0.0031의 2.5 GHz/23 C/Z 방향 조건을 각각 보존하고 2.400~2.4835 GHz에 적용하는 등방성 상수 근사다. `isotropic_constant_total_tan_delta`를 명시적으로 선택하여 독립 유전체 전도도는 미정/비소비로 유지한다. 기존 `isotropic_constant`의 합산 의미는 바꾸지 않았다. Df에서 환산한 상수 kappa는 대역 중심에서 입력 Df와 일치하며 광대역 상수 Df 모델이 아니다.
+
+도체는 JLC 측정값과 분리한 `100% IACS / 20 C` 기준 구리 58 MS/m를 사용한다. 코어 0.762 mm와 양면 동박 각 0.035 mm의 명목 합계는 0.832 mm이며 제작 후보 0.9 mm와의 차이를 배분하지 않았다. 솔더마스크, ENIG의 Ni/Au 층, 거칠기, 이방성/분산, SMA/케이블과 제작 공차를 생략한 모델이다. 실제 납품용 미정 재료 2개는 적층/형상에서 소비하지 않으며 해당 물성과 적용 대역의 null을 유지했다.
+
+같은 불변 snapshot의 CAD 형상, AP242 STEP/BREP 재입력, 표시 mesh와 출처를 확인하고 WSL2 openEMS를 실제 실행했다. native 격자점 639,693개, 4,805 steps에서 에너지 감소 42.08 dB로 요청 종료 조건을 충족했고, 51개 주파수 표본의 독립 재후처리와 결과 재열기 및 원본 불변 검사를 통과했다. 전체 통합 경과 시간은 136.734초다. 하부 동박층 정의만으로 자동 접지면을 추가하지 않았으며, CAD 왕복은 같은 Open CASCADE kernel의 확인이다.
+
+| 최종 검증 | 결과 | 실행 시간 |
+| --- | --- | --- |
+| Windows 서비스 환경 전체 회귀 | 685개 수집, 618개 통과, 67개 조건부 스킵, 실패/오류 0 | 364.510초 |
+| wxWidgets PCB 선택 회귀 | 3개 통과, 실패/오류 0 | 33.525초 |
+| 총 Df 모델 native 양성 대조군 | 1개 통과, 실제 CAD/openEMS/재후처리/재열기 | 169.218초 |
+| RO4350B 탐색 프로젝트 전체 통합 | `passed`, 같은 snapshot의 CAD/STEP/openEMS/재후처리/재열기와 원본 불변 | 136.734초 |
+
+전체 회귀의 스킵을 native 실행 통과로 간주하지 않는다. GUI 선택 및 총 Df native 대조군은 위의 별도 실행이며, 과거 GUI 전체/CTest/다른 OS 결과를 이번 소스의 새 전체 검증으로 표시하지 않는다. 로그는 `.local/manufacturing-source-review/full-tests.log`, `gui-selection-tests.log`, `native-total-loss-warm.log`이고 실제 선택/통합 보고서는 같은 폴더의 `ro4350b-input.json`, `ro4350b-integration.json`이다.
+
+총 Df native 대조군의 첫 준비 시도는 WSL cold boot 과정에서 10초 start control timeout으로 실패했다. 최초 로그 `native-total-loss.log`를 보존했고, WSL 예열과 제한 시간이 있는 keepalive 이후 별도 실행이 통과했다. 이 조치는 이번 실행 환경을 준비한 것이며 자동 시작/복구 문제가 해결됐다는 의미가 아니다. 재부팅 직후 자동 준비와 제한 시간 처리 보강은 다음 작업으로 남긴다.
+
+RO4350B 결과의 `status=computed_unvalidated`, `physics_validated=false`를 유지한다. `converged=true`는 시간영역 에너지 종료 조건 충족만 뜻한다. 이 새 재료/기하의 격자/경계 수렴, 제조 공차와 실측 대조는 아직 검증하지 않았다. 실제 제작 적층/물성/주문 조합도 미확정이며 기존 승인 IFA 및 원문 자료를 이번 탐색 수치로 덮어쓰지 않았다.

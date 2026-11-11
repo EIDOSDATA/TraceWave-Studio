@@ -60,6 +60,7 @@ StudioFrame은 화면 사이의 연결과 서비스 DTO 캐시를 유지한다. 
 | 제조업체 적층 초안 | `catalog/stackup_draft*.py` | JLCPCB/PCBWay/관측별 물리 층 변환, 미정값과 수동 구성 사유 |
 | PCB 적용 조정 | `application/pcb_selection*.py` | 요청 계약, 후보 조립, 층/급전 참조 검사, 미리보기 해시와 단일 writer 적용 |
 | PCB 저장 계약 | `domain/pcb_selection*.py` | 버전이 있는 출처 확장, 현재 참조에 필요한 이전 출처, 원자 명령과 역명령 |
+| 재료 손실 계약 | `domain/material_models.py` | 명시적 모델 검증과 목적별 소비 물성. 총 Df 모델의 독립 전도도 미소비 및 도체 적용 거절 |
 | 요청 규칙 | `project_contract.py`, `request_ledger.py` | 입력 형태/상한/경로, epoch와 receipt의 멱등성 |
 | 프로젝트 데이터 | `project_repository.py`, `project_history.py`, `project_operations.py` | 불변 문서 저장, 명령/undo/redo, 열기/저장/snapshot/검사 |
 | 작업 조정 | `solver_jobs.py`, `cad_jobs.py`, `job_state.py` | 작업 접수/실행/취소/게시 및 명시적 상태 전이 |
@@ -68,6 +69,8 @@ StudioFrame은 화면 사이의 연결과 서비스 DTO 캐시를 유지한다. 
 | PCB 투영 | `pcb_solver.py`, `pcb_projection.py`, `pcb_geometry.py`, `pcb_results.py` | 계획 조립, 물리 입력/도체 투영, 결과/종료 판정 |
 | 격자/접촉 | `pcb_mesh.py`, `pcb_contacts.py`, `adapters/solvers/openems/pcb_mesh.py` | 계획 격자, 물리 접촉과 native 격자 확인 |
 | CAD adapter | `adapters/cad/native.py`, `geometry.py`, `bodies.py`, `step_io.py`, `display.py` | 패키지 조립, 고체 생성/집계, STEP 교환과 표시 mesh |
+| 제조 후보 검증 도구 | `tools/manufacturing_verification/jlc_ro4350b.py`, `tools/create_jlc_ro4350b_verification.py` | 실제 미정 물성과 출처 기반 탐색 입력의 분리, 공개 선택 API를 통한 새 프로젝트 생성 |
+| CAD/해석 통합 검증 | `tools/catalog_pcb_verification/`, `tools/verify_catalog_pcb.py` | 저장된 동일 스냅샷의 기하/해석/재후처리와 카탈로그 및 worker 없는 결과 재열기 |
 
 기존 공개 import와 필요한 worker 연결 seam은 명시적 재노출/위임으로 유지한다. 동적 mixin이나 monkeypatch로 구현 파일을 연결하지 않는다. 파일별 상세 책임과 작업 상태도는 [worker 구조](worker_structure.md), 원자적 저장/이력 경계는 [저장 계약](project_persistence.md)을 따른다.
 

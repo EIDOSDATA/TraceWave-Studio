@@ -13,6 +13,7 @@ from rfad.application.pcb_geometry import (MAX_POLYGON_POINTS, fail, scalar, len
 from rfad.application.pcb_mesh import mesh_lines, policy_report
 from rfad.application.pcb_results import normalization_contract
 from rfad.domain.design import material_input_fields, resolve_scalar
+from rfad.domain.material_models import TOTAL_TAN_DELTA_MODEL
 from rfad.domain.planar import validate_region
 
 EPSILON0 = 8.8541878128e-12
@@ -33,16 +34,19 @@ class MaterialProjection:
         if material_id not in self.sources:
             fail("E_MATERIAL_UNKNOWN", "해석에 소비할 실제 재료를 지정하십시오.", field)
         source = self.sources[material_id]
+        fields = material_input_fields(model=source["model"], conductor_only=conductor, volume_conductor=volume,
+                                       field="materials." + material_id + ".model")
         low = scalar(self.document, source["validity_hz"]["min"], "frequency", field + ".validity_hz.min", positive=True)
         high = scalar(self.document, source["validity_hz"]["max"], "frequency", field + ".validity_hz.max", positive=True)
         if not low <= self.frequency["start"] < self.frequency["stop"] <= high:
             fail("E_MATERIAL_RANGE", "재료 물성의 유효 대역이 해석 대역을 포함하지 않습니다.", field)
         values = {name: scalar(self.document, source[name], dimension, field + "." + name,
                                positive=name == "epsilon_r", nonnegative=name != "epsilon_r")
-                  for name, dimension in material_input_fields(conductor_only=conductor, volume_conductor=volume)}
+                  for name, dimension in fields}
         result = {"id": material_id, "name": source["name"],
-                  "conductivity_s_per_m": values["conductivity"],
                   "validity_hz": {"min": low, "max": high}, "source_refs": deepcopy(source["source_refs"]), "assumptions": deepcopy(source["assumptions"])}
+        if "conductivity" in values:
+            result["conductivity_s_per_m"] = values["conductivity"]
         if conductor:
             result["consumed_properties"] = ["conductivity"]
             result["unconsumed_properties"] = ["epsilon_r", "tan_delta"]
@@ -59,6 +63,11 @@ class MaterialProjection:
             result["consumed_properties"] = ["epsilon_r", "tan_delta", "conductivity"]
             result["unconsumed_properties"] = []
             result["consumption_models"] = ["dielectric"]
+            if source["model"] == TOTAL_TAN_DELTA_MODEL:
+                result["model"] = source["model"]
+                result["consumed_properties"] = ["epsilon_r", "tan_delta"]
+                result["unconsumed_properties"] = ["conductivity"]
+                result["loss_partition"] = "total_electric_loss_from_tan_delta_no_separate_conductivity"
             if result["epsilon_r"] < 1 or result["epsilon_r"] > 100 or result["tan_delta"] > 1:
                 fail("E_MATERIAL_RANGE", "초기 PCB profile의 물성 범위를 벗어났습니다.", field)
         if material_id in self.consumed and self.consumed[material_id] != result:
@@ -141,8 +150,18 @@ def project_pcb(document, settings):
         if item["role"] == "dielectric":
             mat = materials.consume(item["material_id"], field + ".material_id")
             item["epsilon_r"] = mat["epsilon_r"]
-            item["kappa_s_per_m"] = mat["conductivity_s_per_m"] + 2 * math.pi * center_hz * EPSILON0 * mat["epsilon_r"] * mat["tan_delta"]
+            dielectric_loss = 2 * math.pi * center_hz * EPSILON0 * mat["epsilon_r"] * mat["tan_delta"]
+            if mat.get("model") == TOTAL_TAN_DELTA_MODEL:
+                item["kappa_s_per_m"] = dielectric_loss
+                item["loss_model"] = TOTAL_TAN_DELTA_MODEL
+                item["loss_partition"] = mat["loss_partition"]
+                item["loss_approximation"] = "constant_kappa_from_total_tan_delta_at_band_center_not_broadband_constant_tan_delta"
+            else:
+                item["kappa_s_per_m"] = mat["conductivity_s_per_m"] + dielectric_loss
             item["loss_reference_frequency_hz"] = center_hz
+        elif source["material_id"] in materials.sources and materials.sources[source["material_id"]]["model"] == TOTAL_TAN_DELTA_MODEL:
+            fail("E_UNSUPPORTED", "총 손실 탄젠트 모델은 도체 층에 사용할 수 없습니다.",
+                 "materials." + source["material_id"] + ".model")
         layers.append(item)
     dielectrics = [item for item in layers if item["role"] == "dielectric"]
     if not dielectrics or len(layers) > 8:

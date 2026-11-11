@@ -46,7 +46,7 @@ wxWidgets의 선택 속성 폼은 [편집 확장](editor_contract.md)을 통해 
 | 객체 | 현재 필드와 의미 |
 | --- | --- |
 | board | id, frame_id, rectangle width/height 또는 circle center/radius, thickness_convention=finished |
-| material | id, name, model=isotropic_constant, epsilon_r, tan_delta, conductivity, validity_hz의 min/max, source_refs, assumptions |
+| material | id, name, model, epsilon_r, tan_delta, conductivity, validity_hz의 min/max, source_refs, assumptions. model은 기존 isotropic_constant 또는 명시적 isotropic_constant_total_tan_delta |
 | layer | id, name, role, order, z_min, thickness, material_id. z_min+thickness가 물리 위치의 원본 |
 | net | id, name. 의도한 접속 그룹이며 실제 접촉을 입증하지 않음 |
 | line_path | 공통 속성과 start/end 2D 좌표, width |
@@ -83,6 +83,8 @@ GUI 드래그는 임시 preview 후 한 번의 원본 명령으로 확정한다.
 | em | EM 포함 형상, net, 명시적 재료, 물성 유효 대역, 단일 포트와 대역 누락 |
 
 물성을 모르는 상태에서도 저장한다. em 입력 점검은 필요한 물성이나 급전 좌표의 누락과 모델 대역 밖 입력을 차단한다. 도체 sheet만 사용하는 재료의 유전율/손실은 미정이어도 되며 유전체는 두 값이 필요하다. 체적 via 도체에는 전도도와 상대 유전율을 요구한다. 이 필수 물성 목록은 PCB 계획과 공유한다. 단순히 후속 계획 검증이 필요하다는 이유로 E_UNSUPPORTED를 만들지는 않는다. 모든 목적의 input_status=valid는 초기 입력 검사 통과이며 CAD 생성/STEP export/solver 접수나 물리 합격이 아니다. solver_ready는 항상 false이고 validation_scope=input_only, next_validation으로 다음 확인 경계를 명시한다.
+
+`isotropic_constant_total_tan_delta`는 총 손실을 Df로 지정하는 유전체 전용 모델이다. Dk/Df와 적용 대역을 요구하지만 독립 전도도는 소비하지 않으므로 미정으로 보존할 수 있다. 도체에 이 모델을 적용하면 거절한다. 기존 `isotropic_constant`의 가산 손실 의미는 변경하지 않았다. 모델 선택 이유와 원문 조건은 [재료 손실 모델](material_loss_models.md)을 따른다. 새 모델을 모르는 이전 프로그램은 해당 모델을 임의로 기존 모델로 바꾸지 않고 지원하지 않는 입력으로 처리해야 한다.
 
 보고서는 revision/hash, purpose/profile, input_status, diagnostics와 전체 diagnostic_count를 포함한다. 최대 64개 진단을 반환하며 초과 시 diagnostics_truncated=true다. 작업의 completed는 검사 수행 완료이고 설계 합격 여부는 input_status로 따로 판단한다. snapshot 입력, 보고서 artifact, 전체 제조/해석 profile은 후속이다.
 

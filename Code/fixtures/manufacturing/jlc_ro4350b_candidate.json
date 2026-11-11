@@ -1,0 +1,345 @@
+{
+    "schema_version": "rfad.manufacturing-candidate/0.1",
+    "candidate": {
+        "id": "jlcpcb-ro4350b-30mil-two-layer-20261111",
+        "fabricator": "JLCPCB",
+        "service": "High-Frequency PCB",
+        "laminate_manufacturer": "Rogers Corporation",
+        "laminate_grade": "RO4350B",
+        "excluded_variants": ["RO4350B LoPro", "RO4350B with TICER TCR resistor foil"],
+        "status": "research_candidate_requires_confirmation",
+        "order_confirmed": false,
+        "quote_option_combination_verified": false,
+        "fabricated_board_measured": false,
+        "solver_ready": false,
+        "physics_validated": false,
+        "exploratory_approximation_permitted": true,
+        "exploratory_approximation_scope": "제조사 자료를 근거로 한 별도 탐색용 근사 모델을 허용한다. 가정과 생략을 보존하고 제조/측정 검증과 구분한다. 이 후보의 실제 제조 물성 null을 덮어쓰지 않는다.",
+        "access_date": "2026-11-11",
+        "notes": [
+            "공개 제작 서비스와 재료 데이터시트로 선정한 후속 검증 후보이며 실제 주문 사양 확정이 아니다.",
+            "기존 JLC0206 NP-155F 계산기 후보 및 승인된 초기 IFA fixture와 별도 기록이다.",
+            "관측값을 목표 대역의 등방성 상수 모델로 자동 승격하지 않는다."
+        ]
+    },
+    "observations": [
+        {
+            "id": "ro4350b-process-dk-10ghz",
+            "property": "relative_permittivity_process",
+            "value": 3.48,
+            "tolerance_plus_minus": 0.05,
+            "unit": "1",
+            "direction": "Z",
+            "frequency_hz": 10000000000,
+            "temperature_c": 23,
+            "test_method": "IPC-TM-650 2.5.5.5, clamped stripline",
+            "source_id": "rogers-standard-datasheet",
+            "source_page": 3,
+            "status": "published_material_observation"
+        },
+        {
+            "id": "ro4350b-design-dk-8to40ghz",
+            "property": "relative_permittivity_design",
+            "value": 3.66,
+            "unit": "1",
+            "direction": "Z",
+            "frequency_min_hz": 8000000000,
+            "frequency_max_hz": 40000000000,
+            "temperature_c": null,
+            "test_method": "Differential Phase Length Method",
+            "source_id": "rogers-standard-datasheet",
+            "source_page": 3,
+            "status": "published_typical_design_value"
+        },
+        {
+            "id": "ro4350b-df-2p5ghz",
+            "property": "loss_tangent",
+            "value": 0.0031,
+            "unit": "1",
+            "direction": "Z",
+            "frequency_hz": 2500000000,
+            "temperature_c": 23,
+            "test_method": "IPC-TM-650 2.5.5.5",
+            "source_id": "rogers-standard-datasheet",
+            "source_page": 3,
+            "status": "published_typical_material_value"
+        },
+        {
+            "id": "ro4350b-df-10ghz",
+            "property": "loss_tangent",
+            "value": 0.0037,
+            "unit": "1",
+            "direction": "Z",
+            "frequency_hz": 10000000000,
+            "temperature_c": 23,
+            "test_method": "IPC-TM-650 2.5.5.5",
+            "source_id": "rogers-standard-datasheet",
+            "source_page": 3,
+            "status": "published_typical_material_value"
+        },
+        {
+            "id": "ro4350b-volume-resistivity-cond-a",
+            "property": "volume_resistivity",
+            "value": 12000000000,
+            "unit": "MOhm.cm",
+            "direction": null,
+            "frequency_hz": null,
+            "temperature_c": null,
+            "condition": "COND A",
+            "test_method": "IPC-TM-650 2.5.17.1",
+            "source_id": "rogers-standard-datasheet",
+            "source_page": 3,
+            "status": "published_typical_material_value",
+            "solver_use": "not_selected_as_additional_rf_conductivity"
+        },
+        {
+            "id": "ro4350b-standard-core-30mil",
+            "property": "standard_core_thickness",
+            "source_value_inch": 0.03,
+            "source_rounded_value_mm": 0.76,
+            "converted_value_mm": 0.762,
+            "source_tolerance_plus_minus_inch": 0.002,
+            "converted_tolerance_plus_minus_mm": 0.0508,
+            "source_id": "rogers-standard-datasheet",
+            "source_page": 4,
+            "status": "laminate_standard_nominal_not_fabricated_board_measurement"
+        },
+        {
+            "id": "ro4350b-standard-core-60mil",
+            "property": "standard_core_thickness",
+            "source_value_inch": 0.06,
+            "source_rounded_value_mm": 1.52,
+            "converted_value_mm": 1.524,
+            "source_tolerance_plus_minus_inch": 0.004,
+            "converted_tolerance_plus_minus_mm": 0.1016,
+            "source_id": "rogers-standard-datasheet",
+            "source_page": 4,
+            "status": "alternative_laminate_standard_nominal"
+        },
+        {
+            "id": "ro4350b-standard-cladding-1oz",
+            "property": "standard_cladding",
+            "foil_type": "electrodeposited",
+            "source_designation": "H1/H1",
+            "nominal_weight_oz": 1,
+            "nominal_thickness_um": 35,
+            "source_id": "rogers-standard-datasheet",
+            "source_page": 4,
+            "status": "laminate_standard_option_not_jlc_foil_confirmation"
+        },
+        {
+            "id": "jlc-current-rf-service",
+            "property": "published_service_options",
+            "layers": 2,
+            "thickness_options_mm": [0.65, 0.9, 1.65],
+            "thickness_column_basis": "unspecified_on_current_service_table",
+            "outer_copper_weight_oz": 1,
+            "soldermask_color": "green",
+            "silkscreen_color": "white",
+            "surface_finish": "ENIG",
+            "gold_thickness_options_microinch": [1, 2],
+            "minimum_drill_mm": 0.2,
+            "minimum_track_width_mm": 0.1,
+            "minimum_track_spacing_mm": 0.1,
+            "source_id": "jlc-current-rf-service",
+            "status": "published_service_options_not_confirmed_cart_combination"
+        },
+        {
+            "id": "jlc-2023-thickness-basis",
+            "property": "published_thickness_lists",
+            "source_published_date": "2023-03-09",
+            "pcb_thickness_options_mm": [0.51, 0.76, 1.52],
+            "finished_thickness_options_mm": [0.6, 0.9, 1.65],
+            "source_id": "jlc-rf-launch-2023",
+            "status": "historical_source_requires_current_combination_confirmation",
+            "notes": "현재 표의 첫 항목 0.65 mm와 이전 완성 두께 0.6 mm가 다르다. 0.9 mm 후보는 두 자료에 공통으로 있다."
+        },
+        {
+            "id": "jlc-general-finished-thickness-tolerance",
+            "property": "general_finished_board_tolerance",
+            "below_1mm_plus_minus_mm": 0.1,
+            "at_least_1mm_plus_minus_percent": 10,
+            "source_id": "jlc-general-capabilities",
+            "status": "general_service_information_not_candidate_core_tolerance"
+        }
+    ],
+    "selected_design": {
+        "selection_status": "recommended_verification_geometry_only",
+        "board_width_mm": 40,
+        "board_length_mm": 60,
+        "copper_layer_count": 2,
+        "core_nominal_mm": 0.762,
+        "core_observation_id": "ro4350b-standard-core-30mil",
+        "outer_copper_each_nominal_mm": 0.035,
+        "copper_nominal_basis": ["jlc-current-rf-service", "ro4350b-standard-cladding-1oz"],
+        "core_copper_only_total_mm": 0.832,
+        "finished_board_nominal_candidate_mm": 0.9,
+        "finished_board_actual_mm": null,
+        "finished_thickness_mapping_status": "proposed_30mil_to_0p9mm_mapping_requires_fabricator_confirmation",
+        "baseline_finished_board_target_mm": 1.0,
+        "baseline_fixture": "fixtures/design/initial_ifa.json",
+        "baseline_modified": false,
+        "selection_reason": "공개 30 mil 코어와 0.9 mm 완성 두께 후보는 기존 1.0 mm IFA 목표에 60 mil / 1.65 mm 후보보다 가깝다. 완성 두께와 모델 층 합계의 차이를 임의 배분하지 않는다.",
+        "target_frequency_min_hz": 2400000000,
+        "target_frequency_max_hz": 2483500000,
+        "port": {
+            "kind": "ideal_lumped",
+            "reference_resistance_ohm": 50,
+            "physical_connector_model": null,
+            "status": "design_choice_not_measured_feed_or_impedance_guarantee"
+        },
+        "material_model": {
+            "kind": "not_selected",
+            "selection_scope": "source_confirmed_actual_manufactured_material_only",
+            "relative_permittivity": null,
+            "loss_tangent": null,
+            "additional_conductivity_s_per_m": null,
+            "valid_frequency_min_hz": null,
+            "valid_frequency_max_hz": null,
+            "isotropy_confirmed": false
+        },
+        "conductor_model": {
+            "kind": "not_selected",
+            "conductivity_s_per_m": null,
+            "roughness_um": null,
+            "actual_foil_grade": null
+        },
+        "fabrication_options_proposed": {
+            "soldermask": "green",
+            "silkscreen": "white",
+            "surface_finish": "ENIG",
+            "gold_nominal_microinch": 1,
+            "gold_nominal_um_converted": 0.0254,
+            "nickel_thickness_um": null,
+            "mask_thickness_um": null,
+            "mask_opening_geometry": null,
+            "combination_confirmed": false
+        },
+        "design_band_is_material_validity": false
+    },
+    "unknowns": [
+        {
+            "id": "actual-order-stackup",
+            "fields": ["actual_core_thickness", "actual_finished_copper_thickness", "finished_stackup", "candidate_specific_tolerances"],
+            "reason": "명목 코어, 완성 두께와 동박 옵션은 확인했으나 현재 주문 조합과 제작사 승인 적층표는 없다."
+        },
+        {
+            "id": "material-model-band",
+            "fields": ["material_model.relative_permittivity", "material_model.loss_tangent", "material_model.valid_frequency_min_hz", "material_model.valid_frequency_max_hz"],
+            "reason": "Dk 원문은 10 GHz 또는 8-40 GHz, 가장 가까운 Df 원문은 2.5 GHz다. 2.4-2.4835 GHz 상수 모델로 채택하려면 별도 근거 또는 명시적 근사 선택이 필요하다."
+        },
+        {
+            "id": "material-model-direction",
+            "fields": ["material_model.isotropy_confirmed"],
+            "reason": "공개 RF 표의 방향은 Z다. X/Y 값이나 목표 대역의 등방성 검증을 제공하지 않는다."
+        },
+        {
+            "id": "additional-dielectric-conductivity",
+            "fields": ["material_model.additional_conductivity_s_per_m"],
+            "reason": "체적저항률의 COND A 관측을 Df와 함께 사용할 추가 RF 전도도로 자동 변환하면 손실 해석 의미가 달라진다. 0도 미정의 대체값으로 사용하지 않는다."
+        },
+        {
+            "id": "actual-copper-properties",
+            "fields": ["conductor_model.conductivity_s_per_m", "conductor_model.roughness_um", "conductor_model.actual_foil_grade"],
+            "reason": "JLC 선택 제품의 동박 공급 등급, 전도도, 표면 거칠기와 도금 후 두께 분포가 확인되지 않았다. 일반 구리 상수를 실제 제작값으로 채우지 않는다."
+        },
+        {
+            "id": "mask-and-finish-properties",
+            "fields": ["soldermask_material", "soldermask_loss_tangent", "mask_thickness_um", "nickel_thickness_um", "nickel_properties", "gold_properties"],
+            "reason": "색과 표면처리 옵션만으로 실제 RF 층 물성 및 두께가 확정되지 않는다."
+        },
+        {
+            "id": "rf-osp-option-combination",
+            "fields": ["rf_service_osp_orderability"],
+            "reason": "일반 능력표의 OSP와 고주파 전용 표의 ENIG 표기를 확인했지만 RO4350B+OSP 주문 조합은 확인하지 못했다."
+        },
+        {
+            "id": "physical-feed-and-validation",
+            "fields": ["connector", "launch_geometry", "calibration_reference_plane", "measured_material_coupon", "antenna_measurement"],
+            "reason": "50 ohm 이상 포트는 설계 선택이다. 실제 커넥터, 급전 및 측정 기준면의 확정이나 검증을 뜻하지 않는다."
+        }
+    ],
+    "unsupported_features": [
+        {
+            "id": "soldermask-layer",
+            "status": "not_represented_by_current_pcb_projection",
+            "impact": "유전체 적재 효과를 갖는 마스크층과 개구 형상이 현재 후보의 CAD/EM 층 모델에 없다."
+        },
+        {
+            "id": "enig-nickel-gold-layers",
+            "status": "not_represented_by_current_pcb_projection",
+            "impact": "노출 도체 위의 Ni/Au와 표면 손실을 단순 구리 한 층으로 대신할 수 없다."
+        },
+        {
+            "id": "tensor-and-dispersive-material-model",
+            "status": "unsupported_by_current_isotropic_constant_pcb_solver_contract",
+            "impact": "방향 및 주파수별 관측을 그대로 표현하는 모델과 현재 등방성 상수 입력 사이의 채택 근거가 필요하다."
+        },
+        {
+            "id": "copper-roughness-model",
+            "status": "unsupported_by_current_bulk_conductivity_pcb_solver_contract",
+            "impact": "표면 거칠기 효과나 적층 금속 표면 임피던스 검증이 수행되지 않았다."
+        }
+    ],
+    "sources": [
+        {
+            "id": "jlc-current-rf-service",
+            "title": "JLCPCB High-Frequency PCB Manufacturing",
+            "url": "https://jlcpcb.com/pcb-fabrication/high-frequency-pcb",
+            "access_date": "2026-11-11",
+            "source_kind": "fabricator_service_page"
+        },
+        {
+            "id": "jlc-rf-launch-2023",
+            "title": "JLCPCB Rogers and PTFE High Frequency PCB announcement",
+            "url": "https://jlcpcb.com/news/rogers-ptfe-high-frequency-pcb-available",
+            "published_date": "2023-03-09",
+            "access_date": "2026-11-11",
+            "source_kind": "fabricator_historical_announcement"
+        },
+        {
+            "id": "jlc-rf-design-guide",
+            "title": "JLCPCB RF PCB Design Guide",
+            "url": "https://jlcpcb.com/blog/rf-pcb-design",
+            "access_date": "2026-11-11",
+            "source_kind": "fabricator_design_article"
+        },
+        {
+            "id": "rogers-standard-datasheet",
+            "title": "Rogers RO4000 Series High Frequency Circuit Materials, PUB 92-004",
+            "url": "https://www.rogerscorp.com/-/media/project/rogerscorp/documents/advanced-electronics-solutions/english/data-sheets/ro4000-laminates-ro4003c-and-ro4350b---data-sheet.pdf",
+            "source_revision_text": "Revised 1592 080322 PUB# 92-004",
+            "access_date": "2026-11-11",
+            "source_kind": "laminate_manufacturer_datasheet"
+        },
+        {
+            "id": "jlc-general-capabilities",
+            "title": "JLCPCB PCB Manufacturing and Assembly Capabilities",
+            "url": "https://jlcpcb.com/capabilities/pcb-capabilities/",
+            "access_date": "2026-11-11",
+            "source_kind": "fabricator_general_capabilities"
+        },
+        {
+            "id": "jlc-ul-certification",
+            "title": "JLCPCB UL Certification",
+            "url": "https://jlcpcb.com/help/article/ul-certification",
+            "access_date": "2026-11-11",
+            "source_kind": "fabricator_material_identity"
+        },
+        {
+            "id": "jlc-foil-profile-caveat",
+            "title": "JLCPCB How to Reduce Skin Effect Loss in High-Speed PCB Designs",
+            "url": "https://jlcpcb.com/blog/managing-pcb-skin-effect-loss",
+            "access_date": "2026-11-11",
+            "source_kind": "fabricator_design_article"
+        },
+        {
+            "id": "jlc-ro4350b-mirror-excluded",
+            "title": "RO4003C and RO4350B Laminates with TICER TCR Thin Film Resistor Foils",
+            "url": "https://rs.jlcpcb.com/static/file/rogers-ro4350b-datasheet.pdf",
+            "access_date": "2026-11-11",
+            "source_kind": "excluded_variant_datasheet",
+            "exclusion_reason": "파일 이름과 달리 TICER TCR 저항박 변형 데이터시트다. 일반 RO4350B 동박 등급의 증거로 채택하지 않는다."
+        }
+    ]
+}

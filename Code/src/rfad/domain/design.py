@@ -9,6 +9,8 @@ import math
 from uuid import UUID
 
 from rfad.domain.errors import ProjectError
+from rfad.domain.material_models import (LEGACY_MODEL, TOTAL_TAN_DELTA_MODEL,
+                                        material_input_fields as model_input_fields, validate_material_model)
 from rfad.domain.planar import MAX_REGION_HOLES, MAX_REGION_POINTS, validate_region
 from rfad.domain.units import Quantity, QuantityError
 
@@ -202,8 +204,7 @@ def validate_design(document: dict) -> None:
     for material in document["materials"]:
         field = "materials." + material["id"]
         _fields(material, {"id", "name", "model", "epsilon_r", "tan_delta", "conductivity", "validity_hz", "source_refs", "assumptions"}, field)
-        if material["model"] != "isotropic_constant":
-            _fail("E_UNSUPPORTED", "현재 명시적 등방성 상수 물성만 지원합니다.", field + ".model")
+        validate_material_model(material["model"], field + ".model")
         _number(document, material["epsilon_r"], "dimensionless", field + ".epsilon_r", positive=True)
         _number(document, material["tan_delta"], "dimensionless", field + ".tan_delta", nonnegative=True)
         _number(document, material["conductivity"], "conductivity", field + ".conductivity", nonnegative=True)
@@ -443,14 +444,9 @@ def apply_design_command(document: dict, command_type: str, payload: dict) -> tu
     return changed, ["revision", "geometry", "physics", "network", "metrics", "assessment", "exports"], inverse
 
 
-def material_input_fields(*, conductor_only=False, volume_conductor=False):
+def material_input_fields(*, model=LEGACY_MODEL, conductor_only=False, volume_conductor=False, field="material.model"):
     """! @brief 초기 유전체와 유한 전도 sheet가 실제 소비하는 필수 수량을 공유한다."""
-    fields = (("conductivity", "conductivity"),)
-    if not conductor_only or volume_conductor:
-        fields += (("epsilon_r", "dimensionless"),)
-    if not conductor_only:
-        fields += (("tan_delta", "dimensionless"),)
-    return fields
+    return model_input_fields(model=model, conductor_only=conductor_only, volume_conductor=volume_conductor, field=field)
 
 
 def preflight_design(document: dict, purpose: str) -> list[dict]:
@@ -520,6 +516,7 @@ def preflight_design(document: dict, purpose: str) -> list[dict]:
         materials = {item["id"]: item for item in document["materials"]}
         used_materials = set()
         dielectric_materials = set()
+        conductor_materials = set()
         volume_materials = set()
         for layer in document["stackup"]:
             if layer["material_id"] is None:
@@ -528,18 +525,25 @@ def preflight_design(document: dict, purpose: str) -> list[dict]:
                 used_materials.add(layer["material_id"])
                 if layer["role"] != "conductor":
                     dielectric_materials.add(layer["material_id"])
+                else:
+                    conductor_materials.add(layer["material_id"])
         for geometry in geometries:
             if geometry["net_id"] is None:
                 missing("E_CONNECTIVITY", f"geometry.{geometry['id']}.net_id", "도체의 의도된 net을 지정해야 합니다.")
             if geometry["material_ref"] is not None:
                 used_materials.add(geometry["material_ref"])
+                conductor_materials.add(geometry["material_ref"])
                 if geometry["kind"] == "via":
                     volume_materials.add(geometry["material_ref"])
             elif geometry["kind"] == "via":
                 missing("E_MATERIAL_UNKNOWN", f"geometry.{geometry['id']}.material_ref", "비아 도금 재료를 명시하십시오.")
         for identity in sorted(used_materials):
             material = materials[identity]
-            for field, dimension in material_input_fields(conductor_only=identity not in dielectric_materials, volume_conductor=identity in volume_materials):
+            if material["model"] == TOTAL_TAN_DELTA_MODEL and identity in conductor_materials:
+                missing("E_UNSUPPORTED", f"materials.{identity}.model", "총 손실 탄젠트 모델은 유전체 전용이며 도체에 사용할 수 없습니다.")
+                continue
+            for field, dimension in material_input_fields(model=material["model"], conductor_only=identity not in dielectric_materials,
+                                                         volume_conductor=identity in volume_materials, field=f"materials.{identity}.model"):
                 require(material[field], dimension, f"materials.{identity}.{field}", "E_MATERIAL_UNKNOWN")
             for field in ("min", "max"):
                 require(material["validity_hz"][field], "frequency", f"materials.{identity}.validity_hz.{field}", "E_MATERIAL_RANGE")

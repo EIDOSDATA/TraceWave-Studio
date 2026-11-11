@@ -18,7 +18,11 @@
 
 PCB 선택 기능은 카탈로그 SQLite 조회에 이어 선택 출처/사용자 수정값 저장, 업체별 적층 초안과 원자적 적용/undo까지 서비스 API로 구현했다. [PCB 선택 계약](pcb_selection_contract.md)의 stdio 예제와 `tools/verify_pcb_selection.py`로 확인할 수 있다. [카탈로그 조회 계약](pcb_catalog_contract.md)의 명령으로 `.local/pcb-catalog/catalog.sqlite` 상태를 확인한다. 새 checkout에는 DB가 없으므로 원문 패키지로 build를 실행한다. 이번 선택 API 추가는 DB schema/import 버전을 변경하지 않으므로 정상 DB는 재구축할 필요가 없다. wxWidgets의 직접 입력/소재/제조업체 선택과 단면/변경 미리보기를 연결했다. [화면 사용법](pcb_selection_gui.md)에 따라 GUI를 재빌드하고 실행한다. CAD/solver 통합 검증의 현재 결과와 JLC 미정 입력은 아래 추가 기록을 따른다.
 
-2026-11-11 카탈로그 통합 후 현재 우선순위: 사용자가 업체 선택을 위임한 JLCPCB의 JLC0206 계산기 후보를 선정했다. 공개 명목 적층의 CAD/STEP/mesh와 worker 없는 재열기는 통과했고, 실제 RF 물성의 미정 9개 입력은 보존했다. 별도 명시적 시험 물성의 2층 IFA는 실제 openEMS와 재후처리/재열기까지 통과했다. 다음은 JLC 후보의 재료 손실/전도도/모델 적용 대역과 급전 대역을 근거로 확정한 뒤 동일 도구의 `full`을 실행하는 일이다. 재현 방법과 증거 구분은 [카탈로그 PCB 통합 검증](catalog_pcb_integration.md)을 따른다. 실제 공급 재질 확인과 측정/물리 검증은 계산기 후보 선택만으로 완료되지 않는다.
+2026-11-11의 이전 카탈로그 통합에서는 JLC0206 계산기 후보의 CAD/STEP/mesh와 worker 없는 재열기를 통과했고, 실제 RF 물성의 미정 9개 입력은 보존하여 EM을 `needs_inputs`로 차단했다. 이 과거 기록과 별도 시험 물성 IFA의 양성 대조군은 그대로 유지한다. 재현 방법과 증거 구분은 [카탈로그 PCB 통합 검증](catalog_pcb_integration.md)을 따른다.
+
+이후 [JLC RO4350B 제작 후보](jlc_manufacturing_selection.md)를 조사하고 사용자가 허용한 별도 탐색 모델로 CAD/STEP/openEMS/재후처리/결과 재열기 전체 경로를 통과했다. Design Dk 3.66과 Df 0.0031은 원문 주파수가 다른 근사 입력이고, 58 MS/m는 JLC 실측값이 아닌 20 C IACS 기준 구리다. 실제 납품 재료 2개의 물성과 대역은 미정으로 보존한다. [손실 모델](material_loss_models.md)과 [실행 기록](../runtime_profiles/jlc-ro4350b-exploratory.json)을 먼저 읽고 다음 작업을 시작한다. 완료한 통합 경로를 다시 최초 구현하는 단계가 아니다.
+
+최종 Windows 전체 회귀는 685개 수집/618개 통과/67개 스킵/실패 0, 364.510초다. GUI 선택 3개는 33.525초, 총 Df native 대조군 1개는 169.218초에 별도로 통과했다. RO4350B 전체 통합은 136.734초, native 격자점 639,693개/4,805 steps/에너지 감소 42.08 dB/51개 표본이며 원본 불변을 확인했다. 제조/측정 및 이 새 모델의 격자/경계 수렴은 미검증이다. 상세 범위와 로그는 [개발 상태](development_status.md#jlc-ro4350b-탐색-모델과-전체-경로-검증-2026-11-11)를 따른다.
 
 ## 최초 재부팅 전 저장한 상태
 
@@ -49,18 +53,21 @@ pwsh -NoProfile -File .\tools\setup_wsl.ps1 -Install
 
 완료 기준은 Ubuntu 24.04가 WSL2에서 실제 실행되고 스크립트가 종료 코드 0을 반환하는 것이다. 설치 프로그램의 종료 코드 0만으로 성공을 판단하지 않는다. `.local/wsl/status.json`의 registered/runnable과 상태를 확인한다. 여기까지 완료해도 openEMS 준비 완료는 아니다. 자세한 조건은 [WSL 환경](wsl_environment.md)을 따른다.
 
+이번 총 Df native 대조군의 최초 준비는 WSL cold boot의 10초 start control timeout으로 실패했다. WSL 예열과 제한 시간이 있는 keepalive 뒤 재실행은 통과했지만 자동 복구는 아직 구현하지 않았다. 재부팅 후 solver를 실행하기 전 배포가 실제 응답하는지 확인하고, 같은 실패가 발생하면 원래 실패/작업 상태를 보존한다. 단순 재시도로 이전 작업의 실행 여부를 덮어쓰지 않는다. 이 준비 경로의 자동화와 제한 시간 보강을 우선한다.
+
 ## 이어서 진행할 순서
 
 | 순서 | 작업 | 완료 기준 |
 | --- | --- | --- |
-| 1 | Linux 개발 환경과 서비스 시험 | 전용 배포 안에 Linux용 Python 환경 구성. Windows 가상환경/휠 lock을 재사용하지 않음. 저장/잠금/복구/공백 및 한글 경로/표현식 시험을 실제 실행하고 OS별 스킵을 구분하여 기록 |
-| 2 | Qt 없는 headless openEMS 환경 | openEMS/CSXCAD 소스와 의존성 버전 고정, GUI 의존성 제외 확인, 실제 import/실행 및 작은 참조 사례 검사, runtime profile 갱신 |
-| 3 | GUI 설계 편집 | wxAUI 탐색/2D/속성/문제/로그, 사각/원형 기판/층/선/원호/재료/net/단일 포트 생성과 영속 undo/redo 연결. polygon/pad/via 생성, 좌표 표와 다중 pad 선택 추가. 최신 시험 근거는 개발 기록 참조. 스냅/치수/endpoint 편집은 후속 |
-| 4 | 호스트 CAD와 GUI 연결 | 분리 실행/취소/봉인, 유전체/선/원호/polygon/pad/PTH의 실제 고체와 AP242 출력, GUI STEP/3D 및 완료 결과 복원 구현. 다음은 독립 수신 CAD 검증, 실물 SMA/실장 모델과 표시 LOD/실제 context 복구 수용 |
-| 5 | WSL solver와 실제 RF 해석 | guest supervisor와 도파관 준비/실행/취소/원시 후처리 연결 완료. 사용자 사각/원형 PCB 및 IFA 접지/급전/단락부와 PTH를 소비하고 GUI S11/VSWR/임피던스 결과 표시. [IFA study](ifa_convergence.md)는 격자/경계 거리/시간 종료의 고정 행렬과 실행/재개/재판정 도구를 연결. 실제 판정/근거는 개발 상태 참조. 실제 물성/측정 대조, PML cell 수 변화, 원형/원호와 NF2FF/방사/절대 전력은 별도 후속 |
-| 6 | 성능과 내부 배포 | 실제 편집 장면으로 60/30 fps 및 전체 프로세스 메모리/시작 시간 측정. 취소/복구, 라이선스 고지, 재현 가능한 내부 검증 패키지 점검 |
+| 1 | WSL 시작과 복구 | cold boot에서 준비 상태를 확인하고 start control timeout과 취소/오류 보고를 검증. 수동 예열에 의존한 이번 실행과 자동 복구 구현을 구분 |
+| 2 | RO4350B 실제 제작/급전 조건 | 현재 주문 조합과 승인 적층, 완성 동박, 마스크/ENIG 및 SMA/케이블/측정 기준면 확인. 탐색 입력과 실제 납품 미정 재료를 분리하고 근거 없는 값을 채우지 않음 |
+| 3 | RO4350B 탐색 IFA의 수렴과 목표 대역 | 새 snapshot과 별도 study로 격자/경계/종료 민감도를 검증하고 패턴/급전 치수를 조정. 기존 fixture의 수렴 판정을 전용하지 않음. 국부 특징/곡선/PML 셀 수 검증과 독립 참조/실측 대조 추가 |
+| 4 | GUI 비교와 편집 완성도 | 다중 결과/수렴 연구/계획 검토 화면, 스냅/치수/endpoint 편집. 3D LOD, 실제 GPU reset/DPI/도킹 복구와 독립 수신 CAD 재열기 검증 |
+| 5 | 방사 해석과 원형 PCB 확장 | NF2FF/방사 패턴/이득/효율/전력 수지를 참조 사례로 검증하고 원형 PCB/원호의 별도 격자/경계 연구 수행 |
+| 6 | 성능과 내부 배포 | 실제 편집 장면의 60/30 fps 및 전체 프로세스 메모리/시작/응답 시간 측정. 취소/복구, 라이선스 고지, 재현 가능한 내부 검증 패키지 점검 |
+| 7 | MCP와 EDA 연계 | 같은 명령/작업/결과 계약 위에서 adapter를 구현하고 단위/좌표계/재료/net/port 의미와 요청 멱등성 검증 |
 
-순서 1~2의 초기 환경과 작은 참조 검증, 순서 3~4의 편집/CAD/GUI STEP/3D 및 순서 5의 사용자 PCB 실행 경로를 연결했다. CAD 실행은 WSL을 사용하지 않으며 solver는 별도 [WSL guest 구현](solver_contract.md)을 사용한다. 환경이 이미 준비된 PC에서는 설치보다 최신 소스/빌드/검증 상태를 먼저 확인한다. IFA 실행 fixture의 접지/급전 도체 모델은 구현했지만 결과는 `computed_unvalidated`이며 정식 수렴/실측 검증으로 승격하지 않는다. Linux GUI는 후속 범위를 유지한다.
+위 표는 현재 남은 작업의 우선순위다. Linux 환경과 작은 참조 사례, 편집/CAD/GUI STEP/3D, 사용자 PCB 실행 및 RO4350B 탐색 모델의 전체 연결은 이미 확인했다. CAD 실행은 WSL을 사용하지 않으며 solver는 별도 [WSL guest 구현](solver_contract.md)을 사용한다. 환경이 준비된 PC에서는 설치보다 최신 소스/빌드/검증 상태를 먼저 확인한다. 탐색 결과는 `computed_unvalidated`이며 시간영역 종료를 정식 격자/경계 수렴이나 제조/실측 검증으로 승격하지 않는다. Linux GUI는 후속 범위를 유지한다.
 
 현재 2D 캔버스는 두 번 클릭한 선분, 중심/시작/끝 방향을 지정하는 원호와 Shift CW, 드래그 이동, 삭제, Esc 취소, fit/휠 확대/가운데 버튼 이동을 제공한다. 정확한 좌표/반지름/각도는 `좌표 입력`을 사용한다. 그리드 표시는 마우스 스냅이 아니며 물리 원본을 바꾸지 않는다. [2D 표시/편집 계약](canvas_contract.md)과 [GUI 조작](../ui/wxwidgets/README.md)을 참고한다.
 
