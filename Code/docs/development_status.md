@@ -28,6 +28,7 @@ wxWidgets, Windows 11+WSL2 우선, Linux GUI 후속, 원호/IFA, 내부 검증 �
 | WSL/openEMS 환경 | Ubuntu 24.04.5 WSL2 실행, Linux 서비스 및 표현식 비교 통과. Qt 없는 openEMS 0.37.0/CSXCAD 0.7.0 빌드와 두 격자 도파관 참조 검사 통과 | NF2FF, 실측/독립 solver 정확도 검증 |
 | WSL solver와 결과 | AnalysisPlan/PreparationArtifact/PreparedPlan, 봉인 XML 실행과 raw/정규화/출처, 독립 후처리. ext4 staging, supervisor/watchdog, nonce/lease/재접속/취소. 사각/원형 PCB 선/원호/접지 polygon/패드/PTH, 유한 도체, x/y/z gap 급전, IFA short 연결과 Yee edge 검사, GUI S11/VSWR/임피던스 | 공개 수동 조정, cache/GC, SMA/실장 급전, NF2FF와 실측 |
 | IFA 수치 안정성 | 명시적 시험 입력의 3단계 격자/3단계 경계/2단계 시간 종료 비교, 고정 물리 PML 두께와 graded air, 공개 API 실행/재개/독립 재판정, JSON/CSV/비교 그림 | 아래 실제 검증 기록의 범위만 수용. GUI 다중 결과 비교, 국부 특징/곡선/PML 셀 수 민감도, 제조/실측 정확도 |
+| PCB 카탈로그 | 전체 정리 관측/원시 적층의 중립 모델, 오프라인 SQLite 변환과 검토 사유, 읽기 전용 검색/상세 CLI 및 JSON-RPC, 원문 타입/출처/해시와 페이지 보존 | 구조화 출처의 프로젝트 저장, 적층 미리보기/원자적 적용, wxWidgets 선택 UI와 실제 CAD/EM 채택 검증 |
 
 서비스는 rfad.api/2.0, workspace profile은 rfad.projects/0.2, 새 문서는 rfad.project/0.2다. 세부 계약은 [저장](project_persistence.md), [설계 데이터](design_data.md), [선택 속성](editor_contract.md), [2D 표시/편집](canvas_contract.md), [CAD/STEP](cad_contract.md), [worker 실행](worker_integration.md), [기초 계약](bootstrap_contract.md)을 따른다. 전체 API나 R0/R1 완료를 주장하지 않는다.
 
@@ -253,6 +254,35 @@ CAD의 기존 25개 함수 AST와 PCB 5개 사례의 계획 정규 payload(plan_
 ## 다음 구현
 
 추가 자료 정리 (2026-11-11): PCB 유전율/적층 수집 자료 57,340행과 원문 1,682개를 감사하고 회사별 엑셀, 회사/소재 중심 파일명, ZIP 내부 검색과 검토 색인을 정리했다. 수치/미정 상태는 보존하고 파일명에 따른 출처 경로만 갱신했다. [PCB 재료 카탈로그 설계](pcb_material_catalog.md)는 사용자 직접 입력과 제조업체/소재 선택을 연결하는 후속 설계다. 현재 검색 UI, 원자적 적층 가져오기, 구조화 provenance 저장은 미구현이며, 이번 작업으로 기존 IFA의 가정 물성이나 해석 검증 상태가 바뀌지 않는다.
+
+## PCB 카탈로그 첫 구현과 검증 (2026-11-11)
+
+`Code/src/rfad/catalog`에 중립 ID/물성 조건, 원문 검증/오프라인 builder, 업체별 원시 자료 adapter, 요청 검증/읽기 저장소/서비스를 분리했다. CLI build/status/search/get과 JSON-RPC catalog.status/search/get을 연결했다. 자세한 사용법과 API는 [카탈로그 조회 계약](pcb_catalog_contract.md), 실행 근거와 코드 SHA-256은 [runtime 기록](../runtime_profiles/pcb-catalog.json)을 따른다.
+
+| 실제 전체 자료 | 변환/검증 결과 |
+| --- | --- |
+| 관측 | 57,340행, 142개 원문 필드, 37개 분할. 원래 키/타입/값과 전역 정규 SHA-256 일치 |
+| 출처/표기 그룹 | 출처 1,756개, 제품 표기 그룹 1,058개, 적층 라벨 그룹 2,941개 |
+| 원시 적층 | 37개 JSON, template 3,399개, 구성 행 46,971개, 보조 증거 34개. 원문 전체 복원과 부모 연결 검증 오류 0 |
+| 공개 검색 | 7개 개체의 전체 페이지를 누락/중복 없이 순회. 각 개체의 최대 원문을 조각으로 복원하고 응답 해시/offset/길이/타입 검사 |
+| 위험 사례 | JLC 비양수 226행, PCBWay 그룹 합계 999행, 원문 충돌 49행, Dk/Df 주파수 차이 21행, 자성 1행, Wurth 필드 경계 167행을 그대로 검출 |
+| 주파수 조건 | 2.4 GHz 및 2.45 GHz 점 관측 0행, 2.5 GHz 120행. 근접 주파수의 값을 자동 채택하지 않음 |
+
+최종 DB는 `.local/pcb-catalog/catalog.sqlite`, 503,283,712 bytes(약 480 MiB)다. 전체 변환은 67.748초, 변환 프로세스 peak working set은 186.74 MiB였다. 조회 프로세스는 시작 측정 약 21.13 MiB, 시험 중 최대 26.20 MiB였으며 CAD/NumPy/openEMS 모듈을 import하지 않았다. 파일 크기 전체를 시작 메모리로 적재하지 않는다.
+
+로컬 조회 측정은 조건 검색별 반복 20회의 중앙값 약 2.0~27.3 ms, 마지막 관측 페이지 약 6.8 ms, 전체 리터럴 부분 문자열 검색 약 99.3 ms였다. 부분 문자열 검색의 p95는 약 108.7 ms다. OS 디스크 캐시를 초기화하지 않았고 다른 회귀 시험이 병행된 단일 PC의 관측값이다. GUI 전체 메모리/시작 시간이나 60/30 fps 합격 근거가 아니다. 후속 GUI 검색은 기존 비동기 서비스 연결을 사용하고 검색 결과를 화면에 페이지 단위로 전달해야 한다.
+
+전체 원문/검색 검증은 129.926초에 통과했다. 원시 JSON 독립 복원 검증과 추가 상세 응답 메타데이터 검증도 통과했다. 실행 로그와 보고서는 `.local/pcb-catalog`에 두고 runtime 기록에 파일 해시를 남겼다.
+
+카탈로그 시험 51개가 모두 통과했다. API/CLI 5개, builder 15개, native 자료/독립 검증기 12개, 물성 DTO 5개, 조회 14개다. 손상된 카탈로그를 같은 서비스에 연결해도 기존 직접 입력 material.set, 저장, undo/redo, 스냅샷과 재시작이 유지되는 것을 확인했다. 원문이 없거나 자료 개정이 바뀐 경우, 입력/응답 상한, 원문 타입/큰 정수/Unicode, 실패 시 기존 DB 보존도 검사했다.
+
+소스를 고정한 Windows 전체 시험은 581개 수집, 536개 통과, 45개 환경 조건 스킵으로 409.349초에 완료했다. 기존 GUI 실행 파일과 분리 CAD worker 통합을 포함한다. 서비스 환경에서 직접 CAD kernel을 import하는 시험, Linux process group 및 명시적으로 켜야 하는 WSL/openEMS 시험은 이번 실행에서 스킵했다. 실제 RF 계산이나 수렴 연구를 다시 수행한 것은 아니다.
+
+초기 병행 시험은 소스 편집 중 CAD receipt 재전송 항목 1건이 실패했다. 해당 항목의 단독 재실행 및 이후 고정 소스 전체 시험은 통과했다. 최초 실패의 원인을 단정하지 않고 첫 로그도 보존했다.
+
+원본 패키지 전체 검사에서는 manifest의 2,998개 파일과 자료 참조를 확인했고 내용 불일치는 보고되지 않았다. 다만 `Excel/PCB제작업체/~$PCBWay__PCB_적층.xlsx` 소유자 잠금 파일이 manifest 밖의 추가 파일로 검출되어 엄격한 패키지 검사 종료 코드는 1이었다. 이 임시 파일은 삭제하지 않았다. 카탈로그 변환은 manifest에 선언된 자료만 소비했고 전수 대조를 통과했다. 원본 패키지와 승인 01_Docs는 수정하지 않았다.
+
+다음 작업은 구조화된 선택 출처/사용자 수정값의 프로젝트 소유 사본과 버전 계약, 원자적 적층 적용 및 미리보기, wxWidgets 기판 설정의 순서다. 직접 입력을 유지하며 원형/사각 외곽과 패턴/층/비아/포트 참조를 검증한다. 검색 성공을 제작 가능 또는 solver 준비 완료로 바꾸지 않는다.
 
 재부팅 직후 실행할 명령과 단계별 완료 기준은 [재부팅 후 개발 재개](reboot_resume.md)를 따른다.
 

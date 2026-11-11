@@ -1,0 +1,350 @@
+{
+  "schema": "rfad.verification.pcb-catalog/0.1",
+  "validated_at": "2026-11-11T03:41:03.323945+00:00",
+  "baseline_commit": "bbf41dfcc164f706060faae7195736a521ff73b6",
+  "design_baseline": "RFAD-D0-3.4",
+  "status": "passed",
+  "scope": "offline catalog and read-only service; project input preserved",
+  "catalog_schema": "rfad.catalog/0.1",
+  "import_version": "rfad.catalog.import/1",
+  "catalog_id": "catalog:28b81a2a83c358bb5d62e7d03f99ab7008cc1561b19cd04689e112443c78d733",
+  "database": {
+    "path": ".local/pcb-catalog/catalog.sqlite",
+    "bytes": 503283712,
+    "sha256": "b6ae102c4f6cf9643af6347d6a9f3ea6543689443e0fbe9d3a30cdb9f0e01f92"
+  },
+  "source_canonical_sha256": "069cdc67cb3259313cfcd2701c4b2c45abb5cfa4d9ba960e5e298b44124edf6d",
+  "source_manifest_sha256": "ffa879eb4c0f6aa9edd809a4491d961de0c55282c8c7247e80ad03095b5a298a",
+  "counts": {
+    "observations": 57340,
+    "observation_fields": 142,
+    "partitions": 37,
+    "sources": 1756,
+    "products": 1058,
+    "stackups": 2941,
+    "native_templates": 3399,
+    "native_components": 46971,
+    "native_evidence": 34
+  },
+  "build": {
+    "elapsed_seconds": 67.748,
+    "peak_working_set_bytes": 195813376,
+    "final_working_set_bytes": 44130304
+  },
+  "windows_full": {
+    "collected": 581,
+    "passed": 536,
+    "skipped": 45,
+    "elapsed_seconds": 409.349,
+    "gui_executable": "build/windows-release/bin/tracewave_gui.exe",
+    "cad_worker_python": ".venv-cad/Scripts/python.exe",
+    "skip_scope": "in-process CAD kernel tests require CAD venv; Linux process groups and opt-in WSL/openEMS not run",
+    "log": {
+      "path": ".local/pcb-catalog/final-tests.log",
+      "bytes": 137083,
+      "sha256": "9108278736d66aa6819a737ddf9f0331af138dfcb0e73b42f3fa6669494a96ac"
+    }
+  },
+  "catalog_tests": {
+    "collected": 51,
+    "passed": 51,
+    "by_module": {
+      "test_catalog_api": 5,
+      "test_catalog_build": 15,
+      "test_catalog_native": 12,
+      "test_catalog_properties": 5,
+      "test_catalog_query": 14
+    }
+  },
+  "full_data_verification": {
+    "status": "passed",
+    "elapsed_seconds": 129.92608339999788,
+    "paged_counts": {
+      "observations": 57340,
+      "products": 1058,
+      "stackups": 2941,
+      "sources": 1756,
+      "native_templates": 3399,
+      "native_components": 46971,
+      "native_evidence": 34
+    },
+    "filter_cases": {
+      "exact_2_4ghz": 0,
+      "exact_2_45ghz": 0,
+      "exact_2_5ghz": 120,
+      "jlc_nonpositive": 226,
+      "pcbway_group_total": 999,
+      "source_conflicts": 49,
+      "magnetic_material": 1,
+      "different_dk_df_frequency": 21,
+      "we_cross_layer_fields": 167
+    },
+    "report": {
+      "path": ".local/pcb-catalog/verification.json",
+      "bytes": 5737,
+      "sha256": "71809fe50b4c01e9115e0c3ad08f3bd3c558a3d40e895cf7149b252bbac8d372"
+    },
+    "detail_metadata_report": {
+      "path": ".local/pcb-catalog/detail-verification.json",
+      "bytes": 1112,
+      "sha256": "cccf0f28ea4dcd632c183a0d78007c4725955c41ecab108d8f22a89a21af3b87"
+    }
+  },
+  "native_verification": {
+    "source_files": 37,
+    "records": {
+      "native_templates": 3399,
+      "native_components": 46971,
+      "native_evidence": 34
+    },
+    "error_count": 0,
+    "report": {
+      "path": ".local/pcb-catalog/native-verification.json",
+      "bytes": 15837,
+      "sha256": "a4c5e720ea18e6ba15561cf586dfa6cbbfa8cde703d5dbc30e404ed6ef36fbff"
+    }
+  },
+  "performance": {
+    "schema": "rfad.catalog.performance/1",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "python": "3.12.10",
+    "database_bytes": 503283712,
+    "catalog_id": "catalog:28b81a2a83c358bb5d62e7d03f99ab7008cc1561b19cd04689e112443c78d733",
+    "scope": "standalone Python read-only service; OS disk cache uncontrolled; GUI/FPS/build excluded",
+    "constructor_ms": 0.022899999748915434,
+    "first_status_ms": 0.9884999999485444,
+    "baseline_memory": {
+      "resident_bytes": 22159360,
+      "peak_resident_bytes": 22159360
+    },
+    "after_queries_memory": {
+      "resident_bytes": 25280512,
+      "peak_resident_bytes": 27467776
+    },
+    "heavy_modules": [],
+    "queries": {
+      "first_observations": {
+        "first_ms": 3.5627999968710355,
+        "repeat_count": 20,
+        "median_ms": 3.4394499998597894,
+        "p95_ms": 3.6944999992556404,
+        "max_ms": 3.6987999992561527,
+        "maximum_serialized_bytes": 20741
+      },
+      "rogers_10ghz": {
+        "first_ms": 17.111699999077246,
+        "repeat_count": 20,
+        "median_ms": 16.345299998647533,
+        "p95_ms": 17.42789999843808,
+        "max_ms": 18.852199998946162,
+        "maximum_serialized_bytes": 20276
+      },
+      "pcbway_stackups": {
+        "first_ms": 2.3536999979114626,
+        "repeat_count": 20,
+        "median_ms": 1.9819000008283183,
+        "p95_ms": 2.2987999982433394,
+        "max_ms": 2.5070999981835485,
+        "maximum_serialized_bytes": 12214
+      },
+      "missing_df": {
+        "first_ms": 4.548799999611219,
+        "repeat_count": 20,
+        "median_ms": 4.543200000625802,
+        "p95_ms": 4.86079999973299,
+        "max_ms": 4.995200000848854,
+        "maximum_serialized_bytes": 24645
+      },
+      "substring": {
+        "first_ms": 95.84129999711877,
+        "repeat_count": 20,
+        "median_ms": 99.25004999968223,
+        "p95_ms": 108.67400000279304,
+        "max_ms": 109.90269999820157,
+        "maximum_serialized_bytes": 13054
+      },
+      "last_observations": {
+        "first_ms": 7.261300001118798,
+        "repeat_count": 20,
+        "median_ms": 6.7761499994958285,
+        "p95_ms": 9.518599999864819,
+        "max_ms": 9.739899996930035,
+        "maximum_serialized_bytes": 22363
+      },
+      "we_components": {
+        "first_ms": 9.657400001742644,
+        "repeat_count": 20,
+        "median_ms": 27.32780000042112,
+        "p95_ms": 28.827599999203812,
+        "max_ms": 29.007500001171138,
+        "maximum_serialized_bytes": 23836
+      }
+    }
+  },
+  "source_package_check": {
+    "error_count": 1,
+    "errors": [
+      "File missing from manifest: Excel/PCB제작업체/~$PCBWay__PCB_적층.xlsx"
+    ],
+    "note": "Manifested contents were checked; existing Excel owner lock file is an extra untracked file and was left untouched.",
+    "report": {
+      "path": ".local/pcb-catalog/source-package-verification.json",
+      "bytes": 730,
+      "sha256": "7c607f26a3eb64b6dbba7dfff06b2ec040744acd1e671ad43f680e832fcc7eb2"
+    }
+  },
+  "initial_regression_attempt": {
+    "collected": 575,
+    "skipped": 59,
+    "failures": 1,
+    "failed_test": "test_cad_jobs.CadJobTests.test_receipt_replay_reuses_job_before_and_after_restart",
+    "note": "This run overlapped source edits. The single test and final frozen-source full run passed; initial root cause not conclusively captured.",
+    "log": {
+      "path": ".local/pcb-catalog/tests.log",
+      "bytes": 137197,
+      "sha256": "435b7424c6c2b038a3dd6a4337e34661205e56edf01f12a47c5594749587ba00"
+    }
+  },
+  "limits": [
+    "No project schema migration or catalog apply command.",
+    "No catalog selection GUI yet.",
+    "No new RF accuracy or GUI FPS claim. Benchmark is local with uncontrolled OS cache and concurrent test activity."
+  ],
+  "code_files": [
+    {
+      "path": "src/rfad/catalog/__init__.py",
+      "bytes": 116,
+      "sha256": "f493ee69507a2eeef854f4cdbc3bfd482829ab5b34338743b71c84cb807b7de8"
+    },
+    {
+      "path": "src/rfad/catalog/build.py",
+      "bytes": 19438,
+      "sha256": "0b838211c01c105b68fbcf9247759362896b9217fdfe35cd8156f95b1e4475ef"
+    },
+    {
+      "path": "src/rfad/catalog/models.py",
+      "bytes": 3340,
+      "sha256": "30f285ea3bc597d35fd72a3e200170c862522f240dc3fa0c70f73d62f216961b"
+    },
+    {
+      "path": "src/rfad/catalog/native.py",
+      "bytes": 3301,
+      "sha256": "d505114664c66861b6a79c039f73b3ac6656ffcdf627df8ecab2b8fac536219e"
+    },
+    {
+      "path": "src/rfad/catalog/native_common.py",
+      "bytes": 8038,
+      "sha256": "556902f3e45bb71255451d2437546f0265ff26a9adf1662872d13905a2dbbc68"
+    },
+    {
+      "path": "src/rfad/catalog/native_jlc.py",
+      "bytes": 5063,
+      "sha256": "fe662a96a35bd3a0e2d4c1b261c7cf78cb17d6a903ff8b680e17977e9e3c1c2c"
+    },
+    {
+      "path": "src/rfad/catalog/native_pcbway.py",
+      "bytes": 2413,
+      "sha256": "c13777b1c66e342540fb71d15c9427f0844c6ab9d9533f9fac202a88f5b4d7ae"
+    },
+    {
+      "path": "src/rfad/catalog/native_we.py",
+      "bytes": 3353,
+      "sha256": "f6904f5c87d8a146154a71a553af755d5412cbcb34c6c9971d50b3e4777ea036"
+    },
+    {
+      "path": "src/rfad/catalog/properties.py",
+      "bytes": 6098,
+      "sha256": "67d01c6d83bf3bb2d1139e733490d577f7e5d67450e034a73ec8296dff121e56"
+    },
+    {
+      "path": "src/rfad/catalog/query.py",
+      "bytes": 8194,
+      "sha256": "37bb47544c3ba99d93e833a76af5541796e6a10b8da2f83945b5a1fb2a5a2598"
+    },
+    {
+      "path": "src/rfad/catalog/repository.py",
+      "bytes": 17294,
+      "sha256": "ee5510884cf6289de4acc9879414dc92ff415d23dc34c98d074979ff7a6937a3"
+    },
+    {
+      "path": "src/rfad/catalog/review.py",
+      "bytes": 4959,
+      "sha256": "71a7bc5883805428f01798bcb734055cec7da6e9e6bd29ff775c8007d176b1ff"
+    },
+    {
+      "path": "src/rfad/catalog/schema.py",
+      "bytes": 4856,
+      "sha256": "a9d77e4bcf796bc568b9fb65c5a6a47c3bee96dcbffc543a2304a8aa99e95d40"
+    },
+    {
+      "path": "src/rfad/catalog/service.py",
+      "bytes": 7525,
+      "sha256": "2eca3ffec08fa28db2dfb16c05bcdc0013ee959529eb77a9dc23d3a29e4efbe3"
+    },
+    {
+      "path": "src/rfad/catalog/source.py",
+      "bytes": 13011,
+      "sha256": "fca01aad58763398caf269f4ba1ed81a0100a20ba9cde89a0f3a3c7742906a21"
+    },
+    {
+      "path": "src/rfad/__main__.py",
+      "bytes": 2756,
+      "sha256": "aafaf468dab1d86ce6050aaa5ffe8c57a7cd9f7903e31a6d0f3a36711eec8c76"
+    },
+    {
+      "path": "src/rfad/application/rpc.py",
+      "bytes": 16626,
+      "sha256": "0f55a31088c8c07348a5696b6f8f43a232170536ea2d5bdd2068308d74d41a61"
+    },
+    {
+      "path": "src/rfad/application/catalog_api.py",
+      "bytes": 2414,
+      "sha256": "d5f140390a4b4f7120b617d16fab757117746cbe746e22fa994d1bb871f11152"
+    },
+    {
+      "path": "src/rfad/cli/catalog.py",
+      "bytes": 4917,
+      "sha256": "098cd24482fcb1037263772fa82599b1e1ca6a4863ea879f00229c6e72b60272"
+    },
+    {
+      "path": "tools/verify_pcb_catalog.py",
+      "bytes": 10852,
+      "sha256": "29b7126ab13ff443298b7b8ce9ce8921f193a941a41711e4237f69c0b83323ac"
+    },
+    {
+      "path": "tools/verify_pcb_catalog_native.py",
+      "bytes": 17834,
+      "sha256": "b28ae12fe90f2ccf5b2b18a89017c1866f780956e49d74e15c5074fb437eea6f"
+    },
+    {
+      "path": "tools/pcb_catalog_performance.py",
+      "bytes": 5001,
+      "sha256": "02e3532a1e32c1e4b635a0aced3244b51bd736b25a5e053a09b3f372c07aec64"
+    },
+    {
+      "path": "tests/test_catalog_api.py",
+      "bytes": 9376,
+      "sha256": "1848c3271abce0c99ee2297329e680b428e0504c1b9f0b151cc751cd0c43fb0c"
+    },
+    {
+      "path": "tests/test_catalog_build.py",
+      "bytes": 16615,
+      "sha256": "218d97c85c12ca8b4154b2b3fa0a55d63063632435410e39b99a77db964dee5e"
+    },
+    {
+      "path": "tests/test_catalog_native.py",
+      "bytes": 16783,
+      "sha256": "de1ab58c19eef9589bff18a1731ce07776ce82d31591742fa152ec85e42f0ed2"
+    },
+    {
+      "path": "tests/test_catalog_properties.py",
+      "bytes": 3351,
+      "sha256": "742f88722b9d56fe0811806500638b554438457634a318ffc4f48d9ad1a4d88e"
+    },
+    {
+      "path": "tests/test_catalog_query.py",
+      "bytes": 18339,
+      "sha256": "77206864bf34958b75adb9d534c7a8bf57328032d97d60ac803af7d605bb8b58"
+    }
+  ]
+}

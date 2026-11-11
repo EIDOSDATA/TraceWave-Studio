@@ -4,6 +4,8 @@
 
 이하 읽기 전용 API 설명은 `--workspace` 없는 bootstrap/0.1 profile에 적용한다. 후속 구현한 프로젝트 명령과 영속 저장은 [프로젝트 저장 계약 0.2](project_persistence.md)를 따른다.
 
+2026-11-11 확장: `catalog.status/search/get`과 선택적 `--catalog` 설정은 workspace 유무와 독립된 읽기 전용 기능이다. `capabilities.get.catalog_profile`에 구현 범위/상태를 반환하며 [카탈로그 조회 계약](pcb_catalog_contract.md)을 따른다. 아래 bootstrap의 최초 메서드 범위와 구분한다. 카탈로그 원문 JSON은 큰 정수와 미제공 필드를 보존하기 위한 별도 직렬화를 사용하며 프로젝트 수량/정규 codec으로 자동 변환하지 않는다.
+
 ## 단위와 미정값
 
 `Quantity`는 value_si, dimension, display_unit, status, source_refs를 가진 불변 스칼라 타입이다. SI 값과 표시 단위는 별도로 유지한다. 출처 목록은 tuple로 복사한다.

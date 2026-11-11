@@ -4,7 +4,7 @@
 
 구현 파일별 책임과 상태 처리 규칙은 [코드 구조](docs/code_structure.md)에 정리했다. GUI의 표시/입력 정책과 비동기 상태, 프로젝트 저장/이력과 worker 산출물 처리를 별도 모듈로 관리한다.
 
-수집한 PCB 물성/적층 자료의 정리 결과와 후속 연결 방향은 [PCB 재료 카탈로그 설계](docs/pcb_material_catalog.md)에 정리했다. 직접 입력과 제조업체/소재 선택을 같은 프로젝트에 연결하는 설계이며 카탈로그 검색 UI와 가져오기 기능은 아직 구현하지 않았다.
+수집한 PCB 물성/적층 자료는 [카탈로그 조회 계약](docs/pcb_catalog_contract.md)에 따라 오프라인 SQLite로 변환하고 업체/제품/적층/물성 조건별로 검색한다. 읽기 전용 CLI/JSON-RPC와 원문 상세 조회를 구현했으며 기존 직접 입력은 유지한다. GUI 제조업체 선택, 구조화 출처의 프로젝트 저장과 적층 일괄 적용은 [후속 연결 설계](docs/pcb_material_catalog.md)에 따른다.
 
 ## 시스템 구성
 
@@ -37,6 +37,7 @@ flowchart TD
 | --- | --- | --- |
 | C++ wxWidgets GUI | 프로젝트 트리, 속성 입력, 2D/3D 표시, 선택, 결과와 작업 상태 | `ui/wxwidgets/` |
 | Python 서비스 | 원본 도메인, 입력 검증, 명령, revision, hash를 단일 기준으로 관리 | `src/rfad/domain/`, `src/rfad/application/` |
+| PCB 자료 카탈로그 | 오프라인 자료 변환, 원문/조건/출처 보존, 읽기 전용 SQLite 검색과 작은 상세 DTO | `src/rfad/catalog/`, `application/catalog_api.py`, `cli/catalog.py` |
 | 저장과 작업 관리 | 단일 writer journal, 불변 snapshot, 자료 처리/CAD 작업의 별도 실행, 취소/복구와 파일 봉인 | `src/rfad/storage/`, `application/projects.py`, `application/cad_jobs.py`, `application/native_process.py` |
 | CAD/EDA worker | 사각/원형 유전체와 선/원호/polygon/pad/중공 PTH 고체, AP242 STEP/B-rep 및 원본 의미 sidecar. 제조 출력은 후속 | `src/rfad/adapters/cad/`, `tools/cad_worker.py`; EDA adapter는 후속 |
 | EM worker | WSL2 도파관 참조와 사용자 PCB 단일 포트의 계획/준비/실행/취소/결과 봉인 및 원시 후처리 | `src/rfad/adapters/solvers/openems/`, `application/solver_jobs.py`, `application/wsl_process.py`, `tools/openems_worker.py`, `tools/wsl_supervisor.py` |

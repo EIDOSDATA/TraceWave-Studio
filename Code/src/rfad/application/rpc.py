@@ -10,6 +10,8 @@ from rfad import __version__
 from rfad.domain.errors import ProjectError
 from rfad.domain.project import COMMANDS, SCHEMA_VERSION, LEGACY_SCHEMA_VERSION
 from rfad.domain.expressions import ENGINE_VERSION
+from rfad.application.catalog_api import METHODS as CATALOG_METHODS
+from rfad.application.catalog_api import describe as describe_catalog, query as query_catalog
 
 CONTRACT_VERSION = "rfad.api/2.0"
 MAX_FRAME_BYTES = 64 * 1024
@@ -29,7 +31,7 @@ PROJECT_MUTATIONS = {"project.open", "project.apply_command", "editor.apply", "c
 PROJECT_MUTATIONS.update({"solver.plan", "solver.prepare", "job.submit"})
 
 
-def capabilities(service=None) -> dict:
+def capabilities(service=None, catalog=None) -> dict:
     """! @brief 구현한 조회 기능과 아직 구현하지 않은 제품 기능을 구분한다."""
     result = {
         "contract_version": CONTRACT_VERSION,
@@ -106,6 +108,11 @@ def capabilities(service=None) -> dict:
         result["editor_profile"]["create_selections"] = ["new_parameter", "new_material", "new_net", "new_port"]
         result["project_profile"]["job_kinds"].extend(["em_prepare", "em_analysis"])
         result["features"][2]["status"] = "implemented"
+    result["catalog_profile"] = describe_catalog(catalog)
+    result["methods"].update({
+        name: {"status": "implemented", "extension_profile": "rfad.catalog/0.1"}
+        for name in sorted(CATALOG_METHODS)
+    })
     return result
 
 
@@ -151,7 +158,7 @@ def _validate_tree(value: object, depth: int = 0) -> None:
             _validate_tree(item, depth + 1)
 
 
-def _dispatch(request: object, service=None) -> dict | None:
+def _dispatch(request: object, service=None, catalog=None) -> dict | None:
     """! @brief 읽기 전용 조회만 허용하며 알림에는 응답하지 않는다."""
     if not isinstance(request, dict):
         return _error(None, -32600, "Invalid Request")
@@ -188,6 +195,15 @@ def _dispatch(request: object, service=None) -> dict | None:
             response["error"]["data"]["diagnostics"] = [error.diagnostic()]
         except (ValueError, TypeError, UnicodeError):
             response = _error(request_id, APPLICATION_ERRORS["E_SCHEMA"], "Invalid project input", "E_SCHEMA")
+    elif method in CATALOG_METHODS:
+        try:
+            response = {
+                "jsonrpc": "2.0", "id": request_id,
+                "result": query_catalog(method, request.get("params"), catalog),
+            }
+        except ProjectError as error:
+            response = _error(request_id, APPLICATION_ERRORS.get(error.code, 1099), error.message, error.code)
+            response["error"]["data"]["diagnostics"] = [error.diagnostic()]
     elif method != "capabilities.get":
         response = _error(request_id, -32601, "Method not found")
     else:
@@ -202,7 +218,7 @@ def _dispatch(request: object, service=None) -> dict | None:
             response = _error(request_id, -32602, "Bootstrap capabilities requires empty context and input")
         else:
             try:
-                response = {"jsonrpc": "2.0", "id": request_id, "result": capabilities(service)}
+                response = {"jsonrpc": "2.0", "id": request_id, "result": capabilities(service, catalog)}
             except ProjectError as error:
                 response = _error(request_id, APPLICATION_ERRORS.get(error.code, 1099), error.message, error.code)
     if notification:
@@ -210,7 +226,7 @@ def _dispatch(request: object, service=None) -> dict | None:
     return response
 
 
-def handle_frame(frame: bytes, service=None) -> dict | list | None:
+def handle_frame(frame: bytes, service=None, catalog=None) -> dict | list | None:
     """! @brief 하나의 크기가 제한된 UTF-8 JSON-RPC 메시지를 처리한다.
     @param frame 줄바꿈을 제외한 한 메시지.
     @return 응답 객체이며 알림만 있으면 None.
@@ -234,14 +250,14 @@ def handle_frame(frame: bytes, service=None) -> dict | list | None:
             return _error(None, APPLICATION_ERRORS["E_UNSUPPORTED"], "Mutating batch is not supported", "E_UNSUPPORTED")
         responses = []
         for request in message:
-            response = _dispatch(request, service)
+            response = _dispatch(request, service, catalog)
             if response is not None:
                 responses.append(response)
         return responses or None
-    return _dispatch(message, service)
+    return _dispatch(message, service, catalog)
 
 
-def serve(source: BinaryIO, sink: BinaryIO, log: TextIO, service=None) -> int:
+def serve(source: BinaryIO, sink: BinaryIO, log: TextIO, service=None, catalog=None) -> int:
     """! @brief 제한된 줄 읽기로 서비스하며 큰 프레임 수신 시 종료한다.
     @param source UTF-8 NDJSON 입력 스트림.
     @param sink 프로토콜 전용 출력 스트림.
@@ -258,7 +274,7 @@ def serve(source: BinaryIO, sink: BinaryIO, log: TextIO, service=None) -> int:
             if frame.endswith(b"\r"):
                 frame = frame[:-1]
         oversized = len(frame) > MAX_FRAME_BYTES
-        response = handle_frame(frame, service)
+        response = handle_frame(frame, service, catalog)
         if response is not None:
             payload = json.dumps(response, ensure_ascii=False, allow_nan=False, separators=(",", ":")).encode("utf-8") + b"\n"
             if len(payload) - 1 > MAX_FRAME_BYTES:
