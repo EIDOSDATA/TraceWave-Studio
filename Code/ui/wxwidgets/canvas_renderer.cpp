@@ -226,9 +226,16 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
         graphics->SetPen(graphics->CreatePen(halo));
         graphics->StrokePath(path);
     }
-    wxGraphicsPenInfo pen(colour, width);
-    pen.Cap(wxCAP_ROUND);
-    graphics->SetPen(graphics->CreatePen(pen));
+    // @brief 같은 paint 안의 연속된 선폭/색상은 native pen을 재생성하지 않는다.
+    if (m_linePen.IsNull() || m_lineColour != colour || m_lineWidth != width)
+    {
+        wxGraphicsPenInfo pen(colour, width);
+        pen.Cap(wxCAP_ROUND);
+        m_linePen = graphics->CreatePen(pen);
+        m_lineColour = colour;
+        m_lineWidth = width;
+    }
+    graphics->SetPen(m_linePen);
     graphics->StrokePath(path);
     return true;
 }

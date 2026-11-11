@@ -51,4 +51,4 @@ Linux ext4 staging, run UUID/nonce/heartbeat, detached supervisor/watchdog와 �
 
 작은 진공 PEC 도파관 참조 검증에 이어 [사용자 PCB profile](pcb_solver_contract.md)의 사각/원형 기판, 선/원호/접지 polygon/pad/PTH via와 GUI 실행/결과를 연결했다. IFA의 접지/급전선/단락부와 열린 단일 급전 gap을 명시적으로 소비하며 동일 면의 x/y 또는 층 사이 z 방향 급전을 지원한다. sheet/체적 via의 물성과 기하 근사는 계획/소비 보고서에 남기고 실제 Yee 전기 edge에서 재료 우선순위와 접속 표현을 확인한다. 이 검사는 최종 solver 계수나 RF 정확도 검증을 뜻하지 않는다.
 
-다음은 단일 포트 IFA의 정식 mesh/경계/시간 수렴과 실제 물성/제작/측정 조건 대조다. SMA launch와 정합 부품의 기생 효과, NF2FF/방사 결과, 독립 수신 CAD, 전체 앱 메모리와 60/30 fps 예산도 후속이다. 현재 실행 fixture의 성공을 실물 IFA 검증으로 승격하지 않는다.
+다음은 단일 포트 IFA의 정식 mesh/경계/시간 수렴과 실제 물성/제작/측정 조건 대조다. 선택적 NF2FF 기록/재후처리/GUI 2D 절단면은 [방사 계산 계약](pcb_radiation.md)을 따른다. SMA launch와 정합 부품의 기생 효과, 방사 수렴과 실측 대조, 독립 수신 CAD, 전체 앱 메모리와 60/30 fps 예산도 후속이다. 현재 실행 fixture의 성공을 실물 IFA 검증으로 승격하지 않는다.

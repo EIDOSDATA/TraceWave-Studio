@@ -37,7 +37,7 @@ GUI의 `해석 > 수렴 연구 보고서 비교`는 완료 보고서의 설정 �
 
 원문은 [openEMS NF2FF](https://docs.openems.de/en/latest/concepts/nf2ff.html), [Python API](https://docs.openems.de/en/latest/python/openEMS/nf2ff.html), [공식 안테나 예제](https://docs.openems.de/en/latest/python/openEMS/Tutorials/Simple_Patch_Antenna.html)를 사용했다. 이상적 반파장 패턴은 [MIT 6.661 강의의 식 3.2.31](https://ocw.mit.edu/courses/6-661-receivers-antennas-and-signals-spring-2003/10025a78ab17e1e0866126246b751d11_ch3new.pdf)을 기준으로 비교한다. 유한 굵기/유한 격자의 60 mm 모델을 이상적 가는 반파장과 비교하는 초기 참조이며 독립 solver 또는 실측 검증이 아니다.
 
-이번 참조의 Dmax는 약 1.65863, 이상적 값 1.6409와 상대 차이 1.081%다. 정규화 패턴 최대 차이는 0.01333, 방사 효율은 약 0.999807이다. 계산 후 경로/출력 권한 처리 오류를 보완하고 최초 계산의 원시 필드 파일을 해시 검증해 재사용했다. 후처리 재실행을 새 FDTD 실행으로 집계하지 않는다. 실패 보고서도 보존한다. 이 독립 참조 도구를 사용자 PCB worker의 NF2FF 연결 완료로 표시하지 않는다. PCB/원형 기판의 방사 기능에는 기록 상자의 기하/재료/PML 거리 검사와 원시 파일/후처리/GUI 연결이 추가로 필요하다.
+이번 참조의 Dmax는 약 1.65863, 이상적 값 1.6409와 상대 차이 1.081%다. 정규화 패턴 최대 차이는 0.01333, 방사 효율은 약 0.999807이다. 계산 후 경로/출력 권한 처리 오류를 보완하고 최초 계산의 원시 필드 파일을 해시 검증해 재사용했다. 후처리 재실행을 새 FDTD 실행으로 집계하지 않는다. 실패 보고서도 보존한다. 이 독립 참조 도구를 사용자 PCB worker의 NF2FF 연결 완료로 표시하지 않는다. 이후 사용자 PCB의 기록 상자/기판/PML 거리 검사, 원시 파일 봉인, 재후처리와 GUI를 연결했다. 추가 구현과 별도 검증 범위는 [PCB 방사 계산](pcb_radiation.md)을 따른다. 이 절의 다이폴 실행 수치는 당시 독립 참조의 기록이다.
 
 ## 성능과 내부 검증 묶음
 
@@ -62,6 +62,8 @@ cmake --build build/windows-release --target tracewave_canvas_benchmark
 도구 이름은 `pcb.selection.preview`, `pcb.selection.apply` 등 공개 메서드명이다. arguments는 context/input 및 변경 요청의 request_key/request_key_epoch다. contract_version은 adapter가 고정하고 expected_revision, selection_id와 preview_hash, 명령 ID 및 영수증은 기존 API가 검사한다. 반복 요청에 새 key를 자동 발급하지 않는다. 장시간 실행은 기존 작업 접수 후 job.status/job.cancel을 사용한다. GUI와 같은 workspace writer 잠금을 사용하므로 같은 workspace를 두 서버가 동시에 쓰지 않는다. 외부 EDA의 단위/좌표/net/port 변환은 각 adapter에서 명시적으로 구현해야 한다.
 
 최종 수치와 소스/보고서 해시는 [실행 기록](../runtime_profiles/capacity-and-followup.json)을 따른다.
+
+후속 PCB 방사 구현과 최신 회귀 결과는 [방사 계산 계약](pcb_radiation.md) 및 [추가 실행 기록](../runtime_profiles/pcb-radiation.json)을 따른다. 사용자 PCB의 NF2FF 기록/재후처리/GUI 연결은 완료했고 방사 수렴/독립 대조/실측은 남는다. 연속 pen 재사용을 포함한 최신 합성 renderer p95는 일반 4.237 ms/3000개 25.060 ms다. 같은 세션의 무캐시 측정도 22.392 ms였고 부하가 달랐으므로 개선 비율이나 실제 30 fps 합격을 주장하지 않는다. 앞 절의 37.597 ms는 이전 측정 기록으로 유지한다.
 
 ## 최종 시험 범위
 

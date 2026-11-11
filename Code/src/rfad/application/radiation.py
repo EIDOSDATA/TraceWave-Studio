@@ -28,3 +28,13 @@ def power_metrics(radiated_w, accepted_w, incident_w, directivity):
             "realized_gain_dbi": 10 * math.log10(realized),
             "power_balance_status": "requires_review" if radiated_w > accepted_w or accepted_w > incident_w else "nonnegative_loss",
             "physics_validated": False}
+
+
+def spectral_power_metrics(radiated, accepted, incident, directivity):
+    """! @brief 펄스 Fourier 전력의 공통 s^2 배율을 보존하고 무차원 비율만 해석한다."""
+    value = power_metrics(radiated, accepted, incident, directivity)
+    for name in ("radiated_power", "accepted_power", "incident_power"):
+        value[name + "_w_s2"] = value.pop(name + "_w")
+    value["absolute_power_w"] = None
+    value["normalization"] = "pulse_fourier_spectrum_common_squared_time_scale"
+    return value

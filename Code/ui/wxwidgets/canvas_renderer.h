@@ -25,4 +25,7 @@ private:
     wxDC& m_dc;
     CanvasViewport m_viewport;
     std::unique_ptr<wxGraphicsContext> m_graphics;
+    wxGraphicsPen m_linePen;
+    wxColour m_lineColour;
+    double m_lineWidth = -1.0;
 };

@@ -10,7 +10,7 @@
 
 다음 단계로 별도 호스트 CAD worker, Open CASCADE 유전체/선/원호 고체와 AP242 STEP/B-rep 출력을 연결했다. 이어 GUI STEP 출력/취소/완료 결과 복원, 유전체층 생성과 wxGLCanvas 3D 보기를 구현했다. 원본 sidecar와 실제 schema/단위/이름/형상 재입력은 같은 kernel이며 내부 기하 profile은 `generated_unverified`다. WSL solver worker의 준비/실행/취소/저장과 도파관 두 격자 검증까지 연결했다. 이어 사각/원형 PCB의 사용자 물성/패턴/동일 평면 단일 급전과 GUI 해석/취소/결과 그래프, 재료/net/포트 생성 UI를 연결했다.
 
-이후 구멍을 가진 접지 polygon, 원형/회전 사각 pad, 명시적 중공 관통 PTH via와 IFA의 접지/급전선/단락부를 원본/GUI/CAD/EM에 연결했다. 단일 포트는 동일 sheet 면의 x/y gap과 층 사이 z gap을 지원한다. 고정 IFA fixture의 격자/경계 거리/시간 종료 연구를 실제 실행했고, 1.6~2.6 GHz의 별도 연구에서 초기 기준의 수치 안정성을 확인했다. 현재 우선 작업은 실제 물성/급전/측정 조건과 2.4 GHz 정합 설계, 국부 특징/곡선/PML의 추가 검증, GUI 수렴 비교, NF2FF와 독립 수신 CAD 검증이다. 실물 SMA launch/정합 부품의 기생 효과는 아직 포함하지 않았다. 2D 스냅/치수/endpoint, 3D LOD와 실제 GPU reset/DPI/도킹 복구 및 성능 실측도 남는다. 아래 첫 작업은 새 PC나 배포 미등록 상태에서의 재개 절차로 유지한다. Linux 근거는 [Linux 환경](linux_environment.md), CAD 범위는 [CAD/STEP 계약](cad_contract.md), 도체 모델은 [도체와 IFA 확장](copper_features.md)에 있다.
+이후 구멍을 가진 접지 polygon, 원형/회전 사각 pad, 명시적 중공 관통 PTH via와 IFA의 접지/급전선/단락부를 원본/GUI/CAD/EM에 연결했다. 단일 포트는 동일 sheet 면의 x/y gap과 층 사이 z gap을 지원한다. 고정 IFA fixture의 격자/경계 거리/시간 종료 연구를 실제 실행했고, 1.6~2.6 GHz의 별도 연구에서 초기 기준의 수치 안정성을 확인했다. 현재 우선 작업은 실제 물성/급전/측정 조건과 2.4 GHz 정합 설계, 국부 특징/곡선/PML 및 사용자 PCB 방사의 수렴, GUI 다중 곡선 비교와 독립 수신 CAD 검증이다. NF2FF 기록/후처리/2D 조회는 연결했다. 실물 SMA launch/정합 부품의 기생 효과는 아직 포함하지 않았다. 2D 스냅/치수/endpoint, 3D LOD와 실제 GPU reset/DPI/도킹 복구 및 성능 실측도 남는다. 아래 첫 작업은 새 PC나 배포 미등록 상태에서의 재개 절차로 유지한다. Linux 근거는 [Linux 환경](linux_environment.md), CAD 범위는 [CAD/STEP 계약](cad_contract.md), 도체 모델은 [도체와 IFA 확장](copper_features.md)에 있다.
 
 코드 구조 정리에서는 주 창 진입점, 화면별 이벤트 연결, 순수 표시/작업 상태와 통합 시험을 분리했다. 프로젝트 서비스와 CAD/solver도 책임별 모듈로 분리했으며 공개 API/저장 schema는 유지한다. 새 기능을 추가할 위치와 검증 규칙은 [코드 구조](code_structure.md)를 먼저 확인한다. 최신 회귀 결과는 [개발 상태](development_status.md)에 기록한다.
 
@@ -57,7 +57,7 @@ pwsh -NoProfile -File .\tools\setup_wsl.ps1 -Install
 
 완료 기준은 Ubuntu 24.04가 WSL2에서 실제 실행되고 스크립트가 종료 코드 0을 반환하는 것이다. 설치 프로그램의 종료 코드 0만으로 성공을 판단하지 않는다. `.local/wsl/status.json`의 registered/runnable과 상태를 확인한다. 여기까지 완료해도 openEMS 준비 완료는 아니다. 자세한 조건은 [WSL 환경](wsl_environment.md)을 따른다.
 
-이번 총 Df native 대조군의 최초 준비는 WSL cold boot의 10초 start control timeout으로 실패했다. WSL 예열과 제한 시간이 있는 keepalive 뒤 재실행은 통과했지만 자동 복구는 아직 구현하지 않았다. 재부팅 후 solver를 실행하기 전 배포가 실제 응답하는지 확인하고, 같은 실패가 발생하면 원래 실패/작업 상태를 보존한다. 단순 재시도로 이전 작업의 실행 여부를 덮어쓰지 않는다. 이 준비 경로의 자동화와 제한 시간 보강을 우선한다.
+이번 총 Df native 대조군의 최초 준비는 WSL cold boot의 10초 start control timeout으로 실패했다. WSL 예열과 제한 시간이 있는 keepalive 뒤 재실행은 통과했지만 자동 복구는 아직 구현하지 않았다. 재부팅 후 solver를 실행하기 전 배포가 실제 응답하는지 확인하고, 같은 실패가 발생하면 원래 실패/작업 상태를 보존한다. 단순 재시도로 이전 작업의 실행 여부를 덮어쓰지 않는다. 이후 접수 전 60초 준비/취소와 not_started 구분을 보강했다. 아래 최신 표의 실제 PC cold boot 수용 항목을 따른다.
 
 ## 이어서 진행할 순서
 
@@ -69,11 +69,13 @@ pwsh -NoProfile -File .\tools\setup_wsl.ps1 -Install
 | 4 | RO4350B 공식 제작 표 재확인, 근사와 미정 납품 입력 구분 | 제조업체 승인 적층, 주문별 물성/동박/마스크, SMA 및 실제 시료/교정 자료 필요 |
 | 5 | RO4350B 목표 대역의 8개 사례/6개 고유 계산과 판정 완료 | 복소 S 변화는 충족했으나 내부 공진 없어 전체 수렴 미확립. 정합 조정/공진 추적과 실측 대조 필요 |
 | 6 | GUI의 완료 수렴 보고서 비교/한국어 판정 표시와 실제 시각 확인 | 다중 곡선 중첩, 연구 편집, 추가 스냅/치수/endpoint, 3D LOD/GPU reset/DPI/도킹 복구 수용 |
-| 7 | 실제 PEC 다이폴 FDTD/NF2FF 참조와 지향성/효율/패턴 대조 완료 | 사용자 PCB/원형 기판의 NF2FF 기록 상자 검사, raw/후처리/GUI 연결과 수렴 |
-| 8 | 제품 2D renderer 계측/Clip/Flush 보완, 내부 소스/GUI 검증 묶음 생성 도구 | 3000개 장면의 p95 37.597 ms로 30 fps 예산 미달. 대형 장면 최적화, 전체 프로세스 계측과 배포/라이선스 점검 |
+| 7 | 다이폴 참조에 이어 사용자 PCB의 NF2FF 기록 상자 검사, 12면 봉인, 재후처리와 GUI 2D 절단면 연결 | 사용자 PCB의 방사 상자/각도/격자/전력 수지 수렴, 3D 방사 곡면과 독립 대조 |
+| 8 | 제품 2D renderer 계측/Clip/Flush와 연속 pen 재사용, 내부 소스/GUI 검증 묶음 생성 도구. 최신 3000개 합성 장면 p95 25.060 ms | 실제 조작 시 60/30 fps와 전체 GUI/서비스/worker 메모리 수용, 배포/라이선스 점검. 단일 합성 측정을 제품 FPS 합격으로 확대하지 않음 |
 | 9 | MCP 2025-11-25 stdio 도구 발견/공개 API 전달/영수증 재생/실제 프로세스 시험 | 특정 EDA의 단위/좌표/net/port 변환 및 실제 상호 운용 시험 |
 
 이번 결과와 실행 명령, 한계는 [용량 개선과 후속 검증](capacity_and_followup.md)을 따른다. 기존 823개 거절과 대표 4층 적용 제한은 해소했으며, 1번을 미구현 과제로 다시 시작하지 않는다. 공유 형식은 원문을 축약하거나 외부 카탈로그에 의존하지 않는다.
+
+추가 구현한 [PCB 방사 계산](pcb_radiation.md)은 사각/원형/IFA의 실제 worker 경로, 원시 12면의 동일 후처리, 결과 재열기와 GUI를 확인했다. 전체 724개 중 656개 통과/68개 조건부 스킵, 실제 GUI 17개 및 CTest 7개 통과가 현재 기준이다. 후속 개발은 방사 상자/각도/격자 수렴, 다중 곡선 비교와 2D 편집 보강, 3D 표시/전체 성능 수용을 우선한다. 실제 납품 적층/물성/제작/측정 자료가 필요한 항목은 계속 미정이며 계산 fixture로 대체하지 않는다.
 
 위 표는 1~9번의 구현 결과와 남은 수용 범위다. Linux 환경과 작은 참조 사례, 편집/CAD/GUI STEP/3D, 사용자 PCB 실행 및 RO4350B 탐색 모델의 전체 연결은 이미 확인했다. CAD 실행은 WSL을 사용하지 않으며 solver는 별도 [WSL guest 구현](solver_contract.md)을 사용한다. 환경이 준비된 PC에서는 설치보다 최신 소스/빌드/검증 상태를 먼저 확인한다. 탐색 결과는 `computed_unvalidated`이며 시간영역 종료를 정식 격자/경계 수렴이나 제조/실측 검증으로 승격하지 않는다. Linux GUI는 후속 범위를 유지한다.
 

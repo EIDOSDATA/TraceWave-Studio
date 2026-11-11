@@ -100,13 +100,17 @@ def capabilities(service=None, catalog=None) -> dict:
             "source": "immutable_snapshot", "native_slots": 1, "execution": "wsl2_guest_supervisor",
             "execution_modes": ["solve_and_postprocess", "postprocess_only"], "resume_supported": False,
             "antenna_supported": True, "antenna_profile": "rfad.openems.pcb-single-port/0.1", "antenna_physics_validated": False,
-            "board_outlines": ["rectangle", "circle"], "nf2ff_supported": False, "max_file_bytes": 67108864, "max_package_bytes": 134217728}
+            "board_outlines": ["rectangle", "circle"], "nf2ff_supported": True,
+            "nf2ff": {"profile": "rfad.pcb-radiation/0.1", "opt_in": True, "max_frequencies": 3,
+                      "angle_steps_deg": [5, 10, 15, 30], "physics_validated": False, "absolute_power_supported": False},
+            "max_file_bytes": 67108864, "max_package_bytes": 134217728}
         result["solver_profile"]["profiles"] = ["rfad.openems.rect-waveguide/0.1", "rfad.openems.pcb-single-port/0.1"]
         result["solver_profile"]["profile_scopes"] = {
             "rfad.openems.rect-waveguide/0.1": "empty_reference_project_only",
             "rfad.openems.pcb-single-port/0.1": "user_pcb_single_port_computed_unvalidated",
         }
         result["methods"].update({name: {"status": "implemented", "extension_profile": "rfad.solver-view/0.1"} for name in ("solver.latest", "solver.samples")})
+        result["methods"]["solver.radiation"] = {"status": "implemented", "extension_profile": "rfad.radiation-chart/0.1"}
         result["editor_profile"]["create_selections"] = ["new_parameter", "new_material", "new_net", "new_port"]
         result["project_profile"]["job_kinds"].extend(["em_prepare", "em_analysis"])
         result["features"][2]["status"] = "implemented"
@@ -178,7 +182,7 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
         return _error(None, -32600, "Invalid Request")
     notification = "id" not in request
     method = request["method"]
-    if service is not None and method in PROJECT_MUTATIONS | PCB_SELECTION_READS | {"job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples"}:
+    if service is not None and method in PROJECT_MUTATIONS | PCB_SELECTION_READS | {"job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
         if notification and method in PROJECT_MUTATIONS:
             return None
         try:
@@ -203,6 +207,8 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
                 result = service.solver.latest(params)
             elif method == "solver.samples":
                 result = service.solver.samples(params)
+            elif method == "solver.radiation":
+                result = service.solver.radiation(params)
             else:
                 result = service.mutate(method, params)
             response = {"jsonrpc": "2.0", "id": request_id, "result": result}

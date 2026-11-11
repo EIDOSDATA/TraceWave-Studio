@@ -45,6 +45,7 @@ void StudioFrame::BuildInterface()
     auto* analysis = new wxMenu;
     analysis->Append(IdRunSolver, Display("설정 및 해석 실행"));
     analysis->Append(IdCancelSolver, Display("해석 작업 취소"));
+    analysis->Append(IdRadiation, Display("방사 패턴 조회"));
     const int studyReportId = wxWindow::NewControlId();
     analysis->Append(studyReportId, Display("수렴 연구 보고서 비교"));
     Bind(

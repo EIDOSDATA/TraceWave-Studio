@@ -94,11 +94,25 @@ def exercise_cancellation(service, runtime, context, task_plan):
     return {"job_id": task["job_id"], "state": "cancelled", "termination_confirmed": True, "previous_result_preserved": True}
 
 
-def run(workspace, report_path, fixture_path, *, exercise_cancel=False):
+def radiation_pages(service, context, artifact_id, index):
+    """! @brief 공개 읽기 전용 API의 모든 theta 페이지를 중복 없이 복원한다."""
+    pages, offset = [], 0
+    while offset is not None:
+        page = call(service, "solver.radiation", {"artifact_id": artifact_id, "frequency_index": index, "theta_offset": offset}, context)
+        if page["theta_offset"] != sum(item["returned_count"] for item in pages):
+            raise RuntimeError("방사 패턴 페이지가 중복되거나 누락되었습니다.")
+        pages.append(page)
+        offset = page["next_offset"]
+    return pages
+
+
+def run(workspace, report_path, fixture_path, *, exercise_cancel=False, radiation_frequencies=None, radiation_step=15):
     """! @brief plan/prepare/solve/후처리/조회/재시작을 확인하고 물리 검증과 구분해 기록한다."""
     fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
     if fixture.get("schema") != "rfad.pcb-runtime-fixture/0.1":
         raise ValueError("지원하지 않는 PCB 시험 입력입니다.")
+    if radiation_frequencies:
+        fixture["settings"]["radiation"] = {"frequency_hz": radiation_frequencies, "theta_step_deg": radiation_step, "phi_step_deg": radiation_step}
     started = time.monotonic()
     report = {"schema": "rfad.pcb-worker-verification/0.1", "status": "running", "started_at": datetime.now(timezone.utc).isoformat(),
               "ifa_execution_tested": fixture.get("case_kind") == "ifa_feed", "ifa_accuracy_tested": False,
@@ -133,6 +147,16 @@ def run(workspace, report_path, fixture_path, *, exercise_cancel=False):
         repeated_result = json.loads(service.journal.read_artifact(repeated["normalized_result"]))
         if result["samples"] != repeated_result["samples"] or result["raw_manifest"] != repeated_result["raw_manifest"]:
             raise RuntimeError("독립 후처리에서 원시 자료 또는 표본이 변경되었습니다.")
+        radiation = []
+        if "radiation" in fixture["settings"]:
+            for index in range(len(fixture["settings"]["radiation"]["frequency_hz"])):
+                pages = radiation_pages(service, context, solved["artifact_id"], index)
+                repeated_pages = radiation_pages(service, context, repeated["artifact_id"], index)
+                if [{k: v for k, v in page.items() if k != "artifact_id"} for page in pages] != [{k: v for k, v in page.items() if k != "artifact_id"} for page in repeated_pages]:
+                    raise RuntimeError("독립 NF2FF 후처리에서 필드 또는 전력 비율이 변경되었습니다.")
+                radiation.append(pages)
+            report.update(nf2ff_tested=True, radiation_summary=result["radiation_summary"], radiation_pages=[len(pages) for pages in radiation],
+                          postprocess_radiation_identical=True, radiation_settings=fixture["settings"]["radiation"])
         if exercise_cancel:
             report["cancellation"] = exercise_cancellation(service, runtime, context, task_plan)
         view = call(service, "result.open", {"artifact_id": solved["artifact_id"]}, context)
@@ -148,6 +172,9 @@ def run(workspace, report_path, fixture_path, *, exercise_cancel=False):
                 or call(reopened, "solver.samples", {"artifact_id": solved["artifact_id"]}, context) != chart
                 or call(reopened, "solver.latest", {}, context) != latest):
             raise RuntimeError("해석기 없는 서비스 재시작 후 결과가 변경되었습니다.")
+        for index, pages in enumerate(radiation):
+            if radiation_pages(reopened, context, solved["artifact_id"], index) != pages:
+                raise RuntimeError("해석기 없는 재시작 후 방사 결과가 변경되었습니다.")
     report.update(status="passed", result_restored_without_solver=True, elapsed_seconds=time.monotonic() - started)
     report_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.write_bytes(canonical_bytes(report))
@@ -161,9 +188,12 @@ def main():
     parser.add_argument("--report", type=Path, required=True)
     parser.add_argument("--fixture", type=Path, default=Path(__file__).resolve().parents[1] / "fixtures/pcb_worker_smoke.json")
     parser.add_argument("--exercise-cancel", action="store_true")
+    parser.add_argument("--radiation-frequency-hz", type=float, nargs="+")
+    parser.add_argument("--radiation-step-deg", type=int, choices=(5, 10, 15, 30), default=15)
     args = parser.parse_args()
     try:
-        run(args.workspace, args.report, args.fixture, exercise_cancel=args.exercise_cancel)
+        run(args.workspace, args.report, args.fixture, exercise_cancel=args.exercise_cancel,
+            radiation_frequencies=args.radiation_frequency_hz, radiation_step=args.radiation_step_deg)
         return 0
     except Exception as error:
         print(str(error), file=sys.stderr)

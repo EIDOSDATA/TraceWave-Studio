@@ -2,10 +2,12 @@
 #pragma once
 #include "studio_types.h"
 #include <wx/event.h>
+#include <wx/weakref.h>
 #include <string>
 
 class StudioFrame;
 class PcbSelectionDialog;
+class RadiationDialog;
 
 /** @brief 명시적 smoke 옵션에서만 실제 화면과 서비스를 구동하는 통합 시험 운전자다. */
 class StudioSmokeDriver final
@@ -84,6 +86,8 @@ private:
     std::string m_solverFirstResult;
     Json m_solverChecks = Json::array();
     int m_solverSmokeStage = 0;
+    wxWeakRef<RadiationDialog> m_radiationDialog;
+    bool m_radiationChecked = false;
     bool m_cadErrorProbeSeen = false;
     int m_cadSmokeStage = 0;
     std::string m_cadFirstSnapshot;

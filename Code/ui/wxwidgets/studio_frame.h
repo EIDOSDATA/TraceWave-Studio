@@ -23,6 +23,7 @@ class ModelView;
 class EditorPanel;
 class wxAuiManager;
 class wxButton;
+class wxCheckBox;
 class wxChoice;
 class wxStaticText;
 class wxTextCtrl;
@@ -109,6 +110,8 @@ private:
     void BindSolver();
     /** @brief 해석 조건은 사용자가 확인한 입력이며 보드 물성을 대신 생성하지 않는다. */
     void ConfigureSolver();
+    /** @brief 봉인된 결과의 방사 조회 화면을 독립적으로 연다. */
+    void OpenRadiation();
     /** @brief 작업 상태와 로그를 해석 패널에 표시한다. */
     void SolverStatus(const std::string& state, const std::string& message);
     /** @brief 스냅샷부터 해석까지 별도 작업으로 추적하여 편집과 저장을 계속 허용한다. */
@@ -198,6 +201,8 @@ private:
     bool m_solverRestoring = false;
     std::string m_solverState = "idle";
     Json m_solverDraft = Json::object();
+    wxCheckBox* m_recordRadiation = nullptr;
+    Json m_radiationDraft = Json::object();
     Json m_solverSettings = Json::object();
     Json m_solverResult = Json::object();
     Json m_solverSamples = Json::object();

@@ -8,6 +8,12 @@
 
 wxWidgets, Windows 11+WSL2 우선, Linux GUI 후속, 원호/IFA, 내부 검증 배포와 60/30 fps 초기 목표를 유지한다. WSL 개발 환경과 작은 해석 참조 사례 검증, GUI 선택 속성/영속 undo/redo와 wxAUI 기반 2D 편집 다음으로 별도 호스트 CAD worker와 Open CASCADE 형상/AP242 STEP 출력을 연결했다. 이어 GUI STEP 출력/작업 취소/완료 결과 복원과 wxGLCanvas 3D 형상 보기를 구현했다. WSL2 guest supervisor와 도파관 solver adapter의 준비/실행/취소/결과 저장 및 독립 후처리도 연결했다. 이어 원형 PCB 외형을 저장/편집/CAD/EM에 연결하고 사용자 PCB의 제한된 단일 포트 해석과 GUI 실행/결과 그래프를 추가했다. 접지 polygon/빈 영역, 패드, 중공 도금 비아와 IFA의 실제 급전/단락 도체 모델도 같은 명령/저장/GUI/CAD/EM 경로로 확장했다.
 
+이후 용량 개선 구현을 `4414574`로 커밋/푸시한 뒤, [사용자 PCB 방사 계산](pcb_radiation.md)을 추가했다. 선택적 NF2FF 기록 상자/PML 검사, 12면 E/H 봉인, 별도 복소 필드 산출물과 전력 비율, 같은 raw의 재후처리, 해석기 없는 페이지 조회 및 wxWidgets 2D 절단면을 연결했다. 실제 사각/원형/IFA 사례가 모두 현재 worker 소스 107개의 동일 hash로 실행됐다. 실제 제작/측정 입력과 납품 물성의 미정 상태는 유지했다.
+
+이번 최종 Windows 회귀는 724개 수집/656개 통과/68개 조건부 스킵, 350.227초다. 별도 실제 GUI 17개는 CAD/WSL 조건을 활성화해 모두 통과했으며 203.437초였다. CTest 7개는 0.20초에 모두 통과했다. 사각 PCB의 3개 주파수/5 degree 방사 격자는 64.625초, 원형/원호의 3개 주파수/15 degree와 취소 검사는 56.328초, IFA의 2.44175 GHz/15 degree는 116.375초에 통과했다. 각각 raw 재후처리와 worker 없는 재열기를 포함하며 물리 정확도 합격으로 집계하지 않는다. 최초 플랫폼 간 수학 함수의 마지막 bit 차이를 허용하는 유한 상대 오차 검사를 보완했고 기존 capability 시험/시험 코드 오류를 고친 최종 결과다. 실패 기록도 보존한다.
+
+같은 paint 안의 연속된 색상/선폭에 native pen을 재사용했다. 최종 합성 renderer p95는 일반 4.237 ms, 3000개 장면 25.060 ms였다. 바로 앞 무캐시 측정도 대형 22.392 ms로 예산 안이었으므로 전후 속도 개선을 단정하지 않는다. 전체 조작 FPS와 GUI/서비스/worker 합산 메모리는 별도 수용 항목이다. 원형 실제 결과의 방사 창에서 이전 개정, 100% 초과 효율의 검토 경고와 절단면을 시각 확인하고 검증 창을 종료했다. 수치/소스/바이너리/보고서 hash는 [이번 실행 기록](../runtime_profiles/pcb-radiation.json)을 따른다. 아래 누적 기록의 수치는 각 당시 버전의 범위다.
+
 ## 구현 현황
 
 | 항목 | 구현과 증거 | 남은 범위 |
@@ -25,14 +31,14 @@ wxWidgets, Windows 11+WSL2 우선, Linux GUI 후속, 원호/IFA, 내부 검증 �
 | GUI STEP와 3D | 적용 후 불변 snapshot 접수, CAD 중 편집/저장, 취소와 출력 폴더, 이전 개정 표시 및 재열기 완료 결과 복원. 실제 OCCT 고체에서 생성한 표시 mesh의 background hash/경계 검사, 지연 wxGLCanvas 생성, 회전/이동/확대/선택, 오류 시 context 재생성 재시도 | LOD, 실제 GPU reset/DPI/도킹 복구 수용, 대형 장면/성능 예산, 독립 CAD와 제조/RF 판정 |
 | 2D 직접 편집 | 사각/원형 기판과 미정 도체층/미정 유전체층 생성, 두 점 선분, 중심/시작/끝 방향 원호와 Shift CW, 수치 좌표 생성, 선택/이동/삭제, preview와 단일 명령 commit, fit/zoom/pan | 마우스 스냅, endpoint 편집/회전/미러/구속/Boolean/고급 도면, 정밀도와 최종 시각 수용 |
 | GUI 입력 검사 | 명시적 EM 입력 검사, 문제 목록과 객체/필드 이동, 이전 revision 진단 이동 거절 | 일반 접속/제조 DRC와 정식 물리 검증 |
-| WSL/openEMS 환경 | Ubuntu 24.04.5 WSL2 실행, Linux 서비스 및 표현식 비교 통과. Qt 없는 openEMS 0.37.0/CSXCAD 0.7.0 빌드와 두 격자 도파관 참조 검사 통과 | NF2FF, 실측/독립 solver 정확도 검증 |
-| WSL solver와 결과 | AnalysisPlan/PreparationArtifact/PreparedPlan, 봉인 XML 실행과 raw/정규화/출처, 독립 후처리. ext4 staging, supervisor/watchdog, nonce/lease/재접속/취소. 사각/원형 PCB 선/원호/접지 polygon/패드/PTH, 유한 도체, x/y/z gap 급전, IFA short 연결과 Yee edge 검사, GUI S11/VSWR/임피던스 | 공개 수동 조정, cache/GC, SMA/실장 급전, NF2FF와 실측 |
+| WSL/openEMS 환경 | Ubuntu 24.04.5 WSL2 실행, Linux 서비스 및 표현식 비교 통과. Qt 없는 openEMS 0.37.0/CSXCAD 0.7.0 빌드와 두 격자 도파관 참조 검사 통과 | 사용자 PCB 방사 수렴, 실측/독립 solver 정확도 검증 |
+| WSL solver와 결과 | AnalysisPlan/PreparationArtifact/PreparedPlan, 봉인 XML 실행과 raw/정규화/출처, 독립 후처리. ext4 staging, supervisor/watchdog, nonce/lease/재접속/취소. 사각/원형 PCB 선/원호/접지 polygon/패드/PTH, 유한 도체, x/y/z gap 급전, IFA short 연결과 Yee edge 검사, GUI S11/VSWR/임피던스. 선택적 NF2FF 12면 봉인/재후처리와 GUI 방사 절단면 | 공개 수동 조정, cache/GC, SMA/실장 급전, 방사 수렴과 실측 |
 | IFA 수치 안정성 | 명시적 시험 입력의 3단계 격자/3단계 경계/2단계 시간 종료 비교, 고정 물리 PML 두께와 graded air, 공개 API 실행/재개/독립 재판정, JSON/CSV/비교 그림 | 아래 실제 검증 기록의 범위만 수용. GUI 다중 결과 비교, 국부 특징/곡선/PML 셀 수 민감도, 제조/실측 정확도 |
 | PCB 카탈로그 | 전체 정리 관측/원시 적층의 중립 모델, 오프라인 SQLite 변환과 검토 사유, 읽기 전용 검색/상세 CLI 및 JSON-RPC, 원문 타입/출처/해시와 페이지 보존 | 카탈로그 갱신/배포 범위와 GUI 페이지 검색 |
 | PCB 선택/적층 적용 | 프로젝트 소유 출처와 사용자 수정값, Dk/Df 독립 선택, 업체별 초안/층/급전 대응, wxWidgets 검색/단면/변경 미리보기, 원자 적용/undo. 기존 직접 입력 유지 | 업체 주문/실측 조건 확정. 초안 저장은 제조/RF 승인과 구분 |
-| 적층 물성 제안 | 제조업체 적층의 같은 출처/원문 층에 대응하는 두께/Dk/Df 제안, 페이지별 GUI 검토와 명시적 수용, 공개값/미정/충돌/근사 필요 구분 | 제공되지 않은 Df/완성 동박/적용 대역 유지. 다층 전체 원문 채택 시 기존 근거 예산 한계 |
+| 적층 물성 제안 | 제조업체 적층의 같은 출처/원문 층에 대응하는 두께/Dk/Df 제안, 페이지별 GUI 검토와 명시적 수용, 공개값/미정/충돌/근사 필요 구분 | 제공되지 않은 Df/완성 동박/적용 대역 유지. 823개를 포함한 전체 3409개 후보의 용량 제한은 해소. 더 큰 제품 장면의 별도 계측 필요 |
 | 유전체 손실 모델 | 기존 합산 모델 보존, 명시적 총 Df 모델 추가. 독립 전도도 미정/비소비 보존과 중심 주파수 kappa 환산, 실제 native 양성 대조군 통과 | 광대역 분산/방향별 모델, 실제 시료 물성 및 모델 오차 검증 |
-| 카탈로그 PCB 통합 | JLC0206의 CAD/STEP/미정 RF 입력 차단 기록 유지. 별도 RO4350B 탐색 모델에서 같은 snapshot의 CAD/STEP/openEMS/재후처리/결과 재열기 통과 | 실제 제작 적층/동박/급전 확인, RO4350B 모델의 격자/경계 수렴과 제조/측정 검증 |
+| 카탈로그 PCB 통합 | JLC0206의 CAD/STEP/미정 RF 입력 차단 기록 유지. 별도 RO4350B 탐색 모델에서 같은 snapshot의 CAD/STEP/openEMS/재후처리/결과 재열기 통과 | 실제 제작 적층/동박/급전 확인, RO4350B의 복소 S 변화는 충족했으나 내부 공진 비교와 전체 수렴은 미확립. 제조/측정 검증 필요 |
 
 서비스는 rfad.api/2.0, workspace profile은 rfad.projects/0.2, 새 문서는 rfad.project/0.2다. 세부 계약은 [저장](project_persistence.md), [설계 데이터](design_data.md), [선택 속성](editor_contract.md), [2D 표시/편집](canvas_contract.md), [CAD/STEP](cad_contract.md), [worker 실행](worker_integration.md), [기초 계약](bootstrap_contract.md)을 따른다. 전체 API나 R0/R1 완료를 주장하지 않는다.
 

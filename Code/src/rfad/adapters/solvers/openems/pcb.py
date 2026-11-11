@@ -17,6 +17,8 @@ from .native import (
     descriptor, file_identity, require, write_json,
 )
 from .pcb_mesh import audit_native_mesh
+from .pcb_ports import spectra
+from rfad.application.pcb_radiation import raw_names
 
 
 def prepare(stage, plan, runtime):
@@ -79,6 +81,10 @@ def prepare(stage, plan, runtime):
     connectivity = audit_native_mesh(csx, case, lines)
     port = case["port"]
     solver.AddLumpedPort(1, port["resistance_ohm"], port["start_mm"], port["stop_mm"], port["axis"], excite=1, priority=10)
+    if "radiation_recording" in case:
+        from .pcb_radiation import create_box
+
+        create_box(csx, case["radiation_recording"])
     xml = output / "pcb.xml"
     solver.Write2XML(str(xml))
     observed = {axis: [float(value) for value in grid.GetLines(axis)] for axis in "xyz"}
@@ -104,6 +110,10 @@ def prepare(stage, plan, runtime):
     preparation = {"schema": "rfad.preparation-artifact/0.1", "analysis_plan_id": plan["plan_id"], "analysis_plan_hash": canonical_hash(plan),
                    "profile": PROFILE, "files": files, "mesh_statistics": mesh, "normalization": normalization,
                    "consumption_report": consumption, "runtime_identity": runtime}
+    if "radiation_recording" in case:
+        preparation["radiation_recording"] = case["radiation_recording"]
+        write_json(output / "radiation_recording.json", case["radiation_recording"])
+        files.append(descriptor(stage, output / "radiation_recording.json", "radiation_recording"))
     validate_preparation(plan, preparation)
     write_json(output / "preparation.json", preparation)
     return preparation, files + [descriptor(stage, output / "preparation.json", "preparation_artifact")]
@@ -144,7 +154,7 @@ def solve(stage, request, inputs, runtime):
     require(any("libopenEMS" in f["path"] for f in actual), "실제 native 로딩을 확인하지 못했습니다.", "E_VERSION")
     stats, termination = statistics_and_termination(raw, request["analysis_plan"])
     require(stats["native_cells"] == prep["mesh_statistics"]["native_grid_points"], "실제 native cell 수가 준비 격자와 다릅니다.")
-    files = [descriptor(stage, raw / name, "raw/" + name) for name in RAW_NAMES]
+    files = [descriptor(stage, raw / name, "raw/" + name) for name in raw_names(request["analysis_plan"])]
     execution = {"command": command, "elapsed_seconds": time.monotonic() - started, "exit_code": child.returncode, "loaded_native_files": actual,
                  "statistics": stats, "termination": termination, "native_input_sha256": file_identity(raw / "pcb.xml")["sha256"]}
     manifest = {"schema": "rfad.openems-raw/0.1", "complete": True, "analysis_plan_id": request["analysis_plan"]["plan_id"],
@@ -160,15 +170,7 @@ def normalize_probes(raw, plan):
 
     frequency = plan["case"]["frequency_hz"]
     frequencies = np.linspace(frequency["start"], frequency["stop"], frequency["count"])
-    spectra = {}
-    for name in RAW_NAMES[:2]:
-        data = np.loadtxt(raw / name, comments=("#", "%"))
-        require(data.ndim == 2 and data.shape[0] >= 3 and data.shape[1] >= 2 and np.all(np.isfinite(data)), "포트 원시 데이터가 불완전합니다.", "E_MISSING_ARTIFACT")
-        times, values = data[:, 0], data[:, 1]
-        steps = np.diff(times)
-        require(np.all(steps > 0) and np.allclose(steps, steps[0], rtol=5e-4, atol=0), "포트 시간축이 균일하지 않습니다.")
-        spectra[name] = np.asarray([2 * steps[0] * np.sum(values * np.exp(-1j * 2 * np.pi * f * times)) for f in frequencies])
-    voltage, current = spectra["port_ut_1"], spectra["port_it_1"]
+    voltage, current = spectra(raw, frequencies)
     incident = 0.5 * (voltage + plan["case"]["port"]["resistance_ohm"] * current)
     require(np.max(np.abs(incident)) > 1e-18 and np.all(np.abs(incident) > np.max(np.abs(incident)) * 1e-4)
             and np.all(np.abs(current) > 1e-24), "포트 여기 또는 전류가 너무 작아 정규화할 수 없습니다.")
@@ -189,6 +191,7 @@ def postprocess(stage, request, inputs, runtime, manifest=None):
     prep = _check_preparation(request, inputs)
     validate_preparation(request["analysis_plan"], prep)
     files = []
+    names = raw_names(request["analysis_plan"])
     raw = stage / "output/raw"
     if manifest is None:
         require("raw_manifest" in inputs, "후처리할 원시 manifest가 없습니다.", "E_MISSING_ARTIFACT")
@@ -196,7 +199,7 @@ def postprocess(stage, request, inputs, runtime, manifest=None):
         require(manifest.get("complete") is True and manifest.get("schema") == "rfad.openems-raw/0.1", "원시 결과가 완료 상태가 아닙니다.", "E_MISSING_ARTIFACT")
         require(manifest["analysis_plan_hash"] == canonical_hash(request["analysis_plan"]) and manifest["prepared_plan_hash"] == canonical_hash(request["prepared_plan"]), "원시 결과의 계획 해시가 다릅니다.", "E_HASH")
         records = manifest.get("files", [])
-        require(len(records) == len(RAW_NAMES) and {f["role"] for f in records} == {"raw/" + name for name in RAW_NAMES}, "원시 결과의 필수 파일이 누락 또는 중복되었습니다.", "E_MISSING_ARTIFACT")
+        require(len(records) == len(names) and {f["role"] for f in records} == {"raw/" + name for name in names}, "원시 결과의 필수 파일이 누락 또는 중복되었습니다.", "E_MISSING_ARTIFACT")
         raw.mkdir()
         for record in records:
             role = record["role"]
@@ -204,7 +207,7 @@ def postprocess(stage, request, inputs, runtime, manifest=None):
             identity = file_identity(inputs[role])
             require(all(identity[key] == record[key] for key in identity), "원시 결과의 바이트 봉인이 다릅니다.", "E_HASH")
             shutil.copyfile(inputs[role], raw / role.split("/")[1])
-        files = [descriptor(stage, raw / name, "raw/" + name) for name in RAW_NAMES]
+        files = [descriptor(stage, raw / name, "raw/" + name) for name in names]
         write_json(stage / "output/raw_manifest.json", manifest)
         files.append(descriptor(stage, stage / "output/raw_manifest.json", "raw_manifest"))
     require(file_identity(raw / "pcb.xml") == file_identity(inputs["native_input"]), "원시 해석의 XML이 준비 입력과 다릅니다.", "E_HASH")
@@ -217,6 +220,11 @@ def postprocess(stage, request, inputs, runtime, manifest=None):
               "samples": samples, "assessment": {"status": "computed_unvalidated", "physics_validated": False, "converged": True, "finite_samples": True},
               "termination": termination, "native_statistics": stats, "mesh_statistics": prep["mesh_statistics"], "normalization": prep["normalization"],
               "provenance": provenance, "raw_manifest": manifest}
+    if "radiation_recording" in request["analysis_plan"]["case"]:
+        from .pcb_radiation import postprocess as postprocess_radiation
+
+        result["radiation_summary"], radiation_files = postprocess_radiation(stage, request["analysis_plan"], raw)
+        files.extend(radiation_files)
     validate_result(request["analysis_plan"], result, request["prepared_plan"])
     write_json(stage / "output/normalized.json", result)
     write_json(stage / "output/provenance.json", provenance)

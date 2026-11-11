@@ -8,7 +8,7 @@
 
 도파관 profile은 설계 형상/매개변수/재료/포트가 있는 프로젝트를 이 참조 형상으로 조용히 대체하지 않고 접수를 거절한다. 별도의 PCB profile은 사각/원형 기판, 선/원호, 구멍을 가진 접지 polygon, 원형/회전 사각 pad, 중공 도금 관통 PTH via와 명시적 물성을 소비한다. 단일 lumped 포트는 동일 sheet 면의 x/y gap 또는 서로 다른 sheet 사이 z gap을 사용하며 S11/VSWR/입력 임피던스를 계산한다. IFA의 접지/단락부/방사체가 같은 net인 경우도 실제 형상과 열린 gap을 검사한다. 도체/급전의 상세 의미는 [도체와 IFA 확장](copper_features.md)을 따른다.
 
-실행 가능한 IFA 도체 모델과 실물 검증은 구분한다. 실제 SMA launch, 정합 부품/마스크/케이블과 측정 기준면은 아직 완성하지 않았으며 정식 IFA 격자/경계/시간 수렴과 실측 대조도 후속이다. NF2FF, 이득/효율/절대 전력은 현재 결과에 포함하지 않는다. 진공과 PEC는 도파관 사례에서 명시한 조건이며 미정 사용자 물성의 기본값이 아니다.
+실행 가능한 IFA 도체 모델과 실물 검증은 구분한다. 실제 SMA launch, 정합 부품/마스크/케이블과 측정 기준면은 아직 완성하지 않았으며 정식 IFA 격자/경계/시간 수렴과 실측 대조도 후속이다. 선택적 NF2FF와 지향성/이득/효율 계산은 [방사 계산 계약](pcb_radiation.md)을 따른다. 절대 출력 전력과 실측 정확도는 미정이다. 진공과 PEC는 도파관 사례에서 명시한 조건이며 미정 사용자 물성의 기본값이 아니다.
 
 ## 서비스 흐름
 
@@ -24,8 +24,9 @@
 | result.open | artifact_id, 선택적 selection: all/normalized/raw | 작은 metadata와 파일 참조. 계산을 시작하지 않음 |
 | solver.latest | 빈 input | 최근 완료 해석 참조. 실패/취소 결과로 대체하지 않음 |
 | solver.samples | artifact_id | 최대 201점의 주파수/S11 dB/VSWR/복소 임피던스 표시 DTO와 원본 SnapshotRef |
+| solver.radiation | artifact_id, 선택적 frequency_index/theta_offset/theta_limit | 봉인된 NF2FF의 최대 5개 theta 행과 지표. 128 KiB 이하의 읽기 전용 페이지 |
 
-plan/prepare/submit/result.open/solver.latest/solver.samples의 context에는 project_id를 지정한다. analysis_profile은 위 두 profile 중 하나이며 runtime_profile은 공통 `openems-wsl-reference/0.1`이다. timeout_seconds는 0 초 초과 300 초 이하이고 검증 CLI는 120 초를 사용한다. latest/samples는 `rfad.solver-view/0.1` 개발 확장이며 새 정식 API 번호를 만들지 않는다. 조회는 solver 환경 없이 가능하고 계산을 시작하지 않는다.
+plan/prepare/submit/result.open/solver.latest/solver.samples/solver.radiation의 context에는 project_id를 지정한다. analysis_profile은 위 두 profile 중 하나이며 runtime_profile은 공통 `openems-wsl-reference/0.1`이다. timeout_seconds는 0 초 초과 300 초 이하이고 검증 CLI는 120 초를 사용한다. latest/samples는 `rfad.solver-view/0.1` 개발 확장이며 새 정식 API 번호를 만들지 않는다. 조회는 solver 환경 없이 가능하고 계산을 시작하지 않는다.
 
 execution_mode는 `solve_and_postprocess` 또는 `postprocess_only`다. 후처리 전용에는 동일한 PreparedPlan으로 완료된 `raw_result_id`를 추가한다. 원시 파일/manifest가 없거나 봉인이 다르면 실패한다. solver를 자동으로 다시 실행하지 않는다. 변환 규약은 이 profile 버전에 고정하며 임의 conversion profile은 지원하지 않는다.
 
@@ -39,7 +40,7 @@ PCB의 polygon은 구멍을 유지하는 면 분할로 전달한다. 동박은 �
 
 native 준비에서는 실제 CSXCAD 재료 우선순위를 Yee 전기 edge 중심에서 평가해 도체/패드/비아의 소실 또는 접속 변화와 급전 gap 침범을 검사한다. `yee_connectivity_checked=true`는 이 격자 표현 검사이고 `operator_coefficients_checked=false`를 유지한다. solver의 최종 계수, 전류 연속성 수렴이나 RF 정확도를 독립 검증했다는 뜻은 아니다.
 
-analysis는 준비 단계의 동일 XML 바이트를 native openEMS CLI에 직접 전달한다. 모델을 다시 생성하지 않는다. 종료 후 도파관은 4개, PCB는 2개 시간 probe를 보존하고 공통으로 2개 native 통계, native.log, 입력 XML과 raw manifest를 보존한다. postprocess_only는 이 원시 파일을 검증하고 DFT만 다시 계산한다.
+analysis는 준비 단계의 동일 XML 바이트를 native openEMS CLI에 직접 전달한다. 모델을 다시 생성하지 않는다. 종료 후 도파관은 4개, PCB는 2개 시간 probe를 보존하고 공통으로 2개 native 통계, native.log, 입력 XML과 raw manifest를 보존한다. postprocess_only는 이 원시 파일을 검증하고 DFT를 다시 계산한다. 방사 옵션이 있으면 12개 E/H 기록을 함께 검증하고 NF2FF도 다시 계산한다. FDTD는 시작하지 않는다.
 
 정규화는 `exp(-j*2*pi*f*t)`, `2*dt*sum(...)` pulse Fourier 규약을 사용하며 RMS 전력으로 변환하지 않는다. 도파관에서는 S11/S21과 U/I를 구하고 기준 임피던스로 주파수별 진공 TE10 모드 임피던스를 사용한다. 한 포트만 여기하므로 완전한 2-port S 행렬을 계산했다고 표시하지 않는다. 자세한 참조 해석식/판정 기준은 [참조 검사](openems_reference.md)를 따른다. PCB에서는 사용자가 명시한 실수 lumped 저항을 기준으로 S11/VSWR와 U/I를 계산한다. 물리 정확도 판정은 `computed_unvalidated`다.
 

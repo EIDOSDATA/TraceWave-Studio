@@ -1,5 +1,6 @@
 /** @file @brief 주 창의 solver 책임을 구현한다. */
 #include "studio_internal.h"
+#include "radiation_dialog.h"
 
 /** @brief 해석 작업 상태와 결과 그래프를 기존 설계 탭과 분리하여 구성한다. */
 void StudioFrame::BuildSolverInterface()
@@ -9,14 +10,17 @@ void StudioFrame::BuildSolverInterface()
     auto* tools = new wxBoxSizer(wxHORIZONTAL);
     AddTool(panel, tools, IdRunSolver, "설정 및 해석 실행");
     AddTool(panel, tools, IdCancelSolver, "해석 취소");
+    m_recordRadiation = new wxCheckBox(panel, wxID_ANY, Display("NF2FF 기록"));
+    tools->Add(m_recordRadiation, 0, wxALL | wxALIGN_CENTER_VERTICAL, 4);
+    AddTool(panel, tools, IdRadiation, "방사 패턴 조회");
+    layout->Add(tools, 0, wxEXPAND | wxALL, 4);
     m_solverMetric = new wxChoice(panel, wxID_ANY);
     for (const auto* name : {"S11 (dB)", "VSWR", "Z (ohm): Re / Im"})
     {
         m_solverMetric->Append(name);
     }
     m_solverMetric->SetSelection(0);
-    tools->Add(m_solverMetric, 0, wxALL | wxALIGN_CENTER_VERTICAL, 4);
-    layout->Add(tools, 0, wxEXPAND | wxALL, 4);
+    layout->Add(m_solverMetric, 0, wxLEFT | wxRIGHT | wxBOTTOM, 8);
     m_solverStatus = new wxStaticText(panel, wxID_ANY, Display("해석 환경 연결을 확인하고 있습니다."));
     layout->Add(m_solverStatus, 0, wxEXPAND | wxALL, 6);
     m_solverViewState =
@@ -47,6 +51,10 @@ void StudioFrame::BindSolver()
             CancelSolver();
         },
         IdCancelSolver);
+    Bind(wxEVT_MENU, [this](wxCommandEvent&)
+    {
+        OpenRadiation();
+    }, IdRadiation);
     m_solverMetric->Bind(wxEVT_CHOICE,
                          [this](wxCommandEvent& event)
                          {
@@ -94,7 +102,52 @@ void StudioFrame::ConfigureSolver()
                             {"curve_tolerance_mm", values.at("curve_tolerance_mm")},
                             {"max_timesteps", static_cast<int>(values.at("max_timesteps").get<double>())},
                             {"end_criterion", values.at("end_criterion")}};
+    if (m_recordRadiation->GetValue())
+    {
+        Json radiation = m_radiationDraft;
+        if (!AskNumbers("방사 기록 조건 / 계산 결과이며 제작 및 측정 검증 전",
+                        {{"frequency_hz", "방사 계산 주파수 (Hz)", (values.at("start_hz").get<double>() + values.at("stop_hz").get<double>()) / 2},
+                         {"theta_step_deg", "theta 간격 (5/10/15/30 deg)", 15},
+                         {"phi_step_deg", "phi 간격 (5/10/15/30 deg)", 15}}, radiation))
+        {
+            return;
+        }
+        const std::vector<double> allowed = {5, 10, 15, 30};
+        if (radiation.at("frequency_hz").get<double>() < values.at("start_hz").get<double>() ||
+            radiation.at("frequency_hz").get<double>() > values.at("stop_hz").get<double>() ||
+            std::find(allowed.begin(), allowed.end(), radiation.at("theta_step_deg").get<double>()) == allowed.end() ||
+            std::find(allowed.begin(), allowed.end(), radiation.at("phi_step_deg").get<double>()) == allowed.end())
+        {
+            wxMessageBox(Display("방사 주파수는 해석 대역 안에, 각도 간격은 5/10/15/30 중에서 지정하세요."), Display("방사 조건"), wxOK | wxICON_WARNING, this);
+            return;
+        }
+        m_radiationDraft = radiation;
+        m_solverSettings["radiation"] = Json{{"frequency_hz", Json::array({radiation.at("frequency_hz")})},
+                                             {"theta_step_deg", static_cast<int>(radiation.at("theta_step_deg").get<double>())},
+                                             {"phi_step_deg", static_cast<int>(radiation.at("phi_step_deg").get<double>())}};
+    }
     StartSolver();
+}
+
+void StudioFrame::OpenRadiation()
+{
+    if (m_solverSamples.empty() || !m_solverSamples.at("metadata").contains("radiation_summary"))
+    {
+        return;
+    }
+    const std::string project = m_project;
+    auto* dialog = new RadiationDialog(this, m_solverSamples,
+        m_solverSamples.at("snapshot").at("revision_id") != m_revision,
+        [this, project](const Json& input, std::function<void(const Json&)> completed, std::function<void(const Json&)> rejected)
+        {
+            if (!m_connected || project != m_project || m_closing)
+            {
+                rejected(Json{{"message", "프로젝트 연결이 바뀌었습니다. 화면을 다시 여십시오."}});
+                return;
+            }
+            Send("solver.radiation", input, false, Context(), std::move(completed), std::move(rejected));
+        });
+    dialog->Show();
 }
 
 void StudioFrame::SolverStatus(const std::string& state, const std::string& message)

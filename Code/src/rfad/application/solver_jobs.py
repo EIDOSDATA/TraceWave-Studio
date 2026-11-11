@@ -13,6 +13,7 @@ from rfad.application.solver_requests import PCB_PROFILE, SOLVER_METHODS, valida
 from rfad.application.solver_runtime import SolverRuntime, stage_solver_job
 from rfad.application.solver_artifacts import read_solver_result, seal_solver_outputs, check_prepared_outputs, check_solver_result
 from rfad.application.solver_queries import open_solver_result, latest_solver_result, solver_samples
+from rfad.application.radiation_queries import radiation_chart
 from rfad.domain.errors import ProjectError
 
 
@@ -266,6 +267,9 @@ class SolverCoordinator:
                 result_record["raw_files"] = captured["raw_files"]
             operation = {"artifact_id": result_id, "normalized_result": normalized["artifact"], "assessment": result.get("assessment", {}),
                          "snapshot": deepcopy(captured["analysis_plan"]["snapshot"]), "profile": captured["analysis_plan"]["analysis_profile"]}
+            if "radiation_summary" in result:
+                result_record["metadata"]["radiation_summary"] = deepcopy(result["radiation_summary"])
+                operation["radiation_summary"] = deepcopy(result["radiation_summary"])
         def publish(state):
             active = state["jobs"][job["job_id"]]
             if active["solver"]["nonce"] != captured["nonce"]:
@@ -352,6 +356,10 @@ class SolverCoordinator:
     def samples(self, params):
         """! @brief 봉인 표본을 제한된 화면 DTO로 투영한다."""
         return solver_samples(self.service, params)
+
+    def radiation(self, params):
+        """! @brief 계산을 시작하지 않고 봉인된 방사 페이지를 조회한다."""
+        return radiation_chart(self.service, params)
 
     def _loop(self):
         """! @brief 새로운 접수에서만 깨어나며 조정기 실패는 숨기지 않는다."""

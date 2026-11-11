@@ -1,5 +1,6 @@
 /** @file @brief 주 창의 smoke_workers 책임을 구현한다. */
 #include "studio_internal.h"
+#include "radiation_dialog.h"
 
 /** @brief 실제 GUI 명령과 서비스, CAD 프로세스 및 renderer의 연결을 검증한다. */
 void StudioSmokeDriver::CadSmokeTick()
@@ -200,6 +201,40 @@ void StudioSmokeDriver::SolverSmokeTick()
     else if (m_solverSmokeStage == 3 && !m_frame.m_solverWorkflow.Active() && m_frame.m_solverState == "completed" &&
              m_frame.m_solverChart->RenderedFrames() > 0)
     {
+        if (m_frame.m_solverSettings.contains("radiation") && !m_radiationChecked)
+        {
+            if (!m_radiationDialog)
+            {
+                CanvasAssert(m_frame.m_tools.at(IdRadiation)->IsEnabled(), "Radiation viewer unavailable.");
+                m_frame.OpenRadiation();
+                for (auto* child : m_frame.GetChildren())
+                {
+                    auto* dialog = dynamic_cast<RadiationDialog*>(child);
+                    if (dialog != nullptr)
+                    {
+                        m_radiationDialog = dialog;
+                    }
+                }
+                CanvasAssert(m_radiationDialog.get() != nullptr, "Radiation viewer did not open.");
+                return;
+            }
+            CanvasAssert(m_radiationDialog->m_details->IsEmpty() || m_radiationDialog->m_pattern.Complete(),
+                         "Radiation viewer showed partial data.");
+            CanvasAssert(!m_radiationDialog->m_status->GetLabel().Contains(Display("실패")), "Radiation query failed.");
+            if (!m_radiationDialog->m_pattern.Complete() || m_radiationDialog->m_renderedFrames == 0)
+            {
+                return;
+            }
+            m_radiationDialog->m_phi->SetSelection(1);
+            m_radiationDialog->m_metric->SetSelection(3);
+            m_radiationDialog->m_chart->Refresh(false);
+            const auto frames = m_radiationDialog->m_renderedFrames;
+            m_radiationDialog->m_chart->Update();
+            CanvasAssert(m_radiationDialog->m_renderedFrames > frames, "Radiation phi/metric view did not repaint.");
+            m_solverChecks.push_back("radiation_paged_view_and_phi_metric_selection");
+            m_radiationChecked = true;
+            m_radiationDialog->Destroy();
+        }
         CanvasAssert(m_frame.m_solverSamples.at("snapshot").at("revision_id") != m_frame.m_revision &&
                          m_frame.m_editor.at("saved_revision") == m_frame.m_revision,
                      "Solver snapshot changed or concurrent save failed.");

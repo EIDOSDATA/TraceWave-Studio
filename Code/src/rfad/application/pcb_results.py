@@ -9,14 +9,20 @@ from rfad.application.pcb_mesh import mesh_lines
 RAW_NAMES = ("port_ut_1", "port_it_1", "openEMS_stats.txt", "openEMS_run_stats.txt", "native.log", "pcb.xml")
 
 
-def normalization_contract(port):
+def normalization_contract(port, *, radiation=False):
     """! @brief 명시적 lumped 저항과 pulse Fourier 비율의 결과 규약을 반환한다."""
-    return {"schema": "rfad.normalization.pcb-single-port/0.1", "fourier_convention": "exp(-j*2*pi*f*t)",
+    result = {"schema": "rfad.normalization.pcb-single-port/0.1", "fourier_convention": "exp(-j*2*pi*f*t)",
             "native_fourier_scale": "2*dt*sum(value*exp(-j*2*pi*f*t))", "native_voltage_unit": "V*s", "native_current_unit": "A*s",
             "wave_definition": "voltage_wave_real_lumped_resistance", "reference_impedance_ohm": port["resistance_ohm"],
             "reference_plane": port["reference_plane"], "reference_plane_shift_mm": 0.0,
             "start_terminal": "reference_geometry_id", "stop_terminal": "positive_geometry_id", "polarity": 1,
             "absolute_power_gain_efficiency": "not_evaluated", "vswr_invalid_when_reflection_ge_one": True}
+
+    if radiation:
+        result.update(absolute_power_gain_efficiency="absolute_power_not_evaluated_gain_efficiency_from_nf2ff_ratios",
+                      radiation_power_unit="W*s^2", radiation_electric_field_unit="V*s/m",
+                      radiation_radius_m=1.0, radiation_center_unit="m")
+    return result
 
 
 def read_statistics_values(text, max_timesteps):
@@ -46,6 +52,8 @@ def check_termination(log, iterations, settings):
 
 def validate_preparation(plan, preparation):
     """! @brief 실제 준비 통계/소비/정규화가 계획의 결정적 투영과 같은지 확인한다."""
+    if preparation.get("radiation_recording") != plan["case"].get("radiation_recording"):
+        fail("E_HASH", "NF2FF 준비 기록이 계획과 다릅니다.")
     lines = mesh_lines(plan["case"])
     mesh = preparation["mesh_statistics"]
     consumption = preparation["consumption_report"]
@@ -121,6 +129,21 @@ def validate_result(plan, result, prepared_plan=None):
                     fail("E_HASH", "정의되지 않은 VSWR/dB를 유한한 합격값으로 대체할 수 없습니다.")
             elif type(actual) not in (int, float) or not math.isclose(expected, actual, rel_tol=1e-10, abs_tol=1e-12):
                 fail("E_HASH", "복소 결과와 표시용 VSWR/dB가 다릅니다.")
+    validate_radiation_summary(plan, result)
     expected_assessment = {"status": "computed_unvalidated", "physics_validated": False, "converged": True, "finite_samples": True}
     if result.get("assessment") != expected_assessment or result.get("termination", {}).get("status") != "end_criterion_reached":
         fail("E_SOLVER", "PCB 계산 완료와 물리 검증 합격을 구분해야 합니다.")
+
+
+def validate_radiation_summary(plan, result):
+    """! @brief 방사 요청과 결과 요약의 존재/주파수/단위가 대응하는지 확인한다."""
+    recording = plan["case"].get("radiation_recording")
+    summary = result.get("radiation_summary")
+    if recording is None:
+        if summary is not None:
+            fail("E_HASH", "방사를 요청하지 않은 결과에 방사 요약이 있습니다.")
+        return
+    if (type(summary) is not dict or summary.get("frequency_hz") != recording["frequency_hz"]
+            or summary.get("physics_validated") is not False or summary.get("absolute_power_w") is not None
+            or summary.get("power_unit") != "W*s^2"):
+        fail("E_HASH", "방사 결과 요약이 요청한 대역/정규화와 다릅니다.")

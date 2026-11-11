@@ -84,6 +84,10 @@ void StudioFrame::UpdateControls()
         {
             enabled = m_connected && m_solverWorkflow.CanRequestCancel();
         }
+        else if (item.first == IdRadiation)
+        {
+            enabled = opened && !m_solverSamples.empty() && m_solverSamples.at("metadata").contains("radiation_summary");
+        }
         else if (item.first == IdFit3D || item.first == IdTop3D || item.first == IdIso3D)
         {
             enabled = m_modelView->HasMesh();
@@ -91,11 +95,12 @@ void StudioFrame::UpdateControls()
         item.second->Enable(enabled);
     }
     for (const int id : {IdBoard, IdCircularBoard, IdLayer, IdDielectric, IdCoordinates, IdDeleteShape, IdValidate,
-                         IdExportStep, IdBuild3D, IdCancelCad, IdOutputFolder, IdRunSolver, IdCancelSolver})
+                         IdExportStep, IdBuild3D, IdCancelCad, IdOutputFolder, IdRunSolver, IdCancelSolver, IdRadiation})
     {
         GetMenuBar()->Enable(id, m_tools.at(id)->IsEnabled());
     }
     m_steps->Enable(opened);
+    m_recordRadiation->Enable(opened && m_solverConfigured && !m_solverWorkflow.Active() && !m_solverRestoring);
     m_layerChoice->Enable(drawing);
     m_width->Enable(drawing);
     m_canvas->SetEditingEnabled(opened && synchronized);

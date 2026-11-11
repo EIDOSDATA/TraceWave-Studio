@@ -55,11 +55,16 @@ def check_prepared_outputs(journal, captured, preparation, files):
     """! @brief 준비 완료 선언 전에 소비 내역과 필수 native 파일의 연결을 검사한다."""
     roles = {f["role"]: f for f in files}
     required = {"native_input", "mesh_statistics", "consumption_report", "normalization", "runtime_provenance", "preparation_artifact"}
+    radiation = "radiation_recording" in captured["analysis_plan"]["case"]
+    if radiation:
+        required.add("radiation_recording")
     if roles.keys() != required or preparation.get("schema") != "rfad.preparation-artifact/0.1" or preparation.get("profile") != captured["analysis_plan"]["analysis_profile"]:
         raise ProjectError("E_HASH", "준비 산출물의 필수 역할 또는 profile이 다릅니다.")
     descriptions = [{k: v for k, v in f.items() if k != "artifact"} for f in files if f["role"] != "preparation_artifact"]
     if preparation.get("files") != descriptions:
         raise ProjectError("E_HASH", "준비 manifest와 실제 파일 목록이 다릅니다.")
+    if radiation and json.loads(journal.read_artifact(roles["radiation_recording"]["artifact"])) != preparation.get("radiation_recording"):
+        raise ProjectError("E_HASH", "NF2FF 기록 상자가 준비 manifest와 다릅니다.")
     for role, key in (("mesh_statistics", "mesh_statistics"), ("consumption_report", "consumption_report"), ("normalization", "normalization"), ("runtime_provenance", "runtime_identity")):
         if json.loads(journal.read_artifact(roles[role]["artifact"])) != preparation.get(key):
             raise ProjectError("E_HASH", "준비 manifest와 소비 보고 내용이 다릅니다.")
@@ -103,13 +108,16 @@ def check_solver_result(journal, job, result, files):
     pcb = captured["analysis_plan"]["analysis_profile"] == PCB_PROFILE
     roles = {f["role"]: f for f in files}
     if pcb:
-        from rfad.application.pcb_solver import RAW_NAMES, read_statistics_values, check_termination as check_pcb_termination, validate_result
+        from rfad.application.pcb_solver import read_statistics_values, check_termination as check_pcb_termination, validate_result
+        from rfad.application.pcb_radiation import raw_names as pcb_raw_names
 
-        raw_names = RAW_NAMES
+        raw_names = pcb_raw_names(captured["analysis_plan"])
     else:
         raw_names = ("port_ut_1", "port_it_1", "port_ut_2", "port_it_2", "openEMS_stats.txt", "openEMS_run_stats.txt", "native.log", "waveguide.xml")
     raw_roles = {"raw/" + name for name in raw_names}
-    if roles.keys() != raw_roles | {"raw_manifest", "normalized_result", "provenance"}:
+    radiation = pcb and "radiation_recording" in captured["analysis_plan"]["case"]
+    radiation_roles = {"radiation_result", "radiation_native"} if radiation else set()
+    if roles.keys() != raw_roles | {"raw_manifest", "normalized_result", "provenance"} | radiation_roles:
         raise ProjectError("E_MISSING_ARTIFACT", "해석 결과의 필수 원시 파일이 없습니다.")
     manifest = json.loads(journal.read_artifact(roles["raw_manifest"]["artifact"]))
     provenance = json.loads(journal.read_artifact(roles["provenance"]["artifact"]))
@@ -164,6 +172,13 @@ def check_solver_result(journal, job, result, files):
         raise ProjectError("E_HASH", "결과 주파수 축이 계획과 다릅니다.")
     if pcb:
         validate_result(captured["analysis_plan"], result, captured["prepared_plan"])
+        if radiation:
+            from rfad.application.pcb_radiation import validate_result as validate_radiation, summary
+
+            field = json.loads(journal.read_artifact(roles["radiation_result"]["artifact"]))
+            validate_radiation(captured["analysis_plan"], field)
+            if result["radiation_summary"] != summary(field):
+                raise ProjectError("E_HASH", "방사 요약과 봉인 필드 산출물이 다릅니다.")
         return
     assessment = assess_samples(samples)
     observed_assessment = result.get("assessment", {})

@@ -31,7 +31,7 @@ flowchart TD
     POST --> STORE
 ```
 
-위 그림은 승인된 목표 구조다. 현재 환경 진단, 단위/미정값, 제한 표현식과 의존 그래프, 기판/적층/재료/선/원호/net/단일 포트 데이터, 목적별 입력 검사, 프로젝트 명령/저장/불변 스냅샷을 구현했다. wxWidgets GUI에서 매개변수/표현식과 설계 속성을 편집하고 사각/원형 기판, 미정 도체층/유전체층, 선/원호, 재료/net/단일 포트를 생성한다. 중앙 2D 캔버스의 선택/이동/삭제도 같은 서비스 명령과 영속 undo/redo를 사용한다. GUI의 STEP 출력과 3D 갱신은 불변 스냅샷을 별도 호스트 CAD worker에 전달한다. Open CASCADE 고체와 AP242 STEP/B-rep를 생성하고 같은 고체에서 파생한 표시용 mesh를 wxGLCanvas로 표시한다. WSL2 guest supervisor와 openEMS 도파관 adapter를 연결해 불변 계획/준비 XML/실행/취소/원시 결과 저장 및 독립 후처리를 구현했다. 이어 사각/원형 PCB의 사용자 물성/선/원호/단일 급전 투영과 GUI 해석 실행/취소/S11/VSWR/임피던스 그래프를 연결했다. 접지 polygon/빈 영역, 원형/회전 패드, 중공 PTH와 IFA 급전선/단락부를 저장/GUI/CAD/해석에 연결했다. 실제 IFA 정확도와 NF2FF는 후속이다. [해석 worker 계약](docs/solver_contract.md)과 [도체/급전 확장](docs/copper_features.md)을 참고한다.
+위 그림은 승인된 목표 구조다. 현재 환경 진단, 단위/미정값, 제한 표현식과 의존 그래프, 기판/적층/재료/선/원호/net/단일 포트 데이터, 목적별 입력 검사, 프로젝트 명령/저장/불변 스냅샷을 구현했다. wxWidgets GUI에서 매개변수/표현식과 설계 속성을 편집하고 사각/원형 기판, 미정 도체층/유전체층, 선/원호, 재료/net/단일 포트를 생성한다. 중앙 2D 캔버스의 선택/이동/삭제도 같은 서비스 명령과 영속 undo/redo를 사용한다. GUI의 STEP 출력과 3D 갱신은 불변 스냅샷을 별도 호스트 CAD worker에 전달한다. Open CASCADE 고체와 AP242 STEP/B-rep를 생성하고 같은 고체에서 파생한 표시용 mesh를 wxGLCanvas로 표시한다. WSL2 guest supervisor와 openEMS 도파관 adapter를 연결해 불변 계획/준비 XML/실행/취소/원시 결과 저장 및 독립 후처리를 구현했다. 이어 사각/원형 PCB의 사용자 물성/선/원호/단일 급전 투영과 GUI 해석 실행/취소/S11/VSWR/임피던스 그래프를 연결했다. 접지 polygon/빈 영역, 원형/회전 패드, 중공 PTH와 IFA 급전선/단락부를 저장/GUI/CAD/해석에 연결했다. 선택적 NF2FF 기록/후처리와 방사 패턴 조회는 [방사 계산 계약](docs/pcb_radiation.md)을 따른다. 실제 IFA 정확도와 방사 수렴/실측 대조는 후속이다. [해석 worker 계약](docs/solver_contract.md)과 [도체/급전 확장](docs/copper_features.md)을 참고한다.
 
 속성 화면은 미적용 입력, 적용 후 저장 필요, 저장됨을 구분한다. 한글 속성 이름, 값과 단위의 같은 행 배치, 입력 방식별 표시, 상세 식별자 접기와 오류 필드 이동을 제공한다. 현재 구현과 승인된 최종 화면 방향의 구분은 [GUI의 UX 구현 방향](ui/wxwidgets/README.md#ux-구현-방향)을 따른다.
 
@@ -128,3 +128,5 @@ PYTHONPATH=src python3 -m rfad serve
 격자/경계/시간 종료 조건은 [IFA 수렴 연구](docs/ifa_convergence.md)의 별도 도구로 비교한다. 기판 내부 격자와 PML 물리 두께를 분리하고 동일 snapshot의 복소 S11/반사 최소점/임피던스 변화를 기록한다. 계산 완료, 수치 안정성, 목표 대역 정합과 실측 정확도는 별도 상태다. 기존 결과를 변경하지 않고 원본 artifact와 판정기 출처를 가진 비교 기록을 보존한다.
 
 제조업체 적층의 출처 용량 개선, 공유 근거 호환성, RO4350B 수렴 연구, NF2FF 참조, 성능 계측과 MCP 연결의 범위는 [용량 개선과 후속 검증](docs/capacity_and_followup.md)을 따른다. 실제 제작/실측, 대형 장면 프레임 예산과 사용자 PCB 방사 기능의 미완료 범위도 함께 기록한다.
+
+사용자 PCB의 선택적 NF2FF 기록/재후처리, 지향성/이득/효율, GUI 절단면 조회와 시험 범위는 [PCB 방사 계산](docs/pcb_radiation.md)에 정리했다. 제작 및 측정 물성의 미정 상태를 유지하며 계산 결과를 실물 성능 승인으로 취급하지 않는다.

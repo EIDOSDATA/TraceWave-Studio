@@ -271,16 +271,21 @@ def project_pcb(document, settings):
     lines = mesh_lines(case)
     if "mesh_policy" in settings:
         case["mesh_policy_report"] = policy_report(case, lines)
+    from rfad.application.pcb_radiation import recording
+
+    radiation = recording(case, lines)
+    if radiation is not None:
+        case["radiation_recording"] = radiation
     cells = math.prod(len(values) for values in lines.values())
     return {"case": case,
-            "normalization": normalization_contract(port),
+            "normalization": normalization_contract(port, radiation=radiation is not None),
             "model_report": {"scope": "user_pcb_single_port", "user_geometry_consumed": True, "user_materials_consumed": True,
                              "physical_validation_state": "not_validated", "omissions": omissions,
                              "approximations": ["outer copper collapsed to adjacent dielectric interface with finite-conductivity sheet model",
                                                 "dielectric tan_delta converted to constant conductivity at evaluation band center",
                                                 "analytic line/arc/pad converted to bounded-error polygons before Cartesian Yee discretization",
                                                 "PTH uses explicit finite-kappa hollow volume; RF skin depth loss accuracy is unvalidated"],
-                             "unsupported_observables": ["NF2FF", "gain", "efficiency", "absolute_power", "full_s_matrix"]},
+                             "unsupported_observables": ["absolute_power", "full_s_matrix"] if radiation is not None else ["NF2FF", "gain", "efficiency", "absolute_power", "full_s_matrix"]},
             "resource_estimate": {"kind": "initial_estimate_not_measured", "estimated_grid_points": cells,
                                   "estimated_memory_bytes": 128 * 1024 * 1024 + cells * 160, "max_wall_time_seconds": 300,
                                   "max_output_bytes": 128 * 1024 * 1024, "max_artifact_bytes": 64 * 1024 * 1024},

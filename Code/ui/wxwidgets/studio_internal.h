@@ -57,6 +57,7 @@ enum
     IdNewPort,
     IdRunSolver,
     IdCancelSolver,
+    IdRadiation,
     IdLayer,
     IdDielectric,
     IdExportStep,

@@ -78,6 +78,17 @@ class GuiSolverProcessTests(unittest.TestCase):
             self.assertTrue(result["solver_result"]["artifact_id"])
             self.assertTrue(list(workspace.rglob("normalized.json")))
 
+    @unittest.skipUnless(os.environ.get("RFAD_TEST_WSL") == "1", "실제 WSL 계산은 RFAD_TEST_WSL=1로 명시합니다.")
+    def test_radiation_pages_display_with_snapshot_and_restart(self):
+        """! @brief 실제 NF2FF 결과를 wx 화면에서 페이지로 읽고 phi/지표를 전환한다."""
+        settings = {**SETTINGS, "air_padding_mm": 8,
+                    "radiation": {"frequency_hz": [10e9], "theta_step_deg": 15, "phi_step_deg": 15}}
+        with TemporaryDirectory(prefix="TraceWave GUI NF2FF ") as temporary:
+            _, result = self.run_gui(Path(temporary), fixture_document(circle=True, arc=True), settings=settings)
+            self.assertIn("radiation_paged_view_and_phi_metric_selection", result["solver_checks"])
+            self.assertIn("restart_restores_result", result["solver_checks"])
+            self.assertFalse(result["solver_result"]["radiation_summary"]["physics_validated"])
+
 
 if __name__ == "__main__":
     unittest.main()

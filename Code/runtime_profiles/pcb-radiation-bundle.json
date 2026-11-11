@@ -1,0 +1,13 @@
+{
+  "path": ".local\\pcb-radiation\\TraceWave-Studio-internal-validation.zip",
+  "files": 387,
+  "bytes": 8613694,
+  "sha256": "a3ae98b20f650f4df0709ba7b105aa4987ad2fe683d2bc2344b9b842b2b8186f",
+  "status": "contents_verified",
+  "schema": "rfad.internal-bundle-verification/0.1",
+  "verified_at": "2026-11-11T09:43:04.798205+00:00",
+  "external_to_archive": true,
+  "turnkey_installer": false,
+  "physics_validated": false,
+  "pcb_radiation_verification_sha256": "0f7789a581b9efdb25325f22022e9a3ce5d637b985c7c8a117a8bb6a55e118c8"
+}
