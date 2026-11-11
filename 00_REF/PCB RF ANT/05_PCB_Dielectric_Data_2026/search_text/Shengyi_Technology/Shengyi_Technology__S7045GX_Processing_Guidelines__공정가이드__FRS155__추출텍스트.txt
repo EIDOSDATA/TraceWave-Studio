@@ -1,0 +1,333 @@
+PROCESSING GUIDELINES
+
+
+
+       Laminate: S7045GX
+       Prepreg: S7045GXB
+
+
+ Low CTE, Lower Mid-loss Material
+
+
+
+
+                           CN-PG-2506-02-S7045GX-S7045GXB
+   This processing guideline is based on the IPC-4101E standard and has been tailored according to the
+    actual characteristics of the product to optimize its application for SYTECH S7045GX/S7045GXB
+    materials.
+
+
+1. Storage condition
+1.1 Laminate
+
+1.1.1 Storage method
+
+   Store in original packaging on a flat platform or suitable rack. Avoid heavy stacking or other incorrect
+
+    storage method to prevent warpage.
+
+1.1.2 Storage condition
+
+   Store in a ventilated, dry, room-temperature environment. Avoid direct sunlight, rain, and corrosive gases
+
+    (Storage conditions directly impact material quality).
+
+   Double-sided boards stored under suitable conditions for ≤2 years and single-sided boards for ≤1 year
+
+    meet IPC-4101E performance requirements.
+
+1.1.3 Handling
+
+   Handle with clean gloves. Impact or sliding may damage copper foil. Naked hand contact may
+
+    contaminate surfaces. All above defects may bring bad effects during production.
+
+1.2 Prepreg
+
+1.2.1 Storage method
+
+   Store horizontally in original packaging. Avoid heavy stacking or other incorrect storage method to prevent
+
+    prepreg from being damaged.
+
+   After cutting, reseal leftover roll prepreg with plastic film and return to original packaging tray.
+
+1.2.2 Storage condition
+
+   All prepreg should be stored at either of below conditions with sealed package and without any influence
+
+    of UV light.
+
+   Condition 1:   3 months when stored at <23℃ and <50% RH.
+
+   Condition 2:   6 months when stored at <5℃.
+
+   Be careful of RH due to its obvious effect on prepreg quality. When packaging is open, it’s recommended
+
+    using up within 8 hours.
+
+1.2.3 Prepreg cutting
+
+   Cut by the professionals with clean gloves would be better which to avoid contamination of the surface,
+
+    also need to be carefully to operate which prevent wrinkles or creases.
+
+   Clean the stack-up table or cutting machine surface before cutting to avoid cross contamination of
+
+                                                                          CN-PG-2506-02-S7045GX-S7045GXB
+    different types of PP powder.
+
+1.2.4 Usage Notes
+
+   When brought out from cooling warehouse, prepreg should be stabilized to ambient temperature before
+
+    opening package, keep at least 8 hours is recommended, depending on specified store condition.
+
+   For panel form prepreg after cutting, all should be kept under condition 1 or 2 and used up ASAP. When
+
+    exceeding 3 days, it’s must re-inspect and insure quality before use.
+
+   Leftover or cut prepregs should be packed and sealed with vacuum foil pack and put it back in the above
+
+    storage condition 1 or 2.
+
+   For IQC inspection, prepreg should be finished all tests within 5 day from the date of acceptance according
+
+    to IPC-4101C specification.
+
+
+
+2. PWB Processing
+2.1 Panel cutting
+
+   Sawing and shearing method is recommended. Must be careful of stress damage caused by the roller
+
+    cutter during cutting, which may lead to potential delamination of the board edge.
+
+2.2 Thin core baking
+
+   Thin core baking depends on actual need. If bake after cutting, it’s recommended to rinse cutting panels
+
+    first, which is able to remove resin powder brought by cutting and avoid etching problem.
+
+   Recommended for baking condition: 150-175℃/3-5h, be sure to avoid contact directly with heater
+
+2.3 Brown Oxide
+
+   Brown oxide is recommend.
+
+   Bake after brown oxide: 120℃/1-2h, and lay-up within 4 hours after baking.
+
+   For multilayer board:
+
+         A: Bake before brown oxide: 120℃/3-5h.
+
+         B: Bake after brown oxide: 110-120℃/1.5-2h.
+
+   Baking stack height: ＜1 inch.
+
+2.4 Lay-up
+
+   Confirm prepreg direction of warp and fill at lay-up process. Avoid prepreg reversal or overturn in case of
+
+    multilayer board distortion after press.
+
+   The time from stacking the boards to entering the press should be controlled within 2 hours.
+
+   The overall time from the browning of the core board to start of pressing is controlled within 8 hours.
+
+   When there is a risk of moisture of absorption in the buffering material, it is recommended to dry it.
+
+   Due to the material properties, it is prone to static electricity. When stacking, special attention should be
+
+                                                                        CN-PG-2506-02-S7045GX-S7045GXB
+    paid to the adsorption of foreign objects on prepreg.
+
+   To ensure good alignment of expansion and contraction during board placement, it is recommended to
+
+    use rivets for fixation. When it is necessary to fix the fusion method, it is recommended to use
+
+    electromagnetic thermal fusion and carefully evaluate the optimal fusion effect parameters. Other fusion
+
+    methods require a rigorous and detailed evaluation of the fusion effect based on the PCB’s own conditions
+
+    to avoid layer deviation caused by poor fusion.
+2.5 Press process
+
+   Advised heat-up rate: 2-3℃/min (product temperature ranged 80℃-140℃).
+
+    Full pressure is recommended at 350-450 PSI (25-32kgf/cm2), specified value should be determined by
+
+     multilayer feature (lay-up construction and resin filled area). Apply full pressure when product temperature
+
+     100-130℃.For thick copper with a thickness of 3oz or more, advised heat-up rate: 3-4℃/min (product
+
+
+     temperature ranged 80℃-140℃), full pressure is recommended at 430-570 PSI(30-40kgf/cm2),              apply
+
+     full pressure when product temperature 80-100℃.
+
+    Curing condition: Product temperature 200-210℃, 100-130min.
+
+   Cooling rate<2℃/min.
+
+   If using a copper foil thermal press machine, please notify SYTECH in advance.
+
+   For HDI and N+N boards: To ensure better thickness uniformity, it is recommended to evaluate the method
+
+    of adding buffer paper to the middle layer of the Book.
+
+    Considering the high resin filling characteristics of this product, for stack-ups of >/=3oz thick copper and
+
+     buried copper structures, it is recommended to increase RC2% for the relevant PP on the basis of the
+
+     same thickness specification as ordinary mid-loss materials.
+
+    When taken singe side or dummy panel for multilayer, be sure to roughen the unclad surface before use
+
+     in case of poor bonding due to smooth surface. Etching from double sided laminates for that purpose is
+
+     an optimized measure.
+
+2.6 Drilling
+
+   New drill bit and 1 panel/stack (thick board) is recommended, to ensure good hole wall quality. In addition,
+
+    based on the ordinary FR-4 drilling parameters, it is recommended to reduce the falling speed by 10-20%
+
+    appropriately to test the optimal drilling parameters suitable for your company. The following drilling
+
+    parameters are for reference:
+
+
+                                                                        CN-PG-2506-02-S7045GX-S7045GXB
+                   Diameter             Speed        Infeed           RTR           Max hits
+
+
+                        (mm)            (krpm)       (ipm)            IPM              H
+
+
+                        0.20             97           56              300             500
+
+
+                        0.25             120          86              300             500
+
+
+                        0.30             95           70              500             500
+
+
+                        0.35             88           58              500             500
+
+
+                        0.40             88           62              600             500
+
+
+   When drilling dense holes or holes with a diameter less than 0.6mm, it is recommended to use LE
+
+    aluminum sheet for the cover plate aluminum sheet.
+
+   Suggest specifying a drilling rig with good performance (stable swing test, good suction force, etc., such
+
+    as Hitachi/Schmoll).
+
+   When the board thickness is greater than 3.0mm, it is recommended to use step-by-step drilling, pre
+
+    drilling, or butt drilling processes.
+
+2.7 Baking after drill
+
+   It is recommended to dry the plate after drilling: 180~190 ℃/3 Hour/rack. Note that the plate cannot
+
+    contact the heat source directly.
+
+2.8 Desmear
+
+   Due to the composition and structure of the material, it has good chemical resistance, and potassium
+
+    permanganate is difficult to bite the material. It is recommended to use Plasma+potassium permanganate
+
+    to remove drilling stains. The specific parameters need to be set according to the actual PCB structure
+
+    (board thickness, aperture size).
+
+   For specific plasma parameters and chemical Desmear parameter conditions, it is necessary to conduct
+
+    a detailed investigation and evaluation based on PCB solution and equipment production capacity, in order
+
+    to set the most matching processing parameters that meet the requirements of hole wall quality and
+
+    related quality; The following Plasma parameters are for reference only.
+
+                  O            CF           N    Vacuum       Power     Flow rate    Step time     Temp
+                    2               4       2
+
+      Step
+
+                 L/min         L/min    L/min    MTORR         W            L/min       Min         ℃
+
+
+
+                                                                       CN-PG-2506-02-S7045GX-S7045GXB
+       1           2.25     /        0.25        250         9000          2.5          45        80
+
+
+
+       2           2.45    0.3       0.25        250         6500          3.0          15        105
+
+
+
+       3           2.50     /          /         250         5000          2.5          5         100
+
+
+   The specific desmear conditions are related to the equipment, chemicals type, board thickness or hole
+
+    area, and need to be set by comprehensive evaluation.
+
+   On the premise of full load, it is suggested applying longer Plasma time for thicker board.
+
+2.9 Ultrasonic water washing
+
+   Recommended to perform ultrasonic water washing and drying after plasma treatment at a speed of
+
+    2.0m/min.
+
+2.10 HAL
+
+   Suitable for lead free HAL process.
+
+2.11 Appearance Processing
+
+   Recommended to use a milling machine for processing, and it is not recommended to use a blade
+
+    method for processing. The lifespan of the blade is reduced by 20% compared to conventional FR-
+
+    4 materials.
+
+2.12 Packaging
+
+   Suggest baking finished boards at 125-135℃/3~5h before packaging to prevent moisture effect.
+
+   Use aluminum foil vacuum packaging for packaging materials is recommend.
+
+
+
+
+3. PCB Soldering
+3.1 Shelf life of PCB
+
+   3 months with packaging protection. Aluminum foil vacuum packaging, with a validity period of 3 months.
+
+   Would be better to bake the components at 130-140℃ for 3-5 hours before using.
+
+3.2 Reflow
+
+   Suitable for lead free reflow process.
+
+
+
+This processing guidelines is for reference only! Should you have any questions, please feel free to
+contact us. SYTECH will support you with prompt and effective service.
+
+
+                                                                      CN-PG-2506-02-S7045GX-S7045GXB
+

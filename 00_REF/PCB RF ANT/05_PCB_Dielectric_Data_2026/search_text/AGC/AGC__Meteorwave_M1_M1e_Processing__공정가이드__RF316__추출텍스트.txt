@@ -1,0 +1,143 @@
+                                                    Confidential
+                            General Processing Guidelines
+
+
+ Meteorwave M1 / M1e
+                                                              Adsorbed moisture in the inner layer can affect the
+Very Low Loss and Ultra Low Loss                              curing properties of the prepreg. Conveyorized
+Material Systems                                              warm air drying is usually not effective in removing
+                                                              adsorbed moisture from the etched layer.
+Meteorwave® M1 high frequency / ultra-low loss
+electronic materials offer advanced electrical
+performance and high reliability for automotive
+radar applications. Meteorwave® M1 is ideal for                                          Recommendations
+automotive radar programs up to 77GHz.
+
+                                                                                257°F (125°C) in vertical racks with
+Material Handling & Storage                                     Signal layers   minimum 0.5” (12mm) separation for
+Store laminates flat in a dry environment. Do not                               120 minutes
+bend, scratch or dent laminate.
+Store prepreg flat, in a cool, dry environment at               Plane layers
+less than 72°F (23C) and 50% RH.                              and plated
+                                                                                257°F (125°C) in vertical racks with
+Vacuum reseal opened bags of unused prepreg.                      sub-lam       minimum 0.5” (12mm) separation for
+                                                                                120 minutes
+                                                                   layers
+Copper & Surface Preparation
+Prepare copper surface for photo resist application           Note: 1) If cores are allowed to sit exposed for 24
+with a mild micro-etch.                                                hours or greater they should be re-
+                                                                       baked.
+Bond Enhancing Treatments                                           2) Baking cores in stacks does not provide
+                                                                       an effective airflow to remove entrapped
+Meteorwave products are meant for high speed
+                                                                       moisture from the cores and should be
+signal integrity circuitry. Brown and black oxide
+                                                                       avoided.
+may be used but are not recommended for signal
+                                                                    3) Cores with thickness greater than 100
+integrity.
+                                                                       mils (2.54mm) may require additional
+                                                                       bake time, please contact your local
+Alternative oxides such as Atotech Bondfilm HF or
+                                                                       technical representative.
+equivalent are recommended.
+
+Inner Layer Drying                                            Sub-Assembly Baking
+Inner layers should be oven dried to remove                   Post oxide bake is also recommended for each sub-
+adsorbed moisture prior to re-lamination.                     assembly before relamination. The same
+                                                              recommendations outlined above in Inner Layer
+                                                              Drying should be followed.
+
+Lay-up
+For best results, use inner layers within 2 hours after drying. Rebake inner layers if not used within 24 hours.
+                                                     Confidential
+
+
+
+
+Lamination
+For best results, fully cure in vacuum assisted hydraulic press
+
+                                                               Recommendations
+                                               A minimum of 28.5” Hg (965 mbars) for 20 minutes
+  Vacuum Gauge Pressure
+                                   before applying heat & pressure. Maintain vacuum throughout press cycle
+       Heat Up Rate*                                       4 - 7°F (2 - 4 °C) per minute
+       Critical Range                                       180 – 330°F (82 – 165°C)
+          Pressure                                          450 - 550 psi (31 - 38 bar)
+                                                 >90 minutes @ 420 °F (>90 minutes @ 216 °C )
+      Cure Time, Temp
+
+      Cool Down Rate                     <5ºF (3°C) per minute or less until stack reaches 260°F (127°C)
+        Breakdown                                  After panels have cooled below 150°F (65 °C)
+
+*Note: Heat rise is usually controlled by using an acceptable thermal lagging such as kraft paper or press pads.
+Alternately the heat rise can be controlled by ramping the platen temperature about 5 – 10 °F (5 °C) higher than
+book temperatures and controlling the heat up rate through the critical temperature range.
+
+Drilling
+  Typical Drill Parameters                                     Recommendations
+          Drill Sizes              0.010” – 0.20” (0.25 – 0.5 mm)               0.020” - 0.040” (0.5 – 1.0 mm)
+       Surface Speed              315 – 400 SFM (96 – 122 m/min.)                    400 SFM (122m/min.)
+          Chip Load              0.7 – 1.2 mils (0.018-0.030 mm/rev)        1.2 – 1.5 mils (0.030 – 0.038 mm/rev)
+    Maximum Hit Count                        750 - 1000                                    1000 -1500
+    Typical Stack Height                 ≤0.180” (≤4.5 mm)                             ≤0.240” (≤6.0 mm)
+
+
+Note: Undercut drills are recommended for small hole drills < 0.0185” (0.47 mm). Peck drilling is recommended
+for panel thicknesses greater than .100” (2.5mm). Lubricated entry and/or back-up materials may be used to
+reduce the heat generation during drilling.
+Drilling parameters should be adjusted depending on hole size, layer count, panel thickness, copper content
+and stack height. For specific feed and speed parameters, contact your drill supplier or AGC’s technical
+representative. Detailed typical drilling parameters are available for many products. Please contact www.agc-
+ml.info-maltimaterial@agc.com.
+
+
+Hole Cleaning (Resin Smear Removal)
+Chemical desmear is preferred , but a plasma desmear followed by a milsd permanganate desmear can be used.
+
+Plasma: Typical desmear conditions
+        Temperature                  Gas mixture                       Power                            Time
+          80 2C              10%CF4 , 80% O2, 10% N2                 4000 W                     15-20 min
+
+
+Note: Depending on the amount of resin removal required, a preheat cycle and an oxygen burn cycle for ash
+removal may be necessary.
+                                                  Confidential
+
+
+
+
+Chemical Desmear:
+                     Type                  Temp (°F /°C)                             Time
+            Cyclic Amine 50%              173 ± 5 / 78 ± 2                         4 - 6 min.
+   Alkaline Permanganate oxidizer         175 ± 5 / 80 ± 2                       8 - 12 min.
+
+
+Panels > 0.180” (4.6 mm): Desmear process must be evaluated to insure adequate solution transfer through
+vias. It may be necessary to use a very light plasma cycle followed by chemical desmear on very thick panels
+with high aspect ratio vias. Due to variations in plasma equipment, proper process times and equipment
+settings should be evaluated for effectiveness when desmearing Meteorwave material.
+
+
+Routing
+        Typical Drill Parameters                                 Recommendations
+               Stack Height                                        0.250” (6 mm)
+                    Tool Size                                      0.093” (2.4 mm)
+                Feed Rate                                        60 IPM (1.5 m/min.)
+                     Speed                                            24K RPM
+
+
+
+
+ These guidelines can provide only basic and reference information for PCB fabricators. Because of different
+ environment, equipment, tooling and so on, in all instances, the user shall determine suitability in any given
+ conditions or applications. For more detailed processing information, please contact with the AGC engineer or
+ sales representative.
+
+
+
+
+ AGC Inc. 2025-06
+ agc-ml.multimaterial@agc.com
+

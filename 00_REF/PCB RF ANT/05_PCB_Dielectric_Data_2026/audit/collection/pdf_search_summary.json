@@ -1,0 +1,37 @@
+{
+  "access_date": "2026-11-11",
+  "source_manifests": [
+    "agents/root_sources.json",
+    "agents/fr4_sources.json",
+    "agents/rf_sources.json",
+    "agents/fab_sources.json"
+  ],
+  "source_pdf_references": 967,
+  "unique_pdf_contents": 949,
+  "duplicate_pdf_references": 18,
+  "source_status_counts": {
+    "extracted": 932,
+    "no_extractable_text_possible_image_pdf": 14,
+    "very_little_text_possible_image_pdf": 21
+  },
+  "unique_pdf_status_counts": {
+    "extracted": 914,
+    "no_extractable_text_possible_image_pdf": 14,
+    "very_little_text_possible_image_pdf": 21
+  },
+  "unique_pdf_extraction_engine_counts": {
+    "pdftotext_-layout": 949
+  },
+  "unique_pdf_pages": 3571,
+  "text_files": 949,
+  "text_bytes": 11354925,
+  "elapsed_seconds": 37.12,
+  "notes": [
+    "PDF contents deduplicated by full SHA256; names use first 12 hex characters after collision check.",
+    "Text extracted using pdftotext -layout -enc UTF-8; PyMuPDF text-only fallback on error.",
+    "No OCR, graph digitization, numeric correction, unit conversion or inferred values.",
+    "Possible-image flag is a text-density heuristic, not a visual classification: zero text, fewer than 100 total nonwhitespace characters, or fewer than 80 nonwhitespace characters per page.",
+    "Low-text pages have fewer than 40 nonwhitespace characters in PyMuPDF extraction; partial flag if at least half the pages are low-text.",
+    "Only actual PDF files directly referenced by manifest local_path are included. PDFs inside ZIPs are outside this extraction scope."
+  ]
+}

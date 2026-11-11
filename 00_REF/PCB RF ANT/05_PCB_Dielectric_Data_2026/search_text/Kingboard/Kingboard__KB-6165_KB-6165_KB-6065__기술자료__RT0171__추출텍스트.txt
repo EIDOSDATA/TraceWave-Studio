@@ -1,0 +1,86 @@
+                               Technical Information                                               Laminate: KB-6165
+                               产品技术资料                                                               Prepreg: KB-6065
+                                                                                                                   UL: E123995
+
+   Lead-Free/Tg 150/Low CTE
+       特性 (Feature)                                                                      应用 (Application)
+       • 无铅 Tg>150℃                                                                      • 电脑及笔记本电脑
+         Lead-free DSC Tg>150℃                                                             Computer and NB
+       • 优良的耐热性                                                                          • 仪器仪表
+         Excellent thermal reliability                                                     Instruments
+       • 低的Z轴热膨胀系数                                                                       • 消费电子
+         Low Z-CTE                                                                         Consumer electronics
+       • 良好的耐CAF性能                                                                       • 简单汽车电子
+         Anti-CAF capability                                                               Simple automotive electronics
+
+
+       板材性能 (Laminate Properties)
+                                                      Test Method
+               Test Item                                                        Test Condition          Unit     Typical Value
+                                                     (IPC-TM-650)
+                测试项目                                                               处理条件                 单位          典型值
+                                                        测试方法
+                       Thermal Stress
+                           热应力
+                                                            2.4.13.1         Float 288 ℃ / Unetched     Sec          ≥240
+                    Glass Transition (Tg)
+                       玻璃化转变温度
+                                                             2.4.25                    DSC               ℃            153
+                                                                                      Alpha 1                          42
+                  CTE / Z-Axis Expansion                                                               ppm/ ℃
+                      Z-轴热膨胀系数
+                                                             2.4.24                   Alpha 2                         240
+ Thermal                                                                            50 - 260 ℃           %            3.0
+  热性能                     X/Y CTE
+                                                             2.4.24               40 ℃ - 125 ℃         ppm/ ℃        12/15
+                      X/Y-轴热膨胀系数
+                              T-260                         2.4.24.1                   TMA              min           ＞60
+                              T-288                         2.4.24.1                   TMA              min           ＞20
+                     TD(5% weight loss)                     2.4.24.6                   TGA               ℃            348
+                        Flammability
+                            燃烧性
+                                                             UL94                    E-24/125          Rating         V-0
+                     Surface Resistivity
+                         表面电阻率
+                                                            2.5.17.1               C-96/35/90           MΩ          2.4×108
+                     Volume Resistivity
+                         体积电阻率
+                                                            2.5.17.1               C-96/35/90          MΩ-cm        3.0×109
+                    Dielectric Breakdown
+                          击穿电压
+                                                             2.5.6              D-48/50+D0.5/23          kV           ≥45
+
+                     Dielectric Constant                                      Etched         @ 1 MHz                  4.8
+ Electrical               介电常数
+                                                             2.5.5.9                                     —
+                                                                             (RC50%)         @ 1 GHz                  4.6
+   电性能
+                         Loss Tangent                                         Etched         @ 1 MHz                 0.015
+                           介质损耗
+                                                             2.5.5.9                                     —
+                                                                             (RC50%)         @ 1 GHz                 0.016
+                            CTI
+                      相对漏电起痕指数
+                                                            IEC60112           Etched/0.1% NH4CL         V           ≥175
+                       Arc Resistance
+                          耐电弧性
+                                                             2.5.1              D-48/50+D-0.5/23        Sec           120
+
+                    Peel Strength (1 oz.)                                                A                             --
+                       铜箔剥离强度
+                                                             2.4.8                                     N/mm
+                                                                               Float 288 ℃ / 10 Sec                   1.45
+Mechanical                                                                          Lengthwise                        550
+                      Flexural Strength
+ 机械性能                     弯曲强度
+                                                             2.4.4                                     N/mm2
+                                                                                    Crosswise                         470
+                      Water Absorption
+                           吸水率
+                                                             2.6.2.1                 D-24/23             %            0.09
+
+ Remarks:                                                              注:
+ - Typical Values for reference only.                                  - 典型值只供参考
+ - Standard Values according to IPC-4101E /99/101                      - 规格值参照 IPC-4101E/99/101
+ - Typical Value of Specimen thickness is 1.6mm (#7628*8)              - 样品 的厚度为 1.6mm (#7628*8)
+

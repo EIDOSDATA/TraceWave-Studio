@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head><meta charset="UTF-8"><script>if(navigator.userAgent.match(/MSIE|Internet Explorer/i)||navigator.userAgent.match(/Trident\/7\..*?rv:11/i)){var href=document.location.href;if(!href.match(/[?&]nowprocket/)){if(href.indexOf("?")==-1){if(href.indexOf("#")==-1){document.location.href=href+"?nowprocket=1"}else{document.location.href=href.replace("#","?nowprocket=1#")}}else{if(href.indexOf("#")==-1){document.location.href=href+"&nowprocket=1"}else{document.location.href=href.replace("#","&nowprocket=1#")}}}}</script><script>(()=>{class RocketLazyLoadScripts{constructor(){this.v="2.0.5",this.userEvents=["keydown","keyup","mousedown","mouseup","mousemove","mouseover","mouseout","touchmove","touchstart","touchend","touchcancel","wheel","click","dblclick","input"],this.attributeEvents=["onblur","onclick","oncontextmenu","ondblclick","onfocus","onmousedown","onmouseenter","onmouseleave","onmousemove","onmouseout","onmouseover","onmouseup","onmousewheel","onscroll","onsubmit"]}async t(){this.i(),this.o(),/iP(ad|hone)/.test(navigator.userAgent)&&this.h(),this.u(),this.l(this),this.m(),this.k(this),this.p(this),this._(),await Promise.all([this.R(),this.L()]),this.lastBreath=Date.now(),this.S(this),this.P(),this.D(),this.O(),this.M(),await this.C(this.delayedScripts.normal),await this.C(this.delayedScripts.defer),await this.C(this.delayedScripts.async),await this.T(),await this.F(),await this.j(),await this.A(),window.dispatchEvent(new Event("rocket-allScriptsLoaded")),this.everythingLoaded=!0,this.lastTouchEnd&&await new Promise(t=>setTimeout(t,500-Date.now()+this.lastTouchEnd)),this.I(),this.H(),this.U(),this.W()}i(){this.CSPIssue=sessionStorage.getItem("rocketCSPIssue"),document.addEventListener("securitypolicyviolation",t=>{this.CSPIssue||"script-src-elem"!==t.violatedDirective||"data"!==t.blockedURI||(this.CSPIssue=!0,sessionStorage.setItem("rocketCSPIssue",!0))},{isRocket:!0})}o(){window.addEventListener("pageshow",t=>{this.persisted=t.persisted,this.realWindowLoadedFired=!0},{isRocket:!0}),window.addEventListener("pagehide",()=>{this.onFirstUserAction=null},{isRocket:!0})}h(){let t;function e(e){t=e}window.addEventListener("touchstart",e,{isRocket:!0}),window.addEventListener("touchend",function i(o){o.changedTouches[0]&&t.changedTouches[0]&&Math.abs(o.changedTouches[0].pageX-t.changedTouches[0].pageX)<10&&Math.abs(o.changedTouches[0].pageY-t.changedTouches[0].pageY)<10&&o.timeStamp-t.timeStamp<200&&(window.removeEventListener("touchstart",e,{isRocket:!0}),window.removeEventListener("touchend",i,{isRocket:!0}),"INPUT"===o.target.tagName&&"text"===o.target.type||(o.target.dispatchEvent(new TouchEvent("touchend",{target:o.target,bubbles:!0})),o.target.dispatchEvent(new MouseEvent("mouseover",{target:o.target,bubbles:!0})),o.target.dispatchEvent(new PointerEvent("click",{target:o.target,bubbles:!0,cancelable:!0,detail:1,clientX:o.changedTouches[0].clientX,clientY:o.changedTouches[0].clientY})),event.preventDefault()))},{isRocket:!0})}q(t){this.userActionTriggered||("mousemove"!==t.type||this.firstMousemoveIgnored?"keyup"===t.type||"mouseover"===t.type||"mouseout"===t.type||(this.userActionTriggered=!0,this.onFirstUserAction&&this.onFirstUserAction()):this.firstMousemoveIgnored=!0),"click"===t.type&&t.preventDefault(),t.stopPropagation(),t.stopImmediatePropagation(),"touchstart"===this.lastEvent&&"touchend"===t.type&&(this.lastTouchEnd=Date.now()),"click"===t.type&&(this.lastTouchEnd=0),this.lastEvent=t.type,t.composedPath&&t.composedPath()[0].getRootNode()instanceof ShadowRoot&&(t.rocketTarget=t.composedPath()[0]),this.savedUserEvents.push(t)}u(){this.savedUserEvents=[],this.userEventHandler=this.q.bind(this),this.userEvents.forEach(t=>window.addEventListener(t,this.userEventHandler,{passive:!1,isRocket:!0})),document.addEventListener("visibilitychange",this.userEventHandler,{isRocket:!0})}U(){this.userEvents.forEach(t=>window.removeEventListener(t,this.userEventHandler,{passive:!1,isRocket:!0})),document.removeEventListener("visibilitychange",this.userEventHandler,{isRocket:!0}),this.savedUserEvents.forEach(t=>{(t.rocketTarget||t.target).dispatchEvent(new window[t.constructor.name](t.type,t))})}m(){const t="return false",e=Array.from(this.attributeEvents,t=>"data-rocket-"+t),i="["+this.attributeEvents.join("],[")+"]",o="[data-rocket-"+this.attributeEvents.join("],[data-rocket-")+"]",s=(e,i,o)=>{o&&o!==t&&(e.setAttribute("data-rocket-"+i,o),e["rocket"+i]=new Function("event",o),e.setAttribute(i,t))};new MutationObserver(t=>{for(const n of t)"attributes"===n.type&&(n.attributeName.startsWith("data-rocket-")||this.everythingLoaded?n.attributeName.startsWith("data-rocket-")&&this.everythingLoaded&&this.N(n.target,n.attributeName.substring(12)):s(n.target,n.attributeName,n.target.getAttribute(n.attributeName))),"childList"===n.type&&n.addedNodes.forEach(t=>{if(t.nodeType===Node.ELEMENT_NODE)if(this.everythingLoaded)for(const i of[t,...t.querySelectorAll(o)])for(const t of i.getAttributeNames())e.includes(t)&&this.N(i,t.substring(12));else for(const e of[t,...t.querySelectorAll(i)])for(const t of e.getAttributeNames())this.attributeEvents.includes(t)&&s(e,t,e.getAttribute(t))})}).observe(document,{subtree:!0,childList:!0,attributeFilter:[...this.attributeEvents,...e]})}I(){this.attributeEvents.forEach(t=>{document.querySelectorAll("[data-rocket-"+t+"]").forEach(e=>{this.N(e,t)})})}N(t,e){const i=t.getAttribute("data-rocket-"+e);i&&(t.setAttribute(e,i),t.removeAttribute("data-rocket-"+e))}k(t){Object.defineProperty(HTMLElement.prototype,"onclick",{get(){return this.rocketonclick||null},set(e){this.rocketonclick=e,this.setAttribute(t.everythingLoaded?"onclick":"data-rocket-onclick","this.rocketonclick(event)")}})}S(t){function e(e,i){let o=e[i];e[i]=null,Object.defineProperty(e,i,{get:()=>o,set(s){t.everythingLoaded?o=s:e["rocket"+i]=o=s}})}e(document,"onreadystatechange"),e(window,"onload"),e(window,"onpageshow");try{Object.defineProperty(document,"readyState",{get:()=>t.rocketReadyState,set(e){t.rocketReadyState=e},configurable:!0}),document.readyState="loading"}catch(t){console.log("WPRocket DJE readyState conflict, bypassing")}}l(t){this.originalAddEventListener=EventTarget.prototype.addEventListener,this.originalRemoveEventListener=EventTarget.prototype.removeEventListener,this.savedEventListeners=[],EventTarget.prototype.addEventListener=function(e,i,o){o&&o.isRocket||!t.B(e,this)&&!t.userEvents.includes(e)||t.B(e,this)&&!t.userActionTriggered||e.startsWith("rocket-")||t.everythingLoaded?t.originalAddEventListener.call(this,e,i,o):(t.savedEventListeners.push({target:this,remove:!1,type:e,func:i,options:o}),"mouseenter"!==e&&"mouseleave"!==e||t.originalAddEventListener.call(this,e,t.savedUserEvents.push,o))},EventTarget.prototype.removeEventListener=function(e,i,o){o&&o.isRocket||!t.B(e,this)&&!t.userEvents.includes(e)||t.B(e,this)&&!t.userActionTriggered||e.startsWith("rocket-")||t.everythingLoaded?t.originalRemoveEventListener.call(this,e,i,o):t.savedEventListeners.push({target:this,remove:!0,type:e,func:i,options:o})}}J(t,e){this.savedEventListeners=this.savedEventListeners.filter(i=>{let o=i.type,s=i.target||window;return e!==o||t!==s||(this.B(o,s)&&(i.type="rocket-"+o),this.$(i),!1)})}H(){EventTarget.prototype.addEventListener=this.originalAddEventListener,EventTarget.prototype.removeEventListener=this.originalRemoveEventListener,this.savedEventListeners.forEach(t=>this.$(t))}$(t){t.remove?this.originalRemoveEventListener.call(t.target,t.type,t.func,t.options):this.originalAddEventListener.call(t.target,t.type,t.func,t.options)}p(t){let e;function i(e){return t.everythingLoaded?e:e.split(" ").map(t=>"load"===t||t.startsWith("load.")?"rocket-jquery-load":t).join(" ")}function o(o){function s(e){const s=o.fn[e];o.fn[e]=o.fn.init.prototype[e]=function(){return this[0]===window&&t.userActionTriggered&&("string"==typeof arguments[0]||arguments[0]instanceof String?arguments[0]=i(arguments[0]):"object"==typeof arguments[0]&&Object.keys(arguments[0]).forEach(t=>{const e=arguments[0][t];delete arguments[0][t],arguments[0][i(t)]=e})),s.apply(this,arguments),this}}if(o&&o.fn&&!t.allJQueries.includes(o)){const e={DOMContentLoaded:[],"rocket-DOMContentLoaded":[]};for(const t in e)document.addEventListener(t,()=>{e[t].forEach(t=>t())},{isRocket:!0});o.fn.ready=o.fn.init.prototype.ready=function(i){function s(){parseInt(o.fn.jquery)>2?setTimeout(()=>i.bind(document)(o)):i.bind(document)(o)}return"function"==typeof i&&(t.realDomReadyFired?!t.userActionTriggered||t.fauxDomReadyFired?s():e["rocket-DOMContentLoaded"].push(s):e.DOMContentLoaded.push(s)),this},s("on"),s("one"),s("off"),t.allJQueries.push(o)}e=o}t.allJQueries=[],o(window.jQuery),Object.defineProperty(window,"jQuery",{get:()=>e,set(t){o(t)}})}P(){const t=new Map;document.write=document.writeln=function(e){const i=document.currentScript,o=document.createRange(),s=i.parentElement;let n=t.get(i);void 0===n&&(n=i.nextSibling,t.set(i,n));const c=document.createDocumentFragment();o.setStart(c,0),c.appendChild(o.createContextualFragment(e)),s.insertBefore(c,n)}}async R(){return new Promise(t=>{this.userActionTriggered?t():this.onFirstUserAction=t})}async L(){return new Promise(t=>{document.addEventListener("DOMContentLoaded",()=>{this.realDomReadyFired=!0,t()},{isRocket:!0})})}async j(){return this.realWindowLoadedFired?Promise.resolve():new Promise(t=>{window.addEventListener("load",t,{isRocket:!0})})}M(){this.pendingScripts=[];this.scriptsMutationObserver=new MutationObserver(t=>{for(const e of t)e.addedNodes.forEach(t=>{"SCRIPT"!==t.tagName||!t.src||t.noModule||t.isWPRocket||this.pendingScripts.push({script:t,promise:new Promise(e=>{const i=()=>{const i=this.pendingScripts.findIndex(e=>e.script===t);i>=0&&this.pendingScripts.splice(i,1),e()};t.addEventListener("load",i,{isRocket:!0}),t.addEventListener("error",i,{isRocket:!0}),setTimeout(i,1e3)})})})}),this.scriptsMutationObserver.observe(document,{childList:!0,subtree:!0})}async F(){await this.X(),this.pendingScripts.length?(await this.pendingScripts[0].promise,await this.F()):this.scriptsMutationObserver.disconnect()}D(){this.delayedScripts={normal:[],async:[],defer:[]},document.querySelectorAll("script[type$=rocketlazyloadscript]").forEach(t=>{t.hasAttribute("data-rocket-src")?t.hasAttribute("async")&&!1!==t.async?this.delayedScripts.async.push(t):t.hasAttribute("defer")&&!1!==t.defer||"module"===t.getAttribute("data-rocket-type")?this.delayedScripts.defer.push(t):this.delayedScripts.normal.push(t):this.delayedScripts.normal.push(t)})}async _(){await this.L();let t=[];document.querySelectorAll("script[type$=rocketlazyloadscript][data-rocket-src]").forEach(e=>{let i=e.getAttribute("data-rocket-src");if(i&&!i.startsWith("data:")){i.startsWith("//")&&(i=location.protocol+i);try{const o=new URL(i).origin;o!==location.origin&&t.push({src:o,crossOrigin:e.crossOrigin||"module"===e.getAttribute("data-rocket-type")})}catch(t){}}}),t=[...new Map(t.map(t=>[JSON.stringify(t),t])).values()],this.Y(t,"preconnect")}async G(t){if(await this.K(),!0!==t.noModule||!("noModule"in HTMLScriptElement.prototype))return new Promise(e=>{let i;function o(){(i||t).setAttribute("data-rocket-status","executed"),e()}try{if(navigator.userAgent.includes("Firefox/")||""===navigator.vendor||this.CSPIssue)i=document.createElement("script"),[...t.attributes].forEach(t=>{let e=t.nodeName;"type"!==e&&("data-rocket-type"===e&&(e="type"),"data-rocket-src"===e&&(e="src"),i.setAttribute(e,t.nodeValue))}),t.text&&(i.text=t.text),t.nonce&&(i.nonce=t.nonce),i.hasAttribute("src")?(i.addEventListener("load",o,{isRocket:!0}),i.addEventListener("error",()=>{i.setAttribute("data-rocket-status","failed-network"),e()},{isRocket:!0}),setTimeout(()=>{i.isConnected||e()},1)):(i.text=t.text,o()),i.isWPRocket=!0,t.parentNode.replaceChild(i,t);else{const i=t.getAttribute("data-rocket-type"),s=t.getAttribute("data-rocket-src");i?(t.type=i,t.removeAttribute("data-rocket-type")):t.removeAttribute("type"),t.addEventListener("load",o,{isRocket:!0}),t.addEventListener("error",i=>{this.CSPIssue&&i.target.src.startsWith("data:")?(console.log("WPRocket: CSP fallback activated"),t.removeAttribute("src"),this.G(t).then(e)):(t.setAttribute("data-rocket-status","failed-network"),e())},{isRocket:!0}),s?(t.fetchPriority="high",t.removeAttribute("data-rocket-src"),t.src=s):t.src="data:text/javascript;base64,"+window.btoa(unescape(encodeURIComponent(t.text)))}}catch(i){t.setAttribute("data-rocket-status","failed-transform"),e()}});t.setAttribute("data-rocket-status","skipped")}async C(t){const e=t.shift();return e?(e.isConnected&&await this.G(e),this.C(t)):Promise.resolve()}O(){this.Y([...this.delayedScripts.normal,...this.delayedScripts.defer,...this.delayedScripts.async],"preload")}Y(t,e){this.trash=this.trash||[];let i=!0;var o=document.createDocumentFragment();t.forEach(t=>{const s=t.getAttribute&&t.getAttribute("data-rocket-src")||t.src;if(s&&!s.startsWith("data:")){const n=document.createElement("link");n.href=s,n.rel=e,"preconnect"!==e&&(n.as="script",n.fetchPriority=i?"high":"low"),t.getAttribute&&"module"===t.getAttribute("data-rocket-type")&&(n.crossOrigin=!0),t.crossOrigin&&(n.crossOrigin=t.crossOrigin),t.integrity&&(n.integrity=t.integrity),t.nonce&&(n.nonce=t.nonce),o.appendChild(n),this.trash.push(n),i=!1}}),document.head.appendChild(o)}W(){this.trash.forEach(t=>t.remove())}async T(){try{document.readyState="interactive"}catch(t){}this.fauxDomReadyFired=!0;try{await this.K(),this.J(document,"readystatechange"),document.dispatchEvent(new Event("rocket-readystatechange")),await this.K(),document.rocketonreadystatechange&&document.rocketonreadystatechange(),await this.K(),this.J(document,"DOMContentLoaded"),document.dispatchEvent(new Event("rocket-DOMContentLoaded")),await this.K(),this.J(window,"DOMContentLoaded"),window.dispatchEvent(new Event("rocket-DOMContentLoaded"))}catch(t){console.error(t)}}async A(){try{document.readyState="complete"}catch(t){}try{await this.K(),this.J(document,"readystatechange"),document.dispatchEvent(new Event("rocket-readystatechange")),await this.K(),document.rocketonreadystatechange&&document.rocketonreadystatechange(),await this.K(),this.J(window,"load"),window.dispatchEvent(new Event("rocket-load")),await this.K(),window.rocketonload&&window.rocketonload(),await this.K(),this.allJQueries.forEach(t=>t(window).trigger("rocket-jquery-load")),await this.K(),this.J(window,"pageshow");const t=new Event("rocket-pageshow");t.persisted=this.persisted,window.dispatchEvent(t),await this.K(),window.rocketonpageshow&&window.rocketonpageshow({persisted:this.persisted})}catch(t){console.error(t)}}async K(){Date.now()-this.lastBreath>45&&(await this.X(),this.lastBreath=Date.now())}async X(){return document.hidden?new Promise(t=>setTimeout(t)):new Promise(t=>requestAnimationFrame(t))}B(t,e=window){return e===document&&"readystatechange"===t||(e===document&&"DOMContentLoaded"===t||(e===window&&"DOMContentLoaded"===t||(e===window&&"load"===t||e===window&&"pageshow"===t)))}static run(){(new RocketLazyLoadScripts).t()}}RocketLazyLoadScripts.run()})();
+</script>
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+
+<!-- Google Tag Manager for WordPress by gtm4wp.com -->
+<script data-cfasync="false" data-pagespeed-no-defer>
+	var gtm4wp_datalayer_name = "dataLayer";
+	var dataLayer = dataLayer || [];
+</script>
+<!-- End Google Tag Manager for WordPress by gtm4wp.com -->
+	<!-- This site is optimized with the Yoast SEO Premium plugin v28.3 (Yoast SEO v28.3) - https://yoast.com/product/yoast-seo-premium-wordpress/ -->
+	<title>PCB Material Selector | Sierra Circuits</title>
+<link data-rocket-prefetch href="https://munchkin.marketo.net" rel="dns-prefetch">
+<link data-rocket-prefetch href="https://abrtp2-cdn.marketo.com" rel="dns-prefetch">
+<link data-rocket-prefetch href="https://edge.fullstory.com" rel="dns-prefetch">
+<link data-rocket-prefetch href="https://www.googletagmanager.com" rel="dns-prefetch">
+<link data-rocket-prefetch href="https://cdn.evgnet.com" rel="dns-prefetch">
+<link data-rocket-prefetch href="https://rtp-static.marketo.com" rel="dns-prefetch">
+<link data-rocket-prefetch href="https://pages.protoexpress.com" rel="dns-prefetch">
+<link data-rocket-prefetch href="https://browser.sentry-cdn.com" rel="dns-prefetch">
+<link data-rocket-prefetch href="https://fast.wistia.com" rel="dns-prefetch">
+<link data-rocket-prefetch href="https://seal.digicert.com" rel="dns-prefetch">
+<link crossorigin data-rocket-preload as="font" href="https://www.protoexpress.com/wp-content/themes/sierra-circuits/assets/fonts/Montserrat/montserrat-v15-latin-regular.woff2" rel="preload"><link rel="preload" data-rocket-preload as="image" href="https://www.protoexpress.com/wp-content/uploads/2021/04/logo.svg" fetchpriority="high">
+	<meta name="description" content="Use this PCB material selector before you send your design to manufacturing and find materials that suit your application. Try it now!" />
+	<link rel="canonical" href="https://www.protoexpress.com/tools/pcb-material-selector/" />
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="PCB Material Selector | Sierra Circuits" />
+	<meta property="og:description" content="Use this PCB material selector before you send your design to manufacturing and find materials that suit your application. Try it now!" />
+	<meta property="og:url" content="https://www.protoexpress.com/tools/pcb-material-selector/" />
+	<meta property="og:site_name" content="Sierra Circuits" />
+	<meta property="article:publisher" content="https://www.facebook.com/sierracircuits/" />
+	<meta property="article:modified_time" content="2025-09-04T18:10:23+00:00" />
+	<meta property="og:image" content="https://www.protoexpress.com/wp-content/uploads/2024/11/Material-selector.webp" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="628" />
+	<meta property="og:image:type" content="image/webp" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:label1" content="Est. reading time" />
+	<meta name="twitter:data1" content="17 minutes" />
+	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https:\/\/schema.org","@graph":[{"@type":"WebPage","@id":"https:\/\/www.protoexpress.com\/tools\/pcb-material-selector\/","url":"https:\/\/www.protoexpress.com\/tools\/pcb-material-selector\/","name":"PCB Material Selector | Sierra Circuits","isPartOf":{"@id":"https:\/\/www.protoexpress.com\/#website"},"primaryImageOfPage":{"@id":"https:\/\/www.protoexpress.com\/tools\/pcb-material-selector\/#primaryimage"},"image":{"@id":"https:\/\/www.protoexpress.com\/tools\/pcb-material-selector\/#primaryimage"},"thumbnailUrl":"https:\/\/www.protoexpress.com\/wp-content\/uploads\/2024\/11\/Material-selector.webp","datePublished":"2021-04-22T08:07:13+00:00","dateModified":"2025-09-04T18:10:23+00:00","description":"Use this PCB material selector before you send your design to manufacturing and find materials that suit your application. Try it now!","breadcrumb":{"@id":"https:\/\/www.protoexpress.com\/tools\/pcb-material-selector\/#breadcrumb"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["https:\/\/www.protoexpress.com\/tools\/pcb-material-selector\/"]}]},{"@type":"ImageObject","inLanguage":"en-US","@id":"https:\/\/www.protoexpress.com\/tools\/pcb-material-selector\/#primaryimage","url":"https:\/\/www.protoexpress.com\/wp-content\/uploads\/2024\/11\/Material-selector.webp","contentUrl":"https:\/\/www.protoexpress.com\/wp-content\/uploads\/2024\/11\/Material-selector.webp","width":1200,"height":628,"caption":"material-selector.webp"},{"@type":"BreadcrumbList","@id":"https:\/\/www.protoexpress.com\/tools\/pcb-material-selector\/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Planners","item":"https:\/\/www.protoexpress.com\/?tool-type=planner"},{"@type":"ListItem","position":2,"name":"Material Selector"}]},{"@type":"WebSite","@id":"https:\/\/www.protoexpress.com\/#website","url":"https:\/\/www.protoexpress.com\/","name":"Sierra Circuits","description":"Sierra Circuits","publisher":{"@id":"https:\/\/www.protoexpress.com\/#organization"},"potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https:\/\/www.protoexpress.com\/?s={search_term_string}"},"query-input":{"@type":"PropertyValueSpecification","valueRequired":true,"valueName":"search_term_string"}}],"inLanguage":"en-US"},{"@type":"Organization","@id":"https:\/\/www.protoexpress.com\/#organization","name":"Sierra Circuits, Inc.","url":"https:\/\/www.protoexpress.com\/","logo":{"@type":"ImageObject","inLanguage":"en-US","@id":"https:\/\/www.protoexpress.com\/#\/schema\/logo\/image\/","url":"https:\/\/www.protoexpress.com\/wp-content\/uploads\/2022\/01\/logo.svg","contentUrl":"https:\/\/www.protoexpress.com\/wp-content\/uploads\/2022\/01\/logo.svg","width":116,"height":36,"caption":"Sierra Circuits, Inc."},"image":{"@id":"https:\/\/www.protoexpress.com\/#\/schema\/logo\/image\/"},"sameAs":["https:\/\/www.facebook.com\/sierracircuits\/","https:\/\/www.linkedin.com\/company\/sierra-circuits-inc\/","https:\/\/www.youtube.com\/channel\/UCz-QzCLZPbBov9MmTQ7zJlg"]}]}</script>
+	<!-- / Yoast SEO Premium plugin. -->
+
+
+
+<link rel="alternate" type="application/rss+xml" title="Sierra Circuits &raquo; Feed" href="https://www.protoexpress.com/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Sierra Circuits &raquo; Comments Feed" href="https://www.protoexpress.com/comments/feed/" />
+<script type="text/javascript" src="https://cdn.evgnet.com/beacon/sierracircuits/sierra_production/scripts/evergage.min.js" id="interaction-studio-pbox" data-rocket-defer defer></script><style id="wp-img-auto-sizes-contain-inline-css">
+img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
+/*# sourceURL=wp-img-auto-sizes-contain-inline-css */
+</style>
+<style id="classic-theme-styles-inline-css">
+/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+/*# sourceURL=/wp-includes/css/classic-themes.min.css */
+</style>
+
+<style id="global-styles-inline-css">
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgb(6,147,227) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgb(252,185,0) 0%,rgb(255,105,0) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgb(255,105,0) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgb(255, 255, 255), 6px 6px rgb(0, 0, 0);--wp--preset--shadow--crisp: 6px 6px 0px rgb(0, 0, 0);}.wp-block-button{--wp--preset--dimension--25: 25%;--wp--preset--dimension--50: 50%;--wp--preset--dimension--75: 75%;--wp--preset--dimension--100: 100%;}:where(body) { margin: 0; }:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}body{padding-top: 0px;padding-right: 0px;padding-bottom: 0px;padding-left: 0px;}:root :where(.wp-element-button, .wp-block-button__link){background-color: #32373c;border-width: 0;color: #fff;font-family: inherit;font-size: inherit;font-style: inherit;font-weight: inherit;letter-spacing: inherit;line-height: inherit;padding-top: calc(0.667em + 2px);padding-right: calc(1.333em + 2px);padding-bottom: calc(0.667em + 2px);padding-left: calc(1.333em + 2px);text-decoration: none;text-transform: inherit;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+/*# sourceURL=global-styles-inline-css */
+</style>
+
+<link rel='stylesheet' id='allow-webp-image-css' href='https://www.protoexpress.com/wp-content/plugins/allow-webp-image/public/css/allow-webp-image-public.css?ver=1.0.1' media='all' />
+<link data-minify="1" rel='stylesheet' id='sierra-fonts-css' href='https://www.protoexpress.com/wp-content/cache/min/1/wp-content/themes/sierra-circuits/assets/fonts/Montserrat/sierra-fonts.min.css?ver=1759135508' media='all' />
+<link data-minify="1" rel='stylesheet' id='sierra-style-css' href='https://www.protoexpress.com/wp-content/cache/min/1/wp-content/themes/sierra-circuits/assets/css/custom.css?ver=1783494765' media='all' />
+<link data-minify="1" rel='stylesheet' id='sierra-extra-style-css' href='https://www.protoexpress.com/wp-content/cache/min/1/wp-content/themes/sierra-circuits/style.css?ver=1759135509' media='all' />
+<link rel='stylesheet' id='lity-css-css' href='https://www.protoexpress.com/wp-content/themes/sierra-circuits/assets/lity/lity.min.css?ver=1.2.0.1.7.0' media='all' />
+<link data-minify="1" rel='stylesheet' id='tablepress-default-css' href='https://www.protoexpress.com/wp-content/cache/min/1/wp-content/plugins/tablepress/css/build/default.css?ver=1759135509' media='all' />
+<style id="tablepress-default-inline-css">
+.tablepress-id-131 th{color:#000}.tablepress-id-131 tr td{color:#000}.tablepress-id-144 thead{color:#000}.tablepress-id-144 tbody tr td{color:#000}.tablepress{color:#000}.tablepress thead tr th{color:#000}.tablepress tbody tr td{color:#000}
+/*# sourceURL=tablepress-default-inline-css */
+</style>
+<style id="rocket-lazyload-inline-css">
+.rll-youtube-player{position:relative;padding-bottom:56.23%;height:0;overflow:hidden;max-width:100%;}.rll-youtube-player:focus-within{outline: 2px solid currentColor;outline-offset: 5px;}.rll-youtube-player iframe{position:absolute;top:0;left:0;width:100%;height:100%;z-index:100;background:0 0}.rll-youtube-player img{bottom:0;display:block;left:0;margin:auto;max-width:100%;width:100%;position:absolute;right:0;top:0;border:none;height:auto;-webkit-transition:.4s all;-moz-transition:.4s all;transition:.4s all}.rll-youtube-player img:hover{-webkit-filter:brightness(75%)}.rll-youtube-player .play{height:100%;width:100%;left:0;top:0;position:absolute;background:url(https://www.protoexpress.com/wp-content/plugins/wp-rocket/assets/img/youtube.png) no-repeat center;background-color: transparent !important;cursor:pointer;border:none;}
+/*# sourceURL=rocket-lazyload-inline-css */
+</style>
+<script type="text/rocketlazyloadscript" id="jquery-core-js" data-rocket-src="https://www.protoexpress.com/wp-includes/js/jquery/jquery.min.js?ver=3.7.1" data-rocket-defer defer></script>
+<script type="text/rocketlazyloadscript" id="jquery-migrate-js" data-rocket-src="https://www.protoexpress.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1" data-rocket-defer defer></script>
+<script type="text/rocketlazyloadscript" id="allow-webp-image-js" data-rocket-src="https://www.protoexpress.com/wp-content/plugins/allow-webp-image/public/js/allow-webp-image-public.js?ver=1.0.1" data-rocket-defer defer></script>
+<link rel="https://api.w.org/" href="https://www.protoexpress.com/wp-json/" /><link rel='shortlink' href='https://www.protoexpress.com/?p=102' />
+
+<!-- Google Tag Manager for WordPress by gtm4wp.com -->
+<!-- GTM Container placement set to manual -->
+<script data-cfasync="false" data-pagespeed-no-defer>
+	var dataLayer_content = {"pageTitle":"PCB Material Selector | Sierra Circuits","pagePostType":"tools","pagePostType2":"single-tools","pagePostAuthor":"sierraman","pagePostTerms":{"tool-type":["Planners"],"meta":{"intro_text":"","tool_url":"https:\/\/www.protoexpress.com\/material-selector-tool\/","list_image":2669,"tool_list_description":"The Sierra Circuits’ \u003Cstrong\u003EPCB Material Selector\u003C\/strong\u003E allows you to search and compare the properties and specifications of board materials that fit your application. There are 50+ rigid materials and 10+ flex materials available in this tool. For each material, there are various parameters listed, such as dielectric constant, dissipation factor, glass transition temperature, decomposition temperature, moisture absorption, etc.\r\n\r\nThe tool can quickly find the materials (rigid or flex) suitable to your application and provide datasheet for any given material instantaneously. It also provides you with a comparison of materials that fit your application criteria such as IPC revisions, slash numbers, Tg, Dk, and lead-free compatibility.","tool_list_title":"PCB Material Selector","tool_list_try_text":"Get Started Now","related_top_text":"Sierra Circuits has developed easy-to-use tools for PCB Designers and Electrical Engineers at every stage of circuit board development.","related_tools":"","video_text":"How to select the best PCB material","video_embed_code":"\u003Cscript src=\u0022https:\/\/fast.wistia.com\/embed\/medias\/b9yili16mh.jsonp\u0022 async\u003E\u003C\/script\u003E\u003Cscript src=\u0022https:\/\/fast.wistia.com\/assets\/external\/E-v1.js\u0022 async\u003E\u003C\/script\u003E\r\n\u003Cdiv class=\u0022wistia_responsive_padding\u0022 style=\u0022padding: 56.25% 0 0 0; position: relative;\u0022\u003E\r\n\u003Cdiv class=\u0022wistia_responsive_wrapper\u0022 style=\u0022height: 100%; left: 0; position: absolute; top: 0; width: 100%;\u0022\u003E\r\n\u003Cdiv class=\u0022wistia_embed wistia_async_b9yili16mh seo=false videoFoam=true\u0022 style=\u0022height: 100%; position: relative; width: 100%;\u0022\u003E\r\n\u003Cdiv class=\u0022wistia_swatch\u0022 style=\u0022height: 100%; left: 0; opacity: 0; overflow: hidden; position: absolute; top: 0; transition: opacity 200ms; width: 100%;\u0022\u003E\u003Cimg style=\u0022filter: blur(5px); height: 100%; object-fit: contain; width: 100%;\u0022 src=\u0022https:\/\/fast.wistia.com\/embed\/medias\/b9yili16mh\/swatch\u0022 alt=\u0022\u0022 aria-hidden=\u0022true\u0022 \/\u003E\u003C\/div\u003E\r\n\u003C\/div\u003E\r\n\u003C\/div\u003E\r\n\u003C\/div\u003E","content_item":"","alternative_title":"PCB Material Selector","disable_cut_copy_paste":1,"interaction_studio_cat_classname":"PCB Planners","tools_blog_image":2669,"tools_blog_title":"PCB DESIGN TOOL","tools_blog_sub_title":"Material Selector","wp_schema_pro_optimized_structured_data":"\u003C!-- Schema optimized by Schema Pro --\u003E\u003Cscript type=\u0022application\/ld+json\u0022\u003E{\u0022@context\u0022:\u0022https:\/\/schema.org\u0022,\u0022@type\u0022:\u0022Service\u0022,\u0022name\u0022:\u0022Material Selector\u0022,\u0022serviceType\u0022:\u0022Online PCB Tool\u0022,\u0022image\u0022:{\u0022@type\u0022:\u0022ImageObject\u0022,\u0022url\u0022:\u0022https:\/\/www.protoexpress.com\/wp-content\/uploads\/2024\/11\/Material-selector.webp\u0022,\u0022width\u0022:1200,\u0022height\u0022:628},\u0022provider\u0022:{\u0022@type\u0022:\u0022LocalBusiness\u0022,\u0022name\u0022:\u0022Sierra Circuits\u0022,\u0022image\u0022:{\u0022@type\u0022:\u0022ImageObject\u0022,\u0022url\u0022:\u0022https:\/\/www.protoexpress.com\/wp-content\/uploads\/2025\/10\/Logo_Text.png\u0022,\u0022width\u0022:691,\u0022height\u0022:216},\u0022telephone\u0022:null,\u0022priceRange\u0022:\u0022FREE\u0022},\u0022areaServed\u0022:{\u0022@type\u0022:\u0022State\u0022,\u0022name\u0022:\u0022\u0022},\u0022description\u0022:\u0022PCB material selection is the first step in your design process. Selecting the dielectric material for your design is very important, as it can impact the overall performance of the board. To help board designers determine what sort of material best suits their design needs, we have developed a circuit board material selector.\\r\\n\\r\\nSierra Circuits\u0027 PCB Material Selector allows you to search and compare the properties and specifications of board materials that fit your application. There are 50+ rigid materials and 10+ flex materials available in this tool. For each material, there are various parameters listed, such as dielectric constant, dissipation factor, glass transition temperature, decomposition temperature, moisture absorption, etc.\\r\\n\\r\\nFeatures of our material selector tool:\\r\\n\\r\\n \\tCan quickly find the materials (rigid or flex) suitable for your application\\r\\n \\tProvides a datasheet for any given material instantaneously\\r\\n \\tAllows you to compare materials that fit your application criteria, such as IPC revisions, slash numbers, Tg, Dk, and lead-free compatibility\\r\\n\\r\\nHow to select the best PCB material\\r\\nOur circuit board material tool allows you to search and compare PCB materials that fit your application and meet your requirements.\\r\\n\\r\\nSierra Circuits PCB material selector\\r\\n\\r\\nAll the criteria for comparative selection are listed below:\\r\\nInitial selection criteria\\r\\nIn the Board Properties section, you can choose the following options:\\r\\n\\r\\n \\t\\r\\n\\r\\n \\tMaterial type (flex or rigid)\\r\\n \\tHalogen-free (yes or all)\\r\\n\\r\\n\\r\\n\\r\\n\\r\\n \\tVery high thermal conductivity\\r\\n\\r\\nMaterial type: Rigid\\r\\nIf you select rigid as the material type and click on the “Go\/Submit” button, our Material Selector lists out all the available rigid materials (even if no criteria are selected).\\r\\n\\r\\nAfter selecting the required criteria, click on the “View” button to view the properties of that particular material. To compare the properties, select two or more different materials and hit the “Compare” button. A new window pops up comparing the properties of the chosen materials.\\r\\nMaterial type: Flex\\r\\nIf you select flex as the material type and click the “GO\/SUBMIT” button, our circuit board material tool lists out all the available flex materials. You can now have a look at all the materials along with their properties as shown here.\\r\\n\\r\\n\\r\\n\\r\\nBy clicking the “View” button, you can view the properties of that particular material. To compare the properties, select two different materials by clicking the checkbox and hitting the Compare button. A new window pops up comparing the properties of the chosen materials.\\r\\n\\r\\nHalogen-free\\r\\n\\r\\nSelect the option Yes to list out halogen-free materials. If the option All is selected, the tool considers all the available materials present. This filter only applies to rigid materials.\\r\\n\\r\\nVery high thermal conductivity\\r\\n\\r\\nThermal conductivity is the ability of a material to transfer heat by conduction. It is usually represented by the symbol K, and its units are W\/mK (watts per meter per degree Kelvin)\\r\\n\\r\\nSelect the Very High Thermal Conductivity option if you require thermal conductivity greater than 1W\/mK.\\r\\n\\r\\nThe key material properties that are used as a criterion for selection\/filtering are categorized in the following table:\\r\\n\\r\\n\\r\\n\\r\\nElectrical properties\\r\\nThermal properties\\r\\nChemical properties\\r\\nMechanical properties\\r\\n\\r\\n\\r\\nDielectric constant (Dk)\\r\\nGlass transition temperature (Tg)\\r\\nMoisture absorption (%)\\r\\nTensile modulus (Mpsi)\\r\\n\\r\\n\\r\\nDissipation factor (Df)\/ Loss tangent (Tanδ)\\r\\nDecomposition temperature (Td)\\r\\nCAF resistance\\r\\nTensile strength (Kpsi)\\r\\n\\r\\n\\r\\nCTI class\/Voltage\\r\\nThermal conductivity (K)\\r\\n\\r\\nFlexural strength (Kpsi)\\r\\n\\r\\n\\r\\nDielectric electrical strength (V\/Mil)\\r\\nCoefficient of thermal expansion (CTE)\\r\\n\\r\\n\\r\\n\\r\\n\\r\\nMax signal frequency content (GHz)\\r\\n\\r\\n\\r\\n\\r\\n\\r\\n\\r\\nHighest data transfer rate (Gbps)\\r\\n\\r\\n\\r\\n\\r\\n\\r\\n\\r\\nFastest signal rise\/fall time (ns)\\r\\n\\r\\n\\r\\n\\r\\n\\r\\n\\r\\n\\r\\nElectrical properties\\r\\nIn this section, fill in the fields to narrow down the required material.\\r\\n\\r\\n\\r\\n\\r\\nSpeed\/loss\\r\\n\\r\\nBased on the operating frequency (speed) and associated loss, PCB materials are categorized as:\\r\\n\\r\\n \\tNormal speed\/normal loss\\r\\n \\tMedium speed\/medium loss\\r\\n \\tHigh speed\/low loss\\r\\n \\tVery high speed\/very low loss\\r\\n\\r\\nDepending on your application, you can choose one of these 4 categories. Select option “All” to view all the materials available, irrespective of these categories.\\r\\n\\r\\nThe dissipation factor (Df) is the most important in determining the extent of signal loss in a PCB material; a higher value of Df leads to a higher loss. Furthermore, the signal loss also increases with the frequency or speed of operation. Therefore, for controlling the loss at high frequencies or high speeds, choose a PCB material with a low Df value. Thus, the range of Df values is the criteria for the above speed\/loss categorization.\\r\\n\\r\\nThe dielectric constant (Dk) of a PCB material changes with frequency. Large variations of Dk with frequency cause larger signal distortion\/rise time degradation, which becomes less acceptable for high-frequency or high-speed signals. Therefore, as the signal frequency or speed increases, it is desirable to have less variation in Dk with frequency. The need for less variation of Dk with frequency for low-loss PCB materials has been recognized and implemented by all board material manufacturers.\\r\\n\\r\\nIf you would like to learn more about losses in PCB transmission lines, see losses in PCB transmission lines.\\r\\n\\r\\nMax signal frequency content (GHz), or fastest signal rise\/fall time (ns), or highest data transfer rate (Gbps)\\r\\n\\r\\nYou can also choose the materials based on maximum signal frequency content (GHz)\/fastest signal rise or fall time (ns)\/highest data transfer rate (Gbps).\\r\\n\\r\\nThese 3 parameters are related to each other; if any one of the aforementioned values is specified, the material selection tool automatically calculates the remaining two values. For example, if you input the maximum signal frequency content, it automatically displays the corresponding values of the fastest signal rise\/fall time (ns) and the highest data transfer rate (Gbps).\\r\\n\\r\\nDielectric constant (Dk) \\r\\n\\r\\nThe Dk of most PCB materials ranges from 2 to 10. To choose the appropriate range out of this, a slider button has been provided in the Material Selector.\\r\\n\\r\\nThe Dk of a PCB material largely determines the trace width of controlled impedance transmission lines on the circuit board; the greater the Dk value, the lesser the trace width will be for the same target controlled impedance value. A higher Dk value also leads to higher dielectric loss. In general, high-speed\/low-loss materials have lower Dk values. Thus, Dk becomes an important electrical performance criterion for material selection. For normal speed\/normal loss materials, the Dk varies considerably with frequency; for very high speed\/very low loss materials, the Dk remains effectively constant with frequency. The Dk of the most commonly used board material- FR4- for example FR370HR- is 3.92 @ 10Ghz.\\r\\n\\r\\nThe values of Dk specified in our Material Selector are with a material’s resin content at 50% (as per IPC guidelines for the listing of properties in the material’s datasheet). Since Dk varies with frequency as well, we have used the values at 10 GHz in this tool.\\r\\n\\r\\nThe range of the above-mentioned properties can be set using the respective sliding button.\\r\\n\\r\\nDissipation factor (Df)\\r\\n\\r\\nA material’s dissipation factor is the most important factor in determining the signal attenuation or signal loss, as signals travel along a PCB conductor or trace. The lower a material’s dissipation factor is, the lesser will be the signal loss. Thus, Df is the most important selection criterion from the signal loss perspective. The Df of FR4 material FR370HR is 0.025 @ 10Ghz.\\r\\n\\r\\nThe values of Df specified in our Material Selector are with a material’s resin content at 50% (as per IPC guidelines for the listing of properties in the material’s datasheet). Since Df varies with frequency as well, we have used the values at 10 GHz in this tool.\\r\\n\\r\\nCTI class\/voltage (comparative tracking index)\\r\\n\\r\\nIt is a measure of the voltage threshold above which electric breakdown can occur between 2 electrical conductors on the surface of a material. The smaller the CTI class value, the higher the threshold voltage. The CTI of the most commonly used PCB material- FR4- for example FR370HR- is CTI Class 3 with the electric breakdown voltage range being 175V-249V.\\r\\n\\r\\nDielectric electrical strength\\r\\n\\r\\nElectrical strength, given in volts per unit thickness, measures the maximum electrical field a board material can withstand in the Z direction before its electrical breakdown. In this tool, the unit used is volts\/mil. The dielectric electrical strength of the most commonly used PCB material- FR4- for example, FR370HR- is 1350 V\/mil. Most of the IPC-certified materials have a dielectric electrical strength \u0026gt;= 750 V\/mil.\\r\\n\\r\\nVolume resistivity\\r\\n\\r\\nIt is the electrical resistance of any material of unit length and unit cross-sectional area (A) when measured across the length (l). Volume resistivity is expressed in units of Ω-cm (ohm-cm). For a dielectric material, since resistivity is very high, it is usually expressed in units of MΩ-cm. The volume resistivity of FR4 material, for example, FR370HR, is 3.0 x 108 MΩ-cm.\\r\\n\\r\\n\\r\\n\\r\\nResistance R = ρ⋅ (L\/A); where ρ is the resistivity\\r\\n\\r\\nThe inverse of volume resistivity is called electrical conductivity (σ), which is expressed in Mhos\/cm or Siemens\/cm.\\r\\n\\r\\nSurface resistivity\\r\\n\\r\\nIt is the electrical resistance of any material surface of a square shape of any dimension when measured across one of the dimensions. Surface resistivity is expressed in units of ohms or ohms per square. For a dielectric material, since resistivity is very high, it is usually expressed in units of Mohms or Mohms per square. The surface resistivity of the most commonly used PCB material FR4- for example, FR370HR- is 3.0 x 106 MΩ-cm.\\r\\n\\r\\n\\r\\n\\r\\nResistance R = ρₛ(L\/W); where ρ is the resistivity\\r\\n\\r\\nArc resistance\\r\\n\\r\\nThe ability of an insulating material (measured in terms of time) to withstand a high-voltage electric arc and resist the formation of a conducting path along its surface. The conducting path is due to the chemical and thermal decomposition of the material. For example, the arc resistance of FR4 material FR370HR is 115 seconds.\\r\\n\\r\\nDielectric breakdown\\r\\n\\r\\nIt is the voltage at which breakdown of a dielectric material occurs, usually expressed in kV. The dielectric breakdown voltage of FR4 - FR370HR is 50kV.\\r\\nThermal properties\\r\\nIn this section, you can set the range of various thermal properties like glass transition temperature (Tg), decomposition temperature (Td), coefficient of thermal expansion (CTE) along X, Y, and Z axes, and thermal conductivity (K).\\r\\n\\r\\n\\r\\n\\r\\nGlass transition temperature (Tg)\\r\\n\\r\\nTg is the temperature around which a circuit board substrate transitions from a glassy, rigid state to a softened, deformable state. Above Tg, the material has a substantially higher coefficient of thermal expansion than that below Tg. However, the deformation with temperature around Tg is completely elastic; when the temperature drops from a temperature higher than Tg to below Tg, the material returns to its original state. For all lead-free (ROHS compatible) materials, the Tg requirement is \u0026gt;= 170 °C. The Tg of FR4 material FR370HR is 180 °C.\\r\\n\\r\\nDecomposition temperature (Td)\\r\\n\\r\\nTd is the temperature at which a PCB material chemically decomposes, and the change is completely irreversible; once the material crosses Td, it cannot return to its original state after cooling down and therefore becomes totally non-functional. The Td of FR4 material FR370HR is 340 °C.\\r\\n\\r\\nCoefficient of thermal expansion (CTE) X\/Y and Z direction\\r\\n\\r\\nIt is the rate of expansion of a board material in the X, Y, and Z directions as the temperature increases. These values refer to the rate of expansion below Tg. The X, Y CTE of FR4 material FR370HR is (13,14) ppm\/°C. The Z-axis CTE of FR370HR is 45 ppm\/°C.\\r\\n\\r\\nThermal conductivity\\r\\n\\r\\nThe unit of thermal conductivity (K) is W\/mK (Watt per meter per degree Kelvin). The K of most PCB materials is in the range of 0.2 to 0.5 W\/m⋅K; for FR4 material FR370HR, it is 0.4 W\/mK.\\r\\n\\r\\nBased on the values of thermal conductivity, we have categorized them into 3 categories, as given in the drop-down list:\\r\\n\\r\\n \\tNormal (≤ 0.5 W\/mK)\\r\\n \\tHigh (0.5 to 1 W\/mK)\\r\\n \\tVery high (\u0026gt; 1 W\/mK)\\r\\n\\r\\nTime to delamination- T260\\r\\n\\r\\nThe amount of time, in minutes, a dielectric material can withstand before failure or delamination at 260°C. The T260 time of FR4- for instance, FR370HR- is 60 minutes.\\r\\n\\r\\nTime to delamination- T288\\r\\n\\r\\nThe amount of time, in minutes, a dielectric material can withstand before failure or delamination at 288°C. The T288 time of FR370HR is 30 minutes.\\r\\nChemical properties\\r\\n\\r\\n\\r\\nHere, you can set the range of tolerable moisture absorption of the required material. If a CAF-resistant material is required, you can select the option “Yes” else select the option “All”.\\r\\n\\r\\nMoisture absorption\\r\\n\\r\\nIt is a measure of the ability of a board material to resist water absorption when immersed in water. It is given by the percentage increase in weight of a dielectric material due to water absorption under controlled conditions as specified in the IPC test method standard IPC-TM-650- 2.6.2.1A. The moisture absorption of FR4 material FR370HR is 0.15%.\\r\\n\\r\\nCAF resistance\\r\\n\\r\\nCAF (conductive anodic filament) is a metallic filament that is formed due to electrochemical migration. Formation of CAF might lead to electrical failure. This can be avoided by choosing CAF-resistant materials. Opt for CAF-resistant materials if your circuit board operates under a high-temperature and high-power environment.\\r\\n\\r\\nMethylene chloride resistance\\r\\n\\r\\nIt is a measure of a material’s chemical resistance; specifically, the ability of a circuit board material to resist methylene chloride absorption.\\r\\n\\r\\nJust like moisture absorption, it is expressed by a percentage increase in the weight of a PCB material due to exposure to or soaking in methylene chloride under controlled conditions. Most board materials have methylene chloride resistance values in the range of 0.01% to 0.20%.\\r\\n\\r\\nFlammability\\r\\n\\r\\nUL94, or the standard for the safety of flammability of plastic materials, is defined by Underwriter Laboratories. Most PCB materials adhere to UL94 V-0, whose main requirement is that the specimens may not burn with flaming combustion for more than 10 seconds after each application of the test flame.\\r\\nMechanical properties\\r\\n\\r\\n\\r\\nMechanical properties (tensile modulus, tensile strength, and flexural strength) of the required material can be set in this section. The two common units of measurement listed for mechanical properties are Mpa (Megapascals) and Kpsi (Kilopounds per square inch). If the datasheet of a material only lists one unit, you can convert between the two using:\\r\\n\\r\\n1 Mpa = 0.145 Kpsi\\r\\n\\r\\n1 Kpsi = 6.895 Mpa = 0.703 kg\/m²\\r\\n\\r\\nOften, there are 2 numbers given when reading the mechanical properties of a material. The mechanical properties exhibit slightly different values in 2 perpendicular directions, namely- MD (Machine Direction) and CD (Cross Direction). The MD is typically the direction that is fed lengthwise into a machine (X-axis), while the CD is perpendicular (Y-axis) to the MD. MD and CD apply to those PCB materials that have the glass-fiber cloth as a reinforcement in the resin system.\\r\\n\\r\\nTensile modulus (Young\u0027s modulus)\\r\\n\\r\\nIt’s a measure of the mechanical strength (and possibly stiffness) of a PCB material. It measures the stress\/strain ratio in the same direction that force (tensile or compressive) is applied. Young\u0027s modulus is also correlated to the stiffness of a material.\\r\\n\\r\\nThe unit of stress is the same as that of pressure, i.e., force per unit area. Strain, being the ratio of two lengths, is dimensionless. Therefore, the unit of tensile modulus is the same as that of stress, i.e., force per unit area. The most commonly used units are Mpsi (Megapounds per square inch) in the Imperial System and Gpa (Gigapascals) in the Metric System. They are related as:\\r\\n\\r\\n1 Mpsi=6.895 Gpa\\r\\n\\r\\nThe tensile modulus of FR4 material FR370HR is 3.744 Mpsi (MD) and 3.178 Mpsi (CD).\\r\\n\\r\\n\\r\\n\\r\\nTensile strength\\r\\n\\r\\nThe maximum tensile stress a material will withstand while being stretched or pulled before permanent, irreversible deformation in the form of necking takes place. The cross-section starts to significantly contract at the necking site. The tensile strength of the most commonly used PCB material- FR4- for example, FR370HR- is 55.9 Kpsi (MD) and 35.62 (CD).\\r\\n\\r\\n\\r\\n\\r\\nFlexural strength\\r\\n\\r\\nFlexural strength is a measure of a material’s tendency to bend under load. It is measured as the maximum load per unit area that a material will withstand without fracturing (permanent bending), when supported at the ends and loaded at the center, as shown in the diagram below.\\r\\n\\r\\n\\r\\n\\r\\nFor homogenous materials, flexural strength is the same as tensile strength, and for composite materials (which most PCB materials are), flexural strength is usually higher than tensile strength. The flexural strength of PCB material FR4- FR370HR- is 90 Kpsi (MD) and 77 Kpsi (CD).\\r\\n\\r\\nPoisson’s ratio \\r\\n\\r\\nIt is the ratio of the strain in the transverse direction to the strain in the direction in which the load is applied. The Poisson’s ratio of the most commonly used PCB material- FR4- for example FR370HR- is 0.177 (MD) and 0.171 (CD).\\r\\n\\r\\nDimensional stability\\r\\n\\r\\nThe amount of dimensional change a dielectric material can undergo when exposed to different degrees of temperature. The units are usually expressed in mm\/m or mils\/in. The dimensional stability of Rogers 4350 B, for example, is \u0026lt; 0.5 mm\/m or mils\/in.\\r\\n\\r\\nPeel strength\\r\\n\\r\\nIt is the measure of the bond strength between the copper conductor and the dielectric material. It is expressed in pounds of force per linear inch (PLI, or average load per conductor width) required to separate bonded materials where the angle of separation is 180 degrees. The peel strength of FR370HR is 1.14 N\/mm or 6.5 lb\/in.\\r\\nIPC and slash number\\r\\nUsing this option, the right IPC standard applicable to your circuit board can be selected.\\r\\n\\r\\nThe electrical performance of the signal traces is affected by the materials used in the circuit board. Sierra Circuits\u0027 PCB Material Selector tool assists you in comparing and selecting the materials that best meet your design requirements.\u0022}\u003C\/script\u003E\u003C!-- \/ Schema optimized by Schema Pro --\u003E"}}};
+	dataLayer.push( dataLayer_content );
+</script>
+<script type="text/rocketlazyloadscript" data-cfasync="false" data-pagespeed-no-defer>
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WS2QLL5');
+</script>
+<!-- End Google Tag Manager for WordPress by gtm4wp.com --><link rel="llms-sitemap" href="https://www.protoexpress.com/llms.txt" />
+  <script type="text/rocketlazyloadscript">
+    // remove the visibility for icon befor DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', (event) => {
+      let userIcon = document.querySelector('[title="User Team"]');
+      let userIconList = document.getElementById('user-customer-portal');
+      userIcon.setAttribute("style", "visibility:hidden;");
+      userIconList.setAttribute("style", "visibility:hidden;");
+    });
+  </script>
+<noscript><style id="rocket-lazyload-nojs-css">.rll-youtube-player, [data-lazy-src]{display:none !important;}</style></noscript><meta name="generator" content="WP Rocket 3.23.2.2" data-wpr-features="wpr_delay_js wpr_defer_js wpr_lazyload_images wpr_lazyload_iframes wpr_preconnect_external_domains wpr_auto_preload_fonts wpr_oci wpr_minify_css wpr_preload_links wpr_desktop" /></head>
+
+<body class="">
+  
+<!-- GTM Container placement set to manual -->
+<!-- Google Tag Manager (noscript) -->
+				<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WS2QLL5" height="0" width="0" style="display:none;visibility:hidden" aria-hidden="true"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->  <a href="#sr-main-content" class="sr-only sr-only-focusable">Skip to main content</a>
+  <div  id="wrapper">
+    <div  id="sticky_navigation_wrapper">
+      <div  id="sticky_navigation">
+        <div class="topbar">
+  <div  class="container">
+    <div class="row align-items-center justify-content-between topbar__logo-section">
+      <div class="col-md-6 col-lg-6 headerpad">
+        <div class="topbar__left d-flex align-items-center">
+          <a class="logo-link" href="https://www.protoexpress.com" title="Sierra Circuits Logo">
+            <img fetchpriority="high" src="https://www.protoexpress.com/wp-content/uploads/2021/04/logo.svg" alt="Sierra Circuits" />
+          </a>
+          <div class="topbar__message">
+            Best-in-Class PCB Fabrication, Assembly, &amp; Components. <br />
+            Industry Leading PCB Designer's Tools.
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-6 col-xs-12  topbar__quote-section position-relative">
+        <div class="search-box">
+          <form action="https://www.protoexpress.com/" method="get">
+            <p class="search-btn"> <input type="text" name="s" value="" class="search-input" placeholder="Looking for something?">
+                            <span id="magnifying-glass">
+                <input type="submit" value="">
+              </span>
+            </p>
+          </form>
+        </div>
+        <div class="topbar__right">
+          <div class="d-flex align-items-center justify-content-end">
+                        <div class="topbar__contact mr-2">
+              <p class="mt-0 mb-0">
+                <span class="d-none d-md-block">Speak to an Account Manager</span>
+                <span class="d-block">
+                  <img width="10" height="15" src="https://www.protoexpress.com/wp-content/themes/sierra-circuits/assets/svg/phone.svg" alt="Telephone" />
+                  <a href="tel:+1 (800) 763-7503">+1 (800) 763-7503</a>
+                </span>
+              </p>
+
+            </div>
+            <div class="home-quote-now">
+                            <a href="#quoter" class="button pill lity-pop " data-lity>Quote Now</a>
+              <a href="https://www.protoexpress.com/facility-tour/" class="button pill lity-pop">Book a Tour</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>        <header>
+          <div class="container">
+            <div class="row mx-0">
+              <nav class="col-lg-12 col-md-12 col-sm-12 px-0">
+                <div id="menuToggle">
+                  <input type="checkbox" class="hamburg-toggler" />
+                  <span class="hamburg-menu"></span>
+                  <span class="hamburg-menu"></span>
+                  <span class="hamburg-menu"></span>
+                  <ul id="menu-main-menu" class="top-navigation justify-content-end"><li id="menu-item-1712" class="sub-menu--tools-design menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children dropdown top-level-menu-item menu-item-1712"><a href="https://www.protoexpress.com/products/" class="nav-link dropdown-toggle">PCB Products</a><input type="checkbox" name="menuopt" class="subnav-toggler" id="subnav-toggler-5">
+<ul class="sub-menu sub-menu--products arrow-top">
+	<li id="menu-item-2350" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children dropdown top-level-menu-item menu-item-2350"><span class="sub-menu-header">Order PCBs Online</span>
+	<ul class="sub-menu sub-menu--products arrow-top">
+		<li id="menu-item-10174" class="menu-item menu-item-type-post_type menu-item-object-products menu-item-10174"><a href="https://www.protoexpress.com/products/turnkey-pro/">Turnkey PRO</a></li>
+		<li id="menu-item-10175" class="menu-item menu-item-type-post_type menu-item-object-products menu-item-10175"><a href="https://www.protoexpress.com/products/online-pcb-manufacturing/">Web PCB</a></li>
+		<li id="menu-item-12955" class="menu-item menu-item-type-post_type menu-item-object-products menu-item-12955"><a href="https://www.protoexpress.com/products/no-touch/">No Touch PCB</a></li>
+		<li id="menu-item-10303" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-10303"><a href="https://www.protoexpress.com/kicad-quote-plugin/">KiCad Quote Plugin</a></li>
+	</ul>
+</li>
+	<li id="menu-item-2349" class="sb-mn-brd menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children dropdown top-level-menu-item menu-item-2349"><span class="sub-menu-header">Advanced PCBs</span>
+	<ul class="sub-menu sub-menu--products arrow-top">
+		<li id="menu-item-10176" class="menu-item menu-item-type-post_type menu-item-object-products menu-item-10176"><a href="https://www.protoexpress.com/products/rigid-pcb/">Rigid PCBs</a></li>
+		<li id="menu-item-10177" class="menu-item menu-item-type-post_type menu-item-object-products menu-item-10177"><a href="https://www.protoexpress.com/products/flex-and-rigid-flex-pcb/">Flex &#038; Rigid Flex PCBs</a></li>
+		<li id="menu-item-10178" class="menu-item menu-item-type-post_type menu-item-object-products menu-item-10178"><a href="https://www.protoexpress.com/products/hdi-printed-circuit-boards/">HDI PCBs</a></li>
+		<li id="menu-item-10179" class="menu-item menu-item-type-post_type menu-item-object-products menu-item-10179"><a href="https://www.protoexpress.com/products/microelectronics-pcb/">Microelectronics PCBs</a></li>
+		<li id="menu-item-10180" class="menu-item menu-item-type-post_type menu-item-object-products menu-item-10180"><a href="https://www.protoexpress.com/products/mil-spec-pcb/">Aerospace &#038; Defense PCBs</a></li>
+		<li id="menu-item-10181" class="menu-item menu-item-type-post_type menu-item-object-products menu-item-10181"><a href="https://www.protoexpress.com/products/controlled-impedance/">Controlled Impedance PCBs</a></li>
+		<li id="menu-item-14504" class="menu-item menu-item-type-post_type menu-item-object-products menu-item-14504"><a href="https://www.protoexpress.com/products/rf-and-microwave-pcbs/">RF &#038; Microwave PCBs</a></li>
+	</ul>
+</li>
+	<li id="menu-item-2351" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children dropdown top-level-menu-item menu-item-2351"><span class="sub-menu-header">PCB Services</span>
+	<ul class="sub-menu sub-menu--products arrow-top">
+		<li id="menu-item-10182" class="spl-event menu-item menu-item-type-post_type menu-item-object-products menu-item-10182"><a href="https://www.protoexpress.com/products/pcb-assembly/">PCB Assembly</a></li>
+		<li id="menu-item-13157" class="spl-event menu-item menu-item-type-post_type menu-item-object-products menu-item-13157"><a href="https://www.protoexpress.com/products/pcb-component-sourcing-and-stocking/">Component Sourcing and Stocking</a></li>
+		<li id="menu-item-10451" class="menu-item menu-item-type-post_type menu-item-object-products menu-item-10451"><a href="https://www.protoexpress.com/products/flying-probe-testing-for-pcb-assembly/">Flying Probe Testing</a></li>
+		<li id="menu-item-25375" class="spl-event menu-item menu-item-type-post_type menu-item-object-page menu-item-25375"><a href="https://www.protoexpress.com/pcb-design-support/">PCB Design Support</a></li>
+		<li id="menu-item-1704" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1704"><a href="https://www.protoexpress.com/industries/">Industries We Serve</a></li>
+	</ul>
+</li>
+</ul>
+</li><li id="menu-item-1697" class="sub-menu--tools-design menu-item menu-item-type-post_type menu-item-object-page current-menu-ancestor current_page_ancestor menu-item-has-children dropdown top-level-menu-item menu-item-1697"><a href="https://www.protoexpress.com/tools/" class="nav-link dropdown-toggle">Designer&#8217;s Tools</a><input type="checkbox" name="menuopt" class="subnav-toggler" id="subnav-toggler-5">
+<ul class="sub-menu sub-menu--products arrow-top">
+	<li id="menu-item-2359" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-has-children dropdown top-level-menu-item menu-item-2359"><span class="sub-menu-header">PCB Planners</span>
+	<ul class="sub-menu sub-menu--products arrow-top">
+		<li id="menu-item-10185" class="menu-item menu-item-type-post_type menu-item-object-tools menu-item-10185"><a href="https://www.protoexpress.com/tools/pcb-stackup-designer/">Stackup Designer</a></li>
+		<li id="menu-item-10186" class="menu-item menu-item-type-post_type menu-item-object-tools current-menu-item menu-item-10186"><a href="https://www.protoexpress.com/tools/pcb-material-selector/" aria-current="page">Material Selector</a></li>
+		<li id="menu-item-25701" class="menu-item menu-item-type-post_type menu-item-object-tools menu-item-25701"><a href="https://www.protoexpress.com/tools/component-selector/">Component Selector</a></li>
+	</ul>
+</li>
+	<li id="menu-item-2356" class="sb-mn-brd menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children dropdown top-level-menu-item menu-item-2356"><span class="sub-menu-header">Calculators</span>
+	<ul class="sub-menu sub-menu--products arrow-top">
+		<li id="menu-item-10188" class="menu-item menu-item-type-post_type menu-item-object-tools menu-item-10188"><a href="https://www.protoexpress.com/tools/pcb-impedance-calculator/">Impedance Calculator</a></li>
+		<li id="menu-item-10187" class="menu-item menu-item-type-post_type menu-item-object-tools menu-item-10187"><a href="https://www.protoexpress.com/tools/via-impedance-calculator/">Via Impedance Calculator</a></li>
+		<li id="menu-item-10189" class="menu-item menu-item-type-post_type menu-item-object-tools menu-item-10189"><a href="https://www.protoexpress.com/tools/trace-width-and-current-capacity-calculator/">Trace Width and Current <span class="breakClass">Capacity Calculator</span></a></li>
+		<li id="menu-item-10190" class="menu-item menu-item-type-post_type menu-item-object-tools menu-item-10190"><a href="https://www.protoexpress.com/tools/via-current-capacity-temperature-rise-calculator/">Via Current Capacity Calculator</a></li>
+		<li id="menu-item-10191" class="menu-item menu-item-type-post_type menu-item-object-tools menu-item-10191"><a href="https://www.protoexpress.com/tools/signal-layer-estimator/">Signal &#038; Plane Layer Estimator</a></li>
+		<li id="menu-item-10192" class="menu-item menu-item-type-post_type menu-item-object-tools menu-item-10192"><a href="https://www.protoexpress.com/tools/pcb-conductor-spacing-and-voltage-calculator/">Conductor Spacing &#038; Voltage Calculator</a></li>
+		<li id="menu-item-13060" class="menu-item menu-item-type-post_type menu-item-object-tools menu-item-13060"><a href="https://www.protoexpress.com/tools/via-thermal-resistance-calculator/">Via Thermal Resistance Calculator</a></li>
+		<li id="menu-item-10193" class="menu-item menu-item-type-post_type menu-item-object-tools menu-item-10193"><a href="https://www.protoexpress.com/tools/transmission-line-reflection-calculator/">Transmission Line Reflection Calculator</a></li>
+		<li id="menu-item-10194" class="menu-item menu-item-type-post_type menu-item-object-tools menu-item-10194"><a href="https://www.protoexpress.com/tools/bandwidth-rise-time-and-critical-length-calculator/">Bandwidth Rise Time and Critical Length Calculator</a></li>
+		<li id="menu-item-10195" class="menu-item menu-item-type-post_type menu-item-object-tools menu-item-10195"><a href="https://www.protoexpress.com/tools/rlc-resonant-frequency-and-impedance-calculator/">RLC Resonant Frequency and Impedance Calculator</a></li>
+		<li id="menu-item-10196" class="menu-item menu-item-type-post_type menu-item-object-tools menu-item-10196"><a href="https://www.protoexpress.com/tools/maximum-via-stub-length-calculator/">Maximum Via Stub Length Calculator</a></li>
+		<li id="menu-item-21770" class="menu-item menu-item-type-post_type menu-item-object-tools menu-item-21770"><a href="https://www.protoexpress.com/tools/power-distribution-network-analyzer/">PDN Analyzer</a></li>
+	</ul>
+</li>
+	<li id="menu-item-2357" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children dropdown top-level-menu-item menu-item-2357"><span class="sub-menu-header">File Checkers</span>
+	<ul class="sub-menu sub-menu--products arrow-top">
+		<li id="menu-item-10197" class="menu-item menu-item-type-post_type menu-item-object-tools menu-item-10197"><a href="https://www.protoexpress.com/tools/pcb-dfm-tool/">Better DFM</a></li>
+		<li id="menu-item-10198" class="menu-item menu-item-type-post_type menu-item-object-tools menu-item-10198"><a href="https://www.protoexpress.com/tools/bom-checker-tool/">BOM Cleaner</a></li>
+		<li id="menu-item-15761" class="menu-item menu-item-type-post_type menu-item-object-tools menu-item-15761"><a href="https://www.protoexpress.com/tools/bom-compare-tool/">Compare 2 BOMs</a></li>
+	</ul>
+</li>
+</ul>
+</li><li id="menu-item-16428" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-16428"><a target="_blank" href="https://sierraconnect.protoexpress.com/?utm_source=protoexpress.com&#038;utm_medium=display&#038;utm_campaign=homepage%2Bmenu%2Boct%2B2023" class="nav-link">Community</a></li><li id="menu-item-862" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-862"><a href="https://www.protoexpress.com/about-sierra-circuits/" class="nav-link">About</a></li><li id="menu-item-32832" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-32832"><a href="https://www.protoexpress.com/careers/" class="nav-link">Careers</a></li><li id="menu-item-2320" class="align-menu-right sub-menu--tools-design menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children dropdown top-level-menu-item menu-item-2320"><a href="#" class="nav-link dropdown-toggle">Resources</a><input type="checkbox" name="menuopt" class="subnav-toggler" id="subnav-toggler-5">
+<ul class="sub-menu sub-menu--products arrow-top">
+	<li id="menu-item-10199" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children dropdown top-level-menu-item menu-item-10199"><span class="sub-menu-header">Excellence</span>
+	<ul class="sub-menu sub-menu--products arrow-top">
+		<li id="menu-item-10200" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-10200"><a href="https://www.protoexpress.com/pcb-manufacturing-capabilities/">Capabilities &#038; Specs</a></li>
+		<li id="menu-item-10201" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-10201"><a href="https://www.protoexpress.com/pcb-certificates/">PCB Certifications</a></li>
+		<li id="menu-item-10202" class="menu-item menu-item-type-post_type menu-item-object-knowledge-base menu-item-10202"><a href="https://www.protoexpress.com/kb/supplier-quality-requirements/">Supplier Quality Requirements</a></li>
+	</ul>
+</li>
+	<li id="menu-item-10203" class="sb-mn-brd menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children dropdown top-level-menu-item menu-item-10203"><span class="sub-menu-header">Education Center</span>
+	<ul class="sub-menu sub-menu--products arrow-top">
+		<li id="menu-item-10743" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-10743"><a href="https://www.protoexpress.com/facility-tour/">Facility Tour</a></li>
+		<li id="menu-item-35450" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-35450"><a href="https://www.protoexpress.com/pcb-design-ama/">PCB Design AMA</a></li>
+		<li id="menu-item-11179" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-11179"><a href="https://www.protoexpress.com/events/">Webinars &#038; Seminars</a></li>
+		<li id="menu-item-10207" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-10207"><a href="https://www.protoexpress.com/webinar/">Webinars Slides / Recordings</a></li>
+		<li id="menu-item-10204" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-10204"><a href="https://www.protoexpress.com/faq/">FAQ</a></li>
+		<li id="menu-item-10205" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-10205"><a href="https://www.protoexpress.com/kb/">Knowledge Base</a></li>
+		<li id="menu-item-10206" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-10206"><a href="https://www.protoexpress.com/pcb-design-guides/">Design Guides</a></li>
+		<li id="menu-item-10208" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-10208"><a href="https://www.protoexpress.com/blog/">Blog</a></li>
+	</ul>
+</li>
+</ul>
+</li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item-has-children dropdown top-level-menu-item" id="sierra-user-menu">
+                        <input type="checkbox" name="menuopt" class="subnav-toggler" id="subnav-toggler-6" />
+                            <a title="User Team" href="#" class="nav-link dropdown-toggle" aria-haspopup="true">
+                                <svg data-cache_svg="icon-nav-person" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-person-circle cache_me_outside" viewBox="0 0 16 16">
+                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"></path>
+                                    <path fill-rule="evenodd"
+                                          d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"></path>
+                                </svg>
+                                <span class="caret"></span>
+                            </a>
+                           <ul role="menu" class="sub-menu sub-menu--users arrow-top align-sub-menu-right" id="user-customer-portal">
+                                <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item-has-children dropdown">
+                                    <span class="sub-menu-header">Order Management</span>
+                                    <ul role="menu" class="sub-menu arrow-top"><li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement">
+                                <a title="Start an Online Quote" href="https://www.protoexpress.com/customer-portal/instant-online-quote">Start an Online Quote</a>
+                              </li></ul></li>
+            <span class="sub-menu-header">Customer Care</span>
+            <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement">
+              <a title="FAQs" href="/customer-care">Contact Us</a>
+            </li>
+            <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" class="menu-item-has-children dropdown">
+                        <span class="sub-menu-header">Account</span>
+                            <ul role="menu" class="sub-menu arrow-top">
+                            <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement">
+                                <a title="Sign In" href="https://www.protoexpress.com/login">Sign In</a>
+                              </li>
+                              <li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement">
+                              <a title="Create an Account" href="https://www.protoexpress.com/signup/?wordPressToolsLink=https://www.protoexpress.com/tools/pcb-material-selector/">Create an Account</a>
+                            </li></ul></li></ul></li></ul>                </div>
+              </nav>
+            </div>
+          </div>
+        </header>
+      </div>
+    </div> <section  class="pt-3 condensed_header has-black-bg container">
+   <div  class="pt-0 mt-0 has-black-bg pill_row d-flex mb-3">
+     <div class="col-auto px-0">
+       <h5 class="d-inline-block primary_yellow pr-4 my-0 py-0">Tools for Designers: </h5>
+     </div>
+     <div class="col-auto pill_row d-flex  px-0">
+       
+        <a href="https://www.protoexpress.com/tools/component-selector/" class="button button-primary inline-block pill mr-2">Component Selector</a>
+        
+        <a href="https://www.protoexpress.com/tools/power-distribution-network-analyzer/" class="button button-primary inline-block pill mr-2">Power Distribution Network Analyzer</a>
+        
+        <a href="https://www.protoexpress.com/tools/bom-compare-tool/" class="button button-primary inline-block pill mr-2">BOM Compare Tool</a>
+        
+        <a href="https://www.protoexpress.com/tools/via-thermal-resistance-calculator/" class="button button-primary inline-block pill mr-2">Via Thermal Resistance Calculator</a>
+        
+        <a href="https://www.protoexpress.com/tools/via-impedance-calculator/" class="button button-primary inline-block pill mr-2">Via Impedance Calculator</a>
+        
+        <a href="https://www.protoexpress.com/tools/maximum-via-stub-length-calculator/" class="button button-primary inline-block pill mr-2">Maximum Via Stub Length Calculator</a>
+        
+        <a href="https://www.protoexpress.com/tools/rlc-resonant-frequency-and-impedance-calculator/" class="button button-primary inline-block pill mr-2">RLC Resonant Frequency and Impedance Calculator</a>
+        
+        <a href="https://www.protoexpress.com/tools/bandwidth-rise-time-and-critical-length-calculator/" class="button button-primary inline-block pill mr-2">Bandwidth, Rise Time and Critical Length Calculator</a>
+        
+        <a href="https://www.protoexpress.com/tools/transmission-line-reflection-calculator/" class="button button-primary inline-block pill mr-2">Transmission Line Reflection Calculator</a>
+        
+        <a href="https://www.protoexpress.com/tools/pcb-conductor-spacing-and-voltage-calculator/" class="button button-primary inline-block pill mr-2">PCB Conductor Spacing and Voltage Calculator</a>
+        
+        <a href="https://www.protoexpress.com/tools/signal-layer-estimator/" class="button button-primary inline-block pill mr-2">Signal and Plane Layer Estimator</a>
+        
+        <a href="https://www.protoexpress.com/tools/via-current-capacity-temperature-rise-calculator/" class="button button-primary inline-block pill mr-2">Via Current Capacity and Temperature Rise Calculator</a>
+        
+        <a href="https://www.protoexpress.com/tools/pcb-impedance-calculator/" class="button button-primary inline-block pill mr-2">Impedance Calculator</a>
+        
+        <a href="https://www.protoexpress.com/tools/trace-width-and-current-capacity-calculator/" class="button button-primary inline-block pill mr-2">Trace Width, Current Capacity and Temperature Rise Calculator</a>
+        
+        <a href="https://www.protoexpress.com/tools/pcb-dfm-tool/" class="button button-primary inline-block pill mr-2">Better DFM</a>
+        
+        <a href="https://www.protoexpress.com/tools/bom-checker-tool/" class="button button-primary inline-block pill mr-2">BOM Checker</a>
+        
+        <a href="https://www.protoexpress.com/tools/pcb-material-selector/" class="button button-primary inline-block pill mr-2">Material Selector</a>
+        
+        <a href="https://www.protoexpress.com/tools/pcb-stackup-designer/" class="button button-primary inline-block pill mr-2">Stackup Designer</a>
+             </div>
+   </div>
+        <div  style="display: none;" id="relatedcategory">PCB Planners</div>
+      <hr class="page-title__divider--dark mb-5" />
+   <h1 class="page-title">
+     PCB Material Selector   </h1>
+   <h2 class="h3style mb-3"></h2>
+   <a href="https://www.protoexpress.com/material-selector-tool/" class="button d-inline-block">
+     Get Started Now   </a>
+ </section>
+ <section  class="body_content has-black-bg tools-content">
+   <div class="container">
+     <div class="row pb-5">
+       <div class="col-lg-8 col-md-12 col-xs-12">
+         <p>PCB material selection is the first step in your <a href="/products/pcb-layout-optimization">design</a> process. Selecting the dielectric material for your design is very important, as it can impact the overall performance of the board. To help board designers determine what sort of material best suits their design needs, we have developed a circuit board material selector.</p>
+<p>Sierra Circuits&#8217; PCB Material Selector allows you to search and compare the properties and specifications of board materials that fit your application. There are 50+ rigid materials and 10+ flex materials available in this tool. For each material, there are various parameters listed, such as dielectric constant, dissipation factor, glass transition temperature, decomposition temperature, moisture absorption, etc.</p>
+<p><b>Features of our material selector tool:</b></p>
+<ul>
+<li>Can quickly find the materials (rigid or flex) suitable for your application</li>
+<li>Provides a datasheet for any given material instantaneously</li>
+<li>Allows you to compare materials that fit your application criteria, such as IPC revisions, slash numbers, Tg, Dk, and lead-free compatibility</li>
+</ul>
+<h2>How to select the best PCB material</h2>
+<p>Our circuit board material tool allows you to search and compare PCB materials that fit your application and meet your requirements.</p>
+<figure id="attachment_2010" aria-describedby="caption-attachment-2010" style="width: 718px" class="wp-caption aligncenter"><a href="https://www.protoexpress.com/material-selector-tool/"><img fetchpriority="high" decoding="async" id="toolsimage" class="wp-image-2010" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20718%20436'%3E%3C/svg%3E" alt="Material Selection tool interface" width="718" height="436" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2021/04/image1-3.png" /><noscript><img fetchpriority="high" decoding="async" id="toolsimage" class="wp-image-2010" src="https://www.protoexpress.com/wp-content/uploads/2021/04/image1-3.png" alt="Material Selection tool interface" width="718" height="436" /></noscript></a><figcaption id="caption-attachment-2010" class="wp-caption-text">Sierra Circuits PCB material selector</figcaption></figure>
+<p>All the criteria for comparative selection are listed below:</p>
+<h3>Initial selection criteria</h3>
+<p>In the <b>Board Properties</b> section, you can choose the following options:</p>
+<ol>
+<li style="list-style-type: none;">
+<ol>
+<li><b>Material type</b> (flex or rigid)</li>
+<li><b>Halogen-free</b> (yes or all)</li>
+</ol>
+</li>
+</ol>
+<ul>
+<li aria-level="1"><b>Very high thermal conductivity</b></li>
+</ul>
+<h4>Material type: Rigid</h4>
+<p>If you select rigid as the material type and click on the “Go/Submit” button, our Material Selector lists out all the available rigid materials (even if no criteria are selected).</p>
+<p>After selecting the required criteria, click on the “View” button to view the properties of that particular material. To compare the properties, select two or more different materials and hit the “Compare” button. A new window pops up comparing the properties of the chosen materials.</p>
+<h4>Material type: Flex</h4>
+<p>If you select flex as the material type and click the “<b>GO/SUBMIT”</b> button, our circuit board material tool lists out all the available flex materials. You can now have a look at all the materials along with their properties as shown here.</p>
+<p><a href="https://www.protoexpress.com/material-selector-tool/"><img decoding="async" class="wp-image-2011 aligncenter" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20725%20363'%3E%3C/svg%3E" alt="Flex materials list" width="725" height="363" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2021/04/image3-1.png" /><noscript><img decoding="async" class="wp-image-2011 aligncenter" src="https://www.protoexpress.com/wp-content/uploads/2021/04/image3-1.png" alt="Flex materials list" width="725" height="363" /></noscript></a></p>
+<p>By clicking the “View” button, you can view the properties of that particular material. To compare the properties, select two different materials by clicking the checkbox and hitting the <strong>Compare</strong> button. A new window pops up comparing the properties of the chosen materials.</p>
+<p><b>Halogen-free</b></p>
+<p>Select the option <b>Yes</b> to list out halogen-free materials. If the option <b>All</b> is selected, the tool considers all the available materials present. This filter only applies to rigid materials.</p>
+<p><b>Very high thermal conductivity</b></p>
+<p>Thermal conductivity is the ability of a material to transfer heat by conduction. It is usually represented by the symbol K, and its units are W/mK (watts per meter per degree Kelvin)</p>
+<p>Select the Very High Thermal Conductivity option if you require thermal conductivity greater than 1W/mK.</p>
+<p>The key material properties that are used as a criterion for selection/filtering are categorized in the following table:</p>
+<table class="tool-table specs-table table">
+<tbody>
+<tr>
+<td><b>Electrical properties</b></td>
+<td><b>Thermal properties</b></td>
+<td><b>Chemical properties</b></td>
+<td><b>Mechanical properties</b></td>
+</tr>
+<tr>
+<td>Dielectric constant (Dk)</td>
+<td>Glass transition temperature (Tg)</td>
+<td>Moisture absorption (%)</td>
+<td>Tensile modulus (Mpsi)</td>
+</tr>
+<tr>
+<td>Dissipation factor (Df)/ Loss tangent (Tanδ)</td>
+<td>Decomposition temperature (Td)</td>
+<td>CAF resistance</td>
+<td>Tensile strength (Kpsi)</td>
+</tr>
+<tr>
+<td>CTI class/Voltage</td>
+<td>Thermal conductivity (K)</td>
+<td></td>
+<td>Flexural strength (Kpsi)</td>
+</tr>
+<tr>
+<td>Dielectric electrical strength (V/Mil)</td>
+<td>Coefficient of thermal expansion (CTE)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Max signal frequency content (GHz)</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Highest data transfer rate (Gbps)</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Fastest signal rise/fall time (ns)</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3><b>Electrical properties</b></h3>
+<p>In this section, fill in the fields to narrow down the required material.</p>
+<p><a href="https://www.protoexpress.com/material-selector-tool/"><img decoding="async" class="wp-image-2012 aligncenter" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20698%20395'%3E%3C/svg%3E" alt="Electrical properties of circuit board materials" width="698" height="395" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2021/04/image2-2.png" /><noscript><img decoding="async" class="wp-image-2012 aligncenter" src="https://www.protoexpress.com/wp-content/uploads/2021/04/image2-2.png" alt="Electrical properties of circuit board materials" width="698" height="395" /></noscript></a></p>
+<p><b>Speed/loss</b></p>
+<p>Based on the operating frequency (speed) and associated loss, PCB materials are categorized as:</p>
+<ol>
+<li>Normal speed/normal loss</li>
+<li>Medium speed/medium loss</li>
+<li>High speed/low loss</li>
+<li>Very high speed/very low loss</li>
+</ol>
+<p>Depending on your application, you can choose one of these 4 categories. Select option “All” to view all the materials available, irrespective of these categories.</p>
+<p>The dissipation factor (Df) is the most important in determining the extent of signal loss in a PCB material; a higher value of Df leads to a higher loss. Furthermore, the signal loss also increases with the frequency or speed of operation. Therefore, for controlling the loss at high frequencies or high speeds, choose a PCB material with a low Df value. Thus, the range of Df values is the criteria for the above speed/loss categorization.</p>
+<p>The dielectric constant (Dk) of a PCB material changes with frequency. Large variations of Dk with frequency cause larger signal distortion/rise time degradation, which becomes less acceptable for high-frequency or high-speed signals. Therefore, as the signal frequency or speed increases, it is desirable to have less variation in Dk with frequency. The need for less variation of Dk with frequency for low-loss PCB materials has been recognized and implemented by all board material manufacturers.</p>
+<p>If you would like to learn more about losses in PCB transmission lines, see <a href="/blog/losses-in-pcb-transmission-lines/">losses in PCB transmission lines</a>.</p>
+<p><b>Max signal frequency content (GHz), or fastest signal rise/fall time (ns), or highest data transfer rate (Gbps)</b></p>
+<p>You can also choose the materials based on maximum signal frequency content (GHz)/fastest signal rise or fall time (ns)/highest data transfer rate (Gbps).</p>
+<p>These 3 parameters are related to each other; if any one of the aforementioned values is specified, the material selection tool automatically calculates the remaining two values. For example, if you input the <strong>maximum signal frequency content</strong>, it automatically displays the corresponding values of <strong>the fastest signal rise/fall time (ns) </strong>and the <strong>highest data transfer rate (Gbps)</strong>.</p>
+<p><b>Dielectric constant (Dk) </b></p>
+<p>The Dk of most PCB materials ranges from 2 to 10. To choose the appropriate range out of this, a slider button has been provided in the Material Selector.</p>
+<p>The Dk of a PCB material largely determines the trace width of controlled impedance transmission lines on the circuit board; the greater the Dk value, the lesser the trace width will be for the same target controlled impedance value. A higher Dk value also leads to higher dielectric loss. In general, high-speed/low-loss materials have lower Dk values. Thus, Dk becomes an important electrical performance criterion for material selection. For normal speed/normal loss materials, the Dk varies considerably with frequency; for very high speed/very low loss materials, the Dk remains effectively constant with frequency. The Dk of the most commonly used board material- FR4- for example FR370HR- is 3.92 @ 10Ghz.</p>
+<p>The values of Dk specified in our Material Selector are with a material’s resin content at 50% (as per IPC guidelines for the listing of properties in the material’s datasheet). Since Dk varies with frequency as well, we have used the values at 10 GHz in this tool.</p>
+<p>The range of the above-mentioned properties can be set using the respective sliding button.</p>
+<p><b>Dissipation factor (Df)</b></p>
+<p>A material’s dissipation factor is the most important factor in determining the signal attenuation or signal loss, as signals travel along a PCB conductor or trace. The lower a material’s dissipation factor is, the lesser will be the signal loss. Thus, Df is the most important selection criterion from the signal loss perspective. The Df of FR4 material FR370HR is 0.025 @ 10Ghz.</p>
+<p>The values of Df specified in our Material Selector are with a material’s resin content at 50% (as per IPC guidelines for the listing of properties in the material’s datasheet). Since Df varies with frequency as well, we have used the values at 10 GHz in this tool.</p>
+<p><b>CTI class/voltage</b><b> (comparative tracking index)</b></p>
+<p>It is a measure of the voltage threshold above which electric breakdown can occur between 2 electrical conductors on the surface of a material. The smaller the CTI class value, the higher the threshold voltage. The CTI of the most commonly used PCB material- FR4- for example FR370HR- is CTI Class 3 with the electric breakdown voltage range being 175V-249V.</p>
+<p><b>Dielectric electrical strength</b></p>
+<p>Electrical strength, given in volts per unit thickness, measures the maximum electrical field a board material can withstand in the Z direction before its electrical breakdown. In this tool, the unit used is volts/mil. The dielectric electrical strength of the most commonly used PCB material- FR4- for example, FR370HR- is 1350 V/mil. Most of the IPC-certified materials have a dielectric electrical strength &gt;= 750 V/mil.</p>
+<p><b>Volume resistivity</b></p>
+<p>It is the electrical resistance of any material of unit length and unit cross-sectional area (A) when measured across the length (l). Volume resistivity is expressed in units of Ω-cm (ohm-cm). For a dielectric material, since resistivity is very high, it is usually expressed in units of MΩ-cm. The volume resistivity of FR4 material, for example, FR370HR, is 3.0 x 108 MΩ-cm.</p>
+<p><img decoding="async" class="wp-image-2013 aligncenter" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20571%20389'%3E%3C/svg%3E" alt="Resistive material with electrical contacts" width="571" height="389" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2021/04/image5-1.png" /><noscript><img decoding="async" class="wp-image-2013 aligncenter" src="https://www.protoexpress.com/wp-content/uploads/2021/04/image5-1.png" alt="Resistive material with electrical contacts" width="571" height="389" /></noscript></p>
+<p>Resistance R = ρ⋅ (L/A); where ρ is the resistivity</p>
+<p>The inverse of volume resistivity is called electrical conductivity (σ), which is expressed in Mhos/cm or Siemens/cm.</p>
+<p><b>Surface resistivity</b></p>
+<p>It is the electrical resistance of any material surface of a square shape of any dimension when measured across one of the dimensions. Surface resistivity is expressed in units of ohms or ohms per square. For a dielectric material, since resistivity is very high, it is usually expressed in units of Mohms or Mohms per square. The surface resistivity of the most commonly used PCB material FR4- for example, FR370HR- is 3.0 x 106 MΩ-cm.</p>
+<p><img decoding="async" class="size-full wp-image-2014 aligncenter" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20591%20356'%3E%3C/svg%3E" alt="Principle of measuring surface resistivity using parallel strip electrodes" width="591" height="356" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2021/04/image4-1.png" /><noscript><img decoding="async" class="size-full wp-image-2014 aligncenter" src="https://www.protoexpress.com/wp-content/uploads/2021/04/image4-1.png" alt="Principle of measuring surface resistivity using parallel strip electrodes" width="591" height="356" /></noscript></p>
+<p>Resistance R = ρₛ(L/W); where ρ is the resistivity</p>
+<p><b>Arc resistance</b></p>
+<p>The ability of an insulating material (measured in terms of time) to withstand a high-voltage electric arc and resist the formation of a conducting path along its surface. The conducting path is due to the chemical and thermal decomposition of the material. For example, the arc resistance of FR4 material FR370HR is 115 seconds.</p>
+<p><b>Dielectric breakdown</b></p>
+<p>It is the voltage at which breakdown of a dielectric material occurs, usually expressed in kV. The dielectric breakdown voltage of FR4 &#8211; FR370HR is 50kV.</p>
+<h3>Thermal properties</h3>
+<p>In this section, you can set the range of various thermal properties like glass transition temperature (Tg), decomposition temperature (Td), coefficient of thermal expansion (CTE) along X, Y, and Z axes, and thermal conductivity (K).</p>
+<p><a href="https://www.protoexpress.com/material-selector-tool/"><img decoding="async" class="wp-image-2015 aligncenter" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20355%20372'%3E%3C/svg%3E" alt="Thermal properties of PCB materials" width="355" height="372" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2021/04/image7-1.png" /><noscript><img decoding="async" class="wp-image-2015 aligncenter" src="https://www.protoexpress.com/wp-content/uploads/2021/04/image7-1.png" alt="Thermal properties of PCB materials" width="355" height="372" /></noscript></a></p>
+<p><b>Glass transition temperature (Tg)</b></p>
+<p>Tg is the temperature around which a circuit board substrate transitions from a glassy, rigid state to a softened, deformable state. Above Tg, the material has a substantially higher coefficient of thermal expansion than that below Tg. However, the deformation with temperature around Tg is completely elastic; when the temperature drops from a temperature higher than Tg to below Tg, the material returns to its original state. For all lead-free (ROHS compatible) materials, the Tg requirement is &gt;= 170 °C. The Tg of FR4 material FR370HR is 180 °C.</p>
+<p><b>Decomposition temperature (Td)</b></p>
+<p>Td is the temperature at which a PCB material chemically decomposes, and the change is completely irreversible; once the material crosses Td, it cannot return to its original state after cooling down and therefore becomes totally non-functional. The Td of FR4 material FR370HR is 340 °C.</p>
+<p><b>Coefficient of thermal expansion (CTE) X/Y and Z direction</b></p>
+<p>It is the rate of expansion of a board material in the X, Y, and Z directions as the temperature increases. These values refer to the rate of expansion below Tg. The X, Y CTE of FR4 material FR370HR is (13,14) ppm/°C. The Z-axis CTE of FR370HR is 45 ppm/°C.</p>
+<p><b>Thermal conductivity</b></p>
+<p>The unit of thermal conductivity (K) is W/mK (Watt per meter per degree Kelvin). The K of most PCB materials is in the range of 0.2 to 0.5 W/m⋅K; for FR4 material FR370HR, it is 0.4 W/mK.</p>
+<p>Based on the values of thermal conductivity, we have categorized them into 3 categories, as given in the drop-down list:</p>
+<ol>
+<li>Normal (≤ 0.5 W/mK)</li>
+<li>High (0.5 to 1 W/mK)</li>
+<li>Very high (&gt; 1 W/mK)</li>
+</ol>
+<p><b>Time to delamination- T260</b></p>
+<p>The amount of time, in minutes, a dielectric material can withstand before failure or delamination at 260°C. The T260 time of FR4- for instance, FR370HR- is 60 minutes.</p>
+<p><b>Time to delamination- T288</b></p>
+<p>The amount of time, in minutes, a dielectric material can withstand before failure or delamination at 288°C. The T288 time of FR370HR is 30 minutes.</p>
+<h3>Chemical properties</h3>
+<p><a href="https://www.protoexpress.com/material-selector-tool/"><img decoding="async" class="wp-image-2016 size-full aligncenter" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20429%20197'%3E%3C/svg%3E" alt="Chemical properties of circuit board materials" width="429" height="197" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2021/04/image6-1.png" /><noscript><img decoding="async" class="wp-image-2016 size-full aligncenter" src="https://www.protoexpress.com/wp-content/uploads/2021/04/image6-1.png" alt="Chemical properties of circuit board materials" width="429" height="197" /></noscript></a></p>
+<p>Here, you can set the range of tolerable moisture absorption of the required material. If a CAF-resistant material is required, you can select the option “<b>Yes</b>” else select the option “<b>All</b>”.</p>
+<p><b>Moisture absorption</b></p>
+<p>It is a measure of the ability of a board material to resist water absorption when immersed in water. It is given by the percentage increase in weight of a dielectric material due to water absorption under controlled conditions as specified in the IPC test method standard IPC-TM-650- 2.6.2.1A. The moisture absorption of FR4 material FR370HR is 0.15%.</p>
+<p><b>CAF resistance</b></p>
+<p>CAF (conductive anodic filament) is a metallic filament that is formed due to electrochemical migration. Formation of CAF might lead to electrical failure. This can be avoided by choosing CAF-resistant materials. Opt for CAF-resistant materials if your circuit board operates under a high-temperature and high-power environment.</p>
+<p><b>Methylene chloride resistance</b></p>
+<p>It is a measure of a material’s chemical resistance; specifically, the ability of a circuit board material to resist methylene chloride absorption.</p>
+<p>Just like moisture absorption, it is expressed by a percentage increase in the weight of a PCB material due to exposure to or soaking in methylene chloride under controlled conditions. Most board materials have methylene chloride resistance values in the range of 0.01% to 0.20%.</p>
+<p><b>Flammability</b></p>
+<p>UL94, or the standard for the safety of flammability of plastic materials, is defined by Underwriter Laboratories. Most PCB materials adhere to UL94 V-0, whose main requirement is that the specimens may not burn with flaming combustion for more than 10 seconds after each application of the test flame.</p>
+<h3>Mechanical properties</h3>
+<p><a href="https://www.protoexpress.com/material-selector-tool/"><img decoding="async" class="wp-image-2017 size-full aligncenter" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20871%20193'%3E%3C/svg%3E" alt="Mechanical properties of PCBs" width="871" height="193" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2021/04/image9-1.png" /><noscript><img decoding="async" class="wp-image-2017 size-full aligncenter" src="https://www.protoexpress.com/wp-content/uploads/2021/04/image9-1.png" alt="Mechanical properties of PCBs" width="871" height="193" /></noscript></a></p>
+<p>Mechanical properties (tensile modulus, tensile strength, and flexural strength) of the required material can be set in this section. The two common units of measurement listed for mechanical properties are Mpa (Megapascals) and Kpsi (Kilopounds per square inch). If the datasheet of a material only lists one unit, you can convert between the two using:</p>
+<p>1 Mpa = 0.145 Kpsi</p>
+<p>1 Kpsi = 6.895 Mpa = 0.703 kg/m²</p>
+<p>Often, there are 2 numbers given when reading the mechanical properties of a material. The mechanical properties exhibit slightly different values in 2 perpendicular directions, namely- MD (Machine Direction) and CD (Cross Direction). The MD is typically the direction that is fed lengthwise into a machine (X-axis), while the CD is perpendicular (Y-axis) to the MD. MD and CD apply to those PCB materials that have the glass-fiber cloth as a reinforcement in the resin system.</p>
+<p><b>Tensile modulus (Young&#8217;s modulus)</b></p>
+<p>It’s a measure of the mechanical strength (and possibly stiffness) of a PCB material. It measures the stress/strain ratio in the same direction that force (tensile or compressive) is applied. Young&#8217;s modulus is also correlated to the stiffness of a material.</p>
+<p>The unit of stress is the same as that of pressure, i.e., force per unit area. Strain, being the ratio of two lengths, is dimensionless. Therefore, the unit of tensile modulus is the same as that of stress, i.e., force per unit area. The most commonly used units are Mpsi (Megapounds per square inch) in the Imperial System and Gpa (Gigapascals) in the Metric System. They are related as:</p>
+<p>1 Mpsi=6.895 Gpa</p>
+<p>The tensile modulus of FR4 material FR370HR is 3.744 Mpsi (MD) and 3.178 Mpsi (CD).</p>
+<p><img decoding="async" class="wp-image-2018 aligncenter" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20627%20395'%3E%3C/svg%3E" alt="Young’s modulus of PCB material" width="627" height="395" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2021/04/image8-1.png" /><noscript><img decoding="async" class="wp-image-2018 aligncenter" src="https://www.protoexpress.com/wp-content/uploads/2021/04/image8-1.png" alt="Young’s modulus of PCB material" width="627" height="395" /></noscript></p>
+<p><b>Tensile strength</b></p>
+<p>The maximum tensile stress a material will withstand while being stretched or pulled before permanent, irreversible deformation in the form of necking takes place. The cross-section starts to significantly contract at the necking site. The tensile strength of the most commonly used PCB material- FR4- for example, FR370HR- is 55.9 Kpsi (MD) and 35.62 (CD).</p>
+<p><img decoding="async" class="wp-image-2019 aligncenter" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20498%20334'%3E%3C/svg%3E" alt="Necking process" width="498" height="334" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2021/04/image11.png" /><noscript><img decoding="async" class="wp-image-2019 aligncenter" src="https://www.protoexpress.com/wp-content/uploads/2021/04/image11.png" alt="Necking process" width="498" height="334" /></noscript></p>
+<p><b>Flexural strength</b></p>
+<p>Flexural strength is a measure of a material’s tendency to bend under load. It is measured as the maximum load per unit area that a material will withstand without fracturing (permanent bending), when supported at the ends and loaded at the center, as shown in the diagram below.</p>
+<p><img decoding="async" class="wp-image-2020 aligncenter" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20567%20357'%3E%3C/svg%3E" alt="Three point bending setup to calculate flexural strength" width="567" height="357" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2021/04/image10-1.png" /><noscript><img decoding="async" class="wp-image-2020 aligncenter" src="https://www.protoexpress.com/wp-content/uploads/2021/04/image10-1.png" alt="Three point bending setup to calculate flexural strength" width="567" height="357" /></noscript></p>
+<p>For homogenous materials, flexural strength is the same as tensile strength, and for composite materials (which most PCB materials are), flexural strength is usually higher than tensile strength. The flexural strength of PCB material FR4- FR370HR- is 90 Kpsi (MD) and 77 Kpsi (CD).</p>
+<p><b>Poisson’s ratio </b></p>
+<p>It is the ratio of the strain in the transverse direction to the strain in the direction in which the load is applied. The Poisson’s ratio of the most commonly used PCB material- FR4- for example FR370HR- is 0.177 (MD) and 0.171 (CD).</p>
+<p><b>Dimensional stability</b></p>
+<p>The amount of dimensional change a dielectric material can undergo when exposed to different degrees of temperature. The units are usually expressed in mm/m or mils/in. The dimensional stability of Rogers 4350 B, for example, is &lt; 0.5 mm/m or mils/in.</p>
+<p><b>Peel strength</b></p>
+<p>It is the measure of the bond strength between the copper conductor and the dielectric material. It is expressed in pounds of force per linear inch (PLI, or average load per conductor width) required to separate bonded materials where the angle of separation is 180 degrees. The peel strength of FR370HR is 1.14 N/mm or 6.5 lb/in.</p>
+<h3>IPC and slash number</h3>
+<p>Using this option, the right IPC standard applicable to your circuit board can be selected.</p>
+<p>The electrical performance of the signal traces is affected by the materials used in the circuit board. Sierra Circuits&#8217; PCB Material Selector tool assists you in comparing and selecting the materials that best meet your design requirements.</p>
+                </div>
+       <div class="col-lg-4 col-md-12 col-xs-12">
+         	<divdiv  class="side-widget --dashed mb-5 dynamic_layout_element">
+	<div class="v-card v-card__has-overlay turnkey_pro--card" id="blog_vcard_badge" name="blog_vcard_badge">
+<div class="v-card__top  position-relative mb-4 text-center text-white"><span class="v-card__badge">Turnkey PRO PCBs</span><br />
+    <svg class="cache_me_outside mt-5" data-cache_svg="cta_icon-upload"  width="41" height="50" viewBox="0 0 41 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11.5415 38H28.7915V20.75H40.2915L20.1665 0.625L0.0415039 20.75H11.5415V38ZM0.0415039 43.75H40.2915V49.5H0.0415039V43.75Z"
+      fill="white"/>
+    </svg></p>
+<h3 class="mb-3 mt-2 text-center">
+      <a href="/customer-portal/qta" class="text-white">Upload Your BOM <span class="breakClass">to start a Quote</span></a><br />
+    </h3>
+<p>    <a href="/customer-portal/qta" class="button button-primary d-inline-block">Start Your Instant Quote</a>
+  </div>
+</div>
+    </divdiv>
+	       </div>
+     </div>
+ </section>
+ <section class="sectionVertSpacingHalf has-lighter-dark-bg">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12 text-white text-center">
+
+
+        <h3 class="mb-5">How to select the best PCB material</h3>
+        <div class="videoWrapper">
+          <p><script type="text/rocketlazyloadscript" data-rocket-src="https://fast.wistia.com/embed/medias/b9yili16mh.jsonp" async></script><script type="text/rocketlazyloadscript" data-rocket-src="https://fast.wistia.com/assets/external/E-v1.js" async></script></p>
+<div class="wistia_responsive_padding" style="padding: 56.25% 0 0 0; position: relative;">
+<div class="wistia_responsive_wrapper" style="height: 100%; left: 0; position: absolute; top: 0; width: 100%;">
+<div class="wistia_embed wistia_async_b9yili16mh seo=false videoFoam=true" style="height: 100%; position: relative; width: 100%;">
+<div class="wistia_swatch" style="height: 100%; left: 0; opacity: 0; overflow: hidden; position: absolute; top: 0; transition: opacity 200ms; width: 100%;"><img decoding="async" style="filter: blur(5px); height: 100%; object-fit: contain; width: 100%;" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" alt="" aria-hidden="true" data-lazy-src="https://fast.wistia.com/embed/medias/b9yili16mh/swatch" /><noscript><img decoding="async" style="filter: blur(5px); height: 100%; object-fit: contain; width: 100%;" src="https://fast.wistia.com/embed/medias/b9yili16mh/swatch" alt="" aria-hidden="true" /></noscript></div>
+</div>
+</div>
+</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ <section class="grid_row tool_grid almostWhiteBg sectionVertSpacing">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10 col-sm-12">
+        <h3 class="color-dark text-center mb-5 ">
+          Sierra Circuits has developed easy-to-use tools for PCB Designers and Electrical Engineers at every stage of circuit board development.        </h3>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+
+            <div class="tool_col col-lg-4 col-md-6 col-12">
+
+        <a class="tool_col_object" href="https://www.protoexpress.com/tools/component-selector/">
+          <img alt="Tool Illustration - Component Selection Tool" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" class="img-fluid" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2024/11/component-selector-tool-icon.svg" /><noscript><img alt="Tool Illustration - Component Selection Tool" src="https://www.protoexpress.com/wp-content/uploads/2024/11/component-selector-tool-icon.svg" class="img-fluid" /></noscript>          <div class="toolCard__texts white-bg">
+            <p>
+              <strong>
+                Component Selection Tool
+              </strong>
+            </p>
+          </div>
+        </a>
+      </div>
+
+            <div class="tool_col col-lg-4 col-md-6 col-12">
+
+        <a class="tool_col_object" href="https://www.protoexpress.com/tools/power-distribution-network-analyzer/">
+          <img alt="Tool Illustration - Power Distribution Network Analyzer" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" class="img-fluid" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2024/05/PDN_tool-image.svg" /><noscript><img alt="Tool Illustration - Power Distribution Network Analyzer" src="https://www.protoexpress.com/wp-content/uploads/2024/05/PDN_tool-image.svg" class="img-fluid" /></noscript>          <div class="toolCard__texts white-bg">
+            <p>
+              <strong>
+                Power Distribution Network Analyzer
+              </strong>
+            </p>
+          </div>
+        </a>
+      </div>
+
+            <div class="tool_col col-lg-4 col-md-6 col-12">
+
+        <a class="tool_col_object" href="https://www.protoexpress.com/tools/sierra-design-portal/">
+          <img alt="Tool Illustration - Sierra Design Portal" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" class="img-fluid" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2021/04/icon-tool-checker-dfm.svg" /><noscript><img alt="Tool Illustration - Sierra Design Portal" src="https://www.protoexpress.com/wp-content/uploads/2021/04/icon-tool-checker-dfm.svg" class="img-fluid" /></noscript>          <div class="toolCard__texts white-bg">
+            <p>
+              <strong>
+                Sierra Design Portal
+              </strong>
+            </p>
+          </div>
+        </a>
+      </div>
+
+            <div class="tool_col col-lg-4 col-md-6 col-12">
+
+        <a class="tool_col_object" href="https://www.protoexpress.com/tools/bom-compare-tool/">
+          <img alt="Tool Illustration - BOM Compare Tool" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" class="img-fluid" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2023/08/bom-compare-tool-icon.svg" /><noscript><img alt="Tool Illustration - BOM Compare Tool" src="https://www.protoexpress.com/wp-content/uploads/2023/08/bom-compare-tool-icon.svg" class="img-fluid" /></noscript>          <div class="toolCard__texts white-bg">
+            <p>
+              <strong>
+                BOM Compare Tool
+              </strong>
+            </p>
+          </div>
+        </a>
+      </div>
+
+            <div class="tool_col col-lg-4 col-md-6 col-12">
+
+        <a class="tool_col_object" href="https://www.protoexpress.com/tools/via-thermal-resistance-calculator/">
+          <img alt="Tool Illustration - Via Thermal Resistance Calculator" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" class="img-fluid" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2023/02/tool_icon_via-thermal-resistance-calculator.svg" /><noscript><img alt="Tool Illustration - Via Thermal Resistance Calculator" src="https://www.protoexpress.com/wp-content/uploads/2023/02/tool_icon_via-thermal-resistance-calculator.svg" class="img-fluid" /></noscript>          <div class="toolCard__texts white-bg">
+            <p>
+              <strong>
+                Via Thermal Resistance Calculator
+              </strong>
+            </p>
+          </div>
+        </a>
+      </div>
+
+            <div class="tool_col col-lg-4 col-md-6 col-12">
+
+        <a class="tool_col_object" href="https://www.protoexpress.com/tools/via-impedance-calculator/">
+          <img alt="Tool Illustration - Via Impedance Calculator" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" class="img-fluid" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2022/07/Via-Impedance-Calculator_tool_icon.svg" /><noscript><img alt="Tool Illustration - Via Impedance Calculator" src="https://www.protoexpress.com/wp-content/uploads/2022/07/Via-Impedance-Calculator_tool_icon.svg" class="img-fluid" /></noscript>          <div class="toolCard__texts white-bg">
+            <p>
+              <strong>
+                Via Impedance Calculator
+              </strong>
+            </p>
+          </div>
+        </a>
+      </div>
+
+            <div class="tool_col col-lg-4 col-md-6 col-12">
+
+        <a class="tool_col_object" href="https://www.protoexpress.com/tools/maximum-via-stub-length-calculator/">
+          <img alt="Tool Illustration - Maximum Via Stub Length Calculator" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" class="img-fluid" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2022/05/icon-tool-max-via-stub-calc.svg" /><noscript><img alt="Tool Illustration - Maximum Via Stub Length Calculator" src="https://www.protoexpress.com/wp-content/uploads/2022/05/icon-tool-max-via-stub-calc.svg" class="img-fluid" /></noscript>          <div class="toolCard__texts white-bg">
+            <p>
+              <strong>
+                Maximum Via Stub Length Calculator
+              </strong>
+            </p>
+          </div>
+        </a>
+      </div>
+
+            <div class="tool_col col-lg-4 col-md-6 col-12">
+
+        <a class="tool_col_object" href="https://www.protoexpress.com/tools/rlc-resonant-frequency-and-impedance-calculator/">
+          <img alt="Tool Illustration - RLC Resonant Frequency and Impedance Calculator" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" class="img-fluid" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2022/04/RLCresonateFreqImpedCalc.svg" /><noscript><img alt="Tool Illustration - RLC Resonant Frequency and Impedance Calculator" src="https://www.protoexpress.com/wp-content/uploads/2022/04/RLCresonateFreqImpedCalc.svg" class="img-fluid" /></noscript>          <div class="toolCard__texts white-bg">
+            <p>
+              <strong>
+                RLC Resonant Frequency and Impedance Calculator
+              </strong>
+            </p>
+          </div>
+        </a>
+      </div>
+
+            <div class="tool_col col-lg-4 col-md-6 col-12">
+
+        <a class="tool_col_object" href="https://www.protoexpress.com/tools/bandwidth-rise-time-and-critical-length-calculator/">
+          <img alt="Tool Illustration - Bandwidth, Rise Time and Critical Length Calculator" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" class="img-fluid" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2022/04/icon-tool-Bandwith-RiseTime-CriticalLengthCalc.svg" /><noscript><img alt="Tool Illustration - Bandwidth, Rise Time and Critical Length Calculator" src="https://www.protoexpress.com/wp-content/uploads/2022/04/icon-tool-Bandwith-RiseTime-CriticalLengthCalc.svg" class="img-fluid" /></noscript>          <div class="toolCard__texts white-bg">
+            <p>
+              <strong>
+                Bandwidth, Rise Time and Critical Length Calculator
+              </strong>
+            </p>
+          </div>
+        </a>
+      </div>
+
+            <div class="tool_col col-lg-4 col-md-6 col-12">
+
+        <a class="tool_col_object" href="https://www.protoexpress.com/tools/transmission-line-reflection-calculator/">
+          <img alt="Tool Illustration - Transmission Line Reflection Calculator" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" class="img-fluid" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2022/04/icon-tool-transmission-line-reflection-calc.svg" /><noscript><img alt="Tool Illustration - Transmission Line Reflection Calculator" src="https://www.protoexpress.com/wp-content/uploads/2022/04/icon-tool-transmission-line-reflection-calc.svg" class="img-fluid" /></noscript>          <div class="toolCard__texts white-bg">
+            <p>
+              <strong>
+                Transmission Line Reflection Calculator
+              </strong>
+            </p>
+          </div>
+        </a>
+      </div>
+
+            <div class="tool_col col-lg-4 col-md-6 col-12">
+
+        <a class="tool_col_object" href="https://www.protoexpress.com/tools/pcb-conductor-spacing-and-voltage-calculator/">
+          <img alt="Tool Illustration - PCB Conductor Spacing and Voltage Calculator" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" class="img-fluid" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2022/03/PCB-Conductor-Spacing-and-Voltage-Calculator-Icon.svg" /><noscript><img alt="Tool Illustration - PCB Conductor Spacing and Voltage Calculator" src="https://www.protoexpress.com/wp-content/uploads/2022/03/PCB-Conductor-Spacing-and-Voltage-Calculator-Icon.svg" class="img-fluid" /></noscript>          <div class="toolCard__texts white-bg">
+            <p>
+              <strong>
+                PCB Conductor Spacing and Voltage Calculator
+              </strong>
+            </p>
+          </div>
+        </a>
+      </div>
+
+            <div class="tool_col col-lg-4 col-md-6 col-12">
+
+        <a class="tool_col_object" href="https://www.protoexpress.com/tools/signal-layer-estimator/">
+          <img alt="Tool Illustration - Signal Layer Estimator" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" class="img-fluid" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2022/03/icon-tool-signal-layer-estimator.svg" /><noscript><img alt="Tool Illustration - Signal Layer Estimator" src="https://www.protoexpress.com/wp-content/uploads/2022/03/icon-tool-signal-layer-estimator.svg" class="img-fluid" /></noscript>          <div class="toolCard__texts white-bg">
+            <p>
+              <strong>
+                Signal Layer Estimator
+              </strong>
+            </p>
+          </div>
+        </a>
+      </div>
+
+            <div class="tool_col col-lg-4 col-md-6 col-12">
+
+        <a class="tool_col_object" href="https://www.protoexpress.com/tools/via-current-capacity-temperature-rise-calculator/">
+          <img alt="Tool Illustration - Via Current Capacity and Temperature Rise Calculator" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" class="img-fluid" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2022/02/via-current-capacitor-tool-icon.svg" /><noscript><img alt="Tool Illustration - Via Current Capacity and Temperature Rise Calculator" src="https://www.protoexpress.com/wp-content/uploads/2022/02/via-current-capacitor-tool-icon.svg" class="img-fluid" /></noscript>          <div class="toolCard__texts white-bg">
+            <p>
+              <strong>
+                Via Current Capacity and Temperature Rise Calculator
+              </strong>
+            </p>
+          </div>
+        </a>
+      </div>
+
+            <div class="tool_col col-lg-4 col-md-6 col-12">
+
+        <a class="tool_col_object" href="https://www.protoexpress.com/tools/pcb-impedance-calculator/">
+          <img alt="Tool Illustration - Impedance Calculator" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" class="img-fluid" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2021/04/icon-tool-calc-impedance-1.svg" /><noscript><img alt="Tool Illustration - Impedance Calculator" src="https://www.protoexpress.com/wp-content/uploads/2021/04/icon-tool-calc-impedance-1.svg" class="img-fluid" /></noscript>          <div class="toolCard__texts white-bg">
+            <p>
+              <strong>
+                Impedance Calculator
+              </strong>
+            </p>
+          </div>
+        </a>
+      </div>
+
+            <div class="tool_col col-lg-4 col-md-6 col-12">
+
+        <a class="tool_col_object" href="https://www.protoexpress.com/tools/trace-width-and-current-capacity-calculator/">
+          <img alt="Tool Illustration - Trace Width, Current and Temp Rise Calculator" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" class="img-fluid" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2021/04/icon-tool-calc-trace_width.svg" /><noscript><img alt="Tool Illustration - Trace Width, Current and Temp Rise Calculator" src="https://www.protoexpress.com/wp-content/uploads/2021/04/icon-tool-calc-trace_width.svg" class="img-fluid" /></noscript>          <div class="toolCard__texts white-bg">
+            <p>
+              <strong>
+                Trace Width, Current and Temp Rise Calculator
+              </strong>
+            </p>
+          </div>
+        </a>
+      </div>
+
+            <div class="tool_col col-lg-4 col-md-6 col-12">
+
+        <a class="tool_col_object" href="https://www.protoexpress.com/tools/pcb-dfm-tool/">
+          <img alt="Tool Illustration - Better DFM" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" class="img-fluid" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2021/04/icon-tool-checker-dfm.svg" /><noscript><img alt="Tool Illustration - Better DFM" src="https://www.protoexpress.com/wp-content/uploads/2021/04/icon-tool-checker-dfm.svg" class="img-fluid" /></noscript>          <div class="toolCard__texts white-bg">
+            <p>
+              <strong>
+                Better DFM
+              </strong>
+            </p>
+          </div>
+        </a>
+      </div>
+
+            <div class="tool_col col-lg-4 col-md-6 col-12">
+
+        <a class="tool_col_object" href="https://www.protoexpress.com/tools/bom-checker-tool/">
+          <img alt="Tool Illustration - BOM Checker" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" class="img-fluid" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2021/04/icon-tool-checker-bom-1.svg" /><noscript><img alt="Tool Illustration - BOM Checker" src="https://www.protoexpress.com/wp-content/uploads/2021/04/icon-tool-checker-bom-1.svg" class="img-fluid" /></noscript>          <div class="toolCard__texts white-bg">
+            <p>
+              <strong>
+                BOM Checker
+              </strong>
+            </p>
+          </div>
+        </a>
+      </div>
+
+            <div class="tool_col col-lg-4 col-md-6 col-12">
+
+        <a class="tool_col_object" href="https://www.protoexpress.com/tools/pcb-material-selector/">
+          <img alt="Tool Illustration - PCB Material Selector" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" class="img-fluid" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2021/04/icon-tool-planner-material_selector.svg" /><noscript><img alt="Tool Illustration - PCB Material Selector" src="https://www.protoexpress.com/wp-content/uploads/2021/04/icon-tool-planner-material_selector.svg" class="img-fluid" /></noscript>          <div class="toolCard__texts white-bg">
+            <p>
+              <strong>
+                PCB Material Selector
+              </strong>
+            </p>
+          </div>
+        </a>
+      </div>
+
+            <div class="tool_col col-lg-4 col-md-6 col-12">
+
+        <a class="tool_col_object" href="https://www.protoexpress.com/tools/pcb-stackup-designer/">
+          <img alt="Tool Illustration - PCB Stackup Designer" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" class="img-fluid" data-lazy-src="https://www.protoexpress.com/wp-content/uploads/2021/04/icon-tool-planner-stackup.svg" /><noscript><img alt="Tool Illustration - PCB Stackup Designer" src="https://www.protoexpress.com/wp-content/uploads/2021/04/icon-tool-planner-stackup.svg" class="img-fluid" /></noscript>          <div class="toolCard__texts white-bg">
+            <p>
+              <strong>
+                PCB Stackup Designer
+              </strong>
+            </p>
+          </div>
+        </a>
+      </div>
+
+      
+    </div>
+  </div>
+</section> <section class="prefooter">
+  <h2 class="text-center">Talk to a Sierra Circuits PCB Expert today</h2>
+  <p>24 hours a day, 7 days a week.</p>
+  <p>
+    <strong>
+      Call us: <a class="yellowish" href="tel:+1 (800) 763-7503"> +1 (800) 763-7503</a><br />
+      <a href="https://sierracircuits.ormeteorite.com/c/Vishwakarma#/select-time" class="yellowish" target="_blank">Book a Meeting</a> with a Sales Rep<br />
+      Email us: <a class="yellowish" href="/customer-care">through our Customer Care form</a>
+    </strong>
+  </p>
+</section><div class="above-footer">
+  <ul class="ipc-list">
+    <li><a href="https://pages.protoexpress.com/rs/727-TSC-367/images/Sierra Certificate-AS9100D-ISO 9001_2015 Rev A.pdf?version=0">AS9100D – Military &amp; Aerospace</a></li><li><a href="https://media.protoexpress.com/certificates/ipc-a-600-inspectors.pdf">IPC-A-600 Inspectors</a></li><li><a href="https://www.protoexpress.com/pcb-certificates/">IPC 6012 CLASS 2</a></li><li><a href="https://www.protoexpress.com/pcb-certificates/">IPC 6012 CLASS 3/ES</a></li><li><a href="https://media.protoexpress.com/certificates/flex-rigid-flex-pcbs.pdf">UL Certification - Flex &amp; Rigid Flex PCBs</a></li><li><a href="https://media.protoexpress.com/certificates/rigid-pcbs.pdf">UL Certification - Rigid PCBs</a></li><li><a href="https://www.protoexpress.com/wp-content/uploads/2025/09/Sierra-Circuits-REACH_-RoHS-Material-Composiition-Declaration-1_21_2025.pdf">RoHS / REACH Compliance</a></li><li><a href="https://pages.protoexpress.com/rs/727-TSC-367/images/Sierra Certificate-AS9100D-ISO 9001_2015 Rev A.pdf?version=0">ISO 9001:2015 Certificate</a></li><li><a href="https://media.protoexpress.com/certificates/iso-13485-2016-certificate-medical-devices.pdf">ISO 13485:2016</a></li><li><a href="https://media.protoexpress.com/certificates/MIL-PRF-31032-3Flex-Certificate.pdf">MIL-PRF-31032 Certificate</a></li><li><a href="https://media.protoexpress.com/certificates/ITAR-Registration-Letter.pdf">ITAR Registered</a></li><li><a href="https://www.protoexpress.com/wp-content/uploads/2025/09/APPROVED-SIERRA-CIRCUITS_-INC-0ZHS4-44400194_JCP-Certification.pdf">JCP Certification Approval Letter</a></li>  </ul>
+  <p>
+    <a href="https://www.protoexpress.com/about-sierra-circuits/">Sierra Circuits is a minority-owned business</a><span style="color:#fff;">, certified by the</span> <a href="https://nmsdc.org/" target="_blank" rel="noopener noreferrer">National Minority Supplier Development Council.</a>  </p>
+</div><footer id="footer" class="container">
+  <div class="row">
+    <div class="col footer-widget">
+      <h3>
+        <a href="https://www.protoexpress.com/pcb-manufacturing-capabilities/">Capabilities</a>      </h3>
+      <ul id="menu-footer-menu-1" class="menu"><li id="menu-item-3141" class="menu-item menu-item-type-post_type menu-item-object-products menu-item-3141"><a href="https://www.protoexpress.com/products/rigid-pcb/">Rigid PCBs</a></li>
+<li id="menu-item-3134" class="menu-item menu-item-type-post_type menu-item-object-products menu-item-3134"><a href="https://www.protoexpress.com/products/flex-and-rigid-flex-pcb/">Flex and Rigid-Flex PCBs</a></li>
+<li id="menu-item-3136" class="menu-item menu-item-type-post_type menu-item-object-products menu-item-3136"><a href="https://www.protoexpress.com/products/microelectronics-pcb/">Microelectronics PCBs</a></li>
+<li id="menu-item-3137" class="menu-item menu-item-type-post_type menu-item-object-products menu-item-3137"><a href="https://www.protoexpress.com/products/mil-spec-pcb/">Aerospace &#038; Defense PCBs</a></li>
+<li id="menu-item-3135" class="menu-item menu-item-type-post_type menu-item-object-products menu-item-3135"><a href="https://www.protoexpress.com/products/hdi-printed-circuit-boards/">HDI PCBs</a></li>
+<li id="menu-item-3133" class="menu-item menu-item-type-post_type menu-item-object-products menu-item-3133"><a href="https://www.protoexpress.com/products/controlled-impedance/">Controlled Impedance</a></li>
+<li id="menu-item-3139" class="menu-item menu-item-type-post_type menu-item-object-products menu-item-3139"><a href="https://www.protoexpress.com/products/pcb-assembly/">PCB Assembly</a></li>
+</ul>    </div>
+    <div class="col footer-widget">
+      <h3>
+        <a href="https://www.protoexpress.com/tools/">Tools for Designers</a>      </h3>
+      <ul id="menu-footer-menu-2" class="menu"><li id="menu-item-3149" class="menu-item menu-item-type-post_type menu-item-object-tools menu-item-3149"><a href="https://www.protoexpress.com/tools/trace-width-and-current-capacity-calculator/">Trace Width, Current Capacity and Temperature Rise Calculator</a></li>
+<li id="menu-item-3146" class="menu-item menu-item-type-post_type menu-item-object-tools menu-item-3146"><a href="https://www.protoexpress.com/tools/pcb-impedance-calculator/">Impedance Calculator</a></li>
+<li id="menu-item-3148" class="menu-item menu-item-type-post_type menu-item-object-tools menu-item-3148"><a href="https://www.protoexpress.com/tools/pcb-stackup-designer/">Stackup Designer</a></li>
+<li id="menu-item-3147" class="menu-item menu-item-type-post_type menu-item-object-tools current-menu-item menu-item-3147"><a href="https://www.protoexpress.com/tools/pcb-material-selector/" aria-current="page">Material Selector</a></li>
+<li id="menu-item-3145" class="menu-item menu-item-type-post_type menu-item-object-tools menu-item-3145"><a href="https://www.protoexpress.com/tools/bom-checker-tool/">BOM Checker</a></li>
+<li id="menu-item-3144" class="menu-item menu-item-type-post_type menu-item-object-tools menu-item-3144"><a href="https://www.protoexpress.com/tools/pcb-dfm-tool/">Better DFM</a></li>
+<li id="menu-item-3150" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3150"><a href="https://www.protoexpress.com/pcb-design-guides/">Design Guides</a></li>
+</ul>    </div>
+    <div class="col footer-widget">
+      <h3>
+        <a href="https://www.protoexpress.com/customer-care/">Learn More</a>      </h3>
+      <ul id="menu-footer-menu-3" class="menu"><li id="menu-item-3152" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3152"><a href="https://www.protoexpress.com/faq/">FAQ</a></li>
+<li id="menu-item-3153" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3153"><a href="https://www.protoexpress.com/kb/">Knowledge Base</a></li>
+<li id="menu-item-3155" class="menu-item menu-item-type-post_type menu-item-object-faq menu-item-3155"><a href="https://www.protoexpress.com/faq/customer-portal/">Customer Portal</a></li>
+<li id="menu-item-3154" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3154"><a href="https://www.protoexpress.com/webinar/">Webinars</a></li>
+<li id="menu-item-3151" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3151"><a href="https://www.protoexpress.com/blog/">Blog</a></li>
+<li id="menu-item-7867" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7867"><a href="https://www.protoexpress.com/terms-and-conditions/">Terms &#038; Conditions</a></li>
+</ul>    </div>
+    <div class="col footer-widget">
+      <h3>
+        <a href="https://www.protoexpress.com/pcb-manufacturing-usa/">Company</a>      </h3>
+      <ul id="menu-footer-menu-4" class="menu"><li id="menu-item-3156" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3156"><a href="https://www.protoexpress.com/about-sierra-circuits/">About Sierra Circuits</a></li>
+<li id="menu-item-3160" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3160"><a href="https://www.protoexpress.com/customer-care">Contact Us</a></li>
+<li id="menu-item-3159" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3159"><a href="https://www.protoexpress.com/customer-care/shared-access">Shared Portal Access (SPX)</a></li>
+<li id="menu-item-3157" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3157"><a href="https://www.protoexpress.com/pcb-certificates/">PCB Certifications</a></li>
+<li id="menu-item-5195" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5195"><a href="https://www.protoexpress.com/kb/supplier-quality-requirements/">Quality</a></li>
+<li id="menu-item-33084" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-33084"><a href="https://www.protoexpress.com/careers/">Join Our Team Now</a></li>
+</ul>    </div>
+    <div class="col-xl-2 col footer-widget">
+      <ul class="footer--social_icons">
+        <li id="footer-social-facebook">
+          <a href="https://www.facebook.com/sierracircuits/" target="_blank" rel="noopener noreferrer">
+            <svg class="cache_me_outside" data-cache_svg="icon-social_footer-facebook" width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12.8637 0.867188C6.50135 0.867188 1.34375 6.02479 1.34375 12.3872C1.34375 18.7496 6.50135 23.9072 12.8637 23.9072C19.2261 23.9072 24.3837 18.7496 24.3837 12.3872C24.3837 6.02479 19.2261 0.867188 12.8637 0.867188ZM15.5925 8.82799H13.861C13.6558 8.82799 13.4278 9.09799 13.4278 9.45679V10.7072H15.5937L15.2661 12.4904H13.4278V17.8436H11.3842V12.4904H9.53015V10.7072H11.3842V9.65839C11.3842 8.15359 12.4282 6.93079 13.861 6.93079H15.5925V8.82799V8.82799Z" fill="#AC9F7F" />
+            </svg>
+          </a>
+        </li>
+        <li id="footer-social-linkedin">
+          <a href="https://www.linkedin.com/company/sierra-circuits-inc/" target="_blank" rel="noopener noreferrer">
+            <svg class="cache_me_outside" data-cache_svg="icon-social_footer-linkedin" width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12.8637 0.867188C6.50135 0.867188 1.34375 6.02479 1.34375 12.3872C1.34375 18.7496 6.50135 23.9072 12.8637 23.9072C19.2261 23.9072 24.3837 18.7496 24.3837 12.3872C24.3837 6.02479 19.2261 0.867188 12.8637 0.867188ZM10.0437 17.162H7.71095V9.65479H10.0437V17.162ZM8.86295 8.73319C8.12615 8.73319 7.64975 8.21119 7.64975 7.56559C7.64975 6.90679 8.14055 6.40039 8.89295 6.40039C9.64535 6.40039 10.1061 6.90679 10.1205 7.56559C10.1205 8.21119 9.64535 8.73319 8.86295 8.73319ZM18.5637 17.162H16.2309V13.0016C16.2309 12.0332 15.8925 11.3756 15.049 11.3756C14.4045 11.3756 14.0218 11.8208 13.8526 12.2492C13.7901 12.4016 13.7745 12.6176 13.7745 12.8324V17.1608H11.4405V12.0488C11.4405 11.1116 11.4105 10.328 11.3793 9.65359H13.4061L13.5129 10.6964H13.5597C13.867 10.2068 14.6193 9.48439 15.8781 9.48439C17.413 9.48439 18.5637 10.5128 18.5637 12.7232V17.162Z" fill="#AC9F7F" />
+            </svg>
+          </a>
+        </li>
+        <li id="footer-social-twitter">
+          <a href="https://twitter.com/SierraCircuits?" target="_blank" rel="noopener noreferrer">
+            <img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2023%2023'%3E%3C/svg%3E" alt="twitter icon" width="23" height="23" data-lazy-src="https://www.protoexpress.com/wp-content/themes/sierra-circuits/assets/images/twitter.webp"><noscript><img src="https://www.protoexpress.com/wp-content/themes/sierra-circuits/assets/images/twitter.webp" alt="twitter icon" width="23" height="23"></noscript>
+          </a>
+        </li>
+        <li id="footer-social-youtube">
+          <a href="https://www.youtube.com/channel/UCz-QzCLZPbBov9MmTQ7zJlg" target="_blank" rel="noopener noreferrer">
+            <svg class="cache_me_outside" data-cache_svg="icon-social_footer-youtube" width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14.7874 12.263L12.0922 11.0054C11.857 10.8962 11.6638 11.0186 11.6638 11.279V13.6478C11.6638 13.9082 11.857 14.0306 12.0922 13.9214L14.7862 12.6638C15.0226 12.5534 15.0226 12.3734 14.7874 12.263ZM12.8638 0.943359C6.50135 0.943359 1.34375 6.10096 1.34375 12.4634C1.34375 18.8258 6.50135 23.9834 12.8638 23.9834C19.2262 23.9834 24.3838 18.8258 24.3838 12.4634C24.3838 6.10096 19.2262 0.943359 12.8638 0.943359ZM12.8638 17.1434C6.96695 17.1434 6.86375 16.6118 6.86375 12.4634C6.86375 8.31496 6.96695 7.78336 12.8638 7.78336C18.7606 7.78336 18.8638 8.31496 18.8638 12.4634C18.8638 16.6118 18.7606 17.1434 12.8638 17.1434Z" fill="#AC9F7F" />
+            </svg>
+          </a>
+        </li>
+      </ul>
+      <p class="footer--phone_links">
+        Phone: <a href="tel:8007637503">(800) 763-7503</a><br />
+        Fax: <a href="tel:4087351408">(408) 735-1408</a>
+      </p>
+    </div>
+  </div>
+</footer><!-- After footer -->
+<div class="after-footer">
+  <div class="container">
+    <dl class="pl-0 mb-0">
+      <dt class="first-heading">
+                <a href="https://www.protoexpress.com/industries/">Solutions by Industry</a>
+      </dt>
+      <dd><a href="https://www.protoexpress.com/industries/military-grade-pcb/">Aerospace & Defense </a></dd><dd><a href="https://www.protoexpress.com/industries/automotive-pcb/">Automotive</a></dd><dd><a href="https://www.protoexpress.com/industries/consumer-electronic-pcb/">Consumer & Wearables </a></dd><dd><a href="https://www.protoexpress.com/industries/medical-grade-pcb/">Healthcare & Medical Devices</a></dd><dd><a href="https://www.protoexpress.com/industries/university-research-pcb/">Universities & Research Institutions</a></dd><dd><a href="https://www.protoexpress.com/industries/industrial-pcb/">Industrial Manufacturing</a></dd>    </dl>
+  </div>
+</div><!-- Terms & Conditions -->
+<div class="footer-terms">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-sm-8 col-xs-12">
+        <p class="mt-0 mb-0 terms">
+                    <a href="https://www.protoexpress.com/terms-and-conditions/">Terms & Conditions</a> &nbsp;
+          <a href="https://www.protoexpress.com/privacy/">Privacy Policy</a> &nbsp;
+          <a href="https://www.protoexpress.com/ccpa-compliance/">CCPA Compliance</a><br />
+          &copy; 2026 Sierra Circuits, All Rights Reserved.
+        </p>
+      </div>
+      <div class="col-sm-4 col-xs-12">
+        <p class="mt-0 mb-0 text-white text-right">
+          Sierra Circuits, Inc.<br/>
+          1108 West Evelyn Avenue<br/>
+          Sunnyvale, CA 94086, USA  
+        </p>
+      </div>
+    </div>
+  </div>
+</div><!-- Footer Newsletter -->
+<div class="footer-newsletter">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+        <div class="newsletter-text d-inline-flex align-items-center">
+          <svg class="cache_me_outside" data-cache_svg="icon-footer_newsletter" width="36" height="25" viewBox="0 0 36 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M33.9162 0.567071C33.7686 0.551862 33.6199 0.551862 33.4722 0.567071H3.15204C2.95772
+                            0.570065 2.76468 0.599203 2.57812 0.6537L18.2255 16.2361L33.9162 0.567071Z" fill="white"></path>
+            <path d="M35.5188 2.07227L19.7523 17.7738C19.3465 18.1772 18.7976 18.4036 18.2254 18.4036C17.6533 18.4036 17.1044 18.1772 16.6986 17.7738L1.07287 2.19138C1.02483 2.36793 0.999365 2.54986 0.99707 2.73281V24.3901C0.99707 24.9645 1.22524 25.5154 1.6314 25.9215C2.03755 26.3277 2.58841 26.5558 3.1628 26.5558H33.483C34.0574 26.5558 34.6083 26.3277 35.0144 25.9215C35.4206 25.5154 35.6487 24.9645 35.6487 24.3901V2.73281C35.6401 2.5072 35.5963 2.28433 35.5188 2.07227Z" fill="white"></path>
+          </svg>
+          <p class="text-white mt-0 mb-0">
+            Get PCB design tips and prototyping advice to build better boards
+            - delivered to your inbox, every week.
+          </p>
+        </div>
+
+      </div>
+      <div class="col-lg-6 mt-5 mt-lg-0 col-12 cta_form_wrapper footer-newsletter-form">
+        <p><script src="//pages.protoexpress.com/js/forms2/js/forms2.min.js" data-rocket-defer defer></script></p>
+<form id="mktoForm_1992"></form>
+<p><script type="text/rocketlazyloadscript">MktoForms2.loadForm("//pages.protoexpress.com", "727-TSC-367", 1992);</script></p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="footer-certs">
+  <div class="container">
+    <div class="row mt-0 py-4">
+      <div class="col-12 d-flex justify-content-between align-items-center align-content-center">
+        <a href="//www.securitymetrics.com/site_certificate?id=1275886&tk=a874f0b5fea9c6abe864d7c2a500be80" target="_blank" rel="noopener noreferrer">
+          <img width="150" height="82" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20150%2082'%3E%3C/svg%3E" alt="SecurityMetrics Credit Card Safe" data-lazy-src="https://www.protoexpress.com/wp-content/themes/sierra-circuits/assets/images/security-metrics-credit-card-safe.png" /><noscript><img width="150" height="82" src="https://www.protoexpress.com/wp-content/themes/sierra-circuits/assets/images/security-metrics-credit-card-safe.png" alt="SecurityMetrics Credit Card Safe" /></noscript>
+        </a>
+        <!-- DigiCert Seal HTML -->
+        <!-- Place HTML on your site where the seal should appear -->
+        <div id="DigiCertClickID_5ECUZoYQ"></div>
+        <!-- DigiCert Seal Code -->
+        <!-- Place with DigiCert Seal HTML or with other scripts -->
+        <script type="text/rocketlazyloadscript" data-rocket-type="text/javascript">
+        var __dcid = __dcid || [];
+
+        __dcid.push({
+          "cid": "DigiCertClickID_5ECUZoYQ",
+          "tag": "5ECUZoYQ"
+        });
+        (function() {
+          var cid = document.createElement("script");
+          cid.async = true;
+          cid.src = "//seal.digicert.com/seals/cascade/seal.min.js";
+          var s = document.getElementsByTagName("script");
+          var ls = s[(s.length - 1)];
+          ls.parentNode.insertBefore(cid, ls.nextSibling);
+        }());
+        </script>
+      </div>
+      </a>
+    </div>
+  </div>
+</div><!-- Quote Now Overlay -->
+<div id="quoter" class="quoter-container lity-hide" style="max-height: 988px;">
+  <div class="container">
+    <div class="row tight_row">
+      <div class="col-md-4 col-12">
+        <div class="v-card product-list--card modal_product_quote_card">
+          <div class="v-card__top">
+            <img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" alt="Turnkey PRO" class="d-none d-lg-block text-center" data-lazy-src="/wp-content/uploads/2021/04/product-turnkey_pro-2.webp"><noscript><img src="/wp-content/uploads/2021/04/product-turnkey_pro-2.webp" alt="Turnkey PRO" class="d-none d-lg-block text-center"></noscript>
+            <h3 class="mb-1 px-3 text-md-center">
+              <a href="/products/turnkey-pro/">
+                Turnkey PCBs</a>
+            </h3>
+          </div>
+          <div class="v-card__middle pb-4 px-3">
+            <p class="text-lg-center smFont product_pitch_text">
+              Fabrication, Procurement, & Assembly. <span class="d-lg-block secondary-red"><strong>PCBs fully assembled in as fast as 5 days.</strong></span>
+            </p>
+            <ul>
+              <li>Bundled together in an entirely-online process</li>
+              <li>Reviewed and tested by Engineers</i>
+              <li>DFA & DFM Checks on every order</li>
+              <li>Shipped from Silicon Valley in as fast as 5 days</li>
+            </ul>
+          </div>
+          <div class="v-card__bottom bg-white  d-flex align-items-center justify-content-center pt-0 pb-4 px-4 text-center position-relative">
+            <a href="/customer-portal/qta" class="button button--sm">Start Instant Online Quote</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-12">
+        <div class="v-card product-list--card modal_product_quote_card">
+          <div class="v-card__top">
+            <img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" alt="Online PCB Fabrication" class="d-none d-lg-block text-center" data-lazy-src="/wp-content/uploads/2021/04/product-rigid_pcb.webp"><noscript><img src="/wp-content/uploads/2021/04/product-rigid_pcb.webp" alt="Online PCB Fabrication" class="d-none d-lg-block text-center"></noscript>
+            <h3 class="mb-1 px-3 text-md-center">
+              <a href="/products/online-pcb-manufacturing/">
+                Standard PCBs </a>
+            </h3>
+          </div>
+          <div class="v-card__middle pb-4 px-3">
+            <p class="text-lg-center smFont product_pitch_text">
+              Fabrication. <em>Procurement & Assembly optional.</em> <span class="d-lg-block">Flexible and transparent for advanced creators.</span>
+            </p>
+            <ul>
+              <li><strong>Rigid PCBs</strong>, built to IPC-6012 Class 2 Specs</li>
+              <li>2 mil (0.002″) trace / space</li>
+              <li>DFM Checks on every order</li>
+              <li>24-hour turn-times available</li>
+            </ul>
+          </div>
+          <div class="v-card__bottom bg-white d-flex align-items-center justify-content-center pt-0 pb-4 px-4 text-center position-relative">
+            <a href="/customer-portal/instant-online-quote" class="button button--sm">Start Instant Online Quote</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-12">
+        <div class="v-card product-list--card modal_product_quote_card">
+          <div class="v-card__top">
+
+            <img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" alt="Advanced PCBs" class="d-none d-lg-block text-center" data-lazy-src="/wp-content/uploads/2021/04/product_3-rigid_pcb.webp"><noscript><img src="/wp-content/uploads/2021/04/product_3-rigid_pcb.webp" alt="Advanced PCBs" class="d-none d-lg-block text-center"></noscript>
+            <h3 class="mb-1 px-3 text-md-center">
+              <a href="/products/rigid-pcb/">
+                Advanced PCBs
+              </a>
+            </h3>
+          </div>
+          <div class="v-card__middle pb-4 px-3">
+            <p class="text-lg-center smFont product_pitch_text">
+              Complex technology, with a dedicated CAM <span class="d-lg-block">Engineer. Stack-up assistance included.</span>
+            </p>
+            <ul>
+              <li>Complex PCB requirements</li>
+              <li>Mil-Spec & Class 3 with HDI Features</li>
+              <li>Blind & Buried Vias</li>
+              <li>Flex & Rigid-Flex boards</li>
+            </ul>
+          </div>
+          <div class="v-card__bottom bg-white  d-flex align-items-center justify-content-lg-between justify-content-center pt-0 pb-4 px-4 text-center position-relative">
+            <a href="/customer-portal/custom-quote" class="button button--sm">Start Quote</a>
+            <a href="tel:8007637503" class="learn-more-link d-block d-lg-inline opacity-60 h5style pr-3"><img width="10" height="15" class="icon-contact_phone" src="https://www.protoexpress.com/wp-content/themes/sierra-circuits/assets/svg/phone.svg" alt="Telephone Icon"> +1 800-763-7503</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><a href="#" title="Back to top" class="topbutton"></a></div><script type="speculationrules">
+{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/wp-*.php","/wp-admin/*","/wp-content/uploads/*","/wp-content/*","/wp-content/plugins/*","/wp-content/themes/sierra-circuits/*","/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+</script>
+<script type="text/rocketlazyloadscript" id="rocket-browser-checker-js-after">
+"use strict";var _createClass=function(){function defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||!1,descriptor.configurable=!0,"value"in descriptor&&(descriptor.writable=!0),Object.defineProperty(target,descriptor.key,descriptor)}}return function(Constructor,protoProps,staticProps){return protoProps&&defineProperties(Constructor.prototype,protoProps),staticProps&&defineProperties(Constructor,staticProps),Constructor}}();function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor))throw new TypeError("Cannot call a class as a function")}var RocketBrowserCompatibilityChecker=function(){function RocketBrowserCompatibilityChecker(options){_classCallCheck(this,RocketBrowserCompatibilityChecker),this.passiveSupported=!1,this._checkPassiveOption(this),this.options=!!this.passiveSupported&&options}return _createClass(RocketBrowserCompatibilityChecker,[{key:"_checkPassiveOption",value:function(self){try{var options={get passive(){return!(self.passiveSupported=!0)}};window.addEventListener("test",null,options),window.removeEventListener("test",null,options)}catch(err){self.passiveSupported=!1}}},{key:"initRequestIdleCallback",value:function(){!1 in window&&(window.requestIdleCallback=function(cb){var start=Date.now();return setTimeout(function(){cb({didTimeout:!1,timeRemaining:function(){return Math.max(0,50-(Date.now()-start))}})},1)}),!1 in window&&(window.cancelIdleCallback=function(id){return clearTimeout(id)})}},{key:"isDataSaverModeOn",value:function(){return"connection"in navigator&&!0===navigator.connection.saveData}},{key:"supportsLinkPrefetch",value:function(){var elem=document.createElement("link");return elem.relList&&elem.relList.supports&&elem.relList.supports("prefetch")&&window.IntersectionObserver&&"isIntersecting"in IntersectionObserverEntry.prototype}},{key:"isSlowConnection",value:function(){return"connection"in navigator&&"effectiveType"in navigator.connection&&("2g"===navigator.connection.effectiveType||"slow-2g"===navigator.connection.effectiveType)}}]),RocketBrowserCompatibilityChecker}();
+//# sourceURL=rocket-browser-checker-js-after
+</script>
+<script id="rocket-preload-links-js-extra">
+var RocketPreloadLinksConfig = {"excludeUris":"/login/|/customer-portal/login/|/customer-portal/logout/|/logout.php/|/blog/how-to-determine-impedance-circuit/|/wp-admin/|/kicad-quote-plugin/|/(?:.+/)?feed(?:/(?:.+/?)?)?$|/(?:.+/)?embed/|/(index.php/)?(.*)wp-json(/.*|$)|/refer/|/go/|/recommend/|/recommends/","usesTrailingSlash":"1","imageExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif|pdf|doc|docx|xls|xlsx|php","fileExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif|pdf|doc|docx|xls|xlsx|php|html|htm","siteUrl":"https://www.protoexpress.com","onHoverDelay":"100","rateThrottle":"3"};
+//# sourceURL=rocket-preload-links-js-extra
+</script>
+<script type="text/rocketlazyloadscript" id="rocket-preload-links-js-after">
+(function() {
+"use strict";var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},e=function(){function i(e,t){for(var n=0;n<t.length;n++){var i=t[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(e,i.key,i)}}return function(e,t,n){return t&&i(e.prototype,t),n&&i(e,n),e}}();function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var t=function(){function n(e,t){i(this,n),this.browser=e,this.config=t,this.options=this.browser.options,this.prefetched=new Set,this.eventTime=null,this.threshold=1111,this.numOnHover=0}return e(n,[{key:"init",value:function(){!this.browser.supportsLinkPrefetch()||this.browser.isDataSaverModeOn()||this.browser.isSlowConnection()||(this.regex={excludeUris:RegExp(this.config.excludeUris,"i"),images:RegExp(".("+this.config.imageExt+")$","i"),fileExt:RegExp(".("+this.config.fileExt+")$","i")},this._initListeners(this))}},{key:"_initListeners",value:function(e){-1<this.config.onHoverDelay&&document.addEventListener("mouseover",e.listener.bind(e),e.listenerOptions),document.addEventListener("mousedown",e.listener.bind(e),e.listenerOptions),document.addEventListener("touchstart",e.listener.bind(e),e.listenerOptions)}},{key:"listener",value:function(e){var t=e.target.closest("a"),n=this._prepareUrl(t);if(null!==n)switch(e.type){case"mousedown":case"touchstart":this._addPrefetchLink(n);break;case"mouseover":this._earlyPrefetch(t,n,"mouseout")}}},{key:"_earlyPrefetch",value:function(t,e,n){var i=this,r=setTimeout(function(){if(r=null,0===i.numOnHover)setTimeout(function(){return i.numOnHover=0},1e3);else if(i.numOnHover>i.config.rateThrottle)return;i.numOnHover++,i._addPrefetchLink(e)},this.config.onHoverDelay);t.addEventListener(n,function e(){t.removeEventListener(n,e,{passive:!0}),null!==r&&(clearTimeout(r),r=null)},{passive:!0})}},{key:"_addPrefetchLink",value:function(i){return this.prefetched.add(i.href),new Promise(function(e,t){var n=document.createElement("link");n.rel="prefetch",n.href=i.href,n.onload=e,n.onerror=t,document.head.appendChild(n)}).catch(function(){})}},{key:"_prepareUrl",value:function(e){if(null===e||"object"!==(void 0===e?"undefined":r(e))||!1 in e||-1===["http:","https:"].indexOf(e.protocol))return null;var t=e.href.substring(0,this.config.siteUrl.length),n=this._getPathname(e.href,t),i={original:e.href,protocol:e.protocol,origin:t,pathname:n,href:t+n};return this._isLinkOk(i)?i:null}},{key:"_getPathname",value:function(e,t){var n=t?e.substring(this.config.siteUrl.length):e;return n.startsWith("/")||(n="/"+n),this._shouldAddTrailingSlash(n)?n+"/":n}},{key:"_shouldAddTrailingSlash",value:function(e){return this.config.usesTrailingSlash&&!e.endsWith("/")&&!this.regex.fileExt.test(e)}},{key:"_isLinkOk",value:function(e){return null!==e&&"object"===(void 0===e?"undefined":r(e))&&(!this.prefetched.has(e.href)&&e.origin===this.config.siteUrl&&-1===e.href.indexOf("?")&&-1===e.href.indexOf("#")&&!this.regex.excludeUris.test(e.href)&&!this.regex.images.test(e.href))}}],[{key:"run",value:function(){"undefined"!=typeof RocketPreloadLinksConfig&&new n(new RocketBrowserCompatibilityChecker({capture:!0,passive:!0}),RocketPreloadLinksConfig).init()}}]),n}();t.run();
+}());
+
+//# sourceURL=rocket-preload-links-js-after
+</script>
+<script type="text/rocketlazyloadscript" id="sierra-scripts-js" data-rocket-src="https://www.protoexpress.com/wp-content/themes/sierra-circuits/assets/js/main.bundle.js?ver=1.2.0.1.7.0" data-rocket-defer defer></script>
+<script type="text/rocketlazyloadscript" id="lity-js-js" data-rocket-src="https://www.protoexpress.com/wp-content/themes/sierra-circuits/assets/lity/lity.min.js?ver=1.2.0.1.7.0" data-rocket-defer defer></script>
+<script id="sierra-extra-scripts-js-extra">
+var sierra_settings = {"ajaxurl":"https://www.protoexpress.com/wp-admin/admin-ajax.php","user_nonce":"836cdb79e5"};
+//# sourceURL=sierra-extra-scripts-js-extra
+</script>
+<script type="text/rocketlazyloadscript" id="sierra-extra-scripts-js" data-rocket-src="https://www.protoexpress.com/wp-content/themes/sierra-circuits/assets/sierra-circuits.js?ver=1.2.0.1.7.0" data-rocket-defer defer></script>
+<script type="text/rocketlazyloadscript" id="stickybits-js-js" data-rocket-src="https://www.protoexpress.com/wp-content/themes/sierra-circuits/assets/js/stickybits.js?ver=1.2.0.1.7.0" data-rocket-defer defer></script>
+    <script type="text/rocketlazyloadscript" data-rocket-type="text/javascript">window.addEventListener('DOMContentLoaded', function() {
+      jQuery(document).ready(function() {
+        //Disable cut copy paste
+        jQuery('body').bind('cut copy paste', function(e) {
+          e.preventDefault();
+        });
+
+        //Disable mouse right click
+        jQuery("body").on("contextmenu", function(e) {
+          return false;
+        });
+      });
+    });</script>
+
+    <script type="text/rocketlazyloadscript">window.addEventListener('DOMContentLoaded', function() {
+    jQuery(function() {
+      // grab the initial top offset of the navigation
+      var sticky_navigation_offset_top = jQuery('#sticky_navigation').offset().top;
+      // our function that decides weather the navigation bar should have "fixed" css position or not.
+      var sticky_navigation = function() {
+        var scroll_top = jQuery(window).scrollTop(); // our current vertical position from the top
+        // if we've scrolled more than the navigation, change its position to fixed to stick to top, otherwise change it back to relative
+        if (scroll_top > sticky_navigation_offset_top) {
+          jQuery('#sticky_navigation').css({
+            'position': 'fixed',
+            'top': 0,
+            'left': 0
+          });
+        } else {
+          jQuery('#sticky_navigation').css({
+            'position': 'relative'
+          });
+        }
+      };
+      // run our function on load
+      sticky_navigation();
+      // and run it again every time you scroll
+      jQuery(window).scroll(function() {
+        sticky_navigation();
+      });
+    });
+  });</script>
+  <script type="text/rocketlazyloadscript">window.addEventListener('DOMContentLoaded', function() {
+    jQuery(document).ready(function($) {
+      var offset = 100;
+      var speed = 2500;
+      var duration = 500;
+      jQuery(window).scroll(function() {
+        if (jQuery(this).scrollTop() < offset) {
+          jQuery('.topbutton').fadeOut(duration);
+        } else {
+          jQuery('.topbutton').fadeIn(duration);
+        }
+      });
+      jQuery('.topbutton').on('click', function() {
+        jQuery('html, body').animate({
+          scrollTop: 0
+        }, speed);
+        return false;
+      });
+    });
+  });</script>
+  <script type="text/rocketlazyloadscript">window.addEventListener('DOMContentLoaded', function() {
+    jQuery(document).ready(function() {
+      var url = "https://www.protoexpress.com/customer-portal/chkAuth/session-status.jsp";
+      jQuery.get(url, function(data) {
+        let userIcon = document.querySelector('[title="User Team"]');
+        let userIconList = document.getElementById('user-customer-portal');
+        if (data == 'True') {
+          var form_data = {
+            action: 'sierra_load_user_status',
+            security_nonce: sierra_settings.user_nonce
+          };
+          jQuery.ajax({
+            url: sierra_settings.ajaxurl,
+            type: 'post',
+            data: form_data,
+            success: function(response) {
+              if (response != '-') {
+                jQuery('#sierra-user-menu').html(response).addClass('sierra-logged-in');
+              }
+              userIcon.setAttribute("style", "visibility:visible;");
+              userIconList.setAttribute("style", "visibility:visible;");
+            }
+          });
+        } else {
+          userIcon.setAttribute("style", "visibility:visible;");
+          userIconList.setAttribute("style", "visibility:visible;");
+        }
+      });
+    });
+  });</script>
+<script>window.lazyLoadOptions=[{elements_selector:"img[data-lazy-src],.rocket-lazyload,iframe[data-lazy-src]",data_src:"lazy-src",data_srcset:"lazy-srcset",data_sizes:"lazy-sizes",class_loading:"lazyloading",class_loaded:"lazyloaded",threshold:300,callback_loaded:function(element){if(element.tagName==="IFRAME"&&element.dataset.rocketLazyload=="fitvidscompatible"){if(element.classList.contains("lazyloaded")){if(typeof window.jQuery!="undefined"){if(jQuery.fn.fitVids){jQuery(element).parent().fitVids()}}}}}},{elements_selector:".rocket-lazyload",data_src:"lazy-src",data_srcset:"lazy-srcset",data_sizes:"lazy-sizes",class_loading:"lazyloading",class_loaded:"lazyloaded",threshold:300,}];window.addEventListener('LazyLoad::Initialized',function(e){var lazyLoadInstance=e.detail.instance;if(window.MutationObserver){var observer=new MutationObserver(function(mutations){var image_count=0;var iframe_count=0;var rocketlazy_count=0;mutations.forEach(function(mutation){for(var i=0;i<mutation.addedNodes.length;i++){if(typeof mutation.addedNodes[i].getElementsByTagName!=='function'){continue}
+if(typeof mutation.addedNodes[i].getElementsByClassName!=='function'){continue}
+images=mutation.addedNodes[i].getElementsByTagName('img');is_image=mutation.addedNodes[i].tagName=="IMG";iframes=mutation.addedNodes[i].getElementsByTagName('iframe');is_iframe=mutation.addedNodes[i].tagName=="IFRAME";rocket_lazy=mutation.addedNodes[i].getElementsByClassName('rocket-lazyload');image_count+=images.length;iframe_count+=iframes.length;rocketlazy_count+=rocket_lazy.length;if(is_image){image_count+=1}
+if(is_iframe){iframe_count+=1}}});if(image_count>0||iframe_count>0||rocketlazy_count>0){lazyLoadInstance.update()}});var b=document.getElementsByTagName("body")[0];var config={childList:!0,subtree:!0};observer.observe(b,config)}},!1)</script><script data-no-minify="1" async src="https://www.protoexpress.com/wp-content/plugins/wp-rocket/assets/js/lazyload/17.8.3/lazyload.min.js"></script><script>function lazyLoadThumb(e,alt,l){var t='<img data-lazy-src="https://i.ytimg.com/vi/ID/hqdefault.jpg" alt="" width="480" height="360"><noscript><img src="https://i.ytimg.com/vi/ID/hqdefault.jpg" alt="" width="480" height="360"></noscript>',a='<button class="play" aria-label="Play Youtube video"></button>';if(l){t=t.replace('data-lazy-','');t=t.replace('loading="lazy"','');t=t.replace(/<noscript>.*?<\/noscript>/g,'');}t=t.replace('alt=""','alt="'+alt+'"');return t.replace("ID",e)+a}function lazyLoadYoutubeIframe(){var e=document.createElement("iframe"),t="ID?autoplay=1";t+=0===this.parentNode.dataset.query.length?"":"&"+this.parentNode.dataset.query;e.setAttribute("src",t.replace("ID",this.parentNode.dataset.src)),e.setAttribute("frameborder","0"),e.setAttribute("allowfullscreen","1"),e.setAttribute("allow","accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"),this.parentNode.parentNode.replaceChild(e,this.parentNode)}document.addEventListener("DOMContentLoaded",function(){var exclusions=["logo.svg","phone.svg","facility-1.webp","facility-2.webp","facility-3.webp","facility-4.webp","facility-5.webp","facility-6.webp","facility-7.webp","facility-8.webp","facility-9.webp","blog-loader.gif"];var e,t,p,u,l,a=document.getElementsByClassName("rll-youtube-player");for(t=0;t<a.length;t++)(e=document.createElement("div")),(u='https://i.ytimg.com/vi/ID/hqdefault.jpg'),(u=u.replace('ID',a[t].dataset.id)),(l=exclusions.some(exclusion=>u.includes(exclusion))),e.setAttribute("data-id",a[t].dataset.id),e.setAttribute("data-query",a[t].dataset.query),e.setAttribute("data-src",a[t].dataset.src),(e.innerHTML=lazyLoadThumb(a[t].dataset.id,a[t].dataset.alt,l)),a[t].appendChild(e),(p=e.querySelector(".play")),(p.onclick=lazyLoadYoutubeIframe)});</script>
+</body>
+
+</html>
+<!-- This website is like a Rocket, isn't it? Performance optimized by WP Rocket. Learn more: https://wp-rocket.me - Debug: cached@1787576758 -->

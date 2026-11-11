@@ -1,0 +1,291 @@
+       PROCESSING GUIDELINES
+
+                 Laminate: SG7350D2
+
+
+High thermal conductivity, High frequency PTFE Material
+
+
+
+
+                         1 / 6           CN-PG-2206-02-SG7350D2-EN
+This product process guideline uses IPC-4103 Standard as a reference, and Shengyi make some changes
+according to the product characteristics of the actual situation as to making it more suitable for the Shengyi
+SG7350D2 product use.
+
+
+
+1. Storage condition
+1.1 Laminate
+
+1.1.1 Storage condition
+
+   Keep laminates as received packaging onto a flat floor or a proper pallet. Avoid heavy pressure in case
+
+    of distortion occurring due to incorrect storage method.
+
+1.1.2 Storage condition
+
+   Keep laminates at ventilated, dry and ambient condition. Avoid direct exposure to sunlight, rain and
+
+    chemical gas.
+
+   The shelf life of laminate maintains two years for double sided and one year for single sided at above
+
+    proper storage conditions. All internal properties within shelf life meet IPC-4101E specification sheet.
+
+1.1.3 Operation manual
+
+   PTFE material is softer compared with FR-4 material and needs to be handled with care.
+
+   Handle laminates carefully wearing clean gloves. Collision and slippage will damage the cladding copper.
+
+    Naked hand operation will contaminate the surface of cladding copper. All above defects may bring bad
+
+    effects during production.
+
+
+
+2. PCB Processing
+2.1 Panel cutting
+
+   Sawing (preferred) and shearing method is recommended. Be careful of potential edge cracks when using
+
+    roller cutter or caused by improper gap or cutter blade abrasion.
+
+2.2 Thin core baking
+
+   Thin core baking depends on actual need. If bake after cutting, it’s recommended to rinse cutting panels
+
+    first, which is able to remove resin powder brought by cutting and avoid etching problem.
+
+   Baking condition: 110-120℃/60-90min, be sure to avoid contact directly with heater.
+
+2.3 Pre-treatment
+
+   During PCB processes do not take any form of mechanical grinding, try to use chemical method for pre-
+
+    treatment rinsing.
+
+2.4 Etching
+
+   After inner-layer etching, laminates need be transferred to hot-press process as soon, the suggested
+
+    staying time does not exceed 4 hours.
+
+
+                                                     2 / 6                    CN-PG-2206-02-SG7350D2-EN
+2.5 Hot-press process
+
+   Hot-press procedure depending on the prepreg used, and should be chosen according to the prepreg
+
+    characteristics.
+
+2.6 Drilling
+
+   Drill bit: because the material contains high hardness ceramic filler, in order to improve the hole limit and
+
+    drilling quality, it is suggested to use coated drill bit, such as diamond coated drill bit.
+
+   Drilling plate: when drilling, on top uses Aluminum cover plate with better heat dissipation combined with
+
+    phenolic composite plate or similar cover plate with greater hardness, at the bottom uses high hardness
+
+    phenolic backing plate or other similar backing plate with good hardness.
+
+   Drilling stack number: because PTFE is soft, to avoid hole deviation during drilling, the stacking number
+
+    should be smaller. Laminate thickness ≤30mill, suggest 2 panels/stack, laminate thickness ≥60mil,
+
+    suggest 1 panel/stack. For 2 panels/stack, it is suggested to add white paper between two panels to avoid
+
+    scratch.
+
+   Stacking structure: phenolic backing plate+PTFE (white paper+PFFE)+ phenolic cover plate+copper foil.
+
+    If PTFE is hybrided with FR-4, in drilling PTFE is faced down, FR-4 is faced up. The structure diagram is
+
+    as follows:
+                                                                   Aluminum sheet
+                                                                   Cover plate
+
+
+                                                                   PTFE + white paper +PTFE
+
+
+                                                                    Backing plate
+
+
+   When drilling PTH hole, must use new drill bit, cannot use re-grinded drill bit, drill bit hit count: 500. When
+
+    drilling non-PTH hole, re-grinded drill bit can used, re-grinding time depending on the drill hole quality, it
+
+    is suggested the re-grinding time does not exceed 3 times.
+
+   Drilling parameter (for reference) as below:
+
+    Diameter（mm）            Speed(Krpm)              Infeed(ipm)              Rtr(ipm)              Maxhit
+
+           0.3                    100                    150                     400                 500
+
+           0.5                    75                     120                     400                 500
+
+           0.8                    60                      80                     500                 500
+
+           1.0                    50                      80                     500                 500
+
+           1.5                    25                      50                     600                 500
+
+           3.0                    20                      50                     600                 500
+
+(Remark: The drilling parameters depend on the drill model, drill bit manufacturer and hole diameter; There is
+
+a certain correlation between the rotating speed, infeed speed and retract speed; PCB processing shall be self
+
+                                                        3 / 6                       CN-PG-2206-02-SG7350D2-EN
+assessed according to specific conditions.)
+
+
+
+   After drilling it is avoided to remove burr. If drilling quality is bad and needs to be deburred, it is suggested
+
+    to place the laminate onto a hard and flat platform, use sandpaper ≤ 600 mesh to gently smooth it
+
+    according to a circular track.
+
+   After drilling use high pressure air to clean the loose rubber slag and burr in the hole.
+
+2.7 Desmear
+
+   PTFE is insoluble in solvents and needs to be cleaned by non-chemical methods. Plasma is
+
+    recommended for treatment. For better cleaning, it is recommended that before Plasma laminate shall be
+
+    washed with ultrasonic water and then to baking. The recommended baking conditions are 110-120℃/60-
+
+    90min.
+
+   Plasma parameters for double-sided hole wall activation (for reference):
+
+      Step           O2            H2            N2            Pressure     RF(W)      Flow Rate     Seg Time
+
+                                                                (PSI)                                （min）
+
+        1          80%                          20%              250         4000          2.5          15
+
+        2                        80%            20%              250         4000          2.5          30
+
+
+
+   Plasma parameters for multi-layer hole wall desmear (for reference)
+
+      Step        O2          H2          N2          CF4       Pressure     RF(W)     Flow Rate Seg Time
+
+                                                                 (PSI)                               （min）
+
+          1      80%                     20%                      250        4000          2.5          10
+
+          2      80%                     10%          10%         250        4000          2.5          30
+
+          3                  80%         20%                      250        4000          2.5          20
+
+
+
+2.8 PTH
+
+   PTH does need to go through desmear section, directly starts from oil removal.
+
+   If needs twice PTH process, the second time PTH can starts from pre-soak tank.
+
+2.9 AOI inspection
+
+   PTFE material surface will become flattened as the time passes, so after the intermediate AOI inspection,
+
+    solder resist ink shall be applied as soon as possible, and materials do not stay in this process. If needs
+
+    to stay, staying time shall not be longer than 8 hours.
+
+
+
+2.10 Solder mask
+
+   Because the combination between the solder resist ink and the laminate material is a physical bonding
+
+                                                       4 / 6                      CN-PG-2206-02-SG7350D2-EN
+    rather than a chemical bonding, it is not allowed to do mechanical grinding for the laminate before applying
+
+    the solder resist ink, it is to avoid damage to the surface roughness of the laminate, resulting in poor
+
+    adhesion between the solder resist ink and the laminate, and the consequent oil rejection.
+
+   If oil (solder resist ink) rejection problem occurs, customer can remove the solder resist ink and go through
+
+    a plasma process again, increase laminate surface roughness and promote better bonding of solder resist
+
+    ink to the substrate.
+
+   The low surface energy of PTFE material results in weak adhesion with solder resist ink. Appropriately
+
+    reducing the thickness of solder resist ink layer, improving the UV pre-curing energy level (recommended >
+
+    level 10), prolonging low temperature post-curing time and selecting appropriate solder resist ink can
+
+    greatly improve the adhesion between PTFE and solder resist ink. If necessary, bake at 110-120℃ for
+
+    60-90min to remove the influence of water vapor.
+
+2.11 Surface treatment
+
+   When used in the base station antenna field, it is recommended to do tin deposition. If it is used in other
+
+    fields, silver or gold precipitation can also be used.
+
+   Avoid HAL treatment as much as possible. If HAL treatment is a must, it is recommended as follows:
+
+1） Bake the plate at 150℃/90-120min before HAL process.
+
+2） The temperature of HAL shall be lower than that for FR-4 products. Try to avoid rapid heating and use
+
+gradual heating and cooling.
+
+3) It is suggested the maximum temperature of tin furnace should not be higher than 255℃.
+
+2.12 Outline contouring
+
+   Not suitable for punching/beer board, suggested to use a milling machine for processing and reduce the
+
+    travel speed appropriately.
+
+2.13 Packaging
+
+   To prevent moisture effect on the heat resistance of base material, suggest baking finished PCB boards
+
+    at 110-120℃/60-90min before packaging.
+
+   For long time storage, aluminum foil vacuum packaging is recommended.
+
+
+
+3. PWB Soldering
+3.1 Shelf life of PWB
+
+   3 months with aluminum packaging protection.
+
+   Bake at 110-120℃/60-90min before assembly is recommended, especially when stored more than 3
+
+    months.
+
+3.2 Reflow
+
+   Suitable for standard lead-free reflow process
+
+                                                       5 / 6                   CN-PG-2206-02-SG7350D2-EN
+This process guide is for reference only! Should you have any questions when using SG7350D2 product,
+
+please feel free to contact us. ShengYi will support you with prompt and effective service.
+
+
+
+
+                                                     6 / 6                    CN-PG-2206-02-SG7350D2-EN
+

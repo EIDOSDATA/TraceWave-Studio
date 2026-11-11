@@ -1,0 +1,76 @@
+                                                                                                                                                                     Data Sheet
+
+RO4000® Laminates with TICER™ TCR® Thin                                                                                                                 Features:
+                                                                                                                                                             • Glass-reinforced Hydrocarbon
+
+Film Resistor Foils                                                                                                                                            and ceramic dielectric
+                                                                                                                                                             • Volume manufacturing process
+RO4000® Series High Frequency Circuit Materials are glass-reinforced hydrocarbon                                                                             • Excellent high-frequency
+and ceramic (not PTFE) laminates designed for performance sensitive, high volume                                                                               performance
+                                                                                                                                                             • Low Z-Axis expansion, excellent
+commercial applications.
+                                                                                                                                                               dimensional stability
+RO4000 laminates are designed to offer superior high frequency performance and                                                                               • Integrated thin film resistor
+                                                                                                                                                               benefit
+low-cost circuit fabrication. The result is a low loss material which can be fabricated
+                                                                                                                                                             • CAF resistant
+using standard epoxy/glass (FR-4) processes.
+
+RO4003C™, RO4350B™, RO4360G2™, and RO4835™ laminates are available clad with                                                                             Typical Applications:
+                                                                                                                                                        •       Global communication system
+the Ticer TCR Thin Film resistor foils. Ticer TCR clad RO4000 laminates are available in
+                                                                                                                                                        •       High reliability and complex
+0.5oz (18µm) thick foil with resistor values of 25, 50, and 100 Ω/sq(1). 1oz (35µm) thick                                                                       multi-layer circuits
+copper foils are available as special order.                                                                                                            •       Wireless communication devices
+
+TICER™ product brochures, resistor calculator and processs guidelines can be found at:
+http://www.ticertechnologies.com/technical-literature.
+
+                                                          Typical Value (4)
+                 Property                                                                           Direction                     Units                     Condition                 Test Method (3)
+                                                   RO4003C                 RO4350B
+    Dielectric Constant, er (Process                                                                                                                                                  IPC-TM-650 2.5.5.5
+                                                    3.38±0.05              3.48±0.05 (2)                   Z                          -                     10 GHz/23°C
+    specification)                                                                                                                                                                    Clamped Stripline
+    Dielectric Constant, er (Design                                                                                                                                                   IPE-TM-650 2.5.5.6
+                                                        3.55                    3.66                       Z                          -                      FSR / 23°C
+    specification)                                                                                                                                                                           FSR
+    Dissipation Factor                                0.0027                  0.0037                                                                        10GHz/23°C
+                                                                                                           Z                          -                                              IPC-TM-650, 2.5.5.5
+    tan, d                                            0.0021                  0.0031                                                                        2.5 GHz/23°C
+                                                        0.70                    0.61                                              N/mm                After Solder Float,
+    Copper Peel Strength                                                                                   -                                                                           IPC-TM-650, 2.4.8
+                                                        (4.0)                   (3.5)                                              (pli)                 ½ oz TCR foil
+    Flammability                                        N/A                      V-0                       -                          -                          -                            UL 94
+
+   1.     As a service, Rogers offers customers the option of purchasing resistive foils bonded to certain substrates. Rogers does not guarantee the performance
+          of resistive layers, and as such, shall not be liable for any loss or damage suffered by the Buyer. ACS products manufactured with resistive foils are
+          offered on a “best efforts” basis for appearance and resistive expectations. Please reference “Rogers Statement on Resistive Foil Visual Appearance and
+          Resistivity Expectations” at the Rogers Document Library website: http://rogerscorp.com/downloads.
+   2.     RO4350B 4 mil laminates have a process Dk of 3.33 ± 0.05 and are in conformance with IPC-4103A/240. All other RO4350B laminate thicknesses are /11
+          and /240 compliant.
+   3.     Clamped stripline method can potentially lower the actual dielectric constant due to the presence of air gap. Dielectric constant in practice may be
+          higher than the values listed.
+   4.     Typical values are a representation of an average value for the population of the property. For specification values, contact Rogers Corporation.
+
+   Prolonged exposure in an oxidative environment may cause changes to the dielectric properties of hydrocarbon based materials. The rate of change
+   increases at higher temperatures and is highly dependent on the circuit design. Although Rogers’ high frequency materials have been used successfully in
+   innumerable applications and reports of oxidation resulting in performance problems are extremely rare, Rogers recommends that the customer evaluate
+   each material and design combination to determine fitness for use over the entire life of the end product.
+
+
+    Available Offerings:                Contact your Rogers Customer Service or Sales Representative for available product offerings and configurations.
+
+The information contained in this document is intended to assist in you in designing with Rogers’ circuit materials. It is not intended to and does not create any warranties,
+express or implied, including any warranty of merchantability or fitness for a particular purpose or that the results shown on this document will be achieved by a user for a
+particular purpose. The user is responsible for determining the suitability of Rogers’ circuit materials for each application.
+
+TCR is a registered trademark owned by Nippon Mining & Metals Co., Ltd., Tokyo, Japan. Ticer Technologies is a licensee of the technology and trademark of TCR. TCR is manufactured under license from Nippon Mining &
+Metals Co., Ltd.
+The Rogers’ logo, RO4000, RO4003C, RO4360G2, RO4835 and RO4350B are trademarks of Rogers Corporation or one of its subsidiaries.
+©2022 Rogers Corporation, Printed in USA. All rights reserved. Revised 1565 042922 Publication: #92-134
+
+                                                                                                     Page 1 of 1
+ 100 S. Roosevelt Avenue, Chandler AZ 85226
+ Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+

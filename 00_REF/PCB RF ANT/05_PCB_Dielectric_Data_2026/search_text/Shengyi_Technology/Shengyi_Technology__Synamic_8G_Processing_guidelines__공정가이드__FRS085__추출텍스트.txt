@@ -1,0 +1,214 @@
+         PROCESSING GUIDELINES
+
+
+
+                  Laminate: Synamic8G
+                  Prepreg: Synamic8GB
+
+Halogen-free High Heat Resistance & Ultra-low Loss Material
+
+
+
+
+                                     CN-PG-2104-03-Synamic8G-Synamic8GB-en
+This processing guide follows the IPC-4101C standard and is to provide necessary guidance for customer
+reference, based on Synamic8G/Synamic8GB material features.
+
+
+1. Storage Condition
+
+1.1 Laminate core
+    Store Condition
+Pack with original forms on the platform or on the appropriate frame, avoiding stress, prevent sheet
+deformation caused by inappropriate storage which may impact the subsequent PCB processes.
+
+    Storage Environment
+Sheets should be stored in ventilated, dry, at room temperature under environment control, avoiding direct
+sunlight, rain and avoid erosion of corrosive gas (stored environment directly affect the quality of material).
+
+For double-sided copper-clad boards (cores), to minimize shifting as to avoid scratching the surface of the
+product, with a suitable environment and condition for storage, the shelf life can be up to two years.
+
+    Operation Manuel
+Wear clean gloves and carefully operate the cores. Copper foil collisions, sliding will cause damage of the
+cores.
+
+Bare hands action will cause contamination to copper foil surface. These defects are likely to cause adverse
+effects.
+
+1.2 Prepreg
+
+    Storage Condition
+
+Levels stored in original packaging form, avoiding stress, prevent sheet deformation caused by inappropriate
+storage condition.
+
+Leftover or cut prepregs should pack and seal with vacuum foil packaging and put it back in the original
+packaging tray.
+
+    Storage Environment
+Prepreg sealed packaging should be stored in free of UV irradiation environment, specific storage conditions
+and the storage period as follows:
+
+Condition 1. At a temperature of <5℃, storage period for 6 months.
+
+Condition 2. At a temperature of <23℃, relative humidity <50% when stored, storage period for 3 months
+
+Note: Relative humidity affect prepreg quality the most, pay special attention on weather (conduct
+dehumidification process is necessary for wet weather).
+
+    Cutting Guideline
+Cutting the best way is left to professional staff wear clean gloves during operation, prevent the pollution of
+prepreg surface; operation must be careful to prevent prepreg wrinkle or crack, to avoid affect prepregs.
+
+    Prepregs Use Recommendations
+If moving from a low temperature storage space to a higher temperature or ambient temperature storage
+space, it must go through the temperature settle process, (8 - 24 hours, settle time is varies depending on
+
+                                                                      CN-PG-2104-03-Synamic8G-Synamic8GB-en
+temperature variation in between two storage conditions). Open package after temperature settle process is
+completed as to avoid affecting the quality and adhesion of prepregs.
+
+For prepreg package stored in above conditions 1 or 2, after open is required to complete the use as soon as
+possible, for packages opened more than 3 days, it must re-inspect and insure quality before use.
+
+Leftover or cut prepregs should pack and seal with vacuum foil packaging and put it back in the above stated
+storage condition 1 or 2.
+
+
+
+
+2. PCB Process Recommendations
+
+    2.1 Panel Cutting
+
+        Sawing (preferred) and shearing method is recommended. Be careful of potential edge cracks
+         when using roller cutter or caused by improper gap or cutter blade abrasion.
+
+    2.2 Thin Core Baking
+
+        Thin core baking depends on actual need. If bake after cutting, it’s recommended to rinse cutting
+         panels first, which can remove resin powder brought by cutting and avoid etching problem. Baking
+         condition: 150-175℃/3-5h, be sure to avoid contact directly with heater.
+
+    2.3 Brown Oxide
+
+        After Brown Oxide treatment, it is recommended to bake 110~120℃/1~2h as to remove moisture
+         before press lamination process. Material should be used within 8 hours after baking.
+
+        For sequential lam or multiple lamination board, suggest baking before brown oxidation, baking
+         condition: 140-150℃/1~2 hour, pile up stack thickness no more than 2 inches. Baking after brown
+         oxidation would be 120℃/1~2 hour.
+
+    2.4 Lay-up
+
+        Ensure the prepregs direction of warp and fill at lay-up process. Avoid flipping the prepregs during
+         lay-up process to reduce warping, deforming and folding issues.
+
+        Copper compatibility should be evaluated to ensure adhesive reliability. Please contact with
+         SYTECH for more information.
+
+    2.5 Lamination
+
+        For multilayer pressing, it’s recommended to keep heat-up rate at 3-4℃/min (optimal 3.5℃/min)
+         when material temperature at 80-140℃.
+
+        Suggest full pressure set for 400-500psi (optimal 450psi) when material temperature is at 80-
+         100℃. The outer layer temperature per book need to be controlled below 120℃.
+
+        Curing condition: temperature 195-210℃, curing time 100-120min.
+
+        Cooling rate: lower than 3℃/min before cooling down to 130℃.
+
+        If unclad or single-sided core materials are used in multi-layer lamination, surface roughening
+         should be conducted to avoid lack of adhesion.
+                                                                    CN-PG-2104-03-Synamic8G-Synamic8GB-en
+2.6 Drill
+
+    New drill bit, single stack and hit count reduction is recommended for getting better hole quality.
+
+    Control hits counts in the range of 500-1000 hits (for hole diameter 0.5mm or smaller, suggest
+     500hits). For dense holes area or hole size <0.6mm, LE aluminum cover layer is recommended.
+
+    Reduce chip load 10-20% when compared to standard FR-4. Run trials to get proper drill
+     parameters are necessary. Below parameters are for reference.
+
+    Table 1: Drilling parameters (reference only)
+
+      Diameter                     Infeed         Speed          RTR            Max hits       Chipload
+      (mm)          (inch)         (ipm)          (krpm)         (ipm)          Hit            (mil/rev)
+      0.20          0.0078         67             95             500            500            0.71
+      0.25          0.0097         71             95             500            500            0.75
+      0.30          0.0117         76             95             500            500            0.80
+      0.35          0.0136         81             95             500            500            0.85
+      0.40          0.0156         105            63             500            500            1.67
+      0.45          0.0175         110            60             500            500            1.83
+      0.50          0.0195         125            62             1000           500            2.02
+      0.55          0.0214         127            60             1000           500            2.12
+      0.60          0.0233         130            58             1000           500            2.24
+      0.65          0.0253         125            55             1000           500            2.27
+      0.70          0.0272         125            53             1000           500            2.36
+      0.75          0.0292         125            51             1000           500            2.45
+      0.80          0.0311         125            50             1000           500            2.50
+      0.85          0.0331         124            49             1000           500            2.53
+      0.90          0.0350         123            48             1000           500            2.56
+      0.95          0.0370         122            47             1000           500            2.60
+      1.00          0.0389         121            46             1000           500            2.63
+      1.05          0.0409         121            45             1000           500            2.69
+      1.10          0.0428         120            44             1000           500            2.73
+      1.30          0.0506         120            35             1000           500            3.43
+      1.50          0.0584         115            32             1000           500            3.59
+      1.70          0.0661         100            28             1000           500            3.57
+      1.90          0.0739         90             23             1000           500            3.91
+    Suggest baking after drill 190℃/3-4h, in racks, and avoid contact of heater directly.
+
+2.7 Desmear
+
+    Due to material composition and structure, its chemical resistance is good. Both plasma and
+     chemical desmear are recommended.
+
+    Control etch rate at 0.3～0.4mg/cm2 and adjust parameters based on hole quality as to avoid
+     haloing, ICD. Scout lot is suggested prior to manufacturing.
+
+    Detailed parameters follow the actual PCB structure (overall thickness, hole diameter) for setting.
+
+                                                                  CN-PG-2104-03-Synamic8G-Synamic8GB-en
+        Plasma parameters below are for your reference.
+
+
+
+    Table 2: Plasma parameters (Reference only)
+
+    Parameter    Gas Flow Rate（L/min）                Watts       Time        Temp.     Flow Rate      Pressure
+                 O2          N2          CF4         （V）         (min)       （℃）        (SLM)        （mTorr）
+    Seg 1        2.25        0.25        0.00        9000        45.0        80.0      2.50          250
+    Seg 2        2.46        0.24        0.30        6500        20.0        105.0     3.00          250
+    Seg 3        2.50        0.00        0.00        5000        5.0         100.0     2.50          250
+
+
+    2.8 Routing/Punching
+
+       Routing process is recommended. Reduce routing speed to prevent edge cracks from outburst
+        mechanical force.
+
+       Punching is NOT recommended for Synamic8G.
+
+
+
+3. Soldering
+    3.1 Shelf life of PWB
+       3 months with packaging protection.
+
+       Suggest bake at 130-140℃/3~5h prior to assembly.
+
+    3.2 Reflow
+        Synamic8G is compatible for lead-free reflow process
+
+
+This process guide is for reference only! Should you have any questions, please feel free to contact us.
+
+
+
+
+                                                                    CN-PG-2104-03-Synamic8G-Synamic8GB-en
+

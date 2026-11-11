@@ -1,0 +1,182 @@
+{
+  "report_created_utc": "2026-11-11T01:21:50.680011+00:00",
+  "status": "complete_for_requested_preview_scope",
+  "prior_report": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\excel_visual_review.json",
+  "prior_reviewed_images": 68,
+  "new_unique_images_reviewed": 14,
+  "cumulative_unique_image_paths_reviewed": 82,
+  "scope": "원래 68개 이미지 검토에 연계한 추가 검토이다. 시트 상단 preview에 실제 표시된 영역만 검토하며 모든 workbook/행/열을 육안검토했다는 뜻이 아니다.",
+  "new_images": [
+    {
+      "relative_path": "AGC/01_조건별 자료.png",
+      "absolute_path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\qa\\AGC\\01_조건별 자료.png",
+      "sha256": "592593d823e5b55fe85948fe9170212552a773e0e1a11fafb900a4612129163b",
+      "modified_utc": "2026-11-11T01:15:01.383711+00:00",
+      "visually_reviewed": true
+    },
+    {
+      "relative_path": "AGC/02_필드 안내.png",
+      "absolute_path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\qa\\AGC\\02_필드 안내.png",
+      "sha256": "a73a78951b63fc0a679bc609cbd3710f35922e02a5265db4f2e4458f2df0d851",
+      "modified_utc": "2026-11-11T01:15:02.450493+00:00",
+      "visually_reviewed": true
+    },
+    {
+      "relative_path": "Isola/01_조건별 자료.png",
+      "absolute_path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\qa\\Isola\\01_조건별 자료.png",
+      "sha256": "e408c82d34e7cf58db678ec01726071c2d6ea3a115ff89921e9d9fa0d6879177",
+      "modified_utc": "2026-11-11T01:16:29.638093+00:00",
+      "visually_reviewed": true
+    },
+    {
+      "relative_path": "Isola/02_필드 안내.png",
+      "absolute_path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\qa\\Isola\\02_필드 안내.png",
+      "sha256": "c33004449f16a026122410e91605172d28674678169a932ba9541f6374440ce1",
+      "modified_utc": "2026-11-11T01:16:31.113916+00:00",
+      "visually_reviewed": true
+    },
+    {
+      "relative_path": "PCBWay/01_조건별 자료.png",
+      "absolute_path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\qa\\PCBWay\\01_조건별 자료.png",
+      "sha256": "e796e6ca38e679df5cbe54643a84b59230d422bf779e13f4265c990dd8262ea1",
+      "modified_utc": "2026-11-11T01:13:10.577757+00:00",
+      "visually_reviewed": true
+    },
+    {
+      "relative_path": "PCBWay/02_필드 안내.png",
+      "absolute_path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\qa\\PCBWay\\02_필드 안내.png",
+      "sha256": "a73a78951b63fc0a679bc609cbd3710f35922e02a5265db4f2e4458f2df0d851",
+      "modified_utc": "2026-11-11T01:13:11.978797+00:00",
+      "visually_reviewed": true
+    },
+    {
+      "relative_path": "Kingboard/01_조건별 자료.png",
+      "absolute_path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\qa\\Kingboard\\01_조건별 자료.png",
+      "sha256": "80a709e7624d425d023113f325bf44746c44b3dac844884adc4bd729e129c0fd",
+      "modified_utc": "2026-11-11T01:18:32.570509+00:00",
+      "visually_reviewed": true
+    },
+    {
+      "relative_path": "Kingboard/02_필드 안내.png",
+      "absolute_path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\qa\\Kingboard\\02_필드 안내.png",
+      "sha256": "a73a78951b63fc0a679bc609cbd3710f35922e02a5265db4f2e4458f2df0d851",
+      "modified_utc": "2026-11-11T01:18:33.937563+00:00",
+      "visually_reviewed": true
+    },
+    {
+      "relative_path": "PCBWay/03_원자료 적층.png",
+      "absolute_path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\qa\\PCBWay\\03_원자료 적층.png",
+      "sha256": "663b2cd763f87a3d31b1f597a94bf2811069c49ebecbf48cf120ac36926e009a",
+      "modified_utc": "2026-11-11T01:13:13.295821+00:00",
+      "visually_reviewed": true
+    },
+    {
+      "relative_path": "PCBWay/04_원자료 구성행.png",
+      "absolute_path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\qa\\PCBWay\\04_원자료 구성행.png",
+      "sha256": "5e82c8c9bd97ef19cbefd6ee8b927297c436df5ecc6d99496d5bbb8dbdca10ff",
+      "modified_utc": "2026-11-11T01:13:14.139467+00:00",
+      "visually_reviewed": true
+    },
+    {
+      "relative_path": "Panasonic/01_조건별 자료.png",
+      "absolute_path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\qa\\Panasonic\\01_조건별 자료.png",
+      "sha256": "b338e6eb3e4d1810d0b9f899b6b2bbdd7f76efb30ac6d410d1480b952318c46d",
+      "modified_utc": "2026-11-11T01:21:59.015349+00:00",
+      "visually_reviewed": true
+    },
+    {
+      "relative_path": "Panasonic/02_필드 안내.png",
+      "absolute_path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\qa\\Panasonic\\02_필드 안내.png",
+      "sha256": "c33004449f16a026122410e91605172d28674678169a932ba9541f6374440ce1",
+      "modified_utc": "2026-11-11T01:22:01.606115+00:00",
+      "visually_reviewed": true
+    },
+    {
+      "relative_path": "Shengyi_Technology/01_조건별 자료.png",
+      "absolute_path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\qa\\Shengyi_Technology\\01_조건별 자료.png",
+      "sha256": "d1ee73354e9aff32ece5ad36f18d08779171f8c361563bede0a1610d7fb6eedc",
+      "modified_utc": "2026-11-11T01:35:39.557253+00:00",
+      "visually_reviewed": true
+    },
+    {
+      "relative_path": "Shengyi_Technology/02_필드 안내.png",
+      "absolute_path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\qa\\Shengyi_Technology\\02_필드 안내.png",
+      "sha256": "c33004449f16a026122410e91605172d28674678169a932ba9541f6374440ce1",
+      "modified_utc": "2026-11-11T01:35:41.282631+00:00",
+      "visually_reviewed": true
+    }
+  ],
+  "corrected_preview_recheck": [
+    {
+      "relative_path": "Peters/01_조건별 자료.png",
+      "absolute_path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\qa\\Peters\\01_조건별 자료.png",
+      "sha256": "45ce610092e51d930ad5416d0cefb7f76259420aea798dc372ffaff63fb7561a",
+      "modified_utc": "2026-11-11T01:28:36.430638+00:00",
+      "reviewed_utc": "2026-11-11T01:30:05.416167+00:00",
+      "status": "resolved",
+      "observation": "열 폭과 행 높이가 확대되었고 긴 시험법/값의 종류 문자열 끝까지 보인다. 인접 열과 붙는 현상이 해소되었다."
+    },
+    {
+      "relative_path": "NextPCB/01_조건별 자료.png",
+      "absolute_path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\qa\\NextPCB\\01_조건별 자료.png",
+      "sha256": "8f81f753c28e4db9e36c03aa4cd112e537c1ae53f4b2387026d28fc71522a7b7",
+      "modified_utc": "2026-11-11T01:28:44.829875+00:00",
+      "reviewed_utc": "2026-11-11T01:30:05.416167+00:00",
+      "status": "resolved",
+      "observation": "열 폭과 행 높이가 확대되었고 긴 시험법/값의 종류 문자열 끝까지 보인다. 인접 열과 붙는 현상이 해소되었다."
+    },
+    {
+      "relative_path": "PCBWay/04_원자료 구성행.png",
+      "absolute_path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\qa\\PCBWay\\04_원자료 구성행.png",
+      "sha256": "86c1d6575058be4f130d7092082e4eff163b80b170d5e55591e9543af66ce873",
+      "modified_utc": "2026-11-11T01:31:32.522290+00:00",
+      "reviewed_utc": "2026-11-11T01:33:19.907538+00:00",
+      "status": "resolved",
+      "observation": "재료 원문 Outer Base Copper 0.5OZ, 압착 후 0.0175 (Plating to 1OZ) 및 1.1 (Core with Cu)가 온전히 표시된다. 인접 열과 붙는 현상이 해소되었다. 그룹 합계 적용행수 3과 중복합산 금지 안내가 유지된다."
+    },
+    {
+      "relative_path": "CircuitHub/01_조건별 자료.png",
+      "absolute_path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\qa\\CircuitHub\\01_조건별 자료.png",
+      "sha256": "1b8bc7fc8d0a72dc30a704e5017d1923c7775e25d47f8566e36e4783fec74d64",
+      "modified_utc": "2026-11-11T01:39:47.014215+00:00",
+      "reviewed_utc": "2026-11-11T01:42:27.577680+00:00",
+      "status": "resolved",
+      "observation": "확대된 열폭과 행높이에서 값의 종류 문자열 전체가 보인다. CircuitHub는 fabricator_summary_unspecified_typical_or_limit와 옆 not stated가 분리되어 읽히며 Generic은 generic_material_reference가 끝까지 표시된다."
+    },
+    {
+      "relative_path": "Generic_material_reference_Arlon_handbook/01_조건별 자료.png",
+      "absolute_path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\qa\\Generic_material_reference_Arlon_handbook\\01_조건별 자료.png",
+      "sha256": "a1a392994e426006e6b52f63f611e8669bf099e9a4fd8e7b19c677f3d539805f",
+      "modified_utc": "2026-11-11T01:39:56.729711+00:00",
+      "reviewed_utc": "2026-11-11T01:42:27.577680+00:00",
+      "status": "resolved",
+      "observation": "확대된 열폭과 행높이에서 값의 종류 문자열 전체가 보인다. CircuitHub는 fabricator_summary_unspecified_typical_or_limit와 옆 not stated가 분리되어 읽히며 Generic은 generic_material_reference가 끝까지 표시된다."
+    }
+  ],
+  "pending_corrected_previews": [],
+  "observations": [
+    "AGC/Isola/PCBWay/Kingboard 조건별 자료 및 필드 안내 preview에서 주요 제목/수치 잘림이나 빈 표를 발견하지 않았다.",
+    "PCBWay 원자료 구성행 상단의 압착 그룹 두께 중복 합산 금지 안내는 명확하다.",
+    "PCBWay 원자료 구성행 D6/D12 재료 원문은 긴 Outer Base Copper 문자열이 다음 두께 열과 붙고 잘린다. Excel 담당에게 wrap 또는 열폭 보완을 전달했다.",
+    "PCBWay 원자료 적층의 JSON 보존 열은 전체 내용이 preview에서 표시되지 않는다. 원문 전체 값 손실을 의미하지 않으며 workbook 셀/원본 데이터로 확인해야 한다.",
+    "대기 중 새로 생성된 Panasonic 조건별 자료/필드 안내 preview 2개도 직접 확인했다. 표시된 제목/수치/제품명에 잘림이나 빈 표는 발견하지 않았다.",
+    "Shengyi Technology 추가 preview 2개를 확인했다. 긴 시험법 설명이 G9:G12에서 줄바꿈되어 권리/참고용 주의문 끝까지 보이며 행 높이에 맞게 표시된다. 이전 버전은 이 검토자가 직접 열람하지 않았으므로 수정 전후 비교 주장은 하지 않는다."
+  ],
+  "old_preview_initial_check": {
+    "checked_utc": "2026-11-11T01:21:50.680011+00:00",
+    "result": "수정 대상 4개 PNG는 2026-11-11T01:08Z 버전이며 wrap 변경 전 한 줄 표시였다. Excel 담당은 대형 작업 뒤 재생성 큐에 있다고 확인했다."
+  },
+  "edits_performed": "이 보고서만 작성. 이미지/통합문서/원본은 수정하지 않았다.",
+  "report_completed_utc": "2026-11-11T01:42:27.577680+00:00",
+  "corrected_display_findings_resolved": 5,
+  "unresolved_requested_correction_count": 0,
+  "final_result": "기존 검토에서 지적한 CircuitHub/Peters/Generic/NextPCB 및 추가 PCBWay의 표시문제를 수정된 PNG로 재검증했고 모두 해결되었다. 새 14개 이미지도 직접 검토했다. 관찰된 영역에서 추가 수치/제목 잘림이나 빈 표는 발견하지 않았다.",
+  "remaining_scope_limits": [
+    "모든 workbook/시트/행/열의 육안검토가 아니다.",
+    "Rogers Process/Design 분류 열은 기존 preview 범위 밖이므로 이 시각감사로 확인했다고 주장하지 않는다.",
+    "길이가 큰 원본 JSON 셀은 preview에서 전체가 표시되지 않으며 full-cell/XML 값 검증은 생성 담당의 별도 자동 검증 대상이다.",
+    "전체안내는 최종 WE 원자료 경고 반영과 재저장 중이며, 최종 전체안내 시각검증은 부모/생성 담당의 후속 확인 범위이다.",
+    "일부 field-guide PNG가 병행 재생성되었을 수 있다. 수정 조건표 5개는 현재 해시와 직접 열람을 별도로 기록했다."
+  ],
+  "currently_present_never_reviewed_image_paths": []
+}

@@ -1,0 +1,405 @@
+                                                                                             Astra® MT77
+                                                                        Ultra Low Loss, RF/MW Laminate and Prepreg
+
+
+
+    Processing Guide
+    The processing guidelines contained in this document were developed through in-house testing and field experience. However, they
+    should be considered to be starting points that will require further adjustment. Read the following review of processes for applicability
+    to your particular Printed Wiring Board (PWB) fabrication environment. Remember that the suggestions contained herein cannot
+    account for all possible board designs or processing environments. Additional adjustments by the fabricator will be necessary. Isola can
+    and will assist with this process, but the fabricator, not Isola, is ultimately responsible for their process and the end results.
+    Fabricators should verify that PWBs made using these suggestions meet all applicable quality and performance
+    requirements.
+
+
+    Part 1: Prepreg Storage and Handling
+    Isola Group’s prepreg bonding sheets for use in multilayer printed circuit board applications are manufactured to specifications that
+    include physical and electrical properties and processing characteristics relative to the laminating application. Handling and storage
+    factors have an important influence on the desired performance of the prepreg. Some parameters are affected by the environment in
+    which prepregs are stored. They can also deteriorate over extended periods of storage. The prepreg received by the customer is a
+    glass fabric that has been impregnated with a stated quantity of low volatile, partially polymerized resin. The resin is tack-free but
+    somewhat brittle. Many lamination problems arise from resin loss off the fabric due to improper handling. The fabric used is based on
+    the order and supplies the required thickness. In most cases the amount of resin carried by the fabric increases as the fabric thickness
+    decreases.
+
+    Handling Suggestions
+    Handle all prepreg using clean gloves. Use sharp, precision equipment when cutting or paneling prepreg. Treat all prepreg as being
+    very fragile. Use extreme care when handling very high resin content prepreg (glass fabrics 1080 and finer).
+
+    Storage Suggestions
+    Upon receipt, all prepreg should be immediately moved from the receiving area to a controlled environment. Material should be kept in
+    original packaging until ready to use. All prepreg should be used as soon as possible. A First-In-First-Out (FIFO) inventory management
+    system should be used. If not handled properly, Astra® MT77 prepreg will absorb moisture, which will lead to depressed Tg’s and cure
+    and affect flow in the press. If extended storage is required, separate facilities should be reserved with appropriate environmental
+    control.
+
+    Prepreg should be stored at ≤ 23ºC and below 50% humidity. Prepreg packages should be allowed to equilibrate to
+    layup room conditions before opening to prevent moisture condensation on the prepreg.
+
+    Stabilization time will depend on storage temperature. In cases where storage temperature is significantly below room temperature,
+    keep prepreg in package or plastic wrapping during the stabilization period to prevent moisture condensation. Once the original
+    packaging is opened, the prepreg should be used immediately. Remaining prepreg should be resealed in the original packaging with
+    fresh desiccant, do not vacuum seal Astra MT77 prepreg. Storage should be in the absence of catalytic environments such as high
+    radiation levels or intense ultraviolet light.
+
+
+    Part 2: Innerlayer Preparation
+    Isola Group’s Astra MT77 laminates are fully cured and ready for processing. It has been the experience of most fabricators that stress
+    relief bake cycles are not effective in reducing any movement of high performance laminates such as Astra MT77. Therefore, it is
+    suggested that the movement of unbaked laminate be characterized and the appropriate artwork compensation factors are used.
+
+    Dimensional Stability
+    The net dimensional movement of laminate after the etch, oxide and lamination processes is typically shrinkage. This shrinkage is due
+    to the relaxation of stresses that were induced when the laminate was pressed as well as shrinkage contribution from the resin system.
+    Most of the movement will be observed in the grain direction of the laminate.
+
+    There are situations that have been known to alter the proportion of shrinkage in grain versus fill direction in some board shops. These
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/astra-
+               mt77-laminate-and-prepreg/                  Last Updated September 17, 2025          © 2021, Isola Group, All rights reserved.
+                                                                                                            Astra® MT77
+                                                                                    Ultra Low Loss, RF/MW Laminate and Prepreg
+
+
+    include autoclave pressing and cross-plying laminate grain direction to that of prepreg.
+
+
+
+
+      Table 1: Initial Artwork Compensation Factors
+
+            DK             Configuration                   Direction         Comp (in/in)
+
+         2.80-3.00           Signal/Signal             Warp (grain)         0.0007-0.0012
+
+             "                     "                          Fill          0.0005-0.0009
+                                                                                                  Table 1 assumes that laminate and prepreg grain directions are
+                                                                                                  oriented along the same dimension. Each shop must
+             "              Signal/Ground              Warp (grain)         0.0005-0.0007
+                                                                                                  characterize material behavior given their particular lamination
+             "                     "                          Fill          0.0003-0.0006         cycles, border designs and grain orientation of laminate to
+             "             Ground/Ground               Warp (grain)         0.0002-0.0004         prepreg. If Tachyon® 100G materials have been used, use the
+             "                     "                          Fill          0.0002-0.0004         artwork compensation factors from that material as a starting
+                                                                                                  point. It is also suggested that specific laminate constructions
+         3.10-3.45           Signal/Signal             Warp (grain)         0.0005-0.0007
+                                                                                                  are specified and adhered to so that dimensional variations due
+             "                     "                          Fill          0.0001-0.0003
+                                                                                                  to changes in construction are avoided. Table 1 assumes that
+             "              Signal/Ground              Warp (grain)         0.0003-0.0005         signal layers are either half or 1 ounce copper and ground layers
+             "                     "                          Fill          0.0000-0.0002         are either 1 or 2 ounce copper.
+
+             "             Ground/Ground               Warp (grain)         0.0000-0.0002
+
+             "                     "                          Fill          0.0000-0.0002
+
+      Table 1 (for reference) illustrates the suggested approach to characterizing
+      laminate movement and provides approximate artwork compensation factors
+      for Astra MT77 laminate when using a hydraulic press.
+
+
+
+    Imaging and Etching
+    Astra MT77 laminates are imaged using standard aqueous dry films and are compatible with both cupric chloride and ammoniacal
+    etchants.
+
+    Bond Enhancement
+    Alternative oxides are preferred on all high performance material systems. Post reduced oxides need to be tested to assure
+    compatibility with Lead Free processing temperatures. All oxide finishes should exhibit consistent and uniform coloring of the surface
+    coating.
+
+    If reduced oxides are used, consult the chemical supplier for post oxide baking considerations as excessive baking may lead to lower
+    pink ring resistance. It is generally suggested that post‑oxide baking be performed vertically, in racks. Suggest mild bake of oxided
+    inner layers (15-30 minutes @ 80-100°C).
+
+    For conveyorized oxide replacements, an efficient dryer at the end of a conveyorized oxide replacement line should remove all
+    moisture from the inner layer surface. However, drying of layers for 30 minutes minimum @ 100°C or higher is considered as
+    “best practice,” especially for boards to be subjected to “lead-free” processes. Drying in racks is preferred.
+
+    If immersion tin adhesion treatments are used, the fabricator should test the coating to verify adequate bond strength is developed
+    with Astra MT77 prepregs.
+
+
+    Part 3: Lamination
+
+      Table 2: Astra MT77 General Lamination Parameters
+
+        Process                    Recommendation
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/astra-
+              mt77-laminate-and-prepreg/                               Last Updated September 17, 2025                © 2021, Isola Group, All rights reserved.
+                                                                                                           Astra® MT77
+                                                                                  Ultra Low Loss, RF/MW Laminate and Prepreg
+
+
+                                   Recommended minimum: 15 minutes on risers,                  Use the full press cycle for both subassembly as well as final
+        Vacuum Time
+                                   Product not to exceed 100°C                                 lamination. The amount of time at cure temperature, and to
+        Curing                                                                                 some extent the actual cure temperature of Astra MT77, will be
+                                   190-200°C (375-390°F)
+        Temperature                                                                            determined by the thickness of the multilayer package being
+                                   190°C (375°F): 70 min or                                    produced. Very thick boards will require a longer cure time to
+        Curing Time
+                                   200°C (390°F): 60 min                                       assure optimum material performance. Removal of Astra MT77
+        Resin Flow                 100-140°C (210-280°F)                                       flash should be performed by routing rather than shearing to
+        Window                     Maintain heat ramp in this temperature range.               minimize crazing along the panel edges. A minimum vacuum
+        Heat Ramp                  3.0-5°C/min (5.4-9°F/min)                                   draw down time is recommended to assure surface moisture
+                                                                                               removal and good air and volatile removal.
+                                   325-375 PSI (23-27 kg/cm2) ≤ 1oz, ≤ 18 layers
+        Pressure                   350-400 PSI (25-28 kg/cm2) >1oz copper, >18
+                                   layers
+
+                                   Single Stage: Apply pressure after vacuum dwell
+                                   time
+        Pressure                   Dual Stage: 50 PSI (3.5 kg/cm2) after vacuum
+        Application                dwell time,
+                                   switch to high pressure ≤ 90°C product
+                                   temperature.
+
+                                   Cool to 135-140°C (275-285°F) at 2.8°C/min
+                                   (5.0°F/min)
+        Cool Down
+                                   with 50 PSI (3.5 kg/cm2) pressure
+                                   prior to removing or transferring the load.
+
+
+
+    Part 4: Drill
+    General
+    To assure effective removal of the resin debris during drilling, undercut drill geometries and high helix tools are suggested. On high
+    layer count technologies and thicker overall board thicknesses, peck drilling parameters may be necessary. Suggested parameters are
+    outlined below for typical multilayer designs.
+
+    Cutting Speed and Chipload
+    Relative to standard FR-4 parameters, use lower chiploads and cutting speeds to drill Astra MT77 printed circuit boards. The
+    parameters in Table 3 provide a moderate initial starting point for typical board designs. Thick boards with heavy copper or special
+    cladding such as invar will require more conservative drill parameters. Boards with numerous 2 oz. copper inner layers or boards with
+    coarse glass weave may require more conservative parameters.
+
+    Stack Height and Hit Count
+    Stack heights and hit counts will vary according to construction and overall thickness of the boards being drilled. For thicker boards,
+    above 2.5 mm (100 mils) overall, with high layer counts, drill one high.
+
+    Maximum hit count for drill diameters below 0.020′′ is 1,000, while drills at or above 0.020′′ diameter can be permitted up to 1,500 hits.
+    These general guidelines are strongly influenced by board thickness, geometry, stack height, etc.
+
+    Aluminum entry and lubricated backing help create good quality hole walls but are not essential in all applications. It is suggested that
+    the fabricator’s supplier of entry and backup be consulted.
+
+
+
+      Table 3: Suggested Drilling Parameters For Initial Astra MT77 Setup
+
+                                      Spindle              Surface Speed Per
+              Drill Size                                                                       Infeed                    Chipload                         Retract
+                                       Speed                      Minute
+
+            Inch         mm               rpm              SFPM            SMPM        inch/min         m/min   inch/rev         mm/rev           mil/min       m/min
+
+          0.0098         0.25         100,000              258              79            40            1.02      0.40            0.010             600             15
+
+          0.0118         0.30         100,000              309              94            80            2.03      0.80            0.020             800             20
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/astra-
+              mt77-laminate-and-prepreg/                            Last Updated September 17, 2025                © 2021, Isola Group, All rights reserved.
+                                                                                                      Astra® MT77
+                                                                              Ultra Low Loss, RF/MW Laminate and Prepreg
+
+
+          0.0138         0.35          95,500              345        105             120          3.05   1.26           0.032             1000       20
+
+          0.0157         0.40          95,500              394        120             150          3.81   1.57           0.040             1000       25
+
+          0.0197         0.50          76,400              394        120             190          4.83   2.49           0.063             1000       25
+
+          0.0248         0.63          61,000              396        121             170          4.32   2.79           0.071             1000       25
+
+          0.0295         0.75          51,000              394        120             150          3.81   2.94           0.075             1000       25
+
+          0.0354         0.90          43,000              399        122             130          3.30   3.02           0.077             1000       25
+
+          0.0394         1.00          38,500              379        121             117          2.97   3.04           0.077             1000       25
+
+          0.0500         1.27          30,500              399        122              91          2.31   2.98           0.076             1000       25
+
+          0.0591         1.50          26,000              402        123              78          1.98   3.00           0.076             1000       25
+
+          0.0787         2.00          20,000              412        126              60          1.52   3.00           0.076             1000       25
+
+
+
+    Part 5: Hole Wall Preparation
+    General
+    Good desmear and electroless copper deposition performance are more easily achieved when the drilled hole quality is good. The
+    generation of smooth, debris free hole walls is influenced by the degree of resin cure, drilling conditions and board design
+    considerations. The elimination of 7628 or similar heavy glasses (whenever possible), coupled with properly adjusted drill parameters
+    on fully cured boards has been shown to improve overall drilled hole quality. This helps reduce smear generation, which improves
+    desmear performance and can ultimately help to reduce copper wicking.
+
+    Factors which influence chemical desmear rates, and therefore the suggestions in this document, include: resin type,
+    chemistry type, bath dwell times, bath temperatures, chemical concentrations in each bath and the amount of solution transfer through
+    the holes.
+
+    Factors which influence the amount of solution transfer through the holes include: hole size, panel thickness, work bar
+    stroke length, panel separation in the rack and the use of solution agitation, rack vibration and rack “bumping” to remove air bubbles
+    from the holes.
+
+    Chemical Desmear
+    Trials show that Astra MT77 shows good response to chemical desmear. Processing parameters used for 170 Tg FR-4 should be used,
+    excessive dwell time will cause etchback. Two passes of chemical desmear is recommended for high reliability or thicker designs (>2.5
+    mm). A short plasma etch desmear can be used, comparable to standard FR-4, can be used instead of a second pass chemical
+    desmear.
+
+    Plasma Desmear
+    Plasma can be used with or without a single permanganate pass (to be determined by each fabricator). Plasma processing tends to
+    improve overall hole quality, particularly in thick and/or high aspect ratio boards. Standard plasma gas mixtures and process cycles
+    designed for conventional FR-4 epoxy are suggested for use as initial starting parameters for Astra MT77.
+
+    Microvia Plasma Desmear
+    The use of FR-4 level plasma etching is strongly recommended. User must verify that the laser microvia landing pad is clean of resin
+    residues and is free of copper oxides before electroless copper plating.
+
+    3-Point Etchback
+    True 3-point “etchback” exposes the innerlayer “post” on all three sides for subsequent plating processes. This will require a more
+    robust approach compared to simple desmear, which is designed only to remove resin smear from the vertical surface of the
+    innerlayer interconnect “posts”.
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/astra-
+              mt77-laminate-and-prepreg/                         Last Updated September 17, 2025          © 2021, Isola Group, All rights reserved.
+                                                                                                          Astra® MT77
+                                                                                   Ultra Low Loss, RF/MW Laminate and Prepreg
+
+
+    Plasma will readily etch back Astra MT77 resin. Standard plasma gas mixtures and process cycles designed for conventional FR-4 epoxy
+    are satisfactory and are suggested for use as initial starting parameters for etchback of Astra MT77. The practice of following the
+    plasma process with a chemical process is suggested rather than plasma alone to increase hole wall texture and remove plasma ash
+    residues. Consult the chemical supplier for suggested conditions.
+
+    If plasma is not available, chemical etchback for 3-point connections must be done with extreme care on Astra MT77 to minimize
+    copper wicking.
+
+
+    Part 6: Secondary Drilling, Routing and Scoring
+    Secondary Drilling
+    The use of entry and backer material may be necessary during the secondary drilling of larger hole sizes to avoid crazing/fracturing at
+    the hole perimeter. Additionally, sharper plunge point angle geometries may be necessary to avoid crazing around secondary drilled
+    hole perimeters.
+
+    Routing and Scoring
+    Modifications of the final PWB route fabrication process may be necessary. Table 4 lists initial starting parameters. Note that
+    parameters listed may require further adjustment.
+
+
+
+      Table 4: Suggested Routing Parameters for Initial Astra MT77
+                                                                                                 The customer should contact the scoring equipment
+      Setup
+                                                                                                 and/or bit supplier for application specific suggestions
+          Stack Height                                                       Router Bit          for use with Astra MT77 materials.
+                                Spindle Speed         Table Speed
+               (Max)                                                            Life
+
+                inch                  rpm                  inch/min          linear feet
+
+               0.200                 25,000                  25                  35
+
+
+
+    Your Isola Technical Account Manager may also be able to provide some initial suggestions, but these should be validated through
+    testing by the individual PWB fabricator.
+
+
+
+
+    Part 7: Packaging and Storage
+    Astra MT77 finished boards have low moisture sensitivity and good shelf life. However, Isola recommends using best practices in
+    storage and packaging, as noted below, to reduce risk during lead-free assembly.
+    Astra MT77 boards should be dry prior to packaging to ensure the most robust lead-free performance. Printed boards made from Astra
+    MT77 that will use high temperature assembly and which require a long shelf life, recommended packaging is to use a Moisture Barrier
+    Bag (MBB) with a Humidity Indicator Card (HIC) and adequate drying desiccant inside the MBB to prevent moisture absorption during
+    shipment and long-term storage.
+    Upon opening the MBB, the boards should be processed within 168 hours when maximum shop floor conditions are at < 30°C
+    (85°F)/60% RH. MBB bags that are opened for inspection should be resealed immediately to protect the boards from moisture uptake.
+
+
+
+
+    Part 8: Health and Safety
+    Always handle laminate with care. Laminate edges are typically sharp and can cause cuts and scratches if not handled properly.
+    Handling and machining of prepreg and laminate can create dust (see Astra MT77 Material Safety Data Sheet). Appropriate ventilation
+    is necessary in machining/punching areas. The use of protective masks is suggested to avoid inhaling dust. Gloves, aprons and/or
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/astra-
+              mt77-laminate-and-prepreg/                              Last Updated September 17, 2025              © 2021, Isola Group, All rights reserved.
+                                                                                                 Astra® MT77
+                                                                          Ultra Low Loss, RF/MW Laminate and Prepreg
+
+
+    safety glasses are suggested if individuals have frequent or prolonged skin or eye contact with dust.
+
+    Isola Group does not use polybromide biphenyls or polybromidebiphenyl oxides as flame retardants in any product. Material Safety
+    Data Sheets are available upon request.
+
+
+    Part 9: Ordering Information
+    Contact your local sales representative or visit: www.isola-group.com for further information.
+
+    Or contact us at: info@isola-group.com
+
+    Isola Group North America
+    6565 West Frye Road
+    Chandler, AZ 85226
+    Phone: 480-893-6527
+    Fax: 480-893-1409
+
+    Isola Asia Pacific (Hong Kong) Ltd.
+    12/F, Kin Sang Commercial Centre
+    49 King Yip Street, Kwun Tong
+    Kowloon, Hong Kong
+    Phone: 852-2418-1318
+    Fax: 852-2418-1533
+
+    Isola GmbH
+    Isola Strasse 2
+    D-52348 Düren, Germany
+    Phone: 49-2421-8080
+    Fax: 49-2421-808164
+
+
+    Learn More
+    https://www.isola-group.com/products/all-printed-circuit-materials/ASTRA-MT77/
+
+    The Isola name and logo are registered trademarks of Isola Corp. USA in the USA and other countries. DSRFoil is a registered trademark
+    of Isola USA Corp. in other countries. All other trademarks mentioned herein are property of their respective owners. © 2020 Isola
+    Group, All Rights Reserved. 05/20 PG185HRC
+
+
+
+                NOTES
+                The data contained in this document, while believed to be accurate and based on both field testing and analytical methods
+                considered to be reliable, is for information purposes only. Any sales of these products will be governed by the terms and conditions
+                of the agreement under which they are sold.
+
+
+
+
+                Isola, the Isola logo, Astra, Chronon, GETEK, I-Fill, IsoDesign, IsoStack, I-Speed, I-Tera, Polyclad, Stratus, TerraGreen, and The Base
+                for Innovation are registered trademarks or trademarks of ISOLA USA Corp. in the United States and in other countries. Copyright ©
+                2021 Isola Group. All rights reserved.
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/astra-
+              mt77-laminate-and-prepreg/                     Last Updated September 17, 2025                © 2021, Isola Group, All rights reserved.
+

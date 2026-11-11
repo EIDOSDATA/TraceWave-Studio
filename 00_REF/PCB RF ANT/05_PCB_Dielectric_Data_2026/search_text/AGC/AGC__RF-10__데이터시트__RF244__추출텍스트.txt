@@ -1,0 +1,102 @@
+RF-10
+Base Material for High Power RF Applications
+
+ Benefits
+      •    High DK for RF circuit size reduction
+      •    Excellent dimensional stability
+      •    Tight DK tolerance (10.2 +/- 0.3)
+      •    Low 0.0025 loss tangent (@ 10 GHz)
+      •    High thermal conductivity for enhanced thermal management
+      •    Excellent adhesion to smooth coppers
+      •    Low X, Y, Z expansion
+      •    Excellent price/performance ratio
+
+ Applications
+      •    Microstrip Patch Antennas
+      •    GPS Antennas
+      •    Passive Components (filters, couplers, power dividers)
+      •    Aircraft Collision Avoidance Systems
+      •    Satellite components
+
+
+RF-10 copper clad laminates are composites of ceramic filled PTFE and woven fiberglass. RF-10 has the advantage of high dielectric
+constant and low dissipation factor. Thin woven fiberglass reinforcement is used to offer both low dielectric loss and improved rigidity
+for ease of handling and improved dimensional stability for multilayer circuits.
+
+RF-10 laminates are engineered to provide a cost effective substrate with industry acceptable delivery times. RF-10 responds to a need
+in RF applications for size reduction. RF-10 bonds well to smooth low profile copper. The low dissipation of RF-10 combined with the
+use of very smooth copper results in optimal insertion losses at higher frequency where skin effect losses play a substantial role.
+
+RF-10 can be sheared, drilled, milled and plated using standard PTFE circuit board processing techniques.
+RF-10 laminates have low X, Y and Z thermal coefficients of expansion for exceptional plated through hole reliability and reduced
+scaling factors for artwork compensation.
+          Properties               Conditions           Typical Value                    Unit                         Test Method
+ Electrical Properties
+ Dielectric Constant               @ 10 GHz                 10.2 ± 0.3                               IPC-650 2.5.5.5.1 Mod.
+ Dissipation Factor                @ 10 GHz                  0.0025                                  IPC-650 2.5.5.5.1 Mod.
+ Surface Resistivity                                        1.0 x 108               Mohms            IPC-650 2.5.17.1
+ Volume Resistivity                                         6.0 x 107              Mohms/cm          IPC-650 2.5.17.1
+ Thermal Properties
+ Thermal Conductivity                Unclad                    0.85                    W/M*K         IPC-650-2.4.50
+                                       X                        16
+ CTE (RT- 150 °C)                      Y                        20                     ppm/°C        IPC-650 2.4.41
+                                       Z                        25
+ TcK† (-55 to 150 °C)                                          -370                    ppm/°C        IPC-650 2.5.5.6
+ Mechanical Properties
+                                      MD                96.53 (14,000)             N/mm2 (psi)
+ Flexural Strength                                                                                   IPC-650-2.4.4
+                                      CD                68.95 (10,000)             N/mm2 (psi)
+                                      MD                62.57 (8,900)              N/mm2 (psi)
+ Tensile Strength                                                                                    IPC-650-2.4.19
+                                      CD                37.26 (5,300)              N/mm2 (psi)
+                                                           -0.0032                % (25 mil-MD)
+                                                                                                     IPC-650 2.4.39 (After Etch)
+                                                           -0.0239                % (25 mil-CD)
+ Dimensional Stability
+                                                           -0.0215                % (25 mil-MD)
+                                                                                                     IPC-650 2.4.39 (After Bake)
+                                                           -0.0529                % (25 mil-CD)
+                                                           -0.0301                % (25 mil-MD)
+                                                                                                     IPC-650 2.4.39 (After Stress)
+                                                           -0.0653                % (25 mil-CD)
+ Dimensional Stability
+                                                           -0.0027                % (60 mil-MD)
+                                                                                                     IPC-650 2.4.39 (After Etch)
+                                                           -0.0142                % (60 mil-CD)
+                                                           -0.1500                % (60 mil-MD)
+                                                                                                     IPC-650 2.4.39 (After Bake)
+                                                           -0.0326                % (60 mil-CD)
+ Dimensional Stability
+                                                           -0.0167                % (60 mil-MD)
+                                                                                                     IPC-650 2.4.39 (After Stress)
+                                                           -0.0377                % (60 mil-CD)
+ Chemical / Physical Properties
+ Moisture Absorption                                           0.08                       %          IPC-650 2.6.2.1
+ Peel Strength
+                                                               1.7                     N/mm          IPC-650 2.4.8 (solder)
+ (1 oz. RT copper)
+ Density                        Specific Gravity               2.77                      g/cm3       IPC-650-2.3.5
+ Specific Heat                                                 0.90                      J/g°C       IPC-650-2.4.50
+ Flammability Rating                                           V-0                                   Internal
+† TcK = Thermal Coefficient of DK
+                                                                Typical Thicknesses1
+              Inches                                 mm                                     Inches                            mm
+               0.010                                 0.25                                    0.060                            1.52
+               0.020                                 0.51                                    0.100                            2.54
+               0.025                                 0.64                                    0.125                            3.18
+                                                                Available Sheet Sizes2
+              Inches                                 mm                                    Inches                            mm
+              12 x 18                              305 x 457                               18 x 24                         457 x 610
+              16 x 18                              406 x 457                               36 x 48                        914 x 1,220
+
+* All test data provided are typical values and not intended to be specification values. For review of critical specification tolerances,
+   please contact a company representative directly.
+* RF-10 can be manufactured in increments of 0.005”(0.125mm).
+* Standard panel size is 18” x 24” (457 mm x 610 mm).
+* Please contact AGC for availability of additional thicknesses, other sizes & any other type of cladding.
+
+
+
+ AGC Inc. 2024-02
+ agc-ml.multimaterial@agc.com
+

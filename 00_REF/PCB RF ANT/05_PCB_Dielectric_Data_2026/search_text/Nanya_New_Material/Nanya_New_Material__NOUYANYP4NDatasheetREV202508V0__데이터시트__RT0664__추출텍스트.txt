@@ -1,0 +1,60 @@
+             Extreme Low Loss & Excellent Thermal Resistance
+                           NY-P4N/NY-P4PN
+     特点 FEATURES:
+            低介电常数和低介质损耗（Low Dk 3.22@10GHz，Low Df 0.0014@10GHz）
+            优异的电气和热可靠性 Excellent electrical and thermal reliability properties
+            优异的防潮性和无铅回流焊工艺兼容 Excellent moisture resistance and lead Free reflow process compatible
+            优越的PTH可靠性和耐CAF能力 Superior PTH reliability and anti-CAF capability
+            Dk/Df性能稳定平坦，防潮性能优异Stable and flat Dk/Df performance and excellent moisture resistance
+
+
+     应用领域 APPLICATIONS:
+            射频 Radio Frequency
+            服务器，基站 Server，Base Station
+            背板，高性能计算机 Backplane，High Performance Computer
+            超级核心路由器和交换机 Super Core Router and Switchers
+
+
+NY-P4N基板典型性能 Typical Properties for NY-P4N Laminate
+  属性                            项目                       测试方法           测试条件            单位        典型值
+Property                        Item                   IPC-TM-650     Test Condition    Unit   Typical Value
+                                                          2.4.25           DSC           ℃           \
+                        玻璃态转换温度 Tg                        2.4.24          TMA           ℃          170
+                                                         2.4.24.4         DMA           ℃          200
+                   X/Y轴热膨胀系数CTE,X/Y-axis                 2.4.24.5       ＜Tg,TMA        PPM/℃      17/18
+ 热性能                                                                    ＜Tg,TMA        PPM/℃        50
+                           Z轴热膨胀系数                        2.4.24
+Thermal                                                                 ＞Tg,TMA        PPM/℃       270
+                         Z-axis Expansion
+                                                          2.4.24        50~260℃          %          3.0
+                          热裂解温度 Td                       2.4.24.6      TGA(5%W.L)       ℃          400
+                                                                          Clad          Min       ＞120
+                           耐热性 T288                      2.4.24.1
+                                                                         Etched         Min       ＞120
+                                               1MHz                                                  \
+                       介电常数 DK                           2.5.5.9
+                                               1GHz                     C-24/23/50       -           \
+                       (R/C:66%)
+                                               10GHz   SPDR method                                 3.22
+
+ 电性能                                           1MHz                                      -           \
+                       介质损耗 Df                           2.5.5.9
+Electrical                                     1GHz                     C-24/23/50                   \
+                       (R/C:66%)                                                         -
+                                               10GHz   SPDR method                                0.0014
+                    体积电阻 Volume Resistivity                                            MΩ-cm     2.4×109
+                                                         2.5.17.1       C-96/35/90
+                    表面电阻 Surface Resistivity                                            MΩ       1.9×108
+                      吸水率 Water Absorption               2.6.2.1     E-1/105+D-24/23     %         0.06
+               剥离强度 Peel Strength (HTE)         1oz                                                  \
+               剥离强度 Peel Strength (RTF)         1oz       2.4.8        As Received     N/mm          \
+物理性能
+              剥离强度 Peel Strength (HVLP)         1oz                                               0.525
+Physical
+                        弯曲强度                   Warp                                                200
+                                                          2.4.4        As Received     N/mm2
+                    Flexural Strength           Fill                                               180
+                     耐燃性 Flame Resistance                 UL-94         A&E-4/125        -         V-0
+
+IPC-4101 Type Designation : /                                                                  Rev: 202508V0
+

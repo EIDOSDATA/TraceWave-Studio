@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "manifest_checked": false,
+  "counts": {
+    "reused_file_checks": 82955,
+    "sources": 1756,
+    "observations": 57340,
+    "observation_fields": 142,
+    "partitions": 37,
+    "pdf_search_entries": 967,
+    "fabricator_extra_files": 37,
+    "archives": 18,
+    "archive_members": 648,
+    "guide_local_links": 17
+  },
+  "error_count": 0,
+  "errors": [],
+  "errors_omitted": 0,
+  "scope": "File integrity, record structure and source links only. Not independent material, cell-transcription or solver accuracy validation."
+}

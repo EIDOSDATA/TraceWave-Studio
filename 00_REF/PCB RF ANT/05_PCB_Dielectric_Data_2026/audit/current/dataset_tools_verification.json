@@ -1,0 +1,79 @@
+{
+  "status": "passed",
+  "cli_export_cases": 15,
+  "csv_columns": 142,
+  "prior_review_json_identical": true,
+  "review_summary_matches_current_canonical_hash": true,
+  "publisher_filter_reads_only_matching_partition": true,
+  "malformed_input_rejection": [
+    "hash",
+    "count",
+    "publisher",
+    "path_escape",
+    "duplicate_record_id",
+    "nonfinite_scalar",
+    "negative_dk",
+    "reversed_range",
+    "unknown_source",
+    "unknown_field",
+    "broken_guide_link",
+    "broken_guide_anchor",
+    "tampered_manifest_file",
+    "tampered_archive_member"
+  ],
+  "atomic_export_preserves_existing_files_and_removes_temporary_on_failure": true,
+  "legacy_csv_mixed_source_context_string_or_list_supported": true,
+  "scope": "Reference data utilities only; no GUI or physical solver implementation. Final full manifest check is performed after package finalization.",
+  "files": [
+    {
+      "path": "scripts/build_review_index.py",
+      "bytes": 7167,
+      "sha256": "7a60e83721cb69e12ae6e5611a15e930daad9f3dada790c9bb1222952a9a9c0d"
+    },
+    {
+      "path": "scripts/dataset_io.py",
+      "bytes": 4856,
+      "sha256": "84104f967e35f88460b05880ddb09281610c2ad81c9e6208a3a8149977b88de7"
+    },
+    {
+      "path": "scripts/filter_records.py",
+      "bytes": 4866,
+      "sha256": "907c03198f01499762dc7e948c10081cb4ab98320df9e27ea9361bc1bd33036c"
+    },
+    {
+      "path": "scripts/record_filter.py",
+      "bytes": 4761,
+      "sha256": "4cdc7dd9993cbbc99aefbad474054481effcfb67d075a7a4e32491b51b825b98"
+    },
+    {
+      "path": "scripts/review_rules.py",
+      "bytes": 4959,
+      "sha256": "71a7bc5883805428f01798bcb734055cec7da6e9e6bd29ff775c8007d176b1ff"
+    },
+    {
+      "path": "scripts/verification_common.py",
+      "bytes": 2046,
+      "sha256": "c278012c3b71903c40b851d3bf7551edeef58483bcf94fe85f2cdba9a955e5e9"
+    },
+    {
+      "path": "scripts/verify_inventory.py",
+      "bytes": 3095,
+      "sha256": "d9984464802861d924d32389233b77feb72fdef65e24e6dbf61d9266e0c5f12c"
+    },
+    {
+      "path": "scripts/verify_observations.py",
+      "bytes": 4201,
+      "sha256": "f8c6fee53b600babcba11ed6e17d7566edbc636084aa585ac631ee0bb0781d29"
+    },
+    {
+      "path": "scripts/verify_package.py",
+      "bytes": 2609,
+      "sha256": "d66c97ccedef2d1f85295cf6acf87225ef6c21cd3a9f185aa588dfef9a98f5e1"
+    },
+    {
+      "path": "scripts/verify_sources.py",
+      "bytes": 4310,
+      "sha256": "60323e6faca444c195d5933ad67b9f240a3a1f3eb7c78a09d887291d4b03154b"
+    }
+  ]
+}

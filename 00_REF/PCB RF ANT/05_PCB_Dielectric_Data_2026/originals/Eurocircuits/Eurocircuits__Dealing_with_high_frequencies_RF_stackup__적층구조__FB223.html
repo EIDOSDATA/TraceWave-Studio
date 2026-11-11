@@ -1,0 +1,1087 @@
+<!doctype html>
+<html class="no-js min-h-full antialiased" lang="en-GB">
+<head>
+		<meta charset="utf-8">
+<script>
+var gform;gform||(document.addEventListener("gform_main_scripts_loaded",function(){gform.scriptsLoaded=!0}),document.addEventListener("gform/theme/scripts_loaded",function(){gform.themeScriptsLoaded=!0}),window.addEventListener("DOMContentLoaded",function(){gform.domLoaded=!0}),gform={domLoaded:!1,scriptsLoaded:!1,themeScriptsLoaded:!1,isFormEditor:()=>"function"==typeof InitializeEditor,callIfLoaded:function(o){return!(!gform.domLoaded||!gform.scriptsLoaded||!gform.themeScriptsLoaded&&!gform.isFormEditor()||(gform.isFormEditor()&&console.warn("The use of gform.initializeOnLoaded() is deprecated in the form editor context and will be removed in Gravity Forms 3.1."),o(),0))},initializeOnLoaded:function(o){gform.callIfLoaded(o)||(document.addEventListener("gform_main_scripts_loaded",()=>{gform.scriptsLoaded=!0,gform.callIfLoaded(o)}),document.addEventListener("gform/theme/scripts_loaded",()=>{gform.themeScriptsLoaded=!0,gform.callIfLoaded(o)}),window.addEventListener("DOMContentLoaded",()=>{gform.domLoaded=!0,gform.callIfLoaded(o)}))},hooks:{action:{},filter:{}},addAction:function(o,r,e,t){gform.addHook("action",o,r,e,t)},addFilter:function(o,r,e,t){gform.addHook("filter",o,r,e,t)},doAction:function(o){gform.doHook("action",o,arguments)},applyFilters:function(o){return gform.doHook("filter",o,arguments)},removeAction:function(o,r){gform.removeHook("action",o,r)},removeFilter:function(o,r,e){gform.removeHook("filter",o,r,e)},addHook:function(o,r,e,t,n){null==gform.hooks[o][r]&&(gform.hooks[o][r]=[]);var d=gform.hooks[o][r];null==n&&(n=r+"_"+d.length),gform.hooks[o][r].push({tag:n,callable:e,priority:t=null==t?10:t})},doHook:function(r,o,e){var t;if(e=Array.prototype.slice.call(e,1),null!=gform.hooks[r][o]&&((o=gform.hooks[r][o]).sort(function(o,r){return o.priority-r.priority}),o.forEach(function(o){"function"!=typeof(t=o.callable)&&(t=window[t]),"action"==r?t.apply(null,e):e[0]=t.apply(null,e)})),"filter"==r)return e[0]},removeHook:function(o,r,t,n){var e;null!=gform.hooks[o][r]&&(e=(e=gform.hooks[o][r]).filter(function(o,r,e){return!!(null!=n&&n!=o.tag||null!=t&&t!=o.priority)}),gform.hooks[o][r]=e)}});
+</script>
+
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="author" content="Eurocircuits">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+<link rel="alternate" href="https://www.eurocircuits.com/online-smart-tools-services-products/high-frequencies/" hreflang="en" />
+<link rel="alternate" href="https://www.eurocircuits.com/de/elektronische-fertigungstechnik/mit-hohen-frequenzen-arbeiten/" hreflang="de" />
+<link rel="alternate" href="https://www.eurocircuits.com/hu/online-eszkozok-es-szolgaltatasok/nagyfrekvenciak-kezelese/" hreflang="hu" />
+
+	<!-- This site is optimized with the Yoast SEO plugin v28.6 - https://yoast.com/product/yoast-seo-wordpress/ -->
+	<title>Dealing with High Frequencies - Eurocircuits</title>
+	<meta name="description" content="Electronics designers who define circuits where high frequencies form the basis of their application are in a select group of specialists." />
+	<link rel="canonical" href="https://www.eurocircuits.com/online-smart-tools-services-products/high-frequencies/" />
+	<meta property="og:locale" content="en_GB" />
+	<meta property="og:locale:alternate" content="de_DE" />
+	<meta property="og:locale:alternate" content="hu_HU" />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="Dealing with High Frequencies - Eurocircuits" />
+	<meta property="og:description" content="Electronics designers who define circuits where high frequencies form the basis of their application are in a select group of specialists." />
+	<meta property="og:url" content="https://www.eurocircuits.com/online-smart-tools-services-products/high-frequencies/" />
+	<meta property="og:site_name" content="Eurocircuits" />
+	<meta property="article:published_time" content="2022-12-08T09:36:28+00:00" />
+	<meta property="article:modified_time" content="2025-03-07T14:15:58+00:00" />
+	<meta property="og:image" content="https://www.eurocircuits.com/content/uploads/2024/05/Dealing-with-High-Frequencies-Featured-Image.jpg" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="628" />
+	<meta property="og:image:type" content="image/jpeg" />
+	<meta name="author" content="Rik" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:label1" content="Written by" />
+	<meta name="twitter:data1" content="Rik" />
+	<meta name="twitter:label2" content="Est. reading time" />
+	<meta name="twitter:data2" content="13 minutes" />
+	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https:\/\/schema.org","@graph":[{"@type":"Article","@id":"https:\/\/www.eurocircuits.com\/online-smart-tools-services-products\/high-frequencies\/#article","isPartOf":{"@id":"https:\/\/www.eurocircuits.com\/online-smart-tools-services-products\/high-frequencies\/"},"author":{"name":"Rik","@id":"https:\/\/www.eurocircuits.com\/#\/schema\/person\/64e6ed01236ea88abf46739ad133dceb"},"headline":"Dealing with High Frequencies","datePublished":"2022-12-08T09:36:28+00:00","dateModified":"2025-03-07T14:15:58+00:00","mainEntityOfPage":{"@id":"https:\/\/www.eurocircuits.com\/online-smart-tools-services-products\/high-frequencies\/"},"wordCount":417,"image":{"@id":"https:\/\/www.eurocircuits.com\/online-smart-tools-services-products\/high-frequencies\/#primaryimage"},"thumbnailUrl":"https:\/\/www.eurocircuits.com\/content\/uploads\/2024\/05\/Dealing-with-High-Frequencies-Featured-Image.jpg","articleSection":["Electronic Manufacturing Technology","Online Smart Tools – Services &amp; Products"],"inLanguage":"en-GB"},{"@type":"WebPage","@id":"https:\/\/www.eurocircuits.com\/online-smart-tools-services-products\/high-frequencies\/","url":"https:\/\/www.eurocircuits.com\/online-smart-tools-services-products\/high-frequencies\/","name":"Dealing with High Frequencies - Eurocircuits","isPartOf":{"@id":"https:\/\/www.eurocircuits.com\/#website"},"primaryImageOfPage":{"@id":"https:\/\/www.eurocircuits.com\/online-smart-tools-services-products\/high-frequencies\/#primaryimage"},"image":{"@id":"https:\/\/www.eurocircuits.com\/online-smart-tools-services-products\/high-frequencies\/#primaryimage"},"thumbnailUrl":"https:\/\/www.eurocircuits.com\/content\/uploads\/2024\/05\/Dealing-with-High-Frequencies-Featured-Image.jpg","datePublished":"2022-12-08T09:36:28+00:00","dateModified":"2025-03-07T14:15:58+00:00","author":{"@id":"https:\/\/www.eurocircuits.com\/#\/schema\/person\/64e6ed01236ea88abf46739ad133dceb"},"description":"Electronics designers who define circuits where high frequencies form the basis of their application are in a select group of specialists.","breadcrumb":{"@id":"https:\/\/www.eurocircuits.com\/online-smart-tools-services-products\/high-frequencies\/#breadcrumb"},"inLanguage":"en-GB","potentialAction":[{"@type":"ReadAction","target":["https:\/\/www.eurocircuits.com\/online-smart-tools-services-products\/high-frequencies\/"]}]},{"@type":"ImageObject","inLanguage":"en-GB","@id":"https:\/\/www.eurocircuits.com\/online-smart-tools-services-products\/high-frequencies\/#primaryimage","url":"https:\/\/www.eurocircuits.com\/content\/uploads\/2024\/05\/Dealing-with-High-Frequencies-Featured-Image.jpg","contentUrl":"https:\/\/www.eurocircuits.com\/content\/uploads\/2024\/05\/Dealing-with-High-Frequencies-Featured-Image.jpg","width":1200,"height":628,"caption":"Dealing with High Frequencies - Featured Image"},{"@type":"BreadcrumbList","@id":"https:\/\/www.eurocircuits.com\/online-smart-tools-services-products\/high-frequencies\/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https:\/\/www.eurocircuits.com\/"},{"@type":"ListItem","position":2,"name":"Blogs","item":"https:\/\/www.eurocircuits.com\/blog\/"},{"@type":"ListItem","position":3,"name":"Dealing with High Frequencies"}]},{"@type":"WebSite","@id":"https:\/\/www.eurocircuits.com\/#website","url":"https:\/\/www.eurocircuits.com\/","name":"Eurocircuits","description":"","potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https:\/\/www.eurocircuits.com\/?s={search_term_string}"},"query-input":{"@type":"PropertyValueSpecification","valueRequired":true,"valueName":"search_term_string"}}],"inLanguage":"en-GB"},{"@type":"Person","@id":"https:\/\/www.eurocircuits.com\/#\/schema\/person\/64e6ed01236ea88abf46739ad133dceb","name":"Rik","image":{"@type":"ImageObject","inLanguage":"en-GB","@id":"https:\/\/secure.gravatar.com\/avatar\/61c618e40e9071a16445bbce558bc813c1efbcadb1c59573ed32f9df531de5ee?s=96&d=mm&r=g","url":"https:\/\/secure.gravatar.com\/avatar\/61c618e40e9071a16445bbce558bc813c1efbcadb1c59573ed32f9df531de5ee?s=96&d=mm&r=g","contentUrl":"https:\/\/secure.gravatar.com\/avatar\/61c618e40e9071a16445bbce558bc813c1efbcadb1c59573ed32f9df531de5ee?s=96&d=mm&r=g","caption":"Rik"},"url":"https:\/\/www.eurocircuits.com\/author\/rik\/"}]}</script>
+	<!-- / Yoast SEO plugin. -->
+
+
+<link rel="alternate" title="oEmbed (JSON)" type="application/json+oembed" href="https://www.eurocircuits.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.eurocircuits.com%2Fonline-smart-tools-services-products%2Fhigh-frequencies%2F&#038;lang=en" />
+<link rel="alternate" title="oEmbed (XML)" type="text/xml+oembed" href="https://www.eurocircuits.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.eurocircuits.com%2Fonline-smart-tools-services-products%2Fhigh-frequencies%2F&#038;format=xml&#038;lang=en" />
+<link rel='stylesheet' id='gravity_forms_theme_foundation-css' href='https://www.eurocircuits.com/content/plugins/gravityforms/assets/css/dist/gravity-forms-theme-foundation.min.css?ver=3.1.3.1' media='all' />
+<style id="wp-block-library-inline-css">
+:root{--wp-block-synced-color:#7a00df;--wp-block-synced-color--rgb:122,0,223;--wp-bound-block-color:var(--wp-block-synced-color);--wp-editor-canvas-background:#ddd;--wp-admin-theme-color:#007cba;--wp-admin-theme-color--rgb:0,124,186;--wp-admin-theme-color-darker-10:#006ba1;--wp-admin-theme-color-darker-10--rgb:0,107,160.5;--wp-admin-theme-color-darker-20:#005a87;--wp-admin-theme-color-darker-20--rgb:0,90,135;--wp-admin-border-width-focus:2px}@media (min-resolution:192dpi){:root{--wp-admin-border-width-focus:1.5px}}.wp-element-button{cursor:pointer}:root .has-very-light-gray-background-color{background-color:#eee}:root .has-very-dark-gray-background-color{background-color:#313131}:root .has-very-light-gray-color{color:#eee}:root .has-very-dark-gray-color{color:#313131}:root .has-vivid-green-cyan-to-vivid-cyan-blue-gradient-background{background:linear-gradient(135deg,#00d084,#0693e3)}:root .has-purple-crush-gradient-background{background:linear-gradient(135deg,#34e2e4,#4721fb 50%,#ab1dfe)}:root .has-hazy-dawn-gradient-background{background:linear-gradient(135deg,#faaca8,#dad0ec)}:root .has-subdued-olive-gradient-background{background:linear-gradient(135deg,#fafae1,#67a671)}:root .has-atomic-cream-gradient-background{background:linear-gradient(135deg,#fdd79a,#004a59)}:root .has-nightshade-gradient-background{background:linear-gradient(135deg,#330968,#31cdcf)}:root .has-midnight-gradient-background{background:linear-gradient(135deg,#020381,#2874fc)}:root{--wp--preset--font-size--normal:16px;--wp--preset--font-size--huge:42px}.has-regular-font-size{font-size:1em}.has-larger-font-size{font-size:2.625em}.has-normal-font-size{font-size:var(--wp--preset--font-size--normal)}.has-huge-font-size{font-size:var(--wp--preset--font-size--huge)}:root .has-text-align-center{text-align:center}:root .has-text-align-left{text-align:left}:root .has-text-align-right{text-align:right}.has-fit-text{white-space:nowrap!important}#end-resizable-editor-section{display:none}.aligncenter{clear:both}.items-justified-left{justify-content:flex-start}.items-justified-center{justify-content:center}.items-justified-right{justify-content:flex-end}.items-justified-space-between{justify-content:space-between}.screen-reader-text{word-wrap:normal!important;border:0;clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;word-break:normal!important}.screen-reader-text:focus{background-color:#ddd;clip-path:none;color:#444;display:block;font-size:1em;height:auto;left:5px;line-height:normal;padding:15px 23px 14px;text-decoration:none;top:5px;width:auto;z-index:100000}html :where(.has-border-color){border-style:solid}html :where([style^=border-color],[style*=";border-color"],[style*="; border-color"]){border-style:solid}html :where([style^=border-top-color],[style*=";border-top-color"],[style*="; border-top-color"]){border-top-style:solid}html :where([style^=border-right-color],[style*=";border-right-color"],[style*="; border-right-color"]){border-right-style:solid}html :where([style^=border-bottom-color],[style*=";border-bottom-color"],[style*="; border-bottom-color"]){border-bottom-style:solid}html :where([style^=border-left-color],[style*=";border-left-color"],[style*="; border-left-color"]){border-left-style:solid}html :where([style^=border-width],[style*=";border-width"],[style*="; border-width"]){border-style:solid}html :where([style^=border-top-width],[style*=";border-top-width"],[style*="; border-top-width"]){border-top-style:solid}html :where([style^=border-right-width],[style*=";border-right-width"],[style*="; border-right-width"]){border-right-style:solid}html :where([style^=border-bottom-width],[style*=";border-bottom-width"],[style*="; border-bottom-width"]){border-bottom-style:solid}html :where([style^=border-left-width],[style*=";border-left-width"],[style*="; border-left-width"]){border-left-style:solid}html :where(img[class*=wp-image-]){height:auto;max-width:100%}:where(figure){margin:0 0 1em}html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:var(--wp-admin--admin-bar--height,0px)}@media screen and (max-width:600px){html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:0px}}
+/*wp_block_styles_on_demand_placeholder:6af3ae121a4fc*/
+/*# sourceURL=wp-block-library-inline-css */
+</style>
+<style id="classic-theme-styles-inline-css">
+/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+/*# sourceURL=/wp-includes/css/classic-themes.min.css */
+</style>
+<style id="wp-block-styles-placeholder-inline-css">
+:root { --wp-internal-comment: "Placeholder for wp_hoist_late_printed_styles() to replace with the block styles printed at wp_footer." }
+/*# sourceURL=wp-block-styles-placeholder-inline-css */
+</style>
+<style id="wp-global-styles-placeholder-inline-css">
+:root { --wp-internal-comment: "Placeholder for wp_hoist_late_printed_styles() to replace with the global-styles printed at wp_footer." }
+/*# sourceURL=wp-global-styles-placeholder-inline-css */
+</style>
+<link rel='stylesheet' id='io-ai-variables-css' href='https://www.eurocircuits.com/content/plugins/io-ai-wp-core/assets/css/variables.css?ver=2.10.2' media='all' />
+<link rel='stylesheet' id='dashicons-css' href='https://www.eurocircuits.com/wp/wp-includes/css/dashicons.min.css?ver=7.1.3' media='all' />
+<link rel='stylesheet' id='io-ai-wp-chatbot-variables-css' href='https://www.eurocircuits.com/content/plugins/io-ai-wp-chatbot/assets/css/variables.css?ver=1.13.2' media='all' />
+<link rel='stylesheet' id='io-search-shared-css' href='https://www.eurocircuits.com/content/plugins/io-ai-wp-chatbot/assets/css/search-shared.css?ver=1.13.2' media='all' />
+<link rel='stylesheet' id='io-conversational-search-css' href='https://www.eurocircuits.com/content/plugins/io-ai-wp-chatbot/assets/css/conversational-search.css?ver=1.13.2' media='all' />
+<link rel='stylesheet' id='main-css-css' href='https://www.eurocircuits.com/content/themes/io/build/css/main-BoJ8t0xq.css' media='all' />
+<link rel='stylesheet' id='kadence-blocks-rowlayout-css' href='https://www.eurocircuits.com/content/plugins/kadence-blocks/dist/style-blocks-rowlayout.css?ver=3.7.12.1' media='all' />
+<link rel='stylesheet' id='kadence-blocks-column-css' href='https://www.eurocircuits.com/content/plugins/kadence-blocks/dist/style-blocks-column.css?ver=3.7.12.1' media='all' />
+<link rel='stylesheet' id='kadence-blocks-image-css' href='https://www.eurocircuits.com/content/plugins/kadence-blocks/dist/style-blocks-image.css?ver=3.7.12.1' media='all' />
+<link rel='stylesheet' id='kadence-blocks-spacer-css' href='https://www.eurocircuits.com/content/plugins/kadence-blocks/dist/style-blocks-spacer.css?ver=3.7.12.1' media='all' />
+<style id="kadence-blocks-advancedheading-inline-css">
+	.wp-block-kadence-advancedheading mark{background:transparent;border-style:solid;border-width:0}
+	.wp-block-kadence-advancedheading mark.kt-highlight{color:#f76a0c;}
+	.kb-adv-heading-icon{display: inline-flex;justify-content: center;align-items: center;}
+	.is-layout-constrained > .kb-advanced-heading-link {display: block;}.wp-block-kadence-advancedheading.has-background{padding: 0;}.kb-screen-reader-text{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);}
+/*# sourceURL=kadence-blocks-advancedheading-inline-css */
+</style>
+<style id="kadence-blocks-global-variables-inline-css">
+:root {--global-kb-font-size-sm:clamp(0.8rem, 0.73rem + 0.217vw, 0.9rem);--global-kb-font-size-md:clamp(1.1rem, 0.995rem + 0.326vw, 1.25rem);--global-kb-font-size-lg:clamp(1.75rem, 1.576rem + 0.543vw, 2rem);--global-kb-font-size-xl:clamp(2.25rem, 1.728rem + 1.63vw, 3rem);--global-kb-font-size-xxl:clamp(2.5rem, 1.456rem + 3.26vw, 4rem);--global-kb-font-size-xxxl:clamp(2.75rem, 0.489rem + 7.065vw, 6rem);}:root {--global-palette1: #3182CE;--global-palette2: #2B6CB0;--global-palette3: #1A202C;--global-palette4: #2D3748;--global-palette5: #4A5568;--global-palette6: #718096;--global-palette7: #EDF2F7;--global-palette8: #F7FAFC;--global-palette9: #ffffff;}
+/*# sourceURL=kadence-blocks-global-variables-inline-css */
+</style>
+<style id="kadence_blocks_css-inline-css">
+.kb-row-layout-id9520_2039d9-7f > .kt-row-column-wrap{padding-top:var( --global-kb-row-default-top, var(--global-kb-spacing-sm, 1.5rem) );padding-bottom:var( --global-kb-row-default-bottom, var(--global-kb-spacing-sm, 1.5rem) );grid-template-columns:minmax(0, 1fr);}@media all and (max-width: 767px){.kb-row-layout-id9520_2039d9-7f > .kt-row-column-wrap{grid-template-columns:minmax(0, 1fr);}}.kadence-column9520_d43b8a-e8 > .kt-inside-inner-col{column-gap:var(--global-kb-gap-sm, 1rem);}.kadence-column9520_d43b8a-e8 > .kt-inside-inner-col{flex-direction:column;}.kadence-column9520_d43b8a-e8 > .kt-inside-inner-col > .aligncenter{width:100%;}@media all and (max-width: 1024px){.kadence-column9520_d43b8a-e8 > .kt-inside-inner-col{flex-direction:column;justify-content:center;}}@media all and (max-width: 767px){.kadence-column9520_d43b8a-e8 > .kt-inside-inner-col{flex-direction:column;justify-content:center;}}.kb-image9520_cfff8c-d1 .kb-image-has-overlay:after{opacity:0.3;}.wp-block-kadence-spacer.kt-block-spacer-9520_1ebd34-4c .kt-block-spacer{height:30px;}.wp-block-kadence-spacer.kt-block-spacer-9520_1ebd34-4c .kt-divider{width:80%;}.wp-block-kadence-advancedheading.kt-adv-heading9520_8b9a97-e9 mark.kt-highlight, .wp-block-kadence-advancedheading.kt-adv-heading9520_8b9a97-e9[data-kb-block="kb-adv-heading9520_8b9a97-e9"] mark.kt-highlight{-webkit-box-decoration-break:clone;box-decoration-break:clone;}.wp-block-kadence-advancedheading.kt-adv-heading9520_8b9a97-e9 img.kb-inline-image, .wp-block-kadence-advancedheading.kt-adv-heading9520_8b9a97-e9[data-kb-block="kb-adv-heading9520_8b9a97-e9"] img.kb-inline-image{width:150px;display:inline-block;}.wp-block-kadence-spacer.kt-block-spacer-9520_360956-4e .kt-block-spacer{height:15px;}.wp-block-kadence-spacer.kt-block-spacer-9520_360956-4e .kt-divider{width:80%;}.wp-block-kadence-advancedheading.kt-adv-heading9520_d93b79-f6 mark.kt-highlight, .wp-block-kadence-advancedheading.kt-adv-heading9520_d93b79-f6[data-kb-block="kb-adv-heading9520_d93b79-f6"] mark.kt-highlight{-webkit-box-decoration-break:clone;box-decoration-break:clone;}.wp-block-kadence-advancedheading.kt-adv-heading9520_d93b79-f6 img.kb-inline-image, .wp-block-kadence-advancedheading.kt-adv-heading9520_d93b79-f6[data-kb-block="kb-adv-heading9520_d93b79-f6"] img.kb-inline-image{width:150px;display:inline-block;}.wp-block-kadence-spacer.kt-block-spacer-9520_494dda-96 .kt-block-spacer{height:30px;}.wp-block-kadence-spacer.kt-block-spacer-9520_494dda-96 .kt-divider{width:80%;}.kb-image9520_133ee1-6a .kb-image-has-overlay:after{opacity:0.3;}.wp-block-kadence-spacer.kt-block-spacer-9520_6bc902-ea .kt-block-spacer{height:30px;}.wp-block-kadence-spacer.kt-block-spacer-9520_6bc902-ea .kt-divider{width:80%;}.wp-block-kadence-advancedheading.kt-adv-heading9520_cb6935-a4 mark.kt-highlight, .wp-block-kadence-advancedheading.kt-adv-heading9520_cb6935-a4[data-kb-block="kb-adv-heading9520_cb6935-a4"] mark.kt-highlight{-webkit-box-decoration-break:clone;box-decoration-break:clone;}.wp-block-kadence-advancedheading.kt-adv-heading9520_cb6935-a4 img.kb-inline-image, .wp-block-kadence-advancedheading.kt-adv-heading9520_cb6935-a4[data-kb-block="kb-adv-heading9520_cb6935-a4"] img.kb-inline-image{width:150px;display:inline-block;}.wp-block-kadence-spacer.kt-block-spacer-9520_010dff-02 .kt-block-spacer{height:15px;}.wp-block-kadence-spacer.kt-block-spacer-9520_010dff-02 .kt-divider{width:80%;}.wp-block-kadence-advancedheading.kt-adv-heading9520_cb01b1-65 mark.kt-highlight, .wp-block-kadence-advancedheading.kt-adv-heading9520_cb01b1-65[data-kb-block="kb-adv-heading9520_cb01b1-65"] mark.kt-highlight{-webkit-box-decoration-break:clone;box-decoration-break:clone;}.wp-block-kadence-advancedheading.kt-adv-heading9520_cb01b1-65 img.kb-inline-image, .wp-block-kadence-advancedheading.kt-adv-heading9520_cb01b1-65[data-kb-block="kb-adv-heading9520_cb01b1-65"] img.kb-inline-image{width:150px;display:inline-block;}.wp-block-kadence-spacer.kt-block-spacer-9520_b964a4-b0 .kt-block-spacer{height:15px;}.wp-block-kadence-spacer.kt-block-spacer-9520_b964a4-b0 .kt-divider{width:80%;}.wp-block-kadence-advancedheading.kt-adv-heading9520_f33600-a8 mark.kt-highlight, .wp-block-kadence-advancedheading.kt-adv-heading9520_f33600-a8[data-kb-block="kb-adv-heading9520_f33600-a8"] mark.kt-highlight{-webkit-box-decoration-break:clone;box-decoration-break:clone;}.wp-block-kadence-advancedheading.kt-adv-heading9520_f33600-a8 img.kb-inline-image, .wp-block-kadence-advancedheading.kt-adv-heading9520_f33600-a8[data-kb-block="kb-adv-heading9520_f33600-a8"] img.kb-inline-image{width:150px;display:inline-block;}.wp-block-kadence-spacer.kt-block-spacer-9520_5aa92c-72 .kt-block-spacer{height:15px;}.wp-block-kadence-spacer.kt-block-spacer-9520_5aa92c-72 .kt-divider{width:80%;}.wp-block-kadence-advancedheading.kt-adv-heading9520_633a4d-ce mark.kt-highlight, .wp-block-kadence-advancedheading.kt-adv-heading9520_633a4d-ce[data-kb-block="kb-adv-heading9520_633a4d-ce"] mark.kt-highlight{-webkit-box-decoration-break:clone;box-decoration-break:clone;}.wp-block-kadence-advancedheading.kt-adv-heading9520_633a4d-ce img.kb-inline-image, .wp-block-kadence-advancedheading.kt-adv-heading9520_633a4d-ce[data-kb-block="kb-adv-heading9520_633a4d-ce"] img.kb-inline-image{width:150px;display:inline-block;}.wp-block-kadence-spacer.kt-block-spacer-9520_83564d-ad .kt-block-spacer{height:15px;}.wp-block-kadence-spacer.kt-block-spacer-9520_83564d-ad .kt-divider{width:80%;}.wp-block-kadence-advancedheading.kt-adv-heading9520_69a83c-fd mark.kt-highlight, .wp-block-kadence-advancedheading.kt-adv-heading9520_69a83c-fd[data-kb-block="kb-adv-heading9520_69a83c-fd"] mark.kt-highlight{-webkit-box-decoration-break:clone;box-decoration-break:clone;}.wp-block-kadence-advancedheading.kt-adv-heading9520_69a83c-fd img.kb-inline-image, .wp-block-kadence-advancedheading.kt-adv-heading9520_69a83c-fd[data-kb-block="kb-adv-heading9520_69a83c-fd"] img.kb-inline-image{width:150px;display:inline-block;}.wp-block-kadence-spacer.kt-block-spacer-9520_1730b0-d4 .kt-block-spacer{height:15px;}.wp-block-kadence-spacer.kt-block-spacer-9520_1730b0-d4 .kt-divider{width:80%;}.wp-block-kadence-advancedheading.kt-adv-heading9520_dbe067-18 mark.kt-highlight, .wp-block-kadence-advancedheading.kt-adv-heading9520_dbe067-18[data-kb-block="kb-adv-heading9520_dbe067-18"] mark.kt-highlight{-webkit-box-decoration-break:clone;box-decoration-break:clone;}.wp-block-kadence-advancedheading.kt-adv-heading9520_dbe067-18 img.kb-inline-image, .wp-block-kadence-advancedheading.kt-adv-heading9520_dbe067-18[data-kb-block="kb-adv-heading9520_dbe067-18"] img.kb-inline-image{width:150px;display:inline-block;}.wp-block-kadence-spacer.kt-block-spacer-9520_884ed5-c4 .kt-block-spacer{height:15px;}.wp-block-kadence-spacer.kt-block-spacer-9520_884ed5-c4 .kt-divider{width:80%;}.wp-block-kadence-advancedheading.kt-adv-heading9520_42ca53-18 mark.kt-highlight, .wp-block-kadence-advancedheading.kt-adv-heading9520_42ca53-18[data-kb-block="kb-adv-heading9520_42ca53-18"] mark.kt-highlight{-webkit-box-decoration-break:clone;box-decoration-break:clone;}.wp-block-kadence-advancedheading.kt-adv-heading9520_42ca53-18 img.kb-inline-image, .wp-block-kadence-advancedheading.kt-adv-heading9520_42ca53-18[data-kb-block="kb-adv-heading9520_42ca53-18"] img.kb-inline-image{width:150px;display:inline-block;}.wp-block-kadence-spacer.kt-block-spacer-9520_536ceb-70 .kt-block-spacer{height:30px;}.wp-block-kadence-spacer.kt-block-spacer-9520_536ceb-70 .kt-divider{width:80%;}.kb-image9520_8eeb61-dd.kb-image-is-ratio-size, .kb-image9520_8eeb61-dd .kb-image-is-ratio-size{max-width:900px;width:100%;}.wp-block-kadence-column > .kt-inside-inner-col > .kb-image9520_8eeb61-dd.kb-image-is-ratio-size, .wp-block-kadence-column > .kt-inside-inner-col > .kb-image9520_8eeb61-dd .kb-image-is-ratio-size{align-self:unset;}.kb-image9520_8eeb61-dd{max-width:900px;}.image-is-svg.kb-image9520_8eeb61-dd{-webkit-flex:0 1 100%;flex:0 1 100%;}.image-is-svg.kb-image9520_8eeb61-dd img{width:100%;}.kb-image9520_8eeb61-dd .kb-image-has-overlay:after{opacity:0.3;}.wp-block-kadence-spacer.kt-block-spacer-9520_a9bf1e-a7 .kt-block-spacer{height:30px;}.wp-block-kadence-spacer.kt-block-spacer-9520_a9bf1e-a7 .kt-divider{width:80%;}.wp-block-kadence-advancedheading.kt-adv-heading9520_bc0f72-33 mark.kt-highlight, .wp-block-kadence-advancedheading.kt-adv-heading9520_bc0f72-33[data-kb-block="kb-adv-heading9520_bc0f72-33"] mark.kt-highlight{-webkit-box-decoration-break:clone;box-decoration-break:clone;}.wp-block-kadence-advancedheading.kt-adv-heading9520_bc0f72-33 img.kb-inline-image, .wp-block-kadence-advancedheading.kt-adv-heading9520_bc0f72-33[data-kb-block="kb-adv-heading9520_bc0f72-33"] img.kb-inline-image{width:150px;display:inline-block;}.wp-block-kadence-spacer.kt-block-spacer-9520_53ff3b-00 .kt-divider{width:80%;}.wp-block-kadence-advancedheading.kt-adv-heading9520_a9a962-df, .wp-block-kadence-advancedheading.kt-adv-heading9520_a9a962-df[data-kb-block="kb-adv-heading9520_a9a962-df"]{text-align:left;}.wp-block-kadence-advancedheading.kt-adv-heading9520_a9a962-df mark.kt-highlight, .wp-block-kadence-advancedheading.kt-adv-heading9520_a9a962-df[data-kb-block="kb-adv-heading9520_a9a962-df"] mark.kt-highlight{-webkit-box-decoration-break:clone;box-decoration-break:clone;}.wp-block-kadence-advancedheading.kt-adv-heading9520_a9a962-df img.kb-inline-image, .wp-block-kadence-advancedheading.kt-adv-heading9520_a9a962-df[data-kb-block="kb-adv-heading9520_a9a962-df"] img.kb-inline-image{width:150px;display:inline-block;}.wp-block-kadence-spacer.kt-block-spacer-9520_7cda97-1a .kt-block-spacer{height:30px;}.wp-block-kadence-spacer.kt-block-spacer-9520_7cda97-1a .kt-divider{width:80%;}.wp-block-kadence-advancedheading.kt-adv-heading9520_e3d0eb-17 mark.kt-highlight, .wp-block-kadence-advancedheading.kt-adv-heading9520_e3d0eb-17[data-kb-block="kb-adv-heading9520_e3d0eb-17"] mark.kt-highlight{-webkit-box-decoration-break:clone;box-decoration-break:clone;}.wp-block-kadence-advancedheading.kt-adv-heading9520_e3d0eb-17 img.kb-inline-image, .wp-block-kadence-advancedheading.kt-adv-heading9520_e3d0eb-17[data-kb-block="kb-adv-heading9520_e3d0eb-17"] img.kb-inline-image{width:150px;display:inline-block;}.wp-block-kadence-spacer.kt-block-spacer-9520_2cdf55-2e .kt-block-spacer{height:15px;}.wp-block-kadence-spacer.kt-block-spacer-9520_2cdf55-2e .kt-divider{width:80%;}.wp-block-kadence-advancedheading.kt-adv-heading9520_1d34f3-2f mark.kt-highlight, .wp-block-kadence-advancedheading.kt-adv-heading9520_1d34f3-2f[data-kb-block="kb-adv-heading9520_1d34f3-2f"] mark.kt-highlight{-webkit-box-decoration-break:clone;box-decoration-break:clone;}.wp-block-kadence-advancedheading.kt-adv-heading9520_1d34f3-2f img.kb-inline-image, .wp-block-kadence-advancedheading.kt-adv-heading9520_1d34f3-2f[data-kb-block="kb-adv-heading9520_1d34f3-2f"] img.kb-inline-image{width:150px;display:inline-block;}.wp-block-kadence-spacer.kt-block-spacer-9520_eacdcd-af .kt-block-spacer{height:15px;}.wp-block-kadence-spacer.kt-block-spacer-9520_eacdcd-af .kt-divider{width:80%;}.wp-block-kadence-advancedheading.kt-adv-heading9520_87eab2-6b mark.kt-highlight, .wp-block-kadence-advancedheading.kt-adv-heading9520_87eab2-6b[data-kb-block="kb-adv-heading9520_87eab2-6b"] mark.kt-highlight{-webkit-box-decoration-break:clone;box-decoration-break:clone;}.wp-block-kadence-advancedheading.kt-adv-heading9520_87eab2-6b img.kb-inline-image, .wp-block-kadence-advancedheading.kt-adv-heading9520_87eab2-6b[data-kb-block="kb-adv-heading9520_87eab2-6b"] img.kb-inline-image{width:150px;display:inline-block;}.wp-block-kadence-spacer.kt-block-spacer-9520_e434aa-99 .kt-divider{width:80%;}.wp-block-kadence-spacer.kt-block-spacer-9520_cbb88f-e2 .kt-block-spacer{height:100px;}.wp-block-kadence-spacer.kt-block-spacer-9520_cbb88f-e2 .kt-divider{border-top-width:2px;border-top-color:#2a9f00;width:80%;}.kb-row-layout-id13388_31a7fd-7c > .kt-row-column-wrap{padding-top:var( --global-kb-row-default-top, var(--global-kb-spacing-sm, 1.5rem) );padding-bottom:var( --global-kb-row-default-bottom, var(--global-kb-spacing-sm, 1.5rem) );grid-template-columns:minmax(0, 1fr);}@media all and (max-width: 767px){.kb-row-layout-id13388_31a7fd-7c > .kt-row-column-wrap{grid-template-columns:minmax(0, 1fr);}}.kadence-column13388_98ee9e-75 > .kt-inside-inner-col{column-gap:var(--global-kb-gap-sm, 1rem);}.kadence-column13388_98ee9e-75 > .kt-inside-inner-col{flex-direction:column;}.kadence-column13388_98ee9e-75 > .kt-inside-inner-col > .aligncenter{width:100%;}@media all and (max-width: 1024px){.kadence-column13388_98ee9e-75 > .kt-inside-inner-col{flex-direction:column;justify-content:center;}}@media all and (max-width: 767px){.kadence-column13388_98ee9e-75 > .kt-inside-inner-col{flex-direction:column;justify-content:center;}}.wp-block-kadence-advancedheading.kt-adv-heading13388_103339-a8, .wp-block-kadence-advancedheading.kt-adv-heading13388_103339-a8[data-kb-block="kb-adv-heading13388_103339-a8"]{text-align:center;}.wp-block-kadence-advancedheading.kt-adv-heading13388_103339-a8 mark.kt-highlight, .wp-block-kadence-advancedheading.kt-adv-heading13388_103339-a8[data-kb-block="kb-adv-heading13388_103339-a8"] mark.kt-highlight{-webkit-box-decoration-break:clone;box-decoration-break:clone;}.wp-block-kadence-advancedheading.kt-adv-heading13388_103339-a8 img.kb-inline-image, .wp-block-kadence-advancedheading.kt-adv-heading13388_103339-a8[data-kb-block="kb-adv-heading13388_103339-a8"] img.kb-inline-image{width:150px;display:inline-block;}.wp-block-kadence-spacer.kt-block-spacer-13388_e79c5d-48 .kt-block-spacer{height:20px;}.wp-block-kadence-spacer.kt-block-spacer-13388_e79c5d-48 .kt-divider{width:80%;}.wp-block-kadence-advancedheading.kt-adv-heading13388_2b5b34-a3, .wp-block-kadence-advancedheading.kt-adv-heading13388_2b5b34-a3[data-kb-block="kb-adv-heading13388_2b5b34-a3"]{text-align:center;}.wp-block-kadence-advancedheading.kt-adv-heading13388_2b5b34-a3 mark.kt-highlight, .wp-block-kadence-advancedheading.kt-adv-heading13388_2b5b34-a3[data-kb-block="kb-adv-heading13388_2b5b34-a3"] mark.kt-highlight{-webkit-box-decoration-break:clone;box-decoration-break:clone;}.wp-block-kadence-advancedheading.kt-adv-heading13388_2b5b34-a3 img.kb-inline-image, .wp-block-kadence-advancedheading.kt-adv-heading13388_2b5b34-a3[data-kb-block="kb-adv-heading13388_2b5b34-a3"] img.kb-inline-image{width:150px;display:inline-block;}.wp-block-kadence-spacer.kt-block-spacer-9520_dc1911-e4 .kt-divider{width:80%;}.wp-block-kadence-spacer.kt-block-spacer-9520_d02840-be .kt-divider{width:80%;}
+/*# sourceURL=kadence_blocks_css-inline-css */
+</style>
+<script id="jquery-core-js" src="https://www.eurocircuits.com/wp/wp-includes/js/jquery/jquery.min.js?ver=3.7.1"></script>
+<script id="jquery-migrate-js" src="https://www.eurocircuits.com/wp/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1"></script>
+<script id="jquery-js-after">
+jQuery.event.special.touchstart = {
+        setup: function( _, ns, handle ) {
+            this.addEventListener("touchstart", handle, { passive: !ns.includes("noPreventDefault") });
+        }
+    };
+    jQuery.event.special.touchmove = {
+        setup: function( _, ns, handle ) {
+            this.addEventListener("touchmove", handle, { passive: !ns.includes("noPreventDefault") });
+        }
+    };
+    jQuery.event.special.wheel = {
+        setup: function( _, ns, handle ){
+            this.addEventListener("wheel", handle, { passive: true });
+        }
+    };
+    jQuery.event.special.mousewheel = {
+        setup: function( _, ns, handle ){
+            this.addEventListener("mousewheel", handle, { passive: true });
+        }
+    };
+//# sourceURL=jquery-js-after
+</script>
+<link rel="https://api.w.org/" href="https://www.eurocircuits.com/wp-json/" /><link rel="alternate" title="JSON" type="application/json" href="https://www.eurocircuits.com/wp-json/wp/v2/posts/9520" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.eurocircuits.com/wp/xmlrpc.php?rsd" />
+<link rel='shortlink' href='https://www.eurocircuits.com/?p=9520' />
+<meta name="google-site-verification" content="0BFI80gXtUU9DjzUDEMfDyG9j5RRvpTi5Su8l_IH_TA" />
+	<!-- Start Google Tag Manager -->
+	<script>(function (w, d, s, l, i) {
+			w[l] = w[l] || [];
+			w[l].push({
+				'gtm.start':
+					new Date().getTime(), event: 'gtm.js'
+			});
+			var f = d.getElementsByTagName(s)[0],
+				j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+			j.async = true;
+			j.src =
+				'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+			f.parentNode.insertBefore(j, f);
+		})(window, document, 'script', 'dataLayer', 'GTM-KRNKVGZN');</script>
+	<!-- End Google Tag Manager -->
+			<script>
+			window.dataLayer = window.dataLayer || [];
+			window.dataLayer.push({
+				'external_ip': '90.96.185.255'
+			});
+		</script>
+			<link rel="icon" type="image/png" href="https://www.eurocircuits.com/content/themes/io/build/favicon/favicon-96x96.png" sizes="96x96"/>
+	<link rel="icon" type="image/svg+xml" href="https://www.eurocircuits.com/content/themes/io/build/favicon/favicon.svg"/>
+	<link rel="shortcut icon" href="https://www.eurocircuits.com/content/themes/io/build/favicon/favicon.ico"/>
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.eurocircuits.com/content/themes/io/build/favicon/apple-touch-icon.png"/>
+	<meta name="apple-mobile-web-app-title" content="Eurocircuits"/>
+	<link rel="manifest" href="https://www.eurocircuits.com/content/themes/io/build/favicon/site.webmanifest"/>
+	<style id="wp-custom-css">
+
+/* Hide duplicate Eurocircuits heading on SEO AI blog posts */
+body:has(.seoaic-post) h1:has(> a[href="https://www.eurocircuits.com/"]) {
+    display: none !important;
+}
+
+</style>
+</head>
+<body class="wp-singular post-template-default single single-post postid-9520 single-format-standard wp-theme-io io-theme flex flex-col min-h-screen">
+<header class="c-header relative top-0 left-0 w-full bg-white font-bold transition duration-300 z-40">
+	<div class="bg-gray-50 py-3 hidden lg:block">
+		<div class="container">
+			<div class="flex items-center justify-end gap-5">
+								<nav class="c-nav-secondary">
+					<ul id="menu-header-secondary" class="list-none m-0 flex items-center justify-end gap-x-5"><li id="menu-item-6937" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6937"><a target="_blank" href="https://be.eurocircuits.com/shop/eclogin.aspx">Sign In / Register</a></li>
+<li id="menu-item-3199" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3199"><a target="_blank" href="https://be.eurocircuits.com/shop/assembly/configurator.aspx">PCB Calculator</a></li>
+<li id="menu-item-3201" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3201"><a href="https://www.eurocircuits.com/contact/">Contact</a></li>
+</ul>				</nav>
+			</div>
+		</div>
+	</div>
+	<div class="container flex justify-between items-center py-2 lg:py-4">
+		<div class="flex items-center">
+			<a href="https://www.eurocircuits.com"
+			   class="c-logo block w-16 lg:w-24 aspect-square me-2 xl:me-5 lg:me-11"
+			   title="Eurocircuits">
+				<img src="https://www.eurocircuits.com/content/themes/io/build/img/logo.png" alt="Logo Eurocircuits">
+			</a>
+							<nav role="navigation" class="c-nav-primary mr-4">
+					<ul id="menu-primary-navigation" class=""><li id="menu-item-8605" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8605"><a href="https://www.eurocircuits.com/services/">Services</a></li>
+<li id="menu-item-12534" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-12534"><a href="https://www.eurocircuits.com/help-knowledge-centre/">Help &amp; Knowledge centre</a>
+<ul class="sub-menu">
+	<li id="menu-item-3495" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-3495"><a href="https://www.eurocircuits.com/help-knowledge-centre/help-centre/">Help centre</a>
+	<ul class="sub-menu">
+		<li id="menu-item-10849" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-10849"><a href="https://www.eurocircuits.com/technical-guidelines/">Technical guidelines</a></li>
+		<li id="menu-item-10850" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-10850"><a href="https://www.eurocircuits.com/user-guides/">User guides</a></li>
+		<li id="menu-item-33619" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-33619"><a href="https://www.eurocircuits.com/technical-guidelines/technical-educational-videos/">Technical &#038; Educational Videos</a></li>
+	</ul>
+</li>
+	<li id="menu-item-3494" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-3494"><a href="https://www.eurocircuits.com/help-knowledge-centre/knowledge-centre/">Knowledge centre</a>
+	<ul class="sub-menu">
+		<li id="menu-item-10829" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-10829"><a href="https://www.eurocircuits.com/blog/">Blogs</a></li>
+		<li id="menu-item-10830" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-10830"><a href="https://www.eurocircuits.com/events/">Events</a></li>
+		<li id="menu-item-10852" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-10852"><a href="https://www.eurocircuits.com/technical-terms-and-abbreviations/">Glossary</a></li>
+	</ul>
+</li>
+</ul>
+</li>
+<li id="menu-item-3586" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3586"><a href="https://www.eurocircuits.com/how-it-works/">How it works</a></li>
+<li id="menu-item-8612" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8612"><a href="https://www.eurocircuits.com/for-students-teachers/">For students &amp; teachers</a></li>
+<li id="menu-item-12775" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-12775"><a href="https://www.eurocircuits.com/downloads/">Downloads</a></li>
+<li id="menu-item-8611" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8611"><a href="https://www.eurocircuits.com/about-us/">About us</a></li>
+</ul>				</nav>
+					</div>
+
+		<div class="flex justify-end items-center">
+									<a href="https://www.eurocircuits.com/help-knowledge-centre/help-centre/"
+					   class="c-header__search text-black w-14 px-4 h-14 items-center flex mr-3 lg:mr-0">
+												<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16a6.5 6.5 0 1 1 0-13m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>					</a>
+				
+										<a href="https://be.eurocircuits.com/shop/assembly/configurator.aspx"
+						   class="btn btn-primary text-base lg:text-lg px-3 lg:px-5 hidden lg:inline-flex" target=&quot;_blank&quot;>
+							Get an instant price						</a>
+															<div class="c-hamburger js-hamburger group relative w-[30px] h-[22px] ml-auto cursor-pointer lg:hidden">
+						<span
+							class="absolute block w-full h-[3px] bg-primary rounded left-0 opacity-100 transition duration-300 transform-none top-0 group-[.is-open]:top-[7px] group-[.is-open]:-rotate-45"></span>
+						<span
+							class="absolute block w-full h-[3px] bg-primary rounded left-0 opacity-100 transition duration-300 transform-none top-[7px] group-[.is-open]:opacity-0 group-[.is-open]:-left-8"></span>
+						<span
+							class="absolute block w-full h-[3px] bg-primary rounded left-0 opacity-100 transition duration-300 transform-none top-[14px] group-[.is-open]:top-[7px] group-[.is-open]:rotate-45"></span>
+					</div>
+				
+							<div class="c-language-selector hidden md:inline-block text-white uppercase ml-3 lg:ml-4">
+    <div class="group relative bg-primary rounded py-1 px-2 hover:cursor-pointer hover:rounded-t">
+        <div class="flex items-center text-inherit">
+            <span class="block uppercase">en</span>
+            <span class="block w-2.5 h-2.5 ml-2 transition group-hover:-scale-y-100"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 25"><path fill="currentColor" d="M7.41 9.08 12 13.67l4.59-4.59L18 10.5l-6 6-6-6z"/></svg></span>
+        </div>
+
+        <ul class="c-language-selector__list absolute left-0 top-full -translate-y-1 hidden w-full m-0 p-0 bg-primary overflow-hidden rounded-b group-hover:block">
+            	<li class="lang-item lang-item-166 lang-item-de lang-item-first"><a lang="de-DE" hreflang="de-DE" href="https://www.eurocircuits.com/de/elektronische-fertigungstechnik/mit-hohen-frequenzen-arbeiten/">de</a></li>
+	<li class="lang-item lang-item-171 lang-item-hu"><a lang="hu-HU" hreflang="hu-HU" href="https://www.eurocircuits.com/hu/online-eszkozok-es-szolgaltatasok/nagyfrekvenciak-kezelese/">hu</a></li>
+        </ul>
+    </div>
+</div>
+					</div>
+	</div>
+</header>
+
+<main role="main" class="relative grow transition duration-300 z-10 overflow-clip">
+	<div class="container">
+	<h1 class="pt-6 lg:pt-12 pb-4">Dealing with High Frequencies</h1>
+		<div class="flex gap-1">
+					<span>Author: Dirk Stans</span>
+							/
+							<time>
+				Published on: 08 December 2023			</time>
+			</div>
+	<div class="kb-row-layout-wrap kb-row-layout-id9520_2039d9-7f alignnone wp-block-kadence-rowlayout"><div class="kt-row-column-wrap kt-has-1-columns kt-row-layout-equal kt-tab-layout-inherit kt-mobile-layout-row kt-row-valign-top">
+
+<div class="wp-block-kadence-column kadence-column9520_d43b8a-e8"><div class="kt-inside-inner-col">
+<figure class="wp-block-kadence-image kb-image9520_cfff8c-d1"><img loading="lazy" decoding="async" width="1700" height="600" src="https://www.eurocircuits.com/content/uploads/2024/05/Dealing-with-High-Frequencies-Blog-Banner.jpg" alt="Dealing with High Frequencies - Blog Banner" class="kb-img wp-image-7544" srcset="https://www.eurocircuits.com/content/uploads/2024/05/Dealing-with-High-Frequencies-Blog-Banner.jpg 1700w, https://www.eurocircuits.com/content/uploads/2024/05/Dealing-with-High-Frequencies-Blog-Banner-300x106.jpg 300w, https://www.eurocircuits.com/content/uploads/2024/05/Dealing-with-High-Frequencies-Blog-Banner-1400x494.jpg 1400w, https://www.eurocircuits.com/content/uploads/2024/05/Dealing-with-High-Frequencies-Blog-Banner-768x271.jpg 768w, https://www.eurocircuits.com/content/uploads/2024/05/Dealing-with-High-Frequencies-Blog-Banner-1536x542.jpg 1536w, https://www.eurocircuits.com/content/uploads/2024/05/Dealing-with-High-Frequencies-Blog-Banner-600x212.jpg 600w" sizes="(max-width: 1700px) 100vw, 1700px" /></figure>
+
+
+
+<div class="wp-block-kadence-spacer aligncenter kt-block-spacer-9520_1ebd34-4c"><div class="kt-block-spacer kt-block-spacer-halign-center"></div></div>
+
+
+
+<p class="kt-adv-heading9520_8b9a97-e9 wp-block-kadence-advancedheading" data-kb-block="kb-adv-heading9520_8b9a97-e9">Electronics designers who define circuits where frequencies of several Gigahertz form the basis of their application are in a select group of specialists. These designers need PCBs built with special materials suitable for these frequencies as FR-4 is only suitable for frequencies in the Megahertz range.</p>
+
+
+
+<div class="wp-block-kadence-spacer aligncenter kt-block-spacer-9520_360956-4e"><div class="kt-block-spacer kt-block-spacer-halign-center"></div></div>
+
+
+
+<p class="kt-adv-heading9520_d93b79-f6 wp-block-kadence-advancedheading" data-kb-block="kb-adv-heading9520_d93b79-f6">In recent years the need for this kind of application has grown enormously. Everything must be connected to everything and many of these connections go through the air via very high-frequency radio waves. These types of applications require extensive testing and experimentation which increase the need for suitable prototypes.</p>
+
+
+
+<div class="wp-block-kadence-spacer aligncenter kt-block-spacer-9520_494dda-96"><div class="kt-block-spacer kt-block-spacer-halign-center"></div></div>
+
+
+
+<figure class="wp-block-kadence-image kb-image9520_133ee1-6a size-full"><img loading="lazy" decoding="async" width="526" height="290" src="https://www.eurocircuits.com/content/uploads/2024/05/rf-pool-1.png" alt="Images of RF pool PCBs" class="kb-img wp-image-7145" srcset="https://www.eurocircuits.com/content/uploads/2024/05/rf-pool-1.png 526w, https://www.eurocircuits.com/content/uploads/2024/05/rf-pool-1-300x165.png 300w" sizes="(max-width: 526px) 100vw, 526px" /></figure>
+
+
+
+<div class="wp-block-kadence-spacer aligncenter kt-block-spacer-9520_6bc902-ea"><div class="kt-block-spacer kt-block-spacer-halign-center"></div></div>
+
+
+
+<p class="kt-adv-heading9520_cb6935-a4 wp-block-kadence-advancedheading" data-kb-block="kb-adv-heading9520_cb6935-a4">The demand for a pooling service was obvious and from this we conducted a thorough study of the issues and talked to people with the relevant expertise. From this our RF pool service was born with poolable (and thus most economical) buildups for 2-layer and 4-layer PCBs.</p>
+
+
+
+<div class="wp-block-kadence-spacer aligncenter kt-block-spacer-9520_010dff-02"><div class="kt-block-spacer kt-block-spacer-halign-center"></div></div>
+
+
+
+<p class="kt-adv-heading9520_cb01b1-65 wp-block-kadence-advancedheading" data-kb-block="kb-adv-heading9520_cb01b1-65">We also found two suitable materials to work with: i-Tera from Isola and RO4350B from Rogers, both offer suitable material properties for these types of circuits.</p>
+
+
+
+<div class="wp-block-kadence-spacer aligncenter kt-block-spacer-9520_b964a4-b0"><div class="kt-block-spacer kt-block-spacer-halign-center"></div></div>
+
+
+
+<p class="kt-adv-heading9520_f33600-a8 wp-block-kadence-advancedheading" data-kb-block="kb-adv-heading9520_f33600-a8">Isola I-Tera MT40 is suitable for many of today’s high speed digital and RF/microwave applications. It has a dielectric constant of 3.38, stable between -40°C and +140°C up to W-band frequencies. Tg is 215° and Td 360°. Its low dissipation factor (Df) of 0.0028 makes it a cost-effective alternative to PTFE and other commercial microwave and high-speed digital laminates.</p>
+
+
+
+<div class="wp-block-kadence-spacer aligncenter kt-block-spacer-9520_5aa92c-72"><div class="kt-block-spacer kt-block-spacer-halign-center"></div></div>
+
+
+
+<p class="kt-adv-heading9520_633a4d-ce wp-block-kadence-advancedheading" data-kb-block="kb-adv-heading9520_633a4d-ce">Rogers RO4350B™ has a higher specification, making it an ideal material for broadband applications. It has excellent dimensional stability, including a Z-axis CTE comparable to that of copper. Tg is 280°.</p>
+
+
+
+<div class="wp-block-kadence-spacer aligncenter kt-block-spacer-9520_83564d-ad"><div class="kt-block-spacer kt-block-spacer-halign-center"></div></div>
+
+
+
+<p class="kt-adv-heading9520_69a83c-fd wp-block-kadence-advancedheading" data-kb-block="kb-adv-heading9520_69a83c-fd">Both materials have UL 94 V0 flammability certification.</p>
+
+
+
+<div class="wp-block-kadence-spacer aligncenter kt-block-spacer-9520_1730b0-d4"><div class="kt-block-spacer kt-block-spacer-halign-center"></div></div>
+
+
+
+<p class="kt-adv-heading9520_dbe067-18 wp-block-kadence-advancedheading" data-kb-block="kb-adv-heading9520_dbe067-18">Download the data sheet for I-Tera <a href="https://www.eurocircuits.com/content/uploads/2024/05/I-Tera-MT-RF-Very-Low-loss-Laminate-Isola.pdf"><strong>here</strong></a> and for Rogers RO4350B™ <a href="https://www.eurocircuits.com/content/uploads/RO4000-Laminates-Data-sheet-.pdf"><strong>here</strong></a>.</p>
+
+
+
+<div class="wp-block-kadence-spacer aligncenter kt-block-spacer-9520_884ed5-c4"><div class="kt-block-spacer kt-block-spacer-halign-center"></div></div>
+
+
+
+<p class="kt-adv-heading9520_42ca53-18 wp-block-kadence-advancedheading" data-kb-block="kb-adv-heading9520_42ca53-18">For 4-layer boards we offer a standard build combining I-Tera or RO4350B™ with <a href="http://www.isola-group.com/products/370hr/"><strong>Isola PCL370HR</strong></a> high performance 180°Tg FR4 prepreg:</p>
+
+
+
+<div class="wp-block-kadence-spacer aligncenter kt-block-spacer-9520_536ceb-70"><div class="kt-block-spacer kt-block-spacer-halign-center"></div></div>
+
+
+
+<figure class="wp-block-kadence-image kb-image9520_8eeb61-dd size-full"><img loading="lazy" decoding="async" width="910" height="523" src="https://www.eurocircuits.com/content/uploads/2024/05/Buildup-Editor-RF-Pool-FR4-I-Tera-Eng.png" alt="Buildup-Editor-RF-Pool-FR4-I-Tera-Eng" class="kb-img wp-image-7547" srcset="https://www.eurocircuits.com/content/uploads/2024/05/Buildup-Editor-RF-Pool-FR4-I-Tera-Eng.png 910w, https://www.eurocircuits.com/content/uploads/2024/05/Buildup-Editor-RF-Pool-FR4-I-Tera-Eng-300x172.png 300w, https://www.eurocircuits.com/content/uploads/2024/05/Buildup-Editor-RF-Pool-FR4-I-Tera-Eng-768x441.png 768w, https://www.eurocircuits.com/content/uploads/2024/05/Buildup-Editor-RF-Pool-FR4-I-Tera-Eng-600x345.png 600w" sizes="(max-width: 910px) 100vw, 910px" /></figure>
+
+
+
+<div class="wp-block-kadence-spacer aligncenter kt-block-spacer-9520_a9bf1e-a7"><div class="kt-block-spacer kt-block-spacer-halign-center"></div></div>
+
+
+
+<p class="kt-adv-heading9520_bc0f72-33 wp-block-kadence-advancedheading" data-kb-block="kb-adv-heading9520_bc0f72-33">Read more about our <a href="https://www.eurocircuits.com/services/rf-pool/"><strong>RF pool service</strong></a>.</p>
+
+
+
+<div class="wp-block-kadence-spacer aligncenter kt-block-spacer-9520_53ff3b-00"><div class="kt-block-spacer kt-block-spacer-halign-center"></div></div>
+
+
+
+<h3 class="kt-adv-heading9520_a9a962-df wp-block-kadence-advancedheading" data-kb-block="kb-adv-heading9520_a9a962-df">About Eurocircuits</h3>
+
+
+
+<div class="wp-block-kadence-spacer aligncenter kt-block-spacer-9520_7cda97-1a"><div class="kt-block-spacer kt-block-spacer-halign-center"></div></div>
+
+
+
+<p class="kt-adv-heading9520_e3d0eb-17 wp-block-kadence-advancedheading" data-kb-block="kb-adv-heading9520_e3d0eb-17">When you need a reliable and affordable single-source European electronics manufacturing partner, with over 30 years of experience, then Eurocircuits is an excellent choice. By working with us you get many <a href="https://www.eurocircuits.com/services/"><strong>pooling options</strong></a>, instant pricing, free DRC and DFM tools, multilingual support, and much more.</p>
+
+
+
+<div class="wp-block-kadence-spacer aligncenter kt-block-spacer-9520_2cdf55-2e"><div class="kt-block-spacer kt-block-spacer-halign-center"></div></div>
+
+
+
+<p class="kt-adv-heading9520_1d34f3-2f wp-block-kadence-advancedheading" data-kb-block="kb-adv-heading9520_1d34f3-2f">Eurocircuits offers fast and reliable on-time <a href="https://www.eurocircuits.com/services/"><strong>services</strong></a> without compromising on quality, using a broad range of technologies to bring you a cost-effective manufacturing service. We help you achieve Right First Time for Manufacture through virtual manufacturing so that you can get your projects to the market on-time and on budget. Let’s make your project a reality!</p>
+
+
+
+<div class="wp-block-kadence-spacer aligncenter kt-block-spacer-9520_eacdcd-af"><div class="kt-block-spacer kt-block-spacer-halign-center"></div></div>
+
+
+
+<p class="kt-adv-heading9520_87eab2-6b wp-block-kadence-advancedheading" data-kb-block="kb-adv-heading9520_87eab2-6b"><a href="https://www.eurocircuits.com/about-us/"><strong>More about Eurocircuits &#8230;</strong></a></p>
+
+
+
+<div class="wp-block-kadence-spacer aligncenter kt-block-spacer-9520_e434aa-99"><div class="kt-block-spacer kt-block-spacer-halign-center"></div></div>
+
+
+
+<div class="wp-block-kadence-spacer aligncenter kt-block-spacer-9520_cbb88f-e2"><div class="kt-block-spacer kt-block-spacer-halign-center"><hr class="kt-divider"/></div></div>
+
+
+<div class="kb-row-layout-wrap kb-row-layout-id13388_31a7fd-7c alignnone wp-block-kadence-rowlayout"><div class="kt-row-column-wrap kt-has-1-columns kt-row-layout-equal kt-tab-layout-inherit kt-mobile-layout-row kt-row-valign-top">
+
+<div class="wp-block-kadence-column kadence-column13388_98ee9e-75"><div class="kt-inside-inner-col">
+<p class="kt-adv-heading13388_103339-a8 wp-block-kadence-advancedheading" data-kb-block="kb-adv-heading13388_103339-a8"><strong>Bring your product to market on time and within budget – join the Eurocircuits Community</strong></p>
+
+
+
+<div class="wp-block-kadence-spacer aligncenter kt-block-spacer-13388_e79c5d-48"><div class="kt-block-spacer kt-block-spacer-halign-center"></div></div>
+
+
+
+<p class="kt-adv-heading13388_2b5b34-a3 wp-block-kadence-advancedheading" data-kb-block="kb-adv-heading13388_2b5b34-a3"><a href="https://www.linkedin.com/company/eurocircuits/"><img loading="lazy" decoding="async" width="86" height="86" hspace="10" class="wp-image-13305" style="display: inline;" src="https://www.eurocircuits.com/content/uploads/2024/12/so_in.jpg" alt="LinkedIn icon" srcset="https://www.eurocircuits.com/content/uploads/2024/12/so_in.jpg 86w, https://www.eurocircuits.com/content/uploads/2024/12/so_in-150x150.jpg 150w, https://www.eurocircuits.com/content/uploads/2024/12/so_in-200x200.jpg 200w, https://www.eurocircuits.com/content/uploads/2024/12/so_in-600x600.jpg 600w, https://www.eurocircuits.com/content/uploads/2024/12/so_in-1200x1200.jpg 1200w, https://www.eurocircuits.com/content/uploads/2024/12/so_in-300x300.jpg 300w, https://www.eurocircuits.com/content/uploads/2024/12/so_in-400x400.jpg 400w" sizes="(max-width: 86px) 100vw, 86px" /></a> <a href="https://www.facebook.com/eurocircuits/"><img loading="lazy" decoding="async" width="85" height="86" hspace="10" class="wp-image-13304" style="display: inline;" src="https://www.eurocircuits.com/content/uploads/2024/12/so_fb.jpg" alt="Facebook icon" srcset="https://www.eurocircuits.com/content/uploads/2024/12/so_fb.jpg 85w, https://www.eurocircuits.com/content/uploads/2024/12/so_fb-150x150.jpg 150w, https://www.eurocircuits.com/content/uploads/2024/12/so_fb-200x200.jpg 200w, https://www.eurocircuits.com/content/uploads/2024/12/so_fb-600x600.jpg 600w, https://www.eurocircuits.com/content/uploads/2024/12/so_fb-1200x1200.jpg 1200w, https://www.eurocircuits.com/content/uploads/2024/12/so_fb-300x300.jpg 300w, https://www.eurocircuits.com/content/uploads/2024/12/so_fb-400x400.jpg 400w" sizes="(max-width: 85px) 100vw, 85px" /></a> <a href="https://twitter.com/Eurocircuits"><img loading="lazy" decoding="async" width="85" height="86" hspace="10" class="wp-image-13381" style="display: inline;" src="https://www.eurocircuits.com/content/uploads/2024/12/X-logo-Eurocircuits-Green.jpg" alt="X logo in Eurocircuits Green" srcset="https://www.eurocircuits.com/content/uploads/2024/12/X-logo-Eurocircuits-Green.jpg 85w, https://www.eurocircuits.com/content/uploads/2024/12/X-logo-Eurocircuits-Green-150x150.jpg 150w, https://www.eurocircuits.com/content/uploads/2024/12/X-logo-Eurocircuits-Green-200x200.jpg 200w, https://www.eurocircuits.com/content/uploads/2024/12/X-logo-Eurocircuits-Green-600x600.jpg 600w, https://www.eurocircuits.com/content/uploads/2024/12/X-logo-Eurocircuits-Green-1200x1200.jpg 1200w, https://www.eurocircuits.com/content/uploads/2024/12/X-logo-Eurocircuits-Green-300x300.jpg 300w, https://www.eurocircuits.com/content/uploads/2024/12/X-logo-Eurocircuits-Green-400x400.jpg 400w" sizes="(max-width: 85px) 100vw, 85px" /></a> <a href="https://www.youtube.com/user/eurocircuits"><img loading="lazy" decoding="async" width="85" height="86" hspace="10" class="wp-image-13307" style="display: inline;" src="https://www.eurocircuits.com/content/uploads/2024/12/so_yt.jpg" alt="You Tube icon" srcset="https://www.eurocircuits.com/content/uploads/2024/12/so_yt.jpg 85w, https://www.eurocircuits.com/content/uploads/2024/12/so_yt-150x150.jpg 150w, https://www.eurocircuits.com/content/uploads/2024/12/so_yt-200x200.jpg 200w, https://www.eurocircuits.com/content/uploads/2024/12/so_yt-600x600.jpg 600w, https://www.eurocircuits.com/content/uploads/2024/12/so_yt-1200x1200.jpg 1200w, https://www.eurocircuits.com/content/uploads/2024/12/so_yt-300x300.jpg 300w, https://www.eurocircuits.com/content/uploads/2024/12/so_yt-400x400.jpg 400w" sizes="(max-width: 85px) 100vw, 85px" /></a> <img loading="lazy" decoding="async" width="204" height="86" hspace="10" class="wp-image-13372" style="display: inline;" src="https://www.eurocircuits.com/content/uploads/2024/12/ec-tv-black-86px-High.jpg" alt="eC TV logo in black"></p>
+</div></div>
+
+</div></div>
+
+
+<div class="wp-block-kadence-spacer aligncenter kt-block-spacer-9520_dc1911-e4"><div class="kt-block-spacer kt-block-spacer-halign-center"></div></div>
+
+
+
+<section class="b-block b-newsletter text-left pt-6 md:pt-12 lg:pt-14 xl:pt-20 pb-6 md:pb-12 lg:pb-14 xl:pb-20">
+	<div class="container">
+        <div class="md:w-10/12 mx-auto bg-primary text-white text-center py-8 sm:py-12 lg:py-20 px-4 sm:px-8 lg:px-12">
+            <div class="max-w-[700px] mx-auto">
+                                    <h2 class="mb-6">Join the Eurocircuits community</h2>
+                                                    <div class="mb-10 max-w-[370px] mx-auto">
+                        Get all the latest news and information about our company, the industry and technology                    </div>
+                                                    <div class="c-newsletter">
+                        
+                <div class='gf_browser_unknown gform_wrapper gform-theme gform-theme--foundation gform-theme--framework gform-theme--orbital' data-form-theme='orbital' data-form-index='0' id='gform_wrapper_3' ><div id='gf_3' class='gform_anchor' tabindex='-1'></div><form method='post' enctype='multipart/form-data'  id='gform_3'  action='/online-smart-tools-services-products/high-frequencies/#gf_3' data-formid='3' novalidate>
+                        <div class='gform-body gform_body'><div id='gform_fields_3' class='gform_fields top_label form_sublabel_below description_below validation_below'><div id="field_3_1" class="gfield gfield--type-email field_sublabel_below gfield--no-description field_description_below field_validation_below gfield_visibility_visible"  ><label class='gfield_label gform-field-label' for='input_3_1'><span class='gform-field-label__text'>Email</span></label><div class='ginput_container ginput_container_email'>
+                            <input name='input_1' id='input_3_1' type='email' value='' class='large form-control'   placeholder='Your email'  aria-invalid="false"  />
+                        </div></div></div></div>
+        <div class='gform-footer gform_footer top_label'> <button type='submit' id='gform_submit_button_3' class="gform_button button btn btn-primary" onclick='gform.submission.handleButtonClick(this);' data-submission-type='submit' >Submit</button> 
+            <input type='hidden' class='gform_hidden' name='gform_submission_method' data-js='gform_submission_method_3' value='postback' />
+            <input type='hidden' class='gform_hidden' name='gform_theme' data-js='gform_theme_3' id='gform_theme_3' value='orbital' />
+            <input type='hidden' class='gform_hidden' name='gform_style_settings' data-js='gform_style_settings_3' id='gform_style_settings_3' value='' />
+            <input type='hidden' class='gform_hidden' name='is_submit_3' value='1' />
+            <input type='hidden' class='gform_hidden' name='gform_submit' value='3' />
+            
+            <input type='hidden' class='gform_hidden' name='gform_currency' data-currency='EUR' value='MWBfJP/jZQ7+C3QytrtZnJQzz54fVrVj4AOElNggH5H/UKcEQUQYR4yCcf3Kzny09SVUxzVg3XdlU3dIX1VLPmsyH8XlkwVVWnvSOM/dlGJyQCI=' />
+            <input type='hidden' class='gform_hidden' name='gform_unique_id' value='' />
+            <input type='hidden' class='gform_hidden' name='state_3' value='WyJ7XCJnZm9ybV9zdWJtaXNzaW9uX21ldGhvZFwiOltcImJkNjVjNzAzMWI1YTZlMmMyYjQxZjRjNDAzNGJmMDBhXCIsXCI1MjQ2M2QwOTg2MGQ0YTEzYmNlNmIxNjM1MGJjNTVhMFwiXSxcImdmb3JtX3RoZW1lXCI6XCIzYmMxOGY1MGFhMzUyZTU0NjkyMThiMjE4ZWYyNDJjZVwiLFwiZ2Zvcm1fc3R5bGVfc2V0dGluZ3NcIjpcImEyNmI0YTVmZGU4ZWRkYWE3NTBmMTE0NTkxZTE1YjYyXCIsXCJmb3JtX2lkXCI6XCJiYjM4MzYwNGVkMGU1ODk4NDZiZjc2NTQ0OTBjZTY1ZVwiLFwidXJsXCI6XCIyZTc2NGUzMjUwNGE4NWUxNjBmYzU3NGVmMDFjMzVmY1wiLFwic3RhdGVfdGltZXN0YW1wXCI6XCI3NGE4M2VhNTYwZGVhZjljOGMzZGEyZmEwZGU0MTNkMlwifSIsIjljMTkyMDM2ZDEzYTBkMGU3MDA4MTczNTJkYzExODM4IiwxNzk0MzU0NzA2XQ==' />
+            <input type='hidden' autocomplete='off' class='gform_hidden' name='gform_target_page_number_3' id='gform_target_page_number_3' value='0' />
+            <input type='hidden' autocomplete='off' class='gform_hidden' name='gform_source_page_number_3' id='gform_source_page_number_3' value='1' />
+            <input type='hidden' name='gform_field_values' value='' />
+            
+        </div>
+                        </form>
+                        </div>                    </div>
+                            </div>
+        </div>
+	</div>
+</section>
+
+
+
+<div class="wp-block-kadence-spacer aligncenter kt-block-spacer-9520_d02840-be"><div class="kt-block-spacer kt-block-spacer-halign-center"></div></div>
+</div></div>
+
+</div></div></div>
+</main>
+
+<footer class="c-footer relative transition duration-300">
+    <div class="pt-12 sm:pt-20 pb-16 sm:pb-24 md:pb-32 bg-gray-50">
+        <div class="container">
+            <!-- Logo -->
+            <div class="w-24 aspect-square mb-6">
+                <img src="https://www.eurocircuits.com/content/themes/io/build/img/logo.png" alt="Logo Eurocircuits">
+            </div>
+
+            <div class="grid grid-cols-12">
+                <div class="col-span-12 xl:col-span-4">
+                                            <p class="mb-5 text-gray-500 max-w-[362px] pe-8">Eurocircuits gets it right first-time - using digital twin verification and our in-house European manufacturing facilities.
+</p>
+                    
+                                            <ul class="c-socials list-none flex items-center gap-2 ml-0">
+        <li>
+        <a href="https://www.facebook.com/eurocircuits/" target="_blank" class="c-socials__facebook block w-6 h-6 p-1 text-gray-500 hover:text-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14"><path fill="currentColor" d="m10.258 7.875.389-2.534H8.215V3.697c0-.693.34-1.369 1.429-1.369h1.105V.172S9.746 0 8.787 0c-2.002 0-3.31 1.214-3.31 3.41v1.932H3.25v2.533h2.226v6.126h2.738V7.875z"/></svg>        </a>
+    </li>
+                <li>
+        <a href="https://www.linkedin.com/company/eurocircuits/" target="_blank" class="c-socials__linkedin block w-6 h-6 p-1 text-gray-500 hover:text-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14"><path fill="currentColor" d="M3.617 12.25h-2.54V4.071h2.54zM2.346 2.956c-.812 0-1.471-.673-1.471-1.485a1.47 1.47 0 1 1 2.942 0c0 .812-.66 1.485-1.471 1.485m10.776 9.294h-2.534V8.269c0-.95-.019-2.166-1.32-2.166-1.32 0-1.523 1.03-1.523 2.098v4.049H5.208V4.071h2.436v1.116h.035c.34-.643 1.167-1.32 2.403-1.32 2.57 0 3.043 1.692 3.043 3.89v4.493z"/></svg>        </a>
+    </li>
+            <li>
+        <a href="https://twitter.com/Eurocircuits" target="_blank" class="c-socials__twitter block w-6 h-6 p-1 text-gray-500 hover:text-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334q.002-.211-.006-.422A6.7 6.7 0 0 0 16 3.542a6.7 6.7 0 0 1-1.889.518 3.3 3.3 0 0 0 1.447-1.817 6.5 6.5 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.32 9.32 0 0 1-6.767-3.429 3.29 3.29 0 0 0 1.018 4.382A3.3 3.3 0 0 1 .64 6.575v.045a3.29 3.29 0 0 0 2.632 3.218 3.2 3.2 0 0 1-.865.115 3.2 3.2 0 0 1-.614-.057 3.28 3.28 0 0 0 3.067 2.277A6.6 6.6 0 0 1 .78 13.58a6 6 0 0 1-.78-.045A9.34 9.34 0 0 0 5.026 15"/></svg>        </a>
+    </li>
+            <li>
+        <a href="https://www.youtube.com/user/eurocircuits" target="_blank" class="c-socials__youtube block w-6 h-6 p-1 text-gray-500 hover:text-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.01 2.01 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.01 2.01 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31 31 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.01 2.01 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A100 100 0 0 1 7.858 2zM6.4 5.209v4.818l4.157-2.408z"/></svg>        </a>
+    </li>
+    </ul>
+                                    </div>
+
+                <div class="grid grid-cols-12 col-span-12 gap-y-6 xl:contents mt-12 xl:mt-0">
+                                            <nav role="navigation" class="c-nav--footer col-span-12 sm:col-span-6 md:col-span-3 xl:col-span-2">
+                            <h4 class="text-base text-primary font-bold mb-3">Services</h4><ul id="menu-services" class="list-none m-0 p-0 flex flex-col gap-1.5 text-sm"><li id="menu-item-12774" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12774"><a href="https://www.eurocircuits.com/services/">PCB Manufacturing</a></li>
+<li id="menu-item-12981" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12981"><a href="https://www.eurocircuits.com/services/">PCB Assembly</a></li>
+<li id="menu-item-15501" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15501"><a href="https://www.eurocircuits.com/for-students-teachers/">For students &amp; teachers</a></li>
+</ul>                        </nav>
+                                                <nav role="navigation" class="c-nav--footer col-span-12 sm:col-span-6 md:col-span-3 xl:col-span-2">
+                            <h4 class="text-base text-primary font-bold mb-3">Legal</h4><ul id="menu-legal" class="list-none m-0 p-0 flex flex-col gap-1.5 text-sm"><li id="menu-item-32144" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-32144"><a href="https://www.eurocircuits.com/about-us/impressum/">Impressum</a></li>
+<li id="menu-item-15499" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15499"><a href="https://www.eurocircuits.com/about-us/our-business-etiquette/terms-of-sales/">Eurocircuits Terms of Sales</a></li>
+<li id="menu-item-23827" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-23827"><a href="https://www.eurocircuits.com/termofuse/">Terms of Use</a></li>
+<li id="menu-item-15500" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15500"><a href="https://www.eurocircuits.com/about-us/our-business-etiquette/eurocircuits-non-disclosure-agreement/">NDA</a></li>
+<li id="menu-item-23828" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-23828"><a href="https://www.eurocircuits.com/about-us/our-business-etiquette/privacypolicy/">Privacy Statement</a></li>
+<li id="menu-item-23829" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-23829"><a href="https://www.eurocircuits.com/disclaimer/">Website disclaimer</a></li>
+<li id="menu-item-23830" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-23830"><a href="https://www.eurocircuits.com/about-us/our-business-etiquette/">Our Business Etiquette</a></li>
+</ul>                        </nav>
+                                                <nav role="navigation" class="c-nav--footer col-span-12 sm:col-span-6 md:col-span-3 xl:col-span-2">
+                            <h4 class="text-base text-primary font-bold mb-3">Resources</h4><ul id="menu-resources" class="list-none m-0 p-0 flex flex-col gap-1.5 text-sm"><li id="menu-item-10440" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-10440"><a target="_blank" href="https://be.eurocircuits.com/shop/assembly/configurator.aspx">PCB Calculator</a></li>
+<li id="menu-item-10441" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-10441"><a target="_blank" href="https://be.eurocircuits.com/shop/eclogin.aspx">Sign in / Register</a></li>
+<li id="menu-item-9306" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9306"><a href="/help-knowledge-centre/help-centre/">Help centre</a></li>
+<li id="menu-item-9304" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9304"><a href="/blog">Blogs</a></li>
+<li id="menu-item-10439" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-10439"><a href="https://www.eurocircuits.com/events/">Events</a></li>
+</ul>                        </nav>
+                                                <nav role="navigation" class="c-nav--footer col-span-12 sm:col-span-6 md:col-span-3 xl:col-span-2">
+                            <h4 class="text-base text-primary font-bold mb-3">Contact</h4><ul id="menu-contact" class="list-none m-0 p-0 flex flex-col gap-1.5 text-sm"><li id="menu-item-14682" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-14682"><a href="https://www.eurocircuits.com/contact/sales-customer-support/">Sales &amp; Customer Support</a></li>
+<li id="menu-item-14681" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-14681"><a href="https://www.eurocircuits.com/contact/head-office-subsidiaries/">Head Office &amp; Subsidiaries</a></li>
+<li id="menu-item-23831" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-23831"><a href="https://www.eurocircuits.com/ec-calendar/">eC-calendar</a></li>
+</ul>                        </nav>
+                                        </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white py-6">
+        <div class="container flex justify-between items-center text-sm text-gray-500">
+            <span>&copy;
+                    2026                Eurocircuits                </span>
+            <nav role="navigation" class="c-nav-legal justify-self-end">
+                            </nav>
+        </div>
+    </div>
+</footer>
+<aside class="hidden fixed z-50 flex-col gap-4 bottom-4 left-4 p-6 m-0 bg-primary text-white shadow-md js-popup-newsletter">
+	<main class="flex gap-8">
+		<div class="w-72">
+			<h2 class="mb-4">
+				Get connected!			</h2>
+			<p>
+				Join the Eurocircuits Community, keep up to date with News &amp; Information.			</p>
+		</div>
+		<div>
+			<img src="https://www.eurocircuits.com/content/uploads/2025/03/11-post-150x150.png" alt="Mailbox illustration">
+		</div>
+	</main>
+	<footer class="text-white/60 text-sm">
+		<div class="flex justify-between">
+			<button class="js-popup-dismiss">No thanks, not interested.</button>
+			<button class="js-popup-close">Remind me later.</button>
+		</div>
+	</footer>
+</aside>
+<aside class="c-sidebar z-[999999] block lg:hidden fixed w-[250px] h-full top-0 right-[-250px] bg-primary text-white transition duration-300 overflow-y-auto">
+	<div class="flex flex-col justify-between gap-5 p-3">
+        <nav role="navigation" class="c-nav-sidebar flex flex-col gap-5">
+            <ul id="menu-primary-navigation-1" class=""><li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8605"><a href="https://www.eurocircuits.com/services/">Services</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-12534"><a href="https://www.eurocircuits.com/help-knowledge-centre/">Help &amp; Knowledge centre</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-3495"><a href="https://www.eurocircuits.com/help-knowledge-centre/help-centre/">Help centre</a>
+	<ul class="sub-menu">
+		<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-10849"><a href="https://www.eurocircuits.com/technical-guidelines/">Technical guidelines</a></li>
+		<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-10850"><a href="https://www.eurocircuits.com/user-guides/">User guides</a></li>
+		<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-33619"><a href="https://www.eurocircuits.com/technical-guidelines/technical-educational-videos/">Technical &#038; Educational Videos</a></li>
+	</ul>
+</li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-3494"><a href="https://www.eurocircuits.com/help-knowledge-centre/knowledge-centre/">Knowledge centre</a>
+	<ul class="sub-menu">
+		<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-10829"><a href="https://www.eurocircuits.com/blog/">Blogs</a></li>
+		<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-10830"><a href="https://www.eurocircuits.com/events/">Events</a></li>
+		<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-10852"><a href="https://www.eurocircuits.com/technical-terms-and-abbreviations/">Glossary</a></li>
+	</ul>
+</li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3586"><a href="https://www.eurocircuits.com/how-it-works/">How it works</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8612"><a href="https://www.eurocircuits.com/for-students-teachers/">For students &amp; teachers</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-12775"><a href="https://www.eurocircuits.com/downloads/">Downloads</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8611"><a href="https://www.eurocircuits.com/about-us/">About us</a></li>
+</ul>			<ul id="menu-header-secondary-1" class="list-none m-0 flex flex-col items-start"><li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6937"><a target="_blank" href="https://be.eurocircuits.com/shop/eclogin.aspx">Sign In / Register</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3199"><a target="_blank" href="https://be.eurocircuits.com/shop/assembly/configurator.aspx">PCB Calculator</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3201"><a href="https://www.eurocircuits.com/contact/">Contact</a></li>
+</ul>        </nav>
+		        <div class="c-language-selector c-language-selector--mobile text-white uppercase">
+    <ul class="c-language-selector__list border-t border-white/[.1] pt-3 list-none m-0">
+        	<li class="lang-item lang-item-166 lang-item-de lang-item-first"><a lang="de-DE" hreflang="de-DE" href="https://www.eurocircuits.com/de/elektronische-fertigungstechnik/mit-hohen-frequenzen-arbeiten/">Deutsch</a></li>
+	<li class="lang-item lang-item-171 lang-item-hu"><a lang="hu-HU" hreflang="hu-HU" href="https://www.eurocircuits.com/hu/online-eszkozok-es-szolgaltatasok/nagyfrekvenciak-kezelese/">Magyar</a></li>
+    </ul>
+</div>
+	</div>
+</aside>
+<script type="speculationrules">
+{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/wp/wp-*.php","/wp/wp-admin/*","/content/uploads/*","/content/*","/content/plugins/*","/content/themes/io/*","/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+</script>
+<script id="io-conversational-search-js-extra">
+var ioConversationalSearch = {"ajaxUrl":"https://www.eurocircuits.com/wp/wp-admin/admin-ajax.php","nonce":"23e869a175","lang":"en","strings":{"thinking":"Searching and analysing...","error":"An error occurred. Please try again.","noContent":"I couldn't find relevant content about that topic."}};
+//# sourceURL=io-conversational-search-js-extra
+</script>
+<script id="io-conversational-search-js" src="https://www.eurocircuits.com/content/plugins/io-ai-wp-chatbot/assets/js/conversational-search.js?ver=1.13.2"></script>
+<script id="main-js-js" src="https://www.eurocircuits.com/content/themes/io/build/main-DUiJMRKp.js"></script>
+<script id="main-php-vars-js-extra">
+var vars = {"ajaxurl":"https://www.eurocircuits.com/wp/wp-admin/admin-ajax.php","templateurl":"https://www.eurocircuits.com/content/themes/io","siteurl":"https://www.eurocircuits.com/wp","countryCode":"{\"ip\":\"90.96.185.255\",\"country\":\"US\"}"};
+//# sourceURL=main-php-vars-js-extra
+</script>
+<script id="seoaiwp-form-tracking-js-extra">
+var SeoaiwpConversionConfig = {"enabled":"","tagId":"","label":""};
+//# sourceURL=seoaiwp-form-tracking-js-extra
+</script>
+<script id="seoaiwp-form-tracking-js-after">
+/**
+ * WordPress & HubSpot Form Events → GTM dataLayer + GA4 gtag
+ *
+ * Listens for successful form submissions from popular WordPress form
+ * plugins and HubSpot forms, then pushes events to both window.dataLayer
+ * (GTM) and gtag (GA4 direct).
+ *
+ * Also tracks clicks on tel: and mailto: links.
+ *
+ * Supported: CF7, Gravity Forms, WPForms, Forminator, Formidable,
+ * Ninja Forms, Fluent Forms, WS Form, Elementor Forms, Enfold (Avia),
+ * HubSpot Forms v3, HubSpot Forms v4, Pipedrive LeadBooster, Leadoo
+ */
+
+// ── IE11 closest() polyfill ───────────────────────────────────────
+
+if (!Element.prototype.closest) {
+    Element.prototype.closest = function (s) {
+        var el = this;
+        do {
+            if (el.matches(s)) return el;
+            el = el.parentElement || el.parentNode;
+        } while (el !== null && el.nodeType === 1);
+        return null;
+    };
+}
+
+(function () {
+    'use strict';
+
+    window.dataLayer = window.dataLayer || [];
+
+    // ── helpers ──────────────────────────────────────────────────
+
+    // Fires a Google Ads conversion event using values from SeoaiwpConversionConfig
+    // (injected via wp_localize_script from WPSEOAI → Settings → SEA).
+    function fireGoogleAdsConversion() {
+        var cfg = window.SeoaiwpConversionConfig;
+        if (!cfg || !cfg.enabled || !cfg.tagId || !cfg.label) return;
+        if (typeof gtag !== 'function') return;
+
+        gtag('event', 'conversion', {
+            send_to: 'AW-' + cfg.tagId + '/' + cfg.label
+        });
+    }
+
+    function pushEvent(formPlugin, formId, formElement, extraData) {
+        var submitBtn = formElement
+            ? formElement.querySelector('[type="submit"]')
+            : null;
+
+        var submitText = '';
+        if (submitBtn) {
+            submitText = submitBtn.tagName === 'INPUT'
+                ? submitBtn.value
+                : submitBtn.textContent.trim();
+        }
+
+        var basePayload = {
+            event:      'wpseoai_form_submission',
+            formPlugin: formPlugin,
+            formId:     formId || '',
+            formClass:  formElement ? (formElement.className || '') : '',
+            submitText: submitText,
+            pageUrl:    window.location.href,
+            pageTitle:  document.title
+        };
+
+        if (extraData) {
+            Object.keys(extraData).forEach(function (key) {
+                basePayload[key] = extraData[key];
+            });
+        }
+
+        // ── GTM dataLayer push ───────────────────────────────────
+
+        window.dataLayer.push(basePayload);
+
+        // ── GA4 gtag direct ──────────────────────────────────────
+
+        if (typeof gtag === 'function') {
+            var gtagPayload = {};
+            Object.keys(basePayload).forEach(function (key) {
+                if (key !== 'event') gtagPayload[key] = basePayload[key];
+            });
+            gtag('event', 'wpseoai_form_submission', gtagPayload);
+        }
+
+        // ── Google Ads conversion ────────────────────────────────
+
+        fireGoogleAdsConversion();
+    }
+
+    function pushLinkClick(eventName, linkType, href, linkText) {
+        var payload = {
+            event:     eventName,
+            linkType:  linkType,
+            linkHref:  href,
+            linkText:  linkText,
+            pageUrl:   window.location.href,
+            pageTitle: document.title
+        };
+
+        window.dataLayer.push(payload);
+
+        if (typeof gtag === 'function') {
+            gtag('event', eventName, {
+                link_type:  linkType,
+                link_href:  href,
+                link_text:  linkText,
+                page_url:   window.location.href,
+                page_title: document.title
+            });
+        }
+
+        // ── Google Ads conversion ────────────────────────────────
+
+        fireGoogleAdsConversion();
+    }
+
+    // ── 1. Contact Form 7 ───────────────────────────────────────
+
+    document.addEventListener('wpcf7mailsent', function (event) {
+        var formId = event.detail.contactFormId;
+        pushEvent('cf7', formId, event.target);
+    }, false);
+
+    // ── 2. Gravity Forms ────────────────────────────────────────
+    //
+    // Three confirmation types need separate handling:
+    //   a) AJAX text confirmation  → 'gform_confirmation_loaded' fires
+    //   b) Non-AJAX page reload    → '.gform_confirmation_message' present on load
+    //   c) Page redirect           → track before redirect via 'gform_pre_submission'
+
+    var gfTrackedForms = {};
+
+    jQuery(function ($) {
+
+        // (a) AJAX text/message confirmation
+        $(document).on('gform_confirmation_loaded', function (event, formId) {
+            if (gfTrackedForms['conf_' + formId]) return;
+            gfTrackedForms['conf_' + formId] = true;
+
+            var formEl = document.getElementById('gform_' + formId) ||
+                document.querySelector('#gform_wrapper_' + formId + ' form');
+            pushEvent('gravity_forms', formId, formEl);
+        });
+
+        // (b) Non-AJAX page reload — confirmation message rendered server-side
+        $('.gform_confirmation_message').each(function () {
+            var wrapper = $(this).closest('.gform_wrapper');
+            var formId = (wrapper.attr('id') || '').replace('gform_wrapper_', '');
+            if (formId && !gfTrackedForms['conf_' + formId]) {
+                gfTrackedForms['conf_' + formId] = true;
+                pushEvent('gravity_forms', formId, null);
+            }
+        });
+
+        // (c) Redirect confirmation — capture before the browser navigates away
+        if (typeof gform !== 'undefined' && typeof gform.addAction === 'function') {
+            gform.addAction('gform_pre_submission', function (formEl) {
+                var formId = formEl ? formEl.getAttribute('id') : '';
+                formId = formId.replace('gform_', '');
+                if (formId) {
+                    pushEvent('gravity_forms', formId, formEl);
+                    gfTrackedForms['conf_' + formId] = true;
+                }
+            });
+        }
+
+        // ── 3. WPForms ─────────────────────────────────────────
+
+        $(document).on('wpformsAjaxSubmitSuccess', 'form.wpforms-form', function (event) {
+            var formId = $(event.target).attr('data-formid');
+            pushEvent('wpforms', formId, event.target);
+        });
+
+        // ── 4. Forminator ──────────────────────────────────────
+
+        $(document).on('forminator:form:submit:success', function (event) {
+            var formId = $(event.target).find('input[name="form_id"]').val();
+            pushEvent('forminator', formId, event.target);
+        });
+
+        // ── 5. Formidable Forms ────────────────────────────────
+        //   a) AJAX → frmFormComplete fires
+        //   b) Non-AJAX page reload → .frm_message present on load
+
+        var frmTrackedForms = {};
+
+        $(document).on('frmFormComplete', function (event, form) {
+            var formId = $(form).find('input[name="form_id"]').val();
+            if (formId) frmTrackedForms['frm_' + formId] = true;
+            pushEvent('formidable', formId, form);
+        });
+
+        // Non-AJAX: detect success message rendered after page reload
+        $('.frm_message').each(function () {
+            var wrapper = $(this).closest('.frm_forms');
+            var formId = wrapper.find('input[name="form_id"]').val() ||
+                (wrapper.attr('id') || '').replace('frm_form_', '').replace('_container', '');
+            if (formId && !frmTrackedForms['frm_' + formId]) {
+                frmTrackedForms['frm_' + formId] = true;
+                pushEvent('formidable', formId, wrapper.find('form')[0] || null);
+            }
+        });
+
+        // ── 6. Ninja Forms ─────────────────────────────────────
+
+        if ($.fn.onFirst) {
+            $(document).onFirst('nfFormSubmitResponse', function (event, data) {
+                var formId = data.response.data.form_id;
+                pushEvent('ninja_forms', formId, event.target);
+            });
+        } else {
+            $(document).on('nfFormSubmitResponse', function (event, data) {
+                var formId = data.response.data.form_id;
+                pushEvent('ninja_forms', formId, event.target);
+            });
+        }
+
+        // ── 7. Fluent Forms ────────────────────────────────────
+
+        $(document).on('fluentform_submission_success', function (event, data) {
+            if (!data || !data.form) return;
+            var formId = data.config.id;
+            pushEvent('fluent_forms', formId, data.form[0] || event.target);
+        });
+
+        // ── 8. WS Form ────────────────────────────────────────
+
+        $(document).on('wsf-submit-complete', function (event, formObject, formId) {
+            pushEvent('ws_form', formId, event.target);
+        });
+
+        // ── 9. Elementor Forms ─────────────────────────────────
+
+        function observeElementorForm(form) {
+            var observer = new MutationObserver(function (mutations) {
+                for (var i = 0; i < mutations.length; i++) {
+                    if (form.querySelector('.elementor-message-success')) {
+                        var formId = form.getAttribute('id') ||
+                            (form.querySelector('input[name="form_id"]') || {}).value || '';
+                        pushEvent('elementor_form', formId, form);
+                        observer.disconnect();
+                        return;
+                    }
+                }
+            });
+
+            observer.observe(form, {
+                attributes: true,
+                childList:  true,
+                subtree:    true
+            });
+        }
+
+        // existing forms on page
+        document.querySelectorAll('.elementor-form').forEach(function (form) {
+            observeElementorForm(form);
+        });
+
+        // forms inside Elementor popups (loaded dynamically)
+        var popupObserver = new MutationObserver(function (mutationsList) {
+            for (var i = 0; i < mutationsList.length; i++) {
+                var popupForm = document.querySelector('[class*="elementor-popup"] form');
+                if (popupForm) {
+                    observeElementorForm(popupForm);
+                    popupObserver.disconnect();
+                    break;
+                }
+            }
+        });
+        popupObserver.observe(document.body, { childList: true, subtree: true });
+
+        // ── 10. Enfold (Avia) Contact Forms ───────────────────────
+        //
+        // Enfold forms submit via AJAX and do not fire custom JS events.
+        // On success the form slides up and the response container
+        // (#ajaxresponse_{id}) becomes visible with an .avia-form-success heading.
+        // We use a MutationObserver to detect this DOM change.
+
+        var enfoldTracked = {};
+
+        function observeEnfoldResponse(responseEl) {
+            var observer = new MutationObserver(function () {
+                if (responseEl.classList.contains('hidden') ||
+                    responseEl.style.display === 'none') {
+                    return;
+                }
+
+                if (!responseEl.querySelector('.avia-form-success')) {
+                    return;
+                }
+
+                var formId = (responseEl.id || '').replace('ajaxresponse_', '');
+                if (enfoldTracked[formId]) return;
+                enfoldTracked[formId] = true;
+
+                var formEl = responseEl.parentElement
+                    ? responseEl.parentElement.querySelector('form.avia_ajax_form') ||
+                    responseEl.parentElement.querySelector('form.ajax_form')
+                    : null;
+
+                pushEvent('enfold', formId, formEl);
+                observer.disconnect();
+            });
+
+            observer.observe(responseEl, {
+                attributes:      true,
+                attributeFilter: ['class', 'style'],
+                childList:       true,
+                subtree:         true
+            });
+        }
+
+        document.querySelectorAll('.ajaxresponse').forEach(function (el) {
+            observeEnfoldResponse(el);
+        });
+
+    });
+
+    // ── 11. HubSpot Forms v3 ───────────────────────────────────
+    //
+    // v3 forms communicate via window.postMessage. On success the
+    // message payload carries the form ID, conversion ID, and field values.
+
+    window.addEventListener('message', function (event) {
+        if (event.data.type === 'hsFormCallback' &&
+            event.data.eventName === 'onFormSubmitted') {
+
+            pushEvent(
+                'hubspot_v3',
+                event.data.id,
+                null,
+                {
+                    conversion_id: event.data.data.conversionId
+                }
+            );
+        }
+    });
+
+    // ── 12. HubSpot Forms v4 ───────────────────────────────────
+    //
+    // v4 forms fire a custom DOM event. Field values are fetched
+    // asynchronously via the HubspotFormsV4 API.
+
+    window.addEventListener('hs-form-event:on-submission:success', function (event) {
+        if (typeof HubspotFormsV4 === 'undefined') return;
+
+        var hsForm = HubspotFormsV4.getFormFromEvent(event);
+        if (!hsForm) return;
+
+        pushEvent(
+            'hubspot_v4',
+            hsForm.getFormId(),
+            null,
+            {
+                conversion_id: hsForm.getConversionId()
+            }
+        );
+    });
+
+    // ── 13. Lead form submissions ─────────────────────────────
+    //
+    // Lead forms dispatch a custom 'wpseoai:lead_form_submit' event on
+    // successful submission. The event detail may carry formId and any
+    // additional metadata the form wishes to surface.
+
+    document.addEventListener('wpseoai:lead_form_submit', function (event) {
+        pushEvent('wpseoai_lead_form', '', null);
+    }, false);
+
+    // ── 14. Pipedrive LeadBooster Forms ──────────────────────────
+    //
+    // Pipedrive forms are embedded as iframes and post a message to the
+    // parent window on submission. The payload includes formUUID which
+    // serves as the form identifier.
+
+    window.addEventListener('message', function (event) {
+        var data = event.data;
+        if (!data || data.event !== 'pipedrive_form_submit') return;
+
+        pushEvent('pipedrive', data.formUUID || '', null, null);
+    });
+
+    // ── 15. Leadoo ────────────────────────────────────────────────
+    //
+    // Leadoo pushes a { event: 'LEAD' } object to window.dataLayer on
+    // form submission. We wrap dataLayer.push to intercept it.
+    // The _busy guard prevents re-entrancy from our own pushEvent calls.
+
+    (function () {
+        var dl = window.dataLayer;
+        if (!dl || typeof dl.push !== 'function') return;
+
+        var _orig = dl.push.bind(dl);
+        var _busy = false;
+
+        dl.push = function () {
+            if (!_busy) {
+                for (var i = 0; i < arguments.length; i++) {
+                    var item = arguments[i];
+                    if (item && typeof item === 'object' && item.event === 'LEAD') {
+                        _busy = true;
+                        try {
+                            pushEvent('leadoo', '', null, null);
+                        } finally {
+                            _busy = false;
+                        }
+                    }
+                }
+            }
+            return _orig.apply(null, arguments);
+        };
+    }());
+
+    // ── 16. tel: and mailto: link clicks ──────────────────────
+    //
+    // Uses event delegation on document so dynamically injected links
+    // (popups, live chat widgets, etc.) are captured without re-binding.
+    // closest() walks up the DOM in case the click lands on a child
+    // element inside the anchor (e.g. an icon or span).
+    // hrefLower handles uppercase protocol variants (e.g. TEL:, MAILTO:).
+
+    document.addEventListener('click', function (event) {
+        var anchor = event.target.closest('a[href]');
+        if (!anchor) return;
+
+        var href = anchor.getAttribute('href') || '';
+        var hrefLower = href.toLowerCase();
+        var linkText = anchor.textContent.trim();
+
+        if (hrefLower.indexOf('tel:') === 0) {
+            pushLinkClick('wpseoai_tel_click', 'tel', href.slice(4), linkText);
+        } else if (hrefLower.indexOf('mailto:') === 0) {
+            pushLinkClick('wpseoai_mail_click', 'mailto', href.slice(7), linkText);
+        }
+    }, false);
+
+})();
+
+//# sourceURL=seoaiwp-form-tracking-js-after
+</script>
+<script id="wp-dom-ready-js" src="https://www.eurocircuits.com/wp/wp-includes/js/dist/dom-ready.min.js?ver=3fe927cab37bf38d6a23"></script>
+<script id="wp-hooks-js" src="https://www.eurocircuits.com/wp/wp-includes/js/dist/hooks.min.js?ver=f0f188028580e8dc1255"></script>
+<script id="wp-i18n-js" src="https://www.eurocircuits.com/wp/wp-includes/js/dist/i18n.min.js?ver=1dfe7db3940c23ea9216"></script>
+<script id="wp-i18n-js-after">
+wp.i18n.setLocaleData( { 'text direction\u0004ltr': [ 'ltr' ] } );
+//# sourceURL=wp-i18n-js-after
+</script>
+<script id="wp-a11y-js" src="https://www.eurocircuits.com/wp/wp-includes/js/dist/a11y.min.js?ver=31c6cec5a4ff7aff483d"></script>
+<script id="gform_json-js" defer='defer' src="https://www.eurocircuits.com/content/plugins/gravityforms/js/jquery.json.min.js?ver=3.1.3.1"></script>
+<script id="gform_gravityforms-js-extra">
+var gform_i18n = {"datepicker":{"wdOffset":1,"helpTextShort":"Press F1 for help","helpText":"Press the arrow keys to navigate by day, PageUp and PageDown to navigate by month, Alt+PageUp and Alt+PageDown to navigate by year, or Escape to cancel.","openOnFocusHelpText":"Press Down arrow to browse the calendar, or Escape to close.","tooltipTxt":"Press Escape to cancel","disabledTxt":"Disabled","markedTxt":"Selected","prevTxt":"Previous","nextTxt":"Next","monthTxt":"Month","yearTxt":"Year","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"days":[{"s":"S","l":"Sunday"},{"s":"M","l":"Monday"},{"s":"T","l":"Tuesday"},{"s":"W","l":"Wednesday"},{"s":"T","l":"Thursday"},{"s":"F","l":"Friday"},{"s":"S","l":"Saturday"}]}};
+var gf_legacy_multi = [];
+var gform_gravityforms = {"strings":{"invalid_file_extension":"This type of file is not allowed. Must be one of the following:","file_uploaded":"File uploaded","delete_file":"Delete this file","in_progress":"in progress","file_exceeds_limit":"File exceeds size limit","illegal_extension":"This type of file is not allowed.","max_reached":"Maximum number of files reached","unknown_error":"There was a problem while saving the file on the server","currently_uploading":"Please wait for the uploading to complete","cancel":"Cancel","cancel_upload":"Cancel this upload","cancelled":"Cancelled","error":"Error","message":"Message"},"vars":{"images_url":"https://www.eurocircuits.com/content/plugins/gravityforms/images"}};
+var gf_global = {"gf_currency_config":{"name":"Euro","symbol_left":"","symbol_right":"&#8364;","symbol_padding":" ","thousand_separator":".","decimal_separator":",","decimals":2,"code":"EUR"},"base_url":"https://www.eurocircuits.com/content/plugins/gravityforms","number_formats":[],"version_hash":"0b1bd76eaa3a1ce64e059edb7d5e48b8","countries":{"AF":"Afghanistan","AX":"\u00c5land Islands","AL":"Albania","DZ":"Algeria","AS":"American Samoa","AD":"Andorra","AO":"Angola","AI":"Anguilla","AQ":"Antarctica","AG":"Antigua and Barbuda","AR":"Argentina","AM":"Armenia","AW":"Aruba","AU":"Australia","AT":"Austria","AZ":"Azerbaijan","BS":"Bahamas","BH":"Bahrain","BD":"Bangladesh","BB":"Barbados","BY":"Belarus","BE":"Belgium","BZ":"Belize","BJ":"Benin","BM":"Bermuda","BT":"Bhutan","BO":"Bolivia","BQ":"Bonaire, Sint Eustatius and Saba","BA":"Bosnia and Herzegovina","BW":"Botswana","BV":"Bouvet Island","BR":"Brazil","IO":"British Indian Ocean Territory","BN":"Brunei Darussalam","BG":"Bulgaria","BF":"Burkina Faso","BI":"Burundi","CV":"Cabo Verde","KH":"Cambodia","CM":"Cameroon","CA":"Canada","KY":"Cayman Islands","CF":"Central African Republic","TD":"Chad","CL":"Chile","CN":"China","CX":"Christmas Island","CC":"Cocos Islands","CO":"Colombia","KM":"Comoros","CD":"Congo, Democratic Republic of the","CG":"Congo","CK":"Cook Islands","CR":"Costa Rica","CI":"C\u00f4te d'Ivoire","HR":"Croatia","CU":"Cuba","CW":"Cura\u00e7ao","CY":"Cyprus","CZ":"Czechia","DK":"Denmark","DJ":"Djibouti","DM":"Dominica","DO":"Dominican Republic","EC":"Ecuador","EG":"Egypt","SV":"El Salvador","GQ":"Equatorial Guinea","ER":"Eritrea","EE":"Estonia","SZ":"Eswatini","ET":"Ethiopia","FK":"Falkland Islands","FO":"Faroe Islands","FJ":"Fiji","FI":"Finland","FR":"France","GF":"French Guiana","PF":"French Polynesia","TF":"French Southern Territories","GA":"Gabon","GM":"Gambia","GE":"Georgia","DE":"Germany","GH":"Ghana","GI":"Gibraltar","GR":"Greece","GL":"Greenland","GD":"Grenada","GP":"Guadeloupe","GU":"Guam","GT":"Guatemala","GG":"Guernsey","GN":"Guinea","GW":"Guinea-Bissau","GY":"Guyana","HT":"Haiti","HM":"Heard Island and McDonald Islands","VA":"Holy See","HN":"Honduras","HK":"Hong Kong","HU":"Hungary","IS":"Iceland","IN":"India","ID":"Indonesia","IR":"Iran","IQ":"Iraq","IE":"Ireland","IM":"Isle of Man","IL":"Israel","IT":"Italy","JM":"Jamaica","JP":"Japan","JE":"Jersey","JO":"Jordan","KZ":"Kazakhstan","KE":"Kenya","KI":"Kiribati","KP":"Korea, Democratic People's Republic of","KR":"Korea, Republic of","KW":"Kuwait","KG":"Kyrgyzstan","LA":"Lao People's Democratic Republic","LV":"Latvia","LB":"Lebanon","LS":"Lesotho","LR":"Liberia","LY":"Libya","LI":"Liechtenstein","LT":"Lithuania","LU":"Luxembourg","MO":"Macao","MG":"Madagascar","MW":"Malawi","MY":"Malaysia","MV":"Maldives","ML":"Mali","MT":"Malta","MH":"Marshall Islands","MQ":"Martinique","MR":"Mauritania","MU":"Mauritius","YT":"Mayotte","MX":"Mexico","FM":"Micronesia","MD":"Moldova","MC":"Monaco","MN":"Mongolia","ME":"Montenegro","MS":"Montserrat","MA":"Morocco","MZ":"Mozambique","MM":"Myanmar","NA":"Namibia","NR":"Nauru","NP":"Nepal","NL":"Netherlands","NC":"New Caledonia","NZ":"New Zealand","NI":"Nicaragua","NE":"Niger","NG":"Nigeria","NU":"Niue","NF":"Norfolk Island","MK":"North Macedonia","MP":"Northern Mariana Islands","NO":"Norway","OM":"Oman","PK":"Pakistan","PW":"Palau","PS":"Palestine, State of","PA":"Panama","PG":"Papua New Guinea","PY":"Paraguay","PE":"Peru","PH":"Philippines","PN":"Pitcairn","PL":"Poland","PT":"Portugal","PR":"Puerto Rico","QA":"Qatar","RE":"R\u00e9union","RO":"Romania","RU":"Russian Federation","RW":"Rwanda","BL":"Saint Barth\u00e9lemy","SH":"Saint Helena, Ascension and Tristan da Cunha","KN":"Saint Kitts and Nevis","LC":"Saint Lucia","MF":"Saint Martin","PM":"Saint Pierre and Miquelon","VC":"Saint Vincent and the Grenadines","WS":"Samoa","SM":"San Marino","ST":"Sao Tome and Principe","SA":"Saudi Arabia","SN":"Senegal","RS":"Serbia","SC":"Seychelles","SL":"Sierra Leone","SG":"Singapore","SX":"Sint Maarten","SK":"Slovakia","SI":"Slovenia","SB":"Solomon Islands","SO":"Somalia","ZA":"South Africa","GS":"South Georgia and the South Sandwich Islands","SS":"South Sudan","ES":"Spain","LK":"Sri Lanka","SD":"Sudan","SR":"Suriname","SJ":"Svalbard and Jan Mayen","SE":"Sweden","CH":"Switzerland","SY":"Syria Arab Republic","TW":"Taiwan","TJ":"Tajikistan","TZ":"Tanzania, the United Republic of","TH":"Thailand","TL":"Timor-Leste","TG":"Togo","TK":"Tokelau","TO":"Tonga","TT":"Trinidad and Tobago","TN":"Tunisia","TR":"T\u00fcrkiye","TM":"Turkmenistan","TC":"Turks and Caicos Islands","TV":"Tuvalu","UG":"Uganda","UA":"Ukraine","AE":"United Arab Emirates","GB":"United Kingdom","US":"United States","UY":"Uruguay","UM":"US Minor Outlying Islands","UZ":"Uzbekistan","VU":"Vanuatu","VE":"Venezuela","VN":"Viet Nam","VG":"Virgin Islands, British","VI":"Virgin Islands, U.S.","WF":"Wallis and Futuna","EH":"Western Sahara","YE":"Yemen","ZM":"Zambia","ZW":"Zimbabwe"},"strings":{"newRowAdded":"New row added.","rowRemoved":"Row removed","formSaved":"The form has been saved.  The content contains the link to return and complete the form."}};
+//# sourceURL=gform_gravityforms-js-extra
+</script>
+<script id="gform_gravityforms-js" defer='defer' src="https://www.eurocircuits.com/content/plugins/gravityforms/js/gravityforms.min.js?ver=3.1.3.1"></script>
+<script id="gform_placeholder-js" defer='defer' src="https://www.eurocircuits.com/content/plugins/gravityforms/js/placeholders.jquery.min.js?ver=3.1.3.1"></script>
+<script id="gform_gravityforms_utils-js" defer='defer' src="https://www.eurocircuits.com/content/plugins/gravityforms/assets/js/dist/utils.min.js?ver=d7e103405223e60d2719f4c330fd11cf"></script>
+<script id="gform_gravityforms_theme_vendors-js" defer='defer' src="https://www.eurocircuits.com/content/plugins/gravityforms/assets/js/dist/vendor-theme.min.js?ver=0c901cb641ce64b99c20ea1a4d208cc9"></script>
+<script id="gform_gravityforms_theme-js-extra">
+var gform_theme_config = {"common":{"form":{"honeypot":{"version_hash":"0b1bd76eaa3a1ce64e059edb7d5e48b8"},"ajax":{"ajaxurl":"https://www.eurocircuits.com/wp/wp-admin/admin-ajax.php","ajax_submission_nonce":"176d3dea45","i18n":{"step_announcement":"Step %1$s of %2$s, %3$s","unknown_error":"There was an unknown error processing your request. Please try again.","error_403":"The request was blocked (403 error) for unknown security reasons. Remove any code-like text (scripts or DB queries) and try again."}}}},"hmr_dev":"","public_path":"https://www.eurocircuits.com/content/plugins/gravityforms/assets/js/dist/","config_nonce":"0cbe55057d"};
+//# sourceURL=gform_gravityforms_theme-js-extra
+</script>
+<script id="gform_gravityforms_theme-js" defer='defer' src="https://www.eurocircuits.com/content/plugins/gravityforms/assets/js/dist/scripts-theme.min.js?ver=8f89e8f0726c4a5c07d9ac2aa66a76e1"></script>
+<script type='text/javascript'>var gfZeroSpamConfig = {"forms":[{"ajaxUrl":"https:\/\/www.eurocircuits.com\/wp\/wp-admin\/admin-ajax.php","fallbackToken":"M3wxNzk0MzU0NzA2fDE3OTQ5NTk1MDZ8N2YyMjQzMzNmZWE4ZTViMmEyMTNmMTYzZjRkNTU2OTZ8MQ.ZTU5MGU0M2I5ZmQxOTM3NmQ0MjkxZmMyZGEyZGI1NjdjODUwZjZhNzY0OTY0NGFlYmNmZGMwZTYxMmQxNzhhYQ","formId":3,"timeout":3000}],"debug":false};</script>
+<script id="gf-zero-spam-js" defer='defer' src="https://www.eurocircuits.com/content/plugins/gravity-forms-zero-spam/dist/js/gf-zero-spam.js?ver=1786062630"></script>
+<script>
+gform.initializeOnLoaded( function() { jQuery(document).on('gform_post_render', function(event, formId, currentPage){if(formId == 3) {if(typeof Placeholders != 'undefined'){
+                        Placeholders.enable();
+                    }} } );jQuery(document).on('gform_post_conditional_logic', function(event, formId, fields, isInit){} ) } );
+</script>
+<script>
+gform.initializeOnLoaded( function() {jQuery(document).trigger("gform_pre_post_render", [{ formId: "3", currentPage: "1", abort: function() { this.preventDefault(); } }]);        if (event && event.defaultPrevented) {                return;        }        const gformWrapperDiv = document.getElementById( "gform_wrapper_3" );        if ( gformWrapperDiv ) {            const visibilitySpan = document.createElement( "span" );            visibilitySpan.id = "gform_visibility_test_3";            gformWrapperDiv.insertAdjacentElement( "afterend", visibilitySpan );        }        const visibilityTestDiv = document.getElementById( "gform_visibility_test_3" );        let postRenderFired = false;        function triggerPostRender() {            if ( postRenderFired ) {                return;            }            postRenderFired = true;            gform.core.triggerPostRenderEvents( 3, 1 );            if ( visibilityTestDiv ) {                visibilityTestDiv.parentNode.removeChild( visibilityTestDiv );            }        }        function debounce( func, wait, immediate ) {            var timeout;            return function() {                var context = this, args = arguments;                var later = function() {                    timeout = null;                    if ( !immediate ) func.apply( context, args );                };                var callNow = immediate && !timeout;                clearTimeout( timeout );                timeout = setTimeout( later, wait );                if ( callNow ) func.apply( context, args );            };        }        const debouncedTriggerPostRender = debounce( function() {            triggerPostRender();        }, 200 );        if ( visibilityTestDiv && visibilityTestDiv.offsetParent === null ) {            const observer = new MutationObserver( ( mutations ) => {                mutations.forEach( ( mutation ) => {                    if ( mutation.type === 'attributes' && visibilityTestDiv.offsetParent !== null ) {                        debouncedTriggerPostRender();                        observer.disconnect();                    }                });            });            observer.observe( document.body, {                attributes: true,                childList: false,                subtree: true,                attributeFilter: [ 'style', 'class' ],            });        } else {            triggerPostRender();        }    } );
+</script>
+
+	<script>
+	var script = document.createElement("script");
+	script.id = "ccHostSnippet";
+	script.src = "https://chat.eurocircuits.com/static/chat/js/carecoll_host.js?key=ec161&lang=en&v=" + new Date().getTime();
+	document.head.appendChild(script);
+	</script>
+	</body>
+</html>

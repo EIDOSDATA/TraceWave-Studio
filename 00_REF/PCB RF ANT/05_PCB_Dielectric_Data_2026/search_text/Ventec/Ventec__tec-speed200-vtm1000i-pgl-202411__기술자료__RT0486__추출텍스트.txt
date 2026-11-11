@@ -1,0 +1,201 @@
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+tec-speed 20.0 VTM1000i                                                   UL Approval: E214381       Version:20/11/2024
+
+
+PROCESS GUIDE
+
+
+Precautions in Handling
+Storage Condition & Shelf Life
+                                                  Laminate
+                          Temperature             Room
+ Storage Condition
+                          Relative Humidity       /
+ Shelf Life                                       24 Months(airproof)
+
+
+
+
+Designing and Inner layer Process
+•       Tooling & pinning holes should be drilled or routed. Punching is forbidden.
+•       Dimension stability is superior to Standard FR-4 materials.
+•       Please consult with your oxide vendor to make sure that our material is fully compatible with your oxide
+        process. We recommend controlling the peel strength to over 2 lb./in.
+•       After oxide, it is preferred to press cores within 12 hours. Any cores staged more than 24 hours should be
+        re-treated.
+•       Please confirm the grinding treatment process as the material was soft and brittle. Please don't use the
+        grinding process for the inner and outer layer with large area or full no copper design.
+
+
+
+
+                                                                                                                Page 1 of 4
+www.venteclaminates.com                                                                                  Published on: 20/11/2024
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+tec-speed 20.0 VTM1000i                                                UL Approval: E214381    Version:20/11/2024
+
+PROCESS GUIDE
+
+
+Availability-Laminate
+                                                         Dk@10GHz                         Df@10GHz
+     Laminate             Core Thickness
+
+                              (inch)                  IPC-TM650 2.5.5.5
+                Cavity resonator
+                                                       Clamped Stripline
+                               0.015                      9.8±0.245                           0.0023
+                               0.020                      9.8±0.245                           0.0023
+                               0.025                      9.8±0.245                           0.0023
+                              0.030                       9.8±0.245                           0.0023
+                               0.050                      9.8±0.245                           0.0023
+     VTM1000i
+                              0.060                       9.8±0.245                           0.0023
+                               0.075                      9.8±0.245                           0.0023
+                               0.100                      9.8±0.245                           0.0023
+                               0.125                      9.8±0.245                           0.0023
+                               0.150                      9.8±0.245                           0.0023
+
+Remarks:
+
+•       Copper foil: Hoz~2oz, HTE, RTF and HVLP are all available based upon request.
+•       More types may be available upon request.
+•       Metal base is available upon request.
+
+
+
+
+                                                                                                         Page 2 of 4
+www.venteclaminates.com                                                                            Published on: 20/11/2024
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+tec-speed 20.0 VTM1000i                                                   UL Approval: E214381       Version:20/11/2024
+
+PROCESS GUIDE
+
+
+Typical Drilling Parameters
+•        Drilling parameters should be adjusted depending on hole size, layer count, panel thickness, stack count and
+         stack height etc.
+•        Please adjust drilling parameters after checking qualities of through holes.
+
+S   uggest Drilling parameter as blow:
+
+          Diameter
+             Spindle speed
+           Feed rate                Retract
+              Hit Counts
+            (mm)                   (KRPM)                  (IPM)                   (IPM)
+             0.50                        55                 150                    1000                     500
+             0.60                        46                 130                    1000                     500
+             1.00                        30                  86                    1000                     500
+             2.53                        15                  45                    1000                     500
+
+•        C hip load: 0.0025”~0.005” / revolution.
+•        Surface speed: 300~400 SFM.
+
+•        Excessive wear of carbide drill bits. Diamond coated drill bits are recommended.
+•        LEAluminum sheet and white phenolic entry board are preferred, please consult your local Ventec
+         representative for options.
+
+
+
+Desmear Process
+Panels should be baked for at least 1 hour at 120℃ prior to plasma treatment. Plasma treated holes are more delicate
+than permanganate etched holes. Panels should not be exposed to any pressure wash or scrubbing process prior to
+metallization.
+
+Plasma Desmear: 
+
+One time of FR-4 conditions is recommendable.
+
+Permanganate horizontal Desmear: 
+
+The weight loss of VTM1000i laminate is more than that of our conventional FR-4 material. One time of FR-4
+condition is recommendable.
+
+Permanganate vertical Desmear: 
+
+Vertical desmear process is not recommendable.
+
+
+
+
+                                                                                                               Page 3 of 4
+www.venteclaminates.com                                                                                  Published on: 20/11/2024
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+tec-speed 20.0 VTM1000i                                                                          UL Approval: E214381   Version:20/11/2024
+
+PROCESS GUIDE
+
+
+Routing
+Consists of a hydrocarbon highly filled ith ceramic filler. ue to the abrasive nature of the ceramic filler, the routing
+                                                w                               D
+
+parameters and tool life should be ad usted accordingly.
+                                            j
+
+
+
+
+    Recommended Tools                               Diamond coated router its
+                                                                   ‑                         b
+
+
+
+    Lateral C ip Load
+                  h                                 0.0010 0.001
+                                                             " -           5"
+
+
+
+
+    Surface Speed                                   200 400 S M
+                                                         -             F
+
+
+
+
+    Entr   y b   oard                               P oenolic 0.010 0.0 0
+                                                     h             (        "-      3   ")
+
+
+
+
+    E it oard
+     x     b                                        P oenolic 0.100
+                                                     h             (        ")
+
+
+
+
+Packaging and baking recommendation
+•              It is recommended to bake the board before packaging at 125℃/4~8h to avoid moisture causing a decrease
+               in heat resistance.
+•              If the PCBs needs to be stored for a long time before use, it is recommended to use aluminum foil 
+
+               vacuum packaging.
+•              If exceed 3 months after packaging, It is best to bake the PCBs at 125℃/4~6h before assembly before use.
+
+
+
+
+                                                                                                                                  Page 4 of 4
+www.venteclaminates.com                                                                                                     Published on: 20/11/2024
+

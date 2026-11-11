@@ -1,0 +1,146 @@
+                                                                                                        IsoClad® Series
+                                                                                                   Laminates Data Sheet
+
+PTFE/Nonwoven Fiberglass Laminates
+                                                                             IsoClad laminates are nonwoven fiberglass/PTFE
+                                                                             composites for use as printed circuit board
+                                                                             substrates. The nonwoven reinforcement allows
+ Features:                                                                   these laminates to be used more easily in
+  • Nonwoven Fiberglass Reinforcement                                        applications where the final circuit will be bent to
+  • Low Dielectric Constant                                                  shape. Conformal or “wrap-around” antennas are
+  • Extremely Low Loss                                                       a good example.
+
+ Benefits:                                                                   IsoClad products use longer random fibers and a
+  • Less Rigid than Woven Fiberglass                                         proprietary process to provide greater dimensional
+  • Highly Isotropic in X, Y and Z Directions                                stability and better dielectric constant uniformity
+                                                                             than competitive nonwoven fiberglass/PTFE
+ Typical Applications:                                                       laminates of similar dielectric constants.
+  • Conformal Antennas
+  • Stripline and Microstrip Circuits                                        IsoClad 917 laminates (Er=2.17, 2.20) use a low
+  • Missile Guidance Systems                                                 ratio of fiberglass/PTFE to achieve the lowest
+  • Radar and Electronic Warfare Systems                                     dielectric constant and dissipation factor available
+                                                                             in a combination of PTFE and fiberglass.
+
+                                                                             IsoClad 933 laminates (Er=2.33) use a higher
+                                                                             fiberglass/PTFE ratio for a more highly reinforced
+                                                                             combination that offers better dimensional
+                                                                             stability and increased mechanical strength.
+
+
+
+
+    Results listed above are typical properties; they are not to be used as specification limits. The above information creates no ex-pressed or
+                       implied warranties. The properties of laminates may vary, depending on the design and application.
+                                                Typical Properties: IsoClad
+            Property                         Test Method                     Condition               IsoClad 917             IsoClad 933
+Dielectric Constant @ 10 GHz            IPC TM-650 2.5.5.5              C23/50                      2.17, 2.20             2.33
+Dissipation Factor @ 10 GHz             IPC TM-650 2.5.5.5              C23/50                      0.0013                 0.0016
+Thermal Coefficient of Er               IPC TM-650 2.5.5.5              -10°C to +140°C             -157                   -132
+(ppm/°C)                                Adapted
+
+Peel Strength (lbs.per inch)            IPC TM-650 2.4.8                After Thermal               10                     10
+Volume Resistivity (MΩ-cm)              IPC TM-650 2.5.17.1             C96/35/90                   1.5 x 10   10
+                                                                                                                           3.5 x 10 8
+Surface Resistivity (MΩ)                IPC TM-650 2.5.17.1             C96/35/90                   1.0 x 10 9             1.0 x 10 8
+Arc Resistance (seconds)                ASTM D-495                      D48/50                      >180                   >180
+Tensile Modulus (kpsi)                  ASTM D-638                      A, 23°C                     133, 120               173, 147
+Tensile Strength (kpsi)                 ASTM D-882                      A, 23°C                     4.3, 3.8               6.8, 5.3
+Compressive Modulus (kpsi)              ASTM D-695                      A, 23°C                     182                    197
+Flexural Modulus (kpsi)                 ASTM D-790                      A, 23°C                     213                    239
+Dielectric Breakdown (kv)               ASTM D-149                      D48/50                      >45                    >45
+Density (g/cm3)                         ASTM D-792 Method A             A, 23°C                     2.23                   2.27
+Water Absorption (%)                    MIL-S-13949H 3.7.7              E1/105 + D24/23             0.04                   0.05
+                                        IPC TM-650 2.6.2.2
+Coefficient of Thermal                  IPC TM-650 2.4.24               0°C to 100°C
+Expansion (ppm/°C)                      Mettler 3000
+X Axis                                  Thermomechanical                                            46                     31
+Y Axis                                  Analyzer                                                    47                     35
+Z Axis                                                                                              236                    203
+
+Thermal Conductivity (W/mK)             ASTM E-1225                     100°C                       0.263                  0.263
+Outgassing
+Total Mass Loss (%)                     Maximum 1.00%                   125°C, ≤10-6 torr           0.02                   0.03
+Collected Volatile                      Maximum 0.10%                                               0.00                   0.00
+Condensable Material (%)
+Water Vapor Regain (%)                                                                              0.02                   0.02
+Visible Condensate (±)                                                                              NO                     NO
+
+
+
+Flammability                            UL 94 Vertical Burn             C48/23/50, E24/125          Meets                  Meets
+                                        IPC TM-650 2.3.10                                           requirements of        requirements of
+                                                                                                    UL94-V0                UL94-V0
+
+
+
+
+Results listed above are typical properties; they are not to be used as specification limits. The above information creates no ex-pressed or
+                   implied warranties. The properties of laminates may vary, depending on the design and application.
+                                                                                                                              Figure 1
+                                     Dielectric Constant vs. Frequency for
+                                                                                                        Demonstrates the stability of dielectric
+                                                                                                        constant across frequency. This information
+                                                                                                        was correlated from data generated by using
+                                                                                                        a free space and circular resonator cavity. This
+                                                                                                        characteristic demonstrates the inherent
+    Percentage Change
+
+
+
+
+                                                                                                        robustness of Rogers’ laminates across
+                                                                                                        frequency, thus simplifying the final design
+                                                                                                        process when working across EM spectrum.
+                                                                                                        The stability of the dielectric constant of
+                                                                                                        IsoClad over frequency insures easy design
+                                                                                                        transition and scalability of design.
+
+
+
+                                                  Frequency (GHz)
+
+
+                                                                                                                              Figure 2
+
+                                                                                                        Demonstrates the stability of dissipation
+                        0.0040                                                                          factor across frequency. This characteristic
+                        0.0035
+                                                                                                        demonstrates the inherent robustness of
+Dissipation Factor
+
+
+
+
+                                                                                                        Rogers’ laminates across frequency, providing
+                        0.0030
+                                                                                                        a stable platform for high frequency
+                        0.0025
+                                                                                                        applications where signal integrity is critical to
+                        0.0020                                                                          the overall performance of the application.
+                        0.0015
+                        0.0010
+                        0.0005
+                        0.0000
+                                 0              10                 20                 30
+                                                Frequency (GHz)
+
+
+
+
+              Results listed above are typical properties; they are not to be used as specification limits. The above information creates no ex-pressed or
+                                 implied warranties. The properties of laminates may vary, depending on the design and application.
+  The information in this data sheet is intended to assist you in designing with Rogers’ circuit materials. It is not intended to and does
+  not create any warranties express or implied, including any warranty of merchantability or fitness for a particular purpose or that the
+  results shown on this data sheet will be achieved by a user for a particular purpose. The user should determine the suitability of
+  Rogers’ circuit materials for each application.
+
+  These commodities, technology and software are exported from the United States in accordance with the Export Administration
+  regulations. Diversion contrary to U.S. law prohibited.
+
+  The Rogers’ logo, Helping power, protect, connect our world and IsoClad are trademarks of Rogers Corporation or one of its
+  subsidiaries. ©2022 Rogers Corporation. All rights reserved. PUB 92-211. Revised 1547 072822
+
+
+Results listed above are typical properties; they are not to be used as specification limits. The above information creates no ex-pressed or
+                   implied warranties. The properties of laminates may vary, depending on the design and application.
+

@@ -1,0 +1,299 @@
+                                                                              APPLICATION NOTES
+
+
+                                                  Drilling Defects: Causes and Solutions
+                                                                                                       Rev April 3 2012
+
+
+
+
+Nailheading:                             Corrective Action:                        material will adhere to the drill bit
+Nailheading is the distortion of the     1. Determine “type” of nailhead,         flutes causing hole wall quality
+copper inner layer at the hole wall,        single sided nailheading or bi-        problems.
+this distortion takes the form of a         directional nailheading.               Smear:
+“Nailhead”. There are several types
+                                         2. For Single sided nailheading:         Smear is a thin layer of resin
+of nailheads, the most common
+                                             Reduce infeed rate, or increase       transferred from the base material
+type seen on small hole diameters
+                                             RPM. For Bi-directional               of the hole wall during drilling, that
+is a thermomechanical nailhead.
+                                             nailheading, reduce RPM or            covers the exposed edge of the
+The thermo-mechanical nailhead
+                                             increase infeed rate.                 inner layer pad (land). Thermal
+is produced by excessive heat and
+                                                                                   mechanical smear that is created
+the drill bit pushing and pulling the    3. On small diameter drills, retract
+                                                                                   by excessive heat (drill friction)
+copper in each direction the drill bit      rates may be reduced.
+                                                                                   and is clear in appearance. Purely
+travels. Drill sizes above 0.0292”       4. Undercured “B” stage will soften      mechanical smear is a heavier
+diameter are susceptible to both            and not provide mechanical             coating over the inner layer land with
+thermomechanical and mechanical             support for the copper, and will       a color similar to the resin system
+nailheading. Mechanical nailheading         allow nailheading.                     being used and may be related to
+only is characterized by a one
+                                         5. Check the drill bit for clogging.     the same process issues that result
+directional nailhead. This nailheading
+                                            Clogging of the flutes can             in nailheading.
+is usually accompanied by a heavy
+resin smear over the copper.                be caused by drill bit design,         Potential Causes:
+                                            aluminum entry sticking to the drill
+Potential Causes:                                                                  1. Undercured resin.
+                                            flutes, under cured resin, backer
+1. Incorrect infeed.                        material or poor vacuum removal        2. Excessive spindle RPM.
+                                            of drill debris.
+2. Incorrect spindle RPM.                                                          3. Excessive infeed during drilling.
+                                         6. High temperature elongation
+3. Incorrect retract rate.                                                         4. Too low infeed vs RPM
+                                            copper foils will increase
+                                                                                       (generates heat).
+4. Undercured resin.                        nailheading, the higher the tensile
+                                            elongation of the copper, the          5. Drill depth into backer.
+5. Drill bit clogging.
+                                            more severe the nailheading will       6. Dull drill/chipped drill.
+6. High temperature elongation              be under conditions that would
+copper / Number of copper layers.           causenailheading.                      7. Under cured resin in
+                                                                                       backer material
+7. Entry or backer material.             7. Some types of entry and backer
+                                                                                   8. Incorrect smear removal process.
+Corrective Action:                           6. Under-cured resin in the backer        3. Backer material - If the backer
+                                                material will transfer to the               material does not support the
+1. Verify the press cycle, cure
+                                                inner layer conductor. This is              PCB properly on exit- the material
+    parameters and processing
+                                                a “sneaky” effect, since most               will be pushed out instead of
+    conditions for the lot and material
+                                                fabricators will be aware of the Tg         drilled, creating an exit burr which
+    in question.
+                                                of the product itself, but perhaps          will usually shows fractures under
+2. Verify RPM. [Note: The most                 not of the backer.                          the copper.
+    common practice to determine
+                                             7. Smear removal processes which          Hole wall Fractures
+    correct RPM is to calculate RPM
+                                                 are too weak or spent will not
+    for a given drill size- based on a                                                  1. Excessive heat or mechanical
+                                                 adequately remove smear. Make
+    pre-determined surface feet per                                                         stress created when high spindle
+                                                 necessary additions or increase
+    minute formula. A recommended                                                           speeds are used with slow infeed
+                                                 temperature or time in smear
+    starting point is 350 SFPM for                                                          rates.
+                                                 removal as recommended
+    higher Tg materials such as Arlon
+                                                 by the chemistry supplier. If          2. The resin is undercured.
+    supplies.]
+                                                 using plasma etch back make            3. The drill flute clogs with resin,
+3. A very high infeed rate while                necessary changes to gasses,               entry material, copper, or backer
+    drilling will create a heavy resin           power settings and/or time in              material.
+    smear over the inner layer copper.           vacuum chamber to properly
+    This smear will have the same                remove any smear.                      4. Wrong backup material.
+    coloring as the base material                                                       Corrective Action:
+                                             Resin Fracturing (haloing) Surface:
+    being drilled. This usually occurs
+    on drill sizes larger than 0.0292”.      Resin fracturing is mechanical             1. Adjust infeed rate, reduce in
+    The infeed rate is probably              damage to resin in the proximity of            increments of 20% until fracture is
+    too high, reduce the infeed in           the hole wall. The damage may be               eliminated.
+    increments of 20% until problem          “Surface” or “Hole Wall Fractures”.        2. Change entry material to one
+    is corrected.                            Surface fractures are visible without          which will support the drill on
+                                             the aid of cross section analysis,             penetration.
+4. Adjust drill depth into backer
+                                             and will usually be accompanied by
+    material to proper level, (1½ times                                                 3. Change backer material to a
+                                             disruption of the outer layer copper
+    the drill diameter, or the drill point                                                  harder material. Backer material
+                                             material. Hole wall fractures occur
+    geometry + 0.010”). Excessive                                                           should be approximately as hard
+                                             between conductor layers and
+    drill depth into the backer will                                                        as the material being drilled.
+                                             usually require cross section analysis
+    create unnecessary heat, resulting
+                                             for detection and analysis.                4. Adjust spindle RPM to correct
+    in smear.
+                                                                                            SFPM and change infeed rate to
+                                             Potential Causes:
+5. Dull/chipped drills create heat,                                                        appropriate level.
+    resulting in smear. An individual        Surface Fractures
+    drill bit should be retired when                                                    5. Verify proper laminate cure,
+                                             1. Infeed rate too high.                       if in “B” stage areas, re-bake
+    recommended wear limit is
+    reached. Chipping can be caused          2. Incorrect entry material - Entry           to specifications adhering to
+    by improper drill bit handling,             material which is soft or thin              maximum stack height, time at
+    incorrect infeed rates, or improper         and will not properly support the           temperature, and cool down
+    entry materials.                            drill on entry, allowing the drill to       cycle.
+                                                create a burr on the top of the
+                                                panel which will separate the base
+                                                copper foil from the resin and
+                                                create a fracture or crack in the
+                                                resin.
+6. If steps 1 – 5 are completed and     3. Verify/correct state of cure. (Tg)   Wedge Voids:
+    OK, flute clogging is caused by;                                             Wedge voids may be identified by
+                                         4. Reset drilling parameters for
+  a. Entry material (aluminum)             material being drilled.              cross section as a circumferential
+   sticking to the drill (on small                                               attack of the laminate material at the
+                                         5. Change drills and correct problem
+   diameters) blocking the path of                                               copper interface. Similar to “pink
+                                            causing clogging.
+   the drill debris evacuation.                                                  ring” but with a “wedge” of material
+                                         6. Replace chipped drill with new      removed adjacent to the copper
+   b. High RPM low infeed rates
+                                            tool.                                layer. Typically there are voids or
+    causes the PCB board resin to
+                                         Pad (Land) Tearout:                     plating folds in the copper plating at
+    get hot and adhere to the drill.
+                                                                                 these locations.
+   c. Check Drill design, small         Pad tearout results when the
+                                         Land area (usually unsupported) is      Potential Causes:
+    diameter drills with insufficient
+    flute volume will clog.              dislodged from base material.           1. Deterioration of process control in
+                                         Potential Causes:                           the oxide process.
+7. Use harder backup material.
+                                         1. Excessive heat being generated         a. Oxide bath out of balance.
+Gouging:
+                                            during drilling process.                b. Inadequate rinsing.
+Gouging is excessive and irregular
+removal of base material from the        2. Dull drill, drills used with the       c. Poor handling after oxide.
+drilled hole wall. Gouging may be           incorrect parameters fail
+                                                                                 2. Deterioration of process control in
+evident in either the resin rich areas      prematurely. This will create
+                                                                                     the multilayer lamination process.
+or the glass reinforced areas.              excessive heat as described in #1
+                                            above.                                  a. Incorrect bake cycles.
+Potential Causes:
+                                         3. Pad to hole size incorrect.             b. Deficient prepreg flow due to
+In resin rich areas                                                                    age or cycle.
+                                         Corrective Action:
+1. Desmear operation too                                                           c. Incorrect resin cure.
+    aggressive.                          1. Change drilling parameters
+                                         (Speed/Feed & hit count). High          3. Deterioration of process control in
+2. Depth into backer material                                                       the drill process.
+                                         RPM and low infeed rate causes
+    too deep.
+                                         excessive heat which under severe
+                                                                                    a. Drill condition.
+3. Under cured material.                 conditions will push the inner layer
+                                         land down on entry and pull up on          b. Drill feed/speed.
+4. Clogged drill flute.
+                                         retract causing unsupported pads           c. Entry/backer materials.
+In glass reinforced areas                to tear away from the “B” stage and
+                                         “Core” material.                        4. Deterioration of process control in
+1. Glass etch too aggressive.                                                        desmear/etch-back process.
+2. Incorrect drilling parameters.        2. If correct diameter drill was used
+                                         with correct parameters, with no           a. Aggressive Plasma cycle.
+3. Chipped drill.                        improvement, then this problem             b. Aggressive Permanganate
+Corrective Action:                       can only be corrected by change in            cycle.
+                                         design of PWB hole to pad ratio. Or
+1. Correct desmear and glass etch                                                  c. Glass etch make-up.
+                                         perhaps use of a higher Tg material
+    operations.                          that will not soften or lift at the     Corrective Action:
+2. Adjust depth of drill penetration    normal temperature and stresses
+                                                                                 1. Refer to Corrective Action under
+    into backer/change backer            developed during drilling.
+                                                                                     “Hole Wall Fractures”.
+    material.
+Pink Ring:                                    Burrs:                                      3. Clean the surface of the PWB and
+                                                                                              the entry material of all debris and
+Pink Ring is a delamination of the            Burring is the distortion of copper
+                                                                                              dust prior to drilling.
+bond between the ‘B’ stage material           foil on the outer layer(s) of the PWB.
+and a copper oxide surface of the             Burrs may be either entry or exit           4. Replace entry material with a
+inner layer copper. This typically            burrs, and may be visible on both               more rigid material or reduce the
+appears surrounding the drilled               sides of the same panel.                        amount of vacuum being used.
+hole but may appear in areas away
+                                              Cause:                                      5. Replace the entry with a harder
+from the drilled hole. This happens
+                                                                                              material.
+when acid attacks the oxide through           Entry Burrs
+a micro delamination, created at                                                          6. Use smaller diameter or variable
+                                              1. Lack of entry material.
+drilling because of the weak bond.                                                            diameter pressure foot.
+                                              2. Entry material too thin for the
+NOTE: Pink ring is not necessarily a                                                      Exit Burrs
+                                                  speeds and feeds being used.
+drilling related problem, however it                                                      1. Clean the backer, the drill table
+is typically and wrongly attributed to        3. Debris entrapment between entry
+                                                                                              and both sides of each panel
+drilling.                                         material and the PWB.
+                                                                                              prior to installing on drill table. (All
+Cause:                                        4. The opening in the drill spindle            material should be wiped off with
+                                                  pressure foot is too large, allowing        a tack cloth before placing on the
+1. Deficient bond between the inner               the vacuum to lift the thin entry           drill table).
+layer copper oxide and ‘B’ stage                  material creating an ‘Oil can’
+attributed to:                                                                            2. Replace backer material with a
+                                                  effect.
+                                                                                              harder material.
+a. Lack of process control in the             5. Soft entry material.
+oxide process.                                                                            3. Correct flute clogging, (resin cure,
+                                              Exit Burrs                                      entry material, backer material,
+b. Control of heat up rate in
+                                              1. Debris entrapment between                   etc.).
+    lamination.
+                                                  panels or between the bottom of         Misregistration
+c. Prepreg with lower surface resin              the panel and the backer material.
+    (ie 7628).                                                                            Misregistration is the failure of
+                                              2. Backer material too soft for            alignment of one or more of the
+d. Control of etch-back process.                  material being drilled.                 inner layers to the other inner layers
+Corrective Action                             3. Debris clogging the flute of            or the drilled hole. While drilling
+                                                  the drill.                              adjustments may help mitigate the
+1. Control the oxide chemistries.
+                                                                                          effect, this is often not a drilling issue
+2. Use adequate hot and deionized            Corrective Action:                          per-se unless the drill tape or photo
+    water rinses in oxide line. (Critical!)   Entry Burrs                                 tooling have problems. (See below)
+3. Control lamination press                  1. Use entry material on all drill sizes   Potential Cause:
+    cycle within manufactures                     drilled with a chipload in excess       Layer To Layer:
+    recommendations.                              of .0015” (For drills used with less
+                                                  than a .0015” chip load, entry          1. Photo tool incorrectly used or
+4. Use prepreg selections (against
+                                                  material protects the surface of            punched.
+    copper details) which have
+    adequate surface resin. Avoid the             the PWB from damage and to              2. Material movement during etch or
+    use of heavy fabrics such as 7628             aids the drill for a more accurate          lamination.
+    against C-stage layers.                       penetration of the board material).
+                                                                                          3. Misregistration in dryfilm.
+5. Adequate rinsing after acid               2. Replace entry material with a
+    chemistries in copper deposition.             thicker or more rigid material.
+   Layers To Hole
+   1. Location of tooling holes on drill       NOTE: Correct layer alignment to
+       table off in relation to panel tooling   each other, then correct alignment of
+       holes.                                   drilled hole to the layers.
+   2. Drill machine positions incorrectly      The information and data contained
+       (runs short or long).                    herein is believed to be reliable but
+                                                all recommendations are made
+   3. Drill spindle has excessively high
+                                                without guarantee. Since varied
+       run out.
+                                                process techniques and board
+   4. Drill bit deflects on entry or           designs present unique challenges
+       through drill stack.                     to the multilayer board process
+   Corrective Action:                           engineer, it is up to the user to
+                                                determine the applicability and
+   Layer To Layer:                              suitability of any suggestions and
+   1. Re-tool photo tools - check for          ideas mentioned herein. No one set
+       proper use.                              of process suggestions or material
+                                                recommendations will work for all
+   2. Size artwork to compensate               users, designs or material sets.
+       for material movement on core            No suggestion for use, or material
+       material.                                supplied shall be construed as a
+   Layers To Hole                               recommendation or inducement
+                                                to violate any law or infringe any
+   1. Make new set-up on drilling
+                                                patent.
+       machine.
+   2. Service drill machine to move to
+       correct distances.
+   3. Change collets in drill spindles or
+       change drill spindle.
+   4. Change entry material, speeds
+   and feeds, or drill bit design.
+   5. Adjust size drill program.
+
+
+
+
+                                                        9433 Hyssop Drive
+                                              Rancho Cucamonga, California 91730
+                                            Tel: (909) 987-9533 • Fax: (909) 987-8541
+
+                                                       www.arlonemd.com
+
+Ver 1.1
+

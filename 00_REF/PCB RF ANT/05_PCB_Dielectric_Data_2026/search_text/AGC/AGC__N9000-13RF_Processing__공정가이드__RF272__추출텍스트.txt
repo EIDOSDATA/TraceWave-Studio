@@ -1,0 +1,122 @@
+                                                   Confidential
+
+
+
+
+                               N9000-13RF
+                                   General Processing Guidelines
+
+
+Cyanate Ester
+Laminate and Prepreg
+N8000 is a high-performance advanced material with a high Tg and extremely low Z-Axis expansion, creating a
+material with signal speed capabilities not achievable through standard epoxy or polyimide.
+
+Material Handling & Storage
+Store laminates flat in a dry environment. Do not bend, scratch or dent laminate.
+Store prepreg flat, with a storage temperature of <72° F (<23°C) and ≤50% RH.
+
+Drilling
+N9000-13 RF materials should be drilled using highly polished carbide tools. The use of repointed tools is not
+recommended. Panels can be drilled in stacks based on total thickness. The total stack height, including entry
+and backup materials, should not exceed 70% of the effective flute length of the drill bit. For a multilayer PCB, 1
+panel per stack is preferred. The use of hard phenolic, rigid entry .020-.032” (0.5 mm - 0.8 mm) and backup .060-
+.080” (1.5 mm – 2.0 mm) material is recommended. PTFE laminates are much softer than FR4 laminates. The
+edges of the holes will be distorted if entry and backup materials are not used during drilling. Aluminium or
+aluminium-clad entry and backup materials are not recommended for N9000-13 RF materials, as aluminium
+burrs have a tendency to damage the soft PTFE during the machining process. The following drill parameters are
+recommended as a beginning point to develop specific process parameters.
+
+ Drill bit (mm)       INFEED (IPM)        SPEED (KRPM)            RTR (IPM)     Chip load (mil)     Hit Max
+ 0.20                 73                  73                      300           1.0                 500
+ 0.25                 89                  68                      300           1.3                 500
+ 0.30                 85                  60                      300           1.4                 500
+ 0.35                 83                  55                      300           1.5                 500
+ 0.40                 87                  52                      300           1.7                 500
+ 0.50                 96                  48                      400           2.0                 500
+ 0.65                 74                  37                      400           2.0                 600
+ 0.75                 64                  32                      400           2.0                 600
+ 1.00                 48                  24                      400           2.0                 600
+ 1.25                 40                  20                      400           2.0                 600
+
+
+
+Hole Cleaning/Deburr
+Use proper entry and exit materials to minimize burr formation. If the burrs are small, use a hand pumice scrub
+followed by high pressure rinsing to remove debris from the holes. Mechanical deburr or scrubbing to remove
+burrs is not recommended. All loose debris in the holes should be removed prior to plasma treatment.
+                                                         Confidential
+
+
+Bake
+If the PCB is a hybrid with Nelco N4000-13, then bake after hole cleaning. Bake condition could be 3-4hours
+@150°C.
+
+Desmear
+PTFE is chemically inert. There is no material available that can chemically remove drill smear from a hole in
+PTFE. The only way to remove the smear is to use a larger drill bit and cut the smear out of the hole. Plasma
+processes typically used to desmear epoxy-based boards (O2 / CF4) appear to have limited effectiveness when
+treating PTFE surfaces. By contrast, NH3 or (70% H2 / 30% N2) blends have been found to yield good results with
+PTFE as well as sodium etching.
+
+The typical plasma cycle contains three steps: An O2/N2 burn to raise the product temperature, a main process
+cycle, and an O2 burn to remove ash and residual unreacted resin components. Baking at 30-60min@120°C
+before Plasma is recommended.
+
+ Step      O2            N2           CF4           H2        Pressure   RF           Seg Time (min)      Remark
+ 1         80%           20%                                  250Torr    8000W        30
+ 2         80%           10%          10%                     250Torr    4000W        10-45               For FR4
+ 3         100%                                               250Torr    4000W        10
+ 4                       30%                        70%       250Torr    4200W        10-30               For PTFE
+
+
+
+Metallization
+Skip the chemical desmear and the panels should be processed through metallization within 8 hours after
+plasma. If the hold time is exceeded, re-activate the PTFE using step 1 and step 4 from the list above.
+
+Imaging
+The dimensional stability of Neltec’s N9000-13 RF material is excellent. The dimensional change should be <0.5
+mils/inch (0.005 mm/cm), depending on the construction and process.
+
+Solder Mask
+If the PTFE is in the outer layer, the solder mask should be applied within 24 hours after etching; the tooth of the
+copper provides mechanical bonding of the mask to the PTFE surface. If the hold time is exceeded, re-activate
+the PTFE using step 1 and step 4 from the list above.
+
+Reflow/HASL
+Bake prior to re-flow or hot air solder leveling.
+
+Developing/Etching/Stripping
+Due the low modulus of the PTFE materials, frames and leaders may be required when processing thin laminates
+through some conveyorized equipment. Standard etchants can be used.
+
+Routing
+Routing, steel rule die cutting, waterjet cutting, and laser cutting can be used depending on required edge
+quality and cutting tolerances. In the case of routing, standard carbide (helical two flutes or four flutes) routers
+are recommended. Copper foil should be etched away from the routed edge to prevent burring. For edge
+plating, follow the hole plating recommendations above.
+                                                   Confidential
+
+
+Appendix
+*If the out layer of the PCB is FR-4, not PTFE, then the entry and back-up materials for drilling can be aluminum
+or aluminum-clad. In this case, mechanical deburring can be applied.
+
+*If the PCB is a multilayer hybrid with the Nelco N4000-13 series, the peak temp. for lamination should be less
+than 195°C, and the cure time should be less than 110 min.
+
+
+
+
+ These guidelines can provide only basic and reference information for PCB fabricators. Because of different
+ environment, equipment, tooling and so on, in all instances, the user shall determine suitability in any given
+ conditions or applications. For more detailed processing information, please contact with the AGC engineer or
+ sales representative.
+
+
+
+
+ AGC Inc. 2025-07
+ agc-ml.multimaterial@agc.com
+

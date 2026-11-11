@@ -1,0 +1,48 @@
+ S7439
+  Low Loss & Heat Resistance Multilayer PCB Material
+
+FEATURES                                                           APPLICATIONS
+● High Tg and high Td                                              Server, Switch and Base station
+● Excellent thermal reliability                                    Backplane, Line cards
+● Excellent anti-CAF performance                                   High performance computing, Office Routers etc.
+● Low Dk/Df (@10GHz): 3.66/0.0060
+● Lower Z-axis CTE, offering superior PTH reliability
+
+GENERAL PROPEAIES
+
+         Test Items                   Test Method              Test Condition            Unit         Typical Value
+                                  IPC-TM-650 2.4.24.4                DMA                                    200
+              Tg                                                                           ℃
+                                  IPC-TM-650 2.4.25D                 DSC                                    190
+              Td                  IPC-TM-650 2.4.24.6           TGA (5% W.L)               ℃                383
+             T288                 IPC-TM-650 2.4.24.1                TMA                  min               120
+             T300                 IPC-TM-650 2.4.24.1                TMA                  min                60
+       Thermal Stress             IPC-TM-650 2.4.13.1         288℃, solder dip              -              Pass
+                                   IPC-TM-650 2.4.24              Before Tg             ppm/℃                45
+        CTE (Z-axis)               IPC-TM-650 2.4.24               After Tg             ppm/℃               210
+                                   IPC-TM-650 2.4.24               50-260℃                 %                2.6
+                      1GHz         IPC-TM-650 2.5.5.9             C-24/23/50                -              3.85
+   Permittivity      10GHz         IPC-TM-650 2.5.5.5             C-24/23/50                -              3.66
+                     10GHz          IEC61189-2-721                C-24/23/50                -              4.05
+                      1GHz         IPC-TM-650 2.5.5.9             C-24/23/50                -             0.0045
+ Loss Tangent        10GHz         IPC-TM-650 2.5.5.5             C-24/23/50                -             0.0060
+                     10GHz          IEC61189-2-721                C-24/23/50                -             0.0068
+     Volume Resistivity           IPC-TM-650 2.5.17.1             C-96/35/90            MΩ-cm            4.03×107
+     Surface Resistivity          IPC-TM-650 2.5.17.1            C-96/35/90               MΩ             2.03×107
+       Arc Resistance               IPC-TM-650 2.5.1             D-48/50+D-                s                180
+                                                                   0.5/23
+   Dielectric Breakdown             IPC-TM-650 2.5.6             D-48/50+D-               kV                >45
+                                                                   0.5/23
+    Peel Strength (1Oz)             IPC-TM-650 2.4.8             288℃/10s               N/mm            0.95 [5.43]
+                                                                                        [lb/in]
+     Water Absorption              IPC-TM-650 2.6.2.1              D-24/23                %                0.09
+        Flammability                       UL94                   C-48/23/50            Rating              V-0
+Remarks : 1. All the typical value is based on the 0.76mm (6*2116) specimen, but not guarantee data.
+       2. All the typical value listed above is for your reference only, please turn to Shengyi Technology Co., Ltd. for
+        detailed information, and all rights from this data sheet are reserved by Shengyi Technology Co., Ltd.
+
+
+
+
+                                                                                    CN-TDS-1912-03-S7439-S7439B
+

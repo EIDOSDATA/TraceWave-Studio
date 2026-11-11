@@ -1,0 +1,287 @@
+     Data Sheet
+Ultra-low transmission loss, highly heat-resistant
+multi-layer circuit board materials
+
+                                              Laminate R-579Y
+                                              Prepreg R-569Y
+                                      Any letters with parentheses ( ) at the end of a part
+                                      number are for identification code in our company
+                                      and are not included in the part numbers registered
+                                      for UL certification.
+
+
+
+
+                  Jul. 2024   No.240724
+                                                                                                                                                 No.; 240724
+
+                 General Properties / Laminate R-579Y(N) & R-579Y(U)
+
+                                                                                                                                      Typical Values
+
+                           Items                                     Units           Test Method                Condition    R-579Y(N)        R-579Y(U)
+                                                                                                                              Low-Dk          Ultra Low-Df
+                                                                                                                               glass              glass
+
+                          Glass Transition Temp (Tg)                  C                 DMA                    As received     220                220
+                     Thermal Decomposition Temp ( Td )                C                  TGA                   As received     370                370
+
+                      Time to Delam
+                                                     With Cu         Min        IPC TM-650 2.4.24.1            As received     > 120             > 120
+                         ( T288 )
+ THERMAL
+                                                     X – axis      ppm / C       IPC TM-650 2.4.24                < Tg        17～20             17 - 20
+                        CTE : α1                     Y – axis      ppm / C       IPC TM-650 2.4.24                < Tg        17～20             17 - 20
+                                                     Z – axis      ppm / C       IPC TM-650 2.4.24                < Tg          50                 50
+                        CTE : α2                     Z – axis      ppm / C       IPC TM-650 2.4.24                > Tg         270                270
+
+                    Dielectric Constant
+                                                    @ 14GHz            -               * Note 1                C-24/23/50      3.13               3.08
+                           ( Dk )
+ELECTRICAL
+                    Dissipation Factor
+                                                    @ 14GHz            -               * Note 1                C-24/23/50     0.0016             0.0012
+                          ( Df )
+
+                               Water Absorption                       %          IPC TM-650 2.6.2.1             D-24/23        0.06               0.06
+ PHYSICAL             Peel Strength               1oz ( H-VLP3 )    kN / m        IPC TM-650 2.4.8         As Received          0.7               0.7
+                                   Flammability                        -               UL 94V                  C-48/23/50      94V-0             94V-0
+
+   Sample thickness : 30 mil = 0.750 mm (1078 x 10ply)
+   Note 1 : Balanced-type Circular Disk Resonance Method [ IEC 63185 (2020) ]
+
+
+
+   * The data in the above table represents typical values for your reference and are not guaranteed values.
+                                                                                                                                  No.; 240724
+
+          Dielectric Properties / Laminate R-579Y(N) : Low-Dk glass
+
+14-60GHz ; Balanced-type Circular Disk Resonance Method [ IEC 63185 (2020) ]
+ Core         Actual Thickness           Cloth                   Typical Resin                              Typical Dk
+                                                        ply
+ Type          mil        mm             Style                   Content (%)         14GHz        25GHz      37GHz       49GHz   60GHz
+   2           2.0       0.050           1035            1            67              3.11         3.11       3.11        3.11    3.11
+  2.6          2.6       0.065           1078            1            61              3.19         3.19       3.19        3.19    3.19
+   3           3.0       0.075           1078            1            65              3.13         3.13       3.13        3.13    3.13
+   3           3.0       0.075           1035            1            77              2.99         2.99       2.99        2.99    2.99
+  3.5          3.5       0.090           1078            1            70              3.07         3.07       3.07        3.07    3.07
+   4           3.9       0.100           1035            2            67              3.11         3.11       3.11        3.11    3.11
+   4           3.9       0.100           1078            1            73              3.03         3.03       3.03        3.03    3.03
+   4           3.9       0.100           2013            1            56              3.26         3.26       3.26        3.26    3.26
+  4.5          4.5       0.114           1035            2            70              3.07         3.07       3.07        3.07    3.07
+   5           5.0       0.127           1078            2            61              3.19         3.19       3.19        3.19    3.19
+   5           5.1       0.130           1035            2            74              3.02         3.02       3.02        3.02    3.02
+   5           4.9       0.125           2116            1            55              3.27         3.27       3.27        3.27    3.27
+   6           5.7       0.146           1078            2            65              3.13         3.13       3.13        3.13    3.13
+   6           5.9       0.150           1035            2            77              2.99         2.99       2.99        2.99    2.99
+   7           7.0       0.178           1078            2            70              3.07         3.07       3.07        3.07    3.07
+   8           7.9       0.200           2013            2            56              3.26         3.26       3.26        3.26    3.26
+  10           9.8       0.250           2116            2            55              3.27         3.27       3.27        3.27    3.27
+  12          11.8       0.300           2013            3            56              3.26         3.26       3.26        3.26    3.26
+  16          15.7       0.400           2013            4            56              3.26         3.26       3.26        3.26    3.26
+  20          19.7       0.500           2116            4            55              3.27         3.27       3.27        3.27    3.27
+  25          24.6       0.625           2116            5            55              3.27         3.27       3.27        3.27    3.27
+  30          29.5       0.750           2116            6            55              3.27         3.27       3.27        3.27    3.27
+
+
+
+
+* The data in the above table represents typical values for your reference and are not guaranteed values.
+                                                                                                                                    No.; 240724
+
+          Dielectric Properties / Laminate R-579Y(N) : Low-Dk glass
+
+14-60GHz ; Balanced-type Circular Disk Resonance Method [ IEC 63185 (2020) ]
+ Core         Actual Thickness           Cloth                   Typical Resin                              Typical Df
+                                                        ply
+ Type          mil        mm             Style                    Content(%)        14GHz         25GHz      37GHz       49GHz    60GHz
+   2           2.0       0.050           1035            1            67            0.0015        0.0017     0.0019      0.0021   0.0023
+  2.6          2.6       0.065           1078            1            61            0.0017        0.0019     0.0021      0.0023   0.0025
+   3           3.0       0.075           1078            1            65            0.0016        0.0018     0.0020      0.0022   0.0024
+   3           3.0       0.075           1035            1            77            0.0014        0.0015     0.0017      0.0019   0.0020
+  3.5          3.5       0.090           1078            1            70            0.0015        0.0017     0.0019      0.0021   0.0022
+   4           3.9       0.100           1035            2            67            0.0015        0.0017     0.0019      0.0021   0.0023
+   4           3.9       0.100           1078            1            73            0.0014        0.0016     0.0018      0.0020   0.0022
+   4           3.9       0.100           2013            1            56            0.0018        0.0020     0.0022      0.0024   0.0026
+  4.5          4.5       0.114           1035            2            70            0.0015        0.0017     0.0019      0.0021   0.0022
+   5           5.0       0.127           1078            2            61            0.0017        0.0019     0.0021      0.0023   0.0025
+   5           5.1       0.130           1035            2            74            0.0014        0.0016     0.0018      0.0020   0.0021
+   5           4.9       0.125           2116            1            55            0.0018        0.0020     0.0022      0.0025   0.0027
+   6           5.7       0.146           1078            2            65            0.0016        0.0018     0.0020      0.0022   0.0024
+   6           5.9       0.150           1035            2            77            0.0014        0.0015     0.0017      0.0019   0.0020
+   7           7.0       0.178           1078            2            70            0.0015        0.0017     0.0019      0.0021   0.0022
+   8           7.9       0.200           2013            2            56            0.0018        0.0020     0.0022      0.0024   0.0026
+  10           9.8       0.250           2116            2            55            0.0018        0.0020     0.0022      0.0025   0.0027
+  12          11.8       0.300           2013            3            56            0.0018        0.0020     0.0022      0.0024   0.0026
+  16          15.7       0.400           2013            4            56            0.0018        0.0020     0.0022      0.0024   0.0026
+  20          19.7       0.500           2116            4            55            0.0018        0.0020     0.0022      0.0025   0.0027
+  25          24.6       0.625           2116            5            55            0.0018        0.0020     0.0022      0.0025   0.0027
+  30          29.5       0.750           2116            6            55            0.0018        0.0020     0.0022      0.0025   0.0027
+
+
+
+
+* The data in the above table represents typical values for your reference and are not guaranteed values.
+                                                                                                                             No.; 240724
+
+           Dielectric Properties / Prepreg R-569Y(N) : Low-Dk glass
+
+14-60GHz ; Balanced-type Circular Disk Resonance Method [ IEC 63185 (2020) ]
+
+                      Resin                     Typical                                              Typical Dk
+Cloth Style
+                    Content(%)                 Thickness              14GHz            25GHz            37GHz      49GHz   60GHz
+                         69*                     54um                  3.08             3.08                3.08   3.08    3.08
+                          72                     60um                  3.04             3.04                3.04   3.04    3.04
+   1035
+                          75                     68um                  3.01             3.01                3.01   3.01    3.01
+                          77                     75um                  2.99             2.99                2.99   2.99    2.99
+                          66                     78um                  3.12             3.12                3.12   3.12    3.12
+                          70                     90um                  3.07             3.07                3.07   3.07    3.07
+   1078
+                          74                    105um                  3.02             3.02                3.02   3.02    3.02
+                          77                    121um                  2.99             2.99                2.99   2.99    2.99
+                          57                    101um                  3.24             3.24                3.24   3.24    3.24
+   2013
+                          60                    110um                  3.20             3.20                3.20   3.20    3.20
+   2116                   58                    134um                  3.23             3.23                3.23   3.23    3.23
+*This construction is under development.
+
+
+
+
+* The data in the above table represents typical values for your reference and are not guaranteed values.
+                                                                                                                               No.; 240724
+
+           Dielectric Properties / Prepreg R-569Y(N) : Low-Dk glass
+
+14-60GHz ; Balanced-type Circular Disk Resonance Method [ IEC 63185 (2020) ]
+
+                      Resin                     Typical                                               Typical Df
+Cloth Style
+                    Content(%)                 Thickness              14GHz            25GHz           37GHz       49GHz    60GHz
+                         69*                     54um                 0.0015           0.0017          0.0019      0.0021   0.0023
+                          72                     60um                 0.0014           0.0016          0.0018      0.0020   0.0022
+   1035
+                          75                     68um                 0.0014           0.0016          0.0017      0.0019   0.0021
+                          77                     75um                 0.0014           0.0015          0.0017      0.0019   0.0020
+                          66                     78um                 0.0016           0.0017          0.0020      0.0022   0.0023
+                          70                     90um                 0.0015           0.0017          0.0019      0.0021   0.0022
+   1078
+                          74                    105um                 0.0014           0.0016          0.0018      0.0020   0.0021
+                          77                    121um                 0.0014           0.0015          0.0017      0.0019   0.0020
+                          57                    101um                 0.0017           0.0020          0.0022      0.0024   0.0026
+   2013
+                          60                    110um                 0.0017           0.0019          0.0021      0.0023   0.0025
+   2116                   58                    134um                 0.0017           0.0019          0.0022      0.0024   0.0026
+*This construction is under development.
+
+
+
+
+* The data in the above table represents typical values for your reference and are not guaranteed values.
+                                                                                                                                  No.; 240724
+
+    Dielectric Properties / Laminate R-579Y(U) : Ultra Low Df glass
+
+14-60GHz ; Balanced-type Circular Disk Resonance Method [ IEC 63185 (2020) ]
+ Core         Actual Thickness           Cloth                   Typical Resin                              Typical Dk
+                                                        ply
+ Type          mil        mm             Style                    Content(%)        14GHz         25GHz      37GHz       49GHz   60GHz
+   2           2.0       0.050           1035            1            68             3.05          3.05       3.05        3.05    3.05
+  2.6          2.6       0.065           1078            1            62             3.12          3.12       3.12        3.12    3.12
+   3           3.0       0.075           1078            1            66             3.08          3.08       3.08        3.08    3.08
+   3           3.0       0.075           1035            1            78             2.95          2.95       2.95        2.95    2.95
+  3.5          3.5       0.090           1078            1            71             3.02          3.02       3.02        3.02    3.02
+   4           3.9       0.100           1035            2            68             3.05          3.05       3.05        3.05    3.05
+   4           3.9       0.100           1078            1            74             2.99          2.99       2.99        2.99    2.99
+  4.5          4.5       0.114           1035            2            71             3.02          3.02       3.02        3.02    3.02
+   5           5.0       0.127           1078            2            62             3.12          3.12       3.12        3.12    3.12
+   5           5.1       0.130           1035            2            75             2.98          2.98       2.98        2.98    2.98
+   6           5.7       0.146           1078            2            66             3.08          3.08       3.08        3.08    3.08
+   6           5.9       0.150           1035            2            78             2.95          2.95       2.95        2.95    2.95
+   7           7.0       0.178           1078            2            71             3.02          3.02       3.02        3.02    3.02
+
+
+
+
+* The data in the above table represents typical values for your reference and are not guaranteed values.
+                                                                                                                                      No.; 240724
+
+Dielectric Properties / Laminate R-579Y(U) : Ultra Low Df glass
+
+  14-60GHz ; Balanced-type Circular Disk Resonance Method [ IEC 63185 (2020) ]
+
+   Core         Actual Thickness           Cloth                   Typical Resin                              Typical Df
+                                                          ply
+   Type          mil        mm             Style                    Content(%)        14GHz         25GHz      37GHz       49GHz    60GHz
+     2           2.0       0.050           1035            1            68            0.0012        0.0014     0.0016      0.0018   0.0020
+    2.6          2.6       0.065           1078            1            62            0.0013        0.0015     0.0017      0.0019   0.0021
+     3           3.0       0.075           1078            1            66            0.0012        0.0014     0.0016      0.0018   0.0020
+     3           3.0       0.075           1035            1            78            0.0011        0.0013     0.0015      0.0017   0.0018
+    3.5          3.5       0.090           1078            1            71            0.0012        0.0014     0.0016      0.0018   0.0019
+     4           3.9       0.100           1035            2            68            0.0012        0.0014     0.0016      0.0018   0.0020
+     4           3.9       0.100           1078            1            74            0.0012        0.0013     0.0015      0.0017   0.0019
+    4.5          4.5       0.114           1035            2            71            0.0012        0.0014     0.0016      0.0018   0.0019
+     5           5.0       0.127           1078            2            62            0.0013        0.0015     0.0017      0.0019   0.0021
+     5           5.1       0.130           1035            2            75            0.0012        0.0013     0.0015      0.0017   0.0019
+     6           5.7       0.146           1078            2            66            0.0012        0.0014     0.0016      0.0018   0.0020
+     6           5.9       0.150           1035            2            78            0.0011        0.0013     0.0015      0.0017   0.0018
+     7           7.0       0.178           1078            2            71            0.0012        0.0014     0.0016      0.0018   0.0019
+
+
+
+
+  * The data in the above table represents typical values for your reference and are not guaranteed values.
+                                                                                                                             No.; 240724
+
+      Dielectric Properties / Prepreg R-569Y(U) : Ultra Low Df glass
+
+14-60GHz ; Balanced-type Circular Disk Resonance Method [ IEC 63185 (2020) ]
+
+                      Resin                     Typical                                              Typical Dk
+Cloth Style
+                    Content(%)                 Thickness              14GHz            25GHz            37GHz      49GHz   60GHz
+                         70*                     54um                  3.03             3.03                3.03   3.03    3.03
+                          73                     61um                  3.00             3.00                3.00   3.00    3.00
+   1035
+                          76                     69um                  2.97             2.97                2.97   2.97    2.97
+                          78                     76um                  2.95             2.95                2.95   2.95    2.95
+                          67                     77um                  3.07             3.07                3.07   3.07    3.07
+                          71                     89um                  3.02             3.02                3.02   3.02    3.02
+   1078
+                          75                    104um                  2.98             2.98                2.98   2.98    2.98
+                          78                    120um                  2.95             2.95                2.95   2.95    2.95
+*This construction is under development.
+
+
+
+
+* The data in the above table represents typical values for your reference and are not guaranteed values.
+                                                                                                                               No.; 240724
+
+      Dielectric Properties / Prepreg R-569Y(U) : Ultra Low Df glass
+
+14-60GHz ; Balanced-type Circular Disk Resonance Method [ IEC 63185 (2020) ]
+
+                      Resin                     Typical                                               Typical Df
+Cloth Style
+                    Content(%)                 Thickness              14GHz            25GHz            37GHz      49GHz    60GHz
+                         70*                     54um                 0.0012           0.0014          0.0016      0.0018   0.0020
+                          73                     61um                 0.0012           0.0014          0.0015      0.0017   0.0019
+   1035
+                          76                     69um                 0.0012           0.0013          0.0015      0.0017   0.0019
+                          78                     76um                 0.0011           0.0013          0.0015      0.0017   0.0018
+                          67                     77um                 0.0012           0.0014          0.0016      0.0018   0.0020
+                          71                     89um                 0.0012           0.0014          0.0016      0.0018   0.0019
+   1078
+                          75                    104um                 0.0012           0.0013          0.0015      0.0017   0.0019
+                          78                    120um                 0.0011           0.0013          0.0015      0.0017   0.0018
+*This construction is under development.
+
+
+
+
+* The data in the above table represents typical values for your reference and are not guaranteed values.
+

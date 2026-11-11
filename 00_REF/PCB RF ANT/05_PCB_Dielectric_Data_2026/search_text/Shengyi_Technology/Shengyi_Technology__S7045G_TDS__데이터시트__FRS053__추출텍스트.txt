@@ -1,0 +1,50 @@
+ S7045G
+ (UL ANSL: FR-4.1)High Tg, Halogen Free & Mid Loss Material
+
+FEATURES                                                    APPLICATIONS
+● Anti-CAF capability
+                                                            Server, Switch, Base station, Computer peripherals
+● Excellent through-hole Reliability
+● Low insertion loss, Dk/Df@1GHz:4.3/0.010
+
+
+
+GENERAL PROPERTIES
+        Test Items                    Test Method              Test Condition             Unit        Typical Value
+                                 IPC-TM-650 2.4.24.4                 DMA                   ℃                 190
+             Tg
+                                  IPC-TM-650 2.4.25D                 DSC                   ℃                 175
+             Td                  IPC-TM-650 2.4.24.6           TGA (5% W.L)                ℃                 390
+            T288                 IPC-TM-650 2.4.24.1                 TMA                  min                 60
+            T260                 IPC-TM-650 2.4.24.1                 TMA                  min                 60
+      Thermal Stress             IPC-TM-650 2.4.13.1          288℃, solder dip              s               >100
+                                   IPC-TM-650 2.4.24              Before Tg             ppm/℃                 40
+        CTE(Z-axis)                IPC-TM-650 2.4.24               After Tg             ppm/℃                210
+                                   IPC-TM-650 2.4.24               50-260℃                 %                 2.3
+                     (1GHz)       IPC-TM-650 2.5.5.9              C-24/23/50                -               4.30
+ Permittivity       (10GHz)       IPC-TM-650 2.5.5.5              C-24/23/50                -               4.15
+ （RC54%）
+                    (10GHz)         IEC 61189-2-721               C-24/23/50                -               4.50
+                     (1GHz)       IPC-TM-650 2.5.5.9              C-24/23/50                -               0.010
+ Loss Tangent       (10GHz)       IPC-TM-650 2.5.5.5              C-24/23/50                -               0.013
+  （RC54%）
+                    (10GHz)         IEC 61189-2-721               C-24/23/50                -               0.013
+    Volume Resistivity           IPC-TM-650 2.5.17.1              C-96/35/90            MΩ-cm             5.5×107
+    Surface Resistivity          IPC-TM-650 2.5.17.1             C-96/35/90               MΩ              6.0×107
+      Arc Resistance               IPC-TM-650 2.5.1              D-48/50+D-                 s                180
+                                                                   0.5/23
+  Dielectric Breakdown             IPC-TM-650 2.5.6              D-48/50+D-                kV                >45
+                                                                   0.5/23
+   Peel Strength (1oz)             IPC-TM-650 2.4.8              288℃/10s                N/mm            1.0 [5.71]
+                                                                                         [lb/in]
+    Flexural Strength              IPC-TM-650 2.4.4                    A                  Mpa             550/450
+        (LW/CW)
+    Water Absorption              IPC-TM-650 2.6.2.1               D-24/23                 %                0.12
+       Flammability                        UL94                   C-48/23/50            Rating               V-0
+             CTI                        IEC60112                       A                Rating              PLC3
+Remarks : 1. Specification sheet IPC-4101/130, is for your reference only.
+         2. All the typical value is based on 0.76mm(6*2116) thickness with RTF copper specimen.
+         3. All the typical value listed above is for your reference only, please turn to Shengyi Technology Co., Ltd. for
+           detailed information, and all rights from this data sheet are reserved by Shengyi Technology Co., Ltd.
+                                                                                           CN-TDS-1912-03-S7045G
+

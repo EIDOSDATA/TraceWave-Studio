@@ -1,0 +1,158 @@
+                                                                                          Fabrication
+                                                                                          Technical Articles
+                                                                                                      Notes
+
+
+Processing Guidelines for RO4400™
+Bonding Layers
+These guidelines were developed to provide fabricators basic information on processing core and foil bonded multilayered
+printed wiring boards (PWB’s) using RO4450F™, RO4460G2™, and RO4450T™ bonding layers and assorted RO4000® core
+materials.
+
+STORAGE:
+Upon receipt, all bondply should be immediately moved from the receiving area into a controlled environment. Proper
+storage conditions would include temperatures between 10°C and 32°C (50°F and 90°F) and protection against exposure to
+catalytic conditions such as high radiation and ultraviolet light. The bondply should not be stored frozen, refrigerated, or
+under vacuum. It is best to store the bondply in its heat sealed packaging. Partially used packages should be resealed with
+tape as the adhesive layers nearest the open end of a package may yellow and harden over time. Material in this condition
+should be discarded.
+
+When properly stored, bondply properties will be maintained for 6 months from the shipment date.
+A “first-in, first-out” inventory system is recommended.
+
+UNPACKING:
+The RO4400™ bondply is packaged in a dust-free environment, but will collect dust and debris from counter tops. We
+recommend counter tops be cleaned prior to unpackaging the bondply. Plastic slip-sheeting has been provided to ease
+separation of individual plies and to shield the bondply from contamination until it is ready for use.
+
+TOOLING:
+Tooling holes can be punched, drilled, or cut. Thin entry and exit materials may be needed to support the bondply through
+the tooling hole formation process. The slip-sheeting should remain in place through tooling as it will shield the bondply
+from contamination and should eliminate the risk of individual plies fusing together as the tooling holes are formed.
+
+DESIGN AND USE CONSIDERATIONS:
+The RO4400 bondply materials are recommended for
+pressing single-lamination or sequentially bonded multilayer
+constructions using RO4000® cores. The bondply can be used
+in core and foil bonded multilayer boards. The CU4000™ and
+CU4000 LoPro© sheeted copper from Rogers Corporation is
+recommended for use in foil bonded designs using RO4450F™,
+RO4450T™ and RO4460G2™ bonding layers. CU4000 LoPro
+copper foils use a thin adhesive layer to promote increased
+bond of smooth copper to dielectric layers and results in a
+thickness increase of approximately 0.00035”.
+Each ply of RO4450F and RO4460G2 bondply will bond to a
+0.004” (0.101 mm) thickness and each ply of RO4450T bondply
+will bond to a nominal 0.0025’’ (0.064mm), 0.003” (0.076 mm), 0.0035’’ (0.089mm), 0.004” (0.101 mm), 0.005” (0.127 mm),
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                          Page 1 of 4
+                                                                                           Technical Articles
+
+or 0.006’’ (0.152mm) thickness (depending upon the grade selected) when pressed between opposing flat surfaces. The actual
+thickness each ply will add to a multilayer construction is dependent upon the weight and distribution of copper on the inner-
+layer surfaces.
+
+The RO4450F/RO4460G2 bondply layers can fill up to 0.0018” of total copper thickness whether the copper is on one side or split
+between both sides of the adhesive layer. It should be noted that the maximum copper thickness applies to entire inner-layer
+surfaces including functional areas of the PWB, venting/flow patterns, plating bars, etc. Additional layers of bondply are required
+when copper fill requirements exceed 0.002”. The RO4450T bondply offering has multiple glass styles and resin contents available.
+This allows for more flexibility in stack up designs.
+
+Venting patterns should be carefully considered when using RO4400 bondply systems. Vertically off set (non-stacking and non-
+connected) copper dots are preferred for signal layers. The copper dots can be 0.0150’’ in diameters and spaced on 0.300’’ to 0.350’’
+centers. A nearly solid starburst pattern is recommended for venting plane layers. Venting channels on opposing sides of plane
+over plane inner-layers should not overlap. Vertically stacked copper frames around low-pressure areas (such as IPC coupons and
+x-ray accessible fiducials) should be avoided when possible.
+
+Etched dielectric surfaces should not be mechanically or chemically altered prior to multilayer bonding. Inner-layer metal
+surfaces should be oxide treated to promote improved mechanical adhesion. Reduced black oxide, brown oxide, and additive or
+subtractive oxide alternatives have been successfully applied. Inner-layers should be baked for 15-20 minutes at 115oC (239oF) to
+125oC (257oF) just prior to preparing the multilayer package for bonding.
+
+Contact your local technical services representative for questions or assistance with these guidelines. Also contact your local
+technical services representative when bonding designs with (1) more than six metal layers, (2) copper layers 35 microns or
+thicker, (3) plane layers on opposing sides of bondply, or (4) when bonding to FR-4 cores. In some instances, special instructions
+may apply. For example, bonding pressures approaching 750 PSI may be required ensure proper fill when using single prepreg
+plies or filling thick copper inner-layers.
+
+Recommended Bonding Cycle:
+The RO4400 bondply resin systems are at their lowest viscosity at temperatures between 100oC (210oF) and 120oC (250oF). Fill of
+MLBs will benefit by spending 20 minutes in this reduced viscosity temperature window. This can be accomplished by ramping
+at a rate of 1oC/Min (2oF/Min) from room temperature 100oC (210oF) to 175oC (350oF), or by dwelling between 115oC (240oF) and
+120oC (250oF) for 20 minutes. Should the latter approach be chosen, the ramp rates from RT to 115oC and from 115oC to 175oC
+can be 1.0oC-4.0oC/Min (2oF to 7oF/Min). Care should be taken to not exceed 120oC (250oF) during the 20 minute dwell. Time vs.
+temperature trials may be required to define requirements for lagging materials. Thermocouples should be included inside the
+press book when verifying the thermal profile.
+
+Vacuum assistance is preferred. Bonding pressures between 400 and 750 PSI (depending upon fill requirements) should be
+applied before book temperature exceeds 38oC (100oF) and should be used for the entire heating cycle regardless of vacuum
+assistance potential. Lengthy (>5 minutes) vacuum drawdowns should be avoided. Transfer to a cooling press is allowed after a
+60 minute dwell at 175oC (350oF).
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                          Page 2 of 4
+                                                                                                              Technical Articles
+
+
+
+
+PTH and Outer-layer Processing:
+Processing guidelines for RO4003C™, RO4350B™, RO4360G2™, RO4835™, RO4835T™ and RO4000 LoPro core materials are applicable
+to RO4000 multilayer boards. Multilayer constructions may require desmear as determined by inspection of drilled hole walls.
+If desmear is required, CF4/O2 plasma is preferred over a traditional chemical desmear process. Shortened exposures to solvent
+swellers and permanganate should be considered when choosing chemical desmear. Etchback of core and prepreg layers is not
+recommended.
+
+
+
+Visual comparison of RO4000 LoPro laminates and traditional RO4000 cores in   Expected visual appearance in a cross section of RO4000 LoPro Laminates.
+multilayer constructions.
+
+
+
+
+       RO4000 LoPro Cores                  Traditional RO4000 Cores
+
+
+
+
+     100 S. Roosevelt Avenue, Chandler, AZ 85226
+     Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                                       Page 3 of 4
+                                                                                                             Technical Articles
+
+
+
+
+The information contained in this processing guide is intended to assist you in designing with Rogers’ circuit materials and bondply. It is not
+intended to and does not create any warranties, express or implied, including any warranty of merchantability or fitness for a particular purpose
+or that the results shown on this data sheet and processing guide will be achieved by a user for a particular purpose. The user is responsible for
+determining the suitability of Rogers’ circuit materials and bondply for each application.
+
+Prolonged exposure in an oxidative environment may cause changes to the dielectric properties of hydrocarbon based materials. The rate of
+change increases at higher temperatures and is highly dependent on the circuit design. Although Rogers’ high frequency materials have been used
+successfully in innumerable applications and reports of oxidation resulting in performance problems are extremely rare, Rogers recommends that
+the customer evaluate each material and design combination to determine fitness for use over the entire life of the end product.
+
+These commodities, technology and software are exported from the United States in accordance with the Export Administration regulations. Diversion
+contrary to U.S. law prohibited.
+
+The Rogers’ logo, RO4000, RO4400, RO4003C, RO4350B, RO4360G2, RO4450F, RO4450T, RO4460G2, RO4835, RO4835T, CU4000, LoPro and Helping power,
+protect, connect our world are trademarks of Rogers Corporation or one of its subsidiaries.
+
+© 2023 Rogers Corporation, Printed in U.S.A, All rights reserved.
+Revised 1628 010323 Publication #92-005
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                                    Page 4 of 4
+

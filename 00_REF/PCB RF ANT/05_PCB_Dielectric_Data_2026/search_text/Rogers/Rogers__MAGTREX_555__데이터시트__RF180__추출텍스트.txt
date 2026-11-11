@@ -1,0 +1,155 @@
+                                                                                                                                   Data Sheet
+
+
+
+                                                        555
+   High Impedance Laminates
+    MAGTREX® 555 laminate is an industry first low loss laminate with controlled
+    permeability and permittivity. MAGTREX® 555 materials are constructed from a
+    proprietary, low loss, high resistivity ceramic filler and a high temperature
+    thermoplastic matrix. This yields a system which is conformable, PCB processable,
+                                                                                                                        Features and Benefits:
+    and mechanically and electrically stable.
+                                                                                                                        Matched permeability and
+    MAGTREX® 555 materials offer a miniaturization factor comparable to a material                                      permittivity with high miniaturization
+                                                                                                                        factor √ er µr
+    with a dielectric constant of 30, with an intrinsic impedance comparable to a
+    material with dielectric constant of 1. This makes the material ideal for                                             • Substrate impedance matched
+                                                                                                                            to air
+    miniaturizing antennas below 500 MHz in operating frequency.                                                          • Antenna miniaturization with
+                                                                                                                            improved bandwidth
+    When used as part of an antenna design, MAGTREX® 555 materials offer designers
+    the ability to produce electrically small antennas with bandwidth and efficiencies                                  High temperature thermoplastic
+                                                                                                                        composite laminate with low
+    not previously possible.                                                                                            moisture absorption
+                                                                                                                          • Environmentally stable electrical
+    MAGTREX® 555 materials are available with copper, for use as a laminate material,                                       performance
+    or without copper for use as a loading element for cavity backed antennas.                                            • Flexible and mechanically robust
+
+                                                                                                                        Low dielectric and magnetic loss
+    When ordering MAGTREX® 555 materials, it is important to specify laminate                                           below 500 MHz
+    thickness and whether copper is required, and if so, the copper thickness.
+                                                                                                                          • High antenna efficiency
+
+
+                                                                                                                        Typical Applications:
+
+                                                                                                                          • Low profile VHF/UHF antennas
+                                                                                                                          • Electrically small VHF / UHF
+                                                                                                                            antennas
+                                                                                                                          • VHF magnetic components (eg.
+                                                                                                                            Inductor, Transformer)
+
+
+
+
+                                                                                                                                                                 1
+\\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com
+                   MAGTREX® 555                             Typical Value(1)           Direction               Units                        Condition                  Test Method
+                     Property                                                             X=CMD
+                                                                                          Y=MD
+
+
+     Electric & Magnetic Properties
+     Dielectric Constant, (er)                                      6.5                     X/Y                   -                          400 MHz          Coaxial Airline 1” NRW Extraction
+     Dielectric Constant, (er)                                      5.3                      Z                    -                          400 MHz              FSR, IPC-TM-650, 2.5.5.6
+     Permeability (µr)                                              6.0                     X/Y                   -                          400 MHz          Coaxial Airline 1” NRW Extraction
+     Dielectric Loss Tangent                                        0.01                    X/Y                   -                          400 MHz          Coaxial Airline 1” NRW Extraction
+     Magnetic Loss Tangent                                         <.05                     X/Y                   -                          400 MHz          Coaxial Airline 1” NRW Extraction
+     Thermal Coefficent of √ er µr                               ~+1000                       -               ppm/°C                    250 MHz, 0-100C           FSR, IPC-TM-650, 2.5.5.6
+     Thermal Coefficient of er                                      TBD                    TBD                ppm/°C                         TBD MHz                        TBD
+     Thermal Coefficient of µr                                      TBD                    TBD                ppm/°C                         TBD MHz                        TBD
+     Volume Resistivity                                             615                       -                MΩ•cm                      Condition A(2)            IPC-TM-650 2.5.17.1
+     Surface Resistivity                                            174                       -                   MΩ                      Condition A(2)            IPC-TM-650 2.5.17.1
+     Electrical Strength                                            131                      Z                 V/mil                                 -               IPC-TM-650 2.5.6.2
+     Dielectric Breakdown                                          14.35                      -                  kV                                  -                IPC-TM-650 2.5.6
+     Curie Temperature                                              241                       -                   C                                  -                      VSM
+     f1 (see Figures 1&2)                                           499                       -                 MHz                                 23C       Coaxial Airline 1” NRW Extraction
+     f2 (see Figures 1 & 2)                                         715                       -                 MHz                                 23C       Coaxial Airline 1” NRW Extraction
+     f3 (see Figures 1 & 2)                                        3900                       -                 MHz                                 23C       Coaxial Airline 1” NRW Extraction
+     ft (see Figures 1 & 2)                                        2800                       -                 MHz                                 23C       Coaxial Airline 1” NRW Extraction
+     Mechanical Properties
+     Peel Strength                                                 >3.1                       -                  pli              1oz ED After Solder Float           IPC-TM-650 2.4.8
+                                                                    0.15                     X                                            Condition A
+     Dimensional Stability                                                                                        %                                                   IPC-TM-650 2.2.4
+                                                                    0.18                     Y                                      0.50” sample thickness
+                                                               10.6 (1.54)                   X
+     Flexural Strength                                                                                       MPa (ksi)                               -                  ASTM D790
+                                                               10.8 (1.57)                   Y
+                                                                550 (79.8)                   X
+     Flexural Modulus                                                                                        MPa (ksi)                               -                  ASTM D790
+                                                                572 (82.9)                   Y
+                                                                8.6 (1.25)                   X
+     Tensile Strength                                                                                        MPa (ksi)                               -                  ASTM D638
+                                                                6.7 (0.97)                   Y
+                                                              1482 (214.9)                   X
+     Tensile Modulus                                                                                         MPa (ksi)                               -                  ASTM D638
+                                                              1502 (217.7)                   Y
+     Compressive Strength                                    >143.8 (>20.8)                   -              MPa (ksi)                               -           ASTM D3410/D3410M-16
+     Compressive Modulus                                      2092 (303.4)                    -              MPa (ksi)                               -           ASTM D3410/D3410M-16
+     Poisson’s Ratio                                              0.3685                      -                   -                                  -           ASTM D3039/D3039M-14
+                                                                                                           kJ/m2      (ft
+     Impact Strength                                           9.77 (4.65)                                    lb/in2)                                -               ASTM D256 - 10e1
+
+     Thermal Properties
+                                                                     22                      X
+     Coefficient of Thermal Expansion                                25                      Y                ppm/°C                       -55 to 288°C              IPC TM-650 2.4.41
+                                                                     25                      Z
+     Thermal Conductivity                                           0.47                      -               W/m°K                        -55 to 288°C                 ASTM C518
+     Decomposition Temperature (Td)                                 500                       -                   C                      5% weight loss              IPC-TM-650 2.3.40
+     T260                                                           >30                       -                 min                             TMA                 IPC-TM-650 2.4.24.1
+     T288                                                           >30                       -                 min                             TMA                 IPC-TM-650 2.4.24.1
+     Physical Properties
+     Flammability                                                   N/A                       -                   -                                  -                        -
+     Moisture Absorption                                           <.25                       -                   %                           D48/50                 IPC TM-650 2.6.2.1
+     Density                                                        3.45                      -                g/cm3                        C-24/23/50             ASTM D792 Method A
+     Specific Heat                                                  .765                      -                J/g/°C                               DSC               ASTM E1269-11
+     Lead Free Process Compatible                                  PASS                       -                   -                                  -                        -
+     Outgassing                                                     0.02                      -                   %                         TML/CVCM                   ASTM E595-15
+     Fungus Resistance                                             PASS                       -                   -                                  -                IPC-TM-650 2.6.1
+    (1) Typical values are a representation of an average value for the population of the property. For specification values contact Rogers Corp.
+    (2) Measurements taken with Fluke 187 multimeter. Note: Resistance readings taken with a Fluke 189 Multimeter.
+
+
+
+
+                                                                                                                                                                                                  2
+\\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com
+                                                    Figure 1 - Typical permeability curve as a function of frequency
+
+
+
+
+                                                               Figure 2 - Typical MAGTREX 555 properties at 23C
+
+                                 Standard Thicknesses                                                        Standard Panel Size             Standard Cladding
+0.040” (1.02mm) +/- 0.002”                      0.140” (3.56mm) +/- 0.007”                                 12” X 18” (305 X 457 mm) Electrodeposited Copper Foil
+0.060” (1.52mm) +/- 0.003”                      0.200” (5.08mm) +/- 0.010”                                                          1 oz. (35µm)
+0.080” (2.03mm) +/- 0.004”                      0.260” (6.60mm) +/- 0.013”
+0.100” (2.54mm) +/- 0.005”                                                                                                          Unclad
+
+
+
+
+                                                                                                                                                                   3
+\\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com
+\\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com
+
+The information in this data sheet is intended to assist you in designing with Rogers’ circuit materials. It is not intended to and does not create any
+warranties express or implied, including any warranty of merchantability or fitness for a particular purpose or that the results shown on this data
+sheet will be achieved by a user for a particular purpose. The user should determine the suitability of Rogers’ circuit materials for each application.
+These commodities, technology and software are exported from the United States in accordance with the Export Administration regulations. Diversion contrary to
+U.S. law prohibited.
+The Rogers’ logo, Helping power, protect, connect our world, MAGTREX are trademarks of Rogers Corporation or one of its subsidiaries.
+©2024 Rogers Corporation, Printed in U.S.A., All rights reserved.
+
+Revised 1629 092225 PUB# 92-188
+
+Helping power, protect, connect our world
+                                                                                TM
+
+
+
+
+                                                                                                                                                          4
+

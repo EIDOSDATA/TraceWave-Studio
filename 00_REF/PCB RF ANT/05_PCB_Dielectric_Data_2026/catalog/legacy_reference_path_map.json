@@ -1,0 +1,13 @@
+[
+  {
+    "field": "source_manifest_file",
+    "source_id": "FB240",
+    "old_reference": "originals/JLCPCB/FB240_request_manifest.json",
+    "current_reference": "originals/JLCPCB/JLCPCB__NP-155F_및_S1000-2M__기술자료__FB240.json",
+    "affected_records": 26276,
+    "before_dataset_sha256": "425ced1c3d8664c2150d509df4decb4f88a64bfe06f40e0c717fd2052805f58d",
+    "after_dataset_sha256": "069cdc67cb3259313cfcd2701c4b2c45abb5cfa4d9ba960e5e298b44124edf6d",
+    "reason": "Legacy collector reference did not name an existing package file. Resolve to the archived request manifest for the same source_id. Technical observations unchanged.",
+    "inverse_change_reproduces_prior_dataset": true
+  }
+]

@@ -1,0 +1,1107 @@
+      The influence of test method, conductor profile, and substrate anisotropy
+              on the permittivity values required for accurate modeling
+                           of high frequency planar circuits
+
+                                    Allen F. Horn, III
+                                   Patricia A. LaFrance
+                                    John W. Reynolds
+                                      John Coonrod
+
+
+
+Introduction
+
+For many years, the design of high frequency electronic circuits was considered an art
+and numerous design iterations and hand-tuning were expected. However, in the last
+decade, concomitant with the increasing sophistication of design software and the
+increasing speeds of personal computers, there is an increasing expectation that the actual
+circuit performance will mirror the modeled performance. While close agreement of
+measured and modeled performance is frequently the case, we, as a materials supplier,
+are occasionally contacted by customers unhappy by the poor agreement between
+modeled data using the data sheet permittivity and loss values and the actual circuit
+performance.
+
+As discussed in the present work, depending on the material and design in question,
+several factors can contribute to a less-than expected agreement between modeled and
+measured electrical performance.
+
+Form many years, the data sheet permittivity of many high frequency laminates has been
+reported by the IPC-TM-650 2.5.5.5 clamped stripline test method called for in the IPC-
+4103 Specification of Base Materials for High Speed/High Frequency Applications. In
+the present work, it is demonstrated that clamped stripline testing on fully etched samples
+reports a permittivity value that is 5 to 10% lower than measured on microstrip or
+stripline assemblies with bonded copper foil. We will demonstrate that this discrepancy
+is in part due to the several micron thick air gap left by the profile of the etched foil as
+well as a much greater effect of copper foil profile on conductor surface impedance than
+previously has been documented or accounted for in modeling software.
+
+High profile copper foil results in an increase in surface inductance that alters the
+propagation constant. The conductor models in many high frequency circuit design
+software packages do not yet incorporate this effect. This can lead to discrepancies of an
+additional 15% or greater in the apparent effective permittivity and is particularly evident
+with high profile copper on relatively thin (less than 0.25 mm) laminates.
+
+Additionally, if not properly accounted for, the anisotropy or directionality of permittivity
+can result in poorer agreement of measured and modeled performance, particularly with
+edge-coupled structures and coplanar wave guide circuits.
+Basics of Permittivity and loss
+
+The interaction between an electromagnetic field and its environment is described by
+Maxwell’s equations1:
+
+                 D = v                                                             (1)
+
+               B=0                                                                  (2)
+
+                X H = D/t + J                                                      (3)
+
+                X E = -B/t                                                         (4)
+
+Where E is the electric field intensity, D is the electric displacement vector, ρ is charge
+density, B is magnetic flux density, H is the magnetic field strength and J is the current
+density vector. While the exact solutions to this set of coupled partial differential
+equations have been obtained for certain limiting cases, in general, numerical solutions
+are required,
+
+The following constitutive relationships describe the response in the medium to the
+applied electromagnetic field:
+
+               D = εE = ( ε‫ ׳‬- jε‫) ״‬                                                  (5)
+
+               B = μH = ( μ‫ ׳‬- jμ‫) ״‬                                                  (6)
+
+               J = σE                                                                 (7)
+
+where by ε = ε‫ – ׳‬jε ‫ ״‬is the complex permittivity, is μ = μ‫ – ׳‬jμ‫ ״‬is the complex
+permeability and σ is the conductivity.
+
+The low loss circuit substrate materials considered in the present work are non-magnetic
+(μ = μ of free space and μ‫ = ״‬0) and non-conductive (σ = 0), so we will confine our
+attention to ε.
+
+When an electric field is applied to a dielectric material, the field interacts with polar
+moieties in the material to impose a net electric dipole moment, which augments the total
+displacement flux that would be experienced in free space, D. The additional
+polarization due to the material is a vector P and in the presence of a dielectric material:
+
+               D = ε0 E + P                                                           (8)
+
+The dielectric materials used for high frequency circuit laminates, and indeed, most
+dielectric materials are “linear dielectrics,” meaning that P is linear with applied voltage
+so:
+               P = ε0 χ E                                                             (9)
+
+Where χ is the electric susceptibility and is a complex variable, encompassing both the
+storage and dissipative elements of the dielectric material’s interaction with the electric
+field.
+
+Thus, the displacement flux including material effects is written
+
+       D = ε0 E + P = ε0 (1 + χ ) E = ε E                                             (10)
+
+       ε = ε‫ – ׳‬jε‫ = ״‬ε0 (1 + χ )                                                     (11)
+
+where ε , is the material’s complex permittivity and ε‫ ׳‬and ε‫ ״‬are the real (storage) and
+imaginary (dissipative) parts respectively.
+
+For computational and reference convenience purposes, the real part of the material’s
+permittivity relative to that of free space, εR is most commonly used where
+
+                        εR = ε‫ ׳‬/ ε0                                                  (12)
+
+The imaginary part is usually expressed as the loss tangent, tan(δ), or dissipation factor,
+DF, where
+
+                        tan(δ) = DF = ε‫ ״‬/ ε‫׳‬                                         (13)
+
+As long as the values are relatively low (<0.02), the tan(δ) is the fraction of the
+eletromagnetic energy i a fully developed plane wave dissipated in the dielectric per
+wavelength traveled.
+
+If the frequency range of 100 MHz to 300 GHz, the majority of the interaction between
+an electric field and a polymeric material is through rotation and displacement of the
+dipoles within the polymer2. The internal dipole displacment contributes to εR‫ ׳‬and the
+molecular friction due to the dipole rotation contributes to the tan(δ).
+
+Thus, apolar materials where the constituent atoms are similar in electronegativity, such
+as hydrocarbon polymers, polyethylene, polypropylene, and polystyrene exhibit a low
+relative permittivity and tan(δ) since there is comparatively little intereaction of the
+electric field with the material.
+
+Polar materials, such as epoxy, comprise atoms of differing electronegativity such as
+carbon and oxygen and exhibit an internal dipole moment. These polar moieties are more
+easily rotated in the alternating electric filed, giving rise to a higher permittivity and
+higher tan(δ).
+
+However, some materials with large electronegativity differences between the
+constituent atoms, such as the carbon and fluorine in polytetrafluoroethylene (PTFE)
+exhibit very low permittivity and loss. This is due to the PTFE polymer’s morphology
+and repeat unit symmetry that results in a very small net repeat unit dipole moment.
+
+Permittivity measurements for high frequency laminate quality control
+
+Stable manufacturing of many microwave circuit devices requires a tight εR control.
+Device manufacturers often want the total of both batch-to-batch and within-sheet
+variation to be less than 0.5%. Manufacturers, both of devices and laminates require a
+“precise” test method to ensure repeatability. To be able to specify the εR value to a
+precision of ±0.5% requires a 95% confidence limit of the test method of better than
+about ±0.1%.
+
+The microwave circuit laminate manufacturer needs a fast, precisely repeatable test
+method that uses small relatively thin planar samples and measures the εR in the z-axis
+(thickness direction). These requirements preclude many common material test methods.
+With many test methods, such as split post dielectric resonators, and cavity or waveguide
+perturbation, the calculated εR depends linearly on the volume or thickness of the
+samples. With thin laminates, it is problematic to routinely measure thickness to the
+required ±0.1% accuracy.
+
+Due to the mixed dielectric medium of air and the circuit substrate, microstrip resonators
+or transmission lines require either resorting to a correlation or field solver to calculate
+the substrate εR from the measured circuit performance and the result will vary with the
+anisotropy of the εR of the material.
+
+Stripline resonance testing eliminates the above concerns. Precise knowledge of the
+substrate thickness is not required and since the dielectric medium is homogeneous,
+accounting for the effect of a mixed medium is unnecessary.
+
+Based largely on the shortcomings of the alternative methods, clamped stripline
+resonance has become a high frequency laminate industry standard test for εR and DF at
+X-band.
+
+Clamped stripline test methods
+
+IPC- TM-650 2.5.5.5c Stripline permittivity at X-band
+
+The major manufacturers of copper clad high frequency circuit laminates widely use the
+IPC-TM-650 2.5.5.5c “Stripline test for dielectric constant and dissipation factor at X-
+band test.” The detailed test method description is available for free down load at the
+IPC web site, www.ipc.org. This “clam-shell” design clamped stripline test fixture
+(figure 1) is designed to measure the complex dielectric constant of fully etched circuit
+substrate by a resonance technique.
+
+The fixture is designed to accept coupons of 1.3 mm thickness for materials with εR
+values of greater than 6.0 and 1.5 mm for materials with εR values less than 6.0. A 0.2
+mm thick “pattern card” made of a material with the same εR value as the material under
+test is printed with the loosely coupled 20 ohm resonator and 50 ohm probe lines on one
+side and etched free of copper on the other. The resonator length is sized such that 4th
+node resonance will occur at approximately 10 GHz.
+The two fully etched coupons are placed on either side of the pattern card and the fixture
+is closed under a constant force and a frequency sweep is run with a network analyzer.
+The εR is calculated as
+
+               εR = (n c / 2 fr (L + ΔL))2                                           (14)
+
+where n is the peak node number , c is the speed of light, fr is the peak resonant
+frequency, L is the resonator length, and ΔL is the correction for fringing capacitance
+which is close in value to the dielectric thickness, as discussed in detail in the test
+method.
+
+The X-band clamped stripline method has proven to be quick and repeatable and an
+excellent tool for quality control. However, each fixture is limited to a narrow range of
+εR and sample thickness.
+
+Historically, designers using soft PTFE-based circuit laminates have confirmed good
+agreement between the measured and modeled performance of bonded stripline and
+microstrip assemblies using the εR values from the clamped stripline test. In more
+recent years, it has become clear that this test method understates the εR values of high εR
+laminates and rigid laminates.
+
+IPC- TM-650 2.5.5.5.1c Stripline permittivity to 14 GHz
+
+This related clamped stripline test, referred to as the “long stripline” (LSL) method, is a
+more versatile method with a single fixture allowing a wide range of εR and thickness
+values. Samples are 25.4 mm wide by “length” where the length may be 51 mm, 76 mm,
+152 mm, and 305 mm. The laminate samples are clamped between thick copper bars,
+backed up by heavy steel bars that maintain a constant pressure along the length of the
+sample (figure 2).
+
+The signal is capacitively coupled from the center conductor of RG-405 coaxial cable
+that is held in a self-centering, micrometer adjustable fixture. The distance between the
+coax center conductor and the resonator can be increased to maintain the desired loose
+capacitive coupling at higher frequencies. With the 152 mm length sample and FR4 with
+an εR value of about 4, the fundamental node occurs at about 500 MHz and measurements
+can generally be made to about 14 GHz. The εR is calculated at each resonant frequency
+from (14) without the fringing capacitance correction since the resonators are long
+compared to the sample thickness.
+
+Several configurations of samples can be tested by the LSL method (figure 3). Type A
+samples are etched free of the copper foil. Both conductors and ground planes are made
+from smooth rolled copper foil, with the conductor width chosen to achieve an impedance
+of about 20 ohms. Thus, all four copper-dielectric interfaces are clamped and may
+contain minute air gaps. The type B samples have copper foil ground planes left intact.
+The appropriate width conductor is etched into the foil of one half of the clamped
+assembly with the inner side of the second half is etched free of copper. Type B samples
+have three of the four interfaces bonded, and one interface adjacent to the resonator is
+clamped. Type D samples are bonded, eliminating the presence of air gaps.
+
+Microstrip differential phase length measurements
+
+The microstrip configuration effective permittivity, εeff, of 50-ohm transmission lines on
+0.5 mm laminate was calculated from the differential phase length. The phase length of
+two different lengths of transmission line held in an Intercontinental Microwave WK-
+3003-D substrate fixture was measured with a HP-8510B network analyzer from 1 to 20
+GHz.
+                             eff
+                  2f              L
+                             c                                                        (15)
+
+where Φ is the phase length and L is the physical length of the transmission line.
+
+To remove the electrical length of the fixture, we divide the difference in phase length by
+the difference in physical length of the two transmission lines to yield the differential
+phase length.
+
+                                  eff
+                  2f                 L
+                                 c                                                    (16)
+
+Equation 16 is rearranged to calculate the effective permittivity of the microstrip circuit.
+
+                                     2
+                          c 
+                eff         
+                         2fL                                                      (17)
+
+
+and laminate εR was calculated from the εeff value and the physical dimensions of the
+transmission line using the method of Hammerstad and Jenson [ ].
+
+Materials and sample preparation
+
+The seven materials tested are listed in table 1. All PTFE samples were 152 mm x 25.4
+mm x 0.63 mm thick. The FR4, RO4003C™, and RO4350B™ laminate samples were
+152 mm x 25.4 mm x 1.52 mm thick. The nominal εR value by the X-band stripline
+method is included in the material ID for each sample except the FR4.
+
+
+FR4 is an epoxy resin reinforced with 40-60 weight % woven glass fabric. The Rogers
+RO4000® materials consist of a hydro-carbon (HC) resin that is highly filled with fused
+amorphous silica and coated onto a considerably lower weight of glass fabric than the
+FR4. The RO3003™, RO3006™, and RO3010™ laminates samples are particulate-
+filled PTFE composites with no glass reinforcement. The filler is a mix of fused
+amorphous silica and titanium dioxide with the ratio chosen to yield the desired εR value
+
+The type A samples were fully etched and assembled in the clamped stripline
+configuration using the smooth rolled copper strips. The resonator strips were 3.2 mm
+wide.
+
+We also etched 3.2 mm wide resonators in the type B samples using material from the
+same laminate immediately adjacent to the type A samples. Solid ground planes were
+left intact on the opposite side.
+
+The type D samples were prepared by bonding the type B samples after testing. The
+FR4, and HC samples were bonded using the appropriate “pre-preg” and the
+manufacturers’ suggested lamination conditions. The PTFE samples were “fusion
+bonded” (i.e., laminated above the melting point of the PTFE resin with no bonding film)
+at a temperature of 360C and a pressure of 80 bar, the approximately lamination
+conditions used to make particulate filled PTFE composite laminates.
+
+
+Results
+
+Typical Type D sample results from the LSL test show a relatively flat response of εR
+versus frequency for the RO4000 laminate materials and a somewhat greater slope with
+the FR4 (Figure 4).
+
+Similar curves were generated for type A, B, and D samples for the six materials listed in
+table 1.
+
+Effect of bonding / air gaps
+
+The average εR of the three nodes closest to 10 GHz is shown for the three LSL sample
+types and the microstrip lines are shown in table 2.
+
+One will note that the measured εR values increase as the number of air gaps between
+conductor and dielectric are reduced going from sample types A to B to D for all
+materials.
+
+The RO3035™ laminate sample exhibits a 2% difference in εR between the type A
+(clamped) and type D (bonded) samples. The effect of the air gaps is small since this
+material is both relatively soft and has a low εR.
+
+The RO4003C™ and RO4350B laminate samples exhibit a somewhat more significant 3
+to 3.7% increase in εR from the clamped to bonded samples. While low in εR, the rigidity
+of these materials apparently allows more air to be entrapped at the interface.
+Similar to the HC materials, the FR4 sample also exhibits an increase in εR of about 3.5%
+between type A and type D samples.
+
+The RO3006 and RO3010 laminates exhibit an increase of 6.4% and 9.0% respectively
+when the type D bonded samples are compared to the clamped type B samples.
+
+These data demonstrate that the major cause for the low permittivity measured by
+clamped stripline tests is due to the presence of air at the interface left behind by the
+etching of the copper foil cladding. An exaggerated sketch is shown in figure 5.
+
+Rogers Corporation has chosen to add a “design DK” (permittivity) value to the data
+sheet of the rigid or high permittivity laminates that are susceptible to air gap
+discrepancy. The design DK value is extracted from the differential phase length
+measurements made on 0.5 mm and 0.625 mm microstrip assemblies. Our experience
+with customers is that the design DK values frequently result in good agreement of
+modeled and measured data in both microstrip and stripline assemblies. However, there
+are additional complications of conductor effects and permittivity anisotropy that are
+discussed below.
+
+Conductor effects
+
+The majority of planer circuit substrates are clad with one of three types of commercially
+available copper foil specifically manufactured for that purpose: Rolled/Annealed, (RA),
+Electro-deposited (ED) and reverse treated (RT). The foils are treated by the foil
+manufacturers with different types of treatments to improve and preserve adhesion to
+different types of circuit substrates. Historically, high profile (“rough”) foils have been
+used to increase adhesion to the dielectric material while lower profile foils are used to
+improve etch definition or reduce conductor loss.
+
+The surface profiles in the current work have been characterized using a Veeco
+Metrology Wyko NT1100 optical profiling system. The instrument’s operation is based
+on white light interferometry. This non-contact method generates a three dimensional
+image of the surface topography with a resolution of about 1 nm in a 1 mm square area.
+The profile can be characterized by a wide variety of different statistics, including rz, the
+peak-to-valley roughness, rq (or RRMS), the root-mean-square roughness, and the surface
+area index. RRMS is most widely used in characterizing conductor roughness in high
+frequency electrical applications.
+
+RA (rolled/annealed) foil is produced from an ingot of solid copper by successively
+passing it though a rolling mill. After rolling, the foil itself is very smooth, with an RMS
+profile (RRMS) of 0.1 to 0.2μm. For printed circuit substrate applications, the foil
+manufacturer additively treats the rolled foil, increasing the RRMS to 0.4 to 0.5 μm on the
+treated side.
+
+ED (electro-deposited) foil is produced by plating from a copper sulfate solution onto a
+slowly rotating polished stainless steel drum. The “drum side” of ED foil exhibits an
+RRMS of about 0.1 to 0.2μ, similar to untreated RA foil. The profile of the “bath side” of
+the plated foil is controlled by the plating conditions, but is considerably higher in profile
+than the drum side. The ED foil manufacture generally applies a further plated treatment
+to the batch side of the foil for improved adhesion and chemical compatibility with the
+intended dielectric material. ED foils have historically been manufactured with RRMS
+values in the range of 1 to 3μ. The 2500X SEM photograph (figure 6) visually
+demonstrates the difference between a high profile (3μm RMS) ED foil and a low profile
+(0.5μm RMS) RA foil.
+
+It has long been known that conductor roughness increases conductor loss at higher
+frequencies. In 1949, S. P. Morgan4 published a paper numerically modeling the effect
+of regular triangular and square patterned grooves in a conductor surface on the
+conductor loss at different frequencies. As the skin depth of the signal approaches the
+height of the grooves, the conductor loss increases. With grooves with an aspect ratio of
+about 1:1, the maximum increase of a rough conductor is a factor of two for a signal
+traveling perpendicular to the grooves and considerably small for a signal traveling
+parallel. A simple explanation of the mechanism is that the small skin depth signal must
+travel along the surface of the rough conductor, effectively increasing the path length and
+conductor resistance.
+
+The Morgan correlation was adapted into an automated microstrip insertion loss and
+impedance calculation described by Hammerstad and Jensen (H&J). The correlation is
+incorporated as a multiplicative correction factor KSR to the attenuation constant
+calculated for a smooth conductor.
+
+       α cond, rough = α cond, smooth · KSR                                           (18)
+
+where α cond, smooth is the attenuation constant calculated for a smooth conductor and
+
+                   2       RRMS  2 
+        K SR  1  arctan1.4                                                       (19)
+                            
+                                     
+
+Where RRMS is the RMS value of the conductor roughness and δ is the skin depth. It
+should be noted that both α cond, smooth and KSR are functions of frequency. When the
+ratio of RRMS/ δ is small, as with a smooth conductor or at low frequencies where the skin
+depth is large, the value of KSR is close to one. As the ratio becomes large as with higher
+profile conductors and higher frequencies, the value of KSR approaches two (figure 7).
+This correlation predicts a “saturation effect,” i.e., that the maximum effect of the
+conductor roughness would be to double the conductor loss. This result also implies that
+the conductor loss for a lower profile foil will eventually approach that of a rough foil as
+frequency increases.
+
+However, more recent theoretical work by Tsang et al.5 and Huray et al6 have shown that
+this saturation effects should not occur, and that increase in conductor loss of greater than
+a factor of two can be caused by higher profile conductors.
+The present authors found only two recent papers directly addressing the effects of
+conductor profile on the phase constant. Ding et al7 have conducted modeling of wave
+propagation in a randomly rough parallel plate waveguide. They state “the phase angle
+of the coherent wave shows that the rough waveguide exhibits more phase shift than a
+smooth waveguide corresponding to an increase in phase constant,” though the
+magnitude of the effect is not quantified.
+
+Deutsch et al8 measured the relative dielectric constant, εR , of 0.0025” and 0.010” thick
+samples of FR4 laminate clad with rough and smooth copper foil using the “full sheet
+resonance” test method9. The calculated εR of the thin substrate clad with the rough foil
+was approximately 15% higher than that of the same thickness substrate with smooth foil.
+The increase in calculated εR of the thin substrate clad with the smooth foil was
+considerably lower. Modeling with both a three dimensional, full-wave electromagnetic
+field solver and a two dimensional code that included the detailed profile of the
+conductors confirmed the approximate magnitude of the measured results. The authors
+attribute the increase in calculated εR to the increase in inductance caused by the
+conductor profile. Both the models and measured data also show an increase in
+dispersion (frequency dependence of εR) that is also caused by the effect of conductor
+profile on inductance
+
+Horn, III et al10, 11, experimentally measured the differential insertion loss and differential
+phase length of 50 ohm transmission lines on Rogers ULTRALAM® 3000 LCP
+laminates clad with copper foils with roughness values ranging from 0.4µm to 3.0µm
+RMS. The ULTRALAM LCP laminate was chosen since it is an unreinforced pure
+polymer and there is no question that the material’s permittivity could vary with
+composition or thickness.
+
+As is discussed below, reference experimentally quantifies both the larger than previously
+predicted increase in conductor loss and the previously generally unknown (with the
+exception of references 7 and 8) effect of conductor roughness on the propagation
+constant.
+
+Insertion loss results up to 50 GHz (figure 8) for copper foils with profiles of 0.5, 0.7,
+1.5, and 3.0μm on the 0.004” thick LCP dielectric material show a number of interesting
+features. The measured data for the 0.5μm nearly match the line calculated for smooth
+foil using the method of H&J and the MWI impedance calculator. The line calculated for
+conductor profile of 1.5μ (white line) match the measured data at low frequencies, but at
+frequencies higher than about 20 GHz, the measured data are substantially higher in loss
+than the calculated. The same general features are exhibited by the 3μm profile data
+measured and calculated data.. The calculated line for 3μm (black diamonds) matches
+the measured data up to about 10 GHz. At higher frequencies, the measured data exhibit
+substantially higher insertion loss than the calculated line.
+
+These data clearly show that saturation does not occur, at lest up to frequencies of 50
+GHz and that the effect of conductor profile is larger than predicted by the Morgan
+correlation at frequencies above 10 GHz.
+The effective dielectric constant of the microstrip circuit, εeff, was calculated from the
+differential phase length from 8 to 50 GHz, and smoothed with a 4th order polynomial fit
+and the data are plotted for the four copper types in figure 9. There is a substantial effect
+of the copper profile on the εeff value. For the 0.5μm profile foil, the εeff value is about
+2.36 at 10 GHz while the value for the 3μm profile foil is 2.66 at the same frequency.
+Clearly, the propagation constant is strongly affected by the conductor profile.
+
+Additional measurements described in reference were done comparing the effect of high
+(3.0µm RMS) and low (0.4µm RMS) profile copper foils on the propagation constant in
+50 ohm transmission lines on LCP laminates ranging from 0.1 mm to 0.5 mm in
+thickness. The “substrate permittivity”, εsub , was calculated using the method of H&J
+from the εeff measured by differential phase length. A plot of the 5-35 GHz average εsub
+(figure 10) versus laminate thickness shows that the effect of the smooth copper on
+propagation constant is small, while the use of the high profile foil substantially increases
+the apparent εsub by about 15% as the laminate thickness decreases (figure 11).
+
+To our knowledge, most conductor models used in high frequency circuit modeling
+software do not encompass this effect of conductor roughness on propagation constant.
+One exception is Sonnet® Software, in which the conductor model includes an increase
+in surface inductance that has been shown to predict both an insertion loss and
+propagation constant that agrees with measured values on a wide range of materials and
+laminate thicknesses.
+
+We recommend that the engineer interested in accurate modeling ascertain if the
+software’s conductor model accounts properly for the effect of conductor roughness on
+both the loss and propagation constant. If not, other methods will be necessary to get
+good agreement between measured and modeled data, particularly when high profile
+copper foil and thin dielectric laminates are used.
+
+An alternative method to get models using the traditional conductor models to predict
+measured performance is to include the conductor effect on propagation constant in the
+apparent εsub of the material. A plot of the apparent εsub of Rogers RO4003C and
+RO4350B laminates with the standard high profile copper foil shows the increase in εsub
+input to the software necessary to get good agreement between modeled and measured
+performance if a traditional conductor model is used (figure 12). The same plot for and
+RO4003C and RO4350B LoPro™ laminates with a low profile copper foil actually show
+a slight decrease in the value of εsub as laminate thickness decreases.
+
+
+Composite Mixing Rules and Anisotropy
+
+As described by Neelakanta12, the mixing rules that predict the properties of a composite,
+such as thermal conductivity, dielectric constant, or modulus, based on those of its
+components depend highly on the spatial arrangement of the components, as well as the
+volume fraction of each component.
+The parallel arrangement of materials (figure 13a) leads to a simple mixing rule in which
+the composite property is the sum of the component properties weighted for their volume
+fraction in the composite. In the case of the εR of a composite with N components
+
+
+                                        N
+                        R composite   vi R i                                    (20)
+                                       i 1
+
+
+where vi is the volume fraction of component i and εRi is the permittivity of that
+component. The parallel arrangement is the upper bound for εR, as well as dielectric
+constant and modulus. The parallel arrangement is a reasonable model for the in-plane
+properties of woven glass fabric reinforced resin composites like epoxy-glass FR4
+laminate or woven glass-PTFE high frequency laminate.
+
+The series arrangement (figure 13b) leads to the lower bond for a composite’s thermal
+conductivity, permittivity, and modulus. The εR of a series composite is given by
+
+                                              N
+                        R composite  1 /  vi R i 1                             (21)
+                                              i 1
+
+
+The z-axis (through plane) properties of resin impregnated woven glass fabric composites
+are examples of composite material properties that are very nearly approximated by the
+series model.
+
+Over the years, a number of models of varying degrees of complexity have been
+proposed to describe the behavior of dispersed phase composites (figure 13c). A major
+consideration is accounting for the proportion of series and parallel character of each
+phase. Obviously, the continuous phase exhibits some degree of parallel character due to
+its continuity A convenient equation that often yields remarkably good agreement given
+its simplicity is the logarithmic mixture law13 also known as Lichtenecker’s rule given by
+
+                                                     N
+                       log( R composite )   vi log( R i )                       (22)
+                                                     i 1
+
+
+A dispersed phase composite is an approximation of a ceramic powder filled polymeric
+material. The logarithmic mixing rule predicts an isotropic permittivity which is, in fact
+observed, if the dispersed filler particles are spherical.
+
+However, with irregularly shaped filler particles, the sheet forming process will often
+selectively align the particles, resulting in surprisingly high values of anisotropy.
+
+In the most general case, the permittivity of an anisotropic material will be described by a
+nine element tensor.
+                 D x    xx         xy     xz   E x 
+                                                         
+                 D y     yx       yy     yz   E y                           (23)
+                                            zz   E z 
+                 D z    zx         zy
+
+However, as a practical matter, the off-diagonal elements such as εxy (quantifying the
+displacement flux in the x direction arising from the electric field in the y-direction) are
+insignificant in common dielectric materials and it is sufficient to only consider the
+diagonal elements
+
+                 D x    xx         0       0  E x 
+                                                         
+                Dy    0            yy     0  E y                              (24)
+                                            zz   E z 
+                 Dz   0             0
+
+Furthermore, in circuit laminates, εxx and εyy rarely differ significantly from each other
+and for modeling purposes, only the z-axis (out of plane) value, εzz, and x-y plane (in-
+plane) value, εx-y are used. Many practical test methods, such as resonator perturbation,
+by nature, measure the in-plane average permittivity, εx-y, and cannot resolve the
+individual components, εxx and εyy.
+
+Experimental measurements of laminate anisotropy
+
+“Two resonator” test method of Dankov
+
+In Dielectric Anisotropy of Modern Microwave Substrates, Dankov14, 15 describes a “two
+resonator” test method using fully etched samples that measures the in-plane and z-axis
+permittivity of high frequency circuit laminates. The two resonator test method exploits
+the fact that different resonant cavity designs and different propagation modes can be
+chosen to obtain the E-field either in-plane or out-of-plane with the sample to be
+measured. Dankov demonstrates the test method to be accurate to within 0.5% or better
+for εx-y and εzz and also measures the expected near-zero anisotropy of pure PTFE
+polymer sheet, as well as polyolefin and polycarbonate materials. With the resonator
+test methods, the intensity of the electric field is uniform throughout the thickness of the
+laminate, so it measures the true bulk values of the εzz and εx-y of the laminate. It is
+interesting to compare Dankov’s results with the clamped stripline resonator test method
+and with the simple mixing rules. Selected data from reference 15 taken at about 12 GHz
+are shown in table 3. The % anisotropy is defined as:
+
+
+                A%  100 *  xy   zz   xy   zz                              (22)
+
+Rogers RO3003 laminate is a composite of PTFE and a dispersed filler comprised
+predominantly of ground fused silica powder. The fused silica is irregular in shape and
+has an εR of about 3.8 compared to the εR of 2.05 for PTFE. A dispersed-phase
+composite with relatively small difference in εR of the filler and resin would be expected
+to be low in anisotropy, consistent with Dankov’s measured anisotropy of 1.0%.
+
+Rogers RO3203™ laminate comprises plies of PTFE-silica powder composite with about
+15 volume% woven glass fabric to increases the laminate stiffness. The addition of the
+higher permittivity (εR = 6.5) glass fabric increases the in-plane permittivity, resulting in
+a greater degree of anisotropy, consistent with Dankov’s measured value of 7.2%.
+
+Nelco® NH9300 laminate is a woven glass fabric-PTFE composite laminate. It is a
+reasonable approximation of the geometer to consider the composite as alternating sheets
+of PTFE resin and glass fabric. Thus, in-plane it will exhibit a high degree of parallel
+character, while out-of-plane, it will be very close to a series arrangement when
+considering the PTFE and glass fabric. Dankov measures an εzz of 2.82, and an εx-y
+value of 3.42, resulting in an anisotropy ratio of 19.2%. At 60 volume % PTFE,
+equation 21 predicts an εzz of 2.82 and equation 20 predicts an εx-y value of 3.83,
+resulting in a calculated anisotropy 28%. This hardly constitutes quantitative agreement.
+However, considering the fact that fabric is not really a continuous solid sheet and
+therefore exhibits less of a parallel character than implied by equation 20, the simple
+equations are at least, indicative of the correct trend.
+
+Rogers RO4003C laminate is a three phase consisting of dispersed silica in a
+hydrocarbon resin, reinforced with a relatively small amount of glass fabric and results in
+an anisotropy of about 8.3%.
+
+Nelco® NH9338 PTFE-woven glass fabric laminate contains a higher fraction of the
+glass fabric and a small amount of titanium dioxide to increase the permittivity. As
+above, the predominantly lamellar arrangement of the glass fabric and PTFE and the
+relatively large difference in permittivity of the two components results in Dankov
+measuring a relatively high anisotropy value of 24.6%.
+
+As discussed earlier, Rogers RO3010 laminate is a PTFE-titanium dioxide powder
+dispersed phase composite with a permittivity value of 10.2 as measured by the clamped
+stripline method. The titanium dioxide particles are irregular in shape. The permittivity
+of the titanium dioxide is about 100. Due to the sheet forming process aligning the major
+axis of the filler particles in an “in-plane” orientation, the measured anisotropy is 14.7%.
+Rogers TMM® 10i laminate is a hydrocarbon resin material containing a spherical
+proprietary titanate filler. The use of the physically nearly isotropic particles reduces the
+measured permittivity anisotropy by more than 50%.
+
+It is also interesting to note that Dankov’s εzz values for the Rogers-manufactured
+materials all agree with the clamped stripline values discussed above to with 1%, with the
+exception of the TMM10i laminate that exhibits a difference of about 5% between the
+two test methods. It should be remembered that the two resonator method samples are
+etched free of copper foil. Thus, similar to the clamped stripline method the resonator
+method yields εzz values that would be low compared to those measured on microstrip
+circuits for materials that are rigid or high permittivity but appear to be in good
+agreement with the softer, low εzz materials such as RO3003 or RO3203 laminates.
+
+Dual Mode Microstrip Resonator Method
+
+Rautio et al.16, 17 have developed a considerably different test method for measuring high
+frequency laminate εR anisotropy. As discussed in reference 17, anisotropy most affects
+the discrepancy between measured and modeled performance when working with edge
+coupled structures such as band pass filters and differential pair transmission lines.
+Rautio et al.17 show that one can achieve a model that accurately predicts the center
+frequency of a band pass filter with a single isotropic εR value, but the predicted band
+width will too narrow. When the anisotropy of permittivity is correctly accounted for,
+both center frequency and bandwidth can be accurately modeled.
+
+The dual mode microstrip resonator method (“RA resonator” for authors Rautio and
+Arvas) sample consists of a pair of closely coupled parallel lines etched on a microstrip
+substrate (figure ). The long lines allow measurement from a relatively low frequency
+and at closely spaced resonant frequencies. Resonant peaks are taken from a sweep of
+S11 over frequency and the permittivity is extracted using a Sonnet® Software model.
+The two lines give rise to two resonant modes. The electric field structures are very
+different between even mode (figure 15a) and odd mode (figure 15.b) resonance. Odd
+mode coupling between the lines causes the εx-y to be relatively dominant while the even
+mode coupling to the ground plane accentuates the effect of the εzz..
+
+Dual mode microstrip RA resonator results for several materials at 10 GHz are shown in
+table 4. Rogers RO4350B laminate is nearly identical in formulation to the RO4003C
+material, except for the addition of a flame retardant, so anisotropy of the two materials is
+expected to be similar. Since the RA resonator samples are actual microstrip circuits
+with the copper foil bonded to the dielectric, the measured εzz values are quite
+comparable with the bonded stripline or microstrip phase length results presented earlier
+in table 1.
+
+We were initially quite surprised to discover that the εx-y (in-plane) permittivity values of
+the woven glass fabric composites was lower than the εzz, contrary to the measurements
+of the bulk in-plane permittivity of Dankov and the expected values from theory.
+
+However, after some reflection and referring again to figure 15b , it is clear that the
+magnitude of the E-field for the odd mode resonance is greater closer to the surface of the
+laminate. The higher εR glass fabric can be many microns from the conductors so the
+properties of the lower permittivity resin phase dominate the effective εx-y.
+
+This is corroborated by the RA resonator results on the RO3010 laminate. Recalling that
+this material does not contain glass fabric, but is filled with titanium dioxide of several
+microns in diameter, its composition is nearly uniform on the scale of the E-field all the
+way to the interface with the conductors. Thus, while the RA resonator value for εzz is
+11.0 the in-plane εx-y value of 12.0 is quite similar to the bulk value measured by Dankov.
+In this case, the bulk εx-y and effective εx-y for tightly edge-coupled structures is the same.
+
+However, with a lamellar composite laminate, the effective εx-y could be different in the
+same material depending on the degree of coupling between the structures of interest.
+Tightly coupled structures will exhibit a lower effective εx-y since the E-field is strongest
+in the resin-rich surface. Knowing the bulk εx-y for lamellar composite structures could
+actually lead a designer in the wrong direction.
+
+Conclusions and Recommendations
+
+Clearly, there is no single value for permittivity of a material that will yield good
+agreement between modeled and measured data for all high frequency circuit design
+software systems.
+
+The data sheet permittivity values measured by the IPC-TM-650 2.5.5.5 clamped
+stripline test method in accordance with IPC-4103 high frequency material specification
+can be 5 to 10% lower than is measured by methods using conductors that are bonded
+directly to the laminate with rigid or high permittivity materials. Rogers also publishes a
+recommended “design dielectric constant” based the differential phase length of
+microstrip transmission lines for these materials where the IPC-TM-650 2.5.5.5
+permittivity value does not work well for circuit design.
+
+The effect of conductor profile on the propagation constant needs to be considered,
+particularly when modeling thin (< 0.5 mm) laminates with higher profile copper foils.
+The designer should make sure to understand the conductor model that is used by his or
+her software design package and account for the effect accordingly.
+
+With uniform, particulate filled composite laminates, the bulk εx-y value may be adequate
+for designing edge coupled structures affected by anisotropic permittivity. However,
+when designing on lamellar woven glass fabric reinforced composite laminates, the
+effective εx-y can vary with coupling. Accurate modeling may require some variant of
+the RA dual resonator method with coupling similar to the final structure.
+1.    David M. Pozar, Microwave Engineering, 2nd edition, J. Wiley & Sons, New
+      York (1998)
+2.    Chen C Ku & Raymond Liepins, Electrical Properties of Polymers: Chemical
+      Principles, Hanser Publishers, Munich (1987)
+3.    E. Hammerstad and O. Jenson, “Accurate models for microstrip computer aided
+      design,” 1980 IEEE MTT-S Int. Microwave Symp. Dig, pp. 407-409, May 1980.
+4.    S. P. Morgan, “Effect of surface roughness on eddy current losses at microwave
+      frequencies,” J. Applied Physics, p. 352, v. 20, 1949
+5.    L. Tsang, X. Gu, & H. Braunisch, “Effects of random rough surfaces on
+      absorption by conductors at microwave frequencies, IEEE Microwave and
+      Wireless Components Letters, v. 16, n. 4, p. 221, April 2006
+6.    Paul G. Huray, Femi Oluwafemi , Jeff Loyer , Eric Bogatin , & Xiaoning Ye ,
+      “Impact of Copper Surface Texture on Loss: A Model That Works,” DesignCon
+      2010 Proceedings, Santa Clara, CA, 2010.
+7.    R. Ding, L. Tsang, & H. Braunisch, “Wave propagation in a randomly rough
+      parallel-plate waveguide,” IEEE Transactions on Microwave Theory and
+      Techniques, v. 57, n.5, May 2009
+8.    Deutsch, A. Huber, G.V. Kopcsay, B. J. Rubin, R. Hemedinger, D. Carey, W.
+      Becker, T Winkel, & B. Chamberlin, p. 311, ., IEEE Symposium on Electrical
+      Performance of Electronic Packaging, 2002
+9.    The Institute for Interconnecting and Packaging Circuits, www.ipc.org, IPC-
+      TM-650 Test Methods Manual, 2.5.5.6
+10.   A. F. Horn, III, P. A. LaFrance, J. W. Reynolds, J. C. Rautio, Effect of conductor
+      profile on the insertion loss, phase constant, and dispersion in thin high
+      frequency transmission lines. DesignCon 2010 Proceedings, Santa Clara, CA,
+      2010.
+11.   A. F. Horn, III, J. W. Reynolds, J. C. Rautio, Conductor profile effects on the
+      propagation constant of microstrip transmission line, Microwave Symposium
+      Digest (MTT), 2010 IEEE MTT-S International, pp 868-871
+12.   Neelakanta, P. S., Handbook of Electromagnetic Materials, pp. 108-111, CRC
+      Press, New York (1995)
+13.   Bujard, P., Proceedings of I-THERM, IEEE, Los Angeles May 11-13, p. 41
+      (1988)
+14.   P. I. Dankov, B. N. Hadjistamov, I. P. Arestove, and V. P. Lecheva,
+      “Measurement of dielectric anisotropy of microwave substrates by two-resonator
+      method with different pairs of resonators,” PIERS Online, Vol. 5, No. 6, 2009
+15.   P. I. Dankov, Dielectric Anisotropy of Modern Microwave Substrates,
+      Microwave and Millimeter Wave Technologies from Photonic Bandgap Devices
+      to Antenna and Applications, Igor Minin (Ed.), ISBN: 978-953-7619-66-4,
+      InTech, 2010
+16.   J. C. Rautio and S. Arvas, Measurement of Planar Substrate Uniaxial
+      Anisotropy, IEEE Trans. Microwave Theory and Techniques., vol. 57. no.10,
+      pp. 2456-2463, Oct 2009
+17.   J. C. Rautio, R. L. Carlson, B. J. Rautio, and S. Arvas, Shielded Dual-Mode
+      Microstrip Resonator Measurement of Uniaxial Anisotropy, IEEE Trans.
+      Microwave Theory and Techniques., vol. 59. no.3, pp. 748-754, 2011
+Figure 1: IPC-TM-650 2.5.5.5 clamped stripline test fixture.
+The two 1.5 mm fully etched coupons are inserted on either side
+of the patterned resonator card and the fixture is closed to form a
+stripline circuit
+
+
+
+
+Figure 2. IPC-TM-650 2.5.5.5.1 stripline permittivity to 14 GHz
+Etched dielectric to be assembled with copper foil to form a clamped
+stripline assembly.
+Figure 3. End view of LSL sample configurations
+
+
+
+
+     Material                    Description
+      FR4                 Epoxy-fiberglass laminate
+    RO4003™         Hydrocarbon-silica woven glass laminate
+    RO4350™         Hydrocarbon-silica woven glass laminate
+    RO3035™        Commercial grade PTFE-particulate laminate
+    RO3006™        Commercial grade PTFE-particulate laminate
+    RO3010™        Commercial grade PTFE-particulate laminate
+
+                          Table 1
+
+
+
+                  10 GHz Permittivity Values
+     Material        Type A    Type B     Type D   Microstrip
+      FR4              4.09      4.17       4.23     4.30
+    RO4003™            3.46      3.52       3.57     3.61
+    RO4350™            3.50      3.57       3.63     3.66
+    RO3035™            3.54      3.54       3.61     3.62
+    RO3006™            6.11      6.27       6.53     6.57
+    RO3010™           10.14     10.64      11.05     11.00
+
+                           Table 2
+              4.5
+  Epsilon R
+
+
+
+
+                        FR4
+               4
+                        RO4350B laminate
+                        RO4003C laminate
+
+
+
+              3.5
+                    0         5                 10                  15
+                              Frequency (GHz)
+
+Figure 4. Permittivity versus frequency for selected Type D laminate samples
+measured by LSL.
+
+
+
+
+Figure 5. Exaggerated cutaway view of air gaps with fully etched sample
+in a clamped stripline assembly.
+                                                2500X SEM photos of treated copper foil
+
+
+
+
+                                            3μ RMS ED foil                0.5μ RMS RA foil
+
+
+
+                                      Figure 6. Copper foil images
+
+
+
+
+                                            Conductor roughness attenuation factor vs. Frequency
+                                                        RMS profile as a parameter
+
+                                2.0
+ Conductor Attenuation Factor
+
+
+
+
+                                1.8
+
+
+                                                                                                         0.2u
+                                1.6                                                                      0.4u
+                                                                                                         0.75u
+                                                                                                         1u
+                                                                                                         1.5u
+                                1.4
+                                                                                                         3u
+
+
+
+                                1.2
+
+
+
+                                1.0
+                                      0.1                  1                      10               100
+                                                                Frequency (GHz)
+
+Figure 7. H&J/Morgan-calculated conductor attenuation factor, KSR
+                                      Insertion loss of various copper foils
+                                  50 ohm microstrip TL on 0.004" LCP laminate
+
+
+
+
+              -0.4
+
+
+
+              -0.9
+ IL (dB/in)
+
+
+
+
+              -1.4       RT-0.5u RMS
+                         RT-0.7u RMS
+                         ED-1.5U RMS
+                         ED-3u RMS
+              -1.9
+                         H&J Smooth
+                         H&J 1.5u RMS
+                         H&J 3u RMS
+              -2.4
+                     0      10           20               30           40           50             60
+                                                    Freq. (GHz)
+
+
+
+
+Figure 8. Data of reference 10
+
+
+
+
+                         LCP laminate Keff versus frequency for various copper foil types
+                                    50 ohm microstrip TL on 0.004" laminate
+
+
+              2.8
+
+
+              2.7
+                                                                                         ED - 3.0u RMS
+              2.6
+                                                                                         ED - 1.5u RMS
+     Keff
+
+
+
+
+              2.5                                                                        RT - 0.7u RMS
+
+                                                                                         RT - 0.5u RMS
+              2.4
+
+
+              2.3
+
+
+              2.2
+                     0     10           20           30           40           50            60
+                                              Frequency (GHz)
+
+Figure 9. Data of reference 10
+                                                     Calculated Eps[R] of LCP laminate with 0.5u RMS RA foil
+                                                                  Effect of laminate thickness
+                                          3.5
+
+
+                                          3.4
+                                                                                               0.1 mm laminate
+                  Calculated Eps[R] sub
+
+
+
+
+                                                                                               0.2 mm laminate
+                                          3.3
+                                                                                               0.3 mm laminate
+                                                                                               0.4 mm laminate
+                                          3.2                                                  0.5 mm laminate
+
+
+                                          3.1
+
+
+                                           3
+
+
+                                          2.9
+                                                0        5    10          15        20        25        30         35        40
+                                                                                 GHz
+
+Figure 10. Data of reference 10
+
+
+
+                                                    Calculated Eps[R]sub of LCP laminate with 3u RMS ED foil
+                                                                   Effect of laminate thickness
+
+                                 3.5
+
+
+                                 3.4
+
+                                                                                                                  0.1 mm lamiante
+  Calculated Eps[R]sub
+
+
+
+
+                                 3.3
+                                                                                                                  0.2 mm laminate
+                                                                                                                  0.3 mm laminate
+                                 3.2                                                                              0.4 mm lamiante
+                                                                                                                  0.5 mm laminate
+
+                                 3.1
+
+
+                                          3
+
+
+                                 2.9
+                                                0    5       10      15        20        25        30        35         40
+                                                                               GHz
+
+Figure 11. Data of reference 10
+                                               Average Eps[R] sub (8-50 GHz) versus thickness
+                                        for RO4000® substrates with LoPro™ and standard copper foils
+
+
+                              4.3
+                                                                                       RO4003C™ Std. foil
+                              4.2
+                                                                                       RO4003C™ LoPro
+                              4.1
+ Calculated Avg. Eps[R] sub
+
+
+
+
+                                                                                       RO4350B™ Std. foil
+                              4.0
+                                                                                       RO4350B™ LoPro
+                              3.9
+
+                              3.8
+
+                              3.7
+
+                              3.6
+
+                              3.5
+
+                              3.4
+
+                              3.3
+                                0.000          0.005        0.010        0.015        0.020         0.025
+                                                              Thickness (in)
+Figure 12. Data of reference 11
+
+
+
+
+                                         A – Parallel Arrangement
+
+
+
+
+                                          B – Series Arrangement
+
+
+
+
+                                        C – Dispersed Arrangement
+
+Figure 13. Spatial arrangements of two-phase composite laminates
+                                Dual Resonator - 12.5 GHz
+                IPC-TM-650
+  Laminate        2.5.5.5           εzz            εx-y     ∆A (%)
+                  10 GHz
+
+ RO3003™             3.00          2.97            3.00       1.0
+ RO3203™             3.00          2.96            3.18       7.2
+  NH9300             3.00          2.82            3.42      19.2
+ RO4003C™            3.38          3.37            3.66       8.3
+  NH9338             3.38          3.14            4.02      24.6
+   FR4                ---          3.94            4.38      10.6
+ RO3010™            10.20          10.13           11.74     14.7
+ TMM® 10i            9.80          10.35           11.04      6.5
+
+                 Table 3. Data of Dank ov (reference 15)
+
+
+
+                                  RA Resonator - 8 GHz
+                 Microstrip
+  Laminate      phase length        εzz            εx-y
+                 εR 10 GHz
+
+   FR4               4.3           4.06*           3.93*
+ RO4350B™            3.6           3.62            3.40
+ RO3010™            11.0           11.00           11.95
+
+     Table 4. Data of Rautio et al. (references 16 & 17)
+                   * measured at 2 GHz
+
+
+
+
+Figure 14. A 10 inch long RA resonator on Rogers RO4350B™ laminate,
+Lightly coupled at the ends via SMA connector tabs. The resonator is nearly
+25λ at 16 GHz. (taken from reference 17)
+Figure 15a. Even mode E-field of stripline coupled lines. Top image is total
+E-field, center is magnitude of the in-plane component, and bottom is the
+magnitude of the z-axis component (taken from reference 16)
+
+
+
+
+Figure 15b. Odd mode E-field of stripline coupled lines. (taken from
+reference 16)
+

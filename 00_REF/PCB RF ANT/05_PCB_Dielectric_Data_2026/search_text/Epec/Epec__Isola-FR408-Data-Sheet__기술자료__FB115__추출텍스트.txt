@@ -1,0 +1,151 @@
+                                                                                                                                                 FR408
+                                                                                            Mid Loss, Epoxy Laminate and Prepreg
+
+                                                                                 Tg 180°C Td 360°C Dk 3.67 Df 0.0120
+
+
+
+    IPC-4101 /24 /121 /124                          UL - File Number E41625
+
+
+    FR408 is a high-performance FR-4 epoxy laminate and
+    prepreg system designed for advanced circuitry
+    applications.
+                                                           Its low dielectric constant (Dk) and low dissipation factor (Df) make it an
+        PRODUCT FEATURES
+                                                           ideal candidate for broadband circuit designs requiring faster signal
+          Industry Recognition                             speeds or improved signal integrity. FR408 is compatible with most
+             UL File Number: E41625                        FR-4 processes. This feature allows the use of FR408 without
+             Qualified to UL’s MCIL Program
+                                                           adding complexity to current fabrication techniques.
+             RoHS Compliant
+          Performance Attributes
+
+          Processing Advantages
+                                                           PRODUCT ATTRIBUTES
+             FR-4 process compatible
+             UV blocking and AOI fluorescence
+
+        PRODUCT AVAILABILITY
+        Standard Material Offering: Laminate
+             2 to 125 mil (0.05 to 3.2 mm)                 TYPICAL MARKET APPLICATIONS
+        Copper Foil Type
+             HTE Grade 3
+             RTF (Reverse Treat Foil)
+        Copper Weight
+             ½, 1 and 2 oz (18, 35 and 70 µm)
+             available
+             Heavier copper foil available
+             Thinner copper foil available
+        Standard Material Offering: Prepreg
+             Tooling of prepreg panels
+        Glass Fabric Availability
+             E-glass
+             Square weave glass
+             Mechanically spread glass
+
+                                                             Isola Group                         Isola Asia Pacific                      Isola GmbH
+                                                             6565 West Frye RoadChandler,        (Hong Kong) Ltd.12/F,                   Isola Strasse 2 D-52348 Düren,
+                                                             AZ 85226 Phone: 480-893-6527        Kin Sang Commercial Centre,             GermanyPhone: 49-2421-8080
+    ORDERING INFORMATION:                                    Fax: 480-893-1409                   49 King Yip Street, Kwun Tong,          Fax: 49-2421-808164
+    Contact your local sales representative or                                                   Kowloon,
+    contact info@isola-group.com for further                                                     Hong KongPhone: 852-2418-1318
+    information.                                                                                 Fax: 852-2418-1533
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/fr408-
+                 laminate-and-prepreg/                           Last Updated January 21, 2023              Revision No: C © 2023, Isola Group, All rights reserved.
+    Typical Values Table
+
+                                                                                                                    Units                            Test Method
+                                            Property                                          Typical Value
+                                                                                                              Metric (English)                IPC-TM-650 (or as noted)
+      Glass Transition Temperature (Tg) by DSC                                                180             °C                     2.4.25C
+      Decomposition Temperature (Td) by TGA @ 5% weight loss                                  360             °C                     2.4.24.6
+      Time to Delaminate by TMA          A. T260                                              60
+                                                                                                              Minutes                2.4.24.1
+      (Copper removed)                   B. T288                                              15
+                                         A. Pre-Tg                                            60              ppm/°C
+      Z-Axis CTE                         B. Post-Tg                                           228             ppm/°C                 2.4.24C
+                                         C. 50 to 260°C, (Total Expansion)                    3.5             %
+      X/Y-Axis CTE                       Pre-Tg                                               13              ppm/°C                 2.4.24C
+      Thermal Conductivity                                                                    0.4             W/m·K                  ASTM E1952
+      Thermal Stress 10 sec @            A. Unetched
+                                                                                              Pass            Pass Visual            2.4.13.1
+      288ºC (550.4ºF)                    B. Etched
+                                         A. @ 100 MHz                                         3.69                                   2.5.5.3
+                                         B. @ 1 GHz                                           3.66                                   2.5.5.9
+      Dk, Permittivity                   C. @ 2 GHz                                           3.67            —                      Bereskin Stripline
+                                         D. @ 5 GHz                                           3.66                                   Bereskin Stripline
+                                         E. @ 10 GHz                                          3.65                                   Bereskin Stripline
+                                         A. @ 100 MHz                                         0.0094                                 2.5.5.3
+                                         B. @ 1 GHz                                           0.0117                                 2.5.5.9
+      Df, Loss Tangent                   C. @ 2 GHz                                           0.0120          —                      Bereskin Stripline
+                                         D. @ 5 GHz                                           0.0127                                 Bereskin Stripline
+                                         E. @ 10 GHz                                          0.0125                                 Bereskin Stripline
+                                         A. After moisture resistance                         4.6 x 107
+      Volume Resistivity                                                                                      MΩ-cm                  2.5.17.1
+                                         B. At elevated temperature                           2.8 x 108
+                                         A. After moisture resistance                         2.81 x 106
+      Surface Resistivity                                                                                     MΩ                     2.5.17.1
+                                         B. At elevated temperature                           2.64 x 108
+      Dielectric Breakdown                                                                    >50             kV                     2.5.6B
+      Arc Resistance                                                                          120             Seconds                2.5.1B
+      Electric Strength (Laminate & laminated prepreg)                                        55 (1400)       kV/mm (V/mil)          2.5.6.2A
+                                                                                                                                     UL 746A
+      Comparative Tracking Index (CTI)                                                        3 (175-249)     Class (Volts)
+                                                                                                                                     ASTM D3638
+                                         A. Low profile copper foil and very low profile
+                                                                                                                                     2.4.8C
+                                         copper foil all copper foil >17 μm [0.669 mil]       1.14 (6.5)
+                                         B. Standard profile copper
+      Peel Strength                                                                                           N/mm (lb/inch)         2.4.8.2A
+                                            1. After thermal stress                           1.225 (7.0)
+                                                                                                                                     2.4.8.3
+                                            2. At 125ºC (257ºF)                               1.14 (6.5)
+                                                                                                                                     2.4.8.3
+                                            3. After process solutions                        0.90 (5.1)
+
+                                         A. Length direction                                  561 (81.4)
+      Flexural Strength                                                                                       MPa (kpsi)             2.4.4B
+                                         B. Cross direction                                   442 (64.1)
+                                         A. Length direction                                  409 (59.3)
+      Tensile Strength                                                                                        MPa (kpsi)             ASTM D3039
+                                         B. Cross direction                                   290 (42.0)
+                                         A. Length direction                                  3685
+      Young's Modulus                                                                                         ksi                    ASTM D790-15e2
+                                         B. Cross direction                                   3044
+                                         A. Length direction                                  0.162
+      Poisson's Ratio                                                                                         —                      ASTM D3039
+                                         B. Cross direction                                   0.138
+      Moisture Absorption                                                                     0.15            %                      2.6.2.1A
+      Flammability (Laminate & laminated prepreg)                                             V-0             Rating                 UL 94
+      Relative Thermal Index (RTI)                                                            130             °C                     UL 796
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/fr408-
+                 laminate-and-prepreg/                                Last Updated January 21, 2023            Revision No: C © 2023, Isola Group, All rights reserved.
+                NOTES
+                Visit our site http://www.isola-group.com for more details.
+                Revisions:
+                A: Initial release - 4/17
+                B: Corrected units for Flexural and Tensile Strength - 8/18
+                C: Change MOT to RTI 5/19
+
+
+
+
+                Isola, the Isola logo, Astra, Chronon, GETEK, I-Fill, IsoDesign, IsoStack, I-Speed, I-Tera, Polyclad, Stratus,
+                TerraGreen, and The Base for Innovation are registered trademarks or trademarks of ISOLA USA Corp. in the
+                United States and in other countries. Copyright © 2021 Isola Group. All rights reserved.
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/fr408-
+                 laminate-and-prepreg/                        Last Updated January 21, 2023   Revision No: C © 2023, Isola Group, All rights reserved.
+

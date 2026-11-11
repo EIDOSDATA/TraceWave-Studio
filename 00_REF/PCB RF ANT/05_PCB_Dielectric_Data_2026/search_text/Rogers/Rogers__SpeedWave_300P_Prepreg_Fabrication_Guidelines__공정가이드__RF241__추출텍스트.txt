@@ -1,0 +1,102 @@
+                                                                                             Fabrication
+                                                                                             Technical Articles
+                                                                                                         Notes
+
+SpeedWave™ 300P Prepreg
+Processing Guidelines for Hybrid MLB
+SpeedWave™ Prepreg is a glass reinforced ultra-low loss resin system that can be used to bond a variety of Rogers’ laminates
+including XtremeSpeed™ RO1200™, CLTE-MW™, and RO4000® series. These guidelines were developed to provide fabricators
+basic information on processing core and foil bonded multi-layered hybrid printed wiring boards (PWB’s) using the
+SpeedWave Prepreg System. First-time users should contact a Rogers’ Technical Service Engineer for a processing overview.
+
+STORAGE:
+Upon receipt, all prepreg should be immediately moved from the receiving area into a controlled environment. Proper
+storage conditions would include <23°C (73°F) and <55% Relative Humidity. Open material should be packaged in a moisture
+barrier bag to avoid water absorption. Avoid high humidity environments as it causes deterioration of the material properties.
+Prepreg shelf life is 3 months from shipment date when above storage conditions are followed. A “first-in, first-out” inventory
+system is recommended.
+
+TOOLING:
+SpeedWave Prepreg is compatible with most typical MLB tooling applications. Tooling holes can be punched, drilled, or cut.
+
+OXIDE TREATMENT:
+Innerlayer metal surfaces should use a chemical treatment to enhance copper to resin bond strength. Alternative oxide is
+recommended over traditional brown or black oxides.
+
+LAMINATION:
+The lamination parameters below are recommended for one lamination cycle. If the design calls for multiple lamination
+cycles consult with a Technical Service Engineer.
+Low profile copper foils are fine for inner layers. A higher profile copper foil is recommended for OL where adhesion is critical.
+
+
+
+          Press Type              Hydraulic Vacuum Press
+         Curing Temp              Material Temperature should
+                                  be kept at 200°C (400⁰F) for 120
+                                  minutes.
+         Rate of Rise             4.0 +/- 0.5°C/min
+                                  8.5 +/- 1.0°F/min
+           Pressure               Kiss pressure: 80psi
+                                  Full Pressure: 375 – 450psi
+                                  Apply full pressure at 110-130°C
+                                  (230°F-265°F) material temp.
+         Cooling Rate             <2°C/min from 190°C(375°F) to RT
+           Vacuum                 28 mmHg
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                             Page 1 of 2
+                                                                                                                           Technical Articles
+
+
+
+
+DRILLING:
+Core materials should dictate drilling parameters when drilling hybrid MLB’s that are bonded using SpeedWave Prepreg. Refer
+to the Processing Guidelines of the specific core material used in the hybrid build. Reach out to a Technical Service Engineer to
+discuss specific applications.
+
+
+PTH and OUTER-LAYER PROCESSING:
+Deburr can be administered after drill. High pressure air or water spray should be used to remove loose debris from holes walls.
+Plasma is the preferred method for desmear. When plasma is used, chemical desmear should be skipped. If chemical desmear
+is chosen over a plasma process, a modified cycle may be required. Please consult with a Technical Service Engineer for cycle
+recommendations.
+
+If hybrid MLB construction uses PTFE based materials the desmear process should be followed by a plasma treatment prior to
+copper deposition.
+
+
+                                                                                                     Operating              Power                                 Process
+                                               Gas Percentages                                                                              Final Temp
+   Segment                                                                                            Pressure              Level                                  Time
+   Number                  CF₄                 O₂                  N₂                Flow
+                                                                                                        mTorr                 Kw                   ˚C                min
+                           v%                  v%                  v%                 SLM
+         1                   0                 80                  20                  2.5                250                   8                  85                 99
+         2                  10                 80                  10                  2.5                250                 4.5                  85                 30
+         3                   0                 100                  0                  2.5                250                   8                  85                 10
+
+
+FINAL FINISHES: SpeedWave materials are compatible with all industry standard final finishes.
+
+The information contained in this processing guide is intended to assist you in designing with Rogers’ circuit materials and bondply. It is not intended to and does not create
+any warranties, express or implied, including any warranty of merchantability or fitness for a particular purpose or that the results shown on this data sheet and processing
+guide will be achieved by a user for a particular purpose. The user is responsible for determining the suitability of Rogers’ circuit materials and bondply for each application.
+Prolonged exposure in an oxidative environment may cause changes to the dielectric properties of hydrocarbon based materials. The rate of change increases at higher
+temperatures and is highly dependent on the circuit design. Although Rogers’ high frequency materials have been used successfully in innumerable applications and reports
+of oxidation resulting in performance problems are extremely rare, Rogers recommends that the customer evaluate each material and design combination to determine
+fitness for use over the entire life of the end product.
+
+These commodities, technology and software are exported from the United States in accordance with the Export Administration regulations. Diversion contrary
+to U.S. law prohibited. The Rogers’ logo, SpeedWave, XtremeSpeed, RO1200, CLTE-MW, RO4000 and Helping power, protect, connect our world are trademarks of
+Rogers Corporation or one of its subsidiaries. © 2020 Rogers Corporation, Printed in U.S.A, All rights reserved. Issued 1492 092820 Publication #92-549
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                                        Page 2 of 2
+

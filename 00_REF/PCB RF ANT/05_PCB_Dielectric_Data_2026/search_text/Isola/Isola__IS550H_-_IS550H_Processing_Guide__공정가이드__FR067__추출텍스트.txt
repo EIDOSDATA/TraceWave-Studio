@@ -1,0 +1,492 @@
+                                                                                                                     IS550H
+                                                   Halogen Free, High Reliability Laminate and Prepreg
+
+
+
+Processing Guide
+The processing guidelines contained in this document were developed through in-house testing and field experience. However, they
+should be considered to be starting points that will require further adjustment. Read the following review of processes for applicability
+to your particular Printed Wiring Board (PWB) fabrication environment. Remember that the suggestions contained herein can not
+account for all possible board designs or processing environments. Additional adjustments by the fabricator will be necessary. Isola can
+and will assist with this process, but the fabricator, not Isola, is ultimately responsible for their process and the end results.
+Fabricators should verify that PWBs made using these suggestions meet all applicable quality and performance
+requirements.
+
+
+Part 1: Prepreg Storage and Handling
+Isola Group’s IS550H is a halogen-free product. The prepreg bonding sheets for use in multilayer printed circuit board applications are
+manufactured to specifications that include physical and electrical properties and processing characteristics relative to the laminating
+application. Handling and storage factors have an important influence on the desired performance of the prepreg. Some parameters
+are affected by the environment in which prepregs are stored. They can also deteriorate over extended periods of storage. The prepreg
+received by the customer is a glass fabric that has been impregnated with a stated quantity of low volatile, partially polymerized resin.
+The resin is tack-free but somewhat brittle. Many lamination problems arise from resin loss off the fabric due to improper handling. The
+fabric used is based on the order and supplies the required thickness. In most cases the amount of resin carried by the fabric increases
+as the fabric thickness decreases.
+
+Handling Suggestions
+Handle all prepreg using clean gloves. Use sharp, precision equipment when cutting or paneling prepreg. Treat all prepreg as being
+very fragile. Use extreme care when handling very high resin content prepreg (glass fabrics 1080 and finer).
+
+Storage Suggestions
+Upon receipt, all prepreg should be immediately moved from the receiving area to a controlled environment. All prepreg should be
+used as soon as possible using a First-In-First-Out (FIFO) inventory management system. If not handled properly, IS550H prepreg will
+absorb moisture, which will lead to depressed Tg’s and cure and affect flow in the press. If extended storage is required, separate
+facilities should be reserved with appropriate environmental control. Prepreg properties will be maintained for 6 months when stored at
+5°C (41°F) or 3 months when stored at 23°C (73°F) and below 50% relative humidity.
+
+Prepreg packages should be allowed to equilibrate to layup room conditions before opening to prevent moisture
+condensation on the prepreg.
+
+Stabilization
+Stabilization time will depend on storage temperature. In cases where storage temperature is significantly below room temperature,
+keep prepreg in package or plastic wrapping during stabilization period to prevent moisture condensation. Once the original packaging
+is opened, the prepreg should be used immediately. Remaining prepreg should be resealed in the original packaging with fresh
+desiccant. Storage should be in the absence of catalytic environments such as high radiation levels or intense ultraviolet light.
+
+Prepregs are sold to IPC-4101C specifications. After delivery to the customer, retesting services are available, but passing retest results
+do not constitute a re-certification. Prepregs will be tested at the original manufacturing site or at another appropriate site to be
+determined by Technical Service.
+
+
+Part 2: Innerlayer Preparation
+Isola Group’s IS550H laminates are fully cured and ready for processing. It has been the experience of most fabricators that stress
+relief bake cycles are not effective in reducing any movement of high performance laminates such as IS550H. Therefore, it is
+suggested that the movement of unbaked laminate be characterized and the appropriate artwork compensation factors are used.
+
+Dimensional Stability
+The net dimensional movement of laminate after the etch, oxide and lamination processes is typically shrinkage. This shrinkage is due
+
+
+  https://www.isola-group.com/pcb-laminates-
+      prepreg/is550h-laminate-prepreg/                Last Updated April 17, 2026               © 2021, Isola Group, All rights reserved.
+                                                                                                                 IS550H
+                                                             Halogen Free, High Reliability Laminate and Prepreg
+
+
+to the relaxation of stresses that were induced when the laminate was pressed as well as shrinkage contribution from the resin system.
+Most of the movement will be observed in the grain direction of the laminate. There are situations that have been known to alter the
+proportion of shrinkage in grain versus fill direction in some board shops. These include autoclave pressing and cross-plying laminate
+grain direction to that of prepreg. While both of these practices have their advantages, material movement must be uniquely
+characterized.
+
+
+
+
+ Table 1: Initial Artwork Compensation Factors
+
+                                                                       Comp
+   Base Thickness           Configuration         Direction
+                                                                      (in/in)
+
+                                                                      0.0007-
+       ≤ 0.005″              Signal/Signal       Warp (grain)
+                                                                      0.0009
+
+                                                                      0.0001-
+           "                        "                 Fill
+                                                                      0.0003
+
+                                                                      0.0005-
+           "                 Signal/Ground       Warp (grain)
+                                                                      0.0007
+
+                                                                      0.0001-
+           "                        "                 Fill
+                                                                      0.0003
+
+                                                                      0.0002-
+           "                Ground/Ground        Warp (grain)
+                                                                      0.0004
+
+                                                                      0.0000-
+           "                        "                 Fill
+                                                                      0.0002
+
+                                                                      0.0005-
+     0.006-0.009             Signal/Signal       Warp (grain)
+                                                                      0.0007
+
+                                                                      0.0001-
+           "                        "                 Fill
+                                                                      0.0003
+
+                                                                      0.0003-
+           "                 Signal/Ground       Warp (grain)
+                                                                      0.0005
+
+                                                                      0.0000-
+           "                        "                 Fill
+                                                                      0.0002
+
+                                                                      0.0000-
+           "                Ground/Ground        Warp (grain)
+                                                                      0.0002
+
+                                                                      0.0000-
+           "                        "                 Fill
+                                                                      0.0002
+
+                                                                      0.0002-
+     0.010-0.014″            Signal/Signal       Warp (grain)
+                                                                      0.0004
+
+                                                                      0.0000-
+           "                        "                 Fill
+                                                                      0.0002
+
+                                                                      0.0001-
+           "                 Signal/Ground       Warp (grain)
+                                                                      0.0003
+
+                                                                      0.0000-
+           "                        "                 Fill
+                                                                      0.0002
+
+                                                                      0.0000-
+           "                Ground/Ground        Warp (grain)
+                                                                      0.0002
+
+                                                                      0.0000-
+           "                        "                 Fill
+                                                                      0.0002
+
+ Table 1 (for reference) illustrates the suggested approach to characterizing
+ laminate movement and provides approximate artwork compensation factors
+
+
+ https://www.isola-group.com/pcb-laminates-
+     prepreg/is550h-laminate-prepreg/                         Last Updated April 17, 2026   © 2021, Isola Group, All rights reserved.
+                                                                                                                                    IS550H
+                                                           Halogen Free, High Reliability Laminate and Prepreg
+
+ for IS550H laminate when using a hydraulic press.                                        This table assumes that laminate and prepreg grain directions
+                                                                                          are oriented along the same dimension. Each shop must
+characterize material behavior given their particular lamination cycles, border designs and grain orientation of laminate to prepreg. It is
+also suggested that specific laminate constructions be specified and adhered to so that dimensional variations due to changes in
+construction are avoided. Table 1 assumes that signal layers are either half or 1 ounce copper and ground layers are either 1 or 2
+ounce copper.
+
+Imaging and Etching
+IS550H laminates are imaged using standard aqueous dry films and are compatible with both cupric chloride and ammoniacal etchants.
+
+Bond Enhancement
+Both reduced oxides and oxide alternative chemistries have been used successfully in fabricating IS550H multilayer boards to date.
+Users should make sure the oxide or oxide replacement coating exhibits a consistent, uniformly dark color.
+
+If reduced oxides are used, consult the chemical supplier for post oxide baking considerations as excessive baking may lead to lower
+pink ring resistance. It is generally suggested that post-oxide baking be performed vertically, in racks. We suggest mild bake of oxide
+coated innerlayers (30 minutes @ 80-100°C).
+
+For conveyorized oxide replacements, an efficient dryer at the end of a conveyorized oxide replacement line should remove all
+moisture from the innerlayer surface. However, drying of layers for 30 minutes minimum @ 100°C or higher is considered a
+“best practice”, especially for boards to be subjected to “lead-free” processes. Drying in racks is preferred.
+
+Peel strengths may be slightly lower as compared to FR-4 due to the higher modulus properties of the resin system. The use of RTF foil
+will typically increase the bond strength by approximately 1 to 1.5 lbs as compared to non-RTF foil copper foil. If immersion tin
+adhesion treatments are used, the fabricator should test the coating to verify adequate bond strength is developed with IS550H
+prepregs.
+
+
+                                                                                          Part 3: Lamination
+ Table 2: IS550H General Lamination Parameters                                            Standard Lamination
+                                                                                          IS550H is a higher viscosity material than most Halogenated FR-
+   Process                Recommendation
+                                                                                          4 materials. To get the best results during lamination, use
+   Vacuum Time            20 minutes (no pressure, product on risers)
+                                                                                          higher pressures and higher heat rise rates than standard FR-4
+   Curing
+                          190-200°C (375-390°F)
+                                                                                          materials. (See Table 2.) These operating parameters will ensure
+   Temperature
+                                                                                          good fill and flow of the PWB. This material has very little flash,
+                          200°C - 75 min                                                  so edge tapering is minimal, and good thickness distribution is
+   Curing Time            190°C - 100 min                                                 found. If you are producing higher layer counts (>20 layers) or
+                          190°C recommended for sequential lamination
+                                                                                          use 2 oz or heavier copper, the need to follow the guidelines is
+   Resin Flow             100-170°C (210-340°F)                                           more important. These processing parameters have performed
+   Window                 Maintain heat ramp in this temperature range.
+                                                                                          well up on very difficult product designs.
+   Heat Ramp              2.5-5°C/min (4.5-9.0°F/min)
+                                                                                          Sequential Lamination
+                          350-450 PSI
+   Pressure                                                                               Sub-assemblies must be baked prior to performing the
+                          Select based on filling requirements
+                                                                                          secondary lamination. Water will interfere with the curing of the
+                          Single Stage: Apply pressure after vacuum dwell time.
+                                                                                          IS550H resin system.
+   Pressure               Dual Stage: 7.0 Kg/cm2 (100 PSI ) after vacuum dwell
+   Application            time, switch to high pressure ≤ 85°C product
+                          temperature.
+                                                                                          Sub-assemblies require much longer baking, particularly when
+                                                                                          stored in open environment. Baking times range from 3-24
+                          After 30 minutes at cure temperature, reduce
+                                                                                          hours at 110-180°C (230-356°F). Consult with an Isola Technical
+   Pressure Drop          pressure to 3.5 Kg/cm2 (50 PSI) in hot press
+                          (optional).                                                     Expert for recommendations.
+
+                          Cool to 135-140°C (275-285°F) at 2.8°C/min                      Removal of IS550H flash should be performed by routing rather
+   Cool Down              (5.0°F/min) with 3.5 Kg/cm2 (50 PSI) pressure prior to
+                                                                                          than shearing to minimize crazing along the panel edges.
+                          removing or transferring the load.
+
+
+
+
+ https://www.isola-group.com/pcb-laminates-
+     prepreg/is550h-laminate-prepreg/                            Last Updated April 17, 2026                   © 2021, Isola Group, All rights reserved.
+                                                                                                                            IS550H
+                                                      Halogen Free, High Reliability Laminate and Prepreg
+
+
+Part 4: Drill
+General
+IS550H material has high thermal performance and stability. Due to this high thermal performance, the material tends to form free
+standing chips during drilling, and is not likely to create drill smear. Due to the increased thermal decomposition temperature of the
+resin system, the drill debris remains as free particles and will not impact the drill flute relief volumes.
+
+To assure effective removal of the resin debris during drilling, undercut drill geometries and high helix tools are recommended. On high
+layer count technologies and thicker overall board thicknesses, peck drilling parameters may be necessary. Suggested parameters are
+outlined below for typical multilayer designs.
+
+Cutting Speed and Chipload
+The parameters in Table 3 provide a moderate initial starting point for typical board designs. Thick boards with heavy copper or special
+cladding such as invar will require more conservative drill parameters.
+
+Stack Height and Hit Count
+Stack heights and hit counts will vary with the construction and overall thickness of the boards being drilled. Standard .060” thick
+boards have been successfully stacked 3 high for bit diameters down to 13.5 mils. As a general guideline, the sum of the board
+thickness in a multilayer drill stack should not exceed 200 mils. Maximum hit count for a small drill diameter is 1000. For drill
+diameters of 13.5 mils and greater, maximum hit count is 1500.
+
+
+
+ Table 3: Suggested Drilling Parameters For Initial IS550H Setup
+
+                                               Surface Speed Per
+            Drill Size         Spindle Speed                                           Infeed               Chipload                         Retract
+                                                      Minute
+
+     mm             Inch              RPM      SMPM            SFPM         Meter min.      Inch min   mm rev.       mil rev.      Meter min.      Inch min.
+
+     0.25         0.0098           120,000       94            309              1.57            62      0.013          0.52             15             600
+
+     0.30         0.0118           105,000       99            325              1.78            70      0.017          0.52             20             600
+
+     0.35         0.0138            94,000     103             339              1.98            78      0.021          0.52             20             800
+
+     0.40         0.0157            85,000     107             350              2.16            85      0.025          1.00             25             1000
+
+     0.50         0.0197            75,000     118             387              2.54            100     0.034          1.33             25             1000
+
+     0.63         0.0248            60,000     119             390              2.29            90      0.038          1.50             25             1000
+
+     0.75         0.0295            50,000     118             387              2.16            85      0.043          1.70             25             1000
+
+     0.90         0.0354            43,000     122             399              1.91            75      0.044          1.74             25             1000
+
+     1.00         0.0394            38,000     119             392              1.73            68      0.045          1.79             25             1000
+
+     1.27         0.0500            32,000     128             419              1.57            62      0.049          1.94             25             1000
+
+     1.50         0.0591            28,000     132             433              1.42            56      0.051          2.00             25             1000
+
+     2.00         0.0787            22,000     138             454              1.27            50      0.058          2.27             25             1000
+
+
+
+Part 5: Hole Wall Preparation
+Good desmear and electroless copper deposition performance are more easily achieved when the drilled hole quality is good. The
+generation of smooth, debris free hole walls is influenced by the degree of resin cure, drilling conditions and board design
+considerations. The elimination of 7628 or similar heavy glasses (whenever possible), coupled with properly adjusted drill parameters
+on fully cured boards has been shown to improve overall drilled hole quality. This helps reduce smear generation, which improves
+desmear performance and can ultimately help to
+reduce copper wicking.
+
+Factors which influence chemical desmear rates, and therefore the suggestions in this document, include: resin type,
+chemistry type, bath dwell times, bath temperatures, chemical concentrations in each bath and the amount of solution transfer through
+
+
+  https://www.isola-group.com/pcb-laminates-
+      prepreg/is550h-laminate-prepreg/                  Last Updated April 17, 2026                    © 2021, Isola Group, All rights reserved.
+                                                                                                                              IS550H
+                                                        Halogen Free, High Reliability Laminate and Prepreg
+
+
+the holes.
+
+Factors which influence the amount of solution transfer through the holes include: hole size, panel thickness, work bar stroke length,
+panel separation in the rack and the use of solution agitation, rack vibration and rack “bumping” to remove air bubbles from the holes.
+
+Chemical Desmear
+
+Conventional permanganate desmear systems are effective for removal of IS550H resin from interconnect posts. Dwell times and
+temperatures typically used for most high performance FR-4 materials should be satisfactory. NMP is not compatible with IS550H.
+DO NOT use NMP based swellers with IS550H.
+
+Plasma Desmear
+
+If available, plasma can be used with or without a single permanganate pass (to be determined by each fabricator). Plasma processing
+tends to improve overall hole quality, particularly in thick and/or high aspect ratio boards. Standard plasma gas mixtures and cycles are
+satisfactory. Care must be exercised to avoid excessive resin removal if both plasma and permanganate are employed together.
+
+3-Point Etchback
+
+True 3-point “etchback” exposes the innerlayer “post” on all three sides for subsequent plating processes. This will require a more
+robust approach compared to simple desmear, which is designed only to remove resin smear from the vertical surface of the innerlayer
+interconnect “posts”.
+
+Plasma will readily etch back IS550H resin. Standard plasma gas mixtures and process cycles designed for conventional FR-4 epoxy are
+satisfactory and are suggested for use as initial starting parameters for etchback of IS550H. The practice of following the plasma
+process with a chemical process is suggested rather than plasma alone to increase hole wall texture and remove plasma ash residues.
+
+If plasma is not available, chemical etchback for 3-point connections can usually be accomplished using a double-pass through the
+permanganate line. Care must be taken when using a double-pass to minimize copper wicking. Consult the chemical supplier for
+suggested conditions.
+
+NMP is not compatible with IS550H. DO NOT use NMP based swellers with IS550H.
+
+Secondary Drilling
+
+The use of entry and backer material may be necessary during the secondary drilling of larger hole sizes to avoid crazing/fracturing at
+the hole perimeter. Additionally, sharper plunge point angle geometries may be necessary to avoid crazing around secondary drilled
+hole perimeters.
+
+Routing and Scoring
+
+Modifications of the final PWB rout fabrication process may be necessary. Table 4 lists initial starting parameters using chip breaker or
+diamond cut tool designs. Note that parameters listed may require further adjustment.
+
+                                                                                     For PWB designs requiring scored geometries, the testing of
+  Table 4: Suggested Routing Parameters for Initial IS550H Setup                     various Tgs and resin content materials has determined that
+                                                                                     adjustments to the process will be necessary. As the modulus
+          Tool Diameter             Spindle Speed   Spindle Travel Speed             strength of materials increases, the maximum resultant web
+        Inch            mm                 RPM      Inch min.     Meter min.         thickness (dependent on the scored edge depth) must be
+      0.0620          1.5748              45,000       20            0.508
+                                                                                     decreased to avoid excessive fracturing upon breaking away the
+                                                                                     scored materials.
+      0.0930          2.3622              35,000       40            1.016
+
+      0.1250          3.1750              25,000       50            1.270           Individual board designs/stack-ups may require adjustment of
+                                                                                     score depth geometries. Thinner web thicknesses are
+                                                                                     typically required. This is influenced by layer count, glass
+types and retained copper in the design.
+
+The fabricator should contact the scoring equipment and/or bit supplier for application specific suggestions for use with
+IS550H     materials.
+  https://www.isola-group.com/pcb-laminates-
+       prepreg/is550h-laminate-prepreg/                     Last Updated April 17, 2026                  © 2021, Isola Group, All rights reserved.
+                                                                                                                  IS550H
+                                                  Halogen Free, High Reliability Laminate and Prepreg
+
+
+Your Isola Technical Account Manager may also be able to provide some initial suggestions, but these should be reviewed with the
+scoring equipment supplier and validated through testing by the individual PWB fabricator.
+
+
+Part 6: Special Application - Embedded Heat Sink
+IS550H is especially well suited for heat dissipation applications using embedded copper due to excellent high
+temperature resistance and thermal conductivity. IS550H has higher Tg and lower flow characteristics when compared with
+standard FR-4 product which results in a tight processing window for embedded heat sink applications.
+
+PCB’s with embedded heat sinks complicate PCB manufacturing and require a good understanding of process capability and product
+tolerance. There are two common issues with embedded heat sinks:
+
+1. Low bond strength between prepreg and embedded heat sink due to poor oxide coating on the embedded heat sink.
+2. Edge/corner delamination due to low fill resin or high localized lamination pressure. These lead to glass stop and oxide damage.
+Isola recommends the following best practices for embedded heat sink designs:
+1. To avoid the edges of heat sinks cutting into the glass fabric during lamination, the surrounding PCB thickness should be slightly
+thicker than the heat sink itself. This requires a stack-up adjustment of the PCB to account for the fabricated heat sink thickness plus its
+tolerance.
+2. Chamfered edges of the heat sink will help reduce the stress distribution along the edges.
+3. For the prepreg to form a good bond to the heat sinks, the heat sinks must be properly prepared for its surface to accept the oxide
+treatment with acceptable adhesion quality.
+
+        a. The heat sink parts are commonly machined copper and are exposed to cutting fluids. Some heat sinks may be heat
+        treated. Extra attention is required to ensure thorough cleaning of the surface to promote good oxide adhesion. Additional
+        oxide processing time is often required to achieve equivalent bonding to standard PCB foil.
+        b. Testing is suggested to evaluate the bond interface. Creating and building a test vehicle and exposing it to simulated
+        reflow cycling is recommended.
+
+4. Lamination pressure must be optimized to maximize resin flow and fill around the heat sink and at the same time preventing the
+heat sink from cutting into the glass fabric.
+5. The edges and corners of the heat sinks are stress concentration points. A sufficient layer of resin between the embedded heat sink
+and the glass is required to prevent crack formation during thermal stress at those edge locations. Isola recommend to use the highest
+resin content 1080 prepreg directly against heat sinks.
+
+
+Part 7: Packaging and Storage
+IS550H finished boards have low moisture sensitivity and good shelf life. However, Isola recommends using best practices in storage
+and packaging, as noted below, to reduce risk during lead-free assembly.
+
+IS550H boards should be dry prior to packaging to ensure the most robust lead-free performance. For some complex, high reliability
+designs, baking prior to solder mask application can be implemented to ensure maximum floor life in assembly processing. Printed
+boards made for high temperature assembly from IS550H, which require a long shelf life, the best protection is provided using a
+Moisture Barrier Bag (MBB) with a Humidity Indicator Card (HIC) and adequate drying desiccant inside the MBB to prevent moisture
+absorption during shipment and long-term storage.
+
+Upon opening the MBB, the boards should be processed within 168 hours when maximum shop floor conditions are at < 30°C
+(85°F)/60% RH. MBB bags that are opened for inspection should be resealed immediately to protect the boards from moisture uptake.
+
+
+Part 8: Health and Safety
+Always handle laminate with care. Laminate edges are typically sharp and can cause cuts and scratches if not handled properly.
+Handling and machining of prepreg and laminate can create dust (see IS550H Material Safety Data Sheet).
+
+Appropriate ventilation is necessary in machining/punching areas. The use of protective masks is suggested to avoid inhaling dust.
+Gloves, aprons and/or safety glasses are suggested if individuals have frequent or prolonged skin or eye contact with dust.
+
+
+
+
+  https://www.isola-group.com/pcb-laminates-
+      prepreg/is550h-laminate-prepreg/               Last Updated April 17, 2026             © 2021, Isola Group, All rights reserved.
+                                                                                                                           IS550H
+                                                      Halogen Free, High Reliability Laminate and Prepreg
+
+
+
+
+Part 9: Ordering Information
+Contact your local sales representative or contact info@isola-group.com for further information.
+
+Isola Group
+6565 West Frye Road
+Chandler, AZ 85226
+Phone: 480-893-6527
+Fax: 480-893-1409
+
+Isola Asia Pacific (Hong Kong) Ltd.
+12/F Kin Sang Commecial Center
+49 King Yip Street, Kwun Tong
+Kowloon, Hong Kong
+Phone: 852-2418-1318
+Fax: 852-2418-1533
+
+Isola GmbH
+Isola Strasse 2 D-52348
+Düren, Germany
+Phone: 49-2421-8080
+Fax: 49-2421-808164
+
+Revisions:
+A: Original Release – 01/14/2021
+
+
+
+          NOTES
+          The data contained in this document, while believed to be accurate and based on both field testing and analytical methods
+          considered to be reliable, is for information purposes only. Any sales of these products will be governed by the terms and conditions
+          of the agreement under which they are sold.
+
+
+
+
+          Isola, the Isola logo, Astra, Chronon, GETEK, I-Fill, IsoDesign, IsoStack, I-Speed, I-Tera, Polyclad, Stratus, TerraGreen, and The Base
+          for Innovation are registered trademarks or trademarks of ISOLA USA Corp. in the United States and in other countries. Copyright ©
+          2021 Isola Group. All rights reserved.
+
+
+
+ https://www.isola-group.com/pcb-laminates-
+     prepreg/is550h-laminate-prepreg/                     Last Updated April 17, 2026                 © 2021, Isola Group, All rights reserved.
+

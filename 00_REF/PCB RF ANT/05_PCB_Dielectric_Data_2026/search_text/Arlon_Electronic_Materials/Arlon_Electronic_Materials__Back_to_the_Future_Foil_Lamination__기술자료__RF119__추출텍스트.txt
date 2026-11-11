@@ -1,0 +1,276 @@
+                                                                             TECHNICAL ARTICLE
+
+              “Back to the Future” -- Foil Lamination for the 21st Century
+                                                                                               by Chet Guiles, Arlon 2013
+
+ The use of foil lamination in HDI designs has surged in recent years because options are available for very thin layers
+ suitable for high interconnect density combined with laser drilling for very small diameter holes. This article discusses
+ some of the materials available as well as issues that might be encountered in PWB fabrication and/or Assembly.
+
+Historically, cost-conscious PWB          The Old…
+design engineers realized that it was
+                                          First let’s look at some of the issues
+possible to do PWB layouts using
+                                          associated with the historical foil
+foil lamination instead of laminate
+                                          lamination process which involved
+cap construction, and through that
+                                          nothing more complicated than
+simple expedient to save money
+                                          adding a surface layer to a multilayer
+in the manufactured cost of bare
+                                          PWB by using prepreg and copper
+boards. This is “old” technology,
+                                          foil on the outside of the layup (see
+even for me, though I’ve only been
+                                          Figure 2) rather than a piece of
+in the business 20 years. Most
+                                          copper clad laminate, which was
+designers and PWB fabricators take
+                                          referred to as a “cap layer” (see         Figure 1 —
+it for granted and take advantage
+                                          Figure 1). Its primary purpose, as        Traditional Cap Lamination uses a copper
+of it whenever possible, which is
+                                          mentioned above, was to reduce            clad laminate for the top or cap layer with
+much of the time. That might lead                                                   prepreg as bonding material.
+                                          cost. Which it did. There were
+you to think that foil lamination, like
+                                          some issues associated with foil
+“your father’s Buick,” is somewhat
+                                          lamination, some of which are still
+passé and only marginally relevant
+                                          relevant to the new generations
+to the high tech world of personal
+                                          of foil lamination applications.
+telecommunications and high speed
+                                          Let’s briefly look to the past for a
+data transfer. Wrong! Just as it was
+                                          historical perspective.
+recently announced that new drive/
+fly cars may well be available soon       There have been hiccups in the
+that are “airphibious,” foil lamination   foil lamination process over the
+now begins to have application well       years. As it turns out, the copper
+beyond cost reduction. There is a         foil used to bond to some of the
+whole generation of high density          high performance resin systems
+interconnect (HDI) boards that            such as polyimide are not the same        Figure 2 —
+not only use foil lamination, but in      ones used to bond to standard             Foil Lamination uses prepreg and copper
+                                          FR-4, which has led to “low copper        foil at the surface, and the designer ad-
+which the foil laminated surface
+                                                                                    justs all the other layers accordingly.
+layer is essential to the function and    peel” results whose source was not
+performance of the design.                always intuitively obvious. After all
+                                          copper is copper, right? Wrong. So
+                                          Lesson #1 (which the “old timers”
+who have been using foil lamination        the same copper peel requirements         multilayer PWB providing a dielectric
+for many years already know) is:           as their suppliers, including getting     layer (the resin on the coated foil)
+Use the proper copper foil for the         qualified, doing lot testing to confirm   that can subsequently be laser
+resin system you are laminating.           the achievement of acceptable             drilled to form microvias between
+Your laminate and prepreg supplier         copper peels under all the various        layers 1 and 2, permitting efficient
+will be able to guide you in the right     conditions, and maintaining the           signal distribution and higher
+direction, since in all likelihood he      same records as laminators.               interconnect density.
+also uses that foil to get proper bond     MIL-S-13949 is now obsolete (along
+                                                                                     RCC products are available as
+performance. Is this a design or a         with many of us who were subject
+                                                                                     simple B-stage in coated thickness
+fabrication issue? Our experience          to it for so many years) — but the
+                                                                                     of 50 to 100 microns (2 to 4 mils
+has been that the designer needs           reason its requirements were passed
+                                                                                     for those of you like myself who
+to be aware of fabrication issues          along to PWB fabricators (see
+                                                                                     are still English units dinosaurs) or
+because if it turns out not to work,       Lesson #1 and Lesson #2 above)
+                                                                                     in a more sophisticated version,
+guess who is going to get the              remains valid. You still need a
+                                                                                     as a C-stage/B-stage combination
+“credit!”                                  robust copper peel value if you are
+                                                                                     that provides better flatness and
+                                           going to do foil lamination and in
+Lesson #2 and corollary to Lesson                                                    parallelism and greatly reduces any
+                                           new generation foil lam products this
+#1 (and the designer should be                                                       chance for accidental punch-through
+                                           can be even more critical as we will
+aware for the same reasons) is that                                                  of a copper feature that might cause
+                                           see.
+when a PWB producer manufactures                                                     premature shorting.
+boards, he is not laminating under         …And the New
+                                                                                     This was at one time the most widely
+the same conditions of time,
+                                            In recent years a whole new              and successfully used method
+temperature and pressure being
+                                           application for foil lamination           of surface microvia formation
+used by the laminate supplier, which
+                                           has evolved in which designers            worldwide. Issues occasionally
+means that optimization of the
+                                           have taken advantage of newer             reported with RCC, depending of
+lamination cycle will be necessary
+                                           materials and processes allowing          course on the user, fabricator and
+to achieve acceptable copper
+                                           them to design HDI (High Density          application include low copper
+bonds without causing other issues.
+                                           Interconnect) MLB’s that are thinner,     peel values, excessive “footballing”
+Remember that changing pressure,
+                                           lighter and in many cases less costly     causing lack of flatness and
+heat-up rate, etc. will impact such
+                                           than their predecessors. Taking           parallelism, and resin shrinkage
+intangibles as layer registration, resin
+                                           advantage of materials that can be        resulting in registration issues as
+flow and fill, flatness and parallelism
+                                           laser drilled or plasma ablated to        well as occasional resin cracking. In
+of the overall MLB, etc., etc. Some
+                                           form surface microvias between            addition, since coating copper foil
+of these will impact functional
+                                           layers 1 and 2 (and even 1, 2 and 3       becomes increasingly more difficult
+performance of the board. If the
+                                           with some planning) designers have        as the foil gets thinner, the cost of
+board fabricator can’t or won’t do
+                                           been able to realize thinner PWB’s        RCC in very thin copper, such as 9
+the necessary work to avoid those
+                                           that have much higher interconnect        micron that is needed for formation
+problems, then Lesson #2a is “Go
+                                           density for applications that must        of very fine lines and spaces, can
+back to cap lam designs.”
+                                           be low cost, light, thin, and able to     be considerable. (Lesson #3 for
+When the now defunct MIL-S-13949           handle a plethora of functions.           the design group is to make sure
+military specification for laminates                                                 that the material you select for foil
+                                           Foil lamination is integral to
+was in force, DESC (Defense                                                          lamination in microvia applications
+                                           this process. There are several
+Electronics Supply Center for those                                                  works for you in your own
+                                           approaches to surface microvia
+too young to remember or who                                                         application when your chosen board
+                                           materials:
+have worked in commercial PWB                                                        fabricator provides finished product.)
+facilities all your lives) decided that    1.) Resin Coated Copper Foil
+                                                                                     2.) Non-Woven Aramid Prepregs
+PWB houses doing foil lamination           Resin Coated Copper Foil (RCC,
+were de-facto acting as their own                                                    The use of 50 micron or 100 micron
+                                           aka RCF, Resin Coated Foil) can
+laminate suppliers, and had to meet                                                  epoxy prepreg (0.002” and 0.004”)
+                                           be laminated directly on top of a
+based on non-woven aramid (NWA)              NWA layer and to make laser via             computers in which a requirement
+reinforced laminates as the basis for        interconnections between layers 1, 2        exists for interconnections to survive
+a foil lamination process has found a        and 3 as can be seen in Figure 4.           a variety of drop impact tests. In
+considerable following among those                                                       the mind of many OEM designers
+                                             Two issues must be taken into
+who have encountered issues with                                                         that low peel value is a “drop dead”
+                                             account not only by the OEM design
+RCC and/or where multiple layers of                                                      issue in choosing a material for HDI
+                                             group, but equally by the board
+microvia interconnect are desirable                                                      designs.
+                                             fabricator or assembly house who
+or necessary. Designed for PWB
+                                             is designing a process around               Newer generation NWA based
+applications, NWA reinforcement
+                                             NWA materials. First is moisture            products such as Arlon’s 55ST
+is 100% organic, lightweight and
+                                             uptake, in that products based on           have attempted to overcome the
+provides a thin, dimensionally
+                                             NWA absorb more moisture than               low peel problem by forming an
+stable, flat platform for microvia
+                                             do standard glass-polyimides and            interpenetrating polymer network
+applications.
+                                             therefore will require some baking or       (IPN) between the NWA and the
+Figure 3 illustrates a typical surface       desiccation prior to lamination and         resin system itself, permitting 1 oz.
+microvia hole drilled in an epoxy-           solder reflow. The development of           peels as high as 10 lb/in — double
+aramid MLB with a surface layer              second generation products with             that of the previous generation of
+based on NWA.                                lower water absorption mitigates            products — and half ounce peels (in
+                                             this issue somewhat in high                 foil lamination applications) over 7
+                                             performance epoxy systems, but will         lb/in. Progress is also being made
+                                             always remains a consideration for          in the area of water absorption, but
+                                             polyimides, and especially in high          there is still need to be careful with
+                                             humidity areas and applications             drying of these materials.
+                                             in which high humidity will be
+                                                                                         3. “Flat Glass” (and Better Lasers)
+                                             encountered..
+                                                                                         New to the foil lamination arena
+                                             The second area of concern for
+                                                                                         is the use of so-called “flat glass”
+                                             NWA products has been low copper
+                                                                                         which is special fiberglass fabric
+Figure 3 -- Laser microvia drilled in NWA    peel values due to the inherently
+                                                                                         that lies very flat and is easier to
+based foil laminated layer. Laser stops at   low cohesive strength of the NWA
+the copper stop-pad. Photo courtesy of
+                                                                                         lase cleanly than traditional glass
+                                             product. One ounce copper peel
+Dupont Company.                                                                          weaves. The idea here is that a
+                                             values at or under 5 lb/in were
+                                                                                         “premium” glass epoxy prepreg
+                                             common with early generation
+The thin aramid product provides                                                         can possibly be made to do the
+                                             NWA products, which resulted in
+improved flatness and parallelism,                                                       job now being done by RCC or
+                                             a mixed reception for the material
+while the fiber reinforcement                                                            nonwoven aramid products. The
+                                             in applications such as hand held
+provided by the aramid inhibits                                                          cost performance of these new glass
+                                             phones, PDA’s and laptop
+the formation and propagation                                                            materials is still in the process of
+of resin microcracks. Because                                                            being evaluated and availability is
+NWA products are provided using                                                          limited in electrical grades.
+standard high performance epoxy                                                          On another front, although not a
+and polyimide resin systems, cure                                                        subject for detailing in this article,
+times and temperatures are within                                                        improving laser technology may well
+the normal parameters of most PWB                                                        help this and other materials achieve
+fabricators. In addition, because                                                        microvias faster and more cleanly
+NWA products are available as both                                                       — both of which are still issues with
+laminate and prepreg, it is possible                                                     trying to form quality microvias in
+to design using more than one                 Figure 4 —                                 glass fiber based products.
+                                              Microvia interconnections using laminate
+                                              and prepreg based on NWA material.
+                                              Photo courtesy of Dupont Company.
+   Back to the Future                    The challenge for the board designer      Chet Guiles is CTO of C&N
+                                         and fabricator as we go forward           Consultants. Prior to forming
+   For the future a wider variety of
+                                         will be to integrate some of these
+   materials and designs will want to                                              C&N in 2004, Chet was
+                                         newer concepts in surface microvia
+   take advantage of foil lamination
+                                         materials and cope at the same            Director of New Business
+   for surface microvia formation.
+                                         time with the fact that they don’t all    Development for Arlon, Materials
+   Applications requiring higher
+                                         process “just like FR-4.” And yet it is
+   frequencies will need materials                                                 for Electronics Division. Chet
+                                         exactly these emergent technologies
+   that can be laser drilled yet which                                             joined Arlon in 1979 and prior to
+                                         that will open new vistas for board
+   have low dielectric constant and
+                                         performance, continued size               assuming technical marketing
+   loss characteristics for handling
+                                         reduction and density increase.           responsibilities held positions
+   microwave and FR signals. Large
+   optical backplanes will utilize                                                 as Technical Director and
+   materials that can act as light
+                                                                                   Product Manager as well as
+   ducts at the board surface — and
+   while this is not “foil lamination”                                             various assignments in process
+   as we currently know it, the newer                                              engineering, technical service,
+   technology will add a level of                                                  cost accounting and quality
+   complexity to the interconnection
+                                                                                   assurance. Chet is the author
+   between surface copper foil and the
+   multilayer board beneath.                                                       of “Everything You Ever Wanted
+                                                                                   to Know About Laminates…
+                                                                                   But Were Afraid to Ask” and
+                                                                                   numerous articles and papers on
+                                                                                   the subject of high performance
+                                                                                   laminate materials.
+
+                                                                                   Additional information about
+                                                                                   Arlon, including the text of
+                                                                                   “Everything You Ever Wanted to
+                                                                                   Know…” can be found at
+                                                                                   www.arlonemd.com
+
+
+
+
+                                                 9433 Hyssop Drive
+                                       Rancho Cucamonga, California 91730
+                                     Tel: (909) 987-9533 • Fax: (909) 987-8541
+
+                                                www.arlonemd.com
+
+Ver 1.1
+

@@ -1,0 +1,244 @@
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+tec-speed 4.0H-PK VT-464LT                                                            UL Approval: E214381         Version: 20/05/2026
+
+PROCESS GUIDE
+
+
+
+Precautions in Handling
+
+Storage Condition & Shelf Life
+                                                        Prepreg                                             Laminate
+
+    Storage                   Temperature               Below 23ºC (73ºF)         Below 5ºC (41ºF)          Room
+    Condition                 Relative Humidity         Below 55%                 /                         /
+
+    Shelf Life                                          3 Months                  6 Months                  24 Months (airproof)
+
+
+•         Laminate should be stored flat in a cool dry environment. Avoid bending or scratching the laminate surface.
+• 	Prepreg should be stored flat in a cool dry controlled environment 23ºC or less and 50% RH or less.
+     Extended storage of prepreg should be at a reduced temperature of 5ºC.
+• 	Open bags of prepreg must be resealed. Prepreg should not be exposed to open environments for more than
+    8 hours total cumulatively under the above conditions or as agreed upon between user and supplier.
+• 	A first-in-first-out inventory system and a method to track material lot numbers through PCB processing and
+    delivery of finished circuits is recommended.
+
+
+
+
+Designing and Inner layer Process
+• 	Before feed please baking to remove any absorbed moisture or surface moisture especially for thinner core.
+    A racked bake at 150 ºC for 120 minutes is preferred.
+• 	Oxide Alternative is preferred & recommended over the other oxide chemistry for the advanced boards fabrications,
+    especially for lead free and high layer count applications.
+•         Holding time between brown oxide and press process: best control within 24 hours.
+
+
+
+
+                                                                                                                               Page 1 of 5
+www.venteclaminates.com                                                                                                 Published on: 20/05/2026
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+tec-speed 4.0H-PK VT-464LT                                                 UL Approval: E214381       Version: 20/05/2026
+
+PROCESS GUIDE
+
+
+
+Prepreg Availability
+Dk values are for impedance design
+
+
+                          Delivered
+                          Thickness                 Dk                                         Df
+   PP        R/C
+  Type       (%)
+                                       @      @      @       @       @      @        @        @           @             @
+                            (μm)
+                                      1GHz   2GHz   5GHz   10GHz   20GHz   1GHz     2GHz     5GHz       10GHz         20GHz
+             73%             40       3.63   3.58   3.58   3.54    3.50    0.0066   0.0069   0.0074     0.0084        0.0089
+  1027
+             75%             45       3.59   3.54   3.54   3.50    3.45    0.0067   0.0070   0.0075     0.0085        0.0090
+
+             75%             50       3.59   3.54   3.54   3.50    3.45    0.0067   0.0070   0.0075     0.0085        0.0090
+  1037
+             77%             55       3.55   3.50   3.50   3.46    3.44    0.0068   0.0071   0.0076     0.0086        0.0091
+
+             72%             60       3.66   3.61   3.61   3.57    3.53    0.0065   0.0068   0.0073     0.0083        0.0088
+
+  1067       74%             65       3.61   3.56   3.56   3.52    3.48    0.0066   0.0069   0.0074     0.0084        0.0089
+
+             76%             72       3.57   3.52   3.52   3.48    3.43    0.0067   0.0070   0.0075     0.0085        0.0090
+
+             66%             76       3.70   3.65   3.65   3.61    3.57    0.0062   0.0065   0.0070     0.0080        0.0085
+
+  1078       69%             84       3.68   3.63   3.63   3.59    3.55    0.0063   0.0066   0.0071     0.0081        0.0086
+
+             72%             95       3.66   3.61   3.61   3.57    3.53    0.0065   0.0068   0.0073     0.0083        0.0088
+
+  2113       59%            100       3.81   3.76   3.76   3.71    3.66    0.0057   0.0060   0.0065     0.0075        0.0080
+
+             53%            112       3.95   3.90   3.90   3.85    3.80    0.0054   0.0057   0.0062     0.0072        0.0077
+
+             55%            119       3.90   3.85   3.85   3.80    3.75    0.0055   0.0058   0.0063     0.0073        0.0078
+  2116
+             57%            125       3.85   3.80   3.80   3.76    3.72    0.0056   0.0059   0.0064     0.0074        0.0079
+
+             59%            136       3.81   3.76   3.76   3.71    3.66    0.0057   0.0060   0.0065     0.0075        0.0080
+
+  7628       48%            192       4.10   4.05   4.05   4.00    3.95    0.0051   0.0054   0.0059     0.0069        0.0074
+
+
+
+
+                                                                                                                 Page 2 of 5
+www.venteclaminates.com                                                                                  Published on: 20/05/2026
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+tec-speed 4.0H-PK VT-464LT                                                   UL Approval: E214381       Version: 20/05/2026
+
+PROCESS GUIDE
+
+
+
+Laminates Availability
+Dk values are for impedance design
+
+   Laminate                                            Dk                                        Df
+   Thickness              Glass
+                          Style   RC     @      @      @       @       @      @        @        @           @            @
+  (μm)      (mil)                       1GHz   2GHz   5GHz   10GHz   20GHz   1GHz     2GHz     5GHz       10GHz        20GHz
+
+   30        1.2      1027x1      65%   3.71   3.67   3.67   3.62    3.57    0.0062   0.0065   0.0070     0.0080        0.0085
+
+   50        2.0      1067x1      66%   3.70   3.65   3.65   3.61    3.57    0.0062   0.0065   0.0070     0.0080        0.0085
+
+   60        2.5      1078x1      59%   3.81   3.76   3.76   3.71    3.66    0.0057   0.0060   0.0065     0.0075        0.0080
+
+   80        3.0      1078x1      66%   3.70   3.65   3.65   3.61    3.57    0.0062   0.0065   0.0070     0.0080        0.0085
+
+   90        3.5      1086x1      66%   3.70   3.65   3.65   3.61    3.57    0.0062   0.0065   0.0070     0.0080        0.0085
+                      2113x1      58%   3.83   3.78   3.78   3.74    3.70    0.0056   0.0059   0.0064     0.0074        0.0079
+  100        4.0
+                      1067x2      66%   3.70   3.65   3.65   3.61    3.57    0.0062   0.0065   0.0070     0.0080        0.0085
+
+  110        4.5      2116x1      52%   3.98   3.93   3.93   3.88    3.83    0.0054   0.0057   0.0062     0.0072        0.0077
+                      1078x2      59%   3.81   3.76   3.76   3.71    3.66    0.0057   0.0060   0.0065     0.0075        0.0080
+  130         5
+                      2116x1      56%   3.88   3.83   3.83   3.78    3.73    0.0055   0.0058   0.0063     0.0073        0.0078
+
+  150         6       1078x2      65%   3.71   3.67   3.67   3.62    3.57    0.0062   0.0065   0.0070     0.0080        0.0085
+
+  180         7       7628x1      43%   4.22   4.17   4.12   4.07    4.02    0.0049   0.0052   0.0057     0.0067        0.0072
+                      2113x2      58%   3.83   3.78   3.78   3.74    3.70    0.0056   0.0059   0.0064     0.0074        0.0079
+  200         8
+                      7628x1      48%   4.10   4.05   4.05   4.00    3.95    0.0051   0.0054   0.0059     0.0069        0.0074
+
+  254        10       2116x2      56%   3.88   3.83   3.83   3.78    3.73    0.0055   0.0058   0.0063     0.0073        0.0078
+
+  305        12       1506x2      47%   4.13   4.08   4.08   4.03    3.98    0.0051   0.0054   0.0059     0.0069        0.0074
+
+  381        15       7628x2      45%   4.18   4.13   4.13   4.08    4.03    0.0050   0.0053   0.0058     0.0068        0.0073
+
+  461        18       1506x3      47%   4.13   4.08   4.08   4.03    3.98    0.0051   0.0054   0.0059     0.0069        0.0074
+                     7628*2+
+  510        21                   48%   4.10   4.05   4.05   4.00    3.95    0.0051   0.0054   0.0059     0.0069        0.0074
+                      2113x1
+
+  610        24       7628x3      48%   4.10   4.05   4.05   4.00    3.95    0.0051   0.0054   0.0059     0.0069        0.0074
+
+  710        28       7628x4      43%   4.22   4.17   4.12   4.07    4.02    0.0049   0.0052   0.0057     0.0067        0.0072
+
+  790        31       7628x4      48%   4.10   4.05   4.05   4.00    3.95    0.0051   0.0054   0.0059     0.0069        0.0074
+  1000       39       7628x5      48%   4.10   4.05   4.05   4.00    3.95    0.0051   0.0054   0.0059     0.0069        0.0074
+                      7628x6      48%   4.10   4.05   4.05   4.00    3.95    0.0051   0.0054   0.0059     0.0069        0.0074
+  1200       47
+                     2116x11      55%   3.90   3.85   3.85   3.80    3.75    0.0055   0.0058   0.0063     0.0073        0.0078
+
+
+
+
+                                                                                                                   Page 3 of 5
+www.venteclaminates.com                                                                                    Published on: 20/05/2026
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+tec-speed 4.0H-PK VT-464LT                                                            UL Approval: E214381   Version: 20/05/2026
+
+PROCESS GUIDE
+
+
+
+Press Condition
+
+ 1. Heating rate (Rate of Rise) of material [Material Temperature]: Programmable Press: ≥2.8ºC/min
+ 2. Curing Temperature & Time: >100min at more than 210ºC and peak temperature>215 ºC
+ 3. Full Pressure: ≥400psi (28Kg/cm2) should be applied full pressure before 100 ºC
+ 4. Cushion for pressure evenness is needed
+
+
+
+
+                                                                                                                       Page 4 of 5
+www.venteclaminates.com                                                                                         Published on: 20/05/2026
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+tec-speed 4.0H-PK VT-464LT                                                           UL Approval: E214381      Version: 20/05/2026
+
+PROCESS GUIDE
+
+
+
+Typical Drilling Parameters
+•      Drilling parameters should be adjusted depending on hole size, layer count, panel thickness, stack count and stack height etc
+•      Please adjust drilling parameters after checking qualities of through holes
+•      Suggest Drilling parameter as below:
+
+
+     Diameter (mm)           Spindle Speed (krpm)       Feed Rate (mm/sec)           Chip Load (μm/rev)             Hit Counts
+
+            0.25                      145                         25                       8~13                         500
+
+             1.0                       53                         31                       30~45                       1000
+
+
+
+
+Desmear Process
+•      Please test desmear rate and check whether the smear is cleaned clearly by SEM , Ventec could provide the specimen for pilot.
+•      1 cycle Plasma and 1 cycle desmear or 2 cycles desmear is recommended.
+•      Holding time from desmear to PTH process: < 24 hours
+
+
+
+
+Packaging and baking recommendation
+•      It is recommended to bake the board before packaging at 125ºC/4~8h to avoid moisture causing a decrease in heat resistance.
+
+• 	If the PCBs needs to be stored for a long time before use, it is recommended to use aluminum foil vacuum packaging.
+
+•      If exceed 3 months after packaging , It is best to bake the PCBs at 125ºC/4~6h before assembly before use.
+
+
+
+
+                                                                                                                           Page 5 of 5
+www.venteclaminates.com                                                                                             Published on: 20/05/2026
+

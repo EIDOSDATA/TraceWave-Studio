@@ -1,0 +1,168 @@
+                                                                                Data Sheet
+
+
+RO3003G2™ Circuit Materials
+High Frequency Laminates
+
+RO3003G2™ high-frequency ceramic-filled PTFE laminates are
+an extension of Rogers’ industry leading RO3003™ solutions.            FEATURES AND BENEFITS:
+RO3003G2 laminates are based on industry feedback to address
+the next generation needs for mm-wave automotive radar
+applications.                                                          Best in class performance for
+                                                                       insertion loss
+                                                                         • Utilizing new Very Low Profile
+The combination of optimized resin and filler content along                (VLP) ED copper
+with the introduction of Very Low Profile ED copper translates         Minimize dielectric constant variation
+to a Dk of 3.00 @ 10 GHz (clamped stripline method) & 3.07 @           in finished PCB
+77 GHz (microstrip differential phase length method). These               • Homogeneous construction
+                                                                            incorporating VLP ED copper and
+laminates also show very low insertion loss of 1.3dB/inch for 5             reduced dielectric porosity
+mil laminates as measured by the microstrip differential phase
+                                                                       Enable trend toward more small
+length method.                                                         diameter vias
+                                                                         • Enhanced filler system using
+                                                                           small rounded particles
+RO3003G2 laminates can be fabricated into printed circuit
+boards using standard PTFE circuit board processing techniques,        Global manufacturing foot print
+with minor modifications as described in the application note            • Multiple high volume
+                                                                           manufacturing plants
+“Fabrication Guidelines for RO3000® Series High Frequency
+Circuit Materials.”
+                                                                       TYPICAL APPLICATIONS:
+
+
+                                                                         • Adaptive cruise control
+                                                                         • Forward collision warning
+                                                                         • Active brake assist
+                                                                         • Lane change assist
+                                                                         • Traffic jam pilot
+                                                                         • Parking pilot
+                                                                         • Blind spot detection
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+
+
+                                                         Page 1 of 4
+                                                                         Data Sheet
+
+
+                                                             Chart 1:
+
+
+
+
+                                                              Chart 2:
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+
+
+                                                         Page 2 of 4
+                                                                                                                           Data Sheet
+
+
+                                                        TYPICAL VALUE(1)
+                        PROPERTY
+                                                                                           Unit           Condition                    Test Method
+                                                       RO3003G2 Direction
+                                                                                                                                        IPC-TM-650
+ Dielectric Constant, er Process                       3.00 ± 0.04        Z                  -           10 GHz 23°C                      2.5.5.5
+                                                                                                                                     Clamped Stripline
+                                                                                                                                     Differential Phase
+ (2,)
+        Dielectric Constant, er Design                    3.07            Z                  -              77 GHZ
+                                                                                                                                      Length Method
+                                                                                                                                         IPC-TM-650
+ Dissipation Factor, tan d                               0.0011           Z                  -           10 GHz 23°C
+                                                                                                                                           2.5.5.5
+                                                                                                           10 GHz                        IPC-TM-650
+ Thermal Coefficient of er                                -35             Z               ppm/°C
+                                                                                                         -50 to 150°C                      2.5.5.5
+                                                         -0.16            X
+ Dimensional Stability                                                                    mm/m            Method C                    IPC TM-650 2.2.4
+                                                         -0.14            Y
+ Volume Resistivity                                     1.4 x 109         -               MΩ•cm            COND A                        IPC 2.5.17.1
+ Surface Resistivity                                    2.6 x 10⁸         -                MΩ              COND A                        IPC 2.5.17.1
+                                                          378             X
+ Tensile Modulus                                                                            ksi              23°C                        ASTM D638
+                                                          396             Y
+                                                                                                                                         IPC-TM-650
+ Moisture Absorption                                      0.06            -                 %               D48/50
+                                                                                                                                           2.6.2.1
+                                                          0.73                                               0°C
+ Specific Heat                                                            Z               J/g/K                                       ASTM E1269-11
+                                                          0.83                                               50°C
+ Thermal Conductivity                                     0.43            Z               W/m/K              50°C                       ASTM D5470
+                                                           16             X
+ Coefficient of Thermal Expansion                          17             Y               ppm/°C         23°C/50% RH                 IPC-TM-650 2.4.41
+                                                           18             Z
+ Td                                                       500             -               °C TGA                   -                    ASTM D3850
+                                                                                           gm/
+ Density                                                  2.15            -                                  23°C                        ASTM D792
+                                                                                           cm3
+                                                                                                         1/2 oz. EDC
+ Copper Peel Strength                                     12.0            -                lb/in                                        IPC-TM-2.4.8
+                                                                                                      After Solder Float
+ Flammability                                             V-0             -                  -                     -                        UL 94
+ Lead Free Process Compatible                             YES             -                  -                     -                              -
+
+
+NOTES:
+(1) Typical values are a representation of an average value for the population of the property. For specification values contact Rogers Corporation.
+(2) The design Dk is an average number from several different tested lots of material and on the most common thicknesses. If more detailed information is
+     required, please contact Rogers Corporation or refer to Rogers’ technical papers in the Rogers Technology Support Hub at www.rogerscorp.com/techub
+
+
+                 Foil                         Sa                                 Sz                         Sq                      Surface Area Index
+                                           (microns)                          (microns)                  (microns)
+               1/4 oz                        0.35                               3.85                        0.44                           2.37
+               1/2 oz                        0.34                               3.73                        0.43                           2.82
+                1 oz                         0.36                               4.05                        0.45                           2.24
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+
+
+                                                                       Page 3 of 4
+                                                                                                                            Data Sheet
+
+
+        Standard Thicknesses                          Standard Panel Sizes                                        Standard Claddings
+ 0.005” (0.13mm) +/- 0.0005”              24” X 18” (610 X 457mm)                        VLP Electrodeposited Copper Foil
+ 0.010” (0.25mm) +/- 0.0007”              24” X 21” (610 X 533mm)                        ½ oz (18µm) TH/TH
+
+                                        *Additional panel sizes available                *Additional cladding weights are available
+*Contact Customer Service or Sales Engineering to inquire about additional available product configurations
+
+
+
+
+The information in this data sheet is intended to assist you in designing with Rogers’ circuit materials. It is not intended to and does not create any
+warranties express or implied, including any warranty of merchantability or fitness for a particular purpose or that the results shown on this data sheet
+will be achieved by a user for a particular purpose. The user should determine the suitability of Rogers’ circuit materials for each application.
+
+These commodities, technology and software are exported from the United States in accordance with the Export Administration regulations. Diversion contrary to
+U.S. law prohibited.
+
+The Rogers’ logo, Helping power, protect, connect our world, RO3000, RO3003 and RO3003G2 are trademarks of Rogers Corporation or one of its subsidiaries.
+
+©2022 Rogers Corporation, Printed in U.S.A., All rights reserved.
+Revised 1625 102522 Publication #92-547
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+
+
+                                                                       Page 4 of 4
+

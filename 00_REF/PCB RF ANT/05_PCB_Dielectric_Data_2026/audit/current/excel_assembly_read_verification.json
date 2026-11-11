@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "library": "openpyxl 3.1.5",
+  "operation": "read only; no Workbook.save or authoring",
+  "files": [
+    {
+      "file": "assembled.xlsx",
+      "sheets": 4,
+      "first_sheet_values_types_styles_compared": 57000,
+      "tables_filters_freeze_passed": true,
+      "rich_text_and_hyperlink_passed": false
+    },
+    {
+      "file": "assembled_variant.xlsx",
+      "sheets": 4,
+      "first_sheet_values_types_styles_compared": 57000,
+      "tables_filters_freeze_passed": true,
+      "rich_text_and_hyperlink_passed": true
+    }
+  ]
+}

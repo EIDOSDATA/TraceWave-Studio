@@ -1,0 +1,310 @@
+     PROCESSING GUIDELINES
+
+
+
+              Laminate: Autolad1G
+              Prepreg: Autolad1GB
+
+Halogen free and high reliability Multilayer board
+
+
+
+
+                                  CN-PG-2203-02-Autolad1G-Autolad1GB
+This product process guideline uses IPC-4101 Standard as a reference, and Shengyi make some changes
+according to the product characteristics of the actual situation so as to making it more suitable for the Shengyi
+Autolad1G/Autolad1GB product use.
+
+
+1. Storage condition
+1.1 Laminate
+
+1.1.1 Storage condition
+
+   Pack with original forms on the platform or on the appropriate shelf, avoiding stress, prevent sheet
+
+    deformation caused by inappropriate storage which may impact the subsequent PCB processes.
+
+1.1.2 Storage environment
+
+   Sheets should be stored in ventilated, dry, at room temperature, avoiding direct sunlight, rain and avoid
+
+    erosion of corrosive gas (storage environment directly affect the quality of material).
+
+   For double-sided copper clad laminates (cores), to minimize moving as to avoid scratching the surface of
+
+    the product, with a suitable environment and condition for storage, the shelf life can be up to two years.
+
+   For single-sided copper clad laminates, with a suitable environment and condition for storage, the shelf
+
+    life can be up to one year.
+
+1.1.3 Operation manual
+
+   Wear clean gloves and carefully handle the laminates. Collisions, sliding will cause damage of the
+
+    laminate copper. Bare hand actions will cause contamination to copper foil surface. These defects may
+
+    cause adverse effects on the use of laminates.
+
+1.2 Prepreg
+
+1.2.1 Storage method
+
+   Levelly stored in original package form, avoid heavy stress, prevent prepreg damage caused by
+
+    inappropriate storage condition.
+
+   Leftover or cut prepreg should be packed and sealed with plastic wrap and put it back on the backing ring
+
+    in the original package.
+
+1.2.2 Storage environment
+
+    Prepreg should be sealed packaged and be stored in free of UV irradiation environment, specific storage
+
+     conditions and the storage periods are as follows:
+
+        Condition 1:     3 months when stored at <23℃ and <50% RH.
+
+        Condition 2:     6 months when stored at <5℃.
+
+    Note: Relative humidity affect prepreg quality the most, conduct dehumidification process if necessary for
+
+     wet weather. It is recommended to use the prepreg within 3 days after unpackage.
+
+1.2.3 Cutting guideline
+                                                                       CN-PG-2203-02-Autolad1G-Autolad1GB
+   The best way for cutting is to left it to professional staff, they should wear clean gloves during operation,
+
+    prevent the pollution of prepreg surface; and operation must be careful to prevent prepreg wrinkle or crack.
+
+   Autolad3G is halogen-free, when cutting prepreg, clean the platform first to avoid cross-contamination of
+
+    different types of resin powder.
+
+1.2.4 Prepreg use recommendations
+
+   When the prepreg is taken out from the cold storage, it must go through a warming process before opening
+
+    the package. The warming time is more than 8 hours (depending on the specific storage conditions).
+
+    Open the package after it is the same as the ambient temperature.
+
+   The prepreg that has been cut into panels shall be stored in the environment of Condition 1 or Condition
+
+    2 and used up as soon as possible. If the prepreg storage exceeds 3 days, it must be re-tested and
+
+    qualified before use.
+
+   After unpacking the roll form prepreg, for the rest of the roll, it is required to seal the rest roll according to
+
+    original package standard, and store it in Condition 1 or Condition 2.
+
+   For IQC inspection, PP test should be finished within 5 days from the date of acceptance according to
+
+    IPC-4101 specification.
+
+   If the PP panels need to be dehumidified before use, it is recommended that the dehumidification cabinet
+
+    conditions to be set: temperature <23 ℃ , relative humidity about 40%, and the upper limit of
+
+    temperature/humidity fluctuation should not exceed 50%.
+
+2. PWB Processing
+2.1 Panel cutting
+
+   Sawing (preferred) and shearing method is recommended. Be careful of potential edge cracks when using
+
+    roller cutter or caused by improper gap or cutter blade abrasion.
+
+2.2 Thin core baking
+
+   Thin core baking depends on actual needs. If bake after cutting, it’s recommended to rinse cutting panels
+
+    first, which is able to remove resin powder brought by cutting and to avoid etching problem.
+
+   Baking condition: 150℃/2-4h, be sure to avoid contact directly with heater.
+
+2.3 Inner layer oxide treatment
+
+   Autolad3G is suggested for brown-oxide treatment.
+
+2.4 Lay-up
+
+   Ensure prepreg direction of warp and fill to be consistent between different layers at lay-up process. Avoid
+
+    prepreg reversal or overturn to avoid multilayer board warpage, distortion and after press.
+
+   After brown-oxide treatment and before going into press the time needs to be controlled within 12 hours.
+
+   After lay-up and before going into press the time needs to be controlled within 12 hours.
+                                                                          CN-PG-2203-02-Autolad1G-Autolad1GB
+   When the buffer materials may have the risk of moisture absorption, it is recommended to bake them dry
+
+    before use.
+
+   Due to the material characteristics, it is easy to carry static electricity. When stacking, special attention
+
+    should be paid to the adsorption of foreign matters on prepreg.
+
+   In order to ensure good alignment effect during panel arrangement, it is recommended to use riveting
+
+    method for riveting and fixation; It is recommended to use electromagnetic heat when the fusion method
+
+    is required, and PCB should evaluate the optimal parameters for the best fusion effect in detail; Other
+
+    fusion methods require rigorous and detailed evaluation of the fusion effect from PCB, to avoid layer
+
+    deviation caused by poor fusion.
+
+2.5 Press process
+
+    It is recommended to select the press with good vacuum pumping performance and vacuum door sealing
+
+     to avoid the entry of external moisture.
+
+    Keep heat-up rate at 1.5-2.5℃/min when material temperature is from 80℃ to 140℃.
+
+    Full pressure setting is recommended at the range of 350 – 420 PSI (oil press), specified pressure value
+
+     should be determined by multilayer feature (lay-up construction and resin-filled area). It is recommended
+
+     to turn to full pressure at 100-130℃.
+
+    Curing condition: temperature over 180℃, >90min.
+
+    Cooling rate: ＜2℃/min.
+
+    Out of press material temperature: ＜150℃.
+
+    If pressed by Adara machine, please inform us for more information.
+
+    When adopting single-sided or copper-free panels for multilayer, be sure to roughen the unclad surface
+
+     before use, otherwise poor bonding might happen due to smooth surface. Etc hing double sided board for
+
+     the roughened surface purpose is one of optional measures.
+
+2.6 Drilling
+
+   It is better to use new drill to process.
+
+   The stack-up thickness is recommended to be no more than 2 pieces / stack (calculated according to the
+
+    core thickness of 1.6mm/ piece).
+
+   Suggested hit count to be 1000-2000 holes.
+
+   The drilling feed rate is suggested to be lowered by 15-20% compared with normal FR-4 drilling parameter.
+
+2.7 Baking after drilling
+
+   Suggested baking after drilling condition: 170-180℃/3h, pay attention that the laminate cannot be in
+
+    direct contact with the heat source.
+
+   Bake before resin plug hole and after back drilling: 170-180℃/2-3h.
+                                                                       CN-PG-2203-02-Autolad1G-Autolad1GB
+2.8 Desmear
+
+   It is suggested that the specific parameters should be set according to the actual PCB structure (board
+
+    thickness, hole size), and all kinds of structural boards should be fully evaluated in detail to determine the
+
+    best matching desmear conditions and parameters.
+
+   Desmear effect should refer to the inner copper connection with hole wall crosssection to make sure there
+
+    is no resin residue after desmear process.
+
+   Once plasma or horizontal desmear is recommended.
+
+   The specific desmear conditions are related to the equipment, desmear solution type, PCB thickness or
+
+    hole area.
+
+   Under the premise of full loading, it is recommended that the thicker the PCB thickness, the longer the
+
+    plasma time.
+
+2.9 Solder mask
+
+   Suggested baking condition before applying solder mask: 130℃/2-4h.
+
+   Be careful of panel distortion or warpage due to improper stacking at solder mask post-baking process.
+
+   Not suggested for solder mask rework treatment, which will show white spot phenomenon after the solder
+
+    mask rework process.
+
+2.10 HAL
+
+   Suitable for lead-free HAL process.
+
+   For the structure with thick copper and large copper surface (or thick copper plating), the temperature is
+
+    high during lead-free tin spraying, resulting in excessive thermal stress, which is prone to white spots
+
+    between large copper surfaces, copper warping and other problems. The improvement measures are as
+
+    follows:
+
+   1. Reduce the tin spraying temperature, shorten the tin spraying time, and reduce the thermal stress
+
+    generated during tin spraying;
+
+   2. Before tin spraying, pre bake the plate under the condition of 140-150℃/2h, and spray tin immediately
+
+    to remove the moisture accumulated on the plate surface, which can reduce the probability of white spots;
+
+   3. Avoid too large tin spraying surface, or increase the thickness of green oil appropriately, which can well
+
+    cushion the thermal stress generated during tin spraying;
+
+   4. The large copper surface structure is designed as a grid structure.
+
+2.11 Punching
+
+   Suggested to use milling machine for processing and reduce the travel speed, not suitable for
+
+    punching/beer board, which may cause blast edge, blast hole problem.
+
+2.12 Package
+                                                                       CN-PG-2203-02-Autolad1G-Autolad1GB
+   To prevent moisture effect on the heat resistance of base material, suggest baking finished PCB boards
+
+    at 150℃/4-6h before packaged.
+
+   For long time storage, it’s recommended to wrap by aluminum foil vacuum package.
+
+
+
+3. PWB Soldering
+3.1 Shelf life of PWB
+
+   3 months with aluminum foil package.
+
+   Baking at 125℃/4-6h before assembly is recommended, especially after stored for more than 3 months.
+
+3.1 Reflow
+
+   Suitable for standard lead-free reflow process
+
+3.2 Manual soldering suggestion
+
+   For separated or connected pad, manual soldering temperature should range 350-380℃.
+
+   Single point welding time: less than 3s.
+
+
+
+This process guide is for reference only! Should you have any questions when using Autolad3G/Autolad3GB
+
+product, please feel free to contact us. Shengyi will support you with prompt and effective service.
+
+
+
+
+                                                                      CN-PG-2203-02-Autolad1G-Autolad1GB
+

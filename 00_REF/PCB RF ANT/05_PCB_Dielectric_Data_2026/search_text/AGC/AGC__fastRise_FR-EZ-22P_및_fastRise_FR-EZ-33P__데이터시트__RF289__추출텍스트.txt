@@ -1,0 +1,142 @@
+fastRise™ EZ BONDPLIES
+Low temperature curing, flexible prepreg/bondply
+
+ Benefits
+      •    FR4 lamination temperatures
+      •    Low DK enables reduced PWB thickness for the same impedance
+      •    Thermosetting prepreg will not reflow
+      •    Fiberglass-free prepreg
+      •    Compatible with conventional lamination processes
+      •    Can be combined with any core material
+      •    Laser Ablatable
+
+ Applications
+      •    High Speed Flex Cables
+      •    Thin Multilayers
+      •    ATE testing
+      •    mmWave Antenna/Automotive
+
+
+fastRise™ EZ is a low temperature curing, low loss flexible prepreg/bondply series of products. FR-EZ is designed to enable the
+manufacture of complex rigid/flex PWBs containing polyimide (DuPont™ Pyralux® AP/TK flexible circuit materials), LCP or PTFE cores
+without excessive movement. fastRise™ EZ is flexible when thin and can be combined with various flexible or rigid copper clad core
+materials. FR-EZ is based on a thermosetting adhesive and PTFE film. FR-EZ has low moisture absorption and is capable at high
+frequencies due to its low dissipation value. fastRise™ EZ bonds well to AGC’s PTFE cores and to otherwise difficult substrates such
+as Pyralux® AP polyimide, PEEK, LCP, flat planes of PTFE or hydrocarbon (synthetic rubber). AGC’s PTFE-rich TLY 5 and other non-
+reinforced PTFE-rich substrates can be well bonded with FR-EZ.
+
+fastRise™ EZ’s low loss enables the design of flexible high speed cables and rigid RF/digital multilayers without the uncertainties and
+costs associated with the high temperature lamination of PTFE or LCP materials. FR‑EZ can also be used to replace cable harnesses
+with denser flex circuits. The low moisture absorption of 0.2% is very attractive vs. conventional polyimides.
+
+FR-EZ can be sequentially laminated, has better bonding capabilities with copper than other RF prepregs and will yield higher peel
+strengths in a foil lamination. The low DK of FR-EZ is advantageous in flex applications to reduce thickness while maintaining the same
+impedance. The low modulus of FR-EZ allows for more ductility in a thicker multilayer. The low dissipation values of FR‑EZ is an option
+for any multilayer stackup where pure packages of other materials have fabrication challenges.
+
+                                            fastRise™ EZ for Traditional Rigid-Flex Builds
+fastRise™ EZ is well suited for higher layer count flex and rigid-flex builds as a replacement for bonding sheets utilizing acrylic adhesives.
+Acrylic adhesives in flexible circuitry are a known source of processing challenges that can lead to reliability concerns. Most of these
+difficulties are encountered in the processes from via formation through via metallization, as the acrylic is very sensitive to drill
+parameters, plasma parameters and some chemistries. fastRise™ EZ eliminates these concerns by using a flexible thermoset resin
+system and additionally eliminates the need for a “bikini” approach to rigid-flex stripline structures.
+
+                                              What Does This Mean for the Fabricator?
+Multilayer Flex
+• Increased yields from microsection evaluation
+• Greater via reliability
+
+Rigid-Flex
+• Eliminate the need to pre-rout bond-ply before lamination
+• Eliminate the need for no-flow prepreg and routing of that prepreg within a multilayer flex structure in a rigid-flex
+• Eliminate expensive custom tooling for lamination
+FR-EZ / PYRALUX®                                                                      FR-EZ / PYRALUX® TK
+
+
+
+
+Change in insertion loss with moisture uptake after water immersion for various stripline test vehicles (Pyralux® TK/TK, Pyralux® AP/LF, Pyralux®
+TK/FREZ and Pyralux® AP/FREZ). Pyralux® is a registered trademark of E. I. du Pont de Nemours and Company
+Typical Values
+            Properties                   Conditions            FR-EZ-22P        FR-EZ-33P           Unit                     Test Method
+                 General Properties
+ Overall Thickness                                                 2.2              3.3              mil
+ Carrier Film Thickness                                             1                1               mil
+ Center Carrier Film Type                                         PTFE             PTFE
+                  Electrical Properties
+ Dielectric Constant                       @ 10 GHz              2.40              2.50                         IPC-650 2.5.5.5.1
+ Dissipation Factor                        @ 10 GHz             0.0018            0.0024                        IPC-650 2.5.5.5.1
+ Volume Resistivity                                            1.5 x 109         1.5 x 109      Mohms/cm        IPC-650-2.5.17E
+ Surface Resistivity                                            6 x 106           6 x 106       Mohms/cm        IPC-650-2.5.17E
+ Dielectric Breakdown                                             35                35             kV           ASTM D149-09A
+ Dielectric Strength                                             2237              3229           V/mil         ASTM D149-09A
+                  Thermal Properties
+ Thermal Conductivity                                             0.33             0.33           W/M*K         IPC-TM-650 2.4.50
+                                               X                  109                97           ppm/°C
+ CTE (RT to 125 °C) *                          Y                  149               165           ppm/°C        IPC-650 2.4.41
+                                               Z                  137               137           ppm/°C
+ Tg (TMA)                                                          ND               ND              °C          IPC-650 2.4.24.4A
+                                          2% wt. loss             410               395             °C
+ Td                                                                                                             IPC-650 2.4.24.6 (TGA)
+                                          5% wt. loss             445               440             °C
+ TcK                                    (-55 to 100 °C)           -112              -78           ppm/°C        IPC-650 2.5.5.5.1
+                  Mechanical Properties
+                                                                    5.1             5.1            lbs/in
+                                                                                                                  IPC-650 2.4.9E
+ Peel Strength                        after thermocycling           4.8             4.8            lbs/in
+                                     chemical resistance            7.2             7.2            lbs/in         IPC-650 2.3.2, 2.4.9
+                                               MD                  0.85            0.85           mils/in
+  Dimensional Stability                                                                                           IPC-650 2.2.4 (TS)
+                                               CD                  0.61            0.61           mils/in
+                                               MD                  996             1194              psi
+  Tensile Strength                                                                                                ASTM D 902
+                                               CD                  989             1091              psi
+                                               MD                   33              23               psi
+  Tensile Modulus                                                                                                 ASTM D 902
+                                               CD                   20              22               psi
+                                      0.250 inch mandrel           293              110            Cycles
+                                      0.199  inch mandrel          187              72             Cycles
+  Flexural Fatigue and Ductility1                                                                                 ASTM E796 / IPC 2.4.3.1
+                                      0.125 inch mandrel           129              55             Cycles
+                                      0.075 inch mandrel            50              24             Cycles
+                                               MD                  2860            2900              psi
+  Flexural Strength                                                                                                            IPC-650 2.4.4
+                                               CD                  2880            2940              psi
+  Flexural Modulus                             MD                128,000         127,000             psi                       IPC-650 2.4.4
+                                               CD                124,000         126,000             psi
+                   Chemical / Physical Properties
+  Moisture Absorption                                              0.13            0.14              %            IPC-650 2.6.2.1
+  Density                              (Specific Gravity)          1.68            1.59            g/cm3                        ASTM D 792
+  Resin Flow                                                      8 – 14          12 - 22            %            IPC-650 2.3.17
+                                               MD                   68              10               %
+  Ultimate Elongation                                                                                             ASTM D 902
+                                               CD                   12              11               %
+  Fungus Resistance                                             no growth       no growth                                      IPC-650-2.6.1
+  Moisture / Insulation
+                                                                 100,000         100,000          Mohms           IPC-650 2.6.3.2
+  Resistance
+* All test data provided are typical values and not intended to be specification values. For review of critical specification tolerances, please contact a
+   company representative directly.
+* Please contact AGC for availability of additional thicknesses, other sizes.
+1 RH copper, double sided, 4 mil dielectric, 8 oz. weight, cycles to failure
+
+* 2nd TMA heating, cured at 420°C
+ND - Not Detectable
+                                                         Water Soak Testing
+
+
+
+
+Insertion loss testing of various stripline test vehicles (Pyralux TK/TK, Pyralux AP/LF, Pyralux TK/FREZ and Pyralux AP/FREZ) before and
+after water immersion.
+
+
+
+
+                                               Photo credit: nasa.gov
+
+
+
+ AGC Inc. 2025-01
+ agc-ml.multimaterial@agc.com
+

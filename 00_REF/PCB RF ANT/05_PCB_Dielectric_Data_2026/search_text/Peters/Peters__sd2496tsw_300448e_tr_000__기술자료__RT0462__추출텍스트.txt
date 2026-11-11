@@ -1,0 +1,250 @@
+                              Solder resist SD 2496 TSW
+                              The solder resist SD 2496 TSW enables so-called complete soldering with
+                              simultaneous selective soldering.
+                               High definition in screen printing
+                               excellent adhesion
+                               suitable for “static-flex” circuits
+                               excellent yellowing resistance even after lead-free reflow soldering and tempering
+                                 processes
+                               low ΔE values
+                               high remission
+                               improves the light emission of LEDs through very high reflectivity
+                               very good resistance to weathering (QUV accelerated weathering test)
+                               halogen-free in accordance with JPCA-ES01-2003/IEC 61249-2-21
+                               basically compatible with lead-free soldering processes
+                               UL Recognised Component: best flame class V-0 acc. to UL 94
+                                 (UL File No. E80315)
+                               no brittleness with multiple hardening, e.g. subsequent prints
+
+                              Characteristics
+                               Colour/appearance                                              white
+                               Solids content of mixture
+                               DIN EN ISO 3251 (1 h, 125 °C [257 °F],                    70  2 by weight
+                               1 g weighed quantity)
+LP 251806 E-3 / 300448e_000
+
+
+
+
+                               Viscosity* of mixture at 20 °C [68 °F],
+                                                                                       31 500 ± 4 500 mPas
+                               DIN EN ISO 3219
+                               Density at 20 °C [68 °F], ISO 2811-1
+                               Comp. A                                                  1.43 ± 0.05 g/cm³
+                               Comp. B                                                  1.05 ± 0.05 g/cm³
+                               Mixture                                                  1.41 ± 0.05 g/cm³
+                               Pot life of mixture
+                                                                                         approx. 8 hours
+                               (at 18 – 23 °C) [64.4 - 68 °F], set-up quantity 500 g
+
+                                    * measured with Haake RS 600, C 20/1°, D = 100 s-1,
+                                      viscosity measuring unit supplied by Thermo Fisher Scientific, www.thermofisher.com
+
+                                    Indices: SD = screen printing, TSW = thermally stable white
+Technical Report SD 2496 TSW
+
+
+Optical properties
+              Property                                 Test method                                 Result
+Remission at 460 nm                   light sourceLichtart D65, 45°/0°, 10° standard                91 %
+Brightness (L index)                          observer, 40 µm layer thickness                          95
+ΔE after thermal stress
+                                                                                                      < 1*
+(1000 h at 125 °C [257 °F])
+ΔL after thermal stress
+                                                        ISO 7724-3                                    < 1*
+(1000 h at 125 °C [257 °F])
+ΔE after UV stress (1000 h
+                                                                                                      < 1*
+xenon arc radiation, 550 W/cm²)
+* The highest quality (least yellowing) corresponds to a colour change of ΔE < 1. The grades in descending
+    order to the lowest quality correspond to colour changes in ΔE as follows:
+    ΔE = 0–1: normally not visible
+    ΔE = 1–2: slight yellowing, only visible to the trained eye
+    ΔE = 2–3,5: medium change, visible to the untrained eye
+    ΔE = 3,5–5: marked change
+    (applies in the same manner to ΔL for changes in brightness)
+
+
+Physical and mechanical properties
+              Property                            Test method                                 Result
+                                     IPC-SM-840E, 3.5.2.1                                 class H and T
+Adhesion
+                                     IPC-SM-840E, 3.6.2.6 (ink on ink)                    class H and T
+                                     DIN EN ISO 2409
+Cross hatch                          on copper                                                 Gt 0
+                                     on FR 4                                                   Gt 0
+Pencil hardness                      IPC-SM-840E, 3.5.1                                       ≈4H
+                                     Mandrel bending acc. to DIN 53152,
+Flexibility                                                                              1,5 mm mandrel
+                                     polyimide film, thickness: 50 µm
+                                     IPC-SM-840E, 3.6.1.1
+                                     Isopropanol                                             passed
+                                     Isopropanol : deionised
+                                     water (75 : 25)                                         passed
+Resistance to solvents
+                                     D-Limonene                                              passed
+                                     10% alkaline cleaning agents                            passed
+                                     Monoethanolamine                                        passed
+                                     Deionised water                                         passed
+                                     IPC-SM-840E, Pkt. 3.7.2                    passed: 20 s at 265 °C [509 °F]
+Solder bath resistance               IPC-TM-650, 2.6.8                         passed: 10 s at 288 °C [550.4 °F]
+                                     UL 94                                     passed: 20 s at 288 °C [550.4 °F]*
+
+        * With a solder bath resistance of 20 s at 288 °C [550.4 °F], the solder resist fulfils the required
+          temperature resistance for lead-free soldering.
+
+
+
+
+2                                                                                                     www.peters.de
+                                                                             Technical Report SD 2496 TSW
+
+
+Electrical properties
+              Property                           Test method                               Result
+ Dielectric strength                 IPC-TM-650, 2.5.6.1                                96 kV/mm
+ Surface resistance                  DIN EN 62631-3-2                                ≥ 2 x 1014 Ohm
+ Volume resistivity                  DIN EN 62631-3-1                              ≥ 5 x 1015 Ohm x cm
+ Moisture and insulation resistance IPC-SM-840E, 3.9.1                                class H and T
+ Comparative Tracking Index          DIN EN IEC 60 112,
+                                                                                          CTI ≥ 600
+ (CTI, Tracking resistance)          on FR 4 base material with CTI 250
+
+Optimum electrical insulation values can only be achieved when all flux residues are removed
+thoroughly from the printed circuit boards.
+
+Processing
+            Please read this technical report and the publications listed below carefully before using the
+            product. These sheets are enclosed with the first shipment of product or sample.
+            The corresponding material safety data sheet contains detailed information and characteristics
+            on safety precautions, environmental protection, transport, storage, handling and waste
+            disposal.
+            Technical information TI 15/3 “Protective measures when using chemicals including lacquers,
+            casting compounds, thinners, cleaning agents”
+            Technical information TI 15/10 “Processing of 2-pack systems“
+
+            Technical information TI 15/13 “Precleaning in the pcb fabrication process“
+ Due to the large number of fluxes available on the market, check their compatibility, especially
+  with low-solid fluxes.
+ When using chemical finishing processes, check the resistance of the solder resist in
+  preliminary tests. Dry film thicknesses > 20 µm are recommended.
+ Please note that the solder resist is not resistant to aggressive cleaning agents and solvents.
+  However, the solvent resistance according to IPC-SM-840E, 3.6.1.1, is fulfilled.
+Since the many different permutations make it impossible to evaluate the whole spectrum
+(parameters, reactions with materials used, chemical processes and machines) of processes and
+subsequent processes in all their variations, the parameters we recommend are to be viewed as
+guidelines only that were determined in laboratory conditions. We advise you to determine the
+exact process limitations within your production environment, in particular as regards compatibility
+with your specific follow-up processes, in order to ensure a stable fabrication process and products
+of the highest possible quality.
+The specified product data is based upon standard processing conditions/test conditions of the
+mentioned norms and must be verified if necessary while observing suitable test conditions on
+processed products.
+Feel free to contact our application technology department (ATD) if you have any questions or for a
+consultation.
+
+
+
+
+www.peters.de                                                                                                3
+Technical Report SD 2496 TSW
+
+Mixing
+          Component A : Hardener (Component B) = 100 : 2 (parts by weight)
+
+On the labels of our containers, you will find the volume [L] and weight [kg]. The mixing ratio refers
+to the weight.
+
+Adjustment of viscosity
+The solder resist SD 2496 TSW is adjusted in such a manner that it can normally be processed in
+the condition supplied. To reduce its viscosity for processing purposes
+
+    DIL    dilute with universal thinner UV 5000 or universal retarder UZ 5100
+
+When using the retarder, the screen open time is extended at the same time.
+
+Auxiliary products recommended
+ ELPESPEC® screen opener HP 5200
+    highly active spray for dissolving dried screen printing inks from the screen; silicone- and
+    grease-free, thus no surface defect/dewettings or smearing effects to be expected
+ ELPESPEC® anti-static spray HP 5500
+    prevents and eliminates electrostatic discharge occurring during screen printing; silicone- and
+    grease-free
+ ELPESPEC® cleaning agent R 5899
+    for screen washing equipment, simply and safely to handle, no labelling in accordance with the
+    German dangerous goods regulations required, extremely high flash point (> 100 °C [> 212 °F]),
+    low vapour pressure < 0.1 hPa at 20 °C [68 °F], thus not affected by the EU-VOC regulation
+    1999/13/CE
+ ELPESPEC® cleaning agent R 5821
+    for the cleaning of equipment and work tools, high flash point (+32 °C [89.6 °F])
+ ELPESPEC® cleaning agent R 5817
+    for the manual cleaning of screens and tools
+
+Screen printing
+ Ensure that the surface to be coated is clean, dry and grease/oxide-free and that copper surfaces
+  preferably have an average surface roughness of 2 µm.
+                               Recommended screen printing parameters
+                      Polyester 43-80 to 77-48
+Screen fabric
+                      (acc. to old nomenclature polyester 43-77 T [lines/cm]) or corresponding steel fabric
+Screen tension        at least 25 N/cm or according to the instructions of the screen mesh manufacturer
+Squeegee              75-80 Shore-A hardness
+Squeegee profile      right angled
+Squeegee angle        approx. 75 °C
+
+
+
+
+4                                                                                            www.peters.de
+                                                                                 Technical Report SD 2496 TSW
+
+Drying/curing
+ Cure the solder resist SD 2496 TSW in a convection dryer under the following conditions:
+  30 min* at 150 °C [302 °F] or 60 min* at 130 °C [266 °F].
+          * Object holding time: The curing time starts when the panels reach the curing temperature.
+SD 2496 TSW is also suitable for curing in conveyorised IR lines.
+ Determine the optimum temperature profile of the system in preliminary tests.
+
+Packaging
+The packing units available are indicated in our offer which we will send you upon request.
+
+Shelf life and storage conditions
+                 Shelf life: In sealed original containers at least 4 months
+         +25°C
+
+
+                 Storage conditions: +5 °C to +25 °C [+41 °F to +77 °F]
+  +5°C
+
+
+
+
+For warehousing reasons, isolated cases may occur where the shelf life upon shipment is less than
+the shelf life indicated in this technical report. However, it is ensured that our products have at
+least two-thirds of their shelf life remaining when they leave our company. Labels on containers
+show shelf life and storage conditions.
+
+Disclaimer
+All descriptions and images of our goods and products contained in our technical literature,
+catalogues, flyers, circular letters, advertisements, price lists, websites, data sheets and brochures,
+and in particular the information given in this literature are non-binding unless expressly stated
+otherwise in the Agreement. This shall also include the property rights of third parties if applicable.
+The products are exclusively intended for the applications indicated in the corresponding technical
+data sheets. The advisory service does not exempt you from performing your own assessments, in
+particular as regards their suitability for the applications intended. The application, use and
+processing of our products and of the products manufactured by you based on the advice given by
+our Application Technology Department are beyond our control and thus entirely your
+responsibility. The sale of our products is effected in accordance with our current terms of sale and
+delivery.
+Any questions? We would be pleased to offer you advice and assistance in solving your problems.
+Samples and technical literature are available upon request.
+
+Lackwerke Peters GmbH & Co. KG              Internet: www.peters.de    Phone +49 2152 2009-0
+Hooghe Weg 13, 47906 Kempen, Germany        E-Mail: peters@peters.de   Fax   +49 2152 2009-70
+
+
+
+
+www.peters.de                                                                                              5
+

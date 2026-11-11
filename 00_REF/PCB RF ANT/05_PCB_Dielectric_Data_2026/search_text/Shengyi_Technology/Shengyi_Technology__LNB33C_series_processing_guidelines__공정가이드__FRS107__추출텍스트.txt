@@ -1,0 +1,242 @@
+ PROCESSING GUIDELINES
+
+
+
+           Laminate: LNB33C
+
+High Frequency CH Material for 5G Antenna
+
+
+
+
+                                   CN-PG-2006-01-LNB33C-EN
+This product process guideline uses IPC-4103 Standard as a reference, and Shengyi make some changes
+according to the product characteristics of the actual situation as to making it more suitable for the Shengyi
+LNB33C product use.
+
+
+
+1. Storage condition
+1.1 Laminate
+
+1.1.1 Storage condition
+
+   Stored in platform or shelf in original packages, avoid improper outside force and any deformation.
+
+1.1.2 Storage environment
+
+   Laminate sheets should be stored in ventilated, dry at room temperature under environment control,
+
+    avoiding direct sunlight, rain and corrosive gas (storage condition has direct and important effect to the
+
+    quality of material).
+
+   The shelf life of laminate maintains two years for double sided and one year for single sided at above
+
+    proper storage conditions. All internal properties within shelf life meet IPC 4103 specification sheet.
+
+1.1.3 Operation
+
+   Wear clean gloves and carefully move the cores. Collisions and sliding will cause damage of the cores.
+
+    Bare hands action will cause contamination to copper foil surface. These defects are likely to cause
+
+    adverse effects.
+
+
+
+2. PWB Processing
+2.1 Panel cutting
+
+   Sawing (preferred) and shearing method is recommended. Be careful of potential edge cracks when using
+
+    roller cutter.
+
+2.2 Thin core baking
+
+   Thin core baking depends on actual need. If bake after cutting, it’s recommended to rinse cutting panels
+
+    first, to remove resin powder brought by cutting and avoid etching problem.
+
+   Baking condition: 150℃/1-3h, be sure to avoid contact directly with heater.
+
+2.3 Brown oxide
+
+   Recommend to use brown oxide for inner layer treatment. To avoid absorption of moisture, it is advised
+
+    to bake on the shelf after brown oxide process. Baking condition: 120℃/1h. After baking, pressing process
+
+    should be done within 4 hours.
+
+2.4 Lay-up
+
+   Ensure prepreg direction of warp and fill at lay-up process. Avoid prepreg reversal or overturn in case of
+
+
+                                                                                  CN-PG-2006-01-LNB33C-EN
+    multilayer board distortion after press.
+
+2.5 Press process
+
+   Pressing process depends on the type of the bonding sheet.
+
+2.6 Drilling
+
+   New drill bit is recommended with max 4 panels/stack. Use new drill and reduce the max hit count to
+
+    ensure better hole wall quality. Melamine back-up board is recommended and clean holes with high
+
+    pressure air after drill. The drilling parameters as follows are for reference.
+
+                                               LNB33C Drilling parameters
+
+               Drill dia.
+                             Max Hit           Speed KRPM          Feed IPM             Return IPM
+                 mm
+                0.250          1200                 108                21                  300
+                0.350          1000                 98                40.6                 500
+                0.500          1000                 95                50.4                 800
+                0.600          1000                 90                47.6                 800
+                0.750          1000                 75                50.4                 800
+                0.850          1000                 68                52.5                 800
+                0.950          1000                 62                52.5                 800
+                1.000          800                  60                52.5                 800
+                1.200          800                  55                 68                  800
+                1.400          800                  50                 68                  800
+                1.600          800                  45                 80                  800
+                2.000          500                  38                 70                  800
+                3.000          100                  28                 52                  500
+                3.175          100                  28                 45                  300
+                4.000          100                  25                 25                  300
+                5.000          100                  22                 25                  300
+                6.000          200                  20                 10                  300
+
+                                       LNB33C Hybrid PCB drilling parameters
+
+           Drill dia. mm       Max Hit           Speed KRPM         Feed IPM             Return IPM
+
+                 0.250          1200                 108                24                  300
+                 0.350          1000                  98               46.4                 500
+                 0.351          1000                  98                44                  500
+                 0.500          1000                  95               57.6                 800
+                 0.600          1000                  90               54.4                 800
+                 0.750          1000                  75               57.6                 800
+                 0.850          1000                  68                60                  800
+                 0.950          1000                  62                60                  800
+                 1.000           800                  60               60.5                 800
+                                                                                      CN-PG-2006-01-LNB33C-EN
+                 1.001          800                60                 56                 800
+                 1.200          800                55                 68                 800
+                 1.600          800                45                 80                 800
+                 2.000          500                38                 70                 800
+                 3.000          100                28                 52                 500
+                 3.175          100                28                 45                 300
+                 4.000          100                25                 25                 300
+                 5.000          100                22                 25                 300
+                 6.000          200                20                 10                 300
+
+   For dense holes or hole size < 0.6mm, it is recommended to use LE aluminum cover sheets.
+
+   The fixing and cushioning effects of entry and back-up boards should be taken into account in drilling
+
+    process, so as to reduce burrs caused by chip removal.
+
+   Mechanical deburr by brushing after drilling is not recommended. If have to brush, the parameters with
+
+    the least effect on the damage of laminate/copper surface should be selected, in case of reduction of the
+
+    bonding strength of copper foil.
+
+2.7 Bake after drilling
+
+   Baking after drilling is not necessary, and based on actual needs for application.
+
+   Baking condition: 150℃/1-3h, be sure to avoid contact directly with heater.
+
+2.8 Desmear
+
+   The chemical resistance of the material is good due to its composition and structure. It’s recommended
+
+    to go through 1x plasma or 1x plasma + 1x fast chemical desmear, with appropriate weight loss of
+
+    0.3g/cm3. The specific parameters should be set according to the actual PCB structure (thickness, hole
+
+    size and so on).
+
+   The plating copper adhesive of slot holes should be kept attention when horizontal desmear.
+
+2.9 PTH
+
+   Horizontal PTH process is preferred for through hole structure, please select the best way according to
+
+    PCB structure.
+
+   For vertical PTH, the vibration of the equipment and the moving speed of hanging shelf may cause internal
+
+    stress and warpage onto base material, which is a comprehensive effect and corresponds to the PCB
+
+    structure.
+
+2.10 Solder mask
+
+   To reach good bonding performance, mechanical brushing on material surface is not necessary before
+
+    solder mask
+
+   Solder mask wetting time should be double compared to FR-4, so as to increase solder mask adhesive.
+
+   Solder mask rework should be avoided, in case of copper adhesive reduction or material surface damage.
+                                                                                  CN-PG-2006-01-LNB33C-EN
+2.11 Rework
+
+   Process reworks like chemical Tin, solder mask would reduce the bonding strength between base material
+
+    and copper foil, which may result in delamination or material surface damage. Therefore, process rework
+
+    should be avoided.
+
+2.12 HAL
+
+   Suitable for lead free HAL.
+
+2.13 Punching/Routing
+
+   Routing is advised and not suitable for punching process.
+
+2.14 Packaging
+
+   Baking before packaging is advised, with condition 125-135℃/1-3H, in case of the heat resistance
+
+    reduction due to moisture.
+
+   Note: the base material color will deepen after baking, which is a normal phenomenon.
+
+   Aluminum packing is advised.
+
+
+
+3. PWB Soldering
+3.1 Shelf life of PWB
+
+   3 months with Aluminum film package.
+
+   Bake at 125℃/1~3h before assembly is recommended, especially when stored more than 3 months.
+
+   Note: the base material color will deepen after baking, which is a normal phenomenon.
+
+3.1 Reflow
+
+   Suitable for lead free reflow process
+
+
+
+
+This process guide is for reference only! Should you have any questions, please feel free to contact us.
+
+ShengYi will support you with prompt and effective service.
+
+
+
+
+                                                                             CN-PG-2006-01-LNB33C-EN
+

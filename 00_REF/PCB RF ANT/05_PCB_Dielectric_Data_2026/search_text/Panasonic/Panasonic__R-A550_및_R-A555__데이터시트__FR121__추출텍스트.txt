@@ -1,0 +1,131 @@
+   Data Sheet
+Low Dk Halogen-free
+             Multi-layer Materials
+                                          Laminate R-A555
+                                          Prepreg R-A550
+                                    Any letters with parentheses ( ) at the end of a part
+                                    number are for identification code in our company
+                                    and are not included in the part numbers registered
+                                    for UL certification.
+
+
+
+
+                Jul. 2024   No.240724
+                                                                                                                                             No.; 240724
+                                   General Properties / Laminate R-A555
+                                                                                                                                  Typical Values
+                                  Items                                      Units             Test Method          Condition
+                                                                                                                                   R-A555(W)
+                                                                                                   TMA              As received        160
+                                  Glass Transition Temp ( Tg )                ˚C
+                                                                                                   DMA              As received        200
+
+                              Thermal Decomposition Temp ( Td )               ℃                    TGA              As received        380
+
+                            Time to Delam                  Without Cu         Min           IPC TM-650 2.4.24.1     As received        > 60
+                               ( T288 )                       With Cu         Min           IPC TM-650 2.4.24.1     As received        > 60
+      THERMAL
+
+                                                              X - axis      ppm / C          IPC TM-650 2.4.24         < Tg          11 – 13
+
+                              CTE : α1                        Y - axis      ppm / C          IPC TM-650 2.4.24         < Tg          13 – 15
+
+                                                              Z - axis      ppm / C          IPC TM-650 2.4.24         < Tg            37
+
+                              CTE : α2                        Z – axis      ppm / C          IPC TM-650 2.4.24         > Tg            170
+
+                                        Volume Resistivity                 MΩ - cm          IPC TM-650 2.5.17.1     C-96/35/90       1 x 10 9
+
+                                        Surface Resistivity                   MΩ            IPC TM-650 2.5.17.1     C-96/35/90       1 x 10 8
+
+                          Dielectric Constant                @ 1GHz            -            IPC TM-650 2.5.5.9      C-24/23/50         3.4
+     ELECTRICAL
+                          ( Dk ) ( RC : 70% )              @ 10GHz             -            IPC TM-650 2.5.5.5      C-24/23/50         3.2
+
+                          Dissipation Factor                 @ 1GHz            -            IPC TM-650 2.5.5.9      C-24/23/50        0.008
+                          ( Df ) ( RC : 70% )              @ 10GHz             -            IPC TM-650 2.5.5.5      C-24/23/50        0.011
+
+                                          Water Absorption                    %             IPC TM-650 2.6.2.1       D-24/23           0.07
+      PHYSICAL
+                                            Flammability                       -                  UL 94V            C-48/23/50       94V-0†1
+
+†1 The value represents Panasonic internal test results based on the UL94 test method for flammability and is NOT intended
+   to indicate that the product is UL certified. If UL certification is required, use R-A555W for the UL recognized grades.
+   Sample thickness ; 32 mil ( 0.8 ㎜ )
+   * The data in the above table represents typical values for your reference and are not guaranteed values.
+
+                                                                                                                                                 1
+                                                                                                                                            No.; 240724
+                      Dielectric Properties / Laminate R-A555 Dk, Df
+1GHz ; IPC TM650-2.5.5.9                 2GHz-10GHz ; IPC TM650-2.5.5.5
+
+            Actual
+                                          Typical                     Typical Dk                                     Typical Df
+ Core     Thickness       Cloth
+                                   ply     Resin
+ Type                     Style
+                                          Content
+          mil    mm                                  1GHz 2GHz 4GHz 6GHz 8GHz 10GHz 1GHz                    2GHz    4GHz    6GHz    8GHz 10GHz
+
+ 1.6      1.6   0.040     1037      1       66        3.5     3.5    3.5     3.4     3.4     3.3    0.008   0.010   0.010   0.010   0.010   0.011
+
+ 2.0      2.0   0.050     1037      1       72        3.4     3.4    3.4     3.3     3.3     3.2    0.008   0.010   0.010   0.010   0.010   0.011
+
+ 2.0      2.0   0.050     106       1       68        3.4     3.4    3.4     3.3     3.3     3.2    0.008   0.010   0.010   0.010   0.010   0.011
+
+ 2.0      2.0   0.052     1067      1       61        3.6     3.6    3.6     3.5     3.5     3.4    0.007   0.009   0.009   0.009   0.009   0.010
+
+ 2.5      2.4   0.062     1080      1       54        3.8     3.8    3.8     3.7     3.7     3.6    0.007   0.009   0.009   0.009   0.009   0.010
+
+ 2.3      2.4   0.062     1078      1       54        3.8     3.8    3.8     3.7     3.7     3.6    0.007   0.009   0.009   0.009   0.009   0.010
+
+
+
+
+* The data in the above table represents typical values for your reference and are not guaranteed values.
+
+                                                                                                                                                2
+                                                                                                                                               No.; 240724
+                         Dielectric Properties / Prepreg R-A550 Dk, Df
+1GHz ; IPC TM650-2.5.5.9                2GHz-10GHz ; IPC TM650-2.5.5.5
+                        Typical
+ Cloth      Resin                                           Typical Dk                                                  Typical Df
+                       Thickness
+ Style   Content (%)
+                          (um)       1GHz      2GHz      4GHz      6GHz      8GHz      10GHz     1GHz         2GHz    4GHz     6GHz    8GHz      10GHz
+             76            33         3.3       3.3       3.3       3.2       3.2       3.1      0.008        0.010   0.010    0.010   0.010      0.011
+ 1017
+             78            36         3.3       3.3       3.3       3.2       3.2       3.1      0.008        0.010   0.010    0.010   0.010      0.011
+             68            38         3.4       3.4       3.4       3.3       3.3       3.2      0.008        0.010   0.010    0.010   0.010      0.011
+             70            41         3.4       3.4       3.4       3.3       3.3       3.2      0.008        0.010   0.010    0.010   0.010      0.011
+ 1027        73            46         3.3       3.3       3.3       3.2       3.2       3.1      0.008        0.010   0.010    0.010   0.010      0.011
+             75            51         3.3       3.3       3.3       3.2       3.2       3.1      0.008        0.010   0.010    0.010   0.010      0.011
+             77            55         3.3       3.3       3.3       3.2       3.2       3.1      0.008        0.010   0.010    0.010   0.010      0.011
+             67            42         3.5       3.5       3.5       3.4       3.4       3.3      0.008        0.010   0.010    0.010   0.010      0.011
+             69            46         3.4       3.4       3.4       3.3       3.3       3.2      0.008        0.010   0.010    0.010   0.010      0.011
+ 1037        72            51         3.4       3.4       3.4       3.3       3.3       3.2      0.008        0.010   0.010    0.010   0.010      0.011
+             74            56         3.3       3.3       3.3       3.2       3.2       3.1      0.008        0.010   0.010    0.010   0.010      0.011
+             77            64         3.3       3.3       3.3       3.2       3.2       3.1      0.008        0.010   0.010    0.010   0.010      0.011
+             72            54         3.4       3.4       3.4       3.3       3.3       3.2      0.008        0.010   0.010    0.010   0.010      0.011
+ 106
+             75            62         3.3       3.3       3.3       3.2       3.2       3.1      0.008        0.010   0.010    0.010   0.010      0.011
+             67            57         3.5       3.5       3.5       3.4       3.4       3.3      0.008        0.010   0.010    0.010   0.010      0.011
+             69            61         3.4       3.4       3.4       3.3       3.3       3.2      0.008        0.010   0.010    0.010   0.010      0.011
+ 1067
+             72            69         3.4       3.4       3.4       3.3       3.3       3.2      0.008        0.010   0.010    0.010   0.010      0.011
+             74            75         3.3       3.3       3.3       3.2       3.2       3.1      0.008        0.010   0.010    0.010   0.010      0.011
+             60            70         3.6       3.6       3.6       3.5       3.5       3.4      0.007        0.009   0.009    0.009   0.009      0.010
+ 1078
+             62            75         3.6       3.6       3.6       3.5       3.5       3.4      0.007        0.009   0.009    0.009   0.009      0.010
+             60            69         3.6       3.6       3.6       3.5       3.5       3.4      0.007        0.009   0.009    0.009   0.009      0.010
+ 1080
+             62            73         3.6       3.6       3.6       3.5       3.5       3.4      0.007        0.009   0.009    0.009   0.009      0.010
+
+
+
+
+  * The data in the above table represents typical values for your reference and are not guaranteed values.
+
+                                                                                                                                                   3
+

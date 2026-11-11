@@ -1,0 +1,161 @@
+                                                                             APPLICATION NOTES
+
+
+       Measuring and Understanding Tg (Glass Transition Temperature)
+                                                                                                            Arlon 2011
+
+
+One of the first pieces of data anyone    and inflexible (glass state) and in fact   DSC defines the glass transition as
+looks at when evaluating a potential      the rubber band can be shattered.          a change in the heat capacity as the
+new material for Printed Wiring           Upon standing and warming to room          polymer matrix goes from the glass
+Board (PWB) applications is its Glass     temperature the rubber band will           state to the rubber state. This is a
+Transition Temperature (Tg). Over the     again become flexible and rubbery          second order endothermic transition
+years we have all developed a set of      (rubber like state).                       (requires heat to go through the
+assumptions about Tg that affect                                                     transition) so in the DSC the
+how we think about the design                                                        transition appears as a step
+and manufacture of boards. Tg’s of                                                   transition and not a peak such as
+materials used in our industry run                                                   might be seen with a melting
+from 115˚C (for old-line difunctional                                                transition.
+FR-4) to about 250˚C (for high end
+                                                                                     TMA defines the glass transition in
+polyimide materials) with an almost
+                                                                                     terms of the change in the coefficient
+unbroken continuum in between
+                                                                                     of thermal expansion (CTE) as the
+based on various classes of resins,
+                                                                                     polymer goes from glass to rubber
+cross-linking agents and blending
+                                                                                     state with the associated change in
+ratios. We also have two primary
+                                                                                     free molecular volume.
+ways in which Tg is routinely being
+measured: Differential Scanning                                                      Each of these techniques measures
+Calorimetry (the “official” method),                                                 a different result of the change
+and Thermo-Mechanical Analysis                                                       from glass to rubber. The DSC
+(TMA).                                                                               is measuring a heat flow effect,
+                                                                                     whereas the TMA is measuring a
+Glass Transition is a method
+                                                                                     physical effect i.e the expansion in
+to characterize a property of a
+                                                                                     the two directions. Both techniques
+polymeric material. The glass
+                                                                                     assume that the effect happens over
+transition is the temperature where
+                                                                                     a narrow range of a few degrees in
+the polymer goes from a hard, glass
+                                                                                     temperature. If the glass transition is
+like state to a rubber like state. The
+                                                                                     very broad it may not be seen with
+best way to envision this type of
+                                                                                     either approach. This is similar in
+transition is to put a rubber band
+                                                                                     some ways to comparing inorganic
+(rubber like state, very flexible) into
+                                                                                     materials with thermoplastics in
+a container of liquid nitrogen. When
+                                                                                     terms of their melting points: many
+removed the rubber band is solid
+                                                                                     inorganic materials have sharp
+                                                                                     melting points that take place within
+a fraction of a degree of temperature,         PTFE for instance has a minor         • The higher the Tg the better will be
+while most polymers have a much                second order crystalline transition      the long term thermal stability of a
+wider melting range depending on the           at about 19˚C that results in a minor material. (This unfortunately is not
+distribution of their molecular weight.        hiccup in the curve of dielectric        necessarily true -- See “The Ups
+                                                                                        and Downs of Continuous Operating
+Since thermosetting (crosslinked)              constant vs. temperature, but is
+                                                                                        Temperature in the July 2001
+resins such as the epoxies that are            neither a melt point nor a real Glass
+                                                                                        Newsletter.)
+commonly used in our industry do               Transition.
+not have melting points, we look at                                                  The question of plated through
+                                           3. Most polymers have Tg’s but           hole reliability and CTE(Z) is more
+Tg as a measure of change of state,
+                                               technically its measurement           complicated than being simply
+but like their thermoplastic brethren,
+                                               depends on a crystalline transition a roughly linear function of Tg.
+thermoset resins for a variety reasons                                               That would be OK and works
+                                               so if a polymer is largely or totally
+of do not all have sharp Tg transitions.                                             out reasonably if you are always
+                                               amorphous in nature it may not
+The DSC and TMA often give results             have (or readily exhibit) a Tg.       comparing PWB’s with the same
+                                                                                     construction, fabric reinforcement and
+that differ from one another by
+                                           The traditional wisdom concerning         resin content, all of which contribute
+5-10˚C when used to test a polymer.
+                                           Tg is that higher Tg’s confer several     in some way to the CTE values.
+Moreover, some polymers are more
+                                           distinct benefits in a resin system:      And it is a mistake to equate thermal
+amenable to DSC (epoxies for
+instance) or to TMA (i.e. some of the      • The higher the Tg, the lower            stability with Tg because the two
+                                              the total amount of Z-direction         involve totally different phenomena.
+first generation polyimides such as
+                                                                                      The most thermally stable epoxy we
+Kerimid 601), because the transition is       movement when a PWB is heated
+                                                                                      ever used was in the old 1102 Burn-In
+easier to observe using one technique         (either in use or during process        material that we sold for many years
+over the other. For example if a              steps such as solder reflow). This      until operating temperatures started
+polymer has a very large CTE above            translates into reduced stress on       making demands on it that were
+the glass transition, the polymer             plated through holes (PTH’s) during     beyond its capability. Yet its Tg was
+may be easier to test with the TMA            processing, reduced risk of hidden      only about 105˚C. Because it had very
+than with the DSC, where the glass            or intermittent PTH defects, and        low levels of flame retardant it didn’t
+transition may be almost invisible            therefore better board reliability.     have the tendency to decompose
+                                                                                      when heated.
+because it is very broad or does not       • The higher the Tg the less likely
+absorb an amount of heat easily               it will be that rework will result in   So What Do We Need Tg for?
+detectable by the DSC.                        pads or lines detaching from the        Firstly, it is a good check to make
+                                              surface of the PWB. This was a          sure that your PWB’s are cured to the
+Points to ponder:                             major reason for using polyimide on     proper level. Using Tg as a guideline
+1. DSC is the classic and “official”         almost all military PWB’s for many      will quickly detect severe undercure
+   way to determine Tg even though            years where field repairs were often    and allow a process to be tweaked to
+   in some cases there are polymeric          important. (This is true!)              ensure boards with good mechanical
+   materials that do not exhibit a sharp   • The higher the Tg the less measling     integrity.
+   Tg by DSC.                                 (separation of resin from glass         Secondly, it is a good first order
+                                             weave at the knuckles believed due       indicator of resistance to process
+2. Tg and Melt Point are distinctly         to differential expansion of the glass   temperatures. As you go to thicker
+    separate phenomena and even              vs. the resin) will be experienced.      and thicker boards (12 layer MLBs
+    when looking at thermoplastic            (This is true!)                          and up) higher temperature resins do
+    materials such as are part of many                                                provide improved measling resistance
+    laminates (PPO, PPE) their Tg’s                                                   and more reliability of PTH’s through
+    should not be construed as being                                                  thermal cycling. In addition if newer
+    melt points and vice-versa.                                                       lead-free solders do settle in at
+                                                                                      higher temperatures than the current
+                                                                                      systems, higher temp materials will
+                                                                                      provide an added margin of safety.
+Thirdly, there are applications in which
+rework or repair temperatures may put
+surface features (pads, lines) at risk,
+and higher Tg materials do not soften
+and “let go” of Copper foils as readily.
+Fourth, Tg as measured by TMA
+(DSC won’t do this) will give you an
+actual value for Z direction expansion
+both below and above the Tg
+inflection point so that you can make
+judgements as your boards get thicker
+about the total amount of movement
+you can expect and when to plan to
+switch to a material with higher Tg
+and therefore less movement.
+The attached chart showing the
+difference between a polyimide (Blue
+Line — Arlon’s 35N) and a high Tg
+Epoxy (Black Line — Arlon’s 45N)
+shows how the point of inflection
+makes a large difference in total Z
+direction expansion between room
+temperature and solder reflow
+temperature (i.e. 250˚C even where
+the rate of expansion below and
+above the Tg’s is essentially the same.
+
+
+
+
+                                                   9433 Hyssop Drive
+                                         Rancho Cucamonga, California 91730
+                                       Tel: (909) 987-9533 • Fax: (909) 987-8541
+
+                                                 www.arlonemd.com
+
+Ver 1.1                                                                            (Source: http://outgassing.nasa.gov )
+

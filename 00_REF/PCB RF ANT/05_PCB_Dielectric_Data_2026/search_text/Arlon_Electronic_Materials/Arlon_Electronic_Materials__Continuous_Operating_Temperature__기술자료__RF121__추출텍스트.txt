@@ -1,0 +1,141 @@
+                                                                APPLICATION NOTES
+
+
+                                        Continuous Operating Temperature
+                                                                                  Vince Weis, Arlon 2016
+
+    The Up’s and Down’s of Continuous Operating Temperature
+  What determines "Continuous Operating Temperature" of a system and how does that
+  differ from Tg?
+  What are the Continuous Operating Temperatures of common laminate systems?
+  Can I relate "Continuous Operating Temperature" to service life of my board under real-
+  time conditions?
+
+The truth is that no answer to this question will ever totally satisfy a board designer with
+specific conditions in mind, and only some kind of accelerated testing of an actual board or
+assembly will give a meaningful answer.
+
+Continuous operating temperature is the temperature at which a particular material can
+operate without undue deterioration for a long period of time. The first trap is the word
+"continuous" because it implies "forever" and that will never be the case. So someone has
+to stop and ask "At what temperature..?" and "For how long..?" For instance, if you wanted
+to use the product to check core temperatures in a volcano, our standard measures of
+"continuous operating temperature" would quickly prove inadequate.
+
+There are many ways to evaluate this. We measure Tg (glass transition temperature -
+typically not an indicator of long term performance) and look at thermal decomposition via
+TGA (thermogravimetric analysis - which looks at the temperature at which a material starts
+to come apart rapidly, also not necessarily an indicator of long term stability at some lower
+temperature). Short term testing at various temperatures (T260, T288 and T300) give an
+indication of short term thermal stability suitable for determining process and soldering
+stability, but not related to long term performance. Underwriters Laboratories(UL )
+developed a Relative Thermal Index (RTI) that may be the best general indicator of
+extended life at specific temperatures; given that it looks at specific properties and not at the
+broad spectrum of functional performance crtiteria. All of these are indicators of relative
+performance and allow comparisons between materials. For many reasons, no single
+approach will necessarily be able to provide one easy-to-use number that can reliably be
+taken as the "Continuous Operating Temperature." We will look at why this is the case.
+The UL RTI uses an Arrhenius plotting of time vs temperature based on a four point thermal
+aging study, similar to the idealized graph shown in the illustration below, for materials
+which is the mathematical extrapolation of data from a four temperature accelerated aging
+evaluation to a temperature at which the material will operate for 100,000 hours and still
+retain at least 50% of its original physical or electrical properties. Typical properties tested
+are tensile strength (physical) and dielectric breakdown resistance (electrical).
+
+Remember, however, that the maker of a PWB wants their entire board to operate for a
+long period of time, and most data available on materials was specifically developed on
+the unclad laminate composite, (resin and glass). The internal structure of the board itself,
+(amount of heat sinking capacity and density of power-generating components), as well as
+the intended use environment, will also affect the service life of a board.
+
+                                                  It is quite possible that a PWB that has less
+                                                  than 50% of its original tensile strength and
+                                                  less than 50% of its original dielectric
+Nominal                    0.003     0.0053       breakdown
+                                                 0.010           voltage0.020
+                                                              0.015       will still work
+                                                                                       0.031perfectly  well
+                                                                                                   0.062       0.093
+Thickness (mils)          ±0.0005   ±0.0005       in its intended
+                                                ±0.001      ±0.0015application.
+                                                                        ±0.002       At  best, these
+                                                                                      ±0.002           are
+                                                                                                  ±0.004      ±0.005
+                                                  indicators rather than absolutes, and good
+Actual Thickness (mils)   0.0031     0.0053     0.0095       0.0155      0.020        0.0304
+                                                  judgement      should continue     to  play an 0.0624       0.0932
+Dielectric Constant         2.75      2.85        important 2.95
+                                                  2.94         role in assessing
+                                                                          2.96       how2.98they relate
+                                                                                                    2.98 to    2.98
+                           ±0.08     ±0.06        your application.
+                                                ±0.06        ±0.04       ±0.04        ±0.04        ±0.04      ±0.04
+
+                                                 I am often concerned when the UL RTI is used
+                                                 as an absolute, rather than a relative
+                                                 performance indicator. While the UL RTI may
+                                                 not identify the ultimate use temperature of a
+                                                 material, it is a good starting point guideline.
+                                                 Although, use above that temperature will
+                                                 result in increasingly rapid failure. The UL plot
+                                                 is logarithmic and in a relative sense you can
+                                                 quickly estimate what will happen as you
+                                                 increase (or decrease) temperatures.
+
+Oxidation is the principal mechanism by which epoxies and polyimides embrittle and turn
+brown as they sit or operate at high temperatures over a period of time. Above the Tg this
+process occurs more rapidly because of greater diffusion rates and more molecular motion.
+As with many chemical reactions, the rate at which it proceeds roughly doubles for every 10°
+C temperature increase. With polyimide, for example, although it turns brown fairly quickly,
+this is mostly a surface oxidation and not a deep deterioration of the material. Lower
+temperature materials, epoxies with fairly labile bromine and the like will deteriorate
+substantially at temperatures which are relatively innocuous to polyimide.
+
+Oxidation is also the major cause of long term failure of copper bonds on PWB's. Copper
+traces oxidize not only on the top side,(where they turn purple or black), but also underneath
+due to diffusion of oxygen. When the treatment that bonds the copper to the surface
+oxidizes sufficiently, the bond will fail and the line will fall off with relatively little handling.
+    Not one of the standard thermal indexing values relates to this phenomenon, which will
+    occur as a function of the rate of diffusion of oxygen under the copper traces and as a
+    function of temperature. The use of a protective coating that will inhibit surface oxidation
+    and absorb UV will help to substantially prolong the life of any material.
+
+     Polyimide is clearly the most thermally stable of the available resins in the marketplace with
+     an RTI (for a rigid board) of 170/180 (electrical/mechanical). Materials such as BT with RTI
+     of 140/150 or FR5 epoxy with RTI of 130/140, (note that FR-5 is not inherently more
+     thermally stable than FR-4 – it is designed to maintain its rigidity at a higher temperature
+     than FR-4 but this does not indicate thermal stability per se), will not have the survivability at
+     high temperature of polyimide.
+
+     Prolonged temperatures over 250°F will eventually deteriorate copper bonds on any PWB
+     surface. This is a primary mechanism for failure of copper bonds on Teflon® boards which
+     otherwise are entirely resistant to normal oxidative, (or almost any chemical), attack on the
+     resin itself. Use of designs with "Pads Only" surfaces, or employment of high temperature
+     conformal coatings will significantly extend the service life of a board under such conditions.
+
+     TROUBLESHOOTING TIP: It is always important that a designer test the materials he is
+     choosing to ensure that they will actually perform acceptably in their intended use. This is
+     not a cop-out to avoid responsibility for the performance of our materials. Neither we, nor
+     any laminator, can ensure that our material will perform in conditions that are out of our
+     control. There needs to be a good early dialogue between the designer and the laminator to
+     discuss needs and specifications and make sure they select the best available material for
+     the job. This will minimize the risk of designing boards that will fail prematurely.
+     BLATANT COMMERCIAL MESSAGE: The best available laminate resin for long term high
+     temperature applications is Arlon's 85N and 85HP, which is a pure polyimide with no flame
+     retardants or other thermally unstable additives. Where optimal thermal performance is
+     needed, we don't know of any material with superior property retention at high temperature.
+     It is used, for example, in downhole drilling applications where a combination of high
+     temperature, corrosive environment and high humidity tend to eat inferior materials in a very
+     short time.
+
+
+
+
+                                                 9433 Hyssop Drive
+                                       Rancho Cucamonga, California 91730
+                                     Tel: (909) 987-9533 • Fax: (909) 987-8541
+
+                                                www.arlonemd.com
+
+Ver 1.0
+

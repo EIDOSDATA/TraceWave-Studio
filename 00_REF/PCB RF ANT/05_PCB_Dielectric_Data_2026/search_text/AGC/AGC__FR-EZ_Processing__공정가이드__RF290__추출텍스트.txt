@@ -1,0 +1,278 @@
+                                            FR-EZ
+                                    General Processing Guidelines
+
+
+
+
+General Information                                      Storage
+fastRise™ EZ                                             Store the material in a cool dry area away from
+FR-EZ-22P and FR-EZ-33P prepreg use the flexible         direct sunlight and high humidity, avoiding material
+fastRise™ thermoset resin system which has been          contamination. fastRise™ EZ is certified to meet all
+engineered for use in flexible printed circuit boards.   requirements as agreed upon between the user and
+It is compatible with most materials, especially         supplier for a given shelf life as defined by the
+those that are difficult to bond to including LCP,       storage conditions below.
+Polyimides (e.g. DuPont AP), and PTFE laminates
+(e.g. DuPont TK). fastRise EZ provides an ideal          Storage Conditions
+solution where flexible circuits with low loss, high     Condition 1 (i.e. refrigeration): <4.5°C (40°F)
+operating temperature, and/or improved peel              Condition 2 (i.e. room temp): <23°C (73°F), Relative
+strengths are required. Similar to other parts in the    Humidity <50%
+fastRise family, fastRise EZ utilizes a flexible PTFE
+film for low electrical loss and a high performance      When removing fastRise EZ prepreg from
+thermoset resin as an adhesive on the top and            refrigeration, it should be allowed to acclimate to
+bottom.                                                  room temperature in the sealed bag.
+
+                                                         This will reduce the chance of moisture
+                                                         condensation on the prepreg and will also provide a
+                                                         more consistent start temperature for the
+                                                         lamination process. Bags should be resealed when
+                                                         not in use.
+
+                                                         Shelf Life
+                                                         If material is stored under Condition 1 above, a shelf
+                                                         life of 180 days after receipt of shipment will apply.
+                                                         If material is stored under Condition 2 above, a shelf
+                                                         life of 90 days after receipt of shipment will apply.
+                                                         AGC will not ship fastRise EZ material with less than
+                                                         90 days of remaining shelf life. Packaging will default
+                                                         to indicate shelf life based on storage Condition 2
+                                                         unless end user notifies AGC that Condition 1
+                                                         applies. In the event that prepreg expires, please
+                                                         contact your AGC technical representative for
+                                                         assistance to coordinate re-testing the expired
+                                                         prepreg.
+Handling
+fastRise™ EZ prepreg is supplied between two release sheets. The surface of fastRise EZ may be tacky, especially
+for freshly manufactured material. Although it is recommended to allow refrigerated fastRise EZ prepregs to
+acclimate prior to opening a sealed bag, in some cases it may be advantageous to use the prepreg while it is cool*
+which will reduce the tackiness of the material and make handling easier.
+
+*do not allow condensation to form on the prepreg
+
+
+Inner Layer Preparation
+Laminate Preparation
+fastRise™ EZ will bond well to most other materials. Inner-layers should be clean and dry before bonding. Oxide
+treatments of copper surfaces are recommended. As long as the uncured prepreg hasn’t been exposed to moisture
+or high humidity, vacuum desiccating of the material is not required.
+
+Flow Patterns / Thieving
+Solid copper borders, 0.5-1.0” wide, are recommended and have been observed to allow the use of much higher
+lamination pressures without any negative effects or squeeze out. See Lamination section for more information.
+For thieving, retaining as much copper in between parts is preferred. Interlocking patterns such as offset
+diamonds, honeycombs, or other patterns which inhibit resin flow channels are ideal. Interlocking “star burst”
+flow patterns or other patterns which may promote resin flow channel formation should be avoided.
+
+Baking
+As a general recommendation, fastRise™ EZ should be baked after exposure to moisture for 3 hours at 80°C
+(175°F). This can be substituted with a 1 hour bake at 120°C (250°F). For simplicity in this processing guide, all bake
+steps will refer to the 120°C process even though they are both acceptable. Do not bake the material prior to
+cure/lamination.
+
+Negative outcomes have occured when baking fastRise™ EZ at temperatures of 180°C (350°F) for as little as
+30 minutes. It is up to each user to establish proper bake times and temperatures that are compatible with
+their equipment and the materials being used.
+
+Lamination
+ Excessive resin flow should be avoided as it can cause flow channels or other undesirable conditions.
+
+Quick Start
+
+                                                    fastRise EZ                      fastRise EZ Low Temp
+        Cure Temp / Time                           60 minutes at                         150 minutes at
+      (measured at bondline)                       215°C (420°F)                           200°C (390°F)
+                                                                 100 (preferred) - 200 psi
+               Pressure
+                                                         (see Pressure section page 7 for details)
+              Heating Rate                                      2 – 4°C/min (3 – 8°F/min)
+           Critical Range                                      80°C – 150°C (175°F – 300°F)
+              Cooling Rate                                     Less than 3°C/min (6°F/min)
+              Breakdown                 Breakdown or transfer to cold press when bondline is below 90°C (200°F)
+                Vacuum                              Full vacuum is recommended through entire cycle
+           Vacuum Delay                       Hold vacuum 10-20 minutes before applying heat or pressure
+Padding and Conformance Materials
+Typical padding and conformance materials used for rigid, rigid-flex, or flexible circuit manufacturing can be used
+(pending temperature ratings of the materials). Press padding (outside separator plates) is recommended. Use of
+conformance materials such as AGC TacPad, PTFE skive film, clutch lamination, or others are often helpful to
+balance pressure variations induced from circuits. Clutch laminations are recommended for foil lamination
+applications and when bonding plated up copper layers to achieve consistent dielectric thicknesses.
+
+Pressure
+
+ Excessive pressure should be avoided; it can distort circuit patterns, induce resin/filler separation, or create
+ flow channels.
+
+Full pressure should be achieved before the fastRise™ EZ reaches 80°C (175°F). fastRise™ resin flow has been
+shown to be directly proportional to lamination pressure and higher pressures can increase resin flow when
+required. Lower pressures in the range of 100 psi are believed to aid the center film in laying flat which may reduce
+phase shift in the circuitry at elevated frequencies. Past data has also shown that lower lamination pressures are
+linked to decreased scale variation between panels..
+
+Temperature
+
+
+
+
+Resin Flow Window / Critical Range
+fastRise™ resins gel and flow between 80°C - 150°C (175°F – 300°F) and reaches their lowest viscosity between
+100°C – 125°C (212°F – 260°F).
+
+Heating Rate
+A cold start of the press is desirable. Typical fastRise™ heating rates are 2°C/min – 4°C/min (3°F/min – 8°F/min).
+In difficult to fill applications such as heavy copper or high layer count boards, a slow heating rate should be used
+(2°F/min – 3°F/min). It is also recommended that low heating rates be used if the process is to accommodate tight
+registration requirements or high layer counts. Past studies have shown that lower heating rates (i.e. <3°F/min)
+can provide substantial improvements in registration repeatability.
+Curing
+fastRise™ EZ resins cure at a lower temperature than other fastRise™ part numbers. A standard fastRise™ heating
+profile can usually be used where the bondline is held at 215°C (420°F) for a minimum of 1 hour. However,
+fastRise™ EZ can also be cured where the bondline is held at 200°C (390°F) for 2.5 hours. The lower cure
+temperature can provide some advantages in choosing release/padding/conformance materials as well as
+enabling the use of traditional lamination presses designed for FR-4. This also increases compatibility with other
+low-temperature flexible materials.
+
+Cooling
+A slow cool (<6°F/min) is necessary to avoid any issues associated with delamination. The hot press should be
+cooled below 90°C (200°F) before transferring to a cold press. In situations where mismatched CTE’s may induce
+delamination or where warping may be an issue, slower cooling rates (<3°F/min) may provide better results.
+
+Additional Notes
+Multiple Ply Constructions
+Resin flow can increase when multiple plies of fastRise™ EZ are used against each other. If higher-flow is not
+desired, pressure should be reduced to prevent excess resin flow, resin separation, or formation of flow channels.
+
+Drilling
+ In most cases, the laminate cores will dictate drilling parameters. The following information is provided as a
+ general suggested starting point where fastRise EZ is combined with typical low-loss PTFE-based laminates.
+
+Quick Start
+                                                Imperial units                             SI units
+          Entry Material                  Phenolic (0.010” – 0.024”)            Phenolic (0.25mm - 0.6mm)
+         Backer Material                              Rigid Phenolic, Slickback, or comparable
+  Cutting Speed (Surface Speed)                   100 SFM                                30.5 MPM
+              Chip Load                           0.0010 in                                25 μm
+                                                                     0-1000 ms
+               Dwell                      (increase dwell time as speed and chip load deviate from above
+                                                                recommendations)
+
+Drill Bits
+Sharp drill bits are critical to any PTFE drilling; new drill bits should always be used. Undercut drill bits are
+recommended, but past studies have shown that some drill bit brands may obtain better results using their
+standard drill bits.
+
+Chip Load
+A chip load of 1.0 mil (25.4 μm) is common with fastRise™ combined with AGC laminates. Increasing the chip load
+to 1.25 mils (31.8 μm) may provide acceptable hole quality and improved productivity.
+
+Cutting Speed
+Drill speeds of 100 SFM (30.5 m/min) or less will usually eliminate drill smear if it is present. The slower speeds
+allow generated heat to dissipate before smearing PTFE. Drill speed can be increased due to equipment
+limitations, but added dwell times may become more important.
+
+Dwell Time
+If smear is present and ideal cutting speeds cannot be obtained, a 250ms dwell is recommended for initial process
+setup in order to cool the drill bit between holes. Past AGC studies have shown that hole-wall quality in PTFE
+materials may improve as dwell times are increased to as much as 1000ms.
+Peck Drilling
+Peck drilling should be avoided where possible; it has been shown to increase drill bit wear as well as increase
+process time. Peck drilling may be required in some situations (e.g. bird nesting, hole plugging, chip extraction on
+thick panels, breaking thin drill bits, etc.). If traditional peck drilling is not used, hole-wall quality in PTFE laminates
+may be improved with the use of a “clean” peck where the peck depth is set to equal that of the phenolic entry.
+In this, the entry material will effectively clean the drill bit, retract to clear phenolic debris and cool, and then
+reenter to drill the hole.
+
+Hit Count
+Hit counts can vary widely and are usually determined by the laminates used, panel thickness, and hole size. Hit
+counts of 100-300 hits per bit are typical for ceramic/PTFE constructions. When paired with unreinforced and
+ceramic free laminates, little drill wear will take place and hit counts of 700-1000 are not unreasonable. When
+developing the process, the drill point edges should be periodically inspected to assess the level of drill wear and
+hit count should be adjusted accordingly.
+
+Entry / Backer Materials
+Rigid entry and exit material is usually beneficial in order to remove any debris or deposits from the drill bit. 10-
+25 mil phenolic entry is acceptable for most applications and 30-50 mil phenolic entry can be used if pressure foot
+clearance is substantial. Like the entry, rigid backer is usually necessary to prevent burring and aid in obtaining
+good hole-wall quality. Thick phenolic is typical and lubricated rigid backers such as SlickBack® from L.C.O.A.® have
+also been successful.
+
+Coolant Assisted Drilling
+Some drilling equipment is now equipped to apply coolant/lubricant to the drill bit during the drilling process. This
+process has been shown to provide substantial benefit to the drilling process and should be used if available. If
+available, expect increased chip loads, cutting speed, and improved hit counts.
+
+Laser Drilling / MicroVias
+A CO2 laser is recommended for microvia formation in fastRise EZ. While a UV laser may be used to ablate the
+surface copper, UV energy directed into the fastRise will tend to leave a blown out microvia geometry instead of
+one with smooth hole walls and a slight taper. Unchecked, it may also negatively affect the capture pad. If copper
+foil thickness variation prevents consistent UV/CO2 lasing, higher quality may be achieved by first etching away
+the surface copper where the microvias are to be formed, then ablating the fastRise EZ with a CO2 laser only.
+
+Hole Wall Preparation
+fastRise™ EZ requires a PTFE activation cycle for the PTFE film. The thermoset adhesive resins can be desmeared
+/ etched back prior to the PTFE activation as directed below..
+
+Desmear
+Plasma
+If panels have been exposed to moisture, bake the boards at 120°C (250°F) for 1 hour to drive out moisture.
+Standard FR-4 CF4/O2 desmear processes should then be used. The CF4 cycle time is typically half that of standard
+FR-4 times because the fastRise™ EZ resin system tends to etch back quickly.
+
+Permanganate
+A permanganate desmear IS NOT RECOMMENDED if the process contains glass etch chemistry. This is due to the
+high ceramic content of the fastRise™ EZ resin system and will result in excessive etchback. If glass etch chemistries
+must be used due to other materials in the stack up, consult with your AGC technical service representative for
+specific process recommendations. Standard permanganate and glass etch baths as a part of the electroless
+copper process are OK. However, note that this alone will not sufficiently desmear the fastRise™ EZ resin. A plasma
+process as described above is required for good hole wall quality.
+PTFE Activation
+Plasma
+If panels have been exposed to moisture, pre-bake the boards at 80°C (175°F) for 3 hours. Plasma treat the PTFE
+resin using 70%/30% Hydrogen/Nitrogen gas mixture. 100% Helium may also suffice. Power settings for the RF-
+signal generator are typically 60-75% of full rated power for 30-60 minutes, but results may vary. Thick panels or
+high-aspect ratio holes may require extended plasma cycle times.
+
+Sodium Etch
+Sodium Etches (e.g. Fluoroetch) for PTFE activation works well with fastRise™ EZ. Follow the manufacturer’s
+recommended treatment process. Subsequently, bake for 3 hours at 80°C (175°F) prior to plating to remove
+moisture that may have been absorbed during the sodium treatment process.
+
+ Chlorine can have adverse effects on the sodium treatment. Do not subject exposed sodium etch treated holes
+ to heavily concentrated chlorine-based chemical processes.
+
+
+Plating
+A robust hole wall preparation process is necessary for a successful deposition plating process due to the PTFE
+content in the fastRise™ EZ . Following hole wall preparation, fastRise™ EZ will accept standard electroless copper
+or direct metallization plating.
+
+Image, Develop, Etch, Srtip
+When copper surface preparation is required, chemical cleaning processes are preferred (e.g. microetch);
+mechanical scrubbing (e.g. pumice scrub) should be avoided due to possible mechanical damage or distortion.
+Although fastRise™ EZ should be resistant to this type of damage, low loss materials typically used in conjunction
+with fastRise™ EZ may not be. Otherwise, standard processing should be used.
+
+Solder Mask
+Panels should be clean and dry. No other special treatment is required.
+
+Solder Reflow
+A pre-bake cycle of 2 – 3 hours at 120°C [250°F] is recommended prior to thermal stressing. Longer pre-heat times
+and reduced cycle times may be advantageous depending on design and processes.
+
+
+Routing / Milling
+fastRise™ EZ can be successfully machined using standard router bits or end mills. Rigid phenolic entry and a rigid
+backer should be used. In some cases, adding paper (white paper or craft paper) between the phenolic and the
+part allows better conformance to surface topography (e.g. circuits, soldermask, etc.) and may reduce burring. For
+tight tolerances or superior edge quality, a “rough cut” placed 0.005”- 0.010” off the part edge may be run prior
+to the “finish” cut at the nominal part edge.
+
+
+
+
+ These guidelines can provide only basic and reference information for PCB fabricators. Because of different
+ environment, equipment, tooling and so on, in all instances, the user shall determine suitability in any given
+ conditions or applications. For more detailed processing information, please contact with the AGC engineer or
+ sales representative.
+
+ 2023-05 AGC Inc.
+ agc-ml.info-maltimaterial@agc.com
+

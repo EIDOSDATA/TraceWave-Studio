@@ -1,0 +1,439 @@
+[
+  {
+    "manufacturer": "Fineline",
+    "source_id": "FB061",
+    "observations": 62,
+    "download_status": "failed",
+    "archived": false,
+    "local_path": null,
+    "source_url": "https://www.fineline-global.com/pcb-material/",
+    "notes": "Official page/PDF was readable through web retrieval; direct download returned HTTP 403. Numeric table facts retained with source attribution; original file not packaged.",
+    "error": null,
+    "example": {
+      "record_id": "PCB057212",
+      "product": "IT-158",
+      "dk": 4.3,
+      "df": 0.016,
+      "frequency_ghz": 1,
+      "source_location": "Standard rigid / FR4 table, material row 1"
+    }
+  },
+  {
+    "manufacturer": "Fineline",
+    "source_id": "FB062",
+    "observations": 5,
+    "download_status": "failed",
+    "archived": false,
+    "local_path": null,
+    "source_url": "https://www.fineline-global.com/knowledge-centre/pcb-raw-materials-guide/",
+    "notes": "Official page/PDF was readable through web retrieval; direct download returned HTTP 403. Numeric table facts retained with source attribution; original file not packaged.",
+    "error": null,
+    "example": {
+      "record_id": "PCB057336",
+      "product": "FR4 Tg135-140",
+      "dk": null,
+      "df": null,
+      "frequency_ghz": 0.001,
+      "source_location": "Raw material guide dielectric constant range table"
+    }
+  },
+  {
+    "manufacturer": "Fineline",
+    "source_id": "FB199",
+    "observations": 62,
+    "download_status": "failed",
+    "archived": false,
+    "local_path": null,
+    "source_url": "https://www.fineline-global.com/wp-content/uploads/2022/05/Fineline_Materials_V4.pdf",
+    "notes": "Official page/PDF was readable through web retrieval; direct download returned HTTP 403. Numeric table facts retained with source attribution; original file not packaged.",
+    "error": null,
+    "example": {
+      "record_id": "PCB057274",
+      "product": "IT-158",
+      "dk": 4.3,
+      "df": 0.016,
+      "frequency_ghz": 1,
+      "source_location": "p2; Standard rigid / FR4 table, material row 1"
+    }
+  },
+  {
+    "manufacturer": "ITEQ",
+    "source_id": "FRI001",
+    "observations": 2,
+    "download_status": "web_read_only_http403",
+    "archived": false,
+    "local_path": null,
+    "source_url": "https://www.iteqcorp.com/wp-content/uploads/2026/05/W-CTE-1002-34C_Data-sheet-IT-180A.pdf",
+    "notes": "Official manufacturer PDF was readable through web retrieval. Direct binary download returned HTTP 403; original PDF is not bundled.",
+    "error": null,
+    "example": {
+      "record_id": "PCB005165",
+      "product": "IT-180A",
+      "dk": 4.5,
+      "df": 0.014,
+      "frequency_ghz": 0.001,
+      "source_location": "PDF page 1, Permittivity / Loss Tangent table"
+    }
+  },
+  {
+    "manufacturer": "ITEQ",
+    "source_id": "FRI002",
+    "observations": 4,
+    "download_status": "web_read_only_http403",
+    "archived": false,
+    "local_path": null,
+    "source_url": "https://www.iteqcorp.com/wp-content/uploads/2026/05/W-CTE-1002-54B_Data-sheet-IT-858G.pdf",
+    "notes": "Official manufacturer PDF was readable through web retrieval. Direct binary download returned HTTP 403; original PDF is not bundled.",
+    "error": null,
+    "example": {
+      "record_id": "PCB005181",
+      "product": "IT-858G",
+      "dk": 4.9,
+      "df": 0.0122,
+      "frequency_ghz": 1,
+      "source_location": "PDF page 1, Permittivity / Loss Tangent table"
+    }
+  },
+  {
+    "manufacturer": "ITEQ",
+    "source_id": "FRI003",
+    "observations": 4,
+    "download_status": "web_read_only_http403",
+    "archived": false,
+    "local_path": null,
+    "source_url": "https://www.iteqcorp.com/wp-content/uploads/2026/05/W-CTE-1002-17B_Data-sheet-258GA3.pdf",
+    "notes": "Official manufacturer PDF was readable through web retrieval. Direct binary download returned HTTP 403; original PDF is not bundled.",
+    "error": null,
+    "example": {
+      "record_id": "PCB005167",
+      "product": "IT-258GA3",
+      "dk": 4.4,
+      "df": 0.014,
+      "frequency_ghz": 1,
+      "source_location": "PDF page 1, Permittivity / Loss Tangent table"
+    }
+  },
+  {
+    "manufacturer": "ITEQ",
+    "source_id": "FRI004",
+    "observations": 4,
+    "download_status": "web_read_only_http403",
+    "archived": false,
+    "local_path": null,
+    "source_url": "https://www.iteqcorp.com/wp-content/uploads/2026/02/W-CTE-1002-10B_Data-sheet-IT-158.pdf",
+    "notes": "Official manufacturer PDF was readable through web retrieval. Direct binary download returned HTTP 403; original PDF is not bundled.",
+    "error": null,
+    "example": {
+      "record_id": "PCB005149",
+      "product": "IT-158",
+      "dk": 4.3,
+      "df": 0.016,
+      "frequency_ghz": 1,
+      "source_location": "PDF page 1, Permittivity / Loss Tangent table"
+    }
+  },
+  {
+    "manufacturer": "ITEQ",
+    "source_id": "FRI005",
+    "observations": 4,
+    "download_status": "web_read_only_http403",
+    "archived": false,
+    "local_path": null,
+    "source_url": "https://www.iteqcorp.com/wp-content/uploads/2026/05/W-CTE-1002-18C_Data-sheet-IT-150GS.pdf",
+    "notes": "Official manufacturer PDF was readable through web retrieval. Direct binary download returned HTTP 403; original PDF is not bundled.",
+    "error": null,
+    "example": {
+      "record_id": "PCB005145",
+      "product": "IT-150GS",
+      "dk": 4.2,
+      "df": 0.01,
+      "frequency_ghz": 1,
+      "source_location": "PDF page 1, Permittivity / Loss Tangent table"
+    }
+  },
+  {
+    "manufacturer": "ITEQ",
+    "source_id": "FRI006",
+    "observations": 4,
+    "download_status": "web_read_only_http403",
+    "archived": false,
+    "local_path": null,
+    "source_url": "https://www.iteqcorp.com/wp-content/uploads/2026/05/W-CTE-1002-07B_Data-sheet-IT-150G.pdf",
+    "notes": "Official manufacturer PDF was readable through web retrieval. Direct binary download returned HTTP 403; original PDF is not bundled.",
+    "error": null,
+    "example": {
+      "record_id": "PCB005141",
+      "product": "IT-150G",
+      "dk": 3.7,
+      "df": 0.0137,
+      "frequency_ghz": 1,
+      "source_location": "PDF page 1, Permittivity / Loss Tangent table"
+    }
+  },
+  {
+    "manufacturer": "ITEQ",
+    "source_id": "FRI007",
+    "observations": 4,
+    "download_status": "web_read_only_http403",
+    "archived": false,
+    "local_path": null,
+    "source_url": "https://www.iteqcorp.com/wp-content/uploads/2026/05/W-CTE-1002-53B_Data-sheet-IT-170GT.pdf",
+    "notes": "Official manufacturer PDF was readable through web retrieval. Direct binary download returned HTTP 403; original PDF is not bundled.",
+    "error": null,
+    "example": {
+      "record_id": "PCB005161",
+      "product": "IT-170GT",
+      "dk": 4.0,
+      "df": 0.0085,
+      "frequency_ghz": 1,
+      "source_location": "PDF page 1, Permittivity / Loss Tangent table"
+    }
+  },
+  {
+    "manufacturer": "ITEQ",
+    "source_id": "FRI008",
+    "observations": 4,
+    "download_status": "web_read_only_http403",
+    "archived": false,
+    "local_path": null,
+    "source_url": "https://www.iteqcorp.com/wp-content/uploads/2026/05/W-CTE-1002-31B_Data-sheet-IT-170GRA1.pdf",
+    "notes": "Official manufacturer PDF was readable through web retrieval. Direct binary download returned HTTP 403; original PDF is not bundled.",
+    "error": null,
+    "example": {
+      "record_id": "PCB005153",
+      "product": "IT-170GRA1",
+      "dk": 3.9,
+      "df": 0.008,
+      "frequency_ghz": 1,
+      "source_location": "PDF page 1, Permittivity / Loss Tangent table"
+    }
+  },
+  {
+    "manufacturer": "ITEQ",
+    "source_id": "FRI009",
+    "observations": 4,
+    "download_status": "web_read_only_http403",
+    "archived": false,
+    "local_path": null,
+    "source_url": "https://www.iteqcorp.com/wp-content/uploads/2026/05/W-CTE-1002-58C_Data-sheet-IT-170GRA2.pdf",
+    "notes": "Official manufacturer PDF was readable through web retrieval. Direct binary download returned HTTP 403; original PDF is not bundled.",
+    "error": null,
+    "example": {
+      "record_id": "PCB005157",
+      "product": "IT-170GRA2",
+      "dk": 4.0,
+      "df": 0.006,
+      "frequency_ghz": 1,
+      "source_location": "PDF page 1, Permittivity / Loss Tangent table"
+    }
+  },
+  {
+    "manufacturer": "ITEQ",
+    "source_id": "FRI010",
+    "observations": 4,
+    "download_status": "web_read_only_http403",
+    "archived": false,
+    "local_path": null,
+    "source_url": "https://www.iteqcorp.com/wp-content/uploads/2026/05/W-CTE-1002-02C_Data-sheet-IT-958G.pdf",
+    "notes": "Official manufacturer PDF was readable through web retrieval. Direct binary download returned HTTP 403; original PDF is not bundled.",
+    "error": null,
+    "example": {
+      "record_id": "PCB005185",
+      "product": "IT-958G",
+      "dk": 3.85,
+      "df": 0.0054,
+      "frequency_ghz": 1,
+      "source_location": "PDF page 1, Permittivity / Loss Tangent table"
+    }
+  },
+  {
+    "manufacturer": "ITEQ",
+    "source_id": "FRI011",
+    "observations": 2,
+    "download_status": "web_read_only_http403",
+    "archived": false,
+    "local_path": null,
+    "source_url": "https://www.iteqcorp.com/wp-content/uploads/2026/05/W-CTE-1002-64D_Data-sheet-IT-601G.pdf",
+    "notes": "Official manufacturer PDF was readable through web retrieval. Direct binary download returned HTTP 403; original PDF is not bundled.",
+    "error": null,
+    "example": {
+      "record_id": "PCB005171",
+      "product": "IT-601G",
+      "dk": 3.5,
+      "df": 0.0055,
+      "frequency_ghz": 1,
+      "source_location": "PDF page 1, Permittivity / Loss Tangent table"
+    }
+  },
+  {
+    "manufacturer": "ITEQ",
+    "source_id": "FRI012",
+    "observations": 8,
+    "download_status": "web_read_only_http403",
+    "archived": false,
+    "local_path": null,
+    "source_url": "https://www.iteqcorp.com/wp-content/uploads/2026/05/W-CTE-1002-78B_Data-sheet-IT-602G.pdf",
+    "notes": "Official manufacturer PDF was readable through web retrieval. Direct binary download returned HTTP 403; original PDF is not bundled.",
+    "error": null,
+    "example": {
+      "record_id": "PCB005173",
+      "product": "IT-602G",
+      "dk": 3.97,
+      "df": 0.0046,
+      "frequency_ghz": 1,
+      "source_location": "PDF page 1, Permittivity / Loss Tangent table"
+    }
+  },
+  {
+    "manufacturer": "ITEQ",
+    "source_id": "FRI013",
+    "observations": 8,
+    "download_status": "web_read_only_http403",
+    "archived": false,
+    "local_path": null,
+    "source_url": "https://www.iteqcorp.com/wp-content/uploads/2026/05/W-CTE-1002-55B_Data-sheet-IT-968G.pdf",
+    "notes": "Official manufacturer PDF was readable through web retrieval. Direct binary download returned HTTP 403; original PDF is not bundled.",
+    "error": null,
+    "example": {
+      "record_id": "PCB005189",
+      "product": "IT-968G",
+      "dk": 3.76,
+      "df": 0.0034,
+      "frequency_ghz": 1,
+      "source_location": "PDF page 1, Permittivity / Loss Tangent table"
+    }
+  },
+  {
+    "manufacturer": "ITEQ",
+    "source_id": "FRI014",
+    "observations": 8,
+    "download_status": "web_read_only_http403",
+    "archived": false,
+    "local_path": null,
+    "source_url": "https://www.iteqcorp.com/wp-content/uploads/2026/05/W-CTE-1002-56B_Data-sheet-IT-968GSE.pdf",
+    "notes": "Official manufacturer PDF was readable through web retrieval. Direct binary download returned HTTP 403; original PDF is not bundled.",
+    "error": null,
+    "example": {
+      "record_id": "PCB005197",
+      "product": "IT-968GSE",
+      "dk": 3.33,
+      "df": 0.0028,
+      "frequency_ghz": 1,
+      "source_location": "PDF page 1, Permittivity / Loss Tangent table"
+    }
+  },
+  {
+    "manufacturer": "ITEQ",
+    "source_id": "FRI015",
+    "observations": 12,
+    "download_status": "web_read_only_http403",
+    "archived": false,
+    "local_path": null,
+    "source_url": "https://www.iteqcorp.com/wp-content/uploads/2026/02/W-CTE-1002-66C_Data-sheet-IT-988GLSE.pdf",
+    "notes": "Official manufacturer PDF was readable through web retrieval. Direct binary download returned HTTP 403; original PDF is not bundled.",
+    "error": null,
+    "example": {
+      "record_id": "PCB005217",
+      "product": "IT-988GLSE",
+      "dk": 3.3,
+      "df": 0.0014,
+      "frequency_ghz": 1,
+      "source_location": "PDF page 1, Permittivity / Loss Tangent table"
+    }
+  },
+  {
+    "manufacturer": "ITEQ",
+    "source_id": "FRI016",
+    "observations": 12,
+    "download_status": "web_read_only_http403",
+    "archived": false,
+    "local_path": null,
+    "source_url": "https://www.iteqcorp.com/wp-content/uploads/2026/05/W-CTE-1002-65C_Data-sheet-IT-988GL.pdf",
+    "notes": "Official manufacturer PDF was readable through web retrieval. Direct binary download returned HTTP 403; original PDF is not bundled.",
+    "error": null,
+    "example": {
+      "record_id": "PCB005205",
+      "product": "IT-988GL",
+      "dk": 3.83,
+      "df": 0.0032,
+      "frequency_ghz": 1,
+      "source_location": "PDF page 1, Permittivity / Loss Tangent table"
+    }
+  },
+  {
+    "manufacturer": "ITEQ",
+    "source_id": "FRI017",
+    "observations": 6,
+    "download_status": "web_read_only_http403",
+    "archived": false,
+    "local_path": null,
+    "source_url": "https://www.iteqcorp.com/wp-content/uploads/2026/05/W-CTE-1002-74C_Data-sheet-IT-998GSE.pdf",
+    "notes": "Official manufacturer PDF was readable through web retrieval. Direct binary download returned HTTP 403; original PDF is not bundled.",
+    "error": null,
+    "example": {
+      "record_id": "PCB005229",
+      "product": "IT-998GSE",
+      "dk": 3.41,
+      "df": 0.0017,
+      "frequency_ghz": 10,
+      "source_location": "PDF page 1, Permittivity / Loss Tangent table"
+    }
+  },
+  {
+    "manufacturer": "ITEQ",
+    "source_id": "FRI018",
+    "observations": 6,
+    "download_status": "web_read_only_http403",
+    "archived": false,
+    "local_path": null,
+    "source_url": "https://www.iteqcorp.com/wp-content/uploads/2026/05/W-CTE-1002-71C_Data-sheet-IT-998GSE2.pdf",
+    "notes": "Official manufacturer PDF was readable through web retrieval. Direct binary download returned HTTP 403; original PDF is not bundled.",
+    "error": null,
+    "example": {
+      "record_id": "PCB005235",
+      "product": "IT-998GSE2",
+      "dk": 3.16,
+      "df": 0.0013,
+      "frequency_ghz": 10,
+      "source_location": "PDF page 1, Permittivity / Loss Tangent table"
+    }
+  },
+  {
+    "manufacturer": "ITEQ",
+    "source_id": "FRI019",
+    "observations": 6,
+    "download_status": "web_read_only_http403",
+    "archived": false,
+    "local_path": null,
+    "source_url": "https://www.iteqcorp.com/wp-content/uploads/2026/06/W-CTE-1002-80A_Data-sheet_IT-999GSE2.pdf",
+    "notes": "Official manufacturer PDF was readable through web retrieval. Direct binary download returned HTTP 403; original PDF is not bundled.",
+    "error": null,
+    "example": {
+      "record_id": "PCB005241",
+      "product": "IT-999GSE2",
+      "dk": 3.12,
+      "df": 0.0009,
+      "frequency_ghz": 10,
+      "source_location": "PDF page 1, Permittivity / Loss Tangent table"
+    }
+  },
+  {
+    "manufacturer": "ITEQ",
+    "source_id": "FRI020",
+    "observations": 6,
+    "download_status": "web_read_only_http403",
+    "archived": false,
+    "local_path": null,
+    "source_url": "https://www.iteqcorp.com/wp-content/uploads/2026/06/W-CTE-1002-81B_Data-sheet_IT-999GSE3.pdf",
+    "notes": "Official manufacturer PDF was readable through web retrieval. Direct binary download returned HTTP 403; original PDF is not bundled.",
+    "error": null,
+    "example": {
+      "record_id": "PCB005247",
+      "product": "IT-999GSE3",
+      "dk": 3.03,
+      "df": 0.0007,
+      "frequency_ghz": 10,
+      "source_location": "PDF page 1, Permittivity / Loss Tangent table"
+    }
+  }
+]

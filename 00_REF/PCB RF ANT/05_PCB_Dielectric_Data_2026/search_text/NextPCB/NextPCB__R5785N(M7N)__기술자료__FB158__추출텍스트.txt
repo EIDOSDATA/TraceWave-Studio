@@ -1,0 +1,390 @@
+    Data Sheet
+
+High Speed, Low Loss Multi-layer Materials
+
+
+                                           Laminate R-5785
+                                           Prepreg R-5680
+
+
+
+
+                 Dec. 2016   No.16120228
+                                                                                                                                         No.; 16120228-1
+
+                           Specification / Laminate R-5785 & R-5785(N)
+
+                                                                                                                                 Value
+                          Property                                       Units       Test Method         Condition    R-5785          R-5785(N)
+                                                                                                                      E glass        Low-Dk glass
+                                                                                         DSC            As received     200                200
+                       Glass Transition Temp ( Tg )                        C
+                                                                                         DMA            As received     210                210
+                   Thermal Decomposition Temp ( Td )                       C             TGA            As received     400                400
+
+                      Time to Delam              Without Cu               Min     IPC TM-650 2.4.24.1   As received   ＞ 120               ＞ 120
+    THERMAL              ( T288 )                 With Cu                 Min     IPC TM-650 2.4.24.1   As received   ＞ 120               ＞ 120
+                                                   X - axis          ppm / C      IPC TM-650 2.4.24        ＜ Tg       14 - 16            14 - 16
+                         CTE : α1                  Y - axis          ppm / C      IPC TM-650 2.4.24        ＜ Tg       14 - 16            14 - 16
+                                                   Z - axis          ppm / C      IPC TM-650 2.4.24        ＜ Tg         42                  42
+                         CTE : α2                  Z - axis          ppm / C      IPC TM-650 2.4.24        ＞ Tg         280                280
+                              Volume Resistivity                     MΩ - cm      IPC TM-650 2.5.17.1   C-96/35/90    1 x 10 ９           1 x 10 ９
+                              Surface Resistivity                         MΩ      IPC TM-650 2.5.17.1   C-96/35/90    1 x 10 8           1 x 10 8
+
+                   Dielectric Constant            ＠1GHｚ                    -      IPC TM-650 2.5.5.9    C-24/23/50     3.63                3.37
+ELECTRICAL
+                          ( Dk )                 ＠ 12GHz                   -            *Note 1         C-24/23/50     3.61                3.35
+
+                    Dissipation Factor            ＠1GHｚ                    -      IPC TM-650 2.5.5.9    C-24/23/50     0.002              0.001
+                          ( Df )                 ＠ 12GHz                   -            *Note 1         C-24/23/50     0.003              0.002
+                              Water Absorption                            ％       IPC TM-650 2.6.2.1      D-24/23      0.06                0.06
+    PHYSICAL           Peel Strength           1oz ( H-VLP )             kN / m    IPC TM-650 2.4.8     As Received     0.8                0.8
+                                 Flammability                              -              UL            C-48/23/50    94V-0               94V-0
+
+Sample thickness ; 29.5 mil = 0.75 mm
+Note 1: The method by H. Kawabata, Proceedings of the 36th European Microwave Conference, 388-391 (2006)
+*The data above show actual values and are not guaranteed.
+
+1       © Panasonic Corporation Electronic Materials Business Division
+                                                                                                                                          No.; 16120228-2
+
+                                  Specification / Laminate R-5785 : E glass
+1GHz ; IPC TM650-2.5.5.9
+6-50GHz ; The method by H. Kawabata, Proceedings of the 36th European Microwave Conference,
+         388-391 (2006)
+
+             Actual Thickness                           Typical                                      Typical Dk
+    Core                             Cloth
+                                                         Resin
+                                                ply
+                                                        Content
+    Type        mil        mm        Style                          1GHz    6GHz   12GHz   18GHz   23GHz   29GHz   34GHz   40GHz   45GHz     50GHz
+                                                          (%)
+
+     2          2.0       0.050      1035        1         65        3.37   3.36   3.35    3.35    3.35     3.34   3.34    3.34    3.34       3.34
+    2.6         2.6       0.065      1080        1         57        3.55   3.54   3.53    3.53    3.53     3.53   3.53    3.53    3.53       3.53
+    2.6         2.6       0.065      1078        1         57        3.55   3.54   3.53    3.53    3.53     3.53   3.53    3.53    3.53       3.53
+     3          3.0       0.075      1078        1         63        3.41   3.40   3.39    3.39    3.39     3.39   3.39    3.39    3.39       3.39
+     4          3.9       0.100      3313        1         53        3.63   3.61   3.61    3.60    3.60     3.60   3.60    3.60    3.60       3.60
+     4          3.9       0.100      1035        2         65        3.37   3.36   3.35    3.35    3.35     3.34   3.34    3.34    3.34       3.34
+     5          5.0       0.127      1078        2         57        3.55   3.54   3.53    3.53    3.53     3.53   3.53    3.53    3.53       3.53
+     5          4.9       0.125      2116        1         53        3.63   3.61   3.61    3.60    3.60     3.60   3.60    3.60    3.60       3.60
+     5          5.1       0.130      1080        2         57        3.55   3.54   3.53    3.53    3.53     3.53   3.53    3.53    3.53       3.53
+     6          5.7       0.146      1078        2         63        3.41   3.40   3.39    3.39    3.39     3.39   3.39    3.39    3.39       3.39
+     6          5.9       0.150      1080        2         63        3.41   3.40   3.39    3.39    3.39     3.39   3.39    3.39    3.39       3.39
+     8          7.9       0.200      3313        2         53        3.63   3.61   3.61    3.60    3.60     3.60   3.60    3.60    3.60       3.60
+    10          9.8       0.250      2116        2         53        3.63   3.61   3.61    3.60    3.60     3.60   3.60    3.60    3.60       3.60
+    12         11.8       0.300      3313        3         53        3.63   3.61   3.61    3.60    3.60     3.60   3.60    3.60    3.60       3.60
+    16         15.7       0.400      3313        4         53        3.63   3.61   3.61    3.60    3.60     3.60   3.60    3.60    3.60       3.60
+    20         19.7       0.500      2116        4         53        3.63   3.61   3.61    3.60    3.60     3.60   3.60    3.60    3.60       3.60
+    25         24.6       0.625      2116        5         53        3.63   3.61   3.61    3.60    3.60     3.60   3.60    3.60    3.60       3.60
+    30         29.5       0.750      2116        6         53        3.63   3.61   3.61    3.60    3.60     3.60   3.60    3.60    3.60       3.60
+
+*The data above show actual values and are not guaranteed.
+
+2          © Panasonic Corporation Electronic Materials Business Division
+                                                                                                                                            No.; 16120228-3
+
+                                  Specification / Laminate R-5785 : E glass
+1GHz ; IPC TM650-2.5.5.9
+6-50GHz ; The method by H. Kawabata, Proceedings of the 36th European Microwave Conference,
+         388-391 (2006)
+
+             Actual Thickness                           Typical                                       Typical Dk
+    Core                             Cloth
+                                                         Resin
+                                                ply
+                                                        Content
+    Type        mil        mm        Style                          1GHz    6GHz    12GHz   18GHz   23GHz   29GHz   34GHz   40GHz   45GHz      50GHz
+                                                          (%)
+
+     2          2.0       0.050      1035        1         65       0.002   0.003   0.003   0.003   0.003   0.003   0.004   0.004   0.004      0.004
+    2.6         2.6       0.065      1080        1         57       0.002   0.003   0.003   0.003   0.004   0.004   0.004   0.004   0.004      0.005
+    2.6         2.6       0.065      1078        1         57       0.002   0.003   0.003   0.003   0.004   0.004   0.004   0.004   0.004      0.005
+     3          3.0       0.075      1078        1         63       0.002   0.003   0.003   0.003   0.003   0.003   0.004   0.004   0.004      0.004
+     4          3.9       0.100      3313        1         53       0.002   0.003   0.003   0.003   0.004   0.004   0.004   0.004   0.005      0.005
+     4          3.9       0.100      1035        2         65       0.002   0.003   0.003   0.003   0.003   0.003   0.004   0.004   0.004      0.004
+     5          5.0       0.127      1078        2         57       0.002   0.003   0.003   0.003   0.004   0.004   0.004   0.004   0.004      0.005
+     5          4.9       0.125      2116        1         53       0.002   0.003   0.003   0.003   0.004   0.004   0.004   0.004   0.005      0.005
+     5          5.1       0.130      1080        2         57       0.002   0.003   0.003   0.003   0.004   0.004   0.004   0.004   0.004      0.005
+     6          5.7       0.146      1078        2         63       0.002   0.003   0.003   0.003   0.003   0.003   0.004   0.004   0.004      0.004
+     6          5.9       0.150      1080        2         63       0.002   0.003   0.003   0.003   0.003   0.003   0.004   0.004   0.004      0.004
+     8          7.9       0.200      3313        2         53       0.002   0.003   0.003   0.003   0.004   0.004   0.004   0.004   0.005      0.005
+    10          9.8       0.250      2116        2         53       0.002   0.003   0.003   0.003   0.004   0.004   0.004   0.004   0.005      0.005
+    12         11.8       0.300      3313        3         53       0.002   0.003   0.003   0.003   0.004   0.004   0.004   0.004   0.005      0.005
+    16         15.7       0.400      3313        4         53       0.002   0.003   0.003   0.003   0.004   0.004   0.004   0.004   0.005      0.005
+    20         19.7       0.500      2116        4         53       0.002   0.003   0.003   0.003   0.004   0.004   0.004   0.004   0.005      0.005
+    25         24.6       0.625      2116        5         53       0.002   0.003   0.003   0.003   0.004   0.004   0.004   0.004   0.005      0.005
+    30         29.5       0.750      2116        6         53       0.002   0.003   0.003   0.003   0.004   0.004   0.004   0.004   0.005      0.005
+
+*The data above show actual values and are not guaranteed.
+
+3          © Panasonic Corporation Electronic Materials Business Division
+                                                                                                                                 No.; 16120228-4
+
+                                 Specification / Prepreg R-5680 : E glass
+
+1GHz ; IPC TM650-2.5.5.9
+6-50GHz ; The method by H. Kawabata, Proceedings of the 36th European Microwave Conference,
+               388-391 (2006)
+
+               Resin       Typical                                                        Typical Dk
+    Cloth
+              Content     Thickness
+    Style
+               (%)          ( um )        1GHz          6GHz         12GHz      18GHz   23GHz    29GHz   34GHz   40GHz   45GHz     50GHz
+
+    1027         75            49          3.18         3.15             3.15   3.15    3.15      3.15   3.15    3.15    3.15       3.15
+
+                 70            60          3.26         3.25             3.25   3.24    3.24      3.24   3.24    3.24    3.24       3.24
+
+    1035         73            68          3.20         3.19             3.19   3.19    3.18      3.18   3.18    3.18    3.18       3.18
+
+                 75            74          3.18         3.15             3.15   3.15    3.15      3.15   3.15    3.15    3.15       3.15
+
+    1080         64            76          3.39         3.38             3.37   3.37    3.37      3.37   3.37    3.37    3.37       3.37
+
+                 64            77          3.39         3.38             3.37   3.37    3.37      3.37   3.37    3.37    3.37       3.37
+
+                 68            89          3.30         3.29             3.29   3.28    3.28      3.28   3.28    3.28    3.28       3.28
+    1078
+                 72           104          3.22         3.21             3.21   3.20    3.20      3.20   3.20    3.20    3.20       3.20
+
+                 75           118          3.18         3.16             3.16   3.16    3.16      3.16   3.16    3.16    3.16       3.16
+
+                 54            98          3.63         3.61             3.61   3.60    3.60      3.60   3.60    3.60    3.60       3.60
+    3313
+                 57           106          3.55         3.54             3.53   3.53    3.53      3.53   3.53    3.53    3.53       3.53
+
+    2116         56           132          3.57         3.56             3.56   3.55    3.55      3.55   3.55    3.55    3.55       3.55
+
+*The data above show actual values and are not guaranteed.
+
+4       © Panasonic Corporation Electronic Materials Business Division
+                                                                                                                               No.; 16120228-5
+
+                                 Specification / Prepreg R-5680 : E glass
+
+1GHz ; IPC TM650-2.5.5.9
+6-50GHz ; The method by H. Kawabata, Proceedings of the 36th European Microwave Conference,
+               388-391 (2006)
+
+               Resin       Typical                                                      Typical Df
+    Cloth
+              Content     Thickness
+    Style
+               (%)          ( um )        1GHz          6GHz         12GHz   18GHz   23GHz     29GHz   34GHz   40GHz   45GHz     50GHz
+
+    1027         75            49         0.002         0.002        0.002   0.002   0.003     0.003   0.003   0.003   0.003     0.004
+
+                 70            60         0.002         0.002        0.003   0.003   0.003     0.003   0.003   0.003   0.004     0.004
+
+    1035         73            68         0.002         0.002        0.002   0.002   0.003     0.003   0.003   0.003   0.003     0.004
+
+                 75            74         0.002         0.002        0.002   0.002   0.003     0.003   0.003   0.003   0.003     0.004
+
+    1080         64            76         0.002         0.003        0.003   0.003   0.003     0.003   0.004   0.004   0.004     0.004
+
+                 64            77         0.002         0.003        0.003   0.003   0.003     0.003   0.004   0.004   0.004     0.004
+
+                 68            89         0.002         0.003        0.003   0.003   0.003     0.003   0.003   0.004   0.004     0.004
+    1078
+                 72           104         0.002         0.002        0.002   0.002   0.003     0.003   0.003   0.003   0.003     0.004
+
+                 75           118         0.002         0.002        0.002   0.002   0.003     0.003   0.003   0.003   0.003     0.004
+
+                 54            98         0.002         0.003        0.003   0.003   0.004     0.004   0.004   0.004   0.005     0.005
+    3313
+                 57           106         0.002         0.003        0.003   0.003   0.004     0.004   0.004   0.004   0.004     0.005
+
+    2116         56           132         0.002         0.003        0.003   0.003   0.004     0.004   0.004   0.004   0.004     0.005
+
+*The data above show actual values and are not guaranteed.
+
+5       © Panasonic Corporation Electronic Materials Business Division
+                                                                                                                                          No.; 16120228-6
+
+                       Specification / Laminate R-5785(N) : Low-Dk glass
+1GHz ; IPC TM650-2.5.5.9
+6-50GHz ; The method by H. Kawabata, Proceedings of the 36th European Microwave Conference,
+         388-391 (2006)
+
+             Actual Thickness                           Typical                                      Typical Dk
+    Core                             Cloth
+                                                         Resin
+                                                ply
+                                                        Content
+    Type        mil        mm        Style                          1GHz    6GHz   12GHz   18GHz   23GHz   29GHz   34GHz   40GHz   45GHz     50GHz
+                                                          (%)
+
+     2          2.0       0.050      1035        1         67        3.21   3.20   3.20    3.20    3.19     3.19   3.19    3.19    3.19       3.19
+    2.6         2.6       0.065      1078        1         59        3.32   3.31   3.30    3.30    3.30     3.30   3.30    3.30    3.30       3.30
+     3          3.0       0.075      1078        1         65        3.24   3.23   3.22    3.22    3.22     3.22   3.22    3.22    3.22       3.22
+    3.5         3.5       0.090      1078        1         70        3.18   3.17   3.16    3.16    3.16     3.16   3.16    3.16    3.16       3.16
+     4          3.9       0.100      3313        1         55        3.37   3.35   3.35    3.34    3.34     3.34   3.34    3.34    3.34       3.34
+     4          3.9       0.100      1035        2         67        3.21   3.20   3.20    3.20    3.19     3.19   3.19    3.19    3.19       3.19
+     5          5.0       0.127      1078        2         59        3.32   3.31   3.30    3.30    3.30     3.30   3.30    3.30    3.30       3.30
+     5          4.9       0.125      2116        1         55        3.37   3.35   3.35    3.34    3.34     3.34   3.34    3.34    3.34       3.34
+     6          5.7       0.146      1078        2         65        3.24   3.23   3.22    3.22    3.22     3.22   3.22    3.22    3.22       3.22
+     7          7.0       0.178      1078        2         70        3.18   3.17   3.16    3.16    3.16     3.16   3.16    3.16    3.16       3.16
+     8          7.9       0.200      3313        2         55        3.37   3.35   3.35    3.34    3.34     3.34   3.34    3.34    3.34       3.34
+    10          9.8       0.250      2116        2         55        3.37   3.35   3.35    3.34    3.34     3.34   3.34    3.34    3.34       3.34
+    12         11.8       0.300      3313        3         55        3.37   3.35   3.35    3.34    3.34     3.34   3.34    3.34    3.34       3.34
+    16         15.7       0.400      3313        4         55        3.37   3.35   3.35    3.34    3.34     3.34   3.34    3.34    3.34       3.34
+    20         19.7       0.500      2116        4         55        3.37   3.35   3.35    3.34    3.34     3.34   3.34    3.34    3.34       3.34
+    25         24.6       0.625      2116        4         55        3.37   3.35   3.35    3.34    3.34     3.34   3.34    3.34    3.34       3.34
+    30         29.5       0.750      2116        6         55        3.37   3.35   3.35    3.34    3.34     3.34   3.34    3.34    3.34       3.34
+
+*The data above show actual values and are not guaranteed.
+
+6          © Panasonic Corporation Electronic Materials Business Division
+                                                                                                                                            No.; 16120228-7
+
+                       Specification / Laminate R-5785(N) : Low-Dk glass
+1GHz ; IPC TM650-2.5.5.9
+6-50GHz ; The method by H. Kawabata, Proceedings of the 36th European Microwave Conference,
+         388-391 (2006)
+
+             Actual Thickness                           Typical                                       Typical Df
+    Core                             Cloth
+                                                         Resin
+                                                ply
+                                                        Content
+    Type        mil        mm        Style                          1GHz    6GHz    12GHz   18GHz   23GHz   29GHz   34GHz   40GHz   45GHz      50GHz
+                                                          (%)
+
+     2          2.0       0.050      1035        1         67       0.001   0.002   0.002   0.002   0.002   0.002   0.003   0.003   0.003      0.003
+    2.6         2.6       0.065      1078        1         59       0.001   0.002   0.002   0.002   0.002   0.003   0.003   0.003   0.003      0.003
+     3          3.0       0.075      1078        1         65       0.001   0.002   0.002   0.002   0.002   0.002   0.003   0.003   0.003      0.003
+    3.5         3.5       0.090      1078        1         70       0.001   0.002   0.002   0.002   0.002   0.002   0.002   0.003   0.003      0.003
+     4          3.9       0.100      3313        1         55       0.001   0.002   0.002   0.002   0.003   0.003   0.003   0.003   0.003      0.004
+     4          3.9       0.100      1035        2         67       0.001   0.002   0.002   0.002   0.002   0.002   0.003   0.003   0.003      0.003
+     5          5.0       0.127      1078        2         59       0.001   0.002   0.002   0.002   0.002   0.003   0.003   0.003   0.003      0.003
+     5          4.9       0.125      2116        1         55       0.001   0.002   0.002   0.002   0.003   0.003   0.003   0.003   0.003      0.004
+     6          5.7       0.146      1078        2         65       0.001   0.002   0.002   0.002   0.002   0.002   0.003   0.003   0.003      0.003
+     7          7.0       0.178      1078        2         70       0.001   0.002   0.002   0.002   0.002   0.002   0.002   0.003   0.003      0.003
+     8          7.9       0.200      3313        2         55       0.001   0.002   0.002   0.002   0.003   0.003   0.003   0.003   0.003      0.004
+    10          9.8       0.250      2116        2         55       0.001   0.002   0.002   0.002   0.003   0.003   0.003   0.003   0.003      0.004
+    12         11.8       0.300      3313        3         55       0.001   0.002   0.002   0.002   0.003   0.003   0.003   0.003   0.003      0.004
+    16         15.7       0.400      3313        4         55       0.001   0.002   0.002   0.002   0.003   0.003   0.003   0.003   0.003      0.004
+    20         19.7       0.500      2116        4         55       0.001   0.002   0.002   0.002   0.003   0.003   0.003   0.003   0.003      0.004
+    25         24.6       0.625      2116        4         55       0.001   0.002   0.002   0.002   0.003   0.003   0.003   0.003   0.003      0.004
+
+    30         29.5       0.750      2116        6         55       0.001   0.002   0.002   0.002   0.003   0.003   0.003   0.003   0.003      0.004
+
+*The data above show actual values and are not guaranteed.
+
+7          © Panasonic Corporation Electronic Materials Business Division
+                                                                                                                                 No.; 16120228-8
+
+                      Specification / Prepreg R-5680(N) : Low-Dk glass
+
+1GHz ; IPC TM650-2.5.5.9
+6-50GHz ; The method by H. Kawabata, Proceedings of the 36th European Microwave Conference,
+               388-391 (2006)
+
+               Resin       Typical                                                        Typical Dk
+    Cloth
+              Content     Thickness
+    Style
+               (%)          ( um )        1GHz          6GHz         12GHz      18GHz   23GHz    29GHz   34GHz   40GHz   45GHz     50GHz
+
+                 72            60          3.15         3.14             3.14   3.14    3.14      3.14   3.14    3.14    3.14       3.14
+
+    1035         75            68          3.11         3.11             3.11   3.10    3.10      3.10   3.10    3.10    3.10       3.10
+
+                 77            74          3.09         3.09             3.08   3.08    3.08      3.08   3.08    3.08    3.08       3.08
+
+                 66            77          3.23         3.22             3.21   3.21    3.21      3.21   3.21    3.21    3.21       3.21
+
+                 70            89          3.18         3.17             3.16   3.16    3.16      3.16   3.16    3.16    3.16       3.16
+    1078
+                 74           104          3.12         3.12             3.12   3.11    3.11      3.11   3.11    3.11    3.11       3.11
+
+                 77           118          3.09         3.09             3.08   3.08    3.08      3.08   3.08    3.08    3.08       3.08
+
+                 56            98          3.37         3.35             3.35   3.34    3.34      3.34   3.34    3.34    3.34       3.34
+    3313
+                 59           106          3.33         3.32             3.32   3.31    3.31      3.31   3.31    3.31    3.31       3.31
+
+    2116         58           132          3.33         3.33             3.33   3.33    3.32      3.32   3.32    3.32    3.32       3.32
+
+
+*The data above show actual values and are not guaranteed.
+
+8       © Panasonic Corporation Electronic Materials Business Division
+                                                                                                                               No.; 16120228-9
+
+                      Specification / Prepreg R-5680(N) : Low-Dk glass
+
+1GHz ; IPC TM650-2.5.5.9
+6-50GHz ; The method by H. Kawabata, Proceedings of the 36th European Microwave Conference,
+               388-391 (2006)
+
+               Resin       Typical                                                      Typical Df
+    Cloth
+              Content     Thickness
+    Style
+               (%)          ( um )        1GHz          6GHz         12GHz   18GHz   23GHz     29GHz   34GHz   40GHz   45GHz     50GHz
+
+                 72            60         0.001         0.002        0.002   0.002   0.002     0.002   0.002   0.003   0.003     0.003
+
+    1035         75            68         0.001         0.002        0.002   0.002   0.002     0.002   0.002   0.003   0.003     0.003
+
+                 77            74         0.001         0.002        0.002   0.002   0.002     0.002   0.002   0.002   0.003     0.003
+
+                 66            77         0.001         0.002        0.002   0.002   0.002     0.002   0.003   0.003   0.003     0.003
+
+                 70            89         0.001         0.002        0.002   0.002   0.002     0.002   0.002   0.003   0.003     0.003
+    1078
+                 74           104         0.001         0.002        0.002   0.002   0.002     0.002   0.002   0.003   0.003     0.003
+
+                 77           118         0.001         0.002        0.002   0.002   0.002     0.002   0.002   0.002   0.003     0.003
+
+                 56            98         0.001         0.002        0.002   0.002   0.003     0.003   0.003   0.003   0.003     0.004
+    3313
+                 59           106         0.001         0.002        0.002   0.002   0.002     0.003   0.003   0.003   0.003     0.003
+
+    2116         58           132         0.001         0.002        0.002   0.002   0.002     0.003   0.003   0.003   0.003     0.003
+
+
+*The data above show actual values and are not guaranteed.
+
+9       © Panasonic Corporation Electronic Materials Business Division
+                                                                                                                                            No.; 16120228-10
+
+                                                          ++ Before purchase ++
+
+   【Notes before you use】
+   ・Prior to adoption and use of a product contained in the datasheet, please verify the suitability for your application
+    by your quality testing, evaluation, etc.
+   ・We would like to have a delivery specifications mutually agreed for the product that you have decided to use.
+    The agreements defined in the delivery specifications are assigned higher priority.
+   ・Please note that images shown may somewhat differ from the actual product in color.
+   ・Please note that specifications and external design are subject to change for product improvement without notice.
+   ・For details on products in the datasheet, please contact your distributor or our sales department.
+
+   【Safety Information】
+   ・Before using the product, please read the delivery specifications carefully or contact the distributor from which
+    you purchased the product or our sales department in order to use the product correctly.
+   ・The products in the datasheet are Electronic circuit board materials for electronic and electrical devices.
+    Please do not use them for other than specified use.
+
+Please Contact us of more
+【Technical Marketing】                             【Sales Offices】
+・Japan (Osaka)        TEL: 81-6-6908-8132         ・China (Hong Kong)       TEL: 852-2956-3118     Panasonic Corporation
+・USA (Cupertino)      TEL: 1-408-861-3946         ・China (Suzhou)          TEL: 86-512-68252697   Automotive & Industrial Systems Company
+・Austria (Enns)       TEL: 43-7223-883-0          ・China (Guangzhou)       TEL: 86-20-8713-0888
+・China (Guangzhou)    TEL: 86-20-8713-0888        ・Korea (Seoul)           TEL: 82-2-361-7870
+                                                                                                  Electronic Materials Business Division
+                                                  ・Taiwan (Hsinchu)        TEL: 886-3-598-3201    Circuit Board Materials Business Unit.
+                                                  ・Thailand (Ayuthaya)     TEL: 66-35-330-846     Head Office: 1006 Kadoma, Kadoma City, Osaka 571-8506
+                                                  ・Singapore (Joo Koon)    TEL: 65-6861-8385
+                                                                                                  TEL: 81-6-6908-1101
+                                                  ・Austria (Enns)          TEL: 43-7223-883-0
+                                                  ・Japan (Osaka)           TEL: 81-6-6904-2771    industrial.panasonic.com/ww/electronic-materials
+                                                  ・USA (Cupertino)         TEL: 1-408-861-3946
+ *The data above show actual values and are not guaranteed.
+
+ 10       © Panasonic Corporation Electronic Materials Business Division
+

@@ -1,0 +1,146 @@
+                                                                                    Data Sheet
+
+
+Kappa 438 Laminates
+
+Specifically formulated to have FR-4 matched dielectric constant (Dk),
+design transition to Kappa 438 laminates will be effortless. These        Features and Benefits:
+laminates also exhibit low loss, tight Dk and thickness tolerances         Glass Reinforced Hydrocarbon
+needed to meet the growing performance needs of the wireless               Thermoset Platform
+                                                                             • Ease of PCB manufacturing and
+market traditionally served by higher end FR-4 materials. Demand for           assembly in line with FR-4
+wireless data is growing exponentially, driving a need for substantially
+higher levels of mobile network capacity and performance. FR-4 was         Dk Tailored to FR-4 Industry Standard
+                                                                           Norms
+historically a material choice for many less demanding RF applications,     • 4.38 Dk for ease of transition
+                                                                               when upgraded electrical
+but changes in the wireless infrastructure related to growing                  performance is needed over FR-4
+performance requirements, especially in small cells and carrier-grade
+Wi-Fi, has resulted in instances where the properties of FR-4 are          Tighter Dk and Thickness Tolerance
+                                                                           than FR-4
+lacking, and RF performance and consistency is compromised.                  • Consistent circuit performance
+
+                                                                           Low Z Axis CTE and High Tg
+Wireless circuit designers can now realize a true breakthrough with          • Improved design flexibility, PTH
+Kappa 438 laminates because they feature the performance of mid-tier           reliability
+                                                                             • Automated assembly compatible
+circuit materials that extend beyond performance limitations of FR-4,
+and provide the optimum blend of price, performance, and reliability.      Flame Retardant Laminate
+Kappa 438 laminates can be fabricated using standard epoxy/glass             • UL 94 V-0
+(FR-4) processes and are compatible with conventional bondplies.
+                                                                           Typical Applications:
+These laminates utilize RoHS compliant flame-retardant technology
+to achieve a UL 94 V-0 flame retardant rating and are lead-free solder       • Carrier Grade WiFi/Licensed
+process compatible. These materials conform to the requirements of             Assisted Access (LAA)
+                                                                             • Small Cell and Distributed
+IPC-4103A, slash sheet /250.                                                   Antenna Systems (DAS)
+                                                                             • Vehicle to Vehicle/Vehicle to
+                                                                               Infrastructure Communications
+                                                                               (V2X)
+                                                                             • Internet of Things (IoT)
+                                                                               Segments: Smart Home and
+                                                                               Wireless Meters
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+                                                         Page 1 of 4
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+                                                         Page 2 of 4
+                                                            Typical Value
+                                                               Kappa
+                     Property                                                       Direction               Units                 Condition                                   Test Method
+                                                              Laminate
+                                                                 [1]
+ [3]
+       Dielectric Constant, er Design                            4.38[2]                  Z                    -                    2.5 GHz                     Differential Phase Length Method
+Dissipation Factor tan, d                                        0.005                    Z                    -                 10 GHz/23°C                               IPC-TM-650 2.5.5.5
+ Thermal Coefficient of Dielectric                                                                                                 10 GHz
+                                                                   -21                    -                ppm/°C               (-50 to 150°C)                      Modified IPC-TM-650 2.5.5.5
+ Constant e
+               r
+
+ Volume Resistivity                                            2.9 x 109                  -                MΩ•cm                    COND A                                IPC-TM-650 2.5.17.1
+
+ Surface Resistivity                                           6.2 x 107                  -                  MΩ                     COND A                                IPC-TM-650 2.5.17.1
+
+ Electrical Strength                                               675                    Z                 V/mil                        -                                 IPC-TM-650 2.5.6.2
+
+ Tensile Strength                                                  16                    MD                  kpsi                        -                             ASTM D3039/D3039-14
+                                                                   12                   CMD
+
+ Flexural Strength                                                 25                    MD                  kpsi                        -                                  IPC-TM-650 2.4.4
+                                                                   19                   CMD
+
+ Dimensional Stability                                            -0.48                  MD                mm/m                          -                                IPC-TM-650 2.4.39a
+                                                                  -0.59                 CMD
+                                                                   13                     X
+ Coefficient of Thermal Expansion                                  16                     Y                ppm/°C                -55 to 288°C                              IPC-TM-650 2.4.41
+                                                                   42                     Z
+ Thermal Conductivity                                             0.64                    Z               W/(m.K)                     80°C                                    ASTM D5470
+
+ Time to Delamination (T288)                                      >60                     -               minutes                    288°C                                IPC-TM-650 2.4.24.1
+
+ Tg                                                               >280                    -                °C TMA                        -                                IPC-TM-650 2.4.24.3
+
+ Td                                                                414                    -                   °C                         -                                 IPC-TM-650 2.3.40
+
+ Moisture Absorption                                              0.07                    -                   %                      24/23                                 IPC-TM-650 2.6.2.1
+
+ Young’s Modulus                                                  2264                   MD                  kpsi                        -                             ASTM D3039/D3039-14
+                                                                  2098                  CMD
+
+ Flex Modulus                                                     2337                   MD                  kpsi                        -                                  IPC-TM-650 2.4.4
+                                                                  2123                  CMD
+ Bow                                                              0.03                    -                   %                          -                                IPC-TM-650 2.4.22C
+
+ Twist                                                            0.08                    -                   %                          -                                IPC-TM-650 2.4.22C
+ Copper Peel Strength                                              5.8                    -                 lbs/in             1 oz (35 µm) foil                            IPC-TM-650 2.4.8
+ After Thermal Stress
+ Flammability                                                      V-0                    -                    -                         -                                         UL 94
+
+ Specific Gravity                                                 1.99                    -                 g/cm3                        -                                     ASTM D792
+
+ Lead-Free Process Compatible                                      Yes                    -                    -                         -
+NOTES:
+[1] Typical values are a representation of an average value for the population of the property. For specification values contact Rogers Corporation.
+[2] Dielectric Constant using stripline method IPC TM-650 2.5.5.5 at 10 GHz is 4.10 +/- 0.08 for Rogers’ internal Q.A. testing
+[3] The design Dk is an average number from several different tested lots of material and on the most common thickness/s. If more detailed information is required please contact Rogers Corporation.
+
+
+                                   Standard Thicknesses                                                            Standard Panel Sizes:                                     Standard Cladding
+0.010” (0.254 mm) +/- 0.001”                                                                       24” X 18”       (610 X 457 mm)                           Electrodeposited Copper Foil
+0.020” (0.508 mm) +/- 0.0015”                                                                      24.25” X 18.25” (616 X 464 mm)                           ½ oz. (18µm) HH/HH
+0.030” (0.762 mm) +/- 0.002”                                                                       48” X 36”        (1219 X 915 mm)                         1 oz. (35µm) H1/H1
+0.040” (1.016 mm) +/- 0.003”                                                                       48.25” X 36.25” (1226 X 921 mm)
+0.060” (1.524 mm) +/- 0.004”
+                                                                                                   *Additional panel sizes available
+*Additional non-standard thicknesses of 0.090” and 0.120” available
+
+*Contact Customer Service or Sales Engineering to inquire about additional available product configurations
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+                                                                                                    Page 3 of 4
+The information in this data sheet is intended to assist you in designing with Rogers’ circuit materials. It is not intended to and does not create any warranties express or
+implied, including any warranty of merchantability or fitness for a particular purpose or that the results shown on this data sheet will be achieved by a user for a particular
+purpose. The user should determine the suitability of Rogers’ circuit materials for each application.
+
+Prolonged exposure in an oxidative environment may cause changes to the dielectric properties of hydrocarbon based materials. The rate of change increases at higher temperatures
+and is highly dependent on the circuit design. Although Rogers’ high frequency materials have been used successfully in innumerable applications and reports of oxidation resulting in
+performance problems are extremely rare, Rogers recommends that the customer evaluate each material and design combination to determine fitness for use over the entire life of the
+end product.
+
+
+The Rogers’ logo, Kappa and Helping power, protect, connect our world are trademarks of Rogers Corporation or one of its subsidiaries.
+© 2022 Rogers Corporation, Printed in U.S.A.,
+All rights reserved. Revised 1626 110822 PUB# 92-183
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+                                                                                      Page 4 of 4
+

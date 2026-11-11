@@ -1,0 +1,166 @@
+                                                    Confidential
+
+
+
+
+             N7000-2HT, N7000-3
+                and N7000-3F
+                                  General Processing Guidelines
+
+
+
+Toughened Polyimide
+N7000-2HT, N7000-3 and N7000-3F non-MDA                       • Option 2: Peroxysulfuric oxide alternative or
+toughened polyimide materials offer superior                  white (Sn) oxide.
+board performance, reliability, excellent thermal
+performance. These PCB materials are appropriate              Note: The brown oxide deposit should be tested
+for device-undertest (DUT).                                   using a weight loss test. Thick oxide deposits tend
+                                                              to yield poor thermal resistance. The oxide deposit
+                                                              should not exceed 0.4 mg/cm2.
+Material Handling & Storage
+Store laminates flat in a dry environment. Do not
+bend, scratch or dent laminate.                               Inner Layer Drying
+Store prepreg flat, with a storage temperature of             Inner layers should be oven dried to remove
+<72° F (<23°C) and ≤50% RH.                                   absorbed moisture. Absorbed moisture in the inner
+For extended prepreg storage, reduce storage                  layer can affect the curing properties of the
+temperature to <41° F (<5°C).                                 prepreg. Conveyorized warm air drying is usually
+Place prepreg under vacuum or in a desiccant                  not effective in removing absorbed moisture from
+chamber 12 - 24 hours prior to lay-up for best                the etched layer.
+results.
+Reseal opened bags of unused prepreg.
+                                                                                         Recommendations
+
+Copper & Surface Preparation
+Prepare copper surface for photo resist application                            230°F (110°C) in vertical racks with
+according to the following options:                            Signal layers   minimum 0.5” (12 mm) separations for
+The type of copper surface preparation employed                                30 minutes
+should relate to the foil type as specified below:             Plane layers
+                                                                               230°F (110°C) in vertical racks with
+                                                                and plated
+• Reverse Treat Foil (RTFoil®): Chemical clean                   sub-lam       minimum 0.5” (12 mm) separation for
+followed by a light tack clean.                                                60 minutes
+                                                                  layers
+• Shiny Copper Foil: Chemical and / or Mechanical
+ clean followed by a light tack clean.
+                                                              Note: 1) Check with oxide supplier if using DMAB
+• Double Treat Foil: Chemical clean followed by a
+                                                              oxide reducer. Excessive exposure to heat may re-
+light tack clean.
+                                                              oxidize the reduced treatment.
+                                                              2) If inner layers are baked horizontally in stacks of
+Note: Chemical clean consists of a mild cleaner to
+                                                              1 - 2“ (25-50mm) extend time to 90 minutes.
+remove soils followed by a mild acid to remove the
+                                                              3) Drying temperatures below 212°F (100°C) are
+passivation.
+                                                              not effective in removing absorbed moisture from
+                                                              the layer.
+Bond Enhancing Treatments                                     4) If slip sheets are used to protect layers it is
+One of the following options can be used                      important that they not contain wax or silicon
+successfully:                                                 based materials which can transfer between cores
+• Option 1: Brown oxide with DMAB                             and affect adhesion after lamination.
+(dimethylamino borane) reduction.
+                                                    Confidential
+
+
+
+
+Lay-up
+For best results, use inner layers within 2 hours after drying. Rebake inner layers if not used within 24 hours.
+
+Note: In some cases, interactions between ammoniacal etching processes and certain copper foil types can
+increase the likelihood of high resistance shorts. Contact your local technical service representative to discuss
+choice of copper foil to be used in lay-up.
+
+Lamination
+For best results, fully cure in vacuum assisted hydraulic press
+
+                                                               Recommendations
+                                               A minimum of 28.5” Hg (965 mbars) for 30 minutes
+  Vacuum Gauge Pressure
+                                                       before applying heat & pressure.
+       Heat Up Rate*                                    8 - 12°F (4.4 – 6.5 °C) per minute
+       Critical Range                                       180 – 280°F (80 – 140°C)
+          Pressure                                        225 - 300 psi (15.5 – 20.6 bar)
+      Cure Time, Temp                            135 minutes @ 425 °F (135 minutes @ 218 °C)
+      Cool Down Rate                      7°F (4°C) per minute or less until stack reaches 260°F (127°C)
+        Breakdown                                After panels have cooled below 225°F (107 °C)
+
+Notes: Heat rise is usually controlled by using an acceptable thermal lagging such as kraft paper or press pads.
+Alternately the heat rise can be controlled by ramping the platen temperature about 5 – 10 °F (5 °C) higher than
+book temperatures and controlling the heat up rate through the critical temperature range.
+
+For partial cure in press and full cure in oven, laminate product 60 minutes at 400°F (204°C) followed by a 60
+minute postbake in the oven at 425°F (218°C). Care should be taken in handling the undercured polyimide panel
+to avoid localized delamination.
+
+For PCB’s requiring multiple laminations, it may be beneficial to undercure the laminated sub-assemblies (sub-
+lams). Sublams can be initially cured at 400°F (204°C) for 90 minutes. Use the standard lamination process for
+final cure
+
+Drilling
+  Typical Drill Parameters                                     Recommendations
+          Drill Sizes             0.010” – 0.020” (0.30 – 0.50 mm)              0.020” - 0.040” (0.50 – 1.0 mm)
+       Surface Speed              300 – 400 SFM (91– 122 m/min.)               350-450 SFM (107 – 138 m/min.)
+          Chip Load              0.5 – 1.5 mils/rev (12 – 38 µm/rev)          0.8 – 2.0 mils/rev (20 – 50 µm/rev)
+    Maximum Hit Count                        500 - 1000                                      750 – 1200
+    Typical Stack Height           0.045” – 0.100” (1.1 – 2.5 mm)               0.045” – 0.100” (1.1 - 2.5 mm)
+
+Note: Undercut drills are recommended for small hole drills < 0.0185” (0.47 mm). Peck drilling is recommended
+for panel thicknesses greater than .100” (2.5mm). Lubricated entry and/or back-up materials may be used to
+reduce the heat generation during drilling.
+                                                       Confidential
+
+
+
+
+Drilling parameters should be adjusted depending on hole size, layer count, panel thickness, copper content and
+stack height. For specific feed and speed parameters, contact your drill supplier or AGC’S technical
+representative. Detailed typical drilling parameters are available for many products. Please contact agc-
+ml.multimaterial@agc.com.
+
+Hole Cleaning (Resin Smear Removal)
+Most solvent swell and permanganate etch processes are suitable. Aggressive solvent swell processes and
+double pass chemical desmear processes should be avoided.
+
+Plasma: Typical desmear conditions
+           Temperature                  Gas mixture                    Power                          Time
+              80 2C              10%CF4 , 80% O2, 10% N2            4000 W                        20-30 min
+
+
+Note: Depending on the amount of resin removal required, a preheat cycle and an oxygen burn cycle for ash
+removal may be necessary. Longer dwell times will be required if full etch-back is required. See your technical
+representative for additional information.
+
+Chemical Desmear:
+                     Type                       Temp (°F /°C)                               Time
+              Cyclic Amine 100%                130 ± 5 / 54 ± 2                        3 - 5 min.
+            Cyclic Amine 50% v/v               170 ± 5 / 77 ± 2                        6 - 8 min.
+          Butyl / hydroxide solvent            173 ± 5 / 78 ± 2                        6 - 8 min.
+      Alkaline Permanganate oxidizer           175 ± 5 / 79 ± 2                      12 - 16 min.
+
+
+
+Routing
+           Typical Drill Parameters                                   Recommendations
+                 Stack Height                                         0.250” (6.25 mm)
+                   Tool Size                                           0.093” (2.4 mm)
+                   Feed Rate                                          36 IPM (0.9 m/min.)
+                     Speed                                                 24K RPM
+
+
+
+    These guidelines can provide only basic and reference information for PCB fabricators. Because of different
+    environment, equipment, tooling and so on, in all instances, the user shall determine suitability in any given
+    conditions or applications. For more detailed processing information, please contact with the AGC engineer or
+    sales representative.
+
+
+.
+
+
+
+
+    AGC Inc. 2025-07
+    agc-ml.multimaterial@agc.com
+

@@ -1,0 +1,133 @@
+                              General Processing Guidelines
+
+       Meteorwave® No Flow Series
+                                     Meteorwave 1000NF
+                                      Ultra Low Loss and Very Low Loss Materials
+
+
+
+
+Purpose
+These guidelines can provide only basic and reference information for PCB fabricators. Because of different
+environment, equipment, tooling, etc., the user shall determine suitability in any given conditions or applications. For
+more detailed processing information, please contact your local AGC technical service engineer or sales representative.
+
+
+Material Handling & Storage
+Store laminates flat in a dry environment. Do not bend, scratch, or dent laminate. Store prepreg flat, in a cool, dry environment
+per IPC-4101E Condition 2 [less than 72°F (23°C) and 50% RH]. For extended shelf life, store per IPC-4101E Condition 1 [less
+than 5°C (41°F)]. Reseal opened bags of unused prepreg.
+
+
+Copper & Surface Preparation
+Prepare copper surface for photo resist application using standard chemistries and techniques.
+
+
+Bond Enhancing Treatments
+Meteorwave products are meant for high-speed signal integrity circuitry. Brown and black oxide may be used but are not
+recommended for signal integrity. Alternative oxides are the preferred treatment for high-speed and RF applications.
+
+
+Inner Layer & Sub-assembly Drying
+Inner layers should be oven dried to remove adsorbed moisture prior to re-lamination. Adsorbed moisture in the inner layer
+can affect the curing properties of the prepreg. Conveyorized warm air drying is usually not effective in removing adsorbed
+moisture from the etched layer. Consult your oxide supplier for inner layer baking conditions so as to not reduce the intended
+adhesion properties.
+
+
+                                                                  Best Practice Recommendations
+
+            Signal layers             230°F (110°C) in vertical racks with minimum 0.5” (12mm) separation for 30 minutes
+
+ Plane layers and sub-assemblies      230°F (110°C) in vertical racks with minimum 0.5” (12mm) separation for 60 minutes
+
+
+Inner Layer Drying Notes:
+For best results, use inner layers within 2 hours after drying. Rebake inner layers if not used within 24 hours. Baking cores in
+stacks does not provide an effective airflow to remove entrapped moisture from the cores and should be avoided. Post oxide
+baking is also recommended for each sub-assembly before relamination. The same recommendations outlined above should
+be followed. Cores and sub-assemblies greater than 100 mils (2.54mm) thick may require additional baking time.
+Lamination
+For best results, fully cure in vacuum assisted hydraulic press.
+
+                                                                      Recommendations
+                                  A minimum of 28.5” Hg (965 mbars) for 20 minutes. Do not apply heat or pressure prior
+   Vacuum Gauge Pressure
+                                           to vacuum dwell time. Maintain vacuum throughout press cycle.
+        Heat Up Rate[1]                                           4 - 7°F (2 - 4°C) per minute
+         Critical Range                                             180 - 330°F (82 - 165°C)
+          Pressure[2]                                              400 - 500 psi (27 - 35 bar)
+                                             Single Stage: Apply pressure immediately after vacuum dwell time.
+      Single / Dual Stage
+                                                              Dual Stage: Is not recommended
+       Cure Time, Temp                                           >90 minutes @ 390°F (200°C)
+       Cool Down Rate                           <6°F (3°C) per minute or less until stack reaches 260°F (127°C)
+          Breakdown                                     After panels have cooled below 150°F (65 °C)
+
+Lamination Notes:
+[1] Heat rise is usually controlled by using an acceptable thermal lagging such as kraft paper or press pads. Alternately the heat
+rise can be controlled by ramping the platen temperature about 5 - 10°F (5°C) higher than book temperatures and controlling
+the heat up rate through the critical temperature range.
+[2] Lamination pressure is based on 1/2oz and 1oz copper. Heavier copper weights may require higher pressure.
+
+
+Drilling
+   Typical Drill Parameters                                           Recommendations
+           Drill Sizes                 0.010” - 0.018” (0.25 - 0.46 mm)                  0.020” - 0.040” (0.5 - 1.0 mm)
+        Surface Speed                  300 - 400 SFM (96 - 122 m/min)                   350 - 450 SFM (91 - 122 m/min)
+      Chip Load [per rev]               0.5 - 1.0 mil (0.013 - 0.025 mm)                1.2 - 1.5 mils (0.030 - 0.038 mm)
+     Maximum Hit Count                            750 – 1000                                      1000 - 1500
+
+
+Drilling Notes:
+Undercut drills are recommended for small hole drills less than 0.020” (0.5 mm). Peck drilling is recommended for panel
+thicknesses greater than .100” (2.5 mm). Lubricated entry and/or back-up materials may be used to reduce the heat generation
+during drilling.
+Peck drilling may be necessary for panel thicknesses greater than .100” (2.5 mm). Lubricated entry and/or back-up materials
+may be used to reduce the heat generation during drilling. Drilling parameters should be adjusted depending on hole size, layer
+count, panel thickness, copper content and stack height. For specific feed and speed parameters, contact your drill supplier or
+AGC’s technical representative. Detailed typical drilling parameters are available for many products. Please contact www.agc-
+ml.info-multimaterial@agc.com.
+Hole Cleaning (Resin Smear Removal)
+Plamsa desmear is preferred. Plasma desmear followed by a mild chemical desmear can be used. If a chemical desmear only
+is used, the dwell times should be reviewed with your tech service rep.
+
+Plasma Desmear: Typical desmear conditions
+         Temperature                      Gas mixture                     Power                             Time
+            80 2C                  10%CF4 , 80% O2, 10% N2              4000 W                          15-20 min
+
+
+Plasma Note: Depending on the amount of resin removal required, a preheat cycle and an oxygen burn cycle for ash removal
+may be necessary. Due to variations in plasma equipment, process times and equipment settings should be evaluated.
+
+Chemical Desmear:
+                    Type                          Temp (°F /°C)                                Time
+             Cyclic Amine 50%                    173 ± 5 / 78 ± 2                            4 - 6 min
+     Alkaline Permanganate oxidizer              175 ± 5 / 80 ± 2                            8 - 12 min
+
+
+Chemical Desmear Notes: For panels > 0.180” (4.6 mm), the desmear process must be evaluated to insure adequate solution
+transfer through vias. It may be necessary to use a very light plasma cycle followed by chemical desmear on thick panels with
+high aspect ratio vias.
+
+
+
+Routing
+         Typical Drill Parameters                                         Recommendations
+                Stack Height                                                0.250” (6 mm)
+                  Tool Size                                                0.093” (2.4 mm)
+                  Feed Rate                                               60 IPM (1.5 m/min)
+                    Speed                                                      24K RPM
+
+
+
+
+ These guidelines can provide only basic and reference information for PCB fabricators. Because of different
+ environment, equipment, tooling, etc., the user shall determine suitability in any given conditions or applications. For
+ more detailed processing information, please contact your local AGC technical service engineer or sales representative.
+
+
+
+ AGC Inc. 2026-02
+ agc-ml.info-multimaterial@agc.com
+

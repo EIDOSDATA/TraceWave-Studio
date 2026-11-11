@@ -1,0 +1,129 @@
+\\\ Datasheet
+
+
+  Radix™ Printable Dielectric
+  3D-Printable Dielectric Material for use on Fortify FLUX Series Printers
+
+
+                                                                                                                                       \\\ Features and Benefits:
+  Radix™ Printable Dielectrics                                            material has a dissipation factor
+  are the industry’s first low                                            of 0.0043 at 10 GHz, and can be                                 Industry first low loss 3D-printable
+                                                                                                                                          photopolymer with loss tangent of
+  loss DLP and sterolithography                                           used to create structures that                                  0.0043 @ 10 GHz. Dielectric constant
+  (SLA) 3D-printable material.                                            have a graded dielectric constant                               of 2.8 @ 10 GHZ
+  By combining a low loss resin                                           in all three dimensions by means                               •   Ensures high efficiency in large
+  system with the design freedom                                          of a varying density lattice. These                                lenses and antenna structures
+  and speed of DLP 3D-printing,                                           latticed structures provide even                                Robust thin-walled printing
+  this technology enables the                                             lower dissipation factor and                                    capability down to 225 microns
+  scalable manufacturing of new                                           weight when compared against                                   •   Enables lattice structures for use
+  RF components that cannot                                               a similar part made with solid                                     up to at least 40 GHz
+  be made with traditional                                                materials.                                                      Create structures that spatially vary
+  manufacturing processes. The                                                                                                            in dielectric constant from 1.15 to
+  printable materials leverage                                                                                                            2.0 with a one-material system
+  the performance of DLP and                                                                                                             •   Enables wideband, field-of-view
+  SLA printing processes to allow                                                                                                            enhancing lenses, and switch-
+                                                                                                                                             beam steering antenna systems
+  antenna engineers to implement
+                                                                                                                                             for mmWave applications
+  new dielectric components in
+  applications such as SATComm                                                                                                         \\\ Typical Applications:
+  antenna lenses and volumetric                                                                                                          •   Gradient Index (GRIN) or Gradient
+  circuits for mmWave frequencies.                                                                                                           Dielectric Constant Lenses
+                                                                                                                                         •   3D Antenna Systems
+  Radix Printable Dielectric also
+  enables the use of Gradient Index                                                                                                      •   Impedance matching structures
+  (GRIN) dielectric components                                                                                                           •   Rapid Prototyping of radomes
+                                                                                                                                             and other components
+  with little added complexity.
+  The solid 2.8 dielectric constant
+
+
+  Fortify’s FLUX series printers powered by a DLP (Digital Light Processing) engine, combine the scalability, resolution,
+  and surface quality of photopolymers with the performance expectations of traditional high performance polymers.
+  CKM (Continuous Kinetic Mixing), a proprietary subsystem built into the printers, enables printing of photopolymer
+  resins with uniformly distributed functional additives. The system ensures that particles stay uniformly suspended
+  instead of agglomerating or settling to the bottom of the vat. CKM allows for an expanded processing window
+  compared to other photopolymer DLP or SLA systems, processing much higher viscosity materials. Fortify partners
+  with Rogers Corporation and other global chemical companies to extend material properties and solve printability
+  challenges. www.3dfortify.com
+
+  Advanced Connectivity Solutions
+                                                                                                                                                                                  1
+          S. Roosevelt
+  \\\ 100 S. RooseveltAvenue
+                       Avenue\\\\\\Chandler,
+                                    Chandler,AZAZ 85226
+                                                85226 \\\ \\\
+                                                           Tel:Tel: 480-961-1382
+                                                                480-961-1382      \\\ Fax:
+                                                                              \\\ Fax:     480-961-4533
+                                                                                       480-961-4533      \\\ www.rogerscorp.com
+                                                                                                    \\\ www.rogerscorp.com \\\ IPC S
+Data Sheet
+Radix™ Printable Dielectric
+                                                             Typical
+      Properties                                                           Direction          Units                  Test Conditions                      Test Method
+                                                            Values (1)
+
+      Electrical Properties
+
+                                                               2.8              Z                -       23˚C @ 50% RH             10 GHz              IPC-TM-650 2.5.5.5
+      Dielectric Constant
+                                                               2.8              Z                -       23˚C @ 50% RH             24 GHz              IPC-TM-650 2.5.5.5
+                                                             0.0043             Z                -       23˚C @ 50% RH             10 GHz              IPC-TM-650 2.5.5.5
+      Dissipation Factor
+                                                             0.0046             Z                -       23˚C @ 50% RH             24 GHz              IPC-TM-650 2.5.5.5
+
+      Volume Resistivity                                   1.9 X 1015            -            ohm-cm             -                     -                  ASTM D257
+      Surface Resistivity                                  1.8 X 1015          XY             ohm/sq             -                     -                  ASTM D257
+      Electrical Strength (dielectric strength)                446              Z              V/mil             -                     -               IPC TM-650 2.5.6.2
+      Thermal Properties
+
+      Decomposition Temperature (Td)                           313               -              ˚C        2hrs @ 105˚C        5% Weight Loss           IPC TM-650 2.4.24.6
+      Coefficient of Thermal Expansion                        76, 75          XY, Z           ppm/˚C             -             -50˚C to 50˚C           IPC TM-650 2.4.41
+      Coefficient of Thermal Expansion                      123, 120          XY, Z           ppm/˚C             -             50˚C to 250˚C           IPC TM-650 2.4.41
+
+      Thermal Conductivity                                     0.3              Z             W/(m.K)         50˚C                     -                  ASTM D5470
+
+      Mechanical Properties
+
+      Tensile Stress at Break                                   38             XY              MPa               -                     -                  ASTM D638
+      Elongation at Failure                                    2.3             XY               %                -                     -                  ASTM D638
+      Young’s Modulus                                          2.7             XY              GPa               -                     -                  ASTM D638
+      Heat Deflection Temperature @ 0.455
+                                                               76.7              -              ˚C               -                     -                  ASTM D648
+      MPa
+      Heat Deflection Temperature @ 1.82 MPa                   59.1              -              ˚C               -                     -                  ASTM D648
+      Physical Properties
+                                                              Dark
+      Color                                                                      -               -               -                     -                        -
+                                                           blue/black
+      Flammability                                             HB                -               -               -                     -                     UL 94
+      Moisture Absorption                                      0.08              -             wt %          D24/23                    -                  ASTM D570
+      Specific Gravity                                         1.36              -               -            23˚C                     -                  ASTM D792
+                                                                                                                                                        IPC 4101C, 3.17,
+      Shelf Life                                                6                                    Months from Date of Manufacture
+                                                                                                                                                          Condition 2
+1
+    Typical values are a representation of an average value for the population of the property. For specification values contact Rogers Corporation.
+\\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com
+The information in this data sheet is intended to assist you in designing with Rogers’ materials. It is not intended to and does not create any
+warranties express or implied, including any warranty of merchantability or fitness for a particular purpose or that the results shown on this
+data sheet will be achieved by a user for a particular purpose. The user should determine the suitability of Rogers’ materials for each application.
+These commodities, technology and software are exported from the United States in accordance with the Export Administration regulations. Diversion contrary to
+U.S. law prohibited.
+The Rogers’ logo, Radix and Helping power, protect, connect our world, are trademarks of Rogers Corporation or one of its subsidiaries.
+©2022 Rogers Corporation, Printed in U.S.A., All rights reserved.
+Issued 1627 010523 Publication #92-205
+
+
+
+
+Helping power, protect, connect our world
+                                                                                         TM
+
+
+
+
+                                                                                                                                                                             2
+

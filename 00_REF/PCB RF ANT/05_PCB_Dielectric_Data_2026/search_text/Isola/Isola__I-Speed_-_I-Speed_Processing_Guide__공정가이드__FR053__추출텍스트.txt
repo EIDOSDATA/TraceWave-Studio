@@ -1,0 +1,408 @@
+                                                                                                    I-Speed®
+                                                                              Low Loss, Epoxy Laminate and Prepreg
+
+
+
+  Processing Guide
+  The processing guidelines contained in this document were developed through in-house testing and field experience. However,
+  they should be considered to be starting points that will require further adjustment. Read the following review of processes for
+  applicability to your particular Printed Wiring Board (PWB) fabrication environment. Remember that the suggestions contained
+  herein can not account for all possible board designs or processing environments. Additional adjustments by the fabricator will be
+  necessary. Isola can and will assist with this process, but the fabricator, not Isola, is ultimately responsible for their process and the
+  end results. Fabricators should verify that PWBs made using these suggestions meet all applicable quality and
+  performance requirements.
+
+
+  Part 1: Prepreg Storage and Handling
+  Isola Group’s prepreg bonding sheets for use in multilayer printed circuit board applications are manufactured to specifications that
+  include physical properties, electrical properties and processing characteristics relative to the laminating application. Handling and
+  storage factors have an important influence on the desired performance of the prepreg. Some parameters are affected by the
+  environment in which prepregs are stored. They can also deteriorate over extended periods of storage. The prepreg received by
+  the customer is a glass fabric that has been impregnated with a stated quantity of low volatile, partially polymerized resin. The
+  resin is tack-free but somewhat brittle. Many lamination problems arise from resin loss off the fabric or damage to the woven glass
+  due to improper handling. The fabric used is based on the order
+  and supplies the required thickness. In most cases the amount of resin carried by the fabric increases as the fabric thickness
+  decreases.
+
+  Handling Suggestions
+  Handle all prepreg using clean gloves. Use sharp, precision equipment when cutting or paneling prepreg. Treat all prepreg as being
+  very fragile. Use extreme care when handling very high resin content prepreg (glass fabrics 1080 and finer).
+
+  Storage Suggestions
+  Upon receipt, all prepreg should be immediately moved from the receiving area to a controlled environment. All prepreg should be
+  used as soon as possible using a First-In-First-Out (FIFO) inventory management system. If not handled properly, I-Speed prepreg
+  will absorb moisture, which will lead to depressed Tg’s and cure and affect flow in the press. If extended storage is required,
+  separate facilities should be reserved with appropriate environmental control. Prepreg should be stored at ≤ 23ºC and below 50%
+  humidity.
+
+  Prepreg packages should be allowed to equilibrate to layup room conditions before opening to prevent moisture
+  condensation on the prepreg.
+
+  Stabilization time will depend on storage temperature. In cases where storage temperature is significantly below room
+  temperature, keep prepreg in package or plastic wrapping during stabilization period to prevent moisture condensation. Once the
+  original packaging is opened, the prepreg should be used immediately. Remaining prepreg should be resealed in the original
+  packaging with fresh desiccant. Storage should be in the absence of catalytic environments such as high radiation levels or intense
+  ultraviolet light.
+
+
+  Part 2: Innerlayer Preparation
+  Isola Group’s I-Speed® laminates are fully cured and ready for processing. It has been the experience of most fabricators that
+  stress relief bake cycles are not effective in reducing any movement of high performance laminates such as I-Speed. Therefore, it is
+  suggested that the movement of unbaked laminate be characterized and the appropriate artwork compensation factors are used.
+
+  Dimensional Stability
+  The net dimensional movement of laminate after the etch, oxide and lamination processes is typically shrinkage. This shrinkage is
+  due to the relaxation of stresses that were induced when the laminate was pressed as well as shrinkage contribution from the resin
+  system. Most of the movement will be observed in the grain direction of the laminate.
+
+  There are situations that have been known to alter the proportion of shrinkage in grain versus fill direction in some board shops.
+  These include autoclave pressing and cross-plying laminate grain direction to that of prepreg. While both of these practices have
+  their advantages, material movement must be uniquely characterized.
+
+  If data already exists for artwork compensation on IS415 or FR408HR material, it is suggested to use those factors for the starting
+
+https://www.isola-group.com/pcb-laminates-prepreg/i-
+           speed-laminate-and-prepreg/                 Last Updated November 04, 2026         © 2021, Isola Group, All rights reserved.
+                                                                                                                     I-Speed®
+                                                                                         Low Loss, Epoxy Laminate and Prepreg
+
+
+  point, instead of those listed in Table 1.
+
+                                                                                            This table assumes that laminate and prepreg grain directions
+     Table 1: Initial Artwork Compensation Factors                                          are oriented along the same dimension. Shrinkage factors
+                                                                                            differ based on the process and processing equipment used in
+                Base                                                         Comp           manufacturing.
+                                Configuration           Direction
+          Thickness                                                         (in/in)
+
+                                                                            0.0007-         Imaging and Etching
+           ≤ 0.005″              Signal/Signal         Warp (grain)
+                                                                            0.0009          I-Speed® laminates are compatible with all industry standard
+                                                                            0.0001-         image resists and copper etchants.
+                 "                       "                 Fill
+                                                                            0.0003
+                                                                                            Bond Enhancement
+                                                                            0.0005-
+                 "              Signal/Ground          Warp (grain)                         Oxide alternative chemistries have been used successfully in
+                                                                            0.0007
+                                                                                            fabricating I-Speed multilayer boards to date. They are the
+                                                                            0.0001-
+                 "                       "                 Fill                             only bond enhancement process recommended for lead-free
+                                                                            0.0003
+                                                                                            applications. Reduced black oxide is not recommended and is
+                                                                            0.0002-         more design and process sensitive, as well as being less
+                 "              Ground/Ground          Warp (grain)
+                                                                            0.0004
+                                                                                            thermally stable. Users should make sure the oxide or oxide
+                                                                            0.0000-         alternative coating exhibits a consistent and uniformly dark
+                 "                       "                 Fill
+                                                                            0.0002
+                                                                                            color.
+                                                                            0.0005-
+         0.006-0.009″            Signal/Signal         Warp (grain)
+                                                                            0.0007          For conveyorized oxide alternatives, the dryer should be
+                                                                            0.0001-         capable of removing all moisture from the innerlayer surface.
+                 "                       "                 Fill
+                                                                            0.0003          However,
+
+                                                                            0.0003-
+                                                                                            drying of layers for 120 minutes minimum @ 110°C
+                 "              Signal/Ground          Warp (grain)
+                                                                            0.0005          (230°F) or higher is required for boards to be subjected
+                                                                                            to “Lead-Free” processes. Drying in racks is preferred.
+                                                                            0.0000-
+                 "                       "                 Fill
+                                                                            0.0002
+                                                                                            Wet cores interfere with the curing of prepreg, leading
+                                                                            0.0000-         to low Tg values and degraded performance. Users
+                 "              Ground/Ground          Warp (grain)
+                                                                            0.0002
+                                                                                            need to
+                                                                            0.0000-         verify the effectiveness of their process to achieve dry
+                 "                       "                 Fill
+                                                                            0.0002
+                                                                                            cores.
+                                                                            0.0002-
+         0.010-0.014″            Signal/Signal         Warp (grain)
+                                                                            0.0004          If reduced oxides are used, consult the chemical supplier for
+                                                                            0.0000-         post oxide baking considerations as excessive baking may
+                 "                       "                 Fill
+                                                                            0.0002          lead to lower pink ring resistance. It is generally suggested
+
+                                                                            0.0001-
+                                                                                            that post-oxide baking be performed vertically, in racks. The
+                 "              Signal/Ground          Warp (grain)
+                                                                            0.0003          use of standard, non-drum side outer layer foil is
+                                                                                            recommended for all lead-free applications.
+                                                                            0.0001-
+                 "                       "                 Fill
+                                                                            0.0003
+
+                                                                            0.0001-
+                 "              Ground/Ground          Warp (grain)
+                                                                            0.0003
+
+                                                                            0.0000-
+                 "                       "                 Fill
+                                                                            0.0002
+
+     Table 1 (for reference) illustrates the suggested approach to characterizing
+     laminate movement and provides approximate artwork compensation
+     factors.
+
+
+
+  Part 3: Lamination
+  The amount of time at cure temperature and the required pressure will be a function of board design. Thinner boards and copper
+  can run at the lower end of the ranges. Thicker boards may require longer cure times. Heavy copper or designs with significant low
+  pressure areas should use higher pressure.
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/i-
+           speed-laminate-and-prepreg/                            Last Updated November 04, 2026               © 2021, Isola Group, All rights reserved.
+                                                                                                                      I-Speed®
+                                                                                      Low Loss, Epoxy Laminate and Prepreg
+
+
+  Faster heat ramps lower the minimum achieved viscosity and improve resin fill and flow, but require that full pressure application
+  occur before the product reaches the flow temperature. This is helpful with hard to fill product. Slower heat ramps do not achieve
+  the same relative viscosity but have a longer time to fill. They will work better on light copper designs and thinner boards.
+
+  Sequential Lamination
+  Sub-assemblies must be baked prior to performing the secondary lamination. Water will interfere with the curing of the I-Speed
+  resin system.
+  Sub-assemblies require much longer baking, particularly when stored in open environment.
+
+  Baking times range from 3-24 hours at 110-180°C (230-356°F). Extended baking times can be done just before the oxide
+  alternative process. Post alternative oxide bake can be short, just to remove surface moisture. Consult with an Isola Technical
+  Expert for recommendations.
+
+  Removal of I-Speed flash should be performed by routing rather than shearing to minimize crazing along the panel edges.
+
+
+                                                                                           Part 4: Drill
+     Table 2: I-Speed® General Lamination Parameters                                       General
+                                                                                           The I-Speed materials exhibit increased thermal stability and
+       Process                 Recommendation
+                                                                                           generate little or no smear. To assure effective removal of the
+       Vacuum Time             20 minutes (no pressure, product on risers)
+                                                                                           resin debris during drilling, undercut drill geometries and high
+       Curing                  200°C (390°F)                                               helix tools are strongly recommended on drills up to 1.0 mm
+       Temperature             210°C (410°F) Maximum
+                                                                                           in diameter. On high layer count technologies and thicker
+       Curing Time             75 to 105 minutes above 200°C (390°F)                       overall board thicknesses, peck drilling parameters may be
+                               110 to 160°C (230 to 320°F)                                 necessary. Suggested parameters are outlined below for
+       Resin Flow Window
+                               Maintain heat ramp in this temperature range.               typical multilayer designs. may be necessary.
+       Heat Ramp               3.5 to 5°C/min (6.3 to 9.0°F/min)
+                                                                                           Cutting Speed and Chipload
+       Pressure                28 to 35 Kg/cm² (400 to 500 PSI)                            Relative to standard FR-4 parameters, use lower chiploads to
+                               Single Stage: Apply pressure after vacuum dwell             drill I-Speed printed circuit boards. The parameters in Table 3
+                               time.                                                       provide a moderate initial starting point for typical multilayer
+       Pressure
+                               Dual Stage: 5.5 kg/cm² (75 PSI) after vacuum dwell
+       Application                                                                         board designs.
+                               time, switch to high pressure ≤100°C product
+                               temperature.
+                                                                                           High cutting speeds and high chiploads are associated
+
+       Pressure Drop
+                               After 30 minutes at cure temperature reduce                 with rough holes and fracturing around the glass yarn.
+                               pressure to 3.5 kg/cm2(50 PSI) .
+                                                                                           Low chiploads have been associated with hole debris
+                               Cool to 135 to 140°C (275 to 285°F) at 2.8°C/min            and hole wall adhesion issues.
+       Cool Down
+                               (5.5°F/min) with 5.0 kg/cm2
+                                                                                           Stack Height and Hit Count
+                                                                                           Stack heights and hit counts will vary with the construction
+  and overall thickness of the boards being drilled. For thicker boards, above 2.5 mm (100 mils) overall, with high layer counts, drill
+  one high. Aluminum entry and lubricated backing materials help create good hole wall quality.
+
+
+                                       Spindle         Surface Speed Per
+             Drill Size                                                                   Infeed                    Chipload                        Retract
+                                       Speed                  Minute
+
+            in          mm              RPM            SFPM            SMPM       in/min        m/min       mil/rev        mm/rev          in/min          mm/min
+
+         0.0098        0.25            80,000          206              63          50             1.27      0.63           0.016            600              15
+
+         0.0118        0.30            72,000          223              68          60             1.52      0.83           0.021            800              20
+
+         0.0138        0.35            70,000          253              77          80             2.03      1.14           0.029            800              20
+
+         0.0157        0.40            70,000          289              88          85             2.16      1.21           0.031           1000              25
+
+         0.0197        0.50            75,000          387             118          100            2.54      1.33           0.034           1000              25
+
+         0.0248        0.63            60,000          390             119          90             2.29      1.50           0.038           1000              25
+
+         0.0295        0.75            50,000          387             118          85             2.16      1.70           0.043           1000              25
+
+         0.0354        0.90            43,000          399             122          75             1.91      1.74           0.044           1000              25
+
+         0.0394        1.00            38,000          392             119          68             1.73      1.79           0.045           1000              25
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/i-
+           speed-laminate-and-prepreg/                         Last Updated November 04, 2026                  © 2021, Isola Group, All rights reserved.
+                                                                                                             I-Speed®
+                                                                                     Low Loss, Epoxy Laminate and Prepreg
+
+
+         0.0500        1.27           32,000           419          128            62          1.57   1.94          0.049           1000           25
+
+         0.0591        1.50           28,000           433          132            62          1.42   2.00          0.051           1000           25
+
+         0.0787        2.00           22,000           454          138            50          1.27   2.27          0.058           1000           25
+
+
+
+  Part 5: Hole Wall Preparation
+  General
+  When I-Speed® is properly cured and drilled, it it will generate very little smear. The main purpose of desmear processing on this
+  material is to remove debris and provide an acceptable texture to the hole walls.
+
+  Good desmear and electroless copper deposition performance are more easily achieved when the drilled hole quality is good. The
+  generation of smooth, debris free hole walls is influenced by the degree of resin cure, drilling conditions and board design
+  considerations. The reduction or elimination of heavy glasses (whenever possible), coupled with properly adjusted drill parameters
+  has been shown to improve overall drilled hole quality.
+
+  Desmear
+  Two types of desmearing process have been effective on I-Speed.
+
+  Plasma etching and chemical desmear combined is the standard process flow for I-Speed. I-Speed requires extended plasma
+  etching cycles. 30-50% more plasma etching amount (weight loss) is required with I-Speed compared with FR408HR.
+
+  It is suggested that checking plating quality coupons after plasma etching for positive etchback is helpful to determine best
+  processing parameters. Contact Isola Technical support with questions.
+
+  Two passes chemical desmear. I-Speed shows good compatibility with NMP swellers; two passes provides good hole cleaning. Non-
+  NMP swellers are less efficient on I-Speed and should only be used with plasma etching.
+
+  3-Point Etchback
+  True 3-point “etchback” exposes the innerlayer “post” on all three sides for subsequent plating processes. This will require a more
+  robust approach compared to simple desmear.
+
+  A combination of plasma and chemical processing is required. Testing indicates that the plasma provides nearly all of the resin
+  removal. Chemical desmear should be used primarily for hole cleaning and conditioning. Permanganate chemistry alone should not
+  be used for 3-point etchback with I-Speed.
+
+  Secondary Drilling
+  The use of entry and backer material may be necessary during the secondary drilling of larger hole sizes to avoid crazing/fracturing
+  at the hole perimeter. Use of the same tool types as primary drilling is recommended. Note that parameters listed may require
+  further adjustment.
+
+  Routing and Scoring
+  Due to the greater modulus properties of the I-Speed materials, modifications of the final PWB rout fabrication process may be
+  necessary. Table 4 lists initial starting parameters using chip breaker or diamond cut tool designs. Note that parameters listed may
+  require further adjustment.
+
+  For PWB designs requiring scored geometries, thinner web thicknesses are typically required. Selection of proper web thickness is
+  based on same design factors as other materials.
+
+
+
+     Table 4: Suggested Routing Parameters for Initial I-Speed®
+     Setup
+
+          Tool Diameter           Spindle Speed        Spindle Travel Speed
+
+           in          mm                RPM            in/min         mm/min
+
+         0.062         1.57            45,000            20               0.51
+
+         0.093         2.36            35,000            40               1.02
+
+         0.125                         25,000            50               1.27
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/i-
+           speed-laminate-and-prepreg/                        Last Updated November 04, 2026           © 2021, Isola Group, All rights reserved.
+                                                                                                              I-Speed®
+                                                                                 Low Loss, Epoxy Laminate and Prepreg
+
+
+     Chip breaker or diamond cut tool designs recommended.                          Part 6: Packaging and Storage
+                                                                                    I-Speed® finished boards have low moisture sensitivity and
+                                                                                    good shelf life. However, Isola recommends using best
+  practices in storage and packaging, as noted below, to reduce risk during lead-free assembly.
+
+  I-Speed boards should be dry prior to packaging to ensure the most robust lead-free performance. The use of a Moisture Barrier
+  Bag (MBB) with a Humidity Indicator Card (HIC) and adequate drying desiccant inside the MBB are recommended practices for
+  improving shipping robustness and long-term storage.
+
+  Upon opening the MBB, the boards should be processed within 168 hours when maximum shop floor conditions are at <30°C
+  (85°F)/60% RH. MBB bags that are opened for inspection should be resealed immediately to protect the boards from moisture
+  uptake.
+
+
+  Part 7: Health and Safety
+  Always handle laminate with care. Laminate edges are typically sharp and can cause cuts and scratches if not handled properly.
+  Handling and machining of prepreg and laminate can create dust (see I-Speed Material Safety Data Sheet (MSDS)).
+
+  Appropriate ventilation is necessary in machining/punching areas.
+
+  The use of protective masks is suggested to avoid inhaling dust. Gloves, aprons and/or safety glasses are suggested if individuals
+  have frequent or prolonged skin or eye contact with dust.
+
+  Isola Group does not use polybromidebiphenyls or polybromide-biphenyloxides as flame retardants in any product.
+  Material Safety Data Sheets are available upon request.
+
+
+  Part 8: Ordering Information
+  Contact your local sales representative or contact: info@isola-group.com for further information.
+
+  Isola Group
+  6565 West Frye Road
+  Chandler, AZ 85226
+  Phone: 480-893-6527
+  Fax: 480-893-1409
+
+  Isola Asia Pacific (Hong Kong) Ltd.
+  12/F Kin Sang Commecial Center
+  49 King Yip Street, Kwun Tong,
+  Kowloon, Hong Kong
+  Phone: 852-2418-1318
+  Fax: 852-2418-1533
+
+  Isola GmbH
+  Isola Strasse 2
+  D-52348 Düren, Germany
+  Phone: 49-2421-8080
+  Fax: 49-2421-808164
+
+
+
+               NOTES
+               The data contained in this document, while believed to be accurate and based on both field testing and analytical methods
+               considered to be reliable, is for information purposes only. Any sales of these products will be governed by the terms and
+               conditions of the agreement under which they are sold.
+
+
+
+
+               Isola, the Isola logo, Astra, Chronon, GETEK, I-Fill, IsoDesign, IsoStack, I-Speed, I-Tera, Polyclad, Stratus, TerraGreen, and The
+               Base for Innovation are registered trademarks or trademarks of ISOLA USA Corp. in the United States and in other countries.
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/i-
+           speed-laminate-and-prepreg/                    Last Updated November 04, 2026                © 2021, Isola Group, All rights reserved.
+                                                                                                 I-Speed®
+                                                                                Low Loss, Epoxy Laminate and Prepreg
+
+
+               Copyright © 2021 Isola Group. All rights reserved.
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/i-
+           speed-laminate-and-prepreg/                   Last Updated November 04, 2026    © 2021, Isola Group, All rights reserved.
+

@@ -1,0 +1,61 @@
+Extreme Low Loss & High Tg & Ultra low CTE & Halogen Free
+                  NY8888N / NY8888NP
+     特点 FEATURES:
+            低介电常数和低介质损耗（Low Dk 3.4@10GHz，Low Df 0.0014@10GHz）
+            优异的电气和热可靠性 Excellent electrical and thermal reliability properties
+            优异的防潮性和无铅回流焊工艺兼容 Excellent moisture resistance and lead Free reflow process compatible
+            优越的PTH可靠性和耐CAF能力 Superior PTH reliability and anti-CAF capability
+            高Tg及超低热膨胀系数 High Tg and ultra-low thermal expansion coefficient
+
+
+     应用领域 APPLICATIONS:
+            数据中心 Data Centre
+            AI服务器 AI Server
+            高性能计算机 High Performance Computer
+            超级核心路由器和交换机 Super Core Router and Switcher
+
+
+NY8888N基板典型性能 Typical Properties for NY8888N Laminate
+  属性                           项目                        测试方法           测试条件            单位        典型值
+Property                       Item                    IPC-TM-650     Test Condition    Unit   Typical Value
+                                                          2.4.25           DSC           ℃           \
+                        玻璃态转换温度 Tg                        2.4.24          TMA           ℃          180
+                                                         2.4.24.4         DMA           ℃          220
+                X/Y轴热膨胀系数,X/Y-axis Expansion             2.4.24.5       ＜Tg,TMA        PPM/℃      10/11
+                                                                        ＜Tg,TMA        PPM/℃        50
+  热性能                                                     2.4.24
+                           Z轴热膨胀系数
+ Thermal                                                                ＞Tg,TMA        PPM/℃       150
+                         Z-axis Expansion
+                                                          2.4.24        50~260℃          %          1.8
+                          热裂解温度 Td                       2.4.24.6      TGA(5%W.L)       ℃          400
+                                                                          Clad          Min       ＞120
+                           耐热性 T288                      2.4.24.1
+                                                                         Etched         Min       ＞120
+                                               1MHz                                                  \
+                       介电常数 DK                           2.5.5.9
+                                               1GHz                     C-24/23/50       -           \
+                       (R/C:65%)
+                                               10GHz   SPDR method                                  3.4
+
+ 电性能                                           1MHz                                                  \
+                       介质损耗 Df                           2.5.5.9
+Electrical                                     1GHz                     C-24/23/50       -           \
+                       (R/C:65%)
+                                               10GHz   SPDR method                                0.0014
+                    体积电阻 Volume Resistivity                                            MΩ-cm     2.4×109
+                                                         2.5.17.1       C-96/35/90
+                    表面电阻 Surface Resistivity                                            MΩ       1.9×108
+                      吸水率 Water Absorption               2.6.2.1     E-1/105+D-24/23     %         0.06
+               剥离强度 Peel Strength (HTE)         1oz                                                  \
+               剥离强度 Peel Strength (RTF)         1oz       2.4.8        As Received     N/mm          \
+物理性能
+              剥离强度 Peel Strength (HVLP)         1oz                                                 0.6
+Physical
+                        弯曲强度                   Warp                                                200
+                                                          2.4.4        As Received     N/mm2
+                    Flexural Strength           Fill                                               180
+                     耐燃性 Flame Resistance                 UL-94         A&E-4/125        -         V-0
+
+IPC-4101: 134; IPC-4103: 230/530                                                               Rev: 202505V1
+

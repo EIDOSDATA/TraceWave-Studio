@@ -1,0 +1,486 @@
+\\\ Fabrication Notes
+
+
+  MAGTREX® 555
+  High Impedance Laminates Fabrication Guidelines
+
+  MAGTREX® 555 materials are constructed from a proprietary, low loss, high resistivity ceramic filler and a high
+  temperature thermoplastic PTFE matrix. This yields a system which is conformable, through hole via capable, and
+  mechanically and electrically stable. These laminates feature a closely matched X/Y axis permeability and permittivity of 6
+  and 6.5, respectively, along with low magnetic and dielectric loss below 500 MHz. MAGTREX® 555 high impedance
+  laminates feature a low X, Y, Z CTE closely matched to copper for thermal reliability and are available in thicknesses from 40
+  to 260 mils. They are offered with or without copper cladding.
+
+   These guidelines were developed to provide fabricators with basic information on processing double-sided and multi-layer
+   boards using copper clad MAGTREX® 555 laminates.
+
+   A Rogers’ technical service engineer or sales representative should be contacted for more detailed processing information
+   or to discuss processing of multi-layered designs.
+
+  \\\ Notes on Packaging, Receiving, Storage, and Preparation for Processing
+
+   Receiving
+
+   1. Open the shipping cartons and inspect material immediately upon receipt.
+
+   2. Advise the carrier of any shipping damage noted. It is helpful to photograph the containers and contents to support
+      your claim.
+
+   3. All quality problems should be reported to Rogers’ Customer Service as soon as possible, and not later than 30 days
+      after receipt of the product.
+
+   4. Damaged or rejected material should not be returned without a proper return authorization obtained from the
+      Customer Service Representative. Returns without proper authorization may be refused.
+
+   5. Rogers Corporation maintains full traceability records for individual laminates based upon lot and sheet numbers.
+      Maintaining traceability is often essential to understanding and correcting any problems that may arise. It is strongly
+      urged that customers adopt an appropriate procedure for maintaining the identification of individual panels through
+      storage, processing, and delivery of final product.
+   6. Every panel is packaged and labeled with the product
+      identification and lot and sheet numbers. An example of a typical
+      label is provided. Verify that this label is present on individual
+      cores when the shipment is received. (See example)
+
+
+
+                                                                                                                                                                Emple of Label
+
+
+   Advanced Connectivity Solutions
+                                                                                                                                                                                 1
+           S. Roosevelt
+   \\\ 100 S. RooseveltAvenue
+                        Avenue\\\\\\Chandler,
+                                     Chandler,AZAZ 85226
+                                                 85226 \\\ \\\
+                                                           Tel:Tel: 480-961-1382
+                                                                480-961-1382          Fax: 480-961-4533
+                                                                                  \\\ 480-961-4533
+                                                                             \\\ Fax:                   \\\ www.rogerscorp.com
+                                                                                                   \\\ www.rogerscorp.com \\\ IPC Slash Sheet # \\\ UL File #
+Fabrication Notes
+MAGTREX® 555 FABRICATION GUIDELINES
+
+Storage
+
+MAGTREX® 555 PTFE-based laminates can be stored indefinitely at normal ambient room temperatures (65°F to 85°F, 18°
+C to 30°C) and normal humidity levels. At room temperature, the dielectric materials are inert to high humidity and
+atmospheric pollutants such as industrial gases and marine salts. However, metal claddings, such as copper foil, can be
+oxidized or corroded during long term storage due to high humidity, sulfur oxides, and marine salts. Normal cleaning
+procedures, covered later in this publication, readily remove traces of corrosion from properly stored materials.
+
+It is preferred to store materials in the original boxes which should be stacked on a flat surface and out of the way of
+mobile handling and moving equipment. Cartons should be stacked to a maximum of five high to avoid excessive weight
+on the bottom packages.
+
+\\\ Single- and Double-Sided PCB Fabrication Guidelines
+
+Surface Preparation
+
+Chemical methods of cleaning/preparing copper surfaces are preferred. Mechanical surface preparation tends to cause
+microscopic scratches in copper and may distort the panels. Scratches may become stress risers that can lead to thermal
+stress cracks in some environmental conditions while mechanical distortions may challenge effective registration of fine
+features. While strongly recommending against abrasive cleaning, we recognize that in some circumstances that abrasive
+cleaning is necessary. When abrasive cleaning is required, it should be performed with minimal pressure and knowledge of
+the risks involved. Brush scrubbing may cause material distortion.
+
+Tooling Holes
+
+Pinning or tooling holes can be punched, drilled, or routed using normal procedures.
+
+Drilling
+
+1. Avoiding Smear
+
+Smear on drilled via walls is a well-known challenge when processing PTFE materials. The low modulus resin system
+may stretch slightly during drilling, causing a connected “flap” of resin to form. Furthermore, small pieces of debris may
+become lodged between the hole wall and the tool during drilling where they become shear-deformed and are loosely
+re-deposited onto the hole wall. PTFE resin flaps and re-deposited debris can not be removed during traditional plasma or
+permanganate desmear processing.
+
+Re-deposited debris can be dislodged using vapor honing. But, a proven process to remove the flap-style smear that is
+connected to a hole wall does not exist. As this type of smear cannot be readily removed, it must be avoided by employing
+tightly controlled drilling parameters and conservative tool life expectations.
+
+2. Stack Construction
+
+MAGTREX® 555 cores can be drilled individually or in stacks using pressed phenolic composite boards for entry and exit.
+The total thickness of the core material plus entry material and penetration into exit material should not exceed 75% of the
+drill’s flute length. For most applications, the maximum stack height should be less than 0.240 inch (6.1 mm).
+
+
+
+
+                                                                                                                               2
+ \\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com
+Fabrication Notes
+MAGTREX® 555 FABRICATION GUIDELINES
+
+3. Drill Type
+
+Carbide drills should be used to minimize wear of cutting edges. Standard style drills with an included lip angle of 130° are
+recommended. Undercut style drills where the flute diameter is reduced 0.025” (0.65 mm) from the cutting end may help to
+reduce re-deposited smear. The use of new drills is strongly urged. Re-pointed drills, if used, must be precision ground and
+visually inspected prior to use. Expected hit yields should be reduced by 50% each time a drill is repointed.
+
+4. Drill Parameters
+
+The optimum tool surface speed and infeed rates are 250-300 surface feet per minute (60 to 90 meters per minute) and
+0.002” (0.045 mm) to 0.003” (0.070 mm) per revolution. The retract rate should be maintained between 400 and 500 inches
+per minute (10 and 13 meters per minute). The drill bit should be changed once it has drilled 12” (30 cm) of dielectric.
+
+Equations for using surface speed, infeed rate, and tool diameter to calculate spindle and infeed speeds are provided below
+along with a quick-reference table:
+                                                           Entry Phenolic Composite: 0.010”-0.030” (0.25-0.75 mm)
+                                                             Exit Phenolic Composite: >0.060” (1.5 mm)
+                                                                                  Chip Load: 0.002”-0.003” (0.045-0.070 mm)
+                                                                            Surface Speed: 200-300 ft/min (60-90 m/min)
+                                                                               Retract Rate: 400-500 inch/min (10-13 m/min)
+
+
+Tool Life Estimate:                                      Stack Height                                                   Maximum Hit
+                                                       0.060” (1.5 mm )                                                     300
+                                                        0.120” (3.0 mm)                                                     250
+                                                        0.180” (4.5 mm)                                                     100
+
+
+
+Equations for calculating spindle speed and infeed rate:
+
+Spindle Speed (RPM)=950/Tool Dia (inch)
+
+Infeed (IPM)=Spindle Speed (RPM) X 0.002 (inch)
+
+                               Tool Size                                            Spindle Speed                                     Infeed
+                (in)                                 (mm)                                   (RPM)                            (IPM)             (m/m in)
+              0.0197                                  0.50                                  48500                            96.4                2.4
+             0.00256                                  0.65                                  37100                            74.2                1.9
+              0.0295                                  0.75                                  32200                            64.4                1.6
+              0.0394                                  1.00                                  24100                            48.2                1.2
+              0.0492                                  1.25                                  20000                            40.0                1.0
+              0.0625                                  1.59                                  20000                            40.0                1.0
+              0.1250                                  3.18                                  20000                            40.0                1.0
+
+
+
+
+                                                                                                                                                          3
+\\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com
+Fabrication Notes
+MAGTREX® 555 FABRICATION GUIDELINES
+
+
+5. Deburring
+The use of flat, rigid entry/exit materials, conservative drilling parameters, and limited hit counts with new drills should
+minimize the risk of copper burring. When drilled properly, the cores should be ready for subsequent processing. Chemical
+preparation is preferred, but if mechanical or hand pumice scrubbing processes are used to deburr boards, the force
+applied must be minimized to prevent gouging and dimensional distortion.
+6. Hole Preparation
+Loosely re-deposited debris in the holes can be removed using vapor- or hydro-honing processes. These processes involve
+directing abrasive particles carried in water or air streams through drilled holes. The soft laminates must be adequately
+supported through these processes.
+Drilled holes in PTFE-based laminates must be treated prior to the deposition of a conductive seed layer (e.g., electroless
+copper or direct metallization). Not performing a surface activation treatment will most likely result in poor metal adhesion
+or plated voids. Two common pre-treatments for PTFE materials are sodium treatment and plasma treatment. Either can
+be used for treating MAGTREX® 555 materials.
+Sodium treatments consist of highly reactive sodium naphthalene compounds in glycol ether solution. They are very
+effective at making PTFE surfaces wettable prior to metal deposition. Recommended application procedures available from
+the vendors of sodium treatment products are applicable when processing filled PTFE materials with one exception.
+The treatment time should not exceed sixty seconds while treatment time of 30 seconds in duration are preferred.
+Controlling exposure time is required to reduce the risk of absorption of chemicals into the dielectric material surrounding
+the drilled holes. Sodium treated MAGTREX® cores should be baked at 125C for 60 minutes just prior to metallization.
+
+
+Sources for sodium treatment chemicals:
+
+
+                                                                                  FluoroEtch® Etchant
+                                                                                 Acton Technologies, Inc
+                                                                                    100 Thompson St
+                                                                                    Pittston, PA 18640
+                                                                                      570-654-0612
+
+                                                          W.L. Gore Tetra-Etch® etchant 500 ML available from
+                                                                        R.S. Hughes Company, Inc
+                                                                             1162 Sonora Court
+                                                                           Sunnyvale, CA 94086
+                                                                               408-739-3211
+
+Sources for sodium treatment services:
+
+                                                                                  FluoroEtch® Etchant
+                                                                                 Acton Technologies, Inc
+                                                                                    100 Thompson St
+                                                                                    Pittston, PA 18640
+                                                                                      570-654-0612
+
+                                                                                    G & S Associates
+                                                                                  1865 Sampson Ave.
+                                                                                   Corona, CA 92879
+                                                                             http://www.gsassociates.com
+                                                                                     951-739-7513
+
+
+
+
+                                                                                                                               4
+\\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com
+ Fabrication Notes
+ MAGTREX® 555 FABRICATION GUIDELINES
+
+
+ A recommended plasma treatment prior to metal desposition would use a 70/30 H2/N2 blend, NH3, or N2 gases. Plasma conditions
+ would be:
+                                                                                    Pressue: 100 mTORR Pump-down
+                                                                                             250 mTORR Operating
+                                                                                      Power: 4000 Watts
+                                                                                Frequency: 40 KHz
+                                                                                    Voltage: 500 - 600 V
+                                                                                Cycle Time: 410-30 Minutes
+
+
+Metallization
+
+Electroless copper processes or direct deposit electroless copper alternatives may be used to deposit a conductive seed layer
+once the PTFE surface has been properly treated (and baked if a sodium treatment process was used). As the PTFE resin sys-
+tem is soft and somewhat compressible, a flash plate build-up of 0.0001”-0.0003” (0.0025-0.0076mm) thick copper should be
+applied prior to preparing metal surfaces for photoresist.
+
+Resist Strip, Cu Etch, Sn or Sn/Pb Strip
+
+Standard etchants and strip solutions may be used. Thin cores may require the support of leader boards or frames through
+conveyorized processes. Complete rinsing (preferred: 20-30 minutes in 70F+ distilled or de-ionized water) and baking (pre-
+ferred: 125°C for 60 minutes in air or for 30 minutes under vacuum) of cores should immediately follow the final strip process.
+
+The post-etched surface of the cores will retain the imprint of the copper cladding’s dendritic tooth structure. This surface, if
+left undisturbed, provides adequate surface area for mechanical bonding of most soldermasks and adhesive systems used for
+multi-layer bonding. Not wiping or scrubbing the etched surfaces will allow the cores to proceed through soldermask applica-
+tion or multi-layer bonding without requiring special surface pre-treatments.
+
+Soldermask Application
+
+Epoxy-based soldermasks such as Hysol® SR1000 are preferred if the soldermask will be selectively silver screened. Most pho-
+toimageable soldermasks have been found to provide adequate adhesion providing the post-etch surface has been preserved
+and the cores have been baked prior to application of the coating.
+
+Final Metal Surface
+
+All final metal surface options (i.e. HASL, Sn, Sn/Pb, Ni/Au, Ag, OSP, etc.) can be applied to circuits on MAGTREX® 555 materials.
+Exposure time to fluxes should be less than 30 seconds prior to HASL or reflow. Any processes requiring flux or oil should be
+immediately followed by a thorough rinse (hot water is preferred, a 15-minute rinse in clean solvents such as methanol, etha-
+nol, or isopropyl alcohol may be required if dielectric has been exposed to water insoluble solvents) and bake (30-60 minutes
+at 125°C).
+
+Final Circuitization
+
+Individual circuits in MAGTREX® 555 materials can be routed, scored, punched, or lased depending upon edge quality require-
+ments. Detailed recommendations for routing are provided below:
+
+These guidelines were developed to minimize burrs and maximize tool life when routing stacks of double sided boards. This
+information should also be applicable to most bonded assemblies.
+
+
+                                                                                                                                5
+ \\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com
+Fabrication Notes
+MAGTREX® 555 FABRICATION GUIDELINES
+
+Guideline Summary:
+
+                                                                             Chip Load: 0.00125”- 0.00250”/rev.
+                                                                                        (32 mm - 64 mm/rev.)
+                                                                                   Speed: 200 - 600 sfm
+                                                                                          (61 - 183 m/min)
+                                                                           Peripheries: Conventional Cut
+                                                                 Internal Cut-outs: Climb-cut
+                                                                              Tool Type: Double fluted spiral endmill-carbide
+                                                                             Exit/Entry: Phenolic or composite board
+                                                                               Tool Life: 20 - 30 linear feet
+                                                                                          (6 - 9 meters)
+
+ * Pre-route vacuum channels in the backer board to provide adequate air flow through the channels during routing.
+
+ * Double pass (opposite directions) when two clean edges are required.
+
+Recommended Tool Type:
+
+Best results have been obtained with a double fluted spiral endmill. Other carbide endmills (ie. single flute, three flute, etc.) may also be
+used without significantly impacting quality. However, conventional diamond cut and chip breaker router bits should not be used since
+they generally yield inferior quality and poor effective tool life.
+
+Machining Parameters:
+
+
+
+
+                     Tool Diameter                                                      Spindle Speed                           Lateral Feed Rate
+                             1/32”                                                    40 KRPM (327 sfm                          75 IPM (0.0019/rev.)
+                             1/16”                                                    30 KRPM (491 sfm)                         75 IPM (0.0025”/rev.)
+                             3/32”                                                    20 KRPM (491 sfm                          50 IPM (0.0025”/rev.)
+                              1/8”                                                    15 KRPM (491 sfm)                         37 IPM (0.0025”/rev.
+
+
+                           1.0 mm                                                   40 KRPM (125 m/min                      2.0 m/min (50 mm/rev.
+                           1.5 mm                                                   32 KRPM (150 m/min)                    2.0 m/min (63 mm/rev.)
+                           2.5 mm                                                   19 KRPM (150 m/min)                     1.2 m/min (63mm/rev.)
+                           3.0 mm                                                   16 KRPM (150 m/min)                    1.0 m/min (63 mm/rev.)
+
+
+
+
+                                                                                                                                                        6
+\\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com
+Fabrication Notes
+MAGTREX® 555 FABRICATION GUIDELINES
+
+Entry/Exit/Interleaving Material and Table Configuration:
+
+Burrs and loose debris can be minimized by using entry and exit material, compressible interleaving sheets, and open
+vacuum channels. The entry and exit material provide the support necessary to minimize material deflection and obtain
+cleanly cut edges. The interleaving material (often 2-4 sheets of Kraft paper) conforms around metal features and offers
+support to etched dielectric surfaces. Open channels in the backer material significantly increase the effectiveness of the
+routing machines vacuum system by allowing air to flow up through channels during routing. This minimizes the need for
+de-burring and debris removal after routing by preventing flute and channel clogging. The vacuum measured at the
+spindle should be at least 30 in. H2O for best results.
+
+Vacuum channels are prepared by pre-routing the backer material with a tool that is 1.5 to 2.0 times the diameter of the
+tool used to rout the panels. Channel depth is usually about 0.060” to 0.100” (1.5 - 2.5 mm). The routed peripheries and cut-
+outs in the backer material are joined with channels that extend to areas outside the panel periphery. This allows air to be
+drawn through the channels during routing.
+
+Figure #1 (below) is an example of a pre-routed backer board. There are two boards per panel. Each board has an internal
+cut-out. Three connecting channels extend to areas outside the periphery of panels to be routed.
+
+When routing parts, “entry material” is placed above and below the stack of panels.
+
+The “entry material” placed below the stack prevents deflection of material into the oversized vacuum channels in the
+backer board. During routing, the tool cuts through the thin channel overlay (0.015” to 0.025” entry) to provide access to
+the vacuum channels.
+
+Climb-Cut vs. Conventional Cut:
+
+The leading edge of a routed channel is typically cleaner than the trailing edge (figure #2-below). Therefore, peripher-
+ies should be conventional cut and internal cut-outs should be climb-cut to maximize edge quality on the finished part
+(figures 3 & 4). If both edges of a routed channel need to be cleanly cut, the tool direction should be reversed for a second
+pass through the channels. This will remove most of the debris left on the trailing edge during the first pass (figure #2
+- below).
+
+Routing Through Copper Cladding:
+
+Routed edge quality is usually superior when routing through the copper foil since it helps constrain the dielectric material.
+However, good results can generally be obtained with or without copper cladding.
+
+Stack Height:
+
+At least 20%-30% of the flute should be exposed above the entry material to allow for debris removal. This leaves 70%- 80%
+of the flute length available for routing the panels, entry material and exit material. The maximum stack height can be
+calculated by subtracting the entry thickness and exit penetration depth from the available flute length (70%-80% of the
+actual flute length).
+
+
+                                                                                                 1.75 x 0.260” (available flute length)
+Example:
+                                                                                                            - 0.015” (entry material)
+0.0625” endmill with 0.260” flute length
+                                                                                                            - 0.015” (exit overlay)
+0.015” entry and vacuum channel overlay
+                                                                                                            - 0.020” (vacuum channel penetration)
+0.020” penetration into vacuum channels
+                                                                                                              0.145” (maximum stack height)
+
+
+                                                                                                                                                    7
+\\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com
+Fabrication Notes
+MAGTREX® 555 FABRICATION GUIDELINES
+
+  Estimated Tool Life:
+
+  Edge quality will slowly degrade as the tool wears. Fabricators should base tool life on the edge quality requirements for
+  a particular job. In general, 20 - 30 linear feet (6-9 meters) of material can be routed with the same tool without sacrific-
+  ing edge quality. This estimate is basically the same with or without a second pass. Since flute and channel clogging will
+  significantly impact edge quality, vacuum channels are usually needed to minimize the need for tool changes.
+
+  \\\ Multilayer Considerations
+
+  1. Inner-Layer Preparation
+
+  Standard photoresist and etch procedures are used. Care should be taken to preserve the as-etched dielectric surface. Se-
+  lection of an appropriate copper surface treatment is dependent upon the adhesive selected. All layers should be baked
+  for 30 minutes at 100-125°C prior to bonding.
+
+  2. Adhesive Systems
+
+  Two categories of adhesive systems, thermoplastic and thermoset, can be used when bonding MAGTREX® 555
+  multilayers. Thermoplastics, such as Dupont’s FEP or Rogers CuClad™ 6700 and CuClad™ 6250 films, are typically selected
+  when electrical properties of the thin adhesive layers are critical. The dielectric constant and dissipation factor of the
+  fluoropolymer thermoplastic films are low. As the PTFE resin system is a thermoplastic, direct or fusion bond-ing can be
+  used to manufacture homogeneous multiplayer constructions.
+
+  Thermosets, such as FR-4 prepreg, Rogers’ 2929 bondply and Rogers’ Speedwave 300P prepreg can be chosen when
+  thicker bonding layers are required and electrical properties are less critical.
+
+  3. Thermoplastics
+
+  Melting point is an important consideration when selecting a thermoplastic adhesive system. FEP melts at 500°F (260°C)
+  and is therefore stable through most PCB and assembly processes. The 390°F (200°C) melting point of CuClad 6700 film
+  can result in a re-melting if subsequent PCB or assembly processes are higher in temperature and longer in duration than
+  a few minutes. Copper surfaces should be prepared using an oxide alternative such as Bondilm ™ from Atotech or
+  Multibond™ from MacDermid.
+
+  The thermoplastic adhesives should be bonded with applied pressure between 50 and 250 PSI. The ramp to temperature
+  (525-550°F, 275-290°C) for (FEP; 425-450°F, 220-230°C for CuClad 6700 can be 6-8°F/min (3.5-4.5°C/min) and the dwell at
+  temperature should be 20-30 minutes. Cooling to 250°F (120°C) at a rate of 2-4°F/min (1.4-2.5°C/min) should be complet-
+  ed under pressure as transfer cooling can result in delamination.
+
+  4. Thermosets
+
+  Refer to vendor recommendations for appropriate oxide types and bond conditions when using thermoset adhesive
+  systems.
+
+  5. Post-Bond PCB Processing
+
+  Guidelines for double-sided circuit processing would apply to multilayer through hole and outer-layer processing.
+
+
+
+
+                                                                                                                                  8
+\\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com
+Fabrication Notes
+MAGTREX® 555 FABRICATION GUIDELINES
+
+\\\ Figures                                                                   Figure 1
+
+
+
+
+                                                                                                    Figure 3
+
+
+                                   Figure 2
+
+
+
+
+\\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com
+
+The information in this fabrication guideline is intended to assist you in fabricating Rogers’ circuit materials. It is not intended to and does not create any
+warranties express or implied, including any warranty of merchantability or fitness for a particular purpose or that the results shown on this fabrication
+guideline will be achieved by a user for a particular purpose. The user should determine the suitability of Rogers’ circuit materials for each application.These
+commodities, technology or software are exported from the United States in accordance with the Export Administration regulations. Diversion contrary to U.S.
+law prohibited.
+
+The Rogers’ logo, Helping power, protect, connect our world, and MAGTREX are trademarks of Rogers Corporation or one of its subsidiaries.
+©2024 Rogers Corporation, Printed in U.S.A., All rights reserved.
+
+Issued 1422 092225 Publication #92-412
+
+Helping power, protect, connect our world
+                                                                                TM
+
+
+
+
+                                                                                                                                                                   9
+

@@ -1,0 +1,13 @@
+{
+  "records": 57340,
+  "unique_ids": 57340,
+  "current_canonical_sha256": "069cdc67cb3259313cfcd2701c4b2c45abb5cfa4d9ba960e5e298b44124edf6d",
+  "initial_canonical_sha256": "088d03d235f97026cce0cccf70ec596b55ec77cf47addc3c229f98321f55e6f7",
+  "inverse_reference_mapping_sha256": "088d03d235f97026cce0cccf70ec596b55ec77cf47addc3c229f98321f55e6f7",
+  "only_reference_paths_changed": true,
+  "all_other_keys_values_types_preserved": true,
+  "source_file_rename_changed_records": 30823,
+  "source_file_inverse_map_entries_applied": 30823,
+  "legacy_source_manifest_references_fixed": 26276,
+  "rows_deleted": 0
+}

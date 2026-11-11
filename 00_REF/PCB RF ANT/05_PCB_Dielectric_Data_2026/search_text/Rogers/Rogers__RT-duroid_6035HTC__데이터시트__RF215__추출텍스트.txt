@@ -1,0 +1,215 @@
+                                                                                                                Data Sheet
+                                                                                                            DataRT/duroid
+                                                                                                                  Sheet6035HTC
+
+
+
+
+RT/duroid® 6035HTC
+High Frequency Laminate
+                                                                                                   Features/Benefits:
+
+                                                                                                   High Thermal conductivity
+                                                                                                      • Improved dielectric heat
+RT/duroid® 6035HTC high frequency circuit materials are ceramic filled PTFE composites for              dissipation enables lower
+                                                                                                        operating temperatures for high
+use in high power RF and microwave applications.                                                        power applications
+                                                                                                   Low loss tangent
+                                                                                                      • Excellent high frequency
+                                                                                                        performance
+With a thermal conductivity of almost 2.4 times the standard RT/duroid 6000 products, and
+                                                                                                   Thermally stable low profile and reverse
+copper foil (electrodeposited and reverse treat) with excellent long term thermal stability, RT/   treat copper foil
+                                                                                                      • Lower insertion loss and excellent
+duroid 6035HTC laminates are an exceptional choice for high power applications.                         thermal stability of traces
+                                                                                                   Advanced filler system
+                                                                                                      • Improved drill ability and extended
+Rogers advanced filler system enables excellent drill ability, reducing drilling costs as               tool life compared to alumina-
+                                                                                                        containing circuit materials
+compared to standard high thermally conductive laminates which use alumina fillers.
+                                                                                                   Some Typical Applications:
+                                                                                                     • High power RF and microwave
+                                                                                                       amplifiers
+                                                                                                     • Power amplifiers, couplers, filters,
+                                                                                                       combiners, power dividers
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+                                                                      Page 1 of 4
+At increasing power levels, Rogers measured the heat rise of a resistor placed on a microstrip circuit attached to a controlled heat sink. Thermal
+imaging was used to generate temperature rise data.
+
+Comparison of WG-PTFE and RT/duroid 6035HTC laminate Thermal Images at 4 Watts:
+
+
+
+
+          		
+          		WG-PTFE					RT/duroid 6035HTC
+
+
+
+
+                                                WG - PTFE Trise=83.6°C                 RT/duroid 6035HTC laminate Trise = 35.9°C
+
+
+
+
+                                                                          Heat Flow versus Temperature Rise
+                                                                                  Dk = 3.5 Laminates
+                                       14
+
+
+                                       12
+                                                                                        RT/duroid 6035HTC
+                                       10
+                   Heat Flow (Watts)
+
+
+
+
+                                       8
+                                                                                                      RO4350B™
+                                       6                                                                            RO3035™
+
+
+                                       4
+
+                                                                                                 Dk=3.5 WG-PTFE
+                                       2
+
+
+                                       0
+
+                                            0             20             40        60            80           100       120        140
+                                                                                  Temperature rise (C)
+
+Chart 1. Four different 3.5 Dk laminate materials were tested, and the RT/duroid 6035HTC laminate most effectively
+dissipated heat away from the resistor to enable the lowest temperature rise.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+                                                                                   Page 2 of 4
+                                         Cu Peel Strength Through Solder Exposures
+                                             Varied Cu Types and Final Finishes
+           8
+
+
+
+           6
+
+
+                                                                                                                        STD - HASL
+                                                                                                                        STD - ENIG
+           4                                                                                                            RT - HASL
+                                                                                                                        RT - ENIG
+
+
+
+           2
+
+
+
+           0
+                        As - Is                1 X Solder               3 X Solder               5 X Solder
+
+
+Chart 2. Illustrates the stable copper peel strength maintained on 0.125” copper trace widths after multiple sixty-second exposures to
+288°C(550°F) solder. Rogers matched copper foils to RT/duroid 6035HTC, which exhibit excellent thermal stability after multiple high
+temperature exposures enabling long-term reliability of circuitry for high power, high temperature applications.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+                                                                   Page 3 of 4
+             Property                      Typical Value [1]           Direction                 Units                       Condition                         Test Method
+                                             RT/duroid
+                                              6035HTC
+                                                                                                                                                                IPC-TM-650
+ Dielectric Constant, er                       3.50 ± 0.05                   Z                       -                       10 GHz/23°C                          2.5.5.5
+ Process
+                                                                                                                                                             Clamped Stripline
+  Dielectric Constant, er
+ [2]
+                                                                                                                                                         Differential Phase Length
+                                                    3.6                      Z                       -                      8 GHz - 40 GHz
+ Design                                                                                                                                                           Method
+
+ Dissipation Factor,                             0.0013                      Z                       -                       10 GHz/23°C                     IPC-TM-650, 2.5.5.5
+
+ Thermal Coefficient of er                         -66                       Z                  ppm/°C                      -50°C to 150°C                mod IPC-TM-650, 2.5.5.5
+ Dielectric Strength                               835                       -                    V/Mil                    15 mil thickness                  IPC-TM-650, 2.5.6.2
+ Breakdown Voltage                                12.59                      -                      kV                     15 mil thickness                   IPC-TM-650, 2.5.6
+ Volume Resistivity                                10 8
+                                                                             -                  MΩ•cm                           COND A                      IPC-TM-650, 2.5.17.1
+
+ Surface Resistivity                               108                       -                     MΩ                           COND A                      IPC-TM-650, 2.5.17.1
+
+                                                   329                     MD
+ Tensile Modulus                                                                                  kpsi                   40 hrs @ 23°C/50RH                      ASTM D638
+                                                   244                     CMD
+                                                                                                                         0.030” 1 oz EDC foil
+                                                  -0.11                    CMD                   mm/m
+ Dimensional Stability                                                                                                        Thickness                     IPC-TM-650, 2.4.39A
+                                                  -0.08                    MD                  (mils/inch)
+                                                                                                                         after etch +E4/105
+
+                                                    19                       X
+ Coefficient of Thermal
+                                                    19                       Y                  ppm/°C                       23°C/50% RH                      IPC-TM-650 2.4.41
+ Expansion (-55 to 288 °C)
+                                                    39                       Z
+
+ Thermal Conductivity                              1.44                      -                   W/m/K                            80°C                           ASTM C518
+                                                                                                                                                          IPC-TM-650 2.6.2.1 ASTM
+ Moisture Absorption                               0.06                      -                      %                           D24/23
+                                                                                                                                                                   D570
+ Density                                            2.2                      -                  gm/cm3                            23°C                           ASTM D-792
+ Copper Peel Strength                               7.9                      -                      pli                     20 sec.@ 288°C                    IPC-TM-650 2.4.8
+ Flammability                                      V-0                       -                       -                              -                               UL 94
+ Lead-Free Process
+                                                   YES
+ Compatible
+
+
+
+[1] Typical values are a representation of an average value for the population of the property. For specification values contact Rogers Corporation.
+[2] The design Dk is an average number from several different tested lots of material and on the most common thickness/s. If more detailed information is required, please contact Rogers
+     Corporation. Refer to Rogers’ technical paper “Dielectric Properties of High Frequency Materials” available at
+     https://www.rogerscorp.com.
+
+
+
+ Standard Thickness                                             Standard Panel Size:                            Standard Copper Cladding
+ 0.010” (0.254mm)                                               12” X 18” (305 X457mm)                          ½ oz. (18µm) Electrodeposited copper foil (HH/HH)
+ 0.020” (0.508mm)                                               24” X 18” (610 X 457mm)
+                                                                                                                1 oz. (35µm) Electrodeposited copper foil (H1/H1)
+ 0.030” (0.762mm)
+ 0.060” (1.524mm)                                                                                               2 oz. (70µm) Electrodeposited copper foil (H2/H2)
+                                                                                                                ½ oz. (18µm) Reverse treat copper foil (SH/SH)
+                                                                                                                1 oz. (35µm) Reverse treat copper foil (S1/S1)
+
+The information in this data sheet is intended to assist you in designing with Rogers’ circuit materials. It is not intended to and does not create any warranties express
+or implied, including any warranty of merchantability or fitness for a particular purpose or that the results shown on this data sheet will be achieved by a user for a
+particular purpose. The user should determine the suitability of Rogers’ circuit materials for each application.
+
+These commodities, technology and software are exported from the United States in accordance with the Export Administration regulations. Diversion contrary to U.S. law
+prohibited.
+
+The Rogers’ logo, Helping Power, Protect, Connect our world, RO3035, RO4350B and RT/duroid are trademarks of Rogers Corporation or one of its subsidiaries.
+©2023 Rogers Corporation.
+Revised 1630 021323 Publication #92-153
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+                                                                                      Page 4 of 4
+

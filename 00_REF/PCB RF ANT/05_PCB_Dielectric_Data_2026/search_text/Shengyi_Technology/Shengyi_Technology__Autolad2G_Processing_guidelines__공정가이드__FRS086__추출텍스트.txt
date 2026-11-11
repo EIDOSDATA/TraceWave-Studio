@@ -1,0 +1,245 @@
+                   PROCESSING GUIDELINES
+
+                            Laminate: Autolad2G
+                            Prepreg: Autolad2GB
+
+
+High Tg, High CTI, Halogen Free & High Reliability Automotive Base Material
+
+
+
+
+                                     1/5     CN-PG-1911-02-Autolad2G- Autolad2GB-en
+This product process guideline uses IPC-4101 Standard as a reference, and Shengyi keeps the right to update
+according to the product features in PCB applications as to making it more suitable for use.
+Halogen-free: Cl≤900ppm, Br≤900ppm, Cl + Br ≤1500ppm (0.15%)
+
+
+
+1. Storage condition
+1.1 Laminate (core)
+
+1.1.1 Storage condition
+
+   Pack with original forms on the platform or on the appropriate storage rack, avoiding stress, preventing
+
+    sheet deformation caused by inappropriate storage which may impact the subsequent PCB processes.
+
+1.1.2 Storage environment
+
+   Sheets should be stored in ventilated, dry, at room temperature under environment control, avoiding direct
+
+    sunlight, rain and avoid erosion of corrosive gas (stored environment directly affect the quality of material).
+
+   For double-sided copper clad laminates (cores), to minimize shifting as to avoid scratching the surface of
+
+    the product, with suitable environment and condition for storage, the shelf life can be up to 2 years.
+
+   For single-sided copper clad laminates, with a suitable environment and condition for storage, the shelf
+
+    life can be up to 1 year.
+
+1.1.3 Operation manual
+
+   Wear clean gloves and carefully operate the cores. Copper foil collisions, sliding will cause damage of the
+
+    cores. Bare hands action will cause contamination to copper foil surface. These defects are likely to cause
+
+    adverse effects.
+
+1.2 Prepreg
+
+1.2.1 Storage method
+
+   Levels stored in original packaging form, avoiding stress, prevent sheet deformation caused by
+
+    inappropriate storage condition.
+
+   Leftover or cut Prepregs should pack and seal with vacuum foil packaging and put it back in the original
+
+    packaging tray.
+
+1.2.2 Storage environment
+
+   Prepreg sealed packaging should be stored in free of UV irradiation environment, specific storage
+
+    conditions and the storage period as follows:
+
+        Condition 1:   90 days when stored at <23℃ and <50% RH.
+
+        Condition 2:   180 days when stored at <5℃.
+
+   Note: Relative humidity affect prepreg quality the most, pay special attention on weather (conduct
+
+    dehumidification process is necessary for wet weather).
+
+1.2.3 Cutting guideline
+
+
+                                                       2/5         CN-PG-1911-02-Autolad2G- Autolad2GB-en
+   It’s best to leave the professional staff to handle the cutting with proper equipment, clean gloves is required
+
+    during the operation to avoid contamination of surface; operation must be careful to prevent prepreg
+
+    wrinkle or crack.
+
+1.2.4 Prepregs usage recommendations
+
+   Due to different density, it is necessary to adjust the resin content of prepreg in order to achieve similar
+
+    cured thickness when compared to standard FR-4. Please take care of this for stack up design.
+
+   If moving from a low temperature storage space to a higher temperature or ambient temperature storage
+
+    space, it must go through the temperature settle process, (8 - 24 hours, settle time is varies depending
+
+    on temperature variation in between two storage conditions). Open package after temperature settle
+
+    process is completed as to avoid moisture condensation which would affecting the quality and adhesion
+
+    of prepregs.
+
+   For PP package stored in above conditions 1 or 2, use up as soon as possible. For packages opened
+
+    more than 3 day, it must be re-inspected to ensure quality before using.
+
+   Leftover or cut prepregs should be packed and sealed with vacuum foil packaging and put it back in the
+
+    above stated storage condition 1 or 2.
+
+   For IQC inspection, PP test should be finished within 5 days from the date of acceptance according to
+
+    IPC-4101 specification, and the test temperature of Gel Time of prepregs is generally 190℃.
+
+
+
+2. PWB Processing
+2.1 Panel cutting
+
+   Sawing (preferred) and shearing method is recommended. Be careful of potential edge cracks when using
+
+    roller cutter or caused by improper gap or cutter blade abrasion.
+
+2.2 Thin core baking
+
+   Thin core baking depends on actual need. If bake after cutting, it’s recommended to rinse cutting panels
+
+    first, which is able to remove resin powder brought by cutting and avoid etching problem.
+
+   Baking condition: 150℃/4-8h, be sure to avoid contact directly with heat supply.
+
+2.3 Brown/Black oxide
+
+   Suitable for brown oxidation
+
+   In order to avoid excessive moisture absorption, baking after brown oxidation is recommended at the
+
+    condition of 120℃/1h and press within 4 hours.
+
+2.4 Lay-up
+
+   Ensure prepreg direction of warp and fill at lay-up process. Avoid prepreg reversal or overturn in case of
+
+    multilayer board warpage after lamination.
+
+2.5 Press process
+
+                                                       3/5         CN-PG-1911-02-Autolad2G- Autolad2GB-en
+    Curing rate: 1.0-2.5℃/min when the temperature of top layer ranges 80-140 ℃.
+
+    Full pressure setting is recommended at the range of 300 – 420 PSI (oil heated), specified value should be
+
+     determined by multilayer feature (lay-up construction and resin filled area).
+
+    Apply full pressure when the temperature of top layer ranges 90-110 ℃.
+
+    Curing condition: 185~195℃, >60min.
+
+    If pressed by Adara machine, please inform us for more information.
+
+    When adopted single-sided or dummy panel for multilayer, be sure to roughen the unclad surface before
+
+     use, otherwise poor bonding might happen due to smooth surface. Etching double sided board for that
+
+     purpose is one optional approach.
+
+2.6 Drilling
+
+    Autolad2G/Autolad2GB is high Tg & high fillers system, please adjust drill parameters according to other
+
+     high Tg FR-4. New drill bit, single stack and less hit count (for example, 500-1000 hits for 0.30mm or 0.40mm
+
+     hole diameter) is recommended for getting better hole wall quality. Besides, run FA to get optimal drill
+
+     parameters are necessary.
+
+    For dense holes area or hole size <0.6mm, LE aluminum cover is recommended.
+
+2.7 Desmear
+
+    Autolad2G belongs to PN curing system + inorganic filler type products, Ultrasonic rinse is recommended
+
+     to be used for desmear. As the desmear weight loss is less than normal FR-4, it is suggested run FA to make
+
+     the optimal parameters.
+
+    150℃/2-4h baking after drilling is beneficial to strengthen the Desmear effect and further improve the
+
+     dimensional stability of PCB board.
+
+2.8 Solder mask
+
+   Be careful of panel distortion or warpage due to improper stack-up at pose baking process.
+
+2.9 HAL
+
+   Suitable for lead free HAL process.
+
+2.10 Punching/Routing
+
+   Not suitable for punching process.
+
+   Routing process is recommended. Reduce routing speed to prevent edge cracks from outburst
+
+    mechanical force.
+
+2.11 Packaging
+
+   Suggest bake finished boards at 125℃/4~8h before packaging to prevent moisture effect on the heat
+
+    resistance of base material
+
+   Aluminum pack is recommended for PCB packing with moisture indicator.
+
+
+
+                                                      4/5         CN-PG-1911-02-Autolad2G- Autolad2GB-en
+3. PWB Soldering
+3.1 Shelf life of PWB
+
+   3 months with packaging protection (depends on surface treatment type).
+
+   Baking at 125℃/4~8h before assembly is recommended if stored for long (depends on surface treatment).
+
+3.1 Reflow
+
+   Suitable for lead free reflow process
+
+3.2 Manual soldering
+
+   For separated or connected pad, manual soldering temperature should range 350-380℃ and hold less
+
+    than 3s for single point.
+
+
+
+
+This process guide is for reference only! Should you have any questions, please feel free to contact us.
+
+SYTECH will support you with prompt and effective service.
+
+
+
+
+                                                   5/5       CN-PG-1911-02-Autolad2G- Autolad2GB-en
+

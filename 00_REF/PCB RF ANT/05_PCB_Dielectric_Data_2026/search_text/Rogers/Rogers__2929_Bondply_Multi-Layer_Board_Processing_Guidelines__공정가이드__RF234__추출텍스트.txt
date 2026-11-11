@@ -1,0 +1,206 @@
+                                                                                                   Fabrication
+                                                                                                   Technical Articles
+                                                                                                               Notes
+
+
+2929 Bondply
+Multi-Layer Board Processing Guidelines
+MATERIAL DESCRIPTION: 2929 bondply is an unreinforced,                 should be shielded from long-term exposures to UV light. 2929
+hydrocarbon based thin film adhesive system intended for use           bondply should be used within six months of the date of shipment.
+in high performance, high reliability multi-layer constructions.
+A low dielectric constant (2.9) and loss tangent (<0.003) at           DESIGN CONSIDERATIONS: The post-bond thickness of
+microwave frequencies makes it ideal for bonding multi-layer           2929 bondply can be predicted using the following formula.
+boards (MLB’s) made using PTFE composite materials such as             It should be noted that copper distribution, planarity of
+RT/duroid® 6000 and RO3000® series laminates, filled hydro-            platens and caul plates, layer count, compressible padding,
+carbon resin composites such as RO4000® cores, and specialty thin      etc… will effect the final thickness and uniformity thereof.
+core laminates. The proprietary cross-linking resin system makes       The following calculation can be used as a starting point to
+this thin film adhesive system compatible with sequential bond         predict post-bond core:core spacing, but fine tuning based
+processing while controlled flow characteristics offer excellent       upon actual thickness measurements is recommended.
+blind via fill capability and potentially predictable cutback ratios
+for designs requiring blind and/or buried cavities. 2929 bondply       Core: core spacing = 2929 + (Side A Cu thk X retained Cu) +
+is compatible with traditional flat press and autoclave bonding.       (Side B Cu thk X retained Cu) where:
+
+The film is currently available in 0.0015”, 0.002”, and 0.003”         Core: core spacing is distance between etched core surfaces
+thick sheets. Individual sheets can be stacked to yield thicker        on opposing (A & B) sides of 2929 bondply. The distance is
+adhesive layers. The unreinforced thin film can be tack bonded         measured from the base of copper features.
+to inner-layers to ease simultaneous machining of cut-outs             2929 is pre-press thickness of 2929 adhesive.
+through core and adhesive layers and to facilitate formation
+of vias using conductive pastes. An easy to release carrier            Side A and Side B Cu thickness is the thickness of the copper
+film protects the adhesive layer from contamination during             layers on the A and B side of the 2929 bondply. Typically, 0.5ED
+machining, screening of conductive pastes, and MLB booking.            would be 0.0007” while 1ED would be 0.0014”.
+
+
+These processing guidelines offer current “best practice”              Retained Cu is the percent of copper remaining on surface
+procedures and parameters for bonding MLB’s using 2929                 A and B after inner-layer preparation divided by 100. A solid
+bondply. The recommendations will be updated as additional             copper plane would be 100%/100 = 1.0.
+information becomes available. A Rogers’ Technical Service
+Engineer (TSE) should be consulted for our latest information. All     Example:
+first-time users are urged to contact a Rogers’ TSE, Sales Engineer    2929 thickness = 0.004”
+(SE), or Applications Development Manager (ADM) for evaluation/        Side A Cu thick = 0.0007” (0.5E)
+demonstration samples and special handling instructions. A video       Side B Cu thick = 0.0014” (1E)
+showing the recommended technique for laying up a multilayer           Side A retained Cu = 0.25 (25%/100)
+using 2929 Bondply can be viewed in the video section on the           Side B retained Cu = 0.5 (50%/100)
+Rogers Technology Support Hub: www.rogerscorp.com/techub.
+                                                                       Core: core spacing =
+STORAGE: Materials should be stored between 10 to 30°C (50 to          0.004” + (0.0007 X 0.25) + (0.0014 X 0.5) = 0.0049”
+80°F) and relative humidity less than 60%. The uncured material
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+
+1										
+                                                                                                  Fabrication
+                                                                                                  Technical Articles
+                                                                                                              Notes
+
+
+Note: Cu:Cu spacing would be                                          be carefully peeled beginning in one corner and peeling toward
+0.0049” – (0.0007” + 0.0014”) = 0.0028”                               the diagonal corner. The preferred method of initiating the
+                                                                      separation process involves bending one corner of the adhesive
+FORMATION OF TOOLING HOLES: Tooling holes can                         over until the PET carrier is in contact with itself. Pressing on
+be punched or drilled as single sheets or in stacks of                the bend will snap the adhesive layer. The PET carrier can be
+multiple sheets.    The maximum recommended stack                     slid toward the opposing corner while maintaining a slight
+height for punching holes is ten sheets. The   maximum                downward pressure. The free hand should be used to hold
+recommended stack height for drilling holes is 25 sheets              down the adhesive layer during removal of the release liner.
+providing a new drill and proper parameters are used.                 Special care may be required to avoid tearing of the adhesive
+                                                                      layer near tooling holes and cut-outs. Pre-releasing and
+For either hole formation technique, the 2929 sheets should           replacing the PET layer may prove helpful before machining
+be stacked between layers of pressed phenolic entry material          cut-outs or when booking very thin (0.0015”) adhesive layers.
+with the PET side on top. A release sheet should be placed
+between the phenolic sheet and the bottom layer of 2929               Handling, especially of thin (<0.002” thick) layers, can be
+to avoid welding the adhesive to the exit material during             facilitated through the use of tack bonding. Tack bond is possible
+formation of the tooling holes. The white tag stock paper used        using a hot roll laminator at 125°C (275°F), 6” per minute feed
+to package 2929 for shipment can be used as the release layer.        rate, and 30 PSI. Tack bonding is also possible at 110°C (230°F)
+                                                                      providing the feed rate is slowed to 2” per minute feed rate.
+Tooling holes can be punched as standard. Holes should
+be drilled using 200 SFM and a 0.0015”/” infeed rate. The             Tack bonding can be accomplished using a vacuum
+default parameters for all drill diameters greater than               lamination system.      Parameters would include a 60-90
+0.060” are 20 KRPM spindle speed and 25 IPM infeed.                   second dwell with bondline temperatures between 115 to
+                                                                      140°C (240 to 285°F). When possible, tooling holes should
+INNER LAYER PREPARATION: Innerlayer metal surfaces should             be formed after the tack bonding process. When properly
+be oxide treated to promote mechanical adhesion. A wide range         applied, the tack bond should remain intact for 2-4 days
+of oxide alternatives and some reduced black or brown oxides          and the adhesive layer should remain fully functional.
+have been used successfully with 2929 Bondply. The thermal            Note: As is true with many bonding materials,the use of
+capabilites of a given oxide treatment must be understood             compressible padding placed internal to the tooling plates
+in order to select the appropriate lamination temperature.            is recommended to improve pressure uniformity across the
+                                                                      multilayer book. When selecting a press pad material, it is
+Please refer to the specific laminate manufacturers’ data sheets      important to insure the material is properly rate for the selected
+and processing guidelines for any recommended treatment of            bonding temperature. In addition, some designs may rquire
+the etched dielectric surfaces and also to insure the laminates can   additional conformance. In those cases, the use of skived
+tolerate the lamination temperature required for 2929 Bondply.        PTFE or similar products have been used successfully between
+                                                                      the multilayer panel and the stainless steel separators plates.
+MULTILAYER LAYUP (Reference 2929 instructional video
+noted on page 1): The uncured adhesive layer is fragile. The          MLB BONDING CYCLE: The press cycle should include a 2.5°C -
+release sheet facilitates handling, serves as a protective barrier    4.0°C/min (4.5°F - 7.0°F/min) ramp rate from room temperature to
+against contamination, and should not be removed until                245-250°C (473 to 482°F) and a 90-120 minute dwell at 245-250°C.
+after the adhesive layer has been punched, machined (cavity
+designs), and positioned onto the inner-layer surface. Once           NOTE: 2929 bondply can be bonded at lower temperatures if
+positioned onto the inner-layer surface, the carrier film should      required to compensateforlessthermallyrobustoxidetreatements.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+
+2										
+                                                                                Fabrication
+                                                                                Technical Articles
+                                                                                            Notes
+
+
+However, the absolute minimum product temperature must
+be above 224°C (435°F). Dwell time should be 120 minutes
+when cure temperature is less than 245-250°C (473 to 482°F).
+
+The recommended applied pressure for the entire cycle is 400
+PSI, although pressure can be increased or decreased through
+evaluation to control flow of the resin/filler system. Vacuum
+assistance is preferred, but not required. Cooling can be
+accomplished in the hot press or after a transfer to a cold press for
+an accelerated rate of cooling. 2929 bondply is also compatible
+with autoclave bonding using the thermal profile described above.
+
+
+
+
+                                     Thermal Profile for 2929 Bondply
+
+               500                                                                           260
+
+               450
+                                                                                             220
+               400
+
+                                                                                             180
+ Fahrenheit 350
+               300
+                                                                                             140
+    Farenheit 250                                                                                  Celsius
+                                                                                             100
+               200
+
+               150                                                                           60
+
+               100
+                                                                                             20
+                 50
+
+                  0                                                                          -20
+                        0   10 20 30 40 50 60 70 80 90 100 110 120 130 140 150 160 170 180
+                                                            Time (Minutes)
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+
+3										
+                                                                                                                         Technical Articles
+                                                                                                                         Fabrication Notes
+
+
+POST-MLB BOND PROCESSING: With minor exceptions,
+bonded MLB’s should be processed using procedures
+and parameters associated with the core layers. Thin sub-
+assemblies should be handled carefully after bonding to avoid
+excessive bending. 2929 can be desmeared chemically or
+using plasma. A plasma cycle is provided below. The adhesive
+system does not require special sodium or plasma wettability
+treatments prior to plating, but 2929 is compatible with
+these processes should they be required for the core layers.
+
+Plasma Desmear Cycle
+Frequency:                         40 KHz
+Voltage:                          500-600V
+Power:                            4000-5000Watts
+
+Pre-Heat to 60°C using:
+Gases:                  90% O2, 10% N2
+Pressure:               250mTORR
+
+Desmear using:
+Gases:                            75% O2, 15% CF4, 10% N2
+Pressure                          250 mTORR
+Time                              10-15 minutes
+
+
+
+
+The information in this process guide is intended to assist you in designing and fabricating PWB’s with Rogers’ circuit materials. It is not intended to and does not
+create any warranties express or implied, including any warranty of merchantability or fitness for a particular purpose or that the results shown on this data sheet
+will be achieved by a user for a particular purpose. The user should determine the suitability of Rogers’ circuit materials for each application.
+
+Prolonged exposure in an oxidative environment may cause changes to the dielectric properties of hydrocarbon based materials. The rate of change
+increases at higher temperatures and is highly dependent on the circuit design. Although Rogers’ high frequency materials have been used successfully
+in innumerable applications and reports of oxidation resulting in performance problems are extremely rare, Rogers recommends that the customer
+evaluate each material and design combination to determine fitness for use over the entire life of the end product.
+
+These commodities, technology and software are exported from the United States in accordance with the Export Administration
+regulations. Diversion contrary to U.S. law prohibited.
+RT/duroid, RO4000, RO3000 and the Rogers’ logo are trademarks of Rogers Corporation or one of its subsidiaries.
+© 2021 Rogers Corporation, Printed in U.S.A, All rights reserved.
+Revised 1504 021221 Publication #92-517
+

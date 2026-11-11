@@ -1,0 +1,382 @@
+                                                                           APPLICATION NOTES
+
+
+                                                       RHEOLOGY; Materials in Motion
+                                                The Science of Circuit Board Lamination
+                                                                                                           Arlon 2013
+
+
+I. Introduction                           applications. Prepregs must wet, fill    The Science of Rheology, when
+                                          and encapsulate very well, yet not       applied to the multilayer lamination
+Circuit boards have become more
+                                          flow so much as to create a multilayer   process, can reduce reliance on
+intricate and material performance
+                                          board with the profile of an official    some of the “magic” in the lamination
+and reliability in the multilayer board
+                                          NFL football.                            process with data about material
+manufacturing process is more critical
+                                                                                   deformation and fluid mechanics. An
+than ever before. Prepregs must           In these days of tough international
+                                                                                   understanding of prepreg rheology
+readily meet the new demands of           competition and shortened
+                                                                                   can turn the lamination process away
+today’s electronic product designs.       development cycles, productivity
+                                                                                   from the remnants of EVOP, SWAG
+The application of prepreg rheology       must constantly increase so that
+                                                                                   or other rituals (like crossing one’s
+in the lamination cycle can help          companies can remain competitive
+                                                                                   fingers or mumbling a quick prayer as
+characterize and design prepregs          and profitable in the marketplace.
+                                                                                   the press closes). This can mean the
+to allow enhanced performance             The lamination press cannot be a
+                                                                                   difference between a process that is
+under the increased demands of            bottleneck. Deliveries must be just-
+                                                                                   robust, in the middle of its process
+miniaturization, SMT and advanced         in-time and products must work
+                                                                                   window, or one that occasionally
+packaging designs.                        right the first time. Stack heights
+                                                                                   drifts out of control when lamination
+                                          are being increased and cycle times
+Considering the advances in                                                        parameters do not line up exactly.
+                                          decreased to improve manufacturing
+computing and electronics over the
+                                          throughput. In addition, new prepreg     II. Theoretical Basis
+past ten years, it is hard to imagine
+                                          and laminate materials with higher
+the developments we will see in the                                                “ Panta Rei” or the observation
+                                          performance properties are available
+next ten. Even as electronic products                                              ‘Everything Flows’, was first
+                                          to help increase yields through
+take on smaller sizes for speed,                                                   documented by Heraclitus, a 5th
+                                          the MLB manufacturing process.
+convenience and portability, these                                                 Century B.C. Metaphysician. It was
+                                          Improved resins, blends, new resins
+devices need to provide additional                                                 not until some 2200 years later that
+                                          and new additives come with claims
+functionality and performance.                                                     rheology was established as the
+                                          of improved performance, but they
+Because of this, multilayer boards                                                 science of material deformation and
+                                          “are not your father’s Buick” and will
+contain much finer lines and                                                       flow when Sir Isaac Newton defined
+                                          require rigorous process development
+spaces as well as increased layer                                                  viscosity as the ratio of shear stress
+                                          both at the supplier and processor
+counts. Prepregs must fill more                                                    to shear rate. Understanding rheology
+                                          levels. If manufacturing procedures
+difficult circuit geometries than ever                                             on a practical and theoretical basis
+                                          are not carefully developed through
+before. The tight requirements for                                                 replaces some of the “art” in the
+                                          Statistical Product Development and
+dielectric thickness control must be                                               lamination process with science.
+                                          SPC, the processing window will
+maintained for controlled impedance                                                Applying this to the multilayer
+                                          appear to be very small or elusive.
+lamination process can mean the          of material being studied and the          Factors Affecting Viscosity
+difference between a robust process viscosity range of the fluid under
+                                                                                    In the realm of polymer processing,
+in the middle of a process window        consideration. This article will not
+                                                                                    it is important to consider the factors
+and one that can occasionally drift out attempt to describe them all. A good
+                                                                                    that affect viscosity. These are:
+of control.                              source for information on rheology
+                                         basics as well as instrument types for     A. Temperature Effects
+Viscosity
+                                         polymer melts would be Cogswell’s          The presence or absence of heat
+Materials respond to stress in           “Polymer Melt Rheology” (See               determines how active molecules
+many ways. “Lubricate,” “spread”         bibliography)                              are in a fluid. As solids and liquids
+and “squeeze” are some of the
+                                         The coefficient of viscosity (or simply    increase in temperature, molecules
+non-technical words to describe
+                                         viscosity), is the measure of resistance   become more active, and less
+rheological response. Materials can
+                                         to an applied force, or the resistance     likely to remain entangled, so it is
+be strained, ruptured, made to flow or
+                                         to flow. This is modeled by two plates     not surprising that the viscosity
+move or accelerate when subjected to
+                                         separated by a fluid. One plate is         tends to decrease as temperature
+stress. The basic relationship of stress
+                                         stationary, while the other is moving      increases. In our shear plate model,
+and strain defined by Newton is:
+                                         at a constant speed, maintaining a         the molecules are less likely to
+F /A = μ * V/L                           constant distance from the stationary      remain entangled when heated, so
+                                         plane. When such a force is applied,       the velocity gradient will be more
+where F/A = shear stress (force per
+                                         the layer of fluid immediately adjacent    pronounced, resulting in a lower
+unit area),
+                                         to the moving plane moves nearly           viscosity.
+μ = a proportionality constant           at the speed of the moving plane,          B. Concentration Effects
+(viscosity)                              while subsequent layers, closer to the
+                                                                                    High viscosity polymers can be
+V/L = the velocity per layer thickness stationary plane move more slowly.
+                                         This establishes a velocity gradient       lowered in viscosity by dilution with
+(shear rate).
+                                         between the plates.                        low molecular weight polymers.
+From this relationship, the ratio of                                                The low molecular weight polymers
+shear stress to shear rate defines       When a fluid more effectively transfers    can act as a “slippage plane” in our
+viscosity. Many factors exert an effect its momentum to adjacent layers,            simple shear plate example where
+upon viscosity. Fluids with higher       there would be less of a velocity          the fluid has a more pronounced
+molecular weights usually have higher gradient, and the observation in our          velocity gradient between the plates.
+viscosities. More molecular branching plate model is that the fluid layer has       Low viscosity components can act
+and molecular entanglement also          a high viscosity. When a fluid does        as lubricants or plasticizers for the
+results in higher viscosity. Increase    not effectively transfer its momentum      larger molecules, to keep the larger
+in temperature reduces viscosity by      to adjacent fluid layers in our plate      molecules from entangling. (Moisture
+increasing molecular activity and        model, the velocity gradient is more       in prepreg can lower the apparent
+reducing entanglement. Dilution of       pronounced and the fluid has a low         melt viscosity because it acts like a
+higher molecular weight materials        viscosity. This sets up the basis for a    plasticizer.)
+with lower molecular weight species      rheometer. When the shearing plates
+                                         are of a known geometry and at a           C. Molecular Weight & Distribution
+will also lower viscosity by reducing
+                                         fixed distance, a calibrated strain can        Effects
+molecular entanglement.
+                                         be applied to the plate. A transducer,     Molecular size can affect the intrinsic
+The definition of these relationships,   attached to the stationary plate, can      viscosity of materials. Smaller
+along with Newton and Baron von          measure the induced stress in the test     molecules tend to have lower
+Leibniz’ independent development of sample. By determining the ratio of
+                                                                                    viscosities. As the size of a molecule
+Calculus, accelerated developments the shear force (force per unit area) to
+                                                                                    increases and the molecular weight
+in the science of rheology and           the shear rate (velocity gradient), the    increases, the tendency will be
+measurement of fluid viscosity. There flow resistance, or viscosity is derived.
+                                                                                    towards higher viscosities.
+are many different ways to measure
+viscosity, depending on the type
+D. Molecular Branching & Chain          plastics. (Quicksand is an example of
+   Diameter Effects                      a dilatant substance)
+As molecules increase in branching       4. Thixotropic materials are the
+and chain diameter, the more likely      opposite of dilatant materials. These
+they are to entangle to distribute shear materials will increase in flow rate with
+stress in our shear plate model. This increases in agitation or increases in
+results in a higher observed viscosity. shear stress. When agitation or shear
+                                         stress is stopped, hysteresis occurs.
+E. Shear Effects
+                                         Generally, the material will thicken,
+Newtonian Fluids                         but less shear stress is required to
+Fluids are considered Newtonian          create a given flow compared to the
+when the coefficient of viscosity        first application of shear stress. (Paint
+remains constant over changes in         for example, flows when brushed, yet
+shear stress. This means the viscosity does not sag afterwards).
+remains constant, regardless of the      5. Rheopectic substances are
+applied shear stress.                    materials that when periodically
+Non-Newtonian Fluids                     sheared will “set” or build in viscosity
+                                         rapidly. The apparent viscosity of a
+Fluids that exhibit a change in          rheopectic substance will increase
+viscosity with a change in the shear     with time under a constant shear
+rate are known as Non-Newtonian          stress. (A thick mixture of cornstarch  Fitted with an oscillating bottom plate
+fluids (Figure 2.) To be meaningful,     in water is rheopectic.)                and a torque transducer on the top
+viscosity values should be reported                                              plate (see photo above), the parallel
+with the shear rate used when            Rheological Testing                     plate rheometer can be programmed
+measurements are reported.               Selecting from the various ways to      with a heating profile, oscillating
+                                         measure viscosity depends upon          frequency and strain to produce a
+Other Responses to Shear Stress
+                                         the material studied and the range      stress within a sample. Samples of
+It is useful to be aware of the various of viscosity under consideration. For prepreg dust are sifted to remove
+types of response to shear stress.       prepregs, the parallel plate rheometer glass fiber reinforcement (since fabric
+The following types of response          is favored, due to its flexibility in   fragments can result in unrepeatable
+can occur when a plastic or fluid is     testing conditions. This is because     readings). The instrument computer
+subjected to shear stress:               the instrument can be used to model compares the material stress to
+                                                                                 the input strain, and separates the
+1. A Bingham plastic, or “true plastic,” lamination press cycles without
+flows only after a certain yield point   putting expensive product at risk. It information into the tan delta (phase
+has been exceeded as the shear           is an instrument that has been widely angle), the storage (in phase) and loss
+                                                                                 modulus (out of phase) components.
+stress is increased. (Chewing gum is used in one form or another since the
+                                         1950’s.                                 The instrument’s computer
+an example of a Bingham plastic).
+                                                                                 mathematically derives viscosity
+2. Pseudoplastic materials appear         The instrument can be envisioned       from this information. The instrument
+to have a yield stress where flow        as a set of parallel plates contained   provides a profile that shows where
+increases dramatically with increases within a programmable oven. The            the prepreg melts, softens, flows and
+in shear stress. (Paper pulp is an       oven is used to provide either          gels, thus defining a baseline for the
+example of a pseudoplastic material). an isothermal (steady state) or            lamination process (which has been
+                                         programmed heat ramp. This makes simulated in the instrument).
+3. Dilatant materials show high flow     the instrument ideal for characterizing
+under very low shear stresses, but       a dynamic manufacturing process         The operator programs the heating
+further increases in shear rate result   such as a multilayer board lamination profile, test frequency and strain into
+in lower flow. These are also referred cycle rather than a quick isothermal      the instrument. The sample (prepreg
+to as shear thickening or inverted       test such as a flow or gel test.        dust that has been removed from the
+reinforcement and sifted to remove        more accurate information about the       When prepregs are heated more
+reinforcement fibers) is tested without   rheological differences in prepregs,      quickly, they become more fluid
+reinforcement because within the          based upon thickness yield per ply.       or “juicier”, to provide more flow
+parallel plates, fabric reinforcements    Because of the lower pressure to          during lamination. This is utilized
+result in strange, often unrepeatable     area ratio in testing, the Scaled Flow    to provide more flow in lamination.
+results. (Note: In prepregs from          Test correlates better to rheological     When taken to extreme, there can
+which neat resin cannot be removed        differences in prepregs than the Resin    be so much flow, or uneven flow in a
+it is possible to use the prepreg         Flow Test.                                multilayer package so as to induce the
+itself, but the glass influence makes                                               appearance of dryness (resin starved
+                                          Lamination
+results more difficult to interpret and                                             glass), voids (gel occurs too rapidly)
+comparisons to pure resin testing are     The lamination press may be               or thickness tolerance problems (too
+moot.)                                    considered a rheometer of sorts.          much edge flow, or “flash”).
+                                          While it does not provide units of
+III. Application to Lamination                                                    When prepregs are heated more
+                                          viscosity, observations of the type and
+                                                                                  slowly, they become less fluid. This
+Prepreg Characterization                  amounts of flash around the edges of
+                                                                                  is done to reduce the amount of flow
+                                          laminate books provide the lamination
+Resin flow testing does not always                                                and flash during lamination. If the
+                                          engineer with rheological information
+correlate with production results.                                                heating rate is too slow, there may be
+                                          about the press cycle. The amount
+For example, the Resin Flow Test                                                  voiding or incomplete encapsulation
+                                          of flash reveals if resin flow was
+(IPC-TM-650; method 2.3.17B) calls                                                of traces, or poor adhesion to inner
+                                          excessive, inadequate or sufficient. As
+for a 200 psi lamination pressure on                                              layer circuitry. These observations
+                                          a qualitative guide, edge flash can be
+a 4 inch by 4 inch layup of 4 plies.                                              are readily explainable. In considering
+                                          used to determine whether the press
+Consider the Resin Flow Parameter:                                                the two opposing activities- resin melt
+                                          cycle is providing consistent resin
+                                                                                  vs. resin gelation, a slower heating
+                                          flow.
+                                                                                  rate provides the resin time to react
+                                          Over the years, the lamination process and advance its molecular weight
+                                          has been empirically determined         at elevated temperatures before
+                                          to provide a good, robust process       reaching minimum viscosity. The
+Where:
+                                          window. Some of the observations        process can be considered to be a
+F = Resin Flow Parameter                  about prepregs include:                 “thermal aging” effect, whereby the
+C = Geometry Constant                                                             prepreg shows a higher melt viscosity.
+                                          Changes in heating rate can induce
+P = Pressure                                                                      With faster heating rates, there is
+                                          changes in melt viscosity profile
+A = Area                                                                          considerably less cross linking of the
+                                          (Figure 1).
+μ= viscosity
+t = time
+We see that resin flow is proportional
+to the Pressure to Area Ratio, as
+well as the viscosity profile which
+will be driven by the press cycle. In
+the IPC Resin flow test, the Pressure
+to Area ratio is 12.5. This pressure
+to area ratio can be 10 to 15 times
+higher than the pressure to area
+ratios of production laminations of
+multilayer boards. From this, it is
+easy to see why the resin flow test
+does not correlate well with prepreg
+rheology. The Scaled Flow Test (IPC-
+TM-650; method 2.4.38A) provides
+                                                                                   Figure 1
+resin, so there is less time for thermal   Experimental work has shown that            This provides the advantage of a
+aging before the prepreg reaches its       plateau cycles can be used when a           lower minimum viscosity than is
+minimum viscosity, so the prepreg          particularly difficult fill configuration   provided by a slower heating rate. By
+shows a lower melt viscosity. In           requires a lot of resin fill ( for example, choosing a plateau temperature that is
+considering the effects of Figure 1,       heavy opposing copper planes) and           slightly lower than the minimum melt
+several approaches can be used to          when excessive resin flow results in        viscosity, the lower rate of reaction of
+optimize flow and fill.                    poor dielectric thickness control and the melt will result in a longer time to
+                                           crushed or deformed inner layers.           gelation. This plateau is usually 15 to
+Adjusting the rate of heat up can
+                                           With a plateau cycle, the material is       25 minutes long to extend resin flow.
+make significant differences in flow.
+                                           quickly heated to a temperature just        The press cycle then continues on to
+Faster heat up rates will result in
+                                           before the point of minimum viscosity. the final cure temperature.
+lower melt viscosity and more flow,
+                                           The fast temperature rise provides
+while slower heat up rates will result                                                 Since the plateau cycle takes the
+                                           the advantage of a lower minimum
+in higher viscosity and less flow.                                                     advantages of both the fast heating
+                                           melt viscosity than is furnished with a
+Balancing heat up rate with pressure                                                   rate cycle as well as the slow heating
+                                           slower heating rate, where the resin is
+gives the process engineer a good                                                      rate cycle, wetting is improved,
+                                           thermally aged before full melt. Since
+opportunity to get the flow he needs                                                   uniform resin retention is achieved for
+                                           the package is maintained, and not
+to fill and bond, without resulting in                                                 thickness control.
+                                           ramped with additional heat, there
+too much flow or on the other hand,
+                                           is a slower reaction rate and longer        V. Summary
+poor fill and inadequate wetting.
+                                          gel time. After a plateau of 15 to 20      Prepreg rheology provides the
+In the past a lot of laminators have      minutes, the material is brought to        lamination engineer with a scientific
+used a “kiss cycle” in which they         final cure temperature. The plateau        perspective on the lamination
+delay applying of full pressure until the cycle has the advantages of both the
+                                                                                     process. The parallel plate rheometer
+prepreg has reached a molten state.       fast heating rate (for low viscosity       offers the advantage of observing
+By using a contact pressure of 50 to filling and wetting) and the slow
+                                                                                     the effects of process changes.
+100 psi until the prepreg becomes a       heating rate (for longer working time,     Modeling can be done on a laboratory
+melt (about 80°C-105°C for epoxies        less taper, etc.). As a result, wet out    instrument without putting expensive
+and 100-135°C for polyimides). At         and encapsulation is improved, and         product at risk. Better prediction of
+this fluid stage, where the resin has     more uniform printed circuit board         the effect of process changes can be
+just become molten, but before the        resin retention provides for better        designed with appropriate rheological
+resin reaches its minimum viscosity       dielectric thickness control.              information.
+(and maximum cross-linking rate) the
+                                          The fluidity curve can also be             An understanding of the critical
+full lamination pressure is applied. By
+                                          integrated to derive a Fluidity time       parameters of a given resin system
+waiting until the resin has become
+                                          integral or Integrated Flow. This          allows for a more robust lamination
+molten, the greater fluidity in the resin
+                                          integral has been used to compare          process. As circuit configurations
+creates less shear stress in the elastic
+                                          prepregs and different press cycles.       change, an understanding of rheology
+melt region and there is less glass
+                                          Experimental work has shown that           can be used to counterbalance
+reinforcement deformation.
+                                          plateau cycles can be used when            rheological effects.
+Note: The use of a kiss cycle is not      a particularly difficult configuration
+recommended by this author unless         requires a lot of fill (heavy opposing     Delayed pressure application
+there is a flow issue to be resolved,     copper planes), where excess               temperatures (kiss cycles) and plateau
+since use of a kiss cycle depends on resin flow results in poor dielectric           cycles can be used to now push
+good control of the temperature inside thickness control and crushed or              prepreg to new performance levels in
+the laminate book, and because the        deformed inner layers. The concept         the lamination process.
+temperature of material closest to the behind a plateau temperature is to            Prepreg rheology offers several
+platens of a press will get hotter faster quickly heat the package to a chosen       perspectives to the lamination
+than that in the center resulting in a    temperature, slightly shy of the resin     engineer. The parallel plate rheometer
+differential flow between laminates in system minimum melt viscosity.                offers the advantage of observing the
+the same book.
+     effects of an actual process on the
+     instrument. Modeling can be done                                                BIBLIOGRAPHY
+     on a lab instrument without having to
+                                                                                     1. Considine, Douglas M; Considine,
+     put expensive product at risk. More
+                                                                                        Glenn D., Encyclopedia of
+     educated process changes can be
+                                                                                        Chemistry, Fourth Edition, Van
+     made with rheological information.
+                                                                                        Nostrand Reinhold, N.Y., 1984
+     Portions of this article published
+                                                                                     2. Binder, Stephen, Fluid Mechanics,
+     originally as “Die Wissenschaft
+                                                                                        Fourth Edition, Prentice-Hall, Inc.,
+     des Verpressens von Multilayern ,
+                                                                                        Englewood Cliffs, N.J., 1962
+     originally appearing in the German
+     Printed Circuit Board Technical                                                 3. Marshall, D.I., Measuring Viscosity
+     journal: “Zev Leiterplatten” in ..12/93                                            by Thermosetting Resins by
+                                                                                        Parallel Plate Plastometry
+     Additional article published in May 93,
+     August 93 “PCFAB.” Thanks to Paul                                               4. Bartlett, C.J.; Bloechle, D.P.; &
+     Kyle for the initial articles which have                                           Mazeika, W.A., The Use of Scaled
+     been combined in this paper. Any                                                   Flow Testing For B-Stage Prepreg,
+     errors or omissions are those of the                                               IPC Technical Paper IPC-TP-281,
+     redactor (Chet Guiles, Arlon) and not                                              IPC 22nd Annual Meeting, April,
+     the original author.                                                               1979
+                                                                                     5. Van Black, L.H., Elements of
+                                                                                        Materials, Science & Engineering,
+                                                                                        Addison-Wesley Publishing
+                                                                                        Company, Reading, MA, 1975
+                                                                                     6. Galgoci, E.C., Pigneri, Young,
+                                                                                        G.C., Tait, R.A., Jackson,
+                                                                                        R.J.,Rheological Indexing of
+                                                                                        Prepreg Resin, 3rd International
+                                                                                        SAMPE Electronics Conference
+                                                                                        Proceedings, June 1989 ( Vol 3,
+                                                                                        Pp1224-1233)
+
+
+
+
+                                                     9433 Hyssop Drive
+                                           Rancho Cucamonga, California 91730
+                                         Tel: (909) 987-9533 • Fax: (909) 987-8541
+
+                                                   www.arlonemd.com
+
+Ver 1.1
+

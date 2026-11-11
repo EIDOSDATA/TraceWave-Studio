@@ -1,0 +1,179 @@
+                                                                                                 Data Sheet
+
+
+
+Data Sheet and Processing Guidelines
+for RO3000® Series Bondply
+
+Rogers RO3000® series bondply is an undensified version of RO3000 laminates that can be used to process highly
+reliable, homogeneous RO3000 multi-layer boards (MLB’s). The bondply is used in a manner analogous to prepreg in FR-4
+constructions and, once bonded, becomes the equivalent of a normal RO3000 core layer.
+
+
+RO3000 series bondply offers electrical and thermal-mechanical advantages over most other adhesive systems that can be
+used to bond RO3000 material multi-layer constructions. In addition, improvements offered by bondply layers over core-to-
+core fusion bonding include improved layer-to-layer registration, tighter control over Z-axis spacing of copper layers, better
+encapsulation of buried metal features at lower applied pressures, and design flexibility.
+
+
+During a MLB bonding process, the bondply will reduce in thickness to about five mils and closely match predictable electrical
+properties. A Rogers’ Technical Support Engineer (TSE) should be contacted for design data.
+
+
+PROCESSING GUIDELINES:
+
+
+INNER-LAYER PREPARATION:
+Cores should be processed through inner-layer as standard. If copper roughening is required (ground or power planes), a
+microetch or a subtractive process oxide alternative such as Atotech’s Bondfilm or MacDermid’s MultiBond LE should be used.
+Traditional additive process oxide treatments lack the thermal stability to survive the high temperature bond conditions.
+
+
+PTFE activation by sodium or plasma treatment should be avoided. All inner-layers should be baked at 125°C to 150°C
+(257°F - 302°F) for at least one hour prior to MLB bonding.
+
+
+PREPARATION OF MLB BOOK:
+RO3000 bondply layers require careful handling to avoid tearing. Pinning holes can be punched, drilled, or routed. Entry
+material should be used during drill or rout to shield the bondply layers from debris.
+Due to in-plane expansion characteristics, type 304 stainless steel separator plates are recommended. Five to ten mil thick
+sheets of aluminum should be placed between the multi-layers and the separator plates.
+
+
+Foil bonding of outer-layers is possible but a Rogers’ Technical Service Engineer should be consulted prior to processing foil-
+bonded constructions.
+
+
+
+
+Advanced Connectivity Solutions                                                                                       Page 1 of 4
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+                                                                                                 Data Sheet
+
+
+BOND CYCLE:
+Temperature control is most critical between 600°F (315°C) and 700°F (371°C) during the ramp up, and between 700°F
+(371°C) 500°F (260°C) during the cool down. The ramp rate to 600°F (315°C) can be up to 10°F (5.5°C)/min, but the ramp
+from 600°F (315°C) to 700°F (371°C) should be 5°F (2.7°C)/Min. The dwell at 700°F (371°C) should be 30-60 minutes. The
+cooling rate to 500°F (260°C) should be at a rate of 2°F (1.1°C)/Min. An accelerated cool can be used, but materials should
+remain in the press until package temperatures are less than 250°F (121°C).
+
+
+Applied pressure will depend upon press (autoclave or flat bed) equipment and fill requirements, but will probably fall into a
+range of 250 to 500 PSI.
+
+
+
+
+OUTER-LAYER PROCESSING:
+Standard processing guidelines for RO3000 cores would serve as the best starting point for processing homogeneous multi-
+layer constructions.
+
+
+
+
+Advanced Connectivity Solutions                                                                                       Page 2 of 4
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+                                                                                             Data Sheet
+
+
+
+
+Chart 1: RO3000 Bondply Thickness vs. Bond Pressure
+The data in Chart 1 demonstrates the uniform thickness over bond pressure of RO3003™, RO3006™, and RO3010™ bondply.
+
+
+
+
+Chart 2: RO3000 Bondply Specific Gravity vs. Bond Pressure
+The data in Chart 1 demonstrates the excellent stability of specific gravity over bond pressure of RO3003, RO3006, and
+RO3010 bondply.
+
+Advanced Connectivity Solutions                                                                                   Page 3 of 4
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+                                                                                                             Data Sheet
+
+                                          TYPICAL VALUE (1)
+        PROPERTY                                                             DIRECTION        UNIT          CONDITION         TEST METHOD
+                                 RO3003          RO3006         RO3010
+ Dielectric Constant,r                                                                                                      IPC-TM-650
+ Process                      3.00 ± 0.04(2)    6.15 ± 0.15   10.2 ± 0.30         Z             -           10GHz 23°C          2.5.5.5
+                                                                                                                            Clample Stripline
+                                                                                                                               Differential
+   Dielectric Constant, r
+ (2)
+                                  3.00             6.50          11.20            Z             -         8 GHz - 40 GHz      Phase Length
+ Design
+                                                                                                                                 Method
+ Dissipation Factor                                                                                                            IPC-TM-650
+                                 0.0010           0.0020         0.0022           Z             -           10GHz 23°C
+                                                                                                                                 2.5.5.5
+ Thermal
+ Coefficient of r                                                                                            10GHz            IPC-TM-650
+                                   -3              -262           -395            Z          ppm/°C
+                                                                                                            50 to 150°C          2.5.5.5
+
+ Dimensional Stability            -0.06           -0.27          -0.35            X                                            IPC TM-650
+                                                                                             mm/m             COND A
+                                  0.07            -0.15          -0.31            Y                                               2.2.4
+ Volume
+                                   107             105            105                        MΩ•cm            COND A          IPC 2.5.17.1
+ Resistivity
+ Surface
+                                   107             105            105                         MΩ              COND A          IPC 2.5.17.1
+ Resistivity
+ Tensile
+                                   900            2068            1500           X,Y          MPa              23°C            ASTM D638
+ Modulus
+ Moisture                                                                                                                      IPC-TM-650
+                                  0.04             0.02           0.05            -            %              D48/50
+ Absorption                                                                                                                      2.6.2.1
+ Specific Heat
+                                   0.9             0.86            0.8                       J/g/K                             Calculated
+
+ Thermal
+                                  0.50             0.79           0.95            -          W/m/K             80°C            ASTM C518
+ Conductivity
+ Coefficient of Thermal            17               17             13             X
+                                                                                                                                 ASTM
+ Expansion                         16               17             11             Y          ppm/°C        -55 to 288°C
+                                                                                                                               D3386-94
+                                   25               24             16             Z
+ Td                                500             500            500                        °C TGA                           ASTM D3850
+ Density                           2.1             2.6             2.8                      gm/cm3
+ Flammability                     94V-0           94V-0          94V-0                                                                UL
+ Lead-Free Process
+                                   Yes              Yes            Yes
+ Compatible
+Typical values are a representation of an average value for the population of the property. For specification values contact Rogers
+Corporation.
+
+Shelf Life: Two years from date of shipment
+
+(1) References: Internal T.R.’s 1430, 2224, 2854. Tests at 23°C unless otherwise noted. Typical values should not be used for specification
+    limits.
+(2) The nominal dielectric constant of an 0.060” thick RO3003 laminate as measured by the IPC-TM-650, 2.5.5.5 will be 3.02, due to the
+    elimination of biasing caused by air gaps in the test fixture. For further information refer to Rogers T.R. 5242.
+
+                           Standard Thickness                                                         Standard Size
+ 0.005” (0.13mm)                                                         RO3003: 25.5”X18”                   RO3010: 25.5”X18”
+                                                                         RO3006: 25.5”X18”
+
+The information in this data sheet is intended to assist you in designing with Rogers’ circuit materials. It is not intended to and does
+not create any warranties express or implied, including any warranty of merchantability or fitness for a particular purpose or that the
+results shown on this data sheet will be achieved by a user for a particular purpose. The user should determine the suitability of Rog-
+ers’ circuit materials for each application.
+
+These commodities, technology and software are exported from the United States in accordance with the Export Administration regulations.
+Diversion contrary to U.S. law prohibited.
+
+The Rogers’ logo, Helping power, protect, connect our world, RO3000, RO3003, RO3006, and R03010 are trademarks of Rogers Corporation
+or one of its subsidiaries. © 2016 Rogers Corporation, Printed in U.S.A., All rights reserved.
+Revised 1258 121216 Publication #92-147
+Advanced Connectivity Solutions                                                                                                       Page 4 of 4
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+

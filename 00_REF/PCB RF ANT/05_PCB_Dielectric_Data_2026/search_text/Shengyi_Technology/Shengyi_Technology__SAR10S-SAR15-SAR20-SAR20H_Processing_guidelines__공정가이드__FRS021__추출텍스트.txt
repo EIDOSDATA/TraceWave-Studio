@@ -1,0 +1,147 @@
+             PROCESSING GUIDELINES
+
+
+         Laminate: SAR10S、SAR15、SAR20、SAR20H
+
+Excellent heat dissipation, High heat resistance Aluminum Material
+
+
+
+
+                               1/3            CN-PG-1809-01- SAR Series-EN
+This product process guideline uses GB-T31988 Standard as a reference, and Shengyi make some changes
+according to the product characteristics of the actual situation as to making it more suitable for the Shengyi
+SAR10S, SAR15, SAR20 and SAR20H product use.
+
+
+
+1. Storage condition
+1.1 Laminate
+
+1.1.1 Storage condition
+
+   Pack with original forms on the platform or on the appropriate frame, avoiding stress, prevent sheet
+
+    deformation caused by inappropriate storage which may impact the subsequent PCB processes.
+
+1.1.2 Storage environment
+
+   Sheets should be stored in ventilated, dry, at room temperature under environment control, avoiding direct
+
+    sunlight, rain and avoid erosion of corrosive gas (stored environment directly affect the quality of material).
+
+   Minimize shifting as to avoid scratching the surface of the product, with a suitable environment and
+
+    condition for storage, the shelf life can be up to one year.
+
+
+
+2、PWB Processing
+2.1 Operation
+
+   Wear clean gloves and carefully operate the laminates. Copper foil collisions, sliding will cause damage
+
+    of the laminates. Bare hands action will cause contamination to copper foil surface. These defects are
+
+    likely to cause adverse effects.
+
+2.2 Usage recommendation
+
+   When selected aluminum laminate for high power LED, the higher the power supply of the module, the
+
+    higher thermal conductivity is required. The higher the thermal conductivity, the better the heat dissipation;
+
+    the thinner the dielectric, the better the heat dissipation and the lower the thermal resistance, but
+
+    withstanding voltage needs to be taken into account.
+
+   Pay attention to any pollution and scratches of aluminum laminate during operation. In the mechanical
+
+    processes of drilling, punching and cutting etc., be sure to avoid break or pollute the dielectric layer.
+
+   Due to the chemical properties of aluminum board, pattern fabrication should be taken appropriate etching
+
+    lines (acid or alkaline) and corresponding protective measures.
+
+   During Hi-pot test, dirt on board surface, hole and aluminum board edge burr, sawtooth-like pattern and
+
+    scratches of dielectric layer will lead to Hi-pot test fire, leakage and breakdown and result in rejection. Pay
+
+    attention to board surface cleaning and edge quality, etc.
+
+   A minimum insulation barrier must be maintained between the edge of the circuit board (or a hole in the
+
+    circuit board) and the nearest conductor. The distance between edge and line is recommended to be at
+
+
+                                                       2/3                     CN-PG-1809-01- SAR Series-EN
+    least 2 mm, and the distance between hole and line is at least 3mm.
+
+   Because most of the structure of aluminum laminate is metal and less internal stress of non-fiber dielectric,
+
+    simple mechanical method can replace the conventional baking with pressure to achieve leveling effect,
+
+    so common metal leveling machine is available. If warpage occurs, mechanical leveling is recommended.
+
+   The relevant cutting tools for aluminum laminate need to be harder, so special drill bit, special milling /
+
+    router bit, special V-CUT blade and special die and so on are needed. At the same time, cutting speed
+
+    should be reduced.
+
+2.3 Drilling and Routing
+
+   1 Panel/Stack
+
+   Low spindle speed, high torsion, low linear speed
+
+   Tool selection: use special cutting tools for aluminum materials, choose single-edge, double-edge cutting
+
+    tools to ensure smooth chip removal, and generally use diameter of about 2.0mm.
+
+   Drilling parameters (for reference): feed speed 10-16mm/s; return speed 150mm/s; spindle speed 50 kpm;
+
+    hit count around 200-500 hits.
+
+   The higher the thermal conductivity, the greater the wear of the material to the drill bit / router. Process
+
+    parameters are adjusted according to different thermal conductivity materials.
+
+2.4 Punching
+
+   Using air gun to remove aluminum chips caused by each punching in order to avoid bad appearance in
+
+    subsequent operation due to residual aluminum chips in the die.
+
+   Due to the deformation of aluminum and the formation of R angle when punching, aluminum surface must
+
+    be worked towards the cutting blade when punching, otherwise it’s easy to cause the peeling off of solder
+
+    mask and dielectric layer and result in poor quality. Recommend to put the aluminum surface faced
+
+    upwards to the cutting blade in case of solder mask or dielectric layer peeling off and edge burrs problem.
+
+   Punching machine: 160-200t high tonnage punching machine with special die is recommended. The
+
+    punching edge length and panel edge margin should be adjusted according to different sizes of die.
+
+   Punching die: tungsten steel and other high hardness steel should be used in the cutting blade and punch
+
+    position, for high proportion of fillers are contained in the thermal dielectric layer.
+
+2.5 Protect film
+
+   PET film: generally colorless or green, not suitable for lead-free HAL process.
+
+   If not peeled off before HAL process, the whole PET film will be cracked and adhered to the back of the
+
+    aluminum board, which is not able to be removed.
+
+
+
+This process guide is for reference only! Should you have any questions, please feel free to contact us.
+
+ShengYi will support you with prompt and effective service.
+
+                                                        3/3                      CN-PG-1809-01- SAR Series-EN
+

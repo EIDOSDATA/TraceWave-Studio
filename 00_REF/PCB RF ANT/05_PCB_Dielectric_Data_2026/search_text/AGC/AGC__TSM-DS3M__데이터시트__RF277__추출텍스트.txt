@@ -1,0 +1,134 @@
+TSM-DS3M
+Dimensionally Stable Low Loss Laminate
+
+ Benefits
+      •    Industry Best Df (Df = 0.0014 @10 GHz)
+      •    High Thermal Conductivity (TC = 0.65 W/m*K)
+      •    Low Z Axis Expansion for Military Applications
+      •    Low (~5%) Fiberglass Content
+      •    Dimensional Stability Rivals Epoxy
+      •    Enables Large Format High Layer Count PWBs
+      •    Builds Complex PWBs in Yield with Consistency and Predictability
+      •    Temperature Stable Dk ± 0.25% (-30 to 120°C)
+      •    Compatible with Resistive Foils
+ Applications
+      •    Microstrip and Stripline Circuitry for Avionics and Aerospace
+           Applications
+      •    Couplers
+      •    Phased Array Antennas
+      •    Radar Manifolds
+      •    mmWave Antenna/Automotive
+      •    Oil Drilling
+      •    Semiconductor/ATE Testing
+TSM-DS3M is a thermally stable, industry leading low loss core (Df = 0.0014 at 10 GHz) that can be manufactured with the
+predictability and consistency of the best fiberglass reinforced epoxies. TSM-DS3M is a ceramic-filled reinforced material with very
+low fiberglass content (~5%) that rivals epoxies in fabricating large format complex multilayers. TSM-DS3M is designed for high
+reliability military applications. TSM-DS3M was developed for high power applications (TC = 0.65 W/M*K) where it is necessary for
+the dielectric material to conduct heat away from other heat sources in a PWB design. TSM-DS3M was also developed to have very
+low coefficients of thermal expansion for demanding thermal cycling. A TSM-DS3M core combined with fastRise™27 prepreg (Df =
+0.0014 at 10 GHz) is an industry leading solution for the lowest possible dielectric losses that can be attained at epoxy-like 420°F
+(215°C) fabrication temperatures. The low insertion losses of TSM-DS3M/fastRise™27 are only rivaled by fusion bonding (PTFE
+laminates melt from 550 to 650°F (288 - 343°C)). Fusion bonding is expensive, it causes excessive material movement and it puts
+stress on plated through holes. For complex multilayers, the price of poor yield drives up the final material cost. fastRise™27 enables
+the sequential lamination of TSM-DS3M at a low 420°F (215°C) with consistency and predictability that reduces cost.
+For microwave applications, the low x, y and z CTE values assure that critical spacings between traces in filters and couplers have
+very low movement with temperature. TSM-DS3M can be used with very low profile copper foils yielding a smooth copper edge
+between coupled lines. Registration over many layers is critical for yield and variations in copper weight and copper etching across a
+panel can cause non-linear movement. Non-linear movement over large panels
+leads to a lack of registration of the drilled hole to the pad and possibly open circuits.TSM-DS3M is compatible with Ticer® and
+OhmegaPly® resistive foils.
+Resistor foil stability is best achieved when laminating at low temperatures using AGCs fastRise™ family of prepregs. TSM-DS3M is
+intended for RF circuitry and requires OEM design validation for digital circuitry. TcK is an abbreviation of Thermal Coefficient of
+dielectric constant. Like many other dielectric test methods, the resulting dielectric values are test method dependent. TcK is no
+exception. Most standard dielectric constant test methods are based on applying pressure with clamping to remove any air gap
+between the dielectric substrates and the pattern cards. If measured with fabricated PCBs, there could be variation in circuitry
+pattern length or width. Many conventional PTFE based materials show a negative TcK. As PTFE expands, its density decreases and
+this helps explain why PTFE generally shows a negative TcK. Another factor is molecular interactions or vibrations that increase with
+temperature resulting in increasing dielectric constant with temperature. This is the case of epoxy based laminates. IPC standard
+methods typically involve clamping of samples with pressure which may prevent natural expansion in the Z axis and may not be
+representative of an industrial or military application. The following graphs show different results according to the particular IPC test
+method. IPC-650 2.5.5.6 is a method using no applied pressure which is a condition more representative of actual use. IPC-650
+2.5.5.5.1 (modified) is measured with applied pressure and the DK is somewhat sensitive to dielectric thickness. IPC-650 2.5.5.5 is
+also measured with applied pressure but is less sensitive to dielectric thickness.
+    TSM-DS3M: DK over Temperature                    TSM-DS3M: DK over Temperature
+
+
+
+
+    IPC-650 2.5.5.6 (without pressure)                IPC-650 2.5.5.5.1 (with pressure)
+
+    TSM-DS3M: DK over Temperature             TSM-DS3/DS3B/DS3M series: DF over Temperature
+
+
+
+
+                                                      The dissipation factor varies from
+      IPC-650 2.5.5.5 (with pressure)             0.0010 - 0.0015 over a typical application
+                                                             temperature range.
+
+Ring Resonator Properties vs. Frequency on   TSM- DS3/DS3B/DS3M series at mmWave (Damaskos)
+       TSM- DS3/DS3B/DS3M series.
+            Properties                     Conditions               Typical Value              Unit                      Test Method
+ Electrical Properties
+ Dielectric Constant                                                 2.94 ± 0.04                          IPC-650 2.5.5.3
+ Dissipation Factor                                                    0.0014                             IPC-650 2.5.5.5.1 (Modified)
+                                                                      2.3 x 106             Mohms*cm      IPC-650 2.5.17.1 Sec. 5.2.1 (ET)
+ Volume Resistivity
+                                                                      2.1 x 107             Mohms*cm      IPC-650 2.5.17.1 Sec. 5.2.1 (HC)
+                                                                      1.1 x 107              Mohms        IPC-650 2.5.17.1 Sec. 5.2.1 (ET)
+ Surface Resistivity
+                                                                      1.8 x 108              Mohms        IPC-650 2.5.17.1 Sec. 5.2.1 (HC)
+ Thermal Properties
+                                         2% Weight Loss                 526                     °C
+ Td                                                                                                       IPC-650 2.4.24.6 (TGA)
+                                         5% Weight Loss                 551                     °C
+ Thermal Conductivity                        Unclad                     0.65                  W/M*K       ASTM F 433/ASTM 1530-06
+                                               X                         10
+ CTE (RT to 125°C)                             Y                         16                   ppm/°C      IPC-650 2.4.41/TMA
+                                               Z                         23
+ Mechanical Properties
+ Density                                 Specific Gravity             2.11                    g/cm3       ASTM D 792
+                                               MD                 81 (11,811)               N/mm2 (psi)   ASTM D 790/ IPC-650 2.4.4
+ Flexural Strength
+                                                CD                 51 (7,512)               N/mm2 (psi)   ASTM D 3039/IPC-650 2.4.19
+                                               MD                  48 (7,030)               N/mm2 (psi)
+ Tensile Strength                                                                                         ASTM D 3039/IPC-650 2.4.19
+                                                CD                 26 (3,830)               N/mm2 (psi)
+                                               MD                      1.6                      %
+ Elongation at Break                                                                                      ASTM D 3039/IPC-650 2.4.19
+                                                CD                     1.5                      %
+                                               MD               6,708 (973,000)             N/mm2 (psi)
+ Young’s Modulus                                                                                          ASTM D 3039/IPC-650 2.4.19
+                                                CD              6,784 (984,000)             N/mm2 (psi)
+                                               MD                     0.24
+ Poisson’s Ratio                                                                                          ASTM D 3039/IPC-650 2.4.19
+                                                CD                    0.20
+ Chemical / Physical Properties
+ Dielectric Breakdown                                                   47.5                  kV          IPC-650 2.5.6 (ASTM D 149)
+ Dielectric Strength                                                21,575 (548)         V/mm (V/mil)     ASTM D 149 (Through Plane)
+ Arc Resistance                                                         226                Seconds        IPC-650 2.5.1
+ Moisture Absorption                                                    0.07                  %           IPC-650 2.6.2.1
+* ET - Elevated Temperature                    * HC - Humidity Conditioning
+
+                                                                      Typical Thicknesses
+                                      Inches                                                                    mm
+                              0.0050, 0.0100, 0.0200                                                      0.13, 0.25, 0.51
+                              0.0300, 0.0600, 0.0900                                                      0.76, 1.52, 2.29
+                                                                     Available Sheet Sizes
+                Inches                                    mm                                    Inches                            mm
+                12 x 18                                 305 x 457                               16 x 36                         406 x 914
+                16 x 18                                 406 x 457                               24 x 36                         610 x 914
+                18 x 24                                 457 x 610                               18 x 48                        457 x 1,220
+
+⚫     All test data provided are typical values and not intended to be specification values. For review of critical specification
+      tolerances, please contact a company representative directly.
+⚫     TSM-DS3M can be manufactured in increments of 0.005” (0.125mm).
+⚫     Standard panel size is 18” x 24” (457 mm x 610 mm).
+⚫     Please contact AGC for availability of additional thicknesses, other sizes & any other type of cladding.
+⚫     The resistor foil manufacturer covers the warranty for the copper foil that includes the resistor layer, as well
+      as the performance and workability related to the copper foil. Our company does not take responsibility for
+      the processing of resistor layers and the performance or workability of the final products.
+
+ AGC Inc. 2026-07
+ agc-ml.multimaterial@agc.com
+

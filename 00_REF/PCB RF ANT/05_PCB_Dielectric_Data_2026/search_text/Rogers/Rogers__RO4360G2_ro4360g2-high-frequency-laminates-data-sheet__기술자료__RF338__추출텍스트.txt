@@ -1,0 +1,127 @@
+                                                                                         Data Sheet
+
+
+    RO4360G2™
+    High Frequency Laminates
+                                                                               Features and benefits:
+
+                                                                               RO4000® thermoset resin system specially
+                                                                               formulated to meet 6.15 Dk
+                                                                                 • Ease of fabrication / processes similar
+                                                                                   to FR-4
+                                                                                 • RO4000 material repeatability
+                                                                                 • Low loss
+     RO4360G2™ laminates are 6.15 Dk, low loss, glass-reinforced,                • High thermal conductivity
+                                                                                 • Lower total PCB cost solution than
+     hydrocarbon ceramic-filled thermoset materials that provide the ideal         competing PTFE products
+     balance of performance and processing ease. RO4360G2 laminates            Low Z-axis CTE / High Tg
+     extend Rogers’ portfolio of high performance materials by providing         • Design flexibility
+     customers with a product that is lead-free process capable and              • Plated through-hole reliability
+     offers better rigidity for improved processability in multi-layer board     • Automated assembly compatible
+
+     constructions, while reducing material and fabrication costs.             Environmentally friendly
+                                                                                 • Lead free process compatible
+     RO4360G2 laminates process similar to FR-4 and are automated              Regional finished goods inventory
+
+     assembly compatible. They have a low                                        • Short lead times / quick inventory
+                                                                                   turns
+     Z-axis CTE for design flexibility and have the same high Tg as all of       • Efficient supply chain
+     the RO4000 product line. RO4360G2 laminates can be paired with            CAF resistant
+     RO4400™ prepreg and lower-Dk RO4000 laminate in multi-layer
+     designs.
+                                                                               Some Typical Applications:
+                                                                                 • Base Station Power Amplifiers
+     RO4360G2 laminates, with a Dk of 6.15 (Design Dk 6.4), allow designers
+                                                                                 • Small Cell Transceivers
+     to reduce circuit dimensions in applications where size and cost are
+     critical. They are the best value choice for engineers working on
+     designs including power amplifiers, patch antennas, ground-based
+     radar, and other general RF applications.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+                                                            Page 1 of 2
+                Property                            Typical Value                Direction                     Units                       Condition                                 Test Method
+                                                     RO4360G2
+                                                         [1]
+                                                                                                                                           10 GHz/23°C                                  IPC-TM-650
+  Dielectric Constant, er                              6.15 ± 0.15                      Z                                                                                                 2.5.5.5
+  (Process Specification)                                                                                                                  2.5 GHz/23°C                              (2) Clamped Stripline
+
+
+  Dissipation Factor                                      0.0038                        Z                                                  10 GHz/23°C                             IPC-TM-650, 2.5.5.5
+  Thermal Conductivity                                     0.75                                               W/m/K                             50°C                                  ASTM D-5470
+  Volume Resistivity                                    4.0 x 10  13
+                                                                                                               Ω•cm                          Elevated T                           IPC-TM-650, 2.5.17.1
+
+  Surface Resistivity                                   9.0 x 1012                                                Ω                          Elevated T                           IPC-TM-650, 2.5.17.1
+
+  Electrical Strength                                       784                         Z                      V/mil                                                               IPC-TM-650, 2.5.6.2
+
+                                                         131 (19)                       X
+  Tensile Strength                                                                                          MPa (kpsi)                40 hrs 50%RH/23°C                                ASTM D638
+                                                         97 (14)                        Y
+                                                         213 (31)                       X                   MPa (kpsi)
+  Flexural Strength                                                                                                                   40 hrs 50%RH/23°C                             IPC-TM-650, 2.4.4
+                                                         145 (21)                       Y
+                                                             13                         X
+                                                                                                                                        -50°C to 288°C
+  Coefficient of Thermal                                                                                                                                                           IPC-TM-650, 2.1.41
+                                                             14                         Y                     ppm/°C                 After Replicated Heat
+  Expansion
+                                                                                                                                             Cycle
+                                                             28                         Z
+  Tg                                                       >280                                               °C TMA                             N/A                              IPC-TM-650 2.4.24.3
+  Td                                                      407°C                                                   °C                             N/A                            ASTM D3850 using TGA
+                                                                                                                                          30 min / 125°C                                IPC-TM-650
+  T288                                                      >30                         Z                       min
+                                                                                                                                             Prebake                                      2.4.24.1
+
+  Moisture Absorption                                      0.08                                                   %                          50°C/48hr                     IPC-TM-650 2.6.2.1 ASTM D570
+
+  Thermal Coefficient of er                          -131 @ 10 GHz                      Z                     ppm/°C                      -50°C to 150°C                           IPC-TM-650, 2.5.5.5
+  Density                                                  2.16                                              gm/cm3                               RT                                   ASTM D792
+  [4] Copper Peel Strength                              5.2 (0.91)                                          pli (N/mm)                     Condition B                              IPC-TM-650 2.4.8
+                                                                                                                                                                                      UL94 File
+  Flammability                                              V-0
+                                                                                                                                                                                    QMTS2.E102763
+(1) Typical values are a representation of an average value for the population of the property. For specification values contact Rogers Corporation.
+(2) Clamped stripline method can potentially lower the actual dielectric constant due to presence of airgap. Dielectric constant in practice may be higher than the value listed.
+(3) Design DK is an average number from several different tested lots of material and on the most common thickness/s. If more detailed information is required please contact Rogers Corporation. Refer to Rogers
+     technical article “The Influence of Test Method, Conductor Profile, and Substrate Anisotropy on the Permittivity Values Required for Accurate Modeling of High Frequency Planar Circuits” available on our website at
+     www.rogerscorp.com.
+(4) Results based on 1oz data
+
+Prolonged exposure in an oxidative environment may cause changes to the dielectric properties of hydrocarbon based materials. The rate of change increases at higher temperatures
+and is highly dependent on the circuit design. Although Rogers’ high frequency materials have been used successfully in innumerable applications and reports of oxidation resulting in
+performance problems are extremely rare, Rogers recommends that the customer evaluate each material and design combination to determine fitness for use over the entire life of the
+end product.
+ Standard Thicknesses                                                       Standard Panel Sizes                                                 Standard Claddings
+ 0.008” (0.203mm) +/- 0.0007”                                               24” X 18” (610 X 457mm)                                              Electrodeposited Copper Foil
+ 0.016” (0.406mm) +/- 0.0015”                                               24” X 21” (610 X 533mm)                                              ½ oz. (18µm) HH/HH
+ 0.020” (0.508mm) +/- 0.0015”                                               24” X 36” (610 X 915 mm)                                             1 oz. (35µm) H1/H1
+ 0.024” (0.610mm) +/- 0.0015”                                               48” X 36” (1219 X 915 mm)
+ 0.032” (0.813mm) +/- 0.0020”
+ 0.060” (1.524mm) +/- 0.0040”                                               *Additional panel size available                                     *Additional claddings, such as heavy metal, resistive
+                                                                                                                                                 foil and unclad are available
+ *Additional non-standard thicknesses available from
+ 0.008” - 0.060” in increments of 0.004”
+*Contact Customer Service or Sales Engineering to inquire about additional available product configurations
+The information in this data sheet is intended to assist you in designing with Rogers’ circuit materials. It is not intended to and does not create any warranties express or implied, including any warranty
+of merchantability or fitness for a particular purpose or that the results shown on this data sheet will be achieved by a user for a particular purpose. The user should determine the suitability of Rogers’
+circuit materials for each application.
+
+These commodities, technology and software are exported from the United States in accordance with the Export Administration regulations. Diversion contrary to U.S. law prohibited.
+The Rogers’ logo, RO4400, RO4000 and RO4360G2 are licensed trademarks of Rogers Corporation or one of its subsidiaries.
+© 2022 Rogers Corporation, Printed in U.S.A. All rights reserved. Revised 1594 080322 Publication #92-143
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+                                                                                                    Page 2 of 2
+

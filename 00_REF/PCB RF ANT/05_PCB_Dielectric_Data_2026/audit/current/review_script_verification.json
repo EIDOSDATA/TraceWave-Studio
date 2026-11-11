@@ -1,0 +1,49 @@
+{
+  "status": "passed",
+  "full_prior_audit_review_json_identical": true,
+  "prior_summary_counts_identical": true,
+  "publisher_and_stackup_csv_every_flag_count_matches_json": true,
+  "two_generation_output_bytes_identical": true,
+  "input_jsonl_hashes_unchanged": true,
+  "flags_do_not_mutate_input": true,
+  "rejected_fixture_conditions": [
+    "partition_sha256_mismatch",
+    "partition_count_mismatch",
+    "publisher_mismatch",
+    "path_escape",
+    "duplicate_record_id"
+  ],
+  "scope": "Reference dataset utility validation only; no production GUI, CAD or solver feature implemented.",
+  "files": [
+    {
+      "path": "scripts/review_rules.py",
+      "bytes": 4959,
+      "sha256": "71a7bc5883805428f01798bcb734055cec7da6e9e6bd29ff775c8007d176b1ff"
+    },
+    {
+      "path": "scripts/build_review_index.py",
+      "bytes": 9852,
+      "sha256": "17a091659692b2c080532bf5db7bafd7d45ef961ea3db7b0429e72e52de6617f"
+    },
+    {
+      "path": "catalog/selection_review.json",
+      "bytes": 1370528,
+      "sha256": "90dbe479a41b01a18d6e45c54342f869480327403b7f996c070472c946a5c9c1"
+    },
+    {
+      "path": "catalog/selection_review_summary.json",
+      "bytes": 3469,
+      "sha256": "3112d290fa048a30efc3b51603188427d8a8d15fb5a6b08a212202168d0f72a0"
+    },
+    {
+      "path": "catalog/review_publishers.csv",
+      "bytes": 9953,
+      "sha256": "6c7458b3a44682971588f9b2fc347ce23e04837aa3a2e070cefa78ef82e8ea10"
+    },
+    {
+      "path": "catalog/review_stackups.csv",
+      "bytes": 254199,
+      "sha256": "595fcc701842db5b6320e7c440106e751f3877a775971c086277e8630c85425e"
+    }
+  ]
+}

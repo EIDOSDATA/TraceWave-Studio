@@ -1,0 +1,645 @@
+   Dr. Vipul Shah, Ph.D.
+             &
+      Mr. Vince Weis
+          Presents
+
+         Rheology
+“The Science of Deformation
+         and Flow”
+                           1
+                                         Speaker Bio
+
+Dr. Vipul Shah
+
+    •    Dr. Shah received his Ph.D. degree in polymer chemistry and has over 15 years of experience in developing
+         polymers for various applications. Dr. Shah began work in Arlon in 2013 and currently holds a position of
+         Product Development and Assurance Manager with Arlon EMD.
+
+
+
+Mr. Vince Weis
+
+    •    Mr. Weis began his career in 1972 in the copper clad industry, holding various positions both inside and outside
+         the manufacturing center. Mr. Weis joined Arlon EMD in 1975 and held many roles during his manufacturing
+         career such as Quality Manager, Research and Development Manager, Technical Service Manager and his
+         current position as Senior Field Applications Engineer.
+
+
+                                                                                                                     2
+                                       Presentation Overview
+
+•   Rheology – Dr. Vipul Shah
+    •   Definition
+    •   The Science of Rheology
+    •   Application of Rheology in PWB’s
+    •   Chemical Structure Evolution
+    •   Rheometer
+    •   Minimum Melt Viscosity and Gel Point
+    •   Viscosity profile at various heat-up rate
+    •   Viscosity profile at isothermal temperature
+    •   Developing Potential Press Cycles using data from Rheology
+
+•   Using Rheology in Measurement of Flow – Vince Weis
+    •   Integrated Flow
+    •   Pressure
+    •   Area
+
+
+
+
+                                                                     3
+                           Rheology Defined
+
+
+
+
+• Rheology is the science of flow and deformation of materials.
+
+• Deformation and flow are referred to as strain and strain rate and
+  indicate the time-dependent behavior of materials under the
+  influence of an external force. For this reason, rheology is also
+  considered to be the study of stress-strain relationships in materials.
+
+
+
+
+                                                                            4
+                             The Science of Rheology
+
+
+Rheology is the science of Deformation and Flow.
+
+• Measure fluid properties
+
+• Understand structure-flow property relationships
+
+• Modeling flow behavior
+
+• Melts under processing conditions
+
+• Understanding rheology on a practical and theoretical basis replaces some of the
+  “magic” in the lamination process with science. Applying this science to the multilayer
+  lamination process can mean the difference between a robust process in the middle of a
+  process window and one that can occasionally drift out of control
+
+                                                                                            5
+                          Application of Rheology in PWB’s
+
+
+The oscillating disk parallel plate rheometer (ODR) permits to characterize the melt
+viscosity of various resin systems dynamically.
+
+• Rheology provides flow characteristics of the resin system
+
+• Rheology provides effect of rate of rise of temperature on viscosity of the resin
+
+• Rheology provides processing window available to you in your standard press cycle
+
+• Mathematical models can be developed using data from the rheometer to develop
+  potential press cycle
+
+
+
+                                                                                       6
+                                                   Thermoset Resin: Chemical Structure Evolution *
+
+                        Chemical structure evolution during thermoset processing (curing) of a reactive system
+
+
+
+                                                          Heat                                                       Heat
+                                                                                                                   Pressure
+
+
+
+
+Unreacted monomers                                                             B-Stage                                                              C-Stage
+  Resin monomers                                                 Partially cured polymer (Prepreg)                                          Cured polymer (Laminate)
+    Curing agent                                                           Partially soluble
+      Solvent                                                                Able to melt
+                                                                          Dr. Shah:
+                                                                          The above pictures are a representation of the chemical structure evolution during thermoset processing. The
+                                                                          left picture represents resin monomers with curing agents and solvents. When this resin mixture is applied to
+                                                                          glass fiber or non-woven aramid paper and heated, the monomer starts to react with each other to form a
+                                                                          linear polymer chain in the B-staging process. A partially cured polymer on reinforcement is called prepreg.
+                                                                          During the B-stage process the polymer is still reactive, it is partially soluble and can be melted when the heat
+                                                                          is applied. When B-staged prepreg is laminated using heat and pressure, the polymer reacts further and
+                                                                          creates a 3-dimensional network called C-stage. At this point, the polymer is completely cured in the form of a
+                                                                          laminate. It is not soluble and it cannot be re-melted in this form.
+                                                                                                                                                                                  7
+*Understanding Rheology of Thermosets - TA Instruments.
+Rheometer ARES Equipment
+        A rheometer is a precision instrument that contains the
+        material of interest in a geometric configuration, controls
+        the environment around it, and applies and measures wide
+        ranges of stress, strain, and strain rate.
+
+        •   Sinusoidal stress applied, strain measured and split into
+            storage (G’) and loss (G”) modulus read-outs.
+        •   Operating limits:
+             Temperature up to 500°C.
+             Frequency up to 80Hz.
+        •   Highly customizable test conditions
+        •   Simulation of press temperature cycle
+        •   Key information can be obtained
+             • Initial viscosity
+             • Minimum Melt Viscosity
+             • Gel Point
+             • Optimum Heating Rate
+             Dr. Shah:
+             The storage modulus (G prime) is a measure of the elastic response of fluid material and
+             measures the stored energy where the loss modulus (G double prime) is the measure of viscous
+             response of thermoset resins and measures the loss energy of the resin as heat. The
+             instrument can operate up to 500°C and the plates can oscillate at frequency up to 80 Hz.
+                                                                                                       8
+                                                   Thermoset Resin: Minimum Melt Viscosity and Gel Point*
+                                                                                                             Minimum Melt Viscosity (MMV)
+                                                                                                             • Lowest resistance to flow
+                                                                                                             • Helps to determine the time/temp at which
+                                                                                                               pressure should be applied during lamination
+                                                                                                             • Helps to wet the embedded fibers uniformly
+
+                                                                                                             Gel Point
+                                                                                                             • Time/temp at which a polymer undergoes
+                                                                                                                gelation, leading to a gel formation
+                                                                                                             • Curing process increases rapidly
+                                                                                                             • Helps to determine the time/temp at which
+                                                                                                               (before gel point) pressure should be applied
+                                                                                                               during lamination
+
+
+                                                          Dr. Shah:
+                                                          The above is a graph from a Rheometer of a typical thermoset resin. Temperature is recorded on the x-axis in Celsius, the Y-axis on the left is
+                                                          listing G prime and G double prime which is the storage modulus and loss modulus in Pascal respectively, and complex viscosity on the y-axis on
+                                                          the right. The graph shows 3 curves; the blue curve represents viscosity, the black curve is G Prime and red is G double prime. Starting with the
+                                                          viscosity curve, as temperature increases viscosity decreases, it reaches to the level where you see the value of viscosity is minimum or what is
+                                                          called minimum melt viscosity, also defined as the point during the lamination cycle of maximum fluidity, where any increase or decrease in
+                                                          pressure will result in the most change in movement (flow) of the resin. The black curve and red curve where it intersects is called the gel point
+                                                          which defines time and temperature at which the polymer undergoes gelation and leading to a gel formation, beyond this point, the curing
+                                                          process increases rapidly. Knowing the gel point of a resin helps determine at what time and temperature at which pressure should be applied
+                                                          during lamination cycle as the resin will stop flowing after the gel point.
+                                                                                                                                                                                                  9
+*Understanding Rheology of Thermosets - TA Instruments.
+                                              Thermoset Resin: Viscosity profile as a function of heat-up rate*
+
+                                                                                                  The heat-up rate has a great influence on the viscosity
+                                                                                                  profile of a thermoset resin i.e. faster the heating rate,
+                                                                                                  sooner resin reaches to MMV and the smaller it’s MMV
+                                                                                                  window
+
+                                                                                                  Optimum Heat-up Rate
+                                                                                                  • Helps determine the time needed to reach the
+                                                                                                    minimum viscosity
+                                                                                                  • Helps to determine the time/temp at which
+                                                                                                    pressure may be applied during lamination
+
+
+                                                          Dr. Shah:
+                                                          This graph represents the effect of viscosity of a thermoset resin at various heat-up rates. The heat-up rate has a great influence on
+                                                          the viscosity profile of thermoset resin, meaning, the faster the heating rate the sooner the resin reaches to its minimum melt
+                                                          viscosity and the smaller its minimum melt viscosity window. Having the optimum heat-up rate helps us determine the time needed
+                                                          for the resin to reach its minimum melt viscosity, it also helps to determine the time and temperature that pressure can be applied
+                                                          during lamination process.
+                                                          On this graph we have three different heat-up rates, 1°C, 2°C and 3°C. The x-axis is time and y-axis is viscosity.
+                                                          In a 3°C heating rate, which is a faster heating rate, the resin reaches to its minimum melt viscosity much sooner compared to
+                                                          lower heating rate at 1°C. Notice the resin stays at minimum melt viscosity for a much shorter time for high heating rates versus a
+                                                          wider time for a lower heating rate. The high heating rate has a lower viscosity value compared to lower heating rate.
+                                                                                                                                                                                      10
+*Understanding Rheology of Thermosets - TA Instruments.
+                                                          Thermoset Resin: Isothermal Scans*
+
+                                                                            The rheometer can run in isothermal mode. The isothermal
+                                                                            holds has a high influence on processing window
+                                                                            i.e. at higher temperature, the MMV window is shorter
+                                                                            compared to the lower temperature
+
+                                                                            Optimum Isothermal Scan
+                                                                            • Helps deciding the time and temperature at which
+                                                                              to impose isothermal holds during lamination
+                                                                            • Isothermal holds near or at minimum viscosity extends
+                                                                              the processing window
+
+                                                                      Dr. Shah:
+                                                                      The Rheometer has a capability to run in isothermal mode. The isothermal mode is a constant
+                                                                      temperature hold, this graph demonstrates at high temperature, the minimum melt viscosity
+                                                                      window is shorter compared to lower temperature, having the optimum isothermal information
+                                                                      helps decide the time and temperature at which to impose isothermal hold during lamination. On
+                                                                      this graph there are five different curves representing five different temperatures. The x-axis is
+                                                                      time and y-axis is viscosity.
+                                                                      At high temperature, which is 173°C represented by the black curve and the lowest temperature
+                                                                      which is 129°C represented by the light blue color curve, the blue curve stays much longer at its
+                                                                      minimum melt viscosity stage when run at a lower temperature compared to high temperature
+                                                                      curve. There is a wider processing window in the blue curve where you can apply pressure in
+                                                                      order to observe maximum flow.
+                                                                                                                                                              11
+*Understanding Rheology of Thermosets - TA Instruments.
+                                                          Thermoset Resin: Potential Press (Cure) Cycle*
+                                                                                       Potential Press (Cure) Cycle
+
+                                                                                       • Pressure: Applying pressure at a critical time during
+                                                                                         lamination helps:
+                                                                                           • Wet the embedded fibers uniformly
+                                                                                           • Reduce dryness
+                                                                                           • Reduce excessive flow
+                                                                                           • Achieve dimensional uniformity
+                                                                                           • Achieve target thickness
+                                                                                           • Control outgassing of volatiles
+                                                                                       • Heat-up Rate
+                                                                                       • Isothermal Hold
+                                                                                       • Cure time and temperature
+                                                                                       • Cool down under pressure
+                                                                            Dr. Shah:
+                                                                            The graph above represents an example of a lamination press cycle with a viscosity curve
+                                                                            superimposed by the temperature and pressure profile. The blue dotted line is a viscosity curve,
+                                                                            the black line is the temperature profile, and the red line is your pressure profile. As temperature
+                                                                            increases the resin viscosity decreases, in this example, there is an isothermal hold (at 120C), this
+                                                                            is where resin reaches to its minimum melt viscosity (maximum fluidity), in which pressure is
+                                                                            applied and is held for a predetermined amount of time. The first Isotherm hold is held for about
+                                                                            30 minutes and increased for the second isotherm hold (cure temperature) throughout the
+                                                                            duration of the cure cycle. The viscosity starts to climb as heat and pressure increase and resin
+                                                                            gets fully cured before the second isotherm hold time has concluded (178C). After the competition
+                                                                            of the cure cycle the press is cooled down under pressure.                                 12
+*Understanding Rheology of Thermosets - TA Instruments.
+                    Discussion on Thermoset Resin Flow
+
+
+    Total Resin Flow
+
+    P   1
+F =C ∫       dt
+    A η (t )
+Where F = Resin Flow Parameter                  Mr. Weis:
+                                                Utilizing a Rheometer, unique problems on very unusual and
+C = Constant (dependant on geometric shape)     difficult designs can be studied and analyzed to determine the
+                                                effects of various heat-up rate and pressure profiles.
+P/A = Pressure to Area ratio                    The laminator can use this information and consider how it actually
+                                                affects total resin flow in their process.
+Integral over time of the reciprocal of resin   Total resin flow is defined by this equation and was developed by
+                                                AT&T Bell Labs back in the late 1970’s.
+viscosity                                       F is a flow parameter and defines a relative total flow of the resin.
+                                                The equation is solved by defining C equal to a constant which is
+  (η = viscosity)                               primarily dependent on geometric shape.
+                                                P / A is a ratio of pressure to the area of the part.
+                                                The third factor is the integral overtime of the reciprocal of the
+                                                viscosity.
+                                                Each of these factors that affect total flow will be looked at in the
+                                                following slides and how they're part of a total resin flow.
+                                                                                                           13
+                                                        Thermoset Resin Flow
+                                                            33NViscosity
+                                                  Polyimide Melt Melt Viscosity
+                                                                         Vs Heat-up Rate
+     P 1
+F = C ∫ dt                              1.0E+08
+
+
+
+     A η (t )                           1.0E+07
+
+
+
+
+    1           Melt Viscosity, Poise
+                                        1.0E+06
+                                                                                                                     3 C/min
+
+
+
+
+∫ η (t ) dt
+                                                                                                                     5 C/min
+                                        1.0E+05
+                                                                                                                     7 C/min
+                                                                                                                     9 C/min
+                                        1.0E+04
+
+
+
+                                        1.0E+03
+
+
+
+                                        1.0E+02
+                                                  0    10       20         30         40         50         60
+                                                                      Time, Minutes
+
+
+                                                            Mr. Weis:
+                                                            The first portion of the equation that's discussed here is the integral part of the equation that relates back to the
+                                                            studies that Dr. Shah discussed using Rheometry as a method to study the behavior of our resin systems in a process.
+                                                            In this particular chart, our polyimide resident system was studied. A steady rate of heat up was used until the
+                                                            product is past the point of gel. The yellow curve has a relatively fast heat up rate of 9°C per minute.
+                                                            The red curve at 9°C per minute is a very fast heat up rate of 3°C per minute. This generally brackets the range that
+                                                            we recommend for use of our product where we were normally recommending around 5°C or 6°C per minute as a
+                                                            midpoint. So here we're looking at extremes of what we normally recommend in a process. The rates will have a
+                                                            direct influence on the total flow that will occur during lamination. Lower viscosity will cause the material to flow
+                                                            more, as we'll see in the next slides.
+                                                                                                                                                                          14
+                                                        Thermoset Resin Flow
+
+                                                                                                     Mr. Weis:
+                                              Integrated
+                                                      33NFlow Under
+                                                           Melt     Pressure
+                                                                Viscosity                            Determining which portion of this curve is important as it
+                                                                                                     pertains to total flow is dependent on the pressure that
+                                1.0E+08                                                              will be applied during lamination. Everything will flow
+                                                                                                     given enough pressure applied. For example, a cold rolled
+                                                                                                     steel flows into a new shape at very high pressures, cookie
+                                1.0E+07                                                              dough doesn't require the same amount of pressure to
+                                                                                                     change its shape. The resin will only flow after it reaches a
+                                                                                                     certain yield point. The resin is fairly solid up to a certain
+        Melt Viscosity, Poise
+
+
+
+
+                                1.0E+06                                                              temperature. At a particular viscosity, there will be a
+                                                                                           3 C/min
+                                                                                                     certain minimum pressure that needs to be applied to
+                                                                                           5 C/min   force the resin past the yield point and for flow to start.
+                                1.0E+05
+                                                                                           7 C/min   You can think of it as similar to a stick of chewing gum, it
+                                                                                                     can still feel pretty stiff until enough pressure is applied
+                                                                                           9 C/min   and will suddenly start to move. Pressure lines on this
+                                1.0E+04
+                                                                                                     chart are for discussion purposes, mainly, and not
+                                                                                                     necessarily known yield points.
+                                1.0E+03                                                              If we apply very high pressure such as 300 PSI, the yield
+                                                                                                     point will be much higher and the resin will start to flow
+                                                                                                     even at higher viscosities. If low pressure is used such as
+                                1.0E+02                                                              100 PSI the yield point will not be exceeded until a much
+                                          0     10     20        30         40   50   60             lower viscosity is reached. At low pressures, it shows that
+                                                            Time, Minutes                            there will still be resin flow with high heat up rates.
+                                                                                                     There's a portion of the viscosity curve that's below that
+                                                                                                     yield point at very slow heat up rates like the red curve
+The integral is dependent on pressure.                                                               flow will not occur because the yield point is not been
+                                                                                                     reached. Knowing the pressures that we're going to use in
+Flow only occurs after a certain yield point has been                                                manufacturing can be important in determining the part of
+                                                                                                     the curve we're going to utilize in measuring the potential
+exceeded                                                                                             for resin flow and to solve the integral.
+                                                                                                                                                        15
+                                                                 Thermoset Resin Flow
+
+                                          Polyimide Resin
+                                                      33N Fluidity Vs Heat-up Rate
+                                                             Fluidity
+                            4.0E+00
+
+
+
+
+                            3.0E+00
+
+
+                                                                                          3 C/min
+              Thousandths
+1/Viscosity
+
+
+
+
+                                                                                          5 C/min
+                            2.0E+00
+                                                                                          7 C/min
+                                                                                          9 C/min
+
+                            1.0E+00
+
+
+
+
+                            0.0E+00
+                                                                                                    Mr. Weis:
+                                      0       10      20        30         40   50   60             The inverse part of the curve can be represented as
+                                                           Time, Minutes                            Fluidity, this visually is an easier way to look at the
+                                                                                                    information.
+                                                                                                    It provides a much clearer view of the effects of the resin
+
+Melt viscosity can also be represented as fluidity                                                  changes overtime at the different heat up rates.
+                                                                                                    The heat up rate yellow shows that the resin becomes
+                                                                                                    much more fluid than it does that slower heat up rates.
+                                                                                                    This factor can be important to the ability to wet and bond
+                                                                                                    to adjacent surfaces in multi-layer processes.
+                                                                                                    We can take this curve and integrate or calculate the area
+                                                                                                    under that curve and look at what the total flow will be
+                                                                                                    under certain pressure and certain heat up rate conditions.
+
+                                                                                                                                                 16
+                                                              Thermoset Resin Flow
+
+                                               Polyimide Resin Integrated
+                                                33N Integrated    Flow Flow
+                               1000
+
+
+
+                                800
+
+
+
+    1
+∫ η (t )dt
+                                                                                       3 C/min
+             Integrated Flow
+
+
+
+
+                                600
+                                                                                       5 C/min
+                                                                                       7 C/min
+                                400
+                                                                                       9 C/min
+
+
+                                200
+
+
+
+                                  0
+                                      0   10       20        30         40   50   60             Mr. Weis:
+                                                        Time, Minutes                            It is the inverse of viscosity that is used to solve the
+                                                                                                 equation for the flow parameter.
+
+                Integrating the curve will yield a flow value.                                   When we integrate this data, calculating the area under
+                                                                                                 the curve, we come up with an integrated flow value.
+                                                                                                 The relative flow is depicted on the y-axis.
+                                                                                                 The high heat-up rates result in a higher integrated flow,
+                                                                                                 whereas the low heat-up rates have a lower flow value.
+                                                                                                 This gives us a solution to this part of the equation and
+                                                                                                 how the viscosity under certain pressure contributes to
+                                                                                                 total flow of the material.
+                                                                                                                                                   17
+                                                                    Pressure to Area Ratio
+
+                •The pressure to area ratio is often ignored or mis-understood
+    P   1
+F =C ∫       dt • P in this equation is pressure per unit area (psi or other units)
+    A η (t )    • As pressure increases, flow will increase
+
+  P
+                • As area increases, flow will decrease
+                • To maintain uniform flow on different panel sizes, pressure (psi) must
+                change to keep the ratio to an equal value, or it will change the total flow.
+                •Some have commented that since psi is a pressure of an area unit, that it
+  A             should be kept constant. This does not hold true.
+                • There is resistance to flow on larger sizes
+                •We cannot use the same pressure (psi) on a 4x4 as we do on a 24x24.
+    Mr. Weis:
+    The next portion of the calculation for discussion is the pressure over area ratio. The pressure to area ratio is often ignored or misunderstood.
+    The P variable in this equation is in units of PSI or the pressure that will be used in lamination. The A variable is the total area of the product under pressure.
+    If pressure increases, the value of the ratio increases and will result in a higher flow. If the area increases the ratio will decrease, resulting in a lower total flow. To maintain the
+    same flow on panels with different total areas this ratio should remain constant. In other words, different size panels will require different pressures; larger panel sizes require
+    higher pressures and smaller panels require lower pressures. Some have thought that since PSI, as the unit area value, it should be held constant over different panel sizes, but
+    this does not hold true.
+    For example, a common 18 x 24 in. panel might use between 300 to 400 PSI. If a 4 x 4 in. piece were laminated with this pressure, it would squeeze all the resin out of it. You
+    cannot use the same PSI on a small sample and expect the same flow results.
+    Keep in mind that we are not dealing with a pure molten resin, we're dealing with a product that contains a non melting reinforcement that's inside of the product. This
+    reinforcement causes a restriction to resin movement and flow. On a large panel, the restrictions add up significantly, causing a reduction in flow unless compensated for by an
+    increase in pressure. There is also friction defects from layers on either side of the resin that is trying to melt and flow. There are layers that aren't perfectly smooth and have
+    circuit traces that act as dams that restrict the flows as well.                                                                                                               18
+                                            Shapes makes a difference
+
+                                                                               Mr. Weis:
+                   •The other often ignored and undefined parameter for flow   The other part of the equation is the C or the constant. The
+     P     1
+                    is the geometry of the product.                            constant is primarily dominated by sample shape. An ideal
+     A ∫ η (t )
+F =C            dt
+                                                                               sample with a parallel plate such as the rheometer would
+                   •An ideal sample in a parallel plate would be a circle.     be a circle where there is a uniform distance from a center
+                   • In our case, a square would be the basic unit.            to any edge of the sample. In the process of making circuit
+                                                                               boards, we don't deal with making circles. We deal with
+                   • As the shape changes, flow will change.                   making square or rectangular panels.
+                   • One estimate is that the shape factor is approximately    The shape of that rectangular panel can affect total flow.
+                                                                               One estimate of the shape factor is approximately equal to
+                     equal to Perimeter                                        the perimeter divided by four times the square root of the
+
+
+
+
+C
+                                   4 A                                         area. This is not a scientifically derived equation, but it
+                                                                               does result in a close approximation to the affective shape.
+                                                                               As the shape changes, the flow will change.
+                                                                               Looking at the figures, an idealized shape in our processes
+                                                                               would be a square. Since we usually make rectangles or
+                                                                               squares, the square shape will be our idealized unit with a
+          Imagine 3 different panel sizes, all the same area:                  value of 1. If we look at another extreme shape, let's
+                                                                               consider a rectangle that is 3 in by 48 in long, it has exactly
+                                                                               the same area as the 12 in by 12 in square, but it's going to
+                                                                               behave very differently. Concerning resin flow, any point on
+                       6          C= 1.25                                      the panel of this irregular shape is now very close to an
+                                                                               edge of the panel. The resin now has a shorter path for
+  1       C=                         24                                        movement with less resistance, less friction, so it is going to
+  2       1
+                                                                               flow more.
+                                                                               In this case, it would calculate that the value for C is going
+                       3                      C= 2.16                          to be more than two times as much as the value for the
+                                                                               square shape. This part of the equation takes into account
+           12                                                                  shape as it affects flow.
+                                               48                                                                                 19
+                                 Discussion on Thermoset Resin Flow
+
+
+Resin flow testing does not always correlate with production results. For example, the Resin Flow Test (IPC-
+TM-650; method 2.3.17.2 calls for a 200-psi lamination pressure on a 4” X 4” layup of 3 plies.
+
+It is shown that resin flow is proportional to the Pressure to Area Ratio, as well as the viscosity profile
+provided by the press cycle. In the IPC Resin flow test, the pressure to area ratio is 12.5. This pressure to
+area ratio can be 10-15 times higher than the pressure to area ratios of production laminations of
+multilayer boards where the ratio may be closer to a value of 1. From this, it is easy to see why the resin
+flow test does not correlate well with production PWB processes.
+
+The Scaled Flow test was developed to provide an equivalent “Scaled” sample size and pressure that closely
+reflects recommended processes for the product. Arlon uses this method for characterizing prepreg in
+production. The H is a viscosity-controlled value that correlates well with the rheological properties and is
+targeted to provide a consistent degree of cure across all prepreg styles.
+
+
+
+
+                                                                                                                20
+                                      Understanding Flow
+
+
+
+Prepreg rheology provides the lamination engineer with several perspective views of the lamination process. The
+parallel plate rheometer offers the advantage of observing the effects of process changes. Modelling can be done
+on a laboratory instrument without putting expensive product at risk.
+
+More educated process changes can be made with rheological information. An understanding of the critical
+parameters of a given resin system allows for a more robust lamination process. As circuit configurations change,
+an understanding of rheology can be used to counterbalance rheological effects.
+
+    – There is a relationship to pressure and heat up rate that can change the integral
+    – Size matters! Larger panel sizes need higher pressure (psi)
+    – Shape matters. An irregular panel size will result in more flow
+
+Using the Resin Flow Parameter led to the development of the Scaled Flow test
+    • Uses a viscosity-controlled resin flow
+    • Utilizes a pressure to area ratio representative to actual PWB production parameters
+                                                                                                                    21
+                                Summary
+
+
+• Rheology provides melt characteristics of thermoset resin systems
+
+• Rheology measures the effect of temperature on the viscosity of the resin
+
+• Rheology provides processing windows available for press cycle
+  optimization
+
+• Flow is affected by melt viscosity, pressure, area, and shape
+
+• Applying this science to the multilayer lamination process can mean the
+  difference between a robust process in the middle of a process window and
+  one that can occasionally drift out of control
+
+                                                                              22
+                                 Common Terms and Definitions
+
+• Viscosity (symbol ƞ) - Viscosity is a measure of a fluid’s resistance to flow.
+
+• Complex viscosity (Symbol ƞ*) - The frequency-dependent viscosity function determined during forced
+  harmonic oscillation of shear stress.
+
+• Minimum melt viscosity – Fluid’s lowest resistance to flow at given temperature.
+
+• Gel Point - Time/temp at which a polymer undergoes gelation, leading to a gel formation.
+
+• Prepreg - A fibrous material reimpregnated with a synthetic resin, used in making reinforced laminates.
+
+• Storage modulus (Symbol G’) – Is a measure of elastic response of a material, it measures the stored energy.
+
+• Loss modulus (Symbol G’’) – Is a measure of viscous response of a material, it measures the energy dissipate
+  as heat.
+
+• Shear Flow- Several layers of fluid sliding over each other, with each upper layer moving faster than the layer
+  below it.
+                        Common Terms and Definitions (cont.)
+
+
+
+• Poise- (symbol P) is the unit of dynamic viscosity (absolute viscosity) in the centimeter-gram-second system
+  of units.
+
+• Integrated flow- Specifies the cumulative value of flow used from the start to finish of measurement. For
+  example, when water has accumulated in a tank for an hour at an instantaneous flow of 100 L/min,
+  the integrated flow is equal to 6000 liters.
+Thank you for joining Arlon’s Educational Technology Seminar
+
+This presentation will be posted on Arlon’s website at
+www.arlonemd.com/resources.
+
+For additional information regarding what was discussed today please feel
+free to send an email to the team:
+
+Dave Nelson, Director of Business Development- dave.nelson@arlonemd.com
+Vince Weis- Sr. Applications Engineer- vince.weis@arlonemd.com
+Tony Welo, Arlon Technical Sales- tony.welo@arlonemd.com
+Mark Orzech- Arlon Technical Sales- mark.orzech@arlonemd.com
+
+                                                                            25
+

@@ -1,0 +1,134 @@
+fastRise™ TC
+Bond-Ply for Indestructible Stacked Microvias
+
+ Benefits
+      •    Df = 0.0023 @ 10 GHz
+      •    Passes 200 reflow cycles @ 35 – 260°C
+      •    Low ~ 22ppm/°C expansion closely matched to copper and aluminum
+      •    Low modulus, surface conformal layer to prevent pad cratering
+      •    High 0.94 W/M*K thermal conductivity
+      •    High flow and fill for sequential lamination and filling layers of heavy
+           copper
+
+
+ Applications
+      •    Semiconductor Pin Routing (HDI)
+      •    Power Amplifiers
+      •    Aviation
+      •    Space
+      •    Military
+
+fastRise™ TC is a free standing, non-reinforced resin system designed with extremely low X, Y, Z thermal expansion. fastRise™ TC is a
+higher DK, non-flame retarded build-up film and has a coefficient of thermal expansion from 16 ~ 22 ppm/°C over the temperature
+range from 30°C to 260°C. This build-up film is close to the thermal expansion rates of copper (18 ppm/°C) and aluminum (24
+ppm/°C) to minimize any stress that occurs during temperature excursions caused by the mismatched expansion rates of the metal
+and the dielectric material. fastRise™ TC was designed to meet the current and future needs of:
+     1. High density (HDI) laser formed interconnects
+     2. Applications requiring critical thermal reliability such as space and avionics
+     3. Applications in need of thermal conductivity to spread heat away from hot spots
+
+fastRise™ TC has low dissipation values and is suitable for both high frequency microwave and digital electronics. To achieve high
+thermal stability, the following characteristics are important:
+     1. Low thermal expansion and contraction above and below Tg
+     2. A high Tg (225°C) to minimize any accelerated expansion above Tg
+     3. Low modulus
+
+Materials can have very low CTE values and be very brittle and prone to cracking with very little mismatched stresses. The ideal
+material has a low modulus, is conformable, and is capable of a limited amount of elongation and does not crack. fastRise TC has
+been designed for low CTE, high Tg, and as low a modulus as possible and still retain other key properties.
+
+
+
+                                                  Scan shows 4 stacks of
+                                                  microvias and the
+                                                  adjoining finely etched
+                                                  traces.
+
+                                                           Scan shows consistent layer
+                                                               to layer thickness after
+                                                           each sequential lamination.
+High Density Interconnects pose many material challenges. fastRise TC addresses those challenges with the following features:
+    1. High flow and fill to encapsulate circuitry between sequential laminations to avoid any chemical infiltration.
+    2. Ideally enough flow with 1 ply of bonding material.
+    3. Sufficient copper adhesion to survive all PWB fabrication steps including planarization and routing.
+    4. Good lasability for via formation and a wide enough process window to account for varying thickness as a result of uneven
+        copper distribution.
+    5. Temperature stability through many sequential laminations.
+
+fastRise TC acts as a leveling agent and will level off thickness variations in a subassembly. It is important that a subassembly be as
+flat as possible to achieve a uniform dielectric thickness of fastRise TC during the first foil lamination. fastRise TC is available in 1.2 to
+2.5 mil in thickness, laser drills readily with a large process window and overcomes wide thickness variations from an underlying
+subassembly. It is a debated topic in the industry whether passing 6x reflow is a good enough indicator of thermal reliability of
+stacked vias. fastRise TC passes 200 cycles 35 – 260° C of reflow with layers of 4 stacked microvias.
+
+
+
+
+                                                  fastRiseTM TC D-coupon top to bottom
+
+
+
+
+These two graphs show the respective dielectric thicknesses layer to layer when looking at the top and bottom of the FR4
+subassembly.
+              Properties                Conditions         Typical Value           Unit                        Test Method
+ Electrical Properties
+ Available Thickness                                         1.2 / 2.5              mil
+ Dielectric Constant                     @ 10 GHz               4.8                              IPC-650 2.5.5.5.1 (modified)
+ Dissipation Factor                      @ 10 GHz             0.0023                             IPC-650 2.5.5.5.1 (modified)
+                                       After elevated
+ Volume Resistivity                                          7.4 x 108          Mohm/cm          IPC-650 2.5.17.1E
+                                          humidy
+                                       After elevated
+ Surface Resistivity                                         1.8 x 108            Mohm           IPC-650 2.5.17.1E
+                                          humidy
+ Thermal Properties
+ Thermal Conductivity                                          0.94               W/M*K          IPC-TM 650 2.4.50
+                                            X                   22                ppm/°C
+ CTE (RT to 260°C)                          Y                   22                ppm/°C         IPC-650 2.4.41/TMA
+                                            Z                   22                ppm/°C
+                                        2% wt. loss          357 (675)             °C (°F)
+ Td                                                                                              IPC-650 2.4.24.6/TGA
+                                        5% wt. loss          402 (756)             °C (°F)
+ Tg                                                          225 (437)             °C (°F)       IPC-650 2.4.41/TMA
+ Mechanical Properties
+ Peel Strength                       After solder float      0.61 (3.5)        N/mm (lbs/in)     IPC-TM 650 2.4.9E
+ Dielectric Strength                                         31.8 (808)       Kv/mm (V/mil)      ASTM D 149
+                                            MD               11 (1,595)        N/mm2 (psi)
+ Tensile Strength                                                                                IPC-TM 650 2.4.18.3
+                                            CD               11 (1,595)        N/mm2 (psi)
+                                            MD               738 (107)         N/mm2 (kpsi)
+ Young’s Modulus                                                                                 IPC-TM 650 2.4.18.3
+                                            CD               814 (118)         N/mm2 (kpsi)
+                                            MD                   9.7               %
+ Elongation at Break                                                                             IPC-TM 650 2.4.18.3
+                                            CD                   12                %
+ Chemical / Physical Properties
+ Moisture Absorption                                           0.07                  %           IPC-TM 650-2.6.2.1
+ Dielectric Breakdown                   @ 20 MIL               18.3                  Kv          ASTM D 149
+ Density                              Specific Gravity         2.22                g/cm3         IPC-TM TM-650 2.3.5
+* All test data provided are typical values and not intended to be specification values. For review of critical specification tolerances,
+please contact a company representative directly.
+
+
+
+
+                        Example part number: FR-TC-31 - 18" x 24" (457 mm x 610 mm)
+
+
+
+
+                                                                                                                        Separation occurs at
+                                                                                                                        the onset of cooling
+                                                                                                                              ~ 190°C
+24 D-coupons passed 24 cycles 35 - 260 °C. The 24 coupons were divided: 8 coupons were solder floated at 270 °C, 8 coupons at 280 °C,
+and 8 coupons at 288 °C. The 24 D-coupons were then thermocycled another 24 times at an outside laboratory. All 24 coupons passed
+48 cycles 35 - 260 °C with all of them being solder floated from 270 - 288 °C. Separately, an experiment was done thermocycling other
+coupons to 260 °C. The coupons passed 200 cycles 35 - 260 °C.
+
+
+
+
+ AGC Inc. 2024-12
+ agc-ml.multimaterial@agc.com
+

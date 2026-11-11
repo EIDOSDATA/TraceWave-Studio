@@ -1,0 +1,623 @@
+{
+  "status": "PASS",
+  "representative_sheets": 86,
+  "independent_review": "../dielectric-review/excel_visual_review_final.json",
+  "independent_review_unique_previews": 82,
+  "author_final_reviews": [
+    "JLCPCB: all 4 sheets",
+    "Overview: all 6 sheets including current source links and WE warning"
+  ],
+  "resolved_display_issues": [
+    "CircuitHub value_type",
+    "Generic reference value_type",
+    "Peters method",
+    "NextPCB value_type",
+    "PCBWay copper/material text",
+    "Shengyi long test method"
+  ],
+  "scope": "Representative A1:H12 views, not a visual review of every row. Every saved data cell is independently compared by finalize.py.",
+  "images": [
+    {
+      "publisher": "전체 안내",
+      "sheet": "회사별 자료",
+      "preview": "qa\\00_overview\\01_회사별 자료.png",
+      "sha256": "3cf2206a37928a01a7203687c742aaeadf586b8c16867b00c950fcada8651e28",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "전체 안내",
+      "sheet": "제품 목록",
+      "preview": "qa\\00_overview\\02_제품 목록.png",
+      "sha256": "9f5825bd3c52315cf568c357e56e033b591536d56faab9e78e94dea88096554a",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "전체 안내",
+      "sheet": "출처 목록",
+      "preview": "qa\\00_overview\\03_출처 목록.png",
+      "sha256": "6190aac4d1aadb7f7df39681c7d4457b8448293f171035729a08010ec960f771",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "전체 안내",
+      "sheet": "검토 항목",
+      "preview": "qa\\00_overview\\04_검토 항목.png",
+      "sha256": "e4837137967d56d4f75247bec0a079660421a1a1e6cd77cc32bcd584e426c749",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "전체 안내",
+      "sheet": "원자료 적층",
+      "preview": "qa\\00_overview\\05_원자료 적층.png",
+      "sha256": "0dad9ef2bcd0787bc62b124b3e5d75680d55ceeee920336ae37b55ce24cbf1ec",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "전체 안내",
+      "sheet": "수집 메모",
+      "preview": "qa\\00_overview\\06_수집 메모.png",
+      "sha256": "03ffe558b208d603de49e3e64d4d3ad6a862443be4730aeee9ba66961489448d",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "AGC",
+      "sheet": "조건별 자료",
+      "preview": "qa\\AGC\\01_조건별 자료.png",
+      "sha256": "592593d823e5b55fe85948fe9170212552a773e0e1a11fafb900a4612129163b",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "AGC",
+      "sheet": "필드 안내",
+      "preview": "qa\\AGC\\02_필드 안내.png",
+      "sha256": "a73a78951b63fc0a679bc609cbd3710f35922e02a5265db4f2e4458f2df0d851",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "AISLER",
+      "sheet": "조건별 자료",
+      "preview": "qa\\AISLER\\01_조건별 자료.png",
+      "sha256": "407d30a65b83fa5590360d1da2d1fd5d598e8a706e4fdc7942a25f10d99433fb",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "AISLER",
+      "sheet": "필드 안내",
+      "preview": "qa\\AISLER\\02_필드 안내.png",
+      "sha256": "a73a78951b63fc0a679bc609cbd3710f35922e02a5265db4f2e4458f2df0d851",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "AdvancedPCB",
+      "sheet": "조건별 자료",
+      "preview": "qa\\AdvancedPCB\\01_조건별 자료.png",
+      "sha256": "552dfe96a7c2a6f4ba9244899f888cb58d2f8e49475b2e5585a18dcb140c7f27",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "AdvancedPCB",
+      "sheet": "필드 안내",
+      "preview": "qa\\AdvancedPCB\\02_필드 안내.png",
+      "sha256": "271ef52166b11c564808f4e7607bbd0cb229ccac3d187607cd91818611aab325",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Arlon Electronic Materials",
+      "sheet": "조건별 자료",
+      "preview": "qa\\Arlon_Electronic_Materials\\01_조건별 자료.png",
+      "sha256": "7efb854a4d4c5b534140026f9c70fe8017606e0055ab7fc9cdb06204f5f89b2d",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Arlon Electronic Materials",
+      "sheet": "필드 안내",
+      "preview": "qa\\Arlon_Electronic_Materials\\02_필드 안내.png",
+      "sha256": "a73a78951b63fc0a679bc609cbd3710f35922e02a5265db4f2e4458f2df0d851",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Chukoh",
+      "sheet": "조건별 자료",
+      "preview": "qa\\Chukoh\\01_조건별 자료.png",
+      "sha256": "ded37ef54149235cfff708992088ba360b267222de0924ba60e4bdb49fbcb06e",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Chukoh",
+      "sheet": "필드 안내",
+      "preview": "qa\\Chukoh\\02_필드 안내.png",
+      "sha256": "a73a78951b63fc0a679bc609cbd3710f35922e02a5265db4f2e4458f2df0d851",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "CircuitHub",
+      "sheet": "조건별 자료",
+      "preview": "qa\\CircuitHub\\01_조건별 자료.png",
+      "sha256": "1b8bc7fc8d0a72dc30a704e5017d1923c7775e25d47f8566e36e4783fec74d64",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "CircuitHub",
+      "sheet": "필드 안내",
+      "preview": "qa\\CircuitHub\\02_필드 안내.png",
+      "sha256": "bb21d74386a48dfde79cc1cb67e476a3a8230cfe1672b3559e40196e4b28ec54",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Doosan",
+      "sheet": "조건별 자료",
+      "preview": "qa\\Doosan\\01_조건별 자료.png",
+      "sha256": "3ebe890f285864b07cda255b4c987e3fe4e2c8cee55968df10cf65d69cbe37e5",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Doosan",
+      "sheet": "필드 안내",
+      "preview": "qa\\Doosan\\02_필드 안내.png",
+      "sha256": "ee3d1844a9699b75de916647c8d4fad1bb39699c5be906d5436fe1208db5e436",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "EMC",
+      "sheet": "조건별 자료",
+      "preview": "qa\\EMC\\01_조건별 자료.png",
+      "sha256": "86f9f8a45da02ad9e7ca20c2e7e88b152d8dd51a412748390a371311fbac30f5",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "EMC",
+      "sheet": "필드 안내",
+      "preview": "qa\\EMC\\02_필드 안내.png",
+      "sha256": "a73a78951b63fc0a679bc609cbd3710f35922e02a5265db4f2e4458f2df0d851",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Epec",
+      "sheet": "조건별 자료",
+      "preview": "qa\\Epec\\01_조건별 자료.png",
+      "sha256": "5dd2301e0d743ee8e83d267d87ea3ed1e9c2745e7997a970164df6ec5dc4a50d",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Epec",
+      "sheet": "필드 안내",
+      "preview": "qa\\Epec\\02_필드 안내.png",
+      "sha256": "1212e913627720c054b95dac7eb7c79bcba5e3283a5ca66355a6459706ada63a",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Eurocircuits",
+      "sheet": "조건별 자료",
+      "preview": "qa\\Eurocircuits\\01_조건별 자료.png",
+      "sha256": "f756f19dc58af3293570d2c86ace8fc905e98efb367595ad1fd0cfe49f12e9cc",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Eurocircuits",
+      "sheet": "필드 안내",
+      "preview": "qa\\Eurocircuits\\02_필드 안내.png",
+      "sha256": "bb21d74386a48dfde79cc1cb67e476a3a8230cfe1672b3559e40196e4b28ec54",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Fineline",
+      "sheet": "조건별 자료",
+      "preview": "qa\\Fineline\\01_조건별 자료.png",
+      "sha256": "82af628bddca769715305e2792f0a15f2e8889a68afc791147066ab6fd2cefaf",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Fineline",
+      "sheet": "필드 안내",
+      "preview": "qa\\Fineline\\02_필드 안내.png",
+      "sha256": "ee3d1844a9699b75de916647c8d4fad1bb39699c5be906d5436fe1208db5e436",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Generic material reference (Arlon handbook)",
+      "sheet": "조건별 자료",
+      "preview": "qa\\Generic_material_reference_Arlon_handbook\\01_조건별 자료.png",
+      "sha256": "a1a392994e426006e6b52f63f611e8669bf099e9a4fd8e7b19c677f3d539805f",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Generic material reference (Arlon handbook)",
+      "sheet": "필드 안내",
+      "preview": "qa\\Generic_material_reference_Arlon_handbook\\02_필드 안내.png",
+      "sha256": "c33004449f16a026122410e91605172d28674678169a932ba9541f6374440ce1",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "ITEQ",
+      "sheet": "조건별 자료",
+      "preview": "qa\\ITEQ\\01_조건별 자료.png",
+      "sha256": "0f93209567af998215e5a1d53910ddc35cdc4fab470f23dbfec32b167b3788f8",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "ITEQ",
+      "sheet": "필드 안내",
+      "preview": "qa\\ITEQ\\02_필드 안내.png",
+      "sha256": "a73a78951b63fc0a679bc609cbd3710f35922e02a5265db4f2e4458f2df0d851",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Isola",
+      "sheet": "조건별 자료",
+      "preview": "qa\\Isola\\01_조건별 자료.png",
+      "sha256": "e408c82d34e7cf58db678ec01726071c2d6ea3a115ff89921e9d9fa0d6879177",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Isola",
+      "sheet": "필드 안내",
+      "preview": "qa\\Isola\\02_필드 안내.png",
+      "sha256": "c33004449f16a026122410e91605172d28674678169a932ba9541f6374440ce1",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "JLCPCB",
+      "sheet": "조건별 자료",
+      "preview": "qa\\JLCPCB\\01_조건별 자료.png",
+      "sha256": "924bc3e743ab559f9d2913e00f263820b216cb1bf95fc956463ca3ef615bbd13",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "JLCPCB",
+      "sheet": "필드 안내",
+      "preview": "qa\\JLCPCB\\02_필드 안내.png",
+      "sha256": "39705bd2c2fc5e63910d3b41df19ef19160c801301568d017bf60bb25d4e121a",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "JLCPCB",
+      "sheet": "원자료 적층",
+      "preview": "qa\\JLCPCB\\03_원자료 적층.png",
+      "sha256": "1b509b73d0fc9d070b85c3018827a5e9804e11e27af63d81b40c7a6546d46b7a",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "JLCPCB",
+      "sheet": "원자료 구성행",
+      "preview": "qa\\JLCPCB\\04_원자료 구성행.png",
+      "sha256": "f74fd6bd6106322387cd8b0ff8b52cbaca52dec9492881d7e2e62794845ef1ac",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Kingboard",
+      "sheet": "조건별 자료",
+      "preview": "qa\\Kingboard\\01_조건별 자료.png",
+      "sha256": "80a709e7624d425d023113f325bf44746c44b3dac844884adc4bd729e129c0fd",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Kingboard",
+      "sheet": "필드 안내",
+      "preview": "qa\\Kingboard\\02_필드 안내.png",
+      "sha256": "a73a78951b63fc0a679bc609cbd3710f35922e02a5265db4f2e4458f2df0d851",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Lab Circuits",
+      "sheet": "조건별 자료",
+      "preview": "qa\\Lab_Circuits\\01_조건별 자료.png",
+      "sha256": "97cfd0abe34caef3823fc354ac768da5b48cca6b0041e902fbf24a6eaac68be0",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Lab Circuits",
+      "sheet": "필드 안내",
+      "preview": "qa\\Lab_Circuits\\02_필드 안내.png",
+      "sha256": "bb21d74386a48dfde79cc1cb67e476a3a8230cfe1672b3559e40196e4b28ec54",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "MGC",
+      "sheet": "조건별 자료",
+      "preview": "qa\\MGC\\01_조건별 자료.png",
+      "sha256": "8ba457e30542f1a51c62731c63d28c13463b3742688a5581c76130e11da3d45f",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "MGC",
+      "sheet": "필드 안내",
+      "preview": "qa\\MGC\\02_필드 안내.png",
+      "sha256": "a73a78951b63fc0a679bc609cbd3710f35922e02a5265db4f2e4458f2df0d851",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Multi Circuit Boards",
+      "sheet": "조건별 자료",
+      "preview": "qa\\Multi_Circuit_Boards\\01_조건별 자료.png",
+      "sha256": "d41363485180c16f80d3c59514b47a2b6c6b8ab79cf1cfd5fd2eb75f4152c4d2",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Multi Circuit Boards",
+      "sheet": "필드 안내",
+      "preview": "qa\\Multi_Circuit_Boards\\02_필드 안내.png",
+      "sha256": "ee3d1844a9699b75de916647c8d4fad1bb39699c5be906d5436fe1208db5e436",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "NCAB",
+      "sheet": "조건별 자료",
+      "preview": "qa\\NCAB\\01_조건별 자료.png",
+      "sha256": "b5a7b6c9a15a56744ecb281f3d9b22559cfe5237b9cb1540a8c0430da07fee19",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "NCAB",
+      "sheet": "필드 안내",
+      "preview": "qa\\NCAB\\02_필드 안내.png",
+      "sha256": "f8be631a74b79764603e4fd8531a3f92de597d6e683f39ad0c127ace41ef42c5",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Nanya_New_Material",
+      "sheet": "조건별 자료",
+      "preview": "qa\\Nanya_New_Material\\01_조건별 자료.png",
+      "sha256": "55652c91e26c8fa51058bd24c15ade0b8194ffe0d8ba9b809450af60ac5b7e36",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Nanya_New_Material",
+      "sheet": "필드 안내",
+      "preview": "qa\\Nanya_New_Material\\02_필드 안내.png",
+      "sha256": "c33004449f16a026122410e91605172d28674678169a932ba9541f6374440ce1",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "NextPCB",
+      "sheet": "조건별 자료",
+      "preview": "qa\\NextPCB\\01_조건별 자료.png",
+      "sha256": "8f81f753c28e4db9e36c03aa4cd112e537c1ae53f4b2387026d28fc71522a7b7",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "NextPCB",
+      "sheet": "필드 안내",
+      "preview": "qa\\NextPCB\\02_필드 안내.png",
+      "sha256": "1212e913627720c054b95dac7eb7c79bcba5e3283a5ca66355a6459706ada63a",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Nitto",
+      "sheet": "조건별 자료",
+      "preview": "qa\\Nitto\\01_조건별 자료.png",
+      "sha256": "2c650513982d01f8287e74a8c230b07fb49fbbdfe436087062a5a4d13ed4040b",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Nitto",
+      "sheet": "필드 안내",
+      "preview": "qa\\Nitto\\02_필드 안내.png",
+      "sha256": "a73a78951b63fc0a679bc609cbd3710f35922e02a5265db4f2e4458f2df0d851",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "OSH Park",
+      "sheet": "조건별 자료",
+      "preview": "qa\\OSH_Park\\01_조건별 자료.png",
+      "sha256": "e13522aac514a7422ed5ee65ab81a3c0b4f85541e314d683fa5647ea1c1692d1",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "OSH Park",
+      "sheet": "필드 안내",
+      "preview": "qa\\OSH_Park\\02_필드 안내.png",
+      "sha256": "bb21d74386a48dfde79cc1cb67e476a3a8230cfe1672b3559e40196e4b28ec54",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "PCBWay",
+      "sheet": "조건별 자료",
+      "preview": "qa\\PCBWay\\01_조건별 자료.png",
+      "sha256": "e796e6ca38e679df5cbe54643a84b59230d422bf779e13f4265c990dd8262ea1",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "PCBWay",
+      "sheet": "필드 안내",
+      "preview": "qa\\PCBWay\\02_필드 안내.png",
+      "sha256": "a73a78951b63fc0a679bc609cbd3710f35922e02a5265db4f2e4458f2df0d851",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "PCBWay",
+      "sheet": "원자료 적층",
+      "preview": "qa\\PCBWay\\03_원자료 적층.png",
+      "sha256": "663b2cd763f87a3d31b1f597a94bf2811069c49ebecbf48cf120ac36926e009a",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "PCBWay",
+      "sheet": "원자료 구성행",
+      "preview": "qa\\PCBWay\\04_원자료 구성행.png",
+      "sha256": "86c1d6575058be4f130d7092082e4eff163b80b170d5e55591e9543af66ce873",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Panasonic",
+      "sheet": "조건별 자료",
+      "preview": "qa\\Panasonic\\01_조건별 자료.png",
+      "sha256": "b338e6eb3e4d1810d0b9f899b6b2bbdd7f76efb30ac6d410d1480b952318c46d",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Panasonic",
+      "sheet": "필드 안내",
+      "preview": "qa\\Panasonic\\02_필드 안내.png",
+      "sha256": "c33004449f16a026122410e91605172d28674678169a932ba9541f6374440ce1",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Peters",
+      "sheet": "조건별 자료",
+      "preview": "qa\\Peters\\01_조건별 자료.png",
+      "sha256": "45ce610092e51d930ad5416d0cefb7f76259420aea798dc372ffaff63fb7561a",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Peters",
+      "sheet": "필드 안내",
+      "preview": "qa\\Peters\\02_필드 안내.png",
+      "sha256": "a73a78951b63fc0a679bc609cbd3710f35922e02a5265db4f2e4458f2df0d851",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Resonac",
+      "sheet": "조건별 자료",
+      "preview": "qa\\Resonac\\01_조건별 자료.png",
+      "sha256": "4342d59c5ed6e5af46aecd396ed0c7f12445d5712efc3c9a7291019a92e6b791",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Resonac",
+      "sheet": "필드 안내",
+      "preview": "qa\\Resonac\\02_필드 안내.png",
+      "sha256": "a73a78951b63fc0a679bc609cbd3710f35922e02a5265db4f2e4458f2df0d851",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Risho",
+      "sheet": "조건별 자료",
+      "preview": "qa\\Risho\\01_조건별 자료.png",
+      "sha256": "d1f680096f7185afa400d87c3d0bdb7c4ee0199f4fd153fb34c4fbc949ec3e2b",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Risho",
+      "sheet": "필드 안내",
+      "preview": "qa\\Risho\\02_필드 안내.png",
+      "sha256": "a73a78951b63fc0a679bc609cbd3710f35922e02a5265db4f2e4458f2df0d851",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Rogers",
+      "sheet": "조건별 자료",
+      "preview": "qa\\Rogers\\01_조건별 자료.png",
+      "sha256": "f326a3a04f6871b498b204aedb1154ad0b5fafa42b810f7f43bd5986802f68cf",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Rogers",
+      "sheet": "필드 안내",
+      "preview": "qa\\Rogers\\02_필드 안내.png",
+      "sha256": "a73a78951b63fc0a679bc609cbd3710f35922e02a5265db4f2e4458f2df0d851",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Seeed Fusion",
+      "sheet": "조건별 자료",
+      "preview": "qa\\Seeed_Fusion\\01_조건별 자료.png",
+      "sha256": "068c2fa9f7c7a98065f80844a4f8ae74203c74e7318664710cff1c9be0b41286",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Seeed Fusion",
+      "sheet": "필드 안내",
+      "preview": "qa\\Seeed_Fusion\\02_필드 안내.png",
+      "sha256": "ee3d1844a9699b75de916647c8d4fad1bb39699c5be906d5436fe1208db5e436",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Shengyi Technology",
+      "sheet": "조건별 자료",
+      "preview": "qa\\Shengyi_Technology\\01_조건별 자료.png",
+      "sha256": "d1ee73354e9aff32ece5ad36f18d08779171f8c361563bede0a1610d7fb6eedc",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Shengyi Technology",
+      "sheet": "필드 안내",
+      "preview": "qa\\Shengyi_Technology\\02_필드 안내.png",
+      "sha256": "c33004449f16a026122410e91605172d28674678169a932ba9541f6374440ce1",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Sumitomo_Bakelite",
+      "sheet": "조건별 자료",
+      "preview": "qa\\Sumitomo_Bakelite\\01_조건별 자료.png",
+      "sha256": "690a08b00514af5f2a23dcc385261b88f6253d146f2be4bf4b69853014e39c1b",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Sumitomo_Bakelite",
+      "sheet": "필드 안내",
+      "preview": "qa\\Sumitomo_Bakelite\\02_필드 안내.png",
+      "sha256": "a73a78951b63fc0a679bc609cbd3710f35922e02a5265db4f2e4458f2df0d851",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "TTM Technologies",
+      "sheet": "조건별 자료",
+      "preview": "qa\\TTM_Technologies\\01_조건별 자료.png",
+      "sha256": "1216e6f5ecc7bb45b753d89de786ac598c9cc1204266e7fb33eda9f04b8897d0",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "TTM Technologies",
+      "sheet": "필드 안내",
+      "preview": "qa\\TTM_Technologies\\02_필드 안내.png",
+      "sha256": "ee3d1844a9699b75de916647c8d4fad1bb39699c5be906d5436fe1208db5e436",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "TUC",
+      "sheet": "조건별 자료",
+      "preview": "qa\\TUC\\01_조건별 자료.png",
+      "sha256": "cebdcdd22ff10969801139103f56cc750a50771345ab173b0abd90dc5b13dd2c",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "TUC",
+      "sheet": "필드 안내",
+      "preview": "qa\\TUC\\02_필드 안내.png",
+      "sha256": "a73a78951b63fc0a679bc609cbd3710f35922e02a5265db4f2e4458f2df0d851",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Ventec",
+      "sheet": "조건별 자료",
+      "preview": "qa\\Ventec\\01_조건별 자료.png",
+      "sha256": "4de40a53a21b144549f893b5c89632998a81c305d1ad696d583ade48bca060e4",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Ventec",
+      "sheet": "필드 안내",
+      "preview": "qa\\Ventec\\02_필드 안내.png",
+      "sha256": "a73a78951b63fc0a679bc609cbd3710f35922e02a5265db4f2e4458f2df0d851",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Wurth Elektronik",
+      "sheet": "조건별 자료",
+      "preview": "qa\\Wurth_Elektronik\\01_조건별 자료.png",
+      "sha256": "15fc6f4149dca175bfd7a6a45b39420900c5e9a0f3668c3caff165a234eda288",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Wurth Elektronik",
+      "sheet": "필드 안내",
+      "preview": "qa\\Wurth_Elektronik\\02_필드 안내.png",
+      "sha256": "a73a78951b63fc0a679bc609cbd3710f35922e02a5265db4f2e4458f2df0d851",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Wurth Elektronik",
+      "sheet": "원자료 적층",
+      "preview": "qa\\Wurth_Elektronik\\03_원자료 적층.png",
+      "sha256": "98d1f6eba2167520e65c68df7423b96ea06b2a04b77f20dddcad7b3c3ae8597a",
+      "representative_visual_review": "PASS"
+    },
+    {
+      "publisher": "Wurth Elektronik",
+      "sheet": "원자료 필드",
+      "preview": "qa\\Wurth_Elektronik\\04_원자료 필드.png",
+      "sha256": "cb8e765b449f327ede60c9bebb84774eeea9b91107e244bba2a5174447b5bd33",
+      "representative_visual_review": "PASS"
+    }
+  ]
+}

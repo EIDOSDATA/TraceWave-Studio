@@ -1,0 +1,115 @@
+\\\ Datasheet
+
+
+  RO4835™ Laminate Data Sheet
+  High Frequency Circuit Materials
+   Thermoset laminate materials, including FR-4, are affected by oxidation over                                            \\\ Features and Benefits:
+   time and temperature. This can slightly increase the dielectric constant and                                              Significantly improved oxidation
+   dissipation factor of the circuit substrate. The change rate and impact on                                                resistance compared to typical
+   circuit performance vary based on design and operating temperature. Rogers’                                               thermoset microwave materials
+   RO4835™ laminate, part of the RO4000® series, offers enhanced stability at                                                  •   Designed for performance
+                                                                                                                                   sensitive, high volume
+   high temperatures and is more resistant to oxidation than other hydrocarbon                                                     applications.
+   materials. RO4835 laminates share similar electrical and mechanical properties
+                                                                                                                             Low loss
+   with RO4350B™ laminates and are designed for high frequency performance                                                    •   Excellent electrical performance
+   and cost-effective circuit fabrication. It uses standard epoxy/glass (FR-4)                                                    allows application with higher
+   processes and is competitively priced.                                                                                         operating frequencies.
+                                                                                                                              •   Ideal for automotive
+   For frequencies above 500 MHz, RO4000 materials are ideal due to their low                                                     applications.
+   dielectric loss, making them suitable for RF microwave circuits and controlled                                            Tight dielectric constant tolerance
+   impedance transmission lines. The material’s thermal coefficient of expansion                                              •    Controlled impedance
+   (CTE) matches copper, ensuring excellent dimensional stability and reliable                                                     transmission lines
+   plated through-hole quality in mixed dielectric multi-layer boards, even under                                            Lead-free process compatible
+   thermal shock. RO4000 laminates have a Tg of >280°C (536°F), ensuring stable                                               •   No blistering or delamination
+   expansion characteristics throughout circuit processing temperatures.                                                     Low Z-axis expansion
+                                                                                                                              •   Reliable plated through holes
+   RO4000 series laminates can be processed using standard FR-4 techniques
+                                                                                                                             Low in-plane expansion coefficient
+   without specialized via preparation. They are rigid, thermoset laminates,                                                  •   Remains stable over an entire
+   compatible with automated systems and scrubbing equipment for copper                                                           range of circuit processing
+   surface preparation. RO4835 laminates are RoHS compliant and suitable for UL                                                   temperatures
+   94V-0 certified applications.                                                                                             CAF resistant
+                                                                                                                             \\\ Typical Applications:
+                                                                                                                              •   Automotive Radar and Sensors
+                                                                                                                              •   Point-to point Microwave
+                                                                                                                              •   Power Amplifiers
+                                                                                                                              •   Phased - Array Radar
+ \\\ Standard Offerings                                                                                                       •   RF Components
+
+
+                 Standard Thicknesses                                                 Standard Panel Sizes                           Standard Cladding
+
+  0.004” (0.10mm) +/- 0.0007”                                        12” X 18” (305 X 457 mm)                              Electrodeposited Copper Foil
+  0.0066” (0.17mm) +/- 0.0007”                                       24” X 18” (610 X 457 mm)                              1/2 oz. (18μm)
+  0.010” (0.25mm) +/- 0.0010”                                        24” X 36” (610 X 915 mm)                              1 oz. (35μm)
+  0.020” (0.51mm) +/- 0.0015”                                        48” X 36” (1219 X 915 mm)
+  0.030” (0.76mm) +/- 0.0020”
+  0.060” (1.52mm) +/- 0.0040”
+
+
+ *Contact Customer Service or Sales Engineering to inquire about other available product configurations including additional thicknesses, panel sizes and claddings.
+ ont
+                                                                                                                                                                       1
+   \\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com
+Data Sheet
+RO4835 LAMINATES
+
+\\\ Standard Properties Table
+   Properties                                                       Typical Value                       Units                          Test Conditions                                       Test Method
+
+
+   Electrical Properties
+   Dielectric Constant (Process)2                                     3.48 ± 0.051                          -                        23˚C                   10 GHz                         IPC TM-650 2.5.5.5
+   Dielectric Constant (Design)3                                           3.66                             -                          -                  8 - 40 GHz                  Differential Phase Length
+   Dissipation Factor                                                     0.0037                            -                        23˚C                   10 GHz                         IPC TM-650 2.5.5.5
+   Thermal Coefficient of Dielectric Constant                               +50                        ppm/°C                               -50°C to 150°C                                 IPC TM-650 2.5.5.5
+   Volume Resistivity                                                    5 X 10    8                   MΩ•cm
+                                                                                                                                             Condition A                                  IPC-TM-650, 2.5.17.1
+   Surface Resistivity                                                   7 X 108                          MΩ
+   Electrical Strength (dielectric strength)                            30.2 (755)                KV/mm (V/mil )                                    -                                      IPC TM-650 2.5.6.2
+   Thermal Properties
+   Decomposition Temp (Td)                                                  390                         ˚C TGA                                      -                                        ASTM D3850
+   Glass Transition Temp (Tg)                                              >280                        ˚C TMA                                       A                                     IPC-TM-650 2.4.24.3
+   Coefficient of Thermal Expansion - x                                      10
+   Coefficient of Thermal Expansion - y                                      12                        ppm/˚C                               -55˚C to 288˚C                                 IPC TM-650 2.4.41
+   Coefficient of Thermal Expansion - z                                      31
+   Thermal Conductivity                                                     0.66                       W/(m.K)                                    80˚C                                         ASTM C518
+   Dimensional Stability (x,y)                                              <0.5                  mm/m (mils/in)                 after etch               +E2/150°C                        IPC TM-650 2.4.39a
+   Mechanical Properties
+   Copper Peel Strength                                                  0.88 (5.0)                  N/mm (pli)                 After solder float 35 μm ED foil                            IPC TM-650 2.4.8
+   Young’s Modulus                                                     7780 (1128)                    MPa (kpsi)                                   RT                                          ASTM D638
+   Tensile Strength                                                     136 (19.7)                    MPa (kpsi)                                   RT                                          ASTM D638
+   Flexural Strength                                                     186 (27)                     MPa (kpsi)                                                                            IPC-TM-650 2.4.4
+   Physical Properties
+   Flammability                                                             V-0                             -                                       -                                              UL 94
+   Moisture Absorption                                                      0.05                           %                         50˚C                    48 Hr                             ATSM D570
+   Density                                                                  1.92                        g/cm³                                     23˚C                                         ASTM D792
+   Lead Free Process compatible                                             YES                             -                                       -                                                 -
+1 RO4835 4mil laminates have a process Dk of 3.33+-0.05 and are in conformance with IPC-4103A/240. All other RO4835 laminate thicknesses are /11 and /240 compliant.
+2 The IPC clamped stripline method can potentially lower the actual dielectric constant due to presence of airgaps between the laminates under test and the resonator card. Dielectric constant in practice may be higher than the
+values listed.
+3 The design Dk is an average number from several different tested lots of material and on the most common thickness/s. If more detailed information is required, please contact Rogers Corporation. Refer to Rogers’ technical paper
+“Dielectric Properties of High Frequency Materials” available at http://www.rogerscorp.com
+Typical values are a representation of an average value for the population of the property. For specification values contact Rogers Corporation.
+
+
+
+
+\\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com
+
+
+The information in this data sheet is intended to assist you in designing with Rogers’ circuit materials. It is not intended to and does not create any
+warranties express or implied, including any warranty of merchantability or fitness for a particular purpose or that the results shown on this data
+sheet will be achieved by a user for a particular purpose. The user should determine the suitability of Rogers’ circuit materials for each application.
+These commodities, technology and software are exported from the United States in accordance with the Export Administration regulations. Diversion contrary to
+U.S. law prohibited.
+
+The Rogers’ logo, Helping power, protect, connect our world, RO4000, RO4350B and RO4835 are trademarks of Rogers Corporation or one of its subsidiaries.
+©2024 Rogers Corporation, Printed in U.S.A., All rights reserved.
+
+Revised 1686 092425 Publication #92-160
+                                                                                                                                                                                                                               2
+Helping power, protect, connect our world
+                                                                                                                TM
+

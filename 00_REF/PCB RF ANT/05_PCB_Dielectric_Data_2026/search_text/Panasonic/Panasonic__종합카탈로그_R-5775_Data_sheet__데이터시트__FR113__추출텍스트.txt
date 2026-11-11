@@ -1,0 +1,257 @@
+    Data Sheet
+
+High Speed, Low Loss Multi-layer Materials
+
+
+                                           Laminate R-5775
+                                           Prepreg R-5670
+
+
+
+
+                 Aｐｒ. 2021   No.21041931
+                                                                                                                        No.; 21041931 - 1
+
+                                           Specification / Laminate R-5775
+
+                                Property                                  Units       Test Method         Condition    Typical Value
+
+                                                                                          DSC            As received       185
+                              Glass Transition Temp ( Tg )                 C
+                                                                                          DMA            As received       210
+
+                         Thermal Decomposition Temp ( Td )                 C              TGA            As received       410
+
+                            Time to Delam                 Without Cu       Min     IPC TM-650 2.4.24.1   As received      > 120
+
+     THERMAL                   ( T288 )                     With Cu        Min     IPC TM-650 2.4.24.1   As received      > 120
+
+                                                            X - axis     ppm / C   IPC TM-650 2.4.24        < Tg         14 - 16
+
+                               CTE : α1                     Y - axis     ppm / C   IPC TM-650 2.4.24        < Tg         14 - 16
+
+                                                            Z - axis     ppm / C   IPC TM-650 2.4.24        < Tg            45
+
+                               CTE : α2                     Z - axis     ppm / C   IPC TM-650 2.4.24        > Tg           260
+
+                                     Volume Resistivity                  MΩ - cm   IPC TM-650 2.5.17.1   C-96/35/90      1 x 10 9
+
+                                     Surface Resistivity                   MΩ      IPC TM-650 2.5.17.1   C-96/35/90      1 x 10 8
+
+                         Dielectric Constant               @ 1GHz           -      IPC TM-650 2.5.5.9    C-24/23/50        3.71
+    ELECTRICAL
+                                ( Dk )                    @ 10GHz           -      IPC TM-650 2.5.5.5    C-24/23/50        3.61
+
+                         Dissipation Factor                @ 1GHz           -      IPC TM-650 2.5.5.9    C-24/23/50       0.002
+                               ( Df )                     @ 10GHz           -      IPC TM-650 2.5.5.5    C-24/23/50       0.004
+
+                                     Water Absorption                      %       IPC TM-650 2.6.2.1     D-24/23          0.14
+
+    PHYSICAL                Peel Strength               1oz ( H-VLP )    kN / m     IPC TM-650 2.4.8     As Received       0.8
+
+                                        Flammability                        -              UL            C-48/23/50       94V-0
+
+Sample thickness ; 29.5 mil = 0.750 mm ( Core Type 30 )
+* The data in the above table are not guaranteed values.
+
+1       © Panasonic Corporation Electronic Materials Business Division
+                                                                                                                                               No.; 21041931 - 2
+
+                                           Specification / Laminate R-5775(K)
+
+ 1GHz ; IPC TM650-2.5.5.9                            2GHz-10GHz ; IPC TM650-2.5.5.5
+
+                  Actual                           Typical
+    Core                           Cloth            Resin                           Typical Dk                                  Typical Df
+                Thickness                    ply
+    Type                           Style           Content
+               mil      mm                         （％）          1GHz        2GHz   4GHz   6GHz   8GHz 10GHz 1GHz       2GHz    4GHz    6GHz    8GHz 10GHz
+     2        2.0      0.050       1035       1        65       3.46        3.39   3.38   3.38   3.38   3.37   0.002   0.002   0.003   0.003   0.004   0.004
+    2.6       2.6      0.065       1080       1        57       3.65        3.58   3.57   3.56   3.56   3.55   0.002   0.002   0.003   0.003   0.004   0.004
+    2.6       2.6      0.065       1078       1        57       3.65        3.58   3.57   3.56   3.56   3.55   0.002   0.002   0.003   0.003   0.004   0.004
+     3        3.0      0.075       1078       1        63       3.49        3.42   3.41   3.40   3.40   3.39   0.002   0.002   0.003   0.003   0.004   0.004
+    3.5       3.5      0.090       1078       1       68        3.41        3.34   3.33   3.33   3.33   3.32   0.002   0.002   0.003   0.003   0.004   0.004
+     4        3.9      0.100       3313       1       54        3.71        3.64   3.63   3.63   3.62   3.61   0.002   0.002   0.003   0.003   0.004   0.004
+     4        3.9      0.100       1035       2        65       3.46        3.39   3.38   3.38   3.38   3.37   0.002   0.002   0.003   0.003   0.004   0.004
+     5        5.0      0.127       1078       2       57        3.65        3.58   3.57   3.56   3.56   3.55   0.002   0.002   0.003   0.003   0.004   0.004
+     5        4.9      0.125       2116       1       54        3.71        3.64   3.63   3.63   3.62   3.61   0.002   0.002   0.003   0.003   0.004   0.004
+     5        5.1      0.130       1080       2       57        3.65        3.58   3.57   3.56   3.56   3.55   0.002   0.002   0.003   0.003   0.004   0.004
+     6        5.7      0.146       1078       2       63        3.49        3.42   3.41   3.40   3.40   3.39   0.002   0.002   0.003   0.003   0.004   0.004
+     6        5.9      0.150       1080       2       63        3.49        3.42   3.41   3.40   3.40   3.39   0.002   0.002   0.003   0.003   0.004   0.004
+     7        7.0      0.178       1078       2       68        3.41        3.34   3.33   3.33   3.33   3.32   0.002   0.002   0.003   0.003   0.004   0.004
+     8        7.9      0.200       3313       2       54        3.71        3.64   3.63   3.63   3.62   3.61   0.002   0.002   0.003   0.003   0.004   0.004
+    10        9.8      0.250       2116       2       54        3.71        3.64   3.63   3.63   3.62   3.61   0.002   0.002   0.003   0.003   0.004   0.004
+    12        11.8     0.300       3313       3       54        3.71        3.64   3.63   3.63   3.62   3.61   0.002   0.002   0.003   0.003   0.004   0.004
+    16        15.7     0.400       3313       4       54        3.71        3.64   3.63   3.63   3.62   3.61   0.002   0.002   0.003   0.003   0.004   0.004
+    20        19.7     0.500       2116       4       54        3.71        3.64   3.63   3.63   3.62   3.61   0.002   0.002   0.003   0.003   0.004   0.004
+    25        24.6     0.625       2116       5       54        3.71        3.64   3.63   3.63   3.62   3.61   0.002   0.002   0.003   0.003   0.004   0.004
+    30        29.5     0.750       2116       6       54        3.71        3.64   3.63   3.63   3.62   3.61   0.002   0.002   0.003   0.003   0.004   0.004
+
+* The data in the above table are not guaranteed values.
+
+2          © Panasonic Corporation Electronic Materials Business Division
+                                                                                                                                       No.; 21041931 - 3
+
+                                         Specification / Prepreg R-5670(K)
+
+ 1GHz ; IPC TM650-2.5.5.9                         2GHz-10GHz ; IPC TM650-2.5.5.5
+                    Resin            Typical                              Typical Dk                                   Typical Df
+    Cloth
+                   Content          Thickness
+    Style
+                    (%)               ( um )          1GHz      2GHz     4GHz   6GHz   8GHz   10GHz   1GHz    2GHz    4GHz    6GHz    8GHz    10GHz
+
+    1027              75                 49           3.28      3.21     3.20   3.20   3.20   3.19    0.002   0.002   0.003   0.003   0.004   0.004
+
+                      70                 60           3.35      3.25     3.25   3.24   3.24   3.23    0.002   0.002   0.003   0.003   0.004   0.004
+
+    1035              73                 68           3.29      3.22     3.22   3.21   3.21   3.20    0.002   0.002   0.003   0.003   0.004   0.004
+
+                      75                 74           3.28      3.21     3.20   3.20   3.20   3.19    0.002   0.002   0.003   0.003   0.004   0.004
+
+                      64                 76           3.47      3.40     3.39   3.39   3.39   3.38    0.002   0.002   0.003   0.003   0.004   0.004
+    1080
+                      68                 87           3.41      3.34     3.33   3.33   3.33   3.32    0.002   0.002   0.003   0.003   0.004   0.004
+
+                      64                 77           3.47      3.40     3.39   3.39   3.39   3.38    0.002   0.002   0.003   0.003   0.004   0.004
+
+                      68                 89           3.41      3.34     3.33   3.33   3.33   3.32    0.002   0.002   0.003   0.003   0.004   0.004
+    1078
+                      72                104           3.31      3.24     3.23   3.23   3.23   3.22    0.002   0.002   0.003   0.003   0.004   0.004
+
+                      75                118           3.28      3.21     3.20   3.20   3.20   3.19    0.002   0.002   0.003   0.003   0.004   0.004
+
+                      54                 98           3.71      3.64     3.63   3.63   3.62   3.61    0.002   0.002   0.003   0.003   0.004   0.004
+    3313
+                      57                106           3.65      3.58     3.57   3.56   3.56   3.55    0.002   0.002   0.003   0.003   0.004   0.004
+
+                      54                125           3.71      3.64     3.63   3.63   3.62   3.61    0.002   0.002   0.003   0.003   0.004   0.004
+    2116
+                      56                132           3.67      3.60     3.59   3.58   3.58   3.57    0.002   0.002   0.003   0.003   0.004   0.004
+
+
+* The data in the above table are not guaranteed values.
+
+3       © Panasonic Corporation Electronic Materials Business Division
+                                                                                                                                            No.; 21041931 - 4
+
+                                           Specification / Laminate R-5775(G)
+
+ 1GHz ; IPC TM650-2.5.5.9                            2GHz-10GHz ; IPC TM650-2.5.5.5
+                                                   Typical
+                  Actual
+    Core                           Cloth            Resin                           Typical Dk                               Typical Df
+                Thickness                    ply
+    Type                           Style           Content
+               mil      mm                         （％）          1GHz        2GHz   4GHz   6GHz   8GHz 10GHz 1GHz    2GHz    4GHz    6GHz    8GHz 10GHz
+     2        2.0      0.050       1035       1      65         3.46        3.39   3.38   3.38   3.38  3.37 0.002   0.002   0.003   0.003   0.004 0.004
+     2        2.0      0.050       1067       1      64         3.47        3.40   3.39   3.39   3.39  3.38 0.002   0.002   0.003   0.003   0.004 0.004
+    2.6       2.6      0.065       1080       1      57         3.65        3.58   3.57   3.56   3.56  3.55 0.002   0.002   0.003   0.003   0.004 0.004
+    2.6       2.6      0.065       1078       1      57         3.65        3.58   3.57   3.56   3.56  3.55 0.002   0.002   0.003   0.003   0.004 0.004
+     3        3.0      0.075       1078       1      63         3.49        3.42   3.41   3.40   3.40  3.39 0.002   0.002   0.003   0.003   0.004 0.004
+    3.5       3.5      0.090       1078       1      68         3.41        3.34   3.33   3.33   3.33  3.32 0.002   0.002   0.003   0.003   0.004 0.004
+     4        3.9      0.100       3313       1      54         3.71        3.64   3.63   3.63   3.62  3.61 0.002   0.002   0.003   0.003   0.004 0.004
+     4        3.9      0.100       1035       2      65         3.46        3.39   3.38   3.38   3.38  3.37 0.002   0.002   0.003   0.003   0.004 0.004
+     5        5.0      0.127       1078       2      57         3.65        3.58   3.57   3.56   3.56  3.55 0.002   0.002   0.003   0.003   0.004 0.004
+     5        4.9      0.125       2116       1      54         3.71        3.64   3.63   3.63   3.62  3.61 0.002   0.002   0.003   0.003   0.004 0.004
+     5        5.1      0.130       1080       2      57         3.65        3.58   3.57   3.56   3.56  3.55 0.002   0.002   0.003   0.003   0.004 0.004
+     6        5.7      0.146       1078       2      63         3.49        3.42   3.41   3.40   3.40  3.39 0.002   0.002   0.003   0.003   0.004 0.004
+     6        5.9      0.150       1080       2      63         3.49        3.42   3.41   3.40   3.40  3.39 0.002   0.002   0.003   0.003   0.004 0.004
+     7        7.0      0.178       1078       2      68         3.41        3.34   3.33   3.33   3.33  3.32 0.002   0.002   0.003   0.003   0.004 0.004
+     8        7.9      0.200       3313       2      54         3.71        3.64   3.63   3.63   3.62  3.61 0.002   0.002   0.003   0.003   0.004 0.004
+    10        9.8      0.250       2116       2      54         3.71        3.64   3.63   3.63   3.62  3.61 0.002   0.002   0.003   0.003   0.004 0.004
+    12        11.8     0.300       3313       3      54         3.71        3.64   3.63   3.63   3.62  3.61 0.002   0.002   0.003   0.003   0.004 0.004
+    16        15.7     0.400       3313       4      54         3.71        3.64   3.63   3.63   3.62  3.61 0.002   0.002   0.003   0.003   0.004 0.004
+    20        19.7     0.500       2116       4      54         3.71        3.64   3.63   3.63   3.62  3.61 0.002   0.002   0.003   0.003   0.004 0.004
+    22        21.9     0.555       7628       3      42         4.07        4.00   3.97   3.96   3.95  3.95 0.002   0.002   0.003   0.003   0.004 0.004
+    25        24.6     0.625       2116       5      54         3.71        3.64   3.63   3.63   3.62  3.61 0.002   0.002   0.003   0.003   0.004 0.004
+    29        29.1     0.740       7628       4      42         4.07        4.00   3.97   3.96   3.95  3.95 0.002   0.002   0.003   0.003   0.004 0.004
+    30        29.5     0.750       2116       6      54         3.71        3.64   3.63   3.63   3.62  3.61 0.002   0.002   0.003   0.003   0.004 0.004
+    37        36.4     0.925       7628       5      42         4.07        4.00   3.97   3.96   3.95  3.95 0.002   0.002   0.003   0.003   0.004 0.004
+
+* The data in the above table are not guaranteed values.
+
+4          © Panasonic Corporation Electronic Materials Business Division
+                                                                                                                                       No.; 21041931 - 5
+
+                                         Specification / Prepreg R-5670(G)
+
+ 1GHz ; IPC TM650-2.5.5.9                         2GHz-10GHz ; IPC TM650-2.5.5.5
+                    Resin            Typical                              Typical Dk                                   Typical Df
+    Cloth
+                   Content          Thickness
+    Style                                             1GHz      2GHz     4GHz   6GHz   8GHz   10GHz   1GHz    2GHz    4GHz    6GHz    8GHz    10GHz
+                    (%)               ( um )
+    1027              75                 49           3.28       3.21    3.20   3.20   3.20   3.19    0.002   0.002   0.003   0.003   0.004   0.004
+
+                      70                 60           3.35      3.25     3.25   3.24   3.24   3.23    0.002   0.002   0.003   0.003   0.004   0.004
+
+    1035              73                 68           3.29      3.22     3.22   3.21   3.21   3.20    0.002   0.002   0.003   0.003   0.004   0.004
+
+                      75                 74           3.28      3.21     3.20   3.20   3.20   3.19    0.002   0.002   0.003   0.003   0.004   0.004
+
+                      69                 59           3.38      3.29     3.29   3.28   3.28   3.27    0.002   0.002   0.003   0.003   0.004   0.004
+
+    1067              72                 67           3.31      3.24     3.23   3.23   3.23   3.22    0.002   0.002   0.003   0.003   0.004   0.004
+
+                      74                 72           3.29      3.22     3.21   3.21   3.21   3.20    0.002   0.002   0.003   0.003   0.004   0.004
+
+                      64                 76           3.47      3.40     3.39   3.39   3.39   3.38    0.002   0.002   0.003   0.003   0.004   0.004
+    1080
+                      68                 87           3.41      3.34     3.33   3.33   3.33   3.32    0.002   0.002   0.003   0.003   0.004   0.004
+
+                      64                 77           3.47      3.40     3.39   3.39   3.39   3.38    0.002   0.002   0.003   0.003   0.004   0.004
+
+                      68                 89           3.41      3.34     3.33   3.33   3.33   3.32    0.002   0.002   0.003   0.003   0.004   0.004
+    1078
+                      72                104           3.31      3.24     3.23   3.23   3.23   3.22    0.002   0.002   0.003   0.003   0.004   0.004
+
+                      75                118           3.28      3.21     3.20   3.20   3.20   3.19    0.002   0.002   0.003   0.003   0.004   0.004
+
+                      54                 98           3.71      3.64     3.63   3.63   3.62   3.61    0.002   0.002   0.003   0.003   0.004   0.004
+    3313
+                      57                106           3.65      3.58     3.57   3.56   3.56   3.55    0.002   0.002   0.003   0.003   0.004   0.004
+
+                      54                125           3.71      3.64     3.63   3.63   3.62   3.61    0.002   0.002   0.003   0.003   0.004   0.004
+    2116
+                      56                132           3.67      3.60     3.59   3.58   3.58   3.57    0.002   0.002   0.003   0.003   0.004   0.004
+* The data in the above table are not guaranteed values.
+
+5       © Panasonic Corporation Electronic Materials Business Division
+                                                                                                                                               No.; 21041931 - 6
+
+                                                           ++ Before purchase ++
+
+   【Notes before you use】
+      ・Please verify the suitability and fitness for intended application by quality testing, evaluation or other means at your
+       own option before any adoption, use or change of use conditions of a product listed in the datasheet.
+      ・We would like to have a delivery specifications mutually agreed for the product that you have decided to use.
+       The agreements defined in the delivery specifications are assigned higher priority.
+      ・Please note that images shown may somewhat differ from the actual product in color.
+      ・Please note that specifications and external design are subject to change for product improvement without notice.
+      ・For details on products in the datasheet, please contact your distributor or our sales department.
+
+   【Safety Information】
+      ・Before using the product, please read the delivery specifications carefully or contact the distributor from which
+       you purchased the product or our sales department in order to use the product correctly.
+      ・The products in the datasheet are Electronic circuit board materials for electronic and electrical devices.
+       Please do not use them for other than specified use.
+
+Please Contact us of more
+【Technical Marketing】                             【Sales Offices】
+・Japan (Osaka)         TEL: 81-6-6904-2771        ・China (Hong Kong)        TEL: 852-2529-3956      Panasonic Corporation
+・USA (Mountain view)   TEL: 1-408-861-3946        ・China (Suzhou)           TEL: 86-512-6825-1565   Industrial Solutions Company
+・Austria (Enns)        TEL: 43-7223-883           ・China (Guangzhou)        TEL: 86-20-8713-0888
+・China (Guangzhou)     TEL: 86-20-8713-0888       ・Korea (Seoul)            TEL: 82-2-361-7873
+                                                                                                    Electronic Materials Business Division
+                                                  ・Taiwan (Hsinchu)         TEL: 886-3-598-3201     Circuit Board Materials Business Unit.
+                                                  ・Thailand (Ayuthaya)      TEL: 66-3533-0846       Head Office: 1006 Kadoma, Kadoma City, Osaka 571-8506
+                                                  ・Austria (Enns)           TEL: 43-7223-883
+                                                                                                    TEL: 81-6-6908-1101
+                                                  ・USA (Mountain view)      TEL: 1-408-861-3946
+                                                  ・Japan (Osaka)            TEL: 81-6-6904-2771     industrial.panasonic.com/ww/electronic-materials
+
+ * The data in the above table are not guaranteed values.
+
+  6        © Panasonic Corporation Electronic Materials Business Division
+

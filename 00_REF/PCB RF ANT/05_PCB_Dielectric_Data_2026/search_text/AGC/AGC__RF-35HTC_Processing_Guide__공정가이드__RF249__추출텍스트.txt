@@ -1,0 +1,776 @@
+                                    RF-35HTC
+                                       General Processing Guidelines
+
+
+
+General Information                                          Do not mechanically scrub the material
+                                                             As with thin core or flexible substrates, mechanically
+RF-35TC, RF-35A2, and TSM-DS3 are Thermally
+                                                             scrubbing will stretch and deform the material. The
+Stable ceramic filled Materials. The TSM-DS3 is
+                                                             pinch rollers used to move the panel during
+developed to meet the demanding requirements for
+                                                             scrubbing can also cause dents as particle or brush
+dielectric constant temperature stability and plated
+                                                             material are pressed into the surface of the laminate.
+hole reliability for high temperature and varying
+                                                             Chemical cleaning is much preferred. Eliminating
+environmental conditions. TSM-DS3 are low loss,
+                                                             mechanical cleaning and unnecessary handling will
+dimensionally stable thin core material for
+                                                             improve the dimensional accuracy of subsequent
+multilayer digital applications, that can be combined
+                                                             processes by preventing mechanical distortion of
+with our fastRise prepregs for the lowest stripline
+                                                             the laminate.
+insertion losses. The TSM-DS3 uses a light weight
+style of fiberglass and very high loadings of ceramic
+                                                             Do not pick up a panel horizontally by one end or
+particles yielding excellent dimensional and
+                                                             edge
+electronic performance, as well as ease of
+                                                             By allowing the material to flop over you may
+processing. TSM-DS3 are available in thickness
+                                                             stretch the copper and substrate. Lift the panel by
+multiples of 0.005” (0.125mm), making it ideal for
+                                                             two parallel edges; preferably the two closest
+double-sided or multilayer applications.
+                                                             dimensionally.
+Processing recommendation for the TSM-DS3 are
+                                                             Prevent contaminant deposits on the material or
+similar to other types of PTFE based AGC materials.
+                                                             copper
+It should be noted that these recommendations are
+                                                             The use of clean protective gloves and slip sheets
+based on standard industry practices and optimal
+                                                             will prevent contamination and staining. You will
+parameters may differ somewhat, depending on
+                                                             not need to remove oils, grease or fingerprints if
+available processing equipment.
+                                                             you don’t deposit them.
+
+Handling                                                     Do not mechanically abrade the PTFE surface after
+PTFE is a thermoplastic material which is very stable        etching/removing the copper
+electrically and chemically when compared with               If left undisturbed, the PTFE surface is very good
+common thermosetting resins such as epoxy,                   for adhesion of solder mask, prepreg and bonding
+polyphenyleneoxide, polyimide and cyanate ester.             adhesive without further preparation. The etched
+Part of what gives PTFE its superior performance             surface of the PTFE is very wettable due to the rough
+over frequency and temperature also makes the                tooth structure left behind after cooper removal.
+pure resin relatively soft. It is for this reason that all
+AGC laminates are reinforced with glass fabric.              If the surface becomes disturbed, further surface
+                                                             preparation using sodium or plasma etching can
+The glass fabric reinforcement of the substrate              improve wettability and adhesion to the surface.
+greatly increases stability in the X and Y axis over
+non-woven or unreinforced PTFE products. While               Do not stack panels directly on top of each other
+the glass fabric provides excellent dimensional              Particles or debris on the surface of the panel can
+stability, the following process and handling                become imprinted into the copper and substrate of
+precautions should be taken to prevent damage                adjacent panels. The preferred method of storage
+or deformation of the laminate during fabrication.           is to rack the panels vertically.
+
+                                                             If panels must be stacked use clean, soft, slip sheet
+                                                             material between each panel and keep stack height
+                                                             to a minimum.
+Drilling for Double Sided Ceramic Filled PTFE Laminates
+Good hole quality can be achieved using AGC recommended drill parameters. Standard 130° point geometry, 32 -
+35 helix angle PCB carbide drills work well with all AGC PTFE-based laminates. Hole quality can be affected by drill
+sharpness. AGC recommends using new drills for the best hole quality. Hole wall quality will be directly related to
+drill bit hit count. TSM-DS3 have very high loadings of ceramic particles. A conservative hit count is 150 hits/bit.
+200-300 hits/bit can be used for less critical applications…50-100 hits/bit might be necessary if drill smear is a
+problem. Stack height should not exceed 2/3 the flute length of the smallest diameter drill being used. Standard
+phenolic entry material (≥0.020” [0.5mm] thickness) is acceptable. A hard phenolic backup board (from 0.090” to
+0.125” [2.29mm – 3.18mm] thickness) is recommended to reduce bottom-side burring. The pressure of the drill
+foot should be a minimum of 40 psi and should be increased if topside burring is excessive. The primary objective
+of drilling PTFE based laminates is avoiding bird nesting. Debris on the drill bit runs the risk of smearing off onto
+the hole and adhering to the hole as the drilled hole and drill tool become hot and the PTFE acts like an adhesive.
+Hard phenolic on entry serves to abrade Teflon debris off the bit. Optimizing the amount of phenolic to clean the
+drill tool between hits is a necessary factor in high quality TSM-DS3 drilled holes. Although the process window is
+wider for drilling TSM-DS3 double sided pwbs vs multilayer pwbs, one should follow the same strategies and tactics
+that one would use to fabricate a multilayer based on TSM-DS3 cores.
+
+AGC recommends the following drill conditions for double sided ceramic filled PTFE material:
+    • Entry material: Aluminum sheet or standard phenolic entry (10-15 mil Phenolic preferred).
+    • Backup material: Hard phenolic of thickness from 0.060” to 0.125”.
+    • Stack height should not exceed 2/3 the flute length of the smallest diameter drill being used.
+    • Drill parameters as found in the drill appendix. For microdrilling (<0.020” diameter) use the highest speed
+        column parameters that equipment allows.
+    • Optimize drill parameters to reduce or eliminate birdnesting, burrs, and smearing.
+    • Hit counts range from 50 hits to 500 hits depending on drill size and board thickness.
+    • Peck drilling if necessary.
+
+All drilling debris must be removed prior to hole wall preparation such as plasma or sodium treatment. Thoroughly
+remove all debris in the holes with a high pressure air or water blast. If water is used, bake the laminate for 1 hour
+at 250°F [120°C] to remove moisture prior to through hole treatment. Burring can occur if drilling conditions are
+not correct. If burring occurs, sanding is not recommended. Pumice scrubbing has been known to be effective,
+however AGC does not recommend any process that may cause distortion of the laminate. The best solution to
+prevent burrs is by thoroughly understanding and implementing the optimum drilling process and parameters for
+your equipment. Smearing is a condition where the PTFE resin has been heated to a point where it softens and is
+easily moved within the hole. It usually appears as a line between the copper foil and the plated copper. Assuming
+that sharp drill bits are being used, the solution is to reduce the cutting speed (thus surface feet per minute) and
+infeed rate to prevent the heating up of the drill bit. Low chip loads are the key to success in drilling PTFE. If debris
+builds up on the bits (birdnesting) it is necessary to optimize the thickness of the phenolic entry material. Phenolic
+entry material is a hard material that will abrade PTFE off the surface of the bit. If the drill tool is contaminated
+with PTFE in the flutes, the drill debris will strike an inner layer and smear drill bit debris across the post. The
+phenolic entry material should be used as a sacrificial material to smear drill bit debris onto the phenolic so that
+the drill bit reaches the PTFE laminate core free of any debris. Dwell times between hits will allow the bit to cool
+before reentry. Protrusions may not be noticeable until after the electroless plating process, even if a high
+magnification microscope is used. See Section 6 for hole-wall preparation. Hole wall tear-out, or gouging, is
+another possible defect caused during the drilling process. Gouging is usually an indicator of either a dull drill or
+an excessively high chip load. Another factor that can influence gouging is the fiberglass weave style. A coarse
+glass is more prone to gouging than a medium or fine glass style.
+
+If gouging occurs, first check for worn drill bits before adjusting the drill parameters. If gouging persists, reduce
+the chip load. Care should be taken to keep drill bit temperatures to a minimum by keeping the cutting speed low
+while adjusting chip loads downward. Due to the thickness of high layer count digital multilayer boards, peck
+drilling may be required for acceptable hole wall quality. The thermoplastic nature of the PTFE resin and the
+thickness of the board may result in the inability of the drill bit to clear debris which may result in smearing and
+burrs. Peck drilling with a full withdrawal of the drill bit after each peck will reduce heat buildup and debris accrual.
+A general rule of thumb for peck depth is 20 to 30 mils per peck and should be optimized at the board shop.
+                    Figure 1 – Cross section illustrates the very low fiberglass content of TSM-DS3
+
+
+Drilling TSM-DS3 and Multilayers Containing fastRise Prepreg
+The typical material combination for RF / Microwave and digital multilayers are TSM-DS3, fastRise27 and one of
+the fastRise27 part numbers. Tight process control and optimized parameters are essential to achieve required
+hole wall quality for thick multilayer (> 0.100”) and back plane. High speed digital application
+has tight specification to ensure that press fit connectors are not damaged.
+
+
+
+
+                               Figure 2 - Multilayer containing TSM-DS3 and fastRise27
+
+Drill setup conditions
+(1) Drill bits: Use only new straight shank bits. For example: a. Diameter < 15mil Tycom/Kyocera 560 series straight
+shank. A comparison of drill bit vendors yielded the following results for a 10 mil tool when drilling a 115 mil TSM-
+DS3/FR27 multilayer stackup:
+
+       Vendor                      Model                      Helix Angle           Style             Nodules/hole
+        Union                NEU L026, 0.25 x 4.5                 40                  UC                 0.54
+        Union              MD35 A3815, 0.25 x 5 / #8              35               Straight              0.72
+       Kemmer                SH381010021021R                      38               Straight              0.67
+       Kemmer                E34000250-C45040                     38                  UC                 0.72
+    Kyocera/Tycom               460.0098.177                      38                  UC                 0.98
+    Kyocera/Tycom               560.0098.177                      38               Straight              0.12
+        HPTec                    8 212 0250                       40                  UC                 0.48
+        HPTec                 212, 157mil flute                   45                  UC                 0.25
+
+Parameters: 10 mil Tycom 560 series straight shank, 7 mil aluminum entry, 16.5 mil phenolic entry, 16.5 mil
+phenolic exit, 120K speed, infeed 55, 0.25 second dwell between hits, 1st peck to the depth of phenolic + aluminum
++ 2 mils into material (28 mil), 1 peck/30 mils thereafter.
+
+(2) Maximum hit counts: 200 hits/bit
+(3) Drill Stackup Illustration (for 250 mil thick pwbs, thick phenolic entry should be used):
+                                        Figure 3 – Stackup of Multilayer Drilling
+
+(4) Vacuum: Maximum capacity
+(5) Drill foot pressure: > 40 psi
+(6) Dwell between hits: 1 second (250 millisecond may work)
+(7) Peck drilling through the phenolic entry material.
+
+                        Table 1. TSM-DS3 Double Sided or Multilayer Drill parameters with fastRise.
+         Drill Size                Chipload         Spindle Speed              Feed Rate              Retract Rate
+          (inch)                     (mil)              (Krpm)                   (ipm)                  (in/min)
+          0.0100                   0.4 – 0.6           80 – 125                 55 – 60                   1000
+          0.0120                   0.4 – 0.6           80 – 125                 55 – 60                   1000
+         0.02001                     0.64                 70                       45                     1000
+         0.02002                     0.33                 45                       15                     1000
+          0.0280                      1.0                 32                       32                     1000
+          0.0380                      1.3                 24                       31                     1000
+          0.0400                      1.8                 22                       40                     1000
+          0.0420                      1.8                 21                       38                     1000
+          0.0440                      1.8                 20                       37                     1000
+          0.0460                      1.8                 19                       35                     1000
+          0.0480                      1.8                 19                       34                     1000
+          0.0500                      2.0                 19                       36                     1000
+1
+  50 hits per bit with peck drilling
+2
+  150 hits per bit, no pecking
+
+Entry/Exit Materials
+Phenolic entry and exit material is critical for drilling PTFE based circuit boards. 16-25 mil phenolic is recommended
+for 100 mil pwbs. 40-50 mil phenolic entry is recommended for 250 mil thick pwbs. PTFE gets hot and likes to
+accumulate on the surfaces of the bit. Phenolic entry and exit material will essentially “clean” the surface of a bit.
+Debris builds up on the bit which includes anything the bit comes into contact with: entry material, copper,
+fiberglass, silica, PTFE, metal from the bit itself, phenolic, Aluminum etc. It is necessary to use a hard thick phenolic
+entry material to essentially break the debris off the bit and smear the debris onto the phenolic before the bit
+arrives clean at the surface of the pcb and drills. Following these drill parameters should allow the user to arrive
+at fairly good hole wall quality on very thick telecom type boards (200-300 mil).
+
+DO NOT WORRY ABOUT PHENOLIC CAUSING EXCESSIVE DRILL WEAR. Drilling Teflon is limited by debris filling and
+fusing to the drill bits. Drill bits are generally exchanged due to debris build up on the bits before wear becomes
+an issue. Reducing hit count should eliminate wear as a factor. Typically 70 mil phenolic is used as backup but the
+phenolic only needs to be 15 mils or the depth of the drill. If the drill only penetrates 20 mils at the bottom the
+phenolic need only be 20 mil. Phenolic backup can be stacked with spectrumboard. Phenolic can also be combined.
+A 25 mil piece of phenolic can be combined with a 15 mil piece of phenolic to yield a 40 mil piece of phenolic. If
+the requirements are such that even higher hole wall quality is needed there is another solution:
+Tip: Strategies to remove plating nodules: for very demanding hole wall specifications it might be necessary to
+drill the holes, pass the pcb through an electroless treatment or flash plating treatment to essentially make the
+debris in the hole rigid, then redrill to snap the debris from the side of the hole wall. Another strategy for critical
+hole wall quality is to slightly under drill (using undersized diameter drill bit)the hole, thereby remove most of the
+PTFE-ceramic from the hole, flash plate the hole, and then redrill it with the proper size bit. If undersized drilling
+is used, flash plating between drill sizes may not be necessary.
+
+Dwell Times
+Studies have shown that the best hole wall quality is obtained when the drill bit has a chance to cool. This makes
+intuitive sense because a cooler bit will be less likely to cause the PTFE to become soft and stretchy. We have
+found that a 1 second (1,000ms) dwell time between hits is sufficient. Longer dwell times will not improve hole
+wall quality.
+
+Peck Drilling
+We have also found that it is beneficial to “clean” the bit by pecking to a depth that corresponds to the thickness
+of the entry material. Pecking through the distance of the phenolic will abrade debris off the bit in the phenolic
+and allow the debris from the phenolic to be removed before the bit reenters the hole and starts drilling the
+multilayer based on fastRise. Therefore the first peck should be the depth of the entry material. This is necessary
+to remove the phenolic debris before “cleaned” drill bit starts drilling into the PTFE based pcb. Past studies have
+shown that peck drilling inside of PTFE pcb is necessary for micro diameters (12mil and 14mil) to remove the debris
+in order to prevent tool breakage. However, for 28mil holes, peck drilling inside 200 mil PTFE based pcb is still not
+clear. Some drill studies suggest that peck drilling will leave a small circular ring where the drill bits stop in the
+hole. However, it may be necessary to peck drill to remove drill debris. Peck drilling has the benefit of allowing the
+bit to cool a bit and it improves debris removal. However, we have found in a very complex 250 mil pwb that the
+peck drilling puts a lot more wear on the drill bit. You need a sharp cutting tool to cut the Teflon smoothly
+otherwise it does smear. Some drill bit vendors claim that pecks increase drill wear proportional to the # of pecks.
+No pecking and low 50 hits per bit has the best chance of eliminating smear because the drill bit will stay very
+sharp. To drill a thick pwb with no pecking however, you have to operate at very low chiploads. Table 4 shows two
+different successful drill parameters for drilling a 20 mil hole, with and without peck drilling.
+
+Inner Layer Preparation
+Multilayer applications require that two or more laminates be bonded together to form a single circuit board.
+There are two important considerations when processing the circuit board. The first is registration of the features
+from one layer to another. The second is the condition of the bond surface prior to lamination.
+
+Registration: Layer to layer registration is often a critical requirement of the finished circuit board and
+misregistration can cause a variety of issues such as open circuits and poor coupler performance. Therefore, it is
+important that the material be acclimated to the processing environment and the correct artwork compensation
+used. Acclimation to the processing environment is simply making sure that the laminate is at ambient
+temperature prior to processing. It is recommended that if the laminate has seen extreme temperatures during
+shipment or storage, it should be placed in ambient conditions for 24 hours prior to processing. All laminates
+experience movement after the copper foil has been etched. Various factors such as laminate thickness, glass style,
+construction, copper foil thickness, and circuit design all contribute to the characteristic known as dimensional
+stability. The data is reference only and, again, is dependent on the factors listed above. Most printed circuit board
+shops determine artwork compensation data by running samples or estimating based on previous experience.
+
+                                Dimensional Change in                                       Dimensional Change in
+    Material Designation                                       Material Designation
+                                Parts Per Million (PPM)                                     Parts Per Million (PPM)
+           TSM-DS3                     200 - 400                       TLY                         400 – 800
+             TLC                       200 – 400                    RF-35, 35P                     200 – 400
+             TLE                       220 – 400                      RF-60                        400 – 600
+             TLT                       400 – 600                     CER-10                        400 – 600
+Table 2 – Typical dimensional change
+Hole Wall Preparation
+PTFE based laminates require that drilled holes be subjected to a process which will prepare the PTFE resin system
+for subsequent plating. There are two processes that have been shown capable of providing void-free copper
+plating. One process is chemical in nature and involves a sodium-based solution that strips the fluorine atoms from
+the PTFE molecules. This process has been used for many years in the industry with great success. The advantages
+of sodium etching include long shelf life of the hole wall treatment, fast treatment time, and complete coverage.
+The primary disadvantage of sodium etchant is the volatility of the chemical. Various manufacturers and etchant
+services are available. Another method of preparing the holes for plating is plasma etching. If the proper gases
+and cycles are used, plasma will allow plating to the PTFE resin. Experience has shown that the best gases to use
+are a mixture of hydrogen and nitrogen. Helium can also be used in many cases. The advantage of plasma etching
+is that it is a relatively safe procedure. Disadvantages include relatively long cycle times (35 to 60 minutes) and
+short shelf life of the effect (4 – 24 hours).
+
+Sodium Treatment: A sodium-based chemical treatment process does an excellent job of preparing the PTFE
+through-hole surface prior to the plated through hole process. Follow the manufacturer’s recommended
+treatment process. Bake for 1 hour at 250°F (121°C) prior to plating to remove moisture that may have been
+absorbed during the sodium treatment process.
+
+NOTE: Do not subject the treated holes to heavily concentrated chlorine-based chemical processes prior to
+electroless copper plating or direct metallization. Chlorine can have adverse effects on the sodium treatment and
+result in plating voids.
+
+Plasma Etching: Plasma treat using a 30-70% Hydrogen, 70-30% Nitrogen gas mixture. Power setting for the RF-
+signal generator should be 60-75% of full rated power for 30-60 minutes depending on the hole diameter, number
+of holes, and thickness of the board. Boards with relatively higher aspect ratios will require longer plasma cycle
+times. Industry experience has shown that gases such as helium and CF4 are not as effective as hydrogen as
+evidenced by sporadic plating voids and higher contact angles.
+
+Special treatment should be used if TSM-DS3 are combined with AGC’s fastRise. fastRise also contains a
+thermoset resin as the bonding agent. This requires a desmear process in addition to the PTFE treatment. There
+are two common methods of desmearing thermoset resin systems. One of the desmear processes involves dipping
+the boards in a permanganate chemical which dissolves the resin. The second method is plasma. Generally
+speaking, the gases used to desmear the thermoset resin do not affect the PTFE resin, nor do the gases used for
+treating the PTFE resin desmear the thermoset resin very well if at all. Also, the sodium solution commonly used
+to treat the PTFE resin will not affect the thermoset resins system. Because TSM-DS3 contain no thermosetting
+resin…..they must be treated with either plasma gases or sodium etching for proper wet out and adhesion of the
+plating chemicals.
+
+For multilayer applications, Permanganate desmear IS NOT RECOMMENDED and has been shown to be very
+aggressive, due to the relatively thin layer of thermosetting resin and due to the fact that the thermosetting layer
+contains a silica filler, and can cause excessive etchback. Permanganate will not affect the PTFE. Desmearing of
+the fastRise can be more closely controlled with a plasma desmear cycle. In addition, hole wall treatment of the
+PTFE can also be done successfully with plasma and it is possible to have back-to-back desmear and hole treatment
+without removing the product from the plasma machine. Basically desmear and PTFE activation should occur in a
+two cycle plasma cycle. TSM-DS3 core materials will not be affected by a permanganate desmear process.
+
+
+ AGC recommends the following hole wall treatment:
+     • Thoroughly clean holes prior to treatment. If water cleaning is used, bake the boards at 220°F (105°C)
+         for 1 hour
+     • Plasma treat the epoxy component using a standard epoxy desmear gases and power and a 15 minute
+         cycle time to reduce overetching of the epoxy
+     • Continue plasma cycle with a PTFE cycle shown below
+Plasma Etching: If desmearing or etchback of the thermoset used to bond fastRise is necessary, the prepreg should
+first be exposed to a standard FR4 plasma desmear (10-15 minutes, 185°F /85°C, O2, N2 CF4 gas mixture. If too
+much etchback or pencil tipping of the interconnect occurs at the post then the dwell time in the FR4 plasma
+desmear cycle needs to be reduced. The treatment of the PTFE requires a different gas mixture. Plasma treatment
+of the PTFE resin using a 30-70% Hydrogen, 70-30% Nitrogen gas mixture has been shown to be very effective. If
+Hydrogen is not available, a 100% Helium should also suffice. Power setting for the RF-signal generator should be
+60-75% of full rated power for 30-60 minutes depending on the hole diameter, number of holes, and thickness of
+the board. Boards with relatively higher aspect ratios will require longer plasma cycle times. Industry experience
+has shown that gases such as helium and CF4 are not as effective as hydrogen as evidenced by sporadic plating
+voids and higher contact angles.
+
+Note: Regardless of which method of hole wall treatment is used, desmearing of the thermoset resin should be
+done prior to treatment of the PTFE resin.
+
+Plating
+After the hole wall has been properly prepared, fastRise will accept either electroless copper or direct metallization
+plating. The electrolytic plating process is the same for PTFE or epoxy based materials. Typical plating consists of
+1 – 1.5 mils [25μm - 35μm] of copper plate in the holes and/or on the surface.
+
+Image, Develop, Etch, Strip
+Prepare the copper surface, apply dry film, and image and develop using a standard process. The copper surface
+preparation should consist of microetching the copper. Scrubbing is not recommended for thin core PTFE-based
+materials or multilayer inner layers due to possible registration issues.
+
+The etching process is the same as for a standard printed circuit board. Machine settings should be appropriate
+for the copper thickness of the multilayer inner layers. Strip the photoresist using a standard process.
+
+Solder Mask
+Soldermasking of PTFE materials can be achieved quite easily once the processes of cleaning, application and the
+adhesion mechanisms are thoroughly understood. The following covers these fundamentals. Soldermask
+materials have changed drastically in the last 10 years with a move from two component fixed pot life epoxies, to
+single component heat cured epoxies, to the now standard liquid photo imageable soldermasks. The LPI’s are
+different in that they incorporate a UV reactive component which allows these modified acrylic formulas (or
+combinations of epoxy and acrylates) to be imaged photographically for fine line resolution between fine pitch
+pads.
+
+With the advantages of LPI’s being their ease of use and resolution capability they often do not have the same
+adhesion characteristics as the previous pure epoxy systems. This fact must be taken into account when applying
+LPI’s to PTFE laminates. The mechanism for adhesion of soldermask (or prepreg or bonding film) to the PTFE
+laminate surface is the condition of the PTFE surface prior to application. By nature, PTFE is a very low surface
+energy fluoropolymer and thus it has excellent non-stick properties, which make it highly popular in lubrication
+and release applications.
+
+However, the adhesion of the base copper cladding is achieved by lamination of the relatively rough (Table 3)
+treated copper surface to the PTFE material under high heat and pressure. This process is able to produce an
+excellent mechanical bond between the PTFE resin and the rough dendritic surface of the copper (Figure 3). It is
+the negative impression of the rough copper treatment that remains in the PTFE after etching the copper to form
+the circuitry pattern (Figure 4), which provides adequate surface area for mechanical bonding of the soldermask
+to the PTFE surface (Figure 5). Therefore it is important to eliminate traditional scrubbing techniques which may
+disturb or destroy this rough surface.
+                                                   RzDin (microns)                           Ra (microns)
+             Copper Type
+                                                       “Peak”                                 “Average”
+          1⁄4 oz. ED copper                              4.95                                    0.80
+          1⁄2 oz. ED copper                              6.65                                    1.00
+           1 oz. ED copper                               9.60                                    1.50
+           2 oz. ED copper                               9.70                                    1.55
+Table 3 – Typical copper treatment roughness for various standard weights of electrodeposited copper foils.
+
+
+
+
+                   Figure 4 – Illustration of PTFE surface remaining after copper removal / etching.
+
+
+
+
+                  Figure 5 – Illustration of soldermask wetting and adhesion to rough PTFE surface.
+
+With the need to replace the process a substitute process has been used which has several added benefits.
+Chemical cleaning of the copper surface offers the advantage of reduced mechanical stress on the material. This
+becomes critically important when dealing with thin laminates (<0.010” or 25 mm) and or critical dimensional
+tolerances in soldermask or second stage drilling or routing.
+
+The removal of the scrubbing application also eliminates pits and dents which may be caused by high pressure
+contact with the steel or ceramic coated steel pinch rollers typically used in scrubbing machines to prevent panel
+movement during rotary scrubbing.
+Soldermask Process – Pattern Plated Copper
+1. Etch panels as normal to define circuitry pattern.
+
+2. Allow plated metal etch resist (tin or tin/lead, in the case of nickel or gold surfaces obviously these will remain)
+to remain on panel through post etch inspection processes to prevent copper surface contamination, staining or
+oxidation prior to soldermask application.
+
+3. Set up soldermask application process, prior to stripping or removing the metallic etch resist. Note: For double
+sided soldermask applications, setup soldermask process to apply soldermask to the side of the panel with the
+largest copper area to be covered (i.e. if the ground plane is to be completely covered with soldermask then this
+would be the first side coated).
+
+4. Strip tin or tin/lead from copper surfaces. The copper surfaces should be bright and stain free following tin or
+tin/lead strip. Note: Omit this process for nickel and gold finishes.
+
+5. Chemically clean and roughen the copper surfaces using an acid or alkaline cleaner followed by a micro-etch
+process which removes 30-60μ” of copper. This should provide adequate surface area for adhesion of soldermask
+to copper surfaces.
+
+6. Dry panels thoroughly. If you do not have an adequate horizontal drier then an oven bake is recommended at
+150-170°F (66-77°C) for 15-20 minutes. Note: Drying process should not cause oxidation of copper surfaces. If
+oxidation occurs reduce drying time.
+
+7. Allow panels to cool to room temperature (approximately 5-10 minutes) and immediately apply soldermask.
+
+8. Tack dry (LPI) or bake and cure (silk screened epoxy) soldermask per manufacturer’s recommendation.
+
+9. Continue processing per manufacturer’s recommendation for LPI soldermasks (image, develop and cure).
+
+10. For second side, repeat processes beginning with # 5.
+
+Soldermask Process – Panel Plated Copper
+1. Etch panels as normal to define circuitry pattern.
+
+2. Strip dry film resist from panels and rinse and dry thoroughly to prevent copper surface oxidation.
+
+3. Using clean white cotton gloves, perform post etch inspection immediately following dry film removal. Move
+panels to soldermask process directly after inspection.
+
+4. Set up soldermask application process while post etch inspection is taking place to minimize hold time between
+etch, strip and soldermask application.
+
+Note: For double sided soldermask applications, setup soldermask process to apply soldermask to the side of the
+panel with the largest copper area to be covered (i.e. if the ground plane is to be completely covered with
+soldermask then this would be the first side coated).
+
+5. Chemically clean and roughen the copper surfaces using an acid or alkaline cleaner followed by a micro-etch
+process which removes 30-60μ” of copper. This should provide adequate surface area for adhesion of soldermask
+to copper surfaces.
+
+6. Dry panels thoroughly. If you do not have an adequate horizontal drier then an oven bake is recommended at
+150-170°F (66-77°C) for 15-20 minutes. Note: Drying process should not cause oxidation of copper surfaces. If
+oxidation occurs reduce drying time.
+
+7. Allow panels to cool to room temperature (approximately 5-10 minutes) and immediately
+apply soldermask.
+
+8. Tack dry (LPI) or bake and cure (silk screened epoxy) soldermask per manufacturer’s recommendation.
+
+9. Continue processing per manufacturer’s recommendation for LPI soldermasks (image, develop and cure).
+
+10. For second side, repeat processes beginning with step # 5.
+Solder Reflow
+Hot air solder leveling is a common method of protecting exposed copper circuitry. Two basic types of hot air level
+machines are used in the industry, horizontal and vertical. By far the more popular of the two is the vertical
+machine. It is less expensive and easier to maintain than the horizontal type. However, the vertical machine
+subjects the printed circuit board to a more severe level of thermal shock than the horizontal.
+
+Once the board is clamped in the vertical machine, the only preheat the board sees is the few seconds above the
+solder pot prior to immersion. Typical immersion times are 5 – 6 seconds from entry into the solder pot to
+complete withdrawal. This minimal preheat time can be particularly harsh on PTFE based laminates due to their z
+axis expansion characteristics. When using hot air solder leveling on PTFE laminates, AGC recommends a bake
+cycle of 2–3 hours at 300°F (149°C) just prior to the HASL process. The solder pot temperature should be
+maintained at 460° - 480°F (238° - 249°C)) for optimal performance. Cycle time should be 5 – 6 seconds from the
+time of entry to the complete withdrawal of the board. Dwell time in the solder pot should not exceed 2 seconds.
+
+Machining / Routing
+Machining of PTFE-based substrates is typically more difficult than epoxy-based substrates due to the softness of
+the PTFE resin system. The style of fiberglass used in the substrate also affects the quality of routing with respect
+to burrs and fibers. The heavier the fiberglass weave, the more difficult it is to cut.
+
+AGC products can be successfully machined using two flute end mills when the recommended methods and rout
+parameters are used. In addition to the rout parameters, an equally important factor in successful routing is having
+intimate contact throughout the routed package. Figure 6 shows a typical rout stack with phenolic entry and
+backer material on either side of the circuit board. Notice that the entry material rides on top of the copper traces
+leaving an air gap between the entry material and the PTFE substrate. In this case, the router bit will force the soft
+substrate into the air gap at the area circled in red.
+
+Many circuit board applications also have soldermask on top of the copper traces which increases the gap further.
+The solution to a cleaner cut is to introduce a material between the copper traces and the phenolic entry material
+that will conform at the edge and will help fill in the air gap. One type of paper that has been shown to work well
+is the paper found in between artwork film. It is thick enough to fill in the normal air gap and cuts without
+generating as much debris as other paper such as Kraft paper.
+
+
+
+
+       Figure 6 – A typical rout stack with phenolic entry and backer material on either side of the circuit board
+                                    Figure 7 – Typical TSM-DS3 rout stack-up
+
+Recent routing trials using AGC materials have yielded the following recommended rout parameters. These
+parameters are good starting points for all standard AGC materials. Special materials such as those with heavy
+metal ground planes may require different rout parameters and are not addressed in this guideline.
+
+                            Recommended Routing Parameters for All AGC Materials
+                                                 Spindle Type                             Z - Feed Rate
+     Tool
+                Chipload           60,000 max                   80,000 max           Without         With
+  Diameter
+               (mils/rev)     Spindle     Feed Rate        Spindle     Feed Rate    predrilling   predrilling
+    (mils)
+                            Speed(rpm)     (in/min)      Speed(rpm)     (in/min)     (in/min)      (in/min)
+    31.5          0.24        50,000          11.8         50,000          11.8        0.0            20
+    35.4          0.26         45,000         11.8         45,000          11.8        0.0            20
+    39.4          0.30         40,000         11.8         40,000          11.8        0.0            79
+    43.3          0.32         37,000         11.8         37,000          11.8        0.0            79
+    47.2          0.35         34,000         11.8         34,000          11.8        0.0            79
+    51.2          0.51         31,000         15.8         31,000          15.8        0.0            79
+    55.1          0.54         29,000         15.8         29,000          15.8        0.0            79
+    59.1          0.59         27,000         15.8         27,000          15.8        0.0            79
+    63.0          0.79         25,000         19.7         25,000          19.7        0.0           197
+    66.9          0.82         24,000         19.7         24,000          19.7        0.0           197
+    70.8          1.03         23,000         23.6         23,000          23.6        0.0           197
+    74.8          1.12         21,000         23.6         21,000          23.6        0.0           197
+    78.7          1.38         20,000         27.6         20,000          27.6        0.0           197
+    82.7          1.58         20,000         31.5         20,000          31.5        0.0           197
+    86.6          1.58         20,000         31.5         20,000          31.5        0.0           197
+    90.6          1.58         20,000         31.5         20,000          31.5        0.0           197
+    94.5          1.77         20,000         35.4         20,000          35.4        0.0           197
+    98.4          1.77         20,000         35.4         20,000          35.4        0.0           197
+    118.1         2.17         20,000         43.3         20,000          43.3        0.0           197
+    125.0        2.17         20,000          43.3         20,000          43.3        0.0           197
+Table 4 – Recommended routing parameters for all AGC materials
+                           Recommended Routing Parameters for All AGC Materials
+                                                  Spindle Type                                  Z - Feed Rate
+     Tool
+                Chipload           60,000 max                    80,000 max                Without         With
+  Diameter
+               (µm/rev)       Spindle      Feed Rate        Spindle      Feed Rate        predrilling    predrilling
+    (mm)
+                            Speed(rpm)      (m/min)       Speed(rpm)      (m/min)          (m/min)        (m/min)
+     0.80          5          50,000          0.25          50,000          0.25              0             0.50
+     0.90          6          45,000          0.27          45,000          0.27              0             0.50
+     1.00          8          40,000          0.32          40,000          0.32              0             2.00
+     1.10          9          37,000          0.33          37,000          0.33              0             2.00
+     1.20          10         34,000          0.34          34,000          0.34              0             2.00
+     1.30          12         31,000          0.37          31,000          0.37              0             2.00
+     1.40          14         29,000          0.41          29,000          0.41              0             2.00
+     1.50          16         27,000          0.43          27,000          0.43              0             2.00
+     1.60          18         25,000          0.45          25,000          0.45              0             5.00
+     1.70          22         24,000          0.53          24,000          0.53              0             5.00
+     1.80          26         23,000          0.60          23,000          0.60              0             5.00
+     1.90          30         21,000          0.63          21,000          0.63              0             5.00
+     2.00          34         20,000          0.68          20,000          0.68              0             5.00
+     2.10          38         20,000          0.76          20,000          0.76              0             5.00
+     2.20          40         20,000          0.80          20,000          0.80              0             5.00
+     2.30          42         20,000          0.84          20,000          0.84              0             5.00
+     2.40          44         20,000          0.88          20,000          0.88              0             5.00
+     2.50          46         20,000          0.92          20,000          0.92              0             5.00
+     3.00          53         20,000          1.06          20,000          1.06              0             5.00
+     3.18          55         20,000          1.10          20,000          1.10              0             5.00
+Table 5 – Recommended routing parameters for all AGC materials (metric)
+
+
+Multilayer
+General Information for TSM-DS3 multilayers with fastRise Prepreg
+fastRise prepreg is part of the AGC product offering designed specifically for High Speed Digital /ATE (DUT)
+applications, and RF multilayers for mmWave frequencies. Coupled with other AGC laminate cores, fastRise
+enables the use of low electrical loss stipline structures in high multilayer count boards out to high data rates (43+
+gbps) and mmWave frequencies.
+
+The thermoset properties of the bonding agent enable multiple laminations and thermal excursions during
+standard circuit board fabrication without delamination of the multilayer package. fastRise utilizes a high loading
+of ceramic for low electrical loss and dimensional stability, a high performance thermoset resin as a bonding agent
+for the copper foil, and some PTFE. The major component is silica. fastRise prepreg can be used to bond together
+all standard PTFE core materials (TLY, RT/Duroid 5880 etc), ceramic filled PTFE material (TSM-DS3, RO3003,
+RT/duroid6002, CLTE), rubber products (RO4003/R4350), standard modified epoxy cores (N4000-13SI), and
+polyimide cores.
+
+
+
+
+                                           Figure 8 – fastRise construction
+fastRise is designed very much like an acrylic based polyimide prepreg. Polyimide prepregs typically contain a
+polyimide film with a butter coat of a low temperature adhesive. fastRise contains a highly ceramic loaded PTFE
+film with a surface coat of a low temperature adhesive. The adhesive layer is responsible for flowing and filling
+between the innerlayer artwork. There are two mechanisms for filling the artwork. The thermosetting resin that
+is coated onto the PTFE/ceramic film will do most of the work in filling the copper artwork as shown in the pictures
+below. However, in very demanding applications where there is very heavy copper and a very tight pitch, the PTFE-
+ceramic film will conform and fill around the copper thus increasing the effective mass available to flow and fill
+the artwork.
+
+DESIGN NOTE: In order to achieve adequate filling around etched features, the number of fastRise plies and ply
+thickness should be determined using the guidelines in Table 2. These guidelines are based on high layer count
+multilayer designs with stacked traces which create high and low pressure areas during lamination. The
+recommendations are conservative and other designs may realize satisfactory results using fewer or thinner bond
+plies. The flow properties are very dependent on the pressure used during lamination and the prepreg used. For
+low flow or cavity type applications, the prepregs with 4-5% flow should be used and low lamination pressures.
+For 2-3 oz copper filling, high flowing prepregs are necessary. 2 plies of prepreg may be necessary for 2-3 oz copper.
+
+
+
+
+                                  Table 6 Choosing the Right fastRise Part Number
+
+
+
+
+                                  Table 7 Pressed Thicknesses and Design Guidance
+fastRise is manufactured to a mass specification and not to a thickness specification. The final pressed thickness
+will depend on many factors including: (1) the mass of copper etched away (2) pitch (3) the presence of low
+pressure zones in the pwb (4) press pressure during multilayer lamination (5) the presence of features such as
+blind or buried vias that will draw thermoset resin away. fastRise will vary in thickness by no more than 9% when
+all of the lamination parameters have been established and they are consistent. Processing fastRise can be readily
+accomplished using standard epoxy circuit board processing methods coupled with either plasma or sodium
+treatment of the PTFE hole walls. The following process recommendations are based on circuit boards produced
+at several facilities. It should be noted that each board shop may have different equipment and methods that will
+require modifications to these recommendations. Drill and routing parameters and artwork compensation data
+are very dependent on circuit board thickness and design and should be adjusted based on the experience of each
+facility. The treatment of hole walls prior to plating must be done using a plasma or sodium treatment system.
+
+fastRise
+Refrigeration
+fastRise is a non reinforced prepreg that is manufactured between release liners so that individual plies of fastRise
+do not stick together. The adhesive layer on the surface of the PTFE/ceramic film can be quite tacky especially for
+freshly manufactured material. It is recommended to refrigerate fastRise prior to lamination. Continuous
+refrigeration is always a good practice for storing prepregs as this will extend the shelf life. However, because
+fastRise can be quite tacky, fastRise should be refrigerated as close to 40ºF/4ºC as possible. fastRise will stiffen up
+and will separate from the release liners a
+lot easier.
+
+Lamination
+Various laminate cores are used in conjunction with fastRise prepreg to produce multilayer boards for the
+RF/digital/ATE multilayer markets. fastRise when used in a symmetrical board design, will result in optimum
+electrical and mechanical performance. Because of the thermoset properties of the bonding agent, multiple
+bonding cycles can be achieved without worry of delamination. In addition, the recommended press temperature
+of 420°F [215.5°C] is within reach of most board shops.
+
+AGC recommends the following press cycle for fastRise27 for most laminations:
+    • Vacuum Lamination Recommended
+    • Heat rise 3°F - 10°F / minute [1.5°C – 5.5°C] to 420°F [215.5°C] *
+        - Flow window is 130°F [80°C] – 302°F [150°C]
+    • Maintain pressure at 73 psi [5 bar] until package reaches 100°F [37°C] then apply full pressure of 500 psi
+        [31 bar] Hold (cure) for 1 hour
+    • Cool package under full pressure at < 6°F [3°C] / minute
+
+Alternate press cycle for hybrids:
+     • Press at 390F for 3 hours, otherwise same as above
+
+For fastRiseDS, fastRise77P, and very difficult flow and fill multilayers with fastRise27, AGC recommends the
+following press cycle:
+     • Vacuum Lamination Recommended
+     • Heat rise 3°F - 10°F / minute [1.5°C – 2.0°C] to 225 °F [121°C ]
+     • Maintain pressure at 73 psi [5 bar] until package reaches 100°F [37°C] then apply full pressure of 500 psi
+         [31 bar]
+     • HOLD AT 225°F for 60 minutes
+     • Increase temperature from 225°F [121°C] to 420°F [215.5°C] at 1.5 – 3.0°C / minute - Flow window is
+         130°F [80°C] – 302°F [150°C]
+     • Hold (cure) for 1 hour
+     • Cool package under full pressure at < 6°F [3°C] / minute
+*For high layer count boards, best flow and fill has been seen at low heat-up rates. For low layer count multilayers, a
+low heat-up rate is less critical.
+
+The as shipped prepreg cure is not very advanced. For best gap filling it is desirable to achieve the maximum
+amount of flow prior to the advancement of the resin. The earliest application of pressure will help, certainly
+below the melt of the thermoset (140°F [60°C]), coupled with a 3°F - 10°F [1.5°C -5.5°C] rate of rise. A cold start of
+the press is desirable. A hot start of the press will advance the cure of the resin before the
+best flow is achieved and the optimal amount of flow will not be achieved.
+
+For lamination of 2 oz innerlayers a slow heat ramp up rate is suggested. Lagging or padding will help achieve a
+slower heat rise. Press pressure will affect the degree of flow and any voiding if present. Low pressure will yield
+less flow, more pressure more flow. A slow cool is necessary to avoid any issues associated with delamination. The
+hot press should be cooled to somewhere between 170-200°F before opening, although data suggests the press
+could be opened at 250°F. Transfer to a cold press should not be done until the hot press has reached the
+recommended temperatures.
+Appendix
+DOUBLE SIDED PTFE MATERIALS
+                               Double Sided PTFE Laminate Microdrilling Parameters
+                                 80,000 max              110,000 max              125,000 max
+                                                                                                          Retract
+ Drill Size   Chipload                              Spindle                  Spindle
+                           Spindle       Feed Rate             Feed Rate                Feed Rate          Rate
+   (in)         (mil)                                Speed                    Speed
+                         Speed (rpm)      (in/min)              (in/min)                 (in/min)        (in/min)
+                                                     (rpm)                    (rpm)
+  0.0039        0.3        80,000             24    110,000         35       125,000        113            135
+  0.0059        0.5        80,000             39    110,000         55       125,000        125            145
+  0.0079        0.7        80,000             59    110,000         79       125,000        138            157
+  0.0098        1.0        80,000             79    110,000        106       125,000        157            197
+  0.0118        1.2        80,000             94    110,000        130       125,000        177            236
+  0.0138        1.3        80,000            106    110,000        146       125,000        189            276
+  0.0157        1.5        80,000            118    104,000        154       106,000        177            315
+  0.0177        1.7        80,000            134     92,000        154        92,000        169            354
+  0.0197        1.9        80,000            150     83,000        157        85,000        165            394
+
+DOUBLE SIDED PTFE MATERIALS
+                                            Double sided PTFE Drilling Parameters
+                           Spindle     Feed     Retract                             Spindle     Feed      Retract
+   Drill      Chipload                                       Drill      Chipload
+                            Speed      Rate      Rate                                Speed      Rate       Rate
+ Size (in)      (mil)                                      Size (in)      (mil)
+                            (rpm)    (in/min) (in/min)                               (rpm)    (in/min)   (in/min)
+ 0.0217          1.8       80,000       140      400.0     0.0748          2.4      27,000       65        500.0
+ 0.0236          1.8       77,500       141      400.0     0.0768          2.5      26,000       65        500.0
+ 0.0256          1.9       75,000       140      400.0     0.0787          2.5      26,000       65        500.0
+ 0.0276          1.9       72,500       135      400.0     0.0807          2.5      26,000       65        500.0
+ 0.0295          1.9       70,000       130      400.0     0.0827          2.6      25,000       65        500.0
+ 0.0315          1.9       66,000       125      400.0     0.0846          2.7      24,000       65        500.0
+ 0.0335          1.9       62,000       120      400.0     0.0866          2.7      24,000       65        500.0
+ 0.0354          2.0       60,000       120      500.0     0.0886          2.8      23,000       65        500.0
+ 0.0374          2.0       57,000       115      500.0     0.0906          2.8      23,000       65        500.0
+ 0.0394          2.0       54,000       110      500.0     0.0925          2.7      22,000       60        500.0
+ 0.0413          2.1       51,000       105      500.0     0.0945          2.8      21,500       60        500.0
+ 0.0433          2.1       48,000       100      500.0     0.0965          2.6      21,000       55        500.0
+ 0.0453          2.1       45,000        95      500.0     0.0984          2.7      20,500       55        500.0
+ 0.0472          2.1       43,000        90      500.0     0.1004          2.5      20,000       50        500.0
+ 0.0492          2.0       42,000        85      500.0     0.1024          2.5      20,000       50        500.0
+ 0.0512          2.0       40,000        80      500.0     0.1043          2.5      20,000       50        500.0
+ 0.0531          2.1       39,000        80      500.0     0.1063          2.3      19,500       45        500.0
+ 0.0551          2.1       38,000        80      500.0     0.1083          2.3      19,500       45        500.0
+ 0.0571          2.2       36,000        80      500.0     0.1102          2.4      19,000       45        500.0
+ 0.0591          2.4       34,000        80      500.0     0.1122          2.2      18,500       40        500.0
+ 0.0610          2.3       32,000        75      500.0     0.1142          2.2      18,500       40        500.0
+ 0.0630          2.3       32,000        75      500.0     0.1161          2.2      18,000       40        500.0
+ 0.0650          2.3       32,000        75      500.0     0.1181          2.0      17,500       35        500.0
+ 0.0669          2.4       31,000        75      500.0     0.1201          2.0      17,500       35        500.0
+ 0.0689          2.3       30,000        70      500.0     0.1220          2.1      17,000       35        500.0
+ 0.0709          2.4       29,000        70      500.0     0.1240          1.8      17,000       30        500.0
+ 0.0728          2.5       28,000        70      500.0     0.1250          1.9      16,000       30        500.0
+DOUBLE SIDED PTFE MATERIALS
+                                   Double Sided PTFE Microdrilling Parameters (Metric)
+  Drill                        80,000 max                 110,000 max                  125,000 max               Retract
+           Chipload
+  Size                     Spindle     Feed Rate      Spindle       Feed Rate     Spindle      Feed Rate          Rate
+             (um)
+ (mm)                    Speed (rpm)    (m/min)    Speed (rpm)       (m/min)    Speed (rpm)     (m/min)         (m/min)
+  0.10        7.6          80,000         0.61       110,000           0.89       125,000         1.00             2.99
+  0.15        12.5         80,000         1.00       110,000           1.40       125,000         1.60             4.49
+  0.20        18.8         80,000         1.50       110,000           2.00       125,000         2.30             5.98
+  0.25        25.0         80,000         2.00       110,000           2.70       125,000         3.10             7.48
+  0.30        30.0         80,000         2.40       110,000           3.30       125,000         3.70             8.98
+  0.35        33.7         80,000         2.70       110,000           3.70       125,000         4.00            10.47
+  0.40        37.5         80,000         3.00       104,000           3.90       106,000         3.90            11.97
+  0.45        42.5         80,000         3.40        92,000           3.90        92,000         3.90            13.47
+  0.50        47.5         80,000         3.80        83,000           4.00        85,000         4.00            14.96
+DOUBLE SIDED PTFE MATERIALS
+                                     Double sided PTFE Drilling Parameters (Metric)
+                                                                                                   Spindle       Feed
+ Drill Size    Chipload        Spindle     Feed Rate     Retract Rate    Drill Size   Chipload
+                                                                                                    Speed        Rate
+  (mm)           (um)        Speed (rpm)    (m/min)        (m/min)        (mm)          (um)
+                                                                                                    (rpm)      (m/min)
+    0.55                        76,000         3.8           10.2           1.90        81.8       22,000         1.8
+    0.60                        69,000         3.6           10.2           1.95        81.8       22,000         1.8
+    0.65                        64,000         3.5           10.2           2.00        81.0       21,000         1.7
+    0.70                        60,000         3.4           10.2           2.05        81.0       21,000         1.7
+    0.75                        56,000         3.2           10.2           2.10        80.0       20,000         1.6
+    0.80                        52,000         3.1           10.2           2.15        80.0       20,000         1.6
+    0.85                        49,000         3.0           10.2           2.20        80.0       20,000         1.6
+    0.90                        46,000         2.9           12.7           2.25        80.0       20,000         1.6
+    0.95                        44,000         2.9           12.7           2.30        80.0       20,000         1.6
+    1.00                        42,000         2.9           12.7           2.35        80.0       20,000         1.6
+    1.05                        40,000         2.8           12.7           2.40        80.0       20,000         1.6
+    1.10                        38,000         2.7           12.7           2.45        80.0       20,000         1.6
+    1.15                        36,000         2.7           12.7           2.50        80.0       20,000         1.6
+    1.20                        35,000         2.7           12.7           2.55        80.0       20,000         1.6
+    1.25                        34,000         2.7           12.7           2.60        80.0       20,000         1.6
+    1.30                        32,000         2.6           12.7           2.65        80.0       20,000         1.6
+    1.35                        31,000         2.6           12.7           2.70        80.0       20,000         1.6
+    1.40                        30,000         2.5           12.7           2.75        80.0       20,000         1.6
+    1.45                        29,000         2.4           12.7           2.80        80.0       20,000         1.6
+    1.50                        27,000         2.3           12.7           2.85        80.0       20,000         1.6
+    1.55                        26,000         2.2           12.7           2.90        80.0       20,000         1.6
+    1.60                        26,000         2.2           12.7           2.95        80.0       20,000         1.6
+    1.65                        25,000         2.1           12.7           3.00        80.0       20,000
+    1.70                        24,000         2.1           12.7           3.05        80.0       20,000
+    1.75                        23,000         2.0           12.7           3.10        80.0       20,000
+    1.80                        23,000         1.9           12.7           3.15        80.0       20,000
+    1.85                        23,000         1.8           12.7           3.18        80.0       20,000
+ These guidelines can provide only basic and reference information for PCB fabricators. Because of different
+ environment, equipment, tooling and so on, in all instances, the user shall determine suitability in any given conditions
+ or applications. For more detailed processing information, please contact with the AGC engineer or sales
+ representative.
+ AGC Inc.
+ agc-ml.info-maltimaterial@agc.com
+

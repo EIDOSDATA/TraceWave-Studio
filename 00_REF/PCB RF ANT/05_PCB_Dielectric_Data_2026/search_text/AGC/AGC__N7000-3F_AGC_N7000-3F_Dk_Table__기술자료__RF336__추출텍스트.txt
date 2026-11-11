@@ -1,0 +1,53 @@
+                                          N7000-3F - Dielectric Properties Table
+
+LAMINATE:
+                                                              Nominal     Nominal     10      10
+ Thickness
+              &    Tol.          Construction          RC%   Thickness   Thickness   GHz     GHz
+   (inch)
+                                                               (inch)       (µm)     Dk       Df
+   0.0020     ±   0.0005   1   106                     70%    0.0020        52       3.64   0.0141
+   0.0035     ±   0.0005   1   1080                    67%    0.0035        88       3.73   0.0141
+   0.0040     ±   0.0005   2   106                     70%    0.0041       103       3.64   0.0141
+   0.0050     ±   0.0007   2   106                     75%    0.0050       127       3.50   0.0140
+   0.0060     ±   0.0007   2   1080                    63%    0.0061       154       3.85   0.0142
+   0.0080     ±   0.0010   2   2116                    45%    0.0081       205       4.54   0.0145
+   0.0100     ±   0.0010   2   2116                    53%    0.0100       254       4.20   0.0143
+   0.0120     ±   0.0015   2   2116   +    1    106    55%    0.0120       305       4.12   0.0143
+   0.0140     ±   0.0015   2   2116   +    1    2116   51%    0.0140       356       4.29   0.0144
+   0.0150     ±   0.0015   3   2116                    53%    0.0150       381       4.20   0.0143
+   0.0160     ±   0.0015   2   106    +    3    2116   49%    0.0162       411       4.35   0.0144
+   0.0180     ±   0.0015   2   1080   +    3    2116   49%    0.0182       462       4.34   0.0144
+   0.0210     ±   0.0025   2   2116   +    2    7628   41%    0.0214       544       4.70   0.0146
+   0.0240     ±   0.0025   2   106    +    3    7628   44%    0.0241       612       4.58   0.0145
+   0.0280     ±   0.0025   2   2116   +    3    7628   41%    0.0281       714       4.74   0.0146
+   0.0310     ±   0.0040   2   106    +    4    7628   42%    0.0308       781       4.64   0.0146
+   0.0470     ±   0.0050   2   1080   +    6    7628   43%    0.0470       1194      4.64   0.0145
+   0.0590     ±   0.0050   2   1080   +    8    7628   41%    0.0595       1510      4.73   0.0146
+   0.0620     ±   0.0050   2   2116   +    8    7628   39%    0.0615       1561      4.82   0.0146
+
+
+
+
+Page 1 of 2                                                                                          June 3, 2026
+                                                 N7000-3F - Dielectric Properties Table
+
+ PREPREG:
+                                 Thickness      Thickness
+      Glass           RC%                                        10 GHz Dk       10 GHz Df
+                                  (inches)         (µm)
+
+       106             77          0.0027            70             3.25           0.0140
+      1080             70          0.0039            99             3.44           0.0141
+      2116             53          0.0050           127             4.00           0.0143
+
+
+
+
+These laminate and prepreg items are representative of available materials. These items and their associated values may not be regularly available and additional
+lead times or minimum order quantities could apply. Please contact our office or your local technical representative for assistance with choosing the best material for
+your design and application.
+                                                                    For More Information:
+                                      North America +1.480.967.5600 • Europe +33.5.62.98.52.90 • Asia Pacific +65.686.17117
+ Page 2 of 2                                     agc-ml.multimaterial@agc.com • www.agc-multimaterial.com                                                June 3, 2026
+

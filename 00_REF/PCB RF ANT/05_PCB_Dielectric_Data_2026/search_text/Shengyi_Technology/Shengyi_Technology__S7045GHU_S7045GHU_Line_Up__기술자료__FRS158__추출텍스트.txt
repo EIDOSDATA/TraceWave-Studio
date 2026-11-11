@@ -1,0 +1,57 @@
+ Based Material Line Up
+
+ S7045GHU/ S7045GHUB
+1.    CORE (C-STAGE)
+                            Tickness                                             Dk                               Df
+      Product                                            ply-up
+                   （mm）                （mil）                              1GHz           10GHz      1GHz                10GHz
+                    0.051                2               1x106            3.59           4.01       0.013               0.0153
+                    0.076                3               1x1080           3.77           4.19       0.012               0.0146
+                    0.102                4               1x3313           3.95           4.42       0.010               0.0138
+                    0.127                5               1x2116           3.97           4.43       0.010               0.0135
+                    0.152                6               2x1080           3.77           4.19       0.012               0.0146
+                    0.203                8               2x3313           3.95           4.42       0.010               0.0138
+     S7045GHU
+                    0.254               10               2 x2116          3.97           4.43       0.010               0.0135
+                    0.381               15               3x2116           3.97           4.43       0.010               0.0135
+                    0.508               20               4x2116           3.97           4.43       0.010               0.0135
+                    0.635               25               5x2116           3.97           4.43       0.010               0.0135
+                    0.762               30               6x2116           3.97           4.43       0.010               0.0135
+                    1.016               40               8x2116           3.97           4.43       0.010               0.0135
+
+
+
+
+2.    PREPREG (B-STAGE)
+                                             Thickness                      Dk                               Df
+       Product   Glass style     RC%
+                                              （mm）                 1GHz          10GHz           1GHz                  10GHz
+                                  72           0.051               3.59           4.01           0.013                 0.0153
+     S7045GHUB      106
+                                  77           0.064               3.48           3.88           0.013                 0.0157
+
+                                                                                                   CN-LU-2504-S01-S7045GHU-S7045GHUB
+Based Material Line Up
+                                              64              0.076                  3.77                        4.19   0.012               0.0146
+                           1080
+                                              68              0.086                  3.68                        4.10   0.012               0.0149
+                                              56              0.102                  3.95                        4.42   0.010               0.0138
+                           3313
+                                              60              0.117                  3.86                        4.27   0.011               0.0143
+                                              55              0.127                  3.97                        4.43   0.010               0.0135
+                           2116
+                                              59              0.145                  3.88                        4.30   0.011               0.0142
+
+
+
+
+3. REMARK
+   1)   Dk/Df at 1GHz measuring method: IPC TM-650 2.5.5.9;
+   2)   Dk/Df at 10GHz measuring method: IEC61189-2-721 SPDR;
+   3) The above data is for reference only, but not guarantee value. SYTECH reserves the right for any update.
+
+
+
+
+                                                                                                                          CN-LU-2504-S01-S7045GHU-S7045GHUB
+

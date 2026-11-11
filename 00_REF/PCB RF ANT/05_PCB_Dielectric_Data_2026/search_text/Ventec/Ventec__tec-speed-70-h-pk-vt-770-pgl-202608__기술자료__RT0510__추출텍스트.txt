@@ -1,0 +1,277 @@
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+tec-speed 7.0
+            1H-PPKKVVTT-770(
+              H-        -770LK)                                             U    L Approval: E214381       Version:16/08/2026
+
+PROCESS GUIDE
+
+
+Precautions in Handling
+Storage Condition & Shelf Life
+                                                    Prepreg                                            Laminate
+                           Temperature              B   elow 23ºC (73ºF)     B   elow 5ºC (41ºF)       R   oom
+ Storage Condition
+                           Relative Humidity        B   elow 55%RH           /                         /
+
+
+ Shelf Life                                         3   Months               6 Months                  24   Months(airproof)
+
+•       The pre-preg exceeding shelf time should be retested.
+•       Take care in handling thin core laminates as they are easily damaged.
+•       If the pre-preg is not consumed within 48hrs after opening the vacuum package, it is recommended that
+        the bags be resealed.
+•       Material is available in both long and short grain. The grain direction is indicated on the label with an arrow.
+
+
+
+
+Designing and Inner layer Process
+•       Please be careful when single ply of 1078 or 1035, 1027 prepreg is designed to the dielectric layer.
+•       Baking of material is recommended for stabilization of dimension.
+•       In case of thin copper(ex.3um) with carrier copper foil, the carrier foil should be removed off before baking. 
+
+        Baking condition: Temp 200℃, 2 hours.
+•       Brown Oxide can be used. In the case of using Black Oxide,please check whether peel strength is 
+
+        acceptable for the usage.
+•       Holding time between brown oxide and press process: best control within 6 hours.
+
+
+
+
+                                                                                                                        Page 1 of 6
+www.venteclaminates.com                                                                                          Published on: 16/08/2026
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+tec-speed 7.0 H-PK VT-770                                                  UL   Approval: E214381     V   ersion:16/08/2026
+
+PROCESS GUIDE
+
+
+Prepreg Availability
+•       E-Glass styles: 2116, 2113, 1078, 1067, 1037, etc.
+•       DK values are for impedance design.
+
+                                                              Dk                                     Df
+    100% PPT          Glass
+     R/C
+
+                      Style      (%)     @
+       @
+          @
+    @
+    @
+   @
+           @
+   @
+    @
+    @
+
+        mil                             1GHz     2GHz        5GHz 10GHz 20GHz 1GHz         2GHz 5GHz 10GHz 20GHz
+        1.7                      73      3.28     3.28       3.22   3.18   3.15   0.0030   0.0034   0.0037   0.0039      0.0041
+        1.8               1027   75      3.25     3.24       3.20   3.16   3.13   0.0030   0.0034   0.0037   0.0039      0.0041
+        2.0                      77      3.22     3.21       3.17   3.13   3.10   0.0029   0.0033   0.0036   0.0038      0.0040
+        1.9                      72      3.31     3.31       3.25   3.21   3.18   0.0030   0.0035   0.0038   0.0040      0.0042
+        2.0               1037   74      3.27     3.27       3.23   3.19   3.16   0.0030   0.0034   0.0037   0.0039      0.0041
+        2.2                      76      3.23     3.22       3.18   3.14   3.11   0.0029   0.0033   0.0036   0.0038      0.0040
+        2.5                      71      3.33     3.33       3.27   3.23   3.19   0.0030   0.0035   0.0038   0.0040      0.0042
+        2.6               1067   73      3.28     3.28       3.22   3.18   3.15   0.0030   0.0034   0.0037   0.0039      0.0041
+        2.9                      75      3.25     3.24       3.20   3.16   3.13   0.0030   0.0034   0.0037   0.0039      0.0041
+        3.1                      64      3.42     3.41       3.36   3.33   3.29   0.0031   0.0036   0.0039   0.0041      0.0043
+        3.3               1078   66      3.40     3.40       3.35   3.31   3.27   0.0031   0.0036   0.0039   0.0041      0.0043
+        3.5                      68      3.33     3.32       3.26   3.22   3.19   0.0030   0.0035   0.0038   0.0040      0.0042
+        4.0               2113   56      3.48     3.48       3.43   3.39   3.34   0.0033   0.0038   0.0041   0.0043      0.0045
+        5.0               2116   54      3.50     3.49       3.45   3.41   3.38   0.0033   0.0038   0.0041   0.0043      0.0045
+
+Remarks:
+
+
+
+•       Press thickness test condition---Prepreg lamination size 18”*24”, Copper Foil---1oz/1oz, Flow---about 5%.
+•       Make laminated prepreg to micro-section and measure the thickness with microscope; This thickness is used
+        for resistance design calculation.
+•       The thickness measured with micrometer is 0.2~0.4 mil larger than that measured with micro-section; and
+        mainly used for total thickness design calculation.
+
+
+
+
+                                                                                                                   Page 2 of 6
+www.venteclaminates.com                                                                                      Published on: 16/08/2026
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+tec-speed 7.0 H-PK VT-770                                             UL Approval: E214381       Version:16/08/2026
+
+PROCESS GUIDE
+
+
+Laminates Availability
+•         E-Glass style.
+•         DK values are for impedance design.
+
+     Pressed
+                                            Dk                                     Df
+    Thickness         Glass
+    R/C
+
+                      Style     (%)      @
+      @
+      @
+    @
+    @
+   @
+           @
+   @
+    @
+    @
+
+    µm       mil                        1GHz    2GHz    5GHz 10GHz 20GHz 1GHz         2GHz 5GHz 10GHz 20GHz
+    43       1.7      1-1027     73      3.28    3.28   3.22   3.18   3.15   0.0030   0.0034   0.0037   0.0039      0.0041
+     50      2.0      1-1067     65      3.40    3.40   3.35   3.31   3.27   0.0031   0.0036   0.0039   0.0041      0.0043
+     64      2.5      1-1067     71      3.33    3.32   3.26   3.22   3.19   0.0030   0.0035   0.0038   0.0040      0.0042
+     76      3.0      1-1078     64      3.42    3.41   3.36   3.33   3.29   0.0031   0.0036   0.0039   0.0041      0.0043
+     89      3.5      1-1078     68      3.35    3.35   3.29   3.25   3.21   0.0030   0.0035   0.0038   0.0040      0.0042
+    102              1-3313      56      3.48    3.48   3.43   3.39   3.34   0.0033   0.0038   0.0041   0.0043      0.0045
+             4.0
+    102              2-1067      65      3.40    3.40   3.35   3.31   3.27   0.0031   0.0036   0.0039   0.0041      0.0043
+    127               1-2116     54      3.50    3.49   3.45   3.41   3.38   0.0033   0.0038   0.0041   0.0043      0.0045
+              5.0
+    127              2-1067      71      3.33    3.32   3.26   3.22   3.19   0.0030   0.0035   0.0038   0.0040      0.0042
+    152       6.0    2-1078      63      3.44    3.44   3.39   3.35   3.31   0.0031   0.0036   0.0039   0.0041      0.0043
+    203       8.0    2-3313      56      3.48    3.48   3.43   3.39   3.34   0.0033   0.0038   0.0041   0.0043      0.0045
+    254      10.0     2-2116     54      3.50    3.49   3.45   3.41   3.38   0.0033   0.0038   0.0041   0.0043      0.0045
+    305      12.0    3-3313      56      3.48    3.48   3.43   3.39   3.34   0.0033   0.0038   0.0041   0.0043      0.0045
+                     2-2116+
+
+    356      14.0                55      3.49    3.49   3.44   3.40   3.36   0.0033 0.0038 0.0041 0.0043 0.0045
+                     1-3313
+    381      15.0     3-2116     54      3.50    3.49   3.45   3.41   3.38   0.0033 0.0038 0.0041 0.0043 0.0045
+    406      16.0    4-3313      56      3.48    3.48   3.43   3.39   3.34   0.0033 0.0038 0.0041 0.0043 0.0045
+                     2-2116+
+
+    457      18.0                55      3.49    3.49   3.44   3.40   3.36   0.0033 0.0038 0.0041 0.0043 0.0045
+                     2-3313
+    508      20.0     4-2116     54      3.50    3.49   3.45   3.41   3.38   0.0033 0.0038 0.0041 0.0043 0.0045
+    635      25.0     5-2116     54      3.50    3.49   3.45   3.41   3.38   0.0033 0.0038 0.0041 0.0043 0.0045
+    711      28.0    7-3313      56      3.48    3.48   3.43   3.39   3.34   0.0033 0.0038 0.0041 0.0043 0.0045
+
+•         More types could be available upon request.
+
+
+
+
+                                                                                                              Page 3 of 6
+www.venteclaminates.com                                                                                 Published on: 16/08/2026
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+tec-speed 7.0 H-PK VT-770                                              UL Approval: E214381      Version:16/08/2026
+
+PROCESS GUIDE
+
+
+Press Condition
+1.Heating rate (Rate of Rise) of material [Material Temperature]: Programmable Press: ≥3℃/min.
+2.Curing Temperature & Time: >120min at more than 210ºC and peak temperature>215 ºC.
+3.Full Pressure: ≥400psi (28Kg/cm2) should be applied full pressure before 100 ºC.
+4.Vacuuming should be continued until over 140ºC [Material Temperature].
+5.Cushion for pressure evenness is needed.
+
+
+
+
+                                                                                                           Page 4 of 6
+www.venteclaminates.com                                                                              Published on: 16/08/2026
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+tec-speed 7.0 H-PK VT-770                                                  UL Approval: E214381        Version:16/08/2026
+
+PROCESS GUIDE
+
+
+Typical Drilling Parameters
+•       Drilling parameters should be adjusted depending on hole size, layer count, panel thickness, stack count and
+        stack height etc.
+•       Please adjust drilling parameters after checking qualities of through holes.
+
+Suggest Drilling parameter as blow:
+
+         Diameter
+             Spindle speed
+            Feed rate                Retract rate
+            Hit counts
+           (mm)                   (KRPM)                   (IPM)                     (IPM)
+            0.10                  200-300                  25-38                      800                     1000
+            0.20                  150-200                  38-50                      800                     1000
+            0.30                  100-150                  38-60                      800                     1000
+            0.40                   80-100                  40-50                      800                     1000
+
+•       Smear,resin cracking or nail heading may occur if drilling condition doesn’t match material.
+
+
+
+Desmear Process
+•       The weight loss of VT-770 is less than as our conventional FR-4 material.
+•       We recommend a plasma cycle and a vertical permanganate cycle together to adequately prepare the 
+
+        hole walls for plating (If used by horizontal desmear, it should be need twice cycles) .
+
+Plasma Desmear Parameter:
+
+One time of FR-4 conditions is recommendable.
+Permanganate Desmear Parameter:
+
+Twice of FR-4 horizontal desmear condition is recommendable, or one time of FR-4 vertical desmear condition
+is recommendable.
+
+Typical Permanganate Desmear parameter by Atotech chemical as below:
+
+             Process                    Reagent type                  Temperature(℃)                   Duration(min)
+             Sewlling                       Alkaline                      60-70                            5-10
+              Etching                   Permanganate                      70-80                            10-15
+
+Please consult the chemical supplier for suggested conditions.
+
+
+
+                                                                                                                   Page 5 of 6
+www.venteclaminates.com                                                                                     Published on: 16/08/2026
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+tec-speed 7.0 H-PK VT-770                                              UL Approval: E214381      Version:16/08/2026
+
+PROCESS GUIDE
+
+
+Packaging and baking recommendation
+•       It is recommended to bake the board before packaging at 125℃/4~8h to avoid moisture causing a decrease
+        in heat resistance.
+•       If the PCBs needs to be stored for a long time before use, it is recommended to use aluminum foil vacuum
+
+        packaging.
+•       If exceed 3 months after packaging, It is best to bake the PCBs at 125℃/4~6h before assembly before use.
+
+
+
+
+                                                                                                            Page 6 of 6
+www.venteclaminates.com                                                                               Published on: 16/08/2026
+

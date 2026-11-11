@@ -1,0 +1,157 @@
+PROCESSING GUIDELINES
+
+
+
+     Laminate: S2155G
+
+
+
+
+                        CN-PG-1809-01-S2155G-EN
+This product process guideline uses IPC-4101 Standard as a reference, and Shengyi make some changes
+according to the product characteristics of the actual situation as to making it more suitable for the Shengyi
+S2155G product use.
+
+
+
+1. Storage condition
+1.1 Laminate
+
+1.1.1 Storage condition
+
+   Pack with original forms on the platform or on the appropriate frame, avoiding stress, prevent sheet
+
+    deformation caused by inappropriate storage which may impact the subsequent PCB processes.
+
+1.1.2 Storage environment
+
+   Sheets should be stored in ventilated, dry, at room temperature under environment control, avoiding
+
+    direct sunlight, rain and avoid erosion of corrosive gas (stored environment directly affect the quality of
+
+    material).
+
+   For double-sided copper clad laminates (cores), to minimize shifting as to avoid scratching the surface of
+
+    the product, with a suitable environment and condition for storage, the shelf life can be up to two years.
+
+   For single-sided copper clad laminates, with a suitable environment and condition for storage, the shelf
+
+    life can be up to one year.
+
+1.1.3 Operation manual
+
+   Wear clean gloves and carefully operate the cores. Copper foil collisions, sliding will cause damage of
+
+    the cores. Bare hands action will cause contamination to copper foil surface. These defects are likely to
+
+    cause adverse effects.
+
+
+
+2. PWB Processing
+2.1 Panel cutting
+
+   Sawing (preferred) and shearing method is recommended. Be careful of potential edge cracks when
+
+    using roller cutter or caused by improper gap or cutter blade abrasion.
+
+2.2 Pre-baking
+
+   Because CEM-3 core material uses glass fiber paper as the reinforced material, the dimensional stability
+
+    of CEM-3 is worse than that of FR-4. In PCB processing, baking after panel cutting can eliminate the
+
+    stress and lower the dimensional shrinkage rate of the CEM-3 materials.
+
+   Material pre-baking depends on the actual need. If materials are baked after cutting, it’s recommended to
+
+    rinse cutting panels first, which is able to remove resin powder brought by cutting and avoid etching
+
+    problem.
+
+
+                                                                                 CN-PG-1809-01-S2155G-EN
+   Baking condition: 150℃/3-5h, be sure to avoid materials directly contact with heater. Baking for 1.0mm
+
+    thickness laminate, the stack up quantity does not exceed 30 panels; and for 1.6mm thickness laminate,
+
+    the stack up quantity does not exceed 20 panels.
+
+2.3 Film compensation
+
+   CEM-3 materials have large shrinkage rate because of the structure. Although pre-baking process will
+
+    lower the shrinkage rate, in the following PCB process, materials will still occur different degrees of
+
+    shrinkage or expansion and therefore will need the film compensation. Film compensation factor are
+
+    determined by actual production experience or FA production experience.
+
+2.4 Etching
+
+   S2155G contains inorganic fillers, because of the reflectance difference, similar to white spots might be
+
+    observed scattered on the laminate surface, which is normal and will not affect the material property.
+
+2.5 Drilling
+
+   For 1.6mm thickness laminate, the suggested drilling parameters are: 3-4 panels per stack, drill speed
+
+    60000-70000r/min, feed speed 60-70μm/r; we also suggest customers to find the suitable drilling
+
+    parameters according to their trial run experience.
+
+2.6 Solder mask
+
+   Be careful of panel distortion or warpage due to improper stack-up at pose baking process.
+
+2.7 HAL
+
+   Suitable for non-lead free HAL process.
+
+2.8 Punching
+
+   S2155G is suitable for punching process.
+
+2.9 PWB Packaging
+
+   PWB baking before packaging is suggested, baking condition: 125℃/3-5h, to prevent moisture effect on
+
+    the heat resistance of base material.
+
+   For a long time storage, it’s advised to wrap by aluminum pack.
+
+
+
+3. PWB Soldering
+3.1 Shelf life of PWB
+
+   3 months with packaging protection.
+
+   Bake at 125℃/3~5h before assembly is recommended, especially when stored more than 3 months.
+
+3.1 Reflow
+
+   Suitable for standard non-lead free reflow process.
+
+3.3 Manual soldering
+
+                                                                                CN-PG-1809-01-S2155G-EN
+   For separated or edge connected pad.
+
+   Manual soldering temperature should range 350-380℃ (Use temperature control soldering iron).
+
+   Time for single point soldering: within 3 seconds.
+
+
+
+This process guide is for reference only! Should you have any questions, please feel free to contact us.
+
+ShengYi will support you with prompt and effective service.
+
+
+
+
+                                                                            CN-PG-1809-01-S2155G-EN
+

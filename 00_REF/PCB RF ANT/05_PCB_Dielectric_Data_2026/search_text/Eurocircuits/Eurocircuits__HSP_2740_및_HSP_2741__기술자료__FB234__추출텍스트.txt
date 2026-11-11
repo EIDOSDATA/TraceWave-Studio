@@ -1,0 +1,530 @@
+                                                                                                                    Heatsink pastes
+
+                                                                             HSP 2740 and HSP 2741
+
+                                                                        Base: Epoxy resin (EP)
+                                                                           black 1-pack systems
+                                                                           solvent-free
+                                                                           application by means of screen or stencil printing
+                                                                           can be applied in variable structures and layer
+                                                                            thicknesses
+                                                                         simplify the thermal management of pcbs/assemblies
+                                                                         excellent heat conductivity
+                                                                         low-cost and reliable alternative to "conventional"
+                                                                            bonded heatsink foils
+                                                                         UL approval acc. to UL 94 for HSP 2741 (see item 2)
+
+                                                                     Index: HSP = heatsink paste
+
+
+
+
+                               Contents
+                               1. General information ............................. 2         7.3 Advice on pcb design .......................... 6
+LP 112207 E-6 / 0210904e.006
+
+
+
+
+                               2. Application ........................................... 2   7.4 Screen printing .................................... 7
+                               3. Special notes ....................................... 2     8. Drying/curing ....................................... 8
+                               4. Safety recommendations .................... 3               9. Standard packaging ............................ 9
+                               5. Characteristics..................................... 3      10. Shelf life and storage conditions ......... 9
+                               6. Properties ............................................ 3   11. Further literature/technical
+                               6.1 General properties .............................. 4            documentation..................................... 9
+                               6.2 Physical and mechanical properties.... 4                   12. Further products for the production of
+                               6.3 Electrical properties ............................. 5          pcbs ..................................................... 9
+                               6.4 Heat-conducting performance ............. 5                13. Further products for the electronics/
+                               7. Processing........................................... 5         electrical engineering industries........ 10
+                               7.1 Adjustment of viscosity ........................ 6
+                               7.2 Auxiliary products ................................ 6
+                                       Please read this technical report, the corresponding material safety data sheet and the Technical
+                                       Information sheets TI 15/3, TI 15/11 and TI 15/13 (see Item 4 and 7) carefully before using the
+                                       product.
+Technical Report HSP 2740 and HSP 2741
+
+
+1.   General information
+The heatsink pastes HSP 2740 and HSP 2741 are highly thermally conductive 1-pack systems
+based on epoxy resin (EP) that are applied by means of screen or stencil printing and thermally
+cured.
+All symbols that are used in this technical data sheet and on our containers, such as , are
+explained on our website www.peters.de in the section ”Service – Symbols on labels”.
+
+2.   Application
+The heatsink pastes HSP 2740 and HSP 2741 constitute an extremely low-cost as well as reliable
+alternative in printed circuit board production to the currently used bonded heat sinks that can only
+be processed at substantial expense. The outstanding heat-conducting properties enable the
+industry to do without the use of heat-conducting metal sheets, fraught with high material and
+process costs, for the thermal management of printed circuit boards or flat packs in many fields.
+On account of their excellent heat-conducting properties the heatsink pastes HSP 2740 and
+HSP 2741 are printed chiefly on printed circuit board areas with heat vias and thus heat is already
+dissipated where it occurs. In particular, the unavoidable thermal transition resistances are
+minimised.
+However, the heatsink pastes HSP 2740 and HSP 2741 are not suitable for printing on Pb/Sn
+surfaces which melt during soldering and cause the heatsink pastes to lift.
+The heatsink pastes are also used for the thermal management of LEDs. They increase the
+luminance and lifespan of the LEDs by effectively reducing the heat generated during operation.
+Compared to HSP 2741 the heatsink paste HSP 2740 is distinguished by a better resistance in
+electroless processes, a higher dielectric strength, very good printing properties as well as by a
+very smooth, silk-mat surface. HSP 2740 meets the requirements according to UL 94.
+               Please take into account that owing to the higher degree of cross-linking
+               HSP 2740 possesses a lower flexibility, thus thinner base materials (< 1 mm),
+               higher layer thicknesses and/or larger heatsink paste areas may lead to
+               warping of the printed circuit board. Therefore, please perform your own
+               pretests (see also item 7 "Processing").
+The heatsink paste HSP 2741 shows good printing properties, a slightly less smooth surface and a
+comparatively higher flexibility, so that no warping caused by material tensions are to be expected.
+Furthermore, HSP 2741 is UL approved according to UL 94 (for further information see UL File No.
+E80315; Registered trade mark of         Underwriters Laboratories Inc.; Northbrook, Illinois 60062).
+               Due to the large number of – partly extremely aggressive – chemical finish
+               processes available, the compatibility in particular with HSP 2741 must be
+               verified. Please perform appropriate pre-trials accordingly (see also Section
+               7 "Processing").
+
+3.   Special notes
+The following comparison of the application processes illustrates the essential advantages of the
+"printed heatsink" in the form of a possible application model: As the flow charts show, production
+of printed circuit boards is simplified by using printable heatsinks as especially cost- and time-
+intensive process steps are cut down. Moreover, many steps in the processing of "conventional
+heatsinks" can hardly be automated.
+
+
+
+
+2                                                                                      www.peters.de
+                                                                     Technical Report HSP 2740 and HSP 2741
+
+        "conventional bonded heatsink”                                     "printed heatsink”           h
+
+       Fabrication of punching tools                                               not applicable
+
+Punching of the metal foils in heatsink tools                                      not applicable
+
+Bonding of accurate bonding foil to punched                                        not applicable
+                 shapes
+
+Positioning and bonding of heatsinks on the                                        not applicable
+                   pcb
+
+  Mechanical pretreatment of the heatsink
+                                                                                   not applicable
+             metallic surface
+
+Fabrication of screens for printing protective                       Fabrication of screens for printing heatsink
+             coat onto heatsink                                         paste, that constitutes the heatsink
+
+       Printing of the protective coat                               Direct printing of the heatsink onto the pcb
+     (as a rule, solder resist two times)                            (if necessary more than once, see Item 7)
+
+        Curing of the protective coat                                          Curing of the heatsink
+       (if necessary after each print)
+
+
+4.    Safety recommendations
+ Please read the corresponding material safety data sheet where you will find detailed
+  specifications of safety precautions, environmental protection, waste disposal, storage,
+  handling, transport as well as other characteristics.
+ When using chemicals, the common precautions should be carefully noted.
+ Please read our Technical Information sheet TI 15/3 ”Protective measures when using
+  chemicals including lacquers, casting compounds, thinners, cleaning agents”. On our
+  report manual CD and on our website, technical information sheets can be accessed in the
+  ”Service” section.
+
+5.    Characteristics
+                                                    HSP 2740                              HSP 2741
+Colour/appearance                                     black                                 black
+Solids content                                   100 % by weight                      100 % by weight
+Viscosity* at 20 °C [68 °F]
+                                             28 000  3 000 mPas                    28 000  3 000 mPas
+ISO 3219
+Density at 20 °C [68 °F]
+                                                 2.00  0.05 g/cm³                    2.05  0.05 g/cm³
+ISO 2811-1
+
+      * measured with Haake RS 600, C 20/1°, D = 100 s-1, viscosity measuring unit supplied by:
+        Thermo Electron (Karlsruhe) GmbH (formerly Haake-Messtechnik GmbH + Co)
+        Dieselstraße 4, 76227 Karlsruhe, Germany
+        Phone +49 (0) 721 - 40 94 - 0; Fax +49 (0) 721 - 40 94 - 300
+        www.thermo.com
+
+6.    Properties
+The heatsink pastes HSP 2740 and HSP 2741 are distinguished by the following properties:
+www.peters.de                                                                                                   3
+Technical Report HSP 2740 and HSP 2741
+
+6.1   General properties
+ do not contain substances listed in the RoHS directive 2002/95/EC, EU End-Of-Life Vehicle
+    directive 2000/53/EC and WEEE directive 2002/96/EC
+ solids content 100%, i.e. the achieved dry film thickness is practically identical with the wet layer
+    thickness
+ problem-free application with existing screen/stencil printing and dryer technology
+ high definition and easy printability enable the representation of practically any heat dissipative
+    areas on the printed circuit board
+ high flexibility in the configuration of many different heatsink geometries as merely the
+    corresponding screens and stencils have to be replaced
+ homogeneous lacquer film, i.e. no reduction of the thermal conductivity by air inclusions
+ being paste systems, they facilitate the secure filling of heat vias to increase the heat contact
+    areas
+ excellent adhesion to solder resists and various metallic substrates
+ thermal class F based on DIN IEC 60 085 permits the use of HSP 2740 and HSP 2741 at
+    continuous temperature loads of up to 155 °C [311 °F]
+ high mechanical resistance
+ very good solder bath resistance
+ UL approval acc. to UL 94 for HSP 2741 (see also Item 2 "Application”). HSP 2740 meets the
+    requirements acc. to UL 94
+ free of halogenated flame retardants.
+
+6.2   Physical and mechanical properties
+         Property                  Test method               HSP 2740                 HSP 2741
+                           IPC-TM-650, 2.3.42
+                           Isopropanol                        passed                   passed
+                           Isopropanol (75 %) / H2O           passed                   passed
+Solvent resistance
+                           (25 %)
+                           monoethanolamine                   passed                   passed
+                           deionized H2O                      passed                   passed
+                           IPC-SM-840E,                passed: 20 s at 265 °C   passed: 20 s at 265 °C
+                           3.7.1/3.7.2                       [509 °F]                 [509 °F]
+                           IPC-TM-650, 2.6.8           passed: 10 s at 288 °C   passed: 10 s at 288 °C
+Solder bath resistance
+                                                            [550.4 °F]               [550.4 °F]
+                           UL 94                                                passed: 20 s at 288 °C
+                                                                                     [550.4 °F]
+                           based on
+Thermal class                                           F = 155 °C [311 °F]      F = 155 °C [311 °F]
+                           DIN IEC 60 085
+                           TMA method (thermo-
+Glass transition
+                           mechanical analysis,        approx. 80 °C [176 °F]   approx. 65 °C [149 °F]
+temperature Tg
+                           expansion mode)
+                           TMA method (thermo-
+Coefficient of thermal                                approx. 27 ppm/°C < Tg approx. 30 ppm/°C < Tg
+                           mechanical analysis,
+expansion CTE                                         approx. 110 ppm/°C > Tg approx. 100 ppm/°C > Tg
+                           expansion mode)
+                           Based on VDE 0304 per
+Heat conductivity          modified heated wire               2 W/mK                   2 W/mK
+                           method
+
+
+4                                                                                        www.peters.de
+                                                                Technical Report HSP 2740 and HSP 2741
+
+6.3   Electrical properties
+        Property                 Test method                 HSP 2740                   HSP 2741
+                           VDE 0303, part 21
+                                                             30 kV/mm                   10 kV/mm
+Dielectric strength        DIN EN 60243-1
+
+                           IPC-TM-650, 2.5.6.1                 passed                    passed
+                           VDE 0303, part 30
+Surface resistance         DIN IEC 60093                   2.0 x 1012 Ohm            2.0 x 1012 Ohm
+                           IPC-TM-650, 2.5.17.1
+                           VDE 0303, part 30
+Specific volume
+                           DIN IEC 60093                4.9 x 1016 Ohm x cm        3.0 x 1014 Ohm x cm
+resistivity
+                           IPC-TM-650, 2.5.17.1
+Moisture and insulation                                     class H and T             class H and T
+                           IPC-SM-840E, 3.9.1
+resistance                                                 1.0 x 1012 Ohm             1.0 x 109 Ohm
+                           DIN EN 60112 on base
+Comparative Tracking       material
+Index (CTI)                with CTI 250                       CTI 600*                   CTI 600*
+                           with CTI 600                       CTI 600*                   CTI 600*
+                           DIN 53483       1 kHz                 5.8                       4.4
+Dielectric constant ε r                    1 MHz                 5.2                       4.2
+                                           1 GHz                 6.5                       4.1
+
+Dielectric loss factor     DIN 53483       1 kHz               0.015                      0.029
+                                           1 MHz               0.013                      0.021
+tan δ
+                                           1 GHz               0.022                      0.025
+      * Among others the CTI value of the coating also depends upon the tracking resistance of the base
+        material.
+
+6.4 Heat-conducting performance
+Compared to the systems used up to now heatsink pastes are very flexible in their design.
+Provided the developer and pcb manufacturer work together from a very early stage of
+development, they open up new ways in the thermal management of electronic assemblies. The
+layout, the design of the heat coupler, the chosen final copper thickness, the size of the printable
+area as well as the optimum layer thickness of the heatsink have a substantial influence on the
+result (see also item 7.3 ”Advice on pcb design”). In most cases the effectiveness cannot be
+calculated in advance, however, in pretrials concrete values can be ascertained.
+The field of application of heatsink pastes is mainly where heat dissipation by means of heat
+couplers to the ”back side” of the pcb is possible and heat convection in a scale of approx.
+3 W/m K occur. Heatsink pastes are particularly suitable to solve thermal problems where the
+expenditure for metal foils is too cost-intensive or where the layout design does not allow the use
+of a metal foil. They can be used successfully in layouts where copper areas are integrated as
+heatsinks. In such cases it is possible to reduce the copper areas by more than 50 % by
+overprinting them with heatsink paste.
+
+7.    Processing
+                  Since the many different permutations make it impossible to evaluate the
+                  whole spectrum (parameters, reactions with materials used, chemical
+                  processes and machines) of processes and subsequent processes in all
+                  their variations, the parameters we recommend are to be viewed as
+                  guidelines only that were determined in laboratory conditions. We advise
+                  you to determine the exact process limitations within your production
+                  environment, in particular as regards compatibility with your specific follow-
+                  up processes, in order to ensure a stable fabrication process and products
+                  of the highest possible quality.
+www.peters.de                                                                                             5
+Technical Report HSP 2740 and HSP 2741
+
+               The specified product data is based upon standard processing
+               conditions/test conditions of the mentioned norms and must be verified
+               observing suitable test conditions on processed printed circuit boards.
+               Feel free to contact our application technology department (ATD) if you have
+               any questions or for a consultation.
+               Stir lightly before using
+
+7.1 Adjustment of viscosity
+The heatsink pastes HSP 2740 and HSP 2741 must be processed in the condition supplied.
+
+
+               Do not add any solvents or thinners to reduce viscosity.
+
+
+
+7.2 Auxiliary products
+We recommend the cleaning agents R 5899, R 5821 and R 5817 as auxiliary products for the
+processing of the heatsink pastes HSP 2740 and HSP 2741. The cleaning agent R 5899 does not
+have to be marked according to German dangerous goods regulations and can be handled simply
+and safely. Owing to its high flash point (> 100 °C [> 212 °F]) it is especially suitable for use in
+screen washing equipment. The cleaning agent R 5899 is particularly distinguished by a low
+vapour pressure (< 0.1 hPa at 20 °C [68 °F]) and thus is not affected by the EU-VOC regulation
+1999/13/EG which judges solvents by their percentage of volatile organic compounds (VOC =
+volatile organic compounds).
+Furthermore, the cleaning agent R 5821 is available which, owing to its high flash point of +32 °C
+[89.6 °F], is also suitable for use in screen washing equipment as well as for cleaning work tools.
+For the manual cleaning of screens and tools we recommend our cleaning agent R 5817 with its
+fast and thorough cleaning properties.
+
+               Do not use cleaning agent as a thinner or for washing hands since solvents
+               remove the natural grease from skin.
+
+
+Special technical reports for these products are available upon request. Further information
+regarding the content and consequences of the EU-VOC regulation can be found in our technical
+information sheet TI 15/110 E ”EU-VOC regulations – Content and consequences for the PCB
+industry”. On our report manual CD you will find technical reports in the "Products" section and
+technical information sheets in the "Service" section.
+
+7.3 Advice on pcb design
+The design should be determined in close cooperation between pcb manufacturer and assembly
+developer to fully utilize the performance of HSP 2740 and HSP 2741: To this aim, the following
+notes should be observed:
+ SMD assembly
+   On account of the relatively high layer thickness of the heatsink paste of 100 – 300 µm the
+   printing of solder paste directly next to the heatsink area should be avoided in order to ensure a
+   perfect solder paste print.
+ Holes
+   A largest possible free space around the holes of soldered components should be aimed for, at
+   least 0.5 mm on all sides.
+ Heat vias (heat couplers)
+   The efficiency of the heatsink paste is greatly increased by means of so-called heat vias. These
+   vias should have a diameter of 0.6 – 0.8 mm.
+6                                                                                      www.peters.de
+                                                                  Technical Report HSP 2740 and HSP 2741
+
+7.4 Screen printing
+The heatsink pastes HSP 2740 and HSP 2741 can be applied either by screen or stencil printing.
+After each print an interim curing of each layer is mandatory (see item 8 ”Drying/curing”).
+ Please read our Technical Information sheets TI 15/11 ”The screen printing stencil in the
+   pcb industry” and TI 15/13 ”Precleaning in the pcb fabrication process”. On our report
+   manual CD and on our website technical information sheets can be accessed in the ”Service”
+   section.
+ Ensure that the surface to be coated is clean, dry and grease-/oxide-free and that copper
+   surfaces preferably have an average surface roughness of 2 µm.
+ Filling of the heat vias
+  The better the heat vias are filled the more efficient the heat dissipation. The filling degree of the
+  vias can be controlled by means of the squeegee pressure and printing speed (by increasing
+  the squeegee pressure and slower printing more material is filled into the vias).
+                               Recommended screen printing parameters
+                              Steel fabric:
+                              - 224/100
+    Screen fabric
+                              - 245/65
+                              - 265/50
+                              Free spaces in the screen fabric > hole diameter
+                              (0.3 – 0.5 mm larger, depending on print format size)
+    Screen printing stencil   A high stencil build-up is not necessary because the ink should be printed
+                              into the drill holes only. As a rule it is sufficient to close the screen mesh
+                              with a thin coat of emulsion or a thin capillary film.
+                              Base material with a thickness of approx. 3 mm that was drilled with the
+                              same drill program but where the diameters of the holes are five times the
+                              size of the actual heat vias. (The printing underlay enables the filling of the
+    Printing underlay         holes since there is no resistance caused by air pockets under the
+                              holes.)
+                              An undergrid would also be acceptable provided it does not permit the
+                              printing substrate to spring.
+    Snap-off                  low
+    Flooding                  rubber squeegee 75 Shore A push stroke 70°
+                              rubber squeegee 75 Shore A, squeegee profile 30-45°
+                              printing angle 90°
+    Printing
+                              As high a squeegee pressure as possible (4 bar) and as low a printing
+                              speed as possible
+
+  These printing parameters are meant for orientation purposes and, depending on the layout of
+  the printed circuit board and aspect ratio (ratio of hole diameter to board thickness) of the
+  plated-through holes to be filled, must be optimised and adjusted to the prevailing production
+  conditions.
+
+ Print on unpopulated areas
+  A layer thickness of at least 50 µm of HSP 2740 and 80 µm of HSP 2741 must be applied in one
+  pass as with thinner layers a complete curing is not guaranteed.
+  The layer thickness of the print on unpopulated areas is chiefly dependent upon the screen
+  fabric used. As a rule the achieved dry film thickness is approximately identical to the thread
+  diameter.
+
+
+
+
+www.peters.de                                                                                                   7
+Technical Report HSP 2740 and HSP 2741
+
+                                Recommended screen printing parameters
+                                15-200 polyester fabric (15T per old nomenclature)
+                                with a 2 x 100 µm capillary film
+      Screen fabric             or for lower layer thicknesses:
+                                18-180 polyester fabric (18T per old nomenclature)
+                                with a 2 x 80 µm capillary film
+      Screen tension            at least 25 N/cm or according to the screen manufacturer's instructions
+      Snap-off                  2-3 mm
+      Lift                      minimum
+                                Rubber squeegee 70 – 75 Shore A, push-stroke, sharp-edged (do not
+      Flooding                  use metal shovel!)
+                                slow flood (100 mm/s)
+                                Rubber squeegee 70 – 75 Shore A, pull-stroke, sharp-edged
+      Printing                  printing angle 75°
+                                fast print (250 mm/s)
+
+ Overcoat print
+     When using coarse screen fabrics a clear fabric structure is visible on the surface. If a fine
+     planar surface is needed, e.g. because the HSP surface is to be fixed to an aluminum casing to
+     increase the heat dissipation from the assembly, a so-called overcoat print is recommended.
+     This print smooths out the fabric structure. A layer of at least 50 µm of HSP 2740 and 80 µm of
+     HSP 2741 must be applied in one pass as a complete cure cannot be guaranteed with thinner
+     coats.
+                                Recommended screen printing parameters
+                                Steel fabric with a 80 µm film:
+      Screen fabric             - 265/50 (especially for high ink penetration but sensitive)
+                                - 245/65 (also high ink penetration but more stable)
+                                Reduce the free spaces in the fabric by 0.3 mm compared to the print
+      Screen printing stencil
+                                on unpopulated areas
+      Flooding                  Standard flooding process with metal shovel
+                                Rubber squeegee 70 – 75 Shore A, pull-stroke, sharp-edged
+      Printing                  printing angle 75°
+                                fast print (250 mm/s)
+
+ Fabric choice in case of low demands on the surface structure
+     If there is no need for a fine surface structure but a high layer thickness is required (250-500
+     µm) the filling print can be effected by means of a 15-200 polyester fabric. The ink
+     accumulations over the vias on account of the thick fabric are ultimately almost hidden by the
+     high overall thickness and the coarse fabric structure.
+ Fabric choice for low layer thicknesses
+     If only a low layer thickness is required (140 – 250 µm), the use of a 245/65 steel fabric for the
+     filling print and for printing over unpopulated areas is recommended.
+
+8.      Drying/curing
+The heatsink pastes HSP 2740 and HSP 2741 are thermally cured under the following conditions:
+45 min* at 150 °C [302 °F].
+        * Object holding time: The time is measured from the point when the panels reach the curing
+          temperature.
+
+
+
+8                                                                                              www.peters.de
+                                                               Technical Report HSP 2740 and HSP 2741
+
+In case of multiple prints, an intermediate drying of each layer of
+ 30 min at 130 °C [266 °F] (HSP 2740)
+ 10 min at 130 °C [266 °F] (HSP 2741)
+should be sufficient. The last layer must be cured for 45 min at 150 °C [302 °F].
+
+                    Depending on the layout and subsequent processes it may be necessary to
+                    adjust the curing parameters and apply higher coating thicknesses.
+
+
+Generally HSP 2740 and HSP 2741 are also excellently suitable for curing in conveyorized infrared
+dryers. The corresponding parameters have to be determined by performing pre-trials.
+
+9.    Standard packaging
+The heatsink pastes HSP 2740 and HSP 2741 are packed for delivery as follows:
+                            Packaging               Selling unit
+HSP 2740
+                          10 tins of 2 kg              20 kg
+HSP 2741
+
+Partial lots of a selling unit can be ordered but will entail surcharges to cover repackaging costs.
+
+10. Shelf life and storage conditions
+Labels on containers show shelf life and storage conditions.
+
+                    Shelf life: In sealed original containers at least 6 months
+            +10°C   Optimum storage conditions are: +5 °C to +10 °C [+41 °F to +50 °F]
+                   Protect the container from sun and other heat sources as the system is
+     +5°C
+                    temperature sensitive.
+                    Protect against frost
+
+For warehousing reasons, isolated cases may occur where the shelf life upon shipment is less than
+the shelf life indicated in this technical report. However, it is ensured that our products have at
+least two-thirds of their shelf life remaining when they leave our company.
+
+11. Further literature/technical documentation
+In addition to the recommendations given in this technical report, we can provide technical papers
+and information sheets written and compiled by members of our staff. Visit our website at
+http://www.peters.de or click on the "Service" section on our report manual CD.
+
+12. Further products for the production of pcbs
+We offer a wide range of etch resists (photoimageable, UV curing, conventional curing),
+plating resists, solder resists (photoimageable, UV curing, conventional curing) as well as
+peelable solder masks, marking inks (photoimageable, UV curing, conventional curing),
+carbon-conductive inks, via hole fillers (purely thermal curing), thick film fillers, plugging
+pastes, heatsink pastes, special strippers for solder resists and further auxiliary products
+for screen printing (e. g. cleaning agents, thinners).
+Special technical reports are also available for these products and can be provided on request. On
+our report manual CD you will find technical reports in the "Products" section.
+
+
+
+
+www.peters.de                                                                                          9
+Technical Report HSP 2740 and HSP 2741
+
+13. Further products for the electronics/ electrical engineering
+    industries
+We boast a wide range of conformal coatings, thick film lacquers, casting compounds,
+casting resins, electro pastes, insulating lacquers, impregnating varnishes, adhesive
+lacquers and auxiliary products for electronics.
+Special technical reports are also available for these products and can be provided on request. On
+our report manual CD you will find technical reports in the "Products" section.
+
+Any questions?
+We would be pleased to offer you advice and assistance in solving your problems. Free samples
+and technical literature are available upon request.
+The above information as well as advice given by our Application Technology Department whether in verbal or written
+form or during product evaluations is provided to the best of our knowledge, but must be regarded as non-binding
+recommendations, also with respect to possible third-party proprietary rights.
+The products are exclusively intended for the applications indicated in the corresponding technical data sheets.
+The advisory service does not exempt you from performing your own assessments, in particular of our material safety
+data sheets and technical information sheets, and of our products as regards their suitability for the applications
+intended. The application, use and processing of our products and of the products manufactured by you based on the
+advice given by our Application Technology Department are beyond our control and thus entirely your responsibility. The
+sale of our products is effected in accordance with our current terms of sale and delivery.
+
+
+Lackwerke Peters GmbH & Co. KG               Internet: www.peters.de    Phone +49 2152 2009-0
+Hooghe Weg 13, 47906 Kempen, Germany         E-Mail: peters@peters.de   Fax   +49 2152 2009-70
+
+
+
+
+10                                                                                                    www.peters.de
+

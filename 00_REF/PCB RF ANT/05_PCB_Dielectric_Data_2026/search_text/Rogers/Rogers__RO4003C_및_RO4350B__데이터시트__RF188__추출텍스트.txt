@@ -1,0 +1,198 @@
+                                                                                                        Data Sheet
+
+
+RO4000® Series
+High Frequency Circuit Materials
+
+RO4000® hydrocarbon ceramic laminates are designed to offer superior high frequency            FEATURES AND BENEFITS:
+performance and low cost circuit fabrication. The result is a low loss material which can be   RO4000 materials are reinforced
+fabricated using standard epoxy/glass (FR-4) processes offered at competitive prices.          hydrocarbon/ceramic laminates - not
+                                                                                               PTFE
+The selection of laminates typically available to designers is significantly reduced once         • Designed for performance
+operational frequencies increase to 500 MHz and above. RO4000 material possesses the                sensitive, high volume
+properties needed by designers of RF microwave circuits and matching networks and                   applications
+                                                                                               Low dielectric tolerance and low loss
+controlled impedance transmission lines. Low dielectric loss allows RO4000 series material        • Excellent electrical performance
+to be used in many applications where higher operating frequencies limit the use of               • Allows applications with higher
+conventional circuit board laminates. The temperature coefficient of dielectric constant            operating frequencies
+is among the lowest of any circuit board material (Chart 1), and the dielectric constant          • Ideal for broadband applications
+is stable over a broad frequency range (Chart 2). For reduced insertion loss, LoPro® foil is   Stable electrical properties vs.
+                                                                                               frequency
+available (Chart 3). This makes it an ideal substrate for broadband applications.
+                                                                                                  • Controlled impedance
+                                                                                                    transmission lines
+RO4000 material’s thermal coefficient of expansion (CTE) provides several key benefits            • Repeatable design of filters
+to the circuit designer. The expansion coefficient of RO4000 material is similar to that of    Low thermal coefficient of dielectric
+copper which allows the material to exhibit excellent dimensional stability, a property        constant
+needed for mixed dielectric multi-layer boards constructions. The low Z-axis CTE of               • Excellent dimensional stability
+                                                                                               Low Z-axis expansion
+RO4000 laminates provides reliable plated through-hole quality, even in severe thermal            • Reliable plated through holes
+shock applications. RO4000 series material has a Tg of >280°C (536°F) so its expansion         Low in-plane expansion coefficient
+characteristics remain stable over the entire range of circuit processing temperatures.           • Remains stable over an entire
+                                                                                                    range of circuit processing
+RO4000 series laminates can easily be fabricated into printed circuit boards using standard         temperatures
+                                                                                               Volume manufacturing process
+FR-4 circuit board processing techniques. Unlike PTFE based high performance materials,           • RO4000 laminates can be
+RO4000 series laminates do not require specialized via preparation processes such as                fabricated using standard glass
+sodium etch. This material is a rigid, thermoset laminate that is capable of being processed        epoxy processes
+by automated handling systems and scrubbing equipment used for copper surface                     • Competitively priced
+preparation.                                                                                   CAF resistant
+
+RO4003C™ laminates are currently offered in various configurations utilizing                   SOME TYPICAL APPLICATIONS:
+both 1080 and 1674 glass fabric styles, with all configurations meeting the                     • Cellular Base Station Antennas
+same laminate electrical performance specification. Specifically designed                         and Power Amplifiers
+                                                                                                • RF Identification Tags
+as a drop-in replacement for the RO4003C™ material, RO4350B™ laminates
+                                                                                                • Automotive Radar and Sensors
+utilize RoHS compliant flame-retardant technology for applications requiring                    • LNB’s for Direct Broadcast
+UL 94V-0 certification. These materials conform to the requirements of IPC-                       Satellites
+4103, slash sheet /10 for RO4003C, see note #1 for RO4350B slash sheet determination.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+                                                                  Page 1 of 4
+                                 Chart 1: RO4000 Series Materials Dielectric Constant vs. Temperature
+
+
+
+
+                                Chart 2: RO4000 Series Materials Dielectric Constant vs. Frequency
+
+
+
+
+                                                     Chart 3: Microstrip Insertion Loss
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+                                                                  Page 2 of 4
+                 Property                               Typical Value               Direction       Units             Condition                             Test Method
+                                              RO4003C             RO4350B
+                                                                                                                                                             IPC-TM-650
+ Dielectric Constant, er Process             3.38 ± 0.05        (1)
+                                                                      3.48 ± 0.05       Z              ­-            10 GHz/23°C                               2.5.5.5
+                                                                                                                                                          Clamped Stripline
+
+ (2)
+       Dielectric Constant, er Design            3.55                   3.66            Z              -             8 to 40 GHz                   Differential Phase Length Method
+
+                                                0.0027                 0.0037                                        10 GHz/23°C                             IPC-TM-650
+ Dissipation Factor tan, d                                                              Z              -
+                                                0.0021                 0.0031                                        2.5 GHz/23°C                              2.5.5.5
+                                                                                                                                                             IPC-TM-650
+ Thermal Coefficient of er                       +40                    +50             Z          ppm/°C           -50°C to 150°C
+                                                                                                                                                               2.5.5.5
+                                                                                                                                                             IPC-TM-650
+ Volume Resistivity                           1.7 X 1010              1.2 X 1010        -           MΩ•cm              COND A
+                                                                                                                                                               2.5.17.1
+                                                                                                                                                             IPC-TM-650
+ Surface Resistivity                           4.2 X 109              5.7 X 109         -             MΩ               COND A
+                                                                                                                                                               2.5.17.1
+                                                  31.2                   31.2                      KV/mm               0.51mm                                IPC-TM-650
+ Electrical Strength                                                                    Z
+                                                 (780)                  (780)                      (V/mil)             (0.020”)                                2.5.6.2
+                                           19,650 (2,850)      16,767 (2,432)           X
+ Tensile Modulus                                                                                  MPa (ksi)                RT                                ASTM D638
+                                           19,450 (2,821)      14,153, (2,053)          Y
+                                              139 (20.2)          203 (29.5)            X
+ Tensile Strength                                                                                  MPa (ksi)               RT                                ASTM D638
+                                              100 (14.5)          130 (18.9)            Y
+                                                 276                    255                          MPa                                                     IPC-TM-650
+ Flexural Strength                                                                      -                                   -
+                                                 (40)                   (37)                        (kpsi)                                                      2.4.4
+                                                                                                   mm/m               after etch                             IPC-TM-650
+ Dimensional Stability                           <0.3                   <0.5           X,Y
+                                                                                                 (mils/inch)          +E2/150°C                                2.4.39A
+                                                  11                      10            X
+ Coefficient of                                                                                                                                              IPC-TM-650
+                                                  14                      12            Y          ppm/°C            -55 to 288°C
+ Thermal Expansion                                                                                                                                              2.4.41
+                                                  46                      32            Z
+                                                                                                                                                             IPC-TM-650
+ Tg                                              >280                   >280            -          °C TMA                  A
+                                                                                                                                                               2.4.24.3
+ Td                                              425                     390            -          °C TGA                                                   ASTM D3850
+ Thermal Conductivity                            0.71                   0.69            -          W/m/°K                 80°C                               ASTM C518
+                                                                                                                  48 hrs immersion
+ Moisture Absorption                             0.06                   0.06            -             %             0.060” sample                            ASTM D570
+                                                                                                                  Temperature 50°C
+ Density                                         1.79                   1.86            -           g/cm3                 23°C                               ASTM D792
+                                                 1.05                   0.88                       N/mm            after solder float                        IPC-TM-650
+ Copper Peel Strength                                                                   -
+                                                 (6.0)                  (5.0)                       (pli)            1 oz. EDC Foil                             2.4.8
+ Flammability                                    N/A                      V-0
+                                                                        (3)
+                                                                                        -              -                    -                                   UL 94
+ Lead-Free Process Compatible                     Yes                    Yes            -              -                    -                                     -
+NOTES:
+
+(1) RO4350B 4 mil laminates have a process Dk of 3.33 ± 0.05 and are in conformance with IPC-4103A/240. All other RO4350B laminate thicknesses are /11 and /240 compliant.
+(2) The design Dk is an average number from several different tested lots of material and on the most common thickness/s. If more detailed information is required, please contact Rogers
+    Corporation or refer to Rogers’ technical papers in the Rogers Technology Support Hub available at http://www.rogerscorp.com.
+(3) RO4350B LoPro® laminates do not share the same UL designation as standard RO4350B laminates. A separate UL qualification may be necessary.
+
+Typical values are a representation of an average value for the population of the property. For specification values contact Rogers Corporation.
+
+RO4000 LoPro laminate uses a modified version of the RO4000 resin system to bond reverse treated foil. Values shown above are RO4000 laminates without the addition of the LoPro resin.
+LoPro foil results in an overall thickness increase of approximately 0.0007” (18µm) per core.
+
+The LoPro Resin Dk is approximately 2.4. However, when used in combination with the base laminate system, the average design Dk noted in the data sheet table should be used.
+(The design Dk value decreases by about 0.1 as the core thickness decreases from 0.020” to 0.004”.)
+
+Prolonged exposure in an oxidative environment may cause changes to the dielectric properties of hydrocarbon based materials. The rate of change increases at higher
+temperatures and is highly dependent on the circuit design. Although Rogers’ high frequency materials have been used successfully in innumerable applications and reports
+of oxidation resulting in performance problems are extremely rare, Rogers recommends that the customer evaluate each material and design combination to determine fitness
+for use over the entire life of the end product.
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+                                                                                        Page 3 of 4
+Standard Thicknesses                         Standard Panel Sizes                              Standard Claddings
+RO4003C:                                     24” X 18” (610 X 457 mm)                          Electrodeposited Copper Foil
+0.008” (0.203mm) +/- 0.0010”                 24” X 21” (610 X 533 mm)                          ½ oz. (18μm) HH/HH
+0.012” (0.305mm) +/- 0.0010”                 24” X 36” (610 X 915 mm)                          1 oz. (35μm) H1/H1
+0.016” (0.406mm) +/- 0.0015”                 48” X 36” (1219 X 915 mm)
+0.020” (0.508mm) +/- 0.0015”                                                                   *Additional cladding weights are available
+0.032” (0.813mm) +/- 0.0020”                 *Additional panel sizes available
+0.060” (1.524mm) +/- 0.0040”
+
+RO4350B:
+0.004” (0.10mm) +/- 0.0007”
+0.0066” (0.17mm) +/- 0.0007”
+0.010” (0.25mm) +/- 0.0010”
+0.020” (0.51mm) +/- 0.0015”
+0.030” (0.76mm) +/- 0.0020”
+0.060” (1.52mm) +/- 0.0040”
+
+
+*Additional non-standard thicknesses
+available from 0.0066” - 0.060” in varying
+increments
+
+*Contact Customer Service or Sales Engineering to inquire about additional available product configurations
+
+
+
+
+The information in this data sheet is intended to assist you in designing with Rogers’ circuit materials. It is not intended to and does
+not create any warranties express or implied, including any warranty of merchantability or fitness for a particular purpose or that the
+results shown on this data sheet will be achieved by a user for a particular purpose. The user should determine the suitability of Rogers’
+circuit materials for each application.
+
+
+The Rogers’ logo, Helping power, protect, connect our world, LoPro, RO3003, RO4000, RO4350B, and RO4003C are trademarks of Rogers
+Corporation or one of its subsidiaries.
+© 2022 Rogers Corporation, Printed in U.S.A.,
+All rights reserved. Revised 1592 080322 PUB# 92-004
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+                                                                                 Page 4 of 4
+

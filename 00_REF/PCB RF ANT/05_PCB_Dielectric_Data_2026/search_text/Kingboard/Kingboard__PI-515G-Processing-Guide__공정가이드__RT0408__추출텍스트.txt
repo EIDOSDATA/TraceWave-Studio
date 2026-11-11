@@ -1,0 +1,141 @@
+                                                                                    PI-515G/PP-PI515G
+                                                                                      Processing Guide
+This Processing Guide is edited in according to the IPC-4101 standard, and based on this standard. It is organized according to the
+internal test results of product characteristics and the actual use of customers, so that customers are more conducive to the use of KB-
+PI-515G/PP-PI515G.
+
+The recommendations contained herein do not cover all possible PCB designs or processing environments. Manufacturers/ Users will
+need to make other process adjustments to accommodate as necessary. The contents of the attachment are for advice and reference
+only, and the specific parameter setting should be determined according to the actual situation。
+Part 1: CCL Storage Conditions
+Storage method
+It should be stored in a flat surface with the original packaging to avoid heavy pressure and prevent sheet deformation or sheet bending
+problems.
+
+Storage environment
+Materials should be stored in a dry environment, avoid direct sunlight, rain, and avoid the erosion of corrosive gases. It is recommended
+that the sheet be used within one year of the production date.
+
+Part 2: Prepreg Storage Conditions
+Storage method
+As soon as a prepreg is received, it should be moved from the receiving area to a controlled environment. All prepreg should be
+managed using a first-in, first-out (FIFO) inventory system. If not handled properly, the prepreg may absorb moisture, resulting in the
+affections on Tg, curing, and press flow etc. Store in a flat surface with original packaging, and do not stack them together to avoid stress
+and damage to materials. Wrap the remaining unused prepreg in a plastic wrap to prevent moisture absorption.
+
+Storage environment
+Materials should be stored in a condition of temperature is less than 23 degrees Celsius and the Relative humidity is less than 60%, for
+shelf life up to 3 months.
+                                                                              PI-515G/PP-PI515G
+                                                                                Processing Guide
+Part 3: Inner Layer and Copper Foil Treatment
+Workers should handle the materials carefully, to prevent wrinkling or creases of the prepreg and avoid affecting the use of the
+prepreg. The stored prepreg must undergo a tempering process before use. It is recommended to temper and dehumidify for 12 hours
+before usage. Prepreg that has been cut into panels should be stored in the above suggested environment and to be consumed as soon
+as possible.
+Before mass production, the appropriate compensation coefficient must be determined in according to the proportion of residual
+copper and the thickness of the platen, and resin content to be adjusted if need.
+The inner layer should be placed in a controlled temperature and humidity environment for 8 hours before punching and AOI. Better
+dimensional stability and accuracy in this environment.
+The inner layer should be baked at 120°C for at least 60 minutes after the browning treatment.
+
+Part 4: Pressing Process/ Press cycle
+In the process of stacking, ensure that the stacking sequence of
+the prepreg is consistent, avoid reversal or flipping actions, and
+avoid warping and deformation problems.
+Pressure setting: vacuum press 300-400psi (the specific high                              Reduce pressure when reach curing
+pressure needs to be adjusted according to the customer's                                  temperature above 30min to release
+                                                                                           stress.
+situation).
+It is recommended that the heating rate between 80-140 °C is
+1.5-2.5 °C/min, please refer to Table 1 for reference.                                 Curing temperature above 180(materials
+                                                                                       temperature), keep 60min at least.
+Temperature for materials’ curing should be at least 180°C or
+above for 60 minutes or more. Full pressure is 300-400 psi. The
+cooling rate is lower than 3°C/min.
+
+
+
+                                                                                                     Table 1
+                                                                                    PI-515G/PP-PI515G
+                                                                                      Processing Guide
+Part 5: Recommendations for Dilling Parameters
+Be sure to vacuum up the dust. It will help prevent gouging.
+The following table (Table 2) lists a series of parameters for your reference, we assume the CCL overall thickness is 2mm. It needs to be
+adjusted according to different tools, board structure, board thickness, number of layers and copper thickness.
+After the drilling process, blow the with an air gun properly to avoid blockage of the holes
+
+                                                                                            HITACHI Machine.
+                                                                                            Drilling parameters adjusted based on PI-515G
+                               钻孔参数                                                                钻孔参数
+     钻头直径                                                孔限              钻头直径                                                孔限
+     （mm)          转速 (krpm)       落速 (m/min)           (Hits)           （mm)          转速 (krpm)        落速 (m/min)          (Hits)
+
+    0.20～0.25         170              2.0              1500            1.50～1.55          50               2.6             1500
+
+    0.275-0.30        170              2.0              1500            1.60～1.65          50               2.4             1500
+
+    0.35-0.375        160              2.2              1500            1.70～1.75          50               2.2             1500
+
+    0.40～0.45         135              2.2              1500            1.80～1.85          45               2.1             1500
+
+    0.50～0.55         120              2.3              1500            1.90～1.95          45               1.9             1500
+
+    0.60～0.65         110              2.3              1500            2.00～2.15          45               1.8             1500
+
+    0.70～0.75         105              2.4              1500            2.20～2.35          40               1.7             1000
+
+    0.80～0.85          85              2.5              1500            2.00～2.55          40               1.6             1000
+
+    0.90～0.95          80              2.5              1500            2.20～2.75          35               1.5             1000
+
+    1.00～1.05          75              2.6              1500            2.30～2.95          35               1.4             800
+
+    1.10～1.15          70              2.6              1500            2.50～3.25          30               1.3             800
+
+    1.20～1.25          65              2.7              1500            3.30～3.65          30               0.9             500
+
+    1.30～1.35          60              2.8              1500            3.70～3.95          30               0.6             500
+
+    1.40～1.45          55              2.8              1500            4.00～4.45          25               0.5             500
+                                                                                  PI-515G/PP-PI515G
+                                                                                    Processing Guide
+Part 6: Etching(Glue removal)
+Vertical or horizontal permanganate etching can be performed normally, but the cross-sections must be examined with a scanning
+microscope.
+The following are the suggested parameters of different suppliers, and customers need to adjust them according to the actual situation.
+
+      Factory           Item                    Parameter              Temperature     Time
+
+                       KMnO4                    45~65g/L
+    Rohmhaas
+                       NaOH                     0.9~1.3N                 72~80℃       18min
+    （罗门哈斯）
+                       K2MnO4                    ＜25g/L
+
+                       KMnO4                    40-65 g/l
+    MacDermid
+                       K2MnO4                    < 25 g/l                65~85℃       15min
+    （麦德美）
+                       NaOH                     1.2 -1.3 N
+                                                                                                 Etching control requirements: 0.2-
+                       KMnO4                    45-65 g/l
+      Atotech
+                                                                                                 0.6mg/c㎡, under normal circumstances,
+                       K2MnO4                    < 30 g/l                80~85℃       15min
+     （安美特）                                                                                       1 times of etching can meet the
+                       NaOH                     34-45g/l                                         requirements
+
+Part 7: Soldering
+Validity period of packaging: The validity period of aluminum foil vacuum packaging is three months. It is best to bake at 125℃/4-8
+hours before use.
+Reflow soldering parameters: Suitable for conventional lead-free reflow soldering process.
+Part 8: Health and Safety advice
+Use caution when handling materials. Because the edges of the laminate are exceptionally sharp. Cuts and scratches may result if not
+handled properly.
+Handling and machining of prepregs and laminates generates dust. Therefore, proper ventilation must be provided in the
+machining/pressing area. A protective mask is recommended to avoid inhalation of dust. Gloves, apron and safety glasses are
+recommended if the individual is in frequent or prolonged contact with skin or dust. (See PI-515G Material Safety Data Sheet)
+                                                                                                                                   Version: 1.2
+                                                                                                                                   2022/6/15
+

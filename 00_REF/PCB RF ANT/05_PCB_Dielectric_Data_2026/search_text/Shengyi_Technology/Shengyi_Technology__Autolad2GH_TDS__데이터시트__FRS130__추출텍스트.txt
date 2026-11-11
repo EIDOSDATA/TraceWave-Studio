@@ -1,0 +1,46 @@
+  Autolad2GH
+   Halogen free, High Tg, High CTI, Automotive used PCB material
+
+ FEATURES                                                              APPLICATIONS
+      CTI≥600V for hash environment and critical                      High power & high voltage applications
+       design for safe creepage distance                               EV automotive electrification
+      Excellent high voltage anti-CAF                                 On board charger (OBC), etc.
+      Robust thermal cycling resistance
+      Halogen, antimony and red phosphorous free
+GENERAL PROPERTIES
+          Test Items                    Test Method                  Test Condition            Unit         Typical Value
+
+                                    IPC-TM-650 2.4.24.4                   DMA                                     190
+              Tg                                                                                ℃
+                                    IPC-TM-650 2.4.25D                    DSC                                     175
+              Td                    IPC-TM-650 2.4.24.6             TGA (5% wt. loss)           ℃                 402
+            T288                    IPC-TM-650 2.4.24.1                   TMA                   min               >60
+            T260                    IPC-TM-650 2.4.24.1                   TMA                   min               >60
+       Thermal Stress               IPC-TM-650 2.4.13.1                  288℃,                   s
+                                                                     solder dipping                              ＞100
+                                     IPC-TM-650 2.4.24                 Before Tg             ppm/℃                 35
+        CTE (Z-axis)                 IPC-TM-650 2.4.24                  After Tg             ppm/℃                190
+                                     IPC-TM-650 2.4.24                  50-260℃                  %                 2.1
+     Permittivity (1GHz)*           IPC-TM-650 2.5.5.9                 C-24/23/50                -                 4.3
+  Loss Tangent (1GHz)*              IPC-TM-650 2.5.5.9                 C-24/23/50                -               0.015
+     Volume Resistivity             IPC-TM-650 2.5.17.1                C-96/35/90            MΩ-cm             4.83×107
+     Surface Resistivity            IPC-TM-650 2.5.17.1                C-96/35/90               MΩ             4.98×106
+       Arc Resistance                 IPC-TM-650 2.5.1              D-48/50+D-0.5/23             s                130
+  Dielectric Breakdown                IPC-TM-650 2.5.6              D-48/50+D-0.5/23            kV            45+kV NB
+     Peel Strength (1oz)              IPC-TM-650 2.4.8                 288℃/10s               N/mm
+                                                                                              [lb/in]          1.2 [6.86]
+Flexural Strength (LW/CW)             IPC-TM-650 2.4.4                      A                  Mpa             520/400
+      Water Absorption              IPC-TM-650 2.6.2.1                  D-24/23                  %                0.09
+        Flammability                         UL94                      C-48/23/50             Rating              V-0
+             CTI                          IEC 60112                         A                 Rating       PLC 0 (≥600V)
+
+Remark:
+1. Specification sheet: IPC-4101/130, is for your reference only.
+2. All the typical value is based on the 1.6mm (8X7628) specimen, “ * ” is based on the 1.0mm(9X2116) specimen.
+3. In order to satisfy CTI≥600V, 2116(RC≥54%)，7628(RC≥45%) or above thickness prepreg is suggested to be used
+for outer prepreg layer.
+4. All the typical value listed above is for your reference only, please turn to Shengyi Technology Co., Ltd for detailed
+information, and all rights from this data sheet are reserved by Shengyi Technology Co., Ltd.
+
+                                                                              CN-TDS-2304-05-Autolad2GH-Autolad2GHB
+

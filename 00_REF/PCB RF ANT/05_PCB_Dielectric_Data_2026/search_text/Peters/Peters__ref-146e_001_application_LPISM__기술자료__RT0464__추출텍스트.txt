@@ -1,0 +1,515 @@
+         Application of photoimageable
+                 solder resists
+
+
+  Advantages and disadvantages of the various
+         application methods available
+
+
+
+
+                       Dipl.-Ing. Sven Kramer
+
+
+
+
+Ref. No. 146E            Supplemented and revised edition
+issued December 2004     of paper dated August 2000
+                                 Application of photoimageable solder resists
+                               - Advantages and disadvantages of the various
+                                       application methods available -
+
+
+                                                      Contents
+Introductory
+1.             Which application processes shall be compared? .................................. 1
+1.1            Curtain coating technology ............................................................................ 1
+1.2            Screen printing application ............................................................................ 2
+               1.2.1       Screen printing, single-sided, horizontal ....................................... 3
+               1.2.2       Screen printing, double-sided, horizontal ..................................... 3
+               1.2.3       Screen printing, double-sided, vertical ......................................... 3
+               1.2.4       Units for double-sided, vertical screen printing ............................. 5
+1.3            Spray application ........................................................................................... 5
+               1.3.1       Spray application .......................................................................... 5
+               1.3.2       Advantages and disadvantages in the use of solder resists in the
+                           double-sided spraying process ..................................................... 5
+2.             Comparison of the various application technologies .............................. 7
+2.1            Degree of automation .................................................................................... 7
+2.2            Availability7
+2.3            Processing method........................................................................................ 7
+2.4            Adaptation of the coating parameters to the pcb layout ................................ 7
+2.5            Lacquer consumption .................................................................................... 8
+3.             Elpemer solder resists for each type of application .............................. 8
+4.             Summary ...................................................................................................... 9
+5.       Literature...................................................................................................... 9
+Appendix: Explanation of indices used
+
+
+
+
+LP 042212 E-1                                                                                                 REF-146E.001
+                         Application of photoimageable solder resists
+                       - Advantages and disadvantages of the various                1
+                               application methods available -
+
+
+
+1.          Which application processes shall be compared?
+When applying Lackwerke Peters' photoimageable solder resists of the series'
+Elpemer spray application which is widely used in the USA, is gaining importance in
+Europe alongside curtain coating and screen printing processes. Therefore, besides
+the two established application processes, this process will be described in the course
+of this text and advantages as well as disadvantages of each process will be
+discussed.
+
+1.1         Curtain coating technology
+In case of curtain coating the printed circuit board is accelerated to a speed of up to 90
+m/min, transported through the lacquer curtain and subsequently decelerated to
+normal transport speed of a few metres/min. The lacquer curtain is defined with regard
+to thickness and flow speed. Since the lacquer curtain and printed circuit board
+transport speed are nearly equal, solder resist is applied to the printed circuit board in
+a uniform layer.
+
+
+                           4                                       3
+
+                                                                               2
+
+
+
+
+                   5                                                       1
+
+
+
+
+                       Figure 1: Side view of a curtain coating unit
+
+The solder resist is permanently pumped from the storage tank [1] into the pouring
+head [4] and flows back to the storage tank via a collection duct. In order to obtain
+consistent process parameters, the viscosity of the solder resist is controlled
+permanently by means of a viscosity measuring unit [3] and is kept within preset
+viscosity tolerances by the addition of solvents from an automatic dispensing system
+[2].
+
+LP 042212 E-1                                                                  REF-146E.001
+                        Application of photoimageable solder resists
+                      - Advantages and disadvantages of the various                2
+                              application methods available -
+
+
+Since the lacquer viscosity is dependent upon the temperature, attention must be paid
+to a constant tempering of the lacquer. As a rule, the lacquer in the storage tank is
+tempered by means of a cooling cycle as it is permanently heated up by the lacquer
+pump. The lacquer quantity to be applied, that depends upon the required layer
+thickness, is suitably adjusted by the number of revolutions of the pump [5]. The fine
+adjustment occurs by weighing the applied wet ink weight on a test board.
+In case the second side of the printed circuit board is to be coated directly after pre-
+drying, it is mandatory to ensure that the printed circuit board is turned by 180 ° before
+coating the second side. Turning the board prevents one side of the inner walls of the
+holes and through-hole platings from being double-coated with solder resist when
+coating the second side. When double-coating the inner walls, the developing time
+must be extended in order to avoid lacquer residues from remaining in the holes, which
+may unnecessarily impair the achievable resolution of the solder mask.
+A simple curtain coating line comprises a pouring head and a follow-up drying line for
+pre-drying the lacquer. For this purpose, pure IR as well as convection drying lines –
+but sometimes also combinations of both systems – are used. Since IR drying runs
+very fast and temperature progress is difficult to control, the use of convection dryers
+frequently is preferred. However, the compact construction of the unit at simultaneous
+high throughput speaks in favour of IR dryers. The drying process by convection drying
+is significantly milder and the danger of over-drying or solvent inclusions in the lacquer
+caused by the lacquer surface drying too fast is considerably lower. Curtain coating
+lines which are designed for a high throughput consist of two tandem pouring heads to
+coat both sides of the printed circuit board, whereby, for instance, a paternoster oven
+for convection drying of the solder resist coating is connected to each pouring head.
+Usually, the above described rotation of the printed circuit board by 180° is achieved
+by means of the first paternoster before the second side is coated.
+The pouring heads are – depending on the equipment concept – equipped with a
+coating edge limitation, so that the respective outer plating edge sides can be kept free
+of lacquer. The complete handling system is adjusted to this technique after the first
+side of the printed circuit board has been coated/dried. In order to avoid marks on the
+first coated side of the printed circuit boards, after this process step they are held at
+the edges only. These special holding and clip systems even enable the coating and
+drying of very thin substrates down to 0.3 mm.
+
+1.2         Screen printing application
+Screen printing is a contact printing process, whereby by means of a squeegee screen
+printing lacquer is applied through the screen mesh to areas which are not covered by
+the screen coating.
+Two different screen printing processes are applied in the fabrication of printed circuit
+boards. On the one hand single-sided, horizontal screen printing, by means of which
+not only conventional screen printing lacquers but also photoimageable ink systems
+can be processed. Furthermore, double-sided, vertical screen printing by means of
+which only photoimageable lacquer systems can be processed.
+
+
+
+
+LP 042212 E-1                                                                 REF-146E.001
+                         Application of photoimageable solder resists
+                       - Advantages and disadvantages of the various                3
+                               application methods available -
+
+
+1.2.1       Screen printing, single-sided, horizontal
+In case of the classical screen printing process, the material to be coated is fixed to a
+horizontal base (printing table) and coated by means of a printing screen placed
+thereon. For this printing process, machines ranging from simple manual printing
+tables to fully-automatic screen printing lines with loading and unloading equipment
+and optical registration of the printing material are used. Owing to the high registration
+accuracy, besides photoimageable lacquer systems, which do not require a high
+registration accuracy, conventional screen printing lacquers (thermal or UV curing) are
+processed.
+When processing conventional lacquers, areas that must not be printed are covered
+with a stencil in the screen mesh. When printing photoimageable systems, usually only
+the edge areas are covered with the stencil material. However, in order to avoid
+lacquer accumulations in the drill holes, in special cases through-hole platings are also
+covered by means of a stencil. In this case a high stencil structure is unnecessary,
+since the stencil is used only for closing the screen mesh. Comprehensive advice on
+making stencils can be found in our Technical Information sheet TI 15/11 "The screen
+printing stencil in the printed circuit board industry " which we will gladly provide upon
+request.
+
+1.2.2       Screen printing, double-sided, horizontal
+This type of classical screen printing for the application of photoimageable solder
+resists is mainly used in the Far-East.
+As already described in section 1.2.1, in this particular case the solder resist is applied
+to the first side. For printing the second side, the first - still wet side – is balanced on
+pins. As far as possible, the pins are positioned in such a manner that the pre-printed
+side is only touched in uncritical areas, such as free base material areas within the
+circuits or between the boards on a complete panel. Due to the minimum contact
+surface of the pins, the lacquer coating remains virtually intact.
+Application may be effected either by means of a single screen printing table, which is
+furnished with pins for both sides, or by means of two screen printing tables for each
+side respectively, whereby only the one for the second side is furnished with a bed-of-
+nails.
+
+1.2.3     Screen printing, double-sided, vertical
+In the screen printing process special vertical screen printing machines are used,
+which allow simultaneous coating of both sides of the printed circuit board.
+Essentially, the vertical screen printing units function on the following fundamental
+principles,
+ the panels are fixed in a vertical position
+ the screens are fixed at an equal distance to the vertical panels
+ both squeegees are always exactly in the same position on each side of the panel
+ the squeegee angle is the same for both squeegees
+ the squeegees have the same dynamic pressure on both sides of the panel
+from which the following key advantages result:
+
+LP 042212 E-1                                                                  REF-146E.001
+                        Application of photoimageable solder resists
+                      - Advantages and disadvantages of the various                         4
+                              application methods available -
+
+
+ the whole equipment requires only a small space
+ simultaneous coating of both printed circuit board sides; thus printing on two equally
+  clean/oxide-free surfaces
+ joint pre-drying of both printed circuit board sides
+ printed circuit boards with big holes and openings can be coated without any danger
+  of the lacquer bleeding through - in the same manner as in curtain coating
+  technology.
+General advantages of screen printing in comparison to curtain coating are as follows:
+ when using stencils those areas to which no solder mask should be applied (i. e.
+  copper border) can be left out
+ owing to the higher solids content, a considerably lower wet film weight is required
+ the rheological properties of a screen printing lacquer (structural viscosity) prevent it
+  from running off the conductor edge, so that a better edge coverage is achieved with
+  a lower coating thickness on the surface
+ vertical positioning of the printed circuit board during pre-drying so that convection
+  drying is completed after a very short time.
+Despite the numerous advantages vertical screen printing has to offer, two decisive
+disadvantages of this coating method exist which considerably dampened the initial
+enthusiasm:
+ larger quantities of lacquer get into small holes independent of the type of the ink
+   system used. The holes are literally filled if the parallelity of the opposite printing
+   squeegees deviates slightly. Therefore, it is often difficult to ensure complete free
+   development of those holes, and/or the obtainable resolution suffers from the
+   extremely long developing times that may result in order to ensure complete free
+   development.
+ the obtainable throughput depends strongly on the chosen print mode and the type
+   of printed circuit board to be coated. As a rule, specified capacities of 100 – 120
+   pcbs per hour are far inobtainable. The obtainable throughput is lower in particular
+   in the case of frequent format changes.
+
+                                                         P r in t in g s c r e e n s
+
+
+
+                       P r in t in g s q u e e g e e
+
+
+
+
+                                     PCB
+
+
+
+
+                  Figure 2: Scheme of double-sided, vertical screen printing
+
+LP 042212 E-1                                                                          REF-146E.001
+                        Application of photoimageable solder resists
+                      - Advantages and disadvantages of the various                5
+                              application methods available -
+
+
+1.2.4         Units for double-sided, vertical screen printing
+For double-sided, vertical screen printing semi-automatic and fully-automatic units are
+available. Semi-automatic units are composed of a manual loading and unloading area
+and a fully-automatic printing area whereas in case of fully-automatic units the printed
+circuit boards are additionally transported to the printing area via a stacker or a
+magazine. After the printing cycle, the coated printed circuit boards are transported
+automatically to a vertical conveyorized dryer.
+Both, Cugher, Italy, who manufactured such machines until 1999 and Circuit
+Automation, USA, as a manufacturer of these systems (meanwhile also the owners of
+Cugher) have further optimised their equipment with regard to a higher degree of
+automatization and processing of thinner materials. Material thicknesses of at least 0.1
+mm can be processed by means of hanging dryers which are increasing in popularity.
+
+1.3         Spray application
+When applying by spraying, the solder resist is finely atomised (usually "airless") or in
+addition electrically charged (electrostatic spraying) and transported to the earthed
+printed circuit board by means of the static charge and a low air pressure. In general
+practice, for the spray application of our Elpemer solder resists in particular the Argus
+double-sided, horizontal spray coater has a proven track record, which is used by
+numerous companies in the USA and Canada in combination with our Elpemer
+solder resists of the series AS 2467. Besides the low viscosity that is necessary for
+the spraying process the latter offer an optimum lacquer flow and a good coverage of
+conductor edges. Meanwhile, also European manufacturers offer spraying units, as for
+instance Systronic, Flein and All4-PCB, Therwill-CH.
+
+1.3.1        Spray application
+The Argus spray coater coats and pre-dries printed circuit boards horizontally; in this
+process the lower side is the first to be coated by the spraying head that oscillates
+across the direction of travel; the second, upper side is then coated according to the
+same principle. The spraying nozzles and the compressed air for atomisation are
+heated to about 50 – 100 °C [122 - 212 °F], so that the lacquer viscosity is reduced
+directly in the spraying nozzle for easier atomisation of the solder resist.
+The heated spray nozzles enable the use of highly viscous lacquer systems which, on
+the one hand, permits the use of lacquers with a high solids content and, on the other
+hand, ensures a favourable, i.e. fast, pre-drying characteristic. Thus, the use of our
+Elpemer lacquers has stood the test with numerous customers because the lacquers
+are virtually in curtain coating or spraying viscosity after mixing.
+Mention should also be made that US-based Teledyne equally offers machines for
+double-sided spray application, which are suitable for processing Elpemer solder
+resists.
+
+1.3.2      Advantages and disadvantages in the use of solder resists in the
+           double-sided spraying process
+One advantage of this application technology when using Elpemer solder resists, the
+very short lacquer preparation time, has been mentioned previously.
+
+
+LP 042212 E-1                                                                 REF-146E.001
+                         Application of photoimageable solder resists
+                       - Advantages and disadvantages of the various                         6
+                               application methods available -
+
+
+A further important technological advantage which is already noticeable in vertical,
+double-sided screen printing is the fact that the coating and pre-drying of both pcb
+sides are effected in one operation sequence which enables a uniform degree of pre-
+drying for the entire printed circuit board.
+If, in case of application by means of curtain coating or screen printing technology
+incomplete wetting of the gaps between fine conductor bundles, especially with high
+conductors, occasionally occur in the coating of printed circuit boards with a high
+conductor density and unfavourable layout (skipping), this problem can be excellently
+solved by means of the spray technology. Owing to the fine atomisation of the lacquer
+particles in the spray nozzle even printed circuit board areas that are difficult to access
+can be reliably wetted and covered with solder resist. The spraying technology also
+ensures that only small lacquer quantities are trapped even in very small via holes. Thus,
+the decisive disadvantage of vertical double-sided screen printing does not occur.
+Moreover, detailed trials and microsection evaluations have shown that coatings
+achieved by spraying display an excellent ratio of lacquer on conductor to lacquer on
+base material. The following microsection evaluation of a printed circuit board
+processed on Argus equipment illustrates the edge coverage in this process:
+                                   C           D
+                                                                E
+
+
+                            A
+
+                                                                     F
+                                                    B
+
+
+
+           conductor   conductor       lacquer on       lacquer on       lacquer on    lacquer on
+             height      width          conductor        conductor        conductor   basematerial
+                                          edge            surface           edge
+            A [µm]      B [µm]          C [µm]           D [µm]           E [µm]         F [µm]
+  No. 1         60        275             18               10               10            26
+  No. 2         60        250             20               10               14            26
+  No. 3         60        250             18               12               20            30
+  No. 4         50        250             20               12               18            30
+  No. 5         60        250             14               12               16            28
+  No. 1         65        250             12               14               16            34
+  No. 2         60        225             18               14               16            32
+  No. 3         60        225             18               14               14            32
+  No. 4         70        250             22               10               12            30
+  No. 5         70        250             22               12               10            30
+
+Of course, a serious disadvantage of spray technology is the overspray, which on the
+one hand leads to an increased lacquer consumption and on the other hand to a
+considerable contamination of the printed circuit board handling systems that make
+cleaning as mentioned above necessary. However, more recent developments with a
+defined recirculation of the overspray mean considerable savings can be expected.
+
+LP 042212 E-1                                                                          REF-146E.001
+                        Application of photoimageable solder resists
+                      - Advantages and disadvantages of the various                7
+                              application methods available -
+
+
+2.          Comparison of the various application technologies
+For an objective comparison of the application technologies mentioned the following
+aspects should be compared:
+ degree of automation
+ availability
+ processing method
+ adaptation of the coating parameters to the pcb layout
+ lacquer consumption.
+
+2.1        Degree of automation
+While application by the curtain coating process and the spraying process is, as a rule,
+accomplished by fully automatic coating/pre-drying units vertical screen printing units
+are usually offered as semi-automatic machines. It should be mentioned, however, that
+these vertical units are also available in fully automatic versions.
+The spraying technology offers excellent productivity features if no format changes are
+required, and also vertical screen printing achieves relatively high throughput figures if
+no changes in format are required. Nevertheless, curtain coating technology is
+unbeatable if the formats to be coated change frequently as it is the only application
+technique that does not demand a change in parameters for this. In this respect,
+vertical double-sided screen printing is inferior to other methods.
+
+2.2        Availability
+A curtain coating line offers the highest availability as even in case of format changes
+no set-up time is necessary and it usually operates 24 hours per day. Here the other
+application techniques lose points as in case of a format change especially with vertical
+screen printing, a longer set-up time may be necessary. Moreover, extensive
+adjustments must be performed prior to start of operation or cleaning jobs done at the
+end of operation if the units are not used continuously.
+
+2.3         Processing method
+In this respect the "new" application techniques boast their advantages. Vertical screen
+printing as well as the spraying process warrant the coating and pre-drying of both pcb
+sides each in one working step so that 2 pcb sides of the same quality result while
+saving drying energy as only one oven cycle is necessary for pre-drying. Thus,
+furthermore, shorter exposure and developing times as well as a reduction of the
+undercut can be achieved which increases the stability of finest ink structures. In
+comparison with curtain coating the pcb sides can only be processed one at a time
+resulting in two pre-dried solder resist areas of differing strengths. In case of vertical
+double-sided screen printing attention must be paid to the problem of free development
+of smaller holes.
+
+2.4        Adaptation of the coating parameters to the pcb layout
+Similar to the aspect of availability, curtain coating can score an advantage here, as
+only the corresponding wet film weight has to be adjusted. In contrast to the screen
+printing processes quite extensive adjustments of parameters and maybe a screen
+
+LP 042212 E-1                                                                 REF-146E.001
+                        Application of photoimageable solder resists
+                      - Advantages and disadvantages of the various                8
+                              application methods available -
+
+
+change have to be effected. Spraying processes take a middle position in this case. In
+case of frequently repeating formats there is a possibility to access the complete unit
+set-up by means of the computer control.
+
+2.5         Lacquer consumption
+Looking at the pure lacquer consumption per pcb area, the curtain coating technology
+will certainly come last because, owing to the comparatively low solids content of these
+lacquers, very large quantities have to be applied for the secure edge coverage of the
+conductors. In addition, merely the outer copper borders can be kept lacquer-free even
+if a coating edge limitation is installed.
+Vertical, double-sided screen printing offers lacquer saving potentials because of the
+high solids content of the lacquers used and owing to the fact that the entire copper
+border can be kept lacquer-free. Lacquer losses are caused, however, by screen
+cleaning as a result of frequent changes of format.
+Owing to the good rheological properties of the screen printing ink an improved ratio of
+the layer thicknesses is achieved. Therefore, for the same edge coverage as in curtain
+coating technology a lower layer thickness is applied to the base material which also
+reduces the lacquer consumption and avoids problems during the assembling process
+due to too high lacquer thicknesses.
+Similar to screen printing, the spraying technology also boasts a lower lacquer
+consumption per area because, owing to the fine atomisation of the lacquer, no
+embedding of the conductive pattern takes place but an adequate conductor edge
+coverage is reached with a simultaneously low lacquer coating thickness on base
+material planes. The only negative feature is the overspray which can be minimised,
+however, by a clever adaptation of the parameters. The manufacturers of spraying
+units estimate the overspray at approx. 10 %, which can be called extremely low
+compared with the overspray values of older system technologies (e.g. electrostatic
+spraying). Certainly, attention must be paid to the fact that in case of unfavourable
+equipment adjustments the quantity of overspray might be much higher.
+
+3.          Elpemer solder resists for each type of application
+The Elpemer® solder resists, both the polyalcohol developable adjustments of the
+series 2469 and the aqueous-alkaline developable types of the series 2467, are
+available in a variety of formulations for every application described in this paper. The
+curtain coating and screen printing adjustments prove to be fully compatible also for
+application on the latest equipment technology (paternoster circulating air dryer and/or
+vertical screen printing respectively).
+The nearly vertical ink flanks enable the representation of finest details as for instance
+solder dams between SMD pads, a high productivity and economy is ensured by short
+processing times and optimum lacquer properties.
+Finally the Elpemer AS (Index AS = air spray) adjustments have proven their
+excellent suitability for use on spray units.
+The photoimageable solder resists of the series Elpemer 2463 FLEX are relatively
+new. They are aqueous-alkaline developable ink systems for application by screen
+printing that are especially developed for the manufacture of flexible circuits and enjoy
+strongly increasing popularity.
+
+LP 042212 E-1                                                                 REF-146E.001
+                         Application of photoimageable solder resists
+                       - Advantages and disadvantages of the various             9
+                               application methods available -
+
+
+4.          Summary
+Generally, there is no outright "favourite" when selecting an application process. It is
+the spectrum of the printed circuit boards to be produced at a manufacturer that is
+decisive for the application process to be favoured. The chosen process should offer
+the most advantages under the existing circumstances. When selecting a suitable
+application process PETERS Engineering für Elektroniklacke GmbH + Co KG will
+be glad to assist you and draft complete unit concepts of renowned manufacturers if
+desired.
+
+5.          Literature
+[1]    Brochure of Argus International, USA
+
+[2]    Brochures of Cugher, Italy
+
+[3]    Brochures of Circuit Automation, USA
+
+[4]    Markus Wieler: The application of photoimageable solder resists in vertical,
+       double-sided screen printing – Advantages of this process compared with the
+       curtain coating technology –
+       paper presented at a panel discussion of the Association of former graduates of
+       the technical college for metal design, metal and plating technology, Solingen on
+       January 28, 1997 in Solingen, Germany.
+
+[5]    G. Herrmann: "Handbook of pcb technology", volume 3, 1993 (in German)
+       Publisher: G. Herrmann
+       in collaboration with 21 co-authors including Werner Peters
+       Published by Eugen G. Leuze, 88342 Saulgau Württ, Germany
+       ISBN No. 3-87480-091-1.
+
+
+
+Appendix
+
+Explanation of indices used in this report:
+
+The indices of product names used in this report have the following meaning:
+
+                AS                   air spray
+                FLEX        for flexible printed circuits
+                SM                    silk-mat
+
+
+
+
+LP 042212 E-1                                                               REF-146E.001
+

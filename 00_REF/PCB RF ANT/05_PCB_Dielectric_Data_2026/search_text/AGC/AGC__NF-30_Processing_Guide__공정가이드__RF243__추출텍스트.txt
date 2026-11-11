@@ -1,0 +1,289 @@
+                                            NF-30
+                                     General Processing Guidelines
+
+
+
+General Information                                        Avoid mechanical scrubbing
+NF-30 copper clad laminates are constructed with
+                                                           Mechanical scrubbing may stretch and deform the
+ceramic-filled PTFE composites without a woven
+                                                           material similar to thin core or flexible substrates.
+fiber glass fabric. The special ceramic-filled PTFE
+                                                           Pinch rollers used in many scrubbers may cause
+composite techniques on NF-30 can offer low
+                                                           dents particle or brush material are pressed into the
+dielectric loss and minimal signal distortion in
+                                                           surface of the laminates.
+microwave application. NF-30 bonds well to smooth
+low profile copper.
+                                                           Unexpected dimensional changes and adhesion
+                                                           strength failure with PSR or other bonding layers are
+The low dissipation of NF-30 combined with the use
+                                                           also expected from mechanical scrubbing. Chemical
+of very smooth copper results in optimal insertion
+                                                           cleaning preferred for NF-30 laminates.
+losses at higher frequency where skin effect losses
+play a substantial role.
+                                                           Do not pick up a panel by one edge
+                                                           Allowing the material to “flop” may stretch the
+NF-30 laminates are engineered to provide the
+                                                           copper and substrate. Lift the panel by two parallel
+excellent dimensional stability under non-woven
+                                                           edges; preferably the two closest dimensionally.
+fiberglass reinforcement. It can cover the typical
+etch or baking shrinkage.
+                                                           Do not stack panels directly on top of each other
+                                                           The weight of the panels may emboss any particles
+Storage                                                    or debris on the surface of the panel into adjacent
+NF-30 series laminates can be stored indefinitely at       panels. If panels must be stacked, use clean soft slip
+room temperature. At room temperature the                  sheet material between each panel and keep stack
+dielectric materials of NF-30 are inert to high            height to a minimum. Prevent contaminant deposits
+humidity. However metal claddings such as copper           on the material or copper.
+can be oxidized during exposure to high humidity.
+Generally, these traces of corrosion could be easily       The use of clean protective gloves and slip sheets
+removed by pre-exposure cleaning procedures.               will prevent contamination and staining. Keep work
+                                                           surfaces clean, dry, and completely free of debris.
+Even if the resins and components, we use (PTFE,
+Ceramic fillers, etc.) will not change or degrade in
+storage, if exposed to high humidity over 50%RH,
+proper baking process prior to fabricating PCB
+process is necessary.
+
+
+Handling
+NF-30 laminates reinforcement and are softer than
+most other rigid base materials for printed circuit
+Avoid bending or other mishandling which can lead
+or micro-cracking the composite. These defects may
+cause various failures, some of which are believed
+to be a result of chemical infiltration of the fractures
+or micro-cracks.
+board and are more susceptible to handling damage.
+As with all laminate materials, especially thin
+materials, care should be taken to avoid distorting
+the material during handling.
+Design consideration
+There are many different test methods that can be used to determine a DK value for laminates and the resulting
+DK values are test method dependent.
+Most industrial standard dielectric constant test methods are based on clamped stripline resonator method that
+apply pressure with clamping between the dielectric substrates and the pattern cards. These test methods have
+a high degree of repeatability.
+
+The other method can be measured with fabricated PCBs. In this case, results can be affected by a small
+variation in circuitry pattern length or width, but results can be better matched with actual field test results.
+Again, there can be different DK results between the clamped stripline resonator method and fabricated
+microstrip PCB methods regardless of the variation in circuit. These difference can be more than expected for
+the case of thin dielectric thickness with different profile copper.
+Below table show the example of dielectric constant results on NF-30-0050 with different coppers.
+
+
+    Test method                 Clamped Stripline                Microstrip Ring Resonator            Remark
+         DK                          Process DK                            Design DK
+       Copper                 ULPH                   CH            ULPH                CH
+     Roughness             Rz ≤ 1 µm              Rz ≤ 4 µm      Rz ≤ 1 µm        Rz ≤ 4 µm
+   5mil(0.125mm)              3.00                  2.99            2.90               3.04
+
+
+
+
+NF-30 is supplied with ULP copper foil, an Ultra-Low Profile copper foil due to its superior insertion loss at 77
+GHz. The slightly lower Design DK is easily adjusted in any CAD program.
+Innerlayer preparation for multilayer
+Multilayer applications require that two or more laminates be bonded together to form a single circuit board.
+There are two important considerations when processing the circuit board. The first is registration of the
+features from one layer to another. The second is the condition of the bond surface prior to lamination.
+
+Acclimation
+If the laminates has been extreme temperatures during shipment or storage, the material should be placed in
+ambient conditions for 24 hours prior to processing. If exposed to high humidity over 50%RH, proper baking
+process prior to fabricating PCB process is necessary.
+
+Scaling
+This data is for reference only and is dependent on numerous factors such as laminate thickness, copper
+thickness, copper types, circuit design, adjacent laminates / prepregs, lamination parameters, etc. Most PCB
+fabricators determine artwork compensation data by running a pilot lot or estimating based on previous
+experience.
+In general, registration of layers can be improved by retaining as much copper as possible.
+
+     Property              Condition                 MD                      CD                  Remark
+                         After etching             0.018%                  0.044%                DT ; 5mil
+   Dimensional
+                         After Baking             -0.038%                 -0.010%              IPC-TM-650
+     stability
+                          After stress            -0.065%                 -0.034%                 2.4.39.
+
+Surface preparation;
+A chemical process consisting of organic cleaners and a micro etch is the preferred method of preparing copper
+surfaces for coating with photoresist. Mechanical scrubbing is not recommended due to the distorting the thin
+laminate or imparting deep scratches that change the functional spacing. Both liquid and dry film photoresist can
+be applied.
+NF-30 laminates are compatible with most oxide and oxide alternative processes. Highly caustic, high temperature
+processes, such as traditional or reduced black oxides, should be followed by a thorough rinse and bake of the
+inner layers.
+Special pretreatments of etched surfaces using sodium or plasma processes are not generally needed if care was
+taken to protect the substrate surface after copper etching. Removal of volatile substances prior to MLB bonding
+should be ensured by proper baking process at 110~125 ℃ for 0.5~2 hours.
+
+Multilayer
+For best results, NF-30 laminates should be bonded using low loss bond ply such as fastRise™ series or HB series
+provided by AGC. The press cycle can be determined by the requirements of the chosen adhesive system of
+bondply and NF-30 laminates are compatible with most of adhesive systems. Please refer to AGC process
+guidelines for fastRise.
+Drilling
+Drill bits
+Sharp drill bits are critical to any PTFE drilling; New drill bits should always be used. Undercut drill bits are
+recommended, but past studies have shown that some drill bit brands may obtain better results using their
+standard drill bits like new carbide drills.
+
+Chip Load
+A nominal chip load of 1.0 mil (25.4 µm) should be used for all tool sizes. Increasing the chip load to 1.25 mils (31.8
+µm) may provide acceptable hole quality and improved productivity up to applications.
+
+Cutting speed
+Drill speeds of 100 SFM (30.5 m/min) or less is recommended. Slower speeds offer the greatest hole quality
+improvements. They allow generated heat to dissipate before smearing PTFE. Drill speed can be increased due to
+equipment limitations but added dwell times may become important. At a simple application, surface speeds of
+300 SFM (90 m/min) could also provide acceptable hole quality.
+
+Dwell Time
+Low surface speeds will reduce or eliminate the need for dwell. If ideal cutting speeds cannot be obtained, 1,250
+ms dwell is recommended for initial process setup in order to cool the drill bit between holes. Past AGC studies
+have shown that hole wall quality may improve as dwell times are increased to as much as 1,000 ms.
+
+Peck Drilling
+Peck drilling should be avoided where possible; it has been shown to increase drill bit wear as well as increase
+process time. Peck drilling may be required in some situations. If traditional peck drilling is not used, hole-wall
+quality may be improved with the use of a ”clean” peck where the peck depth is set to equal that of the phenolic
+entry.
+
+Hit Count
+NF-30 laminates can yields exceptional tool life when ideal cutting speeds and chip loads are used. Hit counts of
+700~1000 are recommended for initial process setup. Tool life should be based upon cross-section inspections.
+
+Entry materials
+Rigid entry and exit material is critical in order to remove any debris or deposits from the drill bit. 10~25 mil (0.25
+– 0.6 mm) phenolic entry is acceptable for most applications and 30~50 mil (0.75 -1.0 mm) phenolic entry can be
+used if pressure foot clearance is substantial.
+
+Backer materials
+Like the entry, rigid backer is necessary to prevent burring and aid in obtaining hole-wall quality. Thick phenolic is
+typical and lubricated rigid backers have also been found to be very successful.
+
+Quick start
+The following chart is provided as a general starting point for drill process development. The user shall determine
+the optimized conditions and suitability.
+                                                                         Units
+        Entry Material                                Phenolic (0.010”~0.024”/ 0.25~0.6 mm)
+       Backer Material                                Rigid Phenolic, Slickback, or comparable
+        Cutting Speed                                   100 ~ 300 SFM (30.5 ~ 91.5 m/min)
+          Chip Load                                     0.0010 ~ 0.0015 in (25.4 ~ 38.1 µm)
+            Dwell                                                    0~1000 ms
+          Hit Count                                                   700~1200
+Drill charts
+Following table can be used as general starting point of recommended drilling parameters;
+               Spindle                                                   Spindle
+ Diameter                    Infeed     Retract     Remark   Diameter                  Infeed    Retract    Remark
+   (mm)
+                Speed        (IPM)          (IPM)                (mm)
+                                                                          Speed         (IPM)     (IPM)
+                   (krpm)                                                 (krpm)
+    0.2             70        70            300                   0.8       30              42    400
+   0.25             67        70            300                   1.0       24              35    400
+   0.35             55        65            300                  1.25       20              30    400
+    0.5             46        58            400                   1.5       20              30    400
+    0.7             34        46            400                   2.5       20              30    400
+
+
+PLATING
+NF-30 laminates have been engineered to be highly resistant to chemical infiltration and a robust hole wall
+preparation process is necessary for a successful deposition plating process. Following hole wall preparation, NF-
+30 will accept standard electroless copper or direct deposit metallization plating process. For high aspect radios
+or other difficult to plate applications, a second pass through the electroless process may be required to ensure
+proper hole-wall coverage. It may also be beneficial to run a short duration of electrolyzed copper, rinse etc. then
+restart the electrolyzed copper from the beginning to expose the hole wall to fresh chemistry.
+
+IMAGE, DEVELOP, ETCH, STRIP
+When copper surface preparation is required, chemical cleaning processes are preferred (e.g. microetch);
+Mechanical scrubbing (e.g. pumice scrub) should be avoided due to possible mechanical damage. Otherwise,
+standard processing should be used.
+
+SOLDER MASK
+No special treatment is required if the surface has not been mechanically scrubbed. In rare cases, where adhesion
+is poor, a plasma treatment may be used to activate the exposed PTFE.
+We recommend not to directly carry out tape test on dielectric layer. If needed for checking adhesion of PSR, we
+recommend to clean the dielectric surface where the tape to be attached with smooth cloth wiped.
+
+ROUTING / MILLING
+PCBs using NF-30 can be successfully machined using standard router bits or end mills. Rigid phenolic entry and a
+rigid backer should be used. In some cases, adding paper (white paper or Kraft paper) between the phenolic and
+the part allows better conformance to surface topography (e.g. circuits, solder mask, etc.) and may reduce burring.
+For tight tolerances or superior edge quality, a “rough cut” placed 0.005 in. -0.010 in. (0.13 – 0.25 mm) off the part
+edge may be run prior to the “finish” cut at the nominal part edge. Metallic bits for PTFE board fabrication are
+recommend. NF-30 materials will generally provide a better edge quality than is possible with the glass reinforced
+materials.
+
+Following table can be used as general starting point of recommended routing parameters;
+                   Router Diameter                               Spindle Speed                       Feed Rate
+          (mils)                     (mm)               (kRPM)                   (in/min)             (m/min)
+            33                        0.8                 50                        10.8                0.27
+            39                        1.0                 40                        12.2                0.31
+            47                        1.2                 34                        12.6                0.32
+            63                        1.6                 25                        18.7                0.48
+            78                        2.0                 20                        27.2                0.69
+            94                        2.4                 20                        35.0                0.89
+           118                        3.0                 20                        42.5                1.08
+           125                        3.2                 20                        43.3                1.10
+Hole wall preparation
+The debris loosely deposited in the holes can be removed by using a vapor or hydro-honing process. These
+processes involve directing water suspended abrasive particles through drilled holes. Due to the softness, NF-30
+laminates should be properly supported through these processes.
+
+Desmear
+Plasma
+If panels have been exposed to moisture, bake the boards at 110 ºC for 1 hour. PTFE composites are usually not
+desmeared but the adhesive system used to bond multilayer require desmear. Standard FR4/epoxy desmear
+processes should then be used. The desmear plasma time is typically half of that of standard FR4/epoxy times
+because fastRiseTM resin system tends to etch back very quickly.
+
+Permanganate
+Permanganate desmear is not recommended and has been shown to be very aggressive on fastRiseTM resulting
+in excessive etchback. This is due to the high silica filler content and thermoset content in the resin system. Neither
+process (Plasma and Permanganate) will have a significant effect on NF-30 materials but should be done prior to
+activation of PTFE (NF-30) surface.
+
+PTFE Activation
+Plasma
+If panels have been exposed to moisture, bake the boards at 110 ºC for 1 hour. Plasma treat the PTFE resin using
+70%/30% hydrogen/nitrogen gas mixture. 100% helium may also suffice. Power settings for the RF-signal
+generator are typically 60~75 % of full rated power for 30~60 minutes. Thick panels or high-aspect ratio holes may
+require extended plasma cycle times. Thick panels may also benefit from an additional 30miutes O2 plasma
+process prior to the PTFE activation plasma.
+
+Sodium Etch
+Sodium Etches (e.g. Fluoroetch) work well. Follow the manufacturer’s recommended treatment process.
+Subsequently, bake for 1 hour at 121 ºC prior to plating to remove moisture that may have been absorbed during
+the sodium treatment process. Chlorine can have adverse effects on the sodium treatment. Do not subject
+exposed sodium etch treated holes to heavily concentrated chlorine-based chemical processes.
+
+Process Example
+The following table is offered by March Plasma as a basic starting point recipe;
+                                                 Gas
+ Power(kW)      Pressure(mT)         Gasses               Flow(slm)   Pnl Temp (ºC)   Time(min)         Function
+                                                Ratios
+     4.5             250             O2 / N 2   90 / 10     2.5            90           A/R               Heating
+      4              250             CF4 / O2   10 / 90     2.5            99           10        Thermoset etch-back
+                                                                                                  Removes fluorine and
+      4              250               O2        100        2.5            99            5
+                                                                                                      cleans others
+                                                                                                  Activate PTFE. H2/N2
+     4.2             250               N2        100        2.5            99            30       Cycle is typically more
+                                                                                                  effective and reliable.
+
+ These guidelines can provide only basic and reference information for PCB fabricators. Because of different
+ environment, equipment, tooling and so on, in all instances, the user shall determine suitability in any given
+ conditions or applications. For more detailed processing information, please contact with the AGC engineer or
+ sales representative.
+
+ AGC Inc. 2022-11
+ agc-ml.info-maltimaterial@agc.com
+

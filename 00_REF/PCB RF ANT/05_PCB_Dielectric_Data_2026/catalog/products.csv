@@ -1,0 +1,1059 @@
+﻿organization,product,condition_records,material_forms,point_frequencies_ghz,source_ids,records_without_point_frequency
+AGC,Meteorwave  E2,1,laminate / prepreg / bondply / bondfilm,,RF346,1
+AGC,Meteorwave  E3,1,laminate / prepreg / bondply / bondfilm,,RF346,1
+AGC,Meteorwave  ELL 202,1,laminate / prepreg / bondply / bondfilm,,RF346,1
+AGC,Meteorwave  ELL 205,1,laminate / prepreg / bondply / bondfilm,,RF346,1
+AGC,Meteorwave  ELL 302,1,laminate / prepreg / bondply / bondfilm,,RF346,1
+AGC,Meteorwave  ELL 305,1,laminate / prepreg / bondply / bondfilm,,RF346,1
+AGC,Meteorwave 1000,243,laminate; prepreg,2; 10; 40,RF008; RF295; RF297,0
+AGC,Meteorwave 1000NF,3,no-flow prepreg,2; 10,RF008; RF301,0
+AGC,Meteorwave 2000,237,laminate; prepreg,2; 10; 40,RF008; RF303; RF304,0
+AGC,Meteorwave 3000,117,laminate; prepreg,2; 10; 40,RF008; RF305; RF306,0
+AGC,Meteorwave 3350,60,laminate; prepreg,2; 10; 40,RF008; RF307; RF308,0
+AGC,Meteorwave 4000,201,laminate; prepreg,2; 10; 40,RF008; RF309; RF310,0
+AGC,Meteorwave 8000,235,laminate; prepreg,2; 10; 40; 80,RF008; RF311; RF312,11
+AGC,Meteorwave 8300,57,laminate; prepreg,2; 10; 40,RF008; RF313; RF314,0
+AGC,Meteorwave E2,1,laminate,10,RF008,0
+AGC,Meteorwave E3,1,laminate,10,RF008,0
+AGC,Meteorwave ELL 202,1,laminate,10,RF008,0
+AGC,Meteorwave ELL 205,1,laminate,10,RF008,0
+AGC,Meteorwave ELL 302,1,laminate,10,RF008,0
+AGC,Meteorwave ELL 305,1,laminate,10,RF008,0
+AGC,Meteorwave M1,19,laminate; prepreg,10; 77,RF008; RF315; RF317,0
+AGC,N4000-13,99,laminate; prepreg,1; 2; 2.5; 10,RF008; RF318; RF320,0
+AGC,N4000-13 EP,108,laminate; prepreg,1; 2; 2.5; 10,RF008; RF321; RF322,0
+AGC,N4000-13 EP SI,75,laminate; prepreg,1; 2; 2.5; 10,RF008; RF323; RF324,0
+AGC,N4000-13 SI,75,laminate; prepreg,1; 2; 2.5; 10,RF008; RF325; RF326,0
+AGC,N4000-29,83,laminate; prepreg,2; 2.5; 10,RF327; RF329,0
+AGC,N4000-29NF,5,no-flow prepreg,2; 10,RF008; RF330,0
+AGC,N4350-13RF,1,laminate,10,RF262,0
+AGC,N4380-13RF,1,laminate,10,RF264,0
+AGC,N5000,294,laminate; prepreg,0.001; 1; 2.5; 10,RF265; RF267,0
+AGC,N7000-2 HT / -3,1,laminate,10,RF008,0
+AGC,N7000-2 HT / N7000-3,126,laminate,1; 2; 10,RF333,0
+AGC,N7000-2HT,2,laminate,2.5; 10,RF331,0
+AGC,N7000-3,16,laminate; prepreg,1; 2; 2.5; 10,RF008; RF333; RF334,0
+AGC,N7000-3F,23,filled resin prepreg; laminate; prepreg,10,RF335; RF336,0
+AGC,N8000,98,laminate; prepreg,0.001; 1; 2.5; 10,RF268; RF270,0
+AGC,N9300-13RF,1,laminate,10,RF271,0
+AGC,N9320-13RF,1,laminate,10,RF271,0
+AGC,N9338-13RF,1,laminate,10,RF271,0
+AGC,N9350-13RF,1,laminate,10,RF271,0
+AGC,NF-30,4,laminate,10; 77; 78.1,RF008; RF242,0
+AGC,RF-10,2,laminate,10,RF008; RF244,0
+AGC,RF-30A,4,laminate,1.9; 10,RF008; RF246,0
+AGC,RF-35HTC,2,laminate,10,RF008; RF248,0
+AGC,RF-35TC,2,laminate,10,RF008; RF250,0
+AGC,RF-60TC,2,laminate,10,RF008; RF252,0
+AGC,TLC-32,3,laminate,0.001; 10,RF008; RF279,0
+AGC,TLE-95,3,laminate,0.001; 10,RF008; RF281,0
+AGC,TLF-35A,3,laminate,1.9; 10,RF008; RF254,0
+AGC,TLX-8,3,laminate,0.001; 10,RF008; RF256,0
+AGC,TLY-3,2,laminate,10,RF008; RF283,0
+AGC,TLY-5,2,laminate,10,RF008; RF258,0
+AGC,TLY-5A,2,laminate,10,RF008; RF285,0
+AGC,TLY-5Z,2,laminate,10,RF008; RF273,0
+AGC,TSM-DS3,2,laminate,10,RF008; RF275,1
+AGC,TSM-DS3M,2,laminate,10,RF008; RF277,1
+AGC,TSM-DS3b,2,laminate,10,RF008; RF260,0
+AGC,fastRise,3,non-reinforced prepreg,10; 40,RF287,0
+AGC,fastRise EZpure,2,bonding film / prepreg; bondply / prepreg,10,RF008; RF291,0
+AGC,fastRise FR-25,1,bonding film / prepreg,10,RF008,0
+AGC,fastRise FR-27,1,bonding film / prepreg,10,RF008,0
+AGC,fastRise FR-28,1,bonding film / prepreg,10,RF008,0
+AGC,fastRise FR-EZ-22P,2,bonding film / prepreg; bondply / prepreg,10,RF008; RF289,0
+AGC,fastRise FR-EZ-33P,2,bonding film / prepreg; bondply / prepreg,10,RF008; RF289,0
+AGC,fastRise TC,2,bonding film / prepreg; bondply / prepreg,10,RF008; RF293,0
+AISLER,Core FR4,7,core,,FB206; FB207; FB208; FB212,7
+AISLER,Prepreg 1080,16,prepreg,,FB206; FB208; FB212,16
+AISLER,Prepreg 2116,9,prepreg,,FB207; FB208,9
+AdvancedPCB,185HR,1,,2,FB187,0
+AdvancedPCB,3003,1,,,FB187,1
+AdvancedPCB,3006,1,,,FB187,1
+AdvancedPCB,3010,1,,,FB187,1
+AdvancedPCB,3203,1,,,FB187,1
+AdvancedPCB,3210,1,,,FB187,1
+AdvancedPCB,370HR,1,,2,FB187,0
+AdvancedPCB,4003C,1,,,FB187,1
+AdvancedPCB,408HR,1,,1,FB187,0
+AdvancedPCB,4350B,1,,,FB187,1
+AdvancedPCB,4450B,1,,10,FB187,0
+AdvancedPCB,85N,1,,0.001,FB187,0
+AdvancedPCB,Aluminum clad unspecified,1,,0.001,FB187,0
+AdvancedPCB,ED130UV,1,,1,FB187,0
+AdvancedPCB,FR406,1,,1,FB187,0
+AdvancedPCB,IS620i,1,,1,FB187,0
+AdvancedPCB,N4000-11,1,,1,FB187,0
+AdvancedPCB,N4000-12,1,,1,FB187,0
+AdvancedPCB,N4000-13,1,,1,FB187,0
+AdvancedPCB,N4000-13 SI/EP,1,,1,FB187,0
+AdvancedPCB,N4000-29,1,,1,FB187,0
+AdvancedPCB,N4000-6,1,,2.5,FB187,0
+AdvancedPCB,P95,1,,1,FB187,0
+AdvancedPCB,P96,1,,1,FB187,0
+AdvancedPCB,RT/duroid 5870,1,,,FB187,1
+AdvancedPCB,RT/duroid 5880,1,,,FB187,1
+AdvancedPCB,RT/duroid 6002,1,,,FB187,1
+AdvancedPCB,RT/duroid 6006,1,,,FB187,1
+AdvancedPCB,RT/duroid 6010,1,,,FB187,1
+AdvancedPCB,TLC,1,,10,FB187,0
+AdvancedPCB,TLE,1,,10,FB187,0
+AdvancedPCB,TLT,1,,0.001,FB187,0
+AdvancedPCB,TLX,1,,10,FB187,0
+Arlon Electronic Materials,33N,2,laminate; laminate / prepreg,0.001; 1,RF140,0
+Arlon Electronic Materials,35N,2,laminate; laminate / prepreg,0.001; 1,RF141,0
+Arlon Electronic Materials,37N,1,prepreg,0.001,RF142,0
+Arlon Electronic Materials,38N,1,prepreg,0.001,RF143,0
+Arlon Electronic Materials,44N,1,prepreg,0.001,RF144,0
+Arlon Electronic Materials,45N,1,prepreg,0.001,RF145,0
+Arlon Electronic Materials,45NK,1,laminate / prepreg,0.001,RF146,0
+Arlon Electronic Materials,47N,1,prepreg,0.001,RF147,0
+Arlon Electronic Materials,49N,1,prepreg,0.001,RF148,0
+Arlon Electronic Materials,51N,2,laminate / prepreg,0.001; 1,RF149,0
+Arlon Electronic Materials,55NT,1,laminate / prepreg,0.001,RF150,0
+Arlon Electronic Materials,84HP,1,prepreg,0.001,RF154,0
+Arlon Electronic Materials,84N,2,prepreg,0.001; 1,RF151,0
+Arlon Electronic Materials,85HP,1,laminate / prepreg,0.001,RF152,0
+Arlon Electronic Materials,85N,2,laminate / prepreg,0.001; 1,RF153,0
+Arlon Electronic Materials,85NT,1,laminate / prepreg,0.001,RF156,0
+Arlon Electronic Materials,86HP,3,laminate / prepreg,1; 5; 10,RF155,0
+Chukoh,CGA-500,7,laminate,,RT0192,7
+Chukoh,CGH-500,8,laminate,,RT0193,8
+Chukoh,CGK-500,8,laminate,,RT0194,8
+Chukoh,CGN-500,9,laminate,,RT0191,9
+Chukoh,CGP-500A,12,laminate,,RT0189,12
+Chukoh,CGS-500A,7,laminate,,RT0190,7
+CircuitHub,Kingboard KB6050 prepreg 1080,1,prepreg,,FB057,1
+CircuitHub,Kingboard KB6050 prepreg 2116,1,prepreg,,FB057,1
+CircuitHub,Kingboard KB6050 prepreg 3313,1,prepreg,,FB057,1
+CircuitHub,Kingboard KB6050 prepreg 7628,1,prepreg,,FB057,1
+Doosan,DS-7402,2,,1; 10,RT0001,0
+Doosan,DS-7402BS (DF),2,,1; 10,RT0001,0
+Doosan,DS-7402BS (DFM),1,,1,RT0001,0
+Doosan,DS-7402H,3,,1; 10,RT0001,0
+Doosan,DS-7402HD,2,,1; 10,RT0001,0
+Doosan,DS-7402LC,2,,1; 10,RT0001,0
+Doosan,DS-7402M,2,,1; 10,RT0001,0
+Doosan,DS-7409DJG,3,,1; 10,RT0001,0
+Doosan,DS-7409DJG (N),3,,1; 10,RT0001,0
+Doosan,DS-7409DJG (S),3,,1; 10,RT0001,0
+Doosan,DS-7409DJL2+,3,,1; 10,RT0001,0
+Doosan,DS-7409DJN+,3,,1; 10,RT0001,0
+Doosan,DS-7409DJN2+,3,,1; 10,RT0001,0
+Doosan,DS-7409DQN,3,,1; 10,RT0001,0
+Doosan,DS-7409DQN2,3,,1; 10,RT0001,0
+Doosan,DS-7409DV (C),3,,1; 10,RT0001,0
+Doosan,DS-7409DV (N),3,,1; 10,RT0001,0
+Doosan,DS-7409DV (NT),3,,1; 10,RT0001,0
+Doosan,DS-7409DV (T),3,,1; 10,RT0001,0
+Doosan,DS-7409DX (C),1,,1,RT0001,0
+Doosan,DS-7409DXG,3,,1; 10,RT0001,0
+Doosan,DS-7409HG (FQ),2,,1; 10,RT0001,0
+Doosan,DS-7409HG (FU),2,,1; 10,RT0001,0
+Doosan,DS-7409HG (I),2,,1; 10,RT0001,0
+Doosan,DS-7409HG (IQ),2,,1; 10,RT0001,0
+Doosan,DS-7409HG (KN),2,,1; 10,RT0001,0
+Doosan,DS-7409HG (LE),2,,1; 10,RT0001,0
+Doosan,DS-7409HG (X),2,,1; 10,RT0001,0
+Doosan,DS-7409HG (Z),2,,1; 10,RT0001,0
+Doosan,DS-7409HG (ZL),2,,1; 10,RT0001,0
+Doosan,DS-7409HG (ZS),2,,1; 10,RT0001,0
+Doosan,DS-7409HG (ZU),2,,1; 10,RT0001,0
+Doosan,DS-7409S (N),1,,1,RT0001,0
+Doosan,DS-8402H BS (DFL),2,,1; 10,RT0001,0
+Doosan,DS-8402HL,2,,1; 10,RT0001,0
+Doosan,DS-8502LC,2,,1; 10,RT0001,0
+Doosan,DS-8502SQ,2,,1; 10,RT0001,0
+Doosan,DS-8502SQN,2,,1; 10,RT0001,0
+Doosan,DS-9530,3,,1; 10,RT0001,0
+Doosan,DSF-900LC,2,,1; 10,RT0001,0
+Doosan,DSF-900SQ,2,,1; 10,RT0001,0
+Doosan,DSR-1000,2,,1; 10,RT0001,0
+Doosan,DST-9000,1,,1,RT0001,0
+Doosan,DST-9000HT,1,,1,RT0001,0
+Doosan,DST-9000S,1,,1,RT0001,0
+Doosan,DSflex-600,2,,1; 10,RT0001,0
+Doosan,DSflex-600D,2,,1; 10,RT0001,0
+Doosan,DSflex-600P,2,,1; 10,RT0001,0
+Doosan,DSflex-600U,2,,1; 10,RT0001,0
+Doosan,DSflex-600UF (DS),2,,1; 10,RT0001,0
+Doosan,DSflex-600UK (SS),2,,1; 10,RT0001,0
+Doosan,DSflex-600UY,2,,1; 10,RT0001,0
+Doosan,DSflex-900,2,,1; 10,RT0001,0
+Doosan,RAPIDON-10W,3,,1; 10,RT0001,0
+Doosan,RAPIDON-10W (N),3,,1; 10,RT0001,0
+EMC,EM-285,4,laminate,0.001; 1; 10,RT0004; RT0140,0
+EMC,EM-355(D),4,laminate,2; 10,RT0004; RT0139,0
+EMC,EM-370(5),4,laminate,0.001; 1; 10,RT0004; RT0138,0
+EMC,EM-370(D),4,laminate,1; 10,RT0004; RT0136,0
+EMC,EM-370(D)-15,4,laminate,1; 10,RT0004; RT0137,0
+EMC,EM-370(Z),6,laminate,1; 10,RT0004; RT0134,0
+EMC,EM-370(Z)-15,6,laminate,1; 10,RT0004; RT0135,0
+EMC,EM-390,6,laminate,1; 10,RT0004; RT0133,0
+EMC,EM-526,2,laminate,10,RT0004,0
+EMC,EM-528,8,laminate,1; 10,RT0004; RT0113,0
+EMC,EM-528K,6,laminate,1; 10,RT0004; RT0112,0
+EMC,EM-626,8,laminate,1; 10,RT0004; RT0117,0
+EMC,EM-626K,2,laminate,10,RT0004,0
+EMC,EM-825,4,laminate,0.001; 1; 10,RT0004; RT0144,0
+EMC,EM-825(I),4,laminate,0.001; 1; 10,RT0004; RT0143,0
+EMC,EM-827,2,laminate,10,RT0004,0
+EMC,EM-827(I),4,laminate,0.001; 1; 10,RT0004; RT0141,0
+EMC,EM-828G,4,laminate,1; 10,RT0004; RT0132,0
+EMC,EM-888,4,laminate,1; 10,RT0004; RT0131,0
+EMC,EM-888(S),4,laminate,1; 10,RT0004; RT0129,0
+EMC,EM-888(S)(A),4,laminate,1; 10,RT0004; RT0130,0
+EMC,EM-888K,4,laminate,1; 10,RT0004; RT0128,0
+EMC,EM-890,6,laminate,1; 10,RT0004; RT0125,0
+EMC,EM-890K,6,laminate,1; 10,RT0004; RT0123,0
+EMC,EM-890K(A),6,laminate,1; 10,RT0004; RT0124,0
+EMC,EM-891,6,laminate,1; 10,RT0004; RT0127,0
+EMC,EM-891K,6,laminate,1; 10,RT0004; RT0126,0
+EMC,EM-892K,6,laminate,1; 10,RT0004; RT0121,0
+EMC,EM-892K(A),6,laminate,1; 10,RT0004; RT0122,0
+EMC,EM-892K2,6,laminate,1; 10,RT0004; RT0119,0
+EMC,EM-892K2(A),6,laminate,1; 10,RT0004; RT0120,0
+EMC,EM-A30,6,laminate,1; 10,RT0004; RT0109,0
+EMC,EM-A50,4,laminate,10,RT0004; RT0115,0
+EMC,EM-A56,2,laminate,10,RT0004,0
+EMC,EM-A56K,2,laminate,10,RT0004,0
+EMC,EM-A70K,3,laminate,10,RT0004; RT0118,0
+EMC,EM-S370(Z),6,laminate,1; 10,RT0004; RT0108,0
+EMC,EM-S376,6,laminate,1; 10,RT0004; RT0102,0
+EMC,EM-S526,6,laminate,1; 10,RT0004; RT0107,0
+EMC,EM-S530,6,laminate,1; 10,RT0004; RT0106,0
+EMC,EM-S530K,6,laminate,1; 10,RT0004; RT0105,0
+EMC,EM-S532K,6,laminate,1; 10,RT0004; RT0104,0
+EMC,EM-S570,3,laminate,1; 10,RT0004; RT0103,0
+Epec,185HR,2,,0.001; 1,FB059,0
+Epec,25FR,1,,1,FB059,0
+Epec,25N,1,,1,FB059,0
+Epec,2LPSE 1005,1,,0.001,FB059,0
+Epec,3003,1,,1,FB059,0
+Epec,4003C,1,,1,FB059,0
+Epec,4350B,1,,1,FB059,0
+Epec,4450B,1,,1,FB059,0
+Epec,85N,1,,0.001,FB059,0
+Epec,ED130UV,2,,0.001; 1,FB059,0
+Epec,FR408,1,,1,FB059,0
+Epec,Getek,1,,0.001,FB059,0
+Epec,HTE-420,1,,0.001,FB059,0
+Epec,HTE-740,1,,0.001,FB059,0
+Epec,IT140,1,,0.001,FB059,0
+Epec,IT140G,1,,0.001,FB059,0
+Epec,IT158,1,,0.001,FB059,0
+Epec,IT170G,1,,0.001,FB059,0
+Epec,IT180,1,,0.001,FB059,0
+Epec,IT600,1,,0.001,FB059,0
+Epec,N4000-13,2,,0.001; 1,FB059,0
+Epec,N4000-13SI,1,,1,FB059,0
+Epec,N4000-2,2,,0.001; 1,FB059,0
+Epec,N4000-6,2,,0.001; 1,FB059,0
+Epec,N4000-7,2,,0.001; 1,FB059,0
+Epec,N5000,2,,0.001; 1,FB059,0
+Epec,N7000-1,2,,0.001; 1,FB059,0
+Epec,NP-140TL,1,,1,FB059,0
+Epec,NP-175FR,1,,1,FB059,0
+Epec,NP-180TL,1,,1,FB059,0
+Epec,NPG-170TL,1,,1,FB059,0
+Epec,NPG-180TL,1,,1,FB059,0
+Epec,P95,2,,0.001; 1,FB059,0
+Epec,PYRALUX AC,1,,0.001,FB059,0
+Epec,PYRALUX AP,1,,0.001,FB059,0
+Epec,Polyclad 370HR,2,,0.001; 1,FB059,0
+Epec,S1000,1,,0.001,FB059,0
+Epec,S1130,1,,0.001,FB059,0
+Epec,S1141,1,,0.001,FB059,0
+Epec,S1155,1,,0.001,FB059,0
+Epec,S1165,1,,0.001,FB059,0
+Epec,S1170,1,,0.001,FB059,0
+Epec,S1440,1,,0.001,FB059,0
+Epec,S1600,2,,0.001; 1,FB059,0
+Epec,S1860,1,,1,FB059,0
+Epec,S2130,1,,0.001,FB059,0
+Epec,S3110,1,,0.001,FB059,0
+Epec,THKD050513,1,,0.001,FB059,0
+Epec,TLC,1,,1,FB059,0
+Epec,TLE,1,,1,FB059,0
+Epec,TLT,1,,1,FB059,0
+Epec,TLX,1,,1,FB059,0
+Epec,TMM3,1,,1,FB059,0
+Epec,TMM4,1,,1,FB059,0
+Epec,Ultralam 2000,1,,1,FB059,0
+Eurocircuits,HSP 2740,3,paste_coating,1e-06; 0.001; 1,FB234,0
+Eurocircuits,HSP 2741,3,paste_coating,1e-06; 0.001; 1,FB234,0
+Eurocircuits,I-Tera MT40,4,,10,FB229,0
+Eurocircuits,I-Tera MT40 RF pool,2,,10,FB222,0
+Eurocircuits,Imagecure XV501T DI / IMC5009R-5009H,1,solder_mask,0.001,FB235,0
+Eurocircuits,R-1755M,1,,1,FB226,0
+Eurocircuits,R-1766,1,,1,FB226,0
+Eurocircuits,RO4450B,2,bondply,10,FB231,0
+Eurocircuits,RO4450F,1,bondply,10,FB231,0
+Fineline,185HR,2,,1,FB061; FB199,0
+Fineline,2929 Bondply,2,,1,FB061; FB199,0
+Fineline,85N,2,,1,FB061; FB199,0
+Fineline,AD1000,2,,1,FB061; FB199,0
+Fineline,AD1000/AD1000L,2,,1,FB061; FB199,0
+Fineline,DuPont AP,2,,1,FB061; FB199,0
+Fineline,F4BM-1/2,2,,1,FB061; FB199,0
+Fineline,FR4 Tg135-140,1,,0.001,FB062,0
+Fineline,FR4 Tg150-170,1,,0.001,FB062,0
+Fineline,FR4 high speed Tg180-220,1,,1,FB062,0
+Fineline,FR408 HR,2,,1,FB061; FB199,0
+Fineline,GF265,2,,1,FB061; FB199,0
+Fineline,IT-158,2,,1,FB061; FB199,0
+Fineline,IT-170GRA1,2,,1,FB061; FB199,0
+Fineline,IT-180A,2,,1,FB061; FB199,0
+Fineline,IT-968,2,,1,FB061; FB199,0
+Fineline,IT150DA,2,,1,FB061; FB199,0
+Fineline,ITERA-MT-40 / R-5785N/ M7N (combined source cell),2,,1,FB061; FB199,0
+Fineline,LNB33,2,,1,FB061; FB199,0
+Fineline,N4000-13/EP/SI,2,,1,FB061; FB199,0
+Fineline,N4800-20/SI,2,,1,FB061; FB199,0
+Fineline,NY2150,2,,1,FB061; FB199,0
+Fineline,NY2170,2,,1,FB061; FB199,0
+Fineline,PTFE,1,,0.001,FB062,0
+Fineline,Polyimide,1,,0.001,FB062,0
+Fineline,R-5725S/ M4S,2,,1,FB061; FB199,0
+Fineline,R-5775G/ M6G,2,,1,FB061; FB199,0
+Fineline,R-5775N/ M6N,2,,1,FB061; FB199,0
+Fineline,R-5785/M7,2,,1,FB061; FB199,0
+Fineline,RF-35,2,,1,FB061; FB199,0
+Fineline,RF-60TC,2,,1,FB061; FB199,0
+Fineline,RF-775,2,,1,FB061; FB199,0
+Fineline,RF-777,2,,1,FB061; FB199,0
+Fineline,RO3003,2,,1,FB061; FB199,0
+Fineline,RO3006,2,,1,FB061; FB199,0
+Fineline,RO4000LoPro,2,,1,FB061; FB199,0
+Fineline,RO4003C,2,,1,FB061; FB199,0
+Fineline,RO4003C Lopro,2,,1,FB061; FB199,0
+Fineline,RO4350B,2,,1,FB061; FB199,0
+Fineline,RO4350B Lopro,2,,1,FB061; FB199,0
+Fineline,RO4450F PP,2,,1,FB061; FB199,0
+Fineline,RO4533,2,,1,FB061; FB199,0
+Fineline,RO4725JXR,2,,1,FB061; FB199,0
+Fineline,RO4725JXR lopro,2,,1,FB061; FB199,0
+Fineline,RO4730G3,2,,1,FB061; FB199,0
+Fineline,RO4835,2,,1,FB061; FB199,0
+Fineline,RO4835 Lopro,2,,1,FB061; FB199,0
+Fineline,RT5880,2,,1,FB061; FB199,0
+Fineline,RT6002,2,,1,FB061; FB199,0
+Fineline,RT6010LM,2,,1,FB061; FB199,0
+Fineline,S1000-2/S1000-2M,2,,1,FB061; FB199,0
+Fineline,S1000H,2,,1,FB061; FB199,0
+Fineline,S1150G,2,,1,FB061; FB199,0
+Fineline,S1151G,2,,1,FB061; FB199,0
+Fineline,S1190,2,,1,FB061; FB199,0
+Fineline,SF305,2,,1,FB061; FB199,0
+Fineline,TLX-8,2,,1,FB061; FB199,0
+Fineline,TMM 10 Laminates,2,,1,FB061; FB199,0
+Fineline,TU-768,2,,1,FB061; FB199,0
+Fineline,TU-862HF,2,,1,FB061; FB199,0
+Fineline,TU-872 SLK,2,,1,FB061; FB199,0
+Fineline,TU-872 SLK SP,2,,1,FB061; FB199,0
+Fineline,TU933(T3),2,,1,FB061; FB199,0
+Fineline,Thinflex W,2,,1,FB061; FB199,0
+Fineline,VT901,2,,1,FB061; FB199,0
+Fineline,ZYF265D,2,,1,FB061; FB199,0
+Fineline,ZYF300CA,2,,1,FB061; FB199,0
+Generic material reference (Arlon handbook),BT-epoxy,1,material family reference,0.001,RF122,0
+Generic material reference (Arlon handbook),Ceramic-filled PTFE,1,material family reference,0.001,RF122,0
+Generic material reference (Arlon handbook),Epoxy-glass (FR-4),1,material family reference,0.001,RF122,0
+Generic material reference (Arlon handbook),Filled PTFE (CLTE-XT),1,material family reference,0.001,RF122,0
+Generic material reference (Arlon handbook),Nonwoven aramid-epoxy,1,material family reference,0.001,RF122,0
+Generic material reference (Arlon handbook),Polyimide-glass,1,material family reference,0.001,RF122,0
+Generic material reference (Arlon handbook),Polyimide-quartz,1,material family reference,0.001,RF122,0
+Generic material reference (Arlon handbook),Pure PTFE (Teflon),1,material family reference,0.001,RF122,0
+Generic material reference (Arlon handbook),Type GX PTFE-glass,1,material family reference,0.001,RF122,0
+Generic material reference (Arlon handbook),Type GY PTFE-glass,1,material family reference,0.001,RF122,0
+Generic material reference (Arlon handbook),Woven aramid-epoxy,1,material family reference,0.001,RF122,0
+ITEQ,IT-150G,4,laminate,1; 2; 5; 10,FRI006,0
+ITEQ,IT-150GS,4,laminate,1; 2; 5; 10,FRI005,0
+ITEQ,IT-158,4,laminate,1; 2; 5; 10,FRI004,0
+ITEQ,IT-170GRA1,4,laminate,1; 2; 5; 10,FRI008,0
+ITEQ,IT-170GRA2,4,laminate,1; 2; 5; 10,FRI009,0
+ITEQ,IT-170GT,4,laminate,1; 2; 5; 10,FRI007,0
+ITEQ,IT-180A,2,laminate,0.001; 1,FRI001,0
+ITEQ,IT-258GA3,4,laminate,1; 2; 5; 10,FRI003,0
+ITEQ,IT-601G,2,laminate,1; 10,FRI011,0
+ITEQ,IT-602G,8,laminate,1; 2; 5; 10,FRI012,0
+ITEQ,IT-858G,4,laminate,1; 2; 5; 10,FRI002,0
+ITEQ,IT-958G,4,laminate,1; 2; 5; 10,FRI010,0
+ITEQ,IT-968G,8,laminate,1; 2; 5; 10,FRI013,0
+ITEQ,IT-968GSE,8,laminate,1; 2; 5; 10,FRI014,0
+ITEQ,IT-988GL,12,laminate,1; 2; 5; 10,FRI016,0
+ITEQ,IT-988GLSE,12,laminate,1; 2; 5; 10,FRI015,0
+ITEQ,IT-998GSE,6,laminate,2; 5; 10,FRI017,0
+ITEQ,IT-998GSE2,6,laminate,2; 5; 10,FRI018,0
+ITEQ,IT-999GSE2,6,laminate,2; 5; 10,FRI019,0
+ITEQ,IT-999GSE3,6,laminate,2; 5; 10,FRI020,0
+Isola,185HR,342,core; prepreg,0.1; 0.5; 1; 2; 5; 10,FR001,0
+Isola,370HR,384,core,0.1; 0.5; 1; 2; 5; 10,FR002,0
+Isola,370HR Ultra,108,core,0.1; 0.5; 1; 2; 5; 10,FR003,0
+Isola,Astra ® MT77,25,prepreg,2; 5; 10; 15; 20,FR005,0
+Isola,DE104,200,core; prepreg,0.1; 0.5; 1; 2; 5,FR006,0
+Isola,FR406,180,core; prepreg,0.1; 0.5; 1; 2; 5; 10,FR007,0
+Isola,FR408HR,264,core; prepreg,0.1; 0.5; 1; 2; 5; 10,FR009,0
+Isola,I-Speed ®,85,core,2; 5; 10; 15; 20,FR010,0
+Isola,I-Tera ® MT40,120,core,2; 5; 10; 15; 20,FR012,0
+Isola,IS400,228,core; prepreg,0.1; 0.5; 1; 2; 5; 10,FR013,0
+Isola,IS410,156,core; prepreg,0.1; 0.5; 1; 2; 5; 10,FR014,0
+Isola,IS550H,180,core; prepreg,0.1; 0.5; 1; 2; 5; 10,FR015,0
+Isola,IS580G,112,core,2; 5; 10; 20,FR016,0
+Isola,P95/P25,186,core; prepreg,0.1; 0.5; 1; 2; 5; 10,FR018,0
+Isola,P96/P26,192,core; prepreg,0.1; 0.5; 1; 2; 5; 10,FR019,0
+Isola,Tachyon ® 100G,252,core; prepreg,1; 2; 5; 10; 15; 20,FR020,0
+Isola,TerraGreen ® 400G,119,core,10; 15; 20; 30,FR021,0
+Isola,TerraGreen ® 400G2,88,core,10; 15; 20; 30,FR024,0
+Isola,TerraGreen ® 400GE,108,core,10; 15; 20; 30,FR022,0
+JLCPCB,FR4 core,2,core,,FB038; FB039,2
+JLCPCB,FR4 prepreg 1080,1,prepreg,,FB038,1
+JLCPCB,FR4 prepreg 2116,2,prepreg,,FB038; FB039,2
+JLCPCB,FR4 prepreg 3313,2,prepreg,,FB038; FB039,2
+JLCPCB,FR4 prepreg 7628,2,prepreg,,FB038; FB039,2
+JLCPCB,FR4 two-layer capability nominal dielectric constant,1,,,FB041,1
+JLCPCB,Flex coverlay,1,coverlay,,FB220,1
+JLCPCB,Flex polyimide core,2,core,,FB220,2
+JLCPCB,NP-155F,4528,bare_core; core; prepreg,,FB240,4528
+JLCPCB,S1000-2M,21748,bare_core; core; prepreg,,FB240,21748
+JLCPCB,Solder mask,2,solder_mask,,FB038; FB039,2
+Kingboard,HF-140,82,core; laminate,1; 2; 5; 10,RT0174; RT0175,0
+Kingboard,HF-170,100,core,1; 2; 5; 10,RT0401,0
+Kingboard,KB-3200G,80,core,1; 2; 5; 10,RT0183,0
+Kingboard,KB-5200G,2,laminate,1; 10,RT0185,0
+Kingboard,KB-6060,80,prepreg,1; 2; 5; 10,RT0158,0
+Kingboard,KB-6060A,84,prepreg,1; 2; 5; 10,RT0161,0
+Kingboard,KB-6064,96,prepreg,1; 2; 5; 10,RT0169,0
+Kingboard,KB-6064F,108,prepreg,1; 2; 5; 10,RT0382,0
+Kingboard,KB-6065,108,prepreg,1; 2; 5; 10,RT0172,0
+Kingboard,KB-6065F,108,prepreg,1; 2; 5; 10,RT0385,0
+Kingboard,KB-6065G,108,prepreg,1; 2; 5; 10,RT0178,0
+Kingboard,KB-6065GC,72,prepreg,1; 2; 5; 10,RT0398,0
+Kingboard,KB-6065LE,108,prepreg,1; 2; 5; 10,RT0389,0
+Kingboard,KB-6067F,108,prepreg,1; 2; 5; 10,RT0392,0
+Kingboard,KB-6068LE,108,prepreg,1; 2; 5; 10,RT0395,0
+Kingboard,KB-6069GT,120,prepreg,1; 2; 5; 10,RT0404,0
+Kingboard,KB-6150,2,laminate,0.001; 1,RT0156,0
+Kingboard,KB-6160,82,core; laminate,0.001; 1; 2; 5; 10,RT0157; RT0158,0
+Kingboard,KB-6160A,82,core; laminate,0.001; 1; 2; 5; 10,RT0160; RT0161,0
+Kingboard,KB-6160C,2,laminate,0.001; 1,RT0163,0
+Kingboard,KB-6160F,2,laminate,0.001; 1,RT0165,0
+Kingboard,KB-6160LC,2,laminate,0.001; 1,RT0166,0
+Kingboard,KB-6160LC(C),2,laminate,0.001; 1,RT0167,0
+Kingboard,KB-6164,90,core; laminate,0.001; 1; 2; 5; 10,RT0168; RT0169,0
+Kingboard,KB-6164F,90,core; laminate,0.001; 1; 2; 5; 10,RT0381; RT0382,0
+Kingboard,KB-6165,110,core; laminate,0.001; 1; 2; 5; 10,RT0171; RT0172,0
+Kingboard,KB-6165C,2,laminate,0.001; 1,RT0387,0
+Kingboard,KB-6165F,90,core; laminate,0.001; 1; 2; 5; 10,RT0384; RT0385,0
+Kingboard,KB-6165G,90,core; laminate,1; 2; 5; 10,RT0177; RT0178,0
+Kingboard,KB-6165GC,90,core; laminate,1; 2; 5; 10,RT0397; RT0398,0
+Kingboard,KB-6165LE,90,core; laminate,0.001; 1; 2; 5; 10,RT0388; RT0389,0
+Kingboard,KB-6167F,90,core; laminate,0.001; 1; 2; 5; 10,RT0391; RT0392,0
+Kingboard,KB-6168LE,90,core; laminate,0.001; 1; 2; 5; 10,RT0394; RT0395,0
+Kingboard,KB-6169GT,94,core; laminate,1; 2; 5; 10,RT0403; RT0404,0
+Kingboard,PI-515G,92,core,1; 2; 5; 10,RT0407,0
+Kingboard,PI-618G,124,core,1; 2; 5; 10,RT0410,0
+Kingboard,PP-HF140,84,prepreg,1; 2; 5; 10,RT0175,0
+Kingboard,PP-HF170,112,prepreg,1; 2; 5; 10,RT0401,0
+Kingboard,PP-KB3200G,128,prepreg,1; 2; 5; 10,RT0183,0
+Kingboard,PP-PI515G,136,prepreg,1; 2; 5; 10,RT0407,0
+Kingboard,PP-PI618G,104,prepreg,1; 2; 5; 10,RT0410,0
+Lab Circuits,FR110/FR210 (UL-V0) LF110/LF210,2,coverlay,0.001,FB065,0
+Lab Circuits,I-Tera® MT40,2,,10,FB065,0
+Lab Circuits,PCL 370HR,2,,1,FB065,0
+Lab Circuits,Pyralux AP (UL-V0) Taiflex 2FP,2,,0.001,FB065,0
+Lab Circuits,RO4003C,2,,10,FB065,0
+Lab Circuits,RO4350B,2,,10,FB065,0
+Lab Circuits,RO4450F Prepreg,2,prepreg,10,FB065,0
+Lab Circuits,VT-481,2,,1,FB065,0
+MGC,EL190T,3,laminate,0.001; 1; 10,RT0429,0
+MGC,EL230T,3,laminate,0.001; 1; 10,RT0429,0
+MGC,GHPL-830SR,3,prepreg,1; 5; 10,RT0196,0
+MGC,GHPL-830SR typeLC,3,prepreg,1; 5; 10,RT0196,0
+MGC,HL820WDI,1,laminate,1,RT0430,0
+MGC,HL832NS,3,laminate,1; 5; 10,RT0196,0
+MGC,HL832NSAtypeLCA,3,laminate,1; 5; 10,RT0196,0
+MGC,HL832NSF,3,laminate,1; 5; 10,RT0196,0
+MGC,HL832NSFtypeLCA,3,laminate,1; 5; 10,RT0196,0
+MGC,HL832NSR,3,laminate,1; 5; 10,RT0196,0
+MGC,HL832NSRtype LCA,3,laminate,1; 5; 10,RT0196,0
+MGC,HL832NStype LC,3,laminate,1; 5; 10,RT0196,0
+MGC,HL832NX(A),3,laminate,1; 5; 10,RT0196,0
+MGC,HL972LF typeLD,3,laminate,1; 5; 10,RT0196,0
+MGC,HL972LFG,3,laminate,1; 5; 10,RT0196,0
+MGC,HL972LFG typeLD,3,laminate,1; 5; 10,RT0196,0
+Multi Circuit Boards,ARLON 85N Polyimid HTg,1,,0.001,FB049,0
+Multi Circuit Boards,DuPont Pyralux AP,1,,0.001,FB049,0
+Multi Circuit Boards,DuPont Pyralux FR,1,,0.001,FB049,0
+Multi Circuit Boards,FR4 Halogen-free,1,,0.001,FB050,0
+Multi Circuit Boards,FR4 High-TG,1,,0.001,FB050,0
+Multi Circuit Boards,FR4 Standard,1,,0.001,FB050,0
+Multi Circuit Boards,FR4 Track resistant,1,,0.001,FB050,0
+Multi Circuit Boards,FR4 standard calculator assumption,1,,,FB051,1
+Multi Circuit Boards,"ISOLA 370HR FR4 HTg, CAF-Enhanced",2,,1,FB049,0
+Multi Circuit Boards,ISOLA DE156 FR4 halogen-free,1,,1,FB049,0
+Multi Circuit Boards,ISOLA Duraver DE104 Discontinued,1,,1,FB049,0
+Multi Circuit Boards,ISOLA Duraver DE104 KF FR4 tracking resistant,1,,1,FB049,0
+Multi Circuit Boards,ISOLA IS400 FR4 MidTg,1,,,FB049,1
+Multi Circuit Boards,"ISOLA IS410 FR4 HTg, CAF-Enhanced",2,,1,FB049,0
+Multi Circuit Boards,"ISOLA IS420 FR4 HTg, CAF-Enhanced",1,,1,FB049,0
+Multi Circuit Boards,"ISOLA IS420 FR4 HTg, CAF-Enhanced alt.",1,,1,FB049,0
+Multi Circuit Boards,ITEQ IT-158 FR4 MidTg alternative,1,,1,FB049,0
+Multi Circuit Boards,ITEQ IT-180A FR4 HTg,2,,1,FB049,0
+Multi Circuit Boards,Panasonic Megtron6 HF Material,1,,10,FB049,0
+Multi Circuit Boards,Panasonic RF775,1,,0.001,FB049,0
+Multi Circuit Boards,Polyimide,1,,0.001,FB050,0
+Multi Circuit Boards,Rogers 4003C PTFE HF Material,1,,10,FB049,0
+Multi Circuit Boards,Rogers 4350B HF Material,1,,10,FB049,0
+Multi Circuit Boards,Rogers RO3001 Bonding Film for PTFE,1,,10,FB049,0
+Multi Circuit Boards,Rogers RO3003 PTFE ceramic-filled,1,,10,FB049,0
+Multi Circuit Boards,Rogers RO3006 PTFE ceramic-filled,1,,10,FB049,0
+Multi Circuit Boards,Rogers RO3010 PTFE ceramic-filled,1,,10,FB049,0
+Multi Circuit Boards,Shengyi S1000-2 FR4 HTg,1,,0.001,FB049,0
+Multi Circuit Boards,Shengyi S1000-2 FR4 HTg alternative,1,,0.001,FB049,0
+Multi Circuit Boards,Shengyi S1141 FR4 alternative,1,,0.001,FB049,0
+Multi Circuit Boards,Shengyi SF305,1,,0.001,FB049,0
+Multi Circuit Boards,Taconic RF-35 Ceramic,1,,,FB049,1
+Multi Circuit Boards,Taconic TLC PTFE,1,,10,FB049,0
+Multi Circuit Boards,Taconic TLX PTFE,1,,10,FB049,0
+Multi Circuit Boards,Thinflex W-05050,1,,0.001,FB049,0
+NCAB,Extremely low loss,1,,,FB052,1
+NCAB,Low loss,1,,,FB052,1
+NCAB,Mid loss,1,,,FB052,1
+NCAB,Standard loss,1,,,FB052,1
+NCAB,Ultra low loss,1,,,FB052,1
+NCAB,Very low loss,1,,,FB052,1
+Nanya_New_Material,NOUYA 2 (NY6180LL),4,,1; 10,RT0638,0
+Nanya_New_Material,NOUYA 2 NY3170HF,4,,1; 10,RT0639,0
+Nanya_New_Material,NOUYA 2+ (NY3170M),6,,0.001; 1; 10,RT0634,0
+Nanya_New_Material,NOUYA 2+ (NY6180),4,,1; 10,RT0636,0
+Nanya_New_Material,NOUYA 2+ (NY6180HF),4,,1; 10,RT0635,0
+Nanya_New_Material,NOUYA 2+ (NY6180L),4,,1; 10,RT0637,0
+Nanya_New_Material,NOUYA 4 (NY6200),4,,1; 10,RT0617,0
+Nanya_New_Material,NOUYA 4G (NY3170M2),4,,1; 10,RT0616,0
+Nanya_New_Material,NOUYA 4G+ (NY3170LK),4,,1; 10,RT0615,0
+Nanya_New_Material,NOUYA 6 (NY6300),4,,1; 10,RT0614,0
+Nanya_New_Material,NOUYA 6G (NY6666SE),4,,1; 10,RT0578,0
+Nanya_New_Material,NOUYA 6G+ (NY6300S),4,,1; 10,RT0612,0
+Nanya_New_Material,NOUYA 7 (NY-P1),4,,1; 10,RT0611,0
+Nanya_New_Material,NOUYA 7G+ (NY6666),4,,1; 10,RT0610,0
+Nanya_New_Material,NOUYA 7GN (NY6300SN),4,,1; 10,RT0609,0
+Nanya_New_Material,NOUYA 7N (NY-P2),4,,1; 10,RT0608,0
+Nanya_New_Material,NOUYA 7N+ (NY-P3),4,,1; 10,RT0606,0
+Nanya_New_Material,NOUYA 7N+ (NY6666N),4,,1; 10,RT0607,0
+Nanya_New_Material,NOUYA 8N (NY-P4N),1,,10,RT0603,0
+Nanya_New_Material,NOUYA 8N (NY8888N),1,,10,RT0605,0
+Nanya_New_Material,NOUYA 8U (NY-P4),2,,1; 10,RT0602,0
+Nanya_New_Material,NOUYA 8U (NY8888N2),1,,10,RT0604,0
+Nanya_New_Material,NOUYA 9 (NY-P5Q),2,,10,RT0600,0
+Nanya_New_Material,NOUYA 9 (NY9999Q),1,,10,RT0601,0
+Nanya_New_Material,NY-A1,4,,0.001; 1,RT0622,0
+Nanya_New_Material,NY-A3HF,4,,1; 10,RT0620,0
+Nanya_New_Material,NY-A5HF,4,,1; 10,RT0619,0
+Nanya_New_Material,NY-A6HF,4,,1; 10,RT0618,0
+Nanya_New_Material,NY1600,8,,0.001; 1; 10,RT0642,0
+Nanya_New_Material,NY2140,4,,0.001; 1,RT0632,0
+Nanya_New_Material,NY2140L,1,,5,RT0633,0
+Nanya_New_Material,NY2150,8,,0.001; 1,RT0631,0
+Nanya_New_Material,NY2150H,4,,0.001; 1,RT0630,0
+Nanya_New_Material,NY2170,6,,0.001; 1; 10,RT0628,0
+Nanya_New_Material,NY2170H,6,,0.001; 1; 10,RT0627,0
+Nanya_New_Material,NY2600,2,,0.001; 1,RT0629,0
+Nanya_New_Material,NY3150HC,4,,0.001; 1,RT0624,0
+Nanya_New_Material,NY3150HF,4,,0.001; 1,RT0625,0
+Nanya_New_Material,NY3170HC,4,,0.001; 1,RT0623,0
+Nanya_New_Material,NY3176HF,4,,1; 10,RT0626,0
+Nanya_New_Material,NY6200ANT,1,laminate,10,RT0214,0
+Nanya_New_Material,NY6200ANT366,2,laminate,10,RT0592,0
+Nanya_New_Material,NY6600,2,laminate,3.5; 10,RT0641,0
+Nanya_New_Material,NY8320 LD,16,core,1; 10,RT0640; RT0701,0
+Nanya_New_Material,NY8320 LDP,8,prepreg,1; 10,RT0701,0
+Nanya_New_Material,NY8320 NS,2,,1; 10,RT0595,0
+Nanya_New_Material,NY8320 NSA,2,,1; 10,RT0593,0
+Nanya_New_Material,NY8320 NSB,2,,1; 10,RT0594,0
+Nanya_New_Material,NY8320 NSC,2,,1; 10,RT0596,0
+Nanya_New_Material,NY8320 NSF,2,,1; 10,RT0597,0
+Nanya_New_Material,NY8320 NSFP,92,prepreg,0.001; 1; 5; 10,RT0660,0
+Nanya_New_Material,NY9720,2,,1; 10,RT0598,0
+Nanya_New_Material,NY9720 LD,2,,1; 10,RT0599,0
+Nanya_New_Material,NYHP-220D,1,,10,RT0579,0
+Nanya_New_Material,NYHP-255D,1,,10,RT0580,0
+Nanya_New_Material,NYHP-265D,1,,10,RT0581,0
+Nanya_New_Material,NYHP-300D,1,,10,RT0582,0
+Nanya_New_Material,NYHP-7300H,3,laminate,2; 10,RT0584,0
+Nanya_New_Material,NYHP-7300MW,1,laminate,10,RT0590,0
+Nanya_New_Material,NYHP-7300MW-P,1,laminate,10,RT0591,0
+Nanya_New_Material,NYHP-7350,1,laminate,10,RT0585,0
+Nanya_New_Material,NYHP-7350 ANT,1,laminate,10,RT0586,0
+Nanya_New_Material,NYHP-7350 LNB,1,laminate,10,RT0587,0
+Nanya_New_Material,NYHP-7350D,1,laminate,10,RT0589,0
+Nanya_New_Material,NYHP-7350PA(X),1,laminate,10,RT0588,0
+NextPCB,EM-888,1,,,FB063,1
+NextPCB,EM-888K,1,,,FB063,1
+NextPCB,EM-891,1,,,FB063,1
+NextPCB,EM370(Z),1,,,FB063,1
+NextPCB,EM828G,1,,,FB063,1
+NextPCB,I-Speed,1,,,FB063,1
+NextPCB,I-Tera MT40,1,,,FB063,1
+NextPCB,IT-170GRA1,1,,,FB063,1
+NextPCB,IT-958GTC,1,,,FB063,1
+NextPCB,IT-968,1,,,FB063,1
+NextPCB,IT-968 SE,1,,,FB063,1
+NextPCB,IT-988G SE,1,,,FB063,1
+NextPCB,Isola-FR406,1,,,FB063,1
+NextPCB,Isola-FR408HR,1,,,FB063,1
+NextPCB,NP175FM,1,,,FB063,1
+NextPCB,R-5725S/M4S,1,,,FB063,1
+NextPCB,R-5775G/M6G,1,,,FB063,1
+NextPCB,R-5775N/M6N,1,,,FB063,1
+NextPCB,R-5785/M7,1,,,FB063,1
+NextPCB,R-5785N/M7N,1,,,FB063,1
+NextPCB,RO3003,1,,10,FB064,0
+NextPCB,RO4003C,1,,10,FB064,0
+NextPCB,RO4350B,1,,10,FB064,0
+NextPCB,RO5870,1,,10,FB064,0
+NextPCB,RO5880,1,,10,FB064,0
+NextPCB,TU-862 HF,1,,,FB063,1
+NextPCB,TU-863,1,,,FB063,1
+NextPCB,TU-872 SLK,1,,,FB063,1
+NextPCB,TU-883,1,,,FB063,1
+NextPCB,TU-933,1,,,FB063,1
+NextPCB,Tachyon 100G,1,,,FB063,1
+Nitto,Low-Dielectric Porous Polyimide FCCL,3,FCCL,10,RT0013,0
+OSH Park,2 layer 1.6 mm / Kingboard KB6167F,1,core,0.01,FB042,0
+OSH Park,EM-528 2x3313-59%,2,prepreg,,FB045,2
+OSH Park,EM-528 5x7628,1,core,,FB045,1
+OSH Park,FR408HR 106 75% prepreg,2,prepreg,1,FB044,0
+OSH Park,FR408HR 2113 core,2,core,1,FB044,0
+OSH Park,FR408HR 2113 prepreg,2,prepreg,1,FB043,0
+PCBWay,1080 RC68%,190,prepreg,,FB198,190
+PCBWay,2116 RC58%,658,prepreg,,FB198,658
+PCBWay,3313 RC58%,279,prepreg,,FB198,279
+PCBWay,7628 RC46%,398,prepreg,,FB198,398
+PCBWay,Core,725,core,,FB198,725
+Panasonic,R-1551(W/WN),224,prepreg,0.001; 0.1; 1; 2; 4; 6; 8; 10,FR096,0
+Panasonic,R-1551S,51,prepreg,0.001; 0.1; 1,FR097,0
+Panasonic,R-1566(W/WN),112,core,0.001; 0.1; 1; 2; 4; 6; 8; 10,FR096,0
+Panasonic,R-1566S,24,core,0.001; 0.1; 1,FR097,0
+Panasonic,R-1570,160,prepreg,0.001; 0.1; 1; 2; 4; 6; 8; 10,FR098,0
+Panasonic,R-1577,168,core,0.001; 0.1; 1; 2; 4; 6; 8; 10,FR098,0
+Panasonic,R-1650C,120,prepreg,0.001; 0.1; 1; 2; 4; 6; 8; 10,FR099,0
+Panasonic,R-1650D,13,prepreg,1,FR100,0
+Panasonic,R-1650E,96,prepreg,0.001; 0.1; 1; 2; 4; 6; 8; 10,FR101,0
+Panasonic,R-1650M,104,prepreg,0.001; 0.1; 1; 2; 4; 6; 8; 10,FR102,0
+Panasonic,R-1650V,192,prepreg,0.001; 0.1; 1; 2; 4; 6; 8; 10,FR103,0
+Panasonic,R-1661(GZ),120,prepreg,0.001; 0.1; 1; 2; 4; 6; 8; 10,FR104,0
+Panasonic,R-1755C,64,core,0.001; 0.1; 1; 2; 4; 6; 8; 10,FR099,0
+Panasonic,R-1755D,12,core,1,FR100,0
+Panasonic,R-1755E,88,core,0.001; 0.1; 1; 2; 4; 6; 8; 10,FR101,0
+Panasonic,R-1755M,192,core,0.001; 0.1; 1; 2; 4; 6; 8; 10,FR102,0
+Panasonic,R-1755V,120,core,0.001; 0.1; 1; 2; 4; 6; 8; 10,FR103,0
+Panasonic,R-1766(GH),64,core,0.001; 0.1; 1; 2; 4; 6; 8; 10,FR104,0
+Panasonic,R-5410,10,prepreg,14; 26; 37; 48; 60,FR105,0
+Panasonic,R-5410X,10,prepreg,14; 26; 37; 48; 60,FR106,0
+Panasonic,R-5470,24,prepreg,1; 13; 23; 34; 45; 55,FR107,0
+Panasonic,R-5470X,24,prepreg,1; 13; 23; 34; 45; 55,FR108,0
+Panasonic,R-5515,15,core,14; 26; 37; 48; 60,FR105,0
+Panasonic,R-5515X,15,core,14; 26; 37; 48; 60,FR106,0
+Panasonic,R-5575,102,core,1; 13; 23; 34; 45; 55,FR107,0
+Panasonic,R-5575X,102,core,1; 13; 23; 34; 45; 55,FR108,0
+Panasonic,R-5620,242,prepreg,0.001; 0.1; 1; 2; 4; 6; 8; 10; 13; 23; 34; 45; 55,FR110,0
+Panasonic,R-5620S,176,prepreg,0.001; 0.1; 1; 2; 4; 6; 8; 10,FR109,0
+Panasonic,R-5630,234,prepreg,0.001; 0.1; 1; 2; 4; 6; 8; 10; 13; 23; 34; 45; 55,FR111,0
+Panasonic,R-5670(G),102,prepreg,1; 2; 4; 6; 8; 10,FR113,0
+Panasonic,R-5670(K),168,prepreg,1; 2; 4; 6; 8; 10; 13; 24; 35; 46; 56,FR113; FR114,0
+Panasonic,R-5670(N),66,prepreg,1; 13; 24; 36; 47; 58,FR112,0
+Panasonic,R-5680(GE),84,prepreg,1; 13; 24; 36; 47; 58,FR122,0
+Panasonic,R-5680(GN),90,prepreg,1; 14; 25; 36; 48; 59,FR122,0
+Panasonic,R-5680(N),90,prepreg,1; 14; 25; 36; 48; 59,FR116,0
+Panasonic,R-568Y(GE),84,prepreg,1; 13; 24; 36; 47; 58,FR117,0
+Panasonic,R-568Y(GN),90,prepreg,1; 14; 25; 36; 48; 59,FR117,0
+Panasonic,R-568Y(N),90,prepreg,1; 14; 25; 36; 48; 59,FR118,0
+Panasonic,R-5690(N),55,prepreg,14; 25; 37; 49; 60,FR119,0
+Panasonic,R-5690(U),40,prepreg,14; 25; 37; 49; 60,FR119,0
+Panasonic,R-569Y(N),55,prepreg,14; 25; 37; 49; 60,FR120,0
+Panasonic,R-569Y(U),40,prepreg,14; 25; 37; 49; 60,FR120,0
+Panasonic,R-5725,386,core,0.001; 0.1; 1; 2; 4; 6; 8; 10; 13; 23; 34; 45; 55,FR110,0
+Panasonic,R-5725S,352,core,0.001; 0.1; 1; 2; 4; 6; 8; 10,FR109,0
+Panasonic,R-5735,192,core,0.001; 0.1; 1; 13; 23; 34; 45; 55,FR111,0
+Panasonic,R-5775(G),288,core,1; 2; 4; 6; 8; 10; 13; 24; 35; 46; 56,FR113; FR114,0
+Panasonic,R-5775(K),240,core,1; 2; 4; 6; 8; 10; 13; 24; 35; 46; 56,FR113; FR114,0
+Panasonic,R-5775(N),102,core,1; 13; 24; 36; 47; 58,FR112,0
+Panasonic,R-5785(GE),96,core,1; 13; 24; 36; 47; 58,FR122,0
+Panasonic,R-5785(GN),126,core,1; 14; 25; 36; 48; 59,FR122,0
+Panasonic,R-5785(N),132,core,1; 14; 25; 36; 48; 59,FR116,0
+Panasonic,R-578Y(GE),96,core,1; 13; 24; 36; 47; 58,FR117,0
+Panasonic,R-578Y(GN),126,core,1; 14; 25; 36; 48; 59,FR117,0
+Panasonic,R-578Y(N),132,core,1; 14; 25; 36; 48; 59,FR118,0
+Panasonic,R-5795(N),110,core,14; 25; 37; 49; 60,FR119,0
+Panasonic,R-5795(U),65,core,14; 25; 37; 49; 60,FR119,0
+Panasonic,R-579Y(N),110,core,14; 25; 37; 49; 60,FR120,0
+Panasonic,R-579Y(U),65,core,14; 25; 37; 49; 60,FR120,0
+Panasonic,R-A550,132,prepreg,1; 2; 4; 6; 8; 10,FR121,0
+Panasonic,R-A550(W),132,prepreg,1; 2; 4; 6; 8; 10,FR094,0
+Panasonic,R-A555,36,core,1; 2; 4; 6; 8; 10,FR121,0
+Panasonic,R-A555(W),36,core,1; 2; 4; 6; 8; 10,FR094,0
+Peters,Elpemer 2467 series,2,solder_mask,0.001,RT0453,1
+Peters,Elpemer 2469 SM-HF series,5,solder_mask,1e-06; 0.001; 0.1; 0.5; 1,RT0454,0
+Peters,Elpemer SD 2463 FLEX-HF,2,solder_mask,3; 10,RT0461,0
+Resonac,GEA-705G,2,prepreg,1; 10,RT0204,0
+Resonac,GEA-770G,2,prepreg,1; 10,RT0204,0
+Resonac,GEA-795G,2,prepreg,1; 10,RT0204,0
+Resonac,GH-100 (Type D),3,prepreg,1; 10,RT0204,0
+Resonac,GH-200 (Type D),3,prepreg,1; 10,RT0204,0
+Resonac,MCF-200HS,2,adhesive_film,10,RT0204,0
+Resonac,MCF-770G (Type P),2,adhesive_film,10,RT0204,0
+Resonac,MCL-E-679FG (Type R),4,laminate,1; 10,RT0204,0
+Resonac,MCL-E-679FG (Type S),4,laminate,1; 10,RT0204,0
+Resonac,MCL-E-679FGB (Type R),2,laminate,1; 10,RT0204,0
+Resonac,MCL-E-679FGB (Type S),2,laminate,1; 10,RT0204,0
+Resonac,MCL-E-700G (Type R),3,laminate,1; 10,RT0204,0
+Resonac,MCL-E-705G,3,laminate,1; 10,RT0204,0
+Resonac,MCL-E-705G (Type L),3,laminate,1; 10,RT0204,0
+Resonac,MCL-E-705G (Type LH),3,laminate,1; 10,RT0204,0
+Resonac,MCL-E-705G (Type X),1,laminate,10,RT0204,0
+Resonac,MCL-E-770G (Type R),3,laminate,1; 10,RT0204,0
+Resonac,MCL-E-770G (Type RLH),3,laminate,1; 10,RT0204,0
+Resonac,MCL-E-795G,3,laminate,1; 10,RT0204,0
+Resonac,MCL-E-795G (Type L),1,laminate,1,RT0204,0
+Resonac,MCL-E-795G (Type LH),3,laminate,1; 10,RT0204,0
+Resonac,MCL-E-795G (Type X),1,laminate,1,RT0204,0
+Resonac,MCL-HD60,6,laminate,10; 20; 36; 50; 60,RT0204,0
+Resonac,MCL-HD60 (Type D),6,laminate,10; 20; 36; 50; 60,RT0204,0
+Resonac,MCL-HD80,6,laminate,10; 20; 36; 50; 60,RT0204,0
+Resonac,MCL-HD90,6,laminate,10; 20; 36; 50; 60,RT0204,0
+Resonac,MCL-HD90 (Type D),6,laminate,10; 20; 36; 50; 60,RT0204,0
+Resonac,MCL-HE-679G (Type S),4,laminate,1; 10,RT0204,0
+Resonac,MCL-HS100,3,laminate,1; 10,RT0204,0
+Resonac,MCL-HS100 (Type D),3,laminate,1; 10,RT0204,0
+Resonac,MCL-HS200,3,laminate,1; 10,RT0204,0
+Resonac,MCL-HS200 (Type D),3,laminate,1; 10,RT0204,0
+Resonac,MCL-I-671,3,laminate,0.001; 1,RT0204,0
+Resonac,MCL-LW-900G,2,laminate,10,RT0204,0
+Resonac,MCL-LW-910G,2,laminate,10,RT0204,0
+Resonac,MCL-LW-990 (Type RFD),2,laminate,10,RT0204,0
+Resonac,TD-002,2,prepreg,1,RT0204,0
+Risho,CS-3396,4,laminate,1; 7,RT0207,0
+Rogers,2929 Bondply,2,bonding film / prepreg; bondply,10,RF002; RF233,0
+Rogers,6250 Bonding Film,1,bonding film / prepreg,10,RF002,0
+Rogers,6700 Bonding Film,1,bonding film / prepreg,10,RF002,0
+Rogers,92ML Prepreg,1,bonding film / prepreg,0.001,RF002,0
+Rogers,AD250C,4,laminate,10,RF001; RF161,1
+Rogers,AD255C,4,laminate,10,RF001; RF161,1
+Rogers,AD255C-IM,2,laminate,10,RF347,0
+Rogers,AD300D,4,laminate,10,RF001; RF161,1
+Rogers,AD300D-IM,3,laminate,0.001; 10,RF347,0
+Rogers,AD350A,4,laminate,10,RF001; RF161,1
+Rogers,Anteo,4,laminate,10,RF001; RF163,1
+Rogers,CLTE,4,laminate,10,RF001; RF170,1
+Rogers,CLTE-AT,2,laminate,10,RF001,1
+Rogers,CLTE-MW,16,laminate,10,RF001; RF169,8
+Rogers,CLTE-XT,7,laminate,10,RF001; RF170,1
+Rogers,CuClad 217,4,laminate,0.001; 10,RF001; RF171,1
+Rogers,CuClad 233,3,laminate,0.001; 10,RF001; RF171,1
+Rogers,CuClad 250,3,laminate,0.001; 10,RF001; RF171,1
+Rogers,DiClad 527,3,laminate,0.001; 10,RF001; RF173,1
+Rogers,DiClad 870,3,laminate,0.001; 10,RF001; RF173,1
+Rogers,DiClad 880,4,laminate,0.001; 10,RF001; RF173,1
+Rogers,DiClad 880-IM,2,laminate,10,RF347,0
+Rogers,IsoClad 917,3,laminate,10,RF001; RF175,1
+Rogers,IsoClad 933,2,laminate,10,RF001,1
+Rogers,Kappa 438,3,laminate,2.5; 10,RF001; RF177,1
+Rogers,LoPro bonding resin layer,1,bonding resin layer,,RF340,1
+Rogers,MAGTREX 555,2,laminate,0.4,RF180,0
+Rogers,RO3003,4,laminate,10; 77,RF001; RF184,1
+Rogers,RO3003 Bondply,2,bondply,10,RF185,1
+Rogers,RO3003G2,2,laminate,10; 77,RF001,0
+Rogers,RO3006,3,laminate,10,RF001; RF184,2
+Rogers,RO3006 Bondply,2,bondply,10,RF185,1
+Rogers,RO3010,3,laminate,10,RF001; RF184,2
+Rogers,RO3010 Bondply,2,bondply,10,RF185,1
+Rogers,RO3035,3,laminate,10,RF001; RF184,2
+Rogers,RO3203,3,laminate,10,RF001; RF187,2
+Rogers,RO3206,3,laminate,10,RF001; RF187,2
+Rogers,RO3210,3,laminate,10,RF001; RF187,2
+Rogers,RO4003C,4,laminate,2.5; 10,RF001; RF188,2
+Rogers,RO4003C LoPro,3,laminate,2.5; 10,RF340,1
+Rogers,RO4350B,5,laminate,2.5; 10,RF001; RF188,2
+Rogers,RO4350B LoPro,3,laminate,2.5; 10,RF340,1
+Rogers,RO4360G2,5,laminate,2.5; 10,RF001; RF338,2
+Rogers,RO4450F,1,bonding film / prepreg,10,RF002,0
+Rogers,RO4450T,7,bondply,10,RF238,0
+Rogers,"RO4450T (0.003"")",1,bonding film / prepreg,10,RF002,0
+Rogers,RO4460G2,1,bonding film / prepreg,10,RF002,0
+Rogers,RO4533,4,laminate,2.5; 10,RF001; RF194,1
+Rogers,RO4534,4,laminate,2.5; 10,RF001; RF194,1
+Rogers,RO4535,3,laminate,2.5; 10,RF001,1
+Rogers,RO4725JXR,4,laminate,2.5; 10,RF001; RF195,2
+Rogers,RO4730G3,3,laminate,10,RF001; RF195,2
+Rogers,RO4830,6,laminate,10; 77,RF001; RF339,0
+Rogers,RO4835,4,laminate,10,RF001; RF200,2
+Rogers,RO4835 LoPro,3,laminate,2.5; 10,RF340,1
+Rogers,RO4835T,10,laminate,10,RF001; RF198,5
+Rogers,RT/duroid 5870,4,laminate,0.001; 10,RF001; RF201,2
+Rogers,RT/duroid 5880,4,laminate,0.001; 10,RF001; RF201,2
+Rogers,RT/duroid 5880LZ,4,laminate,10,RF001; RF208,2
+Rogers,RT/duroid 6002,4,laminate,10,RF001; RF337,2
+Rogers,RT/duroid 6006,4,laminate,10,RF001; RF211,2
+Rogers,RT/duroid 6010.2LM,3,laminate,10,RF001; RF212,1
+Rogers,RT/duroid 6035HTC,3,laminate,10,RF001; RF215,2
+Rogers,RT/duroid 6202,5,laminate,10,RF001,1
+Rogers,RT/duroid 6202PR,5,laminate,10,RF001; RF219,1
+Rogers,Radix 2.8Dk Printable Dielectric,2,3D printable dielectric (not a copper-clad laminate),10; 24,RF350,0
+Rogers,SpeedWave 300P Prepreg,67,bonding film / prepreg; prepreg,1; 3; 5; 10; 15; 20,RF002; RF240,0
+Rogers,TC350,5,laminate,0.001; 1.8; 10,RF001; RF221,1
+Rogers,TC350 Plus,3,laminate,10,RF001; RF223,1
+Rogers,TC600,4,laminate,1.8; 10,RF001; RF224,2
+Rogers,TMM 10,3,laminate,10,RF001; RF225,2
+Rogers,TMM 10i,3,laminate,10,RF001; RF225,2
+Rogers,TMM 13i,3,laminate,10,RF001; RF225,2
+Rogers,TMM 3,3,laminate,10,RF001; RF225,2
+Rogers,TMM 4,3,laminate,10,RF001; RF225,2
+Rogers,TMM 6,3,laminate,10,RF001; RF225,2
+Rogers,XtremeSpeed RO1200,82,laminate,1; 5; 10; 15; 20; 25; 30; 35; 40; 45; 50,RF001; RF229; RF230,2
+Rogers,XtremeSpeed RO1200 Bondply,13,bonding film / prepreg; bondply,1; 5; 10; 15; 20; 25; 30; 35; 40; 45; 50,RF002; RF230,0
+Seeed Fusion,FR4 Tg130 specification range,1,,,FB221,1
+Shengyi Technology,AeroWave 300,3,laminate,10,FRS261,1
+Shengyi Technology,Autolad1,145,core; laminate; prepreg,1; 3; 5; 10,FRS120; FRS234,0
+Shengyi Technology,Autolad1G,230,core; laminate; prepreg,1; 3; 5; 10,FRS125; FRS277,0
+Shengyi Technology,Autolad2G,189,core; laminate; prepreg,1; 3; 5; 10,FRS176; FRS272,0
+Shengyi Technology,Autolad2GH,189,core; laminate; prepreg,1; 3; 5; 10,FRS137; FRS284,0
+Shengyi Technology,Autolad3,1,laminate,0.001,FRS233,0
+Shengyi Technology,Autolad3G,305,core; laminate; prepreg,1; 3; 5; 10,FRS186; FRS283,0
+Shengyi Technology,Autolad6G,250,core; prepreg,1; 3; 5; 10; 15,FRS192,0
+Shengyi Technology,BIF201,1,laminate,10,FRS210,0
+Shengyi Technology,BIF202,1,laminate,10,FRS209,0
+Shengyi Technology,DL,1,laminate,10,FRS263,0
+Shengyi Technology,DLF,1,laminate,1,FRS300,0
+Shengyi Technology,LNB33,2,laminate,10,FRS228,0
+Shengyi Technology,LNB33C,2,laminate,10,FRS279,0
+Shengyi Technology,LNB33C(340),2,laminate,10,FRS280,0
+Shengyi Technology,LNB33C(345),1,laminate,10,FRS281,0
+Shengyi Technology,LNB33C(350),2,laminate,10,FRS282,0
+Shengyi Technology,Q260,1,laminate,0.001,FRS252,0
+Shengyi Technology,Q360G,1,laminate,0.001,FRS240,0
+Shengyi Technology,Recyclad1G,1,laminate,1,FRS291,0
+Shengyi Technology,S1000,145,core; laminate; prepreg,0.001; 1; 3; 5; 10,FRS074; FRS258,0
+Shengyi Technology,S1000-2,177,core; laminate; prepreg,0.001; 1; 3; 5; 10,FRS073; FRS255,0
+Shengyi Technology,S1000-2M,210,core; laminate; prepreg,0.001; 1; 3; 5; 10,FRS195; FRS254,0
+Shengyi Technology,S1000H,165,core; laminate; prepreg,1; 3; 5; 10,FRS140; FRS256,0
+Shengyi Technology,S1130,1,laminate,0.001,FRS244,0
+Shengyi Technology,S1141,153,core; laminate; prepreg,0.001; 1; 3; 5; 10,FRS081; FRS243,0
+Shengyi Technology,S1141 150,149,core; laminate; prepreg,0.001; 1; 3; 5; 10,FRS002; FRS246,0
+Shengyi Technology,S1150G,229,core; laminate; prepreg,1; 3; 5; 10,FRS139; FRS250,0
+Shengyi Technology,S1150GH,269,core; laminate; prepreg,1; 3; 5; 10,FRS153; FRS294,0
+Shengyi Technology,S1151G,69,core; laminate; prepreg,1; 3; 5; 10,FRS061; FRS249,0
+Shengyi Technology,S1170G,201,core; laminate; prepreg,1; 3; 5; 10,FRS191; FRS248,0
+Shengyi Technology,S1190,74,core; laminate; prepreg,0.001; 1; 3; 5; 10,FRS001; FRS253,0
+Shengyi Technology,S1190G,285,core; laminate; prepreg,1; 3; 5; 10,FRS156; FRS295,0
+Shengyi Technology,S1600,1,laminate,0.001,FRS257,0
+Shengyi Technology,S1600L,63,core; laminate; prepreg,0.001; 1,FRS141; FRS245,0
+Shengyi Technology,S2126,1,laminate,0.001,FRS237,0
+Shengyi Technology,S2130/S2130JB,1,laminate,0.001,FRS239,0
+Shengyi Technology,S2131/S2131JB,1,laminate,0.001,FRS238,0
+Shengyi Technology,S2155G,1,laminate,0.001,FRS235,0
+Shengyi Technology,S2600F,1,laminate,0.001,FRS236,0
+Shengyi Technology,S3110,1,laminate,0.001,FRS242,0
+Shengyi Technology,S3116,1,laminate,0.001,FRS241,0
+Shengyi Technology,S6015,1,laminate,1,FRS201,0
+Shengyi Technology,S7040G,235,core; laminate; prepreg,1; 3; 5; 10,FRS041; FRS206,0
+Shengyi Technology,S7045G,287,core; laminate; prepreg,1; 3; 5; 10,FRS076; FRS208,0
+Shengyi Technology,S7045GH,234,core; laminate; prepreg,1; 3; 5; 10,FRS096; FRS275,0
+Shengyi Technology,S7045GHU,30,core; laminate; prepreg,1; 10,FRS158; FRS296,0
+Shengyi Technology,S7045GX,267,core; laminate; prepreg,1; 3; 5; 10; 15,FRS149; FRS292,0
+Shengyi Technology,S7136H,4,laminate,10,FRS227,1
+Shengyi Technology,S7439,199,core; laminate; prepreg,1; 3; 5; 10,FRS003; FRS207,0
+Shengyi Technology,S7439C,183,core; laminate; prepreg,1; 3; 5; 10,FRS042; FRS259,0
+Shengyi Technology,S7439G,235,core; laminate; prepreg,1; 3; 5; 10,FRS037; FRS260,0
+Shengyi Technology,S7439GS,203,core; laminate; prepreg,1; 3; 5; 10; 15,FRS172; FRS293,0
+Shengyi Technology,SCGA-500 GF220,1,laminate,10,FRS232,0
+Shengyi Technology,SCGA-500 GF255,1,laminate,10,FRS231,0
+Shengyi Technology,SCGA-500 GF265,1,laminate,10,FRS230,0
+Shengyi Technology,SCGA-500 GF300,1,laminate,10,FRS229,0
+Shengyi Technology,SDI03K,225,core; laminate; prepreg,1; 3; 5; 10,FRS131; FRS247,0
+Shengyi Technology,SDI06K,320,core; prepreg,1; 3; 5; 10; 15,FRS190,0
+Shengyi Technology,SF202,1,laminate,10,FRS221,0
+Shengyi Technology,SF202C,1,laminate,10,FRS218,0
+Shengyi Technology,SF206B,1,laminate,10,FRS213,0
+Shengyi Technology,SF206C,1,laminate,10,FRS217,0
+Shengyi Technology,SF224,1,laminate,10,FRS299,0
+Shengyi Technology,SF230,1,laminate,10,FRS220,0
+Shengyi Technology,SF240C,1,laminate,10,FRS302,0
+Shengyi Technology,SF280,1,laminate,10,FRS265,0
+Shengyi Technology,SF305,1,laminate,10,FRS219,0
+Shengyi Technology,SF305C,1,laminate,10,FRS216,0
+Shengyi Technology,SF315B,1,laminate,10,FRS212,0
+Shengyi Technology,SF315C,2,laminate,10,FRS215,1
+Shengyi Technology,SF325,1,laminate,1,FRS298,0
+Shengyi Technology,SF325C,1,laminate,10,FRS214,0
+Shengyi Technology,SF335C,1,laminate,10,FRS264,0
+Shengyi Technology,SF385,1,laminate,10,FRS304,0
+Shengyi Technology,SF385C,1,laminate,10,FRS305,0
+Shengyi Technology,SG7350D,1,laminate,10,FRS268,0
+Shengyi Technology,SG7350D2,1,laminate,10,FRS273,0
+Shengyi Technology,SH260,67,core; laminate; prepreg,1; 3; 10,FRS038; FRS203,0
+Shengyi Technology,SI10US,103,core; laminate; prepreg,1; 5; 10,FRS089; FRS269,0
+Shengyi Technology,SI13U,100,core; laminate; prepreg,1; 5; 10,FRS093; FRS274,0
+Shengyi Technology,SL,1,laminate,10,FRS262,0
+Shengyi Technology,SLF,1,laminate,10,FRS289,0
+Shengyi Technology,SML02G,347,core; laminate; prepreg,1; 3; 5; 10; 15,FRS160; FRS276,0
+Shengyi Technology,SP168GN,31,laminate; prepreg,1; 5; 10,FRS080; FRS211,0
+Shengyi Technology,SP175M,1,laminate,1,FRS202,0
+Shengyi Technology,ST110G,72,core; prepreg,0.001; 1; 10,FRS101,0
+Shengyi Technology,ST210G,1,laminate,0.001,FRS251,0
+Shengyi Technology,Synamic 6,351,core; laminate; prepreg,1; 3; 5; 10; 15; 28,FRS180; FRS205,0
+Shengyi Technology,Synamic 6GX,222,core; laminate; prepreg,1; 3; 5; 10; 15,FRS127; FRS266,0
+Shengyi Technology,Synamic 6N,203,core; laminate; prepreg,1; 3; 5; 10; 15,FRS173; FRS204,0
+Shengyi Technology,Synamic8G,243,core; laminate; prepreg,1; 3; 5; 10; 15,FRS128; FRS270,0
+Shengyi Technology,Synamic8GN,218,core; laminate; prepreg,1; 3; 5; 10; 15,FRS129; FRS271,0
+Shengyi Technology,Synamic8GX,381,core; laminate; prepreg,1; 5; 10; 15; 20; 30,FRS179; FRS303,0
+Shengyi Technology,Synamic9GN,249,core; laminate; prepreg,1; 10; 14; 26; 38; 50; 62,FRS142; FRS290,0
+Shengyi Technology,mmWave G,74,core; laminate; prepreg,10; 14; 25; 37; 49; 61; 73; 77; 85,FRS188; FRS285,0
+Shengyi Technology,mmWave77,1,laminate,10,FRS267,0
+Sumitomo_Bakelite,ELC-4762/4756 (UV type),4,laminate,0.001; 1,RT0009,0
+Sumitomo_Bakelite,ELC-4970 (UV type),4,laminate,0.001; 1,RT0009,0
+Sumitomo_Bakelite,ELC-4970GS (UV type),4,laminate,0.001; 1,RT0009,0
+Sumitomo_Bakelite,ELC-4972R&S (UV type),4,laminate,0.001; 1,RT0009,0
+TTM Technologies,DuPont 951,1,,3,FB066,0
+TTM Technologies,Ferro A6M,1,,3,FB066,0
+TUC,PegaClad 1,1,laminate_or_prepreg,10,RT0336,0
+TUC,PegaClad 2,1,laminate_or_prepreg,10,RT0335,0
+TUC,PegaClad 2A,2,laminate_or_prepreg,10,RT0334; RT0375,0
+TUC,PegaClad 300,1,laminate_or_prepreg,10,RT0332,0
+TUC,TU-662F,1,laminate_or_prepreg,1,RT0380,0
+TUC,TU-747 HF,2,laminate_or_prepreg,1,RT0348; RT0373,0
+TUC,TU-747 LK,2,laminate_or_prepreg,1,RT0362; RT0372,0
+TUC,TU-747T,2,laminate_or_prepreg,1,RT0361; RT0371,0
+TUC,TU-768,2,laminate_or_prepreg,1,RT0356; RT0379,0
+TUC,TU-862 HF,2,laminate_or_prepreg,1,RT0347; RT0378,0
+TUC,TU-862S,1,laminate_or_prepreg,1,RT0346,0
+TUC,TU-862T,2,laminate_or_prepreg,1,RT0360; RT0369,0
+TUC,TU-865,1,laminate_or_prepreg,1,RT0377,0
+TUC,TU-865S,1,laminate_or_prepreg,10,RT0376,0
+TUC,TU-872 LK,2,laminate_or_prepreg,10,RT0005; RT0345,0
+TUC,TU-872 SLK,1,laminate_or_prepreg,10,RT0344,0
+TUC,TU-901 (T),1,laminate_or_prepreg,10,RT0366,0
+TUC,TU-901N,1,laminate_or_prepreg,10,RT0367,0
+TUC,TU-901N (T),1,laminate_or_prepreg,10,RT0365,0
+TUC,TU-902N,1,laminate_or_prepreg,10,RT0364,0
+TUC,TU-902R,1,laminate_or_prepreg,10,RT0363,0
+TUC,ThunderClad 1,1,laminate_or_prepreg,10,RT0343,0
+TUC,ThunderClad 1+,1,laminate_or_prepreg,10,RT0342,0
+TUC,ThunderClad 2,1,laminate_or_prepreg,10,RT0355,0
+TUC,ThunderClad 2 Sp,2,laminate_or_prepreg,10,RT0359; RT0374,0
+TUC,ThunderClad 200G,1,laminate_or_prepreg,10,RT0354,0
+TUC,ThunderClad 2A,1,laminate_or_prepreg,10,RT0341,0
+TUC,ThunderClad 2A Sp,1,laminate_or_prepreg,10,RT0339,0
+TUC,ThunderClad 2C,1,laminate_or_prepreg,10,RT0340,0
+TUC,ThunderClad 3,1,laminate_or_prepreg,10,RT0358,0
+TUC,ThunderClad 3+,1,laminate_or_prepreg,10,RT0357,0
+TUC,ThunderClad 3E,1,laminate_or_prepreg,10,RT0352,0
+TUC,ThunderClad 400G,1,laminate_or_prepreg,10,RT0353,0
+TUC,ThunderClad 4HN,1,laminate_or_prepreg,10,RT0338,0
+TUC,ThunderClad 4HR,1,laminate_or_prepreg,10,RT0337,0
+TUC,ThunderClad 5N,1,laminate_or_prepreg,10,RT0349,0
+TUC,ThunderClad 5Q,1,laminate_or_prepreg,10,RT0351,0
+TUC,ThunderClad 5R,1,laminate_or_prepreg,10,RT0350,0
+Ventec,Bondply VT-447 RCF Resin Coated Bondply,1,laminate_or_prepreg,1,RT0216,0
+Ventec,Pro-bond 9F VT-468 RCF,1,laminate_or_prepreg,10,RT0226,0
+Ventec,VT-370X LCTE Laminate,1,laminate_or_prepreg,10,RT0239,0
+Ventec,VT-370X Laminate,1,laminate_or_prepreg,10,RT0241,0
+Ventec,VT-42 Laminate/Prepreg,1,laminate_or_prepreg,1,RT0278,0
+Ventec,VT-441 Laminate/Prepreg,1,laminate_or_prepreg,1,RT0280,0
+Ventec,VT-441C Laminate/Prepreg,2,laminate_or_prepreg,1,RT0282; RT0284,0
+Ventec,VT-441V Laminate/Prepreg,1,laminate_or_prepreg,1,RT0285,0
+Ventec,VT-447 Laminate/Prepreg,1,laminate_or_prepreg,1,RT0287,0
+Ventec,VT-447(B) Laminate/Prepreg,2,laminate_or_prepreg,1,RT0289; RT0291,0
+Ventec,VT-447C Laminate/Prepreg,2,laminate_or_prepreg,1,RT0292; RT0293,0
+Ventec,VT-447V(I) Laminate/Prepreg,1,laminate_or_prepreg,1,RT0296,0
+Ventec,VT-462S Laminate/Prepreg,222,core; laminate_or_prepreg; prepreg,1; 2; 5; 10; 20,RT0257,0
+Ventec,VT-462SH No & Low Flow Prepreg,2,laminate_or_prepreg,10,RT0256; RT0259,0
+Ventec,VT-464 Laminate/Prepreg,132,core; laminate_or_prepreg; prepreg,1; 2; 5; 10; 20,RT0227,0
+Ventec,VT-464G Laminate/Prepreg,2,laminate_or_prepreg,1; 10,RT0297,0
+Ventec,VT-464GS Laminate/Prepreg,2,laminate_or_prepreg,2,RT0298; RT0299,0
+Ventec,VT-464H-PK Laminate/Prepreg,4,laminate_or_prepreg,1; 10,RT0253; RT0255,0
+Ventec,VT-464L Laminate/Prepreg,182,core; laminate_or_prepreg; prepreg,1; 2; 5; 10; 20,RT0236,0
+Ventec,VT-468 (LK2) / VT-468 (Q) Laminate,135,core; prepreg,1; 2; 5; 10; 20,RT0267,0
+Ventec,VT-47 HP PP NF/LF,1,laminate_or_prepreg,1,RT0302,0
+Ventec,VT-47 LT Prepreg,2,laminate_or_prepreg,1; 10,RT0303,0
+Ventec,VT-47 Laminate/Prepreg,1,laminate_or_prepreg,1,RT0300,0
+Ventec,VT-481 Laminate/Prepreg,1,laminate_or_prepreg,1,RT0306,0
+Ventec,VT-547C Laminate/Prepreg,2,laminate_or_prepreg,1,RT0321; RT0322,0
+Ventec,VT-5A2 Laminate/Prepreg,1,laminate_or_prepreg,1,RT0323,0
+Ventec,VT-6702 Laminate,2,laminate_or_prepreg,10,RT0243,0
+Ventec,VT-6706 High Frequency Laminate,1,laminate_or_prepreg,10,RT0245,0
+Ventec,VT-6880 High Frequency Laminate,1,laminate_or_prepreg,10,RT0251,0
+Ventec,VT-770 Laminate/Prepreg,2,laminate_or_prepreg,1; 10,RT0261,0
+Ventec,VT-770(LK) Laminate/Prepreg,2,laminate_or_prepreg,1; 10,RT0263,0
+Ventec,VT-901 Laminate/Prepreg,1,laminate_or_prepreg,1,RT0324,0
+Ventec,VT-901N Polyimide No Flow / Low Flow Prepreg,1,laminate_or_prepreg,1,RT0327,0
+Ventec,VT-901PP NF/LF LCTE Polyimide No Flow / Low Flow Prepreg,2,laminate_or_prepreg,1,RT0328; RT0329,0
+Ventec,VT-90H Laminate/Prepreg,1,laminate_or_prepreg,1,RT0330,0
+Ventec,pro-bond 20FG2 VT-8728G2 RCF,1,laminate_or_prepreg,10,RT0220,0
+Ventec,pro-bond-20f-vt-8728-rcf / 8728-FN/FL,2,laminate_or_prepreg,1; 10,RT0219,0
+Ventec,pro-bond-20f-vt-8728-rcf / 8728-FR,2,laminate_or_prepreg,1; 10,RT0219,0
+Ventec,pro-bond-4c-vt-464lt-rcc,2,laminate_or_prepreg,1; 10,RT0222,0
+Ventec,pro-bond-7c-7f-vt-770-rcc-rcf,2,laminate_or_prepreg,1; 10,RT0223,0
+Ventec,pro-bond-8c-vt-463h-rcc,2,laminate_or_prepreg,1; 10,RT0225,0
+Ventec,tec-speed 20.0 VT-870 H1000 Hydrocarbon Ceramic based Laminate,2,laminate_or_prepreg,10,RT0231,0
+Ventec,tec-speed 20.0 VTM1000i Hydrocarbon Ceramic based Laminate,2,laminate_or_prepreg,10,RT0234,0
+Ventec,tec-speed 8.1 & 8.2 H-PK VT-772+(LK) & VT-772+(LK2) Laminate/Prepreg,135,core; prepreg,1; 2; 5; 10; 20,RT0265,0
+Ventec,tec-speed-200-vt-870-h348-tcr,1,laminate_or_prepreg,10,RT0233,0
+Ventec,vt-4a2h-pp-tec-thermal-4,1,laminate_or_prepreg,1,RT0309,0
+Wurth Elektronik,WE-ADH-0001,5,dielectric,1e-06,FB021; FB193; FB194,0
+Wurth Elektronik,WE-ADH-0010,4,dielectric,0.001,FB021,0
+Wurth Elektronik,WE-ADH-0101,24,dielectric,1,FB021; FB022,0
+Wurth Elektronik,WE-CL-0001,12,coverlay,0.001,FB021,0
+Wurth Elektronik,WE-CL-0007,23,coverlay,0.001,FB021,0
+Wurth Elektronik,WE-CO-0002,3,core,0.001,FB020,0
+Wurth Elektronik,WE-CO-0004,6,core,0.001,FB020,0
+Wurth Elektronik,WE-CO-0005,4,core,0.001,FB020,0
+Wurth Elektronik,WE-CO-0008,4,core,0.001,FB020,0
+Wurth Elektronik,WE-CO-0009,8,core,0.001,FB020,0
+Wurth Elektronik,WE-CO-0013,4,core,0.001,FB020; FB025,0
+Wurth Elektronik,WE-CO-0014,6,core,0.001,FB020; FB025,0
+Wurth Elektronik,WE-CO-0017,2,core,0.001,FB025,0
+Wurth Elektronik,WE-CO-0019,2,core,0.001,FB025,0
+Wurth Elektronik,WE-CO-0041,79,core,1,FB021; FB023; FB025; FB194,0
+Wurth Elektronik,WE-CO-0042,2,core,1,FB021,0
+Wurth Elektronik,WE-CO-0043,67,core,1,FB020; FB021; FB025; FB193,0
+Wurth Elektronik,WE-CO-0044,41,core,1,FB020; FB025,0
+Wurth Elektronik,WE-CO-0045,23,core,1,FB020; FB021; FB025,0
+Wurth Elektronik,WE-CO-0046,19,core,1,FB021; FB025,0
+Wurth Elektronik,WE-CO-0047,19,core,1,FB021; FB025,0
+Wurth Elektronik,WE-CO-0048,25,core,1,FB020; FB021; FB025,0
+Wurth Elektronik,WE-CO-0050,17,core,1,FB020; FB021; FB025,0
+Wurth Elektronik,WE-CO-0052,7,core,1,FB021; FB025,0
+Wurth Elektronik,WE-CO-0053,4,core,1,FB021; FB025,0
+Wurth Elektronik,WE-CO-0056,8,core,1,FB025,0
+Wurth Elektronik,WE-CO-0058,3,core,1,FB021; FB025,0
+Wurth Elektronik,WE-CO-0100,4,core,10,FB024,0
+Wurth Elektronik,WE-COWC-0021,1,core,0.001,FB020,0
+Wurth Elektronik,WE-COWC-0028,1,core,0.001,FB020,0
+Wurth Elektronik,WE-COWC-0058,3,core,1,FB021,0
+Wurth Elektronik,WE-COWC-0060,1,core,1,FB020,0
+Wurth Elektronik,WE-COWC-0067,1,core,1,FB020,0
+Wurth Elektronik,WE-PB-0001,6,dielectric,0.001,FB021,0
+Wurth Elektronik,WE-PI-0100,24,dielectric,1,FB021; FB022,0
+Wurth Elektronik,WE-PI-0102,4,dielectric,1,FB021,0
+Wurth Elektronik,WE-PI-0103,47,dielectric,1,FB021; FB022; FB193; FB194,0
+Wurth Elektronik,WE-PP-0003,16,prepreg,0.001,FB025,0
+Wurth Elektronik,WE-PP-0004,21,prepreg,0.001,FB020,0
+Wurth Elektronik,WE-PP-0010,25,prepreg,0.001,FB020,0
+Wurth Elektronik,WE-PP-0013,4,prepreg,0.001,FB020,0
+Wurth Elektronik,WE-PP-0030,3,prepreg,1,FB021,0
+Wurth Elektronik,WE-PP-0031,5,prepreg,1,FB021,0
+Wurth Elektronik,WE-PP-0032,8,prepreg,1,FB021,0
+Wurth Elektronik,WE-PP-0033,9,prepreg,1,FB021,0
+Wurth Elektronik,WE-PP-0034,353,prepreg,1,FB021; FB023; FB025,0
+Wurth Elektronik,WE-PP-0035,183,prepreg,1,FB020; FB021; FB025,0
+Wurth Elektronik,WE-PP-0036,17,prepreg,1,FB021,0
+Wurth Elektronik,WE-PP-0042,2,prepreg,1,FB021,0
+Wurth Elektronik,WE-PP-0043,31,prepreg,1,FB020; FB025,0
+Wurth Elektronik,WE-PP-0046,10,prepreg,1,FB020,0
+Wurth Elektronik,WE-PP-0048,11,prepreg,1,FB021; FB025,0
+Wurth Elektronik,WE-PP-0070,20,prepreg,10,FB024,0
+Wurth Elektronik,WE-SM-0001,328,solder_mask,1,FB020; FB021; FB023; FB024; FB025,0
+Wurth Elektronik,WE-SMFlex-0001,10,solder_mask,1,FB021; FB193; FB194,0
+Wurth Elektronik,WE-SMFlex-0002,17,solder_mask,1,FB021,0
+Wurth Elektronik,WE-SMFlex-0003,12,solder_mask,1,FB021; FB022,0

@@ -1,0 +1,149 @@
+\\\ Datasheet
+
+    RO4500™ Series
+    Cost Performance Antenna Grade Laminates
+     RO4500™ Series High Frequency Laminates are cost/performance materials from Rogers                                  \\\ Features and Benefits:
+     Corporation, specifically engineered and manufactured to meet the specific demands of                               Loss range (0.0020 to 0.0037), Dk
+     the antenna markets.                                                                                                range (3.3 to 3.5), low PIM
+                                                                                                                         response
+     RO4533™ and RO4534™ laminates extend the capabilities of the successful RO4000®                                        •    Wide range of application use
+     product series into antenna applications. This ceramic-filled, glass-reinforced hydrocarbon
+                                                                                                                         Thermoset resin system
+     based material set provides the controlled dielectric constant, low loss performance and
+     excellent passive intermodulation response required for mobile infrastructure microstrip                               •    Compatible with standard PCB
+                                                                                                                                 fabrication
+     antenna applications.
+                                                                                                                         Excellent dimensional stability
+     As with all RO4000® high frequency laminates, RO4500™ laminates are fully compatible                                   •    Greater yield on larger panels
+     with conventional FR-4 and high temperature lead-free solder processing. These                                              sizes
+     laminates do not require special treatment needed on traditional PTFE-based laminates
+                                                                                                                         Uniform mechanical properties
+     for plated through-hole preparation. This product series is an affordable alternative to
+     more conventional PTFE antenna technologies, thus allowing designers to optimize the                                   •    Maintains mechanical form
+                                                                                                                                 during handling
+     price and performance of their antennas. Moreover, RO4533™ and RO4534™ laminates are
+     available halogen-free to meet the most stringent “green” standards.                                                High thermal conductivity
+
+                                                                                                                            •    Improved power handling
+     The resin systems of RO4500™ dielectric materials are designed to provide the necessary
+     properties for ideal antenna performance. The coefficients of thermal expansion (CTEs) in
+     both the X and Y directions are similar to that of copper. The good CTE match reduces                               \\\ Typical Applications:
+     stresses in the printed circuit board antenna. The typical glass transition temperature of                             •   Cellular infrastructure base
+     RO4500™ materials exceeds 280°C (536°F), leading to a low z-axis CTE and excellent plated                                  station antennas
+     through-hole reliability. These properties, in combination with a dimensional stability
+                                                                                                                            •   WiMAX antenna networks
+     value of less than 0.05%, make RO4500™ laminates an excellent candidate for printed
+     circuit antenna applications. RO4500™ materials also provide increased thermal
+     conductivity over equivalent PTFE/woven glass materials, allowing for design of antennas
+     with increased power handling capability.
+
+     In addition to these excellent thermo-mechanical properties, RO4500™ laminates embody
+     electrical characteristics that antenna designers need. The laminates have a dielectric
+     constant (Dk) ranging from 3.3 to 3.5 (±0.08) and a loss tangent (Df) of 0.0020 to 0.0037
+     measured at 2.5 GHz. These values allow antenna designers to realize substantial gain
+     values while minimizing signal loss. Materials are available with demonstrated low PIM
+     performance, with values better than –155 dBC using two 43 dBm swept tones at 1900
+     MHz.
+
+
+
+
+                                                                                                                                                                  1
+ \\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com
+    Data Sheet
+    RO4500™ Series
+
+    \\\ Standard Properties Table
+                                                                      Typical Values
+        Properties                                                                                     Direction           Units                Condition                 Test Method
+                                                                 RO4533™            RO4534™
+        [1] Dielectric Constant, e Process                                                                                                      10 GHz/23°C
+                                  r                              3.3 ± 0.08          3.4 ± 0.08              Z                 -                                         IPC-TM-650,2.5.5.5
+                                                                                                                                                  2.5 GHz
+
+                                                                   0.0020              0.0022                                                  2.5 GHz/23°C
+        Dissipation Factor                                                                                   Z                 -                                        IPC-TM-650, 2.5.5.5
+                                                                   0.0025              0.0027                                                   10 GHz/23°C
+
+                                                                                                                                              Reflected 43 dBm         Summitek 1900b PIM
+        [2] PIM (Typical)                                           -157                -157                  -              dBc                swept tones                Analyzer
+
+        Dielectric Strength                                         >500                >500                 Z              V/mil                0.51 mm                IPC-TM-650, 2.5.6.2
+                                                                                                                           mm/m
+        Dimensional Stability                                       <0.2                <0.3                X,Y                                  after etch             IPC-TM-650, 2.4.39A
+                                                                                                                         (mils/inch)
+                                                                      13                 11                  X
+        Coefficient of Thermal Expansion
+                                                                      11                 14                  Y             ppm/°C               -55 to 288°C             IPC-TM-650, 2.4.41
+                                                                      37                 46                  Z
+
+        Thermal Conductivity                                         0.6                 0.6                  -            W/(m.K)                 80°C                     ASTM C518
+
+                                                                                                                                                                        IPC-TM-650, 2.6.2.1
+        Moisture Absorption                                         0.02                0.06                  -               %                   D48/50                   ASTM D570
+
+                                                                                                                                                                            IPC-TM-650,
+        Tg                                                          >280                >280                  -            °C TMA                    A
+                                                                                                                                                                              2.4.24.3
+        Density                                                      1.8                 1.8                  -           gm/cm3                     -                      ASTM D792
+                                                                     6.9                 6.3                                lbs/in             1 oz. EDC post
+        Copper Peel Strength                                                                                  -                                                          IPC-TM-650, 2.4.8
+                                                                    (1.2)               (1.1)                              (N/mm)                solder float
+        Flammability                                              NON FR              NON FR                  -                -                     -                         UL 94
+
+        Lead-Free Process Compatible                                 Yes                 Yes                  -                -                     -                            -
+
+      [1]Typical values are a representation of an average value for the population of the property. RO4500 LoPro laminates use a modified version of the RO4000 resin system to
+      bond reverse treated foil. Values shown above are for RO4500 laminates without the addition of the LoPro resin. For double-sided boards, the LoPro foil results in a core
+      thickness increase of approximately 0.0007” (0.000018mm) while the resulting Design Dk is dependent on laminate thickness due to LoPro resin Dk being 2.4. Therefore,
+      design Dk is highly dependent on core thickness. For specification values contact Rogers Corporation or visit the Rogers Technology Support hub at http://
+      www.rogerscorp.com.
+      [2] PIM Performance is heavily influenced by the copper choice. PIM values provided are based on testing of reverse-treat electrodeposited copper foils using Rogers’ internal
+      test method on a 0.060” laminate. Typical PIM rating on standard EDC foils are < -145 dBc. Refer to the laminate thickness and copper option table for material options.
+      Prolonged exposure in an oxidative environment may cause changes to the dielectric properties of hydrocarbon based materials. The rate of change increases at higher
+      temperatures and is highly dependent on the circuit design. Although Rogers’ high frequency materials have been used successfully in innumerable applications and reports
+      of oxidation resulting in performance problems are extremely rare, Rogers recommends that the customer evaluate each material and design combination to determine
+      fitness for use over the entire life of the end product.
+
+                                         Standard Thicknesses                                                         Standard Panel Sizes:                             Standard Claddings
+       RO4533                                   RO4534                                                    24” X 18” (610 X 457 mm)                        Electrodeposited Copper Foil
+       0.020” (0.508mm) +/- 0.0015”             0.020” (0.508mm) +/- 0.0015”                              24” X 21” (610 X 533 mm)                        ½ oz. (18µm) HH/HH
+       0.030” (0.762mm) +/- 0.0015”             0.032” (0.813mm) +/- 0.0020”                              24” X 36” (610 X 915 mm)                        1 oz. (35µm) H1/H1
+       0.060” (1.524mm) +/- 0.0040”             0.060” (1.524mm) +/- 0.0040”                              48” X 36” (1219 X 915 mm)
+
+       *Additional non-standard thicknesses available from 0.020” -                                       *Additional panel sizes available               *Additional cladding weights available
+       0.060” in varying increments
+
+
+      *Contact Customer Service or Sales Engineering to inquire about additional available product configurations
+
+
+
+
+                                                                                                                                                                                                   2
+\\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com
+Data Sheet
+RO4500™ Series
+
+
+
+
+\\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com
+The information in this data sheet is intended to assist you in designing with Rogers’ circuit materials. It is not intended to and does not create any warranties express
+or implied, including any warranty of merchantability or fitness for a particular purpose or that the results shown on this data sheet will be achieved by a user for a
+particular purpose. The user should determine the suitability of Rogers’ circuit materials for each application.These commodities, technology and software are
+exported from the United States in accordance with the Export Administration regulations. Diversion contrary to U.S. law prohibited.
+
+The Rogers’ logo, Helping power, protect, connect our world, RO4500, RO4533, RO4534 and LoPro are trademarks of Rogers Corporation or one of its subsidiaries.
+©2024 Rogers Corporation, Printed in U.S.A., All rights reserved.
+
+Revised 1597 081326 Publication #92-166
+
+Helping power, protect, connect our world
+                                                                                   TM
+
+
+
+
+                                                                                                                                                                         3
+

@@ -1,0 +1,61 @@
+                                                                                                                  PRINTED CIRCUIT BOARDS
+                                                                                                                  1-48 layers · From 1WD express · 30 years
+
+
+Materials Default Values                        FR4                                                                                      Poole, 15.10.2025
+
+
+
+In the following, we have listed the established default values for FR4 materials used at Multi Circuit
+Boards Ltd.
+
+The quality of your PCBs is assured through the use of technical comparable materials (dependent on
+manufacturing inventory, global market). A specific material can be defined on request; this may lead
+to a longer production time and / or a price adjustment.
+
+
+                                                                   FR4                      FR4                         FR4            FR4
+                                                                                                                                      Track            Polyimid
+                                                               Standard                 High-TG               Halogen-free
+                                                                                                                                  resistant
+ TG                                           °C
+ CTE-z                                      ppm/°C                  60                       45                         45              50                20
+ Permittivity εr                            at 1MHz               4,6                    4,8                       4,7                4,7                 3,4
+ Electrical strength                        KV/mm                 45                      55                        50                 45                 125
+ Surface resistivity                           MΩ               10^6                    10^7                      10^7               10^7                10^6
+ Tracking resistance                            V             175 - 249*              175 - 249*                175 - 249*        400 - 599**               -
+ CTI                                           PLC                 3                       3                         3                  1                   -
+ Td value                                      °C                301                     345                       360                310                 ***
+ Peel strenth                                N/mm              1,1 - 1,6                 1,2                       1,4                1,6                 1,6
+ Flammability class                          UL-94                V0                      V0                       V0                  V0                  V0
+
+ Standard                                                      IPC-4101                IPC-4101                  IPC-4101           IPC-4101          IPC-4204
+
+ Depending on availability                      e.g.           Isola Duraver            Isola IS410           Isola Duraver 156   Isola Duraver KF   DuPont Pyralux
+ and / or customer request                                   Shengyi S1141          Shengyi S1000-2            Shengyi S1155      Shengyi S1600      Shengyi SF302
+
+                                                            KingBoard 6160             Iteq IT180-A           KingBoard 6162
+                                                               Panasonic                 Panasonic               Panasonic                             Panasonic
+                                                               R-1766M                   R-1755V                 R-1566V                                R-F775
+
+
+ * ISOLA recommends the value of 200 for calculations.
+
+ *** Recommended operating temperature: standard 105°C, on request 210°C (Arlon).
+
+
+ If you need a special material (e.g. halogen-free, high-Tg, metal-core, BT epoxy or PTFE), please
+ contact us. You can find an overview on our website: www.multi-circuit-boards.eu
+
+
+ Text data contained in this data sheet represents typical values and does not constitute any warranty or guarantee. For review
+ of critical specification tolerances, please contact our CAM department.
+
+
+
+   SUPPORT:                     CONTRACTING PARTY:
+   Multi Leiterplatten GmbH     Multi Circuit Boards Ltd. | Business Centres, Holyrood Close | GB-Poole, BH17 7FJ
+   Brunnthaler Straße 2         VAT-ID: DE281397430 | GB Co. Reg: 07909372
+   DE-85649 Brunnthal           Contact: Tel: +44 1425 489 111 | info@multi-circuit-boards.eu | www.multi-cb.eu
+   +49 8104 628-0 | Fax: -160   Bank details: Commerzbank Munich | IBAN DE31 7004 0048 0763 3407 00 | BIC COBADEFF970
+

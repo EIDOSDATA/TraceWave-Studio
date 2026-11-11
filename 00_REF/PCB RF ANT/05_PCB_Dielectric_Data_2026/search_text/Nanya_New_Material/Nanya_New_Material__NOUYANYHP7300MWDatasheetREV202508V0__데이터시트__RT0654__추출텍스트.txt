@@ -1,0 +1,101 @@
+产品编号（Item No）：NYHP-7300MW
+                Very Low Loss & Low Z-axis CTE
+     特点：                                                   FEATURES：
+         低介电常数(Dk 3.0@10GHz)                              ● Low Dk (Dk 3.0@10GHz)
+         介质损耗(Df 0.0014@10GHz)                            ● Low Df (Df 0.0014@10GHz)
+         Tg >200℃ 高耐热性                                    ● Tg >200℃ and high thermostability
+         优异通孔可靠性及 PCB 加工性                                 ● Superior PTH reliability and easy PCB processing
+          低吸水率                                            ● Low moisture absorption
+
+    应用领域：                                                APPLICATIONS：
+    ● 毫米波/汽车雷达应用                                         ● Millimeter Wave / Automotive Radar
+
+NYHP-7300MW 基板产品规格表 Specification Sheet for Laminate
+                                                                      典型值                                测试方法
+          NYHP-7300MW 覆铜板                   单位Units                                      条件
+                                                                   Typical Value                       Test Method
+         NYHP-7300MW Laminate                                                         Condition
+                                          Metric(English)          1.524mm CCL                         IPC-TM-650
+1. 抗剥强度Peel Strength, As received          N/mm(lb/inch)             ＞0.7 (4.0)       1oz HVLP             2.4.8
+2. 体积电阻 Volume Resistivity,                 MΩ-cm,
+                                                                       4×108           COND A            2.5.17.1
+   恒温恒湿C-96/35/90                           Minimum
+3. 表面电阻 Surface Resistivity,                  MΩ,
+                                                                      2.1×108          COND A            2.5.17.1
+   恒温恒湿C-96/35/90                           minimum
+                                               %
+4. 吸水率 Moisture Absorption                                              0.14                              2.6.2.1
+                                            maximum
+5. 介电常数 Permittivity
+                                            Maximum                  3.0 ± 0.05      10 GHz/23℃           2.5.5.5
+   (Laminate & Prepreg as laminated)
+6. 介质损耗 Loss Tangent
+                                            Maximum                   0.0014         10 GHz/23℃           2.5.5.5
+   (Laminate & Prepreg as laminated)
+7. TCDK                                      PPM/℃                      25           -50℃-150℃            2.5.5.5
+8. 弯曲强度 Flexural Strength,
+                                             N/mm2,                     210
+    A. 纵向 Length direction                                                               RT            ASTM D790
+                                             minimum                    155
+    B. 横向 Cross direction
+9. 热应力冲击 Thermal Stress
+                                                                       Pass
+     A. 未蚀刻 Unetched                      10 sec at 288℃                                288℃             2.4.13.1
+                                                                       Pass
+     B. 蚀刻 Etched
+10. 燃烧性 Flammability                                                                                      UL94
+                                              Rating                    V-0
+     ( Laminate & Prepreg as laminated)                                                            （UL File: E213990）
+11. 玻璃态转化温度
+                                                ℃                      >200             DMA               2.4.24
+     Glass Transition Temperature
+12. 热分解温度                                                                                                  TD
+                                                ℃                       410
+     Decomposition Temperature                                                                         (5% wt loss)
+                                   α1                                   50
+13. 膨胀系数Z-Axis CTE                            ppm/℃                                                       2.4.24
+                                   α2                                   300
+14. 耐热性(除去铜箔)
+    Thermal Resistance (Copper removed)
+    A.T260                                   Minutes                   >120                              2.4.24.1
+    B.T288                                   Minutes                   > 60
+    C.T300                                   Minutes                   > 60
+15. 耐CAF性能 CAF Resistance                    Pass/Fail                 Pass            AABUS              2.6.25
+
+*AABUS = 供需双方商定 As agreed upon between user and supplier.
+
+
+
+
+                                                                                                                    1 of 2
+板材厚度与公差        The thickness & Tolerance
+
+                               厚度 Thickness           厚度 Thickness     公差 Tolerance
+     型号（Model）
+                                   (mm)                  (inch)            (mm)
+                                   0.127                 0.005             ±0.025
+     NYHP-7300MW                   0.254                 0.010             ±0.038
+                                   0.508                 0.020             ±0.050
+
+
+板材尺寸 Standard Size
+       型号（Model）                           英寸/inch                   毫米/mm
+                                            36×48                    914×1219
+       NYHP-7300MW
+                                            42×48                    1067×1219
+注：可以根据客户要求的尺寸开 PNL 出货。
+Remark: Other size could be available upon request.
+
+
+铜箔 Copper Foil
+       型号（Model）                                          HVLP3
+                                                           Hoz
+       NYHP-7300MW
+                                                           1oz
+注：Other copper spec could be available upon request
+
+
+
+
+                                                                                    2 of 2
+

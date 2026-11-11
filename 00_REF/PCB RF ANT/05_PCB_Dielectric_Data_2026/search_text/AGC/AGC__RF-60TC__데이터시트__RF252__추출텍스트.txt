@@ -1,0 +1,87 @@
+RF-60TC
+Base Material for High Power RF Applications
+
+ Benefits
+      •    Improved loss tangent
+      •    High thermal conductivity
+      •    Enhanced dimensional stability
+      •    Low Z-axis CTE
+      •    Excellent adhesion to metal
+      •    Stable DK over frequency
+      •    Stable DK over temperature
+      •    Low moisture absorption
+
+ Applications
+      •    High Power Amplifiers
+      •    Miniaturized Antennas
+      •    GPS, Patch, RFID reader
+      •    Filters, Couplers & Dividers
+      •    Satellites
+
+RF-60TC is a PTFE based, ceramic filled fiberglass substrate for use as a base material for high power RF and microwave
+applications. This material is designed to provide lower operating temperatures in high power applications and better gains and
+efficiencies in miniaturized antenna applications for the 6.15 DK market through improved dielectric heat dissipation and exceptionally
+low dielectric losses.
+RF-60TC’s enhanced heat transfer allows for additional design margin, extends the active components’ lifetime and improves long
+term reliability. RF-60TC has excellent adhesion to very low profile and reverse treated copper for reduced insertion loss. Heavy metal
+backed laminates are also available. The low CTE and improved dimensional stability of RF-60TC make it possible to build high layer
+count multilayer PWBs with improved plated through hole reliability.
+          Properties              Conditions           Typical Value               Unit                               Test Method
+ Electrical Properties
+ Dielectric Constant               @ 10 GHz             6.15 ± 0.15                                 IPC-650 2.5.5.5.1 (Modified)
+ Dissipation Factor                @ 10 GHz               0.0020                                    IPC-650 2.5.5.5.1 (Modified)
+ Surface Resistivity                                     1.0 x 108               Mohms              IPC-650 2.5.17.1 (After Humidity)
+ Volume Resistivity                                      1.0 x 108              Mohms/cm            IPC-650 2.5.17.1 (After Humidity)
+ Thermal Properties
+                                    Unclad                 0.90                   W/M*K
+ Thermal Conductivity               CH/CH                  1.00                   W/M*K             IPC-650 2.4.50
+                                    C1/C1                  1.05                   W/M*K
+                                      X                     9.9
+ CTE (RT- 150 °C)                     Y                     9.9                   ppm/°C            IPC-650 2.4.41
+                                      Z                     40
+ T CK                                                     -3.581                  ppm/°C
+                                  2% Wt. Loss            500 (930)                 °C (°F)          IPC-650 2.4.24.6 / TGA
+ Td
+                                  5% Wt. Loss            515 (960)                 °C (°F)          IPC-650 2.4.24.6 / TGA
+ Mechanical Properties
+                                      MD                69 (10,000)            N/mm2 (psi)
+ Flexural Strength                                                                                  IPC-650 2.4.4
+                                      CD                 62 (9,000)            N/mm2 (psi)
+                                      MD                 62 (9,000)            N/mm2 (psi)
+ Tensile Strength                                                                                   IPC-650 2.4.19
+                                      CD                 48 (7,000)            N/mm2 (psi)
+                                      MD                    0.01              mm/M (mils/in)
+ Dimensional Stability                                                                              IPC-650 2.4.39 Sec. 5.4 (After Bake)
+                                      CD                    0.69              mm/M (mils/in)
+                                      MD                    0.06              mm/M (mils/in)
+ Dimensional Stability                                                                              IPC-650 2.4.39 Sec. 5.5 (Thermal Stress)
+                                      CD                    0.80              mm/M (mils/in)
+ Chemical / Physical Properties
+ Moisture Absorption                                        0.03                    %               IPC-650 2.6.2.1
+ Arc Resistance                                             > 180                Seconds            IPC-650 2.5.1
+ Density                        Specific Gravity            2.84                  g/cm3             IPC-650 2.3.5
+ Specific Heat                                              0.94                   J/gK             IPC-650 2.4.50
+ Flammability Rating                                         V-0                                    UL 94
+
+                                                               Typical Thicknesses1
+              Inches                                 mm                                   Inches                               mm
+              0.0050                                 0.13                                 0.0250                               0.64
+              0.0100                                 0.25                                 0.0300                               0.76
+              0.0200                                 0.51                                 0.0600                               1.52
+                                                               Available Sheet Sizes2
+              Inches                                 mm                                   Inches                               mm
+              12 x 18                              305 x 457                              16 x 36                            406 x 914
+              16 x 18                              406 x 457                              24 x 36                            610 x 914
+              18 x 24                              457 x 610
+* All test data provided are typical values and not intended to be specification values. For review of critical specification tolerances,
+please contact a company representative directly.
+* RF-60TC can be manufactured in increments of 0.005”(0.125mm).
+* Standard panel size is 18” x 24” (457 mm x 610 mm).
+* Please contact AGC for availability of additional thicknesses, other sizes & any other type of cladding.
+
+
+
+
+ AGC Inc. 2024-02
+ agc-ml.multimaterial@agc.com
+

@@ -1,0 +1,83 @@
+{
+  "files": 2747,
+  "bytes": 1035264538,
+  "manifest_entries": 2746,
+  "manifest_failures": 0,
+  "sources": 1756,
+  "source_reference_issues": 0,
+  "original_files": 1682,
+  "unreferenced_originals": [],
+  "source_download_status_counts": {
+    "downloaded": 1699,
+    "failed": 26,
+    "redirect_instead_of_document": 2,
+    "failed_empty_response": 3,
+    "not_downloaded": 1,
+    "http404": 2,
+    "web_read_only_http403": 20,
+    "request_only": 1,
+    "blocked_human_verification": 2
+  },
+  "search_index_entries": 967,
+  "search_index_failures": 0,
+  "pdf_files_read": 949,
+  "pdf_pages_read": 3571,
+  "pdf_total_low_text_pages": 113,
+  "pdfs_without_search_index": [],
+  "pdfs_in_index_not_read": [],
+  "html_files_read": 705,
+  "html_error_candidates": 0,
+  "zip_files_read": 18,
+  "zip_entries_read": 648,
+  "zip_pdf_entries_read": 308,
+  "text_payload_bytes_read": 508292816,
+  "zero_byte_files": [],
+  "duplicate_groups": 6,
+  "read_error_count": 0,
+  "zip_pdf_page_references": 393,
+  "unique_archive_pdf_pages": 208,
+  "archive_index_publication": {
+    "archive_files": 18,
+    "members": 648,
+    "unique_member_contents": 502,
+    "pdf_members": 308,
+    "unique_pdf_contents": 168,
+    "pdf_page_references": 393,
+    "new_search_text_files": 166,
+    "reused_existing_search_text_files": 2,
+    "native_altium_members": 173,
+    "native_ipc2581_members": 167,
+    "failed_members": 0
+  },
+  "visual_review": {
+    "pdf_pages": [
+      "RF161 p2",
+      "RF188 p3",
+      "RF312 p4",
+      "FB032::alle PDF/BASIC10_ML10_147_17_2V13.PDF p1"
+    ],
+    "image_source_ids": [
+      "FB206",
+      "FB207",
+      "FB208",
+      "FB209",
+      "FB210",
+      "FB211",
+      "FB212"
+    ],
+    "all_pdf_pages_visually_reviewed": false,
+    "ocr_performed": false
+  },
+  "deletion_recommendations": {
+    "originals": [],
+    "reason": "No zero-byte originals or byte-identical original files. Distinct sources with low information content are not redundant scientific evidence.",
+    "redirect_evidence_ids": [
+      "RT0150",
+      "RT0215"
+    ],
+    "sidecar_duplicate_groups": 5,
+    "empty_issue_jsons_semantically_distinct": true
+  },
+  "html_originals_read": 704,
+  "html_package_guide_read": 1
+}

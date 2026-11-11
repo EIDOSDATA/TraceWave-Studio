@@ -1,0 +1,125 @@
+fastRise™ EZpure
+Low temperature curing, thermosetting prepreg
+
+ Benefits
+      •    FR4 lamination temperatures
+      •    Low DK enables reduced PWB thickness for the same impedance
+      •    Thermosetting prepreg will not reflow
+      •    Fiberglass-free prepreg
+      •    Compatible with conventional lamination processes
+      •    Can be combined with any core material
+      •    Laser Ablatable
+
+
+ Applications
+      •    High Speed Flex Cables
+      •    Thin Multilayers
+      •    ATE testing
+      •    mmWave Antenna/Automotive
+      •    Bonding of Subassemblies
+
+fastRiseTMEZpure is a low temperature curing adhesive for flexible and rigid PWBs. EZpure is a non-reinforced adhesive
+containing only a low loss thermosetting resin and ceramic additives. EZpure has been optimized to adhere to difficultto-bond-to
+substrates like PTFE, polyimide (DuPont™ Pyralux® AP/TK flexible circuit materials) and LCP.
+The primary drawback of polyimides, LCPs and PTFE is the high temperatures normally associated with multilayer fabrication.
+
+EZpure can be laminated at 200°C, thus preventing any unwanted dimensional movement of the copper clad laminate core. Because
+EZpure has no reinforcement and uses only submicron, or micron sized ceramic and polymeric resin, the optimal pressure for
+laminating can vary significantly. Important factors to consider are the thickness of EZpure that is being used and design features such
+as cutouts, cavities, copper retention and thickness, and the type of thieving used. Please consult with an applications engineer.
+
+In testing EZpure bondply with LCP cores, PWBs have passed 260°C and 300°C solder reflow without defects. FR-EZpure
+has exhibited 5-7 lbs. of adhesion to LCP cores and that adhesion is stable after 260°C and 300°C thermal cycling.
+
+EZpure’s low loss enables the design of flexible high speed cables and rigid RF/digital multilayers without the uncertainties and costs
+associated with the high temperature lamination of PTFE or LCP materials. EZpure can be used to replace cable harnesses with denser
+flex circuits. The lack of a reinforcement makes EZpure a great candidate for laser vias. The low moisture absorption of 0.3% is very
+attractive vs. conventional polyimides.
+
+
+
+
+EZpure can be sequentially laminated and has better bonding capabilities with copper than other RF prepregs. The low DK of EZpure
+is advantageous in flex applications to reduce thickness while maintaining the same impedance. The low modulus of EZ pure allows
+for more ductility in a thicker multilayer. The low dissipation values of EZpure is an option for any multilayer stackup where pure
+packages of other materials have fabrication challenges.
+                                                  fastRiseTM EZpure Laser Ablation
+
+EZpure can be readily laser ablated as shown below as a matrix of 4, 5 and 6 mil holes (Figure 1). A copper plated microvia is shown
+in Figure 2. Figure 3 (800X) is a 4 mil dielectric layer of EZpure with a 150 μm via using an ESI 5335 UV laser.
+
+
+
+
+                  Figure 1                                    Figure 2                                     Figure 3
+
+
+
+
+                                                                        fastRise™ EZpure Flow Dependence on Pressure
+fastRiseTM EZpure HDI Buildup
+EZpure hybrid multilayers have been produced with a 28 mil FR4 core and varying layers of EZpure based microvia layers. 4
+sequential laminations were performed to build both stacked and staggered microvias having 2, 3, and 4 layers of interconnect. The
+D coupons were analyzed by Conductor Analysis Technologies. The D coupons were subjected to 6X solder reflow before
+thermocycling from -55 to 178 C̊.
+
+
+
+
+EZpure microvias are 5mil in diameter with a dielectric spacing of 3-4 mils. Microvias were created with a UV/CO2 laser
+(UV/CO2/UV). PWB’s were fabricated by TTM Technologies Forest Grove, Oregon.
+  Arrays of Daisy Chain Stacked and Staggered Vias,
+                     D Coupons
+
+EZ-pure-0055H shows very consistent layer to layer dielectric spacing. Thermal cycling analysis by Conductor Analysis
+Technologies is available upon request. Please consult with your regional technical service manager.
+
+              Properties                      Conditions              Typical Value     Unit                        Test Method
+ Unpressed Thickness (Pressed)                1.5 (1.2), 2.0 (1.55), 3.0 (2.03)         mil
+ Electrical Properties
+ Dielectric Constant                          @ 10 GHz                   2.8                       IPC-650 2.5.5.5.1
+ Dissipation Factor                           @ 10 GHz                 0.0032                      IPC-650 2.5.5.5.1
+ Volume Resistivity                                                   3.75 x 106      Mohms/cm     IPC-650-2.5.17E
+ Surface Resistivity                                                  2.24 x 108      Mohms/cm     IPC-650-2.5.17E
+ Thermal Properties
+ Thermal Conductivity                                                    0.33          W/M*K       ASTM F 433/ASTM 1530-06
+ CTE (35 to 200 °C)                             X, Y, Z                   44           ppm/°C      IPC-650 2.4.41
+                                              2% wt. loss                375             °C
+ Td                                                                                                IPC-650 2.4.24.6 (TGA)
+                                              5% wt. loss                386             °C
+ Tg                                                                      168             °C
+ Mechanical Properties
+                                                                           3.0          lbs/in
+ Peel Strength                             after solder float              3.0          lbs/in     IPC-650 2.4.9E
+                                          after thermocycling              3.0          lbs/in
+                                                  MD                      -9.8         mils/in
+ Dimensional Stability                                                                             IPC-650 2.2.4 (TS)
+                                                   CD                    -10.3         mils/in
+ Tensile Strength                                                         800           psi        IPC-650 2.4.19
+ Chemical / Physical Properties
+ Chemical Resistance                                                      90              %        IPC-650-2.3.2G
+ Elongation at break                                                     19.5             %        IPC-650 2.4.19
+ Fungus Growth                                                      0 (no growth)                  IPC-650-2.6.1
+
+A rigid flex construction of EZpure/Pyralux® AP/FR4 has passed IST, HATS and Lead Free reflow:
+                                                        fastRise™EZpure Thermal Reliability
+       Test Standard               Via Size                 Preconditioning                Cycles                     Pass/Fail
+                            17.5 mil and 17.7 mil                                       1000 Cycles                    Passed
+ IST                                                           6X at 260˚C
+                          (50 mil and 100mil pitch)                               Room Temp. to 160˚C         (<10% Change in resistance)
+                                                                                         500 Cycles
+                          7.9 mil, 9.8 mil, 14.5 mil                                                                   Passed
+ HATS                                                                -                -55˚C to 125˚C
+                               and 17.7 mil                                                                   (<10% Change in resistance)
+                                                                                     2 cycles per hour
+ Solder Stress                        -                        6x at 288˚C                    -                          Passed
+ IPC-6013 Group A                     -                              -                        -                          Passed
+* All test data provided are typical values and not intended to be specification values. For review of critical specification tolerances,
+   please contact a company representative directly.
+* Please contact AGC for availability of additional thicknesses, other sizes.
+
+
+
+ AGC Inc. 2025-01
+ agc-ml.multimaterial@agc.com
+

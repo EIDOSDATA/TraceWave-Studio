@@ -1,0 +1,132 @@
+{
+  "records": 18966,
+  "sources": 463,
+  "physical_pdfs": 297,
+  "manufacturers": {
+    "ITEQ": {
+      "records": 112,
+      "numeric_products": 20,
+      "frequencies_ghz": [
+        0.001,
+        1,
+        2,
+        5,
+        10
+      ],
+      "missing_dk": 0,
+      "missing_df": 0,
+      "missing_method": 0,
+      "missing_thickness": 112
+    },
+    "Isola": {
+      "records": 3329,
+      "numeric_products": 19,
+      "frequencies_ghz": [
+        0.1,
+        0.5,
+        1.0,
+        2.0,
+        5.0,
+        10.0,
+        15.0,
+        20.0,
+        30.0
+      ],
+      "missing_dk": 0,
+      "missing_df": 0,
+      "missing_method": 3329,
+      "missing_thickness": 0
+    },
+    "Panasonic": {
+      "records": 6886,
+      "numeric_products": 62,
+      "frequencies_ghz": [
+        0.001,
+        0.1,
+        1.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        13.0,
+        14.0,
+        23.0,
+        24.0,
+        25.0,
+        26.0,
+        34.0,
+        35.0,
+        36.0,
+        37.0,
+        45.0,
+        46.0,
+        47.0,
+        48.0,
+        49.0,
+        55.0,
+        56.0,
+        58.0,
+        59.0,
+        60.0
+      ],
+      "missing_dk": 0,
+      "missing_df": 25,
+      "missing_method": 0,
+      "missing_thickness": 0
+    },
+    "Shengyi Technology": {
+      "records": 8639,
+      "numeric_products": 97,
+      "frequencies_ghz": [
+        0.001,
+        1.0,
+        3.0,
+        5.0,
+        10.0,
+        14.0,
+        15.0,
+        20.0,
+        25.0,
+        26.0,
+        28.0,
+        30.0,
+        37.0,
+        38.0,
+        49.0,
+        50.0,
+        61.0,
+        62.0,
+        73.0,
+        77.0,
+        85.0
+      ],
+      "missing_dk": 5,
+      "missing_df": 14,
+      "missing_method": 24,
+      "missing_thickness": 173
+    }
+  },
+  "known_gaps": [
+    "Public sources in this collection do not establish exhaustive worldwide or historical coverage.",
+    "ITEQ 20 official PDFs read through web retrieval; direct download HTTP403. Original PDF bytes are absent; URLs and transcribed data are included.",
+    "Shengyi Autolad3 Lineup FRS183 original included; image/outlined text construction table not transcribed.",
+    "Source PDFs contain broader mechanical/thermal/processing content; numerical dataset focuses on dielectric values and selected construction metadata.",
+    "Isola HTML construction tables do not state a test method; method is null rather than inferred from an unrelated sheet.",
+    "Panasonic 120 lower-frequency rows carry method_scope_note because heading explicitly says 1GHz.",
+    "Shengyi SP168GN 30 rows retain Dk/Df but ambiguous thickness unit is not converted; four S1150GH rows have an empty original mm cell."
+  ],
+  "download_statuses": {
+    "downloaded": 440,
+    "not_downloaded": 1,
+    "http404": 2,
+    "web_read_only_http403": 20
+  },
+  "validation": {
+    "source_ids_unique": true,
+    "all_records_resolve_source_id": true,
+    "all_downloaded_pdf_signatures_valid": true,
+    "all_expected_numeric_ranges_pass": true,
+    "duplicate_conditions_with_equal_values": 0
+  }
+}

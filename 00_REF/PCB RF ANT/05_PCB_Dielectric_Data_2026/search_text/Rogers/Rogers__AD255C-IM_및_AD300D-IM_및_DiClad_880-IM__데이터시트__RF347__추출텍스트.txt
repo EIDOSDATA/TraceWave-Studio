@@ -1,0 +1,142 @@
+                                                                                                                                 Data Sheet
+
+
+IM Series™
+Antenna Grade Laminates
+IM Series™ high frequency laminates are an outstanding Passive InterModulation
+(PIM) performing version of our AD300D™, AD255C™, and DiClad® 880 antenna grade
+laminates. These specialty materials from Rogers Corporation are engineered and                                     Features and Benefits:
+manufactured to meet the specific demands of today’s base station antenna markets.                                  Low PIM (-166 dBc at 0.030”)
+The IM Series materials should be used where very demanding PIM requirements exist.
+                                                                                                                       • Enables the successful
+The IM Series laminates extend the capabilities of the successful AD300D, AD255C,                                        production of high
+and DiClad 880 product grades. The laminates now include the newly developed                                             performance antenna designs
+IM cladding solution. This includes an ultra-smooth (Rq = 0.5µm by non-contact
+                                                                                                                    PTFE resin system
+interferometry method) electrodeposited copper foil cladding option which has
+excellent adhesion to the substrate materials. Figure 1 below shows a comparison                                      • Controlled Dk, low Df materials
+                                                                                                                        enabling high performance
+of the new 1 oz. IM cladding option (IM1/IM1) vs the current 1 oz. reverse treated
+                                                                                                                        designs
+electrodeposited copper option (S1/S1).
+                                                                                                                    Woven glass reinforced materials
+                                                                                                                    for excellent dimensional stability
+                                                                                                                      • Greater yield on larger panel
+                                                                                                                         sizes
+                                                                                                                    Uniform mechanical properties
+                                                                                                                     • Maintains mechanical form
+                 Figure 1. SEM images of IM1 cladding (left, Rq = 0.5µm) and S1 cladding (right, Rq = 1.0µm).
+                                                                                                                        during handling
+                                                                                                                     Some Typical Applications:
+This combination of ultra-low roughness IM foil with the controlled dielectric                                        • Cellular infrastructure base
+performance found in the selected laminates results in a family of ultra-low PIM                                        station antennas
+laminate solutions that are unrivaled in PTFE laminates in today’s base station antenna                               • WiMax antenna networks
+market. The PIM performance of all substrates with the IM cladding has typical values
+of -166 dBc at 0.030” and -165 dBc at 0.060” using the Rogers internal test method of
+two 43 dBm swept tones at 1900 MHz. The PIM performance has also been evaluated
+at frequencies as low as 710 MHz with even better results.
+
+Notably, the standard deviation of the PIM values using the IM1/IM1 cladding
+was found to be significantly improved vs the standard S1/S1 reverse treated
+electrodeposited copper foil cladding. Figure 2 shows the improvement of the
+standard deviation and range of the IM cladding vs the S1 cladding. This improvement
+affords the antenna designer the opportunity to either increase the average PIM
+performance over current designs or maintain the current PIM levels while improving
+antenna production yields.
+The IM Series laminates are compatible with the processing approaches used for                                     Figure 2. PIM performance of IM1/IM1 vs S1/S1 cladding on
+standard PTFE based printed circuit board substrates.                                                              AD300 laminate.
+
+                  Standard Thicknesses                                                     Standard Panel Sizes                     Standard Cladding
+ 0.030” (0.762 mm)                                                    12” X 18” (305 X 457 mm)                    Interferometry Method Electrodeposited Copper Foil
+ 0.060” (1.524 mm)                                                    24” X 18” (610 X 457 mm)                    1 oz. (35 μm) M1/M1
+
+ *Additional non-standard thicknesses available                       *Additional sizes available.                *Additional cladding weights may be available
+
+ *Contact Customer Service or Sales Engineering to
+ inquire about additional available product configurations
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+                                                                                                 Page 1 of 2
+                                                                                                                                                                                                             Data Sheet
+                                                                         DiClad
+  Electrical Properties(1)                                                                      AD255C-IM                    AD300D-IM                      Units                       Test Conditions                                     Test Method
+                                                                         880-IM
+                                                                                                                                                                             Reflected 43 dBm swept tones at                                Rogers internal
+  PIM (30mil/60mil)(2)                                                  -166/-165                  -166/-166                     -166/-165                     dBc
+                                                                                                                                                                                    1900MHz, IM1/IM1                                           50 ohm
+                                                                             2.17                                                2.97/3.03                                                                       10 GHz                   IPC TM-650 2.5.5.5
+  Dielectric Constant (process)                                                                         2.55                                                        -         23oC @ 50% RH
+                                                                             2.20                                               (2.94/3.00)                                                                      (1 MHz)                 (IPC TM-650 2.5.5.3)
+  Dissipation Factor (process)                                            0.0009                      0.0014                       0.0021                           -         23oC @ 50% RH                      10 GHz                   IPC TM-650 2.5.5.5
+                                                                                                                                                                                                                                               Microstrip
+  Dielectric Constant (design)                                               2.20                       2.58                     2.95/3.01                          -            C-24/23/50                      10 GHz                        Differential
+                                                                                                                                                                                                                                              Phase Length
+  Thermal Coefficient of Dielectric Constant                                -160                        -110                          -73                   ppm/ºC                0 to 100oC                     10 GHz                   IPC TM-650 2.5.5.5
+                                                                                                                                                            Mohm-
+  Volume Resistivity                                                     1.4 X 109                  7.4 X 108                     1.7 X 108                                      C-96/35/90                            -                 IPC TM-650 2.5.17.1
+                                                                                                                                                             cm
+  Surface Resistivity                                                    2.9 X 106                  3.6 X 107                     5.1 X 107                 Mohm                 C-96/35/90                            -                 IPC TM-650 2.5.17.1
+  Electrical Strength (dielectric
+                                                                             640                        910                           750                    V/mil                        -                            -                  IPC TM-650 2.5.6.2
+  strength)
+  Dielectric Breakdown                                                       >45                        >45                            46                       kV                  D-48/50                 X/Y direction                  IPC TM-650 2.5.6
+                                                                            I                           I                           II                       class/                                                                            UL-746A,
+  Comparative Tracking Index                                                                                                                                                     C-40/23/50                            -
+                                                                         (V≥600)                     (V≥600)                 (400 ≤ V <600)                  volts                                                                            ASTM D3638
+  Thermal Properties(1)
+  Decomposition Temperature (Td)                                            >550                       >550                         >550                        º
+                                                                                                                                                                 C              2 hrs @ 105ºC             5% Weight Loss                  IPC TM-650 2.3.40
+  Coefficient of Thermal Expansion - x                                        28                         34                            24                   ppm/ºC                        -                 -55ºC to 288ºC                IPC TM-650 2.4.41
+  Coefficient of Thermal Expansion - Y                                        49                         26                            23                   ppm/ C      º
+                                                                                                                                                                                          -                 -55 C to 288 C
+                                                                                                                                                                                                                 º              º
+                                                                                                                                                                                                                                          IPC TM-650 2.4.41
+  Coefficient of Thermal Expansion - z                                       317                        196                            98                   ppm/ C      º
+                                                                                                                                                                                          -                 -55 C to 288 C
+                                                                                                                                                                                                                 º              º
+                                                                                                                                                                                                                                          IPC TM-650 2.4.41
+  Thermal Conductivity                                                       0.23                       0.35                         0.37                   W/m K       º
+                                                                                                                                                                                          -                   z direction                     ASTM D5470
+  Time to Delamination                                                      > 60                        > 60                         > 60                  minutes               as received                         288ºC               IPC TM-650 2.4.24.1
+  Mechanical Properties(1)
+  Copper Peel Strength after Thermal                                        2.5                         2.1                          2.1                    N/mm
+                                                                                                                                                                                 10s @ 288ºC                   35 μm foil                  IPC TM-650 2.4.8
+  Stress                                                                   (14.1)                      (12.1)                       (11.9)                  (lbs/in)
+                                                                        80.7/62.7                   60.7/44.1                  152.4/127.6
+  Flexural Strength (MD/CMD)                                                                                                                              MPa (ksi)              25oC +/-3oC                           -                       ASTM D790
+                                                                        (11.7/9.1)                  (8.8/6.4)                  (22.1/18.5)
+                                                                        42.7/39.5                   55.8/45.5                  122.0/120.7                                                                                                   ASTM D3039/
+  Tensile Strength (MD/CMD)                                                                                                                               MPa (ksi)               23oC/50RH                            -
+                                                                        (6.2/5.7)                   (8.1/6.6)                  (17.7/17.5)                                                                                                    D3039-14
+                                                                      5,540/4,740                 6,400/5,650                 10,400/9,580                                                                                                   IPC TM-650
+  Flex Modulus (MD/CMD)                                                                                                                                   MPa (ksi)              25oC +/-3oC                           -
+                                                                       (805/687)                   (930/820)                  (1510/1390)                                                                                                 Test Method 2.4.4
+                                                                                                                                                                                 after etch +
+  Dimensional Stability (MD/CMD)                                        0.63/0.43                   0.03/0.07                   -0.08/0.02                mils/inch                                                    -                 IPC TM-650 2.4.39a
+                                                                                                                                                                                     bake
+  Physical Properties(1)
+  Flammability                                                               V-0                         V-0                          V-0                           -                     -                            -                            UL 94
+                                                                                                                                                                                    E1/105
+  Moisture Absorption                                                        0.02                       0.03                         0.04                       %                                                      -                  IPC TM-650 2.6.2.1
+                                                                                                                                                                                   +D48/50
+  Density                                                                    2.23                       2.28                         2.23                    g/cm3               C-24/23/50                            -                       ASTM D792
+                                                                                                                                                                                  2 hours at
+  Specific Heat Capacity                                                     0.87                       0.81                         0.80                     J/gºK                                                    -                      ASTM E2716
+                                                                                                                                                                                    105ºC
+  NASA Outgassing                                                       0.01/0.01                   0.01/0.01                    0.01/0.01                      %                         -                   TML/CCVM                         ASTM E595
+(1) Typical values are a representation of an average value for the population of the property using a 0.060” laminate.
+(2) PIM Performance is heavily influenced by the copper choice. PIM values provided are typical values based on testing of the IM foil using Rogers’ internal test method on 0.030” thick and 0.060” thick laminates.
+Rogers recommends that the customer evaulate each material and design combination to determine fitness for use over the entire life of the end product.
+The information in this data sheet is intended to assist you in designing with Rogers’ circuit materials. It is not intended to and does not create any warranties express or implied, including any warranty of merchantability or fitness for a particular purpose or that
+the results shown on this data sheet will be achieved by a user for a particular purpose. The user should determine the suitability of Rogers’ circuit materials for each application.
+These commodities, technology and software are exported from the United States in accordance with the Export Administration regulations. Diversion contrary to U.S. law prohibited.
+The Rogers’ logo, AD300D, AD300, AD255C, DiClad, IM Series and Helping power, protect, connect our world are trademarks of Rogers Corporation or one of its subsidiaries.
+© 2022 Rogers Corporation, Printed in U.S.A., All rights reserved. Revised 1586 072822 Publication #92-192
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+
+                                                                                                                             Page 2 of 2
+

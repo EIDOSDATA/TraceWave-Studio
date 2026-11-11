@@ -1,0 +1,71 @@
+产品编号（Item No）：NYHP-7350
+   型号（Model）：NYHP-7350 LNB
+           High Frequency Very Low Loss Laminate
+    特点：                                   FEATURES：
+     低介电常数(Dk 3.3@10GHz)                 ● Low Dk (Dk 3.3@10 GHz )
+     介质损耗(Df 0.0031@10GHz)               ● Low Df (Df 0.0031@10 GHz)
+     Tg >200℃无铅兼容板材                      ● Tg>200℃, Lead-free compatible
+     优异通孔可靠性及 PCB 加工性                    ● Superior PTH reliability and easy PCB processing
+     低吸水率                               ● Low moisture absorption
+
+    应用领域：                                                 APPLICATIONS：
+        卫星电视高频头                                          ● LNB
+
+NYHP-7350 LNB 基板产品规格表 Specification Sheet for Laminate
+                                                                典型值             条件         测试方法
+        NYHP-7350 LNB 覆铜板                    单位Units
+                                                             Typical Value   Condition    Test Method
+        NYHP-7350 LNB Type Laminate
+                                           Metric(English)   0.508 mm CCL                 IPC-TM-650
+1. 抗剥强度Peel Strength, As received           N/mm(lb/inch)     ＞0.8 (4.57)    0.5oz HTE       2.4.8
+                                              MΩ-cm,
+2. 体积电阻 Volume Resistivity,                                    1.0×1010       COND A        2.5.17.1
+                                              Minimum
+                                                MΩ,
+3. 表面电阻 Surface Resistivity,                                   5.1×109        COND A        2.5.17.1
+                                              Minimum
+                                                 %
+4. 吸水率 Moisture Absorption                                       0.08                       2.6.2.1
+                                              maximum
+5. 介电常数 Permittivity                             ---
+                                                                  3.3        10 GHz/23℃     2.5.5.5
+   (Laminate & Prepreg as laminated)          maximum
+6. 介质损耗 Loss Tangent                             ---
+                                                                0.0031       10 GHz/23℃     2.5.5.5
+   (Laminate & Prepreg as laminated)          maximum
+7. TCDK                                       PPM/℃               48         -50℃-150℃      2.5.5.5
+8. 弯曲强度 Flexural Strength,
+                                              N/mm2,             220
+    A. 纵向 Length direction                                                      RT           2.4.4
+                                              minimum            140
+    B. 横向 Cross direction
+9. 热应力冲击 Thermal Stress
+                                                                 Pass
+     A. 未蚀刻 Unetched                       10 sec at 288℃                      288℃         2.4.13.1
+                                                                 Pass
+     B. 蚀刻 Etched
+10. 燃烧性 Flammability
+                                               rating            V-0                         UL94
+     ( Laminate & Prepreg as laminated)
+11. 玻璃态转化温度
+                                                 ℃               >200           DMA         2.4.24
+     Glass Transition Temperature
+12. 热分解温度                                                                                     TD
+                                                 ℃               400
+     Decomposition Temperature                                                            (5% wt loss)
+16. 膨胀系数Z-Axis CTE
+                                                 %                1.2                       2.4.24
+     A. 50 to 280 ℃
+13. 耐热性(除去铜箔)
+     Thermal Resistance (Copper removed)
+     A.T260                                   Minutes            >120                       2.4.24.1
+     B.T288                                   Minutes            > 60
+     C.T300                                   Minutes            > 60
+14. 耐CAF性能 CAF Resistance                     Pass/Fail          Pass          AABUS        2.6.25
+*AABUS = 供需双方商定 As agreed upon between user and supplier.
+
+
+
+
+                                                                                                       1 of 1
+

@@ -1,0 +1,342 @@
+                               Carbon-conductive ink SD 2843 HAL
+                               The carbon-conductive ink SD 2843 HAL is a 1-pack screen printing ink that, on
+                               account of selected special carbons and high-quality types of graphite, displays an
+                               excellent conductivity even after soldering. The achieved conductivities are to a large
+                               extent dependent upon the selected curing conditions (see Item "Resistance in relation
+                               to curing conditions”).
+                               The carbon-conductive ink SD 2843 HAL is suitable for touch-key contacts and
+                               enables the substitution of gold on contacts, the production of cross-over conductors
+                               (cross-over technology) as well as the creation of printed resistances. Further
+                               applications include migration protection for silver-conductive ink, electro-mechanical
+                               keyboards, foil keyboards for computers, switch contacts, low-voltage circuits, shield
+                               areas and heating elements.
+                               Since the performance of the carbon-conductive ink SD 2843 HAL largely depends on
+                               the condition of the contact module we recommend to carry out extensive trials on the
+                               cycle resistance under conditions of use.
+
+                                black, mat
+                                individual resistances can be adjusted by mixing with insulating paste SD 2803 HAL
+                                excellent definition
+                                high mechanical resistance
+                                excellent adhesion on many substrates
+                                very good adhesion on flexible base materials such as polyimide foils, thus also
+                                  suitable for ”static flex” circuits
+                                resistant to Hot-Air Levelling as well as in leaded and lead-free wave and reflow
+LP 141709 E-2 / 0207900e.002
+
+
+
+
+                                  soldering processes
+                                stable electrical resistance even after temperature and moisture stress
+Technical Report SD 2843 HAL
+
+The carbon-conductive ink SD 2843 HAL shows almost no change in resistance after soldering or
+Hot-Air levelling. If the interfaces between the substrate and copper have been printed over with
+carbon-conductive ink, the resistance may change under thermal stress such as multiple soldering,
+due to the difference in heat extension of copper and the base material.
+ Pre-trials are mandatory given the high number of flux agents available on the market.
+ Protect the carbon-conductive ink by overprinting it with a peelable solder resist (solder mask) if
+  the resistance of the carbon-conductive ink changes/the resistance is insufficient, or to avoid
+  residues of fluxing agents.
+Boards that have been coated with SD 2843 HAL may also be treated in chemical or electroplated
+surface finish processes such as CSN or ENiG provided they have been protected by a peelable
+solder mask.
+For further information on suitable solder masks please see our technical report on the peelable
+solder masks of the series SD 2950 and the Application Information sheet AI 2/29 ”Selection
+criteria and processing advice for our peelable solder resists (solder masks) of the series SD 2950”.
+Basically, a subsequent protective coating can be applied without interfering with the resistance. The
+ELPEGUARD® conformal coatings of the series SL 1301 ECO-FLZ and SL 1301 ECO-BA-FLZ,
+as well as the thick film coating ELPEGUARD® Twin-Cure® DSL 1600 E-FLZ/150 were tested as
+examples. Perform pre-trials when using other protective coating systems to ensure the
+compatibility.
+
+Characteristics
+                                                     SD 2843 HAL               SD 2803 HAL
+Colour/aspect                                          black, mat                colourless
+Solids content, ISO 3251
+(1 h, 125 °C [257 °F], 1 g weighed quantity,       75  2 % by weight        74  2 % by weight
+75 mm dish)
+Viscosity* at 20 °C [68 °F], ISO 3219             17 000  2 000 mPas       4 500  1 000 mPas
+Density at 20 °C [68 °F], ISO 2811-1                1.27  0.05 g/cm³         1.35  0.05 g/cm³
+
+      * measured with Haake RS 600, C 20/1°, D = 100 s-1, viscosity measuring unit supplied by:
+        Thermo Fisher Scientific, Dieselstraße 4, 76227 Karlsruhe, Germany
+        Phone +49 721 4094-444, Fax +49 721 4094-300, www.thermo.com
+Indices: SD = screen printing ink, HAL = Hot-Air Levelling
+
+
+Physical and mechanical properties
+            Property                           Test method                           Result
+                                   IPC-SM840E, 3.7.2                         20 s at 265 °C [509 °F]
+Solder bath resistance
+                                   IPC-TM-650, 2.6.8                        20 s at 288 °C [550.4 °F]
+                                   IPC-TM-650, 2.3.42
+                                   Isopropanol                                      passed
+Resistance to solvents
+                                   Isopropanol/water                                passed
+                                   Deionized water                                  passed
+Moisture and insulation            based on
+                                                                        change of layer resistance < 25 %
+resistance                         IPC-SM-840E, 3.9.1
+                                   DIN EN ISO 2409
+Cross hatch                        on copper                                          Gt 0
+                                   on FR 4                                            Gt 0
+
+2                                                                                             www.peters.de
+                                                                               Technical Report SD 2843 HAL
+
+
+Resistance in relation to curing conditions
+          Curing parameters                         Test method                            Result
+Circulating air curing                     measured over parallel copper
+                                                                                      approx. 20 /
+(45 min/130-140 °C [266-284 °F])                   contacts *
+Circulating air curing                     measured over parallel copper
+                                                                                      approx. 13 /
+(45 min/150 °C [302 °F])                           contacts *
+IR curing                                  measured over parallel copper
+                                                                                    approx. 13-20 /
+(at least 2 min/180 °C [356 °F])                   contacts *
+
+     * resistance of a square area (area: 1 cm², layer thickness: approx. 25 µm), for further details see
+       Report 148 “Carbon-conductive inks – fields of application and potential for rationalisation and cost
+       reduction”
+In case of higher temperatures and/or longer curing times changes in resistance may occur.
+Besides the physical evaporation of solvents and the chemical reaction of binding agents, the
+carbon particles go through a sintering process during IR curing.
+This temperature-induced sintering process is mainly responsible for the final resistance, thus a
+slightly differing resistance results depending upon the temperature profile and drying time. The
+reproducibility subject to the same processing and curing conditions is in the range of  2 Ohm/.
+                                                      R
+
+
+                                             carbon-conductive ink
+                                                 SD 2843 HAL
+
+
+                                                               1 cm
+
+
+                                                    1 cm
+
+                                                    copper
+
+            Fig. 1: Principle for measuring the resistance at a coating thickness of approx. 25 µm
+When measuring resistances, this measuring principle shows direct Ohm/square values and is
+generally valid for any square surface. However, the edge length should not fall below approx. 0.8
+cm, as otherwise influences from the screen printing process and/or contact resistances on the
+copper may falsify the measuring results considerably.
+
+Increase of resistance with insulating paste SD 2803 HAL
+Higher resistance values can be achieved by mixing the carbon-conductive ink SD 2843 HAL with
+insulating paste SD 2803 HAL. The diagram below shows the resistance values of difference
+mixing ratios as examples. Measuring has been made on a square surface of 1 cm² and a dry layer
+thickness of approx. 25 µm, measured on parallel copper contacts see fig. 1). Under temperature
+load, resistance values may change by up to 30 %.
+ For each batch, you should measure a series of resistance values under your production
+  conditions.
+
+
+
+
+www.peters.de                                                                                                  3
+Technical Report SD 2843 HAL
+
+
+
+
+               Fig. 2: Example of resistance series for mixing SD 2803 HAL and SD 2843 HAL
+
+
+Processing
+           Please read this technical report and the publications listed below carefully before using the
+           product. These sheets are enclosed with the first shipment of product or sample.
+           The corresponding material safety data sheet contains detailed information and characteristics
+           on safety precautions, environmental protection, transport, storage, handling and waste
+           disposal.
+           Technical information TI 15/3 ”Protective measures when using chemicals including lacquers,
+           casting compounds, thinners, cleaning agents“
+           Technical information TI 15/10 ”Processing of 2-pack systems“
+
+           Technical information TI 15/13 ”Precleaning in the pcb fabrication process“
+
+The carbon-conductive ink SD 2843 HAL is intended for printing on copper surfaces. An
+application of this carbon-conductive ink on other surfaces such as ENIG is critical.
+Contamination of the substrate leads to adhesion problems of the subsequently printed
+carbon-conductive ink. If this causes the carbon-conductive ink to peel off we recommend
+the pre-cleaning of the surface, e.g. by means of the cleaning agent CME 137 supplied by
+KIV PCB ProfiChem GmbH or KOH, e.g. stripper Ultrastrip 218 P available from Mac Dermid
+Electronics Solutions.
+Since the many different permutations make it impossible to evaluate the whole spectrum
+(parameters, reactions with materials used, chemical processes and machines) of processes and
+subsequent processes in all their variations, the parameters we recommend are to be viewed as
+guidelines only that were determined in laboratory conditions. We advise you to determine the
+exact process limitations within your production environment, in particular as regards compatibility
+with your specific follow-up processes, in order to ensure a stable fabrication process and products
+of the highest possible quality.
+The specified product data is based upon standard processing conditions/test conditions of the
+mentioned norms and must be verified observing suitable test conditions on processed printed
+circuit boards.
+Feel free to contact our application technology department (ATD) if you have any questions or for a
+consultation.
+4                                                                                             www.peters.de
+                                                                        Technical Report SD 2843 HAL
+
+Safety recommendations
+ When using chemicals, the common precautions should be carefully noted.
+ Ensure that extractor units of workplace ventilation arrangements are positioned at solvent
+  source level.
+ Please also pay attention to national guidelines or directives concerning operating safety such
+  as the German TRBS (technical rules for operating safety) and those concerning the handling of
+  flammable liquids as for example the German TRbF (technical rules for flammable liquids) or
+  European directives.
+
+Viscosity adjustment
+The carbon-conductive ink SD 2843 HAL is adjusted in such a manner that it can normally be
+processed in the condition supplied.
+                Stir before use, see also Item “Screen printing”
+
+ Please consider that owing to its high thixotropy the carbon-conductive ink SD 2843 HAL has to
+  be stirred prior to processing which reduces the viscosity considerably.
+If necessary, its viscosity can be reduced for processing purposes by adding the retarder VZ 5105.
+  DIL     to be thinned with retarder VZ 5105
+
+ Please note that by adding retarder VZ 5105 the solids content and thus the dry film thickness
+  are reduced. Low layer thicknesses show a higher resistance.
+ Therefore, perform pre-trials to determine the suitable quantity of retarder VZ 5105 to be added
+
+Auxiliary products recommended
+ Screen opener HP 5200
+  highly active spray for dissolving dried screen printing inks from the screen; silicone- and
+  grease-free, thus no surface defect/dewettings or smearing effects
+ Cleaning agent R 5899
+  for screen washing equipment, simply and safely to handle, no labelling in accordance with the
+  German dangerous goods regulations required, extremely high flash point (> 100 °C), low
+  vapour pressure < 0.1 hPa at 20 °C, thus not affected by the EU-VOC regulation 1999/13/CE
+ Cleaning agent R 5821
+  for screen washing equipment and the cleaning of work tools, high flash point (+32 °C [89.6 °F])
+ Cleaning agent R 5817
+  for the manual cleaning of screens and tools
+
+Mixing with insulating paste SD 2803 HAL
+                Stir before use
+
+ Mix the two products very thoroughly
+
+Screen printing
+ Ensure that the surface to be coated is clean, dry and grease-/oxide-free and that copper
+  surfaces preferably have an average surface roughness of 2 µm.
+
+                Stir before use
+
+www.peters.de                                                                                      5
+Technical Report SD 2843 HAL
+
+ Stir the carbon-conductive ink SD 2843 HAL thoroughly.
+Compared to conventional screen printing lacquers, the carbon-conductive ink SD 2843 HAL
+displays a considerably higher thixotropy. By means of thorough mixing, the thixotropy is reduced
+and processing viscosity is reached. During breaks and storage, the thixotropy increases again
+and the lacquer becomes thicker.
+ Thus, after breaks the carbon-conductive ink SD 2843 HAL may have to be stirred again.
+The optimum processing temperature is 18-23 °C [64.4 –73.4 °F], with a humidity in the range of
+50-70 % r. h.
+
+Printing parameters             Standard process                  Proven parameters from practical
+                                                                            experience
+Screen fabric                  polyester 43-80 to 55-65                150-250 mesh steel fabric,
+                         (acc. to old nomenclature 43 – 55 T                angled at 22.5°
+                      [lines/cm]) or corresponding steel fabric
+Screen tension        min. 25 N/cm or acc. to the recommendations given by the screen fabric manufacturer
+Squeegee                                   75-80 Shore-A hardness with angular cut
+Squeegee angle                                               75-80°
+Squeegee pressure                            as low as possible, to avoid smearing
+
+A very low stencil build-up or the use of thin steel stencils, a steep squeegee angle, a sharp
+squeegee edge and a low squeegee pressure contribute to a high resolution.
+ If possible, print control areas that enable a measurement of the resistance at parallel copper
+  conductors to determine resistances and for process control.
+The following specialities have to be observed when processing SD 2843 HAL:
+ When printing on thermally curing 2-pack solder resists, it should be ensured that the solder
+  resists have fully cured, otherwise changes in resistance may occur (see also Item "Curing in
+  circulating air ovens").
+ When overprinting carbon conductors/resistors with thermally curing inks (for instance 2-pack
+  solder resists) the resistance may increase (see also Item "Curing in circulating air ovens").
+  We suggest using our UV curing solder resists of the series SD 2368 UV or SD 2460/201 UV-
+  FLEX. The flexible solder resists (Index FLEX) are to be preferred for overprinting in cross-over
+  technology. A coating thickness of 25 - 30 µm should be applied in order to ensure perfect
+  insulation. These coating thicknesses are achieved by employing polyester fabrics of 54-64 to
+  68-55 (according to old nomenclature 54 T to 68 T [lines/cm]). (UV) curing should be effected
+  directly after printing in order to prevent the carbon-conductive ink from being penetrated by
+  liquid solder resist components.
+ When using the carbon-conductive ink SD 2843 HAL as migration protection, the silver
+  conductor must be covered completely by the carbon-conductive ink.
+
+Drying/Curing
+The carbon-conductive ink SD 2843 HAL may be cured either in circulating air ovens or in IR
+curing units.
+ Curing conditions (temperature and time) must be kept constant to ensure that a reproducible
+  final resistance/properties are achieved.
+ Do not cure the carbon-conductive ink SD 2843 HAL at the same time as other lacquer systems
+  in the curing oven, since this may delay their curing and/or increase the resistance (see also
+  Item ”Screen printing”).
+
+6                                                                                           www.peters.de
+                                                                                     Technical Report SD 2843 HAL
+
+Curing in circulating air ovens
+ Cure the carbon-conductive ink SD 2843 HAL in the circulating air oven for 45 min* at
+  130–150 °C [266–302 °F] (see also Item "Resistance in relation to curing conditions”).
+       * Object holding time: The curing time is measured from the point when the panels reach the curing
+            temperature.
+
+IR-curing
+ Dry the carbon-conductive ink SD 2843 HAL in IR curing units for at least
+  2 min at 180 °C [356 °F].
+ Determine the optimum temperature profile of the oven for curing the carbon-conductive ink
+  SD 2843 HAL in pre-trials.
+
+Standard packaging
+                              Packaging                    Selling unit
+SD 2843 HAL                10 tins of 0.25 kg                  2.5 kg
+SD 2803 HAL                 4 tins of 0.5 kg                    2 kg
+Partial lots of the selling unit available against surcharge.
+
+Shelf life and storage conditions
+Labels on containers show shelf life and storage conditions.
+
+                    Shelf life: In sealed original containers at least 6 months
+            +25°C
+
+                    Storage conditions: +5 °C to +25 °C [+41 °F to +77 °F]
+     +5°C
+
+
+
+For warehousing reasons, isolated cases may occur where the shelf life upon shipment is less than
+the shelf life indicated in this technical report. However, it is ensured that our products have at
+least two-thirds of their shelf life remaining when they leave our company. Labels on containers
+show shelf life and storage conditions.
+
+Disclaimer
+All descriptions and images of our goods and products contained in our technical literature,
+catalogues, flyers, circular letters, advertisements, price lists, websites, data sheets and brochures,
+and in particular the information given in this literature are non-binding unless expressly stated
+otherwise in the Agreement. This shall also include the property rights of third parties if applicable.
+The products are exclusively intended for the applications indicated in the corresponding technical
+data sheets. The advisory service does not exempt you from performing your own assessments, in
+particular as regards their suitability for the applications intended. The application, use and
+processing of our products and of the products manufactured by you based on the advice given by
+our Application Technology Department are beyond our control and thus entirely your
+responsibility. The sale of our products is effected in accordance with our current terms of sale and
+delivery.
+Any questions?
+We would be pleased to offer you advice and assistance in solving your problems. Samples and
+technical literature are available upon request.
+
+Lackwerke Peters GmbH & Co. KG                  Internet: www.peters.de    Phone +49 2152 2009-0
+Hooghe Weg 13, 47906 Kempen, Germany            E-Mail: peters@peters.de   Fax   +49 2152 2009-70
+
+
+www.peters.de                                                                                                  7
+

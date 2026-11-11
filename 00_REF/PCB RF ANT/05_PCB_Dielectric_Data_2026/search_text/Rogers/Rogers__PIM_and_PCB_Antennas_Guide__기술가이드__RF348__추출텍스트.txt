@@ -1,0 +1,164 @@
+PIM
+Passive Intermodulation (PIM) has been a concern in wireless
+transmission systems since the 1970s. PIM affects systems
+that use a single antenna for both transmitting and receiving
+signals on multiple carrier frequencies. Slight non-linearities
+in the input/output relationship in the system can generate
+additional signals that are in-band at very low power levels
+that can increase the noise-floor. Increased noise degrades
+system performance. Its effects are becoming more notice-
+                                                                  TESTING FOR TOMORROW
+                                                                  A number of factors can affect PIM in the transmitting side of
+                                                                  a base station. The presence of ferrous metals or other mag-
+                                                                  netic materials in the electromagnetic field near the antenna
+                                                                  can significantly increase PIM. Imperfect connections, such
+                                                                  as conductive particles or chipped plating on the mating
+                                                                  surfaces of conductors are a frequent cause.
+                                                                                                                                                                                                                      Rogers Corporation’s routine PIM test vehicle is a 305 mm (12”) 50 ohm transmission line on 0.76 mm (0.030”) dielectric material
+                                                                                                                                                                                                                      in the 1900 MHz band /using two 43 dBm (20 watt) tones. There are 4 circuits on a 12”x18” panel and each are rigidized with a
+                                                                                                                                                                                                                      laminated 1.5mm FR-4 stiffener in preparation for PIM testing. Reflected PIM (also called reverse) is measured with port 1 of the
+                                                                                                                                                                                                                      sample connected to the PIM analyzer and port 2 connected to a low PIM load. The connection is made to the board through
+                                                                                                                                                                                                                      0.141” solder-plated braided low PIM cables and soldered lightweight coax to microstrip connectors. The circuits are gently
+                                                                                                                                                                                                                      manipulated, with attention to reducing the stress on the solder connection until the lowest stable PIM value is achieved and re-
+                                                                                                                                                                                                                      corded. The recorded laminate value is the average of the recorded stable PIM value for each of the four PIM test vehicle circuits.
+
+able with each new generation of wireless communication           When designing and utilizing PCB antennas it is important to                                                                                        When trying to differentiate between “good” PIM (perhaps in the range of -153 dBc) and “great” PIM (perhaps < -160 dBc), vari-
+technologies. Modern cellular communications technologies         remember that PIM is not a basic laminate property. Just like                                                                                       ation in the test results itself is relatively high since it is not far from the noise floor. Thus, repeated testing is very important to
+such as 5G using FDD (Frequency Division Duplex) sys-             insertion loss, gain, directivity, and many other important                                                                                         developing an understanding of relative PIM.
+tems rely on advanced modulation techniques for reliable          electrical variables, PIM is a system property that depends
+voice, video, and high-speed data communications. Such            highly on the system design. However, through extensive                                                                                             The following example demonstrates the importance in circuit design and current density in measured PIM. The 50 ohm trans-
+systems depend on minimal interference and low levels of          research at Rogers Corporation, we have determined the                                                                                              mission line on 0.030” Rogers RO4534™ laminate typically exhibits PIM of about -157 dBc. A customer routinely builds filters on
+PIM to function at optimum levels. Minimizing PIM usually         laminate properties that can help contribute to low PIM                                                                                             this laminate that consistently exhibit PIM better than -160 dBc due to the difference in current density.
+involves evaluating the antennas in a cell site or other form     variables.
+of wireless base station. And low-PIM antennas start with                                                                                                                                                             MAKING A DIFFERENCE
+printed-circuit-board (PCB) laminates that can hold their         It is well known by antenna designers that minimizing                                                                                               These measurements and research studies are ongoing processes within different facilities at Rogers Corporation. Testing re-
+own against PIM, by means of carefully selected materials,        current density is key to achieving a low PIM system. On                                                                                            vealed a great deal about the PIM performance of the company’s PCB laminates, and led the way to the development of different
+processing, and advanced test techniques. With good design        the laminate side, Rogers determined that high conductor                                                                                            types of circuit laminates well suited for low-PIM antennas, including the RO4500™ series thermoset laminates (see Table 1) and
+practices and proper understanding, control, and monitor-         purity and low conductor profile, dielectric formulation and                                                                                        the IM series™ woven-glass, polytetrafluoroethylene (PTFE)/ceramic antenna circuit materials (see Table 2).
+ing of the PCB laminate properties, excellent system PIM can      physical properties, as well as control of the conductor –
+be achieved.                                                      dielectric interface can be controlled properly to minimize                                                                                          Laminate          Dielectric      Dissipation        Thermal           PIM       Laminate      Dielectric   Dissipation     Thermal        PIM
+                                                                                                                                                                                                                                         Constant          Factor         Conductivity       (dBc)                    Constant       Factor      Conductivity    (dBc)
+                                                                  PIM generation.                                                                                                                                                        @ 10 GHz,        @ 10 GHz          (W/m/K)                                   @ 10 GHz,     @ 10 GHz       (W/m/K)
+In a perfectly linear electrical system with multiple carrier                                                                                                                                                                              z-axis                                                                       z-axis
+frequencies, though “linear distortion” of power levels may       Rogers Corporation has regularly been testing PIM in-house                                                                                           RO4533™               3.30           0.0025            > 0.60         <-157      DiClad           2.20         0.0009         > 0.23      <-166
+occur, no additional frequencies can be generated. However,       since 2002 and developed a data and knowledge base un-                                                                                                                                                                                880™-IM
+                                                                                                                                                                                                                       RO4534™               3.40           0.0027            > 0.60         <-157
+when the system exhibits non-linearity such as an amplifier       paralleled in the laminate industry. Our first PIM testing unit,                                                                                                                                                                      AD-              2.55         0.0014         > 0.35      <-166
+approaching its saturation power level, additional frequen-                                                                                                                                                            RO4535™               3.50           0.0037            > 0.60         <-157      255C™-IM
+                                                                  a Summitek 1900b was installed in our R&D labs and used
+cies that are linear combinations of the input carrier frequen-   during development and periodic materials verification.                                                                                              RO4725G3™             2.55           0.0028            > 0.40         <-160      AD-              2.97         0.0021         > 0.46      <-166
+                                                                                                                                                                                                                                                                                                        300D™-IM
+cies may be generated. Let us consider two closely spaced         Early in 2015, we added two additional Kaelus iQA-1921c                                                                                              RO4730G3™             3.00           0.0029            > 0.40         <-160
+frequencies, f1 and f2, operating in the same band (Fig.          (Fig. 2) units at our manufacturing facilities producing anten-
+                                                                                                                                                                                                                      Table 1: Rogers Corporation’s thermoset antenna laminates                        Table 2: Rogers Corporation’s 30mil WG PTFE/ceramic antenna materials
+1). “Second order” IM products are 2f1, 2f2, and f2 – f1. All     na grade materials.
+second order products generated are at frequencies far from                                                                                                                                                           All materials were tested with a 12 in. long microstrip transmission line test
+                                                                                                                                                                                                                      circuit on 0.030-in. (1.5 mm) thick laminate                                     IM Series antenna -grade materials
+the operating band, as do all even-order IM products. Third                                                                         f1   f2
+                                                                                                                                              dBc                                                                                                                                                      include the AD250C™, AD255C™,
+order products include 3f1, 3f2, 2f1+f2, 2f1-f2, 2f2+f1, and                                                                                                 Fig 1. Passive intermodulation
+                                                                                                                                                             (PIM) is produced in passive circuits
+                                                                                                                                                                                                                      RO4500 series antenna-grade                                                      and AD300C™ DiClad 880-IM,
+2f2-f1. While some third order products are at frequencies far
+                                                                                                                                                             by the mixing of two or more                             laminates include the RO4533,                                                    AD255C-IM and AD300D-IM lam-
+from the operating band, others (2f1-f2 and 2f2-f1) can fall in                                                                                              carrier signals and their harmonics                      RO4534, and RO4535 circuit                                                       inates. The circuit materials are
+band, as shown in figure 1. Some of the higher odd-order IM
+                                                                                                              2f1-f2                          2f2-f1                                                                  materials. They are ceramic-                                                     formed of low-loss PTFE resin with
+products (5th, 7th, 9th, etc.) may also fall in-band, though at
+                                                                                                                                                                                                                      filled, glass-reinforced thermo-                                                 carefully selected fillers and fiber-
+power levels significantly lower than the 3rd order products.                           3f1-2f2                                                                     3f2-2f1                                           set resin materials with excel-                                                  glass reinforcement to achieve
+                                                                                                                                                                                                                      lent dimensional stability and                                                   excellent mechanical stability with
+PIM is intermodulation that is generated in a passive system.     4f1-3f2                                                                                                                   4f2-3f1
+                                                                                                                                                                                                                      uniform mechanical properties                                                    low loss and tight constant of a laminate
+The PIM power levels are generally very low compared to                                                                                                                                                                                                                                                can affect PIM by contributing to the physical dimensions of
+                                                                                          5th order product
+
+
+
+
+                                                                                                                                                                      5th order product
+                                                                    7th order product
+
+
+
+
+                                                                                                                3rd order product
+
+
+
+
+                                                                                                                                                3rd order product
+
+
+
+
+                                                                                                                                                                                               7th order product
+
+
+
+
+                                                                                                                                                                                                                      to help limit PIM.
+the transmitted signals that generate them. A PIM level of                                                                                                                                                                                                                                             transmission lines leading to higher current densities in dense-
+-153 dBc indicates a power level relative to the transmitted                                                                                                                                                          They are available with values of dielectric constant (Dk)                       ly spaced control of dielectric constant across the material. In
+signal of 5 x 10-16. However, since the power of the received                                                                                                                                                         ranging from 3.3 to 3.5 at 10 GHz in the z direction and low                     fact, the dielectric constant is controlled within ±0.05 for all
+signals is very low, PIM can increase the noise floor and lead                                                                                                                                                        loss, with loss tangent or dissipation factor (Df ) from 0.0025                  three materials, for Dk values ranging from 2.20 to 2.97 mea-
+to operational problems.                                                                                                                                                                  Figure 2. A high-perfor-    to 0.0037 at 10 GHz. All three circuit materials can handle                      sured in the z-direction at 10 GHz. As with the RO4500 Series
+                                                                                                                                                                                          mance test set with PIM     the heat of high power levels, with excellent thermal con-                       materials, the IM Series laminates feature good thermal con-
+                                                                                                                                                                                          analyzer provides mea-
+                                                                                                                                                                                                                      ductivity values. When tested with Rogers’ test fixture and                      ductivity and low coefficient of thermal expansion (CTE) in the
+                                                                                                                                                                                          surement results on the
+                                                                                                                                                                                          PIM levels from different   microstrip transmission-line test circuit, all three materials                   z axis for excellent stability when forming plated through holes
+                                                                                                                                                                                          circuit laminates.          exhibited low PIM levels of better than -157 dBc with two                        (PTHs). And, like the RO4500 Series materials, the IM Series
+                                                                                                                                                                                                                      +43-dBm test tones, when testing materials with 30mil thick                      laminates feature very low values of PIM, better than -166 dBc
+                                                                                                                                                                                                                      dielectric. When testing thicker materials of the same type, it                  when measured with the Rogers’ test fixture and test circuit.
+                                                                                                                                                                                                                      is typical to get improved PIM values.
+Both families of circuit materials contribute very little to an antenna’s PIM levels. But, by applying
+lessons learned from the extensive testing and research, Rogers’ has managed to exceed
+even this low level of PIM, with its RO4730G3 antenna-grade circuit materials.
+These thermoset laminates feature Dk values of 2.55 and 3.0, respectively, with
+loss tangents of 0.0028 and 0.0029, respectively. For antenna designers
+(or designers of passive components concerned with PIM), the PIM levels
+ when measured with the standard test circuit and measurement setup
+were exceedingly low: <-160 dBc, both for measurements on 0.030-in.
+(1.5 mm) thick laminates.
+
+These three materials exhibit almost unmeasurable PIM levels and,
+along with the RO4500 and IM Series laminates, provide excellent
+foundations for antennas and other passive circuits where PIM must
+be minimized. PIM can result from many factors in a circuit or system,
+and even the thickness and dielectric constant of a laminate can affect
+PIM by contributing to the physical dimensions of transmission lines
+leading to higher current densities in densely spaced circuits. However,
+with these circuit laminates as starting points, antenna designers can be
+assured of having an opportunity to create an antenna design with the
+lowest PIM possible.
+
+
+
+
+                                                                                      ®
+
+
+
+
+WORLD CLASS PERFORMANCE
+
+Rogers Corporation (NYSE:ROG) is a global leader in engineered materials to power, protect and connect our world. Rogers delivers
+innovative solutions to help our customers solve their toughest material challenges. Rogers’ advanced electronic and elastomeric
+materials are used in applications for EV/HEV, automotive safety and radar systems, mobile devices, renewable energy, wireless
+infrastructure, energy-efficient motor drives, industrial equipment and more. Headquartered in Chandler, Arizona, Rogers operates
+manufacturing facilities in the United States (U.S.), Asia and Europe, with sales offices worldwide.
+
+rogerscorp.com
+
+
+                 BECOME A MEMBER OF OUR TECHNOLOGY
+                 SUPPORT HUB TO ACCESS MORE INFORMATION
+                 Instructional Videos • Tools • Technical Articles & Much More
+                 www.rogerscorp.com/techub
+
+USA +1 480-961-1382 • EUROPE - BELGIUM +32 9 235 3611 • CHINA +86.21.62175599
+
+RO4534, AD Series, RO4500, AD250C, AD255C, AD300C, RO4533, RO4535, RO4725JXR, RO4730G3, the Rogers’ logo and Helping power, protect, connect our
+word are trademarks of Rogers Corporation or one of its subsidiaries. Publication # 92-603. Revised 10.2025
+

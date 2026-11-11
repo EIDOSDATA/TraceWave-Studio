@@ -1,0 +1,134 @@
+                                                                                           Technical Articles
+                                                                                           Fabrication Notes
+
+
+
+How to Avoid Creep Problems on Board
+Assemblies
+Introduction
+
+Microwave circuit board materials based on polytetrafluoroethylene (PTFE), whether reinforced with woven or non-woven
+glass fiber such as RT/duroid® 5870 and 5880 materials exhibit Z-axis thermal expansion somewhat greater than pure PTFE.
+The difference is caused by the constraint on expansion imposed by the reinforcing fiber oriented largely in the X-, Y- plane of
+the laminate. For stripline circuit devices the Z-axis expansion is considerably greater than the metal hardware used to clamp
+boards together or to attach surface launchers.
+
+Bonded assemblies avoid the problems of thermal mismatch between clamping hardware and the board. However, thermal
+mismatch can still hurt performance, for example, when a circle of screws attaches a surface coax-to stripline launcher.
+
+Torque values for the screws may be specific to maintain clamp force through the worst expected thermal excursion but not
+exceeding the elastic limit or plastic yield point of the hardware or board material. This may be adequate when the service
+temperature varies little. For more severe thermal excursions the creep characteristics of PTFE-based materials must be con-
+sidered.
+
+Thermoplastic materials exhibit time-related relaxation under stress known as creep. Elastic recovery after an applied force is
+removed is also time dependent. Both creep rate and elastic recovery generally increase with temperature.
+
+Effect on Attachment
+
+How does creep affect attaching hardware such as a surface launcher to a stripline board?
+
+The screws are torqued to a given value which represents a screw stress level. At constant temperature, creep will decrease
+the initial stress at a decreasing rate such that it never becomes zero and the assembly never loosens.
+
+However, if there are temperature excursions loosening can occur as follows: At a temperature maximum creep rate is maxi-
+mized, due to both the increased stress caused by the thermal mismatch of expansion coefficients, and the increased tem-
+perature. At lower temperatures the initial stress will decrease to zero and the assembly will loosen. The actual amount of
+compressive deformation of the board for loosening is very small and may take several temperature cycles, but loosening will
+eventually happen.
+
+Suggested Solutions
+
+To alleviate the problem of creep, lower the hardware stiffness and increase the range of elastic response. This will maintain
+tightness in spite of creep, and minimize stress increase at high temperatures. A simple way to implement this method is to
+provide longer screws fitted with springs, such as a stack of Belleville washers.
+
+Example
+
+Consider the following case:
+Board:
+  Stripline board assembly of RT/duroid 5880 microwave laminates with 0.125 in. ground plane spacing.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                            Page 1 of 3
+                                                                                                 Technical Articles
+
+
+Assembly:
+  A standard brass surface launcher with a 0.562 in. diameter flange and opposing backup plate held in place with eight #2-
+  56 brass screws.
+Assumption:
+  Service with thermal cycling from 23°C to 150°C.
+Interpolation of the RT/duroid 5880 microwave laminate data sheet thermal expansion values shows 5.0 mm/mm at 23°C and
+28.3 mm/m at 150°C; a total change of 32.5 mm/m. This amounts to an unimpeded change of 0.0041 in. for the total board
+thickness of 0.125 in. Since the fixture hardware is all brass with a coefficient of thermal expansion (CTE) of 20 ppm/K, the dif-
+ferential expansion will be 0.003845 in.
+
+The assembly could include four offset washers and eight series stacks of two stainless steel Belleville springs per screw, as
+shown in Figure 1. The Belleville springs have a standard outside diameter of 0.187 in. and a hole size of 0.093 in. with the
+height of each spring specified to change from 0.0130 in. to 0.0100 in. between unloaded and loaded at 6.75 lbs. force. If the
+screws are tightened to deflect 0.002 in. for each spring stack at 23°C, then the initial force of 18.0 lbs. will increase to 52.6 lbs,
+at 150°C.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                               Page 2 of 3
+                                                                                                            Technical Articles
+
+
+Stress in the dielectric in the 0.248 inch2 flange area will very from 73 to 212 psi. At these stress levels creep is negligible.
+The situation is quite different when the Belleville springs are not included. The differential expansion of 0.00385 in. is dis-
+tributed between the screws and the dielectric so that the compressive force on the dielectric equals the tensile force on the
+screws. If linear elastic force is assumed for first approximation, the force equals (modulus) X (area stressed) X (deflection) /
+(effective length).
+
+
+     Terms               Dielectric       Brass Screws
+ Modulus, kpsi               97           13000
+ Area stressed, in2          0.248        8X0.0045 = 0.036
+ Length, inch                0.1275       0.21
+ Deflection, inch            X            0.00385 - X
+
+
+Balancing the force on the dielectric against that on the brass screws, and assuming ideal linear response of the dielectric,
+yields an X value of 0.00355 in. and a stress of 2700 psi. This is much greater than the 212 psi with Belleville springs, and well
+above the point where permanent deformation will occur. The system can be expected to loosen at room temperature after
+exposure to 1500C for less than one day. The expected loosening is based upon experimental observations of creep deforma-
+tion. The effect of using stainless steel hardware would be even greater, since it has a CTE about 90% of brass and a modulus
+over twice that of brass.
+A high aspect ration test specimen, 0.5 in X 0.5 in. X 1.0 high, of a molded PTFE/glass composite with fiber type, amount and
+orientation similar to that of RT/duroid 5880 microwave laminate has been observed to permanently deform about 1% after
+24 hours at 2000 psi and 1500C, with most of the deformation occurring in the first hour.
+
+
+Conclusion
+Loosening of hardware attached to RT/duroid microwave circuit boards due to creep can be avoided through consideration
+of the factors involved and by designing to minimize creep deformation. The use of Belleville spring washers illustrated in the
+example above is one effective way in which the problem can be eliminated.
+
+
+
+
+The information in this fabrication guideline is intended to assist you in fabricating Rogers’ circuit materials. It is not intended to and does not cre-
+ate any warranties express or implied, including any warranty of merchantability or fitness for a particular purpose or that the results shown on this
+fabrication guideline will be achieved by a user for a particular purpose. The user should determine the suitability of Rogers’ circuit materials for
+each application.
+These commodities, technology or software are exported from the United States in accordance with the Export Administration regulations. Diversion con-
+trary to U.S. law prohibited.
+RT/duroid and the Rogers' logo are trademarks of Rogers Corporation or one of its subsidiaries.
+© 2023 Rogers Corporation, Printed in U.S.A
+Revised 1661 082423 Publication #92-533
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                                       Page 3 of 3
+

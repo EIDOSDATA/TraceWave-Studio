@@ -1,0 +1,438 @@
+                                     fastRise™ TC
+                                   Processing Guide
+                                               December 2024
+
+
+
+
+Disclaimer:
+This process guide is provided to users to assist in gaining an understanding of these materials and to quickly
+establish processes for PCB fabrication. It is assumed that the users will have a technical understanding and
+experience in the processes, equipment and standards related to PCB fabrication. The user will likely need to
+make adjustments to account for specific requirements and their production processes.
+The following process recommendations are based on testing and production processes at several circuit board facilities. Each facility
+will have different product designs, equipment, or methods that will require modifications to these recommendations. For example,
+drilling parameters, routing parameters, and artwork compensation can vary dependent on circuit board thickness, design, processes,
+and equipment.
+Adjustments should be based on the experience of each facility. Please contact your AGC representative if assistance is required.
+
+
+
+
+    TABLE OF CONTENTS
+    GENERAL INFORMATION                                                                                                         3
+    STORAGE                                                                                                                     4
+    HANDLING                                                                                                                    5
+    INNER LAYER PREPARATION                                                                                                     5
+    BAKING                                                                                                                      5
+    LAMINATION                                                                                                                  6
+             QUICK START                                                                                                        6
+             PADDING AND CONFORMANCE MATERIALS                                                                                  6
+             PRESSURE                                                                                                           7
+             TEMPERATURE                                                                                                        8
+             ADDITIONAL NOTES                                                                                                   9
+    DRILLING                                                                                                                  10
+             QUICK START                                                                                                       10
+             DRILL BITS                                                                                                        10
+             CHIP LOAD                                                                                                         10
+             CUTTING SPEED                                                                                                     10
+             DWELL TIME                                                                                                        10
+             PECK DRILLING                                                                                                     11
+             HIT COUNT                                                                                                         11
+             ENTRY / BACKER MATERIALS                                                                                          11
+             COOLANT ASSISTED DRILLING                                                                                         11
+             LASER DRILLING / MICROVIAS                                                                                        11
+    HOLE WALL PREPARATION                                                                                                     12
+    PLATING                                                                                                                   12
+    IMAGE, DEVELOP, ETCH, STRIP                                                                                               12
+    SOLDER MASK                                                                                                               13
+    SOLDER REFLOW                                                                                                             13
+    ROUTING / MILLING                                                                                                         13
+GENERAL INFORMATION
+fastRise™ TC
+fastRise™ TC prepreg is a variation on the basic fastRise™ thermoset resin system designed to achieve
+both high thermal conductivity and thin dielectric spacing. These thin dielectrics are accomplished in
+part by removing the supporting PTFE film. Removing the PTFE eliminates some processing challenges
+for the PCB fabricator and improves compatibility with other laminate systems. Additionally, the thin,
+pure resin layer is well suited to HDI build-up designs with multiple layers of laser drilled microvias.
+fastRise™ TC has a distinct advantage in this case owing to its coefficient of thermal expansion (CTE)
+being closely matched to copper. This, combined with its low elastic modulus, minimizes the stresses on
+the microvia connections during thermal cycling of the PCB.
+
+fastRise™ TC is available in both 1.2 mil and 2.5 mil thicknesses. Multiple plys can be used to achieve the
+desired finished thickness. The copper weight and circuit design on the adjacent layers will influence
+how much resin is needed. When calculating final pressed thicknesses to do an impedance calculation,
+please consult your technical service or technical sales manager for an approximate signal to ground
+distance.
+
+fastRise™ TC is delivered as a b-staged pure resin cast onto a release sheet. Layup procedures should
+specify that the release sheet must be removed as each layer of bondply is added.
+
+
+
+
+                        HDI build-up design using 4 layers of FastRise TC prepreg
+
+
+
+
+                                               -3-
+STORAGE
+Store the material in a cool dry area away from direct sunlight and high humidity, avoiding material
+contamination. fastRise™ TC is certified to meet all requirements as agreed upon between the user and
+supplier for a given shelf life as defined by the storage conditions below.
+
+
+Storage Conditions
+Condition 1 (i.e. refrigeration): <4.5°C (40°F)
+Condition 2 (i.e. room temp):    <23°C (73°F), Relative Humidity <50%
+
+
+When removing fastRise™ TC prepreg from refrigeration, it should be allowed to acclimate to room
+temperature in the sealed bag. This will reduce the chance of moisture condensation on the prepreg
+and will also provide a more consistent start temperature for the lamination process. Bags should be
+resealed when not in use.
+
+
+Shelf Life
+For fastRise™ TC, If material is stored under Condition 1 above, a shelf life of 180 days after receipt of
+shipment will apply. If material is stored under Condition 2 above, a shelf life of 90 days after receipt of
+shipment will apply. AGC will not ship fastRise™ TC material with less than 90 days of remaining shelf
+life. Packaging will default to indicate shelf life based on storage Condition 2 unless end user notifies
+AGC that Condition 1 applies. In the event that the prepreg expires, please contact your AGC technical
+representative for assistance to coordinate re-testing the expired prepreg.
+
+
+
+
+                                                  -4-
+HANDLING
+fastRise™ TC resin is cast onto a release sheet and packaged with a slip sheet between each piece. The
+release sheet should remain in place until just prior to layup. To avoid damaging the resin during
+removal, best practice is to attach a piece of tape to both the release sheet and the resin, then pull
+apart. The resin can withstand some flexing and folding without cracking, though to minimize any
+potential cracking it is advised to handle by at least 2 edges at all times. The surface of fastRise™ TC may
+be tacky, especially for freshly manufactured material. Although it is recommended to allow refrigerated
+prepregs to acclimate prior to opening a sealed bag, in some cases it may be advantageous to use the
+prepreg while it is cool* which will reduce the tackiness of the material and make handling easier. This
+recommendation is especially important when laying up two plies of prepreg on top of each other, as
+excessive tackiness can make it difficult to keep both pieces of material flat.
+*do not allow condensation to form on the prepreg
+
+
+
+INNER LAYER PREPARATION
+Laminate Preparation
+fastRise™ TC will bond well to most other materials. Inner-layers should be clean and dry before
+bonding. Oxide treatments of copper surfaces are recommended. As long as the uncured prepreg hasn’t
+been exposed to moisture or high humidity, vacuum desiccating of the material is not required.
+
+
+Flow Patterns / Thieving
+Solid copper borders, 0.5-1.0” wide, are recommended and have been observed to allow the use of
+much higher lamination pressures without any negative effects or squeeze out. See Lamination section
+for more information. For thieving, retaining as much copper in between parts is preferred. Interlocking
+patterns such as offset diamonds, honeycombs, or other patterns which inhibit resin flow channels are
+ideal. Interlocking “star burst” flow patterns or other patterns which may promote resin flow channel
+formation should be avoided.
+
+
+
+BAKING
+As a general recommendation, fastRise™ TC should be baked after exposure to moisture for 3 hours at
+80°C (175°F). This can be substituted with a 1 hour bake at 120°C (250°F). For simplicity in this
+processing guide, all bake steps will refer to the 120°C process even though they are both acceptable.
+The only heating of the bondply that should occur in its uncured state is a hot roll lamination (if
+required), do not bake the raw uncured sheets.
+
+
+
+
+                                                    -5-
+LAMINATION
+ Excessive resin flow should be avoided as it can cause flow channels or other undesirable conditions.
+
+
+Quick Start
+                                       fastRise TC                          fastRise TC High Temp
+
+ Cure Temp / Time
+                                      120 minutes at                               120 minutes at
+    (measured at
+                                       215°C (420°F)                               230°C (450°F)
+      bondline)
+                                                            400 – 500 psi
+      Pressure
+                                              (see Pressure section page 7 for details)
+
+    Heating Rate                                       2 – 3°C/min (3 – 5°F/min)
+
+ Temperature Hold                             30 – 40 minutes at 260°F recommended
+
+   Critical Range                                    80oC – 150oC (175°F – 300oF)
+
+    Cooling Rate                                     Less than 3°C/min (6°F/min)
+
+     Breakdown               Breakdown or transfer to cold press when bondline is below 90°C (200°F)
+
+       Vacuum                           Full vacuum is recommended through entire cycle
+
+   Vacuum Delay                    Hold vacuum 10-20 minutes before applying heat or pressure
+
+
+
+
+Padding and Conformance Materials
+Typical padding and conformance materials used for rigid, rigid-flex, or flexible circuit manufacturing can
+be used (pending temperature ratings of the materials).
+Press padding (outside separator plates) is recommended. Use of conformance materials such as AGC’s
+TacPad, PTFE skive film, clutch lamination, or others are often helpful to balance pressure variations
+induced from circuits. Clutch laminations are recommended for foil lamination applications and when
+bonding plated up copper layers to achieve consistent dielectric thicknesses.
+
+
+
+
+                                               -6-
+Pressure
+
+ Excessive pressure (500 psi +) should be avoided; it can distort circuit patterns, induce resin/filler
+ separation, create flow channels, and impact phase shift in signals.
+
+
+
+Full pressure should be achieved before the fastRise™ TC reaches 80oC (175oF). fastRise™ resin flow has
+been shown to be directly proportional to lamination pressure and higher pressures can increase resin
+flow when required.
+HDI build-up designs and any foil lamination should be pressed at high pressure – 400-500 psi – to
+ensure good fill of the circuitry and uniform dielectric thickness. Other designs using fastRise TC will be
+able to achieve good results using lower pressures. Standard cap-core constructions with ½ oz or 1 oz
+copper should use a starting point of 200psi. Features such as cavities may necessitate a reduction in
+pressure down to 100psi.
+Due to the absence of PTFE film in fastRise™ TC, this product is especially prone to high flow rates at
+higher pressures. AGC has observed that a solid copper border around the inner layers, combined with
+the appropriate flow pattern, can prevent squeeze out and allow the application of pressures from 100
+psi to as high as 500 psi. Due to this observation AGC highly recommends a solid copper border for all
+inner layer artwork to achieve higher lamination pressures. Approximate % flow vs. pressure for typical
+unsupported fastRise™ resin products are charted below (per IPC standard flow test procedures).
+
+
+
+
+                                                -7-
+Temperature
+
+Resin Flow Window / Critical Range
+fastRise™ resins gel and flow between 80°C - 150°C (175°F – 300°F) and reaches their lowest viscosity
+between 100°C – 125°C (212°F – 260°F).
+
+
+Heating Rate
+A cold start of the press is desirable. Typical fastRise™ heating rates are 2°C/min – 3°C/min (3°F/min –
+5°F/min). In difficult to fill applications such as heavy copper or high layer count boards, a slow heating
+rate should be used (2°F/min – 3°F/min). It is also recommended that low heating rates be used if the
+process is to accommodate tight registration requirements or high layer counts. Past studies have
+shown that lower heating rates (i.e. <3°F/min) can provide substantial improvements in registration
+repeatability.
+
+
+Curing
+fastRise™ TC resins cure at the same temperature as standard fastRise™ but benefit from a longer time
+at temperature. It is recommended to hold the bondline at 230°C (450°F) for a minimum of 2 hours. If
+the conformance materials and laminates can handle higher temperatures, AGC has seen improved
+adhesion results with a cure temperature of 220°C (430°F) for 2 hours.
+
+
+Cooling
+A slow cool (<6°F/min) is necessary to avoid any issues associated with delamination. The hot press
+should be cooled below 90oC (200°F) before transferring to a cold press. In situations where
+mismatched CTE’s may induce delamination or where warping may be an issue, slower cooling rates
+(<3°F/min) may provide better results.
+
+
+
+
+                                                -8-
+Additional Notes
+
+Multiple Ply Constructions
+Resin flow can increase when multiple plies of fastRise™ TC are used against each other. If higher-flow is
+not desired, pressure should be reduced to prevent excess resin flow, resin separation, or formation of
+flow channels.
+
+
+
+Foil Lamination
+Foil laminations may be achieved with fastRise™ TC part numbers provided squeeze out and flow are
+minimized with the use of a solid copper border. In this case, the highest recommended pressures of
+500psi may be advantageous to prevent pooling of resin in the center of the panel. Proper conformance
+materials are critical. Contact an AGC Technical Representative for process and design considerations
+that must be considered before using fastRise™ TC in a foil lamination construction.
+
+
+
+
+                                               -9-
+DRILLING
+    In most cases, the laminate cores will dictate drilling parameters. The following information is
+    provided as a general suggested starting point where fastRise TC is combined with typical low-
+    loss PTFE-based laminates.
+
+
+
+Quick Start
+                                                   Imperial units                                     SI units
+         Entry Material                     Phenolic (0.010” – 0.024”)                   Phenolic (0.25mm - 0.6mm)
+         Backer Material                               Rigid Phenolic, Slickback, or comparable
+ Cutting Speed (surface speed)                        100 SFM                                       30.5 MPM
+            Chip Load                                 0.0010 in.                                      25.4 µm
+                                                                          0-1000 ms
+              Dwell
+                                          (increase dwell time as speed and chip load deviate from above recommendations)
+
+
+Drill Bits
+Sharp drill bits are critical to any PTFE drilling; new drill bits should always be used. Undercut drill bits
+are recommended, but past studies have shown that some drill bit brands may obtain better results
+using their standard drill bits.
+
+
+
+Chip Load
+A chip load of 1.0 mil (25.4 µm) is common with fastRise™ combined with AGC’s PTFE-based laminates.
+Increasing the chip load to 1.25 mils (31.8 µm) may provide acceptable hole quality and improved
+productivity.
+
+
+
+Cutting Speed
+Drill speeds of 100 SFM (30.5 m/min) or less will usually eliminate drill smear if it is present. The slower
+speeds allow generated heat to dissipate before smearing PTFE. Drill speed can be increased due to
+equipment limitations, but added dwell times may become more important.
+
+
+
+
+                                                 - 10 -
+Dwell Time
+If smear is present and ideal cutting speeds cannot be obtained, a 250ms dwell is recommended for
+initial process setup in order to cool the drill bit between holes. Past AGC studies have shown that hole-
+wall quality in PTFE materials may improve as dwell times are increased to as much as 1000ms.
+
+
+
+Peck Drilling
+Peck drilling should be avoided where possible; it has been shown to increase drill bit wear as well as
+increase process time. Peck drilling may be required in some situations (e.g. bird nesting, hole plugging,
+chip extraction on thick panels, breaking thin drill bits, etc.).
+If traditional peck drilling is not used, hole-wall quality in PTFE laminates may be improved with the use
+of a “clean” peck where the peck depth is set to equal that of the phenolic entry. In this, the entry
+material will effectively clean the drill bit, retract to clear phenolic debris and cool, and then reenter to
+drill the hole.
+
+
+
+Hit Count
+Hit counts can vary widely and are usually determined by the laminates used, panel thickness, and hole
+size. Hit counts of 100-300 hits per bit are typical for ceramic/PTFE constructions. When paired with
+unreinforced and ceramic free laminates, little drill wear will take place and hit counts of 700-1000 are
+not unreasonable. When developing the process, the drill point edges should be periodically inspected
+to assess the level of drill wear and hit count should be adjusted accordingly.
+
+
+
+Entry / Backer Materials
+Rigid entry and exit material is usually beneficial in order to remove any debris or deposits from the drill
+bit. 10-25 mil phenolic entry is acceptable for most applications and 30-50 mil phenolic entry can be
+used if pressure foot clearance is substantial.
+Like the entry, rigid backer is usually necessary to prevent burring and aid in obtaining good hole-wall
+quality. Thick phenolic is typical and lubricated rigid backers such as SlickBack® from L.C.O.A.® have also
+been successful.
+
+
+
+Coolant Assisted Drilling
+Some drilling equipment is now equipped to apply coolant/lubricant to the drill bit during the drilling
+process. This process has been shown to provide substantial benefit to the drilling process and should
+be used if available. If available, expect increased chip loads, cutting speed, and improved hit counts.
+
+
+
+
+                                                - 11 -
+Laser Drilling / MicroVias
+Microvias are best formed using a combination UV/CO2 laser. An initial UV pass to ablate the surface
+copper. A CO2 pass is recommended for formation of the actual microvia in the fastRise TC, followed by
+a final UV pass to clean the capture pad. Capture pad cleaning is critical to forming a solid microvia
+connection, and AGC recommends an aggressive UV laser clean as opposed to a wet chemistry-based
+cleaning process.
+
+
+
+HOLE WALL PREPARATION
+fastRise™ TC does not contain PTFE and therefore does not require an activation step prior to plating.
+The thermoset adhesive resins can be de-smeared / etched back as directed below.
+
+
+
+Desmear
+Plasma
+If panels have been exposed to moisture, bake the boards at 120°C (250°F) for 1 hour to drive out
+moisture. Standard FR-4 CF4/O2 desmear processes should then be used. The CF4 cycle time is typically
+half that of standard FR-4 times because the fastRise™ TC resin system tends to etch back quickly.
+
+Permanganate
+A permanganate desmear IS NOT RECOMMENDED if the process contains glass etch chemistry. This is
+due to the high ceramic content of the fastRise™ TC resin system and will result in excessive etchback. If
+glass etch chemistries must be used due to other materials in the stack up, consult with your AGC
+technical service representative for specific process recommendations.
+Standard permanganate and glass etch baths as a part of the electroless copper process are OK.
+However, note that this alone will not sufficiently desmear the fastRise™ TC resin. A plasma process as
+described above is required for good hole wall quality.
+
+
+
+PLATING
+fastRise™ TC will readily accept any standard electroless copper or direct metallization plating. It is
+compatible with all copper plating and final finish chemistries.
+
+
+
+IMAGE, DEVELOP, ETCH, STRIP
+When copper surface preparation is required, chemical cleaning processes are preferred (e.g.
+microetch); mechanical scrubbing (e.g. pumice scrub) should be avoided due to possible mechanical
+
+
+
+                                               - 12 -
+damage or distortion. Although fastRise™ TC should be resistant to this type of damage, low loss
+materials typically used in conjunction with fastRise™ TC may not be. Otherwise, standard processing
+should be used.
+
+
+
+SOLDER MASK
+Panels should be clean and dry. No other special treatment is required.
+
+
+
+
+SOLDER REFLOW
+A pre-bake cycle of 2 – 3 hours at 120oC [250oF] is recommended prior to thermal stressing. Longer pre-
+heat times and reduced cycle times may be advantageous depending on design and processes.
+
+
+
+
+ROUTING / MILLING
+fastRise™ TC can be successfully machined using standard router bits or end mills. Rigid phenolic entry
+and a rigid backer should be used. In some cases, adding paper (white paper or craft paper) between the
+phenolic and the part allows better conformance to surface topography (e.g. circuits, soldermask, etc.)
+and may reduce burring. For tight tolerances or superior edge quality, a “rough cut” placed 0.005”-
+0.010” off the part edge may be run prior to the “finish” cut at the nominal part edge.
+
+
+
+
+                                             - 13 -
+

@@ -1,0 +1,36 @@
+{
+  "renamed_search_text_files": 1115,
+  "company_directories": 24,
+  "maximum_absolute_path_length": 244,
+  "text_bytes_sha256_unchanged": true,
+  "files_merged_or_deleted": 0,
+  "original_document_bytes_sha256_unchanged": true,
+  "observation_index_and_partition_hashes_unchanged": true,
+  "current_metadata_changes": [
+    {
+      "path": "catalog/sources.json",
+      "replacements": 967
+    },
+    {
+      "path": "catalog/sources.csv",
+      "replacements": 967
+    },
+    {
+      "path": "catalog/pdf_search_index.json",
+      "replacements": 967
+    },
+    {
+      "path": "catalog/archive_members.json",
+      "replacements": 308
+    },
+    {
+      "path": "catalog/archive_members.csv",
+      "replacements": 308
+    },
+    {
+      "path": "START_HERE_ko.html",
+      "replacements": 967
+    }
+  ],
+  "original_text_capture_paths_preserved": true
+}

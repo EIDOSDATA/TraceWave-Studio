@@ -1,0 +1,671 @@
+{
+  "source_url": "https://jlcpcb.com/api/jlcTools/impedance/selectPageImpedanceDefaultTemplate",
+  "public_ui_url": "https://jlcpcb.com/pcb-impedance-calculator",
+  "access_date": "2026-11-11",
+  "request_method": "POST",
+  "notes": "Anonymous public calculator responses; all pages for ordinary PCB boardType=1 and HDI boardType=3, usePurpose=1; public UI offers both types. No customer/login data requested.",
+  "responses": [
+    {
+      "request_body": {
+        "pageNum": 1,
+        "pageSize": 100,
+        "boardType": 1,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_1_page_001.json",
+      "total": 1519,
+      "records": 100,
+      "bytes": 5134914,
+      "sha256": "91173edae5be7456241956b8d0d8850a023dc3f8d65e45210713137e17df3945",
+      "status": "downloaded",
+      "original_response_sha256": "05f6dac59809b58ba70b26bb4d33ce42fd958eb28d0f09a35c3743edeb6f94fa",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 2,
+        "pageSize": 100,
+        "boardType": 1,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_1_page_002.json",
+      "total": 1519,
+      "records": 100,
+      "bytes": 3545516,
+      "sha256": "28b12d507a97203c3d394705a492635745f86151ea899ec53ef860c6985aa59f",
+      "status": "downloaded",
+      "original_response_sha256": "6106d8eb5ecff88cd523cbcd2f5fa9420255d2c60e0e3f5f4eff72c8b88901bc",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 3,
+        "pageSize": 100,
+        "boardType": 1,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_1_page_003.json",
+      "total": 1519,
+      "records": 100,
+      "bytes": 1949524,
+      "sha256": "f787c661424ac1e08c5966921369bff2ec9b7498d66c1a8dacbda6b0115c3668",
+      "status": "downloaded",
+      "original_response_sha256": "ebc8b754ad3160c9e5af06792214678e6c643f26cac5edd79cbacbd76877e413",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 4,
+        "pageSize": 100,
+        "boardType": 1,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_1_page_004.json",
+      "total": 1519,
+      "records": 100,
+      "bytes": 2060538,
+      "sha256": "b47233383359466b9be0b57cf41e41e22106ed261a47889550ba41b7cb9afdf7",
+      "status": "downloaded",
+      "original_response_sha256": "b4f06094854aa9babf89f5ccb8bd1c388b8e5bc5ac5b735b3ffb852b7e27bd60",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 5,
+        "pageSize": 100,
+        "boardType": 1,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_1_page_005.json",
+      "total": 1519,
+      "records": 100,
+      "bytes": 2221330,
+      "sha256": "5fac694c30ef23b1c2df2e84822904d64b6298fe47b09c9e9cd2dfd7100d76d2",
+      "status": "downloaded",
+      "original_response_sha256": "9bcb8176cdc628e41b730b361baab422f0d8528b5b7eb55e3c90c144473b25b5",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 6,
+        "pageSize": 100,
+        "boardType": 1,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_1_page_006.json",
+      "total": 1519,
+      "records": 100,
+      "bytes": 2189606,
+      "sha256": "9d9ff1a6ab52b8df8b219a81da36ed76d855927a5d650efcda32a3f0c9f47c0d",
+      "status": "downloaded",
+      "original_response_sha256": "f731f9b06d64f5a5ecf6e1fc550145e65eeb96a2082d54f3eb377e7e0f465412",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 7,
+        "pageSize": 100,
+        "boardType": 1,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_1_page_007.json",
+      "total": 1519,
+      "records": 100,
+      "bytes": 2834035,
+      "sha256": "fc2b1e50e9924a834e78983194532d99a2b9949c417af3dab7144723eeb1ccbb",
+      "status": "downloaded",
+      "original_response_sha256": "31bfe766df335e1c3c923beba1914c75923affa2d5f8d9baf9773455868a3f3a",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 8,
+        "pageSize": 100,
+        "boardType": 1,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_1_page_008.json",
+      "total": 1519,
+      "records": 100,
+      "bytes": 3124555,
+      "sha256": "b08b919865ece1692bae7ab8e2d47ee11650b27f366805b0c82915341f76f392",
+      "status": "downloaded",
+      "original_response_sha256": "837d06b5812e719360af5e82570f1287dd8a3325a6a4bd4a1d63b6b01ecf8627",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 9,
+        "pageSize": 100,
+        "boardType": 1,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_1_page_009.json",
+      "total": 1519,
+      "records": 100,
+      "bytes": 2248142,
+      "sha256": "f026a5713332902d1c5a5e0318757e109c25765ebcc5d07695dc70af4846107d",
+      "status": "downloaded",
+      "original_response_sha256": "49c4a842b8246c882047fb5d6259c056cfe9f70515f3715db9b9e1974d40933a",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 10,
+        "pageSize": 100,
+        "boardType": 1,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_1_page_010.json",
+      "total": 1519,
+      "records": 100,
+      "bytes": 2667717,
+      "sha256": "df80537df2e3e1c22efd6a219e880db60066f7f3f08e315ccdefe798f61984d4",
+      "status": "downloaded",
+      "original_response_sha256": "7cae513cfdad8194b6107d5483155bc78b345190f9337e0f19e4c3ffed71525e",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 11,
+        "pageSize": 100,
+        "boardType": 1,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_1_page_011.json",
+      "total": 1519,
+      "records": 100,
+      "bytes": 4231279,
+      "sha256": "4b4e609f1d440d0d57d4ec7347131c731d32f72e4b3d395e0171ff335c224430",
+      "status": "downloaded",
+      "original_response_sha256": "a4c52eabf53689910479bd9856033f1dfebfd275422c99407d5ac80a10c6ca2c",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 12,
+        "pageSize": 100,
+        "boardType": 1,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_1_page_012.json",
+      "total": 1519,
+      "records": 100,
+      "bytes": 3002167,
+      "sha256": "74a20626c8cb724aa1b96af18d1ee374d3334941d70b8467fcb1f55e01e53826",
+      "status": "downloaded",
+      "original_response_sha256": "0aac1e084fb16095271415aba15a4293a8cd03b526ec53e95715368e17b18dc7",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 13,
+        "pageSize": 100,
+        "boardType": 1,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_1_page_013.json",
+      "total": 1519,
+      "records": 100,
+      "bytes": 2751648,
+      "sha256": "c0390f4bf86d5cb58bfc141722001533a4fe5a778b6bedda793f62a53f49adf0",
+      "status": "downloaded",
+      "original_response_sha256": "ad4fc6fe430a0f1aaf72d7661c11522a5a5100b0f430881e748cf8e1bc66689d",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 14,
+        "pageSize": 100,
+        "boardType": 1,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_1_page_014.json",
+      "total": 1519,
+      "records": 100,
+      "bytes": 5085722,
+      "sha256": "0326e75fbf7aa2b4c1e75d25186bd3f5d8f6773260259631d375a5a8b617768c",
+      "status": "downloaded",
+      "original_response_sha256": "25e8cb32203775bacf965c3ca5e0aed9eab555d894ba8bfb202ef8fc2cc60703",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 15,
+        "pageSize": 100,
+        "boardType": 1,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_1_page_015.json",
+      "total": 1519,
+      "records": 100,
+      "bytes": 5135665,
+      "sha256": "ef0ca4bf350af1957638afa9a257478939897167ffc56840e1c36ce89da54946",
+      "status": "downloaded",
+      "original_response_sha256": "02f660d468db72a46660a61de99e19ce3d9878bbe103c77be54051045aa1e016",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 16,
+        "pageSize": 100,
+        "boardType": 1,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_1_page_016.json",
+      "total": 1519,
+      "records": 19,
+      "bytes": 1219680,
+      "sha256": "1222d8f6abaa46a425911815ac5d6e0821e76573dc4eec33914934ba310cd9c9",
+      "status": "downloaded",
+      "original_response_sha256": "a008b676f531f1833a4e509898b826e59fa81ee26b02d8d28657b2d763f8ca83",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 1,
+        "pageSize": 100,
+        "boardType": 3,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_3_page_001.json",
+      "total": 1407,
+      "records": 100,
+      "bytes": 3517464,
+      "sha256": "704ebee86542ada59cc95a3643dcebe753df887fd4756d8ea5aa456b98482250",
+      "status": "downloaded",
+      "original_response_sha256": "0c35a7536f94fe8bee9977e432ba00d70e39f7cce6c0dd4a0923509ed3220334",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 2,
+        "pageSize": 100,
+        "boardType": 3,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_3_page_002.json",
+      "total": 1407,
+      "records": 100,
+      "bytes": 2061703,
+      "sha256": "3e2aecd6af9eba86d8f46ee12a9a548163d499b05415c28047147304a3253362",
+      "status": "downloaded",
+      "original_response_sha256": "89363128e8aec218bba6ac4a4c1fdd8e6c48cc9c5d431e69c29c3d4a0a752ef0",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 3,
+        "pageSize": 100,
+        "boardType": 3,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_3_page_003.json",
+      "total": 1407,
+      "records": 100,
+      "bytes": 2120160,
+      "sha256": "95554d9110641198d350b321af7b8ee379a47cf5a44eae53872cd66bb9300403",
+      "status": "downloaded",
+      "original_response_sha256": "403213055a22221d32747227db28e19b450bb6a337480134dccaaa29639b2b9f",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 4,
+        "pageSize": 100,
+        "boardType": 3,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_3_page_004.json",
+      "total": 1407,
+      "records": 100,
+      "bytes": 2323718,
+      "sha256": "6efa061f5d5a05025eefb6297342f6d653688529e4704cd409b48dd84012b525",
+      "status": "downloaded",
+      "original_response_sha256": "1097eaaa6cb5395f4b732400216b01acdac25aad99201aed791accdab5774ed1",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 5,
+        "pageSize": 100,
+        "boardType": 3,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_3_page_005.json",
+      "total": 1407,
+      "records": 100,
+      "bytes": 2225320,
+      "sha256": "8abcd197bec9c6ba85c41f6210e36f96fb55dddcba9729682070529a30d0af22",
+      "status": "downloaded",
+      "original_response_sha256": "35b7d257dd4723aad3839fee96263c6a235bfc3a53619a470b4335c60eba4c40",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 6,
+        "pageSize": 100,
+        "boardType": 3,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_3_page_006.json",
+      "total": 1407,
+      "records": 100,
+      "bytes": 2386970,
+      "sha256": "95056dbfde0e2191b9d5d689a42321a1de4a186a3048a530d36b689fa6e02360",
+      "status": "downloaded",
+      "original_response_sha256": "fcc77d3544b62fc8921200402689bd6f82eca6f527d2863703e4beadcfeb1cee",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 7,
+        "pageSize": 100,
+        "boardType": 3,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_3_page_007.json",
+      "total": 1407,
+      "records": 100,
+      "bytes": 2386880,
+      "sha256": "0d9dea6e9bacd4f19cbb6bbc6c07132d37b3253ed4f05fadf051d14b266b18bc",
+      "status": "downloaded",
+      "original_response_sha256": "fdbaea15de7200c860171dd948e213d1186f059a85cd4a514ab1d8c95fd9ea78",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 8,
+        "pageSize": 100,
+        "boardType": 3,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_3_page_008.json",
+      "total": 1407,
+      "records": 100,
+      "bytes": 2347815,
+      "sha256": "29392f68883ab59df05d75776a4c60c60259fd577c32d1c901ef6a3c0a8fd2af",
+      "status": "downloaded",
+      "original_response_sha256": "ede685c345d008f033956ec00cd4231acca08da5ade56886cbff234ec0aed9f4",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 9,
+        "pageSize": 100,
+        "boardType": 3,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_3_page_009.json",
+      "total": 1407,
+      "records": 100,
+      "bytes": 2151334,
+      "sha256": "f3f998202ac0c05508fd3bed9d5be2747c19257cbeeb5258d9227994a43d15e4",
+      "status": "downloaded",
+      "original_response_sha256": "324172b1d102780ca666f08377118b725c50d2fe21386f16bf3db750f6e6596e",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 10,
+        "pageSize": 100,
+        "boardType": 3,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_3_page_010.json",
+      "total": 1407,
+      "records": 100,
+      "bytes": 2338365,
+      "sha256": "8cdb96334999e2c8abbaed81df817029dc25227a4f39f66d3b5eb18a6c62f89d",
+      "status": "downloaded",
+      "original_response_sha256": "482037438d5d43e77c1c7a3290ef5fa394f749b2b5efcbbd5990c8ef0138bdaa",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 11,
+        "pageSize": 100,
+        "boardType": 3,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_3_page_011.json",
+      "total": 1407,
+      "records": 100,
+      "bytes": 2667275,
+      "sha256": "2ed93017f0b74eba37380568dc2a5326b031f312e9a74ada6223a94b2ab1eb86",
+      "status": "downloaded",
+      "original_response_sha256": "870428238779a110fbfcf16f476a5bbc4fe145133593692149d146cdee5c8151",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 12,
+        "pageSize": 100,
+        "boardType": 3,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_3_page_012.json",
+      "total": 1407,
+      "records": 100,
+      "bytes": 3332262,
+      "sha256": "3bc731ba7dfebe1110ac18c1bdd6390bf9b1547dffd4bffbc4eb150d893af520",
+      "status": "downloaded",
+      "original_response_sha256": "1879bb4d94d281b1f4f50c5b380ee2b59b05a92400fbae336065c8acd18abd45",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 13,
+        "pageSize": 100,
+        "boardType": 3,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_3_page_013.json",
+      "total": 1407,
+      "records": 100,
+      "bytes": 2860587,
+      "sha256": "b7dcf75220f2f4858c0697c27c8d1c18bbd30fb3d2e38c33c8e234628c72a164",
+      "status": "downloaded",
+      "original_response_sha256": "3e2a0a0ef333eaa58f09a5f212f95b02f6d5c415d42afed8c2f71b55d63a75d2",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 14,
+        "pageSize": 100,
+        "boardType": 3,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_3_page_014.json",
+      "total": 1407,
+      "records": 100,
+      "bytes": 2953367,
+      "sha256": "a6953a12e3088aefbb06837927d2d36697623dc57e1bbef281e7affbc09519f3",
+      "status": "downloaded",
+      "original_response_sha256": "f9e706f722a8de07298289ac21d30ac59315406192fbaa5fde3f939bc33c149f",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    },
+    {
+      "request_body": {
+        "pageNum": 15,
+        "pageSize": 100,
+        "boardType": 3,
+        "usePurpose": 1
+      },
+      "local_path": "raw/FAB/JLC_public_API/board_type_3_page_015.json",
+      "total": 1407,
+      "records": 7,
+      "bytes": 239604,
+      "sha256": "c50e61d9f911c031108eab30f038179c528720ffbf053b535906c3f7256d0655",
+      "status": "downloaded",
+      "original_response_sha256": "5207a7786dd831437592c6e8ce838845fb51d38a052b1c6a206add825065fbe5",
+      "engineering_snapshot_redacted_fields": [
+        "createUserId",
+        "createUserName",
+        "updateUserId",
+        "updateUserName"
+      ]
+    }
+  ],
+  "engineering_snapshot_note": "Technical API fields retained; createUserId/createUserName/updateUserId/updateUserName removed because unrelated to electrical data. Original-response and engineering-snapshot hashes are recorded separately.",
+  "counts": {
+    "board_type_1_api_templates": 1519,
+    "board_type_1_named_templates": 1222,
+    "board_type_1_dielectric_numeric_rows": 16933,
+    "board_type_1_custom_or_unconstrained_templates": 297,
+    "board_type_3_api_templates": 1407,
+    "board_type_3_named_templates": 1244,
+    "board_type_3_dielectric_numeric_rows": 9343,
+    "board_type_3_custom_or_unconstrained_templates": 163
+  }
+}

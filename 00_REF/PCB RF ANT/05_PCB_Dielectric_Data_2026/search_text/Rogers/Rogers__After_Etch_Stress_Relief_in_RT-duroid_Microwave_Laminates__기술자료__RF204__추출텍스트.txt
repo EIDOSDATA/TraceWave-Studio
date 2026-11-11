@@ -1,0 +1,118 @@
+                                                                                                 Fabrication
+                                                                                                 Technical Articles
+                                                                                                             Notes
+
+
+After Etch Stress Relief in RT/duroid®
+High Frequency Laminates
+As is typical of all polytetrafluoroethylene (PTFE) based circuit board materials in which the cop­per cladding is bonded to the
+dielectric at elevated temperatures, RT/duroid® laminates show some degree of dimensional shrinkage after copper is etched
+off. When the laminate is cooled to room temperatures after the copper has been bonded to the dielectric, the copper and
+dielectric are at dif­ferent dimensions than they would be if not bonded together due to differences in the thermal coef      ­fi cients
+of expansion (CTE’s). The dielectric is trying to shrink but is restrained by the copper foil. Similarly the copper is trying to
+grow, but is restrained by the dielectric.
+
+After lamination, 50% of the PTFE in the dielec­tric is in a crystalline phase, and 50% in the amorphous phase. The amorphous
+phase has both viscous and elastic properties; it is “viscoelastic.” The elastic response to any applied stress is immediate; it will
+deform immediately. However the viscous response to the applied stress is time related; it will slowly deform over a period of
+time.
+
+When a portion of the copper is etched away to generate the circuit, the internal stresses become unbalanced since there is
+now less copper trying to stretch the dielectric. There is an immediate elastic response by the crystalline portion of the PTFE,
+and the elastic response of the amorphous phase which results in a shrink­ing of the laminate. The viscous response of the
+amorphous phase results in a continued slow shrinking over time until a balance is reached. The shrinking due to the viscous
+response can take days.
+
+To complicate the picture, the CTE’s of the dielectric are dif­ferent in the X- (Machine direction, MD) and Y- (Cross Machine
+Direction, CMD) axis for some of the laminates, so that the shrinkage can be dif­ferent in the two axis. The amount of copper
+etched away, the distribution and geometry of the remaining copper, the relative thicknesses of the dielectric and copper,
+the type of copper, the type of dielectric, the amount of time elapsed since the material was laminated and the storage
+temperature, all affect the amount of the immediate and residual etch shrinkage in both the X- and Y- axis.
+
+All of this makes it very difficult to predict the precise amount of etch shrinkage to expect. For many circuits the shrinkage is
+small enough to ignore, but for large circuits requiring close feature registration, the total material movement is large enough
+to create a problem. For cases where the shrinkage is not acceptable, a procedure called “double etching “ is the solution. This
+process involves two separate image and etch steps, with a bake cycle between, to accelerate the residual shrinkage. This
+procedure eliminates approximately 90% of the etch shrinkage before the final circuit is etched. The remaining amount of
+movement will be typically no more than a few hundredths of a percent, which is small enough to ignore.
+
+The double etch procedure consists on generating two sets of artwork: a “rough” and a “final.” The rough artwork exposes
+about 90% of the copper to be etched away, leaving copper only in the areas where the final circuit will be. It can be
+conveniently created by increasing the final line widths and lengths by 10% to 15%. The circuit board is imaged with the
+rough artwork and the exposed copper etched off. It should be noted that any tooling holes or targets will move as the
+material shrinks after etching, and will be useless for further locating. Consequently new holes or targets will need to be
+added before the final etch. The final artwork can be registered to the board by including narrow lines in the rough artwork in
+the X- and Y- axis, crossing close to the board center.
+
+Before the final artwork can be imaged, the residual etch shrinkage needs to be eliminated. Since this is a time related
+property, we could wait until the strain relief occurred. However, this could take many days before the amount of residual
+shrinkage was reduced to ignorable levels. The amorphous phase of PTFE is characterized by a glassy state and a rubbery
+state, and strain relief occurs at a much faster rate in the rubbery than in the glassy state. The glass transition temperature
+is about 130°C (266°F), so that the rate of strain relief can be accelerated by baking the circuit board above 130°C (266°F).
+Ex­perimental data indicates that no significant material shrinkage can be detected after a 2 hour 225°C bake in a nitrogen
+purged oven. The presence of oxygen at this time/temperature exposure will cause oxidation of the copper and lead to
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                              Page 1 of 2
+reduced copper peel strength. An alternative to nitrogen purge ovens is the use of hot air recirculating ovens with a modified
+bake cycle that would not alter the copper peel strength. This modified cycle only eliminates about 60% of the etch shrinkage.
+The cycle depends on the kind of material as presented in Table I. During the bake cycle, the circuit panels need to be free
+of constraints so as to allow free movement of the material. An after bake stabilization period of 10 hours is needed on RT/
+duroid 5880 and 5870 materials to allow for final stress relief. The photomask from the rough etching should be remov­ed
+before the bake cycle.
+
+The boards are now stabilized and very little further etch shrinkage is expected. Table II presents dimensional change of RT/
+duroid laminates after all copper has been etched off, the total movement for a given circuit is proportional to the amount of
+copper left on the board. The final artwork is aligned to the centerlines from the rough artwork, and tooling holes punched
+or drilled. If plated through holes are needed, these can now be drilled, sodium etched, and all surfaces electroless plated.
+A reverse photomask exposing the surfaces to be plated is imaged, and the board plated to the desired thickness. Solder or
+gold is now plated onto the exposed copper, and finally the re­maining copper (including the exposed electroless deposition)
+is etched away, using the solder or gold as an etch mask. If there are no plated through holes, or as an alternative pro­cess, a
+positive final artwork can be imaged and the remaining copper etched after punching or drilling the tooling holes.
+
+This two-step etching and baking cycle will result in very small dimensional changes in the final circuit. Tight dimensional
+tolerances with excellent feature registration can be achieved, allowing one to obtain the maximum performance from RT/
+duroid laminates.
+
+                                                                  Table I. Stress Relieving Bake Cycles
+
+      RT/duroid Laminate                               Recommended Bake Cycle                                 Alternative Bake Cycle                      Stabilization
+
+                     5870                                        2 hours @ 225°C                                    1 hour @ 175° C                           10 hours
+                     5880                                        2 hours @ 225°C                                    1 hour @ 175° C                           10 hours
+                     6006                                        2 hours @ 225°C                                    2 hours @ 150° C                         not needed
+                     6010                                        2 hours @ 225°C                                    2 hours @ 150° C                         not needed
+
+
+                                                Table II. Typical Dimensional Change of RT/duroid Laminates
+                RT/duroid Material                                      Recommended Bake Cycle                                        Alternative Bake Cycle
+                Grade and Thickness                                     CMD%            CMD%                                          CMD%             MD%
+
+                5880                  0.010"                               -0.557                         -0.155                        -0.411                      -0.085
+                5880                  0.062"                               -0.350                         -0.112                        -0.277                      -0.079
+                5870                  0.010"                               -0.178                         -0.025                        -0.144                      +0.005
+                5870                  0.062"                               -0.093                         -0.006                        -0.061                      +0.078
+                6006                  0.010"                               -0.877                         -1.089                        -0.641                      -0.807
+                6010                  0.010"                               -0.320                         -0.330                        -0.209                      -0.209
+                6010                  0.050"                               -0.330                         -0.339                        -0.211                      -0.221
+
+     Note: RT/duroid 6002 laminates and TMM® Temperature Stable Laminates have minimal etch shrinkage since their CTE’s were engineered to
+     be the same as that of copper (16 ppm/°C) for the X- and Y- axis. Typical values are 0.02% or less of shrinkage. This very low number allows
+     tight after etch registration without the need of a double etch procedure.
+
+
+
+
+The information contained in this fabrication note is intended to assist you in fabricating Rogers' laminates. It is not intended to and does not create any warranties, express or
+implied, including any warranty of merchantability or fitness for a particular application. The user should determine the suitability of Rogers' circuit materials for each application.
+
+RT/duroid and TMM are trademarks of Rogers Corporation or one of its subsidiaries. All right reserved. ©2023 Rogers Corporation, Printed in U.S.A.
+Revised 1660 082423 Publication #92-422
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                                                     Page 2 of 2
+

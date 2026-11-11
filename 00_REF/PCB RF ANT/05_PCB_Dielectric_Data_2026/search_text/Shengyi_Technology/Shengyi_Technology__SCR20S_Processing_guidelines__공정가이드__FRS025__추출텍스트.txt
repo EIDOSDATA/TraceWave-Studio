@@ -1,0 +1,145 @@
+PROCESSING GUIDELINES
+
+     Laminate: SAR20S
+
+     Metal base laminate
+
+
+
+
+             1/3           CN-PG-1809-01-SCR20S-EN
+This product process guideline uses IPC-4101 Standard as a reference, and Shengyi make some changes
+according to the product characteristics of the actual situation as to making it more suitable for the Shengyi
+SCR20S product use.
+
+
+
+
+1. Storage condition
+1.1 Laminate
+
+1.1.1 Storage condition
+
+   Pack with original forms on the platform or on the appropriate frame, avoiding stress, prevent sheet
+
+    deformation caused by inappropriate storage which may impact the subsequent PCB processes.
+
+1.1.2 Storage environment
+
+   Sheets should be stored in ventilated, dry, at room temperature under environment control, avoiding direct
+
+    sunlight, rain and avoid erosion of corrosive gas (stored environment directly affect the quality of material).
+
+   Minimize shifting as to avoid scratching the surface of the product, with a suitable environment and
+
+    condition for storage, the shelf life can be up to one year.
+
+1.1.3 Operation manual
+
+   Wear clean gloves and carefully operate the laminates. Copper foil collisions, sliding will cause damage
+
+    of the laminates. Bare hands action will cause contamination to copper foil surface. These defects are
+
+    likely to cause adverse effects. To void scratches due to abrasion in the process of material transfer, can
+
+    increase a piece of cushion paper or cushion pad in between laminates.
+
+
+
+2、PWB Processing
+2.2 Usage recommendation
+
+   When selected copper base laminate for high power LED, the higher the power supply of the module, the
+
+    higher thermal conductivity is required. The higher the thermal conductivity, the better the heat dissipation.
+
+    The thinner the dielectric layer, the lower the thermal resistance, and the better the heat dissipation
+
+    performance under Hi-pot conditions. For outdoor equipment with high voltage resistance requirement,
+
+    when the thermal conductivity is satisfied, the thicker the dielectric layer, the higher the voltage resistance.
+
+   Pay attention to careful handling during production, especially for mechanical processes of drilling,
+
+    punching and cutting etc., be sure to avoid defects like pollution, damage, scratches and so on.
+
+   Due to the chemical properties of copper base board, pattern fabrication should be taken appropriate
+
+    etching lines (acid or alkaline) and corresponding protective measures, especially for those to prevent
+
+    copper edge from erosion. There are two common measures, one is to protect edges by tapes; another
+
+    is manually cut off protection film around 4mm from the edge, and grind after etching process. Both
+
+
+                                                       2/3                         CN-PG-1809-01-SCR20S-EN
+    methods can be selected according to the actual need.
+
+   For copper base laminate warpage, simple mechanical method can replace the conventional baking with
+
+    pressure to achieve leveling effect, so common metal leveling machine is available.
+
+   The relevant cutting tools for copper base laminate need to be harder, so special drill bit, special milling /
+
+    router bit, special V-CUT blade and special die and so on are needed. Cutting speed should be slow.
+
+2.3 Drilling and Routing
+
+   Tool selection: use special cutting tools for copper base materials, choose single-edge, double-edge
+
+    cutting tools to ensure smooth chip removal, and generally use diameter of 1.6mm or above.
+
+   Drilling parameters (for reference): drill bit diameter 2.0mm, spindle speed 45 Krpm, feed speed 0.2m/min,
+
+    return speed 10m/min, hit count 15 hits, 1 panel/stack.
+
+   Routing parameters (for reference): router diameter 2.0mm, spindle speed 35 Krpm, feed speed 6mm/s,
+
+    running speed 0.3mm/s, platform speed 12mm/s, routing length 3m, 1 panel/stack.
+
+   Pay attention to the routing quality, such like dielectric nick/edge crack phenomenon, which is mainly
+
+    related to the mismatching factor of process condition and material characteristics. The process
+
+    parameters above are for reference. If similar edge defect occurs, adjust parameters appropriately to
+
+    ensure quality.
+
+2.4 Punching
+
+   Using air gun or brush to remove copper and dielectric chips caused by each punching in order to avoid
+
+    bad appearance like copper damage by pressure in subsequent operation due to residual chips in the die.
+
+   Due to the deformation of copper base and the formation of R angle when punching, copper base surface
+
+    must be worked towards the cutting blade when punching, otherwise it’s easy to cause the peeling off of
+
+    solder mask and dielectric layer and result in poor quality.
+
+   Punching machine: 200t or higher tonnage punching machine with special die is recommended. The
+
+    punching edge length should be adjusted according to different sizes of die.
+
+   Punching die: High efficiency die is needed, and made by special die steel. Because high proportion of
+
+    fillers are contained in the thermal dielectric layer, tungsten steel and other high hardness steel fabrication
+
+    for the cutting blade and punch position can prolong the life of die
+
+2.5 Protect film
+
+   PET film: generally colorless or green, not suitable for HAL process.
+
+   If not peeled off before HAL process, the whole PET film will be cracked and adhered to the back of the
+
+    copper base board, which is not able to be removed.
+
+
+
+This process guide is for reference only! Should you have any questions, please feel free to contact us.
+
+ShengYi will support you with prompt and effective service.
+
+                                                       3/3                         CN-PG-1809-01-SCR20S-EN
+

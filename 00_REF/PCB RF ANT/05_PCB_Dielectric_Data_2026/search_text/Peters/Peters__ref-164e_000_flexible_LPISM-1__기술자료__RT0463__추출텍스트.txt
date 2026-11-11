@@ -1,0 +1,570 @@
+                     Flexible solder masks
+
+     – Fields of application, performance capabilities
+                     and limitations –
+
+
+
+
+                Sven Kramer, Manager Application Technology
+            Dr. Manfred Suppa, Manager Research & Development
+
+
+
+
+Ref. No. 164 E
+Issue October 2009
+                                     Flexible solder masks
+                              – Fields of application, performance
+                                  capabilities and limitations –
+                                                    Contents
+1.          Introduction ................................................................................................. 1
+2.          Formulation ................................................................................................. 1
+3.          Processing ................................................................................................... 2
+3.1         Precleaning the substrate.............................................................................. 4
+3.2         Preparing the ink ........................................................................................... 4
+3.3         Application ..................................................................................................... 5
+3.4         Drying, exposing and developing photoimageable solder masks .................. 5
+3.5         Curing / Crosslinking ..................................................................................... 6
+4.          Performance and limitations ...................................................................... 7
+4.1         Selecting a suitable ink system and resolution .............................................. 7
+4.2         Selecting a suitable ink system and flexibility ................................................ 8
+4.3         Resistances ................................................................................................... 8
+5.          Summary .................................................................................................... 11
+6.          Literature.................................................................................................... 11
+
+
+
+
+LP 092810 E-0                                                                                              REF-164e.000
+                              Flexible solder masks
+                       – Fields of application, performance                       1
+                           capabilities and limitations –
+
+
+1.    Introduction
+Flexible Printed Circuits (FPC) are used in many fields. With their primary origin in
+aerospace applications, they can be found in computer and telecommunication
+technology, e.g. clamshell cell phones, laptops and hard drives. In recent years, the
+field has expanded to include automotive applications, sensor technology and medical
+appliances. The future growth rate of FPC applications is forecast to be 10% and
+more.
+Flexible printed circuits can be coated with a coverlay, in which the openings are
+punched or lasered, or with flexible solder masks. Besides thermal curing types,
+flexible solder masks are available as UV curing and photoimageable systems. A
+number of aspects must be considered when selecting the ideal ink for the application
+at hand, such as the demands on registration accuracy and resolution as well as the
+compatibility between the foil substrate and the solder mask process. The processing
+of flexible photoimageable solder masks requires a slightly different approach to when
+using "traditional" photoimageable solder masks, one reason being the poor
+mechanical stability of the foils during processing. With flexible photoimageable solder
+masks (FLPiSM) in particular, high HDI flex requirements can be achieved using
+established processes with excellent resistances to the associated surface finishes
+(ENiG, CSN) and to the heavy environmental loads encountered in aggressive
+surroundings.
+For the various application fields of flexible printed circuits different types of solder
+mask are available with formulations tailored to the individual requirement profiles. In
+practice, this enables a good choice of solder mask both with respect to the desired
+processing properties as well as to the performance capability. Such ink systems are
+typically divided into:
+ UV curing inks
+ thermal curing inks
+ photoimageable inks (which are thermal cured/crosslinked after the
+   photolithographic imaging process).
+The understandable demand for a much higher flexibility of these ink systems
+compared to "traditional" solder masks used in combination with rigid pcbs is joined by
+similarly high demands on the thermal, thermomechanical, physical and chemical
+properties. As a rule, all these inks are formulated as 2-pack systems (resin and
+hardener component) and applied by horizontal or vertical double-sided screen
+printing.
+
+2.    Formulation
+The basic formulations of the three above mentioned ink types vary considerably. The
+model formulation of a flexible photoimageable solder mask in tables 1a and 1b
+illustrates the complexity of the type, sychronisation and number of components
+involved:
+
+
+
+
+LP 092810 E-0                                                               REF-164e.000
+                                     Flexible solder masks
+                              – Fields of application, performance                                 2
+                                  capabilities and limitations –
+
+
+                           Table 1a: Formulation of resin component (A)
+       Raw Material                                            Property
+ Binding agents (photo-        Decisive for adhesion, flexibility, resistances and physical and chemical
+ reactive and thermal          final properties of the coating
+ crosslinking resins)
+ Filling agents                Adhesion, scratch resistance, control of flow behaviour (thixotropy)
+ Dyes/pigments                 Colour-giving substances (soluble/unsoluble)
+ Additives                     Responsible for defoaming during flash-off and drying, wetting of
+                               substrate, regulation of flow behaviour, etc.
+ Solvents                      Viscosity adjustment, control of drying behaviour
+
+
+                          Table 1b: Formulation of hardener component (B)
+       Raw Material                                            Property
+ Photoinitiators               Initiate photopolymerisation during exposure, influence the required
+                               exposure energy and ability to represent fine structures (ink dams
+                               between pads)
+ Solvents                      Viscosity adjustment, control of drying behaviour
+ Hardener (crosslinker for     Decisive for resistances and physical and chemical final properties of
+ the thermal curing binding    the coating
+ agent components)
+
+Pure UV curing ink formulations do not contain the thermal crosslinking components or
+the volatile solvents to adjust the viscosity; the "solvents" used in such products have a
+UV functionality. They do not evaporate during curing, but as reactive thinners take
+part in the UV crosslinking reaction and are integrated into the binding agent
+backbone. Vice versa, the pure thermal crosslinking inks do not contain any UV-
+reactive substances.
+
+3.    Processing
+Even if flexible solder masks are processed in the same principle manner as
+"traditional" solder masks, there are still some peculiarities that need to be observed
+which can have a considerable effect on the result. The flexible substrate in particular
+places greater demands on the solder mask application process. Due to the large
+number of sometimes highly specialised base materials / adhesives it is definitely
+advisable to assess their individual performance over the whole process. The ink
+manufacturer specifies the solder mask processing parameters. Figs. 1 – 3 illustrate
+the process flow for the three types of solder mask used for flexible substrates.
+
+
+
+
+LP 092810 E-0                                                                              REF-164e.000
+                          Flexible solder masks
+                   – Fields of application, performance                     3
+                       capabilities and limitations –
+
+                                   Preclean substrate
+                               (mechanical and/or chemical)
+
+
+
+
+                                          Apply ink
+                                      (screen printing)
+
+
+
+                                        Thermal cure
+                              (crosslinking reaction to achieve
+                                    the final properties)
+
+
+
+                Fig. 1: Process flow for thermal curing solder mask
+                                   Preclean substrate
+                               (mechanical and/or chemical)
+
+
+
+
+                                          Apply ink
+                              (screen printing or "reel-to-reel")
+
+
+
+                                           UV cure
+                              (crosslinking reaction to achieve
+                                    the final properties)
+
+
+
+                  Fig. 2: Process flow for UV curing solder mask
+                                   Preclean substrate
+                               (mechanical and/or chemical)
+
+
+
+
+                                         Apply ink
+                                  (mainly screen printing,
+                                occasionally spray coating)
+
+
+                                         Predry
+                               (removes solvents to achieve
+                              an exposable, tack-free coating)
+
+
+
+
+                                        Expose
+                               (negative photoimaging by
+                              means of photopolymerisation)
+
+
+
+
+                                         Develop
+                              (removes unexposed areas with
+                                 sodium carbonate solution)
+
+
+
+
+                                          Final cure
+                              (crosslinking reaction to achieve
+                                    the final properties)
+
+
+                Fig. 3: Process flow for photoimageable solder mask
+LP 092810 E-0                                                         REF-164e.000
+                               Flexible solder masks
+                        – Fields of application, performance                       4
+                            capabilities and limitations –
+
+3.1 Precleaning the substrate
+Prerequisites to ensure perfect adhesion of the coating without the risk of dewetting or
+delamination in subsequent processes as well as to secure the maximum achievable
+electrical properties are an oxide-free metal layer with a typical average peak-to-valley
+height of around 0.8 to 1.2 µm and a clean and dry substrate. Polyimide substrates in
+particular have a tendency to absorb moisture so that it can be advisable to temper
+them prior to applying the ink to safely avoid problems with the adhesion. Meanwhile,
+multi-step chemical pretreatments have proven their worth considering the problematic
+handling of flexible substrates in mechanical pretreatment processes and because of
+their ability to obtain optimum adhesion of the ink even when exceptionally aggressive
+finishes (electroless nickel/gold and electroless tin) are used. Especially in application
+fields for photoimageable solder masks they are valuable in promoting an excellent
+adhesion, chemical resistance and thermal (shock) resistance.
+
+3.2 Preparing the ink
+The resin and hardener components should always be mixed electromechanically to
+attain a reproducible homogeneous mixture and to avoid "dead zones" in the
+containers. Devices where the mixing head itself is static and the container is allowed
+to rotate (Fig. 4) have proven very effective. It is extremely important to avoid trapping
+air in the mixture as it is difficult to expel and micro-bubbles can be transferred to the
+substrate even after observing long standing times prior to printing. Typically, the
+mixture should be stirred for approx. 10-15 minutes. The low revolution speed with this
+type of mixing equipment keeps the incorporation of air to a minimum. The best way to
+check whether the components are mixed properly is to decant the mixture into a
+second container and inspect the emptied container for potential "dead zones". A
+holding time of at least 30 minutes between mixing and printing is recommended.
+
+
+
+
+                  Fig. 4: Electromechanical mixer with static mixing head
+The use of electromechanical ink shakers should be carefully debated. Although the
+mixing result is often very good, the amount of air incorporated is considerable. With
+this method of mixing it is easy to generate enough frictional heat to allow the trapped
+air to escape (the increased temperature of the mixture reduces the viscosity), but it is
+imperative to observe long holding times to bring the mixture back down to room
+LP 092810 E-0                                                               REF-164e.000
+                               Flexible solder masks
+                        – Fields of application, performance                         5
+                            capabilities and limitations –
+
+temperature prior to application. Another problem is the large influence the high heat
+generated by the mixing process can have on the pot life, i.e. the maximum possible
+processing time may be distinctly reduced. At the same time, the predry window of
+photoimageable inks can become much narrower and negatively affect or even totally
+prevent unexposed areas from being completely developed free.
+
+3.3 Application
+Screen printing is the most popular method for coating flexible printed circuit boards.
+The main reason for this is that both with the single-sided horizontal and double-sided
+vertical coating process bend stress during application can be well prevented and
+coating is practically independent of the substrate thickness. Typically, the processing
+temperature ranges between around 20 to 23°C, with most inks being tailored to this
+temperature window. Because the viscosity in particular is closely related to the
+temperature, larger fluctuations inevitably change the flow behaviour and thus lead to
+variations in trace coverage.
+Overall, flexible solder masks are especially susceptible to static build-up on the
+substrate which can result in micro-dewettings. This can particularly reduce the
+reliability in the immediate vicinity of traces due to ultra-low or non-existent coverage.
+Further, flexible photoimageable solder masks react very sensitively to contaminations
+(dust, residues from other products on tools, abrasion from gloves, etc.), easily causing
+wetting problems. In general, it should be assumed that a dry film thickness of at least
+10 µm (on edge of trace) is necessary in order to achieve a good resistance in
+chemical finish processes. The resistance of flexible photoimageable inks basically is
+much higher than that of pure UV or thermal curing systems for which the higher
+crosslinking density is primarily responsible.
+In the case of higher traces, it is advisable to apply two coats if necessary, instead of
+one coat with a correspondingly coarse screen fabric (where the large amount of
+material applied may cause the ink to run off the trace edges). With flexible
+photoimageable solder masks completely curing the first coat before applying the
+second one is often not mandatory, but it does reduce the risk of damage/cracking
+during handling and ensures the first coat is fully stable when the second coat is
+developed. It may be possible just to initially cure the first coat.
+
+3.4 Drying, exposing and developing photoimageable solder masks
+Immediately after application and before the actual drying phase (removal of the
+solvents to achieve a tack-free coating which can be exposed in a contact process) a
+holding time or "flash-off" of at least 10 minutes should be observed to allow any marks
+left by the screen mesh during the printing process to even out and to give any trapped
+air the opportunity to rise to the ink surface.
+Contrary to "traditional" photoimageable solder masks, the types formulated especially
+for use on flexible substrates may have a slightly greater tendency to stick to the artwork
+during exposure. This phenomenon is not necessarily to be attributed to insufficient
+drying, but in general to the specialities of the formulated and flexibilised binding agents.
+While the lateral stability of rigid and rigid-flex pcb panels means they can be directly
+transported through the process line, flexible circuits between 0.1 and 0.2 mm thick
+can no longer be conveyed without appropriate aids. All kinds of carrier systems have
+been designed for this purpose.
+LP 092810 E-0                                                                  REF-164e.000
+                                  Flexible solder masks
+                           – Fields of application, performance                              6
+                               capabilities and limitations –
+
+The problem with several carrier systems is that the flexible circuits are often too wavy
+to be processed and are then clamped via a lidding system or sucked tight by the
+vacuum devices of the printer and assembler through holes in the carrier. These
+carrier systems can be used for the printing process, but not for the wet chemical
+processes required for photoimageable solder masks.
+In this case, sandwich components are more appropriate – optionally with an eloxised
+aluminium base plate or an ESD1-approved epoxy base plate – where the surface is
+covered with a fully polymerised, adhesive modified silicone which attracts the flexible
+circuits depending on their surface quality.
+A key speciality of flexible photoimageable solder masks is that they only exhibit the
+required/desired degree of flexibility after thermal cure, because it is only then that a
+complete and stable three-dimensional network is created. This demands great care in
+avoiding bend stress and crazing in the uncured ink film (Fig. 5) during all prior
+processing and handling steps. Single-sided processing has proven very beneficial in
+this respect, but is coupled with a higher effort and lower capacity.
+
+
+
+
+                Fig. 5: Crazing in solder mask following bend stress prior to curing
+Occasional staining (moisture trapped under the surface) in the electroless nickel/gold
+process is frequently a consequence of poor polymerisation during exposure. With
+flexible photoimageable solder masks in general it is extremely important to keep to the
+exposure energy specified by the manufacturer to achieve optimum results. Because
+the trapped moisture is usually superficial, brief tempering often helps to remove it.
+
+3.5 Curing / Crosslinking
+When using flexible photoimageable solder masks it should be carefully considered
+whether to perform a "UV bump" before or after thermal cure. Ideally, a UV bump
+vitrifies the ink surface thus, for example, promoting ultra-low ionic contamination
+readings with various surface finishes, however it often leads to embrittlement and
+reduced flexibility.
+The common rule is that the manufacturers' curing instructions must be followed very
+precisely. Excessive UV and thermal crosslinking can be detrimental to the flexibility.
+
+1
+    ESD – electro-static discharge
+
+LP 092810 E-0                                                                          REF-164e.000
+                                        Flexible solder masks
+                                 – Fields of application, performance                            7
+                                     capabilities and limitations –
+
+4.    Performance and limitations
+Table 2 lists an estimated ranking of some characteristic properties of the three
+principle types of ink available.
+       Table 2: Estimated comparison of selected characteristics of flexible solder masks
+           Property                       UV curing             Thermal curing      Photoimageable
+Process complexity                 low                    low                    very high
+Suitability for "static-flex"      very high              very high              very high
+Suitability for "dynamic-flex"     high                   high to very high      medium to high
+Achievable resolution              very low               very low               very high
+                                   (approx. 150–200 µm)   (approx. 150–200 µm)   (up to 30 µm)
+Thermal stress on substrate        very low               low to very low        very high
+during cure                        (depends on equip-     (cure from 80°C)       (as a rule 1 h at
+                                   ment used)                                    150°C)
+Suitability for "reel-to-reel"     very high              low                    low
+processing
+Soldering resistance               low to medium          low to high            very high
+                                                          (depends on curing
+                                                          parameters)
+Chemical resistance                low                    low to high            very high
+                                                          (depends on curing
+                                                          parameters)
+TCT resistance                     low                    medium                 very high
+Permanent temperature              low                    medium                 very high
+resistance
+UL 94 approval                     depends on             depends on             depends on
+                                   manufacturer           manufacturer           manufacturer
+
+4.1 Selecting a suitable ink system and resolution
+Traditionally, flexible circuit boards are used in combination with so-called coverlays
+(foils) based on epoxy or acrylate polymers into which a pattern is drilled or punched
+before they are applied. Their precision is similar to that of screen printed solder
+masks. Line/space requirements of 50 µm cannot be met that way. Photoimageable
+solder masks are one solution in achieving this increasingly important requirement for
+flexible circuit boards. A combination of classic application processes – such as
+lamination or screen printing – and laser ablation to open the holes is also possible and
+has already partly established itself as a further option. Laser ablation is particularly
+beneficial in achieving an exact registration.
+One restriction to be remembered, especially with BGA applications, is the film
+thickness. In this case, 50 µm foils are not unproblematic, and while 25 µm foils are
+more suitable they are much more difficult to handle. Photoimageable solder masks
+have a significant processing advantage in this respect.
+
+
+
+
+LP 092810 E-0                                                                           REF-164e.000
+                                   Flexible solder masks
+                            – Fields of application, performance                                8
+                                capabilities and limitations –
+
+
+                     Table 3: Estimated comparison of selected characteristics
+                               of coverlays and flexible solder masks
+                              Dry film (Coverlay)                Liquid solder masks (SM)
+       Application             Vacuum laminator                       Screen printing
+                                                       2-pack SM            UV-SM             FLPiSM
+ Film thickness             25–50 µm                 10–20 µm         10–20 µm          10–20 µm
+ Resolution                 approx. 200 µm           150–200 µm       150–200 µm        approx. 30 µm
+ Electrical properties      good                     good             good              very good
+ Flexibility                very good                very good        good              good
+ Processing                 complex                  simple           simple            complex
+ Costs                      high                     low              low               medium
+
+4.2 Selecting a suitable ink system and flexibility
+When selecting a suitable ink system for a specific application, a number of partly
+contradictory factors must be taken into consideration. Naturally with flex applications the
+focus is on the bend stress capability which, besides the choice of product, is primarily
+influenced by the applied film thickness (thicker films usually behave far less favourably in
+this regard than thin films). As a rule, the bend stress capability specified by the ink
+manufacturers refers to a certain bend radius with a defined substrate and a defined ink
+film thickness. Often the maximum possible number of bend cycles without cracking is
+specified. Generally, with "static-flex" or "flex-to-install" applications the number of bend
+stress cycles is limited; photoimageable solder masks are particularly suitable for such
+scenarios, especially where the demands on the resolution (e.g. ink dams between pads)
+are high. When pure thermal or pure UV curing ink systems are used it must be accepted
+that the resolution will not be nearly as good, although the bend stress capability of such
+inks is much higher.
+Table 4 shows a typical method to test the adhesion of a coating after long-term
+thermal stress. The evaluation of potential cracks is performed under a light
+microscope at 16x magnification. The solder mask is ranked as delaminated from the
+substrate if lifting is visible under the light microscope.
+                         Table 4: Results of adhesion after thermal storage –
+                                flexible photoimageable solder mask
+                     Test                       After 500 h storage           After 1000 h storage
+                                                      at 120°C                      at 120°C
+ Adhesion IPC-TM-650, 2.4.29B,               no cracking,                   no cracking,
+ 10 cycles, 20 bends, 2 mm mandrel, 180°     no delamination                no delamination
+ (PI foil, 25 µm film thickness)
+
+4.3 Resistances
+Table 5 illustrates the thermal resistances of different flexible solder mask types. The
+maximum resistance (based on the criteria delamination and chalking) is achieved by a
+photoimageable solder mask. With thermal curing inks it should be noted that the
+curing parameters can be varied over a relatively wide range so as to accommodate
+LP 092810 E-0                                                                            REF-164e.000
+                                  Flexible solder masks
+                           – Fields of application, performance                        9
+                               capabilities and limitations –
+
+the thermal stress capabilities of the substrate. The curing temperature of some
+thermal curing inks can be varied over a range from approx. 80 to 130°C although the
+curing time must be adapted accordingly. In general, the different degrees of
+crosslinking that result affect the soldering resistance, i.e. the resistance is lower at a
+lower curing temperature than at a higher curing temperature.
+                      Table 5: Comparison of the soldering resistances of
+                  UV curing, thermal curing and photoimageable solder masks
+                Test                   UV curing      Thermal curing     Photoimageable
+IPC-SM-840D, 3.7.2, 10 s / 260°C       passed         passed             passed
+IPC-SM-840D, 3.7.3, 10 s / 260°C       passed         passed             passed
+(Pb-free)
+IPC-T-650, 2.6.8, 20 s / 288°C         10 s passed    10 s passed        20 s passed
+UL 94 (20 s / 288°C)                   10 s passed    10 s passed        20 s passed
+IPC-SM-840D, 3.7.3.1,                  failed         failed             passed
+sim. reflow Pb-free (5 x 10 s/260°C)
+
+As can be seen from a comparative thermogravimetric analysis based on a 5% mass
+loss (Fig. 6), the thermal resistance level of photoimageable flexible solder masks is
+similarly high to that of solder masks for rigid applications. The thermal resistance with a
+TG5 value of around 350°C is comparable to high-Tg base materials. While this means
+that the thermal resistances of the polyimide carrier cannot be utilised to the full,
+applications projecting into a temperature range of 150°C are possible.
+
+
+
+
+                   Fig. 6: Thermogravimetric analysis (5% mass loss method)
+                                of photoimageable solder masks
+A comparison of the maximum possible bend radius (Table 6) when using a 50 µm
+thick polyimide foil coated with different ink types at a film thickness of 25 µm shows
+that the appropriate thermal curing ink performs best, exhibiting folding resistance
+without cracking. However, the prerequisite for this maximum flexibility are ultra-low
+curing temperatures which, as mentioned above, have a detrimental effect on the
+soldering resistance. When describing the flexibility, the method to determine the
+"bend strength" has a great influence on the specified minimum radii and number of
+LP 092810 E-0                                                                 REF-164e.000
+                                Flexible solder masks
+                         – Fields of application, performance                          10
+                             capabilities and limitations –
+
+bend cycles. The substrate and trace geometry equally have an important effect. To
+differentiate, amongst others the so-called bar code test has proven a practical tool
+where the bend cycles are performed at right-angles to the copper traces and the bend
+strength can be determined depending on the lines and spaces.
+                            Table 6: Possible maximum bend radii
+          Test                UV curing             Thermal curing         Photoimageable
+ maximum bend            1.5 mm radius          < 1.0 mm radius          2 mm radius
+ strength around                                (resistant to folding)
+ mandrel
+ (20 bend cycles/180°)
+
+Fig. 7 shows the moisture and insulation resistance results of a flexible,
+photoimageable solder mask which was tested based on TM 2.6.3.1 of IPC-TM-650 at
+various moisture and temperature conditions. The test was performed over a range
+from 40°C and 90% r.h. up to 85°C and 85% r.h. at 50 V BIAS.
+
+
+
+
+ Fig. 7: Insulation resistances of a flexible photoimageable solder mask with various finishes
+             after thermal cycling [1000 cycles, -40°C (30 min) / +150°C (45 min)]
+
+The measured resistance values are all > 500 MOhm and thus exceed the "IPC
+threshold" of the IPC-SM-840 specification. The resistance values at 85°C/85% r.h. are
+equally above the lower threshold value of 100 MOhm per IPC despite the high
+humidity/thermal stress. There was no evidence of a significant influence of the type of
+finish. The results are comparable to those from tests performed on photoimageable
+solder masks for rigid applications.
+With flexible substrates, special attention must be paid to the adhesive film. It can have
+a considerable effect on the electrical moisture and insulation performance. Fig. 8
+shows an identical photoimageable solder mask on foils with different adhesives which
+has been characterised by means of an 85/85 cycle test. Depending on the level of
+humidity and thermal stress the insulation resistance fluctuates immensely. The
+environmental conditions 35°C and 90% r.h., 65°C and 90% r.h. and 85°C and 85%
+LP 092810 E-0                                                                     REF-164e.000
+                                Flexible solder masks
+                         – Fields of application, performance                          11
+                             capabilities and limitations –
+
+r.h. were continually applied and the insulation value recorded after one hour and after
+three days. The two end values at 25°C and 50% r.h. (RT – room temperature)
+represent the regeneration capability. The best results were achieved with an
+adhesive-free substrate.
+
+
+
+
+        Fig. 8: Moisture/insulation resistances of a flexible photoimageable solder mask
+                       in an 85/85 cycle with various adhesive substrates
+
+5.    Summary
+The use of solder masks on flexible substrates is gaining in importance. UV curing,
+thermal curing and photoimageable materials are available that differ considerably in
+their application and final properties. The most significant differences are the degree of
+flexibility that can be achieved, the maximum possible image resolution and the
+potential resistance during soldering. These solder masks are processed by means of
+familiar and established methods which can be reliably mastered after taking into
+consideration a few specialities related to flexible solder masks.
+The majority of flexible circuits will certainly be produced in Asia, however it is evident that
+German printed circuit board manufacturers can also handle this technology at a high
+level and a lot can be expected here in the future.
+
+6.    Literature
+/1/    Sven Kramer, Lackwerke Peters, Solder balls on photoimageable solder masks,
+       IPC Expo, Long Beach, 1999
+/2/    Manfred Suppa, Lackwerke Peters, Thermal stress and thermal cycling tests,
+       12th FED Conference, Neu-Ulm, 2004
+/3/    Ralf Rumpen, Rösnick Vertriebs GmbH, Neue Carriertechnik für flexible
+       Schaltungen im SMD-Prozess, guest article LPinfos (customer magazine
+       published by Lackwerke Peters), Issue 38/2005
+/4/    Technical data sheets ELPEMER SD 2463 FLEX-HF, SD 2460/201 UV-FLEX,
+       SD 2460 FLEX, Lackwerke Peters, 2009
+LP 092810 E-0                                                                     REF-164e.000
+

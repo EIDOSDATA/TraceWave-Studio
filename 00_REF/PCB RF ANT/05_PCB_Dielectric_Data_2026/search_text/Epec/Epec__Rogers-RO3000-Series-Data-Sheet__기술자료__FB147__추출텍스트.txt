@@ -1,0 +1,233 @@
+                                                                                                          Data Sheet
+
+
+RO3000® Series Circuit Materials
+RO3003™, RO3006™, RO3010™ and RO3035™
+High Frequency Laminates
+                                                                                               Features and Benefits:
+RO3000® high frequency circuit materials are ceramic-filled PTFE composites intended           Low dielectric loss (RO3003™ laminates)
+                                                                                                  • Laminates can be used in applications
+for use in commercial microwave and RF applications. This family of products was                     up to 77 GHz.
+designed to offer exceptional electrical and mechanical stability at competitive prices.       Excellent mechanical properties versus
+                                                                                               temperature
+                                                                                                  • Reliable stripline and multi-layer board
+RO3000 series laminates are ceramic-filled PTFE based circuit materials with mechanical              constructions.
+properties that are consistent regardless of the dielectric constant selected. This allows     Uniform mechanical properties for a range
+                                                                                               of dielectric constants
+the designer to develop multi-layer board designs that use different dielectric constant          • Ideal for multi-layer board designs with
+materials for individual layers, without encountering warpage or reliability problems.               a range of dielectric constants
+                                                                                                  • Suitable for use with epoxy glass multi-
+                                                                                                     layer board hybrid designs
+RO3000 materials exhibit a coefficient of thermal expansion (CTE) in the X and Y axis of       Stable dielectric constant versus
+17 ppm/oC. This expansion coefficient is matched to that of copper, which allows the           temperature and frequency (RO3003
+                                                                                               laminates)
+material to exhibit excellent dimensional stability, with typical etch shrinkage (after etch      • Ideal for band pass filters, microstrip
+and bake) of less than 0.5 mils per inch. The Z-axis CTE is 24 ppm/ °C, which provides               patch antennas, and voltage controlled
+                                                                                                     oscillators.
+exceptional plated through-hole reliability, even in severe thermal environments. The          Low in-plane expansion coefficient (match
+dielectric constant versus temperature for RO3003™ and RO3035™ materials is very               to copper)
+                                                                                                  • Allows for more reliable surface
+stable (Chart 1).                                                                                    mounted assemblies
+                                                                                                  • Ideal for applications sensitive to
+                                                                                                     temperature change
+RO3000 series laminates can be fabricated into printed circuit boards using standard
+                                                                                                  • Excellent dimensional stability
+PTFE circuit board processing techniques, with minor modifications as described in             Volume manufacturing process
+the application note “Fabrication Guidelines for RO3000 Series High Frequency Circuit             • Economical laminate pricing
+Materials.”
+                                                                                               Some Typical Applications:
+                                                                                                 • Automotive radar applications
+                                                                                                 • Global positioning satellite antennas
+                                                                                                 • Cellular telecommunications systems -
+                                                                                                   power amplifiers and antennas
+                                                                                                 • Patch antenna for wireless
+                                                                                                   communications
+                                                                                                 • Direct broadcast satellites
+                                                                                                 • Datalink on cable systems
+                                                                                                 • Remote meter readers
+                                                                                                 • Power backplanes
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+                                                                                                                     Data Sheet
+
+
+                                                             Chart 1: RO3003 and RO3035 Laminate Dielectric Constant vs. Temperature
+
+                                                1.01
+
+ The data in Chart 1 demonstrates the
+ excellent stability of dielectric constant    1.005
+
+ over temperature for RO3003 & RO3035
+ laminates, including the elimination of           1
+
+ the step change in dielectric constant,                                                                                        PTFE/WG
+ which occurs near room temperature            0.995
+                                                                                                                                RO3003
+ with PTFE glass materials.                                                                                                     RO3035
+ The data in Chart 2 shows the                  0.99
+
+
+                                               0.985
+
+
+                                                0.98
+                                                       -50       -25     0      25      50     75      100    125      150
+
+
+
+
+                                                                         Chart 2: RO3003 and RO3035 Dissipation Factor
+
+distribution of dissipation factor for
+RO3003 and RO3035 materials.
+                                                                                                                             RO3003
+Test Method: IPC-TM-650 2.5.5.5
+                                                                                                                             RO3035
+Condition: 10 GHz 23° C
+
+
+
+
+                                                   0.0008              0.0010        0.0012         0.0014          0.0016        0.0018
+
+
+
+
+                                              Chart 3: Normalized Dk vs. Frequency using microstrip differential phase length method 50 ohm mi-
+                                                                       crostrip circuits based on ~20mil thick laminates
+Chart 3 demonstrates the
+stability of dielectric constant for RO3000
+series products over frequency. This
+stability
+simplifies the design of
+broadband components as well as
+allowing the materials to be used in a wide
+range of applications over a very broad
+range of frequencies.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+                                                                                                                                    Data Sheet
+
+                                                         Typical Value(1)
+           Property                                                                                    Direction        Unit         Condition          Test Method
+                                  RO3003           RO3035            RO3006            RO3010
+                                                                                                                                                          IPC-TM-650
+ Dielectric Constant, er
+                                  3.00 ± 0.04     3.50 ± 0.05        6.15 ± 0.15      10.2 ± 0.30           Z             -          10 GHz 23°C            2.5.5.5
+ Process
+                                                                                                                                                       Clamped Stripline
+                                                                                                                                                          Differential
+  Dielectric Constant, er
+ (2)
+                                     3.00             3.60              6.50             11.20              Z             -         8 GHz - 40 GHz       Phase Length
+ Design
+                                                                                                                                                           Method
+                                                                                                                                                          IPC-TM-650
+ Dissipation Factor, tan d          0.0010           0.0015            0.0020           0.0022              Z             -          10 GHz 23°C
+                                                                                                                                                            2.5.5.5
+                                                                                                                                       10 GHz             IPC-TM-650
+ Thermal Coefficient of er            -3              -45               -262              -395              Z         ppm/°C
+                                                                                                                                     -50 to 150°C           2.5.5.5
+                                     -0.06            -0.11             -0.27            -0.35              X
+ Dimensional Stability                                                                                                 mm/m            COND A          IPC TM-650 2.2.4
+                                     0.07              0.11             -0.15            -0.31              Y
+ Volume Resistivity                   107             107                105              105                         MW•cm            COND A             IPC 2.5.17.1
+ Surface Resistivity                  107             107                105              105                           MW             COND A             IPC 2.5.17.1
+                                     930              1025              1498             1902               X
+ Tensile Modulus                                                                                                        MPa             23°C              ASTM D638
+                                     823              1006              1293             1934               Y
+                                                                                                                                                          IPC-TM-650
+ Moisture Absorption                 0.04             0.04              0.02              0.05              -            %             D48/50
+                                                                                                                                                            2.6.2.1
+ Specific Heat                        0.9                               0.86              0.8                           J/g/K                             Calculated
+ Thermal Conductivity                0.50             0.50              0.79              0.95              -          W/m/K            50°C             ASTM D5470
+                                      17               17                17                13               X
+ Coefficient of Thermal
+                                      16               17                17                11               Y         ppm/°C         23°C/50% RH       IPC-TM-650 2.4.41
+ Expansion (-55 to 288 °C)
+                                      25               24                24                16               Z
+ Td                                  500              500               500               500                          °C TGA                            ASTM D3850
+ Density                              2.1              2.1               2.6              2.8                         gm/cm     3
+                                                                                                                                        23°C              ASTM D792
+                                                                                                                                      1 oz. EDC
+ Copper Peel Strength                12.7             10.2               7.1              9.4                           lb/in        After Solder        IPC-TM-2.4.8
+                                                                                                                                        Float
+
+ Flammability                        V-0              V-0               V-0               V-0                                                                UL 94
+
+ Lead Free Process
+                                     YES              YES               YES               YES
+ Compatible
+
+
+
+
+NOTES:
+(1) Typical values are a representation of an average value for the population of the property. For specification values contact Rogers Corporation.
+
+(2) The design Dk is an average number from several different tested lots of material and on the most common thickness/s. If more detailed information is re-
+    quired, please contact Rogers Corporation or refer to Rogers’ technical papers in the Roger Technology Support Hub available at http://www.rogerscorp.com/
+    techub
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+                                                                                                                            Data Sheet
+
+             Standard Thicknesses                         Standard Panel Sizes                                     Standard Claddings
+ RO3003:                                          RO3003/RO3006/RO3010/RO3035:            RO3003:
+ 0.005” (0.13mm) +/- 0.0005”
+ 0.010” (0.25mm) +/- 0.0007”                      12” X 18” (305 X 457mm)                 Electrodeposited Copper Foil
+ 0.020” (0.51mm) +/- 0.0010”                      24” X 18” (610 X 457mm)                 ½ oz. (18µm) (HH/HH)
+ 0.030” (0.76mm) +/- 0.0015”                                                              1 oz. (35µm) (H1/H1)
+ 0.060” (1.52mm) +/- 0.0030”                      RO3003 0.005” and 0.010”:
+                                                  12” X 18” (305 X 457mm)                 Rolled Copper Foil
+ RO3006/RO3010:                                   24” X 18” (610 X 457mm)                 ½ oz. (18µm) (AH/AH)
+ 0.005” (0.13mm) +/- 0.0005”                      24” X 21” (610 X 533mm)                 1 oz. (35µm) (A1/A1)
+ 0.010” (0.25mm) +/- 0.0007”
+ 0.025” (0.64mm) +/- 0.0010”
+ 0.050” (1.28mm) +/- 0.0020”
+
+                                                                                          RO3006/RO3010/RO3035:
+ RO3035
+ 0.010” (0.25mm) +/- 0.0005”                                                              Electrodeposited Copper Foil
+ 0.020” (0.51mm) +/- 0.0010”                                                              ½ oz. (18µm) (HH/HH)
+ 0.060” (1.52mm) +/- 0.0030”                                                              1 oz. (35µm) (H1/H1)
+
+ *Additional non-standard thicknesses available   *Additional panel sizes available       *Additional claddings, such as heavy metal, resistive foil and unclad
+ from 0.005: - 0.195” in increments of 0.005”                                             are available
+
+*Contact Customer Service or Sales Engineering to inquire about additional available product configurations
+
+
+
+
+ The information in this data sheet is intended to assist you in designing with Rogers’ circuit materials. It is not intended to and does not create any war-
+ ranties express or implied, including any warranty of merchantability or fitness for a particular purpose or that the results shown on this data sheet will
+ be achieved by a user for a particular purpose. The user should determine the suitability of Rogers’ circuit materials for each application.
+
+ These commodities, technology and software are exported from the United States in accordance with the Export Administration regulations. Diversion contrary to
+ U.S. law prohibited.
+
+ The Rogers’ logo, Helping power, protect, connect our world, RO3000, RO3003, RO3006, R03010 and RO3035 are trademarks of Rogers Corporation or one of its
+ subsidiaries.
+ ©2022 Rogers Corporation, Printed in U.S.A., All rights reserved.
+ Revised 1589 080122 Publication #92-130
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+

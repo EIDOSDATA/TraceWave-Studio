@@ -1,0 +1,253 @@
+                                                                                   Advanced Circuit Materials Division
+                                                                                               100 S. Roosevelt Avenue
+                                                                                                   Chandler, AZ 85226
+                                                                                   Tel: 480-961-1382, Fax: 480-961-4533
+                                                                                          www.rogerscorporation.com
+
+Advanced Circuit Materials
+                                                                                        Data Sheet and
+                                                                                  Fabrication Guidelines
+                                                                                                                  4.4.2
+
+
+
+
+3001 Bonding Film Properties and Laminating
+Techniques
+
+
+Rogers 3001 bonding film is a thermoplastic chloro-fluorocopolymer. It is recommended for bonding low
+dielectric constant PTFE (Teflon® fluorocarbon polymer) microwave stripline packages and other multilayer
+circuits. It may also be used to bond other structural and electrical components to the dielectric.
+
+3001 bonding film features a low dielectric constant and low loss tangent at microwave frequencies, ensuring
+minimum interference with the electrical function of bonded stripline and other multilayer constructions. It is
+compatible with Rogers RT/duroid® low dielectric constant laminates, ULTRALAM® woven glass/PTFE micro-
+wave circuit laminates, RO3000® series high frequency circuit materials, RT/duroid® 6002 ceramic filled circuit
+materials, and other PTFE-based low dielectric constant substrates.
+
+Its high temperature resistance and chemical inertness ensure that assemblies bonded with 3001 bonding film
+will meet or exceed the most stringent process and environmental specifications.
+
+Reliable bonds can be achieved with 3001 bonding film using equipment readily available in the printed circuit
+fabrication industry. Laminating techniques are familiar to most circuit fabrication shops. The film is easily cut
+to size, and accurate relief holes for tooling slots and surface mounted launchers may be punched.
+
+3001 bonding film is available in a thickness of 0.0015" (0.381mm), in continuous 12" (305mm) wide rolls, on
+standard 3" ID cores. Properly designed packaging and plastic cores ensure freedom from airborne contami-
+nation, and paper of cardboard "lint".
+
+
+
+
+                                                                                 (See product data on page 4)
+
+
+
+
+The world runs better with Rogers®
+BF 4.4.2
+Page 2 of 4                                            BONDING TECHNIQUE:
+PREPARATION:                                           1. Layup: Assemble boards to be bonded
+1. Copper: Following etching and stripping of the         interleaved with bonding film between
+   etch resist, copper circuitry should be treated        dielectric layers. In cases where registration
+   with a light microetch to ensure complete              is critical, the plates should be provided
+   removal of resist residues and to provide              with pins and the boards and film with holes.
+   sufficient topography for sound mechanical             Clean room or filtered air flow conditions are
+   adhesion. DO NOT mechanically clean.                   recommended. A thermocouple inserted at
+                                                          the bond line is recommended for observing
+NOTE: Do not use 3001 Bond Film when bonding to           the lag time for reaching the bonding
+  metal ground planes or where inner layers are           temperature. Thermocouples should be small
+  mostly metal.                                           diameter and located where they will not
+                                                          damage the part or interfere with pressure
+2. All surfaces to be bonded should be free of            uniformity.
+   contaminants that impair adhesion, including
+   dust, grease, oil, fingerprints, non-adherent       2. Clamp: While the press is cool, typically below
+   oxides, salts or other process chemical residues.      120°C (248°F), center the assembly package
+   A final rinse of deionized water may be                on the platen area. Close the press and adjust
+   followed by a dip in clean isopropyl alcohol.          the hydraulic system so that the bond area
+   Avoid use of compressed air which can deposit          receives the desired pressure. Generally 100 psi
+   airborne contaminates such as oil.                     is sufficient but up to 200 psi may be required
+                                                          to assure flow of the bonding film when the
+    The PTFE surface as initially exposed by etching      copper pattern occupies a greater part of the
+    away electrodeposited foil is typically water-        bond areas.
+    wettable and capable of forming a bond
+    without a sodium etch treatment. Almost any           Clamping in a cool press followed by heating
+    kind of solid surface contact by scrubbing,           is important for uniformity of temperature
+    swabbing, rubbing or normal stacking and              across the bond area as the bonding film
+    handling will destroy that wettability by             fuses.
+    distorting the microscopic surface features left
+    from the copper cladding. The result will be       3. Heat: Start the platen heating cycle toward
+    that a PTFE surface treatment will be needed          a 220°C (428°F) set point. Generally the
+    to assure repeatability of a good bond. Treat         maximum heating rate is acceptable as
+    the surface with one of the commercially              long as enough control is used to keep the
+    available elemental sodium solutions such as          upper and lower platens at nearly the same
+    Poly-Etch® or FluoroEtch®. Alternatively, sodium      temperature, within 1 to 5°C.
+    complex in liquid ammonia according to U.S.        4. Dwell: Hold the temperatures at the bond
+    Patent 2,789,062 can be used. (Because of the         line at set point for a minimum of 15 minutes.
+    high ceramic content on RT/duroid 6002, 6006,         This allows the film, in its melted state, time to
+    6010, RO3000™ and RO3200™ families, surface           flow and wet the surfaces to be bonded. The
+    preparation might not be needed and not               embedded thermocouple is useful to be sure
+    recommended).                                         the bond line actually sees this dwell. For thick
+    Hot air oven baking should be used to assure          layups there could be enough lag in heating
+    removal of all solvent residues. This can be as       to require an extended dwell. Sometimes dwell
+    little as 45 to 60 minutes at 121°C (250°F) but       might need to be increased to 30-45 minutes.
+    with some solvents such as acetone, methylene      5. Cool: Turn the heating power supply off and
+    chloride or trichlor as much as 2 hours at 150°C      cool the platens while continuing to maintain
+    (302°F) may be needed to assure complete              the clamp pressure until the temperature is
+    solvent removal.                                      down to 120°C (248°F). Remove pressure and
+3. Staging: Boards prepared for bonding should            take the assembly out of the press. Platen
+   be stored in a clean, dry environment.                 cooling water flow could be stopped at this
+   Generally layup and bonding should be done             point to save on heating time on the next
+   within 24 hours of surface preparation.                cycle since 120°C (248°F) is cool enough for
+                                                          clamping in Step 2.
+4. 3001 Bonding Film: The bonding film arrives
+   ready for use and requires no further
+   preparation. Handle the film in a clean, dust-
+   free environment only with gloves to avoid
+   contamination with skin acids and oils.
+Notes:                                                                                                                              BF 4.4.2
+                                                                                                                                  Page 3 of 4
+a. A maximum bond strength may be achieved                      500                                                                    260
+   using a press temperature of 232°C (450°F)                             Approx. 30 min. heat-up 15 min at temp.
+
+   for most standard RT/duroid laminates or their                                                                      Water cool
+   equivalents clad with electrodeposited copper                400                                                   under pressure   205
+   and etched (but not sodium etched). 3001
+                                                                                                   Critical step in
+   bonding film has minimal adhesion to copper                  300                                                                    149
+
+
+
+
+                                                                                                                                             TEMP °C
+                                                                                                   bonding cycle
+
+
+
+
+                                                      TEMP °F
+   and should not be used where large copper
+   surfaces are present.                                        200               Laminate temp. as                                     94
+                                                                                     measured by
+                                                                                   thermocouple at
+b. The bonding parameters of temperature,                                              bondline
+   pressure and time are interrelated and may                   100                                                                     37
+   be adjusted somewhat to suit individual
+   requirements. The minimum possible                             0                                                                    0
+   bonding temperature is 199°C (390°F),                              0     10       20      30    40            50      60       70
+                                                                                           TIME-MINUTES
+   while temperatures over 246°C (475°F)
+   should be avoided to prevent excess flow.
+   Excessive temperature may result in material                       A time-temperature curve as shown on the
+   decomposition and excessive fuming. Vacuum                         accompanying chart illustrates a typical
+   lamination (14 psi) has been used to obtain a                      press temperature cycle which has produced
+   satisfactory bond.                                                 satisfactory bonding results.
+
+c. In some cases, it may be feasible to increase
+   productivity by a transfer press technique in
+   which the board assembly in a metal plate          TROUBLE SHOOTING:
+   fixture is clamped in a hot press where it
+   quickly reaches the 220°C (428°F) set point        No Bond
+   and dwells long enough to melt and flow. The       1. Surface of board to be bonded was mechani-
+   pressure is then released and the assembly            cally cleaned (pumice scrubbed, brushed,
+   moved and reclamped at once in a second               etc.).
+   press at 120°C (248°F) where it quickly cools to      Solution: Do not mechanically clean. Use
+   freeze the bonding film. Design the fixture with      chemical cleaning procedure.
+   enough thermal capacity and in-plane thermal       2. Inadequate temperature-time above minimum
+   conductivity to avoid uneven heating, and to          bond temperature.
+   minimize premature heating or cooling during          Solution: Double check temperature at bond-
+   press transfers. Pressure must be re-applied          line with thermocouple.
+   before bond line temperature drops below           3. Contamination with release agents, moisture,
+   220°C (428°F).                                        dirt, etc.
+                                                         Solution: Review cleaning and priming proce-
+d. Bonding presses should be well maintained             dures and conditions.
+   and in good working order. Features such as
+   platen flatness, degree of parallel, temperature   Spotty Bonding or Blistering
+   uniformity at heating and cooling, etc, as well    1. Non-uniform pressure.
+   as routine lamination practices should agree          Solution: Use fresh padding or additional pad-
+   with generally accepted industry guidelines           ding. Check flatness or press.
+   as well as those of the manufacturer. For          2. Inadequate temperature.
+   further information the following references          Solution: Double check temperature at bond-
+   may be consulted: Printed Circuit Handbook,           line with thermocouple.
+   C.Coombs, McGraw Hill, 1988; The Multilayer        3. Inadequate rinse and dry of cores prior to
+   Printed Circuit Handbook, J.A. Scarlett ed.,          bonding.
+   Electrical Publications 1985.                         Solution: Review cleaning and drying proce-
+e. Packages properly bonded will yield a bond            dures. Review storage conditions and duration
+   strength (peel) in excess of 20 lbs. per inch         of time between preparation and bonding.
+   width.
+                                                      Distortion
+Safety Note:                                          1. Excessive temperature.
+                                                      2. Non-uniform pressure.
+As with all halocarbon polymers when subjected
+to temperatures at or above their melting point,
+adequate ventilation should be provided.
+BF 4.4.2
+Page 4 of 4
+Typical Values                                                                                                                                    3001 Bonding Film
+ PROPERTY                                                       TYPICAL VALUE                       DIRECTION         UNITS            CONDITION               TEST METHOD
+ Dielectric Constant                                                    2.28                             Z              -              X-band [1]               IPC-TM-650,
+                                                                                                                                                                   2.5.5.5
+ Dissipation Factor                                                    0.003                             Z              -                 X-band                IPC-TM-650,
+                                                                                                                                                                   2.5.5.5
+ Volume Resistivity                                                      1011                            -           Mohm/cm               25°C                 ASTM D257
+                                                                              9
+ Surface Resistivity                                                     10                             X,Y           Mohm                 25°C                 ASTM D257
+ Dielectric Strength                                                    2500                             Z            V/mil                                     ASTM D149
+ Thickness                                                             0.0015                            Z             inch                                     Micrometer
+ Water Absorption                                                       0.05                                            %              24hrs/23°C               ASTM D570
+ Bond Strength                                                          1400                             Z             psi                    A                       [2]
+ Tensile Strength                           MD                           7.5                             X             kpsi                                     ASTM D882
+                                            CMD                          5.5                             Y
+ Elongation                                 MD                           115                             X              %                                       ASTM D882
+                                            CMD                          200                             Y
+ Youngs                                     MD                           140                             X             kpsi                                     ASTM D882
+ Modulus
+                                            CMD                          150                             Y
+ Thermal Conductivity                                                   0.22                             Z            W/m/K
+ Maximum Use Temperature                                                 176                                           °C
+ Crystalline Melt                           Nominal                      186                                           °C
+
+
+ Chemical Resistance -                      Weight                Visual Effect                                       Weight           Visual Effect
+ 2 weeks/ambient                            Increase                                                                 Increase
+                                            (%)                                                                         (%)
+ Acetone                                    5.17                  Cloudy, Very                     Methyl Ethyl        5.9            Very Flexible
+                                                                     Flexible                       Ketone
+ Ammonium Hydroxide                         None                       None                   Nitric Acid - 70%       None                 None
+ Carbon Tetrachloride                       4.1                       Flexible                   Sodium               None                 None
+                                                                                              Hydroxide - 50%
+ Ethanol                                    None                       None                          Sulfuric         None                 None
+                                                                                                    Acid - 30%
+ Hydrochloric Acid - 36%                    None                       None                          Toluene           2.8                Flexible
+ Hydrofluoric Acid - 60%                    None                       None                   Trichloroethlene         10.9           Cloudy, Very
+                                                                                                                                         Flexible
+ Methanol                                   0.1                        None                       Trichlorofluoro-      -             Cloudy Very
+                                                                                                      ethane                            Flexible
+
+Typical Values are a representation of an average value for the population of the property. For specificiation values contact Rogers Corporation.
+
+Shelf life: 3001 bonding film is a thermoplastic. As such, there are no shelf life limitations.
+Notes:
+[1] Two stacks of 40 piles of film are used.
+[2] A specimen of two 0.062” thick pieces of RT/duroid®5880 microwave circuit laminate is machined with 0.500” diameter groove cut just through the bond line on one side and
+    concentric with a 0.375” diameter hole just through the bond line from the other side. Breaking force to pull apart the isolated bond area of 0.375” ID/0.500” OD (0.86 in.2) is
+    measured at 0.050 in/min. cross head speed.
+[3] Differential scanning calorimetry test is on a 8 mg specimen which was melted by heating to 240°C followed by slow cooling to 40°C before a second heating for the measure-
+    ment.
+
+
+The information in this data sheet and processing guideline is intended to assist you in fabricating Rogers’ circuit material laminates.
+It is not intended to and does not create any warranties express or implied, including any warranty of merchantability or fitness for
+a particular purpose or that the results shown on this data sheet and fabrication guideline will be achieved by a user for a particular
+purpose. The user should determine the suitability of Rogers’ circuit material laminates for each application.
+
+The commodities, technology and software are exported from the United States in accordance with the Export Administration
+regulations. Diversion contrary to U.S. law is prohibited
+                                                         RT/duroid, RO3000 and ULTRALAM are licensed trademarks of Rogers Corporation.
+                                                                          Teflon is a registered trademark of E.I. duPont de Nemours & Co.,
+                                                                            Poly-etch is a registered trademark of Matheson Gas Products,
+                                                                              Fluoroetch is a registered trademark of Acton Associates, Inc.
+                                                            ©1994, 2002, 2005, 2008 Rogers Corporation, Printed in U.S.A. All rights reserved.
+                                                                                            Revised 05/08, -0508-0.5-CC, Publication #92-442
+

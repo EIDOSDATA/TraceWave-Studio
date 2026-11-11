@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "public_api": "workbook.export({format:'xlsx'})",
+  "source_doc": "@oai/artifact-tool/docs/spreadsheets/api/references/import-export.md",
+  "rows": 500,
+  "cells_compared": 28500,
+  "formulas_or_errors": 0
+}

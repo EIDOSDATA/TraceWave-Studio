@@ -1,0 +1,405 @@
+LT
+ CC
+Desi
+   gnGui
+       de
+Table of Contents
+
+
+Table of Contents....................................................................................................................... 2
+LTCC Process ............................................................................................................................... 3
+Material Properties .................................................................................................................... 4
+Conductor Parameters ............................................................................................................ 5
+Via Parameters ............................................................................................................................. 7
+Multilayer Parameters.............................................................................................................. 9
+RF & Microwave Parameters ..............................................................................................10
+LTCC Process
+
+
+
+
+Figure 6.1.1: Typical Process for Fabricating an LTCC Structure
+A series of steps are required for the production of LTCC structures. Performance, structure, and process capability of both
+ceramic and conductor are explained in the following pages.
+Material Properties
+
+A: 7.1.1dfdfd: Available Material Systems                                                 Table: 7.4.1: Materials Options Preferred Material System
+ Available Tape Systems                       Available Metallization Systems              Manufacturer                             DuPont           Ferro
+ DuPont 951                                   All gold, all silver, ENiG                   Process                                  951              A6M
+ Ferro A6M                                    All gold                                     Inner Layer Au                           TC502            30-025
+                                                                                           Via Fill Au                              TC501            30-078
+                                                                                           Wirebond Co-Fire Au                      5742 (Al wire)   30-065 (Al wire)
+Table: 7.2.1: Material System Mechanical Properties                                                                                 5734 (Au wire)   30-025 (Au wire)
+                                                                                           Wirebond Post-Fire Au                    5743 (Al wire)   30-068 (Al wire)
+ Parameter                                    DuPont 951                   Ferro A6M                                                5715 (Au wire)
+ Green sheet area (inches2)                   6.5 & 8.0                    6.5             Solderable Au                            5739 (Pt/Au)     36-020 (Pt/Au)
+ Usable green sheet area (inches)             4.6 & 6.2                    4.5             Brazing Material (AuSn, AuGe Braze) 5062/5063         4007
+ XY shrinkage                                 12.92%                       14.85%          Inner Layer Ag                      6142 (Signal)     33-398
+ XY shrinkage tolerance                       ±0.3%                        ±0.3%                                               6148 (Power, Gnd)
+ Green tape thickness (mils)                  2, 4.5, 6.5, 10              5, 10           Via Fill Ag                         6141 (Ag)         33-343 (Ag)
+                                                                                                                               6138 (Pd/Ag)      39-005 (Pd/Ag)
+ Fired tape thickness (mils)                  1.7, 3.8, 5.5, 8.5           3.7, 7.4
+                                                                                           Solderable Co-Fired Ag                   6146 (Pd/Ag)     33-391
+ Z shrinkage                                  15%                          25%
+                                                                                           Solderable Post-Fired Ag                 6135 (Pd/Ag)     3350
+ Z shrinkage tolerance                        ±0.5%                        ±0.5%
+                                                                                           Co-Fired Resistors                       CF Series        87 Series
+ Patterning technology                        Screen Print & Etch          Screen Print
+                                                                                           Post-Fired Resistors                     7200 Series      82 Series
+ Thermal Conductivity                         3.3                          2.0
+                                                                                           Co-Fired Dielectric                      9615             10-088
+ Young’s Modulus (GPa)                        120                          92
+                                                                                           Post-Fired Overglaze                     QQ550            NCAa
+ Poisson’s Ratio                              —                            —
+                                                                                           Note: a) NCA – Not currently available
+ Flexural Strength (MPa)                      320                          170
+ Density (g/cm3)                              3.1                          2.5
+ Note:
+ 1. 951 mechanical data taken from DuPont website
+
+
+
+
+Table: 7.3.1: Material System Electrical Properties
+ Parameter                                    DuPont 951                   Ferro A6M
+ Dielectric Constant @3GHz                    7.8                          5.6
+ Dielectric Constant tolerance                ±0.2                         —
+ Loss Tangent @3GHz                           0.006                        0.002
+ Breakdown voltage (V/25µm)                   > 1000                       > 900
+ Note:
+ 1. Typical values are shown in this table.
+Conductor Parameters
+
+The cross sectional shape of a conductor embedded in an LTCC substrate is characterized as an ellipse. Cross-
+sectional views of the conductors depict shapes that are not rectangular, but shapes with thicker mid-sections
+and tapered edges. Ellipses are traced around the conductor’s outer edges and parameters such as width,
+thickness, and area is defined and based on the major and minor radii of the ellipses.
+
+Conductor Line Widths and                                                                      Conductor to Ceramic Edge
+Spacings (minimums, typical,                                                                   (minimums, typical, and
+and tolerances)                                                                                tolerances)
+
+
+
+
+Figure 8.1.1: Line Width and Line to Line Spacing                                              Figure 8.2.1: Conductor to Ceramic Edge
+
+Table 8.1.1: Line Width                                                                        Table 8.2.1: Conductor to Ceramic Edge Parameters
+                          Minimum                    Typical                Tolerance                                   Minimum                     Typical        Tolerance
+                           (mils)                    (mils)                  (mils)                                      (mils)                     (mils)          (mils)
+ (A)Printed                   3.0                      4.0                     ±1.0             (A)Printed                  4.0                       8.0            ±1.0
+                                                                                                Note:
+                                                                                                Conductor thickness is defined as the minor radius of an ellipse
+Table 8.1.2: Line to Line Spacing                                                               at the center of the conductor.
+
+                          Minimum                    Typical                Tolerance
+                           (mils)                    (mils)                  (mils)
+ (B)Printed                   3.0                      4.5                     ±1.0            Conductor Line Thickness
+ Notes:                                                                                        and Shape (minimum, typical,
+ 1. Cross-sectional views of the conductors depict an elliptical shape – therefore conductor
+    width is defined as the major diameter of a traced ellipse.
+                                                                                               and tolerances)
+ 2. Printed parameters characterized in DuPont 951 all silver conductorsystem.
+ 3. Printed parameters refer to a screen printing process.
+ 4. Parameters are applicable to exposed and buried layers.
+
+
+
+
+                                                                                               Figure 8.3.1: Conductor Thickness
+
+                                                                                               Table 8.3.1: Conductor Thickness Parameters
+                                                                                                                         Minimum                    Typical        Tolerance
+                                                                                                                          (mils)                    (mils)          (mils)
+                                                                                                (A)                         0.4                       0.5            ±0.2
+                                                                                                Note:
+                                                                                                Conductor thickness is defined as the minor radius of an ellipse
+                                                                                                at the center of the conductor.
+Conductor Parameters (continued)
+
+Conductor Cross-Sectional Area                                                           Conductor Layout
+and Elliptical Dimensions                                                                Recommendations
+(minimum, typical, and tolerances)
+                                                                                         The following are some general recommendations when laying
+                                                                                         out a multilayer circuit in LTCC.
+                                                                                         1. Ground and power plane layout recommendations – keep
+                                                                                            metallization to <50% of ceramic area for better adhesion
+                                                                                            of ceramic layer to ceramic layer and for better consistency
+                                                                                            of shrinkage through a panel; for buried metal layers, see
+                                                                                            example in Figure 3.5.1. For best practices, use a hatched
+                                                                                            ground plane where possible.
+                                                                                         2. Full metal coverage can be printed on exposed surfaces
+                                                                                            post firing.
+                                                                                         3. Relative even distribution of metal on any tape layer
+                                                                                            is recommended for consistent ceramic shrinkage
+                                                                                            during firing.
+
+Figure 8.4.1: Cross-Section of a Conductor with a Traced
+Ellipse. The minor and major radius of the ellipse is shown.
+These radii define thethickness, width,and elliptical area of
+the conductor lines.
+
+Table 8.4.1: Elliptical Parameters
+                                       Minimum               Typical         Tolerance
+ (A) Elliptical Area (mils2)                0.9                1.80               —
+ (B) Minor Radius (mils)                    0.2                0.25              ±0.1
+ (C) Major Radius (mils)                    1.5                2.25              ±0.5
+
+ Notes:
+ 1. Cross-sectional views of the conductors depict an elliptical shape – therefore the
+    elliptical area served as an accurate measurement for its area.
+ 2. The product of the majorradius, minor radius, and - serve as theformula for
+    calculating the elliptical area. A = B.C.-
+ 3. The major and minor radius also serve as a mathematical model to define the
+    cross-sectional shape of the conductors.                                             Figure 8.5.1: Buried Ground Plane, Metal Coverage <50%
+                                                                                         > Shows solid ground plane in buried layer – % coverage in
+                                                                                            active area <50%.
+                                                                                         > Metal is spread relatively evenly through the panel active
+                                                                                            area allowing even shrinkage.
+Via Parameters
+
+Via Diameter                                                                              Via Capture Pad
+(minimums, typical,                                                                       (minimums, typical, and
+and tolerances)                                                                           tolerances)
+
+
+
+
+Figure 9.1.1: Diameter of Vias                                                            Figure 9.3.1: Via Capture Pad
+Via diameter is defined as the narrowest point of the via                                 Dashed line represents a via. Label (A) represents the distance
+transition from layer to layer. Typically there is a via capture                          from the via’s edge to the edge of the capture pad.
+pad on the interconnected layers. The via capture pad is
+larger in diameter than the via leading to the cross sectional                            Table 9.2.1: Via Capture Pads
+pedestal shape shown.
+                                                                                           Parameter                               Minimum             Typical            Tolerance
+                                                                                                                                    (mils)             (mils)              (mils)
+Table 9.1.1: Via Diameter                                                                  (A) Via Capture Pad                          2                3.5                ±1.5
+                                                                                           Notes:
+                                        Minimum              Typical        Tolerance
+                                                                                           1. No capture pad is needed unless a trace is connected to thevia.
+ (A) 2 mil Tape Thickness                   3.4                4.5             ±1          2. In some cases, capture pads are omitted by design – i.e. a trace that is
+                                                                                              less than the via diameter can run over the via as a means of connection.
+ (A) 5 mil Tape Thickness                   3.4                4.5             ±1
+ (A) 10 mil Tape Thickness                  6.8                8.5             ±1
+ Notes:
+ 1. Via diameter must be less than 80% tape thickness.                                    Via Spacing and Layout
+                                                                                          (minimums, typical, and
+                                                                              CONDUCTOR
+                                                                              THICKNESS
+                                                                                          tolerances)
+
+
+
+
+                                                                             DIELECTRIC
+                                                                             THICKNESS
+ STACKED        STAGGERED       NON-HERMETIC      HERMETIC      THERMAL
+   VIAS            VIAS         THERMAL VIAS      THERMAL       SPREADING
+                                                    VIAS          VIAS
+
+
+
+Figure 9.2.1: Vias Definition, Cross Section
+                                                                                          Figure 9.4.1: Via Spacing and Layout
+
+                                                                                          Table 9.3.1: Via spacing and layout recommendations
+                                                                                           Parameter                               Minimum             Typical            Tolerance
+                                                                                                                                   (mils)              (mils)              (mils)
+                                                                                          (A) Via to Via Spacing                (1.5 x D) + D            —                   ±1
+                                                                                          (B) Via to Conductor Edge                     3                 4                  ±1
+                                                                                          (C) Via to Ceramic Edge                       3                 4                  ±1
+                                                                                           Note:
+                                                                                           1. Where “D” is via diameter.
+Via Parameters (continued)
+
+Table: 9.4.1: Design Guidelines Summary                                                     > Products with wider mechanical tolerances can be green
+                                                                                              state singulation for cost reduction.
+ Design Feature                          Standard Guides          Premium Guides
+ Tape Layer Count                        8-20 Layers              Up to 30 Layersb
+                                                                                            > Diamond saw dicing offers minimal dimensional deviation
+ Max. Substrate Size, Fireda             100 mm x 100 mm 100 mm x 100 mm
+                                                                                              for standard, rectangular shapes.
+ Thermal Vias, 95 ∝m Tape                250 ∝m Ø 10 mil  125 ∝m Ø 5 mil
+                                                          250 ∝m pitch 10 mil               Brazing
+ Thermal Vias, 215 ∝m Tape               250 ∝m Ø 10 mil          180 ∝m Ø                  > Conductors for successful brazing to LTCC are available for
+                                                                  300 ∝m pitch
+                                                                                              the primary tape systems. Please refer to Table 2.4.1 for the
+ Distance, Conductor to Edge             250 ∝m min. 10 mil 175 ∝m min.
+                                                                                              specific material choices.
+ Internal Ground/                        Grid: 50% Metal    Grid: 50% Metal
+ Power Plane Coverage                    Localized: 100%    Localized: 100%                 > To meet MIL Specification Visual Inspection Criteria, it is
+ Minimum Tape Layer Count or             8 Layers or 1 mm,        8 Layers or 1 mm.           recommendedthatthebrazingpad be30-40milslarger
+ Minimum Thickness                       Whichever is More        Whichever is More           than the lead or seal ringcomponent.
+ Notes: a) Typical with current tooling. Custom tooling will allow a maximum fired sizeof
+           160 x 160 mm. More complex size and shape designs can be addressed on an         > Gold-tin or gold-germanium soldering is recommended for
+           individual basis.
+        b) Up to 60 layers are possible with alternative processing techniques.
+                                                                                              most applications.
+
+
+Cavities
+                                                                                            Testing
+> Cavities are defined as openings or through-holes in the
+  LTCC design that are introduced into the green state                                      > DC electrical testing can be achieved with either an
+  structure prior to firing. Post-machined operations (CO2 laser                              electrical Net test (opens and shorts) or capacitor test. It is
+  drilling) are not included in the recommendations below.                                    required that the customer supply an ASCII Netlist per 356D.
+> Minimum distance of 100 mils must be maintained between                                   Passive Elements
+  adjacent cavities or through-holes, or between cavity walls
+  or through-holes and the part.                                                            > Inductors, resistors, and capacitors may all be integrated
+                                                                                              into a standard LTCC structure. Electrical characteristics are
+> Minimum cavity length and width are 100 mils. Maximum                                       achieved through a combination of design (e.g., surface real
+  ratio of cavity depth to minimum XY dimension is 1:1.                                       estate, one or more layers), inherent properties of the green
+  Preferred ratio is 1:2. Minimum radius on any corner of a                                   tape, and the material system chosen.
+  cavity is 20 mils.
+                                                                                            > Depending upon the material system, enhancement
+> Cavities with floors must have a minimum floor thickness of                                 materials exist to locally increase the dielectric constant
+  20 mils. Via and conductor limitations related to cavity walls                              for some capacitor ranges. Specifics must be reviewed on
+  or cavity shelves are the same as those listed in Table 9.4.1.                              a design-by-design basis.
+  Vias are listed in Table 8.2.1.
+                                                                                            > Buried resistors will exhibit a tolerance of ±30%. Surface
+> Cavities may have one or more intermediate, stepped                                         resistors may typically be laser trimmed using a Nd:YAG laser
+  shelves. Minimum shelf thickness is 20 mils. Minimum shelf                                  to ±2% to ±5%. Tighter tolerance requirements must be
+  width is 50 mils.                                                                           reviewed on a design-by-design basis. Resistor values are
+> Maximum combined surface area of cavity opening to total                                    limited by design and material availability, but typically run
+  part surface area is 60%. Preferred maximum is 40%.                                         between 10 Ω and 1 kΩ for buried resistors, and 1 Ω to 100
+                                                                                              MΩ for surface resistors. Minimum buried resistor size is 30 x
+Electroless Plating                                                                           30 mils; minimum surface resistor size is 20 x 20mils.
+> As a vertically integrated facility, TTM offers electroplating                            > Overcoat and solder-blocking materials are available as
+  (Ni/Au and Ni/Pb-Sn), and electroless plating (Ni/Au).                                      post-fired operations.
+
+Singulation
+> Primary methods for component singulation are: laser
+  machining and diamond saw, which may be used in
+  combination.
+> Singulation typically requires 60 mils of non-active area
+  surrounding the final circuit. For complex shapes, CO2
+  machining offers routing capability for the LTCC substrate.
+Multilayer Parameters
+
+Tape Layer Thickness                                                                     Conductor and Tape Collation/
+(minimum, typical, and                                                                   Layer to Layer Alignment
+tolerances)                                                                              (tolerance)
+
+
+
+
+Figure 10.1.1: Ceramic TapeLayer Thickness                                               Figure 10.2.1: Layer to Layer Alignment
+
+Table 10.1.1: Ceramic Tape Layer Thickness                                               Table 10.2.1: Layer to Layer Alignment
+ Parameter                               Minimum             Typical         Tolerance    Parameter                                Tolerance
+                                          (mils)             (mils)           (mils)                                                (mils)
+ (A) Tape thickness 2 mil                   1.45               1.7             ±0.25      (A & B) Layer to layer alignment           ±2.0
+ (A) Tape thickness 4.5 mil                 3.55               3.8             ±0.25
+ (A) Tape thickness 10 mil                  8.25               8.5             ±0.25
+ Notes:
+ 1. Tape thickness is defined as the distance between the centers of conductors in a
+    successive layer.
+ 2. Combinations of tape may be used to achieve alternative desired thickness.
+RF & Microwave Parameters
+
+Dielectric Constant Measurements
+Ring Resonators are used to measure the dielectric constant
+of available material sets. A ring resonator is a simple structure
+that is a 50Ω transmission line, one wavelength long at a
+fundamental frequency. The single wavelength transmission
+line ring has no discontinuity effects resulting in a standing
+wave pattern that resonates at every harmonic of the
+fundamental frequency. There is no reflection characteristic
+on the ring structure resulting in full wavelength resonances        Figure 11.1.1: Dual Ring Resonator Structure
+only. Energy is coupled onto and off the ring through two
+identical transmission lines that are separated from the ring
+by a 4 mil gap, resulting in a capacitive coupling effect.
+                                                                                           A
+The dielectric constant information is extracted from the                                                           B
+
+frequency of resonance at each harmonic allowing multiple DK                                                            Design Values
+(dielectric constant) estimates per structure. This                                                                     A = 9.6 mils
+information is somewhat independent of the quality of the                                                               B = 8.5 mils
+transmission line print allowing a very accurate estimate                                   C
+                                                                                                                        C = 4.5 mils
+of the material DK.                                                                                             D
+                                                                                                                        D = 20.4 mils
+
+Microstrip and Stripline ring resonators have been designed,
+fabricated and measured yielding DK data for DuPont 951
+material sets. DK is extracted from resonant frequency
+measurements using the following equations:                          Figure 11.1.2: Transmission Line Dimensions –
+                                                                     DuPont 951.
+Table 11.1.1: DK and effective DK:
+STRIPLINE RING RESONATORS
+   Material DK = (c*n/(fc*l))2
+MICROSTRIP RING RESONATORS
+   Effective DK = (c*n/(fc*l))2
+PARAMETERS
+  c = 3.0*108 (m/s)
+  n = Harmonicnumber
+  fc = Measured harmonic resonant frequency (Hz)
+  l = Resonator length (m)
+Dual ring resonator coupons designed to resonate at
+fundamental frequencies of 2, 3, 5, 7 and 11 GHz have been
+manufacturedandRFtestedat TTM-Salem.Theresonator
+coupon contains a microstrip structure and a stripline
+structure, forming two ring resonators in one block of ceramic.
+Figure 6.1.1 shows a single dual resonator coupon;figure
+                                                                     Figure 11.1.3: Typical Broadband 5GHz Ring Resonator
+6.1.2 shows a cross section of the dual resonator structure.
+                                                                     Response showing resonances at the first/second/third
+Figure 6.1.3 shows a typical broadband 5GHz ring resonator
+                                                                     and fourth harmonics.
+response.
+RF & Microwave Parameters (continued)
+
+The ring resonator coupons can be used to estimate lot to lot    Attenuation Per Unit Length vs.
+material dielectric constant (DK) and effective DK at multiple   Frequency Measurements
+frequencies; the 5GHz resonator has recently been used as a      Attenuation Lines: 50Ω Microstrip and Stripline transmission
+means of comparing process variation between firing              lines are used to measure attenuation vs. frequency. Lines of
+processes in a box oven and on a belt furnace.                   varying lengths are measured up to 20GHz and compared to
+                                                                 each other. All attenuation line data is normalized to a unit
+                                                                 length of one inch.
+
+                                                                 Table 11.2.1: Attenuation line lengths
+                                                                                      Microstrip Line         Stripline Line
+                                                                                     Length (inches)         Length (inches)
+                                                                  Line 1                   1.0                     1.1
+                                                                  Line 2                   1.0                     1.1
+                                                                  Line 3                  1.76                     1.86
+                                                                  Line 4                  1.76                     1.86
+                                                                  Line 5                  3.79                     3.89
+                                                                  Line 6                  16.35                   16.45
+                                                                  Line 7                  9.63                     9.73
+
+                                                                 Table 11.2.2: Calculated attenuation/unit length for
+                                                                 DuPont 951 stripline and microstrip transmission lines
+Figure 11.1.4: DK Estimates for DuPont 943 and
+                                                                                       Microstrip                Stripline
+DuPont 951 from stripline ring resonator measurements              Frequency     Attenuation/unitlength   Attenuation/unitlength
+                                                                     (GHz)                (dB)                     (dB)
+                                                                       2                 -0.15                    -0.24
+                                                                       3                 -0.19                    -0.29
+                                                                       4                 -0.23                    -0.35
+                                                                       5                 -0.28                    -0.40
+                                                                       6                 -0.32                    -0.46
+                                                                       7                 -0.36                    -0.52
+                                                                       8                 -0.40                    -0.57
+                                                                       9                 -0.45                    -0.63
+                                                                      10                 -0.49                    -0.68
+                                                                      11                 -0.53                    -0.74
+                                                                      12                 -0.57                    -0.80
+                                                                      13                 -0.62                    -0.85
+                                                                      14                 -0.66                    -0.91
+                                                                      15                 -0.70                    -0.96
+
+Figure 11.1.5: Effective DK Estimates for DuPont 943 and
+DuPont 951 from microstrip
+RF & Microwave Parameters (continued)
+
+Attenuation per unit length is an average of six line measurements – lines having differing
+lengths. Microstrip transmission lines are ~9mils in width and 0.5mils in thickness;
+stripline transmission lines are ~4.5mils in line width and 0.5mils in thickness.
+
+
+
+
+Figure 11.2.1: DuPont 951 Stripline Attenuation Lines –            Figure 11.2.2: DuPont 951 Microstrip Attenuation Lines –
+attenuation per unit length                                        attenuation per unit length
+

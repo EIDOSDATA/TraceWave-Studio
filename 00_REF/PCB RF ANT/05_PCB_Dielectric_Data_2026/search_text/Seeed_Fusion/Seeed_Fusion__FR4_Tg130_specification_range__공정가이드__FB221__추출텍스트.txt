@@ -1,0 +1,1973 @@
+DFM$V1.1$
+
+Revisions$in$this$version:$
+   3   Renamed$some$headings.$
+   3   Fonts$and$styles$changed.$
+   3   Reordered$content,$moved$design$considerations$to$the$front$and$component$layout$considerations$to$the$end$(figures$also$re3ordered).$
+   3   Removed$Appendix$(moved$to$section$6)$
+   3   Re3wrote$‘Files&for&Manufacture&Requirements’&chapter$and$moved$to$chapter$2.$
+   3   Restructure$so$all$new$chapters$start$on$a$new$page.$
+   3   Added$a$gap$between$the$section$number$(e.g.$[1])$and$the$first$word.$
+   3   Edited$layout$of$specification$to$fit$on$exactly$3$pages.$
+   3   Formatted$specification$table$and$most$other$tables$(centered,$corrected$spacing,$capitalized$headings).$
+   3   Added$unit$conversions$for$some$entries$(mil/mm)$and$rounded$some$units.$
+   3   Removed$‘’$sign$where$the$word$‘minimum’$was$already$used.$
+   3   Added$new$points$([7],$[8]$and$[19]).$
+   3   Removed$point$[82]$–$not$relevant.$
+   3   Reworded$point$[23]$Surface$Array$Device$clearance$area.$
+   3   Removed$‘Description:’$labels$since$they$are$not$necessary.$
+   3   Changed$wording$from$required$to$recommended,$since$many$of$the$stricter$requirements$apply$only$to$advanced$designs$but$will$still$be$accepted$
+       for$simpler$designs.$
+   3   Silkscreen$requirements$changed$to$optional.$
+   3   Re3wrote$chapter$on$vias$to$a$chapter$on$drill$holes$in$general$that$is$consistent$with$the$specification.$
+   3   Changed$recommended$stamp$hole$width$from$5mm$to$6mm$(consistent$with$1.5mm$hole$spacing).$
+   3   Removed$section$‘[12]&Symmetrical&Panelization’$3$not$relevant.$
+   3   Removed$1/3$stamp$hole$recommendation$–$not$consistent.$
+   3   Modified$figures,$descriptions$and$layout.$Major$changes$(numbers$refer$to$the$old$document):$
+             o     Figures$1/2/3/4//5/7/8/10/13/14/16/17/21/25/26/28/32/36/43/55$corrected$conversion$errors.$
+             o     Figures$2/5/31/32/39/40/45/46/47/48/49/51$redesigned.$
+             o     Grouped$all$chapter$14$figures$into$one$figure.$
+             o     Direction$of$Travel$renamed$to$Processing$Direction.$
+             o     Removed$unnecessary$labels.$
+   3   Modified$and$removed$tables.$Major$changes:$
+             o     Removed$table$7/10/11$–$pointless/incomplete/inaccurate.$
+             o     Changed$values$in$Table$8$to$match$specification.$
+             o     Removed$last$two$columns$of$Table$6.$
+                                                                         CONTENTS
+
+
+1. Brief Introduction ........................................................................................................................3
+2. Seeed Fusion PCB Specification ............................................................................................4
+   2.1      Required Manufacturing Files..................................................................................................................... 4
+   2.2      PCB Gerber File............................................................................................................................................ 4
+   2.3      PCB Specification for FR4-TG130............................................................................................................. 5
+3. PCB Lamination Structure.........................................................................................................8
+   3.1      Layer Structure.............................................................................................................................................. 8
+4. PCB Dimensions Specification ............................................................................................... 9
+   4.1      Manufactured PCB Dimensions..................................................................................................................9
+5. Surface Treatments................................................................................................................... 11
+   5.1      Hot Air Solder Leveling (HASL)................................................................................................................ 11
+      5.1.1     Process Requirements...........................................................................................................................11
+      5.1.2     Range of Applications.............................................................................................................................11
+   5.2      Electroless Nickel Immersion Gold (ENIG).............................................................................................11
+      5.2.1     Process Requirements...........................................................................................................................11
+      5.2.2     Range of Applications.............................................................................................................................11
+   5.3      Organic Solderability Preservatives (OSP).............................................................................................11
+6. PCBA Constructions................................................................................................................. 12
+7. Copper Trace Design ............................................................................................................... 13
+   7.1      Trace Width, Spacing and Routing Recommendations....................................................................... 13
+   7.2      Solder Pad to Trace Connections............................................................................................................ 14
+   7.3      Copper Pour Design Requirements.........................................................................................................16
+8. Solder Mask Design ................................................................................................................. 17
+   8.1      Solder Mask Design for Copper Traces.................................................................................................. 17
+   8.2      Solder Mask Design for Holes.................................................................................................................. 17
+      8.2.1     Via Holes.................................................................................................................................................. 17
+   8.3      Alignment Holes.......................................................................................................................................... 17
+      8.3.1     Positioning Holes.................................................................................................................................... 18
+      8.3.2     Buried and Plugged Vias....................................................................................................................... 18
+   8.4      Solder Pad Solder Mask Design.............................................................................................................. 19
+   8.5      Gold-Finger Solder Mask Design............................................................................................................. 20
+9. Silkscreen Design .....................................................................................................................21
+   9.1      Silkscreen Design Considerations........................................................................................................... 21
+   9.2      Silkscreen Contents....................................................................................................................................21
+10. Hole Design ................................................................................................................................ 23
+   10.1     Plated and Non-Plated Drill Holes........................................................................................................... 23
+      10.1.1       General Hole Spacing........................................................................................................................23
+      10.1.2       Via Hole Clearance Area................................................................................................................... 23
+
+
+                                                                                    1
+  10.2      Mechanical Hole Design............................................................................................................................ 23
+     10.2.1        Hole Types........................................................................................................................................... 24
+     10.2.2        Spacing Requirements...................................................................................................................... 24
+11. Fiducial Mark Design ............................................................................................................... 25
+  11.1      Classification................................................................................................................................................25
+  11.2      Fiducial Mark Structure.............................................................................................................................. 25
+     11.2.1        Panel Fiducial Marks and Image Fiducial Marks.......................................................................... 25
+     11.2.2        Local Fiducial...................................................................................................................................... 25
+  11.3      Position of Fiducials....................................................................................................................................26
+     11.3.1        Panel Fiducial Marks..........................................................................................................................26
+     11.3.2        Image Fiducial Marks.........................................................................................................................27
+     11.3.3        Local Fiducial Marks.......................................................................................................................... 27
+12. Panelization and Bridge Design.............................................................................................28
+  12.1      V-CUT Scoring.............................................................................................................................................28
+  12.2      Stamp Hole Design.....................................................................................................................................29
+  12.3      Panelization..................................................................................................................................................29
+  12.4      Panelization Methods for Irregularly Shaped PCBs..............................................................................32
+13. Component Layout Considerations......................................................................................33
+  13.1      General Component Layout Requirements............................................................................................33
+  13.2      Reflow Soldering......................................................................................................................................... 34
+     13.2.1        General Requirements for SMD Components...............................................................................34
+     13.2.2        SMD Component Placement Requirements..................................................................................34
+     13.2.3        Through-Hole Component Layout Requirements for PCBs Undergoing Reflow Soldering.. 37
+  13.3      Wave Soldering........................................................................................................................................... 37
+     13.3.1        SMD Component Layout Requirements for PCBs Undergoing Wave Soldering....................37
+     13.3.2        Common Through-Hole Component Layout Requirements........................................................40
+     13.3.3        General Requirements For Wave Soldering Through Hole Components................................ 40
+
+
+
+
+                                                                                   2
+1. Brief Introduction
+      Seeed is a hardware innovation platform for makers to grow inspirations into differentiating products
+and offers accessible technologies with quality and delivery guarantee. Seeed Fusion Service offers one-
+stop prototyping service for PCB (Printed Circuit Board) service, PCBA (PCB Assembly) service and other
+electronic and mechanical customized services (like CNC Milling, 3D Printing, PCB Layout Service).
+
+     Seeed has been in the electronics industry for more than 9 years and has accumulated a great deal
+of manufacturing experience. To help bridge the gap between design and manufacture and put into
+practice our company values “Grow the Difference”, which aims to help more people make their product
+come true, we have summarized our 9 years of manufacturing experience in this manual.
+
+     Since we are not a professional publisher, there may be some incorrect spellings or vague
+expressions in this manual, we really appreciate your feedback to help us improve the manual together.
+We will keep upgrading this manual to make it beneficial to the whole community, if you have any advice
+or suggestions, please contact us at: (fusion@seeed.cc). For more information about the latest prototype
+service and specification, please head to our website www.seeedstudio.com
+
+    This specification defines the design parameters for PCB design from a DFM point of view, including
+the shape, lamination construction, Fiducial design, component layout, conductive traces, holes, solder
+mask, surface treatments, silk screen design, and so on.
+
+
+
+
+                                                    3
+2. Seeed Fusion PCB Specification
+2.1 Required Manufacturing Files
+
+      [1]          PCB (Printed Circuit Board) only Service:
+            Copper Circuit layers, Soldermask layers (one for each circuit layer), Silkscreen layers (optional),
+            Mechanical layer (one per file), Drill file (one per file).
+      [2]          PCBA (Printed Circuit Board and Assembly) Service:
+            Same as PCB service plus Bill of Materials (BOM).
+      [3]          Stencil Service: Solder Mask / Solder Paste layer. Both Top and Bottom mask / paste
+            layers can be etched onto the same stencil if the effective area of the stencil is large enough to
+            accommodate both layers.
+
+
+2.2 PCB Gerber File
+
+The Gerber format is an open 2D binary vector image file format. It is the standard file used by the printed
+circuit board (PCB) industry and software to describe the layers of a board: copper layers, solder mask,
+silkscreen, etc. Gerber files should be contained inside a single .rar or .zip archive with the following
+standard file extensions:
+
+
+                                Extension                                   Layer
+                              pcbname.GTL                                 Top Copper
+                              pcbname.GTS                             Top Soldermask
+                              pcbname.GTO                              Top Silkscreen
+                              pcbname.GBL                             Bottom Copper
+                              pcbname.GBS                           Bottom Soldermask
+                              pcbname.GBO                            Bottom Silkscreen
+                              pcbname.TXT                                    Drill
+                          pcbname.GML/GKO                       Mechanical / Board Outline
+                              pcbname.GL2                       Inner Layer 2 ( for ≥ 4 layer)
+                              pcbname.GL3                       Inner Layer 3 ( for ≥ 4 layer)
+
+
+Notes:
+   1. Gerber files must be in RS-274x format.
+   2. The drill file should be in Excellon format.
+   3. Gerber files and the Drill file must be stored in the same folder/archive.
+   4. The board outline must be provided.
+
+
+
+
+                                                            4
+2.3 PCB Specification for FR4-TG130
+
+                                                          Units: mm [mil] where applicable
+          ITEM                   DESCRIPTION                    SPECIFICATION
+
+                                                                    10 * 10mm
+                                                       Tip: If your board width is smaller
+                              Minimum dimensions        than this size, you can make a
+    Board Dimensions                                     bigger panel and use slots to
+                                                               separate the boards.
+                               Maximum dimensions                 500 * 500mm
+  Available Board Layers                                           1 - 16 layers
+
+                            Minimum pieces per order                 5 pieces
+ Available Board Quantity
+                            Maximum pieces per order               8000 pieces
+
+   Dielectric Constant                                               4.2 - 4.7
+
+  Dielectric Separation
+                                                                    0.075 - 5.0
+       Thickness
+                                                               0.6 / 0.8 / 1.0 / 1.2 /
+                                   1-2 layers
+                                                                1.6 / 2.0 / 2.5 / 3.0
+                                      4 layers         0.8 / 1.0 / 1.2 / 1.6 / 2.0 / 2.5 / 3.0
+                                   6-8 layers            1.0 / 1.2 / 1.6 / 2.0 / 2.5 / 3.0
+     Available Board
+       Thickness                   10 layers                 1.2 / 1.6 / 2 / 2.5 / 3.0
+                                   12 layers                   1.6 / 2.0 / 2.5 / 3.0
+                                   14 layers                      2.0 / 2.5 / 3.0
+                                   16 layers                         2.5 / 3.0
+     Available Board
+                                                                 1oz. 2oz. 3oz.
+     Copper Weights
+
+    Board Thickness
+                                                                      ± 10%
+       Tolerance
+
+
+
+
+                                                            For 1oz: 4mil, 5mil, 6mil
+                                                          [0.1mm, 0.13mm, 0.15mm]
+     Minimum Trace
+    Width and Spacing                                       For 2oz: 10mil [0.25mm]
+
+                                                            For 3oz: 15mil [0.4mm]
+
+
+
+
+                                            5
+Minimum Trace Width
+   in Inner Layers
+ (for 4 layer boards)
+
+                                                6mil
+
+
+
+
+  Minimum Distance                         For 1oz ≥ 8mil
+  Between Trace and                        For 2oz ≥ 12mil
+     Copper Pour                           For 3oz ≥ 15mi
+
+
+
+
+  Minimum Distance
+                                                12mil
+    Between Vias
+
+
+
+
+  Minimum Distance
+                                                12mil
+Between PTH and Trace
+
+
+
+
+    Annular Rings                          ≥ 0.15mm [6mil]
+
+
+
+
+ Outer Layer Copper
+                                    0.035 - 0.07mm (for 1oz - 2oz)
+     Thickness
+
+
+
+
+ Inner Layer Copper
+                                          0.017 (for 0.5oz)
+      Thickness
+
+
+Drilling Hole Diameter
+                                             0.2 - 6.5mm
+      (Mechanical)
+
+                                              Standard:
+                                         ≥ 0.32mm for Green
+  Minimum Width of                    ≥ 0.35mm for other colors
+  Soldermask Dam                          Limit (costs extra):
+                                         ≥ 0.10mm for Green
+                                      ≥ 0.13mm for other colors
+
+Diameter of Castellated
+                          Minimum              0.6mm
+        Holes
+
+                               6
+  BGA Pad Dimensions
+(for track spacing/width)
+
+                                                               For 6mil ≥ 0.45mm
+                                                               For 5mil ≥ 0.35mm
+                                                               For 4mil ≥ 0.25mm
+
+
+
+
+  Minimum Circuit to
+                                                                    0.3mm
+    Edge Spacing
+
+
+
+
+  Minimum Distance
+  Between Inner Trace                                            0.2mm [8mil]
+      and NPTH
+
+
+
+
+  Minimum Silkscreen                                         Height ≥ 0.6mm [23mil]
+  Height / Trace Width                                     Trace Width ≥ 0.1mm [4mil]
+
+
+Perfect Aspect Ratio for
+                                                                      1:5
+    Silkscreen Text
+                                  If soldermask is
+       Silkscreen                                             Silkscreen is WHITE
+                            Green/Red/Yellow/Blue/Black
+          Color
+                               If soldermask is White         Silkscreen is BLACK
+
+
+  Minimum Distance
+    Between Pad                                                  0.15mm [6mil]
+    and Silkscreen
+
+
+
+   Minimum Milling
+                                                                    0.8mm
+      Slot Width
+
+     Slot Tolerance
+                                                                   ± 0.15mm
+      (Mechanical)
+                                     Minimum                      70 * 55mm
+  Board Dimensions                   Maximum                     380 * 380mm
+    for V-cutting              Minimum Sub-Board
+                                                                   8 * 8mm
+                                   Dimensions
+                            Varies according to specific
+ PCB Production Time                                          3 - 14 working days
+                                  board features
+
+                                            7
+3. PCB Lamination Structure
+3.1 Layer Structure
+
+    [4]      For PCB lamination, there are generally two design types: Copper foil structure and Core
+    board structure. The Core board type is used in special multilayered boards and mixed boards.
+
+
+
+
+                                     Figure 1: PCB lamination types.
+    [5]      0.5oz copper foil is generally used for the copper in the outer layers, whereas 1oz copper
+    foil is generally chosen for the inner layers. Core boards with asymmetric thicknesses should be
+    avoided in the inner layers.
+    [6]      Symmetrical design considerations include the thickness of pre-preg (pre-impregnated)
+    layers, the type of resin used, the thickness of the copper foil and the type of layer distribution
+    (copper foil layer, circuit layer). The layout should be as symmetrical as possible about the
+    symmetry axis.
+
+
+                                                                          Hoz
+
+                                                                          10mil
+
+                                                                          1oz
+                                                                          12mil
+                                                                          1oz
+
+
+                                                                          1oz
+                                                                          12mil
+                                                                          1oz        Axis of
+                                                                                    symmetry
+                                                                          10mil
+
+                                                                          Hoz
+
+
+
+                               Figure 2: Symmetrical board layer design.
+
+
+
+
+                                                     8
+4. PCB Dimensions Specification
+4.1 Manufactured PCB Dimensions
+
+    [7]       The maximum board dimensions is 500 * 500mm, and the minimum boards dimensions is
+    10 * 10mm.
+    [8]       The maximum board thickness is 3mm and the minimum is 0.6mm (1-2 layers only).
+                                                                     X
+
+
+                                                                                            D
+
+
+                       Y
+
+
+
+
+                                                                              Z
+
+
+              R                               Processing Direction
+
+
+
+                                   Figure 3: PCB dimensions description.
+
+
+    [9]       Recommended PCB width-to-thickness ratio = Y / Z ≤ 150.
+  [10]        Recommended PCB length-to-width ratio = X / Y ≤ 2.
+  [11]        For board thicknesses of less than 0.8mm, the copper foil should be evenly distributed to
+    prevent board bending. If there are many small boards, use of a fixture is recommended.
+  [12]        If the primary side does not meet the clearance area requirements, then the addition of a
+    margin of a width greater than 5mm, along the direction of travel is recommended.
+
+
+
+
+                     Margin                                                       ≥5mm
+
+                                                    Processing Direction
+
+
+
+
+                                   Figure 4: PCB minimum margin dimensions.
+  [13]        The body of components must not exceed past the edge of the PCB, and must satisfy the
+    following:
+          z       The minimum distance from the edge of the solder pad (or component body) to the
+                  primary side must be less than 5mm.
+          z       For non-reflow soldering, when a component protrudes out from the PCB, the width of
+                  the margin is as follows:
+
+
+                                                           9
+                                            Overhanging
+                                            Components
+
+
+
+
+                                                                                   ≥3mm
+
+                                  Processing Direction
+
+
+             Figure 5: Protruding component margin requirements.
+z   For non-reflow soldering, when a component protrudes out from the PCB, the component
+    must fit into the margin with 0.5mm clearance as shown in Figure 6.
+
+
+
+
+                                        ≥3mm
+
+           Processing Direction                          The gap should be 0.5mm larger than the
+                                                           component embedded in the margin
+
+
+
+           Figure 6: Protruding component margin gap requirements.
+
+
+
+
+                                            10
+5. Surface Treatments
+5.1 Hot Air Solder Leveling (HASL)
+
+5.1.1    Process Requirements
+
+
+        [14]      The PCB is covered with molten tin-silver alloy and the excess is blown off using hot air.
+        The resulting alloy coating on the exposed copper surfaces must be between 1µm to 25µm.
+
+5.1.2    Range of Applications
+
+
+        [15]     Using HASL, it is difficult to control the thickness of the coating and preserve the precise
+        shape of the copper pads. It is not recommended for PCBs with fine pitch components since the
+        copper pads of fine pitch components typically need to be flatter. In addition, the thermal shock of
+        the HASL process may cause the PCB to warp. Therefore ultra-thin PCBs with a thickness of less
+        than 0.7 mm are not recommended to undergo this type of surface treatment.
+
+
+5.2 Electroless Nickel Immersion Gold (ENIG)
+
+5.2.1    Process Requirements
+
+
+        [16]     Electroless Nickel Immersion Gold (ENIG) is a surface treatment involving plating the
+        copper pads with nickel then immersion gold to help prevent it from oxidation. PCB copper metal
+        surfaces treated with ENIG must have a nickel coating thickness of 2.5µm-5.0µm, and the
+        immersion gold (99.9% pure gold) layer thickness must be 0.08µm-0.23µm.
+
+5.2.2    Range of Applications
+
+
+        [17]     Due to the resulting flat surface, this process is suitable for PCBs with fine pitch
+        components.
+
+
+5.3 Organic Solderability Preservatives (OSP)
+
+        [18]     This process covers the exposed copper pads with a thin coat of an organic compound.
+        Currently, the only recommended organic formula is Enthone's Entek Plus Cu-106A, which results in
+        a thickness of 0.2µm-0.5µm. Because of the incredibly flat coating, it is especially popular with
+        PCBs with fine pitch components.
+
+
+
+
+                                                       11
+6. PCBA Constructions
+
+   [19]     PCBs can be designed to have only surface mounted components (SMT), through hole
+   components or both, on one layer or both top and bottom layers.
+
+
+
+
+                                       Single Sided SMT Mounting
+
+
+
+
+                                      Single Sided Mixed Mounting
+
+
+
+
+                                      Double Sided SMT Mounting
+
+
+
+
+                               Wave-Soldered Double Sided Mixed Mounting
+
+
+                              Figure 7: Types of PCB constructions.
+
+
+
+
+                                                  12
+7. Copper Trace Design
+7.1 Trace Width, Spacing and Routing Recommendations
+
+  [20]          The width and spacing of copper traces vary according to the thickness of the copper
+     material and which layer the trace is located. The minimum trace widths and spacing for inner and
+     outer layers of various copper thicknesses is shown in table 1.
+
+
+Table 1: Minimum trace widths and spacing.
+
+         Copper                  Outer Layer Trace                   Inner Layer Trace
+      Thickness (oz)           Width and Spacing (mil)             Width and Spacing (mil)
+            1                             4                                   6
+            2                             6                                   6
+            3                             8                                   6
+
+
+  [21]          For outer layers, the distance between the trace and copper pads should satisfy the
+     requirements shown in figure 8.
+
+
+
+
+                                              ≥ 2mil
+                                                                 ≥ 2mil
+
+
+
+                        Figure 8: Recommended spacing between trace and pads.
+  [22]          The distance between outer layer traces, inner layer power/ground planes and ground bus
+     traces to the board edge should be greater than 20mil.
+  [23]          There should not be any traces going through the metal shell of components (e.g.
+     heatsink). The region of the components’ metal shell should have a 1.5mm clearance area around
+     the components’ perimeter.
+                                                               1.5mm
+
+                                       1.5mm
+
+
+
+
+                        Figure 9: Clearance area of components with metal cases.
+
+
+                                                       13
+  [24]         Distance from the trace to non-plated through holes is summarised in table 9.
+
+
+Table 2: Recommended distance between the trace and the edge of NPTHs.
+   Aperture Size                 Distance From the Trace to the Hole Edge
+                                 Mounting hole                      Refer to Mounting hole design
+   NPTH < 80mil
+                                 Non Mounting hole                  8mil
+                                 Mounting hole                      Refer to Mounting hole design
+   80mil < NPTH < 120mil
+                                 Non Mounting hole                  12mil
+                                 Mounting hole                      Refer to Mounting hole design
+   NPTH > 120mil
+                                 Non Mounting hole                  16mil
+
+
+
+7.2 Solder Pad to Trace Connections
+
+  [25]         Asymmetry should be avoided in the trace and connected solder pads.
+
+
+
+
+                              Figure 9: Symmetric and asymmetric traces.
+
+
+  [26]         Traces should start from the center of solder pads and not run through the pads.
+
+
+
+
+                           Figure 10: Starting position of the trace to the pad.
+
+
+
+
+                                                     14
+                            Figure 11: Poor trace and pad alignment.
+[27]       When the width of the trace is wider than the pad, the trace should not overlap the pad.
+  The trace width should be reduced at the point of contact as shown in figure 12. When adjacent pins
+  of fine pitch components need to be connected, the trace should not run directly between the pads.
+  Instead, it should run outside of the row and connect as shown in figure 13.
+
+
+
+
+             Figure 12: Connecting the trace and pad when the trace width is larger.
+
+
+
+
+                  Figure 13: Connecting adjacent pads of fine pitch components.
+
+
+                                                15
+  [28]          The below designs are recommended for ensuring a strong connection between a trace
+    and hole.
+
+
+
+
+                            Filleting          Corner Entry         Key Holing
+
+
+                           Figure 14: Connections between the trace and holes.
+
+
+7.3 Copper Pour Design Requirements
+
+  [29]          When the traces on the same layer are unevenly distributed, or the copper distribution in
+    different layers is asymmetric, including a hatched style copper pour grid into the design is
+    recommended.
+  [30]          If there is a large section of the board without copper, copper pour can be used to even out
+    the copper distribution.
+  [31]          Recommended copper grid size is about 25mil x 25mil.
+
+
+
+                                                                          Size of an individual
+                                                                          square: 25 x 25mil
+
+
+
+
+                                        Figure 15: Copper grid design.
+
+
+
+
+                                                     16
+8. Solder Mask Design
+8.1 Solder Mask Design for Copper Traces
+
+        [32]     Generally, solder mask is designed to cover copper traces, but in special cases, the traces
+        can be exposed according to the specific purposes.
+
+
+8.2 Solder Mask Design for Holes
+
+8.2.1     Via Holes
+
+
+        [33]     Via holes should have solder mask openings on both sides of the board, centered about
+        the hole, as shown in Figure 16. The required diameter of the opening should be D + 5mil where D
+        is the diameter of the plated hole.
+
+
+                                                        D + 5mil      Solder Mask
+
+
+                                                            D
+
+
+
+
+                                    Figure 16: Solder Mask opening for via holes.
+
+
+8.3 Alignment Holes
+
+   [34]          For metallic rivet holes, the solder mask opening should be centered about the rivet hole
+        with a diameter + 6mil of the plated pad, on both sides.
+                                                     D + 6mil
+
+
+                                                       D
+
+
+
+
+                               Figure 17: Metallic rivet hole solder mask opening.
+
+
+   [35]          For non-plated rivet holes, the solder mask opening should be greater than the clearance
+        area for the screw head.
+
+
+
+
+                                                       17
+                                                                D
+
+
+
+
+                                  D ≥ Clearance area of the installation screw head
+
+
+                             Figure 18: Non-metallic rivet hole solder mask opening.
+
+
+   [36]          The solder mask openings for Type A wave soldered holes should satisfy:
+
+                                                                                                 d + 5mil
+
+
+                                          d
+                                     D
+
+
+
+
+                               Bottom Side                                            Top Side
+                  D ≥ Clearance area of the screw head
+
+
+                            Figure 19: Type A mechanical hole solder mask opening.
+
+8.3.1     Positioning Holes
+
+
+   [37]          For non-plated holes, the solder mask opening on both sides of the board should be D +
+        10mil, concentric about the hole, where D is the diameter of the hole. As shown in Figure 20.
+
+
+                                                         D + 10mil
+
+                                                            D
+
+
+
+
+                       Figure 20: Solder mask opening for non-plated mechanical holes.
+
+8.3.2     Buried and Plugged Vias
+
+
+   [38]          Internal vias (or buried vias) do not require solder mask openings on either side of the
+        board.
+   [39]          For PCBs requiring wave soldering, or if the board has BGA (or CSP) with a pitch smaller
+        than 1.00mm, the BGA via holes should be plugged.
+   [40]          If an in circuit testing (ICT) point is added under the BGA, it is recommended to lead out
+        the testing pad from the via hole as shown in figure 21. The diameter of the test pads should be
+        32mil with a solder mask opening of 40mil.
+
+                                                                18
+                                          Figure 21: BGA Testing pad.
+  [41]       If the PCB does not require wave soldering, and the pitch of BGA components is greater
+    that 1.00mm, then there is no need for plugged vias. The BGA via itself can be used as a test point.
+    The top side solder mask opening should be 5mil bigger than the diameter of the hole. The bottom
+    side testing pad should the same as [40] above.
+
+
+8.4 Solder Pad Solder Mask Design
+
+  [42]       Solder mask design for copper pads should follow figure 22.
+
+
+
+
+                       Non-soldered pad                            Soldered pad.
+
+
+                          Figure 22: Solder mask openings for copper pads.
+
+
+  [43]       Since PCB manufacturers have limited precision and limits on the minimum width of solder
+    mask openings, solder mask openings should be at least 6mil bigger than pad size (3mil each side),
+    with a minimum solder mask bridge width of 3mil. There must be solder mask separating pads and
+    holes to prevent solder bridges from forming and causing short circuits.
+
+
+                                                                  A = 3mil
+
+                             Rectangular
+                                Pad
+                                                     A                  Via
+
+
+
+                                                         A
+
+                                                                  A
+                                                 A
+
+
+
+
+                                            Circular Pad
+
+
+
+              Figure 23: Solder mask openings and material widths for various copper pads.
+                                                           19
+  [44]       Groups of SMD pads less than 0.5mm (20mil) apart or less than 10mil between the pad
+    edges do not need solder mask to separate them and can be opened as a group. See figure 24.
+
+
+
+
+                                                                          B
+                                                                          A
+                                      A ≤ 0.5mm or B ≤ 10mil
+
+
+
+                     Figure 24: Solder mask openings for fine pitch SMD components.
+
+
+  [45]       Solder mask openings are recommended for heatsink contacts.
+
+
+8.5 Gold-Finger Solder Mask Design
+
+  [46]       The copper pads of gold-finger connectors should open up the solder mask together. The
+    top of the pads (where the trace is connected) should be opened flush with the solder mask material,
+    and the bottom end solder mask opening should close beyond the edge of the board, as shown in
+    figure 25.
+
+
+                                       Solder mask opens where trace and pads meet
+
+
+
+
+                                                                                Board edge
+
+
+                 Panel
+                 Margin
+
+                                          Solder mask opens beyond the bottom edge
+
+
+                            Figure 25: Solder mask opening for a gold-finger.
+
+
+
+
+                                                     20
+9. Silkscreen Design
+9.1 Silkscreen Design Considerations
+
+  [47]         General Recommendations
+         z   The width of the silkscreen line should be greater than 5mil. Designers must ensure that the
+             silkscreen character’s height is large enough to be read by the naked eye (recommended >
+             50mil).
+         z   Recommended spacing between silkscreen objects is > 8mil.
+         z   The silkscreen must not overlap with solder pads or Fiducials. The minimum spacing
+             between both is 6mil.
+         z   White should be the default silkscreen ink color. Special requirements should be specified in
+             the PCB’s drill hole layer
+         z   For high-density PCB design, the contents of the silkscreen can be chosen according to
+             specific requirements. Any silkscreen text should follow the convention of left to right, top to
+             bottom.
+
+
+9.2 Silkscreen Contents
+
+  [48]         The contents of the silkscreen can include PCB name, version, component serial number,
+    polarity and direction label, barcode box, mounting hole location code, component footprint, board
+    direction of travel indicator, anti-static label, heatsink label, etc.
+  [49]         PCB board name and version:
+     Board name and version should be placed on the top side of the PCB. The font should be chosen
+    such that it can be easily read. The top and bottom sides of the PCB should also be marked with ‘T’
+    and ‘B’ (or similar).
+  [50]         Barcode (optional):
+         z   The barcode should be orientated horizontally or vertically on the PCB, refrain from
+             orientating the barcode at any other angle.
+         z   The recommended position of the bar code on a typical board is shown in the figure below;
+             the position on non-standard boards can use this for reference.
+
+
+
+
+                                                 Sequence
+
+
+
+
+                              Figure 26: Barcode recommended positioning.
+
+                                                       21
+[51]          Component silk screen:
+       z    Component labels, mounting holes and positioning holes must be indicated on the silkscreen
+            clearly and should be located by the relevant features.
+       z    Silkscreen characters, polarity and direction labels must not be covered by components.
+       z    For components installed horizontally (such as lying electrolytic capacitors), the silkscreen
+            should include the component outline on the corresponding position.
+[52]          Processing Direction
+       For the PCBs that are required to be fed into equipment, such as wave soldering equipment, in
+  a specific orientation, the direction of travel should be indicated on the board. This is also suitable
+  for PCBs with solder thieves and teardrop solder pads.
+[53]          Heatsink:
+       For power PCBs that require a heatsink, if the projected area of the heatsink is larger than the
+  component, the actual size must be indicated on the silkscreen.
+[54]          Anti-Static Label:
+           The anti-static silk screen should preferentially be placed on the top side of the PCB.
+
+
+
+
+                                                    22
+10. Hole Design
+10.1    Plated and Plated Drill Holes
+
+10.1.1 General Hole Spacing
+
+
+
+                                      Drill holes           Plated Holes
+
+                                          D                      D
+
+
+
+
+                                                                      6mil
+
+
+                                               12mil          12mil             Surface Trace
+
+
+
+                                                                                  Inner Traces
+
+
+
+                                                                         6mil   Surface Trace
+
+
+
+                                  Figure 26: Spacing requirements for holes.
+
+
+       [55]      Here, we define D, as the minimum diameter of the finished drill hole from wall to wall of
+       the PCB material. Where the wall or edge is defined as the bare PCB material wall and the plated
+       walls include the metallized edge. See figure 26. The minimum diameter of the finished drill hole is
+       0.2mm. For plated holes, the actual finished diameter will be smaller than this.
+       [56]      The minimum spacing between the edges of two holes must be greater than 12mil,
+       whether plated or not. For plated holes, the measurement of the distance does not include the
+       plating material and is especially important to prevent ion migration (leakage of plating material
+       within layers).
+       [57]      For plated holes, the plated walls must be at least 12mil away from the edges of surface
+       copper traces.
+       [58]      For boards with inner copper layers, the inner traces must be 6mil away from the edge of
+       the copper pad of plated holes. This is also to reduce the risk of ion migration.
+
+
+
+10.1.2 Via Hole Clearance Area
+
+
+       [59]      Via holes must not overlap solder pads.
+       [60]      Via holes should not be in a region that extends 1.5mm from the metal shell of any
+       components.
+
+
+                                                       23
+10.2     Mechanical Hole Design
+
+10.2.1 Hole Types
+
+
+Table 3: Recommended hole designs according to function
+
+                                                Non-Metallic        Metal Plated        Non-Metallic      Board Positioning
+    Soldering Process       Metal Fastener
+                                                 Fastener              Rivet               Rivet             (Fiducials)
+
+       Wave soldering           Type A
+
+                                                  Type C               Type B                          Type C
+         Non Wave
+         soldering
+                                Type B
+
+
+
+
+                                                                                                   Non-plated hole
+                      Non-plated hole                           Plated hole
+                                                                                                      (no pad)
+
+
+
+
+                                              Large pad
+
+
+
+
+       Small plated
+         holes
+
+
+                           Type A                                 Type B                              Type C
+
+
+                                          Figure 26: Structure of mechanical holes.
+
+10.2.2 Spacing Requirements
+
+
+Table 4: Recommended spacing of mechanical holes according to purpose.
+
+
+                             Purpose           Fastener Diameter (mm)         Surface Clearance Diameter (mm)
+
+                                                           2                                7.1
+                                                          2.5                               7.6
+                          Screws Holes                     3                                8.6
+                                                           4                                10.6
+                                                           5                                12
+                                                           4                                7.6
+                           Rivets Holes                   2.8                                6
+                                                          2.5                                6
+
+                        Positioning/Tooling                                   Mounting metal component Maximum
+                                                          ≥2
+                            Holes, etc.                                              Clearance Area + A*
+
+                * Where ‘A’ is the minimum spacing between the hole and the trace, with no minimum copper area in the inner layer.
+
+
+
+
+                                                                  24
+11. Fiducial Mark Design
+11.1      Classification
+
+   [61]         Fiducial marks are divided into three categories according to their position and role: Panel
+       Fiducials, Image Fiducials and Local Fiducials.
+
+
+                          Panel
+                         Fiducial
+
+                                                                                     Local Fiducial
+
+
+                                                                                     Image Fiducial
+
+
+
+
+                                    Figure 27: Classification of Fiducial Marks.
+
+
+11.2      Fiducial Mark Structure
+
+11.2.1 Panel Fiducial Marks and Image Fiducial Marks
+
+
+   [62]         Size/Shape: a solid filled circle with a diameter of 1.0 mm.
+       Solder mask opening: 2.00mm in diameter and concentric with the Fiducial.
+       Covering copper: an octagonal copper ring 3.00mm in diameter concentric with the Fiducial and
+       clearance area.
+
+
+
+                                                                    d = 1.0mm
+                                                         d D L      D = 2.0mm
+                                                                    L = 3.0mm
+
+
+
+
+                                Figure 28: Structure of Panel and Image Fiducials.
+
+11.2.2 Local Fiducial
+
+
+   [63]         Size/Shape: a solid filled circle with a diameter of 1.0mm.
+       Solder mask opening: 2.00mm in diameter and concentric with the Fiducial.
+       Covering Copper: not needed.
+
+
+
+
+                                                        25
+                                                                 d = 1.0mm
+                                                                 D = 2.0mm
+                                                       d    D
+
+
+
+
+                                   Figure 29: Structure of local Fiducials.
+
+
+11.3     Position of Fiducials
+
+  [64]          In General: PCBs which require SMT automated assembly must have Fiducial marks on
+       the necessary layers. PCBs which only require manual soldering do not require Fiducial marks.
+       For single-sided boards, Fiducial marks are only required on the side where the SMD components
+       are to be soldered.
+       For double-sided boards, both sides must have Fiducial marks. The position of the Fiducial marks
+       must be generally consistent.
+
+
+
+
+        Figure 29: Both sides of a double sided PCB should generally be consistent with each other.
+
+11.3.1 Panel Fiducial Marks
+
+
+       [65]     Panel Fiducials and image Fiducials should be located on the panel margins and on
+       individual sub-boards respectively. There should be three panel Fiducials per board and three local
+       Fiducials per sub-board, arranged in an ‘L’ shape as far from each other as possible, as shown in
+       Figure 30:
+                                               ≥ 6.0mm
+
+                                       L
+                                                       A        A
+
+
+
+
+                                                       A         A
+
+
+
+
+                                                       A        A
+                                       H
+
+
+                                       H ≥ L + 6.0mm
+
+
+          Figure 30: Fiducial positioning requirements on the panel margins and individual boards.
+
+                                                           26
+11.3.2 Image Fiducial Marks
+
+
+     [66]     There must be three Fiducial marks per sub-board, arranged in an ‘L’ shape, located as far
+     as possible from each other. The distance from the origin of the Fiducial mark and the edge of the
+     sub-board should be greater than 6.00mm. If it is not possible to ensure that the four edges satisfy
+     this requirement, then the requirement must be satisfied for the primary side at least.
+
+11.3.3 Local Fiducial Marks
+
+
+     [67]     For devices with gullwing pins and a pin pitch of ≤ 0.4mm, and surface array packaged
+     devices with a pin pitch of ≤ 0.8mm, local Fiducial points are required.
+     Two local Fiducial marks are required per component and must be symmetrical on both sides of the
+     origin of the component.
+                                                 Y
+
+                                                                B
+
+
+
+
+                                                  O                 X
+
+
+
+                                       A
+
+
+
+
+             Figure 31: Local Fiducials must be symmetrical about the component’s origin.
+
+
+
+
+                                                      27
+12. Panelization and Bridge Design
+12.1    V-CUT Scoring
+
+       [68]      V-cut scoring can be used on PCB panels to separate individual boards. They must run
+       across the entire length of the panel, parallel to a flat edge and not interfere with any component
+       placement.
+       [69]      For panels incorporating v-cut scoring in their design, the recommended board thickness
+       is greater than 3.0mm.
+       [70]      For PCB panels that require machine automated depaneling, a clearance area of 1.0mm
+       is required along both sides of the v-cut line (and on both top and bottom surfaces) to protect the
+       components from damage.
+
+
+
+
+                                                                                   V-cut line
+               ≥ 1mm
+
+
+
+
+                  Figure 32: V-cut clearance for PCBs designed for automated depaneling.
+
+
+At the same time, the structure of the blade of the v-cut scorer must be considered. As shown in figure 33,
+no components with a height of over 25mm are allowed within a 5mm distance from the v-cut line.
+
+
+                                               Blade of depaneling machine
+
+
+
+
+                                           Clearance                     25mm
+
+
+
+                             V-cut cross
+                               section
+
+
+                                                       5mm        5mm
+
+
+
+        Figure 33: Clearance requirements for the separation of boards with a depaneling machine.
+
+
+When v-cut design is applied, these conditions must be met in order to protect components during the
+splitting process, and ensure that the boards will split freely.
+
+
+
+
+                                                             28
+                                    30° ~ 45°                            H ≤ 0.8mm, T = 0.35 ± 0.1mm
+                                                                       0.8 < H < 1.6mm, T = 0.4 ± 0.1mm
+                                                                         H ≥ 1.6mm, T = 0. 5 ± 0.1mm
+                    T                                          H
+
+
+
+
+                                          Figure 34: V-cut dimensions.
+
+
+    A safe distance of ‘S,' as shown in Figure 4, must be maintained between the v-cut line and any
+copper traces to avoid damaging the trace. S ≥ 0.3mm is usually satisfactory.
+                                                                   S
+
+
+
+
+                                   T                                               H
+
+
+
+
+                 Figure 35: The safe distance (S) between v-cut grooves and copper traces.
+
+
+
+12.2    Stamp Hole Design
+
+       [71]      The recommended width of milling grooves is 2mm. Milling grooves are often used in
+       situations where a certain distance must be maintained between individual boards on a panel. It is
+       generally used together with V-CUT scoring and stamp holes.
+       [72]      The distance between the centers of adjacent stamp holes should be 1.5mm.
+       Recommended distance between the two groups of stamp hole is 5mm, as shown in figure 36.
+
+
+                                                                                       1.5mm
+                                                                       2.0mm
+                    1.5mm                             Hole                                             0.3mm
+         2.0mm                                  Diameter = 1.0mm
+                                  0.3mm
+                                                                                       6.0mm
+                                                                           0.3mm
+                        6.0mm
+
+
+
+
+                                  Figure 36: Stamp hole design parameters.
+
+
+12.3    Panelization
+
+       [73]      For PCB boards smaller than 80mm x 80mm, panelization is recommended.
+       [74]      The designer should consider the utilization rate of the design when choosing the PCB
+       material. This is a key factor affecting the cost of the PCB.
+    Note: For some irregular shapes (such as an ‘L’ shaped board), applying the appropriate panelization
+
+                                                          29
+ mode can drastically improve the utilization ratio of a panel and reduce costs, as shown in figure 37.
+
+
+
+                                                                             Milled slot
+
+
+
+                         Same design
+                           rotated
+                                                                             Tooling
+                                                                             Margin
+
+
+
+
+                                  Figure 37: L type PCB layout on a single panel.
+
+
+   [75]       If the PCB is to be processed with reflow soldering and wave soldering techniques, and
+   the cell board size less than 60.0 mm, then no more than two rows should be stacked in one panel
+   (that is, the board should be no more than two boards in height.
+
+
+
+
+                                                                                  No more than two
+                                                                                   boards in width
+
+
+
+
+                                     Figure 38: Diagram of panelization width.
+
+
+   [76]       For smaller boards, the number of boards running across the longest side can be greater
+   than 3, but the width should be no more than 150.0 mm, Margins or tooling bars should be added
+   on the longest sides during production to prevent panel deformation.
+   [77]      Single Board Panelization
+      z    Regular shape board
+Margins are not required for boards with v-cut grooves that satisfy the clearance area requirement
+stated in [12.1].
+
+
+
+
+                    V-cuts
+                                       A               A               A               Margins
+
+
+
+
+                                                    Milled slots
+
+
+                             Figure 39: Example layout of step and repeat panelization.
+
+
+
+
+                                                          30
+       z    Irregularly shaped boards
+ A combination of v-cut lines and milling grooves can be used to shape irregularly shaped boards or
+boards where components hang over the edge.
+
+
+                                           Milled
+                                           slots
+                                                                               Overhanging
+                                                                               component
+
+                                          Milling slot
+                                         width ≥ 2mm
+
+
+
+
+                                           V-cuts
+
+
+
+                          Figure 40: Panelization of irregularly shaped PCBs.
+     [78]     Center Panelization
+       z    Center panelization can be applied to irregularly shaped PCBs. They are arranged in such a
+            way that the outer shape is regular.
+       z    If the two boards do not fit together completely, milling can remove the excess and separate
+            the boards.
+       z    For larger pieces of excess material, the panel can be designed such that the excess pieces
+            may be broken off using stamp hole connections. See figure 41.
+
+
+
+
+                                                                        Milled slot
+
+
+
+
+                                         Excess ‘filler’ piece           Margin
+
+
+
+              Figure 41: Two irregular boards with the excess connected via stamp holes.
+
+        z   PCBs with gold finger connectors need to be positioned so that the fingers face outwards as
+            shown in figure 42. This is necessary for the gold plating process.
+
+
+
+
+                      Figure 42: Recommended layout of PCBs with gold fingers.
+
+
+
+                                                         31
+12.4    Panelization Methods for Irregularly Shaped PCBs
+
+       [79]     General Principle
+         z    If the assembled PCB does not have a clearance area of 5mm along the edge of the board,
+              margins/tooling bars should be added along its perimeter.
+         z    If the PCB is irregular in shape, for example, a corner is missing or a segment cuts into the
+              board, block filler pieces should be used to make the outline more rectangular in shape to
+              aid assembly.
+
+
+
+
+                                                                                         Support
+                                                                                         Margin
+                                             Milled
+
+
+
+                            Stamp hole
+                            connection
+
+
+
+
+Figure 43: Simplification of the outline of irregularly shaped boards via the addition of filler pieces/margins.
+
+       [80]     It is recommended that SMT and wave soldering techniques be used for irregular boards
+       with filler pieces larger than 35mm x 35mm. For filler pieces greater than 50mm in length, two sets
+       of stamp holes should be used, otherwise, one set is satisfactory.
+
+
+
+
+                                                                                     a
+
+
+
+
+                                         a
+
+                                                 Processing Direction
+
+
+
+
+ Figure 44: Stamp hole placement for filler pieces greater than 50mm in length, where ‘a’ is the length of
+                                                 the filler piece.
+
+
+
+
+                                                        32
+13. Component Layout Considerations
+13.1    General Component Layout Requirements
+
+       [81]     Through-hole components with polarity or direction requirements should maintain a
+       consistent alignment throughout the layout and should be arranged as neat as possible. For SMD
+       devices, if they cannot be placed in the same direction, they should be consistent in both X and Y
+       directions for example for tantalum capacitors.
+       [82]     If the component needs to be glued, ensure the component has at least 3mm space.
+       [83]     For PCBs which need have heatsinks, the location and orientation of the heatsink should
+       be considered. There must be sufficient space to ensure that the heatsink does not touch other
+       components. Ensure that a minimum distance of 0.5mm is maintained:
+       1. Thermosensitive devices (such as resistive capacitors, crystal, etc.) should be situated far away
+       from heat producing components.
+       2. Thermosensitive devices should be placed by an air outlet. Tall components devices should be
+       placed behind shorter components to facilitate air flow.
+
+
+
+                                                   Large
+                                                 Components
+
+                                                                            Airflow
+
+
+
+                                                                              Thermosensitive
+                                                                               Components
+
+
+
+                           Figure 45: Placement of thermosensitive components.
+
+
+       [84]     The distance between the devices must satisfy the required space for normal operation,
+       for example, a memory card socket.
+
+
+                                                                  Blocked
+
+
+                                         Memory Card
+                                           Socket
+
+
+
+
+                                         Figure 46: Blocked socket.
+
+
+
+
+                                                       33
+       [85]     Metal parts with different properties or devices with metallic cases must not touch each
+       other. A minimum distance of 1.0mm should be maintained between components.
+
+
+13.2    Reflow Soldering
+
+13.2.1 General Requirements for SMD Components
+
+
+       [86]     It is recommended that fine pitch devices be placed on the same side of the PCB and
+       larger devices (such as inductors) be arranged on the top side.
+       [87]     Polarized components should be aligned such that all the positive poles are on one side of
+       the board and negative poles on the other where possible. Avoid positioning taller components next
+       to shorter ones, which may hinder inspection. A viewing angle of no less than 45 degrees must be
+       maintained throughout the layout to aid manual solder joint inspection.
+
+
+
+
+                                                 α
+
+                                                   D d 45o
+
+                                  Figure 47: Solder joint inspection angle.
+
+       [88]     Surface array devices such as CSP, BGA, etc. must have a clearance area of 2mm, but
+       5mm is ideal.
+       [89]     In general, surface array devices should not be placed on the bottom side of the board
+       (the side with fewer components). The region on the other side of the board, with an additional
+       boarder of 8mm, should not contain any surface array devices, see Figure 46.
+
+
+                               8.0mm                                          8.0mm
+                                                      BGA
+
+
+
+
+                                        Surface array device clearance area
+
+
+                         Figure 48: Layout requirements for surface array devices.
+
+13.2.2 SMD Component Placement Requirements
+
+
+       [90]     All SMD components shall be smaller than 50mm on at least one side.
+       [91]     It is not recommended for two surface-mount gullwing pin devices to overlap, for example,
+       SOP packages as shown in Figure 49.
+
+
+
+
+                                                        34
+                                           Not recommended
+
+
+                    Figure 49: Incompatible layout of two SOP footprints.
+
+
+[92]     In the event that solder pads are shared between two SMD components, the packages
+must be the same, see figure 50.
+
+
+                                           Shared pad
+                             A
+
+
+                                                         A               B
+
+                                 B               Overlapping allowed for chip
+                                                           devices
+
+
+
+
+                   Figure 50: Sharing of solder pads for SMD components.
+[93]     Through-hole devices and SMD components are allowed to overlap when it can be
+confirmed that the SMD pad and the solder paste printed thereon has no effect on the soldering of
+the through-hole device. See figure 51.
+
+
+
+
+                                 Through-hole components may overlap
+                                          SMD components
+
+
+
+           Figure 51: Acceptable through-hole and SMD component layout design.
+
+
+[94]     The required distance between SMD components is:
+Same component: ≥ 0.3mm
+Different components: ≥ 0.13 × h + 0.3mm (where h is the maximum height difference of the
+surrounding neighbors)
+
+
+
+
+                                                  35
+                                                                            Suction nozzle
+                                    X
+
+
+
+                     Y
+
+                                                                                                      h
+
+
+
+
+                                Identical Components                           Different Components
+
+
+                                 Figure 52: Spacing requirements for components.
+
+
+      [95]        For PCBs requiring solder reflow, SMT device spacing varies according to the table 5.
+      The quoted value is the largest of the two: either the pad or the body of the device, whichever is
+      most applicable. The values in brackets represent the lowest acceptable value.
+
+
+Table 5: Component spacing recommendations.
+
+      (Units in                                   STC3528 ~
+                   0402 ~ 0805 1206 ~ 1810                         SOT / SOP   SOJ / PLCC       QFP         BGA
+        mm)                                         7343
+
+    0402 ~ 0805          0.40           0.55           0.70          0.65         0.70          0.45      5.00 (3.00)
+
+
+    1206 ~ 1810                         0.45           0.65          0.50         0.60          0.45      5.00 (3.00)
+
+     STC3528 ~
+                                                       0.50          0.55         0.60          0.45      5.00 (3.00)
+       7343
+
+     SOT / SOP                                                       0.45         0.50          0.45         5.00
+
+
+    SOJ / PLCC                                                                    0.30          0.45         5.00
+
+
+        QFP                                                                                     0.30         5.00
+
+
+        BGA                                                                                                  8.00
+
+
+
+      [96]        The distance between fine pitch devices and the board edge must be greater than 10mm
+      so as to not adversely affect printing quality.
+                  Ideally, the distance between the bar code frame and the surface mounted components
+should meet the requirements shown in Table 6 to preserve the quality of the solder.
+
+
+
+
+                                                              36
+   Table 6: Recommended spacing requirements between printed barcodes and component footprints
+
+                        Pitch d 1.27mm’s Gullwing Pin (e.g. SOP, QFP) and      0603 Size and Greater
+        Component
+                                                                               SMD Chip Components
+        Type            Surface Array Components                               and Other Footprints
+        Minimum
+                        10mm                                                   5mm
+        Spacing, D
+
+
+
+
+                                   D                              D
+                                                 BAR CODE
+
+                                                      D
+
+
+
+
+                     Figure 53: Layout requirements of printed barcodes and components
+
+
+
+13.2.3 Through-Hole Component Layout Requirements for PCBs Undergoing Reflow Soldering
+
+
+       [97]     For PCB with non-transmission side larger than 300mm, heavier through-hole components
+       should not be placed in the middle of the PCB. This will reduce the board deformation caused by
+       the weight of the components during soldering.
+       [98]     To facilitate plug-in sockets, the socket should be placed where convenient.
+       [99]     The distance between through-hole components should be > 10mm.
+       [100]    The distance between through-hole components and the margin should be ≥ 10mm, and
+       board edge should be ≥ 5mm.
+
+
+13.3    Wave Soldering
+
+13.3.1 SMD Component Layout Requirements for PCBs Undergoing Wave Soldering
+
+
+       [101]    Wave soldering is suitable for the following SMD components:
+          z    Chip resistors, capacitors, and inductors that have a package size greater or equal to 0603
+               and standoff value less than 0.15mm.
+          z    SOP packages with pitch ≥ 1.27mm and Standoff value ≤ 0.15mm.
+          z    SOT packages with pitch ≥ 1.27mm and visible pins.
+          Note: The pins of SMD components undergoing wave soldering must be less or equal to 2mm.
+          Other components must be less than 4mm in height.
+       [102]    The long axis of SOP package components should be perpendicular to the direction of
+       travel of the solder wave in the wave soldering process. SOP components also need extra pads at
+       the end of the solder pad rows to act as ‘solder thieves,' see Figure 54.
+                                                      37
+                          Processing Direction                          Processing Direction
+
+
+
+
+               Solder Thief Pad
+
+
+       Figure 54: Solder thief pad placement for SOP packages undergoing wave soldering.
+
+
+[103]       The orientation of SOT-23 package components should be such that the pins point
+parallel to the direction of travel.
+
+
+
+
+                                                 Processing Direction
+
+
+
+             Figure 55: Orientation of SOT-23 packages undergoing wave soldering.
+
+
+[104]      General component spacing principles: In order to reduce shadow effect problems caused
+by wave soldering, certain distances must be maintained between components and individual pads.
+   z     For components of the same type according to Table 7:
+
+                     B                                   L
+
+
+
+
+                                                                            B
+                                  L
+                                                                                               L
+
+
+
+
+                                  Figure 56: Layout of components of the same type.
+
+
+
+
+                                                         38
+Table 7: Distances between components of the same type.
+
+                               Pad Spacing L (mm/mil)                    Component Spacing B (mm/mil)
+
+                               Minimum         Recommended               Minimum                 Recommended
+   Footprint
+                               Spacing         Spacing                   Spacing                 Spacing
+   0603                        0.76/30         1.27/50                   Type 0.76/30            1.27/50
+   0805                        0.89/35         1.27/50                   0.89/35                 1.27/50
+   ≥ 1206                      1.02/40         1.27/50                   1.02/40                 1.27/50
+   SOT                         1.02/40         1.27/50                   1.02/40                 1.27/50
+   Tantalum
+   Capacitors 3216             1.02/40         1.27/50                   1.02/40                 1.27/50
+   and 3528
+   Tantalum
+   Capacitors 6032             1.27/50         1.52/60                   2.03/80                 2.54/100
+   and 7343
+   SOP                         1.27/50         1.52/60                   ---                     ---
+
+
+         z      For different component types, the solder pad edge spacing should be ≥ 1.0mm. Distance
+                requirements are shown in Figure 57 and Table 4.
+
+                                                  B
+
+
+
+
+                                                                                        B
+
+
+
+
+                                                                                   B
+
+
+
+                        Figure 57: Layout of components of different types and PCB structures.
+
+
+Table 8: Distances between components of different types and PCB structures.
+                                                                                                         Solder
+     Footprint        0603 -                                  Through-
+                                     SOT       SOP                             Vias         ICT Point   Thief Pad
+     (mm/mil)          1810                                    Holes
+                                                                                                          Edge
+       0603 -
+                     1.27/50        1.52/60   2.54/100        1.27/50          0.6/24        0.6/24        2.54/100
+        1810
+        SOT          1.27/50                  2.54/100        1.27/50          0.6/24        0.6/24        2.54/100
+        SOP          2.54/100      2.54/100                   1.27/50          0.6/24        0.6/24        2.54/100
+     Through-
+                     1.27/50        1.27/50   1.27/50                          0.6/24        0.6/24        2.54/100
+      Holes
+        Vias          0.6/24        0.6/24     0.6/24          0.6/24          0.3/12        0.3/12         0.6/24
+     ICT Point        0.6/24        0.6/24     0.6/24          0.6/24          0.3/12        0.6/24         0.6/24
+
+      Solder
+     Thief Pad       2.54/100      2.54/100   2.54/100        2.54/100         0.6/24        0.6/24         0.6/24
+       Edge
+
+                                                         39
+13.3.2 Common Through-Hole Component Layout Requirements
+
+
+     [105]    In addition to the special requirements relating to the specific structure of the device,
+     through-hole components must be placed on the top layer.
+     [106]    The spacing between adjacent components is shown in figure 58.
+
+
+
+
+                                                                       Minimum = 0.5mm
+
+
+
+
+                         Figure 58: Distance between through-hole components.
+     [107]    In order to facilitate manual soldering and maintenance/repair the conditions shown in
+     figure 59 must be satisfied.
+
+
+                                         Plated
+                                      Through Hole
+
+
+
+
+                                                 α               α
+
+
+                                                     X
+
+
+                                                     α ≤ 45° X ≥ 1mm
+
+
+                                  Figure 59: Through-hole placement requirements.
+
+13.3.3 General Requirements For Wave Soldering Through Hole Components
+
+
+     [108]    The optimum component pitch is ≥ 2.0mm, the distance between the solder pad edges
+     must be at least 1.00mm as shown in Figure 60. In addition, the component bodies must not
+     interfere with each other.
+
+
+
+
+                                                      Minimum
+                                                       1.0mm
+
+
+
+                     Figure 60: Through-hole component layout for wave soldering.
+
+                                                           40
+[109]     For a long row of through hole component holes, the components should be positioned
+such that the row is parallel to the direction of travel of the solder wave. In special circumstances
+where the row of pads must be aligned perpendicular to the direction of travel, suitable adjustments
+should be made, such replacing the standard pads with elliptical pads. When the spacing between
+adjacent pad edges is 0.6mm - 1.0mm, the implementation of oval pads or solder thieves is
+recommended.
+
+
+
+
+                   Solder
+                 Thief Pads                                     Elliptical
+                                                                 Pads
+
+
+
+
+                                         Processing Direction
+
+
+
+Figure 61: Solder pad alignment relative to board’s direction of travel through the wave soldering
+                                           equipment.
+
+
+
+
+                                                 41
+

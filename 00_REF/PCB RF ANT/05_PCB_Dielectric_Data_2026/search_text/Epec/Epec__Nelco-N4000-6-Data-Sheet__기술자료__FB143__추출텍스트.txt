@@ -1,0 +1,56 @@
+N 4 0 0 0 -6
+High Tg Multifunctional Epoxy Laminate & Prepreg
+
+                                                     Typical Engineering Values
+           Property / Condition                                  Value (U.S. Units)                      Value (Metric Units)                       Test Method
+
+  Mechanical
+  Peel Strength - 1 oz. (35µm) Cu
+      After Solder Float                                     9.0               lb / inch               1.58               N / mm                 IPC-TM-650.2.4.8
+      At Elevated Temperature                                7.0               lb / inch               1.23               N / mm                 IPC-TM-650.2.4.8.2a
+      After Exposure to Process Solutions                    9.0               lb / inch               1.58               N / mm                 IPC-TM-650.2.4.8
+  X / Y CTE [-40°C to +125°C]                                12 - 16           ppm / °C                12 - 16            ppm / °C               IPC-TM-650.2.4.41
+  Z Axis Expansion [50°C to 260°C]                           3.9               %                       3.9                %                      IPC-TM-650.2.4.41
+  Young’s Modulus (X / Y)                                    4.4 / 3.7         psi x 106               29.9 / 25.1        GN / m2                ASTM D3039
+  Poisson’s Ratios (X / Y)                                   0.16 / 0.14                               0.16 / 0.14                               ASTM D3039
+  Thermal Conductivity                                       0.3 - 0.4         W / mK                  0.3 - 0.4          W / mK                 ASTM E1461-92
+  Specific Heat                                              1.2 - 1.4         J / gK                  1.2 - 1.4          J / gK                 ASTM E1461-92
+
+  Electrical
+  Dielectric Constant (50% resin content)
+     @ 1 MHz (TFC / LCR Meter)                               4.3                                       4.3                                       IPC-TM-650.2.5.5.3
+     @ 1 GHz (RF Impedance)                                  4.1                                       4.1                                       IPC-TM-650.2.5.5.9
+     @ 2.5 GHz (Stripline)                                   4.0                                       4.0                                       IPC-TM-650.2.5.5.5
+  Dissipation Factor (50% resin content)
+     @ 1 MHz (TFC / LCR Meter)                               0.027                                     0.027                                     IPC-TM-650.2.5.5.3
+     @ 2.5 GHz (Stripline)                                   0.022                                     0.022                                     IPC-TM-650.2.5.5.9
+  Volume Resistivity
+     C - 96 / 35 / 90                                        108               MΩ - cm                 108                MΩ - cm                IPC-TM-650.2.5.17.1
+     E - 24 / 125                                            107               MΩ - cm                 107                MΩ - cm                IPC-TM-650.2.5.17.1
+  Surface Resistivity
+     C - 96 / 35 / 90                                        107               MΩ                      107                MΩ                     IPC-TM-650.2.5.17.1
+     E - 24 / 125                                            107               MΩ                      107                MΩ                     IPC-TM-650.2.5.17.1
+  Electric Strength                                          1300              V / mil                 5.1x104            V / mm                 IPC-TM-650.2.5.6.2
+  Dielectric Breakdown                                       >50               kV                      >50                kV                     IPC-TM-650.2.5.6
+  Arc Resistance                                             65                seconds                 65                 seconds                IPC-TM-650.2.5.1
+
+  Thermal
+  Glass Transition Temperature (Tg)
+     DSC (°C)                                                175 *             °C                      175 *              °C                     IPC-TM-650.2.4.25c
+     TMA (°C)                                                170 *             °C                      170 *              °C                     IPC-TM-650.2.4.24c
+  Degradation Temp (TGA) (5% wt. loss)                       300               °C                      300                °C                     IPC-TM-650.2.3.40
+  Pressure Cooker - 2 hour                                                                                                                       IPC-TM-650.2.6.16
+     10 second solder dip @ 288ºC                            Pass                                      Pass                                      (modified)
+  T260                                                       4-8               minutes                 4-8                minutes                IPC-TM-650.2.4.24.1
+
+  Chemical / Physical
+  Moisture Absorption                                        0.1               wt. %                   0.1                wt. %                  IPC-TM-650.2.6.2c
+  Methylene Chloride Resistance                              0.7               % wt. chg.              0.7                % wt. chg.             IPC-TM-650.2.3.4.3
+  Density [50% resin content]                                1.92              g / cm3                 1.92               g / cm3                Internal Method
+
+
+*     Tg nominal on laminates. Finished board value may be lower due to printed circuit processes.
+Note: All test data provided are typical values and not intended to be specification values. For review of critical specification tolerances, please contact a Park / Nelco
+      representative directly. Park / Nelco reserves the right to change these typical values as a natural process of refining our testing equipment and techniques.
+                                                                                                                                                                  Rev C 4-02
+

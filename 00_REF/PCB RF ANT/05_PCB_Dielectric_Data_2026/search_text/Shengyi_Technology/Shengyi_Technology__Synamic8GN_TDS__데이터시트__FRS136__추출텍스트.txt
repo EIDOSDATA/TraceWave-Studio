@@ -1,0 +1,50 @@
+ Synamic8GN
+(No ANSI) Halogen-free Ultra-low Loss & Heat Resistance Multilayer PCB Material
+
+FEATURES                                                             APPLICATIONS
+● Low Dk/Df (10GHz): 3.28/0.0019                                         Ultra-high speed network equipment
+● High Tg (DMA): 205℃                                                    Server, switch, storage, routers
+● Excellent thermal reliability                                          High performance computing
+● Excellent anti-CAF performance                                         High frequency measuring instruments
+● Lower Z-axis CTE, offering superior PTH reliability                    Optical communication products
+
+GENERAL PROPEAIES
+
+           Test Items                      Test Method               Test Condition            Unit      Typical Value
+                                       IPC-TM-650 2.4.24.4                  DMA                                 205
+                Tg                                                                              ℃
+                                       IPC-TM-650 2.4.25D                   TMA                                 190
+                Td                     IPC-TM-650 2.4.24.6          TGA (5%wt loss)             ℃               430
+              T300                     IPC-TM-650 2.4.24.1                  TMA                min             >120
+            X/Y-CTE                     IPC-TM-650 2.4.24            TMA(50~125℃)            ppm/℃             12/12
+
+        Thermal Stress                 IPC-TM-650 2.4.13.1               288℃,                   -             Pass
+                                                                      Solder dipping
+                                        IPC-TM-650 2.4.24                Before Tg           ppm/℃               35
+          CTE (Z-axis)                  IPC-TM-650 2.4.24                 After Tg           ppm/℃              200
+                                        IPC-TM-650 2.4.24                50-260℃                %               1.8
+                           1GHz        IPC-TM-650 2.5.5.9                C-24/23/50              -              3.35
+Dielectric Constant       10GHz        IPC-TM-650 2.5.5.5                C-24/23/50              -              3.28
+        (Dk)
+                          10GHz          IEC 61189-2-721                 C-24/23/50              -              3.49
+                           1GHz        IPC-TM-650 2.5.5.9                C-24/23/50              -            0.0008
+Dissipation Factor        10GHz        IPC-TM-650 2.5.5.5                C-24/23/50              -            0.0019
+       (Df)
+                          10GHz          IEC 61189-2-721                 C-24/23/50              -            0.0021
+        Peel Strength                    IPC-TM-650 2.4.8                288℃/10s             N/mm          0.82/0.80
+     (1oz, RTF2/HVLP2)                                                                        [lb/in]        [4.7/4.6]
+
+       Water Absorption                IPC-TM-650 2.6.2.1                 D-24/23               %               0.08
+
+           Flammability                         UL94                     C-48/23/50           Rating            V-0
+
+Remarks:
+1. All the typical value is based on the 30mil (6*2116) thickness specimen, but not guarantee data.
+2. All the typical value listed above is for your reference only, please turn to Shengyi Technology Co., Ltd. for detailed
+information, and all rights from this data sheet are reserved by Shengyi Technology Co., Ltd.
+
+
+
+
+                                                                                        CN-TDS-2403-03-Synamic8GN
+

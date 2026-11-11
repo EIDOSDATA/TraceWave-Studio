@@ -1,0 +1,137 @@
+tec-speed 20.0 - VT-870 / VT-870 Bondply UL Approval: E214381 Version: B1.0
+Laminate/Prepreg
+
+
+General Information
+> High Tg Ceramic Filled Hydrocarbon Laminate & Prepreg
+> Excellent Thermal Reliability
+> Excellent peel strength
+
+
+Application
+> Cellular Base Station Antenna
+> WiMax Antenna Networks
+> Power Amplifiers
+> Automotive Radar
+> LNB (Low Noise Block) for Broadcast Satellites
+> RF Identification Tags (RFID)
+
+
+Availability
+  Material                                 VT-870 L330                   VT-870 H348
+
+  Dk                                              3.3                           3.48
+                                                                   3.3, 4.0**, 6.6, 10, 16.6,
+  Dielectric thickness (mil)             20, 30, 32, 40, 60
+                                                                         20, 30, 40, 60
+  Copper thickness                            Hoz, 1oz                   Hoz, 1oz, 2oz
+
+** Please note Dk of 4mil VT-870 H348 is 3.33 and Df is 0.0035@10GHz. Other thickness data refers to property sheet.
+
+Storage Condition & Shelf Life
+  Properties                                                   Prepreg                                 Laminate
+
+                                 Temperature                   ≤5 ˚C                                   Room
+  Storage Condition
+                                 Relative humidity             /                                       /
+
+  Shelf Life                                                   6 months                                24 months
+
+Note: The prepreg exceeding shelf life should be retested.
+Disclaimer: The information and data contained in this technical literature is based on data and knowledge correct at the time of
+publishing/printing and is believed to be accurate and is offered in good faith for the benefit of the user. The user should make his own
+tests to verify the suitability of this product for any application before its use. All data are typical values only and subject to change without
+notice.
+
+CORPORATE HEADQUARTERS        EMEA REGIONAL HEADQUARTERS       AMERICAS REGIONAL HEADQUARTERS
+Ventec Electronics Co. Ltd.   Ventec Europe                    Ventec USA
+308 TaiShan Rd,               Unit 1 Trojan Business Centre,   720 Lee St., Elk Grove Village,
+New District Suzhou,          Tachbrook Park Estate,           Illinois, IL 60007,
+Jiangsu, P.R. China 215129    Leamington-Spa, CV34 6RH, UK     United States of America
+                                                                                                                                         Page 1 of 3
+T: +86 512-68091810           T: +44 1926-889822               T: +1 630-4221627
+Email: sales@ventec.com.cn    Email: sales@ventec-europe.com   Email: saleseast@ventec-usa.com   www.venteclaminates.com         Published on: 15/10/21
+tec-speed 20.0 - VT-870 / VT-870 Bondply UL Approval: E214381 Version: B1.0
+Laminate/Prepreg
+
+
+
+Properties Sheet
+  Properties                   Test Method                          Units                           VT-870 L330                                     VT-870 H348
+
+  Dielectric Constant          IPC-TM-650 2.5.5.5                     -                                3.3±0.05                                      3.48±0.05
+  @10GHz                       Clamped Stripline
+  Design Dk                    Differential Phase
+                                                                      -                                    3.45                                        3.66
+  (1.7~5GHz)                   Length Method
+  Dissipation Factor
+                               IPC TM650 2.5.5.13                     -                                   0.002                                       0.0032
+  @2.5GHz
+  @10GHz                       Cavity Resonator                       -                                  0.0025                                       0.0037
+
+  PIM*1                        43dBm, 1900MHz                        dBc                                  -160                                         -160
+
+  Tg                           IPC-TM-650 2.4.24                      C
+                                                                      o
+                                                                                                           280                                          280
+
+  Td                           ASTM D3850                             C
+                                                                      o
+                                                                                                           402                                          410
+
+  Z-CTE (50~250oC)             IPC-TM-650 2.4.24                    ppm/oC                                     35                                       31
+  Thermal                      ASTM D5470                           W/mK                                   0.72                                        0.69
+  Conductivity
+  Peel Strength (1oz)          IPC-TM-650 2.4.8                     Lb/in                                  6.0                                          6.0
+
+  Flammability                 UL-94                                Rating                                 V-0                                          V-0
+
+  IPC4103                      -                                      -                                /10 /240                                      /10 /240
+
+All test data provided are typical values and not intended to be specification values.
+
+
+
+Prepreg (VT-870 Bondply)
+                 Glass Style                            Pressed Thickness                           Dielectric Constant @                     Dissipation Factor @ 10GHz
+                                                                                                  10GHz (IPC-TM-650 2.5.5.5                       (Cavity Resonator)
+                                                                                                     Clamped stripline)
+               VT-870 BH348                                0.004” (100μm)                                           3.52±0.05                           0.0035
+
+VT-870 Bondply is compatible in multi-layer constructions with VT-870 laminate.
+
+
+
+
+CORPORATE HEADQUARTERS             EMEA REGIONAL HEADQUARTERS                AMERICAS REGIONAL HEADQUARTERS
+Ventec Electronics Co. Ltd.        Ventec Europe                             Ventec USA
+308 TaiShan Rd,                    Unit 1 Trojan Business Centre,            720 Lee St., Elk Grove Village,
+New District Suzhou,               Tachbrook Park Estate,                    Illinois, IL 60007,
+Jiangsu, P.R. China 215129         Leamington-Spa, CV34 6RH, UK              United States of America
+                                                                                                                                                                       Page 2 of 3
+T: +86 512-68091810                T: +44 1926-889822                        T: +1 630-4221627
+Email: sales@ventec.com.cn         Email: sales@ventec-europe.com            Email: saleseast@ventec-usa.com              www.venteclaminates.com              Published on: 15/10/21
+tec-speed 20.0 - VT-870 / VT-870 Bondply UL Approval: E214381 Version: B1.0
+Laminate/Prepreg
+
+
+
+Signal Integrity – Insertion Loss
+
+
+
+
+Signal Integrity – Passive Intermodulation (PIM)
+
+
+
+
+CORPORATE HEADQUARTERS        EMEA REGIONAL HEADQUARTERS       AMERICAS REGIONAL HEADQUARTERS
+Ventec Electronics Co. Ltd.   Ventec Europe                    Ventec USA
+308 TaiShan Rd,               Unit 1 Trojan Business Centre,   720 Lee St., Elk Grove Village,
+New District Suzhou,          Tachbrook Park Estate,           Illinois, IL 60007,
+Jiangsu, P.R. China 215129    Leamington-Spa, CV34 6RH, UK     United States of America
+                                                                                                                                   Page 3 of 3
+T: +86 512-68091810           T: +44 1926-889822               T: +1 630-4221627
+Email: sales@ventec.com.cn    Email: sales@ventec-europe.com   Email: saleseast@ventec-usa.com   www.venteclaminates.com   Published on: 15/10/21
+

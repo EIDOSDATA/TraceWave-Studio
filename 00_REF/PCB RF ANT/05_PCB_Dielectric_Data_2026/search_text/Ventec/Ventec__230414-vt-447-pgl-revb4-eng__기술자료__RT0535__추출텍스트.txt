@@ -1,0 +1,256 @@
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+VT-447                                                                                        UL Approval: E214381           Version: Rev. B4
+
+PROCESS GUIDE
+VT-447 CCL/Laminate VT-447 PP/Prepreg
+
+
+
+Precautions in Handling
+
+Storage Condition & Shelf Life
+                                                          Prepreg                                                Laminate
+
+    Storage                    Temperature                Below 23ºC (73ºF)          Below 5ºC (41ºF)            Room
+    Condition                  Relative Humidity          Below 55%                  /                           /
+
+    Shelf Life                                            3 Months                   6 Months                    24 Months
+
+
+•         The prepreg exceeding shelf time should be retested.
+•         Take care in handling thin core laminates as they are easily damaged.
+•         If the prepreg is not consumed within 48hrs after opening the vacuum package, it is recommended that the bags be resealed.
+•         Material is available in both long and short grain. The grain direction is indicated on the label with an arrow.
+
+
+Designing and Inner layer Process
+•         Please be careful when single ply of 1080, 1086, 1078 or 106 prepreg is designed to the dielectric layer.
+•         Dimension stability is the same as Standard FR4 material.
+•         Please check with your oxide vendor to make sure that our material is suitable with your oxide process. We recommend to 		
+          control the peel strength with brown oxide copper over 2 Lb/in.
+•         For unclad or single sided laminates to be used in multilayer, please brush unclad sides before use.
+
+
+
+
+                                                                                                                                    Page 1 of 5
+www.venteclaminates.com                                                                                                      Published on: 14/04/2023
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+VT-447
+PROCESS GUIDE
+
+
+
+Prepreg Availability
+E-Glass styles: 7628, 1506, 1500, 2113, 2313, 3313, 2116, 1080, 1086, 1078, 106, 1067 etc.
+
+
+
+                            Press                        DK                                          DF
+    PP          Resin
+                          Thickness     @          @           @         @         @          @            @        @        Remark
+   Type        Content
+                            (mil)      1GHz       2GHz        5GHz     10GHz      1GHz       2GHz         5GHz    10GHz
+ 7628            45%        7.60       4.34       4.29        4.24      4.24      0.012      0.013        0.013   0.014     Standard
+ 1506            52%        7.00       4.13       4.08        4.03      4.03      0.013      0.014        0.014   0.015     Standard
+ 2116            58%        5.30       3.96       3.91        3.86      3.86      0.014      0.015        0.015   0.016     Standard
+ 2116            54%        4.80       4.07       4.02        3.97      3.97      0.014      0.015        0.015   0.016     Standard
+ 2116            52%        4.60       4.13       4.08        4.03      4.03      0.013      0.014        0.014   0.015     Standard
+ 2113            57%        3.90       3.99       3.94        3.89      3.89      0.014      0.015        0.015   0.016     Standard
+ 1080            68%        3.30       3.80       3.70        3.65      3.65      0.015      0.016        0.016   0.017     Standard
+ 1080            66%        3.10       3.85       3.75        3.70      3.70      0.015      0.016        0.016   0.017     Standard
+ 1078            68%        3.30       3.80       3.70        3.65      3.65      0.015      0.016        0.016   0.017     Standard
+ 106             76%        2.30       3.62       3.52        3.47      3.47      0.016      0.017        0.017   0.018     Standard
+
+
+Remark:
+① Press thickness test condition---Prepreg lamination size 18”*24”, Copper Foil---1oz/1oz, Flow---about 5%;
+② Make laminated prepreg to micro-section and measure the thickness with microscope; this thickness is used for resistance design
+  calculation.
+③ The thickness measured with micrometer is 0.2~0.4 mil larger than that measured with micro-section; and mainly used for total
+  thickness design calculation.
+
+
+
+
+                                                                                                                            Page 2 of 5
+www.venteclaminates.com                                                                                              Published on: 14/04/2023
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+VT-447
+PROCESS GUIDE
+
+
+
+Laminates Availability
+- Thickness: 0.002” (0.05mm) to 0.200” (5mm), available in sheet or panel form
+- Copper Foil: 1/4 to 12oz, HTE or RTF or DST
+- DK values are for impedance design
+
+
+
+
+    Core                                               DK                                        DF
+                 Stack-    Resin
+     thk.                               @        @           @       @            @       @            @        @       Remark
+                   up     Content
+  (inches)                             1GHz     2GHz        5GHz   10GHz         1GHz    2GHz         5GHz    10GHz
+   0.002        1-1067     65%         3.85     3.75        3.70     3.70        0.015   0.016        0.016   0.017    Standard
+   0.003        1-2112     52%         4.13     4.08        4.03     4.03        0.013   0.014        0.014   0.015    Standard
+   0.004        1-2116     46%         4.31     4.26        4.21     4.21        0.013   0.014        0.014   0.015    Standard
+   0.004        2-1067     65%         3.85     3.75        3.70     3.70        0.015   0.016        0.016   0.017        2ply
+   0.005        1-2116     55%         4.04     3.99        3.94     3.94        0.014   0.015        0.015   0.016    Standard
+   0.006        1-1506     45%         4.34     4.29        4.24     4.24        0.012   0.013        0.013   0.014    Standard
+   0.007        1-7628     41%         4.47     4.42        4.37     4.37        0.012   0.013        0.013   0.014    Standard
+   0.008        1-7628     46%         4.31     4.26        4.21     4.21        0.013   0.014        0.014   0.015    Standard
+   0.008        2-2116     46%         4.31     4.26        4.21     4.21        0.013   0.014        0.014   0.015        2ply
+   0.010        2-2116     55%         4.04     3.99        3.94     3.94        0.014   0.015        0.015   0.016    Standard
+   0.012        2-1506     45%         4.34     4.29        4.24     4.24        0.012   0.013        0.013   0.014    Standard
+   0.014        2-7628     41%         4.47     4.42        4.37     4.37        0.012   0.013        0.013   0.014    Standard
+   0.016        2-7628     46%         4.31     4.26        4.21     4.21        0.013   0.014        0.014   0.015    Standard
+   0.028        4-7628     41%         4.47     4.42        4.37     4.37        0.012   0.013        0.013   0.014    Standard
+   0.036        5-7628     43%         4.41     4.36        4.31     4.31        0.012   0.013        0.013   0.014    Standard
+   0.045        6-7628     46%         4.31     4.26        4.21     4.21        0.013   0.014        0.014   0.015    Standard
+   0.049        7-7628     41%         4.47     4.42        4.37     4.37        0.012   0.013        0.013   0.014    Standard
+   0.059        8-7628     44%         4.38     4.33        4.28     4.28        0.012   0.013        0.013   0.014    Standard
+
+
+
+
+                                                                                                                         Page 3 of 5
+www.venteclaminates.com                                                                                           Published on: 14/04/2023
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+VT-447
+PROCESS GUIDE
+
+
+
+Press Condition
+ 1. Heating rate (Rate of Rise) of material [Material Temperature]:
+    Programmable Press: 1.5-3.0ºC/min (3~5ºF/min). Manual Press: 3~6ºC /min (5~10ºF/min)
+ 2. Curing Temperature & Time: >60min at more than 185ºC (365ºF); material temperature should exceed 195ºC (383ºF)
+ 3. Full Pressure: ≥300psi (21Kg/cm2) should be applied 15~20 minutes after press starts
+ 4. Vacuuming should be continued until over 140ºC (284ºF) [Material Temperature]
+ 5. Cold Press condition: Keep Plate @ Room Temperature by water; Pressure:100psi; Keep Time: 60minutes
+
+
+               Temperature
+                                                        Hot Start Cycle for VT-447                                          Pressure
+              250ºC/ 482ºF                                                                                                  500psi(35Kg/cm2)
+                                                                                               Vacuum: 760Torr(100KPa)
+                                                                                 185ºC
+                                                                                 (365ºF)
+              200ºC/ 392ºF                                                                                                  400psi(28Kg/cm2)
+
+
+              150ºC/ 302ºF                                                                                                  300psi(21Kg/cm2)
+
+                                  80ºC
+              100ºC/ 212ºF        (176ºF)                                                                                   200psi(14Kg/cm2)
+
+
+                50ºC/ 122ºF                                                                                                 100psi(7Kg/cm2)
+                                                         Vacuum: 30Torr(4KPa)
+
+
+
+                              0             20   35    50                             100     105        125      145 150
+                                                                     Time (minute)
+
+
+
+               Temperature
+                                                  Hot Start Cycle for VT-447 (Manual)                                       Pressure
+              250ºC/ 482ºF                                                                                                  500psi(35Kg/cm2)
+                                                                                            Vacuum: 760Torr(100KPa)
+
+              200ºC/ 392ºF                                                                                                  400psi(28Kg/cm2)
+
+
+              150ºC/ 302ºF                                                                                                  300psi(21Kg/cm2)
+                                                                                                                            250psi(18Kg/cm2)
+              100ºC/ 212ºF                                                                                                  200psi(14Kg/cm2)
+
+
+                50ºC/ 122ºF                                                                                                 100psi(7Kg/cm2)
+                                                      Vacuum: 30Torr(4KPa)
+
+
+
+                              0             20		50                               90   100     110 		              145 150
+                                                                     Time (minute)
+
+
+
+
+                                                                                                                                          Page 4 of 5
+www.venteclaminates.com                                                                                                            Published on: 14/04/2023
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+VT-447
+PROCESS GUIDE
+
+
+                      Temperature                   Adara (Cedal) Press Cycle for VT-447                  Pressure
+
+                      250ºC/ 482ºF                                                                        500psi(35Kg/cm2)
+                                                                       Vacuum: 760Torr(100KPa)
+
+                      200ºC/ 392ºF                                                                        400psi(28Kg/cm2)
+                      185ºC/ 365ºF
+
+                      150ºC/ 302ºF                                                                        300psi(21Kg/cm2)
+                      140ºC/ 284ºF
+
+                      100ºC/ 212ºF                                                                        200psi(14Kg/cm2)
+                       80ºC/ 176ºF
+
+                          50ºC/ 122ºF        Vacuum: 30Torr(4KPa)
+                                                                                                          100psi(7Kg/cm2)
+                           30ºC/ 86ºF
+
+
+                                        0 5 10 		        35    45 50                        100 105   150
+                                                                        Time (minute)
+
+
+
+Typical Drilling Condition (φ0.3-1.0 mm) [Recommended]
+ 1. Spindle Speed                                                               120-180               KRPM
+ 2. Feed Rate                                                                   120-220               inch / min
+ 3. Retract Rate                                                                596-1000              inch / min
+ 4. Chip Load                                                                   0.6~2.0               mil / Rev.
+ 5. Entry board                                                                 t0.15mm Al            –
+
+
+
+
+Desmear Process
+1. Desmear rate of VT-447 is less than that of the conventional FR4;
+2. Adjustments to the desmear process are necessary for the lead-free materials;
+3. Check with your chemical supplier for recommendations.
+
+
+
+
+                                                                                                                               Page 5 of 5
+www.venteclaminates.com                                                                                                 Published on: 14/04/2023
+

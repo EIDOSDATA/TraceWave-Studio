@@ -1,0 +1,133 @@
+RF-35HTC
+High Thermal Conductivity Laminate
+
+ Benefits
+      •    Best in Class Thermal Conductivity
+      •    Low Loss Tangent
+      •    No Glass Reinforcement
+      •    Resists Thermal Oxidation
+      •    High Dimensional Stability
+
+
+
+ Applications
+      •    High power applications such as filters, Couplers, Dividers &
+           Power amplifiers
+      •    Antennas
+      •    Satellites
+
+
+
+
+RF-35HTC is a non-reinforced, low loss, industry leading thermally conductive laminate. The high 1.84 watts/M*K thermal
+conductivity is well suited for any high-power application including amplifiers, couplers, dividers, filters etc. RF-35HTC is a
+ceramic/PTFE composite that is very low in PTFE content. The extremely low loss of 0.0007 at 10 GHz makes RF-35HTC very
+attractive for any high-power application.
+
+The high thermal conductivity is beneficial for moving localized heat away from transistors, capacitors, conductors, other
+components, or the dielectric material. In hot environments exposed to oxygen, hydrocarbon (synthetic rubber) based composites
+are prone to oxidation and higher than expected electrical/thermal losses predicted from modeling. PTFE is attractive at the highest
+of temperatures because PTFE resists any thermal oxidation.
+
+Uniform distribution of ceramic in the dielectric ensures a uniform dielectric in the X, Y, and Z directions. The low X and
+Y CTE ensures good performance of filters over temperature. The low Z axis expansion ensures stable performance of narrow band
+or broad band couplers over temperature and stable signal to ground plane dielectric thickness (stable impedance) over
+temperature. The low PTFE content of RF-35HTC facilitates plating and drilling in printed circuit board fabrication. The high
+concentration of ceramic contributes to improved dimensional stability. AGC has avoided the use of alumina that is abrasive to
+mechanical drilling or routing.
+
+Power handling experiments were conducted on microstrip transmission lines with and without various capacitors at the center of the
+microstrip to quantify the capability of the dielectric to spread thermal energy. The heat profile of the microstrip, both with and
+without a capacitor, and any hot spots was captured using a thermal camera. Transmitted power was increased to 200 Watts. AGC ’s
+RF-35HTC was compared to AGC’s RF-35TC and RF-35TC-A, as well as to two available competitive materials. In every case, the RF-
+35HTC dielectric material outperformed all other materials in its ability to spread thermal energy, as shown on page 2.
+
+RF-35HTC is compatible with all AGC 1 oz copper with ULP 1 oz copper being recommended at high frequencies for the lowest insertion
+losses. Please consult with your technical sales manager about which coppers are most suitable for your application when using 1/2
+oz copper.
+                               Power Handling Test Configuration for Various Laminate Materials
+
+
+
+
+                                                 \
+
+
+
+
+Power Handling of Microstrip Circuits Having No Capacitor (tin                   Thermal Camera Imaging of
+                         finished)                                             Microstrip Circuits, Tin Finished,
+                                                                      No Capacitor (20 mil DT, 1oz Cu, 200 watts, 2.1 GHz)
+
+
+
+
+   Power Handling of Microstrip Circuits Containing a COG                       Thermal Camera Imaging of
+         Grade 47 pF High Q Capacitor by Murata                              Microstrip Circuits Having a 47 pF
+                                                                   Murata Capacitor (20 mil DT, 1oz Cu, 2.1 GHz, 200 Watts)
+          Properties              Conditions        Typical Value               Unit                               Test Method
+ Electrical Properties
+ Dielectric Constant              @ 10 GHz           3.50 ± 0.05                                  IPC-650 2.5.36
+ Dissipation Factor               @ 10 GHz              0.0007                                    IPC-650 2.5.36
+ Volume Resistivity                                    1.7 x 109            Mohms/cm              IPC-650 2.5.17.1 (After elevated temp.)
+ Surface Resistivity                                   2.9 x 106            Mohms/cm              IPC-650 2.5.17.1 (After humidity)
+ Thermal Properties
+                                   Unclad               1.84                  W/M*K
+ Thermal Conductivity                                                                             ASTM F433, ASTM E1461 (Laser Flash)
+                                    clad                2.89                  W/M*K
+                                      X                  11
+ CTE (23 to 125 °C)                   Y                  14                   ppm/°C              IPC-650 2.4.41 / ASTM D 3386
+                                      Z                  77
+ Mechanical Properties
+ Peel Strength                     1 oz. CL1          1.08 (6.17)          N/mm (lbs/in)          IPC-650 2.4.8 (Thermal Stress)
+                                  Lengthwise         18.4 (2,670)            MPa (psi)
+ Flexural Strength                                                                                ASTM D 790 / IPC-650 2.4.4
+                                   Crosswise         17.7 (2,560)            MPa (psi)
+                                  Lengthwise           6.6 (957)             MPa (psi)
+ Tensile Strength                                                                                 ASTM D 3039 / IPC-TM-650 2.4.19
+                                   Crosswise           6.2 (899)             MPa (psi)
+                                      MD                  4.1                  %
+ Elongation at Break                                                                              ASTM D 3039 / IPC-TM-650 2.4.19
+                                      CD                  9.9                  %
+                                      MD           2,856 (414,228)           MPa (psi)
+ Young’s Modulus                                                                                  ASTM D 3039 / IPC-TM-650 2.4.19
+                                      CD           2,676 (388,121)           MPa (psi)
+                                      MD                 0.08
+ Poisson’s Ratio                                                                                  ASTM D 3039 / IPC-TM-650 2.4.19
+                                      CD                 0.08
+                                      MD                 -0.01            mm/M (mils/in.)
+ Dimensional Stability                                                                            IPC-650-2.4.39 Sec. 5.4 (After Etch)
+                                      CD                 -0.01            mm/M (mils/in.)
+                                      MD                 -0.05            mm/M (mils/in.)
+ Dimensional Stability                                                                            IPC-650-2.4.39 Sec. 5.5 (Thermal Stress)
+                                      CD                 -0.02            mm/M (mils/in.)
+ Chemical / Physical Properties
+ Dielectric Breakdown                                     42                     kV               IPC-650 2.5.6
+ Moisture Absorption                                    0.07                     %                IPC-650 2.6.2.1
+ Arc Resistance                                         > 400                 seconds             IPC-650 2.5.1
+ Hardness                                               60.2                     %                ASTM D 2240 (Shore D)
+
+                                                      Panels may be ordered cut to size
+              Inches                              mm                                 Inches                                 mm
+              12 x 18                           304 x 457                            16 x 36                              406 x 914
+              16 x 18                           406 x 457                            24 x 36                              610 x 914
+              18 x 24                           457 x 610                            18 x 48                             457 x 1,220
+                                                        Typical Thickness(Tolerance)
+                Mils                              Mm                                  Mils                                   mm
+              10 (± 1)                         0.25(±0.025)                            20 (± 2)                         0.51(±0.050)
+              30 (± 2)                         0.76(±0.050)                            40 (± 3)                         1.02(±0.076)
+              60 (± 3)                         1.52(±0.076)                            80 (± 4)                         2.03(±0.102)
+              90 (± 4)                         2.29(±0.102)
+
+* All test data provided are typical values and not intended to be specification values. For review of critical specification tolerances,
+   please contact a company representative directly.
+* RF-35HTC can be manufactured in increments of 0.005”(0.125mm).
+* Standard panel size is 18” x 24” (457 mm x 610 mm).
+* Please contact AGC for availability of additional thicknesses, other sizes & any other type of cladding.
+
+
+
+
+ AGC Inc. 2025-10
+ agc-ml.multimaterial@agc.com
+

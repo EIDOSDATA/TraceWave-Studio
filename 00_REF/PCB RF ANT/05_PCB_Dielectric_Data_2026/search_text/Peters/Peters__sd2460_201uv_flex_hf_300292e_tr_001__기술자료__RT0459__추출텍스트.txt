@@ -1,0 +1,277 @@
+                              Solder resists of the series
+                              SD 2460/201 UV-FLEX-HF
+                               Contour sharp application by screen printing
+                               for “print and etch”
+                               for cross-over technology as well as organic and printed electronics
+                               for flexible circuits, excellent adhesion on flexible base materials such as
+                                 polyester/polyimide/polycarbonate foil, as well as on copper foil
+                               resistant to hot-air levelling (HAL) and lead-free reflow soldering
+                               halogen-free according to JPCA-ES01-2003 and IEC 61249-2-21
+                               the white solder resist SD 2490/201 UV-FLEX-HF optimises the light emission of
+                                 LEDs due to its very high reflectivity
+
+                              Characteristics
+                                                                 SD 2450/201 UV-            SD 2460/201           SD 2490/201
+                                                                    FLEX-HF                 UV-FLEX-HF            UV-FLEX-HF
+                               Colour / appearance                        blue                  green                 white
+                               Solids content                                                 > 99 %
+                               Viscosity* of mixture              10,500 ± 2,500           10,500 ± 2,500        13,000 ± 2,000
+                               at 20 °C [68 °F] ISO 3219              mPas                     mPas                  mPas
+                               Density of mixture
+                               at 20 °C [68 °F]                  1.25 ± 0.05 g/cm³        1.29 ± 0.02 g/cm³    1.34 ± 0.05 g/cm³
+                               DIN EN ISO 2811-1
+LP 240706 E-7 / 300292e_001
+
+
+
+
+                                                                                              2 weeks
+                               Pot life of mixture
+                                                                          (while avoiding direct light and solar radiation)
+
+                                    * measured with Haake RS 600, C 20/1°, D = 50 s-1
+                                      viscosity measuring unit supplied by Thermo Fisher Scientific, www.thermofisher.com
+                              Indices: SD = screen printing ink, /201 = mixing ratio 20 : 1, UV = UV curing,
+                              FLEX = for flexible circuits, HF = halogen-free
+Technical Report SD 2460/201 UV-FLEX-HF series
+
+
+
+List of possible physical and mechanical properties
+Lackwerke Peters largely verifies its own production range with regard to the products’ physical and
+mechanical properties. Please note that the values may slightly vary depending on the adjustment.
+              Property                           Test method                               Result
+                                     EN ISO 2409, ISO 2409
+                                     on copper                                              Gt 0
+Cross hatch
+                                     on FR 4                                                Gt 0
+                                     ink on ink                                             Gt 0
+                                     IPC-TM-650, 2.4.1                                 no delamination
+Adhesion                             IPC-TM-650, 2.4.1.6 (after cross         classification 5, no delamination
+                                     hatch)
+                                     IPC-SM-840E, 3.5.1                                     ≈H
+Pencil hardness
+                                     acc. to Wolff-Wilborn                                  ≈B
+                                     Mandrel bend test acc. to DIN 53152
+Flexibility                          on polyester foil, thickness 200 µm              2.5 mm mandrel
+                                     on polyimide foil, thickness: 50 µm              1.5 mm mandrel
+                                     IPC-SM-840E, 3.6.1.1
+                                     Isopropanol                                          passed
+                                     Isopropanol : water (75 : 25)                         failed
+Solvent resistance                   D-Limonene                                            failed
+                                     10% alkaline cleaning agents                          failed
+                                     Monoethanolamine                                      failed
+                                     Deionised water                                      passed
+Solder bath resistance               IPC-SM-840E, 3.7.2                       passed: 10 s at 260 °C [500 °F]
+(depending on the fluxing agent)     UL 94                                    passed: 10 s at 260 °C [500 °F]
+Glass transition temperature Tg      TMA tension mode                                 ≈ 45 °C [113 °F]
+Coefficient of thermal expansion                                                    ≈ 100 ppm/°C < Tg
+                                     TMA tension mode
+(CTE)                                                                               ≈ 190 ppm/°C > Tg
+
+
+List of possible electrical properties
+Lackwerke Peters largely verifies its own production range with regard to the products’ electrical properties.
+Please note that the values may slightly vary depending on the adjustment.
+              Property                           Test method                               Result
+                                     IPC-TM-650, 2.5.6.1                                ≥120 kV/mm
+Dielectric strength
+                                     IPC-SM-840E, 3.8.1                                    passed
+Surface resistance                   DIN EN 62631-3-2                                 ≥ 2.0 x 1014 Ohm
+Volume resistivity                   DIN EN 62631-3-1                              ≥ 1.3 x1013 Ohm x cm
+Moisture and insulation
+                                     IPC-SM-840E, 3.9.1                                Class H and T
+resistance
+                                     DIN EN 60112 on FR 4 base
+Comparative tracking index           material
+(CTI, tracking resistance)           with CTI 250                                        ≥ CTI 250*
+                                     with CTI 600                                        ≥ CTI 600*
+
+      * The CTI value of the coating depends, among others, on the tracking resistance values of the base
+        material.
+Optimum electrical insulation values can only be achieved if all flux residues are removed
+thoroughly from the printed circuit boards.
+
+2                                                                                                www.peters.de
+                                                         Technical Report SD 2460/201 UV-FLEX-HF series
+
+
+Processing
+            Please read this technical report and the publications listed below carefully before using the
+            product. These sheets are enclosed with the first shipment of product or sample.
+            The corresponding material safety data sheet contains detailed information and characteristics
+            on safety precautions, environmental protection, transport, storage, handling and waste
+            disposal.
+            Technical information TI 15/3 ”Protective measures when using chemicals including lacquers,
+            casting compounds, thinners, cleaning agents“
+            Technical information TI 15/10 ”Processing of 2-pack systems“
+
+            Technical information TI 15/13 “Precleaning in the pcb fabrication process“
+
+The solder resists of the series SD 2460/201 UV-FLEX-HF are applied by means of screen
+printing. Since UV curing inks do not contain solvents, there is no drying on the screen, but the
+presence of UV radiation (sun-light or fluorescent lamps) leads to a drying of the ink. The use of
+yellow light and/or yellow filters/UV protective foils is mandatory.
+     UV
+                Protect from UV light
+
+Since the many different permutations make it impossible to evaluate the whole spectrum
+(parameters, reactions with materials used, chemical processes and machines) of processes and
+subsequent processes in all their variations, the parameters we recommend are to be viewed as
+guidelines only that were determined in laboratory conditions. We advise you to determine the
+exact process limitations within your production environment, in particular as regards compatibility
+with your specific follow-up processes, in order to ensure a stable fabrication process and products
+of the highest possible quality.
+The specified product data is based upon standard processing conditions/test conditions of the
+mentioned norms and must be verified if necessary while observing suitable test conditions on
+processed products.
+Feel free to contact our application technology department (ATD) if you have any questions or for a
+consultation.
+
+Mixing
+          Stir component A before use
+
+          Component A : Hardener (Component B) = 20 : 1 (parts by weight)
+
+On the labels of our containers, you will find the volume [L] and weight [kg]. The mixing ratio refers
+to the weight.
+
+Adjustment of viscosity
+The solder resists of the series SD 2460/201 UV-FLEX-HF are adjusted in such a manner that they
+normally can be processed in the condition supplied. If necessary, their viscosity can be reduced
+
+      DIL       by diluting with 2 % max. of reactive thinner VR 5008
+
+Since the reactive thinner VR 5008 participates in the curing process, it is not possible to use other
+solvents.
+
+www.peters.de                                                                                                3
+Technical Report SD 2460/201 UV-FLEX-HF series
+
+Auxiliary products recommended
+ ELPESPEC® anti-static spray HP 5500
+     prevents and eliminates electrostatic discharge occurring during screen printing; silicone- and
+     grease-free
+ ELPESPEC® cleaning agent R 5899
+     for screen washing equipment, simply and safely to handle, no labelling in accordance with the
+     German dangerous goods regulations required, extremely high flash point (> 100 °C [> 212 °F]),
+     low vapour pressure < 0.1 hPa at 20 °C [68 °F], thus not affected by the EU-VOC regulation
+     1999/13/CE
+ ELPESPEC® cleaning agent R 5821
+     for the cleaning of equipment and work tools, high flash point (+32 °C [89.6 °F])
+ ELPESPEC® cleaning agent R 5817
+     for the manual cleaning of screens and tools
+
+Screen printing
+ Ensure that the surface to be coated is clean, dry and grease-/oxide-free and that copper
+  surfaces preferably have an average surface roughness of 2 µm.
+                               recommended screen printing parameters
+Screen fabric             polyester 68-55 up to 120-37
+                          [according to old nomenclature 68 – 120 T (lines/cm)]
+                          or corresponding steel fabric
+Screen tension            at least 25 N/cm or as specified by the screen mesh manufacturer
+Squeegee                  75–80 shore A hardness, right angled
+Squeegee angle            approx. 75°
+
+Cross-over technology
+The cross-over technology allows to arrange superimposed conductor planes instead of using
+costly double-sided printed circuit boards.
+    Insulation lacquer, e.g.
+    SD 2450/201 UV-FLEX
+    as under- and overcoat                                                                   Solder resist
+
+                                                   Double coating
+    Conductive paste                                                                            Copper
+
+
+                                                                                                Substrate
+
+
+Model process parameters:
+
+      Process step       Product                      Drying/curing               Screen fabric
+1. UV solder resist SD 2368 UV-SM                     UV curing: 1500 mJ/cm²      100-40 (old: 100 T)
+2. Undercoat #1          SD 2450/201 UV-FLEX-HF       UV curing: 1500 mJ/cm²      120-37 (old: 120 T)
+3. Undercoat #2          SD 2450/201 UV-FLEX-HF       UV curing: 1800 mJ/cm²      120-37 (old: 120 T)
+4. Conductive            Silver-conductive paste      according to the            according to the
+   paste                                              manufacturer’s              manufacturer’s
+                                                      specifications              specifications
+5. Overcoat              SD 2450/201 UV-FLEX-HF       UV curing: 2500 mJ/cm²      120-37 (old: 120 T)
+
+
+4                                                                                              www.peters.de
+                                                             Technical Report SD 2460/201 UV-FLEX-HF series
+
+The migration of the silver-conductive paste can be avoided by overprinting with a carbon-
+conductive ink which, as an option, can then be covered with a layer of solder resist from the
+SD 2460/201 UV-FLEX-HF series.
+
+Drying/Curing
+The solder resists of the series SD 2460/201 UV-FLEX-HF are cured by means of UV radiation.
+High pressure mercury vapour lamps with a power rating of 80-100 Watt/cm arc length are
+suitable.
+ Cure the solder resists of the series SD 2460/201 UV-FLEX-HF with a UV light energy of min.
+  2500 mJ/cm².
+ In case of multiple printing of the solder resist, cure each of the intermediate layers with an
+  energy of 1500-2000 mJ/cm² and the top layer with an energy of 2500 mJ/cm². This way you
+  achieve a better ink on ink adhesion. Please observe that multiple printing considerably reduces
+  the flexibility of the solder resist.
+ Due to its light-reflective properties, cure the white solder resist SD 2490/201 UV-FLEX-HF at a
+  much higher UV light energy of approx. 3500 mJ/cm². Ascertain the optimum energy by
+  means of pre-trials.
+The indicated light energy was measured with a Beltron* UV Integrator. Equipment of other
+manufacturers may show different values.
+           * Beltron GmbH, Germany, www.beltron.de, info@beltron.de
+ Replace the UV lamps regularly according to the manufacturer’s instructions, as the emission
+  spectrum of the lamps changes in the course of their life span.
+ Install operating time counters to be able to control the operation period.
+
+Packaging
+The packing units available are indicated in our offer which we will send you upon request.
+
+Shelf life and storage conditions
+                Shelf life: In sealed original containers at least 6 months
+        +25°C
+
+
+                Storage conditions: +5 °C to +25 °C [+41 °F to +77 °F]
+ +5°C
+
+
+  UV
+                Protect from UV light
+
+For warehousing reasons, isolated cases may occur where the shelf life upon shipment is less than
+the shelf life indicated in this technical report. However, it is ensured that our products have at
+least two-thirds of their shelf life remaining when they leave our company.
+
+
+
+
+www.peters.de                                                                                            5
+Technical Report SD 2460/201 UV-FLEX-HF series
+
+
+Disclaimer
+All descriptions and images of our goods and products contained in our technical literature,
+catalogues, flyers, circular letters, advertisements, price lists, websites, data sheets and brochures,
+and in particular the information given in this literature are non-binding unless expressly stated
+otherwise in the Agreement. This shall also include the property rights of third parties if applicable.
+The products are exclusively intended for the applications indicated in the corresponding technical
+data sheets. The advisory service does not exempt you from performing your own assessments, in
+particular as regards their suitability for the applications intended. The application, use and
+processing of our products and of the products manufactured by you based on the advice given by
+our Application Technology Department are beyond our control and thus entirely your
+responsibility. The sale of our products is effected in accordance with our current terms of sale and
+delivery.
+Any questions? We would be pleased to offer you advice and assistance in solving your problems.
+Samples and technical literature are available upon request.
+
+Lackwerke Peters GmbH & Co. KG         Internet: www.peters.de    Phone +49 2152 2009-0
+Hooghe Weg 13, 47906 Kempen, Germany   E-Mail: peters@peters.de   Fax   +49 2152 2009-70
+
+
+
+
+6                                                                                          www.peters.de
+

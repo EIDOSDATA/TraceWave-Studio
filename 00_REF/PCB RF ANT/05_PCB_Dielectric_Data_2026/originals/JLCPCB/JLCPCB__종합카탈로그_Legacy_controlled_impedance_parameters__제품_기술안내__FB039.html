@@ -1,0 +1,847 @@
+<!--head-->
+<div class="minHead" header-side ></div>
+<div class="container-fluid pad0 bgf5 ">
+
+    <div class="w1300 mgAuto clearfix mt40 mb40 border bgfff plr30 pt15">
+        <h1 class="text-center font20 strong space2">Multilayer high precision PCB's with impedance control</h1>
+        <p class="mt30 strong font15">JLCPCB can produce High-precision multilayer board with capabilities listed in
+            below table.</p>
+        <div class="tableBor mlr10 mt10" style="width: 650px;">
+            <table class="table table-bordered font14 tdplr10">
+                <tr class="bgf0">
+                    <th width="275px">Min. Trace width/Spacing</th>
+                    <th>Min. Via</th>
+                    <th>Min. BGA</th>
+                </tr>
+                <tr>
+                    <td>3.5mil</td>
+                    <td>0.2mm</td>
+                    <td>0.25mm</td>
+                </tr>
+            </table>
+        </div>
+        <p class="font14 mlr10 mt10 color8"> It is very convenient for customers to conduct an impedance matching design, according to JLCPCB’s laminated structure and related parameters. The PCB will be strictly produced in accordance with the following stackup. </p>
+        <p class="mt30 strong font15">Controlled Impedance PCB Parameters and Stackup</p>
+        <p class="font14 mlr10 color8">1.Prepreg dielectric constant:</p>
+        <div class="tableBor mlr10" style="width: 650px;">
+            <table class="table table-bordered font14 tdplr10">
+                <tr class="bgf0">
+                    <th>Prepreg type</th>
+                    <th>Dielectric constant</th>
+                </tr>
+                <tr>
+                    <td>7628</td>
+                    <td>4.6</td>
+                </tr>
+                <tr>
+                    <td>3313</td>
+                    <td>4.05</td>
+                </tr>
+                <tr>
+                    <td>2116</td>
+                    <td>4.25</td>
+                </tr>
+            </table>
+        </div>
+        <p class="font14 mlr10 mt10 color8">2.Solder mask Parameters</p>
+        <div class="tableBor mlr10" style="width: 935px;">
+            <table class="table table-bordered font14 tdplr10">
+                <tr class="bgf0">
+                    <th>Solder mask thickness over the laminate</th>
+                    <th>Solder mask thickness over traces</th>
+                    <th>Solder mask dielectric constant</th>
+                </tr>
+                <tr>
+                    <td>0.8mil</td>
+                    <td>0.5mil</td>
+                    <td>3.8</td>
+                </tr>
+            </table>
+        </div>
+        <p class="font14 mlr10 mt10 color8">3. Core dielectric constant</p>
+        <div class="tableBor mlr10" style="width: 250px;">
+            <table class="table table-bordered font14 tdplr10">
+                <tr class="bgf0">
+                    <th>Core dielectric constant</th>
+                </tr>
+                <tr>
+                    <td>4.6</td>
+                </tr>
+            </table>
+        </div>
+        <p class="font14 mlr10 mt10 color8">
+            For your convenience, we have designed an
+            <a class="blue" href="/impedanceCalculation" target="_blank">Impedance Calculator</a>
+            to help you calculate the impedance and the trace width you require.</p>
+        <p class="mt30 strong font15">4-Layer Impedance Control Stackup</p>
+        <p class="font14 mlr10 mt10">Thickness</p>
+        <p class="over mlr10">
+            <button class="btn btn-sm btn-default pull-left radius0 bordercd" ng-click="form.thickness=0.8"
+                    ng-class="{'active':form.thickness==0.8}" type="button">0.8mm
+            </button>
+            <button class="btn btn-sm btn-default pull-left ml15 radius0 bordercd" ng-click="form.thickness=1.0"
+                    ng-class="{'active':form.thickness==1.0}" type="button">1.0mm
+            </button>
+            <button class="btn btn-sm btn-default pull-left ml15 radius0 bordercd" ng-click="form.thickness=1.2"
+                    ng-class="{'active':form.thickness==1.2}" type="button">1.2mm
+            </button>
+            <button class="btn btn-sm btn-default pull-left ml15 radius0 bordercd" ng-click="form.thickness=1.6"
+                    ng-class="{'active':form.thickness==1.6}" type="button">1.6mm
+            </button>
+            <button class="btn btn-sm btn-default pull-left ml15 radius0 bordercd" ng-click="form.thickness=2.0"
+                    ng-class="{'active':form.thickness==2.0}" type="button">2.0mm
+            </button>
+            <!--<span class="ver ml10 font16 line30">Current layer:4-layer</span>-->
+        </p>
+        <div ng-show="form.thickness==0.8">
+            <p class="font14 mlr10 mt10">a) JLC7628 Stackup:</p>
+            <div class="tableBor mlr10" style="width: 935px;">
+                <table class="table table-bordered font14 tdplr10">
+                    <tr class="bgf0">
+                        <th>Layer</th>
+                        <th>Material Type</th>
+                        <th>Thickness</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td>Top Layer1</td>
+                        <td class="bg-green">Copper</td>
+                        <td>0.035 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>7628*1</td>
+                        <td>0.2104 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer2</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                        <td class="bg-yellow" rowspan="3">0.25 mm (with copper core)</td>
+                    </tr>
+                    <tr>
+                        <td>Core</td>
+                        <td class="bg-orange">Core</td>
+                        <td class="bg-yellow">0.2 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer3</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>7628*1</td>
+                        <td>0.2104 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Bottom Layer4</td>
+                        <td class="bg-green">Copper</td>
+                        <td>0.035 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">0.2mm (7.87 mil) is nominal thickness of 7628 prepreg. Use 7.1 mil as the thickness when the controlled impedance tracks are on top/bottom, use 8.1 mil when tracks are inside.</td>
+                    </tr>
+                </table>
+            </div>
+            <p class="font14 mlr10 mt10">b) JLC3313 Stackup:</p>
+            <div class="tableBor mlr10" style="width: 935px;">
+                <table class="table table-bordered font14 tdplr10">
+                    <tr class="bgf0">
+                        <th>Layer</th>
+                        <th>Material Type</th>
+                        <th>Thickness</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td>Top Layer1</td>
+                        <td class="bg-green">Copper</td>
+                        <td>0.035 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>3313*1</td>
+                        <td>0.0994 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer2</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                        <td class="bg-yellow" rowspan="3">0.45 mm (with copper core)</td>
+                    </tr>
+                    <tr>
+                        <td>Core</td>
+                        <td class="bg-orange">Core</td>
+                        <td class="bg-yellow">0.45 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer3</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>3313*1</td>
+                        <td>0.0994 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Bottom Layer4</td>
+                        <td class="bg-green">Copper</td>
+                        <td>0.035 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">0.1mm (3.94 mil) is nominal thickness of 7628 prepreg. Use 3.5 mil as the thickness when the controlled impedance tracks are on top/bottom, use 4.5 mil when tracks are inside.</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div ng-show="form.thickness==1.0">
+            <p class="font14 mlr10 mt10">a) JLC7628 Stackup:</p>
+            <div class="tableBor mlr10" style="width: 935px;">
+                <table class="table table-bordered font14 tdplr10">
+                    <tr class="bgf0">
+                        <th>Layer</th>
+                        <th>Material Type</th>
+                        <th>Thickness</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td>Top Layer1</td>
+                        <td class="bg-green">Copper</td>
+                        <td>0.035 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>7628*1</td>
+                        <td>0.2104 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer2</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                        <td class="bg-yellow" rowspan="3">0.45 mm (with copper core)</td>
+                    </tr>
+                    <tr>
+                        <td>Core</td>
+                        <td class="bg-orange">Core</td>
+                        <td class="bg-yellow">0.4 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer3</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>7628*1</td>
+                        <td>0.2104 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Bottom Layer4</td>
+                        <td class="bg-green">Copper</td>
+                        <td>0.035 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">0.2mm (7.87 mil) is nominal thickness of 7628 prepreg. Use 7.1 mil as the thickness when the controlled impedance tracks are on top/bottom, use 8.1 mil when tracks are inside.</td>
+                    </tr>
+                </table>
+            </div>
+            <p class="font14 mlr10 mt10">b) JLC3313 Stackup:</p>
+            <div class="tableBor mlr10" style="width: 935px;">
+                <table class="table table-bordered font14 tdplr10">
+                    <tr class="bgf0">
+                        <th>Layer</th>
+                        <th>Material Type</th>
+                        <th>Thickness</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td>Top Layer1</td>
+                        <td class="bg-green">Copper</td>
+                        <td>0.035 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>3313*1</td>
+                        <td>0.0994 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer2</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                        <td class="bg-yellow" rowspan="3">0.7 mm (with copper core)</td>
+                    </tr>
+                    <tr>
+                        <td>Core</td>
+                        <td class="bg-orange">Core</td>
+                        <td class="bg-yellow">0.7 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer3</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>3313*1</td>
+                        <td>0.0994 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Bottom Layer4</td>
+                        <td class="bg-green">Copper</td>
+                        <td>0.035 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">0.1mm (3.94 mil) is nominal thickness of 7628 prepreg. Use 3.5 mil as the thickness when the controlled impedance tracks are on top/bottom, use 4.5 mil when tracks are inside.</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div ng-show="form.thickness==1.2">
+            <p class="font14 mlr10 mt10">a) JLC7628 Stackup:</p>
+            <div class="tableBor mlr10" style="width: 935px;">
+                <table class="table table-bordered font14 tdplr10">
+                    <tr class="bgf0">
+                        <th>Layer</th>
+                        <th>Material Type</th>
+                        <th>Thickness</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td>Top Layer1</td>
+                        <td class="bg-green">Copper</td>
+                        <td>0.035 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>7628*1</td>
+                        <td>0.2 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer2</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                        <td class="bg-yellow" rowspan="3">0.7 mm (with copper core)</td>
+                    </tr>
+                    <tr>
+                        <td>Core</td>
+                        <td class="bg-orange">Core</td>
+                        <td class="bg-yellow">0.7 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer3</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>7628*1</td>
+                        <td>0.2 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Bottom Layer4</td>
+                        <td class="bg-green">Copper</td>
+                        <td>0.035 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">0.2mm (7.87 mil) is nominal thickness of 7628 prepreg. Use 7.1 mil as the thickness when the controlled impedance tracks are on top/bottom, use 8.1 mil when tracks are inside.</td>
+                    </tr>
+                </table>
+            </div>
+            <p class="font14 mlr10 mt10">b) JLC3313 Stackup:</p>
+            <div class="tableBor mlr10" style="width: 935px;">
+                <table class="table table-bordered font14 tdplr10">
+                    <tr class="bgf0">
+                        <th>Layer</th>
+                        <th>Material Type</th>
+                        <th>Thickness</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td>Top Layer1</td>
+                        <td class="bg-green">Copper</td>
+                        <td>0.035 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>3313*1</td>
+                        <td>0.0994 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer2</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                        <td class="bg-yellow" rowspan="3">0.9 mm (with copper core)</td>
+                    </tr>
+                    <tr>
+                        <td>Core</td>
+                        <td class="bg-orange">Core</td>
+                        <td class="bg-yellow">0.865 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer3</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>3313*1</td>
+                        <td>0.0994 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Bottom Layer4</td>
+                        <td class="bg-green">Copper</td>
+                        <td>0.035 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">0.1mm (3.94 mil) is nominal thickness of 7628 prepreg. Use 3.5 mil as the thickness when the controlled impedance tracks are on top/bottom, use 4.5 mil when tracks are inside.</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div ng-show="form.thickness==1.6">
+            <p class="font14 mlr10 mt10">a) JLC7628 Stackup:</p>
+            <div class="tableBor mlr10" style="width: 935px;">
+                <table class="table table-bordered font14 tdplr10">
+                    <tr class="bgf0">
+                        <th>Layer</th>
+                        <th>Material Type</th>
+                        <th>Thickness</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td>Top Layer1</td>
+                        <td class="bg-green">Copper</td>
+                        <td>0.035 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>7628*1</td>
+                        <td>0.2104 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer2</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                        <td class="bg-yellow" rowspan="3">1.1mm (with copper core)</td>
+                    </tr>
+                    <tr>
+                        <td>Core</td>
+                        <td class="bg-orange">Core</td>
+                        <td class="bg-yellow">1.065 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer3</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>7628*1</td>
+                        <td>0.2104 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Bottom Layer4</td>
+                        <td class="bg-green">Copper</td>
+                        <td>0.035 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">0.2mm (7.87 mil) is nominal thickness of 7628 prepreg. Use 7.1 mil as the thickness when the controlled impedance tracks are on top/bottom, use 8.1 mil when tracks are inside.</td>
+                    </tr>
+                </table>
+            </div>
+            <p class="font14 mlr10 mt10">b) JLC3313 Stackup:</p>
+            <div class="tableBor mlr10" style="width: 935px;">
+                <table class="table table-bordered font14 tdplr10">
+                    <tr class="bgf0">
+                        <th>Layer</th>
+                        <th>Material Type</th>
+                        <th>Thickness</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td>Top Layer1</td>
+                        <td class="bg-green">Copper</td>
+                        <td>0.035 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>3313*1</td>
+                        <td>0.0994 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer2</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                        <td class="bg-yellow" rowspan="3">1.3 mm (with copper core)</td>
+                    </tr>
+                    <tr>
+                        <td>Core</td>
+                        <td class="bg-orange">Core</td>
+                        <td class="bg-yellow">1.265 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer3</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>3313*1</td>
+                        <td>0.0994 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Bottom Layer4</td>
+                        <td class="bg-green">Copper</td>
+                        <td>0.035 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">0.1mm (3.94 mil) is nominal thickness of 3313 prepreg. Use 3.5 mil as the thickness when the controlled impedance tracks are on top/bottom, use 4.5 mil when tracks are inside.</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div ng-show="form.thickness==2.0">
+            <p class="font14 mlr10 mt10">a) JLC7628 Stackup:</p>
+            <div class="tableBor mlr10" style="width: 935px;">
+                <table class="table table-bordered font14 tdplr10">
+                    <tr class="bgf0">
+                        <th>Layer</th>
+                        <th>Material Type</th>
+                        <th>Thickness</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td>Top Layer1</td>
+                        <td class="bg-green">Copper</td>
+                        <td>0.035 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>7628*1</td>
+                        <td>0.2104 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer2</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                        <td class="bg-yellow" rowspan="3">1.5 mm (with copper core)</td>
+                    </tr>
+                    <tr>
+                        <td>Core</td>
+                        <td class="bg-orange">Core</td>
+                        <td class="bg-yellow">1.465 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer3</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>7628*1</td>
+                        <td>0.2104 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Bottom Layer4</td>
+                        <td class="bg-green">Copper</td>
+                        <td>0.035 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">0.2mm (7.87 mil) is nominal thickness of 7628 prepreg. Use 7.1 mil as the thickness when the controlled impedance tracks are on top/bottom, use 8.1 mil when tracks are inside.</td>
+                    </tr>
+                </table>
+            </div>
+            <p class="font14 mlr10 mt10 color8">Note: 2.0 thickness 4-Layer board only provides JLC7628 Stackup.</p>
+        </div>
+        <p class="mt30 strong font15">6-Layer Impedance Control Stackup</p>
+        <p class="font14 mlr10 mt10">Thickness</p>
+        <p class="over mlr10">
+            <button class="btn btn-sm btn-default pull-left radius0 bordercd" ng-click="form.thickness1=1.2"
+                    ng-class="{'active':form.thickness1==1.2}" type="button">1.2mm
+            </button>
+            <button class="btn btn-sm btn-default pull-left ml15 radius0 bordercd" ng-click="form.thickness1=1.6"
+                    ng-class="{'active':form.thickness1==1.6}" type="button">1.6mm
+            </button>
+            <button class="btn btn-sm btn-default pull-left ml15 radius0 bordercd" ng-click="form.thickness1=2.0"
+                    ng-class="{'active':form.thickness1==2.0}" type="button">2.0mm
+            </button>
+            <!--<span class="ver ml10 font16 line30">Current layer:6-layer</span>-->
+        </p>
+        <div ng-show="form.thickness1==1.2">
+            <p class="font14 mlr10 mt10">b) JLC3313 Stackup:</p>
+            <div class="tableBor mlr10" style="width: 935px;">
+                <table class="table table-bordered font14 tdplr10">
+                    <tr class="bgf0">
+                        <th>Layer</th>
+                        <th>Material Type</th>
+                        <th>Thickness</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td>Top Layer1</td>
+                        <td class="bg-green">Copper</td>
+                        <td>0.035 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>3313*1</td>
+                        <td>0.0994 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer2</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                        <td class="bg-yellow" rowspan="3">0.35 mm (with copper core)</td>
+                    </tr>
+                    <tr>
+                        <td>Core</td>
+                        <td class="bg-orange">Core</td>
+                        <td class="bg-yellow">0.35 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer3</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>2116*1</td>
+                        <td>0.1088 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer4</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                        <td class="bg-yellow" rowspan="3">0.35 mm (with copper core)</td>
+                    </tr>
+                    <tr>
+                        <td>Core</td>
+                        <td class="bg-orange">Core</td>
+                        <td class="bg-yellow">0.35 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer5</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>3313*1</td>
+                        <td>0.0994 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Bottom Layer6</td>
+                        <td class="bg-green">Copper</td>
+                        <td>0.035 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">0.1mm (3.94 mil) is nominal thickness of 3313 prepreg. Use 3.5 mil as the thickness of 3313 prepreg when the controlled impedance tracks are on top/bottom, use 5.5 mil(2116 prepreg) or 8.5mil(7628 prepreg) when tracks are inside. </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div ng-show="form.thickness1==1.6">
+            <p class="font14 mlr10 mt10">b) JLC3313 Stackup:</p>
+            <div class="tableBor mlr10" style="width: 935px;">
+                <table class="table table-bordered font14 tdplr10">
+                    <tr class="bgf0">
+                        <th>Layer</th>
+                        <th>Material Type</th>
+                        <th>Thickness</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td>Top Layer1</td>
+                        <td class="bg-green">Copper</td>
+                        <td>0.035 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>3313*1</td>
+                        <td>0.0994 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer2</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                        <td class="bg-yellow" rowspan="3">0.55 mm (with copper core)</td>
+                    </tr>
+                    <tr>
+                        <td>Core</td>
+                        <td class="bg-orange">Core</td>
+                        <td class="bg-yellow">0.55 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer3</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>2116*1</td>
+                        <td>0.1088 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer4</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                        <td class="bg-yellow" rowspan="3">0.55 mm (with copper core)</td>
+                    </tr>
+                    <tr>
+                        <td>Core</td>
+                        <td class="bg-orange">Core</td>
+                        <td class="bg-yellow">0.55 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer5</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>3313*1</td>
+                        <td>0.0994 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Bottom Layer6</td>
+                        <td class="bg-green">Copper</td>
+                        <td>0.035 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">0.1mm (3.94 mil) is nominal thickness of 3313 prepreg. Use 3.5 mil as the thickness of 3313 prepreg when the controlled impedance tracks are on top/bottom, use 5.5 mil(2116 prepreg) or 8.5mil(7628 prepreg) when tracks are inside. </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div ng-show="form.thickness1==2.0">
+            <p class="font14 mlr10 mt10">b) JLC3313 Stackup:</p>
+            <div class="tableBor mlr10" style="width: 935px;">
+                <table class="table table-bordered font14 tdplr10">
+                    <tr class="bgf0">
+                        <th>Layer</th>
+                        <th>Material Type</th>
+                        <th>Thickness</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td>Top Layer1</td>
+                        <td class="bg-green">Copper</td>
+                        <td>0.035 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>3313*1</td>
+                        <td>0.0994 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer2</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                        <td class="bg-yellow" rowspan="3">0.7 mm (with copper core)</td>
+                    </tr>
+                    <tr>
+                        <td>Core</td>
+                        <td class="bg-orange">Core</td>
+                        <td class="bg-yellow">0.7 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer3</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>7628*1</td>
+                        <td>0.2028 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer4</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                        <td class="bg-yellow" rowspan="3">0.7 mm (with copper core)</td>
+                    </tr>
+                    <tr>
+                        <td>Core</td>
+                        <td class="bg-orange">Core</td>
+                        <td class="bg-yellow">0.7 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Inner Layer5</td>
+                        <td class="bg-green">Copper</td>
+                        <td class="bg-yellow">0.0152 mm</td>
+                    </tr>
+                    <tr>
+                        <td>Prepreg</td>
+                        <td>3313*1</td>
+                        <td>0.0994 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Bottom Layer6</td>
+                        <td class="bg-green">Copper</td>
+                        <td>0.035 mm</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">0.1mm (3.94 mil) is nominal thickness of 3313 prepreg. Use 3.5 mil as the thickness of 3313 prepreg when the controlled impedance tracks are on top/bottom, use 5.5 mil(2116 prepreg) or 8.5mil(7628 prepreg) when tracks are inside. </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <p class="font14 mlr10 mt10 mb30 color8">Note: The 6-Layer board temporarily only provides JLC3313 Stackup.</p>
+        <!--   <img src="/client/image/impedance.jpg" />-->
+    </div>
+
+</div>
+<!--footer-->
+<div class="commonFooter" footer-side></div>

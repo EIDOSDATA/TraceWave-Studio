@@ -1,0 +1,496 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" /><meta http-equiv="X-UA-Compatible" content="IE=edge" /><title>
+	Product Properties Tool - Laminate Materials
+</title><link rel="preload" href="/css/calibri.css" as="style" /><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" /><link rel="stylesheet" type="text/css" href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.0/themes/smoothness/jquery-ui.css" /><link href="/css/style.min.css?v=1.01" rel="stylesheet" type="text/css" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-3956254-31"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-3956254-31');
+    </script>
+    
+<style>
+    table.standard th:first-child {border-radius: 10px 0 0 0;}
+    table.standard th:last-child {border-radius: 0 10px 0 0;}
+    table.standard tr td a {font-size:11px}
+    td.primary {background-color:red;}
+    td.secondary {background-color:blue;}
+    @media all{
+            .featherlight{display:none; position:fixed; top:0;right:0;bottom:0;left:0;z-index:2147483647;text-align:center;white-space:nowrap;cursor:pointer;background:#333;background:rgba(0,0,0,0)}
+            .featherlight:last-of-type{background:rgba(0,0,0,.8)}
+            .featherlight:before{content:''; display:inline-block; height:100%; vertical-align:middle; margin-right:-.25em}
+            .featherlight .featherlight-content{position:relative; text-align:left; vertical-align:middle; display:inline-block; overflow:auto; padding:25px 25px 0; border-bottom:25px solid transparent; margin-left:5%; margin-right:5%; max-height:95%; background:#fff; border-radius:10px; cursor:auto; white-space:normal; max-width:500px}
+            .featherlight .featherlight-inner{display:block}
+            .featherlight .featherlight-close-icon{position:absolute; z-index:9999; top:0; right:0; line-height:25px; width:25px; cursor:pointer; text-align:center; font-family:Arial,sans-serif; background:#fff; background:rgba(255,255,255,.3); color:#000}
+        }
+</style>
+<script>
+    function ErrorCheck() {
+        var continueOnError = true;
+        var message = "There was a problem with your selections.\n\r\n\r";
+        if ('None' != $('#ddlOrderByPrimary').val() && $('#ddlOrderByPrimary').val() == $('#ddlOrderBySecondary').val()) {
+            continueOnError = false;
+            message += "The primary and secondary order by values can not be the same\n\r";
+        }
+        if (false == continueOnError) {
+            alert(message);
+        }
+        return continueOnError;
+    }
+</script>
+<meta name="description" content="Sort and compare all Rogers&#39; high frequency laminates according to product properties" /></head>
+<body>
+    
+<!-- Start Web Header -->
+<div class="header-mobile">
+    <a href="https://www.rogerscorp.com" title="Rogers Corporation"><img src="/images/logo-xl.jpg" alt="Rogers Corporation"></a>
+</div>
+<header class="fixed-top fixed-topbar web-widget">
+    <div class="container header-container">
+        <!-- Start Nav-->
+        <div class="d-flex flex-column">
+            <div class="container static-container">
+                <nav class="navbar navbar-expand-lg  border-bottom  py-3">
+                    <!-- Start logo-->
+                    <a class="navbar-brand" href="https://www.rogerscorp.com" title="Rogers Corporation"><img src="/images/logo-xl.jpg" alt="Rogers Corporation"></a>
+                    <!-- End logo-->
+                    <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+                        <!-- Start Utility Nav-->
+                        <ul class="navbar-nav utility-nav float-left">
+                            <li class="mr-3 dropdown">
+                                <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fi flaticon-world mr-1"></i> English <i class="fi flaticon-angle ml-1"></i></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/" class="dropdown-item active">English1</a></li>
+                                    <li><a href="https://www.rogerscorp.cn" target="_blank" class="dropdown-item">中文</a></li>
+                                    <li><a href="https://www.rogerscorp.jp" target="_blank" class="dropdown-item">日本語</a></li>
+                                </ul>
+                            </li>
+                            <li class="mr-3 dropdown">
+                                <a href="#" class="align-middle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fi flaticon-support mr-1"></i> Support <i class="fi flaticon-angle ml-1"></i></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="https://www.rogerscorp.com/support" class="dropdown-item">Global Support</a></li>
+                                    <li><a href="https://www.rogerscorp.com/about-us/corporate-responsibility/certifications" class="dropdown-item">Certifications</a></li>
+                                    <li><a href="https://www.rogerscorp.com/downloads" class="dropdown-item">Document Library Search</a></li>
+                                    <li><a href="https://www.rogerscorp.com/blog" class="dropdown-item">Blog</a></li>
+                                </ul>
+                            </li>
+                            <li class="mr-3 dropdown">
+                                <a href="#" class="align-middle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fi flaticon-lock mr-1"></i> Sign In <i class="fi flaticon-angle ml-1"></i></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="https://www.globalcommhost.com/rogers/acs/techsupporthub/en/login.php" target="_blank" class="dropdown-item">Tech Support Hub</a></li>
+                                    <li><a href="https://www.globalcommhost.com/rogers/pes-designsupporthub/login.php" target="_blank" class="dropdown-item">Design Hub</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <!-- End Utility Nav-->
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- END nav -->
+</header>
+<!-- END Web Header -->
+    <main class="main inner-page container">
+        <form name="frmMain" method="post" action="./index.aspx" id="frmMain">
+<div>
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTMzMjA4MDY4MQ9kFgJmD2QWAgIFD2QWAgIBD2QWBAIBDxYCHgRUZXh0BYcDPHNlY3Rpb24gY2xhc3M9ImlubmVyLWJhbm5lciBiZy1pbWFnZSBteC0wIG14LW1kLTMiIHN0eWxlPSJiYWNrZ3JvdW5kLWltYWdlOiB1cmwoL2ltYWdlcy9iYW5uZXJzL25ldHdvcmtpbmcuanBnKSI+CjxkaXYgY2xhc3M9ImgtMTAwIGp1c3RpZnktY29udGVudC1jZW50ZXIiPgo8ZGl2IGNsYXNzPSJjb2wtbGctOSBiYW5uZXItdGV4dCI+CjxoMSBjbGFzcz0ibXQtMyI+TGFtaW5hdGUgUHJvcGVydGllcyBUb29sPC9oMT4KPHA+U29ydCBhbmQgY29tcGFyZSBhbGwgUm9nZXJzJyBoaWdoIGZyZXF1ZW5jeSBsYW1pbmF0ZXMgYWNjb3JkaW5nIHRvIHByb2R1Y3QgcHJvcGVydGllcy48L3A+CjwvZGl2Pgo8L2Rpdj4KPGRpdiBjbGFzcz0ic3F1YXJlLXdyYXAiPjwvZGl2Pgo8L3NlY3Rpb24+CmQCBQ8QZBAVKAhWaWV3IEFsbFRBRDI1MEPihKIsIEFEMjU1Q+KEoiwgQUQyNjBB4oSiLCBBRDMwMEPihKIsIEFEMzAwROKEoiBBRDMyMEHihKIsIEFEMzUwQeKEoiBMYW1pbmF0ZXMUQ0xURS1BVOKEoiBMYW1pbmF0ZXMRQ0xUReKEoiBMYW1pbmF0ZXMUQ0xURS1YVOKEoiBMYW1pbmF0ZXMeQ3VDbGFkwq4gMjE3LzIzMy8yNTAgTGFtaW5hdGVzFkRpQ2xhZMKuIDUyNyBMYW1pbmF0ZXMaRGlDbGFkwq4gODcwLzg4MCBMYW1pbmF0ZXMbSXNvQ2xhZMKuIDkxNy85MzMgTGFtaW5hdGVzFkthcHBh4oSiIDQzOCBMYW1pbmF0ZXMnTUFHVFJFWOKEoiA1NTUgSGlnaCBJbXBlZGFuY2UgTGFtaW5hdGVzE1JPMzAwM+KEoiBMYW1pbmF0ZXMhUk8zMDA24oSiIGFuZCBSTzMwMTDihKIgTGFtaW5hdGVzE1JPMzAzNeKEoiBMYW1pbmF0ZXMsUk8zMjAz4oSiLCBSTzMyMDbihKIgYW5kIFJPMzIxMOKEoiBMYW1pbmF0ZXMUUk80MDAzQ+KEoiBMYW1pbmF0ZXMUUk80MzUwQuKEoiBMYW1pbmF0ZXMVUk80MzYwRzLihKIgTGFtaW5hdGVzE1JPNDUwMOKEoiBMYW1pbmF0ZXMiUk80NzAw4oSiICBBbnRlbm5hIEdyYWRlIExhbWluYXRlcxNSTzQ4MzDihKIgTGFtaW5hdGVzFFJPNDgzNVTihKIgTGFtaW5hdGVzE1JPNDgzNeKEoiBMYW1pbmF0ZXMaUlQvZHVyb2lkwq4gNTg3MCBMYW1pbmF0ZXMaUlQvZHVyb2lkwq4gNTg4MCBMYW1pbmF0ZXMcUlQvZHVyb2lkwq4gNTg4MExaIExhbWluYXRlcxpSVC9kdXJvaWTCriA2MDAyIExhbWluYXRlcyFSVC9kdXJvaWTCriA2MDA2ICYgNjAxMCBMYW1pbmF0ZXMdUlQvZHVyb2lkwq4gNjAzNUhUQyBMYW1pbmF0ZXMaUlQvZHVyb2lkwq4gNjIwMiBMYW1pbmF0ZXMcUlQvZHVyb2lkwq4gNjIwMlBSIExhbWluYXRlcxJUQzM1MOKEoiBMYW1pbmF0ZXMXVEMzNTDihKIgUGx1cyBMYW1pbmF0ZXMSVEM2MDDihKIgTGFtaW5hdGVzElRNTcKuIDEwIExhbWluYXRlcxNUTU3CriAxMGkgTGFtaW5hdGVzE1RNTcKuIDEzaSBMYW1pbmF0ZXMRVE1Nwq4gMyBMYW1pbmF0ZXMRVE1Nwq4gNCBMYW1pbmF0ZXMRVE1Nwq4gNiBMYW1pbmF0ZXMVKAhWaWV3IEFsbAI4NQQxMDkyBDEwOTAEMTA5MQI5MAI4NwI4OAI4OQQxMTAxBDExMDgCNDICMzkCNDECNDUCNTQCNTUCNTYCNTkCNjAEMTEwMAQxMTAzAjUyAjMxAjMyAjMzAjM0AjM2AjM4AjM1AjM3BDEwOTMEMTEwNwQxMDk0AjQ5AjUwAjUxAjQ2AjQ3AjQ4FCsDKGdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dkZGQ5oURuMnK4G6nC0cUGhb19g033nw==" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['frmMain'];
+if (!theForm) {
+    theForm = document.frmMain;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/WebResource.axd?d=xdJn-DFTX13ODv8bgjFbvB8HqSwpboOc9Lgs_R6MJ1yxmOZ2kgU9-Wen-FpSp-zOgLepaLfJ3ANyfKxTXWrPUey5aK41&amp;t=639190689332169432" type="text/javascript"></script>
+
+<div>
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="FE08C1AA" />
+	<input type="hidden" name="__SCROLLPOSITIONX" id="__SCROLLPOSITIONX" value="0" />
+	<input type="hidden" name="__SCROLLPOSITIONY" id="__SCROLLPOSITIONY" value="0" />
+	<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+	<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEdAFcWsLDPGiNYQTzhM40Ois+Lbny/uICxFFQFYGKtmMSSnn4Oy9R9cB/Vchgk1ejSWTCI3S/9X6AaGDFi+5P74fR0mwcSH8hKqkM8g4H2FivD6hb9ecwhJhG0xs3OX3yGakRGVfeBWy8R73FvNJcMncBOKnZnEYjLgJY6tfu3AV1XDWKBgVEX7VdWpfgVYFU69U79TW4TZUve8Qxt+van2WMugQYXvxF/c+YDA8Q3ueS/kUhQ0FyS9HEHZWZHN8SekZuDwZ5IRCIJoJPEZqQeG0iItD3gY8CNHBYIBfxtBZY6hZnwnrkcAGlbNAsju7ay1dYJxiwPvavHCywPx1m1X5hcvKOkRKz4GZeyZ+3Pdzo1w0M8LjQ41Bi9+kvvRQk0F99qwVDJsPUHXbpm0ppIcQwGcXcnMZfi9aXMNW7euXhfEGiV1660Jrzb7n/iE5x94o2zgFwSSTvdqfw3Teny7pzwO8nd12ugOiVyB9L5Pc4Jqt7qVbxidZuad77yk4Gtpmd4+A+O4At0gbhIq7ZPHVV7XyF/S0nldix02shCzlCADwUH8itNqT0oemgTIasSb7fO1ugxLoZblZzTl4GLAinyXux0BClA4ZhekSY7Fqn2Gag2icW9rqhE3LJsfKmVdkbaTkGzk9p2+GM0nsoT0zDJIskT4mshEbDXOuzt6zdUHC1+TB1LTLWcJL3bkEWogA8ZKWCOBHfBB/F2WK3Wa9+BmmBdtOQ92mUfMkR9AAhj6ePtz+iM00x9FNBvzf8cBUli1Xk0m23R8L0K6WXgv0XfoAUTnF+dyLsEVB+lLTIWRn+NtvkvyX63rjTOQ9d9cAufZJrVkHN1XdA7a7MG9vYessVOyhuJLFVdMyjlw4hhvmpSbqcf7JgQnNNTOTLp6WKn9eb98kms0rKMHmUbvAneT7G8j0AXH2JzUmWRSMa9VRUFbpMzm0CV2zJfOJrACc0791l33ltiD87Y4Gt6fhXlguA48WIedVakcByaI/OqMYaXVd/m85yndvsLSraeZEaxV1KNrq1IdGXlfXOYLw3fS2kT+fcJM/HiZp7I9AfTB+9IEZDzCQE8sg8IuCCK+/xMpsA4TK1nlKitsvyOV0ZYIfNTYmFmla6SCxL+eK3nTSYgzijxnYvmmXB+77LA2PNSj5LZ8iT8loTEwOXI7ErUpSF7sAGGsXQ9783AbotIHvINvBsObOB5Us+9C5Aa4btWtSohO4dH17l/+qyRvDlclJKMbTM43JgwgIJdBqubgs4/wsBCOKyruFlfZ7If+9h9T54TjI9Vy4glJsDE1OPgROha6JGH8QYsYTcwrWMdZ6HTQkk+aq/Gjv1JKvDic/PP9IUPwIBeuZOv+oJ8rSsci1uWVzdkKwt6kV9CelHap4r8q6xrP8lU8LcwbvVjsy/QHfYLk5ahHAOpAsWHi7IHF4p53SwGNxx/MTsB1ipNgI/CxlV9mojReaM8GUX49o9cgWUKg3U+FmcDpMrPGAY5Qt8zaXxr7GRC1MYhQTSnwBahiadMsaBZNrvCbLG1yjmgdItd/mbdgc0b9E/iGW+MmO+g/dqIEBkCSf2+IZs2wSipwCTvRNFwMzQ1XnMCpt1SVHFLwEN/eetw6ndKyjvkaNEullyG/0jVNpricsV5C9VQZa63DLTpNufl66jFAj3PTD3C8vEoj730duTy6gIj0Wfyn5yIObdNJfAORxH4swDnfJxtEu+Uu4s7hhYqpn9pJU26VU9xWAavxb6Ev8gsaE2/0mshGxj2hC/kKU01VNK3P6vU6HnRUxe2uIFJFleQV9CgO3JJod8B/h1hU1ucrf78dIVkJ8zVq3Qu/Z6QLMCwxGt0avZfOmoN1Tdos0uODUNhQW6vjhdZMks8VEi3OgpIUQ==" />
+</div>
+            
+<nav class="breadcrumb">
+    <a class="breadcrumb-item" href="https://www.rogerscorp.com">Home</a>
+    <span class="breadcrumb-item"><a href="https://www.rogerscorp.com/tools">Tools</a></span>
+    <span class="breadcrumb-item"><a href="https://www.rogerscorp.com/advanced-electronics-solutions">Advanced Electronics Solutions</a></span>
+    <span class="breadcrumb-item"><a href="https://www.rogerscorp.com/advanced-electronics-solutions/tools">Advanced Connectivity Solutions Tools</a></span>
+    <span class="breadcrumb-item active">Laminate Properties Tool</span>
+</nav>
+<section class="inner-banner bg-image mx-0 mx-md-3" style="background-image: url(/images/banners/networking.jpg)">
+<div class="h-100 justify-content-center">
+<div class="col-lg-9 banner-text">
+<h1 class="mt-3">Laminate Properties Tool</h1>
+<p>Sort and compare all Rogers' high frequency laminates according to product properties.</p>
+</div>
+</div>
+<div class="square-wrap"></div>
+</section>
+
+
+<div class="light-widget-w-icon mb-3">
+    <i class="fi flaticon-wrench"></i>
+    <div class="widget-container">
+        <div class="title">
+            <h3>Filters</h3>
+        </div>
+            
+            <div class="row">
+                <div class="col-2">
+                    <div class="form-group">
+                        <label for="ddlProductID">Product</label>
+                        <select name="ctl00$cphContent$ddlProductID" id="ddlProductID" class="form-control input-sm">
+	<option selected="selected" value="View All">View All</option>
+	<option value="85">AD250C™, AD255C™, AD260A™, AD300C™, AD300D™ AD320A™, AD350A™ Laminates</option>
+	<option value="1092">CLTE-AT™ Laminates</option>
+	<option value="1090">CLTE™ Laminates</option>
+	<option value="1091">CLTE-XT™ Laminates</option>
+	<option value="90">CuClad&#174; 217/233/250 Laminates</option>
+	<option value="87">DiClad&#174; 527 Laminates</option>
+	<option value="88">DiClad&#174; 870/880 Laminates</option>
+	<option value="89">IsoClad&#174; 917/933 Laminates</option>
+	<option value="1101">Kappa™ 438 Laminates</option>
+	<option value="1108">MAGTREX™ 555 High Impedance Laminates</option>
+	<option value="42">RO3003™ Laminates</option>
+	<option value="39">RO3006™ and RO3010™ Laminates</option>
+	<option value="41">RO3035™ Laminates</option>
+	<option value="45">RO3203™, RO3206™ and RO3210™ Laminates</option>
+	<option value="54">RO4003C™ Laminates</option>
+	<option value="55">RO4350B™ Laminates</option>
+	<option value="56">RO4360G2™ Laminates</option>
+	<option value="59">RO4500™ Laminates</option>
+	<option value="60">RO4700™  Antenna Grade Laminates</option>
+	<option value="1100">RO4830™ Laminates</option>
+	<option value="1103">RO4835T™ Laminates</option>
+	<option value="52">RO4835™ Laminates</option>
+	<option value="31">RT/duroid&#174; 5870 Laminates</option>
+	<option value="32">RT/duroid&#174; 5880 Laminates</option>
+	<option value="33">RT/duroid&#174; 5880LZ Laminates</option>
+	<option value="34">RT/duroid&#174; 6002 Laminates</option>
+	<option value="36">RT/duroid&#174; 6006 &amp; 6010 Laminates</option>
+	<option value="38">RT/duroid&#174; 6035HTC Laminates</option>
+	<option value="35">RT/duroid&#174; 6202 Laminates</option>
+	<option value="37">RT/duroid&#174; 6202PR Laminates</option>
+	<option value="1093">TC350™ Laminates</option>
+	<option value="1107">TC350™ Plus Laminates</option>
+	<option value="1094">TC600™ Laminates</option>
+	<option value="49">TMM&#174; 10 Laminates</option>
+	<option value="50">TMM&#174; 10i Laminates</option>
+	<option value="51">TMM&#174; 13i Laminates</option>
+	<option value="46">TMM&#174; 3 Laminates</option>
+	<option value="47">TMM&#174; 4 Laminates</option>
+	<option value="48">TMM&#174; 6 Laminates</option>
+
+</select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ddlLimit">Results Limit</label>
+                        <select name="ctl00$cphContent$ddlLimit" id="ddlLimit" class="form-control input-sm">
+	<option value="5">5</option>
+	<option value="10">10</option>
+	<option value="20">20</option>
+	<option selected="selected" value="1000">All</option>
+
+</select>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="ddlOrderByPrimary">Sort By (Primary)</label>
+                        <select name="ctl00$cphContent$ddlOrderByPrimary" id="ddlOrderByPrimary" class="form-control input-sm">
+	<option selected="selected" value="None">None</option>
+	<option value="ProductFamily,ProductNumber,ProductSuffix">Product Name</option>
+	<option value="DkProcess">Dielectric Constant (Process)</option>
+	<option value="DkDesign">Dielectric Constant (Design)</option>
+	<option value="DissipationFactor">Dissipation Factor</option>
+	<option value="ThermalCoefficient">Thermal Coefficient</option>
+	<option value="VolumeResistivity">Volume Resistivity</option>
+	<option value="SurfaceResistivity">Surface Resistivity</option>
+	<option value="WaterAbsorption">Water Absorption</option>
+	<option value="ThermalConductivity">Thermal Conductivity</option>
+	<option value="CTEX">Coefficient of Thermal Expansion X</option>
+	<option value="CTEY">Coefficient of Thermal Expansion Y</option>
+	<option value="CTEZ">Coefficient of Thermal Expansion Z</option>
+	<option value="PeelStrength">Peel Strength</option>
+	<option value="Density">Density</option>
+	<option value="PIM">PIM</option>
+
+</select>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtRangeLow">Numeric Range (Primary Sort By)</label>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <input name="ctl00$cphContent$txtRangeLow" type="text" id="txtRangeLow" class="form-control input-sm" /> 
+                            </div>
+                            <div class="col-md-1" style="padding-top:5px">
+                                To 
+                            </div>
+                            <div class="col-md-5">
+                                <input name="ctl00$cphContent$txtRangeHigh" type="text" id="txtRangeHigh" class="form-control input-sm" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        <label for="ddlAscDscPrimary">Order</label>
+                        <select name="ctl00$cphContent$ddlAscDscPrimary" id="ddlAscDscPrimary" class="form-control input-sm">
+	<option selected="selected" value="ASC">Ascending</option>
+	<option value="DESC">Descending</option>
+
+</select>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        <label for="ddlOrderBySecondary">Sort By (Secondary)</label>
+                        <select name="ctl00$cphContent$ddlOrderBySecondary" id="ddlOrderBySecondary" class="form-control input-sm">
+	<option selected="selected" value="None">None</option>
+	<option value="ProductFamily,ProductNumber,ProductSuffix">Product Name</option>
+	<option value="DkProcess">Dielectric Constant (Process)</option>
+	<option value="DkDesign">Dielectric Constant (Design)</option>
+	<option value="DissipationFactor">Dissipation Factor</option>
+	<option value="ThermalCoefficient">Thermal Coefficient</option>
+	<option value="VolumeResistivity">Volume Resistivity</option>
+	<option value="SurfaceResistivity">Surface Resistivity</option>
+	<option value="WaterAbsorption">Water Absorption</option>
+	<option value="ThermalConductivity">Thermal Conductivity</option>
+	<option value="CTEX">Coefficient of Thermal Expansion X</option>
+	<option value="CTEY">Coefficient of Thermal Expansion Y</option>
+	<option value="CTEZ">Coefficient of Thermal Expansion Z</option>
+	<option value="PeelStrength">Peel Strength</option>
+	<option value="Density">Density</option>
+	<option value="PIM">PIM</option>
+
+</select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cbUlFlame">Flammability Rating</label>
+                        <select name="ctl00$cphContent$ddlIsFlammabilityRating" id="ddlIsFlammabilityRating" class="form-control input-sm">
+	<option selected="selected" value="N">Show All Materials</option>
+	<option value="Y">Show Only UL Flame Rated Materials</option>
+
+</select>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="ddlAscDscSecondary">Order</label>
+                        <select name="ctl00$cphContent$ddlAscDscSecondary" id="ddlAscDscSecondary" class="form-control input-sm">
+	<option selected="selected" value="ASC">Ascending</option>
+	<option value="DESC">Descending</option>
+
+</select>
+                    </div>
+                    <div class="form-group center">
+                        <input type="submit" name="ctl00$cphContent$btnFilter" value="Apply Filter" id="btnFilter" class="btn btn-sm btn-success mt-4" /> 
+                        <input type="submit" name="ctl00$cphContent$btnClear" value="Clear" id="btnClear" class="btn btn-sm btn-default mt-4" />
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+<table class="standard table table-hover table-condensed table-striped table-bordered" style="font-size:11px;" border='1'><tr><th>&nbsp;</th><th>&nbsp;</td><th colspan="2">Dielectric Constant, @10GHZ (2.5 GHz) Typical</td><th colspan="6">&nbsp;</td><th colspan="3">Coefficient of Thermal Expansion -55&deg; to 288&deg;C ppm/&deg;C (Typical)</td><th colspan="5">&nbsp;</td></tr><tr><td style="width:2%">&nbsp;</td><td style="width:12%">Product Name</td><td>Process</td><td>Design</td><td>Dissipation Factor TAN @10 GHz (2.5 GHz) (Typical)</td><td>Thermal Coefficient &epsilon;<sub>r</sub> -50&degC to 150&deg;C ppm/&deg;C (Typical)<br/><div class="center"><p><a href="modals.aspx?id=2"  data-featherlight="ajax" class="btn btn-success btn-xs mt-1">More</a></p></div></td><td>Volume Resistivity Mohm (Typical)</td><td>Surface Resistivity Mohm (Typical)</td><td>Water Absorption D48/50% (Typical)</td><td>Thermal Conductivity W/m/&deg;K (Typical) 50&deg;C ASTM D5470</td><td class="center"style="width:2%">X</td><td class="center"style="width:2%">Y</td><td class="center"style="width:2%">Z</td><td>Peel Strength 1 oz (35um) ED Foil lbs/in. (N/mm) (Typical)</td><td>Density gm/cm<sup>3</sup> (Typical)</td><td>Flammability Rating UL94</td><td>Lead-Free Process Compatible</td><td style="width:6%">PIM dBc Typical<br/><div class="center"><p><a href="modals.aspx?id=1"  data-featherlight="ajax" class="btn btn-success btn-xs mt-1">More</a></p></div></td></tr><tr><td><input type="checkbox" value="15" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/ad-series-laminates/ad250c-laminates" target="_blank">AD250C™</a></td><td class="center">2.50+/-0.04</td><td class="center">2.52</td><td class="center">0.0013</td><td class="center">-117</td><td class="center">4.8x10<sup>8</sup></td><td class="center">4.1x10<sup>7</sup></td><td class="center">0.04<sup>22</sup></td><td class="center">0.33</td><td class="center">47</td><td class="center">29</td><td class="center">196</td><td class="center">14.8 (2.6)</td><td class="center">2.28</td><td class="center">V-0</td><td class="center">Y</td><td class="center">-164</td></tr><tr><td><input type="checkbox" value="16" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/ad-series-laminates/ad255c-laminates" target="_blank">AD255C™</a></td><td class="center">2.55+/-0.04</td><td class="center">2.60</td><td class="center">0.0013</td><td class="center">-110</td><td class="center">7.4x10<sup>8</sup></td><td class="center">3.6x10<sup>7</sup></td><td class="center">0.03<sup>22</sup></td><td class="center">0.35</td><td class="center">34</td><td class="center">26</td><td class="center">196</td><td class="center">13.6 (2.4)</td><td class="center">2.28</td><td class="center">V-0</td><td class="center">Y</td><td class="center">-164</td></tr><tr><td><input type="checkbox" value="82" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/ad-series-laminates/ad300d-laminates" target="_blank">AD300D™</a></td><td class="center">2.97, 3.03 +/-0.05</td><td class="center">2.94, 3.03</td><td class="center">0.0021</td><td class="center">-73</td><td class="center">1.7x10<sup>8</sup></td><td class="center">5.1x10<sup>7</sup></td><td class="center">0.04</td><td class="center">0.37</td><td class="center">24</td><td class="center">23</td><td class="center">98</td><td class="center">18.3 (3.2)</td><td class="center">2.23</td><td class="center">V-0</td><td class="center">Y</td><td class="center">-159</td></tr><tr><td><input type="checkbox" value="20" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/ad-series-laminates/ad350a-laminates" target="_blank">AD350A™</a></td><td class="center">3.50+/-0.05</td><td class="center">3.54</td><td class="center">0.0033</td><td class="center">-57</td><td class="center">1.5x10<sup>9</sup></td><td class="center">9.5x10<sup>7</sup></td><td class="center">0.10<sup>22</sup></td><td class="center">0.44</td><td class="center">18</td><td class="center">18</td><td class="center">63</td><td class="center">14.7 (2.6)</td><td class="center">2.43</td><td class="center">V-0</td><td class="center">Y</td><td class="center">-164</td></tr><tr><td><input type="checkbox" value="87" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/anteo-laminates" target="_blank">Anteo™</a></td><td class="center">4.10+/-0.08</td><td class="center">4.38</td><td class="center">0.005</td><td class="center">-21</td><td class="center">2.9x10<sup>9</sup></td><td class="center">6.2x10<sup>7</sup></td><td class="center">0.12 </td><td class="center">0.64</td><td class="center">13</td><td class="center">16</td><td class="center">42</td><td class="center">5.3</td><td class="center">1.99</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="28" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/clte-series-laminates/clte-at-laminates" target="_blank">CLTE-AT™</a></td><td class="center">3.00+/-0.04</td><td class="center">3.0</td><td class="center">0.0013</td><td class="center">-10</td><td class="center">4.3x10<sup>8</sup></td><td class="center">2.0x10<sup>8</sup></td><td class="center">0.03<sup>22</sup></td><td class="center">0.64</td><td class="center">8</td><td class="center">8</td><td class="center">20</td><td class="center">6.5 (1.16)</td><td class="center">2.06</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="81" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/clte-series-laminates/clte-mw-laminates" target="_blank">CLTE-MW™</a></td><td class="center">2.94-3.02+/-0.04</td><td class="center">3.03-3.10</td><td class="center">0.0015</td><td class="center">-35</td><td class="center">1.3x10<sup>7</sup></td><td class="center">2.5x10<sup>6</sup></td><td class="center">0.03<sup>22</sup></td><td class="center">0.42</td><td class="center">8</td><td class="center">8</td><td class="center">30</td><td class="center">6.0 (1.1)</td><td class="center">2.1</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="1" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/clte-series-laminates/clte-xt-laminates" target="_blank">CLTE-XT™</a></td><td class="center">2.94+/-0.03*</td><td class="center">2.94</td><td class="center">0.0012</td><td class="center">-9</td><td class="center">4.3x10<sup>8</sup></td><td class="center">2.5x10<sup>8</sup></td><td class="center">0.02<sup>22</sup></td><td class="center">0.56</td><td class="center">12.7</td><td class="center">13.7</td><td class="center">40.8</td><td class="center">7.2 (1.29)</td><td class="center">2.02</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="3" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/clte-series-laminates" target="_blank">CLTE™</a></td><td class="center">2.98+/-0.04</td><td class="center">2.98</td><td class="center">0.0023</td><td class="center">-9</td><td class="center">1.4x10<sup>9</sup></td><td class="center">1.3x10<sup>6</sup></td><td class="center">0.04<sup>22</sup></td><td class="center">0.50</td><td class="center">9.9</td><td class="center">9.4</td><td class="center">57.9</td><td class="center">7.0 (1.25)</td><td class="center">2.38</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="29" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/cuclad-series-laminates/cuclad-217-laminates" target="_blank">CuClad® 217</a></td><td class="center">2.17, 2.20+/-0.02</td><td class="center">2.17, 2.20</td><td class="center">0.0009</td><td class="center">-151</td><td class="center">2.3x10<sup>8</sup></td><td class="center">3.4x10<sup>6</sup></td><td class="center">0.02<sup>22</sup></td><td class="center">0.26</td><td class="center">29</td><td class="center">28</td><td class="center">246</td><td class="center">14.0 (2.50)</td><td class="center">2.23</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="30" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/cuclad-series-laminates/cuclad-233-laminates" target="_blank">CuClad® 233</a></td><td class="center">2.33+/-0.02</td><td class="center">2.40</td><td class="center">0.0013</td><td class="center">-171</td><td class="center">8.0x10<sup>8</sup></td><td class="center">2.4x10<sup>6</sup></td><td class="center">0.02<sup>22</sup></td><td class="center">0.26</td><td class="center">23</td><td class="center">24</td><td class="center">194</td><td class="center">14.0 (2.50)</td><td class="center">2.26</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="31" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/cuclad-series-laminates/cuclad-250-laminates" target="_blank">CuClad® 250</a></td><td class="center">2.40-2.55+/-0.04</td><td class="center">2.40-2.60</td><td class="center">0.0017</td><td class="center">-170</td><td class="center">8.0x10<sup>9</sup></td><td class="center">1.5x10<sup>8</sup></td><td class="center">0.03<sup>22</sup></td><td class="center">0.25</td><td class="center">18</td><td class="center">19</td><td class="center">177</td><td class="center">14.0 (2.50)</td><td class="center">2.31</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="34" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/diclad-series-laminates" target="_blank">DiClad® 527</a></td><td class="center">2.40-2.60+/-0.04</td><td class="center">2.40-2.60</td><td class="center">0.0017</td><td class="center">-153</td><td class="center">1.2x10<sup>9</sup></td><td class="center">4.5x10<sup>7</sup></td><td class="center">0.03<sup>22</sup></td><td class="center">0.25</td><td class="center">14</td><td class="center">21</td><td class="center">173</td><td class="center">14.0 (2.50)</td><td class="center">2.31</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="33" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/diclad-series-laminates/diclad-870_880-laminates" target="_blank">DiClad® 870</a></td><td class="center">2.33+/-0.04</td><td class="center">2.33</td><td class="center">0.0013</td><td class="center">-161</td><td class="center">1.5x10<sup>9</sup></td><td class="center">3.4x10<sup>7</sup></td><td class="center">0.02<sup>22</sup></td><td class="center">0.26</td><td class="center">17</td><td class="center">29</td><td class="center">217</td><td class="center">14.0 (2.50)</td><td class="center">2.26</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="32" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/diclad-series-laminates/diclad-870_880-laminates" target="_blank">DiClad® 880</a></td><td class="center">2.17, 2.20+/-0.02</td><td class="center">2.2</td><td class="center">0.0009</td><td class="center">-160</td><td class="center">1.4x10<sup>9</sup></td><td class="center">2.9x10<sup>6</sup></td><td class="center">0.02<sup>22</sup></td><td class="center">0.26</td><td class="center">25</td><td class="center">34</td><td class="center">252</td><td class="center">14.0 (2.50)</td><td class="center">2.23</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="36" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/isoclad-series-laminates/isoclad-917-laminates" target="_blank">IsoClad® 917</a></td><td class="center">2.17+/-0.02</td><td class="center">2.17</td><td class="center">0.0013</td><td class="center">-157</td><td class="center">1.5x10<sup>10</sup></td><td class="center">1.0x10<sup>9</sup></td><td class="center">0.04<sup>22</sup></td><td class="center">0.26</td><td class="center">46</td><td class="center">47</td><td class="center">236</td><td class="center">10.0 (1.79)</td><td class="center">2.23</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="37" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/isoclad-series-laminates/isoclad-933-laminates" target="_blank">IsoClad® 933</a></td><td class="center">2.33+/-0.04</td><td class="center">2.33</td><td class="center">0.0016</td><td class="center">-132</td><td class="center">3.5x10<sup>8</sup></td><td class="center">1.0x10<sup>8</sup></td><td class="center">0.05<sup>22</sup></td><td class="center">0.26</td><td class="center">31</td><td class="center">35</td><td class="center">203</td><td class="center">10.0 (1.79)</td><td class="center">2.27</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="73" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/kappa-438-laminates" target="_blank">Kappa™ 438</a></td><td class="center">4.10+/-0.08</td><td class="center">4.38</td><td class="center">0.005</td><td class="center">-21</td><td class="center">2.9x10<sup>9</sup></td><td class="center">6.2x10<sup>7</sup></td><td class="center">0.12 </td><td class="center">0.64</td><td class="center">13</td><td class="center">16</td><td class="center">42</td><td class="center">5.8</td><td class="center">1.99</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="85" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/magtrex-555-high-impedance-laminates" target="_blank">MAGTREX® 555</a></td><td class="center">&#949;<sub>&#915;</sub> = 6.5&#177;0.5<br/>&#956;<sub>&#915;</sub> = 6.0&#177;0.2</td><td class="center"><span class='na'>-</span></td><td class="center">See Data Sheet</td><td class="center">~+1000</td><td class="center">6.15x10<sup>8</sup></td><td class="center">1.74x10<sup>8</sup></td><td class="center">0.25</td><td class="center">0.47</td><td class="center">22</td><td class="center">25</td><td class="center">25</td><td class="center">3.1</td><td class="center">3.45</td><td class="center">N/A</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="84" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/ro3000-series-laminates/ro3003g2-laminates" target="_blank">RO3003G2™</a></td><td class="center">3.00+/-0.04</td><td class="center">3.07<sup>(29)</sup></td><td class="center">0.0011</td><td class="center">-35</td><td class="center">1.4x10<sup>9</sup></td><td class="center">2.6x10<sup>8</sup></td><td class="center">0.06</td><td class="center">0.43</td><td class="center">16</td><td class="center">17</td><td class="center">18</td><td class="center">12.0<sup>(30)</sup></td><td class="center">2.15</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="38" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/ro3000-series-laminates/ro3003-laminates" target="_blank">RO3003™</a></td><td class="center">3.00+/-0.04<sup>7</sup></td><td class="center">3.16<sup>29</sup></td><td class="center">0.0010</td><td class="center">-3</td><td class="center">1x10<sup>7</sup></td><td class="center">1x10<sup>7</sup></td><td class="center">0.04</td><td class="center">0.50</td><td class="center">17</td><td class="center">16</td><td class="center">25</td><td class="center">12.7 (2.2)</td><td class="center">2.1</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="40" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/ro3000-series-laminates/ro3006-laminates" target="_blank">RO3006™</a></td><td class="center">6.15+/-0.15</td><td class="center">6.4</td><td class="center">0.002</td><td class="center">-262</td><td class="center">1x10<sup>5</sup></td><td class="center">1x10<sup>5</sup></td><td class="center">0.02</td><td class="center">0.79</td><td class="center">17</td><td class="center">17</td><td class="center">24</td><td class="center">7.1 (1.2)</td><td class="center">2.6</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="42" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/ro3000-series-laminates/ro3010-laminates" target="_blank">RO3010™</a></td><td class="center">10.20+/-0.30</td><td class="center">11.2</td><td class="center">0.0022</td><td class="center">-395</td><td class="center">1x10<sup>5</sup></td><td class="center">1x10<sup>5</sup></td><td class="center">0.05</td><td class="center">0.95</td><td class="center">13</td><td class="center">11</td><td class="center">16</td><td class="center">9.4 (1.6)</td><td class="center">2.8</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="39" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/ro3000-series-laminates/ro3035-laminates" target="_blank">RO3035™</a></td><td class="center">3.50+/-0.05</td><td class="center">3.60</td><td class="center">0.0015</td><td class="center">-45</td><td class="center">1x10<sup>7</sup></td><td class="center">1x10<sup>7</sup></td><td class="center">0.04</td><td class="center">0.50</td><td class="center">17</td><td class="center">17</td><td class="center">24</td><td class="center">10.2 (1.8)</td><td class="center">2.1</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="9" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/ro3000-series-laminates/ro3200-series-laminates" target="_blank">RO3203™</a></td><td class="center">3.02 +/- 0.04</td><td class="center">3.02</td><td class="center">0.0016</td><td class="center">-13</td><td class="center">1x10<sup>7</sup></td><td class="center">1x10<sup>7</sup></td><td class="center">0.03</td><td class="center">0.48</td><td class="center">13</td><td class="center">13</td><td class="center">58</td><td class="center">10.2 (1.8)</td><td class="center">2.1</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="41" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/ro3000-series-laminates/ro3200-series-laminates" target="_blank">RO3206™</a></td><td class="center">6.15+/-0.15</td><td class="center">6.6</td><td class="center">0.0027</td><td class="center">-212</td><td class="center">1x10<sup>3</sup></td><td class="center">1x10<sup>3</sup></td><td class="center">0.03</td><td class="center">0.67</td><td class="center">13</td><td class="center">13</td><td class="center">34</td><td class="center">10.7 (1.9)</td><td class="center">2.7</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="43" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/ro3000-series-laminates/ro3200-series-laminates" target="_blank">RO3210™</a></td><td class="center">10.20+/-0.50</td><td class="center">10.8</td><td class="center">0.0027</td><td class="center">-459</td><td class="center">1x10<sup>3</sup></td><td class="center">1x10<sup>3</sup></td><td class="center">0.12</td><td class="center">0.81</td><td class="center">13</td><td class="center">13</td><td class="center">34</td><td class="center">11.0 (1.9)</td><td class="center">3</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="47" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/ro4000-series-laminates/ro4003c-laminates" target="_blank">RO4003C™</a></td><td class="center">3.38+/-0.05</td><td class="center">3.55</td><td class="center">0.0027</td><td class="center">40</td><td class="center">1.7x10<sup>10</sup></td><td class="center">4.2x10<sup>9</sup></td><td class="center">0.04</td><td class="center">0.71</td><td class="center">11</td><td class="center">14</td><td class="center">46</td><td class="center">6.0 (1.05)</td><td class="center">1.8</td><td class="center">NON FR</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="13" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/ro4000-series-laminates/ro4350b-laminates" target="_blank">RO4350B™</a></td><td class="center">3.48 +/- 0.05</td><td class="center">3.66</td><td class="center">0.0037</td><td class="center">50</td><td class="center">1.2x10<sup>10</sup></td><td class="center">5.7x10<sup>9</sup></td><td class="center">0.05</td><td class="center">0.69</td><td class="center">10</td><td class="center">12</td><td class="center">32</td><td class="center">5.0 (0.88)</td><td class="center">1.9</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="14" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/ro4000-series-laminates/ro4350b-laminates" target="_blank">RO4360G2™</a></td><td class="center">6.15 +/- 0.15</td><td class="center">6.4</td><td class="center">0.0038</td><td class="center">-131</td><td class="center">4x10<sup>7</sup></td><td class="center">9x10<sup>6</sup></td><td class="center">0.08</td><td class="center">0.75</td><td class="center">13</td><td class="center">14</td><td class="center">28</td><td class="center">5.2 (0.91)</td><td class="center">2.16</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="46" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/ro4000-series-laminates/ro4500-laminates" target="_blank">RO4533™</a></td><td class="center">3.30+/-0.08</td><td class="center">3.45</td><td class="center">0.0025 (0.0020)</td><td class="center">40</td><td class="center">1.1x10<sup>10</sup></td><td class="center">9.9x10<sup>8</sup></td><td class="center">0.02</td><td class="center">0.60</td><td class="center">13</td><td class="center">11</td><td class="center">37</td><td class="center">6.9 (1.2)</td><td class="center">1.8</td><td class="center">NON FR</td><td class="center">Y</td><td class="center">-157</td></tr><tr><td><input type="checkbox" value="12" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/ro4000-series-laminates/ro4500-laminates" target="_blank">RO4534™</a></td><td class="center">3.40 +/- 0.08</td><td class="center">3.55</td><td class="center">0.0027 (0.0022)</td><td class="center">40</td><td class="center">1.7x10<sup>10</sup></td><td class="center">4.2x10<sup>9</sup></td><td class="center">0.06</td><td class="center">0.60</td><td class="center">11</td><td class="center">14</td><td class="center">46</td><td class="center">6.3 (1.1)</td><td class="center">1.8</td><td class="center">NON FR</td><td class="center">Y</td><td class="center">-157</td></tr><tr><td><input type="checkbox" value="49" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/ro4000-series-laminates/ro4500-laminates" target="_blank">RO4535™</a></td><td class="center">3.44+/-0.08</td><td class="center">3.60</td><td class="center">0.0037 (0.0032)</td><td class="center">50</td><td class="center">1.2x10<sup>10</sup></td><td class="center">5.7x10<sup>9</sup></td><td class="center">0.09</td><td class="center">0.6</td><td class="center">16</td><td class="center">17</td><td class="center">50</td><td class="center">5.1 (0.9)</td><td class="center">1.9</td><td class="center">V-0</td><td class="center">Y</td><td class="center">-157</td></tr><tr><td><input type="checkbox" value="44" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/ro4000-series-laminates/ro4700-antenna-grade-laminates" target="_blank">RO4725JXR™</a></td><td class="center">2.55+/-0.05</td><td class="center">2.64</td><td class="center">0.0026 (0.0022)</td><td class="center">34</td><td class="center">2.16x10<sup>8</sup></td><td class="center">4.8x10<sup>7</sup></td><td class="center">0.24</td><td class="center">0.38<sup>(19)</sup></td><td class="center">13.9</td><td class="center">19.0</td><td class="center">25.6</td><td class="center">8.5 (1.49)</td><td class="center">1.27</td><td class="center">NON FR</td><td class="center">Y</td><td class="center">&#8804;-160</td></tr><tr><td><input type="checkbox" value="69" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/ro4000-series-laminates/ro4700-antenna-grade-laminates" target="_blank">RO4730G3™</a></td><td class="center">3.00 +/- 0.05</td><td class="center">2.98</td><td class="center">0.0028 </td><td class="center">34</td><td class="center">9.0x10<sup>7</sup></td><td class="center">7.2x10<sup>5</sup></td><td class="center">0.093</td><td class="center">0.45</td><td class="center">15.9</td><td class="center">14.4</td><td class="center">35.2</td><td class="center">4.1 </td><td class="center">1.58</td><td class="center">V-0</td><td class="center">Y</td><td class="center">&#8804;-165</td></tr><tr><td><input type="checkbox" value="77" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/ro4000-series-laminates/ro4830-laminates" target="_blank">RO4830™</a></td><td class="center">3.25+/-0.05</td><td class="center">3.24<sup>29</sup></td><td class="center">0.0033</td><td class="center">-30</td><td class="center">9.6x10<sup>9</sup></td><td class="center">1.1x10<sup>8</sup></td><td class="center">0.15</td><td class="center">0.45</td><td class="center">23</td><td class="center">23</td><td class="center">110</td><td class="center">3.8 (0.67)</td><td class="center">1.68</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="76" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/ro4000-series-laminates/ro4835t-laminates" target="_blank">RO4835T™</a></td><td class="center">3.33+/-0.05</td><td class="center">3.48</td><td class="center">0.0030</td><td class="center">35 ppm/C (from -50 to 50C), -35 ppm/C (from 50 to 150C)</td><td class="center">1.34x10<sup>8</sup></td><td class="center">1.17x10<sup>6</sup></td><td class="center">0.20</td><td class="center">0.53, 0.52@80°</td><td class="center">14</td><td class="center">16</td><td class="center">62</td><td class="center">3.0 (0.53)</td><td class="center">1.81</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="48" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/ro4000-series-laminates/ro4835-laminates" target="_blank">RO4835™</a></td><td class="center">3.48+/-0.05</td><td class="center">3.66</td><td class="center">0.0037</td><td class="center">50</td><td class="center">5x10<sup>8</sup></td><td class="center">7x10<sup>8</sup></td><td class="center">0.05</td><td class="center">0.66</td><td class="center">10</td><td class="center">12</td><td class="center">31</td><td class="center">5.0 (0.88)</td><td class="center">1.92</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="6" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/rt-duroid-laminates/rt-duroid-5870-laminates" target="_blank">RT/duroid® 5870</a></td><td class="center">2.33 +/- 0.02</td><td class="center">2.33</td><td class="center">0.0012</td><td class="center">-115</td><td class="center">2x10<sup>7</sup></td><td class="center">2x10<sup>7</sup></td><td class="center">0.02</td><td class="center">0.22</td><td class="center">22</td><td class="center">28</td><td class="center">173</td><td class="center">27.2 (4.8)</td><td class="center">2.2</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="5" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/rt-duroid-laminates/rt-duroid-5880-laminates" target="_blank">RT/duroid® 5880</a></td><td class="center">2.20 +/- 0.02</td><td class="center">2.20</td><td class="center">0.0009</td><td class="center">-125</td><td class="center">2x10<sup>7</sup></td><td class="center">3x10<sup>7</sup></td><td class="center">0.02</td><td class="center">0.20</td><td class="center">31</td><td class="center">48</td><td class="center">237</td><td class="center">31.2 (5.5)</td><td class="center">2.2</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="4" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/rt-duroid-laminates/rt-duroid-5880lz-laminates" target="_blank">RT/duroid® 5880LZ</a></td><td class="center">2.00 +/- 0.04</td><td class="center">2.0</td><td class="center">0.0021</td><td class="center">20</td><td class="center">1.74x10<sup>7</sup></td><td class="center">2.08x10<sup>6</sup></td><td class="center">0.31</td><td class="center">0.33</td><td class="center">54</td><td class="center">47</td><td class="center">40</td><td class="center">>4.0</td><td class="center">1.4</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="50" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/rt-duroid-laminates/rt-duroid-5880lz-laminates" target="_blank">RT/duroid® 6002</a></td><td class="center">2.94+/-0.04</td><td class="center">2.94</td><td class="center">0.0012</td><td class="center">12</td><td class="center">1x10<sup>6</sup></td><td class="center">1x10<sup>7</sup></td><td class="center">0.02</td><td class="center">0.60</td><td class="center">16</td><td class="center">16</td><td class="center">24</td><td class="center">8.9 (1.6)</td><td class="center">2.1</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="64" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/rt-duroid-laminates/rt-duroid-6006-and-6010-2lm-laminates" target="_blank">RT/duroid® 6006</a></td><td class="center">6.15 +/- 0.15</td><td class="center">6.45</td><td class="center">0.0027</td><td class="center">-410</td><td class="center">2x10<sup>7</sup></td><td class="center">7x10<sup>7</sup></td><td class="center">0.05</td><td class="center">0.49</td><td class="center">47</td><td class="center">34</td><td class="center">117</td><td class="center">14.3 (2.5)</td><td class="center">2.7</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="54" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/rt-duroid-laminates/rt-duroid-6006-and-6010-2lm-laminates" target="_blank">RT/duroid® 6010.2LM</a></td><td class="center">10.20+/-0.25</td><td class="center">10.7</td><td class="center">0.0023</td><td class="center">-425</td><td class="center">5x10<sup>5</sup></td><td class="center">5x10<sup>6</sup></td><td class="center">0.01</td><td class="center">0.86</td><td class="center">24</td><td class="center">24</td><td class="center">47</td><td class="center">12.3 (2.1)</td><td class="center">3.1</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="53" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/rt-duroid-laminates/rt-duroid-6035htc-laminates" target="_blank">RT/duroid® 6035HTC</a></td><td class="center">3.50+/-0.05</td><td class="center">3.60</td><td class="center">0.0013</td><td class="center">-66</td><td class="center">1x10<sup>8</sup></td><td class="center">1x10<sup>8</sup></td><td class="center">0.06<sup>12</sup></td><td class="center">1.44</td><td class="center">19</td><td class="center">19</td><td class="center">39</td><td class="center">7.9 (1.4)</td><td class="center">2.2</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="52" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/rt-duroid-laminates/rt-duroid-6202-laminates" target="_blank">RT/duroid® 6202</a></td><td class="center">2.94+/-0.04<sup>8</sup></td><td class="center">2.94+/-0.04<sup>8</sup></td><td class="center">0.0015</td><td class="center">+5 to -15<sup>8</sup></td><td class="center">1x10<sup>6</sup></td><td class="center">1x10<sup>9</sup></td><td class="center">0.04</td><td class="center">0.68</td><td class="center">15</td><td class="center">15</td><td class="center">30</td><td class="center">9.1 (1.6)</td><td class="center">2.1</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="51" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/rt-duroid-laminates/rt-duroid-6202pr-laminates" target="_blank">RT/duroid® 6202PR<sup>20</sup></a></td><td class="center">2.90-3.00+/-0.04</td><td class="center">2.90-3.00</td><td class="center">0.0020</td><td class="center">+5 to -15<sup>8</sup></td><td class="center">1x10<sup>10</sup></td><td class="center">1x10<sup>9</sup></td><td class="center">0.03</td><td class="center">0.68</td><td class="center">15</td><td class="center">15</td><td class="center">30</td><td class="center">14.3 (2.5)</td><td class="center">2.1</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="55" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/tc-series-laminates/tc350-laminates" target="_blank">TC350™</a></td><td class="center">3.50+/-0.05</td><td class="center">3.50</td><td class="center">0.0020</td><td class="center">-9</td><td class="center">7.4x10<sup>6</sup></td><td class="center">3.2x10<sup>7</sup></td><td class="center">0.05<sup>(22)</sup></td><td class="center">0.72, 1.00<sup>(27)</sup></td><td class="center">7</td><td class="center">7</td><td class="center">23</td><td class="center">7.0(1.2)</td><td class="center">2.3</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="83" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/tc-series-laminates/tc350-plus-laminates" target="_blank">TC350™ Plus</a></td><td class="center">3.50+/-0.05</td><td class="center">3.62</td><td class="center">0.0017</td><td class="center">-42</td><td class="center">9.4x10<sup>11</sup></td><td class="center">3.3x10<sup>12</sup></td><td class="center">0.05<sup>(25)</sup></td><td class="center">1.24</td><td class="center">10</td><td class="center">9</td><td class="center">38</td><td class="center">4.0 (0.7)</td><td class="center">TBD</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="56" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/tc-series-laminates/tc600-laminates" target="_blank">TC600™</a></td><td class="center">6.15+/-0.15</td><td class="center">6.15</td><td class="center">0.0020</td><td class="center">-75</td><td class="center">1.6x10<sup>9</sup></td><td class="center">3.1x10<sup>9</sup></td><td class="center">0.03<sup>(22)</sup></td><td class="center">1.10</td><td class="center">9</td><td class="center">9</td><td class="center">35</td><td class="center">8.0(1.4)</td><td class="center">3.0</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="7" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/tmm-laminates/tmm-3-laminates" target="_blank">TMM® 3</a></td><td class="center">3.27 +/- 0.032</td><td class="center">3.45</td><td class="center">0.0020</td><td class="center">37</td><td class="center">3x10<sup>9</sup></td><td class="center">9x10<sup>9</sup></td><td class="center">0.06<sup>(10)<sup></td><td class="center">0.70</td><td class="center">15</td><td class="center">15</td><td class="center">23</td><td class="center">5.7 (1.0)</td><td class="center">1.8</td><td class="center">NON FR</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="57" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/tmm-laminates/tmm-4-laminates" target="_blank">TMM® 4</a></td><td class="center">4.50+/-0.045</td><td class="center">4.7</td><td class="center">0.0020</td><td class="center">15</td><td class="center">6x10<sup>8*</sup></td><td class="center">1x10<sup>9*</sup></td><td class="center">0.07<sup>(10)</sup></td><td class="center">0.70</td><td class="center">16</td><td class="center">16</td><td class="center">21</td><td class="center">5.7 (1.0)</td><td class="center">2.1</td><td class="center">NON FR</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="59" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/tmm-laminates/tmm-6-laminates" target="_blank">TMM® 6</a></td><td class="center">6.00+/-0.08</td><td class="center">6.3</td><td class="center">0.0023</td><td class="center">-11</td><td class="center">1x10<sup>8*</sup></td><td class="center">1x10<sup>9</sup></td><td class="center">0.06<sup>(10)</sup></td><td class="center">0.72</td><td class="center">18</td><td class="center">18</td><td class="center">26</td><td class="center">5.7 (1.0)</td><td class="center">2.4</td><td class="center">NON FR</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="8" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/tmm-laminates/tmm-10-laminates" target="_blank">TMM® 10</a></td><td class="center">9.20 +/- 0.23</td><td class="center">9.8</td><td class="center">0.0022</td><td class="center">-38</td><td class="center">2x10<sup>8</sup></td><td class="center">4x10<sup>7</sup></td><td class="center">0.09<sup>(10)</sup></td><td class="center">0.76</td><td class="center">21</td><td class="center">21</td><td class="center">20</td><td class="center">5 (0.9)</td><td class="center">2.8</td><td class="center">NON FR</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="58" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/tmm-laminates/tmm-10i-laminates" target="_blank">TMM® 10i</a></td><td class="center">9.80+/-0.245</td><td class="center">9.9</td><td class="center">0.0020</td><td class="center">-43</td><td class="center">2x10<sup>8</sup></td><td class="center">4x10<sup>7</sup></td><td class="center">0.16<sup>(10)</sup></td><td class="center">0.76</td><td class="center">19</td><td class="center">19</td><td class="center">20</td><td class="center">5 (0.9)</td><td class="center">2.8</td><td class="center">NON FR</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="60" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/tmm-laminates/tmm-13i-laminates" target="_blank">TMM® 13i</a></td><td class="center">12.85+/-0.35<sup>(14)</sup></td><td class="center">12.2</td><td class="center">0.0019</td><td class="center">-70</td><td class="center">TBD</td><td class="center">TBD</td><td class="center">0.13</td><td class="center">0.76<sup>17</sup></td><td class="center">19</td><td class="center">19</td><td class="center">20</td><td class="center">4 (0.7)</td><td class="center">3.0</td><td class="center">NON FR</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td><input type="checkbox" value="74" class="cblProducts" /></td><td><a href="https://www.rogerscorp.com/advanced-electronics-solutions/xtremespeed-ro1200-laminates" target="_blank">XtremeSpeed™ RO1200™</a></td><td class="center">3.03-3.10+/-0.10</td><td class="center">3.03-3.10</td><td class="center">0.0017 </td><td class="center">-35</td><td class="center">1.3x10<sup>7</sup></td><td class="center">2.5x10<sup>6</sup></td><td class="center">0.03</td><td class="center">0.42</td><td class="center">8</td><td class="center">8</td><td class="center">30</td><td class="center">>4.5(>0.79)</td><td class="center">2.1</td><td class="center">V-0</td><td class="center">Y</td><td class="center"><span class='na'>-</span></td></tr><tr><td colspan="14"><button type="button" id="btnCompare" class="btn btn-xs btn-success" disabled>Compare Materials</button></td></tr></table>
+<h3>Properties Notes</h3>
+<ol>
+<li>Measured by IPC-TM-650 method 2.5.5.5 @ ~10 GHz, 23°C. Materials were based on testing raw substrate material. er values and tolerance reported by IPC-TM-650
+method 2.5.5.5 are the basis for quality acceptance, but for some products these values may be incorrect for design engineering applications, especially those in microstrip.
+We recommend that prototype boards of a new design be verified for electrical performance.</li>
+<li>Measured by IPC-TM-650 method 2.5.5.5 at ~10GHz modified.</li>
+<li>Typical values are mean values derived from populations of measurements involving multiple lots of the specific foil type.</li>
+<li>Measured after 48±1 hours immersion at 50±1ºC in accordance with the ASTM D570 standard.</li>
+<li>Tested by ASTM C518.</li>
+<li>Tested by IPC-TM-650 2.4.41. Values are average over temperature range but not necessarily linear. However for RT/duroid 6002 and TMM grades the response is essentially
+linear.</li>
+<li>The nominal dielectric constant of an 0.060" thick RO3003 laminate as measured by IPC-TM-2.5.5.5 will be 3.04 due to the elimination of biasing caused by air gaps in the
+test fixture. For further information refer to Rogers' T.R. 5242.</li>
+<li>Due to construction limitations, the dielectric constant of 0.005" laminates is 3.06 ± 0.04; 0.010" and 0.015" laminates are 3.02 ± 0.04: TCDK is +5 for the higher Dk range;
+and for 2.90 TCDK is -15</li>
+<li>Rogers' high frequency laminates and prepregs are lead-free process compatible and in accordance with IEC 61249-2-21.</li>
+<li>TMM® material test conditions D24/50 (twenty-four hours at 50°C) on 0.050" (1.27mm) thick specimens. TMM13i test condition D48/50.</li>
+<li>Design Dk is determined by testing thick microstrip transmission line circuits and reporting the thickness-axis dielectric constant of the raw material without the influence of
+copper. For more information, refer to the article on the Rogers website titled "The Influence of Test Method, Conductor Profile, and Substrate Anisotropy on the Permittivity
+Values Required for Accurate Modeling of High Frequency Planar Circuits", which was featured in a publication Sept. 2012. http://www.rogerscorp.com/acs/articles.aspx</li>
+<li>Testing conditions: 24 hours @ 23 C, specimens etched free of copper</li>
+<li>Available only with LoPro® copper foil</li>
+<li>Measured by IPC-TM-650 method 2.5.5.6 .</li>
+<li>2oz available on TC350 Plus only</li>
+<li>Values for 2.5 mil thickness.</li>
+<li>Estimated</li>
+<li>IPC-TM-650.2.5.5.5.1</li>
+<li>Test method: ASTM D5470-12 @ 50°C</li>
+<li>PR stands for Planar Resistor. Resistive foil, if required, must be specified when ordering 6202PR laminate.</li>
+<li>Conditions 125ºC/24 hours. Test method IPC-TM-650 2.5.17.1</li>
+<li>Measured after 24+1/2-0 hours immersion at 23 ± 1ºC in accordance with the ASTM D570 standard.</li>
+<li>12 microstrip transmission line test circuit on 0.060" thick laminate.</li>
+<li>N/A</li>
+<li>(D24/23) IPC TM-650 2.6.2.1</li>
+<li>ASTM E1461</li>
+<li>1.0 W/(m•K) based on ASTM E1461</li>
+<li>Values for 3 mil thickness.</li>
+<li>Measured using differential phase length method at 77GHz.</li>
+<li>Value shown is for 1/2 oz ED copper.</li>
+</ol>
+ <p>The information is intended to assist you in designing with Rogers’ circuit materials. It is not intended to and does not create any warranties express or implied, including any warranty of merchantability or fitness for a particular purpose or that the results shown will be achieved by a user for a particular purpose. The user should determine the suitability of Rogers’ circuit materials for each application.</p>
+<style></style>
+
+        
+
+<script type="text/javascript">
+//<![CDATA[
+
+theForm.oldSubmit = theForm.submit;
+theForm.submit = WebForm_SaveScrollPositionSubmit;
+
+theForm.oldOnSubmit = theForm.onsubmit;
+theForm.onsubmit = WebForm_SaveScrollPositionOnSubmit;
+//]]>
+</script>
+</form> 
+    </main>
+    
+<footer class="container">
+    <div class="footer-links  py-3">
+        <!-- Footer Links -->
+        <div class="col-xl-10 m-auto">
+            <div class="row">
+                <div class="col-sm-6 col-md-3 col-lg-4  pl-lg-5  mt-3 mt-md-1">
+                    <h5>Our Businesses</h5>
+                    <ul>
+                        <li><a href="https://www.rogerscorp.com/advanced-electronics-solutions">Advanced Electronics Solutions</a></li>
+                        <li><a href="https://www.rogerscorp.com/elastomeric-material-solutions">Elastomeric Material Solutions</a></li>
+                        <li><a href="https://www.rogerscorp.com/elastomer-components">Elastomer Components</a></li>
+                    </ul>
+                </div>
+                <!-- Grid column -->
+                <!-- Grid column -->
+                <div class="col-sm-6 col-md-3 col-lg-2 mt-3 mt-md-1">
+                    <h5>About Rogers</h5>
+                    <ul>
+                        <li><a href="https://www.rogerscorp.com/news">News</a></li>
+                        <li><a href="https://www.rogerscorp.com/careers">Careers</a></li>
+                        <li><a href="https://www.rogerscorp.com/investors">Investors</a></li>
+                    </ul>
+                </div>
+                <!-- Grid column -->
+                <!-- Grid column -->
+                <div class="col-sm-6 col-md-3  col-lg-3 pl-lg-5 mt-3 mt-md-1">
+                    <h5>Contact Us</h5>
+                    <ul>
+                        <li><a href="https://www.rogerscorp.com/global-locations">Global Locations</a></li>
+                        <li><a href="https://www.rogerscorp.com/support">Global Support</a></li>
+                    </ul>
+                </div>
+                <!-- Grid column -->
+                <!-- Grid column -->
+                <div class="col-sm-6 col-md-3  col-lg-3  mt-3 mt-md-1">
+                    <h5>Legal</h5>
+                    <ul>
+                        <li><a href="https://www.rogerscorp.com/terms-and-conditions" target="_blank">Terms & Conditions</a></li>
+                        <li><a href="https://rogerscorp.com/about-us/corporate-responsibility/certifications" target="_blank">Certifications</a></li>
+                        <li><a href="https://rogerscorp.com/about-us/corporate-responsibility/code-of-business-ethics" target="_blank">Code of Business Ethics</a></li>
+                        <li><a href="https://rogerscorp.com/privacy" target="_blank">Privacy Policy</a></li>
+                        <li><a href="https://rogerscorp.com/terms-of-use" target="_blank">Website Terms of Use</a></li>
+                        <li><a href="https://www.rogerscorp.com/-/media/project/rogerscorp/documents/common/english/customer-support/modern-slavery-and-human-trafficking-statement.pdf" target="_blank">Modern Slavery and Human Trafficking Statement</a></li>
+                    </ul>
+                </div>
+                <!-- Grid column -->
+            </div>
+        </div>
+        <!-- Footer Links -->
+        <div class="social-links">
+            <a href="https://www.facebook.com/pages/Rogers-Corporation/160127067330816" target="_blank" title="Facebook"><i class="facebook"></i></a>
+            <a href="https://twitter.com/rogers_corp" target="_blank" title="Twitter/X"><i class="twitter"></i></a>
+            <a href="https://www.youtube.com/user/RogersCorporation" target="_blank" title="YouTube"><i class="youtube"></i></a>
+            <a href="https://www.linkedin.com/companies/rogers-corporation" target="_blank" title="LinkedIn"><i class="linkedin"></i></a>
+        </div>
+    </div>
+</footer>
+<!-- Copyright -->
+<div class="footer-copyright text-center py-3"> &copy; 2026 Rogers Corporation. All Rights Reserved. </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <div class="overlay"></div>
+    <div class="loader"></div>
+    
+<script src="/scripts/featherlight.1.7.13.min.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    // Array used to track Checked Product checkboxes
+    var productCheckedArray = [];
+
+    $('document').ready(function () {
+        $('#btnCompare').on('click', function () {
+            // Concatination variable used for querystring
+            var productConcatination = "";
+            // Used for counting selected checkboxes 
+            var intProductCounter = 0;
+
+            //Puts together the ID's necessary to pass to the graph via ajax 
+            $.each(productCheckedArray, function (id, value) {
+                //add checked ID to querystring, increment counter
+                productConcatination += value.id + "|";
+                intProductCounter++;
+            });
+            window.open("/acs/properties/laminates/comparison.aspx?id=" + productConcatination +
+                "&orderbyprimary=" + $('#ddlOrderByPrimary').val() +
+                "&ascdscprimary=" + $('#ddlAscDscPrimary').val() +
+                "&orderbysecondary=" + $('#ddlOrderBySecondary').val() +
+                "&ascdscsecondary=" + $('#ddlAscDscSecondary').val());
+        })
+    });
+
+    $(document).delay(250).on("click", ".cblProducts", function (event) {
+        $('#btnCompare').prop('disabled', true);
+        var $cblProducts = $(".cblProducts");
+        //get value of checked checkbox
+        var clickedID = $(this).val();
+
+        //if checkbox checked, then write into array
+        if ($(this).prop('checked')) {
+            productCheckedArray.push({ 'id': clickedID });
+        }
+        //else if unchecked, remove from array
+        else {
+            var removeThisID;
+            $.each(productCheckedArray, function (id, value) {
+                if (value.id === clickedID) {
+                    removeThisID = id;
+                }
+            });
+            productCheckedArray.splice(removeThisID, 1);
+        }
+        if (null != productCheckedArray && "" != productCheckedArray) {
+            $('#btnCompare').prop('disabled', false);
+        }
+    });
+</script> 
+
+</body>
+</html>

@@ -1,0 +1,1227 @@
+[
+  {
+    "source_id": "FB020",
+    "file": "BASIC10_ML10_147_17_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/18/2023 14:39:38",
+    "native_file_sha256": "f69b6617631be5f589c5a2e69306c10fe0a06b418ec08c399a50803cefb44b53"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC10_ML10_161_35_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/18/2023 14:37:24",
+    "native_file_sha256": "35e2663d16fc215687c143e120e50653f2b5324d4f379c00e1284cd35f1eaa9c"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC10_ML10_194_17_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/18/2023 14:35:16",
+    "native_file_sha256": "0c4941a720bcb57d78f63873ca51dc8319baaa260d170f23708dee7474d3aed7"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC10_ML10_209_35_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/18/2023 14:27:31",
+    "native_file_sha256": "f363b85fd1a175ba81cfc20f7db61c9f529280e1ad25c021dd6e7eba5e9a544c"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC10_ML10_229_35_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/18/2023 14:23:36",
+    "native_file_sha256": "0d1b53bf82606f0faaaa4451e056d949e941f4fd9d1e013ed35506d29e2eca4f"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC10_ML10_234_17_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/18/2023 14:17:03",
+    "native_file_sha256": "33f05dd89ce0a8dda177203a10974cd2ce863440175488100bbc928cfbb04460"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC4_ML4_099_17_2V13.stackup",
+    "dielectric_rows": 5,
+    "revision_date": "10/18/2023 15:43:59",
+    "native_file_sha256": "bc8fcfef626fed096bef7bb1e729c61131e830916794bb092f9be29327ae55d7"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC4_ML4_103_35_2V13.stackup",
+    "dielectric_rows": 5,
+    "revision_date": "10/18/2023 15:42:26",
+    "native_file_sha256": "15584ae4308066a9cec3cce7ffa4534cd36f3a25c5c97c84fc219bd4126abf0d"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC4_ML4_159_17_2V13.stackup",
+    "dielectric_rows": 5,
+    "revision_date": "10/18/2023 15:40:51",
+    "native_file_sha256": "fc3c527e6a583db44b81cc2875bc8cc3d730860dfb0951932f0f9f3c7da47af3"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC4_ML4_163_35_2V13.stackup",
+    "dielectric_rows": 5,
+    "revision_date": "10/18/2023 15:39:12",
+    "native_file_sha256": "fe63b510bf3d70c56022cf3229f0b54930c62864011758e73c3a5b2493bb27c8"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC4_ML4_210_17_2V13.stackup",
+    "dielectric_rows": 5,
+    "revision_date": "10/18/2023 16:01:13",
+    "native_file_sha256": "9490888ab3b56a13abc106414a53e92b3d7f77f5c17f85650b0af37dfcf77ba7"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC4_ML4_210_35_2V13.stackup",
+    "dielectric_rows": 5,
+    "revision_date": "10/18/2023 16:10:52",
+    "native_file_sha256": "c77fcb31c445e284e8fc47a0296a25088b6ca9f43cd41dc326d2183158e04818"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC4_ML4_240_17_2V13.stackup",
+    "dielectric_rows": 5,
+    "revision_date": "10/18/2023 16:14:56",
+    "native_file_sha256": "5dd10458b303843757c7f0d794cf3574dd376b815a0ce9236093ec298f72c252"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC4_ML4_240_35_2V13.stackup",
+    "dielectric_rows": 5,
+    "revision_date": "10/18/2023 16:18:51",
+    "native_file_sha256": "b4969acea18561061070932404b981eabeaa7550cca73a149117341479d8ebff"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC6_ML6_095_17_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/18/2023 15:24:35",
+    "native_file_sha256": "985daac920033ead5faa387e66b891f04455431c22bfe86122715c3fc52d68c8"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC6_ML6_102_35_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/18/2023 15:23:04",
+    "native_file_sha256": "f22866692851b57fa3b058a80a73218dae899fb7bdfc2462918fd5b259a741fb"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC6_ML6_155_17_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/18/2023 15:21:29",
+    "native_file_sha256": "9b6008b0afee40a85997f1f2d9720245c000f9652d081004fb8580fdaa3a43fa"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC6_ML6_163_35_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/18/2023 15:19:53",
+    "native_file_sha256": "f68b62625984bdd19007402a64f66f14eddb670970a1ac9ff63ce8164a6fc7c9"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC6_ML6_204_35_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/18/2023 15:18:00",
+    "native_file_sha256": "a42c4916d0479b7d73e811e917425a20ba1cb68d0e6d7e7d0515d3fd1a1362f1"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC6_ML6_205_17_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/18/2023 15:16:31",
+    "native_file_sha256": "a2d0f1e3af1106cc486f362ee2c8cd500ce7a67ab682246aafc14500fd1e5f2a"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC6_ML6_230_17_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/18/2023 15:15:03",
+    "native_file_sha256": "8b7060039ad5b0ab43a6055f94917db9f1f5cf2aad95b77be3e569c6f6673387"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC6_ML6_238_35_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/18/2023 15:13:13",
+    "native_file_sha256": "474889d6d0c14cd306c43f6b0af967860b8944bbff4c3d8b78e235ebe3465631"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC8_ML8_101_17_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "10/18/2023 15:00:53",
+    "native_file_sha256": "df8002506002927aa92bc54096d389131af1a9f3548169ad6ea0267d1405cda9"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC8_ML8_154_17_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "10/18/2023 14:58:12",
+    "native_file_sha256": "5b14239097c0c9c05c0e903e5b154f417b3ae64ec7f6920bf0fd27414f156f0b"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC8_ML8_165_35_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "10/18/2023 14:54:51",
+    "native_file_sha256": "cfd474de7379077ef4db93cfbf23a5736cf42111366c3908a3a28af9edec3d53"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC8_ML8_194_17_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "10/18/2023 14:52:04",
+    "native_file_sha256": "22a540f4f4dd669ffe4e472994aa7fdbbe9b8b6a04df1d19607e64413b6635a0"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC8_ML8_205_35_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "10/18/2023 14:49:28",
+    "native_file_sha256": "2cca79dbf5a71bd0831a9697eb7e812bb130d8e76ca13950966aba3b86341213"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC8_ML8_232_17_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "10/18/2023 14:46:59",
+    "native_file_sha256": "6be5c34d2a5344af2a4ccc7602c166351397280a4d756c27501c2ea5feaea016"
+  },
+  {
+    "source_id": "FB020",
+    "file": "BASIC8_ML8_243_35_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "10/18/2023 14:44:23",
+    "native_file_sha256": "e8cfebbf7b9bf09dc030acfe79042e871e3002ec0616715a42316c1fcc1b1990"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX10_3Ri-4F-3Ri_107_17_2V13.stackup",
+    "dielectric_rows": 13,
+    "revision_date": "10/23/2023 13:25:23",
+    "native_file_sha256": "54da0fa50ba11000cb253010045468f63723424a176152bbb8f879e4865ef438"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX10_3Ri-4F-3Ri_150_17_2V13.stackup",
+    "dielectric_rows": 13,
+    "revision_date": "10/23/2023 13:28:26",
+    "native_file_sha256": "3d7b5d1be0ddd7c8e9c342694f2fe523bf49110dae08ff61104b6d6b97168574"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX2_1F-1Ri_075_17_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/23/2023 10:48:58",
+    "native_file_sha256": "4eaa2002cb971b73ffb7ccacdcb2bbe5f4c9308513ded781949d445f8a6fdd7c"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX2_1F-1Ri_095_17_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/23/2023 10:51:25",
+    "native_file_sha256": "2c4a3a925aba7a958039c2e41220fc96b65d2e543c4826b74e4ead07f581b70a"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX2_1F-1Ri_141_17_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/24/2023 06:37:19",
+    "native_file_sha256": "ef98ed7082d849d3d12df7a817f4ed400f158e83a4c4148aa7944bc1704c0dec"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX2_2F-Ri_027_17_2V13.stackup",
+    "dielectric_rows": 5,
+    "revision_date": "10/23/2023 10:57:52",
+    "native_file_sha256": "79c30f128ea204999df3811895085c0ba4806034b9b43e9940c489f8af28179e"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX3_2F-1Ri_084_17_2V13.stackup",
+    "dielectric_rows": 8,
+    "revision_date": "10/23/2023 11:00:38",
+    "native_file_sha256": "5672b817782bb9d8229c6a4f1d0ba28f853062fe47228801a2c6c0f2dce18c55"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX3_2F-1Ri_094_17_2V13.stackup",
+    "dielectric_rows": 8,
+    "revision_date": "10/23/2023 11:03:41",
+    "native_file_sha256": "67c0e6d95f490d824fff4cc37badbe2afc112b7ad16ebe43da5d2abd8c97b5f5"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX3_2F-1Ri_155_17_2V13.stackup",
+    "dielectric_rows": 8,
+    "revision_date": "10/23/2023 11:08:18",
+    "native_file_sha256": "c3d3726438e00857723cb5ade25336cfa69fd1643e51ee2865cb60da1ea3d058"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX3_3F-Ri_067_17_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "10/23/2023 11:11:05",
+    "native_file_sha256": "a2c8804695f2c6e02821fe5d234dc959074a6e58ff1cb213c39f83b4cb9ec5fb"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX4_1F-3Ri_073_17_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/23/2023 11:19:10",
+    "native_file_sha256": "1e5e862f426569b55e5f3730b1cc820f746af945ce2d11f8a73fa8efb8e0d6e2"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX4_1F-3Ri_093_17_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/23/2023 11:22:16",
+    "native_file_sha256": "0fcb67180ec4ea031df96ab4282644fbd1c2e889c0663fb0e46396484d1ed974"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX4_1F-3Ri_151_17_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/24/2023 06:41:52",
+    "native_file_sha256": "dd498062d483f9f77af6140a971cd981995ea2be2b01845503c741ba04eb1feb"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX4_1Ri-2F-1Ri_075_17_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "10/23/2023 11:30:22",
+    "native_file_sha256": "64812d0d71025ae0fb9bc31cc9fb0e510ec1a03f2ed0694cceb28ae9e6fba221"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX4_1Ri-2F-1Ri_097_17_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 11:33:13",
+    "native_file_sha256": "704f40901b600e6699a2cfef881f738aeffa9c0714d8b4b6acc703a6a6e48fa4"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX4_1Ri-2F-1Ri_151_17_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 11:36:04",
+    "native_file_sha256": "91ba5ab45371f922a2744a8d028d709cec99964107bb9a493c37c34954083276"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX4_2F-2Ri_076_17_2V13.stackup",
+    "dielectric_rows": 8,
+    "revision_date": "10/23/2023 11:40:50",
+    "native_file_sha256": "acf31efcf0968392a36361c71f395a1a6435f62cfbe899eecca2a4ee0fc2a92d"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX4_2F-2Ri_096_17_2V13.stackup",
+    "dielectric_rows": 8,
+    "revision_date": "10/23/2023 11:46:36",
+    "native_file_sha256": "f852398de5c2914df67a58c218ff5ca3a46a49c831c8bf6eb615244222120226"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX4_2F-2Ri_153_17_2V13.stackup",
+    "dielectric_rows": 8,
+    "revision_date": "10/24/2023 06:47:11",
+    "native_file_sha256": "ad312f06a3fccbd0fbef0f2dae2e067c859a74c0b2abef9b628741a51b9f5517"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX4_4F-Ri_069_17_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "10/23/2023 11:50:24",
+    "native_file_sha256": "a18e2aed5afc0190b83f4456173d560c619081f082aedd6061bc11f61d7286f8"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX4_4F_023_12_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/24/2023 07:27:40",
+    "native_file_sha256": "3b310c1e9685580541937c86c106f5ade8888aaba30a282297a45ece3ac4c128"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX6_1F-5Ri_152_17_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "10/23/2023 11:55:43",
+    "native_file_sha256": "577f9e2250e42975279849536721b8c24a8ba5b4a53929a490daa67390cc8315"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX6_1Ri-4F-1Ri_101_17_2V13.stackup",
+    "dielectric_rows": 13,
+    "revision_date": "10/23/2023 12:00:30",
+    "native_file_sha256": "7326fe796b8d206d1e090a8d7688bed4b7f4d3a26029501541796040758ffcef"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX6_1Ri-4F-1Ri_155_17_2V13.stackup",
+    "dielectric_rows": 13,
+    "revision_date": "10/23/2023 12:05:54",
+    "native_file_sha256": "b2376bc761129307afc59b435615f59d5d232e73fd1f4a3a16e8a29e871baf41"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX6_2F-4Ri_100_17_2V13.stackup",
+    "dielectric_rows": 10,
+    "revision_date": "10/23/2023 12:18:10",
+    "native_file_sha256": "5cc8bcf4a2671a80dff2bb77bc78d5ae905d77fb898f26501afebfcc07d608ad"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX6_2F-4Ri_154_17_2V13.stackup",
+    "dielectric_rows": 10,
+    "revision_date": "10/23/2023 12:21:45",
+    "native_file_sha256": "5439a8164125fa62cb6be07d3f23a22444f228574a22eea9c162413fdc153d18"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX6_2Ri-2F-2Ri_099_17_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 12:27:50",
+    "native_file_sha256": "745990e9a9abb13177f55c34bb6660570798580b5121a7d8a9ef332d696f1bae"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX6_2Ri-2F-2Ri_154_17_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 12:30:38",
+    "native_file_sha256": "6c218e756c62841d115b472ed8546f591ea292fa7ed269edf749039d604038ee"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX6_6F_030_12_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/24/2023 07:50:42",
+    "native_file_sha256": "d1574cc5c7944906a02f6e37b4c7d20eda35215e122ec04a675c3eb3501a5668"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX8_1F-7Ri_156_17_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 13:06:24",
+    "native_file_sha256": "96458ce1abc38269389f4187b88803f40c477a07ec5163325a9bcd21064f6629"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX8_2F-6Ri_158_17_2V13.stackup",
+    "dielectric_rows": 12,
+    "revision_date": "10/23/2023 13:09:30",
+    "native_file_sha256": "92126974542f6f9ebc421245e60007a1be3114d73a0e4d8971841bdb8034f2fd"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX8_2Ri-4F-2Ri_104_17_2V13.stackup",
+    "dielectric_rows": 13,
+    "revision_date": "10/23/2023 13:12:24",
+    "native_file_sha256": "f76ead5de609e5106cd61ea1da9b6b84858e4dbcc0145faee77bc8ae32f02d51"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX8_2Ri-4F-2Ri_159_17_2V13.stackup",
+    "dielectric_rows": 13,
+    "revision_date": "10/23/2023 13:15:52",
+    "native_file_sha256": "d59fca625ce5ea0190527217fa5006cd75fb97c6d05cafd569d24b59e585e5ec"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX8_3Ri-2F-3Ri_098_17_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 13:19:05",
+    "native_file_sha256": "b5d6fe423ca46ac082273b3dc6077d0ca2d1d9ae443a8bbe2c361bbcb72ee501"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX8_3Ri-2F-3Ri_158_17_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 13:21:59",
+    "native_file_sha256": "1c8fc11009701f7cb1ef502a0f22119c5f910e99c1c3cf311b46b6354660358e"
+  },
+  {
+    "source_id": "FB021",
+    "file": "FLEX8_8F_037_12_2V13.stackup",
+    "dielectric_rows": 15,
+    "revision_date": "10/24/2023 07:54:10",
+    "native_file_sha256": "843e0b718841708eca7396de4eb92b74a19ed13a1ae459d0b0982eded0824a55"
+  },
+  {
+    "source_id": "FB022",
+    "file": "FLEX4_4F_023_12_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/24/2023 07:27:40",
+    "native_file_sha256": "3b310c1e9685580541937c86c106f5ade8888aaba30a282297a45ece3ac4c128"
+  },
+  {
+    "source_id": "FB022",
+    "file": "FLEX6_6F_030_12_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/24/2023 07:50:42",
+    "native_file_sha256": "d1574cc5c7944906a02f6e37b4c7d20eda35215e122ec04a675c3eb3501a5668"
+  },
+  {
+    "source_id": "FB022",
+    "file": "FLEX8_8F_037_12_2V13.stackup",
+    "dielectric_rows": 15,
+    "revision_date": "10/24/2023 07:54:10",
+    "native_file_sha256": "843e0b718841708eca7396de4eb92b74a19ed13a1ae459d0b0982eded0824a55"
+  },
+  {
+    "source_id": "FB023",
+    "file": "HDI4_1-2b-1_030_25_2V13.stackup",
+    "dielectric_rows": 5,
+    "revision_date": "10/24/2023 07:54:10",
+    "native_file_sha256": "e4fe5cd33cec35fbb01df03cb872e97d653f6ccdf140b41229ce290187b374c6"
+  },
+  {
+    "source_id": "FB023",
+    "file": "HDI6_2-2b-2_041_25_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/24/2023 07:54:10",
+    "native_file_sha256": "c6682628197482fcb50e239734d4a823538c779a747b37b205fd993f9f6ea8bb"
+  },
+  {
+    "source_id": "FB023",
+    "file": "HDI8_3-2b-3_052_25_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "10/24/2023 07:54:10",
+    "native_file_sha256": "2892d2e6a44d04273728f18ba069b6cb95091af25bdb4ce50d8dfaaff096683c"
+  },
+  {
+    "source_id": "FB024",
+    "file": "HDI10_4-2b-4_058_25_2V131.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "11/21/2024 11:15:35",
+    "native_file_sha256": "8e1dc427c338b7689b322f10de49fe170b34cc3f5e05c42cdaa6524d1985b307"
+  },
+  {
+    "source_id": "FB024",
+    "file": "HDI4_1-2b-1_025_25_2V131.stackup",
+    "dielectric_rows": 5,
+    "revision_date": "11/21/2024 10:59:26",
+    "native_file_sha256": "a6c7d7f826fac99a85e744e63d0d33684db47c362990db4739193810a431907e"
+  },
+  {
+    "source_id": "FB024",
+    "file": "HDI6_2-2b-2_036_25_2V131.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "11/21/2024 11:03:51",
+    "native_file_sha256": "f909853e1ebd1df3c39e1a3402057cdad33fc6b5b4a22bc796f807a20d847ab9"
+  },
+  {
+    "source_id": "FB024",
+    "file": "HDI8_3-2b-3_047_25_2V131.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "11/21/2024 11:07:52",
+    "native_file_sha256": "f0286771e1d4fdbb1619406c82cf91b78ab4691b49942ab9e8313c16f5a25607"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI10_1-8-1_114_17_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 08:05:39",
+    "native_file_sha256": "37581a66af396e0d56ffde1f450d9c19196fa4966efa4713152b5845d7753a74"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI10_1-8-1_128_35_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 08:07:15",
+    "native_file_sha256": "4b7246ba4583f191119e3ea3518a156fb16bbc38090cc4b1c47bc02ba84d4d6e"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI10_1-8-1_134_17_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 08:08:48",
+    "native_file_sha256": "b6fa406e6e936680a288408bcb19cd2802cd57eccc977441f066458e9e803c99"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI10_1-8-1_148_35_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 08:10:38",
+    "native_file_sha256": "050b05cce1da2db4359f03a3b423ffaddcad9cf097dd5c2f75b52f7a74a1da57"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI10_1-8-1_154_17_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 08:12:14",
+    "native_file_sha256": "c6f5ddfa282b5fb46aab4e060f4547ba211d90721ceeeccb6da5556aa739d992"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI10_1-8-1_168_35_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 08:14:01",
+    "native_file_sha256": "ccb631fcd4610fe202f7c00b0a07002549ef0c66f84f00786d1913fcf74ee84e"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI10_1-8b-1_119_17_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 07:59:46",
+    "native_file_sha256": "b7e81fc6dbe2a5425059239ed2476272410d1ec61d52e8363c6f7c5331fef508"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI10_1-8b-1_130_35_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 08:02:11",
+    "native_file_sha256": "89fccdab7fcc831dca7fe7fae07f13617fde3be9fc94fa6a6093b0ed32cd5ecb"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI10_1-8b-1_149_17_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 08:04:06",
+    "native_file_sha256": "dc1564739d386df006d813ae544008c5da4f4fa7b59ce81a649c6382c67e6b59"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI10_1-8b_1_160_35_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 07:38:06",
+    "native_file_sha256": "62a9dd9fa9c6ed712ec0b4545568e2648bf48278225f74fbc4c6c5406f06aa25"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI10_2-6-2_118_35_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 08:38:58",
+    "native_file_sha256": "7a718b664e8504afc911e189d869476b1551b9ca23a5e573bf5dd1615cdb9454"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI10_2-6-2_133_35_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 08:41:57",
+    "native_file_sha256": "78c544b41625f7379de275d4c8bf6910008517d774642d79c6d8efe28bc8d583"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI10_2-6-2_163_35_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 08:44:10",
+    "native_file_sha256": "183fa9bc7d06ff81aebbcb1b9e41d302de272c884e1e515ac9284d929c451eba"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI10_2-6b-2_110_17_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 08:15:57",
+    "native_file_sha256": "c6ebf750502924a2380ab7d5045b952068282600882b10ccf013dcdbc7099bf8"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI10_2-6b-2_159_35_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 08:18:31",
+    "native_file_sha256": "a0f8fe077c932df13fe70cf7041fa7bbd56e5b1acb5a0eac7032b04bdac46944"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI10_2-6l8b-2_107_17_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 08:27:29",
+    "native_file_sha256": "5ecb4810575141055ef756c59f968915d82a5a51cc6a3fbee2dbc7a93bc691bc"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI10_2-6l8b-2_133_35_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 08:29:56",
+    "native_file_sha256": "05cce7fa381f93264f0b479fb09ff406fd7f514a94b671136300f6c5ec382073"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI10_2-6l8b-2_152_17_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 08:33:07",
+    "native_file_sha256": "7d27d8174a616428fe52165c8565d3b8cecc2f4172f06ecebe3cf13b12193a65"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI10_2-6l8b-2_163_35_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 08:36:42",
+    "native_file_sha256": "5104c227748b3ee4a819b4e58788fccd9639d58669b4d7c2cc67b89d68b6dd0d"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI10_3-4-3_159_35_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 08:50:09",
+    "native_file_sha256": "5185bbe5e6adbacfa29323a7e04926479650fb48553bffda30ed9e9a734ff3a7"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI10_3-4b-3_150_35_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 08:46:04",
+    "native_file_sha256": "cac812d1f13f8f88968b2da7abdf0ed5ba4088e722b879e7b5b10ea367a2536c"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI10_3-4l6b-3_159_35_2V13.stackup",
+    "dielectric_rows": 11,
+    "revision_date": "10/23/2023 08:47:52",
+    "native_file_sha256": "f40de93f4fa686fb7ae5a4c4d0a9872b9b4b3d30110d63f5638563fa27dcc5af"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI12_1-10-1_140_17_2V13.stackup",
+    "dielectric_rows": 13,
+    "revision_date": "10/19/2023 07:14:36",
+    "native_file_sha256": "63190bd0bd18dc9669cbc92a53d1c1ac8d26eb90bcc8967accef3e3c33b4541f"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI12_1-10-1_158_35_2V13.stackup",
+    "dielectric_rows": 13,
+    "revision_date": "10/19/2023 07:17:40",
+    "native_file_sha256": "cb57bd7c2ac93e156f61ea3c369d87a171d6bbb94712630002b38ff18c810b2d"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI12_1-10-1_165_17_2V13.stackup",
+    "dielectric_rows": 13,
+    "revision_date": "10/19/2023 07:19:38",
+    "native_file_sha256": "a31511275cb9aa5c7d27f307cef5a1644fff5fa705fb1dbe38afceb854a62db2"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI12_1-10-1_183_35_2V13.stackup",
+    "dielectric_rows": 13,
+    "revision_date": "10/19/2023 07:21:34",
+    "native_file_sha256": "cf9ac763cc263c286cb97189ddd17daf4a4366681ecbc13c702a15f3e7c5daa9"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI12_1-10b-1_133_17_2V13.stackup",
+    "dielectric_rows": 13,
+    "revision_date": "10/19/2023 05:39:45",
+    "native_file_sha256": "4b6c842e4092568492713dc6643b52b818b61409f936679a1ee74048d144da25"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI12_1-10b-1_153_17_2V13.stackup",
+    "dielectric_rows": 13,
+    "revision_date": "10/19/2023 05:49:51",
+    "native_file_sha256": "6ed4025ad2680dfd6fc44f8f4a484b8fa074a4edf8d78dfd2067e1e2345528f8"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI12_1-10b-1_159_35_2V13.stackup",
+    "dielectric_rows": 13,
+    "revision_date": "10/19/2023 07:12:08",
+    "native_file_sha256": "c65049d667129ac7c7de112e65a7a6ef9b42a4bf11e90646b7ac49a777f3cd66"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI12_2-8-2_133_17_2V13.stackup",
+    "dielectric_rows": 13,
+    "revision_date": "10/19/2023 07:42:49",
+    "native_file_sha256": "428bac758a7e390ed51cf942164dad6796860d5f32319b952780b94788bd16da"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI12_2-8-2_147_35_2V13.stackup",
+    "dielectric_rows": 13,
+    "revision_date": "10/19/2023 07:47:10",
+    "native_file_sha256": "772690131b8d4a41cd77487f6e186213ac5ab0b8c2ca98af04d07bfeea702558"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI12_2-8-2_153_17_2V13.stackup",
+    "dielectric_rows": 13,
+    "revision_date": "10/19/2023 07:52:49",
+    "native_file_sha256": "614fe1ebdd2e0d6ebb88cecb7be5c08589e9de476fb102d685d4e881ed1751bb"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI12_2-8-2_167_35_2V13.stackup",
+    "dielectric_rows": 13,
+    "revision_date": "10/19/2023 07:55:26",
+    "native_file_sha256": "6329fb6896799fcfe4fd8dbbdf1cc22faa870cbf23e221bdbba1419c83c253e6"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI12_2-8b-2_126_17_2V13.stackup",
+    "dielectric_rows": 13,
+    "revision_date": "10/19/2023 07:24:23",
+    "native_file_sha256": "d4dc24a93b5b93281a05929fdc5b74193f7ebe9249b2fe13b252bc9533b86e8a"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI12_2-8b-2_167_35_2V13.stackup",
+    "dielectric_rows": 13,
+    "revision_date": "10/19/2023 07:26:41",
+    "native_file_sha256": "c9035834c9f5f5ebeaa6af07360f23dc57244cdd93e63bda034e54c8ef362447"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI12_2-8l10b-2_133_17_2V13.stackup",
+    "dielectric_rows": 13,
+    "revision_date": "10/19/2023 07:30:41",
+    "native_file_sha256": "bf0c12932af56093e668b1fa3648470401c04f8d53eb90a2845d7eced08d6847"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI12_2-8l10b-2_147_35_2V13.stackup",
+    "dielectric_rows": 13,
+    "revision_date": "10/19/2023 07:33:58",
+    "native_file_sha256": "002296d7cb55d3ebba4e29fec5a74495a2d7b11b77fa4d6e985814042644449d"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI12_2-8l10b-2_153_17_2V13.stackup",
+    "dielectric_rows": 13,
+    "revision_date": "10/19/2023 07:37:35",
+    "native_file_sha256": "b59a91de586bccbabae77e4474d7ad634424a803c82c524f72a1092c59fd549f"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI12_2-8l10b-2_167_35_2V13.stackup",
+    "dielectric_rows": 13,
+    "revision_date": "10/19/2023 07:40:31",
+    "native_file_sha256": "28b6f90260af9c07d69ca38934c49a6aea39d7856872f89b575a6a104b00b8f0"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI12_3-6-3_167_35_2V13.stackup",
+    "dielectric_rows": 13,
+    "revision_date": "10/19/2023 08:04:36",
+    "native_file_sha256": "d696fd8c63848c808f058c504ed7277be9f50986b57a7b80d4ecd95cff28ec20"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI12_3-6b-3_158_35_2V13.stackup",
+    "dielectric_rows": 13,
+    "revision_date": "10/19/2023 07:58:09",
+    "native_file_sha256": "2ac9e1653fdb964dff4712693a562de886e314323d576de611113a030da83cab"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI12_3-6l8b-3_167_35_2V13.stackup",
+    "dielectric_rows": 13,
+    "revision_date": "10/19/2023 08:01:28",
+    "native_file_sha256": "d8ed9cf3220ac8a4aa25507f84c4a01cae03aadd17b1928c7df951c851ca2f4e"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI4_1-2-1_091_35_2V13.stackup",
+    "dielectric_rows": 5,
+    "revision_date": "10/19/2023 08:04:36",
+    "native_file_sha256": "c633b72f5a1aac576855fc7eeff2d25bd6ec3adc323ba37d40cd9f5e35c5344a"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI4_1-2-1_101_35_2V13.stackup",
+    "dielectric_rows": 5,
+    "revision_date": "10/19/2023 08:04:36",
+    "native_file_sha256": "f0bd02cc7b1424b8f0244ab2b1025d6503b46c8948a246a6e968d79599900b34"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI4_1-2-1_123_35_2V13.stackup",
+    "dielectric_rows": 5,
+    "revision_date": "10/19/2023 08:04:36",
+    "native_file_sha256": "8d081c77b67547ee0f94ab54eb0a862a15fdb4a599caa3da3466b367335985a6"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI4_1-2-1_150_35_2V13.stackup",
+    "dielectric_rows": 5,
+    "revision_date": "10/19/2023 08:04:36",
+    "native_file_sha256": "73e70d6d699ed66197daf7f3ba672df1409b3472ad1e9911b6af24655ef4ae11"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI4_1-2b-1_030_25_2V13.stackup",
+    "dielectric_rows": 5,
+    "revision_date": "10/24/2023 07:54:10",
+    "native_file_sha256": "e4fe5cd33cec35fbb01df03cb872e97d653f6ccdf140b41229ce290187b374c6"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI4_1-2b-1_090_35_2V13.stackup",
+    "dielectric_rows": 5,
+    "revision_date": "10/19/2023 08:04:36",
+    "native_file_sha256": "2bf75f88cdaf12c7dd88b04155d60e2c9909f1e7069871ec7fb5368bf046acc0"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI4_1-2b-1_100_35_2V13.stackup",
+    "dielectric_rows": 5,
+    "revision_date": "10/19/2023 08:04:36",
+    "native_file_sha256": "91837922ab24f360b5920743ecb43b3bba8fe0cb3731f4eee46109fe21922418"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI4_1-2b-1_122_35_2V13.stackup",
+    "dielectric_rows": 5,
+    "revision_date": "10/19/2023 08:04:36",
+    "native_file_sha256": "d9fc478ab90aa69b9e7b7c65ee055b29ee17aa0c1e1506b6b6dd1f424dd2d924"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI4_1-2b-1_149_35_2V13.stackup",
+    "dielectric_rows": 5,
+    "revision_date": "10/19/2023 08:04:36",
+    "native_file_sha256": "c99742c46c10a83baadc3cf74b8f1200bc805f37e19100645a04f47133078124"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI6_1-4-1_089_35_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/23/2023 06:07:36",
+    "native_file_sha256": "9b0beb23452954ad7faa22153476293356f89adfff8439ca0ceb483e2d5f979f"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI6_1-4-1_092_17_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/23/2023 06:07:36",
+    "native_file_sha256": "17ee5e2765a096d7f0f0a104a78e5ddec2984a5135adc7342e656f1c589e17dc"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI6_1-4-1_109_35_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/23/2023 06:07:36",
+    "native_file_sha256": "c0f10c8facd987c22ca7ded7ff981910499010ecee6b8e00dcf4dc734cebf541"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI6_1-4-1_114_17_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/23/2023 06:07:36",
+    "native_file_sha256": "539011c26229a18bc4fd77638c872fd9b6040749f49113819fa615c5a0297f44"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI6_1-4-1_131_35_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/23/2023 06:07:36",
+    "native_file_sha256": "5e425a646a8918e5d7d447c272f0910586cd7f2bb146da92b593cfe4b1ad5554"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI6_1-4-1_144_17_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/23/2023 06:07:36",
+    "native_file_sha256": "eae804dc871f8722aebd1b9962dfb3a73683c1da974f11a6d36e510a6558c8e4"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI6_1-4-1_151_35_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/23/2023 06:07:36",
+    "native_file_sha256": "2b46114d9dac0803f21bf4f84788ac9ce7039b363125452cc2a65dbf426e65b8"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI6_1-4-1_171_35_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/23/2023 06:07:36",
+    "native_file_sha256": "e2abbb84ca2126f6039820a9702e047f124fed44eb5f1c8716608c6dbccae261"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI6_1-4b-1_086_35_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/23/2023 06:07:36",
+    "native_file_sha256": "f0c379770ad0fdf3b1b0ed7c390475a4024962b6a054d414efd1c9f51bd8da3a"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI6_1-4b-1_132_35_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/23/2023 06:07:36",
+    "native_file_sha256": "b1e6126c210f5859202ec8a53380517ac71a0bc838facdcab4436d4d4700a626"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI6_1-4b-1_154_35_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/23/2023 06:07:36",
+    "native_file_sha256": "def2d3f590323a6507fc4a3c57844cd17dbae2e80cfdf4fda44c0d60a0318a5d"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI6_1-4b-1_173_35_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/23/2023 06:07:36",
+    "native_file_sha256": "f54ac13e02b2f4f5dac5d5b7ee0fa47fffa39e32c5e861b2238686c09216156c"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI6_2-2-2_090_35_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/23/2023 06:07:36",
+    "native_file_sha256": "7a44d71d0d7a0e75b40867c3f9e77a54075499c15b50be5f825e26cd3304da3e"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI6_2-2-2_120_35_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/23/2023 06:07:36",
+    "native_file_sha256": "9914c5c93d37ff77e7a86e9f3c77fdf98a2c3ace410a479ebad00cbc47d3323c"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI6_2-2-2_142_35_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/23/2023 06:07:36",
+    "native_file_sha256": "69f2194946a1242631a5c3a568f74883a2ade8d2371839c751d853f019703333"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI6_2-2-2_169_35_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/23/2023 06:07:36",
+    "native_file_sha256": "063523b537b9a369820380ad3b267b96183632acdc5998ebde86108aabe5dc1d"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI6_2-2b-2_041_25_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/24/2023 07:54:10",
+    "native_file_sha256": "c6682628197482fcb50e239734d4a823538c779a747b37b205fd993f9f6ea8bb"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI6_2-2b-2_109_35_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/23/2023 06:07:36",
+    "native_file_sha256": "b00dd2e2c261ccc4abab65e802939b00db21f6fe2e9487aa5c06ae6084f8dd9f"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI6_2-2b-2_141_35_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/23/2023 06:07:36",
+    "native_file_sha256": "db3573dd2122f8d0c488b055ec189a3de997c6fed3f9d584d2b70ade10308867"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI6_2-2l4b-2_110_35_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/23/2023 06:07:36",
+    "native_file_sha256": "da31978088e84149cab8cda445c464c9236ae06aac41076f90baea0822b3f553"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI6_2-2l4b-2_142_35_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/23/2023 06:07:36",
+    "native_file_sha256": "92ffac6e3a6d6aa350e3a013807cb7ae8542190e631472e4dbb1df5286b90ad6"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI6_2-2l4b-2_169_35_2V13.stackup",
+    "dielectric_rows": 7,
+    "revision_date": "10/23/2023 06:07:36",
+    "native_file_sha256": "e97485490ab55779920ed7bb6d71b4b54249496288ed98665f78e9dfa0478bf3"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI8_1-6-1_088_17_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "08/03/2023 20:27:22",
+    "native_file_sha256": "cd49716d26001d536d1d695d7548cfbdde64cc35d8f0f35f2592e84ed1b140ee"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI8_1-6-1_099_35_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "08/03/2023 20:29:49",
+    "native_file_sha256": "e5857c3cd904213964a845427c29b81ca32e29332388d1b496b629019743b2fe"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI8_1-6-1_118_17_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "08/03/2023 20:36:18",
+    "native_file_sha256": "f4f064c1664d5bcd733406768dd7030653ebdf5dee8ba93c14a4f668a72a5bb2"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI8_1-6-1_129_35_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "08/03/2023 20:38:24",
+    "native_file_sha256": "7e68c4011abab93eb4ff96f160728fae1327d66ed2bbb61dc49841e0f2c58643"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI8_1-6-1_148_17_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "08/03/2023 20:41:12",
+    "native_file_sha256": "27a28067cae2692911717a7d7622f62115edbe085b55e3a46dfb1d78b927a794"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI8_1-6-1_159_35_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "08/03/2023 20:45:53",
+    "native_file_sha256": "aa569e766432c92df3a8a8ec5ef19dc5a5ad7934238455d52c97b3a06dd405f2"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI8_1-6-1_166_17_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "08/03/2023 20:49:01",
+    "native_file_sha256": "56a6a6a5e67f44d6bd786df11493031f1281db66107012e442a1900a26a6d84b"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI8_1-6-1_168_35_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "08/03/2023 20:51:25",
+    "native_file_sha256": "fab313648648bcb2202892137793d5edb631acf62f137e85dfdba8ec00a8a84e"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI8_1-6b-1_100_35_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "08/03/2023 20:12:36",
+    "native_file_sha256": "a608c6c278dc237cc9c882fb98c9a5d4ee5f31dca78cd12959a783918ec0287e"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI8_1-6b-1_130_35_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "08/03/2023 20:15:14",
+    "native_file_sha256": "46460b1dfaaa756728c585067e4651714d70893ee1c446dd220112037f8bac54"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI8_1-6b-1_152_35_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "08/03/2023 20:21:18",
+    "native_file_sha256": "773bdcbf706ef221b95ced36726d54fcb68d7546222a1982911e7564832a7a70"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI8_1-6b-1_172_35_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "08/03/2023 20:23:59",
+    "native_file_sha256": "222357c5e78b50cc5f8321ce73db2cf15e9ebee01d16e91096f066e499557094"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI8_2-4-2_108_35_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "08/04/2023 07:06:02",
+    "native_file_sha256": "4f5a9a177ab0bf77051aa778b2421af4b12a39b8414a721dfcb749dee4e71286"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI8_2-4-2_111_17_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "08/04/2023 07:09:45",
+    "native_file_sha256": "5d3f042cd764cc7ea17946e35e5c1e03e0c7f75dfd47870374ed8e9f93a638cc"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI8_2-4-2_143_17_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "08/04/2023 07:15:36",
+    "native_file_sha256": "8af053e51fc4d5691f993689ebabdb016bb7a212fd35a081fdf7e747f383ffb5"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI8_2-4-2_150_35_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "08/04/2023 07:20:22",
+    "native_file_sha256": "99a698b657a823151be31d408baacda468582e39da8cb5ec1eafc8351a146362"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI8_2-4b-2_105_35_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "08/04/2023 06:21:35",
+    "native_file_sha256": "98bb254c72f81cc20c391e10b34f4e453fb7a0d483e9785dc62534d844566d3c"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI8_2-4b-2_151_35_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "08/04/2023 06:24:59",
+    "native_file_sha256": "975b48e7ab9576a23d8bc9d70ae3fc555af47ff78b390a8f62efd9d758ce560d"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI8_2-4l6b-2_108_35_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "08/04/2023 06:35:32",
+    "native_file_sha256": "f8f6a774609a78b206da7616eff162d2a19af545ebdf6ef0a54dfbdfebf19ac9"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI8_2-4l6b-2_150_35_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "08/04/2023 06:47:01",
+    "native_file_sha256": "54a7d6cfb7cb45b5fa886f9aaec019b7a81e04e803aa0a9a53912ef264c0ce3b"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI8_2-4l6b-2_170_35_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "08/04/2023 06:57:54",
+    "native_file_sha256": "f4234ae64bf712fc1e6d7dff1aa1de99a2e921607309dbc6ee1762a74d253bdb"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI8_3-2-3_161_35_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "08/04/2023 07:29:13",
+    "native_file_sha256": "b83c8728b620db60975e9afa885b07a92196a4825e9f0c2e5215b043e6cbbdf0"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI8_3-2b-3_052_25_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "10/24/2023 07:54:10",
+    "native_file_sha256": "2892d2e6a44d04273728f18ba069b6cb95091af25bdb4ce50d8dfaaff096683c"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI8_3-2b-3_160_35_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "08/04/2023 07:23:28",
+    "native_file_sha256": "5517f27f7405f7ead4840c0aacd8d76453b7fbb279944cdd6ea536a658c82ca4"
+  },
+  {
+    "source_id": "FB025",
+    "file": "HDI8_3-2l4b-3_161_35_2V13.stackup",
+    "dielectric_rows": 9,
+    "revision_date": "08/04/2023 07:26:17",
+    "native_file_sha256": "d05913af0151b403d7ceb3300e69b85193497f6563f57f1baf9835a6eb298cce"
+  },
+  {
+    "source_id": "FB193",
+    "file": "en_flex1_1f-ri_030_17_2v13.stackup",
+    "dielectric_rows": 5,
+    "revision_date": "10/23/2023 10:45:22",
+    "native_file_sha256": "a22a2ed04ecbe3f24646207f6e3ce6a5d3e3fbb301150f70d38318bab9d91dec"
+  },
+  {
+    "source_id": "FB194",
+    "file": "en_flex2_2f-ri_027_17_2v13.stackup",
+    "dielectric_rows": 5,
+    "revision_date": "10/23/2023 10:57:52",
+    "native_file_sha256": "79c30f128ea204999df3811895085c0ba4806034b9b43e9940c489f8af28179e"
+  }
+]

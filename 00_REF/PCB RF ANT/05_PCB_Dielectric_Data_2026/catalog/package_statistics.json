@@ -1,0 +1,55 @@
+{
+  "schema": "rfad.reference.package-statistics/1",
+  "scope": "Current organized reference package; counts do not establish physical accuracy or solver readiness.",
+  "created_utc": "2026-11-11T02:41:58.364028+00:00",
+  "observation_count": 57340,
+  "observation_roles": {
+    "material_published_parameter": 26815,
+    "fabricator_published_parameter": 30525
+  },
+  "observation_canonical_sha256": "069cdc67cb3259313cfcd2701c4b2c45abb5cfa4d9ba960e5e298b44124edf6d",
+  "publisher_labels": 37,
+  "companies": 36,
+  "generic_reference_groups": 1,
+  "jsonl_partitions": 37,
+  "original_fields": 142,
+  "product_labels": 1058,
+  "publisher_stackup_labels": 2941,
+  "source_records": 1756,
+  "original_files": 1682,
+  "original_extensions": {
+    ".cvg": 1,
+    ".html": 704,
+    ".jpg": 2,
+    ".json": 1,
+    ".pdf": 949,
+    ".png": 5,
+    ".stackup": 2,
+    ".zip": 18
+  },
+  "search_text_files": 1115,
+  "excel_workbooks": 38,
+  "excel_sheets": 86,
+  "archive_summary": {
+    "archive_files": 18,
+    "members": 648,
+    "unique_member_contents": 502,
+    "pdf_members": 308,
+    "unique_pdf_contents": 168,
+    "pdf_page_references": 393,
+    "new_search_text_files": 166,
+    "reused_existing_search_text_files": 2,
+    "native_altium_members": 173,
+    "native_ipc2581_members": 167,
+    "failed_members": 0
+  },
+  "verification_entry": "scripts/verify_package.py",
+  "workbook_index": "Excel/workbook_index.json",
+  "file_inventory": "catalog/file_manifest.json",
+  "notes": [
+    "Companies and one generic reference group are distinguished; publisher count is not company count.",
+    "Product and stackup labels are not independently verified products or orderable configurations.",
+    "Manifest excludes itself, user exports and Python caches to avoid self-reference and generated-output churn.",
+    "The historical Dataset_Index.xlsx under audit/collection is excluded from the 38 new workbooks."
+  ]
+}

@@ -1,0 +1,943 @@
+PCB Material Selection for RF,
+Microwave and Millimeter-wave
+           Design
+                Outline
+ Printed Circuit Board (PCB) attributes
+  for RF, microwave, millimeter-wave
+  systems
+ Application example – Advanced
+  Automotive Safety System
+ PCB material product solutions
+ Summary
+RF/Microwave/mm-Wave Trends
+ Aerospace and defense applications
+  are the foundation for
+  RF/microwave/millimeter-wave PCBs
+ Recent surge in
+  RF/microwave/millimeter-wave
+  commercial applications
+   Result is wider range of PCB product offerings
+   meeting a wider range of needs
+ Choosing the appropriate PCB material
+ requires consideration of technical
+ performance attributes and cost
+Considerations for PCB Material Selection
+
+ System Requirements
+    Frequency of operation, bandwidth and power
+    Electrical size of board and critical features
+    System loss requirements
+    Temperature range of system operation and cycle profile
+    Number of layers of PCB
+ PCB Material
+    Electromagnetic loss, mechanical strength, thermal
+     properties
+    Stability over varying environmental conditions –
+     temperature, humidity, etc.
+    RF-power handling capability
+    Processability and compatibility with hybrid constructions
+    Cost
+RF/Microwave/millimeter-Wave vs HSD
+ RF/microwave/millimeter-wave PCBs traditionally
+  have only a few layers, in some cases just 1 or 2
+ PCBs for high-speed digital applications often
+  have 20+ layers with hundreds of traces
+ RF/microwave/millimeter wave systems require
+  very low loss
+    Process low-level signals
+    Enable high-power applications
+ HSD applications can be more tolerant of losses
+ RF/microwave/millimeter-wave system
+  applications generally require very precise control
+  of critical dimensions on the PCB
+ Boards with RF/microwave/millimeter-wave and
+  HSD functionality present unique challenges but
+  are becoming more common
+PCB Laminate Material Considerations
+ PCB laminates considered here consist of
+  one or more plies of resin-impregnated glass
+  cloth sandwiched between two copper foils
+
+ The RF/microwave/millimeter wave
+  performance of the laminate & resulting PCB
+  depends primarily on
+    The resin and glass characteristics, dielectric
+    constant and loss factors
+   The quality of the copper foil – surface roughness,
+    purity
+Desirable PCB Electrical Properties
+  Low dissipation factor, Df = tanδ
+     Maximize power delivered
+     Enable high-power applications
+  Low dielectric constant, Dk
+     Allows rapid signal propagation
+  Consistent Df, Dk over operating
+   bandwidth of intended application
+     Provides consistent transmission line impedance
+     Prevents phase distortion
+  Consistent Df, Dk with changes in
+   temperature
+          Electrical Loss Effects
+Electrical Losses in the PCB result in performance
+degradation in antennas and transmission lines and
+components
+  Antenna
+      Lower radiated power
+      Reduction in gain
+      Broadening of return loss resonance
+      Thermal effects at high power levels
+
+  Transmission Lines
+     Lower delivered power
+     Thermal issues in high power applications
+ Transmission Line Loss Effects
+Microstrip line is dominate transmission line in
+RF/microwave/mm-wave with performance
+limited by:
+ Dielectric Loss
+ Conduction Loss
+ Mismatch Loss
+    PCB Material Dielectric Loss
+ Dielectric materials have polarized molecules
+  that move when subjected to the electric field of
+  a digital signal
+
+                         E
+
+
+
+ This motion produces heat loss
+ Loss results in signal attenuation that increases
+  in direct proportion to signal frequency
+ PCB Material Conduction Loss
+ The copper contributes to overall loss
+ through the metal’s resistive losses
+
+ At high signal frequencies, the current in
+ PCB copper is concentrated within a
+ small depth near its surface (skin effect)
+
+ Reduction in effective cross-sectional
+ area increases the effective resistance
+  Conductor Surface Roughness
+ Conductors on PCBs do not have perfectly smooth surfaces
+ Rough copper improves peel strength of laminate
+ Maximum peak-peak tooth size varies ≈2-10 microns
+ Surface roughness increases bulk copper resistance 10 to 50%
+ Electrical impact of conductor roughness increases with
+  increasing frequency
+
+
+
+                   Trace
+
+
+
+
+                   Plane
+               Copper Foil Plating
+Foil is fabricated by plating                   Foil Treatment
+      copper on a drum
+
+                                                            or RTF
+                                                            (drum side)
+
+
+
+
+                   RTF ≠ a foil roughness designator
+        RTF and VLP Copper Profiles
+
+             RTF                                  VLP
+Rq = 2.6 um, RF = 1.85              Rq = 0.68 um, RF = 1.3
+
+
+
+
+   Roughness parameters measured with profilometer
+  Conductor Surface Roughness
+ Resist side                                            Bonding side
+                            Standard foil
+
+
+                                             ~10 µm
+
+
+
+
+         Signal Path
+
+
+The current is able to tunnel        The current is forced to follow every
+below the surface profile and        peak and trough of the surface profile
+through the bulk of the conductor    increasing path length and resistance
+  Effects of Surface Roughness
+ Increase in capacitance due singular
+ electric fields on surface spikes
+
+ Increase in signal group delay over
+ perfectly smooth
+
+ “Apparent” increase in Dk to match
+ group delay vs frequency
+ characteristics
+               Example with RTF Foil
+ Multiple spikes are about 10
+    um from top to bottom
+   Electric field is singular on
+    the spikes (similar to strip          Original Dk=3.0 and spiky surface (3.8 um, 3
+    edges)                                spikes/sq. mil, red x-s)
+
+   Consistent for 2 line types
+                                    Adjusted Dk=3.15 (blue
+      About 5% increase for        circles)
+       MSL with one RTF
+       surface
+      >10% increase for strip
+       line with two RTF                      Original Dk=3.0 (green)
+       surfaces
+   Consistent increase in group
+    delay and decrease in
+    characteristic impedance
+    over very wide frequency        With the adjusted Dk of 3.15 the group
+    band                            delay matches that of Dk = 3.0 case
+                                    with RTF copper surface profile
+        Transmission Line Effects
+ Microstrip Transmission Line
+                                                   w
+                                                             t
+                           εr                                                    h
+
+ Microstrip Dielectric Loss
+                                            εr(εeff – 1)tanδ
+                    αd = 27.3                                           (dB/m) [1]
+                                               εeff ½(εr-1)λ0
+                    εr + 1            εr - 1            1
+       εeff =                    +                                      (static effective permittivity)
+                      2                 2         (1 + 12h/w)1/2
+                                      εr - εeff                   Zc                      Z
+       εeff (f) =     εr     -                      , fp =               , G = 0.6 +0.009 c
+                                     1 +Gf2/fp2                  2µ0h                    ohm
+                                                                         Getsinger effective permittivity)
+Attenuation constant is linear with respect to loss tangent and can be
+significant contributor when tanδ ~ 0.005 - 0.01
+                  Transmission Line Effects
+     Microstrip Conductor Loss
+
+                                      Rs
+            αc = 8.68                           αc’         (dB/m)                      [1] α ’ = f(w , h, t)[1]
+                                                                                       with  c       eq
+                                     Zch
+            weq= w + (t/π)(lna +1), a=4πw/t, w/h < 1/2π
+             weq= w + (t/π)(lnb +1), b=4h/t, w/h > 1/2π
+
+                  Rs= (ωµ/2σ)1/2
+                 To take surface roughness into account replace Rs with the following
+                 Rs (∆) = Rs (1 + (2/π) tan−1(1.4(∆/δ)2) [2]
+                 ∆ = root mean square surface roughness, δ = skin depth
+
+
+[1] Noyan Kinayman, Modern Microwave Circuits, Norwood, MA, Artech House, 2005
+[2] E. Hammerstadt, O. Jensen, “Accurate Models for Microstrip Computer-Aided Design”, IEEE MTT-S Digest, vol. 80,
+pp407-409, May 1980
+PCB Microwave Component Scales
+
+
+
+      Wilkinson Power Divider                       Branch-line coupler
+
+
+
+
+        Hybrid Ring Coupler                    λ/4 wave directional coupler
+•   Microwave circuit elements commonly have λ/4 critical dimensions
+•   Several are typically cascaded requiring propagation distances on order of λ’s
+•   System signal loss due to dielectric and conductor losses can be significant
+        Transmission Line Effects
+ Microstrip Characteristic Impedance
+                                           120 π
+     Zc =                                                                     for = w/h>1
+                 (εeff   )1/2[ w/h + 1.393+0.667ln(w/h + 1.444)]
+                     εr + 1            εr - 1            1
+        εeff =                    +                                  (static effective permittivity)
+                          2              2         (1 + 12h/w)1/2
+                                       εr - εeff               Zc                      Z
+        εeff (f) =       εr   -                      , fp =           , G = 0.6 +0.009 c
+                                      1 +Gf2/fp2              2µ0h                    ohm
+                                                                      Getsinger effective permittivity)
+
+
+ Variations in εr result in impedance mismatches
+    Variations in dielectric thickness and dielectric properties
+       Manufacturing tolerances
+       Temperature and frequency dependent dielectric constant and loss factor
+    Variations in conductor geometry
+Advanced Automotive Safety
+Systems
+Active Safety Systems
+             Radar sensor portfolio
+             • 25 GHz ultra-wide band RADARs
+             • 24 GHz narrow-band RADARs
+             • 77 GHz multimode RADARs
+
+             Supporting
+             • Blind spot detection
+             • Rear cross-traffic alert
+             • Lane change assist
+             • Forward collision warning
+             • Autonomous emergency braking
+             • Adaptive cruise control
+RADAR Resolution Requirements
+ Scenarios Requiring High            Scenarios Needing Lower
+  Resolution                               Resolution
+    Side impact                            Adaptive cruise control – long
+    Cross-traffic alert                       range
+    Narrow pass assistant                    Lane change assist – 24 GHz
+    Evasion maneuver
+    Pedestrian protection
+    Front collision warning
+    Proximity warning and parking
+     assistant
+                 Frequency     Bandwidth        Resolution
+                  24 – 24.25    250 MHz           0.6m
+                     GHz
+                 21 – 26 GHz     5 GHz            0.03m
+                 76 – 77 GHz     1 GHz            0.15m
+                 77 – 81 GHz     4GHz            0.0375m
+Active Safety System Development
+
+
+
+
+                                              Source: Infineon
+
+Systems are migrating to higher frequencies
+• Change in frequency allocation
+• Improved Performance
+• Reduced size and improved affordability
+   Active Safety System Trends
+ Shift to higher frequencies
+   76 GHz to 81 GHz
+   Development ongoing at 140 GHz
+
+ Integration of multiple system functions in one
+  chipset
+   RADAR front end
+   Microcontroller
+
+ Reduction in system size
+
+ Increasing demand for system cost reductions
+  for a widening target market
+         PCB Material Selection
+ Frequency of operation requires high
+  performance material
+ Dk, Df as flat as possible over range of
+  frequency for LRR and SRR
+ Dk, Df temperature stable over operating
+  range (-40°C to 85°C)
+ Lowest cost as possible
+   Choose sufficient material to satisfy requirements
+   Hybrid construction
+   Process compatible with hybrid
+          Hybrid Construction for
+            Automotive Radar
+
+
+
+
+This hybrid structure utilizes high performance material where
+necessary and standard process-compatible materials to reduce
+cost
+Isola Product Solutions
+                                                                      Isola Product Positioning
+                                                                       RF/Microwave Products
+                                                                                       Multilayer, Hybrid & Double-sided
+                                                                                      Multilayer/Hybrid  Applications
+                                                                                                Applications
+Improving Thermal Performance – T260/Td/IST
+
+
+
+
+                                                                                                      Astra® MT
+                                                                                          Very Low Df, Dk 3.00 Df 0.0017
+                                                                             0.005”, 0.010”, 0.015”, 0.020”, 0.030” & 0.060” cores only
+
+
+                                                                         I-Tera® MT - Very Low Loss
+                                                                  0.002” to 0.018” core, full prepreg offering
+                                                                     Dk 3.15 to 3.45, Df – 0.0031 - 0.0037
+                                                                I-Tera MT RF 0.020” & 0.030 3.38 and 3.45 Dk
+
+
+
+
+                                                                                         Double-sided Applications
+
+                                                                                  IS680-345                          IS680-333            IS680-300
+                                                                              Dk 3.45 Df 0.0036                  Dk 3.33 Df 0.0034    Dk 3.00 Df 0.0030
+                                                                               20, 30 & 60 mil                    20, 30 & 60 mil      20, 30 & 60 mil
+
+                                                                                  IS680-338                          IS680-320            IS680-280
+                                                                              Dk 3.38 Df 0.0035                  Dk 3.20 Df 0.0032    Dk 2.80 Df 0.0028
+                                                                               20, 30 & 60 mil                    20, 30 & 60 mil      20, 30 & 60 mil
+
+
+
+
+                                              5 GHz                            10 GHz                                                24 GHz               77 GHz
+
+                                                      Improving Electrical Performance – Lower Dk/Df – Higher Speed
+RF/Microwave Product Offerings
+ IS680
+
+ I-Tera® MT
+
+ Astra® MT
+IS680
+       IS680 Product Strengths
+
+ IS680 is available in 0.020”, 0.030” and 0.060”
+  thicknesses
+
+ Typical solder floats > 3000 seconds
+
+ Superior drilling performance – IS680 does not
+  contain a ceramic filler!
+
+ IS680 has been granted a UL 94 V-0 Flammability
+  Rating
+
+ MOT 110°C
+     IS680 Electrical Properties
+ Stable Df over Frequency 2 to 20 GHz
+ Stable Df over temperature from -40°C to 125°C
+ Stable Dk over frequency range of 2 to 20 GHz
+ Stable Dk over temperature from -40°C to 125°C
+ Customized Dk on thick cores for different
+  applications (ie. 2.80, 3.00, 3.20, 3.33, 3.38, 3.45)
+ The ability to customize Dk to match competitive
+  products vs. advertised Dk values on certain
+  thicknesses
+ Excellent power handling ability
+      IS680 Product Positioning
+ Applicable for RF/microwave designs
+     LNB (satellite TV)
+     Antenna
+     Power amplifier
+     Traffic sensors
+     RFID
+     Collision warning
+     Base station
+     Base Station antenna
+     Sat telephone
+     WiMAX antenna
+ Capable of meeting lead-free requirements
+
+
+IS680 Typical Material Properties
+                  Property             Units         IS680
+
+
+   Tg, (DSC)                            C             200
+   Td, (TGA - ASTM)                     C             360
+   CTE - z-axis (50-260°C)              %            2.80
+   T-260 (TMA)                        minutes         60
+   T-288 (TMA)                        minutes        > 60
+   Dk - 2 GHz                                     2.80 - 3.45
+   Dk - 5 GHz                                     2.80 - 3.45
+   Dk - 10 GHz                                    2.80 - 3.45
+   Df - 2 GHz                                   0.0028 - 0.0036*
+   Df - 5 GHz                                   0.0028 - 0.0036*
+   Df - 10 GHz                                  0.0028 - 0.0036*
+   Peels, 1 oz after thermal stress                    5
+   Moisture Absorption                  %            0.01
+   Flammability                          -          94 V - 0
+   UL recognition                                  non-Ansi
+IS680
+
+TCK Data
+Temperature range
+-40°C to +125°C at 10 GHz
+                          IS680 TCK Dk -40°C to 125°C
+                                                    IS680 TCK Dk
+
+                      3.600
+
+
+
+                      3.500
+Dielectric Constant
+
+
+
+
+                      3.400
+
+
+
+                      3.300
+
+
+
+                      3.200
+
+
+
+                      3.100
+                              -40      -20      0       23            50     75   105     125
+
+                                                     Temperature in Deg. C
+
+                                                             Dk IS680-338
+
+                         Total delta on Dk of 0.005 – very stable over the temperature range
+                        IS680 TCK Df -40°C to 125°C
+                                               IS680 TCK Df
+
+               0.0060
+
+
+               0.0050
+
+
+               0.0040
+Loss Tangent
+
+
+
+
+               0.0030
+
+
+               0.0020
+
+
+               0.0010
+
+
+               0.0000
+                         -40      -20      0        23            50    75   105   125
+
+                                                Temperature in Deg. C
+
+                                                         Df IS680-338
+
+                        Very stable Df (loss tangent) over the temperature range
+I-Tera® MT
+          I-Tera® Product Strengths
+ Standard thicknesses available (nominal ± 5% for 0.020” and above)
+ Full thin core offering from 0.0020 (non-ZBC) to 0.018” for multilayer
+    designs
+   I-Tera MT RF 0.020” & 0.030” available for multilayer or hybrid-
+    multilayer designs
+   Square and MS-spread glass weaves used: 1035, 1067, 1086, 1078
+   Very-low loss material for backplane, high data rate daughter cards,
+    hybrid applications
+   Superior drilling performance – I-Tera MT does not contain a ceramic
+    filler
+   Processing to date – plasma desmear not required
+   No issues with ENIG in testing to date.
+   Passed 1000 HATS cycles
+   Passed 10x 700°F re-work simulation testing
+   Compatible with Isola 185HR, 370HR and IS415 for hybrid
+    constructions
+   I-Tera MT prepreg can be stored at standard FR-4 conditions
+   UL: 94 V- 0
+   UL MOT: 130°C, I-Tera MT is the UL designation
+I-Tera® MT Typical Material Properties
+
+             Property                 Units      I-Tera®MT
+             Tg, (DSC)                  C            200
+             Td, (TGA)                  C            360
+      CTE - z-axis (50-260 C)           %            2.80
+            T-260 (TMA)              minutes          60
+            T-288 (TMA)              minutes         > 60
+             Dk - 2 GHz                           3.00 - 3.45
+             Dk - 5 GHz                           3.00 - 3.45
+            Dk - 10 GHz                           3.00 - 3.45
+             Df - 2 GHz                        0.0030 - 0.0035
+             Df - 5 GHz                        0.0030 - 0.0035
+             Df - 10 GHz                       0.0030 - 0.0035
+  Peels, 1 oz after thermal stress                     5
+       Moisture Absorption             %             0.01
+            Flammability               -            94 V-0
+          UL recognition                          non Ansi
+             I-Tera® MT Thermal Coefficient of
+                     Dielectric Constant
+
+           4.000
+
+           3.900
+
+           3.800
+
+           3.700
+
+           3.600
+Dielectric 3.500
+Constant
+           3.400
+
+           3.300
+
+           3.200
+
+           3.100
+
+           3.000
+                   -40   -20   0          23             50   85   105   125
+                                          Temperature °C
+
+                                   Dielectric Constant
+                   I-Tera® MT Thermal Coefficient of
+                             Loss Tangent
+              0.0070
+
+
+              0.0060
+
+
+              0.0050
+Dissipation
+Factor
+
+              0.0040
+Dielectric
+Constant
+              0.0030
+
+
+              0.0020
+
+
+              0.0010
+
+
+              0.0000
+                       -40   -20   0        23        50    85   105   125
+                                           Temperature °C
+
+                                       Loss Tangent
+                                I-Tera® MT & IS680 vs.
+                                Competitive Products
+
+          0.000
+                0
+
+                      0
+
+                            0
+
+                                  0
+
+                                        0
+
+                                              0
+
+                                                    0
+
+                                                          0
+
+                                                                0
+
+                                                                      .0
+
+                                                                             .0
+
+                                                                                    .0
+
+                                                                                           .0
+
+                                                                                                  .0
+
+                                                                                                         .0
+
+                                                                                                                .0
+
+                                                                                                                       .0
+
+                                                                                                                              .0
+
+                                                                                                                                     .0
+
+                                                                                                                                            .0
+          -0.100
+              1.
+
+                    2.
+
+                          3.
+
+                                4.
+
+                                      5.
+
+                                            6.
+
+                                                  7.
+
+                                                        8.
+
+                                                              9.
+
+                                                                    10
+
+                                                                           11
+
+                                                                                  12
+
+                                                                                         13
+
+                                                                                                14
+
+                                                                                                       15
+
+                                                                                                              16
+
+                                                                                                                     17
+
+                                                                                                                            18
+
+                                                                                                                                   19
+
+                                                                                                                                          20
+          -0.200
+
+          -0.300
+
+          -0.400
+dB/INCH
+
+
+
+
+          -0.500
+
+          -0.600
+
+          -0.700
+
+          -0.800
+
+          -0.900
+                                                                    Frequency in GHz
+
+                                                    RO4350B™        AR 25N        IS680-345
+                                                                                    I-Tera MT    IS680-338
+
+
+
+                          20-25% Improved performance over the competition!
+Astra® MT
+                        Astra® MT
+ RF/Microwave Applications
+    Automotive RADARs and sensors - 77 Gigahertz
+    DAS antennas
+    CPE antennas
+    Feed networks
+    Point to point – microwave links
+    mm-wave applications
+    Aerospace applications
+    GPS satellite antennas
+
+ Competitive products
+    Rogers RO3003™ high frequency circuit materials
+    Taconic ORCER RF-35
+    Arlon AD300C
+    Astra® MT Product Offering
+ RF/microwave and mm wave applications
+   Dk: 3.00
+   Core thickness available: 0.005”, 0.010”,
+    0.015” 0.020”, 0.030” and 0.060”
+   Copper: HVLP-2 (2 micron) copper foil
+      Astra® MT Key Properties
+
+           Property                 Units    Astra MT
+           Tg, (DSC)                  C         200
+           Td, (TGA)                  C         360
+   CTE - z-axis (50-260°C)            %        2.80
+          T-260 (TMA)              minutes       60
+          T-288 (TMA)              minutes     > 60
+           Dk - 2 GHz                          3.00
+           Dk - 5 GHz                          3.00
+          Dk - 10 GHz                          3.00
+           Df - 2 GHz                         0.0017
+           Df - 5 GHz                         0.0018
+           Df - 10 GHz                         0.002
+Peels, 1 oz after thermal stress                 5
+     Moisture Absorption             %         0.01
+          Flammability               -        94 V-0
+        UL recognition                       non Ansi
+Astra MT
+Testing at 77 and 100 GHz
+                                                        -dB/in
+                                                                                          0.000
+
+
+
+
+                        -0.600
+                                 -0.500
+                                          -0.400
+                                                   -0.300
+                                                                 -0.200
+                                                                          -0.100
+                                                                                    1.0
+                                                                                    1.5
+                                                                                    2.0
+                                                                                    2.5
+                                                                                    3.0
+                                                                                    3.5
+                                                                                    4.0
+                                                                                    4.5
+                                                                                    5.0
+                                                                                    5.5
+                                                                                    6.0
+                                                                                    6.5
+                                                                                    7.0
+                                                                                    7.5
+                                                                                    8.0
+
+
+
+
+Astra 3.0
+                                                                                    8.5
+                                                                                    9.0
+                                                                                    9.5
+                                                                                   10.0
+                                                                                   10.5
+                                                                                   11.0
+
+
+
+R03003 ™
+                                                                                   11.5
+                                                                                   12.0
+            Frequency in GHz
+                                                                                   12.5
+                                                                                   13.0
+                                                                                   13.5
+RF35A2
+                                                                                   14.0
+ RF-35A2
+
+
+                                                                                   14.5
+                                                                                   15.0
+                                                                                   15.5
+                                                                                   16.0
+                                                                                   16.5
+                                                                                   17.0
+                                                                                   17.5
+                                                                                   18.0
+                                                                                   18.5
+                                                                                                  Astra® MT vs. Competition
+
+
+
+
+                                                                                   19.0
+                                                                                   19.5
+                                                                                   20.0
+Astra® MT vs. Competition
+  Attenuation –dB/Inch
+    Astra® MT TCk -40°C to 140°C
+           3.500
+
+           3.400
+
+           3.300
+
+           3.200
+
+           3.100
+
+Dielectric 3.000
+Constant
+           2.900
+
+           2.800
+
+           2.700
+
+           2.600
+
+           2.500
+                   -40     -20      0          24      50         80   105   140
+                                        Temperature in Degree C
+
+                                          Astra 3.0
+
+
+              Astra offers very stable Dielectric Constant (Dk) over
+                          temperature due to its high Tg
+Astra® MT Thermal Coefficient of Df
+
+                   Thermal Coefficient of Loss Tangent
+    0.0050
+
+
+
+    0.0040
+
+
+
+    0.0030
+
+Tan δ
+    0.0020
+
+
+
+    0.0010
+
+
+
+    0.0000
+             -40   -20     0         24          50       80   105   140
+                               Temperature in Degrees C
+
+
+                                     Astra 3.0
+Astra® MT Testing at 77 & 100 GHz
+Astra® MT Testing at 77 & 100 GHz
+Astra® MT Testing at 77 & 100 GHz
+Astra® MT Testing at 77 & 100 GHz
+                          Astra® MT
+ Astra MT has been used in automotive 77 GHz hybrid
+  board designs with Isola 185HR & 370HR
+ Astra MT was processed with the Isola 370HR processing
+  parameters with very good results
+ Processing advantages:
+    Predictable scaling (Competition does not use glass weave)
+    Microvia and drill processes used 370HR parameters and had
+     standard hit counts vs reduced hit counts with the competitive
+     products
+    Plasma desmear is not required
+    Astra MT does not need to be processed in a certain time period
+     at microvia plating, electroless and soldermask processes.
+        Competitive products need to go through these process steps in a
+         certain amount of time or will need to repeat the plasma process
+    Planarization of Astra MT is similar to FR-4
+   Selecting the Right Material
+ Laminate material selection can not be
+  condensed into a single-page chart for
+  easy selection
+ High-performance laminate material
+  suppliers have a better understanding
+  of material performance
+ Cost-to-performance evaluations must
+  still be done by the system design team
+  to ensure the lowest cost material that
+  will do the job is selected
+               Summary
+ Printed Circuit Board (PCB) attributes
+  for RF, microwave, millimeter-wave
+  systems
+ Application example – Advanced
+  Automotive Safety System
+ PCB material product solutions
+

@@ -1,0 +1,348 @@
+{
+  "schema": "rfad.reference.cleanup/1",
+  "date": "2026-11-11",
+  "input_files": 2747,
+  "input_total_bytes": 1035264538,
+  "original_manifest_sha256": "a6c2f6f02ed7fcb4b7fdd5f1f8ecb662a4803f94e005c0071c2126f8356dbc52",
+  "backup_path_relative_to_repository": "Code/.local/dielectric-review/before_cleanup.tar.gz",
+  "backup_sha256": "0ba10c1d5ea73750ff05fb7f9596b8b372a97335a721242bbedf0301f5b41503",
+  "records_before": 57340,
+  "records_after": 57340,
+  "original_typed_records_sha256": "088d03d235f97026cce0cccf70ec596b55ec77cf47addc3c229f98321f55e6f7",
+  "partitioned_typed_records_sha256": "088d03d235f97026cce0cccf70ec596b55ec77cf47addc3c229f98321f55e6f7",
+  "all_keys_values_types_and_ids_preserved": true,
+  "observation_rows_deleted": 0,
+  "original_documents_deleted": 0,
+  "changes": [
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/pcb_dielectric_all.json",
+      "bytes": 114292541,
+      "sha256": "836a90dbf6a0ca583bb2a8d5f0d71439d72c73c95758d5d760f2bdcd797eda06",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/fabricators.csv",
+      "bytes": 41534494,
+      "sha256": "1f0df0342b93558f895b5f1f5257d6483969946afc9d487dde55515ba81bdf38",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/materials.csv",
+      "bytes": 21415379,
+      "sha256": "3b54b3e7bf2e0428746b0b67a92136fa784a693ce210c3a2a524aa62d83cb084",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/pcb_dielectric_all.csv",
+      "bytes": 62947382,
+      "sha256": "90add7f4cd372906a73f133733fe7bedbe788392a36fbe384415bdf4c62ab001",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/AdvancedPCB.csv",
+      "bytes": 28192,
+      "sha256": "f994ba8468ff24e11fbef46b52c53b52dc9a860ace6f67021c2f4e4f8b216053",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/AGC.csv",
+      "bytes": 1947743,
+      "sha256": "39e49a40367e4a4887da268bc18229a1cc9b5c987f383bc1cdf9b2a0eece1872",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/AISLER.csv",
+      "bytes": 30898,
+      "sha256": "3d0dbf1a680c1a96c56f7b1b219fd962b972e73af7aef597e571d6adacb432e3",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/Arlon_Electronic_Materials.csv",
+      "bytes": 16922,
+      "sha256": "8d8e5a04108f1ca5ceaabe68f27a5ee7245eded9771472c71dd4f03d001818ef",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/Chukoh.csv",
+      "bytes": 41969,
+      "sha256": "2be58886ea90eee1a55a7d36b9ee40028c34d10081657d36d86ff0df666fae36",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/CircuitHub.csv",
+      "bytes": 5355,
+      "sha256": "7bc28485d1b5e62312895d79ac737f0116da64ff8780beb73e300c4f711386e1",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/Doosan.csv",
+      "bytes": 77092,
+      "sha256": "b6216b01138b52ddc267e8f6d88a8aa4cf2e60cc6eb665da9a26d18d7b1513af",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/EMC.csv",
+      "bytes": 129598,
+      "sha256": "4b87a14e4e377625c0f64113b56a2139eace146d2a688dd8676924f75d9444df",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/Epec.csv",
+      "bytes": 60161,
+      "sha256": "a60eea6f00a37f995662339719787c42cf8dfb51b30cf1b49677b256aa02ecc7",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/Eurocircuits.csv",
+      "bytes": 15827,
+      "sha256": "e33a70dcae22f533afe985513cd1ee1a910ad3662e2dcd9eb08ecc9cf60cf000",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/Fineline.csv",
+      "bytes": 132006,
+      "sha256": "f8e5dd81048aea69c2fccec3167d13feb7877acde351b7a129ab1aeaccc9bd0a",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/Generic_material_reference_Arlon_handbook.csv",
+      "bytes": 11646,
+      "sha256": "1fc11c34aab49f800b7218a6db96ef924c7fa02717819fd994a4e28683e7d555",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/Isola.csv",
+      "bytes": 2481113,
+      "sha256": "5814a77835fa0c1cfe026c415942d8315066670de4254ffe39e53f4013bf18ea",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/ITEQ.csv",
+      "bytes": 67165,
+      "sha256": "0c77e0571a3d014478ca724eacf589eb2f97b7b05e20bc668e165ae25fcc70aa",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/JLCPCB.csv",
+      "bytes": 37630338,
+      "sha256": "1acd3278740489a01560c6539b8401769ff00e85c01e6c2b7961efa090560d9f",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/Kingboard.csv",
+      "bytes": 2311704,
+      "sha256": "3689dbc63626f79bbb359c6660c6000b3e62db7379e18a4de79019d267b015f4",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/Lab_Circuits.csv",
+      "bytes": 14946,
+      "sha256": "60aa7bb6176423ae3eeda58085fbf6072146dd71181c4581ff7deaa3f206a352",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/MGC.csv",
+      "bytes": 28628,
+      "sha256": "825fcb6c8e25b29a109a35f2fa3838fcbe816458aaf433f689622a12e5b7c0b7",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/Multi_Circuit_Boards.csv",
+      "bytes": 31686,
+      "sha256": "9de8d9aa38bf4d7917c13baf8f7cc23c26adab61fdcd6b07a42bbafcb98f6976",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/Nanya_New_Material.csv",
+      "bytes": 310882,
+      "sha256": "b873b349c4af55096b293e75e9f2129f9d6eb34e9f6c53b9ee728d73757dc6fa",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/NCAB.csv",
+      "bytes": 6765,
+      "sha256": "382c744bf63dba95b994693c4396c7ef502dfbbb1c57e5bca969648c29c63234",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/NextPCB.csv",
+      "bytes": 26051,
+      "sha256": "9c6245987922225a859eb76ff0fed4f9368993c5434fcba912a383b1d60bfc53",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/Nitto.csv",
+      "bytes": 4423,
+      "sha256": "eddac7d7288721ffade35661dfd7e2ce85147698763c3b2b89c990df20e734f7",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/OSH_Park.csv",
+      "bytes": 9267,
+      "sha256": "b2725bfac16eb4e87bd1de72fcfc29d068f6ab6a42d682ad4a6dabb1379c5690",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/Panasonic.csv",
+      "bytes": 5050146,
+      "sha256": "8e18e404938d07f7d0cc17a17c09a2bc69a9fcad1af8099d08141d4a2609a4d9",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/PCBWay.csv",
+      "bytes": 1927204,
+      "sha256": "66a7dbe3b66c7df27ec2ee07f2dcd364a5fb53bec35699bfaf4b4e43d38023a0",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/Peters.csv",
+      "bytes": 7700,
+      "sha256": "b57a71d9be8c2f5cd6395a89c09a732c799981302945aa8b5b0d740322a89bc2",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/Resonac.csv",
+      "bytes": 116786,
+      "sha256": "a51173331028a9961a309a7447f44cb6bef285437300169bf44de85a52814a5e",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/Risho.csv",
+      "bytes": 5145,
+      "sha256": "190412aa2e1432c7d30d8add1733cc8bf552203acafb0f3a2445ac69c8a08a96",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/Rogers.csv",
+      "bytes": 317120,
+      "sha256": "98804681156b21b2a88fbd142aa7d75e57ba1894a4dde91e8777d31c8df7aeae",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/Seeed_Fusion.csv",
+      "bytes": 3278,
+      "sha256": "c8b52f95aef03839b1b372db8d71b1be9c72893a253b8d86a710ce0c7d48935f",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/Shengyi_Technology.csv",
+      "bytes": 7889743,
+      "sha256": "6e36c055a5d532b5fcb9e6fe7c4fec61c6df7762164797516108a37cf760e9e2",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/Sumitomo_Bakelite.csv",
+      "bytes": 13595,
+      "sha256": "fa03d6bbd0bfcd132490989741f6189422f14673b402cc29d5b3c1bc34755590",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/TTM_Technologies.csv",
+      "bytes": 4023,
+      "sha256": "75cac5e3dd7010e819ee763fff90cdb1b0869a63cf23d5b2358c05b38b36e7ad",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/TUC.csv",
+      "bytes": 32192,
+      "sha256": "805298affb91910a610bf695506a3559bf8178e62f02f1e1285e8837ee2a08fc",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/Ventec.csv",
+      "bytes": 603887,
+      "sha256": "bb8c851dbbbd29d3ff23490760e8152ba6eda4181a5dceb97c6aa5aa94f2f892",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    },
+    {
+      "action": "quarantined_reproducible_copy",
+      "path": "data/by_organization/Wurth_Elektronik.csv",
+      "bytes": 1645862,
+      "sha256": "9e5830604055f415e22a96c6b4c2e789eb85e09ce9192704f0211b8291cc6967",
+      "replacement": "data/observations/index.json",
+      "reason": "All original JSON keys/values/types/IDs preserved; CSV can be exported."
+    }
+  ],
+  "removal_mode": "Moved verified reproducible copies outside the package to a local recovery folder; original scientific documents and observation rows were not deleted.",
+  "recovery_directory_relative_to_repository": "Code/.local/dielectric-review/removed_reproducible_copies"
+}

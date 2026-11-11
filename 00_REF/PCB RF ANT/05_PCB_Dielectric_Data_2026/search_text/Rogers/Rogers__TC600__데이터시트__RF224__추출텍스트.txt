@@ -1,0 +1,179 @@
+                                                                                  TC600™ Laminates Data Sheet
+ Enhanced Thermal Conductivity Ceramic Filled PTFE/Woven Fiberglass Laminate
+                    for Microwave Printed Circuit Boards
+TC600™ woven fiberglass reinforced, ceramic filled, PTFE-based composite              Features:
+for use as a printed circuit board substrate is designed to provide enhanced          • “Best in Class” Thermal Conductivity(1.1
+heat-transfer through “Best-In-Class” thermal conductivity, while reducing
+                                                                                        W/m.K) and Dielectric Constant Stability
+dielectric loss and insertion loss. Lower losses result in higher Amplifier and
+                                                                                        across Wide Temperatures (-75 ppm/ºC)
+Antenna Gains/Efficiencies. Mechanical robustness is also greatly improved
+for the 6.15 dielectric constant market.                                              • Very Low Loss Tangent provides Higher
+                                                                                        Amplifier or Antenna Efficiency
+The increased thermal conductivity of TC600 laminate provides higher
+power handling, reduces hot-spots and improves device reliability. This               • Mechanically Robust; replaces
+higher heat transfer within the substrate complements designs using                     brittle laminates that cannot withstand
+coins, heat sinks or thermal vias to provide designers additional design                processing, impact, or High G forces
+margin in managing heat. In designs with limited thermal management                   • Priced Affordably for Commercial
+options, TC600 laminate significantly improves heat transfer where the                  Applications
+primary thermal path is through the laminate. This results in reduced in              • High Peel Strength for Reliable Narrow Lines
+junction temperatures and extends the life of active components, which is
+critical for improving power amplifier reliability, extending MTBF and                Benefits:
+reducing warranty costs. In addition, lower operating temperatures and
+                                                                                      • Heat Dissipation and Management
+chip-matching thermal expansion characteristics provide better reliability
+for component attachment prone to solder fatigue, solder softening and
+                                                                                      • Replace Ceramic in Some Applications
+joint failure.                                                                        • Improved Processing and Reliability
+                                                                                      • Large Panel Sizes for Multiple Circuit
+TC600 laminate has “Best-In-Class” Dielectric Constant Stability across a
+                                                                                        Layout for Lowered Processing Costs
+wide temperature range. This helps Power Amplifier and Antenna
+designers maximize gain and minimize dead bandwidth lost to dielectric                Typical Applications:
+constant drift as operating temperature changes. Dielectric constant
+stability is also critical to phase sensitive devices such as network                 • Power Amplifiers, Filters and Couplers
+transformers utilized for impedance matching networks utilized in power               • Microwave Combiner and Power Divider
+amplifier circuitry.                                                                    Boards in Avionics Applications
+TC600 laminate has low Z-Direction CTE. This feature provides                         • Small Footprint Antennas
+unsurpassed plated through hole reliability. TC600 laminate is a “soft                • Digital Audio Broadcasting (DAB)
+substrate” and irrelatively insensitive to stress from vibration. Its robust            Antennas (Satellite Radio)
+nature overcomes the brittleness of thermoset ceramic loaded                          • GPS & Hand-held RFID
+hydrocarbons or ceramics (such as alumina or LTCC) through suspension                   Reader Antennas
+of micro-dispersed ceramics in a relatively soft, woven fiberglass
+reinforced PTFE-based substrate. This gives RF designers the advantage of
+low loss, without sacrificing mechanical robustness required to fulfill the
+needs of shock, drop and impact testing requirements of electronics. It is
+preferred by board manufacturers, as it can be easily cut, drilled, and
+routed without being sensitive to cracking.
+Typical Properties:                                                                           TC600 Laminates
+                  Property                                  Units               Value              Test Method
+
+1. Electrical Properties
+        Dielectric Constant (may vary by thickness)
+      @1.8 MHz                                                -                 6.15               Resonant Cavity
+      @10 GHz                                                 -                 6.15             IPC TM-650 2.5.5.5
+   Dissipation Factor
+      @1.8 GHz                                              -                  0.0017              Resonant Cavity
+      @10 GHz                                               -                  0.0020            IPC TM-650 2.5.5.5
+       Temperature Coefficient of Dielectric                -
+      TCεr @ 10 GHz (-40-150°C)                           ppm/ºC                -75              IPC TM-650 2.5.5.5
+   Volume Resistivity
+      C96/35/90                                           MΩ-cm               1.6x109           IPC TM-650 2.5.17.1
+      E24/125                                             MΩ-cm               2.4x108           IPC TM-650 2.5.17.1
+   Surface Resistivity
+      C96/35/90                                              MΩ               3.1x109           IPC TM-650 2.5.17.1
+      E24/125                                                MΩ               9.0x108           IPC TM-650 2.5.17.1
+   Electrical Strength                                Volts/mil (kV/mm)       850 (34)           IPC TM-650 2.5.6.2
+   Dielectric Breakdown                                      kV                 62                IPC TM-650 2.5.6
+   Arc Resistance                                            sec               >240               IPC TM-650 2.5.1
+2. Thermal Properties
+   Decomposition Temperature (Td)
+      Initial                                               °C                  512             IPC TM-650 2.4.24.6
+      5%                                                    °C                  572             IPC TM-650 2.4.24.6
+   T260                                                     min                 >60             IPC TM-650 2.4.24.1
+   T288                                                     min                 >60             IPC TM-650 2.4.24.1
+   T300                                                     min                 >60             IPC TM-650 2.4.24.1
+         Thermal Expansion, CTE (x,y) 50-150ºC            ppm/ºC                9, 9             IPC TM-650 2.4.41
+   Thermal Expansion, CTE (z) 50-150ºC                    ppm/ºC                 35              IPC TM-650 2.4.24
+   % z-axis Expansion (50-260ºC)                            %                   1.5              IPC TM-650 2.4.24
+3. Mechanical Properties
+        Peel Strength to Copper (1 oz/35 micron)
+      After Thermal Stress                              lb/in (N/mm)           10 (1.8)           IPC TM-650 2.4.8
+           At Elevated Temperatures (150ºC)             lb/in (N/mm)           10 (1.8)          IPC TM-650 2.4.8.2
+      After Process Solutions                           lb/in (N/mm)            9 (1.6)           IPC TM-650 2.4.8
+   Young’s Modulus                                       kpsi (MPa)           280 (1930)        IPC TM-650 2.4.18.3
+   Flexural Strength (Machine/Cross)                      kpsi (MPa)      9.60/9.30 (66/64)       IPC TM-650 2.4.4
+   Tensile Strength (Machine/Cross)                       kpsi (MPa)       5.0/4.30 (34/30)     IPC TM-650 2.4.18.3
+   Compressive Modulus                                    kpsi (MPa)                                ASTM D-3410
+   Poisson’s Ratio                                             -                                    ASTM D-3039
+4. Physical Properties
+   Water Absorption                                           %                 0.03             IPC TM-650 2.6.2.1
+   Density, ambient 23ºC                                   g/cm3                 3.0            ASTM D792 Method A
+   Thermal Conductivity (z-axis)                           W/mK                  1.1                 ASTM E1461
+   Thermal Conductivity (x, y)                             W/mK                  1.4                 ASTM E1461
+   Specific Heat                                            J/gK                0.94                 ASTM E1461
+   Flammability                                             class                V0                     UL-94
+   NASA Outgassing, 125ºC, ≤10-6 torr
+     Total Mass Loss                                         %                  0.02             NASA SP-R-0022A
+     Collected Volatiles                                     %                  0.00             NASA SP-R-0022A
+     Water Vapor Recovered                                   %                  0.00             NASA SP-R-0022A
+*Dielectric Constant may vary by test method or based on specific metal plate or composite constructions.
+ Contact your Rogers’ representative with any specific questions.
+                                                                                                                 TC600 Laminates
+
+
+                                   Dielectric Constant vs. Frequency for TC600             Figure 1
+                       2.00%
+                                                                                           Demonstrates the stability of dielectric constant across
+                       1.50%                                                               frequency. This information was correlated from data generated
+Percentage Change
+
+
+
+
+                       1.00%                                                               by using a free space and circular resonator cavity. This
+                       0.50%                                                               characteristic demonstrates the inherent robustness of Rogers’
+                       0.00%                                                               laminates across frequency, thus simplifying the final design
+                    -0.50%                                                                 process when working across EM spectrum. The stability of the
+                                                                                           Dielectric Constant of TC600 laminate over frequency ensures
+                    -1.00%
+                                                                                           easy design transition and scalability of design.
+                    -1.50%
+                    -2.00%
+                          0.0         5.0      10.0     15.0    20.0        25.0    30.0
+                                                  Frequency (GHz)
+
+
+                                                                                           Figure 2
+                                  Dissipation Factor vs. Frequency Response for TC600      Demonstrates the stability of dissipation factor across frequency.
+                       0.0030
+                                                                                           This characteristic demonstrates the inherent robustness of
+                                                                                           Rogers’ laminates across frequency, providing a stable platform
+                                                                                           for high frequency applications where signal integrity is critical to
+                       0.0025
+  Dissipation Factor
+
+
+
+
+                                                                                           the overall performance of the application.
+                                                                                           Resonant Cavity Methods yielded slightly lower dissipation factor results
+                       0.0020
+                                                                                           than IPC 650-TM 2.5.5.5. Df across 1.8 GHz to 25.6 GHz averaged 0.0017
+                                                                                           in the Z-Axis. Dielectric loss best correlates with Z-Axis (E-field
+                       0.0015                                                              perpendicular to the board) as the signal propagation down the length
+                                                                                           of the board maintains the E-Field perpendicular to the plane of the
+                       0.0010                                                              board (right hand rule), such as a microstrip or stripline design.
+                            0.0                10.0              20.0               30.0
+                                                  Frequency (GHz)
+
+
+
+
+                                                                                           Bottom View
+   Top View
+
+
+
+
+                        Max at 82°C (180°F)                 Max at 73°C (163°F)                Max at 78°C (172°F)                   Max at 72°C (161°F)
+
+
+Figure 3 - THERMAL COMPARISON – thermal image of 25 mil laminate test circuit
+
+
+
+
+ Results listed above are typical properties; they are not to be used as specification limits. The above information creates no
+  expressed or implied warranties. The properties of Rogers laminates may vary, depending on the design and application.
+The information in this data sheet is intended to assist you in designing with Rogers’ circuit materials. It is not intended to and
+does not create any warranties express or implied, including any warranty of merchantability or fitness for a particular purpose or
+that the results shown on this data sheet will be achieved by a user for a particular purpose. The user should determine the
+suitability of Rogers’ circuit materials for each application.
+
+These commodities, technology and software are exported from the United States in accordance with the Export Administration
+regulations. Diversion contrary to U.S. law prohibited.
+
+The Rogers’ logo, Helping power, protect, connect our world, TC Series and TC600 are trademarks of Rogers Corporation or one of its
+subsidiaries. ©2022 Rogers Corporation. All rights reserved. PUB 92-213. Revised 1611 080922
+

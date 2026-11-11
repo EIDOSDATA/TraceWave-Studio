@@ -1,0 +1,321 @@
+<?xml version="1.0"?>
+<IPC-2581 xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" revision="B" xmlns="http://webstds.ipc.org/2581">
+  <Content roleRef="Owner">
+    <FunctionMode mode="USERDEF" level="1" />
+    <StepRef name="PCB-DOC" />
+    <LayerRef name="Top Paste" />
+    <LayerRef name="Top Overlay" />
+    <LayerRef name="flexible Soldermask Top" />
+    <LayerRef name="Top Side" />
+    <LayerRef name="Polyimide" />
+    <LayerRef name="Bottom Side" />
+    <LayerRef name="flexible Soldermask" />
+    <LayerRef name="Adhesive" />
+    <LayerRef name="Stiffener" />
+    <LayerRef name="not used" />
+    <LayerRef name="Bottom Overlay" />
+    <LayerRef name="Bottom Paste" />
+    <LayerRef name="Keep-Out Layer" />
+    <LayerRef name="Mechanical 1" />
+    <LayerRef name="Drill Drawing (Top Side - Bottom Side)" />
+    <LayerRef name="Drill Guide (Top Side - Bottom Side)" />
+    <BomRef name="BOM" />
+    <DictionaryStandard units="MILLIMETER" />
+    <DictionaryColor>
+      <EntryColor id="LAYER_COLOR_Top Paste">
+        <Color r="128" g="128" b="128" />
+      </EntryColor>
+      <EntryColor id="LAYER_COLOR_Top Overlay">
+        <Color r="255" g="255" b="0" />
+      </EntryColor>
+      <EntryColor id="LAYER_COLOR_flexible Soldermask Top">
+        <Color r="128" g="0" b="128" />
+      </EntryColor>
+      <EntryColor id="LAYER_COLOR_Top Side">
+        <Color r="255" g="0" b="0" />
+      </EntryColor>
+      <EntryColor id="LAYER_COLOR_Polyimide">
+        <Color r="255" g="0" b="0" />
+      </EntryColor>
+      <EntryColor id="LAYER_COLOR_Bottom Side">
+        <Color r="188" g="142" b="0" />
+      </EntryColor>
+      <EntryColor id="LAYER_COLOR_flexible Soldermask">
+        <Color r="255" g="0" b="0" />
+      </EntryColor>
+      <EntryColor id="LAYER_COLOR_Adhesive">
+        <Color r="255" g="0" b="0" />
+      </EntryColor>
+      <EntryColor id="LAYER_COLOR_Stiffener">
+        <Color r="255" g="0" b="0" />
+      </EntryColor>
+      <EntryColor id="LAYER_COLOR_not used">
+        <Color r="0" g="0" b="255" />
+      </EntryColor>
+      <EntryColor id="LAYER_COLOR_Bottom Overlay">
+        <Color r="128" g="128" b="0" />
+      </EntryColor>
+      <EntryColor id="LAYER_COLOR_Bottom Paste">
+        <Color r="128" g="0" b="0" />
+      </EntryColor>
+      <EntryColor id="LAYER_COLOR_Keep-Out Layer">
+        <Color r="255" g="0" b="255" />
+      </EntryColor>
+      <EntryColor id="LAYER_COLOR_Mechanical 1">
+        <Color r="255" g="0" b="255" />
+      </EntryColor>
+      <EntryColor id="LAYER_COLOR_Drill Drawing (Top Side - Bottom Side)">
+        <Color r="255" g="0" b="42" />
+      </EntryColor>
+      <EntryColor id="LAYER_COLOR_Drill Guide (Top Side - Bottom Side)">
+        <Color r="128" g="0" b="0" />
+      </EntryColor>
+    </DictionaryColor>
+  </Content>
+  <LogisticHeader>
+    <Role id="Owner" roleFunction="ENGINEER" />
+    <Enterprise id="Enterprise" code="UNKNOWN" />
+    <Person name="Unknown" enterpriseRef="Enterprise" roleRef="Owner" />
+  </LogisticHeader>
+  <Bom name="BOM">
+    <BomHeader assembly="Assembly" revision="Revision">
+      <StepRef name="PCB-DOC" />
+    </BomHeader>
+  </Bom>
+  <Ecad name="output PCB cad-data">
+    <CadHeader units="MILLIMETER">
+      <Spec name="Top Paste">
+        <General type="MATERIAL" />
+      </Spec>
+      <Spec name="Top Overlay">
+        <General type="MATERIAL" />
+      </Spec>
+      <Spec name="flexible Soldermask Top">
+        <General type="MATERIAL">
+          <Property text="WE-SMFlex-0001" />
+        </General>
+      </Spec>
+      <Spec name="Top Side">
+        <General type="MATERIAL">
+          <Property text="Copper" />
+        </General>
+      </Spec>
+      <Spec name="Polyimide">
+        <General type="MATERIAL">
+          <Property text="WE-PI-0103" />
+        </General>
+      </Spec>
+      <Spec name="Bottom Side">
+        <General type="MATERIAL">
+          <Property text="Copper" />
+        </General>
+      </Spec>
+      <Spec name="flexible Soldermask">
+        <General type="MATERIAL">
+          <Property text="WE-SMFlex-0001" />
+        </General>
+      </Spec>
+      <Spec name="Adhesive">
+        <General type="MATERIAL">
+          <Property text="WE-ADH-0001" />
+        </General>
+      </Spec>
+      <Spec name="Stiffener">
+        <General type="MATERIAL">
+          <Property text="WE-CO-0041" />
+        </General>
+      </Spec>
+      <Spec name="not used">
+        <General type="MATERIAL">
+          <Property text="Copper" />
+        </General>
+      </Spec>
+      <Spec name="Bottom Overlay">
+        <General type="MATERIAL" />
+      </Spec>
+      <Spec name="Bottom Paste">
+        <General type="MATERIAL" />
+      </Spec>
+      <Spec name="Keep-Out Layer">
+        <General type="MATERIAL" />
+      </Spec>
+      <Spec name="Mechanical 1">
+        <General type="MATERIAL" />
+      </Spec>
+      <Spec name="Drill Drawing (Top Side - Bottom Side)">
+        <General type="MATERIAL">
+          <Property text="undefined" />
+        </General>
+      </Spec>
+      <Spec name="Drill Guide (Top Side - Bottom Side)">
+        <General type="MATERIAL">
+          <Property text="undefined" />
+        </General>
+      </Spec>
+    </CadHeader>
+    <CadData>
+      <Layer name="Top Paste" layerFunction="PASTEMASK" side="TOP" polarity="POSITIVE" />
+      <Layer name="Top Overlay" layerFunction="LEGEND" side="TOP" polarity="POSITIVE" />
+      <Layer name="flexible Soldermask Top" layerFunction="SOLDERMASK" side="TOP" polarity="POSITIVE" />
+      <Layer name="Top Side" layerFunction="SIGNAL" side="TOP" polarity="POSITIVE" />
+      <Layer name="Polyimide" layerFunction="DIELCORE" side="NONE" polarity="POSITIVE" />
+      <Layer name="Bottom Side" layerFunction="SIGNAL" side="INTERNAL" polarity="POSITIVE" />
+      <Layer name="flexible Soldermask" layerFunction="DIELCORE" side="NONE" polarity="POSITIVE" />
+      <Layer name="Adhesive" layerFunction="DIELCORE" side="NONE" polarity="POSITIVE" />
+      <Layer name="Stiffener" layerFunction="DIELCORE" side="NONE" polarity="POSITIVE" />
+      <Layer name="not used" layerFunction="SIGNAL" side="BOTTOM" polarity="POSITIVE" />
+      <Layer name="Bottom Overlay" layerFunction="LEGEND" side="BOTTOM" polarity="POSITIVE" />
+      <Layer name="Bottom Paste" layerFunction="PASTEMASK" side="BOTTOM" polarity="POSITIVE" />
+      <Layer name="Keep-Out Layer" layerFunction="DOCUMENT" side="INTERNAL" polarity="POSITIVE" />
+      <Layer name="Mechanical 1" layerFunction="DOCUMENT" side="INTERNAL" polarity="POSITIVE" />
+      <Layer name="Drill Drawing (Top Side - Bottom Side)" layerFunction="DOCUMENT" side="INTERNAL" polarity="POSITIVE" />
+      <Layer name="Drill Guide (Top Side - Bottom Side)" layerFunction="DRILL" side="INTERNAL" polarity="POSITIVE">
+        <SpanType fromLayer="Top Side" toLayer="Bottom Side" />
+      </Layer>
+      <Stackup name="Stackup" overallThickness="0.305003" tolPlus="0" tolMinus="0" whereMeasured="OTHER">
+        <StackupGroup name="PCB-DOC_AllStackupLayers" thickness="0.305003" tolPlus="0" tolMinus="0">
+          <StackupLayer layerOrGroupRef="Top Paste" thickness="0" tolPlus="0" tolMinus="0" sequence="1">
+            <SpecRef id="Top Paste" />
+          </StackupLayer>
+          <StackupLayer layerOrGroupRef="Top Overlay" thickness="0" tolPlus="0" tolMinus="0" sequence="2">
+            <SpecRef id="Top Overlay" />
+          </StackupLayer>
+          <StackupLayer layerOrGroupRef="flexible Soldermask Top" thickness="0.015001" tolPlus="0" tolMinus="0" sequence="3">
+            <SpecRef id="flexible Soldermask Top" />
+          </StackupLayer>
+          <StackupLayer layerOrGroupRef="Top Side" thickness="0.02" tolPlus="0" tolMinus="0" sequence="4">
+            <SpecRef id="Top Side" />
+          </StackupLayer>
+          <StackupLayer layerOrGroupRef="Polyimide" thickness="0.05" tolPlus="0" tolMinus="0" sequence="5">
+            <SpecRef id="Polyimide" />
+          </StackupLayer>
+          <StackupLayer layerOrGroupRef="Bottom Side" thickness="0.02" tolPlus="0" tolMinus="0" sequence="6">
+            <SpecRef id="Bottom Side" />
+          </StackupLayer>
+          <StackupLayer layerOrGroupRef="flexible Soldermask" thickness="0.015001" tolPlus="0" tolMinus="0" sequence="7">
+            <SpecRef id="flexible Soldermask" />
+          </StackupLayer>
+          <StackupLayer layerOrGroupRef="Adhesive" thickness="0.05" tolPlus="0" tolMinus="0" sequence="8">
+            <SpecRef id="Adhesive" />
+          </StackupLayer>
+          <StackupLayer layerOrGroupRef="Stiffener" thickness="0.1" tolPlus="0" tolMinus="0" sequence="9">
+            <SpecRef id="Stiffener" />
+          </StackupLayer>
+          <StackupLayer layerOrGroupRef="not used" thickness="0.035001" tolPlus="0" tolMinus="0" sequence="10">
+            <SpecRef id="not used" />
+          </StackupLayer>
+          <StackupLayer layerOrGroupRef="Bottom Overlay" thickness="0" tolPlus="0" tolMinus="0" sequence="11">
+            <SpecRef id="Bottom Overlay" />
+          </StackupLayer>
+          <StackupLayer layerOrGroupRef="Bottom Paste" thickness="0" tolPlus="0" tolMinus="0" sequence="12">
+            <SpecRef id="Bottom Paste" />
+          </StackupLayer>
+          <StackupLayer layerOrGroupRef="Keep-Out Layer" thickness="0" tolPlus="0" tolMinus="0" sequence="13">
+            <SpecRef id="Keep-Out Layer" />
+          </StackupLayer>
+          <StackupLayer layerOrGroupRef="Mechanical 1" thickness="0" tolPlus="0" tolMinus="0" sequence="14">
+            <SpecRef id="Mechanical 1" />
+          </StackupLayer>
+          <StackupLayer layerOrGroupRef="Drill Drawing (Top Side - Bottom Side)" thickness="0" tolPlus="0" tolMinus="0" sequence="15">
+            <SpecRef id="Drill Drawing (Top Side - Bottom Side)" />
+          </StackupLayer>
+          <StackupLayer layerOrGroupRef="Drill Guide (Top Side - Bottom Side)" thickness="0" tolPlus="0" tolMinus="0" sequence="16">
+            <SpecRef id="Drill Guide (Top Side - Bottom Side)" />
+          </StackupLayer>
+        </StackupGroup>
+      </Stackup>
+      <Step name="PCB-DOC">
+        <Datum x="0" y="0" />
+        <Profile>
+          <Polygon>
+            <PolyBegin x="25.4" y="25.4" />
+            <PolyStepSegment x="177.8" y="25.4" />
+            <PolyStepSegment x="177.8" y="127" />
+            <PolyStepSegment x="25.4" y="127" />
+            <PolyStepSegment x="25.4" y="25.4" />
+          </Polygon>
+        </Profile>
+        <LayerFeature layerRef="Top Paste">
+          <Set>
+            <ColorRef id="LAYER_COLOR_Top Paste" />
+          </Set>
+        </LayerFeature>
+        <LayerFeature layerRef="Top Overlay">
+          <Set>
+            <ColorRef id="LAYER_COLOR_Top Overlay" />
+          </Set>
+        </LayerFeature>
+        <LayerFeature layerRef="flexible Soldermask Top">
+          <Set>
+            <ColorRef id="LAYER_COLOR_flexible Soldermask Top" />
+          </Set>
+        </LayerFeature>
+        <LayerFeature layerRef="Top Side">
+          <Set>
+            <ColorRef id="LAYER_COLOR_Top Side" />
+          </Set>
+        </LayerFeature>
+        <LayerFeature layerRef="Polyimide">
+          <Set>
+            <ColorRef id="LAYER_COLOR_Polyimide" />
+          </Set>
+        </LayerFeature>
+        <LayerFeature layerRef="Bottom Side">
+          <Set>
+            <ColorRef id="LAYER_COLOR_Bottom Side" />
+          </Set>
+        </LayerFeature>
+        <LayerFeature layerRef="flexible Soldermask">
+          <Set>
+            <ColorRef id="LAYER_COLOR_flexible Soldermask" />
+          </Set>
+        </LayerFeature>
+        <LayerFeature layerRef="Adhesive">
+          <Set>
+            <ColorRef id="LAYER_COLOR_Adhesive" />
+          </Set>
+        </LayerFeature>
+        <LayerFeature layerRef="Stiffener">
+          <Set>
+            <ColorRef id="LAYER_COLOR_Stiffener" />
+          </Set>
+        </LayerFeature>
+        <LayerFeature layerRef="not used">
+          <Set>
+            <ColorRef id="LAYER_COLOR_not used" />
+          </Set>
+        </LayerFeature>
+        <LayerFeature layerRef="Bottom Overlay">
+          <Set>
+            <ColorRef id="LAYER_COLOR_Bottom Overlay" />
+          </Set>
+        </LayerFeature>
+        <LayerFeature layerRef="Bottom Paste">
+          <Set>
+            <ColorRef id="LAYER_COLOR_Bottom Paste" />
+          </Set>
+        </LayerFeature>
+        <LayerFeature layerRef="Keep-Out Layer">
+          <Set>
+            <ColorRef id="LAYER_COLOR_Keep-Out Layer" />
+          </Set>
+        </LayerFeature>
+        <LayerFeature layerRef="Mechanical 1">
+          <Set>
+            <ColorRef id="LAYER_COLOR_Mechanical 1" />
+          </Set>
+        </LayerFeature>
+        <LayerFeature layerRef="Drill Drawing (Top Side - Bottom Side)">
+          <Set>
+            <ColorRef id="LAYER_COLOR_Drill Drawing (Top Side - Bottom Side)" />
+          </Set>
+        </LayerFeature>
+        <LayerFeature layerRef="Drill Guide (Top Side - Bottom Side)">
+          <Set>
+            <ColorRef id="LAYER_COLOR_Drill Guide (Top Side - Bottom Side)" />
+          </Set>
+        </LayerFeature>
+      </Step>
+    </CadData>
+  </Ecad>
+</IPC-2581>

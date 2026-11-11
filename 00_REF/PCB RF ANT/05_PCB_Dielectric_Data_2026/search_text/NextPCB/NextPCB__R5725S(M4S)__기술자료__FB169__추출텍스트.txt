@@ -1,0 +1,287 @@
+    Data Sheet
+
+High Speed, Low Loss Multi-layer Materials
+
+
+                                                    Laminate R-5725
+                                                    Prepreg R-5620
+
+                             UL/ANSI      FR-4
+                             IPC-4101     Primary:/91
+                         Slash Sheet      Secondary:/102(*)
+                        (*)；Tg measurement is limited to DMA method for Slash Sheet
+
+
+
+                 Nov. 2009     No.09110663
+                                                                                                          No.; 09110663-1
+                                  Specification / Laminate R-5725
+
+
+                           Property                           Units      Test Method         Condition    Value
+                                                                             DSC            As received    176
+                             Glass Transition Temp             ˚C            TMA            As received    170
+                                                                             DMA            As received    210
+        THERMAL           Thermal Decomposition Temp           ℃             TGA            As received    360
+                         Time to Delam (T288 With Cu)         min     IPC TM-650 2.4.24.1   As received    30
+                               CTE (α1) z-axis               ppm/℃    IPC TM-650 2.4.24        ＜ Tg        35
+                               CTE (α2) z-axis               ppm/℃    IPC TM-650 2.4.24        ＞ Tg        265
+                               Volume Resistivity            MΩ-cm    IPC TM-650 2.5.17.1   C-96/35/90    1x10９
+
+                               Surface Resistivity            MΩ      IPC TM-650 2.5.17.1   C-96/35/90    1x108
+
+                                                             ＠１MHｚ    IPC TM-650 2.5.5.9    C-24/23/50     3.9
+       ELECTRICAL           Dielectric Constant (Dk)
+                                                             ＠ 1GHz   IPC TM-650 2.5.5.9    C-24/23/50     3.8
+                                                             ＠１MHｚ    IPC TM-650 2.5.5.9    C-24/23/50    0.005
+                             Dissipation Factor (Df)
+                                                             ＠ 1GHz   IPC TM-650 2.5.5.9    C-24/23/50    0.005
+                               Water Absorption                ％      IPC TM-650 2.6.2.1      D-24/23     0.14
+                           Peel Strength
+        PHYSICAL                                     ST       kN/m     IPC TM-650 2.4.8     As Received    1.2
+                           1 oz (35 μm)
+                                  Flammability                  -             UL            C-48/23/50    94V-0
+
+     Sample thickness ; 32 mil ( 0.8 ㎜ ) #3313 × 8ply
+
+*The data above show actual values and are not guaranteed.
+                                                                                                               No.; 09110663-2
+                                  Specification / Laminate R-5725
+
+     1MHz - 1GHz ; IPC TM650-2.5.5.9
+      Published Nominal
+                                 Cloth         Typical Resin          Typical Dk                  Typical Df
+           Thicknes
+                                 Style           Content
+        mil       mm                                           1MHz    100MHz      1GHz   1MHz    100MHz          1GHz
+        2.0      0.05          1067 × 1            66%         3.62     3.58       3.55   0.005    0.005         0.005
+        2.5      0.06          1080 × 1            59%         3.82     3.78       3.75   0.005    0.005         0.005
+        3.0      0.08          1080 × 1            65%         3.64     3.59       3.57   0.005    0.005         0.005
+        3.4                    1078 × 1            68%         3.54     3.50       3.47   0.005    0.005         0.006
+                 0.09           106 × 2            69%         3.53     3.48       3.46   0.005    0.005         0.006
+        3.5
+                               3313 × 1            51%         4.07     4.03       4.00   0.004    0.005         0.005
+                               3313 × 1            57%         3.91     3.87       3.84   0.005    0.005         0.005
+        4.0      0.10
+                               1067 × 2            66%         3.62     3.58       3.55   0.005    0.005         0.005
+                               1080 × 2            56%         3.93     3.90       3.86   0.005    0.005         0.005
+        4.5      0.11
+                               2116 × 1            48%         4.18     4.14       4.11   0.004    0.005         0.005
+        4.7      0.12          1080 × 2            57%         3.89     3.85       3.82   0.005    0.005         0.005
+        5.0      0.13          2116 × 1            56%         3.93     3.89       3.86   0.005    0.005         0.005
+                               1080 × 2            60%         3.80     3.76       3.73   0.005     0.005         0.005
+        5.1      0.13
+                               1078 × 2            59%         3.83     3.79       3.76   0.005     0.005         0.005
+        5.5      0.14          1080 × 2            63%         3.72     3.68       3.65   0.005     0.005         0.005
+                               1080 × 2            65%         3.64     3.59       3.57   0.005    0.005         0.005
+        6.0      0.15          1504 × 1            49%         4.14     4.10       4.07   0.004    0.005         0.005
+                               1078 × 2            65%         3.66     3.61       3.59   0.005    0.005         0.005
+
+
+*The data above show actual values and are not guaranteed.
+                                                                                                          No.; 09110663-3
+                                  Specification / Laminate R-5725
+
+     1MHz - 1GHz ; IPC TM650-2.5.5.9
+      Published Nominal                             Typical
+                                  Cloth                              Typical Dk                  Typical Df
+           Thicknes                                  Resin
+                                  Style
+        mil       mm                                Content   1MHz    100MHz      1GHz   1MHz    100MHz       1GHz
+                                3313 × 2             52%      4.07     4.03       4.00   0.004    0.005       0.005
+        7.0      0.18
+                                1067 × 3             70%      3.49     3.46       3.42   0.005    0.005       0.006
+        7.5      0.19           7628 × 1             45%      4.26     4.23       4.19   0.004    0.005       0.005
+                                3313 × 2              57%     3.91     3.87       3.84   0.005    0.005       0.005
+        8.0      0.20
+                                2116 × 2              47%     4.20     4.17       4.13   0.004    0.005       0.005
+       10.0      0.25           2116 × 2              56%     3.93     3.89       3.86   0.005    0.005       0.005
+       12.0      0.30           1504 × 2              49%     4.14     4.10       4.07   0.004    0.005       0.005
+       15.0      0.38           7628 × 2              45%     4.26     4.23       4.19   0.004    0.005       0.005
+       18.0      0.46      7628 × 2 + 3313 × 1        45%     4.26     4.23       4.19   0.004    0.005       0.005
+       20.0      0.51      7628 × 2 + 1080 × 2        49%     4.16     4.12       4.09   0.004    0.005       0.005
+       22.0      0.56           7628 × 3              44%     4.29     4.26       4.22   0.004    0.005       0.005
+       24.0      0.61           7628 × 3              48%     4.18     4.14       4.11   0.004    0.005       0.005
+       26.0      0.66      7628 × 3 + 2116 × 1        45%     4.28     4.25       4.21   0.004    0.005       0.005
+       28.0      0.71           7628 × 4              42%     4.36     4.33       4.29   0.004    0.005       0.005
+       31.0      0.79           7628 × 4              47%     4.22     4.19       4.15   0.004    0.005       0.005
+       40.0      1.00           7628 × 5              47%     4.21     4.17       4.14   0.004    0.005       0.005
+                                7628 × 6              47%     4.21     4.17       4.14   0.004    0.005       0.005
+       47.0      1.20
+                               3313 × 12              57%     3.91     3.87       3.84   0.005    0.005       0.005
+
+
+*The data above show actual values and are not guaranteed.
+                                                                                                                               No.; 09110663-4
+                                    Specification / Laminate R-5725
+
+     2GHz-10GHz ; IPC TM650-2.5.5.5
+      Published Nominal                 Typical
+                            Cloth                                   Typical Dk                                 Typical Df
+           Thicknes                      Resin
+                            Style
+        mil      mm                     Content    2GHz      4GHz     6GHz       8GHz 10GHz 2GHz       4GHz      6GHz       8GHz    10GHz
+        2.0      0.05      1067 × 1      66%       3.54      3.53     3.53       3.52   3.52   0.006   0.006    0.007       0.008   0.008
+        2.5      0.06      1080 × 1      59%       3.73      3.71     3.71       3.70   3.69   0.006   0.006    0.006       0.007   0.007
+        3.0      0.08      1080 × 1      65%       3.56      3.54     3.54       3.54   3.53   0.006   0.006    0.007       0.008   0.008
+        3.4                1078 × 1      68%       3.47      3.46     3.45       3.45   3.45   0.006   0.006    0.007       0.008   0.008
+                 0.09      106 × 2       69%       3.46      3.44     3.44       3.44   3.44   0.006   0.006    0.007       0.008   0.008
+        3.5
+                           3313 × 1      51%       3.97      3.95     3.93       3.92   3.91   0.006   0.006    0.006       0.007   0.007
+                           3313 × 1      57%       3.82      3.80     3.79       3.78   3.77   0.006   0.006    0.006       0.007   0.007
+        4.0      0.10
+                           1067 × 2      66%       3.54      3.53     3.53       3.52   3.52   0.006   0.006    0.007       0.008   0.008
+                           1080 × 2      56%       3.84      3.82     3.81       3.80   3.80   0.006   0.006    0.006       0.007   0.007
+        4.5      0.11
+                           2116 × 1      48%       4.07      4.05     4.03       4.02   4.01   0.006   0.006    0.006       0.007   0.007
+        4.7      0.12      1080 × 2      57%       3.80      3.78     3.77       3.76   3.75   0.006   0.006    0.006       0.007   0.007
+        5.0      0.13      2116 × 1      56%       3.84      3.82     3.81       3.80   3.79   0.006   0.006    0.006       0.007   0.007
+                           1080 × 2      60%       3.71      3.70     3.69       3.68   3.67   0.006   0.006    0.007       0.007   0.007
+        5.1      0.13
+                           1078 × 2      59%       3.75      3.73     3.72       3.71   3.70   0.006   0.006    0.006       0.007   0.007
+        5.5      0.14      1080 × 2      63%       3.64      3.62     3.62       3.61   3.61   0.006   0.006    0.007       0.007   0.007
+                           1080 × 2      65%       3.56      3.54     3.54       3.54   3.53   0.006   0.006    0.007       0.008   0.008
+        6.0      0.15      1504 × 1      49%       4.04      4.02     4.00       3.99   3.98   0.006   0.006    0.006       0.007   0.007
+                           1078 × 2      65%       3.58      3.56     3.56       3.55   3.55   0.006   0.006    0.007       0.007   0.008
+
+
+*The data above show actual values and are not guaranteed.
+                                                                                                                            No.; 09110663-5
+                                  Specification / Laminate R-5725
+
+     2GHz-10GHz ; IPC TM650-2.5.5.5
+        Published                             Typical                  Typical Dk                             Typical Df
+     Nominal Thicknes       Cloth Style        Resin
+        mil     mm                            Content    2GHz 4GHz 6GHz 8GHz 10GHz 2GHz               4GHz      6GHz       8GHz 10GHz
+                             3313 × 2          52%       3.97   3.95     3.93   3.92   3.91   0.006   0.006    0.006   0.007     0.007
+       7.0      0.18
+                             1067 × 3          70%       3.42   3.40     3.40   3.40   3.40   0.006   0.006    0.007   0.008     0.008
+       7.5      0.19         7628 × 1          45%       4.16   4.13     4.11   4.10   4.09   0.006   0.006    0.006   0.007     0.007
+                             3313 × 2           57%      3.82   3.80     3.79   3.78   3.77   0.006   0.006    0.006   0.007     0.007
+       8.0      0.20
+                             2116 × 2           47%      4.10   4.08     4.06   4.04   4.03   0.006   0.006    0.006   0.007     0.007
+       10.0     0.25         2116 × 2           56%      3.84   3.82     3.81   3.80   3.79   0.006   0.006    0.006   0.007     0.007
+       12.0     0.30         1504 × 2           49%      4.04   4.02     4.00   3.99   3.98   0.006   0.006    0.006   0.007     0.007
+       15.0     0.38         7628 × 2           45%      4.16   4.13     4.11   4.10   4.09   0.006   0.006    0.006   0.007     0.007
+       18.0     0.46    7628 × 2 + 3313 × 1     45%      4.16   4.13     4.11   4.10   4.09   0.006   0.006    0.006   0.007     0.007
+       20.0     0.51    7628 × 2 + 1080 × 2     49%      4.06   4.03     4.02   4.00   3.99   0.006   0.006    0.006   0.007     0.007
+       22.0     0.56         7628 × 3           44%      4.19   4.16     4.14   4.12   4.11   0.006   0.006    0.006   0.007     0.007
+       24.0     0.61         7628 × 3           48%      4.08   4.05     4.04   4.02   4.01   0.006   0.006    0.006   0.007     0.007
+       26.0     0.66    7628 × 3 + 2116 × 1     45%      4.17   4.15     4.13   4.11   4.10   0.006   0.006    0.006   0.007     0.007
+       28.0     0.71         7628 × 4           42%      4.25   4.22     4.20   4.18   4.17   0.006   0.006    0.006   0.007     0.007
+       31.0     0.79         7628 × 4           47%      4.12   4.09     4.07   4.06   4.05   0.006   0.006    0.006   0.007     0.007
+       40.0     1.00         7628 × 5           47%      4.10   4.08     4.06   4.05   4.04   0.006   0.006    0.006   0.007     0.007
+                             7628 × 6           47%      4.10   4.08     4.06   4.05   4.04   0.006   0.006    0.006   0.007     0.007
+       47.0     1.20
+                             3313 × 12          57%      3.82   3.80     3.79   3.78   3.77   0.006   0.006    0.006   0.007     0.007
+
+
+*The data above show actual values and are not guaranteed.
+                                                                                                               No.; 09110663-6
+                                   Specification / Prepreg R-5620
+
+     1MHz - 1GHz ; IPC TM650-2.5.5.9
+         Published                                                    Typical Dk                  Typical Df
+                                      Typical       Typical
+          Nominal        Cloth
+                                       Resin       Thickness
+         Thicknes        Style
+                                      Content        (um)      1MHz    100MHz      1GHz   1MHz    100MHz          1GHz
+           (mm)
+                          106          72%             51      3.39     3.39       3.38   0.004    0.005          0.005
+                          106          75%             58      3.33     3.33       3.32   0.004    0.005          0.005
+           0.04          1067          66%            52       3.58     3.56       3.56   0.004    0.004          0.005
+                         1067          70%            60       3.47     3.46       3.46   0.004    0.005          0.005
+                         1067          74%            70       3.34     3.34       3.33   0.004    0.005          0.005
+                         1080          65%            78       3.62     3.60       3.59   0.004    0.004          0.005
+                         1080          69%            90       3.48     3.47       3.47   0.004    0.005          0.005
+           0.06          1080          73%            105      3.38     3.38       3.37   0.004    0.005          0.005
+                         1078          64%            75       3.65     3.63       3.62   0.004    0.004          0.005
+                         1078          69%            89       3.48     3.47       3.47   0.004    0.005          0.005
+                         3313          57%            105      3.89     3.85       3.83   0.004    0.004          0.005
+           0.08
+                         3313          63%            126      3.69     3.66       3.65   0.004    0.004          0.005
+           0.10          2116          53%            119      4.03     3.98       3.95   0.004    0.004          0.005
+           0.10          2116          56%            127      3.93     3.88       3.86   0.004    0.004          0.005
+           0.13          1504          51%            160      4.10     4.05       4.01   0.003    0.004          0.005
+           0.15          1501          51%            178      4.10     4.05       4.01   0.003    0.004          0.005
+           0.20          7628          44%            185      4.34     4.27       4.22   0.003    0.004          0.004
+
+
+*The data above show actual values and are not guaranteed.
+                                                                                                                              No.; 09110663-7
+                                   Specification / Prepreg R-5620
+
+     2GHz-10GHz ; IPC TM650-2.5.5.5
+
+       Published                                                    Typical Dk                                 Typical Df
+                               Typical     Typical
+        Nominal       Cloth
+                                Resin     Thickness
+       Thicknes       Style
+                               Content      (um)      2GHz   4GHz     6GHz       8GHz 10GHz 2GHz       4GHz      6GHz       8GHz 10GHz
+         (mm)
+                      106        72%          51      3.38   3.37     3.37       3.37   3.37   0.006   0.006    0.007   0.008     0.008
+                      106        75%          58      3.32   3.31     3.31       3.31   3.31   0.006   0.007    0.007   0.008     0.009
+          0.04        1067       66%         52       3.56   3.56     3.56       3.56   3.55   0.005   0.006    0.007   0.007     0.008
+                      1067       70%         60       3.46   3.45     3.45       3.45   3.45   0.006   0.006    0.007   0.008     0.008
+                      1067       74%         70       3.33   3.32     3.32       3.32   3.32   0.006   0.007    0.007   0.008     0.008
+                      1080       65%         78       3.59   3.59     3.59       3.58   3.58   0.005   0.006    0.007   0.007     0.008
+                      1080       69%         90       3.47   3.47     3.47       3.47   3.47   0.006   0.006    0.007   0.007     0.008
+          0.06        1080       73%         105      3.37   3.36     3.36       3.36   3.36   0.006   0.006    0.007   0.008     0.008
+                      1078       64%         75       3.62   3.62     3.61       3.61   3.61   0.005   0.006    0.007   0.007     0.008
+                      1078       69%         89       3.47   3.47     3.47       3.47   3.47   0.006   0.006    0.007   0.007     0.008
+                      3313       57%         105      3.82   3.82     3.81       3.80   3.80   0.005   0.006    0.006   0.007     0.007
+          0.08
+                      3313       63%         126      3.65   3.65     3.64       3.64   3.64   0.005   0.006    0.007   0.007     0.008
+          0.10        2116       53%         119      3.94   3.93     3.92       3.91   3.91   0.005   0.006    0.006   0.007     0.007
+          0.10        2116       56%         127      3.85   3.85     3.84       3.83   3.83   0.005   0.006    0.006   0.007     0.007
+          0.13        1504       51%         160      4.00   3.99     3.97       3.97   3.96   0.005   0.006    0.006   0.007     0.007
+          0.15        1501       51%         178      4.00   3.99     3.97       3.97   3.96   0.005   0.006    0.006   0.007     0.007
+          0.20        7628       44%         185      4.20   4.19     4.17       4.16   4.15   0.005   0.006    0.006   0.006     0.007
+
+
+
+*The data above show actual values and are not guaranteed.
+                                                                                                                              No.; 09110663-8
+
+
+
+
+                                                        ++Precautions++
+  *The user, through its own analysis and testing, is solely responsible for making the final selection of the boards and
+   materials and assuring that all performance, endurance, maintenance, safety and warning requirements of the
+   application are met.
+  *The user must analyze all aspects of the application, follow applicable industry standards, and follow the information
+   concerning the product in the current product catalog and in any other materials provided from PEW or its subsidiaries or
+   authorized distributors.
+                                                       ++Before purchase++
+
+  * If delivery specifications have been agreed upon, descriptions in the delivery specifications take precedence.
+  * Specifications and appearances are subject to change without prior notice for product improvement.
+  * For details of the products contained in this catalog, contact your dealer or our sales representative.
+  * ALL data are our actual values and not assured values.
+
+    Please Contact us of more
+
+   【Technical Marketing】
+   •Japan (Osaka)               TEL: 81-6-6908-8132
+   •USA                         TEL: 1-503-224-2231
+   •Austria (Enns)              TEL: 43-7223-883-0
+
+   【Sales Offices】
+   •China (Hong Kong)           TEL: 852-2529-3956
+   •China (Suzhou)              TEL: 86-512-68251934
+   •China (Guangzhou)           TEL: 86-20-8713-0898
+   •Korea (Seoul)               TEL: 82-2-2052-1050
+                                                                                        Panasonic Electric Works Co., Ltd.
+   •Taiwan (Taipei)             TEL: 886-2-2581-6020                                    Electronic Materials Business Unit.
+   •Tailand (Ayuthaya)          TEL: 66-35-330-846                                      Circuit Board Materials Division.
+   •Singapore (United Square)   TEL: 65-6255-5473                                       Head Office :1048 Kadoma. Kadoma. Osaka 571-8686
+   •Philipines (Makati City)    TEL: 63-2886-6291
+                                                                                        TEL: 81-6-6908-1131
+   •Austria (Enns)              TEL: 43-7223-883-0
+                                                                                        http://panasonic-denko.co.jp/em/
+
+*The data above show actual values and are not guaranteed.
+

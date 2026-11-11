@@ -1,0 +1,334 @@
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+VT-370X
+tec-speed/ V30.0
+             T-370X
+                 VT-370X
+                     LCTE/ VT-370X                                               LCT
+                                                                          UL Approval:     E  UL Approval: E214381
+                                                                                       E214381 Version:16/10/2025
+PROCESS GUIDE
+
+
+Precautions in Handling
+Storage Condition & Shelf Life
+                                                  Laminate
+                          Temperature             Room
+ Storage Condition
+                          Relative Humidity       /
+ Shelf Life                                       24 Months(airproof)
+
+•       Laminates should be stored flat in a clean dry area. Cores will benefit from being stored between two
+        stiffeners in order to prevent unnecessary bending of the layers or damaged corners. Soft slip sheets should
+        be used to prevent dust and debris from be embossed into the material.
+•       Laminates are without woven glass reinforcement and are softer than most other rigid base materials for
+        printed circuit board and are more susceptible to handling damage. As with all laminate materials, especially
+        thin materials, care should be taken to avoid distorting the material during handling.
+
+
+
+Designing and Inner layer Process
+•       Materials are compatible with many tooling systems. Choosing whether to use round or slotted pins, external
+        or internal pinning. Whichever approach is used, it is good practice to retain copper around tooling holes.
+•       A chemical process consisting of organic cleaners and a micro-etch is the preferred method of preparing
+        copper surfaces for coating with liquid or film photoresist. Mechanical scrubbing is not recommended.
+•       Developers, strippers, and copper etchants used to process epoxy glass materials will also work with layers.
+        Thin cores may require leader boards for conveyorized processing and frames or supportive racks for
+        vertical-type processing.
+•       Laminates are compatible with most oxide and oxide alternative processes. Highly caustic, high temperature
+        processes, should be followed by a thorough rinse and bake of the inner layers.
+
+
+
+
+                                                                                                                Page 1 of 6
+www.venteclaminates.com                                                                                  Published on: 16/10/2025
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+                                                                                                        UL Approval: E214381
+tec-speed 30.0 VT-370X / VT-370X LCTE                                                                      Version:16/10/2025
+
+PROCESS GUIDE
+
+
+Inner Layer Artwork Compensation Factors
+              Thickness                  Configuration                       Direction                    Comp.(ppm)
+              5mil 1/1oz                  Signal/signal                    Length / Width                   900 / 500
+              5mil 1/1oz                  Signal/Ground                    Length / Width                   850 / 450
+              5mil 1/1oz                 Ground/Ground                     Length / Width                   600 / 300
+
+If you use other thickness types, please contact Ventec technical service engineer.
+
+
+
+Laminates Availability
+                                                                Dk@10GHz                               Df@10GHz
+         Laminate          Core Thickness
+
+                               (inch)                        IPC-TM650 2.5.5.5
+                     IPC-TM650 2.5.5.5
+
+                                                              Clamped Stripline                      Clamped Stripline
+                                0.0035                              2.90                                 0.00035
+                                0.0040                              2.90                                 0.00035
+                                0.0045                              2.90                                 0.00035
+          VT-370X
+                                0.0050                              2.90                                 0.00035
+                                0.0080                              2.90                                 0.00035
+                                0.0100                              2.90                                 0.00035
+                                0.0035                              2.95                                 0.00055
+                                0.0040                              2.95                                 0.00055
+                                0.0045                              2.95                                 0.00055
+    VT-370X LCTE
+                                0.0050                              2.95                                 0.00055
+                                0.0080                              2.95                                 0.00055
+                                0.0100                              2.95                                 0.00055
+
+    Copper Type                              Copper thickness                            Remark
+    HVLP3                                    Hoz, 1oz                                    Standard
+    HTE                                      Hoz, 1oz, 2oz                               Optional
+    RTF                                      Hoz, 1oz, 2oz                               Optional
+    RA                                       Hoz, 1oz                                    Optional
+
+•          Copper foil: Hoz~2oz, HTE, RTF, RA and HVLP are all available based upon request.
+•          More types may be available upon request.
+                                                                                                                     Page 2 of 6
+www.venteclaminates.com                                                                                        Published on: 16/10/2025
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+tec-speed 30.0 VT-370X / VT-370X LCTE
+                                                                                                                                                                                                           UL Approval: E214381
+                                                                                                                                                                                                             Version:16/10/2025
+PROCESS GUIDE
+
+
+Bonding for Multilayer
+•             Special pretreatments of etched surfaces using plasma processes shouldn’t be necessary providing care was
+              taken to protect the substrate surface after copper etch. Inner-layers should be baked at 120℃ for 60
+              minutes to ensure removal of volatile substances prior to MLB bonding.
+•             Cores are compatible with a broad range of thermosetting adhesive systems. Many factors, such as electrical
+              performance, flow characteristics, ease of processing, and bond temperature requirements are considered
+              when making the best overall choice.
+•             The press cycle is determined by the requirements of the chosen adhesive resin system of High Tg prepreg.
+
+
+
+Bond cycle
+1.Heating rate (Rate of Rise) of material [Material Temperature]:
+
+50-315 ºC: ≥5.5℃/min 315-371 ºC≥2.7℃/min
+2.Curing Temperature & Time: 30-60min at more than 371ºC.
+3.Full Pressure: 250-500psi should be applied full pressure before 23 ºC.
+4.Cooling rate of material: 260-121 ºC ≤1.1℃/min.
+5.Cushion for pressure evenness is needed.
+
+
+                                             Bondply Temperature & Pressure Profile
+                     500                                                                                                                                                     600
+
+                                                                                                                                                                             550
+
+
+                                                            250-500 PSI Pressure Range                                                                                       500
+    Pressure (PSI)
+
+
+
+
+                                                                                                                                                                                   Temperature (Celsius)
+
+
+
+
+                                                                                                                                                                             450
+
+                     250                                                                                                                                                     400
+
+                                                                                                                                                                             350
+                     200
+                                                                                                                                                                             300
+
+                                                                                                                                                                             250
+
+                                                                                                                                                                             200
+                     100
+                                                                                                                                                                             150
+
+                                                                                                                                                                             100
+
+                                                                                                                                                                             50
+
+                      0                                                                                                                                                      0
+                           0   5   10   15   20   25   30   35   40   45   50   55   60   65   70   75   80   85   90   95   100   105   110   115   120   125   130   135
+
+
+
+                                                                                Time (Minutes)
+                                                                                                                                                                                                                       Page 3 of 6
+www.venteclaminates.com                                                                                                                                                                                          Published on: 16/10/2025
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+                                                                                                            pproval: E214381
+tec-speed 30.0 VT-370X / VT-370X LCTE
+                                                                                                        UL A
+
+
+                                                                                                          Version:16/10/2025
+
+
+
+
+PROCESS GUIDE
+
+
+Mechanical drill parameters
+    Drill Bit Diameter
+              Spindle
+                 Infeed
+                 Retract
+                 Hit Counts
+           (mm)                      (KRPM)                    (IPM)                   (IPM)
+             0.3                       150                      47                      300                        300
+             0.5                       110                      50                      400                        300
+             0.8                       80                       55                      400                        300
+             1.0                       55                       60                      400                        300
+
+•       Excessive wear of carbide drill bits. New drill bits are recommended.
+•       Rigid entry and exit material is critical in order to remove any debris or deposits from the drill bit. 10~25mil
+        (0.25 –0.6 mm) phenolic entry is acceptable for most applications.
+
+
+
+Desmear Process
+Plasma treatment is necessary process, and material should be baked more than 1 hour at 120℃ before plasma
+treatment. Meanwhile, material cannot be suffered any high pressure washing and scrubbing before metallization.
+
+Plasma: Half time of FR-4 conditions is recommended.
+
+
+
+
+          Pressure
+              Temperature
+           as mixture                            Power
+                Duration
+
+            (mT)                    (℃ )            G
+                                                                                               (W)                   (min)
+              22   0                    60          3.50 l/min O2                                7000                    10
+              22   0                    60          0.19 l/min CF4 , 3.50 l/min O2               6800                    10
+              22   0                    60          0.30 l/min N2                                6800                    2   0
+              22   0                    60          1.0 l/min H2 , 1.0 l/min N2                  7000                    10
+
+Permanganate Desmear: Not recommended.
+
+
+
+
+                                                                                                                      Page 4 of 6
+www.venteclaminates.com                                                                                         Published on: 16/10/2025
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+tec-speed 30.0 VT-370X / VT-370X LCTE
+                                                                                                  UL Approval: E214381
+                                                                                                    Version:16/10/2025
+PROCESS GUIDE
+
+
+Plating and EDS
+•       Laminates have been engineered to be highly resistant to chemical infiltration and a robust hole wall  
+
+        preparation process is necessary for a successful deposition plating process. Following hole wall
+        preparation, they will accept standard electroless copper or direct deposit metallization plating process.
+•       Image, Develop, Etch, Strip Film.
+
+        When copper surface preparation is required, chemical cleaning processes are preferred. Mechanical
+        scrubbing should be avoided due to possible mechanical damage. Otherwise, standard processing should be
+        used.
+
+
+
+Solder mask and finish
+•       Materials should be rinsed and baked prior to solder mask application. Rinsing in warm or hot water for
+        20-30 minutes followed by 60 minutes @125℃should be sufficient, especially if the bake is done under
+        vacuum.
+•       No special treatment is required if the surface has not been mechanically scrubbed. In rare cases, where  
+
+        adhesion is poor, a plasma treatment may be used to activate the exposed PTFE.
+•       Laminate is compatible to most final finishes (HASL, Sn, Ag, Ni/Au, OSP, etc). A rinse/bake should be done
+
+        prior to HASL. Make sure etched substrate surfaces are clean before ENIG plating, or else background
+        plating could occur.
+
+
+
+
+                                                                                                                Page 5 of 6
+www.venteclaminates.com                                                                                   Published on: 16/10/2025
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+                                                                                                   pproval: E214381
+tec-speed 30.0 VT-370X / VT-370X LCTE
+                                                                                              UL A
+
+
+                                                                                                 Version:16/10/2025
+
+
+
+
+PROCESS GUIDE
+
+
+Routing
+        Drill Bit Diameter
+              Spindle
+                      Infeed
+                     Retract
+
+               (mm)                      (KRPM)                         (IPM)                       (IPM)
+                0.8                         50                           10                          500
+                 1.0                        40                           12                          500
+                 1.2                        34                           12                          500
+                 1.6                        25                           18                          700
+                2.0                         20                          27.2                         700
+                2.4                         20                           35                          700
+                3.0                         20                           42                          700
+                3.2                         20                           42                          700
+
+•       Excessive wear of carbide drill bits and Diamond coated drill bits are recommended.
+•       Rigid phenolic entry and a rigid backer should be used. In some cases, adding paper (white paper or Kraft
+        paper) between the phenolic and the part allows better conformance to surface topography and may reduce
+        burring.
+•       Materials will generally provide a better edge quality due to none glass fabric.
+
+
+
+Packaging and baking recommendation
+•       It is recommended to bake the board before packaging at 125℃/4~8h to avoid moisture causing a decrease
+        in heat resistance.
+•       If the PCBs needs to be stored for a long time before use, it is recommended to use aluminum foil vacuum
+        packaging.
+•       If exceed 3 months after packaging, It is best to bake the PCBs at 125℃/4~6h before assembly before use.
+
+
+
+
+                                                                                                            Page 6 of 6
+www.venteclaminates.com                                                                               Published on: 16/10/2025
+

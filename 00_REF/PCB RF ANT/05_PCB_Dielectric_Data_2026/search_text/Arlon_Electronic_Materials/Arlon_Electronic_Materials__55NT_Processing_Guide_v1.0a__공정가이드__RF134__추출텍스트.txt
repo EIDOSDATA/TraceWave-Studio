@@ -1,0 +1,250 @@
+55NT
+PROCESSING GUIDELINES
+
+
+  55NT – HIGH TEMPERATURE EPOXY ON AN ARAMID FIBER REINFORCEMENT
+
+  Arlon's 55NT combines the high temperature performance and thermal stability of a
+  multifunctional epoxy on nonwoven aramid reinforcement. 55NT is engineered using this customized
+  substrate for maximum control of CTE for SMT applications.
+
+
+  55NT PREPREGS
+  55NT is designed at a nominal resin content of 49% to provide a CTE value in-plane of 7-9 ppm/ºC as
+  unclad material. Final CTE will depend on board and construction, copper content. The low resin
+  content of 55NT will affect resin flow and applications requiring via hole fill may require higher resin
+  contents or combined with the glass reinforced prepreg.
+  55NT prepreg as supplied has a nominal resin flow of 8% (IPC TM-650 2.3.17). The degree of
+  chemical advancement of this resin is equivalent to that of a 1080 glass with a nominal 35%
+  flow -the restriction in physical flow is due to the nonwoven character of the reinforcement.
+
+  The permeability of the nonwoven aramid fabric and the random orientation of the reinforcement act as
+  a flow restrictor allowing the resin to be retained while encapsulating inner layer details. This
+  results in improved thickness uniformity across the panel and more precision in the manufacture of
+  controlled impedance boards.
+
+
+
+  55NT LAMINATE PRODUCTS
+
+  Non-woven laminates are produced with Arlon’s 55N multifunctional epoxy resin, identical to that
+  supplied in prepreg to ensure total compatibility in bonding layers. The unique combination of aramid
+  reinforcement with a high performance epoxy resin allows the material to be used as an economical
+  replacement for other more costly methods of producing high density, high performance CTE
+  controlled packages.
+
+  For additional technical information on 55NT laminate and prepreg including nominal prepreg
+  pressed thicknesses for the various grades and resin contents, see the technical data sheet
+  available at www.arlonemd.com.
+                        PROCESSING RECOMMENDATIONS
+
+
+CONTROL MOISTURE AT ALL CRITICAL STEPS
+Aramid reinforcements are sensitive to humidity and moisture. Water may be absorbed as a result
+of uncontrolled storage conditions as well as wet processing operations. Moisture must be removed
+prior to the multilayer lamination process as well as subsequent thermal excursions of plasma etch,
+solder reflow, wave soldering, hot air leveling, solder mask baking or thermal stress testing. If
+moisture is not removed, multilayer boards may exhibit delamination or blistering, and electrical
+performance properties may deteriorate. The most critical step is removal of moisture from
+laminates and prepregs prior to lamination.
+
+PREPREG STORAGE CONDITIONS
+55NT is supplied in vapor barrier vacuum bags to minimize additional exposure to atmospheric
+humidity during shipment and storage. Once original factory supplied bags are opened, a vacuum
+desiccation cycle of 8 to 12 hours at 29+ inches of vacuum is recommended for preparation of
+prepreg for lamination. When mineral desiccants are used care must be taken to keep them
+refreshed and dry as aramid materials may “compete” with the desiccant for available moisture.
+
+INNER-LAYER PROCESSING
+As received laminates do not require prebaking prior to Imaging as Tgs are fully developed and do
+not require stress relief. Conventional copper cleaning operations prior to dryfilm are acceptable,
+though care Is needed during mechanical scrubbing to ensure the copper is not distorted which
+could change dimensional stability, CTE properties or induce warpage.
+55NT are compatible with conventional alkaline and cupric chloride etching chemistries as well as
+aqueous resist strippers. Aramid fiber composites will absorb moisture more readily than e-glass
+materials, so laminates (as also true of prepregs) need to be thoroughly dried prior to lamination.
+
+Inner layers processed with brown oxides provide good adhesion to 55NT prepregs. Other oxide
+alternatives have also provided acceptable results.
+
+
+ARTWORK COMPENSATION
+
+Some adjustment may be required depending on the size and direction, residual copper circuit
+density, and tooling scheme used. This is the shrinkage that is expected after lamination. Growth is
+commonly seen in individual inner layer details after etch due to the release of the stress caused
+by the copper and core CTE mismatch and to any moisture absorption by the exposed layers.
+For 55NT, because the in-plane movement is less due both to the nature of the aramid substrate
+and the lower resin content, it is recommended that test layers be made using no more than
+0.3 mils/inch compensation to establish dimensional change. Once comp factors are established
+for a given job, the material has proved very repeatable.
+
+These values are based on using 3/8 inch tooling plates, 0.050 of press pad between the tooling
+and the first separator plate, and using 60 to 70 mil stainless separators. Use of aluminum or
+release films in the package may result in inconsistent material movement.
+
+
+The following is the recommended book stack up for the press:
+
+                                                                3/8” Tooling Plate
+
+
+                                                                Pad Paper
+
+                                                                Stainless Seperator
+
+
+                                                                Circuit
+
+
+                                                                Stainless Seperator
+
+
+                                                                Circuit
+
+
+                                                                Stainless Seperator
+
+
+                                                                Circuit
+
+                                                                Stainless Seperator
+
+
+                                                                Circuit
+
+
+                                                                Stainless Seperator
+
+                                                                Pad Paper
+
+
+                                                                3/8” Tooling Plate
+
+
+
+
+LAMINATION
+
+Layup should be completed as soon as possible (within 2 hours) after drying laminate (1 hours at
+250°F followed by a 90 minute stabilization under desiccation), and desiccation of prepreg under
+vacuum (29+ inches of vacuum for 8-12 hours) for moisture removal. Try to keep lay-up operations
+within a two hour time period after removing materials from vacuum or desiccation steps. Use of
+parallel layup lines has been utilized in some cases to minimize exposure time. Keep exposed
+prepreg and laminate surfaces to a minimum to reduce moisture regain.
+
+Nonwoven aramid is more compressible and porous than E-glass, so the resin flow
+to lamination pressure relationship is different. Slightly higher lamination pressures might be
+required compared to E-glass configurations. The heating rate should be controlled to a
+4.5°C to 6.5°C/minute (8°F to 12°F/minute) heat rise between 100°C to 150°C (210°F and 300°F).
+SUMMARY OF LAMINATION RECOMMENDATIONS
+
+  • Heat Up Rate 4.5°C to 6.5°C (8°F to 12°F) per minute
+
+  • Control Heat Up 100°C to 150°C (210°F to 300°F)
+
+  • Vacuum 29 inches
+
+  • Cure in press 90 minutes at >182°C (360°F)
+
+  • Cool at <6° C/min (10°F/min)
+
+  • Lamination Pressure:
+
+
+
+
+CURING 55NT MULTILAYER BOARDS
+
+Full cure of 55NT is necessary to achieve optimum material properties. The epoxy resin requires
+at least 90 minutes of cure above 182°C (360ºF) to complete cross-linking of the resin matrix.
+Actual cure time may also be dependent on laminate thickness, number of laminates per book
+and the weight and distribution of copper layers or metal cores.
+
+Note: It is suggested that designs for avoid use of 2 ounce copper power and ground planes if
+finished board CTE is an issue – large amounts of heavy copper will skew the CTE toward the
+value of pure copper which is 17 ppm/ºC.
+
+The cure of the multilayer board is typically evaluated by DSC. Once a process is established and
+tested for a given board design, cure results should be expected to be in the 150°C to 175°C range.
+When boards are properly cured, physical properties such as strength and toughness, chemical
+resistance and interlaminar strength will allow a more obust process window for board fabrication
+through drilling, routing and thermal excursions such as reflow and soldering.
+DRILLING
+Because of the smoother laminate surface and softer fibers than E-glass, there is less drill wander
+with small drilled holes. This results in less breakout in annular ring pads. There is also less primary
+angle drill wear which may allow longer drill life.
+
+We do NOT recommend the use of aluminum or aluminum-Clad entry or backup materials.
+Aluminum can become stuck on tip and cutting edges of the drill. The reinforcement is not as
+abrasive as glass and will not knock off the aluminum, leaving a drill point that will not cut cleanly.
+Aramid fibers can block drill flutes when drilling small holes in thick boards or high stacks. Some of
+the following can be considered to reduce drill breakage: high strength carbide drills, reduced stack
+height, reduced drill withdrawal rate, peck drilling or high point angle drills.
+A small orifice pressure foot is available on some types of drilling machines. An orifice of 3.5 mm
+(0.140”) will keep the pressure on the entry material near the hole being drilled. This helps keep the
+material in solid contact with the board and reduces the chance of burrs and volcanoing. The
+pressure of the pressure foot should be at least 10 pounds. Do not allow the pressure foot to lift off
+of the stack, if possible, during the program. Any vibration will cause rough holes. Keep all debris
+out of the area between the entry and the board.
+
+A drill template could also improve pressure applied near the hole. Drill a 1.6 mm piece of entry
+or FR-4 with slightly oversized holes; about 0.020 inch larger than the required final drill diameter.
+
+The use of undercut drills are recommended for sizes less than 0.020 inch. These have increased
+flute volume for better evacuation of the debris and fibers.
+
+Lubricated entry or backup materials are recommended to improve evacuation of the debris and
+fibers. This evacuation is key to improving hole wall quality.
+
+The recommended backup material is a melamine coated phenolic/paper material. Other backup
+products with a hard surface that breaks up easily during drilling should work as well.
+See attached Drill Table for starting drilling parameters. Testing should be done first as individual
+board design will affect results.
+
+HOLE CLEANING
+
+For hole wall adhesion and etchback to have reliable interconnections, plasma offers the best
+plated through hole adhesion. Standard desmear and electroless operations can provide excellent
+copper adhesion and PTH reliability. Bake boards for 2 hours at 250°F to 275°F minimum to
+remove moisture and for improved consistency in plasma etchback. Avoid permanganate systems
+that use DMF or NMP as swell solvents as these may be absorbed and not readily surrendered by
+the aramid fibers. No glass etch is necessary as nonwoven aramid is a 100% organic
+reinforcement.
+ELECTROPLATING
+
+Due to the constraint of CTE in the X-Y plane to 7-12 ppm/ºC, in the finished PWB, the tradeoff in
+constrained core materials such as 55NT is that the Z-axis expansion will be higher than would be
+expected in a glass reinforced material. While experience is that the homogeneous nature of the
+distribution of the fibers in nonwoven aramid actually tends to increase PTH reliability (there being
+no fiber bundles intersecting hole walls to generate stress risers) the absolute CTE in the Z
+direction will be 90-120 ppm/˚-C. Attention to plating baths should be directed at providing minimum
+elongation of 17-20% at 45,000 to 50,000 psi tensile strength. Plating to 1.5 mils (0.038 mm) will
+improve PTH reliability.
+
+ROUTING / FABRICATION
+As previously mentioned, aramid fibers are softer than glass, so routing with a continuous cutting
+edge in a counter-clockwise profile provides a smoother finished edge. A 0.093 inch double fluted
+“end mill” type router is recommended at a speed of 30,000 rpm and a feed rate of 25 ipm. A rigid
+backing material such as phenolic or FR-4 placed on top of the panel stack with a good solid
+pressure foot will reduce fibrous edges. Do not use a brush type pressure foot, as this does not
+supply sufficient pressure to maintain intimate surface contact and eliminate vibration. Kraft paper
+placed against the board surface has also been demonstrated to reduce edge fuzz.
+
+ASSEMBLY
+Due to the moisture absorption of aramid fibers and epoxy resin over time, it is important to
+remove moisture by baking boards prior to any thermal excursions that are part of assembly
+(reflow, etc), or thermal testing. Drying times and temperatures may need to be adjusted to account
+for the amount of copper cladding remaining on cap and innerlayer materials.
+
+DESIGN CRITERIA
+Contact Arlon directly to discuss design recommendations to optimize performance of 55NT
+materials.
+NOTE: The data provided herein is believed to be reliable but is provided for reference purposes
+only and is not intended to be process specific for any particular job. Determination of the suitability
+of any Arlon product for a specific end application is solely the responsibility of the purchaser. Arlon
+recommends careful engineering evaluation of any product before adopting in production PWBs, as
+the recommendations contained herein are starting points, and production conditions and/or circuit
+configurations may require process adjustments for optimization in either process yields or final
+board performance.
+

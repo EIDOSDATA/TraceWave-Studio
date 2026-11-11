@@ -1,0 +1,208 @@
+                                                                                               Fabrication
+                                                                                               Technical Articles
+                                                                                                           Notes
+
+
+Routing Guidelines for TMM® Microwave
+Laminates
+TMM® laminates can be successfully routed using conventional carbide tools. With appropriate routing conditions and tool
+selection, useful tool life in excess of 250 linear inches can be obtained when machining TMM-10 laminates. Tool life is some-
+what lower for the lower dielectric constant grades. This application note discusses factors which effect tool wear and routed
+edge quality. Recommended routing conditions and tool life estimates for various tool sizes and TMM grades are provided in
+quick reference tables.
+
+TMM Microwave Materials, consist of a hydrocarbon matrix highly filled with ceramic filler. This provides TMM laminates with
+its low thermal expansion and makes it possible to offer a wide variety of dielectric constants.
+
+Due to the abrasive nature of the ceramic filler, some precautions are required when routing TMM materials. High tool surface
+speed (>400 SFM) should be avoided whenever possible to prevent excessive tool wear and reduced edge quality.
+
+Recommendations provided below are based on testing completed using an Excellon EX driller/router. A range of carbide tool
+geometries from several tool suppliers were evaluated.
+
+
+
+                                                           TABLE 1
+                                                 Recommended Routing Parameters
+
+                      Recommended Tools:                  Diamond cut carbide tools or sprial chipbreaker with at
+                                                          least 5 flutes
+                      Lateral Chip Load:                  0.0010" - 0.0015"
+                      Surface Speed:                      200-400 SFM
+                      Entry:                              Phoenolic (0.010"-0.030")
+                      Exit:                               Phoenolic (0.100")
+
+
+
+Surface Speed and Chip Load:
+
+Surface speed (SFM) is defined as the velocity (ft./min.) of the outer cutting edge of the tool. The following equation can be
+used to calculate the spindle speed for a particular tool diameter and surface speed.
+
+                       12 x Surface Speed
+                            (ft./min.)
+Spindle Speed (RPM) = π x Tool Diameter
+
+Chip load is defined as the distance of tool travel per revolution. The following equation can be used to calculate feed rate for
+a particular chip load and spindle speed.
+
+Lateral Feed Rate = Chip Load x Spindle Speed
+ (inches/min.) (inches/rev.) (rev./min.)
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                               Page 1 of 4
+Recommended TMM Routing Conditions and Tool Life:
+
+Recommended routing conditions and useful tool life estimates provided in Tables 1 and 2 are based on quality
+considerations such as copper burring, channel width reductions, sidewall roughness as well as the ultimate life of the tool
+(inches to failure). The ultimate tool life values in the accompanying figures provide a good quantitative basis for comparing
+tool geometries and routing conditions. However, useful tool life can be significantly lower due to edge quality requirements.
+The useful tool life estimates provided in Table 2 are typically about 50% to 60% of the ultmate tool life. Tools may need to be
+replaced more frequently for highly demanding applications.
+                                                Table 2: Useful Tool Life Estimates (*):
+                                            Tool TYPE A - Diamond Cut Router Geometry
+                                       Tool TYPE B - Upward Spiral Chipbreaker (³ 5 flutes)
+
+
+                                                                     Tool Diameter - TYPE A                             Tool Diameter - TYPE B
+     Material           Speed              Lateral            1/16'              3/32"               1/8"            1/16"            3/32"           1/8"
+                        (KRPM)           Feed Rate
+                                          (in/min)
+     TMM 3                 15                 19                80                120                120               90              100             100
+     TMM 3                 20                 25                50                 50                 50               40               40             40
+     TMM 3                 25                 31                30                 20                  X               30               20              X
+
+
+     TMM 4                 15                 19               100                140                140              100              120             120
+     TMM 4                 20                 25                70                 70                 70               60               60             60
+     TMM 4                 25                 31                45                 40                  X               45               40              X
+
+
+     TMM 6                 15                 19               150                180                180              120              150             150
+     TMM 6                 20                 25               100                100                100              100              100             100
+     TMM 6                 25                 31                70                 70                  X               70               70              X
+
+
+     TMM 10                15                 19               250                250                250              250              250             250
+     TMM 10                20                 25               250                250                250              250              250             250
+     TMM 10                25                 31               250                250                250              250              250             250
+
+
+(*) Notes:
+1.   This table is based on 0.060" thick constructions. Useful tool life will be significantly lower for thicker constructions. For example, tool life can drop by as
+     much as 50%-60% if the construction thickness is doubled (0.120").
+2.   To maximize tool life and edge quality, the higher spindle speeds listed (20K RPM and 25K RPM) should not be used if lower spindle speeds are available.
+3.   This table assumes a minimum spindle speed of 15K RPM. If available, lower spindle speeds should be used when routing with larger tools (>100").
+     should be used when routing with larger tools (>100").
+
+
+
+Factors Effecting Tool Life:
+There are a variety of factors which effect useful tool life when machining TMM® laminates or bonded assemblies. They include
+TMM grade, surface speed, tool geometry, chip load, tool size and stack height.
+
+TMM Grade:
+The lower dielectric constant TMM grades contain a larger fraction of highly abrasive filler. Therefore, TMM-3 yields a shorter
+tool life then TMM-10. When appropriate routing conditions and tool geometries are used, TMM-3 can yield a useful tool life of
+about 120 linear inches. With TMM-10, useful tool life can exceed 250 linear inches.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                                           Page 2 of 4
+Tool Surface Speed:
+The effect of surface speed on ultimate tool life is shown in Figure #1 for TMM-3 machined with a variety of tool geometries.
+For all geometries tested, ultimate tool life decreased with increasing surface speed. The spindle speed examined ranged from
+15K RPM to 25K RPM (3/32" tool).
+
+Tool Geometry:
+The tool geometries which were evaluated are listed in Table 3. Due to practical considerations, this study only included tools
+from three suppliers. However, similar tool geometries from other suppliers should provide similar results.
+
+In general, tools with a larger number of cutting edges offered superior tool life. As shown in figure #1, the Precision
+Carbide R1U, R1D and Megatool RCS geometries offered the best ultimate tool life. These tools are typically used for routing
+conventional PWB materials such as FR4. Tool geometries which are typically used for routing PTFE based laminates such as
+the Presicion Carbide EM2 cutter yielded poor ultimate tool life due to their relatively small cross-sectional area.
+
+Lateral Feed Rate (Chip Load):
+The effect of chip load on ultimate tool life is shown in Figure #2 for various tool geometries. As chip load increases, the
+ultimate tool life decreases. However, very low chip loads (<0.001"/rev.) should be avoided due to a significant increase in
+copper burring.
+
+
+
+
+                                                                  Table 3
+                                                        Tool Geometries Evaluated
+                                                     (in order of decreasing tool life)
+
+                Abbreviation                                Generic Description                             Vendor
+                     PCR1D                                 Diamond Cut (down-draft)                   Precision Carbide
+                     PCR1U                                  Diamond Cut (up-draft)                    Precision Carbide
+                   Mega RCS                                 Diamond Cut (up-draft)                       Megatool
+                    Tulon 44                               Spiral Chip Breaker (5 flute)                    Tuflon
+                    Mega RI                                 Straight Endmill (3 flute)                   Megatool
+                     PCEM2                                   Spiral Endmill (2 flute)                 Precision Carbide
+
+
+                                                               Table 4
+                                                     Tool Surface Speed (ft./min.)
+
+                   Spindle                      1/16" Tool                    3/32" Tool           1/4" tool
+                 Speed (RPM)
+                       15K                           245                           368                491
+                       20K                           327                           491                654
+                       25K                           409                           614                818
+
+
+Tool Size:
+As seen in Figure #3, larger tools typically yield better ultimate tool life at a given surface speed due to the increased tool cros-
+sectional area. Therefore, smaller tools often need to be replaced more frequently.
+
+Stack Height:
+The ultimate tool life also decreases with increased stack height (Figure #4). This is due to the increased lateral stress on the
+tool. As stack height increases, tools should be replaced more frequently.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                                  Page 3 of 4
+                                                                                         Ultimate Tool Life as a Function of Stack Height
+
+
+
+
+Note: Prolonged exposure in an oxidative environment may cause changes in the dielectric properties of all hydrocarbon based dielectric materials, including
+TMM high frequency dielectric materials. Changes may be exacerbated by increased thermal exposure. Whether or not such changes occur, and whether or
+not they might result in a functional impact on a finished product, depends on a complex set of variables related to factors such as circuit design, functional
+tolerances, operating conditions and other circumstances that are unique to each product design. Although Rogers continues to seek ways to minimize the
+naturally occurring effects of oxidation by developing improved anti-oxidant formulations for the TMM family of high frequency materials, Rogers, as always,
+recommends that the circuit designer and/or the end user test the properties and performance of these materials in each proposed application to determine
+their fitness for use over the entire product life.
+
+
+
+The information contained in this fabrication guide is intended to assist you in designing with Rogers’ circuit materials and prepreg. It is not
+intended to and does not create any warranties, express or implied, including any warranty of merchantability or fitness for a particular purpose
+or that the results shown on this fabrication guide will be achieved by a user for a particular purpose. The user is responsible for determining the
+suitability of Rogers’ circuit materials and prepreg for each application.
+
+These commodities, technology or software are exported from the United States in accordance with the Export Administration regulations.
+Diversion contrary to U.S. law prohibited.
+TMM, the Rogers' logo and Helping power, protect, connect our world is a trademark of Rogers Corporation or one of its subsidiaries
+© 2023 Rogers Corporation, Printed in U.S.A.
+Revised 1655 081123,Publication #92-498
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                                        Page 4 of 4
+

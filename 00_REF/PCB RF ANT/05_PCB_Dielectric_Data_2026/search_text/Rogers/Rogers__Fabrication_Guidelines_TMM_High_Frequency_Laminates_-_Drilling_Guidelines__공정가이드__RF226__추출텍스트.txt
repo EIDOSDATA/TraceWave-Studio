@@ -1,0 +1,134 @@
+                                                                                             Fabrication
+                                                                                             Technical Articles
+                                                                                                         Notes
+
+
+Drilling Guidelines for TMM® Temperature
+Stable Microwave Laminates
+Hole quality with TMM® temperature stable microwave laminates has generally been found to be excellent when proper
+drilling parameters are used. This application note discusses factors which affect tool wear and hole quality. Guidelines which
+have been found to yield good results with double-sided TMM boards and bonded assemblies are provided along with a
+quick reference table.
+
+TMM temperature stable microwave materials consist of a hydrocarbon matrix highly filled with ceramic particles. The ceramic
+filler provides TMM materials with its low thermal expansion and makes it possible to offer a wide range of dielectric constant
+grades.
+
+Due to the abrasive nature of the ceramic filler, some precautions are required when drilling TMM materials. High tool surface
+speed (>500 SFM) and low chip loads (<0.002"/rev.) should be avoided whenever possible since they produce excessive heat
+and tool wear.
+
+Surface Speed and Chip Load
+
+Surface speed (SFM) is defined as the velocity (ft./min.) of the outer cutting edge of the tool and is used to calculate the
+spindle speed:
+
+Spindle Speed (RPM) =          12 x Surface Speed (ft./min.)
+			                            π x Drill Bit Diameter (in.)
+
+Chip load is defined as the depth of penetration per revolution and can be calculated using the following equation:
+
+Infeed Rate (in./min.) = Spindle Speed (RPM) x Chip Load (in./rev.)
+
+Effect of Drilling Parameters on Tool Wear
+
+The tool wear resulting from high surface speed varies with TMM grade and chip load. The lower dielectric constant TMM
+grades contain a larger fraction of highly abrasive filler. With TMM-3 laminates, surface speeds in excess of 500 SFM will
+significantly reduce useful tool life. For example, the maximum useful tool life may be as low as 10-20 hits if TMM-3 laminate
+is drilled with surface speeds in excess of 800 SFM. With TMM-10 laminates, useful tool life drops significantly with surface
+speeds above 650 SFM. The effects of surface speed on tool wear are more pronounced at lower chip loads (<0.002"/rev.).
+
+The minimum spindle speed available on conventional printed wiring board (PWB) drilling machines is usually 15,000 RPM.
+For tools larger than 0.127", the minimum spindle speed will yield surface speeds in excess of 500 SFM. If only a small number
+of large holes are required (i.e. tooling holes), conventional drilling equipment can be used with frequent tool replacement.
+For some applications, useful tool life can be extended by increasing the depth of penetration into backer material to
+compensate for the decreasing effective flute length. If a significant number of large holes (>0.100") are required, it may be
+desirable to use NC machining equipment with lower spindle speed capability to minimize tool costs.
+
+Recommended Drilling Conditions
+
+          Chip Load:		     0.003" - 0.005" per revolution
+          Surface Speed:		 300 - 400 SFM
+          Retract rate:		  500 - 600 in./min.
+          Entry/Exit:		    Phenolic (0.015" entry, 0.100" backer)
+          Tools:			Carbide
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+
+                                                               Page 1 of 2
+Calculating the Maximum Recommended Hit Count                                        Recommended Spindle Speed and Infeed Table *
+                                                                                             Drill Size     SpindleSpeed               Infeed
+The maximum recommended hit count can be calculated                                        (#)        (in.)         (KRPM)            (in/min)
+by dividing the value shown in the table below by the
+thickness of the construction (inches). The results are valid                        Parameters for conventional PWB drill equipment
+for tool sizes between 0.020" and 0.070" with a chip load of                         (15K-60K spindles)
+0.003"/rev. and a surface speed of 300 SFM. Tool life may be
+lower for tool sizes outside this range.                                                   76        0.0200”            57.3             172
+                                                                                           75        0.0210”            54.6             164
+Maximum		                      Recommended Tool Life                                       74        0.0255”            50.9             153
+Recommended =                    (inches of material)                                      73        0.0240”            47.8             143
+Hit Count		                    Board thickness (inches)                                    72        0.0250”            45.8             138
+                                                                                           71        0.0260”            44.1             132
+Maximum Recommended Tool Life (inches of material)                                         70        0.0280”            40.9             123
+                                                                                           69        0.0292”            39.2             118
+                             TMM-3      TMM-4    TMM-6 TMM-10                              68        0.0310”            37.0             111
+ Double-Sided Boards          36"        38"      42"    60"                               67        0.0320”            35.8             107
+ FEP Bonded Assemblies        18"        19"      21"    30"
+                                                                                           66        0.0330”            34.7             104
+                                                                                           65        0.0350”            32.7             98
+                                                                                           64        0.0370”            31.0             93
+For example:                                                                               62        0.0380”            30.1             91
+The maximum recommended hit count for 0.100" double                                        60        0.0400”            28.7             86
+sided TMM-10 construction would be 600 (60"/0.100" =                                       59        0.0410”            28.0             84
+600).                                                                                      58        0.0420”            27.3             82
+                                                                                           56        0.0465”            24.6             74
+Calculating Recommended Spindle Speed and Infeed from                                      54        0.0550”            20.8             63
+Tool Size:                                                                                 52        0.0635”            18.0             54
+                                                                                           50        0.0700”            16.4             49
+ Spindle Speed*(RPM) =                  1146                                               48        0.0760”            15.1             45
+                                 Tool Diam. (inches)                                       46        0.0810”            15.0             45
+                                                                                           44        0.0860”            15.0             45
+ Infeed* (IPM) =                        3.44                                               42        0.0935”            15.0             45
+                               Tool Diameter (inches)                                      40        0.0980”            15.0             45
+
+                                                                                     Parameters for NC machining equipment
+A table including recommended spindle speed and infeed
+                                                                                     (1K-10K spindles)
+for common tool sizes is provided for convenience. If PWB
+drilling equipment is used to drill larger holes (>0.100"),                           34 0.1110”                        10.0             30
+the minimum spindle speed available should be utilized to                             32 0.1250”                        9.2              28
+minimize surface speed.                                                               30 0.1285”                        8.9              27
+Surface speed up to 400 SFM will not generate excessive                               26 0.1470”                        7.8              23
+tool wear. Therefore, use of conventional printed wiring                              24 0.1520”                        7.5              23
+board drilling equipment with tool sizes up to 0.100" will                            20 0.1610”                        7.1              21
+not significantly reduce tool life.                                                  		0.1875”                          6.1              18
+                                                                                     		0.2500"                          4.6              14
+
+
+
+
+                                                                                  * Based on 300 SFM and a 3 mil chip load except for tool #'s
+                                                                                  40-48 (3 mil chip, <400 SFM).
+
+
+
+
+The information in this fabrication note is intended to assist you in designing with Rogers’ circuit materials. It is not intended to and does not
+create any warranties express or implied, including any warranty of merchantability or fitness for a particular application. The user should
+determine the suitability of Rogers’ circuit materials for each application.
+
+These commodities, technology or software are exported from the United States in accordance with the Export Administration regulations. Diversion
+contrary to U.S. law prohibited.
+TMM, Helping power, protect, connect our world and the Rogers' logo are trademarks of Rogers Corporation or one of its subsidiaries
+© 2023 Rogers Corporation, Printed in U.S.A. All rights reserved.
+Revised 1656 081123, Publication #92-497
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+
+                                                                     Page 2 of 2
+

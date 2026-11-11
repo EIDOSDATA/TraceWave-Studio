@@ -1,0 +1,131 @@
+                                                                   CuClad® Bonding
+                                                                             Films
+
+
+CuClad® 6250 and 6700 Bonding Films
+CuClad 6250 and 6700 low melting point bonding films have been developed for lamination of stripline or other
+multilayer circuits fabricated from CuClad or other Rogers’ PTFE-based laminates. Dielectric constants of 6250 and
+6700 bonding films fall in the midrange of CuClad and DiClad® Microwave Printed Circuit Board Substrates product
+lines and ensure uniform reproducibility of electrical performance.
+
+Shelf Life and Storage: There are no shelf-life limitations for CuClad 6250 or 6700 when material is stored away
+from direct sunlight and in the original sealed package at no greater than 25°C (77°F) and 70% relative humidity.
+The film rolls should be stored on edge (standing upright) or suspended by the roll cores to avoid creating creased
+areas or flat spots due to roll weight.
+
+
+
+
+                               Typical Properties: CuClad 6250 and 6700
+          Property                       Units               Test Method                6250               6700
+Dielectric Constant @ 10 GHz                                   IPC TM-650                2.32               2.35
+Dissipation Factor @ 10 GHz                                    IPC TM-650               0.0013             0.0025
+Dielectric Strength                      V/mil                 ASTM D-149              1000 min             2500
+Volume Resistivity                      Ohm-cm                 ASTM D-257                1016               1018
+Surface Resistivity                      Ohms                  ASTM D-257                                   1016
+Arc Resistance                            sec                  ASTM D-495                                 130-140
+Water Absorption                           %                   ASTM D-570                                   0.005
+Thermal Conductivity                    W/m-k                                            0.17               0.17
+Brittle Temperature                        °C                                             -60
+Crystalline Melt Point                   °F (°C)                Hot Stage                                 364 (184)
+Continuous Use
+                                         °F (°C)                                      165 (75)/10         350 (176)
+Temperature
+Density                                 (g/cm3)               ASTM D-1505                0.93                2.1
+
+
+
+
+Results listed above are typical properties; they are not to be used as specification limits. The above information creates
+no expressed or implied warranties. The properties of laminates may vary, depending on the design and application.
+Material Availability
+
+            Grade           Available Thicknesses                     Standard Panel/Roll Sizes
+       6250                0.0015” (0.04mm)                         Width: 24” only
+                                                              Rolls
+                                                                    Lengths: 30ft or 150ft
+                                                                    12"x18" (305mm X 457mm)
+                                                             Sheets
+                                                                    24"x18" (610mm X 457mm)
+       6700                0.0015" (0.04mm)                         Width: 24” only
+                                                              Rolls
+                           0.0030" (0.08mm)                         Lengths: 30ft or 150ft
+                                                                    12"x18" (305mm X 457mm)
+                                                             Sheets
+                                                                    24"x18" (610mm X 457mm)
+
+
+
+
+Results listed above are typical properties; they are not to be used as specification limits. The above information creates
+no expressed or implied warranties. The properties of laminates may vary, depending on the design and application.
+       Processing Recommendations
+       Preparation of Surfaces to be Bonded
+       1. Etched copper circuitry or copper ground/power planes should be treated with a light microetch prior to lamination.
+       Copper surfaces should not be mechanically scrubbed (rotating or oscillating brush) or pumice scrubbed.
+       2. Etched-off PTFE surfaces should be dry and clean, free of all process chemical residues as well as dust, dirt, grease,
+       oils, fingerprints, etc. Thorough rinsing with clean, deionized water followed by forced air drying may be sufficient. A
+       flush or dip in clean (isopropyl alcohol) IPA will aid in drying. Do not swab or wipe surfaces.
+       3. As-etched copper clad surfaces may not require treatment to promote bonding immediatelyafter etching the
+       copper; however, for unclad PTFE laminates or PTFE surfaces that have been wiped, rubbed or handled carelessly
+       prior to lamination, it is strongly recommended:
+       • Sodium metal based chemical surface preparation, using Tetra-Etch® Fluoropolymer Etchant (W.L. Gore) or
+             Fluoroetch® Fluoropolymer Etchant (Acton Technologies), is recommended to maximize adhesion of bonding
+             film to the PTFE surfaces.
+       • Gas plasma cycles have also been shown as effective to promote adhesion to PTFE surfaces; this applies not only to
+             plated through hole preparation, but also to multilayer lamination.
+       4. Panels should be stored in a clean, dry environment. Layup and lamination should be done as soon as possible,
+       preferably within 24 hours of etching/surface preparation.
+       5. CuClad 6250 and 6700 bonding films come ready to use and require no preparation. Handling/cutting of material
+       should take place in a clean, dust-free environment. The operator should use gloves to prevent transfer of oils and
+       acids from hands or fingers.
+
+       Bonding Process
+       1. Lay the bonding film between the layers to be laminated. Be sure to use enough film to encapsulate the
+       thickness of copper traces and patterns and to provide additional thickness as dielectric if required.
+       2. It is recommended that a thermocouple be placed into the laminate at the edge of the bond line (outside the
+       working area of the MLB) to measure actual working temperature at the bonding interface.
+       3. Preheat the press to the approximate bonding temperature required:
+       • For CuClad 6250 Bonding Film, a set temperature of 275°F is suggested (bonding will occur attemperatures
+            between 250°F and 300°F).
+       • For CuClad 6700 Bonding Film, a set temperature of 450°F is suggested (bonding will occur attemperatures
+            between 390°F and 440°F).
+       4. Apply pressure of approximately 100 psi. Pressure as high as 200 psi may be used if lower pressure does not result
+       in sufficient flow for more complex circuit fill. Sufficient padding should be used to develop uniform pressure, or
+       spotty bonds/blisters may occur.
+       5. Hold in the press until the temperature at the bond interface reaches the critical point:
+       • For CuClad 6250, this should be a minimum of 250°F (max, 300°F).
+       • For CuClad 6700, this should be a minimum of 400°F (max, 475°F).
+       6. Hold at temperature for an additional 10 minutes (for 6250) or 15 minutes (for 6700). This step is critical.
+       Insufficient time at temperature will result in a failed or spotty bond.
+       7. Cool under pressure at a maximum cool-down rate of 10°F/min.
+       • For CuClad 6250, cool to under 125°F before removing from the press.
+       • For CuClad 6700, cool to under 200°F before removing from the press.
+
+       Note: Transfer to a cooling press for cool down under pressure to maximize available hot-press availability is
+       acceptable. Transfer should be made, while still hot, and material should not be allowed to sit on cold surfaces during
+       transfer. Cool down pressure should equal the hot pressure. Forced cooling greater than 10oF/min or without
+       adequate pressure may result in partial debondingor board warpage.
+
+
+
+
+Results listed above are typical properties; they are not to be used as specification limits. The above information creates
+no expressed or implied warranties. The properties of laminates may vary, depending on the design and application.
+The information in this data sheet is intended to assist you in designing with Rogers’ circuit materials. It is not intended to and does not
+create any warranties express or implied, including any warranty of merchantability or fitness for a particular purpose or that the results
+shown on this data sheet will be achieved by a user for a particular purpose. The user should determine the suitability of Rogers’ circuit
+materials for each application.
+These commodities, technology and software are exported from the United States in accordance with the Export Administration regulations.
+Diversion contrary to U.S. law prohibited.
+The Rogers’ logo, Helping power, protect, connect our world, DiClad and CuClad are trademarks of Rogers Corporation or one of its
+subsidiaries.
+FluoroEtch is a registered trademark of Acton Technologies, Pittston, PA. Tetra-Etch is a trademark of W.L. Gore & Associates.
+©2022 Rogers Corporation. All rights reserved. PUB 92-209 Issued 1545 021522
+
+
+
+
+Results listed above are typical properties; they are not to be used as specification limits. The above information creates
+no expressed or implied warranties. The properties of laminates may vary, depending on the design and application.
+

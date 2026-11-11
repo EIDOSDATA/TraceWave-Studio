@@ -1,0 +1,194 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "arguments": [
+        "--manufacturer",
+        "Rogers",
+        "--product",
+        "RO4350B",
+        "--frequency-ghz",
+        "10",
+        "--output",
+        "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\filter-check-b5btqi7g\\rogers.csv"
+      ],
+      "expected_success": true,
+      "exit_code": 0,
+      "message": "Exported 3 published observations to C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\filter-check-b5btqi7g\\rogers.csv. No solver readiness is granted."
+    },
+    {
+      "arguments": [
+        "--manufacturer",
+        "Rogers",
+        "--output",
+        "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\filter-check-b5btqi7g\\rogers.csv"
+      ],
+      "expected_success": false,
+      "exit_code": 1,
+      "message": "Export failed: Output already exists: C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\filter-check-b5btqi7g\\rogers.csv"
+    },
+    {
+      "arguments": [
+        "--manufacturer",
+        "JLCPCB",
+        "--dataset-role",
+        "fabricator_published_parameter",
+        "--review-flag",
+        "invalid_nonpositive_source_ply_value",
+        "--output",
+        "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\filter-check-b5btqi7g\\jlc.jsonl"
+      ],
+      "expected_success": true,
+      "exit_code": 0,
+      "message": "Exported 226 published observations to C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\filter-check-b5btqi7g\\jlc.jsonl. No solver readiness is granted."
+    },
+    {
+      "arguments": [
+        "--manufacturer",
+        "PCBWay",
+        "--review-flag",
+        "group_thickness_not_individual_ply_thickness",
+        "--output",
+        "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\filter-check-b5btqi7g\\pcbway.csv"
+      ],
+      "expected_success": true,
+      "exit_code": 0,
+      "message": "Exported 999 published observations to C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\filter-check-b5btqi7g\\pcbway.csv. No solver readiness is granted."
+    },
+    {
+      "arguments": [
+        "--frequency-ghz",
+        "2.4",
+        "--output",
+        "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\filter-check-b5btqi7g\\at24.jsonl"
+      ],
+      "expected_success": true,
+      "exit_code": 0,
+      "message": "Exported 0 published observations to C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\filter-check-b5btqi7g\\at24.jsonl. No solver readiness is granted."
+    },
+    {
+      "arguments": [
+        "--frequency-ghz",
+        "2.5",
+        "--output",
+        "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\filter-check-b5btqi7g\\at25.jsonl"
+      ],
+      "expected_success": true,
+      "exit_code": 0,
+      "message": "Exported 120 published observations to C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\filter-check-b5btqi7g\\at25.jsonl. No solver readiness is granted."
+    },
+    {
+      "arguments": [
+        "--input",
+        "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\filter-check-b5btqi7g\\rogers.csv",
+        "--manufacturer",
+        "Rogers",
+        "--frequency-ghz",
+        "10",
+        "--output",
+        "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\filter-check-b5btqi7g\\legacy.csv"
+      ],
+      "expected_success": true,
+      "exit_code": 0,
+      "message": "Exported 3 published observations to C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\filter-check-b5btqi7g\\legacy.csv. No solver readiness is granted."
+    },
+    {
+      "arguments": [
+        "--input",
+        "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\filter-check-b5btqi7g\\rogers.csv",
+        "--output",
+        "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\filter-check-b5btqi7g\\legacy.jsonl"
+      ],
+      "expected_success": false,
+      "exit_code": 1,
+      "message": "Export failed: Legacy CSV input supports CSV output only; use indexed JSONL to preserve original JSON types."
+    },
+    {
+      "arguments": [
+        "--frequency-ghz",
+        "nan",
+        "--output",
+        "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\filter-check-b5btqi7g\\bad_nan.csv"
+      ],
+      "expected_success": false,
+      "exit_code": 2,
+      "message": "usage: filter_records.py [-h] [--package-root PACKAGE_ROOT] [--input INPUT]\n                         [--manufacturer MANUFACTURER] [--product PRODUCT]\n                         [--source-id SOURCE_ID] [--stackup-id STACKUP_ID]\n                         [--dataset-role {material_published_parameter,fabricator_published_parameter}]\n                         [--review-flag {dk_df_frequency_not_shared,dk_point_frequency_missing,fabricator_planning_observation_not_as_built_measurement,group_thickness_not_individual_ply_thickness,individual_layer_thickness_missing,invalid_nonpositive_source_ply_value,local_source_file_unavailable,measurement_axis_missing,method_scope_note_present,nonunit_relative_permeability,published_source_conflict,scalar_df_missing,scalar_dk_missing,source_specific_quality_flags,test_method_missing,value_comparison_qualifier_present}]\n                         [--frequency-ghz FREQUENCY_GHZ]\n                         [--include-frequency-ranges]\n                         [--allow-missing-frequency] [--scalar-dk-only]\n                         --output OUTPUT\nfilter_records.py: error: Frequency must be finite and positive."
+    },
+    {
+      "arguments": [
+        "--frequency-ghz",
+        "inf",
+        "--output",
+        "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\filter-check-b5btqi7g\\bad_inf.csv"
+      ],
+      "expected_success": false,
+      "exit_code": 2,
+      "message": "usage: filter_records.py [-h] [--package-root PACKAGE_ROOT] [--input INPUT]\n                         [--manufacturer MANUFACTURER] [--product PRODUCT]\n                         [--source-id SOURCE_ID] [--stackup-id STACKUP_ID]\n                         [--dataset-role {material_published_parameter,fabricator_published_parameter}]\n                         [--review-flag {dk_df_frequency_not_shared,dk_point_frequency_missing,fabricator_planning_observation_not_as_built_measurement,group_thickness_not_individual_ply_thickness,individual_layer_thickness_missing,invalid_nonpositive_source_ply_value,local_source_file_unavailable,measurement_axis_missing,method_scope_note_present,nonunit_relative_permeability,published_source_conflict,scalar_df_missing,scalar_dk_missing,source_specific_quality_flags,test_method_missing,value_comparison_qualifier_present}]\n                         [--frequency-ghz FREQUENCY_GHZ]\n                         [--include-frequency-ranges]\n                         [--allow-missing-frequency] [--scalar-dk-only]\n                         --output OUTPUT\nfilter_records.py: error: Frequency must be finite and positive."
+    },
+    {
+      "arguments": [
+        "--frequency-ghz",
+        "0",
+        "--output",
+        "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\filter-check-b5btqi7g\\bad_0.csv"
+      ],
+      "expected_success": false,
+      "exit_code": 2,
+      "message": "usage: filter_records.py [-h] [--package-root PACKAGE_ROOT] [--input INPUT]\n                         [--manufacturer MANUFACTURER] [--product PRODUCT]\n                         [--source-id SOURCE_ID] [--stackup-id STACKUP_ID]\n                         [--dataset-role {material_published_parameter,fabricator_published_parameter}]\n                         [--review-flag {dk_df_frequency_not_shared,dk_point_frequency_missing,fabricator_planning_observation_not_as_built_measurement,group_thickness_not_individual_ply_thickness,individual_layer_thickness_missing,invalid_nonpositive_source_ply_value,local_source_file_unavailable,measurement_axis_missing,method_scope_note_present,nonunit_relative_permeability,published_source_conflict,scalar_df_missing,scalar_dk_missing,source_specific_quality_flags,test_method_missing,value_comparison_qualifier_present}]\n                         [--frequency-ghz FREQUENCY_GHZ]\n                         [--include-frequency-ranges]\n                         [--allow-missing-frequency] [--scalar-dk-only]\n                         --output OUTPUT\nfilter_records.py: error: Frequency must be finite and positive."
+    },
+    {
+      "arguments": [
+        "--frequency-ghz",
+        "-1",
+        "--output",
+        "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\filter-check-b5btqi7g\\bad_-1.csv"
+      ],
+      "expected_success": false,
+      "exit_code": 2,
+      "message": "usage: filter_records.py [-h] [--package-root PACKAGE_ROOT] [--input INPUT]\n                         [--manufacturer MANUFACTURER] [--product PRODUCT]\n                         [--source-id SOURCE_ID] [--stackup-id STACKUP_ID]\n                         [--dataset-role {material_published_parameter,fabricator_published_parameter}]\n                         [--review-flag {dk_df_frequency_not_shared,dk_point_frequency_missing,fabricator_planning_observation_not_as_built_measurement,group_thickness_not_individual_ply_thickness,individual_layer_thickness_missing,invalid_nonpositive_source_ply_value,local_source_file_unavailable,measurement_axis_missing,method_scope_note_present,nonunit_relative_permeability,published_source_conflict,scalar_df_missing,scalar_dk_missing,source_specific_quality_flags,test_method_missing,value_comparison_qualifier_present}]\n                         [--frequency-ghz FREQUENCY_GHZ]\n                         [--include-frequency-ranges]\n                         [--allow-missing-frequency] [--scalar-dk-only]\n                         --output OUTPUT\nfilter_records.py: error: Frequency must be finite and positive."
+    },
+    {
+      "arguments": [
+        "--manufacturer",
+        "Rogers",
+        "--output",
+        "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\00_REF\\PCB RF ANT\\05_PCB_Dielectric_Data_2026\\catalog\\rejected-test-output.csv"
+      ],
+      "expected_success": false,
+      "exit_code": 1,
+      "message": "Export failed: Outputs inside the package are allowed only under exports/"
+    },
+    {
+      "arguments": [
+        "--package-root",
+        "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\filter-check-b5btqi7g\\fixture",
+        "--output",
+        "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\filter-check-b5btqi7g\\tampered.jsonl"
+      ],
+      "expected_success": false,
+      "exit_code": 1,
+      "message": "Export failed: Partition bytes or SHA-256 mismatch: data/observations/Test.jsonl"
+    },
+    {
+      "arguments": [
+        "--package-root",
+        "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\filter-check-b5btqi7g\\fixture",
+        "--output",
+        "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\filter-check-b5btqi7g\\fixture\\exports\\new.jsonl"
+      ],
+      "expected_success": true,
+      "exit_code": 0,
+      "message": "Exported 1 published observations to C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-review\\filter-check-b5btqi7g\\fixture\\exports\\new.jsonl. No solver readiness is granted."
+    }
+  ],
+  "facts": {
+    "rogers_4350b_10ghz": 3,
+    "jlc_invalid_ply": 226,
+    "pcbway_group": 999,
+    "exact_2_4ghz": 0,
+    "exact_2_5ghz": 120,
+    "csv_columns": 142,
+    "atomic_failure_no_output": true,
+    "jsonl_original_null_list_boolean_preserved": true
+  }
+}

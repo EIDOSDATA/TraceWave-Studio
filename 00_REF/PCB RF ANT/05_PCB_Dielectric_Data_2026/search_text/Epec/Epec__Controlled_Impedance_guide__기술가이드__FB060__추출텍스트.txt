@@ -1,0 +1,199 @@
+ Controlled Impedance:
+Why do I need to know more?
+
+       Technical Webinar
+
+
+
+
+          DELIVERING QUALITY SINCE 1952.
+                                               Controlled Impedance:
+                                         Why do I need to know more?
+
+   The Basics:
+
+    Electrical Impedance: A measure of opposition to time-varying electric
+    current in an electric circuit.
+
+    Simplified: To slow down an electrical circuit.
+
+    Why: As PCB designs and components become more complicated, smaller
+    and faster, it becomes necessary to slow certain circuits down, allowing
+    specific functions of components to perform before others.
+
+    The increase in processor clock speed and component switching speed on
+    modern PCB’s means that the interconnecting paths (traces) can no longer be
+    regarded as simple conductors.
+
+                     Every circuit on a PCB has impedance.
+                      The goal is to control the impedance.
+
+                                                                                  2
+                                                   Controlled Impedance:
+                                             Why do I need to know more?
+
+   A Very Simple Example:
+    Electrical Impedance: A measure of opposition to time-varying electric current in an
+    electric circuit.
+
+     The component must first
+     add “A” to “B”, then
+     add the total to “C”.
+
+
+
+
+     The Problem: “A”, “B” and “C” signals all reach the component at the same time.
+
+     The Solution: Apply Impedance to Circuit “C” to slow the signal enough for the
+     component to first calculate (“A”+B”).
+
+                                                                                           3
+                                               Controlled Impedance:
+                                         Why do I need to know more?
+
+   Results:
+    Impedance (Zo) is measured in Ohms (Ω), however it should not be confused
+    with resistance. You cannot measure impedance with an ohmmeter.
+    Target impedance is usually between 25 Ω, and 125 Ω.
+    Typical result of a 75 Ω controlled impedance on a .007” trace is a signal
+    slowdown of approximately 166 ps/in.
+
+
+
+
+                                                                                 4
+                                                  Controlled Impedance:
+                                            Why do I need to know more?
+
+   3 Basic Factors to Impedance:
+    Physical characteristics of impedance trace:
+     – Height of Trace (T1)
+     – Width of Trace at Top (W2)
+     – Width of Trace at Bottom (W1)
+     – Distance to other Copper Features (H1)
+     – Dielectric Constant of PCB Material (Er1)
+
+
+
+
+    Other factors can be involved, however they have much less affect on
+    Impedance such as Speed of circuit, environment, etc…
+
+
+
+
+                                                                           5
+                                                   Controlled Impedance:
+                                             Why do I need to know more?
+
+   Dk (Er) Discussion:
+     – Dielectric Constant (Dk or Er) is the relative permittivity of a material
+     – All PCB materials (cores, prepreg, soldermask) have a Dk value
+     – Values typically range between 3.5 to 5.9
+     – DK values can vary from factory to factory, material to material, even the factory in
+       which the material was manufactured
+     – Resin content of material is the largest factor to Dk
+     – Factories must constantly maintain their material Dk values through testing
+       feedback
+
+
+
+
+                                                                                               6
+                                     Controlled Impedance:
+                               Why do I need to know more?
+
+   Simple Impedance Models:
+
+
+
+
+                                                         7
+                                          Controlled Impedance:
+                                    Why do I need to know more?
+
+   Complicated Impedance Models:
+
+    Some PCB’s may have multiple Impedance requirements!
+    More Impedance requirements mean more impedance coupons, which can
+    decrease the amount of usable panel space for PCB’s.
+
+
+
+
+                                                                         8
+                                             Controlled Impedance:
+                                       Why do I need to know more?
+
+   Testing / Modeling:
+    Impedance Modeling Software: Polar, Apsim
+    Impedance Testing Hardware: Polar, Omicron, others
+
+
+
+
+    Testing is general done on coupons only.
+    Coupons are designed for specific hardware.
+
+
+                                                     Failed impedance coupons do
+                                                     not mean failed boards!!!
+
+                                                     Ask the factory to section the
+                                                     board and verify results
+                                                     Through their impedance
+                                                     Modeling software.
+
+                                                                                      9
+                                                                 The Difference is
+                                                               Quality and Delivery
+
+1.   Quicker Delivery - Epec's technology infrastructure and people, including the
+     Asian and US based operations and engineering teams, enable jobs to get started the
+     same day the order data is electronically received by our factory.
+
+2.   Accurate Information - Epec's on-site personnel provide accurate daily Work
+     In Process reports so customers can receive immediate order status information, along
+     with in person verification of all daily reports by Epec staff.
+
+3.   Better Quality - Epec ensures higher levels of quality through three key additional
+     processes. On-site QA inspectors at each facility provide an additional audit before it
+     leaves Asia, Epec maintains dual UL approval at each facility with quarterly audits, and
+     perform QA audits at our headquarters in Boston, MA.
+
+4.   Flexibility - Each of our manufacturing facilities have been selected for their
+     best-in-class niche product and delivery solutions, ensuring our optimal facility is
+     building every order.
+
+
+
+
+                                                                                            10
+   If you require additional information please contact us with any
+    questions or requests.
+
+    North American Headquarters
+    174 Duchaine Blvd.
+    New Bedford, MA 02745
+    Tel: (508) 995-5171
+    Fax: (508) 998-8694
+
+    Contact Us By Email:
+    Sales               sales@epectec.com
+    Quotes              quoting@epectec.com
+    Engineering         engineering@epectec.com
+
+    Visit Our Website For More Information
+    www.epectec.com
+
+
+    Stay Connected with Epec Engineered Technologies
+    Join our Social Community and keep in touch with all our latest technology investments, current news, upcoming
+    events, and promotions. Visit our Social Media Websites for more information.
+
+
+
+
+                                                                                                                     11
+

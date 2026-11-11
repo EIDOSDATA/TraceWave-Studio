@@ -1,0 +1,250 @@
+    PROCESSING GUIDELINES
+
+
+
+              Laminate: Synamic 6N
+              Prepreg: Synamic 6NB
+
+
+
+Ultra Low Loss & Heat Resistance Multilayer Material
+
+
+
+
+                               CN-PG-2005-05-Synamic 6N-Synamic 6NB
+    THE PREFACE
+    This product uses IPC-4101E Standards as a reference, and Shengyi make some changes according to the
+    product characteristics of the actual situation as to make it more suitable for the Shengyi Synamic
+    6N / Synamic 6NB product use.
+
+
+
+1. Storage Condition
+
+1.1 Laminate core
+1.1.1 Store Condition
+      Pack with original forms on the platform or on the appropriate frame, avoiding stress, prevent sheet
+       deformation caused by inappropriate storage which may impact the subsequent PCB processes.
+
+1.1.2 Storage Environment
+      Sheets should be stored in ventilated, dry, at room temperature under environment control, avoiding
+       direct sunlight, rain and avoid erosion of corrosive gas (stored environment directly affect the quality of
+       material).
+
+      For double-sided copper-clad boards (cores), to minimize shifting as to avoid scratching the surface of
+       the product, with a suitable environment and condition for storage, the shelf life can be up to two years.
+
+1.1.3 Operation Manuel
+      Wear clean gloves and carefully operate the cores. Copper foil collisions, sliding will cause damage of
+       the cores.
+
+      Bare hands action will cause contamination to copper foil surface. These defects are likely to cause
+       adverse effects.
+
+1.2 Prepreg
+
+1.2.1 Storage Condition
+
+      Levels stored in original packaging form, avoiding stress, prevent sheet deformation caused by
+       inappropriate storage condition.
+
+      Leftover or cut Prepregs should pack and seal with vacuum foil packaging and put it back in the original
+       packaging tray.
+
+1.2.2 Storage Environment
+      Prepreg sealed packaging should be stored in free of UV irradiation environment, specific storage
+       conditions and the storage period as follows:
+
+           Condition 1. At a temperature of <5℃, storage period for 6 months.
+
+           Condition 2. At a temperature of <23℃, relative humidity <50% when stored, storage period for 3
+            months
+
+      Note: Relative humidity affect prepreg quality the most, pay special attention on weather (conduct
+       dehumidification process is necessary for wet weather).
+
+1.2.3 Cutting Guideline
+      Cutting the best way is left to professional staff wear clean gloves during operation, prevent the pollution
+       of prepreg surface; operation must be careful to prevent prepreg wrinkle or crack, to avoid affect
+                                                                      CN-PG-2005-05-Synamic 6N-Synamic 6NB
+    prepregs.
+
+1.2.4 Prepregs Use Recommendations
+   If moving from a low temperature storage space to a higher temperature or ambient temperature storage
+    space, it must go through the temperature settle process, (8 - 24 hours, settle time is varies depending
+    on temperature variation in between two storage conditions). Open package after temperature settle
+    process is completed as to avoid affecting the quality and adhesion of prepregs.
+
+   For PP package stored in above conditions 1 or 2, after open is required to complete the use as soon as
+    possible, for packages opened more than 3 day, it must re-inspect and insure quality before use.
+
+   Leftover or cut prepregs should pack and seal with vacuum foil packaging and put it back in the above
+    stated storage condition 1 or 2.
+
+
+
+
+2. PCB Process Recommendations
+
+2.1 Baking on the cores should be carried out before use to eliminate internal stress. Baking
+    conditions should be 150~160℃/4~6 hours or 170~180℃/2~4 hours;
+
+2.2 After Brown Oxide treatment, it is recommended to bake 120℃/60-120min as to remove any
+    surface moisture before press lamination process. Material should be used within 4 hours after
+    baking.
+
+2.3 Avoid turn over actions in prepreg and core stacking, to reduce possible deformation.
+
+2.4 Press Recommendations
+
+2.4.1 Vacuum press.
+
+2.4.2 Press lamination suggested heating rate 2.5~4℃/min (suggested 3.0~3.5℃/min), material
+      temperatures 80~140℃ in the region.
+
+2.4.3 Lamination pressure setting, outer material temperature at about 80~100℃ when increasing pressure
+      (Note: The full pressure to use is 400-500PSI).
+
+2.4.4 Curing material temperature above 210℃, and keep at this temperature at above 120min. After curing,
+      cooling rate should be less than 2.5℃/min, material’s temperature for die open should be less than
+      130℃.
+
+2.4.5 If used dummy layer without copper foil or single sided board in multilayer lamination, please roughen
+      the surface of the dummy board or single-sided board, to avoid weak adhesive in bonding strength.
+
+2.4.6 The net dimensional movement of laminate after etching, oxidation and lamination processes is
+      typically shrinkage. This shrinkage is due to the relaxation of stresses that were induced when the
+      laminate was pressed as well as shrinkage contribution from the resin system and glass fabric.
+      Synamic6N/Synamic6NB is reinforced by low Dk Glass, whose shrinkage is larger than the CCLs with
+      normal E-glass yet. The specific data table as follow:
+
+                                                                                Shrinkage Ratio (‰)
+         Configuration       Copper thickness           Direction
+                                                                            E-glass           Low Dk-glass
+
+                                                                    CN-PG-2005-05-Synamic 6N-Synamic 6NB
+                                                           Warp             0.10—0.30            0.80—1.20
+           Signal/Signal             1oz/1oz
+                                                           Weft             0.10—0.30            0.10—0.30
+                                                           Warp             0.10—0.30            0.80—1.20
+          Signal/Ground              1oz/1oz
+                                                           Weft             0.10—0.30            0.10—0.30
+                                                           Warp             0.10—0.30            0.80—1.20
+          Ground/Ground              1oz/1oz
+                                                           Weft             0.10—0.30            0.10—0.30
+
+
+2.5 Drilling
+
+2.5.1 New drilling bit is recommended to use when drilling.
+
+2.5.2 After drilling, it’s recommend to bake for 3-4 hours at 190℃. Avoid direct contact with heat.
+
+2.5.3 Laser drilling is acceptable, whose specific parameters should be adjusted according to different
+      devices.
+
+2.5.4 LE aluminum or bakelite cushion board is recommended to help.
+
+                               Table 1: Drilling parameters (reference only)
+
+         Diameter           Infeed             Spindle Speed      Retract Rate      Hit counts        Chip load
+   mm               inch       ipm                 krpm               ipm               H              mil/rev
+  0.20           0.0078         67                  95                500               500             0.71
+  0.25           0.0097         71                  95                500               500             0.75
+  0.30           0.0117         76                  95                500               500             0.80
+  0.35           0.0136         81                  95                500               500             0.85
+  0.40           0.0156        105                  63                500               500             1.67
+  0.45           0.0175        110                  60                500               500             1.83
+  0.50           0.0195        125                  62               1000               500             2.02
+  0.55           0.0214        127                  60               1000               500             2.12
+  0.60           0.0233        130                  58               1000               500             2.24
+  0.65           0.0253        125                  55               1000               500             2.27
+  0.70           0.0272        125                  53               1000               500             2.36
+  0.75           0.0292        125                  51               1000               500             2.45
+  0.80           0.0311        125                  50               1000               500             2.50
+  0.85           0.0331        124                  49               1000               500             2.53
+  0.90           0.0350        123                  48               1000               500             2.56
+  0.95           0.0370        122                  47               1000               500             2.60
+  1.00           0.0389        121                  46               1000               500             2.63
+  1.05           0.0409        121                  45               1000               500             2.69
+  1.10           0.0428        120                  44               1000               500             2.73
+  1.30           0.0506        120                  35               1000               500             3.43
+  1.50           0.0584        115                  32               1000               500             3.59
+  1.70           0.0661        100                  28               1000               500             3.57
+  1.90           0.0739         90                  23               1000               500             3.91
+
+Note: Drilling parameters should be adjusted depending on hole size, layer count, panel thickness, stack
+
+                                                                   CN-PG-2005-05-Synamic 6N-Synamic 6NB
+count and stack height etc.
+
+2.6 Desmear
+
+   Desmear rate of this material is smaller than most of the existing lead-free compatible FR-4 materials. To
+    achieve a better desmearing, it’s recommended to use the following conditions:
+
+   Use plasma at first  followed with ultrasonic rinse  add chemical demear after.
+
+   On the premise of ensuring the desmear effect, the total demear rate is recommended to be controlled
+    less than 0.4mg/cm2.
+
+                                Table 2: Plasma parameters (Refence only)
+
+                                                                                     Flow
+                        Gas Flow Rate（L/min）                     Time                        Pressure
+                                                      Watts                Temp      Rate
+                                                                 (min)
+           Parameter      O2       N2        CF4                                     (SLM)     mTorr
+
+              Seg 1      2.25     0.25      0.00      9000       45.0      80.0       2.50      250
+
+              Seg 2      2.46     0.24      0.30      6500       15.0      105.0      3.00      220
+
+              Seg 3      2.50     0.00      0.00      5000        5.0      100.0      2.50      250
+
+
+2.7 Punching is not suitable for PCB profiling process, routing is recommended with reduced routing
+    speed. Try to avoid sudden vibration during routing process which may cause board edge
+    detonation.
+
+2.8 Baking is recommended before packing, condition 125℃/4~6h.
+
+2.9 Vacuum sealed with aluminum plastic pack.
+
+
+
+3. Soldering
+   For finished PCBs, basing on the differences of PCB constructions, the packing and storage condition,
+    the shelf life should change accordingly. Normal shelf life should be finishing assembly within 3 months.
+    After expiration of shelf life, baking is recommended and the condition should be 120-140℃/4-6 hours.
+
+   Applicable for regular lead-free soldering.
+
+
+
+
+4. Design Recommendations
+   Due to Fiberglass structure and weft density differences, when manufacturing it’s recommended to use
+    symmetrical PCB construction stackup.
+
+   Selected dielectrics and to the adjacent cores must be compatible in bonding, weft and grain directions,
+    as to avoid warpage and deformations.
+
+   A different resin system with a large variation in resin density, therefore, even with the same resin
+    content (RC) if a different resin, the dielectric thickness will be varies. A specific resin content (RC) for an
+
+                                                                     CN-PG-2005-05-Synamic 6N-Synamic 6NB
+    actual dielectric thickness should consult with Technical Service Engineer.
+
+
+
+   During using the Shengyi Synamic 6N/Synamic 6NB material, if you have any questions and suggestions,
+    please feel free to contact Shengyi, and Shengyi will provide you with an efficient and effective technical
+    services.
+
+
+
+
+                                                                  CN-PG-2005-05-Synamic 6N-Synamic 6NB
+

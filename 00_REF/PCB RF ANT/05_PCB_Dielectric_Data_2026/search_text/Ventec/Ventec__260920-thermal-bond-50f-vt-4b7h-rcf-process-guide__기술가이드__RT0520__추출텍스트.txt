@@ -1,0 +1,240 @@
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+ thermal-bond RCF                                                                           UL Approval: E214381         Version: 20/09/2026
+
+ PROCESS GUIDE
+ thermal-bond 5.0F (VT-4B7H RCF)
+
+
+
+ Precautions in Handling
+ •      Storage Condition & Shelf Life
+
+                                                                                                   RCF
+     Storage                    Temperature                   Below 23ºC (73ºF)                           Below 5ºC (41ºF)
+     Condition                  Relative Humidity                 Below 55%                                       /
+     Shelf Life                                                        /                                      3 Months
+
+ •      The thermal management prepreg should be taken care of when handling and wearing rubber gloves to
+        prevent contamination is strongly recommended during processing.
+
+
+ Product Handling & Press Process Flow
+
+
+
+
+ 1. Please put RCF on a clean and flat surface with the PET film side up in cleanroom.
+ 2. Please pay more attention to the alignment of RCF colloid edge with the substrate or metal plate.
+ 3. Start from one corner when peeling off the PET film from resin.
+ 4. Then put copper foil or another piece of RCF on the surface.
+ 5. Avoid RCF sticking resulting from stacking during pre‑stacking of multiple PCBs
+    or prolonged standing time.
+ 6. Unused RCF shall be vacuum‑sealed and stored in cold storage.
+    Allow temperature acclimatization before reuse.
+
+
+ Disclaimer:
+ > The information and data contained in this technical literature is based on data and knowledge correct at the time of publishing/
+      printing and is believed to be accurate and is offered in good faith for the benefit of the user. The user should make his own tests to
+      verify the suitability of this product for any application before its use. All data are typical values only and subject to change without
+      notice.
+
+                                                                                                                                     Page 1 of 5
+ www.venteclaminates.com                                                                                                      Published on: 20/09/2026
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+ thermal-bond RCF                                                         UL Approval: E214381     Version: 20/09/2026
+
+ PROCESS GUIDE
+ thermal-bond 5.0F (VT-4B7H RCF)
+
+
+ Press Parameters
+ 1. Heating rate (Rate of Rise) of material [Material Temperature]: 1.5~3.5ºC/min (2.7~5.4ºF/min).
+ 2. Curing Temperature & Time: >60min at more than 180ºC (356ºF) [Material Temperature].
+ 3. Full Pressure: ≥300psi, increase properly if Aluminum ≥2mm
+    It’s a guideline that full pressure is started between 70~100ºC of material temperature.
+ 4. Vacuuming should be continued until over 140ºC (284ºF) [Material Temperature].
+ 5. Cold Press condition: Keep Plate @ Room Temperature by water; Pressure: 100psi; Keep Time: 60minutes
+
+                  Product Name                        Product Code                       Full Pressure (psi)
+                   VT-4B7H RCF                            FT-R                                   ≥450
+                   VT-4B7H RCF                            FT-H                                   ≥300
+
+
+
+
+ Baking Recommendation During PCB Process
+
+                           Process                   Purpose              Cycle                  Potential Risk
+  Before HASL, PCB should be separate (not
+  stacked) and supported in a rack for this         To eliminate                         Potential for measling, blister
+                                                                      2 hours @ 125ºC
+  process. HASL process should be finished within    moisture                                 and de-lamination.
+  24 hours after baking finishing.
+  Before shipment, if PCB stored for >1 month,      To eliminate                         Potential for measling, blister
+                                                                     2~4 hours @ 125ºC
+  PCB should be baked before packaging.              moisture                                 and de-lamination.
+
+
+                                                                                                               Page 2 of 5
+ www.venteclaminates.com                                                                                Published on: 20/09/2026
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+ thermal-bond RCF                                                          UL Approval: E214381    Version: 20/09/2026
+
+ PROCESS GUIDE
+ thermal-bond 5.0F (VT-4B7H RCF)
+
+
+
+ Typical Drilling Condition
+
+ Without Metal Base (only for reference)
+        Diameter                           Spindle Speed       Feed Rate           Retract Rate
+                           Stack Height                                                                 Hit Count
+          (mm)                                (KRPM)            (mm/s)               (mm/s)
+        0.15~0.30          1 PNL/stack       125~155             17~33               200~250                1200
+        0.35~0.40          1 PNL/stack        95~110             40~47                 250                  1200
+        0.55~1.00          1 PNL/stack        60~88                47                  330                  1200
+          >1.00            1 PNL/stack        50~70              30~47                 300              800~1200
+
+
+ •    Carbide drill bit is prone to excessive wear, preferably Jinzhou SHD/MDC series drill bit
+ •    Aluminum and Phenolic Board Covers are recommended
+
+
+ With Metal Base (only for reference)
+        Diameter                           Spindle Speed       Feed Rate           Retract Rate
+                           Stack Height                                                                 Hit Count
+          (mm)                                (KRPM)            (mm/s)               (mm/s)
+        0.25~0.30          1 PNL/stack          40               25~30               100~200                800
+         1.0~2.5           1 PNL/stack        36~39              35~50               250~450             200~500
+           >2.5            1 PNL/stack        30~37              30~40               200~300             200~500
+
+
+ •    Carbide drill bit is prone to excessive wear, preferably Jinzhou SHD/MDC series drill bit.
+ •    Recommend Aluminum and Phenolic Board Covers
+
+
+
+
+                                                                                                             Page 3 of 5
+ www.venteclaminates.com                                                                              Published on: 20/09/2026
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+ thermal-bond RCF                                                                            UL Approval: E214381       Version: 20/09/2026
+
+ PROCESS GUIDE
+ thermal-bond 5.0F (VT-4B7H RCF)
+
+
+
+ Image Transfer
+       Process                                                             Recommendation
+                           The lamination speed maybe needs slower than standard FR4 to have metal substrate approach proper
+       Dry Film
+                           lamination temperature.
+                           Both aluminum and copper could be coated to protect aluminum during etching process. Follow instruction
+       Wet Film
+                           details of manufacturers
+                           Masking or film protection on aluminum is better during developing. Follow chemical manufacturer’s
+      Developing
+                           recommendation.
+
+
+ •    Dry film and wet film are both applicable process on aluminum base laminate.
+ •    Before filming, cleaning of panel surface is necessary.
+ •    Wet film process option
+      • Curtain
+      • Screen
+
+ Etching / Stripping
+        Process                                                             Recommendation
+                           Alkaline or acid solution (cupric chloride, ferric chloride) are both applicable.
+        Etching            Alkaline etching is faster than acid etching and is fit for below 3oz copper. The acid etching performs well on
+                           preventing of undercut and over etch.
+       Stripping           Apply sodium hydroxide solution to remove etch resist and conveying process is preferred.
+
+
+ Solder Masking
+        Process                                                             Recommendation
+     Solder masking        Control the thickness between 1~2mil or depends on boards design
+                           Follow manufacturer’s recommendation on the setting of temperature and time. Having a filter system in oven
+      Pre-heating
+                           is preferred.
+       Developing          Solution concentration, temperature and spray pressure need to be controlled.
+         Curing            Follow the details of temperature and time of manufacturer.
+
+
+ •    Roughness of board surface is necessary to get better adhesion between boards and solder mask.
+ •    Both thermal cured and UV cured solder mask are applicable.
+ •    Masking options
+      • Screen Printing
+      • Curtain Coating
+      • Spray Coating
+      • Roller Coating
+                                                                                                                                   Page 4 of 5
+ www.venteclaminates.com                                                                                                    Published on: 20/09/2026
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+ thermal-bond RCF                                                                         UL Approval: E214381         Version: 20/09/2026
+
+ PROCESS GUIDE
+ thermal-bond 5.0F (VT-4B7H RCF)
+
+
+ Surface Finish Options
+         Process                                                          Recommendation
+          HASL             The most popular surface treatment method. Peel off the protective film from aluminum before HASL.
+          OSP              Follow details of manufacturer’s recommendation.
+                           Popular in wire bonding application. Follow chemistry recommendation to avoid defects of black pad
+          ENIG
+                           and brickle gold.
+     Silver Immersion      Silver immersion has a better soldering ability but has disadvantage of silver migration.
+
+
+ Routing
+           Diameter                   Spindle Speed                 Feed Rate                 Retract Rate              Travel Speed
+             (mm)                        (KRPM)                       (IPM)                       (IPM)                   (mm/sec)
+               0.8                          37                        10~15                        30                       12~15
+               1.0                          37                        10~15                        30                       10~12
+               1.2                          37                        12~18                        30                        8~10
+               1.5                          36                        15~20                        30                        5~8
+               2.0                          34                        15~20                        30                        3~5
+
+
+ •     Backup board – Phenolic is preferred.
+ •     Tools material – Tungsten or Diamond carbite with 2 flutes is preferred
+ •     Stack height – 1 panel / stack
+ •     Consult your tool supplier for more advice.
+
+ Punching
+ •     Alloy side is upwards when punching.
+ •     Tonnage – 120T and above is preferred.
+ •     “D1&D2” should be greater than board thickness.
+ •     “D3” should be greater than board thickness + 0.5mm.
+ •     Consult your tool supplier for more advice.
+
+
+
+
+                                                                                                                                 Page 5 of 5
+ www.venteclaminates.com                                                                                                  Published on: 20/09/2026
+

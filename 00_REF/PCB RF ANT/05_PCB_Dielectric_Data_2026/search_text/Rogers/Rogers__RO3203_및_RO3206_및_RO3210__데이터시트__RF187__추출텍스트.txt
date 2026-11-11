@@ -1,0 +1,137 @@
+                                                                                                         Data Sheet
+
+
+RO3200™ Series Circuit Materials
+RO3203™, RO3206™ and RO3210™
+High Frequency Circuit Laminates
+                                                                                               Features and Benefits
+                                                                                               Woven glass reinforcement
+                                                                                                 • Improves rigidity for easier handling
+                                                                                               Uniform electrical and mechanical
+                                                                                               performance
+                                                                                                 • Ideal for complex multi-layer high
+                                                                                                    frequency structures
+                                                                                               Low dielectric loss
+                                                                                                 • High frequency performance
+                                                                                                    (RO3203™ laminate) can be used in
+RO3203™ , RO3206™ and RO3210™ high frequency circuit materials are ceramic-filled lami-             applications exceeding 20 GHz
+                                                                                               Low in-plane expansion coefficient
+nates reinforced with woven fiberglass. These materials are engineered to offer excep-         (matched to copper)
+tional electrical performance and mechanical stability at competitive prices. The RO3200™        • Suitable for use with epoxy multi-
+                                                                                                    layer board hybrid designs
+series high frequency materials were designed as an extension of the RO3000® series high         • Reliable surface mounted assemblies
+frequency circuit materials with one distinguishing characteristic - improved mechanical       Excellent dimensional stability
+                                                                                                 • High production yields
+stability.                                                                                     Economically priced
+                                                                                                 • Cost effective volume manufacturing
+                                                                                               Surface smoothness
+The dielectric constant of RO3203 high frequency circuit materials is 3.02. This, along with
+                                                                                                 • Allows for finer line etching
+a dissipation factor of 0.0016, extends the useful frequency range beyond 40 GHz. The               tolerances
+
+dielectric constant for RO3206 laminate is 6.15 and 10.2 for RO3210 laminate. The dissipa-
+                                                                                               Some Typical Applications:
+tion factor for RO3206 and RO3210 laminates is 0.0027.                                           • Automotive collision avoidance
+                                                                                                   systems
+                                                                                                 • Automotive global positions satellite
+RO3200 series laminates combine the surface smoothness of a non-woven PTFE laminate,               antennas
+                                                                                                 • Wireless telecommunications
+for finer line etching tolerances, with the rigidity of a woven-glass PTFE laminate. These         systems
+materials can be fabricated into printed circuit boards using standard PTFE circuit board        • Microstrip patch antennas for
+                                                                                                   wireless communications
+processing techniques as described in the application note, “Fabrication Guidelines for          • Direct broadcast satellites
+RO3000 Series High Frequency Circuit Materials.”                                                 • Datalink on cable systems
+                                                                                                 • Remote meter readers
+                                                                                                 • Power backplanes
+RO3200 series laminates are manufactured under an ISO 9002 certified quality system.             • LMDS and wireless broadband
+                                                                                                 • Base station infrastructure
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226                                                                                     Page 1 of 2
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+                                                               Typical Value(1)
+               Property                                                                                      Direction                  Unit                Condition                   Test Method
+                                                 RO3203              RO3206              RO3210
+                                                                                                                                                                                         IPC-TM-650
+ Dielectric Constant, er
+                                                3.02± 0.04          6.15± 0.15          10.2± 0.50                  Z                      -                10 GHz 23°C                    2.5.5.5
+ Process
+                                                                                                                                                                                      Clamped Stripline
+                                                                                                                                                                                          Differential
+  Dielectric Constant, er
+ [2]
+                                                    3.02                  6.6                10.8                   Z                      -              8 GHz - 40 GHz                 Phase Length
+ Design
+                                                                                                                                                                                           Method
+                                                                                                                                                                                           IPC-TM-650
+ Dissipation Factor, tan d                         0.0016              0.0027              0.0027                   Z                      -                10 GHz 23°C
+                                                                                                                                                                                             2.5.5.5
+                                                                                                                                                                                           IPC-TM-650
+ Thermal Coefficient of er                           -13                -212                 -459                   Z                 ppm/°C              10 GHz 0-100°C
+                                                                                                                                                                                             2.5.5.5
+ Dimensional Stability                               0.8                  0.8                 0.8                  X,Y                 mm/m                    COND A                     ASTM D257
+ Volume Resistivity                                  107                 103                  103                                     MW•cm                    COND A                      IPC 2.5.17.1
+ Surface Resistivity                                 10  7
+                                                                         10  3
+                                                                                              10 3
+                                                                                                                                         MW                    COND A                      IPC 2.5.17.1
+                                                     409                 462                 579                  MD
+ Tensile Modulus                                                                                                                         kpsi                     23°C                    ASTM D638
+                                                     351                 462                 517                  CMD
+                                                                                                                                                                                           IPC-TM-650
+ Water Absorption                                   <0.1                <0.1                 <0.1                    -                    %                     D24/23
+                                                                                                                                                                                             2.6.2.1
+ Specific Heat                                      0.95                 0.85                0.79                                       J/g/K                                              Calculated
+
+ Thermal Conductivity                               0.48                 0.67                0.81                    -                 W/m/K                      80°C                     ASTM C518
+
+ Coefficient of Thermal                               13                  13                  13                   X,Y,
+                                                                                                                                      ppm/°C               23°C/50% RH                IPC-TM-650 2.4.41
+ Expansion (-55 to 288 °C)                            58                  34                  34                    Z
+ Td                                                  500                 500                 500                                          °C                      TGA                     ASTM D3850
+ Color                                               Tan                 Tan             Off White
+ Density                                             2.1                  2.7                 3.0                                    gm/cm3
+                                                                                                                                                             1 oz. EDC
+ Copper Peel Strength                               10.2                 10.7                11.0                                         pli               After Solder                  IPC-TM-2.4.8
+                                                                                                                                                               Float
+
+ Flammability                                        V-0                 V-0                  V-0                                                                                              UL 94
+
+ Lead Free Process
+                                                     YES                 YES                 YES
+ Compatible
+NOTES:
+[1] References: Internal T.R.’s 1430, 2224, 2854. Tests at 23°C unless otherwise noted. Typical values are a representation of an average value for the population of the
+property. For specification values contact Rogers Corporation.
+[2] The design DK is an average number from several different tested lots of material and on the most common thickness/s. If more detailed information is required
+please contact Rogers Corporation or refer to Rogers’ technical reports on the Rogers Technology Support Hub at http://www.rogerscorp.com/techub.
+
+ Standard Thicknesses                                    Standard Panel Sizes                               Standard Claddings
+ RO3203:                                                 12” X 18” (305 X 457mm)                            RO3203/RO3206/RO3210:
+ 0.010” (0.25mm) +/- 0.0007”                             24” X 18” (610 X 457mm)                            Electrodeposited Copper Foil
+ 0.020” (0.51mm) +/- 0.0010”                                                                                ½ oz. (18µm) HH/HH
+ 0.030” (0.76mm) +/- 0.0015”                             *Additional panel sizes available                  1 oz. (35µm) H1/H1
+ 0.060” (1.52mm) +/- 0.0030”
+                                                                                                            *Additional claddings and cladding weights, such as reverse treated ED and
+ RO3206/RO3210:
+                                                                                                            resistive foil are available
+ 0.025” (0.64mm) +/- 0.0010”
+ 0.050” (1.28mm) +/- 0.0020”
+                                                                                                            *Contact Customer Service or Sales Engineering to inquire about additional
+                                                                                                            available product configurations
+ *Additional non-standard thicknesses
+ available from 0.010” - 0.250” in varying
+ increments
+
+The information in this data sheet is intended to assist you in designing with Rogers’ circuit materials. It is not intended to and does not create any warranties express or implied, including any warranty of
+merchantability or fitness for a particular purpose or that the results shown on this data sheet will be achieved by a user for a particular purpose. The user should determine the suitability of Rogers’ circuit
+materials for each application.
+
+The Rogers’ logo, RO3200, RO3203, RO3206, RO3210 and RO3000 are trademarks of Rogers Corporation or one of its subsidiaries.
+© 2022 Rogers Corporation, Printed in U.S.A., All rights reserved. Revised 1591 080122 Publication 92-109
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com                                                                                                                                               Page 2 of 2
+

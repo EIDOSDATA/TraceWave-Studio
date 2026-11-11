@@ -1,0 +1,154 @@
+                                                                                    Advanced Circuit Materials Division
+                                                                                                100 S. Roosevelt Avenue
+                                                                                                     Chandler, AZ 85226
+                                                                                     Tel: 480-961-1382, Fax: 480-961-4533
+                                                                                            www.rogerscorporation.com
+
+     Advanced Circuit Materials
+                                                                                                             Design
+                                                                                                                   3.2.1
+    Design Equations for Broadside and Edgewise Stripline
+    Couplers
+Designers wishing to split RF power at a desired proportion between two lines may do so by designing a
+four port stripline coupler device. For this discussion a coupler shall consist of two parallel stripline transmis-
+sion lines having equal widths, equal distances from ground planes and uniform spacing between them
+running for a distance of 1/4 of a wavelength at the design frequency. Connections to both ends of the
+two lines are arranged to be out of the coupled region and to have the designed characteristic imped-
+ance (Z0). Ports 1 and 2 are on the driven line with the coupled line’s port 3 adjacent to port 2 and port 4
+adjacent to port 1. Maximum coupling is at the design frequency and is expressed as the power ratio of port
+4 to port 1 expressed in decibel (dB) units. Ideally all power incident at port 1 splits between ports 2 and 4 with
+none going to port 3. Since a dB unit is -10 log10 (power ratio) a higher coupling coefficient is represented by a
+lower positive dB value. 3 dB represents approximately an equal power split between ports 2 and 4, while
+10 dB represents a 9 to 1 split or lower coupling to the other line.
+
+As a convenience for coupled stripline device design we show formulas on the next page relating the
+characteristic impedance, Z0, and the coupling coefficient in decibels (dB) to line spacing and line width.
+The stripline broadside coupler usually used for high coupling is built from three circuit boards forming two
+signal layers between ground planes as shown in Figure 1. The stripline edgewise coupler usually used for
+lower coupling needs only two boards with a single signal layer as shown in Figure 2. We do not cover here
+the more versatile offset broadside coupler design.
+
+Certain relationships among D, Z0 and V on page 2 are common to both broadside and edgewise cou-
+plers as shown in section A. Note that for the broadside case in section B the symbols s and w represent the
+ratios of line spacing and line width to the total ground plane spacing. The total ground plane spacing is
+the sum of the thicknesses of the three boards. Note that for the edgewise case in section C the symbols w,
+s and b represent dimensional unit values for width, spacing and ground plane spacing respectively.
+
+Several assumptions are made for both cases:
+1. Thickness of the conductors is considered negligible.
+2. The coupled lines have equal width.
+3. Distance to ground plane on either side of the coupled lines is equal.
+4. Dielectric material completely fills the space between ground planes not occupied by conductor, a
+   condition achieved by bonding.
+5. All layers of dielectric material have the same relative permittivity (εr).
+
+
+
+
+'
+
+
+
+
+     Figure 1: Cross sectional view of a typical broad-     Figure 2: Cross sectional view of a typical edge-
+     side stripline coupler.                                wise stripline coupler.
+    The world runs better with Rogers.
+                                                                    where
+ Example designs for Broadside Coupled Lines
+ Substr.      outer      center line    couplingchar.               tanh-1 (i) = arc hyperbolic tangent of i
+ type                    board board width        coeff.            The ratio, w, of line width to ground plane spacing is
+ imped.                                 thk.(in.) thk.(in.)         given by [3].
+
+                                                                                                         ( kR )
+ (in.) dB     Z O, ohm
+ 5880         0.031     0.005    0.200 1.47        9.83
+                                                                           2 tanh-1(R) - s tanh-1                                      [3]
+                                                                    w=
+ 5870         0.031     0.005    0.200 1.47        9.55                    π
+ 6002         0.030     0.005    0.060 1.88       23.53             where
+ 6006         0.050     0.010    0.100 2.22       17.50
+ 6010         0.050     0.010    0.125 2.11       11.39                         k-s
+                                                                    R=         1 -s
+ TMM-3        0.060     0.015    0.200 2.42       17.36
+ TMM-4        0.060     0.015    0.200 2.42       14.80                        k
+ TMM-6        0.050     0.015    0.200 2.76       11.81             B. For edgewise couplers analytic formulas are as
+ TMM-10       0.050     0.015    0.175 2.82       10.68             in reference 2. Use w,s and b values to get values of
+                                                                    ZOe and ZOo which are then used to get D and ZO.
+ Example designs for Edge Coupled Lines
+
+                                                                                      (π2 wb )tanh ( π2 (w+s)
+ Substr.     board line        line     couplingchar.
+ type        thk.      spacing width    coeff.  imped.              keven = tanh
+                                                                                                          b
+                                                                                                              )                        [3]
+             (in.)     (in.)   (in.)    dB      Z O ohm
+ 5880        0.031     0.005   0.025    9.74    68.53               k' even=      1 - k2even                                           [4]
+ 5870        0.031     0.005   0.025    9.74    66.59
+ 6002        0.030     0.005   0.020    9.30    64.96                           30π K(k'even)                                          [2]
+ 6006        0.025     0.005   0.015    9.65    47.77               ZOeven=      εr
+                                                                                  K(keven)
+ 6010        0.025     0.005   0.010    8.89    43.78
+ TMM-3
+ TMM-4
+             0.030
+             0.030
+                       0.005
+                       0.005
+                               0.025
+                               0.020
+                                        9.95
+                                        9.30
+                                                55.47
+                                                52.50
+                                                                                 π w
+                                                                                      (
+                                                                    k odd = tanh 2 b coth        ) (      π (w+s)
+                                                                                                          2   b   )                    [6]
+ TMM-6       0.025     0.005   0.015    9.65    48.36
+ TMM-10      0.025     0.005   0.010    8.89    46.10               k' odd=                                                            [7]
+                                                                                      1-k 2odd
+A. For broadside couplers                                                      K (k'odd)
+synthetic formulas are numbered as in reference 1.                  ZOodd= 30π                                                         [5]
+                                                                            εr K (kodd)
+Given
+D     =      coupling coefficient in dB                             where
+ZO    =      overall characteristic impedance in                    w = width of lines
+      ohms
+V     =      e D/-8.68589 = voltage ratio                           s = spacing between lines
+where                                                               b = ground plane spacing
+                       -20                                          tanh(i) = hyperbolic tangent of i
+-8.68589 =          loge (10)                                       coth(i) = hyperbolic cotangent of i = 1/tanh(i)
+And knowing about the odd and even mode propaga-
+tion                                                                ZO =        ZOeven ZOodd
+ZO,even       1+V                                                                    ZOeven-ZOodd
+          =                                                         D= -8.68589 loge Z     +Z    Oeven   Oodd
+ZO,odd        1-V
+ZO,even ZO,odd = ZO2
+                                                                    References:
+Solve for ZO,even and ZO,odd
+                                                                    1. S.B. Cohn, Characteristic Impedances for Broadside-
+Solve [1] for k and use k to solve [2] for s                           Coupled Strip Transmission Lines, IRE Trans. MTT, Vol MTT-8,
+                                                                       Nov. 1960, pp 633-637.
+              188.3      K(k')                                      2. S.B. Cohn, Shielded Coupled-Strip Transmission Line, IRE
+ZO, even =     εr        K (k)                                [1]      Trans. MTT, Oct. 1955, pp 29-38.
+                                                                    3. M. Milne-Thompson, Section 17. Elliptic Integrals, NBS
+where                                                                  Handbook of Mathematical Functions, eds. M.
+s = ratio of line spacing to ground plane spacing                      Abramowitz, I.A. Stegun, June 1964.
+εr = relative permittivity or dielectric constant
+                                                                    The information in this design note is intended to assist you
+                                                                    in designing with Rogers’ laminates. It is not intended to and
+where                                                               does not create any warranties express or implied, including
+K (k) = elliptic integral of the first kind with                    any warranty of merchantability or fitness for a particular
+modulus k, not to be confused with the parameter m,                 application. The user should determine the suitability of
+                                                                    Rogers’ laminates for each application.
+the square of k. K(k) may be determined by a converg-
+ing infinite series made to coverge rapidly by employ-              These commodities, technology or software are
+ing chain multiplication terms by alternate formula in              exported from the United States in accordance with
+17.3.29 in reference 3                                              the Export Administration regulations. Diversion
+                                                                    contrary to U.S. law prohibited.
+k' =     1 - k2
+              296.1s                                                 RT/duroid® and DUROID® are licensed trademarks of Rogers Corporation.
+ZO,odd =                                                                                  © 1982-2003 Rogers Corporation, Printed in U.S.A.
+            εr • tanh-1 (k)                                   [2]
+                                                                                                                              Publication #
+

@@ -1,0 +1,125 @@
+RF-30A
+Stable Performance Laminate
+
+ Benefits
+      •    Excellent PIM Values in PCBs
+           (measured at lower than -160 dBc*)
+      •    Improved PTH Quality
+      •    Stable Mechanical Properties
+      •    Stable at High Frequencies
+      •    Stable at High Temperatures
+      •    Low Moisture Absorption
+      •    Excellent Peel Strength
+      •    Excellent Price/Performance Ratio
+
+
+
+ Applications
+      •    Antenna and Subcomponent
+      •    RF Passive Components
+      •    PA
+
+
+
+
+RF-30A is an organic-ceramic laminate in AGC’s family of RF substrates. It is based on woven glass reinforcement. RF30A is a result of
+AGC’s expertise in both ceramic filler and PTFE coating technology. RF-30A is the best choice for low cost, high volume commercial
+microwave and radio frequency applications.
+RF-30A exhibits more stable electrical and mechanical properties than designers need. This low loss dielectric substrate with low
+profile copper foil leads to stable electrical properties with better PIMD levels and lower insertion loss over broadband frequency
+range. More stable mechanical properties with lower CTE values, better dimensional stability, and harder rigidity can make RF
+components less affected by other factors.
+RF-30A’s excellent peel strength for 1⁄2 ounce and 1 ounce RT copper is a critical aspect when rework or repeated reflow
+process is required. An ultra low moisture absorption rate with stable loss tangent helps minimize phase shift along
+the different temperature or humidity environments. Less dimensional movement also contributes to stable phase or
+impedance properties over broadband frequency range.
+
+RF-30A has been optimized with ceramic to have a low Z axis CTE for improved PTH reliability and ease of fabrication
+of multilayer circuits. These properties also contribute to more stable PIMD performance.
+
+*Measurement using manufactured PCB coupon with 20 watts per channel @ 800 and 1800 MHz.
+
+PIMD is Passive Intermodulation Distortion in multi-frequency communication systems. In general, there are many factors that
+contribute to PIMD properties: circuit design, power density distribution, connectors, cables, soldering, PCB processing, base
+material properties, and the best and worst PIM performing components. Other factors include: impedance discontinuities or
+improper signal cross-talk in complex circuitry design. Generally PTFE based laminates with very low profile copper foil – whether
+reverse treatment foil or very low profile/no profile copper – lead to the best performance.
+In microstrip transmission line applications many additional factors can also contribute to PIM levels.
+RF-30A exhibits very stable PIM performance and is less affected by other factors, as shown in examples of microstrip transmission
+PIM results with and without PTH.
+
+RF-30A exceeds PIM requirements in PCBs of -153 dBc (measured between 880 and 960 MHz, between 1710 and 1880 MHz and
+between 1920 and 2170 MHz at 20 W power) with CL1/CL1 cladding when processed with today’s state-of-the-art processes and
+process parameters.
+         Example of PIMD results on RF-30A-0600-CL1/CL1
+
+
+
+
+ Condition; 20Watt(43dBm) source near 1800MHz, frequency sweep
+Test coupons ; 50 Ohm microstripline with about 20 inch signal length
+            Properties                      Conditions       Typical Value             Unit                       Test Method
+ Electrical Properties
+ Dielectric Constant                        @ 1.9 GHz         2.97 ± 0.05                             IPC-TM 650 2.5.5.5.1 mod
+                                            @ 1.9 GHz           0.0013                                IPC-TM 650 2.5.5.5.1 mod
+ Dissipation Factor
+                                            @ 10 GHz            0.0020                                IPC-TM 650 2.5.5.5.1 mod
+ Volume Resistivity                                            3.0 x 109            Mohm·cm           IPC-650 2.5.17.1
+ Surface Resistivity                                           2.0 x 108             Mohms            IPC-650 2.5.17.1
+ Thermal Properties
+ Thermal Conductivity                                            0.42                 W/M*K           IPC-650 2.4.50
+                                                X                 8
+ CTE (50-150°C)                                 Y                 11                  ppm/°C          IPC-650 2.4.41
+                                                Z                 60
+ Mechanical Properties
+ Specific Heat                                                   0.95                   J/gK          IPC-650 2.4.50
+ Density                               Specific Gravity          2.16                 g/cm3           IPC-TM-650 2.3.5
+                                             MD             126.5 (18,000)          N/mm2 (psi)       IPC-650 2.4.18.3
+ Flexural Strength
+                                              CD            119.5 (17,000)          N/mm2 (psi)       IPC-650 2.4.19
+                                             MD             133.6 (19,000)          N/mm2 (psi)       IPC-TM-650 2.4.18.3
+ Tensile Strength
+                                              CD            105.5 (15,000)          N/mm2 (psi)       IPC-650 2.4.19
+                                                                0.049                % (30 mil)
+                                               MD
+                                                                0.025                % (60 mil)
+                                                                                                      IPC-650 2.4.39 (After Etch)
+                                                                0.041                % (30 mil)
+                                               CD
+                                                                0.026                % (60 mil)
+ Dimensional Stability
+                                                                0.049                % (30 mil)
+                                               MD
+                                                                0.019                % (60 mil)
+                                                                                                      IPC-650 2.4.39 (After Stress)
+                                                                0.031                % (30 mil)
+                                               CD
+                                                                0.011                % (60 mil)
+ Chemical / Physical Properties
+ Flammability Rating                                                                    V-0           Internal
+
+                                                           Typical Thicknesses1
+                                  Inches                                                              mm
+                                   0.020                                                              0.51
+                                   0.030                                                              0.76
+                                   0.040                                                              1.02
+                                   0.060                                                              1.52
+                                                           Available Sheet Sizes2
+                                  Inches                                                             mm
+                                  12 x 18                                                          305 x 457
+                                  16 x 18                                                          406 x 457
+                                  18 x 24                                                          457 x 610
+                                  36 x 48                                                         914 x 1,220
+
+* All test data provided are typical values and not intended to be specification values. For review of critical specification tolerances,
+   please contact a company representative directly.
+* RF-30A can be manufactured in increments of 0.010”(0.250mm).
+* Standard panel size is 18” x 24” (457 mm x 610 mm).
+* Please contact AGC for availability of additional thicknesses, other sizes & any other type of cladding.
+
+
+
+
+ AGC Inc. 2024-02
+ agc-ml.multimaterial@agc.com
+

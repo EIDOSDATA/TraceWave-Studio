@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta http-equiv="imagetoolbar" content="no">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta name="robots" content="ALL">
+			<title>4차 산업을 선도하는 회사, 티엘비</title>
+	    <meta name="subject" content="4차 산업을 선도하는 회사, 티엘비">
+    <meta name="Keywords" content="PCB, 인쇄회로기판, Memory Module, SSD, IoT, 티엘비, tlb, ddr5"/>
+    <meta name="author" content="4차 산업을 선도하는 인쇄회로기판 전문업체(Memory Module, SSD, IoT PCB)">
+    <meta property="og:type" content="website">
+
+    <meta property="og:image" content="http://www.tlbpcb.com/data/config/sns_logo.jpg" />
+    
+    <meta property="og:site_name" content="4차 산업을 선도하는 회사, 티엘비" />
+    <meta property="og:title" content="4차 산업을 선도하는 회사, 티엘비" />
+    <meta property="og:description" content="4차 산업을 선도하는 인쇄회로기판 전문업체(Memory Module, SSD, IoT PCB)" />
+	<meta property="og:type" content="website">
+    <meta property="og:url" content="http://www.tlbpcb.com">
+    <meta name="naver-site-verification" content=""/>
+    <meta name="google-site-verification" content="" />
+    <meta name="Description" content="4차 산업을 선도하는 인쇄회로기판 전문업체(Memory Module, SSD, IoT PCB)"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta http-equiv="Cache-Control" content="No-Cache">
+    <meta http-equiv="Pragma" content="No-Cache">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=0.1,maximum-scale=5.0,user-scalable=yes" /> 
+
+
+  
+
+	<link rel="stylesheet" href="/css/normalize.min.css">
+	<link rel="stylesheet" href="/css/aos.css">
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon_144.ico" />
+    <link rel="apple-touch-icon-precomposed" href="/img/favicon_144.png" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+
+	<link rel="stylesheet" type="text/css" href="/css/custom_pc.css?ver=26111108" >
+    <link rel="stylesheet" type="text/css" href="/css/custom_tablet.css?ver=26111108" >
+    <link rel="stylesheet" type="text/css" href="/css/custom_mobile.css?ver=26111108" >
+
+	<script>
+		var js_langtype = 'kor';
+	</script>
+	
+	        <script src="/js/jquery-1.8.1.min.js"></script>
+        
+    <script src="/multilang/jsRequestMultiLang.js"></script>
+    <script src="/js/demo.js"></script>
+<!-- 	<script src="/js/demo_kor.js"></script>
+ -->
+
+	<script src="/js/aos.js"></script>
+<!-- # // 스킨마다 다른 js 호출 # -->
+    <!--[if lte IE 9]>
+	<script type="text/javascript" src="/js/html5.js"></script>
+	<script type="text/javascript" src="/js/respond.js"></script>
+    <![endif] -->
+
+</head>   
+<body class="product_body  center_ui_wrap">
+<!-- <body class="product_body  center_ui_wrap" translate="no" data-aos-easing="ease" data-aos-duration="1200" data-aos-delay="0"> -->
+
+<script id="rendered-js">
+	AOS.init({
+	duration: 1200 });
+	//# sourceURL=pen.js
+</script>
+
+
+
+<script> // ###### PC일때 // ysy 2018-10-24 
+	// PC+모바일 공통부분
+	$(function(){
+		// 좌측메뉴/상단메뉴 스크롤 고정 
+		$(window).scroll(function(){ 	
+			var scroll = $(this).scrollTop();
+			if(scroll>= 130) {
+				//$(".left_menu_wrap").addClass("fixed");
+			}else{
+				//$(".left_menu_wrap").removeClass("fixed");
+			}	
+			if(scroll>= 100) {
+				$(".header").addClass("fixed");
+				$(".middle_wrap").addClass("fixed");
+				$(".nav").addClass("fixed");
+				//$(".middle_wrap .logo a").html("<img src='/img/logo_w.png' alt='home'>");
+			}else{
+				$(".header").removeClass("fixed");
+				$(".middle_wrap").removeClass("fixed");
+				$(".nav").removeClass("fixed");
+				//$(".middle_wrap .logo a").html("<img src='/data/config/shop_logo.jpg'>");
+			}
+		});
+		 // 상단 메뉴바에서 일정 넓이 벗어나는 메뉴 안보이게
+        var top_menu_width = $(".top_menu dl").width();
+        var $el_width = $(".top_menu dl"); //메뉴들 선택자
+        var total_width = 0;
+        $el_width.each(function(index) { //각각의 메뉴들의 길이를 구하여 합산합니다.
+            total_width += $(this).width();
+        });
+        var top_menu_qty = $(".top_menu dl").length;//메뉴의 수
+        var over_width = total_width%1340;//넘어가는 메뉴길이
+        //alert("전체길이 : "+total_width);
+        //alert("메뉴의 수 : "+top_menu_qty);
+        //alert("넘어간 길이 : "+over_width);
+        total_width=total_width*1;
+        //alert(total_width)
+            
+            while(total_width >= 1340){//total_width가 870보다 작아질때까지 자식노드 삭제
+            if(total_width > 1340){
+            //alert("자릅니다.");    
+            $(".top_menu dl").last().remove();
+            
+            total_width = 0;
+            $el_width = $(".top_menu dl"); //메뉴들 선택자
+            $el_width.each(function(index) { //각각의 메뉴들의 길이를 구하여 합산합니다.
+            total_width += $(this).width();
+            });          
+            }else{
+				 break;
+				} 
+            }    
+            
+		// PC 전체 카테고리 버튼 마우스오버시, 전체 메뉴 노출
+		/*$(".site_map").hover(function(){
+			$(".total_menu").show();
+		},function(){
+			$(".total_menu").hide();
+		});*/
+
+		//전체사이트맵 클릭 시 레이어 나옴 20181018_ysy
+		$(".nav .site_map h1 a").click(function() {
+			$('.nav').addClass("site_map_open");
+			$('.header_center').addClass("site_map_open");
+			$('.total_menu_wrap').fadeIn();
+			$('body').css("overflow","hidden");
+			$('html').css("overflow","hidden");
+		});
+
+		//전체사이트맵 레이어 닫기 20181018_ysy
+		$(".site_map_close_btn").click(function() {
+			$('.nav').removeClass("site_map_open");
+			$('.header_center').removeClass("site_map_open");
+			$('.total_menu_wrap').hide();
+			$("body").css("overflow", "auto");
+			$("html").css("overflow", "auto");
+			$(".nav .site_map").eq(close_btn_idx).focus();
+		});
+
+		// 좌측 메뉴 타이틀 나오게
+		$(".h2.list").clone().addClass("show").insertAfter(".left_menu_1_title");
+		// 좌측 메뉴 타이틀 나오게
+		$(".h2.list > span").clone().insertAfter(".page_title_wrap > h1");
+		// 좌측 메뉴 상품 리스트 상단 하위 카테고리가 없을시 보더값 처리
+		if($(".sub_category_wrap").find("li").children().length > 0){
+			$(".sub_category_wrap").addClass("border");
+		}
+	});
+</script>
+<hr class="skip">
+<!--  header  -->
+<header class="header header_center headroom">
+<div class="navbar">
+<div class="navbar_container">
+
+	<!--  header > TOP Small메뉴 -->
+    <div class="top_wrap">
+        <div class="centerWrap">
+            <ul class="right">
+                <li class="language">
+											<h2>KOR</h2>
+                        <ul>
+							<li><a href="/?lang=eng">ENG</a></li>
+							<li><a href="/?lang=chn">CHN</a></li>
+                                                        <li><a href="/?lang=vnm">VNM</a></li>
+                        </ul>
+                                    </li>
+
+                <li class="search_btn_wrap"><a href="/shop/prd_search.php" class="search_btn">검색</a></li>
+                <li>
+                    <a href="javascript:;" class="siteMap">
+                        <div>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+	<!--  header > TOP Small메뉴 -->
+	<hr class="skip">
+
+	<!--// header > 로고,검색창,스몰배너  -->
+	
+</header>
+<!-- </header> -->
+<!-- // header -->
+
+<!--  header > 로고,검색창,스몰배너  -->
+<div class="middle_wrap">
+	<div class="centerWrap">
+		<!-- 상점 로고 -->
+		<h1 class="logo">
+			 
+									<a href="/"><img src="/data/config/shop_logo.png" alt="HOME"></a>
+				 
+					</h1>
+		<!--<h1 class="logo"><a href="/"><img src="/img/logo_w.png" alt="HOME"></a></h1>--> 
+	</div>
+</div>
+
+<script>
+	function goSearch(val){			
+		var searchText = val;
+		var strLen = searchText.length;		
+		var totalByte = 0;
+        var len = 0;
+        var oneChar = "";
+        var str2 = "";
+ 
+        for (var i = 0; i < strLen; i++) {
+            oneChar = searchText.charAt(i);
+            if (escape(oneChar).length > 4) {
+                totalByte += 2;
+            } else {
+                totalByte++;
+            }
+        }
+        
+        // 넘어가는 글자는 자른다.
+        if (totalByte <= 2) {
+            alert(Js_MultiLangReplacer("shop_307", false, "영문은 3글자 , 한글은 2글자 이상 입력하세요."));
+            return false;
+        }
+	}
+	
+	$(document).ready(function(){
+		$(".goSearchBtn").on("click", function(){
+			if(goSearch($(this).closest("div").find(".m_input_txt").val()) !== false)
+		    	$(this).closest("form").submit();
+		    else
+		    	return false;
+		});
+		
+		$(".m_input_txt").keydown(function(key) {
+            if (key.keyCode == 13) {
+            	if(goSearch($(this).val()) !== false)
+            		$(this).closest("form").submit();
+            	else
+            		return false;
+            }
+        });
+    });
+</script>
+<!--  ##### nav_탑메뉴 #####  -->
+
+<script>
+	$(function(){	
+		//상단 메뉴 hover 시 좌측 소개글, 이미지 적용 20220314_ysy
+		$(".top_menu > li").hover(function(){
+			var thisCatcode = String($(this).data("catcode"));
+			var $infoArea =  $(".js_depth_info_19000000");
+			$infoArea.show();
+
+			switch(thisCatcode.substr(0,2)){
+				case "14" : 
+				   $infoArea.find("h2").text("회사소개");
+				   $infoArea.find("p").html("<p>티엘비는 풍부한 경험과 기술력을 바탕으로 <br>인쇄회로기판 분야를 선도하는 <br>기업으로 나아가겠습니다.</p>");
+				   $infoArea.find(".myimg").attr("src", "/img/top_menu_img1.jpg");
+				   break;
+				case "15" : 
+				   $infoArea.find("h2").text("제품정보");
+				   $infoArea.find("p").html("<p>티엘비는 최고의 품질과 <br>기술력으로 보답합니다.</p>");
+				   $infoArea.find(".myimg").attr("src", "/img/top_menu_img2.jpg");
+				   break;
+				case "16" : 
+				   $infoArea.find("h2").text("연구/기술");
+				   $infoArea.find("p").html("<p>티엘비는 인쇄회로기판 분야에서 <br>최고 수준의 경쟁력을 갖추며, <br>세계 최고의 고객들의 니즈에 최적화된 <br>기술과 품질을 제공합니다.</p>");
+				   $infoArea.find(".myimg").attr("src", "/img/top_menu_img3.jpg");
+				   break;
+				case "17" : 
+				   $infoArea.find("h2").text("CSR");
+				   $infoArea.find("p").html("<p>티엘비는 법적, 경제적, 윤리적 책임을<br> 수행하기 위해 적극적인 활동을 전개하며, <br>지속가능경영 관련 글로벌·산업별 트렌드와<br> 전략적 방향을 숙지함으로써<br> 최신 이슈에 대응하고 있습니다.</p>");
+				   $infoArea.find(".myimg").attr("src", "/img/top_menu_img4.jpg");
+				   break;
+				case "23" : 
+				   $infoArea.find("h2").text("채용정보");
+				   $infoArea.find("p").html("<p>티엘비는 끝없는 도전으로 새로운 미래를<br> 만들어 가는 가능성에 높은 가치를 두고 있습니다. <br>창의적인 사고와 함께 전체를 이해하고 <br>진취적으로 협업하는 글로벌 인재를 찾습니다.</p>");
+				   $infoArea.find(".myimg").attr("src", "/img/top_menu_img5.jpg");
+				   break;
+				case "19" : 
+				   $infoArea.find("h2").text("투자정보");
+				   $infoArea.find("p").html("<p>티엘비는 철저한 원가관리와 혁신, <br>업무 프로세스의 효율화 등을 통해 <br>견실한 경영실적을 유지하고 있습니다.</p>");
+				   $infoArea.find(".myimg").attr("src", "/img/top_menu_img6.jpg");
+				   break;
+				default:
+				   $infoArea.find("h2").text("ESG");
+				   $infoArea.find("p").html("<p>티엘비는 지속가능경영 관련 글로벌·산업별<br> 트렌드와 전략적 방향을 숙지함으로써<br> 최신 이슈에 대응하고 있습니다.<br>구성원, 고객, 주주, 임직원 등 모든<br> 이해관계자 및 지역사회의 요구에 대응하고<br> 지속가능한 발전을 견인하고 있습니다.</p>");
+				   $infoArea.find(".myimg").attr("src", "/img/top_menu_img1.jpg");
+				   break;
+			}
+		},function(){
+		//	$(this).removeClass("hover");
+		});
+	});
+</script>
+<nav class="nav navbar_center headroom">
+	<div class="centerWrap">
+		<!-- 전체 카테고리 -->
+		<div class="site_map" id="Menu">
+			<h1><a href="javascript:;"><i class="fa fa-bars" aria-hidden="true"></i><!-- 전체메뉴 --></a></h1>
+			<div class="total_menu_wrap">
+				<h1 class="site_map_close_btn"><a href="javascript:;"><!-- 전체메뉴 닫기 --></a></h1>
+				<ul class="total_menu" id="total_Menu"> 
+					<!-- <div class="hot_item"></div> -->
+				    				                					<li class="m_10  depth_2_btn" data-catcode="14000000">
+						                				                            				                                <a href="/content.php?catcode=14110000" class="depth_1 ww" data-catcode="14000000">회사소개</a>
+				                            				                        			                        
+						<div class="depth_2_block">
+							<div class="depth_2_wrap">
+								<div class="depth_2_info js_depth_info_14000000">
+									<h2>회사소개</h2>
+									<p class="depth_2_info1"></p>
+								</div>
+								<div class="depth_2_info2 js_depth_info_14000000">
+									<div class="img_wrap"><img src="/img/top_menu_img1.jpg" class="myimg" alt=""></div>
+								</div>
+								<ul class="depth_2">					   
+									    
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																											<a href="/content.php?catcode=14110000">인사말 </a>
+													                
+													                            
+									</li>
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																											<a href="/content.php?catcode=14120000">품질방침 </a>
+													                
+													                            
+									</li>
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																											<a href="/content.php?catcode=14130000">연혁 </a>
+													                
+													                            
+									</li>
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																											<a href="/content.php?catcode=14140000">조직도 </a>
+													                
+													                            
+									</li>
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																																										<a href="/bbs/list.php?code=certificate&catcode=14150000">인증현황 </a>    
+																											                
+													                            
+									</li>
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																											<a href="/content.php?catcode=14160000">홍보동영상 </a>
+													                
+													                            
+									</li>
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																											<a href="/content.php?catcode=14170000">찾아오시는길 </a>
+													                
+													                            
+									</li>
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																											<a href="/content.php?catcode=14180000">C.I </a>
+													                
+													                            
+									</li>
+									                        
+								</ul>
+							</div>
+					    </div>
+					</li>
+									                					<li class="m_8 active depth_2_btn" data-catcode="15000000">
+						                				                            				                                <a href="/content.php?catcode=15140000" class="depth_1 ww" data-catcode="15000000">제품정보</a>
+				                            				                        			                        
+						<div class="depth_2_block">
+							<div class="depth_2_wrap">
+								<div class="depth_2_info js_depth_info_15000000">
+									<h2>제품정보</h2>
+									<p class="depth_2_info1"></p>
+								</div>
+								<div class="depth_2_info2 js_depth_info_15000000">
+									<div class="img_wrap"><img src="/img/top_menu_img1.jpg" class="myimg" alt=""></div>
+								</div>
+								<ul class="depth_2">					   
+									    
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																																										<a href="/bbs/list.php?ptype=list&catcode=15101100&code=ssd&category=2">SSD PCB </a>
+																											                
+													                            
+									</li>
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																																										<a href="/bbs/list.php?ptype=list&catcode=15111000&code=module&category=1">MODULE PCB </a>
+																											                
+													                            
+									</li>
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																																										<a href="/bbs/list.php?code=tester&catcode=15150000">High Performance PCB </a>    
+																											                
+													                            
+									</li>
+									                        
+								</ul>
+							</div>
+					    </div>
+					</li>
+									                					<li class="m_3  depth_2_btn" data-catcode="16000000">
+						                				                            				                                <a href="/content.php?catcode=16180000" class="depth_1 ww" data-catcode="16000000">연구/기술</a>
+				                            				                        			                        
+						<div class="depth_2_block">
+							<div class="depth_2_wrap">
+								<div class="depth_2_info js_depth_info_16000000">
+									<h2>연구/기술</h2>
+									<p class="depth_2_info1"></p>
+								</div>
+								<div class="depth_2_info2 js_depth_info_16000000">
+									<div class="img_wrap"><img src="/img/top_menu_img1.jpg" class="myimg" alt=""></div>
+								</div>
+								<ul class="depth_2">					   
+									    
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																																										<a href="/bbs/list.php?code=technology&catcode=16200000">보유기술 </a>    
+																											                
+													                            
+									</li>
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																											<a href="/content.php?catcode=16170000">PCB 제조공정 </a>
+													                
+													                            
+									</li>
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																											<a href="/content.php?catcode=16190000">Technical Roadmap </a>
+													                
+													                            
+									</li>
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																											<a href="/content.php?catcode=16300000">친환경 연구개발 </a>
+													                
+													                            
+									</li>
+									                        
+								</ul>
+							</div>
+					    </div>
+					</li>
+									                					<li class="m_4  depth_2_btn" data-catcode="24000000">
+						                				                            <a href="/content.php?catcode=24000000" class="depth_1">ESG</a>
+				                        			                        
+						<div class="depth_2_block">
+							<div class="depth_2_wrap">
+								<div class="depth_2_info js_depth_info_24000000">
+									<h2>ESG</h2>
+									<p class="depth_2_info1"></p>
+								</div>
+								<div class="depth_2_info2 js_depth_info_24000000">
+									<div class="img_wrap"><img src="/img/top_menu_img1.jpg" class="myimg" alt=""></div>
+								</div>
+								<ul class="depth_2">					   
+									    
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																																										<a href="/content.php?catcode=24101000">환경(E) <i></i></a>
+																											                
+																											<ul class="depth_3">
+																																<li class="">
+																																			<a href="/content.php?catcode=24101000">환경경영</a>
+																	 
+																	</li>
+																																<li class="">
+																																			<a href="/content.php?catcode=24101100">환경관리 및 현황</a>
+																	 
+																	</li>
+																																<li class="">
+																																			<a href="/content.php?catcode=24101200">기후변화 대응</a>
+																	 
+																	</li>
+															 
+														</ul>
+													                            
+									</li>
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																																										<a href="/bbs/list.php?code=contribution&catcode=24111000&tp=1">사회(S) <i></i></a>
+																											                
+																											<ul class="depth_3">
+																																<li class="">
+																																																						<a href="/bbs/list.php?code=contribution&catcode=24111000">사회공헌</a>    
+																																			 
+																	</li>
+																																<li class="">
+																																			<a href="/content.php?catcode=24111100">인권경영</a>
+																	 
+																	</li>
+																																<li class="">
+																																			<a href="/content.php?catcode=24111200">행동규범</a>
+																	 
+																	</li>
+																																<li class="">
+																																			<a href="/content.php?catcode=24111300">동반성장</a>
+																	 
+																	</li>
+																																<li class="">
+																																			<a href="/content.php?catcode=24111400">책임광물</a>
+																	 
+																	</li>
+																																<li class="">
+																																			<a href="/content.php?catcode=24111500">안전보건경영</a>
+																	 
+																	</li>
+															 
+														</ul>
+													                            
+									</li>
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																																										<a href="/content.php?catcode=24121000">지배구조(G) <i></i></a>
+																											                
+																											<ul class="depth_3">
+																																<li class="">
+																																			<a href="/content.php?catcode=24121000">이사회</a>
+																	 
+																	</li>
+																																<li class="">
+																																			<a href="/content.php?catcode=24121200">윤리경영</a>
+																	 
+																	</li>
+																																<li class="">
+																																			<a href="/content.php?catcode=24121100">이해관계자 참여</a>
+																	 
+																	</li>
+																																<li class="">
+																																			<a href="/content.php?catcode=24121300">정보보안</a>
+																	 
+																	</li>
+															 
+														</ul>
+													                            
+									</li>
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																																										<a href="/bbs/input.php?mode=write&code=inquiry&catcode=24130000">윤리경영제보 </a>    
+																											                
+													                            
+									</li>
+									                        
+								</ul>
+							</div>
+					    </div>
+					</li>
+									                					<li class="m_4  depth_2_btn" data-catcode="23000000">
+						                				                            				                                <a href="/content.php?catcode=23100000" class="depth_1 ww" data-catcode="23000000">채용정보</a>
+				                            				                        			                        
+						<div class="depth_2_block">
+							<div class="depth_2_wrap">
+								<div class="depth_2_info js_depth_info_23000000">
+									<h2>채용정보</h2>
+									<p class="depth_2_info1"></p>
+								</div>
+								<div class="depth_2_info2 js_depth_info_23000000">
+									<div class="img_wrap"><img src="/img/top_menu_img1.jpg" class="myimg" alt=""></div>
+								</div>
+								<ul class="depth_2">					   
+									    
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																											<a href="/content.php?catcode=23100000">인사제도 </a>
+													                
+													                            
+									</li>
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																											<a href="/content.php?catcode=23110000">급여/복리후생 </a>
+													                
+													                            
+									</li>
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																											<a href="/content.php?catcode=23120000">채용절차 </a>
+													                
+													                            
+									</li>
+									                        
+								</ul>
+							</div>
+					    </div>
+					</li>
+									                					<li class="m_3  depth_2_btn" data-catcode="19000000">
+						                				                            				                                <a href="/content.php?catcode=19140000" class="depth_1 ww" data-catcode="19000000">투자정보</a>
+				                            				                        			                        
+						<div class="depth_2_block">
+							<div class="depth_2_wrap">
+								<div class="depth_2_info js_depth_info_19000000">
+									<h2>투자정보</h2>
+									<p class="depth_2_info1"></p>
+								</div>
+								<div class="depth_2_info2 js_depth_info_19000000">
+									<div class="img_wrap"><img src="/img/top_menu_img1.jpg" class="myimg" alt=""></div>
+								</div>
+								<ul class="depth_2">					   
+									    
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																																										<a href="/bbs/list.php?code=notice&catcode=19110000">공지사항 </a>    
+																											                
+													                            
+									</li>
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																																										<a href="/bbs/list.php?code=board2&catcode=19100000">언론보도 </a>    
+																											                
+													                            
+									</li>
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																											<a href="/content.php?catcode=19120000">IR정보 </a>
+													                
+													                            
+									</li>
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																																										<a href="/bbs/list.php?code=ir_performance&catcode=19150000">IR 자료실 </a>    
+																											                
+													                            
+									</li>
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																											<a href="/content.php?catcode=19130000">재무현황 </a>
+													                
+													                            
+									</li>
+																			
+																		
+																		
+									      
+																			
+									<li class="">
+																																										<a href="/page/stock.php?catcode=19160000">주가정보 </a>    
+																											                
+													                            
+									</li>
+									                        
+								</ul>
+							</div>
+					    </div>
+					</li>
+									</ul>
+			</div>
+
+					</div>
+		<!-- //전체 카테고리 -->
+		<ul class="top_menu">
+			<!-- 전체 카테고리 메뉴 상단바에 복사 -->
+		</ul>
+	</div>
+	
+</nav>
+<!-- //##### nav_탑메뉴 ##### -->
+<hr class="skip">
+<div id="sitemap">
+	<div class="centerWrap">
+		<div class="site_menu_title">
+			<h1><!-- (주)티엘비 --> SITE MAP</h1>
+			<a href="#" class="btn_close"><i class="fa fa-times"></i></a>
+		</div>
+		<ul class="site_menu">
+			<!-- 전체 카테고리 메뉴 사이트맵에 복사 -->
+		</ul>
+	</div>
+</div><!-- #### 본문 container_wrap ####  -->
+	<div class='container_wrap'>
+
+		
+        <!-- 상단 서브비주얼 -->
+        <div class="sub_visual_wrap"  style="background:url(/data/admin/subimg/15000000_sub.jpg) no-repeat center;">
+
+    
+<!-- <div class="sub_visual_wrap"> -->
+<!-- ########### 상단메뉴용 서브비주얼 ########### -->
+<!-- <div class="header_margin"> -->
+    <h1>제품정보<!-- 관리자 > 상단메뉴 > 등록한 서브비쥬얼 이미지가 이 곳에 background로 적용 --></h1>
+    <!-- <img src="/img/sub_visual_00.jpg" alt=""> -->
+<!-- </div> -->
+		<!-- #시작  -->
+				<!--  ###### PC일때.. // kjs 2018-09-03 좌측 메뉴 고정추가 -->
+		<script type="text/javascript">
+			$(function(){
+								
+							});
+		</script>
+				<!-- //#끝 :.. -->
+</div>
+<!-- //상단 서브비주얼 -->
+
+
+				<div class="sub_contents_block sub_top_block" id="Contents"><!-- 상단 메뉴일 경우 -->
+		
+		
+<script>
+    function GoCategory(category){
+        alert(category);
+        $("input[type='hidden'][name='catcode']").val(category);
+        $("form[id='controller']").submit();
+    }
+</script>
+
+<div class="sub_category_top">
+    <!-- 1. 탭메뉴(2뎁스) -->
+	<div class="centerWrap">
+		<ul class="depth_2_sub">
+				    		    
+		    			<li class=" " >
+			                        <!-- <a href="/bbs/list.php?ptype=list&catcode=15101100&code=ssd&category=2">SSD PCB </a> -->
+                    <a href="/bbs/list.php?ptype=list&catcode=15101100&code=ssd&category=2&">SSD PCB</a>
+                			                       
+			    			</li>
+		    				    		    
+		    			<li class=" " >
+			                        <!-- <a href="/bbs/list.php?ptype=list&catcode=15111000&code=module&category=1">MODULE PCB </a> -->
+                    <a href="/bbs/list.php?ptype=list&catcode=15111000&code=module&category=1&">MODULE PCB</a>
+                			                       
+			    			</li>
+		    				    		    
+		    			<li class=" " >
+			                        <a href="/bbs/list.php?code=tester&catcode=15150000">High Performance PCB</a>
+                			                       
+			    			</li>
+		    				</ul>
+	</div>
+    <!-- * 하단 내용 -->
+</div>
+
+				   <div class="sub_contents_wrap sub_top"><!-- 좌측 메뉴일 경우 contents_top이 contents_left 클래스로 변경됨 -->
+			<div class="quickMenu">
+	<div>
+		<ul>
+			<li class="quick01"><span>메일보내기</span><a href="mailto:shawn79@tlbpcb.com"><i class="fa fa-envelope"></i></a></li>
+			<li class="quick02"><span>게시판</span>
+						<a href="/bbs/list.php?code=board&catcode=19100000">
+						<i class="fa fa-bullhorn"></i></a></li>
+			<li class="quick03"><span>맨 위로</span><a href="#"><i class="fas fa-angle-up"></i>TOP</a></li>
+		</ul>
+	</div>
+</div>
+		        
+			<div class="centerWrap">
+
+
+
+
+<style>
+    .bold {
+        font-weight:400;
+    }
+</style>    
+    
+<div class="page_title_wrap">
+	<h1>제품정보</h1>
+	<div class="path_box">
+		<a href="/">HOME</a>
+		
+				<a href="/content.php?catcode=15140000" class="depth_1" >제품정보</a>
+				<a href="/shop/prd_list.php?catcode=15140000" class="depth_2" style="font-weight:400">제품정보</a>
+						                
+	</div>	
+</div>
+
+<div class="sub_right_contents">
+
+	<!-- 내 주변 메뉴들 보이는 네비게이션 바 -->
+		<!-- 내 주변 메뉴들 보이는 네비게이션 바 끝-->
+
+        <div class="product_intro_wrap aos-init" data-aos="fade-up">
+	<div class="product_intro">
+		<div class="sub_title_wrap">
+			<div class="sub_title">
+				<h1><b>Product</b></h1>
+				<p>TLB는 반도체용 PCB 전문 기업으로서의 Vision을 고객 여러분과 함께 합니다.</p>
+			</div>
+		</div>
+	</div>
+	<ul class="product_intro_list">
+		<li>
+			<a href="/bbs/list.php?ptype=list&amp;catcode=15101100&amp;code=ssd&amp;category=2">
+				<div class="img_wrap"><img src="/img/main_product_img1_1.jpg" alt=""></div>
+				<h2>SSD PCB</h2>
+			</a>
+		</li>
+		<li>
+			<a href="/bbs/list.php?ptype=list&amp;catcode=15111000&amp;code=module&amp;category=1">
+				<div class="img_wrap"><img src="/img/main_product_img2_1.jpg" alt=""></div>
+				<h2>Memory Module PCB&nbsp;</h2>
+			</a>
+		</li>
+		<li>
+			<a href="/bbs/list.php?code=tester&amp;catcode=15150000">
+				<div class="img_wrap"><img src="/img/main_product_img5_1.jpg" alt=""></div>
+				<h2>High Performance PCB</h2>
+			</a>
+		</li>
+	</ul>
+</div>    </div>    
+
+			</div>
+		</div>
+	</div>
+</div>
+<!-- //### 본문 container_wrap ####  -->
+<hr class="skip">
+	<!-- footer -->
+<div class="footer_wrap">
+	<footer class="footer">
+	        <!-- footer_bar -->
+	        <div class="footer_bar">
+				<div class="centerWrap">
+					<div class="footer_site_wrap">
+                    	<ul class="footer_site_btn">	
+														<li><a href="/content.php?catcode=14100000"><strong>회사소개</strong></a></li>
+							<li><a href="/content.php?catcode=14160000"><strong>찾아오시는길</strong></a></li>
+							<li><a href="/content.php?catcode=16170000"><strong>PCB 제조공정</strong></a></li>
+							<li><a href="/page/stock.php?catcode=19160000"><strong>주가정보</strong></a></li>
+														<li><a href="/content.php?catcode=22000000" class="privacy_btn"><strong>개인정보처리방침</strong></a></li>
+							<!-- 로그인 부분 주석 처리 -->
+														<!-- 로그인 주석 끝 삭제하려면 /* */ 삭제-->
+						</ul>
+						<div class="productlink_wrap">
+                    	    <button type="button" class="btnset btn-site">TLB PRODUCTS</button>
+                    	    <ul class="productlink">
+                    	        <li><a href="/bbs/list.php?ptype=list&catcode=15111000&code=module&category=1">MODULE PCB</a></li>
+                    	        <li><a href="/bbs/list.php?ptype=list&catcode=15101100&code=ssd&category=2">SSD PCB</a></li>
+                    	        <li><a href="/bbs/list.php?code=tester&catcode=15150000">High Performance PCB</a></li>
+                    	    </ul>
+                    	</div>
+                    </div>
+					<h3>
+												<!--<a href="/"><img src="/img/logo_b.png" alt="HOME"></a> -->
+							<a href="/"><img src="http://www.tlbpcb.com/data/config/admin_logo.png" alt="HOME"></a>
+											</h3>
+				</div>
+	        </div>
+	        <!-- //footer_bar -->
+	        
+	        	        
+			<!-- copyright -->
+			<div class="copyright">
+				<div class="centerWrap">
+					<h3>
+													<a href="/"><img src="/img/logo_b.png" alt="HOME"></a>
+											</h3>
+					<address class="addr">
+						<div class="company_addr_wrap">
+							<div class="company_addr_wrap">
+                                                        <div class="company_addr">
+                                                                <h5>HR</h5>
+                                                                <ul>
+                                                                        <li>Tel : 031-8040-2059</li>
+                                                                        <li class="fax m_after">E-Mail : <a href="mailto:mkyeo@tlbpcb.com">mkyeo@tlbpcb.com</a></li>
+                                                                </ul>
+                                                        </div>
+							<div class="company_addr">
+								<h5>Domestic</h5>
+								<ul>
+									<li>Tel : 031-8040-2073</li>
+									<li class="m_after">E-Mail : <a href="mailto:shawn79@tlbpcb.com">shawn79@tlbpcb.com</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="company_addr_wrap">
+							<div class="company_addr_wrap">
+                                                                <div class="company_addr">
+                                                                        <h5>IR</h5>
+                                                                        <ul>
+                                                                                <li>Tel : 031-8040-2084</li>
+                                                                                <li>E-Mail : <a href="mailto:purple@tlbpcb.com">purple@tlbpcb.com</a></li>
+                                                                        </ul>
+                                                        </div>
+							<div class="company_addr">
+                                                                <h5>Offshore</h5>
+                                                                <ul>
+                                                                        <li>Tel : +82-31-8040-2061</li>
+                                                                        <li class="fax m_after">E-Mail : <a href="mailto:danielkim@tlbpcb.com">danielkim@tlbpcb.com</a></li>
+                                                                </ul>
+                                                        </div>
+						</div>
+							<div class="company_addr_wrap">
+								<div class="company_addr empty_addr">
+        							&nbsp;
+							</div>
+    								<div class="company_addr">
+                                                                <h5>Address</h5>
+                                                                <ul>
+                                                                        <li class="footer_address m_after m_after_block">경기도 안산시 단원구 신원로 305(목내동) 16BL 17LT</li>
+                                                                </ul>
+                                                        </div>
+						</div>
+						<!-- <div class="company_addr_wrap">
+							<div class="company_addr">
+								<ul>
+									<li class="footer_address m_after m_after_block">Copyright ⓒ (주)티엘비 All rights reserved.</li>
+								</ul>
+							</div>
+						</div> -->
+					</address>
+					<!-- //copyright --></div>
+			</div>
+	    
+	</footer>
+</div>
+</div>
+
+
+
+<!-- <script type="text/javascript" src="/js/back-to-top.js"></script> -->
+</body>
+</html>

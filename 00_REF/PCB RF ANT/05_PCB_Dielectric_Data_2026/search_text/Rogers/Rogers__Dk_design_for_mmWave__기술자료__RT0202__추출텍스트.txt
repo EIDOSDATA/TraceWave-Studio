@@ -1,0 +1,1995 @@
+                                    eBook
+
+Circuit Material Design Guide
+for mmWave Radar Applications
+
+                                      May 2020
+
+
+          S P O N S O R E D   B Y
+Table of Contents
+
+
+
+
+3       Introduction
+        Pat Hindle
+        Microwave Journal, Editor
+
+
+
+
+4       Understanding mmWave Circuit RF Variations due to
+        Changes in Temperature
+        Rogers Corp., Chandler, Ariz.
+
+
+
+
+10      Material Solutions for mmWave Radar: From ADAS to
+        Smart Cities and Factories
+        Rogers Corp., Chandler, Ariz.
+
+
+
+
+13      How Do Circuit Material Parameters Impact mmWave Radar
+        Performance?
+        Rogers Corp., Chandler, Ariz.
+
+
+
+
+18      A PCB Laminate Optimized for mmWave Radar
+        Antenna Applications
+        Rogers Corp., Chandler, Ariz.
+
+
+
+
+22      Characterizing Circuit Materials at mmWave Frequencies:
+        Part I
+        John Coonrod
+        Rogers Corp., Chandler, Ariz.
+
+
+
+
+27      Characterizing Circuit Materials at mmWave Frequencies:
+        Part II
+        John Coonrod
+        Rogers Corp., Chandler, Ariz.
+
+
+
+
+                                        2
+Introduction
+
+
+
+    Circuit Material Design Guide for Radar and mmWave Applications
+
+    mmWave applications are expanding rapidly in many commercial markets such as automotive radar,
+for vehicle autonomy and advanced safety systems. Yole Développement estimates the automotive radar
+market alone will reach US$8.6 billion by 2025, at a 2015 CAGR of 15.6 percent. There are many other
+mmWave applications such as body scanners, satellite communications and material properties/defect
+measurements that are also expanding. But designing mmWave circuits is far more challenging than
+traditional RF circuits as design parameters are much more sensitive at these higher frequencies.
+
+    This eBook covers the design considerations for PCB laminate circuits and how to take these issues
+into account when designing for mmWave applications. Dielectric constant is a key material parameter
+that can vary due to temperature changes, within a substrate material due to the construction material,
+or over frequency. Dissipation factor is another key parameter that can affect the losses in a circuit
+and become very significant at mmWave frequencies. Metal surface roughness is another important
+consideration that can increase signal loss that is not significant at lower frequencies. The woven glass
+within the circuit material also causes changes in dielectric constant that can affect mmWave signals
+differently depending on the direction of the metal transmission lines. In addition, datasheets might not
+provide all of the information you need to simulate a circuit accurately.
+
+    The articles in this eBook address these issues in designing mmWave circuits on PCB laminates
+and covers how to mitigate or adjust your design for these effects. The articles have measured data and
+examples that show the effect of each parameter on design examples, providing a practical guide for
+mmWave designs. We hope that you will learn about these effects and more by reading this design guide
+brought to you at no cost due to the sponsorship of this eBook by Rogers Corporation.
+
+
+
+
+Pat Hindle, Microwave Journal Editor
+
+
+
+
+                                                      3
+Understanding mmWave Circuit
+RF Variations due to Changes in
+Temperature
+Rogers Corp., Chandler, Ariz.
+
+
+
+
+C
+       hanges in temperature can cause variations                                               tion against collisions. Fortunately, the circuit material
+       in the performance of high frequency circuits.                                           property known as thermal coefficient of dielectric con­
+       Whether those temperature variations come                                                stant (TCDk) gives a circuit designer a way of knowing
+from heat dissipated within the circuit itself, from de­                                        how much the material’s dielectric constant, Dk (relative
+vices mounted on the circuit, or from the environment,                                          permittivity or εr) will vary from a nominal value as a
+they can have impact on the performance of the circuit.                                         function of temperature. The parameter can be used to
+For example, motor vehicles are increasingly equipped                                           predict the operating tolerances of a circuit material at
+with the mmWave circuitry of automotive advanced                                                mmWave frequencies, when that circuit board must be
+driver assistance systems (ADAS) to provide protec­                                             mounted in an environment with widely varying tem­
+
+                     Microstrip Insertion Loss, Percentage of Dielectric Loss                              Microstrip Insertion Loss, Percentage of Dielectric Loss
+                                  and Conductor Loss at 10 GHz                                                          and Conductor Loss at 77 GHz
+               100                                                                                   100
+               90                                                                                    90
+               80                                                                                    80
+               70                                                                                    70
+ Percent (%)
+
+
+
+
+                                                                                       Percent (%)
+
+
+
+
+               60                                                                                    60
+               50                                                                                    50
+               40                                                                                    40
+               30                                                                                    30
+               20                                                                                    20
+               10                                                                                    10
+                0                                                                                     0
+                      5 Mil RO3003    5 Mil RO3003   20 Mil RO3003 20 Mil RO3003                            5 Mil RO3003    5 Mil RO3003   20 Mil RO3003 20 Mil RO3003
+                      Rolled Copper    ED Copper     Rolled Copper  ED Copper                               Rolled Copper    ED Copper     Rolled Copper  ED Copper
+
+                                 ■ Dielectric Loss   ■ Conductor Loss                                                  ■ Dielectric Loss   ■ Conductor Loss
+
+s Fig. 1 Comparing insertion loss of 50 ohm microstrip transmission line circuits using different substrate thicknesses and the per-
+centage of the insertion loss for dielectric and conductor loss.
+
+                                                                                   4
+peratures, such as in automotive electronics or 5G base
+stations.                                                                                               1.04
+
+
+
+
+                                                                       Normalized Dk Change from 25°C
+    Thermal variations in an RF/microwave printed circuit
+                                                                                                        1.03
+board (PCB) can be caused by several factors. The op­
+erating cycle of a circuit can cause thermal variations                                                 1.02
+(with resulting performance variations), as the circuit                                                 1.01
+switches from power on to power off. The thickness of                                                   1.00
+the PCB material is one of these factors. A PCB based
+on a thinner substrate will have more RF performance                                                    0.99
+sensitivity to conductor effects than a circuit based on                                                0.98
+a thicker substrate. In contrast, a circuit based on a                                                  0.97
+thicker substrate is more sensitive to dielectric effects.                                                 –50    –25      0      25    50      75     100     125    150
+                                                                                                                                  Temperature (°C)
+Typically, conductor effects can have an impact on the
+insertion loss of a high frequency circuit while the cir­                                               Ceramic Filled PTFE               PTFE/Woven Glass (WG)
+cuit’s dielectric characteristics affect the phase response                                             PTFE/Ceramic/WG                   Ceramic Filled Hydrocarbon FR
+                                                                                                        Ceramic Filled Hydrocarbon Non-FR FR-4
+of the circuit; however there are exceptions. Insertion
+loss is critical in passive components, such as filters and
+power combiners, while the phase response is needed                   s Fig. 2 TCDk curves for several different circuit materials
+for phased-array antennas and systems.                                used with PCB technology.
+    As shown in Figure 1, insertion loss is a summation
+of four losses: dielectric loss, conductor loss, radiation            material is good to know for different frequency appli­
+loss and leakage loss. For this example, leakage loss                 cations but also when trying to understand the poten­
+and radiation loss have been ignored. Leakage loss is                 tial impact that TCDk can have on a circuit. In theory, a
+typically not an issue for most PCB applications using                thicker circuit should be influenced more by TCDk than
+high frequency materials because these materials have                 a thinner circuit, because TCDk is a dielectric property.
+very high volume resistivity. However, there can be ex­               Also, as the circuit cycles through different tempera­
+ceptions with high power applications, although high                  tures, its copper conductivity will change slightly and
+power applications will not be covered in this article.               variations in performance caused by those changes
+Radiation loss is also not considered in Figure 1; many               should be more obvious for RF circuits based on thin
+variables impact radiation loss and circuit design can                substrates than those based on thick substrates.
+mitigate a lot of these issues. Figure 1 is included to                   All circuit materials have the TCDk property, al­
+help a reader realize the impact that conductor effects               though due to formulation differences, the amount of
+have on a thin circuit compared to a thicker circuit.                 Dk variation due to temperature change can be very
+    For the 50-Ω transmission line circuits in Figure 1,              different. Figure 2 provides a look at several TCDk be­
+conductor effects are much more significant for a thin­               havior curves for different circuit materials.
+ner circuit than a thicker circuit. In turn, dielectric effects           The data for these TCDk curves was collected by
+are more significant for a thicker circuit than a thinner             testing raw substrate materials and not fabricated
+circuit. Why is this important? With bandwidth having                 circuits. Testing was done at 10 GHz per the X-Band
+been exhausted at lower frequencies, and a growing                    clamped stripline resonator test defined by IPC-TM-650
+number of mmWave applications, those mmWave cir­                      2.5.5.5c; several materials of different TCDk behavior
+cuits will typically be based on thinner substrates. At               were evaluated. The brown curve is FR-4 which is typi­
+mmWave frequencies, circuit designers should be con­                  cally not used at higher frequencies. It has a very poor
+cerned about conductor effects, caused in part by the                 TCDk and FR-4 has not been formulated to account for
+copper surface roughness1 and the final plated finish of              good TCDk performance. The purple curve shows a
+the conductor2.                                                       significant change around room temperature, which is
+    Thicker substrates are typically used at lower fre­               the correct response for PTFE. This curve is based on a
+quencies: the conductor effects are minimized but the                 material which is PTFE and woven glass reinforcement
+dielectric effects are increased. The major consideration             only. However, when ceramic filler is added to the for­
+for dielectric effects is the dissipation factor of the mate­         mulation (light blue curve), the room temperature TCDk
+rial and any nonmetal added to the circuit. Examples of               response is greatly decreased.
+nonmetals added to a circuit which can impact dielec­                     Not all ceramic filler is the same, however, and un­
+tric loss are soldermask and conformal coatings. Figure               derstanding the intricacies of ceramic engineering can
+1 compares a thin circuit (a 5-mil-thick substrate) to a              pay off, which the dark blue curve demonstrates. This
+thicker circuit (a 20-mil-thick substrate) but 20 mils is not         curve is for RO3003™ circuit material, which is a ce­
+considered thick for some applications. For a 30-mil-                 ramic-filled PTFE material and it has minimal TCDk of
+thick substrate, for example, the dielectric losses would             3 ppm/°C and no response at room temperature. An
+be more significant while the insertion loss of a 60-mil-             ideal TCDk would be 0 ppm/°C, which is basically stat­
+thick substrate would be dominated by dielectric loss.                ing there is no change in Dk with a change in tempera­
+    Understanding the variables that can impact a cir­                ture. A good reference for TCDk is that a value of |50|
+cuit’s performance based on the thickness of the circuit              ppm/°C or less is considered good. The absolute value
+
+                                                                  5
+  Microstrip Differential Phase Length Method, Dk vs. Frequency                    Microstrip Differential Phase Length Method, Dk vs. Frequency
+  Using 5 Mill RT/Duroid® 5880 Laminate, Circuits Operating at                     Using 5 Mill RT/Duroid® 5880 Laminate, Circuits Operating at
+                      Different Temperatures                                                           Different Temperatures
+      2.40                                                                             2.40
+                                               ∆Dk = 0.015 @ 77 GHz                                                              ∆Dk = 0.015 @ 77 GHz
+                                               or ∆Φ = 19° @ 77 GHz                                                              or ∆Φ = 19° @ 77 GHz
+      2.35                                                                             2.35
+
+      2.30                                                                             2.30
+
+      2.25                                                                             2.25
+
+      2.20
+ Dk
+
+
+
+
+                                                                                       2.20
+
+
+
+
+                                                                                  Dk
+      2.15                                                                             2.15
+                                                ED CU Room Temp                                                                   ED CU Room Temp
+      2.10                                      ED CU 65 C                             2.10                                       ED CU 65 C
+                                                ED CU 125 C                                                                       ED CU 125 C
+      2.05                                                                             2.05
+                 5 Mil with ED Copper                                                             5 Mil with ED Copper
+      2.00                                                                             2.00
+             1                            10                           100                    1                            10                               100
+                                    Frequency (GHz)                                                                  Frequency (GHz)
+
+
+  Microstrip Differential Phase Length Method, Dk vs. Frequency                    Microstrip Differential Phase Length Method, Dk vs. Frequency
+  Using 5 Mill RT/Duroid® 5880 Laminate, Circuits Operating at                     Using 10 Mill RT/Duroid® 5880 Laminate, Circuits Operating at
+                      Different Temperatures                                                           Different Temperatures
+      2.40                                                                             2.40
+                                               ∆Dk = 0.015 @ 77 GHz                                                              ∆Dk = 0.032 @ 77 GHz
+                                               or ∆Φ = 19° @ 77 GHz                                                              or ∆Φ = 23° @ 77 GHz
+      2.35                                                                             2.35
+
+      2.30                                                                             2.30
+
+      2.25                                                                             2.25
+
+      2.20
+ Dk
+
+
+
+
+                                                                                       2.20
+                                                                                  Dk
+
+
+
+
+      2.15                                                                             2.15
+                                                RLD CU Room Temp                                                                  ED CU Room Temp
+      2.10                                      RLD CU 65 C                            2.10                                       ED CU 65 C
+                                                RLD CU 125 C                                                                      ED CU 125 C
+      2.05                                                                             2.05
+             5 Mil with Rolled Copper                                                             10 Mil with ED Copper
+      2.00                                                                             2.00
+             1                            10                           100                    1                            10                               100
+                                    Frequency (GHz)                                                                  Frequency (GHz)
+
+         These two copper types are very different and the copper                        Thin circuits are dominated by conductor effects and thicker
+   differences do not appear to be a significant factor for circuit-TCDk.              are more sensitive to dielectric effects. Even though 10 Mil isn’t
+                                                                                        that thick, it appears that the thicker circuit is more impacted
+                                                                                                        by the Dk difference due to TCDk.
+s Fig. 3 Comparisons showing circuit-TCDk at different tem-
+peratures and using the same material with a poor TCDk, but                      s Fig. 4 Comparisons showing circuit-TCDk at different tem-
+with different copper types.                                                     peratures and using the same material with poor TCDk and the
+                                                                                 same copper type, but with different substrate thicknesses.
+
+of this number was used because some materials have                              special setup to evaluate circuits at a controlled tem­
+a TCDk trend which has a negative slope and other ma­                            perature.
+terials have a positive TCDk slope. For reference, the                               The circuit-TCDk test method is as follows. For evalu­
+magenta curve has a TCDk of +50 ppm/°C.                                          ating one material, two 50-Ω microstrip transmission-line
+   Even though the chart shown in Figure 2 is helpful                            circuits are used which are identical in every way except
+to understand a material’s TCDk performance, it is still                         for physical length. One circuit is 2 in. long and the other
+limited to several aspects due to that test method. One                          is 8 in. long. The circuit is first assembled and placed on
+aspect is that the test method is limited in frequency and                       a heat block, with the heat block being off and at room
+another aspect is the testing was not using an actual cir­                       temperature. Several sweeps on the mmWave vector
+cuit. Rogers Corporation has developed a test method                             network analyzer (VNA) are performed to ensure stable
+which allows the evaluations of circuits at elevated tem­                        RF performance with the initial reading at room temper­
+peratures and is called the circuit TCDk test method. It                         ature. After the data from the initial reading has been
+uses the microstrip differential length method3 with a                           captured, the heat blocked is turned on and adjusted
+                                                                             6
+                                                                                    Many different circuits have been evaluated with the
+                                                                                circuit-TCDk test method, although an overview of only
+  Microstrip Differential Phase Length Method, Dk vs. Frequency
+    Using 5 Mill RO3003™ Laminate HH, Circuits Operating at                     one study will be presented in this article. Testing was
+                      Different Temperatures                                    performed to evaluate several different materials which
+       3.30
+                                                  ∆Dk = 0.001 @ 77 GHz          had poor TCDk vs. those with good TCDk to better un­
+       3.25
+                                                   or ∆Φ = 1° @ 77 GHz          derstand the effects of TCDk on circuit performance.
+                                                                                Evaluating the materials at different substrate thickness
+       3.20                                                                     and different copper types also made it possible to see
+                                                                                if the effects of TCDk on RF performance varies due to
+       3.15
+                                                                                different substrate thicknesses or copper types.
+ Dk
+
+
+
+
+       3.10
+                                                                                PUT TO THE TEST
+       3.05                                                                         The high frequency materials chosen for this evalu­
+                                                  ED CU Room Temp
+       3.00                                       ED CU 65 C                    ation were RT/duroid® 5880 and RO3003™ laminates.
+                                                  ED CU 125 C                   RT/duroid 5880 material has a good, long history as
+       2.95                                                                     one of the lowest-loss circuit materials ever introduced
+                  5 Mil with ED Copper                                          to the market, although it also has a poor TCDk of -125
+       2.90
+              1                             10                        100       ppm/°C. RO3003 materials have been used for many
+                                      Frequency (GHz)                           years in different applications and have been the ma­
+                                                                                terial of choice for 77 GHz automotive radar sensors.
+  Microstrip Differential Phase Length Method, Dk vs. Frequency                 RO3003 materials have a TCDk of 3 ppm/°C. The thick­
+   Using 5 Mill RO3003™ Laminate RLD, Circuits Operating at                     nesses of substrates in this study was 5 and 10 mils thick.
+                      Different Temperatures                                    Copper foils used were rolled copper with an average
+      3.30
+                                                                                surface roughness of 0.35 μm RMS and ED copper with
+      3.25                                                                      an average roughness of 2.0 μm RMS.
+                                                                                    Figure 3 presents a summary of test results compar­
+      3.20                                                                      ing circuits made with 5-mil RT/duroid 5880 laminate
+      3.15                                                                      with rolled copper to circuits made with 5-mil RT/duroid
+                                                  ∆Dk = 0.001 @ 77 GHz          5880 laminate with ED copper.
+                                                   or ∆Φ = 1° @ 77 GHz
+ Dk
+
+
+
+
+      3.10                                                                          Figure 3 shows no difference in the circuit-TCDk per­
+                                                                                formance due to copper type even at different temper­
+      3.05
+                                                                                atures. The two copper types have very different grain
+      3.00                                                                      structures and slightly different conductivity, although
+                                                        Room Temp               the small differences in conductivity due to different
+      2.95                                              65 C
+                                                        125 C                   temperatures are not apparent. Also, the shift in the ex­
+                  5 Mil with Rolled Copper
+      2.90                                                                      tracted Dk, which is the data on the y-axis for the charts,
+              1                             10                        100       is a normal shift when comparing circuits based on this
+                                      Frequency (GHz)
+                                                                                substrate and with these two different copper types.
+                                                                                The rougher copper (ED) will cause a slower wave prop­
+           This is a duplication of the same experiment done using              agation than the smooth rolled copper and the slower
+      circuits with different copper types on RT/Duroid® 5880 laminate.         phase velocity causes increase in effective dielectric
+                  The RO3003 laminate has nearly ideal TCDk.
+                                                                                constant and ultimately the extracted Dk, which Rogers
+                                                                                calls Design Dk.
+s Fig. 5 Comparisons showing circuit TCDk at different tem-                         To continue this study on TCDk, the same material
+peratures and using the same material, with the same substrate                  with the same copper type will be compared with dif­
+thickness, with excellent TCDk, but with different copper types.                ferent substrate thicknesses, to evaluate the effects of
+                                                                                temperature on circuit materials of different thickness­
+to +65°C. After the circuit has reached this tempera­                           es. The results of the evaluation are shown in Figure 4
+ture, there is time to ensure thermal equilibrium and                           for measurements performed at 77 GHz.
+this is monitored with a thermocouple mounted next                                  As Figure 4 shows, there is a difference in the circuit-
+to the circuit and with a FLIR® thermal imaging cam­                            TCDk behavior depending upon the thickness of the
+era. Once the circuit is stable at +65°C, more sweeps                           substrate. Circuits with the thicker substrate had a larg­
+are performed on the VNA and the data is captured.                              er difference in Design Dk with temperature than the
+The heat block is then adjusted to +125°C and again                             circuits using the thinner substrate. The change in Dk
+thermal equilibrium is reached and a stable RF sweep is                         due to the TCDk of the material at different operating
+performed, and data is collected. The process is com­                           temperatures is an indication that a thicker circuit mate­
+plete for the 2-in. circuit and then repeated for the 8-in.                     rial will be more dominated by the dielectric properties
+circuit. Numerous details of this test method are not                           than the conductor properties.
+covered in this article but can be shared upon request.
+
+                                                                            7
+    Figure 5 shows the results of circuit-TCDk testing for
+circuits using a material with excellent TCDk properties.
+                                                                                              Microstrip Differential Phase Length Method Using
+    As the data shows in Figure 5, there is no difference                                     5 Mill RT/Duroid® Laminate, Circuits Operating at
+in Dk between the circuits using a material with excellent                                                  Different Temperatures
+TCDk and different copper types. Figure 3 shows the                                  0
+different copper types do not affect Dk when using a                               –0.2
+material with poor TCDk. However, the difference in Dk
+                                                                                   –0.4
+or phase angle is minimal for circuits based on a lami­
+nate material with very good TCDk as shown in Figure 5                             –0.6
+
+
+
+
+                                                                   Loss (dB/in.)
+and compared to circuits using material with poor TCDk                             –0.8
+as shown in Figure 3.                                                                           RLD CU Room Temp
+                                                                                   –1.0
+    Another temperature-dependent circuit material                                              RLD CU 65 C
+                                                                                                RLD CU125 C
+property, thermal coefficient of dissipation factor (TCDf),                        –1.3
+                                                                                                ED CU Room Temp
+may also be affected by the relative thickness of a cir­                           –1.4         ED CU 65 C
+                                                                                                ED CU 125 C
+cuit material. But this parameter is extremely difficult to                        –1.6
+measure accurately due to limits of conventional test
+methods. Methods such as the IPC clamped stripline                                 –1.8
+resonator test method, for example, are sensitive to the                           –2.0
+                                                                                          0      10     20    30     40     50    60     70       80
+metals involved with the makeup of the test fixture. As
+                                                                                                               Frequency (GHz)
+these metals expand and contract at different tempera­
+tures, that causes one aspect of inaccuracy for the test
+method. Another issue is the change in conductivity               s Fig. 6 Comparisons showing insertion loss differences for
+due to changes in temperature. Then considering test              circuits built on 5 mil RT/duroid 5880 laminate with two differ-
+                                                                  ent copper types and at different operating temperatures.
+methods which use circuit testing to extract Df, those
+methods also have issues with the type of test vehicle
+and the sensitivity of the test vehicle to physical dimen­        terial that had poor TCDk also had poor TCDf or a wider
+sional changes caused by temperature changes. They                range of Df due to changes in temperature compared
+can also be impacted by the small change in copper                to materials with better TCDk values. Unfortunately, and
+conductivity, which is a small value, but considering the         since these materials (RT/duroid 5880 and RO3003 lami­
+very sensitive nature of extracting the Df from a materi­         nates) have very low dissipation factor (0.001 or less),
+al’s dielectric losses and trying to accurately account for       any change in Df across this range of temperatures and
+the other losses (conductor losses and radiation losses),         frequencies was not obvious during the testing of the
+then the slight conductivity changes of copper due to             transmission lines. A similar comparison using higher-
+temperature change can cause Df extraction accuracy               loss materials with good and poor TCDk could yield
+issues.                                                           different results and it is believed that a material with
+    A more real-world approach to considering changes             poor TCDk will also have poor TCDf. However, the in­
+in circuit material loss due to temperature changes is to         vestigation can be much more complicated due to how
+perform insertion loss testing at different operating tem­        different material formulations behave with changing
+peratures. As part of the circuit-TCDk experiments, other         temperatures and PTFE base materials will likely behave
+circuit properties were evaluated. The circuit properties         much differently than most hydrocarbon-based materi­
+associated with change in Dk, such as phase response              als. And to complicate matters, different PTFE materials
+and impedance, did respond in a predictable manner                can behave very differently based on the different fill­
+in accordance with the change in Dk from temperature              ers that could be used and the different glass styles or
+exposure. However, insertion loss was also evaluated;             amount of glass reinforcement used to make the lami­
+specifically, changes in insertion loss due to temperature        nate.
+were evaluated. Figure 6 compares circuits based on                   In summary, all circuit materials can be defined by
+5-mil RT/duroid 5880 laminates with two different types           TCDk and it is an important parameter that should be
+of copper. This is the same testing that was done for the         considered in the design phase of any new application
+circuit-TCDk evaluations and the data was collected at            that will be exposed to varying temperatures. The thick­
+the same time, with insertion loss responses presented            ness of a circuit substrate can affect circuit performance,
+in Figure 6.                                                      where circuits based on a thicker substrate could be
+    As Figure 6 shows, the effects of copper surface              more impacted by changes in Dk according to a mate­
+roughness are apparent on these circuits. Rolled cop­             rial’s TCDk parameter with varying temperature. Differ­
+per has an extremely smooth surface and does not im­              ences in copper type, which were limited in this study,
+pact conductor loss as much as ED copper with its much            do not appear to be a significant factor for circuit perfor­
+rougher surface. The same testing was done with circuits          mance regarding TCDk. Additionally, as a review of Fig­
+on 5-mil-thick RO3003 laminate; however, the trends               ures 3, 4, and 5 will show, a circuit material’s TCDk is not
+were like the results shown in Figure 6 and not shown             frequency dependent. Small differences can be seen in
+here because the data did not add to the discussion.              the figures but basically the Dk shift due to changes in
+Insertion loss testing had been performed to see if ma­           temperature at 10 GHz will be about the same shift as
+
+                                                              8
+those at 77 GHz. TCDk values found on data sheets are
+                                                                References
+typically tested at 10 GHz; however, that is for raw sub­       1.		John W. Reynolds, P.A. LaFrance, J.C. Rautio and Al F. Horn III,
+strate. When considering TCDk effects in circuit form,              “Effect of the Conductor Profile on the Insertion Loss, Propaga­
+substrate thickness has been shown here to affect how               tion Constant, and Dispersion in Thin High Frequency Transmis­
+the TCDk will impact circuit performance. This would                sion Lines,” DesignCon 2010.
+                                                                2.		John Coonrod, “Insertion Loss Performance Differences Due to
+suggest, when a designer is running circuit simulations,            Plated Finish and Different Circuit Structures,” APEX / IPC Expo
+they should try several simulations with different Dk               2019, Feb. 2019.
+values according to how much the Dk of the raw sub­             3.		John Coonrod, “Characterizing Circuit Materials at Millimeter-
+strate could change across the operating temperatures               Wave Frequencies,” Microwave Journal, Vol. 62. No.5, May 2019.
+in which it will be used, to better understand the impact       		 The reference to the FLIR thermal imaging camera was from FLIR®
+of those changes in Dk on the circuit being simulated. n           Systems, Inc.
+
+
+
+
+                                                            9
+Material Solutions for mmWave
+Radar: From ADAS to Smart
+Cities and Factories
+Rogers Corp., Chandler, Ariz.
+
+
+
+
+O
+           ver the last two decades, radar technology
+           has been widely applied to commercial auto­
+           motive applications to make driving safer and
+           more convenient. With the development of
+Industry 4.0 and Smart Cities, radar applications have
+found even more diverse usage in traffic management,
+security and building automation. As radar PCB appli­
+cations have grown and evolved, Rogers Corporation
+has blazed the trail with high performance, reliable, and
+cost-effective RF material solutions.
+
+RADAR SENSORS FOR ADAS AND
+AUTONOMOUS DRIVING
+   Today, radar sensors are a key component of ad­
+vanced driver assistance systems (ADAS). As ADAS ex­
+pands to meet the increasing functional safety require­           mance. To address the evolving needs of automotive
+ments driven by regulatory and NCAP roadmaps, radar               radar antenna designers, Rogers continues to develop
+technology will be applied to additional applications,            and launch new products to enable automotive radar
+such as corner radars for motorcycle and pedestrian de­           designers, radar chip set suppliers, and PCB fabricators
+tection, as well as in-cabin occupancy sensing to reduce          to optimize the cost and performance of their automo­
+the incidence of heat stroke tragedies. Additionally, high        tive radar applications. Compared to the first genera­
+resolution radar technologies are being developed and             tion RO3003 laminates, next generation RO3003G2™
+deployed in Level 4 and Level 5 autonomous vehicles               laminates provide lower insertion loss, even more stable
+for personal mobility as well as last mile delivery vehi­         dielectric constant, and optimized PCB fabrica­
+cles. Radar technology is expected to grow and evolve             tion performance. Rogers RO4830™
+to meet the increasing performance requirements of                laminates with LoPro® copper
+these automotive applications.                                    foil provide an ex­
+   Along the way, Rogers’ high frequency laminates have           cellent balance of
+provided the RF performance and reliability required by           RF properties and
+the PCB patch antennas used in these safety-critical au­          total cost of own­
+tomotive radar applications. RO4000® materials, such as           ership. RO4830
+RO4835™ laminates are widely used for 24 GHz appli­               thermoset lami­
+cations. For 77/79 GHz automotive radar applications,             nates pro­
+RO3003™ laminates are the industry leader, due to their           vide com­
+exceptionally reliable RF and thermomechanical perfor­            petitive
+                                                             10
+                             Microstrip 50 ohm Transmission Line Testing,
+                                      Differential Length Method
+                            5 Mil Laminates Clad with 1/2 oz. Copper Foils
+                   0
+
+                 –0.5
+
+                 –1.0
+ Loss (dB/in.)
+
+
+
+
+                 –1.5
+
+                 –2.0
+
+                 –2.5       RO3003G2™ Laminate
+                            RO3003™ Laminate
+                 –3.0       RO4830™ LoPro® Laminate
+
+                 –3.5
+
+                 –4.0
+                        0     10    20     30    40     50    60     70      80
+                                           Frequency (GHz)
+
+
+                                                                                       by automatically adapting heating, ventilation and air-
+                                                                                       conditioning (HVAC) systems, controlling lighting, door
+                                                                                       opening and gates. This is to keep balance between
+                                                                                       comfort, cost and energy consumption. In automated
+                                                                                       office room planning systems, radar provides crucial
+                                                                                       data about presence and the amount of people to op­
+                                                                                       timize the utilization of buildings and space. In Smart
+                                                                                       Factories, radar sensors are helping people to manage
+                                                                                       robotic systems in a safe and secure environment by
+                                                                                       predictive safety and health systems.
+                                                                                          In Smart Cities, traffic management systems are track­
+                                                                                       ing real time traffic conditions via radar sensing intensity,
+                                                                                       queues, speed, and position of road users including pe­
+RF material and enable reduced PCB fabrication costs,                                  destrians and bicyclists. Radars provide reliable data in­
+while also delivering low insertion loss (similar to leg­                              put in all weather conditions to adjust traffic speed and
+acy RO3003 laminates), and stable dielectric constant                                  traffic lights to reduce travel time. In case of incidents,
+through environmental exposures.                                                       traffic management systems must react quickly to pre­
+                                                                                       vent hazardous situations and reduce delays caused by
+RADAR TECHNOLOGY FOR SMART CITIES AND                                                  traffic jams. Radars detect incidents in a split second,
+INDUSTRY 4.0                                                                           and cameras zoom in to analyze the situation. Prediction
+    Now we see these same radar technologies, which are                                of traffic conditions is done by combining all sensor data
+being applied to autonomous vehicles, being applied                                    over the air via 5G and vehicle to infrastructure com­
+to create Smart Cities and Smart Factories to improve                                  munications.
+efficiency and quality of life. Globally, more than 4.2 bil­                              Radar technology has an edge over other traffic sen­
+lion people live in urban areas. The United Nations is                                 sors, in both performance and cost. Radar functions ef­
+projecting that this will grow to 68% of the world’s popu­                             fectively in all weather conditions, and performs more
+lation living in dense urban areas by 2050. This large                                 accurate measurements than conductive loops. Radar
+urban population will be concentrated in mega cities.                                  sensors are not intrusive which makes them easily acces­
+High population density is good for cities’ economies to                               sible for road maintenance workers, resulting in lower
+thrive and flourish by higher efficiency and productivity,                             system cost. Similar to automotive ADAS applications,
+providing opportunity for all its citizens and businesses.                             radar in traffic requires high-performance PCB anten­
+Maximum utilization of cities’ road infrastructure, elec­                              nas for transmitting and receiving functions. The PCB
+tricity, buildings and social services are key to providing                            antenna must achieve angular and high lateral resolu­
+benefits for everybody, by creating a safe and clean en­                               tion and repeatable performance. These requirements
+vironment to live in.                                                                  call for Rogers’ circuit materials with the characteristics
+    In Smart Cities, digital sensors, and in particular, radar                         that support operation at such high frequencies and in
+will be the eyes and the ears of the city. These sensors                               such operating environments.
+will help to maximize the operational efficiency of roads.                                Key PCB antenna performance parameters include
+This is to help people to travel from home to work in a                                gain, directivity, and electrical efficiency, and low circuit
+minimum amount of time. Reduced traffic congestion                                     material loss is essential for achieving good PCB an­
+makes maximum use of existing road infrastructure and                                  tenna performance. These compact antennas and their
+increases traffic flow.                                                                high frequency transmitter and receiver circuits must op­
+    Further, radar sensors in building or home automa­                                 erate continuously and reliably in challenging city and
+tion minimizes the amount of electricity being used                                    factory operating environments.
+                                                                                  11
+    In Smart Factories, the fourth industrial revolution has
+begun. Industry 4.0 is about connectivity and a smart,
+interconnected, pervasive environment using cloud
+computing, artificial intelligence, additive manufactur­
+ing, co-robots, drones, block chain and mixed reality.
+Sensors like radar are used to generate data which will
+create insights to do fast product improvements, in­
+crease plant utilization, predictive safety and decrease
+environmental impact. Products will also become Smart
+via internet of things (IoT), transferring data to business­
+es to do real time product improvements during the
+lifetime of a product, offering additional value to cus­
+tomers. In these harsh product and production environ­
+ments, radar measures presence, speed and distance
+and is equipped with GPS for positioning and Wi-Fi for
+fast data transfer.
+    Whether at 24, 60 or 77/79 GHz, the performance
+of PCB antennas is vital to these applications. As the
+market leader for RF materials used in the automotive
+radar market, Rogers is ready to support ease of use
+materials solutions to the industry. Providing optimum
+and reliable RF materials for antenna systems tailored to
+every radar use case of the Smart city. RO4835™ lami­
+nates from Rogers Corporation are well established as
+reliable circuit materials for 24 GHz radar for traffic man­
+agement, and factory, building, and home automation
+applications like door opening and automatic lighting
+and air conditioning systems.
+    When we move to higher frequencies to achieve
+higher resolution for object classification, movement               electric constant performance across a circuit board and
+detection and people counting applications, sizes of                across changing environments, along with the lower in­
+circuit features shrink with increasing frequencies, be­            sertion loss essential for maintaining scarce signal levels
+coming quite fine at operating frequencies of 60 to                 at mmWave frequencies.
+77/79 GHz as those signal wavelengths become quite                      Radar sensors are a cost effective, versatile, and in­
+small. Various circuit transmission-line formats are used           dispensable technology enabling increased safety and
+at those frequencies, including microstrip, stripline, and          mobility for society. Their versatility also makes a great
+coplanar-waveguide (CPWG) circuits. These fine circuit              fit for applications which improve safety, security, and
+features require extremely consistent and predictable               efficiency in our home, offices and industries. As radar
+circuit materials, such as RO3003G2™ and RO4830™                    sensors become ubiquitous, Rogers Corporation contin­
+laminates. RO4830 thermoset laminates are well suit­                ues to innovate and lead the market with high perfor­
+ed for price-sensitive mmWave applications. Rogers                  mance, cost effective materials solutions.n
+RO3003G2 laminates provide the tightly controlled di­
+
+
+
+
+                                                               12
+How Do Circuit Material
+Parameters Impact mmWave
+Radar Performance?
+Rogers Corp., Chandler, Ariz.
+
+
+
+
+M
+           illimeter-wave (mmWave) frequency spectrum            ing frequency, so the higher the frequencies, the finer
+           contains wide available bandwidth for many            the details of the transmission lines. The circuit mate­
+           applications. To take advantage of the band­          rial’s behavior can set the limits for the performance
+width, circuits are being developed at much higher fre­          of the transmission lines at mmWave frequencies, and
+quencies than traditional wireless applications, at fre­         PCB material inconsistencies can result in signal losses,
+quencies from 24 to 77 GHz and beyond, for everything            phase shifts, and propagation delays in the transmission
+from 5G cellular wireless communications networks to             lines. For systems such as radars that rely on timing and
+collision-avoidance radar systems in advanced driver             signal phase, delays and phase distortion degrade ulti­
+assistance systems (ADAS). The frequency range was               mate system performance. By knowing more about the
+once considered off limits for all but the military, with        circuit material parameters that affect mmWave perfor­
+frequencies beyond the range of affordable and practi­           mance, PCB materials can be intelligently specified for
+cal circuits. But mmWave frequencies are quickly being           the growing number of mmWave circuit applications,
+brought to the masses in millions of 77 GHz automotive           including 77 GHz automotive radar systems and Fifth
+radar systems, applying radar and robotic technologies           Generation (5G) cellular wireless communications sys­
+to make roads safer. One of the keys to developing cir­          tems.
+cuits for these systems is understanding what is required            When reviewing circuit material candidates for a de­
+to make the printed-circuit-board (PCB) materials work           sign, specifiers often begin by comparing familiar ma­
+best at these frequencies.                                       terial parameters, such as dielectric constant (Dk) and
+   PCB materials are a starting point for many circuit           dissipation factor (Df). Dk is an indication of a circuit
+designers, although circuits operating at mmWave fre­            material’s electromagnetic (EM) charge storage capabil­
+quencies may represent unknown territories for many of           ity while Df refers to a material’s energy loss. A PCB’s
+those designers. But understanding how various circuit           dielectric material is an insulator for its metal conduc­
+material parameters affect mmWave performance can                tors, and the EM field propagates along the conduc­
+ease the task of finding a circuit laminate for 77 GHz or        tors, through the material, and through the air around it.
+other mmWave circuit applications. In simplest terms,            For materials with copper conductors, lower Dk values
+consistency is everything. A low loss, high performance          translate to faster wave propagation with minimal de­
+circuit material with characteristics that are consistent        lays and changes in signal phase—important behavior
+with time, temperature, and other operating conditions           for mmWave radar circuits.
+will provide repeatable performance at mmWave fre­                   Dk is typically characterized through the thickness or
+quencies.                                                        z-axis of a circuit material. It is usually determined ac­
+   The dimensions and features of PCB transmission               cording to industry-accepted standards developed by
+lines for mmWave circuits, whether microstrip, stripline,        organizations such as the IPC (www.ipc.org) and at a sin­
+or grounded coplanar waveguide (GCPW), of necessity              gle frequency, such as 10 GHz. Every circuit material will
+are quite fine. Signal wavelengths shrink with increas­          have some amount of variation in Dk, ΔDk, according to
+
+                                                            13
+changes in frequency or temperature, and this will affect
+circuit performance.                                                    Example: 50 ohm Microstrip Transmission Line Circuits
+                                                                         Evaluated for Design Dk Using the Same Substrate
+    The Dk value is usually associated with the compo­
+                                                                             and Same Copper, but Different Thickness
+sition of a circuit material’s dielectric materials, such as
+polytetrafluoroethylene (PTFE). But the Dk that deter­               6.6 Mil RO4350B™
+                                                                     Laminate has Design
+mines the performance of a circuit is a composite value              Dk = 3.96 (Average Dk     Cross-Sectional View of a Thin Circuit, with
+resulting from such things as the fillers used in the mate­          from 8 to 40 GHz)          Exaggerated Copper Surface Roughness
+rial, such as glass fiber reinforcement, the material thick­
+ness, and even the quality of the copper conductors.
+For circuit design and computer modeling, this is the                30 Mil RO4350B™
+                                                                     Laminate has Design
+Dk that is more important than the nominal Dk of the                 Dk = 3.68 (Average Dk
+material because this is the Dk that will determine how              from 8 to 40 GHz)
+the circuit on that material and with those conductors
+behaves. It is typically known as “the circuit-perceived                                          Cross-Sectional View of a Thick Circuit
+Dk” or what Rogers Corp. refers to as “Design Dk.”                    If a 60 Mil Substrate is Considered, the Design Dk = 3.66 and Any
+                                                                      Thickness Greater than that, has Dk = 3.66. This Number is the Design
+PROBING THE PARAMETERS                                                Dk Which is on the Data Sheet and is the Intrinsic Dk of the Material.
+
+    Dk is one of many circuit material parameters to re­
+view when considering circuit materials for mmWave cir­
+                                                                    s Fig. 1 This depiction compares circuits with thin and thick
+                                                                    dielectric materials and rough copper conductors.
+cuits such as 77 GHz automotive collision-avoidance ra­
+dars. How tightly the Dk is controlled to a nominal value
+may be as important as the Dk value itself. Additional              lines on thinner substrates while capacitance decreases
+circuit material parameters that can impact mmWave                  and impedance increases for transmission lines on thick­
+circuit performance are Df, material thickness, copper              er substrates. An increase in capacitance can also be
+conductor quality, moisture absorption, and the “glass              achieved with wider transmission lines, which increases
+weave” effect caused by glass fiber reinforcement.                  the conductive area on the PCB.
+Again, consistency is essential, especially at mmWave                   For many high frequency applications, including 77
+frequencies and excess variations in these parameters               GHz radars, transmission-line impedance must be con­
+will impact circuit performance at mmWave frequencies.              sistent and tightly maintained to minimize reflections.
+    These various circuit parameters can all play a part in         Deviations from a characteristic impedance of 50 Ω,
+what is a circuit material’s Design Dk. To ensure clarity           for example, can result in signal reflections, losses, and
+of terms, the “effective Dk” refers to the overall Dk ex­           phase shifts. For a given variation in Dk, those shifts can
+perienced by the propagating wave. For microstrip, the              impact phase response more at mmWave frequencies
+effective Dk is a combination of the Dk of the substrate            than at lower frequencies and become a source of radar
+and the Dk of the air around the substrate. The “Design             performance degradation at mmWave frequencies.
+Dk” uses “effective Dk” data to extract the Dk of the                   Thinner PCB materials are typically used for mmWave
+material itself and remove the effects of the Dk of the             circuits, which are often multilayer circuits with analog,
+air around it.                                                      digital, and power functions. The value of the effective
+    A microstrip circuit using 5-mil-thicksubstrate based           Dk and the Design Dk will decrease for thicker sheets
+on RO3003™ materials, using electrodeposited (ED)                   of the same material. For example, for 6.6-mil-thick
+copper, will have an effective Dk (including the effects            RO4350B™ circuit material from Rogers Corp., the av­
+of air) of 2.54 and the Design Dk will be 3.16 when                 erage value of the Design Dk from 8 to 40 GHz is 3.96 as
+tested at 77 GHz. The Dk of the raw circuit material is             determined through the thickness or z-axis of the mate­
+3.00 through the thickness or z-axis of the material but            rial. But for 30-mil-thick RO4350B laminate, the Design
+this is a standardized test of the raw material and does            Dk is 3.68 (Fig. 1). The Design Dk will continue to de­
+not include the effects of circuitry. The effective Dk and          crease with thicker RO4350B laminate, dropping to 3.66
+Design Dk are circuit properties while the raw material             average from 8 to 40 GHz for 60-mil-thick material, but
+Dk is a material property and is the intrinsic Dk of the            will not decrease further with increased thickness. That
+substrate material.                                                 value represents the intrinsic Dk of the material. At this
+    For example, a material’s Design Dk (the Dk of the              thickness and beyond, the properties of the dielectric
+material tested in circuit form) can change with thickness.         content dominate the circuit’s effective Dk and Design
+The variations in Design Dk with material thickness are             Dk. The conductors play a part in determining the effec­
+also often dependent upon frequency, with Dk typically              tive Dk for thinner versions of the material but less so as
+decreasing at higher frequencies. For a circuit designer,           it gets thicker.
+such Dk variations can lead to unexpected impedances                    To further demonstrate how material thickness can
+for mmWave transmission lines with physical dimensions              impact a circuit design, a different circuit material was
+based on a calculator or computer simulator.                        evaluated. When three different thicknesses (5, 10, and
+    A microstrip circuit using a thin laminate will have            20 mil) of RO3003 circuit material from Rogers Corp.,
+little distance between the signal conductor plane and              with the same type of copper conductor, ½-oz. ED cop­
+the ground plane. Thinner circuits are more dominated               per, were tested for Design Dk using the differential
+by the properties of the conductor than the dielectric              phase length method with 50-Ω microstrip transmission
+material and the conductors can play their part in deter­           lines, the results revealed the change in Design Dk as a
+mining the effective Dk and the Design Dk. Capacitance              function of substrate thickness through 50 GHz (Fig. 2).
+increases and impedance decreases for transmission
+                                                               14
+                                                                                                                 METERING METAL EFFECTS
+                                           Dk vs. Frequency, Differential Phase Length Method,
+                                            Using RO3003™ Laminate with 1/2 oz. ED Copper                            All a circuit material’s components combine for its
+                                 3.5                                                                             Design Dk, so it is important to pay attention to those
+                                                                                                                 different components. Copper conductor quality, for
+                                 3.4
+                                                                                    5 Mil RO3003
+                                                                                    10 Mil RO3003
+                                                                                                                 example, can make a difference in performance at
+                                                                                    20 Mil RO3003                mmWave frequencies. High quality copper conductor
+                                                                                                                 material provides transmission lines with the high con­
+                                 3.3                                                                             ductivity and consistent impedance needed for reliable
+                                                                                                                 signal phase characteristics at mmWave frequencies,
+                                                                                                                 such as in 77 GHz automotive radars.
+ Dk
+
+
+
+
+                                 3.2
+                                                                                                                     The amount of surface roughness in a circuit mate­
+                                 3.1
+                                                                                                                 rial’s copper conductors can affect mmWave circuit per­
+                                                                                                                 formance. Rougher copper yields transmission lines with
+                                                                                                                 slower EM wave propagation than transmission lines
+                                 3.0                                                                             produced with similar copper but smoother surface. The
+                                                                                                                 copper surface roughness that is a concern is the copper
+                                 2.9                                                                             roughness at the substrate-copper interface of a lami­
+                                       1                                10                            100
+                                                                  Frequency (GHz)
+                                                                                                                 nate. The slower wave propagation is equivalent to a
+                                                                                                                 circuit material with higher Dk.
+s Fig. 2 As demonstrated for RO3003, material thickness                                                              To show how differences in copper surface roughness
+can make a difference in the Design Dk of the material, often                                                    can affect mmWave circuit performance, one type of cir­
+consistently across frequencies.                                                                                 cuit material, a 4-mil-thick liquid-crystal-polymer (LCP)
+                                                                                                                 substrate, was teamed with different copper conduc­
+                                            4 Mil LCP Laminate Effective Dielectric Constant vs.                 tors. The copper conductors consisted of different types
+                                            Frequency for Various Copper Foil Types on 50 ohm
+                                                       Microstrip Transmission Line
+                                                                                                                 of ED copper, each having different values of surface
+                                 2.8                                                                             roughness. The surface roughness refers to the aver­
+                                                                                                                 age or root-mean-square (RMS) value across the copper,
+ Effective Dielectric Constant
+
+
+
+
+                                 2.7
+                                                                                                                 with value of 0.5, 0.7, 1.5, and 3.0 μm RMS.
+                                 2.6                                                                                 To evaluate different copper conductors at higher
+                                                                                                                 frequencies, 50-Ω microstrip transmission lines were
+                                 2.5
+                                                                                                                 fabricated on the LCP substrates with the four copper
+                                 2.4                                                                             types and measurements were made with a microwave/
+                                                                                                                 mmWave vector network analyzer (VNA) from 8 to 50
+                                 2.3
+                                                                                                                 GHz. The effective Dk changed according to the type of
+                                 2.2                                                                             copper, with the differences remaining constant across
+                                       0          10         20         30        40         50        60
+                                                                                                                 the frequency range (Fig. 3).
+                                                                  Frequency (GHz)
+                                                                                                                     As the measurements show, a single type of PCB
+                                                       ED – 3.0 μm RMS RT – 0.7 μm RMS
+                                                       ED – 1.5 μm RMS RT – 0.5 μm RMS
+                                                                                                                 material with different types of copper conductors, will
+                                                                                                                 yield different effective Dk values. Circuits using materi­
+s Fig. 3 The effective Dk of a circuit material can also change                                                  als with rough copper surfaces have higher effective Dk
+with copper conductor type and the surface roughness of the                                                      values than the same dielectric materials with smoother
+copper.                                                                                                          copper surfaces. The wave-slowing effects of circuits
+                                                                                                                 with higher effective Dk values can have greater impact
+                                              Microstrip Insertion Loss, Differential Length                     at the highest frequencies.
+                                             Method Using 5 Mil RO3003™ Laminate with ED                             Copper surface roughness can also impact conductor
+                                                           and Rolled Copper                                     loss, especially at mmWave frequencies, with rougher
+                                  0
+                                                                                                                 copper conductor surfaces causing higher conductor
+                                 0.5                                                                             losses. To investigate this, the same 5-mil-thick RO3003
+                                                                                                                 laminate was characterized with both ED and rolled cop­
+                                 1.0                                                                             per. The ED copper has a surface roughness of 2.0 μm
+ Loss (dB/In.)
+
+
+
+
+                                                                          Rolled Copper
+                                                                                                                 RMS while the rolled copper has a surface roughness of
+                                                                          ED Copper
+                                 1.5                                                                             0.35 μm RMS.
+                                                                                                                     The insertion losses of 50-Ω microstrip transmis­
+                                 2.0                                                                             sion lines were measured from DC through 110 GHz to
+                                                                                                                 compare the loss characteristics of the different copper
+                                 2.5                                                                             conductors. The impact of the increased copper surface
+                                                                                                                 roughness on (increased) conductor loss, including in­
+                                 3.0                                                                             sertion loss and return loss, is apparent (Fig. 4). A circuit
+                                       0     10   20    30   40 50    60 70            80   90    100 110
+                                                              Frequency (GHz)                                    material’s thickness will determine the influence of cop­
+                                                                                                                 per surface roughness on loss, with circuits using thin­
+s Fig. 4 The type of copper conductor can also affect a circuit                                                  ner materials more greatly affected by rougher copper
+material’s loss performance at higher frequencies.                                                               surfaces.
+
+                                                                                                            15
+  Microstrip Differential Phase Length Method, Dk vs. Frequency                                                   Microstrip Insertion Loss, Differential Length
+        Using 5 Mil Thick Laminates, Circuits Operating at                                                     Method Using 5 Mil RO3003™ Laminate with 1/2 oz.
+                      Different Temperatures                                                                           Rolled Copper, Circuits with ENIG
+      3.30
+                                                                                                      –0.25
+      3.25
+                                                    ∆Dk = 0.001 @ 77 GHz
+                                                     or ∆Φ = 1° @ 77 GHz                              –0.75
+      3.20
+                                                                                                      –1.25
+
+
+
+
+                                                                                      Loss (dB/In.)
+                     RO3003 ED CU Room Temp
+      3.15           RO3003 ED CU 65 C
+                     RO3003 ED CU 125 C                                                               –1.75
+      3.10                                                                                                       Bare Copper
+                                                   ∆Dk = 0.031 @ 77 GHz
+ Dk
+
+
+
+
+                                                                                                      –2.25      62 Micro Inches Nickel
+                                                   or ∆Φ = 17° @ 77 GHz
+      3.05                                                                                                       175 Micro Inches Nickel
+                                                                                                      –2.75
+      3.00           Competitor I_A Room Temp
+                     Competitor I_A 65 C                                                              –3.25
+                     Competitor I_A 125 C                                                                  0      10   20    30    40   50    60    70   80   90   100
+      2.95                                                                                                                        Frequency (GHz)
+                 Microstrip Circuit Performance, Comparing Room Temperature
+                          to 65°C and 125°C Operating Temperatures
+      2.90                                                                                                          GCPW Insertion Loss, Differential Length
+             1                              10                            100
+                                      Frequency (GHz)                                                         Method Using 5 Mil Extremely Low Loss Laminate with
+                                                                                                                 Rolled Copper, ENIG Different Nickel Thickness
+s Fig. 5 A circuit material’s response to changing tempera-                                           –0.25
+tures can result in changes in Design Dk and phase angle.
+                                                                                                      –0.75
+KEEPING DK CONSTANT
+                                                                                                      –1.25
+   For the small differences in signal phase from reflect­                            Loss (dB/In.)
+ed objects detected by 77 GHz automotive radars, any                                                  –1.75
+variations in a circuit material’s Design Dk can impact
+the phase performance and degrade the accuracy of the                                                 –2.25
+system. While a circuit material with no Dk variations un­                                                       Bare Copper
+                                                                                                      –2.75      62 Micro Inches Nickel
+der any conditions would be ideal, the Design Dk of real                                                         175 Micro Inches Nickel
+materials will change with frequency, with temperature,                                               –3.25
+and with thickness. To maintain the phase range needed                                                     0      10   20    30    40   50    60    70   80   90   100
+for high system accuracy and reliability, a realistic maxi­                                                                       Frequency (GHz)
+mum Dk tolerance for the intrinsic circuit material Dk is
+                                                                                                GCPW is much more impacted by final plated finish than microstrip.
+±0.05.
+   As part of monitoring a circuit material’s changes in
+Dk with temperature, it is specified within a tempera­
+                                                                                     s Fig. 6 Choice of transmission-line technology and how well
+                                                                                     it can be manufactured can impact the performance of a circuit
+ture range according to its thermal coefficient of Dk                                at mmWave frequencies.
+(TCDk) parameter. This is important for applications that
+must weather wide operating temperature ranges, such                                 values are recommended at higher frequencies. Typical
+as 77 GHz radars. Any circuit material considered for                                values are in the range of 0.1 to 0.2 perecnt; RO3003
+mmWave applications should have minimal TCDk value                                   laminate has moisture absorption of 0.04 percent.
+to minimize the effects of changes in Dk on circuit per­                                 Because of the small wavelengths at mmWave fre­
+formance, such as phase shifts.                                                      quencies, the glass weave effect is a concern when
+   Some circuit materials, such as those based on PTFE,                              specifying a PCB material. It refers to the way glass re­
+exhibit an abrupt change in Dk as a function of tempera­                             inforcement is distributed throughout the dielectric in a
+ture around room temperature (+25°C). For many appli­                                circuit material. The glass reinforcement fabric can be an
+cations, a TCDk of 0 ± 25 ppm/°C is considered good.                                 open weave or a spread weave, where an open weave
+As a real world example, RO3003 circuit material has                                 has some openings between glass bundles. The glass
+a TCDk of -3 ppm/°C at 10 GHz through the z-axis for                                 fibers are collected in bundles throughout the material
+a temperature range of -50 to +150°C. The extremely                                  and can be balanced or unbalanced. A glass fabric that
+small value of TCDk results in very little change of Dk                              is considered balanced has the same density of glass in
+with temperature (Fig. 5), vital for consistent circuit per­                         the x-axis compared to the y-axis and an unbalanced
+formance at mmWave frequencies and for wide operat­                                  fabric has different glass densities in these two axes. For
+ing temperature ranges.                                                              open weave glass fabric, there are sections of the circuit
+   Additional circuit material properties of concern at                              material with no glass, where the Dk is low. When glass
+mmWave frequencies include Df, moisture absorption,                                  bundles cross and form knuckles, the Dk is at its highest.
+and the glass weave effect, each of which can influence                              Small wavelengths can be distorted by the differences.
+the Design Dk value of a material. As with Dk, material                                  For a 77 GHz radar, PCB materials with strong glass
+Df has temperature-related behavior, defined by its ther­                            weave effect can suffer from variations in group delay,
+mal coefficient of Df (TCDf), so that its effects on circuit                         propagation delay, and phase angle. Because of the
+design will vary with temperature. Moisture absorption                               impact on phase, materials with a spread glass weave
+refers to the amount of total weight of water, as a per­                             and minimal Dk variations should be specified for 77
+centage, that a circuit material will absorb. The lowest                             GHz circuits. Circuit materials with open glass weave
+                                                                                16
+can have large Dk variation of 0.090 with phase angle
+differences of 100 deg. at 77 GHz. The large variations
+in phase angle equate to large differences in group de­           More on MWI-2019
+lay and propagation delay for those materials. Ideally, a            One way to get a quick idea of the RF perfor­
+material with no glass reinforcement, such as RO3003 or           mance differences of circuit materials at mmWave
+RO3003G2™ laminates, will have no concern for glass               frequencies is the free-of-charge MWI-2019 soft­
+weave effects.                                                    ware program. It is downloadable from the Rogers
+   Even the choice of transmission-line technology can            Corp. (www.rogerscorp.com) website to run on most
+have bearing on the circuit performance ultimately pos­           MS-compatible personal computers (PCs). It em­
+sible for mmWave applications such as 77 GHz automo­              ploys quick-response closed-form equations (versus
+tive radars. The mmWave circuits are usually part of hy­          longer-running EM field solvers) to compute the ef­
+brid multilayer PCB assemblies also containing digital,           fects of different materials and different Dk values
+power, and even opto-electric circuitry. The mmWave               on the performance of high-frequency transmission
+circuitry is usually fabricated with microstrip or GCPW           lines, including microstrip, stripline, and grounded
+transmission-line technologies, although PCB fabrica­             coplanar waveguide (GCPW).
+tion variables can have much greater impact on GCPW,
+including copper plating thickness, conductor etching                The straightforward software works according to
+tolerance, and final plated finish (Fig. 6). Computer             a material’s Design Dk, using a large database of
+models are available for both technologies although               values measured at specific frequencies for different
+GCPW tends to be more difficult to produce especially             materials and copper conductors. Design Dk con­
+at 77 GHz.                                                        siders not just the Dk of the substrate material but
+   While evaluating different circuit materials and cop­          factors such a frequency, substrate thickness, and
+per conductor types with an E-field simulator or even             copper surface roughness that can impact the Dk as
+prototype designs and measurements, can be costly and             seen by the circuit’s transmission lines. While MWI-
+time consuming, an easier approach is with the aid of a           2019 cannot match the accuracy of an EM field solv­
+free MS Windows software program, MWI-2019, down­                 er, it can provide results for different transmission-
+loadable from Rogers Corp. The software (see “More on             line types, copper types, and substrate thicknesses
+MWI-2019”) allows users to experiment with the effects            in a fraction of the time and provides a good first
+of material thickness, copper conductor surface rough­            look at different circuit material candidates through
+ness, and other parameters on Design Dk, using a built-           110 GHz.
+in database of measured Design Dk values for many dif­
+ferent materials. Compared to the long computational
+times of EM simulators, it provides results with some­
+what less accuracy but almost instantly for comparing
+the implications of using different materials and material
+parameters for mmWave circuit designs.
+
+
+
+
+                                                             17
+A PCB Laminate Optimized
+for mmWave Radar Antenna
+Applications
+Rogers Corp., Chandler, Ariz.
+
+Composite material based printed circuit boards (PCBs) constructed from glass fiber cloth with
+differing glass weave construction styles exhibit localized variation of dielectric constant. At
+millimeter-wave (mmWave) frequencies, the glass weave construction style in thin laminates
+causes observable changes in the RF circuit and antenna performance. The impact of PCB
+construction on the transmission line performance is explored in a 100 µm thick woven glass
+polytetrafluoroethylene (PTFE) laminate. Depending on the glass weave construction style, a
+dielectric constant variance between 0.01 and 0.22 is observed. To investigate the effects of
+different glass weave construction styles on the antenna performance, a series fed microstrip
+patch array antenna is constructed on Rogers’ commercially available RO4835™ and RO4830™
+thermoset laminates. The antenna structure produced on the RO4830 laminate exhibits
+significantly less variation under nominal circuit dimensions and maintains the reflection
+coefficient (S11 < –10dB) and bore-sight gain performance.
+
+
+
+
+A
+         utonomous vehicles demand high reliability to                 In this article, the impact of PCB construction on
+         help drivers and pedestrians avoid potentially fa­        mmWave radar performance is investigated. PCB lami­
+         tal accidents. Millimeter-wave (mmWave) radars            nates are typically constructed by impregnating a glass
+are more compact, resilient to environmental effects               cloth with a polymeric resin. The effect of glass fiber
+and provide an accurate solution for object detection              cloth is significant at mmWave frequencies as the glass
+in autonomous driving. In commercial radar systems at              bundle width is comparable to the transmission line
+mmWave frequencies (76-81 GHz), series fed microstrip              width. Also, when the antenna structure is manufactured
+patch antennas are preferred for their ease of design,             on thin (e.g., 100 µm) PCB laminates, woven glass cloth
+compactness, and ability to be manufactured at high
+volumes and low cost1. At high frequencies, the wave­                                                    Knuckle-Bundle
+                                                                                                        (High Dk Region)
+length is very small, hence the transmission line and                                                               Bundle-Open
+antenna dimensions are smaller in comparison to lower                                                             (Low Dk Region)
+frequencies. The PCB effects on the transmission lines
+and microstrip patch antennas need to be investigated
+to ensure the desired performance for automotive ra­
+dar. PCB’s with consistent material properties across the                                              Cross-Sectional View
+laminate under environmental exposure (temperature
+and moisture) are preferred at mmWave frequencies2.
+                                                                                  Top View
+However, copper foil, glass reinforcement, and ceramic
+filler used in laminate constructions have a large impact          s Fig. 1 Microscopic top and cross-sectional views of laminate
+at high frequencies.                                               with glass cloth.
+
+
+                                                              18
+can cause significant changes in the antenna perfor­                      In thin laminates used for mmWave applications, two
+mance and reduce manufacturing yield.                                  of the typical thin glass cloth weave styles used in man­
+                                                                       ufacturing are 1080 and 1078, as shown in Figure 2.
+PCB LAMINATE CONSTRUCTION                                              The 1080 standard weave is with unbalanced glass cloth
+   PCB laminates are constructed using polymeric resin                 indicating more glass content along one axis than the
+and glass cloth which are cladded with copper foils on                 other axis. The 1078 spread glass weave has a more uni­
+two sides. Glass cloth has a typical dielectric constant               form plane of glass fibers than the 1080 weave, with less
+(Dk) of 6.1, while low loss polymeric resin has a Dk of                variation in Dk across the laminate. Thin laminates with
+2.1-3.0. Figure 1 shows the microscopic top and the                    one layer of glass cloth have a more significant variation
+cross-sectional illustrations of glass weave in laminates.             in Dk than multilayer glass cloth based thick laminates.
+A conductor over the knuckle-bundle glass region expe­                 The laminate material with ceramic filler reduces Dk vari­
+riences higher Dk from larger glass content. Whereas,                  ation in laminates due to the glass cloth.
+a conductor over the bundle-open region experiences
+lower Dk from larger resin content. The glass cloth style              IMPACT ON THE TRANSMISSION LINE CIRCUIT
+is characterized based on the thickness of the glass                       The experimental test vehicle is a microstrip transmis­
+weave, the distance between the weave, the spread of                   sion line circuit, which uses 1 mm end launch connectors
+the weave, and the glass content along each axis.                      from Southwest Microwave (model # 2492-04A-6). The
+                                                                       end launch connector excites a 50 ohm grounded co­
+                                                                       planar waveguide (GCPW) which transforms into a high
+                                                                       impedance microstrip transmission line with an imped­
+                                                                       ance transformer. The microstrip transmission line is 5
+                                                                       mils wide and 2" long as shown in Figure 3, ensuring
+                                                                       sensitivity towards the glass weave construction styles.
+                                                                       The circuits are fabricated on 100 µm thick woven glass
+                                                                       polytetrafluoroethylene (PTFE) laminate using 0.5 oz.
+                                                                       rolled copper and a single layer of glass cloth. To com­
+     1080 Glass, Standard Weave     1078 Glass, Spread Weave           pare different glass weave construction styles, the trans­
+                                                                       mission line circuits were fabricated on three different
+s Fig. 2 Microscopic views of the 1080 (open and unbalanced            PCB laminate constructions: PTFE with 1080 glass, PTFE
+weave), and the 1078 (spread weave) glass construction styles.         with 1078 glass and ceramic filled non-PTFE with 1080
+                                                                       glass laminates. Careful inspection of the fabricated
+                                                                       circuits was performed to select the transmission lines
+                                                                       aligned with the knuckle-bundle and the bundle-open
+                                                                       glass regions of the laminates. A network analyzer is used
+                                                                       to measure the magnitude and the phase angle proper­
+                                                                       ties of the circuit. Phase angle (unwrapped), group delay
+                                                                       (based on phase angle which varies with frequency) and
+                                                                       propagation delay (calculated based on phase angle)
+                                                                       are the three parameters used to determine the dielec­
+                                                                       tric constant variation across the laminate.
+                                                                           Table 1 indicates the measured raw group delay,
+s Fig. 3 Microstrip transmission line transitioning from a             propagation delay and phase difference of the transmis­
+GCPW.                                                                  sion lines aligned with the knuckle-bundle and the bun­
+                                                                       dle-open regions of the laminate. A higher Dk slows an
+                             TABLE 1                                   electromagnetic wave, which corresponds to increased
+ MEASURED PERFORMANCE DIFFERENCE BETWEEN                               group delay, increased propagation delay and an in­
+  THE KNUCKLE-BUNDLE AND THE BUNDLE-OPEN                               creased phase difference. The knuckle-bundle regions
+               GLASS REGIONS                                           have higher Dk than the bundle-open regions of the
+                   Average Differences Between the Knuckle-            laminate. Table 2 indicates the dielectric constant varia­
+                   Bundle and the Bundle-Open Glass Region             tion calculated from group delay, propagation delay and
+    Glass
+ Construction           40 GHz to 80 GHz
+                                                                       phase difference of the circuits. The 1078 spread weave
+    Style                                        77 GHz Phase          laminate has a uniform glass plane, consequently a low­
+                     Group        Propagation    Difference (°)        er Dk variation of 0.03 than the 1080 standard weave
+                    Delay (ps)     Delay (ps)
+                                                                       laminate with a variation of 0.22. As discussed earlier,
+  1078 Spread                                                          the ceramic filled laminate has a much smaller Dk varia­
+                         1             1.3             20
+    Weave
+                                                                       tion of 0.02.
+ 1080 Standard
+  Weave, Un-            7.3           10.1             149             IMPACT ON THE ANTENNA PERFORMANCE
+   balanced
+                                                                          A series fed microstrip patch antenna array is a typi­
+ Ceramic Filled                                                        cal automotive radar antenna at mmWave frequency.
+ 1080 Standard
+    Weave,
+                        0.3            0.6             10              The 1×4 series fed microstrip patch antenna is designed
+  Unbalanced                                                           to operate in the frequency range of 76-81 GHz.3 The
+
+                                                                  19
+                                    TABLE 2                                                                                 TABLE 3
+          CALCULATED PERFORMANCE DIFFERENCE                                            COMPARISON OF RO4835 AND RO4830 LAMINATES
+         BETWEEN THE KNUCKLE-BUNDLE AND THE
+                 BUNDLE-OPEN REGIONS                                                    Glass Construction
+                                                                                                                           RO4835 Laminate      RO4830 Laminate
+                                                                                               Style
+                          Equivalent Difference in Dk (ΔDk) Between
+                           the Knuckle-Bundle and the Bundle-Open                       Dielectric Constanta                     3.48                    3.21
+    Glass                                                                                             Loss Tangenta            0.0037                   0.0033
+                              40 GHz to 80 GHz
+ Construction                                                      ΔDk from
+    Style                                    ΔDk from            77 GHz Phase            Substrate Thickness                   100 µm                   125 µm
+                           ΔDk from
+                                            Propagation              Angle                  Ceramic Filler Size                Coarse            Fine and Uniform
+                          Group Delay
+                                               Delay
+                                                                                                     Glass Content              High                     Low
+  1078 Spread
+                             0.02                 0.03                 0.02                          Laminate Type            Thermoset                Thermoset
+    Weave
+ 1080 Standard
+    Weave,                   0.17                 0.22                 0.14
+  Unbalanced                                                                                         20
+                                                                                                                                          Gain Avg (5 Samples) BO
+ Ceramic Filled                                                                                      15                                   Gain Simulated
+ 1080 Standard                                                                                                                            Gain Avg (5 Samples) KB
+                             0.01                 0.02                 0.01                                                               RC Avg (5 Samples) BO
+    Weave,                                                                                           10
+                                                                                                                                          RC Simulated
+  Unbalanced                                                                                                                              RC Avg (5 Samples) KB
+                                                                                                       5
+
+
+
+                                                                                      | S11 | (dB)
+                                                                                                       0
+
+                                                                                                      –5
+
+                                                                                                     –10
+
+                                                                                                     –15
+
+                                                                                                     –20
+                                                  RO4830 Laminate                                       70            75           80             85                90
+            RO4835 Laminate
+                                                                                                                             Frequency (GHz)
+
+s Fig. 4 Fabricated series fed microstrip patch array on the                         s Fig. 6 Comparison of measured results to simulation for
+RO4835 and the RO4830 laminates.                                                     antenna samples on the knuckle-bundle (KB) and bundle-open
+                                                                                     (BO) glass fabric region of the RO4835 laminate.
+                                                                                     (model # 2492-04A-6).
+        Conductor Over              Conductor Over
+        Knuckle-Bundle               Bundle-Open                                        The RO4835 laminates have a dielectric constant
+                                                                                     of 3.48 and loss tangent of 0.0037 at 10 GHz (deter­
+                                                                                     mined by IPC TM-650 2.5.5.5 test method). Whereas,
+                                                                  37 Mil             the RO4830 laminates have a dielectric constant of 3.24
+                                                                                     and loss tangent of 0.0033 (determined by IPC TM-650
+                                                                                     2.5.5.5 test method). The RO4835 laminate is reinforced
+                                                                                     with 1080 standard weave unbalanced glass and ce­
+                                     35.43 Mil
+                                                                                     ramic filled, however, the RO4830 laminate is reinforced
+                                                                  57 Mil             with 1035 spread weave glass and ceramic filled with
+                                                                                     smaller particles. Table 3 further compares the RO4835
+         Width: 3.9 Mil
+                                                               Width: 4.1 Mil
+                                                                                     and RO4830 laminates characteristics.
+                                                                                        The fabricated antenna is selected to match the de­
+                                      59.06 Mil                                      sign dimensions and to align with the knuckle-bundle
+                                                                                     and the bundle-open glass fabric of the RO4835 lami­
+                                                                                     nate as in Figure 5 (a) and (b). However, due to the
+                                                                                     spread glass weave construction style, the selection of
+                                                                                     the antenna to align conductors to glass fabric was not
+   RO4835 Laminate              RO4835 Laminate            RO4830 Laminate           performed in RO4830 laminate, as shown in Figure 5 (c).
+  (a)                         (b)                        (c)
+                                                                                     The antennas were measured for reflection coefficient
+s Fig. 5 Antennas over knuckle-bundle and bundle-open glass                          (S11) and bore-sight gain using a network analyzer. The
+fabric region on RO4835 laminate, and a sample antenna on                            microstrip patch and series microstrip feed line dimen­
+RO4830 laminate.                                                                     sion differ for both laminates as shown in Figure 5.
+antenna is built on RO4835™ and RO4830™ laminate                                        For brevity, the presented results are from the aver­
+materials of differing glass cloth construction, as shown                            age of sample data among multiple measured anten­
+in Figure 4. The antenna is fabricated with grounded                                 nas. The measured results are compared to the full-wave
+adjacent elements to investigate coupling effects. The                               ANSYS HFSS simulation. The antennas on the RO4835
+antenna transitions to a GCPW and then to a 50 ohm                                   laminates (five samples) over the knuckle-bundle and
+Southwest Microwave 1 mm end launch connector                                        bundle-open region show significant variation both in
+
+                                                                                20
+                                                                                reflection coefficient and bore-sight gain are preserved
+                20
+                                                                                by using Rogers RO4830 laminates with a spread weave
+                                               Gain Avg (5 Samples)
+                15                             Gain Simulated                   glass construction style.
+                                               RC Avg (5 Samples)
+                10                             RC Simulated                     CONCLUSIONS
+                  5                                                                The PCB laminate construction influences the trans­
+ | S11 | (dB)
+
+
+
+
+                                                                                mission line and antenna performance. The glass cloth
+                  0
+                                                                                construction style varies the dielectric constant across
+                 –5                                                             the laminate which degrades the performance and im­
+                                                                                pacts the manufacturing yield. The antenna response
+                –10
+                                                                                is much more consistent across the RO4830 laminate
+                –15                                                             than the RO4835 laminate. The improved antenna per­
+                                                                                formance and manufacturing yield are due to laminate
+                –20
+                   70   75         80                85               90
+                                                                                construction, i.e., spread glass weave, less glass content
+                             Frequency (GHz)                                    with the conductor farther from glass fiber, and thicker
+                                                                                substrate. The improved performance is also attributable
+s Fig. 7 Comparison of measured results to simulation for                       to the material’s electrical properties i.e., lower dielectric
+antenna samples on the RO4830 laminate.                                         constant and lower loss tangent of RO4830 laminates.
+                                                                                The larger dimensional widths of the antennas and the
+the reflection coefficient (S11) and bore-sight gain from                       transmission lines also improve the manufacturing yield
+the simulation as in Figure 6. Also, the antenna perfor­                        at high frequencies. Therefore, at mmWave frequen­
+mance on the RO4835 varies across the laminate de­                              cies radar applications, the performance of antennas on
+pending on the conductor alignment to the knuckle-                              Rogers RO4830 laminates is superior to that of antennas
+bundle and bundle-open regions. The shift in gain over                          with Rogers RO4835 laminates.n
+frequency indicates variation in dielectric constant. Also,
+the shift to higher frequency indicates a lower dielectric
+constant. In contrast, the antenna performance as mea­                          REFERENCES
+sured with S11 and bore-sight gain shows consistency
+over samples and much closer match to simulation on                             1.		R. Garg, P.Bhartia, I.Bahl, A. Ittipiboon, “Microstrip Antenna De­
+RO4830 laminates, as shown in Figure 7. The consis­                                 sign Handbook,” Artech House, 2001.
+tency of measured results with simulation demonstrates                          2.		J. Coonrod, “Characterizing Circuit Materials at mmWave Fre­
+                                                                                    quencies,” Microwave Journal, Vol 62. Edition 5, May 2019.
+a minimal variation of dielectric constant across the lami­                     3.		C. A. Balanis, “Antenna Theory: Analysis and Design,” 4th Edi­
+nate. The boresight gain varies by a maximum of 4 dB in                             tion, Chapter 17, Wiley, 2016.
+the standard weave as opposed to a maximum of 2 dB
+in spread weave. Therefore, the antenna performance
+
+
+
+
+                                                                           21
+Characterizing Circuit Materials
+at mmWave Frequencies: Part I
+John Coonrod
+Rogers Corp., Chandler, Ariz.
+
+Different dielectric constant measurement methods provide different results.
+
+
+
+
+T
+           he dielectric constant (Dk) or relative permittiv­           is ideal, with each having challenges and shortcomings,
+           ity of a circuit material is not a constant—de­              especially at frequencies from 30 to 300 GHz.
+           spite what its name might imply. The Dk of a
+           printed circuit board (PCB) material, for exam­              CIRCUIT vs. RAW MATERIAL TESTS
+ple, will change as a function of frequency. Also, using                   Tests for determining circuit material Dk or Df (the
+different Dk test methods on the same piece of mate­                    loss tangent or tanδ) are generally performed in one of
+rial, they are likely to measure different Dk values, which             two ways: either on the raw material or a circuit fabri­
+are correct for those test methods. As circuit materials                cated from the material. Raw material tests depend on
+are increasingly employed at mmWave frequencies,                        high quality test fixtures and test equipment to extract
+with the growth of 5G and advanced driver assistance                    Dk and Df values directly from the material. Circuit tests
+systems, it is important to understand how Dk changes                   use a common circuit and extract the material param­
+with frequency and which Dk test methods are “best”                     eters from the circuit’s performance, such as measuring
+applied.                                                                the center frequency or frequency response of a resona­
+    No industry-standard best test method exists for                    tor. Raw material tests introduce uncertainties typically
+measuring circuit material Dk at mmWave frequencies,                    associated with the text fixture or test setup, while circuit
+although organizations such as the IEEE and IPC have                    tests contain uncertainties from the test circuit design
+committees devoted to this topic. It is not the lack of                 and fabrication techniques. Because the two methods
+measurement methods; in fact, more than 80 are de­                      differ, measurement results and accuracy levels typically
+scribed in just one reference by Chen et al.1 No method                 do not agree.
+
+
+
+
+                                       Ground
+                                        Plane
+                                                                         L
+                  MUT     MUT
+
+       Ground
+        Plane
+
+                                      Signal Plane
+                                       Resonator
+                                         Circuit
+ (a)                                                    (b)                                    (c)
+
+s Fig. 1 X-Band clamped stripline test fixture side view (a), stripline resonator (b) and photograph (c).
+                                                     www.mwjournal.com/articles/32237
+                                                                   22
+                                                                                   is a dependable means of determin­
+                                                                                   ing the Dk and Df (tanδ) in the z-axis
+                                                                                   of a circuit material. It uses a clamping
+     0
+                                                                                   fixture to form a loosely coupled strip­
+         –3 dB                                                                     line resonator from MUT samples. The
+   –10                                                                             measured quality factor (Q) of the res­
+                                                                                   onator is the unloaded Q, so it can be
+   –20
+                                            Node 4, 10 GHz
+                                                                                   measured with minimal impact from
+                                                                   5               cables, connectors and fixture calibra­
+   –30                                                                             tion. The MUT is a copper-clad circuit
+                   f1  fr    f2
+                                                        4
+                                                                                   laminate with all the copper etched
+   –40                                   3
+                           2
+                                                                                   from the substrate prior to testing.
+   –50         1                                                                   The raw circuit material is environ­
+                                                                                   mentally conditioned, cut to size and
+   –60                                                                             placed into the fixture on both sides
+                                                                                   of the resonator circuit at the signal
+   –70                                                                             plane (see Figure 1).
+                                                                                       The resonators are designed with
+   –80                                                                             half-wavelength resonances starting
+                                                                                   at about 2.5 GHz, so node 4 is around
+   –90                                                                             10 GHz; this is the node commonly
+                                                                                   used for Dk and Df measurements.
+  –100
+       1                                                                       14  Lower nodes and frequencies can be
+                                    Frequency (GHz)
+                                                                                   used—even the higher node 5 can be
+s Fig. 2 Wideband clamped stripline measurement of a MUT 60 mils thick, with a     used, although higher nodes are usu­
+Dk = 3.48.                                                                         ally avoided due to wave propagation
+   For example, an X-Band clamped stripline test de­                               or measurement issues from harmon­
+fined by IPC,2 a raw material test, may not provide Dk         ics  and   spurious content. The extraction of the Dk or
+results agreeing with a circuit test of the same material.     relative  permittivity (εr) is straightforward:
+The raw material test creates a stripline resonator by                                     2
+                                                                       ⎡      nc       ⎤
+clamping two pieces of the material under test (MUT)              εr = ⎢               ⎥             (1)
+in a special test fixture. Air can become entrapped be­                ⎣ 2fr (L + ΔL ) ⎦
+tween the MUT and the thin resonator circuit which is
+part of the fixture. The air becomes part of the mea­             where n is the node, c is the speed of light in free space
+surement and lowers the measured Dk. If a circuit test            and fr is the center frequency of the resonant peak. ∆L
+is performed on the same circuit material, without the            compensates for the electrical length extension due to
+entrapped air, the measured Dk will be different. For a           electric fields in the gap-coupled area. Extraction of tanδ
+high frequency circuit material with a Dk tolerance of            (Df) from the measurements is also straightforward. It is
+±0.050 determined from a raw material test, a tolerance           a fraction related to the 3 dB bandwidth of the resonant
+of ±0.075 may result from a circuit test.                         peak after subtracting the conductor losses (1/Qc) asso­
+   Circuit materials are anisotropic, often with different        ciated with the resonator circuit.
+Dk values in the three material axes. Dk values typically          1   1   1
+differ little between the x- and y-axis, so for most high            =   +                           (2)
+                                                                  Qu Q c Q d
+frequency materials, Dk anisotropy comparisons are
+usually made between the z-axis and the x-y plane. For                      1
+the same MUT, test methods that measure Dk for the z-             tanδ ∝                             (3)
+axis can provide different results than test methods used                  Qd
+to evaluate Dk in the x-y plane, although the values of
+Dk may be “correct” for the given method.                                 ⎡f − f ⎤    1
+                                                                   tanδ = ⎢ 2 1 ⎥ −                 (4)
+   The type of circuit used for a circuit test also influ­                ⎣ fr ⎦ Qc
+ences the value of the measured Dk. In general, two
+types of test circuits are used: resonant structures and              Figure 2 shows a measurement using the clamped
+transmission/reflection structures. Resonant structures           stripline test method with a 60-mil thick MUT with Dk
+typically provide narrowband results, while transmis­             = 3.48.
+sion/reflection tests are usually wideband. Methods us­               Ring resonators are often used as test circuits.3 They
+ing resonant structures are typically more accurate.              are simple microstrip structures having resonances at
+                                                                  integer multiples of the mean circumference of the mi­
+TEST METHOD EXAMPLES                                              crostrip ring (see Figure 3a). They are typically loosely
+   An example of a raw material test is the X-Band                coupled, as loose coupling between the feed lines and
+clamped stripline method. It has been used by manufac­            the ring minimizes the capacitance of the gaps between
+turers of high frequency circuit laminates for years and          the feed lines and the ring. This capacitance changes
+                                                                  with frequency, causing the resonant frequency to shift
+                                                             23
+and resulting in errors when extracting the material Dk.
+The conductor width of the resonator ring should be                       50 Ω Feedline      Gap                        Gap
+much smaller than the radius of the ring —as a rule of
+thumb, one-quarter the dimension of the ring radius or
+                                                                                                      Ring Resonator
+smaller.
+   The |S21| response of a microstrip ring resonator on
+a 10-mil thick circuit material with Dk = 3.48 is shown                                                                50 Ω Feedline
+in Figure 3b. An approximate calculation of the Dk is
+                                                                    (a)
+given by
+                                                                      0
+2πr = nλ g                         (5)
+                                                                    –10
+                                                                                                                         5
+          c                                                         –20
+λg =                               (6)
+       f Dk eff                                                     –30                          2      3         4
+                                                                                    1
+                                                                    –40
+                     2
+         ⎡ cn ⎤                                                     –50
+Dk eff = ⎢                         (7)
+         ⎣ 2πrf ⎥⎦                                                  –60
+                                                                    –70
+    Although approximate, these formulas are useful for
+                                                                    –80
+determining an initial Dk value. A more accurate Dk can
+be found using an electromagnetic (EM) field solver and             –90
+                                                                     10 MHz                                                     30 GHz
+precise resonator circuit dimensions.
+    Loosely coupled resonators are often used for Dk and            (b)                              Frequency
+Df measurements to minimize resonator loading effects.
+Coupling should be loose enough so the insertion loss             s Fig. 3 Microstrip ring resonator (a) and wideband
+                                                                  measurement (b).
+is 20 dB or less at the resonant peak. In some cases, with
+extremely weak coupling, the resonant peak may be so                  Subtracting the phase angles of the short and long
+weak that it cannot be measured. This typically occurs            circuits will also subtract the effects of the connectors
+for resonant circuits with thinner substrates, the types          and the signal launch areas. If the return loss is good
+of materials commonly used in mmWave applications,                for both circuits and the connectors have consistent
+since the high frequencies have small wavelengths and             orientation, most of the effects of the connectors will
+circuit dimensions.                                               be minimized. When using this method at mmWave fre­
+                                                                  quencies, return loss at these transitions of better than
+mmWAVE TEST METHODS                                               15 dB through 60 GHz and 12 dB from 60 to 110 GHz is
+   While there are many Dk test methods, only some                considered acceptable.
+are suitable for mmWave frequencies, yet none are ac­                 The extraction equations for the microstrip differen­
+cepted as industry standards. However, the following              tial phase length method are based on a manipulation
+methods are accurate and repeatable at mmWave.                    of the microstrip phase response formula for circuits
+Differential Phase Length Method                                  with different physical lengths:
+   The microstrip differential phase length method                               Eff _ εr
+has been used for many years.4 It is a transmission               Φ = 2πf                   L                    (8)
+                                                                                   c
+test method in which phase measurements are made
+on two circuits that only differ by physical length (see                          Eff _ εr
+Figure 4). To avoid any variations in circuit mate­               ΔΦ = 2πf                      ΔL               (9)
+rial properties, the circuits are fabricated side-by-side                               c
+and as close together as possible on the MUT. The cir­                                      2
+cuits are 50 Ω microstrip transmission lines of different                    ⎡ ΔΦc ⎤
+                                                                  Eff _ εr = ⎢                                (10)
+lengths with a grounded coplanar waveguide (GCPW)                            ⎣ 2πfΔL ⎥⎦
+signal launch. At mmWave frequencies, the GCPW
+signal launch is important, since the launch area can             where c is the speed of light in free space, f is the fre­
+have a major impact on return loss. End-launch con­               quency of the S21 phase angle, ∆L is the difference in
+nectors should also be used, to make good pressure                physical lengths of the two circuits and ∆Φ is the differ­
+contacts between the coaxial connectors and the test              ence in phase angle between the shorter and longer
+circuit without soldering, allowing the same two con­             circuits.
+nectors to be used for the shorter and longer circuits.              The test method comprises a few simple steps:
+This minimizes the effect of the connectors on mea­               • Measure the S21 phase angle as a function of fre­
+surement results. For consistency, the same connec­                  quency for the shorter and longer circuits.
+tors should be oriented to the same ports of the vec­             • Use the formulas to determine the measured effec­
+tor network analyzer (VNA). If connector A is oriented               tive Dk.
+to port 1 of the VNA and connector B to port 2 for                • Obtain precise and accurate circuit dimensions that can
+testing the shorter circuit, the same should be true                 be entered into an EM field solver using the initial Dk
+when testing the longer circuit.                                     value for the material.
+
+                                                             24
+                                        8 in. (203.2 mm)                                                                         2 in. (50.8 mm)
+
+
+
+
+s Fig. 4 Top view of the long and short microstrip circuits used in the differential phase-length method.
+
+
+     3.7
+                                                                                         0
+     3.6
+     3.5                                                                               –0.5
+     3.4
+                                                                                       –1.0
+
+
+
+
+                                                                       Loss (dB/in.)
+     3.3
+Dk
+
+
+
+
+     3.2                                                                               –1.5
+     3.1
+     3.0                                                                               –2.0
+
+     2.9
+                                                                                       –2.5
+     2.8
+     2.7                                                                               –3.0
+       0.01        0.1          1             10           100                             0   10   20   30   40 50 60 70          80    90   100 110
+                          Frequency (GHz)                                                                      Frequency (GHz)
+
+
+s Fig. 5 Dk vs. frequency measured with the microstrip                s Fig. 6 Insertion loss vs. frequency determined from the
+differential phase length method.                                     microstrip differential length measurements.
+
+• Use the software to generate a simulated effective                  also varies, as does the gap dimension. Most mmWave
+   Dk value. Change the Dk in the solver until the mea­               ring resonators are thin (usually 5 mils), and the gap
+   sured and simulated effective Dk values for the mate­              between the feed line and resonator ring is also small.
+   rial match at the same frequency.                                  Thickness and gap variations for a gap-coupled ring
+• By incrementing the frequency into the mmWave re­                   resonator will impact both coupling and the resonant
+   gion and repeating this process, the Dk value can be               frequency.
+   determined across a range of frequencies through                       When comparing two circuits built on the same circuit
+   mmWave.                                                            material and with different copper plating thicknesses,
+   Figure 5 shows a measurement using the microstrip                  the circuit with the thicker copper will exhibit a lower
+differential phase length method with 5-mil thick                     Dk. The resonant frequencies of the two circuits will also
+RO3003G2TM circuit material. The curve was generated                  differ, even though they should be the same for the
+using a Microsoft Windows PC program developed by                     same circuit material and test method. Figure 7 shows
+Rogers Corp.5 The data reflects the usual trend of de­                an example where the thickness variation in a circuit’s
+creasing Dk with increasing frequency. At lower frequen­              final plated finish causes differences in the extracted Dk
+cies, larger changes in Dk occur versus frequency; how­               for the same material. Whether the finish is electroless
+ever, from 10 to 110 GHz, the Dk shows little change.                 nickel immersion gold (ENIG) or other plated finishes,
+This curve reflects a material with low loss and rolled               the issue remains.
+copper with a smooth surface. A material with high loss                   Besides these fabrication issues, conductor width
+and/or higher copper surface roughness will exhibit an                variation, etched-space variation, trapezoidal effects
+increased negative slope in the Dk-frequency relation­                and substrate thickness variation cause similar effects.
+ship. Using this test method, the insertion loss for cir­             If all these variations are accounted for, one individual
+cuits using the MUT can be obtained by subtracting the                ring resonator measurement can yield the correct Dk
+S21 values of the shorter and longer circuits at each fre­            value; however, many test routines will assume nominal
+quency (see Figure 6).                                                circuit dimensions and extract an incorrect Dk. At lower
+                                                                      frequencies these effects do not impact Dk accuracy as
+Ring Resonator Method
+                                                                      much as at mmWave frequencies.
+   The ring resonator method is another approach for                      Another significant variable using ring resonators at
+mmWave characterization. While ring resonators are of­                mmWave is the gap coupling changing with frequency.
+ten used below 10 GHz, with proper fabrication preci­                 It is typical for ring resonators to be evaluated using mul­
+sion they can be used effectively at mmWave frequen­                  tiple nodes, with the nodes usually spaced by significant
+cies. Fabrication is important because the effects of cir­            differences in frequency. As a result, gap coupling varia­
+cuit dimensions and dimensional tolerances are greater                tion can be a significant source of error. To overcome
+at mmWave, with any variation reducing accuracy. The                  this, a differential circumference method is used. This
+thickness of the copper plating on the circuit material               approach uses two ring resonators, essentially identical
+                                                                 25
+    –18                                                               –18
+    –20                                                               –20
+    –22                                                               –22
+    –24                                                               –24
+                                     552.7 MHz
+    –26                                                               –26
+                                     Q = 143.2                                                   452.7 MHz
+    –28                                                               –28                        Q = 175.2
+
+    –30                                                               –30
+    –32                                                               –32
+                                 62 μm Nickel                                                 175 μm Nickel
+    –34                                                               –34
+                             Extracted Dk = 3.106                                          Extracted Dk = 3.089
+    –36                                                               –36
+    –38                                                               –38
+                         78.75        79.15      79.55                                 78.93        79.33      79.73
+  (a)                            Frequency (GHz)                    (b)                        Frequency (GHz)
+
+s Fig. 7 mmWave ring resonator measurements of a MUT with 62 μm thick (a) and 175 μm thick (b) nickel plating.
+except the ring circumferences differ in size and are in­          terfere with the ring resonant peaks. If the feed lines
+teger multiples of each other (see Figure 8). With two             were open-ended microstrip, they would have their
+ring resonators, the higher order resonant nodes used              own resonances. The only way to avoid this is to make
+in the Dk extraction have some frequencies in common.              the feed lines much shorter or use tightly-coupled
+Since the feed lines and gaps are the same, the effects            GCPW feed lines. Since the differential circumference
+of gap coupling are decreased—theoretically eliminat­              ring resonator method yields the circuit’s effective Dk,
+ed—which leads to better accuracy in the extracted Dk.             it is still necessary to make accurate circuit dimension
+The Dk is calculated from the equations:                           measurements and use a field solver to extract the ma­
+                n1c                                                terial Dk.
+ L1 + ΔL =                       (11)
+           2fr1 Eff _ εr                                           CONCLUSION
+                                                                       The mmWave test methods discussed here are cir­
+                  n2 c
+L 2 + ΔL =                                  (12)                   cuit-based. Several other methods may be considered,
+             2fr2 Eff _ εr                                         such as raw material tests, but most yield a material Dk
+                                                                   for the x-y plane rather than the z-axis (thickness). Circuit
+                                     2
+           ⎡ c (n1fr2 − n2 fr1 ) ⎤                                 designers are more interested in the z-axis Dk, but for
+Eff _ εr = ⎢                     ⎥          (13)                   those willing to work with x-y material Dk values, free-
+           ⎣ 2fr1fr2 (L 2 − L1 ) ⎦                                 space measurements, split-cylinder resonator measure­
+                                                                   ments and waveguide perturbation testing are addition­
+   The ring resonators in Figure 8 are microstrip struc­           al test methods.
+tures, with the feed lines tightly-coupled GCPW to                     The clamped broadside coupled stripline resonator
+avoid open-end feed line resonances, which could in­               test method has also been evaluated for determining
+                                                                   circuit material Dk at mmWave frequencies. Unfortu­
+                                                                   nately, this approach is most effective with small pieces
+                                                                   of MUT and is not practical for volume testing. The quest
+                                                                   continues to find a good raw material test to character­
+                                                                   ize materials at mmWave frequencies.n
+
+                                                                   References
+                                                                   1.		L. F. Chen, C. K. Ong and C. P. Neo, “Microwave Electron­
+                                                                       ics, Measurement and Material Characterization,” John
+                                                                       Wiley & Sons Ltd., 2004.
+                                                                   2.		IPC-TM-650 Test Method Manual, “Stripline Test for Per­
+                                                                       mittivity and Loss Tangent (Dielectric Constant and Dissi­
+                                                                       pation Factor) at X-Band,” IPC, March 1998, pp. 1–25.
+                                                                   3.		K. Chang and L. H. Hsieh, “Microwave Ring Circuits and
+                                                                       Related Structures,” Wiley-Interscience, division of John
+                                                                       Wiley & Sons, New York, 2004.
+                                                                   4.		N. K. Das, S. M. Voda and D. M. Pozar, “Two Methods for
+                                                                       the Measurement of Substrate Dielectric Constant,” IEEE
+                                                                       Transactions on Microwave Theory and Techniques, Vol.
+                                                                       35, No. 7, July 1987, pp. 636–642.
+                                                                   5.		“ROG Dk Calculator,” Rogers Corp. Technology Support
+                                                                       Hub. www.rogerscorp.com/acs/technology/index.aspx.
+
+s Fig. 8 Test rings used with the microstrip differential
+circumference ring resonator method.
+
+                                                              26
+Characterizing Circuit Materials
+at mmWave Frequencies: Part II
+John Coonrod
+Rogers Corp., Chandler, Ariz.
+
+Different Dk measurement methods can provide different test results, depending upon the
+many variables involved.
+
+
+
+
+T
+        he first part of this article (See page 14 in this
+                                                                                                        50 ohm GCPW Transmission Line Circuits, Effective Dielectric
+        ebook) explored several methods for measuring                                                     Constant vs. Frequency Using 10 mil RO4835™ Laminate
+        the dielectric constant (Dk) or relative permittiv­                                         3.10
+ity of a circuit material at mmWave frequencies, includ­
+ing by means of ring resonators. Part 2 will take a closer                                          3.05
+look at ring resonators and how they can be used to
+                                                                    Effective Dielectric Constant
+
+
+
+
+determine the Dk and the loss tangent (Df) of a high                                                3.00
+frequency printed circuit board (PCB) material. The im­                                                                                   w21s12 Thin cu
+                                                                                                    2.95
+portance of characterizing circuit material properties at                                                                                 w21s12 Thick cu
+higher frequencies increases steadily as interest grows in                                          2.90
+                                                                                                                                          w18s6 Thin cu
+                                                                                                                                          w18s6 Thick cu
+potentially large applications at mmWave frequencies,
+including automotive radar and 5G wireless communi­                                                 2.85
+cations.
+    Ring resonators are often used to determine the Dk                                              2.80
+and Df of high frequency circuit materials. While they are
+                                                                                                    2.75
+typically used to characterize materials at frequencies
+less than 12 GHz, they can be used at higher frequen­                                               2.70
+cies provided that several issues are addressed. One of                                                66.0 66.2 66.4 66.6 66.8 67.0 67.2 67.4 67.6 67.8 68.0
+these concerns is the RF/microwave performance varia­                                                                      Frequency (GHz)
+tions that occur in a ring resonator as a result of normal
+process variations that can impact the fabrication and             s Fig. 1 Excerpt from article [1] showing effective dielectric
+construction of the resonator PCB, such as variations in           constant versus frequency for the four groups of GCPW, with
+                                                                   tight coupling (s6), loose coupled (s12), and thin and thick
+the thickness of the PCB’s copper plating.                         copper.
+    Electrical connections between different conductor
+layers of PCBs are typically made by plated thru hole              with the circuit laminate material. The plating process is
+(PTH) viaholes formed through the z axis (thickness) of            subject to normal variations in copper plating thickness.
+the circuit material. Conductive paths through the via­               Depending on frequency and design, the perfor­
+holes are formed with electroless copper plating and               mance of some circuits can be impacted by these varia­
+then final electrolytic copper plating. Copper plating is          tions in copper plating thickness. Normally, circuits
+also performed on the outer conductive layers of the               formed with microstrip transmission lines will not be
+PCB, increasing the thickness of the copper supplied               affected. But coupled circuits and circuits with different
+
+
+                                                              27
+                                                                       As shown in Figure 2, another concern with PCB cop­
+                                                                    per thickness variations is related variations of trapezoi­
+                                                                    dal effects.
+                                                                       Most electromagnetic (EM) simulation software will
+                                                                    assume rectangular-shaped conductors for a GCPW cir­
+                                                                    cuit (see Figure 2a). But a cross-sectional view of a GCPW
+                                                                    circuit would show that most of the conductors will vary
+                       Ideal Tightly Coupled GCPW                   between rectangular and trapezoidal shapes (see Figure
+  (a)
+                                                                    2b). Depending upon the PCB fabrication process, the
+                                                                    trapezoidal shape could be inverted compared to what
+                                                                    is shown in Figure 2b, being narrower at the base of
+                                                                    the conductor, which is the interface between the PCB’s
+                                                                    copper conductor and dielectric substrate.
+                                                                       A typical consequence of thicker copper is to have
+                                                                    conductors with more of a trapezoidal shape than a
+                                                                    rectangular shape. Variations from rectangular to trap­
+             Tightly Coupled GCPW with Trapezoidal Effects
+  (b)                                                               ezoidal conductor shapes can impact the electrical per­
+                                                                    formance of coupled circuits. For tightly coupled GCPW
+s Fig. 2 Cross-sectional views of GCPW circuits with ideal,         circuits, rectangular shaped conductors have significant
+rectangular shaped conductors (a) and trapezoidal-shaped
+conductors (b).
+                                                                    current density along the sidewalls of the coupled con­
+                                                                    ductors, with increased electric fields along the coupled
+                                                                    area. When the conductor shape changes to trapezoi­
+         End Launch                           End Launch            dal, the current density changes, with increased current
+         Connector Area                    Connector Area
+                                                                    density near the base of the conductor and lower current
+          50 ohm Feed Line               Ring Resonator             density along the coupled sidewalls. This results in de­
+         (Transmission Line)                                        creased electric fields in the air around the trapezoidal
+                                            Gap Coupling            shaped conductors. Having more or less electric fields
+                                                                    in air will impact the capacitance in gap coupled areas
+                                                                    and alter the effective dielectric constant as determined
+          Gap Coupling
+                                                                    from measurements of such circuits.
+                                         50 ohm Feed Line              The formation of trapezoidal conductors and their
+                                        (Transmission Line)         effects on circuit performance cannot be predicted or
+                                                                    included in a circuit simulation as a standard procedure.
+                                                                    However, for troubleshooting or evaluating a circuit, a
+s Fig. 3 Description of a microstrip ring resonator circuit.        small section of that circuit can be analyzed to deter­
+transmission-line technologies, such as grounded copla­             mine the impact of trapezoidal conductor effects. The
+nar waveguide (GCPW), can exhibit performance varia­                results of the partial circuit analysis will then be available
+tions as a result of variations in the PCB copper thick­            for use in an EM simulator to better predict the overall
+ness. A good example of this was published previously               effects of variations in conductor shape on circuit per­
+(see Figure 1).1                                                    formance.
+    The naming convention for the effective Dk curves of               Because they are coupled structures, ring resonators
+the GCPW circuits in Figure 1 refer to the signal conduc­           can be impacted by certain PCB fabrication variations;
+tor width (w) and the space (s) between the signal con­             copper plating thickness and trapezoidal conductor ef­
+ductor and the neighboring coplanar ground planes.                  fects are among the concerns related to PCB fabrication
+The curve for w18s6 refers to a circuit with an 18-mil-             variations. Most ring resonators are gap coupled (see
+wide signal conductor and space or gap between                      Figure 3).
+both sides of the signal conductor and the neighbor­                   Feedlines bring energy into and out of a ring resona­
+ing ground planes that is 6 mils wide. All circuits in this         tor circuit (see Figure 3). The feedlines are gap coupled
+study were built on the same panel of circuit material to           to the ring resonator and the gap coupling can impact
+minimize material variations which could impact mea­                the resonant frequency. The gap coupling is sensitive
+surement results.                                                   to PCB copper thickness variations. When the copper is
+   As can be seen in Figure 1, there is an approximate              thin, less of the electric fields will occupy the air around
+difference of 0.1 in the values of effective Dk determined          the conductors and more electric fields will be in the
+when using the same design (w18s6) for circuits with                substrate; the distribution of the electric field impacts
+thin copper (about 1 mil thick) compared to circuits with           the capacitance in the gap area and can alter the fre­
+thick copper (about 3 mils thick). This design (w18s6) is           quency of the ring resonator circuit. When the same
+considered tightly coupled: the gap between the signal              circuit design is fabricated with a PCB having thicker
+plane and neighboring coplanar ground planes is rela­               copper, more of the electric field is in air and the ca­
+tively small. As Figure 1 also shows, the loosely coupled           pacitance in the gap area and the center frequency of
+design (w21s12) was less impacted by the difference in              the resonator will change. Although the ring resonator
+copper thickness, with a difference of about 0.075 in ef­           design is the same, it can exhibit significant variations
+fective Dk for circuits with thin and thick copper.                 in resonant frequency due to normal variations in PCB
+                                                               28
+copper thickness and trapezoidal conductor effects. Be­                  the gaps, feedlines, connectors, and cables are less sig­
+cause the same ring resonator can yield different results                nificant. The coupling should be loose enough to where
+depending upon copper thickness and trapezoidal con­                     the resonant peak amplitude is no greater than -20 dB.
+ductor effects, it can also provide a range of Dk values                     Most mmWave circuits are fabricated on thin sub­
+(some incorrect) when used as a test circuit.                            strates. Thinner substrates help minimize radiation, dis­
+   Coupling is a key part of any ring resonator design                   persion, and spurious wave propagating modes. Fabri­
+and variations in PCB copper thickness and conductor                     cating a loosely coupled ring resonator on a thin sub­
+shapes will impact the performance of a ring resonator                   strate with a resonant peak that can be measured is very
+depending upon the amount of coupling in a design.                       difficult. For a thin substrate, the differences between a
+The effects have more impact when the coupling is tight                  gap coupled ring resonator that is loosely coupled com­
+than when it is loose. As a rule, the coupling should be                 pared to tightly coupled, at mmWave frequencies, can
+relatively loose to avoid the impact of copper thickness                 be a dimensional difference of less than 1 mil in the gap
+and trapezoidal shape variations. Additionally, when the                 coupled area. Since most circuit fabricators can maintain
+ring is very loosely coupled, the resonator circuit will be­             an etching tolerance of at best ±0.5 mil (a 1-mil varia­
+have more like an unloaded resonator and the effects of                  tion), coupling variations for mmWave circuits can be
+                                                                         significant from one circuit to the next when fabricating
+                                                                         multiple circuits of the same design.
+                                                                             Not all ring resonator designs have the same sensitiv­
+                                                                         ity to gap coupling. For example, a thru-coupled ring
+                                                                         resonator (see Figure 3) is sensitive to gap coupling
+                                                                         variations but a thru-line design with an edge coupled
+                                                                         ring resonator is less sensitive to gap coupling varia­
+                                                                         tions. Figure 4 provides illustrations of these two types
+                                                                         of coupled resonators.
+                                                                             As was shown in Figure 8 of Part 1 of this article, feed­
+                                                                         lines for thin mmWave ring resonator circuits are best im­
+                                                                         plemented in GCPW to prevent any open-ended feed­
+                    Thru-Coupled Ring Resonator                          line resonance which can interfere with the resonance of
+ (a)                                                                     the ring. Figure 4a shows a thru-coupled ring resona­
+                                                                         tor structure while Figure 4b depicts a thru-line edge
+                                                                         coupled ring resonator. The thru-line transmission line
+                                                                         in Figure 4b uses a GCPW structure in the end-launch
+                                                                         connector area to optimize the signal launch. The signal
+                                                                         launch is the transition from the connector to the PCB.
+                                                                         It must be optimized for good return loss across the fre­
+                                                                         quency range of interest for a ring resonator design.
+                                                                             The thru-coupled ring resonator will exhibit resonant
+                                                                         peaks as expected. However, the thru-line with ring
+                                                                         resonator that is edge coupled will have a “suck-out”
+                                                                         in measured amplitude-versus-frequency response at
+                                                                         the frequencies where the ring resonates. The thru-
+              Thru-Line with Edge Coupled Ring Resonator                 line with edge-coupled ring resonator should have an
+ (b)                                                                     S21 response much like that of a transmission line, al­
+                                                                         though it will have periodic dips in its insertion loss
+s Fig. 4 Illustrations of a thru-coupled ring resonator (a) and a        versus frequency response where the ring resonates (see
+thru-line edge coupled ring resonator (b).
+                                                                         Figure 5).
+                                                                             Table 1 provides a comparison to show potential dif­
+                                                                         ferences in RF performance between these two differ­
+                                                                         ent ring resonators due to normal variations in material
+                                                                         properties and circuit fabrication processes.
+                                                                             Data in Table 1 is from models run in Sonnet Soft­
+                                                                         ware,[2] a popular EM simulation software tool. The EM
+                                                                         field solver has been shown to have excellent accuracy
+                                                                         for planar circuits when simulation results are compared
+                                                                         with measured results. The resonator models are based
+                                                                         on 5-mil-thick RO3003™ circuit laminate with electrode­
+                                                                         posited (ED) copper from Rogers Corp. The ring reso­
+                                                                         nator designs were moderately coupled. The resonant
+                                                                         peak for each resonator was tuned to -10 dB at the cen­
+s Fig. 5 Screen shots from a network analyzer show typical               ter frequency noted in Table 1. Several variations related
+ring resonator performance for the thru-coupled ring resonator           to circuit material properties and PCB fabrication pro­
+and the thru-line edge coupled ring resonator.                           cesses were modeled and the results are shown in Table
+                                                                    29
+                                                               TABLE 1
+                                                THRU-COUPLED RING RESONATOR
+                                                  10% Thinner                                                              Narrow Width,
+                            Baseline                                        Thinner Copper         Thicker Copper
+                                                   Substrate                                                                Wider Gap
+                         Inches        mm        Inches        mm           Inches        mm      Inches         mm        Inches           mm
+  Conductor Width        0.012        0.305      0.012        0.305         0.012        0.305     0.012        0.305      0.011           0.279
+    Coupling Gap         0.007        0.178      0.007        0.178         0.007        0.178     0.007        0.178      0.008           0.203
+ Substrate Thickness     0.005        0.127      0.0045       0.114         0.005        0.127     0.005        0.127      0.005           0.127
+  Copper Thickness       0.0015       0.038      0.0015       0.038         0.001        0.025     0.003        0.076      0.0015          0.038
+ Copper Roughness      0.00007874     0.0020   0.00007874     0.0020    0.00007874       0.0020   7.87E-05      0.0020   0.00007874        0.0020
+ Center Freq. (GHz)           77.41                   77.52                      77.52                  76.96                      77.44
+ Dk from Freq. Shift        Reference                 0.009                      0.009                 –0.035                      0.004
+
+                                         THRU-LINE EDGE COUPLED RING RESONATOR
+                                                  10% Thinner                                                              Narrow Width,
+                            Baseline                                        Thinner Copper         Thicker Copper
+                                                   Substrate                                                                Wider Gap
+                         Inches        mm        Inches        mm           Inches        mm      Inches         mm        Inches           mm
+  Conductor Width        0.012        0.305      0.012        0.305         0.012        0.305     0.012        0.305      0.011           0.279
+    Coupling Gap         0.006        0.152      0.006        0.152         0.006        0.152     0.006        0.152      0.007           0.178
+ Substrate Thickness     0.005        0.127      0.0045       0.114         0.005        0.127     0.005        0.127      0.005           0.127
+  Copper Thickness       0.0015       0.038      0.0015       0.038         0.001        0.025     0.003        0.076      0.0015          0.038
+ Copper Roughness      0.00007874     0.0020   0.00007874     0.0020    0.00007874       0.0020   7.87E-05      0.0020   0.00007874        0.0020
+ Center Freq. (GHz)           77.29                   77.39                      77.33                  77.17                      77.21
+ Dk from Freq. Shift        Reference                 0.008                      0.003                 –0.009                   –0.006
+
+s Table 1 Comparisons of the thru-coupled ring resonator and the thru-line edge coupled ring resonator in relation to variables
+which can potentially impact RF/microwave performance.
+
+1. The description of most of the different models in the                   locity is an effect like a PCB material with an increase in
+column headers is self-explanatory. However, the far                        Dk. Even if the Dk of a circuit substrate has not changed,
+right-hand column labeled “Narrow width, wider gap”                         if using circuits like ring resonators for Dk characteriza­
+shows the difference for a ring conductor with narrower                     tion, circuits with smoother copper will exhibit a circuit-
+width. With PCB fabrication and in a discrete circuit area                  perceived Dk or Design Dk that is lower than the same
+with a conductor and open circuit-board area, a narrow­                     circuits having a rougher copper surface.
+er conductor results in more open circuit-board space.                          In addition, a rougher copper surface will result in in­
+The far right-hand column of Table 1 shows the effects                      creased conductor loss compared to a smoother cop­
+of a narrower ring conductor and resulting increased                        per surface. The increase is dependent upon frequency,
+gap coupling space.                                                         substrate thickness, and the amount of copper surface
+   The Dk extraction is shown on the bottom row of                          roughness. The effects of copper surface roughness will
+Table 1 for each of the different scenarios. In summary,                    be more pronounced for circuits on thinner substrates
+the thru gap coupled ring resonator has a worst-case                        than for circuits on thicker substrates. When evaluating
+Dk shift of 0.035. When subjected to the same material                      the effects of copper surface roughness on insertion loss
+and process variations, the thru-line edge coupled ring                     at lower frequencies with thick skin depth, the effects
+resonator has a worst-case Dk shift of 0.009. This indi­                    will be minimal compared to the more significant effects
+cates that the thru-gap coupled ring resonator is more                      on loss at higher frequencies with thinner skin depth.
+affected by material and PCB fabrication process varia­                         Circuit material copper surface roughness effects can
+tions in terms of RF performance than the thru-line edge                    impact the values of Dk and Df extracted from ring reso­
+coupled ring resonator.                                                     nator circuits. Some amount of surface roughness is to
+   Copper surface roughness is yet another circuit ma­                      be expected, although it is hoped to be within normal
+terial quality that can affect the accuracy of material Dk                  limits. Variations in roughness will occur within a single
+characterization efforts. Copper surface roughness can                      sheet of copper foil and from sheet to sheet, although
+impact transmission-line insertion loss and phase re­                       for some copper, such as rolled copper, the surface
+sponse at high frequencies.3 The quality of the copper                      roughness variations will be minimal. For standard ED
+surface at the circuit material substrate-copper interface                  copper, the normal surface roughness can have signifi­
+can affect the phase velocity of a high-frequency circuit’s                 cant variation. For example, ED copper with a specified
+signals, with a rougher copper surface resulting in slow­                   average surface roughness of 2.0 µm RMS can vary as
+er phase velocity. An EM wave with a slower phase ve­                       much as 1.8 to 2.2 µm within the same sheet of copper.
+
+                                                                       30
+   Since a microstrip ring resonator has two substrate-              locations can make a difference in the 3-dB cutoff fre­
+copper interfaces, it is unlikely that the signal plane cop­         quency, especially at mmWave frequencies.
+per surface roughness will be the same as the ground                     As an example, for an SIW designed for a 3-dB cutoff
+plane for most copper types. If a RF/microwave engi­                 frequency of 70 GHz using a 5-mil-thick substrate with
+neer was trying to account for the effects of copper sur­            Dk of 3.0, a variation in wall hole location of 1 mil (one-
+face roughness during material Dk and Df extraction,                 half of the ±1 mil tolerance) will change the 3-dB cutoff
+not having the same copper roughness on each inter­                  frequency by 1.5 GHz. If this frequency shift is assumed
+face is problematic and unpredictable. It is generally as­           to be due to Dk only and not the SIW drilled hole toler­
+sumed that the signal plane copper surface roughness                 ance, it will result in a shift/error of 0.12 in the extracted
+has more impact on RF performance than the ground                    Dk value.
+plane copper surface roughness. The copper surface                       In addition, the 3-dB cutoff frequency of transitions
+roughness can vary within a small area and the rough­                of other transmission-line technologies to SIW can be
+ness for the ring conductor may vary and it may not be               sensitive to circuit fabrication variables. Transitions may
+what is assumed.                                                     be from microstrip to SIW or GCPW transmission lines
+   The copper surface roughness must be part of any                  to SIW. A microstrip-to-SIW transition is less affected by
+extraction process for Dk and Df using circuit structures            PCB fabrication variations than a GCPW-to-SIW transi­
+such as ring resonators because of the impact of the                 tion. Multiple PCB fabrication variables can impact the
+copper surface roughness on test circuit performance.                RF performance of GCPW and these variations can cer­
+Errors due to copper surface roughness can be mini­                  tainly impact the 3-dB cutoff point. Because of these is­
+mized by using rolled copper. It is smooth, with minimal             sues, extracting the Dk of the material by using the 3-dB
+variations in surface roughness, and minimal effect on               cutoff frequency for SIW at mmWave frequencies is not
+phase or insertion loss of transmission lines in test cir­           recommended.
+cuits.                                                                   The phase angle response for the SIW in the pass­
+   Ring oscillators can be effective test devices for ex­            band frequency region is somewhat less sensitive to the
+tracting material Dk and Df at microwave frequencies;                drill location tolerance but it is still a concern. One de­
+however, accurate extraction of Dk and Df at mmWave                  sign trick which could be advantageous for phase mea­
+frequencies can be very challenging. Ring resonators are             surements in the passband for SIW is to use a dual row
+assumed to have no radiation since the ring is a closed              of grounding viaholes for each sidewall of the SIW struc­
+structure, but there are always exceptions. For a tightly            ture. The drilled hole location tolerance requirement will
+coupled ring resonator that is a thru-coupled resona­                still exist but having dual rows for each sidewall seems
+tor, the radiation in the gap coupled area can affect the            to give an averaging effect and minimizes the impact of
+quality factor (Q) of the resonator which can cause errors           variations in hole location on phase response.
+in Df extraction.                                                        Specific recommendations for measurements that can
+                                                                     help determine circuit material Dk and Df at mmWave
+SIW TEST CIRCUITS                                                    frequencies have not been made in either part 1 or part
+   As circuits move higher in frequency, substrate in­               2 of this article mainly because an industry-defined stan­
+tegrated waveguide (SIW) transmission lines are being                dard test method does not exist at mmWave frequen­
+used more in support of PCB-based mmWave applica­                    cies (30 to 300 GHz). Different methods are available, al­
+tions. SIW provides some benefits at mmWave frequen­                 though caveats must be made regarding accuracy under
+cies, although there are also some concerns when using               certain conditions. Measurements based on ring resona­
+this type of circuit structure for the extraction of material        tors have great value at mmWave frequencies but, with­
+Dk and Df values.                                                    out understanding the many variables related to these
+   Several methods can be used to extract Dk from a                  circuit structures, the accuracy of test results and Dk and
+material with an SIW structure. One technique is based               Df characterizations can be greatly compromised.n
+on using the 3-dB cutoff frequency of the SIW to extract
+the Dk of the circuit material. Another method involves
+phase angle measurements in the passband frequency                   References
+range of the SIW to extract the Dk of the material. When             1. John Coonrod, “Managing Circuit Materials at mmWave Frequen­
+                                                                          cies,” Microwave Journal, Vol. 58, No. 7, July 2015.
+using SIW structures at mmWave frequencies, the loca­                2. Sonnet® Software Inc., http://www.sonnetsoftware.com/
+tion of drilled holes in the circuit material must be ex­            3. Allen F. Horn, III1, John W. Reynolds1, and James C Rautio2, “Con­
+tremely precise. Most PCB fabricators can hold a drilled                  ductor Profile Effects on the Propagation Constant of Microstrip
+hole location tolerance within ±1 mil, which is consid­                   Transmission Lines,” 1-Rogers Corporation, 2-Sonnet Software,
+ered good. But because the hole patterns form the side­                   IEEE Transactions on Microwave Theory & Techniques Sympo­
+                                                                          sium, 2010.
+walls of the SIW, any variations in the hole spacings or
+
+
+
+
+                                                                31
+Rogers’ Laminates: Paving the way
+for tomorrow’s Autonomous Vehicles
+Autonomous “self-driving” vehicles are heading our way guided by a variety
+of sensors, such as short and long range radar, LIDAR, ultrasound and camera.
+Vehicles will be connected by vehicle-to-everything (V2X) technology. The
+electronic systems in autonomous vehicles will have high-performance
+RF antennas. Both radar and RF communication antennas will
+depend on performance possible with circuit materials from
+Rogers Corporation.                                                                                                              Long
+                                                                                                                                 Range
+                                                                                                                                 Radar
+High-performance circuit laminates, such as RO3000® and RO4000® series
+materials, are already well established for radar antennas in automotive
+collision-avoidance radar systems at 24 and 77 GHz. To further enable
+autonomous driving, higher performance GPS/GNSS and V2X antennas
+will be needed, which can benefit from the cost-effective high
+                                                                                                            Short
+performance of Kappa™ 438 and RO4000 series materials.                                                      Range
+                                                                                                            Radar
+These antennas and circuits will count on the consistent                                                                        Short        LIDAR
+quality and high performance of circuit materials                  Short/                                                       Range
+                                                                   Mid-Range                                                    Radar
+from Rogers.                                                       Radar
+
+
+   Material                          Features
+                           RADAR
+                                                                                                                                 Short/
+                                                                                                                                 Mid-Range
+                                                                                                                                 Radar
+ RO3003G2™           Best in class insertion loss / most stable
+ Laminates           electrical properties for 77 GHz antennas                            Camera
+
+ RO4830™             Cost-effective performance
+                                                                                                         Camera
+ Laminates           for 77 GHz antennas
+                                                                                                                       Camera
+ RO4835™             Stable RF performance for                                                       V2X Antenna
+ Laminates           multi-layer 24 GHz antennas
+
+                           ANTENNA
+
+ RO4000 Series       Low loss, FR-4 processable and
+ Circuit Materials   UL 94 V-0 rated materials
+                                                                                  Short
+                                                                     Short/       Range
+ Kappa™ 438                                                          Mid-Range    Radar
+                     Higher performance alternative to FR-4
+ Laminates                                                           Radar
+                                                                                            Camera         Short
+                                                                                                           Range
+To learn more visit:                                                                                       Radar
+ www.rogerscorp.com/autonomousdriving
+                                                                  LIDAR                                    Short/
+                                                                                                           Mid-Range
+                                                                                                           Radar
+
+
+
+
+                                                                                 Long                      LIDAR
+                                                                                 Range
+                                                                                 Radar
+
+
+
+
+USA - AZ, tel. +1 480-961-1382 • EUROPE - BELGIUM, tel. +32 9 235 3611 • www.rogerscorp.com/acs
+

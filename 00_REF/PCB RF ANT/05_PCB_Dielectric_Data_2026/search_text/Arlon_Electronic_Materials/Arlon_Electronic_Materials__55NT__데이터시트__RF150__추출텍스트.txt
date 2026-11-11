@@ -1,0 +1,133 @@
+55NT
+Epoxy Nonwoven Aramid
+                             55NT is an epoxy laminate and prepreg system, reinforced
+                             with a non-woven aramid substrate. This system combines
+                             compatibility with lead-free processing, using a high-
+                             temperature epoxy resin, with the low in-plane (X,Y)
+                             expansion and outstanding dimensional stability of non-
+                             woven aramid reinforcement.
+
+
+
+Features:
+            • Low in-plane (X,Y) expansion of 6-9 ppm/°C allows attachment of SMT devices with
+              minimal risk of solder joint failure due to CTE mismatch
+
+            • Nonwoven aramid organic reinforcement provides outstanding dimensional stability and
+              enhanced registration for improved multilayer yields
+
+            • Tg of 170°C, decomposition temperature of 368°C, and Z-expansion of 3.5% between
+              50 -260°C ensures compatibility with most lead-free processes
+
+            • Polymeric reinforcement results in PCBs typically 25% lighter in weight than conventional
+              glass-reinforced laminates
+
+            • Laser and plasma ablatable for high speed formation of microvias and other features as
+              small as 25µm (µ0.001”)
+
+            • Electrical and mechanical properties meeting the requirements of IPC-4101/55
+
+            • Compatible with lead-free processing
+
+
+
+Typical Applications:
+
+             • Military and commercial avionics, missiles and missile defense, satellites, and other high-
+               reliability SMT applications requiring low in-plane (x,y) CTE values
+
+             • Other applications requiring low in-plane (x,y) CTE values, including chip carriers and
+               multichip modules, where the chip carrier serves as an interposer for attachment to the
+               underlying PCB
+
+             • PCBs that are subjected to elevated temperatures during processing, such as lead-free
+               soldering
+55NT
+Typical Properties:
+55NT
+Availability:
+
+
+
+
+                  Arlon                                           Scaled Flow       Scaled Flow
+                                  Glass Style        Resin %
+               Part Number                                         Hf (mils)         ∆H (mils)
+          85N0672       106                              72           1.7 ± 0.3       0.75 ± 0.20
+          85N8063      1080                              63           2.4 ± 0.3       0.75 ± 0.20
+          85N2355      2313                              55           3.4 ± 0.3       0.75 ± 0.20
+Recommended Process
+          85N2650   Conditions:
+                       2116                              50           4.1 ± 0.3       0.75 ± 0.20
+          85N2840      7628                              40           6.6 ± 0.3       0.70 ± 0.20
+Process inner-layers through develop, etch, and strip using standard industry practices. Use brown oxide on
+rinner layers. Adjust dwell time in the oxide bath to ensure uniform coating. Bake inner layers in a rack for 60
+minutes at 107°C - 121°C (225°F - 250°F) immediately prior to lay-up. Vacuum desiccate the prepreg for
+8 - 12 hours prior to lamination.
+                        Panel Size                 Pressure             Pressure/29˝ Vacuum
+Lamination Cycle:
+                       in           cm             psi       kg/cm2        psi     kg/cm2
+1) Pre-vacuum for 30 - 45 minutes
+                   12 x 18        40 x 46          275         19          200      14.0
+2) Control the heat16rise  to 4.5°C
+                        x 18      30-x6.5°C
+                                       46   (8°F - 350
+                                                   12°F) per minute        250 and150°C
+                                                               25 between 100°C     17.5 (210°F and 300°F).
+   Vacuum lamination is preferred. Start point vacuum lamination pressures are shown21.0
+                   18   x 24      46 x 61          400         28          300      in the table below:
+
+
+
+
+3) Product temperature at start of cure = 182°C (360°F)
+4) Cure time at temperature = 90 minutes
+
+5) Cool down under pressure at ≤ 6°C/min (10°F/min)
+
+De-smear using alkaline permanganate or plasma with settings appropriate for polyimide; plasma is preferred
+for positive etchback
+Conventional plating processes are compatible with 55NT
+Standard profiling parameters may be used; chip breaker style router bits are not recommended Bake for 1 -
+2 hours at 250°F (121°C) prior to solder to reflow of HASL
+For samples, technical assistance and customer service, please contact
+Arlon Electronic Materials at the following locations:
+
+
+                                         NORTH AMERICA:
+                     Arlon EMD, 9433 Hyssop Drive, Rancho Cucamonga, CA
+                            Tel: (909) 987-9533 • Fax: (909) 987-8541
+
+
+FRANCE:                     ISRAEL:                                                 JAPAN:
+CCI Eurolam                 Tech Knowledge, Ltd. 159 Yigal                          Nakao Corp.
+9, rue Marcelin Bertholet   Alon Street,                                            12-8 Nihonbashi Hisamatsu-Cho Tokyo
+92160 Antony, France        Tel Aviv 6744367, Israel                                103-0005 Japan
+Phone: (33) 146744747       Phone: (972) 36958117                                   Phone: (81) 336623201
+Fax: (33) 146666313         Fax: (972) 36917117                                     Fax: (81) 336617118
+GERMANY:                    ITALY:                                                  KOREA
+CCI Eurolam                 Dralmi,SAS                                              UniMicrotek Co. Ltd.
+Otto-Hahn-Str. 46 63303     9LD&HOOLQL                        478 Baekbeom-Ro, Bupyeong-Gu
+Dreiech Germany             20129 Milano Italy                                      Incheon, Korea
+Phone: (49) 610339920       Phone: (39) 025460507                                   Phone: (82) 32-424-1776
+Fax: (49) 6103399229        Fax: (39) 0255013199                                    Fax: (82) 505-720-1785
+UK & SCANDINAVIA:           7$,:$1                                                CHINA:
+CCI Eurolam – UK            $GYDQWLF7HFKQRORJ\,QF $7,                          Zack Peng
+Ulness Walton Lane          9) 1R493 Wen-zhong5G                               Room 6A, Unit 2, Bldg 2
+Leyland, PR26 8NB, UK       7DR\XDQ&ounty0                                    Jin Cheng Shi Dai, Tian Road
+                            7DLZDQ 52&                                          Shenzhen, China 518103
+Phone: (44) 1772452236
+Fax: (44) 1772456859        3KRQH                                   Phone: (86) 75528236491
+                            )D[                                      Fax: (86) 75528236463
+
+                            SINGAPORE:                                              INDIA:
+                            C.T.S. Industries Pte Ltd                               Synertec
+                            47 Kaki Bukit Place                                     301 Raheja Chambers,12 Museum Rd
+                            Singapore 416225                                        Bangalore, India 560001
+
+                            Phone: (65) 6276 3328                                   Phone: (91) 80-25585432
+                            Fax: (65) 6276 3336                                     Fax: (91) 80-25588565
+
+
+Ver 1.4                          © 2020, 2019, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008 Arlon
+

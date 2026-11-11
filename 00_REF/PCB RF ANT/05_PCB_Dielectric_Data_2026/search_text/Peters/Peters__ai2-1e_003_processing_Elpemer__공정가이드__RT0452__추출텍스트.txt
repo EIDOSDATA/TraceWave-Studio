@@ -1,0 +1,1149 @@
+                             AI 2/1: Processing instructions for
+                             photoimageable Elpemer solder
+                             resists
+                             This Application Information Sheet gives detailed and in-depth information that is
+                             imperative for a secure and reliable processing of the photoimageable Elpemer® solder
+                             resists as well as for obtaining ideal coating results.
+                             This AI 2/1 covers all photoimageable Elpemer® ink systems (curtain coating, screen
+                             printing and spraying inks). Basically, the advice on processing photoimageable
+                             systems is also applicable to photoimageable Elpemer photoresists and marking inks.
+                             Contents
+
+                             Schematic of the process flow....................................................................................................... 2
+                             Applicable documents ................................................................................................................... 3
+                             Safety recommendations............................................................................................................... 3
+                             Protection against sunlight and UV light ....................................................................................... 3
+                             Ink preparation............................................................................................................................... 3
+                             Precleaning.................................................................................................................................... 5
+                             Preheating ..................................................................................................................................... 5
+                             Coating .......................................................................................................................................... 5
+                                 Curtain coating ......................................................................................................................... 6
+                                 Screen printing ......................................................................................................................... 7
+                                 Spraying (conventional or electrostatic) ................................................................................... 9
+                                 Double coating ....................................................................................................................... 10
+                             Flash-off....................................................................................................................................... 11
+                             Predrying ..................................................................................................................................... 11
+LP 141212 E-3 / ai2-1e.003
+
+
+
+
+                                 Note on environmental protection .......................................................................................... 13
+                             Exposure ..................................................................................................................................... 13
+                                 UV lamps ................................................................................................................................ 15
+                                 Photo tool ............................................................................................................................... 15
+                                 Exposure energy .................................................................................................................... 16
+                             Holding time................................................................................................................................. 17
+                             Developing – Rinsing – Drying .................................................................................................... 17
+                                 Developer media .................................................................................................................... 17
+                                 Developing ............................................................................................................................. 18
+                             UV bump (optional) ..................................................................................................................... 21
+                             Visual inspection ......................................................................................................................... 22
+                             Thermal curing (final curing)........................................................................................................ 22
+                             Literature ..................................................................................................................................... 22
+                             Disclaimer .................................................................................................................................... 23
+Application Information AI 2/1
+
+
+
+Schematic of the process flow
+Exact parameters for each process step are given in the relevant process data sheets.
+
+                             Incoming goods inspection
+
+                                   Ink preparation
+
+                       Evaluation of boards to be coated
+
+                                      Preclean
+
+                                     (Preheat)
+
+                                        Coat
+
+                                      Flash-off
+
+                                       Predry
+
+                       yes
+                                     Coat 2nd side
+                                      of boards
+                                                      no
+
+                                      Expose
+
+                                    Holding time
+
+                                      Develop
+
+                                       Rinse
+
+                                        Dry
+
+                       yes
+                                     Coat 2nd side
+                                      of boards
+                                                      no
+
+                                 UV-Bump (optional)
+
+                                   Visual control
+
+                                   Thermal cure
+
+                       yes
+                                     Coat 2nd side
+                                      of boards
+                                                      no
+
+                                 UV-Bump (optional)
+
+2                                                                                   www.peters.de
+                                                                               Application Information AI 2/1
+
+
+Applicable documents
+           Please read this technical report and the publications listed below carefully before using the
+           product. These sheets are enclosed with the first shipment of product or sample.
+           The corresponding material safety data sheet contains detailed information and characteristics
+           on safety precautions, environmental protection, transport, storage, handling and waste
+           disposal.
+           The process data sheet contains product-specific data such as characteristics and
+           recommendations for processing parameters.
+           The Technical Report gives information and details on auxiliary products and standard
+           packaging.
+           Technical information TI 15/3 “Protective measures when using chemicals including lacquers,
+           casting compounds, thinners, cleaning agents“
+           Technical information TI 15/10 „Processing of 2-pack systems“
+
+           Technical information TI 15/13 “Precleaning in the pcb fabrication process“
+
+
+Safety recommendations
+ When using chemicals, the common precautions should be carefully noted.
+ Ensure that extractor units of workplace ventilation arrangements are positioned at solvent
+  source level.
+ Please also pay attention to national guidelines or directives concerning operating safety such
+  as the German TRBS (technical rules for operating safety) and those concerning the handling of
+  flammable liquids as for example the German TRbF (technical rules for flammable liquids) or
+  European directives.
+ Ensure that the utilised equipment meets the requirements of the material safety data sheet.
+
+ When handling solvent-based systems, within the scope of the legally prescribed/
+  required hazard assessment measures, it is imperative to observe the relevant explosion
+  protection regulations (including appropriate national health and safety regulations,
+  technical guidelines, harmonised EN norms and EU directives plus any other recognised
+  technical rules). The key physical characteristics of the individual products are stated in
+  Section 9 "Physical and Chemical Properties" of the corresponding material safety data
+  sheets.
+
+Protection against sunlight and UV light
+ Elpemer systems are light-sensitive, therefore it is imperative to avoid exposure to sunlight
+  and UV light.
+  UV
+         Protect against UV light
+
+The use of yellow light or yellow filters/UV foils is mandatory. We gladly name manufacturers of
+suitable films and lamps upon request
+
+Ink preparation
+Prior to processing, the Elpemer solder resists and thinner (if used) have to be brought to room
+temperature. The containers to be processed the following day should be transferred to a room
+that has the same temperature as the processing room.
+
+
+www.peters.de                                                                                               3
+Application Information AI 2/1
+
+The two components (ink component A and hardener component B) are already packed in the
+correct mixing ratio. The volume of the container of component A is sufficiently large to
+accommodate the entire quantity of component B plus any thinner required for adjusting the
+viscosity:
+ Observe the mixing ratio in percent by weight, when mixing smaller quantities.
+ Mix the resist and hardener components as well as the thinner (if used to adjust the viscosity)
+  very carefully until a homogeneous mixture is achieved.
+We recommend to use mechanical stirring equipment, e.g. a basket stirrer, observing a stirring
+time of about 10–15 minutes. Stirring units that stir in air, such as propeller stirrers, are unsuitable.
+
+ Pour screen printing inks into an empty container and stir again.
+This prevents unmixed material from being processed from so-called “dead zones” thus avoiding
+potential quality issues.
+For more detailed information on correct mixing please read our Technical Information Sheet
+TI 15/10 "Processing of 2-pack systems".
+
+ Observe a holding time of 30 min after mixing.
+During this time the ink can degas to avoid breaks in the curtain and micro bubbles in the coating.
+ Observe the pot life at room temperature (18–23 °C [64–74 F]) specified in the appropriate
+  process data sheets.
+
+
+
+
+                                             Fig. 1:
+         Opening the combi-pack and mixing the ink components of the curtain coating inks
+The Elpemer curtain coating inks are supplied in practical combi-packs where the hardener
+component is located in the container lid. This ensures a clear assignment of resin and hardener
+components. The integrated hardener container is pierced with a sharp object (e.g. a three-
+square or screw driver) so that the hardener can flow into the resin component. The conical
+shape of the top container guarantees complete discharge, after which mixing of the components
+can start immediately.
+
+
+
+
+4                                                                                          www.peters.de
+                                                                                     Application Information AI 2/1
+
+                                                                                    The flow time is measured –
+                                                                                    here according to DIN 53211*
+            130
+                                                                                    in a 4 mm dip cup – at 20 °C
+            120                                                                     [68 F].
+            110
+                                                                                    The percentual addition of
+            100                                                                     thinner refers to the viscosity
+ Time [s]
+
+
+
+
+             90                                                                     of the mixture in its as-
+                                                                                    received condition, i.e. 120 s.
+             80
+
+             70
+                                                                                    In addition to the reference
+                                                                                    viscosity, the temperature
+             60
+                                                                                    dependency must equally be
+             50                                                                     considered.
+                  0          1       2          3              4    5   6       7
+                                          Addition of thinner [%]
+
+
+                      Fig. 2: Viscosity curve (flow time) for ElpemerGL 2467
+The illustrated relationship is affected by process and equipment parameters. For this reason, the data in
+the diagram should be seen as a guideline only and, if necessary, be adjusted to the actual production
+environment.
+
+
+Precleaning
+An oxide-free metallisation with an average peak-to-valley height of 2 µm (0.8–1.2 µm for flexible
+laminate) and a perfectly clean, dry substrate are prerequisites for optimum adhesion of the
+coating without dewetting or flaking in follow-up processes and for achieving the maximum
+electrical properties of the solder mask.
+ In our Technical Information Sheet TI 15/13 "Precleaning in the pcb industry" you will find
+  detailed advice on the various precleaning methods. Coat as soon as possible after precleaning in
+  order to avoid oxidation or contamination during temporary storage.
+Particularly some flexible base materials tend to trap humidity.
+ If necessary, temper the base material before coating to avoid adhesion problems.
+Since even slightest silicone residues may cause dewettings, tools and equipment must be
+meticulously cleaned when processing ink systems that contain silicones.
+
+Preheating
+Owing to the well-balanced relation between thixotropy and flow characteristics of the Elpemer
+solder resists, a preheating of the printed circuit board prior to coating is generally not necessary.
+
+Coating
+The photoimageable Elpemer solder resists have been developed for various applications and
+coating processes. If possible, the ink should be processed in air-conditioned clean rooms. The
+characteristics (density, viscosity, etc.) and processing parameters are contained in the
+corresponding Process data sheets and the specified final properties (electrical and physical data)
+are contained in the relevant Technical report.
+The individual coating processes
+ printing (horizontal or vertical)
+ curtain coating
+ screen spraying (conventional or electrostatic)
+are described in the following.
+www.peters.de                                                                                                         5
+Application Information AI 2/1
+
+Since the many different permutations make it impossible to evaluate the whole spectrum
+(parameters, reactions with materials used, chemical processes and machines) of processes and
+subsequent processes in all their variations, the parameters we recommend are to be viewed as
+guidelines only that were determined in laboratory conditions. We advise you to determine the
+exact process limitations within your production environment, in particular as regards compatibility
+with your specific follow-up processes, in order to ensure a stable fabrication process and products
+of the highest possible quality.
+The product data specified in the technical reports is based upon standard processing
+conditions/test conditions of the mentioned norms and must be verified observing suitable test
+conditions on processed printed circuit boards.
+Feel free to contact our application technology department (ATD) if you have any questions or for a
+consultation.
+
+Curtain coating
+With curtain coating, the printed circuit board is accelerated to a speed of up to 90 m/min
+[300 ft/min], conveyed through the ink curtain and decelerated again. Since the ink curtain and pcb
+speed are almost identical, the solder resist precipitates on the printed circuit board as an even
+blanket.
+The solder resist is continuously pumped from a reservoir into the pouring head and flows back to
+the reservoir via a collecting chute with an inclination of 30° in order to avoid air entrapment.
+Air inclusion in the solder resist may lead to blistering on the printed circuit board; in addition, large
+air bubbles cause the curtain to tear which, in turn, leads to voids on the printed circuit board.
+                             Plan view                                Cross section
+
+
+
+
+                A                                    A
+
+
+                                                                    A-A
+
+                            Fig. 3: Design principle of an ink collecting chute
+In order to maintain constant process parameters, the viscosity of the solder resist is permanently
+monitored by a viscosity measuring system and kept within the specified viscosity tolerances by an
+automatic dispensing unit during the pumping process.
+
+ Owing to the thixotropy of the Elpemer solder resists, the viscosity should only be controlled
+  and adjusted while the pump is in operation, because the shearing forces occurring during
+  pump operation already have a viscosity-reducing effect.
+The temperature of the solder resist is kept constant by means of a heating/cooling system in the
+ink circuit.
+
+ Adjust the amount of ink applied by means of the pump capacity/speed.
+
+6                                                                                           www.peters.de
+                                                                            Application Information AI 2/1
+
+Frequency-controlled pumps allow a relatively exact preadjustment.
+ Make fine adjustments by weighing the applied wet ink quantity on a test pcb.
+  Prepare sections of base material of a defined size (for instance, 200 x 300 mm). Weigh one
+  section on scales accurate to at least  0.1 g and then coat. Immediately after coating, weigh
+  the board again. The difference between both readings is the wet ink weight in g/6 dm² / g/0.06
+  m² when the abovementioned format is used or, after division of the measuring result by 0.06, in
+  g/m².
+ Ensure reweighing is effected directly after coating because otherwise the measuring result
+  will be falsified by the evaporation of the solvents.
+ If the second printed circuit board side is coated immediately after the predrying process, turn
+  the board through 180° prior to coating.
+This turn will prevent the walls of the (plated-through) holes from being double-coated with solder
+resist when the second side of the pcb is coated. If the walls are double-coated, the developing
+time will have to be extended to avoid residues of the solder mask remaining in the holes. An
+extended developing time can lead to unnecessary deterioration of the resolution of the solder
+mask.
+ If necessary, reduce the distance between the pouring head and the printed circuit board, the
+  flow rate of the pump/coating speed and/or adjust a higher ink viscosity (> 80 s according to
+  DIN 53211) to avoid ink seeping through larger holes ( 5 mm) to the underside of the pcb.
+ When using a coating edge restriction, take into consideration that this will create drifts of ink
+  along the uncoated edges of the pcb; these drifts will have a significantly higher coating
+  thickness than the other printed circuit board areas.
+The shorter the distance between pouring head/coating edge restrictor and printed circuit board
+surface, the less pronounced the ink drifts.
+ Ensure that no large registration and location holes are positioned in the vicinity of the ink drifts
+  in order to avoid seepage and that flash-off and predrying are adjusted to achieve as complete
+  drying of the ink as possible, including the coating edge areas, without overdrying the ink in the
+  other areas.
+However, owing to the wide predrying window of the Elpemer® solder resists it is extremely
+unlikely that this will happen.
+
+Screen printing
+Screen printing is a contact-printing process in which the solder resist is transferred onto the
+printed circuit board through a screen printing fabric (with or without stencil) by means of a
+squeegee.
+The squeegee normally has a Shore A hardness of 65–75 and a right-angled profile. As a rule, the
+squeegee angle is 75–80°, or 20–30° for vertical screen printing.
+
+ If higher ink films are required, it is advisable to slightly round the edges.
+Polyester screen fabrics or corresponding steel meshes of 32–100 to 54–64 (according to old
+nomenclature 32–54 T) with a screen tension of at least 25 N/cm (or as advised by the screen
+fabric manufacturer) are recommended.
+ With the exception of vertical double-sided screen printing, keep the squeegee pressure as low
+  as possible in order to avoid oozing at the conductor edges.
+All other screen printing parameters depend upon the pcb surface.
+
+www.peters.de                                                                                             7
+Application Information AI 2/1
+
+When coating flexible Elpemer® solder masks, adjust the flood speed, squeegee speed and
+screen snap-off as low as possible in order to avoid micro bubbles.
+For good coverage, also of conductors that are located at right angles to the squeegee direction, a
+“wet-on-wet“ print is recommended.
+The Elpemer® solder resists can be printed into so-called blank screens (i.e. without a stencil) or
+with a stencil that covers the holes. The diameter of the covers needs to be slightly larger than the
+hole diameters. A high stencil build-up is not necessary because the stencil is only required to fill
+the screen mesh. Covering the holes has the advantage that no ink plugs form in the plated-
+through holes that would prevent an adequate flow through the drill holes in the developing
+process and thus unnecessarily extend the developing time. The filling of holes can also be
+effectively avoided by off-setting the printed circuit boards in x-y direction after every print.
+
+ In order to guarantee the free development of the holes it may be necessary to extend the
+  developing time and, in turn, the exposure time. Please note that the resolution grade may
+  suffer slightly.
+Also the processing method (single- or double-sided) as well as the predrying method (convection
+drying, IR drying or a combination of the two) influence the developing performance and thus the
+decision whether a stencil is required or not.
+The following are fundamental advantages of the screen printing process over the curtain coating
+method:
+ owing to the higher solids content, a substantially lower wet-ink weight is required
+ the rheological properties (structural viscosity) prevent flow-off from the conductor edge so that
+    a better edge coverage is achieved.
+For further advantages of screen printing see section ”Double-sided screen printing (vertical)”.
+
+Single-sided screen printing
+In the single-sided screen printing process, initially the first printed circuit board side is printed with
+solder resist, predried, exposed, developed and cured. Then the second side is printed and
+processed accordingly.
+
+Double-sided screen printing (horizontal)
+Double-sided application by means of horizontal screen printing whilst ensuring a high degree of
+process safety can only be accomplished with special screen printing equipment. Since screen
+printing is a contact printing method, the underside of the printed circuit board is subjected to a
+pressure load during the printing process. This load can cause damage to the initially applied ink
+coat if this was predried only. If the first printed circuit board side is exposed and developed before
+the second side is coated, this may lead to increased undercut and thus to poorer resolution on the
+first side (by the duplicate developer action on the first side).
+A double-sided “wet-on-wet” coating is only possible if the printed circuit board is fixed on adapter
+pins in the plated-through holes when printing the second side.
+
+Double-sided screen printing (vertical)
+Vertical screen printing units allow the simultaneous coating of both printed circuit board sides.
+Semi- and fully automatic units are available for a variety of different printed circuit board
+thicknesses and panel sizes.
+Semi-automatic units consist of a manual loading and unloading section and a fully automatic
+printing section.
+8                                                                                            www.peters.de
+                                                                            Application Information AI 2/1
+
+Fully automatic units have the additional feature of loading the panels from a stacker or tray. After
+the printing cycle, the panels are stacked and transferred automatically into a vertical conveyorised
+dryer.
+The main differences among the individual screen printing machines are the panel size and
+thickness that can be processed.
+Depending upon the machine manufacturer, there are also process engineering differences such
+as:
+ pneumatic or electromechanical drive
+ printing cycle with or without separate flooding of the screen mesh
+ "push-stroke" or "pull-stroke" squeegees
+ fixed or variable squeegee angle.
+The quantity of ink pressed into the holes depends strongly on the adjusted printing parameters.
+In spite of these differences, all machines offered operate along the same basic principle:
+ an absolutely uniform coating on both sides of the printed circuit boards is achieved in one pass
+   owing to a relatively flat squeegee angle combined with a very high squeegee pressure of the
+   self-adjusting squeegee units
+ the special printing technique guarantees a uniform coat over and between the conductors. A
+   reliable print without "skipping" can be achieved even with high conductors and very small
+   conductor widths and spaces.
+This application process boasts the following advantages:
+ simultaneous coating of both printed circuit board sides; thus printing on two equally clean and
+  oxide-free surfaces
+ both printed circuit board sides are predried together; this means a lower energy consumption
+  and no risk of overdrying such as can occur in the curtain coating process on the printed circuit
+  board side coated first.
+
+Spraying (conventional or electrostatic)
+In the spraying process, the solder resist is finely atomised by compressed air and transported to
+the printed circuit board by this air (conventional spraying) or additionally charged electrically
+(electrostatic spraying) and transferred to the earthed printed circuit board via the static charge in
+an electrical field and at a low air pressure.
+The printed circuit board sides are coated (and predried) horizontally by means of an oscillating
+spray head that is positioned at right angles to the conveyor direction. As a rule, the spray nozzle
+and/or atomised air is heated to approx. 50–100 °C [122–212 F]. This leads to a direct reduction of
+the ink viscosity in the spray nozzles and enables easy atomisation of the solder resist.
+Heating the spray nozzles enables the application of relatively high-viscosity ink systems, on the
+one hand making the use of high-solids ink possible and on the other hand ensuring fast predrying.
+The spray application of Elpemer® solder resists boasts the following advantages:
+ coating and predrying of both printed circuit board sides in one pass
+ optimum flow and good edge coverage; no wetting problems (“skipping“) when coating printed
+   circuit boards with high conductor densities and unfavourable layouts – even areas of the
+   printed circuit board that are difficult to access can be safely coated due to the fine atomisation
+   of the ink particles
+www.peters.de                                                                                            9
+Application Information AI 2/1
+
+ only small amounts of ink in (even very small) via holes
+ excellent ratio between ink on conductor and ink on base material.
+A serious disadvantage of this spraying technique is the overspray that (a) leads to an increased
+ink consumption and (b) to considerable soiling of the pcb handling systems. However, newest
+equipment with defined overspray recycling is expected to promote considerable savings in this
+respect.
+
+Double coating
+On account of special customer demands with regard to edge coverage, dielectric strength, etc.
+double coating may be required. For adequate resistance to electroless nickel/gold or tin baths a
+conductor edge coverage of at least 10 µm should be aimed for. In principle, there are three
+possible processes that are described below.
+ Perform pretests to secure optimum coating results.
+
+The second coat is applied directly after predrying the first coat
+The advantage of this process is that maximum possible productivity is reached because all further
+process steps, commencing with exposure, are performed together. The disadvantage or difficulty
+with this method is that the printed circuit boards pass through the predrying cycle four times which
+substantially reduces the process window of this step and may easily cause overdrying and thus
+incomplete free development. If the latter is not detected in time (prior to final curing), it can lead to
+irreversible defects (for instance, defective tinning) on the printed circuit boards.
+
+The second coat is applied after exposing and developing the first coat
+The main advantage of this method is also the relatively high productivity achieved for double
+coating, because the particularly time-consuming final curing of the inks is effected simultaneously.
+The risk of overdrying in this case is not higher than with single coating; however, inadequate
+predrying of the first coat may cause problems. It is extremely hard for solvent inclusions and an
+excessively high residual solvent content of the first coat to escape from the coat after the cross-
+linking reaction triggered by the exposure. This may lead to these solvents explosively evaporating
+in the hot-air levelling process and thus causing delamination. In order to avoid this, observe the
+following:
+ Select the wet-ink weight of the first coat as low as possible in order to ensure optimum drying;
+  if necessary, this can be compensated for by a correspondingly higher wet-ink weight of the
+  second coating which would leave the final coat thickness unchanged.
+ For the same reason, set the predrying parameters of the first coat at the upper limit of the
+  processing window, with particular attention being paid to an adequate air exhaust (solvent
+  discharge).
+If this advice cannot be followed for some reason, it may be possible to achieve an optimum result
+by means of a two-step final cure, in spite of solvent inclusions. In this case, the temperature in the
+first step is lower (for instance, 30–45 min/80–120 °C [175–250 °F]) than the final curing
+temperature so that solvent residues can escape.
+
+The second coat is applied after final curing the first coat.
+This relatively unproductive process is the overall safest method. Nevertheless, flaking in the hot-
+air levelling process may also occur in this case.
+The cause are contaminations on the surface of the first coat which practically constitute a dividing
+layer between the two ink films. There are two possible backgrounds to this:
+10                                                                                         www.peters.de
+                                                                          Application Information AI 2/1
+
+ Contaminations on account of the handling of the printed circuit board between the two coating
+   processes.
+   Therefore, care must be taken that after the first preliminary coat the boards are treated with the
+   same precaution as precleaned, uncoated printed circuit boards. Finger prints, etc. must be
+   avoided at all costs; if necessary, it may be advisable to clean the boards prior to applying the
+   second coat.
+ Low-molecular inkcomponents (condensate) precipitate on the first coat when it is final thermal
+   cured.
+   An inadequate exhaust air volume during final cure of the first coat may cause this "condensate"
+   to precipitate on the printed circuit boards making it impossible to obtain an optimum ink-on-ink
+   adhesion.
+
+Flash-off
+Flash-off allows potential air inclusions between the conductors to escape. Furthermore,
+considerable amounts of solvent are removed from the Elpemer solder resist in this process step.
+Flash-off takes place at temperatures of max. 50 °C [120 F]. A good exhaust air extraction is vital.
+In addition, it should be possible to direct the supply air exactly across the printed circuit boards
+right from the start of the flash-off process in order to avoid blistering – dewettings and/or
+accumulation of ink around the drill holes due to the stack effect – and to obtain optimum edge
+coverage.
+The air quantities and temperature in the flash-off zone should be adjustable. The flash-off time
+must comply with the specifications in the Process data sheet.
+ If the printed circuit boards are stored vertically during predrying sufficient air exchange should
+  already be ensured during flash-off to promote fast drying, thus preventing the ink from dripping
+  off (“teardrop formation“).
+With a high Cu build-up (70 µm [2.8 mil] base copper), high ink film thicknesses may be
+encountered directly at the conductors. In the case of an inadequate flash-off time or an
+excessively steep temperature profile of the predrying process, this ink film thickness may lead to
+solvent inclusions that produce so-called "pin holes".
+
+Predrying
+Predrying serves the purpose of removing the solvents still contained in the solder resist after
+flash-off and of drying the coat to such an extent that the coating of the second side or exposure is
+possible without sticking, imprints or other damage to the first side.
+The predrying process takes place in a time/temperature window that varies depending on the ink
+system used. The lower limit is fixed by the mechanical strength of the solder mask. The upper
+range of the predrying process, both regarding temperature and time, must be chosen in such a
+manner that no polymerisation of the solder mask starts to take place and thus optimum
+development of the unexposed areas remains guaranteed.
+
+ With double-sided processing remember that the side coated first may be predried twice.
+Generally speaking, predrying can be performed by means of straight convection drying, if
+necessary with integrated flash-off, as a combination of convection and IR radiation or as a pure IR
+cure process.
+The pure convection drying process requires more floor space and has longer processing times.
+On the other hand, one can work at lower temperatures which offers the following advantages:
+www.peters.de                                                                                        11
+Application Information AI 2/1
+
+ the solder resist is dried more effectively and “gently”
+ lower risk of large solvent quantities remaining in the deeper layers which negatively affect the
+  resolution of the solder mask. This is of particular importance in the case of higher ink quantities
+ problems with imprints caused by the transport system in the case of double-sided processing
+  are reduced, especially with very thin laminate
+ since the temperature load can be kept at a much lower level, this means a higher mechanical
+  stability of the base material in the predrying process.
+Besides adequate air ventilation for the effective discharge of the solvents in the predrying
+process, it is important to ensure sufficient cooling in the outlet of the predrying unit.
+After cooling, the printed circuit board temperature should be lower than 30 °C [86 F] in order to
+avoid mechanical damage during transport and stacking, because at this stage the coat is still
+thermoplastic. In the case of double-sided processing, the second side can be coated after the
+predrying cycle.
+For double-sided coating after the predrying phase, the entire transport system should have a V-
+shaped layout, or the printed circuit board transport should be designed in such a manner that the
+reverse side of the printed circuit board will not lie flat on its side, which will effectively avoid
+possible damage to the coat.
+
+               160                                                                              The lower limit defines
+                                                                                                the mechanical strength
+               140                                                                              of the solder mask.
+               120                                                                              The upper limit shows
+                                                                                                the beginning of the
+               100                                                                              polymerisation of the
+  time [min]
+
+
+
+
+                                                                                                solder mask. The
+                80                                                                              optimum development
+                                     Maximum time
+                60
+                                                                                                of the non-exposed
+                                                                                                areas is possible up to
+                40                                                                              this limit.
+                              predrying window GL 2467
+                20                                                                              It has to be considered
+                          Minimum time                                                          that the predrying
+                 0                                                                              window is dependent
+                     80                              90                          100            upon a variety of
+                                              Temperature [°C]                                  parameters (e.g. the
+                                                                                                layer thickness, the
+               160
+                                                                                                exhaust air volume, the
+                                                                                                printed circuit board
+               140                                                                              condition, the holding
+                                                                                                time after predrying).
+               120
+                                                           Maximum time                         The illustrated
+               100                                                                              relationship was
+  time [min]
+
+
+
+
+                                                                                                determined under
+               80
+                                                                                                ideal laboratory
+               60                    predrying window GL 2469 SM-HF                             conditions;
+                                                                                                it is strongly affected
+               40                                                                               by process and
+                                                                                                equipment
+               20
+                          Minimum time                                                          parameters.
+                0
+                     80                             90                          100
+                                              Temperature [°C]
+
+
+                                Fig. 4: Example of a predrying window for Elpemer® GL 2467 (above) and
+                                          GL 2469 SM-HF (below) when using convection drying
+
+12                                                                                                        www.peters.de
+                                                                          Application Information AI 2/1
+
+ Formation of condensate
+When predrying photoimageable solder resists, particularly those with extremely short exposure
+times, a certain formation of condensate may be encountered. This condensate formation can be
+more prominent when hot air/IR precuring are combined.
+In order to prevent this condensate from being returned to the predrying oven, an adequate
+separation of warm and cold air and, if necessary, the installation of a condensate trap is required.
+
+ Holding time
+Attention must be paid to the fact that the maximum holding times between the process steps
+(predrying – exposing – developing) stated in the Process data sheet are not exceeded because
+otherwise a complete free development may no longer be guaranteed.
+
+Note on environmental protection
+In the process steps “Flash off“ and “Predry“ the majority of the solvents in the corresponding ink
+system escape. In this regard the directive “on the limitation of emissions of volatile organic
+compounds due to the use of organic solvents in certain activities and installations“ (EU-VOC-RL)
+should be considered that aims for a reduction in the emission of volatile organic compounds (with
+a vapour pressure of 0.1 mbar at 20 °C [68 F]).
+Beneficial for the solvents balance in the field of solder resists is
+ the application of ink with high solids contents
+ the utilisation of cleaning agents and developer media with a vapour pressure of > 0.1 mbar,
+  e. g. R 5899 / butyl carbitol (BDG) or aqueous-alkaline developers
+ the recycling of used solvents.
+Detailed information on the requirements of the VOC directive, limit values and effects on the
+manufacture of printed circuit boards can be found in the Technical Information Sheet TI 15/110
+"The EU-VOC regulation – Contents and consequences for the pcb industry".
+
+Exposure
+The process steps “Exposure” and “Developing” must be considered in conjunction with each other
+because they have to be co-ordinated (see also Section “Developing”).
+In the exposure process, those areas of the coated printed circuit board are exposed to UV light
+that are to be masked by a solder resist on the finished printed circuit board. Therefore, the areas
+to be developed free are covered with a suitable photo tool during the exposure process (see also
+Section “Photo tool”).
+As a rule, for the exposure process exposure units are employed with an Fe-doped mercury
+vapour lamp that has a power of 5–10 kW and a maximum emission at 365 nm; for white
+Elpemer solder resists you may also use Ga-doped lamps (see Section ”UV lamps”). A higher
+power will reduce the exposure time and enable a higher resolution. The exposure units should be
+equipped with adequate cooling so that the printed circuit boards do not exceed a temperature of
+about 25 °C [77 F] in the exposure process in order to avoid sticking of the photo tool.
+The units must be equipped with an operating hourmeter because the service life of the UV lamps
+is only about 1000 to 1500 hours, after which they will have to be replaced. As the lamps grow
+older, the wave length range is displaced. The integrators installed in the exposure units ensure
+that the corresponding energy in the correct wave length range continues to be emitted. However,
+the wave length displacement extends the exposure times and increases the thermal stress on the
+photo tool (photo tool sticks to ink, dimensional stability decreases).
+www.peters.de                                                                                        13
+Application Information AI 2/1
+
+Increased heat radiation in the exposure process can also be caused by an incorrectly doped or
+defective lamp and possibly create the following problem:
+Owing to the higher thermal energy, the UV light-activated photo reaction with the sensitisers that
+react to long-wave light continues. This reaction is sufficient to represent an adequate Stouffer
+step. However, the cross-linking reaction/photopolymerisation of the ink surface that is achieved
+especially by means of short-wave light is not sufficient for an optimum resistance of the exposed
+areas in the development process so that the ink film swells in the development process. This may
+lead the ink to flake in thinly applied areas (on narrow conductors, at the conductor edges).
+The exposure frame must render a vacuum between printed circuit board and frame possible. Any
+remaining air should be stroked out in order to avoid air entrapment between the photo tool and
+printed circuit board.
+ Glossy spots
+Glossy spots on the solder resist surface are frequently caused by too short a cooling phase of the
+coated printed circuit board between predrying and exposure. The ink that is still warm right after
+the predrying process is strongly thermoplastic and deformed by the superimposed film and the
+vacuum produced in the exposure process to such an extent that film sticking to the ink surface
+creates isolated glossy areas.
+Another cause for the glossy spots is an excessive heating of the exposure unit surface during the
+exposure process. Owing to the deposited film and the vacuum produced, this situation can also
+cause glossy areas to develop on the printed circuit board due to the thermoplasticity of the ink that
+has not yet been final cured.
+In order to avoid those glossy areas, the printed circuit board should be cooled down to room
+temperature prior to exposure.
+Furthermore, the temperature must not rise substantially above room temperature during the
+exposure process. This can be ensured by means of an effective water cooling of the lamp. By
+reducing the vacuum, film sticking and the resulting glossy spots can be avoided.
+
+                                                                                    The exposure energy refers to a
+                                                                                    5 kW exposure unit with Fe-
+                     13                                                             doped mercury vapour lamps at
+                                                                                    an emission maximum of
+                                                                                    365 nm, measured through the
+                     12
+                                                                                    photo tool at a transparent point
+                                                                                    with ORC UV model UV-350.
+     Stouffer step
+
+
+
+
+                     11
+                                                                                    The Stouffer step reached is
+                                                                                    dependent upon a variety of
+                     10
+                                                                                    parameters, e.g. the developing
+                                                                                    speed, the spraying pressure, the
+                                                                                    developer temperature and
+                      9                                                             potentially the developer
+                       125    150      175          200           225   250   275   medium.
+                                       Exposure energy [mJ/cm²]
+
+
+                     Fig. 5: Graph of the exposure energy in relation to the Stouffer step of Elpemer® GL 2467
+
+The illustrated relationship was determined under ideal laboratory conditions; it is
+strongly affected by process and equipment parameters.
+
+
+
+
+14                                                                                                     www.peters.de
+                                                                           Application Information AI 2/1
+
+UV lamps
+For the exposure of the Elpemer solder resists, Fe-doped mercury vapour lamps with an
+emission maximum at 365 mm are suitable. For white Elpemer solder resists you may also use
+Ga-doped lamps with a maximum emission of 405/420 nm; they may shorten the required
+exposure time by up to 30 % and reduce undercut. Mix-doped and undoped lamps are not suitable
+on account of their emission spectrum).
+When changing the solder resist used, attention must be paid to the fact that not only the lamp, but
+also the integrator that measures the radiation energy and extends the exposure time if the
+exposure energy decreases, may have to be replaced.
+The lamp reflectors must be designed in such a manner that the entire exposure frame is
+illuminated with the same light energy ( 10%).
+With water-cooled lamps (recommended in order to achieve a low temperature in the exposure
+process), the glass cladding must be checked for discolouration and contamination when replacing
+the lamp in order to avoid an energy drop.
+
+
+
+
+            Fig. 6 left: Spectrum of an Fe-doped lamp, peak at 365 nm (type NMX 7000H)
+             right: Spectrum of a Ga-doped lamp, peak at 405/420 nm (type MXA 7000H)
+              (Source: ORC Manufacturing Vertriebs GmbH, Düsseldorf, www.o-r-c.de )
+
+Photo tool
+Diazo or silver halide films can be used as photo tools. The advantages and disadvantages of the
+photo tools have to be weighed against each other:
+ with visual registration, diazo films are the better choice because one can see through the spots
+  impervious to UV and thus better align the layout with the photo tool.
+ among others, the resolution of the solder mask is also dependent on the distance between the
+  photo tool and the solder mask in the exposure process (stray light). Diazo films are more
+  flexible than silver halide films and cling to the conductor structure better but they are thicker
+  than silver halide films which partly counteracts this advantage.
+ since silver halide films are black, they heat up the solder mask more intensively in the
+  exposure process – especially with very large covered areas – and can increase sticking to the
+  solder mask (only in the case of poorly cooled lamps).
+ in the exposure process, the photo tools absorb part of the UV energy; therefore a film should
+  always be applied when the exposure energy is measured. Diazo films absorb about 50% of the
+  UV energy, silver halide films about 25%.
+
+www.peters.de                                                                                          15
+Application Information AI 2/1
+
+The use of so-called protective films that are laminated onto the film layer in order to extend the
+service life of the photo tools has to be checked very carefully. These protective films additionally
+absorb UV energy and increase the distance to the solder mask. This reduces the resolution
+performance of the solder mask due to stray light and extends the exposure time.
+ Cut the photo tool smaller than or, at the most, as large as the printed circuit board panel so that
+  a vacuum can be built up between the photo tool and the solder mask/no misregistration in the
+  edge area is caused by the photo tool being pushed up at the edge by the vacuum. The photo
+  tool is always placed onto the solder mask coated side down.
+
+Exposure energy
+The exposure energy required for the Elpemer solder resist is specified in the corresponding
+Process data sheet. The required wave length of the UV lamp (in nm) and the exposure energy in
+mJ/cm² as well as the grey level (Stouffer step) resulting after the development on a copper
+surface are indicated.
+When using a measuring device to determine the exposure energy it must be ensured that –
+depending on the measuring gauge employed – the measuring unit is calibrated because the
+instruments of different manufacturers indicate substantially varying values. Generally, care must
+be taken that the measuring unit is suitable for the corresponding wave length range.
+When determining the grey level, a Stouffer 21-step wedge, i.e. a film strip increasing in opacity, is
+placed on the solder mask and exposed at different exposure energies. When exposing test
+panels, corresponding film material must be placed on the grey step wedge because the film
+absorbs quite a substantial amount of UV light.
+After the development process, the Stouffer step is evaluated that has just been washed
+off/developed. An exposure time is selected where the grey level is reached that is indicated in the
+corresponding Process data sheet. This is the method to set the exposure time for printed circuit
+boards with plated-through holes of up to 4 mm [0.16 inch]. Consider that the achieved Stouffer
+step is additionally dependent upon the developing speed, the spraying pressure, the developer
+temperature and the developer medium.
+For printed circuit boards that require an extended development time because of very large holes
+or slots, the time required for the free development of such holes/slots has to be determined first.
+The exposure time to be applied is determined by means of exposure tests with the Stouffer
+wedge. In practical operation, a combination of both methods has proven to be useful in application
+processes where holes and plated-through holes are coated with solder resist.
+As far as possible, the exposure energy should always be kept within the limits stated in the
+Process data sheet because underexposure leads to increased undercut and overexposure to
+stray light seeping under the photo tool. Both effects negatively affect the resolution. Furthermore,
+the risk of ghost-imaging on the second printed circuit board side will increase in the case of
+overexposure.
+With thin base material (< 1 mm [< 0.04 inch]), an exposure and development test must be
+performed to ensure that ghost-imaging will not occur when the specified exposure parameters are
+used. Double-sided SMD (surface mounted device) layouts where the pads on both sides are not
+aligned are especially critical. In the case of ghost-imaging, these printed circuit boards must be
+processed single-sided or base material has to be used that is impervious to light.
+Optimum exposure, in conjunction with optimum development, is always achieved when the widths
+of the dams on the photo tool are identical with the widths of the dams on the printed circuit board.
+
+
+16                                                                                       www.peters.de
+                                                                                                 Application Information AI 2/1
+
+Fig. 7.3 shows an optimum exposure/development result.
+                                  Base material
+                                                                      Plated-through hole
+                                                  Solder resist
+
+
+
+
+                                   Fig. 7.1: Overexposure or underdevelopment
+
+
+
+                           Fig. 7.2: Underexposure or overdevelopment (undercut)
+
+
+
+                           Fig. 7.3: Optimum balance of exposure and development
+
+                          Fig. 7: Diagram showing microsections (cross-sections)
+                                   of free-developed plated-through holes
+
+
+Holding time
+Depending on the ink system, a holding time of 10 min for instance is recommended after the
+exposure process. This process step serves the purpose of optimising the photochemical reaction
+activated during exposure.
+
+Developing – Rinsing – Drying
+The process steps "Exposure" and "Developing" must be considered in conjunction with each other
+as they have to be co-ordinated (see also Section “Exposure”).
+
+
+
+
+                             Fig. 8: Scanning electron beam microscope image
+                            of an Elpemer ink sidewall (700-fold magnification)
+
+Developer media
+According to the solubility of the resins used, the developer media for the various Elpemer solder
+resists differ. The following developer media are used:
+
+ For the polyalcohol developable solder resists,
+          O       C H2     C H2     OH                            O      C H2     C H2      OH
+       C2H5     CH2   O           CH2                       C4H9      CH2     O          CH2
+     EDG: Carbitol (C6 H14 O3)                              BDG: Butyl carbitol (C8 H18 O3)
+ For the aqueous-alkaline developable solder resists alkalis, such as sodium carbonate solution
+  Na2 CO3
+
+www.peters.de                                                                                                               17
+Application Information AI 2/1
+
+Polyalcohol development
+The development in polyalcohols is a physical solution process. The ink that was tack-dried in the
+predrying process and not exposed in the exposure process is dissolved again. The developer
+medium, temperature, spraying pressure and loading are responsible for the dissolving velocity.
+Developing processes in polyalcohols should be effected at a relatively cool temperature (about
+25–30 °C [77–86 F]), because the development process takes place quite rapidly, even at low
+temperatures, and higher temperatures negatively influence the result at the edges (undercut). The
+polyalcohols used for developing have a flow behaviour that causes the medium to heat up
+relatively quickly when the developer solution is pumped. In order to keep the development
+temperatures low, adequate cooling must be provided. In order to terminate the influence of the
+developer on the solder resist, a water-rinsing process directly after the developing zone is
+mandatory.
+The excellent suitability of the developer medium carbitol, compared to butyl carbitol, was
+determined in comprehensive tests.
+The developing time can be decreased by about 25% without changing the exposure times or
+observing a poor free development. Merely the sensitivity of the ink in the high-pressure pump
+zone is slightly higher with carbitol. However, this can be controlled by a corresponding adjustment
+of the spray pressure.
+When regarding the undercut, it was also found that the development in carbitol is comparatively
+favourable. When realising 100 µm [4 mil] lands, an undercut of max. 10 µm [0.4 mil] was
+measured which means a reduction of more than 30% compared to butyl carbitol.
+When selecting the developer medium it should also be considered that carbitol falls under the
+VOC directive while butyl carbitol is not classified as a VOC (see also Section “Note on
+environmental protection”).
+
+Aqueous-alkaline development
+The term "aqueous-alkaline" is widespread, but actually incorrect. According to the general formula
+acid + lye => salt + water
+during the development process the carboxylic group in the resin of the ink is converted with soda
+into a water-soluble salt. This salt is then dissolved in water and flushed off. With aqueous-alkaline
+solder resists the reaction basically takes place as follows:
+2 R-COOH + Na2 CO3  2 R – COONa + H2O + CO2                     (R = resin backbone)
+This development process requires a certain reaction temperature. As a rule, the development
+process should be performed at temperatures of 32-38 °C [90-100 F]. Generally, aqueous-alkaline
+development processes are faster than those using polyalcohol. Water rinsing is also necessary to
+stop the process. Rinsing off the soda solution prevents any residual soda solution from further
+dissolving/developing the resist and the formation of a strong undercut.
+
+Developing
+In the development process, some fundamental considerations are independent of the developer
+medium. The developer shall be provided as multiple cascade, both in the actual developing area
+and in the rinse area. Fresh developer solution or fresh water shall always be added to the last
+chamber from the direction of flow, while the corresponding quantity shall be pumped from the first
+chamber; this way, the feeding of the developer medium and/or the rinse water will decrease in the
+direction of flow.
+
+
+18                                                                                      www.peters.de
+                                                                            Application Information AI 2/1
+
+Edge coverage
+In the developing process the solder mask is to be removed from those areas of the printed circuit
+board that were covered by the photo tool in the exposure process. First of all, the question arises
+how the edge areas of the printed circuit board or pcb panel should be treated. As a rule, the edge
+is exposed completely because otherwise the developer would be loaded with stripped ink faster
+and a free-developed edge would have to be treated in subsequent steps (hot-air levelling,
+electroless Ni/Au or other processes).
+ It is vital to ensure that exposure or non-exposure of the edge is performed unambiguously.
+An edge that is not covered light-tight can create a considerable problem. In the development
+process, an ink "smear" will form that cannot be developed off completely, deposits itself on the
+transport system of the developer and is stamped on to free developed areas causing spots that
+are unwettable in subsequent processes.
+
+Development from plated-through holes
+Irrespective of the application method, ink is deposited in drill holes, plated-through holes, cut-outs
+or similar during the coating process. In the curtain coating process mainly large holes are affected
+while small holes, as a rule, are tented by a "ink skin" that will tear during the flash-off process. In
+the screen printing process, particularly in double-sided screen printing, it is more the small holes
+that are filled with ink; this can result in the formation of actual ink plugs.
+For the free development of large holes it is important to operate with a relatively high spray
+pressure (about 4 bar [58 psi]) and flat-cone nozzles. The nozzles must be inclined at an angle of
+about 60° to the printed circuit board surface so that the developer medium can attack the ink in
+the holes as long as possible and with a high pressure.
+The associated developing time depends on the time that is required to remove the ink from the
+holes. These development conditions inevitably create a more substantial undercut of the ink
+edges because these areas are developed too long and thus attacked excessively.
+If, with the type of application chosen, only a small quantity of ink has penetrated the holes (this
+especially applies to horizontal screen printing with hole tenting/spray application) it may be
+possible to considerably reduce the developing time and the spray pressure can be decreased to
+about 2 bar [29 psi]. These measures reduce undercut and much higher resolutions can be
+achieved.
+In order to achieve a reliable free development of small holes ( 0.4 mm [ 0.016 inch]), developer
+must be transported to the area to be developed as frequently as possible. However, this is not
+possible without problems in the case of clogged holes. In the first third of the development
+process the plated-through holes must be sprayed at high pressure and with vertical nozzles in
+order to render them permeable for the developer solution. In the further course of the
+development process, a thorough flow through the plated-through holes at low pressure should be
+effected in order to channel the developer to the ink in the holes. The use of flood nozzles has
+proven beneficial.
+
+
+
+
+www.peters.de                                                                                          19
+Application Information AI 2/1
+
+
+
+
+              Step 1                               Step 2                           Step 3
+  90° spray angle to ink-filled hole     Opening of the ink-filled hole Free development of holes with
+                                                                                flood nozzles
+                       Fig. 9: Schematic of a free development using flood nozzles
+
+Filtration of developer solution
+The developer solution is substantially loaded with dissolved ink components, especially in the first
+developer zone. In order to avoid these ink residues being squeezed onto areas already developed
+free, the developer should always be directed through a suitable filter system. It is also advisable to
+duct the developer through a centrifuge in the first developer chamber. This will separate solid
+components to a large extent and substantially minimise the cleaning effort of the developer.
+
+Replacement of the developer solution
+For a stable process control it is advisable to permanently replace (bleed and feed) the developer
+solution (controlled by a pcb feeding sensor).
+As a rule, the degree of saturation of the developer is stated in percent. The average area
+developed can be estimated statistically and the quantity of developer solution calculated. In any
+case, a parallel process control of the loading should be effected. Many years of practical
+experience have proven that a safe fabrication, irrespective of whether butyl carbitol or carbitol is
+used as the developer medium, is guaranteed up to a loading degree of 2% of solids. In many
+cases, a very fast and conclusive check can be effected by determining the specific gravity of the
+developer solution. Consider that the specific weight is strongly dependent upon the temperature.
+The consumption of butyl carbitol/carbitol can be calculated as follows:
+
+Calculation bases:          wet coating quantity ink                 100 g/m²
+                            dry matter ink after predrying (solids
+                            content 64%)                             64 g/m²
+                            percentage share of area to be           10%
+                            developed (average value)
+This results in an ink quantity to be dissolved of                   6.4 g/m²
+With a loading of 2% this means a theoretically required
+                                                                     320 g/m²
+developer quantity of
+
+Thus, about 640 g of butyl carbitol/carbitol are needed for 1 m² of double-side coated pcb.
+Since the share of the area to be developed is a fluctuating quantity, a "safety reserve" should be
+provided in order to increase the process safety.
+For the process control of aqueous-alkaline developer media, especially pH value determinations,
+the titration at regular intervals with 0.1 n HCI against phenolphthalein, the conductance value
+determination but also the colorimetric measurement have proven useful.
+When calculating the developer quantity required, it must equally be considered whether also
+incorrectly coated printed circuit boards are washed in the developer since this process will feed a
+
+20                                                                                        www.peters.de
+                                                                           Application Information AI 2/1
+
+large quantity of ink to the developer. Generally, washing in the developer is not recommended
+because the transport system will become badly soiled by such activities. If necessary, the boards
+to be cleaned off can be collected and washed together prior to the next cleaning cycle.
+
+Transition zone developer – water rinse
+The transition zone between development zone and water rinse is regarded as a very critical area in
+the entire development process. The most important requirement is that no developer medium must
+be dragged into the water zone. For this reason, squeegee rollers and air knives are used. The air
+knives installed must not spray the developer medium into the water zone; the developer solution
+blown out of the plated-through holes must not be conveyed into the water rinse return either.
+The squeegee rollers should never run dry but must always be moistened with developer medium
+on the developer side. Partially dissolved ink residues are trapped between the free-developed ink
+edges. By means of the squeegee rollers, these residues are squeezed out and rinsed off together
+with the excess developer medium. If these residues get stuck on the dry squeegee rollers, they
+are stamped at random onto another spot of the printed circuit board at a later time and cause
+voids in the subsequent metal plating processes.
+The squeegee rollers at the water rinse inlet are even more critical. These rollers should be
+sprayed with water in such a manner that a "puddle" forms on the printed circuit boards entering
+the water zone. This water will wash off dissolved ink particles.
+After rinsing the printed circuit boards with demineralised water in a triple cascade, water residues
+initially are blown off over air knives. The boards are then hot-air dried in a dryer in such a manner
+that they leave the developer unit without any water residues.
+
+Developer unit maintenance
+The extent of maintenance for the developer unit largely depends on the loading. A complete clean
+per week is recommended. The transport rollers should be cleaned at least at the change of shifts,
+the squeegee rollers described above even more frequently, if necessary. In addition, the nozzle
+assembly should be checked for clogged nozzles at the change of shifts.
+
+UV bump (optional)
+A UV bump (UV post-crosslinking at 500-2000 mJ/cm²) before and/or after thermal curing has a
+positive effect with regard to
+ the ionic contamination by HAL fluxing agents
+ the prevention of whiteish discolourations by subsequent cleaning processes
+ the prevention of spotting in subsequent finish-processes.
+Moreover, the UV bump before final curing offers the advantage that condensate formation during
+final curing is reduced.
+ Ascertain the need for a UV bump by means of pretests as the resistance in subsequent
+  chemical processes and the adhesion of subsequent coatings may be affected both positively
+  and negatively.
+ Please consider the recommendations on the UV dosage in the respective process data sheet.
+With conveyorised final curing ovens the UV bump can be integrated in-line directly behind the
+oven. A regular control of the lamp power and age by means of an hourmeter are imperative.
+ Do not carry out a UV bump when using flexible Elpemer® solder resists as these inks become
+  brittle as a result.
+
+www.peters.de                                                                                         21
+Application Information AI 2/1
+
+
+Visual inspection
+Before the curing process a visual control of the free development, particularly from the plated-
+through holes, registration accuracy and the presence of voids should be carried out. At that time
+printed circuit boards that have one or more of the above imperfections can be washed off in 5%
+NaOH or KOH or special stripper HP 5707. After final curing, the ink film is so stable that stripping
+is practically no longer possible.
+
+Thermal curing (final curing)
+In the final curing process the chemical cross-linking of the ink components is carried out. This
+process is responsible for the mechanical, chemical and electrical properties of the solder mask.
+Therefore, the observance of the parameters in accordance with the specifications in the Process
+data sheet is imperative.
+The quality is irrespective of whether the final curing is effected in a box oven or a conveyorised
+convection oven.
+It is important to observe that
+ the temperature specified in the Process data sheet is reached evenly in the entire oven
+    chamber
+ particularly an optimum control of circulating and exhaust air in the initial phase of the thermal
+     curing process is ensured in order to avoid condensation (see also the advice on “Condensate”
+     in the Section ”Predrying”).
+ the net burn-in time does not begin until the printed circuit boards have reached the specified
+     temperature (object holding time); attention must be paid to the fact that the printed circuit board
+     thickness substantially influences the heat-up time.
+For a trouble-free handling, printed circuit boards cured in conveyorised ovens should be cooled
+down to temperatures slightly above room temperature at the end of the burn-in process.
+In the case of stationary ovens, it is advisable to lock the oven during the entire burn-in process:
+Within the scope of quality assurance, this will ensure that the oven cannot be opened in between
+which would mean an uncontrolled reduction of the specified burn-in-temperature.
+A ramp formed curing curve must be adjusted when filling via holes in order to expel
+possible trapped residual solvents, e. g. 1-3 h at 110 °C [230 F]; subsequent final curing
+according to the Process data sheet.
+The curing conditions also depend on the used quantity of solder resist. Perform pretests
+to determine the optimum parameters.
+Basically, a pure IR final cure is possible, but requires an exact process review. Our Application
+Technology Department (ATD) will gladly assist you in case of any queries.
+ Determine suitable IR curing parameters by means of pretests while ensuring that cross-linking
+  is completed and the final properties are achieved.
+
+Literature
+In addition to the recommendations given in this technical report, we can provide technical papers
+and information sheets written and compiled by members of our staff which are available for
+download on our website http://www.peters.de. We also recommend for further reading:
+Dr. Manfred Suppa, Publisher Werner Peters: “Conformal Coatings for Electronics Applications”,
+1st edition 2012, Lackwerke Peters GmbH + Co KG, ISBN 978-3-00-039856-8
+22                                                                                         www.peters.de
+                                                                              Application Information AI 2/1
+
+
+Disclaimer
+All descriptions and images of our goods and products contained in our technical literature,
+catalogues, flyers, circular letters, advertisements, price lists, websites, data sheets and brochures,
+and in particular the information given in this literature are non-binding unless expressly stated
+otherwise in the Agreement. This shall also include the property rights of third parties if applicable.
+The products are exclusively intended for the applications indicated in the corresponding technical
+data sheets. The advisory service does not exempt you from performing your own assessments, in
+particular as regards their suitability for the applications intended. The application, use and
+processing of our products and of the products manufactured by you based on the advice given by
+our Application Technology Department are beyond our control and thus entirely your
+responsibility. The sale of our products is effected in accordance with our current terms of sale and
+delivery.
+Any questions?
+We would be pleased to offer you advice and assistance in solving your problems. Samples and
+technical literature are available upon request.
+
+Lackwerke Peters GmbH & Co. KG         Internet: www.peters.de    Phone +49 2152 2009-0
+Hooghe Weg 13, 47906 Kempen, Germany   E-Mail: peters@peters.de   Fax   +49 2152 2009-70
+
+
+
+
+www.peters.de                                                                                            23
+

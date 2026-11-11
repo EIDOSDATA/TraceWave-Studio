@@ -1,0 +1,183 @@
+fast Rise™
+Multilayer Non-Reinforced Prepreg
+ Benefits
+      •   Df = 0.0014 / 0.0017 (10/40 GHz)
+      •   Laser ablatable, HDI ready
+      •   Low Dk enables reduced thickness of ATE boards
+      •   Low temperature alternative to thermoplastic films in military
+          designs
+      •   Multilayer prepreg for high layer count high speed digital
+      •   Stable Dk over temperature
+      •   Fiberglass free prepreg
+      •   Enables 5+ sequential laminations
+      •   Compatible with conductive pastes between subassemblies
+
+ Applications
+      •   Filters, Couplers
+      •   Avionics & aerospace
+      •   Automotive Radar
+      •   Beam Steerable Antennas
+      •   Flexible Circuits
+
+
+fastRise™ is designed to bond all manner of circuit boards together with the lowest possible loss of any thermosetting
+prepreg available today. fastRise™ enables 77 GHz automotive radar. fastRise™ is non-reinforced and eliminates
+skew/variation in high speed digital/RF circuits. fastRise™ is based on ceramic, thermoset and PTFE and is ideal for use with
+AGC’s TSM-DS3, TSM-DS3b, TSM-DS3M and EZ-IO-F. fastRise™ can be foil laminated, laser ablated, and sequentially
+laminated to yield layers of stacked or staggered microvias. Please consult with a technical sales person for microvia design
+and reliability testing data. The low temperature lamination leads to less variation when resistive foils are used. fastRise™ is
+flexible enough in the prepreg stage for lasing and impregnation with conductive paste for interconnecting between
+subassemblies. When combined with stable dielectric materials like EZ-IO-F, fastRise™ passes reliability testing including IST,
+HATS and CAF.
+
+The low 420 °F (215 °C) lamination temperature enables 5+ sequential laminations at temperatures lower than those
+normally used for FEP and PFA in Avionics & aerospace constructions. The fastRise™ bonds to PTFE, epoxy, low-flow epoxy,
+LCP, polyimide, and hydrocarbon materials.
+There are many fastRise™ part numbers due to the diverse number of tasks that a prepreg must fulfill. For doing sequential
+laminations where the intent is to flow and fill copper that has been plated up to 2-3 mils, high resin content and high flow
+is required from the prepreg. For applications where you do not want the prepreg flowing into cavities, a low flow prepreg
+is desirable.
+
+Extremely high flow is needed for filling blind or buried vias or milled out cavities. In some coupler designs, a very thin
+prepreg is desirable for maximum coupling between the overlay couplers and sufficient flow is only needed to bond artwork
+with 0.5 oz. copper. Low flow prepregs are best for doing foil laminations. Flow and fill requirements don’t exist in a foil
+lamination so a low flow prepreg is appropriate whereas a high flow prepreg might be more prone to cosmetic defects.
+AGC has found that low flow prepregs are most suitable for microvia formation following a foil lamination (the microvia
+cross sections below are courtesy of Hughes Circuits).
+
+AGC’s low flow prepregs have a much better lased hole quality than the high flow prepregs. In a high layer count PWB,
+often there are many layers of overlapping edge-coupled traces. High layer count PWBs are susceptible to lamination voids
+due to areas of high and low pressure. For all of these reasons it is best to consult the fastRise™ design guide or talk to an
+AGC applications engineer to design with the most suitable prepreg.
+         fastRiseTM prepreg between
+                                                           fastRise™ used at 77 GHz for Automotive Radar
+        subassemblies w/copper paste
+
+
+                  EZ-IO-F-R / TSM-DS3b-R Resistor Foil Stability with Prepreg Lamination
+
+
+
+
+fastRise™ Dielectric Loss at mmWave Frequency               Temperature Influence on Dielectric Constant
+fastRise™ is shipped at a very low degree of cure. The best flow conditions are achieved when the prepreg spends the
+maximum amount of time possible at a temperature of 225 °F (107 °C) using the highest possible pressure. For difficult
+flow and fill designs or when using AGC’s low flow prepregs, the lamination press should ramp up to 225 °F (107 °C) and
+hold for 30-60 minutes at maximum pressure, followed by a slow 2.0-4.0 °C/min. ramp rate to 420 °F (216 °C).
+Because of the large number of possible applications for the fastRise™ prepreg series and the complexity of many
+multilayer printed circuit designs, AGC does not warranty or guarantee the performance of fastRise™ when combined
+with any supplier’s core materials. It is the responsibility of the end user to determine the suitability of fastRise™ for any
+application.
+
+
+AGC's fastRise™ materials meet the requirements of IPC-4103B/520 and IPC-4103B/530
+
+             Properties                   Conditions        Typical Value        Unit                          Test Method
+ Electrical Properties
+ Dielectric Constant                      @ 10 GHz            2.43 – 2.77                      IPC-650 2.5.5.5.1 (modified)
+ Dissipation Factor                       @ 10 GHz         0.0010 – 0.0015                     IPC-650 2.5.5.5.1 (modified)
+                                                              8.00 x 108      Mohms/cm         IPC-650 2.5.17.1 (after elevated temp)
+ Volume Resistivity
+                                                              1.71 x 108      Mohms/cm         IPC-650 2.5.17.1 (after humidity)
+                                                              3.48 x 108       Mohms           IPC-650 2.5.17.1 (after elevated temp)
+ Surface Resistivity
+                                                              1.16 x 108       Mohms           IPC-650 2.5.17.1 (after humidity)
+ Thermal Properties
+ Thermal Conductivity                                           0.25            W/M*K          ASTM F433
+                                              X                  59             ppm/°C
+ CTE (-55 to125°C)                            Y                  70             ppm/°C         IPC-650 2.4.41/TMA
+                                              Z                  72             ppm/°C
+                                          2% wt. loss         376 (709)          °C (°F)
+ Td                                                                                            IPC-650 2.4.24.6/TGA
+                                          5% wt. loss         421 (790)          °C (°F)
+ TcK (-30 to 100 °C)                                            0.06            ppm/°C         IPC-650 2.5.5.5.1 (modified)
+ Tg                                                             188                °C          ASTM E 1640 (DMA)
+ Mechanical Properties
+ Peel Strength                              HH/H1          0.35-0.53 (2-3)   N/mm (lbs/in)     IPC-650 2.4.8
+ Dielectric Strength                                        42.9 (1,090)     Kv/mm (V/mil)     ASTM D 149
+                                               x             12 (1,690)       N/mm2 (psi)
+ Tensile Strength                                                                              ASTM D 882
+                                               y             10 (1,480)       N/mm2 (psi)
+                                               x            2,100 (304)       N/mm2 (kpsi)
+ Tensile Modulus                                                                               ASTM D 882
+                                               y            2,030 (295)       N/mm2 (kpsi)
+                                               x                0.82              %
+ Elongation at Break                                                                           ASTM D 882
+                                               y                0.73              %
+ Chemical / Physical Properties
+ Moisture Absorption                                            0.08               %           IPC-650 2.6.2.1
+ Dielectric Breakdown                                            49               Kv           IPC-650 2.5.6 (parallel to lamination)
+ Density                                Specific Gravity        1.82             g/cm3         ASTM D 792 Method A
+ Hardness                                                        68             Shore D        ASTM D 2240
+
+
+
+
+                                                    Standard fastRise™ Part Numbers
+                           Stripline                      Between                                         Microvia
+                                          High Layer                     Fill Blind/        Resin
+      Product                 with                        Plated Up                                    Formation/Foil        Drill Quality
+                                         Count PWBs                     Buried Vias        Content
+                            1 oz. Cu                   Subassemblies                                     Lamination
+ FR-27-0040-43F           See below 2        Yes1        See below 3          No           Medium           Best                 Best
+ FR-27-0045-35            See below 2        Yes 1
+                                                              No              No            High             R                   Best
+ FR-28-0040-50                Yes            Yes         See below 3          No            High             R                   Best
+ FR-27-0050-40                Yes            Yes         See below 3          No            High             R                   Best
+                                                     Specialty fastRise™ Part Numbers
+                            Stripline                      Between                                      Microvia
+                                           High Layer                      Fill Blind/    Resin
+         Product              with                         Plated Up                                 Formation/Foil      Drill Quality
+                                          Count PWBs                      Buried Vias    Content
+                            1 oz. Cu                    Subassemblies                                  Lamination
+    FR-25-0021-45              No             No1              No               No        Low             No             Susceptible4
+    FR-25-0021-45F             No             No1              No               No        Low             No             Susceptible4
+    FR-26-0025-60              Yes            Yes1        See below 3           No        High            No             Susceptible4
+    FR-27-0035-66              Yes            Yes1            Yes              Yes        High            No             Susceptible4
+    FR-27-0042-75              Yes            Yes1            Yes              Yes       Highest          No             Susceptible4
+1
+  Some layers only
+2
+  FR-27-0030-25, FR-27-0040-43F and FR-27-0045-35 can be used with 1 oz. copper on low layer count PWBs but should not
+be used where many layers are bonded together in a single lamination due to the risk of low pressure areas during
+lamination.
+3
+  Plated up subassemblies can vary in the ultimate copper thickness. A discussion with an AGC Applications Engineer is
+advised.
+4
+  Susceptible to common PTFE drilling defects
+R = Recommended
+
+
+                                                            fastRise™ Prepreg
+                                                   Pressed              Pressed               Pressed
+                               Nominal Dk
+          Product                                 Thickness¤          Thickness¤          Thickness¤ (mil)       Typical Flow %
+                                (10 GHz)
+                                                     (mil)          (mil) 0.5 oz. Cu          1 oz. Cu
+    FR-25-0021-45                  2.43               2.1                  1.9                   1.5                     10.0
+    FR-25-0021-45F                 2.45               2.1                  1.9                   1.5                     2.0
+    FR-26-0025-60                  2.52               2.8                  2.5                   2.1                     11.0
+    FR-27-0030-25                  2.70               3.6                  3.2                   2.8                     3.0
+    FR-27-0035-66                  2.62               3.9                  3.6                   3.2                     15.0
+    FR-27-0040-43F                 2.77               4.1                  3.8                   3.5                     3.0
+    FR-27-0042-75                  2.68               5.0                  4.7                   4.3                     30.0
+    FR-27-0045-35                  2.72               5.6                  5.2                   4.8                     7.0
+    FR-27-0050-40                  2.74               6.0                  5.6                   5.2                     11.0
+    FR-28-0040-50                  2.74               4.4                  4.1                   3.7                     10.0
+
+
+
+
+¤ : Pressed between ground planes                                                                  * Insufficient data
+
+* All test data provided are typical values and not intended to be specification values. For review of critical specification
+  tolerances, please contact a company representative directly.
+* Please contact AGC for availability of additional thicknesses, other sizes.
+
+
+
+
+    AGC Inc. 2026-08
+    agc-ml.multimaterial@agc.com
+

@@ -1,0 +1,449 @@
+                                                                                                         FR408HR
+                                                                       Lead Free, Mid Loss Laminate and Prepreg
+
+
+
+Processing Guide
+The processing guidelines contained in this document were developed through in-house testing and field experience. However, they
+should be considered to be starting points that will require further adjustment. Read the following review of processes for applicability
+to your particular Printed Wiring Board (PWB) fabrication environment. Remember that the suggestions contained herein can not
+account for all possible board designs or processing environments. Additional adjustments by the fabricator will be necessary. Isola can
+and will assist with this process, but the fabricator, not Isola, is ultimately responsible for their process and the end results.
+Fabricators should verify that PWBs made using these suggestions meet all applicable quality and performance
+requirements.
+
+
+Part 1: Prepreg Storage and Handling
+Isola Group’s prepreg bonding sheets for use in multilayer printed circuit board applications are manufactured to specifications that
+include physical properties, electrical properties and processing characteristics relative to the laminating application. Handling and
+storage factors have an important influence on the desired performance of the prepreg. Some parameters are affected by the
+environment in which prepregs are stored. They can also deteriorate over extended periods of storage. The prepreg received by the
+customer is a glass fabric that has been impregnated with a stated quantity of low volatile, partially polymerized resin. The resin is tack-
+free but somewhat brittle. Many lamination problems arise from resin loss off the fabric or damage to the woven glass due to improper
+handling. The fabric used is based on the order
+and supplies the required thickness. In most cases the amount of resin carried by the fabric increases as the fabric thickness decreases.
+
+Handling Suggestions
+Handle all prepreg using clean gloves. Use sharp, precision equipment when cutting or paneling prepreg. Treat all prepreg as being
+very fragile. Use extreme care when handling very high resin content prepreg (glass fabrics 1080 and finer).
+
+Storage Suggestions
+Upon receipt, all prepreg should be immediately moved from the receiving area to a controlled environment. All prepreg should be
+used as soon as possible using a First-In-First-Out (FIFO) inventory management system. If not handled properly, FR408HR prepreg will
+absorb moisture, which will lead to depressed Tg’s and cure and affect flow in the press. If extended storage is required, separate
+facilities should be reserved with appropriate environmental control. Prepreg should be stored at ≤ 23 ºC and below 50% humidity.
+
+Prepreg packages should be allowed to equilibrate to layup room conditions before opening to prevent moisture
+condensation on the prepreg.
+
+Prepregs are sold to IPC-4101 specifications. After delivery to the customer, retesting services are available, but passing retest results
+do not constitute a re-certification. Prepregs will be tested at the original manufacturing site or at another appropriate site to be
+determined by Technical Service.
+
+
+Part 2: Innerlayer Preparation
+Isola Group’s FR408HR laminates are fully cured and ready for processing. It has been the experience of most fabricators that stress
+relief bake cycles are not effective in reducing any movement of high performance laminates such as FR408HR. Therefore, it is
+suggested that the movement of unbaked laminate be characterized and the appropriate artwork compensation factors are used.
+
+Dimensional Stability
+The net dimensional movement of laminate after the etch, oxide and lamination processes is typically shrinkage. This shrinkage is due
+to the relaxation of stresses that were induced when the laminate was pressed as well as shrinkage contribution from the resin system.
+Most of the movement will be observed in the grain direction of the laminate.
+
+There are situations that have been known to alter the proportion of shrinkage in grain versus fill direction in some board shops. These
+include autoclave pressing and cross-plying laminate grain direction to that of prepreg. While both of these practices have their
+advantages, material movement must be uniquely characterized.
+
+If FR408 products, or IS415 products have been used, use these values as starting points for FR408HR products. For FR408HR products
+
+  https://www.isola-group.com/pcb-laminates-
+    prepreg/fr408hr-laminate-and-prepreg/             Last Updated March 24, 2026               © 2021, Isola Group, All rights reserved.
+                                                                                                                      FR408HR
+                                                                           Lead Free, Mid Loss Laminate and Prepreg
+
+
+add 10-20% to above values for starting point, unless you have experience with product family.
+
+This table assumes that laminate and prepreg grain directions are oriented along the same dimension. Each shop must characterize
+material behavior given their particular lamination cycles, border designs and grain orientation of laminate to prepreg. It is also
+suggested that specific laminate constructions be specified and adhered to so that dimensional variations due to changes in
+construction are avoided.
+
+Table 1 assumes that signal layers are either half or 1 ounce copper and ground layers are either 1 or 2 ounce copper.
+
+
+
+ Table 1: Initial Artwork Compensation Factors
+
+               Base Thickness                            Configuration                            Direction                                 Comp (in/in)
+
+                   ≤ 0.005″                               Signal/Signal                          Warp (grain)                              0.0007-0.0009
+
+                       "                                        "                                     Fill                                 0.0001-0.0003
+
+                       "                                 Signal/Ground                           Warp (grain)                              0.0005-0.0007
+
+                       "                                        "                                     Fill                                 0.0001-0.0003
+
+                       "                                 Ground/Ground                           Warp (grain)                              0.0002-0.0004
+
+                       "                                        "                                     Fill                                 0.0000-0.0002
+
+                 0.006-0.009″                             Signal/Signal                          Warp (grain)                              0.0005-0.0007
+
+                       "                                        "                                     Fill                                 0.0001-0.0003
+
+                       "                                 Signal/Ground                           Warp (grain)                              0.0003-0.0005
+
+                       "                                        "                                     Fill                                 0.0000-0.0002
+
+                       "                                 Ground/Ground                           Warp (grain)                              0.0000-0.0002
+
+                       "                                        "                                     Fill                                 0.0000-0.0002
+
+                 0.010-0.014″                             Signal/Signal                          Warp (grain)                              0.0002-0.0004
+
+                       "                                        "                                     Fill                                 0.0000-0.0002
+
+                       "                                 Signal/Ground                           Warp (grain)                              0.0001-0.0003
+
+                       "                                        "                                     Fill                                 0.0000-0.0003
+
+                       "                                 Ground/Ground                           Warp (grain)                              0.0000-0.0003
+
+                       "                                        "                                     Fill                                 0.0000-0.0002
+
+ Table 1 (for reference) illustrates the suggested approach to characterizing laminate movement and provides approximate artwork compensation factors for
+ FR408HR laminate when using a hydraulic press.
+
+
+Imaging and Etching
+FR408HR laminates are imaged using standard aqueous dry films and are compatible with both cupric chloride and ammoniacal
+etchants.
+
+Bond Enhancement
+Oxide alternative chemistries have been used successfully in fabricating FR408HR multilayer boards to date and are the only bond
+enhancement recommended for lead-free applications. Reduced black oxide has been used successfully, but is more design and
+process sensitive, as well as being less thermally stable. Users should make sure the oxide or oxide replacement coating exhibits a
+consistent and uniformly dark color.
+
+For conveyorized oxide replacements, an efficient dryer at the end of a conveyorized oxide replacement line should remove all
+moisture from the innerlayer surface. However, drying of layers for 120 minutes minimum @ 110°C (230°F) or higher is
+required for boards to be subjected to “Lead-Free” processes. Drying in racks is preferred.
+
+
+
+
+ https://www.isola-group.com/pcb-laminates-
+   prepreg/fr408hr-laminate-and-prepreg/                  Last Updated March 24, 2026                        © 2021, Isola Group, All rights reserved.
+                                                                                                                             FR408HR
+                                                                                 Lead Free, Mid Loss Laminate and Prepreg
+
+
+Wet cores interfere with the curing of prepreg, leading to low Tg values and degraded performance. Users need to
+verify the effectiveness of their process to achieve dry cores.
+
+If reduced oxides are used, consult the chemical supplier for post oxide baking considerations as excessive baking may lead to lower
+pink ring resistance. It is generally suggested that post-oxide baking be performed vertically, in racks. Peel strengths may be slightly
+lower as compared to FR406 due to the higher modulus properties of the resin system. The use of DSTFoil™ will typically increase the
+bond strength by approximately 1 to 1.5 lbs as compared to non-DSTFoil copper foil. The use of standard, non-drum side outer layer foil
+is recommended for all lead-free applications.
+
+If immersion tin adhesion treatments are used, the fabricator should test the coating to verify adequate bond strength develops
+with FR408HR prepregs.
+
+
+Part 3: Lamination
+Standard Lamination
+The amount of time at cure temperature and the required pressure will be a function of board thickness and retained copper circuitry
+thickness and distribution. In general, thinner boards will operate at the lower end of the time and temperature range, and thicker
+boards should be run at the higher range.
+
+Faster heat ramps lower the minimum achieved viscosity and improve resin fill and flow, but cause the material to spend less time in
+the flow window. This creates a tighter process window and is more likely to result in glass stop/glass lock conditions. A cycle with an
+isotherm hold is not recommended for faster heat ramps. Slower heat ramps do not achieve the same relative viscosity but enable the
+product to spend more time in the flow window, creating a wider process window. Slow heat ramps work well with isotherm lamination
+cycles.
+
+Sequential Lamination
+Sub-assemblies must be baked prior to performing the secondary lamination. Water will interfere with the curing of the FR408HR resin
+system.
+
+Sub-assemblies require much longer baking, particularly when stored in open environment. Baking times range from 3-24 hours at 110-
+180°C (230-356°F). Consult with an Isola Technical Expert for recommendations.
+
+Removal of FR408HR flash should be performed by routing rather
+than shearing to minimize crazing along the panel edges.
+
+
+
+ Table 3: FR408HR General Lamination Parameters
+
+               Process                                                                        Reommendations
+
+             Vacuum Time                                                        30 minutes (no pressure, product on risers)
+
+          Curing Temperature                                                              188-202°C (370-395°F)
+
+              Curing Time                                          130-160 minutes (time at cure temperature or above 190°C (375°F).
+
+                                                                   3.5-5.0°C/min (6.2-9.0°F/min) from 100°C to 150°C (210°F to 300°F)
+              Heat Ramp                     Target > 4°C/min Product temperature overshoot to 205°C (400°F) acceptable to meet heat ramp requirements with
+                                                                                              alternative oxides.
+
+               Pressure                                                                 200-350 PSI 14-25 kg/cm2
+
+                                                                          Single Stage: Apply pressure after vacuum dwell time.
+          Pressure Application
+                                           Dual Stage: 3.5 kg/cm² (50 PSI) after vacuum dwell time, switch to high pressure ≤100°C (210°F) product temperature.
+
+             Pressure Drop                                     After 30 minutes at cure temperature reduce pressure to 3.5 kg/cm2(50 PSI) .
+
+                                        Cool to 135-140°C (275-285°F) at 2.5°C/min (4.5°F/ min) at 3.5 kg/cm2(50 PSI) pressure prior to removing or transferring
+              Cool Down
+                                                                                                  the load.
+
+ Table 2 outlines general suggestions for lamination temperatures and pressure.
+
+
+
+
+ https://www.isola-group.com/pcb-laminates-
+   prepreg/fr408hr-laminate-and-prepreg/                        Last Updated March 24, 2026                         © 2021, Isola Group, All rights reserved.
+                                                                                                                FR408HR
+                                                                       Lead Free, Mid Loss Laminate and Prepreg
+
+
+Part 4: Drill
+General
+The FR408HR materials exhibit increased thermal stability of the resin system and generate little or no smear. To assure effective
+removal of the resin debris during drilling, undercut drill geometries and high helix tools are strongly recommended on drills up to 1.0
+mm in diameter. On high layer count technologies and thicker overall board thicknesses, peck drilling parameters may be necessary.
+Suggested parameters are outlined below for typical multilayer designs.
+
+Cutting Speed and Chipload
+Relative to standard FR-4 parameters, use lower chiploads to drill FR408HR printed circuit boards. The parameters in Table 3 provide a
+moderate initial starting point for typical board designs. Thick boards with heavy copper or special cladding such as invar will require
+more conservative drill parameters. Boards with numerous 2 oz. copper innerlayers or boards with coarse glass weave may require
+more conservative parameters.
+
+High cutting speeds and high chiploads are associated with rough holes and fracturing around the glass yarn.
+
+Stack Height and Hit Count
+Stack heights and hit counts will vary with the construction and overall thickness of the boards being drilled. For thicker boards, above
+2.5 mm (100 mils) overall, with high layer counts, drill one high. Use undercut bits for particularly demanding designs. Aluminum entry
+and lubricated backing help create good quality hole walls but are not essential in all applications.
+
+
+
+ Table 3: Suggested Drilling Parameters For Initial FR408HR Setup
+
+                                              Surface Speed Per
+         Drill Size           Spindle Speed                                          Infeed                 Chipload                         Retract
+                                                     Minute
+
+       in             mm             RPM      SFPM            SMPM          in/min            m/min   mil/rev         m/rev           in/min       m/min
+
+     0.0098           0.25         120,000    309              94            62               1.57     0.52            0.013           600             15
+
+     0.0118           0.30         105,000    325              99            70               1.57     0.52            0.017           800             20
+
+     0.0138           0.35         94,000     339             103            78               1.98     0.83            0.021           800             20
+
+     0.0157           0.40         85,000     350             107            85               2.16     1.00            0.025          1000             25
+
+     0.0197           0.50         75,000     387             107            100              2.54     1.33            0.034          1000             25
+
+     0.0248           0.63         60,000     390             119            90               2.29     1.50            0.038          1000             25
+
+     0.0295           0.75         50,000     387             118            85               2.16     1.70            0.043          1000             25
+
+     0.0354           0.90         43,000     399             122            75               1.91     1.74            0.044          1000             25
+
+     0.0394           1.00         38,000     392             119            68               1.73     1.79            0.045          1000             25
+
+     0.0500           1.27         38,000     419             128            62               1.57     1.94            0.049          1000             25
+
+     0.0591           1.50         28,000     433             132            56               1.42     2.00            0.051          1000             25
+
+     0.0787           2.00         22,000     454             138            50               1.27     2.27            0.058          1000             25
+
+
+
+Part 5: Hole Wall Preparation
+General
+When FR408HR is properly cured and drilled, it will generate very little smear. The main purpose of desmear processing on this
+material is to remove debris and provide an acceptable texture to the hole walls.
+
+Good desmear and electroless copper deposition performance are more easily achieved when the drilled hole quality is good. The
+generation of smooth, debris free hole walls is influenced by the degree of resin cure, drilling conditions and board design
+considerations. The elimination of 7628 or similar heavy glasses (whenever possible), coupled with properly adjusted drill parameters
+on fully cured boards has been shown to improve overall drilled hole quality. This helps reduce smear generation, which improves
+desmear performance and can ultimately help to
+
+
+ https://www.isola-group.com/pcb-laminates-
+   prepreg/fr408hr-laminate-and-prepreg/              Last Updated March 24, 2026                     © 2021, Isola Group, All rights reserved.
+                                                                                                         FR408HR
+                                                                       Lead Free, Mid Loss Laminate and Prepreg
+
+
+reduce copper wicking.
+
+Factors which influence chemical desmear rates, and therefore the suggestions in this document, include: resin type,
+chemistry type, bath dwell times, bath temperatures, chemical concentrations in each bath and the amount of solution transfer through
+the holes.
+
+Factors which influence the amount of solution transfer through the holes include: hole size, panel thickness, vertical or horizontal
+process equipment and equipment agitation parameters.
+
+Chemical Desmear
+Trials performed by chemical suppliers show that FR408HR is more chemically resistant than typical FR-4 resin systems.
+
+Absorption of solvent swellers has been associated with fracturing or crazing of glass between holes. Chemical desmear should be run
+without solvent swellers. If not feasible, alkaline butlyl carbitol swellers have less impact. NMP chemistries are more aggressive and can
+cause reliability issues, in addition to the fracturing noted above, after lead-free thermal stress. Use of NMP swellers is strongly
+discouraged.
+
+Plasma Desmear
+Plasma desmearing is the preferred method of desmear for high performance materials. It can consistently etch a chemically resistant
+resin system, and when properly run provides good hole wall texturing. It can be used with or without a single permanganate pass (to
+be determined by each fabricator).
+
+Care must be exercised to avoid excessive resin removal if both plasma and permanganate are employed together.
+Plasma processing tends to improve overall hole quality, particularly in thick and/or high aspect ratio boards. Standard
+plasma gas mixtures and cycles are satisfactory.
+
+Hole Wall Condition Verification
+It is recommended that users take test samples for hole wall inspection after drill and deburring and after desmearing. The post drill
+condition indicates hole cleanliness and hole wall damage. Post desmear indicates desmear effectiveness and resin texturing. SEM
+pictures of holes cut vertically in half have been effective for executing this verification.
+
+3-Point Etchback
+True 3-point “etchback” exposes the innerlayer “post” on all three sides for subsequent plating processes. This will require a more
+robust approach compared to simple desmear, which is designed only to remove resin smear from the vertical surface of the innerlayer
+interconnect “posts”.
+
+Permanganate chemistry alone should not be used to attain a full 3-point etchback for FR408HR.
+
+A combination of plasma and chemical processing is suggested. Testing indicates that the plasma provides nearly all of the resin
+removal. Chemical desmear should be used primarily for hole cleaning and conditioning.
+
+If plasma is not available, chemical etchback for 3-point connections must be done with extreme care on FR408HR to minimize copper
+wicking. This is not recommended. If chemical processing alone is used, it will be necessary to either extend the dwell times in
+chemical baths or subject the boards to a double pass through the chemical desmear system. Consult the chemical supplier for
+suggested conditions. The slow dissolution rate of FR408HR resin into chemical etching alone may not result in true 3-point etchback.
+
+Secondary Drilling
+As common with most high Tg materials with increased modulus properties, the use of entry and backer material may be necessary
+during the secondary drilling of larger hole sizes to avoid crazing/fracturing at the hole perimeter. Additionally, sharper plunge point
+angle geometries may be necessary to avoid crazing around secondary drilled hole perimeters.
+
+Routing and Scoring
+Due to the greater modulus properties of the FR408HR materials, modifications of the final PWB rout fabrication process may be
+necessary. Table 4 lists initial starting parameters using chip breaker or diamond cut tool designs. Note that parameters listed
+may require further adjustment.
+
+
+
+  https://www.isola-group.com/pcb-laminates-
+    prepreg/fr408hr-laminate-and-prepreg/             Last Updated March 24, 2026               © 2021, Isola Group, All rights reserved.
+                                                                                                                FR408HR
+                                                                           Lead Free, Mid Loss Laminate and Prepreg
+
+
+                                                                                   For PWB designs requiring scored geometries, the testing of
+ Table 4: Suggested Routing Parameters for Initial FR408HR                         various Tgs and resin content materials has determined that
+ Setup                                                                             adjustments to the process will be necessary. As the modulus
+                                                                                   strength of materials increases, the maximum resultant web
+      Tool Diameter            Spindle Speed     Spindle Travel Speed
+                                                                                   thickness (dependent on the scored edge depth) must be
+       in           mm                RPM        in/min            m/min           decreased to avoid excessive fracturing upon breaking away the
+     0.062         1.57             45,000         20               0.51           scored materials.
+
+     0.093         2.36             35,000         40               1.02           Individual board designs/stack-ups may require adjustment of
+     0.125         3.18             25,000         50               1.27           score depth geometries. Thinner web thicknesses are
+                                                                                   typically required. This is influenced by layer count, glass
+ Chip breaker or diamond cut tool designs recommended.
+                                                                                   types and retained copper in the design.
+
+The customer should contact the scoring equipment and/or bit supplier for application specific suggestions for use with
+FR408HR materials. Your Isola Technical Account Manager may also be able to provide some initial suggestions, but these should be
+validated through testing by the individual PWB fabricator.
+
+
+Part 6: Packaging and Storage
+FR408HR finished boards have low moisture sensitivity and good shelf life. However, Isola recommends using best practices in storage
+and packaging, as noted below, to reduce risk during lead-free assembly.
+
+FR408HR boards should be dry prior to packaging to ensure the most robust lead-free performance. For some complex, high reliability
+designs, baking prior to solder mask application can be implemented to ensure maximum floor life in assembly processing. Printed
+boards made for high temperature assembly from FR408HR, which require a long shelf life, the best protection is provided using a
+Moisture Barrier Bag (MBB) with a Humidity Indicator Card (HIC) and adequate drying desiccant inside the MBB to prevent moisture
+absorption during shipment and long-term storage.
+
+Upon opening the MBB, the boards should be processed within 168 hours when maximum shop floor conditions are at < 30°C
+(85°F)/60% RH. MBB bags that are opened for inspection should be resealed immediately to protect the boards from moisture uptake.
+
+
+Part 7: Health and Safety
+Always handle laminate with care. Laminate edges are typically sharp and can cause cuts and scratches if not handled properly.
+Handling and machining of prepreg and laminate can create dust (see FR408HR Material Safety Data Sheet).
+
+Appropriate ventilation is necessary in machining/punching areas. The use of protective masks is suggested to avoid inhaling dust.
+Gloves, aprons and/or safety glasses are suggested if individuals have frequent or prolonged skin or eye contact with dust.
+
+Isola Group does not use polybromidebiphenyls or polybromidebiphenyloxides as flame retardants in any product. Material Safety Data
+Sheets are available upon request.
+
+
+Part 8: Ordering Information
+Contact your local sales representative or contact: info@isola-group.com for further information.
+
+Isola Group
+6565 West Frye Road
+Chandler, AZ 85226
+Phone: 480-893-6527
+Fax: 480-893-1409
+
+Isola Asia Pacific (Hong Kong) Ltd.
+12/F, Kin Sang Commercial Centre,
+49 King Yip Street, Kwun Tong,
+Kowloon, Hong Kong
+Phone: 852-2418-1318
+
+ https://www.isola-group.com/pcb-laminates-
+   prepreg/fr408hr-laminate-and-prepreg/                  Last Updated March 24, 2026                  © 2021, Isola Group, All rights reserved.
+                                                                                                               FR408HR
+                                                                          Lead Free, Mid Loss Laminate and Prepreg
+
+
+Fax: 852-2418-1533
+
+Isola GmbH
+Isola Strasse 2 D-52348
+Düren, Germany
+Phone: 49-2421-8080
+Fax: 49-2421-808164
+
+
+
+          NOTES
+          The data contained in this document, while believed to be accurate and based on both field testing and analytical methods
+          considered to be reliable, is for information purposes only. Any sales of these products will be governed by the terms and conditions
+          of the agreement under which they are sold.
+
+
+
+
+          Isola, the Isola logo, Astra, Chronon, GETEK, I-Fill, IsoDesign, IsoStack, I-Speed, I-Tera, Polyclad, Stratus, TerraGreen, and The Base
+          for Innovation are registered trademarks or trademarks of ISOLA USA Corp. in the United States and in other countries. Copyright ©
+          2021 Isola Group. All rights reserved.
+
+
+
+
+ https://www.isola-group.com/pcb-laminates-
+   prepreg/fr408hr-laminate-and-prepreg/                 Last Updated March 24, 2026                  © 2021, Isola Group, All rights reserved.
+

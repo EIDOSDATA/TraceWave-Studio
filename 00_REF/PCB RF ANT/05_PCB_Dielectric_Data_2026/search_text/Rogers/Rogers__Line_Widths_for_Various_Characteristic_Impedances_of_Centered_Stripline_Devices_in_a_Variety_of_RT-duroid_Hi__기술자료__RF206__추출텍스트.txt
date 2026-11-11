@@ -1,0 +1,99 @@
+                                                                                                     Design
+
+
+Line Widths for Various
+Characteristic Impedances of
+Centered Stripline Devices in a
+Variety of RT/duroid® High Frequency
+Laminates
+Closed form formulas 1,2 for the calculation of the characteristic impedance of a strip transmission line provide accurate
+designs if the following conditions are met: The center strip is centered between ground planes. The dielectric medium is
+homogeneous and isotropic in dielectric constant.
+
+Stripline (triplate) board assemblies which have been bonded to exclude air at the edges of the conductor strip may be
+designed effectively with the use of these formulas. When assemblies are clamped, the impedance and effective dielectric
+constant will be somewhat lower due to the void at the interface.
+
+Variables of line width W, line thickness T, ground plane spacing B and dielectric constant εr are taken into account. Cohn indi-
+cates that narrow strip cases where the ratio W/(B-T) is less than 0.35 should use a calculation based on equivalent round con-
+ductor. The wide case should use a calculation with fringing capacitance based on a conformal mapping derivation. These
+two formulas result in a discontinuity at the W/(B-T) = 0.35 point when Zo is plotted versus W. In our tabulation a weighted
+average result of the two formulas is used when W/(B-T) is between 0.3 and 0.4. B is assumed to be twice the dielectric thick-
+ness plus foil thickness T. The round conductor approximation 3 is considered inaccurate when the T/W ratio exceeds 0.11. Errors
+due to etching variables on such narrow lines probably exceed the computational errors.
+
+
+
+
+                                                                              W
+                                                          Stripline                                B D       T
+                                                          Dielectric
+                                                          Ground Plane
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                                Page 1 of 2
+                                                                                                                        Design
+
+
+The following formulas can be used to generate tables:                         Other combinations of copper foil thicknesses and dielectric
+                                                                               thicknesses in RT/duroid® laminates or characteristic
+Description of Symbols                                                         impedance values may become of interest. Our Impedance
+                                                                               calculation program is available on our website at http://
+B = ground plane spacing = 2 D + T                                             www.rogerscorp.com. Refer to 3.1.1 when contacting
+T = copper thickness                                                           Rogers, Internal/Technical/Applications Engineer, 100 S.
+D = dielectric thickness                                                       Roosevelt Avenue, Chandler, AZ 85226 (480) 961-1382 or
+W = line width                                                                 your local Rogers Application Engineer.
+εr = relative permittivity
+Z0 = characteristic impedance on ohms
+p = pi = 3.14159265
+A = W/(B-T)
+Note that B,T,D, and W must all be in the same dimensional
+units.                                                                         REFERENCES:
+
+                                                                               1.    S.B. Cohn,"Characteristic Impedance of the Shielded-
+Narrow stripline traces                                                              Strip Transmission Line", IRE Trans MTT, (July 1954), pp
+                                                                                     52-57.
+For narrow traces (A< 0.35)
+                                                                               2.    S.B. Cohn, "Problems in Strip Transmission Lines", IRE
+Z0 = 60 loge (4 B / [πW Y] ) /√ (εr)
+                                                                                     Trans MTT, (March 1955).
+where
+                                                                               3.    J.F. White, "Semiconductor Control", p 521-2 (1977)
+Y = (1 + T [1 + loge (4π / X)+ 0.51π X2] / [Wπ])
+                                                                                     Artech House.
+/2X = T/W
+The function for Y is according to J.F. White3, rather than
+the chart provided by Cohn. Accuracy is questionable
+when T/W exceeds 0.11, in either case.
+
+Wide Stripline Traces
+For wide traces (A>=0.35)
+Z0 = 94.15 / [(√ εr) {CF + W/(B-T) } ]
+where CF is a fringing capacitance term
+CF = [2 X loge (X + 1) - (X - 1) loge (X2 -1)] /π
+where
+X = B / (B-T)
+
+
+
+
+The information in this design note is intended to assist you in designing with Rogers' laminates. It is not intended to and does not create any
+warranties express or implied, including any warranty of merchantability or fitness for a particular application. The user should determine the suit-
+ability of Rogers' laminates for each application.
+
+These commodities, technology or software are exported from the United States in accordance with the Export Administration regulations. Diversion
+contrary to U.S. law prohibited.
+RT/duroid and and the Rogers' logo are trademarks of Rogers Corporation or one of its subsidiaries.
+© 2023 Rogers Corporation, Printed in U.S.A.
+Revised 1641 060223 Publication #92-311
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+
+                                                                       Page 2 of 2
+

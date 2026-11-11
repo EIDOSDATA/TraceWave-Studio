@@ -1,0 +1,772 @@
+<!DOCTYPE html><!-- Last Published: Thu Nov 05 2026 09:42:56 GMT+0000 (Coordinated Universal Time) --><html data-wf-domain="www.circuithub.com" data-wf-page="62f16d0ab7b09250159d0beb" data-wf-site="5e4f3506e94717077b3bdc54"><head><meta charset="utf-8"/><link href="https://cdn.prod.website-files.com" rel="preconnect" crossorigin="anonymous"/><title>CircuitHub - Stackup Information</title><meta content="Standard Multi-Layer PCB Stackups" name="description"/><meta content="CircuitHub - Stackup Information" property="og:title"/><meta content="Standard Multi-Layer PCB Stackups" property="og:description"/><meta content="CircuitHub - Stackup Information" name="twitter:title"/><meta content="Standard Multi-Layer PCB Stackups" name="twitter:description"/><meta property="og:type" content="website"/><meta content="summary_large_image" name="twitter:card"/><meta content="width=device-width, initial-scale=1" name="viewport"/><link href="https://cdn.prod.website-files.com/5e4f3506e94717077b3bdc54/css/circuithub-staging.shared.3bcccf930.min.css" rel="stylesheet" type="text/css" integrity="sha384-O8zPkwL/8R97Nzy8NfU0cExOiyIO698IyTkoV0zr0xftpzKWeb3WXcykRZunxbdg" crossorigin="anonymous"/><link href="https://cdn.prod.website-files.com/5e4f3506e94717077b3bdc54/css/circuithub-staging.62f16d0ab7b09250159d0beb.37d9b0e17.opt.min.css" rel="stylesheet" type="text/css" integrity="sha384-N9mw4XsRopmVLhBOXH2jIhXhALkGOLIpLnX6v6/fKTJPEXIYROTlllIqCvCyS1kZ" crossorigin="anonymous"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous"/><script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script><script type="text/javascript">WebFont.load({  google: {    families: ["Lato:100,100italic,300,300italic,400,400italic,700,700italic,900,900italic"]  }});</script><script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script><link href="https://cdn.prod.website-files.com/5e4f3506e94717077b3bdc54/5e4f3506e94717ba4f3bdcbd_circuit-fav.png" rel="shortcut icon" type="image/x-icon"/><link href="https://cdn.prod.website-files.com/5e4f3506e94717077b3bdc54/5e540a25c8b8fae3b3d7ba28_ch-mark-blue.png" rel="apple-touch-icon"/><link href="https://circuithub.com/capabilities/pcb-stackups" rel="canonical"/><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "Corporation",
+        "name": "CircuitHub",
+        "description": "CircuitHub Inc. is a Web-based contract manufacturer and design hosting service. The company specializes in rapid, turn-key assembly for prototyping and short-run production of electronic goods.",
+        "url": "https://circuithub.com",
+        "logo": "https://circuithub.com/images/mark-bordered-1575x1575.png",
+        "sameAs": [
+            "https://www.facebook.com/CircuitHub",
+            "https://twitter.com/CircuitHub"
+        ]
+    }
+</script>
+<link
+    rel="preload"
+    href="
+https://assets.website-files.com/5e4f3506e94717077b3bdc54/666a7499b0a3dc4ca87cb3bc_PPFormula-SemiExtendedBold.woff"
+    as="font"
+    type="font/woff"
+    crossorigin
+/>
+<link
+    rel="preload"
+    href="
+https://assets.website-files.com/5e4f3506e94717077b3bdc54/66741930ab2d2060e5b4a245_RobotoFlex-VariableFont_GRAD%2CXOPQ%2CXTRA%2CYOPQ%2CYTAS%2CYTDE%2CYTFI%2CYTLC%2CYTUC%2Copsz%2Cslnt%2Cwdth%2Cwght.ttf"
+    as="font"
+    type="font/ttf"
+    crossorigin
+/>
+
+<!--
+  Segment analytics — CONSENT-GATED.
+
+  Currently disabled (SEGMENT_ENABLED = false) pending Privacy Policy refresh.
+
+  To turn back on:
+    1. Confirm /legal/privacy-policy is updated with the full tracker disclosure
+       (Segment + destinations: GA4, FullStory, LinkedIn Insight, Meta Pixel,
+        Intercom, Apollo, Google Ads). See CIPA-Privacy-Compliance-README.
+    2. Flip SEGMENT_ENABLED to true below.
+    3. Save → Publish in Webflow.
+
+  Behavior when enabled:
+    - Segment is NOT initialized on page load.
+    - On user consent (accept in the cookie banner — which dispatches the
+      `ch-consent-changed` event from footer.html), Segment loads and fires
+      analytics.page().
+    - If the visitor already consented in a prior session, Segment loads
+      on this page load (via window.chCookieConsent() check).
+    - Declined / no-choice visitors never load Segment.
+-->
+<script>
+    (function () {
+        var SEGMENT_ENABLED = false; // ← flip to true to activate
+        var SEGMENT_KEY = "8AbvGGkANFEWcy1QigttQkiRqTZDjHVw";
+
+        function loadSegment() {
+            if (!SEGMENT_ENABLED || window.__chSegmentLoaded) return;
+            window.__chSegmentLoaded = true;
+
+            // Segment analytics.js snippet (queue setup + async loader).
+            // Verbatim from Segment's docs; only call when consent granted.
+            // prettier-ignore
+            !function(){var i="analytics",analytics=window[i]=window[i]||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","screen","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware","register"];analytics.factory=function(e){return function(){if(window[i].initialized)return window[i][e].apply(window[i],arguments);var n=Array.prototype.slice.call(arguments);if(["track","screen","alias","group","page","identify"].indexOf(e)>-1){var c=document.querySelector("link[rel='canonical']");n.push({__t:"bpc",c:c&&c.getAttribute("href")||void 0,p:location.pathname,u:location.href,s:location.search,t:document.title,r:document.referrer})}n.unshift(e);analytics.push(n);return analytics}};for(var n=0;n<analytics.methods.length;n++){var key=analytics.methods[n];analytics[key]=analytics.factory(key)}analytics.load=function(key,n){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.setAttribute("data-global-segment-analytics-key",i);t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r);analytics._loadOptions=n};analytics._writeKey=SEGMENT_KEY;analytics.SNIPPET_VERSION="5.2.1";
+            analytics.load(SEGMENT_KEY);
+            analytics.page();}();
+        }
+
+        // Check stored consent once the banner script (in footer.html) has run.
+        // window.chCookieConsent isn't defined until then.
+        function checkExisting() {
+            if (window.chCookieConsent && window.chCookieConsent()) {
+                loadSegment();
+            }
+        }
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", checkExisting);
+        } else {
+            checkExisting();
+        }
+
+        // Load later if the visitor accepts mid-session.
+        window.addEventListener("ch-consent-changed", function (e) {
+            if (e.detail && e.detail.choice === "accepted") loadSegment();
+        });
+    })();
+</script>
+
+<style>
+    .custom-code {
+        display: none;
+    }
+    .tab_tab-link-description {
+        opacity: 0;
+    }
+</style>
+<script src="https://cdn.tryretool.com/embed.js"> </script></head><body><div class="page-wrapper"><div data-animation="default" class="navbar padding-global w-nav" data-easing2="ease" data-wf--main-nav--variant="base" data-easing="ease" data-collapse="medium" data-w-id="5fd2d1c1-16b6-7998-85de-86743170c0ee" role="banner" data-duration="300"><div class="nav-container"><div class="logo-wrap"><a href="/" class="brand w-nav-brand"><div class="ch-logo w-embed"><svg width="auto" height="100%" viewBox="0 0 264 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M80.2225 15.8316C79.8854 15.8316 79.5484 15.8316 79.2113 15.7642C76.9192 15.4272 74.6271 15.2923 72.3351 15.4272C71.5261 15.4946 70.7171 15.562 69.9082 15.6968C68.1554 15.8991 66.6723 17.2473 66.3352 19.0001C65.9981 20.2136 65.8633 21.4944 65.8633 22.7753C65.8633 24.6629 65.8633 26.4831 65.9981 28.3707C66.0656 29.3145 66.2678 30.1909 66.5374 31.0672C67.0093 32.6852 68.425 33.8986 70.1778 34.0335C72.807 34.4379 75.5035 34.4379 78.1327 34.1009C78.672 34.0335 79.1439 33.966 79.6158 33.8986C79.8854 33.8986 80.0877 33.8986 80.3573 33.8986C80.3573 34.1009 80.3573 34.3031 80.3573 34.5054C80.3573 35.8536 80.3573 37.1345 80.3573 38.4828C80.3573 39.1569 80.3573 39.2243 79.6832 39.2918C78.4023 39.494 77.0541 39.6962 75.7732 39.7637C74.1552 39.8311 72.4699 39.8311 70.852 39.7637C69.1666 39.7637 67.4138 39.494 65.7959 39.0221C63.2342 38.2806 61.2791 36.3255 60.5376 33.7638C59.9983 32.011 59.6612 30.1909 59.5938 28.3033C59.3916 25.6741 59.459 22.9775 59.6612 20.3484C59.796 18.663 60.1331 16.9103 60.6724 15.2923C61.5488 12.8654 63.6386 11.0452 66.2004 10.5059C67.6835 10.1014 69.1666 9.89919 70.7171 9.89919C72.4699 9.83178 74.1552 9.83178 75.908 9.89919C77.2563 9.96661 78.6046 10.1014 79.8854 10.4385C80.1551 10.4385 80.3573 10.7082 80.2899 10.9778C80.2899 10.9778 80.2899 10.9778 80.2899 11.0452C80.2899 12.5283 80.2899 14.0115 80.2899 15.562C80.2225 15.562 80.2225 15.6294 80.2225 15.8316Z" fill="#242631"/>
+<path d="M134.289 18.5957H140.222V19.2698C140.222 22.9776 140.222 26.7528 140.222 30.4606C140.222 31.1347 140.222 31.8089 140.289 32.483C140.356 33.6965 141.3 34.6403 142.514 34.7077C142.918 34.7751 143.323 34.8425 143.727 34.8425C145.278 34.8425 146.896 34.7751 148.446 34.7077C148.716 34.7077 148.985 34.6403 149.255 34.5729C149.592 34.5054 149.862 34.2358 149.862 33.8987C149.862 33.6965 149.862 33.4942 149.862 33.292V18.5957H155.996V37.1346C155.996 37.2694 155.996 37.4042 155.996 37.4717C156.064 38.2806 155.457 39.0222 154.716 39.0896C154.648 39.0896 154.648 39.0896 154.581 39.0896C152.221 39.3593 149.862 39.5615 147.57 39.6963C145.615 39.8312 143.66 39.7637 141.772 39.6963C140.693 39.6963 139.615 39.5615 138.604 39.2244C136.581 38.7525 134.963 37.1346 134.694 35.0448C134.491 34.101 134.424 33.1572 134.424 32.2134C134.424 27.764 134.424 23.3147 134.424 18.9328C134.222 18.9328 134.289 18.7979 134.289 18.5957Z" fill="#242631"/>
+<path d="M131.323 35.0445C131.323 36.4602 131.323 37.7411 131.323 39.022C131.323 39.2242 131.188 39.359 131.053 39.4265C131.053 39.4265 131.053 39.4265 130.986 39.4265C130.312 39.5613 129.638 39.6961 129.031 39.6961C127.548 39.7635 125.997 39.8309 124.514 39.8309C122.761 39.8984 121.076 39.7635 119.391 39.4939C118.245 39.359 117.166 39.022 116.155 38.4827C114.604 37.6737 113.458 36.258 113.054 34.5726C112.717 33.2918 112.514 31.9435 112.447 30.5278C112.312 28.3705 112.447 26.2133 112.852 24.056C113.458 21.0224 115.144 19.2696 118.312 18.5281C120.941 18.0562 123.57 17.8539 126.267 17.9888C127.683 17.9888 129.166 18.1236 130.581 18.3258C130.716 18.3258 130.919 18.3932 131.053 18.4607C131.188 18.5281 131.323 18.6629 131.323 18.7977C131.323 20.146 131.323 21.4269 131.323 22.7752C131.323 22.7752 131.323 22.7752 131.256 22.8426C131.053 22.8426 130.851 22.8426 130.581 22.8426C127.952 22.5729 125.256 22.5055 122.559 22.7752C122.02 22.8426 121.481 22.9774 120.941 23.1796C119.863 23.5167 119.054 24.3931 118.851 25.5391C118.379 27.7638 118.379 30.0559 118.784 32.2806C119.121 34.0333 120.267 34.9771 121.952 35.2468C122.492 35.3816 123.098 35.3816 123.705 35.449C125.795 35.449 127.952 35.3816 130.11 35.3816C130.447 35.1794 130.851 35.112 131.323 35.0445Z" fill="#242631"/>
+<path d="M89.661 18.5957V39.2244H83.6611V18.5957H89.661Z" fill="#242631"/>
+<path d="M165.906 39.2244H159.906V18.5957H165.906V39.2244Z" fill="#242631"/>
+<path d="M107.256 17.9888C104.627 17.8539 101.931 18.0562 99.3014 18.5281C96.133 19.2696 94.515 21.0898 93.8409 24.056C93.5038 25.8762 93.369 27.6964 93.5038 29.5166V39.1568H99.5711C99.5711 39.1568 99.5711 31.7412 99.5711 29.2469C99.5037 27.8986 99.6385 26.6178 99.9082 25.3369C100.11 24.2583 100.919 23.3145 101.998 22.9774C102.537 22.7752 103.009 22.6403 103.616 22.5729C105.773 22.3707 107.93 22.3707 110.02 22.5055V17.9888C109.144 18.0562 108.2 17.9888 107.256 17.9888Z" fill="#242631"/>
+<path d="M159.906 10.3037H163.277C164.693 10.3037 165.906 11.4498 165.906 12.9329V15.2924H159.906V10.3037Z" fill="#242631"/>
+<path d="M83.6611 10.3037H87.0318C88.4475 10.3037 89.661 11.4498 89.661 12.8654V15.2249H83.6611V10.3037Z" fill="#242631"/>
+<path d="M181.816 23.1123C182.894 23.1123 184.04 23.1123 185.119 23.1123V18.5281H178.445V10.5732H172.31V15.09C172.31 16.236 172.31 17.3821 172.31 18.5955H168.67V23.1123H172.445C172.445 26.2807 172.445 29.4492 172.445 32.5503C172.445 33.4266 172.58 34.303 172.715 35.1794C172.984 36.9996 174.265 38.5501 176.018 39.0894C177.299 39.5613 178.647 39.7636 179.995 39.7636C181.681 39.7636 183.434 39.831 185.119 39.7636V34.7075C183.906 34.7075 182.759 34.7749 181.546 34.7749C181.209 34.7749 180.872 34.7075 180.535 34.6401C179.389 34.5053 178.58 33.6289 178.512 32.4828C178.445 31.8087 178.378 31.1346 178.378 30.4604C178.378 27.9661 178.378 25.5392 178.378 23.0449L181.816 23.1123Z" fill="#242631"/>
+<path d="M205.478 14.2137C205.478 15.4945 205.478 16.7754 205.478 17.9889C205.478 19.2023 205.545 20.4832 205.478 21.6966H194.152V10.4385H187.95V39.2243H194.152V27.5617H205.41V36.9322C205.41 37.6738 205.41 38.4828 205.41 39.2243H211.68V10.4385H205.41L205.478 14.2137Z" fill="#0099FF"/>
+<path d="M262.915 25.7416C262.847 24.5956 262.578 23.3821 262.241 22.3035C261.701 20.5507 260.42 19.2024 258.668 18.6631C257.859 18.3935 257.05 18.2586 256.241 18.1238C254.353 17.9216 252.466 17.9216 250.578 18.1238C249.297 18.2586 248.016 18.6631 246.87 19.3373C246.735 19.4047 246.668 19.4721 246.533 19.4721V18.5957V10.1689H240.466V37.202C240.466 37.4043 240.466 37.6065 240.533 37.8087C240.533 38.4829 241.073 39.0222 241.679 39.0222C243.028 39.2244 244.376 39.3593 245.792 39.4941C246.331 39.5615 246.87 39.5615 247.477 39.5615C248.016 39.6289 248.556 39.6963 249.095 39.6963C251.117 39.6963 253.14 39.6963 255.162 39.5615C256.308 39.4941 257.454 39.2919 258.533 38.9548C260.218 38.4829 261.566 37.2694 262.241 35.6515C262.645 34.6403 262.915 33.5617 262.982 32.483C263.184 30.3258 263.184 28.0337 262.915 25.7416ZM256.915 31.8089C256.847 32.2808 256.78 32.6853 256.645 33.0898C256.376 34.3032 255.297 35.1796 254.016 35.247C252.466 35.4492 250.982 35.4492 249.432 35.247C248.151 35.1796 247.072 34.2358 246.803 32.9549C246.668 32.2134 246.533 31.4718 246.466 30.7303C246.398 30.1235 246.466 29.5168 246.466 28.9101C246.398 27.5618 246.466 26.2135 246.803 24.9326C247.005 23.7192 248.016 22.7754 249.23 22.6406C250.915 22.3709 252.6 22.3709 254.218 22.6406C255.364 22.7754 256.308 23.5844 256.578 24.7304C256.78 25.5394 256.915 26.4158 256.982 27.2921C257.05 28.7752 256.982 30.2584 256.915 31.8089Z" fill="#0099FF"/>
+<path d="M230.691 18.5955V33.4266C230.691 34.303 230.556 34.4378 229.68 34.6401C229.545 34.6401 229.41 34.7075 229.343 34.7075C227.657 34.7749 225.904 34.7749 224.219 34.8423C223.882 34.8423 223.545 34.7749 223.208 34.7075C222.062 34.5726 221.253 33.6963 221.185 32.5502C221.118 31.8761 221.051 31.2019 221.051 30.5278C221.051 26.7526 221.051 22.9774 221.051 19.2022C221.051 19 221.051 18.7977 221.051 18.5281H215.118C215.118 18.7303 215.118 18.8651 215.118 18.9326C215.118 23.4493 215.118 27.9661 215.118 32.4828C215.118 33.3592 215.253 34.2356 215.388 35.112C215.657 36.9321 216.938 38.4827 218.691 39.022C219.972 39.4939 221.32 39.6961 222.669 39.6961C225.635 39.7635 228.601 39.6961 231.5 39.4939C232.848 39.359 234.196 39.2242 235.612 39.022C236.286 38.9546 236.758 38.4152 236.758 37.8085C236.758 37.6063 236.826 37.404 236.826 37.2018V19.0674C236.826 18.9326 236.826 18.7303 236.758 18.5955H230.691Z" fill="#0099FF"/>
+<path d="M37.7518 35.5165L40.8529 32.4154L43.7517 29.5166C43.8191 29.4492 43.8865 29.3144 43.9539 29.2469C46.5831 26.2807 46.8527 22.5055 44.4932 19.1348C43.482 17.7865 42.336 16.5057 41.1225 15.3596L37.2125 17.1798L35.5271 21.0224L35.7968 21.2921C36.8754 22.3033 36.9428 23.9886 35.9316 25.1347L25.9543 35.112C25.6173 35.449 25.3476 35.7861 24.9431 36.0558C23.8645 36.9996 22.314 36.9322 21.3028 35.9209C19.4152 34.1682 15.5726 30.3256 13.8198 28.438C12.6737 27.1571 12.7412 25.674 13.8872 24.3931C14.1569 24.1235 14.4265 23.8538 14.6962 23.5842L15.5726 22.7078H15.64L16.3141 22.0336L23.7971 14.5507C24.1341 14.2136 24.4712 13.9439 24.8083 13.6069C25.8869 12.6631 27.4374 12.7305 28.4487 13.7417L29.2576 14.4832L33.1676 12.8653L34.9204 8.82045C33.8418 7.74183 32.6957 6.6632 31.5497 5.65199C28.2464 2.75318 24.1341 2.68577 20.8309 5.38233C20.6286 5.58458 20.4938 5.65199 20.2915 5.85423L17.4601 8.68563C16.1793 9.96649 15.4377 10.7081 14.5613 11.5844L10.5839 15.5619L10.0446 16.1012L9.97718 16.1686L6.06716 19.9438C3.03352 22.9774 2.62904 26.9549 5.05595 30.5278C6.20199 32.0109 7.41544 33.4266 8.83114 34.7075C11.258 37.1344 15.64 41.6511 18.2017 43.8758C21.7747 47.0443 26.3588 46.7746 29.7969 43.4039C32.898 40.3703 35.2575 38.0108 37.7518 35.5165Z" fill="#0099FF"/>
+<path d="M45.1673 31.0671L42.4707 33.7637L45.5043 36.7973C46.1785 37.4715 47.2571 37.4715 47.9312 36.7973L49.4818 35.2468L45.1673 31.0671Z" fill="#0099FF"/>
+<path d="M36.6055 39.6287L39.6391 42.6624C40.3132 43.3365 41.3919 43.3365 42.066 42.6624L43.6165 41.1118L39.3695 36.8647L36.6055 39.6287Z" fill="#0099FF"/>
+<path d="M30.7412 45.494L33.7748 48.5276C34.449 49.2017 35.5276 49.2017 36.1343 48.5276L37.6849 46.9771L33.4378 42.73L30.7412 45.494Z" fill="#0099FF"/>
+<path d="M18.6741 4.50604L15.6405 1.4724C14.9663 0.798262 13.8877 0.798262 13.281 1.4724L11.7305 3.02293L15.9776 7.27002L18.6741 4.50604Z" fill="#0099FF"/>
+<path d="M12.8089 10.371L9.77529 7.33739C9.10114 6.66325 8.02252 6.66325 7.34838 7.33739L5.79785 8.88792L10.1124 13.135L12.8089 10.371Z" fill="#0099FF"/>
+<path d="M6.94366 16.236L3.91002 13.2024C3.23588 12.5282 2.15725 12.5282 1.48311 13.2024L0 14.7529L4.24709 18.9326L6.94366 16.236Z" fill="#0099FF"/>
+</svg></div></a></div><nav role="navigation" data-w-id="fbe9ff70-3761-a3b0-912d-acba09ea4348" class="nav-items-wraper w-nav-menu"><div class="mynav"><div class="mob-sidebar-left"><div class="logo-mob-wrap mob-nav-item"><div class="fx-v right"><a href="/deprecate/old-home" class="w-inline-block"><div class="ch-logo w-embed"><svg width="auto" height="100%" viewBox="0 0 264 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M80.2225 15.8316C79.8854 15.8316 79.5484 15.8316 79.2113 15.7642C76.9192 15.4272 74.6271 15.2923 72.3351 15.4272C71.5261 15.4946 70.7171 15.562 69.9082 15.6968C68.1554 15.8991 66.6723 17.2473 66.3352 19.0001C65.9981 20.2136 65.8633 21.4944 65.8633 22.7753C65.8633 24.6629 65.8633 26.4831 65.9981 28.3707C66.0656 29.3145 66.2678 30.1909 66.5374 31.0672C67.0093 32.6852 68.425 33.8986 70.1778 34.0335C72.807 34.4379 75.5035 34.4379 78.1327 34.1009C78.672 34.0335 79.1439 33.966 79.6158 33.8986C79.8854 33.8986 80.0877 33.8986 80.3573 33.8986C80.3573 34.1009 80.3573 34.3031 80.3573 34.5054C80.3573 35.8536 80.3573 37.1345 80.3573 38.4828C80.3573 39.1569 80.3573 39.2243 79.6832 39.2918C78.4023 39.494 77.0541 39.6962 75.7732 39.7637C74.1552 39.8311 72.4699 39.8311 70.852 39.7637C69.1666 39.7637 67.4138 39.494 65.7959 39.0221C63.2342 38.2806 61.2791 36.3255 60.5376 33.7638C59.9983 32.011 59.6612 30.1909 59.5938 28.3033C59.3916 25.6741 59.459 22.9775 59.6612 20.3484C59.796 18.663 60.1331 16.9103 60.6724 15.2923C61.5488 12.8654 63.6386 11.0452 66.2004 10.5059C67.6835 10.1014 69.1666 9.89919 70.7171 9.89919C72.4699 9.83178 74.1552 9.83178 75.908 9.89919C77.2563 9.96661 78.6046 10.1014 79.8854 10.4385C80.1551 10.4385 80.3573 10.7082 80.2899 10.9778C80.2899 10.9778 80.2899 10.9778 80.2899 11.0452C80.2899 12.5283 80.2899 14.0115 80.2899 15.562C80.2225 15.562 80.2225 15.6294 80.2225 15.8316Z" fill="#242631"/>
+<path d="M134.289 18.5957H140.222V19.2698C140.222 22.9776 140.222 26.7528 140.222 30.4606C140.222 31.1347 140.222 31.8089 140.289 32.483C140.356 33.6965 141.3 34.6403 142.514 34.7077C142.918 34.7751 143.323 34.8425 143.727 34.8425C145.278 34.8425 146.896 34.7751 148.446 34.7077C148.716 34.7077 148.985 34.6403 149.255 34.5729C149.592 34.5054 149.862 34.2358 149.862 33.8987C149.862 33.6965 149.862 33.4942 149.862 33.292V18.5957H155.996V37.1346C155.996 37.2694 155.996 37.4042 155.996 37.4717C156.064 38.2806 155.457 39.0222 154.716 39.0896C154.648 39.0896 154.648 39.0896 154.581 39.0896C152.221 39.3593 149.862 39.5615 147.57 39.6963C145.615 39.8312 143.66 39.7637 141.772 39.6963C140.693 39.6963 139.615 39.5615 138.604 39.2244C136.581 38.7525 134.963 37.1346 134.694 35.0448C134.491 34.101 134.424 33.1572 134.424 32.2134C134.424 27.764 134.424 23.3147 134.424 18.9328C134.222 18.9328 134.289 18.7979 134.289 18.5957Z" fill="#242631"/>
+<path d="M131.323 35.0445C131.323 36.4602 131.323 37.7411 131.323 39.022C131.323 39.2242 131.188 39.359 131.053 39.4265C131.053 39.4265 131.053 39.4265 130.986 39.4265C130.312 39.5613 129.638 39.6961 129.031 39.6961C127.548 39.7635 125.997 39.8309 124.514 39.8309C122.761 39.8984 121.076 39.7635 119.391 39.4939C118.245 39.359 117.166 39.022 116.155 38.4827C114.604 37.6737 113.458 36.258 113.054 34.5726C112.717 33.2918 112.514 31.9435 112.447 30.5278C112.312 28.3705 112.447 26.2133 112.852 24.056C113.458 21.0224 115.144 19.2696 118.312 18.5281C120.941 18.0562 123.57 17.8539 126.267 17.9888C127.683 17.9888 129.166 18.1236 130.581 18.3258C130.716 18.3258 130.919 18.3932 131.053 18.4607C131.188 18.5281 131.323 18.6629 131.323 18.7977C131.323 20.146 131.323 21.4269 131.323 22.7752C131.323 22.7752 131.323 22.7752 131.256 22.8426C131.053 22.8426 130.851 22.8426 130.581 22.8426C127.952 22.5729 125.256 22.5055 122.559 22.7752C122.02 22.8426 121.481 22.9774 120.941 23.1796C119.863 23.5167 119.054 24.3931 118.851 25.5391C118.379 27.7638 118.379 30.0559 118.784 32.2806C119.121 34.0333 120.267 34.9771 121.952 35.2468C122.492 35.3816 123.098 35.3816 123.705 35.449C125.795 35.449 127.952 35.3816 130.11 35.3816C130.447 35.1794 130.851 35.112 131.323 35.0445Z" fill="#242631"/>
+<path d="M89.661 18.5957V39.2244H83.6611V18.5957H89.661Z" fill="#242631"/>
+<path d="M165.906 39.2244H159.906V18.5957H165.906V39.2244Z" fill="#242631"/>
+<path d="M107.256 17.9888C104.627 17.8539 101.931 18.0562 99.3014 18.5281C96.133 19.2696 94.515 21.0898 93.8409 24.056C93.5038 25.8762 93.369 27.6964 93.5038 29.5166V39.1568H99.5711C99.5711 39.1568 99.5711 31.7412 99.5711 29.2469C99.5037 27.8986 99.6385 26.6178 99.9082 25.3369C100.11 24.2583 100.919 23.3145 101.998 22.9774C102.537 22.7752 103.009 22.6403 103.616 22.5729C105.773 22.3707 107.93 22.3707 110.02 22.5055V17.9888C109.144 18.0562 108.2 17.9888 107.256 17.9888Z" fill="#242631"/>
+<path d="M159.906 10.3037H163.277C164.693 10.3037 165.906 11.4498 165.906 12.9329V15.2924H159.906V10.3037Z" fill="#242631"/>
+<path d="M83.6611 10.3037H87.0318C88.4475 10.3037 89.661 11.4498 89.661 12.8654V15.2249H83.6611V10.3037Z" fill="#242631"/>
+<path d="M181.816 23.1123C182.894 23.1123 184.04 23.1123 185.119 23.1123V18.5281H178.445V10.5732H172.31V15.09C172.31 16.236 172.31 17.3821 172.31 18.5955H168.67V23.1123H172.445C172.445 26.2807 172.445 29.4492 172.445 32.5503C172.445 33.4266 172.58 34.303 172.715 35.1794C172.984 36.9996 174.265 38.5501 176.018 39.0894C177.299 39.5613 178.647 39.7636 179.995 39.7636C181.681 39.7636 183.434 39.831 185.119 39.7636V34.7075C183.906 34.7075 182.759 34.7749 181.546 34.7749C181.209 34.7749 180.872 34.7075 180.535 34.6401C179.389 34.5053 178.58 33.6289 178.512 32.4828C178.445 31.8087 178.378 31.1346 178.378 30.4604C178.378 27.9661 178.378 25.5392 178.378 23.0449L181.816 23.1123Z" fill="#242631"/>
+<path d="M205.478 14.2137C205.478 15.4945 205.478 16.7754 205.478 17.9889C205.478 19.2023 205.545 20.4832 205.478 21.6966H194.152V10.4385H187.95V39.2243H194.152V27.5617H205.41V36.9322C205.41 37.6738 205.41 38.4828 205.41 39.2243H211.68V10.4385H205.41L205.478 14.2137Z" fill="#0099FF"/>
+<path d="M262.915 25.7416C262.847 24.5956 262.578 23.3821 262.241 22.3035C261.701 20.5507 260.42 19.2024 258.668 18.6631C257.859 18.3935 257.05 18.2586 256.241 18.1238C254.353 17.9216 252.466 17.9216 250.578 18.1238C249.297 18.2586 248.016 18.6631 246.87 19.3373C246.735 19.4047 246.668 19.4721 246.533 19.4721V18.5957V10.1689H240.466V37.202C240.466 37.4043 240.466 37.6065 240.533 37.8087C240.533 38.4829 241.073 39.0222 241.679 39.0222C243.028 39.2244 244.376 39.3593 245.792 39.4941C246.331 39.5615 246.87 39.5615 247.477 39.5615C248.016 39.6289 248.556 39.6963 249.095 39.6963C251.117 39.6963 253.14 39.6963 255.162 39.5615C256.308 39.4941 257.454 39.2919 258.533 38.9548C260.218 38.4829 261.566 37.2694 262.241 35.6515C262.645 34.6403 262.915 33.5617 262.982 32.483C263.184 30.3258 263.184 28.0337 262.915 25.7416ZM256.915 31.8089C256.847 32.2808 256.78 32.6853 256.645 33.0898C256.376 34.3032 255.297 35.1796 254.016 35.247C252.466 35.4492 250.982 35.4492 249.432 35.247C248.151 35.1796 247.072 34.2358 246.803 32.9549C246.668 32.2134 246.533 31.4718 246.466 30.7303C246.398 30.1235 246.466 29.5168 246.466 28.9101C246.398 27.5618 246.466 26.2135 246.803 24.9326C247.005 23.7192 248.016 22.7754 249.23 22.6406C250.915 22.3709 252.6 22.3709 254.218 22.6406C255.364 22.7754 256.308 23.5844 256.578 24.7304C256.78 25.5394 256.915 26.4158 256.982 27.2921C257.05 28.7752 256.982 30.2584 256.915 31.8089Z" fill="#0099FF"/>
+<path d="M230.691 18.5955V33.4266C230.691 34.303 230.556 34.4378 229.68 34.6401C229.545 34.6401 229.41 34.7075 229.343 34.7075C227.657 34.7749 225.904 34.7749 224.219 34.8423C223.882 34.8423 223.545 34.7749 223.208 34.7075C222.062 34.5726 221.253 33.6963 221.185 32.5502C221.118 31.8761 221.051 31.2019 221.051 30.5278C221.051 26.7526 221.051 22.9774 221.051 19.2022C221.051 19 221.051 18.7977 221.051 18.5281H215.118C215.118 18.7303 215.118 18.8651 215.118 18.9326C215.118 23.4493 215.118 27.9661 215.118 32.4828C215.118 33.3592 215.253 34.2356 215.388 35.112C215.657 36.9321 216.938 38.4827 218.691 39.022C219.972 39.4939 221.32 39.6961 222.669 39.6961C225.635 39.7635 228.601 39.6961 231.5 39.4939C232.848 39.359 234.196 39.2242 235.612 39.022C236.286 38.9546 236.758 38.4152 236.758 37.8085C236.758 37.6063 236.826 37.404 236.826 37.2018V19.0674C236.826 18.9326 236.826 18.7303 236.758 18.5955H230.691Z" fill="#0099FF"/>
+<path d="M37.7518 35.5165L40.8529 32.4154L43.7517 29.5166C43.8191 29.4492 43.8865 29.3144 43.9539 29.2469C46.5831 26.2807 46.8527 22.5055 44.4932 19.1348C43.482 17.7865 42.336 16.5057 41.1225 15.3596L37.2125 17.1798L35.5271 21.0224L35.7968 21.2921C36.8754 22.3033 36.9428 23.9886 35.9316 25.1347L25.9543 35.112C25.6173 35.449 25.3476 35.7861 24.9431 36.0558C23.8645 36.9996 22.314 36.9322 21.3028 35.9209C19.4152 34.1682 15.5726 30.3256 13.8198 28.438C12.6737 27.1571 12.7412 25.674 13.8872 24.3931C14.1569 24.1235 14.4265 23.8538 14.6962 23.5842L15.5726 22.7078H15.64L16.3141 22.0336L23.7971 14.5507C24.1341 14.2136 24.4712 13.9439 24.8083 13.6069C25.8869 12.6631 27.4374 12.7305 28.4487 13.7417L29.2576 14.4832L33.1676 12.8653L34.9204 8.82045C33.8418 7.74183 32.6957 6.6632 31.5497 5.65199C28.2464 2.75318 24.1341 2.68577 20.8309 5.38233C20.6286 5.58458 20.4938 5.65199 20.2915 5.85423L17.4601 8.68563C16.1793 9.96649 15.4377 10.7081 14.5613 11.5844L10.5839 15.5619L10.0446 16.1012L9.97718 16.1686L6.06716 19.9438C3.03352 22.9774 2.62904 26.9549 5.05595 30.5278C6.20199 32.0109 7.41544 33.4266 8.83114 34.7075C11.258 37.1344 15.64 41.6511 18.2017 43.8758C21.7747 47.0443 26.3588 46.7746 29.7969 43.4039C32.898 40.3703 35.2575 38.0108 37.7518 35.5165Z" fill="#0099FF"/>
+<path d="M45.1673 31.0671L42.4707 33.7637L45.5043 36.7973C46.1785 37.4715 47.2571 37.4715 47.9312 36.7973L49.4818 35.2468L45.1673 31.0671Z" fill="#0099FF"/>
+<path d="M36.6055 39.6287L39.6391 42.6624C40.3132 43.3365 41.3919 43.3365 42.066 42.6624L43.6165 41.1118L39.3695 36.8647L36.6055 39.6287Z" fill="#0099FF"/>
+<path d="M30.7412 45.494L33.7748 48.5276C34.449 49.2017 35.5276 49.2017 36.1343 48.5276L37.6849 46.9771L33.4378 42.73L30.7412 45.494Z" fill="#0099FF"/>
+<path d="M18.6741 4.50604L15.6405 1.4724C14.9663 0.798262 13.8877 0.798262 13.281 1.4724L11.7305 3.02293L15.9776 7.27002L18.6741 4.50604Z" fill="#0099FF"/>
+<path d="M12.8089 10.371L9.77529 7.33739C9.10114 6.66325 8.02252 6.66325 7.34838 7.33739L5.79785 8.88792L10.1124 13.135L12.8089 10.371Z" fill="#0099FF"/>
+<path d="M6.94366 16.236L3.91002 13.2024C3.23588 12.5282 2.15725 12.5282 1.48311 13.2024L0 14.7529L4.24709 18.9326L6.94366 16.236Z" fill="#0099FF"/>
+</svg></div></a></div></div></div><div class="mob-sidebar-right"><div id="main-nav" class="nav_wrap mob-nav-item"><div class="nav-item desktop-nav"><div data-delay="200" data-hover="true" class="dropdown nav-anchor w-dropdown"><div class="dd-nav w-dropdown-toggle"><div class="nav_link"><p class="clean">Capabilities</p></div></div><nav class="dd-nav-body w-dropdown-list"><a href="/capabilities/pcb-stackups" aria-current="page" class="nav_dd-link w-dropdown-link w--current">PCB Stackups</a><a href="/capabilities/design-rules" class="nav_dd-link w-dropdown-link">Design Rules</a><a href="/capabilities/certifications" class="nav_dd-link w-dropdown-link">Certifications</a><a href="/capabilities/protoboard" class="nav_dd-link w-dropdown-link">ProtoBoard</a></nav></div></div><div class="nav-item"><a href="/case-studies" class="nav_link w-inline-block"><p class="clean">Case Studies</p></a></div><div class="nav-item"><a href="/company/careers" class="nav_link w-inline-block"><p class="clean">Careers</p></a></div><div class="nav-item desktop-nav"><div data-delay="200" data-hover="true" data-w-id="7ce19543-8130-c5c6-7172-489d73c56827" class="dropdown nav-anchor w-dropdown"><div class="dd-nav w-dropdown-toggle"></div><nav class="dd-nav-body w-dropdown-list"><a href="http://docs.circuithub.com/" target="_blank" class="dd-3 dd-nav-item last-item w-dropdown-link">FAQ</a><a href="/blog" class="dd-3 dd-nav-item last-item w-dropdown-link">Blog</a><a href="https://www.pickplacepodcast.com/" target="_blank" class="dd-3 dd-nav-item last-item w-dropdown-link">Podcast</a></nav></div></div><div class="nav-item desktop-nav"><div data-delay="200" data-hover="true" data-w-id="31d51cd3-0d1d-b8b0-5c2d-e7f345583494" class="dropdown nav-anchor w-dropdown"><div class="dd-nav w-dropdown-toggle"></div><nav class="dd-nav-body w-dropdown-list"><div><a href="/company/about-us" class="nav_dd-link dd-1 first-item w-dropdown-link">About Us</a><a href="/company/careers" class="dd-2 dd-nav-item w-dropdown-link">Careers</a><a href="/company/press" class="dd-3 dd-nav-item w-dropdown-link">Press</a><a href="/company/contact" class="dd-4 dd-nav-item last-item w-dropdown-link">Contact</a></div></nav></div></div><div class="sign-in-mob-wraper"><div class="header_cta-wrapper"><a href="https://app.circuithub.com/login" class="button-primary secondary w-inline-block"><div class="text-block-2">Sign In</div></a><a href="https://app.circuithub.com/signup" class="button-primary w-inline-block"><div class="text-block-3">Sign Up</div></a></div></div></div><ul role="list" class="nav_mobile-footer w-list-unstyled"><li><a href="mailto:support@circuithub.com?subject=Support">support@circuithub.com</a></li><li><div>+1 617-401-0319</div></li></ul></div></div></nav><div class="cta-wrap hide-tablet is-hero"><div class="header_cta-wrapper"><a href="https://app.circuithub.com/login" class="button-primary secondary w-inline-block"><div class="text-block-2">Sign In</div></a><a href="https://app.circuithub.com/signup" class="button-primary w-inline-block"><div class="text-block-3">Sign Up</div></a></div></div><div class="menu-button w-nav-button"><div class="nav_button"><div class="nav_button-label">Menu</div><div data-is-ix2-target="1" class="burgeer-ico" data-w-id="ef1b6e7b-5b52-e8ff-0329-b4a47677c219" data-animation-type="lottie" data-src="https://cdn.prod.website-files.com/5e4f3506e94717077b3bdc54/6672a85e5faa0292c1c6cf70_Animation%20-%201718790161460.lottie" data-loop="0" data-direction="1" data-autoplay="0" data-renderer="svg" data-default-duration="2" data-duration="0" data-loading="eager" data-ix2-initial-state="0"></div></div></div></div><div class="w-embed"><style>
+.no-event {pointer-events: none;}
+.footer.dark .footer-category a {
+    color: #fff;
+    text-decoration: none;
+    opacity: 0.6;
+}
+#nav-light .nav-container .cta-wrap .button-gold.secondary {
+    color: #242732;
+    background-color: #fff;
+    border-color: #242732;
+}
+.footer.dark a:hover {
+    opacity: 1;
+}
+.footer li {
+    margin-top: 10px;
+}
+.footer.light a {
+    color: #23253080;
+    -webkit-transition: color 300ms ease;
+    transition: color 300ms ease;
+}
+.footer.light a:hover {
+    color: #09f;
+}
+.footer ul{margin-top: 20px;}
+.v-text {
+    writing-mode: tb-rl;
+    transform: rotate(180deg);
+}
+.video-overlay{
+    mix-blend-mode: multiply;
+}
+.buttons-wraper .button-wrap:first-child {margin-left: 0;}
+.buttons-wraper .button-wrap:last-child {margin-right: 0;}
+.buttons-wraper .button-wrap {margin-left: 5px; margin-right: 5px;}
+.list-10 li{margin-top:10px;}
+.txt-border {
+    -webkit-text-fill-color: #242732;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: #E2B16A;
+    color: #242732;
+    text-shadow: -1px -1px 0 #E2B16A, 1px -1px 0 #E2B16A, -1px 1px 0 #E2B16A, 1px 1px 0 #E2B16A;
+}
+::selection {
+    color: #242631;
+    background: #ffcc65;
+}
+</style>
+<style>
+/*--------------2550
+  @media screen and (min-width: 1920px){
+  .stick-toolbar {
+    top: 95px;
+    }
+    .back-image {
+    bottom: -40%;
+    width: 42%;
+}
+element.style {
+    will-change: transform;
+    transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+    transform-style: preserve-3d;
+}
+.progress-bar {
+    top: 95px;
+    }
+.review-img {
+    height: 100%;
+    width: 80%;
+    max-height: 320px;
+}
+  .blog-label {
+    position: absolute;
+    left: 60px;
+    top: 34px;
+    font-size: 16px;
+}
+  .blog-label {
+    left: 60px;
+    top: 32px;
+}
+.nav-container {
+    max-width: 2000px;
+    padding: 60px 40px 20px;
+}
+.section {
+    max-width: 1800px;
+}
+.col-item {
+    padding: 60px;
+}
+.hero-dscp {
+    font-size: 1.2rem;
+    line-height: 1.8rem;
+}
+.max50 {
+    max-width: 900px;
+}
+.hero-info-wrap.sub {
+    max-width: 800px;
+}
+.max400 {
+    max-width: 600px;
+}
+h1 {
+    font-size: 4rem;
+    line-height: 5rem;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+h2 {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+    line-height: 3.5rem;
+}
+h3 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 2rem;
+    line-height: 3rem;
+}
+h4 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    margin-top: 20px;
+}
+.max400 {
+    max-width: 700px;
+}
+.step-1 {
+    width: 500px !important;
+}
+.section-progress {
+    max-width: 1800px;
+}
+.space_60 {
+    margin-top: 120px;
+}
+.ico-120-wraper {
+    width: 200px;
+    margin-right: 50px;
+    margin-left: 80px;
+    padding-right: 30px;
+}
+.button-gold.large {
+    padding-top: 24px;
+    padding-bottom: 24px;
+    border-radius: 48px;
+    font-size: 1rem;
+}
+.button-gold.large.step-6 {
+    left: -50px;
+}
+.client-logo-item.s {
+    max-height: 100px;
+    max-width: 240px;
+}
+.footer li {
+    margin-top: 20px;
+}
+.footer ul {
+    margin-top: 30px;
+}
+.ch-logo {
+    height: 48px;
+}
+.button-gold {
+    font-size: 1rem;
+}
+.button {
+    font-size: 1rem;
+}
+.sf-content-item {
+    max-width: 800px;
+    margin-top: 300px;
+    margin-bottom: 300px;
+    padding: 60px 60px;
+}
+.ico-ref {
+    width: 40px;
+    height: 40px;
+    margin-right: 20px;
+}
+.dscp {
+    margin-top: 10px;
+    font-size: 1.2rem;
+    line-height: 1.5rem;
+}
+.hero-heading {
+    margin-bottom: 60px;
+    font-size: 5rem;
+    line-height: 6rem;
+}
+.max600 {
+    max-width: 800px;
+}
+.w-tab-link {
+    padding: 18px 50px;
+}
+.client-logo-item {
+    width: 400px;
+    height: 80px;
+}
+.clents-logo-wrap {
+    margin-top: 80px;
+}
+.slider-text-wrap {
+    max-width: 600px;
+}
+.text-slider-item {
+    font-size: 1.5rem;
+    line-height: 2rem;
+}
+.quote-author {
+    margin-top: 60px;
+}
+.container.cta {
+    padding-top: 200px;
+    padding-bottom: 200px;
+}
+.horizontal-divider {
+    width: 200px;
+    height: 6px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.video-text-wrap {
+    max-width: 600px;
+}
+.flow-container {
+    max-width: 1800px;
+    padding-right: 60px;
+    padding-left: 60px;
+}
+    .intro-animation-wraper {
+    width: 80%;
+}
+  } -- */
+  #nav-light .ch-navbar {
+    background-color: #fff !important;
+}
+#nav-light .ch-logo.light {
+    display: none;
+}
+#nav-light .ch-logo.dark {
+    display: block;
+}
+#nav-light .nav-link {
+    color: #252833;
+}
+#monitor .hiw-text-wraper p {opacity: 0.6; }
+@media screen and (max-width: 991px){
+#magic-line {
+    display: none;
+}
+.section-progress.inside {
+    height: calc(100% - 60px);
+}
+.dd-nav-body.w--open .dd-nav-item {
+    color: #fff;
+}
+.dd-nav.w--open .nav-link {
+    opacity:0.5;
+}
+#nav-light .nav-link {
+    color: #fff;
+}
+
+}
+@media screen and (max-width: 479px){
+#main-nav .nav-item .nav-link {
+    font-size: 24px;
+}
+.buttons-wraper .button-wrap {
+    margin-left: 0 !important;
+    margin-right: 0  !important;
+}
+.button-gold.secondary.sign-in-top {
+    display: none !important;
+}
+}
+.back-ref:hover .ico-ref {
+    transform: translate(10px, 0px);
+} 
+.w--nav-menu-open {
+    background: rgba(37, 39, 50, 0);
+    }
+.nav-link.w--current {
+    opacity: 1;
+}  
+.tab-link.white.w--current {
+    color: #fff;
+}
+</style></div><div class="custom-code w-embed"><p>G</p>
+<style>
+/* Make text look crisper and more legible in all browsers */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Focus state style for keyboard navigation for the focusable elements */
+*[tabindex]:focus-visible,
+  input[type="file"]:focus-visible {
+   outline: 0.125rem solid #4d65ff;
+   outline-offset: 0.125rem;
+}
+@keyframes marquee-horizontal {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+.w--current .tab_tab-link-description {
+    max-height: 30rem;
+    opacity: 1;
+}
+.w--current .tab_arrow {
+    transform: translate(0%);
+}
+.is-3-lines {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+.swiper-slide.is-slider-bg.swiper-slide-active {
+    opacity: 1 !important;
+}
+</style></div></div><div class="main-wrapper"><div class="sub-header"><div class="sub-header-hero half"><div class="pcb-hero-top"><img src="https://cdn.prod.website-files.com/5e4f3506e94717077b3bdc54/5e4f3506e94717bee93bdd89_ch-stakup-hero.svg" style="-webkit-transform:translate3d(0, -6.25rem, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, -6.25rem, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, -6.25rem, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, -6.25rem, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);opacity:0" alt="" class="sf-hero-back capabilities-img"/></div><div class="layer-full crop"><img src="https://cdn.prod.website-files.com/5e4f3506e94717077b3bdc54/5e4f3506e9471730a73bddc5_ch-stakup-hero-back-2.svg" style="opacity:0;-webkit-transform:translate3d(6.25rem, -6.25rem, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(6.25rem, -6.25rem, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(6.25rem, -6.25rem, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(6.25rem, -6.25rem, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)" alt="" class="pcb-hero-back"/><div class="layer-full gradient-dark"></div></div></div><div class="container-large-ch hero"><div class="header-img-container full"></div><div class="max50"><div style="-webkit-transform:translate3d(0, -6.25rem, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, -6.25rem, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, -6.25rem, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, -6.25rem, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);opacity:0" class="hero-info-wrap sub"><div class="item-inner"><h4 class="gold-h">Stackups</h4><h1>Standard Multi-Layer PCB Stackups</h1></div></div></div></div></div><div class="w-embed w-script"><!-- Restored PCB stackups content section (copied from the published page on 19 Oct 2026 after it was deleted by mistake). -->
+<style>
+/* Styles for the restored section, copied from the live site (Webflow drops styles no longer used by Designer elements). */
+.ch-pcb-restored .container{margin-bottom:0;padding-bottom:0;position:relative}
+.ch-pcb-restored .container.light{background-color:#f5faff}
+.ch-pcb-restored .space_40{margin-top:2.5rem}
+.ch-pcb-restored .max400{width:100%;max-width:25rem;position:relative}
+.ch-pcb-restored .center{flex-direction:column;justify-content:center;align-items:center;display:flex}
+.ch-pcb-restored .horizontal-divider{background-color:#e2b16a;width:6.25rem;height:.25rem;margin-top:1.25rem;margin-bottom:1.25rem}
+.ch-pcb-restored .light{background-color:var(--offwhite)}
+.ch-pcb-restored .dscp{box-sizing:border-box;aspect-ratio:auto;flex-flow:row;justify-content:flex-start;width:auto;max-width:4000px;margin-top:.375rem;font-size:1rem;display:block}
+.ch-pcb-restored .item-ref{color:#333;align-items:flex-start;max-width:15rem;line-height:1.5;display:flex}
+.ch-pcb-restored .item-ref.gold{color:#e2b16a}
+.ch-pcb-restored .item-ref.space_40{width:700px;max-width:700rem;margin-top:.1rem}
+.ch-pcb-restored .heading-2{font-weight:700}
+.ch-pcb-restored .table-wrap{margin-top:1.25rem}
+.ch-pcb-restored .table-row{border-top:.0625rem #dee2e6;order:0;padding-left:1.25rem;padding-right:1.25rem;display:flex}
+.ch-pcb-restored .table-row:hover{z-index:1;position:relative}
+.ch-pcb-restored .table-row.gold{background-color:#fdc55e4d}
+.ch-pcb-restored .table-row.light{color:#fff;background-color:#494f61;padding-left:1.25rem;padding-right:1.25rem}
+.ch-pcb-restored .table-cell{flex:1;justify-content:flex-start;align-items:flex-start;padding:.9375rem 1.25rem .9375rem 0;display:flex}
+.ch-pcb-restored .table-header{border-bottom:.125rem solid #e2b16a;font-weight:700;display:flex}
+.ch-pcb-restored .table-header:hover{z-index:1;position:relative}
+.ch-pcb-restored .table-item{grid-column-gap:2.5rem;grid-row-gap:1rem;background-color:#fff;flex-direction:column;grid-template-rows:auto;grid-template-columns:1fr;grid-auto-columns:1fr;width:48%;margin-bottom:3.75rem;padding:1.875rem;display:flex}
+.ch-pcb-restored .table-item.full{width:100%}
+.ch-pcb-restored .tables-wraper{grid-column-gap:1rem;grid-row-gap:1rem;flex-wrap:wrap;grid-template-rows:auto auto;grid-template-columns:1fr 1fr;grid-auto-columns:1fr;justify-content:space-between;display:flex}
+.ch-pcb-restored .inner-item-s{padding:1.25rem}
+.ch-pcb-restored .inner-item-m{padding:2.5rem}
+.ch-pcb-restored .dark-link{color:#252732}
+.ch-pcb-restored .stick-toolbar{z-index:2;background-color:#f5faff;justify-content:center;padding:0 2.5rem;display:flex;position:sticky;top:4.0625rem}
+.ch-pcb-restored .nav-link-toolbar{padding:.9375rem 1.25rem;text-decoration:none;transition:background-color .3s,color .2s,opacity .2s}
+.ch-pcb-restored .nav-link-toolbar:hover{background-color:#2427320d}
+.ch-pcb-restored .nav-link-toolbar.w--current{color:#252732;background-color:#fff}
+.ch-pcb-restored .anchor-link{z-index:-1;height:100%;position:absolute;inset:-9.375rem 0% auto}
+.ch-pcb-restored .space-bottom-100{padding-bottom:6.25rem}
+.ch-pcb-restored .ico-ref-wrap{border:.125rem solid #000;flex:none;justify-content:flex-start;align-items:flex-end;width:1.875rem;height:1.875rem;margin-right:.625rem;transition:transform .3s;display:flex}
+.ch-pcb-restored .ico-ref-wrap.gold{border-color:#e2b16a}
+.ch-pcb-restored .lottie-animation{position:relative;bottom:-.3125rem;left:-.1875rem;transform:rotate(-45deg)}
+.ch-pcb-restored .code-embed-stackups{background-color:#daecff;margin-bottom:0;font-weight:400;line-height:1.5vh;overflow:visible}
+</style>
+<div class="ch-pcb-restored"><div class="container light"><div class="inner-item-s"></div><div class="stick-toolbar"><a class="nav-link-toolbar w-inline-block" href="#core-pcb"><div>Core PCB Materials</div></a><a class="nav-link-toolbar w-inline-block" href="#standard-stackup"><div><div>Standard Stackups</div></div></a><a class="nav-link-toolbar w-inline-block" href="#custom-stackup"><div><div>Custom Stackups</div></div></a></div><div class="container-large-ch"><div class="item-inner"><div class="container"><h1>Core PCB Materials </h1><div class="horizontal-divider"></div><div class="tables-wraper"><div class="table-item"><h4>Normal TG material with TG130-135</h4><div class="table-wrap"><div class="table-header" data-w-id="8bf2dbc1-82e5-0f08-de69-d1e88208d6ec"><div class="table-cell"><div>Manufacturer</div></div><div class="table-cell"><div>Material</div></div></div><div class="table-row" data-w-id="8bf2dbc1-82e5-0f08-de69-d1e88208d6f6"><div class="table-cell"><div>ShengYi</div></div><div class="table-cell"><div><a href="https://chris-denney-m8zo.squarespace.com/s/s1141.pdf">S1141</a></div></div></div><div class="table-row" data-w-id="8bf2dbc1-82e5-0f08-de69-d1e88208d707"><div class="table-cell"><div>NanYa</div></div><div class="table-cell"><div><a href="https://chris-denney-m8zo.squarespace.com/s/np-140tl.pdf">NP-140TL</a></div></div></div><div class="table-row" data-w-id="5951a332-898f-453a-e177-3baa9c1f09db"><div class="table-cell"><div>KingBoard</div></div><div class="table-cell"><div><a href="https://chris-denney-m8zo.squarespace.com/s/kb-6160.pdf">KB-6160</a></div></div></div></div></div><div class="table-item"><h4>High TG material with over TG170</h4><div class="table-wrap"><div class="table-header" data-w-id="9ac296d0-0d1d-05dd-6cea-fde0ba2546c7"><div class="table-cell"><div>Manufacturer</div></div><div class="table-cell"><div>Material</div></div></div><div class="table-row" data-w-id="9ac296d0-0d1d-05dd-6cea-fde0ba2546ce"><div class="table-cell"><div>ShengYi</div></div><div class="table-cell"><div><a href="https://chris-denney-m8zo.squarespace.com/s/s1000-2.pdf">S1000-2</a></div></div></div><div class="table-row" data-w-id="9ac296d0-0d1d-05dd-6cea-fde0ba2546d6"><div class="table-cell"><div>Isola</div></div><div class="table-cell"><div><a href="https://cdn.prod.website-files.com/5e4f3506e94717077b3bdc54/66e9d7a640ed22cf05bcd3be_370hr.pdf"> 370HR</a></div></div></div></div></div><div class="table-item"><h4>High frequency material (RF boards)<br/></h4><div class="table-wrap"><div class="table-header" data-w-id="ec12b532-2be0-ee55-a9e0-0c31fd1de3ff"><div class="table-cell"><div>Manufacturer</div></div><div class="table-cell"><div>Material</div></div></div><div class="table-row" data-w-id="ec12b532-2be0-ee55-a9e0-0c31fd1de406"><div class="table-cell"><div>Rogers</div></div><div class="table-cell"><div><a href="https://chris-denney-m8zo.squarespace.com/s/ro4000.pdf">RO4000 Series</a></div></div></div><div class="table-row" data-w-id="ec12b532-2be0-ee55-a9e0-0c31fd1de40e"><div class="table-cell"><div>Taconic</div></div><div class="table-cell"><div><a href="https://chris-denney-m8zo.squarespace.com/s/tlxseries.pdf">TLX Series</a></div></div></div><div class="table-row" data-w-id="05395b3a-62f1-e13e-7fed-b3039b73abd1"><div class="table-cell"><div>Taconic</div></div><div class="table-cell"><div><a href="https://chris-denney-m8zo.squarespace.com/s/rf35.pdf">Orcer RF-35</a></div></div></div></div><a class="space_20 dark-link muted" href="#">More available, please reach out to us</a></div><div class="table-item"><h4>Prepreg Material Information</h4><div class="table-wrap"><div class="table-header" data-w-id="75ca84bb-9b4e-8618-9200-03e729e01f1c"><div class="table-cell"><div>Manufacturer</div></div><div class="table-cell"><div>Material</div></div></div><div class="table-row" data-w-id="75ca84bb-9b4e-8618-9200-03e729e01f23"><div class="table-cell"><div>KingBoard</div></div><div class="table-cell"><div><a href="https://chris-denney-m8zo.squarespace.com/s/KB-6050.pdf">KB-6050 PrePreg</a></div></div></div></div></div><div class="table-item full"><h4><strong>Prepreg dielectric constants</strong><br/></h4><div class="table-wrap"><div class="table-header" data-w-id="39a3f4b4-4ae9-0bd0-24f5-85b1f36fe077"><div class="table-cell"><div>Prepreg Type</div></div><div class="table-cell"><div>Dielectric Constant</div></div></div><div class="table-row" data-w-id="39a3f4b4-4ae9-0bd0-24f5-85b1f36fe084"><div class="table-cell"><div>7628</div></div><div class="table-cell"><div>4.4</div></div></div><div class="table-row" data-w-id="39a3f4b4-4ae9-0bd0-24f5-85b1f36fe091"><div class="table-cell"><div>3313</div></div><div class="table-cell"><div>4.1</div></div></div><div class="table-row" data-w-id="39a3f4b4-4ae9-0bd0-24f5-85b1f36fe09e"><div class="table-cell"><div>1080</div></div><div class="table-cell"><div>3.9</div></div></div><div class="table-row" data-w-id="39a3f4b4-4ae9-0bd0-24f5-85b1f36fe0ab"><div class="table-cell"><div>2116</div></div><div class="table-cell"><div>4.2</div></div></div></div></div><a class="item-ref space_40 w-inline-block" href="https://docs.circuithub.com/en/articles/62956" target="_blank"><div class="ico-ref-wrap gold"><div class="lottie-animation" data-animation-type="lottie" data-autoplay="0" data-default-duration="1.5" data-direction="1" data-duration="0" data-is-ix2-target="1" data-ix2-initial-state="0" data-loading="eager" data-loop="0" data-renderer="svg" data-src="https://cdn.prod.website-files.com/5e4f3506e94717077b3bdc54/5e4f3506e94717f96f3bddb3_lottieflow-arrow-08-2-e2b16a-easey.json" data-w-id="8e76d2ca-6344-62b3-785a-c524f6c5200b"></div></div><div class="dscp">Learn more</div></a></div><div class="anchor-link" id="core-pcb"></div></div><div class="container" id="standard-stackup"><h1 class="heading-2">Standard stackups</h1><div class="horizontal-divider"></div><div class="code-embed-stackups w-embed w-script"><div id="container" style="height: 1200px; width: 100%; background-color: #F5FAFF;"></div>
+<script>
+  var rt =
+    window.retool.RetoolDashboard(
+      document.getElementById('container'),
+      'https://retool.app.circuithub.com/p/stackups/all'
+    );
+</script></div><a class="item-ref space_40 w-inline-block" href="/capabilities/protoboard" target="_blank"><div class="ico-ref-wrap gold"><div class="lottie-animation" data-animation-type="lottie" data-autoplay="0" data-default-duration="1.5" data-direction="1" data-duration="0" data-is-ix2-target="1" data-ix2-initial-state="0" data-loading="eager" data-loop="0" data-renderer="svg" data-src="https://cdn.prod.website-files.com/5e4f3506e94717077b3bdc54/5e4f3506e94717f96f3bddb3_lottieflow-arrow-08-2-e2b16a-easey.json" data-w-id="d0461add-2704-e892-cc94-c393942af401"></div></div><div>Learn more about our Protoboard service. Ideal for small-quantity quick turn orders that meet a defined set of specifications</div></a></div><div class="container" id="custom-stackup"><div class="anchor-link" id="custom"></div><h1 class="heading-2">Custom Stackups</h1><div class="horizontal-divider"></div><div class="max400"><h4>Use our custom stackup tool to specify <strong>custom materials</strong>, <strong>thicknesses</strong>, and <strong>dielectric properties</strong> for your circuitboard layers.</h4></div><a class="item-ref space_40 w-inline-block" href="https://docs.circuithub.com/en/articles/62956-stackups#h_57560767d3" target="_blank"><div class="ico-ref-wrap gold"><div class="lottie-animation" data-animation-type="lottie" data-autoplay="0" data-default-duration="1.5" data-direction="1" data-duration="0" data-is-ix2-target="1" data-ix2-initial-state="0" data-loading="eager" data-loop="0" data-renderer="svg" data-src="https://cdn.prod.website-files.com/5e4f3506e94717077b3bdc54/5e4f3506e94717f96f3bddb3_lottieflow-arrow-08-2-e2b16a-easey.json" data-w-id="1f6af145-8e66-8625-52de-10820642d442"></div></div><div class="dscp">Learn more</div></a></div></div></div><div class="container-large-ch space-bottom-100"><div class="inner-item-m center"><a class="item-ref w-inline-block" href="/capabilities/design-rules"><div class="ico-ref-wrap gold"><div class="lottie-animation" data-animation-type="lottie" data-autoplay="0" data-default-duration="1.5" data-direction="1" data-duration="0" data-is-ix2-target="1" data-ix2-initial-state="0" data-loading="eager" data-loop="0" data-renderer="svg" data-src="https://cdn.prod.website-files.com/5e4f3506e94717077b3bdc54/5e4f3506e94717f96f3bddb3_lottieflow-arrow-08-2-e2b16a-easey.json" data-w-id="afc4b6f6-6c0e-2350-c959-00657db00626"></div></div><div class="dscp">Capabilities</div></a></div></div></div></div>
+</div><footer class="footer"><div class="container-large-ch"><div class="w-layout-grid footer-grid"><div id="w-node-_0896a04d-8bd1-06ec-b2e8-b8932d3be4b8-e3c3ceb3" class="footer-logo"><a aria-label="home" href="/" class="footer_logo w-inline-block"><div class="ch-logo-footer w-embed"><svg width="100%" height="100%" viewBox="0 0 296 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M90.4342 16.8166C90.0563 16.8166 89.6784 16.8166 89.3006 16.7411C86.731 16.3632 84.1615 16.212 81.5919 16.3632C80.685 16.4388 79.7781 16.5143 78.8712 16.6655C76.9063 16.8922 75.2436 18.4037 74.8658 20.3687C74.4879 21.729 74.3367 23.1649 74.3367 24.6008C74.3367 26.7169 74.3367 28.7575 74.4879 30.8736C74.5635 31.9316 74.7902 32.9141 75.0925 33.8966C75.6215 35.7103 77.2086 37.0707 79.1735 37.2218C82.1209 37.6753 85.1439 37.6753 88.0914 37.2974C88.696 37.2218 89.225 37.1463 89.754 37.0707C90.0563 37.0707 90.283 37.0707 90.5853 37.0707C90.5853 37.2974 90.5853 37.5241 90.5853 37.7509C90.5853 39.2624 90.5853 40.6983 90.5853 42.2098C90.5853 42.9655 90.5853 43.0411 89.8296 43.1167C88.3937 43.3434 86.8822 43.5701 85.4462 43.6457C83.6324 43.7213 81.7431 43.7213 79.9293 43.6457C78.0399 43.6457 76.075 43.3434 74.2612 42.8144C71.3893 41.9831 69.1977 39.7914 68.3663 36.9195C67.7617 34.9546 67.3839 32.9141 67.3083 30.798C67.0816 27.8506 67.1571 24.8276 67.3839 21.8802C67.535 19.9908 67.9129 18.0258 68.5175 16.212C69.5 13.4913 71.8428 11.4508 74.7146 10.8462C76.3773 10.3928 78.0399 10.1661 79.7781 10.1661C81.7431 10.0905 83.6324 10.0905 85.5974 10.1661C87.1089 10.2416 88.6204 10.3928 90.0563 10.7707C90.3586 10.7707 90.5853 11.073 90.5098 11.3753C90.5098 11.3753 90.5098 11.3753 90.5098 11.4508C90.5098 13.1135 90.5098 14.7761 90.5098 16.5143C90.4342 16.5143 90.4342 16.5899 90.4342 16.8166Z" fill="currentColor"/>
+<path d="M151.045 19.915H157.696V20.6708C157.696 24.8274 157.696 29.0596 157.696 33.2162C157.696 33.972 157.696 34.7277 157.771 35.4835C157.847 36.8438 158.905 37.9018 160.265 37.9774C160.719 38.053 161.172 38.1286 161.626 38.1286C163.364 38.1286 165.178 38.053 166.916 37.9774C167.218 37.9774 167.521 37.9018 167.823 37.8263C168.201 37.7507 168.503 37.4484 168.503 37.0705C168.503 36.8438 168.503 36.6171 168.503 36.3904V19.915H175.38V40.6981C175.38 40.8493 175.38 41.0004 175.38 41.076C175.456 41.9829 174.776 42.8142 173.944 42.8898C173.869 42.8898 173.869 42.8898 173.793 42.8898C171.148 43.1921 168.503 43.4188 165.934 43.57C163.742 43.7211 161.55 43.6455 159.434 43.57C158.225 43.57 157.016 43.4188 155.882 43.0409C153.615 42.5119 151.801 40.6981 151.499 38.3553C151.272 37.2973 151.196 36.2392 151.196 35.1812C151.196 30.1932 151.196 25.2053 151.196 20.2929C150.97 20.2929 151.045 20.1418 151.045 19.915Z" fill="currentColor"/>
+<path d="M147.72 38.3559C147.72 39.9429 147.72 41.3788 147.72 42.8148C147.72 43.0415 147.569 43.1926 147.418 43.2682C147.418 43.2682 147.418 43.2682 147.342 43.2682C146.586 43.4194 145.831 43.5705 145.151 43.5705C143.488 43.6461 141.75 43.7217 140.087 43.7217C138.122 43.7972 136.233 43.6461 134.343 43.3438C133.059 43.1926 131.849 42.8148 130.716 42.2102C128.978 41.3033 127.693 39.7162 127.239 37.8268C126.861 36.3909 126.635 34.8794 126.559 33.2923C126.408 30.8739 126.559 28.4556 127.013 26.0372C127.693 22.6363 129.582 20.6713 133.134 19.84C136.082 19.311 139.029 19.0843 142.052 19.2354C143.639 19.2354 145.302 19.3866 146.889 19.6133C147.04 19.6133 147.267 19.6889 147.418 19.7644C147.569 19.84 147.72 19.9912 147.72 20.1423C147.72 21.6538 147.72 23.0897 147.72 24.6012C147.72 24.6012 147.72 24.6012 147.644 24.6768C147.418 24.6768 147.191 24.6768 146.889 24.6768C143.941 24.3745 140.918 24.2989 137.895 24.6012C137.291 24.6768 136.686 24.828 136.082 25.0547C134.872 25.4326 133.965 26.415 133.739 27.6998C133.21 30.1938 133.21 32.7633 133.663 35.2573C134.041 37.2222 135.326 38.2803 137.215 38.5826C137.82 38.7337 138.5 38.7337 139.18 38.8093C141.523 38.8093 143.941 38.7337 146.36 38.7337C146.738 38.507 147.191 38.4314 147.72 38.3559Z" fill="currentColor"/>
+<path d="M101.015 19.915V43.0409H94.2886V19.915H101.015Z" fill="currentColor"/>
+<path d="M186.489 43.0409H179.763V19.915H186.489V43.0409Z" fill="currentColor"/>
+<path d="M120.739 19.2354C117.792 19.0843 114.769 19.311 111.822 19.84C108.27 20.6713 106.456 22.7119 105.7 26.0372C105.322 28.0777 105.171 30.1182 105.322 32.1587V42.9659H112.124C112.124 42.9659 112.124 34.6527 112.124 31.8564C112.048 30.3449 112.199 28.909 112.502 27.4731C112.728 26.2639 113.635 25.2058 114.845 24.828C115.449 24.6012 115.978 24.4501 116.658 24.3745C119.077 24.1478 121.495 24.1478 123.838 24.2989V19.2354C122.855 19.311 121.797 19.2354 120.739 19.2354Z" fill="currentColor"/>
+<path d="M179.763 10.6191H183.542C185.129 10.6191 186.489 11.9039 186.489 13.5666V16.2117H179.763V10.6191Z" fill="currentColor"/>
+<path d="M94.2886 10.6191H98.0673C99.6544 10.6191 101.015 11.9039 101.015 13.491V16.1361H94.2886V10.6191Z" fill="currentColor"/>
+<path d="M204.325 24.9788C205.535 24.9788 206.819 24.9788 208.029 24.9788V19.8397H200.547V10.9219H193.669V15.9854C193.669 17.2702 193.669 18.5549 193.669 19.9153H189.588V24.9788H193.821C193.821 28.5308 193.821 32.0828 193.821 35.5593C193.821 36.5417 193.972 37.5242 194.123 38.5067C194.425 40.5472 195.861 42.2854 197.826 42.89C199.262 43.4191 200.773 43.6458 202.285 43.6458C204.174 43.6458 206.139 43.7214 208.029 43.6458V37.9777C206.668 37.9777 205.384 38.0532 204.023 38.0532C203.645 38.0532 203.267 37.9777 202.89 37.9021C201.605 37.7509 200.698 36.7685 200.622 35.4837C200.547 34.7279 200.471 33.9722 200.471 33.2165C200.471 30.4202 200.471 27.6995 200.471 24.9032L204.325 24.9788Z" fill="currentColor"/>
+<path d="M230.852 15.0027C230.852 16.4386 230.852 17.8745 230.852 19.2349C230.852 20.5952 230.928 22.0312 230.852 23.3915H218.156V10.7705H211.203V43.041H218.156V29.9665H230.777V40.4714C230.777 41.3027 230.777 42.2096 230.777 43.041H237.805V10.7705H230.777L230.852 15.0027Z" fill="#0099FF"/>
+<path d="M295.242 27.9265C295.167 26.6418 294.864 25.2814 294.486 24.0722C293.882 22.1073 292.446 20.5958 290.481 19.9912C289.574 19.6889 288.667 19.5377 287.76 19.3866C285.644 19.1599 283.528 19.1599 281.412 19.3866C279.976 19.5377 278.54 19.9912 277.255 20.7469C277.104 20.8225 277.029 20.8981 276.877 20.8981V19.9156V10.4688H270.076V40.7743C270.076 41.001 270.076 41.2277 270.151 41.4544C270.151 42.2102 270.756 42.8148 271.436 42.8148C272.948 43.0415 274.459 43.1927 276.046 43.3438C276.651 43.4194 277.255 43.4194 277.935 43.4194C278.54 43.4949 279.145 43.5705 279.749 43.5705C282.016 43.5705 284.284 43.5705 286.551 43.4194C287.836 43.3438 289.121 43.1171 290.33 42.7392C292.219 42.2102 293.731 40.8498 294.486 39.036C294.94 37.9024 295.242 36.6932 295.318 35.484C295.544 33.0656 295.544 30.4961 295.242 27.9265ZM288.516 34.7283C288.44 35.2573 288.365 35.7107 288.214 36.1642C287.911 37.5245 286.702 38.507 285.266 38.5826C283.528 38.8093 281.865 38.8093 280.127 38.5826C278.691 38.507 277.482 37.449 277.18 36.013C277.029 35.1817 276.877 34.3504 276.802 33.5191C276.726 32.8389 276.802 32.1587 276.802 31.4786C276.726 29.9671 276.802 28.4556 277.18 27.0196C277.406 25.6593 278.54 24.6012 279.9 24.4501C281.79 24.1478 283.679 24.1478 285.493 24.4501C286.778 24.6012 287.836 25.5081 288.138 26.7929C288.365 27.6998 288.516 28.6823 288.592 29.6648C288.667 31.3274 288.592 32.99 288.516 34.7283Z" fill="#0099FF"/>
+<path d="M259.117 19.9154V36.5419C259.117 37.5244 258.966 37.6755 257.983 37.9022C257.832 37.9022 257.681 37.9778 257.605 37.9778C255.716 38.0534 253.751 38.0534 251.862 38.129C251.484 38.129 251.106 38.0534 250.728 37.9778C249.443 37.8267 248.536 36.8442 248.461 35.5594C248.385 34.8037 248.31 34.0479 248.31 33.2922C248.31 29.06 248.31 24.8278 248.31 20.5956C248.31 20.3689 248.31 20.1421 248.31 19.8398H241.659C241.659 20.0666 241.659 20.2177 241.659 20.2933C241.659 25.3568 241.659 30.4203 241.659 35.4838C241.659 36.4663 241.81 37.4488 241.961 38.4313C242.264 40.4718 243.7 42.21 245.665 42.8146C247.101 43.3436 248.612 43.5703 250.124 43.5703C253.449 43.6459 256.774 43.5703 260.024 43.3436C261.535 43.1925 263.047 43.0413 264.634 42.8146C265.39 42.739 265.919 42.1344 265.919 41.4542C265.919 41.2275 265.994 41.0008 265.994 40.7741V20.4444C265.994 20.2933 265.994 20.0666 265.919 19.9154H259.117Z" fill="#0099FF"/>
+<path d="M42.822 38.8846L46.2984 35.4082L49.5481 32.1585C49.6237 32.0829 49.6993 31.9317 49.7748 31.8562C52.7223 28.5309 53.0246 24.2987 50.3794 20.5199C49.2458 19.0084 47.961 17.5725 46.6007 16.2877L42.2174 18.3283L40.328 22.636L40.6303 22.9383C41.8395 24.0719 41.9151 25.9613 40.7814 27.2461L29.5964 38.4312C29.2185 38.809 28.9162 39.1869 28.4627 39.4892C27.2535 40.5473 25.5153 40.4717 24.3817 39.3381C22.2656 37.3731 17.9578 33.0654 15.9929 30.9493C14.7081 29.5133 14.7837 27.8507 16.0685 26.4148C16.3708 26.1125 16.6731 25.8102 16.9754 25.5079L17.9578 24.5254H18.0334L18.7892 23.7696L27.178 15.3808C27.5558 15.003 27.9337 14.7007 28.3116 14.3228C29.5208 13.2647 31.259 13.3403 32.3926 14.4739L33.2995 15.3053L37.6829 13.4915L39.6478 8.95698C38.4386 7.74779 37.1538 6.53859 35.8691 5.40496C32.1659 2.15525 27.5558 2.07967 23.8527 5.10267C23.626 5.32939 23.4748 5.40496 23.2481 5.63169L20.0739 8.80583C18.638 10.2418 17.8067 11.0731 16.8242 12.0555L12.3653 16.5145L11.7607 17.1191L11.6851 17.1946L7.30179 21.4268C3.90092 24.8277 3.44747 29.2866 6.16817 33.2921C7.45294 34.9547 8.81329 36.5418 10.4004 37.9777C13.1211 40.6984 18.0334 45.7619 20.9053 48.2559C24.9107 51.8079 30.0498 51.5056 33.9041 47.7269C37.3806 44.326 40.0257 41.6809 42.822 38.8846Z" fill="#0099FF"/>
+<path d="M51.1348 33.8965L48.1118 36.9195L51.5127 40.3203C52.2684 41.0761 53.4776 41.0761 54.2334 40.3203L55.9716 38.5821L51.1348 33.8965Z" fill="#0099FF"/>
+<path d="M41.5371 43.4951L44.938 46.8959C45.6937 47.6517 46.9029 47.6517 47.6587 46.8959L49.3969 45.1577L44.6357 40.3965L41.5371 43.4951Z" fill="#0099FF"/>
+<path d="M34.9619 50.0693L38.3628 53.4701C39.1185 54.2259 40.3277 54.2259 41.0079 53.4701L42.7461 51.7319L37.9849 46.9707L34.9619 50.0693Z" fill="#0099FF"/>
+<path d="M21.4341 4.12002L18.0332 0.719155C17.2775 -0.0365933 16.0683 -0.0365933 15.3881 0.719155L13.6499 2.45738L18.4111 7.21859L21.4341 4.12002Z" fill="#0099FF"/>
+<path d="M14.8593 10.6952L11.4584 7.29435C10.7027 6.5386 9.49348 6.5386 8.73773 7.29435L6.99951 9.03257L11.8363 13.7938L14.8593 10.6952Z" fill="#0099FF"/>
+<path d="M8.28421 17.2704L4.88334 13.8695C4.12759 13.1138 2.91839 13.1138 2.16265 13.8695L0.5 15.6078L5.26121 20.2934L8.28421 17.2704Z" fill="#0099FF"/>
+</svg></div></a><div class="footer_subheading">On Demand Rapid <br/>Electronics Manufacturing</div></div><div id="w-node-f196daca-f050-89a7-b8dc-65e7bc922eda-e3c3ceb3" class="footer_cta"><a href="https://app.circuithub.com/signup" class="button-primary invert mobile-expand w-button">instant quote</a><a href="/company/contact" class="button-primary secondary invert mobile-expand w-button">contact sales</a></div><div class="footer-nav"><h4>Solutions</h4><ul role="list" class="footer-category w-list-unstyled"><li class="footer_list-item"><a href="https://circuithub.com/login/signup" class="footer_link">Instant Quote</a></li><li class="footer_list-item"><a href="/pricing" class="footer_link">Pricing</a></li></ul></div><div class="footer-nav"><h4>Resources</h4><ul role="list" class="footer-category w-list-unstyled"><li class="footer_list-item"><a href="/capabilities/pcb-stackups" aria-current="page" class="footer_link w--current">PCB Stackups</a></li><li class="footer_list-item"><a href="/capabilities/design-rules" class="footer_link">Design Rules</a></li><li class="footer_list-item"><a href="/blog" class="footer_link">Blog</a></li><li class="footer_list-item"><a href="https://www.pickplacepodcast.com/" class="footer_link">Podcast</a></li><li class="footer_list-item"><a href="http://docs.circuithub.com/" class="footer_link">Help Center</a></li></ul></div><div class="footer-nav"><h4>Company</h4><ul role="list" class="footer-category w-list-unstyled"><li class="footer_list-item"><a href="/company/about-us" class="footer_link">About Us</a></li><li class="footer_list-item"><a href="/company/careers" class="footer_link">Careers</a></li><li class="footer_list-item"><a href="/company/press" class="footer_link">Press</a></li><li class="footer_list-item"><a href="/company/contact" class="footer_link">Contact</a></li></ul></div><div class="footer-nav"><h4>Support</h4><ul role="list" class="footer-category w-list-unstyled"><li class="footer_list-item"><a href="mailto:support@circuithub.com?subject=Support" class="footer_link">support@circuithub.com</a></li><li class="footer_list-item"><a href="tel:+16174010319" class="footer_link">(US) +1 617 401 0319</a></li><li class="footer_list-item"><a href="tel:+16174010319" class="footer_link">(UK) +44 20 3322 2912</a></li></ul></div></div><div class="footer_bottom"><div class="footer_legal"><div>© 2026 CircuitHub</div><div>|</div><a href="/legal/terms-of-service" class="footer_link">Legal</a></div><div class="footer-logo-wraper"><div class="social-wraper"><a aria-label="twitter link" href="https://twitter.com/circuithub?lang=en" target="_blank" class="social-ico w-inline-block"><div class="icon-embed w-embed"><svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18.1761 4H20.9362L14.9061 10.7774L22 20H16.4456L12.0951 14.4066L7.11723 20H4.35544L10.8052 12.7508L4 4H9.69545L13.6279 9.11262L18.1761 4ZM17.2073 18.3754H18.7368L8.86441 5.53928H7.2232L17.2073 18.3754Z" fill="currentColor"/>
+</svg></div></a><a aria-label="instagram link" href="https://www.instagram.com/circuithub" target="_blank" class="social-ico w-inline-block"><div class="icon-embed w-embed"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"  fill='currentColor' /></svg></div></a><a aria-label="linkedin link" href="https://www.linkedin.com/company/circuithub" target="_blank" class="social-ico w-inline-block"><div class="icon-embed w-embed"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--bx" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><circle cx="4.983" cy="5.009" r="2.188" fill="currentColor"></circle><path d="M9.237 8.855v12.139h3.769v-6.003c0-1.584.298-3.118 2.262-3.118c1.937 0 1.961 1.811 1.961 3.218v5.904H21v-6.657c0-3.27-.704-5.783-4.526-5.783c-1.835 0-3.065 1.007-3.568 1.96h-.051v-1.66H9.237zm-6.142 0H6.87v12.139H3.095z" fill="currentColor"></path></svg></div></a><a aria-label="fcebook-link" href="https://www.facebook.com/CircuitHub/" target="_blank" class="social-ico w-inline-block"><div class="icon-embed w-embed"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--bx" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path d="M13.397 20.997v-8.196h2.765l.411-3.209h-3.176V7.548c0-.926.258-1.56 1.587-1.56h1.684V3.127A22.336 22.336 0 0 0 14.201 3c-2.444 0-4.122 1.492-4.122 4.231v2.355H7.332v3.209h2.753v8.202h3.312z" fill="currentColor"></path></svg></div></a></div></div></div></div><div data-w-id="2e01c1f9-0391-7a85-fddd-3f66ae8f453c" class="nav-trigger home"></div><div class="w-embed w-script"><script>
+/* Keep the footer copyright year current: "© 2026 CircuitHub" -> this year. */
+(function () {
+  var y = String(new Date().getFullYear());
+  document.querySelectorAll('.footer_legal > div').forEach(function (d) {
+    if (/©\s*\d{4}/.test(d.textContent)) d.textContent = d.textContent.replace(/©\s*\d{4}/, '© ' + y);
+  });
+})();
+</script>
+<style>
+/* Blog cards: make the whole card open the post (stretch the existing title link over the card). */
+.blog-item.w-dyn-item,.hero-blog-wrap{position:relative}
+.blog-item.w-dyn-item a.link-dark::after,.hero-blog-wrap a.w-inline-block::after{content:"";position:absolute;inset:0;z-index:1}
+.blog-item.w-dyn-item .category-container,.hero-blog-wrap .category-container{position:relative;z-index:2;pointer-events:none}
+.hero-blog-wrap a.w-inline-block{color:inherit;text-decoration:none}
+.blog-item.w-dyn-item h3{transition:color .15s}
+.blog-item.w-dyn-item:hover h3{color:#09f}
+.blog-item.w-dyn-item .blog-hero-prv,.hero-blog-wrap .blog-overlay-img{overflow:hidden}
+.blog-item.w-dyn-item .post-img,.hero-blog-wrap .blog-overlay-img img{transition:transform .35s ease}
+.blog-item.w-dyn-item:hover .post-img,.hero-blog-wrap:hover .blog-overlay-img img{transform:scale(1.03)}
+.blog-item.w-dyn-item a.link-dark:focus-visible,.hero-blog-wrap a.w-inline-block:focus-visible{outline:2px solid #09f;outline-offset:4px}
+</style>
+</div></footer><div class="w-embed"><style>
+@media screen and (max-width: 767px){
+.table-header .table-cell {
+    writing-mode: tb;
+    padding: 20px 0 20px 0;
+    transform: rotate(-180deg);
+    background-color: white;
+}
+}
+</style></div><div class="info-banner"><img src="https://cdn.prod.website-files.com/5e4f3506e94717077b3bdc54/5e4f3506e94717b07b3bdd99_ch-swipe.svg" alt="" class="ico-m"/><h4 class="gold-h">Swipe the table to see all details</h4><div data-w-id="22fe354d-296f-7b94-4947-c789df039e87" class="button-primary space_20"><div>Ok, got it</div></div></div></div></div><script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=5e4f3506e94717077b3bdc54" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script><script src="https://cdn.prod.website-files.com/5e4f3506e94717077b3bdc54/js/circuithub-staging.4aa27580.02537d5d74c7f392.js" type="text/javascript" integrity="sha384-ucqcMrfCC0rHE2/O7ghU4A2s+TD454NijthWQQwHY7tZgck2h7KUKnzN2TZ9KGpn" crossorigin="anonymous"></script><script>
+    //delay
+    $(".delay").click(function (e) {
+        e.preventDefault();
+        var linkUrl = $(this).attr("href");
+        setTimeout(
+            function (url) {
+                window.location = url;
+            },
+            700,
+            linkUrl,
+        );
+    });
+    //nav-2
+    $(function () {
+        var $el,
+            leftPos,
+            $mainNav = $("#main-nav");
+        var $magicLine = $("<div id='magic-line'></div>");
+        $("#main-nav .nav-item").hover(
+            function () {
+                if ($(window).innerWidth() >= 991) {
+                    $el = $(this);
+                    leftPos = $el.position().left;
+                    $mainNav.append($magicLine);
+                    var $active = $("#main-nav .nav-item.active").length
+                        ? $("#main-nav .nav-item.active")
+                        : $(".w--current");
+
+                    $magicLine
+                        .width($el.width())
+                        .css("left", $active.position().left)
+                        .data("origLeft", $magicLine.position().left)
+                        .data("origWidth", $magicLine.width());
+
+                    $magicLine.stop().animate({
+                        left: leftPos,
+                    });
+
+                    $("#main-nav .nav-item.active").removeClass("active");
+                    $el.addClass("active");
+                }
+            },
+            function () {
+                if ($(window).innerWidth() >= 991) {
+                    $magicLine.stop().animate({
+                        left: $magicLine.data("origLeft"),
+                        width: $magicLine.data("origWidth"),
+                    });
+
+                    $magicLine.remove();
+                }
+            },
+        );
+    });
+    //nav-2
+</script>
+<style>
+    #magic-line {
+        position: absolute;
+        bottom: 0px;
+        left: 20px;
+        width: 0px;
+        height: 2px;
+        background: #0099ff;
+        -webkit-transition: width 300ms ease;
+        transition: width 300ms ease;
+    }
+</style>
+<script type="text/javascript">
+    //news cut
+    $(function () {
+        $(".blog-dscp").each(function (i) {
+            len = $(this).text().length;
+            if (len > 100) {
+                $(this).text($(this).text().substr(0, 100) + "…");
+            }
+        });
+    });
+</script>
+
+<script>
+    //prevent body scroll navigation
+    Webflow.push(function () {
+        $(".modal-open").click(function (e) {
+            e.preventDefault();
+            {
+            }
+            $("html, body").css("overflow", "hidden");
+        });
+        $(".modal-close").click(function (e) {
+            e.preventDefault();
+            {
+            }
+            $("html, body").css("overflow", "initial");
+        });
+    });
+</script>
+<style>
+    .login-open .login-form-wrap {
+        display: block;
+    }
+    .target {
+        position: fixed;
+        border-bottom: 4px solid transparent;
+        z-index: -1;
+        top: 45px;
+    }
+
+    .mynav a,
+    .target {
+        transition: all 0.35s ease-in-out;
+    }
+    .no-hover .nav-link {
+        opacity: 1 !important;
+    }
+</style>
+
+<style>
+    #ch-cookie-banner {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #0f172a;
+        color: #f1f5f9;
+        padding: 16px 24px;
+        z-index: 9999;
+        font-family:
+            "Roboto Flex",
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            Roboto,
+            sans-serif;
+        font-size: 14px;
+        line-height: 1.5;
+        box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.15);
+        display: none;
+    }
+    #ch-cookie-banner.ch-visible {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    #ch-cookie-banner p {
+        margin: 0;
+        flex: 1 1 320px;
+    }
+    #ch-cookie-banner a {
+        color: #93c5fd;
+        text-decoration: underline;
+    }
+    #ch-cookie-banner .ch-buttons {
+        display: flex;
+        gap: 8px;
+        flex-shrink: 0;
+    }
+    #ch-cookie-banner button {
+        padding: 8px 16px;
+        border-radius: 6px;
+        border: none;
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+    }
+    #ch-cookie-banner .ch-accept {
+        background: #4b5be8;
+        color: white;
+    }
+    #ch-cookie-banner .ch-decline {
+        background: transparent;
+        color: #f1f5f9;
+        border: 1px solid #475569;
+    }
+    #ch-cookie-banner .ch-accept:hover {
+        background: #3a4ad6;
+    }
+    #ch-cookie-banner .ch-decline:hover {
+        background: #1e293b;
+    }
+</style>
+
+<div id="ch-cookie-banner" role="region" aria-label="Cookie consent">
+    <p>
+        We use cookies to make CircuitHub work and, with your consent, to
+        connect campaign visits with signup and your workspace’s quote and order activity. See our
+        <a href="/legal/privacy-policy">Privacy Policy</a> for details.
+    </p>
+    <div class="ch-buttons">
+        <button class="ch-decline" type="button">Decline</button>
+        <button class="ch-accept" type="button">Accept</button>
+    </div>
+</div>
+
+<!-- BEGIN GENERATED CAMPAIGN TRACKING -->
+<script>(()=>{var H=["utm_source","utm_medium","utm_campaign","utm_content","utm_term"];function W(J){try{let L=document.cookie.split("; ").find((q)=>q.startsWith(`${J}=`));return L?decodeURIComponent(L.slice(J.length+1)):null}catch{return null}}function D(J,L,q){let Q=location.hostname==="circuithub.com"||location.hostname.endsWith(".circuithub.com")?"; Domain=circuithub.com":"";document.cookie=`${J}=${encodeURIComponent(L)}; Path=/; Max-Age=${q}; SameSite=Lax${location.protocol==="https:"?"; Secure":""}${Q}`}function F(){let J=W("ch_analytics_consent")?.split(":");if(J?.[0]!=="2026-10-13")return null;return J[1]==="accepted"||J[1]==="declined"?J[1]:null}function N(){return W("ch_analytics_consent")}var G=null;function $(){return G!==null||F()==="accepted"}function x(){U.delete(document),D("ch_campaign_attribution","",0),D("ch_campaign_browser_id","",0)}function _(J){if(D("ch_analytics_consent",`2026-10-13:${J}:${Date.now()}`,15552000),J==="declined")x(),D("ph_ch_campaign","",0);window.dispatchEvent(new CustomEvent("ch-consent-changed",{detail:{choice:J,version:"2026-10-13",timestamp:new Date().toISOString()}}))}function M(J){let L=(Q)=>J.searchParams.get(Q)??"",q=L("utm_campaign");if(!H.some((Q)=>L(Q)))return null;return{at:new Date().toISOString(),utm_source:L("utm_source"),utm_medium:L("utm_medium"),utm_campaign:q,utm_content:L("utm_content"),utm_term:L("utm_term")}}var O=!1,U=new WeakMap;function b(){let J=performance.getEntriesByType("navigation")[0];if(J?.type==="reload"||J?.type==="back_forward")return!0;if(!document.referrer)return!1;try{let L=new URL(document.referrer).hostname;return L===location.hostname||L==="circuithub.com"||L.endsWith(".circuithub.com")}catch{return!0}}function T(){if(O||!$())return null;try{let J=W("ch_campaign_attribution")??"null",L=J.startsWith("b64:")?new TextDecoder().decode(Uint8Array.from(atob(J.slice(4)),(X)=>X.charCodeAt(0))):J,q=JSON.parse(L),Q=(X)=>X&&typeof X.at==="string"&&Date.parse(X.at)>Date.now()-15552000000&&Date.parse(X.at)<=Date.now()&&[X.utm_source,X.utm_medium,X.utm_campaign,X.utm_content].every((Z)=>typeof Z==="string")&&(X.utm_term===void 0||typeof X.utm_term==="string");return q&&Q(q.first)&&Q(q.latest)?q:null}catch{return null}}function B(J=new URL(location.href)){if(!$())return null;let L=M(J),q=T();if(!L)return q;let Q=JSON.stringify([N(),...H.map((Y)=>L[Y]??"")]),X=U.get(document)??new Set,Z=q&&H.every((Y)=>(q.latest[Y]??"")===(L[Y]??""));if(X.has(Q)||q&&b()||Z&&!document.referrer)return X.add(Q),U.set(document,X),q;let I={first:q?.first??L,latest:L},f=new TextEncoder().encode(JSON.stringify(I)),z="b64:"+btoa(Array.from(f,(Y)=>String.fromCharCode(Y)).join(""));O=!0;try{if(D("ch_campaign_attribution",z,15552000),W("ch_campaign_attribution")===z)return O=!1,X.add(Q),U.set(document,X),I}catch{}try{D("ch_campaign_attribution","",0)}catch{}return null}function S(){let J=T();return{analytics_consent_basis:G?"terms_acceptance":"cookie_banner",legal_consent_accepted_at:G,...J?{campaign_first_touch:J.first,campaign_latest_touch:J.latest,analytics_consent_version:"2026-10-13"}:{}}}function w(J){if($()&&/^[a-f0-9-]{36}$/i.test(J))D("ch_campaign_browser_id",J,15552000)}var P="phc_kv9LKerCAbtVsrhm7zUiuMswtKEgk2TkEqWRc9Gpd3Ys",R={api_host:"https://us.i.posthog.com",persistence:"cookie",persistence_name:"ch_campaign",cross_subdomain_cookie:!0,cookie_expiration:180,opt_out_capturing_by_default:!$(),opt_out_persistence_by_default:!0,advanced_disable_flags:!0,disable_session_recording:!0,disable_external_dependency_loading:!0,before_send:(J)=>$()?J:null,autocapture:!1,person_profiles:"identified_only",capture_pageview:"history_change",capture_pageleave:"if_capture_pageview",capture_exceptions:{capture_unhandled_errors:!0,capture_unhandled_rejections:!0,capture_console_errors:!0}};B();window.addEventListener("ch-consent-changed",()=>B());var E=M(new URL(location.href));for(let J of document.querySelectorAll("a[href]")){let L=J.getAttribute("href");if(!L||L.startsWith("#"))continue;let q;try{q=new URL(L,location.href)}catch{continue}if(q.protocol!=="https:"||![location.hostname,"circuithub.com","www.circuithub.com","app.circuithub.com"].includes(q.hostname))continue;if(["circuithub.com","www.circuithub.com"].includes(q.hostname)&&q.pathname==="/login/signup")q.hostname="app.circuithub.com",q.pathname="/signup";if(E){for(let Q of H)if(q.searchParams.delete(Q),E[Q])q.searchParams.set(Q,E[Q])}J.href=q.href}var j=document.getElementById("ch-cookie-banner"),K=document.createElement("button");K.type="button";K.textContent="Cookie preferences";K.setAttribute("data-ch-cookie-prefs","");K.style.cssText="position:fixed;bottom:8px;right:8px;z-index:9998;border:1px solid #475569;border-radius:4px;background:#0f172a;color:white;padding:4px 8px;font-size:12px";document.body.append(K);window.chCookieConsent=$;var V=document.createElement("script");V.src="https://cdn.jsdelivr.net/npm/posthog-js@1.376.4/dist/array.js";V.integrity="sha384-dCQ102EdPiI9LIdfFoYzgSWlZc5RN1i8DKfK1L4FFMxn6CwMzPHpwFESqRzypx5M";V.crossOrigin="anonymous";V.async=!0;V.referrerPolicy="no-referrer";V.onload=()=>{let J,L=(q)=>{let Q=N();if(Q===J)return!1;let X=J;J=Q;let Z=F();if(Z==="accepted"){if(B(),q.get_explicit_consent_status()!=="granted")q.opt_in_capturing();w(q.get_distinct_id())}else if(Z==="declined")q.reset(),q.opt_out_capturing();else if(X!==void 0||q.get_explicit_consent_status()!=="pending")q.reset(),q.opt_out_capturing(),q.clear_opt_in_out_capturing();return!0};window.posthog?.init(P,{...R,cookieless_mode:"on_reject",opt_out_capturing_by_default:!0,opt_out_persistence_by_default:!1,opt_out_capturing_persistence_type:"cookie",capture_pageview:!0,capture_pageleave:!1,capture_exceptions:!1,before_send:(q)=>{if(!q)return null;if(window.posthog&&L(window.posthog))return null;for(let[Q,X]of Object.entries(q.properties)){if(Q.endsWith("ph_keyword")){delete q.properties[Q];continue}if(typeof X!=="string")continue;if(!/(?:url|referrer)$/.test(Q)||!/^https?:\/\//.test(X))continue;try{let Z=new URL(X);q.properties[Q]=Z.origin+Z.pathname}catch{delete q.properties[Q]}}if($())Object.assign(q.properties,S());return q},loaded:(q)=>{L(q),window.addEventListener("ch-consent-changed",()=>L(q)),window.addEventListener("focus",()=>L(q)),document.addEventListener("visibilitychange",()=>L(q)),window.setInterval(()=>L(q),1000)}})};document.head.append(V);if(F()===null)j?.classList.add("ch-visible");j?.querySelector(".ch-accept")?.addEventListener("click",()=>{_("accepted"),j.classList.remove("ch-visible")});j?.querySelector(".ch-decline")?.addEventListener("click",()=>{_("declined"),j.classList.remove("ch-visible")});document.addEventListener("click",(J)=>{if(J.target instanceof Element&&J.target.closest("[data-ch-cookie-prefs]"))J.preventDefault(),j?.classList.add("ch-visible")});})();
+</script>
+<!-- END GENERATED CAMPAIGN TRACKING -->
+</body></html>

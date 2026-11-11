@@ -1,0 +1,171 @@
+      Data Sheet
+High thermal conductivity Low transmission loss
+ Halogen-free Multi-layer circuit board materials
+Material for PA and Antenna application
+                                                 Laminate R-5575X
+                                                 Prepreg R-5470X
+                                             Any letters with parentheses ( ) at the end of a part
+                                             number are for identification code in our company
+                                             and are not included in the part numbers registered
+                                             for UL certification.
+
+
+
+
+                         Jul. 2024   No.240724
+                                                                                                                                 No.; 240724
+
+                              General Properties / Laminate R-5575X
+                                                                                                                          Typical Values
+                            Items                                      Units             Test Method         Condition
+                                                                                                                            R-5575X
+                                                                                             TMA            As received        205
+                          Glass Transition Temp ( Tg )                   C
+                                                                                             DMA            As received        245
+                      Thermal Decomposition Temp ( Td )                  C                   TGA            As received        440
+
+                        Time to Delam                 Without Cu        min          IPC TM-650 2.4.24.1    As received       > 120
+                           ( T288 )                    With Cu          min          IPC TM-650 2.4.24.1    As received       > 120
+ THERMAL
+                                                        X - axis      ppm / C         IPC TM-650 2.4.24        < Tg          13 - 16
+                           CTE : α1                     Y - axis      ppm / C         IPC TM-650 2.4.24        < Tg          13 - 16
+                                                        Z - axis      ppm / C         IPC TM-650 2.4.24        < Tg            20
+                           CTE : α2                     Z - axis      ppm / C         IPC TM-650 2.4.24        > Tg            155
+                               Thermal Conductivity                   W/mK                Laser flash          25C            0.60
+                                Volume Resistivity                    MΩ - cm        IPC TM-650 2.5.17.1    C-96/35/90       1 x 10 9
+                                Surface Resistivity                     MΩ           IPC TM-650 2.5.17.1    C-96/35/90       1 x 10 8
+                                                       @ 1GHz             -           IPC TM-650 2.5.5.9    C-24/23/50        3.73
+ELECTRICAL         Dielectric Constant ( Dk )
+                                                      @ 13GHz             -                 “ Note 1        C-24/23/50        3.60
+                                                       @ 1GHz             -           IPC TM-650 2.5.5.9    C-24/23/50        0.002
+                    Dissipation Factor ( Df )
+                                                      @ 13GHz             -                 “ Note 1        C-24/23/50       0.0045
+                                 Water Absorption                        %            IPC TM-650 2.6.2.1     D-24/23          0.23
+ PHYSICAL                Peel Strength                1oz ( RTF )      kN / m          IPC TM-650 2.4.8     As received        0.8
+                                    Flammability                          -                 UL 94V          C-48/23/50        94V-0
+  Sample thickness : 30 mil = 0.76 mm ( Core Type 30 ) #1078 x 9ply
+  Note 1 : Balanced-type Circular Disk Resonance Method [ IEC 63185 (2020) ]
+* The data in the above table represents typical values for your reference and are not guaranteed values.
+
+                                                                                                                                        1
+                                                                                                                                   No.; 240724
+
+                            Dielectric Properties / Laminate R-5575X
+
+ 1GHz ; IPC TM650-2.5.5.9
+ 13-55GHz ; Balanced-type Circular Disk Resonance Method [ IEC 63185 (2020) ]
+
+                 Actual Thickness                            Typical                                    Typical Dk
+    Core                                 Cloth
+                                                              Resin
+                                                     ply
+                                                             Content
+    Type         mil          mm         Style                             1GHz        13GHz       23GHz        34GHz   45GHz   55GHz
+                                                               (%)
+
+      4          4.0         0.102        1078        1         75         3.60         3.49        3.49         3.49   3.49    3.49
+      5          5.0         0.127        3313        1         66         3.80         3.66        3.66         3.66   3.66    3.66
+      5          5.0         0.127        1078        1         79         3.53         3.42        3.42         3.42   3.42    3.42
+      6          6.0         0.152        2116        1         63         3.87         3.72        3.72         3.72   3.72    3.72
+     6.6         6.6         0.168        1078        2         69         3.73         3.60        3.60         3.60   3.60    3.60
+     6.6         6.6         0.168        1067        2         80         3.51         3.40        3.40         3.40   3.40    3.40
+      8          8.0         0.203        1078        2         75         3.60         3.49        3.49         3.49   3.49    3.49
+     10          10.0        0.254        1078        3         69         3.73         3.60        3.60         3.60   3.60    3.60
+     10          10.0        0.254        3313        2         66         3.80         3.66        3.66         3.66   3.66    3.66
+    13.3         13.3        0.338        1078        4         69         3.73         3.60        3.60         3.60   3.60    3.60
+    13.3         13.3        0.338        1067        4         80         3.51         3.40        3.40         3.40   3.40    3.40
+    16.6         16.6        0.422        1078        5         69         3.73         3.60        3.60         3.60   3.60    3.60
+    16.6         16.6        0.422        1067        5         80         3.51         3.40        3.40         3.40   3.40    3.40
+     20          20.0        0.508        1078        6         69         3.73         3.60        3.60         3.60   3.60    3.60
+     20          20.0        0.508        3313        4         66         3.80         3.66        3.66         3.66   3.66    3.66
+     30          30.0        0.762        1078        9         69         3.73         3.60        3.60         3.60   3.60    3.60
+     30          30.0        0.762        3313        6         66         3.80         3.66        3.66         3.66   3.66    3.66
+
+
+
+
+* The data in the above table represents typical values for your reference and are not guaranteed values.
+
+                                                                                                                                        2
+                                                                                                                                      No.; 240724
+
+                            Dielectric Properties / Laminate R-5575X
+
+ 1GHz ; IPC TM650-2.5.5.9
+ 13-55GHz ; Balanced-type Circular Disk Resonance Method [ IEC 63185 (2020) ]
+
+                 Actual Thickness                            Typical                                    Typical Df
+    Core                                 Cloth
+                                                              Resin
+                                                     ply
+                                                             Content
+    Type         mil          mm         Style                             1GHz        13GHz       23GHz        34GHz    45GHz    55GHz
+                                                               (%)
+
+      4          4.0         0.102        1078        1         75         0.002       0.0044      0.0046       0.005    0.0053   0.0056
+      5          5.0         0.127        3313        1         66         0.002       0.0045      0.0048       0.0052   0.0056   0.0059
+      5          5.0         0.127        1078        1         79         0.002       0.0043      0.0046       0.0049   0.0052   0.0055
+      6          6.0         0.152        2116        1         63         0.002       0.0046      0.0049       0.0053   0.0057   0.006
+     6.6         6.6         0.168        1078        2         69         0.002       0.0045      0.0048       0.0051   0.0055   0.0058
+     6.6         6.6         0.168        1067        2         80         0.002       0.0043      0.0046       0.0049   0.0052   0.0055
+      8          8.0         0.203        1078        2         75         0.002       0.0044      0.0046       0.005    0.0053   0.0056
+     10          10.0        0.254        1078        3         69         0.002       0.0045      0.0048       0.0051   0.0055   0.0058
+     10          10.0        0.254        3313        2         66         0.002       0.0045      0.0048       0.0052   0.0056   0.0059
+    13.3         13.3        0.338        1078        4         69         0.002       0.0045      0.0048       0.0051   0.0055   0.0058
+    13.3         13.3        0.338        1067        4         80         0.002       0.0043      0.0046       0.0049   0.0052   0.0055
+    16.6         16.6        0.422        1078        5         69         0.002       0.0045      0.0048       0.0051   0.0055   0.0058
+    16.6         16.6        0.422        1067        5         80         0.002       0.0043      0.0046       0.0049   0.0052   0.0055
+     20          20.0        0.508        1078        6         69         0.002       0.0045      0.0048       0.0051   0.0055   0.0058
+     20          20.0        0.508        3313        4         66         0.002       0.0045      0.0048       0.0052   0.0056   0.0059
+     30          30.0        0.762        1078        9         69         0.002       0.0045      0.0048       0.0051   0.0055   0.0058
+     30          30.0        0.762        3313        6         66         0.002       0.0045      0.0048       0.0052   0.0056   0.0059
+
+
+
+* The data in the above table represents typical values for your reference and are not guaranteed values.
+
+                                                                                                                                           3
+                                                                                                                                  No.; 240724
+
+                              Dielectric Properties / Prepreg R-5470X
+
+
+        1GHz ; IPC TM650-2.5.5.9
+        13-55GHz ; Balanced-type Circular Disk Resonance Method [ IEC 63185 (2020) ]
+                          Resin        Typical                                           Typical Dk
+            Cloth
+                         Content      Thickness
+            Style
+                          (%)           ( um )         1GHz          13GHz          23GHz           34GHz       45GHz    55GHz
+
+                            78            75            3.54          3.44           3.44                3.44    3.44     3.44
+
+            1067            81            90            3.49          3.38           3.38                3.38    3.38     3.38
+
+                            83           100            3.45          3.35           3.35                3.35    3.35     3.35
+
+            1078            79           125            3.53          3.42           3.42                3.42    3.42     3.42
+
+
+
+                          Resin        Typical                                              Typical Df
+            Cloth
+                         Content      Thickness
+            Style
+                          (%)           ( um )         1GHz          13GHz          23GHz           34GHz       45GHz    55GHz
+
+                            78            75           0.002         0.0043         0.0046          0.0049      0.0052   0.0055
+
+            1067            81            90           0.002         0.0043         0.0046          0.0049      0.0052   0.0055
+
+                            83           100           0.002         0.0042         0.0045          0.0047      0.0050   0.0052
+
+            1078            79           125           0.002         0.0043         0.0046          0.0049      0.0052   0.0055
+
+
+
+
+* The data in the above table represents typical values for your reference and are not guaranteed values.
+
+                                                                                                                                      4
+

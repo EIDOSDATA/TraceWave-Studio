@@ -1,0 +1,157 @@
+                                                    Confidential
+
+
+
+
+           N4350-13 RF & N4380-13 RF
+                                   General Processing Guidelines
+
+
+
+
+Microwave Performance,                                        • Option 2: Brown oxide with controlled dissolution
+Modified Epoxy                                                post-treatment.
+N4350-13 RF and N4380-13 RF are enhanced epoxy                • Option 3: Peroxysulfuric oxide alternative or white
+systems specifically designed for RF and Microwave            (Sn) oxide.
+applications that required tightly controlled
+electrical properties while also providing the                Note: The brown oxide deposit should be tested
+reliability and competitiveness of an epoxy material.         using a weight loss test. Thick oxide deposits tend
+                                                              to yield poor thermal resistance. The oxide deposit
+                                                              should not exceed 0.4 mg/cm2.
+Material Handling & Storage
+Store laminates flat in a dry environment. Do not
+bend, scratch or dent laminate.                               Inner Layer Drying
+Store prepreg flat, with a storage temperature of             Inner layers should be oven dried to remove
+<72° F (<23°C) and ≤50% RH.                                   absorbed moisture. Absorbed moisture in the inner
+For extended prepreg storage, reduce storage                  layer can affect the curing properties of the
+temperature to <41° F (<5°C).                                 prepreg. Conveyorized warm air drying is usually
+Reseal opened bags of unused prepreg.                         not effective in removing absorbed moisture from
+                                                              the etched layer.
+Copper & Surface Preparation
+Prepare copper surface for photo resist application                                      Recommendations
+according to the following options:
+The type of copper surface preparation employed
+should relate to the foil type as specified below:                             230°F (110°C) in vertical racks with
+                                                               Signal layers   minimum 0.5” (12 mm) separation for
+• Reverse Treat Foil (RTFoil®): Chemical clean                                 30 minutes
+followed by a light tack clean.                                Plane layers
+• Shiny Copper Foil: Chemical and / or Mechanical                              230°F (110°C) in vertical racks with
+                                                               and plated
+ clean followed by a light tack clean.                           sub-lam       minimum 0.5” (12 mm) separation for
+• Double Treat Foil: Chemical clean followed by a                              60 minutes
+                                                                  layers
+light tack clean.
+                                                              Note:
+Note: Chemical clean consists of a mild cleaner to
+                                                              1) If inner layers are baked horizontally in stacks of
+remove soils followed by a mild acid to remove the
+                                                              1-2” (25-50mm) extend time to at least 90 minutes.
+passivation.
+                                                              2) Check with oxide supplier if suing DMAB oxide
+                                                              reducer. Excessive exposure to heat may re-oxidize
+Bond Enhancing Treatments                                     the reduced treatment.
+One of the following options can be used                      3) Drying temperatures below 212°F (100°C) are not
+successfully:                                                 effective in removing absorbed moisture from the
+• Option 1: Brown oxide with DMAB                             layer.
+(dimethylamino borane) reduction.
+                                                    Confidential
+
+
+
+
+Lay-up
+For best results, use inner layers within 2 hours after drying. Rebake inner layers if not used within 24 hours.
+
+Lamination
+For best results, fully cure in vacuum assisted hydraulic press
+
+                                                               Recommendations
+                                             A minimum of 28.5” Hg (965 mbars) for 15-30 minutes
+  Vacuum Gauge Pressure
+                                                        before applying heat & pressure.
+       Heat Up Rate*                                       4 - 8°F (2 - 4 °C) per minute
+       Critical Range                                       180 – 280°F (80 – 140°C)
+          Pressure                                          275 - 350 psi (19 - 25 bar)
+      Cure Time, Temp                             90 minutes @ 380 °F (90 minutes @ 193 °C)
+      Cool Down Rate                      7ºF (4°C) per minute or less until stack reaches 260°F (127°C)
+        Breakdown                                 After panels have cooled below 150°F (65 °C)
+
+*Note: Heat rise is usually controlled by using an acceptable thermal lagging such as kraft paper or press pads.
+Alternately the heat rise can be controlled by ramping the platen temperature about 5 – 10 °F (5 °C) higher than
+book temperatures and controlling the heat up rate through the critical temperature range.
+
+Drilling
+  Typical Drill Parameters                                     Recommendations
+          Drill Sizes             0.010” – 0.018” (0.25 – 0.46 mm)              0.020” - 0.040” (0.5 – 1.0 mm)
+       Surface Speed              300 – 400 SFM (91– 122 m/min.)               350-450 SFM (107 – 138 m/min.)
+          Chip Load              0.5 – 1.5 mils/rev (12 – 38 µm/rev)          1.0 – 2.5 mils/rev (25 - 63 µm/rev)
+    Maximum Hit Count                        500 - 1000                                    750 – 1200
+    Typical Stack Height           0.045” – 0.100” (1.1 – 2.5 mm)               0.045” – 0.100” (1.1 - 2.5 mm)
+
+Note: Undercut drills are recommended for small hole drills < 0.0185” (0.47 mm). Peck drilling is recommended
+for panel thicknesses greater than .100” (2.5mm). Lubricated entry and/or back-up materials may be used to
+reduce the heat generation during drilling.
+
+Drilling parameters should be adjusted depending on hole size, layer count, panel thickness, copper content and
+stack height. For specific feed and speed parameters, contact your drill supplier or AGC’S technical
+representative. Detailed typical drilling parameters are available for many products. Please contact us at agc-
+ml.multimaterial@agc.com.
+
+
+Post Drill Bake
+An annealing bake of the drilled panel is recommended for optimal hole wall performance. Panels should be
+baked in a preheated oven at 356ºF (180ºC) for 2-4 hours. Allow the panels to cool at a rate less than 8ºF/min
+(4.5ºC/min).
+                                                       Confidential
+
+
+
+
+Hole Cleaning (Resin Smear Removal)
+Plasma desmear or a plasma desmear followed by a mild permanganate desmear is preferred. Solvent swell and
+permanganate etch processes can be used but care should be taken to limit the activity and contact times of both
+solvent and permanganate baths.
+
+Plasma: Typical desmear conditions
+           Temperature                  Gas mixture                    Power                          Time
+              80 2C              10%CF4 , 80% O2, 10% N2            4000 W                        15-20 min
+
+
+Note: Depending on the amount of resin removal required, a preheat cycle and an oxygen burn cycle for ash
+removal may be necessary. Excessive etch-back (> 1.0 mil) of this material is not recommended as it may
+adversely affect wicking in the hole wall. See your technical representative for additional information.
+
+Chemical Desmear:
+                        Type                    Temp (°F /°C)                               Time
+          Butyl / hydroxide solvent            173 ± 5 / 78 ± 2                        4 - 6 min.
+      Alkaline Permanganate oxidizer           175 ± 5 / 79 ± 2                       8 - 12 min.
+
+Note 1: Cyclic amine solvent swellers such as n-methyl pyrolidone (NMP) are not recommended.
+Note 2: Control hydroxyl concentration in the permanganate bath below 1.05N (42 g/l for NaOH)
+
+Routing
+           Typical Drill Parameters                                   Recommendations
+                  Stack Height                                        0.250” (6.25 mm)
+                       Tool Size                                       0.093” (2.4 mm)
+                   Feed Rate                                          60 IPM (1.5 m/min.)
+                        Speed                                              24K RPM
+
+Note : When V-scoring, please ensure that care is used when removing the break away tabs to avoid damaging
+the PCB.
+
+
+
+    These guidelines can provide only basic and reference information for PCB fabricators. Because of different
+    environment, equipment, tooling and so on, in all instances, the user shall determine suitability in any given
+    conditions or applications. For more detailed processing information, please contact with the AGC engineer or
+    sales representative.
+
+
+.
+
+
+
+
+    AGC Inc. 2025-07
+    agc-ml.multimaterial@agc.com
+

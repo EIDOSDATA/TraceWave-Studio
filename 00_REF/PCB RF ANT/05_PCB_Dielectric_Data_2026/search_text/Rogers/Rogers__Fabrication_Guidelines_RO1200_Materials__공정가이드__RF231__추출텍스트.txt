@@ -1,0 +1,203 @@
+                                                                                              Fabrication
+                                                                                              Technical Articles
+                                                                                                          Notes
+
+
+XtremeSpeedTM RO1200TM
+Extremely Low Loss Digital Laminate and Bondply
+Material Description:
+XtremeSpeed™ RO1200™ product family includes copper clad ceramic filled, woven glass reinforced polytetrafluoroethylene
+(PTFE) cores and unreinforced ceramic filled PTFE bondply layers. RO1200 cores are available in thicknesses ranging from 0.003”
+to 0.010” and clad with 72 micron (2 oz/sq ft) reverse-treat or 18 and 36 micron (1/2 oz & 1 oz/sq ft) rolled copper foils. The
+RO1200 bondply layers, available in thicknesses of 0.0025”, 0.003”, 0.004”, and 0.005”, can also be stacked to yield thicker copper
+plane:copper plane spacing. The RO1200 core and bondply materials are engineered to offer exceptional electrical performance
+and mechanical stability for the most demanding high speed applications.
+
+These guidelines are offered to provide fabricators with basic information on processing multilayer test vehicles using RO1200
+core and RO1200 bondply materials. These guidelines will be updated as new processing information is developed. For the most
+current and specific processing information, please contact a Rogers Technical Service or Sales Representative.
+
+Storage:
+RO1200 core and RO1200 bondply layers can be stored indefinitely at ambient conditions. A FIFO inventory system is
+recommended as is a method of record keeping that would allow tracking of material lot numbers through PWB processing and
+delivery of test circuits.
+
+INNER-LAYER PREPARATION:
+
+Tooling:
+RO1200 materials are compatible with many tooling systems. Choosing whether to use round or slotted pins, external or internal
+pinning, standard or centerline (Multiline) tooling, and pre vs. post- etch punching would depend upon the capabilities and
+preferences of the circuit facility and the final registration requirements. In general, slotted pins, a centerline tooling format, and
+post-etch punching will meet most needs. Whichever approach is used, it is good practice to retain copper around tooling holes.
+Generally speaking, it is advised to keep copper around tooling holes on both sides of cores clad using 18 micron copper foil and
+on one side only when processing cores clad using 36 or 72 micron copper foils.
+
+Venting patterns typically used for high flow epoxy glass material systems are not appropriate for RO1200 bondply. A venting
+profile in which copper dots on opposing layers interlock instead of stack vertically is preferred for signal layers. The copper dots
+can be 0.0150” in diameter and spaced on 0.300” to 0.350” centers. A nearly solid starburst pattern is recommended for venting
+plane layers. The venting channels on opposing sides of plane over plane inner-layers should be offset such that at one side of the
+core has retained copper cladding. Vertically stacked copper frames around low pressure areas (example, IPC coupons and x-ray
+accessible fiducials)
+should be avoided whenever possible.
+
+Scaling:
+It is recommended to run a first article to determine potential material movement through inner-layer preparation and multilayer
+bonding. As starting points, 0.15 mils/inch to 0.45mils/inch of growth is expected in the 18” and 24” core directions when bonding
+RO1200 cores using RO1200 bondply.
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                              Page 1 of 4
+Surface Preparation for Photoresist Application:
+A chemical process consisting of organic cleaners and a microetch is the preferred method for the preparation of copper surfaces
+prior to coating with liquid or film photoresist. A conveyorized spray system using an abrasive substance suspended in a liquid
+carrier can be used to prepare copper surfaces at the slight risk of some registration control. Mechanical scrubbing of thin RO1200
+cores should be avoided. Whether leaderboards are required would be dependent upon the core thickness and the capability of
+the processing equipment. Care should be taken when removing tape if leader boards were required.
+
+Photoresist Application:
+RO1200 materials are compatible with most methods of applying liquid and film photoresist.
+
+DES Processing:
+Developers and strippers compatible with the photoresist system of choice should be used. RO1200 materials are compatible with
+any copper etching system.
+
+Oxide Treatment:
+Traditional black and brown oxide deposits typically lack the reliability to survive exposure to the bond temperatures required
+to press RO1200 bondply (700F) bonded MLBs. Many oxide alternatives such as Bondfilm™ from Atotech and Multibond™ from
+MacDermid can be used. It is best to use the process recommended by the supplier of the oxide alternative system.
+
+BONDING:
+
+Final Preparation:
+Special pretreatments of etched surfaces using sodium or plasma processes shouldn’t be necessary if care was taken to protect
+the substrate surface after copper etch. Inner-layers should be baked at 110C to 125C for 30 to 120 minutes to ensure removal of
+volatile substances prior to MLB bonding. The recommended bake may need to be modified per recommendation of the oxide
+alternative supplier.
+
+Multilayer Bond Cycle:
+RO1200 bondply bonding would require a 4-6F/Min ramp to 700F, a 60-90 minute dwell at temperature, a 2F/Min cool to 600F,
+and cooling under pressure until package temperature is <350F. Applied pressure would be 500 PSI, but could be decreased or
+increased further depending upon copper fill and scaling requirements. Single use double-ply 970-J Fiberfrax® or other high
+temperature capable press pads should be used on the top and bottom of the press stack. A source for Fiberfrax press pads is:
+
+
+
+Unifrax Corporation
+2351Whirlpool Street
+Niagara Falls, NY 14305-2413
+Telephone: 716-278-3800
+
+
+
+Conformal padding should not be used against panel surfaces. Traditional release layers such as skived PTFE films should not
+be used against stainless steel separator plates. Thick aluminum foil or double-shiny copper foil can be used as release layers
+between the panel being pressed and the stainless steel separator plates. A two hour post bake at 125-150C will help relieve
+dimensional stresses prior to drilling.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                             Page 2 of 4
+PTH & OUTER LAYER PROCESSING:
+
+Drilling:
+Multilayers are most commonly drilled in stacks of one. Phenolic composite boards are recommended for entry (0.010” to 0.030”
+thick) and exit (>0.060”) layers. Sheeted aluminum and metal-coated phenolic boards can also be used as entry layers.
+
+New carbide drills are highly recommended. Standard or undercut styles can be used. Chip loads of 0.00075” to 0.00125” per
+revolution and surface speeds of 75 to 125 SFM are recommended when drilling holes between 0.0079” and 0.0197” in diameter.
+Peck drilling is recommended for MLBs thicker than 0.030”. Retract rate should be between 300 and 400 IPM. Drill optimization
+tests are underway. For the time being, hit counts should be based upon drilling 40 inches of material (example: 40 / 0.125 =
+320 hits when drilling 0.125” thick MLB).
+
+Deburring:
+The use of flat, rigid entry materials, conservative drilling parameters, and limited hit counts with new drills should minimize
+the risk of copper burring. When drilled properly, cores should be ready for subsequent processing. If deburr is necessary (and
+slight), a chemical microetch process is preferred. If mechanical processing is required, a hand pumice scrub is preferred over a
+suspended abrasive spray system which, in turn, is preferred over a conveyorized mechanical deburr or planarization process.
+
+Hole Preparation:
+Drilled panels should be processed twice through a pressure wash with a flip in between applications to remove debris from the
+holes. Sodium or plasma treatments required prior to metal deposition. Bake required after sodium treatment. It is preferred,
+but not required, to skip chemical desmear prior to metallization of the hole walls.
+A recommended plasma cycle for treating PTFE materials is:
+
+Gases: 70/30 or 80/20 H2/N2, NH3, N2, or He
+Pressure:       100 mTORR pump down
+                50 mTORR operating
+Power:          4000 Watts
+Frequency:      40 KHz
+Voltage: 500-600V
+Cycle time:     10-30 minutes
+
+Metallization:
+RO1200 materials are compatible with traditional electroless copper and direct deposit metallization processes. In the case
+of electroless copper, a double-deposition process is recommended to reduce the risk of hole wall voids. The recommended
+double deposition process includes running panels through the standard process through copper deposition, returning the
+panels to the pre-catalyst baths, and re-running through the remainder of the process including second exposures to catalyst
+and copper deposition. A flash plate build-up of 0.0001” to 0.0003” (0.0025mm-0.0076mm) of copper is recommended to better
+support hole walls through pattern plating and outer-layer processing.
+
+PTH Plating & Outer-Layer Imaging:
+Standard equipment and chemical processes are used to acid Cu plate, image, Sn plate, and SES circuit patterns onto RO1200
+panels. Care should be taken to preserve the post-etch dielectric surface. The topography that remains on etched surfaces after
+copper removal promotes improved adhesion to solder masks.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                             Page 3 of 4
+Solder Mask Processing:
+Properly prepared RO1200 material surfaces are compatible with most imageable solder masks. Materials should be rinsed and
+baked prior to solder mask application. Materials can be rinsed at room temperature, but rinsing in warm or hot water for 20-30
+minutes is preferred. The rinses should be followed by 60-90 minute bake @110C-125C. It is acceptable after bake to process the
+layers through a conveyorized chemical surface cleaning process ending with an in-line forced hot air dry.
+
+Final Surfaces:
+Most final metal surfaces (ENIG, Sn, Ag, Ni/Au, OSP, etc…) can be applied without special issue or consideration. A bake, as was
+described prior to solder mask application, should be performed prior to HASL or reflow exposures.
+
+Final Circuitization:
+Individual circuits can be routed, punched, or lased depending upon preference, tolerances, and edge quality requirements.
+Parameters for routing are provided below:
+
+Chip Load:		               0.00125” to 0.00250”/rev
+			                        32mm – 64 mm/rev
+Speed:			200-300 sfm
+			61-92 m/min
+Peripheries:		             Conventional cut
+Internal cutouts: Climb cut
+Tool type:		               carbide double fluted spiral-up Endmill
+Exit/Entry:		              Phenolic or composite board
+Tool life:		      20-30 linear feet
+			6-9 meters
+Pre-rout vacuum channels in backer board
+Double pass (opposite directions) when cleanest edge quality is required
+
+
+
+
+The information in this literature is intended to assist you in designing with Rogers’ circuit materials. It is not intended to and does not create any
+warranties express or implied, including any warranty of merchantability or fitness for a particular purpose or that the results shown on this data sheet
+will be achieved by a user for a particular purpose. The user should determine the suitability of Rogers’ circuit materials for each application.
+These commodities, technology and software are exported from the United States in accordance with the Export Administration regulations. Diversion contrary to
+U.S. law prohibited.
+							
+XtremeSpeed, RO1200, Helping power, protect, connect our world and the Rogers’ logo are trademarks of Rogers Corporation or one of its subsidiaries
+©2022 Rogers Corporation, Printed in U.S.A. All rights reserved.
+Revised 1554 040822 Publication #92-538
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                                         Page 4 of 4
+

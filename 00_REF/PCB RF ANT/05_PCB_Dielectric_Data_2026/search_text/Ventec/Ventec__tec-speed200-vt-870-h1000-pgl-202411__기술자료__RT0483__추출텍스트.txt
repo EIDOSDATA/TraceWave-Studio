@@ -1,0 +1,173 @@
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+tec-speed 20.0 VT-870 H1000 UL Approval: E214381 Version:20/11/2024
+PROCESS GUIDE
+
+
+Precautions in Handling
+Storage Condition & Shelf Life
+                                                  Laminate
+                          Temperature             Room
+ Storage Condition
+                          Relative Humidity       /
+ Shelf Life                                       24 Months(airproof)
+
+
+
+
+Designing and Inner layer Process
+•       Dimension stability is superior to Standard FR-4 materials.
+•       Please consult with your oxide vendor to make sure that our material is fully compatible with your oxide
+        process. We recommend controlling the peel strength to over 2 lb./in.
+•       After oxide, it is preferred to press cores within 12 hours. Any cores staged more than 24 hours should be
+        re-treated.
+•       Please confirm the grinding treatment process as the material was soft and brittle. Please don't use the
+        grinding process for the inner and outer layer with large area or full no copper design.
+
+
+
+Registration system
+•       Strongly recommend Post Etch Punch and Pin technology as the basis for the inner layer registration systems.
+•       If customer utilizes fusion method, below is the requirement for fusing the material. Please check with the
+        machine supplier, and test the fusion performance firstly.
+•       Operate temperature:≥200℃.
+•       Dwell time: At least 1min.
+
+
+
+
+                                                                                                                Page 1 of 4
+www.venteclaminates.com                                                                                  Published on: 20/11/2024
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+tec-speed 20.0 VT-870 H1000 UL Approval: E214381 Version:20/11/2024
+PROCESS GUIDE
+
+
+Availability-Laminate
+                                                                    Dk@10GHz                   Df@10GHz
+       Laminate              Core Thickness
+
+                                 (inch)                       IPC-TM650 2.5.5.5
+            Cavity resonator
+                                                               Clamped Stripline
+                                    0.025                           10.2±0.25                        0.003
+                                    0.025                           10.2±0.25                        0.003
+     VT-870 H1000
+                                    0.050                           10.2±0.25                        0.003
+                                    0.100                           10.2±0.25                        0.003
+
+Remarks:
+
+•         Copper foil: Hoz~2oz, HTE, RTF and HVLP are all available based upon request.
+•         More types may be available upon request.
+
+
+
+Bake Cycles during PCB Fabrication
+There are a few optional baking cycles that may be used PCB fabrication. Please take into consideration when
+appropriate.
+
+    Process                                    Purpose                              Cycle
+    After Cutting
+                             Dimensional stabilization;
+
+                                                                                    2 hours150℃
+    (for laminate <10 mil)                     Eliminate moisture
+    After oxide                                Eliminate moisture                   1-2 hours 120℃
+    After Drilling                             Eliminate stress                     2 hours@ 190℃
+    Before HASL                                Eliminate moisture                   2 hours@ 125℃
+    Before shipment
+
+                                               Eliminate moisture                   2-4 hours@ 105℃
+    (if stored for over 3 months)
+
+
+
+
+                                                                                                                   Page 2 of 4
+www.venteclaminates.com                                                                                      Published on: 20/11/2024
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+tec-speed 20.0 VT-870 H1000 UL Approval: E214381 Version:20/11/2024
+PROCESS GUIDE
+
+
+Typical Drilling Parameters
+•       Drilling parameters should be adjusted depending on hole size, layer count, panel thickness, stack count and
+        stack height etc.
+•       Please adjust drilling parameters after checking qualities of through holes.
+
+Suggest Drilling parameter as blow:
+         Diameter
+            Spindle speed
+            Feed rate                Retract
+              Hit Counts
+           (mm)                  (KRPM)                   (IPM)                   (IPM)
+            0.20                      55                    75                     500                     500
+            0.25                      55                    75                     500                     500
+            0.30                      40                    52                     500                     500
+            0.40                      55                    75                    1000                     500
+            0.60                      46                    70                    1000                     500
+            1.00                      38                    76                    1000                     500
+            2.53                      21                    63                    1000                     500
+
+•       Excessive wear of carbide drill bits. Diamond coated drill bits are recommended.
+•       LE Aluminum sheet and white phenolic entry board are preferred, please consult your local Ventec
+        representative for options.
+
+
+
+
+                                                                                                              Page 3 of 4
+www.venteclaminates.com                                                                                 Published on: 20/11/2024
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+tec-speed 20.0 VT-870 H1000 UL Approval: E214381 Version:20/11/2024
+PROCESS GUIDE
+
+
+Desmear Process
+Panels should be baked for at least 1 hour at 120℃ prior to plasma treatment. Plasma treated holes are more delicate
+than permanganate etched holes. Panels should not be exposed to any pressure wash or scrubbing process prior to
+metallization.
+
+Plasma Desmear: 
+
+One time of FR-4 conditions is recommendable.
+Permanganate horizontal Desmear: 
+
+The weight loss of VT-870 H1000 laminate is more than that of our conventional FR-4 material. One time of FR-4
+condition is recommendable.
+Permanganate vertical Desmear: 
+
+Vertical desmear process is not recommendable.
+
+
+
+
+Packaging and baking recommendation
+•       It is recommended to bake the board before packaging at 125℃/4~8h to avoid moisture causing a decrease
+        in heat resistance.
+•       If the PCBs needs to be stored for a long time before use, it is recommended to use aluminum foil vacuum
+        packaging.
+•       If exceed 3 months after packaging , It is best to bake the PCBs at 125℃/4~6h before assembly before use.
+
+
+
+
+                                                                                                             Page 4 of 4
+www.venteclaminates.com                                                                                Published on: 20/11/2024
+

@@ -1,0 +1,116 @@
+Autolad2G
+(FR-15.1) Halogen-free, High-Tg, High-CTI, Automotive-use Materials
+
+ FEATURES                                                             APPLICATIONS
+
+● CTI≥600V for hash environment                                        High power & high voltage applications
+● High voltage anti-CAF                                                PEV & HEV automotive electrification
+● Extreme thermal cycling resistance                                   On board charger (OBC), etc.
+● MOT 150℃ (≥0.63mm)
+● Halogen, antimony and red phosphorous free
+
+
+GENERAL PROPERTIES
+                                                                                                                      Typical
+Property              Test Items               Test Method                   Test Condition              Unit
+                                                                                                                       Value
+                                                  2.4.24.4                       DMA                                    190
+                            Tg
+                                                   2.4.25                        DSC                                    175
+                         Td                       2.4.24.6                    5% wt. loss                               402
+                        T288                      2.4.24.1                       TMA                    min             60
+Thermal                 T300                      2.4.24.1                       TMA                    min             60
+                    Thermal Stress                2.4.13.1                 288 , solder bath             -             PASS
+                                                  2.4.24c                      Before Tg               ppm/             35
+                                 Z-axis           2.4.24c                       After Tg               ppm/             190
+                                                  2.4.24c                      50-260                    %              2.2
+                    Dk*
+                                 1GHz              2.5.5.9                      C-24/23/50                 -             4.3
+                 RC56%
+                    Df*
+                                 1GHz              2.5.5.9                      C-24/23/50                 -            0.015
+                 RC56%
+                 Volume Resistivity               2.5.17.1            After Moisture Resistance        MΩ-cm          3.86×108
+Electrical       Surface Resistivity              2.5.17.1            After Moisture Resistance           MΩ          3.27×107
+                   Arc Resistance                   2.5.1                 D-48/50+D-0.5/23                 s             130
+                Dielectric Breakdown                2.5.6                 D-48/50+D-0.5/23                kV             45+
+                  Electric Strength                 2.5.6                 D-48/50+D-0.5/23             kV/mm             40+
+                          CTI                    IEC 60112                   As Received               Rating          PLC 0
+                                                                                                       N/mm
+                Peel Strength (1Oz)                  2.4.8                       288 /10s                            1.3 [7.43]
+                                                                                                        [lb/in]
+               Flexural    Length                   2.4.4                    As Received                 MPa            520
+Physical       Strength     Width                   2.4.4                    As Received                 MPa            400
+                 Water Absorption                  2.6.2.1                 E-1/105+D-24/23                %             0.09
+                   Flammability                     UL94                 C-48/23/50, E-24/125          Rating           V-0
+
+      Explanation: C=Humidity conditioning, D=Immersion conditioning in distilled water, E=Temperature conditioning.
+      The first digit following the letter indicates the duration of preconditioning in hours, the second digit the
+      preconditioning temperature in ℃ and the third digit the relative humidity.
+
+     Remarks:
+     1. Applicable IPC slash sheet: IPC-4101/130.Unless otherwise specified, all test methods follow IPC-TM-650.
+     2. All typical value is based on the 1.6mm (8*7628) specimen, “ * ” is based on the 1.0mm(9X2116) specimen
+        but not guarantee data.
+     3. All typical values listed above are for your reference only and not intended for specification.
+     4. Please refer to lineup document for more specification and parameters, or contact Shengyi Technology Co.,
+        Ltd. for detailed information.
+
+
+     https://www.syst.com.cn/      All rights reserved by Shengyi Technology Co., Ltd   CN-TDS-2601-07-Autolad2G-Autolad2GB
+Autolad2GB
+(FR-15.1) Bonding Prepreg for Autolad2G
+
+Product Specification
+
+                                   Resin content                     Cured thickness                   Standard size
+      Glass fabric type
+                                        (%)                               (mm)                          (Roll type)
+                                            73                               0.048
+              1037
+                                            75                               0.053
+                                            73                               0.050
+              106
+                                            77                               0.060                     1.260m×150m
+                                            66                               0.050
+              1067                          71                               0.060
+                                            77                               0.076
+                                            66                               0.076
+                                            69                               0.085
+          1080/1078
+                                            71                               0.092                     1.260m×300m
+                                            74                               0.104
+              3313                          58                               0.102
+                                            54                                0.117
+                                            57                               0.127
+              2116                                                                                     1.260m×250m
+                                            60                               0.134
+                                            63                               0.150
+                                            43                               0.180
+                                            45                               0.190
+              7628                                                                                     1.260m×150m
+                                            48                               0.200
+                                            50                               0.210
+
+    Remark: In order to satisfy CTI≥600V, 2116(RC≥54%)，7628(RC≥45%) or above thickness prepreg is suggested to
+    be used for outer prepreg layer.
+
+
+
+HOT PRESSING CYCLE
+
+      The heat-up rate depends on the inner copper or the structure of multilayer PCB.
+      Curing time: >60min (185~195℃).
+      If you need any more detail information, please turn to Shengyi Technology Co., Ltd.
+
+STORAGE CONDITION
+
+     3 months when stored at < 23℃ and <50% RH.
+     6 months when stored at <5℃. Normalize in room temperature for at least 4h before using.
+     Beware of moisture, always keep wrapped in damp-proof material. Keeping in normal
+      condition, prepreg might absorb moisture and its bonding strength would be weakened.
+     Avoid UV-rays and strong light.
+
+
+        https://www.syst.com.cn/   All rights reserved by Shengyi Technology Co., Ltd   CN-TDS-2601-07-Autolad2G-Autolad2GB
+

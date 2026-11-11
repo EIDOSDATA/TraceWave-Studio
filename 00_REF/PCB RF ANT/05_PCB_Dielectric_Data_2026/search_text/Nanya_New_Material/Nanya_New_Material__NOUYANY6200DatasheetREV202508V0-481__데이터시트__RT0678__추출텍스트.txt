@@ -1,0 +1,63 @@
+                   Low Loss & Excellent Thermal Resistance
+                              NY6200/NY6200P
+     特点 FEATURES:
+            低介电常数和低介质损耗（Low Dk 4.05@10GHz，Low Df 0.0070@10GHz）
+
+            高TG无铅兼容板材 HighTG Lead-free compatible
+
+            低Z轴膨胀系数及优异通孔可靠性 Low Z-CTE offering superior PTH reliability
+
+            低吸水率 Low moisture absorption
+
+
+     应用领域 APPLICATIONS:
+            路由器 Router
+
+            服务器 Server
+            基站 Base Station
+            存储 Storage
+
+
+NY6200基板典型性能 Typical Properties for NY6200 Laminate
+  属性                           项目                        测试方法           测试条件            单位        典型值
+Property                       Item                    IPC-TM-650     Test Condition    Unit   Typical Value
+                                                          2.4.25           DSC           ℃           \
+                          玻璃态转换温度 Tg                      2.4.24          TMA           ℃          200
+                                                         2.4.24.4         DMA           ℃            \
+              X/Y轴热膨胀系数CTE,X/Y-axis（2116×12）             2.4.24.5       ＜Tg,TMA        PPM/℃      15\16
+ 热性能                                                                    ＜Tg,TMA        PPM/℃        35
+                           Z轴热膨胀系数                        2.4.24
+Thermal                                                                 ＞Tg,TMA        PPM/℃       120
+                   Z-axis Expansion（2116×12）
+                                                          2.4.24        50~260℃          %          1.5
+                           热裂解温度 Td                      2.4.24.6     TGA(5%W.L)        ℃          405
+                                                                          Clad          Min        ＞60
+                           耐热性 T288                      2.4.24.1
+                                                                         Etched         Min        ＞60
+                                               1MHz                                                  \
+                      介电常数 DK                            2.5.5.9
+                                               1GHz                    C-24/23/50        -       4.04\3.74
+                     (R/C:55%/70%)
+                                               10GHz   SPDR method                               4.05\3.65
+
+ 电性能                                           1MHz                                                  \
+                       介质损耗 Df                           2.5.5.9
+Electrical                                     1GHz                    C-24/23/50              0.0052\0.0055
+                     (R/C:55%/70%)                                                       -
+                                               10GHz   SPDR method                             0.0070\0.0065
+                    体积电阻 Volume Resistivity                                            MΩ-cm     2.2×109
+                                                         2.5.17.1      C-96/35/90
+                    表面电阻 Surface Resistivity                                            MΩ       1.1×108
+                     吸水率 Water Absorption                2.6.2.1     E-1/105+D-24/23     %         0.12
+               剥离强度 Peel Strength (HTE)         1oz                                                 1.0
+               剥离强度 Peel Strength (RTF)         1oz       2.4.8       As Received      N/mm         0.7
+物理性能
+              剥离强度 Peel Strength (HVLP)         1oz                                                  \
+Physical
+                          弯曲强度                 Warp                                                510
+                                                          2.4.4       As Received      N/mm2
+                    Flexural Strength           Fill                                               460
+                     耐燃性 Flame Resistance                 UL-94        A&E-4/125         -         V-0
+
+IPC-4101 Type Designation : /126                                                               Rev: 202508V0
+

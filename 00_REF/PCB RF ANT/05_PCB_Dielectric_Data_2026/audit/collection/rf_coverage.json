@@ -1,0 +1,165 @@
+{
+  "access_date": "2026-11-11",
+  "record_count": 2709,
+  "source_count": 351,
+  "download_status_counts": {
+    "downloaded": 350,
+    "request_only": 1
+  },
+  "raw_pdf_count": 229,
+  "raw_html_count": 121,
+  "raw_bytes": 144789936,
+  "product_label_count": 171,
+  "manufacturer_records": {
+    "Rogers": 423,
+    "AGC": 2251,
+    "Arlon Electronic Materials": 24,
+    "Generic material reference (Arlon handbook)": 11
+  },
+  "source_organizations": {
+    "Rogers": 152,
+    "AGC": 156,
+    "Arlon Electronic Materials": 43
+  },
+  "records_with_scalar_dk": 2653,
+  "records_with_df": 1992,
+  "records_with_numeric_frequency": 2592,
+  "records_with_thickness": 2300,
+  "records_with_glass_style": 2186,
+  "records_with_resin_content": 2205,
+  "explicitly_flagged_conflict_records": 45,
+  "construction_table_stats": {
+    "stats": [
+      {
+        "source_id": "RF267",
+        "product": "N5000",
+        "source_rows": 73,
+        "normalized_records": 292,
+        "pages": 5
+      },
+      {
+        "source_id": "RF270",
+        "product": "N8000",
+        "source_rows": 24,
+        "normalized_records": 96,
+        "pages": 2
+      },
+      {
+        "source_id": "RF297",
+        "product": "Meteorwave 1000",
+        "source_rows": 80,
+        "normalized_records": 240,
+        "pages": 5
+      },
+      {
+        "source_id": "RF304",
+        "product": "Meteorwave 2000",
+        "source_rows": 78,
+        "normalized_records": 234,
+        "pages": 6
+      },
+      {
+        "source_id": "RF306",
+        "product": "Meteorwave 3000",
+        "source_rows": 38,
+        "normalized_records": 114,
+        "pages": 3
+      },
+      {
+        "source_id": "RF308",
+        "product": "Meteorwave 3350",
+        "source_rows": 19,
+        "normalized_records": 57,
+        "pages": 2
+      },
+      {
+        "source_id": "RF310",
+        "product": "Meteorwave 4000",
+        "source_rows": 66,
+        "normalized_records": 198,
+        "pages": 6
+      },
+      {
+        "source_id": "RF312",
+        "product": "Meteorwave 8000",
+        "source_rows": 58,
+        "normalized_records": 232,
+        "pages": 4
+      },
+      {
+        "source_id": "RF314",
+        "product": "Meteorwave 8300",
+        "source_rows": 27,
+        "normalized_records": 54,
+        "pages": 2
+      },
+      {
+        "source_id": "RF317",
+        "product": "Meteorwave M1",
+        "source_rows": 8,
+        "normalized_records": 16,
+        "pages": 1
+      },
+      {
+        "source_id": "RF320",
+        "product": "N4000-13",
+        "source_rows": 32,
+        "normalized_records": 96,
+        "pages": 3
+      },
+      {
+        "source_id": "RF322",
+        "product": "N4000-13 EP",
+        "source_rows": 35,
+        "normalized_records": 105,
+        "pages": 3
+      },
+      {
+        "source_id": "RF324",
+        "product": "N4000-13 EP SI",
+        "source_rows": 24,
+        "normalized_records": 72,
+        "pages": 2
+      },
+      {
+        "source_id": "RF326",
+        "product": "N4000-13 SI",
+        "source_rows": 24,
+        "normalized_records": 72,
+        "pages": 2
+      },
+      {
+        "source_id": "RF329",
+        "product": "N4000-29",
+        "source_rows": 40,
+        "normalized_records": 80,
+        "pages": 3
+      },
+      {
+        "source_id": "RF333",
+        "product": "N7000-2 HT / N7000-3",
+        "source_rows": 48,
+        "normalized_records": 138,
+        "pages": 3
+      },
+      {
+        "source_id": "RF336",
+        "product": "N7000-3F",
+        "source_rows": 22,
+        "normalized_records": 22,
+        "pages": 2
+      }
+    ],
+    "missed": []
+  },
+  "validation_errors": [],
+  "validation_result": "PASS",
+  "limitations": [
+    "This is a defined public-source collection, not proof that every global or historic manufacturer publication has been found.",
+    "Plots retained in original PDFs; chart curves were not digitized or presented as exact frequency-sweep data.",
+    "AGC Meteorwave ELL detailed TDS/Dk tables require inquiry. Public nominal and family-range values were captured.",
+    "No automatic interpolation, missing-value filling, tolerance-to-nominal averaging, or process-to-design conversion.",
+    "Generic reference rows are tagged generic_material_reference and are not product-specific RF inputs.",
+    "Manufacturer nominal values do not replace a fabrication-specific finished stackup or coupon extraction."
+  ]
+}

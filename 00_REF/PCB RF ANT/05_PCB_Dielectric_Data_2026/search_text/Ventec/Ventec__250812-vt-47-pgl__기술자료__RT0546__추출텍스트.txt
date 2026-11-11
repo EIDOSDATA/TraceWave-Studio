@@ -1,0 +1,344 @@
+ Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+ VT-47                                                                                       UL Approval: E214381         Version: 12/08/2025
+
+  PROCESS GUIDE
+ VT-47 CCL/Laminate VT-47 PP/Prepreg
+
+
+ Precautions in Handling
+
+ Storage Condition & Shelf Life
+                                                           Prepreg                                                Laminate
+
+     Storage                    Temperature                Below 23ºC (73ºF)          Below 5ºC (41ºF)            Room
+     Condition                  Relative Humidity          Below 55%                  /                           /
+
+     Shelf Life                                            3 Months                   6 Months                    24 Months
+
+
+ •         The prepreg exceeding shelf time should be retested.
+ •         Take care in handling thin core laminates as they are easily damaged.
+ •         If the prepreg is not consumed within 48hrs after opening the vacuum package, it is recommended that the bags be resealed.
+ •         Material is available in both long and short grain. The grain direction is indicated on the label with an arrow.
+
+
+ Designing and Inner layer Process
+ •         Please be careful when single ply of 1080, 1086, 1078 or 106 prepreg is designed to the dielectric layer.
+ •         Dimension stability is the same as Standard FR4 material.
+ •         Please check with your oxide vendor to make sure that our material is suitable with your oxide process.
+           We recommend to control the peel strength with brown oxide copper over 2 Lb/in.
+ •         For unclad or single sided laminates to be used in multilayer, please brush unclad sides before use.
+
+
+
+
+                                                                                                                                         Page 1 of 6
+www.venteclaminates.com                                                                                                       Published on: 12/08/2025
+ Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+ VT-47                                                                                   UL Approval: E214381         Version: 12/08/2025
+
+  PROCESS GUIDE
+ VT-47 CCL/Laminate VT-47 PP/Prepreg
+
+
+ Prepreg Availability
+ E-Glass styles: 7628, 1506, 1500, 2113, 2313, 3313, 2116, 1080, 1086, 1078, 106, 1067 etc.
+
+
+
+                                                              DK                                      DF
+                                  Press
+                      Resin
+     PP Type                    Thickness    @         @            @       @        @         @            @        @        Remark
+                     Content
+                                  (mil)     1GHz      2GHz         5GHz   10GHz     1GHz      2GHz         5GHz    10GHz
+
+   7628                   48%     8.20       4.20      4.15        4.10   4.10      0.015     0.016        0.016   0.017     Standard
+
+   7628                   45%     7.60       4.25      4.20        4.15   4.15      0.014     0.015        0.015   0.016     Standard
+
+   1506                   52%     7.10       4.10      4.05        4.00   4.00      0.015     0.016        0.016   0.017     Standard
+
+   2116                   58%     5.30       3.90      3.85        3.80   3.80      0.016     0.017        0.017   0.018     Standard
+
+   2116                   56%     5.10       3.97      3.92        3.87   3.87      0.016     0.017        0.017   0.018     Standard
+
+   2116                   54%     4.90       4.03      3.98        3.93   3.93      0.016     0.017        0.017   0.018     Standard
+
+   2113                   57%     4.00       3.93      3.88        3.83   3.83      0.016     0.017        0.017   0.018     Standard
+
+   1080                   69%     3.50       3.60      3.55        3.50   3.50      0.018     0.019        0.019   0.020     Standard
+
+   1080                   66%     3.20       3.70      3.65        3.60   3.60      0.018     0.019        0.019   0.020     Standard
+
+   1080                   64%     3.00       3.75      3.70        3.65   3.65      0.017     0.018        0.018   0.019     Standard
+
+   1080                   62%     2.90       3.80     3.75         3.70   3.70      0.017     0.018        0.018   0.019     Standard
+
+   106                    76%     2.50       3.45     3.40         3.35   3.35      0.019     0.020        0.020   0.021     Standard
+
+   106                    71%     1.90       3.55     3.50         3.45   3.45      0.018     0.019        0.019   0.020     Standard
+
+
+
+ Remark:
+ ① Press thickness test condition---Prepreg lamination size 18”*24”, Copper Foil---1oz/1oz, Flow---about 5%;
+ ② Make laminated prepreg to micro-section and measure the thickness with microscope; this thickness is used for resistance
+   design calculation.
+ ③ The thickness measured with micrometer is 0.2~0.4 mil larger than that measured with micro-section; and mainly used for
+   total thickness design calculation.
+
+
+
+
+                                                                                                                                      Page 2 of 6
+www.venteclaminates.com                                                                                                    Published on: 12/08/2025
+ Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+ VT-47                                                                              UL Approval: E214381        Version: 12/08/2025
+
+  PROCESS GUIDE
+ VT-47 CCL/Laminate VT-47 PP/Prepreg
+
+
+ Laminates Availability
+ - Thickness: 0.002” (0.05mm) to 0.200” (5mm), available in sheet or panel form
+ - Copper Foil: 1/4 to 12oz, HTE or RTF or DST
+
+ DK values are for impedance design
+
+                                                              DK                                  DF
+     Core thk.                      Resin
+                     Stack-up                 @        @            @       @      @       @            @        @            Remark
+     (inches)                      Content
+                                             1GHz     2GHz         5GHz   10GHz   1GHz    2GHz         5GHz    10GHz
+
+       0.002              1-1067    65%      3.75      3.70        3.65   3.65    0.017   0.018        0.018   0.019         Standard
+
+       0.003              1-2112    52%      4.10      4.05        4.00   4.00    0.015   0.016        0.016   0.017         Standard
+
+       0.004              1-2116    45%      4.20      4.20        4.15   4.15    0.014   0.015        0.015   0.016         Standard
+
+       0.004              2-1078    46%      4.25      4.20        4.15   4.15    0.014   0.015        0.015   0.016             2ply
+
+       0.005              1-2116    55%      4.00      3.95        3.90   3.90    0.016   0.017        0.017   0.018         Standard
+
+       0.006              1-1506    45%      4.25      4.20        4.15   4.15    0.014   0.015        0.015   0.016         Standard
+
+       0.007              1-7628    41%      4.30      4.30        4.25   4.25    0.014   0.015        0.015   0.016         Standard
+
+       0.008              1-7628    46%      4.22      4.17        4.13   4.13    0.014   0.015        0.015   0.016         Standard
+
+       0.008              2-2116    45%      4.25      4.20        4.15   4.15    0.014   0.015        0.015   0.016             2ply
+
+       0.010              2-2116    55%      4.00      3.95        3.90   3.90    0.016   0.017        0.017   0.018         Standard
+
+       0.012              2-1506    45%      4.25      4.20        4.15   4.15    0.014   0.015        0.015   0.016         Standard
+
+       0.014              2-7628    41%      4.35      4.30        4.25   4.25    0.014   0.015        0.015   0.016         Standard
+
+       0.016              2-7628    46%      4.22      4.19        4.13   4.13    0.014   0.015        0.015   0.016         Standard
+                      2-7628
+       0.018                        45%      4.25      4.20        4.15   4.15    0.014   0.015        0.015   0.016         Standard
+                      +1-1080
+                      2-7628
+       0.020                        45%      4.25      4.20        4.15   4.15    0.014   0.015        0.015   0.016         Standard
+                      +1-2116
+       0.021              3-7628    41%      4.35      4.30        4.25   4.25    0.014   0.015        0.015   0.016         Standard
+
+       0.024              3-7628    42%      4.33      4.28        4.23   4.23    0.014   0.015        0.015   0.016         Standard
+
+       0.028              4-7628    41%      4.35      4.30        4.25   4.25    0.014   0.015        0.015   0.016         Standard
+
+       0.036              5-7628    43%      4.30      4.25        4.20   4.20    0.014   0.015        0.015   0.016         Standard
+
+       0.045              6-7628    46%      4.22      4.18        4.13   4.13    0.014   0.015        0.015   0.016         Standard
+
+       0.049              7-7628    41%      4.35      4.30        4.25   4.25    0.014   0.015        0.015   0.016         Standard
+
+       0.059              8-7628    44%      4.28      4.23        4.18   4.18    0.014   0.015        0.015   0.016         Standard
+
+
+
+
+                                                                                                                                  Page 3 of 6
+www.venteclaminates.com                                                                                                Published on: 12/08/2025
+ Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+ VT-47                                                                                                    UL Approval: E214381            Version: 12/08/2025
+
+  PROCESS GUIDE
+ VT-47 CCL/Laminate VT-47 PP/Prepreg
+
+
+ Press Condition
+   1. Heating rate (Rise of Rate) of material [Material Temperature]:
+      Programmable Press: 1.5-3.0ºC/min (3~5ºF/min). Manual Press: 3~6ºC /min (5~10ºF/min)
+   2. Curing Temperature & Time: >60min at more than 185ºC (365ºF) [Material Temperature]
+   3. Full Pressure: ≥250-300psi
+   4. Vacuuming should be continued until over 140ºC (284ºF) [Material Temperature]
+   5. Cold Press condition: Keep Plate @ Room Temperature by water; Pressure:100psi; Keep Time: 60minutes
+
+
+
+
+                     Temperature
+                                                                 Hot Start Cycle for VT-47                                               Pressure
+                     250ºC/ 482ºF                                                                                                        500psi(35Kg/cm2)
+                                                                                                            Vacuum: 760Torr(100KPa)
+                                                                                               185ºC
+                                                                                               (365ºF)
+                     200ºC/ 392ºF                                                                                                        400psi(28Kg/cm2)
+                                                                                                                                         350psi(25Kg/cm2)
+                     150ºC/ 302ºF                                                                                                        300psi(21Kg/cm2)
+
+                                        80ºC
+                     100ºC/ 212ºF       (176ºF)                                                                                          200psi(14Kg/cm2)
+
+
+                      50ºC/ 122ºF                                                                                                        100psi(7Kg/cm2)
+                                                                 Vacuum: 30Torr(4KPa)
+
+
+
+                                    0             20   35      50                       100               125         150          170
+                                                                             Time (minute)
+
+
+
+                     Temperature
+                                                            Hot Start Cycle for VT-47 (Manual)                                           Pressure
+                     250ºC/ 482ºF                                                                                                        500psi(35Kg/cm2)
+                                                                                                         Vacuum: 760Torr(100KPa)
+
+                     200ºC/ 392ºF                                                                                                        400psi(28Kg/cm2)
+
+
+                     150ºC/ 302ºF                                                    185ºC                                               300psi(21Kg/cm2)
+                                                                                     (365ºF)
+                                                                                                                                         250psi(18Kg/cm2)
+                     100ºC/ 212ºF                                                                                                        200psi(14Kg/cm2)
+
+
+                      50ºC/ 122ºF                                                                                                        100psi(7Kg/cm2)
+                                                              Vacuum: 30Torr(4KPa)
+
+
+
+                                    0                          50                   90 100 110			                     150          175
+                                                                             Time (minute)
+
+
+
+
+                                                                                                                                                          Page 4 of 6
+www.venteclaminates.com                                                                                                                        Published on: 12/08/2025
+ Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+ VT-47                                                                                                UL Approval: E214381          Version: 12/08/2025
+
+  PROCESS GUIDE
+ VT-47 CCL/Laminate VT-47 PP/Prepreg
+
+
+                          Temperature                Adara (Cedal) Press Cycle for VT-47                                Pressure
+
+                          250ºC/ 482ºF                                                                                  500psi(35Kg/cm2)
+                                                                        Vacuum: 760Torr(100KPa)
+
+                          200ºC/ 392ºF                                                                                  400psi(28Kg/cm2)
+                          190ºC/ 374ºF
+
+                          150ºC/ 302ºF                                                                                  300psi(21Kg/cm2)
+                          140ºC/ 284ºF
+
+                          100ºC/ 212ºF                                                                                  200psi(14Kg/cm2)
+                           80ºC/ 176ºF
+
+                           50ºC/ 122ºF        Vacuum: 30Torr(4KPa)
+                                                                                                                        100psi(7Kg/cm2)
+                            30ºC/ 86ºF
+
+
+                                         0 5 10 		        35    45 50                        100     115           150
+                                                                         Time (minute)
+
+
+ Typical Drilling Parameters
+ The use of undercut drill bits has yielded better quality on smaller holes. Check with your drill bit supplier for more information.
+
+        Hole Size (mm)            Spindle Speed (KRPM)               Feed Rate (IPM)               Retract Rate (IPM)        Chip Load (Mil/Rev.)
+           0.20~0.25                         135                              75                           791                       0.56
+           0.30~0.35                         155                             120                           984                       0.77
+           0.40~0.45                         120                             125                           900                       1.04
+           0.50~0.55                          95                              90                           700                       0.95
+           0.60~0.65                          80                             110                           765                       1.38
+           0.70~0.75                          72                             120                           765                       1.67
+           0.80~0.95                          68                             120                           850                       1.76
+           1.00~1.05                          60                             140                           984                       2.33
+           1.10~1.15                          54                             150                           984                       2.78
+           1.20~1.25                          52                             160                           984                       3.08
+           1.30~1.45                          50                             150                           984                       3.00
+           1.50~1.55                          45                             130                           984                       2.89
+           1.60~1.75                          40                             120                           800                       3.00
+           1.80~2.00                          35                              80                           600                       2.29
+           2.05~2.45                          30                              80                           500                       2.67
+           2.50~2.75                          25                              70                           500                       2.80
+           2.80~3.20                          20                              60                           500                       3.00
+           3.20~3.60                          20                              60                           500                       3.00
+           3.65~4.00                          20                              35                           500                       1.75
+           4.50~4.80                          20                              25                           400                       1.25
+           4.81~6.50                          20                              20                           300                       1.00
+
+
+
+
+                                                                                                                                                      Page 5 of 6
+www.venteclaminates.com                                                                                                                    Published on: 12/08/2025
+ Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+ VT-47                                                                                   UL Approval: E214381     Version: 12/08/2025
+
+  PROCESS GUIDE
+ VT-47 CCL/Laminate VT-47 PP/Prepreg
+
+
+ Desmearing Process
+ •        Desmear rate is less than that of the conventional FR4.
+ •        Adjustments to the desmear process are necessary for the lead-free materials.
+ •        Check with your chemical supplier for recommendations.
+
+
+
+
+ Packaging and baking recommendation
+ •        It is recommended to bake the board before packaging at 125ºC/4~8h to avoid moisture causing a decrease in heat resistance.
+ •        If the PCBs needs to be stored for a long time before use, it is recommended to use aluminum foil vacuum packaging.
+ •        If exceed 3 months after packaging , It is best to bake the PCBs at 125ºC/4~6h before use.
+
+
+
+
+                                                                                                                                 Page 6 of 6
+www.venteclaminates.com                                                                                               Published on: 12/08/2025
+

@@ -1,0 +1,354 @@
+                                                                                           Fabrication
+                                                                                           Technical Articles
+                                                                                                       Notes
+
+
+AD Series™ High Frequency Laminates
+STRIPLINE AND MULTILAYER CIRCUITS
+
+MATERIAL DESCRIPTION:
+The AD Series™ of copper clad laminates (AD250C™, AD255C™, AD300D™, and AD350A™) combines the superior thermal
+properties of a fluoropolymer resin system with selected ceramic fillers and fiberglass reinforcement to yield laminated
+materials with low loss, low thermal expansion characteristics, and low passive intermodulation (PIM). Stability of PTFE over
+wide frequency and temperature ranges makes AD Series materials ideal for a variety of microwave and RF applications in
+telecom infrastructure. The inclusion of micro-dispersed ceramic provides thermal stability to the laminate in the form of
+lower CTE values and greater phase stability across temperatures.
+
+
+These guidelines were developed to provide fabricators with basic information on processing double-sided and multi-
+layer boards using copper clad filled and reinforced PTFE composite materials. A Rogers’ technical service engineer or sales
+representative should be contacted for more detailed processing information.
+
+
+STORAGE:
+AD series cores can be stored indefinitely at ambient conditions. A first-in-first-out (FIFO) inventory system is recommended
+as a method of record keeping that would allow tracking of material lot numbers through PWB processing and delivery of
+finished circuits.
+
+
+Storage in Original Shipping Cartons
+1. Stack cartons on a flat surface that is safely out of the way of mobile handling and moving equipment. Cartons may be
+    stored on their side if nothing heavy is stacked on top.
+2. Cartons should be stacked to a maximum of five high to avoid excessive weight on the bottom packages.
+
+
+Storage of Panels Removed from Cartons
+1. For AD Series laminates, some discoloration of copper surfaces due to oxidation can occur during storage, especially
+    under conditions of elevated temperature and humidity. The oxidation can be removed by chemical exposures
+    (microetch) which are standard to the PCB fabrication process.
+2. Panels thicker than 20 mils can be stored on edge in slotted shelving units keeping the clad surfaces vertical. This
+    provides easy access with low risk of damage to the metal surfaces.
+3. If storage facilities do not permit vertical stacking:
+         A) The shelf must be flat, smooth, and clean.
+         B) The shelf must extend beyond the full area of the panels being stored.
+         C) Surfaces of the laminates must be free of debris.
+         D) Shelf loading should be kept below 50 pounds per square foot.
+         E) Panels should be interleaved with soft, non-abrasive separator sheets.
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+
+
+                                                           Page 1 of 8
+Handling:
+PTFE-based materials are softer than most other rigid printed wiring board laminates and are more susceptible to handling
+damage. Cores clad only with copper foils are easily creased. Materials bonded to thick aluminum, brass, or copper plates are
+more prone to scratches, pits, and dents. Proper handling procedures should be followed.
+
+
+INNER LAYER PREPARATION:
+
+
+Tooling:
+AD Series materials are compatible with many tooling systems. Choosing whether to use round or slotted pins, external
+or internal pinning, standard or multiline tooling and pre vs. post-etch punching would depend upon the capabilities and
+preferences of the circuit facility and the final registration requirements. In general, slotted pins, a multiline tooling format,
+and post-etch punching will meet most needs. Whichever approach is used, it is good practice to retain copper around
+tooling holes.
+
+
+A flow pattern compatible with the chosen adhesive system can be used between circuits and around the perimeter of the
+panel. But, in general, registration of layers is improved by retaining as much copper as possible. Rogers’ Technical Service
+Engineers can assist in determining the appropriate flow pattern for a given design.
+
+
+Surface Preparation for Photoresist Application:
+A chemical process consisting of organic cleaners and a microetch is the preferred method of preparing copper surfaces for
+coating with liquid or film photoresist. A conveyorized spray system using an abrasive substance suspended in solution can
+be used to prepare copper surfaces at the slight risk of some registration control. Mechanical scrubbing should be considered
+for thick cores (0.060”+) only and, even then, should be performed at reduced pressures to minimize distorting the thin
+laminate or imparting deep scratches that change the functional spacing between copper planes.
+
+
+Photoresist Application:
+Liquid or dry film photoresist can be applied using traditional dip or spray coating, screening, or roll lamination processes.
+
+DES Processing:
+Developers, strippers, and copper etchants used to process epoxy glass materials will also work with AD Series material layers.
+Thin cores may require leader boards for conveyorized processing and frames or supportive racks for vertical-type processing.
+The ceramic filled material will require more stringent rinse & bake processing depending upon the next step in the process
+sequence.
+
+
+Oxide Treatment:
+AD Series cores are compatible with most oxide and oxide alternative processes. It is best to use the process recommended
+by the supplier of the adhesive system chosen to bond together the multilayer board. Highly caustic, high temperature
+processes, such as traditional or reduced black oxides, should be followed by a thorough rinse and bake of the inner layers.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                             Page 2 of 8
+NOTE: Registration can be optimized by introducing lamination tooling holes after oxide treatment and bake.
+
+
+BONDING:
+Bonding Preparation:
+Special pretreatments of etched surfaces using sodium or plasma processes shouldn’t be necessary providing care was
+taken to protect the substrate surface after copper etch. These treatments can be used to improve surface wettability of the
+inner-layers that have sat for several days or have been exposed to any type of mechanical processing, with plasma being
+the preferred method. Proper conditions and parameters for these treatments are provided in the PTH processing section of
+these guidelines.
+
+
+Inner-layers should be baked at 110°C to 125°C (230°F to 260°F) for a minimum of 30 minutes to ensure removal of volatile
+substances prior to MLB bonding. Guidelines for the oxide treatment should be referenced to make certain the dry bake
+doesn’t degrade the bond-enhancing surface.
+
+
+Multilayer Adhesive System:
+AD Series cores are compatible with a broad range of thermosetting (FR-4, Rogers’ 2929 bondply, RO4400™ prepreg, etc…)
+and thermoplastic (CuClad® 6250 & 6700 Bonding Film, FEP, PFA, PTFE, etc…) adhesive systems. Many factors, such as
+electrical performance, flow characteristics, ease of processing, and bond temperature requirements are considered when
+making the best overall choice. Rogers’ Technical Service Engineers (TSE’s) understand the trade-offs and are available to help
+in the selection process.
+
+
+Multilayer Bond Cycle:
+The press cycle is determined by the requirements of the chosen adhesive system. Cooling under pressure is required when
+using thermoplastic (meltable) films.
+
+
+PTH & OUTER LAYER/DOUBLE-SIDED CIRCUIT PROCESSING:
+Drilling:
+Double-sided boards can be drilled as one-ups or in stack heights that are compatible with the flute length of the drills being
+used. Multilayers are most commonly drilled in stacks of one. Phenolic composite boards are recommended for entry (0.010”
+to 0.030” thick) and exit (>0.060”) layers. Sheeted aluminum and metal coated phenolic boards can also be used as entry
+layers.
+
+
+New carbide drills are highly recommended. Standard or undercut styles can be used. Recommended chip loads (0.00075”
+to 0.003” per revolution) and surface speeds (75 to 300 SFM) vary with tool diameter with slower infeeds and lower surface
+speeds being associated with finer diameter drills. Retract rate when drilling double-sided and multilayer boards should be
+between 300 and 500. The following is a quick reference table that provides recommended parameters for commonly used
+drill diameters.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                          Page 3 of 8
+Tool life should be based upon inspection of cross-sectioned holes. This is especially true when drilling multilayer boards
+where factors such as adhesive type, inner-layer copper weight, and board thickness all affect the hole quality and tool life.
+The “twelve inch rule,” which suggests changing a tool after drilling 12” of substrate, is a good place to start when setting
+tool life for multilayer constructions. For example, initial hit count when drilling a 0.060” thick board would be 12”/0.060” =
+200 holes. For a similar board thickness, 500 to 600 hits may be achievable with tools smaller than 0.025 diameter using the
+parameters in the table below. Peck drilling is recommended for MLBs thicker than 0.030”.
+
+
+                          Tool Size               Spindle Speed                 Infeed                  Retract
+                       (in)         (mm)                  (RPM)         (IPM)       (m/min)     (IPM)       (m/min)
+                     0.0079           0.20                36000          27.0            0.69   300               7.6
+                     0.0098           0.25                29200          22.0            0.56   300               7.6
+                     0.0138           0.35                27600          20.7            0.53   300               7.6
+                     0.0197           0.50                24000          18.0            0.46   400           10.2
+                     0.0256           0.65                22300          22.3            0.57   400           10.2
+                     0.0295           0.75                25600          25.6            0.65   400           10.2
+                     0.0394           1.00                24100          48.2            1.2    400           10.2
+                     0.0492           1.25                20000          40.0            1.0    400           10.2
+                     0.0625           1.59                20000          40.0            1.0    400           10.2
+                     0.1250           3.18                20000          40.0            1.0    400           10.2
+
+
+Deburring:
+The use of flat, rigid entry materials, conservative drilling parameters, and limited hit counts with new drills should minimize
+the risk of copper burring. When drilled properly, cores should be ready for subsequent processing. If deburr is necessary
+(and slight), a chemical microetch process is preferred. If mechanical processing is required, a hand pumice scrub is preferred
+over a suspended abrasive spray system which, in turn, is preferred over a conveyorized mechanical deburr or planarization
+process.
+
+
+Hole Preparation:
+Loosely deposited debris in the holes can be removed using clean, high pressure air and/or high pressure water rinse.
+
+
+PTFE composites are typically not desmeared. However, the adhesive system used to bond multilayer boards may require
+desmear using a chemical (permanganate) or plasma (CF4/O2) process. Neither process will have a significant effect upon the
+PTFE materials, but should be performed prior to activation of the PTFE surface. If plasma is chosen for desmear, a dual cycle
+to accomplish desmear of an adhesive system and activation of the PTFE surface is made possible by adding the desmear
+cycle outlined below to the front end of the treatment cycle described in the treatment portion of this section.
+
+
+AD Series materials may require a glass etch to reduce the risk of plated nodules.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                                  Page 4 of 8
+                                     Frequency:                40 KHz
+                                     Voltage:                500-600V
+                                     Power:                  4000-5000 Watts
+                                     Pre-Heat to 60°C using:
+                                     Gases:                  90% 02, 10%N2
+                                     Pressure:               250mTORR
+                                     Desmear using:
+                                     Gases:                  75% O2, 15% CF4, 10%N2
+                                     Pressure:               250mTORR
+                                     Time:                   10-30 minutes
+
+
+Drilled holes in PTFE-based laminates should be treated prior to the deposition of a conductive seed layer (e.g. electroless
+copper or direct metallization). Not performing a surface activation treatment can result in poor metal adhesion or plated
+voids. Two common pre-treatments for PTFE materials are sodium treatment and plasma treatment. Either can be used for
+treating AD Series materials.treating AD Series materials.
+
+
+Sources for sodium treatment chemicals:
+                                                           FluoroEtch® Etchant
+                                                          Acton Technologies, Inc
+                                                             100 Thompson St
+                                                            Pittston, PA 18640
+                                                              570-654-0612
+                                                           www.actontech.com
+
+
+                                           W.L. Gore Tetra-Etch® etchant 500 ML available from
+                                                        R.S. Hughes Company, Inc
+                                                            1162 Sonora Court
+                                                           Sunnyvale, CA 94086
+                                                               408 739 3211
+                                                           www.rshughes.com
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                                 Page 5 of 8
+Recommended plasma cycle for treating PTFE materials:
+
+
+                         Gases:                 70/30 or 80/20 H2/N2, NH3, N2, or He
+                         Pressure:              100 mTORR pumpdown, 50 mTORR operating
+                         Power:                 4000 Watts
+                         Frequency:             40 KHz
+                         Voltage:               500-600V
+                         Cycle time:            10-30 minutes
+                                               Courtesy of Nordson March Plasma Systems
+
+
+
+
+                           Gases                          H2/N2              He           N2
+                           Power                          1800W              1800W        1800w
+                           Frequency                      13.56 MHz          13.56 MHz    13.56 MHz
+                           Pressure                       150 mTor           173 mTor     181 mTor
+                           Gas Mixture (%)                70/30              100          100
+                           Temperature                    200°F              200 °F       200°F
+                           Time (minutes)                 10 to 20           5 to 10      5 to 10
+                                                          Courtesy of Plasma Etch Inc.
+
+
+Panels should be baked for at least 1 hour at 110 to 125°C (230° to 260°F) prior to plasma treatment. Plasma treated holes are
+more delicate than sodium etched holes. Panels should not be exposed to any pressure wash or scrubbing process prior to
+metallization.
+
+
+*Plasma evaluations were completed using Nordson March Plasma Systems - Series B20 Plasma unit. This unit can process
+up to 20 - 18” X 24” panels per load. For more information concerning this equipment, please contact Nordson March Plasma
+Systems (727-573-4567).
+metallization.
+
+
+Metallization
+AD Series materials are compatible with traditional electroless copper and direct deposit metallization processes. Cores
+should be baked (30-90 minutes @ 110°C-125°C (230°F - 260°F)) prior to metal deposition unless plasma, which also serves
+as a vacuum bake, was used to prepare the hole walls for plating. A flash plate build-up of 0.0001” to 0.0003” (0.0025mm-
+0.0076mm) of copper is recommended to better support hole walls through preparation for outer-layer processing.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                                  Page 6 of 8
+PTH Plating & Outer-Layer Imaging:
+Standard equipment and chemical processes are used to plate, image, and etch circuit patterns onto AD Series materials. Care
+should be taken to preserve the post- etch laminate surface. The topography that remains after copper removal promotes
+improved adhesion to solder masks.
+
+
+Final Surfaces:
+Materials should be rinsed and baked prior to solder mask application. Rinsing in warm or hot water for 20-30 minutes
+followed by 60 minutes @ 125°C (260°F) should be sufficient, especially if the bake is done under vacuum. Properly prepared
+AD Series materials are compatible with most LPI solder masks. Epoxy masks are preferred if the application requires selective
+silk screening.
+
+
+Most final finishes (HASL, Sn, Ag, Ni/Au, OSP, etc...) have been applied to AD Series materials without issue or special concern.
+A rinse/bake regimen, if not done as part of a solder mask process, should be done prior to HASL or reflow exposures. When
+flux is needed, acid fluxes are recommended over solvent fluxes. The HASL or reflow exposure should be performed as soon as
+possible after the flux has been applied.
+
+
+Final Circuitization:
+Individual circuits can be routed, punched, or lased depending upon preference, tolerances, and edge quality requirements.
+Parameters for routing are provided below:
+
+
+                        Chip Load:                        0.00125” to 0.00250”/rev, 32mm – 64 mm/rev
+                        Speed:                            200-300 sfm, 61-92 m/min
+                        Peripheries                       Conventional cut
+                        Internal cut- outs                Climb cut
+                        Tool type                         Carbide double fluted spiral-up End mill
+                        Exit/Entry                        Phenolic or composite board
+                        Tool life                         20-30 linear feet, 6-9 meters
+
+
+Pre-rout vacuum channels in backer board to provide adequate air flow through the channels during routing. Double pass
+(opposite directions) when cleanest edge quality is required.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                                  Page 7 of 8
+The information in this fabrication guideline is intended to assist you in fabricating Rogers’ circuit materials. It is not intended to and does not create any
+warranties express or implied, including any warranty of merchantability or fitness for a particular purpose or that the results shown on this fabrication
+guideline will be achieved by a user for a particular purpose. The user should determine the suitability of Rogers’ circuit materials for each application.
+
+These commodities, technology or software are exported from the United States in accordance with the Export Administration regulations. Diversion
+contrary to U.S. law prohibited.
+
+AD Series, AD250C, AD255C, AD260, AD300C, AD320A, AD350A, RO4400 and the Rogers’ logo are trademark of Rogers Corporation or one of its subsidiaries.
+Fluoroetch is a registered trademark of Acton Associates Inc.
+
+
+© 2023 Rogers Corporation, Printed in U.S.A
+Revised 1673 110623 Publication #92-545
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                                           Page 8 of 8
+

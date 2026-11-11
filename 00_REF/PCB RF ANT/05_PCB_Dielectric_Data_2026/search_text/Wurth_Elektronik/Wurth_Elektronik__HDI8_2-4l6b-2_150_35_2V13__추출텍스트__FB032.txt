@@ -1,0 +1,68 @@
+                                                 # Layer            Thickness Description                       Note
+                                                          Top Solder         0.015mm    Soldermask IPC-SM840                   used on rigid parts
+                                                          Top Surface Finish    0.006mm
+                                                         1 Top Side           0.030mm     Starting foil 1/4oz. after plating and processing
+                                                                         0.065mm    Prepreg IPC-4101/127/128                  FR-4.1 filled, halogen free
+                                                         2  Inner Layer 1        0.030mm     Starting foil 1/4oz. after plating and processing
+
+                                                                         0.065mm    Prepreg IPC-4101/127/128                  FR-4.1 filled, halogen free
+
+                                                         3  Inner Layer 2        0.035mm   ED Base Copper
+
+
+
+
+
+                                                                         0.410mm    Core IPC-4101/127/128                     FR-4.1 filled, halogen free
+
+
+
+
+
+                                                         4  Inner Layer 3        0.035mm   ED Base Copper
+
+
+                                                                         0.125mm    Prepreg IPC-4101/127/128                  FR-4.1 filled, halogen free
+
+
+                                                         5  Inner Layer 4        0.035mm   ED Base Copper
+
+
+
+
+
+                                                                         0.410mm    Core IPC-4101/127/128                     FR-4.1 filled, halogen free
+
+
+
+
+
+                                                         6  Inner Layer 5        0.035mm   ED Base Copper
+
+                                                                         0.065mm    Prepreg IPC-4101/127/128                  FR-4.1 filled, halogen free
+
+                                                         7  Inner Layer 6        0.030mm     Starting foil 1/4oz. after plating and processing
+
+                                                                         0.065mm    Prepreg IPC-4101/127/128                  FR-4.1 filled, halogen free
+
+                                                         8 Bottom Side         0.030mm     Starting foil 1/4oz. after plating and processing
+                                                               Bottom Surface Finish 0.006mm
+                                                               Bottom Solder       0.015mm    Soldermask IPC-SM840                   used on rigid parts
+                                                         Total thickness: 1.506mm
+
+
+
+
+
+notes:
+
+Final copper thicknesses according to IPC-6012  HDI8_2-4l6b-2_150_35_2V13
+
+Standard: Surface Finish ENIG                PCB Thickness Tolerance: ± 10%
+(Ni 5.5 µm ± 1.5 µm, Au 0.075 µm ± 0.025 µm)       customer                         created
+
+Please follow our sectional design rules:          pcb name                       approved
+►  www.we-online.com/designruleshdi_en         engineer                         format      A4, landscape
+
+For impedance matching stackups: Please         date
+consult our specialists: HDI@we-online.com       Template Revision: 10/2023 by Andreas Schilpp / Michael Kress / Werner Öchslen

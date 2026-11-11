@@ -1,0 +1,646 @@
+{
+  "status": "assembled_from_exported_cells",
+  "stage": "assembled_before_finalization",
+  "output_path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\staging\\jlc_assembled.xlsx",
+  "output_sha256": "12be2d115e0c59b5925977477c045931a739eb5a9e2e46c5a178236b9b50f407",
+  "scope": "OPC/XML assembly only; no observation values generated or changed; cell formulas and unsupported objects rejected.",
+  "feature_property_bag_policy": "Identical present property-bag bytes are shared. Missing bag parts are accepted only when worksheet, styles, workbook and workbook relationships contain no property-bag references. Boolean cells and checkbox metadata are preserved.",
+  "finalization_note": "This SHA-256 identifies staging bytes before final hyperlink or metadata processing. Use the published workbook index and final QA for the final user workbook identity.",
+  "sheets": [
+    {
+      "name": "조건별 자료",
+      "data_rows": 26291,
+      "cells_including_first_header": 1498647,
+      "range": "A5:BE26296",
+      "chunks": [
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0001.xlsx",
+          "sha256": "37da0d46d48a7465168aaa012714862de5e9cacfec670b6ee514eae092269c37",
+          "data_rows": 500,
+          "target_start_row": 6,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0002.xlsx",
+          "sha256": "e306795385aa5025fd7bd5ca02db9df933367859f261d7d7a97ca55e782051d5",
+          "data_rows": 500,
+          "target_start_row": 506,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0003.xlsx",
+          "sha256": "641d31f65ddeb89ce35aeba4455272360709d079d159b70b2c8f3d61e9651384",
+          "data_rows": 500,
+          "target_start_row": 1006,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0004.xlsx",
+          "sha256": "a5644ae3035991c474ce9a0fa235d949c476abe5209c6f68d41f7e466ec38e38",
+          "data_rows": 500,
+          "target_start_row": 1506,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0005.xlsx",
+          "sha256": "0ede6e306f7215648f35255f81cba116da277128f0179e7824a0d373d10c6ad8",
+          "data_rows": 500,
+          "target_start_row": 2006,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0006.xlsx",
+          "sha256": "e41a3f162aa0b475adab6c4ade7f82cc389464a608a9fe011ebf2d23d0fcb00c",
+          "data_rows": 500,
+          "target_start_row": 2506,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0007.xlsx",
+          "sha256": "1d7e246adf8bcfcd855c578e9f681c57a0f3167a160aebe33f99c5a62aff87c9",
+          "data_rows": 500,
+          "target_start_row": 3006,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0008.xlsx",
+          "sha256": "2e52039c463a6dde75073f239b00bd0cad1b5ab7be67d242545b264370f5b2c2",
+          "data_rows": 500,
+          "target_start_row": 3506,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0009.xlsx",
+          "sha256": "b795a228790ebad4ee297a53fcbeebe75d87f3250a8c0c7ab19e092dcd866005",
+          "data_rows": 500,
+          "target_start_row": 4006,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0010.xlsx",
+          "sha256": "cc5f88d6a2b129e6dc18dd63f0d7732343e02eee7d810b3811a93ee84198beca",
+          "data_rows": 500,
+          "target_start_row": 4506,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0011.xlsx",
+          "sha256": "3334684d9eee244eee60675f30717a59487290d97a05693b6fe750a7b980209c",
+          "data_rows": 500,
+          "target_start_row": 5006,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0012.xlsx",
+          "sha256": "e0b78532086611cfec8e64294f2122521487ba132ac473bc08ae41725e432b31",
+          "data_rows": 500,
+          "target_start_row": 5506,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0013.xlsx",
+          "sha256": "f59405b64601152d1a3ef607dfec2067666201b8ec142c417812a0e09e62ab84",
+          "data_rows": 500,
+          "target_start_row": 6006,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0014.xlsx",
+          "sha256": "97e7d3a5203fb7972d2c497908b23a6a76c02981b66511194a7fcec9addcf544",
+          "data_rows": 500,
+          "target_start_row": 6506,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0015.xlsx",
+          "sha256": "abd776e09022e761e6b904d2dc2310474f42a8d642a265b613728cf07134bb5b",
+          "data_rows": 500,
+          "target_start_row": 7006,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0016.xlsx",
+          "sha256": "7d3465de81e1ee0f73345d467d28072b253faff4cec6c2a15ee0c2944e3b4689",
+          "data_rows": 500,
+          "target_start_row": 7506,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0017.xlsx",
+          "sha256": "c79b6a52bc49dfb503ebe7068f7539144ca793e38a9775449a09a386a1a5ae15",
+          "data_rows": 500,
+          "target_start_row": 8006,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0018.xlsx",
+          "sha256": "d38f878f99f205e1187ca2c5ac566f050bbee4b646370eb0ebde88ff0df61c9b",
+          "data_rows": 500,
+          "target_start_row": 8506,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0019.xlsx",
+          "sha256": "cd047030b1682bfad6a222d31e6756f3af84f92e2cae6a565fb384365ecd1864",
+          "data_rows": 500,
+          "target_start_row": 9006,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0020.xlsx",
+          "sha256": "4737e18f0b35b00cb17d584842e2847c9ff67f9b769ea2dcb29984e05919d9b0",
+          "data_rows": 500,
+          "target_start_row": 9506,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0021.xlsx",
+          "sha256": "86a8f9aeabea1f20aca59775568a62832430e833e068af2887fcb519cfc8c6be",
+          "data_rows": 500,
+          "target_start_row": 10006,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0022.xlsx",
+          "sha256": "7de16564a7100c76d1c20a78e7b04075e0431fce97722c7e5e97f13b94bf1f92",
+          "data_rows": 500,
+          "target_start_row": 10506,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0023.xlsx",
+          "sha256": "3c3a3d744890c80711e79cf8898e008190bc874896c8342dbd15aadeccf0fc01",
+          "data_rows": 500,
+          "target_start_row": 11006,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0024.xlsx",
+          "sha256": "110b099b7f3b25fefdff5ff221cb7d12e799876756f2f1a131a04fc20ee0df0b",
+          "data_rows": 500,
+          "target_start_row": 11506,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0025.xlsx",
+          "sha256": "01d6f512b07566e15b398797d8e630bfa929d35fdec8501b541547b3c498cb30",
+          "data_rows": 500,
+          "target_start_row": 12006,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0026.xlsx",
+          "sha256": "1cd6f7d31c3900210baa6cc59ffe1c8b32aa8210da8d6b6720bb4bfcda5ad33b",
+          "data_rows": 500,
+          "target_start_row": 12506,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0027.xlsx",
+          "sha256": "49011439efafb45f3cb654a6a347708581bf96dbf1cdd1b40d981a20fbbbb5a2",
+          "data_rows": 500,
+          "target_start_row": 13006,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0028.xlsx",
+          "sha256": "bf2ab583bd796e3829d7fbe43a5759d7613c5e7d89b3ac0d30f8339e621baf1e",
+          "data_rows": 500,
+          "target_start_row": 13506,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0029.xlsx",
+          "sha256": "6adc42afa0c43777a505e90fd707403b6b26720d7922dd3b09ab102ca4c1a86e",
+          "data_rows": 500,
+          "target_start_row": 14006,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0030.xlsx",
+          "sha256": "18c8f177c84c3d3564320d944fa83ca55113448b601de05b22c67ebe68b6e98a",
+          "data_rows": 500,
+          "target_start_row": 14506,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0031.xlsx",
+          "sha256": "56e3aea6ddab8b85d68b84b2a15d23cf14ed22aacb0e6b9305342da0b4c6324f",
+          "data_rows": 500,
+          "target_start_row": 15006,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0032.xlsx",
+          "sha256": "6224a90bc3cd43063e25dde4bc8416af7e417841ed91fd23efd5c3ac3eef2293",
+          "data_rows": 500,
+          "target_start_row": 15506,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0033.xlsx",
+          "sha256": "3e58f832247b4a74a844bcdc1296fad5aa9d55b0c0efdeb1a99f031755c9b763",
+          "data_rows": 500,
+          "target_start_row": 16006,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0034.xlsx",
+          "sha256": "204e6d2f9248d5f960d8df1006f2e83b8100a180fb3e3643f27692a4c084f0fa",
+          "data_rows": 500,
+          "target_start_row": 16506,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0035.xlsx",
+          "sha256": "321edd91428468d305b1c078f58eac949046fdd3dbfa981c347b330d1d61991b",
+          "data_rows": 500,
+          "target_start_row": 17006,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0036.xlsx",
+          "sha256": "91e99fb7c611a9bad6d7536aa2e4a24e03207b4f138622669e974d02312b22f7",
+          "data_rows": 500,
+          "target_start_row": 17506,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0037.xlsx",
+          "sha256": "9245554f0131b7b5e9faeacd54f9ee684b27dfc10d2a7072e89d3de52f8d44fd",
+          "data_rows": 500,
+          "target_start_row": 18006,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0038.xlsx",
+          "sha256": "e8dc06e5f7936ade08220123e3f51011f63dc94708d16ccfe7c0877841449d73",
+          "data_rows": 500,
+          "target_start_row": 18506,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0039.xlsx",
+          "sha256": "710e7c56b8c850eae8020d1a5161bdbe57cdfa686dd373d5bf635182f266e6ab",
+          "data_rows": 500,
+          "target_start_row": 19006,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0040.xlsx",
+          "sha256": "d8d24238f033be2fae47477ea16ebbd275646e82b46dfb38a89ae8e7874e1559",
+          "data_rows": 500,
+          "target_start_row": 19506,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0041.xlsx",
+          "sha256": "2344504dbdf1521ae2a8d54d487bf4c72bb16e5db0ffffd098732438967521d5",
+          "data_rows": 500,
+          "target_start_row": 20006,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0042.xlsx",
+          "sha256": "7ad9d54337a46003053ee697bcff9101b15629b75e918e0c1aadcb8d3e35fd9e",
+          "data_rows": 500,
+          "target_start_row": 20506,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0043.xlsx",
+          "sha256": "78c406796fc5db04b7ae998b4ff24c365357f7f928406ddc6bf79993683881b4",
+          "data_rows": 500,
+          "target_start_row": 21006,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0044.xlsx",
+          "sha256": "228e4a19436fa7cd148bd92f165b29405d5ea60ab03ab65fdabc55c2d18e3e56",
+          "data_rows": 500,
+          "target_start_row": 21506,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0045.xlsx",
+          "sha256": "fdac44df5df38c0ab3a77825bf059bd058885b6a9e83a7d546581ddcb288425b",
+          "data_rows": 500,
+          "target_start_row": 22006,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0046.xlsx",
+          "sha256": "397e0400998809023a4930fd4998477fe73738e6748095b2fe62d4875efa39ac",
+          "data_rows": 500,
+          "target_start_row": 22506,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0047.xlsx",
+          "sha256": "7331d16dc3e125c73b2511b3d06094e1fd79c3e117d85d01cd563389cd45cd69",
+          "data_rows": 500,
+          "target_start_row": 23006,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0048.xlsx",
+          "sha256": "f670acb9c2c7267986eccf59cbc107c5edf7a3a838592f56d57c8924b61e5c24",
+          "data_rows": 500,
+          "target_start_row": 23506,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0049.xlsx",
+          "sha256": "61fb4b2686a84a7a8e2b80e93db39ebe8ea2a1dd698faffd1aae3460ea23940c",
+          "data_rows": 500,
+          "target_start_row": 24006,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0050.xlsx",
+          "sha256": "f478e95b64b1aa1b67822e0dd9881531746d691f60d4c7eff24497915cb59c6b",
+          "data_rows": 500,
+          "target_start_row": 24506,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0051.xlsx",
+          "sha256": "442e8c5e6af91c242769a069c71d6351f6046aa72d8fbe9a7cadd909aefec77f",
+          "data_rows": 500,
+          "target_start_row": 25006,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0052.xlsx",
+          "sha256": "86b0e1a8f7e5b11c88122c395575548f47e9d372833c0c9a5b099dc2333cf535",
+          "data_rows": 500,
+          "target_start_row": 25506,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s01_0053.xlsx",
+          "sha256": "d80986bc0fb46b9dfd95d00040984046ec74a9afcc962d63d4255184000584cb",
+          "data_rows": 291,
+          "target_start_row": 26006,
+          "feature_bag_part_present": true
+        }
+      ],
+      "hyperlinks": 0,
+      "conditional_format_groups": 53
+    },
+    {
+      "name": "필드 안내",
+      "data_rows": 142,
+      "cells_including_first_header": 860,
+      "range": "A5:F147",
+      "chunks": [
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s02_0001.xlsx",
+          "sha256": "466f75c1db88e8a98f70bf0d0e2cc12ede1cd9f02eb56f95d14b81f5a75bf359",
+          "data_rows": 142,
+          "target_start_row": 6,
+          "feature_bag_part_present": true
+        }
+      ],
+      "hyperlinks": 0,
+      "conditional_format_groups": 0
+    },
+    {
+      "name": "원자료 적층",
+      "data_rows": 2926,
+      "cells_including_first_header": 29272,
+      "range": "A5:J2931",
+      "chunks": [
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s03_0001.xlsx",
+          "sha256": "97a59fbf649dcef5bfe1472d280ce5d685a82634158e587eea7b718ddb16d16e",
+          "data_rows": 476,
+          "target_start_row": 6,
+          "feature_bag_part_present": false
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s03_0002.xlsx",
+          "sha256": "b36172df6d26f3e927aaf96ea55d86283e3625eb5bb5fe95e9581f747a48cc8c",
+          "data_rows": 500,
+          "target_start_row": 482,
+          "feature_bag_part_present": false
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s03_0003.xlsx",
+          "sha256": "4f48397f6ed4e3982a6b931c044fa65834e643ceb87a409a277dc5c50e869fc3",
+          "data_rows": 409,
+          "target_start_row": 982,
+          "feature_bag_part_present": false
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s03_0004.xlsx",
+          "sha256": "74de5bf952ac1b34abe54dcde476ce642651c373a518edce4fa6f80a8a30de67",
+          "data_rows": 371,
+          "target_start_row": 1391,
+          "feature_bag_part_present": false
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s03_0005.xlsx",
+          "sha256": "f2357090602e9fc6ed39d22037b268f1d2fcefdab94f5a04f9b2c808e6e5b4d9",
+          "data_rows": 500,
+          "target_start_row": 1762,
+          "feature_bag_part_present": false
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s03_0006.xlsx",
+          "sha256": "280a0426998781203c85941ff9843764c63642a0598f5b31e79c9ab8c1c5c3b6",
+          "data_rows": 500,
+          "target_start_row": 2262,
+          "feature_bag_part_present": false
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s03_0007.xlsx",
+          "sha256": "ea39280f237b32cdd2ffb07e7bdc34f783b87c19c177af54bc93ae4363b455b7",
+          "data_rows": 170,
+          "target_start_row": 2762,
+          "feature_bag_part_present": false
+        }
+      ],
+      "hyperlinks": 0,
+      "conditional_format_groups": 0
+    },
+    {
+      "name": "원자료 구성행",
+      "data_rows": 41077,
+      "cells_including_first_header": 657250,
+      "range": "A5:P41082",
+      "chunks": [
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s04_0001.xlsx",
+          "sha256": "aa093c26bba58e68d9f6ae88fe4f020904eb89bab91b654109a8b8b473f5ac80",
+          "data_rows": 1781,
+          "target_start_row": 6,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s04_0002.xlsx",
+          "sha256": "f162d308b6b3bee6187d11c8e3e6ae574b115b782032888308a98f0968a71698",
+          "data_rows": 1781,
+          "target_start_row": 1787,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s04_0003.xlsx",
+          "sha256": "31a1117b1acca6a4dd5146ea1f4dfb7662bbe8a19c8153df075835e3d5941bc3",
+          "data_rows": 1781,
+          "target_start_row": 3568,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s04_0004.xlsx",
+          "sha256": "c7932ff1cf18e31b3bf50cf64b984e11ec1dc196dae3fefde278433051e26b7c",
+          "data_rows": 1781,
+          "target_start_row": 5349,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s04_0005.xlsx",
+          "sha256": "eb4c3f0e5379fc14c64bc5a130ea8dedd7899c8c01ef9a00944b87915dd10ce3",
+          "data_rows": 1781,
+          "target_start_row": 7130,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s04_0006.xlsx",
+          "sha256": "3e762c1a5c3e34d94daecfdc3f9a03c82e90cb3db76788dd6adffd62b9367a64",
+          "data_rows": 1781,
+          "target_start_row": 8911,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s04_0007.xlsx",
+          "sha256": "19608992505182fb5baca5305f2ebc4fea2d769ca9321c939ed819a1ede3996f",
+          "data_rows": 1781,
+          "target_start_row": 10692,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s04_0008.xlsx",
+          "sha256": "7c7b8e1547d084c1a6d9e191b68ce932bf267f3bea35cedf4b884af5dcfdd213",
+          "data_rows": 1781,
+          "target_start_row": 12473,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s04_0009.xlsx",
+          "sha256": "be76617310062dcecea8e5cb4387fc9897b770aa77462291094576c6a5ef7e5d",
+          "data_rows": 1781,
+          "target_start_row": 14254,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s04_0010.xlsx",
+          "sha256": "e3d85b465cfb6b0972dd76272d066637a8785662f9b69f42f62bc8d95d4ec487",
+          "data_rows": 1781,
+          "target_start_row": 16035,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s04_0011.xlsx",
+          "sha256": "d4d13c6571b6932e8aa60e065768b27ac4840215f1e1735f612fdbb34d61e8e1",
+          "data_rows": 1781,
+          "target_start_row": 17816,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s04_0012.xlsx",
+          "sha256": "f5cd24eeb3dc9a7afece52a14131293e42524050bd13222171b2372534d29653",
+          "data_rows": 1781,
+          "target_start_row": 19597,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s04_0013.xlsx",
+          "sha256": "10683b699f1a5d461db1eab465f5a53bcaf8eee499a62762bb6110a109b9a7df",
+          "data_rows": 1781,
+          "target_start_row": 21378,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s04_0014.xlsx",
+          "sha256": "99bccc89c5a8969995a5bcbdcb1d236c9b57c31589495c2f5f4b851139f32a5b",
+          "data_rows": 1781,
+          "target_start_row": 23159,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s04_0015.xlsx",
+          "sha256": "1817f54d463e0fce22d3529e0da044505e2866972272e00d17749da7dbd4bdc7",
+          "data_rows": 1781,
+          "target_start_row": 24940,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s04_0016.xlsx",
+          "sha256": "8fab8824a28e740206ed9272c36a820d308627cdc16e9b3736f22eac8f9b279c",
+          "data_rows": 1781,
+          "target_start_row": 26721,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s04_0017.xlsx",
+          "sha256": "0c68a31b7fc43b1c58e229ce11b7de6f03dece79b0309be732f13e7347a554ab",
+          "data_rows": 1781,
+          "target_start_row": 28502,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s04_0018.xlsx",
+          "sha256": "e5bcf5080843142138ecbd313ac6689fa7846e8c12e4efa44b29e8f0a09872ac",
+          "data_rows": 1781,
+          "target_start_row": 30283,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s04_0019.xlsx",
+          "sha256": "51f558c6530a2ba04b5b2d868dfea6700cabb05faaf2e7e38b6b342d1725734e",
+          "data_rows": 1781,
+          "target_start_row": 32064,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s04_0020.xlsx",
+          "sha256": "bf268f6c0453eed902375d9313c3432992da668fa8b5c533c1955d6d7937c47b",
+          "data_rows": 1781,
+          "target_start_row": 33845,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s04_0021.xlsx",
+          "sha256": "7bfd4fcdca4df85edb8506576a5fd2af21ff091419250482581dbd4b4c16fa72",
+          "data_rows": 1781,
+          "target_start_row": 35626,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s04_0022.xlsx",
+          "sha256": "adc0b8d57435829951dcd3fe4c7bec7b266e0ee45181320352f541b0a3e9159c",
+          "data_rows": 1781,
+          "target_start_row": 37407,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s04_0023.xlsx",
+          "sha256": "fec4e88073c7f90657f641c04a7a64508b16218ca9427d95ecbc9b0f0e96147f",
+          "data_rows": 1781,
+          "target_start_row": 39188,
+          "feature_bag_part_present": true
+        },
+        {
+          "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\jlc_parts\\s04_0024.xlsx",
+          "sha256": "3387c7d56f60909e52b901702007c46a3a2f3c21bd98b8c384ecd324f408797d",
+          "data_rows": 114,
+          "target_start_row": 40969,
+          "feature_bag_part_present": true
+        }
+      ],
+      "hyperlinks": 0,
+      "conditional_format_groups": 0
+    }
+  ]
+}

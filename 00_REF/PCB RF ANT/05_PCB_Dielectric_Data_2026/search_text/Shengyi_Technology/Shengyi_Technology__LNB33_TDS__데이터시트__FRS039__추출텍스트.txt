@@ -1,0 +1,55 @@
+  LNB33
+  Glass Reinforced Hydrocarbon Ceramic High Frequency Circuit Material
+
+FEATURES                                                                 APPLICATIONS
+● Stable electrical properties versus frequency.                         ● LNA/LNB
+● Glass-reinforced hydrocarbon and ceramic dielectric                    ● High frequency wireless communication
+● Low Z-axis expansion and excellent dimensional                         ● Satellite signal transmission equipment
+ stability.                                                              ● Microstrip and Cellular Base Station Antennas
+                                                                         ● Base Station Antennas and Power Amplifiers
+GENERAL PROPERTIES
+        Test Items                      Test Method                     Condition                   Unit            Typical Value
+    Dielectric Constant,
+                                     IPC-TM-650 2.5.5.5             C-24/23/50,10GHz                   -               3.30±0.05
+        Process Dk
+   Dielectric Constant,Dk             IEC 61189-2-721               C-24/23/50,10GHz                   -               3.45±0.05
+                                     IPC-TM-650 2.5.5.5             C-24/23/50,10GHz                                    0.0025
+   Dissipation Factor,Df                                                                               -
+                                      IEC 61189-2-721               C-24/23/50,10GHz                                    0.0032
+ Thermal Coefficient of Dk            IEC 61189-2-721             -40℃～150℃,10GHz                  ppm/℃                  +125
+    Volume Resistivity              IPC-TM-650 2.5.17.1                  A                         MΩ•cm                 6.8x108
+     Surface Resistivity            IPC-TM-650 2.5.17.1                       A                      MΩ                  5.3x107
+              Tg                     IPC-TM-650 2.4.25                      DSC                       ℃                   >280
+              Td                    IPC-TM-650 2.4.24.6                 5% wt. loss                   ℃                   >400
+        CTE (Z-axis)                 IPC-TM-650 2.4.24                   30-260℃                   ppm/℃                      55
+       CTE (X/Y-axis)                IPC-TM-650 2.4.41                   30-260℃                   ppm/℃                  13/15
+        Peel Strength                 IPC-TM-650 2.4.8                   288℃/10s               N/mm [lb/in]            1.0 [5.71]
+      Flexural Strength               IPC-TM-650 2.4.4                        A                     MPa                       235
+     Water Absorption                IPC-TM-650 2.6.2.1                   D-24/23                     %                       0.1
+   Thermal Conductivity                 ASTM D5470                         100℃                   W/(m•K)                 0.69
+ Tensile Modulus(LW/CW)                  ASTM D638                            A                      GPa                15.6/19.7
+ Tensile Strength(LW/CW)                 ASTM D638                            A                     MPa                 112/143
+Notes: All the typical value is based on the 0.51mm (0.020") thickness specimen.
+
+
+PRODUCT SPECIFICATION
+   Product               Standard Thickness Offerings                   Standard Panel Sizes               Standard Copper Cladding
+                         0.010”(0.25mm) 0.020”(0.51mm)
+    LNB33                0.030”(0.76mm) 0.040”(1.02mm)                   36”x 48” & 40”x48” &                  Hoz, 1oz, 2oz HTE
+                         0.050”(1.27mm) 0.060”(1.52mm)                          42”x48”
+                        0.0107”(0.27mm) 0.0207”(0.53mm)                 Additional sizes may be
+                                                                                                                   Hoz, 1oz
+LNB33(CH1)[1]           0.0307”(0.78mm) 0.0407”(1.04mm)                 available upon request
+                                                                                                             Low profile copper foil
+                        0.0507”(1.29mm) 0.0607”(1.54mm)
+
+[1] For double-sided boards, LNB33(CH1) results in a thickness increase of approximately 0.0007” (18μm) and the Dk decreases by about
+0.1 as the core thickness decreases from 0.0207” to 0.0107”.
+
+Remark: All the typical values listed above are for your reference only and not intended for specification. Please contact Shengyi
+Technology Co., Ltd. for detailed information. All rights from this data sheet are reserved by Shengyi Technology Co., Ltd.
+
+
+
+                                                                                                        CN-TDS-1908-04-LNB33
+

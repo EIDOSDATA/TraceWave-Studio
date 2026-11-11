@@ -1,0 +1,711 @@
+DesignCon 2015
+
+
+
+
+Anisotropic Design
+Considerations for 28 Gbps Via
+to Stripline Transitions
+
+Scott McMorrow, Teraspeed® Consulting – A Division
+of Samtec
+
+Ed Sayre, Teraspeed® Consulting – A Division of Samtec
+
+Chudy Nwachukwu, Isola
+David Blankenship, Samtec
+Abstract
+For 28-56 Gb/s design the homogeneous isotropic material assumption is a key
+impediment in model to measurement correlation. Without accurate dielectric material
+models, it is impossible to close the loop between electromagnetic modeling and actual
+operation. Epoxy/glass PCB materials present a layered-anisotropic dielectric profile that
+varies in the x, y, and z direction. We will show that by using anisotropic dielectric
+models the modeling/simulation/measurement loop can be closed with simulation models
+of single-ended and differential vias. A simple experimental design will used to identify
+z-axis dielectric properties, and combined with GMS-Parameter measurements of x-y-
+axis properties. Accurate dielectric models for use in the modeling and simulation of
+trace and via structures will be demonstrated.
+
+
+Author(s) Biography
+
+Scott McMorrow, Consultant – R&D, Teraspeed® Consulting – A Division of Samtec. -
+Scott is an expert in high-performance design and signal integrity engineering, with a
+broad background in complex system design, interconnect and signal integrity
+engineering, modeling and measurement methodology, and professional training,
+spanning over 25 years.
+
+
+Ed Sayre, NESA System Consultant, Teraspeed® Consulting – A Division of Samtec. -
+Dr. Sayre holds a BEE, an MEE, and a PhD, in Electrical Engineering. He has held a
+number of academic faculty positions in Electrical Engineering, and in 1973 established
+NESA, a leading design firm for Gigabit links and interconnects over PCBs, as well as
+cable for Fibre Channel, Infiniband, CX4 and Gigabit Ethernet protocols. CX4 and
+GigabitEthernet protocols.
+
+Chudy Nwachukwu received his MBA in Operations and Supply Chain Management
+from Arizona State University, and holds a M.S.E.E. degree in digital communications
+from Saint Cloud State University in Minnesota. He manages the Signal Integrity
+laboratory and Engineering Application Development for Isola USA Research and
+Development in Chandler, Arizona.
+Background
+For 28-56 Gb/s design the homogeneous isotropic material assumption is a key
+impediment in model to measurement correlation. Without accurate dielectric material
+models, it is impossible to close the loop between electromagnetic modeling and actual
+operation. Epoxy/glass PCB materials present a layered-anisotropic dielectric profile that
+varies in the x, y, and z direction. We will show that by using anisotropic dielectric
+models the modeling/simulation/measurement loop can be closed with simulation models
+of single-ended and differential vias. A simple experimental design will used to identify
+the permittivity for x/y-axis E-Fields, and combined with GMS-Parameter measurements
+of z-axis E-field permittivity. Accurate dielectric models for use in the modeling and
+simulation of trace and via structures will be demonstrated.
+
+28-56 Gb/s designs require the rigorous control of interconnect losses and impedance in
+the signal transmission path. In previous generations of designs, dielectric materials have
+been generally modeled with perfect isotropic properties that are uniform in all directions
+of propagation. This is convenient from the material modeling and electromagnetic
+analysis point of view, but is quite naive. Common PCB materials are a mixture of
+multiple constituents, including fiberglass, epoxy, various polymers, silica, quartz, and
+various other elements that combine into what we call core or prepreg laminate sheets. In
+the 10-28 Gb/s design regime it is now common to consider the anisotropic effects of the
+fiberglass used in the construction of printed circuits for propagation on traces. In the 28-
+56 Gb/s design regime, it will be equally important to consider how anisotropic material
+properties influence signal propagation through traces and vias.
+
+X/Y-axis signal propagation anisotropy is familiar to the modern designer as laminate
+weave skew. This form of layered-anisotropy occurs because the dielectric properties of
+the material vary locally over and under stripline and microstrip traces, due to the
+physical structure of the fiberglass used in PCB laminates. What is not so familiar is that
+this formally represents one in a class of electromagnetic dielectric mixing problems (EM
+Mixing) that determine the effective permittivity of dielectrics with respect to the
+direction of signal propagation. The direction of propagation is important when
+computing the effective permittivity of any dielectric. For mixtures of materials, effective
+permittivity of the mixture is determined by the physical structure of the mixture, and the
+E-Field direction. For signals guided by traces and vias on epoxy/fiberglass laminates, it
+is clear that the physical structure of the dielectric mixture is different with different
+directions of propagation, and clearly very different when viewed from the perspective of
+traces vs. via transitions. These significant structural differences result in profoundly
+different EM Mixing results, which in turn account for a 10% to 20% variation in the
+permittivity "seen" by traces and vias.
+
+First, we will show the theoretical foundation behind the phenomena of Electromagnetic
+Mixing for a variety of materials and problems. Second, using this foundation, we will
+develop simple experiments with Ansys HFSS FEM full-wave electromagnetic solver
+which will demonstrate the EM Mixing problem with various mixtures of common PCB
+materials, showing the directional impact on permittivity, and its implications for modern
+designs. Third, using our experience with HFSS, we develop a generalized class of PCB
+measurement structures designed to illustrate the variation of EM Mixing permittivity
+with direction of propagation, utilizing simple single-ended trace and via structures that
+can be measured, and used to develop accurate material models. Finally, these accurate
+anisotropic dielectric models will be utilized to "close the loop" between theory,
+modeling, and measurement. Conclusions will be drawn with respect to the applicability
+of these methods in the improvement of design of 28-56 Gb/s vias, RF measurement
+launches, connector and package transitions.
+
+
+Epoxy Fiberglass Laminates
+PCB laminates are inhomogeneous structures constructed from multiple dielectric and
+metal layers. Thus, the anisotropic nature of PCBs introduces a spatial variation of the
+dielectric characteristics of the substrate with respect to direction (X, Y & Z-axis). These
+dielectric materials are manufactured by impregnating and strengthening a woven
+fiberglass fabric with epoxy resin. Glass styles of varying thickness, spread and weave
+pattern are bound together with resin in different volume proportions to achieve a desired
+thickness or dielectric performance. See definitions and illustrations of glass styles
+below:
+
+Expanded Weave – Glass spread more than standard in one Direction
+·  Open Weave – Same as Expanded
+·  Open Filament – Same as Expanded
+
+Spread Glass – Glass Spread by a number of different ways
+
+·    Mechanically Spread (MS) Glass – Glass is Mechanically spread in both the warp
+and fill directions.
+
+·      Square Weave – Glass that has a balanced density and/or yarn Counts in warp and
+fill directions.
+
+·     Flat Glass – Glass is made from fibers with little or no twist.
+
+Inhomogeneous mechanical and dielectric characteristics of PCB laminates create an
+environment that is not only non-uniform, but also layered. As can be seen in Figure 1,
+various styles of fiberglass create variations in the structural dielectric characteristics as
+seen by traces, planes, and vias. In recent years, an increase in the usage of spread and
+square weaves helps in the variation of properties, but does not eliminate all variation.
+Gaps and weave thickness variations continue to exist across and between fiber bundles
+in the grain direction, which cannot be fully eliminated. This contributes to anisotropic
+variation.
+
+Along the PCB x-axis and y-axis it is easily apparent that the fiberglass weave establishes
+some manner of variation in the dielectric. This has been discussed in the literature.
+However, in the z-axis, epoxy/fiberglass laminates form a layered dielectric system, with
+glass fabric surrounded on each side by an epoxy filler layer. These ply are layered to
+form the complete PCB substrate, which contains a large number of the laminate sheets.
+Each sheet contains one of many sets of individual epoxy/fiberglass/epoxy layer sets.
+Since the physical environment along the X, Y, and Z PCB axis are different, we can
+expect that the dielectric properties are also different.
+
+
+
+
+                                             Figure 1
+
+
+
+
+Clad PCB Material as a Linear Non-isotropic Dielectric
+Media
+
+The role of PCB material in electronic design is, as the reader knows, both mechanical as
+well as electrical in function. The cladding after processing provides the signal and
+return paths for the signals and the resin and dielectric sandwich provide the support and
+insulating isolation required by the circuitry. As the data rates in digital communications
+have risen to beyond 10Gbps, the details of the PCB material configuration and dielectric
+properties have become more important.
+                                                                                   
+The general relationship in PCB material between the electric vector intensity E and the
+                      
+electric flux density D is no longer co-linear and simple 1. In general, the relationship
+must be expressed as a matrix expressing the coupling between the various vector
+components of the electric vector intensity and the components of electric flux density as
+shown below:
+
+1
+ “Field and Waves in Communication Electronics”, Chapter 13, by Simon Ramo, John R. Whinnery,
+                       rd
+Theordore Van Duzer, 3 Edition, John Wiley & Sons, Inc. 1994.
+                                   Dx ε xx ε xy      ε xz   Ex
+                                   D = ε                   
+                                   y  yx ε yy        ε yz  ⋅  E y
+                                   Dz ε zx ε zy    ε zz   Ez
+
+Stripline consists of a signal conductor lying between and parallel to two conducting
+planes located above and below the signal conductor. Such a structure can, to an excellent
+approximation, support a Transverse Electric-Magnetic (TEM) wave in which the electric
+and magnetic fields are at right angles to each other as well as mutually at right angles to
+the direction of propagating energy. In systems which employ PCB media to carry the
+signal conductors, the signal conductor is a copper foil laminated onto usually surrounded
+by a permeating composite resin and glass reinforcing woven mat materials. Such a
+TEM stripline structure is shown in figure 2 below:
+                                                         Copper foil plane
+                                            X
+
+
+                                                                                        Glass fiber woven mat
+                                                                                        reinforcement: Dk ~ 6
+
+
+
+
+                                                                                            Copper foil
+                                                                                            conductor
+
+
+                                                                                                Z
+
+
+
+                                                                  Resin dielectric Dk ~ 3
+                                                                    permeating space
+                                                                   between glass fibers
+
+
+                              Y
+
+
+
+                                                      Copper foil plane
+
+
+                                        FIGURE 2
+
+Note that the electric fields are predominately in the vertical “X” direction, but also to a
+lesser extent in the “Y” direction. Because the signal conductor is an excellent
+conductor, there is little or no electric vector in the “Z” direction. In this coordinate
+system, shown above, the relationship between the electric field and electric flux density
+can be written:
+                                   Dx ε xx 0         0   Ex
+                                  D =  0 ε           0  ⋅  E y
+                                   y            yy
+
+                                   Dz  0     0 ε zz   Ez
+
+The lack of coupling between vector components somewhat simplifies solutions but does
+not explain the difference in the various components of the dielectric constants. This is
+best explained by analogy.
+
+Consider a capacitor cube made up of PCB material aligned with the electric field as
+shown in Figure 3 below:
+                                                 Resin Dielectric
+                             Glass fiber        (core & prepreg)    Copper Electrode
+                          reinforcing mat                           (top and bottom)
+
+
+
+
+                                                                               + V
+
+                                     W
+
+
+
+
+                                                     W
+
+                                               Figure 3
+
+This can be thought of as two capacitors in parallel; one made up of a resin block and the
+second a block made up of glass reinforcement mats. The capacitance can be shown to
+be:
+                        C parallel = Cre sin + C glass
+
+
+                         where :
+                         Cre sin = e o ⋅ ∆kre sin ⋅ W ⋅ ∆
+                         C glass = e o ⋅ ∆k glass ⋅ W ⋅ (1 − ∆ )
+                         and,
+                         ∆ = the decimal percentage fill of resin
+
+When a typical value for resin dielectric constant is chosen the tradeoff in percentage fill
+and glass Dk can be demonstrated, as in Figure 4.
+                                                                           Considering PCB Layers in parallel: Resin Dk=3
+
+
+
+                        6.00E-11
+
+
+
+
+                           5.00E-11
+
+
+
+
+                             4.00E-11
+                Unit Capacitance
+
+                                   3.00E-11
+
+
+
+                                   2.00E-11
+
+
+                                                                                                                                                                                                      6.60
+                                    1.00E-11
+                                                                                                                                                                                                     6.30
+                                                                                                                                                                                                 6.00
+                                                                                                                                                                                              5.40
+                                    0.00E+00
+                                               0                                                                                                                                          4.80
+                                                        0.1
+                                                                   0.2                                                                                                                 4.20
+                                                                                0.3
+                                                                                               0.4
+                                                                                                            0.5                                                                    3.60
+                                                                                                                         0.6
+                                                                                                                                        0.7
+                                                                                                                                                   0.8                          3.00
+                                                                                                                                                                0.9
+                                                                                                                                                                            1
+
+
+                                                   0.00E+00-1.00E-11       1.00E-11-2.00E-11         2.00E-11-3.00E-11         3.00E-11-4.00E-11   4.00E-11-5.00E-11   5.00E-11-6.00E-11
+
+
+
+                                                                                                          Figure 4
+
+Depending on the Dk of the glass and percentage of resin fill, there can be nearly a 2:1
+change in capacitance.
+
+There is a second condition to be considered, namely, when the electric field intensity is
+at right angles to the planar boundaries of the PCB material. Once again, by analogy,
+
+                                                        Glass fiber                                                                    Copper Electrode
+                                                     reinforcing mat                                                                   (top and bottom)
+
+
+
+                                                                                                                                                            Resin Dielectric
+                                                                                                                                                           (core & prepreg)
+
+
+
+                                                                                                                                                         + V
+
+                                                                         W
+
+
+
+
+                                                                                                           W
+
+                                                                                                                  Figure 5
+                                                                       1                1                         1
+                                                                               =                     +
+                                                               Cseries                Cre sin             C glass
+
+
+                                                              where :
+                                                              Cre sin = e o ⋅ ∆kre sin ⋅ W ⋅ ∆
+                                                              C glass = e o ⋅ ∆k glass ⋅ W ⋅ (1 − ∆ )
+                                                               and,
+                                                               ∆ = the decimal percentage fill of resin
+                                                                                                     Considering PCB Layers in series: Resin Dk=3
+
+
+
+
+                                      6.00E-11
+
+
+
+
+                                         5.00E-11
+
+
+
+                                             4.00E-11
+
+
+
+                                                3.00E-11
+               Unit Capacitance
+
+
+
+
+                                                      2.00E-11
+
+
+                                                                                                                                                                                                                     6.60
+                                                      1.00E-11
+                                                                                                                                                                                                                    6.30
+                                                                                                                                                                                                               6.00
+                                                                                                                                                                                                             5.40
+                                                      0.00E+00
+                                                                  0                                                                                                                                     4.80
+                                                                           0.1
+                                                                                      0.2                                                                                                             4.20
+                                                                                                   0.3
+                                                                                                                0.4
+                                                                                                                             0.5                                                                 3.60
+                                                                                                                                          0.6
+                                                                                                                                                       0.7
+                                                                                                                                                                    0.8                        3.00
+                                                                                                                                                                               0.9
+                                                                                                                                                                                           1
+
+
+
+
+                                                                  0.00E+00-1.00E-11         1.00E-11-2.00E-11         2.00E-11-3.00E-11         3.00E-11-4.00E-11     4.00E-11-5.00E-11    5.00E-11-6.00E-11
+
+
+
+                                                                                                                            Figure 6
+
+The results are similar in that in those regions where the glass predominates on a
+volumetric basis, the capacitance is higher.
+
+However, when the two results are compared, the parallel capacitance in all cases is
+either larger or equal to the serial capacitance. This can be seen in the results shown
+below:
+
+                                                                                                  Excess Unit Parallel Capacitance over Unit Serial
+
+
+
+
+                                                      12.00%
+
+
+
+
+                                                      10.00%
+
+
+
+                                                        8.00%
+                            Excess Unit Capacitance
+
+
+
+
+                                                        6.00%
+
+
+
+                                                         4.00%
+
+
+                                                                                                                                                                                                                     6.60
+                                                         2.00%
+                                                                                                                                                                                                                    6.30
+                                                                                                                                                                                                               6.00
+                                                                                                                                                                                                             5.40
+                                                          0.00%
+                                                                  0                                                                                                                                     4.80
+                                                                            0.1
+                                                                                      0.2                                                                                                             4.20
+                                                                                                    0.3
+                                                                                                                0.4
+                                                                                                                             0.5                                                                 3.60
+                                                                                                                                          0.6
+                                                                                                                                                        0.7
+                                                                                                                                                                    0.8                        3.00
+                                                                                                                                                                               0.9
+                                                                                                                                                                                           1
+
+
+
+
+                                                                                  0.00%-2.00%        2.00%-4.00%         4.00%-6.00%       6.00%-8.00%        8.00%-10.00%     10.00%-12.00%
+
+
+
+                                                                                                                            Figure 7
+Discussion of Parallel and Series Capacitive Effects in
+PCB Stripline and Vias
+
+These results show that there is a slightly different capacitance experienced by the
+                         
+electric field intensity E vector depending on whether the electric intensity is parallel or
+normal to a PCB planar interface.
+
+TEM stripline Electric fields have predominately normal components to the PCB
+interfaces. Consequently, the Electric field lines “see” the PCB as a series accumulation
+of resin and glass reinforcement dielectrics. Thus, one sees that the impedance predicted
+from PCB “weighted average value” dielectric constant to be slightly above that
+measured.
+
+TEM differential stripline Electric fields have predominately parallel components
+between the signal conductors and predominately normal components in the fringing
+fields outside of the signal conductor pair. The small but significant difference in the
+capacitive environment seen by the parallel and normal E-field components will lead to
+wave splitting and waveform distortion, especially in fast rise time serial digital trace
+pairs.
+
+In the case of differential vias terminating connector pins, as seen in Figure 8 below,
+
+
+
+
+                                           Figure 8
+
+the Electric fields are essentially parallel to the layer boundaries. In this case, the Electric
+fields see a parallel capacitive environment. The impedance will be equivalent to the
+impedance computed with the PCB “weighted average value” dielectric constant. There
+will also be no wave splitting.
+
+
+Electromagnetic Mixing Experiments
+A pure example of the electromagnetic mixing problem of layered dielectrics can be
+demonstrated with coaxial transmission lines operating in the TEM mode. In this mode
+E-fields are normal to the signal conductor surfaces. Test structures can be created using
+the normal field configuration shown in Figure 9 below.
+
+
+
+
+  Figure 9 - Coax Test Structure as a metaphor for signal via with grounds. Classic TEM propagation
+  with E-field orthogonal to conductor surfaces.
+
+To mimic the dielectric layering seen by a via penetrating PCB laminates (Figure 8), a
+coaxial test structure of layered dielectrics can be utilized as shown below in Figure 10. A
+100 mil long section of coax was built with layered epoxy/fiberglass/epoxy sections that
+are approximately equivalent to the layering of a 4 mil thick laminate using 1078
+fiberglass. These are replicated across the length of the coaxial cylinder.
+
+
+
+
+  Figure 10 - Layered dielectric mimics epoxy glass layering in 4 mil core and Prepreg.
+By volume, the resin to glass ratio for this design is 66.6%, which is in the middle of the
+range for typical dielectrics. The epoxy to glass permittivity is adjusted in the design to
+create a mixture average of 3.5, also typical for low loss high performance laminate
+materials. In Ansys HFSS, electromagnetic wave ports were placed on the coax and used
+to optimize the structure dimensions to 50 ohm impedance with a pure mixture of epoxy
+and glass at an Er of 3.5.
+
+Once optimized, the epoxy and glass mixture was swept, while keeping the mixture
+average at Er of 3.5. Return loss of the structure and insertion phase were monitored to
+determine if there was any shift in impedance or propagation velocity that would indicate
+a change in the effective Er. The electromagnetic simulation results are consistent with
+theory, and are shown in Table 1 below. With a wide ranging mixture variation, there is
+no change in the impedance of the structure, or the phase of the S12 path, indicating that,
+for via-like structures with well-controlled signal and ground return paths orthogonal to
+the layering, the effective dielectric constant of the material layering is effectively the
+dielectric constant of the mixture average. Permittivity of the dielectric in the X and Y
+direction is therefore constant, and dependent on the layered mixture average.
+    Epoxy Er               Glass Er             Average Er             Return Loss   S12 Phase
+       3.5                    3.5                    3.5                  -54.37     -57.09deg
+      3.442                 3.617                    3.5                  -53.23      -57.1deg
+      3.383                 3.733                    3.5                  -53.58     -57.09deg
+      3.325                  3.85                    3.5                  -54.19     -57.09deg
+      3.267                 3.967                    3.5                  -53.33      -57.1deg
+      3.208                 4.083                    3.5                   -53.5     -57.09deg
+      3.15                   4.2                     3.5                  -53.4      -57.09deg
+      3.092                 4.317                    3.5                  -54.5      -57.09deg
+      3.033                 4.433                    3.5                  -54.2      -57.09deg
+      2.975                 4.55                     3.5                  -53.28     -57.09deg
+      2.917                 4.667                    3.5                  -53.28     -57.09deg
+      2.858                 4.783                    3.5                  -54.47     -57.08deg
+       2.8                   4.9                     3.5                  -52.26      -57.1deg
+      2.742                 5.017                    3.5                  -53.31     -57.09deg
+      2.683                 5.133                    3.5                  -53.34     -57.09deg
+      2.625                 5.25                     3.5                  -53.36     -57.09deg
+
+ Table 1 – All dielectric mixture combinations perform identically to average.
+
+
+To mimic the dielectric layering seen by a stripline signal trace propagating between
+planes (Figure 5), a coaxial test structure of concentric dielectric rings can be utilized as
+shown below in Figure 11. A 100 mil long section of coax was built with concentric
+epoxy/fiberglass/epoxy sections that represent the layering of 1-ply of laminate on each
+side of an infinitely thin stripline trace. These 3 concentric rings fill the entire volume of
+the coaxial transmission line, and are of equal volume.
+
+By volume, the resin to glass ratio for this design is also 66.6%, adjusted to create a
+mixture average of 3.5. In Ansys HFSS, electromagnetic wave ports were placed on the
+coax and used to optimize the structure dimensions to 50 ohm impedance with a pure
+mixture of epoxy and glass at an Er of 3.5.
+    Figure 11 - Layered dielectric mimics epoxy glass layering in 1-ply of laminate material.
+    Equivalent to trace fields in Z-axis normal to X/Y-axis.
+
+Once optimized, the epoxy and glass mixture was swept identically to the previous
+design, while the mixture average was maintained at Er of 3.5. Impedance of the
+structure was measured. The electromagnetic simulation results are consistent with
+theory, and are shown in Table 2 below. As the mixture permittivity ratio is increased,
+the impedance of the coax increases, indicating that, for stripline trace structures with E-
+fields orthogonal to the layering, the effective dielectric constant of the layered dielectric
+decreases with the ratio of the glass to epoxy permittivity. Permittivity of the dielectric in
+the Z direction is therefore variable, and dependent on the layered mixture Er ratio. This
+is an important conclusion.
+
+From first principles, and numerical electromagnetic experiments, we have determined
+that the effective dielectric constant of layered PCB laminates is dependent on the E-field
+direction. Measurement of epoxy-fiberglass laminate material will therefore show an
+anisotropic directional component to the dielectric permittivity that is equivalent to the
+mixture average for X/Y-axis E-field components, and lower than the mixture average for
+Z-axis E-field components. The implications for this are profound. For an
+electromagnetic simulation model of a trace-via transition to be accurate, the layered
+anisotropic dielectric properties of the laminate must be accounted for.
+
+Standard PCB laminate material property measurements are taken with E-fields oriented
+along the Z-axis. For TEM stripline traces and TEM planar cavity model modeling this is
+reasonably accurate. However, for X/Y-axis E-field orientation as seen in via structures,
+in stripline fringe fields, and in differential trace field, using the Z-axis dielectric
+properties alone will cause a shift in both the predicted propagation delay and impedance.
+
+
+
+
+     Epoxy Er              Glass Er        Z(average)                          Impedance
+        3.5                  3.5               3.5                                49.96
+       3.442                3.617              3.5                                50.14
+       3.383                3.733              3.5                                50.34
+       3.325                 3.85              3.5                                50.55
+       3.267                3.967              3.5                                50.79
+       3.208                4.083              3.5                                51.06
+       3.15                  4.2               3.5                                51.34
+       3.092                4.317              3.5                                51.64
+       3.033                4.433              3.5                                51.95
+       2.975                4.55               3.5                                52.29
+       2.917                4.667              3.5                                52.65
+       2.858                4.783              3.5                                53.02
+        2.8                  4.9               3.5                                53.42
+       2.742                5.017              3.5                                53.83
+       2.683                5.133              3.5                                54.27
+       2.625                5.25               3.5                                54.73
+
+   Table 2 – Impedance results indicate an effective Er change with mixture variation in the Z-axis E-
+   field direction.
+Experimental Design of Anisotropy Test Board
+Measurement investigation of X/Y/Z-axis material anisotropy was performed with the
+Teraspeed® Consulting Anisotropy Test Board (Figure 12). This board is designed with 4
+basic structures: A via stub resonator; a thru via structure; microstrip traces for GMS-
+parameter material property de-embedding; and stripline test traces for material property
+de-embedding.
+
+Classic relative X/Y axis anisotropy is investigated using the GMS-parameter de-
+embedding process. This is not intended to be a rigorous characterization of statistical
+variation, but is useful for establishing baseline material properties for signal propagation
+on microstrip and stripline traces. All layers of this PCB are constructed with exactly the
+same laminate system, 1078 fiberglass weave and resin content, to establish a uniform
+dielectric environment. A typical stackup is shown in Figure 13. Identical boards with
+several recent advanced materials from Isola were fabricated and tested. For this paper,
+data from Isola Tachyon® and Chronon will be shown. (Measurement data was
+incomplete at the time of paper submission. Additional measurement information and
+conclusions will be presented at the conference.)
+
+
+
+
+                       ®
+   Figure 12 – Teraspeed Consulting Anisotropy Test Board
+                           ®
+   Figure 13 – Isola Tachyon Test Board Stackup
+
+Tachyon® laminate materials are designed for very high-speed digital applications.
+Tachyon® products use spread glass and reduced profile copper to mitigate skew and
+improve rise times, reduce jitter, increase eye width and height. Use of ultra-smooth
+copper is enabled by very high adhesive bond between the resin and the metal. Tachyon
+has a nominal dielectric constant (Dk) of 3.02, nominal dissipation factor (Df) of 0.0021,
+depending on resin content. It is, however, not a Dk flat material and has varying
+anisotropic properties in all directions.
+
+Chronon has been engineered to mitigate/eliminate skew issues by utilizing spread glass
+and a resin system with Dk matched to the glass system. This is what we like to call an
+effectively isotropic material with a Dk of about 3.5 and a Df of about 0.004 for most
+available prepreg and core variations. It was chosen for this test board to provide a test of
+its isotropic properties and to determine if it can not only effectively eliminate differential
+signal skew, but also improve the predictability of z-axis via transition modeling.
+
+The primary test structure for investigation is the via stub resonator shown in Figure 14.
+A microstrip trace feeds a classic quarter wave resonant structure. The resonant
+frequency of this via depends on its length, and the permittivity of the dielectric mixture.
+If the mechanical dimensions of the structure are known, an accurate measure of the
+dielectric mixture properties in the X/Y-axis E-field direction can be obtained through
+simulation with HFSS. Resonant frequency of the circuit depends on the length of the via,
+fringe capacitance around the pads, and the properties of the dielectric.
+
+
+
+
+   Figure 14 – Quarter Wave Stub Resonator Test Structure
+Experimental Results
+Current measurements of stub resonance on one Chronon test board (Figure 15) and one
+Tachyon test board (Figure 16) show resonant frequency of the stub structure. Figure 17
+shows a comparison between two of the measurements. For the materials used, the
+measured dielectric constant for Chronon and Tachyon in the Z-axis is approximately 3.5
+and 3.0 respectively. A ratio of the square root of the two Dk values will provide a
+relative indication of the ratio of propagation delay for the two materials and therefore the
+ratio of the stub resonant frequency of the test circuit, assuming that both materials have
+similar anisotropic characteristics and physical dimensions. This ratio is 1.08:1.
+
+If both materials are anisotropic, and both have similar ratios of epoxy to resin Dk, then
+we would expect that the ratio of the stub resonant frequencies for both boards to be
+1.08:1. However, if Chronon is effectively isotropic, due to matched Dk of epoxy and
+glass, then Dk (x/y-axis) and Dk(z-axis) are closer, resulting a smaller resonant frequency
+shift. We would then expect an offset between resonant frequencies for the Tachyon and
+Chronon materials.
+
+Preliminary measurements show the Chronon boards to have a higher stub resonant
+frequency than the Tachyon boards, possibly indicating that Chronon has an effective
+Dk(Z-axis) that is lower than Tachyon. However, until mechanical measurements of the
+structures can be performed, this cannot be confirmed. Final measurement and
+simulation results for this paper were not available by publication time. Current work
+involves additional VNA and mechanical micro section measurements before rendering
+our final conclusions.
+
+
+
+
+                                                    ®
+   Figure 15 – Stub Resonant Frequency (Isola Chronon )
+                                                 ®
+Figure 16 – Stub Resonant Frequency (Isola Tachyon )
+

@@ -1,0 +1,109 @@
+产品编号：NYHP-7350D
+               High Frequency Very Low Loss Laminate
+  特点：                                            FEATURES：
+  ● 低介电常数(Dk 3.50@10 GHz)                                    ●      Low Dk (Dk 3.50@10 GHz )
+  ● 介质损耗(Df 0.0024@10 GHz)                                   ●      Low Df (Df 0.0024@10 GHz)
+  ● 无铅兼容板材                                                   ●      Lead-free compatible
+  ● 优异通孔可靠性及 PCB 加工性                                         ●      Superior PTH reliability and easy PCB processing
+  ● 低吸水率                                                     ●      Low moisture absorption
+  应用领域：                                                            APPLICATIONS：
+  ● 功放/天线                                                    ●      Power Amplifier/Antenna
+  ● 微波/无线通信                                                  ●      Microwave/Wireless Communication
+
+NYHP-7350D 基板产品规格表 Specification Sheet for Laminate
+                                                                   典型值               条件                  测试方法
+            NYHP-7350D 覆铜板                   单位Units
+                                                             Typical Value        Condition           Test Method
+        NYHP-7350D Type Laminate
+                                           Metric(English)   1.524mm CCL                               IPC TM 650
+ 1. 抗剥强度Peel Strength, As received         N/mm(lb/inch),        0.65 ( 3.7 )     1oz HVLP                2.4.8
+                                              MΩ-cm,
+ 2. 体积电阻 Volume Resistivity,                                      1.3×108          COND A                2.5.17.1
+                                              Minimum
+                                                MΩ,
+ 3. 表面电阻 Surface Resistivity,                                     5.7×107          COND A                2.5.17.1
+                                              Minimum
+                                                 %
+ 4. 吸水率 Moisture Absorption                                         0.25                                  2.6.2.1
+                                              maximum
+ 5. 介电常数 Permittivity                            ---
+                                                                    3.50         10 GHz/23℃               2.5.5.5
+    (Laminate & Prepreg as laminated)         maximum
+ 6. 介质损耗 Loss Tangent                            ---
+                                                                   0.0024        10 GHz/23℃               2.5.5.5
+    (Laminate & Prepreg as laminated)         maximum
+ 7. TCDK                                      PPM/℃                  40          -50℃-150℃                2.5.5.5
+ 8. 弯曲强度 Flexural Strength,
+                                              N/mm2,                 220
+    A. 纵向 Length direction                                                            RT                  2.4.4
+                                              minimum                140
+    B. 横向 Cross direction
+ 9. 热应力冲击 Thermal Stress
+                                                                    Pass
+     A. 未蚀刻 Unetched                       10 sec at 288℃                           288℃                 2.4.13.1
+                                                                    Pass
+     B. 蚀刻 Etched
+ 10. 燃烧性 Flammability                                                                                    UL94
+                                               rating                V-0
+     ( Laminate & Prepreg as laminated)                                                           （UL File: E213990）
+ 11. 玻璃态转化温度
+                                                 ℃                   170             DMA                  2.4.24
+     Glass Transition Temperature
+ 12. 热分解温度                                                                                                 TD
+                                                 ℃                   400
+     Decomposition Temperature                                                                         (5% wt loss)
+                       X/Y Axis
+                                              PPM/℃                16/17             TMA                  2.4.24
+ 13. 膨胀系数                (50-125℃)
+                       Z-CTE
+                                              PPM/℃                  100             TMA                  2.4.24
+                         (50 to 280 ℃)
+ 14. 耐热性(除去铜箔)
+     Thermal Resistance (Copper removed)
+                                                                    >120
+     A.T260                                   Minutes                                                    2.4.24.1
+                                                                    > 60
+     B.T288                                   Minutes
+                                                                    > 60
+     C.T300                                   Minutes
+ 15. 耐CAF性能 CAF Resistance                    Pass/Fail             Pass            AABUS               2.6.25
+ 16. 导热系数 Thermal Conductivity                 W/m•℃                 0.8                              ASTM D5470
+*AABUS = 供需双方商定 As agreed upon between user and supplier.
+
+
+
+
+                                                                                                                    1 of 2
+板材厚度与公差        The thickness & Tolerance
+
+                                 厚度 Thickness         厚度 Thickness     公差 Tolerance
+       型号（Model）
+                                     (mm)                (inch)            (mm)
+                                    0.254                 0.01             ±0.020
+                                    0.508                 0.02             ±0.038
+        NYHP-7350D
+                                    0.762                 0.03             ±0.050
+                                    1.524                 0.06             ±0.075
+
+
+板材尺寸 Standard Size
+        型号（Model）                           英寸/inch                  毫米/mm
+                                             36×48                   914×1219
+        NYHP-7350D
+                                             42×48                   1067×1219
+注：可以根据客户要求的尺寸开 PNL 出货。
+Remark: Other size could be available upon request.
+
+
+铜箔 Copper Foil
+        型号（Model）                                           HVLP
+                                                             Hoz
+        NYHP-7350D
+                                                              1oz
+注：Other copper spec could be available upon request
+
+
+
+
+                                                                                    2 of 2
+

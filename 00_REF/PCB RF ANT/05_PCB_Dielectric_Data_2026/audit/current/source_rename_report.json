@@ -1,0 +1,60 @@
+{
+  "renamed_originals": 1682,
+  "original_bytes_sha256_unchanged": true,
+  "current_metadata_changed": [
+    {
+      "path": "catalog/archive_members.csv",
+      "replacements": 648
+    },
+    {
+      "path": "catalog/archive_members.json",
+      "replacements": 648
+    },
+    {
+      "path": "catalog/data_dictionary.csv",
+      "replacements": 4
+    },
+    {
+      "path": "catalog/file_manifest.json",
+      "replacements": 1682
+    },
+    {
+      "path": "catalog/file_path_map.csv",
+      "replacements": 1701
+    },
+    {
+      "path": "catalog/pdf_search_index.json",
+      "replacements": 967
+    },
+    {
+      "path": "catalog/schema.json",
+      "replacements": 4
+    },
+    {
+      "path": "catalog/sources.csv",
+      "replacements": 1701
+    },
+    {
+      "path": "catalog/sources.json",
+      "replacements": 1701
+    },
+    {
+      "path": "catalog/unavailable_or_request_only.csv",
+      "replacements": 22
+    },
+    {
+      "path": "START_HERE_ko.html",
+      "replacements": 1701
+    }
+  ],
+  "typed_record_count": 57340,
+  "typed_source_file_changes": 30823,
+  "typed_values_other_than_source_file_unchanged": true,
+  "canonical_sha256_before": "088d03d235f97026cce0cccf70ec596b55ec77cf47addc3c229f98321f55e6f7",
+  "canonical_sha256_after": "425ced1c3d8664c2150d509df4decb4f88a64bfe06f40e0c717fd2052805f58d",
+  "inverse_source_file_mapping_sha256": "088d03d235f97026cce0cccf70ec596b55ec77cf47addc3c229f98321f55e6f7",
+  "inverse_hash_matches_initial": true,
+  "maximum_absolute_path_length": 240,
+  "original_html_internal_links_modified": false,
+  "historical_audit_or_backup_modified": false
+}

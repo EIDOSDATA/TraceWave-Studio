@@ -1,0 +1,54 @@
+S1150GH
+ (UL ANSI: FR4.1) Halogen-free, Mid-Loss PCB Used Multilayer Material
+FEATURES                                                               APPLICATIONS
+      Anti-CAF capability                                             Smartphone, Tablet, NB
+      Lead-free compatible                                            LED, Game Station
+      Halogen, antimony and red phosphorous free                      Network Terminals
+      lower loss than normal Mid-Tg FR-4.1                            Memory, module, SSD
+
+GENERAL PROPERTIES
+
+              Test Items                  Test Method               Test Condition           Unit          Typical
+                                                                                                            Value
+                  Tg                 IPC-TM-650 2.4.25D                    DSC                 ℃             160
+
+                  Td                 IPC-TM-650 2.4.24.6              TGA (5% wt.              ℃
+                                                                         loss)                               390
+
+                 T288                IPC-TM-650 2.4.24.1                   TMA                min            ＞60
+                 T260                IPC-TM-650 2.4.24.1                   TMA                min            ＞60
+                                                                         288℃,
+          Thermal Stress             IPC-TM-650 2.4.13.1             solder dipping            s            ＞100
+
+                                      IPC-TM-650 2.4.24                 Before Tg          ppm/℃              35
+            CTE (Z-axis)              IPC-TM-650 2.4.24                  After Tg          ppm/℃             190
+                                      IPC-TM-650 2.4.24                 50-260℃                %              2.2
+          Dk             1GHz         IPC-TM-650 2.5.5.9               C-24/23/50              -             4.05
+       (RC: 56%)        10GHz         IPC-TM-650 2.5.5.5               C-24/23/50              -             3.96
+          Df             1GHz         IPC-TM-650 2.5.5.9               C-24/23/50              -            0.007
+       (RC: 56%)        10GHz         IPC-TM-650 2.5.5.5               C-24/23/50              -            0.008
+        Volume Resistivity           IPC-TM-650 2.5.17.1               C-96/35/90          MΩ-cm           6.0×108
+        Surface Resistivity          IPC-TM-650 2.5.17.1               C-96/35/90             MΩ           8.0×107
+
+          Arc Resistance               IPC-TM-650 2.5.1                D-48/50+D-              s
+                                                                         0.5/23                              148
+
+               Dielectric              IPC-TM-650 2.5.6                D-48/50+D-             kV
+              Breakdown                                                  0.5/23                          45+kV NB
+
+        Peel Strength (1oz)            IPC-TM-650 2.4.8                288℃/10s             N/mm
+                                                                                            [lb/in]        1.4 [8.0]
+         Flexural Strength             IPC-TM-650 2.4.4                      A               Mpa
+             (LW/CW)                                                                                       550/430
+         Water Absorption             IPC-TM-650 2.6.2.1                 D-24/23               %             0.10
+            Flammability                       UL94                    C-48/23/50           Rating            V-0
+
+    Remark:
+    1. All the typical value is based on the 1.6mm (8*7628) specimen. Dk and Df value is based on 2116 RC56%.
+    2. All the typical value listed above is for your reference only, please turn to Shengyi Technology Co., Ltd for detailed
+    information, and all rights from this data sheet are reserved by Shengyi Technology Co., Ltd.
+
+
+
+                                                                                    CN-TDS-2405-05-S1150GH-S1150GHB
+

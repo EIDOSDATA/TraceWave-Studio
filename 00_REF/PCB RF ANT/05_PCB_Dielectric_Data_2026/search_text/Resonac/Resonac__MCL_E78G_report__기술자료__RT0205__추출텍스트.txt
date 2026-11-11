@@ -1,0 +1,150 @@
+   Low Dielectric Constant Multilayer Material
+            for Mobile “MCL-E-78G”
+                      Yoshikatsu Shiraokawa               Tatsunori Kaneko                   Minoru Kakitani
+                                     Advanced Performance Materials Operational Headquarters,
+                                             Advanced Core Materials Business Sector,
+                                          Printed Wiring Board Materials R&D Department
+
+
+
+ 1      Abstract
+
+       Amid the high functionality and high-speed communication of mobile devices such as smartphones and tablet PCs, it has
+become difficult to control impedance and RF characteristics by increasing wiring density and layer count. Accordingly, related
+motherboard designs have reached the limits for standard FR-4 material 1), 2).
+       We have developed a new low dielectric constant multilayer MCL-E-78G material for mobile devices. As this material shows
+good dielectric constant, it facilitates impedance control of PWB, meaning this material may provide an improved margin for PWB
+design compared to standard FR-4 material.
+
+
+ 2      Key Features of MCL-E-78G
+
+・MCL-E-78G has superior dielectric properties.
+・MCL-E-78G has high thermal stability and glass transition temperature (Tg).
+・MCL-E-78G is an environmentally-friendly material using halogen-free flame retardants.
+
+
+ 3      Development Background
+
+       Recent years have seen functional improvement in mobile                  60                 4H
+                                                                         Zo ＝        × In                           ……Equation to calculate
+devices, as exemplified by smartphones. Accordingly, it is                      Dk                         t
+                                                                                            0.67TTW 0.8＋              impedance (Stripline)
+                                                                                                           W
+expected to become more difficult to secure a sufficient margin
+for PWB (printed wiring board) design due to narrowed wiring                                         W
+                                                                                                                              H
+space and the increased number of layers. Lowering the dielec­                                                 t
+                                                                                       Dk
+tric constant of substrates may be one approach to solve this
+PWB designing problem. By lowering the dielectric constant of
+                                                                                  Item              Unit           Dk ＝ 3.5       Dk ＝ 4.3
+substrate, as indicated in Figure 1, a sufficient wiring pattern
+                                                                            Impedance（Zo）            Ω                50              50
+width can be secured, and an improved margin for designing
+                                                                          Layer thickness（H）         µm              130             130
+PWB can be expected.
+                                                                           Line thickness（t）         µm               12              12
+       In the above context, we developed a multilayer material
+                                                                             Line width（W）           µm               52              40
+with lower dielectric constant than standard FR-4 material by
+employing resins with superior dielectric proper­ties, which                 Figure 1 Effect of using low dielectric constant material
+                                                                                      on PWB design
+were produced based on our proprietar y resin modi­fication
+technology.
+
+
+ 4      Technical Content
+
+1. Design concept of MCL-E-78G
+       MCL-E-78G adopts a resin with superior dielectric proper ties, which was produced based on our proprietar y resin
+modification technology. It uses thermosetting materials with less hydroxyl group generation; hydroxyl group is the cause of
+dielectric properties declining, thus allowing both superior dielectric properties and high heat resistance to be attained. We also
+used halogen-free flame retardants with high thermal-decomposition temperature, Tg and superior dielectric properties.
+
+
+
+
+  30                                             Hitachi Chemical Technical Report No.57
+ 2. General characteristics & properties of MCL-E-78G
+      Table 1 shows the general characteristics & properties of MCL-E-78G. It has dielectric constant (Dk) 3.5 and dissipation
+ factor (Df) 0.011, which outperform the equivalent values for standard FR-4 material. Its superior heat resistance is also in
+ evidence, having 160°C or higher Tg by the TMA method, 60 minutes or longer T-288 by (IPC TM-650), and the thermal-
+ decomposition temperature of 380°C or higher (5% weight loss). It also achieves excellent reliability, as there was no insulation
+ deterioration, even after 1,000 hours of the CAF resistance test (between through-hole walls: 0.3 mm, 85°C/85%RH, and applied
+ voltage: 100 V).
+                                                     Table 1 Properties of MCL-E-78G (thickness 0.8 mm)
+
+                                                   Item                                  Unit          MCL-E-78G          Standard FR-4
+                                           Flame Retardant                               −             Halogen-free        Halogen-free
+                                     ＊1
+                            Dk（ 1 GHz）                         R.C.＝70％                  −               3.4-3.6                 3.9-4.1
+                                    ＊1
+                            Df（1 GHz）                          R.C.＝70％                  −             0.009-0.012         0.016-0.019
+                                Decomposition temp.（ 5 ％ wt loss）                        ℃               380-400             380-390
+                                                                     TMA                 ℃               160-170             155-170
+                                 Tg
+                                                                     DMA                 ℃               200-220             195-215
+                                                                 X ＜ Tg                ppm/℃              13-15                  12-15
+                                                                 Y ＜ Tg                ppm/℃              15-17                  14-17
+                                CTE
+                                                                 Z ＜ Tg                ppm/℃              35-45                  30-40
+                                                                 Z ＞ Tg                ppm/℃             180-230             180-240
+                          Cu Peel strength                  Outer layer 18 µm           kN/m             1.0-1.2                 1.2-1.5
+                            T-288（w/Cu）                              TMA                 min              ＞60                     ＞60
+                            Flammability                             UL-94               −                 V- 0                   V- 0
+                                           ＊2
+                          CAF properties                  85℃/85％RH，DC100 V              hrs.            ＞1000                   ＞1000
+
+                    ＊1）Measured by a Triplate-Line Resonator
+                    ＊2）Drill bit: Φ0.4 mm, T/H wall distance: 0.3 mm, Pre-condition: Reflow x 2（Max 265℃）
+
+
+ 3. Dielectric properties of the MCL-E-78G
+      Figure 2 shows the frequency dependence of Dk and Df up to 10 GHz. It shows MCL-E-78G has superior dielectric properties
+ as Dk by approx. 0.5 and Df by approx. 0.006 were improved compare with standard FR-4 materials.
+
+                          4.10 4.10                                                   0.02200.0220
+
+                          4.00 4.00                                                   0.02000.0200
+                          3.90 3.90
+                                                                                      0.01800.0180
+                                            Standard FR-4 FR-4
+                                                 Standard                                                  Standard FR-4 FR-4
+                                                                                                                Standard
+                          3.80 3.80
+                                                                                      0.01600.0160
+                     Dk   3.70
+                           Dk 3.70                                              Df     Df
+                                                                                      0.01400.0140
+                          3.60 3.60
+                                                                                      0.01200.0120
+                          3.50 3.50                                                                         MCL-E-78G
+                                                                                                                MCL-E-78G
+                          3.40 3.40                                                   0.01000.0100
+                                         MCL-E-78G
+                                              MCL-E-78G
+                          3.30 3.30                                                   0.00800.0080
+                              0 1 02 13 24 35 46 57 68 79 810 91110 11                       0 1 02 13 24 35 46 57 68 79 810 91110 11
+                                                Freq. [GHz]
+                                                       Freq. [GHz]                                          Freq. [GHz]
+                                                                                                                   Freq. [GHz]
+                    ＊）Measured by a Triplate-Line Resonator
+
+                                   Figure 2 Frequency dependency of relative dielectric constant and dissipation factor
+
+
+
+  5    Future Business Development
+
+ ・Development of low transmission loss multilayer materials for next-generation mobile products
+
+【References】
+ 1) EM Data Service Corporation: Market Trend in Major Digital                      2) M
+                                                                                         akoto Yanagita: JPCA Show2012 Proceedings of the NPI Presen­
+     Equipment—Demand Projection of 26 Items of Digital Equip­                          tation, pp. 49-51
+   ment (2014)
+
+
+                                                             Hitachi Chemical Technical Report No.57                                             31
+

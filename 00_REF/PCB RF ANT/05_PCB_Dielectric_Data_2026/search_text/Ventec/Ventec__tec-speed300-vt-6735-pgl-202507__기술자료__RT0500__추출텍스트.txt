@@ -1,0 +1,198 @@
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+tec-speed 30.0 VT-6735                                                   UL Approval: E214381       Version:20/07/2025
+
+PROCESS GUIDE
+
+
+Precautions in Handling
+Storage Condition & Shelf Life
+                                                  Laminate
+                          Temperature             Room
+ Storage Condition
+                          Relative Humidity       /
+ Shelf Life                                       24 Months(airproof)
+
+•       Take care in handling thin core laminates as they are easily damaged.
+•       The grain direction is indicated on the label with an arrow.
+•       Laminates exceeding 24 months can still be used as long as the copper foil has no severe oxidation or stain.
+
+
+
+Designing and Inner layer Process
+•       Tooling & pinning holes should be drilled or routed. Punching is forbidden.
+•       Lay the panel on a flat clean surface. The solvent clean should be followed with a clean water rinse.
+•       Remove copper oxides using commercially available cleaners and micro etchants.
+•       Abrasive cleaning (e.g., pumice powder or conveyorized brush scrubbing) is not recommended.
+•       Mechanical surface preparation tends to cause microscopic scratches in copper. These scratches become
+        stress risers that can lead to thermal stress cracks in some environmental conditions. While strongly
+        recommending against abrasive cleaning, we recognize that in some circumstances that abrasive cleaning
+        is necessary. When abrasive cleaning is required, it should be performed with minimal pressure and
+        knowledge of the risks involved. Brush scrubbing may cause material distortion.
+•       After oxide, it is preferred to press cores within 12 hours. Any cores staged more than 24 hours should be
+        re-treated.
+
+
+
+
+                                                                                                                Page 1 of 4
+www.venteclaminates.com                                                                                  Published on: 20/07/2025
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+tec-speed 30.0 VT-6735                                                  U  L Approval: E214381      Version:20/07/2025
+
+PROCESS GUIDE
+
+
+Laminates Availability
+                                                          Dk@10GHz                                Df@10GHz
+        CCL                Thickness
+
+                             (inch)                   IPC-TM650 2.5.5.5
+                   IPC-TM650 2.5.5.5
+
+                                                       Clamped Stripline                    Clamped Stripline
+                             0.010                         3.5±0.05                                0.0015
+      VT-6735                0.020                         3.5±0.05                                0.0015
+                             0.030                         3.5±0.05                                0.0015
+
+Remarks:
+
+
+
+•       Copper foil: Hoz~2oz, HTE,RTF and HVLP are all available based upon request.
+•       More types may be available upon request.
+
+
+
+Drilling parameters
+     Drill Bit Diameter
+             Spindle
+                 Infeed
+                  Retract
+             Hit Counts
+            (mm)                     (KRPM)                    (IPM)                    (IPM)
+              0.25                      68                      88                       300                     300
+              0.35                      55                      83                       300                     400
+              0.50                      48                      96                       400                     400
+              0.75                      32                      64                       400                     400
+              1.00                      24                      48                       400                     400
+              1.25                      20                      40                       400                     400
+              1.59                      20                      40                       400                     400
+
+•       Surface speed: 150~300 SFM.
+•       Excessive wear of carbide drill bits. Carbide or Diamond coated drill bits are recommended.
+•       LE Aluminum sheet and white phenolic entry board are preferred, please consult your local Ventec
+        representative for options.
+
+
+
+
+                                                                                                              Page 2 of 4
+www.venteclaminates.com                                                                                 Published on: 20/07/2025
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+tec-speed 30.0 VT-6735                                                     UL Approval: E214381      Version:20/07/2025
+
+PROCESS GUIDE
+
+
+Desmear Process
+Plasma treatment is necessary process, and material should be baked more than 1 hour at 120℃ before plasma
+treatment. Meanwhile, material cannot be suffered any high pressure washing and scrubbing before metallization.
+
+Plasma: Half time of FR-4 conditions is recommended.
+
+          Pressure
+               Temperature
+               Gas mixture                  Power
+               Duration
+
+            (mT)                     (℃)                                                   (W)                  (min)
+             250                        90                  90%H2 , 10% N2                 4500                      5
+             250                       100                 10%CF4 , 90% N2                 4000                     10
+             250                       100                     100% O2                     4000                      5
+             250                       100                     100% N2                     4200                     30
+
+Permanganate Desmear: Not recommended.
+
+
+
+Plating and Solder mask
+•       VT-6735 laminates have been engineered to be highly resistant to chemical infiltration and a robust hole wall  
+
+        preparation process is necessary for a successful deposition plating process. Following hole wall preparation,
+        VT-6735 will accept standard electroless copper or direct deposit metallization plating process.
+•       When copper surface preparation is required, chemical cleaning processes are preferred. Mechanical  
+
+        scrubbing should be avoided due to possible mechanical damage. Otherwise, standard processing should be
+        used.
+•       No special treatment is required if the surface has not been mechanically scrubbed. In rare cases, where
+
+        adhesion is poor, a plasma treatment may be used to activate the exposed PTFE.
+
+
+
+
+                                                                                                                Page 3 of 4
+www.venteclaminates.com                                                                                   Published on: 20/07/2025
+Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+tec-speed 30.0 VT-6735                                                 UL A    pproval: E214381   ersion:20/07/2025
+                                                                                                  V
+
+
+
+
+PROCESS GUIDE
+
+
+Routing
+        Drill Bit Diameter
+              Spindle
+                      Infeed
+                        Retract
+
+               (mm)                      (KRPM)                         (IPM)                          (IPM)
+                0.8                         50                           10                             500
+                 1.0                        40                           12                             500
+                 1.2                        34                           12                             500
+                 1.6                        25                           18                             700
+                2.0                         20                          27.2                            700
+                2.4                         20                           35                             700
+                3.0                         20                           42                             700
+                3.2                         20                           42                             700
+
+•       Excessive wear of carbide drill bits and Diamond coated drill bits are recommended.
+•       Rigid phenolic entry and a rigid backer should be used. In some cases, adding paper (white paper or Kraft
+        paper) between the phenolic and the part allows better conformance to surface topography and may reduce
+        burring.
+•       Materials will generally provide a better edge quality due to none glass fabric.
+
+
+
+Packaging and baking recommendation
+•       It is recommended to bake the board before packaging at 125℃/4~8h to avoid moisture causing a decrease
+        in heat resistance.
+•       If the PCBs needs to be stored for a long time before use, it is recommended to use aluminum foil vacuum
+        packaging.
+•       If exceed 3 months after packaging, It is best to bake the PCBs at 125℃/4~6h before assembly before use.
+
+
+
+
+                                                                                                              Page 4 of 4
+www.venteclaminates.com                                                                                 Published on: 20/07/2025
+

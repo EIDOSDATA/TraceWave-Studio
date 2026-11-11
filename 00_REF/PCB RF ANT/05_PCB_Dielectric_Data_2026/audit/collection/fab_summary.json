@@ -1,0 +1,204 @@
+{
+  "total_sources": 240,
+  "download_statuses": {
+    "downloaded": 232,
+    "failed": 6,
+    "blocked_human_verification": 2
+  },
+  "original_local_extensions": {
+    ".html": 67,
+    ".zip": 18,
+    ".pdf": 136,
+    ".stackup": 2,
+    ".cvg": 1,
+    ".png": 5,
+    ".jpg": 2,
+    ".json": 1
+  },
+  "total_normalized_rows": 30525,
+  "rows_are_not_independent_material_measurements": true,
+  "by_fabricator": {
+    "AISLER": {
+      "records": 32,
+      "source_count": 4,
+      "distinct_stackup_ids": 4,
+      "distinct_product_labels": 3,
+      "rows_with_scalar_dk": 27,
+      "rows_with_stated_frequency": 0
+    },
+    "AdvancedPCB": {
+      "records": 33,
+      "source_count": 1,
+      "distinct_stackup_ids": 0,
+      "distinct_product_labels": 33,
+      "rows_with_scalar_dk": 33,
+      "rows_with_stated_frequency": 21
+    },
+    "CircuitHub": {
+      "records": 4,
+      "source_count": 1,
+      "distinct_stackup_ids": 0,
+      "distinct_product_labels": 4,
+      "rows_with_scalar_dk": 4,
+      "rows_with_stated_frequency": 0
+    },
+    "Epec": {
+      "records": 66,
+      "source_count": 1,
+      "distinct_stackup_ids": 0,
+      "distinct_product_labels": 55,
+      "rows_with_scalar_dk": 61,
+      "rows_with_stated_frequency": 66
+    },
+    "Eurocircuits": {
+      "records": 18,
+      "source_count": 6,
+      "distinct_stackup_ids": 0,
+      "distinct_product_labels": 9,
+      "rows_with_scalar_dk": 17,
+      "rows_with_stated_frequency": 18
+    },
+    "Fineline": {
+      "records": 129,
+      "source_count": 3,
+      "distinct_stackup_ids": 0,
+      "distinct_product_labels": 67,
+      "rows_with_scalar_dk": 122,
+      "rows_with_stated_frequency": 129
+    },
+    "JLCPCB": {
+      "records": 26291,
+      "source_count": 5,
+      "distinct_stackup_ids": 2466,
+      "distinct_product_labels": 11,
+      "rows_with_scalar_dk": 26291,
+      "rows_with_stated_frequency": 0
+    },
+    "Lab Circuits": {
+      "records": 16,
+      "source_count": 1,
+      "distinct_stackup_ids": 0,
+      "distinct_product_labels": 8,
+      "rows_with_scalar_dk": 16,
+      "rows_with_stated_frequency": 16
+    },
+    "Multi Circuit Boards": {
+      "records": 38,
+      "source_count": 3,
+      "distinct_stackup_ids": 0,
+      "distinct_product_labels": 35,
+      "rows_with_scalar_dk": 37,
+      "rows_with_stated_frequency": 35
+    },
+    "NCAB": {
+      "records": 6,
+      "source_count": 1,
+      "distinct_stackup_ids": 0,
+      "distinct_product_labels": 6,
+      "rows_with_scalar_dk": 0,
+      "rows_with_stated_frequency": 0
+    },
+    "NextPCB": {
+      "records": 31,
+      "source_count": 2,
+      "distinct_stackup_ids": 0,
+      "distinct_product_labels": 31,
+      "rows_with_scalar_dk": 26,
+      "rows_with_stated_frequency": 5
+    },
+    "OSH Park": {
+      "records": 10,
+      "source_count": 4,
+      "distinct_stackup_ids": 4,
+      "distinct_product_labels": 6,
+      "rows_with_scalar_dk": 10,
+      "rows_with_stated_frequency": 7
+    },
+    "PCBWay": {
+      "records": 2250,
+      "source_count": 1,
+      "distinct_stackup_ids": 298,
+      "distinct_product_labels": 5,
+      "rows_with_scalar_dk": 2250,
+      "rows_with_stated_frequency": 0
+    },
+    "Seeed Fusion": {
+      "records": 1,
+      "source_count": 1,
+      "distinct_stackup_ids": 0,
+      "distinct_product_labels": 1,
+      "rows_with_scalar_dk": 0,
+      "rows_with_stated_frequency": 0
+    },
+    "TTM Technologies": {
+      "records": 2,
+      "source_count": 1,
+      "distinct_stackup_ids": 0,
+      "distinct_product_labels": 2,
+      "rows_with_scalar_dk": 2,
+      "rows_with_stated_frequency": 2
+    },
+    "Wurth Elektronik": {
+      "records": 1598,
+      "source_count": 8,
+      "distinct_stackup_ids": 169,
+      "distinct_product_labels": 57,
+      "rows_with_scalar_dk": 1598,
+      "rows_with_stated_frequency": 1598
+    }
+  },
+  "jlc_api_counts": {
+    "board_type_1_api_templates": 1519,
+    "board_type_1_named_templates": 1222,
+    "board_type_1_dielectric_numeric_rows": 16933,
+    "board_type_1_custom_or_unconstrained_templates": 297,
+    "board_type_3_api_templates": 1407,
+    "board_type_3_named_templates": 1244,
+    "board_type_3_dielectric_numeric_rows": 9343,
+    "board_type_3_custom_or_unconstrained_templates": 163
+  },
+  "additional_files": 37,
+  "additional_file_bytes": 91253680,
+  "sources_with_local_file_bytes": 133711960,
+  "record_kinds": {
+    "published_calculator_stackup_layer": 26276,
+    "stackup_master_layer_typical_planning_value": 1598,
+    "published_stackup_layer": 2292,
+    "fabricator_calculator_parameter": 12,
+    "fabricator_capability_nominal": 1,
+    "fabricator_material_summary": 256,
+    "material_class_default": 5,
+    "ambiguous_multiple_values": 5,
+    "fabricator_impedance_parameter": 8,
+    "fabricator_prepreg_parameter": 4,
+    "material_classification_range": 11,
+    "fabricator_material_design_guide": 2,
+    "historical_fabricator_material_guide": 33,
+    "fabricator_flex_impedance_parameter": 3,
+    "fabricator_service_range": 1,
+    "fabricator_service_material": 2,
+    "supplier_datasheet_hosted_by_fabricator": 16
+  },
+  "wurth_native_file_counts": {
+    "archive_entries": 175,
+    "distinct_file_names": 169,
+    "distinct_content_sha256": 168
+  },
+  "thickness_quality_review": {
+    "affected_rows": 226,
+    "affected_stackups": 25,
+    "source_id": "FB240",
+    "original_value_counts_mm": {
+      "-0.0185": 226
+    },
+    "source_before_adjustment_mm": 0.05,
+    "affected_inner_copper_oz": 4.0,
+    "api_adjacent_copper_mm": 0.137,
+    "observed_adjustment_mm": 0.0685,
+    "affected_material": "Shengyi S1000-2M, 106 RC72%",
+    "action": "Invalid nonpositive normalized thickness_mm replaced by null; original retained in source_thickness_mm; no replacement physical thickness inferred.",
+    "remaining_nonpositive_normalized_thickness_rows": 0,
+    "raw_source_files_and_hashes_unchanged": true,
+    "audit_path": "agents/fab_nonpositive_thickness_audit.json"
+  }
+}

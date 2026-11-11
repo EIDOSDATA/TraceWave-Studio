@@ -1,0 +1,138 @@
+TLY-5Z
+Low DK/Low Z-Axis Expansion/Low Density Laminates
+
+ Benefits
+      •    Low Z Axis CTE
+      •    Plated Through Hole Stability
+      •    Low Density (1.92 g/cm3)
+      •    Attractive Price/Performance Ratio
+      •    Excellent Peel Strength
+      •    Compatible with Flat Copper
+
+
+
+
+ Applications
+      •    Aerospace Components
+      •    Low Weight Antennas for Aircraft
+      •    RF Passive Components
+
+
+
+
+TLY-5Z laminates are advanced, glass-filled, PTFE composites with woven fiberglass reinforcement. The glass-filled
+structure was designed for low density applications such as aerospace having optimally low weight requirements.
+This results in a dimensionally stable composite which is otherwise not possible with nonreinforced PTFEs. The low
+density approach also makes for a composite with a low Z axis expansion which is also not otherwise possible with
+PTFE-rich composites. TLY-5Z is much more thermally stable with respect to z axis expansion induced stress on plated
+through holes than conventional low dielectric constant PTFE composites.
+
+TLY-5Z is also an attractive choice from a cost perspective. The glass-filled structure is a cost effective solution versus
+standard PTFE-rich copper clad laminates. TLY-5Z can be used in high volume commercial microwave applications
+where PTFE-rich substrates would be cost prohibitive. TLY5Z can be used in PWB designs which would be extremely
+difficult to manufacture or thermally unreliable with conventional PTFE-rich substrates. Often, plated through
+holes in conventional PTFE-rich substrates suffer from drilling defects and must be plated with thick copper to have any
+hope of reliability. These PWBs may suffer from thermal cycle induced cracks. TLY-5Z has half the thermal expansion
+of PTFE-rich substrates, offers improved drilling and can be thermally cycled. Ground stitching along transmission lines
+can be readily accomplished and they will be thermally reliable. TLY-5Z offers a much better option for complex multilayer stripline
+design than older PTFE-rich substrates.TLY-5Z can support Substrate Integrated Waveguide (SIW) applications with many mode
+suppression vias.
+
+TLY-5Z can be combined with the flattest of coppers such as the new ULP ultra low profile copper foils.
+
+TLY-5Z shows reduced temperature coefficient of dielectric constant (TcK) relative to conventional 2.2 dielectric constant materials.
+                                                 Conventional 2.2 DK PTFE Subtrates
+
+
+
+
+                                                             PIMD / PIM
+
+PIMD (Passive Intermodulation Distortion) occurs in complex communications systems where multiple frequencies induce unwanted
+harmonic distortion. PIM can result from many sources other than the copper clad laminates. However, laminates such as AGC’s TLY
+and TLY-5Z exceed PIM requirements of PCBs of -153 dBc (measured between 880 and 960 MHz, from 1710 to 1880 MHz and from
+1920 to 2100 MHz). Data was collected using 20 Watt signal carriers and reverse treated copper (CL1).
+
+TLY-5Z’s improved PTH reliability results in consistent PIMD levels in PWB designs with plated
+through holes even after repeated thermal cycling.
+
+
+
+
+                                               PIMD example of TLY-5Z-0300-CL1/CL1
+
+
+
+
+                                                  PTH example after thermal cycle
+            Properties                      Conditions       Typical Value                Unit                      Test Method
+ Electrical Properties
+ Dielectric Constant                        @ 10 GHz           2.20 ± 0.04                                IPC-650 2.5.5.5.1 Mod.
+ Dissipation Factor                         @ 10 GHz             0.0015                                   IPC-650 2.5.5.5.1 Mod.
+ Volume Resistivity                                                109                Mohms/cm            IPC-650 2.5.17.1
+ Surface Resistivity                                               108                 Mohms              IPC-650 2.5.17.1
+ Thermal Properties
+ Thermal Conductivity                                             0.2                   W/M*K             IPC-650 2.4.50
+                                                X                 30
+ CTE (25-260°C)                                 Y                 40                    ppm/°C            IPC-650 2.4.41
+                                                Z                 130
+ Mechanical Properties
+ Peel Strength                          1 oz. copper            1.3 (7)              N/mm (Ibs/in)        IPC-650 2.4.8
+                                             MD                63 (9,137)             N/mm2 (psi)
+ Tensile Strength
+                                              CD               66 (9,572)             N/mm2 (psi)
+                                                                                                          IPC-650 2.4.18.3
+                                             MD             1,260 (182,748)           N/mm2 (psi)
+ Tensile Modulus
+                                              CD            1,140 (165,344)           N/mm2 (psi)
+                                             MD                    6.0                     %
+ Elongation                                                                                               IPC-650 2.4.18.3
+                                              CD                   6.9                     %
+                                             MD               71 (10,300)             N/mm2 (psi)
+ Flex Strength                                                                                            ASTM D790
+                                              CD              80 (11,600)             N/mm2 (psi)
+                                             MD             2,600 (377,100)           N/mm2 (psi)
+ Flex Modulus                                                                                             ASTM D790
+                                              CD            2,980 (432,213)           N/mm2 (psi)
+ Density                               Specific Gravity           1.92                  g/cm3             IPC-650 2.3.5
+                                                                 -0.05                 % (10 mil)
+                                               MD
+                                                                 -0.05                 % (30 mil)
+ Dimensional Stability                                                                                    IPC-650 2.4.39 (Bake)
+                                                                 -0.17                 % (10 mil)
+                                               CD
+                                                                 -0.11                 % (30 mil)
+                                                                 -0.07                 % (10 mil)
+                                               MD
+                                                                 -0.07                 % (30 mil)
+ Dimensional Stability                                                                                    IPC-650 2.4.39 (Stress)
+                                                                 -0.22                 % (10 mil)
+                                               CD
+                                                                 -0.14                 % (30 mil)
+ Chemical / Physical Properties
+ Moisture Absorption                                              0.03                     %              IPC-650 2.6.2.1
+ Hardness                                   Durometer              68                                     ASTM D2240
+ UL-94 Flammability Rating                                        V-0                                     UL-94
+
+                                                           Typical Thicknesses
+                                  Inches                                                               mm
+                                  0.0100                                                               0.25
+                                  0.0200                                                               0.51
+                                  0.0300                                                               0.76
+                                  0.0600                                                               1.52
+                                                          Available Sheet Sizes
+                                  Inches                                                               mm
+                                  12 x 18                                                            305 x 457
+                                  16 x 18                                                            406 x 457
+                                  18 x 24                                                            457 x 610
+
+* All test data provided are typical values and not intended to be specification values. For review of critical specification tolerances,
+   please contact a company representative directly.
+* TLY-5Z can be manufactured in increments of 0.0100”(0.25mm).
+* Standard panel size is 18” x 24” (457 mm x 610 mm).
+* Please contact AGC for availability of additional thicknesses, other sizes & any other type of cladding.
+
+
+ AGC Inc. 2023-12
+ agc-ml.multimaterial@agc.com
+

@@ -1,0 +1,116 @@
+                                                                                           Data Sheet
+
+
+RO4400™ Series Bondply
+Data Sheet
+RO4450B™and RO4450F™ Bondply
+RO4000® dielectric materials have long been used in combination with FR-4
+                                                                                    Feature:
+cores and bondplys as a means to achieve a performance upgrade of standard
+FR-4 multi-layer designs. RO4003C™, RO4350B™ , and RO4000 LoPro™ glass              CAF resistant
+
+reinforced hydrocarbon/ceramic laminates have been used in layers where
+operating frequency, dielectric constant, or high-speed signal requirements
+dictate the need for high performance materials. FR-4 cores and bondply are
+still commonly used to inexpensively form less critical signal layers.
+
+
+The RO4400™ bondply family is comprised of three grades based on the RO4000 series core materials, and are
+compatible in multi-layer constructions with either RO4003C, RO4350B or RO4000 LoPro laminates. A high post-
+cure Tg (>280°C / >536°F ) makes RO4400 series bondply an excellent choice for multi-layers requiring sequential
+laminations as fully cured RO4400 bondplys are capable of handling multiple lamination cycles. In addition, FR-4
+compatible bond requirements (177°C/350°F) permit RO4400 bondply and low flow FR-4 bondply to be combined
+into non-homogeneous multi-layer constructions using a single bond cycle.
+
+
+RO4450F™ bondply has demonstrated improvement in lateral flow capability, and is becoming the first choice for
+new designs or as a replacement in designs that have difficult fill requirements.
+
+
+Each of the RO4450B and RO4450F bondplys are recognized by Underwriter Laboratories with the UL-94 flame
+rating, and are compatible with lead-free processes.
+
+
+
+
+   Advanced Connectivity Solutions                                                                        Page 1 of 2
+   100 S. Roosevelt Avenue, Chandler, AZ 85226
+   Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+                                                                                                                                               Data Sheet
+
+      Typical Values                                                                                                       RO4450B and RO4450F Bondply
+                                                             TYPICAL VALUES
+ PROPERTY                                   RO4450B                           RO4450F               DIRECTION              UNITS               CONDITION                 TEST METHOD
+
+ Thickness                      3.6 (0.091)             4 (0.101)             4 (0.101)                      Z           mils (mm)                     -                            -
+ Dielectric Constant,                                                                                                                                                       IPC-TM-650
+                                3.30 ± 0.05           3.54 ± 0.05            3.52 ± 0.05                     Z                 -              10GHz - 23°C
+ r                                                                                                                                                                           2.5.5.5
+ Dissipation Factor,                                                                                                                                                        IPC-TM-650
+                                    0.004                 0.004                  0.004                       Z                 -               10GHz-23°C
+ tan                                                                                                                                                                         2.5.5.5
+                                                                                                                                                                            IPC-TM-650
+ Dielectric Strength                 1000                  1000                  1000                        Z               V/mil            23°C/50% RH
+                                                                                                                                                                               2.5.6
+ Volume                                                                                                                                                                     IPC-TM-650
+                                 9.26 X 107            9.26 X 107            8.93 X 108                  -                  MΩ•cm             23°C/50% RH
+ Resistivity                                                                                                                                                                  2.5.17.1
+ Surface                                                                                                                                                                    IPC-TM-650
+                                 3.82 X 107            3.82 X 107            1.03 X 107                   X,Y                   MΩ            23°C/50% RH
+ Resistivity                                                                                                                                                                  2.5.17.1
+ Thermal
+                                     0.60                  0.60                   0.65                       Z             W/m/K                    80°C                     ASTM C518
+ Conductivity
+                                                                                                                                                48 hrs
+ Moisture                                                                                                                                  immersion 0.060”
+                                    0.010                  0.05                   0.09                       -                 %                                            ASTM D570
+ Absorption                                                                                                                                    sample
+                                                                                                                                           temperature 50°C
+                                                                                                                                            -60°C - 300°C @                 IPC-TM-650
+ Tg                                  >280                  >280                  >280                        -             °C TMA
+                                                                                                                                               10°C/min                        2.4.24
+ Td                                  390                    390                   390                        -              °C TGA                                          ASTM D3850
+ Density                             1.80                  1.86                   1.83                       -             gm/cm3                   23°C                    ASTM D792
+ Copper                                                                                                                       pli               ½ oz. EDC                   IPC-TM-650
+                                 4.0 (0.70)            4.9 (0.86)             4.0 (0.70)                     Z
+ Adhesion                                                                                                                  (N/mm)           After Solder Float                 2.4.8
+                                      19                    19                     19                        X
+ Coefficient of                                                                                                                                                             IPC-TM-650
+                                      17                    17                     17                        Y             ppm/°C              -55 to 280°C
+ Thermal Expansion                                                                                                                                                             2.4.41
+                                      60                    50                     50                        Z
+ Color                              White                 White                  White                       -                 -                       -                            -
+ Flammability                         V-0                   V-0                   V-0                                                                                            UL94
+ Lead-Free Process
+                              Yes             Yes               Yes
+ Compatible
+Typical values are a representation of an average value for the population of the property.
+For specification values contact Rogers Corporation.
+
+Rogers UL file number is E102763B.
+
+ STANDARD THICKNESS:                                                                             STANDARD SIZE:
+ RO4450B, 0.0036” (0.091mm), 0.004”, (0.101mm)                                                   24X18” Sheets (610mm X 457mm)
+ RO4450F 0.0040” (0.101mm)                                                                       Contact Customer Service for other available sizes.
+The information contained in this data sheet and processing guide is intended to assist you in designing with Rogers’ circuit materials and prepreg. It is not intended to and does not create
+any warranties, express or implied, including any warranty of merchantability or fitness for a particular purpose or that the results shown on this data sheet and processing guide will be
+achieved by a user for a particular purpose. The user is responsible for determining the suitability of Rogers’ circuit materials and prepreg for each application.
+
+Prolonged exposure in an oxidative environment may cause changes to the dielectric properties of hydrocarbon based materials. The rate of change increases at higher temperatures
+and is highly dependent on the circuit design. Although Rogers’ high frequency materials have been used successfully in innumerable applications and reports of oxidation resulting in
+performance problems are extremely rare, Rogers recommends that the customer evaluate each material and design combination to determine fitness for use over the entire life of the end
+product.
+
+These commodities, technology and software are exported from the United States in accordance with the Export Administration regulations. Diversion contrary to U.S. law prohibited.
+
+The Rogers’ logo, RO4000, RO4400, RO4003C, RO4350B, RO4450B, RO4450F and LoPro are licensed trademarks of Rogers Corporation or one of its subsidiaries.
+© 2015 Rogers Corporation, Printed in U.S.A, All rights reserved.
+Revised 1197 060515 Publication #92-150
+
+
+
+
+Advanced Connectivity Solutions
+100 S Roosevelt Avenue, Chandler, AZ 85226                                                                                                                                    Page 2 of 2
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+

@@ -1,0 +1,156 @@
+                                                                                     Tachyon® 100G
+                                                                                 Ultra Low Loss Laminate and Prepreg
+
+                                                                     Tg 215°C Td 360°C Dk 3.02 Df 0.0021
+
+
+
+IPC-4103 /17 IPC-4101 /102                     UL - File Number E41625
+
+
+Tachyon 100G laminate materials are designed for very
+high-speed digital applications up to and beyond data
+rates of 100 Gb/s.
+                                               Tachyon 100G materials exhibit exceptional electrical properties that are very stable
+   PRODUCT FEATURES
+                                               over a broad frequency and temperature range between -55°C and +125°C up to 100
+     Industry Recognition                      GHz. These electrical properties provide designers a scalable solution for next
+        UL File Number: E41625                 generation designs of backplanes and daughter cards, enabling 10x improvements from
+        RoHS Compliant
+                                               10 Gb/s data rates.
+     Performance Attributes
+        CAF resistant                          Isola has developed Tachyon 100G with the highest level of thermal performance for
+        Low moisture absorption                high layer count line cards. The very low Z-axis CTE makes it a perfect choice for fine
+        6x 260°C reflow capable                pitch BGA applications. The material is optimized with the use of spread glass to
+        6x 288°C solder float capable
+                                               mitigate skew, improve rise times, reduce jitter, and increase eye width/height and that
+     Processing Advantages
+                                               use ultra smooth HVLP (VLP2) 2um Rz copper that significantly reduces conductor losses.
+        Multiple lamination cycles
+        HDI technology compatible
+                                               PRODUCT ATTRIBUTES
+   PRODUCT AVAILABILITY
+   Standard Material Offering: Laminate
+        2 to 20 mil (0.05 to 0.51 mm)
+   Copper Foil Type
+        HVLP3 (VLP1) ≤1.1 micron Rz JIS
+        HVLP (VLP2) ≤2.5 micron Rz JIS
+        Embedded resistor foil                 TYPICAL MARKET APPLICATIONS
+   Copper Weight
+        ½, 1 and 2 oz (18, 35 and 70 µm)
+        available
+        Heavier copper foil available
+        Thinner copper foil available
+   Standard Material Offering: Prepreg
+        Tooling of prepreg panels
+        Moisture barrier packaging
+   Glass Fabric Availability
+        Low Dk glass
+        Square weave glass
+        Mechanically spread glass
+
+                                                 Isola Group                         Isola Asia Pacific                      Isola GmbH
+                                                 6565 West Frye RoadChandler,        (Hong Kong) Ltd.12/F,                   Isola Strasse 2 D-52348 Düren,
+                                                 AZ 85226 Phone: 480-893-6527        Kin Sang Commercial Centre,             GermanyPhone: 49-2421-8080
+ORDERING INFORMATION:                            Fax: 480-893-1409                   49 King Yip Street, Kwun Tong,          Fax: 49-2421-808164
+Contact your local sales representative or                                           Kowloon,
+contact info@isola-group.com for further                                             Hong KongPhone: 852-2418-1318
+information.                                                                         Fax: 852-2418-1533
+
+
+
+
+  https://www.isola-group.com/pcb-laminates-
+ prepreg/tachyon-100g-laminate-and-prepreg/         Last Updated November 04, 2026              Revision No: H © 2026, Isola Group, All rights reserved.
+Typical Values Table
+
+                                                                                                           Units                             Test Method
+                                   Property                                       Typical Value
+                                                                                                  Metric (English)                    IPC-TM-650 (or as noted)
+Glass Transition Temperature (Tg) by DSC                                         215              °C                        2.4.25C
+Glass Transition Temperature (Tg) by DMA                                         230              °C                        2.4.24.4
+Glass Transition Temperature (Tg) by TMA                                         210              °C                        2.4.24C
+Decomposition Temperature (Td) by TGA @ 5% weight loss                           360              °C                        2.4.24.6
+                                     A. T260                                     >60
+Time to Delaminate by TMA
+                                     B. T288                                     >60              Minutes                   2.4.24.1
+(Copper removed)
+                                     C. T300                                     >20
+                                     A. Pre-Tg                                   45               ppm/°C
+Z-Axis CTE                           B. Post-Tg                                  250              ppm/°C                    2.4.24C
+                                     C. 50 to 260°C, (Total Expansion)           2.5              %
+X/Y-Axis CTE                         Pre-Tg                                      15               ppm/°C                    2.4.24C
+Thermal Conductivity                                                             0.42             W/m·K                     ASTM E1952
+Thermal Stress 10 sec @ 288ºC        A. Unetched
+                                                                                 Pass             Pass Visual               2.4.13.1
+(550.4ºF)                            B. Etched
+                                     A. @ 2 GHz                                  3.04
+Dk, Permittivity                     B. @ 5 GHz                                  3.02             —                         2.5.5.5
+                                     C. @ 10 GHz                                 3.02
+                                     A. @ 2 GHz
+Df, Loss Tangent                     B. @ 5 GHz                                  0.0021           —                         Bereskin Stripline
+                                     C. @ 10 GHz
+Volume Resistivity                   C-96/35/90                                  1.33x107         MΩ-cm                     2.5.17.1
+Surface Resistivity                  C-96/35/90                                  1.33x105         MΩ                        2.5.17.1
+Dielectric Breakdown                                                             60               kV                        2.5.6B
+Arc Resistance                                                                   125              Seconds                   2.5.1B
+Electric Strength (Laminate & laminated prepreg)                                 60 (1500)        kV/mm (V/mil)             2.5.6.2A
+                                                                                                                            UL 746A
+Comparative Tracking Index (CTI)                                                 3 (175 -249)     Class (Volts)
+                                                                                                                            ASTM D3638
+                                     A. Low profile and very low profile
+                                                                                 0.79 (4.5)                                 2.4.8C
+                                     copper foil
+Peel Strength                                                                                     N/mm (lb/inch)
+                                     B. Low profile and very low profile
+                                                                                 0.96 (5.5)                                 2.4.8.2A
+                                     copper foil ... After thermal stress
+                                     A. Length direction                         303 (44.0)
+Flexural Strength                                                                                 MPa (kpsi)                2.4.4B
+                                     B. Cross direction                          283 (41.0)
+                                     A. Length direction                         207 (30.0)
+Tensile Strength                                                                                  MPa (kpsi)                ASTM D3039
+                                     B. Cross direction                          172 (25.0)
+                                     A. Length direction                         2,551
+Young's Modulus                                                                                   ksi                       ASTM D790-15e2
+                                     B. Cross direction                          2,417
+                                     A. Length direction                         2,264
+Taylor's Modulus                                                                                  ksi                       ASTM D790-15e2
+                                     B. Cross direction                          2,197
+                                     A. Length direction                         0.165
+Poisson's Ratio                                                                                   —                         ASTM D3039
+                                     B. Cross direction                          0.156
+Moisture Absorption                                                              0.1              %                         2.6.2.1A
+Flammability (Laminate & laminated prepreg)                                      V-0              Rating                    UL 94
+Relative Thermal Index (RTI)                                                     130              °C                        UL 746
+
+
+
+
+https://www.isola-group.com/pcb-laminates-
+prepreg/tachyon-100g-laminate-and-prepreg/                   Last Updated November 04, 2026             Revision No: H © 2026, Isola Group, All rights reserved.
+         NOTES
+         Visit our site http://www.isola-group.com for more details.
+         Revisions:
+         A: Initial release - 4/17
+         B: Corrected moisture uptake value 6/18
+         C: Corrected units for Flexural and Tensile Strength - 8/18
+         D: Change MOT to RTI - 5/19
+         E: Changed VLP2 to HVLP to aligned with common industry terms 4/21
+         F: Changed TMA Tg to 210C, DSC Tg to 215C and DMA to 230C based on long term data 9/22
+         G: Added HVLP3, Advanced RTF and 2 ounce copper options, added 20 mil thickness option - 3/24
+         H: Corrected test method for Df - 3/26
+
+
+
+
+         Isola, the Isola logo, Astra, Chronon, GETEK, I-Fill, IsoDesign, IsoStack, I-Speed, I-Tera, Polyclad, Stratus,
+         TerraGreen, and The Base for Innovation are registered trademarks or trademarks of ISOLA USA Corp. in the
+         United States and in other countries. Copyright © 2021 Isola Group. All rights reserved.
+
+
+
+
+https://www.isola-group.com/pcb-laminates-
+prepreg/tachyon-100g-laminate-and-prepreg/            Last Updated November 04, 2026    Revision No: H © 2026, Isola Group, All rights reserved.
+

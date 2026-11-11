@@ -1,0 +1,121 @@
+     Data Sheet
+Halogen-free Ultra-low transmission loss
+           Multi-layer Circuit board materials
+
+                                          Laminate R-5515X
+                                          Prepreg R-5410X
+                                      Any letters with parentheses ( ) at the end of a part
+                                      number are for identification code in our company
+                                      and are not included in the part numbers registered
+                                      for UL certification.
+
+
+
+
+                  Jul. 2024   No.240724
+                                                                                                                                      No.; 240724
+
+                              General Properties / Laminate R-5515X
+                                                                                                                          Typical Values
+                             Items                                      Units            Test Method         Condition        R-5515X
+                                                                                                                          ( 5mil #1078x1 )
+                                                                          C                  TMA            As received         170
+                       Glass Transition Temperature ( Tg )
+                                                                          C            DMA (Tensile )       As received         200
+                    Thermal Decomposition Temperature ( Td )              C                  TGA            As received         410
+
+                     Time to Delamination             Without Cu         Min        IPC TM-650 2.4.24.1     As received      > 120 *1
+                            ( T288 )                   With Cu           Min        IPC TM-650 2.4.24.1     As received      > 120 *1
+ THERMAL
+                    Thermal Stress ( 288C )            With Cu           Sec        IPC TM-650 2.4.13.1     As received          -
+                                                       X - axis        ppm / C       IPC TM-650 2.4.24         ＜ Tg           19 - 21
+                           CTE : α1                    Y - axis        ppm / C       IPC TM-650 2.4.24         ＜ Tg           19 - 21
+                                                       Z - axis        ppm / C       IPC TM-650 2.4.24         ＜ Tg            50 *1
+                           CTE : α2                    Z - axis        ppm / C       IPC TM-650 2.4.24         ＞ Tg           300 *1
+                   Dielectric Constant ( Dk )         ＠ 14GHz              -         IEC 63185 (2020) *2    C-24/23/50         3.06
+                    Dissipation Factor ( Df )         ＠ 14GHz              -         IEC 63185 (2020) *2    C-24/23/50        0.0021
+ELECTRICAL
+                                Volume Resistivity                      MΩ m        IPC TM-650 2.5.17.1     C-96/35/90        1 x 107
+                                Surface Resistivity                      MΩ         IPC TM-650 2.5.17.1     C-96/35/90        1 x 108
+                                 Water Absorption                         %          IPC TM-650 2.6.2.1       D-24/23          0.19
+                       Peel Strength            H oz ( H-VLP2 )         kN / m        IPC TM-650 2.4.8      As Received         0.6
+ PHYSICAL
+                                     Flammability                          -               UL 94V           A&E-168/70         94V-0
+Flammability
+                         Young’s Modulus ( X,Y direction )               GPa            ASTM D3039          As received         9.7
+                         Poisson's Ratio ( X,Y direction )                 -             JIS K7161-1        As received         0.2
+*1 : Sample Thickness ; 20mil = 0.5 mm
+*2 : Balanced-type Circular Disk Resonance Method [ IEC 63185 (2020) ]
+* The data in the above table represents typical values for your reference and are not guaranteed values.
+
+                                                                                                                                          1
+                                                                                                                                     No.; 240724
+
+              Dielectric Properties / Laminate R-5515X : Low-Dk glass
+
+
+Test Method ; Balanced-type Circular Disk Resonance Method [ IEC 63185 (2020) ]
+
+
+                   Actual Thickness                                  Typical Resin                             Typical Dk
+  Core Type
+                                          Cloth Style     Ply          Content
+    ( mil )
+                                                                         (%)
+                   mil          mm                                                       14GHz        26GHz     37GHz       48GHz    60GHz
+     4            4.1          0.105         1067          1              82              3.01         3.00      3.00        3.00     3.00
+     5             5           0.127         1078          1              78              3.06         3.05      3.05        3.05     3.05
+     10            10          0.254         1078          2              78              3.06         3.05      3.05        3.05     3.05
+
+
+
+
+                   Actual Thickness                                  Typical Resin                             Typical Df
+  Core Type
+                                          Cloth Style     Ply          Content
+    ( mil )
+                                                                         (%)
+                   mil          mm                                                       14GHz        26GHz     37GHz       48GHz    60GHz
+     4            4.1          0.105         1067          1              82             0.0023       0.0025    0.0027      0.0029   0.0030
+     5             5           0.127         1078          1              78             0.0021       0.0024    0.0026      0.0029   0.0031
+     10            10          0.254         1078          2              78             0.0021       0.0024    0.0026      0.0029   0.0031
+
+
+
+
+* The data in the above table represents typical values for your reference and are not guaranteed values.
+
+                                                                                                                                             2
+                                                                                                                                No.; 240724
+
+              Dielectric Properties / Laminate R-5410X : Low-Dk glass
+
+
+Test Method ; Balanced-type Circular Disk Resonance Method [ IEC 63185 (2020) ]
+
+
+                          Resin Content        Typical Thickness                                        Typical Dk
+    Cloth Style
+                              (%)                    ( um )
+                                                                        14GHz            26GHz              37GHz    48GHz    60GHz
+       1067                    82                    105                 3.01             3.00               3.00     3.00     3.00
+       1078                    78                    127                 3.06             3.05               3.05     3.05     3.05
+
+
+
+
+                          Resin Content        Typical Thickness                                        Typical Df
+    Cloth Style
+                              (%)                    ( um )
+                                                                        14GHz            26GHz              37GHz    48GHz    60GHz
+
+       1067                    82                    105                0.0023           0.0025             0.0027   0.0029   0.0030
+       1078                    78                    127                0.0021           0.0024             0.0026   0.0029   0.0031
+
+
+
+
+* The data in the above table represents typical values for your reference and are not guaranteed values.
+
+                                                                                                                                       3
+

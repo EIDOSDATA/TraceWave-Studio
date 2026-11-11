@@ -1,0 +1,365 @@
+                                                                                          Fabrication Notes
+
+
+RO3000® and RO3200™
+Series High Frequency Laminates
+STRIPLINE AND MULTILAYER CIRCUITS
+
+MATERIAL DESCRIPTION:
+
+RO3003™, RO3003G2™, RO3006™ and RO3010™ copper clad laminates are filled PTFE composites offering excellent thermal
+reliability and electrical performance over a range of dielectric constants. RO3000® series materials provide the homogeneity
+of properties that are expected of unreinforced materials. RO3203™, RO3206™, and RO3210™ copper clad laminates are
+woven glass reinforced versions that provide similar thermal and electrical characteristics while offering the improved ease of
+handling and registration control that are associated with glass reinforced laminates. RO3000 and RO3200™ series products
+are compatible with manufacturing processes for double-sided and multilayer circuits using PTFE materials.
+
+These guidelines were developed to provide fabricators with basic information on processing double-sided and multi-layer
+boards using copper clad RO3000 and RO3200 series laminates. A Rogers' technical service engineer or sales representative
+should be contacted for more detailed processing information.
+
+STORAGE:
+
+RO3000 and RO3200 cores can be stored indefinitely at ambient conditions. A first-in-first-out (FIFO) inventory system is
+recommended as is a method of record keeping that would allow tracking of material lot numbers through PWB proc-essing
+and delivery of finished circuits.
+
+Storage in Original Shipping Cartons
+1)      Stack cartons on a flat surface that is safely out of the way of mobile handling and moving 				
+        equipment. Cartons may be stored on their side if nothing heavy is stacked on top.
+2)      Cartons should be stacked to a maximum of five high to avoid excessive weight on the bottom 				
+        packages.
+
+Storage of Panels Removed from Cartons
+1)      Thin panels should remain sealed within the polyethylene bags and the adherent polyethylene sheets should remain
+        on thicker cores. These packaging materials deter oxidation and corrosion of the metal layers and provide a measure
+        of protection against mechanical damage (e.g. scratches, pits, dents, etc.). For RO3000 laminates with thick copper
+        plates, the thick metal plate is not protected by anti-tarnish layers. As such, some discoloration due to oxidation is
+        expected during storage, especially under conditions of elevated temperature and humidity. The oxidation can be
+        removed by mechanical (debur) or chemical exposure (microetch) which are standard to the PCB fabrication process.
+
+
+
+
+Advanced Connectivity Solutions
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+2)        Store panels on edge in slotted shelving units keeping the clad surfaces vertical. This provides easy access with low
+          risk of damage to the metal surfaces.
+3)        If storage facilities do not permit vertical stacking:
+          A)       The shelf must be flat, smooth, and clean.
+          B)       The shelf must extend beyond the full area of the panels being stored.
+          C)       Surfaces of the laminates must be free of debris.
+          D)       Shelf loading should be kept below 50 pounds per square foot.
+          E)       Panels should be interleaved with soft, non-abrasive separator sheets.
+
+HANDLING:
+PTFE-based materials are softer than most other rigid printed wiring board laminates and are more susceptible to handling
+damage. Cores clad only with copper foils are easily creased. Materials bonded to thick aluminum, brass, or copper plates are
+more prone to scratches, pits, and dents. Proper handling procedures should be followed.
+1)      Wear gloves of knit nylon or other non-absorbent material when handling panels. Normal skin oils are slightly
+        acidic and readily corrode copper surfaces. Fingerprints are difficult to remove as normal brighteners will dissolve
+        the corrosion, but leave corrosive oils in the copper to cause the fingerprint to reappear hours or days later. The
+        following procedure is recommended to remove fingerprints:
+        A)       Bright dip in dilute hydrochloric acid.
+        B)       Degrease in acetone, methyl ethyl ketone, or vapor degrease with chlorinated solvents.
+        C)       Water rinse and bake dry for 60 minutes @ 250°F (125°C).
+        D)       Repeat bright dip.
+2)      Keep work surfaces clean, dry, and completely free of debris.
+3)      Leave the polyethylene bag or sheet in place through initial processes such as shearing, sawing, blanking, and
+        punching.
+4)      Only pick panels by two edges. Thin cores in particular lack the stiffness required to support themselves by one edge
+        or corner, handling them in that manner may dimensionally distort the dielectric or impart a permanent crease.
+5)      During processing, cores should be transported between workstations on flat carrying trays, preferably interleaved
+        with a soft, sulfur-free paper. Vertical racks should not be used unless they are slotted and provide adequate vertical
+        support.
+
+INNER LAYER PREPARATION:
+
+Tooling: RO3000 and RO3200 materials are compatible with many tooling systems. Choosing whether to use round or slotted
+pins, external or internal pinning, standard or multiline tooling, and pre vs. post-etch punching would depend upon the
+capabilities and preferences of the circuit facility and the final registration requirements. In general, slotted pins, a multiline
+tooling format, and post-etch punching will meet most needs. Whichever approach is used, it is good practice to retain
+copper around tooling holes.
+
+A flow pattern compatible with the chosen adhesive system can be used between circuits and around the perimeter of
+the panel. But, in general, registration of layers (especially thin RO3000 cores) is improved by retaining as much copper as
+possible.
+
+
+
+
+Advanced Connectivity Solutions
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+
+                                                              Page 2 of 8
+Surface Preparation for Photoresist Application: A chemical process consisting of organic cleaners and a microetch is the
+preferred method of preparing copper surfaces for coating with liquid or film photoresist. A conveyorized spray system using
+an abrasive substance suspended in solution can be used to prepare copper surfaces at the slight risk of some registration
+control. Mechanical scrubbing should be considered for thick cores (0.060”+) only and, even then, should be performed at
+reduced pressures to minimize distorting the thin laminate or imparting deep scratches that change the functional spacing
+between copper planes.
+
+Photoresist Application: Liquid or dry film photoresist can be applied using traditional dip or spray coating, screening, or
+roll lamination processes.
+
+DES Processing: Developers, strippers, and copper etchants used to process epoxy glass materials will also work with
+RO3000/RO3200 layers. Thin cores may require leader boards for conveyorized processing and frames or supportive racks for
+vertical-type processing. The ceramic filled material will require more stringent rinse & bake processing depending upon the
+next step in the process sequence.
+
+Oxide Treatment: RO3000/RO3200 cores are compatible with most oxide and oxide alternative processes. It is best to use
+the process recommended by the supplier of the adhesive system chosen to bond together the multilayer board. Highly
+caustic, high temperature processes, such as traditional or reduced black oxides, should be followed by a thorough rinse and
+bake of the inner layers.
+
+BONDING:
+
+Final Preparation: Special pretreatments of etched surfaces using sodium or plasma processes shouldn’t be necessary
+providing care was taken to protect the substrate surface after copper etch. Inner-layers should be baked at 110°C to 125°C
+(230°F to 260°F) for 30 to 120 minutes to ensure removal of volatile substances prior to MLB bonding. Guidelines for the oxide
+treatment should be referenced to make certain the dry bake doesn’t degrade the bond-enhancing surface.
+
+Multilayer Adhesive System: RO3000/RO3200 cores are compatible with a broad range of thermosetting (FR-4, Rogers'
+2929 bondply, RO4400™ prepreg, etc…) and thermoplastic (3001 Bonding Film, FEP, 3908, PFA, PTFE, etc…) adhesive systems.
+RO3003, RO3003G2, RO3006, and RO3010 materials are available as bondply layers for use in fusion bonding very high
+reliability and homogeneous RO3000 multilayer boards. Many factors, such as electrical performance, flow characteristics,
+ease of processing, and bond temperature requirements are considered when making the best overall choice. Rogers’
+Technical Service Engineers (TSE’s) understand the trade-offs and, if asked, will help in the selection process.
+
+Multilayer Bond Cycle: The press cycle is determined by the requirements of the chosen adhesive system. Cooling under
+pressure is required when using thermoplastic (meltable) films.
+
+
+
+
+Advanced Connectivity Solutions
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+
+                                                          Page 3 of 8
+PTH & OUTER LAYER/DOUBLE-SIDED CIRCUIT PROCESSING
+
+Drilling: Double-sided boards can be drilled as one-ups or in stack heights that are compatible with the flute length of the
+drills being used. Multilayers are most commonly drilled in stacks of one. Phenolic composite boards are recommended for
+entry (0.010” to 0.030” thick) and exit (>0.060”) layers. Sheeted aluminum and metal coated phenolic boards can also be used
+as entry layers.
+
+New carbide drills are highly recommended. Standard or undercut styles can be used. Recommended chip loads (0.001” to
+0.003” per revolution) and surface speeds (150 to 300 SFM) vary with tool diameter with slower infeeds and speeds being
+associated with finer diameter drills. Retract rate when drilling double-sided and multilayer boards should be between 300
+and 500 IPM and be 700 to 1000 IPM when drilling double-sided constructions. Following is a quick refer-ence table that
+provides recommended parameters for commonly used drill diameters.
+
+Tool life should be based upon inspection of cross-sectioned holes. This is especially true when drilling multilayer boards
+where factors such as adhesive type, inner-layer copper weight, and board thickness all affect hole quality and tool life. The
+“twelve inch rule,” which suggests changing a tool after drilling 12” of substrate, is a good place to start when setting tool life
+for multilayer constructions. For example, initial hit count when drilling a 0.060” thick board would be 12”/0.060” = 200 holes.
+
+
+
+                              Tool Size          Spindle            Infeed                     Retract
+                                                  Speed
+                            (in)      (mm)        (RPM)     (IPM)        (m/min)        (IPM)       (m/min)
+                           0.0079      0.20       72500      72.5            1.8         300             7.6
+                           0.0098      0.25       68200      88.7            2.3         300             7.6
+                           0.0138      0.35       55400      83.1            2.1         300             7.6
+                           0.0197      0.50       48200      96.4            2.4         400             10.2
+                           0.0256      0.65       37200      74.2            1.9         400             10.2
+                           0.0295      0.75       32200      64.4            1.6         400             10.2
+                           0.0394      1.00       24100      48.2            1.2         400             10.2
+                           0.0492      1.25       20000      40.0            1.0         400             10.2
+                           0.0625      1.59       20000      40.0            1.0         400             10.2
+                           0.1250      3.18       20000      40.0            1.0         400             10.2
+
+
+
+Deburring: The use of flat, rigid entry materials, conservative drilling parameters, and limited hit counts with new drills
+should minimize the risk of copper burring. When drilled properly, cores should be ready for subsequent processing. If debur
+is necessary (and slight), a chemical microetch process is preferred. If mechanical processing is required, a hand pumice scrub
+is preferred over a suspended abrasive spray system which, in turn, is preferred over a conveyorized mechanical debur or
+planarization process.
+
+
+
+
+Advanced Connectivity Solutions
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+
+                                                              Page 4 of 8
+Hole Preparation: Loosely deposited debris in the holes can be removed using a vapor or hydro-honing process. These
+processes involve directing water suspended abrasive particles through drilled holes. The soft laminates must be properly
+supported through these processes.
+
+PTFE composite materials are not typically desmeared. However, the adhesive systems (bondplies & prepregs) used to
+bond multilayer boards or hybrid multilayer boards may require desmear prior to copper deposition. When desmear is
+required, plasma is preferred over a chemical desmear process because elevated temperature, highly alkaline chemicals
+can interact with the filler used in RO3035™ cores and RO3003™ core and bondply layers. The interactions are not a risk to
+the processing bath, but can slightly impact the electrical properties and absorption potential of material surrounding the
+holes. RO3003G2™, RO3006™, RO3010™, and RO3210™ materials are not as effected by the chemical exposures, but a plasma
+desmear is still preferred when possible. When plasma desmear is required, a dual cycle to accomplish (first) desmear of the
+thermosetting adhesive and core layers and (second) surface activation of the PTFE surfaces is possible by adding the CF4/O2
+desmear cycle outlined below to the front end of the plasma cycle that is described in the hole wall treatment section of this
+document.
+
+RO3200 materials may require a glass etch to reduce the risk of plated nodules.
+
+                                         Frequency:                 40 KHz
+                                         Voltage:                   500-600V
+                                         Power:                     4000-5000 Watts
+                                         Pre-Heat to 60°C using:
+                                         Gases:                     90% 02, 10%N2
+                                         Pressure:                  250mTORR
+                                         Desmear using:
+                                         Gases:                     75% O2, 15% CF4, 10%N2
+                                         Pressure:                  250mTORR
+                                         Time:                      10-30 minutes
+
+
+Drilled holes in PTFE-based laminates must be treated prior to the deposition of a conductive seed layer (e.g. electroless
+copper or direct metallization). Not performing a surface activation treatment will most likely result in poor metal adhesion
+or plated voids. Two common pre-treatments for PTFE materials are sodium treatment and plasma treatment. Either can be
+used for treating RO3000 materials.
+
+Sources for sodium treatment chemicals:
+                                                           FluoroEtch® Etchant
+                                                          Acton Technologies, Inc
+                                                             100 Thompson St
+                                                            Pittston, PA 18640
+                                                              570-654-0612
+
+
+
+
+Advanced Connectivity Solutions
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+
+                                                             Page 5 of 8
+                                           W.L. Gore Tetra-Etch® etchant 500 ML available from
+                                                        R.S. Hughes Company, Inc
+                                                            1162 Sonora Court
+                                                           Sunnyvale, CA 94086
+                                                               408 739 3211
+
+Sources for sodium treatment services:
+
+                                                             FluoroEtch Etchant
+                                                            Acton Technologies, Inc
+                                                               100 Thompson St
+                                                              Pittston, PA 18640
+                                                                570-654-0612
+
+                                                                 G & S Associates
+                                                               1865 Sampson Ave.
+                                                                Corona, CA 92879
+                                                          http://www.gsassociates.com
+                                                                   951 739 7513
+
+Recommended plasma cycle for treating PTFE materials:
+
+                                                          Gases: 70/30 or 80/20 H2/N2, NH3, N2, or He
+                                                     Pressure: 100 mTORR pumpdown
+                                                               50 mTORR operating
+                                                          Power: 4000 Watts
+                                                   Frequency: 40 KHz
+                                                      Voltage: 500-600V
+                                                   Cycle time: 10-30 minutes
+                                                     Courtesy of Nordson March Plasma Systems
+
+
+                                                     Gases H2/N2                    He           N2
+                                                     Power 1800W                    1800W        1800w
+                                                Frequency 13.56 MHz                 13.56 MHz    13.56 MHz
+                                                  Pressure 150 mTor                 173 mTor     181 mTor
+                                          Gas Mixture (%) 70/30                     100          100
+                                             Temperature 200°F                      200 °F       200°F
+                                           Time (minutes) 10 to 20                  5 to 10      5 to 10
+                                                             Courtesy of Plasma Etch Inc.
+			
+
+
+
+
+Advanced Connectivity Solutions
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+
+                                                                      Page 6 of 8
+Panels should be baked for at least 1 hour at 110 to 125°C (230 to 260°F) prior to plasma treatment. Plasma treated holes are
+more delicate than sodium etched holes. Panels should not be exposed to any pressure wash or scrubbing process prior to
+metalization.
+*Plasma evaluations were completed using Nordson March Plasma Systems - Series B20 Plasma unit. This unit can process
+up to 20 - 18" X 24" panels per load. For more information concerning this equipment, please contact Nordson March Plasma
+Systems (727-573-4567).
+
+Metallization: RO3000/RO3200 materials are compatible with traditional electroless copper and direct deposit metallization
+processes. Cores should be baked (30-90 minutes @ 110°C-125°C(230°F - 260°F)) prior to metal deposition unless plasma,
+which also serves as a vacuum bake, was used to prepare the hole walls for plating. A flash plate build-up of 0.0001” to
+0.0003” (0.0025mm-0.0076mm) of copper is recommended to better support hole walls through preparation for outer-layer
+processing.
+PTH Plating & Outer-Layer Imaging: Standard equipment and chemical processes are used to plate, image, and etch
+circuit patterns onto RO3000 and RO3200 materials. Care should be taken to preserve the post-etch laminate surface. The
+topography that remains after copper removal promotes improved adhesion to solder masks.
+
+Final Surfaces: Materials should be rinsed and baked prior to solder mask application. Rinsing in warm or hot water for
+20-30 minutes followed by 60 minutes @ 125°C (260°F) should be sufficient, especially if the bake is done under vacuum.
+Properly prepared RO3000/RO3200 materials are compatible with most LPI solder masks. Epoxy masks are preferred if the
+application requires selective silk screening. Stripping of fully cured solder mask is not recommended. Heated, highly caustic
+solutions may negatively interact with the filler system and impair the natural hydrophobicity of the composite material.
+
+Most final finishes (HASL, Sn, Ag, Ni/Au, OSP, etc...) have been applied to RO3000 materials without issue or special concern.
+A rinse/bake regimen, if not done as part of a solder mask process, should be done prior to HASL or reflow exposures. When
+flux is needed, acid fluxes are recommended over solvent fluxes. The HASL or reflow exposure should be performed as soon
+as possible after the flux has been applied. ENIG should be considered for higher Er materials, especially RO3010 laminate,
+only when necessary. Background plating of etched substrate surfaces can occur during ENIG plating.
+Final Circuitization: Individual circuits can be routed, punched, or lased depending upon preference, tolerances, and edge
+quality requirements. RO3000 materials will generally provide a better edge quality than is possible with the glass reinforced
+RO3200 materials. Parameters for routing are provided below:
+
+                                                             0.00125” to 0.00250”/rev
+                                              Chip Load:
+                                                             32mm – 64 mm/rev
+                                                             200-300 sfm
+                                                   Speed:
+                                                             61-92 m/min
+                                             Peripheries Conventional cut
+                                        Internal cutouts Climb cut
+                                                Tool type Carbide double fluted spiral-up Endmill
+                                               Exit/Entry Phenolic or composite board
+                                                             20-30 linear feet
+                                                 Tool life
+                                                             6-9 meters
+
+
+Pre-rout vacuum channels in backer board
+Double pass (opposite directions) when cleanest edge quality is required
+
+
+
+Advanced Connectivity Solutions
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+
+                                                                    Page 7 of 8
+The information in this fabrication note is intended to assist you in designing with Rogers’ circuit materials. It is not intended to and does not create any warranties express or
+implied, including any warranty of merchantability or fitness for a particular purpose or that the results shown on this fabrication note will be achieved by a user for a particular
+purpose. The user should determine the suitability of Rogers’ circuit materials for each application.
+These commodities, technology or software are exported from the United States in accordance with the Export Administration regulations. Diversion contrary to U.S. law prohib-
+ited.
+
+
+
+The Rogers' logo, RO3000, RO3003G2, RO3003, RO3035, RO3006, RO3010, RO3200, RO3203, RO3206, RO3210 and RO4400 are trademarks of Rogers Corporation or one of its
+subsidiaries.
+FluoroEtch is a registered trademark of Acton Technologies, Pittston PA. Tetra-Etch is a trademark of W.L. Gore & Associates.
+©2020 Rogers Corporation, Printed in U.S.A.
+Revised 1476 060520 Publication # 92-434
+Advanced Connectivity Solutions
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+
+                                                                                       Page 8 of 8
+

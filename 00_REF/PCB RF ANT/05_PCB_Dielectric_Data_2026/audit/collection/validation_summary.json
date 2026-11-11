@@ -1,0 +1,17 @@
+{
+  "record_count": 57340,
+  "source_count": 1756,
+  "csv_json_numeric_roundtrip": "PASS: dk, df, frequency_ghz, thickness_mm, resin_content_pct for every record",
+  "record_id_uniqueness": "PASS",
+  "source_id_foreign_keys": "PASS",
+  "record_source_file_paths": "PASS",
+  "source_sha256": "PASS for all archived sources",
+  "guide_local_file_links": "PASS",
+  "workbook_integrity": "PASS: five sheets, valid XLSX ZIP, no Excel error-valued cells",
+  "workbook_visual_review": "PASS: representative render of each worksheet inspected",
+  "example_filter": "PASS: Rogers RO4350B at 10 GHz returned 3 condition records",
+  "numeric_validation_issues": 0,
+  "limitations": "Automated structural checks and targeted source-table reviews do not mean every source cell or historical revision has been manually verified. See source-specific notes and coverage.",
+  "guide_javascript_syntax": "PASS",
+  "data_dictionary": "All 142 fields have specific Korean descriptions"
+}

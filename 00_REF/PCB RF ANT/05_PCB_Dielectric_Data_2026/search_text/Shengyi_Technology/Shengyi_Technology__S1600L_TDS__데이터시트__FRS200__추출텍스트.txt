@@ -1,0 +1,93 @@
+  S1600L
+   (UL ANSI: FR-4.0) High CTI, Multilayer
+FEATURES                                                                        APPLICATIONS
+● High CTI                                                                      PDP, LCD, TV
+● Anti-CAF capability                                                           Refrigerator
+● Excellent through-hole reliability                                            Power supplier
+                                                                                Washing machine
+                                                                                Automotive electronics
+
+GENERAL PROPERTIES
+
+            Test Items                        Test Method                 Test Condition                 Unit             Typical Value
+                                          IPC-TM-650 2.4.25D                     DSC                       ℃                    150
+                 Tg
+                                          IPC-TM-650 2.4.24.4                   DMA                        ℃                    155
+                 Td                       IPC-TM-650 2.4.24.6              TGA (5% W.L)                    ℃                    355
+                T288                      IPC-TM-650 2.4.24.1                    TMA                      min                    27
+                T260                      IPC-TM-650 2.4.24.1                    TMA                      min                   >60
+          Thermal Stress                  IPC-TM-650 2.4.13.1            288℃, solder dip                   s                   >60
+                                           IPC-TM-650 2.4.24                  Before Tg                ppm/℃                     45
+            CTE (Z-axis)                   IPC-TM-650 2.4.24                   After Tg                ppm/℃                    240
+                                           IPC-TM-650 2.4.24                  50-260℃                      %                     3.2
+        Permittivity (1GHz)                IPC-TM-650 2.5.5.9                C-24/23/50                     -                    5.0
+       Loss Tangent (1GHz)                 IPC-TM-650 2.5.5.9                C-24/23/50                     -                  0.014
+        Volume Resistivity                IPC-TM-650 2.5.17.1                C-96/35/90                 MΩ-cm                 2.1×108
+        Surface Resistivity               IPC-TM-650 2.5.17.1                C-96/35/90                   MΩ                  3.2×107
+          Arc Resistance                    IPC-TM-650 2.5.1            D-48/50+D-0.5/23                    s                   151
+      Dielectric Breakdown                  IPC-TM-650 2.5.6            D-48/50+D-0.5/23                   kV                   >45
+        Peel Strength (1oz)                 IPC-TM-650 2.4.8                 288℃/10s               N/mm [lb/in]             1.5 [8.57]
+ Flexural Strength (LW/CW)                  IPC-TM-650 2.4.4                       A                     Mpa                  540/470
+        Water Absorption                   IPC-TM-650 2.6.2.1                  D-24/23                     %                    0.15
+           Flammability                            UL94                      C-48/23/50                 Rating                   V-0
+                 CTI                            IEC60112                           A                    Rating            PLC 0 (≥600V)
+Remarks: 1. Specification sheet: IPC-4101/101, is for your reference only.
+         2. All the typical value is based on the 1.6mm (8*7628) specimen.
+         3. Thin core thickness less than 0.80mm may not satisfy CTI≥600V due to thickness or structure.
+         4. All the typical value listed above is for your reference only, please turn to Shengyi Technology Co., Ltd for detailed information,
+            and all rights from this data sheet are reserved by Shengyi Technology Co., Ltd.
+
+
+
+
+                                                                                                           CN-TDS-2602-07-S1600L-S1600LB
+ S1600LB PREPREG
+ (UL ANSI: FR-4.0) Bonding Prepreg For S1600L
+PREPREG PARAMETERS
+                                         Resin content                       Cured thickness                Standard size
+      Glass fabric type
+                                              (%)                                (mm)                        (Roll type)
+                                                46                                0.190
+             7628                               48                                0.200                     1.260m×150m
+                                                50                                0.210
+
+                                                52                                0.110
+
+             2116                               55                                0.120                     1.260m×250m
+
+                                                58                                0.130
+Other type, resin content and size could be available upon request, and some other prepreg types such as 106, 1080, 2116 RC＜52%, 7628
+RC＜46% may not satisfy CTI≥600V, please turn to ShengYi Technology Co., Ltd for detailed information.
+
+
+
+HOT PRESSING CYCLE
+   The heat-up rate depends on the inner copper or the structure of multilayer PCB.
+   Curing time: >60min (185~195℃).
+   If you need any more detail information, please turn to Shengyi Technology Co., Ltd.
+
+
+
+STORAGE CONDITION
+
+   3 months when stored at < 23℃ and <50% RH.
+   6 months when stored at <5℃. Normalize in room temperature for at least 4h before using.
+   Beware of moisture, always keep wrapped in damp-proof material. Keeping in normal condition, prepreg
+    might absorb moisture and its bonding strength would be weakened.
+
+
+
+PURCHASING INFORMATION
+
+        Thickness                Copper foil                                         Standard size
+
+                                                     1,020mm×1,220mm(40”×48”)             915mm×1,220mm(36”×48”)
+  0.075mm to 3.2mm            12um to 105 um
+                                                     1,070mm×1,220mm(42”×48”)
+  Remarks: Other sheet size and thickness could be available upon request.
+
+
+
+
+                                                                                                   CN-TDS-2602-07-S1600L-S1600LB
+

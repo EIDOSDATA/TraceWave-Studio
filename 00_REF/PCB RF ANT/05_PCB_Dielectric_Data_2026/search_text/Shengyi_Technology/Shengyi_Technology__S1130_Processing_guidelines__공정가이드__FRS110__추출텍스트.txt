@@ -1,0 +1,176 @@
+PROCESSING GUIDELINES
+
+          Laminate: S1130
+
+
+ Normal Tg, Traditional FR-4 Material
+
+
+
+
+                 1 / 4              CN-PG-2206-01-S1130-EN
+This product process guideline uses IPC-4101 Standard as a reference, and Shengyi make some changes
+according to the product characteristics of the actual situation as to making it more suitable for the Shengyi
+S1130 product use.
+
+
+
+1. Storage condition
+1.1 Laminate
+
+1.1.1 Storage method
+
+       Keep laminates as received packaging onto a flat floor or a proper pallet. Avoid heavy pressure in case
+
+        of distortion occurring due to incorrect storage method.
+
+1.1.2 Storage condition
+
+       Keep laminates at ventilated, dry and ambient condition. Avoid direct exposure to sunlight, rain and
+
+        chemical gas.
+
+       The shelf life of laminate maintains two years for double sided and one year for single sided at above
+
+        proper storage conditions. All internal properties within shelf life meet IPC-4101E specification sheet.
+
+1.1.3 Handling
+
+       Handle laminates carefully wearing clean gloves. Collision and slippage will damage the cladding copper.
+
+        Naked hand operation will contaminate the surface of cladding copper. All above defects may bring bad
+
+        effects during production.
+
+1.2 Prepreg
+
+1.2.1 Storage method
+
+       Keep prepreg horizontally with received package. Avoid heavy pressure in case of distortion occurring
+
+        due to incorrect storage method.
+
+       Be sure to re-seal any of remained prepreg with plastic film and put it away properly onto a pallet.
+
+1.2.2 Storage condition
+
+       All prepreg should be stored at below conditions as received packaging without any influence of ultraviolet
+
+        ray.
+
+         Condition 1: 3 months when stored at <23℃ and <50% RH.
+
+         Condition 2: 6 months when stored at <5℃;
+
+       Be careful of relative humidity due to its bad effect on prepreg properties. When packaging is open, it’s
+
+        recommended using up within 8 hours. If not, it must be sealed and packaged before storage.
+
+1.2.3 Prepreg cutting
+
+       Cut prepreg carefully and prevent pollution or crease.
+
+       When cutting the PP, it’s needed to clean the table first, to avoid cross contamination of different types of
+
+        PP resin powder.
+
+
+                                                         2 / 4                          CN-PG-2206-01-S1130-EN
+1.2.4 Usage
+
+   When brought out from cooling warehouse, prepreg should be stabilized to ambient temperature before
+
+    opening package, keep at least 8 hours is recommended, depending on specified store condition.
+
+   For panel form prepreg after cutting, all should be kept under condition 1 (or condition 2) and used up as
+
+    soon as possible. When exceeding 3 days, it’s recommended retesting before use.
+
+   For roll form prepreg remained, all should be sealed again and kept at condition 1 (or condition 2).
+
+   For IQC inspection, prepreg should be finished all tests within 5 day from the date of acceptance according
+
+    to IPC-4101E specification.
+
+
+
+2. PWB Processing
+2.1 Panel cutting
+
+   Sawing (preferred) and shearing method is recommended. Be careful of potential edge cracks when using
+
+    roller cutter or caused by improper gap or cutter blade abrasion.
+
+2.2 Drilling
+
+   Multilayer board is not recommended baking after drilling.
+
+2.3 Desmear
+
+   Fix proper swelling and desmear parameters for processing, for excessive desmear might cause resin
+
+    recession or rough edges. 20-40mg/dm2 is recommended.
+
+2.4 Solder mask
+
+   Be careful of panel distortion or warpage due to improper stack-up at pose baking process.
+
+   Because S1130 doesn’t have UV-blocking property, for double-sided PCB processing it is suggested to
+
+    apply solder mask, going through UV expose on one side first, then the same process solder mask+UV
+
+    exposure on the other side secondly
+
+2.5 HAL
+
+   Suitable for standard HAL process.
+
+   Not recommend for >/=2oz heavy copper application as it might occur pad lift or measling problem. If
+
+    measling detected, suggest baking at 125℃/2-4h before HAL, and processing within 4 hours.
+
+2.6 Punching
+
+   For thickness >/=0.5mm, punching is not recommended.
+
+   For thickness <0.5mm, please evaluate punching operation firstly before mass production.
+
+2.7 Packaging
+
+   To prevent moisture effect on the heat resistance of base material, suggest baking finished PCB boards
+
+    at 125℃/4~6h before packaging. For a long time storage, it’s advised to wrap by aluminum pack.
+
+
+
+                                                     3 / 4                        CN-PG-2206-01-S1130-EN
+3. PWB Soldering
+3.1 Shelf life of PWB
+
+   3 months with packaging protection.
+
+   Bake at 125℃/4~6h before assembly is recommended, especially when stored more than 3 months.
+
+3.1 Reflow
+
+   Suitable for standard reflow process
+
+   Lead free is not recommended. If used for lead free reflow, evaluation by trial is necessary.
+
+3.2 Manual soldering
+
+   For separated or connected pad, manual soldering temperature should range 350-380℃ and hold less
+
+    than 3s for single point.
+
+
+
+This process guide is for reference only! Should you have any questions, please feel free to contact us.
+
+ShengYi will support you with prompt and effective service.
+
+
+
+
+                                                     4 / 4                        CN-PG-2206-01-S1130-EN
+

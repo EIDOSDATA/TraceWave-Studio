@@ -1,0 +1,103 @@
+   S7136H
+   High Frequency Hydrocarbon Ceramic Circuit Material
+
+ FEATURES                                                                APPLICATIONS
+  ● Glass-reinforced hydrocarbon and ceramic dielectric.                 ● Microstrip and Cellular Base Station.
+  ● Excellent high frequency performance due to Low                      ● Power Amplifiers.
+    dielectric tolerance and loss.                                       ● Point-to-point Microwave.
+  ● Stable electrical properties versus frequency.                       ● Phased-Array Radar.
+  ● Low Z-CTE and excellent dimensional stability.                       ● RF Components.
+                                                                         ● High Frequency Wireless Communication.
+
+
+ GENERAL PROPEAIES
+      Test Items                   Test Method             Test Condition             Unit        Direction      Typical Value
+  Dielectric Constant,Dk         IPC-TM-650 2.5.5.5       C-24/23/50,10GHz              -              Z             3.42±0.05
+                                 Differential phase
+   Dielectric Constant                                          COND A                  -                              3.61
+                                     length test
+   Dielectric Constant          IPC-TM-650 2.5.5.15           10GHz/23℃                 -                            3.68±0.05
+      Loss Tangent               IPC-TM-650 2.5.5.5           10GHz/23℃                 -                             0.0030
+      Loss Tangent              IPC-TM-650 2.5.5.15           10GHz/23℃                 -                             0.0035
+Thermal Coefficient of Dk       IPC-TM-650 2.5.5.15          -55°C to 85°C          ppm/℃              Z                +50
+   Volume Resistivity           IPC-TM-650 2.5.17.1             COND A              MΩ•cm                             1.1×108
+   Surface Resistivity          IPC-TM-650 2.5.17.1             COND A                MΩ                              1.6×107
+           Tg                    IPC-TM-650 2.4.25                DSC                  ℃                               ＞280
+           Td                       ASTM D3850             TGA(5% wt. loss)            ℃                                390
+                                 IPC-TM-650 2.4.24             50～260℃              ppm/℃              Z                45
+           CTE
+                                 IPC-TM-650 2.4.41             50～260℃              ppm/℃             X/Y             12/14
+ Peel Strength (1oz HTE)          IPC-TM-650 2.4.8             288℃/10s          N/mm[lb/in]                        0.72 [4.11]
+    Water Absorption             IPC-TM-650 2.6.2.1             D-24/23                %                               0.06
+  Thermal Conductivity              ASTM D5470                   100℃               W/m•K                              0.66
+Tensile Modulus (LW/CW)              ASTM D638                      A                 GPa                            16.1/18.5
+Tensile Strength (LW/CW)             ASTM D638                      A                 MPa                            175/245
+    Flexural Strength             IPC-TM-650 2.4.4                  A                 MPa                               260
+      Flammability                      UL94                  C-48/23/50             Rating                             V-0
+
+
+Remarks: 1. All the typical value is based on the 0.508mm (0.020”) thickness specimen, but not guarantee data.
+          2. All the typical value listed above is for your reference only, please turn to Shengyi Technology Co., Ltd. for
+            detailed information, and all rights from this data sheet are reserved by Shengyi Technology Co., Ltd.
+Explanations: C=Humidity conditioning, D=Immersion conditioning in distilled water, E=Temperature conditioning.
+The figures following the letter symbols indicate with the first digit the duration of the preconditioning in hours, with the
+second digit the preconditioning temperature in ℃ and with the third digit the relative humidity.
+
+
+
+
+                                                                                                 CN-TDS-2210-01-S7136H
+S7136H
+High Frequency Hydrocarbon Ceramic Circuit Material
+
+
+PRODUCT SPECIFICATION
+
+  Product                   Standard Thickness              Standard Panel Size       Standard Copper Cladding
+                          0.0066” (0.168mm) 2×1080
+                           0.010”(0.254mm) 3×1080
+                          0.0133” (0.338mm) 4×1080
+                          0.0166” (0.422mm) 5×1080
+                           0.020”(0.508mm) 6×1080
+                           0.030”(0.762mm) 9×1080
+                          0.040”(1.016mm) 12×1080
+                          0.050”(1.270mm) 15×1080                                              Hoz, 1oz, 2oz
+  S7136H
+                          0.060”(1.524mm) 18×1080                                             HTE copper foil
+                          0.004” (0.102mm) 1×1080
+                          0.008” (0.203mm) 2×1080                  36”×48”
+                                                                   40”×48”
+                          0.012” (0.305mm) 3×1080
+                                                                   42”×48”
+                          0.016” (0.406mm) 4×1080
+                                                            Additional panel sizes
+                          0.024” (0.610mm) 6×1080
+                                                            may be available upon
+                          0.032” (0.813mm) 8×1080                  request.
+                          0.0040”(0.102mm) 1×1080
+                          0.0073”(0.185mm) 2×1080
+                           0.0107”(0.272mm) 3×1080
+                          0.0140”(0.356mm) 4×1080
+                          0.0173”(0.440mm) 5×1080                                                Hoz, 1oz
+S7136H(CR)[1]
+                          0.0207”(0.526mm) 6×1080                                             RTF copper foil
+                          0.0307”(0.780mm) 9×1080
+                          0.0407”(1.034mm) 12×1080
+                          0.0507”(1.288mm) 15×1080
+                          0.0607”(1.542mm) 18×1080
+
+
+    [1] For double-sided boards, with coated RTF copper，Dk for S7136H(CR) is 3.50 for dielectric thickness
+    above 0.0207” and the Dk of S7136H(CR) decreases by about 0.10 as the core thickness decreases from
+    0.0207” to 0.004” .
+
+
+    Remark: All the typical values listed above are for your reference only and not intended for specification.
+    Please contact Shengyi Technology Co., Ltd. for detailed information. All rights from this data sheet are
+    reserved by Shengyi Technology Co., Ltd.
+
+
+
+
+                                                                                        CN-TDS-2210-01-S7136H
+

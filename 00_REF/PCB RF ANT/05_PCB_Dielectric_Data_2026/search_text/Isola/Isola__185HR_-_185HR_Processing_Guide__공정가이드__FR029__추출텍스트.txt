@@ -1,0 +1,478 @@
+                                                                                                                            185HR
+                                                                          High Reliability Epoxy Laminate and Prepreg
+
+
+
+    Processing Guide
+    The processing guidelines contained in this document were developed through in-house testing and field experience. However, they
+    should be considered to be starting points that will require further adjustment. Read the following review of processes for applicability
+    to your particular Printed Wiring Board (PWB) fabrication environment. Remember that the suggestions contained herein can not
+    account for all possible board designs or processing environments. Additional adjustments by the fabricator will be necessary. Isola can
+    and will assist with this process, but the fabricator, not Isola, is ultimately responsible for their process and the end results.
+    Fabricators should verify that PWBs made using these suggestions meet all applicable quality and performance
+    requirements.
+
+
+    Part 1: Prepreg Storage and Handling
+    Isola Group’s prepreg bonding sheets for use in multilayer printed circuit board applications are manufactured to specifications that
+    include physical and electrical properties and processing characteristics relative to the laminating application. Handling and storage
+    factors have an important influence on the desired performance of the prepreg. Some parameters are affected by the environment in
+    which prepregs are stored. They can also deteriorate over extended periods of storage. The prepreg received by the customer is a
+    glass fabric that has been impregnated with a stated quantity of low volatile, partially polymerized resin. The resin is tack-free but
+    somewhat brittle. Many lamination problems arise from resin loss off the fabric due to improper handling. The fabric used is based on
+    the order and supplies the required thickness. In most cases the amount of resin carried by the fabric increases as the fabric thickness
+    decreases.
+
+    Handling Suggestions
+    Handle all prepreg using clean gloves. Use sharp, precision equipment when cutting or paneling prepreg. Treat all prepreg as being
+    very fragile. Use extreme care when handling very high resin content prepreg (glass fabrics 1080 and finer).
+
+    Storage Suggestions
+    Upon receipt, all prepreg should be immediately moved from the receiving area to a controlled environment. All prepreg should be
+    used as soon as possible using a First-In-First-Out (FIFO) inventory management system. If not handled properly, 185HR prepreg will
+    absorb moisture, which will lead to depressed Tg’s and cure and affect flow in the press. If extended storage is required, separate
+    facilities should be reserved with appropriate environmental control. Prepreg should be stored at ≤ 23ºC and below 50% humidity.
+
+    Prepreg packages should be allowed to equilibrate to layup room conditions before opening to prevent moisture
+    condensation on the prepreg.
+
+    Stabilization time will depend on storage temperature. In cases where storage temperature is significantly below room temperature,
+    keep prepreg in package or plastic wrapping during stabilization period to prevent moisture condensation. Once the original packaging
+    is opened, the prepreg should be used immediately. Remaining prepreg should be resealed in the original packaging with fresh
+    desiccant. Storage should be in the absence of catalytic environments such as high radiation levels or intense ultraviolet light.
+
+
+    Part 2: Innerlayer Preparation
+    Isola Group’s 185HR laminates are fully cured and ready for processing. It has been the experience of most fabricators that stress relief
+    bake cycles are not effective in reducing any movement of high performance laminates such as 185HR. Therefore, it is suggested that
+    the movement of unbaked laminate be characterized and the appropriate artwork compensation factors are used.
+
+    Dimensional Stability
+    The net dimensional movement of laminate after the etch, oxide and lamination processes is typically shrinkage. This shrinkage is due
+    to the relaxation of stresses that were induced when the laminate was pressed as well as shrinkage contribution from the resin system.
+    Most of the movement will be observed in the grain direction of the laminate. There are situations that have been known to alter the
+    proportion of shrinkage in grain versus fill direction in some board shops. These include autoclave pressing and cross-plying laminate
+    grain direction to that of prepreg. While both of these practices have their advantages, material movement must be uniquely
+    characterized.
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/185hr-
+                 laminate-and-prepreg/                     Last Updated September 17, 2025          © 2021, Isola Group, All rights reserved.
+                                                                                                                                              185HR
+                                                                                        High Reliability Epoxy Laminate and Prepreg
+
+
+                                                                                                  Table 1 assumes that signal layers are either half or 1 ounce
+       Table 1: Initial Artwork Compensation Factors                                              copper and ground layers are either 1 or 2 ounce copper.
+                                                                                                  Compensation values are based on the laminate and prepreg
+                                                                              Comp                grain directions being oriented along the same dimension. Each
+        Base Thickness        Configuration                Direction
+                                                                              (in/in)
+                                                                                                  shop must characterize material behavior given their particular
+                                                                              0.0007-             lamination cycles, border designs and grain orientation of
+        ≤ 0.005″              Signal/Signal                Warp (grain)
+                                                                              0.0009
+                                                                                                  laminate to prepreg. It is also suggested that specific laminate
+
+        "                     "                            Fill
+                                                                              0.0001-             constructions be specified and adhered to so that dimensional
+                                                                              0.0003
+                                                                                                  variations due to changes in construction are avoided.
+                                                                              0.0005-
+        "                     Signal/Ground                Warp (grain)
+                                                                              0.0007              Imaging and Etching
+                                                                                                  185HR laminates are imaged using standard aqueous dry films
+                                                                              0.0001-
+        "                     "                            Fill                                   and are compatible with both cupric chloride and ammoniacal
+                                                                              0.0003
+                                                                                                  etchants.
+                                                                              0.0002-
+        "                     Ground/Ground                Warp (grain)
+                                                                              0.0004
+                                                                                                  Bond Enhancement
+                                                                              0.0000-             Both reduced oxides and oxide alternative chemistries have
+        "                     "                            Fill
+                                                                              0.0002
+                                                                                                  been used successfully in fabricating 185HR multilayer boards to
+                                                                              0.0005-             date. Users should make sure the oxide or oxide replacement
+        0.006-0.009″          Signal/Signal                Warp (grain)
+                                                                              0.0007
+                                                                                                  coating exhibits a consistent, uniformly dark color.
+                                                                              0.0001-
+        "                     "                            Fill
+                                                                              0.0003              If reduced oxides are used, consult the chemical supplier for
+
+                                                                              0.0003-
+                                                                                                  post oxide baking considerations as excessive baking may lead
+        "                     Signal/Ground                Warp (grain)
+                                                                              0.0005              to lower pink ring resistance. It is generally suggested that post-
+                                                                                                  oxide baking be performed vertically, in racks. Suggest mild
+                                                                              0.0000-
+        "                     "                            Fill                                   bake of oxide coated innerlayers (15-30 minutes @ 80-100°C).
+                                                                              0.0002
+
+                                                                              0.0000-             For conveyorized oxide replacements, an efficient dryer at the
+        "                     Ground/Ground                Warp (grain)
+                                                                              0.0002
+                                                                                                  end of a conveyorized oxide replacement line should remove all
+                                                                              0.0000-             moisture from the innerlayer surface. However, drying of
+        "                     "                            Fill
+                                                                              0.0002
+                                                                                                  layers for 30 minutes minimum @ 100°C (212°F) or
+                                                                              0.0002-             higher is considered a “best practice”, especially for
+        0.010-0.014″          Signal/Signal                Warp (grain)
+                                                                              0.0004
+                                                                                                  boards to be subjected to “lead-free” processes. Drying
+
+        "                     "                            Fill
+                                                                              0.0000-             in racks is preferred.
+                                                                              0.0002
+
+                                                                              0.0001-
+                                                                                                  Peel strengths may be slightly lower as compared to FR406 due
+        "                     Signal/Ground                Warp (grain)
+                                                                              0.0003              to the higher modulus properties of the resin system. The use of
+                                                                                                  DSTFoil™ will typically increase the bond strength by
+                                                                              0.0000-
+        "                     "                            Fill                                   approximately 1 to 1.5 lbs as compared to non-DSTFoil copper
+                                                                              0.0002
+                                                                                                  foil.
+                                                                              0.0000-
+        "                     Ground/Ground                Warp (grain)
+                                                                              0.0002
+                                                                                                  If immersion tin adhesion treatments are used, the fabricator
+                                                                              0.0000-             should test the coating to verify adequate bond strength is
+        "                     "                            Fill
+                                                                              0.0002
+                                                                                                  developed with 185HR prepregs.
+       Table 1 (for reference) illustrates the suggested approach to characterizing
+       laminate movement and provides approximate artwork compensation factors
+       for 185HR laminate when using a hydraulic press.
+
+
+
+    Part 3: Lamination
+    Standard Lamination
+    185HR has a wide range for Heat Ramp Rate (Rate of Rise) with a large flow window. This enables multiple approaches to lamination
+    that will achieve good results. The material rheology behaves in a typical manner, therefore lower heat ramp rates have higher
+    viscosity than high heat ramp rates. Heat ramp rates greater than 3°C/min (5.4°F) have a wider process window without requiring
+
+https://www.isola-group.com/pcb-laminates-prepreg/185hr-
+                 laminate-and-prepreg/                                 Last Updated September 17, 2025                © 2021, Isola Group, All rights reserved.
+                                                                                                                                            185HR
+                                                                                  High Reliability Epoxy Laminate and Prepreg
+
+
+    modifications to the press cycle.
+
+    The amount of time at cure temperature, and to some extent the actual cure temperature of 185HR, will be determined by the
+    thickness of the multilayer package being produced. Very thick boards will require a longer cure time to assure optimum material
+    performance.
+
+    Sequential Lamination
+    Use a 65 minute cure for sub-assemblies depending on thickness and a 75 minute cure for the final assembly. This suggestion assumes
+    a final assembly thickness ≥ 0.125″ (3.2 mm).
+
+    Removal of 185HR flash should be performed by routing rather than shearing to minimize crazing along the panel edges.
+
+                                                                                              Heavy copper and hard-to-fill designs. These parameters
+       Table 3: 185HR Lamination Pressure                                                     are a general guideline. As designs get harder to fill
+                                                                                              adjustments will need to be made to the lamination parameters.
+                                                           Suggested Pressure                 Increasing Heat Ramp rate helps improve flow. For high layer
+        Lamination Method
+                                                           Range
+                                                                                              count PCB’s with many 1 oz or 2 oz layers, increase pressure.
+                                                           350-450 PSI                        For >3 oz copper, Contact Isola Technical Service for assistance.
+        Hydraulic Pressing (without vacuum assist)
+                                                           25-32 Kg/cm2
+
+        Hydraulic Pressing (with vacuum assist via         325-450 PSI
+        vacuum frames or bags)                             22-32 Kg/cm2
+
+                                                           275-400 PSI
+        Hydraulic Pressing (vacuum enclosure)
+                                                           19-28 Kg/cm2
+
+       Table 3 outlines general suggestions for lamination pressure based on press
+       type used.
+
+
+
+                                                                                              Part 4: Drill
+       Table 2: 185HR General Lamination Parameters                                           General
+                                                                                              The 185HR material has high thermal performance and stability.
+        Process                 Recommendation
+                                                                                              Due to this high thermal performance, the material tends to
+        Vacuum Time             10-20 minutes (no pressure, product on risers)
+                                                                                              form free standing chips during drilling, and is not likely to
+        Curing
+                                190-200°C (375-390°F) Max Temp 205°C (400°F)
+                                                                                              create drill smear. Due to the increased thermal decomposition
+        Temperature
+                                                                                              temperature of the resin system, the drill debris remains as free
+                                75 minutes (above 190°C (375°F)                               particles and will not impact the drill flute relief volumes.
+        Curing Time             65 minutes (above 200°C (392°F)
+                                For boards >3.0 mm thick, add 15 min to cure time             To assure effective removal of the resin debris during drilling,
+        Resin Flow              100-150°C (210-300°F)                                         undercut drill geometries and high helix tools are
+        Window                  Maintain heat ramp in this temperature range                  recommended. On high layer count technologies and thicker
+        Heat Ramp               3.0-4.50°C/min (5.5-8°F/min)                                  overall board thicknesses, peck drilling parameters may be
+                                                                                              necessary. Suggested parameters are outlined below for typical
+        Pressure                See Table 3
+                                                                                              multilayer designs.
+                                Single Stage: Apply pressure after vacuum dwell time
+        Pressure                Dual Stage: 50 PSI (3.5 Kg/cm2 ) after vacuum dwell           Cutting Speed and Chipload
+        Application             time, switch to high pressure ≤ 90°C product
+                                                                                              The parameters in Table 4 provide a moderate initial starting
+                                temperature
+                                                                                              point for typical board designs. Thick boards with heavy copper
+                                After 30 minutes at cure temperature, reduce
+                                                                                              or special cladding such as invar will require more conservative
+        Pressure Drop           pressure to 50 PSI (3.5 Kg/cm2 ) in hot press
+                                                                                              drill parameters.
+                                (optional).
+
+                                Cool to 135-140°C (275-285°F) at 2.8°C/min (5.0°F/
+        Cool Down               min) with 3.5 Kg/cm2(50 PSI) pressure prior to
+                                removing or transferring the load.
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/185hr-
+                 laminate-and-prepreg/                             Last Updated September 17, 2025                  © 2021, Isola Group, All rights reserved.
+                                                                                                                                             185HR
+                                                                                  High Reliability Epoxy Laminate and Prepreg
+
+
+    The drill process has a wide window with good results. Parameters depend on cure quality, design and drill bit type. Drill tip speed varies
+    from 110-170 m/min (360-550 ft/min) and chipload varies from 60-75 micron/rev (2.4-3 mils/rev). Users need to factor in small bit
+    reductions, use ratios from supplied drill chart.
+
+    Stack Height and Hit Count
+    Stack heights and hit counts will vary with the construction and overall thickness of the boards being drilled. Standard 1.6 mm (0.062″)
+    thick boards have been successfully stacked 3 high for bit diameters down to 0.35 mm (13.8 mils). As a general guideline, the sum of
+    the board thickness in a multilayer drill stack should not exceed 5 mm (200 mils). Maximum hit count for a small drill diameter is 1000.
+    For drill diameters of 0.35 mm (13.8 mils) and greater, maximum hit count is 1500.
+
+
+
+       Table 4: Suggested Drilling Parameters For Initial 185HR Setup (Undercut Bits)
+
+                                                           Surface Speed Per
+                 Drill Size         Spindle Speed                                                Infeed                 Chipload                          Retract
+                                                                  Minute
+
+           mm            inch              RPM             SMPM            SFPM          m/min            in/min   mm/rev           in/rev         m/min        in/min
+
+          0.15         0.0059             78,000           120              37            1.05             42       0.013            0.54            10             400
+
+          0.20         0.0079             87,000           180              55            1.20             47       0.014            0.54            15             600
+
+          0.25         0.0098             125,000          322              98            1.85             73       0.015            0.58            15             600
+
+           0.3         0.0118             125,000          387             118            2.06             81       0.016            0.65            25             1000
+
+           0.4         0.0157             100,000          412             126            2.24             88       0.022            0.88            25             1000
+
+           0.5         0.0197             80,000           412             126            2.39             94       0.030            1.18            25             1000
+
+           0.6         0.0236             66,000           408             124            2.44             96       0.037            1.45            25             1000
+
+           0.7         0.0276             58,000           418             128            2.31             91       0.040            1.57            25             1000
+
+           0.8         0.0315             51,000           421             128            2.26             89       0.044            1.75            25             1000
+
+           1.0         0.0394             41,000           423             129            2.21             87       0.054            2.12            25             1000
+
+          1.27         0.0500             32,000           419             128            1.88             74       0.059            2.31            25             1000
+
+           1.5         0.0591             27,300           422             129            1.60             63       0.059            2.31            25             1000
+
+          1.75         0.0689             23,300           420             128            1.37             54       0.059            2.32            25             1000
+
+           2.0         0.0787             20,200           416             127            1.19             47       0.059            2.33            25             1000
+
+
+
+
+    Part 5: Hole Wall Preparation
+    General
+    When 185HR is properly cured and drilled, it will generate very little smear. The main purpose of desmear processing on this material is
+    to remove debris and provide an acceptable texture to the hole walls.
+
+    Good desmear and electroless copper deposition performance are more easily achieved when the drilled hole quality is good. The
+    generation of smooth, debris free hole walls is influenced by the degree of resin cure, drilling conditions and board design
+    considerations. The elimination of 7628 or similar heavy glasses (whenever possible), coupled with properly adjusted drill parameters
+    on fully cured boards has been shown to improve overall drilled hole quality. This helps reduce smear generation, which improves
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/185hr-
+                  laminate-and-prepreg/                           Last Updated September 17, 2025                  © 2021, Isola Group, All rights reserved.
+                                                                                                                            185HR
+                                                                                 High Reliability Epoxy Laminate and Prepreg
+
+
+    desmear performance and can ultimately help to reduce copper wicking.
+
+    Factors which influence chemical desmear rates, and therefore the suggestions in this document, include: resin type,
+    chemistry type, bath dwell times, bath temperatures, chemical concentrations in each bath and the amount of solution transfer through
+    the holes.
+
+    Factors which influence the amount of solution transfer through the holes include: hole size, panel thickness, vertical or horizontal
+    process equipment and equipment agitation parameters.
+
+    Chemical Desmear
+    Conventional permanganate desmear systems are effective for removal of 185HR resin from interconnect posts. Dwell times and
+    temperatures typically used for most high performance, high-Tg materials should be satisfactory. Consult the chemical supplier for
+    suggested conditions.
+
+    Plasma Desmear
+    Plasma etching is normally not required for 185HR. It can consistently etch the chemically resistant resin system, and properly run
+    provides good hole wall texturing. It can be used with or without a single permanganate pass (to be determined by each fabricator).
+    Care must be exercised to avoid excessive resin removal if both plasma and permanganate are employed together.
+    Plasma processing tends to improve overall hole quality, particularly in thick and/or high aspect ratio boards. Standard plasma gas
+    mixtures and cycles are satisfactory.
+
+    Hole Wall Condition Verification
+    It is recommended that users take test samples for hole wall inspection after drill and deburring and after desmearing. The post drill
+    condition indicates hole cleanliness and hole wall damage. Post desmear indicates desmear effectiveness and resin texturing. SEM
+    pictures of holes cut vertically in half have been effective for executing this verification.
+
+    3-Point Etchback
+    True 3-point “etchback” exposes the innerlayer “post” on all three sides for subsequent plating processes. This will require a more
+    robust approach compared to simple desmear, which is designed only to remove resin smear from the vertical surface of the innerlayer
+    interconnect “posts”.
+
+    Plasma will readily etch back 185HR resin. Standard plasma gas mixtures and process cycles designed for conventional FR-4 epoxy are
+    satisfactory and are suggested for use as initial starting parameters for etchback of 185HR. The practice of following the plasma
+    process with a chemical process is suggested rather than plasma alone to increase hole wall texture and remove plasma ash residues.
+
+    If plasma is not available, chemical etchback for 3-point connections can usually be accomplished using a double-pass through the
+    permanganate line. Care must be taken when using a double-pass to minimize copper wicking. Consult the chemical supplier for
+    suggested conditions.
+
+    Secondary Drilling
+    The use of entry and backer material may be necessary during the secondary drilling of larger hole sizes to avoid crazing/fracturing at
+    the hole perimeter. Additionally, sharper plunge point angle geometries may be necessary to avoid crazing around secondary drilled
+    hole perimeters.
+
+    Routing and Scoring
+    Modifications of the final PWB rout fabrication process may be necessary. Table 5 lists initial starting parameters using chip breaker or
+    diamond cut tool designs. Note that parameters listed may require further adjustment.
+
+
+
+       Table 5: Suggested Routing Parameters for Initial 185HR Setup
+
+             Tool Diameter               Spindle Speed     Spindle Travel Speed
+
+             inch          mm                RPM           in/min            m/min
+
+           0.0620          1.57             45,000           20               0.51
+
+           0.0930          2.36             35,000           40               1.02
+
+https://www.isola-group.com/pcb-laminates-prepreg/185hr-
+                 laminate-and-prepreg/                            Last Updated September 17, 2025   © 2021, Isola Group, All rights reserved.
+                                                                                                                                      185HR
+                                                                               High Reliability Epoxy Laminate and Prepreg
+
+
+           0.1250          3.18            25,000          50               1.27           For PWB designs requiring scored geometries, the testing of
+                                                                                           various Tgs and resin content materials has determined that
+       Chip breaker or diamond cut tool designs recommended.
+                                                                                           adjustments to the process will be necessary. As the modulus
+                                                                                           strength of materials increases, the maximum resultant web
+    thickness (dependent on the scored edge depth) must be decreased to avoid excessive fracturing upon breaking away the scored
+    materials.
+
+    Individual board designs/stack-ups may require adjustment of score depth geometries. Thinner web thicknesses are typically
+    required. This is influenced by layer count, glass types and retained copper in the design.
+
+    The customer should contact the scoring equipment and/or bit supplier for application specific suggestions for use with
+    185HR materials. Your Isola Technical Account Manager may also be able to provide some initial suggestions, but these should be
+    validated through testing by the individual PWB fabricator.
+
+
+    Part 6: Packaging and Storage
+    185HR finished boards have low moisture sensitivity and good shelf life. However, Isola recommends using best practices in storage
+    and packaging, as noted below, to reduce risk during lead-free assembly.
+
+    185HR boards should be dry prior to packaging to ensure the most robust lead-free performance. For some complex, high reliability
+    designs, baking prior to solder mask application can be implemented to ensure maximum floor life in assembly processing. Printed
+    boards made for high temperature assembly from 185HR, which require a long shelf life, the best protection is provided using a
+    Moisture Barrier Bag (MBB) with a Humidity Indicator Card (HIC) and adequate drying desiccant inside the MBB to prevent moisture
+    absorption during shipment and long-term storage.
+
+    Upon opening the MBB, the boards should be processed within 168 hours when maximum shop floor conditions are at < 30°C
+    (85°F)/60% RH. MBB bags that are opened for inspection should be resealed immediately to protect the boards from moisture uptake.
+
+
+    Part 7: Health and Safety
+    Always handle laminate with care. Laminate edges are typically sharp and can cause cuts and scratches if not handled properly.
+    Handling and machining of prepreg and laminate can create dust (see 185HR Material Safety Data Sheet).
+
+    Appropriate ventilation is necessary in machining/punching areas. The use of protective masks is suggested to avoid inhaling dust.
+    Gloves, aprons and/or safety glasses are suggested if individuals have frequent or prolonged skin or eye contact with dust.
+
+    Isola Group does not use polybromidebiphenyls or polybromidebiphenyloxides as flame retardants in any product. Material Safety Data
+    Sheets are available upon request.
+
+
+    Part 8: Ordering Information
+    Contact your local sales representative or contact info@isola-group.com for further information.
+
+    Isola Group
+    6565 West Frye Road
+    Chandler, AZ 85226
+    Phone: 480-893-6527
+    Fax: 480-893-1409
+
+    Isola Asia Pacific (Hong Kong) Ltd.
+    12/F Kin Sang Commecial Center
+    49 King Yip Street, Kwun Tong
+    Kowloon, Hong Kong
+    Phone: 852-2418-1318
+    Fax: 852-2418-1533
+
+    Isola GmbH
+    Isola Strasse 2 D-52348
+https://www.isola-group.com/pcb-laminates-prepreg/185hr-
+                 laminate-and-prepreg/                          Last Updated September 17, 2025               © 2021, Isola Group, All rights reserved.
+                                                                                                                                    185HR
+                                                                            High Reliability Epoxy Laminate and Prepreg
+
+
+    Düren, Germany
+    Phone: 49-2421-8080
+    Fax: 49-2421-808164
+
+
+    Learn More
+    www.isola-group.com/products/185HR
+
+    The Isola name and logo are registered trademarks of Isola Corp. USA in the USA and other countries. DSRFoil is a registered trademark
+    of Isola USA Corp. in other countries. All other trademarks mentioned herein are property of their respective owners. © 2020 Isola
+    Group, All Rights Reserved. 01/21 Rev:C
+
+
+
+                NOTES
+                The data contained in this document, while believed to be accurate and based on both field testing and analytical methods
+                considered to be reliable, is for information purposes only. Any sales of these products will be governed by the terms and conditions
+                of the agreement under which they are sold.
+
+
+
+
+                Isola, the Isola logo, Astra, Chronon, GETEK, I-Fill, IsoDesign, IsoStack, I-Speed, I-Tera, Polyclad, Stratus, TerraGreen, and The Base
+                for Innovation are registered trademarks or trademarks of ISOLA USA Corp. in the United States and in other countries. Copyright ©
+                2021 Isola Group. All rights reserved.
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/185hr-
+                 laminate-and-prepreg/                       Last Updated September 17, 2025                © 2021, Isola Group, All rights reserved.
+

@@ -1,0 +1,52 @@
+ S7439G
+ (UL ANSI: FR15.1) Halogen Free, Low Loss & High Reliability Material
+
+FEATURES                                                           APPLICATIONS
+● High Tg and high Td                                              Server, Switch, Base station
+● Halogen free material                                            Backplane, Line cards
+● Excellent thermal reliability                                    High performance computing
+● Excellent anti-CAF performance                                   Office Routers
+● Low Dk/Df (@10GHz): 3.74/0.0060
+● Lower Z-axis CTE, offering superior PTH reliability
+
+GENERAL PROPERTIES
+
+         Test Items                    Test Method              Test Condition             Unit           Typical
+                                                                                                           Value
+                                   IPC-TM-650 2.4.24.4                 DMA                                  189
+              Tg                                                                            ℃
+                                   IPC-TM-650 2.4.25D                  DSC                                   181
+              Td                   IPC-TM-650 2.4.24.6             Wt 5% loss               ℃                405
+            T288                   IPC-TM-650 2.4.24.1                 TMA                 min               60
+            T300                   IPC-TM-650 2.4.24.1                 TMA                 min               60
+       Thermal Stress              IPC-TM-650 2.4.13.1         288℃, solder dip              s               100
+                                    IPC-TM-650 2.4.24               Before Tg            ppm/℃               45
+        CTE(Z-axis)                 IPC-TM-650 2.4.24                After Tg            ppm/℃               225
+                                    IPC-TM-650 2.4.24               50-260℃                 %                2.5
+                   1GHz            IPC-TM-650 2.5.5.9              C-24/23/50                -              3.93
+                   10GH            IPC-TM-650 2.5.5.5              C-24/23/50                -              3.74
+   Permittivity        z
+                   10GH              IEC61189-2-721                C-24/23/50                               4.08
+                       z
+                   1GHz            IPC-TM-650 2.5.5.9              C-24/23/50                              0.0045
+                   10GH            IPC-TM-650 2.5.5.5              C-24/23/50                -             0.0060
+  Loss Tangent         z
+                   10GH              IEC61189-2-721                C-24/23/50                -             0.0070
+                       z
+    Volume Resistivity             IPC-TM-650 2.5.17.1             C-96/35/90            MΩ-cm            9.0×108
+     Surface Resistivity           IPC-TM-650 2.5.17.1             C-96/35/90               MΩ            2.0×107
+       Arc Resistance               IPC-TM-650 2.5.1               D-48/50+D-                S               180
+                                                                     0.5/23
+   Dielectric Breakdown             IPC-TM-650 2.5.6               D-48/50+D-               kV              ＞45
+                                                                     0.5/23
+    Peel Strength(1 Oz)             IPC-TM-650 2.4.8               288℃/10s            N/mm[lb/in]        1.2[7.0]
+     Water Absorption              IPC-TM-650 2.6.2.1                D-24/23                %               0.12
+        Flammability                        UL94                   C-48/23/50             Rating             V-0
+
+Remarks: 1. All the typical value is based on the 0.76mm（6*2116）thickness specimen, but not guarantee data.
+        2. All the typical value listed above is for your reference only, please turn to Shengyi Technology Co., Ltd. for
+        detailed information, and all rights from this data sheet are reserved by Shengyi Technology Co., Ltd.
+
+
+                                                                                 CN-TDS-1912-04-S7439G-S7439GB
+

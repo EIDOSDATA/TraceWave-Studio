@@ -1,0 +1,230 @@
+                                                                                                       Technical Articles
+                                                                                                       Fabrication Notes
+
+     RT/duroid® 6202PR High Frequency
+     Laminates Fabrication Guidelines
+     Material Description: RT/duroid® 6202PR high frequency laminate is a ceramic filled, woven glass reinforced polytetrafluoroethylene
+     (PTFE) composite. This extension to our highly successful RT/duroid 6002 and 6202 products provides the electrical performance
+     essential for high frequency applications, possesses the thermal attributes necessary for reliable stripline and multilayer board
+     constructions, and has mechanical properties that contribute to high yields through complex circuit board processes. RT/duroid
+     6202PR is available with standard electrodeposited and rolled copper foils, but is especially compatible with subtractively processing
+     resistive foils. Customers have demonstrated resistor tolerances approaching +/- 5% when designing on RT/duroid 6202PR clad with
+     foils from Ohmega Technologies.
+
+
+     These guidelines were developed to provide fabricators with basic information on processing stripline assemblies and multilayer
+     boards using copper clad RT/duroid 6202PR. Processing information specific to resistive foils can be found at www.ohmega.com. For
+     more information specific to substrate or resistive foil processing, please contact your Rogers’ technical service or sales representative.
+
+
+     Storage: RT/duroid 6202PR cores can be stored indefinitely at ambient conditions. A FIFO inventory system is recommended as is a
+     method of record keeping that would allow tracking of material lot numbers through PWB processing and delivery of finished circuits.
+
+
+     INNER LAYER PREPARATION:
+
+     Tooling: RT/duroid 6202PR is compatible with many tooling systems. Choosing whether to use round or slotted pins, external or
+     internal pinning, standard or multiline tooling, and pre- vs. post-etch punching would depend upon the capabilities and preferences of
+     the circuit facility and the final registration requirements. In general, slotted pins, a multiline tooling format, and post-etch punching
+     will meet most needs. Whichever approach is used, it is good practice to retain copper around tooling holes.
+
+
+     A flow pattern compatible with the chosen adhesive system can be used between circuits and around the perimeter of the panel. But,
+     in general, registration of layers (especially thin cores) is improved by retaining as much copper as possible.
+
+
+     Surface Preparation for Photoresist Application: A chemical process consisting of organic cleaners and a microetch is the preferred
+     method of preparation of copper surfaces prior to coating with liquid or film photoresists. A conveyorized spray system using an
+     abrasive substance suspended in solution can be used to prepare copper surfaces at the slight risk of some registration control.
+     Mechanical scrubbing should be considered for thick cores (0.060”+) only and, even then, should be performed at reduced pressures.
+
+
+     Photoresist Application: RT/duroid 6202PR materials are compatible with most photoresist systems.
+
+
+     DES Processing: Developers and strippers compatible with the photoresist system of choice should be used.
+     RT/duroid 6202PR materials are compatible with any copper etching system. However, materials clad with resistive foils should be
+     etched using recommendations made by the suppliers of the special foil types.
+     Oxide Treatment: RT/duroid 6202PR is compatible with most oxide and oxide alternative processes. It is best to use the process
+     recommended by the supplier of the adhesive system chosen to bond together the multilayer board, as long as that process is
+     compatible with recommendations made by suppliers of the resistive foils.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                                   1 of 4
+BONDING:
+
+Final Preparation: Special pretreatments of etched surfaces using sodium or plasma processes shouldn’t be necessary provided care was taken
+to protect the substrate surface after copper etch. Inner-layers should be baked at 120-150°C for 30-120 minutes to ensure removal of volatile
+substances prior to MLB bonding. Guidelines for the oxide treatment and the resistive foils (if used) should be referenced for optimum bake
+conditions.
+
+
+Multilayer Adhesive System: RT/duroid 6202PR materials are compatible with a broad range of thermosetting (FR-4, RO4400™, etc.) and
+thermoplastic (3001 bonding film, FEP, PFA, PTFE, etc.) adhesive systems. Many factors, such as electrical performance, flow characteristics, ease
+of processing, and bond temperature requirements are considered when making the best overall choice. Rogers’ Technical Service Engineers
+(TSE’s) understand the trade-offs and, if asked, will help in the selection process.
+
+
+Multilayer Bond Cycle: The press cycle is determined by the requirements of the chosen adhesive system. Cooling under pressure is required
+when using thermoplastic (meltable) films.
+
+
+PTH & OUTER LAYER PROCESSING
+
+Drilling: Multilayers are most commonly drilled in stacks of one. Phenolic composite boards are recommended for entry (0.010” to 0.030” thick)
+and exit (>0.060”) layers. Sheeted aluminum and metal coated phenolic boards can also be used as entry layers.
+
+
+New carbide drills are highly recommended. Standard or undercut styles can be used. Recommended chip loads (0.001” to 0.003” per
+revolution) and surface speeds (150 to 300 SFM) vary with tool diameter with slower infeeds and speeds being associated with finer diameter
+drills. Retract rate when drilling multilayer boards should be between 300 and 500 IPM. Below is a quick reference table that provides
+recommended parameters for commonly used drill diameters.
+
+
+Tool life should be based upon inspection of cross-sectioned holes. The “twelve inch rule,” which suggests changing a tool after drilling 12” of
+substrate, is a good place to start. For example, initial hit count when drilling a 0.060” thick board would be 12”/0.060” = 200 holes.
+
+
+                               Tool Size              Spindle Speed                  Infeed                    Retract
+                            (in)           (mm)            (RPM)              (IPM)       (m/min)      (IPM)        (m/min)
+                           0.0079          0.20            72500              72.5            1.8       300              7.6
+                           0.0098          0.25            68200              88.7            2.3       300              7.6
+                           0.0138          0.35            55400              83.1            2,1       300              7.6
+                           0.0197          0.50            48200              96.4            2.4       400              10.2
+                           0.0256          0.65            37200              74.2            1.9       400              10.2
+                           0.0295          0.75            32200              64.4            1.6       400              10.2
+                           0.0394          1.00            24100              48.2            1.2       400              10.2
+                           0.0492          1,25            20000              40.0            1.0       400              10.2
+                           0.0625          1,59            20000              40.0            1.0       400              10.2
+                           0.1250          3.18            20000              40.0            1.0       400              10.2
+
+
+
+Deburring: The use of flat, rigid entry materials, conservative drilling parameters, and limited hit counts with new drills should minimize the
+risk of copper burring. When drilled properly, cores should be ready for subsequent processing. If debur is necessary (and slight), a chemical
+microetch process is preferred. If mechanical processing is required, a hand pumice scrub is preferred over a suspended abrasive spray system
+which, in turn, is preferred over a conveyorized mechanical debur or planarization process.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                                    2 of 4
+Hole Preparation: Loosely deposited debris in the holes can be removed using a vapor or hydro-honing process. These processes involve
+directing water suspended abrasive particles through drilled holes. The soft laminates must be properly supported through these processes.
+
+
+Broken glass bundles can be removed using the process described above or dissolved using a glass etch process that is standard to most FR-4
+material chemical desmear processes.
+
+
+Depending upon the adhesive system used (FR-4, for example), a chemical or plasma desmear process may be required. These desmear
+processes will have little effect on the RT/duroid 6202PR materials and should be done prior to activation of the PTFE surface. The chemical
+process appropriate for desmear of the adhesive system can be used. CF4/O2 plasma can also be used. A dual plasma cycle to accomplish
+desmear of an adhesive system and activation of the PTFE surface is made possible by adding the desmear cycle outlined below to the front end
+of the treatment cycle described in the treatment portion of this section.
+
+
+                                                    Frequency      40KHz
+                                                    Voltage        500-600V
+                                                    Power          4000-5000 Watts
+                                                    Preheat to 60°C using:
+                                                            Gases 90% O2 10% N2
+                                                          Pressure 250 mTORR
+                                                    Desmear using:
+                                                            Gases 75% O2, 15% CF4, 10%N2
+                                                          Pressure 250mTORR
+                                                             Time 10-30 minutes
+
+
+Drilled holes in PTFE-based laminates must be treated prior to the deposition of a conductive seed layer (e.g., electroless copper or direct
+metallization). Not performing a surface activation treatment will most likely result in poor metal adhesion or plated voids. Two common pre-
+treatments for PTFE materials are sodium treatment and plasma treatment. Either can be used for treating RT/duroid 6202PR materials.
+
+
+Sodium treatment products and recommended application procedures are available from:
+
+
+                                                     Poly-Etch                       Fluoro-etch
+                                              Matheson Gas Products             Acton Associates Inc.
+                                                 61 Grove Street                100 Thompson Street
+                                              Gloucester, MA 01903               Pittston, PA 18640
+                                                  978-283-6177                     570-654-0612
+
+
+
+A recommended plasma cycle for treating PTFE materials is:
+
+
+                                                      Gases 70/30 or 80/20 H2/N2, NH3, N2, or He
+                                                   Pressure 100 mTORR pumpdown
+                                                               50 mTORR operating
+                                                      Power 4000 Watts
+                                                 Frequency 40 KHz
+                                                    Voltage 500-600V
+                                                 Cycle time 10-30 minutes
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                                  3 of 4
+Metallization: RT/duroid 6202PR materials are compatible with traditional electroless copper and direct deposit metallization processes. Cores
+should be baked (30-90 minutes @ 120-150oC) prior to metal deposition unless plasma, which also serves as a vacuum bake, was used to prepare
+the hole walls for plating. A flash plate build-up of 0.0001” to 0.0003” (0.0025mm-0.0076mm) of copper is recommended to better support hole
+walls through preparation for outer-layer processing.
+
+
+PTH Plating & Outer-Layer Imaging: Standard equipment and chemical processes are used to plate, image, and etch circuit patterns onto RT/
+duroid 6202PR materials. Care should be taken to preserve the post-etch dielectric surface. The topography that remains after copper removal
+promotes improved adhesion to soldermasks. Materials should be rinsed and baked prior to soldermask application. Rinsing in warm or hot
+water for 20-30 minutes followed by 60 minutes at 125oC should be sufficient, especially if the bake is done under vacuum.
+
+
+Final Surfaces: RT/duroid 6202PR materials are compatible with most LPI soldermasks. Epoxy soldermasks are preferred if the application
+requires selective silk screening. Most final metal surfaces (ENIG, Sn, Ag, Ni/Au, OSP, etc.) can be applied without special issue or consideration. A
+bake, as was described prior to soldermask application, should be performed prior to HASL or reflow exposures.
+
+
+Final Circuitization: Individual circuits can be routed, punched, or lased depending upon preference, tolerances, and edge quality
+requirements. Parameters for routing are provided below:
+
+
+                                                         Chip Load 0.00125” to 0.00250”/rev
+                                                                         32mm – 64 mm/rev
+                                                              Speed 200-300 sfm
+                                                                         61-92 m/min
+                                                       Peripheries Conventional cut
+                                                                         Internal cut-outs climb cut
+                                                          Tool type Carbide double fluted spiral-up endmill
+                                                         Exit/Entry Phenolic or composite board
+                                                            Tool life 20-30 linear feet
+                                                                         6-9 meters
+Pre-rout vacuum channels in backer board.
+Double pass (opposite directions) when cleanest edge quality is required.
+
+
+
+
+The information in this document is intended to assist you in designing with Rogers’ circuit materials. It is not intended to and does not create any warranties express or
+implied, including any warranty of merchantability or fitness for a particular purpose or that the results shown on this document will be achieved by a user for a particular
+purpose. The user should determine the suitability of Rogers’ circuit materials for each application.
+
+These commodities, technology and software are exported from the United States in accordance with the Export Administration regulations. Diversion contrary to U.S. law prohibited.
+The Rogers’ Logo, Helping power, protect, connect our world, RO4400 and RT/duroid are trademarks of Rogers Corporation or one of its subsidiaries.
+© 2023 Rogers Corporation, Printed in U.S.A. All rights reserved.
+Revised 1634 041323 Publication #92-425
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                                                  4 of 4
+

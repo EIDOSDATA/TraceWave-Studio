@@ -1,0 +1,58 @@
+{
+  "bag_presence_by_sheet": [
+    {
+      "sheet": "조건별 자료",
+      "present": true,
+      "chunks": 53
+    },
+    {
+      "sheet": "필드 안내",
+      "present": true,
+      "chunks": 1
+    },
+    {
+      "sheet": "원자료 적층",
+      "present": false,
+      "chunks": 7
+    },
+    {
+      "sheet": "원자료 구성행",
+      "present": true,
+      "chunks": 24
+    }
+  ],
+  "bag_sha256_counts": {
+    "85b85c0943766388c0717c64db39b61f1cbf770e29a71410ea8557cae17bba6b": 78
+  },
+  "missing_parts": [
+    {
+      "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\00_REF\\PCB RF ANT\\05_PCB_Dielectric_Data_2026\\..\\..\\..\\Code\\.local\\dielectric-excel\\jlc_parts\\s03_0001.xlsx",
+      "references": []
+    },
+    {
+      "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\00_REF\\PCB RF ANT\\05_PCB_Dielectric_Data_2026\\..\\..\\..\\Code\\.local\\dielectric-excel\\jlc_parts\\s03_0002.xlsx",
+      "references": []
+    },
+    {
+      "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\00_REF\\PCB RF ANT\\05_PCB_Dielectric_Data_2026\\..\\..\\..\\Code\\.local\\dielectric-excel\\jlc_parts\\s03_0003.xlsx",
+      "references": []
+    },
+    {
+      "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\00_REF\\PCB RF ANT\\05_PCB_Dielectric_Data_2026\\..\\..\\..\\Code\\.local\\dielectric-excel\\jlc_parts\\s03_0004.xlsx",
+      "references": []
+    },
+    {
+      "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\00_REF\\PCB RF ANT\\05_PCB_Dielectric_Data_2026\\..\\..\\..\\Code\\.local\\dielectric-excel\\jlc_parts\\s03_0005.xlsx",
+      "references": []
+    },
+    {
+      "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\00_REF\\PCB RF ANT\\05_PCB_Dielectric_Data_2026\\..\\..\\..\\Code\\.local\\dielectric-excel\\jlc_parts\\s03_0006.xlsx",
+      "references": []
+    },
+    {
+      "path": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\00_REF\\PCB RF ANT\\05_PCB_Dielectric_Data_2026\\..\\..\\..\\Code\\.local\\dielectric-excel\\jlc_parts\\s03_0007.xlsx",
+      "references": []
+    }
+  ],
+  "missing_part_reference_issues": []
+}

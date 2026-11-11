@@ -1,0 +1,554 @@
+{
+  "statistics": {
+    "records": 57340,
+    "record_ids_unique": true,
+    "source_count": 1756,
+    "source_ids_unique": true,
+    "product_labels": 1058,
+    "fields": 142,
+    "roles": {
+      "material_published_parameter": 26815,
+      "fabricator_published_parameter": 30525
+    },
+    "manufacturers": {
+      "Doosan": 121,
+      "EMC": 208,
+      "TUC": 47,
+      "Sumitomo_Bakelite": 16,
+      "Nitto": 3,
+      "Kingboard": 3352,
+      "Chukoh": 51,
+      "MGC": 46,
+      "Risho": 4,
+      "Ventec": 869,
+      "Resonac": 112,
+      "Nanya_New_Material": 302,
+      "Peters": 9,
+      "ITEQ": 112,
+      "Isola": 3329,
+      "Panasonic": 6886,
+      "Shengyi Technology": 8639,
+      "Rogers": 423,
+      "AGC": 2251,
+      "Arlon Electronic Materials": 24,
+      "Generic material reference (Arlon handbook)": 11,
+      "JLCPCB": 26291,
+      "Wurth Elektronik": 1598,
+      "PCBWay": 2250,
+      "OSH Park": 10,
+      "AISLER": 32,
+      "Multi Circuit Boards": 38,
+      "Epec": 66,
+      "NextPCB": 31,
+      "Lab Circuits": 16,
+      "CircuitHub": 4,
+      "NCAB": 6,
+      "TTM Technologies": 2,
+      "AdvancedPCB": 33,
+      "Seeed Fusion": 1,
+      "Eurocircuits": 18,
+      "Fineline": 129
+    },
+    "dk_input_status": {
+      "scalar_with_frequency": 28341,
+      "df_or_other_parameter_only": 56,
+      "scalar_without_point_frequency": 28772,
+      "range_limit_or_choices_only": 171
+    },
+    "exact_duplicate_rows_excluding_record_id": 0,
+    "exact_duplicate_groups": 0,
+    "rows_with_dk": 57113,
+    "rows_with_df": 27778,
+    "rows_with_scalar_dk_and_df": 27710,
+    "rows_with_point_frequency": 28540,
+    "rows_with_stated_method": 16740,
+    "rows_with_stated_axis": 278,
+    "rows_with_published_conflict": 49,
+    "rows_without_local_source_file": 241,
+    "rows_with_dk_df_different_frequencies": 21,
+    "rows_with_simulation_ready_true": 0,
+    "rows_with_simulation_ready_false": 30525,
+    "rows_at_2_4ghz": 0,
+    "rows_at_2_45ghz": 0,
+    "rows_at_2_5ghz": 120
+  },
+  "csv_checks": [
+    {
+      "path": "data/by_organization/AdvancedPCB.csv",
+      "rows": 33,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/AGC.csv",
+      "rows": 2251,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/AISLER.csv",
+      "rows": 32,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/Arlon_Electronic_Materials.csv",
+      "rows": 24,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/Chukoh.csv",
+      "rows": 51,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/CircuitHub.csv",
+      "rows": 4,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/Doosan.csv",
+      "rows": 121,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/EMC.csv",
+      "rows": 208,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/Epec.csv",
+      "rows": 66,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/Eurocircuits.csv",
+      "rows": 18,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/Fineline.csv",
+      "rows": 129,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/Generic_material_reference_Arlon_handbook.csv",
+      "rows": 11,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/Isola.csv",
+      "rows": 3329,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/ITEQ.csv",
+      "rows": 112,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/JLCPCB.csv",
+      "rows": 26291,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/Kingboard.csv",
+      "rows": 3352,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/Lab_Circuits.csv",
+      "rows": 16,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/MGC.csv",
+      "rows": 46,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/Multi_Circuit_Boards.csv",
+      "rows": 38,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/Nanya_New_Material.csv",
+      "rows": 302,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/NCAB.csv",
+      "rows": 6,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/NextPCB.csv",
+      "rows": 31,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/Nitto.csv",
+      "rows": 3,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/OSH_Park.csv",
+      "rows": 10,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/Panasonic.csv",
+      "rows": 6886,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/PCBWay.csv",
+      "rows": 2250,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/Peters.csv",
+      "rows": 9,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/Resonac.csv",
+      "rows": 112,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/Risho.csv",
+      "rows": 4,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/Rogers.csv",
+      "rows": 423,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/Seeed_Fusion.csv",
+      "rows": 1,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/Shengyi_Technology.csv",
+      "rows": 8639,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/Sumitomo_Bakelite.csv",
+      "rows": 16,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/TTM_Technologies.csv",
+      "rows": 2,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/TUC.csv",
+      "rows": 47,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/Ventec.csv",
+      "rows": 869,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/by_organization/Wurth_Elektronik.csv",
+      "rows": 1598,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/fabricators.csv",
+      "rows": 30525,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/materials.csv",
+      "rows": 26815,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "data/pcb_dielectric_all.csv",
+      "rows": 57340,
+      "columns": 142,
+      "all_fields_match": true,
+      "mismatches": 0
+    },
+    {
+      "path": "catalog/sources.csv",
+      "rows": 1756,
+      "same_row_count": true,
+      "all_fields_match": true,
+      "mismatches": 0,
+      "examples": []
+    },
+    {
+      "path": "catalog/products.csv",
+      "rows": 1058,
+      "same_row_count": true,
+      "all_fields_match": true,
+      "mismatches": 0,
+      "examples": []
+    }
+  ],
+  "issues": [],
+  "exact_duplicates": [],
+  "fabricators": [
+    {
+      "manufacturer": "AISLER",
+      "records": 32,
+      "stackup_ids": 4,
+      "with_frequency": 0,
+      "with_df": 0,
+      "with_thickness": 32,
+      "with_board_thickness": 0
+    },
+    {
+      "manufacturer": "AdvancedPCB",
+      "records": 33,
+      "stackup_ids": 0,
+      "with_frequency": 21,
+      "with_df": 33,
+      "with_thickness": 0,
+      "with_board_thickness": 0
+    },
+    {
+      "manufacturer": "CircuitHub",
+      "records": 4,
+      "stackup_ids": 0,
+      "with_frequency": 0,
+      "with_df": 0,
+      "with_thickness": 0,
+      "with_board_thickness": 0
+    },
+    {
+      "manufacturer": "Epec",
+      "records": 66,
+      "stackup_ids": 0,
+      "with_frequency": 66,
+      "with_df": 61,
+      "with_thickness": 0,
+      "with_board_thickness": 0
+    },
+    {
+      "manufacturer": "Eurocircuits",
+      "records": 18,
+      "stackup_ids": 0,
+      "with_frequency": 18,
+      "with_df": 18,
+      "with_thickness": 7,
+      "with_board_thickness": 0
+    },
+    {
+      "manufacturer": "Fineline",
+      "records": 129,
+      "stackup_ids": 0,
+      "with_frequency": 129,
+      "with_df": 122,
+      "with_thickness": 0,
+      "with_board_thickness": 0
+    },
+    {
+      "manufacturer": "JLCPCB",
+      "records": 26291,
+      "stackup_ids": 2466,
+      "with_frequency": 0,
+      "with_df": 0,
+      "with_thickness": 26052,
+      "with_board_thickness": 26276
+    },
+    {
+      "manufacturer": "Lab Circuits",
+      "records": 16,
+      "stackup_ids": 0,
+      "with_frequency": 16,
+      "with_df": 16,
+      "with_thickness": 0,
+      "with_board_thickness": 0
+    },
+    {
+      "manufacturer": "Multi Circuit Boards",
+      "records": 38,
+      "stackup_ids": 0,
+      "with_frequency": 35,
+      "with_df": 20,
+      "with_thickness": 0,
+      "with_board_thickness": 0
+    },
+    {
+      "manufacturer": "NCAB",
+      "records": 6,
+      "stackup_ids": 0,
+      "with_frequency": 0,
+      "with_df": 0,
+      "with_thickness": 0,
+      "with_board_thickness": 0
+    },
+    {
+      "manufacturer": "NextPCB",
+      "records": 31,
+      "stackup_ids": 0,
+      "with_frequency": 5,
+      "with_df": 26,
+      "with_thickness": 0,
+      "with_board_thickness": 0
+    },
+    {
+      "manufacturer": "OSH Park",
+      "records": 10,
+      "stackup_ids": 4,
+      "with_frequency": 7,
+      "with_df": 7,
+      "with_thickness": 10,
+      "with_board_thickness": 0
+    },
+    {
+      "manufacturer": "PCBWay",
+      "records": 2250,
+      "stackup_ids": 298,
+      "with_frequency": 0,
+      "with_df": 0,
+      "with_thickness": 1251,
+      "with_board_thickness": 2250
+    },
+    {
+      "manufacturer": "Seeed Fusion",
+      "records": 1,
+      "stackup_ids": 0,
+      "with_frequency": 0,
+      "with_df": 0,
+      "with_thickness": 0,
+      "with_board_thickness": 0
+    },
+    {
+      "manufacturer": "TTM Technologies",
+      "records": 2,
+      "stackup_ids": 0,
+      "with_frequency": 2,
+      "with_df": 2,
+      "with_thickness": 0,
+      "with_board_thickness": 0
+    },
+    {
+      "manufacturer": "Wurth Elektronik",
+      "records": 1598,
+      "stackup_ids": 169,
+      "with_frequency": 1598,
+      "with_df": 1598,
+      "with_thickness": 1598,
+      "with_board_thickness": 0
+    }
+  ],
+  "automatic_selection_warning": "Scalar Dk with frequency is not equivalent to verified simulation readiness. Require per-property evidence, conditions, layer construction and an explicit adopted hypothesis.",
+  "selection_review_summary": {
+    "all_observations": 57340,
+    "publisher_count": 37,
+    "stackup_label_count": 2941,
+    "global_flag_counts": {
+      "dk_df_frequency_not_shared": 21,
+      "dk_point_frequency_missing": 28800,
+      "fabricator_planning_observation_not_as_built_measurement": 30525,
+      "group_thickness_not_individual_ply_thickness": 999,
+      "individual_layer_thickness_missing": 1225,
+      "invalid_nonpositive_source_ply_value": 226,
+      "local_source_file_unavailable": 241,
+      "measurement_axis_missing": 57062,
+      "method_scope_note_present": 120,
+      "nonunit_relative_permeability": 1,
+      "published_source_conflict": 49,
+      "scalar_df_missing": 29562,
+      "scalar_dk_missing": 227,
+      "source_specific_quality_flags": 421,
+      "test_method_missing": 40600,
+      "value_comparison_qualifier_present": 57
+    },
+    "jlc_templates_in_raw_api": 2926,
+    "jlc_named_templates": 2466,
+    "jlc_unnamed_templates": 460,
+    "jlc_named_stackup_labels": 2466,
+    "json_files_parsed": 60,
+    "rows_at_2_4ghz": 0,
+    "rows_at_2_45ghz": 0,
+    "rows_at_2_5ghz": 120
+  },
+  "selection_review_file": "Code\\.local\\dielectric-review\\selection_review.json"
+}

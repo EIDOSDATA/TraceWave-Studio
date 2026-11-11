@@ -1,0 +1,291 @@
+ Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+ VT-42                                                                                       UL Approval: E214381         Version: 13/02/2025
+
+  PROCESS GUIDE
+ Laminate / Prepreg (Standard FR4 Material)
+
+
+
+ Precautions in Handling
+
+ Storage Condition & Shelf Life
+                                                           Prepreg                                                Laminate
+
+     Storage                    Temperature                Below 23ºC (73ºF)          Below 5ºC (41ºF)            Room
+     Condition                  Relative Humidity          Below 55%                  /                           /
+
+     Shelf Life                                            3 Months                   6 Months                    24 Months (airproof)
+
+
+ •         The prepreg exceeding shelf time should be retested.
+ •         Take care in handling thin core laminates as they are easily damaged.
+ •         If the prepreg is not consumed within 48hrs after opening the vacuum package, it is recommended that the bags be resealed.
+ •         Material is available in both long and short grain. The grain direction is indicated on the label with an arrow.
+
+
+
+
+ Designing and Inner layer Process
+ •         Please be careful when single ply of 1080, 1086, 1078 or 106 prepreg is designed to the dielectric layer.
+ •         Dimension stability is the same as Standard FR4 material.
+ •         Please check with your oxide vendor to make sure that our material is suitable with your oxide process. We recommend to 		
+           control the peel strength with brown oxide copper over 2 Lb/in.
+ •         For unclad or single sided laminates to be used in multilayer, please brush unclad sides before use.
+
+
+
+
+                                                                                                                                         Page 1 of 5
+www.venteclaminates.com                                                                                                       Published on: 13/02/2025
+ Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+ VT-42                                                                                   UL Approval: E214381       Version: 13/02/2025
+
+  PROCESS GUIDE
+ Laminate / Prepreg (Standard FR4 Material)
+
+
+
+ Prepreg Availability
+ E-Glass styles: 7628, 1506, 1500, 2113, 2313, 3313, 2116, 1080, 1086, 1078, 106, 1067 etc.
+
+
+
+                                                          DK                                           DF
+                            Press
+                Resin
+    Type                  Thickness                                                                                    @           Remark
+               Content                @ 1GHz     @ 2GHz     @ 5GHz      @ 10GHz     @ 1GHz    @ 2GHz    @ 5GHz
+                            (mil)                                                                                    10GHz
+
+   7628          46%        8.00       4.16        4.11        4.11       4.06       0.014     0.014        0.014     0.016        Standard
+
+   7628          43%        7.60       4.26        4.20        4.20       4.15       0.013     0.013        0.013     0.015        Standard
+
+   1506          52%        7.40       3.98        3.92        3.90       3.85       0.015     0.016        0.016     0.017        Standard
+
+   2116          55%        5.20       3.93        3.87        3.87       3.80       0.015     0.016        0.016     0.017        Standard
+
+   2116          53%        4.90       3.98        3.92        3.90       3.85       0.015     0.016        0.016     0.017        Standard
+
+   2113          56%        4.00       3.87        3.82        3.82       3.77       0.015     0.016        0.016     0.017        Standard
+
+   1080          65%        3.20       3.68        3.63        3.63       3.58       0.017     0.017        0.018     0.019        Standard
+
+   1080          63%        3.00       3.73        3.69        3.65       3.60       0.017     0.017        0.018     0.019        Standard
+
+ Remark:
+ ① Press thickness test condition---Prepreg lamination size 18”*24”, Copper Foil---1oz/1oz, Flow---about 5%;
+ ② Make laminated prepreg to micro-section and measure the thickness with microscope; this thickness is used for resistance design
+   calculation.
+ ③ The thickness measured with micrometer is 0.2~0.4 mil larger than that measured with micro-section; and mainly used for total
+   thickness design calculation.
+
+
+
+
+                                                                                                                                  Page 1 of 5
+www.venteclaminates.com                                                                                                Published on: 13/02/2025
+ Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+ VT-42                                                                                 UL Approval: E214381         Version: 13/02/2025
+
+  PROCESS GUIDE
+ Laminate / Prepreg (Standard FR4 Material)
+
+
+
+  Laminates Availability
+  - Thickness: 0.002” (0.05mm) to 0.200” (5mm), available in sheet or panel form
+  - Copper Foil: 1/4 to 12oz, HTE or RTF or DST
+
+
+  DK values are for impedance design
+
+                                                           DK                                        DF
+      Core
+                  Stack-    Resin
+       thk.                                                                                                                    Remark
+                    up     Content   @ 1GHz       @ 2GHz        @ 5GHz   @ 10GHz   @ 1GHz   @ 2GHz        @ 5GHz   @ 10GHz
+    (inches)
+
+     0.002         1-106    70%        3.55        3.50          3.50     3.45     0.018    0.018         0.019     0.020     Standard
+
+     0.003        1-2112    50%        4.05        4.00          4.00     3.95     0.015    0.015         0.016     0.017     Preferred
+
+     0.003        1-1080    63%        3.73        3.69          3.65     3.60     0.017    0.017         0.017     0.019     Standard
+
+     0.004        1-2116    44%        4.17        4.13          4.13     4.08     0.014    0.014         0.014     0.016      Standard
+
+     0.004         2-106    70%        3.70        3.70          3.50     3.45     0.018    0.018         0.019     0.020         2ply
+
+     0.005        1-2116    53%        3.98        3.92          3.90     3.85     0.015    0.015         0.016     0.017     Standard
+
+     0.006        1-1506    45%        4.16        4.11          4.11     4.06     0.014    0.014         0.014     0.016     Standard
+
+     0.007        1-7628    41%        4.27        4.23          4.23     4.18     0.013    0.013         0.013     0.015     Standard
+
+     0.008        1-7628    45%        4.16        4.11          4.11     4.06     0.013    0.013         0.013     0.015      Standard
+
+     0.008        2-2116    44%        4.17        4.13          4.13     4.08     0.013    0.013         0.013     0.015         2ply
+
+     0.010        2-2116    53%        3.98        3.92          3.90     3.85     0.015    0.015         0.016     0.017     Standard
+
+     0.012        2-1506    44%        4.17        4.13          4.13     4.08     0.014    0.014         0.014     0.016     Standard
+
+     0.014        2-7628    40%        4.29        4.25          4.25     4.20     0.013    0.013         0.013     0.015     Standard
+
+     0.016        2-7628    45%        4.16        4.11          4.11     4.06     0.014    0.014         0.014     0.016     Standard
+
+     0.028        4-7628    40%        4.29        4.25          4.25     4.20     0.013    0.013         0.013     0.015     Standard
+
+     0.036        5-7628    42%        4.26        4.20          4.20     4.15     0.013    0.013         0.013     0.015     Standard
+
+     0.045        6-7628    42%        4.26        4.20          4.20     4.15     0.013    0.013         0.013     0.015     Standard
+
+     0.049        7-7628    40%        4.29        4.25          4.25     4.20     0.013    0.013         0.013     0.015     Standard
+
+     0.059        8-7628    42%        4.26        4.20          4.20     4.15     0.013    0.013         0.013     0.015     Standard
+
+
+
+
+                                                                                                                                  Page 1 of 5
+www.venteclaminates.com                                                                                                Published on: 13/02/2025
+ Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+ VT-42                                                                                                   UL Approval: E214381      Version: 13/02/2025
+
+  PROCESS GUIDE
+ Laminate / Prepreg (Standard FR4 Material)
+
+
+
+ Press Condition
+
+                     Temperature
+                                                              Hot Start Cycle for VT-42                             Pressure
+                     250ºC/ 482ºF                                                                                   500psi(35Kg/cm2)
+                                                                                        Vacuum: 760Torr(100KPa)
+
+                                                                           170ºC
+                     200ºC/ 392ºF                                          (338ºF)                                  400psi(28Kg/cm2)
+
+
+                     150ºC/ 302ºF                                                                                   300psi(21Kg/cm2)
+
+                                        80ºC
+                     100ºC/ 212ºF       (176ºF)                                                                     200psi(14Kg/cm2)
+
+
+                      50ºC/ 122ºF                                                                                   100psi(7Kg/cm2)
+                                                                Vacuum: 30Torr(4KPa)
+
+
+
+                                    0             20     35      50                     90   100 110       130    150
+                                                                        Time (minute)
+
+
+
+                     Temperature
+                                                       Hot Start Cycle for VT-42 (Manual)                           Pressure
+                     250ºC/ 482ºF                                                                                   500psi(35Kg/cm2)
+                                                                                        Vacuum: 760Torr(100KPa)
+
+                     200ºC/ 392ºF                                                                                   400psi(28Kg/cm2)
+                     190ºC/ 374ºF
+
+                     150ºC/ 302ºF                                                                                   300psi(21Kg/cm2)
+                                                                                                                    250psi(18Kg/cm2)
+                     100ºC/ 212ºF                                                                                   200psi(14Kg/cm2)
+
+
+                      50ºC/ 122ºF                                                                                   100psi(7Kg/cm2)
+                                                                Vacuum: 30Torr(4KPa)
+
+
+
+                                    0             20		50                                90   100 110       130    150
+                                                                        Time (minute)
+
+
+
+
+                                                                                                                                                  Page 1 of 5
+www.venteclaminates.com                                                                                                                Published on: 13/02/2025
+ Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+ VT-42                                                                                             UL Approval: E214381      Version: 13/02/2025
+
+  PROCESS GUIDE
+ Laminate / Prepreg (Standard FR4 Material)
+
+
+
+                              Temperature     Adara (Cedal) Press Cycle for VT-42                    Pressure
+                              250ºC/ 482ºF                                                           500psi(35Kg/cm2)
+                                                                         Vacuum: 760Torr(100KPa)
+
+                              200ºC/ 392ºF                                                           400psi(28Kg/cm2)
+                              175ºC/ 347ºF
+                              150ºC/ 302ºF                                                           300psi(21Kg/cm2)
+                              140ºC/ 284ºF
+
+                              100ºC/ 212ºF                                                           200psi(14Kg/cm2)
+                               80ºC/ 176ºF
+
+                               50ºC/ 122ºF                                                           100psi(7Kg/cm2)
+                                                  Vacuum: 30Torr(4KPa)
+                                30ºC/ 86ºF
+
+
+                                             0 5 10 		        35   45		50                     90 100
+                                                                Time (minute)
+
+
+
+
+ Typical Drilling Parameters (φ0.3-1.0 mm)
+     1. Spindle Speed:                                                      64-105                              KRPM
+     2. Feed Rate:                                                          100-150                             inch / min
+     3. Retract Rate:                                                       596-600                             inch / min
+     4. Chip Load:                                                          0.7~2.0                             mil / Rev.
+     5. Entry board:                                                        t0.15mm Al                          –
+
+
+
+
+ Desmearing Process
+     Standard FR4 Desmear Process
+
+
+
+
+ Packaging and baking recommendation
+ •        It is recommended to bake the board before packaging at 125ºC/4~8h to avoid moisture causing a decrease in heat resistance.
+ •        If the PCBs needs to be stored for a long time before use, it is recommended to use aluminum foil vacuum packaging.
+ •        If exceed 3 months after packaging , It is best to bake the PCBs at 125ºC/4~6h before use.
+
+
+
+
+                                                                                                                                           Page 1 of 5
+www.venteclaminates.com                                                                                                         Published on: 13/02/2025
+

@@ -1,0 +1,455 @@
+                                                                                                                                 IS400
+                                                                     Lead Free, Mid Tg Epoxy Laminate and Prepreg
+
+
+
+    Processing Guide
+    The processing guidelines contained in this document were developed through in-house testing and field experience. However, they
+    should be considered to be starting points that will require further adjustment. Read the following review of processes for applicability
+    to your particular Printed Wiring Board (PWB) fabrication environment. Remember that the suggestions contained herein can not
+    account for all possible board designs or processing environments. Additional adjustments by the fabricator will be necessary. Isola can
+    and will assist with this process, but the fabricator, not Isola, is ultimately responsible for their process and the end results.
+    Fabricators should verify that PWBs made using these suggestions meet all applicable quality and performance
+    requirements.
+
+
+    Part 1: Prepreg Storage and Handling
+    Isola Group’s prepreg bonding sheets for use in multilayer printed circuit board applications are manufactured to specifications that
+    include physical and electrical properties and processing characteristics relative to the laminating application. Handling and storage
+    factors have an important influence on the desired performance of the prepreg. Some parameters are affected by the environment in
+    which prepregs are stored. They can also deteriorate over extended periods of storage. The prepreg received by the customer is a
+    glass fabric that has been impregnated with a stated quantity of low volatile, partially polymerized resin. The resin is tack-free but
+    somewhat brittle. Many lamination problems arise from resin loss off the fabric due to improper handling. The fabric used is based on
+    the order and supplies the required thickness. In most cases the amount of resin carried by the fabric increases as the fabric thickness
+    decreases.
+
+    Handling Suggestions
+    Handle all prepreg using clean gloves. Use sharp, precision equipment when cutting or paneling prepreg. Treat all prepreg as being
+    very fragile. Use extreme care when handling very high resin content prepreg (glass fabrics 1080 and finer).
+
+    Storage Suggestions
+    Upon receipt, all prepreg should be immediately moved from the receiving area to a controlled environment. All prepreg should be
+    used as soon as possible using a First-In-First-Out (FIFO) inventory management system. If not handled properly, IS400 prepreg will
+    absorb moisture, which will lead to depressed Tg’s and cure and affect flow in the press. If extended storage is required, separate
+    facilities should be reserved with appropriate environmental control. Prepreg should be stored at ≤ 23ºC and below 50% humidity.
+
+    Prepreg packages should be allowed to equilibrate to layup room conditions before opening to prevent moisture
+    condensation on the prepreg.
+
+    Stabilization time will depend on storage temperature. In cases where storage temperature is significantly below room temperature,
+    keep prepreg in package or plastic wrapping during stabilization period to prevent moisture condensation. Once the original packaging
+    is opened, the prepreg should be used immediately. Remaining prepreg should be resealed in the original packaging with fresh
+    desiccant. Storage should be in the absence of catalytic environments such as high radiation levels or intense ultraviolet light.
+
+
+    Part 2: Innerlayer Preparation
+    Isola Group’s IS400 laminates are fully cured and ready for processing. It has been the experience of most fabricators that stress relief
+    bake cycles are not effective in reducing any movement of high performance laminates such as IS400. Therefore, it is suggested that
+    the movement of unbaked laminate be characterized and the appropriate artwork compensation factors are used.
+
+    Dimensional Stability
+    The net dimensional movement of laminate after the etch, oxide and lamination processes is typically shrinkage. This shrinkage is due
+    to the relaxation of stresses that were induced when the laminate was pressed as well as shrinkage contribution from the resin system.
+    Most of the movement will be observed in the grain direction of the laminate. There are situations that have been known to alter the
+    proportion of shrinkage in grain versus fill direction in some board shops. These include autoclave pressing and cross-plying laminate
+    grain direction to that of prepreg. While both of these practices have their advantages, material movement must be uniquely
+    characterized.
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/is400-
+           laminate-and-prepreg-isola-group/               Last Updated September 17, 2025          © 2021, Isola Group, All rights reserved.
+                                                                                                                                               IS400
+                                                                         Lead Free, Mid Tg Epoxy Laminate and Prepreg
+
+
+
+      Table 1: Initial Artwork Compensation Factors
+
+                     Base Thickness                           Configuration                            Direction                                 Comp (in/in)
+
+                         ≤ 0.005″                              Signal/Signal                          Warp (grain)                              0.0007-0.0009
+
+                             "                                       "                                     Fill                                 0.0001-0.0003
+
+                             "                                Signal/Ground                           Warp (grain)                              0.0005-0.0007
+
+                             "                                       "                                     Fill                                 0.0001-0.0003
+
+                             "                                Ground/Ground                           Warp (grain)                              0.0002-0.0004
+
+                             "                                       "                                     Fill                                 0.0000-0.0002
+
+                       0.006-0.009″                            Signal/Signal                          Warp (grain)                              0.0005-0.0007
+
+                             "                                       "                                     Fill                                 0.0001-0.0003
+
+                             "                                Signal/Ground                           Warp (grain)                              0.0003-0.0005
+
+                             "                                       "                                     Fill                                 0.0000-0.0002
+
+                             "                                Ground/Ground                           Warp (grain)                              0.0000-0.0002
+
+                             "                                       "                                     Fill                                 0.0000-0.0002
+
+                       0.010-0.014″                            Signal/Signal                          Warp (grain)                              0.0002-0.0004
+
+                             "                                       "                                     Fill                                 0.0000-0.0002
+
+                             "                                Signal/Ground                           Warp (grain)                              0.0001-0.0003
+
+                             "                                       "                                     Fill                                 0.0000-0.0002
+
+                             "                                Ground/Ground                           Warp (grain)                              0.0000-0.0002
+
+                             "                                       "                                     Fill                                 0.0000-0.0002
+
+      Table 1 (for reference) illustrates the suggested approach to characterizing laminate movement and provides approximate artwork compensation factors for
+      IS400 laminate when using a hydraulic press.
+
+
+    Table 1 assumes that laminate and prepreg grain directions are oriented along the same dimension. Each shop must characterize
+    material behavior given their particular lamination cycles, border designs and grain orientation of laminate to prepreg. This table
+    assumes that signal layers are either half or 1 ounce copper and ground layers are either 1 or 2 ounce copper.
+
+    Imaging and Etching
+    IS400 laminates are imaged using standard aqueous dry films and are compatible with both cupric chloride and ammoniacal etchants.
+
+    Bond Enhancement
+    Both reduced oxides and oxide alternative chemistries have been used successfully in fabricating IS400 multilayer boards to date.
+    Users should make sure the oxide or oxide replacement coating exhibits a consistent and uniformly dark color. If reduced oxides are
+    used, consult the chemical supplier for post oxide baking considerations as excessive baking may lead to lower pink ring resistance. It
+    is generally suggested that post-oxide baking be performed vertically, in racks. Suggest mild bake of oxided innerlayers (15-30 minutes
+    @ 80-100°C).
+
+    For conveyorized oxide replacements, an efficient dryer at the end of a conveyorized oxide replacement line should remove all
+    moisture from the innerlayer surface. However, drying of layers for 30 minutes minimum @ 100°C or higher is considered a
+    “best practice”, especially for boards to be subjected to “lead-free” processes. Drying in racks is preferred.
+
+    Peel strengths may be slightly lower as compared to FR406 due to the higher modulus properties of the resin system. The use of
+    DSTFoil™ will typically increase the bond strength by approximately 1 to 1.5 lbs. as compared to non-DSTFoil copper foil. If immersion
+    tin adhesion treatments are used, the fabricator should test the coating to verify adequate bond strength develops with IS400 prepregs.
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/is400-
+           laminate-and-prepreg-isola-group/                 Last Updated September 17, 2025                      © 2021, Isola Group, All rights reserved.
+                                                                                                                                                   IS400
+                                                                               Lead Free, Mid Tg Epoxy Laminate and Prepreg
+
+
+    Part 3: Lamination
+    Standard Lamination
+    The IS400 prepreg materials achieve maximum fluidity at approximately 20°F lower temperatures as compared to standard FR406
+    prepregs. Therefore, it is recommended that lamination press cycles with a delay, kick over to a high pressure (kiss cycle) be adjusted
+    accordingly due to the lower melt and maximum fluidity temperatures. Additionally, vacuum assist lamination processes are
+    suggested. Non-vacuum lamination processes should be reviewed by Isola technical service engineers prior to production
+    implementation.
+
+    Sequential Lamination
+    Use a 60 minute cure for sub-assemblies depending on thickness and a 60-70 minute cure for the final assembly. This suggestion
+    assumes a final assembly thickness ≥ 0.125″ (3.2 mm). Removal of IS400 flash should be performed by routing rather than shearing to
+    minimize crazing along the panel edges.
+
+    Single-Stage and Dual-Stage Press Cycle Lamination
+    The suggested lamination parameters for the single-stage and dual-stage lamination cycles are shown in Table 2. The lamination cycle
+    selected will be a function of board stack up, complexity and thickness as well as the lamination presses capability. Thicker boards
+    may require additional dwell time at curing temperature to achieve full cure. See “Standard Lamination” previously discussed.
+
+    Choosing a dual stage or “kiss” cycle for IS400 multilayer boards may improve results in some applications. Use these cycles to
+    enhance the wetting of the glass along the extreme edges and corners of the panel or to minimize circuit image transfer
+    (“telegraphing”) on foil constructions.
+
+    All cycles include a pressure reduction step in the lamination cycle, which facilitates stress relief of the package during the cure step.
+    Further, all cycles assume vacuum is maintained throughout the heating cycle and all cycles presume that the book is cooled to a
+    temperature well below the Tg of the material before the press is opened. All three conditions are considered to represent “best
+    practice” conditions during lamination by Isola.
+
+    While use of both the pressure drop cycle and cooling well below Tg in the “hot” press are strongly suggested, these
+    steps are considered to be “optional” and the PCB fabricator may have equipment or capacity limitations which prevent
+    following these suggestions.
+
+
+
+
+      Table 2: IS400 General Lamination Parameters
+
+        Process                                Recommendation
+
+        Vacuum Time                            20 minutes (no pressure, product on risers)
+
+        Curing Temperature                     180°C (355°F)
+
+                                               60 minutes (above 180°C (355°F)
+        Curing Time
+                                               75 minutes cure for >3 mm thickness
+
+                                               80-135°C (180-280°F)
+        Resin Flow Window
+                                               Maintain heat ramp in this temperature range.
+
+        Heat Ramp                              2.5-3.5°C/min (4.5-6.5°F/min)
+
+        Pressure                               16-21 kg/cm2 (225-300 PSI)
+
+                                               Single Stage: Apply pressure after vacuum dwell time.
+        Pressure Application
+                                               Dual Stage: 3.5 kg/cm2 (50 PSI) after vacuum dwell time, switch to high pressure ≤ 80°C (176°F) product temperature.
+
+        Pressure Drop                          After 30 minutes at cure temperature, reduce pressure to 3.5 kg/cm2(50 PSI) in hot press (optional).
+
+                                               Cool to 135-140°C (275-285°F) at 2.8°C/min (5.0°F/ min)
+        Cool Down
+                                               with 3.5 kg/cm2 (50 PSI) pressure prior to removing or transferring the load.
+
+
+
+    Table 2 outlines general suggestions for lamination temperature pressure based on press type used. Note that these are guidelines
+
+https://www.isola-group.com/pcb-laminates-prepreg/is400-
+           laminate-and-prepreg-isola-group/                       Last Updated September 17, 2025                    © 2021, Isola Group, All rights reserved.
+                                                                                                                                                   IS400
+                                                                            Lead Free, Mid Tg Epoxy Laminate and Prepreg
+
+
+    only and the board design may require that these suggestions be modified. Consult Isola Technical Service for assistance.
+
+
+
+
+    Part 4: Drill
+    General
+    The IS400 material has high thermal performance and stability. Due to this high thermal performance, the material tends to form free
+    standing chips during drilling, and is not likely to create drill smear. Due to the increased thermal decomposition properties of the resin
+    system, the IS400 drill debris remains as free particles and will not impact the drill flute relief volumes.
+
+    To assure effective removal of the resin debris during drilling, undercut drill geometries and high helix tools are suggested. On high
+    layer count technologies and thicker overall board thicknesses, peck drilling parameters may be necessary. Suggested parameters are
+    outlined below for typical multilayer designs.
+
+    Cutting Speed and Chipload
+    Relative to standard FR-4 parameters, use lower chiploads to drill IS400 printed circuit boards. The parameters in Table 3 provide a
+    moderate initial starting range for typical board designs. Thick boards with heavy copper or special cladding such as invar will require
+    more conservative drill parameters. Boards with numerous 2 oz. copper innerlayers or boards with coarse glass weave may require
+    more conservative parameters. Peck drilling techniques are suggested for boards with thickness > 0.100″ (2.5 mm).
+
+    Stack Height and Hit Count
+    Stack heights and hit counts will vary with construction and overall thickness of the boards being drilled. For thicker boards (above 75
+    mils or 1.91 mm overall) with high layer counts, drill one high. Aluminum entry and lubricated backing help create good quality hole
+    walls but are not essential in all applications. Do not exceed 1,000 hits for bits below 0.014″ diameter and 1,500 hits for bits above
+    0.020″.
+
+
+
+      Table 3: Suggested Drilling Parameters For Initial IS400 Setup
+
+                                                           Surface Speed Per
+                 Drill Size          Spindle Speed                                                  Infeed                  Chipload                         Retract
+                                                                  Minute
+
+          mm              in               RPM             SMPM             SFPM           m/min             in/min    m/rev          in/rev         m/min         in/min
+
+          0.25          0.0098           120,000            94               309            2.2               85       0.018           0.71             15             600
+
+          0.30          0.0118           115,000           108               356            2.5               100      0.022           0.87             20             800
+
+          0.35          0.0138           110,000           121               397            2.7               105      0.024           0.95             20             800
+
+          0.40          0.0157           105,000           132               433            2.7               107      0.026           1.02             25             1000
+
+          0.50          0.0197            90,000           141               464            2.5               99       0.028           1.10             25             1000
+
+          0.65          0.0256            80,000           163               536            2.9               115      0.037           1.44             25             1000
+
+          0.75          0.0295            75,000           177               580            3.4               135      0.046           1.80             25             1000
+
+          1.00          0.0394            62,000           195               639            3.5               136      0.056           2.19             25             1000
+
+          1.25          0.0492            50,000           196               644            3.0               120      0.061           2.40             25             1000
+
+          1.50          0.0591            42,000           198               649            3.0               118      0.071           2.81             25             1000
+
+          2.00          0.0787            31,000           195               639            2.2               87       0.071           2.81             25             1000
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/is400-
+           laminate-and-prepreg-isola-group/                      Last Updated September 17, 2025                     © 2021, Isola Group, All rights reserved.
+                                                                                                                              IS400
+                                                                     Lead Free, Mid Tg Epoxy Laminate and Prepreg
+
+
+    Part 5: Hole Wall Preparation
+    General
+    Good desmear and electroless copper deposition performance are more easily achieved when the drilled hole quality is good. The
+    generation of smooth, debris free hole walls is influenced by the degree of resin cure, drilling conditions and board design
+    considerations. The elimination of 7628 or similar heavy glasses (whenever possible), coupled with properly adjusted drill parameters
+    on fully cured boards has been shown to improve overall drilled hole quality. This helps reduce smear generation, which improves
+    desmear performance and can ultimately help to
+    reduce copper wicking.
+
+    Factors which influence chemical desmear rates, and therefore the suggestions in this document, include: resin type,
+    chemistry type, bath dwell times, bath temperatures, chemical concentrations in each bath and the amount of solution transfer through
+    the holes.
+
+    Factors which influence the amount of solution transfer through the holes include: hole size, panel thickness, work bar
+    stroke length, panel separation in the rack and the use of solution agitation, rack vibration and rack “bumping” to remove air bubbles
+    from the holes.
+
+    Chemical Desmear
+    Dwell times and temperatures typically used for most high performance materials should be satisfactory. Consult the chemical supplier
+    for suggested conditions.
+
+    Plasma Desmear
+    IS400 generally does not require plasma etching. If available, plasma can be used with or without a single permanganate pass (to be
+    determined by each fabricator). Plasma has been determined to readily remove IS400 resin. Plasma processing tends to improve
+    overall hole quality, particularly in thick and/or high aspect ratio boards. Standard plasma gas mixtures and cycles are satisfactory.
+
+    3-Point Etchback
+    True 3-point “Etchback” exposes the innerlayer “post” on all three sides for subsequent plating processes. This will require a more
+    robust approach compared to simple desmear, which is designed only to remove resin smear from the vertical surface of the innerlayer
+    interconnect “posts”.
+
+    Keep in mind that processing through permanganate chemistry alone is not suggested to attain a full 3-point etchback
+    for IS400.
+
+    Plasma will readily etch back IS400 resin. Standard plasma gas mixtures and process cycles designed for conventional FR-4 epoxy are
+    satisfactory and are suggested for use as initial starting parameters for etchback of IS400. The practice of following the plasma process
+    with a chemical process is suggested rather than plasma alone to increase hole wall texture and remove plasma ash residues. Consult
+    the chemical supplier for suggested conditions.
+
+    If plasma is not available, chemical etchback for 3-point connections must be done with extreme care on IS400 to minimize copper
+    wicking.
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/is400-
+           laminate-and-prepreg-isola-group/               Last Updated September 17, 2025       © 2021, Isola Group, All rights reserved.
+                                                                                                                                              IS400
+                                                                            Lead Free, Mid Tg Epoxy Laminate and Prepreg
+
+
+
+
+    Part 6: Secondary Drilling, Routing and Scoring
+    Secondary Drilling
+    As common with most high Tg epoxy materials with increased modulus properties, the use of entry and backer material may be
+    necessary during the secondary drilling of larger hole sizes to avoid crazing/fracturing at the hole perimeter. Additionally, sharper
+    plunge point angle geometries may be necessary to avoid crazing around secondary drilled hole perimeters.
+
+    Routing and Scoring
+    Due to the greater modulus properties of the IS400 materials, modifications of the final PWB rout fabrication process may be
+    necessary. Table 5 lists initial starting parameters using chip breaker or diamond cut tool designs. Note that parameters listed may
+    require further adjustment.
+
+                                                                                             For PWB designs requiring scored geometries, the testing of
+      Table 4: Suggested Routing Parameters for Initial IS400 Setup                          various Tg’s and resin content materials has determined that
+                                                                                             adjustments to the process will be necessary. As the modulus
+            Tool Diameter            Spindle Speed         Spindle Travel Speed              strength of materials increases, the maximum resultant web
+             in           mm                RPM            in/min            m/min           thickness (dependent on the scored edge depth) must be
+           0.062         1.57             45,000             20               0.51
+                                                                                             decreased to avoid excessive fracturing upon breaking away the
+                                                                                             scored materials.
+           0.093         2.36             35,000             40              0.102
+
+           0.125         3.18             25,000             50               1.27
+
+      Chip breaker or diamond cut tool designs recommended.
+
+
+
+
+    Individual board designs/stack-ups may require adjustment of score depth geometries. Thinner web thicknesses are typically
+    required. This is influenced by layer count, glass types and retained copper in the design.
+
+    The customer should contact the scoring equipment and/or bit supplier for application specific suggestions for use with
+    IS400 materials. Your Isola Technical Account Manager may also be able to provide some initial suggestions, but these should be
+    reviewed with the scoring equipment supplier and validated through testing by the individual PWB fabricator.
+
+
+    Part 7: Packaging and Storage
+    IS400 finished boards have low moisture sensitivity and good shelf life. However, Isola recommends using best practices in storage and
+    packaging, as noted below, to reduce risk during lead-free assembly.
+
+    IS400 boards should be dry prior to packaging to ensure the most robust lead-free performance. For some complex, high reliability
+    designs, baking prior to solder mask application can be implemented to ensure maximum floor life in assembly processing. Printed
+    boards made for high temperature assembly from IS400, which require a long shelf life, the best protection is provided using a Moisture
+    Barrier Bag (MBB) with a Humidity Indicator Card (HIC) and adequate drying desiccant inside the MBB to prevent moisture absorption
+    during shipment and
+    long-term storage.
+
+    Upon opening the MBB, the boards should be processed within 168 hours when maximum shop floor conditions are at < 30°C
+    (85°F)/60% RH. MBB bags that are opened for inspection should be resealed immediately to protect the boards from moisture uptake.
+
+
+    Part 8: Health and Safety
+    Always handle laminate with care. Laminate edges are typically sharp and can cause cuts and scratches if not handled properly.
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/is400-
+           laminate-and-prepreg-isola-group/                      Last Updated September 17, 2025                © 2021, Isola Group, All rights reserved.
+                                                                                                                                         IS400
+                                                                       Lead Free, Mid Tg Epoxy Laminate and Prepreg
+
+
+    Handling and machining of prepreg and laminate can create dust (see IS400 Material Safety Data Sheet).
+
+    Appropriate ventilation is necessary in machining/punching areas. The use of protective masks is suggested to avoid inhaling dust.
+    Gloves, aprons and/or safety glasses are suggested if individuals have frequent or prolonged skin or eye contact with dust.
+
+    Isola Group does not use polybromidebiphenyls or polybromidebiphenyloxides as flame retardants in any product. Material Safety Data
+    Sheets are available upon request.
+
+
+    Part 9: Ordering Information
+    Contact your local sales representative or contact: info@isola-group.com for further information.
+
+    Isola Group
+    6565 West Frye Road
+    Chandler, AZ 85226
+    Phone: 480-893-6527
+    Fax: 480-893-1409
+
+    Isola Asia Pacific (Hong Kong) Ltd.
+    12/F, Kin Sang Commercial Centre,
+    49 King Yip Street, Kwun Tong,
+    Kowloon, Hong Kong
+    Phone: 852-2418-1318
+    Fax: 852-2418-1533
+
+    Isola GmbH
+    Isola Strasse 2 D-52348
+    Düren, Germany
+    Phone: 49-2421-8080
+    Fax: 49-2421-808164
+
+
+
+
+    Learn More
+    https://www.isola-group.com/products/all-printed-circuit-materials/IS400
+
+
+
+                NOTES
+                The data contained in this document, while believed to be accurate and based on both field testing and analytical methods
+                considered to be reliable, is for information purposes only. Any sales of these products will be governed by the terms and conditions
+                of the agreement under which they are sold.
+
+
+
+
+                Isola, the Isola logo, Astra, Chronon, GETEK, I-Fill, IsoDesign, IsoStack, I-Speed, I-Tera, Polyclad, Stratus, TerraGreen, and The Base
+                for Innovation are registered trademarks or trademarks of ISOLA USA Corp. in the United States and in other countries. Copyright ©
+                2021 Isola Group. All rights reserved.
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/is400-
+           laminate-and-prepreg-isola-group/                 Last Updated September 17, 2025                © 2021, Isola Group, All rights reserved.
+

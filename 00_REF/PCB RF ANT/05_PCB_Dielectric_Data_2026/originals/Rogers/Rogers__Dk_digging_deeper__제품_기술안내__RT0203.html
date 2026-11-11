@@ -1,0 +1,1173 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- OneTrust Cookies Consent Notice start for www.rogerscorp.com -->
+    <script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js" type="text/javascript" charset="UTF-8" data-domain-script="019a152b-b470-73c4-a147-74793c2bf25e"></script>
+    <script type="text/javascript">
+        function OptanonWrapper() { }
+    </script>
+    <!-- OneTrust Cookies Consent Notice end for www.rogerscorp.com -->
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Digging Deeper into Dielectric Constant for PCB Materials</title>
+    <meta name="description" content="Dielectric constant is the first number most engineers consider when sorting through different printed-circuit-board (PCB) materials. " />
+
+
+    <link rel="canonical" href="https://www.rogerscorp.com/blog/2020/digging-deeper-into-dielectric-constant-for-pcb-materials" />
+    <link rel="preload" href="/css/calibri.css" as="style">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.min.css?v=20250117-2">
+    
+<meta name="VIcurrentDateTime" content="639299509877558661" />
+<meta name="VirtualFolder" content="/" />
+<script type="text/javascript" src="/layouts/system/VisitorIdentification.js"></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-58HXSHZF04"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-58HXSHZF04');
+    </script>
+</head>
+<body class=''>
+    
+<!-- Start Web Header -->
+<header class="fixed-top fixed-topbar web-widget">
+    <div class="container header-container">
+        <!-- Start Nav-->
+        <div class="d-flex flex-column">
+            <div class="container static-container">
+                <nav class="navbar navbar-expand-lg  border-bottom  py-3">
+                    <!-- Start logo-->
+                    <a class="navbar-brand" href="/"><img src="/-/media/project/rogerscorp/images/logo/logo-xl.png"></a>
+
+                    <!-- End logo-->
+                    <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+                        <!-- Start Utility Nav-->
+                        <ul class="navbar-nav utility-nav float-left">
+                                                    <li class="mr-3 dropdown">
+                                                        <a href="#" class="align-middle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fi flaticon-world mr-1"></i> English <i class="fi flaticon-angle ml-1"></i></a>
+                                                        <ul class="dropdown-menu">
+                                                                        <li><a href="https://www.rogerscorp.com" class="dropdown-item " target="">English</a> </li>
+                                                                        <li><a href="https://www.rogerscorp.cn" class="dropdown-item " target="_blank">中文</a> </li>
+                                                                        <li><a href="http://www.rogerscorp.jp/" class="dropdown-item " target="_blank">日本語</a> </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li class="mr-3 dropdown">
+                                                        <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fi flaticon-support mr-1"></i> Support &amp; Resources <i class="fi flaticon-angle ml-1"></i></a>
+                                                        <ul class="dropdown-menu">
+                                                                        <li><a href="/support" class="dropdown-item global-support-track" target="">Global Support</a> </li>
+                                                                        <li><a href="/support/order-process" class="dropdown-item " target="">How to Order</a> </li>
+                                                                        <li><a href="/about-us/corporate-responsibility/certifications" class="dropdown-item " target="">Certifications</a> </li>
+                                                                        <li><a href="/downloads" class="dropdown-item " target="">Document Library Search</a> </li>
+                                                                        <li><a href="/blog" class="dropdown-item " target="">Blog</a> </li>
+                                                                        <li><a href="/tools" class="dropdown-item " target="">Web Tools</a> </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li class="mr-3 dropdown">
+                                                        <a href="#" class="align-middle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fi flaticon-lock mr-1"></i> Sign In <i class="fi flaticon-angle ml-1"></i></a>
+                                                        <ul class="dropdown-menu">
+                                                                        <li><a href="https://www.rogerstechub.com/login.php?utm_source=New%20Website&amp;utm_medium=Header&amp;utm_campaign=Tech%20Support%20Hub%20Global%20Nav" class="dropdown-item tech-support-hub-track" target="_blank">Technology Support Hub</a> </li>
+                                                                        <li><a href="https://www.rogersdesignhub.com/login.php?utm_source=New%20Website&amp;utm_medium=Header&amp;utm_campaign=Design%20Support%20Hub%20Global%20Nav" class="dropdown-item design-support-hub-track" target="_blank">Design Support Hub</a> </li>
+                                                        </ul>
+                                                    </li>
+
+                        </ul>
+                        <!-- End Utility Nav-->
+                        <!-- Start Search Global-->
+                        <div class="col-md-4 pr-0 search-group-wrap">
+                            <div class="input-group search-group" id="cludo-search-form">
+                                <input class="form-control py-1 border-right-0 border-dark typeahead" type="search" value="" placeholder="Enter keywords" id="main-search" autocomplete="off">
+                                <span class="input-group-append">
+                                    <button class="btn btn-outline-secondary py-1 border-left-0 border-dark disabled" id="mainsearchbtn" type="button"> <i class="fi flaticon-search"></i> </button>
+                                </span>
+                            </div>
+                        </div>
+                        <!-- End Search-->
+                    </div>
+                </nav>
+            </div>
+            <!-- Start Main Nav-->
+            <div class="container">
+                <div class="d-flex flex-column">
+                    <div class="main-nav clearfix">
+                        <!-- Start logo-->
+                        <a class="navbar-brand" href="/"><img src="/-/media/project/rogerscorp/images/logo/logo-stick-nav.jpg"></a>
+
+                        <div class="navbar-collapse justify-content-end">
+                            <nav class="navbar navbar-expand-lg">
+                                <div class="container ">
+                                    <ul class="navbar-nav">
+
+                                        <li class="home"><a href="/"><i class="fi flaticon-black"></i></a></li>
+                                                    <li class="dropdown dropdown-megamenu">
+                                                        <a href="#" id="productMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Products</a>
+                                                        <!-- Mega menu start-->
+                                                        <!-- Container Custom Menu Class e.g. business-units-menu /  product-menu / about-menu / investors-menu / careers-menu-->
+                                                        <div class="dropdown-menu dropdown-container product-menu">
+
+                                                            <div class="container ">
+                                                                <div class="d-flex">
+                                                                        <div class="col-4 pr-3 borer border-right">
+                                                                                            <h4><a href="/advanced-electronics-solutions" class="">Advanced Electronics Solutions</a> </h4>
+                                                                                                        <h5>RF Solutions Laminates and 3D Printable Materials</h5>
+                                                                                                        <ul>
+                                                                                                                    <li><a href="/advanced-electronics-solutions/ad-series-laminates">AD Series® Laminates</a> </li>
+                                                                                                                    <li><a href="/advanced-electronics-solutions/anteo-laminates">Anteo™ Laminates</a> </li>
+                                                                                                                    <li><a href="/advanced-electronics-solutions/clte-series-laminates">CLTE Series® Laminates</a> </li>
+                                                                                                                    <li><a href="/advanced-electronics-solutions/cuclad-series-laminates">CuClad® Series</a> </li>
+                                                                                                                    <li><a href="/advanced-electronics-solutions/diclad-series-laminates">DiClad® Series Laminates</a> </li>
+                                                                                                                    <li><a href="/advanced-electronics-solutions/im-series-laminates">IM Series™ Laminates</a> </li>
+                                                                                                                    <li><a href="/advanced-electronics-solutions/isoclad-series-laminates">IsoClad® Series Laminates</a> </li>
+                                                                                                                    <li><a href="/advanced-electronics-solutions/kappa-438-laminates">Kappa® 438 Laminates</a> </li>
+                                                                                                                    <li><a href="/advanced-electronics-solutions/magtrex-555-high-impedance-laminates">MAGTREX® Laminates</a> </li>
+                                                                                                                    <li><a href="/advanced-electronics-solutions/radix-printable-dielectric">Radix™ Printable Dielectric</a> </li>
+                                                                                                                    <li><a href="/advanced-electronics-solutions/ro3000-series-laminates">RO3000® Series</a> </li>
+                                                                                                                    <li><a href="/advanced-electronics-solutions/ro4000-series-laminates">RO4000® Series</a> </li>
+                                                                                                                    <li><a href="/advanced-electronics-solutions/rt-duroid-laminates">RT/duroid® Laminates</a> </li>
+                                                                                                                    <li><a href="/advanced-electronics-solutions/tc-series-laminates">TC Series® Laminates</a> </li>
+                                                                                                                    <li><a href="/advanced-electronics-solutions/tmm-laminates">TMM® Laminates</a> </li>
+                                                                                                                    <li><a href="/advanced-electronics-solutions/xtremespeed-ro1200-laminates">XtremeSpeed&trade; RO1200&trade; Series&nbsp;</a> </li>
+                                                                                                        </ul>
+                                                                                                        <h5>RF Solutions Prepregs, Bondplys, and Thermally &amp; Electrically Conductive Adhesives</h5>
+                                                                                                        <ul>
+                                                                                                                    <li><a href="/advanced-electronics-solutions/prepregs-and-bondplys">Prepregs, Bondplys, and Thermally &amp; Electrically Conductive Adhesives</a> </li>
+                                                                                                        </ul>
+                                                                        </div>
+                                                                                                                                            <div class="col-4 px-4 borer border-right">
+                                                                                        <h4>&nbsp;</h4>
+                                                                                                        <h5>Busbar Solutions</h5>
+                                                                                                        <ul>
+                                                                                                                    <li><a href="/advanced-electronics-solutions/rolinx-busbars">ROLINX® Busbars</a> </li>
+                                                                                                        </ul>
+                                                                                                        <h5>Ceramic Substrates</h5>
+                                                                                                        <ul>
+                                                                                                                    <li><a href="/advanced-electronics-solutions/curamik-ceramic-substrates">curamik® Metallized Ceramic Substrates</a> </li>
+                                                                                                        </ul>
+                                                                                                        <h5>Coolers</h5>
+                                                                                                        <ul>
+                                                                                                                    <li><a href="/advanced-electronics-solutions/curamik-cooling-solutions">curamik® Cooling Solutions</a> </li>
+                                                                                                        </ul>
+                                                                                            <h4 class="pt-3"><a href="/elastomer-components" class="">Elastomer Components</a> </h4>
+                                                                                                        <ul>
+                                                                                                                    <li><a href="/elastomer-components/endur-elastomer-components">ENDUR® Components</a> </li>
+                                                                                                                    <li><a href="/elastomer-components/nitrophyl">NITROPHYL® NBR Floats</a> </li>
+                                                                                                        </ul>
+                                                                        </div>
+                                                                                                                                            <div class="col-4 pl-4">
+                                                                                            <h4><a href="/elastomeric-material-solutions" class="">Elastomeric Material Solutions</a> </h4>
+                                                                                                        <h5>Thermal Propagation Delay Materials</h5>
+                                                                                                        <ul>
+                                                                                                                    <li><a href="/elastomeric-material-solutions/procell-ev-firewall">ProCell&trade; EV Firewall</a> </li>
+                                                                                                        </ul>
+                                                                                                        <h5>Polyurethane Materials</h5>
+                                                                                                        <ul>
+                                                                                                                    <li><a href="/elastomeric-material-solutions/poron-industrial-polyurethanes">PORON® Industrial Polyurethanes</a> </li>
+                                                                                                                    <li><a href="/elastomeric-material-solutions/poron-medical-polyurethanes">PORON&reg; Medical Polyurethanes</a> </li>
+                                                                                                                    <li><a href="/elastomeric-material-solutions/poron-comfort">PORON® Comfort</a> </li>
+                                                                                                                    <li><a href="/elastomeric-material-solutions/xrd-impact">XRD® Impact</a> </li>
+                                                                                                        </ul>
+                                                                                                        <h5>Foam, Solid, and Sponge Silicones</h5>
+                                                                                                        <ul>
+                                                                                                                    <li><a href="/elastomeric-material-solutions/arlon-silicones">ARLON® Silicones</a> </li>
+                                                                                                                    <li><a href="/elastomeric-material-solutions/bisco-silicones">BISCO® Silicones</a> </li>
+                                                                                                                    <li>
+                                                                                                                        <a href="https://silicone.co.uk/" target="_blank">Silicone Engineering Silicones</a>
+                                                                                                                    </li>
+                                                                                                        </ul>
+                                                                                                        <h5>PTFE, UHMW &amp; Pressure Sensitive Tapes</h5>
+                                                                                                        <ul>
+                                                                                                                    <li><a href="/elastomeric-material-solutions/dewal-products">DeWAL® Products</a> </li>
+                                                                                                        </ul>
+                                                                                                        <h5>Flexographic Printing Cushions</h5>
+                                                                                                        <ul>
+                                                                                                                    <li><a href="/elastomeric-material-solutions/rbak-cushion-mounting-materials">R/bak® Cushion Mounting Materials</a> </li>
+                                                                                                        </ul>
+                                                                        </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Mega menu End-->
+                                                    </li>
+                                                <!-- Two Columns Tab -->
+                                                <!-- Two Columns Tab -->
+                                                    <li class="dropdown dropdown-megamenu">
+                                                        <a href="#" id="marketsMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Markets</a>
+                                                        <div class="dropdown-menu dropdown-container markets-menu">
+                                                            <div class="container px-5">
+                                                                    <div class="col-12 mb-3">
+                                                                        <h3><a href="/markets">Markets</a></h3>
+                                                                    </div>
+                                                                <div class="d-flex">
+                                                                        <div class="col-6 pr-5">
+                                                                            <!-- Change to custom css class -->
+                                                                                        <ul class="pr-lg-5">
+                                                                                                    <li>
+                                                                                                        <h4><a href="/markets/aerospace-and-defense">Aerospace & Defense</a></h4>
+                                                                                                            <p>Advanced materials with high reliability under extreme conditions, critical for aerospace, commercial aircraft and defense applications.</p>
+                                                                                                    </li>
+                                                                                                    <li>
+                                                                                                        <h4><a href="/markets/automotive-and-ev-hev">Automotive & EV/HEV</a></h4>
+                                                                                                            <p>Rogers is a leading automotive advanced materials supplier with a wide range of industry solutions to power, protect and connect vehicles.</p>
+                                                                                                    </li>
+                                                                                                    <li>
+                                                                                                        <h4><a href="/markets/battery-energy-storage-systems">Battery Energy Storage Systems (BESS)</a></h4>
+                                                                                                            <p>Enabling reliable, high performing, and safe battery energy storage systems.</p>
+                                                                                                    </li>
+                                                                                                    <li>
+                                                                                                        <h4><a href="/markets/connected-devices">Connected Devices</a></h4>
+                                                                                                            <p>Enabling electronic devices and more to operate interactively or autonomously by use of wireless protocols.</p>
+                                                                                                    </li>
+                                                                                                    <li>
+                                                                                                        <h4><a href="/markets/data-centers-and-wired-infrastructure">Data Centers &amp; Wired Infrastructure</a></h4>
+                                                                                                            <p>Materials for applications in data center &amp; wired infrastructure environments.</p>
+                                                                                                    </li>
+                                                                                                    <li>
+                                                                                                        <h4><a href="/markets/footwear-and-impact-safety">Footwear &amp; Impact Safety</a></h4>
+                                                                                                            <p>Advanced material technologies that provide flexible comfort and wearable impact protection.</p>
+                                                                                                    </li>
+                                                                                                    <li>
+                                                                                                        <h4><a href="/markets/general-industrial">General Industrial</a></h4>
+                                                                                                            <p>Industrial engineers and designers rely on Rogers’ advanced materials to enable reliability, efficiency and performance.</p>
+                                                                                                    </li>
+                                                                                        </ul>
+                                                                        </div>
+                                                                                                                                            <!-- Change to custom css class -->
+                                                                        <div class="col-6 pr-5">
+
+                                                                                        <ul class="pr-lg-5 pt-0">
+                                                                                                    <li>
+                                                                                                        <h4><a href="/markets/major-appliances">Major Appliances</a></h4>
+                                                                                                            <p>Rogers increases energy efficiency with high quality, performance-optimized power electronics.</p>
+                                                                                                    </li>
+                                                                                                    <li>
+                                                                                                        <h4><a href="/markets/medical">Medical</a></h4>
+                                                                                                            <p>Rogers enables high quality patient care in applications ranging from medical instruments to patient cushioning and wound care.</p>
+                                                                                                    </li>
+                                                                                                    <li>
+                                                                                                        <h4><a href="/markets/portable-electronics">Portable Electronics</a></h4>
+                                                                                                            <p>Rogers provides complex and compact electronics with superior fabrication and protection.</p>
+                                                                                                    </li>
+                                                                                                    <li>
+                                                                                                        <h4><a href="/markets/rail">Rail</a></h4>
+                                                                                                            <p>Solutions to power and protect mass transit rail systems.</p>
+                                                                                                    </li>
+                                                                                                    <li>
+                                                                                                        <h4><a href="/markets/wind-and-solar">Wind & Solar</a></h4>
+                                                                                                            <p>Enabling system efficiency and reliability for wind and solar renewable energy sources.</p>
+                                                                                                    </li>
+                                                                                                    <li>
+                                                                                                        <h4><a href="/markets/wireless-infrastructure">Wireless Infrastructure</a></h4>
+                                                                                                            <p>Low-loss, high frequency advanced materials with well-controlled dielectric properties to enable microwave and RF applications, including mobile networks.</p>
+                                                                                                    </li>
+                                                                                        </ul>
+                                                                        </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="dropdown dropdown-megamenu">
+                                                        <a href="#" id="businessMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Business Units</a>
+                                                        <!-- Mega menu start-->
+                                                        <!-- Container Custom Menu Class e.g. business-units-menu /  product-menu / about-menu / investors-menu / careers-menu-->
+                                                        <div class="dropdown-menu dropdown-container business-units-menu">
+
+                                                            <div class="container ">
+                                                                <div class="d-flex">
+                                                                        <div class="col-4 pr-3 borer border-right">
+                                                                                            <h4><a href="/advanced-electronics-solutions" class="">Advanced Electronics Solutions</a> </h4>
+                                                                                        <p>Rogers’ Advanced Electronics Solutions are engineered to solve the challenges driven by higher frequency, high speed and high power electronics through design, development and application support required to deliver quality, reliable solutions.</p>
+                                                                                            <ul>
+                                                                                                        <li><a href="/advanced-electronics-solutions" target="" class="">Products</a></li>
+                                                                                                        <li><a href="https://www.rogersdesignhub.com" target="" class="">Design Support Hub</a></li>
+                                                                                                        <li><a href="https://www.rogerstechub.com/" target="_blank" class="tech-support-hub-track">Technical Support Hub</a></li>
+                                                                                                        <li><a href="/advanced-electronics-solutions/tools" target="" class="">Tools</a></li>
+                                                                                                        <li><a href="/SupportDetails?BusinessUnitId=%7B6D702098-1C8B-4649-B18D-0FCD2B926BE0%7D&amp;SupportTypeId=%7B4105BD6E-997B-495F-A14F-9E33E22ACE48%7D" target="" class="global-support-track">Customer Support</a></li>
+                                                                                            </ul>
+                                                                        </div>
+                                                                                                                                            <div class="col-4 px-4 borer border-right">
+                                                                                            <h4><a href="/elastomeric-material-solutions" class="">Elastomeric Material Solutions</a> </h4>
+                                                                                        <p>Rogers&#39; Elastomeric Material Solutions are engineered for superior performance, from ultra-thin protection for sensitive electronics to robust gasketing for automotive applications.</p>
+                                                                                            <ul>
+                                                                                                        <li><a href="/elastomeric-material-solutions" target="" class="">Products</a> </li>
+                                                                                                        <li><a href="/elastomeric-material-solutions/tools" target="" class="">Tools</a> </li>
+                                                                                                        <li><a href="/SupportDetails?BusinessUnitId=%7B0075752E-56D3-4A95-BAC5-91E390374940%7D&amp;SupportTypeId=%7BCD7C7B88-76A1-497F-9984-E0794AF70A94%7D" target="" class="global-support-track">Customer Support</a> </li>
+                                                                                                        <li><a href="/elastomeric-material-solutions/case-studies" target="" class="">Case Studies</a> </li>
+                                                                                                        <li><a href="/blog" target="" class="">Blogs</a> </li>
+                                                                                            </ul>
+                                                                        </div>
+                                                                                                                                            <div class="col-4 pl-4">
+                                                                                            <h4><a href="/elastomer-components" class="">Elastomer Components</a> </h4>
+                                                                                        <p>Rogers&#39; Elastomer Components Division produces two product lines – NITROPHYL&#174; Floats and ENDUR&#174; Components – with manufacturing headquarters in Suzhou. </p>
+                                                                                        <br />
+                                                                        </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Mega menu End-->
+                                                    </li>
+                                                <!-- Two Columns Tab -->
+                                                    <li class="dropdown dropdown-megamenu">
+                                                        <a href="#" id="aboutMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About Us</a>
+                                                        <!-- Mega menu start-->
+                                                        <!-- Container Custom Menu Class e.g. business-units-menu /  product-menu / about-menu / investors-menu / careers-menu-->
+                                                        <div class="dropdown-menu dropdown-container business-units-menu about-menu">
+
+                                                            <div class="container ">
+                                                                    <div class="col-12 mb-3">
+                                                                        <h3><a href="/about-us">About Us</a></h3>
+                                                                    </div>
+                                                                <div class="d-flex">
+                                                                        <div class="col-4 pr-3 borer border-right">
+                                                                                            <h4><a href="/about-us" class="">Our Businesses</a> </h4>
+                                                                                        <p>Global leaders in engineered materials to power, protect and connect our world.</p>
+                                                                                            <ul>
+                                                                                                        <li><a href="/advanced-electronics-solutions" target="" class="">Advanced Electronics Solutions</a></li>
+                                                                                                        <li><a href="/elastomeric-material-solutions" target="" class="">Elastomeric Material Solutions</a></li>
+                                                                                                        <li><a href="/elastomer-components" target="" class="">Elastomer Components</a></li>
+                                                                                            </ul>
+                                                                                        <h4>&nbsp;</h4>
+<hr />
+<h5> <a href="/about-us/history">History</a> &nbsp;|&nbsp; <a href="/about-us/innovation-at-rogers">Innovation</a>&nbsp;&nbsp;|&nbsp; <a href="/tradeshows">Tradeshows</a>
+</h5>                                                                        </div>
+                                                                                                                                            <div class="col-4 px-4 borer border-right">
+                                                                                            <h4><a href="/about-us/corporate-responsibility" class="">Corporate Responsibility</a> </h4>
+                                                                                        <p>Our responsibility to protect our coworkers and communities is achieved by focusing on health, safety, environmental protection and corporate conduct in all aspects of our business. Explore the sections below to learn more about how Rogers works to protect and improve our communities and business.<br/></p>
+                                                                                            <ul>
+                                                                                                        <li><a href="/about-us/corporate-responsibility/environmental-health-and-safety" target="" class="">Environmental, Health and Safety</a> </li>
+                                                                                                        <li><a href="/about-us/corporate-responsibility/code-of-business-ethics" target="" class="">Code of Business Ethics</a> </li>
+                                                                                                        <li><a href="/about-us/corporate-responsibility/sustainability-report" target="" class="">Sustainability Report</a> </li>
+                                                                                                        <li><a href="/about-us/we-are-rogers" target="" class="">We Are Rogers: Our People, Our Values</a> </li>
+                                                                                                        <li><a href="/about-us/corporate-responsibility/certifications" target="" class="">Certifications</a> </li>
+                                                                                                        <li><a href="/about-us/corporate-responsibility/supply-management" target="" class="">Supply Management</a> </li>
+                                                                                                        <li><a href="/about-us/senior-leadership" target="" class="">Senior Leadership</a> </li>
+                                                                                            </ul>
+                                                                        </div>
+                                                                                                                                            <div class="col-4 pl-4">
+                                                                                        <h4>&nbsp;</h4>
+<h4> <i class="fi flaticon-news-1 icon-big mr-2"></i> <a href="/news">News</a> </h4>
+<h4 class="my-3"> <i class="fi flaticon-world icon-big mr-2"></i> <a href="/support">Contact Us</a> </h4>
+<p><img src="/assets/images/contact-map.jpg" class="img-fluid" /> </p>
+<ul><li><a href="/global-locations">Global Locations</a></li>
+<li> <a href="/investors/contact-investor-relations">Investor Relations</a> </li>
+<li> <a href="/support">Global Support</a> </li></ul>                                                                        </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Mega menu End-->
+                                                    </li>
+                                                <!-- Two Columns Tab -->
+                                                    <li class="dropdown dropdown-megamenu">
+                                                        <a href="#" id="investorsMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Investors</a>
+                                                        <!-- Mega menu start-->
+                                                        <!-- Container Custom Menu Class e.g. business-units-menu /  product-menu / about-menu / investors-menu / careers-menu-->
+                                                        <div class="dropdown-menu dropdown-container business-units-menu investors-menu">
+
+                                                            <div class="container ">
+                                                                    <div class="col-12 mb-3">
+                                                                        <h3><a href="/investors">Investors</a></h3>
+                                                                    </div>
+                                                                <div class="d-flex">
+                                                                        <div class="col-4 pr-3 borer border-right">
+                                                                                            <h5>Investor Relations</h5>
+                                                                                            <ul>
+                                                                                                        <li><a href="/investors" target="" class="">Investor Relations Home</a></li>
+                                                                                                        <li><a href="/investors/press-releases" target="" class="">Press Releases</a></li>
+                                                                                                        <li><a href="/investors/events-and-presentations" target="" class="">Events and Presentations</a></li>
+                                                                                                        <li><a href="/investors/contact-investor-relations" target="" class="">Contact Investor Relations</a></li>
+                                                                                                        <li><a href="/investors/notifications" target="" class="">Email Alerts</a></li>
+                                                                                            </ul>
+                                                                        </div>
+                                                                                                                                            <div class="col-4 px-4 borer border-right">
+                                                                                            <h5>Financials</h5>
+                                                                                            <ul>
+                                                                                                        <li><a href="/investors/annual-reports-and-sec-filings" target="" class="">SEC Filings</a> </li>
+                                                                                                        <li><a href="/investors/quarterly-results" target="" class="">Quarterly Results</a> </li>
+                                                                                                        <li><a href="/investors/analyst-coverage" target="" class="">Analyst Coverage</a> </li>
+                                                                                            </ul>
+                                                                        </div>
+                                                                                                                                            <div class="col-4 pl-4">
+                                                                                            <h5>Corporate Governance</h5>
+                                                                                            <ul>
+                                                                                                        <li><a href="/investors/corporate-governance" target="" class="">Corporate Governance</a> </li>
+                                                                                                        <li><a href="/about-us/senior-leadership" target="" class="">Senior Leadership</a> </li>
+                                                                                                        <li><a href="/investors/board-of-directors" target="" class="">Board of Directors</a> </li>
+                                                                                            </ul>
+                                                                        </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Mega menu End-->
+                                                    </li>
+                                                <!-- Two Columns Tab -->
+                                                    <li class="dropdown dropdown-megamenu">
+                                                        <a href="#" id="careersMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Careers</a>
+                                                        <!-- Mega menu start-->
+                                                        <!-- Container Custom Menu Class e.g. business-units-menu /  product-menu / about-menu / investors-menu / careers-menu-->
+                                                        <div class="dropdown-menu dropdown-container business-units-menu careers-menu">
+
+                                                            <div class="container ">
+                                                                    <div class="col-12 mb-3">
+                                                                        <h3><a href="/careers">Careers</a></h3>
+                                                                    </div>
+                                                                <div class="d-flex">
+                                                                        <div class="col-4 pr-3 borer border-right">
+                                                                                            <h4><a href="https://careers.rogerscorp.com/" class="">Global Career Opportunities</a> </h4>
+                                                                                        <p>Learn more about what makes Rogers a great place to work and view current job openings. Our competitive benefits packages help our employees live their best, both on and off the job. And we offer an exciting summer internship program for motivated students.</p>
+                                                                                            <ul>
+                                                                                                        <li><a href="/careers/benefits" target="" class="">Benefits</a></li>
+                                                                                                        <li><a href="https://careers.rogerscorp.com/" target="_blank" class="job-listing-link-track">Job Listings</a></li>
+                                                                                                        <li><a href="/careers/student-opportunities" target="" class="">Student Opportunities </a></li>
+                                                                                            </ul>
+                                                                        </div>
+                                                                                                                                            <div class="col-4 px-4 borer border-right">
+                                                                                            <h4><a href="/careers/cultural-behaviors" class="">Culture</a> </h4>
+                                                                                        <p>At Rogers Corporation, we’re growing fast. So we empower employees to take initiative and get results. We’re all working together toward a single mission: to power, protect and connect our world. Learn more about how our culture of excellence drives us forward.<br/></p>
+                                                                        </div>
+                                                                                                                                            <div class="col-4 pl-4">
+                                                                                        <h4>&nbsp;</h4>
+<!-- Start White Widget -->
+<div class="white-widget border">
+<p class="my-3"><img alt="" src="/assets/images/careers-img.jpg" class="img-fluid" /></p>
+<p><a rel="noopener noreferrer" rel="noopener noreferrer" href="https://careers.rogerscorp.com/" class="btn btn-lg search-job-listing-btn" target="_blank">Search Job Listings</a></p>
+</div>                                                                        </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Mega menu End-->
+                                                    </li>
+                                                <!-- Two Columns Tab -->
+                                    </ul>
+
+                                    <!-- Start Search-->
+                                    <div class="col-md-4 pr-0 search-group-wrap">
+                                        <div class="input-group search-group" id="cludo-search-form-sticky">
+                                            <input class="form-control py-1 border-right-0 border-dark typeahead" type="search" value="" placeholder="Enter keywords" id="main-search1" autocomplete="off">
+                                            <span class="input-group-append">
+                                                <button class="btn btn-outline-secondary py-1 border-left-0 border-dark" type="button" id="mainsearchbtn1"> <i class="fi flaticon-search"></i> </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <!-- End Search-->
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Main Nav-->
+        </div>
+    </div>
+    <!-- END nav -->
+</header>
+<!-- END Web Header -->
+
+
+<!-- Loading Contents From Partial View-->
+<header class="fixed-top mobile-widget">
+    <div class="container">
+        <nav class="navbar p-2">
+            <!-- Start logo-->
+            <a class="navbar-brand" href="/">
+                <img src="/-/media/project/rogerscorp/images/logo/logo-sm.jpg" alt="Rogers Corporation">
+            </a>
+            <a href="/globalsearch" class="mobile-header-search"><i class="fi flaticon-search"></i></a>
+            <div class="cd-dropdown-trigger"><span></span><span></span><span></span><span></span></div>
+            <nav class="cd-dropdown">
+                <ul class="cd-dropdown-content">
+                            <!-- /sitecore/templates/Project/Common/Content Types/Links/Mobile Menu/Mobile Menu Tab Item Products-->
+                                <!-- Business Units  Start -->
+                                <li class="has-children">
+                                    <a href="#">Products</a>
+                                    <ul class="cd-secondary-dropdown is-hidden">
+                                        <li class="go-back back"><a href="#">Back</a></li>
+                                        <li class="back-index go-back"><a href="#">Products</a> </li>
+
+                                                        <li class="has-children">
+                                                            <a href="">Laminate Materials</a>
+                                                            <ul class="sub-child is-hidden">
+                                                                <li class="go-back back"><a href="#0">Back</a></li>
+                                                                <li class="back-index go-parant"><a href="#">Products</a> </li>
+                                                                <li class="back-index go-back"><a href="">Laminate Materials</a> </li>
+
+                                                                        <li><a href="/advanced-electronics-solutions/ad-series-laminates">AD Series® Laminates</a></li>
+                                                                        <li><a href="/advanced-electronics-solutions/anteo-laminates">Anteo™ Laminates</a></li>
+                                                                        <li><a href="/advanced-electronics-solutions/clte-series-laminates">CLTE Series® Laminates</a></li>
+                                                                        <li><a href="/advanced-electronics-solutions/cuclad-series-laminates">CuClad® Series</a></li>
+                                                                        <li><a href="/advanced-electronics-solutions/diclad-series-laminates">DiClad® Series Laminates</a></li>
+                                                                        <li><a href="/advanced-electronics-solutions/im-series-laminates">IM Series™ Laminates</a></li>
+                                                                        <li><a href="/advanced-electronics-solutions/isoclad-series-laminates">IsoClad® Series Laminates</a></li>
+                                                                        <li><a href="/advanced-electronics-solutions/kappa-438-laminates">Kappa® 438 Laminates</a></li>
+                                                                        <li><a href="/advanced-electronics-solutions/magtrex-555-high-impedance-laminates">MAGTREX® Laminates</a></li>
+                                                                        <li><a href="/advanced-electronics-solutions/radix-printable-dielectric">Radix™ Printable Dielectric</a></li>
+                                                                        <li><a href="/advanced-electronics-solutions/ro3000-series-laminates">RO3000® Series</a></li>
+                                                                        <li><a href="/advanced-electronics-solutions/ro4000-series-laminates">RO4000® Series</a></li>
+                                                                        <li><a href="/advanced-electronics-solutions/rt-duroid-laminates">RT/duroid® Laminates</a></li>
+                                                                        <li><a href="/advanced-electronics-solutions/speedwave-300p-prepreg">SpeedWave® 300P Prepreg</a></li>
+                                                                        <li><a href="/advanced-electronics-solutions/tc-series-laminates">TC Series® Laminates</a></li>
+                                                                        <li><a href="/advanced-electronics-solutions/tmm-laminates">TMM® Laminates</a></li>
+                                                                        <li><a href="/advanced-electronics-solutions/xtremespeed-ro1200-laminates">XtremeSpeed&trade; RO1200&trade; Series&nbsp;</a></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="has-children">
+                                                            <a href="">Prepreg &amp; Bonding Materials</a>
+                                                            <ul class="sub-child is-hidden">
+                                                                <li class="go-back back"><a href="#0">Back</a></li>
+                                                                <li class="back-index go-parant"><a href="#">Products</a> </li>
+                                                                <li class="back-index go-back"><a href="">Prepreg &amp; Bonding Materials</a> </li>
+
+                                                                        <li><a href="/advanced-electronics-solutions/2929-bondply">2929 Bondply Series</a></li>
+                                                                        <li><a href="/advanced-electronics-solutions/coolspan-thermally-and-electrically-conductive-adhesive">COOLSPAN® TECA Film</a></li>
+                                                                        <li><a href="/advanced-electronics-solutions/cuclad-series-laminates">CuClad® Series</a></li>
+                                                                        <li><a href="/advanced-electronics-solutions/ro4000-series-laminates">RO4000® Series</a></li>
+                                                                        <li><a href="/advanced-electronics-solutions/prepregs-and-bondplys/speedwave-300p-prepreg">SpeedWave® 300P Prepreg</a></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="has-children">
+                                                            <a href="/elastomeric-material-solutions">Foam, Solid, and Sponge Silicones</a>
+                                                            <ul class="sub-child is-hidden">
+                                                                <li class="go-back back"><a href="#0">Back</a></li>
+                                                                <li class="back-index go-parant"><a href="#">Products</a> </li>
+                                                                <li class="back-index go-back"><a href="/elastomeric-material-solutions">Foam, Solid, and Sponge Silicones</a> </li>
+
+                                                                        <li><a href="/elastomeric-material-solutions/arlon-silicones">ARLON® Silicones</a></li>
+                                                                        <li><a href="/elastomeric-material-solutions/bisco-silicones">BISCO® Silicones</a></li>
+                                                                        <li><a href="/elastomeric-material-solutions/poron-medical-polyurethanes">PORON&reg; Medical Polyurethanes</a></li>
+                                                                        <li><a href="/elastomeric-material-solutions/poron-industrial-polyurethanes">PORON® Industrial Polyurethanes</a></li>
+                                                                        <li><a href="/elastomeric-material-solutions/dewal-products">DeWAL® Products</a></li>
+                                                                        <li><a href="/elastomeric-material-solutions/rbak-cushion-mounting-materials">R/bak® Cushion Mounting Materials</a></li>
+                                                                        <li>
+                                                                            <a href="https://silicone.co.uk/" target="_blank">Silicone Engineering Silicones</a>
+                                                                        </li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="has-children">
+                                                            <a href="">Thermal Propagation Delay Materials</a>
+                                                            <ul class="sub-child is-hidden">
+                                                                <li class="go-back back"><a href="#0">Back</a></li>
+                                                                <li class="back-index go-parant"><a href="#">Products</a> </li>
+                                                                <li class="back-index go-back"><a href="">Thermal Propagation Delay Materials</a> </li>
+
+                                                                        <li><a href="/elastomeric-material-solutions/procell-ev-firewall">ProCell&trade; EV Firewall</a></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="has-children">
+                                                            <a href="">Polyurethane Materials</a>
+                                                            <ul class="sub-child is-hidden">
+                                                                <li class="go-back back"><a href="#0">Back</a></li>
+                                                                <li class="back-index go-parant"><a href="#">Products</a> </li>
+                                                                <li class="back-index go-back"><a href="">Polyurethane Materials</a> </li>
+
+                                                                        <li><a href="/elastomeric-material-solutions/poron-industrial-polyurethanes">PORON® Industrial Polyurethanes</a></li>
+                                                                        <li><a href="/elastomeric-material-solutions/poron-medical-polyurethanes">PORON&reg; Medical Polyurethanes</a></li>
+                                                                        <li><a href="/elastomeric-material-solutions/poron-comfort">PORON® Comfort</a></li>
+                                                                        <li><a href="/elastomeric-material-solutions/xrd-impact">XRD® Impact</a></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="has-children">
+                                                            <a href="">PTFE, UHMW &amp; Pressure Sensitive Tapes</a>
+                                                            <ul class="sub-child is-hidden">
+                                                                <li class="go-back back"><a href="#0">Back</a></li>
+                                                                <li class="back-index go-parant"><a href="#">Products</a> </li>
+                                                                <li class="back-index go-back"><a href="">PTFE, UHMW &amp; Pressure Sensitive Tapes</a> </li>
+
+                                                                        <li><a href="/elastomeric-material-solutions/dewal-products">DeWAL® Products</a></li>
+                                                                        <li><a href="/elastomeric-material-solutions/procell-ev-firewall">ProCell&trade; EV Firewall</a></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="has-children">
+                                                            <a href="">Flexographic Printing Cushions</a>
+                                                            <ul class="sub-child is-hidden">
+                                                                <li class="go-back back"><a href="#0">Back</a></li>
+                                                                <li class="back-index go-parant"><a href="#">Products</a> </li>
+                                                                <li class="back-index go-back"><a href="">Flexographic Printing Cushions</a> </li>
+
+                                                                        <li><a href="/elastomeric-material-solutions/rbak-cushion-mounting-materials">R/bak® Cushion Mounting Materials</a></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="has-children">
+                                                            <a href="">Busbar Solutions</a>
+                                                            <ul class="sub-child is-hidden">
+                                                                <li class="go-back back"><a href="#0">Back</a></li>
+                                                                <li class="back-index go-parant"><a href="#">Products</a> </li>
+                                                                <li class="back-index go-back"><a href="">Busbar Solutions</a> </li>
+
+                                                                        <li><a href="/advanced-electronics-solutions/rolinx-busbars">ROLINX® Busbars</a></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="has-children">
+                                                            <a href="">Ceramic Substrates</a>
+                                                            <ul class="sub-child is-hidden">
+                                                                <li class="go-back back"><a href="#0">Back</a></li>
+                                                                <li class="back-index go-parant"><a href="#">Products</a> </li>
+                                                                <li class="back-index go-back"><a href="">Ceramic Substrates</a> </li>
+
+                                                                        <li><a href="/advanced-electronics-solutions/curamik-ceramic-substrates">curamik® Metallized Ceramic Substrates</a></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="has-children">
+                                                            <a href="">Coolers</a>
+                                                            <ul class="sub-child is-hidden">
+                                                                <li class="go-back back"><a href="#0">Back</a></li>
+                                                                <li class="back-index go-parant"><a href="#">Products</a> </li>
+                                                                <li class="back-index go-back"><a href="">Coolers</a> </li>
+
+                                                                        <li><a href="/advanced-electronics-solutions/curamik-cooling-solutions">curamik® Cooling Solutions</a></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="has-children">
+                                                            <a href="/elastomer-components">Elastomer Components</a>
+                                                            <ul class="sub-child is-hidden">
+                                                                <li class="go-back back"><a href="#0">Back</a></li>
+                                                                <li class="back-index go-parant"><a href="#">Products</a> </li>
+                                                                <li class="back-index go-back"><a href="/elastomer-components">Elastomer Components</a> </li>
+
+                                                                        <li><a href="/elastomer-components/endur-elastomer-components">ENDUR® Components</a></li>
+                                                                        <li><a href="/elastomer-components/nitrophyl">NITROPHYL® NBR Floats</a></li>
+                                                            </ul>
+                                                        </li>
+
+                                    </ul>
+                                </li>
+                                <!-- Business Units  Nav end -->
+                            <!-- /sitecore/templates/Project/Common/Content Types/Links/Mobile Menu/Mobile Menu Link List  Markets-->
+                            <!-- /sitecore/templates/Project/Common/Content Types/Links/Mobile Menu/Mobile Menu Tab Item Products-->
+                            <!-- /sitecore/templates/Project/Common/Content Types/Links/Mobile Menu/Mobile Menu Link List  Markets-->
+                                <!-- Markets Nav Start -->
+                                <li class="has-children">
+                                    <a href="/markets">Markets</a>
+                                    <ul class="cd-secondary-dropdown is-hidden">
+                                        <li class="go-back back"><a href="#">Back</a></li>
+                                        <li class="back-index"><a href="/markets">Markets</a> </li>
+                                                <li><a href="/markets/aerospace-and-defense">Aerospace & Defense</a></li>
+                                                <li><a href="/markets/automotive-and-ev-hev">Automotive & EV/HEV</a></li>
+                                                <li><a href="/markets/battery-energy-storage-systems">Battery Energy Storage Systems (BESS)</a></li>
+                                                <li><a href="/markets/connected-devices">Connected Devices</a></li>
+                                                <li><a href="/markets/footwear-and-impact-safety">Footwear &amp; Impact Safety</a></li>
+                                                <li><a href="/markets/general-industrial">General Industrial</a></li>
+                                                <li><a href="/markets/major-appliances">Major Appliances</a></li>
+                                                <li><a href="/markets/medical">Medical</a></li>
+                                                <li><a href="/markets/portable-electronics">Portable Electronics</a></li>
+                                                <li><a href="/markets/rail">Rail</a></li>
+                                                <li><a href="/markets/wind-and-solar">Wind & Solar</a></li>
+                                                <li><a href="/markets/data-centers-and-wired-infrastructure">Data Centers &amp; Wired Infrastructure</a></li>
+                                                <li><a href="/markets/wireless-infrastructure">Wireless Infrastructure</a></li>
+                                    </ul>
+                                </li>
+                                <!-- Markets Nav End -->
+                            <!-- /sitecore/templates/Project/Common/Content Types/Links/Mobile Menu/Mobile Menu Tab Item Products-->
+                            <!-- /sitecore/templates/Project/Common/Content Types/Links/Mobile Menu/Mobile Menu Link List  Markets-->
+                                <!-- Business Units  Start -->
+                                <li class="has-children">
+                                    <a href="#">Business Units</a>
+                                    <ul class="cd-secondary-dropdown is-hidden">
+                                        <li class="go-back back"><a href="#">Back</a></li>
+                                        <li class="back-index"><a href="">Business Units</a> </li>
+
+                                                        <li class="has-children">
+                                                            <a href="/advanced-electronics-solutions">Advanced Electronics Solutions</a>
+                                                            <ul class="sub-child is-hidden">
+                                                                <li class="go-back back"><a href="#0">Back</a></li>
+                                                                <li class="back-index go-parant"><a href="#">Business Units</a> </li>
+                                                                <li class="back-index"><a href="/advanced-electronics-solutions">Advanced Electronics Solutions</a> </li>
+                                                                            <li><a href="/advanced-electronics-solutions" target="" class="">Products</a> </li>
+                                                                            <li><a href="https://www.globalcommhost.com/rogers/acs/techsupporthub/en/login.php?utm_source=New%20Website&amp;utm_medium=mobile&amp;utm_campaign=Tech%20Hub%20Mobile%20Menu" target="_blank" class="tech-support-hub-track">ACS Technology Support Hub</a> </li>
+                                                                            <li><a href="/advanced-electronics-solutions/tools" target="" class="">Tools</a> </li>
+                                                                            <li><a href="/SupportDetails?BusinessUnitId=%7B6D702098-1C8B-4649-B18D-0FCD2B926BE0%7D&amp;SupportTypeId=%7B4105BD6E-997B-495F-A14F-9E33E22ACE48%7D" target="" class="global-support-track">Customer Support</a> </li>
+                                                                            <li><a href="https://rogerscorp.secure.force.com/samples/samples_public" target="_blank" class="sample-request-track">Sample Requests</a> </li>
+
+                                                            </ul>
+                                                        </li>
+                                                        <li class="has-children">
+                                                            <a href="/elastomeric-material-solutions">Elastometric Material Solutions</a>
+                                                            <ul class="sub-child is-hidden">
+                                                                <li class="go-back back"><a href="#0">Back</a></li>
+                                                                <li class="back-index go-parant"><a href="#">Business Units</a> </li>
+                                                                <li class="back-index"><a href="/elastomeric-material-solutions">Elastometric Material Solutions</a> </li>
+                                                                            <li><a href="/elastomeric-material-solutions" target="" class="">Products</a> </li>
+                                                                            <li><a href="/elastomeric-material-solutions/tools" target="" class="">Tools</a> </li>
+                                                                            <li><a href="/SupportDetails?BusinessUnitId=%7B0075752E-56D3-4A95-BAC5-91E390374940%7D&amp;SupportTypeId=%7BCD7C7B88-76A1-497F-9984-E0794AF70A94%7D" target="" class="global-support-track">Customer Support</a> </li>
+                                                                            <li><a href="/elastomeric-material-solutions/case-studies" target="" class="">Case Studies</a> </li>
+
+                                                            </ul>
+                                                        </li>
+                                                        <li><a href="/elastomer-components">Elastomer Components</a> </li>
+
+                                    </ul>
+                                </li>
+                                <!-- Business Units  Nav end -->
+                            <!-- /sitecore/templates/Project/Common/Content Types/Links/Mobile Menu/Mobile Menu Tab Item Products-->
+                            <!-- /sitecore/templates/Project/Common/Content Types/Links/Mobile Menu/Mobile Menu Link List  Markets-->
+                                <!-- Business Units  Start -->
+                                <li class="has-children">
+                                    <a href="#">About Us</a>
+                                    <ul class="cd-secondary-dropdown is-hidden">
+                                        <li class="go-back back"><a href="#">Back</a></li>
+                                        <li class="back-index"><a href="/about-us">About Us</a> </li>
+
+                                                        <li><a href="/about-us">About Us</a> </li>
+                                                        <li class="has-children">
+                                                            <a href="/about-us">Our Businesses</a>
+                                                            <ul class="sub-child is-hidden">
+                                                                <li class="go-back back"><a href="#0">Back</a></li>
+                                                                <li class="back-index go-parant"><a href="#">About Us</a> </li>
+                                                                <li class="back-index"><a href="/about-us">Our Businesses</a> </li>
+                                                                            <li><a href="/advanced-electronics-solutions" target="" class="">Advanced Electronics Solutions</a> </li>
+                                                                            <li><a href="/elastomeric-material-solutions" target="" class="">Elastometric Material Solutions</a> </li>
+                                                                            <li><a href="/elastomer-components" target="" class="">Elastomer Components</a> </li>
+
+                                                            </ul>
+                                                        </li>
+                                                        <li class="has-children">
+                                                            <a href="/about-us/corporate-responsibility">Corporate Responsibility</a>
+                                                            <ul class="sub-child is-hidden">
+                                                                <li class="go-back back"><a href="#0">Back</a></li>
+                                                                <li class="back-index go-parant"><a href="#">About Us</a> </li>
+                                                                <li class="back-index"><a href="/about-us/corporate-responsibility">Corporate Responsibility</a> </li>
+                                                                            <li><a href="/about-us/corporate-responsibility/environmental-health-and-safety" target="" class="">Environmental, Health and Safety</a> </li>
+                                                                            <li><a href="/about-us/corporate-responsibility/code-of-business-ethics" target="" class="">Code of Business Ethics</a> </li>
+                                                                            <li><a href="/about-us/corporate-responsibility/sustainability-report" target="" class="">Sustainability Report</a> </li>
+                                                                            <li><a href="/about-us/we-are-rogers" target="" class="">We Are Rogers: Our People, Our Values</a> </li>
+                                                                            <li><a href="/about-us/corporate-responsibility/certifications" target="" class="">Certifications</a> </li>
+                                                                            <li><a href="/about-us/corporate-responsibility/supply-management" target="" class="">Supply Management</a> </li>
+                                                                            <li><a href="/about-us/senior-leadership" target="" class="">Senior Leadership</a> </li>
+
+                                                            </ul>
+                                                        </li>
+                                                        <li><a href="/about-us/history">History</a> </li>
+                                                        <li><a href="/about-us/innovation-at-rogers">Innovation</a> </li>
+                                                        <li><a href="/news">News</a> </li>
+                                                        <li class="has-children">
+                                                            <a href="/support">Contact Us</a>
+                                                            <ul class="sub-child is-hidden">
+                                                                <li class="go-back back"><a href="#0">Back</a></li>
+                                                                <li class="back-index go-parant"><a href="#">About Us</a> </li>
+                                                                <li class="back-index"><a href="/support">Contact Us</a> </li>
+                                                                            <li><a href="/global-locations" target="" class="">Global Locations</a> </li>
+                                                                            <li><a href="/support" target="" class="support-contact-us-click-track">Global Support</a> </li>
+                                                                            <li><a href="/investors/contact-investor-relations" target="" class="">Investor Relations</a> </li>
+
+                                                            </ul>
+                                                        </li>
+
+                                    </ul>
+                                </li>
+                                <!-- Business Units  Nav end -->
+                            <!-- /sitecore/templates/Project/Common/Content Types/Links/Mobile Menu/Mobile Menu Tab Item Products-->
+                            <!-- /sitecore/templates/Project/Common/Content Types/Links/Mobile Menu/Mobile Menu Link List  Markets-->
+                                <!-- Business Units  Start -->
+                                <li class="has-children">
+                                    <a href="#">Investors</a>
+                                    <ul class="cd-secondary-dropdown is-hidden">
+                                        <li class="go-back back"><a href="#">Back</a></li>
+                                        <li class="back-index"><a href="/investors">Investors</a> </li>
+
+                                                        <li class="has-children">
+                                                            <a href="">Financials</a>
+                                                            <ul class="sub-child is-hidden">
+                                                                <li class="go-back back"><a href="#0">Back</a></li>
+                                                                <li class="back-index go-parant"><a href="#">Investors</a> </li>
+                                                                <li class="back-index"><a href="">Financials</a> </li>
+                                                                            <li><a href="/investors/annual-reports-and-sec-filings" target="" class="">SEC Filings</a> </li>
+                                                                            <li><a href="/investors/quarterly-results" target="" class="">Quarterly Results</a> </li>
+                                                                            <li><a href="/investors/analyst-coverage" target="" class="">Analyst Coverage</a> </li>
+
+                                                            </ul>
+                                                        </li>
+                                                        <li class="has-children">
+                                                            <a href="">Corporate Governance</a>
+                                                            <ul class="sub-child is-hidden">
+                                                                <li class="go-back back"><a href="#0">Back</a></li>
+                                                                <li class="back-index go-parant"><a href="#">Investors</a> </li>
+                                                                <li class="back-index"><a href="">Corporate Governance</a> </li>
+                                                                            <li><a href="/investors/corporate-governance" target="" class="">Corporate Governance</a> </li>
+                                                                            <li><a href="/about-us/senior-leadership" target="" class="">Senior Leadership</a> </li>
+                                                                            <li><a href="/investors/board-of-directors" target="" class="">Board of Directors</a> </li>
+
+                                                            </ul>
+                                                        </li>
+                                                        <li><a href="/investors/press-releases">Press Releases</a> </li>
+                                                        <li><a href="/investors/events-and-presentations">Events and Presentations</a> </li>
+                                                        <li><a href="/investors/contact-investor-relations">Contact Investor Relations</a> </li>
+                                                        <li><a href="/investors/notifications">Email Alerts</a> </li>
+                                                        <li><a href="/investors">Investor Relations Home</a> </li>
+
+                                    </ul>
+                                </li>
+                                <!-- Business Units  Nav end -->
+                            <!-- /sitecore/templates/Project/Common/Content Types/Links/Mobile Menu/Mobile Menu Tab Item Products-->
+                            <!-- /sitecore/templates/Project/Common/Content Types/Links/Mobile Menu/Mobile Menu Link List  Markets-->
+                                <!-- Business Units  Start -->
+                                <li class="has-children">
+                                    <a href="#">Careers</a>
+                                    <ul class="cd-secondary-dropdown is-hidden">
+                                        <li class="go-back back"><a href="#">Back</a></li>
+                                        <li class="back-index"><a href="/careers">Careers</a> </li>
+
+                                                        <li><a href="https://careers.rogerscorp.com/">Global Career Opportunities</a> </li>
+                                                        <li><a href="/careers/cultural-behaviors">Culture</a> </li>
+                                                        <li><a href="/careers/benefits">Benefits</a> </li>
+                                                        <li><a href="/careers/student-opportunities">Student Opportunities</a> </li>
+                                                        <li><a href="/support">Contact Us</a> </li>
+
+                                    </ul>
+                                </li>
+                                <!-- Business Units  Nav end -->
+
+                    <li class="utility-nav">
+                        <a>&nbsp;</a>
+                    </li>
+
+                                <!-- Markets Nav Start -->
+                                <li class="has-children utility-nav">
+                                    <a href="#">Language</a>
+                                    <ul class="cd-secondary-dropdown is-hidden">
+                                        <li class="go-back back"><a href="#">Back</a></li>
+                                        <li class="back-index go-back"><a href="#">Language</a> </li>
+                                                    <li><a href="https://www.rogerscorp.com" target="" class="">English</a> </li>
+                                                    <li><a href="https://www.rogerscorp.cn" target="_blank" class="">中文</a> </li>
+                                                    <li><a href="http://www.rogerscorp.jp/" target="_blank" class="">日本語</a> </li>
+                                    </ul>
+                                </li>
+                                <!-- Markets Nav Start -->
+                                <li class="has-children utility-nav">
+                                    <a href="#">Support &amp; Resources</a>
+                                    <ul class="cd-secondary-dropdown is-hidden">
+                                        <li class="go-back back"><a href="#">Back</a></li>
+                                        <li class="back-index go-back"><a href="#">Support &amp; Resources</a> </li>
+                                                    <li><a href="/support" target="" class="global-support-track">Global Support</a> </li>
+                                                    <li><a href="/downloads" target="" class="">Document Library Search</a> </li>
+                                                    <li><a href="/about-us/corporate-responsibility/certifications" target="" class="">Certifications</a> </li>
+                                                    <li><a href="/blog" target="" class="">Blog</a> </li>
+                                                    <li><a href="/tools" target="" class="">Web Tools</a> </li>
+                                    </ul>
+                                </li>
+                                <!-- Markets Nav Start -->
+                                <li class="has-children utility-nav">
+                                    <a href="#">Sign In</a>
+                                    <ul class="cd-secondary-dropdown is-hidden">
+                                        <li class="go-back back"><a href="#">Back</a></li>
+                                        <li class="back-index go-back"><a href="#">Sign In</a> </li>
+                                                    <li><a href="https://www.rogerstechub.com/login.php?utm_source=New%20Website&amp;utm_medium=Header&amp;utm_campaign=Tech%20Support%20Hub%20Global%20Nav" target="_blank" class="tech-support-hub-track">Technology Support Hub</a> </li>
+                                                    <li><a href="https://www.rogersdesignhub.com/login.php?utm_source=New%20Website&amp;utm_medium=Header&amp;utm_campaign=Design%20Support%20Hub%20Global%20Nav" target="_blank" class="design-support-hub-track">Design Support Hub</a> </li>
+                                    </ul>
+                                </li>
+                </ul>
+                <!-- .cd-dropdown-content -->
+            </nav>
+            <!-- .cd-dropdown -->
+        </nav>
+    </div>
+</header>
+
+
+    <main class="main inner-page container">
+        <nav class="breadcrumb">
+            <a class="breadcrumb-item" href="/"> Home</a>
+            <a class="breadcrumb-item" href="/blog"> Blog</a>
+            <span class="breadcrumb-item active">  Digging Deeper into Dielectric Constant for PCB Materials</span>
+</nav>
+
+
+<section class="inner-banner bg-image mx-0 mx-md-3" style="background-image: url(/-/media/project/rogerscorp/images/page-banners/blog-banner.jpg)">
+    <div class="h-100 justify-content-center">
+        <div class="col-lg-9 banner-text">
+            <h1 class="mt-3">Digging Deeper into Dielectric Constant for PCB Materials</h1>
+            
+        </div>
+    </div>
+    <div class="square-wrap"></div>
+</section>
+<section class="layout-70-30">
+    <div class="d-lg-flex  mt-4  mt-md-5 mb-md-4">
+        <div class="col-lg-8 ">
+            
+
+
+<p>
+    <i>
+    Published
+ by John Coonrod, Technical Marketing Manager            <br />
+<a href="/blog?qsBlogSection={9C15A793-A12A-41B8-9132-114BF3B0BCC4}">Advanced Electronics Solutions</a>    </i>
+</p>
+<p>Dielectric constant is the first number most engineers consider when sorting through different printed-circuit-board (PCB) materials. It is the number that guides the search, when needing a circuit-board material with a high dielectric constant or when a design requires a PCB material with a low dielectric constant. But what does dielectric constant really mean? And how can it affect a design if it is not &ldquo;the right&rdquo; dielectric constant? What happens to the circuit if it is designed and fabricated on a PCB material with a high dielectric constant and it should have been one with a low dielectric constant?</p>
+<p>Many engineers are taught that a circuit material&rsquo;s dielectric constant, or relative permittivity or Dk as it is also known, is a fixed value for a given material. In truth, the Dk values listed by materials manufacturers on their data sheets are numbers from a specific test method at a specific frequency, and the value will change under different conditions. For this reason, Rogers Corp. lists Dk values for their materials in reference to specific test methods, but will also provide &ldquo;Design Dk&rdquo; values for the materials that represent Dk values for the material under different conditions and values that can be used when designing or modeling a circuit, as in a commercial computer-aided-engineering (CAE) software program.</p>
+<p>Several earlier blogs in this series have explored the meaning of dielectric constant for PCB materials, including the different types of measurements that PCB materials suppliers use to determine the dielectric constants of their materials. The dielectric-constant values of the materials inevitably compare to the dielectric constant of a vacuum, which is one, or the dielectric constant of dry air, which is close to one, which are standard references for understanding dielectric constant. But unlike a vacuum, the measured values of dielectric constant for a PCB material can differ, depending upon the measurement method and the frequency of the measurements.</p>
+<p>In practical terms, the dielectric constant of any PCB material will be higher than a vacuum. The size of a circuit&rsquo;s structure, such as a resonator, will be determined by the wavelength of the frequency of interest. The size of the circuit structure for a given wavelength decreases as the dielectric constant increases. Dielectric constant is often defined by a capacitor formed with a dielectric material and the amount of electrons or charge the capacitor can store for a given voltage. Materials with higher dielectric constants can store more charge than materials with lower dielectric constants. In theory, for equivalent performance, circuit dimensions can be made smaller by using a circuit material with higher dielectric constant.</p>
+<p>Numerous articles on selecting PCB materials, including some by this author, have suggested the use of circuit materials with higher-dielectric-constant values to miniaturize a circuit, such as an amplifier.[1] Is the process of miniaturizing an RF/microwave/millimeter-wave circuit simply a matter of switching to a higher dielectric-constant PCB material? Is it that easy? Or are other tradeoffs involved with a move to a higher dielectric constant?</p>
+<p>Selecting a PCB material is not simply a matter of choosing a material based on one parameter, such as dielectric constant. If such was the case, circuit designers seeking larger circuits would start with PCB materials having a dielectric constant of 3 or less, while engineers in need of miniaturization would work with PCB materials having a dielectric constant of 10.2 or higher. As will be seen when a future blog takes a closer look at dissipation factor (Df), choosing a PCB material requires more than just one material parameter. Yes, materials with higher dielectric constants can yield smaller circuits for a given operating frequency or bandwidth but, depending upon the requirements for the circuit or circuits to be fabricated on the material, a smart material choice should consider the dielectric constant along with other key material parameters for that application.</p>
+<p>For example, in the article on amplifier design, a jump was not made simply from a low-dielectric-constant material with a value of 3 to a circuit material with dielectric constant of 10.2. A material with a higher dielectric constant of 6.15 was used (RO4360&trade; thermoset material from Rogers Corp.) in place of circuit materials with lower dielectric constants, to achieve the circuit miniaturization. The quality associated with the dielectric constant, such as the dielectric-constant tolerance (variations in dielectric constant regarding lot-to-lot consistency) and dielectric-constant variations with temperature, should also be part of the process of evaluating different materials for dielectric constant. For miniaturizing the amplifier, consideration was also given to other important material parameters, such as thermal conductivity. Since an amplifier circuit will generate heat, and improperly managed heat can cause mechanical and electrical variations in a PCB material, the material&rsquo;s thermal conductivity was considered at least as important as the dielectric constant and its related parameters.</p>
+<p>The dielectric constant of a PCB material is formed by the component materials, such as woven glass, ceramic, or polytetrafluoroethylene (PTFE). Circuit designers tend to plan around a specific dielectric constant for a material, but should never lose sight of the fact that a circuit material&rsquo;s Dk is not constant: it will change with temperature and over frequency, and even with the thickness of the material. Any comparison of different PCB materials can never assume constant Dk. It can also not assume that other material parameters remain constant when switching to a material with a higher Dk value.</p>
+<p>Most PCB materials are anisotropic, which means that the Dk value is different for different axes of the material. Material data sheets typically provide information on such parameters as Dk tolerance and variations in Dk with temperature. In addition, Rogers Corp. has performed extensive evaluations on its circuit materials and offers curves of dielectric constant versus frequency for most of its materials, from RF typically through lower millimeter-wave frequencies.</p>
+<p>Among other things, Rogers&rsquo; investigations into material properties have revealed that working with Dk should never be taken for granted. Dk can vary with temperature and frequency, but it can also vary in unexpected, nonlinear ways, especially at lower frequencies. Although Rogers has invested a great deal of time and effort into developing &ldquo;Design Dk&rdquo; values for its materials, to represent the dielectric characteristics of the circuit materials under real-world conditions, the nonlinear behavior of dielectric constant can be difficult to track for many circuit materials.</p>
+<p>The next blog will take a closer look at the nonlinear dielectric-constant behaviors of some high-frequency circuit materials at lower operating frequencies, to better understand how to design for lower-frequency circuits with proven RF/microwave circuit materials.</p>
+<p>Do you have a design or fabrication question? Log in to the Rogers Technology Support Hub and &ldquo;<a rel="noopener noreferrer" href="https://tinyurl.com/ybdlocno" target="_blank" title="https://tinyurl.com/ybdlocno">Ask an Engineer</a>&rdquo; today.</p>
+
+
+    <h3>Comments</h3>
+        <div class="light-widget mb-4">
+            We do planar transformers at high voltage and relatively low frequency. 2MHz ,3.5KV. Low loss tangent, Low dielectric constant high breakdown strength, low thermal expansion is what's wanted. We run a dielectric constant of about 2 at present. This has been the case for 15 years. Can you offer us a better material?
+            <br />
+            <small><i>Submitted by Gerard Larooy on Apr 28, 2021</i></small>
+        </div>
+<p>Published on Nov 10, 2020</p>
+<div class="light-widget mb-4" id="commentsForm">
+    <h2>Submit Comment</h2>
+<form action="/Blog/AddComment" id="contactUs" method="post">        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        <div id="innerForm">
+            <input type="hidden" name="application" id="application" value="{897D0421-2F92-4B5D-823C-0E70E03ACACD}" />
+            <div class="form-row">
+                <div class="form-group" style="width:100%">
+                    <label for="name">Name<span class="required">*</span></label>
+                    <div class="full">
+                        <input Class="form-control" Style="width:100%" id="name" name="name" type="text" value="" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group" style="width:100%">
+                    <label for="email">Email<span class="required">*</span></label>
+                    <div class="full">
+                        <input Class="form-control" Style="width:100%" id="email" name="email" type="text" value="" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="message">Comments<span class="required">*</span></label>
+                    <div class="full">
+                        <textarea Class="form-control" TextMode="Multiline" cols="200" id="message" name="message" rows="5">
+</textarea>
+                    </div>
+                </div>
+            </div>
+            <div id="g-recaptcha" class="g-recaptcha" data-sitekey="6LcJkr0ZAAAAAI62cCtKAtmWYErIEDFVLukadk-h"></div>
+            <div id="recaptcha-message" class="error help-block" style="display:none;">Completing the recaptcha is required</div>
+            <p class="mt-4">
+                <button type="submit" class="btn btn-large" name="btnSubmit" id="btnSubmit">Submit Form</button>
+                <img src="/Images/loading3.gif" width="100" height="15" class="hidden" id="loadingImage" />
+            </p>
+        </div>
+        <div class="confirmation hidden" style="text-align:left">
+            <br />
+            <p><img src="/images/checked-checkbox.png" width="64" height="64" alt="Success" /></p>
+            <p><b>Submission Successful</b><br />You have successfully submitted a comment. Pending approval, it will be displayed soon. Thank you. </p>
+        </div>
+</form></div>
+<p><a href="/Blog">Return to Blog</a></p>
+        </div>
+        <div class="col-lg-4 ">
+            
+    <!-- Start Support Widget  -->
+    <div class="support-widget my-4">
+        <i class="fi flaticon-support"></i>
+        <div class="widget-container">
+            <div class="title">
+                <h3>Support</h3>
+            </div>
+            <div class="card-text">
+                <h4>Advanced Electronics Solutions</h4>
+                <p>
+                    Find local representatives for personalized support.
+                </p>
+                    <form action="/SupportDetails?BusinessUnitId={6D702098-1C8B-4649-B18D-0FCD2B926BE0}&SupportTypeId=" method="get">
+
+                        <input id="BusinessUnitId" name="BusinessUnitId" type="hidden" value="{6D702098-1C8B-4649-B18D-0FCD2B926BE0}" />
+                        <div class="row py-2 select-support">
+                            <div class="col-sm-7 col-lg-12 col-xl-7 pr-sm-0 pr-lg-3 pr-xl-0">
+                                <select class="form-control" id="SupportTypeId" name="SupportTypeId"><option value="{4105BD6E-997B-495F-A14F-9E33E22ACE48}">Sales Engineers</option>
+<option value="{EB1B402D-200A-4A5A-98FE-77338E69F517}">Customer Service</option>
+<option value="{381ED8E3-4118-4C20-8131-F26358F6F28E}">Fabrication Support</option>
+</select>
+                            </div>
+
+                            <div class="col-sm-5 col-lg-12 col-xl-5 pt-3 pt-sm-0 pt-lg-3 pt-xl-0">
+                                <button type="submit" class="btn btn-outline support-contact-us-click-track">Contact Us</button>
+                            </div>
+                        </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+    <!--  End Support Widget-->
+
+        </div>
+    </div>
+</section>
+    </main>
+    <footer class="container">
+        
+
+<div class="footer-links py-3">
+                <!-- Footer Links -->
+                <div class="col-xl-10 m-auto">
+                    <div class="row">
+                                <div class="col-sm-6 col-md-3 mt-3 mt-md-1 col-lg-4 pl-lg-5">
+                                    <h5> Our Businesses </h5>
+                                        <ul>
+                                                        <li>
+                                                            <a href="/advanced-electronics-solutions" target="">
+                                                                Advanced Electronics Solutions
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="/elastomeric-material-solutions" target="">
+                                                                Elastomeric Material Solutions
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="/elastomer-components" target="">
+                                                                Elastomer Components
+                                                            </a>
+                                                        </li>
+                                        </ul>
+                                </div>
+                                <div class="col-sm-6 col-md-3 mt-3 mt-md-1 col-lg-2">
+                                    <h5> About Rogers </h5>
+                                        <ul>
+                                                        <li>
+                                                            <a href="/news" target="">
+                                                                News
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="/careers" target="">
+                                                                Careers
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="/tradeshows" target="">
+                                                                Tradeshows
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="/investors" target="">
+                                                                Investors
+                                                            </a>
+                                                        </li>
+                                        </ul>
+                                </div>
+                                <div class="col-sm-6 col-md-3 mt-3 mt-md-1 col-lg-3 pl-lg-5">
+                                    <h5> Contact Us </h5>
+                                        <ul>
+                                                        <li>
+                                                            <a href="/global-locations" target="">
+                                                                Global Locations
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="/support" target="">
+                                                                Global Support
+                                                            </a>
+                                                        </li>
+                                        </ul>
+                                </div>
+                                <div class="col-sm-6 col-md-3 mt-3 mt-md-1 col-lg-3">
+                                    <h5> Legal </h5>
+                                        <ul>
+                                                        <li>
+                                                            <a href="/terms-and-conditions" target="">
+                                                                Terms &amp; Conditions
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="/about-us/corporate-responsibility/certifications" target="">
+                                                                Certifications
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="/about-us/corporate-responsibility/code-of-business-ethics" target="">
+                                                                Code of Business Ethics
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="/privacy" target="">
+                                                                Privacy Policy
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="/consumer-privacy-rights" target="">
+                                                                Consumer Privacy Rights
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="/accessibility-statement" target="">
+                                                                Accessibility Statement
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="/terms-of-use" target="">
+                                                                Website Terms of Use
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="/-/media/project/rogerscorp/documents/common/english/customer-support/modern-slavery-and-human-trafficking-statement.pdf" target="_blank">
+                                                                Modern Slavery and Human Trafficking Statement
+                                                            </a>
+                                                        </li>
+                                        </ul>
+                                </div>
+                    </div>
+                </div>
+        <div class="container">
+            <div class="  d-md-flex pt-3">
+                <div class="col-xl-5  offset-xl-1 pt-3  pb-3 pb-md-4 pl-lg-4">
+                    
+		        </div>
+
+                    <div class="col-lg-5  pt-2 pt-md-3  pb-md-4">
+                        <div class="social-links pt-md-4 mt-2">
+                                <a href="http://www.facebook.com/pages/Rogers-Corporation/160127067330816?utm_source=New%20Website&amp;utm_medium=footer&amp;utm_campaign=Footer%20Facebook" target="_blank"><i class="facebook"></i></a>
+                                <a href="http://twitter.com/rogers_corp?utm_source=New%20Website&amp;utm_medium=footer&amp;utm_campaign=Footer%20Twitter" target="_blank"><i class="twitter"></i></a>
+                                <a href="http://www.youtube.com/user/RogersCorporation?utm_source=New%20Website&amp;utm_medium=footer&amp;utm_campaign=Footer%20Youtube" target="_blank"><i class="youtube"></i></a>
+                                <a href="http://www.linkedin.com/companies/rogers-corporation?utm_source=New%20Website&amp;utm_medium=footer&amp;utm_campaign=Footer%20LinkedIn" target="_blank"><i class="linkedin"></i></a>
+                                <a href="/blog?utm_source=New%20Website&amp;utm_medium=footer&amp;utm_campaign=Footer%20Blog" target="_blank"><i class="blog"></i></a>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+</div>
+
+<!-- Copyright -->
+<div class="footer-copyright text-center py-3">  Rogers Corporation. All Rights Reserved. </div>
+
+    </footer>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script async src="/js/main-min.js"></script>
+    <script async src="/js/forms.min.js?v=20260709"></script>
+    <!-- www.Cludo.com Search body init script start -->
+    <script type="text/javascript" src="//customer.cludo.com/scripts/bundles/search-script.min.js"></script>
+    <script>
+    var CludoSearch;
+    (function () {
+        var cludoSettings = {
+            customerId: 316,
+            engineId: 10872,
+            searchUrl: "/GlobalSearch",
+            language: "en",
+            facets: ["Category"],
+            customerTemplate: "SearchContent",
+            searchInputs: ["cludo-search-form", "cludo-search-form-mobile", "cludo-search-form-local", "cludo-search-form-sticky"],
+            initSearchBoxText: "Search...",
+            customCallbackAfterSearch: function customCallback() { $('span#searchTermText').html($('#main-search').val()); },
+            enableRelatedSearches: true, 
+	        loading: "<div class='product-loading loading'><img src='/assets/icons/ajax-loader.gif' ></div>",
+       };
+       CludoSearch = new Cludo(cludoSettings);
+       CludoSearch.translateProvider.translations["en"].total_result = "returned <b>{{value}}</b> result";
+       CludoSearch.translateProvider.translations["en"].total_results = "returned <b>{{value}}</b> results";
+       CludoSearch.init();
+    })();
+    </script>
+	<script src="/sitecore modules/web/xdbtracker/track.min.js"></script>
+    <script src="/js/siteevents.js" async></script>
+	<script src="/js/e-form.js"></script>
+</body>
+</html>

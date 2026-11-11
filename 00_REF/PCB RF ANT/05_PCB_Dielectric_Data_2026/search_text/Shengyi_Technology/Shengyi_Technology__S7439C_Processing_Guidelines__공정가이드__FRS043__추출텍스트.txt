@@ -1,0 +1,326 @@
+   PROCESSING GUIDELINES
+
+
+
+              Laminate: S7439C
+              Prepreg: S7439CB
+
+Low Loss & Heat Resistance Multilayer Material
+
+
+
+
+                                  CN-PG-1911-04-S7439C-S7439CB
+This processing guidelines follows the IPC-4101E standard and is to provide necessary guidance for customer
+reference, based on S7439C/S7439CB material features.
+
+
+1. Storage condition
+1.1 Laminate
+
+1.1.1 Storage method
+
+       Keep laminates as received packaging onto a flat floor or a proper pallet. Avoid heavy pressure in case
+
+        of distortion occurring due to incorrect storage method.
+
+1.1.2 Storage condition
+
+       Keep laminates at ventilated, dry and ambient condition. Avoid direct exposure to sunlight, rain and
+
+        chemical gas.
+
+       The shelf life of laminate maintains two years for double sided and one year for single sided at above
+
+        proper storage conditions. All internal properties within shelf life meet IPC-4101E specification sheet.
+
+1.1.3 Handling
+
+       Handle laminates carefully wearing clean gloves. Collision and slippage will damage the cladding copper.
+
+        Naked hand operation will contaminate the surface of cladding copper. All above defects may bring bad
+
+        effects during production.
+
+1.2 Prepreg
+
+1.2.1 Storage method
+
+       Keep prepreg horizontally with received package. Avoid heavy pressure in case of distortion occurring
+
+        due to incorrect storage method.
+
+       Be sure to re-seal any of remained prepreg with plastic film and put it away properly onto a pallet.
+
+1.2.2 Storage condition
+
+       All prepreg should be stored at below conditions as received packaging without any influence of ultraviolet
+
+        ray.
+
+         Condition 1: 3 months when stored at <23℃ and <50% RH.
+
+         Condition 2: 6 months when stored at <5℃;
+
+       Be careful of relative humidity due to its bad effect on prepreg properties. When packaging is open, it’s
+
+        recommended using up within 8 hours. If not, it must be sealed and packaged before storage.
+
+1.2.3 Prepreg cutting
+
+       Cut prepreg carefully and prevent pollution or crease.
+
+       When cutting the PP, it’s needed to clean the table first, to avoid cross contamination of different types of
+
+        PP resin powder.
+
+1.2.4 Usage
+                                                                               CN-PG-1911-04-S7439C-S7439CB
+   When brought out from cooling warehouse, prepreg should be stabilized to ambient temperature before
+
+    opening package, keep at least 8 hours is recommended, depending on specified store condition.
+
+   For panel form prepreg after cutting, all should be kept under condition 1 (or condition 2) and used up as
+
+    soon as possible. When exceeding 3 days, it’s recommended retesting before use.
+
+   For roll form prepreg remained, all should be sealed again and kept at condition 1 (or condition 2).
+
+   For IQC inspection, prepreg should be finished all tests within 5 day from the date of acceptance according
+
+    to IPC-4101E specification.
+
+
+
+2. PWB Processing
+2.1 Panel cutting
+
+   Sawing and shearing method is recommended. Be careful of potential edge cracks when using roller
+
+    cutter or caused by improper gap or cutter blade abrasion.
+
+2.2 Thin core baking
+
+   Thin core baking depends on actual need. If bake after cutting, it’s recommended to rinse cutting panels
+
+    first, which is able to remove resin powder brought by cutting and avoid etching problem.
+
+   Baking condition: 175℃/3-5h, be sure to avoid contact directly with heat supply.
+
+2.3 Inner layer brown oxide
+
+   Recommend to use brown oxide for inner layer treatment.
+
+   Baking condition after brown oxide: 110~120℃ for 1.5~2hours. After baking, pressing process should be
+
+    done within 46 hours.
+
+   When the laminate that need to be pressed more than one time, for sub-laminate that have been pressed;
+
+    A. Baking before brown oxide: 150℃ for 3~5 hours;
+
+    B. Baking after brown oxide: 110~120℃ for 1.5~2hours.
+
+   When baking, the stack height should be less than 1inch.
+
+2.4 Lay-up
+
+   Ensure prepreg direction of warp and fill at lay-up process. Avoid prepreg reversal or overturn in case of
+
+    multilayer board distortion after press;
+
+   The time from brown oxide to the start of pressing should be controlled within 12 hours;
+
+   When the buffer material which may have hygroscopic risk, it is recommended to dry it before use;
+
+   Due to the characteristics of the material, it is prone to static electricity, pay special attention to the
+
+    adsorption of foreign materials on PP when stacking;
+
+   In order to ensure good registration for lamination, when it is necessary to use hot rivet, it is recommended
+
+    to use electromagnetic thermal fusion. It is suggested to evaluate the best fusion effect parameters in
+
+                                                                           CN-PG-1911-04-S7439C-S7439CB
+    detail, and the following electromagnetic thermal fusion conditions are for reference: 220℃ for 120s,
+
+    warm up for 15s and cool down for 10s. Other fusion methods should be combined with PCB's own
+
+    conditions to carefully evaluate the fusion effect and avoid the layer deviation caused by poor fusion.
+
+2.5 Pressing process
+
+   For multilayer pressing, it is recommended to choose a press machine with good vacuum performance
+
+    and vacuum door sealing, to avoid the outside moisture;
+
+   It’s recommended to keep the heat-up ramp at 2.0-3.0℃/min when the material temperature between 80℃
+
+    to 140℃.
+
+   Full pressure setting is recommended at the range of 380 – 450 PSI (oil heated), specified value should
+
+    be determined by multilayer feature (lay-up construction and inner layer copper area). Apply full pressure
+
+    when the material temperature between 80-100 ℃.
+
+   Curing condition: 190-200℃, 90-120min.
+
+   Cooling rate < 2℃/min;
+
+   Material temperature after hot pressing < 150℃;
+
+   For HDI and N+N lamination: in order to ensure better thickness uniformity, it is recommended to add
+
+    buffer paper in middle layer of Book;
+
+   For the overlay no copper area (starved area which is likely to have low pressure), especially for the low
+
+    resin content prepreg, it is necessary to prevent wrinkles, voids and other types of pressing defects in
+
+    advance, and evaluate the best production conditions.
+
+   If pressed by Adara machine, please inform us for more information.
+
+   When using single-sided or dummy board for multilayer, be sure to roughen the unclad surface before
+
+    use, otherwise poor bonding might happen due to smooth surface. Etching double-sided board for that
+
+    purpose is one option.
+
+
+
+2.6 Drilling
+
+   For good hole quality, it is recommended to use new drill bit and 1pc/stack for drilling (for thick board).
+
+   The drilling parameters need to be carefully evaluated to determine the drilling parameters that match
+
+    your production conditions. The following drilling parameters are for reference only:
+
+
+
+
+
+
+                                                                            CN-PG-1911-04-S7439C-S7439CB
+    For dense hole or diameter of the hole is less than 0.6mm, it is recommended to use LE aluminum sheet
+
+     for cover plate.
+
+    Aperture < =1.0mm: new double-edge drill bit is recommended (45°screw Angle is the best);
+
+    When the thickness of the laminate is > =3.0mm, a step drill or predrill or dual drill process is
+
+     recommended.
+
+2.7 Baking after drilling
+
+    Recommended baking condition: 190℃/3h, be sure to avoid contact directly with heat supply.
+
+    After back drilling, baking before resin-plug-hole: 160~170℃/2~3h;
+
+    After electroplating, if still need to drill holes (containing BGA and high dense hole structure), baking before
+
+     drill: (170-180℃) /(2~3H);
+    After electroplating, if still need to drill holes (without BGA and dense hole structure), no baking.
+2.8 Desmear
+
+    S7439C is relative harder to desmear compared to traditional FR-4 material. Using Plasma plus potassium
+
+     permanganate method for desmear is suitable but the specified parameter should accord to the PCB
+
+     structure and design. It is suggested to make a full and detailed evaluation of various types of structural
+
+     plates to determine the best matching conditions and parameters of the glue removal;
+
+    It is recommended that the inner copper connection should be reached without resin residue.
+
+    Plasma+ level desmear or plasma+ vertical desmear is recommended;
+
+    The following plasma parameters are the parameters of a processing application, for reference only.
+
+    For specific plasma parameters and chemical desmear parameters, PCB potions and equipment
+
+     production capacity need to be evaluated in detail to set the most suitable processing parameters that
+
+     meet the requirements of hole wall quality and related quality.
+                                             vacuum                     The total gas
+            O2           N2       CF4                      RF power                        Step time
+                                              degree                    flow rate
+    Step                                                                                                 Temp/℃
+           L/min        L/min     L/min       TORR            /W             L/min            Min
+
+
+     1      2.26        0.25        0          0.25          9000             2.51             45            80
+
+
+
+
+                                                                              CN-PG-1911-04-S7439C-S7439CB
+    2        2.45     0.25       0.30        0.24          7000            3.00             20             105
+
+
+    3        2.49       0         0          0.25          5000            2.49             4              105
+
+
+   Specific setting of conditions for the removal of resin, related to the equipment, liquid medicine, plate
+
+    thickness or hole area, need to be set by comprehensive investigation and evaluation;
+
+   On the premise of full load, it is suggested that the thicker the plate, the longer the Plasma time.
+
+2.9 HASL
+
+   It is recommended to bake the board before solder mask: 150℃/4~6h;
+
+   When using the rack, avoid the warping problem caused by extrusion or deformation of the plate rack;
+
+   It is not recommended for solder mask rework, which may lead to measling (texture exposure) problem.
+
+2.10 HASL process
+
+   Suitable for lead-free HASL process.
+
+2.11 Punching/Routing
+
+   Suitable for routing process, and it is suggested to reduce the travel speed appropriately;
+
+   Not suitable for punching process.
+
+2.12 Packaging
+
+   To prevent moisture effect on the heat resistance of base material, suggest baking finished boards at 140℃
+
+    /4-6h before packaging.
+
+   It’s advised to warp by aluminum pack.
+
+
+
+3. PWB Soldering
+3.1 Shelf life of PWB
+
+   3 months with aluminum packaging protection.
+
+   Bake at 125℃/4-8h before assembly is recommended if possible.
+
+3.2 Reflow
+
+   Suitable for lead free reflow process
+
+3.3 Manual soldering
+
+   soldering temperature is 350~380℃ (a temperature-controlled solder iron is recommended );
+
+   Welding time of single spot should be less than 3 seconds.
+
+This process guide is for reference only! Should you have any questions, please feel free to contact us. Shengyi
+
+will support you with prompt and effective service.
+
+
+
+
+                                                                           CN-PG-1911-04-S7439C-S7439CB
+

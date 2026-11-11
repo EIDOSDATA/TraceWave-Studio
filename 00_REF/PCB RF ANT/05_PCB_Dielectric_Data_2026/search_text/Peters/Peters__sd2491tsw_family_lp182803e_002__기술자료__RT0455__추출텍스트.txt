@@ -1,0 +1,424 @@
+                              Solder resists of the series
+                                      ®
+                              Elpemer SD 2491 SG-TSW-R8
+                              On account of their high resolution alongside excellent dielectric properties, the
+                              photoimageable solder resists of the series Elpemer® SD 2491 SG-TSW-R8 are used
+                              as insulating coatings for pcbs in fine and superfine line technology, SMD technology
+                              as well as for multilayers.
+                              On account of their pure white colour and their extraordinary yellowing resistance they
+                              are especially suitable for LED applications in automobile electronics.
+                               white-opaque (SD 2491 SG-TSW-R8) or
+                                 snow white-opaque (SD 2491 SG-TSW-R8-B)
+                               application by means of screen printing
+                               aqueous-alkaline developable
+                               excellent yellowing resistance even after lead-free reflow solder processes
+                                 and high temperature loads
+                               no influence on light colour when applied below white LEDs
+                               UL approval: best flame class V-0 according to UL 94, UL file no. E80315
+                               halogen-free acc. to JPCA-ES01-2003 / IEC 61249-2-21.
+                               very good reflectivity values
+                               broad processing window for predrying
+                               good scratch resistance
+                               no pink/purple discolouration after electroless Ni/Au (ENIG) and SMD soldering
+LP 182803 E-0 / 301326e_000
+
+
+
+
+                              Characteristics
+                              The characteristics are indicated in the product-specific process data sheets. We will
+                              provide them with the first shipment of this product or send them to you upon request.
+                              Indices: SD = screen printing, SG = silk-glossy, TSW = thermally stable white, R8 =
+                              revision 8
+
+                              Optical properties
+                                     Property                            Test method                        Result
+                                                       40 µm coating thickness measured on copper with
+                              Reflectivity at 460 nm   a spectral photometer (measuring geometry: 45/0,     ≥ 90 %
+                                                       light source type: D 65, standard observer: 10°)
+                                            ®
+Preliminary Technical Report series Elpemer SD 2491 SG-TSW-R8
+
+
+
+Physical and mechanical properties
+              Property                          Test method                            Result
+Adhesion                            IPC-SM-840E, 3.5.2.1                            class H and T
+                                    DIN EN ISO 2409
+Cross hatch                         on copper                                              Gt 0
+                                    on FR 4                                                Gt 0
+                                    IPC-SM-840E, 3.5.1                                  ≈6H
+Pencil hardness
+                                    acc. to Wolff-Wilborn                               ≈6H
+                                    IPC-SM-840E, 3.6.1
+                                    Isopropanol                                        passed
+Resistance to solvents/
+                                    Isopropanol : water (75 : 25)                      passed
+cleaning agents
+                                    D-Limonene                                         passed
+                                    deonized water                                     passed
+Solder bath resistance              IPC-SM-840E, 3.7.2                         20 s at 265 °C [509 °F]
+Solder flux = 2 % adipic acid       IPC-TM-650, 2.6.8                         20 s at 288 °C [550.4 °F]*
+Simulation lead-free reflow         IPC-SM-840E, 3.7.3.1                             no cracking
+soldering                           5 x 10 s at 260 °C [500 °F]                    no delamination
+Resistance against acid             10 % H2SO4, 30 min at 20 °C [68°F]               no change
+Resistance against lye              10 % NaOH, 30 min at 20 °C [68 °F]               no change
+
+     * With a solder bath resistance of 20 s at 288 °C [550.4 °F] the solder resist
+                  ®
+       ELPEMER SD 2491 SG-TSW-R8 fulfils the required temperature resistance for lead-free soldering.
+
+Electrical properties
+              Property                          Test method                            Result
+Dielectric strength                 IPC-SM-840E, 3.8.1                                 passed
+                                    VDE 0303, Teil 30/DIN IEC 60093                          13
+Surface resistance                                                                 ≈ 6 x 10 Ohm
+                                    IPC-TM-650, 2.5.17.1
+                                    VDE 0303, Teil 30/DIN IEC 60093                   15
+Volume resistivity                                                                ≥ 10 Ohm x cm
+                                    IPC-TM-650, 2.5.17.1
+Moisture and insulation resistance IPC-SM-840E, 3.9.1                               class H and T
+                                    DIN EN 60 112
+Comparative Tracking Index          on FR 4 base material
+(CTI, Tracking resistance)          with CTI 225                                     ≥ CTI 450*
+                                    with CTI 600                                     ≥ CTI 600*
+
+     * The CTI value of the coating depends on the CTI value of the base material; this value is at least
+       maintained.
+Note: Optimum electrical insulation values are only achieved if all flux residues are
+removed thoroughly from the printed circuit boards.
+
+
+
+
+2                                                                                                 www.peters.de
+                                                                                      ®
+                                        Preliminary Technical Report series Elpemer SD 2491 SG-TSW-R8
+
+
+Processing
+            Please read this technical report and the publications listed below carefully before using the
+            product. These sheets are enclosed with the first shipment of product or sample.
+            The corresponding material safety data sheet contains detailed information and characteristics
+            on safety precautions, environmental protection, transport, storage, handling and waste
+            disposal.
+            The process data sheet contains product-specific data such as characteristics and
+            recommendations for processing parameters.
+                                                                                                 ®
+            Application information AI 2/1 “Processing instructions for photoimageable Elpemer solder
+            resists“ – here you find basic information on the processing of photoimageable systems.
+            Technical information TI 15/3 “Protective measures when using chemicals including lacquers,
+            casting compounds, thinners, cleaning agents“
+            Technical information TI 15/13 “Precleaning in the pcb fabrication process
+
+ When applying electroless/galvanic surface finish processes the resistance of Elpemer® SD
+  2491 SG-TSW-R8 has to be verified in pre-trials. In any case, a multiple chemical pre-treatment
+  according to the principle of grain boundary etching (see TI 15/13 for detailed information) is
+  recommended.
+  UV
+         Protect from UV light
+
+Since the many different permutations make it impossible to evaluate the whole spectrum
+(parameters, reactions with materials used, chemical processes and machines) of processes and
+subsequent processes in all their variations, the parameters we recommend are to be viewed as
+guidelines only that were determined in laboratory conditions. We advise you to determine the
+exact process limitations within your production environment, in particular as regards compatibility
+with your specific follow-up processes, in order to ensure a stable fabrication process and products
+of the highest possible quality.
+The specified product data is based upon standard processing conditions/test conditions of the
+mentioned norms and must be verified if necessary while observing suitable test conditions on
+processed products.
+Feel free to contact our application technology department (ATD) if you have any questions or for a
+consultation.
+
+Safety recommendations
+ When using chemicals, the common precautions should be carefully noted.
+ Ensure that extractor units of workplace ventilation arrangements are positioned at solvent
+  source level.
+
+Auxiliary products recommended
+ Screen opener HP 5200
+   highly active spray for dissolving dried screen printing inks from the screen; silicone- and
+   grease-free, thus no surface defect/dewettings or smearing effects to be expected
+ Anti-static spray HP 5500
+   prevents and eliminates electrostatic discharge occurring during screen printing; silicone- and
+   grease-free
+
+
+
+www.peters.de                                                                                                3
+                                            ®
+Preliminary Technical Report series Elpemer SD 2491 SG-TSW-R8
+
+ Special stripper HP 5707
+    for removing photoimageable solder resists (e.g. in case of incorrect exposure) and for cleaning
+    ink developer and resist stripping units.
+ Defoamant HP 5911
+    for defoaming of aqueous-alkaline developer solutions, silicone-free, biologically degradable
+ Cleaning agent R 5899
+    for screen washing equipment, simply and safely to handle, no labelling in accordance with the
+    German dangerous goods regulations required, extremely high flash point (> 100 °C [> 212 °F]),
+    low vapour pressure < 0.1 hPa at 20 °C [68 °F], thus not affected by the EU-VOC regulation
+    1999/13/CE
+ Cleaning agent R 5821
+    for the cleaning of equipment and work tools, high flash point (+32 °C [89.6 °F])
+ Cleaning agent R 5817
+    for the manual cleaning of screens and tools
+
+Drying/curing
+Further information on drying/curing can be found in the corresponding process data sheets of
+each solder resist.
+
+Packaging
+The packing units available are indicated in our offer which we will send you upon request.
+
+Shelf-life and storage conditions
+The shelf life / minimum shelf life and storage conditions are indicated in the product-specific
+product data sheets (PD) and shown on the container labels.
+
+Disclaimer
+All descriptions and images of our goods and products contained in our technical literature,
+catalogues, flyers, circular letters, advertisements, price lists, websites, data sheets and brochures,
+and in particular the information given in this literature are non-binding unless expressly stated
+otherwise in the Agreement. This shall also include the property rights of third parties if applicable.
+The products are exclusively intended for the applications indicated in the corresponding technical
+data sheets. The advisory service does not exempt you from performing your own assessments, in
+particular as regards their suitability for the applications intended. The application, use and
+processing of our products and of the products manufactured by you based on the advice given by
+our Application Technology Department are beyond our control and thus entirely your responsibility.
+The sale of our products is effected in accordance with our current terms of sale and delivery.
+ATTENTION! For new products, according to preliminary technical reports, adequate
+practical results are not always available which would permit a comprehensive assessment
+of such a product. It is therefore imperative to exercise particular care in the testing of such
+products with regard to the application intended!
+Any questions? We would be pleased to offer you advice and assistance in solving your problems.
+Samples and technical literature are available upon request.
+
+Lackwerke Peters GmbH & Co. KG         Internet: www.peters.de    Phone +49 2152 2009-0
+Hooghe Weg 13, 47906 Kempen, Germany   E-Mail: peters@peters.de   Fax   +49 2152 2009-70
+
+
+4                                                                                          www.peters.de
+                               Elpemer® solder resist
+                               SD 2491 SM-TSW-R6-B
+                               On account of its high resolution alongside its excellent dielectric properties the
+                               photoimageable solder resist Elpemer® SD 2491 SM-TSW-R6-B is used as an
+                               insulating coating for pcbs in fine and superfine line technology, SMD technology as
+                               well as for multilayers.
+                               On account of its pure white colour and its extraordinary yellowing resistance it is
+                               especially suitable for LED applications in automobile electronics.
+                                white-opaque
+                                for application by means of screen printing
+                                aqueous-alkaline developable
+                                extraordinary yellowing resistance even after lead-free reflow solder
+                                  processes and high temperature loads
+                                no influence on light colour when applied below white LEDs
+                                good resistance in TCT (temperature cycling test): -40 to +125 °C [-40 to +257 °F],
+                                  500 cycles, no cracking of ink if appropriate FR4 base material is used
+                                UL approval: best flame class V-0 according to UL 94, UL file no. E80315
+                                halogen-free acc. to JPCA-ES01-2003 / IEC 61249-2-21.
+                                very good reflectivity values
+                                broad processing window for predrying
+                                good scratch resistance
+LP 141109 E-0 / 0263800e.000
+
+
+
+
+                                excellent adhesion of subsequent coatings (marking inks, conformal coatings and
+                                  others.)
+                                no pink/purple discolouration after electroless Ni/Au (ENIG) and SMD soldering
+
+                               Characteristics
+                               The characteristics are indicated in the product-specific process data sheets. We will
+                               provide them with the first shipment of this product or send them to you upon request.
+                               Indices: SD = screen printing, SM = silk-mat, TSW = thermally stable white R6 =
+                               reflectivity 6, B = snow white
+Preliminary Technical Report Elpemer® SD 2491 SM-TSW-R6-B
+
+
+Optical properties
+       Property                                Test method                                     Result
+                          40 µm coating thickness measured on copper with a
+Reflectivity at 460 nm    spectral photometer (measuring geometry: 45/0, light                 ≈ 90 %
+                          source type: D 65, standard observer: 10°)
+                          1000 h, 125 °C [257 °F], comparison standard: PCB after
+Yellowing resistance                                                                         b ≈ 1.2
+                          2 x reflow soldering (lead-free), CIE lab system
+
+
+Physical and mechanical properties
+              Property                        Test method                              Result
+Adhesion                            IPC-SM-840E, 3.5.2.1                            class H and T
+                                    DIN EN ISO 2409         on copper                   Gt 0
+Cross hatch
+                                                            on FR 4                     Gt 0
+                                    IPC-SM-840E, 3.5.1                                  5H
+Pencil hardness
+                                    acc. to Wolff-Wilborn                               5H
+                                    IPC-SM-840E, 3.6.1
+                                    Isopropanol                                        passed
+Resistance to solvents/
+                                    Isopropanol : water (75 : 25)                      passed
+cleaning agents
+                                    D-Limonene                                         passed
+                                    deonized water                                     passed
+Solder bath resistance              IPC-SM-840E, 3.7.2                       20 s at 265 °C [509 °F]
+Solder flux = 2 % adipic acid       IPC-TM-650, 2.6.8                       20 s at 288 °C [550.4 °F]*
+Simulation lead-free reflow         IPC-SM-840E, 3.7.3.1                           no cracking
+soldering                           5 x 10 s at 260 °C [500 °F]                  no delamination
+                                    IPC-SM 840E, 3.9.3, -65 to +125 °C
+Temperature shock                                                                   class H and T
+                                    [-85 to 257 °F], 100 cycles
+Resistance against acid             10 % H2SO4, 30 min at 20 °C [68°F]               no change
+Resistance against lye              10 % NaOH, 30 min at 20 °C [68 °F]               no change
+     * With a solder bath resistance of 20 s at 288 °C [550.4 °F] the solder resist Elpemer®
+       SD 2491 SM-TSW-R6-B fulfils the required temperature resistance for lead-free soldering.
+
+Electrical properties
+              Property                        Test method                              Result
+                                    VDE 0303, part 21
+                                                                                     105 kV/mm
+Dielectric strength                 DIN EN 60243-1
+                                    IPC-SM-840E, 3.8.1                                 passed
+                                    VDE 0303, Teil 30/DIN IEC 60093
+Surface resistance                                                                  2 x 1014 Ohm
+                                    IPC-TM-650, 2.5.17.1
+                                    VDE 0303, Teil 30/DIN IEC 60093
+Volume resistivity                                                               1015 Ohm x cm
+                                    IPC-TM-650, 2.5.17.1
+Moisture and insulation resistance IPC-SM-840E, 3.9.1                               class H and T
+                                    DIN EN 60 112
+Comparative Tracking Index          on FR 4 base material
+(CTI, Tracking resistance)          with CTI 175                                      CTI 450*
+                                    with CTI 600                                      CTI 600*
+     * The CTI value of the coating depends on the CTI value of the base material; this value is at least
+       maintained.
+2                                                                                            www.peters.de
+                                           Preliminary Technical Report Elpemer® SD 2491 SM-TSW-R6-B
+
+Note: Optimum electrical insulation values are only achieved if all flux residues are removed
+thoroughly from the printed circuit boards.
+
+Processing
+           Please read this technical report and the publications listed below carefully before using the
+           product. These sheets are enclosed with the first shipment of product or sample.
+           The corresponding material safety data sheet contains detailed information and characteristics
+           on safety precautions, environmental protection, transport, storage, handling and waste
+           disposal.
+           The process data sheet contains product-specific data such as characteristics and
+           recommendations for processing parameters.
+           Application information AI 2/1 “Processing instructions for photoimageable Elpemer® solder
+           resists“
+           Technical information TI 15/3 “Protective measures when using chemicals including lacquers,
+           casting compounds, thinners, cleaning agents“
+           Technical information TI 15/13 “Precleaning in the pcb fabrication process“
+ When appyling electroless/galvanic surface finish processes the resistance of SD 2491 SM-
+  TSW-R6-B has to be verified in pre-trials. In any case, a multiple chemical pre-treatment
+  according to the principle of grain boundary etching (see TI 15/13 for detailed information) is
+  recommended.
+  UV
+         Protect from UV light
+
+Since the many different permutations make it impossible to evaluate the whole spectrum
+(parameters, reactions with materials used, chemical processes and machines) of processes and
+subsequent processes in all their variations, the parameters we recommend are to be viewed as
+guidelines only that were determined in laboratory conditions. We advise you to determine the
+exact process limitations within your production environment, in particular as regards compatibility
+with your specific follow-up processes, in order to ensure a stable fabrication process and products
+of the highest possible quality.
+The specified product data is based upon standard processing conditions/test conditions of the
+mentioned norms and must be verified observing suitable test conditions on processed printed
+circuit boards.
+Feel free to contact our application technology department (ATD) if you have any questions or for a
+consultation.
+
+Safety recommendations
+ When using chemicals, the common precautions should be carefully noted.
+ Ensure that extractor units of workplace ventilation arrangements are positioned at solvent
+  source level.
+ Please also pay attention to national guidelines or directives concerning operating safety such
+  as the German TRBS (technical rules for operating safety) and those concerning the handling of
+  flammable liquids as for example the German TRbF (technical rules for flammable liquids) or
+  European directives.
+
+
+
+
+www.peters.de                                                                                               3
+Preliminary Technical Report Elpemer® SD 2491 SM-TSW-R6-B
+
+Auxiliary products recommended
+ Deoxidising agent HP 5625
+    Deoxidises Cu areas in continuous spray coating units as a pre-treatment of pcbs prior to
+    ink/resist application
+ Screen opener HP 5200
+    highly active spray for dissolving dried screen printing inks from the screen; silicone- and
+    grease-free, thus no surface defect/dewettings or smearing effects to be expected
+ Anti-static spray HP 5500
+    prevents and eliminates electrostatic discharge occurring during screen printing; silicone- and
+    grease-free
+ Special stripper HP 5707
+    for removing photoimageable solder resists (e.g. in case of incorrect exposure) and for cleaning
+    ink developer and resist stripping units
+ Defoamant HP 5911
+    for defoaming of aqueous-alkaline developer solutions, silicone-free, biologically degradable
+ Cleaning agent R 5899
+    for screen washing equipment, simply and safely to handle, no labelling in accordance with the
+    German dangerous goods regulations required, extremely high flash point (> 100 °C [> 212 °F]),
+    low vapour pressure < 0.1 hPa at 20 °C [68 °F], thus not affected by the EU-VOC regulation
+    1999/13/CE
+ Cleaning agent R 5821
+    for screen washing equipment and the cleaning of work tools, high flash point (+32 °C [89.6 °F])
+ Cleaning agent R 5817
+    for the manual cleaning of screens and tools
+
+Drying/curing
+Further information on drying/curing can be found in the corresponding process data sheets of
+each solder resist.
+
+Standard packaging
+                              Component A          Componente B           Selling unit
+SD 2491 SM-TSW-R6-B          10 tins à 0.96 kg    10 tins of 0.08 kg        10.4 kg
+Thinner V 2467-SD             1 can of 15 kg              —                  15 kg
+
+Partial lots of the selling unit / smaller quantities available against surcharge.
+
+Shelf-life and storage conditions
+The shelf life / minimum shelf life and storage conditions are indicated in the product-specific
+product data sheets (PD) and shown on the container labels.
+
+Disclaimer
+All descriptions and images of our goods and products contained in our technical literature,
+catalogues, flyers, circular letters, advertisements, price lists, websites, data sheets and brochures,
+and in particular the information given in this literature are non-binding unless expressly stated
+otherwise in the Agreement. This shall also include the property rights of third parties if applicable.
+
+4                                                                                        www.peters.de
+                                          Preliminary Technical Report Elpemer® SD 2491 SM-TSW-R6-B
+
+The products are exclusively intended for the applications indicated in the corresponding technical
+data sheets. The advisory service does not exempt you from performing your own assessments, in
+particular as regards their suitability for the applications intended. The application, use and
+processing of our products and of the products manufactured by you based on the advice given by
+our Application Technology Department are beyond our control and thus entirely your
+responsibility. The sale of our products is effected in accordance with our current terms of sale and
+delivery.
+ATTENTION!
+For new products, according to preliminary technical reports, adequate practical results are
+not always available which would permit a comprehensive assessment of such a product. It
+is therefore imperative to exercise particular care in the testing of such products with
+regard to the application intended!
+Any questions?
+We would be pleased to offer you advice and assistance in solving your problems. Samples and
+technical literature are available upon request
+
+
+Lackwerke Peters GmbH & Co. KG         Internet: www.peters.de    Phone +49 2152 2009-0
+Hooghe Weg 13, 47906 Kempen, Germany   E-Mail: peters@peters.de   Fax   +49 2152 2009-70
+
+
+
+
+www.peters.de                                                                                       5
+

@@ -1,0 +1,155 @@
+\\\ Datasheet
+
+
+  Anteo™ Laminates
+  Anteo™ laminates, designed with a dielectric constant (Dk) to match that of FR-                                                        \\\ Features and Benefits:
+  4, offer a more cost-effective solution without compromising on performance.                                                              Glass Reinforced Hydrocarbon
+  Despite their lower cost, these laminates retain the tight Dk and thickness                                                               Thermoset Platform
+  tolerances required to cater to the burgeoning needs of the wireless market,                                                                •    Ease of PCB manufacturing and
+  typically addressed by more expensive FR-4 materials.                                                                                            assembly in line with FR-4
+                                                                                                                                            Dk Tailored to FR-4 Industry Standard
+  As the demand for wireless data skyrockets, mobile network capacity and                                                                   Norms
+  performance need to keep pace. Traditional FR-4 materials, while suitable for                                                               •    Anteo L43 laminate has a Dk of
+  less demanding RF applications, have occasionally fallen short due to evolving                                                                   4.38 for ease of transition when
+  wireless infrastructure and escalating performance demands, particularly                                                                         upgraded electrical performance
+                                                                                                                                                   is needed over FR-4
+  in small cells and carrier-grade Wi-Fi. This has can lead to RF performance
+  inconsistencies and inadequacies.                                                                                                         Tighter Dk and Thickness Tolerance
+                                                                                                                                            than FR-4
+  With Anteo laminates, wireless circuit designers are poised for a breakthrough.                                                             •    Consistent circuit performance
+  These materials match the performance of mid-tier circuit materials,                                                                      Low Z Axis CTE and High Tg
+  extending past the constraints of FR-4 and providing an optimal balance of                                                                  •    Improved design flexibility, PTH
+  cost, performance, and reliability. Moreover, Anteo laminates are designed                                                                       reliability
+  to be fabricated using standard epoxy/glass (FR-4) processes, aligning with                                                                 •    Automated assembly compatible
+  conventional bondplies.                                                                                                                   Flame Retardant Laminate
+
+   In terms of compliance, Anteo laminates leverage RoHS-compliant flame-                                                                     •    UL 94 V-0
+   retardant technology to achieve a UL 94 V-0 flame retardant rating. Additionally,
+   they are compatible with lead-free solder processes. Adhering to the
+   requirements of IPC-4103B, slash sheet /250, these materials promise robust                                                           \\\ Typical Applications:
+   compliance with industry standards while offering a more affordable alternative.                                                           •    GPS Antennas
+                                                                                                                                              •    Wifi Antennas
+                                                                                                                                              •    Vehicle to Vehicle/Vehicle to
+                                                                                                                                                   Infrastructure Communications
+                                                                                                                                                   (V2X)
+                                                                                                                                              •    Internet of Things (IoT)
+                                                                                                                                                   Segments: Smart Home and
+                                                                                                                                                   Wireless Meters
+
+
+
+
+                                                                                                                                                                                      1
+  \\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com \\\ IPC Slash Sheet # 4103B/006 \\\ UL File #E102763
+Data Sheet
+ANTEO™ LAMINATES
+
+\\\ Standard Properties Table
+
+                                                                        Typical Value1
+   Properties                                                                                              Units                         Test Conditions                                   Test Method
+                                                                        L43 Laminate
+
+   Electrical Properties
+   Dielectric Constant (design)3                                                 4.382                         -                 C-24/23/50            10 GHz               Microstrip Differential Phase Length
+
+   Dissipation Factor                                                           0.005                          -                 23˚C @ 50% RH         10 GHz               IPC TM-650 2.5.5.5
+   Thermal Coefficient of Dielectric
+                                                                                  -21               ppm/˚C                       -50 to 150˚C          10 GHz               IPC TM-650 2.5.5.5
+   Constant
+   Volume Resistivity                                                         2.9 x 109             MΩ-cm                        C96/35/90                                  IPC TM-650 2.5.17.1
+
+   Surface Resistivity                                                        6.2 x 107             MΩ                           C96/35/90                                  IPC TM-650 2.5.17.1
+
+   Electrical Strength (dielectric strength)                                     675                V/mil                                              -                    IPC TM-650 2.5.6.2
+
+   Thermal Properties
+   Decomposition Temperature (Td)                                                414                ˚C                           2hrs @ 105˚C          5% Weight Loss       IPC TM-650 2.3.40
+
+   Coefficient of Thermal Expansion - x                                           13                ppm/˚C
+
+   Coefficient of Thermal Expansion - y                                           16                ppm/˚C                                     -55˚C to 288˚C                             IPC TM-650 2.4.41
+
+   Coefficient of Thermal Expansion - z                                           42                ppm/˚C
+
+   Thermal Conductivity                                                          0.64               W/(m.K)                                         80˚C                    ASTM D5470
+
+   Time to Delamination                                                          >60                minutes                      as-received           288˚C                IPC TM-650 2.4.24.1
+
+   Mechanical Properties
+
+   Copper Peel Strength                                                           5.3               N/mm (lbs/in)                                35 μm foil                 IPC TM-650 2.4.8
+
+   Tensile Strength (MD/CMD)                                                    16, 12              kpsi                                               -                    ASTM D3039/D3039-14
+
+   Flexural Strength (MD, CMD)                                                  25, 19              kpsi                                               -                    IPC-TM-650 2.4.4
+
+   Dimensional Stability (MD, CMD)                                          -0.48, -0.59            mm/m                                               -                    IPC-TM-650 2.4.39a
+
+   Physical Properties
+   Flammability                                                                   V-0                                                                  -                    UL 94
+
+   Moisture Absorption                                                           0.07                         %                                   D24/23                    IPC TM-650 2.6.2.1
+
+   Lead-free Process Compatible                                                   Yes                                                                  -
+NOTES:
+[1] Typical values are a representation of an average value for the population of the property. For specification values contact Rogers Corporation.
+
+[2] Dielectric Constant using stripline method IPC TM-650 2.5.5.5 at 10 GHz is 4.07 +/- 0.08 for Rogers’ internal Q.A. testing
+
+[3] The design Dk is an average number from several different tested lots of material and on the most common thickness/s. If more detailed information is required please contact Rogers Corporation.
+
+
+
+
+                                                                                                                                                                                                                   2
+\\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com \\\ IPC Slash Sheet # 4103B/006\\\ UL File #E102763
+Data Sheet
+ANTEO™ LAMINATES
+
+\\\ Property Charts
+
+
+
+
+                                                                                                                                                                            3
+\\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com \\\ IPC Slash Sheet # 4103B/006\\\ UL File #E102763
+Data Sheet
+ANTEO™ LAMINATES
+
+
+
+
+\\\ Standard Offerings
+
+               Standard Thicknesses                                Standard Panel Sizes                                 Standard Claddings
+ 0.020” (0.508 mm) ± 0.0015”                                       24” X 18” (610 X 457 mm)              Electrodeposited Copper Foil
+ 0.030” (0.762 mm) ± 0.002”                                        24.25" X 18.25" (616 X 464 mm)        1/2 oz. (18µm) HH/HH
+ 0.040” (1.016 mm) ± 0.003”                                        48" X 36" (1219 X 915 mm)             1 oz. (35µm) H1/H1
+ 0.060” (1.524 mm) ± 0.004”                                        48.25" X 36.25" (1226 X 921mm)
+ 0.090” (2.286 mm) ± 0.004”
+ 0.0120” (3.048 mm) ± 0.006”
+                                                                   *Additional panel sizes available
+*Contact Customer Service or Sales Engineering to inquire about other available product configurations including additional thicknesses, panel sizes and claddings. ont
+
+
+
+
+\\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com
+\\\ IPC Slash Sheet # 4103B/250 \\\ UL File #E102763
+
+The information in this preliminary data sheet is intended to assist you in designing with Rogers’ circuit materials. It is not intended to and does
+not create any warranties express or implied, including any warranty of merchantability or fitness for a particular purpose or that the results shown
+on this data sheet will be achieved by a user for a particular purpose. The user should determine the suitability of Rogers’ circuit materials for each
+application. These commodities, technology and software are exported from the United States in accordance with the Export Administration regulations. Diversion
+contrary to U.S. law prohibited.
+
+The Rogers’ logo, Helping power, protect, connect our world, Anteo is a trademark of Rogers Corporation or one of its subsidiaries.
+©2023 Rogers Corporation, Printed in U.S.A., All rights reserved.
+
+Revised 1674 102925 Publication #92-216
+
+
+Helping power, protect, connect our world                                          TM
+                                                                                                                                                                          4
+

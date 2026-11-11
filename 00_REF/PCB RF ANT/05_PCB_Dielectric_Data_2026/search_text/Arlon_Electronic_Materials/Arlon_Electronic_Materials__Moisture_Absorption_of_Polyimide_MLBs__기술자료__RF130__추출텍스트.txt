@@ -1,0 +1,166 @@
+                                                                             APPLICATION NOTES
+
+
+                                                   Moisture Absorption of Polyimide MLB’s
+                                                                                                               Arlon 2016
+
+
+
+Because polyimide materials tend            Both moisture pickup, and                  dried prior to processing” but we
+to absorb moisture faster (and to a         subsequent drying are impacted             have modeled a simple multilayer with
+higher equilibrium point) than epoxies,     by a number of variables including         10 mil outer layers, solid power and
+we have long recommended taking             the particular resin system used,          ground planes, and 30 mil inners, then
+particular care in removing moisture        the board thickness, any protective        exposed these to room temperature
+from prepreg and inner layer details        coatings that may be on the board,         50% and 85% RH for about a week.
+prior to lamination to avoid blistering     the distance from the outer surface to     In this test, we used three different
+and delamination in finished boards.        the nearest ground or power plane,         Arlon polyimides and a multifunctional
+Over time, however, when finished           and the number and size of internal        FR-4 as a control.
+bare boards are stored prior to             clearances that might permit moisture
+                                                                                       85N is a 250˚C Tg pure polyimide
+assembly, reflow or other thermal           to penetrate beyond the otherwise
+                                                                                       (no flame retardant)
+processes, moisture will be absorbed        impermeable copper power and
+by the boards, and may be present at        ground layers. Naturally if finished       35N is a short cure time, 250˚C Tg
+a level sufficient to cause blistering or   board are dried, desiccated and            multipurpose polyimide
+delamination during those processes.        kept in a well sealed vapor barrier        85HP is a filled 250˚C Tg
+In general it has been determined that      bag, the risk of moisture incursion is     polyimide with low Z-expansion
+a level of about 0.22% moisture in a        dramatically lessened. Because of          and higher thermal conductivity.
+PWB is sufficient to cause problems         all these variables, no single test of
+during assembly or reflow. How              moisture pickup will be completely         45N is a 170˚C Tg multifunctional
+quickly does moisture pickup occur,         reliable as an indicator of “how long      epoxy system
+and what should the assembly house          can they sit before they have to be        To summarize the results:
+do about it prior to processing the
+boards?
+
+
+                                               45N            35N            85N               85HP
+                        85% RH
+                        Equilibrium            0.28%          0.63%          0.68%             0.52%
+                        Time to 0.22%          55 hr          9 hr           10 hr             12.5 hr
+                        50% RH
+                        Equilibrium            0.29%          0.56%          0.57%             0.49%
+                        Time to 0.22%          110 hr         20 hr          19.5 hr           33 hr
+Somewhat “surprising” is that the          Drying Polyimide MLB Boards                 And regardless of the drying
+final equilibrium levels of moisture       Prior to Assembly                           cycle selected, it is of paramount
+absorbed after a week of exposure                                                      importance that dried samples be
+                                           So how long does it take to dry the
+were about the same for 85% RH                                                         run through the process to verify that
+                                           boards after they have absorbed
+and 50% RH, although for the                                                           adequate drying has taken place
+                                           water? In all cases drying is much
+conventional unfilled polyimides they                                                  before the whole batch is processed.
+                                           faster than moisture pickup because it
+were slightly lower at 50% RH. It                                                      Be especially cognizant of possible
+                                           is done at 125˚C (250˚F) but a simple
+suggests that, like in a “bucket” only                                                 blowouts of plated copper and
+                                           rate of drying graph is deceptive,
+so much water can be picked up,                                                        possible blistering and delamination
+although at the 85% RH level the           because it does not take into account       adjacent to internal clearance holes
+rate of pickup was about double that       the time it takes to remove water that      or near board edges where moisture
+of the 50% RH level. It is likely that     has gone down through clearance             might be getting in between the solid
+at elevated temperature, additional        holes or that has bled in at edges and      copper planes.
+pickup could be expected, but for          diffused into layers below the solid
+purposes of this work we assumed           copper power and ground layers.
+that boards will be stored at ambient
+                                           Our experience has been that it takes
+conditions, not under elevated
+                                           4-6 hours at 125˚C in a circulating hot
+temperature.
+                                           air oven to adequately dry a PWB that
+The individual charts of water             has been exposed to humidity long
+pickup vs time are included below.         enough to absorb more than about
+The data was fit to an exponential         0.2% moisture.
+equation that treated the data as
+                                           Removal of water from a polyimide
+being asymptotic to a final
+                                           PWB involves breaking of hydrogen
+equilibrium level (based on an
+                                           bonds as well as the diffusion of free
+incremental increase over the level
+                                           water out of the board. While it may
+attained at 168 hours) and time to
+                                           be true that if it has absorbed less
+0.22% was calculated using the
+                                           water, it may take less time to dry, but
+best fit to an equation of the form:
+                                           unless we can know how much
+y=ke(1-at)                                 it absorbed and how the geometry
+where                                      of the board will impact the rate of
+                                           drying, it is risky to use less time than
+k is the empirically determined
+                                           recommended.
+equilibrium moisture level
+a is a form factor that fits the rate of
+rise of the graph (shape of the curve)
+to the plotted data.
+In all cases the fits were excellent
+with R2 (correlation coefficient)
+values of 0.97 to 0.99.
+                                                                                                                                   Moisture Pickup – 85% RH, 25˚C
+                                                               45N	  @	  85%RH	   t(0.22%)=55 hr
+                                                                                                                                   (Blue Line = Original Data, Red Line = Best Fit)
+                                  0.7	  
+%	  Moisture	  Pickup	         0.6	  
+                                  0.5	  
+                                  0.4	  
+                                  0.3	  
+                                  0.2	  
+                                  0.1	  
+                              1E-­‐15	  
+                                 -­‐0.1	   0	     25	     50	     75	      100	      125	     150	     175	     200	  
+                                                                               Hours	  
+                                  Correlation 0.989
+
+
+
+
+                                                                                                           t(0.22%)=9 hr
+
+
+
+
+                                   Correlation 0.991
+
+
+
+
+                                                                                                          t(0.22%)=10 hr
+
+
+
+
+                                    Correlation 0.988
+
+
+
+
+                                    Correlation 0.975
+                                                             Moisture Pickup – 85% RH, 25˚C
+                                            t(2.2%)=20 hr    (Blue Line = Original Data, Red Line = Best Fit)
+
+
+
+
+            Correlation 0.978
+
+
+
+
+                                          t(2.2%)=19.5 hr
+
+
+
+
+          Correlation 0.986
+
+
+
+
+                                            9433 Hyssop Drive
+                                  Rancho Cucamonga, California 91730
+                                Tel: (909) 987-9533 • Fax: (909) 987-8541
+
+                                          www.arlonemd.com
+
+Ver 1.1
+

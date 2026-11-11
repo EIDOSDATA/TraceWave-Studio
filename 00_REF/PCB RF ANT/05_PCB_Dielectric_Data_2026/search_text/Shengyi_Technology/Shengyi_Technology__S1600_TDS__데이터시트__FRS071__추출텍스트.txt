@@ -1,0 +1,48 @@
+ S1600
+ (UL ANSI: FR-4.0) High CTI
+FEATURES                                                            APPLICATIONS
+● High CTI                                                           PDP, LCD, TV, Refrigerator
+● UV Blocking                                                        Power supplier, Washing machine
+● Good mechanical process ability                                    For applications with CAF requirements,
+● Not recommended for solder mask rework                             recommend customer to carry a systematic
+                                                                     assessment of its reliability.
+GENERAL PROPERTIES
+       Test Items                    Test Method              Test Condition              Unit          Typical Value
+             Tg                  IPC-TM-650 2.4.25D                  DSC                    ℃                 135
+             Td                 IPC-TM-650 2.4.24.6            TGA (5% W.L)                 ℃                 310
+            T288                IPC-TM-650 2.4.24.1                  TMA                   min                  2
+            T260                IPC-TM-650 2.4.24.1                  TMA                   min                 15
+    Thermal Stress              IPC-TM-650 2.4.13.1          288℃, solder dip               s                >100
+                                  IPC-TM-650 2.4.24               Before Tg              ppm/℃                 55
+      CTE (Z-axis)                IPC-TM-650 2.4.24                After Tg              ppm/℃                308
+                                  IPC-TM-650 2.4.24               50-260℃                   %                 4.5
+   Permittivity (1GHz)           IPC-TM-650 2.5.5.9              C-24/23/50                  -                4.5
+ Loss Tangent (1GHz)             IPC-TM-650 2.5.5.9              C-24/23/50                  -                0.017
+   Volume Resistivity           IPC-TM-650 2.5.17.1              C-96/35/90              MΩ-cm              5.0×108
+   Surface Resistivity          IPC-TM-650 2.5.17.1              C-96/35/90                MΩ               5.0×107
+    Arc Resistance                IPC-TM-650 2.5.1               D-48/50+D-                 s                 126
+                                                                   0.5/23
+  Dielectric Breakdown            IPC-TM-650 2.5.6               D-48/50+D-                kV                 >45
+                                                                   0.5/23
+  Peel Strength (1oz)             IPC-TM-650 2.4.8               288℃/10s             N/mm [lb/in]        1.8 [10.28]
+   Flexural Strength              IPC-TM-650 2.4.4                     A                  MPa              550/450
+       (LW/CW)
+   Water Absorption              IPC-TM-650 2.6.2.1                D-24/23                  %                 0.10
+      Flammability                        UL94                   C-48/23/50              Rating              V-0
+             CTI                       IEC60112                        A                 Rating             PLC 0
+                                                                                                           (≥600V)
+Remarks:    1. Specification sheet: IPC-4101/21, is for your reference only.
+           2. All the typical value is based on the 1.6mm (8*7628) specimen.
+           3. All the typical value listed above is for your reference only, please turn to Shengyi Technology Co., Ltd for
+            detailed information, and all rights from this data sheet are reserved by Shengyi Technology Co., Ltd.
+
+PURCHASING INFORMATION
+   Thickness               Copper foil                                     Standard size
+                                              1,020mm ×1,220mm(40”×48”) 915mm ×1,220mm (36”×48”)
+0.8mm to 3.2mm          12um to 70 um
+                                              1,070mm ×1,220mm(42”×48”)
+Remarks: Other sheet size and thickness could be available upon request.
+
+
+                                                                                         CN-TDS-2101-04-S1600
+

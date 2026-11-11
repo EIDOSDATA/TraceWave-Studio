@@ -1,0 +1,67 @@
+Rigid
+                                                                                           # Layer          Thickness Description                   Note
+                                                                                                                       Top Solder         0.015mm      Soldermask IPC-SM840                   used on rigid parts
+                                                                                                                       Top Surface Finish    0.006mm
+                                                                                                                         1 Top Side           0.030mm       Starting foil 1/4oz. after plating and processing
+                                                                                                                                     0.050mm       Flexible core IPC-4204/11                     Flex Polyimide adhesiveless
+                                                                                                                         2  Inner Layer 1        0.017mm    ED Base Copper
+                                                                                                                                     0.100mm      Prepreg IPC-4101/127/128                LowFlow FR-4.1 filled, halogen free
+
+
+
+
+                                                                                                                                     0.610mm      Core IPC-4101/127/128                     FR-4.1 filled, halogen free
+
+
+
+
+
+                                                                                                                                     0.065mm      Prepreg IPC-4101/127/128                  FR-4.1 filled, halogen free
+
+                                                                                                                         3  Bottom Side         0.030mm       Starting foil 1/4oz. after plating and processing
+                                                                                                                                  Bottom Surface Finish 0.006mm
+                                                                                                                                  Bottom Solder       0.015mm      Soldermask IPC-SM840                   used on rigid parts
+                                                                                                         Total thickness: 0.943mm
+
+
+
+
+
+               notes:
+                                                         FLEX3_2F-1Ri_094_17_2V13
+
+                                                                                            PCB Thickness Tolerance: rigid ± 10%  / flex ± 0,05mm
+              Final copper thicknesses according to IPC-6013   Please follow our sectional design rules:
+                               ►  www.we-online.com/designrigidflex            customer                         created
+
+                                                                                                             pcb name                       approved
+             IPC-2223 use A "Flex to install"                  For impedance matching stackups: Please
+                                                             consult our specialists: FLEX@we-online.com     engineer                         format      A4, landscape
+             Standard: Surface Finish ENIG                                                                             date
+               (Ni 5.5 µm ± 1.5 µm, Au 0.075 µm ± 0.025 µm)                                                           Template Revision: 10/2023 by Andreas Schilpp / Michael Kress / Werner Öchslen
+
+Flex
+                                                                                           # Layer           Thickness Description                   Note
+                                                                                                                                                                                flexible Soldermask Top 0.040mm      Soldermask JIS-C-5012/IPC-SM840              flexibel, thermal cured
+                                                                                                                         1 Top Side            0.030mm       Starting foil 1/4oz. after plating and processing
+                                                                                                                                      0.050mm       Flexible core IPC-4204/11                     Flex Polyimide adhesiveless
+                                                                                                                         2  Inner Layer 1         0.017mm    ED Base Copper
+                                                                                                                                           Coverlay Bottom       0.040mm      PI Coverlay IPC-4203/2                      Polyimide + bonding film (Epoxy)
+                                                                                                         Total thickness: 0.177mm
+
+
+
+
+
+               notes:
+                                                         FLEX3_2F-1Ri_094_17_2V13
+
+                                                                                           PCB Thickness Tolerance: rigid ± 10%  / flex ± 0,05mm
+              Final copper thicknesses according to IPC-6013   Please follow our sectional design rules:
+                               ►  www.we-online.com/designrigidflex            customer                         created
+
+                                                                                                             pcb name                       approved
+            IPC-2223 use A "Flex to install"                  For impedance matching stackups: Please
+                                                             consult our specialists: FLEX@we-online.com     engineer                         format      A4, landscape
+             Standard: Surface Finish ENIG                                                                             date
+               (Ni 5.5 µm ± 1.5 µm, Au 0.075 µm ± 0.025 µm)                                                           Template Revision: 10/2023 by Andreas Schilpp / Michael Kress / Werner Öchslen

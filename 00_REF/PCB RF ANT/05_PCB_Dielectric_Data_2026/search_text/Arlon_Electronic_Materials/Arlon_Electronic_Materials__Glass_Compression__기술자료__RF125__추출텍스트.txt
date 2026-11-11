@@ -1,0 +1,54 @@
+                                                                          APPLICATION NOTES
+                                                                           GLASS COMPRESSION
+                                                                                                          Arlon 2013
+                                                                                 Several approaches can be used
+                                                                                 to reduce glass compression:
+                                                                                 1. The simplest “fix” is simply to
+                                                                                     reduce laminating pressure to
+                                                                                     eliminate the excessive flow. In
+                                                                                     this case care needs to be taken
+                                                                                     that enough flow remains to fill
+                                                                                     inner layer circuitry and to prevent
+                                                                                     dryness in low pressure areas.
+                                                                                 2. Slowing heating rate in
+                                                                                     combination with reduced
+                                                                                     lamination pressure to retain more
+                                                                                     of the resin in the package. (Note:
+                                                                                     This will also reduce the tendency
+                                                                                     of a PWB to “football,” or to be
+                                                                                     thinner at the edges than in the
+                                                                                     center.)
+Glass compression is caused             the combination of reduced resin         3.Consider the use of higher resin
+when excessive resin flow occurs,       viscosity due to the faster heat           content fabrics used to build
+leaving glass bundles compressed        up rate with pressure that causes          dielectric thickness, especially
+against themselves and physically       excessive flow. It is more likely to       those in direct contact with a
+contacting inner signal layers          occur with lower resin content and/        signal layer. Use of a heavier
+within the lamination package, as       or heavier glass styles that have less     glass, with a high resin prepreg
+illustrated in the photomicrograph,     resin content in total and less of a       based on 106 or 1080 glass
+above. This phenomenon is               surface “butter-coat.”                     directly against the signal layer,
+believed to result in an increased                                                 can be effective in combination
+                                        Because the retained resin content
+likelihood of shorts and or current                                                with controlled pressure and flow.
+                                        is low, the laminate is structurally
+leakage within the package, since a
+                                        weakened. Additionally, drilling and     4. Use vacuum assisted lamination,
+layer of pure resin between the glass                                               which allows pressure reductions
+                                        fabrication problems may result.
+bundle and the copper represents                                                    to about 60% of the pressure
+                                        Other possibilities include high
+the most effective dielectric in the                                                used in non-vacuum process.
+                                        chemical absorption (wicking), pink
+composite.                                                                          While most of the industry now
+                                        ring, delamination and measling
+Glass compression can occur             in addition to the increased risk of        uses vacuum lamination routinely,
+as a result of high pressure in         current leakage.                            if it is not in use, generally higher
+combination with fast heat-up rates,                                                pressures are used to ensure
+                                                                                    sufficient flow and fill.
+                      9433 Hyssop Drive
+            Rancho Cucamonga, California 91730
+          Tel: (909) 987-9533 • Fax: (909) 987-8541
+
+                    www.arlonemd.com
+
+Ver 1.1
+

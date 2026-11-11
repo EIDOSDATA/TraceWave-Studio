@@ -1,0 +1,289 @@
+                                                                                                                 FR406N
+                                                                              No-Flo® and Lo-Flo® Specialty Prepreg
+
+
+
+Processing Guide
+The processing guidelines contained in this document were developed through in-house testing and field experience. However, they
+should be considered to be starting points that will require further adjustment. Read the following review of processes for applicability
+to your particular Printed Wiring Board (PWB) fabrication environment. Remember that the suggestions contained herein can not
+account for all possible board designs or processing environments. Additional adjustments by the fabricator will be necessary. Isola can
+and will assist with this process, but the fabricator, not Isola, is ultimately responsible for their process and the end results.
+Fabricators should verify that PWBs made using these suggestions meet all applicable quality and performance
+requirements.
+
+
+Part 1: Prepreg Storage and Handling
+Isola Group’s prepreg bonding sheets for use in multilayer printed circuit board applications are manufactured to specifications that
+include physical and electrical properties and processing characteristics relative to the laminating application. Handling and storage
+factors have an important influence on the desired performance of the prepreg. Some parameters are affected by the environment in
+which prepregs are stored. They can also deteriorate over extended periods of storage. The prepreg received by the customer is a
+glass fabric that has been impregnated with a stated quantity of low volatile, partially polymerized resin. The resin is tack-free but
+somewhat brittle. Many lamination problems arise from resin loss off the fabric due to improper handling. The fabric used is based on
+the order and supplies the required thickness. In most cases the amount of resin carried by the fabric increases as the fabric thickness
+decreases.
+Isola Group’s FR406N is a proprietary multifunctional epoxy (170°C Tg typical by DSC) no-flow prepreg. It has been specifically
+formulated for optimal performance in bonding applications that require minimal resin flow and consistency in lamination. The material
+brings the fabricator specific characteristics appropriate for use in heat sink bonding, die cavity board (direct chip attachment) and
+multilayer rigid-flex applications. It meets IPC-4101C specifications as well as UL 94 V-0 specifications.
+
+Handling Suggestions
+Handle all prepreg using clean gloves. Use sharp, precision equipment when cutting or paneling prepreg. Treat all prepreg as being
+very fragile. Use extreme care when handling very high resin content prepreg (glass fabrics 1080 and finer).
+
+Storage Suggestions
+Upon receipt, all prepreg should be immediately moved from the receiving area to a controlled environment. All prepreg should be
+used as soon as possible using a First-In-First-Out (FIFO) inventory management system.No-flow prepregs should remain in their
+original bagging during storage and bags should be resealed if opened.
+
+Prepreg should be stored at ≤ 23ºC and below 50% humidity. Prepreg packages should be allowed to equilibrate to
+layup room conditions before opening to prevent moisture condensation on the prepreg.
+
+If stored @ 5°C (41°F), the unopened bag should be equilibrated for 8 hours in the layup area prior to opening and use.
+
+Attention must be given to environmental conditions in the storage/layup areas to insure that the prepreg is not allowed to absorb
+moisture. FR406N prepregs are hygroscopic. Moisture absorption can lower minimum melt viscosity, resulting in a lengthening of the
+flow window. Further, excessive moisture absorption can also depress Tg and impact degree of cure. If excessive moisture is
+absorbed, desiccation procedures may NOT return prepreg performance to original specifications.
+
+
+Part 2: Prepreg Selection
+Isola Laminate Systems offers no-flow prepregs in various glass styles. The resin content and flow characteristics of these items are
+tightly controlled to optimize consistency of flow and filling capability, plus provide precise thickness contribution. Actual thickness will
+be dependent on the prepregs selected as well as on the specific lamination set-up, including temperature, pressure, area under
+lamination and configuration of facing surfaces.
+FR406N no-flow prepreg should be considered for use where UL94 V-0 flammability rating, high temperature reliability
+and chemical resistance are required.
+Generally, two-plys of no-flow prepreg provide the best results. One ply of no-flow prepreg, style 1080 or thinner, is not generally
+
+  https://www.isola-group.com/pcb-laminates-
+ prepreg/fr406n-no-flow-and-low-flow-prepregs/      Last Updated September 17, 2025             © 2021, Isola Group, All rights reserved.
+                                                                                                                 FR406N
+                                                                            No-Flo® and Lo-Flo® Specialty Prepreg
+
+
+suggested. This is due to the lack of sufficient cushioning during lamination and may result in an increased potential for lamination
+voids and other defects. FR406N no-flow prepregs are typically available in 106 and 1080 glass styles in most regions (Asia, Europe and
+North America). Some regions may offer more than one combination of resin content and/or flow performance per glass style.
+
+Prepreg selection should be based on the glass style and overall thickness requirement needed as well as the resin content and the
+flow characteristics of the specific prepreg product. The PWB fabrication process requirements as well as the end product’s design and
+performance requirements should also be taken into account when choosing no-flow prepregs.
+
+Consult your Technical Service representative for assistance with product selection as well as with general processing
+and press cycle adjustments.The processing suggestions contained in this document are generic or general in nature.
+Each fabricator should characterize FR406N No-flow prepregs in their specific applications.
+
+Incoming Testing and Acceptance of No Flow Prepreg Materials
+During the manufacturing of Isola no flow prepregs, Isola controls the prepreg rheology by performing “Circle Flow” (CF) tests. The test
+consists of punching 1′′ diameter holes in the prepreg, pressing 4 plys of the prepreg and then determining the reduction in the 1′′
+circle diameters due to resin flow. This test method allows for Isola to control the prepreg flow (Circle Flow) to established CF ranges.
+Isola has established capability to three CF ranges identified as low, med and high spec ranges and has the necessary process controls
+in place to consistently manufacture to these spec ranges.
+While the CF testing allows for consistent manufacturing and control of the no flow prepreg rheology, the controlled CF ranges may not
+directly correlate and may result in different flow performance during the PCB fabrication lamination process over the various board
+designs and stackup configurations. Therefore, it is required that an incoming visual inspection and a CF test be performed through the
+PCB lamination process on every lot of no flow prepreg to approve the material for use.
+Due to the different influences of each distinct board design and board stackup, the performance of the Isola no flow prepreg is
+required to be deemed acceptable via the incoming Circle Flow test. The customer incoming test must be correlated to the no flow
+prepreg material spec ranges, LSL and USL material samples, for the given CF material range identified to be supplied. Upon
+completion of the incoming test correlation to the Isola no flow CF product range, the incoming test is required to be performed on
+each production material lot received to determine if the material lot is acceptable for use.
+Due to the high value add of finished product relative to the no-flow/low-flow prepreg, this incoming acceptance testing is a necessary
+and required control to eliminate the Isola no-flow prepreg as a potential contributor to any PCB process or quality problems.
+Please contact the Isola Technical Account manager to obtain assistance in establishing the incoming CF testing and correlation data to
+the Isola no flow CF product ranges.
+
+Bond Enhancement
+Bond strength and assembly reliability will be improved if the organic and metal surfaces to be bonded with no-flow prepregs are
+properly prepared prior to lamination using suitable procedures. Laminate surfaces (flex film or unclad laminate) should be clean and
+roughened (pumice scrubbed, plasma etched or similarly prepared). Metal or metallized surfaces should have the shininess broken and
+oxidation removed by pumice scrubbing, brushing, vapor honing or similar means. Copper surfaces are best prepared with oxide or
+oxide replacements for maximum adhesion. Shiny nickel is a particularly challenging surface to be bonded. Surface(s) must be dry, as
+moisture will affect adhesion, prepreg flow characteristics and disrupt the curing mechanism.
+
+Each fabricator should conduct in-house testing to verify that their coating produces acceptable results with FR406N.
+If reduced oxides are used, consult the chemical supplier for post oxide baking considerations as excessive baking may degrade the
+coating characteristics. It is generally suggested that post-oxide baking be performed vertically, in racks. Suggest mild bake of oxided
+surfaces (15-30 minutes @ 80-100°C). For conveyorized oxide replacements, an efficient dryer at the end of a conveyorized oxide
+replacement line should remove all moisture from the innerlayer surface.
+
+However, drying of layers for 30 minutes minimum @ 100°C or higher is considered a “best practice”. Drying in racks is
+preferred.
+If immersion tin adhesion treatments are used, the fabricator should test the coating to verify adequate bond strength develops with
+FR406N prepregs.
+
+
+Part 3: Lamination
+Standard Lamination
+The amount of time at cure temperature, and to some extent the actual cure temperature of FR406N material, will be determined by
+ https://www.isola-group.com/pcb-laminates-
+prepreg/fr406n-no-flow-and-low-flow-prepregs/     Last Updated September 17, 2025               © 2021, Isola Group, All rights reserved.
+                                                                                                                      FR406N
+                                                                                No-Flo® and Lo-Flo® Specialty Prepreg
+
+
+the thickness of the multilayer package being produced. Very thick boards will require a longer cure time to assure optimum material
+performance.
+On rare occasions a customer will encounter a board design with highly unusual fill characteristics. In those cases, it is sometimes
+necessary to use very high pressures (400-500 PSI) to achieve complete resin fill with the prepreg in question.
+
+                                                                                 It is important to understand when higher pressure is the
+  Table 1: FR406N Lamination Pressure                                            appropriate solution to the problem and when a different
+                                                                                 prepreg (thicker glass style, higher resin content or higher Circle
+                                                 Suggested                       Flow performance) is a more appropriate solution.
+   Lamination Method
+                                                 Pressure Range
+                                                                                 Table 1 outlines general suggestions for lamination pressure
+   Hydraulic Pressing                            350-400 PSI                     based on press type used.
+   (without vacuum assist)                       (25-28 kg/cm2)
+                                                                                 Removal of FR406N flash should be performed by routing rather
+   Hydraulic Pressing
+                                                 325-375 PSI
+                                                                                 than shearing to minimize crazing along the panel edges.
+   (with vacuum assist via vacuum frames or
+                                                 (23-26 kg/cm2)                  Some designs and applications may require deviation
+   bags)
+                                                                                 from these guidelines. Consult with Isola Technical
+   Hydraulic Pressing                            325-375 PSI                     Service for assistance.
+   (vacuum enclosure)                            (23-26 kg/cm2)
+
+                                                 175-200 PSI
+   Autoclave Pressing
+                                                 (12-14 kg/cm2)
+
+
+
+Single-Stage Press Cycle Lamination
+The following page outlines the suggested lamination parameters for a single-stage lamination cycle. Dual-stage cycles that utilize
+“kiss” pressure during the initial stage of the cycle are not suggested for use with FR406N material.
+The lamination cycle selected will be a function of board stackup, complexity and thickness as well as the lamination presses capability.
+Note that the following graph is for reference purposes only and may require adjustment depending on the board size, thickness and
+complexity. Thicker boards may require additional dwell time at curing temperature to achieve full cure. See “Standard
+Lamination” previously discussed.
+The cycle includes a pressure reduction step, which facilitates stress relief of the package during the cure step. Further, the cycle
+assumes that vacuum is maintained throughout the heating cycle and that the book is cooled to a temperature well below the Tg of the
+material before the press is opened. All three conditions are considered to represent “best practice” conditions during lamination by
+Isola.
+
+While use of both the pressure drop cycle and cooling well below Tg in the “hot” press are strongly suggested, these
+steps are considered to be “optional” and the PCB fabricator may have equipment or capacity limitations which prevent
+following these suggestions.
+Also note that your Isola Technical Service representative may elect to utilize an “equilibrated” lamination cycle for
+some prepregs and some board designs. During this type of cycle the product temperature is held for 10-20 minutes in
+the product’s melting temperature range under full pressureto facilitate better flow and wetout of structures. Although
+this type of cycle is not specifically illustrated here, it is considered to be an acceptable practice for some designs.
+
+Single-Stage Lamination
+Step 1:
+Load/center the package as quickly as possible. Pull vacuum for 20 minutes on lifters.
+
+Step 2:
+Apply full pressure of 325-400 PSI (22.8-28.1 kg/cm 2) on the panels. Suggest 350 PSI (24.6 kg/cm 2) for initial pressure setting. See
+Graph. NOTE: “Kiss” pressure cycles are not suggested with FR406N.
+
+Step 3:
+Adjust heat rise to ~3.0-6.0°C/min (5.5-11.0°F/min), as measured between 79-135°C (175-275°F) by controlling the platen ramp rate
+and/or by using the appropriate amount of pressure padding.
+
+Step 4:
+
+
+  https://www.isola-group.com/pcb-laminates-
+ prepreg/fr406n-no-flow-and-low-flow-prepregs/        Last Updated September 17, 2025                © 2021, Isola Group, All rights reserved.
+                                                                                                            FR406N
+                                                                           No-Flo® and Lo-Flo® Specialty Prepreg
+
+
+Cure for a minimum of 80 minutes @ 185°C (365°F) once the package center reaches the specified set point. NOTE: An 60 minute cure
+cycle @ 185°C (365°F) may be used in some applications, but the product may not develop full Tg. Further, if the presence of
+components dictates a lower cure temperature, note that cure duration should be increased by 60 minutes for every -12.2°C (10°F)
+reduction in cure temperature below 185°C (365°F) to develop maximum Tg. The use of unique press cycles should be validated
+by cure analysis. NOTE: Do not let the package temperature exceed 192°C (378°F).
+
+Step 5:
+Reduce the pressure to 50 PSI (3.5 kg/cm 2) after package has been at cure temperature for 30 minutes.
+
+Step 6:
+Cool material as slowly as possible or at 2.8°C/min (5°F/min) down from 185°C (365°F) through 135°C (275°F) or below.
+
+
+
+
+Suggested FR406N Single-Stage Pressure-Temperature Profile
+
+
+
+Please note: This is not a press control program! The graph represents the preferred pressure/temperature profile panels are
+subjected to during the lamination program cycle. Note that the actual high pressure setting chosen may differ from the 350
+PSI suggested in this graph. Press pressure and cure duration selected may depend upon board design as well as other
+factors.
+
+
+
+
+Part 4: Health and Safety
+Always handle laminate with care. Laminate edges are typically sharp and can cause cuts and scratches if not handled properly.
+Handling and machining of prepreg and laminate can create dust (see FR406N Material Safety Data Sheet). Appropriate ventilation is
+necessary in machining/punching areas. The use of protective masks is suggested to avoid inhaling dust. Gloves, aprons and/or safety
+glasses are suggested if individuals have frequent or prolonged skin or eye contact with dust. Isola Group does not use
+polybromidebiphenyls or polybromide-biphenyloxides as flame retardants in any product. Material Safety Data Sheets are available
+upon request.
+
+
+Part 5: Ordering Information
+
+
+ https://www.isola-group.com/pcb-laminates-
+prepreg/fr406n-no-flow-and-low-flow-prepregs/    Last Updated September 17, 2025           © 2021, Isola Group, All rights reserved.
+                                                                                                                       FR406N
+                                                                                 No-Flo® and Lo-Flo® Specialty Prepreg
+
+
+Contact your local sales representative or visit: www.isola-group.com for further information.
+
+Or contact us at: info@isola-group.com
+
+Isola Group North America
+6565 West Frye Road
+Chandler, AZ 85226
+Phone: 480-893-6527
+Fax: 480-893-1409
+
+Isola Asia Pacific (Hong Kong) Ltd.
+12/F, Kin Sang Commercial Centre
+49 King Yip Street, Kwun Tong
+Kowloon, Hong Kong
+Phone: 852-2418-1318
+Fax: 852-2418-1533
+
+Isola GmbH
+Isola Strasse 2
+D-52348 Düren, Germany
+Phone: 49-2421-8080
+Fax: 49-2421-808164
+
+
+Learn More
+https://www.isola-group.com/products/all-printed-circuit-materials/FR406N/
+
+
+
+          NOTES
+          The data contained in this document, while believed to be accurate and based on both field testing and analytical methods
+          considered to be reliable, is for information purposes only. Any sales of these products will be governed by the terms and conditions
+          of the agreement under which they are sold.
+
+
+
+
+          Isola, the Isola logo, Astra, Chronon, GETEK, I-Fill, IsoDesign, IsoStack, I-Speed, I-Tera, Polyclad, Stratus, TerraGreen, and The Base
+          for Innovation are registered trademarks or trademarks of ISOLA USA Corp. in the United States and in other countries. Copyright ©
+          2021 Isola Group. All rights reserved.
+
+
+
+
+ https://www.isola-group.com/pcb-laminates-
+prepreg/fr406n-no-flow-and-low-flow-prepregs/          Last Updated September 17, 2025                © 2021, Isola Group, All rights reserved.
+

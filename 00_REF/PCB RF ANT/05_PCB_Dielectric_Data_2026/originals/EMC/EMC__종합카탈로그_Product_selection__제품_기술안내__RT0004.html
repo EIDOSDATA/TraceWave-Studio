@@ -1,0 +1,1833 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+	<title>EMC</title>
+	<meta name="author" content="Designed by Akacia System | 旭亞系統設計(股)公司 | www.akacia.com.tw" /> 
+	<meta name="keywords" content="EMC,CCL"/>
+	<meta name="description" content="全站 description">
+	<meta name="robots" content="all">
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+
+	<!--[if IE 9]>
+		<script type="text/javascript" src="/template/js/pie/PIE_IE9.js"></script>
+	<![endif]-->
+	<!--[if lt IE 9]>
+	  <script type="text/javascript" src="/template/js/pie/PIE_IE678.js"></script>
+	  <script type="text/javascript" src="/template/js/pie/selectivizr-min.js"></script>
+	<![endif]-->
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<link href="/template/css/reset.css" rel="stylesheet" type="text/css" /><link href="/template/css/bootstrap.css" rel="stylesheet" type="text/css" /><link href="/template/css/font-awesome.min.css" rel="stylesheet" type="text/css" /><link href="/template/css/font-awesome-v4-shims.min.css" rel="stylesheet" type="text/css" /><link href="/template/css/default.css" rel="stylesheet" type="text/css" /><link href="/template/css/main.css" rel="stylesheet" type="text/css" />
+	<link href="/template/css/dir/application.css" rel="stylesheet" type="text/css" /><link href="/template/css/dir/product.css" rel="stylesheet" type="text/css" /><link href="/template/css/dir/datatables.min.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="/template/js/jquery-3.7.1.min.js"></script><script type="text/javascript" src="/template/js/bootstrap.min.js"></script><script type="text/javascript" src="/template/js/init.js"></script>
+	<script type="text/javascript" src="/template/js/item_toggle.js"></script><script type="text/javascript" src="/template/js/table_sort.js"></script><script type="text/javascript" src="/template/js/datatables.min.js"></script>
+	</head>
+<body>
+
+	<div class="container-fluid" id="header_block">
+			<script>
+			$(function() {
+				$('#confirm-cookie-policy').click(function() {
+					var d = new Date();
+					d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
+					var expires = "expires=" + d.toUTCString();
+					document.cookie = "PP=1;" + expires + ";path=/";
+					$('#website-privacy-policy').slideUp();
+					$('.header_margin_block').removeAttr('style');
+					$('.menu_bg_block').css('top', '');
+				});
+				resizeHeader();
+				$(window).resize(function() {
+					resizeHeader();
+				});
+			});
+
+			function resizeHeader() {
+				var x = window.innerWidth;
+				var headerHeight = $('#website-privacy-policy').outerHeight();
+				if (x >= 1199) {
+					headerHeight += 105;
+					$('.menu_bg_block').css('top', headerHeight + 'px');
+				} else {
+					headerHeight += 60;
+				}
+				$('.header_margin_block').css('height', headerHeight + 'px');
+			}
+    </script>
+
+		<div class="cookie_statement" id="website-privacy-policy">
+			<div class="container clearfix">
+				<p>
+					This website uses cookies, if you continue to use our website, we assume that you accept such use. You can learn more detail about <a href="/en-global/privacy_policy/index" class="policy-page-link">Privacy policy</a>.				</p>
+				<div class="confirm-cookie-policy-btn" id="confirm-cookie-policy">OK<i class="fa fa-angle-right privacy_ok" aria-hidden="true"></i></div>
+			</div>
+		</div>
+		<div class="container-fluid header_wrap">
+		<div class="header_container container clearfix">
+			<!-- Logo -->
+
+			<a class="navbar-brand hidden_mobile" href="/en-global" title="EMC">
+				<img src="/template/images/emc_logo.png?v=20210929" alt="EMC" title="EMC">
+			</a>
+			<!-- 常駐區 -->
+			<ul class="resident_list no_ul hidden_mobile">
+									<li class="login_type">
+						<!-- 登入鈕 -->
+						<a href="/en-global/member/signin?done=https%3A%2F%2Fwww.emctw.com%2Findex.php%2Fen-global%2Fproduct_name%2Findex" class="login_btn">
+							<i class="fa fa-sign-in" aria-hidden="true"></i>
+							LOGIN						</a>
+					</li>
+								<li>
+					<!-- 語系 -->
+					<div class="lang_btn">
+						<i class="fa fa-globe" aria-hidden="true"></i>
+						ENGLISH						<!-- 語系列 -->
+						<ul class="no_ul lang_list">
+															<li>
+									<a href="/en-global" title="ENGLISH">
+										ENGLISH									</a>
+								</li>
+															<li>
+									<a href="/zh-TW" title="繁體中文">
+										繁體中文									</a>
+								</li>
+															<li>
+									<a href="/zh-CN" title="简体中文">
+										简体中文									</a>
+								</li>
+													</ul>
+					</div>
+				</li>
+			</ul>
+
+			<!-- MENU列 -->
+			<nav class="navbar navbar-default row" role="navigation">
+				<div class="navbar-header">
+					<!-- 手機版 常駐項 -->
+					<div class="mobile_resident_block hidden_pc">
+						<!-- 手機版 Logo -->
+						<a class="mobile_brand" href="/en-global">
+							<img src="/template/images/emc_logo_m.png?v=20210929" alt="EMC" title="EMC">
+						</a>
+					</div>
+
+					<!-- 手機版 按鈕 -->
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu_list_mobile" id="m_menu_hamb">
+						<!-- <span class="sr-only">Toggle navigation</span> -->
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+				</div>
+
+				<!-- MENU -->
+<!--                20251022 gx update-->
+                <div class="menu-pc">
+                <div class="collapse navbar-collapse" id="menu_list">
+                    <ul class="nav navbar-nav header_menu" id="emc_header_menu">
+                                                                            <!-- 一级菜单 li：无论是否有 children 都分配 data-panel-index -->
+                            <li class="emc-menu-item" data-panel-index="0">
+                                                                <a href="javascript:void(0)"
+                                   class="emc-menu-link disabled"
+                                   title="About EMC">
+                                    About EMC                                </a>
+                            </li>
+                                                                                <!-- 一级菜单 li：无论是否有 children 都分配 data-panel-index -->
+                            <li class="emc-menu-item" data-panel-index="1">
+                                                                <a href="javascript:void(0)"
+                                   class="emc-menu-link disabled"
+                                   title="Products">
+                                    Products                                </a>
+                            </li>
+                                                                                <!-- 一级菜单 li：无论是否有 children 都分配 data-panel-index -->
+                            <li class="emc-menu-item" data-panel-index="2">
+                                                                <a href="javascript:void(0)"
+                                   class="emc-menu-link disabled"
+                                   title="Investors">
+                                    Investors                                </a>
+                            </li>
+                                                                                <!-- 一级菜单 li：无论是否有 children 都分配 data-panel-index -->
+                            <li class="emc-menu-item" data-panel-index="3">
+                                                                <a href="javascript:void(0)"
+                                   class="emc-menu-link disabled"
+                                   title="Governance">
+                                    Governance                                </a>
+                            </li>
+                                                                                <!-- 一级菜单 li：无论是否有 children 都分配 data-panel-index -->
+                            <li class="emc-menu-item" data-panel-index="4">
+                                                                <a href="javascript:void(0)"
+                                   class="emc-menu-link disabled"
+                                   title="Sustainability">
+                                    Sustainability                                </a>
+                            </li>
+                                                                                <!-- 一级菜单 li：无论是否有 children 都分配 data-panel-index -->
+                            <li class="emc-menu-item" data-panel-index="5">
+                                                                <a href="javascript:void(0)"
+                                   class="emc-menu-link disabled"
+                                   title="Career">
+                                    Career                                </a>
+                            </li>
+                                                                                <!-- 一级菜单 li：无论是否有 children 都分配 data-panel-index -->
+                            <li class="emc-menu-item" data-panel-index="6">
+                                                                <a href="javascript:void(0)"
+                                   class="emc-menu-link disabled"
+                                   title="Contact Us">
+                                    Contact Us                                </a>
+                            </li>
+                                                                        </ul>
+
+                    <!-- 全局下拉面板（放在所有一级菜单外部） -->
+                    <div id="emc_global_panel" class="emc-global-panel" aria-hidden="true">
+                                                                            <div class="emc-panel-group" data-index="0" style="display:none;">
+                                                                    <div class="emc-panel-inner">
+                                        <ul class="emc-lv2">
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="/en-global/about_milestone/index"
+                                                       class="emc-lv2-link">
+                                                        Profile                                                    </a>
+                                                                                                    </li>
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="/en-global/our_values/index"
+                                                       class="emc-lv2-link">
+                                                        Our Values                                                    </a>
+                                                                                                    </li>
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="/en-global/leading_technology/index"
+                                                       class="emc-lv2-link">
+                                                        Leading Technology                                                    </a>
+                                                                                                    </li>
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="/en-global/achievements/index"
+                                                       class="emc-lv2-link">
+                                                        Achievements                                                    </a>
+                                                                                                    </li>
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="/en-global/about_quality/index"
+                                                       class="emc-lv2-link">
+                                                        Certifications                                                    </a>
+                                                                                                    </li>
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="/en-global/about_production/index"
+                                                       class="emc-lv2-link">
+                                                        Capacity                                                    </a>
+                                                                                                    </li>
+                                                                                    </ul>
+                                    </div>
+                                                            </div>
+                                                                                <div class="emc-panel-group" data-index="1" style="display:none;">
+                                                                    <div class="emc-panel-inner">
+                                        <ul class="emc-lv2">
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="/en-global/product_name/index"
+                                                       class="emc-lv2-link">
+                                                        By Name                                                    </a>
+                                                                                                    </li>
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="javascript:void(0)"
+                                                       class="emc-lv2-link disabled">
+                                                        By Applications                                                    </a>
+                                                                                                            <ul class="emc-lv3">
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/applications/index/substrate"
+                                                                       class="emc-lv3-link">
+                                                                        Substrate	                                                                    </a>
+                                                                </li>
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/applications/index/mobile_device"
+                                                                       class="emc-lv3-link">
+                                                                        Mobile Device                                                                    </a>
+                                                                </li>
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/applications/index/infrastructure"
+                                                                       class="emc-lv3-link">
+                                                                        Infrastructure                                                                    </a>
+                                                                </li>
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/applications/index/Automotive_Industrial"
+                                                                       class="emc-lv3-link">
+                                                                        Automotive & Industrial                                                                    </a>
+                                                                </li>
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="https://www.arlonemd.com/"
+                                                                       class="emc-lv3-link">
+                                                                        Aerospace, Industrial & Military                                                                    </a>
+                                                                </li>
+                                                                                                                    </ul>
+                                                                                                    </li>
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="/en-global/mass_lam_service/index"
+                                                       class="emc-lv2-link">
+                                                        Mass Lam Service                                                    </a>
+                                                                                                    </li>
+                                                                                    </ul>
+                                    </div>
+                                                            </div>
+                                                                                <div class="emc-panel-group" data-index="2" style="display:none;">
+                                                                    <div class="emc-panel-inner">
+                                        <ul class="emc-lv2">
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="javascript:void(0)"
+                                                       class="emc-lv2-link disabled">
+                                                        Financial Information                                                    </a>
+                                                                                                            <ul class="emc-lv3">
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/key_financial_performance/index"
+                                                                       class="emc-lv3-link">
+                                                                        Key Financial Performance                                                                    </a>
+                                                                </li>
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/presentation_materials/index"
+                                                                       class="emc-lv3-link">
+                                                                        Presentation Materials                                                                    </a>
+                                                                </li>
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/monthly_revenue/index"
+                                                                       class="emc-lv3-link">
+                                                                        Monthly Revenue                                                                    </a>
+                                                                </li>
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/quarterly_results/index"
+                                                                       class="emc-lv3-link">
+                                                                        Quarterly Results                                                                    </a>
+                                                                </li>
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/annual_reports/index"
+                                                                       class="emc-lv3-link">
+                                                                        Annual Reports                                                                    </a>
+                                                                </li>
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/analyst_coverage/index"
+                                                                       class="emc-lv3-link">
+                                                                        Analyst Coverage                                                                    </a>
+                                                                </li>
+                                                                                                                    </ul>
+                                                                                                    </li>
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="/en-global/investors_news/index"
+                                                       class="emc-lv2-link">
+                                                        News                                                    </a>
+                                                                                                    </li>
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="javascript:void(0)"
+                                                       class="emc-lv2-link disabled">
+                                                        Shareholder Service                                                    </a>
+                                                                                                            <ul class="emc-lv3">
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/shareholder_meetings/index"
+                                                                       class="emc-lv3-link">
+                                                                        Shareholder Meetings                                                                    </a>
+                                                                </li>
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/dividend/index"
+                                                                       class="emc-lv3-link">
+                                                                        Dividend                                                                    </a>
+                                                                </li>
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/common_share/index"
+                                                                       class="emc-lv3-link">
+                                                                        Common Share Transfer Agent and Registrar                                                                    </a>
+                                                                </li>
+                                                                                                                    </ul>
+                                                                                                    </li>
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="/en-global/financial_calendar/index"
+                                                       class="emc-lv2-link">
+                                                        Financial Calendar                                                    </a>
+                                                                                                    </li>
+                                                                                    </ul>
+                                    </div>
+                                                            </div>
+                                                                                <div class="emc-panel-group" data-index="3" style="display:none;">
+                                                                    <div class="emc-panel-inner">
+                                        <ul class="emc-lv2">
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="/en-global/organization_structure/index"
+                                                       class="emc-lv2-link">
+                                                        Organization Structure                                                    </a>
+                                                                                                    </li>
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="/en-global/board_of_directors/index"
+                                                       class="emc-lv2-link">
+                                                        Board of Directors                                                    </a>
+                                                                                                    </li>
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="/en-global/functional_committee/index"
+                                                       class="emc-lv2-link">
+                                                        Functional Committees                                                    </a>
+                                                                                                    </li>
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="/en-global/corporate_governance_officer/index"
+                                                       class="emc-lv2-link">
+                                                        Corporate Governance Officer                                                    </a>
+                                                                                                    </li>
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="/en-global/information_security_management/index"
+                                                       class="emc-lv2-link">
+                                                        Information Security Management                                                    </a>
+                                                                                                    </li>
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="/en-global/intellectual_property_management/index"
+                                                       class="emc-lv2-link">
+                                                        Intellectual Property Management                                                    </a>
+                                                                                                    </li>
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="/en-global/resolutions_board_meetings/index"
+                                                       class="emc-lv2-link">
+                                                        Resolutions of Board Meetings                                                    </a>
+                                                                                                    </li>
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="/en-global/major_internal_policies/index"
+                                                       class="emc-lv2-link">
+                                                        Major Internal Policies                                                    </a>
+                                                                                                    </li>
+                                                                                    </ul>
+                                    </div>
+                                                            </div>
+                                                                                <div class="emc-panel-group" data-index="4" style="display:none;">
+                                                                    <div class="emc-panel-inner">
+                                        <ul class="emc-lv2">
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="javascript:void(0)"
+                                                       class="emc-lv2-link disabled">
+                                                        Sustainable Governance                                                    </a>
+                                                                                                            <ul class="emc-lv3">
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/esg_sustainable_governance/index"
+                                                                       class="emc-lv3-link">
+                                                                        Sustainable Governance Overview                                                                    </a>
+                                                                </li>
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/esg_performance/index"
+                                                                       class="emc-lv3-link">
+                                                                        Sustainable Performance                                                                    </a>
+                                                                </li>
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/esg_policy_commitment/index"
+                                                                       class="emc-lv3-link">
+                                                                        Policy and Commitment                                                                    </a>
+                                                                </li>
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/esg_ethics/index"
+                                                                       class="emc-lv3-link">
+                                                                        Ethical Management                                                                    </a>
+                                                                </li>
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/esg_risk_management/index"
+                                                                       class="emc-lv3-link">
+                                                                        Risk Management                                                                    </a>
+                                                                </li>
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/esg_supply_chain/index"
+                                                                       class="emc-lv3-link">
+                                                                        Supply Chain Management                                                                    </a>
+                                                                </li>
+                                                                                                                    </ul>
+                                                                                                    </li>
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="javascript:void(0)"
+                                                       class="emc-lv2-link disabled">
+                                                        Environmental Sustainability                                                    </a>
+                                                                                                            <ul class="emc-lv3">
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/esg_environment/index"
+                                                                       class="emc-lv3-link">
+                                                                        Environmental Sustainability Overview                                                                    </a>
+                                                                </li>
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/esg_energy_ghg_inventory/index"
+                                                                       class="emc-lv3-link">
+                                                                        Energy Management and GHG Inventory                                                                    </a>
+                                                                </li>
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/esg_climate_tcfd/index"
+                                                                       class="emc-lv3-link">
+                                                                        Climate Change                                                                    </a>
+                                                                </li>
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/esg_resources/index"
+                                                                       class="emc-lv3-link">
+                                                                        Resource Management                                                                    </a>
+                                                                </li>
+                                                                                                                    </ul>
+                                                                                                    </li>
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="javascript:void(0)"
+                                                       class="emc-lv2-link disabled">
+                                                        Employee Care and  Social Participation                                                    </a>
+                                                                                                            <ul class="emc-lv3">
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/esg_employee_care_and_social_participation/index"
+                                                                       class="emc-lv3-link">
+                                                                        Employee Care and  Social Participation Overview                                                                    </a>
+                                                                </li>
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/esg_health_and_safety/index"
+                                                                       class="emc-lv3-link">
+                                                                        Occupational Health and Safety                                                                    </a>
+                                                                </li>
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/esg_employee_care/index"
+                                                                       class="emc-lv3-link">
+                                                                        Employee Care                                                                    </a>
+                                                                </li>
+                                                                                                                                                                                            <li class="emc-lv3-item">
+                                                                    <a href="/en-global/esg_social_participation/index"
+                                                                       class="emc-lv3-link">
+                                                                        Social Participation                                                                    </a>
+                                                                </li>
+                                                                                                                    </ul>
+                                                                                                    </li>
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="/en-global/esg_stakeholdes/index"
+                                                       class="emc-lv2-link">
+                                                        Stakeholder Section                                                    </a>
+                                                                                                    </li>
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="/en-global/csr_report/index"
+                                                       class="emc-lv2-link">
+                                                        Reports and Related Documents Downloads                                                    </a>
+                                                                                                    </li>
+                                                                                    </ul>
+                                    </div>
+                                                            </div>
+                                                                                <div class="emc-panel-group" data-index="5" style="display:none;">
+                                                                    <div class="emc-panel-inner">
+                                        <ul class="emc-lv2">
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="/en-global/career_living/index"
+                                                       class="emc-lv2-link">
+                                                        Life at EMC                                                    </a>
+                                                                                                    </li>
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="/en-global/career_learning/index"
+                                                       class="emc-lv2-link">
+                                                        Learning at EMC                                                    </a>
+                                                                                                    </li>
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="/en-global/career_work/index"
+                                                       class="emc-lv2-link">
+                                                        Working at EMC                                                    </a>
+                                                                                                    </li>
+                                                                                    </ul>
+                                    </div>
+                                                            </div>
+                                                                                <div class="emc-panel-group" data-index="6" style="display:none;">
+                                                                    <div class="emc-panel-inner">
+                                        <ul class="emc-lv2">
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="/en-global/for_customers/index"
+                                                       class="emc-lv2-link">
+                                                        For Customers                                                    </a>
+                                                                                                    </li>
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="/en-global/for_investors/index"
+                                                       class="emc-lv2-link">
+                                                        For Investors                                                    </a>
+                                                                                                    </li>
+                                                                                                                                            <li class="emc-lv2-item">
+                                                    <a href="/en-global/ethics_compliance/index"
+                                                       class="emc-lv2-link">
+                                                        Ethics & Compliance                                                    </a>
+                                                                                                    </li>
+                                                                                    </ul>
+                                    </div>
+                                                            </div>
+                                                                        </div>
+
+                    <!-- 子公司图标模块（保留） -->
+                    <div class="menu-subcompany" id="menuSubcompany">
+                         <span class="subcompany-text">Subsidiary：</span>
+                        <!--    //2026/03/27 crystal:改成用global變數來取代(上面那一行),下面的判斷(if ($language_value == '))取消
+                                                          <span class="subcompany-text">Subsidiary：</span>
+                                                   -->
+
+                        <a href="https://www.emcks.com/"
+                           target="_blank"
+                           title="Emcks"
+                           class="subcompany-linkks has-desc"
+                           rel="noopener">
+                            <img src="/upload/media/index/kv/emc_logo.png" alt="Emcks">
+                            <span class="subcompany-desc">中 华 区</span>
+                        </a>
+                        <a href="https://www.arlonemd.com/" target="_blank" title="Arlon" class="subcompany-link" rel="noopener">
+                            <img src="/upload/media/index/kv/Arlon.svg" alt="Arlon">
+                        </a>
+                    </div>
+                </div>
+                </div>
+
+               <!--                手機版 s *********************************************************-->
+                <div class="menu-mobile">
+                <div class="collapse navbar-collapse" id="menu_list_mobile">
+                    <!-- Menu List -->
+                    <ul class="nav navbar-nav header_menu" id="header_menu_mobile">
+                                                        <li class="header_menu_li">
+                                    <a href="#" class="menu_drop" title="About EMC">
+                                        About EMC                                    </a>
+                                    <div class="menu_lv2_block clearfix">
+                                        <ul class="menu_lv2 no_ul">
+                                                                                        <li>
+                                                <a href="/en-global/about_milestone/index" class="" title="Profile">
+                                                    Profile                                                </a>
+                                                                                            </li>
+                                                                                        <li>
+                                                <a href="/en-global/our_values/index" class="" title="Our Values">
+                                                    Our Values                                                </a>
+                                                                                            </li>
+                                                                                        <li>
+                                                <a href="/en-global/leading_technology/index" class="" title="Leading Technology">
+                                                    Leading Technology                                                </a>
+                                                                                            </li>
+                                                                                        <li>
+                                                <a href="/en-global/achievements/index" class="" title="Achievements">
+                                                    Achievements                                                </a>
+                                                                                            </li>
+                                                                                        <li>
+                                                <a href="/en-global/about_quality/index" class="" title="Certifications">
+                                                    Certifications                                                </a>
+                                                                                            </li>
+                                                                                    </ul>
+                                        <ul class="menu_lv2 no_ul">
+                                                                                        <li>
+                                                <a href="/en-global/about_production/index" class="" title="Capacity">
+                                                    Capacity                                                </a>
+                                                                                            </li>
+                                                                                    </ul>
+                                    </div>
+                                </li>
+                                                            <li class="header_menu_li">
+                                    <a href="#" class="menu_drop" title="Products">
+                                        Products                                    </a>
+                                    <div class="menu_lv2_block clearfix">
+                                        <ul class="menu_lv2 no_ul">
+                                                                                        <li>
+                                                <a href="/en-global/product_name/index" class="" title="By Name">
+                                                    By Name                                                </a>
+                                                                                            </li>
+                                                                                        <li>
+                                                <a href="#" class="has-lv3 menu_drop_lv2" title="By Applications">
+                                                    By Applications                                                </a>
+                                                                                                    <div class="menu_lv3_block clearfix">
+                                                        <ul class="menu_lv3 no_ul">
+                                                                                                                        <li>
+                                                                <a href="/en-global/applications/index/substrate" title="Substrate	" target="">
+                                                                    Substrate	                                                                </a>
+                                                            </li>
+                                                                                                                        <li>
+                                                                <a href="/en-global/applications/index/mobile_device" title="Mobile Device" target="">
+                                                                    Mobile Device                                                                </a>
+                                                            </li>
+                                                                                                                        <li>
+                                                                <a href="/en-global/applications/index/infrastructure" title="Infrastructure" target="">
+                                                                    Infrastructure                                                                </a>
+                                                            </li>
+                                                                                                                        <li>
+                                                                <a href="/en-global/applications/index/Automotive_Industrial" title="Automotive & Industrial" target="">
+                                                                    Automotive & Industrial                                                                </a>
+                                                            </li>
+                                                                                                                        <li>
+                                                                <a href="https://www.arlonemd.com/" title="Aerospace, Industrial & Military" target="_blank">
+                                                                    Aerospace, Industrial & Military                                                                </a>
+                                                            </li>
+                                                                                                                    </ul>
+                                                    </div>
+                                                                                            </li>
+                                                                                        <li>
+                                                <a href="/en-global/mass_lam_service/index" class="" title="Mass Lam Service">
+                                                    Mass Lam Service                                                </a>
+                                                                                            </li>
+                                                                                    </ul>
+                                    </div>
+                                </li>
+                                                            <li class="header_menu_li">
+                                    <a href="#" class="menu_drop" title="Investors">
+                                        Investors                                    </a>
+                                    <div class="menu_lv2_block clearfix">
+                                        <ul class="menu_lv2 no_ul">
+                                                                                        <li>
+                                                <a href="#" class="has-lv3 menu_drop_lv2" title="Financial Information">
+                                                    Financial Information                                                </a>
+                                                                                                    <div class="menu_lv3_block clearfix">
+                                                        <ul class="menu_lv3 no_ul">
+                                                                                                                        <li>
+                                                                <a href="/en-global/key_financial_performance/index" title="Key Financial Performance" target="">
+                                                                    Key Financial Performance                                                                </a>
+                                                            </li>
+                                                                                                                        <li>
+                                                                <a href="/en-global/presentation_materials/index" title="Presentation Materials" target="">
+                                                                    Presentation Materials                                                                </a>
+                                                            </li>
+                                                                                                                        <li>
+                                                                <a href="/en-global/monthly_revenue/index" title="Monthly Revenue" target="">
+                                                                    Monthly Revenue                                                                </a>
+                                                            </li>
+                                                                                                                        <li>
+                                                                <a href="/en-global/quarterly_results/index" title="Quarterly Results" target="">
+                                                                    Quarterly Results                                                                </a>
+                                                            </li>
+                                                                                                                        <li>
+                                                                <a href="/en-global/annual_reports/index" title="Annual Reports" target="">
+                                                                    Annual Reports                                                                </a>
+                                                            </li>
+                                                                                                                    </ul>
+                                                        <ul class="menu_lv3 no_ul">
+                                                                                                                        <li>
+                                                                <a href="/en-global/analyst_coverage/index" title="Analyst Coverage" target="">
+                                                                    Analyst Coverage                                                                </a>
+                                                            </li>
+                                                                                                                    </ul>
+                                                    </div>
+                                                                                            </li>
+                                                                                        <li>
+                                                <a href="/en-global/investors_news/index" class="" title="News">
+                                                    News                                                </a>
+                                                                                            </li>
+                                                                                        <li>
+                                                <a href="#" class="has-lv3 menu_drop_lv2" title="Shareholder Service">
+                                                    Shareholder Service                                                </a>
+                                                                                                    <div class="menu_lv3_block clearfix">
+                                                        <ul class="menu_lv3 no_ul">
+                                                                                                                        <li>
+                                                                <a href="/en-global/shareholder_meetings/index" title="Shareholder Meetings" target="">
+                                                                    Shareholder Meetings                                                                </a>
+                                                            </li>
+                                                                                                                        <li>
+                                                                <a href="/en-global/dividend/index" title="Dividend" target="">
+                                                                    Dividend                                                                </a>
+                                                            </li>
+                                                                                                                        <li>
+                                                                <a href="/en-global/common_share/index" title="Common Share Transfer Agent and Registrar" target="">
+                                                                    Common Share Transfer Agent and Registrar                                                                </a>
+                                                            </li>
+                                                                                                                    </ul>
+                                                    </div>
+                                                                                            </li>
+                                                                                        <li>
+                                                <a href="/en-global/financial_calendar/index" class="" title="Financial Calendar">
+                                                    Financial Calendar                                                </a>
+                                                                                            </li>
+                                                                                    </ul>
+                                    </div>
+                                </li>
+                                                            <li class="header_menu_li">
+                                    <a href="#" class="menu_drop" title="Governance">
+                                        Governance                                    </a>
+                                    <div class="menu_lv2_block clearfix">
+                                        <ul class="menu_lv2 no_ul">
+                                                                                        <li>
+                                                <a href="/en-global/organization_structure/index" class="" title="Organization Structure">
+                                                    Organization Structure                                                </a>
+                                                                                            </li>
+                                                                                        <li>
+                                                <a href="/en-global/board_of_directors/index" class="" title="Board of Directors">
+                                                    Board of Directors                                                </a>
+                                                                                            </li>
+                                                                                        <li>
+                                                <a href="/en-global/functional_committee/index" class="" title="Functional Committees">
+                                                    Functional Committees                                                </a>
+                                                                                            </li>
+                                                                                        <li>
+                                                <a href="/en-global/corporate_governance_officer/index" class="" title="Corporate Governance Officer">
+                                                    Corporate Governance Officer                                                </a>
+                                                                                            </li>
+                                                                                        <li>
+                                                <a href="/en-global/information_security_management/index" class="" title="Information Security Management">
+                                                    Information Security Management                                                </a>
+                                                                                            </li>
+                                                                                    </ul>
+                                        <ul class="menu_lv2 no_ul">
+                                                                                        <li>
+                                                <a href="/en-global/intellectual_property_management/index" class="" title="Intellectual Property Management">
+                                                    Intellectual Property Management                                                </a>
+                                                                                            </li>
+                                                                                        <li>
+                                                <a href="/en-global/resolutions_board_meetings/index" class="" title="Resolutions of Board Meetings">
+                                                    Resolutions of Board Meetings                                                </a>
+                                                                                            </li>
+                                                                                        <li>
+                                                <a href="/en-global/major_internal_policies/index" class="" title="Major Internal Policies">
+                                                    Major Internal Policies                                                </a>
+                                                                                            </li>
+                                                                                    </ul>
+                                    </div>
+                                </li>
+                                                            <li class="header_menu_li">
+                                    <a href="#" class="menu_drop" title="Sustainability">
+                                        Sustainability                                    </a>
+                                    <div class="menu_lv2_block clearfix">
+                                        <ul class="menu_lv2 no_ul">
+                                                                                        <li>
+                                                <a href="#" class="has-lv3 menu_drop_lv2" title="Sustainable Governance">
+                                                    Sustainable Governance                                                </a>
+                                                                                                    <div class="menu_lv3_block clearfix">
+                                                        <ul class="menu_lv3 no_ul">
+                                                                                                                        <li>
+                                                                <a href="/en-global/esg_sustainable_governance/index" title="Sustainable Governance Overview" target="">
+                                                                    Sustainable Governance Overview                                                                </a>
+                                                            </li>
+                                                                                                                        <li>
+                                                                <a href="/en-global/esg_performance/index" title="Sustainable Performance" target="">
+                                                                    Sustainable Performance                                                                </a>
+                                                            </li>
+                                                                                                                        <li>
+                                                                <a href="/en-global/esg_policy_commitment/index" title="Policy and Commitment" target="">
+                                                                    Policy and Commitment                                                                </a>
+                                                            </li>
+                                                                                                                        <li>
+                                                                <a href="/en-global/esg_ethics/index" title="Ethical Management" target="">
+                                                                    Ethical Management                                                                </a>
+                                                            </li>
+                                                                                                                        <li>
+                                                                <a href="/en-global/esg_risk_management/index" title="Risk Management" target="">
+                                                                    Risk Management                                                                </a>
+                                                            </li>
+                                                                                                                    </ul>
+                                                        <ul class="menu_lv3 no_ul">
+                                                                                                                        <li>
+                                                                <a href="/en-global/esg_supply_chain/index" title="Supply Chain Management" target="">
+                                                                    Supply Chain Management                                                                </a>
+                                                            </li>
+                                                                                                                    </ul>
+                                                    </div>
+                                                                                            </li>
+                                                                                        <li>
+                                                <a href="#" class="has-lv3 menu_drop_lv2" title="Environmental Sustainability">
+                                                    Environmental Sustainability                                                </a>
+                                                                                                    <div class="menu_lv3_block clearfix">
+                                                        <ul class="menu_lv3 no_ul">
+                                                                                                                        <li>
+                                                                <a href="/en-global/esg_environment/index" title="Environmental Sustainability Overview" target="">
+                                                                    Environmental Sustainability Overview                                                                </a>
+                                                            </li>
+                                                                                                                        <li>
+                                                                <a href="/en-global/esg_energy_ghg_inventory/index" title="Energy Management and GHG Inventory" target="">
+                                                                    Energy Management and GHG Inventory                                                                </a>
+                                                            </li>
+                                                                                                                        <li>
+                                                                <a href="/en-global/esg_climate_tcfd/index" title="Climate Change" target="">
+                                                                    Climate Change                                                                </a>
+                                                            </li>
+                                                                                                                        <li>
+                                                                <a href="/en-global/esg_resources/index" title="Resource Management" target="">
+                                                                    Resource Management                                                                </a>
+                                                            </li>
+                                                                                                                    </ul>
+                                                    </div>
+                                                                                            </li>
+                                                                                        <li>
+                                                <a href="#" class="has-lv3 menu_drop_lv2" title="Employee Care and  Social Participation">
+                                                    Employee Care and  Social Participation                                                </a>
+                                                                                                    <div class="menu_lv3_block clearfix">
+                                                        <ul class="menu_lv3 no_ul">
+                                                                                                                        <li>
+                                                                <a href="/en-global/esg_employee_care_and_social_participation/index" title="Employee Care and  Social Participation Overview" target="">
+                                                                    Employee Care and  Social Participation Overview                                                                </a>
+                                                            </li>
+                                                                                                                        <li>
+                                                                <a href="/en-global/esg_health_and_safety/index" title="Occupational Health and Safety" target="">
+                                                                    Occupational Health and Safety                                                                </a>
+                                                            </li>
+                                                                                                                        <li>
+                                                                <a href="/en-global/esg_employee_care/index" title="Employee Care" target="">
+                                                                    Employee Care                                                                </a>
+                                                            </li>
+                                                                                                                        <li>
+                                                                <a href="/en-global/esg_social_participation/index" title="Social Participation" target="">
+                                                                    Social Participation                                                                </a>
+                                                            </li>
+                                                                                                                    </ul>
+                                                    </div>
+                                                                                            </li>
+                                                                                        <li>
+                                                <a href="/en-global/esg_stakeholdes/index" class="" title="Stakeholder Section">
+                                                    Stakeholder Section                                                </a>
+                                                                                            </li>
+                                                                                        <li>
+                                                <a href="/en-global/csr_report/index" class="" title="Reports and Related Documents Downloads">
+                                                    Reports and Related Documents Downloads                                                </a>
+                                                                                            </li>
+                                                                                    </ul>
+                                    </div>
+                                </li>
+                                                            <li class="header_menu_li">
+                                    <a href="#" class="menu_drop" title="Career">
+                                        Career                                    </a>
+                                    <div class="menu_lv2_block clearfix">
+                                        <ul class="menu_lv2 no_ul">
+                                                                                        <li>
+                                                <a href="/en-global/career_living/index" class="" title="Life at EMC">
+                                                    Life at EMC                                                </a>
+                                                                                            </li>
+                                                                                        <li>
+                                                <a href="/en-global/career_learning/index" class="" title="Learning at EMC">
+                                                    Learning at EMC                                                </a>
+                                                                                            </li>
+                                                                                        <li>
+                                                <a href="/en-global/career_work/index" class="" title="Working at EMC">
+                                                    Working at EMC                                                </a>
+                                                                                            </li>
+                                                                                    </ul>
+                                    </div>
+                                </li>
+                                                            <li class="header_menu_li">
+                                    <a href="#" class="menu_drop" title="Contact Us">
+                                        Contact Us                                    </a>
+                                    <div class="menu_lv2_block clearfix">
+                                        <ul class="menu_lv2 no_ul">
+                                                                                        <li>
+                                                <a href="/en-global/for_customers/index" class="" title="For Customers">
+                                                    For Customers                                                </a>
+                                                                                            </li>
+                                                                                        <li>
+                                                <a href="/en-global/for_investors/index" class="" title="For Investors">
+                                                    For Investors                                                </a>
+                                                                                            </li>
+                                                                                        <li>
+                                                <a href="/en-global/ethics_compliance/index" class="" title="Ethics & Compliance">
+                                                    Ethics & Compliance                                                </a>
+                                                                                            </li>
+                                                                                    </ul>
+                                    </div>
+                                </li>
+                            
+                        <!-- 2026/03/27 Crystal:增加手機板子公司顯示:安插在[聯絡我們]/[語系]中間，與聯絡我們同一顏色 -->
+                        <!-- ※桌機版隱藏項目-子公司 -->
+                        <li class="hidden_pc menu-subcompany">
+                            <a href="#" class="menu_drop">
+                                Subsidiary                            </a>
+                            <div class="menu_lv2_block clearfix blue_li" >
+                                <ul class="menu_lv2 no_ul">
+                                    <li>
+                                        <a href="https://www.emcks.com/"
+                                           target="_blank"
+                                           title="Emcks"
+                                           class="subcompany-linkks has-desc"
+                                           rel="noopener">
+                                            <img src="/upload/media/index/kv/emc_logo.png"  alt="Emcks" style="width: 18%; ">
+                                            <span class="subcompany-desc">中  华  区</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.arlonemd.com/" target="_blank" title="Arlon" class="subcompany-link" rel="noopener">
+                                            <img src="/upload/media/index/kv/Arlon.png" alt="Arlon" style="width: 18%; ">
+                                            <span >Arlon EMD</span>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+
+                        </li>
+
+
+                        <!-- ※桌機版隱藏項目-語系 -->
+                        <li class="hidden_pc blue_li header_menu_li">
+                            <a href="#" class="menu_drop">
+                                <i class="fa fa-globe" aria-hidden="true"></i>
+                                LANGUAGE                            </a>
+                            <div class="menu_lv2_block clearfix">
+                                <ul class="menu_lv2 no_ul">
+                                                                            <li>
+                                            <a href="/en-global" title="ENGLISH">
+                                                ENGLISH                                            </a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/zh-TW" title="繁體中文">
+                                                繁體中文                                            </a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/zh-CN" title="简体中文">
+                                                简体中文                                            </a>
+                                        </li>
+                                                                    </ul>
+                            </div>
+
+                        </li>
+                        <!-- ※桌機版隱藏項目-登入 -->
+                                                    <li class="hidden_pc blue_li">
+                                <a href="/en-global/member/signin?done=https%3A%2F%2Fwww.emctw.com%2Findex.php%2Fen-global%2Fproduct_name%2Findex" class="" title="LOGIN">
+                                    <i class="fa fa-sign-in" aria-hidden="true"></i>
+                                    LOGIN                                </a>
+                            </li>
+                                            </ul>
+                </div>
+                </div>
+                <!--                手機版 e *********************************************************-->
+
+
+            </nav>
+		</div>
+	</div>
+</div>
+<!-- Header end -->
+
+<style>
+    .menu-pc { display: block; }
+    .menu-mobile { display: none; }
+
+/*--2026/04/14 Crystal:修正為1024(因為ipad pro為1024*1366) */
+    @media (max-width: 1024px) {
+        .menu-pc { display: none !important; }
+        .menu-mobile { display: block !important; }
+    }
+
+/*
+    @media (max-width: 768px) {
+        .menu-pc { display: none !important; }
+        .menu-mobile { display: block !important; }
+    }
+*/
+
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const menuList = document.getElementById('menu_list');
+        const menuItems = document.querySelectorAll('#emc_header_menu > li.emc-menu-item');
+        const panel = document.getElementById('emc_global_panel');
+        const groups = document.querySelectorAll('.emc-panel-group');
+        let hideTimer = null;
+
+        if (!menuList || !panel || menuItems.length === 0) {
+            return;
+        }
+
+        function showPanelByIndex(idx) {
+            clearTimeout(hideTimer);
+            // 显示容器
+            panel.style.display = 'block';
+            // 显示对应 group，隐藏其它
+            groups.forEach(g => {
+                if (g.dataset.index === String(idx)) {
+                    g.style.display = 'block';
+                } else {
+                    g.style.display = 'none';
+                }
+            });
+            // 给当前一级加个 open class（可用于箭头样式）
+            menuItems.forEach(li => li.classList.remove('open'));
+            const activeLi = Array.from(menuItems).find(li => li.dataset.panelIndex === String(idx));
+            if (activeLi) activeLi.classList.add('open');
+        }
+
+        function hidePanelDelayed() {
+            clearTimeout(hideTimer);
+            hideTimer = setTimeout(() => {
+                panel.style.display = 'none';
+                groups.forEach(g => g.style.display = 'none');
+                menuItems.forEach(li => li.classList.remove('open'));
+            }, 160);
+        }
+
+        // 绑定事件：用 data-panel-index 精确映射
+        menuItems.forEach(li => {
+            const idx = li.dataset.panelIndex;
+            li.addEventListener('mouseenter', () => {
+                showPanelByIndex(idx);
+            });
+            li.addEventListener('mouseleave', () => {
+                hidePanelDelayed();
+            });
+        });
+
+        // 当鼠标在 panel 区域时取消隐藏
+        panel.addEventListener('mouseenter', () => clearTimeout(hideTimer));
+        panel.addEventListener('mouseleave', () => hidePanelDelayed());
+
+        // 如果离开 header 区域也隐藏（保险）
+        const headerBlock = document.getElementById('header_block');
+        if (headerBlock) headerBlock.addEventListener('mouseleave', hidePanelDelayed);
+    });
+</script>
+
+
+
+
+
+
+
+<!-- 遮罩層 -->
+<div class="overlay"></div>
+
+<!-- pc版 MENU背景 -->
+<div class="menu_bg_block" id="menu_bg_block"></div>
+
+<!-- Heaader凍結間距區塊 -->
+<div class="header_margin_block"></div>
+	<div id="container" class="container-fluid">
+	<div class="clearfix" id="main_content">
+		<!-- banner -->
+					<div class="banner_block hidden-xs" style="background-image:url(/upload/website/banner/emc-banner-products_21080411823.jpg)"></div>
+				<!--麵包屑-->
+		<div class="container bread_list_block hidden-xs">
+			<ul class="bread_list no_ul hidden-xs clearfix">
+				<li>
+					<a href="/en-global" title="Home">
+						Home					</a>
+				</li>
+									<li>
+						<a href="#" title="Products">
+							Products							
+						</a>
+					</li>
+							</ul>
+		</div>
+		<div class="container">
+			<!-- 頁標題 -->
+			<h1 class="page_title">
+				By Name			</h1>					
+		</div>
+		<!-- 主要內容 -->
+		<div class="container">
+			<!-- 開合區 -->    <!---  2026/03/27 Crystal: table id=example & class增加disaply  -->
+		<ul class="no_ul toggle_list">
+					<!-- content -->
+					<div class="toggle_content">
+						<div class="toggle_content_inner">
+							<table id="example"  class="item_sort_table display">
+								<thead>
+									<tr>
+										<th class="sort_th1">
+											Products										</th>
+										<th class="dl_th">
+											Download										</th>
+										<th class="cte_th sort_th1">
+											CTE Z-axis<br>(50~260<sup>o</sup>C)										</th>
+										<th class="tg_th sort_th1">
+											Tg<br>@TMA										</th>
+										<th class="dk_th sort_th1">
+											Dk@10GHz,<br>RC50/70%										</th>
+										<th class="df_th sort_th1">
+											Df@10GHz,<br>RC50/70%										</th>
+									</tr>									
+								</thead>
+								<tbody>
+																			<tr>
+											<td>
+												EM-S376											</td>
+											<td>
+												<a href="/upload/website/item/EM-S376 Datasheet 20241231_25022715242.pdf" class="product_download" target="_blank" title="EM-S376"></a>
+											</td>
+											<td>
+												-											</td>
+											<td>
+												210											</td>
+											<td>
+												3.9/3.4											</td>
+											<td>
+												0.007/0.008											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-S570											</td>
+											<td>
+												<a href="/upload/website/item/EM-S570 Datasheet (Preliminary) 20240716_24081910822.pdf" class="product_download" target="_blank" title="EM-S570"></a>
+											</td>
+											<td>
+												-											</td>
+											<td>
+												280											</td>
+											<td>
+												4.3/ 3.8											</td>
+											<td>
+												0.0075/ 0.0074											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-S532K											</td>
+											<td>
+												<a href="/upload/website/item/EM-S532K Datasheet (Preliminary) 20240716_24100810769.pdf" class="product_download" target="_blank" title="EM-S532K"></a>
+											</td>
+											<td>
+												1.8											</td>
+											<td>
+												180											</td>
+											<td>
+												3.00/2.84											</td>
+											<td>
+												0.0019/0.0017											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-S530K											</td>
+											<td>
+												<a href="/upload/website/item/EM-S530K Datasheet 20240716_24081910807.pdf" class="product_download" target="_blank" title="EM-S530K"></a>
+											</td>
+											<td>
+												1.3											</td>
+											<td>
+												235											</td>
+											<td>
+												3.24/2.95											</td>
+											<td>
+												0.0028/0.0027											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-S530											</td>
+											<td>
+												<a href="/upload/website/item/EM-S530 Datasheet 20240716_24081910796.pdf" class="product_download" target="_blank" title="EM-S530"></a>
+											</td>
+											<td>
+												1.3											</td>
+											<td>
+												235											</td>
+											<td>
+												3.65/3.16											</td>
+											<td>
+												0.0052/0.0042											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-S526											</td>
+											<td>
+												<a href="/upload/website/item/EM-S526 Datasheet 20240716_24081910195.pdf" class="product_download" target="_blank" title="EM-S526"></a>
+											</td>
+											<td>
+												1.3											</td>
+											<td>
+												230											</td>
+											<td>
+												3.9/3.4											</td>
+											<td>
+												0.007/0.008											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-S370(Z)											</td>
+											<td>
+												<a href="/upload/website/item/EM-S370(Z) Datasheet 20240716_24081910748.pdf" class="product_download" target="_blank" title="EM-S370(Z)"></a>
+											</td>
+											<td>
+												1.8											</td>
+											<td>
+												180											</td>
+											<td>
+												4.2/3.8											</td>
+											<td>
+												0.015/0.019											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-A30											</td>
+											<td>
+												<a href="/upload/website/item/EM-A30 Datasheet 20250416_25042814428.pdf" class="product_download" target="_blank" title="EM-A30"></a>
+											</td>
+											<td>
+												1.7											</td>
+											<td>
+												185											</td>
+											<td>
+												4.1/3.7											</td>
+											<td>
+												0.013/0.015											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-A56K											</td>
+											<td>
+												<a href="/upload/website/item/EM-A56K Datasheet 20250214_25033113269.pdf" class="product_download" target="_blank" title="EM-A56K"></a>
+											</td>
+											<td>
+												1.8											</td>
+											<td>
+												170											</td>
+											<td>
+												3.2/3.0											</td>
+											<td>
+												0.0029/0.0027											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-A56											</td>
+											<td>
+												<a href="/upload/website/item/EM-A56 Datasheet 20250214_25022715405.pdf" class="product_download" target="_blank" title="EM-A56"></a>
+											</td>
+											<td>
+												1.8											</td>
+											<td>
+												170											</td>
+											<td>
+												3.7/3.2											</td>
+											<td>
+												0.005/0.004											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-528K											</td>
+											<td>
+												<a href="/upload/website/item/EM-528K Datasheet 20240716_24081910250.pdf" class="product_download" target="_blank" title="EM-528K"></a>
+											</td>
+											<td>
+												1.4											</td>
+											<td>
+												220											</td>
+											<td>
+												3.4/3.2											</td>
+											<td>
+												0.0041/0.0042											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-528											</td>
+											<td>
+												<a href="/upload/website/item/EM-528 Datasheet 20240716_24081910773.pdf" class="product_download" target="_blank" title="EM-528"></a>
+											</td>
+											<td>
+												1.4											</td>
+											<td>
+												220											</td>
+											<td>
+												3.9/3.5											</td>
+											<td>
+												0.0061/0.0058											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-526											</td>
+											<td>
+												<a href="/upload/website/item/EM-526 Datasheet 20240716_24081910532.pdf" class="product_download" target="_blank" title="EM-526"></a>
+											</td>
+											<td>
+												1.3											</td>
+											<td>
+												230											</td>
+											<td>
+												3.9/3.4											</td>
+											<td>
+												0.007/0.008											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-A50											</td>
+											<td>
+												<a href="/upload/website/item/EM-A50 Datasheet 20240716_24081910273.pdf" class="product_download" target="_blank" title="EM-A50"></a>
+											</td>
+											<td>
+												1.3											</td>
+											<td>
+												230											</td>
+											<td>
+												3.9/3.4											</td>
+											<td>
+												0.007/0.008											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-626K											</td>
+											<td>
+												<a href="/upload/website/item/EM-626K Datasheet 20240716 (Preliminary)_24081910784.pdf" class="product_download" target="_blank" title="EM-626K"></a>
+											</td>
+											<td>
+												1.8											</td>
+											<td>
+												170											</td>
+											<td>
+												3.1/2.9											</td>
+											<td>
+												0.0025/0.0023											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-626											</td>
+											<td>
+												<a href="/upload/website/item/EM-626 Datasheet 20240716 (Preliminary)_24081910158.pdf" class="product_download" target="_blank" title="EM-626"></a>
+											</td>
+											<td>
+												1.8											</td>
+											<td>
+												170											</td>
+											<td>
+												3.5/3.1											</td>
+											<td>
+												0.0045/0.0038											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-A70K											</td>
+											<td>
+												<a href="/upload/website/item/EM-A70K Datasheet (Preliminary) 20250225_25033113302.pdf" class="product_download" target="_blank" title="EM-A70K"></a>
+											</td>
+											<td>
+												1.8											</td>
+											<td>
+												170											</td>
+											<td>
+												3.1											</td>
+											<td>
+												0.0018											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-892K2											</td>
+											<td>
+												<a href="/upload/website/item/EM-892K2 Datasheet 20240716_24081910964.pdf" class="product_download" target="_blank" title="EM-892K2"></a>
+											</td>
+											<td>
+												1.8											</td>
+											<td>
+												180											</td>
+											<td>
+												2.90/2.76											</td>
+											<td>
+												0.0014/0.0013											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-892K2(A)											</td>
+											<td>
+												<a href="/upload/website/item/EM-892K2(A) Datasheet 20240716_24081910160.pdf" class="product_download" target="_blank" title="EM-892K2(A)"></a>
+											</td>
+											<td>
+												1.8											</td>
+											<td>
+												180											</td>
+											<td>
+												2.90/2.76											</td>
+											<td>
+												0.0014/0.0013											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-892K											</td>
+											<td>
+												<a href="/upload/website/item/EM-892K Datasheet 20240716_24081910361.pdf" class="product_download" target="_blank" title="EM-892K"></a>
+											</td>
+											<td>
+												1.8											</td>
+											<td>
+												180											</td>
+											<td>
+												3.00/2.84											</td>
+											<td>
+												0.0019/0.0017											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-892K(A)											</td>
+											<td>
+												<a href="/upload/website/item/EM-892K(A) Datasheet-20240716_24101109565.pdf" class="product_download" target="_blank" title="EM-892K(A)"></a>
+											</td>
+											<td>
+												1.8											</td>
+											<td>
+												180											</td>
+											<td>
+												3.00/2.84											</td>
+											<td>
+												0.0019/0.0017											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-890K											</td>
+											<td>
+												<a href="/upload/website/item/EM-890K Datasheet- 20240716_24081910711.pdf" class="product_download" target="_blank" title="EM-890K"></a>
+											</td>
+											<td>
+												2.2											</td>
+											<td>
+												170											</td>
+											<td>
+												3.0/2.8											</td>
+											<td>
+												0.0025/0.0024											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-890K(A)											</td>
+											<td>
+												<a href="/upload/website/item/EM-890K(A) Datasheet 20240716_24081910828.pdf" class="product_download" target="_blank" title="EM-890K(A)"></a>
+											</td>
+											<td>
+												2.2											</td>
+											<td>
+												170											</td>
+											<td>
+												3.0/2.8											</td>
+											<td>
+												0.0025/0.0024											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-890											</td>
+											<td>
+												<a href="/upload/website/item/EM-890 Datasheet 20240716_24081910973.pdf" class="product_download" target="_blank" title="EM-890"></a>
+											</td>
+											<td>
+												2.2											</td>
+											<td>
+												170											</td>
+											<td>
+												3.4/3.0											</td>
+											<td>
+												0.0043/0.0036											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-891K											</td>
+											<td>
+												<a href="/upload/website/item/EM-891K Datasheet 20240716_24081910428.pdf" class="product_download" target="_blank" title="EM-891K"></a>
+											</td>
+											<td>
+												2.2											</td>
+											<td>
+												170											</td>
+											<td>
+												3.1/3.0											</td>
+											<td>
+												0.0032/0.0033											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-891											</td>
+											<td>
+												<a href="/upload/website/item/EM-891 Datasheet 20240716_24081911308.pdf" class="product_download" target="_blank" title="EM-891"></a>
+											</td>
+											<td>
+												2.2											</td>
+											<td>
+												170											</td>
+											<td>
+												3.6/3.2											</td>
+											<td>
+												0.0054/0.0045											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-888K											</td>
+											<td>
+												<a href="/upload/website/item/EM-888K Datasheet 20240716_24081911867.pdf" class="product_download" target="_blank" title="EM-888K"></a>
+											</td>
+											<td>
+												2.4											</td>
+											<td>
+												170											</td>
+											<td>
+												3.2/3.1											</td>
+											<td>
+												0.0062/0.0074											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-888(S)											</td>
+											<td>
+												<a href="/upload/website/item/EM-888(S) Datasheet 20240716_24081911419.pdf" class="product_download" target="_blank" title="EM-888(S)"></a>
+											</td>
+											<td>
+												2.4											</td>
+											<td>
+												170											</td>
+											<td>
+												3.7/3.2											</td>
+											<td>
+												0.0073/0.0079											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-888(S)(A)											</td>
+											<td>
+												<a href="/upload/website/item/EM-888(S)(A) Datasheet 20240716_24081911319.pdf" class="product_download" target="_blank" title="EM-888(S)(A)"></a>
+											</td>
+											<td>
+												2.4											</td>
+											<td>
+												170											</td>
+											<td>
+												3.7/3.2											</td>
+											<td>
+												0.0073/0.0079											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-888											</td>
+											<td>
+												<a href="/upload/website/item/EM-888 Datasheet 20240716_24081911535.pdf" class="product_download" target="_blank" title="EM-888"></a>
+											</td>
+											<td>
+												2.6											</td>
+											<td>
+												170											</td>
+											<td>
+												3.7/3.2											</td>
+											<td>
+												0.0073/0.0079											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-828G											</td>
+											<td>
+												<a href="/upload/website/item/EM-828G Datasheet 20240716_24081911465.pdf" class="product_download" target="_blank" title="EM-828G"></a>
+											</td>
+											<td>
+												2.6											</td>
+											<td>
+												160											</td>
+											<td>
+												3.8/3.3											</td>
+											<td>
+												0.011/0.013											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-390											</td>
+											<td>
+												<a href="/upload/website/item/EM-390 Datasheet-20240716_24081911789.pdf" class="product_download" target="_blank" title="EM-390"></a>
+											</td>
+											<td>
+												2.2											</td>
+											<td>
+												165											</td>
+											<td>
+												3.8/3.3											</td>
+											<td>
+												0.011/0.012											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-370(Z)											</td>
+											<td>
+												<a href="/upload/website/item/EM-370(Z) Datasheet-20240716_24081911875.pdf" class="product_download" target="_blank" title="EM-370(Z)"></a>
+											</td>
+											<td>
+												1.8											</td>
+											<td>
+												180											</td>
+											<td>
+												4.2/3.8											</td>
+											<td>
+												0.015/0.019											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-370(Z)-15											</td>
+											<td>
+												<a href="/upload/website/item/EM-370(Z)-15 Datasheet 20240716_24081911740.pdf" class="product_download" target="_blank" title="EM-370(Z)-15"></a>
+											</td>
+											<td>
+												1.8											</td>
+											<td>
+												180											</td>
+											<td>
+												4.2/3.8											</td>
+											<td>
+												0.015/0.019											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-370(D)											</td>
+											<td>
+												<a href="/upload/website/item/EM-370(D) Datasheet 20240716_24081911319.pdf" class="product_download" target="_blank" title="EM-370(D)"></a>
+											</td>
+											<td>
+												2.2											</td>
+											<td>
+												170											</td>
+											<td>
+												4.0/3.5											</td>
+											<td>
+												0.015/0.017											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-370(D)-15											</td>
+											<td>
+												<a href="/upload/website/item/EM-370(D)-15 Datasheet 20240716_24081911632.pdf" class="product_download" target="_blank" title="EM-370(D)-15"></a>
+											</td>
+											<td>
+												2.2											</td>
+											<td>
+												170											</td>
+											<td>
+												4.0/3.5											</td>
+											<td>
+												0.015/0.017											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-370(5)											</td>
+											<td>
+												<a href="/upload/website/item/EM-370(5) Datasheet 20240716_24081911374.pdf" class="product_download" target="_blank" title="EM-370(5)"></a>
+											</td>
+											<td>
+												2.6											</td>
+											<td>
+												150											</td>
+											<td>
+												4.2/3.8											</td>
+											<td>
+												0.017/0.019											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-355(D)											</td>
+											<td>
+												<a href="/upload/website/item/EM-355(D) Datasheet 20240716_24081911924.pdf" class="product_download" target="_blank" title="EM-355(D)"></a>
+											</td>
+											<td>
+												2.8											</td>
+											<td>
+												150											</td>
+											<td>
+												3.8/3.3											</td>
+											<td>
+												0.013/0.015											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-285											</td>
+											<td>
+												<a href="/upload/website/item/EM-285 Datasheet 20240716_24081911650.pdf" class="product_download" target="_blank" title="EM-285"></a>
+											</td>
+											<td>
+												2.8											</td>
+											<td>
+												150											</td>
+											<td>
+												4.2/3.7											</td>
+											<td>
+												0.015/0.016											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-827(I)											</td>
+											<td>
+												<a href="/upload/website/item/EM-827(I) Datasheet 20240716_24081911720.pdf" class="product_download" target="_blank" title="EM-827(I)"></a>
+											</td>
+											<td>
+												2.6											</td>
+											<td>
+												160											</td>
+											<td>
+												4.1/3.5											</td>
+											<td>
+												0.024/0.027											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-827											</td>
+											<td>
+												<a href="/upload/website/item/EM-827 Datasheet 20240716_24081911198.pdf" class="product_download" target="_blank" title="EM-827"></a>
+											</td>
+											<td>
+												2.6											</td>
+											<td>
+												160											</td>
+											<td>
+												4.1/3.5											</td>
+											<td>
+												0.024/0.027											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-825(I)											</td>
+											<td>
+												<a href="/upload/website/item/EM-825(I) Datasheet 20240716_24081914837.pdf" class="product_download" target="_blank" title="EM-825(I)"></a>
+											</td>
+											<td>
+												3.2											</td>
+											<td>
+												140											</td>
+											<td>
+												4.2/3.6											</td>
+											<td>
+												0.021/0.025											</td>
+										</tr>
+																			<tr>
+											<td>
+												EM-825											</td>
+											<td>
+												<a href="/upload/website/item/EM-825 Datasheet 20240716_24081911944.pdf" class="product_download" target="_blank" title="EM-825"></a>
+											</td>
+											<td>
+												3.2											</td>
+											<td>
+												140											</td>
+											<td>
+												4.2/3.6											</td>
+											<td>
+												0.021/0.025											</td>
+										</tr>
+																		
+								</tbody>
+							</table>
+							
+						</div>
+					</div>
+		</ul>
+	</div>
+	</div>
+</div>	<!-- footer start -->
+<div class="footer_block container-fluid">
+	<div class="container clearfix">
+		<div class="footer_left">
+			<p class="company_text">
+				Elite Material Co., Ltd.			</p>
+			<p class="company_text">
+							</p>
+			<ul class="footer_info_list no_ul">
+				<li>
+									</li>
+				<li>
+									</li>
+			</ul>
+		</div>
+		<div class="footer_right hidden_mobile">
+			<ul class="footer_menu no_ul">
+									<li>
+						                        <a href="/en-global/about_milestone/index" title="About EMC">
+                            About EMC                        </a>
+
+                    </li>
+									<li>
+						                        <a href="/en-global/product_name/index" title="Products">
+                            Products                        </a>
+
+                    </li>
+									<li>
+						                        <a href="/en-global/key_financial_performance/index" title="Investors">
+                            Investors                        </a>
+
+                    </li>
+									<li>
+						                        <a href="/en-global/organization_structure/index" title="Governance">
+                            Governance                        </a>
+
+                    </li>
+									<li>
+						                        <a href="/en-global/esg_sustainable_governance/index" title="Sustainability">
+                            Sustainability                        </a>
+
+                    </li>
+									<li>
+						                        <a href="/en-global/career_living/index" title="Career">
+                            Career                        </a>
+
+                    </li>
+									<li>
+						                        <a href="/en-global/for_customers/index" title="Contact Us">
+                            Contact Us                        </a>
+
+                    </li>
+							
+			</ul>
+		</div>
+		<div class="footer_bottom">
+			<span><a href="/en-global/privacy_policy/index" class="privacyPolicyLink">Privacy policy</a></span>
+			© 2021 Elite Material Co.,Ltd. All Rights Reserved.<br>
+			The website is compatible with the latest versions of Chrome, Firefox, Safari, Opera, Edge.		</div>		
+	</div>
+</div>
+<!-- footer end -->
+
+<!-- go top -->
+<div id="go_top_btn">
+	<i class="fa fa-angle-up" aria-hidden="true"></i>
+</div>
+	
+</body>
+</html>

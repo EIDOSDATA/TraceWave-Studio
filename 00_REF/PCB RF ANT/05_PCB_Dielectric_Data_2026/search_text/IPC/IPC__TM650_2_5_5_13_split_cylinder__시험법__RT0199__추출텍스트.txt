@@ -1,0 +1,326 @@
+                                                                                                          Number
+                                                                                                            2.5.5.13
+     ASSOCIATION CONNECTING                                                                               Subject
+     ELECTRONICS INDUSTRIES ®                                                                               Relative Permittivity and Loss Tangent Using a
+                                                               3000 Lakeside Drive                          Split-Cylinder Resonator
+                                                       Bannockburn, IL 60015-1249
+                                                                                                          Date                                    Revision
+                                                                                                            01/07
+                                                                                                          Originating Task Group
+            IPC-TM-650                                                                                      High Frequency Resonator Test Method Task Group
+      TEST METHODS MANUAL                                                                                   (D-24c)
+
+
+1 Scope      This method describes the nondestructive mea-
+surement of the relative permittivity and loss tangent of unclad
+                                                                                                                                                  z
+dielectric substrates at microwave frequencies using a split-
+cylinder resonator (see Figure 1).
+
+
+                                                                                                                       Coupling
+                                                                                                                          Loop                Upper
+                                                                                                            L                                 Cylindrical
+                                                                                                                                              Cavity
+                                                                                                                                              Region
+
+
+                                                                                                            d                                Sample Region                  p
+
+                                                                                                                                              Lower
+                                                                                                                                              Cylindrical
+                                                                                                            L                                 Cavity
+                                                                                                                                              Region
+                                                                                                                                                               Coupling
+                                                                                                                                                               Loop
+                                                                               IPC-25513-1
+
+Figure 1        Split-Cylinder Resonator                                                                                                          2a
+
+This test method is directly applicable for measuring the                                                                                         2b
+in-plane (the plane parallel to the surface of the specimen)
+                                                                                                                                                                    IPC-25513-2
+permittivity of the specimen because the electric field is
+in-plane. The permittivity of isotropic dielectrics can also be                                         Figure 2         Split-Cylinder Resonator Diagram
+measured with this method.
+                                                                                                        Although the dielectric substrate thickness can vary from
+Note: This measurement method does not measure the out-                                                 0.05 mm to 5.0 mm [0.0020 in to 0.20 in], thin substrates may
+of-plane (direction normal to the surface of the specimen) per-                                         lead to larger measurement uncertainties, while the dielectric
+mittivity of the specimen. However, for most printed boards                                             losses in thicker substrates may prevent the split-cylinder fix-
+the measurement uncertainties associated with this method                                               ture from resonating properly. A substrate thickness on the
+are typically less than the difference between in-plane and                                             order of 1.0 mm [0.040 in] is typical.
+out-of-plane permittivity values. Furthermore, comparison with
+methods measuring the out-of-plane permittivity is difficult                                            The measurement theory assumes the dielectric substrate has
+because those methods typically do not provide measure-                                                 a uniform thickness. Therefore, to reduce the measurement
+ment confidence intervals.                                                                              uncertainty, variation and uncertainty in substrate thickness
+                                                                                                        should be minimized. A typical uncertainty in thickness should
+2 Applicable Documents                       See 6.2.                                                   be no more than 0.02 mm [0.00079 in]. In general, warped
+                                                                                                        samples should also be avoided as these can lead to biases
+3 Test Specimen The test specimen is an unclad dielectric                                               in the calculated values of the relative permittivity and loss
+substrate. The substrate geometry can be either square or                                               tangent.
+circular as long as the substrate extends beyond the diameter
+2a of the two cylindrical cavity sections as shown in Figure 2.                                         For the split-cylinder resonator described here, the measure-
+In particular, for the 10 GHz split-cylinder resonator discussed                                        ment frequency of the split-cylinder resonator is a function of
+in this method, the dimensions of the substrate should be at                                            the relative permittivity and thickness of the substrate. Thicker
+least 50.0 mm [1.97 in] in diameter for circular samples or                                             substrates and higher values of relative permittivity drive the
+50.0 mm [1.97 in] on a side for square samples.                                                         resonant frequency lower, as shown in Figure 6.
+
+Material in this Test Methods Manual was voluntarily established by Technical Committees of IPC. This material is advisory only
+and its use or adaptation is entirely voluntary. IPC disclaims all liability of any kind as to the use, application, or adaptation of this                   Page 1 of 4
+material. Users are also wholly responsible for protecting themselves against all claims or liabilities for patent infringement.
+Equipment referenced is for the convenience of the user and does not imply endorsement by IPC.
+                                                                                     IPC-TM-650
+ Number                                              Subject                                                                                    Date
+               2.5.5.13                                  Relative Permittivity and Loss Tangent Using a Split-Cylinder                                01/07
+                                                         Resonator
+ Revision
+
+
+
+
+4 Measurement Apparatus
+
+                                                                                                       7x10
+                                                                                                                 -4         10 GHz Split-Cylinder Resonator
+4.1 Split-Cylinder Resonator          The method employs a
+                                                                                                                            35 GHz Split-Cylinder Resonator
+split-cylinder resonator, which is a cylindrical cavity separated                                                6          Linear Least Squares Fit
+into two halves of equal length, with a dielectric substrate
+
+
+
+
+                                                                                                  Loss Tangent
+                                                                                                                 5
+placed in the gap between the two cavity sections. The split-                                                                                                  TE013
+                                                                                                                 4
+cylinder resonator must be constructed to allow an adjustable,                                                                       TE017
+                                                                                                                 3
+variable gap between the two cavity sections for introduction                                                               TE015
+                                                                                                                 2                            TE011
+of the dielectric substrate. Additional details about the con-                                                                        TE
+                                                                                                                            TE021 TE023 025
+struction of a split-post resonator are given in the references                                                  1       TE013
+                                                                                                                      TE011
+described in 6.2. Over the years there have been commercial                                                      0
+manufacturers of this fixture.                                                                                        10            20        30          40       50
+
+In order to excite and detect the desired fundamental TE011                                                                          Frequency (GHz)           IPC-25513-4
+resonant mode in the split-cylinder resonator, a coupling loop
+                                                                                            Figure 4 Typical Measurements of the Loss-tangent
+is introduced, through a small hole in the cavity wall, in each
+                                                                                            using 10 GHz and 35 GHz Split-cylinder Resonators
+of the two cavity regions. The plane of the coupling loop
+                                                                                            including Measurements with Higher Modes
+should be parallel to the plane of the sample, in order to allow
+maximum interaction with the vertical component of the mag-                                 4.2 Network Analyzer A scalar or vector network analyzer
+netic field. Each of the coupling loops is connected to a                                   is necessary to perform the measurement with the split-
+coaxial transmission line that is connected to the input port of                            cylinder resonator. Commercially available network analyzers
+a network analyzer. To minimize the effect of coupling losses,                              operate over various frequency ranges, so care is needed to
+the distance to which the loops extend radially into each of the                            ensure that the network analyzer covers the necessary fre-
+cavity sections must also be adjustable. In addition to the fun-                            quency range for the particular split-cylinder resonator used.
+damental TE011 mode, higher modes can be used to extend
+the measurement frequency. Typical measurements on fused                                    4.3 Digital Micrometer     The dielectric substrate thickness
+silica with higher mode measurements are shown in Figures 3                                 can be measured with a digital micrometer with a minimal
+and 4.                                                                                      resolution of 0.001 mm [0.000039 in].
+
+                                                                                            5 Procedure
+
+                         3.90                                                               5.1   Turn on the network analyzer and allow the unit to
+                                                     10 GHz Split-Cylinder Resonator
+                                                     35 GHz Split-Cylinder Resonator        warm-up and stabilize according to the manufacturer’s
+ Relative Permittivity
+
+
+
+
+                         3.85                                                               instructions.
+                                       TE015
+                                        TE021    TE017
+                                TE011TE013                                                  5.2    Connect the network analyzer’s two input ports to the
+                         3.80                   TE                                          split-cylinder resonator’s coupling loops using coaxial trans-
+                                           TE023 025        TE011            TE013          mission lines.
+                         3.75
+                                                                                            5.3 Measure the thickness of the substrate over several
+                                                                                            locations using a digital micrometer, and compute the mean
+                         3.70                                                               substrate thickness.
+                                10              20         30        40        50
+
+                                                Frequency (GHz)                             5.4 Determine split-cylinder resonator properties. The
+                                                                            IPC-25513-3     length, radius and conductivity of the split-cylinder resonator
+Figure 3 Typical Measurements of the Real Part of                                           must be known before the substrate relative permittivity and
+the Permittivity using 10 GHz and 35 GHz Split-cylinder                                     loss tangent can be calculated. If these variables have not
+Resonators including Measurements with Higher Modes                                         been already determined, the following procedure can be
+                                                                                            used:
+
+
+
+Page 2 of 4
+                                                                         IPC-TM-650
+ Number                              Subject                                                                                                     Date
+   2.5.5.13                              Relative Permittivity and Loss Tangent Using a Split-Cylinder                                             01/07
+                                         Resonator
+ Revision
+
+
+
+
+5.4.1 Measure the length L of each of the two split-cylinder                    ing on the thickness and relative permittivity of the dielectric
+resonator sections over several locations and compute the                       substrate being measured, the resonant frequency for the
+mean length of both sections.                                                   split-cylinder plus substrate can be significantly lower than the
+                                                                                resonant frequency of the empty split-cylinder resonator as
+5.4.2 With the split-cylinder empty (no substrate) and closed                   shown in Figure 6.
+(d=0), find the TE011 resonance with the network analyzer.
+To reduce the coupling losses to a negligible level, adjust
+the radial position of the coupling loops so that the peak of
+
+
+
+
+                                                                                      TE011 Resonant Frequency (GHz)
+                                                                                                                       10
+the resonance curve is less than -40 dB. For the particular
+10 GHz split-cylinder resonator described in this method, the
+                                                                                                                       8
+resonant frequency should be approximately 10.04 GHz. If
+another split-cylinder geometry is being used, use the follow-                                                         6
+ing approximation to estimate the TE011 resonant frequency of
+an empty split-cylinder resonator:                                                                                     4
+
+
+
+                                    √( ) ( )
+                                                                                                                       2
+                                c            j1 2   π
+                                                       2
+                     ƒ011 =                       +
+                               2π            a      2L
+                                                                                                                       0
+where c is the speed of light in a vacuum, j1 is the first zero of                                                          0    1      2        3      4          5
+the Bessel function of the first kind J1, a is the split-cylinder                                                                Substrate Thickness (mm)
+radius in meters and L is the length, in meters, of each of the
+split-cylinder sections as shown in Figure 2.                                                                           Sample Relative Permittivity
+                                                                                                                                   2
+5.4.3 Once the TE011 resonance has been identified and                                                                             4
+displayed on the network analyzer display, measure the reso-                                                                       6
+nant frequency f011 and quality factor Q of the resonance and                                                                      8
+use the following expressions to compute the radius a and the                                                                     10
+                                                                                                                                  20
+conductivity σ of the empty split-cylinder’s resonator sections:                                                                  50
+                                                                                                                                 100                           IPC-25513-5
+
+
+
+
+                              [( ) ( ) ]
+                                                                     1
+                                                 2                2 −2
+                                                                                Figure 5 Frequency of the TE011 Resonant Mode as a
+                                   2πƒ011   π
+                     a = j1               −                                     Function of Permittivity and Substrate Thickness for
+                                     c      2L                                  the 10 GHz Split-Cylinder Resonator
+
+                                     2πƒ011µ0                                   In order to identify the correct mode, one can use Figure 6 to
+                               σ=                    2
+                                         2Rs                                    predict the resonant frequency of the TE011 resonant mode.
+                                                                                For a more accurate estimate of this resonant frequency and
+where µ0 is the permeability of free space and
+                                                                                the frequencies of the higher-order resonant modes, software
+                                                                                is available from the National Institute of Standards and Tech-
+
+
+                       √ [( ) ( ) ]
+                                                                   3
+                                         2                    2    2            nology (NIST) which calculates the split-cylinder resonator
+                              µ0    j1                   π                      dimensions, substrate thickness, and provides an estimate of
+                                             +
+                              ε0    a                    2L                     the relative permittivity of the substrate. As of the publication
+
+
+                        [ ( ) ( )]
+              Rs =                           2                    2             of this method, additional commercial vendors are developing
+                              1 π                        1 j1                   similar software and will be listed through the IPC-TM-650
+                      2Q                         +
+                              2L 2L                      a a
+                                                                                Test Methods web page.
+
+5.5 Estimate the TE 0 1 1 Resonant Frequency of                                 5.6 Measure the Relative Permittivity and Loss Tangent
+Substrate-Loaded Split-Cylinder Resonator In addition
+to the desired TE011 resonant mode, other modes are excited                     5.6.1 Place the substrate in the gap separating the two cav-
+in the split-cylinder resonator as shown in Figure 5. Depend-                   ity sections of the split-cylinder resonator in such a way that
+
+
+                                                                                                                                                        Page 3 of 4
+                                                                             IPC-TM-650
+ Number                                       Subject                                                                      Date
+   2.5.5.13                                     Relative Permittivity and Loss Tangent Using a Split-Cylinder                01/07
+                                                Resonator
+ Revision
+
+
+
+
+                                                                                    of the higher-order TE0np resonant modes. The user must
+                                                                                    ensure that these modes are symmetric and not distorted by
+                                                                                    adjacent resonant modes.
+                                -60
+                                                                                    The uncertainties in the real part and loss tangent measure-
+        Magnitude of S21 (dB)
+
+
+
+
+                                                                                    ment will be calculated automatically from the uncertainties in
+                                                                                    various dimensions that are specified. The major source of
+                                -70
+                                                                                    uncertainty will be the uncertainty in the substrate thickness.
+                                                                                    Note that the electric field of the TE011 resonant mode is in the
+                                -80                                                 plane of the substrate. Therefore, if the substrate is anisotro-
+                                                                                    pic, the measured component of the relative permittivity also
+                                                                                    is in the plane of the substrate.
+                                -90                                                 6.1 Software Availability Software may be available from
+                                                                                    commercial vendors and in addition executable code is avail-
+                                      8.6      8.7      8.8   8.9   9.0             able from the Electromagnetic Properties of Materials Project
+                                                                                    at the National Institute of Standards and Technology (NIST,
+                                            Frequency (GHz)                         Boulder, CO). As commercial vendor software becomes avail-
+                                                                    IPC-25513-6     able, IPC will provide listings for these at the IPC-TM-650 web
+                                                                                    page located at www.ipc.org, under ‘‘Standards.’’
+Figure 6 Typical Multiple Split-Cylinder Resonator
+Resonances
+                                                                                    6.2 References
+
+the substrate extends beyond the circumference of both cav-                         M.D. Janezic, ‘‘Nondestructive Relative Permittivity and Loss
+ity sections. Adjust the separation of the two resonator sec-                       Tangent Measurements using a Split-Cylinder Resonator,’’
+tions so that the substrate is held by the weight of the upper                      Ph.D. Thesis, University of Colorado at Boulder, 2003.
+cavity between the two cavity sections.                                             M.D. Janezic, E.F. Kuester, J. Baker-Jarvis, ‘‘Broadband
+                                                                                    Complex Permittivity Measurements of Dielectric Substrates
+5.6.2    Using the estimate calculated in 5.3, measure the                          using a Split-Cylinder Resonator,’’ IEEE MTT-S International
+resonant frequency and quality factor of the TE011 resonant                         Microwave Symposium Digest, pp. 1817-1820, 2004.
+mode using the network analyzer. Since the split-cylinder
+                                                                                    M.D. Janezic and J. Baker-Jarvis, ‘‘Full-Wave Analysis of a
+resonator is a two-port cavity, the network analyzer should be
+                                                                                    Split-Cylinder Resonator for Nondestructive Permittivity Mea-
+set to measure S21, the scattering parameter that measures
+                                                                                    surements,’’ IEEE Transactions on Microwave Theory and
+the transmission through the cavity. The resonance may have
+                                                                                    Techniques, vol. 47, no. 10, pp. 2014-2020, 1999.
+a significant amount of noise, so it may be necessary to adjust
+the amount of averaging performed by the network analyzer.                          K.J. Coakley, J.D. Splett, M.D. Janezic, R.F. Kaiser, ‘‘Estima-
+In some cases where the resonance curve is near the noise                           tion of Q-factors and resonant frequencies,’’ IEEE Transac-
+floor, increasing the coupling level of the split-cylinder resona-                  tions on Microwave Theory and Techniques, vol. 51, no. 3,
+tor may be necessary to improve the signal to noise level,                          pp. 862-868, 2003.
+although this may introduce a small amount of coupling loss.                        J. Baker-Jarvis et al, ‘‘Dielectric and Conductor Measure-
+                                                                                    ments of Electronic Packaging Materials,’’ NIST Technical
+5.6.3 When using the available software, the routine will cal-                      Note 1520, 2001.
+culate the relative permittivity and loss tangent of the dielectric
+substrate after properly identifying the TE011 resonant mode.                       J. Baker-Jarvis et al, ‘‘Measuring the permittivity and perme-
+These values are displayed in the software front panel, includ-                     ability of lossy materials: solids, liquids, building materials, and
+ing an estimate of the measurement uncertainties for the rela-                      negative-index materials,’’ NIST Technical Note 1536, 2005.
+tive permittivity and loss tangent.                                                 B.N. Taylor, ‘‘Guidelines for Expressing the Uncertainties of
+                                                                                    NIST Measurement Results,’’ NIST Technical Note 1297,
+6 Notes If additional measurements are needed at higher                             1994.
+frequencies, the available software will provide the frequencies
+
+
+Page 4 of 4
+

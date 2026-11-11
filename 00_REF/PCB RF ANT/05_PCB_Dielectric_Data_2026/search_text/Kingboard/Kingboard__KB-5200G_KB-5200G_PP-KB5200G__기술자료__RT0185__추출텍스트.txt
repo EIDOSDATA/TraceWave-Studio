@@ -1,0 +1,85 @@
+                               Technical Information                                             Laminate: KB-5200G
+                               产品技术资料                                                           Prepreg: PP-KB5200G
+                                                                                                                     UL: E123995
+
+   Halogen-Free/High Tg/Very low Loss
+       特性 (Feature)                                                                      应用 (Application)
+       • 无卤，无锑，无红磷                                                                       • 服务器，交换机，基站
+         Halogen, antimony and red phosphorous free                                        Server，Switch，Base station
+       • 优良的耐热性                                                                          • 背板
+         Excellent thermal reliability                                                     Backplane
+       • 优良的介电性能                                                                         • 高性能计算机
+       • Very low Dk/Df                                                                    High performance computing
+       • 低的Z轴热膨胀系数                                                                       • 网络通信
+         Low Z-CTE                                                                         Network and telecom application
+       • 良好的耐CAF性能                                                                       • 高复杂度多层板
+         Anti-CAF capability                                                               High complexity multi-layers
+
+
+       板材性能 (Laminate Properties)
+                                                      Test Method
+                Test Item                                                        Test Condition         Unit     Typical Value
+                                                     (IPC-TM- 650)
+                 测试项目                                                               处理条件                单位          典型值
+                                                        测试方法
+                        Thermal Stress
+                            热应力
+                                                            2.4.13.1         Float 288 ℃ / Unetched      Sec         ≥240
+                     Glass Transition (Tg)
+                        玻璃化转变温度
+                                                            2.4.24.4                    DMA               ℃          200
+                                                                                      Alpha 1                         40
+                   CTE / Z-Axis Expansion                                                               ppm/℃
+                      Z-轴热膨胀系数
+                                                             2.4.24                   Alpha 2                        160
+ Thermal                                                                            50 – 260 ℃            %          1.5
+  热性能                      X/Y CTE
+                       X/Y-轴热膨胀系数
+                                                             2.4.24                40 ℃ - 125 ℃         ppm/℃        12/15
+                              T-260                         2.4.24.1                    TMA              min         >60
+                              T-288                         2.4.24.1                    TMA              min         >60
+                      TD(5% weight loss)                    2.4.24.6                    TGA               ℃          420
+                        Flammability
+                            燃烧性
+                                                             UL94                    E-24/125           Rating       V-0
+                     Surface Resistivity
+                         表面电阻率
+                                                            2.5.17.1                C-96/35/90           MΩ         5.4×108
+                     Volume Resistivity
+                         体积电阻率
+                                                            2.5.17.1                C-96/35/90          MΩ-cm       6.5×109
+                    Dielectric Breakdown
+                          击穿电压
+                                                             2.5.6              D-48/50+D-0.5/23         kV          ≥45
+                      Dielectric Constant                                      Etched         @ 1 GHz                 3.9
+ Electrical                                                                                              —
+                           介电常数                                               (RC50%)        @ 10 GHz                 3.8
+   电性能
+                                                      IEC61189-2-721
+                         Loss Tangent                                          Etched         @ 1 GHz               0.0035
+                                                                                                         —
+                           介质损耗                                               (RC50%)        @ 10 GHz               0.0055
+                             CTI
+                       相对漏电起痕指数
+                                                            IEC60112                     A                V          ≥175
+                        Arc Resistance
+                           耐电弧性
+                                                             2.5.1              D-48/50+D-0.5/23         Sec         120
+                     Peel Strength (1 oz.)                                               A                            --
+                        铜箔剥离强度
+                                                             2.4.8                                      N/mm
+                                                                               Float 288 ℃ / 10 Sec                  1.20
+Mechanical                                                                          Lengthwise                       570
+                       Flexural Strength
+ 机械性能                      弯曲强度
+                                                             2.4.4                                      N/mm2
+                                                                                     Crosswise                       480
+                      Water Absorption
+                           吸水率
+                                                             2.6.2.1                  D-24/23             %          0.10
+
+ Remarks:                                                              注:
+ - Typical Values for reference only.                                  - 典型值只供参考
+ - Standard Values according to IPC-4101E/130                          - 规格值参照 IPC-4101E/130
+ - Typical Value of Specimen thickness is 1.0mm (10*2116)              - 样品 的厚度为 1.0mm (10*2116)
+

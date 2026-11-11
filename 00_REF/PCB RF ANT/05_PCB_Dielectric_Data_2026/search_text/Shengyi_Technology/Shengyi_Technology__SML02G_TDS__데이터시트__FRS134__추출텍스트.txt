@@ -1,0 +1,52 @@
+ SML02G
+ (UL ANSI:FR-15.1) Halogen Free, Mid Loss &Low CTE multilayer material
+
+FEATURES                                                         APPLICATIONS
+● High Tg >170℃(DSC),Halogen Free                                Server, Switch, Base station
+● Lower X/Y-axis CTE(≤13ppm),offering superior
+  PTH reliability
+● Lower insertion loss, Dk/Df@10GHz:4.24/0.069
+● Excellent Anti-CAF performance
+GENERAL PROPERTIES
+          Test Items                   Test Method              Test Condition           Unit         Typical
+                                                                                                       Value
+                                   IPC-TM-650 2.4.24.2                DMA                               185
+               Tg                                                                         ℃
+                                   IPC-TM-650 2.4.25D                  DSC                              175
+               Td                  IPC-TM-650 2.4.24.6            5% Wt. loss             ℃             420
+              T300                 IPC-TM-650 2.4.24.1                 TMA                min           >60
+        Thermal Stress             IPC-TM-650 2.4.13.1         288℃, solder dip            -            Pass
+                      X/Y-axis      IPC-TM-650 2.4.41               50-125℃            ppm/℃           11-13
+                                                                    Before Tg          ppm/℃             25
+       CTE
+                       Z-axis       IPC-TM-650 2.4.24                After Tg          ppm/℃            125
+                                                                    50-260℃                %             1.2
+                                    IPC-TM-650 2.5.5.9                1GHz                 -            4.15
+      Dielectric Constant
+                                    IPC-TM-650 2.5.5.5               10GHz                 -            4.24
+                                    IPC-TM-650 2.5.5.9                1GHz                 -          0.0053
+      Dissipation Factor
+                                    IPC-TM-650 2.5.5.5              10GHz                  -          0.0069
+      Volume Resistivity           IPC-TM-650 2.5.17.1          After moisture         MΩ-cm         3.76×107
+                                                                  resistance
+      Surface Resistivity          IPC-TM-650 2.5.17.1          After moisture            MΩ         4.16×107
+                                                                  resistance
+        Arc Resistance               IPC-TM-650 2.5.1          D-48/50+D-0.5/23            s            180
+    Dielectric Breakdown             IPC-TM-650 2.5.6          D-48/50+D-0.5/23           kV         45+kV NB
+   Peel Strength(1oz HTE)            IPC-TM-650 2.4.8              288℃/10s             N/mm            1.00
+ Flexural Strength(LW/CW)            IPC-TM-650 2.4.4                   A                Mpa          550/450
+      Water Absorption              IPC-TM-650 2.6.2.1         E-1/105+D-24/23             %            0.07
+         Flammability                IPC-TM-650 UL94               C-48/23/50           Rating          V-0
+Remarks:
+1. Meet IPC-4101/130 specification sheet.
+2. The CTE typical value is based on the 1.52mm (12*2116) specimen, while the other typical value is based on the
+   0.76mm (6*2116) specimen, but not guarantee data.
+3. All the typical values listed above are for your reference only and not intended for specification. Please
+   contact Shengyi Technology Co., Ltd. for detailed information. All rights from this data sheet are reserved by
+   Shengyi Technology Co., Ltd.
+
+  Explanation: C=Humidity conditioning, D=Immersion conditioning in distilled water, E=Temperature conditioning.
+  The first digit following the letter indicates the duration of preconditioning in hours, the second digit the
+  preconditioning temperature in ℃ and the third digit the relative humidity.
+                                                                             CN-TDS-2308-03-SML02G-SML02GB
+

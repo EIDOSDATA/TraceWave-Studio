@@ -1,0 +1,264 @@
+\\\ Datasheet
+
+  AD Series™ Antenna Materials
+  AD250C™, AD255C™, AD300D™and AD350A™ Laminate Materials
+  The AD Series™ antenna materials from Rogers Corporation are high                                                                      \\\ Features and Benefits:
+  performance, specialty materials that are specifically engineered and                                                                      Low loss tangent (<0.002 at 10 GHz)
+  manufactured to meet the demands of today’s wireless antenna markets.
+                                                                                                                                              •    Excellent circuit performance
+  Rogers has the materials needed to meet these design needs both today                                                                            in all typical wireless frequency
+  and into the future.                                                                                                                             bands
+                                                                                                                                             Controlled dielectric constant (±0.05)
+  The AD Series antenna products are glass-reinforced, PTFE based materials
+                                                                                                                                              •    • Repeatable circuit performance
+  that provide controlled dielectric constant, low loss performance, and
+  very good passive intermodulation (PIM) performance. The woven glass                                                                       Very low PIM (-159 dBc at 30 mil, 1900
+                                                                                                                                             MHz)
+  reinforcement affords good circuit processability and enables high yield
+                                                                                                                                              •    Excellent antenna performance
+  circuit board fabrication.
+                                                                                                                                                   and reduced yield loss due to
+                                                                                                                                                   PIM related issues
+  The AD Series antenna products are manufactured with many dielectric
+  constant options to meet the wide variety of needs for today’s antenna                                                                     Excellent dimensional stability
+  requirements. These options and tight control help to enable the circuit to                                                                 •    Repeatable circuit performance
+                                                                                                                                                   and improved manufacturing
+  meet the desired impedance every time.
+                                                                                                                                                   yields
+  All AD Series antenna products are offered with standard electrodeposited
+  (ED) or reverse treated ED copper foil options. This provides choices that are                                                         \\\ Typical Applications:
+  sufficient to help reduce both circuit losses and antenna PIM.
+
+  Lastly, as PTFE based composites, the AD Series antenna materials have very                                                                 •    Cellular infrastructure base
+  low loss (typically less than 0.002 at 10 GHz), very low moisture absorption                                                                     station antenna
+  (less than 0.1%), and very high copper peel strength (greater than 10 pli).                                                                 •    Automotive telematics antenna
+                                                                                                                                                   systems
+  These features combined together make the AD Series laminates an ideal                                                                      •    Commercial satellite radio
+  choice for antenna applications.                                                                                                                 antenna
+
+
+
+
+  Advanced Connectivity Solutions
+  \\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com \\\ IPC Slash Sheet # \\\ UL File #                            1
+  \\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com \\\ IPC Slash Sheet # \\\ UL File #
+Data Sheet
+AD SERIESTM LAMINATES
+
+\\\ Standard Properties Table
+
+                                                            Typical Values1
+     Properties                                                                                  Units                      Test Conditions                            Test Method
+                                                       AD250C              AD255C
+     Electrical Properties
+     Dielectric Constant (process)                         2.52               2.55                   -             23˚C @ 50% RH               10 GHz       IPC TM-650 2.5.5.5
+
+     Dielectric Constant (design)                          2.50               2.60                   -               C-24/23/50                10 GHz       Microstrip Differential Phase Length
+
+     Dissapation Factor                                  0.0013             0.0013                   -             23˚C @ 50% RH               10 GHz       IPC TM-650 2.5.5.5
+     Thermal Coefficient of Dielectric
+                                                           -117               -110              ppm/˚C                0 to 100˚C               10 GHz       IPC TM-650 2.5.5.5
+     Constant
+     Volume Resistivity                                 4.8 x 108          7.4 x 108            MΩ-cm                 C96/35/90                    -        IPC TM-650 2.5.17.1
+
+     Surface Resistivity                                4.1 x 107          3.6 x 107               MΩ                 C96/35/90                    -        IPC TM-650 2.5.17.1
+     Electrical Strength (dielectric
+                                                           979                911                 V/mil                                            -        IPC TM-650 2.5.6.2
+     strength)
+    Dielectric Breakdown                                   >40                >40                  kV                  D-48/50             X/Y direction    IPC TM-650 2.5.6
+
+                                                       -159/-163          -159/-163                                 Reflected 43 dBm swept tones at
+     PIM2                                                                                          dBc                                                      Rogers Internal 50 ohm
+                                                                                                                            1900 MHz, S1/S1
+
+     Thermal Properties
+     Decomposition Temperature (Td)                       >500               >500                   ˚C              2hrs @ 105˚C         5% Weight Loss     IPC TM-650 2.3.40
+
+     Coefficient of Thermal Expansion - x                   47                 34               ppm/˚C                                                      IPC TM-650 2.4.41
+
+     Coefficient of Thermal Expansion - y                   29                 26               ppm/˚C                          -55˚C to 288˚C              IPC TM-650 2.4.41
+
+     Coefficient of Thermal Expansion - z                  196                196               ppm/˚C                                                      IPC TM-650 2.4.41
+
+     Thermal Conductivity                                  0.33               0.35              W/(m.K)                     -                z direction    ASTM D5470
+
+     Time to Delamination                                  >60                >60               minutes              as-received               288˚C        IPC TM-650 2.4.24.1
+
+     Mechanical Properties
+                                                           2.6                2.4
+     Copper Peel Strength                                                                   N/mm (lbs/in)            10s @288˚C              35 μm foil     IPC TM-650 2.4.8
+                                                          (14.8)             (13.6)
+                                                        60.7/44.1          60.7/44.1
+     Flexural Strength (MD/CMD)                                                                MPa (ksi )             25°C ± 3°C                   -        ASTM D790
+                                                        (8.8/6.4)          (8.8/6.4)
+                                                       41.4/38.6          55.8/45.5
+     Tensile Strength (MD, CMD)                                                                MPa (ksi )          23˚C @ 50% RH                   -        ASTM D3039/D3039-14
+                                                       (6.0/5.6)          (8.1/6.6)
+                                                      6,102/5,364        6,412/5,640
+     Flex Modulus                                                                              MPa (ksi )             25°C ± 3°C                   -        IPC-TM-650 2.4.4
+                                                       (885/778)          (930/818)
+     Dimensional Stability (MD, CMD)                    0.02/0.06          0.03/0.07           mils/inch          after etch + bake                -        IPC-TM-650 2.4.39a
+
+     Physical Properties
+     Flammability                                          V-0                V-0                    -                      -                      -        UL 94
+
+     Moisture Absorption                                   0.04               0.03                  %             E1/105 +D48/50                   -        IPC TM-650 2.6.2.1
+
+     Density                                               2.28               2.28               g/cm³                C24/23/50                    -        ASTM D792
+
+     Specifc Heat Capacity                                0.813              0.813                J/g˚K           2 hours at 105˚C                 -        ASTM E2716
+
+
+
+1
+ Typical values are a representation of an average value for the population of the property. For specification values contact Rogers Corp.
+2PIM Performance is heavily influenced by the copper choice. PIM values provided are typical values based on testing of the S1 foil using Rogers’ internal test method on
+0.030” thick and 0.060” thick laminates.
+Rogers recommends the customer evaluate each material and design combination to determine fitness for use over the entire life of the end product
+
+
+\\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com \\\ IPC Slash Sheet # \\\ UL File #                                 2
+    Data Sheet
+    AD SERIESTM LAMINATES
+
+    \\\ Standard Properties Table
+
+
+                                                                 Typical Values1
+     Properties                                                                                          Units                      Test Conditions                         Test Method
+                                                          AD300D                AD350A
+
+     Electrical Properties
+     Dielectric Constant (process)                            2.97                 3.54                     -             23˚C @ 50% RH               10 GHz      IPC TM-650 2.5.5.5
+
+                                                              2.94                 3.50                                                                           Microstrip Differential Phase
+     Dielectric Constant (design)                                                                           -                C-24/23/50               10 GHz
+                                                                                                                                                                  Length
+     Dissapation Factor                                     0.0021                0.0033                    -             23˚C @ 50% RH               10 GHz      IPC TM-650 2.5.5.5
+     Thermal Coefficient of Dielectric
+                                                              -73                   -57                 ppm/˚C               0 to 100˚C               10 GHz      IPC TM-650 2.5.5.5
+     Constant
+     Volume Resistivity                                    1.7 x 108             1.5 x 109              MΩ-cm                C96/35/90                    -       IPC TM-650 2.5.17.1
+
+     Surface Resistivity                                   5.1 x 107             9.5 x 107                MΩ                 C96/35/90                    -       IPC TM-650 2.5.17.1
+     Electrical Strength (dielectric
+                                                              750                   671                  V/mil                     -                      -       IPC TM-650 2.5.6.2
+     strength)
+    Dielectric Breakdown                                       46                   33                     kV                  D-48/50            X/Y direction   IPC TM-650 2.5.6
+
+                                                          -159/-163             -159/-163                                   Reflected 43 dBm swept tones at
+     PIM2                                                                                                 dBc                                                     Rogers Internal 50 ohm
+                                                                                                                                    1900 MHz, S1/S1
+
+     Thermal Properties
+
+     Decomposition Temperature (Td)                          >500                  >500                    ˚C               2hrs @ 105˚C         5% Weight Loss   IPC TM-650 2.3.40
+
+     Coefficient of Thermal Expansion - x                      24                   18                  ppm/˚C                                                    IPC TM-650 2.4.41
+
+     Coefficient of Thermal Expansion - y                      23                   18                  ppm/˚C                          -55˚C to 288˚C            IPC TM-650 2.4.41
+
+     Coefficient of Thermal Expansion - z                      98                   63                  ppm/˚C                                                    IPC TM-650 2.4.41
+
+     Thermal Conductivity                                     0.37                 0.44                W/(m.K)                      -               z direction   ASTM D5470
+
+     Time to Delamination                                     >60                   >60                minutes               as-received               288˚C      IPC TM-650 2.4.24.1
+
+     Mechanical Properties
+                                                              2.6                   2.4
+     Copper Peel Strength                                                                           N/mm (lbs/in)            10s @288˚C             35 μm foil    IPC TM-650 2.4.8
+                                                             (14.8)                (13.6)
+                                                         152.4/127.6            97.9/62.1
+     Flexural Strength (MD/CMD)                                                                        MPa (ksi )            25°C ± 3°C                   -       ASTM D790
+                                                         (22.1/18.5)            (14.2/9.0)
+                                                        122.0/120.7            97.9/46.2
+     Tensile Strength (MD, CMD)                                                                        MPa (ksi )         23˚C @ 50% RH                   -       IASTM D3039/D3039-14
+                                                        (17.7/17.5)            (14.2/6.7)
+                                                        10,400/9,580         12,652/10,128
+     Flex Modulus                                                                                      MPa (ksi )            25°C ± 3°C                   -       IPC-TM-650 2.4.4
+                                                        (1510/1390)          (1,835/1,469)
+     Dimensional Stability (MD, CMD)                      -0.08/0.02            0.15/0.17              mils/inch         after etch + bake                -       IPC-TM-650 2.4.39a
+
+     Physical Properties
+     Flammability                                             V-0                   V-0                     -                      -                      -       UL 94
+
+     Moisture Absorption                                      0.04                  0.1                    %              E1/105 +D48/50                  -       IPC TM-650 2.6.2.1
+
+     Density                                                  2.23                 2.43                  g/cm³               C24/23/50                    -       ASTM D792
+
+     Specifc Heat Capacity                                    0.80                 0.757                 J/g˚K            2 hours at 105˚C                -       ASTM E2716
+
+1
+ Typical values are a representation of an average value for the population of the property. For specifi cation values contact Rogers Corp.
+2PIM Performance is heavily influenced by the copper choice. PIM values provided are typical values based on testing of the S1 foil using Rogers’ internal test method on 0.030” thick
+and 0.060” thick laminates.
+Rogers recommends the customer evaluate each material and design combination to determine fitness for use over the entire life of the end product
+
+
+    \\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com \\\ IPC Slash Sheet # \\\ UL File #                                 3
+Data Sheet
+AD SERIESTM LAMINATES
+
+\\\ Standard Offerings
+
+               Standard Thicknesses                              Standard Panel Sizes                              Standard Claddings
+AD250C                                                       AD250C .020”:                         Electrodeposited Copper Foil
+0.020” (0.508 mm) +/- 0.002”                                 18” x 12” (457mm x 305mm)             ½ oz. (18µm)
+0.030” (0.762 mm) +/- 0.002”                                                                       1oz. (35µm)
+                                                             18” x 24” (457mm x 610mm)
+0.060” (1.524 mm) +/- 0.003”
+
+AD255C                                                       All Other Thicknesses
+                                                                                                   Reverse Treated Electrodeposited Copper Foil
+0.020” (0.508 mm) +/- 0.002”                                                                       ½ oz. (18µm)
+                                                             12” X 18” (305 X 457 mm)
+0.030” (0.762 mm) +/- 0.002”                                                                       1oz. (35µm)
+                                                             24” X 18” (610 X 457 mm)
+0.040” (1.016 mm) +/- 0.002”
+0.060” (1.524 mm) +/- 0.002”
+0.125” (3.175 mm) +/- 0.006”
+
+AD300D
+0.030” (0.762 mm) +/- 0.002”
+0.040” (1.016mm) +/- 0.002”
+0.060” (1.524 mm) +/- 0.002”
+0.120” (3.048 mm) +/- 0.006”
+
+AD350A
+0.030” (0.762 mm) +/- 0.002”
+0.060” (1.524 mm) +/- 0.003”
+0.120” (3.048 mm) +/- 0.006”
+
+
+*Contact Customer Service or Sales Engineering to inquire about other available product configurations including additional thicknesses, panel sizes and claddings.
+
+
+
+
+\\\ 100 S. Roosevelt Avenue \\\ Chandler, AZ 85226 \\\ Tel: 480-961-1382 \\\ Fax: 480-961-4533 \\\ www.rogerscorp.com
+\\\ IPC Slash Sheet # \\\ UL File #
+
+
+The information in this preliminary data sheet is intended to assist you in designing with Rogers’ circuit materials. It is not intended to and does not
+create any warranties express or implied, including any warranty of merchantability or fitness for a particular purpose or that the results shown on this
+data sheet will be achieved by a user for a particular purpose. The user should determine the suitability of Rogers’ circuit materials for each application.
+These commodities, technology and software are exported from the United States in accordance with the Export Administration regulations. Diversion contrary to
+U.S. law prohibited.
+
+The Rogers’ logo, Helping power, protect, connect our world, AD Series, AD250, AD255C, AD300D, & AD350A are trademarks of Rogers Corporation or one of its
+subsidiaries.
+©2023 Rogers Corporation, Printed in U.S.A., All rights reserved.
+
+Revised 1663 101023 Publication #92-197
+
+
+
+
+Helping power, protect, connect our world
+                                                                                TM
+
+
+
+
+                                                                                                                                                                 4
+

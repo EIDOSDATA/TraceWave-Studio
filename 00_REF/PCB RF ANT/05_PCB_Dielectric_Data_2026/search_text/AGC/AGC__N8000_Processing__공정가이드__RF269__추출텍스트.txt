@@ -1,0 +1,162 @@
+                                                    Confidential
+
+
+
+
+                                           N8000
+                                   General Processing Guidelines
+
+
+Cyanate Ester
+Laminate and Prepreg
+N8000 is a high-performance advanced material
+with a high Tg and extremely low Z-Axis expansion,
+creating a material with signal speed capabilities            • Option 2: Brown oxide with controlled dissolution
+not achievable through standard epoxy or                      post-treatment.
+polyimide.
+                                                              • Option 3: Modified brown oxide with DMAB
+                                                              (dimethylamino borane) reduction. Oxide weight
+Material Handling & Storage                                   gain should be .12  .03 mg / cm2
+Store laminates flat in a dry environment. Do not
+bend, scratch or dent laminate.
+                                                              Note: The brown oxide deposit should be tested
+Store prepreg flat, with a storage temperature of
+                                                              using a weight loss test. Thick oxide deposits tend
+<72° F (<23°C) and ≤50% RH.
+                                                              to yield poor thermal resistance. The oxide deposit
+For extended prepreg storage, reduce storage
+                                                              should not exceed 0.4 mg/cm2.
+temperature to <41° F (<5°C).
+Place prepreg under vacuum or in a desiccant
+chamber 12 - 24 hours prior to lay-up for best                Inner Layer Drying
+results.                                                      Inner layers should be oven dried to remove
+Reseal opened bags of unused prepreg.                         absorbed moisture. Absorbed moisture in the inner
+                                                              layer can affect the curing properties of the
+Copper & Surface Preparation                                  prepreg. Conveyorized warm air drying is usually
+                                                              not effective in removing absorbed moisture from
+Prepare copper surface for photo resist application
+                                                              the etched layer.
+according to the following options:
+The type of copper surface preparation employed
+should relate to the foil type as specified below:                                       Recommendations
+
+• Reverse Treat Foil (RTFoil®): Chemical clean
+followed by a light tack clean.                                                225°F (107°C) in vertical racks with
+• Shiny Copper Foil: Chemical and / or Mechanical              Signal layers   minimum 0.5” (12 mm) separations for
+ clean followed by a light tack clean.                                         60 minutes
+• Double Treat Foil: Chemical clean followed by a
+light tack clean.                                             Note: 1) Check with oxide supplier if using DMAB
+                                                              oxide reducer. Excessive exposure to heat may re-
+Note: Chemical clean consists of a mild cleaner to            oxidize the reduced treatment.
+remove soils followed by a mild acid to remove the            2) If inner layers are baked horizontally in stacks of
+passivation.                                                  1 - 2“ (25-50mm) extend time to 90 minutes.
+                                                              3) Drying temperatures below 212°F (100°C) are
+Bond Enhancing Treatments                                     not effective in removing absorbed moisture from
+One of the following options can be used                      the layer.
+successfully:                                                 4) If slip sheets are used to protect layers it is
+                                                              important that they not contain wax or silicon
+• Option 1: Oxide alternative based on sulfuric-              based materials which can transfer between cores
+peroxide etch                                                 and affect adhesion after lamination.
+                                                    Confidential
+
+
+
+
+Prepreg Drying
+The cure rate of N8000 prepreg can be affected by absorbed moisture. For best results, the prepreg should be
+vacuum desiccated at ambient temperature for 12-24 hours at a minimum vacuum of 28.5” Hg prior to usage. If
+prepreg is stored for 3 days after the drying process, the vacuum desiccation procedure should be repeated..
+
+Lay-up
+For best results, use inner layers within 2 hours after drying. Rebake inner layers if not used within 24 hours.
+
+Lamination
+For best results, fully cure in vacuum assisted hydraulic press
+
+                                                               Recommendations
+                                               A minimum of 28.5” Hg (965 mbars) for 15 minutes
+  Vacuum Gauge Pressure
+                                                       before applying heat & pressure.
+       Heat Up Rate*                                      8 - 12°F (4 – 7 °C) per minute
+       Critical Range                                       180 – 280°F (80 – 140°C)
+          Pressure                                         200 - 300 psi (14 – 21 bar)
+      Cure Time, Temp                            240 minutes @ 425 °F (240 minutes @ 218 °C)
+      Cool Down Rate                      7°F (4°C) per minute or less until stack reaches 260°F (127°C)
+        Breakdown                                 After panels have cooled below 150°F (65 °C)
+
+Notes: Heat rise is usually controlled by using an acceptable thermal lagging such as kraft paper or press pads.
+Alternately the heat rise can be controlled by ramping the platen temperature about 5 – 10 °F (5 °C) higher than
+book temperatures and controlling the heat up rate through the critical temperature range.
+
+For partial cure in press and full cure in oven, laminate product 60 minutes at 360°F (182°C) followed by a 240
+minute postbake in the oven at 425°F (218°C).
+
+Drilling
+  Typical Drill Parameters                                     Recommendations
+          Drill Sizes             0.010” – 0.013” (0.25 – 0.33 mm)             0.020” - 0.040” (0.50 – 1.0 mm)
+       Surface Speed              250 – 350 SFM (76– 107 m/min.)              350-450 SFM (107 – 138 m/min.)
+          Chip Load              0.5 – 1.5 mils/rev (13 – 38 µm/rev)         0.75 – 1.5 mils/rev (19 – 38 µm/rev)
+    Maximum Hit Count                        500 - 1000                                    750 – 1500
+    Typical Stack Height           0.045” – 0.100” (1.1 – 2.5 mm)               0.060” – 0.100” (1.5 - 2.5 mm)
+
+Note: As with all high modulus resin systems, N8000 may exhibit resin cracks of separation of glass and resin
+adjacent to the hole wall if exposed to excessively aggressive drill parameters. Care should be taken in following
+the drill parameters specified in the N8000 Routing and Drilling table.
+                                                    Confidential
+
+
+
+
+Drilling parameters should be adjusted depending on hole size, layer count, panel thickness, copper content and
+stack height. For specific feed and speed parameters, contact your drill supplier or AGC’S technical
+representative. Detailed typical drilling parameters are available for many products. Please contact agc-
+ml.multimaterial@agc.com.
+
+Hole Cleaning (Resin Smear Removal)
+Most solvent swell and permanganate etch processes are suitable. Aggressive solvent swell processes and
+double pass chemical desmear processes should be avoided.
+
+Plasma: Typical desmear conditions
+        Temperature                  Gas mixture                    Power                           Time
+           80 2C              10%CF4 , 80% O2, 10% N2            4000 W                         25-30 min
+
+
+Note: Depending on the amount of resin removal required, a preheat cycle and an oxygen burn cycle for ash
+removal may be necessary. Longer dwell times will be required if full etch-back is required. See your technical
+representative for additional information.
+
+Chemical Desmear:
+                  Type                       Temp (°F /°C)                               Time
+           Cyclic Amine 100%                130 ± 5 / 54 ± 2                        2 - 4 min.
+         Cyclic Amine 50% v/v               170 ± 5 / 77 ± 2                        3 - 5 min.
+       Butyl / hydroxide solvent            173 ± 5 / 78 ± 2                        3 - 5 min.
+   Alkaline Permanganate oxidizer           175 ± 5 / 79 ± 2                        8 - 10 min.
+
+
+Routing
+        Typical Drill Parameters                                   Recommendations
+              Stack Height                                         0.250” (6.25 mm)
+                Tool Size                                            0.093” (2.4 mm)
+                Feed Rate                                          36 IPM (0.9 m/min.)
+                  Speed                                                 24K RPM
+
+
+General Processing Notes
+1. Cyanate ester resin is susceptible to attack from strong alkaline process solutions. Contact of the cured
+resin with strong alkalis such as alkaline cleaners and solder mask strippers should be avoided. Exposure
+with solutions containing strong bases such as solvent swellers for resin desmearing and permanganate
+desmear chemistries should be limited to the recommended levels.
+
+2. The cured cyanate ester resin can absorb moisture more quickly than other materials commonly used to
+fabricate PCB’s. Ensure that moisture is thoroughly removed from PCB’s before subjecting them to solder
+assembly temperatures (solder reflow or solder assembly).
+
+
+ These guidelines can provide only basic and reference information for PCB fabricators. Because of different
+ environment, equipment, tooling and so on, in all instances, the user shall determine suitability in any given
+ conditions or applications. For more detailed processing information, please contact with the AGC engineer or
+ sales representative.
+
+ AGC Inc. 2025-07
+ agc-ml.multimaterial@agc.com
+

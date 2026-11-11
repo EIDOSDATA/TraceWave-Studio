@@ -1,0 +1,118 @@
+VT-47 LT                                                                     UL Approval: E214381         Version: 25/02/2025
+
+IPC4101 / 126 high Tg, Low CTE, high thermal reliability prepreg
+
+
+
+General Information                                      Application
+> High Tg, Low CTE                                       > Any-layer HDI Designs
+> High Reliability for HDI Designs                       > Sequential Laminations
+> Better Dimensional Stability                           > Automotive
+                                                         > Power System
+
+Availability                                             > Server
+
+> Prepregs are available in roll or panel form
+> E-Glass styles: 1078, 1067 and 1037
+
+
+                             Pressed                         Dk                                          Df
+    Glass            R/C    Thickness
+    Type             (%)                        @      @           @       @         @            @            @             @
+                           mil       μm        1GHz   2GHz        5GHz   10GHz      1GHz         2GHz         5GHz         10GHz
+     1037             70   1.7       43        4.00   3.95        3.90    3.79      0.013        0.015        0.016         0.017
+     1037             72   1.8       46        3.96   3.91        3.86    3.75      0.014        0.016        0.017         0.018
+   * 1037             74   2.0       51        3.92   3.87        3.82   3.71       0.014        0.016        0.017         0.018
+     1037             76   2.2       56        3.88   3.83        3.78    3.67      0.014        0.016        0.017         0.018
+     1037             78   2.3       58        3.84   3.79        3.74    3.63      0.014        0.016        0.017         0.018
+     1067             70   2.2       56        4.00   3.95        3.90    3.79      0.013        0.015        0.016         0.017
+     1067             72   2.4       61        3.96   3.91        3.86    3.75      0.014        0.016        0.017         0.018
+   * 1067             74   2.5       64        3.92   3.87        3.82   3.71       0.014        0.016        0.017         0.018
+     1067             76   2.8       71        3.88   3.83        3.78    3.67      0.0014       0.016        0.017         0.018
+     1067             78   2.9       74        3.84   3.79        3.74    3.63      0.014        0.016        0.017         0.018
+   * 1078             66   3.0        76       4.08   4.03        3.98   3.87       0.013        0.015        0.016         0.017
+     1078             68   3.2       81        4.04   3.99        3.94    3.83      0.013        0.015        0.016         0.017
+     1078             70   3.4       86        4.00   3.95        3.90    3.79      0.013        0.015        0.016         0.017
+     1078             72   3.6       91        3.96   3.91        3.86    3.75      0.014        0.016        0.017         0.018
+
+*Standard Availability
+
+
+
+Storage Condition
+ Properties                                                   Prepreg
+
+                                 Temperature                  Below 23˚C (73˚F)              Below 5˚C (41˚F)
+ Storage Condition
+                                 Relative humidity            Below 55% RH                   /
+
+ Shelf Life                                                   3 months                       6 months
+
+
+                                                                                                                          Page 1 of 2
+www.venteclaminates.com                                                                                        Published on: 25/02/2025
+VT-47 LT                                                                                     UL Approval: E214381          Version: 25/02/2025
+
+IPC4101 / 126 high Tg, Low CTE, high thermal reliability prepreg
+
+
+
+Properties Sheet
+ Properties                                  Test Method                  Units                 Specification             Typical Value
+ Thermal Properties
+                          DMA                IPC-TM-650 2.4.24.4          ˚C                    170 minimum               215
+ Tg                       DSC                IPC-TM-650 2.4.25            ˚C                    170 minimum               195
+                          TMA                IPC-TM-650 2.4.24            ˚C                    170 minimum               185
+ Td @5%weight loss                           ASTM D3850                   ˚C                    340 minimum               360
+ T288                                        IPC-TM-650 2.4.24.1          Minute                15 minimum                >60
+ Thermal Stress @ 288˚C                      IPC-TM-650 2.4.13.1          Second                Pass 10s                  >600
+                   Before Tg                 IPC-TM-650 2.4.24            ppm/˚C                60 maximum                25
+                   After Tg                  IPC-TM-650 2.4.24            ppm/˚C                300 maximum               130
+ Z-axis CTE
+                   Total Expansion
+                                             IPC-TM-650 2.4.24            %                     3.0 maximum               1.5
+                   (50~260˚C)
+ XY-axis CTE                                 IPC-TM-650 2.4.24.5          ppm/˚C                –                         10/12
+ Electrical Properties
+                          @ 1GHz             Cavity Resonator             –                     5.2 maximum               4.4
+ Dk (RC 50%)
+                          @ 10GHz            Cavity Resonator             –                     5.2 maximum               4.2
+                          @ 1GHz             Cavity Resonator             –                     0.035 maximum             0.011
+ Df (RC 50%)
+                          @ 10GHz            Cavity Resonator             –                     0.035 maximum             0.015
+                          After Moisture
+ Volume                                      IPC-TM-650 2.5.17.1          MΩ-cm                 1.0E+4 minimum            7.0E+8
+                          Resistance
+ Resistivity
+                          E-24/125           IPC-TM-650 2.5.17.1          MΩ-cm                 1.0E+3 minimum            8.0E+6
+                          After Moisture
+ Surface                                     IPC-TM-650 2.5.17.1          MΩ                    1.0E+4 minimum            7.0E+7
+                          Resistance
+ Resistivity
+                          E-24/125           IPC-TM-650 2.5.17.1          MΩ                    1.0E+3 minimum            8.0E+6
+ Electrical Strength                         IPC-TM-650 2.5.6.2           Volt/mil (KV/mm)      762 (30) minimum          1200~1400 (54)
+ Dielectric Breakdown                        IPC-TM-650 2.5.6             KV                    40 minimum                60
+ Comparative Tracking Index (CTI)            ASTM D3638                   Rating (Volt)         –                         Grade 3 (175~250)
+ Arc Resistance                              ASTM D495                    Second                60 minimum                195
+ Mechanical Properties
+ Peel Strength    As received                IPC-TM-650 2.4.8             lb/in (N/mm)          –                         8.0 (1.4)
+ (1oz)            After thermal stress       IPC-TM-650 2.4.8             lb/in (N/mm)          6.0 (1.05) minimum        8.0 (1.4)
+                  Warp                       IPC-TM-650 2.4.2.4           MPa                   –                         650
+ Flexural Modulus
+                  Fill                       IPC-TM-650 2.4.2.4           MPa                   –                         550
+ Physical Properties
+ Moisture Absorption                         IPC-TM-650 2.6.2.1           %                     0.80 maximum              0.10
+ Flammability                                UL-94                        Rating                V-0 minimum               V-0
+
+All test data provided are typical values and not intended to be specification values.
+Disclaimer: The information and data contained in this technical literature is based on data and knowledge correct at the time of
+publishing/printing and is believed to be accurate and is offered in good faith for the benefit of the user. The user should make his own
+tests to verify the suitability of this product for any application before its use. All data are typical values only and subject to change without
+notice.
+
+
+
+
+                                                                                                                                            Page 2 of 2
+www.venteclaminates.com                                                                                                          Published on: 25/02/2025
+

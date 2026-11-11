@@ -1,0 +1,174 @@
+                                                                                                      Design
+
+
+General Information of Dielectric Constant
+for RT/duroid® 6010.2LM and RO3010™ High
+Frequency Circuit Materials
+
+Abstract
+This text is a supplement to a paper titled “General Information of Dielectric Constants for the Circuit Design using Rogers
+High Frequency Materials”. This paper can be found at http://www.rogerscorp.com. It is intended to promote better
+understanding of the Specification Dk and the Design Dk as shown on the Rogers Corporation datasheets and Product
+Selector Guide.
+
+
+Rogers Corporation uses the X-band clamped stripline resonator test method described in IPC-TM-650 2.5.5.5c as the
+specification method for the dielectric constant of a high frequency material. This test method has a high degree of
+repeatability as well as excellent performance for internal quality control to ensure the manufacturing of consistent high
+frequency laminate products. However as mentioned in the previously referenced paper, this test method has some potential
+issues with anisotropy and compressive modulus of the material under test. Due to these properties being different in the
+RT/duroid® 6010.2LM and the RO3010™ laminates, there are differences to be accounted for regarding the results of the
+clamped stripline test as compared to other test methods. Knowing these differences will help the designer understand the
+electrical performance of these materials with different circuit designs and applications.
+
+
+Introduction
+The X-band clamped stripline test will give results of Dk and Df (dissipation factor) for a material under test. These results may
+or may not correlate well to the same material used in a microstrip application, as an example, where the electromagnetic
+environment of the circuit application is very different from the stripline test.
+
+
+Other test methods that will be discussed are the Full Sheet Resonator (FSR), Split Post Dielectric Resonator (SPDR) and
+differential phase length method. There is no known good correlation between the clamped stripline test and these other
+test methods. However in the case of the RT/duroid 6010.2LM and the RO3010 laminate which have a mean Dk value that is
+very similar in the clamped stripline test, they will generally have a Dk value that is significantly different when tested with
+these other methods.
+
+
+Comparisons between Clamped stripline and other test methods
+A simple graphic representation of the clamped stripline test method is given in figure 1.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                            Page 1 of 4
+Figure 1. X-band clamped stripline resonator test showing dielectric material under test
+
+
+The material under test is sandwiched between two clamping plates that are held under pressure. These plates act as the
+ground planes for the clamped stripline structure. The resonator circuit is relatively thin, designed to be loosely coupled (gap
+coupled) and the element is 2 wavelengths, in physical length, at 10GHz for a particular material. The electric fringing fields in
+the gap coupled area are where the concern for X-Y plane anisotropy can be an issue.
+
+Another factor affecting the test is how well the sample under test will conform to the resonator circuit image. The copper
+circuit image on the resonator circuit has some height above the substrate. If the material under test is very rigid then it will
+not conform around the resonator circuit features as well and more entrapped air will cause the Dk value to differ. A very
+soft material (low compressive modulus) conforms quite well to the circuit image with minimal amount of entrapped air. The
+copper surface roughness also has an effect. The material under test had been laminated as a copper clad laminate and then
+all of the copper etched off prior to this test. The mirror image of the copper surface roughness is now the substrate surface
+roughness. When a copper is used which has a rougher surface this will translate to more surface area of the material under
+test. More surface area has the potential to have more entrapped air which can lower the reported Dk value. However, in
+the case of the materials discussed in this paper, they are relatively soft and the surface topology can compress when tested
+under pressure and the effects of the copper roughness are lessened. Also the two materials discussed here use the same
+copper so any reported Dk differences of these materials are not typically due to the copper effect.
+
+Another test method that is often used is IPC-TM-650 2.5.5.6 Full Sheet Resonance test. This method does not have the issue
+of entrapped air or sensitivity to anisotropic material properties, as does the stripline test. This method uses the copper clad
+laminate as a parallel plate waveguide and determines the dielectric constant from resonant peaks established by standing
+waves corresponding to the physical size of the laminate. These standing waves typically occur at low frequencies due to the
+size of the panel under test.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                            Page 2 of 4
+Therefore the FSR test is usually considered a low frequency test, which evaluates the Dk properties of the laminate in the Z
+axis (thickness axis) only. A graphic representation of this test method is shown in figure 2.
+
+
+
+
+Figure 2. Copper clad laminate under test using the FSR test method
+
+
+The clamped stripline resonator mostly tests the Z axis of the material as well; however the gap coupling in the stripline test
+can be sensitive to X-Y plane electrical properties.
+
+Most PTFE materials which have a lower Dk value do not have significantly different electrical properties in the Z axis versus
+the X-Y plane. Or in other words, they are not significantly anisotropic for Dk properties. By the nature of what is used to raise
+the Dk in PTFE materials to a higher value, there is a pronounced anisotropic effect with higher Dk PTFE materials.
+
+When comparing test data of the RT/duroid 6010.2LM and the RO3010 laminate, one will find that the mean Dk value of these
+materials in the stripline test (Specification Dk) is very similar and is around 10.2. However when the same materials are tested
+in the FSR test, there is a significant difference in the Dk value. There are multiple causes for this phenomenon. One issue is
+that the Dk value for the X-Y plane of the RT/duroid 6010.2LM is much higher than the X-Y plane Dk of RO3010 laminate. This
+difference will have no effect on the FSR test results, however it will have an effect on the stripline test to raise the reported
+Dk value. A balancing effect for the RT/duroid 6010.2LM for the Dk value in the stripline test is the fact that it has a higher
+compressive modulus and therefore it has more entrapped air. The entrapped air lowers the Dk value which offsets the rise
+due to the anisotropic effect. The FSR test is not affected by the X-Y plane Dk differences as well as the compressive modulus
+differences between the two materials, whereas these differences do impact the results of the stripline test.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                            Page 3 of 4
+The Z axis Dk value from the differential phase length difference method for the RT/duroid 6010.2LM is approximately 10.7
+and the RO3010 laminate is about 11.2. These numbers are considered the Design Dk for these materials. The DK numbers
+for these materials may be slightly lower when using the FSR test method however there is relatively good agreement. Both
+of these methods will test the Z axis of the material; however the differential phase length method is a higher frequency test.
+These numbers can be seen in figure 3, where the SPDR (split post dielectric resonator) method will test the material in the X-Y
+plane.
+
+
+
+
+             Material                          Clamped Stripline                             FSR (Z-axis)                         SPDR (X-Y Plane)
+                                                Specification Dk                             Average Dk                             Average Dk
+ RO3010                                                 10.2                                     11.00                                   12.10
+ RT/duroid 6010.2LM                                     10.2                                     10.60                                   13.33
+
+Figure 3. FSR, Differential Phase length and SPDR test results.
+
+
+The comparison between the FSR and SPDR results are a good generality for anisotropic effects of the material. It can be
+seen that the RT/duroid 6010.2LM substrate has much more anisotropic behavior than the RO3010 material, as previously
+mentioned.
+
+There have been several cases where customers report an apparent Dk value for RT/duroid 6010.2LM substrate of
+approximately 11.4 and the same material will be reported by another customer with a different application as 10.8. This is
+likely due to one application having electromagnetic fields using the X-Y plane more so than the other application which is
+using mostly the Z axis properties of the material. Typical applications which will utilize more of the X-Y plane Dk properties
+of a material would be edge coupled features such as some couplers or filters. The applications which use primarily the Z
+axis Dk properties are single ended transmission lines, stub tuning structures and some stepped impedance filters. There are
+applications which will use the Z axis in combination with the X-Y plane properties to a varying degree based on the design.
+An example of this type of application could be a microstrip ring resonator with gap coupling. The gap coupling is sensitive
+to the X-Y plane properties and the resonator is more Z axis related.
+
+Conclusion
+The X-band clamped stripline test method is an IPC standard used to test raw circuit materials to a specification Dk value. This
+is an excellent test for repeatability and quality/process control for a laminate supplier. However this test has some sensitivity
+to entrapped air between the material samples during test. It also has sensitivity to the compressive modulus of the material
+as well as the anisotropic properties of the material. In the case of the RT/duroid 6010.2LM and the RO3010 laminate, they
+both have the same target specification Dk per the stripline test, however their compressive modulus and anisotropy effects
+are very different. Due to these differences, other test methods which are not sensitivity to modulus and anisotropy effects
+will report dissimilar Dk values between these two materials. Understanding that the X-Y Dk values for these materials
+are much higher than the Z axis value is important in understanding differing apparent Dk values when considering edge
+coupled circuit designs. This document is in support of another document which can be found at http://www.rogerscorp.
+com and is titled “General Information of Dielectric Constants for the Circuit Design using Rogers High Frequency Materials”.
+This paper has tables of Dk information using other test methods regarding RT/duroid and RO3010 laminates, as well as other
+Rogers High Frequency laminates.
+
+
+
+
+The Rogers' logo, RT/duroid and RO3010 are trademarks of Rogers Corporation or one of its subsidiaries
+
+The information in this presentation is intended to assist you in working with Rogers' High-Frequency Materials. It is not intended to and does not create any
+warranties, express or implied, including any warranty of merchantability or fitness for a particular purpose or that any results show in this presentation will
+be achieved by a user for a particular purpose. The user is responsible for determining the suitability of Rogers' High Frequency Materials for each application.
+
+Revised 1562 042922 Publication #92-338
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                                          Page 4 of 4
+

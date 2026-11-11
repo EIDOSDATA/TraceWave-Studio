@@ -1,0 +1,122 @@
+{
+  "status": "passed",
+  "stage": "assembly_fixture_validation",
+  "scope": "Technical fixtures assembled only under Code/.local. These are not the final published JLC workbook. No openpyxl or xlsxwriter authoring was used.",
+  "fixtures": [
+    {
+      "path": "assembly_fixture/assembled.xlsx",
+      "source": "Two actual Artifact Tool exports; four-sheet package fixture.",
+      "independent_zip_xml_cells_compared": 142740,
+      "value_type_effective_style_mismatches": 0,
+      "relationships_content_types_tables_filters_freeze_cf_passed": true
+    },
+    {
+      "path": "assembly_fixture/assembled_variant.xlsx",
+      "source": "Same exported values, with font/cell-XF/numFmt indices reordered and an equivalent shared rich string; external test hyperlink added only in fixture.",
+      "independent_zip_xml_cells_compared": 142740,
+      "value_type_effective_style_mismatches": 0,
+      "rich_text_and_link_shift_preserved": true
+    }
+  ],
+  "openpyxl_read_validation": {
+    "status": "passed",
+    "library": "openpyxl 3.1.5",
+    "operation": "read only; no Workbook.save or authoring",
+    "files": [
+      {
+        "file": "assembled.xlsx",
+        "sheets": 4,
+        "first_sheet_values_types_styles_compared": 57000,
+        "tables_filters_freeze_passed": true,
+        "rich_text_and_hyperlink_passed": false
+      },
+      {
+        "file": "assembled_variant.xlsx",
+        "sheets": 4,
+        "first_sheet_values_types_styles_compared": 57000,
+        "tables_filters_freeze_passed": true,
+        "rich_text_and_hyperlink_passed": true
+      }
+    ]
+  },
+  "independent_review_agent": "dielectric_sources",
+  "files": [
+    {
+      "path": "assemble_xlsx.py",
+      "bytes": 23359,
+      "sha256": "28acdad3b68be9ac54dcf6c1d23cd1dd8274277f8934f217af89ac7bce34a79e"
+    },
+    {
+      "path": "xlsx_styles.py",
+      "bytes": 6963,
+      "sha256": "3bc9be79f76defb446fc43054f77545367115aca700cfa378c01732d67564ee0"
+    },
+    {
+      "path": "assembly_fixture/assembled.xlsx",
+      "bytes": 838918,
+      "sha256": "3a18478fa21670bda8842b2c77ecc220af73528cbb263395c243e2a37c06df7b"
+    },
+    {
+      "path": "assembly_fixture/assembled_variant.xlsx",
+      "bytes": 836725,
+      "sha256": "691d49fec60fc13d3f51ceb397423e1b66959719351610bc09efc764a69e4845"
+    },
+    {
+      "path": "assembly_fixture/openpyxl_read_report.json",
+      "bytes": 582,
+      "sha256": "321b5a7a56dae161f24dbda1ec56e184d9aaf04c83c4b47edb99a80818d0ad95"
+    },
+    {
+      "path": "assembly_fixture/assembled_mixed_bag.xlsx",
+      "bytes": 614868,
+      "sha256": "39b9bcbd64f9c80769fa3ae71be18e4424a22fce14a6a015eb7b2fd0db937736"
+    },
+    {
+      "path": "assembly_fixture/assembled_mixed_bag.assembly.json",
+      "bytes": 3261,
+      "sha256": "869f34b3973428c5265f9893799c5fe760c95714dea1d06aaa0b39123dabf561"
+    },
+    {
+      "path": "assembly_fixture/mixed_bag_openpyxl_read_report.json",
+      "bytes": 262,
+      "sha256": "a99d96b59471cd34bbb7f2be4a05e827257038468a70dc6aee44cb9545fc1b37"
+    },
+    {
+      "path": "assembly_fixture/feature_bag_guard_verification.json",
+      "bytes": 293,
+      "sha256": "febc52bd357fb638ad25e7a57054c1fa70e9e7be76dea5f8c4055c2ebf883450"
+    },
+    {
+      "path": "assembly_fixture/feature_bag_audit.json",
+      "bytes": 2127,
+      "sha256": "de9c111289e0c04c51a8d1aed87d5d4357757e947f79184d917ef29266e686cb"
+    }
+  ],
+  "feature_property_bag_compatibility": {
+    "status": "passed",
+    "all_production_chunks_scanned": 85,
+    "identical_present_bag_chunks": 78,
+    "absent_without_references_chunks": 7,
+    "present_bag_sha256": "85b85c0943766388c0717c64db39b61f1cbf770e29a71410ea8557cae17bba6b",
+    "policy": "Share an identical present feature-property-bag. Accept absence only after checking no bag references in styles, worksheet, workbook or workbook relationships. Preserve all boolean cells and checkbox metadata.",
+    "positive_fixture": "assembly_fixture/assembled_mixed_bag.xlsx",
+    "positive_fixture_cells": 62706,
+    "openpyxl_read_validation": {
+      "status": "passed",
+      "read_only_operation": true,
+      "save_called": false,
+      "library": "openpyxl 3.1.5",
+      "four_real_sheet_types_opened": true,
+      "boundary_and_middle_samples": 36,
+      "tables_filters_freeze_number_formats_styles_preserved": true
+    },
+    "negative_fixture_validation": {
+      "status": "passed",
+      "missing_bag_with_references_rejected": true,
+      "message": "Feature property bag is absent but referenced: C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\dielectric-excel\\assembly_fixture\\missing_referenced_bag.xlsx",
+      "no_output_created": true
+    },
+    "production_assembly_report": "staging/jlc_assembled.assembly.json",
+    "production_stage": "assembled_before_finalization"
+  }
+}

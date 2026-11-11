@@ -1,0 +1,163 @@
+                                                                                                                             I-Speed®
+                                                                                       Low Loss, Epoxy Laminate and Prepreg
+
+                                                                              Tg 180°C Td 360°C Dk 3.63 Df 0.0060
+
+
+
+  IPC-4101 /98 /99 /101 /126                           UL - File Number E41625
+
+
+  I-Speed® is a 180°C Tg FR-4 resin system for multilayer
+  PWB applications where maximum thermal performance
+  and reliability are required.
+                                                        I-Speed® laminate and prepreg products are manufactured with Isolas' patentable high
+      PRODUCT FEATURES
+                                                        performance multi-functional resin system, reinforced with electrical grade (E-glass)
+       Industry Recognition                             glass fabric. This system delivers a 15% improvement in Z-axis expansion and offers
+           UL File Number: E41625                       25% more electrical bandwidth (lower loss) than competitive products in this space.
+           Qualified to UL’s MCIL Program
+                                                        These properties coupled with superior moisture resistance at reflow, result in a product
+           RoHS Compliant
+                                                        that bridges the gap from both a thermal and electrical perspective.
+       Performance Attributes
+           Lead-free assembly compatible                The I-Speed ® resin system is laser fluorescing and UV blocking for maximum
+       Processing Advantages                            compatibility with Automated Optical Inspection (AOI) systems, optical positioning
+           FR-4 process compatible                      systems and photo imagable solder mask imaging.
+           UV blocking and AOI fluorescence
+           Multiple lamination cycles
+           HDI technology compatible                    PRODUCT ATTRIBUTES
+      PRODUCT AVAILABILITY
+      Standard Material Offering: Laminate
+           2 to 28 mil (0.05 to 0.71 mm)
+      Copper Foil Type
+           HTE Grade 3
+           HVLP (VLP2) ≤2.5 micron Rz JIS               TYPICAL MARKET APPLICATIONS
+           RTF (Reverse Treat Foil)
+           Embedded resistor foil
+      Copper Weight
+           ½, 1 and 2 oz (18, 35 and 70 µm)
+           available
+           Heavier copper foil available
+           Thinner copper foil available
+      Standard Material Offering: Prepreg
+           Tooling of prepreg panels
+           Moisture barrier packaging
+      Glass Fabric Availability
+           E-glass
+           Square weave glass
+           Mechanically spread glass
+
+                                                          Isola Group                         Isola Asia Pacific                      Isola GmbH
+                                                          6565 West Frye RoadChandler,        (Hong Kong) Ltd.12/F,                   Isola Strasse 2 D-52348 Düren,
+                                                          AZ 85226 Phone: 480-893-6527        Kin Sang Commercial Centre,             GermanyPhone: 49-2421-8080
+  ORDERING INFORMATION:                                   Fax: 480-893-1409                   49 King Yip Street, Kwun Tong,          Fax: 49-2421-808164
+  Contact your local sales representative or                                                  Kowloon,
+  contact info@isola-group.com for further                                                    Hong KongPhone: 852-2418-1318
+  information.                                                                                Fax: 852-2418-1533
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/i-
+           speed-laminate-and-prepreg/                       Last Updated November 04, 2026              Revision No: I © 2026, Isola Group, All rights reserved.
+  Typical Values Table
+
+                                                                                                              Units                               Test Method
+                                    Property                                        Typical Value
+                                                                                                      Metric (English)                     IPC-TM-650 (or as noted)
+   Glass Transition Temperature (Tg) by DSC                                       180                °C                         2.4.25C
+   Glass Transition Temperature (Tg) by DMA                                       195                °C                         2.4.24.4
+   Decomposition Temperature (Td) by TGA @ 5% weight loss                         360                °C                         2.4.24.6
+   Time to Delaminate by TMA                  A. T260
+                                                                                  >60                Minutes                    2.4.24.1
+   (Copper removed)                           B. T288
+                                              A. Pre-Tg
+                                                                                  45                 ppm/°C
+                                              B. Post-Tg
+   Z-Axis CTE                                                                     230                ppm/°C                     2.4.24C
+                                              C. 50 to 260°C, (Total
+                                                                                  2.5                %
+                                              Expansion)
+   X/Y-Axis CTE                               Pre-Tg                              16                 ppm/°C                     2.4.24C
+   Thermal Conductivity                                                           0.4                W/m·K                      ASTM E1952
+   Thermal Stress 10 sec @ 288ºC              A. Unetched
+                                                                                  Pass               Pass Visual                2.4.13.1
+   (550.4ºF)                                  B. Etched
+                                              A. @ 1 GHz                          3.65                                          2.5.5.9
+                                              B. @ 2 GHz                          3.64                                          Bereskin Stripline
+   Dk, Permittivity                                                                                  —
+                                              C. @ 5 GHz                          3.63                                          Bereskin Stripline
+                                              D. @ 10 GHz                         3.63                                          Bereskin Stripline
+                                              A. @ 1 GHz                          0.0057                                        2.5.5.9
+                                              B. @ 2 GHz                          0.0059                                        Bereskin Stripline
+   Df, Loss Tangent                                                                                  —
+                                              C. @ 5 GHz                          0.0059                                        Bereskin Stripline
+                                              D. @ 10 GHz                         0.0060                                        Bereskin Stripline
+                                              A. After moisture resistance        4.4 x 107
+   Volume Resistivity                                                                                MΩ-cm                      2.5.17.1
+                                              B. At elevated temperature          9.4 x 107
+                                              A. After moisture resistance        2.6 x 106
+   Surface Resistivity                                                                               MΩ                         2.5.17.1
+                                              B. At elevated temperature          2.1 x 108
+   Dielectric Breakdown                                                           >50                kV                         2.5.6B
+   Arc Resistance                                                                 137                Seconds                    2.5.1B
+   Electric Strength (Laminate & laminated prepreg)                               70 (1741)          kV/mm (V/mil)              2.5.6.2A
+                                                                                                                                UL 746A
+   Comparative Tracking Index (CTI)                                               2 (250-399)        Class (Volts)
+                                                                                                                                ASTM D3638
+
+                                              A. Standard profile copper                                                        2.4.8C
+                                                                                  1.14 (6.5)
+                                                 1. After thermal stress
+   Peel Strength                                                                                     N/mm (lb/inch)
+                                                 2. After thermal stress                                                        2.4.8.2A
+                                                                                  0.96 (5.5)
+                                                 3. After process solutions                                                     2.4.8.3
+                                                                                  0.90 (5.1)
+                                              A. Length direction                 462 (67.0)
+   Flexural Strength                                                                                 MPa (kpsi)                 2.4.4B
+                                              B. Cross direction                  427 (62.0)
+                                              A. Length direction                 330 (48.3)
+   Tensile Strength                                                                                  MPa (kpsi)                 ASTM D3039
+                                              B. Cross direction                  254 (35.6)
+                                              A. Length direction                 2868
+   Young's Modulus                                                                                   ksi                        ASTM D790-15e2
+                                              B. Cross direction                  2730
+                                              A. Length direction                 0.173
+   Poisson's Ratio                                                                                   —                          ASTM D3039
+                                              B. Cross direction                  0.152
+   Moisture Absorption                                                            0.061              %                          2.6.2.1A
+   Flammability (Laminate & laminated prepreg)                                    V-0                Rating                     UL 94
+   Relative Thermal Index (RTI)                                                   130                °C                         —
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/i-
+           speed-laminate-and-prepreg/                              Last Updated November 04, 2026             Revision No: I © 2026, Isola Group, All rights reserved.
+              NOTES
+              Revisions:
+              A: Initial release - 4/17
+              B: Corrected units for Flexural and Tensile Strength - 8/18
+              C: Removed Low Dk glass option - 10/18
+              D: Change MOT to RTI - 5/19
+              E: Revised CTI to 2 - 1/21
+              F: Changed VLP2 to HVLP to align with common industry terms 4/21
+              G: Corrected data sheet Df values to align with Construction table values 12/22
+              H: Added construction option to 28 mils and added DMA Tg- 3/24
+              I: Modified alpha 1 CTE from 60 to 45 ppm/C and overall from 50-260C from 2.7% to 2.5% (6x2116 30 mil data) 8/24
+
+
+
+
+              Isola, the Isola logo, Astra, Chronon, GETEK, I-Fill, IsoDesign, IsoStack, I-Speed, I-Tera, Polyclad, Stratus,
+              TerraGreen, and The Base for Innovation are registered trademarks or trademarks of ISOLA USA Corp. in the
+              United States and in other countries. Copyright © 2021 Isola Group. All rights reserved.
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/i-
+           speed-laminate-and-prepreg/                     Last Updated November 04, 2026       Revision No: I © 2026, Isola Group, All rights reserved.
+

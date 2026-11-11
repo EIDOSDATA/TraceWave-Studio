@@ -1,0 +1,130 @@
+                                                                                APPLICATION NOTES
+
+
+                                                        Low-Flow Prepregs – Using the Beast!
+                                                                                                  by Chet Guiles, Arlon 2013
+
+
+
+
+In our last column we talked a little bit    with Table 3-2 (which calls out IPC-      reported normally as the average of
+about what a Low-Flow Prepreg was, a         TM-650 Method 2.3.17.2) the nominal       several individual readings (necessary
+bit about flow and rheology, ranted a bit    resin flow range for no flow shall be     in this writer’s opinion because of the
+about the IPC Low Flow test and how          as indicated on the procurement           inherent variability in the test method
+and why it was not a perfect predictor       document. The resin flow percent          itself) which must be in spec for
+of production performance. All that          for no flow shall not vary from the       material to be shipped. An additional
+being said, the industry regularly           nominal value more than specified         requirement       that    no    individual
+uses substantial amounts of low flow         on the applicable specification sheet     measurement shall be out of the spec
+materials in a wide variety of rigid-flex    or as agreed upon between user and        range is problematic because the
+and heat-sink bonding applications.          supplier.                                 inherent variability of the method itself
+And, since highly filled materials                                                     can result in individual readings that
+                                             Generally speaking users will accept
+often approach “low flow” status, the                                                  are “out of spec” when the batch or lot
+                                             the values for flow and variation from
+line between low-flow prepregs and                                                     is actually well controlled and centered.
+                                             their suppliers’ data sheets, and, not
+prepregs that just happen to have
+                                             unreasonably, expect that those will be An incoming test often is a single
+lower than standard flows is becoming
+                                             met on material shipped to them. In measurement taken on one test sample
+somewhat fuzzy. An example of that is
+                                             many cases when incoming material expected to be representative of the lot
+filled “green,” high temperature epoxy
+                                             is tested, lo and behold, the test result and when it “fails” it is assumed the lot
+(“lead-free”) systems used for bonding
+                                             falls outside the published value and is is deficient. But as the old song goes,
+aluminum heat-sinks to PWB’s to
+                                             different from the test result reported “It ain’t necessarily so! A single test
+mount high intensity LED lighting.
+                                             by the supplier. This triggers all kinds result can have as much as a ±30%
+Given the admitted difficulties inherent     of demands for cause and corrective deviation from the average of the lot
+in trying to use industry test methods       action, results in changes in supplier simply based on the inherent “noise”
+and standards it is little surprise that     quality ratings, etc. And in many cases in the test method and measurement.
+the IPC more or less gives laissez           it’s a reaction to an issue that’s not Lab to lab correlation is at best
+faire to both supplier and user to           really an issue. Why? A spec is a spec, marginal and so in many cases users
+establish specifications. It’s interesting   yes? So what happens? And does it wind up employing a “real-lamination”
+to see the highlighted “shalls” in a         really impact product performance?        procedure to accept/reject material
+specification that has no specifications                                               based on the empirical proposition:
+                                             Data sheet values are generally
+and to see resin flow described as a                                                   “Does it work OK in a lamination
+                                             based on averages of significant
+“percentage” when the actual test calls                                                simulation test?” This protects the
+                                             amounts of real data and represent
+for measuring flow in mils of reduction                                                user, but may well reject in-spec
+                                             statistically significant values that an
+of a 1” diameter cut-out circle. (“Shall”                                              material, resulting in delays, claims
+                                             in-control process will generate with
+in an IPC document means that this                                                     and counter claims and pain for both
+                                             6-sigma control when a meaningful
+defines a requirement that has to be                                                   parties involved. Moreover, the supplier
+                                             number of samples are taken.         Test
+met.) From IPC 4101B we read:                                                          does not have the time to do a “real
+                                             data reported for individual rolls of
+                                                                                       lamination” cycle for manufacturing
+3.9.2.2.3 No Flow (NF) When                  material produced in production will
+                                                                                       testing purposes because it would
+specimens are tested in accordance           represent a limited sampling that are
+                                                                                       take too much time and would not
+give any real-time indicator of product are more likely to work well in a         to test the material is inherently more
+performance or process drift, key to wide range of process conditions             “noisy” than the coating process itself.
+process control.                         without the need for constant
+                                         tweaking. Subject of course to           I’d love to say that the answer to all
+We can measure the diameter of a
+                                         Murphy’s Law!                            your problems would be to use
+test hole repeatably and between
+                                                                                  Arlon’s second-generation low flow
+operators, to within 0.001” to 0.002” –
+                                         That all leads to the second issue       materials, 51N epoxy and 38N
+but when we are accurately measuring
+                                         in using low-flow materials,             polyimide, which we are able to
+data from a test that may vary by as
+                                         whatever the questions there may         keep in spec consistently (taking a
+much as ±0.015 on any given sample
+                                         be about testing and correlation         statistically valid sample and
+(more on higher flow “low flow”
+                                         to in-use conditions. And that           averaging results), but that would be
+materials) measurement accuracy isn’t
+                                         second issue is that once a material     overstating their benefits unless
+the issue.
+                                         has been used for a while                users are prepared to “tweak” their
+I wish I could say that there is a       successfully, the end use processes      processes to take advantage of the
+comprehensive answer to this issue       have been tweaked to fit its             unique properties of the materials.
+that “works for everybody”, but there    idiosyncrasies, and alternative,         So it will also be with anyone
+isn’t. Suppliers are working hard to     competitive materials never quite fit    else’s products. The “secret” to
+make their processes run in tighter      in. (Chet’s Corollary to Murphy’s        making the best use of any material
+control (which does not resolve the      Law is that “There is no such thing      is to work with the material
+test method variability question) and    as a drop-in replacement!”) This is      supplier to get the most out of it by
+most users recognize that there is       almost always attributed to the          taking advantage of its unique
+a testing “gray area” but whenever       alternative material’s not being as      properties, and not trying to force a
+there is a nonconformance, nobody        “process friendly” – but in fact if it   round peg into a square hole.
+wants to take the responsibility for the were the other way around, the same
+risk of bad product, so “Does it work?” thing would occur. I know I risk          For now this is The Material Witness
+becomes the gold standard, and           being charged with heresy here, but      wishing you a prosperous 2011.
+suppliers either suck it up or           no two products process exactly
+get tossed out. While our in-house       the same, no matter what generic
+specifications are designed to be as     slash sheet they purport to meet, and
+process friendly as we know how to       no two suppliers produce identical
+make them, there will always be some products, even if they totally meet
+percentage of the end user’s part        the same IPC specification. There
+numbers that seem to defy the ability    are always “phantom variables”
+of the product to “work” even when it    because no man-made process is
+is in spec.                              perfect no matter how good the
+                                         engineering or how accurate the
+Newer generations of low flow products
+                                         metrics by which the control is
+have been designed to provide a wider
+                                         established. And in the case of
+process window – in other words they
+                                         low flow materials, the method used
+
+
+
+
+                                                  9433 Hyssop Drive
+                                        Rancho Cucamonga, California 91730
+                                      Tel: (909) 987-9533 • Fax: (909) 987-8541
+
+                                                  www.arlonemd.com
+
+Ver 1.1
+

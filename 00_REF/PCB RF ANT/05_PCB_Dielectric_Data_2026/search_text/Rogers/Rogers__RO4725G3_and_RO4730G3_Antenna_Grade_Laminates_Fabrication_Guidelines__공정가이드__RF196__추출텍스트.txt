@@ -1,0 +1,217 @@
+                                                                                                         Fabrication Notes
+
+
+RO4725G3™ and RO4730G3™ Antenna Grade
+Laminates Fabrication Guidelines
+
+DRILLING CONDITIONS:
+Surface speeds greater than 500 SFM and chip loads less than 0.002” (0.05mm) should be avoided whenever possible. When using
+small diameter drills (<0.0135”) use below a 0.002” chip load to avoid random breakage of drill bits.
+
+Recommended Ranges
+
+                           Surface Speed:         300-500 SFM (90 to 150m/min)
+                           Chip Load:             0.002”-0.004”/rev. (0.05-0.10 mm)
+                           Retract Rate:          500-1000 IPM 500 IPM (12.7 m/min) for tools less than 0.0135”
+                                                  (0.343mm), 1000 IPM (25.4 m/min) for all others.
+                           Tool Type:             Standard carbide
+                           Tool Life:             2000-3000 hits
+
+
+Hole quality should be used to determine the effective tool life rather than tool wear. These materials will yield good hole quality
+when drilled with bits which are considered worn by epoxy/glass standards. Unlike epoxy/glass, RO4725G3™ and RO4730G3™
+material hole roughness does not increase significantly with tool wear. Typical values range from 8-25mm regardless of hit count
+(evaluated up to 8000 hits). The roughness is directly related to the ceramic filler size and provides topography that is beneficial
+for hole-wall adhesion. Drilling conditions used for epoxy/glass boards have been found to yield good hole quality with hit counts
+in excess of 2000.
+
+A minimum PTH spacing of 12 mil wall to wall for electrically isolated vias and 6-8 mils for thermal and shielding vias that
+redundantly connect copper layers (to prevent sphere edge to edge drilling and chemical ingress) and a hole wall roughness min
+spec of 2 mils.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com               Page 1 of 5
+CALCULATING SPINDLE SPEED AND INFEED:
+                           12 x [Surface Speed (SFM)]
+Spindle Speed (RPM) =
+                           Pi x [Tool Diam. (in.)]
+
+Feed Rate (IPM) = [Spindle Speed (RPM)] x [Chip Load (in/rev.)]
+
+Example:
+Desired Surface Speed: 400 SFM
+Desired Chip Load: 0.003”(0.08 mm)/rev.
+Tool Diameter: 0.0295”(0.75 mm)
+
+
+                                       12 x [400]
+Spindle Speed =                                          = 51,800 RPM
+                                       3.14 x [0.0295]
+
+Infeed Rate =                          [ 51,800] x [0.003] = 155 IPM
+
+
+QUICK REFERENCE TABLE:
+
+                                     Tool Diameter            Spindle Speed (kRPM)      Infeed Rate (IPM)
+                                    0.0100” (0.254mm)                  95.5                    190
+                                    0.0135” (0.343mm)                  70.7                    141
+                                    0.0160” (0.406mm)                  95.5                    190
+                                    0.0197” (0.500mm)                  77.6                    190
+                                    0.0256” (0.650mm)                  60.0                    180
+                                    0.0258” (0.655mm)                  60.0                    180
+                                    0.0295” (0.749mm)                  51.8                    155
+                                    0.0354” (0.899mm)                  43.2                    130
+                                    0.0394” (1.001mm)                  38.8                    116
+                                    0.0453” (1.151mm)                  33.7                    101
+                                    0.0492”(1.257mm)                   31.1                     93
+                                    0.0531” (1.349mm)                  28.8                     86
+                                    0.0625” (1.588mm)                  24.5                     74
+                                   0.0925” (2.350mm)`                  16.5                     50
+                                    0.1250” (3.175mm)                  15.0                     45
+                   * Conditions stated are tapered from 200SFM and 0.002” chip load up to 400 SFM and 0.003”chip load.
+
+DEBURRING:
+RO4725G3 and RO4730G3 materials can be deburred using conventional nylon brush scrubbers.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com           Page 2 of 5
+DESMEAR:
+Due to sensitivity of the LoPro copper to chemical desmear, it is recommended that RO4725G3 and RO4730G3 materials are
+desmeared using a plasma process. Recommended plasma conditions are provided below:
+
+
+
+
+Plasma Desmear Cycle:
+                                     Frequency:                         40 KHz
+                                     Voltage:                           500-600V
+                                     Power:                             4000-5000 Watts
+                                     Pre-Heat to 60°C using:
+                                     Gases:                             90% O2, 10% N2
+                                     Pressure:                          250 mTORR
+                                     Desmear using:
+                                     Gases:                             75% O2, 15% CF4, 10% N2
+                                     Pressure:                          250 mTORR
+                                     Time:                              10-30 minutes
+
+
+
+
+COPPER PLATING:
+No special treatments are required prior to electroless copper plating. Board should be processed using conventional epoxy/glass
+procedures. Desmear of drilled holes is not typically required, as the high Tg (280°C [536°F]) resin system is not prone to smearing
+during drill. Resin can be removed using a standard CF4/O2 plasma cycle or a double pass through an alkaline permanganate
+process should smear results from aggressive drilling practices.
+
+
+
+
+Figure 1: Cross-section of a typical RO4725G3 or RO4730G3 laminate plated through-hole. Note that the appearances of the special filler and slightly
+increased hole-wall roughness are normal for this product. Additionally, the LoPro foil surface contains a thin coating of modifed base resin, which
+appears colorless. We suggest discussing hole quality/appearance with a Rogers’ Technical Service Engineer prior to processing RO4725G3 or
+RO4730G3 laminates for the first time.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com              Page 3 of 5
+IMAGING/ETCHING:
+Panel surfaces may be mechanically and/or chemically prepared for photoresist. Standard aqueous or semiaqueous photoresists
+are recommended. Any of the commercially available copper etchants can be used.
+
+SOLDERMASK:
+Any screenable or photoimageable solder masks typically used on epoxy/glass laminates bond very well to the surface of
+RO4725G3 and RO4730G3 materials. Mechanical scrubbing of the exposed dielectric surface prior to solder mask application
+should be avoided as an “as etched” surface provides for optimum bonding.
+
+HASL and REFLOW:
+RO4725G3 and RO4730G3 material baking requirements are comparable to epoxy/glass. In general, facilities which do not bake
+epoxy/glass boards will not need to bake RO4730G3 boards. For facilities that do bake epoxy/glass as part of their normal process,
+we recommend a 1-2 hour bake at 250°F-300°F (121°C-149°C).
+
+Prolonged exposure in an oxidative environment may cause changes to the dielectric properties of hydrocarbon based materials.
+The rate of change increases at higher temperatures and is highly dependent on the circuit design. Although Rogers’ high
+frequency materials have been used successfully in innumerable applications and reports of oxidation resulting in performance
+problems are extremely rare, Rogers recommends that the customer evaluate each material and design combination to determine
+fitness for use over the entire life of the end product.
+
+SHELF LIFE:
+Rogers’ high frequency copper clad laminates, not etched material, can be stored indefinitely under ambient room temperatures
+(55-85°F, 13-30°C) and humidity levels. At room temperature, the dielectric materials are inert to high humidity. However, metal
+claddings such as copper can be oxidized during exposure to high humidity. Standard PWB pre-exposure cleaning procedures can
+readily remove traces of corrosion from properly stored materials.
+
+ROUTING:
+RO4725G3 and RO4730G3 materials can be machined using carbide tools and conditions typically used for epoxy/glass. Copper
+foil should be etched away from the routing channels to prevent burring.
+MAXIMUM STACK HEIGHT:
+The maximum stack height should be based on 70% of the actual flute length to allow for debris removal.
+
+Example:
+Flute Length:                 0.300” x 0.70    =             0.210”(5.33 mm)
+Backer Penetration:                                      – 0.030”(0.762mm)
+Max. Stack Height:                                           0.180”(4.572mm)
+
+TOOL TYPE:
+Carbide multifluted spiral chip breakers or diamond cut router bits.
+
+ROUTING CONDITIONS:
+Surface speeds below 500 SFM should be used whenever possible to maximize tool life. Tool life is generally greater than 50 linear
+feet when routing the maximum allowable stack height.
+
+Chip Load:                   0.0010-0.0015”(0.0254-0.0381mm)/rev
+Surface Speed:                       300 SFM
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com            Page 4 of 5
+QUICK REFERENCE TABLE:
+
+                                       Tool Diameter                 Spindle Speed                 Lateral Feed Rate
+                                            1/32                        40k RPM                           50 IPM
+                                            1/16                        25k RPM                           31 IPM
+                                            3/32                        20k RPM                           25 IPM
+                                             1/8                        15k RPM                           19 IPM
+
+
+
+
+MULTILAYER BOARD PROCESSING:
+Please refer to the fabrication guidelines for RO4003C(TM)/RO4350B(TM)/RO4835(TM) Materials titled “RO4003C/RO4350B/RO4835
+Laminate Circuit Processing Guidelines” PUB #92-433.
+
+
+
+
+Prolonged exposure in an oxidative environment may cause changes to the dielectric properties of hydrocarbon based materials. The rate of change increases at
+higher temperatures and is highly dependent on the circuit design. Although Rogers’ high frequency materials have been used successfully in innumerable
+applications and reports of oxidation resulting in performance problems are extremely rare, Rogers recommends that the customer evaluate each material and
+design combination to determine fitness for use over the entire life of the end product.
+
+The information in this data sheet is intended to assist you in designing with Rogers’ circuit materials. It is not intended to and does not create any
+warranties express or implied, including any warranty of merchantability or fitness for a particular purpose or that the results shown on this data sheet
+will be achieved by a user for a particular purpose. The user should determine the suitability of Rogers’ circuit materials for each application.
+
+These commodities, technology and software are exported from the United States in accordance with the Export Administration regulations. Diversion
+contrary to U.S. law prohibited.
+
+The Rogers' logo, RO4003C, RO4350B, RO4835, 4725G3 and RO4730G3 are trademarks of Rogers Corporation or one of its subsidiaries.
+© 2023 Rogers Corporation, Printed in U.S.A., All rights reserved.
+Revised 1658 082126 Publication #92-420
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com                  Page 5 of 5
+

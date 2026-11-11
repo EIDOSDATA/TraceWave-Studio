@@ -1,0 +1,185 @@
+                          thermal
+
+VT-4A2H                                                                       UL Approval: E214381   Version: 24/08/2023
+
+Laminate/Prepreg
+
+
+
+General Information
+Ventec offers a series of Ceramic Filled thermally conductive Laminates and Prepregs for multilayer PCB applications
+requiring thermal dissipation. Laminates and prepregs provide ease of manufacture during ply-up. The prepreg provides
+higher thermal conductivity and flowability, which suits high power and heavy copper designs.
+
+> Thermal conductivity - 2.2 W/mK, 8 times that of FR4
+> Tg 130oC & Td 380oC
+> Excellent thermal and insulation performance
+> MOT 105oC
+> Lead-free assembly compatible
+> ROHS & WEEE compliant
+
+
+Application
+> Power Conversion
+> PDP, LED, Regulator for TV, Monitor Drives
+> Rectifier, Power supply
+> Automotive Electronics
+> Hybrid Multilayer Constructions
+> Other designs with thermal management requirements
+
+
+Storage Condition
+                                                       Prepreg                              Laminate
+
+ Storage                   Temperature                 < 23ºC (73ºF)   < 5ºC (41ºF)         Room
+ Condition                 Relative humidity           < 55%           /                    /
+
+The Prepreg exceeding shelf life should be retested.
+
+
+
+
+                                                                                                                   Page 1 of 4
+www.venteclaminates.com                                                                                 Published on: 24/08/2023
+                          thermal
+
+VT-4A2H                                                                                      UL Approval: E214381          Version: 24/08/2023
+
+Laminate/Prepreg
+
+
+
+
+Laminate Properties
+ Properties                                  Test Method                  Units                 Specification            Typical Value
+ Thermal Properties
+                   DSC                       IPC-TM-650 2.4.25                                  90 minimum               130
+ Tg                                                                       ˚C
+                   DMA                       IPC-TM-650 2.4.24.4                                130 minimum              150
+ Td                                          ASTM D3850                   ˚C                    340 minimum              380
+ T260                                        IPC-TM-650 2.4.24.1          Minute                30 minimum               >60
+ T288                                        IPC-TM-650 2.4.24.1          Minute                15 minimum               >30
+ Thermal Stress @ 288˚C                      IPC-TM-650 2.4.13.1          Second                10 minimum               >600
+               Before Tg                     IPC-TM-650 2.4.24            ppm/˚C                60 maximum               28
+               After Tg                      IPC-TM-650 2.4.24            ppm/˚C                300 maximum              145
+ Z-axis CTE
+               Total Expansion
+                                             IPC-TM-650 2.4.24            %                     3.0 maximum              2.3
+               (50~260˚C)
+ MOT                                         UL 746B                      ˚C                    –                        105
+ Electrical Properties
+ Dk (RC 90%)     @ 1GHz                      IPC-TM-650 2.5.5.9           –                     7 maximum                5.1
+ Df (RC 90%)     @ 1GHz                      IPC-TM-650 2.5.5.9           –                     0.035 maximum            0.014
+                 After Moisture
+ Volume                                      IPC-TM-650 2.5.17.1          MΩ-cm                 1.0E+4 minimum           5.0E+8
+                 Resistance
+ Resistivity
+                 E-24/125                    IPC-TM-650 2.5.17.1          MΩ-cm                 1.0E+3 minimum           3.1E+7
+                 After Moisture
+ Surface                                     IPC-TM-650 2.5.17.1          MΩ                    1.0E+4 minimum           2.3E+7
+                 Resistance
+ Resistivity
+                 E-24/125                    IPC-TM-650 2.5.17.1          MΩ                    1.0E+3 minimum           5.2E+6
+ Electrical Strength                         IPC-TM-650 2.5.6.2           Volt/mil (KV/mm)      762 (30) minimum         >1000 (40)
+ Dielectric Breakdown                        IPC-TM-650 2.5.6             KV                    40 minimum               60
+                                                                                                                         Grade 2 (Internal Test
+ Comparative Tracking Index (CTI)            UL 746A                      Rating (Volt)         –
+                                                                                                                         Grade 0)
+ Mechanical Properties
+ Peel Strength     As received               IPC-TM-650 2.4.8             lb/in (N/mm)          6 (1.05)                 12 (2.1)
+ (1oz)             After thermal stress      IPC-TM-650 2.4.8             lb/in (N/mm)          6 (1.05) minimum         12 (2.1)
+ Physical Properties
+ Moisture Absorption                         IPC-TM-650 2.6.2.1           %                     0.5 maximum              0.12
+ Flammability                                UL-94                        Rating                –                        V-0
+ Thermal       Z-axis                                                                           –                        2.2
+                                             ISO22007-2                   W/mK
+ Conductivity XY-axis                                                                           –                        3.4
+
+Note: All test data provided are typical values and not intended to be specification values.
+
+Disclaimer: The information and data contained in this technical literature is based on data and knowledge correct at the time of
+publishing/printing and is believed to be accurate and is offered in good faith for the benefit of the user. The user should make his own
+tests to verify the suitability of this product for any application before its use. All data are typical values only and subject to change without
+notice.
+
+
+
+
+                                                                                                                                            Page 2 of 4
+www.venteclaminates.com                                                                                                          Published on: 24/08/2023
+                          thermal
+
+VT-4A2H                                                                                  UL Approval: E214381       Version: 24/08/2023
+
+Laminate/Prepreg
+
+
+Availability
+
+Laminate
+  Item                                                 Availability
+
+  Copper Foil                                          Hoz, 1oz, 2oz, 3oz
+  Dielectric                                           .003” (80um), .004” (100um), .006” (150um), .008” (200um)
+  Standard Size                                        37”*49”, 41”*49”, 43”*49”, and panels could be cut from above sizes.
+
+
+
+Prepreg
+  Glass Fabric                                        Press Thickness (um)
+
+  106*                                                80
+  106                                                 125
+  106                                                 150
+
+Remark: 106* has limited ability of resin filling. Please contact Ventec Technical Support before use.
+
+
+Inner Layer
+  Item                                                Recommendation
+
+  Surface Preparation                                 Chemical treatment preferred
+  D.E.S.                                              Standard process
+  Oxide                                               Compatible with most oxide chemicals
+
+
+
+
+                                                                                                                                   Page 3 of 4
+www.venteclaminates.com                                                                                                 Published on: 24/08/2023
+                          thermal
+
+VT-4A2H                                                                               UL Approval: E214381       Version: 24/08/2023
+
+Laminate/Prepreg
+
+
+
+Press Condition
+ Item                                               Recommendation
+
+ 1. Heating rate (Rise of Rate) on Product          3-6oC min (5~10oF/min)
+ 2. Full Pressure on Product                        ≥400psi in 5~10 minutes after pressing starts
+ 3. Curing Temperature & Time                       >50min at more than 170oC (338oF) on Product
+ 4. Vacuuming should be continued until over 140oC (284oF) [Material Temperature]
+ 5. Cold Press condition: Keep Plate cooled by water; Pressure: 100psi; Dwell: 60 minutes
+ 3. Curing Temperature & Time
+
+
+
+
+Machining & Wet Processes
+ Item                                               Recommendation
+
+ Drilling                                           Excessive wear of carbide drill bits. Diamond coated drill
+ Desmearing                                         Alkaline permanganate or plasma
+ Metallization                                      Compatible with direct deposit or electroless copper processes
+ Surface Finish                                     Compatible with OSP, HASL, ENIG, etc. Bake prior to HASL.
+ Punching & Routing                                 Aggressive wear of machining tools
+
+
+
+
+                                                                                                                                Page 4 of 4
+www.venteclaminates.com                                                                                              Published on: 24/08/2023
+

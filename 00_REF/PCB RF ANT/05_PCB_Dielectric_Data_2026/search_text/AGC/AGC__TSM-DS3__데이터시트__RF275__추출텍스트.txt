@@ -1,0 +1,143 @@
+TSM-DS3
+Dimensionally Stable Low Loss Laminate
+
+ Benefits
+      •    Industry Best Df (Df = 0.0014 @10 GHz)
+      •    High Thermal Conductivity (TC = 0.65 W/m*K)
+      •    Low (~5%) Fiberglass Content
+      •    Dimensional Stability Rivals Epoxy
+      •    Enables Large Format High Layer Count PWBs
+      •    Builds Complex PWBs in Yield w/ Consistency and Predictability
+      •    Temperature Stable Dk ± 0.25% (-30 to 120°C)
+      •    Compatible With Resistive Foils
+
+ Applications
+      •    Couplers
+      •    Phased Array Antennas
+      •    Radar Manifolds
+      •    mmWave Antenna/Automotive
+      •    Oil Drilling
+      •    Semiconductor/ATE Testing
+
+
+TSM-DS3 is a thermally stable, industry leading low loss core (Df = 0.0014 at 10 GHz) that can be manufactured with the
+predictability and consistency of the best fiberglass reinforced epoxies. TSM-DS3 is a ceramic-filled reinforced material with very low
+fiberglass content (~ 5%) that rivals epoxies in fabricating large format complex multilayers.
+TSM-DS3 was developed for high power applications (TC = 0.65 W/m*K) where it is necessary for the dielectric material to conduct
+heat away from other heat sources in a PWB design. TSM-DS3 was also developed to have very low coefficients of thermal expansion
+for demanding thermal cycling.
+
+A TSM-DS3 core combined with fastRise™27 (Df = 0.0014 at 10 GHz) prepreg is an industry leading solution for the lowest possible
+dielectric losses that can be attained at epoxy-like 420°F fabrication temperatures. The low insertion losses of TSM-DS3/ fastRise™27
+are only rivaled by fusion bonding (PTFE laminates melt from 550 to 650°F (288 - 343°C)). Fusion bonding is expensive, it causes
+excessive material movement and it puts stress on plated through holes. For complex multilayers, the price of poor yield drives up
+the final material cost. fastRise™27 enables the sequential lamination of TSM-DS3 at a low 420°F (215°C) with consistency and
+predictability that reduces cost.
+For microwave applications, the low x, y and z CTE values assure that critical spacings between traces in filters and couplers have
+very low movement with temperature.
+
+TSM-DS3 can be used with very low profile copper foils yielding a smooth copper edge between coupled lines.
+Registration over many layers is critical for yield and variations in copper weight and copper etching across a panel can cause
+nonlinear movement. Non-linear movement over large panels leads to a lack of registration of the drilled hole to the pad and
+possibly open circuits.
+
+TSM-DS3 is compatible with Ticer® and OhmegaPly® resistive foils. Resistor foil stability is best achieved when laminating at low
+temperatures using AGC’s fastRise™27 family of prepregs.
+
+TSM-DS3 is intended for RF circuitry and requires OEM design validation for digital circuitry.
+TSM- DS3/DS3B/DS3M series: DK over Temperature                  TSM- DS3/DS3B/DS3M series: DF over Temperature
+
+
+
+
+                                                                           The dissipation factor varies from
+    The TSM-DS3 dielectric constant shows a
+                                                                       0.0010 - 0.0015 over a typical application
+      +/- 0.2% deviation with temperature.
+                                                                                  temperature range.
+
+   Ring Resonator Properties vs. Frequency on                  TSM- DS3/DS3B/DS3M series at mmWave (Damaskos)
+          TSM- DS3/DS3B/DS3M series.
+
+
+
+
+                     Insertion loss comparison of TSM-DS3 vs. a synthetic rubber hydrocarbon
+                         laminate. Test vehicle shown below using Southwest Connectors.
+
+
+
+
+                                          INSERTION LOSS - Loss Per Inch
+                   Item                                    30 GHz                    57 GHz                   67 GHz
+            TSM-DS3 (Dk = 3.0)
+              Dielectric 5 mils                           - 1.038 dB                - 2.386 dB              - 2.861 dB
+           Trace Width = 12 mils
+               Hydrocarbon
+                 (Dk=3.38)
+                                                          - 2.023 dB                - 3.553 dB              - 4.150 dB
+              Dielectric 8 mils
+           Trace Width = 17 mils
+            Properties                Conditions               Typical Value               Unit                      Test Method
+ Electrical Properties
+ Dielectric Constant                                            3.00 ± 0.05                           IPC-650 2.5.5.3
+ Dissipation Factor                                               0.0014                              IPC-650 2.5.5.5.1 (Modified)
+                                                                 2.3 x 106              Mohms*cm      IPC-650 2.5.17.1 Sec. 5.2.1 (ET)
+ Volume Resistivity
+                                                                 2.1 x 107              Mohms*cm      IPC-650 2.5.17.1 Sec. 5.2.1 (HC)
+                                                                 1.1 x 107               Mohms        IPC-650 2.5.17.1 Sec. 5.2.1 (ET)
+ Surface Resistivity
+                                                                 1.8 x 108               Mohms        IPC-650 2.5.17.1 Sec. 5.2.1 (HC)
+ Thermal Properties
+ Thermal Conductivity                   unclad                     0.65                   W/M*K       ASTM F 433/ASTM 1530-06
+                                    2% Weight Loss                 526                      °C
+ Td                                                                                                   IPC-650 2.4.24.6 (TGA)
+                                    5% Weight Loss                 551                      °C
+                                           X                        10
+ CTE (RT to 125°C)                         Y                        16                    ppm/°C      IPC-650 2.4.41/TMA
+                                           Z                        23
+ Mechanical Properties
+ Density                            Specific Gravity             2.11                     g/cm3       ASTM D 792
+                                          MD                 81 (11,811)                N/mm2 (psi)   ASTM D 790/ IPC-650 2.4.4
+ Flexural Strength
+                                           CD                 51 (7,512)                N/mm2 (psi)   ASTM D 3039/IPC-650 2.4.19
+                                          MD                  48 (7,030)                N/mm2 (psi)
+ Tensile Strength                                                                                     ASTM D 3039/IPC-650 2.4.19
+                                           CD                 26 (3,830)                N/mm2 (psi)
+                                          MD                      1.6                       %
+ Elongation at Break                                                                                  ASTM D 3039/IPC-650 2.4.19
+                                           CD                     1.5                       %
+                                          MD               6,708 (973,000)              N/mm2 (psi)
+ Young’s Modulus                                                                                      ASTM D 3039/IPC-650 2.4.19
+                                           CD              6,784 (984,000)              N/mm2 (psi)
+                                          MD                     0.24
+ Poisson’s Ratio                                                                                      ASTM D 3039/IPC-650 2.4.19
+                                           CD                    0.20
+ Chemical / Physical Properties
+ Dielectric Breakdown                                              47.5                  kV           IPC-650 2.5.6 (ASTM D 149)
+ Dielectric Strength                                           21,575 (548)         V/mm (V/mil)      ASTM D 149 (Through Plane)
+ Arc Resistance                                                    226                Seconds         IPC-650 2.5.1
+ Moisture Absorption                                               0.07                  %            IPC-650 2.6.2.1
+* ET - Elevated Temperature               * HC - Humidity Conditioning
+
+                                                                 Typical Thicknesses1
+                                 Inches                                                                     mm
+                         0.0050, 0.0100, 0.0200                                                       0.13, 0.25, 0.51
+                         0.0300, 0.0600, 0.0900                                                       0.76, 1.52, 2.29
+                                                                Available Sheet Sizes2
+               Inches                                mm                                     Inches                            mm
+               12 x 18                             305 x 457                                16 x 36                         406 x 914
+               16 x 18                             406 x 457                                24 x 36                         610 x 914
+               18 x 24                             457 x 610                                18 x 48                        457 x 1,220
+All test data provided are typical values and not intended to be specification values. For review of critical specification tolerances,
+   please contact a company representative directly.
+TSM-DS3 can be manufactured in increments of 0.005”(0.125mm).
+Standard panel size is 18” x 24” (457 mm x 610 mm).
+Please contact AGC for availability of additional thicknesses, other sizes & any other type of cladding.
+The resistor foil manufacturer covers the warranty for the copper foil that includes the resistor layer, as well as the performance and
+workability related to the copper foil. Our company does not take responsibility for the processing of resistor
+layers and the performance or workability of the final products.
+
+ AGC Inc. 2026-07
+ agc-ml.multimaterial@agc.com
+

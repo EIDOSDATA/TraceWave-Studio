@@ -1,0 +1,430 @@
+                                        TLF-35A
+                                       General Processing Guidelines
+
+
+
+General Information                                          • Do not pick up a panel horizontally by one end or
+The TLF-35A product is part of the AGC ORganic
+                                                             edge
+CERamic (ORCER) product line. It should be noted
+                                                             By allowing the material to flop over you may
+that these recommendations are based on standard
+                                                             stretch the copper and substrate. Lift the panel by
+industry practices and optimal parameters may
+                                                             two parallel edges; preferably the two closest
+differ somewhat, depending on available processing
+                                                             dimensionally.
+equipment.
+
+Handling of PTFE Laminates                                   • Prevent contaminant deposits on the material or
+PTFE is a thermoplastic material which is very stable        copper
+electrically and chemically when compared with               The use of clean protective gloves and slip sheets
+common thermosetting resins such as epoxy,                   will prevent contamination and staining. You will
+polyphenyleneoxide, polyimide and cyanate ester.             not need to remove oils, grease or fingerprints if
+Part of what gives PTFE its superior performance             you don’t deposit them.
+over frequency and temperature also makes the
+pure resin relatively soft. It is for this reason that all
+AGC laminates are reinforced with glass fabric. The          • Do not mechanically abrade the PTFE surface
+glass fabric reinforcement of the substrate greatly          after etching/removing the copper
+increases stability in the X and Y axis over non-            If left undisturbed, the PTFE surface is very good for
+woven or unreinforced PTFE products. While the               adhesion of solder mask, prepreg and bonding
+glass fabric provides excellent dimensional stability,       adhesive without further preparation. The etched
+the following process and handling precautions               surface of the PTFE is very wettable due to the rough
+should be taken to prevent damage or deformation             tooth structure left behind after cooper removal. If
+of the laminate during fabrication.                          the surface becomes disturbed, further surface
+                                                             preparation using sodium or plasma etching can
+                                                             improve wettability and adhesion to the surface.
+• Do not mechanically scrub the material
+As with thin core or flexible substrates, mechanically
+scrubbing will stretch and deform the material. The          • Do not stack panels directly on top of each other
+pinch rollers used to secure the panel during                Particles or debris on the surface of the panel can
+scrubbing will also cause dents as particle or brush         become imprinted into the copper and substrate of
+material are pressed into the surface of the laminate.       adjacent panels. The preferred method of storage is
+Chemical cleaning is much preferred. Eliminating             to rack the panels vertically. If panels must be
+mechanical cleaning and unnecessary handling will            stacked use clean, soft, slip sheet material between
+improve the dimensional accuracy of subsequent               each panel and keep stack height to a minimum.
+processes by preventing mechanical distortion of
+the laminate.
+Drilling
+Good hole quality can be achieved using AGC recommended drill parameters. Standard 130° point geometry, PCB
+carbide drills work well with all AGC PTFE-based laminates. Hole quality can be affected by drill sharpness. AGC
+recommends using new drills for the best hole quality. Stack height should not exceed 2/3 the flute length of the
+smallest diameter drill being used. Standard phenolic entry material (≈0.020” [0.5mm] thickness) is acceptable
+along with aluminum / paper / aluminum entry. A hard phenolic backup board (≈ 0.090” to 0.125” [2.29mm–
+3.18mm] thickness) is recommended to reduce bottom-side burring. The pressure of the drill foot should be a
+minimum of 40 psi and should be increased if topside burring is excessive. The number of hits per drill will vary
+depending on the drill parameters, hole size, stack height, and laminate thickness. A worn drill bit usually results
+in an abnormally high number of nodules which may not be noticed until after plating. A normal hit count can
+range from 500 to 1500 hits for the TLF-35A material.
+
+All drilling debris must be removed prior to hole wall preparation such as plasma or sodium treatment. Thoroughly
+remove all debris in the holes with a high pressure air or water blast. If water is used, bake the laminate for 1 hour
+at 250°F (121°C) to remove moisture prior to through hole treatment. Burring can occur if drilling conditions are
+not correct. If burring occurs, sanding is not recommended. Pumice scrubbing has been known to be effective,
+however AGC does not recommend any process that may cause distortion of the laminate. The best solution to
+prevent burrs is by thoroughly understanding and implementing the optimum drilling process and parameters for
+your equipment.
+
+The TLF-35A product is made with a heavy weave fiberglass that may be difficult to drill without leaving 1 – 2 mil
+(0.025mm - 0.050mm) protrusions. These protrusions are usually individual strands of the fiberglass bundles which
+have not been cleanly cut by the drill. In most cases, these protrusions are of no consequence. In cases where
+components are inserted in the hole, the hole size is critical. If the protrusions do not exceed 2 mils (0.050mm),
+one solution is to drill the hole size to the maximum tolerance so that the final tolerance will be within specification.
+If the protrusions are excessive, adjusting the drill parameters may reduce the number and size of protrusions. A
+reduction of the chip load will usually result in fewer and smaller protrusions. An increase in the speed or a
+reduction in the feed rate will reduce the chip load. Care must be taken to prevent smearing of the thermoplastic
+resin. Too much speed (or surface feet per minute) may result in excessive heat in the drill which will allow the
+PTFE to melt and smear copper surfaces where it is essentially impossible to remove.
+
+Smearing is a condition where the PTFE resin has been heated to a point where it softens and is easily moved
+within the hole. It usually appears as a line between the copper foil and the plated copper. Assuming that sharp
+drill bits are being used, the solution is to reduce the speed (thus surface feet per minute) of the drill to prevent
+heat buildup. The chip load will increase so careful inspection for protrusions should be done after the electroless
+plating step, if possible. Protrusions may not be noticeable until after the electroless plating process, even if a high
+magnification microscope is used. Hole wall tear-out, or gouging, is another possible defect caused during the
+drilling process. Gouging is usually an indicator of either a dull drill or an excessively high chip load. Another factor
+that can influence gouging is the fiberglass weave style. A coarse glass is more prone to gouging than a medium
+or fine glass style. If gouging occurs, first check for worn drill bits before adjusting the drill parameters. If gouging
+persists, reduce the chip load. Care should be taken to keep drill bit temperatures to a minimum by keeping the
+surface feet per minute low while adjusting chip loads downward.
+
+
+
+
+                                Figure 1 - Typical hole wall quality of TLF-35A material
+                                            TLF-35A Drilling Parameters
+             Drill Size (mm)       Spindle Speed (krpm)         Feed Rate (m/min)       Retract (m/min)
+                   0.30                     100                        2.8                     15
+                   0.35                      98                        2.8                     15
+                   0.40                      95                        3.2                     15
+                   0.45                      88                        3.2                     15
+                   0.50                      80                        3.8                     15
+                   0.55                      70                        3.8                     15
+                   0.60                      65                        3.8                     15
+                   0.65                      60                        3.6                     15
+                   0.70                      57                        3.6                     15
+                   0.75                      52                        3.3                     15
+                   0.80                      50                        3.3                     15
+                   0.85                      46                        3.3                     15
+                   0.90                      44                        3.2                     15
+                   0.95                      42                        3.2                     15
+                   1.00                      40                        3.0                     15
+                   1.50                      27                        2.6                     15
+                   2.00                      20                        2.0                     15
+                   3.00                      20                        1.2                     20
+                                            Table 1 – Drilling Parameters
+
+
+
+Inner Layer Preparation
+Multilayer applications require that two or more laminates be bonded together to form a single circuit board.
+There are two important considerations when processing the circuit board. The first is registration of the features
+from one layer to another. The second is the condition of the bond surface prior to lamination.
+
+Registration: Layer to layer registration is often a critical requirement of the finished circuit board and
+misregistration can cause a variety of issues such as open circuits and poor coupler performance. Therefore, it is
+important that the material be acclimated to the processing environment and the correct artwork compensation
+used. Acclimation to the processing environment is simply making sure that the laminate is at ambient
+temperature prior to processing. It is recommended that if the laminate has seen extreme temperatures during
+shipment or storage, it should be placed in ambient conditions for 24 hours prior to processing.
+
+All laminates experience movement after the copper foil has been etched. Various factors such as laminate
+thickness, glass style, construction, copper foil thickness, and circuit design contribute to the characteristic known
+as dimensional stability. The dimensional change data for various types of AGC laminates is listed in Table 2. The
+data is for reference only and is dependent on the factors listed. Most printed circuit board shops determine
+artwork compensation data by running samples or estimating based on previous experience.
+
+                  Material Designation              Dimensional Change in Parts Per Million (PPM)
+                          TLC                                          200 – 400
+                           TLE                                         220 – 400
+                          TLX                                          400 – 600
+                           TLY                                          400 - 800
+                        RF-30A                                         200 – 400
+                                 Table 2 – Dimensional change in parts per million
+Bond Surface Condition: The condition of the substrate surface prior to bonding is critical in achieving good inner
+layer bond strength. As shown in Figure 2, the copper foil of the laminate has a dendrite structure designed to
+increase the copper peel strength. As the copper foil is etched, the dendrite imprint is left in the substrate surface.
+It is critical to subsequent multilayer bonding that this structure be present and undisturbed. Any mechanical
+abrasion of the substrate surface will destroy the imprint pattern and can result in poor bond strength between
+the layers. If the surface is destroyed, a sodium or plasma etch prior to multilayer bonding will greatly enhance
+surface adhesion. It is recommended that proper handling techniques be used at all times (see Handling of PTFE
+Laminates). It is also recommended that any processes used to clean the copper surface be chemical in nature,
+not mechanical.
+
+
+
+
+                              Figure 2 – Illustration of copper laminated to PTFE surface.
+
+
+Hole Wall Preparation
+PTFE based laminates require that drilled holes be subjected to a process which will prepare the PTFE resin system
+for subsequent plating. There are two processes that have been shown capable of providing void-free copper
+plating. One process is chemical in nature and involves a sodium-based solution that strips the fluorine atoms from
+the PTFE molecules. This process has been used for many years in the industry with great success. The advantages
+of sodium etching include long shelf life of the hole wall treatment, fast treatment time, and complete coverage.
+The primary disadvantage of sodium etchant is the volatility of the chemical. Various manufacturers and etchant
+services are available, call technical service for a complete list.
+
+Another method of preparing the holes for plating is plasma etching. If the proper gases and cycles are used,
+plasma will allow plating to the PTFE resin. Experience has shown that the best gases to use are a mixture of
+hydrogen and nitrogen. Helium can also be used in many cases. The advantage of plasma etching is that it is a
+relatively safe procedure. Disadvantages include relatively long cycle times (35 to 60 minutes) and short shelf life
+of the effect (4 – 24 hours).
+
+Sodium Treatment: A sodium-based chemical treatment process does an excellent job of preparing the PTFE
+through-hole surface prior to the plated through hole process. Follow the manufacturer’s recommended
+treatment process. Bake for 1 hour at 250°F (121°C) prior to plating to remove moisture that may have been
+absorbed during the sodium treatment process.
+
+NOTE: Do not subject the treated holes to heavily concentrated chlorine-based chemical processes prior to
+electroless copper plating or direct metallization. Chlorine can have adverse effects on the sodium treatment and
+result in plating voids.
+
+Plasma Etching: Plasma treat using a 30-70% Hydrogen, 70-30% Nitrogen gas mixture. Power setting for the RF-
+signal generator should be 60-75% of full rated power for 30-60 minutes depending on the hole diameter, number
+of holes, and thickness of the board. Boards with relatively higher aspect ratios will require longer plasma cycle
+times. Industry experience has shown that gases such as helium and CF4 are not as effective as hydrogen as
+evidenced by sporadic plating voids and higher contact angles.
+Plating
+After the hole wall has been properly prepared, PTFE-based laminates will accept either electroless copper or
+direct metallization plating. The electrolytic plating process is the same for PTFE or epoxy based materials. Typical
+plating consists of 1 – 1.5 mils (0.025mm – 0.038mm) of copper plate in the holes and/or on the surface.
+
+Image, Develop, Etch, Strip
+Prepare the copper surface, apply dry film, and image and develop using a standard process. The copper surface
+preparation should consist of microetching the copper. Scrubbing is not recommended for thin core PTFE-based
+materials or multilayer inner layers due to possible registration issues. Scrubbing can also destroy bonding surfaces
+and cause delamination of multilayers (see Inner Layer Preparation). If the surface is destroyed, a sodium or
+plasma etch prior to soldermask application or multilayer bonding will greatly enhance surface adhesion.
+
+The etching process is the same as for a standard printed circuit board. Machine settings should be appropriate
+for the copper thickness of the multilayer inner layers. The substrate surface of the boards MUST NOT be touched
+or scrubbed. Strip the photoresist using a standard process.
+
+Solder Mask
+Soldermasking of PTFE materials can be achieved quite easily once the processes of cleaning, application and the
+adhesion mechanisms are thoroughly understood. The following covers these fundamentals. Soldermask
+materials have changed drastically in the last 10 years with a move from two component fixed pot life epoxies, to
+single component heat cured epoxies, to the now standard liquid photo imageable soldermasks. The LPI’s are
+different in that they incorporate a UV reactive component which allows these modified acrylic formulas (or
+combinations of epoxy and acrylates) to be imaged photographically for fine line resolution between fine pitch
+pads. With the advantages of LPI’s being their ease of use and resolution capability they often do not have the
+same adhesion characteristics as the previous pure epoxy systems. This fact must be taken into account when
+applying LPI’s to PTFE laminates.
+
+The mechanism for adhesion of soldermask (or prepreg or bonding film) to the PTFE laminate surface is the
+condition of the PTFE surface prior to application. By nature, PTFE is a very low surface energy fluoropolymer and
+thus it has excellent non-stick properties, which make it highly popular in lubrication and release applications.
+However, the adhesion of the base copper cladding is achieved by lamination of the relatively rough (Table 3)
+treated copper surface to the PTFE material under high heat and pressure. This process is able to produce an
+excellent mechanical bond between the PTFE resin and the rough dendritic surface of the copper (Figure 2). It is
+the negative impression of the rough copper treatment that remains in the PTFE after etching the copper to form
+the circuitry pattern (Figure 3), which provides adequate surface area for mechanical bonding of the soldermask
+to the PTFE surface (Figure 4). Therefore it is important to eliminate traditional scrubbing techniques which may
+disturb or destroy this rough surface.
+
+With the need to replace the process a substitute process has been used which has several added benefits.
+Chemical cleaning of the copper surface offers the advantage of reduced mechanical stress on the material. This
+becomes critically important when dealing with thin laminates (<0.010” or 25 mm) and or critical dimensional
+tolerances in soldermask or second stage drilling or routing. The removal of the scrubbing application also
+eliminates pits and dents which may be caused by high pressure contact with the steel or ceramic coated steel
+pinch rollers typically used in scrubbing machines to prevent panel movement during rotary scrubbing.
+
+                                                                                         Ra (microns)
+                     Copper Type                    RzDin (microns) “Peak”
+                                                                                          “Average”
+                        1⁄4 oz. ED                           4.95                            0.80
+                        1⁄2 oz. ED                           6.65                            1.00
+                         1 oz. ED                            9.60                            1.50
+                         2 oz. ED                            9.70                            1.55
+     Table 3 – Typical copper treatment roughness for various standard weights of electrodeposited copper foils.
+                    Figure 3 – Illustration of PTFE surface remaining after copper removal/etching
+
+
+
+
+                  Figure 4 – Illustration of soldermask wetting and adhesion to rough PTFE surface.
+
+
+Soldermask Process – Pattern Plated Copper
+1. Etch panels as normal to define circuitry pattern.
+
+2. Allow plated metal etch resist (tin or tin/lead, in the case of nickel or gold surfaces obviously these will remain)
+to remain on panel through post etch inspection processes to prevent copper surface contamination, staining or
+oxidation prior to soldermask application.
+
+3. Set up soldermask application process, prior to stripping or removing the metallic etch resist.
+Note: For double sided soldermask applications, setup soldermask process to apply soldermask to the side of the
+panel with the largest copper area to be covered (i.e. if the ground plane is to be completely covered with
+soldermask then this would be the first side coated).
+
+4. Strip tin or tin/lead from copper surfaces. The copper surfaces should be bright and stain free following tin or
+tin/lead strip. Note: Omit this process for nickel and gold finishes.
+
+5. Chemically clean and roughen the copper surfaces using an acid or alkaline cleaner followed by a micro-etch
+process which removes 30-60μ” of copper. This should provide adequate surface area for adhesion of soldermask
+to copper surfaces.
+
+6. Dry panels thoroughly. If you do not have an adequate horizontal drier then an oven bake is recommended at
+150-170°F (66-77°C) for 15-20 minutes.
+Note: Drying process should not cause oxidation of copper surfaces. If oxidation occurs reduce drying time.
+
+7. Allow panels to cool to room temperature (approximately 5-10 minutes) and immediately apply soldermask.
+
+8. Tack dry (LPI) or bake and cure (silk screened epoxy) soldermask per manufacturer’s recommendation.
+
+9. Continue processing per manufacturer’s recommendation for LPI soldermasks (image, develop and cure).
+
+10. For second side, repeat processes beginning with # 5.
+Solder Reflow
+Hot air solder leveling is a common method of protecting exposed copper circuitry. Two basic types of hot air level
+machines are used in the industry, horizontal and vertical. By far the more popular of the two is the vertical
+machine. It is less expensive and easier to maintain than the horizontal type. However, the vertical machine
+subjects the printed circuit board to a more severe level of thermal shock than the horizontal.
+
+Once the board is clamped in the vertical machine, the only preheat the board sees is the few seconds above the
+solder pot prior to immersion. Typical immersion times are 5 – 6 seconds from entry into the solder pot to
+complete withdrawal.
+
+This minimal preheat time can be particularly harsh on PTFE based laminates due to their z axis expansion
+characteristics. When using hot air solder leveling on PTFE laminates, AGC recommends a bake cycle of 2 – 3 hours
+at 300°F (149°C) just prior to the HASL process. The solder pot temperature should be maintained at 460° – 480°F
+(238° - 249°C) for optimal performance. Cycle time should be 5 – 6 seconds from the time of entry to the complete
+withdrawal of the board. Dwell time in the solder pot should not exceed 2 seconds.
+
+Machining
+Machining of PTFE-based substrates is typically more difficult than epoxy-based substrates due to the softness of
+the PTFE resin system. The style of fiberglass used in the substrate also affects the quality of routing with respect
+to burrs and fibers. The heavier the fiberglass weave, the more difficult it is to cut.
+
+AGC products can be successfully machined using standard router bits or end mills when the recommended
+methods and rout parameters are used. In addition to the rout parameters, an equally important factor in
+successful routing is having intimate contact throughout the routed package. Figure 5 shows a typical rout stack
+with phenolic entry and backer material on either side of the circuit board. Notice that the entry material rides on
+top of the copper traces leaving an air gap between the entry material and the PTFE substrate. In this case, the
+router bit will force the soft substrate into the air gap at the area circled in red.
+
+Many circuit board applications also have soldermask on top of the copper traces which increases the gap further.
+The solution to a cleaner cut is to introduce a material between the copper traces and the phenolic entry material
+that will conform at the edge and will help fill in the air gap. One type of paper that has been shown to work well
+is the paper found in between artwork film. It is thick enough to fill in the normal air gap and cuts without
+generating as much debris as other paper such as Kraft paper.
+
+
+
+
+                                      Figure 5 – Typical TLF-35A rout stack-up
+
+Recent routing trials using AGC materials have yielded the following recommended rout parameters. These
+parameters are good starting points for all standard AGC materials. Special materials such as those with heavy
+metal ground planes may require different rout parameters and are not addressed in this guideline.
+                          Recommended Routing Parameters for All AGCc Materials
+                                                 Spindle Type                               z - Feed Rate
+   Tool
+            Chipload             60,000 max                       80,000 max           Without          With
+Diameter
+           (mils/rev) Spindle peed       Feed Rate       Spindle peed     Feed Rate   predrilling predrilling
+  (mils)
+                            (rpm)         (in/min)           (rpm)         (in/min)    (in/min)       (in/min)
+  31.5        0.24         50,000            11.8           50,000            11.8        0.0             20
+  35.4        0.26         45,000            11.8           45,000            11.8        0.0             20
+  39.4        0.30         40,000            11.8           40,000            11.8        0.0             79
+  43.3        0.32         37,000            11.8           37,000            11.8        0.0             79
+  47.2        0.35         34,000            11.8           34,000            11.8        0.0             79
+  51.2        0.51         31,000            15.8           31,000            15.8        0.0             79
+  55.1        0.54         29,000            15.8           29,000            15.8        0.0             79
+  59.1        0.59         27,000            15.8           27,000            15.8        0.0             79
+   63         0.79         25,000            19.7           25,000            19.7        0.0            197
+  66.9        0.82         24,000            19.7           24,000            19.7        0.0            197
+  70.8        1.03         23,000            23.6           23,000            23.6        0.0            197
+  74.8        1.12         21,000            23.6           21,000            23.6        0.0            197
+  78.7        1.38         20,000            27.6           20,000            27.6        0.0            197
+  82.7        1.58         20,000            31.5           20,000            31.5        0.0            197
+  86.6        1.58         20,000            31.5           20,000            31.5        0.0            197
+  90.6        1.58         20,000            31.5           20,000            31.5        0.0            197
+  94.5        1.77         20,000            35.4           20,000            35.4        0.0            197
+  98.4        1.77         20,000            35.4           20,000            35.4        0.0            197
+ 118.1        2.17         20,000            43.3           20,000            43.3        0.0            197
+  125         2.17         20,000            43.3           20,000            43.3        0.0            197
+                     Table 4 – Recommended routing parameters for all Taconic materials
+
+                          Recommended Routing Parameters for All AGC Materials
+                                                Spindle Type                               z - Feed Rate
+   Tool
+            Chipload            60,000 max                       80,000 max           Without          With
+Diameter
+           (mils/rev) Spindle peed      Feed Rate       Spindle peed     Feed Rate  predrilling predrilling
+  (mils)
+                            (rpm)        (in/min)           (rpm)         (in/min)    (in/min)       (in/min)
+  0.80         5           50,000           0.25           50,000            0.25         0             0.50
+  0.90         6           45,000           0.27           45,000            0.27         0             0.50
+  1.00         8           40,000           0.32           40,000            0.32         0             2.00
+  1.10         9           37,000           0.33           37,000            0.33         0             2.00
+  1.20         10          34,000           0.34           34,000            0.34         0             2.00
+  1.30         12          31,000           0.37           31,000            0.37         0             2.00
+  1.40         14          29,000           0.41           29,000            0.41         0             2.00
+  1.50         16          27,000           0.43           27,000            0.43         0             2.00
+  1.60         18          25,000           0.45           25,000            0.45         0             5.00
+  1.70         22          24,000           0.53           24,000            0.53         0             5.00
+  1.80         26          23,000           0.60           23,000            0.60         0             5.00
+  1.90         30          21,000           0.63           21,000            0.63         0             5.00
+  2.00         34          20,000           0.68           20,000            0.68         0             5.00
+  2.10         38          20,000           0.76           20,000            0.76         0             5.00
+  2.20         40          20,000           0.80           20,000            0.80         0             5.00
+  2.30         42          20,000           0.84           20,000            0.84         0             5.00
+  2.40         44          20,000           0.88           20,000            0.88         0             5.00
+  2.50         46          20,000           0.92           20,000            0.92         0             5.00
+  3.00         53          20,000           1.06           20,000            1.06         0             5.00
+  3.18         55          20,000           1.10           20,000            1.10         0             5.00
+                  Table 5 – Recommended routing parameters for all AGC materials (metric)
+Multilayer
+Print and etch inner layers using standard image/ etch processes (see Inner Layer Preparation). Treat any copper
+surfaces with appropriate oxide or alternative processes.
+The PTFE surface of the RF type laminates should not require further treatment if the surface is undisturbed after
+etching. Scrubbing is not recommended as it will distort the material and remove the mechanical tooth structure
+imparted by the laminated copper foil.
+
+It is this tooth structure which allows mechanical adhesion of the bond ply or prepreg.
+
+As mentioned earlier, RF type laminates can be laminated in a pure package or in a mixed package that typically
+uses an epoxy type laminate or prepreg. The choice of package depends on the electrical performance
+requirements of the package. Most mixed dielectric packages are designed with the digital or low frequency
+portion on the epoxy laminate and the high frequency on the RF type laminate. When bonded together, this type
+of laminate reduces cost, space, connectors, and considerably shortens the distance the signal must travel.
+
+A pure multilayer package of RF type materials can be bonded using AGC’s HT1.5 bonding film. This is a
+thermoplastic film with very low electrical loss and has been used in the industry for many years for bonding other
+types of PTFE based laminates. The HT1.5 bond film has a dielectric constant of 2.35 which is significantly different
+than the dielectric constant of the RF type materials.
+
+However, the designer should be able to design with this in mind. AGC is currently developing a bonding prepreg
+which will closely match the DK of the RF type materials. HT 1.5 is a thermoplastic and will remelt at approximately
+400°F (204°C), therefore care must be taken when multiple or sequential lamination is required or when subjecting
+the board to thermal excursions such as Hot Air Solder Leveling.
+
+Another bonding film used in the industry is FEP, a fluoropolymer-based film. The melt point of FEP is
+approximately 500°F (260°C) and offers greater protection from delamination when the board is subjected to post-
+lamination thermal cycles such as Hot Air Solder Leveling.
+
+A mixed dielectric package consisting of RF type laminates and other laminates such as epoxy is not common, but
+can be accomplished quite easily. Bonding RF type laminates to an epoxy laminate is accomplished using standard
+epoxy prepreg. Since the high frequency RF signal does not see the epoxy due to the ground plane on the RF
+laminate, the higher loss of the epoxy prepreg does not come into play.
+
+Standard epoxy prepreg lamination cycles can be used per the manufacturer’s recommendations. It is important
+that the RF type laminate is not scrubbed in case there are non-copper areas on the ground plane.
+The dendrite imprint left after etching the copper foil is critical to good bond strength and must not be disturbed
+prior to lamination.
+
+
+
+
+ These guidelines can provide only basic and reference information for PCB fabricators. Because of different
+ environment, equipment, tooling and so on, in all instances, the user shall determine suitability in any given
+ conditions or applications. For more detailed processing information, please contact with the AGC engineer or
+ sales representative.
+
+ AGC Inc.
+ agc-ml.info-maltimaterial@agc.com
+

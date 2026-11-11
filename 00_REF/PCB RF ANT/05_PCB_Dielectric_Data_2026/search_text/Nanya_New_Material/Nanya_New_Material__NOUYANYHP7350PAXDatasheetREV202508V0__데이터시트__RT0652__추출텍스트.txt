@@ -1,0 +1,74 @@
+产品编号：NYHP-7350PA(X)
+      型号：NYHP-7350PA(X)
+        High Frequency Very Low Loss Laminate
+    特点：                                    FEATURES：
+  ●低介电常数(Dk 3.5@10 GHz)                                      ● Low Dk (Dk 3.5@10 GHz )
+  ●介质损耗(Df 0.0029@10 GHz)                                    ● Low Df (Df 0.0029@10 GHz)
+  ●Tg>200℃无卤板材                                               ● Tg>200℃, Halogen-free compatible
+  ●优异通孔可靠性及 PCB 加工性                                          ● Superior PTH reliability and easy PCB processing
+  ●低吸水率                                                      ● Low moisture absorption
+     应用领域：
+  ●功放/天线                                                     ● 汽车雷达
+  ●LNA/LNB                                                   ● 微波/无线通
+NYHP-7350 PA(X) 基板产品规格表 Specification Sheet for Laminate
+                                                                 典型值               条件                 测试方法
+         NYHP-7350 PA(X) 覆铜板                 单位Units
+                                                             Typical Value      Condition           Test Method
+         NYHP-7350 PA(X) Type Laminate
+                                           Metric(English)   1.016mm CCL                             IPC TM 650
+ 1. 抗剥强度Peel Strength, As received         N/mm(lb/inch),      ＞0.8 (4.5)        1oz RTF                2.4.8
+                                             MΩ-cm,
+ 2. 体积电阻 Volume Resistivity,                                    1.0×1010         COND A               2.5.17.1
+                                             Minimum
+                                               MΩ,
+ 3. 表面电阻 Surface Resistivity,                                   5.1×109          COND A               2.5.17.1
+                                             Minimum
+                                                %
+ 4. 吸水率 Moisture Absorption                                       0.08                                 2.6.2.1
+                                             maximum
+ 5. 介电常数 Permittivity                           ---
+                                                                  3.5          10 GHz/23℃              2.5.5.5
+    (Laminate & Prepreg as laminated)        maximum
+ 6. 介质损耗 Loss Tangent                           ---
+                                                                0.0029         10 GHz/23℃              2.5.5.5
+    (Laminate & Prepreg as laminated)        maximum
+ 7. TCDK                                      PPM/℃                48          -50℃-150℃               2.5.5.5
+ 8. 弯曲强度 Flexural Strength,
+                                              N/mm2,              220
+    A. 纵向 Length direction                                                         RT                   2.4.4
+                                              minimum             140
+    B. 横向 Cross direction
+ 9. 热应力冲击 Thermal Stress
+                                                                 Pass
+     A. 未蚀刻 Unetched                       10 sec at 288℃                         288℃                2.4.13.1
+                                                                 Pass
+     B. 蚀刻 Etched
+ 10. 燃烧性 Flammability
+                                               rating             NA
+     ( Laminate & Prepreg as laminated)
+ 11. 玻璃态转化温度
+                                                 ℃               >190              DMA                 2.4.24
+     Glass Transition Temperature
+ 12. 热分解温度                                                                                              TD
+                                                 ℃                400
+     Decomposition Temperature                                                                      (5% wt loss)
+                    X/Y-axis（50~125℃）         PPM/℃              19/20             TMA                2.4.24
+ 13. CTE膨胀系数 Z-axis（50~125℃）                  PPM/℃               50               TMA                2.4.24
+                    Z-axis（50~260℃）           %                  2.4%              TMA                2.4.24
+ 14. 耐 热 性 ( 除 去 铜 箔 )Thermal Resistance
+ (Copper removed)
+                                                                 >120
+     A.T260                                   Minutes                                                 2.4.24.1
+                                                                 > 60
+     B.T288                                   Minutes
+                                                                 > 60
+     C.T300                                   Minutes
+ 15. 耐CAF性能 CAF Resistance                    Pass/Fail          Pass            AABUS                2.6.25
+ 16. PIM                                        dBc              <-158           43dBm        800/1800/2600 MHz
+*AABUS = 供需双方商定 As agreed upon between user and supplier.
+
+
+
+
+                                                                                                                  1 of 1
+

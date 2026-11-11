@@ -1,0 +1,563 @@
+Technical Data Sheet                                                         Imagecure XV501T DI
+
+
+                                                                 From the Imagecure family of
+     XV501T DI                                                   Photoimageable Solder masks
+
+    1. Description
+    Imagecure XV501T DI solder mask is a liquid product which dries by evaporation to give a film that can be
+    sensitized by exposure to UV wavelengths between 360nm and 405nm. The unexposed material is developed in
+    a dilute alkali solution and then cured to give a durable, chemical and heat-resistant film.
+
+    This Technical Information Leaflet (TIL) and the relevant Material Safety Data Sheet (MSDS) should be read
+    carefully prior to using this product.
+
+
+    2. Product features
+       •   Available in semi-matt and matt finishes.
+       •   Resolution capability down to 50μm (2mil.) and less.
+       •   Exposure sensitivity 40 - 250mJ/cm² (depending on colour / DI Machine)
+       •   Proven resistance to HASL processing.
+       •   Compatible with a range of Ni/ Au and immersion tin chemistries.
+       •   Excellent adhesion to and encapsulation of copper tracks.
+       •   Halogen free (<300ppm total halogen content)
+       •   RoHS & WEEE Directive Compliant
+
+
+
+
+                                              U.L. FILE NUMBER E83564
+                                              ® is a registered trade mark
+
+
+
+    3. Product Range
+     IMC5009R:EJ01                  XV501T             DI Green Halogen Free Resist      5.00 kg.
+     IMC5009H:CK10                  XV501T           DI Clear Halogen Free Hardener      2.50 kg.
+
+     IMC5009R:CK10                  XV501T             DI Green Halogen Free Resist      2.00 kg.
+     IMC5009H:BG04                  XV501T           DI Clear Halogen Free Hardener      1.00 kg.
+
+      CDSN4059                      XZ107                          Slow Screen Thinner    5.00 L.
+      CDSN4042                      XZ90                                 Spray Thinner    5.00 L.
+      CDSN4065                      XZ108                                Spray Thinner    5.00 L.
+      CDSN4066                      XZ108                                Spray Thinner   25.00 L.
+      CDSN4008                      XZ46                                Screen Cleaner    5.00 L.
+
+
+
+
+                                                                                                    T325 Version 5
+                                                                                                     January 2019
+                                                                                                         Page 1/9
+
+
+
+
+                                       En;alkdjfalkjfadkfjaldkfjalkdj                                         1
+Technical Data Sheet                                                     Imagecure XV501T DI
+
+
+    4. General Handling
+
+       4.1 Storage and Shipping
+       When stored in sealed containers, in a cool place (20ºC / 68ºF), away from sources of direct heat and sunlight,
+       Imagecure DI XV501T resist components have a maximum shelf life of 12 months, hardener components
+       have a maximum shelf life of 18 months. Imagecure XV501T can withstand higher temperatures (40 - 60ºC /
+       104 - 140ºF), whilst in transit for up to periods of 1 month without any detrimental effect on its performance.
+
+
+       4.2 Waste disposal
+       Care should be exercised in the disposal of printing ink waste. This should be carried out in accordance with
+       good industrial practice, observing all the appropriate regulations and guidelines. For more handling advice
+       refer to the detailed Safety Data Sheet (SDS), supplied by your local Sun Chemical Circuits representative.
+
+    5. Application / Processing Conditions
+
+       5.1 Processing Environment
+       The choice of printing and exposure environment has been found to have a direct effect on fine solder dam
+       yield values. Every effort should be made to minimize the incidence of dust or fibres on the print room and
+       exposure area. It is therefore recommended that a Class 10,000 clean room be considered the minimum
+       requirement for resolving features less than 100µm (4mil) at high yield.
+
+       Commercial, automated printing equipment may already contain some level of air filtration and the
+       manufacturers or local Sun Chemical Circuits representatives can advise on its’ suitability.
+
+       It is also recommended that the Mixing, Coating, Exposure & Developing areas be fitted with UV screened
+       illumination (yellow lights) due to the high photosensitivity of this particular product.
+
+
+       5.2 Mixing
+       The green resist and clear hardener components must be mixed together in the correct mixing ratio of 2:1 w/w
+       before use. The hardener component must be added to the resist component.
+
+       Once the resist and hardener components have been mixed together then the required Imagecure Thinner
+       can be added to thin the mix to the correct application viscosity.
+
+       Mechanical mixing is recommended to ensure thorough mixing of the resist and hardener components.
+       Recommended mixers include those with variable speed motors / paddle type mixing blades as well as the
+       shaker or rotating type mixers. Such mixers should guarantee a consistent mix for each mixed pack.
+
+       Mixing times will depend on the type of mixer or stirrer used but typical mix times of 10 - 15 minutes with
+       stirrer speeds between 40 - 100 rpm can be expected. Avoid excessively fast speeds as this will entrap
+       large volumes of air into the mixed resist.
+
+       It is recommended that attention be paid to ensuring that any resist at the sides of the container and on the
+       bottom is completely mixed into the main body of the resist. After the mixing operation is completed it is
+       recommended to allow the mixed and thinned pack to debubble for ~ 30 min. before use.
+
+       Mixed pot life at 23º± 2ºC (70 - 77ºF) will be approximately 48 hours. Always ensure the lid is replaced on
+       the container to avoid any contamination and excessive solvent evaporation.
+
+
+
+                                                                                                           T325 Version 5
+                                                                                                            January 2019
+                                                                                                                Page 2/9
+
+
+
+
+                                         En;alkdjfalkjfadkfjaldkfjalkdj                                                2
+Technical Data Sheet                                                    Imagecure XV501T DI
+
+
+       5.3 Thinning
+       Screen      This product is supplied ready-to-use, and therefore further thinning is not generally
+                   recommended. However, if necessary, a maximum of 3% Imagecure Slow Thinner XZ107 should
+                   be used.
+
+       Spray       The mixed product should be thinned to approximately 25-30 seconds Zahn 3 cup (48-62 Ford
+                   Cup #4, 48-56 Din Cup #4, using XZ90 or XZ108 Spray Thinner. Other reducers are available to
+                   suit customer’s particular requirements. Your local Sun Chemical Circuits representative will be
+                   pleased to advise on product selection.
+
+       N.B. The mixed resist should be stirred thoroughly before reduction.
+
+
+       5.4 Pre-Clean
+       Ensure that all copper surfaces are completely clean, tarnish free and dry prior to applying Imagecure. For
+       panels that are badly oxidised and tarnished then a micro-etch prior to mechanical pre-cleaning is
+       recommended. The micro-etch should be capable of removing any oxide or tarnish staining and of thoroughly
+       rinsing and drying the panel before being mechanically cleaned.
+
+       Mechanical pre-cleaning is recommended as follows: -
+
+       Brushing      280 - 400 grit silicon carbide brushes are recommended having a footprint on the copper of 8 -
+                     15mm. (0.3 - 0.6 in). The water rinse and heater sections should be capable of thoroughly
+                     rinsing and drying the panels such that no water is left in the holes or between closely spaced
+                     conductors and that moisture or tarnish is not present on the freshly brushed panels.
+
+                     It is important that each brush is regularly checked and dressed to ensure optimum efficiency
+                     during use. Please note that Nylon brushes of 600 - 800 grit can also be used.
+
+       Pumice        Pumice or Aluminium oxide slurry of between 12 - 18% is recommended with an optimum of
+                     15%. The water rinse and heater sections must be capable of rinsing and drying the panels
+                     such that residual pumice particles are completely removed and that no water is left in the holes
+                     or between closely spaced conductors and that moisture or tarnish is not present on the freshly
+                     cleaned panels.
+
+       Microetch     Panels having close track/gap configurations, which may not be suitable for mechanical
+                     precleaning, the use of a “deep etching“ micro-etch chemistry is recommended. It is
+                     recommended that each user ensures that the Imagecure product is compatible with the
+                     particular micro-etch used and all subsequent metal finishing processes.
+
+       Surface roughness figures of:-
+
+                   Ra = 0.2 - 0.4µm.               R delta q = 4 - 9º
+
+       would be considered to be optimum values for copper surfaces pre-cleaned as above. A minimum Ra of
+       0.2µm. with an R delta q value of >4º is recommended (optimum R delta q values 7 - 9º).
+
+       NB. It is recommended that all freshly cleaned panels are coated with Imagecure XV501T within a maximum
+       time of 2 - 4 hours. The actual maximum time will vary depending upon ambient temperature and humidity.
+       Panels left longer than 4 hours before coating should be pre-cleaned again.
+
+       Please refer to separate technical document on surface roughness for a fuller explanation of the above
+       roughness values.
+
+                                                                                                           T325 Version 5
+                                                                                                            January 2019
+                                                                                                                Page 3/9
+
+
+
+
+                                         En;alkdjfalkjfadkfjaldkfjalkdj                                              3
+Technical Data Sheet                                                   Imagecure XV501T DI
+
+
+       5.5 Application
+       Screen      The Imagecure XV501T series can be used with all types of vertical screen print units and
+                   horizontal screen print machines.
+
+                   Typical polyester meshes will be 32 - 48T/cm. (80TPI - 122TPI), with a 65 - 70° shore squeegee
+                   with a square edge profile. The optimum mesh for printing is 43T/cm (110TPI) and this will be
+                   suitable for most 18µm. and 35µm. base copper board designs.
+
+                   For boards with 70µm. base copper, or for boards requiring a specific withstand voltage the use
+                   of meshes with lower mesh counts 32 - 36T/cm. (80 - 90TPI) may be necessary.
+
+                   Print tests with subsequent microsections are recommended to ensure adequate track
+                   encapsulation. Screens must be cleaned, thoroughly dried and free from cleaner or solder mask
+                   residues, before use.
+
+       Spray       The Imagecure XV501T spray series can be used with vertical and horizontal air and
+                   electrostatic spray units.
+
+                   Once the thinned Imagecure has been added to the sump and the correct viscosity obtained, film
+                   weight may be set by the use of “weight gain panels” or a wet-wheel and by adjustment of the
+                   conveyor, pot pressure and/or pump speed. Typical spray parameters are given below:
+
+       Electrostatic Spray         Voltage:                                         40 - 100 kV.
+                                                                                    (Dependant on equipment)
+                                   Bell speed:                                      25 - 35 (x 1000) rpm.
+                                   Shaping air:                                     8 psi
+
+       AHK Spray                   Ink Pressure:                                     0.7 - 1.5 Bar
+                                                                                    (Depending on thickness required)
+                                   Spray Pressure:                                  2.5 – 4.0 Bar
+                                   Line speed:                                      0.4 – 0.8 m/min.
+                                   Air temperature:                                 100°C
+
+
+
+       More detailed conditions for individual machines are available from manufacturers’ operation manuals.
+
+       Wet weight values of 70 - 100gsm are typical, with wet-wheel values of 55 - 80μm. This will give a dry
+       coating thickness of approximately 25 - 40μm.
+
+       Coating thickness may need to be changed depending on board configuration and conductor heights as well
+       as end use requirements (withstand voltage etc.). In some instances it may not be possible to achieve a
+       suitable coating in a single coat and the use of double coating may be necessary.
+
+       Discussion with your Imagecure partner is recommended in order to obtain optimum results.
+
+
+
+
+                                                                                                         T325 Version 5
+                                                                                                          January 2019
+                                                                                                              Page 4/9
+
+
+
+
+                                         En;alkdjfalkjfadkfjaldkfjalkdj                                            4
+Technical Data Sheet                                                   Imagecure XV501T DI
+
+
+       5.6 Washing Up
+       Screen     Screen Cleaner XZ46 is recommended for washing up.
+       Spray      Pipes, spray guns and accessories can be cleaned with XZ90 or XZ108 Thinner.
+
+       Alternative cleaners and screen washes are available to suit customers’ particular requirements. Your local
+       Sun Chemical Circuits representative will be pleased to advise on product selection.
+
+
+       5.7 Pre-Dry
+       Good drying of the printed film is important so ovens with good temperature profiles and extraction are
+       necessary. Specific drying parameters (time and temperature) will be dependent upon the specific oven used
+       as well as the thermal mass and quantity of the panels being dried.
+
+       Air flow speeds of 1 - 2m/sec. are recommended to achieve sufficient removal of the volatile solvent. Drying
+       is less efficient as the air velocity drops below 0.5m./sec.
+
+       Due to the products extreme photosensitivity, it is recommended that panels be allowed to cool either in a
+       yellow light area or a darkened room (with controlled temp. and humidity). It is recommended that all panels
+       be exposed and developed within 24 hours. If the humidity increases above 60% RH then the storage time of
+       the dried panels will be reduced.
+
+       Screen     It is recommended that printed panels be allowed to de-bubble for approximately 5 - 10 minutes
+                  in still air at ambient temperature prior to being placed in the oven.
+
+                  For vertical screen print systems with a vertical drying oven a set air temperature of 75 - 85°C
+                  (167 - 185°F) for 30 - 50 min. is recommended. Optimum 80°C (176°F) for 45mins. Drying will
+                  depend on board thickness and Imagecure thickness as printed, as well as air flow in the oven.
+
+                  For printing processes that only print one side at a time the following is recommended for
+                  box ovens:
+
+                  Side 1              10 min. at 75 - 80°C (167 - 176°F)
+                  Side 2              30 - 40 min. at 75 - 80°C (167 - 176°F)
+
+                  The maximum drying time (Side 1 + 2) should not exceed 45 minutes at 80°C (176°F).
+
+                  Allow an adequate gap between panels. Spacing of 25 - 40 mm (1 - 1.6 in.) is recommended to
+                  ensure sufficient air flow between panels.
+
+       Spray       Imagecure XV501T Spray series can be dried with either horizontal or vertical convection & IR
+                   ovens. For convection drying, board temperatures should be between 80 - 85°C (176 - 185°F)
+                   with dwell times of 30 - 45 min.
+
+                   Typical drying parameters for IR drying are:
+
+                   Beltron Line      Line Speed 0.4 – 0.8 m./min
+                   (V-Band IR)       Temp. Zones 1 – 6 = 70/80/90/100/90/90°C
+
+       Note: Drying conditions may vary depending on laminate thickness; the recommended maximum hold time
+       after pre-dry is 24 hours in yellow light.
+
+
+
+
+                                                                                                         T325 Version 5
+                                                                                                          January 2019
+                                                                                                              Page 5/9
+
+
+
+
+                                        En;alkdjfalkjfadkfjaldkfjalkdj                                             5
+Technical Data Sheet                                                    Imagecure XV501T DI
+
+
+       5.8 Exposure
+       DI Exposure         Ensure panels are at room temperature before exposure step. Please note that due to
+                           the extreme photosensitivity of this material, it is recommended that the panels be
+                           allowed to cool either in a yellow light area or a darkened room. To reduce the
+                           possibility of contamination, panels can be passed through a dust removal system (such
+                           as those supplied by Teknek), prior to placing in the DI unit.
+
+                           Optimal resist spectral sensitivity: 360 - 405nm.
+                           Energy requirement: 40 - 150mJ/cm² (dependant on Exposure Machine)
+
+       Conventional        If there is a requirement for for use with conventional exposure, please contact your
+       Exposure            local representative.
+
+       After exposure, allow a hold time of 5 – 10 minutes before development. The maximum hold time for exposed
+       panels is 24 hours in yellow light.
+
+
+       5.9 Development
+       Imagecure XV501T will readily develop in either potassium or sodium carbonate solutions.                    The
+       recommended carbonate concentration is 10 ± 2g/ltr.
+
+       The working pH range is 10.8 to 11.3 for aqueous carbonate solutions. To ensure the quality of development
+       it is recommended that the pH of the developer solution does not drop below 10.8. At a pH <10.6 the efficiency
+       of the developer solution may drop due to the increased loading of photopolymer.
+
+       Recommended temperature range is 30 - 35ºC (86 - 95°F), optimum 33°C (91°F).
+       Spray pressures of between 1.5 - 3 bar (22 - 44 PSI), optimum 2 bar (29 PSI).
+
+       Dwell in the developing chambers of 45 - 80 seconds, optimum 60 seconds. For boards with small via holes
+       (0.2 - 0.4mm) or with laminate thickness > 3mm, longer dwell times may be necessary to ensure complete
+       development of the holes.
+
+       Water rinse pressures to be 2 -3 bar (30 - 45 PSI), with operating temperatures 15 - 30ºC (59 - 86°F). It is
+       recommended that hard water (~200 ppm dissolved ions) be used where possible to give good rinsing,
+       followed by a final rinse in deionised water.
+
+       It should be noted that Imagecure films needing to be removed can be stripped by dipping in either a
+       proprietary solder mask stripper or 5% sodium hydroxide solution at 50 - 70°C (122 - 158°F).
+
+
+
+
+                                                                                                          T325 Version 5
+                                                                                                           January 2019
+                                                                                                               Page 6/9
+
+
+
+
+                                         En;alkdjfalkjfadkfjaldkfjalkdj                                              6
+Technical Data Sheet                                                      Imagecure XV501T DI
+
+
+        5.10 UV Bump
+        If a UV bump is required then it is recommended that it be carried prior to post bake, and that a multi lamp
+        double sided UV cure unit be used. Recommended UV energy is 2500mJ/cm²*.
+
+        A UV bump can also be carried out after post bake, recommended energy of 3000mJ/cm²*.
+
+        * Exposure readings taken with an IL390B radiometer from International Light Co.
+
+        A UV bump will improve surface hardness, reduce volatile emissions, reduce ionic contamination and give
+        increased resistance to OEM assembly cleaning processes.
+
+
+        5.11 Post Bake
+        It is important to ensure that all ovens have an independent thermal profile taken, as the set air temperature
+        is not always reliable and the air flow in the oven or the door seals may give rise to either hot or cold spots.
+
+        The recommended bake cycle is 150 - 160ºC (302 - 320°F) for 60 - 90 min. Optimum is 155ºC for 60 min.
+        Bake times should be taken when oven temperature reaches the pre-set point.
+
+        Sufficient air flow is necessary to ensure a consistent temperature gradient in the oven as well as a uniform
+        degree of cure for the solder resist.
+
+        With respect to batch ovens boards should be racked 25 - 40mm. (1.0 - 1.6 in.) apart.
+
+        All exhaust ducting and extraction fans should be adequately insulated to avoid any volatile emissions
+        condensing around the oven area.
+
+
+
+        5.12 Notation/ Legend Printing
+        All Imagecure XV501T products are compatible with a wide range of Sun Chemical UV curing, thermal curing
+        and photoimageable notation inks.
+
+        Thermal curing inks can be applied prior to post bake to increase productivity.
+
+
+    6. Health and safety
+    Detailed material safety data sheets will be supplied by your local Sun Chemical Circuits representative.
+
+    The products detailed hereon are formulated not to contain, and meet the requirements of the RoHS Directive
+    2011/65/EU, European Directive 2003/11/EC, Delegated Directive (EU) 2015/863 and Delegated Directive (EU)
+    2016/585, regarding the presence of the metals - Pb (Lead / Lead compounds), Hexavalent Chromium, Cd
+    (Cadmium), Hg (Mercury), Poly Brominated Flame Retardants, and Phthalates.
+
+    Conforms to Regulation (EC) No. 1907/2006 (REACH), Annex II – Europe.
+
+    As the world’s foremost producer of inks, pigments and colour technology, Sun Chemical is leading our industry
+    in developing and producing products which minimise our impact – and our customers’ impact – on the
+    environment and striving to maximise the use of renewable resources. We consider it our responsibility to be
+    involved in the communities in which we live and work and to offer direction in meeting today’s needs without
+    compromising the ability of future generations to meet theirs.
+
+                                                                                                             T325 Version 5
+                                                                                                              January 2019
+                                                                                                                  Page 7/9
+
+
+
+
+                                           En;alkdjfalkjfadkfjaldkfjalkdj                                              7
+Technical Data Sheet                                                        Imagecure XV501T DI
+
+
+    7. Film Performance/ Technical Specification
+
+         7.1 Physical Properties of Imagecure XV501T DI Screen
+
+
+    Pack Code                    Viscosity                 S.G.                   Flash point     Non-volatile content
+
+    IMC5009R                   16.0 – 20.0 Pas             1.28               >70°C (158°F)             67 – 69%
+    IMC5009H                   13.0 – 15.0 Pas             1.20               >70°C (158°F)             77 – 80%
+
+    *Viscosity measured at 25°C (77°F). Please note viscosity can vary greatly depending on ink temperature,
+    volume of ink tested, type of viscometer used and the test method.
+
+
+    Non Volatiles (as supplied)                                                                        71 - 73%
+    Volatile Organic Content (VOC)                                                                 360 - 400g./L.
+
+
+         7.2 Properties of Imagecure XV501T Cured Film
+    Solder Resistance                                      MIL-PRF-55110F                       30 secs @ 288°C (550°F)
+                                                             IPC SM840E
+    Resistance to Fluxes                                     IPC SM840E                                  Pass
+
+    Ni/Au Plating                                                                                        Pass
+    Chemical Tin Plating                                                                                 Pass
+    Immersion Silver Plating                                                                             Pass
+
+    Hydrolytic Stability                                  IPC SM840E Class H                             Pass
+
+    Solvent, Cleaning Agent, & Flux Resistance            IPC SM840E Class H                             Pass
+
+    Fungal Resistance                                     IPC SM840E Class H                             Pass
+
+    Abrasion Pencil Hardness                              IPC SM840E Class H                           Pass (7H)
+
+    Adhesion (Copper)                                     IPC SM840E Class H                            Pass
+                                                              EN ISO 2409                               < GT1
+
+    Thermal Shock                                         IPC SM840E Class H                             Pass
+                                                            MIL-PRF-55110F                               Pass
+                                                             MIL-STD-202G                                Pass
+                                                 Bosch Y 273 R80 029 Class TC1 and TC4                   Pass
+                                                     Siemens 657539.49.60 Class C                        Pass
+
+    Thermal Storage                                       IPC SM840E Class H                             Pass
+                                                 Bosch Y 273 R80 029 Class TC1 and TC4                   Pass
+                                                     Siemens 657539.49.60 Class C                        Pass
+
+    Chemical Resistance                                            IPA                                  >1 hour
+                                                          1,1,1 Trichloroethane                         >1 hour
+                                                                   MEK                                  >1 hour
+                                                           Methylene Chloride                           >1 hour
+                                                            Alkaline Detergent                          >1 hour
+                                                                  Fluxes                                >1 hour
+
+
+                                                                                                             T325 Version 5
+                                                                                                              January 2019
+                                                                                                                  Page 8/9
+
+
+
+
+                                             En;alkdjfalkjfadkfjaldkfjalkdj                                            8
+Technical Data Sheet                                                                      Imagecure XV501T DI
+
+
+    7.2 Properties of Imagecure XV501T Cured Film (continued)
+    Ionic Contamination                                  MIL-PRF-55110F (Alpha Ionograph 500M)                         <0.3µg. NaCl/cm²
+                                                                    Hella – N67036                                       < 0.8 µg / cm²
+                                                      Siemens 657539.49.60 (Alpha Ionograph 500M)                        < 3.1 µg / cm²
+
+    Flammability                                                        UL 94V0 Rating                                  File No. E83564
+                                                                          (Series K)
+
+    Bellcore                                                            TR-NWT000078                                           Pass
+
+    Insulation Resistance                                        IPC SM840E Classes T & H                                      Pass
+    Moisture & Insulation Resistance                             IPC SM840E Classes T & H                                      Pass
+    Electromigration                                             IPC SM840E Classes T & H                                      Pass
+
+    Comparitive Tracking Index                                              IEC 112                                            225
+    (FR4 Laminate – CTI Rated 500 V)
+
+    E-Corrosion                                                      Bosch Y 273 R80 029                                       Pass
+                                                                    Siemens 657539.49.60                                       Pass
+
+    Dielectric Constant Er (1 MHz)                                                                                          3.9 – 4.0
+
+    Dielectric Loss Factor tangent (102 Hz - 106Hz)                                                                            0.02
+
+    Dielectric Strength                                          IPC SM840E Classes T & H                                  150kV/mm.
+    (50Hz.) - 10µm minimum                                              DIN53481
+
+
+    8. Disclaimers
+    This information has been carefully compiled from experience gained in field conditions and extensive laboratory
+    testing. However the products’ performance and its’ suitability for the customers’ purpose depend on the particular
+    conditions of use and the material being printed. We recommend that customers satisfy themselves that each
+    product meets their requirements in all respects before commencing a production run. Since we cannot anticipate
+    or control the conditions under which our products are used, it is impossible to guarantee their performance. All
+    sales are also subject to our standard terms and conditions.
+
+    9. Technical Assistance / Contacts
+    Sun Chemical Circuits are an international company, and as such can offer technical, engineering and sales
+    support to our customers worldwide.
+
+
+    For further information regarding this product, or any of our extensive range of materials for PCB fabrication,
+    please contact your local Sun Chemical team or visit the Technical Help Desk at website:
+    http://www.sunchemicalhelpdesk.com
+
+
+
+
+    Our Products are intended for sale to professional users. The information herein is general information designed to assist customers in
+    determining the suitability of our products for their applications. All recommendations are made without guarantee, since the application and
+    conditions of use are beyond our control. We recommend that customers satisfy themselves that each product meets their requirements in all
+    respects before commencing a print run. There is no implied warranty of merchantability or fitness for purpose of the product or products
+    described herein. In no event shall Sun Chemical be liable for damages of any nature arising out of the use or reliance upon this information.
+    Modifications of the product for reasons of improvements might be made without further notice.
+
+                                                                                                                                      T325 Version 5
+                                                                                                                                       January 2019
+                                                                                                                                           Page 9/9
+
+     Norton Hill, Midsomer Norton Bath, BA3 4RT, England. Telephone: (44) 1761 414471 Fax: (44) 1761 416609
+
+
+
+
+                                                   En;alkdjfalkjfadkfjaldkfjalkdj                                                               9
+

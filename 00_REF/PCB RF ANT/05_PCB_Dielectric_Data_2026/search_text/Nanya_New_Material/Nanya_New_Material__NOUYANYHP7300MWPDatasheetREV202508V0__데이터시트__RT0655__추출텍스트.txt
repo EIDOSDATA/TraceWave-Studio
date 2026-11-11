@@ -1,0 +1,68 @@
+产品编号（Item No）：NYHP-7300MW-P
+           PTFE High Frequency Copper Clad Laminate
+     特点：                                 FEATURES：
+      低介电常数(Dk 2.95@10GHz)              ● Low Dk (Dk 2.95@10GHz)
+      介质损耗(Df 0.0004@10GHz)             ● Low Df (Df 0.0004@10GHz)
+      PTFE 高频材料                         ● PTFE high frequency material
+      优异通孔可靠性及 PCB 加工性                  ● Superior PTH reliability and easy PCB processing
+      低吸水率                              ● Low moisture absorption
+
+    应用领域：                                                APPLICATIONS：
+    ● 毫米波/汽车雷达应用                                         ● Millimeter Wave / Automotive Radar
+
+NYHP-7300MW-P 基板产品规格表 Specification Sheet for Laminate
+                                                                    典型值                              测试方法
+        NYHP-7300MW-P 覆铜板                   单位Units                                  条件
+                                                                 Typical Value                     Test Method
+      NYHP-7300MW-P Laminate                                                      Condition
+                                          Metric(English)       1.524mm CCL                        IPC-TM-650
+1. 抗剥强度Peel Strength, As received          N/mm(lb/inch)           1.0 (5.7)      Hoz HVLP            2.4.8
+2. 体积电阻 Volume Resistivity,                 MΩ-cm,
+                                                                    4×108          COND A            2.5.17.1
+   恒温恒湿C-96/35/90                           Minimum
+3. 表面电阻 Surface Resistivity,                  MΩ,
+                                                                    2.1×108        COND A            2.5.17.1
+   恒温恒湿C-96/35/90                           minimum
+                                               %
+4. 吸水率 Moisture Absorption                                           0.04                             2.6.2.1
+                                            maximum
+5. 介电常数 Permittivity
+                                            Maximum               2.95 ± 0.05    10 GHz/23℃           2.5.5.5
+   (Laminate & Prepreg as laminated)
+6. 介质损耗 Loss Tangent
+                                            Maximum                 0.0004       10 GHz/23℃           2.5.5.5
+   (Laminate & Prepreg as laminated)
+7. TCDK                                      PPM/℃                    25          -50℃-150℃           2.5.5.5
+8. 弯曲强度 Flexural Strength,
+                                             N/mm2,                  210
+    A. 纵向 Length direction                                                            RT           ASTM D790
+                                             minimum                 155
+    B. 横向 Cross direction
+9. 热应力冲击 Thermal Stress
+                                                                     Pass
+     A. 未蚀刻 Unetched                      10 sec at 288℃                            288℃             2.4.13.1
+                                                                     Pass
+     B. 蚀刻 Etched
+10. 燃烧性 Flammability                                                                                   UL94
+                                              Rating                 V-0
+     ( Laminate & Prepreg as laminated)                                                         （UL File: E213990）
+11. 热分解温度                                                                                               TD
+                                                ℃                   ＞500
+     Decomposition Temperature                                                                     (5% wt loss)
+                                   α1                                 23
+12.膨胀系数Z-Axis CTE                             ppm/℃                                                   2.4.24
+                                   α2                                 35
+13. 耐热性(除去铜箔)
+    Thermal Resistance (Copper removed)
+    A.T260                                   Minutes                 >120                            2.4.24.1
+    B.T288                                   Minutes                 > 60
+    C.T300                                   Minutes                 > 60
+14. 耐CAF性能 CAF Resistance                    Pass/Fail               Pass           AABUS             2.6.25
+
+*AABUS = 供需双方商定 As agreed upon between user and supplier.
+
+
+
+
+                                                                                                                1 of 1
+

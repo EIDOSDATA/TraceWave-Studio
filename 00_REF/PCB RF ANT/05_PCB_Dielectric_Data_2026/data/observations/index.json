@@ -1,0 +1,270 @@
+{
+  "schema": "rfad.reference.observations/1",
+  "record_count": 57340,
+  "ordering": "Partitions sorted by publisher; record_id preserves original global order.",
+  "record_semantics": "Published condition observations, not unique products or independent measurements.",
+  "missing_values": "Original omitted keys, explicit nulls and all original JSON types are preserved.",
+  "canonical_digest_basis": "record_id order; sorted keys; compact UTF-8 JSON; one LF per record",
+  "canonical_sha256": "069cdc67cb3259313cfcd2701c4b2c45abb5cfa4d9ba960e5e298b44124edf6d",
+  "partitions": [
+    {
+      "publisher": "AGC",
+      "path": "data/observations/AGC.jsonl",
+      "records": 2251,
+      "bytes": 3080957,
+      "sha256": "7a7cb774a4b9eccff62179708441b1a102356d29e887ea2e0fed41557912c91e"
+    },
+    {
+      "publisher": "AISLER",
+      "path": "data/observations/AISLER.jsonl",
+      "records": 32,
+      "bytes": 41889,
+      "sha256": "e3338428e1e4c04527a5a04cc8a1365830f4341d5d160a29157a43316d6357f2"
+    },
+    {
+      "publisher": "AdvancedPCB",
+      "path": "data/observations/AdvancedPCB.jsonl",
+      "records": 33,
+      "bytes": 41066,
+      "sha256": "fff624c8cf023aa409056126e1a0ba50e314fb1526d5cc9c34fb72b166556e28"
+    },
+    {
+      "publisher": "Arlon Electronic Materials",
+      "path": "data/observations/Arlon_Electronic_Materials.jsonl",
+      "records": 24,
+      "bytes": 23388,
+      "sha256": "98aa89ad23b4e6a332afe4d60af6bf5ab3de1156f3d143ba50dbf11fba044f58"
+    },
+    {
+      "publisher": "Chukoh",
+      "path": "data/observations/Chukoh.jsonl",
+      "records": 51,
+      "bytes": 60278,
+      "sha256": "4b92ae871a0b69f62fe4c2399563df2c331edb4b097b74cdd248ff2a2fac590c"
+    },
+    {
+      "publisher": "CircuitHub",
+      "path": "data/observations/CircuitHub.jsonl",
+      "records": 4,
+      "bytes": 4604,
+      "sha256": "a9a19d1dff4285b0a9377861aa1589340d13920d11fb9215b1d9d92e0a9a7182"
+    },
+    {
+      "publisher": "Doosan",
+      "path": "data/observations/Doosan.jsonl",
+      "records": 121,
+      "bytes": 119581,
+      "sha256": "0597bbb8cf5042c6d948e518cf31e38709b57f130cbd2fab9a70c0be9e68e586"
+    },
+    {
+      "publisher": "EMC",
+      "path": "data/observations/EMC.jsonl",
+      "records": 208,
+      "bytes": 198448,
+      "sha256": "eed21b625ac007d5550bd2dc5a3ac15b34e7763832b47278dbf8ac6a9d6177be"
+    },
+    {
+      "publisher": "Epec",
+      "path": "data/observations/Epec.jsonl",
+      "records": 66,
+      "bytes": 90346,
+      "sha256": "5587f8e4bfbfba893313c83e8b7f4c738a0d11bd61f3dcf5fa61c206490b82f1"
+    },
+    {
+      "publisher": "Eurocircuits",
+      "path": "data/observations/Eurocircuits.jsonl",
+      "records": 18,
+      "bytes": 21317,
+      "sha256": "9cc7ce882ecd8c8b2d8f8a42a03b1608476f0f9f78dd0c992b6c2530711ecdfa"
+    },
+    {
+      "publisher": "Fineline",
+      "path": "data/observations/Fineline.jsonl",
+      "records": 129,
+      "bytes": 182902,
+      "sha256": "fad7113dae27ca3234867d2f0c205840cb050f80b8f6eaf7b19ae4b384bf9f1b"
+    },
+    {
+      "publisher": "Generic material reference (Arlon handbook)",
+      "path": "data/observations/Generic_material_reference_Arlon_handbook.jsonl",
+      "records": 11,
+      "bytes": 13743,
+      "sha256": "848c29ba420e282fd0c1870e67f56ca4489876dc8ff6ca84849912195b0770b9"
+    },
+    {
+      "publisher": "ITEQ",
+      "path": "data/observations/ITEQ.jsonl",
+      "records": 112,
+      "bytes": 98498,
+      "sha256": "4a127de97ca7e4b58ab70c5f84175eb6c563369a96d69fed2eb78caba1be9307"
+    },
+    {
+      "publisher": "Isola",
+      "path": "data/observations/Isola.jsonl",
+      "records": 3329,
+      "bytes": 3642492,
+      "sha256": "718398c2bbf62449be75af92eee3fa582eae515402b642893f32a993bff620a1"
+    },
+    {
+      "publisher": "JLCPCB",
+      "path": "data/observations/JLCPCB.jsonl",
+      "records": 26291,
+      "bytes": 62975495,
+      "sha256": "fd0c5741de257b4a695db7ff8d25b2f8f6d896f1ca84149b0b0e1ef22309c34e"
+    },
+    {
+      "publisher": "Kingboard",
+      "path": "data/observations/Kingboard.jsonl",
+      "records": 3352,
+      "bytes": 3678181,
+      "sha256": "c7493e3756d4abfca30e82b4a4019c3fcefbd06ed1da19d0bc87a65a9c730daa"
+    },
+    {
+      "publisher": "Lab Circuits",
+      "path": "data/observations/Lab_Circuits.jsonl",
+      "records": 16,
+      "bytes": 20147,
+      "sha256": "4da1d01a6da92de9a2c6105f8146c93d86c7d152522acb1cae2b9f8e059ece7f"
+    },
+    {
+      "publisher": "MGC",
+      "path": "data/observations/MGC.jsonl",
+      "records": 46,
+      "bytes": 43222,
+      "sha256": "154825c553cae63964b27cf346649ca323ff726095f0da7d1492f057b5347555"
+    },
+    {
+      "publisher": "Multi Circuit Boards",
+      "path": "data/observations/Multi_Circuit_Boards.jsonl",
+      "records": 38,
+      "bytes": 46323,
+      "sha256": "239289601f981311ae3e5f0fd77c0c130ce22e67a04c1dcfcfc7789121a6556f"
+    },
+    {
+      "publisher": "NCAB",
+      "path": "data/observations/NCAB.jsonl",
+      "records": 6,
+      "bytes": 7134,
+      "sha256": "9ed2417c01dd0c231188e1ea4854d61ed80217d0cd9dc0cb07af44bfed1c65aa"
+    },
+    {
+      "publisher": "Nanya_New_Material",
+      "path": "data/observations/Nanya_New_Material.jsonl",
+      "records": 302,
+      "bytes": 422290,
+      "sha256": "2712c1f5ce2c8d1b423389c67774506a4473fe4f0801c9a8ae1a91f5102e7d42"
+    },
+    {
+      "publisher": "NextPCB",
+      "path": "data/observations/NextPCB.jsonl",
+      "records": 31,
+      "bytes": 38723,
+      "sha256": "8d5c1d8ec0be75954564b447935a0cc284c6ec805fa5548d0652eccb96aa624f"
+    },
+    {
+      "publisher": "Nitto",
+      "path": "data/observations/Nitto.jsonl",
+      "records": 3,
+      "bytes": 3006,
+      "sha256": "56782aa050256f37c2b6fa90ef3d2db3a691d4e36da73798347fba0e4ee7a7d0"
+    },
+    {
+      "publisher": "OSH Park",
+      "path": "data/observations/OSH_Park.jsonl",
+      "records": 10,
+      "bytes": 11689,
+      "sha256": "cd66dafe8b1a931f473a0db80492f89dca20f4377069284f6b6f89a2ad0aab97"
+    },
+    {
+      "publisher": "PCBWay",
+      "path": "data/observations/PCBWay.jsonl",
+      "records": 2250,
+      "bytes": 3561109,
+      "sha256": "2b73dd92df46c89e3704622ed2ded127062aea226c1d4d0617797fa241fccb49"
+    },
+    {
+      "publisher": "Panasonic",
+      "path": "data/observations/Panasonic.jsonl",
+      "records": 6886,
+      "bytes": 7589020,
+      "sha256": "c24d460e7b82c81a7da1064b10ee7dfe1bca18b0776effd0364c3c7b15d660dd"
+    },
+    {
+      "publisher": "Peters",
+      "path": "data/observations/Peters.jsonl",
+      "records": 9,
+      "bytes": 7208,
+      "sha256": "496985f36d566b70dea91501ca8aef61f8f2174545e160c4f36bbd64851728ea"
+    },
+    {
+      "publisher": "Resonac",
+      "path": "data/observations/Resonac.jsonl",
+      "records": 112,
+      "bytes": 178744,
+      "sha256": "3a03a49f1579e6e88c22e27519298e58b1bda6928e11c3ef1644265a1c36d0fa"
+    },
+    {
+      "publisher": "Risho",
+      "path": "data/observations/Risho.jsonl",
+      "records": 4,
+      "bytes": 3970,
+      "sha256": "f89d66d909cda5528cff46b9d416065ac6d96c4bf15170d65423f4dd0ebbe56d"
+    },
+    {
+      "publisher": "Rogers",
+      "path": "data/observations/Rogers.jsonl",
+      "records": 423,
+      "bytes": 487198,
+      "sha256": "c23288cabb6cd59ff4a1e06b8c0ff3d320395e5c0ae7976077b5a6f61fe2510b"
+    },
+    {
+      "publisher": "Seeed Fusion",
+      "path": "data/observations/Seeed_Fusion.jsonl",
+      "records": 1,
+      "bytes": 1169,
+      "sha256": "bbce5f374489b824edfb9c81f20249bd8afc5ed34fcc9abc5dae5e6e6e246f04"
+    },
+    {
+      "publisher": "Shengyi Technology",
+      "path": "data/observations/Shengyi_Technology.jsonl",
+      "records": 8639,
+      "bytes": 10952186,
+      "sha256": "a7a17a6292aa1943f2ec76aaf471a165d756b2adf301a32a4ff4a38b708e958c"
+    },
+    {
+      "publisher": "Sumitomo_Bakelite",
+      "path": "data/observations/Sumitomo_Bakelite.jsonl",
+      "records": 16,
+      "bytes": 17056,
+      "sha256": "059660b8c378e091410165cfb64e4668f165ff118daef55850cc896988bc36f8"
+    },
+    {
+      "publisher": "TTM Technologies",
+      "path": "data/observations/TTM_Technologies.jsonl",
+      "records": 2,
+      "bytes": 2344,
+      "sha256": "9971c6ab4fde92b97fae944bbfeef98446d6b0da14ceda70d9381a44b74b25bb"
+    },
+    {
+      "publisher": "TUC",
+      "path": "data/observations/TUC.jsonl",
+      "records": 47,
+      "bytes": 46132,
+      "sha256": "0c9dbbf0db59af99658688f94cbb1ee6a3b1b37b2d2e697097da07d55f58bbad"
+    },
+    {
+      "publisher": "Ventec",
+      "path": "data/observations/Ventec.jsonl",
+      "records": 869,
+      "bytes": 933674,
+      "sha256": "b63ac4b356fa21a240ba307ab1218e8937df581c848d0a668140470c86d162b6"
+    },
+    {
+      "publisher": "Wurth Elektronik",
+      "path": "data/observations/Wurth_Elektronik.jsonl",
+      "records": 1598,
+      "bytes": 2434884,
+      "sha256": "fca9392aea2acc1c796b59765638517bcf45ad5864a954ec8bed1f839c526cad"
+    }
+  ]
+}

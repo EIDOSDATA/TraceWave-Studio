@@ -1,0 +1,76 @@
+产品编号：NY6200ANT
+
+
+        Modified expoxy for RF application
+    特点：                                             FEATURES：
+        介电常数(Dk 4.38@10GHz)                              Dk (Dk 4.38@10GHz)
+        介质损耗(Df 0.0065@10GHz)                            Df (Df 0.0065@10GHz)
+        低吸水率                                             Low moisture absorption
+        优异通孔可靠性及 PCB 加工性                                 Superior PTH reliability and easy PCB processing
+
+    应用领域：
+        移相器/天线                                           Phaser/Antenna
+
+
+NY6200ANT 基板产品规格表 Specification Sheet for Laminate
+                                                                  典型值                                 测试方法
+           NY6200ANT 覆铜板                    单位 Units                                 条件
+                                                              Typical Value                         Test Method
+          NY6200ANT Laminate                                                      Condition
+                                         Metric(English)       0.508mm CCL                             IPC-TM-650
+1. 玻璃态转化温度
+                                            ℃                      190               DSC                2.4.24
+   Glass Transition Temperature
+2. 膨胀系数 Z-Axis CTE
+                                          ppm/℃                    100               TMA                2.4.24
+    A. 50 to 260 ℃
+3. 膨胀系数 X/Y CTE
+                                          ppm/℃                   12/14              TMA                2.4.24
+    A. 50 to 125℃
+4. 热分解温度                                                                                                 TD
+                                            ℃                      385
+    Decomposition Temperature                                                                        (5% wt loss)
+5. 介电常数 Permittivity
+                                            ----                4.38+/-0.08       10 GHz/23℃            SPDR
+    (Laminate & Prepreg as laminated)
+6. 介质损耗 LossTangent                         ----                  0.0065          10 GHz/23℃            SPDR
+   (Laminate & Prepreg as laminated)
+7. 吸水率 Moisture Absorption                  %
+                                                                   0.09                                2.6.2.1
+                                         maximum
+8. 抗剥强度 Peel Strength, As received         N/mm                    0.95                                 2.4.8
+
+9. 体积电阻 VolumeResistivity,               MΩ-cm,                           7
+                                                                 3.5×10                                2.5.17.1
+                                         Minimu
+                                            m
+                                           MΩ,                            6
+10. 表面电阻 SurfaceResistivity,                                     5.0×10                                2.5.17.1
+                                         minimum
+11. 抗拉强度 Tensilestrength                   MPa                     265                             GB/T 1040.1-2018
+
+12. 弯曲强度 Flexural strength                 MPa                     425                                2.4.4.1B
+
+13. 拉伸模量 Tensile Modulus                   MPa                    25000                            GB/T 1040.1-2018
+14. 燃烧性 Flammability
+                                           Rating                   V-0                                 UL94
+    ( Laminate & Prepreg as laminated)
+15. PIM                                                                           输入功率：
+                                            dBc                   <-158                          800/1800/2600 MHz
+                                                                                   43dBm
+NY6200ANT 基板采购信息
+
+           标准厚度产品                             标准板材尺寸                    标准铜箔
+
+          0.008”(0.203mm)
+          0.012”(0.305mm)
+                                                                 HOz (17um), 1Oz (35 um)
+          0.016”(0.406mm)                  37” x 49” & 41”x49”
+                                                                      RTF2 copper
+          0.020”(0.508mm)
+          0.031”(0.787mm)
+          0.040”(1.016mm)
+          0.060”(1.524mm)
+
+*AABUS = 供需双方商定 As agreed upon between user and supplier
+

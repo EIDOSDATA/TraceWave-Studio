@@ -1,0 +1,294 @@
+           PROCESSING GUIDELINES
+
+                       Laminate: S1190
+                       Prepreg: S1190B
+
+High Performance, High Reliability, Multilayer PCB Used Material
+
+
+
+
+                              1 / 6        CN-PG-1810-01-S1190-S1190B-EN
+This product process guideline uses IPC-4101 Standard as a reference, and Shengyi make some changes
+according to the product characteristics of the actual situation as to making it more suitable for the Shengyi
+S1190/S1190B product use.
+
+
+
+1. Storage condition
+1.1 Laminate
+
+1.1.1 Storage condition
+
+   Pack with original forms on the platform or on the appropriate frame, avoiding stress, prevent sheet
+
+    deformation caused by inappropriate storage which may impact the subsequent PCB processes.
+
+1.1.2 Storage environment
+
+   Sheets should be stored in ventilated, dry, at room temperature under environment control, avoiding direct
+
+    sunlight, rain and avoid erosion of corrosive gas (stored environment directly affect the quality of material).
+
+   For double-sided copper clad laminates (cores), to minimize shifting as to avoid scratching the surface of
+
+    the product, with a suitable environment and condition for storage, the shelf life can be up to two years.
+
+   For single-sided copper clad laminates, with a suitable environment and condition for storage, the shelf
+
+    life can be up to one year.
+
+1.1.3 Operation manual
+
+   Wear clean gloves and carefully operate the cores. Copper foil collisions, sliding will cause damage of the
+
+    cores. Bare hands action will cause contamination to copper foil surface. These defects are likely to cause
+
+    adverse effects.
+
+1.2 Prepreg
+
+1.2.1 Storage method
+
+   Levels stored in original packaging form, avoiding stress, prevent sheet deformation caused by
+
+    inappropriate storage condition.
+
+   Leftover or cut Prepregs should pack and seal with vacuum foil packaging and put it back in the original
+
+    packaging tray.
+
+1.2.2 Storage environment
+
+   Prepreg sealed packaging should be stored in free of UV irradiation environment, specific storage
+
+    conditions and the storage period as follows:
+
+        Condition 1:   3 months when stored at <23℃ and <50% RH.
+
+        Condition 2:   6 months when stored at <5℃.
+
+   Note: Relative humidity affect prepreg quality the most, pay special attention on weather (conduct
+
+    dehumidification process is necessary for wet weather).
+
+1.2.3 Cutting guideline
+
+
+                                                      2 / 6                 CN-PG-1810-01-S1190-S1190B-EN
+   Cutting the best way is left to professional staff wear clean gloves during operation, prevent the pollution
+
+    of prepreg surface; operation must be careful to prevent prepreg wrinkle or crack, to avoid affect prepregs.
+
+1.2.4 Prepregs use recommendations
+
+   If moving from a low temperature storage space to a higher temperature or ambient temperature storage
+
+    space, it must go through the temperature settle process, (8 - 24 hours, settle time is varies depending
+
+    on temperature variation in between two storage conditions). Open package after temperature settle
+
+    process is completed as to avoid affecting the quality and adhesion of prepregs.
+
+   For PP package stored in above conditions 1 or 2, after open is required to complete the use as soon as
+
+    possible, for packages opened more than 3 day, it must re-inspect and insure quality before use.
+
+   Leftover or cut prepregs should pack and seal with vacuum foil packaging and put it back in the above
+
+    stated storage condition 1 or 2.
+
+   For IQC inspection, PP test should be finished within 5 days from the date of acceptance according to
+
+    IPC-4101 specification.
+
+
+
+2. PWB Processing
+2.1 Panel cutting
+
+   Sawing (preferred) and shearing method is recommended. Be careful of potential edge cracks when using
+
+    roller cutter or caused by improper gap or cutter blade abrasion.
+
+2.2 Thin core baking
+
+   Thin core baking depends on actual need. If bake after cutting, it’s recommended to rinse cutting panels
+
+    first, which is able to remove resin powder brought by cutting and avoid etching problem.
+
+   Baking condition: 150℃/4-8h, be sure to avoid contact directly with heat supply.
+
+2.3 Brown oxide
+
+   Brown oxide is recommended.
+
+   In order to avoid excessive moisture absorption, baking after brown oxide is recommended at the
+
+    condition of 120℃/1h and press within 4 hours.
+
+2.4 Lay-up
+
+   Ensure prepreg direction of warp and fill at lay-up process. Avoid prepreg reversal or overturn in case of
+
+    multilayer board distortion after press.
+
+2.5 Press process
+
+   For multilayer pressing, it’s recommended to keep heat-up rate at 1.0-2.5 ℃ /min when material
+
+    temperature is from 80℃ to 140℃.
+
+   Full pressure setting is recommended at the range of 300 – 420 PSI (21-30kgf/cm2, oil heated), specified
+
+    value should be determined by multilayer feature (lay-up construction and resin filled area).
+
+                                                     3 / 6                CN-PG-1810-01-S1190-S1190B-EN
+   Apply full pressure when the temperature of top layer ranges 80-100 ℃.
+
+   Curing condition: 190-200℃, >60min.
+
+   Maximum 8-10 layers of every open is recommended.
+
+   14-16 plies of kraft papers (unit weigh is 161g/m2) are suggested using at the upper and bottom for every
+
+    open.
+
+   If pressed by Adara machine, please inform us for more information.
+
+   When adopted singe sided or dummy panel for multilayer, be sure to roughen the unclad surface before
+
+    use, otherwise poor bonding might happen due to smooth surface. Etching double sided board for that
+
+    purpose is one of optional measures.
+
+2.6 Drilling
+
+   New drill bit is recommended.
+
+   Stack count should not be more than 3 panel/stack (calculated by 1.6mm thickness)
+
+   Maximum hit count should range 1000-1500 hits. (1.0 mm hole size)
+
+   Chip load is decreased 10-30% while compared to that of normal material.
+
+   Below parameters are for your reference.
+
+
+                    mm         kr/min        IPM        mil/rev        IPM         hits
+                    0.25         160           68           0.43       600         1200
+                    0.30         155           88           0.57       600         1200
+                    0.40         145         105            0.72       600         1400
+                    0.50         95            70           0.74       800         1200
+                    0.60         90            78           0.87       800         1200
+                    0.70         80            80           1.00       800         1500
+                    0.80         68            80           1.18       800         1500
+                    0.90         60            84           1.40       800         1500
+                    1.00         60            85           1.42       800         1500
+                    1.10         60            90           1.50       800         1500
+                    1.20         55            90           1.64       800         1500
+                    1.30         50            95           1.90       800         1500
+                    1.40         50          100            2.00       800         1500
+                    1.50         45            90           2.00       800         1500
+                    1.60         45            90           2.00       800         1500
+                    1.70         40            90           2.25       800         1200
+                    1.80         40            90           2.25       800         1200
+                    1.90         38            90           2.37       800         1200
+                    2.00         38            85           2.24       800         1200
+                    2.10         36            80           2.22       800         1000
+                    2.20         34            80           2.35       800         1000
+                    2.50         30            70           2.33       800         800
+
+
+                                                    4 / 6               CN-PG-1810-01-S1190-S1190B-EN
+                      3.00        28          70             2.50       800           650
+                      3.30        28          50             1.79       800           480
+                      3.50        25          45             1.80       800           300
+                      4.00        25          35             1.40       800           300
+                      4.50        25          35             1.40       800           300
+                      5.00        22          25             1.14       800           300
+                      5.50        20          25             1.25       800           300
+                      6.00        20          25             1.25       800           200
+                      6.50        20          20             1.00       800           200
+
+   For dense holes area or hole size <0.6mm, LE aluminum cover layer is recommended.
+
+   For boards with dense or heat sink holes, suggest baking after drilling by condition 190℃/3h.
+
+2.7 Desmear
+
+   Recommend to lengthen the working time or increase operation temperature while comparing to normal
+
+    FR-4 material. Recommend to fix proper swelling and Desmear parameters. Below parameters are for
+
+    reference only.
+                             Process               Temperature                 Time
+
+                              SWELL                    80℃                    8~15min
+
+                             DESMEAR                   77℃                  10~20min
+
+                         NEUTRALIZE                    40℃                    8~15min
+
+
+
+2.8 Solder mask
+
+   Be careful of panel distortion or warpage due to improper stack-up at pose baking process.
+
+   Base material color will turn to dark at solder mask curing process by UV light. If the darken color is not
+
+    acceptable, please avoid UV light method for solder mask curing.
+
+2.9 HAL
+
+   Suitable for lead free HAL process.
+
+2.10 Punching/Routing
+
+   Not suitable for punching process.
+
+   Routing speed and distance is recommended reducing to some extent as fillers will cause abrasion on
+
+    rout bit.
+
+2.10 Packaging
+
+   To prevent moisture effect on the heat resistance of base material, suggest baking finished boards at 150℃
+
+    /2~4h before packaging.
+
+   For a long time storage, it’s advised to wrap by aluminum pack.
+
+
+
+3. PWB Soldering
+
+                                                     5 / 6               CN-PG-1810-01-S1190-S1190B-EN
+3.1 Shelf life of PWB
+
+   3 months with packaging protection.
+
+   Bake at 125℃/4~8h before assembly is recommended, especially when stored more than 3 months.
+
+3.1 Reflow
+
+   Suitable for lead free reflow process
+
+3.2 Manual soldering
+
+   For separated or connected pad, manual soldering temperature should range 350-380℃ and hold less
+
+    than 3s for single point.
+
+
+
+This process guide is for reference only! Should you have any questions, please feel free to contact us. Shengyi
+
+will support you with prompt and effective service.
+
+
+
+
+                                                      6 / 6               CN-PG-1810-01-S1190-S1190B-EN
+

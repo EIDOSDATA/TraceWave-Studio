@@ -1,0 +1,158 @@
+                                                                      TECHNICAL ARTICLE
+
+                                                            FAQ’s About Moisture Control
+                                                                                                      Arlon 2016
+
+
+
+
+Why is moisture an issue in prepreg?
+With most high temperature, multifunctional epoxies, the effect of moisture is to reduce Tg by reacting
+with the resin (hydrolysis). The same rules that apply for polyimide may be applied to high temperature
+epoxies. While moisture technically doesn’t reduce the Tg of polyimide (or interfere with crosslink density),
+it can later result in delamination or blistering when the finished board is post processed at high temps in
+soldering or leveling.
+
+
+What about polyimide prepregs? Is moisture really a bigger issue with polyimides than
+with epoxy systems?
+Polyimides are more moisture sensitive than epoxies in the sense that they will absorb water from the air
+more quickly. Moisture which is in the prepreg does not do the prepreg itself any harm, but may result
+in voids, delamination and other defects in laminated boards. Foamy flow is an indicator of moisture in
+prepreg. It is not exclusively a phenomenon associated with polyimide, but because polyimide picks up
+moisture faster than FR-4, it is seen as a problem more often. Drying any prepreg by storing at low humidity
+with desiccant, or vacuum drying before use will minimize this effect.
+Moisture can cause additional problems in finished PWBs – the integrity of a multilayer board under high
+temperature stressed conditions (such as are simulated by the T288 or T300 test for materials designated
+“Lead-Free”) can be compromised by excessive moisture. Thus it is important to control moisture even in
+finished bare boards prior to solder reflow or assembly processing, and even in finished boards if they are
+going to be subsequently exposed to high temperatures, such as when they are to be repaired, or when
+devices require replacement or re-soldering. Obviously this is exaggerated with lead-free solder systems
+due to their higher temperatures.
+
+We recommend vacuum drying prepregs for several hours at 29” of Hg, and this will be discussed at length
+in the Processing section. Vacuum desiccation at room temperature is preferred over any kind of oven
+drying for standard epoxy or polyimide prepreg, even when you believe the oven drying is under controlled
+conditions and the temperature low enough not to hurt the prepreg. Oven drying may tend to advance
+the prepreg, and may result in marginal or insufficient flow or bond that can result in delamination or other
+failures on subsequent thermal processing. The only exception to that might be for non-woven aramid
+polyimide where a vacuum oven temperature of no more than 90˚F (32˚C) for 4-5 hours at 29” of vacuum
+may be helpful in removing excess moisture.
+Why does Arlon recommend vacuum desiccation of all prepregs prior to use?
+
+Prepreg stored under refrigeration at < 5ºC (41ºF) must be allowed to stabilize at ambient temperatures
+prior to use. This time can be included as part of a vacuum desiccation process. Vacuum desiccation of
+Arlon’s prepreg is recommended to remove moisture. Moisture trapped in a multiplayer PCB can cause
+excess resin flow, measles, delamination and depressed Tg values. Store the dried prepreg in either a
+nitrogen dry box or chemical desiccation box. Control the temperature and humidity in these chambers per
+the conditions stated above.
+
+
+
+                                              Vacuum Times
+  Epoxy Prepregs:                     44N, 45N, 45NK, 47N, 49N, 51N                       = 6-8 Hours
+  Polyimide Prepregs:                 33N, 35N, 37N, 38N, 84N, 85N                        = 8-12 Hours
+  Thermount® Prepregs:                55NT, 85NT                                          = 24 Hours
+
+
+Nominal                0.003
+What special precautions must be0.0053
+                                 taken with0.010
+                                            regard to0.015
+                                                      moisture 0.020
+                                                               in                      0.031       0.062          0.093
+Thickness (mils)      ±0.0005  ±0.0005    ±0.001    ±0.0015   ±0.002                  ±0.002      ±0.004         ±0.005
+high performance polyimide and some multifunctional epoxy prepregs?
+Actual Thickness (mils)     0.0031     0.0053        0.0095      0.0155     0.020     0.0304     0.0624     0.0932
+Polyimide prepregs are more sensitive to moisture pickup from the air than conventional epoxy prepregs.
+Dielectric Constant
+The presence   of moisture in2.75
+                              prepreg, as2.85
+                                           is also the 2.94       2.95 can cause
+                                                       case in epoxies,      2.96 any of2.98      2.98
+                                                                                         a number of process 2.98
+and product quality problems including foamy flow, voids, delamination and uneven thickness. In the case ±0.04
+                             ±0.08      ±0.06         ±0.06      ±0.04      ±0.04      ±0.04     ±0.04
+of polyimide, it also has an established link with poor bond to inner layer treated copper foil.
+Grannells and Lamm (United Technologies) determined that as little as 0.2% moisture in a polyimide
+prepreg may result in some blistering and delamination, and as little as 0.4% can result in frothy flow and
+significantly deteriorated inner layer bonding. It is possible for polyimide prepreg to absorb this much or
+more water while sitting around in an uncontrolled humidity environment.
+TROUBLESHOOTING TIP: Other volatile components of polyimide prepreg include low molecular weight
+resin fractions and some traces of retained high boiling solvents which may serve as process lubricant and
+actually react during prepreg cure, so measurement of total volatiles is not necessarily a good measure of
+retained water. Proactive removal of moisture by desiccation is important.
+Although desiccant boxes have been used with some degree of success to remove water, the process
+is slow and unless you use dry desiccant and change it or “recharge” it regularly, it is often unreliable for
+critical jobs. Polyimide will eventually start to compete with desiccant for water if the desiccant is not dry
+and changed regularly. If you use a dry box, it is extremely helpful to use a slow bleed of dry nitrogen (use
+a bubble type flow meter to ensure that the flow is continuous) over the material. This will remove ambient
+moisture and by reducing the partial pressure of water over the material, aid in the diffusion of residual
+moisture out of the product.
+
+The relationship between dry prepreg and quality of inner layer bond is a most important aspect of this
+phenomenon. The one method which has reliably removed water from prepreg down to the 0.2% level is
+vacuum desiccation. Roughly 12 to 16 hours (overnight) at 29 inches of mercury will remove essentially all
+the water that is not chemically bonded. “Hydrogen bonded” water at the surface of the fiberglass fibers,
+for example is not volatile under normal conditions although it can over time affect the degree of cure and
+the flow. Keeping prepreg in a dry environment prior to use will minimize the risk, but proactive drying is
+always recommended.
+There are several ways to remove water effectively using vacuum:
+
+1. Use a plasma unit during its “time off”. The plasma unit is capable of pulling a hard vacuum and unless it
+    is in use 24 hours a day, it may be free overnight. Vacuum pumps are made for continuous duty and this
+    will not hurt them.
+
+2. If you are using vacuum assisted hydraulic presses or autoclave presses, prepreg can be dried in these
+    units (without heat and pressure, of course!) during their off time at night.
+
+3. Prepreg can be “turkey bagged” or placed into an improvised tool (made for example from silicone
+    rubber sheeting designed for structural mold tooling) and held overnight in a vacuum.
+
+4. A dedicated vacuum oven or vacuum chamber is always a good approach. Shelving will permit
+    reasonable loading without stacking too high (which hinders water removal).
+
+TROUBLESHOOTING TIP: The purpose of vacuum drying and vacuum lamination is the removal of volatile
+elements in the system to prevent their interfering with the process or product. While vacuum drying at
+room temperature or slightly above will largely remove only water, vacuum lamination may release low
+molecular weight resin or other trace materials at cure temperatures that over time can build up in the
+vacuum system and contaminate vacuum pump oil. Coalescing type filters collect this type of volatiles, but
+may become plugged up quickly, negating the effect of the vacuum. Cold trap filters, while they are less
+common and require continuing attention, do not plug up as readily. Valves and fittings in the system need
+to be cleaned periodically so they perform optimally. Be sure the vacuum pump has an oil return line and
+change vacuum pump oil on a regular preventive maintenance schedule to prevent damage to the pump.
+
+
+
+Why is vacuum lamination superior to conventional press lamination for high performance
+multilayers? How does it differ?
+
+Vacuum lamination is now the norm in most high end MLB facilities, although in some high volume FR-4
+facilities, non-vacuum presses are still in use. For many reasons, vacuum lamination is highly desirable for
+MLB manufacture as it has become for the laminators themselves. Both enclosed vacuum presses and
+autoclave systems are in use. The biggest difference is that autoclave systems are slower in heat up rate
+and so consideration needs to be given to using prepregs with sufficient resin content to flow and fill at
+lower heat rate, hence higher melt viscosity/lower flow.
+In a vacuum lamination system reduced lamination pressures are possible since the vacuum itself helps
+with resin flow around traces and into via holes. It may be possible to reduce pressures to about 60-70%
+of the pressure used in a non-vacuum press.
+The reduced pressure also seems to help with registration, especially on complex PWB’s.
+      Are there other sources of moisture that should be considered?
+      Laminate layers used in the multilayer board can be a significant source of moisture that can damage the
+      final product. If the layers have not been sufficiently dried and kept dry up to the time of lamination, the
+      moisture in the layers will try to escape during lamination. This occurs at the same time that the prepreg is
+      melting and flowing. The moisture escape path is directly into the prepreg at its most critical phase. This will
+      make problems appear to be a prepreg issue but the cause could be moisture in the layers and not prepreg
+      conditioning.
+
+
+
+
+                                                     9433 Hyssop Drive
+                                           Rancho Cucamonga, California 91730
+                                         Tel: (909) 987-9533 • Fax: (909) 987-8541
+
+                                                     www.arlonemd.com
+
+Ver 1.1
+

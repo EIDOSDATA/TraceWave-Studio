@@ -1,0 +1,93 @@
+                                                                            APPLICATION NOTES
+
+
+                         Arlon Products Meet NASA Outgassing Requirements
+                                                                                                            Arlon 2016
+
+
+
+
+Rancho Cucamonga, CA – Arlon              plate. One obvious example of            criteria are based on many years of
+recently updated data on their high       the significance of this in space        experience and represent a degree of
+performance laminate products that        applications is in sophisticated         confidence based on experience.
+have successfully completed NASA          optical systems deployed in space
+                                                                                   What does this test data does not tell
+testing for outgassing and total          where condensable materials could
+                                                                                   you? The test method is a screening
+condensable volatiles according to        seriously degrade performance.
+                                                                                   test for materials done under specific
+ASTM E-595-93 (Standard Method            As you can see in the table below,
+                                                                                   conditions. The ASTM test method
+for Total Mass Loss and Collected         Arlon’s materials have extremely
+                                                                                   cautions that “The use of materials
+Volatile Condensable Materials from       low %CVMC, indicating that only a
+                                                                                   that are deemed acceptable in
+Outgassing in a Vacuum Environment)       negligible part of the mass loss is
+                                                                                   accordance with this test does not
+and thus can be considered for critical   other than water vapor.
+                                                                                   ensure that the system or component
+space applications.
+                                          %WVR (Water Vapor Regain) is a           will remain uncontaminated.
+What do these tests tell you?             measure of how much water will be        Therefore subsequent functional,
+                                          reabsorbed by the material after being developmental and qualification
+%TML (Total Mass Loss) is the total
+                                          re-exposed to 50% RH at 23oC for         tests should be used as necessary to
+amount of material that outgases from
+                                          24 hours. While this is not a specific ensure that the material’s performance
+a conditioned sample expressed as
+                                          space requirement, it does provide       is satisfactory.”
+a percent of the initial sample mass.
+                                          a valuable insight into the degree of
+For example if a sample weighing                                                   For example, Arlon’s 85NT nonwoven
+                                          need for desiccation and/or drying
+100 grams loses a half gram of mass                                                aramid polyimide product (which has
+                                          of materials during the fabrication
+during the test, the %TML is 0.5%.                                                 a %TML of 1.57% and thus is outside
+                                          process.
+In many instances the total mass lost                                              the NASA “accept” parameters) has
+will consist of absorbed water, which     What does this information mean to       already been used in commercial
+in moderate quantities will dissipate     you as a designer of space-based         space applications and is being
+in the vacuum of space and not be         electronics systems (beyond the          qualified in other space programs
+problematic. If some of the mass          obvious that it is a requirement for any based on performance, despite being
+loss is not water, then another test      NASA program)? Historically a TML        high in total mass loss (all of which is
+(%CVMC) is more critical.                 of 1.00% and a CVMC of 0.1% have water). In such a case the selection
+                                          been used as screening levels for        of material needs to be based on
+%CVMC (Collected Volatile
+                                          space materials. This testing ensures the designer’s knowledge of the
+Condensable Materials) represents
+                                          that these materials have been           material and application and sufficient
+the percentage of the weight of the
+                                          screened by NASA and selected for        reliability testing to ensure function.
+sample that will outgas from the
+                                          space applications. These selection
+sample then condense on a collector
+          Current Arlon products which have completed NASA/ASTM E595-93 testing are:
+
+             Product        Description                           %TML           %CVCM                 %WVR
+
+              33N           Flame Retardant Polyimide UL-94 V0      0.52              0.00                0.21
+              35N           Flame Retardant Polyimide UL-94V1       0.42              0.01                0.26
+              37N           Low Flow Polyimide Prepreg              0.77              0.00                0.39
+              38N           2nd Gen Low Flow Polyimide Prepreg      0.71              0.00                0.34
+              45N           Multifunctional Epoxy                   0.24              0.01                0.01
+              47N           Modified Epoxy Low Flow                 0.62              0.01                0.15
+              49N           Multifunctional Epoxy Low Flow          0.69              0.00                0.35
+              51N           Lead-Free Epoxy Low Flow                0.48              0.01                0.25
+              55NT          Epoxy Nonwoven Aramid                   1.32              0.00                0.58
+              84N           Filled Polyimide Prepreg                0.44              0.01                0.20
+              85HP          High Performance Polyimide              0.46              0.01                0.22
+              85N           High Temp Polyimide                     0.78              0.01                0.27
+              85NT          Polyimide Nonwoven Aramid               1.91              0.00                0.93
+              HF-50         Powdered Poly Hole Fill Compound        1.05              0.02                0.86
+
+
+
+
+                                                      9433 Hyssop Drive
+                                            Rancho Cucamonga, California 91730
+                                          Tel: (909) 987-9533 • Fax: (909) 987-8541
+
+                                                    www.arlonemd.com
+
+Ver 1.2                                                                                      (Source: http://outgassing.nasa.gov )
+

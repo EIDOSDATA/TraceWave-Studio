@@ -1,0 +1,1014 @@
+{
+  "record_unit": "One published material/stackup condition observation, not one unique material.",
+  "missing": "JSON null; empty CSV field. Never substituted with zero.",
+  "csv_encoding": "UTF-8 with BOM; comma-delimited; arrays/objects are JSON strings.",
+  "numeric_units": {
+    "dk": "dimensionless relative permittivity",
+    "df": "dimensionless loss tangent",
+    "frequency_ghz": "GHz",
+    "thickness_mm": "mm",
+    "resin_content_pct": "percent"
+  },
+  "fields": [
+    {
+      "field": "record_id",
+      "description_ko": "패키지 내 관측 행 식별자. 제품 수가 아니라 조건별 데이터 행을 뜻함.",
+      "observed_types": "str",
+      "non_null_records": 57340,
+      "examples": "PCB000001 | PCB000002 | PCB000003"
+    },
+    {
+      "field": "dataset_role",
+      "description_ko": "원자재 공개 물성 또는 PCB 제조사의 공정/적층/계산기 공개 파라미터 구분.",
+      "observed_types": "str",
+      "non_null_records": 57340,
+      "examples": "material_published_parameter | fabricator_published_parameter"
+    },
+    {
+      "field": "manufacturer",
+      "description_ko": "원문 값을 공개한 제조사/PCB 업체. PCB 업체 행의 원자재 공급사는 laminate_manufacturer를 별도 확인.",
+      "observed_types": "str",
+      "non_null_records": 57340,
+      "examples": "Doosan | EMC | TUC"
+    },
+    {
+      "field": "laminate_manufacturer",
+      "description_ko": "PCB 업체가 밝힌 실제 원자재 공급사. 비어 있으면 추정하지 않음.",
+      "observed_types": "str",
+      "non_null_records": 26454,
+      "examples": "Nan Ya | Shengyi | Kingboard"
+    },
+    {
+      "field": "product",
+      "description_ko": "원문 제품/재료/적층 내 자재 이름. 별칭과 제품군도 포함하므로 고유 제품 개수와 다름.",
+      "observed_types": "str",
+      "non_null_records": 57340,
+      "examples": "DS-7402 | DS-7402M | DS-7402BS (DF)"
+    },
+    {
+      "field": "material_family",
+      "description_ko": "출처 또는 추출 단계의 재료군 분류. FR-4·PPE·polyimide 같은 재질과 laminate 같은 포괄적 분류를 포함하며, 특정 제품이나 시험조건을 뜻하지 않음.",
+      "observed_types": "str",
+      "non_null_records": 37738,
+      "examples": "copper_clad_laminate | flexible_laminate | laminate"
+    },
+    {
+      "field": "material_form",
+      "description_ko": "재료의 공급 형태 또는 적층 내 역할. core=코어, prepreg=프리프레그, laminate=적층판, solder_mask=솔더마스크 등이며 laminate_or_prepreg는 둘을 확정 구분하지 않은 표기.",
+      "observed_types": "str",
+      "non_null_records": 56719,
+      "examples": "laminate | laminate_or_prepreg | FCCL"
+    },
+    {
+      "field": "dk",
+      "description_ko": "상대유전율 εr의 출처별 명목/대표/설계/공정값. 무차원. dk_min/max와 혼용 금지.",
+      "observed_types": "float,int",
+      "non_null_records": 57113,
+      "examples": "4.33 | 4.21 | 4.25"
+    },
+    {
+      "field": "dk_min",
+      "description_ko": "원문 범위의 하한 또는 ≥ 제한값. dk가 비어 있으면 중간값을 만들지 않음.",
+      "observed_types": "float,int",
+      "non_null_records": 168,
+      "examples": "3.5 | 3.4 | 3.3"
+    },
+    {
+      "field": "dk_max",
+      "description_ko": "원문 범위의 상한 또는 ≤ 제한값. 원문 비교 연산자 확인.",
+      "observed_types": "float,int",
+      "non_null_records": 167,
+      "examples": "3.6 | 3.5 | 3.4"
+    },
+    {
+      "field": "dk_tolerance",
+      "description_ko": "원문 Dk ± 허용차의 절대값. % 허용차는 별도 필드 확인.",
+      "observed_types": "float",
+      "non_null_records": 3487,
+      "examples": "0.2 | 0.05 | 0.25"
+    },
+    {
+      "field": "df",
+      "description_ko": "손실탄젠트 tanδ. 무차원. Dk와 주파수/방법이 다른 값은 별도 행 또는 별도 주파수 필드.",
+      "observed_types": "float",
+      "non_null_records": 27778,
+      "examples": "0.013 | 0.014 | 0.016"
+    },
+    {
+      "field": "df_min",
+      "description_ko": "공개된 손실탄젠트 Df 범위의 하한 또는 하한 부등식의 경계값. 무차원이며 df_comparison 등 비교 표기와 함께 해석.",
+      "observed_types": "float",
+      "non_null_records": 119,
+      "examples": "0.005 | 0.006 | 0.007"
+    },
+    {
+      "field": "df_max",
+      "description_ko": "공개된 손실탄젠트 Df 범위의 상한 또는 상한 부등식의 경계값. 무차원이며 df_limit_operator/df_comparison을 함께 확인.",
+      "observed_types": "float",
+      "non_null_records": 170,
+      "examples": "0.0025 | 0.0015 | 0.0012"
+    },
+    {
+      "field": "frequency_ghz",
+      "description_ko": "명시된 시험 주파수를 GHz로 단위 환산. 추정/보간 없음. null은 0 Hz가 아님.",
+      "observed_types": "float,int",
+      "non_null_records": 28540,
+      "examples": "1 | 10 | 10.0"
+    },
+    {
+      "field": "frequency_min_ghz",
+      "description_ko": "공개된 주파수 범위 하한. 전 대역에서 일정한 물성이라는 뜻이 아님.",
+      "observed_types": "float,int",
+      "non_null_records": 65,
+      "examples": "0.001 | 10 | 8"
+    },
+    {
+      "field": "frequency_max_ghz",
+      "description_ko": "공개된 주파수 범위 상한. 임의 보간용 주파수 sweep으로 사용하지 말 것.",
+      "observed_types": "float,int",
+      "non_null_records": 65,
+      "examples": "0.1 | 10 | 40"
+    },
+    {
+      "field": "frequency_text",
+      "description_ko": "주파수 원문 문자열. 근사, 범위, 단위 또는 미기재 여부를 함께 확인.",
+      "observed_types": "str",
+      "non_null_records": 57285,
+      "examples": "1 GHz | 10 GHz | 1 MHz"
+    },
+    {
+      "field": "value_type",
+      "description_ko": "process/design/typical/범위/구성표/공정 대표값 등 원문 값의 성격. 자동 평균/통합 금지.",
+      "observed_types": "str",
+      "non_null_records": 57340,
+      "examples": "datasheet_value | product_selection_typical | typical"
+    },
+    {
+      "field": "method",
+      "description_ko": "원문 시험법. IPC 2.5.5.13과 SPDR는 이름을 임의로 동일시하지 않음.",
+      "observed_types": "str",
+      "non_null_records": 47250,
+      "examples": "IPC-TM-650 2.5.5.9 | IPC-TM-650 2.5.5.5 | SPDR"
+    },
+    {
+      "field": "axis",
+      "description_ko": "측정 방향/이방성 조건. 비어 있는 방향은 z축으로 추정하지 않음.",
+      "observed_types": "str",
+      "non_null_records": 30800,
+      "examples": "perpendicular (manufacturer Note*) | Z | Z (thickness)"
+    },
+    {
+      "field": "thickness_mm",
+      "description_ko": "출처에 기재된 두께의 mm 표현. dielectric separation, 동박 포함 core, 시험편 두께를 notes/thickness_basis/thickness_type로 확인.",
+      "observed_types": "float",
+      "non_null_records": 54356,
+      "examples": "1.6 | 0.034 | 0.076"
+    },
+    {
+      "field": "glass_style",
+      "description_ko": "유리섬유 직조 코드. 1080/2116/7628 등을 숫자 재료 상수로 해석하지 않음.",
+      "observed_types": "str",
+      "non_null_records": 44229,
+      "examples": "1080 | 3313 | 2116"
+    },
+    {
+      "field": "resin_content_pct",
+      "description_ko": "원문 수지 함량 RC(%). 제공 상태와 압착 후 값을 구분하며 원문 기준 확인.",
+      "observed_types": "float,int",
+      "non_null_records": 42628,
+      "examples": "70.0 | 50 | 70"
+    },
+    {
+      "field": "construction",
+      "description_ko": "ply 수, glass 조합 등 원문 구성. 동일 재료명이라도 구성에 따라 값이 다를 수 있음.",
+      "observed_types": "str",
+      "non_null_records": 15602,
+      "examples": "1080*1 | 3313*1 | 2116*1"
+    },
+    {
+      "field": "stackup_id",
+      "description_ko": "업체별 공개 적층 식별자. 두께/동박/공정 조건이 다른 적층은 별도.",
+      "observed_types": "str",
+      "non_null_records": 30166,
+      "examples": "JLC081021-3313A__bc629399 | JLC08122H-3313__f743e16f | JLC063021-3313__3fc058aa"
+    },
+    {
+      "field": "layer",
+      "description_ko": "해당 적층에서 값을 적용하는 유전체/솔더마스크 층.",
+      "observed_types": "str",
+      "non_null_records": 30166,
+      "examples": "L1-L2 | L2/L3 | L3-L4"
+    },
+    {
+      "field": "dk_input_status",
+      "description_ko": "숫자/주파수 존재 여부만 판정한 상태. 시뮬레이터에 적합함을 인증하는 필드가 아님.",
+      "observed_types": "str",
+      "non_null_records": 57340,
+      "examples": "scalar_with_frequency | df_or_other_parameter_only | scalar_without_point_frequency"
+    },
+    {
+      "field": "review_flags",
+      "description_ko": "누락 시험 조건/원문 불일치/수치화 불가 범위 등 자동 검토 태그. 빈 문자열도 정확성을 보증하지 않음.",
+      "observed_types": "str",
+      "non_null_records": 57340,
+      "examples": "measurement_axis_not_stated | test_method_not_stated;measurement_axis_not_stated | frequency_not_numeric_or_not_stated;test_method_not_stated;measurement_axis_not_stated"
+    },
+    {
+      "field": "source_id",
+      "description_ko": "catalog/sources의 source_id와 조인하는 키.",
+      "observed_types": "str",
+      "non_null_records": 57340,
+      "examples": "RT0001 | RT0004 | RT0005"
+    },
+    {
+      "field": "source_location",
+      "description_ko": "원문 PDF 페이지, 표/행, HTML 섹션 또는 native 적층 항목 위치.",
+      "observed_types": "str",
+      "non_null_records": 57340,
+      "examples": "PDF p.5, electrical properties, table row 5 | PDF p.5, electrical properties, table row 6 | PDF p.5, electrical properties, table row 7"
+    },
+    {
+      "field": "source_url",
+      "description_ko": "제조사 원문 URL. 서버가 차단/삭제한 출처는 URL과 사유를 보존.",
+      "observed_types": "str",
+      "non_null_records": 57340,
+      "examples": "https://www.doosanelectronics.com/download/product/kr/CCL_All_Properties_PDF_240930_v9.pdf | https://www.emctw.com/en-global/product_name/index | https://www.tuc.com.tw/en-us/products-detail/id/1"
+    },
+    {
+      "field": "source_file",
+      "description_ko": "압축 해제 폴더 기준 원문 상대경로. 동일 바이트 원문은 한 번만 보관하고 여러 URL이 같은 경로를 참조.",
+      "observed_types": "str",
+      "non_null_records": 57099,
+      "examples": "originals/Doosan/Doosan__종합카탈로그_CCL_all_properties_20240930__종합카탈로그__RT0001.pdf | originals/EMC/EMC__종합카탈로그_Product_selection__제품_기술안내__RT0004.html | originals/TUC/TUC__TU-872_LK_TU872LK__제품_기술안내__RT0005.html"
+    },
+    {
+      "field": "notes",
+      "description_ko": "해석 조건, 원문 각주, 불일치, 두께 기준 등 필수 확인 사항.",
+      "observed_types": "str",
+      "non_null_records": 57335,
+      "examples": "2024-09-30 catalog. Blank test-method columns have not been filled from adjacent columns. | Paired RC50/70% values split into separate observations; this summary does not specify glass construction or test method. | Table header: RC50/70%. A single unslashed value has unspecified RC and is not assigned to 50% or 70%."
+    },
+    {
+      "field": "additional_total_dielectric_thickness_inch",
+      "description_ko": "양면 기판에 추가되는 유전체의 총두께(inch). RF340 LoPro 수지층 설명의 값이며 한쪽 면의 단일 층 두께가 아님.",
+      "observed_types": "float",
+      "non_null_records": 1,
+      "examples": "0.0007"
+    },
+    {
+      "field": "application_data_rate_category",
+      "description_ko": "공개 재료표의 디지털 데이터 전송률 등급(Gbps). Dk/Df의 측정 주파수(GHz)와 다르며 주파수로 변환하지 않음.",
+      "observed_types": "str",
+      "non_null_records": 26,
+      "examples": "40-56 Gbps | 25-40 Gbps | 10-25 Gbps"
+    },
+    {
+      "field": "available_thickness_mil",
+      "description_ko": "제조사가 제시한 공급 가능한 두께 선택지 목록(mil; 1 mil=0.001 inch). 각 두께에서 별도로 측정한 Dk/Df 데이터라는 뜻은 아님.",
+      "observed_types": "list",
+      "non_null_records": 1,
+      "examples": "[1.2,2.5]"
+    },
+    {
+      "field": "board_layers",
+      "description_ko": "PCBWay 공개 적층 선택지의 총 동박층 수. 개별 유전체 행의 순서나 프리프레그 매수와 구분.",
+      "observed_types": "int",
+      "non_null_records": 2250,
+      "examples": "4 | 6 | 8"
+    },
+    {
+      "field": "board_nominal_thickness_mm",
+      "description_ko": "PCBWay 공개 적층 선택지의 명목 보드 두께(mm). 개별 유전체층 두께가 아님.",
+      "observed_types": "float",
+      "non_null_records": 2250,
+      "examples": "1.6 | 2.4 | 2.0"
+    },
+    {
+      "field": "board_type",
+      "description_ko": "JLCPCB 공개 계산기 템플릿의 보드 유형. ordinary_rigid는 일반 경성 PCB, HDI는 HDI 템플릿을 뜻함.",
+      "observed_types": "str",
+      "non_null_records": 26276,
+      "examples": "ordinary_rigid | HDI"
+    },
+    {
+      "field": "bottom_copper_thickness_mm",
+      "description_ko": "해당 유전체 항목 아래쪽 도체의 원문 두께(mm). JLCPCB API의 botConductorThick 값이며 완성 동박/원박 기준은 원본과 notes 확인.",
+      "observed_types": "float",
+      "non_null_records": 26276,
+      "examples": "0.0 | 0.03 | 0.0152"
+    },
+    {
+      "field": "carrier_thickness_mil",
+      "description_ko": "접착재 내부 캐리어의 두께(mil). 수록된 AGC fastRise 행에서는 PTFE 캐리어를 뜻하며 공급 상태 전체 두께와 구분.",
+      "observed_types": "int",
+      "non_null_records": 2,
+      "examples": "1"
+    },
+    {
+      "field": "coating_above_substrate_mm",
+      "description_ko": "기판 표면 위 코팅층의 공개 두께(mm). JLCPCB 솔더마스크 계산기 형상 파라미터이며 도체 위 코팅 두께와 구분.",
+      "observed_types": "float",
+      "non_null_records": 2,
+      "examples": "0.030479999999999997 | 0.02032"
+    },
+    {
+      "field": "coating_above_trace_mm",
+      "description_ko": "신호선 도체 윗면 위 코팅층의 공개 두께(mm). 기판 표면을 기준으로 한 전체 높이가 아님.",
+      "observed_types": "float",
+      "non_null_records": 2,
+      "examples": "0.015239999999999998 | 0.0127"
+    },
+    {
+      "field": "coating_between_traces_mm",
+      "description_ko": "두 신호선 사이 영역의 공개 코팅 두께(mm). 선간 거리나 트레이스 폭을 뜻하지 않음.",
+      "observed_types": "float",
+      "non_null_records": 1,
+      "examples": "0.030479999999999997"
+    },
+    {
+      "field": "collection_group",
+      "description_ko": "수집 작업군(root/fr4/rf/fab). 재질 분류가 아님.",
+      "observed_types": "str",
+      "non_null_records": 57340,
+      "examples": "root | fr4 | rf"
+    },
+    {
+      "field": "column_identity",
+      "description_ko": "주파수 등 열 제목이 모호할 때 원문 열을 특정하기 위한 위치 설명. 해당 source_location과 conflict_note를 확인.",
+      "observed_types": "str",
+      "non_null_records": 11,
+      "examples": "last Dk/Df pair; columns 7/8"
+    },
+    {
+      "field": "condition_text",
+      "description_ko": "시험편 처리·환경·측정조건의 원문 문자열. C-96/20/65, RT/RH 등의 코드를 임의로 해석하거나 통일하지 않고 보존.",
+      "observed_types": "str",
+      "non_null_records": 214,
+      "examples": "C-96/20/65 | C-96/20/65+D-24/23 | RT/RH"
+    },
+    {
+      "field": "conditioning",
+      "description_ko": "원문 Test Condition 칸의 조건 문자열. 전처리 코드 외에 주파수/온도도 포함될 수 있으므로 해당 notes와 함께 해석.",
+      "observed_types": "str",
+      "non_null_records": 183,
+      "examples": "10 GHz/23°C | C-24/23/50 | 2 GHz/23°C"
+    },
+    {
+      "field": "conditioning_duration_hours",
+      "description_ko": "원문에 명시된 시험편 전처리 시간(h). 유전 특성 측정 시간과 구분.",
+      "observed_types": "int",
+      "non_null_records": 25,
+      "examples": "1"
+    },
+    {
+      "field": "conditioning_temperature_c",
+      "description_ko": "원문에 명시된 시험편 전처리 온도(°C). 유전 특성의 측정 온도 temperature_c와 구분.",
+      "observed_types": "int",
+      "non_null_records": 25,
+      "examples": "105"
+    },
+    {
+      "field": "conflict_note",
+      "description_ko": "발견한 차이의 근거와 원문 조건. 최신값을 임의로 선정하지 않음.",
+      "observed_types": "str",
+      "non_null_records": 53,
+      "examples": "General Characteristics p.7 and detailed p.28 publish different 10 GHz Df ranges for this product. Both original ranges and their specimen/method context are retained. | The individual official datasheet includes differing nominal values/conditions. Retain source distinction and verify before selecting simulation input. | Repeated 40 GHz header in original; intended frequency not inferred. Confirm with AGC."
+    },
+    {
+      "field": "copper_foil",
+      "description_ko": "동박 사양·표면처리·양면 조합의 원문 표기. AH/AH, RTF2 등의 상세 의미는 해당 출처의 정의를 확인.",
+      "observed_types": "str",
+      "non_null_records": 29,
+      "examples": "AH/AH | 1 oz electrodeposited both sides | RTF2"
+    },
+    {
+      "field": "copper_layer_count",
+      "description_ko": "JLCPCB 공개 적층 템플릿의 총 동박층 수. 유전체 데이터 행 수와는 다름.",
+      "observed_types": "int",
+      "non_null_records": 26276,
+      "examples": "8 | 6 | 10"
+    },
+    {
+      "field": "core_with_copper_thickness_mm",
+      "description_ko": "동박을 포함한 core 전체 두께. 유전체 separation과 구분.",
+      "observed_types": "float",
+      "non_null_records": 725,
+      "examples": "1.1 | 1.0 | 2.0"
+    },
+    {
+      "field": "data_conflict",
+      "description_ko": "공식 자료 간 차이 또는 원문 표기 문제를 검출한 경우 true. conflict_note 확인.",
+      "observed_types": "bool",
+      "non_null_records": 53,
+      "examples": "True | False"
+    },
+    {
+      "field": "df_comparison",
+      "description_ko": "Df에 적용되는 원문 비교 형태. > 또는 <는 부등식, range는 범위이며 df_min/df_max와 함께 해석.",
+      "observed_types": "str",
+      "non_null_records": 6,
+      "examples": "> | range | <"
+    },
+    {
+      "field": "df_frequency_ghz",
+      "description_ko": "Df에 별도로 명시된 측정 주파수(GHz). 공통 frequency_ghz 또는 Dk의 주파수와 같다고 가정하지 않음.",
+      "observed_types": "float,int",
+      "non_null_records": 288,
+      "examples": "1 | 0.001 | 10"
+    },
+    {
+      "field": "df_frequency_text",
+      "description_ko": "Df의 주파수 또는 주파수 범위를 보존한 원문 문자열. 단일 GHz 숫자로 정리되지 않은 범위도 포함.",
+      "observed_types": "str",
+      "non_null_records": 1,
+      "examples": "10^2 to 10^6 Hz"
+    },
+    {
+      "field": "df_limit_operator",
+      "description_ko": "Df 한계값의 원문 부등호. 예를 들어 <는 해당 df_max보다 작다는 뜻이며 대표값과 구분.",
+      "observed_types": "str",
+      "non_null_records": 51,
+      "examples": "<"
+    },
+    {
+      "field": "df_method",
+      "description_ko": "Df에 별도로 명시된 시험법. 같은 행의 Dk 시험법 또는 공통 method와 다를 수 있음.",
+      "observed_types": "str",
+      "non_null_records": 4,
+      "examples": "Bereskin Stripline"
+    },
+    {
+      "field": "df_text",
+      "description_ko": "Df 원문 표기. 범위, 부등호, 단위·각주가 있는 경우 숫자 열과 함께 확인.",
+      "observed_types": "str",
+      "non_null_records": 4879,
+      "examples": "0.013 | 0.014 | 0.016"
+    },
+    {
+      "field": "df_tolerance",
+      "description_ko": "Df의 절대 허용편차를 담는 필드(무차원). 현재 수록값은 모두 null이며 백분율 허용편차는 df_tolerance_pct로 구분.",
+      "observed_types": "",
+      "non_null_records": 0,
+      "examples": ""
+    },
+    {
+      "field": "df_tolerance_pct",
+      "description_ko": "원문에 제시된 Df의 백분율 허용편차(%). 10.0은 원문 ±10% 표기이며 Df 절대값 ±10을 뜻하지 않음.",
+      "observed_types": "float",
+      "non_null_records": 3312,
+      "examples": "10.0"
+    },
+    {
+      "field": "dielectric_thickness_before_calculator_pp_adjustment_mm",
+      "description_ko": "PCB 제조사 계산기에서 동박/프리프레그 조정 전 기록한 두께. 압착 후 물리 두께를 대신한다고 보증하지 않음.",
+      "observed_types": "float",
+      "non_null_records": 26276,
+      "examples": "0.107 | 0.075 | 0.084"
+    },
+    {
+      "field": "dk_choices",
+      "description_ko": "원문 한 칸에 함께 제시된 Dk 선택지 또는 구성별 후보 값의 배열. 범위의 양 끝이나 평균값으로 바꾸지 않으며 정확한 적용 조건은 notes 확인.",
+      "observed_types": "list",
+      "non_null_records": 9,
+      "examples": "[2.97,3.03] | [2.94,3.03] | [2.17,2.2]"
+    },
+    {
+      "field": "dk_comparison",
+      "description_ko": "Dk의 원문 비교 형태. 부등호 또는 range 표기를 dk_min/dk_max와 함께 해석.",
+      "observed_types": "str",
+      "non_null_records": 5,
+      "examples": "> | range"
+    },
+    {
+      "field": "dk_text",
+      "description_ko": "Dk 원문 표기. 범위, ±, 각주 기호가 있는 경우 숫자 열과 함께 확인.",
+      "observed_types": "str",
+      "non_null_records": 5005,
+      "examples": "4.33 | 4.21 | 4.25"
+    },
+    {
+      "field": "document_date",
+      "description_ko": "해당 데이터에 연결된 문서의 날짜 또는 개정 시점 표기. 자료 수집일이나 개별 시편의 측정일과 구분.",
+      "observed_types": "str",
+      "non_null_records": 62,
+      "examples": "2022-05"
+    },
+    {
+      "field": "finished_outer_copper_oz",
+      "description_ko": "PCBWay 적층 선택지의 완성 외층 동박 oz 표기. 명목 옵션이며 실측 μm 두께가 아님.",
+      "observed_types": "float",
+      "non_null_records": 2250,
+      "examples": "1.0 | 2.0 | 3.0"
+    },
+    {
+      "field": "glass_type",
+      "description_ko": "유리 보강재의 종류. E-glass, low-Dk glass 등 재질 계열이며 1080·2116 같은 직물 스타일 번호와 구분.",
+      "observed_types": "str",
+      "non_null_records": 47,
+      "examples": "E | Low Dk | Low Dk glass"
+    },
+    {
+      "field": "inner_copper_oz",
+      "description_ko": "공개 적층 옵션의 내층 동박 oz 등급. 실제 두께(mm) 값과 구분하며 제조 조건은 해당 출처 확인.",
+      "observed_types": "float",
+      "non_null_records": 28526,
+      "examples": "1.0 | 0.5 | 2.0"
+    },
+    {
+      "field": "inner_residual_copper_pct",
+      "description_ko": "PCBWay 적층 선택지의 내층 잔동률(%). 패턴 형성 후 남는 동박 면적의 비율로, 동박 두께나 수지 함량이 아님.",
+      "observed_types": "float",
+      "non_null_records": 2250,
+      "examples": "70.0 | 50.0 | 30.0"
+    },
+    {
+      "field": "laminated_group_rows",
+      "description_ko": "한 개의 압착 후 합산 두께를 공유하는 프리프레그 표 행 수. 그 합산 두께를 각 행의 개별 두께로 반복 적용하지 않음.",
+      "observed_types": "int",
+      "non_null_records": 1525,
+      "examples": "1 | 2 | 3"
+    },
+    {
+      "field": "laminated_group_start_row",
+      "description_ko": "합산 압착 두께를 공유하는 프리프레그 그룹이 시작되는 원본 적층표 행 번호. PCBWay 표의 1기준 행 번호.",
+      "observed_types": "int",
+      "non_null_records": 1525,
+      "examples": "2 | 6 | 7"
+    },
+    {
+      "field": "laminated_group_thickness_mm",
+      "description_ko": "여러 prepreg ply가 공유하는 압착 후 합계 두께. 각 ply의 개별 두께로 중복 입력하지 않음.",
+      "observed_types": "float",
+      "non_null_records": 1525,
+      "examples": "0.1855 | 0.1785 | 0.1715"
+    },
+    {
+      "field": "layer_database_update_time",
+      "description_ko": "JLCPCB 원본 층 정의의 dbUpdateTime 타임스탬프. 공개 데이터베이스 갱신 시점이며 재료 시험일이 아님.",
+      "observed_types": "str",
+      "non_null_records": 13348,
+      "examples": "2022-07-21T12:45:53.000+00:00 | 2022-06-23T12:18:36.000+00:00 | 2022-10-27T01:51:27.000+00:00"
+    },
+    {
+      "field": "layer_index",
+      "description_ko": "JLCPCB 원본 basicDataList 배열의 0기준 인덱스. 동박 항목까지 포함한 원본 위치이며 L1 같은 동박층 번호와 다름.",
+      "observed_types": "int",
+      "non_null_records": 26276,
+      "examples": "1 | 2 | 3"
+    },
+    {
+      "field": "layer_sequence",
+      "description_ko": "PCBWay 원본 적층표의 1기준 행 순서. 동박과 유전체 행을 포함한 표 기준이며 숫자 자체가 동박층 번호는 아님.",
+      "observed_types": "int",
+      "non_null_records": 2250,
+      "examples": "2 | 4 | 6"
+    },
+    {
+      "field": "manufacturing_location",
+      "description_ko": "원문이 구분한 제조 사업장 또는 생산 지역. AMMA(미국), AMMS(싱가포르)처럼 사업장별 조건을 구분하는 데 사용.",
+      "observed_types": "str",
+      "non_null_records": 1196,
+      "examples": "AMMA (United States) | AMMS (Singapore)"
+    },
+    {
+      "field": "material_definition_id",
+      "description_ko": "JLCPCB 공개 계산기의 원자재/층 기본 정의 ID. 전역 표준 재료 코드나 독립적인 물성 시험 식별자는 아님.",
+      "observed_types": "int",
+      "non_null_records": 26276,
+      "examples": "34 | 16 | 29"
+    },
+    {
+      "field": "material_description",
+      "description_ko": "원본 적층 파일의 재료 설명과 IPC 규격 표기. IPC 재료 등급은 특정 원자재 제조사 제품명과 구분.",
+      "observed_types": "str",
+      "non_null_records": 1598,
+      "examples": "Soldermask IPC-SM840 | Prepreg IPC-4101/127/128 | Core IPC-4101/127/128"
+    },
+    {
+      "field": "material_name",
+      "description_ko": "JLCPCB 계산기 원문 재료명. 직물·RC·명목 두께·동박 포함 문구가 함께 들어갈 수 있으므로 thickness_mm와 별도로 확인.",
+      "observed_types": "str",
+      "non_null_records": 26276,
+      "examples": "3313 RC57% 4.2mil | 0.075mm 1/1OZ without copper | 1080  RC67% 3.3mil"
+    },
+    {
+      "field": "method_is_multi_clause",
+      "description_ko": "true이면 method가 단일 시험법 이름 대신 여러 시험법/주파수 조건의 원문 각주를 함께 보존함. 해당 주파수에 적용되는 문구를 확인.",
+      "observed_types": "bool",
+      "non_null_records": 8276,
+      "examples": "True"
+    },
+    {
+      "field": "method_scope_note",
+      "description_ko": "표에 명시된 시험법의 적용 주파수 범위가 불명확할 때 기록한 설명. 수록된 Panasonic 행은 1 GHz 머리말과 더 낮은 주파수 열의 관계를 주의 표시.",
+      "observed_types": "str",
+      "non_null_records": 120,
+      "examples": "Page heading explicitly states the method for 1 GHz; same table includes this lower-frequency column. Method applicability at this frequency is not separately explicit."
+    },
+    {
+      "field": "method_source_text",
+      "description_ko": "시험법과 적용 주파수에 관한 원문 머리말/문구. 정리된 method와 대조해 범위·표기 차이를 확인하는 용도.",
+      "observed_types": "str",
+      "non_null_records": 5506,
+      "examples": "1MHz - 1GHz ; IPC TM650-2.5.5.9 | 2GHz-10GHz ; IPC TM650-2.5.5.5 | 1GHz ; IPC TM650-2.5.5.9"
+    },
+    {
+      "field": "nominal_board_thickness_mm",
+      "description_ko": "JLCPCB 템플릿이 제시한 명목 보드 전체 두께(mm). 개별 코어/프리프레그 두께가 아님.",
+      "observed_types": "float",
+      "non_null_records": 26276,
+      "examples": "1.0 | 1.2 | 3.0"
+    },
+    {
+      "field": "nominal_thickness_inch",
+      "description_ko": "원문 구성의 명목 두께(inch). 주문 지정 두께 specified_thickness_inch와 다를 수 있으며 동박 포함 기준은 notes 확인.",
+      "observed_types": "float",
+      "non_null_records": 2808,
+      "examples": "0.002 | 0.0024 | 0.0031"
+    },
+    {
+      "field": "nominal_thickness_mil",
+      "description_ko": "원문 구성의 명목 두께(mil; 1 mil=0.001 inch). 원문 mm 병기값과 반올림 차이가 있을 수 있음.",
+      "observed_types": "float",
+      "non_null_records": 3312,
+      "examples": "3.0 | 3.5 | 4.0"
+    },
+    {
+      "field": "offering",
+      "description_ko": "Isola 구성의 공급 분류 원문. Standard, Alternate, Alt/Spread 등이며 현재 주문 가능 여부나 생산 보증을 의미하지 않음.",
+      "observed_types": "str",
+      "non_null_records": 1933,
+      "examples": "Alternate | Alt/Spread | Standard"
+    },
+    {
+      "field": "outer_copper_oz",
+      "description_ko": "JLCPCB 공개 적층 옵션의 외층 동박 oz 등급. 완성 동박/원박 기준과 도금 조건은 원문을 확인.",
+      "observed_types": "float",
+      "non_null_records": 26276,
+      "examples": "2.0 | 1.0 | 2.5"
+    },
+    {
+      "field": "plate_contain_copper_label",
+      "description_ko": "JLCPCB API의 plateContainCopper 원문 불리언. 어떤 재료/두께 표기를 수식하는지는 notes와 원본을 확인하며 thickness_mm의 동박 포함 여부로 곧바로 치환하지 않음.",
+      "observed_types": "bool",
+      "non_null_records": 26276,
+      "examples": "False | True"
+    },
+    {
+      "field": "plies",
+      "description_ko": "원문의 plies/Piles 항목에 기재된 적층 매수. 복합 유리 직물 구성은 glass_style 또는 construction과 함께 확인.",
+      "observed_types": "float",
+      "non_null_records": 330,
+      "examples": "1.0 | 2.0 | 3.0"
+    },
+    {
+      "field": "ply",
+      "description_ko": "원문의 ply 항목에 기재된 적층 매수. Panasonic 등에서 사용하며 혼합 직물 구성은 glass_style과 함께 확인.",
+      "observed_types": "float",
+      "non_null_records": 2538,
+      "examples": "1.0 | 2.0 | 3.0"
+    },
+    {
+      "field": "ply_index",
+      "description_ko": "AISLER 적층 그림에서 위에서 아래로 전사한 유전체 행의 1기준 순번. 한 재료의 유리포 매수와 구분.",
+      "observed_types": "int",
+      "non_null_records": 32,
+      "examples": "1 | 2 | 3"
+    },
+    {
+      "field": "public_template_id",
+      "description_ko": "JLCPCB 공개 임피던스 계산기 템플릿의 원본 ID. 템플릿 데이터 연결용이며 제조 주문 번호가 아님.",
+      "observed_types": "str",
+      "non_null_records": 26276,
+      "examples": "bc62939910ad4f298868c5fc2d0c0b3b | f743e16f8120419f9adeb8c65ded58af | 3fc058aa4f8f41608cb294fd4bba33b0"
+    },
+    {
+      "field": "published_df_values",
+      "description_ko": "원문에 슬래시로 나열된 복수 Df 값의 배열. 각 값과 직물·RC·주파수의 대응이 정의되지 않아 단일 Df를 선택하지 않은 경우 사용.",
+      "observed_types": "list",
+      "non_null_records": 5,
+      "examples": "[0.0054,0.0045] | [0.0062,0.0074] | [0.0073,0.0079]"
+    },
+    {
+      "field": "published_dk_values",
+      "description_ko": "원문에 슬래시로 나열된 복수 Dk 값의 배열. 각 값과 직물·RC·주파수의 대응이 정의되지 않아 단일 Dk를 선택하지 않은 경우 사용.",
+      "observed_types": "list",
+      "non_null_records": 5,
+      "examples": "[3.6,3.2] | [3.2,3.1] | [3.7,3.2]"
+    },
+    {
+      "field": "qa_status",
+      "description_ko": "추출 데이터의 검토 상태 표지. independent_table_and_footnote_review는 표와 각주를 독립 재검토했다는 뜻이며 제조사 보증 또는 시뮬레이션 적용 승인이 아님.",
+      "observed_types": "str",
+      "non_null_records": 112,
+      "examples": "independent_table_and_footnote_review"
+    },
+    {
+      "field": "quality_flags",
+      "description_ko": "출처별 전문 검토 태그. JSON 배열인 경우 CSV에서는 JSON 문자열로 보존.",
+      "observed_types": "list",
+      "non_null_records": 421,
+      "examples": "[\"nonpositive_source_dielectric_thickness\",\"individual_ply_thickness_unresolved\",\"requires_fabricator_stackup_confirmation\"] | [\"summary_table_not_construction_specific\"] | [\"summary_table_not_construction_specific\",\"possible_source_df_typo\"]"
+    },
+    {
+      "field": "raw_resin_content",
+      "description_ko": "제조사/계산기에서 받은 수지 함량의 원문 문자열(RC57% 등). 정리된 resin_content_pct와 대조하는 용도.",
+      "observed_types": "str",
+      "non_null_records": 15880,
+      "examples": "RC57% | RC67% | RC54%"
+    },
+    {
+      "field": "raw_supplier_code",
+      "description_ko": "JLCPCB 원본 공급사 코드 또는 명칭(nanya, 南亚, shenyi 등). 정리된 laminate_manufacturer와 구분해 원문 식별값을 보존.",
+      "observed_types": "str",
+      "non_null_records": 26276,
+      "examples": "nanya | 南亚 | shenyi"
+    },
+    {
+      "field": "record_kind",
+      "description_ko": "관측 행의 근거 유형. 계산기 적층층, 공개 적층층, IPC 등급의 계획값, 재료 요약표 등을 구분하며 실제 시편 측정 여부는 이 유형과 notes로 판단.",
+      "observed_types": "str",
+      "non_null_records": 30525,
+      "examples": "published_calculator_stackup_layer | stackup_master_layer_typical_planning_value | published_stackup_layer"
+    },
+    {
+      "field": "reference_standard",
+      "description_ko": "실제 시험법 이름과 별도로 원문에 기재된 표준/규격 식별자.",
+      "observed_types": "str",
+      "non_null_records": 22,
+      "examples": "IPC-TM-650 2.5.5.9 | JPCA TM-001 | IEC-62810"
+    },
+    {
+      "field": "relative_humidity_pct",
+      "description_ko": "해당 자료에 함께 명시된 상대습도(%RH). 측정 환경인지 전처리 환경인지는 원문 조건과 notes 확인.",
+      "observed_types": "int",
+      "non_null_records": 9,
+      "examples": "50"
+    },
+    {
+      "field": "relative_permeability",
+      "description_ko": "상대투자율 μr(무차원). 자성 복합재의 자기적 물성이며 상대유전율 Dk와 다름; μr=1로 임의 대체하지 않음.",
+      "observed_types": "int",
+      "non_null_records": 1,
+      "examples": "6"
+    },
+    {
+      "field": "reported_df",
+      "description_ko": "원문에 기재되었지만 이상값으로 분류해 정상 df 필드에 넣지 않은 숫자. 해당 source_context와 notes에서 오류 표시와 원문을 확인.",
+      "observed_types": "float",
+      "non_null_records": 2,
+      "examples": "3.75 | 3.42"
+    },
+    {
+      "field": "resin_content_text",
+      "description_ko": "수지 함량 조건의 원문 표기. RC50%/70%처럼 복수 조건이거나 숫자 하나에 특정 RC를 배정할 수 없는 경우에도 보존.",
+      "observed_types": "str",
+      "non_null_records": 169,
+      "examples": "RC50%/70% | 55%/70% | 50%"
+    },
+    {
+      "field": "simulation_ready",
+      "description_ko": "일부 PCB 업체 행의 적용 조건 검증 상태를 나타내는 수집자 표지. 현재 채워진 값은 모두 false로, 실제 적층·주파수·제조 조건을 확인해야 한다는 뜻.",
+      "observed_types": "bool",
+      "non_null_records": 30525,
+      "examples": "False"
+    },
+    {
+      "field": "source_collection_record_id",
+      "description_ko": "병렬 수집 단계의 원래 레코드 ID. 최종 record_id와 별개.",
+      "observed_types": "str",
+      "non_null_records": 33346,
+      "examples": "RT0204-QA-001 | RT0204-QA-002 | RT0204-QA-003"
+    },
+    {
+      "field": "source_column_qualifier",
+      "description_ko": "원문 해당 칸의 단위/한정 문구(—, Maximum 등). Typical Value 머리말과 상충할 수 있으므로 notes와 함께 해석.",
+      "observed_types": "str",
+      "non_null_records": 186,
+      "examples": "— | Maximum | — Maximum"
+    },
+    {
+      "field": "source_context",
+      "description_ko": "수치 주변의 원문 행 문맥과 값 문자열을 보존한 텍스트 또는 객체 배열. RC 쌍·측정조건·원문 이상값을 확인하는 용도.",
+      "observed_types": "list,str",
+      "non_null_records": 327,
+      "examples": "[{\"property\":\"dk\",\"context\":\"Dk Permittivity | SPDR | 10 GHz/23°C | —\",\"reported_value\":\"4.38+/-0.08\",\"paired_value_cell\":\"4.38+/-0.08\"},{\"property\":\"df\",\"context\":\"Df Loss Tangent | SPDR | 10 GHz/23°C | —\",\"reported_value\":\"0.0065\",\"paired_value_cell\":\"0.0065\"}] | [{\"property\":\"dk\",\"context\":\"电性能 Electrical | 介电常数 Dk (R/C:55%/70%) Permittivity | 1GHz | 2.5.5.9 | C-24/23/50 | —\",\"reported_value\":\"3.80\",\"paired_value_cell\":\"3.80\\\\3.47\"},{\"property\":\"df\",\"context\":\"电性能 Electrical | 介质损耗 Df (R/C:55%/70%) Loss Tangent | 1GHz | 2.5.5.9 | C-24/23/50 | —\",\"reported_value\":\"0.0032\",\"paired_value_cell\":\"0.0032\\\\0.0023\"}] | [{\"property\":\"dk\",\"context\":\"电性能 Electrical | 介电常数 Dk (R/C:55%/70%) Permittivity | 1GHz | 2.5.5.9 | C-24/23/50 | —\",\"reported_value\":\"3.47\",\"paired_value_cell\":\"3.80\\\\3.47\"},{\"property\":\"df\",\"context\":\"电性能 Electrical | 介质损耗 Df (R/C:55%/70%) Loss Tangent | 1GHz | 2.5.5.9 | C-24/23/50 | —\",\"reported_value\":\"0.0023\",\"paired_value_cell\":\"0.0032\\\\0.0023\"}]"
+    },
+    {
+      "field": "source_manifest_file",
+      "description_ko": "행이 별도 원문 응답 JSON을 참조할 때 그 응답의 요청/출처 manifest 경로.",
+      "observed_types": "str",
+      "non_null_records": 26276,
+      "examples": "originals/JLCPCB/JLCPCB__NP-155F_및_S1000-2M__기술자료__FB240.json"
+    },
+    {
+      "field": "source_method_footnotes",
+      "description_ko": "시험법·시험편·전처리 조건을 포함한 원문 각주 묶음. 각주 번호가 어느 물성과 주파수에 적용되는지 원본 표와 함께 확인.",
+      "observed_types": "str",
+      "non_null_records": 60,
+      "examples": "*1）HeatingRate:10℃/min.(Comp.) *2）800μmthickness. *3）MeasuredbySPDR. *4）Referto''ConditionNote'' *Abovedata areexperimentalresultsandnotguaranteed. Standard Specifications ●CopperCladLaminate ●Prepreg | *1)HeatingRate:10℃/min. *2)Tensile *3)MeasuredbySPDR. *4)Referto“ConditionNote” *5)t0.8mm *Abovedataareexperimentalresultsandnotguaranteed. Standard Specifications | *1)HeatingRate:10℃/min.(Comp.) *2)MeasuredbySPDR. *3)Referto\"ConditionNote\" *4)t0.8mm *Abovedataareexperimentalresultsandnotguaranteed. Standard Specifications"
+    },
+    {
+      "field": "source_pdf_page",
+      "description_ko": "PDF 파일 안에서 첫 페이지를 1로 센 페이지 번호. 문서에 인쇄된 페이지 번호 source_printed_page와 다를 수 있음.",
+      "observed_types": "int",
+      "non_null_records": 112,
+      "examples": "5 | 6 | 7"
+    },
+    {
+      "field": "source_printed_page",
+      "description_ko": "문서 페이지에 인쇄된 페이지 번호. PDF 뷰어의 파일 페이지 번호 source_pdf_page와 구분.",
+      "observed_types": "int",
+      "non_null_records": 112,
+      "examples": "6 | 7 | 8"
+    },
+    {
+      "field": "source_printed_thickness_mm",
+      "description_ko": "원문에 직접 인쇄된 mm 두께를 별도로 보존한 값. inch에서 환산한 thickness_mm와 불일치할 수 있으며 자동 보정하지 않음.",
+      "observed_types": "float",
+      "non_null_records": 4,
+      "examples": "0.135 | 0.254 | 0.508"
+    },
+    {
+      "field": "source_product_text",
+      "description_ko": "철자·괄호·열 제목 등을 정리하기 전의 원문 제품 표기. 정리된 product와 대조해 원문 오류나 별칭을 확인.",
+      "observed_types": "str",
+      "non_null_records": 112,
+      "examples": "MCL-E-795G | MCL-E-795G (Type LH) | MCL-E-705G"
+    },
+    {
+      "field": "source_record",
+      "description_ko": "원문에서 추출해 보존한 표 한 행의 텍스트. 여러 수치가 함께 들어 있으므로 열 제목과 source_location을 대조할 때 사용.",
+      "observed_types": "str",
+      "non_null_records": 2399,
+      "examples": "AD250C™ | 2.50+/-0.04 | 2.52 | 0.0013 | -117 | AD250C™ | 2.50+/-0.04 | 2.52 | 0.0013 | AD255C™ | 2.55+/-0.04 | 2.60 | 0.0013 | -110"
+    },
+    {
+      "field": "source_revision_date",
+      "description_ko": "원본 적층 파일에 기록된 개정 날짜/시각 문자열. 원문 형식으로 보존하며 재료 시험일이나 자료 수집일과 구분.",
+      "observed_types": "str",
+      "non_null_records": 1598,
+      "examples": "10/18/2023 14:39:38 | 10/18/2023 14:37:24 | 10/18/2023 14:35:16"
+    },
+    {
+      "field": "source_specimen_text",
+      "description_ko": "시험편 또는 재료 형태·두께를 밝힌 원문 표 제목/문구. 구체적 시편 두께와 동박 포함 여부 판단 시 참조.",
+      "observed_types": "str",
+      "non_null_records": 60,
+      "examples": "●CopperCladLaminate (t0.4mm) | ●CopperCladLaminate （t0.4mm） | ●Copper Clad Laminate （t0.2mm）"
+    },
+    {
+      "field": "source_thickness_mm",
+      "description_ko": "원문 API/표에 기재된 두께. 음수 등 물리적으로 유효하지 않은 값도 감사용으로 보존. solver 입력에 직접 사용 금지.",
+      "observed_types": "float",
+      "non_null_records": 226,
+      "examples": "-0.0185"
+    },
+    {
+      "field": "specified_thickness_inch",
+      "description_ko": "제조사 구성표의 지정/주문 두께(inch). 같은 행의 명목 두께 nominal_thickness_inch와 별도 수치이며 실제 압착 두께를 자동 의미하지 않음.",
+      "observed_types": "float",
+      "non_null_records": 1522,
+      "examples": "0.002 | 0.0027 | 0.003"
+    },
+    {
+      "field": "stackup_display_name",
+      "description_ko": "JLCPCB 계산기 화면용 적층 이름의 원문. Standard/Special, 완성 두께와 공차 문구 등이 포함될 수 있음.",
+      "observed_types": "str",
+      "non_null_records": 26276,
+      "examples": "JLC081021-3313A(Standard /Finished thickness 1.0mm±10%) | JLC08122H-3313(Standard /Finished thickness 1.21mm±10%) | JLC063021-3313(Special/Finished thickness2.98mm±10%)"
+    },
+    {
+      "field": "stackup_name",
+      "description_ko": "JLCPCB 원문 적층 명칭. 같은 명칭이 여러 템플릿에 있을 수 있어 public_template_id/stackup_id와 함께 사용.",
+      "observed_types": "str",
+      "non_null_records": 26276,
+      "examples": "JLC081021-3313A | JLC08122H-3313 | JLC063021-3313"
+    },
+    {
+      "field": "temperature_c",
+      "description_ko": "해당 유전 특성에 명시된 시험/측정 온도(°C). 별도의 시험편 전처리 온도 conditioning_temperature_c와 구분.",
+      "observed_types": "int",
+      "non_null_records": 151,
+      "examples": "23"
+    },
+    {
+      "field": "template_create_time",
+      "description_ko": "JLCPCB 공개 계산기 템플릿의 원본 생성 시각. 보드 제조일이나 재료 측정일이 아님.",
+      "observed_types": "str",
+      "non_null_records": 26276,
+      "examples": "2023-09-25T06:02:28.000+00:00 | 2023-09-25T06:32:36.000+00:00 | 2024-09-14T01:55:40.000+00:00"
+    },
+    {
+      "field": "thickness_basis",
+      "description_ko": "두께에 동박이 포함되는지의 명시된 기준. nominal_excluding_copper=동박 제외 명목 두께, nominal_including_copper=동박 포함 명목 두께.",
+      "observed_types": "str",
+      "non_null_records": 88,
+      "examples": "nominal_excluding_copper | nominal_including_copper"
+    },
+    {
+      "field": "thickness_before_lamination_mm",
+      "description_ko": "PCBWay 적층표의 압착 전 두께(mm). 압착 후 프리프레그 개별/그룹 두께와 다르며 코어의 동박 제외 기준은 notes 확인.",
+      "observed_types": "float",
+      "non_null_records": 2250,
+      "examples": "0.196 | 1.03 | 0.93"
+    },
+    {
+      "field": "thickness_choices_mm",
+      "description_ko": "같은 표에 제시된 두께 또는 시험편 두께 선택지 목록(mm). 해당 Dk/Df와 각 두께의 개별 대응이 확정되었다는 뜻은 아님.",
+      "observed_types": "list",
+      "non_null_records": 15,
+      "examples": "[0.2,0.4] | [0.4,0.8] | [0.4,0.1]"
+    },
+    {
+      "field": "thickness_inch",
+      "description_ko": "원문 또는 해당 추출 기록의 두께(inch). 명목·시편·동박 포함·압착 상태 중 어느 기준인지는 notes와 다른 두께 필드 확인.",
+      "observed_types": "float",
+      "non_null_records": 3157,
+      "examples": "0.0045 | 0.0055 | 0.0025"
+    },
+    {
+      "field": "thickness_max_mm",
+      "description_ko": "원문에 제시된 두께 범위의 상한(mm). 단일 실측 두께나 자동 선택값으로 사용하지 않음.",
+      "observed_types": "float",
+      "non_null_records": 11,
+      "examples": "0.127"
+    },
+    {
+      "field": "thickness_mil",
+      "description_ko": "원문 또는 해당 추출 기록의 두께(mil; 1 mil=0.001 inch). 공급 상태/시험편/경화 후 기준은 notes 확인.",
+      "observed_types": "float,int",
+      "non_null_records": 75,
+      "examples": "2.5 | 3 | 3.5"
+    },
+    {
+      "field": "thickness_min_mm",
+      "description_ko": "원문에 제시된 두께 범위의 하한(mm). thickness_max_mm와 함께 범위를 해석.",
+      "observed_types": "float",
+      "non_null_records": 11,
+      "examples": "0.0635"
+    },
+    {
+      "field": "thickness_original",
+      "description_ko": "단위까지 포함한 원본 두께 문자열. 정리된 mm 값과 대조할 때 사용하며 원문의 두께 기준은 notes 확인.",
+      "observed_types": "str",
+      "non_null_records": 1598,
+      "examples": "0.5906mil | 4.9213mil | 5.9055mil"
+    },
+    {
+      "field": "thickness_source_unit",
+      "description_ko": "원문의 두께 단위와 필요한 경우 지정/명목 구분 설명. um은 μm이며 정리된 thickness_mm의 단위와 구분.",
+      "observed_types": "str",
+      "non_null_records": 2098,
+      "examples": "um | inch (specified; no separate nominal) | inch"
+    },
+    {
+      "field": "thickness_status",
+      "description_ko": "두께 값의 사용 가능성/원문 이상 표시. source_thickness_mm 및 notes를 함께 확인.",
+      "observed_types": "str",
+      "non_null_records": 226,
+      "examples": "invalid_nonpositive_source_ply_value"
+    },
+    {
+      "field": "thickness_tolerance_inch",
+      "description_ko": "원문 두께 허용편차의 크기(inch). ± 또는 한쪽 방향 공차 여부와 적용 두께는 원본 확인.",
+      "observed_types": "float",
+      "non_null_records": 1522,
+      "examples": "0.0005 | 0.0007 | 0.001"
+    },
+    {
+      "field": "thickness_tolerance_mm",
+      "description_ko": "공개된 두께 허용편차(mm). 보드 전체 두께인지 개별 유전체 두께인지 notes와 source_location 확인.",
+      "observed_types": "float",
+      "non_null_records": 1,
+      "examples": "0.1524"
+    },
+    {
+      "field": "thickness_tolerance_text",
+      "description_ko": "두께 공차를 표시한 원문 문자열. 백분율·mil·mm가 함께 적힐 수 있으며 단위와 적용 기준을 그대로 보존.",
+      "observed_types": "str",
+      "non_null_records": 6,
+      "examples": "+/-.797mil (0.0202mm) | +/-10% (0.436mil,0.0111mm) | +/-10% (0.4mil  ,0.0102mm)"
+    },
+    {
+      "field": "thickness_type",
+      "description_ko": "두께가 어떤 상태/대상을 뜻하는지의 설명. overall thickness as supplied는 공급 상태의 전체 두께이며 개별 수지층 두께와 구분.",
+      "observed_types": "str",
+      "non_null_records": 2,
+      "examples": "overall thickness as supplied"
+    },
+    {
+      "field": "top_copper_thickness_mm",
+      "description_ko": "해당 유전체 항목 위쪽 도체의 원문 두께(mm). JLCPCB API의 topConductorThick 값이며 완성 동박/원박 기준은 원본과 notes 확인.",
+      "observed_types": "float",
+      "non_null_records": 26276,
+      "examples": "0.0 | 0.03 | 0.0152"
+    }
+  ],
+  "storage": {
+    "canonical": "data/observations/index.json and its publisher JSONL partitions",
+    "human_view": "Excel company workbooks; generated views, not authoritative edits",
+    "csv": "On-demand export using scripts/filter_records.py; original field ordering retained",
+    "path_rename": "Only source_file and legacy source_manifest_file references were updated. Field-specific inverse maps reproduce all original observation keys, values and types."
+  }
+}

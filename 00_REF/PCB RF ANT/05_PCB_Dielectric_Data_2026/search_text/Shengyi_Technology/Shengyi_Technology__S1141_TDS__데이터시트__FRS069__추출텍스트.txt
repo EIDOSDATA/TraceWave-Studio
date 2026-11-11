@@ -1,0 +1,100 @@
+ S1141
+ (UL ANSI: FR-4.0) Conventional FR-4
+
+FEATURES                                                            APPLICATIONS
+● DICY cured                                                         Computer, Instrumentation, VCR,
+● UV Blocking/AOI Compatible                                         Communication equipment, electronics,
+● Excellent mechanical process ability                               Game machine, automotive electronics,
+                                                                     Aviation, and etc.
+                                                                     Not suggested for ＞2oz copper, HDI,
+                                                                     and≥12L application.
+                                                                     For applications with CAF requirements,
+                                                                     recommend customer to carry a systematic
+                                                                     assessment of its reliability.
+GENERAL PROPERTIES
+
+       Test Items                    Test Method              Test Condition              Unit         Typical Value
+
+             Tg                  IPC-TM-650 2.4.25D                  DSC                   ℃                 140
+             Td                  IPC-TM-650 2.4.24.6           TGA (5% W.L)                ℃                 310
+            T288                 IPC-TM-650 2.4.24.1                 TMA                  min                  2
+            T260                 IPC-TM-650 2.4.24.1                 TMA                  min                 15
+    Thermal Stress               IPC-TM-650 2.4.13.1         288℃, solder dip               s                >60
+                                  IPC-TM-650 2.4.24               Before Tg             ppm/℃                 65
+      CTE (Z-axis)                IPC-TM-650 2.4.24                After Tg             ppm/℃                300
+                                  IPC-TM-650 2.4.24               50-260℃                  %                  4.5
+   Permittivity (1GHz)           IPC-TM-650 2.5.5.9              C-24/23/50                 -                 4.4
+ Loss Tangent (1GHz)             IPC-TM-650 2.5.5.9              C-24/23/50                 -               0.013
+   Volume Resistivity            IPC-TM-650 2.5.17.1             C-96/35/90             MΩ-cm              5.2×108
+   Surface Resistivity           IPC-TM-650 2.5.17.1             C-96/35/90               MΩ               5.4×107
+     Arc Resistance               IPC-TM-650 2.5.1               D-48/50+D-                 s                120
+                                                                   0.5/23
+  Dielectric Breakdown            IPC-TM-650 2.5.6               D-48/50+D-                kV                >45
+                                                                   0.5/23
+  Peel Strength (1oz)             IPC-TM-650 2.4.8               288℃/10s            N/mm [lb/in]        1.8 [10.28]
+   Flexural Strength              IPC-TM-650 2.4.4                     A                  MPa              600/500
+       (LW/CW)
+   Water Absorption              IPC-TM-650 2.6.2.1                D-24/23                 %                 0.15
+      Flammability                        UL94                   C-48/23/50             Rating               V-0
+             CTI                       IEC60112                        A                Rating              PLC 3
+
+Remarks:    1. Specification sheet: IPC-4101/21, is for your reference only.
+           2. All the typical value is based on the 1.6mm (8*7628) specimen.
+           3. All the typical value listed above is for your reference only, please turn to Shengyi Technology Co., Ltd
+            for detailed information, and all rights from this data sheet are reserved by Shengyi Technology Co., Ltd.
+
+
+
+
+                                                                                       CN-TDS-2101-03-S1141-S0401
+S0401 PREPREG
+ (UL ANSI: FR-4.0) Bonding Prepreg For S1141
+PREPREG PARAMETERS
+                                   Resin content               Cured thickness             Standard size
+          Type
+                                        (%)                         (mm)                    (Roll type)
+                                          71                          0.050
+        106/1037                          74                          0.057                1.260m×150m
+                                          76                          0.062
+                                          64                          0.078
+        1080/1078
+                                          68                          0.090
+        2313/3313                         55                          0.100
+                                                                                           1.260m×300m
+                                          52                          0.120
+           2116                           55                          0.129
+                                          58                          0.140
+                                          42                          0.148
+           1506                                                                            1.260m×150m
+                                          45                          0.160
+                                          43                          0.195
+                                          45                          0.205
+           7628                                                                            1.260m×150m
+                                          48                          0.220
+                                          50                          0.230
+Other type, resin content and size could be available upon request.
+
+HOT PRESSING CYCLE
+  ⚫     The heat-up rate depends on the inner copper or the structure of multilayer PCB.
+  ⚫     Curing time: >30min (170~180℃).
+  ⚫     If you need any more detail information, please turn to Shengyi Technology Co., Ltd.
+
+STORAGE CONDITION
+  ⚫     3 months when stored at < 23℃ and <50% RH.
+  ⚫     6 months when stored at <5℃. Normalize in room temperature for at least 4h before using.
+  ⚫     Beware of moisture, always keep wrapped in damp-proof material. Keeping in normal condition,
+        prepreg might absorb moisture and its bonding strength would be weakened.
+  ⚫     Avoid UV-rays and strong light.
+
+PURCHASING INFORMATION
+      Thickness          Copper foil                                   Standard size
+    0.05mm to            12um to 70        1,020mm ×1,220mm(40”×48”)           915mm ×1,220mm(36”×48”)
+      3.2mm                 um             1,070mm ×1,220mm(42”×48”)
+
+Remarks: Other sheet size and thickness could be available upon request.
+
+
+
+
+                                                                                 CN-TDS-2101-03-S1141-S0401
+

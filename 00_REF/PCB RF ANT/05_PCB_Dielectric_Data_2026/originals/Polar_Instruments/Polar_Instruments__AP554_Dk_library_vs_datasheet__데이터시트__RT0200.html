@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Speedstack library values vs data sheet values</title>
+    <link href="../../style/polar_style_2023.css" rel="stylesheet" type="text/css">
+  </head>
+<body>
+      <table width="1024" style="margin-left:auto;margin-right:auto;">
+		<tr>
+          <td height="50">
+             <a href="https://www.polarinstruments.com/index.html" class="imglnk" target="_top"><img src="../../images/logo_113x36.gif" width="154" height="36" alt=""></a>
+		  </td> 
+          <td height="50">
+               <script>
+                  (function() {
+                    var cx = '004053556566735988367:ql25ugyld2y';
+                    var gcse = document.createElement('script');
+                    gcse.type = 'text/javascript';
+                    gcse.async = true;
+                    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+                        '//www.google.com/cse/cse.js?cx=' + cx;
+                    var s = document.getElementsByTagName('script')[0];
+                    s.parentNode.insertBefore(gcse, s);
+                  })();
+               </script>
+		       <div> 
+		   		  <gcse:searchbox></gcse:searchbox>
+			  </div>
+		   </td>
+         </tr>
+      </table>
+        
+      <!-- start of standard header  -->
+        <script language="JavaScript" type="text/javascript" src="../../style/menubar1.txt"></script> 
+      <!-- end of standard header -->
+	  
+       <table  style="margin-left:auto;margin-right:auto;">
+            <tr> 
+              <td height="30" colspan="2" valign="middle" >
+                <div>
+                  <gcse:searchresults></gcse:searchresults> 
+                </div>
+              </td>
+            </tr>
+        </table>
+       <!-- Start of main body text -->
+       <table width="1024" style="margin-left:auto;margin-right:auto;">
+          <tr class="whiterow">
+            <td height="25" >
+              <div class="float_left">
+                &nbsp;Speedstack library values and why they may differ from published vendor data sheet values</div> 
+              <div class="float_right">
+                Application Note AP554&nbsp;
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="4">
+              <p class="subparaBold">Why are the Dk and Df values in the Speedstack on-line library sometimes different from those on the published vendor data sheet?</p>
+              <p>Polar and our material partners go to great lengths to ensure the quality of material data in the Speedstack on-line libraries. Sometimes customers ask us why the values of dielectric constant (Er / Dk) and loss tangent (tan &delta;/ Df) downloaded differ from those on the public data sheets on the material vendor's website. The most common reason for this tends to be that the vendor data sheet contains generic values for the material type. Often the data sent to us under our partner agreement will have more detail and break down the dielectric constant and loss tangent for the differing glass / resin ratios in the particular prepreg or core thickness. </p>
+              <p>How much can it vary? &#8211; dependent on the glass type, if normal e-glass is used then some of the variation we see over a range of resin contents can be:</p>
+              <p>Data sheet Typical Er = 3.6</p>
+              <p>At 73% resin Er = 3.3</p>
+              <p>At 55% resin Er = 3.7</p>
+              <p>On core materials for a given resin content the Er is the final value as the resin content is locked in and the resin cured. For prepregs the resin content may change slightly during pressing as resin is lost due to flow in the pressing process.</p>
+              <p>The key thing to remember is that for impedance and for Vp, Er only has a second order effect; the impedance and Vp vary as 1/ Square root of Er so any change in dielectric constant will have only minor effects. Using the Monte Carlo analysis in the Si8000m or Si9000e can show you the extent of variation you should expect.</p>
+			  
+              <p class="subparaBold">Glass styles are changing</p>
+              <p>Glass weave is increasingly moving to spread rather than open weave for ease of laser drilling and signal integrity performance. But with spread glass it is harder for the resin to flow through the cloth raising the risk of glass stop. So often you see higher resin contents on spread glass in order to ensure sufficient resin to flow between the traces and circuit features.</p>
+              <p class="centre"><img src="images/ap554_1.jpg" alt="" width="843" height="466" class="graphic_border"/></p>
+              <p class="centre">Fig 1 open weave glass / spread glass</p>
+              <p class="subparaBold">Low Dk glass</p>
+              <p>Some materials are now available with low Dk glass &#8211; this has closer electrical properties to that of the resin systems and the variation of Dk Df with resin content will be reduced.</p>
+			  
+              <p class="subparaBold">If you see a difference between the data sheet typical value?</p>
+              <p>Your first thought should be that this is because of the resin content of the prepreg or core you are using. But if something looks unusual and you are unsure of the value &#8211; please do feel comfortable to contact the material vendor as their technical specialists are able to give you a deeper insight. Any errors in the data can also be reported back to polarcare@polarinstruments.com with your Polarcare contract number and we will also work with the material supplier for an update.</p>
+		    </td>
+          </tr>
+          <tr>
+            <td colspan="4">
+              <p class="subparaBold">Vendor provided data:</p>
+              <p class="subparaBold">Please note that data in Speedstack is provided &quot;as received&quot; from the material partners &#8211; at their request. <br>
+              </p>
+              <p>Our library management team always seek the vendor authority before updating material values or content.</p>
+            </td>
+          </tr>
+        </table>
+        
+        <table width="100%" style="margin-left:auto;margin-right:auto;" cellpadding="0" cellspacing="0" border="0">
+           <tr>
+            <td class="languagebar_blue">
+              <!-- start of language bar -->
+              <script language="JavaScript" type="text/javascript" src="../../style/language_bar.txt"></script> 
+              <!-- end of language bar -->
+            </td>
+          </tr>
+          <tr>
+            <td class="bottomrow_blue">
+              <!-- start of standard footer -->
+              <script LANGUAGE="JavaScript" type="text/javascript" src="../../style/contact_footer.txt"></script> 
+              <!-- end of standard footer -->
+            </td>
+          </tr> 
+      </table>
+  </body>
+</html>

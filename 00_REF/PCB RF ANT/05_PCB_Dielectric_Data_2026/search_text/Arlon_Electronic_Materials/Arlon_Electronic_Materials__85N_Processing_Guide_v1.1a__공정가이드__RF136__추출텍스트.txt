@@ -1,0 +1,134 @@
+85N
+PROCESSING GUIDELINES
+
+
+                      Processing 85N Polyimide Materials
+  There are several areas in which the processing of polyimide multilayers differs significantly
+  from that of handling conventional epoxy materials.
+
+  Key Differences in Processing Polyimide:
+     Prepreg should be thoroughly dried before lamination, preferably in a vacuum at 29+” for at
+      least 8-16 hours.
+     Brown oxide or oxide alternative inner layer treatment followed by thorough rinsing is
+      required for bonding. Old black oxide chemistries will not work.
+     Carefully control the heatup rate during lamination for consistency of flow and thickness
+      yields.
+     High temperature cures are necessary to achieve optimum material properties.
+     Plasma or permanganate etchback/ desmear. Sulfuric/chromic systems will not attack
+      polyimides.
+
+  It has been determined that as little as 0.4% water retained in polyimide prepreg will result in
+  slightly frothy flow and significant deterioration of the quality of inner layer bonding. Although
+  desiccant boxes have been used with varying degrees of success for drying polyimide prepreg,
+  we feel that 16 hours at 29” of vacuum is the best and most reliable way to dry polyimide prepreg
+  for use. Polyimide will eventually start to compete with desiccant chemicals for water unless the
+  desiccant is dried and changed regularly and consistently. Although 85N is slightly less
+  moisture sensitive than older polyimides, these precautions are still valid.
+
+  PREPREG STORAGE CONDITIONS
+  85N prepreg should be stored in a controlled environment and protected from exposure to
+  radiation or ultraviolet light. Prepreg properties will be maintained for three months after
+  receipt if stored below 20ºC (<68ºF) and < 30% relative humidity. Prepreg should be
+  allowed to equilibrate at processing conditions before use and care should be used to prevent
+  moisture condensation. Arlon strongly recommends to vacuum desiccate prepreg for 8-12
+  hours prior to use.
+
+  LAYER PREPARATION
+  The use of brown (sometimes called red or bronze) oxide or newer oxide alternative
+  processes are necessary for bonding polyimide inner layers. The needle like structure of the
+  older black oxide does not survive internal shear forces caused by thermal stress and the
+  bonds fail. Although aesthetically it is considered desirable to have a uniform dark oxide,
+  bond strengths have been verified repeatedly to be higher when a much lighter oxide is
+  used. This may be accomplished by reducing the concentration of oxide chemicals or
+  through the combination of lower bath temperature and shorter times. Oxide weights of 0.1 to
+  0.2 mg/cm2 are typical.
+Rinsing after brown oxide treatment is critical. Polyimides are sensitive to alkalis and will tend to
+hold onto excess alkali after oxiding. Alkali will also hide in the oxide’s nodular structure. Hot
+water spray rinsing to remove the excess alkali both from the polyimide surface and from within
+the oxide itself is considered essential. Inadequate rinsing can be expected to cause serious
+inner layer bonding problems and possible delamination during subsequent thermal processing.
+Most of the newer oxide alternatives work well with polyimide materials. Achieving a rough
+copper surface at the microetch step is key to optimizing adhesion. Layers should be baked at
+110 to 125°C just prior to lamination.
+
+LAMINATION
+There is a wide variety of permutations of temperature, pressure and time that can be combined
+to make what is known as a "lamination cycle”. These are varied to suit the capabilities and
+needs of the PWB producer. Pressure, temperature and time may vary depending on the
+available equipment, panel size and complexity and other factors. The following cycle is typical
+of what will be expected to yield good results. A heatup rate of 8-12°F/min. (4-6°C/min.) between
+100°C and150°C (210°F and 300°F) is recommended. The use of vacuum assist is highly
+encouraged.
+
+A minimum cure of 2 hours at 425-430°F is recommended to achieve full resin cure. It is
+preferred to complete the cure in the press although post cures has been used. The actual time
+required will be dependent on the laminate thickness, the number of laminates in the
+opening, the weight of copper in the laminate (especially true for heavy copper power or ground
+planes or metal core boards, etc.
+There is no single correct pressure to use in laminating polyimide multilayers. It has been
+determined that the following are good starting points. If it is necessary to fill heavy copper,
+somewhat higher pressures might be of some help in addition to selection of a prepreg with
+adequate surface resin.
+                         Polyimide Lamination Pressures
+DRILLING
+Starting point drilling recommendations for polyimide are as follows (with typical drill sizes given
+for reference purposes):
+
+                                    Drilling Parameters
+
+
+
+
+A separate guide is available containing tables with detailed drilling parameters.
+
+
+HOLE PREPARATION
+
+Hole cleaning is strongly recommended with all resin systems used on multilayer printed wiring
+boards to assure reliable interconnection. A post-drill bake of 110-120ºC for 2 hours is
+recommended prior to desmear/etchback operations. Plasma hole cleaning is the preferred
+method, using a cycle suitable for polyimide. As a starting point, chemical parameters and dwell
+times appropriate for high glass transition temperature systems should be used for desmear and
+adjusted based on effectiveness. Etchback/Desmear should be optimized through careful study
+of hole wall quality pre & post processing.
+
+Desmear or etchback using a 60% carbon tetrafluoride (Freon) / 40% dry oxygen plasma. Set
+plasma unit to 60% of power capability for 25 to 30 minutes. Time will vary depending on gas
+flow, temperature, hole sizes and quantity, etc. Follow as necessary by 2-3 minutes in
+ammonium bifluoride to remove exposed glass fibers.
+
+Another hole preparation method is alkaline permanganate. As a preparation for plating of holes
+in polyimide PWBs, permanganate systems are reported to give good results and are available
+from several suppliers of PWB chemicals.
+
+COPPER PLATING
+Standard plating processes and several direct metallization systems have been used. To assure
+the highest standards of plated through reliability, copper plating thickness should be 0.0015” at
+the center of the plated through hole, for high layer count PWBs.
+METAL FINISHING
+Traditional metal finishes have been used without issue including reflowed tin-lead, hot air leveled
+solder, electroless and electrolytic nickel, tin-palladium, tin-silver, immersion tin, and various types
+of gold plating. A bake at 110-120ºC for 2 hours prior to thermal excursions, such as those
+encountered during hot air solder leveling, is considered prudent. Bake times and temperatures
+may require adjustment depending on local conditions.
+
+SOLDER MASK
+Liquid photo-imageable solder masks, as well as screened-on thermal cured epoxy solder
+masks may be used on 85N and 85NT based PWBs without special surface preparation.
+
+PROFILING/ROUTING
+Either scoring or routing may be used with polyimide materials. A carbide, multifluted router bit
+is recommended for the best edge quality. Tool wear, as well as edge quality, should be
+monitored to avoid cracking or fracturing the edges. High spindle speeds and reduced in-feeds
+may be necessary to improve router yield. Rigid phenolic backer board should be used to
+minimize burring. Contact your router supplier for additional recommendations. Scoring, using a
+30ºV -pitch blade, is a cost effective technique for many commercial applications.
+
+PRINTED WIRING ASSEMBLY
+Standard through hole and surface mount assembly processes are compatible with 85N.
+Pre-baking boards is recommended for 6 hours at 110-120ºC, although longer times may be
+necessary depending on overall thickness or if boards have been exposed to moisture or
+humidity for long periods of time. Fixturing may be required for thin boards or in-panel
+soldering to minimize warping. PWBs should be removed from panels by sawing or routing;
+shearing will induce warp and increase the possibility of cracked ceramic components.
+

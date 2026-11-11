@@ -1,0 +1,440 @@
+Technical Data Sheet                                Imagecure IMC6000 Series
+
+
+                                                         From the Imagecure family of
+IMC6000 Series                                           Photoimageable Solder masks
+
+
+
+1. Description
+Imagecure IMC6000 LED S e r i e s is a two component thermal hardening liquid photoimageable solder resist /
+notation ink that dries by solvent evaporation to give a film that can be processed in aqueous potassium or
+sodium carbonate solution. IMC6000 LED Series has been formulated for LED applications.
+
+This Technical Information Leaflet (TIL) and the relevant Material Safety Data Sheet (MSDS) should be
+read carefully prior to using this product.
+
+
+
+2. Product features
+      RoHS & WEEE Directive Compliant
+      Excellent adhesion to all clean copper surfaces
+      It is recommended that Imagecure IMC6000 white LPISM is tested with intended ENIG chemistry
+       and then checked after reflow soldering prior to final approval
+
+
+
+
+    3. Product Range
+
+
+IMC6001R        XV501T MT1 LED          Matt White Screen Resist         0.90Kg
+IMC6002R        XV501T PL3 LED          White Screen Resist              0.90Kg
+IMC6000H        XV501T LED              Clear Screen Hardener            0.10Kg
+
+CDSN4059        XZ107                   Thinner                          5.00L
+CDSN4008        XZ46                    Screen Cleaner                   5.00L
+
+
+
+
+                                                                                                     T311 Version 1
+                                                                                                     November 2015
+                                                                                                          Page 1/8
+Technical Data Sheet                                   Imagecure IMC6000 Series
+
+
+4. General Handling
+
+
+   4.1 Storage and Shipping
+   When stored in sealed containers, in a cool place (20ºC / 68ºF), away from sources of direct heat and
+   sunlight, Imagecure IMC6000 LED Series Resists & Hardeners have a shelf life of 18 months.
+
+
+   Imagecure IMC6000 LED Series can withstand higher temperatures (40 - 60ºC / 104 - 140ºF), whilst in transit
+   for up to periods of 1 month without any detrimental effect on its performance.
+
+
+   4.2 Waste disposal
+   Care should be exercised in the disposal of printing ink waste. This should be carried out in accordance
+   with good industrial practice, observing all the appropriate regulations and guidelines.
+
+   For more specific handling advice refer to the detailed Safety Data Sheet (SDS), supplied by your local
+   Sun Chemical Circuits representative.
+
+
+
+5. Application / Processing Conditions
+
+
+   5.1 Mixing
+   The a p p r o p r i a t e resist and hardener components must be mixed together in the correct mixing
+   ratio of 9:1 w/w before use. The hardener component must be added to the resist component.
+
+   It is recommended that attention be paid to ensuring that any resist at the sides of the container and on
+   the bottom is completely mixed into the main body of the resist. After the mixing operation is completed
+   it is recommended to allow the mixed and thinned pack to debubble for ~ 30 min. before use.
+
+   Mixed pot life at 23º± 2ºC (70 - 77ºF) will be approximately 72 hours. Always ensure the lid is replaced
+   on the container to avoid any contamination and excessive solvent evaporation.
+
+
+   5.2 Thinning
+   Imagecure IMC6000 LED Series is supplied ready to use. However, should thinning be necessary, a
+   maximum of 2% w/w Imagecure Thinner XZ107 may be used.
+
+   N.B. The mixed resist should be stirred well before use.
+
+
+
+
+                                                                                                           T311 Version 1
+                                                                                                           November 2015
+                                                                                                                Page 2/8
+Technical Data Sheet                                    Imagecure IMC6000 Series
+
+5.3 Pre-Clean
+Ensure that all copper surfaces are completely clean, tarnish free and dry prior to applying Imagecure.
+
+Mechanical pre-cleaning is recommended as follows: -
+
+Brushing     280 - 400 grit silicon carbide brushes are recommended having a footprint on the copper
+             of 8 - 15mm. (0.3 - 0.6 in). The water rinse and heater sections should be capable of
+             thoroughly rinsing and drying the panels such that no water is left in the holes or between
+             closely spaced conductors and that moisture or tarnish is not present on the freshly
+             brushed panels.
+
+              It is important that each brush is regularly checked and dressed as necessary to ensure
+              optimum efficiency during use.
+
+              Please note that Nylon brushes of 600 - 800 grit can also be used.
+
+Pumice       Pumice or Aluminium oxide slurry of between 12 - 18% is recommended with an optimum
+              of 15%. The water rinse and heater sections must be capable of rinsing and drying the
+              panels such that residual pumice particles are completely removed and that no water is
+              left in the holes or between closely spaced conductors and that moisture or tarnish is not
+              present on the freshly cleaned panels.
+
+              For panels that are badly oxidised and tarnished then a micro-etch prior to mechanical
+              pre-cleaning is recommended. The micro-etch should be capable of removing any oxide
+              or tarnish staining and of thoroughly rinsing and drying the panel before being
+              mechanically cleaned.
+
+Microetch    Where panels have close track/gap configurations, which may not be suitable for
+             mechanical precleaning, the use of a “deep etching“ microetch chemistry is
+             recommended. It is recommended that each user ensures that the Imagecure product is
+             compatible with the particular micro-etch used and all subsequent metal finishing
+             processes.
+
+Surface roughness figures of:-
+
+            Ra              0.2 - 0.4µm.
+            R delta q       4 - 9º
+
+would be considered to be optimum values for copper surfaces pre-cleaned as above. A minimum Ra
+of 0.2µm. with an R delta q value of >4º is recommended (optimum R delta q values 7 - 9º).
+
+Please refer to separate technical document on surface roughness for a fuller explanation of the above
+roughness values.
+
+
+NOTE. It is recommended that all freshly cleaned panels are coated with Imagecure IMC6000 LED Series
+within a maximum time of 2 - 4 hours. The actual maximum time will vary depending upon ambient
+temperature and humidity. Panels left longer than 4 hours before coating should be pre-cleaned again.
+
+
+
+
+                                                                                                           T311 Version 1
+                                                                                                           November 2015
+                                                                                                                Page 3/8
+Technical Data Sheet                                    Imagecure IMC6000 Series
+5.4     Application
+The Imagecure IMC6000 LED series can be used with vertical and horizontal screen print machines.
+                                                                                        0
+Typical polyester meshes will be 36/90 – 43/80cm (90/90 – 125/80inch) with a 65 – 70 shore squeegee
+with a square edge profile. The optimum mesh for printing is 43/80cm (110/80inch) and this will be
+suitable for most 18µm and 35µm base copper board designs.
+
+For boards with 70µm base copper, or for boards requiring a specific withstand voltage, the use of
+meshes with lower mesh counts 32/100 – 36/90cm (80/100 – 90/90inch) may be necessary.
+
+Print tests with subsequent micro-sections are recommended to ensure adequate track encapsulation.
+
+When used as a legend ink 100 – 120T/cm (255 – 305T/inch) polyester mesh is recommended. The
+legend ink can be applied to fully processed Imagecure & Imagecure panels prior to final cure. The ink
+may be applied all over PCB’s or as “oversize” lettering and then photoimaged / developed to
+accurately achieve the required design.
+
+Screens must be cleaned, thoroughly dried and free from screen cleaner and ink residues before use.
+
+
+5.5     Washing Up
+Screen Cleaner XZ46 is recommended for washing up. Alternative cleaners and screenwashes are
+available to suit customers’ particular requirements. Your local Sun Chemical Circuits representative will
+be pleased to advise on product selection.
+
+
+5.6     Pre-Dry
+Good drying of the printed film is important, so ovens with good temperature profiles and extraction are
+necessary. Specific drying parameters (time and temperature) will be dependent upon the specific oven
+used as well as the thermal mass and quantity of the panels being dried.
+
+It is recommended that printed panels be allowed to debubble for approximately 5 – 10 minutes in still
+air at ambient temperature prior to being placed in an oven.
+
+Air flow speeds of 1 – 2 m/sec. are recommended to achieve sufficient removal of the volatile solvent.
+Drying is less efficient as the air velocity drops below 0.5 m/sec.
+                                                                                                0
+For vertical screen print systems with a vertical drying oven a set air temperature of 75 – 80 C (167 –
+    0                                                         0       0
+176 F) for 30 – 45 minutes is recommended. Optimum 80 C (176 F) for 45 minutes. Drying will be
+dependent on board thickness and Imagecure thickness as printed, as well as air flow in the oven.
+
+For printing processes that only print one side at a time the following is recommended for box ovens:-
+                             0              0                                 0             0
+Side 1: 10 minutes at 75 – 80 C (167 – 176 F) Side 2: 35 minutes at 75 – 80 C (167 – 176 F)
+                                                                                  0    0
+When used as a legend ink, the recommended pre-dry is 10 – 15 minutes at 80 C (176 F).
+
+Allow an adequate gap between panels. Spacing of 25 – 40mm (1 – 1.6inch) is recommended to
+ensure sufficient air flow between panels.
+
+After drying it is recommended that all panels be exposed and developed within 24 hours. The
+maximum storage time of boards before exposure/development is 72 hours. However it is
+recommended that boards be stored in yellow light conditions with controlled temperature and humidity.
+If the humidity increases above 60% RH then the storage time of the dried panels will be reduced.
+
+
+
+
+                                                                                                             T311 Version 1
+                                                                                                             November 2015
+                                                                                                                  Page 4/8
+Technical Data Sheet                                     Imagecure IMC6000 Series
+
+5.7 Exposure
+All Imagecure IMC6000 LED Series systems are negative working and can be used with all exposure units
+using ferric doped and Gallium doped lamps.
+
+Ferric & Ga-doped lamps with power ratings of 5 - 10kW are recommended. It is recommended that to
+remove the infra-red radiation the unit is either cooled or has an infra-red filter to keep the temperature
+of the artwork < 30ºC (86°F). Optimum working temperature 22 - 25ºC (72 - 77°F).
+
+Exposure readings of 900 - 1200 mJ/cm² are typical*.
+
+* Exposure readings taken with an IL390B radiometer from the International Light Co. Inc.
+
+Stouffer values of 7 - 11 (solid resist) using a 21 step wedge are typical. For selective Ni/ Au and or
+immersion Sn an exposure level of min. 10 (solid resist) is recommended.
+
+The artwork should have a Dmax > 4.0 and a Dmin < 0.15.
+
+
+5.8 Development
+Imagecure IMC6000 LED Series will readily develop in either potassium or sodium carbonate solutions.
+The recommended carbonate concentration is 10 ± 2g./lit.
+
+The working pH range is 11.3 to 10.8 for aqueous carbonate solutions. To ensure the quality of
+development it is recommended that the pH of the developer solution does not drop below 10.8. At a
+pH <10.6 the efficiency of the developer solution may drop due to the increased loading of
+photopolymer.
+
+Recommended temperature range is 30 - 40ºC (86 - 104°F), optimum 35ºC (95°F).
+
+Spray pressures between 2 - 3 bar (30 - 45 PSI), optimum 2.5 bar (37.5 PSI).
+
+Dwell times in the developing chambers of 45 - 80 seconds, optimum 60 seconds. For boards with
+small via holes (0.2 - 0.4mm) or with laminate thickness > 3mm, longer dwell times may be necessary
+to ensure complete development of the holes.
+
+Water rinse pressures to be 2 -3 bar (30 - 45 PSI), with operating temperatures 15 - 30ºC (59 - 86°F).
+
+It is recommended that hard water (~200 ppm dissolved ions) be used where possible to give good
+rinsing, followed by a final rinse in deionised water.
+
+Anti-foams will need to be added to the aqueous developing chambers to avoid foaming. The amount of
+anti-foam to be added may vary depending upon the type of anti-foam used, the size and number of
+developing chambers and spray bars, spray pressures and the loading of developed resist. In all cases
+it is recommended that the minimum amount of anti-foam be added.
+
+
+
+
+                                                                                                              T311 Version 1
+                                                                                                              November 2015
+                                                                                                                   Page 5/8
+Technical Data Sheet                                        Imagecure IMC6000 Series
+
+
+ 5.9      UV Bump
+ It is not recommended to UV bump the IMC6000 LED Series of products.
+
+
+ 5.10      Post Bake
+ It is important to ensure that all ovens have an independent thermal profile taken, as the set air
+ temperature is not always reliable and the air flow in the oven or the door seals may give rise to either
+ hot or cold spots.
+
+ The recommended bake cycle is 150 - 155ºC (302 - 311°F) for 60 - 90 min. Optimum is 155ºC for 60
+ min. Bake times should be taken when oven temperature reaches the pre-set point. Where a ramped
+                                                    0                   0                   0
+ post-bake is necessary, the recommended cycle is 80 C/60 minutes + 120 C/30 minutes + 150 C/60
+ minutes.
+
+ Sufficient air flow is necessary to ensure a consistent temperature gradient in the oven as well as a
+ uniform degree of cure for the solder resist. With respect to batch ovens boards should be racked 25 -
+ 40mm. (1.0 - 1.6 in.) apart.
+
+ All exhaust ducting and extraction fans should be adequately insulated to avoid any volatile emissions
+ condensing around the oven area.
+
+
+ 5.11      Notation / Legend Printing
+ When used as a solder mask, Imagecure IMC6000 LED Series is compatible with a wide range of UV
+ curing, thermal and photoimageable notation inks.
+
+ Tests should be conducted if applying Thermal Curing Notation Inks prior to post bake to increase
+ productivity.
+
+ A short post bake of 10 – 15 minutes at 150°C (302°F) may be required in some cases.
+
+
+ 5.12     Processing Through ENIG Plating
+ It is recommended that when processing panels coated with Imagecure 6000 series inks through ENIG that
+ the level of contamination in the water rinse section immediately after the gold plating bath is no greater than
+ 50µS.
+
+
+ 6. Health and Safety
+ Detailed material safety data sheets will be supplied by your local Sun Chemical Circuits representative.
+
+ The products detailed hereon have been tested in accordance with, and meet the requirements of,
+ the RoHS Directive 2002/96/EC and 2011/65/EU, and the European Directive 2003/11/EC,
+ regarding the presence of the metals - Pb (Lead / Lead compounds), Hexavalent Chromium,
+ Cd (Cadmium), Hg (Mercury), and Poly Brominated Flame Retardants.
+
+ Conforms to Regulation (EC) No. 1907/2006 (REACH), Annex II – Europe.
+
+ As the world’s foremost producer of inks, pigments and colour technology, Sun Chemical is leading
+ our industry in developing and producing products which minimise our impact – and our customers’
+ impact – on the environment and striving to maximise the use of renewable resources. We consider it
+ our responsibility to be involved in the communities in which we live and work and to offer direction in
+ meeting today’s needs without compromising the ability of future generations to meet theirs.
+
+
+
+                                                                                                                    T311 Version 1
+                                                                                                                    November 2015
+                                                                                                                         Page 6/8
+Technical Data Sheet                                          Imagecure IMC6000 Series
+
+ 7. Film Performance/ Technical Specification
+
+    7.1 Physical Properties of Imagecure IMC6000 LED Series
+
+    Pack Code               Viscosity (PaS)*              S.G.      Flash Point                    Non-Volatile Content
+                                                                        0       0
+    IMC6001R                18.0 – 22.0                   1.40      >100 C (>212 F)                70 – 73%
+                                                                        0       0
+    IMC6002R                18.0 – 22.0                   1.40      >100 C (>212 F)                70 – 73%
+                                                                        0       0
+    IMC6000H                4.5 – 6.5                     1.16      >100 C (>212 F)                93 – 96%
+
+ *Viscosity measured at 25°C (77°F). Please note viscosity can vary greatly depending on ink temperature,
+  volume of ink tested, type of viscometer used and the test method
+
+    Volatile Organic Content (VOC)                                                                       400 - 430g/L
+
+    7.2 Properties of Imagecure IMC6000LED Series Cured Film
+
+    Solder Resistance                            MIL-PRF-55110F                        30 secs @ 2880C (5500F)
+                                                 IPC SM840E                            10 secs @ 2600C (5000F)
+    Resistance to Fluxes                         IPC SM840E                            Pass
+    Hydrolytic Stability                         IPC SM840E Class H                    Pass
+    Solvent, Cleaning, Flux Resistance           IPC SM840E Class H                    Pass
+    Fungal Resistance                            IPC SM840E Class H                    Pass
+    Abrasion Pencil Hardness                     IPC SM840E Class H                    Pass
+    Abrasion Taber Method                        IPC SM840E Class H                    Pass
+    Adhesion (Copper)                            IPC SM840E Class H                    Pass
+    Adhesion (Tin / Lead)                        IPC SM840E Class H                    Pass
+    Dielectric Strength                          IPC SM840E Class H                    150kV/mm
+    (50Hz.) 20-S-Value                           DIN53481
+
+    Electroless Ni/Au Plating                                                                Pass
+    It is recommended that when processing panels coated with Imagecure 6000 series inks through ENIG that the level of
+    contamination in the water rinse section immediately after the gold plating bath is no greater than 50µS.
+
+
+    Chemical Resistance                          IPA                                   > 1 hour
+                                                 1,1,1 Trichloroethane                 > 1 hour
+                                                 MEK                                   > 1 hour
+                                                 Methylene Chloride                    > 1 hour
+                                                 Alkaline Detergent                    > 1 hour
+                                                 Fluxes                                > 1 hour
+
+    Thermal Shock                                IPC SM840E Class H                    Pass
+                                                 MIL-PRF-55110F                        Pass
+                                                 MIL-STD-202G                          Pass
+
+    Flammability                                                                       No Status
+
+    Ionic Contamination                          MIL-PRF-55110F                        <0.3µg. NaCl/cm2
+                                                                                       Using Alpha Ionograph 500M
+
+    Bellcore                                     TR-NWT000078                          Pass
+    Insulation Resistance                        IPC SM840E Classes T & H              Pass
+    Moisture & Insulation Resistance             IPC SM840E Classes T & H              Pass
+    ElectroMigration                             IPC SM840E Classes T & H              Pass
+    Siemens E-Corrosion                          SN57030                               Pass
+
+     Comparative Tacking Index                   IEC112                                >450V
+     (FR4 Laminate – CTI Rated 500V)
+
+
+
+
+                                                                                                                      T311 Version 1
+                                                                                                                      November 2015
+                                                                                                                           Page 7/8
+Technical Data Sheet                                                  Imagecure IMC6000 Series
+
+
+ 8. Disclaimers
+ This information has been carefully compiled from experience gained in field conditions and extensive
+ laboratory testing. However the products’ performance and its’ suitability for the customers’ purpose depend
+ on the particular conditions of use and the material being printed. We recommend that customers satisfy
+ themselves that each product meets their requirements in all respects before commencing a production run.
+ Since we cannot anticipate or control the conditions under which our products are used, it is impossible to
+ guarantee their performance. All sales are also subject to our standard terms and conditions.
+
+
+
+ 9. Technical Assistance / Contacts
+ Sun Chemical Circuits are an international company, and as such can offer technical, engineering and sales
+ support to our customers worldwide.
+
+
+ For further information regarding this product, or any of our extensive range of materials for PCB
+ fabrication, please contact your local Sun Chemical team or visit the Technical Help Desk at website:
+ http://www.sunchemicalhelpdesk.com
+
+
+
+
+ Our Products are intended for sale to professional users. The information herein is general information designed to assist customers in
+ determining the suitability of our products for their applications. All recommendations are made without guarantee since the
+ application and conditions of use are beyond our control. We recommend that customers satisfy themselves that each product meets
+ their requirements in all respects before commencing a print run. There is no implied warranty of merchantability or fitness for purpose
+ of the product or products described herein. In no event shall Sun Chemical be liable for damages of any nature arising out of the use
+ or reliance upon this information. Modifications of the product for reasons of improvements might be made without further notice.
+
+ Norton Hill, Midsomer Norton Bath, BA3 4RT, England. Telephone: (44) 1761 414471 Fax: (44) 1761 416609
+
+
+
+                                                                                                                                     T311 Version 1
+                                                                                                                                     November 2015
+                                                                                                                                          Page 8/8
+

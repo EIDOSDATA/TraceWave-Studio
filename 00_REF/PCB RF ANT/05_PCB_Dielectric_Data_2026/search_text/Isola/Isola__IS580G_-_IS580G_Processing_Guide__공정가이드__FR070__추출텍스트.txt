@@ -1,0 +1,400 @@
+                                                                                                             IS580G
+                                                                            Halogen-free, Very Low Loss Material
+
+
+
+Processing Guide
+The processing guidelines contained in this document were developed through in-house testing and field experience. However, the
+guidelines should be considered starting points that may require further adjustment. Read the following review of processes for
+applicability to your particular Printed Wiring Board (PWB) fabrication environment. The suggestions contained herein cannot
+account for all possible board designs or processing environments. Isola can and will assist with this process, but the fabricator, not
+Isola, is ultimately responsible for their process and the end results.
+
+Fabricators should verify that PWBs made using these suggestions meet all applicable quality and performance
+requirements.
+
+
+Part 1: Prepreg Storage and Handling
+Isola Group’s prepreg bonding sheets for use in multilayer printed circuit board applications are manufactured to specifications that
+include physical properties, electrical properties and processing characteristics relative to the laminating application. Handling and
+storage factors have an important influence on the desired performance of the prepreg. Some parameters are affected by the
+environment in which prepregs are stored. They can also deteriorate over extended periods of storage. The prepreg received by
+the customer is a glass fabric that has been impregnated with a stated quantity of low volatile, partially polymerized resin. The
+resin is tack free but somewhat brittle. Many lamination problems arise from resin loss off the fabric or damage to the woven glass
+due to improper handling. The fabric used is based on the order and supplies the required thickness. In most cases the amount of
+resin carried by the fabric increases as the fabric thickness decreases.
+
+Handling Suggestions
+Handle all prepreg using clean gloves. Use sharp, precision equipment when cutting or paneling prepreg. Treat all prepreg as being
+very fragile. Use extreme care when handling very high resin content prepreg (glass fabrics like 1078 and finer).
+
+Storage Suggestions
+Upon receipt, all prepreg should be immediately moved from the receiving area to a controlled environment. Material should be
+kept in original packaging until ready to use. All prepreg should be used as soon as possible. A First-In-First-Out (FIFO) inventory
+management system should be used. Do not stack heavy objects on top of the prepreg. High pressure can result in damage and
+resin pull off.
+
+If not handled properly, IS580G prepreg will absorb moisture, which will lead to depressed Tg and cure and affect flow in the press.
+If extended storage is required, separate facilities should be reserved with appropriate environmental control. Prepreg should be
+stored at ≤ 23ºC and below 50% humidity. Prepreg packages should be allowed to equilibrate to layup room conditions before
+opening to prevent moisture condensation on the prepreg.
+
+Stabilization
+Stabilization time will depend on storage temperature. In cases where storage temperature is significantly below room
+temperature, keep prepreg in package or plastic wrapping during the stabilization period to prevent moisture condensation. Once
+the original packaging is opened, the prepreg should be used immediately. Remaining prepreg should be resealed in the original
+packaging with fresh desiccant, do not vacuum seal IS580G prepreg. Storage should be in the absence of catalytic environments
+such as high radiation levels or intense ultraviolet light.
+
+
+
+
+Part 2: Innerlayer Preparation
+Isola Group’s IS580G laminates are fully cured and ready for processing. It has been the experience of most fabricators that stress
+
+
+ https://www.isola-group.com/pcb-laminates-
+              prepreg/is580g/                     Last Updated November 09, 2026          © 2021, Isola Group, All rights reserved.
+                                                                                                                            IS580G
+                                                                                Halogen-free, Very Low Loss Material
+
+
+relief bake cycles are not effective in reducing any movement of high-performance laminates such as IS580G. Therefore, it is
+suggested that the movement of unbaked laminate be characterized, and the appropriate artwork compensation factors are used.
+
+Dimensional Stability
+The net dimensional movement of laminate after the etch, oxide and lamination processes is typically shrinkage. This shrinkage is
+due to the relaxation of stresses that were induced when the laminate was pressed as well as shrinkage contribution from the resin
+system. Most of the movement will be observed in the grain direction of the laminate.
+
+There are situations that have been known to alter the proportion of shrinkage in grain versus fill direction in some board shops.
+These include autoclave pressing and cross-plying laminate grain direction to that of prepreg. While both of these practices have
+their advantages, material movement must be uniquely characterized. FR408HR artwork compensation factors can be used as a
+starting point or use those listed in Table 1. This table assumes that laminate and prepreg grain directions are oriented along the
+same dimension. Shrinkage factors differ based on the process and processing equipment used in manufacturing.
+
+
+
+ Table 1: Initial Artwork Compensation Factors Base Thickness Configuration
+
+               Base Thickness                          Configuration                          Direction                               Comp (in/in)
+
+                   ≤ 0.005″                             Signal/Signal                            Warp                               0.0007-0.0009"
+
+                       "                                      "                                   Fill                              0.0001-0.0003"
+
+                       "                                Signal/Ground                            Warp                               0.0005-0.0007"
+
+                       "                                      "                                   Fill                              0.0001-0.0003"
+
+                       "                               Ground/Ground                             Warp                               0.0002-0.0004"
+
+                       "                                      "                                   Fill                              0.0000-0.0002"
+
+                 0.006-0.009"                           Signal/Signal                            Warp                               0.0005-0.0007"
+
+                       "                                      "                                   Fill                              0.0001-0.0003"
+
+                       "                                Signal/Ground                            Warp                               0.0003-0.0005"
+
+                       "                                      "                                   Fill                              0.0000-0.0002"
+
+                       "                               Ground/Ground                             Warp                               0.0000-0.0002"
+
+                       "                                      "                                   Fill                              0.0000-0.0002"
+
+                 0.010-0.014"                           Signal/Signal                            Warp                               0.0002-0.0004"
+
+                       "                                      "                                   Fill                              0.0002-0.0004"
+
+                       "                                Signal/Ground                            Warp                               0.0001-0.0003"
+
+                       "                                      "                                   Fill                              0.0001-0.0003"
+
+                       "                               Ground/Ground                             Warp                               0.0001-0.0003"
+
+                       "                                      "                                   Fill                              0.0000-0.0002"
+
+ Table 1 (for reference) illustrates the suggested approach to characterizing laminate movement and provides approximate artwork compensation factors.
+
+
+Imaging and Etching
+IS580G laminates are compatible with all industry standard image resists and copper etchants. Bond Enhancement Oxide
+alternative chemistries have been used successfully in fabricating IS580G multilayer boards to date. They are the only bond
+enhancement process recommended for lead-free applications. Reduced black oxide is not recommended and is more design and
+process sensitive, as well as being less thermally stable. Users should make sure the oxide or oxide alternative coating exhibits a
+consistent and uniform color.
+
+For conveyorized oxide alternatives, the dryer should be capable of removing all moisture from the inner layer surface.
+
+However, drying of layers for 120 minutes minimum @ 110°C (230°F) or higher is required for boards to be subjected
+to “Lead-Free” processes. Drying in racks is preferred.
+
+
+
+
+ https://www.isola-group.com/pcb-laminates-
+              prepreg/is580g/                         Last Updated November 09, 2026                     © 2021, Isola Group, All rights reserved.
+                                                                                                                              IS580G
+                                                                                     Halogen-free, Very Low Loss Material
+
+
+Wet cores interfere with the curing of prepreg, leading to low Tg values and degraded performance. Users need to verify the
+effectiveness of their process to achieve dry cores. It is generally suggested that post oxide baking be performed vertically, in
+racks.
+
+
+
+
+Part 3: Lamination
+The amount of time at cure temperature and the required pressure will be a function of board design. Thinner boards and
+lightweight copper designs can be run at the lower end of the ranges. Low rates of rise work better when using light weight copper
+and thinner board designs.
+
+Thicker board designs may require longer cure times. Heavy weight copper or hard to fill designs with significant low-pressure
+areas should use a higher-pressure setting. Faster heat ramps lower the minimum viscosity and improve resin fill and flow but
+requires that full pressure application occur before the product reaches the flow temperature. Slower heat ramps may not achieve
+the required minimum melt viscosity to properly fill the copper pattern.
+
+Sequential Lamination
+Sub-assemblies must be baked prior to performing the secondary lamination. Water will interfere with the curing of the IS580G
+resin system. Sub-assemblies require much longer baking, particularly when stored in open warehouse environment. Baking times
+can range from 3-24 hours at 110-180°C (230-356°F). Extended baking should be performed just before the inner layer bond
+treatment process. Post bond treatment bake must be adequate to remove all surface moisture. Consult with an Isola Technical
+Expert for recommendations.
+
+Removal of IS580G flash should be performed by routing rather than shearing to minimize crazing along the panel edges.
+
+
+   Process                                    Recommendation
+
+   Vacuum Time                                >10 minutes (no pressure, product on risers)
+
+   Curing Time/Temperature                    >100 minutes at or above 210°C (410°F). Higher Temperatures are acceptable to 220°C (430°F)
+
+                                              110-165°C (230-330°F) 2-3°C/min Heat rise.
+   Resin Flow Window
+                                              Maintain heat ramp in this temperature range.
+
+   Heat Ramp                                  2-2.5°C/min (3.6-4.6°F/min) Preferred for best curing results 3°C/min (5.5°F/min)
+
+   Pressure                                   375-425 PSI (26.5-30 Kg/cm2)
+
+                                              Single Stage: Apply pressure after vacuum dwell time.
+   Pressure Application                       Dual Stage: 100 PSI (7.0 Kg/cm2) after vacuum dwell time, switch to high pressure ≤ 90°C product
+                                              temperature.
+
+   Pressure Drop                              After 30 minutes at cure temperature, reduce pressure to 50 PSI (3.5 Kg/cm2) in hot press (optional).
+
+                                              Cool to 135-140°C (275-285°F) at 2.8°C/min (5.0°F/min) with 50 PSI (3.5 Kg/cm2) pressure prior to removing
+   Cool Down
+                                              or transferring the load.
+
+
+
+
+Part 4: Drill
+IS580G materials exhibit robust thermal stability and generate little or no smear. Generation of smooth, debris free hole walls is
+influenced by the degree of resin cure, drilling conditions and board design considerations. The reduction or elimination of heavy
+glass styles (whenever possible), coupled with properly adjusted drill parameters has been shown to improve overall drilled hole
+
+ https://www.isola-group.com/pcb-laminates-
+              prepreg/is580g/                              Last Updated November 09, 2026                  © 2021, Isola Group, All rights reserved.
+                                                                                                                     IS580G
+                                                                                  Halogen-free, Very Low Loss Material
+
+
+quality. Drill bit geometries can impact drilled hole quality and using newer drill bit designs generally produce superior results. For
+high layer count technologies and thicker board designs, peck drilling parameters may be necessary. Suggested parameters in
+Table 3 can be used for typical multilayer designs.
+
+Cutting Speed and Chipload
+IS580G uses lower chiploads to drill compared to typical FR-4 materials. Too high of cutting speeds and chiploads are associated
+with rough holes and fracturing around the glass yarn. Too low of chiploads have been associated with hole debris and hole wall
+adhesion issues. The parameters in Table 3 provides an initial starting point for typical multilayer board designs.
+
+Stack Height and Hit Count
+Stack heights and hit counts will vary with the construction and overall thickness of the PCB board being drilled. For thicker boards,
+above 2.5 mm (100 mils) overall, with high layer counts or heavy copper, drill a one PCB high stack. Lubricated aluminum entry
+and backing materials produce better hole wall quality.
+
+
+
+ Table 3: Suggested Drilling Parameters for Initial IS580G Setup
+
+                                  Spindle
+          Drill Size                          Surface Speed/Minute                Infeed              Chipload                          Retract
+                                   Speed
+
+     mm           inch              RPM        SMPM          SFPM         m/min        in/min    mm/rev          mil/rev         m/min        in/min
+
+     0.20        0.0079           130,000        82           268          1.52            60    0.012            0.46             15             600
+
+     0.25        0.0098           130,000       102           335          2.03            80    0.016            0.62             15             600
+
+     0.30        0.018            120,000       113           371          2.16            85    0.018            0.71             20             800
+
+     0.35        0.0138           110,000       121           397          2.16            85    0.020            0.77             20             800
+
+     0.40        0.0157            95,000       119           392          2.54            100   0.027            1.05             25         1000
+
+     0.50        0.0197            75,000       118           387          2.54            100   0.034            1.33             25         1000
+
+     0.63        0.0248            60,000       119           390          2.29            90    0.038            1.50             25         1000
+
+     0.75        0.0295            50,000       118           387          2.16            85    0.043            1.70             25         1000
+
+     0.90        0.0354            43,000       122           399          1.91            75    0.044            1.74             25         1000
+
+     1.00        0.0394            38.000       119           392          1.73            68    0.045            1.79             25         1000
+
+     1.27        0.0500            32,000       128           419          1.57            62    0.049            1.94             25         1000
+
+     1.50        0.0591            28,000       132           433          1.42            56    0.051            2.00             25         1000
+
+     2.00        0.0787            22,000       138           454          1.27            50    0.058            2.27             25         1000
+
+
+
+Drill testing performed on 580G showed a very wide range of drilling parameters gave excellent results. Drill life was about 1000
+hits for 0.20mm drills and >1000 for 0.25mm drills. Drill TV was 3.2 mm thick using 2116 glass style. The testing was run using
+TCT UCY and UCY-94EY. Alternate drill bit designs and suppliers may produce different results.
+
+
+
+
+Part 5: Hole Wall Preparation
+When IS580G is properly cured and drilled, it will generate very little smear. Desmear processing on this material is performed to
+remove debris and provide an acceptable texture to the drilled hole walls. Good desmear and electroless copper deposition
+performance are more easily achieved when the drilled hole quality is good.
+
+Desmear
+Plasma etching and chemical desmear are effective on IS580G. Combining these two processes is the recommended process flow.
+
+
+ https://www.isola-group.com/pcb-laminates-
+              prepreg/is580g/                         Last Updated November 09, 2026              © 2021, Isola Group, All rights reserved.
+                                                                                                            IS580G
+                                                                              Halogen-free, Very Low Loss Material
+
+
+IS580G requires similar plasma etch times as FR408HR followed by a chemical desmear process used primarily for hole cleaning
+and conditioning. Plasma etching is recommended for laser microvia technology.
+
+A chemical only desmear process can also be used on IS580G for low aspect plated through holes. Good agitation and solution flow
+through the PTH is critical. For best results, horizontal processing equipment is recommended. For high aspect ratio PTH designs,
+the use of a permanganate only process should be evaluated to determine process limits.
+
+Isola recommends checking plating quality coupons after plasma etching for positive etchback to determine the best processing
+parameters. Contact Isola Technical support with any questions.
+
+3-Point Etchback
+True 3-point “etchback” exposes the inner layer “post” on all three sides for subsequent plating processes. This will require a more
+robust approach using a combination of plasma and chemical processing is required. Testing indicates that the plasma provides
+nearly all of the resin removal.
+
+Permanganate chemistry alone does not provide adequate 3-point etchback of IS580G. If plasma is not available, chemical
+etchback for 3-point connections must be done with extreme care to minimize copper wicking.
+
+Secondary Drilling
+The use of entry and backer material may be necessary during the secondary drilling of larger hole sizes to avoid crazing/fracturing
+at the hole wall. Use of the same tool types as primary drilling is recommended. Note that parameters listed may require further
+adjustment.
+
+Routing and Scoring
+Table 4 lists initial starting parameters using chip breaker or diamond cut tool designs. Parameters listed in Table 4 may require
+further modifications of the final PCB routing process due to the hardness property of the IS580G materials.
+
+Due to the hardness of IS580G resin system, PCB designs with scoring may require thinner web thicknesses. This is influenced
+by layer count, glass types and retained copper in the design. Your Isola Technical Account Manager may also be able to provide
+some initial suggestions, but these should be validated through testing by the individual PCB fabricator.
+
+
+
+ Table 4: Suggested Routing Parameters for Initial IS580G
+
+                   Tool Diameter                         Spindle Speed                            Spindle Travel Speed
+
+              in                      mm                       RPM                       in/min                             m/min.
+
+           0.062                      1.57                    45,000                      20                                 0.051
+
+           0.093                      2.36                    35,000                      40                                 0.102
+
+           0.125                      3.18                    25,000                      50                                 1.27
+
+ Chip breaker or diamond cut tool designs recommended
+
+
+
+
+Part 6: Packaging and Storage
+IS580G finished boards have low moisture sensitivity and good shelf life. However, Isola recommends using best practices in
+storage and packaging, as noted below, to reduce risk during lead-free assembly. IS580 boards should be dry prior to packaging to
+ensure the most robust lead-free performance. The use of a Moisture Barrier Bag (MBB) with a Humidity Indicator Card (HIC) and
+adequate drying desiccant inside the MBB are recommended practices for improving shipping robustness and long-term storage.
+
+Upon opening the MBB, the boards should be processed within 168 hours when maximum shop floor conditions are at < 30°C
+(85°F)/60% RH. MBB bags that are opened for inspection should be resealed immediately to protect the boards from moisture
+uptake.
+
+
+Part 7: Health and Safety
+ https://www.isola-group.com/pcb-laminates-
+              prepreg/is580g/                       Last Updated November 09, 2026       © 2021, Isola Group, All rights reserved.
+                                                                                                                       IS580G
+                                                                                Halogen-free, Very Low Loss Material
+
+
+Always handle laminate with care. Laminate edges are typically sharp and can cause cuts and scratches if not handled properly.
+Handling and machining of prepreg and laminate can create dust (see FR408HR Material Safety Data Sheet).
+
+Appropriate ventilation is necessary in machining/punching areas. The use of protective masks is suggested to avoid inhaling dust.
+Gloves, aprons and/or safety glasses are suggested if individuals have frequent or prolonged skin or eye contact with dust.
+
+Isola Group does not use polybromidebiphenyls or polybromidebiphenyloxides as flame retardants in any product. Material Safety
+Data Sheets are available upon request.
+
+
+Part 8: Ordering Information
+Contact your local sales representative or contact: info@isola-group.com for further information.
+
+Isola Group
+6565 West Frye Road
+Chandler, AZ 85226
+Phone: 480-893-6527
+Fax: 480-893-1409
+
+Isola Asia Pacific (Hong Kong) Ltd.
+12/F, Kin Sang Commercial Centre,
+49 King Yip Street, Kwun Tong,
+Kowloon, Hong Kong
+Phone: 852-2418-1318
+Fax: 852-2418-1533
+
+Isola GmbH
+Isola Strasse 2 D-52348
+Düren, Germany
+Phone: 49-2421-8080
+Fax: 49-2421-808164
+
+
+
+           NOTES
+           The data contained in this document, while believed to be accurate and based on both field testing and analytical methods
+           considered to be reliable, is for information purposes only. Any sales of these products will be governed by the terms and
+           conditions of the agreement under which they are sold.
+
+
+
+
+           Isola, the Isola logo, Astra, Chronon, GETEK, I-Fill, IsoDesign, IsoStack, I-Speed, I-Tera, Polyclad, Stratus, TerraGreen, and The
+           Base for Innovation are registered trademarks or trademarks of ISOLA USA Corp. in the United States and in other countries.
+           Copyright © 2021 Isola Group. All rights reserved.
+
+
+
+
+ https://www.isola-group.com/pcb-laminates-
+              prepreg/is580g/                         Last Updated November 09, 2026                © 2021, Isola Group, All rights reserved.
+

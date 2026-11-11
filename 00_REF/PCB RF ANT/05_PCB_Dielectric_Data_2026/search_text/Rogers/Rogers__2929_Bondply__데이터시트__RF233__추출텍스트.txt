@@ -1,0 +1,120 @@
+                                                                                                           Data Sheet
+
+
+
+
+2929 Bondply Data Sheet
+2929 bondply is an unreinforced, hydrocarbon based thin film adhesive system intended for
+
+use in high performance, high reliability multi-layer constructions. A low dielectric constant   Features and Benefits:
+                                                                                                   • Low Dielectric constant and loss
+(2.9) and loss tangent (<0.003) at microwave frequencies makes it ideal for bonding multi-           tangent
+                                                                                                   • Ideal for multi-layer bonding
+layer boards (MLB’s) made using PTFE composite materials such as RT/duroid® 6000, RO4000®
+                                                                                                   • Compatible with traditional
+                                                                                                     processing methods
+and RO3000® series laminates. The proprietary cross-linking resin system makes this thin
+                                                                                                   • Compatible with a broad range
+                                                                                                     of material types including PTFE
+film adhesive system compatible with sequential bond processing while controlled flow
+                                                                                                     composites
+characteristics offer blind via fill capability and potentially predictable cutback ratios for     • Reliable through sequential bonding
+                                                                                                   • Can be tack bonded to inner-layer
+designs requiring blind cavities.                                                                    surfaces prior to machining cut-outs
+                                                                                                   • Excellent blind via fill capability
+                                                                                                   • Predictable control of post-bond
+                                                                                                     thickness
+2929 bondply is compatible with traditional flat press and autoclave bonding. The film is
+                                                                                                 Typical applications:
+                                                                                                   • Radar and Sensors
+currently available in 0.0015”, 0.002” and 0.003” sheet thicknesses (0.038mm, 0.051mm, and
+                                                                                                   • Point-to-point Microwave
+0.076mm). Individual sheets can be stacked to yield thicker adhesive layers. The unreinforced      • Base Station Antennas
+                                                                                                   • Power Amplifiers
+thin film can be tack bonded to inner-layers to ease simultaneous machining of cut-outs            • Phased Array Radar
+                                                                                                   • RF Components
+through core and adhesive layers. An easy-to-release carrier film protects the adhesive layer      • Patch Antennas
+                                                                                                   • Power Backplanes
+from contamination during the machining and MLB booking processes.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+                                                                                                                                   Page 1 of 2
+                                                                                                                                                                    Data Sheet
+
+              Property                            Typical Value[1]                      Direction                       Units                            Condition               Test Method
+                                                   2929 Bondply
+
+ Dielectric Constant, er                                                                                                                                                           IPC-TM-650
+                                                        2.94 ± 0.05                            Z                                                        10 GHz/23°C
+ Process                                                                                                                                                                             2.5.5.5.1
+
+ Dissipation Factor                                         0.003                              Z                                                        10 GHz/23°C           IPC-TM-650, 2.5.5.5
+ Thermal Coefficient of
+                                                               -6                              Z                       ppm/°C                           -50°C - 150°C         IPC-TM-650, 2.5.5.5
+ Dielectric Constant, er
+                                                          7.4 X 109                                                                                    125C/24 Hours               IPC-TM-650
+ Volume Resistivity                                                                                                     MΩ•cm
+                                                          5.1 X 10    8
+                                                                                                                                                  35C/90%RH/96 Hours                 2.5.17.1
+
+                                                          8.2 X 10    8
+                                                                                                                                                       125C/24 Hours               IPC-TM-650
+ Surface Resistivity                                                                                                      MΩ                                                         2.5.17.1
+                                                          1.5 X 105                                                                               35C/90%RH/96 Hours
+
+ Dielectric Strength                                        2500                               Z                         V/mil                          23°C/50%RH            IPC-TM-650, 2.5.6.2
+
+                                                              50                               X
+ Coefficient of Thermal
+                                                              50                               Y                       ppm/°C                             0-150°C             IPC-TM-650, 2.4.41
+ Expansion
+                                                              50                               Z
+ Thermal Conductivity                                         0.4                              Z                       W/m/°K                               80°C                   ASTM C518
+ Moisture Absorption                                          0.1                                                          %                              D24/23                   ASTM D570
+ Tg                                                          170                                                           °C                           DMA Method             IPC-TM-650 2.4.24
+ T-288                                                       >30                               Z                          Min                               TMA
+ Td                                                          400                                                           °C                            TGA 5% WT                ASTM D3850
+ Specific Gravity                                             1.5                                                     gm/cm3                                23°C                   ASTM D792
+                                                                                                                                                          ½ oz. EDC
+ Copper Peel Strength                                         5.0                             X,Y                          pli                                                 IPC-TM-650 2.4.8
+                                                                                                                                                         Post Solder
+ Flammability                                                N/A                                                                                                                        UL94
+ Lead-Free Process
+                                                             YES
+ Compatible
+ Outgassing
+                                    TML                      0.42
+                                                                                                                           %                                                       ASTM E-595
+                                 CVCM                        0.02
+                                   WVR                       0.03
+NOTES:
+[1] Typical values are a representation of an average value for the population of the property. For specification values contact Rogers Corporation.
+
+                                      Standard Thicknesses                                                                                             Standard Panel Sizes
+ 0.0015” (0.038mm) +/- 10%                                                                                           18”X12” (457mm X 305mm)
+ 0.0020” (0.051mm) +/- 10%                                                                                           18”X24” (457mm X 610mm)
+ 0.0030” (0.076mm) +/- 10%
+
+ *Contact Customer Service or Sales Engineering to inquire about additional                                          *Additional panel sizes available
+ available product configurations
+
+The information in this data sheet is intended to assist you in designing with Rogers’ circuit materials. It is not intended to and does not create any warranties express or implied, including any warranty
+of merchantability or fitness for a particular purpose or that the results shown on this data sheet will be achieved by a user for a particular purpose. The user should determine the suitability of Rogers’
+circuit materials for each application. Prolonged exposure in an oxidative environment may cause changes to the dielectric properties of hydrocarbon based materials. The rate of change increases at
+higher temperatures and is highly dependent on the circuit design. Although Rogers’ high frequency materials have been used successfully in innumerable applications and reports of oxidation resulting in
+performance problems are extremely rare, Rogers recommends that the customer evaluate each material and design combination to determine fitness for use over the entire life of the end product.
+These commodities, technology and software are exported from the United States in accordance with the Export Administration regulations. Diversion contrary to U.S. law prohibited.
+RT/duroid, RO4000, RO3000, Helping power, protect, connect and the Rogers’ logo are trademarks of Rogers Corporation or one of its subsidiaries.
+©
+ 2022 Rogers Corporation, Printed in U.S.A. All rights reserved. Revised 1584 072822 Publication #92-159
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382 Fax: 480-961-4533 www.rogerscorp.com
+
+                                                                                                                                                                                            Page 2 of 2
+

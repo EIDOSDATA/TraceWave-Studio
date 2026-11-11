@@ -1,0 +1,500 @@
+                                                                                                                             FR406
+                                                           Standard Loss, High Tg Epoxy Laminate and Prepreg
+
+
+
+    Processing Guide
+    The processing guidelines contained in this document were developed through in-house testing and field experience. However, they
+    should be considered to be starting points that will require further adjustment. Read the following review of processes for applicability
+    to your particular Printed Wiring Board (PWB) fabrication environment. Remember that the suggestions contained herein can not
+    account for all possible board designs or processing environments. Additional adjustments by the fabricator will be necessary. Isola can
+    and will assist with this process, but the fabricator, not Isola, is ultimately responsible for their process and the end results.
+    Fabricators to verify that PWBs made using these suggestions meet all applicable quality and performance
+    requirements.
+
+
+    Part 1: Prepreg Storage and Handling
+    Isola Group’s prepreg bonding sheets for use in multilayer printed circuit board applications are manufactured to specifications that
+    include physical and electrical properties and processing characteristics relative to the laminating application. Handling and storage
+    factors have an important influence on the desired performance of the prepreg. Some parameters are affected by the environment in
+    which prepregs are stored. They can also deteriorate over extended periods of storage. The prepreg received by the customer is a
+    glass fabric that has been impregnated with a stated quantity of low volatile, partially polymerized resin. The resin is tack-free but
+    somewhat brittle. Many lamination problems arise from resin loss off the fabric due to improper handling. The fabric used is based on
+    the order and supplies the required
+    thickness. In most cases the amount of resin carried by the fabric increases as the fabric thickness decreases.
+
+    Handling Suggestions
+    Handle all prepreg using clean gloves. Use sharp, precision equipment when cutting or paneling prepreg. Treat all prepreg as being
+    very fragile. Use extreme care when handling very high resin content prepreg (glass fabrics 1080 and finer).
+
+    Storage Suggestions
+    Upon receipt, all prepreg should be immediately moved from the receiving area to a controlled environment. All prepreg should be
+    used as soon as possible using a First-In-First-Out (FIFO) inventory management system. If not handled properly, FR406 prepreg will
+    absorb moisture, which will lead to depressed Tg’s and cure and affect flow in the press. If extended storage is required, separate
+    facilities should be reserved with appropriate environmental control. Prepreg should be stored at <= 23 ºC and below 50% humidity.
+
+    Prepreg packages should be allowed to equilibrate to layup room conditions before opening to prevent moisture
+    condensation on the prepreg.
+
+    Stabilization time will depend on storage temperature. In cases where storage temperature is significantly below room temperature,
+    keep prepreg in package or plastic wrapping during stabilization period to prevent moisture condensation. Once the original packaging
+    is opened, the prepreg should be used immediately. Remaining prepreg should be resealed in the original packaging with fresh
+    desiccant. Storage should be in the absence of catalytic environments such as high radiation levels or intense ultraviolet light.
+
+
+    Part 2: Innerlayer Preparation
+    Isola Group’s FR406 laminates are fully cured and ready for processing. It has been the experience of most fabricators that stress relief
+    bake cycles are not effective in reducing any movement of high performance laminates such as FR406. Therefore, it is suggested that
+    the movement of unbaked laminate be characterized and the appropriate artwork compensation factors are used.
+
+    Dimensional Stability
+    The net dimensional movement of laminate after the etch, oxide and lamination processes is typically shrinkage. This shrinkage is due
+    to the relaxation of stresses that were induced when the laminate was pressed as well as shrinkage contribution from the resin system.
+    Most of the movement will be observed in the grain direction of the laminate.
+
+    There are situations that have been known to alter the proportion of shrinkage in grain versus fill direction in some board shops. These
+    include autoclave pressing and cross-plying laminate grain direction to that of prepreg. While both of these practices have their
+    advantages,
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/fr406-
+                 laminate-and-prepreg/                      Last Updated May 28, 2026               © 2021, Isola Group, All rights reserved.
+                                                                                                                                             FR406
+                                                                      Standard Loss, High Tg Epoxy Laminate and Prepreg
+
+
+                                                                                                This table assumes that laminate and prepreg grain directions
+      Table 1: Initial Artwork Compensation Factors                                             are oriented along the same dimension. Each shop must
+                                                                                                characterize material behavior given their particular lamination
+                                                                                Comp            cycles, border designs and grain orientation of laminate to
+         Base Thickness           Configuration             Direction
+                                                                                (in/in)
+                                                                                                prepreg. It is also suggested that specific laminate constructions
+                                                                               0.0007-          be specified and adhered to so that dimensional variations due
+             ≤ 0.005″              Signal/Signal           Warp (grain)
+                                                                               0.0009
+                                                                                                to changes in construction are avoided.
+                                                                               0.0001-
+                 "                        "                    Fill
+                                                                               0.0003           Table 1 assumes that signal layers are either half or 1 ounce
+
+                                                                               0.0005-
+                                                                                                copper and ground layers are either 1 or 2 ounce copper.
+                 "                 Signal/Ground           Warp (grain)
+                                                                               0.0007
+                                                                                                Imaging and Etching
+                                                                               0.0001-
+                 "                        "                    Fill                             FR406 laminates are imaged using standard aqueous dry films
+                                                                               0.0003
+                                                                                                and are compatible with both cupric chloride and ammoniacal
+                                                                               0.0002-          etchants.
+                 "                Ground/Ground            Warp (grain)
+                                                                               0.0004
+
+                                                                               0.0000-          Bond Enhancement
+                 "                        "                    Fill
+                                                                               0.0002           Both reduced oxides and oxide alternative chemistries have
+                                                                               0.0005-          been used successfully in fabricating FR406 multilayer boards to
+           0.006-0.009″            Signal/Signal           Warp (grain)
+                                                                               0.0007           date. Users should make sure the oxide or oxide replacement
+                                                                               0.0001-          coating exhibits a consistent, uniformly dark color. If reduced
+                 "                        "                    Fill
+                                                                               0.0003           oxides are used, consult the chemical supplier for post oxide
+
+                                                                               0.0003-
+                                                                                                baking considerations as excessive baking may lead to lower
+                 "                 Signal/Ground           Warp (grain)
+                                                                               0.0005           pink ring resistance. It is generally suggested that post-oxide
+                                                                                                baking be performed vertically, in racks. Suggest mild bake of
+                                                                               0.0000-
+                 "                        "                    Fill                             oxided innerlayers (15-30 minutes @ 80-100°C).
+                                                                               0.0002
+
+                                                                               0.0000-          For conveyorized oxide replacements, an efficient dryer at the
+                 "                Ground/Ground            Warp (grain)
+                                                                               0.0002
+                                                                                                end of a conveyorized oxide replacement line should remove all
+                                                                               0.0000-          moisture from the innerlayer surface. However, drying of
+                 "                        "                    Fill
+                                                                               0.0002
+                                                                                                layers for 30 minutes minimum @ 100°C (212°F) or
+                                                                               0.0002-          higher is considered a “best practice”.
+           0.010-0.014″            Signal/Signal           Warp (grain)
+                                                                               0.0004
+
+                                                                               0.0000-          If immersion tin adhesion treatments are used, the fabricator
+                 "                        "                    Fill
+                                                                               0.0002           should test the coating to verify adequate bond strength is
+
+                                                                               0.0001-
+                                                                                                developed with FR406 prepregs.
+                 "                 Signal/Ground           Warp (grain)
+                                                                               0.0003
+
+                                                                               0.0000-
+                 "                        "                    Fill
+                                                                               0.0002
+
+                                                                               0.0000-
+                 "                Ground/Ground            Warp (grain)
+                                                                               0.0002
+
+                                                                               0.0000-
+                 "                        "                    Fill
+                                                                               0.0002
+
+      Table 1 (for reference) illustrates the suggested approach to characterizing
+      laminate movement and provides approximate artwork compensation factors
+      for FR406 laminate when using a hydraulic press.
+
+
+
+    Part 3: Lamination
+    Standard Lamination
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/fr406-
+                 laminate-and-prepreg/                                  Last Updated May 28, 2026                   © 2021, Isola Group, All rights reserved.
+                                                                                                                                      FR406
+                                                              Standard Loss, High Tg Epoxy Laminate and Prepreg
+
+
+    The amount of time at cure temperature, and to some extent the actual cure temperature of FR406, will be determined by the thickness
+    of the multilayer package being produced. Very thick boards will require a longer cure time to assure optimum material performance.
+
+    Sequential Lamination
+    Use a 50 minute cure for sub-assemblies depending on thickness and a 60-70 minute cure for the final assembly. This suggestion
+    assumes a final assembly thickness ≥ 0.125″ (3.2 mm). Removal of FR406 flash should be performed by routing rather than shearing to
+    minimize crazing along the panel edges.
+
+    Table 2 outlines general suggestions for lamination pressure based on press type used.
+
+                                                                                         Single-Stage and Dual-Stage Press Cycle Lamination
+      Table 2: FR406 Lamination Pressure                                                 The following pages outline the suggested lamination
+                                                                                         parameters for the single-stage and dual-stage lamination
+                                                           Suggested Pressure            cycles. The lamination cycle selected will be a function of board
+                     Lamination Method
+                                                                 Range
+                                                                                         stack up, complexity and thickness as well as the lamination
+                                                              300-350 PSI                presses capability. Note that the following graphs are for
+          Hydraulic Pressing (without vacuum assist)
+                                                              21-25 kg/cm2
+                                                                                         reference purposes only and may require adjustment depending
+          Hydraulic Pressing (with vacuum assist via           250-300 PSI               on the board size, thickness and complexity. Thicker boards
+                    vacuum frames or bags)                    18-21 kg/cm2
+                                                                                         may require additional dwell time at curing temperature
+                                                              200-250 PSI                to achieve full cure. See “Standard Lamination” previously
+            Hydraulic Pressing (vacuum enclosure)
+                                                              14-18 kg/cm2               discussed.
+
+                                                                                         Choosing a dual stage or “kiss” cycle for FR406 multilayer
+    boards may improve results in some applications. Use these cycles to enhance the wetting of the glass along the extreme edges and
+    corners of the panel or to minimize circuit image transfer (“telegraphing”) on foil constructions.
+
+    All cycles include a pressure reduction step in the lamination cycle, which facilitates stress relief of the package during the cure step.
+    Further, all cycles assume vacuum is maintained throughout the heating cycle and all cycles presume that the book is cooled to a
+    temperature well below the Tg of the material before the press is opened. All three conditions are considered to represent “best
+    practice” conditions during lamination by Isola.
+
+    While use of both the pressure drop cycle and cooling well below Tg in the “hot” press are strongly suggested, these
+    steps are considered to be “optional” and the PCB fabricator may have equipment or capacity limitations which prevent
+    following these suggestions.
+
+    Single-Stage Lamination (No “Kiss” Cycle)
+    1. Load/center the package as quickly as possible. Pull vacuum for 30 minutes on lifters.
+    2. Apply full pressure of 200-350 PSI (14.1-24.6 kg/cm 2) on the panels. Suggest 275 PSI (19.3 kg/cm 2 for initial pressure setting. See
+    Table 2.
+    3. Adjust heat rise to ~4.5-6.7°C/min (8-12°F/min), as measured between 79-135°C (175-275°F) by controlling the platen ramp rate
+    and/or by using the appropriate amount of pressure padding.
+    4. Cure for a minimum of 50 minutes @ 177°C (350°F) once the package center reaches the specified set point. NOTE: A 60-70 minute
+    cure may be appropriate for high layer count boards or boards ≥ 0.125″ (3.2 mm) in thickness. Boards below 0.070″ in thickness may
+    be cured for 50 minutes.
+    5. If possible, reduce the pressure to 50 PSI (3.5 kg/cm 2) after package has been at cure temperature for 15 minutes. This will relieve
+    stress which may assist subsequent lead-free processing.
+    6. Cool material as slowly as possible or at 2.8°C/min (5°F/min),down from 185°C (365°F) through 135°C (275°F). Post baking
+    is not required.
+
+
+
+             Suggested FR406 Single-Stage Pressure-Temperature Profile
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/fr406-
+                 laminate-and-prepreg/                           Last Updated May 28, 2026                   © 2021, Isola Group, All rights reserved.
+                                                                                                                           FR406
+                                                           Standard Loss, High Tg Epoxy Laminate and Prepreg
+
+
+
+
+    Please note: This is not a press control program! The graph represents the preferred pressure/temperature profile panels are
+    subjected to during the lamination program cycle. Note that the actual high pressure setting and cure duration chosen may
+    differ from the 275 PSI suggested setting shown in this graph. Press pressure and cure duration selected may depend
+    upon board design as well as other factors.
+
+    Dual-Stage Lamination (With “Kiss” Cycle)
+    Choosing a dual-stage or “kiss” cycle for FR406 may improve results in some applications. Use these cycles to enhance the wetting of
+    the glass along the extreme edges and corners of the panel or to minimize circuit image transfer (“telegraphing”) on foil constructions.
+    Develop dual-stage cycles based on the temperature of the stack at various locations. It is essential that the temperatures of the top
+    and bottom panels in the stack be below full fluidity temperature when high pressure is applied. Ensure that the temperature
+    difference between the center and outside of the stack is less than 22°C (40°F) when full pressure is applied.
+
+    1. Load/center the package as quickly as possible. Pull vacuum for 20 minutes on lifters.
+    2. Close press and apply 50 PSI (3.5 kg/cm 2 ) pressure. Adjust heat rise to ~4.5-6.7°C/min (8-12°F/min), as measured between 79-
+    135°C (175-275°F) by controlling the platen ramp rate and/or by using the appropriate amount of pressure padding.
+    3. Apply full pressure of 200-350 PSI (14.1-24.6 kg/cm 2) on the panels when the center of the stack reaches 93°C (200°F). Suggest 275
+    PSI (19.3 kg/cm 2) for initial pressure setting. See Table 2. NOTE: The exterior (top and bottom) panel temperature must be ≤ 110°C
+    (230°F) when full pressure is applied. Cure for a minimum of 50 minutes @ 185°C (365°F) once the package center reaches the
+    specified set point. NOTE: A 60-70 minute cure may be necessary for boards ≥ 0.125″ (3.2 mm) in thickness.
+    4. Use stress relief and cooling cycles as with single-stage lamination. Post baking is not required.
+
+
+
+             Suggested FR406 Dual-Stage Pressure-Temperature Profile
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/fr406-
+                 laminate-and-prepreg/                      Last Updated May 28, 2026             © 2021, Isola Group, All rights reserved.
+                                                                                                                                 FR406
+                                                                Standard Loss, High Tg Epoxy Laminate and Prepreg
+
+
+
+
+    Please note: This is not a press control program! The graph represents the preferred pressure/temperature profile panels are
+    subjected to during the lamination program cycle. Note that the actual high pressure setting and cure duration chosen may
+    differ
+    from the 275 PSI suggested setting shown in this graph. Press pressure and cure duration selected may depend upon
+    board
+    design as well as other factors.
+
+
+    Part 4: Drill
+    General
+    Standard drill bit geometries have been used with FR406 with good results. However, to assure effective removal of the resin debris
+    during drilling, undercut drill geometries and high helix tools are suggested. On high layer count technologies and thicker overall board
+    thicknesses, peck drilling parameters may be necessary. Suggested parameters are outlined below for typical multilayer designs.
+
+    Cutting Speed and Chipload
+    Maximum cutting speeds of 550 to 600 SFPM are suggested. Chiploads should not exceed 3.5 mils for bit diameters of .040″ and above.
+    Table 3 gives drill parameters by bit diameter for a maximum cutting speed of 550 SFPM and maximum chipload of 3.0 mils.
+
+    Cutting speeds and chiploads in excess of those in Table 3 have been successfully implemented on all of Isola’s FR-4 products in 6 to
+    12 layer .060″ (1.6 mm) thick boards. The parameters in Table 3 provide a moderate initial starting point for typical board designs.
+    Thick boards with heavy copper or special cladding such as invar will require more conservative drill parameters.
+
+    Stack Height and Hit Count
+    Stack heights and hit counts will vary according to construction and overall thickness of the boards being drilled. Standard .060″ thick
+    boards have been successfully stacked 3 high for bit diameters down to 13.5 mils. As a general guideline, the sum of the board
+    thickness in a multilayer drill stack should not exceed 200 mils. Maximum hit count for a small drill diameter is 1000. For drill diameters
+    of 13.5 mils and greater, maximum hit count is 1500.
+
+
+
+      Table 3: Suggested Drilling Parameters For Initial FR406 Setup
+
+                                                           Surface Speed Per
+               Drill Size           Spindle Speed                                              Infeed        Chipload                          Retract
+                                                                Minute
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/fr406-
+                 laminate-and-prepreg/                             Last Updated May 28, 2026            © 2021, Isola Group, All rights reserved.
+                                                                                                                                 FR406
+                                                                  Standard Loss, High Tg Epoxy Laminate and Prepreg
+
+
+             in           mm               RPM             SFPM        SMPM           in/min   m/min   mil/rev        mm/rev            in/min      m/min
+
+           0.0098         0.25            120,000          309           94             75     1.91     0.63            0.016            600         15
+
+           0.0118         0.30            105,000          325           99             82     2.08     0.78            0.020            800         20
+
+           0.0138         0.35            100,000          361          110             90     2.29     0.90            0.023            800         20
+
+           0.0157         0.40            91,000           375          114             96     2.44     1.05            0.027            1000        25
+
+           0.0197         0.50            92,000           474          145            100     2.54     1.09            0.028            1000        25
+
+           0.0256         0.65            84,000           563          172            130     3.30     1.55            0.039            1000        25
+
+           0.0295         0.75            70,000           541          165            140     3.56     2.00            0.051            1000        25
+
+           0.0354         0.90            58,000           538          164            145     3.68     2.50            0.064            1000        25
+
+           0.0394         1.00            52,000           536          163            155     3.94     2.98            0.076            1000        25
+
+           0.0500         1.27            42,000           550          168            125     3.18     2.98            0.076            1000        25
+
+           0.0591         1.50            35,000           541          165            105     2.67     3.00            0.076            1000        25
+
+           0.0787         2.00            26,000           536          163             78     1.98     3.00            0.076            1000        25
+
+
+
+    Part 5: Hole Wall Preparation
+    General
+    Good desmear and electroless copper deposition performance are more easily achieved when the drilled hole quality is good. The
+    generation of smooth, debris free hole walls is influenced by the degree of resin cure, drilling conditions and board design
+    considerations. The elimination of 7628 or similar heavy glasses (whenever possible), coupled with properly adjusted drill parameters
+    on fully cured boards has been shown to improve overall drilled hole quality. This helps reduce smear generation, which improves
+    desmear performance and can ultimately help to
+    reduce copper wicking.
+
+    Factors which influence chemical desmear rates, and therefore the suggestions in this document, include: resin type,
+    chemistry type, bath dwell times, bath temperatures, chemical concentrations in each bath and the amount of solution transfer through
+    the holes.
+
+    Factors which influence the amount of solution transfer through the holes include: hole size, panel thickness, work bar stroke length,
+    panel separation in the rack and the use of solution agitation, rack vibration and rack “bumping” to remove air bubbles from the holes.
+
+    Chemical Desmear
+    Conventional permanganate desmear systems are effective for removal of FR406 resin from interconnect posts. Dwell times and
+    temperatures typically used for most high performance materials should be satisfactory. Consult the chemical supplier for suggested
+    conditions.
+
+    Plasma Desmear
+    If available, plasma can be used with or without a single permanganate pass (to be determined by each fabricator). Plasma processing
+    tends to improve overall hole quality, particularly in thick and/or high aspect ratio boards. Standard plasma gas mixtures and cycles are
+    satisfactory. Care must be exercised to avoid excessive resin removal if both plasma and permanganate are employed
+    together.
+
+    3-Point Etchback
+    True 3-point “etchback” exposes the innerlayer “post” on all three sides for subsequent plating processes. This will require a more
+    robust approach compared to simple desmear, which is designed only to remove resin smear from the vertical surface of the innerlayer
+    interconnect “posts”.
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/fr406-
+                  laminate-and-prepreg/                            Last Updated May 28, 2026            © 2021, Isola Group, All rights reserved.
+                                                                                                                                         FR406
+                                                                  Standard Loss, High Tg Epoxy Laminate and Prepreg
+
+
+    Plasma will readily etch back FR406 resin. Standard plasma gas mixtures and process cycles designed for conventional FR-4
+    epoxy are satisfactory and are suggested for use as initial starting parameters for etchback of FR406. The practice of following the
+    plasma process with a chemical process is suggested rather than plasma alone to increase hole wall texture and remove plasma ash
+    residues.
+
+    If plasma is not available, chemical etchback for 3-point connections can usually be accomplished using a double-pass through the
+    permanganate line. Some fabricators have found a post-drill bake for 2 hours @ 375°F with boards racked (not stacked) accelerates
+    resin removal rates with permanganate systems. Care must be taken when using a double-pass to minimize copper wicking. Consult
+    the chemical supplier for suggested conditions.
+
+
+
+
+    Secondary Drilling
+    The use of entry and backer material may be necessary during the secondary drilling of larger hole sizes to avoid crazing/fracturing at
+    the hole perimeter. Additionally, sharper plunge point angle geometries may be necessary to avoid crazing around secondary drilled
+    hole perimeters.
+
+    Routing and Scoring
+    Modifications of the final PWB route fabrication process may be necessary. Table 4 lists initial starting parameters using chip breaker or
+    diamond cut tool designs. Note that parameters listed may require further adjustment.
+
+                                                                                            For PWB designs requiring scored geometries, the testing of
+      Table 4: Suggested Routing Parameters for Initial FR406 Setup                         various Tg’s and resin content materials has determined that
+                                                                                            adjustments to the process will be necessary. As the modulus
+            Tool Diameter             Spindle Speed        Spindle Travel Speed             strength of materials increases, the maximum resultant web
+             in           mm                RPM            in/min           m/min           thickness (dependent on the scored edge depth) must be
+           0.062          1.57            45,000             20              0.51
+                                                                                            decreased to avoid excessive fracturing upon breaking away the
+                                                                                            scored materials. Individual board designs/stack-ups may
+           0.093          2.36            35,000             40              1.02
+                                                                                            require adjustment of score depth geometries. Thinner web
+           0.125          3.18            25,000             50              1.27           thicknesses are typically required. This is influenced by layer
+      Chip breaker or diamond cut tool designs recommended.
+                                                                                            count, glass types and retained copper in the design. The
+                                                                                            customer should contact the scoring equipment and/or bit
+                                                                                            supplier for application specific suggestions for use with FR406
+    materials. Your Isola Technical Account Manager may also be able to provide some initial suggestions, but these should be validated
+    through testing by the individual PWB fabricator.
+
+
+    Part 6: Packaging and Storage
+    FR406 finished boards have low moisture sensitivity and good shelf life. However, Isola recommends using best practices in storage
+    and packaging, as noted below, to reduce risk during lead-free assembly.
+
+    FR406 boards should be dry prior to packaging to ensure the most robust lead-free performance. For some complex, high reliability
+    designs, baking prior to solder mask application can be implemented to ensure maximum floor life in assembly processing. Printed
+    boards made for high temperature assembly from FR406, which require a long shelf life, the best protection is provided using a
+    Moisture Barrier Bag (MBB) with a Humidity Indicator Card (HIC) and adequate drying desiccant inside the MBB to prevent moisture
+    absorption during shipment and
+    long-term storage.
+
+    Upon opening the MBB, the boards should be processed within 168 hours when maximum shop floor conditions are at < 30°C
+    (85°F)/60% RH. MBB bags that are opened for inspection should be resealed immediately to protect the boards from moisture uptake.
+
+
+    Part 7: Health and Safety
+    Always handle laminate with care. Laminate edges are typically sharp and can cause cuts and scratches if not handled properly.
+    Handling and machining of prepreg and laminate can create dust (see FR406 Material Safety Data Sheet).
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/fr406-
+                  laminate-and-prepreg/                             Last Updated May 28, 2026                   © 2021, Isola Group, All rights reserved.
+                                                                                                                                     FR406
+                                                             Standard Loss, High Tg Epoxy Laminate and Prepreg
+
+
+    Appropriate ventilation is necessary in machining/punching areas. The use of protective masks is suggested to avoid inhaling dust.
+    Gloves, aprons and/or safety glasses are suggested if individuals have frequent or prolonged skin or eye contact with dust.
+
+    Isola Group does not use polybromidebiphenyls or polybromidebiphenyloxides as flame retardants in any product. Material Safety Data
+    Sheets are available upon request.
+
+
+
+
+    Part 8: Ordering Information
+    Contact your local sales representative or contact: info@isola-group.com for further information.
+
+    Isola Group
+    6565 West Frye Rd
+    Chandler, AZ 85226
+    Phone: 480-893-6527
+    Fax: 480-893-1409
+
+    Isola Asia Pacific (Hong Kong) Ltd.
+    12/F Kin Sang Commecial Center
+    49 King Yip Street, Kwun Tong,
+    Kowloon, Hong Kong
+    Phone: 852-2418-1318
+    Fax: 852-2418-1533
+
+    Isola GmbH
+    Isola Strasse 2 D-52348
+    Düren, Germany
+    Phone: 49-2421-8080
+    Fax: 49-2421-808164
+
+
+
+                NOTES
+                The data contained in this document, while believed to be accurate and based on both field testing and analytical methods
+                considered to be reliable, is for information purposes only. Any sales of these products will be governed by the terms and conditions
+                of the agreement under which they are sold.
+
+
+
+
+                Isola, the Isola logo, Astra, Chronon, GETEK, I-Fill, IsoDesign, IsoStack, I-Speed, I-Tera, Polyclad, Stratus, TerraGreen, and The Base
+                for Innovation are registered trademarks or trademarks of ISOLA USA Corp. in the United States and in other countries. Copyright ©
+                2021 Isola Group. All rights reserved.
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/fr406-
+                 laminate-and-prepreg/                          Last Updated May 28, 2026                   © 2021, Isola Group, All rights reserved.
+

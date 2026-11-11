@@ -1,0 +1,237 @@
+                                                                                                         Fabrication
+                                                                                                         Technical Articles
+                                                                                                                     Notes
+
+
+
+     Kappa® 438 Laminates
+     Circuit Processing Guidelines
+     These guidelines were developed to provide fabricators basic information on processing double-sided and multi-layered printed
+     wiring boards (PWB’s) using Kappa® 438 laminates. Please refer to RO4400™ bondply processing guidelines for additional information
+     on inner-layer preparation and multi-layer bonding.
+
+     Storage: Fully clad Kappa 438 laminates should be stored at room temperature (between 50-90°F/ 10-32°C). A first-in-first-
+     out inventory system and a method to track material lot numbers through PWB processing and delivery of finished circuits is
+     recommended.
+
+     INNER LAYER PREPARATION:
+
+     Tooling: Kappa 438 laminates are compatible with many pinned and pinless tooling systems. Choosing whether to use round
+     or slotted pins, external or internal pinning, standard or multiline tooling, and pre vs. post-etch punching would depend on the
+     capabilities and preferences of the circuit facility and final registration requirements. In general, slotted pins, a multiline tooling format,
+     and post-etch punching will meet most needs.
+
+     Surface Preparation for Photoresist Processing and Copper Etching: Depending upon Kappa 438 core thickness, copper
+     surfaces can be prepared for photo imaging using chemical or mechanical processes. Thinner cores should be prepared using a
+     chemical process consisting of cleaning, micro-etching, water rinsing, and drying steps. Thicker Kappa 438 cores are compatible with
+     mechanical scrub systems.
+
+     Kappa 438 materials are compatible with most liquid and dry film photo-resists and, once patterned, can be processed through
+     develop, etch, and strip (DES) systems typically used to process FR-4 materials.
+
+     Oxide Treatment: Kappa 438 cores can be processed through any copper oxide or oxide alternative process in preparation for multi-
+     layer bonding. The best treatment choice is typically the one recommended in the guidelines supporting the chosen prepreg or
+     adhesive system.
+
+     Multi-Layer Bonding: Kappa 438 laminates are compatible with many thermosetting and thermoplastic adhesive systems.
+     Guidelines for the adhesive system should be consulted for bond cycle parameters.
+
+     DRILLING:
+
+
+     Drilling Considerations: Standard entry (aluminum or thin pressed phenolic) and exit (pressed phenolic or fiber board) materials can
+     be used when drilling Kappa 438 cores or bonded assemblies in one-up or multi-up stacks.
+
+
+     Kappa 438 materials are compatible with a broad range of drilling parameters. However, drilling speeds greater than 500 surface feet
+     per minute (SFM) should be avoided. Chip loads greater than 0.002”/” are recommended for mid-range and large diameter tools while
+     lower chiploads (<0.002”/”) are recommended for small (<0.0135”) diameter drills. In general, standard geometry drills are preferred
+     over undercut styles as they more effectively evacuate debris from the holes during the drilling process. Hit counts should be based
+     on inspection of plated-through holes (PTH’s) and not the appearance of the tools. Drilling Kappa 438 laminates will result in an
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                                      Page 1 of 4
+accelerated wear rate of drills. But, hole wall quality is determined by the size distribution of the ceramic powder and not by the cutting edge
+of the drill bit. A hole wall roughness ranging from 8 to 25 mm is expected and should remain consistent from the initial hit through several
+thousand hits.
+
+
+Offered below are a summary of recommended drill parameters, equations for using surface speed and chip load to calculate spindle speeds and
+infeed rates, and a ready-reference drill table. A Rogers Technical Service Engineer (TSE) should be contacted for more detailed information.
+
+
+Recommended Ranges:
+
+
+                                 Surface Speed 300-500 SFM (90 to 150m/min)
+                                     Chip Load 0.002”-0.004”/rev. (0.05-0.10mm)
+                                  Retract Rate 500 IPM (12.7m/min) for tools less than 0.0135” (0.343mm), 1,000 IPM
+                                               (25.4 m/min) for all others
+                                     Tool Type Standard carbide
+                                      Tool Life 2,000-3,000 hits
+
+
+CALCULATING SPINDLE SPEED AND INFEED:
+
+
+          Spindle Speed = 		            (12 x Surface Speed (SFM)]/(π x Tool Diam. (in.))
+          Feed Rate (IPM) = 		          [Spindle Speed (RPM)] x [Chip Load (in/rev.)]
+          Example:
+          Desired Surface Speed: 		                400 SFM
+          Desired Chip Load: 		                    0.003”(0.08 mm)/rev.
+          Tool Diameter: 			                       0.0295”(0.75 mm)
+          Spindle Speed = 		            (12 x 400)/(3.14 X 0.0295) = 51800 RPM
+          Infeed Rate = 			                        51,800 x 0.003 = 155 IPM
+
+
+QUICK REFERENCE TABLE:
+                                      Tool Diameter                Spindle Speed (kRPM)                Infeed Rate (IPM)
+                                    0.0100” (0.254mm)                         95.5                             190
+                                    0.0135” (0.343mm)                         70.7                             141
+                                    0.0160” (0.406mm)                         95.5                             190
+                                    0.0197” (0.500mm)                         77.6                             190
+                                    0.0256” (0.650mm)                         60.0                             180
+                                    0.0258” (0.655mm)                         60.0                             180
+                                    0.0295” (0.749mm)                         51.8                             155
+                                    0.0354” (0.899mm)                         43.2                             130
+                                    0.0394” (1.001mm)                         38.8                             116
+                                    0.0453” (1.151mm)                         33.7                             101
+                                    0.0492” (1.257mm)                         31.1                              93
+                                    0.0531” (1.349mm)                         28.8                              86
+                                    0.0625” (1.588mm)                         24.5                              74
+                                    0.0935” (2.350mm)                         16.5                              50
+                                    0.0625” (1.588mm)                         24.5                              74
+                                    0.0925” (2.350mm)                         16.5                              50
+                                    0.1250” (3.175mm)                         15.0                              45
+                              •Conditions stated are tapered from 200 SFM and 0.002” chip load up to 400 SFM and 0.003”chip load.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                                        Page 2 of 4
+PTH PROCESSING:
+Surface Preparation: Thick multi-layer and double-sided constructions can be processed through conveyorized debur equipment that uses
+oscillating nylon brushes to abrade the copper surfaces. Thinner layers may require pumice scrubbing by hand, conveyorized processing with
+an abrasive spray, or chemical preparation. In general, the thickness of the material and registration requirements should be considered when
+choosing the best method of debur and surface preparation.
+Desmear is typically not required of drilled holes in double-sided boards as the high glass transition temperature of the resin system (>280°C/
+>536°F) minimizes the occurrence of smear. Multi-layer boards may require desmear depending upon the needs of the bondply or prepreg
+layers. If desmear is required, a single or double pass through alkaline permanganate or a CF4/O2 plasma process may be used. Plasma desmear
+is preferred over chemical desmear when processing CAF sensitive designs.
+
+
+We recommend against etchback of the Kappa 438 laminate layers as this might result in aggressive etchback of resin near copper layers and
+loosening of filler particles on the hole wall.
+
+
+Metal Deposition:
+Kappa 438 materials do not require special treatments prior to metallization and are compatible with electroless copper processing and direct
+deposition of ionic and colloidal conductive layers. A copper flash plate (0.00025”) prior to imaging might be considered for boards with high
+aspect ratio holes.
+
+
+COPPER PLATING & OUTER-LAYER PROCESSING:
+Kappa 438 laminates are compatible with panel and pattern processing using standard acid copper and electrolytic tin or tin/lead plating. Once
+plated, Kappa 438 laminates can be processed through any standard strip/etch/strip (SES) process.
+
+
+The post-etch surface of Kappa 438 laminates should be preserved as this surface will bond very well with direct screened and photo-imageable
+solder masks.
+
+
+Final Metal Finishes:
+Kappa 438 laminates are compatible with organic solderability preservatives (OSP’s), hot air solder levelling (HASL), and most chemically
+deposited or electroplated finishes.
+
+
+FINAL CIRCUITIZATION:
+Circuits made using Kappa 438 laminates can be “individualized “ by dicing, sawing, shearing, routing or punching. V-scoring and breakaway
+tabs can be used to facilitate individualization of circuits after automated assembly.
+
+
+Recommendations for routing are provided below:
+
+
+ROUTING:
+Kappa 438 laminates are routed using carbide tools and conditions that are typical to processing traditional epoxy/glass materials. Copper
+should be etched away from the routing path to prevent burring.
+
+
+MAXIMUM STACK HEIGHT:
+The maximum stack height should be based on 70% of the actual flute length to allow for debris removal.
+
+
+Example:
+		                    Flute Length: 		              0.300” x 0.70 = 0.210”(5.33 mm)
+		                    Backer Penetration:         – 0.030”(0.762mm)
+		                    Max. Stack Height: 0.180”(4.572mm)
+
+
+TOOL TYPE:
+Carbide multi-fluted spiral chip breakers or diamond cut router bits.
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                                    Page 3 of 4
+ROUTING CONDITIONS:
+Surface speeds below 500 SFM should be used whenever possible to maximize tool life. Tool life is generally greater than 30 linear feet when
+routing the maximum allowable stack height.
+
+
+          Chip Load: 		                   0.0010-0.0015”(0.0254-0.0381mm)/rev
+          Surface Speed:       300 – SFM
+
+
+QUICK REFERENCE TABLE:
+
+
+                                             Tool Diameter          Spindle Speed           Lateral Feed Rate
+                                                   1/32                 40k RPM                   50 IPM
+                                                   1/16                 25k RPM                   31 IPM
+                                                   3/32                 20k RPM                   25 IPM
+                                                   1/8                     15k                    25 IPM
+
+
+SHELF LIFE:
+Rogers’ High Frequency laminates can be stored for extended durations under ambient room temperatures (55-85°F, 13-30°C) and humidity
+levels. At room temperature, the dielectric materials are inert to high humidity. However, metal claddings such as copper can be oxidized
+during exposure to high humidity. (Oxidation on the copper surface can easily be removed in a standard micro-etch process.) In addition, over
+an extended period (>5 years) the exposed dielectric along edges of the panel may experience detectable levels of oxidation. Accounting for
+standard tooling hole and trim loss, such trace levels of oxidation would not be expected to extend into the utilized portion of the laminate.
+Please note however, that as each application is different, Rogers cannot warrant that its products are fit for any particular end use, and, as
+always, Rogers recommends that the circuit designer and/or the end user test the properties and performance of these materials in each
+proposed application to determine their fitness for use over the entire product life.
+
+
+
+
+Prolonged exposure in an oxidative environment may cause changes to the dielectric properties of hydrocarbon based materials. The rate of change increases
+at higher temperatures and is highly dependent on the circuit design. Although Rogers’ high frequency materials have been used successfully in innumerable
+applications and reports of oxidation resulting in performance problems are extremely rare, Rogers recommends that the customer evaluate each material and
+design combination to determine fitness for use over the entire life of the end product.
+
+The information in this data sheet is intended to assist you in designing with Rogers’ circuit materials. It is not intended to and does not create any
+warranties express or implied, including any warranty of merchantability or fitness for a particular purpose or that the results shown on this data sheet
+will be achieved by a user for a particular purpose. The user should determine the suitability of Rogers’ circuit materials for each application.
+
+These commodities, technology and software are exported from the United States in accordance with the Export Administration regulations. Diversion contrary to
+U.S. law prohibited.
+							
+RO4400, Kappa, and the Rogers’ logo are trademarks of Rogers Corporation or one of its subsidiaries
+©2021Rogers Corporation, Printed in U.S.A. All rights reserved.
+Revised 1536 101921 Publication #92-541
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                                        Page 4 of 4
+

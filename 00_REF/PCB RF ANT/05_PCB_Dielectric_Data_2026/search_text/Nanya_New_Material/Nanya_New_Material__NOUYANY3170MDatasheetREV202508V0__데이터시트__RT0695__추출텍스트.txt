@@ -1,0 +1,60 @@
+  Mid-Loss & Halogen-free & Excellent Thermal Resistance
+                  NY3170M/NY3170MP
+     特点 FEATURES:
+            高TG无卤无铅兼容 High TG Halogen-free and Lead-free compatible
+            低Z-CTE值 Low Z-axis CTE
+            优秀的尺寸安定性 Excellent Dimension Stability
+            低的介电损耗和介电常数 (Low Dk 4.10@10GHz and Low Df 0.0085@10GHz)
+
+
+     应用领域 APPLICATIONS:
+            路由器 Router
+            服务器 Server
+            基站 Base Station
+            存储 Storage
+            高性能笔记本 High-performance Notebook
+
+
+NY3170M基板典型性能 Typical Properties for NY3170M Laminate
+  属性                           项目                        测试方法           测试条件            单位        典型值
+Property                       Item                    IPC-TM-650     Test Condition    Unit   Typical Value
+                                                          2.4.25           DSC           ℃           \
+                          玻璃态转换温度 Tg                      2.4.24          TMA           ℃          190
+                                                         2.4.24.4         DMA           ℃          250
+              X/Y轴热膨胀系数CTE,X/Y-axis（2116×12）             2.4.24.5       ＜Tg,TMA        PPM/℃      16\17
+ 热性能                                                                    ＜Tg,TMA        PPM/℃        40
+                           Z轴热膨胀系数                        2.4.24
+Thermal                                                                 ＞Tg,TMA        PPM/℃       210
+                   Z-axis Expansion（2116×12）
+                                                          2.4.24        50~260℃          %          2.3
+                           热裂解温度 Td                      2.4.24.6     TGA(5%W.L)        ℃          385
+                                                                          Clad          Min        ＞60
+                           耐热性 T288                      2.4.24.1
+                                                                         Etched         Min        ＞60
+                                               1MHz                                              3.90\3.60
+                       介电常数 Dk                           2.5.5.9
+                                               1GHz                    C-24/23/50        -       3.87\3.57
+                     (R/C:55%/70%)
+                                               10GHz   SPDR method                               4.10\3.65
+
+ 电性能                                           1MHz                                            0.0076\0.0082
+                       介质损耗 Df                           2.5.5.9
+Electrical                                     1GHz                    C-24/23/50              0.0078\0.0084
+                     (R/C:55%/70%)                                                       -
+                                               10GHz   SPDR method                             0.0085\0.0089
+                    体积电阻 Volume Resistivity                                            MΩ-cm     2.4×109
+                                                         2.5.17.1      C-96/35/90
+                    表面电阻 Surface Resistivity                                            MΩ       1.2×108
+                     吸水率 Water Absorption                2.6.2.1     E-1/105+D-24/23     %         0.12
+               剥离强度 Peel Strength (HTE)         1oz                                                 1.0
+               剥离强度 Peel Strength (RTF)         1oz       2.4.8       As Received      N/mm         0.8
+物理性能
+              剥离强度 Peel Strength (HVLP)         1oz                                                  \
+Physical
+                          弯曲强度                 Warp                                                490
+                                                          2.4.4       As Received      N/mm2
+                    Flexural Strength           Fill                                               420
+                     耐燃性 Flame Resistance                 UL-94        A&E-4/125         -         V-0
+
+IPC-4101 Type Designation : /130                                                               Rev: 202508V0
+

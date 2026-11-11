@@ -1,0 +1,107 @@
+{
+  "status": "PASS",
+  "workbooks": 38,
+  "sheets": 86,
+  "unique_condition_observations": 57340,
+  "original_fields_preserved": 142,
+  "original_json_rows_equal": 57340,
+  "all_original_json_types_match": true,
+  "saved_cell_type_categories_match": true,
+  "all_saved_data_cells_compared": 3719868,
+  "native_hyperlinks": 61807,
+  "verified_local_hyperlink_targets": 2711,
+  "overview_rows": {
+    "회사별 자료": 37,
+    "제품 목록": 1058,
+    "출처 목록": 1756,
+    "검토 항목": 17,
+    "원자료 적층": 6,
+    "수집 메모": 272
+  },
+  "observation_canonical_sha256": "069cdc67cb3259313cfcd2701c4b2c45abb5cfa4d9ba960e5e298b44124edf6d",
+  "source_files": {
+    "catalog/sources.json": "704d4c5e49cdca5c450be3b5ffb80f247b18e700037962dc4184aef80353a294",
+    "catalog/products.json": "13f5ffa82c76eeda305d49fd80a9fa2b8c929662742aa8f1590e192eea6b9469",
+    "catalog/data_dictionary.csv": "950514c702813453426632828529173466c7fe74271668c043d5102a545d6ce5"
+  },
+  "native_engineering_sources": {
+    "JLCPCB": {
+      "templates": 2926,
+      "component_rows": 41077,
+      "native_files": 31,
+      "all_original_values_and_types_match": true
+    },
+    "PCBWay": {
+      "templates": 298,
+      "component_rows": 4296,
+      "post_lamination_groups_preserved": true,
+      "all_original_values_and_types_match": true
+    },
+    "Wurth Elektronik": {
+      "source_rows": 1598,
+      "extracted_key_values": 66582,
+      "all_original_values_and_types_match": true,
+      "prefix_overlap_source_rows": 167
+    },
+    "source_sha256": {
+      "board_type_1_page_001.json": "91173edae5be7456241956b8d0d8850a023dc3f8d65e45210713137e17df3945",
+      "board_type_1_page_002.json": "28b12d507a97203c3d394705a492635745f86151ea899ec53ef860c6985aa59f",
+      "board_type_1_page_003.json": "f787c661424ac1e08c5966921369bff2ec9b7498d66c1a8dacbda6b0115c3668",
+      "board_type_1_page_004.json": "b47233383359466b9be0b57cf41e41e22106ed261a47889550ba41b7cb9afdf7",
+      "board_type_1_page_005.json": "5fac694c30ef23b1c2df2e84822904d64b6298fe47b09c9e9cd2dfd7100d76d2",
+      "board_type_1_page_006.json": "9d9ff1a6ab52b8df8b219a81da36ed76d855927a5d650efcda32a3f0c9f47c0d",
+      "board_type_1_page_007.json": "fc2b1e50e9924a834e78983194532d99a2b9949c417af3dab7144723eeb1ccbb",
+      "board_type_1_page_008.json": "b08b919865ece1692bae7ab8e2d47ee11650b27f366805b0c82915341f76f392",
+      "board_type_1_page_009.json": "f026a5713332902d1c5a5e0318757e109c25765ebcc5d07695dc70af4846107d",
+      "board_type_1_page_010.json": "df80537df2e3e1c22efd6a219e880db60066f7f3f08e315ccdefe798f61984d4",
+      "board_type_1_page_011.json": "4b4e609f1d440d0d57d4ec7347131c731d32f72e4b3d395e0171ff335c224430",
+      "board_type_1_page_012.json": "74a20626c8cb724aa1b96af18d1ee374d3334941d70b8467fcb1f55e01e53826",
+      "board_type_1_page_013.json": "c0390f4bf86d5cb58bfc141722001533a4fe5a778b6bedda793f62a53f49adf0",
+      "board_type_1_page_014.json": "0326e75fbf7aa2b4c1e75d25186bd3f5d8f6773260259631d375a5a8b617768c",
+      "board_type_1_page_015.json": "ef0ca4bf350af1957638afa9a257478939897167ffc56840e1c36ce89da54946",
+      "board_type_1_page_016.json": "1222d8f6abaa46a425911815ac5d6e0821e76573dc4eec33914934ba310cd9c9",
+      "board_type_3_page_001.json": "704ebee86542ada59cc95a3643dcebe753df887fd4756d8ea5aa456b98482250",
+      "board_type_3_page_002.json": "3e2aecd6af9eba86d8f46ee12a9a548163d499b05415c28047147304a3253362",
+      "board_type_3_page_003.json": "95554d9110641198d350b321af7b8ee379a47cf5a44eae53872cd66bb9300403",
+      "board_type_3_page_004.json": "6efa061f5d5a05025eefb6297342f6d653688529e4704cd409b48dd84012b525",
+      "board_type_3_page_005.json": "8abcd197bec9c6ba85c41f6210e36f96fb55dddcba9729682070529a30d0af22",
+      "board_type_3_page_006.json": "95056dbfde0e2191b9d5d689a42321a1de4a186a3048a530d36b689fa6e02360",
+      "board_type_3_page_007.json": "0d9dea6e9bacd4f19cbb6bbc6c07132d37b3253ed4f05fadf051d14b266b18bc",
+      "board_type_3_page_008.json": "29392f68883ab59df05d75776a4c60c60259fd577c32d1c901ef6a3c0a8fd2af",
+      "board_type_3_page_009.json": "f3f998202ac0c05508fd3bed9d5be2747c19257cbeeb5258d9227994a43d15e4",
+      "board_type_3_page_010.json": "8cdb96334999e2c8abbaed81df817029dc25227a4f39f66d3b5eb18a6c62f89d",
+      "board_type_3_page_011.json": "2ed93017f0b74eba37380568dc2a5326b031f312e9a74ada6223a94b2ab1eb86",
+      "board_type_3_page_012.json": "3bc731ba7dfebe1110ac18c1bdd6390bf9b1547dffd4bffbc4eb150d893af520",
+      "board_type_3_page_013.json": "b7dcf75220f2f4858c0697c27c8d1c18bbd30fb3d2e38c33c8e234628c72a164",
+      "board_type_3_page_014.json": "a6953a12e3088aefbb06837927d2d36697623dc57e1bbef281e7affbc09519f3",
+      "board_type_3_page_015.json": "c50e61d9f911c031108eab30f038179c528720ffbf053b535906c3f7256d0655",
+      "fab_pcbway_stackups.json": "c259f3d4cef50c3007fc7e95f2d2143c4945b9af15248f1349831cfc0c2dd267",
+      "fab_we_raw_fields.json": "c5c576dc74ff51fbbcdce37763eb729adafca5939651734fa9603b0858db3d91"
+    },
+    "input_spec_sha256": {
+      "JLCPCB.json": "ed6f7fb8754525998292f4ef5840f528368f9200b2c75b606fb45138eaf16e05",
+      "PCBWay.json": "9de21a44ce4cb9029858f4ecaa336645533932811efaa41b60cad5385b3cac58",
+      "Wurth_Elektronik.json": "9be8222929b173080139cae29b49f308a941b74e24e0bf7d0fe7220cee245dbb"
+    }
+  },
+  "visual_review": {
+    "status": "PASS",
+    "representative_sheets": 86,
+    "report": "Code/.local/dielectric-excel/visual_qa_summary.json"
+  },
+  "native_excel_gui_opened": false,
+  "jlc_export_method": "85 Artifact Tool generated chunks, standard OOXML package assembly into the original 4 sheets, followed by final full-spec saved-cell and type comparison.",
+  "preservation": [
+    "Blank or null is never substituted with zero.",
+    "JSON preserves omitted keys, explicit nulls, nested values and original types.",
+    "Integers longer than 15 decimal digits are text in display columns and exact integers in original JSON.",
+    "Text longer than 30000 characters is split into numbered adjacent fields without loss.",
+    "Every saved data cell, native hyperlink, table filter and freeze pane is independently checked."
+  ],
+  "limitations": [
+    "Published observations are not verified solver input or independent product counts.",
+    "WE raw_fields include prefix-overlap capture in 167 source rows and cannot map directly to physical layers.",
+    "Raw JSON and archive fields can require expanding the selected cell to read all text.",
+    "Representative PNG rendering is supplementary; all workbook data is verified against prepared source values."
+  ]
+}

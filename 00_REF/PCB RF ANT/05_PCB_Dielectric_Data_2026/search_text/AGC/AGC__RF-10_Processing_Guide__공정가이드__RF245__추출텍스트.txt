@@ -1,0 +1,570 @@
+                                           RF-10
+                                         with fastRise TM
+                                    General Processing Guidelines
+
+
+General Information                                      Storage
+Ceramic/PTFE Laminate                                    Ceramic/PTFE Laminate
+RF-35TC, RF-35A2, RF-60TC, RF-10 and TSM-DS3 are         Ceramic/PTFE laminates should be stored flat in a
+thermally stable ceramic filled PTFE materials. They     clean dry area at room temperature. Cores will
+were developed to meet the demanding                     benefit from being stored between two stiffeners in
+requirements for thermally stable dielectric             order to prevent unnecessary bending of the layers
+constants and plated through-hole reliability in         or damaged corners. Soft slip sheets should be used
+extreme environmental conditions.                        to prevent dust and debris from being embossed
+AGC’s ceramic/PTFE laminates are low loss,               into the material. With proper storage conditions,
+dimensionally stable, thin core materials for            cores have an indefinite shelf life.
+multilayer digital or RF applications that can be
+combined with our fastRiseTM prepregs for the            fastRise™
+lowest stripline insertion losses. A lightweight style   Shelf Life
+of fiberglass and very high loadings of ceramic          AGC will not ship fastRise™ material with less than
+particles yield excellent dimensional and electronic     90 days of remaining shelf life. In the event that
+performance, as well as ease of processing. Most         prepreg expires, please contact with your AGC
+materials are available in thickness multiples of        technical sales person for assistance to coordinate
+0.005” (0.125mm), making it ideal for double-sided       retesting the expired prepreg.
+or multilayer applications.
+Processing recommendations for ceramic/PTFE              Refrigeration
+laminates are similar to other types of PTFE based       fastRise™ should be stored flat in a sealed bag below
+AGC materials. It should be noted that these             42°F. Refrigeration temperatures of 14°F – 32°F are
+recommendations are based on standard industry           ideal for preventing unintended polymerization
+practices and optimal parameters may differ              (cross-linking).
+somewhat, depending on available processing              Upon removing fastRise™ prepreg from
+equipment.                                               refrigeration, it should be allowed to acclimate to
+                                                         room temperature in a sealed bag. This will reduce
+fastRise™ Prepregs                                       the chance of moisture condensation on the
+Various laminate cores are used in conjunction with      prepreg and will also provide a more consistent start
+fastRise prepreg to produce multilayer boards for        temperature for the lamination process. Bags
+the RF/digital/ATE multilayer markets. fastRise,         should be resealed when not in use.
+when used in a symmetrical board design, will result
+in optimum electrical and mechanical performance.
+Because of the thermoset properties of the bonding
+agent, multiple bonding cycles can be achieved
+without worry of delamination. In addition, the
+recommended press temperature of 420°F [215°C]
+is within reach of most board shops.
+Handling
+Ceramic/PTFE Laminate
+PTFE is a thermoplastic material which is very stable electrically and chemically when compared with common
+thermosetting resins such as epoxy, polyphenyleneoxide, polyimide and cyanate ester. Part of what gives PTFE its
+superior performance over frequency and temperature also makes the pure resin relatively soft. It is for this reason
+that all AGC laminates are reinforced with glass fabric. The glass fabric reinforcement of the substrate greatly
+increases stability in the X and Y axis over non-woven or unreinforced PTFE products. While the glass fabric
+provides excellent dimensional stability, the following process and handling precautions should be taken to
+prevent damage or deformation of the laminate during fabrication.
+
+Avoid mechanical scrubbing
+As with thin core or flexible substrates, mechanically scrubbing will stretch and deform the material. The pinch
+rollers used to secure the panel during scrubbing will also cause dents as particle or brush material are pressed
+into the surface of the laminate. Chemical cleaning is much preferred. Eliminating mechanical cleaning and
+unnecessary handling will improve the dimensional accuracy of subsequent processes by preventing mechanical
+distortion of the laminate.
+
+Do not pick up a panel horizontally by one end or edge
+By allowing the material to flop over you may stretch the copper and substrate. Lift the panel by two parallel edges;
+preferably the two closest dimensionally.
+
+Prevent contaminant deposits on the material or copper
+The use of clean protective gloves and slip sheets will prevent contamination and staining. You will not need to
+remove oils, grease or fingerprints if you don’t deposit them.
+
+Do not mechanically abrade the PTFE surface after etching/removing the copper
+If left undisturbed, the PTFE surface is very good for adhesion of solder mask, prepreg and bonding adhesive
+without further preparation. The etched surface of the PTFE is very wettable due to the rough tooth structure left
+behind after cooper removal. If the surface becomes disturbed, further surface preparation using sodium or
+plasma etching can improve wettability and adhesion to the surface.
+
+Do not stack panels directly on top of each other
+Particles or debris on the surface of the panel can become imprinted into the copper and substrate of adjacent
+panels. The preferred method of storage is to rack the panels vertically. If panels must be stacked use clean, soft,
+slip sheet material between each panel and keep stack height to a minimum.
+
+fastRise™ B-Stage
+fastRise™ prepreg is supplied between two release sheets. The surface of fastRise™ may be tacky (especially for
+freshly manufactured material). Although it is recommended to allow refrigerated fastRise™ B-Stage prepregs to
+acclimate prior to opening a sealed bag, in some cases it may be advantageous to use the prepreg while it is cool*
+which will reduce the tackiness of the material and make handling easier.
+
+*do not allow condensation to form on the prepreg
+Inner Layer Preparation
+Acclimation
+If the laminate has seen extreme temperatures during shipment or storage, the material should be placed in
+ambient conditions for 8- 24 hours prior to processing.
+
+Scaling
+All laminates experience movement after the copper foil has been etched. Various factors such as laminate
+thickness, glass style, construction, copper foil thickness, and circuit design all contribute to the characteristic
+known as dimensional stability. The data is reference only and, again, is dependent on the factors listed above.
+Most printed circuit board shops determine artwork compensation data by running samples or estimating based
+on previous experience.
+
+                                  Dimensional Change in Parts Per Million (PPM)
+        Material Designation                              X                                      Y
+               TSM-DS                                 200-400                                200-400
+           RF-35A2, 35TC                              200-400                                200-400
+              RF-60TC                                 400-600                                400-600
+                RF-10                                 400-600                                400-600
+
+
+Lamination
+Quick Start
+ The following chart is provided as a general starting point for lamination recipe development. The later sections
+ provide substantially more detail allowing recipes to be optimized for specific applications.
+
+
+                                      Low Flow /                                           High Flow /
+                                                                   Standard
+                                    Foil Lamination                                         30+ Layers
+          Vacuum                               Full vacuum is recommended through entire cycle
+       Vacuum Delay                      Hold vacuum 10-20 minutes before applying heat or pressure
+       Heating Rate                                       3 - 8°F /min (1.7 – 4.4°C/min)
+       Critical Range                                     176°F – 302°F (80°C – 150°C)
+        Pressure                     100 – 200 psi               200 – 350 psi                  350 – 500 psi
+    Cure Temp / Time                                   420°F -480°F for 60 – 120 minutes
+  (measured at bondline)                             (215.5 – 248.9°C for 60 - 120 minutes)
+      Cooling Rate                                       Less than 6°F/min (3.3°C/min)
+        Breakdown                Breakdown or transfer to cold press when bondline is less than 200°F (93.3°C)
+*Please see the section on Foil Lamination which covers additional process parameters
+
+
+Flow Patterns / Thieving
+Solid copper boarders with small alternating “star burst” vent lines are ideal. Interlocking thieving patterns, offset
+diamonds, honeycombs, or other patterns which inhibit resin flow channels are also acceptable. Interlocking “star
+burst” flow patterns or other patterns which may promote resin flow channel formation should be avoided.
+
+Padding and Conformance Materials
+Press padding (outside separator plates) is recommended. Use of conformance materials such as AGC TacPad,
+PTFE skive film, clutch lamination, or others are often helpful to balance pressure variations induced from circuits.
+Pressure
+ Excessive pressure should be avoided; it can distort circuit patterns, induce resin/filler separation, or create
+ flow channels.
+Full pressure should be achieved before the fastRise™ reaches 248°F (120°C). fastRise™ resin flow has been shown
+to be directly proportional to lamination pressure. Pressure can be used to control flow so that high-flowing
+fastRise™ part numbers will act as no-flows or low-flowing part numbers achieve additional flow.
+
+For example, FR27-0035-26 resin flow can be approximated with the following equation:
+
+                                          Flow % = Pressure X 0.0002 [psi]
+
+Lower pressures have been linked to decreased grain-direction scale variation between panels (see Pressure
+Effects on Scaling below). This effect was not observed in the fill-direction. Although low pressures can be used to
+reduce grain-direction scale variation, it is advised to modify heating rates before reducing the pressures; heating
+rates have a larger impact on scale variation and the risk of inadequate pressure is avoided. Many fabricators find
+that a lamination pressure of 200-350 psi is effective for most products. In the event that high flow is required (e.g.
+heavy copper, via filling, etc.), some fabricators increase lamination pressure to 350-550 psi. Likewise, for low-
+flow applications (e.g. cavities, foil lamination, etc.) pressure ranges of 100-200 psi are often advantageous.
+
+
+
+
+Low flow applications
+Where limited or no resin flow is required, there are low resin flow formats of the fastRise™ and the engineer
+should consider using these types along with exploring how to manage the flow level with pressure and time in
+the low viscosity window, with the specific design of the PCB.
+It is strongly recommended that suitable conformal press materials are used as well as employing methods for
+damming the resin flow in cut-outs or cavities.
+
+Where cut-outs are made in the fastRise™, damming methods help with limited registration, restricted clearance
+to vias near the cavity, and gathering at the cut path when using mechanical processes. Although the minimum
+pressure should be used, pressure must be adequate to achieve adhesive contact surrounding the cutout area.
+Extending time in the low viscosity window may be helpful.
+Temperature
+Resin Flow Window / Critical Range
+fastRise™ resin gels and melts between 176°F - 302°F (80C – 150°C) and reaches its lowest viscosity between 215°F
+– 260°F(102°C – 127°C). Extending the time in which the resin is at its lowest viscosity can improve flow and is
+advantageous in hard to fill applications (e.g. heavy copper, embedded component cavities, via filling, etc.).
+Lengthening the time in this low viscosity window is accomplished by reducing the heating rate or by adding a
+dwell of up to 1 hour at 260°F (127°C).
+
+Heating Rate
+A cold start of the press is desirable. Typical fastRise™ heating rates are 3°F /min – 8°F /min (1.7°C/min - 4.4°C/min)
+and rates of 3°F /min – 10°F /min (1.6°C/min – 5.5°C/min) have been successful. In difficult to fill applications such
+as heavy copper (>1oz.), via filling, etc. or in high layer count boards, a slow heating rate should be used. It is
+strongly recommended that low heating rates be used if the process is to accommodate tight registration
+requirements or high layer counts. Data has shown that lower heating rates (i.e. 3°F/min) can provide substantial
+improvements in registration repeatability.
+
+
+
+
+Curing
+Curing begins at 395°F and fastRise™ curing processes are usually designed to hold the bondline between 420°F –
+450°F for a minimum of 1 hour. Curing temperatures of up to 480°F can be used and the elevated temperatures
+will achieve performance gains while lower temperatures have also been successful in hybrid lamination cycles.
+AGC has observed that higher lamination temperatures combined with a 2 hour dwell can lower Zaxis CTE values
+by more than 30%. High-reliability applications often use a 2 hour cure at the elevated temperatures. The
+reduction in Z axis CTE is related to the resin content of the fastRise™ part number and will vary by fastRise™ part
+number. Elevated curing temperatures have also been shown to improve peel strengths. For this reason, it is
+strongly recommended that foil laminations use a cure temperature of at least 450°F. Hybrid laminations have
+successfully been accomplished by curing at 395°F for 3 hours. AGC advises caution as this is the minimum possible
+cure temperature and adhesion may be reduced.
+
+Cooling
+A slow cool is necessary to avoid any issues associated with delamination. The hot press should be cooled below
+200°F before transferring to a cold press.
+Foil Lamination
+fastRise™ Selection
+FR27-0040-43F and FR25-0021-45F were specifically designed for foil laminations and tend to provide superior
+surface quality and aesthetics. FR27-0040-43F is preferred due to the increased chances of drill smear with FR25-
+0021-45F. Other fastRise™ part numbers will also work with foil lamination, but additional process development
+may be required. Lower flowing part numbers typically yield better results.
+
+Recommended Foils
+TWS or TW foils from Circuit Foils is ideal. Other copper foils with sufficient dendrite tooth structure may also be
+acceptable.
+
+Pressure
+Foil lamination requires minimal pressure. 100-200 PSI should be adequate and higher pressures may be used to
+fill copper that is plated to 1-2 oz. If the surface appearance shows signs of excessive flow or flow channels, the
+pressure should be reduced. Pressure has a little to no impact on peel strength. Cure temperature is much more
+effective at improving bond strengths.
+
+Temperature
+Slower heating rates are recommended for foil laminations and an added 60 minute dwell at 225°F (107°C) may
+also be advantageous to allow the resin to flow uniformly without flow channels. When heating from 225° (107°C)
+to 450°F (232°C), much lower heating rates of 3°F/min – 5°F/min should be used. A cure temperature of 450°F
+(232°C) for a minimum of 1 hour should be used for foil laminations. Peel strengths increase with elevated cure
+temperatures and extended cure times. Cooling rates should not exceed 6°F/min (3°C/min) until bondline is less
+than 200°F (93°C).
+
+Foil Lamination Surface Quality
+Excessive resin flow can cause flow channels which may be visible on the foil surface after lamination. If the
+adhesion is good in some areas but delamination is found in other areas, it is likely the result of thermal shear
+stresses and there are several steps which can be taken. Cooling should never be done by transferring the
+laminates from a hot press to a cold press. Cooling rates of 2°F/min – 4°F/min or lower are ideal. An aluminum
+sheet and/or conformal padding (e.g. AGC TacPad, skive PTFE, PacoPlus, etc.) placed between the panel and the
+steel plate will help reduce transferred shear stress. Press padding, such as PacoPad will also help.
+
+Several fabricators have found clutch laminations helpful in which a layer of higher flowing prepreg (e.g. FR4,
+acrylic, polyimide) is placed between release sheets (e.g. PTFE film, foil release, PVDF film) that are then placed
+against the part during lamination. The higher flowing prepreg will flow providing hydrostatic pressure as well as
+offsetting thermal stresses.
+Additional Notes
+Poor Pressure Distribution
+Constructions containing very low pressure areas with stacked regions of little or no copper between layers (e.g.
+coupons, ground clearances, fiducials, etc.) may require special considerations to achieve ideal bonding. Resin
+from the higher flowing fastRise™ part numbers combined with higher pressures will fill the low pressure areas to
+balance the pressure. Although the low flow fastRise™ may be capable, caution is advised to ensure that adequate
+resin flow and resin volume are present to avoid poor adhesion and resin starvation. Copper distribution should
+be as balanced as possible especially with thicker or plated circuits.
+
+Multiple Ply Constructions
+Resin flow can increase dramatically if multiple plies of fastRise™ are used against each other. If high-flow is not
+desired, pressure should be reduced to approximately 25%-50% to prevent excess resin flow, resin separation, or
+formation of flow channels.
+
+Encapsulating the conductor pattern
+Although fastRise™ film is not porous, it is flexible and will conform to circuit patterns. The film can have an
+elongation of 30-300% and will fill circuit patterns as long as there is sufficient resin to flow within the areas.
+
+
+
+
+Drilling
+Quick Start
+
+ The following chart is provided as a general conservative starting point for drill process development. The later
+ sections provide substantially more detail allowing the process to be optimized for differing applications.
+
+ Please contact Technical Service for a Drill Table Creator file to calculate specific process parameters.
+
+                                               Imperial units                            SI units
+                                            Aluminum or Phenolic                   Aluminum or Phenolic
+          Entry Material
+                                         (0.010” – 0.015” preferred)           (0.25mm - 0.38mm preferred)
+         Backer Material                              Rigid Phenolic, Slickback, or comparable
+  Cutting Speed (Surface Speed)                    100 SFM                                   30.5 MPM
+              Chip Load                            0.0010 in                                   25.4 μm
+                                                                        0-1000 ms
+               Dwell
+                                       (increase dwell time as speed and chip load deviate from above recommendations)
+              Hit Count                                                   50-300
+Drill Bits
+Standard 130° point geometry, 32 - 45 helix angle PCB carbide drills work well with all AGC ceramic/PTFE-based
+laminates. Stack height should not exceed 2/3 the flute length of the smallest diameter drill being used.
+
+Sharp drill bits are critical to any PTFE drilling; new drill bits should always be used. Undercut drill bits are
+recommended, but past studies have shown that some drill bit brands may obtain better results using their
+standard drill bits.
+
+
+
+
+Chip Load
+A nominal chip load of 1.0 mil (25.4 μm) is a recommended starting point for all tool sizes. Increasing or decreasing
+the chip load from 1.0 mil (25.4 μm) has not been found to offer any quality improvements. Increasing the chip
+load to 1.25 mils (31.8 μm) may provide acceptable hole quality and improved productivity. If drill smear is visible
+and bits are sharp, reduce chip load until it is eliminated.
+
+Cutting Speed
+Drill speeds of 100 SFM (30.5m/min) or less is recommended. Slower speeds offer the greatest hole-quality
+improvements; they allow generated heat to dissipate before smearing PTFE. Drill speed can be increased due to
+equipment limitations, but added dwell times may become more important. If drill smear is visible and bits are
+sharp, reduce cutting speed until it is eliminated.
+
+Dwell Time
+Lower surface speeds will reduce or eliminate the need for dwell. If ideal cutting speeds cannot be obtained, a
+250ms dwell is recommended for initial process setup in order to cool the drill bit between holes and prevent
+softening of the PTFE that will later smear across interconnects. Past AGC studies have shown that hole-wall
+quality may improve as dwell times are increased to as much as 1000ms.
+
+Peck Drilling
+Peck drilling should be avoided where possible; it has been shown to increase drill bit wear as well as increase
+process time. Peck drilling may be required in some situations (e.g. bird nesting, hole plugging, chip extraction on
+thick panels, breaking thin drill bits, etc.). Peck drilling with a full withdrawal of the drill bit after each peck will
+reduce heat buildup and debris accrual. A general rule of thumb for peck depth is 20 to 30 mils per peck and should
+be optimized at the board shop. If traditional peck drilling is not used, hole-wall quality may be improved with the
+use of a “clean” peck where the peck depth is set to equal that of the Phenolic entry. In this, the entry material
+will effectively clean the drill bit, retract to clear Phenolic debris and cool, and then reenter to drill the hole.
+Past studies have shown that peck drilling ceramic/PTFE based PCBs is necessary for micro diameters (12mil and
+14mil) to remove enough debris in order to prevent tool breakage. However, for 28mil holes, it is not clear that
+peck drilling <0.200” ceramic/PTFE based PCBs is required. Some drill studies suggest that peck drilling will leave
+a small circular ring where the drill bits stop in the hole.
+Hit Count
+AGC recommends using new drills for the best hole quality. Hole wall quality will be directly related to drill bit hit
+count. AGC’s ceramic/PTFE laminates have very high loadings of ceramic particles. A conservative hit count is 150
+hits/bit. 200-300 hits/bit can be used for less critical application. 50-100 hits/bit might be necessary if drill smear
+is a problem.
+
+Due to the ceramics used in TSM-DS3, RF-35TC, and RF-60TC, close attention must be paid to drill bit wear.
+Minimize hit counts as necessary to maintain hole wall quality.
+
+For very demanding hole wall specifications it might be necessary to drill the holes, pass the PCB through an
+electroless treatment or flash plating treatment to essentially make the debris in the hole rigid, then re-drill to
+snap the debris from the side of the hole wall. Another strategy for critical hole wall quality is to slightly under drill
+(using undersized diameter drill bit) the hole, thereby removing most of the PTFE-ceramic from the hole, flash
+plate the hole, and then re-drill it with the proper size bit. If undersized drilling is used, flash plating between drill
+sizes may not be necessary.
+
+Entry / Backer Materials
+Standard Phenolic (≥0.020” thickness) or aluminum (0.007”-0.015”) entry material is acceptable. A hard Phenolic
+backup board (from 0.060” to 0.125” thickness) is recommended to reduce bottom-side burring.
+
+Aluminum or Phenolic entry serves to abrade Teflon debris off the bit. Optimizing the amount of Phenolic to clean
+the drill tool between hits prevents bird nesting and smear, and is a necessary factor in high quality ceramic/PTFE
+drilled holes. Do not worry about Phenolic causing excessive drill wear. Although the process window is wider for
+drilling double sided PCBs vs. multilayer PCBs, one should follow the same strategies and tactics that one would
+use to fabricate a multilayer based on ceramic/PTFE cores.
+
+The pressure of the drill foot should be a minimum of 40 psi and should be increased if topside burring is excessive.
+
+Laser Drilling / MicroVias
+fastRise™
+The lasing of the fastRise™ part numbers will vary between the different part numbers; please consult the
+fastRise™ datasheet for details regarding the ideal part numbers. Standard fastRise™ part numbers typically yield
+improved hole-wall quality.
+
+                                                     FR-28-0050-40
+
+
+
+
+                                                Photo by Hughes Circuits
+Hole Wall Preparation
+fastRise™ and ceramic/PTFE laminates require a PTFE activation cycle. If AGC laminates are combined with
+fastRise™, panels will benefit from a desmear/etchback process performed prior to the PTFE activation.
+
+Desmear
+Plasma
+If panels have been exposed to moisture, bake the boards at 220°F - 250°F (104°C - 121°C) for 1 hour. Standard
+FR4/epoxy desmear processes should then be used. The desmear plasma time is typically half that of standard
+FR4/epoxy times because fastRise™ resin system tends to etch back very quickly.
+
+Permanganate
+Permanganate desmear IS NOT RECOMMENDED and has been shown to be very aggressive on fastRise™ resulting
+in excessive etchback. This is due to the high silica filler content and thermoset content in the resin system.
+
+PTFE Activation
+Plasma
+If panels have been exposed to moisture, pre-bake the boards at 220°F - 250°F (104°C - 121°C) for 1 hour. Plasma
+treat the PTFE resin using 70%/30% Hydrogen/Nitrogen gas mixture. 100% Helium may also suffice. Power settings
+for the RF-signal generator are typically 60-75% of full rated power for 30-60 minutes. Thick panels or high-aspect
+ratio holes may require extended plasma cycle times. Thick panels may also benefit from an additional 30 minute
+O2 plasma process prior to the PTFE activation plasma. Experience has shown that gases such as Helium and CF4
+are not as effective as Hydrogen as evidenced by sporadic plating voids and higher contact angles. The advantage
+of plasma etching is that it is a relatively safe procedure. Disadvantages include relatively long cycle times (35 to
+60 minutes) and short shelf life of the effect (4 – 24 hours).
+
+Sodium Etch
+Sodium Etches (e.g. Fluoroetch) work well with both fastRise™ and AGC’s ceramic/PTFE laminates. Follow the
+manufacturer’s recommended treatment process. Subsequently, bake for 1 hour at 250°F[121°C] prior to plating
+to remove moisture that may have been absorbed during the sodium treatment process. The advantages of
+sodium etching include long shelf life of the hole wall treatment, fast treatment time, and complete coverage. The
+primary disadvantage of sodium etchant is the volatility of the chemical.
+
+ Chlorine can have adverse effects on the sodium treatment. Do not subject exposed sodium etch treated holes
+ to heavily concentrated chlorine-based chemical processes.
+
+
+Process Example
+The following table is offered by March Plasma as a basic starting point recipe:
+
+ Power    Pressure                 Gas      Flow     Pnl Temp       Time
+                       Gases                                                                Function
+  (kW)      (mT)                  Ratios    (slm)       (°C)      (minutes)
+   4.5       250       O2 / N2    90 / 10    2.5         90          A/R                     Heating
+    4        250       CF4 / O2   10 / 90    2.5         99           10             Thermoset etch-back
+                                                                                Removes fluorine and cleans the
+    4        250         O2        100       2.5         99            5
+                                                                                              glass
+                                                                                 Activates PTFE. H2/N2 Cycle is
+   4.2       250         N2        100       2.5         99           30          typically more effective and
+                                                                                             reliable
+Note: Regardless of which method of hole wall treatment is used, desmearing of the thermoset resin should be done
+prior to treatment of the PTFE resin.
+Plating
+After the hole wall has been properly prepared, fastRise and the ceramic/PTFE laminates will accept either
+electroless copper or direct metallization plating. The electrolytic plating process is the same for PTFE or epoxy
+based materials. Typical plating consists of 1 – 1.5 mils [25μm - 35μm] of copper plate in the holes and/or on the
+surface. For high-aspect ratios or other difficult to plate applications, a second pass through the electroless process
+may be required to ensure proper hole-wall coverage. It may also be beneficial to run a short duration of
+electrolyzed copper, rinse etc., then restart the electrolyzed copper from the beginning to expose the hole wall to
+fresh chemistry.
+
+Image, Develop, Etch, Srtip
+Prepare the copper surface, apply dry film, and image and develop using a standard process. The copper surface
+preparation should consist of microetching the copper. Mechanical scrubbing (e.g. pumice scrub) is not
+recommended for thin core PTFE-based materials or multilayer inner layers due to possible registration issues and
+mechanical damage. The etching process is the same as for a standard printed circuit board. Machine settings
+should be appropriate for the copper thickness of the multilayer inner layers. Strip the photoresist using a standard
+process.
+
+Solder Mask
+Overview
+With the advantages of liquid photo imageable (LPI) soldermasks being their ease of use and resolution capability,
+they often do not have the same adhesion characteristics as the previous pure epoxy systems. This fact must be
+taken into account when applying LPI’s to PTFE laminates. The mechanism for adhesion of soldermask (or prepreg
+or bonding film) to the PTFE laminate surface is the condition of the PTFE surface prior to application. By nature,
+PTFE is a very low surface energy fluoropolymer and thus it has excellent non-stick properties, which make it highly
+popular in lubrication and release applications. However, the adhesion of the base copper cladding is achieved by
+lamination of the relatively rough treated copper surface to the PTFE material under high heat and pressure. This
+process is able to produce an excellent mechanical bond between the PTFE resin and the rough dendritic surface
+of the copper. It is the negative impression of the rough copper treatment that remains in the PTFE after etching
+the copper to form the circuitry pattern, which provides adequate surface area for mechanical bonding of the
+soldermask to the PTFE surface. Therefore it is important to eliminate traditional scrubbing techniques which may
+disturb or destroy this rough surface.
+
+
+      Solder Mask Adhered to
+        Rough PTFE Surface                                                         Solder Mask
+
+
+
+
+                                                                            PTFE Laminate
+With the need to replace the process a substitute process has been used which has several added benefits.
+Chemical cleaning of the copper surface offers the advantage of reduced mechanical stress on the material. This
+becomes critically important when dealing with thin laminates (<0.010” or 25 mm) and or critical dimensional
+tolerances in soldermask or second stage drilling or routing. The removal of the scrubbing application also
+eliminates pits and dents which may be caused by high pressure contact with the steel or ceramic coated steel
+pinch rollers typically used in scrubbing machines to prevent panel movement during rotary scrubbing. In rare
+cases where adhesion is poor, a plasma treatment may be used to activate the exposed PTFE surface.
+Pattern Plated Copper
+  1.  Etch panels as normal to define circuitry pattern.
+  2.  Allow plated metal etch resist (tin or tin/lead, in the case of nickel or gold surfaces obviously these will
+      remain) to remain on panel through post etch inspection processes to prevent copper surface
+      contamination, staining or oxidation prior to soldermask application.
+  3. Set up soldermask application process, prior to stripping or removing the metallic etch resist. Note: For
+      double sided soldermask application, set up solder mask process to apply soldermask to the side of the
+      panel with the largest copper area to be covered (i.e. if the ground plane is to be completely covered
+      with soldermask then this would be the first side coated).
+  4. Strip tin or tin/lead from copper surfaces. The copper surfaces should be bright and stain free following
+      tin or tin/lead strip. Note: Omit this process for nickel and gold finishes.
+  5. Chemically clean and roughen the copper surfaces using an acid or alkaline cleaner followed by a micro-
+      etch process which removes 30-60m” of copper. This should provide adequate surface area for adhesion
+      of soldermask to copper surfaces.
+  6. Dry panels thoroughly. If you do not have an adequate horizontal dryer, then an oven bake is
+      recommended at 150-170°F[66-77°C] for 15-20 minutes.
+      Note: Drying process should not cause oxidation of copper surfaces. If oxidation occurs reduce drying
+      time. PTFE LaminateSolder MaskSolder Mask Adhered to Rough PTFE SurfacePTFE Surface.
+  7. Allow panels to cool to room temperature (approximately 5-10 minutes) and immediately apply
+      soldermask.
+  8. Tack dry (LPI) or bake and cure (silk screened epoxy) soldermask per manufacturer’s recommendation.
+  9. Continue processing per manufacturer’s recommendation for LPI soldermasks (image, develop and cure).
+  10. For second side, repeat processes beginning with # 5.
+
+Panel Plated Copper
+  1.  Etch panels as normal to define circuitry pattern.
+  2.  Strip dry film resist from panels and rinse and dry thoroughly to prevent copper surface oxidation.
+  3.  Using clean white cotton gloves, perform post etch inspection immediately following dry film removal.
+      Move panels to soldermask process directly after inspection.
+  4. Set up soldermask application process while post etch inspection is taking place to minimize hold time
+      between etch, strip and soldermask application.
+      Note: For double sided soldermask applications, setup soldermask process to apply soldermask to the
+      side of the panel with the largest copper area to be covered (i.e. if the ground plane is to be completely
+      covered with soldermask then this would be the first side coated).
+  5. Chemically clean and roughen the copper surfaces using an acid or alkaline cleaner followed by a micro-
+      etch process which removes 30-60m” of copper. This should provide adequate surface area for adhesion
+      of soldermask to copper surfaces.
+  6. Dry panels thoroughly. If you do not have an adequate horizontal dryer, an oven bake is recommended
+      at 150-170°F [66-77°C] for 15-20 minutes.
+      Note: Drying process should not cause oxidation of copper surfaces. If oxidation occurs reduce drying
+      time.
+  7. Allow panels to cool to room temperature (approximately 5-10 minutes) and immediately apply
+      soldermask.
+  8. Tack dry (LPI) or bake and cure (silk screened epoxy) soldermask per manufacturer’s recommendation.
+  9. Continue processing per manufacturer’s recommendation for LPI soldermasks (image, develop and cure).
+  10. For second side, repeat processes beginning with step # 5.
+Solder Replow
+Hot air solder leveling (HASL) is a common method of protecting exposed copper circuitry. Two basic types of hot
+air level machines are used in the industry, horizontal and vertical. By far the more popular of the two is the vertical
+machine. It is less expensive and easier to maintain than the horizontal type. However, the vertical machine
+subjects the printed circuit board to a more severe level of thermal shock than the horizontal.
+
+Once the board is clamped in the vertical machine, the only preheat the board sees is the few seconds above the
+solder pot prior to immersion. Typical immersion times are 5 – 6 seconds from entry into the solder pot to
+complete withdrawal. This minimal preheat time can be particularly harsh on PTFE based laminates due to their z
+axis expansion characteristics. When using hot air solder leveling on PTFE laminates, AGC recommends a bake
+cycle of 2 – 3 hours at 300°F[150°C] just prior to the HASL process.
+
+The solder pot temperature should be maintained at 460°F - 480°F[238°C – 250°C] for optimal performance. Cycle
+time should be 5 – 6 seconds from the time of entry to the complete withdrawal of the board. Dwell time in the
+solder pot should not exceed 2 seconds. Longer preheat times and adjusted cycle times may be advantageous
+depending on design and processes.
+
+ROUTING / MILLING
+Machining of ceramic/PTFE substrates is typically more difficult than epoxy-based substrates due to the softness
+of the PTFE resin system. The style of fiberglass used in the substrate also affects the quality of routing with respect
+to burrs and fibers. The heavier the fiberglass weave, the more difficult it is to cut. AGC’s ceramic/PTFE laminates
+can be successfully machined using two flute end mills when the recommended methods and rout parameters are
+used. Rigid Phenolic entry and a rigid backer should be used.
+
+In some cases, adding paper (white paper or Kraft paper) between the Phenolic and the part allows better
+conformance to surface topography (e.g. circuits, soldermask, etc.) and may reduce burring. For tight tolerances
+or superior edge quality, a “rough cut” placed 0.005 in. -0.010 in. off the part edge may be run prior to the “finish”
+cut at the nominal part edge. Historical data have yielded the following recommended rout parameters.
+
+These parameters are good starting points for all standard AGC materials. Special materials such as those with
+heavy metal ground planes may require different rout parameters and are not addressed in this guideline.
+                Router Diameter                Spindle Speed                       Feed Rate
+        (mils)                      (mm)           (kRPM)               (in/min)               (m/min)
+         31.5                       0.8              50                   11.8                   0.25
+         35.4                       0.9              45                   11.8                   0.27
+         39.4                       1.0              40                   11.8                   0.32
+         43.3                       1.1              37                   11.8                   0.33
+         47.2                       1.2              34                   11.8                   0.34
+         51.2                       1.3              31                   15.8                   0.37
+         55.1                       1.4              29                   15.8                   0.41
+         59.1                       1.5              27                   15.8                   0.43
+         63.0                       1.6              25                   19.7                   0.45
+         66.9                       1.7              24                   19.7                   0.53
+         31.5                       0.8              50                   11.8                   0.25
+         35.4                       0.9              45                   11.8                   0.27
+         39.4                       1.0              40                   11.8                   0.32
+         43.3                       1.1              37                   11.8                   0.33
+         47.2                       1.2              34                   11.8                   0.34
+         51.2                       1.3              31                   15.8                   0.37
+         55.1                       1.4              29                   15.8                   0.41
+         59.1                       1.5              27                   15.8                   0.43
+         63.0                       1.6              25                   19.7                   0.45
+         66.9                       1.7              24                   19.7                   0.53
+
+
+
+
+These guidelines can provide only basic and reference information for PCB fabricators. Because of different
+environment, equipment, tooling and so on, in all instances, the user shall determine suitability in any given
+conditions or applications. For more detailed processing information, please contact with the AGC engineer or
+sales representative.
+
+AGC Inc.
+agc-ml.info-maltimaterial@agc.com
+

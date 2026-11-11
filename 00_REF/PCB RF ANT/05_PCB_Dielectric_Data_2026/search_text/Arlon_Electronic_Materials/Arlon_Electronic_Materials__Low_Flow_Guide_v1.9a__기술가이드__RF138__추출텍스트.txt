@@ -1,0 +1,343 @@
+Low-Flow Guide                                                                      v1.09
+
+
+       Low-Flow prepreg, also referred to in some cases as “No-Flow” prepreg, is
+       engineered to have a controlled melt viscosity that results in controlled low
+       flow for laminating rigid flex products or bonding heat sinks to printed wiring
+       boards. Characterized by a high melt viscosity, Low-Flow prepregs do not
+       flow excessively into cutouts in heat sinks or past the edge of the rigid
+       segment of a rigid-flex board, so that insertion of devices into cutouts is
+       enabled, and flexibility of the flex section of the board is maintained.
+
+       Arlon manufactures a range of Low-Flow prepregs designed for a variety of
+       heat sink and rigid-flex bonding applications. Individual product lines may
+       also have some variation in available glass styles and flow ranges to further
+       provide optimized materials for specific applications.
+
+
+       47N Modified Epoxy Low-Flow (Tg=135°C) – 47N is optimized for bonding
+       PWB’s to heat sinks and can be processed at reduced laminating
+       temperatures and pressures to protect devices already mounted on partially
+       stuffed assembled devices. 47N is available in 106 and 1080 glass
+       reinforcement styles.
+
+       49N Multifunctional Epoxy Low-Flow (Tg=170°C) – 49N is designed
+       primarily for use in epoxy rigid-flex assemblies, and is available in both 106
+       and 1080 glass reinforcement styles with flow ranges to accommodate a
+       range of process requirements.
+
+       51N Lead-Free Multifunctional Low-Flow (Tg=170°C) – 51N is the first of
+       a new generation of low flow products designed with enhanced melt rheology
+       for better bond and wetting and using a resin system specifically engineered
+       for lead-free application environments.
+
+       37N Epoxy Modified Polyimide Low-Flow (Tg=200°C) – 37N is Arlon’s
+       basic polyimide Low-Flow product. Modified with epoxy for flow control and
+       enhanced adhesion, 37N was originally designed for use in polyimide rigid-flex
+       assemblies. 37N is available in 106 and 1080 glass reinforcements with
+       several flow ranges.
+
+       38N 2nd Generation Modified Polyimide Low-Flow (Tg=200°C) – Designed
+       with a significantly improved bond to untreated polyimide film, 38N was
+       designed to offer robust rheological characteristics for a variety of rigid-flex
+       designs utilizing adhesiveless flex products. 38N drops easily into a wide
+       range of process conditions.
+Defining Characteristics of Low-Flow Systems:
+Effect of Heatup Rate on Flow Characteristics
+                                                      Influence of Temperature Ramp Rate on Rheology
+                                                          33N Polyimide and 37N Low Flow Polyimide
+                                                     Determination of Minimum Viscosity at 3, 5, 7°C/min
+                                  1.E+08
+
+
+
+                                  1.E+07
+Log of complex viscosity, poise
+
+
+
+
+                                  1.E+06
+                                                                                                                             37N_3°C/min
+                                                                                                                             37N_5°C/min
+                                  1.E+05                                                                                     37N_7°C/min
+                                                                                                                             33N_3°C/min
+                                                                                                                             33N_5°C/min
+                                                                                                                             33N_7°C/min
+                                  1.E+04
+
+
+
+                                  1.E+03
+
+
+
+                                  1.E+02
+                                           50   70      90       110       130       150      170          190   210   230
+
+                                                                       Temperature, C
+
+Most resin systems will respond to a change in heatup rate to provide different melt viscosities and
+flows. This can be seen in the above chart comparing Arlon’s 37N low-flow product with Arlon’s 33N
+standard polyimide prepreg at varying heat-up rates of 3, 5, and 7°C/minute. The following illustrates
+the key differences resulting from changing heatup rate, comparing a low-flow product and a standard
+prepreg:
+
+
+
+
+The most significant difference is the almost two orders of magnitude higher viscosity (less flow) for
+the Low-Flow 37N than for the standard flow 33N polyimide. This is achieved by the use of high
+molecular weight additives that inhibit flow, as well as careful control of the resin system
+advancement during B-staging. This allows for tailored flow control in applications requiring low
+controlled resin flow as distinct from conventional prepreg which is optimized for flowing around
+etched lines and filling via holes in inner layers. Like standard flow materials, the melt viscosity of
+Low-Flow products can be varied by the adjustment of heat-up rate. The combination of heating rate
+and pressure will permit “fine tuning” of the Low Flow systems. Multiple flow ranges are available for
+certain products to help with process optimization.
+
+
+
+Low-Flow Characterization
+Low-Flow prepregs are outside the range
+which can be accurately measured by the
+standard IPC TM-650 4” x 4” flow test and
+require a special test method to measure
+and control flow. Because the amount of
+flow into cutout areas is critical, the
+standard test consists of a sample stack of
+prepreg with two 1” diameter holes
+punched in it, which is then laminated
+under specified test conditions. The
+amount of flow into the holes is measured
+as the number of mils (thousandths of an
+inch) by which the diameter of the circle is
+reduced by the resin flowing into the circle.
+To ensure accuracy in testing, Arlon uses
+an advanced optical comparator to make
+precise and repeatable measurements of
+Low-Flow materials (see Figure 1, right).
+
+The resin flows into the circle during
+lamination and the final diameter of the
+circle is measured (see Figure 2 and 3).
+The difference between the original 1.000”
+diameter of the circle and the final diameter
+is the amount of flow in mils. By this
+method (IPC TM650 2.3.17.2), a typical
+Low-Flow material may have anywhere
+between 0.030” and 0.120” of flow,
+depending on the grade and the degree to
+which the flow is restricted in the resin
+formula    and     treating    (prepregging)
+operation.
+Flow is expressed as the average amount of reduction in the diameter of the two 1” diameter holes
+after pressing. The diagram below shows the process. The diameter of the holes is fixed by the
+diameter of the punch size at a nominal 1.000”. After pressing the average flow is measured either
+using a caliper (Standard Measurement) or using the Arlon computerized optical measurement which
+calculates the mathmatical best fit for of over 500 points around the circle. The difference between
+the original diameter (1.000”) and the calculated final diameter is the flow in mils.
+
+
+
+
+Key Properties of Low-Flow Products
+Selecting the right Low-Flow product for an application, of course, requires evaluation of several key
+properties as they relate to the specific products being manufactured, as well as the details of the
+manufacturing process. Arlon offers the widest range of materials to accommodate the most complex
+PCB manufacturing and assembly. The following table lists key properties of Arlon Low-Flow
+products.
+
+General Properties of Arlon Low-Flow Products
+Selecting the Right Arlon Low-Flow Product
+for Your Application:
+
+If the application is Rigid-Flex bonding:
+
+• High Performance Polyimide Rigid-Flex (Adhesiveless Flex) — use 38N
+      - For 2.0 mils/ply, use Style 106
+      - For 3.0 mils/ply, use Style 1080
+• Commercial Polyimide Rigid-Flex (Acrylic Adhesive Flex) — use 37N or 38N
+     - For 1.8 to 2.0 mils/ply use Style 106
+     - For 3.0 mils/ply use Style 1080
+     - For general use, use 70-100 mils flow (37N), 70-120 mils flow (38N)
+     - To fill heavier copper, or for additional flow, use the 100-130 mils or
+       the 4-8% flow version of 37N
+      Note: 38N was engineered to have improved bond to untreated polyimide film, so if this
+      is critical to your process or to the end-device performance or reliability, 38N may be the
+      better choice.
+
+• Commercial Epoxy Rigid-Flex (Adhesiveless Flex) — use 49N or 51N (Lead-Free Applications)
+     - For 2.3 mils/ply use Style 106 Glass
+     - For 3.4 mils/ply, use Style 1080 glass
+     - For general purpose, including heavy copper fill, use 60-120 mil flow range
+      Note: 51N was engineered to have improved bond to untreated polyimide film. 51N is flow
+      modified for lower nominal melt viscosity for enhanced wet-out and bond.
+
+• Low Cost Commercial Epoxy Rigid-Flex (Acrylic Adhesive Flex) — use 47N, 49N or 51N
+      - For 2.3 mils/ply use Style 106 Glass
+      - For 3.4 mils/ply, use Style 1080 glass
+      - For Tg 135°C use 47N, for Tg 170°C use 49N or 51N
+      - For general purposes, use 50-100 mil flow range (60-120 for 51N and 49N)
+      Note: Some low cost flex-rigid applications may be fabricated using polyester film or other
+      lower temperature materials in place of polyimide film. In such cases the lowest temperature
+      curing Low-Flow material is 47N which can be laminated as low as 300°F and 100 psi
+      (depending on the amount of flow required, pressure can be adjusted)
+ Continued:
+ Selecting the Right Arlon Low-Flow Product
+
+  If the application is Heat-Sink bonding:
+
+ • Applications requiring Polyimide Tg (200°C) use 38N
+       - For 2.0 mils/ply use Style 106
+       - For 3.0 mils/ply use Style 1080
+ • Applications requiring Tg, of 130°-170°C, use 49N
+        - For 2.3 mils/ply use Style 106
+       - For 3.4 mils/ply, use Style 1080
+       - For general purposes, use 60-120mil flow range
+       - Where less flow is needed, use 30-90 mil flow range (as with critical cut-outs)
+ • Applications requiring low temperature and low pressure bonding (because the boards already
+   have been assembled with some active devices) — use 47N which can be cured at reduced
+   temperature and pressure of 300°F and 100 psi.
+        - For 2.3 mils/ply use Style 106
+       - For 3.4 mils/ply, use Style 1080
+       - For general purposes, use 50-100 mil flow range
+       - Where less flow is needed, use 30-90 mil flow range (as with critical cut-outs)
+ • Applications requiring the lowest cost option, where high Tg is not essential — use 47N
+        - For 2.3 mils/ply, use Style 106
+       - For 3.4 mils/ply, use Style 1080
+       - For general purposes, use 50-100 mil flow range
+       - Where less flow is needed, use 30-90 mil flow range (as with critical cut-outs)
+ • Applications where Lead-Free performance is indicated — use 51N
+
+
+Note: Specific grades of each material have been developed in response to customer’s varying
+processes and requirements. In general the lower flow values are recommended for heat sink
+bonding applications.
+
+If your application is unique or not covered above, contact an Arlon technical service engineer for
+specific recommendations. It is likely that one of the product grades already available will be
+adaptable to your application. For high volume special applications, Arlon engineers may be able
+to develop a grade customized for your product and process.
+Arlon Low-Flow Part Number List
+
+A detailed list of the various Arlon Low-Flow grades is included below. This table shows Tg, glass
+reinforcement style, resin content (%), nominal pressed thickness, flow range (diameter reduction
+expressed in mils as noted above) and “typical application” (either R/F — Rigid Flex — or HS —Heat
+Sink Bonding). It also includes the Arlon part number for ease of ordering, and the most recent IPC
+4101 Slash Sheet to which the product conforms.
+Arlon Low-Flow Application Selection Guide
+
+                                                                               What       What
+                                                                               Glass      Flow
+                                                                               Style?    Range?
+Rigid-Flex                                                                                (mils)
+
+
+                                                                                        106 (70-120)
+                                                                                         2.0mils/ply
+     High Performance Polyimide
+                                                         38N
+   (Adhesiveless) and Polyimide Film                                                    1080 (70-120)
+                                                                                         3.0mils/ply
+
+
+
+                                                                                         106 (60-90)
+                                                                                         1.8mils/ply
+                                                                  Normal
+                                                                                        1080 (60-90)
+       Commercial Polyimide                                                              3.0mils/ply
+                                                         37N
+         (Acrylic Adhesive)
+
+                                                                                         106 (4-8%)
+                                                                                         1.8mils/ply
+                                                                  Fill 2 oz.
+                                                                                        1080 (4-8%)
+                                                                                         3.0mils/ply
+
+
+
+                                                                    106 (60-120)
+                                                                     2.3mils/ply
+         Commercial Epoxy
+                                                         49N
+           (Adhesiveless)                                           1080 (60-120)
+                                                                     3.4mils/ply
+
+
+
+
+                                                       Tg 170°C
+
+
+
+         Commercial Epoxy                                                               106 (50-100)
+                                                                                         2.3mils/ply
+         (Acrylic Adhesive)
+                                                       Tg 135°C     47N
+                                                                                        1080 (50-100)
+                                                                                         3.4mils/ply
+
+
+    In general, for rigid flex, use higher flow only
+    when heavier copper fill is needed.
+
+    In general, for heat sinks, use medium flow
+    except in the case when there are several
+    cutouts, when a low flow may be preferred.
+  Arlon Low-Flow Application Selection Guide
+
+                                                                    What           What
+                                                                    Glass          Flow
+                                                                    Style?        Range?
+  Heat-Sink Bonding                                                                (mils)
+
+
+                                                                                 106 (60-120)
+                                                                                  2.3mils/ply
+                                     51N
+                                            Normal
+                                                                                 1080 (60-120)
+         High Performance or
+                                                                                  3.4mils/ply
+        High Temp Application        49N
+
+
+                                                                                  106 (30-90)
+                                                                                  2.3mils/ply
+                                           Cutouts          Lower Flow
+                                                                                 1080 (30-90)
+        Low Temperature and                                                       3.4mils/ply
+         Low Pressure Bond
+           300°F / 100 psi
+                                                                                 106 (50-100)
+                                                                                  2.3mils/ply
+                                           Normal
+                                                                                 1080 (50-100)
+                                     47N                                          3.4mils/ply
+
+
+
+
+                                                                                  106 (30-90)
+           Lowest Cost                                                            2.3mils/ply
+         Commercial Option                 Cutouts          Lower Flow
+
+                                                                                  1080 (30-90)
+                                                                                   3.4mils/ply
+
+
+
+
+Other
+
+
+        Contact Arlon Tech Service         In general, for rigid flex, use higher flow only
+          for Recommendations              when heavier copper fill is needed.
+
+                                           In general, for heat sinks, use medium flow
+                                           except in the case when there are several
+                                           cutouts, when a low flow may be preferred.
+

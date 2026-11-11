@@ -1,0 +1,565 @@
+                                                                                                                  P95/P25
+                                                                                   Polyimide UL HB Laminate and Prepreg
+
+
+
+   Processing Guide
+   The processing guidelines contained in this document were developed through in-house testing and field experience. However, they
+   should be considered to be starting points that will require further adjustment. Read the following review of processes for applicability
+   to your particular Printed Wiring Board (PWB) fabrication environment. Remember that the suggestions contained herein can not
+   account for all possible board designs or processing environments. Additional adjustments by the fabricator will be necessary. Isola can
+   and will assist with this process, but the fabricator, not Isola, is ultimately responsible for their process and the end results.
+   Fabricators should verify that PWBs made using these suggestions meet all applicable quality and performance
+   requirements.
+
+
+   Part 1: Prepreg Storage and Handling
+   Isola Group’s prepreg bonding sheets for use in multilayer printed circuit board applications are manufactured to specifications that
+   include physical and electrical properties and processing characteristics relative to the laminating application. Handling and storage
+   factors have an important influence on the desired performance of the prepreg. Some parameters are affected by the environment in
+   which prepregs are stored. They can also deteriorate over extended periods of storage. The prepreg received by the customer is a
+   glass fabric that has been impregnated with a stated quantity of low volatile, partially polymerized resin. The resin is tack-free but
+   somewhat brittle. Many lamination problems arise from resin loss off the fabric due to improper handling. The fabric used is based on
+   the order and supplies the required
+   thickness. In most cases the amount of resin carried by the fabric increases as the fabric thickness decreases.
+
+   Isola Group offers a product line of polyimide-based prepregs and copper clad laminates for high temperature printed circuit
+   applications. These products consist of an all polyimide resin system suitable for military (P95/P25), and flame resistant products
+   (P96/P26) for commercial or industrial electronic applications requiring superior performance and the utmost in thermal properties.
+   They utilize bismaleimide resin, fully cured without the use of MDA (Methylene Dianiline). The resulting polymer has a high Tg without
+   the characteristic difficulties of brittleness and low initial bond strength associated with traditional thermoset polyimides.
+
+   Handling Suggestions
+   Handle all prepreg using clean gloves. Use sharp, precision equipment when cutting or paneling prepreg. Treat all prepreg as being
+   very fragile. Use extreme care when handling very high resin content prepreg (glass fabrics 1080 and finer).
+
+   Storage Suggestions
+   Upon receipt, all prepreg should be immediately moved from the receiving area to a controlled environment. All prepreg should be
+   used as soon as possible using a First-In-First-Out (FIFO) inventory management system. Prepreg properties will be maintained for 3
+   months when stored at 23°C (73°F) and below 50% relative humidity. If extended storage is required, separate facilities should be
+   reserved with appropriate environmental control. However, refrigeration at temperatures less than 41°F have limited effect
+   on the useful life of polyimide prepregs.
+
+   Long-term vacuum storage is not recommended. Polyimide prepreg flow characteristics are more responsive than
+   typical epoxies to external factors such as moisture. Prepreg packages should be allowed to equilibrate to layup room
+   conditions before opening to prevent moisture
+   condensation on the prepreg.
+
+   Stabilization time will depend on storage temperature. In cases where storage temperature is significantly below room temperature,
+   keep prepreg in package or plastic wrapping during stabilization period to prevent moisture condensation. Once the original packaging
+   is opened, the prepreg should be used immediately. Remaining prepreg should be resealed in the original packaging with fresh
+   desiccant. Storage should be in the absence of catalytic environments such as high radiation levels or intense ultraviolet light.
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/p95-
+                 p25-polyimide-ul-hb/                    Last Updated September 17, 2025           © 2021, Isola Group, All rights reserved.
+                                                                                                                        P95/P25
+                                                                                              Polyimide UL HB Laminate and Prepreg
+
+
+   Prepregs are sold to IPC-4101 specifications, except that storage at or below 5°C (41°F) does not extend the product’s shelf
+   life to 6 months. After delivery to the customer, retesting services are available, but passing retest results do not constitute a re-
+   certification. Prepregs will be tested at the original manufacturing site or at another appropriate site to be determined by Technical
+   Service.
+
+   Prepreg Selection
+   Minimize the use of high resin content prepreg whenever possible to prevent excessive layer movement, Z-axis CTE and thickness
+   variation. For best drilling and hole quality, selection of glass styles to match core constructions is recommended. For more information
+   and assistance, consult with an Isola Group Technical Service Representative.
+
+   P25 prepreg is typically paired with P95 cores. Both materials are UL listed as “HB” material.
+
+   P26 prepreg is typically paired with P96 cores. Both materials are UL listed as “V-0” material.
+
+
+   Part 2: Innerlayer Preparation
+   Isola Group’s P95/P96 laminates are fully cured and ready for processing. It has been the experience of most fabricators that stress
+   relief bake cycles are not effective in reducing any movement of high performance laminates such as P95 and P96. Therefore, it is
+   suggested that the movement of unbaked laminate be characterized and the appropriate artwork compensation factors are used.
+
+   Dimensional Stability
+   The net dimensional movement of laminate after the etch, oxide and lamination processes is typically shrinkage. This shrinkage is due
+   to the relaxation of stresses that were induced when the laminate was pressed as well as shrinkage contribution from the resin system.
+   Most of the movement will be observed in the grain direction of the laminate.
+
+   There are situations that have been known to alter the proportion of shrinkage in grain versus fill direction in some board shops. These
+   include autoclave pressing and cross-plying laminate grain direction to that of prepreg. While both of these practices have their
+   advantages, material movement must be uniquely characterized.
+
+   The dimensional movement of high performance laminates is generally greater than that of epoxies.
+
+
+
+      Table 1: Initial Artwork Compensation Factors
+
+                                                                               Comp
+        Base Thickness           Configuration            Direction
+                                                                               (in/in)
+
+                                                                              0.0008-
+            ≤ 0.005″              Signal/Signal          Warp (grain)
+                                                                               0.0010
+
+                                                                              0.0001-
+                "                        "                   Fill
+                                                                               0.0003
+
+                                                                              0.0006-
+                "                 Signal/Ground          Warp (grain)
+                                                                               0.0008
+
+                                                                              0.0001-
+                "                        "                   Fill
+                                                                               0.0003
+
+                                                                              0.0002-
+                "                Ground/Ground           Warp (grain)
+                                                                               0.0004
+
+                                                                              0.0000-
+                "                        "                   Fill
+                                                                               0.0002
+
+                                                                              0.0006-
+          0.006-0.009″            Signal/Signal          Warp (grain)
+                                                                               0.0008
+
+                                                                              0.0001-
+                "                        "                   Fill
+                                                                               0.0003
+
+                                                                              0.0004-
+                "                 Signal/Ground          Warp (grain)
+                                                                               0.0006
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/p95-
+                 p25-polyimide-ul-hb/                               Last Updated September 17, 2025      © 2021, Isola Group, All rights reserved.
+                                                                                                                                  P95/P25
+                                                                                              Polyimide UL HB Laminate and Prepreg
+
+
+                                                                              0.0001-          This table assumes that laminate and prepreg grain directions
+                "                        "                   Fill
+                                                                               0.0003          are oriented along the same dimension. Each shop must
+                                                                              0.0000-          characterize material behavior given their particular lamination
+                                 Ground/Ground           Warp (grain)
+                                                                               0.0002          cycles, border designs and grain orientation of laminate to
+                                                                              0.0000-          prepreg. It is also suggested that specific laminate constructions
+                "                        "                   Fill
+                                                                               0.0002          be specified and adhered to so that dimensional variations due
+                                                                              0.0002-          to changes in construction are avoided.
+          0.010-0.014″            Signal/Signal          Warp (grain)
+                                                                               0.0004
+                                                                                               Table 1 assumes that signal layers are either half or 1 ounce
+                                                                              0.0000-
+                "                        "                   Fill                              copper and ground layers are either 1 or 2 ounce copper.
+                                                                               0.0002
+                                                                                               Thicker copper will generally contribute to greater dimensional
+                                                                              0.0001-
+                "                 Signal/Ground          Warp (grain)                          movement in designs where the majority of the copper is
+                                                                               0.0003
+                                                                                               removed.
+                                                                              0.0000-
+                "                        "                   Fill
+                                                                               0.0002          Imaging and Etching
+                                                                              0.0000-          P95/P96 laminates are imaged using standard aqueous dry films
+                "                Ground/Ground           Warp (grain)
+                                                                               0.0002          and are compatible with both cupric chloride and ammoniacal
+                                                                              0.0000-          etchants.
+                "                        "                   Fill
+                                                                               0.0002
+                                                                                               As with any polyimide laminate, prolonged or repeated
+      Table 1 (for reference) illustrates the suggested approach to characterizing             exposure (such as image rework) to aqueous resist
+      laminate movement and provides approximate artwork compensation factors
+                                                                                               stripper baths with higher levels of alkalinity should be
+      for P95/P96 laminate when using a hydraulic press.
+                                                                                               avoided. Strip and rinse should be thorough and finished
+                                                                                               with high quality water at neutral pH.
+
+   Bond Enhancement
+   Only oxide alternative chemistries are recommended for fabricating P95/P25 and P96/P26 multilayer boards. Users should make sure
+   the oxide or oxide replacement coating exhibits a consistent, uniformly dark color.
+
+   Contact your Isola representative for use of P95/P96 materials with standard oxide processes. Final rinses should be very thorough and
+   include tempered high quality water at neutral pH. Polyimide innerlayers should be thoroughly dried in an oven prior to lay-
+   up. Bake cycles that fall between 200°F and 250°F for 60 minutes are generally acceptable. It is generally suggested that
+   post-oxide baking be performed vertically, in racks.
+
+   However, drying of layers for 30 minutes minimum @ 100°C (212°F) or higher is considered a requirement, regardless of
+   whether or not the polyimide boards will be subjected to “lead-free” processes. Drying in racks is preferred.
+
+   The use of DSTFoil™ will typically increase the bond strength by approximately 1 to 1.5 lbs as compared to non-DSTFoil copper foil.
+
+   If immersion tin adhesion treatments are used, the fabricator should test the coating to verify adequate bond strength is developed
+   with P25 and P26 prepregs.
+
+
+
+
+   Automatic Optical Inspection
+   P95/P96 etched polyimide laminates do not naturally fluoresce for enhancement of laser-based AOI systems. However, the dark tan-
+   orange color provides contrast to copper for reflectance based AOI systems.
+
+
+   Part 3: Lamination
+   Package Lay-Up
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/p95-
+                 p25-polyimide-ul-hb/                               Last Updated September 17, 2025                © 2021, Isola Group, All rights reserved.
+                                                                                                                       P95/P25
+                                                                                             Polyimide UL HB Laminate and Prepreg
+
+
+   If the prepreg has been stored such that moisture absorption may have occurred, it should be conditioned prior to lay-up. Subjecting the
+   prepreg to vacuum desiccation for 8-24 hours prior to lay-up (24-hour duration using small stack height is suggested) will improve the
+   flow consistency and produce higher Tg and superior product properties.
+
+   Standard Lamination
+   The use of Advanced Bond or Polytreat copper foil is strongly recommended. (Contact an Isola representative if additional help or
+   process information is needed.) The amount of time at cure temperature, and to some extent the actual cure temperature of P95/P25
+   and P96/P26 multilayer boards, will be determined by the thickness of the multilayer package being produced. Very thick boards will
+   require a longer
+   cure time to assure optimum material performance.
+
+   Sequential Lamination
+   Due to the variation in designs for sequential lamination, we recommend contacting your Isola representative to get recommendations
+   for your application.
+
+   Removal of the polyimide flash should be performed by routing rather than shearing to minimize crazing along the panel edges.
+
+   Single-Stage and Dual-Stage Press Cycle Lamination
+   The suggested lamination parameters for the single-stage and dual-stage lamination cycles are shown in Table 2. The lamination cycle
+   selected will be a function of board stack up, complexity and thickness as well as the lamination presses capability. Thicker boards
+   may require additional dwell time at curing temperature to achieve full cure. See “Standard Lamination” previously discussed.
+
+   Choosing a dual stage or “kiss” cycle for P95/P25 and P96/P26 multilayer boards may improve results in some applications. Use these
+   cycles to enhance the wetting of the glass along the extreme edges and corners of the panel or to minimize circuit image transfer
+   (“telegraphing”) on foil constructions.
+
+   All cycles include a pressure reduction step in the lamination cycle, which facilitates stress relief of the package during the cure step.
+   Further, all cycles assume vacuum is maintained throughout the heating cycle and all cycles presume that the book is cooled to a
+   temperature well below the Tg of the material before the press is opened. All three conditions are considered to represent “best
+   practice” conditions during lamination by Isola.
+
+   While use of both the pressure drop cycle and cooling well below Tg in the “hot” press are strongly suggested, these
+   steps are considered to be “optional” and the PCB fabricator may have equipment or capacity limitations which prevent
+   following these suggestions.
+
+
+
+      Table 2: P95/P25 and P96/P26 General Lamination Parameters
+
+       Process                  Recommendation
+
+       Vacuum Time              30 minutes (no pressure, product on risers)
+
+       Curing
+                                220°C (425°F)
+       Temperature
+
+                                150 minutes (above 220°C (425°F) Thicker boards
+       Curing Time
+                                (>3 mm) should be cured 180 min.
+
+       Resin Flow               80 to 140°C (180 to 280°F) Maintain heat ramp in this
+       Window                   temperature range.
+
+       Heat Ramp                5.0 to 7.0°C/min (9 to 13°F/min)
+
+       Pressure                 200-250 PSI 14-18 Kg/cm2
+
+                                Single Stage – Apply pressure after vacuum dwell
+                                time.
+       Pressure
+                                Dual Stage – 3.5 kg/cm2 (50 PSI) after vacuum dwell
+       Application
+                                time, switch to high pressure ≤ 90°C product
+                                temperature.
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/p95-
+                  p25-polyimide-ul-hb/                             Last Updated September 17, 2025      © 2021, Isola Group, All rights reserved.
+                                                                                                                                  P95/P25
+                                                                                              Polyimide UL HB Laminate and Prepreg
+
+
+                               After 30 minutes at cure temperature, reducepressure            Oven Cure Option
+       Pressure Drop
+                               to 3.5 Kg/cm2 (50 PSI) in hot press(optional).                  For those situations where either press capacity or press
+                               Cool to 135 to 140°C (275 to 285°F) at 2.8°C/min                temperature capability is a restricting factor, boards can be
+       Cool Down               (5.0°F/min) with 3.5 kg/ cm2 (50 PSI) pressure prior to         cooled after 60 minutes at 182°C (360°F) and removed from the
+                               removing or transferring the load.                              press. A post-lamination bake in a convection oven will be
+
+      Table 2 outlines general suggestions for lamination temperature and pressure
+                                                                                               necessary to complete the cure, using the following process:
+      based on press type used. However, the fabricator should take board design               1. Carefully remove packages from tooling and remove all flash
+      characteristics and panel size into account when setting pressure.                       from panels. The flash should be removed by routing processes
+                                                                                               instead of shearing processes in order to avoid crazing. NOTE:
+                                                                                               Polyimide in an under cured state will be very brittle. Handle
+   panels very carefully.
+   2. Vacuum all debris and dust from panels.
+   3. Stack panels on flat shelves or a flat support apparatus so that the panels remain flat. Keep stack height to less than 1″.
+   4. Place the panels in an air circulating convection oven and raise the oven temperature to a temperature that permits all panels in the
+   stack to reach 218°C (425°F) for a minimum of 3 hours. It is strongly recommended that the fabricator place a thermocouple in the
+   center of the stack when setting up the process conditions (oven temperature set point and total dwell time) to ensure that the panels
+   are exposed to the suggested curing conditions.
+   5. Allow panels to cool slowly by shutting the oven heaters off and opening the oven door. Allow the panels to cool until they are cool
+   enough to handle before removing them from the oven. Note that handling hot panels can induce warpage.
+
+
+   Part 4: Drill
+   General
+   Polyimide materials are more difficult to drill than conventional FR-4 epoxy materials. The material is very abrasive and drill wear will
+   occur more quickly than with conventional epoxy laminates. Drilling parameters and other processing conditions are very dependent
+   on circuit boards features, including thickness, number of conductor layers, etc. The following information should be considered for
+   initial set-up and modified as appropriate for the individual situation.
+
+   Panel Stack Height and Hit Count
+   Panel stacks should not exceed 0.200″ in total height of board material. If the individual panel thickness exceeds 0.100″, then better
+   results will be attained by drilling the boards one-high.
+
+   The number of hits on a single drill bit should be limited to 750 to 1,200. This is dependent on the board design and build, board/ stack
+   thickness, number of copper layers, etc. The bit size will also dictate the number of hits. Note that an excessive hit count will produce
+   excessive drill bit wear and will impact hole wall roughness and quality.
+
+   Drilling Support Materials
+   Drill bit suppliers and drill entry/backup material suppliers should be consulted when choosing entry and backup materials for
+   polyimide drilling. Proper choice of entry material can help to reduce drill bit entry burrs, can reduce drill wander and in some cases
+   can assist in heat dissipation.
+
+   Backup materials provide stack support and can facilitate both chip removal and heat dissipation, depending on the material chosen.
+   Lubricated materials and materials designed specifically to reduce bit temperature can be advantageous when drilling polyimide
+   materials due to the higher heat levels generated during drilling of polyimides vs. epoxy materials.
+
+   Drill Bits
+   Use only new bits. Conventional geometry bits are acceptable for larger holes, (> 1.25 mm in diameter). Undercut bits are
+   recommended for holes less than 1.25 mm diameter. Justification depends on board configuration (thickness, aspect ratio, total copper,
+   etc.) and drill limitations.
+
+   Cutting Speed and Chipload
+   Maximum cutting speeds of 300 to 500 SFPM are recommended. Chiploads should not exceed 2.5 mils for bit diameters of .040″ and
+   above. Table 3 provides a set of suggested parameters for initial set-up of the drill operation for Isola polyimide laminates. It provides
+   drill parameters by bit diameter for a maximum cutting speed of 500 SFPM and maximum chipload of 2.5 mils. Modifications may be
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/p95-
+                 p25-polyimide-ul-hb/                               Last Updated September 17, 2025                © 2021, Isola Group, All rights reserved.
+                                                                                                                               P95/P25
+                                                                                          Polyimide UL HB Laminate and Prepreg
+
+
+   necessary given the individual drill application. Thick boards with heavy copper or special cladding such as invar will require more
+   conservative drill parameters.
+
+   It is suggested that drill bit suppliers also be contacted for drilling parameter suggestions that are specific to their drill
+   bit geometries.
+
+
+
+      Table 3: Suggested Drilling Parameters For Initial P95/P96 Setup
+
+                                                         Surface Speed Per
+              Drill Size           Spindle Speed                                               Infeed                  Chipload                         Retract
+                                                                Minute
+
+            in             mm            RPM             SFPM            SMPM         in/min        m/min      mil/rev        mm/rev            in/min        m/min
+
+          0.0098         0.25           75,000           193              59            60              1.52    0.80            0.020            600              15
+
+          0.0118         0.30           72,000           223              68            63              1.60    0.88            0.022            800              20
+
+          0.0138         0.35           72,000           260              79            67              1.70    0.93            0.024            800              20
+
+          0.0157         0.40           69,000           284              87            69              1.75    1.00            0.025            1000             20
+
+          0.0197         0.50           57,000           294              90            57              1.45    1.00            0.025            1000             20
+
+      Contact your Isola Technical Support representative for large hole drilling parameters.
+
+
+
+   Part 5: Hole Wall Preparation
+   General
+   Good desmear and electroless copper deposition performance are more easily achieved when the drilled hole quality is good. The
+   generation of smooth, debris free hole walls is influenced by the degree of resin cure, drilling conditions and board design
+   considerations. The elimination of 7628 or similar heavy glasses (whenever possible), coupled with properly adjusted drill parameters
+   on fully cured boards has been shown to improve overall drilled hole quality. This helps reduce smear generation, which improves
+   desmear performance and can ultimately help to
+   reduce copper wicking.
+
+   Factors which influence chemical desmear rates, and therefore the suggestions in this document, include: resin type,
+   chemistry type, bath dwell times, bath temperatures, chemical concentrations in each bath and the amount of solution transfer through
+   the holes.
+
+   Factors which influence the amount of solution transfer through the holes include: hole size, panel thickness, work bar stroke length,
+   panel separation in the rack and the use of solution agitation, rack vibration and rack “bumping” to remove air bubbles from the holes.
+
+   Chemical Desmear
+   Although the term “desmear” is usually a misnomer when dealing with polyimides, standard permanganates have provided a
+   satisfactory hole wall cleaning of Isola Group polyimides prior to plating. Consult your chemical supplier in setting up a permanganate
+   process, as there are specific solvent baths available for polyimides.
+
+   Plasma Desmear
+   Plasma processing can be used to remove drill smear and debris. During plasma processing, polyimide hole walls tend to become very
+   smooth, which can result in low electroless copper adhesion. Further, some ash may also be present after plasma etching is complete.
+
+   Boards should be subjected to a single pass through the permanganate desmear line to provide suitable roughness in the hole wall and
+   remove the residual ash. Although not mandatory, this “best practice” increases process latitude in subsequent metallization steps and
+   is strongly suggested.
+
+   3-Point Etchback
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/p95-
+                 p25-polyimide-ul-hb/                           Last Updated September 17, 2025                 © 2021, Isola Group, All rights reserved.
+                                                                                                               P95/P25
+                                                                                   Polyimide UL HB Laminate and Prepreg
+
+
+   True 3-point “etchback” exposes the innerlayer “post” on all three sides for subsequent plating processes. This will require a more
+   robust approach compared to simple desmear, which is designed only to remove resin smear from the vertical surface of the innerlayer
+   interconnect “posts”.
+
+   When using wet chemistry to achieve 3-point etchback, a 2-hour bake at 218°C (425°F) prior to hole wall preparation has been
+   determined to enhance the performance of the various permanganate baths in achieving a full military etchback of Isola Group
+   polyimides. Depending on the permanganate desmear chemistry used, a double pass process may be necessary in getting the amount
+   of etchback required.
+
+   If plasma is used for 3-point etchback, boards should be subjected to a single pass through the permanganate desmear line to provide
+   suitable roughness in the hole wall and remove the residual ash. Although not mandatory, this “best practice” increases process
+   latitude in subsequent metallization steps and is strongly suggested.
+
+   Glass and Drill Debris Removal
+   Conventional hydrofluoric acid or fluoboric type etchants are acceptable for glass bundle removal.
+
+
+
+
+   Secondary Drilling
+   Avoiding secondary drilling, whenever possible, is a good practice for P95/P96 materials. 130 degree point angle geometries are
+   necessary to avoid crazing around secondary drilled hole perimeters. As common with most high Tg epoxy materials with increased
+   modulus properties, the use of entry and backer material may be necessary during the secondary drilling of larger hole sizes on
+   polyimide materials to avoid crazing/fracturing at the hole perimeter.
+
+   Special attention should be paid to the curing process if secondary drilling operations are to be utilized. Excessive curing can render
+   the laminate matrix brittle, which can lead to crazing issues during secondary drilling operations, even when proper entry and backup
+   materials are used.
+
+   Solder Leveling
+   All board types and configurations should be baked to remove moisture prior to any solder leveling and fusing
+   procedures, which includes HASL and reflow by IR or hot oil. Suggested bake cycle is 121-135°C (250-275°F) for a
+   minimum of 4 hours to as long as 12 hours or as required to remove all moisture.
+
+   Routing and Scoring
+   Due to the greater modulus properties and hardness of the P95/P96 materials, modifications of the final PWB rout fabrication process
+   will be necessary.
+
+   It is strongly suggested that the scoring equipment and/or router bit manufacturer be contacted for application specific
+   suggestions for use with polyimide laminate materials.
+
+   For PWB designs requiring scored geometries, the testing of various Tgs and resin content materials has determined that adjustments
+   to the process will be necessary. As the modulus strength of materials increases, the maximum resultant web thickness (dependent on
+   the scored edge depth) must be decreased to avoid excessive fracturing upon breaking away the scored materials.
+
+   Individual board designs/stack-ups may require adjustment of score depth geometries. Thinner web thicknesses are typically
+   required. This is influenced by layer count, glass types and retained copper in the design. Your Isola Technical Account Manager may
+   also be able to provide
+   some initial suggestions, but these should be reviewed with the scoring equipment supplier and validated through testing by the
+   individual PWB fabricator.
+
+
+   Part 6: Packaging and Storage
+   Isola recommends using best practices in storage and packaging, as noted below, to reduce risk during lead-free assembly.
+
+   P95/P96 boards should be dry prior to packaging to ensure the most robust lead-free performance. For some complex, high reliability
+
+https://www.isola-group.com/pcb-laminates-prepreg/p95-
+                 p25-polyimide-ul-hb/                    Last Updated September 17, 2025        © 2021, Isola Group, All rights reserved.
+                                                                                                                          P95/P25
+                                                                                      Polyimide UL HB Laminate and Prepreg
+
+
+   designs, baking prior to solder mask application can be implemented to ensure maximum floor life in assembly processing. Printed
+   boards made for high temperature assembly from P95/P96, which require a long shelf life, the best protection is provided using a
+   Moisture Barrier Bag (MBB) with a Humidity Indicator Card (HIC) and adequate drying desiccant inside the MBB to prevent moisture
+   absorption during shipment and
+   long-term storage.
+
+   Upon opening the MBB, the boards should be processed within 168 hours when maximum shop floor conditions are at < 30°C
+   (85°F)/60% RH. MBB bags that are opened for inspection should be resealed immediately to protect the boards from moisture uptake.
+
+
+   Part 7: Health and Safety
+   Always handle laminate with care. Laminate edges are typically sharp and can cause cuts and scratches if not handled properly.
+   Handling and machining of prepreg and laminate can create dust (see P95/P96 Material Safety Data Sheet).
+
+   Appropriate ventilation is necessary in machining/punching areas. The use of protective masks is suggested to avoid inhaling dust.
+   Gloves, aprons and/or safety glasses are suggested if individuals have frequent or prolonged skin or eye contact with dust.
+
+   Isola Group does not use polybromidebiphenyls or polybromidebiphenyloxides as flame retardants in any product. Material Safety Data
+   Sheets are available upon request.
+
+
+
+
+   Part 8: Ordering Information
+   Contact your local sales representative or contact: info@isola-group.com for further information.
+
+   Isola Group
+   6565 West Frye Road
+   Chandler, AZ 85226
+   Phone: 480-893-6527
+   Fax: 480-893-1409
+
+   Isola Asia Pacific (Hong Kong) Ltd.
+   12/F, Kin Sang Commercial Centre,
+   49 King Yip Street, Kwun Tong,
+   Kowloon, Hong Kong
+   Phone: 852-2418-1318
+   Fax: 852-2418-1533
+
+   Isola GmbH
+   Isola Strasse 2 D-52348
+   Düren, Germany
+   Phone: 49-2421-8080
+   Fax: 49-2421-808164
+
+
+
+               NOTES
+               The data contained in this document, while believed to be accurate and based on both field testing and analytical methods
+               considered to be reliable, is for information purposes only. Any sales of these products will be governed by the terms and conditions
+               of the agreement under which they are sold.
+
+
+
+
+               Isola, the Isola logo, Astra, Chronon, GETEK, I-Fill, IsoDesign, IsoStack, I-Speed, I-Tera, Polyclad, Stratus, TerraGreen, and The Base
+               for Innovation are registered trademarks or trademarks of ISOLA USA Corp. in the United States and in other countries. Copyright ©
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/p95-
+                 p25-polyimide-ul-hb/                       Last Updated September 17, 2025                © 2021, Isola Group, All rights reserved.
+                                                                                                             P95/P25
+                                                                                   Polyimide UL HB Laminate and Prepreg
+
+
+               2021 Isola Group. All rights reserved.
+
+
+
+
+https://www.isola-group.com/pcb-laminates-prepreg/p95-
+                 p25-polyimide-ul-hb/                    Last Updated September 17, 2025      © 2021, Isola Group, All rights reserved.
+

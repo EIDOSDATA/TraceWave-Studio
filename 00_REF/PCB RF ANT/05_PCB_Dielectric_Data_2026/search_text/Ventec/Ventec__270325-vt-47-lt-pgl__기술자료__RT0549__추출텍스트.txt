@@ -1,0 +1,192 @@
+ Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+ VT-47 LT                                                                                                           Version: 27/03/2025
+
+  PROCESS GUIDE
+ VT-47 LT
+
+
+
+ Precautions in Handling
+
+ Storage Condition
+   Properties                                                           Prepreg
+
+                                     Temperature                        Below 23˚C (73˚F)                  Below 5˚C (41˚F)
+   Storage Condition
+                                     Relative humidity                  Below 55% RH                       /
+
+   Shelf Life                                                           3 months                           6 months
+
+
+ • 	The prepreg exceeding shelf time should be retested.
+ • 	If the prepreg is not consumed within 48hrs after opening the vacuum package, it is recommended that the bags be resealed.
+ • 	Material is available in both long and short grain. The grain direction is indicated on the label with an arrow.
+
+
+
+
+ Designing and Inner layer Process
+ • 	Please be careful when single ply of 1037, 1067, or 1078 prepreg is designed to the dielectric layer.
+ • 	Dimension stability is the same as Standard FR4 material.
+ • 	Please check with your oxide vendor to make sure that our material is suitable with your oxide process.
+     We recommend to control the peel strength with brown oxide copper over 2 Lb/in.
+
+
+
+
+                                                                                                                                   Page 1 of 4
+www.venteclaminates.com                                                                                                 Published on: 27/03/2025
+ Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+ VT-47 LT                                                                                                        Version: 27/03/2025
+
+  PROCESS GUIDE
+ VT-47 LT
+
+
+
+ Prepreg Availability
+ E-Glass styles: 1078, 1067, 1037 etc.
+
+
+                                Pressed                           Dk                                            Df
+                     R/C       Thickness
+   PP Type                                       @         @            @        @           @           @            @             @
+                     (%)
+                             mil         μm     1GHz      2GHz         5GHz    10GHz        1GHz        2GHz         5GHz         10GHz
+     1037             70      1.7        43     4.00       3.95        3.90      3.79       0.013       0.015        0.016         0.017
+     1037             72      1.8        46     3.96       3.91        3.86      3.75       0.014       0.016        0.017         0.018
+   * 1037             74      2.0        51     3.92       3.87        3.82      3.71       0.014       0.016        0.017         0.018
+     1037             76      2.2        56     3.88       3.83        3.78      3.67       0.014       0.016        0.017         0.018
+     1037             78      2.3        58     3.84       3.79        3.74      3.63       0.014       0.016        0.017         0.018
+     1067             70      2.2        56     4.00       3.95        3.90      3.79       0.013       0.015        0.016         0.017
+     1067             72      2.4        61     3.96       3.91        3.86      3.75       0.014       0.016        0.017         0.018
+   * 1067             74      2.5        64     3.92       3.87        3.82      3.71       0.014       0.016        0.017         0.018
+     1067             76      2.8        71     3.88       3.83        3.78      3.67       0.014       0.016        0.017         0.018
+     1067             78      2.9        74     3.84       3.79        3.74      3.63       0.014       0.016        0.017         0.018
+   * 1078             66      3.0        76     4.08       4.03        3.98      3.87       0.013       0.015        0.016         0.017
+     1078             68      3.2        81     4.04       3.99        3.94      3.83       0.013       0.015        0.016         0.017
+     1078             70      3.4        86     4.00       3.95        3.90      3.79       0.013       0.015        0.016         0.017
+     1078             72      3.6        91     3.96       3.91        3.86      3.75       0.014       0.016        0.017         0.018
+
+*Standard Availability
+
+Remark:
+① Press thickness test condition---Prepreg lamination size 18”*24”, Copper Foil---1oz/1oz, Flow---about 5%;
+② Make laminated prepreg to micro-section and measure the thickness with microscope; this thickness is used for
+  resistance design calculation.
+③ The thickness measured with micrometer is 0.2~0.4 mil larger than that measured with micro-section;
+  and mainly used for total thickness design calculation.
+
+
+
+
+                                                                                                                                 Page 2 of 4
+www.venteclaminates.com                                                                                               Published on: 27/03/2025
+ Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+ VT-47 LT                                                                                                   Version: 27/03/2025
+
+  PROCESS GUIDE
+ VT-47 LT
+
+
+
+
+ Press Condition
+
+   1. Heating rate (Rate of Rise) of material [Material Temperature]:
+       Programmable Press: 2-4ºC/min (4~7ºF/min). Manual Press: 3~6ºC /min (5~10ºF/min)
+   2. Curing Temperature & Time: >60min at more than 190ºC (374ºF) [Material Temperature]
+   3. Full Pressure: ≥ 300psi
+   4. Vacuuming should be continued until over 140ºC (284ºF) [Material Temperature]
+   5. Cold Press condition: Keep Plate @ Room Temperature by water; Pressure:100psi; Keep Time: 60minutes
+
+
+
+
+                                                                                                                          Page 3 of 4
+www.venteclaminates.com                                                                                        Published on: 27/03/2025
+ Professional Manufacturer of Copper Clad Laminates
+
+
+
+
+ VT-47 LT                                                                                                   Version: 27/03/2025
+
+  PROCESS GUIDE
+ VT-47 LT
+
+
+
+
+ Typical Drilling Parameters
+ • 	The use of undercut drill bits has yielded better quality on smaller holes.
+     Check with your drill bit supplier for more information.
+ •        Suggest Drilling parameter as below:
+
+
+        Diameter (mm)          Spindle Speed (KRPM)          Feed Rate (IPM)         Retract Rate (IPM)   Chip Load (mil/rev)
+
+            0.20~0.25                    135                        75                      791                  0.56
+
+            0.30~0.35                    155                        120                     984                  0.77
+
+            0.40~0.45                    120                        125                     900                  1.04
+
+            0.50~0.55                    95                         90                      700                  0.95
+
+            0.60~0.65                    80                         110                     765                  1.38
+
+            0.70~0.75                    72                         120                     765                  1.67
+
+            0.80~0.95                    68                         120                     850                  1.76
+
+            1.00~1.05                    60                         140                     984                  2.33
+
+            1.10~1.15                    54                         150                     984                  2.78
+
+            1.20~1.25                    52                         160                     984                  3.08
+
+            1.30~1.45                    50                         150                     984                  3.00
+
+            1.50~1.55                    45                         130                     984                  2.89
+
+            1.60~1.75                    40                         120                     800                  3.00
+
+            1.80~2.00                    35                         80                      600                  2.29
+
+            2.05~2.45                    30                         80                      500                  2.67
+
+            2.50~2.75                    25                         70                      500                  2.80
+
+            2.80~3.20                    20                         60                      500                  3.00
+
+            3.20~3.60                    20                         60                      500                  3.00
+
+            3.65~4.00                    20                         35                      500                  1.75
+
+            4.50~4.80                    20                         25                      400                  1.25
+
+            4.81~6.50                    20                         20                      300                  1.00
+
+
+
+ Desmearing Process
+ •        Desmear rate is less than that of the conventional FR4.
+ •        Adjustments to the desmear process are necessary for the lead-free materials.
+ •        Check with your chemical supplier for recommendations.
+
+                                                                                                                           Page 4 of 4
+www.venteclaminates.com                                                                                         Published on: 27/03/2025
+

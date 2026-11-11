@@ -1,0 +1,330 @@
+                                                               TerraGreen® 400G2
+                                                           Halogen-free, Extremely Low Loss Material Subject to
+                                                                                                                        L2 Glass Availability
+
+
+Processing Guide
+The processing guidelines contained in this document were developed through in-house testing and field experience. However, they
+should be considered to be starting points that will require further adjustment. Read the following review of processes for applicability
+to your particular Printed Wiring Board (PWB) fabrication environment. These recommendations contained herein cannot account for all
+possible board designs or processing environments and adjustments by the fabricator will be necessary. Fabricators should verify that
+PWBs made using these suggestions meet all applicable quality and performance requirements.
+
+TerraGreen® 400G2 has been specifically designed for extremely low loss applications where the best possible electrical performance
+is required. In order to achieve optimal thermal and electrical performance, an ultra-low loss bond treatment and use of one of the
+recommended press cycles is necessary. Isola can and will assist with this process, but the fabricator, not Isola, is ultimately
+responsible for their process and the end results. Fabricators should verify that PWBs made using these suggestions meet all
+applicable quality and performance requirements.
+
+
+Part 2: Innerlayer Preparation
+Isola Group’s TerraGreen® 400G2 laminates are fully cured and ready for processing. It has been the experience of most fabricators
+that stress relief bake cycles are not effective in reducing any movement of high performance laminates such as TerraGreen® 400G2.
+Therefore, it is suggested that the movement of unbaked laminate be characterized and the appropriate artwork compensation factors
+are used.
+
+Dimensional Stability
+The net dimensional movement of laminate after the etch, oxide and lamination processes is typically shrinkage. This shrinkage is due
+to the relaxation of stresses that were induced when the laminate was pressed as well as shrinkage contribution from the resin system.
+Most of the movement will be observed in the grain direction of the laminate.
+
+There are situations that have been known to alter the proportion of shrinkage in grain versus fill direction in some board shops. These
+include autoclave pressing and cross-plying laminate grain direction to that of prepreg.
+
+                                                                                     This table assumes that laminate and prepreg grain directions
+ Table 1                                                                             are oriented along the same dimension. Each shop must
+                                                                                     characterize material behavior given the specific lamination
+      PCB Resin Content %                      Direction      Comp (in/in)           cycle used, border designs and grain orientation of laminate to
+       High Resin Content %                Warp(Grain)            0.0016             prepreg. It is also suggested that specific laminate constructions
+                  "                               Fill            0.0016
+                                                                                     are specified and adhered to so that dimensional variations due
+                                                                                     to changes in construction are avoided. Table 1 assumes that
+       Low Resin Content %                 Warp(Grain)            0.0014
+                                                                                     signal layers are either 1/2 or 1 ounce copper and ground layers
+                  "                               Fill            0.0012             are either 1 or 2 ounce copper. TerraGreen® 400G2 and
+ (for reference) illustrates the suggested approach to characterizing laminate
+                                                                                     Tachyon 100G scaling factors are very close and are considered
+ movement and provides approximate artwork compensation factors for                  interchangeable as a starting point.
+ TerraGreen® 400G laminate when using a hydraulic press.
+
+
+
+Imaging and Etching
+TerraGreen® 400G2 laminates are imaged using standard aqueous dry films and are compatible with both cupric chloride and
+ammoniacal etchants. Bond Enhancement TerraGreen® 400G uses < 1 micron Rz surface roughness copper (VLP1) to bond to the
+laminate surface. For optimal electrical performance, an equally high performance Ultra Low Loss (very low profile) bond enhancement
+is highly recommended.
+
+Etch type bond enhancements are compatible for bonding and thermal properties with no limitation of use for PCB quality or reliability.
+However, electrical performance will be sacrificed and will result in significantly increased total signal loss, S21.
+
+If immersion tin adhesion treatments are used, the fabricator should test the coating to verify adequate bond strength is developed
+
+
+  https://www.isola-group.com/pcb-laminates-
+      prepreg/terragreensup-sup-400g2/                       Last Updated May 07, 2026                   © 2021, Isola Group, All rights reserved.
+                                                                   TerraGreen® 400G2
+                                                          Halogen-free, Extremely Low Loss Material Subject to
+                                                                                                                             L2 Glass Availability
+with TerraGreen® 400G2 prepregs.
+
+Reduced black oxide systems are not recommended for TerraGreen® 400G2.
+
+For conveyorized oxide replacements, an efficient dryer at the end of a conveyorized oxide replacement line must remove all moisture
+from the inner layer surface. However, drying of layers for 30 minutes minimum @ 100°C or higher is considered a “best practice,”
+especially for boards to be subjected to “lead-free” processes. Drying in racks is preferred.
+
+
+
+
+Part 3: Lamination
+The chemistry of TerraGreen® 400G2 is unique and can be laminated using typical FR4 type methods. The resin system requires more
+energy to cure than most materials. In order to achieve the optimal thermal properties for the resin system a longer press cycle for
+thick designs may be required.
+
+Pressure requirements are dependent on product design and technology. Higher pressures can be used on difficult to fill designs such
+has heavy copper foil or partial plane features.
+
+Isola Technical Service will provide support and lab testing to ensure the lamination cycle is performing properly.
+
+After lamination, removal of TerraGreen® 400G2 flash should be performed by routing rather than shearing to minimize crazing along
+the panel edges.
+
+
+
+ Table 2: TerraGreen® 400G2 General Lamination Parameters
+
+   Process                               Recommendations
+
+   Vacuum Time                           Recommended Minimum: On Risers: >10 min. Product temperature to not exceed 100°C
+
+   Curing Temperature                    200°C (395°F) Do Not Exceed 222°C (437°F) Product Temperature
+
+   Curing Time                           120 minutes at or above 200°C (395°F)
+
+   Resin Flow Window                     100-150°C (210-300°F) 2-3°C/min heat rise Maintain heat ramp in this temperature range.
+
+   Heat Ramp                             2-2.5°C/min (3.6-4.5°F/min) for best curing results
+
+   Pressure                              375-425 PSI (26.5-30 Kg/cm²)
+
+                                         Single Stage: Apply pressure after vacuum dwell time.
+   Pressure Application
+                                         Dual Stage: 100 PSI (7.0 Kg/cm²) after vacuum dwell time, switch to high pressure ≤ 90°C product temperature.
+
+   Pressure Drop (optional)              After 30 minutes at cure temperature, reduce pressure to 50 PSI (3.5 Kg/cm2) in hot press (optional)
+
+                                         Cool to 135-140°C (275-285°F) at 2.8°C/min (5.0°F/ min) with 50 PSI (3.5 Kg/cm²) pressure prior to removing or
+   Cool Down
+                                         transferring the load.
+
+
+
+Heat Ramp Rate is very important for TerraGreen® 400GE. Lower Heating rates have better performance. High Temperature Post Bake
+can be used on very high reliability designs to provide stress relief. Post Baking is not required but can improve some high-end designs.
+Post bake at 210°C (410°F) for 2 hrs.
+
+
+Part 4: Drill
+General
+To assure effective removal of the resin debris during drilling, undercut drill geometries and high helix tools are suggested. On high
+layer count technologies and thicker overall board thicknesses, peck drilling parameters may be necessary. Suggested parameters are
+
+ https://www.isola-group.com/pcb-laminates-
+     prepreg/terragreensup-sup-400g2/                             Last Updated May 07, 2026                   © 2021, Isola Group, All rights reserved.
+                                                        TerraGreen® 400G2
+                                                   Halogen-free, Extremely Low Loss Material Subject to
+                                                                                                                   L2 Glass Availability
+outlined below for typical multilayer designs.
+
+Cutting Speed and Chipload
+Relative to standard FR-4 parameters, use lower chiploads and cutting speeds to drill TerraGreen® 400G2 printed circuit boards. The
+parameters in Table 3 provide a moderate initial starting point for typical board designs. Boards with large amounts of copper in drilled
+holes or Non-Functional pads on most/all layer will need to lower tip speeds. Keep the infeed the same as standard.
+
+Stack Height and Hit Count
+Stack heights and hit counts will vary according to construction and overall thickness of the boards being drilled. For thicker boards,
+above 2.5 mm (100 mils) overall, with high layer counts, drill one high. Maximum hit count for drill diameters below 0.020″ is 1,000,
+while drills at or above 0.020″ diameter can be permitted up to 1,500 hits. These general guidelines are strongly influenced by board
+thickness, geometry, stack height, etc. Aluminum entry and lubricated backing help create good quality hole walls but are not essential
+in all applications. It is suggested that the fabricator’s supplier of entry and backup be consulted.
+
+
+
+ Table 3: Suggested Drilling Parameters for Initial TerraGreen® 400G2 Setup
+
+          Drill Size            Spindle Speed   Surface Speed                   Infeed                   Chip Load                         Retract
+
+       Inch            mm             RPM       SFPM     SMPM          in/min            m/min   mil/rev         mm/rev            in/min        m/min
+
+      0.0098           0.25         100,000     258        79            40              1.02     0.40            0.010              600             15
+
+      0.0118           0.30         100,000     309        79            80              2.03     0.80            0.020              800             20
+
+      0.0138           0.35          95,500     245        94           120              3.05     1.26            0.032              800             20
+
+      0.0157           0.40          95,500     394       105           150              3.81     1.57            0.040             1000             25
+
+      0.0197           0.50          76,400     394       120           150              4.83     2.49            0.063             1000             25
+
+      0.0248           0.63          61,000     394       121           170              4.32     2.79            0.071             1000             25
+
+      0.0295           0.75          51.000     394       120           150              3.81     2.94            0.075             1000             25
+
+      0.0354           0.90          43,000     399       122           130              3.30     3.02            0.077             1000             25
+
+      0.0394           1.00          38,500     397       121           130              3.30     3.04            0.077             1000             25
+
+       0.500           1.27          30,500     399       122            91              2.31     2.31            0.076             1000             25
+
+      0.0591           1.50          26,000     402       123            78              1.98     1.98            0.076             1000             25
+
+      0.0787           2.00          20,000     402       126            60              1.52     1.52            0.076             1000             25
+
+
+
+Part 5: Hole Wall Preparation
+General
+Good desmear and electroless copper deposition performance are more easily achieved when the drilled hole quality is good. The
+generation of smooth, debris free hole walls is influenced by the degree of resin cure, drilling conditions and board design
+considerations. The helps reduce smear and debris generation.
+
+Factors which influence chemical desmear rates, and therefore the suggestions in this document, include:
+resin type, chemistry type, bath dwell times, bath temperatures, chemical concentrations in each bath and the amount of solution
+transfer through the holes.
+
+Factors which influence the amount of solution transfer through the holes include: hole size, panel thickness, work bar
+stroke length, panel separation in the rack and the use of solution agitation, rack vibration and rack “bumping” to remove air bubbles
+from the holes.
+
+Chemical Desmear
+Trials show that TerraGreen® 400G2 shows good response to chemical desmear. Processing parameters used for 170 Tg FR-4 should
+be used, excessive dwell time will cause etchback.
+
+
+
+  https://www.isola-group.com/pcb-laminates-
+      prepreg/terragreensup-sup-400g2/                 Last Updated May 07, 2026                    © 2021, Isola Group, All rights reserved.
+                                                     TerraGreen® 400G2
+                                               Halogen-free, Extremely Low Loss Material Subject to
+                                                                                                          L2 Glass Availability
+Two passes of chemical desmear is recommended for high reliability or thicker designs (>2.5 mm). A short plasma etch desmear can
+be used, comparable to standard FR-4, can be used instead of a second pass chemical desmear.
+
+Plasma Desmear
+Plasma can be used with or without a single permanganate pass (to be determined by each fabricator). Plasma processing tends to
+improve overall hole quality, particularly in thick and/or high aspect ratio boards. Standard plasma gas mixtures and process cycles
+designed for conventional FR-4 epoxy are suggested for use as initial starting parameters for TerraGreen® 400G.
+
+3-Point Etchback
+True 3-point “etchback” exposes the inner layer “post” on all three sides for subsequent plating processes. This will require a more
+robust approach compared to simple desmear, which is designed only to remove resin smear from the vertical surface of the innerlayer
+interconnect “posts”.
+
+
+
+
+Plasma will readily etch back TerraGreen® 400G resin. Standard plasma gas mixtures and process cycles designed for conventional FR-
+4 epoxy are satisfactory and are suggested for use as initial starting parameters for etchback of TerraGreen® 400G. The practice of
+following the plasma process with a chemical process is suggested rather than plasma alone to increase hole wall texture and remove
+plasma ash residues. Consult the chemical supplier for suggested conditions.
+
+If plasma is not available, chemical etchback for 3-point connections must be done with extreme care on TerraGreen® 400G to
+minimize copper wicking.
+
+Secondary Drilling
+The use of entry and backer material may be necessary during the secondary drilling of larger hole sizes to avoid crazing/fracturing at
+the hole perimeter. Additionally, sharper plunge point angle geometries may be necessary to avoid crazing around secondary drilled
+hole perimeters.
+
+Routing and Scoring
+Modifications of the final PWB route fabrication process may be necessary. Table 4 lists initial starting parameters. Note that
+parameters listed may require further adjustment.
+
+The customer should contact the scoring equipment and/or bit supplier for application specific suggestions for use
+with TerraGreen® 400G materials. Your Isola Technical Account Manager may also be able to provide some initial suggestions, but
+these should be validated through testing by the individual PWB fabricator.
+
+
+Part 6: Packaging and Storage
+TerraGreen® 400G2 finished boards have low moisture sensitivity and good shelf life. However, Isola recommends using best practices
+in storage and packaging, as noted below, to reduce risk during lead-free assembly.
+
+TerraGreen® 400G2 boards should be dry prior to packaging to ensure the most robust lead-free performance. Printed boards made
+from TerraGreen® 400G2 that will use high temperature assembly and which require a long shelf life, recommended packaging is to
+use a Moisture Barrier Bag (MBB) with a Humidity Indicator Card (HIC) and adequate drying desiccant inside the MBB to prevent
+moisture absorption during shipment and long term storage.
+
+Upon opening the MBB, the boards should be processed within 168 hours when maximum shop floor conditions are at < 30°C
+(85°F)/60% RH. MBB bags that are opened for inspection should be resealed immediately to protect the boards from moisture uptake.
+
+
+Part 7: Health and Safety
+Always handle laminate with care. Laminate edges are typically sharp and can cause cuts and scratches if not handled properly.
+Handling and machining of prepreg and laminate can create dust (see TerraGreen® 400G Safety Data Sheet). Appropriate ventilation
+is necessary in machining/punching areas. The use of protective masks is suggested to avoid inhaling dust. Gloves, aprons and/or
+safety glasses are suggested if individuals have frequent or prolonged skin or eye contact with dust.
+
+
+
+
+ https://www.isola-group.com/pcb-laminates-
+     prepreg/terragreensup-sup-400g2/               Last Updated May 07, 2026              © 2021, Isola Group, All rights reserved.
+                                                           TerraGreen® 400G2
+                                                     Halogen-free, Extremely Low Loss Material Subject to
+                                                                                                                     L2 Glass Availability
+Isola Group does not use polybromide biphenyls or polybromide biphenyl oxides as flame retardants in any product.
+Safety Data Sheets are available upon request.
+
+
+
+
+Part 8: Ordering Information
+Contact your local sales representative or visit: www.isola-group.com for further information.
+
+Isola Group Global Headquarters
+6565 West Frye Road
+Chandler, AZ 85226
+Phone: 480-893-6527
+Fax: 480-893-1409
+info@isola-group.com
+
+Isola Asia Pacific (Hong Kong) Ltd.
+12/F, Kin Sang Commercial Centre,
+49 King Yip Street, Kwun Tong,
+Kowloon, Hong Kong
+Phone:852-2418-1318
+Fax: 852-2418-1533
+info.hkg@isola-group.com
+
+Isola GmbH
+Isola Strasse 2
+D-52348 Düren, Germany
+Phone: 49-2421-8080
+Fax: 49-2421-808164
+info-dur@isola-group.com
+
+The data contained in this document, while believed to be accurate and based on both field testing and analytical
+methods considered to be reliable, is for information purposes only. Any sales of these products will be governed by the
+terms and conditions of the agreement under which they are sold.
+
+
+
+          NOTES
+          The data contained in this document, while believed to be accurate and based on both field testing and analytical methods
+          considered to be reliable, is for information purposes only. Any sales of these products will be governed by the terms and conditions
+          of the agreement under which they are sold.
+
+
+
+
+          Isola, the Isola logo, Astra, Chronon, GETEK, I-Fill, IsoDesign, IsoStack, I-Speed, I-Tera, Polyclad, Stratus, TerraGreen, and The Base
+          for Innovation are registered trademarks or trademarks of ISOLA USA Corp. in the United States and in other countries. Copyright ©
+          2021 Isola Group. All rights reserved.
+
+
+
+
+ https://www.isola-group.com/pcb-laminates-
+     prepreg/terragreensup-sup-400g2/                     Last Updated May 07, 2026                   © 2021, Isola Group, All rights reserved.
+

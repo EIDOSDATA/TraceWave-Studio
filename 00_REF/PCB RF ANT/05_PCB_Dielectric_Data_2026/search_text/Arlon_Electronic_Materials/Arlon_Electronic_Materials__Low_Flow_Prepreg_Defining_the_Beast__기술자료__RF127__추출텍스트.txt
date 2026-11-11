@@ -1,0 +1,159 @@
+                                                                                          APPLICATION NOTES
+
+
+                                                              Low-Flow Prepregs – Defining the Beast!
+                                                                                                                 by Chet Guiles, Arlon 2013
+
+
+
+One of my favorite authors once wrote       introduction of the concept.     (My                        adjusted, the minimum viscosity of the
+about perception: “For now we see in        personal involvement in low flow                            low flow product behaves similar to
+a mirror, dimly…” speaking in an era        materials began in the Early Mesozoic                       that of a standard flow resin. As the
+when mirrors were at best polished          Period.)                                                    heatup rate increases, the minimum
+metal surfaces. In the infancy of low                                                                   melt viscosity is lower, and hence,
+                                            How “low” is low flow compared
+flow products we used to speak about                                                                    the product will flow more, all other
+                                            to “normal prepregs?                        The charts
+“No-Flow” prepregs as if “no-flow” was                                                                  conditions being equal. If only it were
+                                            identified as “35N Rheology” and “47N
+sufficient definition of the product, but                                                               practical to use a three temperature
+                                            Rheology” are respectively a standard
+as we have recently pointed out in our                                                                  ramp rate test to characterize low flow
+                                            polyimide prepreg – 35N — (minimum
+discussions of rheology, “Everything                                                                    products during manufacture! Instead,
+                                            viscosity about 800 poise at heatup
+Flows,” and as we consider these                                                                        we have an IPC test procedure (IPC
+                                            rate 5˚C/minute) and a standard epoxy
+increasingly essential but sometimes                                                                    TM-650 2.3.17.2) that defines low flow
+                                            low flow product, 47N – (minimum
+hard to define products, much                                                                           in terms of average reduction of the
+                                            viscosity about 8000 poise at heatup
+consideration will have to be given to                                                                  diameter of a cut-out circle when the
+                                            rate of 5˚C/minute). As you can see,
+what the products need to do, how                                                                       material is tested under “standard”
+                                            the viscosity of the low flow product
+they do it, how we test them, what                                                                      conditions    of   temperature      and
+                                            is about an order of magnitude higher
+the testing means, and how or if the                                                                    pressure.
+                                            than that of the full flow prepreg.
+testing relates meaningfully to how
+                                            Note also that as the heat-up rate is What this looks like is as follows.
+the products work in a PWB rigid-flex
+                                                                                                   The sample involves three pieces of
+production environment.
+                                                                     35N Rheology                  prepreg into which are punched two
+Let’s try to define “low flow” in terms        10000000                                            1” diameter holes, as shown. After
+that will make sense to both suppliers          1000000
+                                                                                                   test, the resin has flowed into the
+and users of the products. A “low                                                                  circles (irregularly as shown in the
+                                              Viscosity (P)
+
+
+
+
+                                                 100000
+flow” prepreg is a prepreg that flows                                                              middle diagram) and the average
+sufficiently to wet out and adhere to                                                              reduction in diameter of the circle as
+                                                                                      35N 3°C per min
+                                                  10000
+                                                                                      35N 5°C per min
+                                                                                      35N 7°C per min
+
+bonding surfaces and to fill inner layer           1000                                            measured along several diameters is
+copper details, but that does not flow              100                                            defined as the “flow. A typical low flow
+                                                        110     130         150        170
+so much as to fill in cut-out areas in                              Temperature (°C)
+                                                                                                   product may flow into the holes in a
+a heat-sink or run unevenly out of the                                                             range of 0.030” to as much as 0.150”
+interface between rigid and flexible                                47N Rheology
+                                                                                                   depending on the grade and type.
+elements of a rigid-flex PWB. That            1000000                                              Measuring this manually has proved to
+being said, how to define that flow             100000
+                                                                                                   have a great deal of inherent variability
+quantitatively and to control it in such                                                           (as much as +/- 30% of nominal!), so
+                                            Viscosity (P)
+
+
+
+
+a way that the resulting product has             10000                                             use of a computerized automated
+wide applicability in a variety of PWB            1000
+                                                                                                   measurement system as is indicated
+                                                                                      47N 3°C per min
+                                                                                      47N 5°C per min
+
+
+heat-sink and rigid-flex designs has                                                               by the test coupon on the far right has
+                                                                                      47N 7°C per min
+
+
+
+
+been an issue with both producers                  100
+                                                       80   100     120       140    160   180
+                                                                                                   been developed in which 500 to 1000
+and users of the products since the                                Temperature (°C)                individual measurements are taken
+                                                                                       work quite like “Product X.” Different
+                                                                                       products, even if they are “the same”
+                                                                                       according to IPC testing (remember,
+                                                                                       this is at several hundred degrees F/
+                                                                                       minute heat-up rate at 200 psi), do not
+                                                                                       necessarily “work” the same way in
+                                                                                       process and the only way to really get
+                                                                                       the best out of any low flow product
+                                                                                       is to work with it in your own process
+                                                                                       until you are sufficiently familiar with it
+                                                                                       to make it jump through hoops.
+                                                                                       I’m sure there are a few “miracle”
+                                                                                       prepregs out there that have inherent
+                                                                                       organic bio-feedback loops that adapt
+around the “diameter” of the flow a normal press cycle, far too long for a
+                                                                                       flow and viscosity to the specific
+bead and a statistical “best fit” circle is real-time prepreg manufacturing test.
+                                                                                       design being manufactured, but for
+defined to determine the flow.              So what happens? We test using the
+                                                                                       the most part we in the business
+                                            IPC procedure. Many of our customers
+Although we have gotten something of                                                   have to be constrained by the laws of
+                                            test in a realistic process simulation.
+a handle on the measurement method,                                                    chemistry and physics, the limitations
+                                            And there is (Surprise, surprise!) often
+the test itself remains somewhat                                                       of     human-designed       processes,
+                                            poor correlation and the potential for
+variable, and correlation between test                                                 and the constraints of “standard”
+                                            issues in terms of how and whether
+presses and between test facilities                                                    testing.   Doing “the best we can”
+                                            “specs” have been met.
+remains problematic. To be practical                                                   with “what we’ve got” is not a cheap
+as a ‘real time manufacturing test, One of the unintended consequences                 excuse to avoid getting better – over
+the test procedure needs to be able of test methods that relate only                   the years we’ve improved materials
+to be completed in a relatively few marginally to in-use parameters is                 and methods, and so have the guys
+minutes. The quality of die punched that individual products (rather than              producing PWB’s. Working together
+holes in the prepreg is critical, since generic slash sheet designations)              we can evolve newer and better
+any damage to prepreg edges will become                locked     into   processes     materials, provided we are willing to
+result in irregular flow. The IPC method because engineers and shop floor              tune our processes to get the best out
+also results in unrealistically high heat- people become familiar with their use       of them.
+up rates (several hundred degrees F and make the necessary adjustments
+                                                                                       Next time: How Low-Flow materials
+per minute!) and not unexpectedly, in pressure and temperature, prepreg
+                                                                                       work in-process and what kinds of
+irregular flow. Users who employ test cut-backs, etc. so that they will work
+                                                                                       modifications of flow and viscosity
+procedures based on normal PWB with a variety of designs. They come
+                                                                                       have been made to open the process
+manufacturing processes with heat- to have the belief that the product
+                                                                                       window with a minimum of pain.
+up rates around 10˚F/minute get better itself is infinitely process-flexible,
+results, but the testing takes as long as and so anything new seems never to
+
+
+
+
+                                                     9433 Hyssop Drive
+                                           Rancho Cucamonga, California 91730
+                                         Tel: (909) 987-9533 • Fax: (909) 987-8541
+
+                                                     www.arlonemd.com
+
+Ver 1.1
+

@@ -1,0 +1,541 @@
+                                                                                                                             Fabrication
+                                                                                                                             Technical Articles
+                                                                                                                                         Notes
+
+
+RT/duroid® 6002/6006/6010
+High Frequency Laminates
+Fabrication Guidelines
+Notes on Packaging, Receiving, Storage, and Preparation for Processing
+
+
+Packaging
+High frequency circuit laminates are shipped in reinforced corrugated cardboard containers. Filler cardboard sheets, self-
+adherent polyethylene sheets, and vacuum-sealed poly bubble pack protect the materials against damage during shipping.
+
+
+Receiving
+1) Open the shipping cartons and inspect material immediately upon receipt.
+2) Advise the carrier of any shipping damage noted. It is helpful to photograph the containers and contents to support your
+    claim.
+3) All quality problems should be reported to Rogers’ Customer Service as soon as possible, and not later than 30 days after
+    receipt of the product. You may contact by telephone or in writing:
+
+
+4)   Damaged or rejected material should not be returned without a proper return authorization obtained from the Customer
+     Service Representative. Returns without proper authorization may be refused.
+5)   Every panel is packaged and labeled with the product identification and lot and sheet numbers. An example of a typical
+     label is provided. Verify that this label is present on individual cores when the shipment is received.
+6)   Rogers Corporation maintains full traceability records for individual laminates based upon lot and sheet numbers.
+     Maintaining traceability is often essential to understanding and correcting any problems that may arise. It is strongly
+     urged that customers adopt an appropriate procedure for maintaining the identification of individual panels through
+     storage, processing, and delivery of final
+     product.
+                                                          RT/duroid®, RO4000®, RO3000®. TMM®, ULTRALAM® SYRON™, XT/duroid™
+                                                                        Licensed trademarks of Rogers Corporation
+Storage                                                              HIGH FREQUENCY LAMINATES
+                                                                          The world runs better with Rogers.®
+ RT/duroid® 6000 PTFE-based laminates can be
+                                                                                                         Rogers Part Number: Unique ID
+                                                                 RPN           2006898
+stored indefinitely at normal ambient room
+temperatures (65°F to 85°F, 18°C to 30°C) and                    RO3010 9X12 1E/1E                    0100+-0007/DI
+                                                                                                                             Grade, panel size, cladding,
+                                                                 CPN
+                                                                                                                             dielectric thickness and thickness tolerance
+normal humidity levels. At room temperature,                     00013565 SHEET 1 2
+                                                                                                                Press load and sheet number
+the dielectric materials are inert to high                       NOTES:       1 2 3 4 5 6 7 8
+humidity and atmospheric pollutants such as                                                                          Date of manufacture
+                                                                 DOM 11/11/07           MG09712                      and operations ID number
+industrial gases and marine salts. However,
+                                                                 LOC: MLAM FGDS 3S                        Storage location
+metal claddings, such as copper foil or thick
+aluminum, brass, and copper backing, can be
+oxidized or corroded during direct exposure to
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+
+                                                                    Page 1 of 12
+high humidity, sulfur oxides, and marine salts. The adherent polyethylene cover sheet (thick cores) and polythelene bag (thin
+laminates) provide a large measure of protection from corrosive atmospheres. Normal cleaning procedures, covered later in
+this publication, readily remove traces of corrosion from properly stored materials.
+
+
+Storage in Original Shipping Cartons
+1) Stack cartons on a flat surface that is safely out of the way of mobile handling and moving equipment.
+2) Cartons should be stacked to a maximum of five high to avoid excessive weight on the bottom packages.
+
+
+Storage of Panels Removed from Cartons
+1) Thin panels should remain sealed within the polyethylene bags, and the adherent polyethylene sheets should remain
+    on thicker cores. These packaging materials deter oxidation and corrosion of the metal layers and provide a measure of
+    protection against mechanical damage (i.e., scratches, pits, dents, etc.).
+2) Store panels on edge in slotted shelving units, keeping the clad surfaces vertical. This provides easy access with low risk
+    of damage to the metal surfaces.
+3) If storage facilities do not permit vertical stacking:
+     A)    The shelf must be flat, smooth, and clean.
+     B)    The shelf must extend beyond the full area of the panels being stored.
+     C)    Surfaces of the laminates must be free of debris.
+     D)    Shelf loading should be kept below 50 pounds per square foot.
+     E)    Panels should be interleaved with soft, non-abrasive separator sheets.
+
+
+Handling
+PTFE-based materials are softer than most other rigid printed wiring board laminates and are more susceptible to handling
+damage. Cores clad only with copper foils are easily creased. Materials bonded to thick aluminum, brass, or copper plates are
+more prone to scratches, pits, and dents. Proper handling procedures should be followed.
+1) Wear gloves of knit nylon or other non-absorbent material when handling panels. Normal skin oils are slightly acidic and
+    readily corrode copper surfaces. Fingerprints are difficult to remove as normal brighteners dissolve the corrosion,
+    but leave corrosive oils in the copper to cause the fingerprint to reappear hours or days later. The
+    following procedure is recommended to remove fingerprints:
+    A) Bright dip in dilute hydrochloric acid.
+    B) Degrease in acetone, methyl ethyl ketone, or vapor degrease with chlorinated solvents.
+    C) Water rinse and bake dry for 60 minutes @ 250°F (125°C).
+    D) Repeat bright dip.
+2) Keep work surfaces clean, dry, and completely free of debris.
+3) Leave the polyethylene bag or sheet in place through initial processes such as shearing, sawing, blanking, and punching.
+4) Only pick panels by two edges. Thin cores in particular lack the stiffness required to support themselves by one edge or
+    corner, handling them in that manner may dimensionally distort the dielectric or impart a permanent crease.
+5) During processing, cores should be transported between work stations on flat carrying trays, preferably interleaved with
+    a soft, sulfur-free paper. Vertical racks should not be used unless they are slotted and provide adequate vertical support.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                          Page 2 of 12
+Single- and Double-Sided PCB Fabrication Guidelines
+
+
+Surface Preparation
+For panels protected by self-adhering polyethylene sheet, use the following steps to remove it and any adhesive residue. This
+should be done prior to drill (double-sided process) or just before the final copper cleaning step that immediately precedes
+the application of photoresist in a single-sided process. As previously mentioned, gloves should be worn.
+
+
+1)   Lay the panel on a flat clean surface.
+2)   Peel back the film at one corner and extend the starting peel across the short edge.
+3)   Hold the exposed panel end against the flat surface and gently peel off the film in a horizontal direction away from the
+     starting edge.
+4)   Turn the panel over and remove the film on the other side in a similar manner. Make sure that the work surface remains
+     clean.
+5)   Remove adhesive residue by wiping with a lint-free cloth soaked in an alcohol solvent. Isopropanol, 70% to 100%,
+     is recommended for low toxicity and flammability. Ketones, such as acetone or MEK, or halogenated hydrocarbon
+    degreasing solvents are not particularly effective for removing adhesive spots.
+6) The solvent clean should be followed with a clean water rinse.
+7) Remove copper oxides using commercially available cleaners and microetchants.
+8) Abrasive cleaning (e.g., pumice powder or conveyorized brush scrubbing) is not recommended. Mechanical surface
+    preparation tends to cause microscopic scratches in copper. These scratches become stress risers that can lead to thermal
+    stress cracks in some environmental conditions. While strongly recommending against abrasive cleaning, we recognize
+    that in some circumstances that abrasive cleaning is necessary. When abrasive cleaning is required, it should be
+    performed with minimal pressure and knowledge of the risks involved. Brush scrubbing may cause material
+    distortion.
+
+
+Tooling Holes
+Pinning or tooling holes can be punched, drilled, or routed using normal procedures.
+
+
+Drilling
+
+Avoiding Smear
+ Smear on drilled via walls is a well-known problem with epoxy-glass laminates. Overheated tools can thermally decompose
+the epoxy resin system causing it to soften. The softened resin system stretches slightly during drilling, causing a connected
+“flap” of resin to form. Furthermore, small pieces of debris may become lodged during drilling between the hole wall and the
+tool when they become shear-deformed and are loosely re-deposited. Resin flaps and re-deposited debris can be removed
+during plasma or permanganate desmear processes.
+
+
+Similar types of smear occur when drilling PTFE composites. While re-deposited debris can be dislodged using vapor honing,
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                          Page 3 of 12
+a proven way does not exist to remove the flap-style smear that is connected to a hole wall. As smear cannot be readily
+removed, it must be avoided by employing tightly controlled drilling parameters and conservative tool life expectations.
+
+
+Stack Construction
+RT/duroid® 6000 cores can be drilled individually or in stacks using pressed phenolic composite boards for entry and exit. The
+total thickness of the core material plus entry material and penetration into exit material should not exceed 75% of the drill’s
+flute length. For most applications, the maximum stack height should be less than 0.240 inch (6.1 mm).
+
+
+
+Drill Type
+Carbide drills should be used to minimize wear of cutting edges. Standard style drills with an included lip angle of 130° are
+recommended. Undercut style drills where the flute diameter is reduced 0.025” (0.65 mm) from the cutting end may help to
+reduce re-deposited smear. The use of new drills is strongly urged. Re-pointed drills, if used, must be precision ground and
+visually inspected prior to use.
+
+
+Drill Parameters
+The optimum tool surface speed and infeed rates are 250-300 surface feet per minute (60 to 90 meters per minute) and 0.002”
+(0.045 mm) to 0.003” (0.070 mm) per revolution. The retract rate should be maintained between 400 and 500 inches per
+minute (10 and 13 meters per minute). The drill bit should be changed once it has drilled 12” (30 cm) of dielectric.
+
+
+Equations for using surface speed, infeed rate, and tool diameter to calculate spindle and infeed speeds are provided below
+along with a quick-reference table:
+
+
+Entry Phenolic Composite			      0.010”-0.030” (0.25-0.75 mm)
+Exit     Phenolic Composite			   >0.060” (1.5 mm)
+Chip Load					0.002”-0.003” (0.045-0.070 mm)
+Surface Speed				              200-300 ft/min (60-90 m/min)
+Retract Rate					                400-500 inch/min (10-13 m/min)
+
+
+Tool Life Estimate: Stack Height Maximum Hit Count
+				0.060” (1.5 mm)		300
+				0.120” (3.0 mm)		250
+				0.180” (4.5 mm)		100
+
+
+Equations for calculating spindle speed and infeed rate:
+
+
+Spindle Speed (RPM)=950/Tool Dia (inch)
+
+
+Infeed (IPM)=Spindle Speed (RPM) X 0.002 (inch)
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                           Page 4 of 12
+                        Tool Size                             Spindle Speed                        Infeed
+             (in)                        (mm)                     (RPM)                    (IPM)              (m/min)
+           0.0197                         0.50                    48200                    96.4                  2.4
+           0.0256                         0.65                    37100                    74.2                  1.9
+           0.0295                         0.75                    32200                    64.4                  1.6
+           0.0394                         1.00                    24100                    48.2                  1.2
+           0.0492                         1.25                    20000                    40.0                  1.0
+           0.0625                         1.59                    20000                    40.0                  1.0
+           0.1250                         3.18                    20000                    40.0                  1.0
+
+
+Deburring
+The use of flat, rigid entry/exit materials, conservative drilling parameters, and limited hit counts with new drills should
+minimize the risk of copper burring. When drilled properly, the cores should be ready for subsequent processing. Chemical
+preparation is preferred, but if mechanical or hand pumice scrubbing processes are used to deburr boards, the force applied
+must be minimized to prevent gouging and dimensional distortion.
+
+Hole Preparation
+Loosely re-deposited debris in the holes can be removed using vapor- or hydro-honing processes. These processes involve
+directing abrasive particles carried in water or air streams through drilled holes. The soft laminates must be adequately
+supported through these processes.
+
+
+Drilled holes in PTFE-based laminates must be treated prior to the deposition of a conductive seed layer (e.g., electroless
+copper or direct metallization). Not performing a surface activation treatment will most likely result in poor metal adhesion
+or plated voids. Two common pre-treatments for PTFE materials are sodium treatment and plasma treatment. Either can be
+used for treating RT/duroid 6000 materials.
+
+
+Sodium treatments consist of highly reactive sodium naphthalene compounds in glycol ether solution. They are very
+effective at making PTFE surfaces wettable prior to metal deposition. Recommended application procedures available from
+the vendors of sodium treatment products are applicable when processing RT/duroid 6000 materials with one exception.
+The treatment time must not exceed thirty seconds. Controlling exposure time is required to reduce the risk of absorption of
+chemicals into the dielectric material surrounding the drilled holes. Sodium treated RT/duroid 6000 cores should be baked at
+125C for 60 minutes just prior to metallization.
+
+Sources for sodium treatment chemicals:
+                                                           FluoroEtch® Etchant
+                                                          Acton Technologies, Inc
+                                                             100 Thompson St
+                                                            Pittston, PA 18640
+                                                              570-654-0612
+
+                                           W.L. Gore Tetra-Etch® etchant 500 ML available from
+                                                        R.S. Hughes Company, Inc
+                                                            1162 Sonora Court
+                                                           Sunnyvale, CA 94086
+                                                               408 739 3211
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                               Page 5 of 12
+Sources for sodium treatment services:
+                                                             FluoroEtch Etchant
+                                                            Acton Technologies, Inc
+                                                               100 Thompson St
+                                                              Pittston, PA 18640
+                                                                570-654-0612
+
+                                                                 G & S Associates
+                                                               1865 Sampson Ave.
+                                                                Corona, CA 92879
+                                                          http://www.gsassociates.com
+                                                                  951 739 7513
+
+
+A recommended plasma treatment prior to metal desposition would use a 70/30 H2/N2 blend, NH3, or N2 gases. Plasma
+conditions would be:
+
+
+                                                    Pressure:     100 mTORR Pump-down
+                                                                  250 mTORR Operating
+                                                      Power:      4000 Watts
+                                                  Frequency:      40 KHz
+                                                     Voltage:     500-600 V
+                                                  Cycle Time:     10-30 Minutes
+Metallization
+Electroless copper processes or electroless copper alternatives such as Crimson, Shadow, and Black Hole may be used to
+deposit a conductive seed layer once the PTFE surface has been properly treated (and baked if a sodium treatment process
+was used). As the PTFE resin system is soft and somewhat compressible, a flash plate build-up of copper 0.0001”-0.0003”
+(0.0025-0.0076mm) thick should be applied prior to preparing metal surfaces for photoresist.
+
+
+Resist Strip, Cu Etch, Sn or Sn/Pb Strip
+Standard etchants and strip solutions may be used. Thin cores may require the support of leader boards or frames through
+conveyorized processes. Complete rinsing (preferred: 20-30 minutes in 70F+ distilled or de-ionized water) and baking
+(preferred: 125°C for 60 minutes in air or for 30 minutes under vacuum) of cores should immediately follow the final strip
+process.
+
+
+The post-etched surface of the cores will retain the imprint of the copper cladding’s dendritic tooth structure. This surface,
+if left undisturbed, provides adequate surface area for mechanical bonding of most soldermasks and adhesive systems used
+for multi-layer bonding. Not wiping or scrubbing the etched surfaces will allow the cores to proceed through soldermask
+application or multi-layer bonding without requiring special surface pre-treatments.
+
+
+Soldermask Application
+Epoxy-based soldermasks such as Hysol® SR1000 are preferred if the soldermask will be selectively silver screened. Most
+photoimageable soldermasks have been found to provide adequate adhesion providing the post-etch surface has been
+preserved and the cores have been baked prior to application of the coating.
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                                  Page 6 of 12
+Final Metal Surface
+All final metal surface options (i.e. HASL, Sn, Sn/Pb, Ni/Au, Ag, OSP, etc.) have been successfully applied to circuits on RT/
+duroid 6000 materials. Exposure time to fluxes should be less than 30 seconds prior to HASL or reflow. Any processes
+requiring flux or oil should be immediately followed by a thorough rinse (hot water is preferred, a 15-minute rinse in clean
+solvents such as methanol, ethanol, or isopropyl alcohol may be required if dielectric has been exposed to water insoluble
+solvents) and bake (30-60 minutes at 125°C). Electroless nickel/immersion gold (ENIG) finishes should be used on RT/duroid
+6010 materials only when absolutely required. ENIG processes can stain the surface of the high dielectric constant materials.
+
+
+Final Circuitization
+Individual circuits in RT/duroid 6000 materials can be routed, scored, punched, or lased depending upon edge quality
+requirements. Detailed recommendations for routing are provided below:
+
+
+These guidelines were developed to minimize burrs and maximize tool life when routing stacks of double sided boards. This
+information should also be applicable to most bonded assemblies.
+
+
+Guideline Summary:
+
+
+         Chip Load: 0.00125”- 0.00250”/rev.
+		 (32 mm - 64 mm/rev.)
+             Speed: 200 - 600 sfm
+		 (61 - 183 m/min)
+        Peripheries: Conventional Cut
+  Internal Cut-outs: Climb-cut
+          Tool Type: Double fluted spiral
+		endmill-carbide
+         Exit/Entry: Phenolic or composite board
+           Tool Life: 20 - 30 linear feet
+		 (6 - 9 meters)
+* Pre-route vacuum channels in the backer board to provide adequate air flow through the channels during routing.
+* Double pass (opposite directions) when two clean edges are required.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                          Page 7 of 12
+Recommended Tool Type:
+The machining parameters provided were developed using an Excellon EX200 Driller/Router at Megatool’s Buena Park, CA
+facility. Best results were obtained with a double fluted spiral endmill (Megatool RP series).
+
+
+Other carbide endmills (ie. single flute, three flute, etc.) may also be used without significantly impacting quality. However,
+conventional diamond cut and chip breaker router bits should not be used since they generally yield inferior quality and poor
+effective tool life.
+
+
+Machining Parameters:
+                Tool Diameter                               Spindle Speed                        Lateral Feed Rate
+                     1/32”                                 40 KRPM (327 sfm)                     75 IPM (0.0019/rev.)
+                     1/16”                                 30 KRPM (491 sfm)                    75 IPM (0.0025”/rev.)
+                     3/32”                                 20 KRPM (491 sfm)                    50 IPM (0.0025”/rev.)
+                      1/8”                                 15 KRPM (491 sfm)                    37 IPM (0.0025”/rev.)
+
+
+                    1,0 mm                                40 KRPM (125 m/min)                  2.0 m/min (50 mm/rev.)
+                    1.5 mm                                32 KRPM (150 m/min)                  2.0 m/min (63 mm/rev.)
+                    2.5 mm                                19 KRPM (150 m/min)                  1.2 m/min (63mm/rev.)
+                    3.0 mm                                16 KRPM (150 m/min)                  1.0 m/min (63 mm/rev.)
+
+
+Entry/Exit/Interleaving Material and Table Configuration:
+Burrs and loose debris can be minimized by using entry and exit material, compressible interleaving sheets, and open vacuum
+channels. The entry and exit material provide the support necessary to minimize material deflection and obtain cleanly
+cut edges. The interleaving material (often 2-4 sheets of Kraft paper) conforms around metal features and offers support
+to etched dielectric surfaces. Open channels in the backer material significantly increase the effectiveness of the routing
+machines vacuum system by allowing air to flow up through channels during routing. This minimizes the need for deburring
+and debris removal after routing by preventing flute and channel clogging. The vacuum measured at the spindle should be at
+least 30 in. H2O for best results.
+
+
+Vacuum channels are prepared by pre-routing the backer material with a tool that is 1.5 to 2.0 times the diameter of the tool
+used to rout the panels. Channel depth is usually about 0.060” to 0.100” (1.5 - 2.5 mm). The routed peripheries and cut-outs
+in the backer material are joined with channels that extend to areas outside the panel periphery. This allows air to be drawn
+through the channels during routing.
+
+
+Figure #1 (previous page) is an example of a pre-routed backer board. There are two boards per panel. Each board has an
+internal cut-out. Three connecting channels extend to areas outside the periphery of panels to be routed.
+
+
+When routing parts, “entry material” is placed above and below the stack of panels.
+
+
+The “entry material” placed below the stack prevents deflection of material into the oversized vacuum channels in the backer
+board. During routing, the tool cuts through the thin channel overlay (0.015” to 0.025” entry) to provide access to the vacuum
+channels.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                             Page 8 of 12
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                          Page 9 of 12
+Climb-Cut vs. Conventional Cut:
+The leading edge of a routed channel is typically cleaner than the trailing edge (figure #2-previous page). Therefore,
+peripheries should be conventional cut and internal cut-outs should be climb-cut to maximize edge quality on the finished
+part (figures 3 & 4). If both edges of a routed channel need to be cleanly cut, the tool direction should be reversed for a
+second pass through the channels. This will remove most of the debris left on the trailing edge during the first pass (figure #2
+- previous page).
+
+
+Routing Through Copper Cladding:
+Routed edge quality is usually superior when routing through the copper foil since it helps constrain the dielectric material.
+However, good results can generally be obtained with or without copper cladding.
+
+
+Stack Height:
+At least 20%-30% of the flute should be exposed above the entry material to allow for debris removal. This leaves 70%-
+80% of the flute length available for routing the panels, entry material and exit material. The maximum stack height can be
+calculated by subtracting the entry thickness and exit penetration depth from the available flute length (70%-80% of the
+actual flute length).
+
+
+ Example:
+ 0.0625” endmill with 0.260” flute length
+ 0.015” entry and vacuum channel overlay
+ 0.020” penetration into vacuum channels
+
+
+ 0.75 x 0.260” (available flute length)
+        - 0.015” (entry material)
+        - 0.015” (exit overlay)
+        - 0.020” (vacuum channel penetration)             		
+          0.145” (maximum stack height)
+
+
+Estimated Tool Life:
+Edge quality will slowly degrade as the tool wears. Fabricators should base tool life on the edge quality requirements for a
+particular job. In general, 20 - 30 linear feet (6-9 meters) of material can be routed with the same tool without sacrificing edge
+quality. This estimate is basically the same with or without a second pass. Since flute and channel clogging will significantly
+impact edge quality, vacuum channels are usually needed to minimize the need for tool changes.
+
+
+* Rogers Corporation would like to thank Megatool, Inc. for helping us develop these guidelines.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                           Page 10 of 12
+Multilayer Considerations
+
+
+Inner-Layer Preparation
+Standard photoresist and etch procedures are used. Care should be taken to preserve the as-etched dielectric surface.
+Selection of an appropriate copper surface treatment is dependent upon the adhesive selected. All layers should be baked
+for 30 minutes at 100-125°C prior to bonding.
+
+
+Adhesive Systems
+Two categories of adhesive systems, thermoplastic and thermoset, have been used when bonding
+RT/duroid 6000 multilayers. Thermoplastics, such as Dupont’s FEP film or Rogers 3001 film, are typically selected when
+electrical properties of the adhesive layers are critical. The dielectric constant and dissipation factor of FEP is 2.1 and 0.0003.
+The dielectric constant and dissipation factor of 3001 film is 2.28 and 0.003. As the PTFE resin system is a thermoplastic, direct
+bonding (see RT 4.9.3, “RT/duroid 6002 High Frequency Laminate Direct Bonding”) can be used to manufacture homogeneous
+multiplayer constructions.
+
+
+Thermosets, such as FR-4 prepreg or Speedboard C from W.L.Gore, can be chosen when electrical properties are less critical.
+
+
+Thermoplastics
+Melting point is an important consideration when selecting a thermoplastic adhesive system. FEP melts at 500°F (260°C) and
+is therefore stable through most PCB and assembly processes. The 390°F (200°C) melting point of 3001 film can result in a
+re-melting if subsequent PCB or assembly processes are higher in temperature and longer in duration than a few minutes.
+Copper surfaces should be prepared using a microetch, brown oxide, red oxide, or one of the subtractive process oxide
+alternatives. 3001 film should not be used against a continuous copper plane.
+
+
+The thermoplastic adhesives should be bonded with applied pressure between 50 and 250 PSI. The ramp to temperature
+(525-550°F, 275-290°C) for (FEP; 425-450°F, 220-230°C for 3001) can be 6-8°F/min (3.5-4.5°C/min) and the dwell at temperature
+should be 20-30 minutes. Cooling to 250°F (120°C) at a rate of 2-4°F/min (1.4-2.5°C/min) should be completed under pressure
+as transfer cooling can result in delamination.
+
+
+Thermosets
+Refer to vendor recommendations for appropriate oxide types and bond conditions when using thermoset adhesive systems.
+
+
+Post-Bond PCB Processing
+Guidelines for double-sided circuit processing would apply to multilayer through hole and outer-layer processing.
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                          Page 11 of 12
+The information in this fabrication guideline is intended to assist you in fabricating Rogers’ circuit materials. It is not intended to and does not
+create any warranties express or implied, including any warranty of merchantability or fitness for a particular purpose or that the results shown on
+this fabrication guideline will be achieved by a user for a particular purpose. The user should determine the suitability of Rogers’ circuit materials
+for each application.
+
+These commodities, technology or software are exported from the United States in accordance with the Export Administration regulations. Diversion
+contrary to U.S. law prohibited.
+
+RT/duroid is a trademark of Rogers Corporation or one of its subsidiaries.
+Teflon and DuPont are trademarks of E.I. duPont de Nemours & Co., Poly-etch is a registered trademark of Matheson Gas Products
+SPEEDBOARD is a registered trademark of W.L.Gore and Associates, Fluoroetch is a registered trademark of Acton Associates Inc.
+Hysol SR1000 is a registered trademark of Dexter Corporation, Windsor Locks. CT
+© 2023 Rogers Corporation, Printed in U.S.A
+Revised 1640 060223 Publication #92-412
+
+
+
+
+100 S. Roosevelt Avenue, Chandler, AZ 85226
+Tel: 480-961-1382, Fax: 480-961-4533 www.rogerscorp.com
+                                                                    Page 12 of 12
+
