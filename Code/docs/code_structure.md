@@ -96,3 +96,13 @@ StudioFrame은 화면 사이의 연결과 서비스 DTO 캐시를 유지한다. 
 5. 기존 저장소/명령/결과 계약과 취소/복구 의미를 보존하는 회귀를 수행한다. 네이티브 함수 이동 시 입력 계획과 실제 CAD/openEMS 실행을 확인한다.
 
 기존 IFA 수렴과 runtime profile은 당시 소스의 검증 기록으로 유지한다. 소스 분리에 따라 worker source identity가 달라지므로 이전 연구에 현재 소스로 `--resume`을 섞지 않는다. 완료 자료의 `--reassess-only` 또는 새 workspace를 사용한다.
+
+## 용량과 후속 연계 모듈
+
+- `domain/resource_limits.py`: 저장/근거/선택/적층/전송의 유한 자원 예산.
+- `domain/pcb_evidence_pool.py`: 선택 0.2의 공유 원문 보존과 0.1 검증용 복원. 외부 sidecar 없음.
+- `application/wsl_process.py`: worker 접수 전 준비/취소와 접수 후 소유권 복구의 구분.
+- `application/mcp.py`, `tools/mcp_stdio.py`: 기존 공개 API와 영수증을 재사용하는 MCP 2025-11-25 stdio adapter.
+- `application/radiation.py`, `tools/nf2ff_dipole_worker.py`: 방사 지표의 의미와 격리된 참조 계산. 사용자 PCB worker와 별도.
+- `ui/wxwidgets/study_report_dialog.*`: 완료 연구의 설정과 판정을 표시하는 읽기 전용 비교 화면.
+- `tools/canvas_render_benchmark.cpp`, `build_internal_bundle.py`: 제품 renderer 계측과 내부 검증 묶음 생성.

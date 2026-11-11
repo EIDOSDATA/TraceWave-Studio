@@ -15,7 +15,7 @@ from rfad.application.catalog_api import describe as describe_catalog, query as 
 from rfad.application.pcb_selection_contract import READ_METHODS as PCB_SELECTION_READS, MUTATION_METHODS as PCB_SELECTION_MUTATIONS
 
 CONTRACT_VERSION = "rfad.api/2.0"
-MAX_FRAME_BYTES = 64 * 1024
+from rfad.domain.resource_limits import MAX_FRAME_BYTES, MAX_DOCUMENT_BYTES, MAX_SELECTION_RESULT_BYTES
 MAX_BATCH_ITEMS = 16
 MAX_STRING_BYTES = 8192
 MAX_DEPTH = 64
@@ -76,7 +76,7 @@ def capabilities(service=None, catalog=None) -> dict:
             "schema_version": SCHEMA_VERSION, "readable_schema_versions": [LEGACY_SCHEMA_VERSION, SCHEMA_VERSION],
             "expression_engine": ENGINE_VERSION, "open_modes": ["create", "open", "recover"],
             "commands": [name for name in COMMANDS if name != "pcb_stackup.apply"],
-            "max_document_bytes": 32768, "mutating_batch": False, "mutating_notification": False,
+            "max_document_bytes": MAX_DOCUMENT_BYTES, "mutating_batch": False, "mutating_notification": False,
             "scope": "workspace-local versioned projects and optional isolated host CAD worker",
             "design_validation": {"profile": "rfad.design/0.1", "purposes": ["geometry", "step", "em"], "source": "draft_revision", "max_returned_diagnostics": 64},
         }
@@ -115,7 +115,9 @@ def capabilities(service=None, catalog=None) -> dict:
                                   for name in sorted(PCB_SELECTION_READS | PCB_SELECTION_MUTATIONS)})
         result["pcb_selection_profile"] = {"profile": "rfad.pcb-selection/0.1", "preview_required": True,
                                             "atomic_apply": True, "source_copies_in_project": True,
-                                            "project_schema": SCHEMA_VERSION, "max_result_bytes": 49152}
+                                            "project_schema": SCHEMA_VERSION, "max_result_bytes": MAX_SELECTION_RESULT_BYTES,
+                                            "readable_selection_schemas": ["rfad.pcb-selection/0.1", "rfad.pcb-selection/0.2"],
+                                            "shared_evidence_supported": True}
     result["catalog_profile"] = describe_catalog(catalog)
     result["methods"].update({
         name: {"status": "implemented", "extension_profile": "rfad.catalog/0.1"}

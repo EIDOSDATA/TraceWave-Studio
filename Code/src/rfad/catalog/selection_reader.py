@@ -13,7 +13,7 @@ MAX_RAW_BYTES = 256 * 1024
 MAX_READ_BYTES = 1024 * 1024
 MAX_READ_ROWS = 512
 MAX_COMPONENTS = 256
-MAX_EVIDENCE_BYTES = 12 * 1024
+from rfad.domain.resource_limits import MAX_EVIDENCE_BYTES
 ENTITIES = frozenset({"observations", "sources", "native_templates", "native_components"})
 
 
@@ -246,7 +246,7 @@ class SelectionReader:
         if identity not in self._evidence:
             candidate = [*self._evidence.values(), evidence]
             if len(canonical_json(candidate).encode("utf-8")) > MAX_EVIDENCE_BYTES:
-                raise CatalogError("E_RESOURCE", "프로젝트 선택 근거의 전체 12 KiB 상한을 초과했습니다.")
+                raise CatalogError("E_RESOURCE", "프로젝트 선택 근거의 전체 128 KiB 상한을 초과했습니다.")
             self._evidence[identity] = evidence
         return deepcopy(evidence)
 

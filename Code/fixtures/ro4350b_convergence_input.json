@@ -1,0 +1,1010 @@
+{
+  "schema": "rfad.pcb-runtime-fixture/0.1",
+  "case_kind": "ifa_feed",
+  "description": "제조사 관측을 참고한 별도 탐색 모델. 명목 코어/구리만 표현하며 마스크/ENIG/거칠기/분산/실장/공차를 생략. 실제 납품 물성과 제조/측정 검증은 미정.",
+  "document": {
+    "schema_version": "rfad.project/0.2",
+    "project_id": "e93527de-ee25-4c00-ac0d-660edf1ecc9a",
+    "revision_id": "d7633f64-39fc-4add-b474-8936129aceb7",
+    "parent_revision_ids": [],
+    "metadata": {
+      "name": "JLC RO4350B 30 mil 탐색용 IFA",
+      "description": "제조사 관측을 참고한 별도 탐색 모델. 명목 코어/구리만 표현하며 마스크/ENIG/거칠기/분산/실장/공차를 생략. 실제 납품 물성과 제조/측정 검증은 미정.",
+      "created_at": "2026-11-10T22:18:49.603711+00:00",
+      "modified_at": "2026-11-10T22:18:49.603711+00:00"
+    },
+    "frames": {
+      "world": {
+        "id": "80e5dd44-b5f3-4efd-b758-e203cb55c7ab",
+        "parent_frame_id": null,
+        "handedness": "right",
+        "translation_si": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "board": {
+        "id": "6fdd7346-7fd1-4924-becd-7d134d6670f5",
+        "parent_frame_id": "80e5dd44-b5f3-4efd-b758-e203cb55c7ab",
+        "handedness": "right",
+        "translation_si": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      }
+    },
+    "parameters": {},
+    "board": {
+      "id": "51cf1b19-34c3-4b4d-8ad1-742012fa834c",
+      "frame_id": "6fdd7346-7fd1-4924-becd-7d134d6670f5",
+      "outline": {
+        "kind": "rectangle",
+        "width": {
+          "value_si": 0.04,
+          "dimension": "length",
+          "display_unit": "mm",
+          "status": "user_entered",
+          "source_refs": [
+            "test-only-explicit-assumption"
+          ]
+        },
+        "height": {
+          "value_si": 0.06,
+          "dimension": "length",
+          "display_unit": "mm",
+          "status": "user_entered",
+          "source_refs": [
+            "test-only-explicit-assumption"
+          ]
+        }
+      },
+      "thickness_convention": "finished"
+    },
+    "extensions": {},
+    "geometry": [
+      {
+        "frame_id": "6fdd7346-7fd1-4924-becd-7d134d6670f5",
+        "layer_id": "e4638f10-c579-49f5-bc39-55a065b32eea",
+        "material_ref": "b6ff1075-c48b-48f7-9f45-29f3a6a4d5d0",
+        "source_ref": "test-only-explicit-assumption",
+        "include_in_em": true,
+        "include_in_export": true,
+        "net_id": "8470f28b-a037-419e-a9e8-af4beeabd4d0",
+        "id": "483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+        "kind": "planar_region",
+        "role": "ground",
+        "outer": [
+          [
+            {
+              "value_si": 0.0,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": [
+                "test-only-explicit-assumption"
+              ]
+            },
+            {
+              "value_si": 0.0,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": [
+                "test-only-explicit-assumption"
+              ]
+            }
+          ],
+          [
+            {
+              "value_si": 0.04,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": [
+                "test-only-explicit-assumption"
+              ]
+            },
+            {
+              "value_si": 0.0,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": [
+                "test-only-explicit-assumption"
+              ]
+            }
+          ],
+          [
+            {
+              "value_si": 0.04,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": [
+                "test-only-explicit-assumption"
+              ]
+            },
+            {
+              "value_si": 0.05,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": [
+                "test-only-explicit-assumption"
+              ]
+            }
+          ],
+          [
+            {
+              "value_si": 0.0,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": [
+                "test-only-explicit-assumption"
+              ]
+            },
+            {
+              "value_si": 0.05,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": [
+                "test-only-explicit-assumption"
+              ]
+            }
+          ]
+        ],
+        "holes": [
+          [
+            [
+              {
+                "value_si": 0.03,
+                "dimension": "length",
+                "display_unit": "mm",
+                "status": "user_entered",
+                "source_refs": [
+                  "test-only-explicit-assumption"
+                ]
+              },
+              {
+                "value_si": 0.01,
+                "dimension": "length",
+                "display_unit": "mm",
+                "status": "user_entered",
+                "source_refs": [
+                  "test-only-explicit-assumption"
+                ]
+              }
+            ],
+            [
+              {
+                "value_si": 0.034,
+                "dimension": "length",
+                "display_unit": "mm",
+                "status": "user_entered",
+                "source_refs": [
+                  "test-only-explicit-assumption"
+                ]
+              },
+              {
+                "value_si": 0.01,
+                "dimension": "length",
+                "display_unit": "mm",
+                "status": "user_entered",
+                "source_refs": [
+                  "test-only-explicit-assumption"
+                ]
+              }
+            ],
+            [
+              {
+                "value_si": 0.034,
+                "dimension": "length",
+                "display_unit": "mm",
+                "status": "user_entered",
+                "source_refs": [
+                  "test-only-explicit-assumption"
+                ]
+              },
+              {
+                "value_si": 0.014,
+                "dimension": "length",
+                "display_unit": "mm",
+                "status": "user_entered",
+                "source_refs": [
+                  "test-only-explicit-assumption"
+                ]
+              }
+            ],
+            [
+              {
+                "value_si": 0.03,
+                "dimension": "length",
+                "display_unit": "mm",
+                "status": "user_entered",
+                "source_refs": [
+                  "test-only-explicit-assumption"
+                ]
+              },
+              {
+                "value_si": 0.014,
+                "dimension": "length",
+                "display_unit": "mm",
+                "status": "user_entered",
+                "source_refs": [
+                  "test-only-explicit-assumption"
+                ]
+              }
+            ]
+          ]
+        ]
+      },
+      {
+        "frame_id": "6fdd7346-7fd1-4924-becd-7d134d6670f5",
+        "layer_id": "e4638f10-c579-49f5-bc39-55a065b32eea",
+        "material_ref": "b6ff1075-c48b-48f7-9f45-29f3a6a4d5d0",
+        "source_ref": "test-only-explicit-assumption",
+        "include_in_em": true,
+        "include_in_export": true,
+        "net_id": "8470f28b-a037-419e-a9e8-af4beeabd4d0",
+        "id": "4ae807f7-0e5f-43f6-a7b2-c4203bb80fb4",
+        "kind": "line_path",
+        "role": "radiator",
+        "start": [
+          {
+            "value_si": 0.005,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          },
+          {
+            "value_si": 0.057,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          }
+        ],
+        "end": [
+          {
+            "value_si": 0.031,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          },
+          {
+            "value_si": 0.057,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          }
+        ],
+        "width": {
+          "value_si": 0.001,
+          "dimension": "length",
+          "display_unit": "mm",
+          "status": "user_entered",
+          "source_refs": [
+            "test-only-explicit-assumption"
+          ]
+        }
+      },
+      {
+        "frame_id": "6fdd7346-7fd1-4924-becd-7d134d6670f5",
+        "layer_id": "e4638f10-c579-49f5-bc39-55a065b32eea",
+        "material_ref": "b6ff1075-c48b-48f7-9f45-29f3a6a4d5d0",
+        "source_ref": "test-only-explicit-assumption",
+        "include_in_em": true,
+        "include_in_export": true,
+        "net_id": "8470f28b-a037-419e-a9e8-af4beeabd4d0",
+        "id": "6442ae11-5c6e-4deb-a44e-5e683f69083c",
+        "kind": "line_path",
+        "role": "feed",
+        "start": [
+          {
+            "value_si": 0.009000000000000001,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          },
+          {
+            "value_si": 0.0525,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          }
+        ],
+        "end": [
+          {
+            "value_si": 0.009000000000000001,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          },
+          {
+            "value_si": 0.057,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          }
+        ],
+        "width": {
+          "value_si": 0.001,
+          "dimension": "length",
+          "display_unit": "mm",
+          "status": "user_entered",
+          "source_refs": [
+            "test-only-explicit-assumption"
+          ]
+        }
+      },
+      {
+        "frame_id": "6fdd7346-7fd1-4924-becd-7d134d6670f5",
+        "layer_id": "e4638f10-c579-49f5-bc39-55a065b32eea",
+        "material_ref": "b6ff1075-c48b-48f7-9f45-29f3a6a4d5d0",
+        "source_ref": "test-only-explicit-assumption",
+        "include_in_em": true,
+        "include_in_export": true,
+        "net_id": "8470f28b-a037-419e-a9e8-af4beeabd4d0",
+        "id": "8523d17e-8a81-4054-ab55-e449146549a1",
+        "kind": "pad",
+        "role": "feed",
+        "pad_shape": "rectangle",
+        "center": [
+          {
+            "value_si": 0.009000000000000001,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          },
+          {
+            "value_si": 0.053,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          }
+        ],
+        "size": [
+          {
+            "value_si": 0.002,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          },
+          {
+            "value_si": 0.002,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          }
+        ],
+        "rotation": {
+          "value_si": 0.0,
+          "dimension": "angle",
+          "display_unit": "deg",
+          "status": "user_entered",
+          "source_refs": [
+            "test-only-explicit-assumption"
+          ]
+        }
+      },
+      {
+        "frame_id": "6fdd7346-7fd1-4924-becd-7d134d6670f5",
+        "layer_id": "e4638f10-c579-49f5-bc39-55a065b32eea",
+        "material_ref": "b6ff1075-c48b-48f7-9f45-29f3a6a4d5d0",
+        "source_ref": "test-only-explicit-assumption",
+        "include_in_em": true,
+        "include_in_export": true,
+        "net_id": "8470f28b-a037-419e-a9e8-af4beeabd4d0",
+        "id": "9fba8f18-1eb6-408c-ac83-f85eca05c52a",
+        "kind": "line_path",
+        "role": "short",
+        "start": [
+          {
+            "value_si": 0.005,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          },
+          {
+            "value_si": 0.0495,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          }
+        ],
+        "end": [
+          {
+            "value_si": 0.005,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          },
+          {
+            "value_si": 0.057,
+            "dimension": "length",
+            "display_unit": "mm",
+            "status": "user_entered",
+            "source_refs": [
+              "test-only-explicit-assumption"
+            ]
+          }
+        ],
+        "width": {
+          "value_si": 0.001,
+          "dimension": "length",
+          "display_unit": "mm",
+          "status": "user_entered",
+          "source_refs": [
+            "test-only-explicit-assumption"
+          ]
+        }
+      }
+    ],
+    "materials": [
+      {
+        "id": "136f185b-1fc4-4e80-af16-a7c69521df0e",
+        "name": "실제 납품 물성 미확정: JLC 동박",
+        "model": "isotropic_constant",
+        "epsilon_r": {
+          "value_si": null,
+          "dimension": "dimensionless",
+          "display_unit": "1",
+          "status": "missing",
+          "source_refs": []
+        },
+        "tan_delta": {
+          "value_si": null,
+          "dimension": "dimensionless",
+          "display_unit": "1",
+          "status": "missing",
+          "source_refs": []
+        },
+        "conductivity": {
+          "value_si": null,
+          "dimension": "conductivity",
+          "display_unit": "S/m",
+          "status": "missing",
+          "source_refs": []
+        },
+        "validity_hz": {
+          "min": {
+            "value_si": null,
+            "dimension": "frequency",
+            "display_unit": "Hz",
+            "status": "missing",
+            "source_refs": []
+          },
+          "max": {
+            "value_si": null,
+            "dimension": "frequency",
+            "display_unit": "Hz",
+            "status": "missing",
+            "source_refs": []
+          }
+        },
+        "source_refs": [
+          "jlcpcb-ro4350b-30mil-two-layer-20261111"
+        ],
+        "assumptions": [
+          "납품 시료의 목표 대역 물성은 미정으로 보존하며 이 재료를 해석에 연결하지 않는다."
+        ]
+      },
+      {
+        "id": "6c5d3b75-119b-4d93-a425-fda386bda49e",
+        "name": "실제 납품 물성 미확정: RO4350B",
+        "model": "isotropic_constant",
+        "epsilon_r": {
+          "value_si": null,
+          "dimension": "dimensionless",
+          "display_unit": "1",
+          "status": "missing",
+          "source_refs": []
+        },
+        "tan_delta": {
+          "value_si": null,
+          "dimension": "dimensionless",
+          "display_unit": "1",
+          "status": "missing",
+          "source_refs": []
+        },
+        "conductivity": {
+          "value_si": null,
+          "dimension": "conductivity",
+          "display_unit": "S/m",
+          "status": "missing",
+          "source_refs": []
+        },
+        "validity_hz": {
+          "min": {
+            "value_si": null,
+            "dimension": "frequency",
+            "display_unit": "Hz",
+            "status": "missing",
+            "source_refs": []
+          },
+          "max": {
+            "value_si": null,
+            "dimension": "frequency",
+            "display_unit": "Hz",
+            "status": "missing",
+            "source_refs": []
+          }
+        },
+        "source_refs": [
+          "jlcpcb-ro4350b-30mil-two-layer-20261111"
+        ],
+        "assumptions": [
+          "납품 시료의 목표 대역 물성은 미정으로 보존하며 이 재료를 해석에 연결하지 않는다."
+        ]
+      },
+      {
+        "id": "8689527a-22cd-421f-a92c-36b8d3000a51",
+        "name": "선택 전 미정 재료 1",
+        "model": "isotropic_constant",
+        "epsilon_r": {
+          "value_si": null,
+          "dimension": "dimensionless",
+          "display_unit": "1",
+          "status": "missing",
+          "source_refs": []
+        },
+        "tan_delta": {
+          "value_si": null,
+          "dimension": "dimensionless",
+          "display_unit": "1",
+          "status": "missing",
+          "source_refs": []
+        },
+        "conductivity": {
+          "value_si": null,
+          "dimension": "conductivity",
+          "display_unit": "S/m",
+          "status": "missing",
+          "source_refs": []
+        },
+        "validity_hz": {
+          "min": {
+            "value_si": null,
+            "dimension": "frequency",
+            "display_unit": "Hz",
+            "status": "missing",
+            "source_refs": []
+          },
+          "max": {
+            "value_si": null,
+            "dimension": "frequency",
+            "display_unit": "Hz",
+            "status": "missing",
+            "source_refs": []
+          }
+        },
+        "source_refs": [],
+        "assumptions": [
+          "기하 연결용 fixture의 시험 물성은 채택하지 않음"
+        ]
+      },
+      {
+        "id": "b6ff1075-c48b-48f7-9f45-29f3a6a4d5d0",
+        "name": "선택 전 미정 재료 2",
+        "model": "isotropic_constant",
+        "epsilon_r": {
+          "value_si": null,
+          "dimension": "dimensionless",
+          "display_unit": "1",
+          "status": "missing",
+          "source_refs": []
+        },
+        "tan_delta": {
+          "value_si": null,
+          "dimension": "dimensionless",
+          "display_unit": "1",
+          "status": "missing",
+          "source_refs": []
+        },
+        "conductivity": {
+          "value_si": null,
+          "dimension": "conductivity",
+          "display_unit": "S/m",
+          "status": "missing",
+          "source_refs": []
+        },
+        "validity_hz": {
+          "min": {
+            "value_si": null,
+            "dimension": "frequency",
+            "display_unit": "Hz",
+            "status": "missing",
+            "source_refs": []
+          },
+          "max": {
+            "value_si": null,
+            "dimension": "frequency",
+            "display_unit": "Hz",
+            "status": "missing",
+            "source_refs": []
+          }
+        },
+        "source_refs": [],
+        "assumptions": [
+          "기하 연결용 fixture의 시험 물성은 채택하지 않음"
+        ]
+      }
+    ],
+    "ports": [
+      {
+        "id": "5fde8fba-d2ec-4e09-9388-7e85d24c07ec",
+        "name": "Explicit test gap",
+        "kind": "lumped",
+        "positive_geometry_id": "8523d17e-8a81-4054-ab55-e449146549a1",
+        "reference_geometry_id": "483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+        "resistance": {
+          "value_si": 50.0,
+          "dimension": "impedance",
+          "display_unit": "ohm",
+          "status": "user_entered",
+          "source_refs": [
+            "test-only-explicit-assumption"
+          ]
+        },
+        "reference_plane": "탐색용 이상적 50 ohm 국부 gap 포트. 실제 SMA/케이블 기준면이 아님.",
+        "polarity": 1,
+        "direction": [
+          0,
+          1,
+          0
+        ],
+        "validity_hz": {
+          "min": {
+            "value_si": 2400000000.0,
+            "dimension": "frequency",
+            "display_unit": "Hz",
+            "status": "user_entered",
+            "source_refs": []
+          },
+          "max": {
+            "value_si": 2483500000.0,
+            "dimension": "frequency",
+            "display_unit": "Hz",
+            "status": "user_entered",
+            "source_refs": []
+          }
+        },
+        "excitation_box": {
+          "start": [
+            {
+              "value_si": 0.009000000000000001,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": [
+                "test-only-explicit-assumption"
+              ]
+            },
+            {
+              "value_si": 0.05,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": [
+                "test-only-explicit-assumption"
+              ]
+            },
+            {
+              "value_si": 0.0007970000000000001,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": []
+            }
+          ],
+          "stop": [
+            {
+              "value_si": 0.009000000000000001,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": [
+                "test-only-explicit-assumption"
+              ]
+            },
+            {
+              "value_si": 0.052000000000000005,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": [
+                "test-only-explicit-assumption"
+              ]
+            },
+            {
+              "value_si": 0.0007970000000000001,
+              "dimension": "length",
+              "display_unit": "mm",
+              "status": "user_entered",
+              "source_refs": []
+            }
+          ]
+        }
+      }
+    ],
+    "stackup": [
+      {
+        "id": "66c044b8-1b96-4efb-b94a-810b54a5637e",
+        "name": "Explicit lower copper; no automatic ground fill",
+        "role": "conductor",
+        "order": 0,
+        "z_min": {
+          "value_si": 0.0,
+          "dimension": "length",
+          "display_unit": "mm",
+          "status": "user_entered",
+          "source_refs": []
+        },
+        "thickness": {
+          "value_si": 3.5000000000000004e-05,
+          "dimension": "length",
+          "display_unit": "mm",
+          "status": "user_entered",
+          "source_refs": []
+        },
+        "material_id": "b6ff1075-c48b-48f7-9f45-29f3a6a4d5d0"
+      },
+      {
+        "id": "e4a4695c-615a-4ac4-9314-3ee8d1166436",
+        "name": "Test dielectric",
+        "role": "dielectric",
+        "order": 1,
+        "z_min": {
+          "value_si": 3.5000000000000004e-05,
+          "dimension": "length",
+          "display_unit": "mm",
+          "status": "user_entered",
+          "source_refs": []
+        },
+        "thickness": {
+          "value_si": 0.000762,
+          "dimension": "length",
+          "display_unit": "mm",
+          "status": "user_entered",
+          "source_refs": []
+        },
+        "material_id": "8689527a-22cd-421f-a92c-36b8d3000a51"
+      },
+      {
+        "id": "e4638f10-c579-49f5-bc39-55a065b32eea",
+        "name": "Test outer conductor",
+        "role": "conductor",
+        "order": 2,
+        "z_min": {
+          "value_si": 0.0007970000000000001,
+          "dimension": "length",
+          "display_unit": "mm",
+          "status": "user_entered",
+          "source_refs": []
+        },
+        "thickness": {
+          "value_si": 3.5000000000000004e-05,
+          "dimension": "length",
+          "display_unit": "mm",
+          "status": "user_entered",
+          "source_refs": []
+        },
+        "material_id": "b6ff1075-c48b-48f7-9f45-29f3a6a4d5d0"
+      }
+    ],
+    "nets": [
+      {
+        "id": "8470f28b-a037-419e-a9e8-af4beeabd4d0",
+        "name": "IFA continuous DC conductor including short and ground"
+      }
+    ],
+    "connections": [],
+    "targets": [],
+    "networks": [],
+    "environment": [],
+    "analysis_definitions": [],
+    "optimization_studies": [],
+    "measurement_sets": [],
+    "manufacturing_profiles": [],
+    "export_profiles": [],
+    "source_references": [],
+    "assumptions": [],
+    "validation_profiles": []
+  },
+  "settings": {
+    "frequency_hz": {
+      "start": 2400000000.0,
+      "stop": 2483500000.0,
+      "count": 201
+    },
+    "grid_mm": 0.5,
+    "air_padding_mm": 8.0,
+    "curve_tolerance_mm": 0.025,
+    "max_timesteps": 50000,
+    "end_criterion": 0.0001
+  },
+  "catalog_selection": {
+    "source": null,
+    "materials": [
+      {
+        "key": "core",
+        "name": "탐색 RO4350B: Design Dk/총 Df 근사",
+        "model": "isotropic_constant_total_tan_delta",
+        "model_reason": "공개 Df를 총 전기 손실로 표현한다. 독립 전도도는 미정으로 보존하고 추가 가산하지 않음",
+        "properties": {
+          "epsilon_r": {
+            "mode": "user",
+            "value": 3.66,
+            "record_id": "PCB026460",
+            "reason": "Design Dk 3.66의 원문 8~40 GHz 조건을 보존하고 2.4 GHz 좁은 대역에 등방성 상수로 근사. 실측 확정값 아님"
+          },
+          "tan_delta": {
+            "mode": "user",
+            "value": 0.0031,
+            "record_id": "PCB026461",
+            "reason": "23 C/Z 방향 2.5 GHz의 typical Df를 2.4 GHz 좁은 대역에 근사. Dk와 동일 시험 조건이 아님"
+          },
+          "conductivity": {
+            "mode": "missing",
+            "reason": "원본 미정값을 보존하며 이 모델에서 소비하지 않음"
+          }
+        },
+        "validity_hz": {
+          "min": 2400000000.0,
+          "max": 2483500000.0,
+          "reason": "사용자가 허용한 2.400~2.4835 GHz 탐색 상수 모델 대역이며 제조사 보증/측정 대역이 아님"
+        }
+      },
+      {
+        "key": "copper",
+        "name": "탐색 기준 구리: 100% IACS / 20 C",
+        "model": "isotropic_constant",
+        "model_reason": "유한 전도 sheet의 기준 구리 모델이며 JLC 완성 동박의 측정값이 아님",
+        "properties": {
+          "epsilon_r": {
+            "mode": "missing",
+            "reason": "원본 미정값을 보존하며 이 모델에서 소비하지 않음"
+          },
+          "tan_delta": {
+            "mode": "missing",
+            "reason": "원본 미정값을 보존하며 이 모델에서 소비하지 않음"
+          },
+          "conductivity": {
+            "mode": "user",
+            "value": 58000000.0,
+            "reason": "100% IACS 20 C 표준 저항률의 역수 58 MS/m를 기준 구리로 선택함. JLC 제공값 아님: https://nvlpubs.nist.gov/nistpubs/Legacy/circ/nbscircular31e2.pdf"
+          }
+        },
+        "validity_hz": {
+          "min": 2400000000.0,
+          "max": 2483500000.0,
+          "reason": "사용자가 허용한 2.400~2.4835 GHz 탐색 상수 모델 대역이며 제조사 보증/측정 대역이 아님"
+        }
+      }
+    ],
+    "material_ids": {
+      "core": "8689527a-22cd-421f-a92c-36b8d3000a51",
+      "copper": "b6ff1075-c48b-48f7-9f45-29f3a6a4d5d0"
+    },
+    "layers": [
+      {
+        "key": "bottom",
+        "name": "Explicit lower copper; no automatic ground fill",
+        "role": "conductor",
+        "thickness_mm": 0.035
+      },
+      {
+        "key": "core",
+        "name": "Test dielectric",
+        "role": "dielectric",
+        "thickness_mm": 0.762
+      },
+      {
+        "key": "top",
+        "name": "Test outer conductor",
+        "role": "conductor",
+        "thickness_mm": 0.035
+      }
+    ],
+    "layer_ids": {
+      "bottom": "66c044b8-1b96-4efb-b94a-810b54a5637e",
+      "core": "e4a4695c-615a-4ac4-9314-3ee8d1166436",
+      "top": "e4638f10-c579-49f5-bc39-55a065b32eea"
+    },
+    "material_assignments": {
+      "bottom": "copper",
+      "core": "core",
+      "top": "copper"
+    },
+    "layout_reason": "RO4350B 표준 30 mil 코어와 1 oz 동박의 명목 모델. JLC 완성 명목 0.9 mm와 합계 0.832 mm 차이를 배분하지 않음",
+    "notes": [
+      "사용자가 제조사 자료를 근거로 한 탐색 근사를 허용함. 미정 실제 물성은 별도 미사용 재료로 보존함.",
+      "후보: jlcpcb-ro4350b-30mil-two-layer-20261111",
+      "제작 서비스: https://jlcpcb.com/pcb-fabrication/high-frequency-pcb",
+      "생략 모델: soldermask, ENIG nickel/gold layers, copper roughness, anisotropy, dielectric dispersion, SMA launch and cable, fabrication tolerances",
+      "기존 IFA의 XY 설계 기하를 재사용한 탐색이며 정합/수렴/제작/측정 정확도를 검증한 안테나가 아님."
+    ]
+  }
+}

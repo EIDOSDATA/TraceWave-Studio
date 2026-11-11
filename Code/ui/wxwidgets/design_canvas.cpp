@@ -359,7 +359,9 @@ void DesignCanvas::OnPaint(wxPaintEvent&)
             ++nativeOmissions;
         }
     }
+    renderer.Flush();
     DrawPreview(dc, renderer);
+    renderer.Flush();
     dc.SetTextForeground(wxColour(73, 86, 103));
     dc.DrawText(Display("2D 설계 / mm"), FromDIP(10), FromDIP(10));
     if (m_scene.omissionCount > 0)

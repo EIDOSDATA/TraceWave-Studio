@@ -28,7 +28,9 @@ from rfad.application.rpc import handle_frame
 from rfad.application.solver import RUNTIME_PROFILE
 from rfad.application.solver_jobs import SolverRuntime
 from rfad.domain.project import validate_project
+from rfad.catalog.service import CatalogService
 from verify_openems_worker import call
+from catalog_pcb_verification.common import wait
 from verify_pcb_worker import create_fixture
 
 
@@ -188,7 +190,7 @@ def publish_assessment(report_path, report, cases, assessment):
     report["assessment_artifact"] = reference
 
 
-def run(workspace, report_path, study_path, *, resume=False, reassess_only=False):
+def run(workspace, report_path, study_path, *, resume=False, reassess_only=False, catalog_database=None):
     """! @brief 수렴 연구를 실행하고 원본 계산과 독립된 판정/근거를 게시한다."""
     study = json.loads(study_path.read_text(encoding="utf-8"))
     definitions = validate_study(study)
@@ -208,9 +210,22 @@ def run(workspace, report_path, study_path, *, resume=False, reassess_only=False
                   "runtime_identity": runtime.identity, "runs": {}, "physics_validated": False, "measurement_validated": False}
         save_report(report_path, report)
     started = time.monotonic()
-    with ProjectService(workspace, solver_runtime=runtime, auto_run=not reassess_only) as service:
+    with ProjectService(workspace, solver_runtime=runtime, auto_run=not reassess_only, catalog_database=catalog_database) as service:
         if "subject" not in report:
             context, project_path, snapshot = create_fixture(service, fixture)
+            if "catalog_selection" in fixture:
+                spec = deepcopy(fixture["catalog_selection"])
+                status = CatalogService(catalog_database).status()
+                if not status.get("available"):
+                    raise ValueError("출처를 보존할 명시적 카탈로그가 필요합니다.")
+                spec["catalog_id"] = status["catalog_id"]
+                data = {"expected_revision": snapshot["revision_id"], "selection_id": str(uuid4()), "specification": spec}
+                preview = call(service, "pcb.selection.preview", data, context)
+                if not preview["can_apply"]:
+                    raise ValueError("연구의 출처 선택을 적용할 수 없습니다.")
+                applied = call(service, "pcb.selection.apply", {**data, "preview_hash": preview["preview_hash"], "command_id": str(uuid4())}, context, mutation=True)
+                snapshot, _ = wait(service, call(service, "snapshot.create", {"expected_revision": applied["new_revision"],
+                                               "description": "출처 기반 탐색 수렴 연구"}, context, mutation=True))
             report["subject"] = {"context": context, "project_path": project_path, "snapshot": snapshot}
             report["status"] = "running"
             save_report(report_path, report)
@@ -285,13 +300,14 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--workspace", type=Path, required=True)
     parser.add_argument("--report", type=Path, required=True)
+    parser.add_argument("--catalog", type=Path)
     parser.add_argument("--study", type=Path, default=CODE_ROOT / "fixtures/ifa_convergence_study.json")
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--resume", action="store_true")
     group.add_argument("--reassess-only", action="store_true")
     args = parser.parse_args()
     try:
-        report = run(args.workspace, args.report, args.study, resume=args.resume, reassess_only=args.reassess_only)
+        report = run(args.workspace, args.report, args.study, resume=args.resume, reassess_only=args.reassess_only, catalog_database=args.catalog)
         return 0 if report["assessment"]["numerical_stability"]["status"] == "established" else 1
     except Exception as error:
         print(str(error), file=sys.stderr)

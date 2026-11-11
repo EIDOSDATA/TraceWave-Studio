@@ -4,6 +4,7 @@ from copy import deepcopy
 import hashlib
 import json
 import unittest
+from unittest.mock import patch
 from uuid import uuid4
 
 from rfad.application.canonical import canonical_bytes
@@ -381,7 +382,7 @@ class PcbSelectionDomainTests(unittest.TestCase):
             validate_selection(item)
             histories.append(item)
         current = selection(self.document)
-        with self.assertRaises(ProjectError) as caught:
+        with patch("rfad.domain.pcb_selection.MAX_EVIDENCE_BYTES", 12 * 1024), self.assertRaises(ProjectError) as caught:
             validate_selection(current | {"history": histories})
         self.assertEqual(caught.exception.code, "E_RESOURCE")
         candidate = deepcopy(self.document)

@@ -40,7 +40,7 @@ class ProjectRepository:
         validate_project(document)
         payload = canonical_bytes(document)
         if len(payload) > self.max_document_bytes:
-            raise ProjectError("E_RESOURCE", "초기 profile의 프로젝트 크기 32 KiB를 초과했습니다.")
+            raise ProjectError("E_RESOURCE", "초기 profile의 프로젝트 크기 512 KiB를 초과했습니다.")
         return self.journal.put_immutable(f"{path}/revisions/{document['revision_id']}/project.json", payload)
 
     @staticmethod

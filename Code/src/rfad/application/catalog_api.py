@@ -1,6 +1,7 @@
 """! @brief 프로젝트 변경과 분리된 읽기 전용 카탈로그 RPC 경계를 제공한다."""
 
 from rfad.domain.errors import ProjectError
+from rfad.domain.resource_limits import MAX_STACKUP_RESULT_BYTES
 
 
 PROFILE = "rfad.catalog/0.1"
@@ -24,6 +25,7 @@ def describe(catalog=None) -> dict:
         "project_mutations": False,
         "simulation_readiness": "not_evaluated",
         "max_result_bytes": 48 * 1024,
+        "max_stackup_result_bytes": MAX_STACKUP_RESULT_BYTES,
         "status": _service(catalog).status(),
     }
 
@@ -70,8 +72,8 @@ def query(method: str, params: object, catalog=None) -> dict:
 
                     return bounded(build_stackup_suggestions(reader, source, draft,
                                                              offset=params["input"].get("offset", 0),
-                                                             limit=params["input"].get("limit", 8)))
-                return bounded(draft)
+                                                             limit=params["input"].get("limit", 8)), limit=MAX_STACKUP_RESULT_BYTES)
+                return bounded(draft, limit=MAX_STACKUP_RESULT_BYTES)
         raise ProjectError("E_UNSUPPORTED", "지원하지 않는 카탈로그 조회입니다.")
     except CatalogError as error:
         raise ProjectError(error.code, error.message, details=error.details) from error

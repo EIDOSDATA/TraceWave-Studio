@@ -10,9 +10,13 @@ class CanvasRenderer final
 {
 public:
     CanvasRenderer(wxWindow& window, wxDC& dc, CanvasViewport viewport);
+    ~CanvasRenderer();
     void DrawGrid(bool visible);
     void DrawBoard(const CanvasScene::Model& scene);
-    bool DrawShape(const CanvasScene::Shape& shape, CanvasGeometry::Point offset, const wxColour& colour, bool highlight);
+    /** @brief 직접 DC 표시와 섞이는 경계에서 누적 graphics 명령을 한 번 반영한다. */
+    void Flush();
+    bool DrawShape(const CanvasScene::Shape& shape, CanvasGeometry::Point offset, const wxColour& colour,
+                   bool highlight);
 
 private:
     wxPoint WorldToScreen(CanvasGeometry::Point point) const;

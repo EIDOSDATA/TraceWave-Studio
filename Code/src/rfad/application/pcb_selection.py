@@ -12,6 +12,7 @@ from rfad.catalog.models import CatalogError, canonical_json
 from rfad.domain.errors import ProjectError
 from rfad.domain.pcb_selection import EXTENSION_KEY, state_hash
 from rfad.domain.project import validate_project
+from rfad.domain.pcb_evidence_pool import expand_selection
 
 
 class PcbSelectionCoordinator:
@@ -49,7 +50,7 @@ class PcbSelectionCoordinator:
             issues.append(issue(error.code, error.message, blocker=True, details=error.details))
         size = len(canonical_bytes(candidate))
         if size > MAX_DOCUMENT_BYTES:
-            issues.append(issue("E_RESOURCE", "출처를 포함한 프로젝트가 32 KiB를 초과합니다. 선택 범위를 줄이십시오.", blocker=True))
+            issues.append(issue("E_RESOURCE", "출처를 포함한 프로젝트가 512 KiB를 초과합니다. 선택 범위를 줄이십시오.", blocker=True))
         thicknesses = [item["thickness"]["value_si"] if "value_si" in item["thickness"] else None
                        for item in candidate["stackup"]]
         total = sum(thicknesses) * 1000 if thicknesses and None not in thicknesses else None
@@ -60,6 +61,7 @@ class PcbSelectionCoordinator:
                                 nominal_mm=nominal, modeled_mm=total, difference_mm=total - nominal))
         digest = canonical_hash({"project_id": document["project_id"], "expected_revision": data["expected_revision"],
                                  "selection_id": data["selection_id"], "specification": data["specification"], "payload": payload})
+        display_selection = expand_selection(payload["selection"])
         result = {"profile": PROFILE, "project_id": document["project_id"], "expected_revision": data["expected_revision"],
                   "selection_id": data["selection_id"], "preview_hash": digest,
                   "can_apply": not any(item["severity"] == "blocker" for item in issues), "readiness": "not_assessed",
@@ -67,10 +69,10 @@ class PcbSelectionCoordinator:
                   "candidate_layers": layer_rows(candidate),
                   "changes": describe_changes(document, candidate, moved), "source_draft": draft,
                   "catalog": payload["selection"]["catalog"], "decisions": payload["selection"]["decisions"],
-                  "evidence_ids": [entry["id"] for entry in payload["selection"]["evidence"]],
+                  "evidence_ids": [entry["id"] for entry in display_selection["evidence"]],
                   "retained_selections": [{"selection_id": entry["id"], "catalog": entry["catalog"],
                                            "evidence_ids": [item["id"] for item in entry["evidence"]]}
-                                          for entry in payload["selection"].get("history", [])],
+                                          for entry in display_selection.get("history", [])],
                   "issues": issues, "input_checks": checks,
                   "size": {"document_bytes": size, "document_limit_bytes": MAX_DOCUMENT_BYTES},
                   "modeled_total_thickness_mm": total}

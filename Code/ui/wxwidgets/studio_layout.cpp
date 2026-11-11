@@ -1,5 +1,6 @@
 /** @file @brief 주 창의 layout 책임을 구현한다. */
 #include "studio_internal.h"
+#include "study_report_dialog.h"
 
 /** @brief 프로젝트 메타데이터와 선택 객체의 서비스 기반 입력 폼을 구성한다. */
 void StudioFrame::BuildInterface()
@@ -44,6 +45,15 @@ void StudioFrame::BuildInterface()
     auto* analysis = new wxMenu;
     analysis->Append(IdRunSolver, Display("설정 및 해석 실행"));
     analysis->Append(IdCancelSolver, Display("해석 작업 취소"));
+    const int studyReportId = wxWindow::NewControlId();
+    analysis->Append(studyReportId, Display("수렴 연구 보고서 비교"));
+    Bind(
+        wxEVT_MENU,
+        [this](wxCommandEvent&)
+        {
+            ShowStudyReport(this);
+        },
+        studyReportId);
     bar->Append(analysis, Display("해석"));
     auto* view = new wxMenu;
     view->Append(IdResetLayout, Display("기본 패널 배치 복원"));

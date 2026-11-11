@@ -26,6 +26,9 @@ class WslProcessTests(unittest.TestCase):
         self.run_id = str(uuid.uuid4())
         self.nonce = uuid.uuid4().hex
         self.runtime = WslRuntime(poll_seconds=0.001)
+        readiness = patch.object(self.runtime, "prepare", return_value={"status": "ready", "worker_started": False})
+        readiness.start()
+        self.addCleanup(readiness.stop)
 
     def stage(self, directory):
         """! @brief 사용자 코드가 아닌 고정 worker 파일 묶음의 최소 fixture를 만든다."""

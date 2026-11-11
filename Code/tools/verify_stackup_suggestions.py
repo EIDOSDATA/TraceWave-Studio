@@ -15,6 +15,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from rfad.application.catalog_api import query
 from rfad.application.canonical import canonical_bytes
 from rfad.catalog.service import CatalogService
+from rfad.domain.resource_limits import MAX_STACKUP_RESULT_BYTES
 from rfad.domain.errors import ProjectError
 
 
@@ -50,7 +51,7 @@ def check_result(result, source):
     require(result["schema"] == "rfad.pcb-stackup-suggestions/0.1", "제안 schema 불일치")
     require(result["source"] == source, "요청과 제안 출처 불일치")
     require(result["readiness"] == "not_assessed", "제안을 해석 준비 완료로 승격함")
-    require(len(canonical_bytes(result)) <= 48 * 1024, "제안 응답 예산 초과")
+    require(len(canonical_bytes(result)) <= MAX_STACKUP_RESULT_BYTES, "제안 응답 예산 초과")
     require(result["returned_count"] == len(result["layers"]), "페이지 반환 행수 불일치")
     require(result["total_count"] == len(result["draft"]["layers"]), "전체 층수 불일치")
     draft = {item["key"]: item for item in result["draft"]["layers"]}

@@ -4,6 +4,8 @@ import hashlib
 import math
 import re
 
+from rfad.domain.pcb_evidence_pool import expand_selection
+
 from rfad.domain.design import _uuid, resolve_scalar
 from rfad.domain.material_models import MATERIAL_MODELS
 from rfad.domain.pcb_selection_evidence import MAX_EVIDENCE_BYTES, decode, encoded, fail, fields, pointer, read_pointer, sha256, text, validate_evidence
@@ -180,6 +182,7 @@ def validate_selection(selection: object) -> None:
     """! @brief 필요한 과거 출처도 개별 검증하고 전체 사본 예산을 함께 제한한다."""
     if type(selection) is not dict:
         fail("E_SCHEMA", "PCB 선택은 객체여야 합니다.", "selection")
+    selection = expand_selection(selection)
     history = selection.get("history", [])
     if type(history) is not list or len(history) > 32:
         fail("E_RESOURCE", "PCB 선택 이력은 최대 32개 비재귀 목록이어야 합니다.", "selection.history")
@@ -193,8 +196,14 @@ def validate_selection(selection: object) -> None:
             fail("E_CONFLICT", "PCB 선택 이력의 ID가 중복됩니다.", "selection.history")
         identities.add(item["id"])
         evidence.extend(item["evidence"])
-    if len(encoded(evidence).encode("utf-8")) > MAX_EVIDENCE_BYTES:
-        fail("E_RESOURCE", "현재와 과거 PCB 출처의 합계가 12 KiB 예산을 초과했습니다.", "selection.history")
+    unique = {}
+    for entry in evidence:
+        identity = entry["id"]
+        if identity in unique and unique[identity] != entry:
+            fail("E_HASH", "같은 ID의 출처 사본이 서로 다릅니다.", "selection.history")
+        unique[identity] = entry
+    if len(unique) > 256 or len(encoded(list(unique.values())).encode("utf-8")) > MAX_EVIDENCE_BYTES:
+        fail("E_RESOURCE", "현재와 과거 PCB 출처의 합계가 128 KiB 예산을 초과했습니다.", "selection.history")
 
 
 def validate_project_selection(document: dict) -> None:

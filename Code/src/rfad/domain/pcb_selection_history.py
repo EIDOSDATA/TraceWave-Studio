@@ -4,6 +4,7 @@ from copy import deepcopy
 
 from rfad.domain.pcb_selection import EXTENSION_KEY, validate_selection
 from rfad.domain.pcb_selection_evidence import fail
+from rfad.domain.pcb_evidence_pool import expand_selection, pool_selection
 
 
 def _source_references(candidate: dict) -> set[str]:
@@ -39,6 +40,7 @@ def preserve_selection_history(document: dict, candidate: dict, new_selection: d
     history = []
     if previous is not None:
         validate_selection(previous)
+        previous = expand_selection(previous)
         records = [{key: value for key, value in previous.items() if key != "history"}, *previous.get("history", [])]
         for record in records:
             supplied = {item["id"] for item in record["evidence"]}
@@ -49,5 +51,6 @@ def preserve_selection_history(document: dict, candidate: dict, new_selection: d
         fail("E_SCHEMA", "현재 설계의 PCB 출처 참조에 대응하는 프로젝트 소유 사본이 없습니다.", "selection.history")
     if history:
         result["history"] = history
+    result = pool_selection(result)
     validate_selection(result)
     return result

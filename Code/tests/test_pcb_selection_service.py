@@ -7,6 +7,7 @@ from pathlib import Path
 import tempfile
 import unittest
 from uuid import uuid4
+from unittest.mock import patch
 
 from rfad.application.canonical import canonical_bytes
 from rfad.application.projects import ProjectService
@@ -15,6 +16,7 @@ from rfad.application.rpc import handle_frame, serve
 from rfad.catalog.build import build_catalog
 from rfad.domain.errors import ProjectError
 from rfad.domain.pcb_selection import EXTENSION_KEY
+from rfad.domain.pcb_evidence_pool import expand_selection, POOL_SCHEMA
 from test_catalog_build import make_package
 from test_design import quantity
 from test_pcb_solver import fixture_document, snapshot_for, runtime_identity, SETTINGS
@@ -312,15 +314,37 @@ class PcbSelectionServiceTests(unittest.TestCase):
         with self.assertRaises(ProjectError):
             self.service.mutate("pcb.selection.apply", self.request({**data, "preview_hash": preview["preview_hash"], "command_id": str(uuid4())}))
         self.assertEqual(self.service.journal.read(), before)
+
         data = self.selection()
         data["specification"]["notes"] = ["큰 출처 설명 " + "가" * 990 for _ in range(12)]
-        preview = self.preview(data)
-        self.assertFalse(preview["can_apply"])
-        self.assertGreater(preview["size"]["document_bytes"], 32768)
-        self.assertTrue(any(item["code"] == "E_RESOURCE" for item in preview["issues"]))
-        with self.assertRaises(ProjectError):
-            self.service.mutate("pcb.selection.apply", self.request({**data, "preview_hash": preview["preview_hash"], "command_id": str(uuid4())}))
+        with patch("rfad.application.pcb_selection.MAX_DOCUMENT_BYTES", 32768):
+            preview = self.preview(data)
+            self.assertFalse(preview["can_apply"])
+            self.assertGreater(preview["size"]["document_bytes"], 32768)
+            self.assertTrue(any(item["code"] == "E_RESOURCE" for item in preview["issues"]))
+            with self.assertRaises(ProjectError):
+                self.service.mutate("pcb.selection.apply", self.request({**data, "preview_hash": preview["preview_hash"], "command_id": str(uuid4())}))
         self.assertEqual(self.service.journal.read(), before)
+
+    def test_large_shared_evidence_history_survives_real_store_and_reopen(self):
+        """! @brief 구형 선택을 공유 근거로 전환한 뒤 실제 journal과 저장을 왕복한다."""
+        first_spec = manual_specification()
+        first_spec['catalog_id'] = self.catalog_id
+        first_spec['materials'] = [manual_material(catalog=True)]
+        self.apply(self.selection(first_spec))
+        previous = deepcopy(self.document()['extensions'][EXTENSION_KEY])
+        next_material = manual_material(key='second', catalog=True)
+        next_material['properties']['epsilon_r']['record_id'] = 'PCB000001'
+        spec = {'source': None, 'catalog_id': self.catalog_id, 'materials': [next_material],
+                'notes': ['공유 출처 보존 시험 ' + '가' * 990 for _ in range(12)]}
+        self.apply(self.selection(spec))
+        selected = self.document()['extensions'][EXTENSION_KEY]
+        self.assertEqual(selected['schema'], POOL_SCHEMA)
+        self.assertEqual(expand_selection(selected)['history'], [previous])
+        self.complete('project.save', self.request({'expected_revision': self.document()['revision_id']}))
+        self.service.close()
+        self.service = ProjectService(self.workspace, auto_run=False, catalog_database=self.root / 'absent.sqlite')
+        self.assertEqual(self.service.pcb_selection.get(self.request({}, read=True))['selection'], selected)
 
     def test_reselection_retains_referenced_source_in_latest_snapshot(self):
         spec = manual_specification()

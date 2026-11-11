@@ -7,7 +7,7 @@ from rfad.domain.errors import ProjectError
 from rfad.domain.project import new_project
 
 RETENTION_SECONDS = 7 * 24 * 60 * 60
-MAX_DOCUMENT_BYTES = 32 * 1024
+from rfad.domain.resource_limits import MAX_DOCUMENT_BYTES
 MAX_RECEIPTS = 2048
 MAX_JOBS = 512
 MAX_PROJECTS = 32

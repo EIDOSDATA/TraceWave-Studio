@@ -43,7 +43,7 @@ wire 버전은 `rfad.api/2.0`이며 문서 버전 3.4와 구분한다. 현재 �
 전송 규칙:
 
 - stdin/stdout의 UTF-8 NDJSON. stdout은 protocol, stderr는 로그다.
-- 현재 handshake 전용 profile은 요청/응답 모두 줄 구분자 제외 최대 64 KiB다. 승인된 metadata 최대 1 MiB보다 좁은 초기 지원 범위다.
+- 현재 handshake 전용 profile은 요청/응답 모두 줄 구분자 제외 최대 1 MiB다. 선택 출처 용량 개선과 함께 GUI/서비스 전송 상한을 맞췄다.
 - LF/CRLF를 받고 EOF의 마지막 개행 없는 JSON도 처리한다. 빈 줄은 parse error다.
 - batch 최대 16개, 각 문자열 UTF-8 최대 8192 bytes, JSON 최대 depth 64다.
 - 줄을 제한 없이 모은 후 크기를 검사하지 않는다. 초과 입력은 E_RESOURCE 응답 후 남은 줄을 읽어 버리지 않고 서비스를 종료한다.

@@ -12,6 +12,19 @@ CanvasRenderer::CanvasRenderer(wxWindow& window, wxDC& dc, CanvasViewport viewpo
 {
 }
 
+void CanvasRenderer::Flush()
+{
+    if (m_graphics)
+    {
+        m_graphics->Flush();
+    }
+}
+
+CanvasRenderer::~CanvasRenderer()
+{
+    Flush();
+}
+
 int CanvasRenderer::FromDIP(int value) const
 {
     return m_window.FromDIP(value);
@@ -21,7 +34,7 @@ wxPoint CanvasRenderer::WorldToScreen(Point point) const
 {
     const Point pixel = m_viewport.Project(point);
     return wxPoint(static_cast<int>(std::llround(std::clamp(pixel.x, -1e7, 1e7))),
-        static_cast<int>(std::llround(std::clamp(pixel.y, -1e7, 1e7))));
+                   static_cast<int>(std::llround(std::clamp(pixel.y, -1e7, 1e7))));
 }
 
 /** @brief 현재 축척에 맞는 격자 간격과 원점을 표시한다. */
@@ -66,7 +79,8 @@ void CanvasRenderer::DrawGrid(bool visible)
         m_dc.DrawLine(0, origin.y, size.x, origin.y);
     }
     m_dc.SetTextForeground(wxColour(94, 107, 121));
-    m_dc.DrawText("X / mm", std::max(2, size.x - FromDIP(60)), std::clamp(origin.y + 4, 2, std::max(2, size.y - FromDIP(22))));
+    m_dc.DrawText("X / mm", std::max(2, size.x - FromDIP(60)),
+                  std::clamp(origin.y + 4, 2, std::max(2, size.y - FromDIP(22))));
     m_dc.DrawText("Y / mm", std::clamp(origin.x + 4, 2, std::max(2, size.x - FromDIP(60))), FromDIP(4));
 }
 
@@ -75,10 +89,12 @@ void CanvasRenderer::DrawBoard(const CanvasScene::Model& scene)
 {
     if (scene.hasBoard)
     {
-        const wxPoint leftTop = WorldToScreen(scene.circularBoard ?
-            Point{scene.boardCenter.x - scene.boardRadius, scene.boardCenter.y + scene.boardRadius} : Point{0.0, scene.boardHeight});
-        const wxPoint rightBottom = WorldToScreen(scene.circularBoard ?
-            Point{scene.boardCenter.x + scene.boardRadius, scene.boardCenter.y - scene.boardRadius} : Point{scene.boardWidth, 0.0});
+        const wxPoint leftTop = WorldToScreen(scene.circularBoard ? Point{scene.boardCenter.x - scene.boardRadius,
+                                                                          scene.boardCenter.y + scene.boardRadius}
+                                                                  : Point{0.0, scene.boardHeight});
+        const wxPoint rightBottom = WorldToScreen(scene.circularBoard ? Point{scene.boardCenter.x + scene.boardRadius,
+                                                                              scene.boardCenter.y - scene.boardRadius}
+                                                                      : Point{scene.boardWidth, 0.0});
         m_dc.SetPen(wxPen(wxColour(105, 153, 117), FromDIP(2)));
         m_dc.SetBrush(wxBrush(wxColour(232, 243, 235), wxBRUSHSTYLE_BDIAGONAL_HATCH));
         if (scene.circularBoard)
@@ -102,20 +118,24 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
     if (!m_graphics)
     {
         m_graphics.reset(wxGraphicsContext::CreateFromUnknownDC(m_dc));
+        if (m_graphics)
+        {
+            m_graphics->Clip(0, 0, m_viewport.width, m_viewport.height);
+        }
     }
     auto* graphics = m_graphics.get();
     if (!graphics)
     {
         return false;
     }
-    graphics->Clip(0, 0, m_viewport.width, m_viewport.height);
     wxGraphicsPath path = graphics->CreatePath();
     if (shape.kind == "line_path")
     {
         CanvasGeometry::Point start = m_viewport.Project(shape.start, offset);
         CanvasGeometry::Point end = m_viewport.Project(shape.end, offset);
         const double padding = std::max(1.0, shape.width * m_viewport.pixelsPerMm) / 2.0 + FromDIP(8);
-        if (!CanvasGeometry::ClipSegment(start, end, -padding, -padding, m_viewport.width + padding, m_viewport.height + padding))
+        if (!CanvasGeometry::ClipSegment(start, end, -padding, -padding, m_viewport.width + padding,
+                                         m_viewport.height + padding))
         {
             return true;
         }
@@ -126,8 +146,8 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
     {
         const Point center = m_viewport.Project(shape.center, offset);
         path.AddArc(center.x, center.y, shape.radius * m_viewport.pixelsPerMm,
-            -shape.startAngle * CanvasGeometry::Pi / 180.0,
-            -(shape.startAngle + shape.sweepAngle) * CanvasGeometry::Pi / 180.0, shape.sweepAngle < 0.0);
+                    -shape.startAngle * CanvasGeometry::Pi / 180.0,
+                    -(shape.startAngle + shape.sweepAngle) * CanvasGeometry::Pi / 180.0, shape.sweepAngle < 0.0);
     }
     else if (!shape.rings.empty())
     {
@@ -145,6 +165,7 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
     }
     else
     {
+        Flush();
         const Point center = m_viewport.Project(shape.center, offset);
         const double radius = shape.radius * m_viewport.pixelsPerMm;
         if (radius > 0.0)
@@ -163,12 +184,14 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
             marker.AddLineToPoint(center.x + half, center.y);
             marker.MoveToPoint(center.x, center.y - half);
             marker.AddLineToPoint(center.x, center.y + half);
-            graphics->SetPen(wxPen(highlight ? wxColour(36, 141, 225) : wxColour(105, 113, 121), FromDIP(2), wxPENSTYLE_SHORT_DASH));
+            graphics->SetPen(
+                wxPen(highlight ? wxColour(36, 141, 225) : wxColour(105, 113, 121), FromDIP(2), wxPENSTYLE_SHORT_DASH));
             graphics->StrokePath(marker);
         }
     }
     if (shape.kind != "line_path" && shape.kind != "arc_path")
     {
+        Flush();
         if (highlight)
         {
             graphics->SetPen(wxPen(wxColour(36, 141, 225), FromDIP(5)));
@@ -192,12 +215,12 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
             graphics->SetBrush(wxBrush(wxColour(250, 251, 253)));
             graphics->DrawEllipse(center.x - radius, center.y - radius, radius * 2.0, radius * 2.0);
         }
-        graphics->Flush();
         return true;
     }
     const double width = std::max(shape.width * m_viewport.pixelsPerMm, 1.0);
     if (highlight)
     {
+        Flush();
         wxGraphicsPenInfo halo(wxColour(36, 141, 225), width + FromDIP(5));
         halo.Cap(wxCAP_ROUND);
         graphics->SetPen(graphics->CreatePen(halo));
@@ -207,6 +230,5 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
     pen.Cap(wxCAP_ROUND);
     graphics->SetPen(graphics->CreatePen(pen));
     graphics->StrokePath(path);
-    graphics->Flush();
     return true;
 }

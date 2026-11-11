@@ -6,7 +6,7 @@
 
 namespace
 {
-constexpr std::size_t MaxFrameBytes = 64 * 1024;
+constexpr std::size_t MaxFrameBytes = 1024 * 1024;
 constexpr std::size_t MaxQueueMessages = 64;
 
 /** @brief 유효한 Win32 handle만 해제한다. */
@@ -273,7 +273,7 @@ void ServiceClient::ReadLoop(HANDLE pipe, bool protocol)
                 {
                     if (protocol)
                     {
-                        Fail("Python service frame exceeds 64 KiB.");
+                        Fail("Python service frame exceeds 1 MiB.");
                         return;
                     }
                     discardingLog = true;

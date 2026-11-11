@@ -114,11 +114,11 @@ Windows에서 파일 fsync, 같은 volume 교체, 실제 프로세스 강제 종
 
 - 프로젝트 경로는 workspace 안의 `projects/이름`이다. absolute/상위 이동/Windows 예약 이름과 기존 symlink/reparse 경로를 거부한다.
 - create는 이미 존재하는 경로를 덮어쓰지 않는다. 미게시 orphan이 남은 경로도 자동 삭제하지 않는다.
-- 프로젝트 32 KiB/32개, 매개변수 128개, 설계 객체 256개(32 KiB 제한도 적용), jobs 512개/대기 32개, receipts와 명령 이력 각각 2048개, snapshots 1024개, epoch 128개가 초기 상한이다.
+- 프로젝트 512 KiB/32개, 매개변수 128개, 설계 객체 256개(512 KiB 제한도 적용), jobs 512개/대기 32개, receipts와 명령 이력 각각 2048개, snapshots 1024개, epoch 128개가 초기 상한이다.
 - journal state와 단일 artifact의 최대 크기는 각각 8 MiB다. 초기 disk admission은 최소 16 MiB 또는 새 상태의 이중 기록에 필요한 여유 중 큰 값을 확인한다. 실제 기록 실패도 별도로 처리한다.
 - 오래된 commit과 artifact의 자동 GC는 아직 없으므로 상한/공간 부족은 E_RESOURCE로 접수를 거부한다. 보존 이력을 몰래 삭제하지 않는다.
 - mutation batch와 mutation notification은 실행하지 않는다. 조회 batch만 지원하며 변경에는 응답 ID와 영속 request key를 사용한다.
-- stdout의 최대 프레임은 기존 64 KiB다. 큰 프로젝트/배열의 chunk/artifact 전송을 지원하는 완료 profile이 아니다.
+- stdout의 최대 프레임은 1 MiB다. 큰 프로젝트/배열의 chunk/artifact 전송을 지원하는 완료 profile이 아니다.
 
 ## AI/MCP와 EDA 연결 경계
 

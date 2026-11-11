@@ -1,0 +1,12 @@
+{
+  "path": ".local\\capacity-improvement\\TraceWave-Studio-internal-validation.zip",
+  "files": 375,
+  "bytes": 8525206,
+  "sha256": "459ff18a6df40d2db6428511ae4f0e719dd365a1ee513d7f1b34aff3540f2ffd",
+  "status": "contents_verified",
+  "schema": "rfad.internal-bundle-verification/0.1",
+  "verified_at": "2026-11-11T08:57:30.598725+00:00",
+  "external_to_archive": true,
+  "turnkey_installer": false,
+  "capacity_verification_sha256": "9bb89782c03ad8c421e5fd5142133a76d59067dde5b4ad095f51dd3c280995e5"
+}

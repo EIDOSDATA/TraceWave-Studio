@@ -9,7 +9,7 @@ from rfad.domain.errors import ProjectError
 
 
 EVIDENCE_ENTITIES = frozenset({"observations", "sources", "native_templates", "native_components"})
-MAX_EVIDENCE_BYTES = 12 * 1024
+from rfad.domain.resource_limits import MAX_EVIDENCE_BYTES, MAX_EVIDENCE_ITEMS
 
 
 def fail(code: str, message: str, field: str) -> None:
@@ -127,12 +127,12 @@ def _origin(value: object, entity: str, field: str) -> None:
 
 def validate_evidence(values: object, catalog: dict | None) -> dict[str, tuple[dict, object]]:
     """! @brief 전체 사본과 선택 필드 사본을 구분하고 출처 ID와 해시를 대조한다."""
-    if type(values) is not list or len(values) > 32:
-        fail("E_RESOURCE", "PCB 선택 출처는 최대 32개 목록이어야 합니다.", "selection.evidence")
+    if type(values) is not list or len(values) > MAX_EVIDENCE_ITEMS:
+        fail("E_RESOURCE", "PCB 선택 출처는 최대 256개 목록이어야 합니다.", "selection.evidence")
     if values and catalog is None:
         fail("E_SCHEMA", "카탈로그 개정 없는 출처 사본은 저장할 수 없습니다.", "selection.catalog")
     if len(encoded(values).encode("utf-8")) > MAX_EVIDENCE_BYTES:
-        fail("E_RESOURCE", "PCB 선택 출처의 12 KiB 예산을 초과했습니다.", "selection.evidence")
+        fail("E_RESOURCE", "PCB 선택 출처의 128 KiB 예산을 초과했습니다.", "selection.evidence")
     result = {}
     for number, entry in enumerate(values):
         field = f"selection.evidence[{number}]"

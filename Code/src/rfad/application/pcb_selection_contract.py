@@ -9,7 +9,7 @@ from rfad.domain.errors import ProjectError
 
 
 PROFILE = "rfad.pcb-selection/0.1"
-MAX_RESULT_BYTES = 48 * 1024
+from rfad.domain.resource_limits import MAX_SELECTION_RESULT_BYTES as MAX_RESULT_BYTES
 READ_METHODS = frozenset({"pcb.selection.preview", "pcb.selection.get", "pcb.selection.context"})
 MUTATION_METHODS = frozenset({"pcb.selection.apply"})
 
@@ -105,8 +105,10 @@ def read_envelope(params):
     return params["context"], params["input"]
 
 
-def bounded(value):
+def bounded(value, *, limit=MAX_RESULT_BYTES):
     """! @brief 일부 출처나 변경을 숨기지 않고 큰 응답을 명시적으로 거부한다."""
-    if len(canonical_bytes(value)) > MAX_RESULT_BYTES:
-        raise ProjectError("E_RESOURCE", "PCB 선택 결과가 48 KiB를 초과했습니다. 선택 범위를 줄이십시오.")
+    size = len(canonical_bytes(value))
+    if size > limit:
+        raise ProjectError("E_RESOURCE", "PCB 선택 결과가 응답 크기 상한을 초과했습니다.",
+                           details={"result_bytes": size, "limit_bytes": limit})
     return value

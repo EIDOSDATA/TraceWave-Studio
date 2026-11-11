@@ -116,7 +116,7 @@ CLI 검색 입력은 JSON 파일로 전달할 수 있다.
 
 `catalog.get`은 `entity`, `id`, 선택적 `catalog_id`, `raw_offset`, `raw_limit`을 받는다. `raw_offset > 0`인 후속 조각에는 이전 응답의 `catalog_id`가 필수다. 원문 조각 offset은 UTF-8 바이트가 아닌 Unicode code point 기준이다. 기본 4,096자, 최대 8,192자이며 응답 바이트 상한 때문에 더 짧아질 수 있다. `raw.next_offset`을 그대로 사용하고 마지막 `complete: true`까지 조합한 UTF-8 문자열을 `raw.sha256`과 비교한다. `complete`는 해당 조각으로 원문 끝에 도달했다는 뜻이다. offset 0부터 한 번에 전체가 들어오는 경우 서비스도 해시를 확인한다.
 
-검색 요약에는 전체 원문을 넣지 않는다. 긴 요약/물성 설명은 `truncated_fields`로 축약을 알리고 상세 원문에 전체를 보존한다. 결과 상한은 48 KiB이며 기존 RPC 프레임 64 KiB 및 최대 요청 ID 공간을 남긴다. 기존 batch 전체 응답 상한도 유지되므로 큰 조회 여러 개는 개별 프레임으로 요청한다. SQLite VM 실행량과 대기 시간도 제한한다.
+검색 요약에는 전체 원문을 넣지 않는다. 긴 요약/물성 설명은 `truncated_fields`로 축약을 알리고 상세 원문에 전체를 보존한다. 결과 상한은 48 KiB이며 RPC 프레임 1 MiB 및 최대 요청 ID 공간을 남긴다. 기존 batch 전체 응답 상한도 유지되므로 큰 조회 여러 개는 개별 프레임으로 요청한다. SQLite VM 실행량과 대기 시간도 제한한다.
 
 ## 전체 자료 검증
 

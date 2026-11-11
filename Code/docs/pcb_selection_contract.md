@@ -1,6 +1,6 @@
 # PCB 선택 출처, 적층 미리보기와 원자적 적용 계약
 
-작성일: 2026-11-11 KST. 승인 기준선: RFAD-D0-3.4. API 확장과 프로젝트 선택 확장은 `rfad.pcb-selection/0.1`이다. 프로젝트 본체는 `rfad.project/0.2`, 공개 RPC envelope는 `rfad.api/2.0`을 유지한다.
+작성일: 2026-11-11 KST. 승인 기준선: RFAD-D0-3.4. API profile은 `rfad.pcb-selection/0.1`이며 프로젝트 선택 저장은 0.1 및 공유 근거 0.2를 지원한다. 프로젝트 본체는 `rfad.project/0.2`, 공개 RPC envelope는 `rfad.api/2.0`을 유지한다.
 
 이 구현은 [PCB 재료 카탈로그 설계](pcb_material_catalog.md)의 선택 근거 저장, 적층 초안, 변경 미리보기와 일괄 적용을 연결한다. [읽기 전용 카탈로그](pcb_catalog_contract.md)를 사용해도 프로젝트 변경은 별도의 명시적 적용 요청으로 수행한다. wxWidgets 화면 조작은 [PCB 선택 화면](pcb_selection_gui.md)을 따른다. 범용 EDA 가져오기와 새 CAD/solver 물리 모델은 이 변경 범위에 포함하지 않는다.
 
@@ -41,7 +41,7 @@ apply는 별도 job이 아닌 동기 변경 명령이다. `project.open`, `proje
 
 ## 제조업체 적층과 물성의 함께 제안
 
-`catalog.stackup_suggestions`는 `context: {}`인 읽기 전용 카탈로그 API다. `input`은 `{source: {catalog_id, entity, id}, offset?, limit?}`이며 `entity`는 `native_templates` 또는 `observations`다. `offset`은 0부터 시작하고 `limit`은 기본 8, 허용 범위 1~8이다. 부울/문자열을 페이지 수치로 변환하지 않는다. 카탈로그 개정, 선택 원문과 층 관계를 다시 검사하고 응답은 48 KiB 이내로 제한한다. 숫자나 원문을 줄여 예산을 맞추지 않으며 필요한 경우 반환 행수를 줄이고 실제 `next_offset`을 알려준다.
+`catalog.stackup_suggestions`는 `context: {}`인 읽기 전용 카탈로그 API다. `input`은 `{source: {catalog_id, entity, id}, offset?, limit?}`이며 `entity`는 `native_templates` 또는 `observations`다. `offset`은 0부터 시작하고 `limit`은 기본 8, 허용 범위 1~8이다. 부울/문자열을 페이지 수치로 변환하지 않는다. 카탈로그 개정, 선택 원문과 층 관계를 다시 검사하고 응답은 128 KiB 이내로 제한한다. 숫자나 원문을 줄여 예산을 맞추지 않으며 필요한 경우 반환 행수를 줄이고 실제 `next_offset`을 알려준다.
 
 응답 schema는 `rfad.pcb-stackup-suggestions/0.1`이다. `source`, 전체 `draft`, 현재 페이지의 `layers`, `issues`, `readiness: not_assessed`, `offset`, `total_count`, `returned_count`, `next_offset`, `limited_by_bytes`를 반환한다. `next_offset`이 null이면 마지막 페이지다. GUI의 이전 페이지는 실제 방문한 오프셋 이력으로 이동한다. 조회나 페이지 이동만으로 프로젝트, 사용자 폼 또는 기존 적용 미리보기를 변경하지 않는다.
 
@@ -61,7 +61,7 @@ JLCPCB는 카탈로그 적층/출처, 공개 template ID, 구성행 순번, 재�
 
 현재 전체 자료의 JLCPCB/PCBWay 대응 관측은 Dk가 있어도 Df가 미정이다. 따라서 이 자료를 선택하면 Dk 공개값과 Df 미정이 함께 표시된다. RO4350B 탐색 모델처럼 다른 자료에 근거한 명시적 근사는 별도 사용자 입력으로 유지하고, 업체명이나 제품명만으로 기존 탐색 가정을 기본값에 복사하지 않는다.
 
-조회 가능한 제안과 프로젝트에 한 번에 적용 가능한 범위도 구분한다. 12 KiB 출처 근거와 32 KiB 프로젝트 상한은 유지한다. 실제 대표 JLC 4층/PCBWay 4층에서 모든 유전체 물성을 함께 채택하면 원문 사본 합계가 12 KiB를 초과하여 적용이 거절된다. 값을 숨기거나 출처를 생략해 적용하지 않으며, 선택 범위를 줄이거나 직접 입력을 사용해야 한다. 전체 자료 검사와 대표 적용 결과는 [개발 상태](development_status.md)를 따른다.
+조회 가능한 제안과 프로젝트에 적용 가능한 물리 범위를 구분한다. 출처 128 KiB/프로젝트 512 KiB 상한으로 기존 823개 조회 거절을 해소하고, 대표 JLC 4층/PCBWay 4층의 모든 유전체 제안 적용과 저장/재열기를 확인했다. 원문이나 미정값을 축약하지 않는다. 바이트 상한 개선이 solver의 층수/재료 지원 확대를 뜻하지는 않는다. [용량 개선과 후속 검증](capacity_and_followup.md)을 따른다.
 
 전체 카탈로그의 모든 native template과 OSH Park 관측 기반 적층 후보를 검사하는 명령은 다음과 같다. 모든 제안 페이지를 이어 층 순서/누락/중복과 미정값을 확인하고, 자원 한계는 기존 초안 API에서도 같은 입력으로 재현되는지 분리한다. 보고서는 새 경로만 허용하며 DB는 읽기 전용으로 열고 변경 전후 해시를 비교한다.
 
@@ -161,7 +161,7 @@ preview 결과에는 다음 정보가 들어간다.
 - `retained_selections`: 보존할 이전 선택의 `{selection_id, catalog, evidence_ids}` 목록. 현재 객체의 출처 참조를 유지하기 위해 필요한 사본을 확인한다.
 - `issues`: warning과 blocker. 입력 자체의 잘못된 형식이나 불가능한 물성 채택은 RPC 오류로 반환할 수도 있다.
 - `input_checks`: geometry/step/em의 기존 입력 검사. 각 진단은 최대 16개와 축약 여부를 표시한다.
-- `size`: 후보 프로젝트 바이트 수와 32 KiB 상한.
+- `size`: 후보 프로젝트 바이트 수와 512 KiB 상한.
 
 `preview_hash`는 project_id, expected_revision, selection_id, specification과 생성한 적용 payload를 해시한다. apply는 같은 입력을 다시 검증하고 해시가 같을 때만 적용한다. 미리보기 후 원문 개정, 입력 또는 현재 프로젝트 revision이 달라지면 다시 검토해야 한다. preview_hash 자체는 변경 권한이나 물리 검증 승인이 아니다.
 
@@ -202,11 +202,11 @@ history는 모든 편집을 무한히 모으는 journal이 아니다. 다음 선
 
 | 제한 | 값 |
 | --- | --- |
-| 저장할 프로젝트 전체 | 정규 UTF-8 JSON 32 KiB |
-| 선택 API 결과 | 48 KiB |
-| 기존 JSON-RPC 프레임 | 64 KiB |
-| 프로젝트 선택 근거 목록 | 현재와 history의 evidence 합산 정규 JSON UTF-8 크기 12 KiB. 문자열 escape와 metadata 포함 |
-| 과거 선택 사본 | 최대 32개 비재귀 목록. 프로젝트 32 KiB와 근거 합산 12 KiB도 동시에 적용 |
+| 저장할 프로젝트 전체 | 정규 UTF-8 JSON 512 KiB |
+| 선택 API 결과 | 384 KiB. 적층 조회/제안 128 KiB, 일반 검색/상세 48 KiB |
+| JSON-RPC 프레임 | 1 MiB |
+| 프로젝트 선택 근거 목록 | 현재와 history의 고유 evidence 합산 정규 JSON UTF-8 크기 128 KiB, 최대 256개. 문자열 escape와 metadata 포함 |
+| 과거 선택 사본 | 최대 32개 비재귀 목록. 프로젝트 512 KiB와 고유 근거 합산 128 KiB도 동시에 적용 |
 | 근거 raw_json 한 개 | 4,096자 및 8,192 bytes |
 | 한 선택의 카탈로그 읽기 | 원문 한 행 256 KiB, 전체 1 MiB, 최대 512개 캐시 행 |
 | 한 native template의 구성행 조회 | 최대 256개 |
@@ -359,3 +359,9 @@ $env:PYTHONPATH = 'src'
 ```
 
 현재 단계의 적용 성공은 RF 물성의 측정 검증, 제조 가능성 보증 또는 IFA 성능 합격이 아니다. 다음 화면 연결에서는 이 API의 미정값/차단 사유/출처/사용자 변경을 그대로 보여 주고, 사용자가 검토한 입력만 apply해야 한다. 실제 개발 상태와 전체 회귀 결과는 [개발 상태](development_status.md)를 따른다.
+
+## 공유 근거 저장 형식 0.2
+
+기존 `rfad.pcb-selection/0.1` 문서는 그대로 읽고, 조회만으로 원본 또는 해시를 변경하지 않는다. 새 적용에서 선택의 정규 표현이 32 KiB를 넘고 실제 중복 저장을 줄일 수 있으면 `rfad.pcb-selection/0.2`를 사용한다. 프로젝트 본체는 0.2, API profile은 0.1을 유지한다. 새 선택 형식의 지원은 capabilities에서 별도로 알린다. 이전 실행 파일이 새 대용량 문서를 읽는 역방향 호환을 보장하지 않는다.
+
+0.2는 최상위 `evidence_pool`에 고유 출처 사본을 한 번 저장하고 현재 선택과 비재귀 history의 `evidence`에는 순서가 있는 ID 목록을 저장한다. 사본의 raw_json, 원문/사본 SHA-256, 포인터, origin과 ID는 변경하지 않는다. 검증 시 독립된 0.1 사본으로 복원한 뒤 각 catalog/채택값/해시를 재검증한다. 없는/중복/미사용 사본, 서로 다른 같은 ID와 변조된 원문은 거절한다. 고유 근거에 합계 예산을 적용한다. 저장, 스냅샷과 역명령은 기존 원자 경로를 사용하며 외부 파일이나 설치 카탈로그에 출처를 의존하지 않는다.

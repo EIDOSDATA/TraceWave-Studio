@@ -59,7 +59,7 @@ def _identity(run_id: str, nonce: str) -> None:
         raise ProjectError("E_SCHEMA", "WSL 실행 UUID 또는 nonce 형식이 잘못되었습니다.")
 
 
-def _run_control(argv: list[str], raw: bytes, timeout: float) -> subprocess.CompletedProcess:
+def _run_control(argv: list[str], raw: bytes, timeout: float, *, cancel=None) -> subprocess.CompletedProcess:
     """! @brief 제어 출력도 실시간 byte 상한을 적용하며 launcher만 유한 시간에 회수한다."""
     process = subprocess.Popen(argv, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                shell=False, close_fds=True, bufsize=0,
@@ -102,6 +102,9 @@ def _run_control(argv: list[str], raw: bytes, timeout: float) -> subprocess.Comp
     violation = ""
     try:
         while process.poll() is None:
+            if cancel is not None and cancel.is_set():
+                violation = "cancelled"
+                break
             if overflow.is_set():
                 violation = "output_limit"
                 break
@@ -138,7 +141,8 @@ class WslRuntime:
     def __init__(self, distribution="TraceWave-Dev", user="tracewave",
                  python="/home/tracewave/rfad-runtime/openems-venv/bin/python",
                  guest_root="/home/tracewave/rfad-runtime/worker-runs", *,
-                 lease_seconds=10.0, poll_seconds=0.25, control_timeout_seconds=10.0):
+                 lease_seconds=10.0, poll_seconds=0.25, control_timeout_seconds=10.0,
+                 startup_timeout_seconds=60.0):
         """! @brief 승인된 실행 구성과 supervisor 소스 바이트를 생성 시점에 고정한다."""
         if (type(distribution) is not str or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,63}", distribution)
                 or type(user) is not str or not re.fullmatch(r"[a-z_][a-z0-9_-]{0,31}", user)):
@@ -149,7 +153,7 @@ class WslRuntime:
                 raise ProjectError("E_SCHEMA", "WSL 런타임은 고정 Linux 절대 경로여야 합니다.")
         if str(guest_root).startswith("/mnt/"):
             raise ProjectError("E_SCHEMA", "WSL 실행 staging은 Linux 파일시스템에 있어야 합니다.")
-        for value in (lease_seconds, poll_seconds, control_timeout_seconds):
+        for value in (lease_seconds, poll_seconds, control_timeout_seconds, startup_timeout_seconds):
             if type(value) not in (int, float) or not math.isfinite(value) or value <= 0:
                 raise ProjectError("E_SCHEMA", "WSL 감독 시간은 유한 양수여야 합니다.")
         self.distribution = distribution
@@ -159,6 +163,7 @@ class WslRuntime:
         self.lease_seconds = float(lease_seconds)
         self.poll_seconds = float(poll_seconds)
         self.control_timeout_seconds = float(control_timeout_seconds)
+        self.startup_timeout_seconds = float(startup_timeout_seconds)
         self._source = Path(__file__).resolve().parents[3] / "tools" / "wsl_supervisor.py"
         self._supervisor = self._source.read_bytes()
         self._supervisor_sha256 = hashlib.sha256(self._supervisor).hexdigest()
@@ -168,6 +173,33 @@ class WslRuntime:
         return {"protocol": PROTOCOL, "distribution": self.distribution, "user": self.user,
                 "python": self.python, "guest_root": self.guest_root,
                 "supervisor_sha256": self._supervisor_sha256, "lease_seconds": self.lease_seconds}
+
+    def prepare(self, cancel: threading.Event) -> dict:
+        """! @brief 계산 접수 전에 WSL과 고정 Python 경로를 유한 시간 안에 확인한다.
+
+        @details 준비 명령은 worker를 시작하지 않는다. 준비 실패와 취소는
+        not_started로 확정할 수 있으며 이미 접수한 solve를 재제출하지 않는다.
+        """
+        started = time.monotonic()
+        program = ("import pathlib,sys;"
+                   "assert pathlib.Path(sys.argv[1]).is_file(),'configured Python missing';"
+                   "sys.stdout.write('rfad.wsl-ready/0.1')")
+        argv = ["wsl.exe", "--distribution", self.distribution, "--user", self.user,
+                "--exec", "/usr/bin/python3", "-I", "-B", "-c", program, self.python]
+        try:
+            response = _run_control(argv, b"", self.startup_timeout_seconds, cancel=cancel)
+            if response.returncode or response.stdout != b"rfad.wsl-ready/0.1":
+                raise ProjectError("E_RESOURCE", "WSL 또는 지정한 해석 Python의 준비를 확인하지 못했습니다.",
+                                   details={"stderr": response.stderr[-2048:].decode("utf-8", errors="replace")})
+        except (OSError, subprocess.TimeoutExpired) as error:
+            raise ProjectError("E_RESOURCE", "WSL 준비 프로세스를 실행하지 못했습니다.",
+                               details={"not_started": True, "outcome_unknown": False,
+                                        "termination_confirmed": True}) from error
+        except ProjectError as error:
+            error.details.update(not_started=True, outcome_unknown=False, termination_confirmed=True)
+            raise
+        return {"status": "ready", "elapsed_seconds": time.monotonic() - started,
+                "startup_timeout_seconds": self.startup_timeout_seconds, "worker_started": False}
 
     @staticmethod
     def _linux_path(path: Path) -> str:
@@ -271,10 +303,18 @@ class WslRuntime:
             manifest = self._manifest(stage)
             if self._source.read_bytes() != self._supervisor:
                 raise ProjectError("E_VERSION", "동결 후 WSL supervisor 구현이 변경되었습니다.")
+            readiness = self.prepare(cancel)
+            if cancel.is_set():
+                return {"protocol": PROTOCOL, "run_id": run_id, "nonce": nonce, "state": "cancelled",
+                        "termination_confirmed": True, "outcome_unknown": False, "not_started": True,
+                        "readiness": readiness}
             payload = {**self.identity(), "host_stage": self._linux_path(stage), "run_id": run_id, "nonce": nonce,
                        "files": manifest, "timeout_seconds": timeout_seconds, "limits": limits}
         except ProjectError as error:
             error.details.update({"termination_confirmed": True, "outcome_unknown": False, "not_started": True})
+            if cancel.is_set():
+                return {"protocol": PROTOCOL, "run_id": run_id, "nonce": nonce, "state": "cancelled",
+                        "termination_confirmed": True, "outcome_unknown": False, "not_started": True}
             raise
         except OSError as error:
             raise ProjectError("E_RESOURCE", "WSL 시작 전 staging 파일을 확인하지 못했습니다.",
@@ -330,4 +370,4 @@ class WslRuntime:
                     status["output_directory"] = str(stage / "output")
                 except (ProjectError, OSError, ValueError, KeyError) as error:
                     status = {**status, "state": "failed", "export_error": str(error)[:2048]}
-        return status
+        return {**status, "readiness": readiness}

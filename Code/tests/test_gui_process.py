@@ -124,14 +124,14 @@ class GuiProcessTests(unittest.TestCase):
         self.assertTrue(result["passed"], result)
 
     def test_oversized_protocol_frame_fails_without_hanging(self):
-        """! @brief 64 KiB를 넘는 stdout 프레임을 제한된 오류로 종료한다."""
+        """! @brief 1 MiB를 넘는 stdout 프레임을 제한된 오류로 종료한다."""
         with TemporaryDirectory(prefix="rfad GUI frame ") as temporary:
             directory = Path(temporary)
-            source = self.source_stub(directory, "import sys, time\nsys.stdout.write('x' * 70000)\nsys.stdout.flush()\ntime.sleep(120)\n")
+            source = self.source_stub(directory, "import sys, time\nsys.stdout.write('x' * 1048577)\nsys.stdout.flush()\ntime.sleep(120)\n")
             code, result = self.run_gui(directory, source=source)
         self.assertEqual(code, 2, result)
         self.assertFalse(result["passed"])
-        self.assertIn("64 KiB", result["error"])
+        self.assertIn("1 MiB", result["error"])
         self.assertLess(result["process_elapsed_seconds"], 10.0, result)
 
     def test_service_exit_is_reported(self):

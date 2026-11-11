@@ -41,7 +41,7 @@ void Finite(const Json& value)
 void Bounded(const Json& value)
 {
     Finite(value);
-    Require(value.dump().size() <= 48 * 1024, "PCB 화면 DTO의 48 KiB 상한을 초과했습니다.");
+    Require(value.dump().size() <= 384 * 1024, "PCB 화면 DTO의 384 KiB 상한을 초과했습니다.");
 }
 
 void Uuid(const Json& value)

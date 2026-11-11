@@ -9,7 +9,7 @@ from rfad.domain.material_models import TOTAL_TAN_DELTA_MODEL
 
 
 SUGGESTION_SCHEMA = "rfad.pcb-stackup-suggestions/0.1"
-MAX_RESULT_BYTES = 48 * 1024
+from rfad.domain.resource_limits import MAX_STACKUP_RESULT_BYTES as MAX_RESULT_BYTES
 MAX_PAGE_SIZE = 8
 
 

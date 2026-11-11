@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 import sys
 import unittest
+from unittest.mock import patch
 
 from rfad.application.rpc import CONTRACT_VERSION, MAX_BATCH_ITEMS, MAX_FRAME_BYTES, handle_frame, serve
 
@@ -105,7 +106,8 @@ class RpcTests(unittest.TestCase):
         frame = encode([request("x" * 7900) for _ in range(8)])
         self.assertLess(len(frame), MAX_FRAME_BYTES)
         sink = io.BytesIO()
-        self.assertEqual(serve(io.BytesIO(frame + b"\n"), sink, io.StringIO()), 0)
+        with patch("rfad.application.rpc.MAX_FRAME_BYTES", 64 * 1024):
+            self.assertEqual(serve(io.BytesIO(frame + b"\n"), sink, io.StringIO()), 0)
         self.assertLessEqual(len(sink.getvalue()) - 1, MAX_FRAME_BYTES)
         self.assertEqual(json.loads(sink.getvalue())["error"]["data"]["domain_code"], "E_RESOURCE")
 

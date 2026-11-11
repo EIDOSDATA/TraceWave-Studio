@@ -8,6 +8,7 @@ from pathlib import Path
 import sqlite3
 from tempfile import TemporaryDirectory
 import unittest
+from unittest.mock import patch
 from uuid import uuid4
 
 from rfad.catalog.build import build_catalog
@@ -265,7 +266,7 @@ class CatalogSelectionTests(unittest.TestCase):
                 connection.execute("UPDATE native_components SET raw_json=?,raw_sha256=? WHERE component_id=?",
                                    (raw, hashlib.sha256(raw.encode("utf-8")).hexdigest(), "large" + str(index)))
             connection.commit()
-        with SelectionReader(self.database, self.catalog_id) as reader:
+        with patch("rfad.catalog.selection_reader.MAX_EVIDENCE_BYTES", 12 * 1024), SelectionReader(self.database, self.catalog_id) as reader:
             with self.assertRaises(CatalogError) as caught:
                 for index in range(7):
                     reader.capture("native_components", "large" + str(index), ["/payload"])
