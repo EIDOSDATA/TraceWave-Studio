@@ -16,6 +16,8 @@
 
 ## 시스템 구성
 
+[추가 문헌/초기 후보](docs/printed_templates_and_seeds.md)는 G001 모노폴과 G008/G009 IFA의 원문 일부 도체, 조건을 제한한 초기 길이와 가정 사본을 제공한다. 원문 두께 불일치와 실제 물성 미정을 보존하며, 시안에 따른 작업 탭/레이어/세로 도구/작업 상태를 기존 GUI에 연결했다. 기하/초기 추정과 해석/수렴/실측은 별도 상태다.
+
 앞으로의 전체 작업 순서와 단계별 완료 조건은 [개발 완료 계획](docs/completion_plan.md)을 따른다. 기존 7/8단계 권장 목록을 대체하며, 재부팅 뒤 환경 확인과 실행 명령은 [재부팅 후 개발 재개](docs/reboot_resume.md)에 정리했다.
 
 2번의 [승인 요구/구현 대조](docs/implementation_audit.md)와 [공통 계약](docs/shared_contracts.md), [Studio GUI 설계](docs/studio_gui_design.md)를 정리했다. 요구/AC 연결은 실제 수용 합격과 구분하며 기능별 코드/시험/누락 범위를 추적한다.

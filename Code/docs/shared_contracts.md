@@ -48,6 +48,8 @@
 
 ## 3. 상태/작업 계약
 
+추가 [G001/G008/G009와 초기식](printed_templates_and_seeds.md)은 카드 0.3/후보 0.2를 사용한다. G001만 조건부 `initial_estimate`를 제공하고 추정 Quantity/요청/가정을 origin에 보존한다. 현재 물성/접지 조건은 확인하지 않으며 자동 공진/정합 해석이 아니다. 기존 카드 0.1/0.2와 origin 0.1의 읽기를 유지한다. GUI의 작업 영역 이동/2D 레이어 표시는 물리 원본과 해석 포함 여부를 바꾸지 않는다.
+
 문헌 카드의 첫 범위는 [G031 부분 기하](literature_templates.md)다. 원문 bytes/hash/locator와 문헌 치수, 사용자 수정/배치, 생략/미정 항목을 카드 0.2에 보존한다. 후보와 과거 생성 입력의 geometry/initial_estimate/analysis/convergence/measurement/manufacturing 축을 나눠 표시하며 전체 보드 재현 또는 물리 검증 상태를 만들지 않는다. 기존 0.1 내장 카드와 프로젝트/origin의 읽기 의미를 유지한다.
 
 - 현재 접수된 job은 queued부터 시작한다. draft/validating/planned는 계획 준비 단계이며 임의로 현재 journal JobState에 추가하지 않는다.

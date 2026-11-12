@@ -26,6 +26,10 @@ void TemplateDialog::BuildInterface()
     m_cards = new wxChoice(this, wxID_ANY);
     m_cards->SetName("template.card");
     selectors->Add(m_cards, 1, wxEXPAND);
+    selectors->Add(new wxStaticText(this, wxID_ANY, Display("후보 방식")), 0, wxALIGN_CENTER_VERTICAL);
+    m_mode = new wxChoice(this, wxID_ANY);
+    m_mode->SetName("template.mode");
+    selectors->Add(m_mode, 1, wxEXPAND);
     selectors->Add(new wxStaticText(this, wxID_ANY, Display("적용할 도체층")), 0, wxALIGN_CENTER_VERTICAL);
     m_binding = new wxChoice(this, wxID_ANY);
     m_binding->SetName("template.layer");
@@ -36,10 +40,13 @@ void TemplateDialog::BuildInterface()
     selectors->Add(m_target, 1, wxEXPAND);
     layout->Add(selectors, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::PanelPadding));
     auto* content = new wxBoxSizer(wxHORIZONTAL);
+    auto* inputs = new wxBoxSizer(wxVERTICAL);
     m_inputs = new EditorPanel(this);
     m_inputs->SetName("template.inputs");
     m_inputs->SetMinSize(FromDIP(wxSize(360, 180)));
-    content->Add(m_inputs, 1, wxEXPAND | wxRIGHT, FromDIP(StudioTheme::PanelPadding));
+    inputs->Add(m_inputs, 1, wxEXPAND);
+    BuildSeedControls(inputs);
+    content->Add(inputs, 1, wxEXPAND | wxRIGHT, FromDIP(StudioTheme::PanelPadding));
     auto* review = new wxBoxSizer(wxVERTICAL);
     auto* previewTitle = new wxStaticText(this, wxID_ANY, Display("형상 미리보기 / mm"));
     StudioTheme::Heading(*previewTitle);
@@ -74,6 +81,11 @@ void TemplateDialog::BuildInterface()
                   {
                       SelectCard(event.GetSelection());
                   });
+    m_mode->Bind(wxEVT_CHOICE,
+                 [this](wxCommandEvent& event)
+                 {
+                     SelectMode(event.GetSelection());
+                 });
     for (auto* choice : {m_binding, m_target})
     {
         choice->Bind(wxEVT_CHOICE,

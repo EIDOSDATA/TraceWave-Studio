@@ -95,12 +95,13 @@ def capabilities(service=None, catalog=None) -> dict:
                                   for name in ("target.editor.get", "target.editor.apply")})
         result["target_editor_profile"] = {"profile": target_editor.PROFILE, "source": "draft_revision",
                                            "partial_edits": True, "preserves_sources": True, "evaluation_supported": False}
-        result["methods"].update({name: {"status": "implemented", "extension_profile": "rfad.template-candidate/0.1"}
+        result["methods"].update({name: {"status": "implemented", "extension_profile": "rfad.template-candidate/0.2"}
                                   for name in sorted(TEMPLATE_READS | {"template.apply"})})
         result["methods"]["template.synthesize"]["api_id"] = "API-007"
-        result["template_profile"] = {"profile": "rfad.template-candidate/0.1", "modes": ["explicit_geometry"],
+        result["template_profile"] = {"profile": "rfad.template-candidate/0.2", "modes": ["explicit_geometry", "initial_estimate"],
                                       "preview_required": True, "atomic_apply": True, "source_copies_in_project": True,
-                                      "geometry_generator": True, "seed_synthesizer": False,
+                                      "geometry_generator": True, "seed_synthesizer": True,
+                                      "seed_scope": "G001: ideal free-space quarter-wave or source-scoped nWP008 at 2.45 GHz; no RF performance solution",
                                       "physics_validated": False, "measurement_validated": False}
         result["methods"].update({name: {"status": "implemented", "extension_profile": "rfad.editor/0.1"} for name in ("editor.get", "editor.apply", "project.undo", "project.redo")})
         result["editor_profile"] = {"profile": "rfad.editor/0.1", "source": "draft_revision", "history_limit": 128, "history_persistent": True, "full_document_returned": False, "max_dto_bytes": 61440}

@@ -63,6 +63,7 @@ void StudioFrame::RefreshScene(std::function<void()> completed)
                  m_layerChoice->SetSelection(static_cast<int>(active - m_layerIds.begin()));
              }
              m_canvas->SetDrawingLayer(m_activeLayer);
+             RefreshLayerList();
              m_canvas->SetSelection(m_selection.value("kind", "") == "geometry" ? m_selection.value("id", "") : "");
              if (first)
              {

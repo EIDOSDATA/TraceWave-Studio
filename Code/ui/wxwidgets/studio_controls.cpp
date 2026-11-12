@@ -123,6 +123,7 @@ void StudioFrame::UpdateControls()
     }
     UpdateDraftState();
     UpdateModelState();
+    UpdateWorkspace();
 }
 
 /** @brief 미적용 입력과 적용 후 저장 필요 상태를 서비스 개정 정보로 구분한다. */

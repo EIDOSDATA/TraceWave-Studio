@@ -1,5 +1,7 @@
 # TraceWave Studio GUI 디자인과 화면 계약
 
+2026-11-12 추가 구현: 사용자 화면 시안을 따라 작업 탭 5개, 프로젝트/레이어 분리, 세로 편집 도구와 실제 작업 상태 표를 기존 기능에 연결했다. [문헌/초기 후보 및 작업 공간](printed_templates_and_seeds.md)의 범위를 따른다. wxWidgets/wxAUI/사용자 정의 2D/wxGLCanvas OpenGL 3D 구성을 유지하며 시안 전체 외형과 전체 UX/성능 수용을 완료한 것은 아니다.
+
 갱신일: 2026-11-12 KST. 개발 완료 계획 2번의 설계 산출물과 4번의 첫 화면 기반 구현을 기록한다. 승인 기준선 RFAD-D0-3.4의 [05 화면 설계](../../01_Docs/05_RFAD_화면과_사용자_경험_설계.md), [24 GUI와 성능](../../01_Docs/24_RFAD_GUI_선정과_성능_설계.md), 기존 [화면 시안](ui_concept.md)을 구체화한다. 화면 계약 전체와 성능의 완료를 뜻하지 않는다. 이번에 구현/확인한 범위는 11절을 따른다.
 
 ![TraceWave Studio 완성 목표 시안](assets/tracewave-studio-ui-concept-v2.png)

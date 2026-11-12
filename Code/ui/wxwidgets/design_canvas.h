@@ -29,6 +29,9 @@ public:
     void SetStrokeWidth(double widthMm);
     void SetEditingEnabled(bool enabled);
     void SetLayerVisible(const std::string& identity, bool visible);
+    bool IsLayerVisible(const std::string& identity) const;
+    void SetBoardVisible(bool visible);
+    bool IsBoardVisible() const;
     void SetGridVisible(bool visible);
     void FitView();
     void CancelGesture();
@@ -78,6 +81,7 @@ private:
     double m_strokeWidth = 1.0;
     bool m_editingEnabled = true;
     bool m_showGrid = true;
+    bool m_showBoard = true;
     bool m_fitted = false;
     CanvasGestureState m_gesture;
     bool m_clockwise = false;

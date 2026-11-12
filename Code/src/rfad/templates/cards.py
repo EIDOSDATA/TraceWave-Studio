@@ -5,6 +5,7 @@ from copy import deepcopy
 from rfad.application.canonical import canonical_hash
 from rfad.domain.design import _fail, _fields, _text, _strings
 from rfad.templates import g031
+from rfad.templates import printed_references as printed
 
 
 CARD_SCHEMA = "rfad.template-card/0.1"
@@ -55,15 +56,15 @@ def _card(identity: str) -> dict:
 
 def describe_card(identity: str, version: str = VERSION) -> dict:
     """! @brief 알려진 버전의 깊은 사본과 정규 내용 해시를 반환한다."""
-    if type(identity) is not str or identity not in (ARC, IFA, g031.IDENTITY) or version != VERSION:
+    if type(identity) is not str or identity not in (ARC, IFA, g031.IDENTITY, *printed.IDENTITIES) or version != VERSION:
         _fail("E_UNSUPPORTED", "지원하지 않는 템플릿 또는 버전입니다.", "template")
-    card = g031.card() if identity == g031.IDENTITY else _card(identity)
+    card = printed.card(identity) if identity in printed.IDENTITIES else (g031.card() if identity == g031.IDENTITY else _card(identity))
     return {**card, "content_hash": canonical_hash(card)}
 
 
 def list_cards() -> list[dict]:
     """! @brief 작은 내장 카드 목록을 외부 파일 실행 없이 반환한다."""
-    return [describe_card(identity) for identity in (ARC, IFA, g031.IDENTITY)]
+    return [describe_card(identity) for identity in (ARC, IFA, g031.IDENTITY, *printed.IDENTITIES)]
 
 
 def resolve_card(reference: dict) -> dict:
@@ -79,33 +80,41 @@ def validate_card_snapshot(card: object) -> None:
     """! @brief 과거 카드 사본은 현재 라이브러리 재조회 없이 내용과 제한된 증거 상태를 검사한다."""
     keys = {"schema", "template_id", "version", "name", "description", "family", "generator_version", "mode", "board_kinds",
             "input_fields", "support", "source", "assumptions", "limitations", "content_hash"}
-    literature = type(card) is dict and card.get("schema") == g031.SCHEMA
+    new_reference = type(card) is dict and card.get("schema") == printed.SCHEMA
+    literature = type(card) is dict and card.get("schema") in (g031.SCHEMA, printed.SCHEMA)
     if literature:
         keys |= {"evidence", "reference_inputs"}
+    if new_reference:
+        keys |= {"modes", "seed_recipes"}
     _fields(card, keys, "template_origin.card")
-    if (card["schema"] != (g031.SCHEMA if literature else CARD_SCHEMA) or card["mode"] != "explicit_geometry"
-            or card["generator_version"] != (g031.GENERATOR if literature else GENERATOR_VERSION) or card["support"] != SUPPORT
+    expected_schema = printed.SCHEMA if new_reference else (g031.SCHEMA if literature else CARD_SCHEMA)
+    expected_generator = printed.GENERATOR if new_reference else (g031.GENERATOR if literature else GENERATOR_VERSION)
+    support = {**SUPPORT, "seed_synthesizer": new_reference and card["template_id"] == printed.MONOPOLE}
+    if (card["schema"] != expected_schema or card["mode"] != "explicit_geometry"
+            or card["generator_version"] != expected_generator or card["support"] != support
             or type(card["support"]) is not dict or any(type(value) is not bool for value in card["support"].values())):
         _fail("E_VERSION", "템플릿 사본의 지원 profile 또는 검증 주장이 다릅니다.", "template_origin.card")
     _text(card["template_id"], "template_origin.card.template_id")
     _text(card["version"], "template_origin.card.version")
-    if card["template_id"] not in ((g031.IDENTITY,) if literature else (ARC, IFA)) or card["version"] != VERSION:
+    identities = printed.IDENTITIES if new_reference else ((g031.IDENTITY,) if literature else (ARC, IFA))
+    if card["template_id"] not in identities or card["version"] != VERSION:
         _fail("E_VERSION", "지원하지 않는 과거 템플릿 카드 형식입니다.", "template_origin.card.template_id")
     for key in ("name", "description", "family"):
         _text(card[key], "template_origin.card." + key)
-    kinds = ["rectangle", "circle"] if card["template_id"] in (ARC, g031.IDENTITY) else ["rectangle"]
+    kinds = ["rectangle", "circle"] if literature or card["template_id"] == ARC else ["rectangle"]
     if card["board_kinds"] != kinds or type(card["board_kinds"]) is not list:
         _fail("E_SCHEMA", "템플릿의 보드 지원 범위가 다릅니다.", "template_origin.card.board_kinds")
     _fields(card["source"], {"source_id", "kind", "references", "scope"}, "template_origin.card.source")
     for key in ("source_id", "kind", "scope"):
         _text(card["source"][key], "template_origin.card.source." + key)
-    if card["source"]["kind"] != ("cad_reference" if literature else "implementation_recipe"):
+    source_kind = "document_reference" if new_reference else ("cad_reference" if literature else "implementation_recipe")
+    if card["source"]["kind"] != source_kind:
         _fail("E_SCHEMA", "내장 기하 생성기 출처를 원문 검증 카드로 바꿀 수 없습니다.", "template_origin.card.source.kind")
     for name, value in (("source.references", card["source"]["references"]), ("assumptions", card["assumptions"]), ("limitations", card["limitations"])):
         _strings(value, "template_origin.card." + name)
         if not value or len(value) > 16:
             _fail("E_RESOURCE", "템플릿 출처/가정 설명은 1~16개여야 합니다.", "template_origin.card." + name)
-    definitions = g031.FIELDS if literature else (_ARC_FIELDS if card["template_id"] == ARC else _IFA_FIELDS)
+    definitions = printed.definitions(card["template_id"]) if new_reference else (g031.FIELDS if literature else (_ARC_FIELDS if card["template_id"] == ARC else _IFA_FIELDS))
     descriptors = card["input_fields"]
     if type(descriptors) is not list or len(descriptors) != len(definitions):
         _fail("E_SCHEMA", "템플릿 입력 descriptor 수가 다릅니다.", "template_origin.card.input_fields")
@@ -116,7 +125,9 @@ def validate_card_snapshot(card: object) -> None:
                 or descriptor["required"] is not True):
             _fail("E_SCHEMA", "템플릿 입력 descriptor의 역할/차원/단위가 다릅니다.", "template_origin.card.input_fields")
         _text(descriptor["label"], "template_origin.card.input_fields.label")
-    if literature:
+    if new_reference:
+        printed.validate_snapshot(card)
+    elif literature:
         g031.validate_snapshot(card)
     if card["content_hash"] != canonical_hash({key: value for key, value in card.items() if key != "content_hash"}):
         _fail("E_HASH", "프로젝트의 템플릿 카드 사본 해시가 다릅니다.", "template_origin.card.content_hash")

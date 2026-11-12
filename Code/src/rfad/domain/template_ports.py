@@ -9,6 +9,7 @@ from rfad.domain.layer_surface import single_dielectric_contact
 from rfad.domain.template_geometry import literal, object_id
 from rfad.templates.cards import IFA
 from rfad.templates.g031 import IDENTITY as G031
+from rfad.templates.printed_references import IDENTITIES as PRINTED_CARDS
 
 
 def _point(document, value, field):
@@ -57,8 +58,8 @@ def generate_port(document: dict, additions: dict, instance_id: str, binding: di
     """! @brief 포트 생성을 명시한 경우만 연결하고 누락을 50 ohm 등으로 보완하지 않는다."""
     if recipe is None:
         return
-    if card["template_id"] == G031:
-        _fail("E_UNSUPPORTED", "G031 부분 기하 카드는 port:null만 지원합니다. 급전은 생성 후 별도로 검토하십시오.", "port")
+    if card["template_id"] in (G031, *PRINTED_CARDS):
+        _fail("E_UNSUPPORTED", "문헌 부분 기하 카드는 port:null만 지원합니다. 급전은 생성 후 별도로 검토하십시오.", "port")
     _fields(recipe, {"reference_geometry_id", "resistance", "reference_plane", "polarity", "direction", "validity_hz", "excitation_box"}, "port")
     if document["ports"]:
         _fail("E_UNSUPPORTED", "첫 템플릿 급전은 기존 포트가 없는 단일 포트 프로젝트만 지원합니다.", "ports")

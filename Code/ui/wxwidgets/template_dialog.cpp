@@ -5,6 +5,7 @@
 #include "studio_support.h"
 #include <wx/button.h>
 #include <wx/choice.h>
+#include <wx/panel.h>
 #include <wx/textctrl.h>
 #include <stdexcept>
 
@@ -65,22 +66,40 @@ void TemplateDialog::SelectCard(int index)
     StoreDraft();
     m_loading = true;
     m_card = m_context.at("cards").at(static_cast<std::size_t>(index));
+    m_mode->Clear();
+    for (const auto& mode : m_card.value("modes", Json::array({"explicit_geometry"})))
+    {
+        m_mode->Append(Display(mode == "initial_estimate" ? "근거가 있는 초기 길이 추정" : "원문 / 명시 치수"));
+    }
+    m_activeMode = m_cardModes.value(m_card.at("template_id").get<std::string>(), 0);
+    if (m_activeMode >= static_cast<int>(m_mode->GetCount()))
+    {
+        m_activeMode = 0;
+    }
+    m_mode->SetSelection(m_activeMode);
+    RenderCardInputs();
+}
+
+void TemplateDialog::RenderCardInputs()
+{
+    m_loading = true;
     Json fields = Json::array();
     for (const auto& field : m_card.at("input_fields"))
     {
         const auto references = m_card.value("reference_inputs", Json::object());
         const std::string key = field.at("key");
         const bool reference = references.contains(key);
+        const bool estimatedLength = m_activeMode == 1 && key == "length";
         fields.push_back(Json{
             {"key", field.at("key")},
             {"label", field.at("label").get<std::string>() + " (" + field.at("display_unit").get<std::string>() + ")" +
                           (reference ? " / 원문" : "")},
             {"editor", "text"},
-            {"value", reference ? references.at(key).at("display_value").get<std::string>() : ""},
-            {"readonly", false}});
+            {"value", estimatedLength ? "초기식에서 계산" : (reference ? references.at(key).at("display_value").get<std::string>() : "")},
+            {"readonly", estimatedLength}});
     }
     m_inputs->SetFields(fields);
-    const auto found = m_drafts.find(m_card.at("template_id").get<std::string>());
+    const auto found = m_drafts.find(DraftKey());
     if (found != m_drafts.end())
     {
         for (const auto& field : found.value().items())
@@ -88,6 +107,7 @@ void TemplateDialog::SelectCard(int index)
             m_inputs->SetFieldValue(field.key(), field.value());
         }
     }
+    RenderSeedControls();
     m_loading = false;
     Changed();
 }
@@ -126,8 +146,12 @@ std::string TemplateDialog::CardDescription() const
                 text += "\n- " + note.get<std::string>();
             }
         }
+        for (const auto& conflict : m_card.at("evidence").value("source_conflicts", Json::array()))
+        {
+            text += "\n원문 불일치: " + conflict.get<std::string>();
+        }
     }
-    return text + "\n\n형상만 생성합니다. 급전 포트와 실제 물성, 정합/방사 성능은 자동 확정하지 않습니다.";
+    return text + SeedDescription() + "\n\n형상만 생성합니다. 급전 포트와 실제 물성, 정합/방사 성능은 자동 확정하지 않습니다.";
 }
 
 void TemplateDialog::Changed()
@@ -159,6 +183,11 @@ Json TemplateDialog::Specification() const
     for (const auto& field : m_card.at("input_fields"))
     {
         const std::string key = field.at("key");
+        if (m_activeMode == 1 && key == "length")
+        {
+            quantities[key] = Json{{"source", "initial_estimate"}};
+            continue;
+        }
         const std::string value = m_inputs->FieldValue(key).get<std::string>();
         if (value.empty())
         {
@@ -177,8 +206,8 @@ Json TemplateDialog::Specification() const
         const auto& target = m_context.at("targets").at(static_cast<std::size_t>(m_target->GetSelection() - 1));
         targets.push_back(Json{{"id", target.at("id")}, {"revision_id", target.at("revision_id")}});
     }
-    return Json{{"expected_revision", m_revision},
-                {"mode", "explicit_geometry"},
+    Json specification{{"expected_revision", m_revision},
+                {"mode", m_activeMode == 1 ? "initial_estimate" : "explicit_geometry"},
                 {"template", Json{{"template_id", m_card.at("template_id")},
                                   {"version", m_card.at("version")},
                                   {"content_hash", m_card.at("content_hash")}}},
@@ -190,6 +219,11 @@ Json TemplateDialog::Specification() const
                                  {"material_id", binding.at("material_id")}}},
                 {"explicit_inputs", quantities},
                 {"port", nullptr}};
+    if (m_activeMode == 1)
+    {
+        specification["seed"] = SeedSpecification();
+    }
+    return specification;
 }
 
 void TemplateDialog::Preview()
@@ -266,7 +300,8 @@ void TemplateDialog::Apply()
             [this](const Json& result)
             {
                 AcceptMutation(result);
-                m_drafts.erase(m_card.at("template_id").get<std::string>());
+                m_drafts.erase(DraftKey());
+                m_seedDrafts.erase(DraftKey());
                 m_preview = nullptr;
                 m_reviewedInput = nullptr;
                 m_reloadingContext = true;
@@ -284,6 +319,8 @@ void TemplateDialog::UpdateActions()
 {
     const bool editable = Editable() && !m_reloadingContext;
     m_cards->Enable(editable);
+    m_mode->Enable(editable && m_mode->GetCount() > 1);
+    m_seedPanel->Enable(editable);
     m_binding->Enable(editable);
     m_target->Enable(editable);
     m_inputs->Enable(editable);
@@ -296,19 +333,31 @@ void TemplateDialog::StoreDraft()
 {
     if (!m_card.is_null())
     {
-        m_drafts[m_card.at("template_id").get<std::string>()] = m_inputs->Changes();
+        m_drafts[DraftKey()] = m_inputs->Changes();
+        if (m_activeMode == 1)
+        {
+            m_seedDrafts[DraftKey()] = Json{{"fields", m_seedInputs->Changes()}, {"recipe", m_seedRecipe->GetSelection()}};
+        }
     }
 }
 
 bool TemplateDialog::HasDraft() const
 {
-    if (!m_reloadingContext && m_inputs->IsDirty())
+    if (!m_reloadingContext && (m_inputs->IsDirty() ||
+                               (m_activeMode == 1 && (m_seedInputs->IsDirty() || m_seedRecipe->GetSelection() > 0))))
     {
         return true;
     }
     for (const auto& draft : m_drafts.items())
     {
         if (!draft.value().empty())
+        {
+            return true;
+        }
+    }
+    for (const auto& draft : m_seedDrafts.items())
+    {
+        if (!draft.value().at("fields").empty() || draft.value().at("recipe") != 0)
         {
             return true;
         }

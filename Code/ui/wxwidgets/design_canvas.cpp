@@ -175,6 +175,22 @@ void DesignCanvas::SetEditingEnabled(bool enabled)
     Refresh(false);
 }
 
+bool DesignCanvas::IsLayerVisible(const std::string& identity) const
+{
+    return m_hiddenLayers.count(identity) == 0;
+}
+
+void DesignCanvas::SetBoardVisible(bool visible)
+{
+    m_showBoard = visible;
+    Refresh(false);
+}
+
+bool DesignCanvas::IsBoardVisible() const
+{
+    return m_showBoard;
+}
+
 void DesignCanvas::SetLayerVisible(const std::string& identity, bool visible)
 {
     if (visible)
@@ -334,8 +350,11 @@ void DesignCanvas::OnPaint(wxPaintEvent&)
     dc.Clear();
     CanvasRenderer renderer(*this, dc, Viewport());
     renderer.DrawGrid(m_showGrid);
-    renderer.DrawBoard(m_scene);
-    const wxColour colours[] = {wxColour(189, 109, 36), wxColour(117, 87, 173), wxColour(27, 144, 138), wxColour(177, 74, 96)};
+    if (m_showBoard)
+    {
+        renderer.DrawBoard(m_scene);
+    }
+    const wxColour colours[] = {wxColour(241, 153, 67), wxColour(117, 87, 173), wxColour(27, 144, 138), wxColour(177, 74, 96)};
     std::size_t nativeOmissions = m_scene.rangeOmissionCount;
     for (const Shape& shape : m_scene.shapes)
     {

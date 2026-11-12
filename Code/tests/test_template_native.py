@@ -19,6 +19,9 @@ from test_literature_templates import literature_input
 from test_cad_worker_process import cad_request, register_fixture, request, status
 from test_pcb_ifa import ifa_document
 from test_pcb_solver import fixture_document, quantity
+from rfad.templates.printed_references import IDENTITIES as PRINTED, MONOPOLE
+from test_printed_seeds import printed_input
+from test_template_candidates import base_document
 
 
 CAD_PYTHON = os.environ.get("RFAD_CAD_PYTHON", "")
@@ -26,6 +29,9 @@ CAD_PYTHON = os.environ.get("RFAD_CAD_PYTHON", "")
 
 def explicit_case(identity):
     """! @brief 제조값이 아닌 명시 기하 시험을 준비하고 모든 RF 물성은 미정으로 둔다."""
+    if identity in PRINTED:
+        document = base_document(IFA, missing=True)
+        return document, printed_input(document, identity)["explicit_inputs"]
     document = fixture_document(circle=True) if identity in (ARC, G031) else ifa_document()
     if identity == G031:
         document["board"]["outline"]["radius"] = quantity(10, "mm")
@@ -72,10 +78,15 @@ class TemplateNativeTests(unittest.TestCase):
         """! @brief 문헌의 부분 원호/stub도 같은 실제 CAD/봉인/재열기 경로를 사용한다."""
         self.run_cases((G031,))
 
+    def test_printed_and_seed_sources_survive_real_step_and_runtime_free_reopen(self):
+        """! @brief 세 문헌과 추정 길이도 실제 CAD에서 생성되고 RF 미정값을 유지한다."""
+        self.run_cases((*PRINTED, (MONOPOLE, "nwp008_trim20")))
+
     def run_cases(self, identities):
         """! @brief 카드별로 독립 작업 영역에서 공개 API와 실제 worker를 실행한다."""
         evidence = []
-        for identity in identities:
+        for case in identities:
+            identity, recipe = case if type(case) is tuple else (case, None)
             with self.subTest(template=identity), TemporaryDirectory(prefix="rfad template CAD ") as directory:
                 workspace = Path(directory)
                 with ProjectService(workspace, cad_runtime=CadRuntime(Path(CAD_PYTHON)), auto_run=False) as service:
@@ -98,6 +109,9 @@ class TemplateNativeTests(unittest.TestCase):
                             "binding": {"board_id": current["board"]["id"], "frame_id": current["board"]["frame_id"],
                                         "layer_id": layer["id"], "material_id": layer["material_id"]},
                             "explicit_inputs": inputs, "port": None}
+                    if recipe is not None:
+                        seeded = printed_input(current, identity, recipe=recipe)
+                        data.update(mode=seeded["mode"], seed=seeded["seed"], explicit_inputs=seeded["explicit_inputs"])
                     preview = self.rpc(service, "template.synthesize", {
                         "contract_version": "rfad.api/2.0", "context": {"project_id": project_id}, "input": data})
                     self.assertTrue(preview["can_apply"], preview)
@@ -144,7 +158,7 @@ class TemplateNativeTests(unittest.TestCase):
                     for uri, digest in sealed.items():
                         self.assertEqual(hashlib.sha256((workspace / uri).read_bytes()).hexdigest(), digest)
                     evidence.append({
-                        "template_id": identity, "card_hash": card["content_hash"],
+                        "template_id": identity, "recipe": recipe, "card_hash": card["content_hash"],
                         "snapshot": snapshot, "result": result,
                         "artifacts": list(artifacts.values()),
                         "materials_and_stackup_preserved": True, "targets_preserved": True,

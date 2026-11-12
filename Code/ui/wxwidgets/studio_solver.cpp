@@ -157,6 +157,7 @@ void StudioFrame::OpenRadiation()
 
 void StudioFrame::SolverStatus(const std::string& state, const std::string& message)
 {
+    ShowWorkspaceJob(1, state, message);
     m_solverState = state;
     m_solverStatus->SetLabel(Display(message));
     m_solverStatus->GetParent()->Layout();

@@ -19,6 +19,11 @@ void StudioSmokeDriver::SetupSmokeTick()
         {
             ++m_setupPendingTicks;
         }
+        if (m_frame.m_options.printedSeedSmoke)
+        {
+            PrintedSeedSmokeTick();
+            return;
+        }
         if (auto* target = dynamic_cast<TargetEditorDialog*>(m_frame.m_setupDialog))
         {
             SetupTargetSmoke(*target);

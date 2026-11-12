@@ -13,12 +13,12 @@ from rfad.domain.template_command import apply_template_command
 from rfad.domain.template_geometry import generate_geometry, all_ids, object_id
 from rfad.domain.template_instance import (EXTENSION_KEY, MAX_INSTANCES, record_hash, instance_status, object_ids)
 from rfad.domain.template_ports import generate_port
-from rfad.domain.template_inputs import normalize_inputs
+from rfad.domain.template_seeds import normalize_candidate
 from rfad.domain.template_provenance import generation_report
 from rfad.templates.cards import list_cards, describe_card, resolve_card
 
 
-PROFILE = "rfad.template-candidate/0.1"
+PROFILE = "rfad.template-candidate/0.2"
 READ_METHODS = frozenset({"template.list", "template.get", "template.context", "template.synthesize"})
 MUTATION_METHODS = frozenset({"template.apply"})
 MAX_RESULT_BYTES = 256 * 1024
@@ -80,11 +80,11 @@ class TemplateCandidateCoordinator:
             return
         if method not in ("template.synthesize", "template.apply"):
             raise ProjectError("E_UNSUPPORTED", "지원하지 않는 템플릿 요청입니다.")
-        _fields(data, _CANDIDATE_FIELDS | ({"command_id", "preview_hash"} if method == "template.apply" else set()))
+        _fields(data, _CANDIDATE_FIELDS | ({"command_id", "preview_hash"} if method == "template.apply" else set()), {"seed"})
         _uuid(data["expected_revision"])
         _uuid(data["instance_id"])
-        if data["mode"] != "explicit_geometry":
-            raise ProjectError("E_UNSUPPORTED", "현재 템플릿은 명시 치수 기하 생성만 지원합니다.")
+        if data["mode"] not in ("explicit_geometry", "initial_estimate"):
+            raise ProjectError("E_UNSUPPORTED", "지원하지 않는 템플릿 후보 방식입니다.")
         if method == "template.apply":
             _uuid(data["command_id"])
             digest = data["preview_hash"]
@@ -125,7 +125,7 @@ class TemplateCandidateCoordinator:
             existing = document["extensions"].get(EXTENSION_KEY, {"instances": []})["instances"]
             if len(existing) >= MAX_INSTANCES or any(item["id"] == data["instance_id"] for item in existing):
                 raise ProjectError("E_CONFLICT", "인스턴스가 이미 존재하거나 템플릿 8개 상한에 도달했습니다.")
-            inputs = normalize_inputs(card, data["explicit_inputs"])
+            inputs, estimate = normalize_candidate(card, data["explicit_inputs"], data["mode"], data.get("seed"))
             additions = generate_geometry(document, data["instance_id"], data["binding"], card, inputs)
             generate_port(document, additions, data["instance_id"], data["binding"], card, data["port"])
             if additions["ports"] and object_id(data["instance_id"], "port") in all_ids(document):
@@ -137,6 +137,8 @@ class TemplateCandidateCoordinator:
                       "inputs": inputs, "requested_inputs": deepcopy(data["explicit_inputs"]), "port_recipe": deepcopy(data["port"]),
                       "target_snapshots": targets, "objects": additions, "source_document": source_document,
                       "source_document_hash": canonical_hash(source_document)}
+            if card["schema"] == "rfad.template-card/0.3":
+                record.update(mode=data["mode"], initial_estimate=estimate)
             record["record_hash"] = record_hash(record)
             payload = {"instance_id": data["instance_id"], "expected_instance_hash": None, "replacement": record}
             candidate = deepcopy(document)
@@ -148,9 +150,18 @@ class TemplateCandidateCoordinator:
             digest = canonical_hash({"project_id": document["project_id"], "expected_revision": data["expected_revision"], "payload": payload})
             diagnostics = preflight_design(candidate, "em")
             issues = [] if data["port"] is not None else [{"severity": "warning", "code": "E_PORT_UNKNOWN", "message": "포트 미정의 geometry-only 후보입니다. 저항과 급전 조건을 자동 생성하지 않습니다."}]
+            if card["schema"] == "rfad.template-card/0.3":
+                issues.append({"severity": "warning", "code": "W_PARTIAL_REFERENCE",
+                               "message": "원문 일부 도체만 생성합니다. 접지/비아/급전/적층과 전체 보드 재현은 포함하지 않습니다."})
+                for conflict in card["evidence"]["source_conflicts"]:
+                    issues.append({"severity": "warning", "code": "W_SOURCE_CONFLICT", "message": conflict})
+            if estimate is not None:
+                issues.append({"severity": "warning", "code": "W_SEED_ASSUMPTION",
+                               "message": "초기식 조건은 사용자 가정입니다. 현재 기판의 물성/접지 조건을 확인하거나 공진/정합을 계산한 결과가 아닙니다."})
             result = {**base, "can_apply": True, "preview_hash": digest, "scene": build_canvas_dto(candidate),
                       "card": card, "generated_ids": object_ids(record), "issues": issues,
-                      "generation": generation_report(card, inputs),
+                      "generation": generation_report(card, inputs, estimate),
+                      "initial_estimate": estimate,
                       "input_checks": {"scope": "input_only", "input_status": "blocked" if diagnostics else "valid", "solver_ready": False,
                                        "diagnostics": diagnostics[:32], "diagnostic_count": len(diagnostics)},
                       "size": {"document_bytes": size, "document_limit_bytes": MAX_DOCUMENT_BYTES}}

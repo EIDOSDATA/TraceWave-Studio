@@ -60,14 +60,14 @@ void StudioFrame::RefreshProject()
     m_tree->Freeze();
     m_tree->DeleteAllItems();
     const wxTreeItemId root =
-        m_tree->AddRoot(m_name->GetValue(), -1, -1, new SelectionData(Json{{"kind", "project"}, {"id", m_project}}));
+        m_tree->AddRoot(m_name->GetValue(), 0, 0, new SelectionData(Json{{"kind", "project"}, {"id", m_project}}));
     std::map<std::string, wxTreeItemId> categories;
     const std::pair<const char*, const char*> names[] = {
         {"parameter", "매개변수"}, {"board", "기판"},    {"material", "재료"}, {"layer", "적층"},
         {"net", "네트"},           {"geometry", "형상"}, {"port", "포트"}};
     for (const auto& name : names)
     {
-        categories.emplace(name.first, m_tree->AppendItem(root, Display(name.second)));
+        categories.emplace(name.first, m_tree->AppendItem(root, Display(name.second), 0, 0));
     }
     wxTreeItemId selected = root;
     std::string selectedLabel = "프로젝트 속성";

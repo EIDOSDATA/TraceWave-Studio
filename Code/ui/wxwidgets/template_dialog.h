@@ -8,6 +8,8 @@ class EditorPanel;
 class wxButton;
 class wxChoice;
 class wxTextCtrl;
+class wxPanel;
+class wxSizer;
 
 /** @brief 원호/IFA 카드의 입력을 추정하지 않고 서비스 후보만 표시한다. */
 class TemplateDialog final : public ProjectSetupDialog
@@ -20,6 +22,13 @@ private:
     void BuildInterface();
     void RenderContext(const Json& context);
     void SelectCard(int index);
+    void SelectMode(int index);
+    void RenderCardInputs();
+    void BuildSeedControls(wxSizer* layout);
+    void RenderSeedControls();
+    Json SeedSpecification() const;
+    std::string DraftKey() const;
+    std::string SeedDescription() const;
     Json Specification() const;
     void Changed();
     void Preview();
@@ -32,12 +41,19 @@ private:
 
     Json m_context;
     Json m_drafts = Json::object();
+    Json m_seedDrafts = Json::object();
+    Json m_cardModes = Json::object();
     Json m_card = nullptr;
     Json m_reviewedInput = nullptr;
     Json m_preview = nullptr;
     bool m_loading = false;
     bool m_reloadingContext = false;
+    int m_activeMode = 0;
     wxChoice* m_cards = nullptr;
+    wxChoice* m_mode = nullptr;
+    wxPanel* m_seedPanel = nullptr;
+    wxChoice* m_seedRecipe = nullptr;
+    EditorPanel* m_seedInputs = nullptr;
     wxChoice* m_binding = nullptr;
     wxChoice* m_target = nullptr;
     EditorPanel* m_inputs = nullptr;

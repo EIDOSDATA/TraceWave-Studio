@@ -1,16 +1,16 @@
 # 원호와 평면 IFA 명시 기하 템플릿 계약
 
-명시 치수 원호/IFA 및 G031 문헌 부분 기하의 카드 조회, 읽기 전용 후보 미리보기와 단일 원자 적용을 구현했다. 이 기능은 기하 생성기이며 주파수 기반 초기 합성, RF 성능 평가, 제조 또는 측정 검증 완료를 뜻하지 않는다. G031의 원문/치수/생략 범위는 [문헌 카드 계약](literature_templates.md)을 따른다.
+명시 치수 원호/IFA 및 G031 문헌 부분 기하의 카드 조회, 읽기 전용 후보 미리보기와 단일 원자 적용을 구현했다. 이어 [G001/G008/G009와 조건부 초기 길이](printed_templates_and_seeds.md)를 연결했다. 초기식은 G001의 제한된 시작 길이 추정이며 RF 공진/정합 합성, 성능 평가, 제조 또는 측정 검증 완료를 뜻하지 않는다. G031의 원문/치수/생략 범위는 [문헌 카드 계약](literature_templates.md)을 따른다.
 
-기준일: 2026-11-12 KST. 승인 RFAD-D0-3.4 FN-006/007과 API-007의 제한된 `explicit_geometry` 범위다. 최초 제안 기록은 [template_design.md](template_design.md), 목표 원본은 [target_contract.md](target_contract.md), GUI 사용 계약은 [target_template_gui.md](target_template_gui.md)를 따른다.
+기준일: 2026-11-12 KST. 승인 RFAD-D0-3.4 FN-006/007과 API-007의 `explicit_geometry` 및 제한된 `initial_estimate` 범위다. 최초 제안 기록은 [template_design.md](template_design.md), 목표 원본은 [target_contract.md](target_contract.md), GUI 사용 계약은 [target_template_gui.md](target_template_gui.md)를 따른다.
 
 ## 1. 지원 범위와 미정값
 
 | 항목 | 구현 범위 |
 | --- | --- |
-| 후보 profile | `rfad.template-candidate/0.1` |
-| 카드 schema | 내장 `rfad.template-card/0.1`, 문헌 `rfad.template-card/0.2` |
-| 생성기 | 내장 `rfad.explicit-geometry/0.1`, 문헌 `rfad.literature-geometry/0.1` |
+| 후보 profile | `rfad.template-candidate/0.2` |
+| 카드 schema | 내장 0.1, G031 0.2, 추가 문헌 `rfad.template-card/0.3` |
+| 생성기 | 내장 `rfad.explicit-geometry/0.1`, G031 `rfad.literature-geometry/0.1`, 추가 문헌 `rfad.printed-reference/0.1` |
 | 프로젝트 | 현재 `rfad.project/0.3` core 객체에 실제 매개변수, net, 기하, 선택적 포트를 추가 |
 | 출처 확장 | `extensions["rfad.template-origin"]`, schema `rfad.template-origin/0.1` |
 | 원호 카드 | `template_id="builtin.explicit_arc"`, `version="0.1"`; 기존 원형 또는 직사각 보드 |
@@ -19,7 +19,7 @@
 
 사용자가 만든 보드, 적층, 재료, 기존 기하와 목표를 유지한다. 내장 직접 입력 카드 두 종에는 숫자 치수나 RF 물성 기본값이 없다. G031은 원문 치수만 별도로 제공하며 배치 이동량과 물성/포트를 채우지 않는다. 시험용 Dk/Df, 동박 전도도, 두께, 50 ohm 또는 시험 대역을 제품 기본값으로 승격하지 않는다. 필요한 기하 치수가 없으면 후보 생성을 거부한다. 물성이나 포트가 미정이면 가능한 기하를 저장하고 후속 해석의 부족 입력과 구분한다.
 
-카드 `support`는 `geometry_generator=true`이며 `seed_synthesizer`, `simulated`, `converged`, `measured`, `manufacturing_verified`는 각각 `false`다. 내장 카드의 `source.kind="implementation_recipe"`는 TraceWave 생성기의 설계 근거를 뜻한다. 문헌 카드의 `cad_reference`는 확인한 원문 일부의 치수 근거이며 원본 전체나 문헌 성능의 승계를 주장하지 않는다.
+카드 `support`는 `geometry_generator=true`이며 G001만 `seed_synthesizer=true`다. `simulated`, `converged`, `measured`, `manufacturing_verified`는 모두 `false`다. 내장 카드의 `source.kind="implementation_recipe"`는 TraceWave 생성기의 설계 근거를 뜻한다. G031의 `cad_reference`와 추가 문헌의 `document_reference`는 확인한 원문 일부의 치수/초기식 근거이며 원본 전체나 문헌 성능의 승계를 주장하지 않는다.
 
 ## 2. 공개 API와 요청 수명
 
@@ -46,13 +46,14 @@
 | 필드 | 의미와 검사 |
 | --- | --- |
 | `expected_revision` | 읽을 현재 프로젝트 개정 UUID |
-| `mode` | `explicit_geometry`만 지원 |
+| `mode` | `explicit_geometry`; G001만 `initial_estimate` 추가 지원 |
 | `template` | 조회한 `{template_id,version,content_hash}` 전체 |
 | `instance_id` | 새 인스턴스 UUID; 현재 객체와 충돌 검사 |
 | `target_refs` | 명시적으로 선택한 `{id,revision_id}` 목록, 최대 32개; 없으면 `[]` |
 | `binding` | 기존 `{board_id,frame_id,layer_id,material_id}`; `material_id`는 null 가능 |
 | `explicit_inputs` | 카드 descriptor가 요구하는 모든 기하 필드 |
 | `port` | 미정이면 `null`; 명시 포트는 5절의 recipe |
+| `seed` | 초기식 모드의 `{recipe_id,frequency,assumption}`; 상세 범위는 추가 문헌 계약 |
 
 `target_refs`의 목표 사본은 생성 당시 출처로 보존한다. 선택한 목표 대역을 solver 주파수 설정으로 자동 복사하거나 길이/재료로 변환하지 않는다. 목표 평가 상태는 계속 `not_evaluated`다. `binding`은 현재 보드/frame과 실제 도체 층을 참조한다. 명시 재료가 있으면 실제 프로젝트 재료 ID여야 하며, null이면 그 상태를 보존한다.
 
@@ -194,4 +195,4 @@ PCB solver는 검증된 provenance namespace만 추가로 허용한다. 임의 e
 
 이 시험의 RF 물성은 명시된 시험 가정이다. 순수 CAD input 또는 PCB plan 생성 성공은 native 실행, 수렴 또는 제조/측정 성능 합격과 구분한다. 실제 CAD worker/STEP/재열기 확인은 `tests/test_template_native.py`의 별도 환경 의존 검증 범위이며 결과는 실행 기록을 따른다.
 
-FN-006/007 전체 완료로 표시하지 않는다. 일반 템플릿 등록/import, G031 전체 보드 및 추가 문헌 카드, 주파수 기반 seed synthesis, 목표 평가/자동 정합, 전층 keepout/제조 DRC, 포트 GUI, 독립 RF 참조 및 제작/측정 검증은 후속 범위다. G031의 `reference_inputs`/`evidence`, 명시 원문 선택 `{"source":"card"}` 및 분리된 `generation` 상태는 [문헌 카드 계약](literature_templates.md)을 따른다. 위 최초 내장 카드 검증 수치는 당시 기록이며 문헌 카드의 신규 실행은 별도 기록한다.
+FN-006/007 전체 완료로 표시하지 않는다. 일반 템플릿 등록/import, 문헌 전체 보드 및 다른 topology, 원호/IFA RF 합성, 목표 평가/자동 정합, 전층 keepout/제조 DRC, 포트 GUI, 독립 RF 참조 및 제작/측정 검증은 후속 범위다. G031의 `reference_inputs`/`evidence`, 명시 원문 선택 `{"source":"card"}` 및 분리된 `generation` 상태는 [문헌 카드 계약](literature_templates.md)을 따른다. 새 카드/초기식은 [추가 계약](printed_templates_and_seeds.md)을 따른다. 위 최초 내장 카드 검증 수치는 당시 기록이며 문헌 카드의 신규 실행은 별도 기록한다.

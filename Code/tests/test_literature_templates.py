@@ -62,7 +62,7 @@ class LiteratureDomainTests(unittest.TestCase):
 
     def test_source_card_is_versioned_without_changing_old_cards(self):
         """! @brief 기존 0.1 카드와 신규 출처 카드의 schema 및 검증 주장을 구분한다."""
-        self.assertEqual(len(list_cards()), 3)
+        self.assertTrue({ARC, IFA, g031.IDENTITY}.issubset({card["template_id"] for card in list_cards()}))
         for identity in (ARC, IFA, g031.IDENTITY):
             card = describe_card(identity)
             validate_card_snapshot(card)

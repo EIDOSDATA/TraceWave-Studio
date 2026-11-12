@@ -24,6 +24,7 @@ class EditorPanel;
 class wxAuiManager;
 class wxButton;
 class wxCheckBox;
+class wxCheckListBox;
 class wxChoice;
 class wxStaticText;
 class wxTextCtrl;
@@ -36,6 +37,8 @@ class wxPanel;
 class ProjectStudyDialog;
 class ProjectSetupDialog;
 class wxThreadEvent;
+class WorkspaceBar;
+enum class WorkspaceArea;
 
 /** @brief 표시와 이벤트 연결을 맡고 작업 진행은 독립 상태 객체에 위임하는 주 창이다. */
 class StudioFrame final : public wxFrame
@@ -56,6 +59,12 @@ private:
 
     /** @brief 프로젝트 메타데이터와 선택 객체의 서비스 기반 입력 폼을 구성한다. */
     void BuildInterface();
+    void BuildWorkspacePages();
+    void BuildWorkspaceLayers();
+    void UpdateWorkspace();
+    void RefreshLayerList();
+    void NavigateWorkspace(WorkspaceArea area);
+    void ShowWorkspaceJob(long row, const std::string& state, const std::string& message);
     /** @brief 현재 프로젝트의 원본을 보존하는 연구 설정/진행 창을 연다. */
     void OpenProjectStudy();
     /** @brief 목표 또는 명시 기하 카드의 비동기 설정 화면을 연다. */
@@ -223,6 +232,14 @@ private:
     Json m_solverSamples = Json::object();
     wxAuiManager* m_manager = nullptr;
     wxString m_defaultLayout;
+    WorkspaceBar* m_workspaceBar = nullptr;
+    wxCheckListBox* m_workspaceLayers = nullptr;
+    wxCheckBox* m_workspaceBoard = nullptr;
+    wxListCtrl* m_workspaceJobs = nullptr;
+    wxStaticText* m_analysisSummary = nullptr;
+    wxStaticText* m_outputSummary = nullptr;
+    std::vector<std::string> m_workspaceLayerIds;
+    std::vector<std::pair<int, wxButton*>> m_workspaceCommands;
     std::map<int, wxButton*> m_tools;
     DesignCanvas* m_canvas = nullptr;
     wxNotebook* m_views = nullptr;

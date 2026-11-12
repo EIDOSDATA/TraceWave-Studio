@@ -121,6 +121,7 @@ void StudioFrame::BindCad()
 /** @brief 완료 상태와 입력 개정, 출력 위치를 사용자가 확인할 수 있게 유지한다. */
 void StudioFrame::CadStatus(const std::string& state, const std::string& message)
 {
+    ShowWorkspaceJob(0, state, message);
     m_cadState = state;
     m_cadStatus->SetLabel(Display(message));
     m_cadStatus->SetToolTip(Display(message));

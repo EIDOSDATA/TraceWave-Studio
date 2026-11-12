@@ -9,18 +9,25 @@ from rfad.domain.parameter_graph import evaluate_parameters, expression_record
 from rfad.domain.units import Quantity
 from rfad.templates.cards import ARC, IFA
 from rfad.templates.g031 import IDENTITY as G031
+from rfad.templates import printed_references as printed
 
 
 _DERIVED_LABELS = {"arc_start_x": "원호 시작 X", "arc_start_y": "원호 시작 Y", "ground_right": "접지 오른쪽 X",
                    "ground_top": "접지 위쪽 Y", "radiator_end_x": "방사 가지 끝 X", "pad_rotation": "패드 회전각",
                    "placed_center_x": "배치 원호 중심 X", "placed_center_y": "배치 원호 중심 Y",
                    "placed_feed_start_x": "배치 stub 시작 X", "placed_feed_start_y": "배치 stub 시작 Y",
-                   "placed_feed_end_x": "배치 stub 끝 X", "placed_feed_end_y": "배치 stub 끝 Y"}
+                   "placed_feed_end_x": "배치 stub 끝 X", "placed_feed_end_y": "배치 stub 끝 Y",
+                   "mono_left": "모노폴 왼쪽 X", "mono_right": "모노폴 오른쪽 X", "mono_tip": "모노폴 끝 Y",
+                   "arm_right": "수평 가지 오른쪽 X", "arm_bottom": "수평 가지 아래 Y", "arm_top": "수평 가지 위 Y",
+                   "short_right": "단락 가지 오른쪽 X", "feed_left": "급전 가지 왼쪽 X", "feed_right": "급전 가지 오른쪽 X"}
 
 
 def parameter_roles(card: dict) -> list[str]:
     """! @brief 표시 이름과 무관한 고정 생성 역할로 ID 대응을 검사한다."""
-    if card["template_id"] == G031:
+    if card["template_id"] in printed.IDENTITIES:
+        derived = (("mono_left", "mono_right", "mono_tip") if card["template_id"] == printed.MONOPOLE else
+                   ("arm_right", "arm_bottom", "arm_top", "short_right", "feed_left", "feed_right"))
+    elif card["template_id"] == G031:
         derived = tuple("placed_" + key for key in ("center_x", "center_y", "feed_start_x", "feed_start_y", "feed_end_x", "feed_end_y"))
     else:
         derived = ("arc_start_x", "arc_start_y") if card["template_id"] == ARC else ("ground_right", "ground_top", "radiator_end_x", "pad_rotation")
@@ -118,7 +125,8 @@ class _Builder:
     def __init__(self, document, instance_id, binding, card, inputs):
         """! @brief 원본과 입력을 변경하지 않고 생성 영역을 분리한다."""
         self.document, self.instance_id, self.binding = document, instance_id, binding
-        prefix = "G031 " if card["template_id"] == G031 else ("원호 " if card["template_id"] == ARC else "IFA ")
+        prefix = (card["evidence"]["geometry_id"] + " " if card["template_id"] in printed.IDENTITIES else
+                  ("G031 " if card["template_id"] == G031 else ("원호 " if card["template_id"] == ARC else "IFA ")))
         self.label_prefix = prefix + instance_id[:8] + " / "
         self.parameters, self.geometry, self.values = {}, [], {}
         descriptors = {item["key"]: item for item in card["input_fields"]}
@@ -243,6 +251,9 @@ def generate_geometry(document: dict, instance_id: str, binding: dict, card: dic
     elif card["template_id"] == G031:
         from rfad.domain.literature_geometry import generate_g031
         generate_g031(builder)
+    elif card["template_id"] in printed.IDENTITIES:
+        from rfad.domain.printed_geometry import generate_printed
+        generate_printed(builder, card["template_id"])
     else:
         _fail("E_UNSUPPORTED", "기하 생성기를 찾을 수 없습니다.", "template.template_id")
     evaluate_parameters(builder.parameters, update=True)

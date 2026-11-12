@@ -8,6 +8,7 @@ from rfad.domain.template_geometry import object_id, parameter_roles
 from rfad.domain.template_inputs import normalize_inputs
 from rfad.templates.cards import validate_card_snapshot
 from rfad.domain.template_provenance import generation_report
+from rfad.domain.template_seeds import normalize_candidate
 
 
 EXTENSION_KEY = "rfad.template-origin"
@@ -32,7 +33,8 @@ def object_ids(record: dict) -> dict[str, list[str]]:
 
 def validate_record(record: object) -> None:
     """! @brief 카드가 외부 라이브러리에 없어도 과거 입력/객체 사본을 검증한다."""
-    _fields(record, _RECORD_FIELDS, "template_origin.instance")
+    new_reference = type(record) is dict and type(record.get("card")) is dict and record["card"].get("schema") == "rfad.template-card/0.3"
+    _fields(record, _RECORD_FIELDS | ({"mode", "initial_estimate"} if new_reference else set()), "template_origin.instance")
     instance_id = _uuid(record["id"], "template_origin.instance.id")
     _uuid(record["base_revision"], "template_origin.base_revision")
     digest = record["base_content_hash"]
@@ -43,7 +45,17 @@ def validate_record(record: object) -> None:
     for key, identity in record["binding"].items():
         if key != "material_id" or identity is not None:
             _uuid(identity, "template_origin.binding." + key)
-    if normalize_inputs(record["card"], record["requested_inputs"]) != record["inputs"]:
+    if new_reference:
+        estimate = record["initial_estimate"]
+        if estimate is not None and (type(estimate) is not dict or "request" not in estimate):
+            _fail("E_SCHEMA", "초기 추정 사본의 요청이 없습니다.", "template_origin.initial_estimate")
+        inputs, expected = normalize_candidate(record["card"], record["requested_inputs"], record["mode"],
+                                               None if estimate is None else estimate["request"])
+        if estimate != expected:
+            _fail("E_HASH", "초기 추정 사본과 원문/입력의 계산 결과가 다릅니다.", "template_origin.initial_estimate")
+    else:
+        inputs = normalize_inputs(record["card"], record["requested_inputs"])
+    if inputs != record["inputs"]:
         _fail("E_HASH", "템플릿 표시 원문과 저장 Quantity가 다릅니다.", "template_origin.inputs")
     if type(record["target_snapshots"]) is not list or len(record["target_snapshots"]) > 32:
         _fail("E_SCHEMA", "과거 템플릿 입력/목표 사본 형식이 다릅니다.", "template_origin.inputs")
@@ -113,7 +125,7 @@ def _validate_original_design(record: dict) -> None:
         else:
             probe[name] = sorted([*probe[name], *deepcopy(additions)], key=lambda item: item["id"])
     validate_project(probe)
-    if record["card"]["schema"] == "rfad.template-card/0.2":
+    if record["card"]["schema"] in ("rfad.template-card/0.2", "rfad.template-card/0.3"):
         from rfad.domain.template_geometry import generate_geometry
         generated = generate_geometry(source, record["id"], record["binding"], record["card"], record["inputs"])
         if generated != record["objects"]:
@@ -157,5 +169,5 @@ def instance_status(document: dict, record: dict) -> dict:
                 changes.append({"collection": name, "id": identity, "status": "removed" if identity not in current else "modified"})
     return {"instance_id": record["id"], "template_id": record["card"]["template_id"], "version": record["card"]["version"],
             "record_hash": record["record_hash"], "changes": changes, "support": deepcopy(record["card"]["support"]),
-            "generation": generation_report(record["card"], record["inputs"]),
+            "generation": generation_report(record["card"], record["inputs"], record.get("initial_estimate")),
             "evaluation_status": "not_evaluated"}

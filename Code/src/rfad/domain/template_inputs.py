@@ -7,7 +7,22 @@ from rfad.domain.template_geometry import literal
 from rfad.domain.units import Quantity, QuantityError
 
 
-def normalize_inputs(card: dict, inputs: object) -> dict:
+def normalize_quantity_input(value: object, dimension: str, field: str) -> dict:
+    """! @brief 표시 문자열 또는 기존 Quantity의 차원/유한값을 같은 경계에서 검사한다."""
+    if type(value) is dict and set(value) == {"value", "unit"}:
+        if type(value["value"]) is not str or not value["value"].strip() or len(value["value"]) > 128:
+            _fail("E_UNIT", "숫자 표시 입력은 비어 있지 않은 문자열이어야 합니다.", field)
+        try:
+            normalized = Quantity.from_value(float(value["value"]), value["unit"]).to_dict()
+        except (TypeError, ValueError, OverflowError, QuantityError):
+            _fail("E_UNIT", "표시 입력의 숫자 또는 단위가 올바르지 않습니다.", field)
+    else:
+        normalized = deepcopy(value)
+    literal({"parameters": {}}, normalized, dimension, field)
+    return normalized
+
+
+def normalize_inputs(card: dict, inputs: object, *, calculated: dict | None = None) -> dict:
     """! @brief UI의 숫자 문자열 또는 기존 Quantity만 수용하여 SI로 한 번 변환한다."""
     descriptors = {item["key"]: item for item in card["input_fields"]}
     _fields(inputs, set(descriptors), "explicit_inputs")
@@ -16,19 +31,13 @@ def normalize_inputs(card: dict, inputs: object) -> dict:
         value = inputs[key]
         field = "explicit_inputs." + key
         reference = card.get("reference_inputs", {}).get(key)
+        if value == {"source": "initial_estimate"} and calculated is not None and key in calculated:
+            result[key] = deepcopy(calculated[key])
+            continue
         if value == {"source": "card"} and reference is not None:
             result[key] = deepcopy(reference["quantity"])
             continue
-        if type(value) is dict and set(value) == {"value", "unit"}:
-            if type(value["value"]) is not str or not value["value"].strip() or len(value["value"]) > 128:
-                _fail("E_UNIT", "숫자 표시 입력은 비어 있지 않은 문자열이어야 합니다.", field)
-            try:
-                normalized = Quantity.from_value(float(value["value"]), value["unit"]).to_dict()
-            except (TypeError, ValueError, OverflowError, QuantityError):
-                _fail("E_UNIT", "표시 입력의 숫자 또는 단위가 올바르지 않습니다.", field)
-        else:
-            normalized = deepcopy(value)
-        literal({"parameters": {}}, normalized, descriptor["dimension"], field)
+        normalized = normalize_quantity_input(value, descriptor["dimension"], field)
         if reference is not None:
             original = reference["quantity"]
             normalized["source_refs"] = list(dict.fromkeys([*normalized["source_refs"], *original["source_refs"]]))

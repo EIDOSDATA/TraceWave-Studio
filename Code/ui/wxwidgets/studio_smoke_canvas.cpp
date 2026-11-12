@@ -234,6 +234,8 @@ void StudioSmokeDriver::CanvasSmokeNext()
         m_frame.m_canvas->SetLayerVisible(m_frame.m_activeLayer, false);
         CanvasAssert(m_frame.m_canvas->HitTest(anchor).empty(), "Hidden layer remains selectable.");
         m_frame.m_canvas->SetLayerVisible(m_frame.m_activeLayer, true);
+        /** @brief 확대 뒤 다시 반올림한 표시 픽셀을 pan 기준으로 사용한다. */
+        const wxPoint panAnchor = m_frame.m_canvas->WorldToScreen(midpoint);
         wxMouseEvent panStart(wxEVT_MIDDLE_DOWN);
         panStart.SetPosition(anchor);
         panStart.SetMiddleDown(true);
@@ -245,7 +247,7 @@ void StudioSmokeDriver::CanvasSmokeNext()
         wxMouseEvent panEnd(wxEVT_MIDDLE_UP);
         panEnd.SetPosition(anchor + wxPoint(20, 10));
         m_frame.m_canvas->GetEventHandler()->ProcessEvent(panEnd);
-        CanvasAssert(m_frame.m_canvas->WorldToScreen(midpoint) == anchor + wxPoint(20, 10) &&
+        CanvasAssert(m_frame.m_canvas->WorldToScreen(midpoint) == panAnchor + wxPoint(20, 10) &&
                          m_frame.m_revision == revision,
                      "View-only pan mutated geometry or failed.");
         m_frame.m_canvas->FitView();

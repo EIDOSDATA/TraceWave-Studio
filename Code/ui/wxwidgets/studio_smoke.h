@@ -65,6 +65,10 @@ public:
     void OnSelected();
 
 private:
+    /** @brief 추가 문헌/초기식과 표시 전용 작업 영역을 실제 서비스로 확인한다. */
+    void PrintedSeedSmokeTick();
+    void PrintedSeedDialog(TemplateDialog& dialog);
+    int m_printedCase = 0;
     /** @brief 실제 목표 입력/선택/적용 이벤트와 출처 보존을 검사한다. */
     void SetupTargetSmoke(TargetEditorDialog& dialog);
     /** @brief 원호/IFA 카드 입력과 미리보기 변경 폐기를 검사한다. */

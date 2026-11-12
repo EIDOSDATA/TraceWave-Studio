@@ -2,6 +2,9 @@
 #include "studio_internal.h"
 #include "study_report_dialog.h"
 #include "studio_theme.h"
+#include "workspace_bar.h"
+#include "drawing_rail.h"
+#include <wx/collpane.h>
 #include <wx/statline.h>
 #include <wx/wrapsizer.h>
 
@@ -47,7 +50,7 @@ void StudioFrame::BuildInterface()
     bar->Append(edit, Display("편집"));
     auto* design = new wxMenu;
     design->Append(IdTargets, Display("목표 / 대역 설정"));
-    design->Append(IdTemplates, Display("원호 / IFA 템플릿"));
+    design->Append(IdTemplates, Display("문헌 / 형상 / 초기 후보"));
     design->AppendSeparator();
     design->Append(IdBoard, Display("직사각 기판 만들기"));
     design->Append(IdCircularBoard, Display("원형 기판 만들기"));
@@ -117,22 +120,38 @@ void StudioFrame::BuildInterface()
          });
     auto* workspace = new wxPanel(this);
     StudioTheme::BindSurface(*workspace);
-    auto* top = new wxBoxSizer(wxHORIZONTAL);
+    auto* top = new wxBoxSizer(wxVERTICAL);
+    m_workspaceBar = new WorkspaceBar(workspace);
+    m_workspaceBar->onNavigate = [this](WorkspaceArea area)
+    {
+        NavigateWorkspace(area);
+    };
+    m_workspaceBar->onCommand = [this](int action)
+    {
+        const int commands[] = {IdSave, IdRunSolver, IdExportStep};
+        wxCommandEvent command(wxEVT_MENU, commands[action]);
+        GetEventHandler()->ProcessEvent(command);
+    };
+    top->Add(m_workspaceBar, 0, wxEXPAND);
+    auto* secondary = new wxBoxSizer(wxHORIZONTAL);
     auto* title = SectionTitle(workspace, "TraceWave Studio");
-    top->Add(title, 1, wxALIGN_CENTER_VERTICAL | wxALL, FromDIP(StudioTheme::PanelPadding));
-    AddTool(workspace, top, IdCreate, "새 프로젝트");
-    AddTool(workspace, top, IdOpen, "열기");
-    AddTool(workspace, top, IdSave, "저장");
-    AddTool(workspace, top, IdSnapshot, "스냅샷");
-    ToolSeparator(workspace, top);
-    AddTool(workspace, top, IdUndo, "실행 취소");
-    AddTool(workspace, top, IdRedo, "다시 실행");
-    ToolSeparator(workspace, top);
-    AddTool(workspace, top, IdExportStep, "STEP 출력");
+    secondary->Add(title, 1, wxALIGN_CENTER_VERTICAL | wxALL, FromDIP(StudioTheme::InputGap));
+    AddTool(workspace, secondary, IdCreate, "새 프로젝트");
+    AddTool(workspace, secondary, IdOpen, "열기");
+    AddTool(workspace, secondary, IdSave, "저장");
+    AddTool(workspace, secondary, IdSnapshot, "스냅샷");
+    ToolSeparator(workspace, secondary);
+    AddTool(workspace, secondary, IdUndo, "실행 취소");
+    AddTool(workspace, secondary, IdRedo, "다시 실행");
+    AddTool(workspace, secondary, IdExportStep, "STEP 출력");
+    secondary->Hide(m_tools.at(IdSave));
+    secondary->Hide(m_tools.at(IdExportStep));
+    top->Add(secondary, 0, wxEXPAND);
     workspace->SetSizer(top);
     m_manager->AddPane(workspace, wxAuiPaneInfo()
                                       .Name("workspace")
                                       .Top()
+                                      .Layer(2)
                                       .CaptionVisible(false)
                                       .CloseButton(false)
                                       .Resizable(false)
@@ -144,14 +163,21 @@ void StudioFrame::BuildInterface()
     StudioTheme::BindSurface(*navigation);
     auto* navigationSizer = new wxBoxSizer(wxVERTICAL);
     AddTool(navigation, navigationSizer, IdTargets, "목표 / 대역 설정");
-    AddTool(navigation, navigationSizer, IdTemplates, "원호 / IFA 템플릿");
-    navigationSizer->Add(SectionTitle(navigation, "설계 단계"), 0, wxALL, FromDIP(StudioTheme::PanelPadding));
-    m_steps = new wxListBox(navigation, wxID_ANY);
+    AddTool(navigation, navigationSizer, IdTemplates, "문헌 / 형상 / 초기 후보");
+    auto* guide = new wxCollapsiblePane(navigation, wxID_ANY, Display("설계 안내"));
+    auto* guideSizer = new wxBoxSizer(wxVERTICAL);
+    m_steps = new wxListBox(guide->GetPane(), wxID_ANY);
     for (const auto& label : {"1  기판", "2  패턴", "3  재료", "4  급전", "5  입력 검사"})
     {
         m_steps->Append(Display(label));
     }
-    navigationSizer->Add(m_steps, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(StudioTheme::InputGap));
+    guideSizer->Add(m_steps, 0, wxEXPAND);
+    guide->GetPane()->SetSizer(guideSizer);
+    navigationSizer->Add(guide, 0, wxEXPAND | wxALL, FromDIP(StudioTheme::InputGap));
+    guide->Bind(wxEVT_COLLAPSIBLEPANE_CHANGED, [navigation](wxCollapsiblePaneEvent&)
+    {
+        navigation->Layout();
+    });
     AddTool(navigation, navigationSizer, IdPcbSelection, "기판 설정 / 자료 선택");
     navigationSizer->Add(SectionTitle(navigation, "객체 / 레이어"), 0, wxALL, FromDIP(StudioTheme::PanelPadding));
     m_tree =
@@ -163,6 +189,8 @@ void StudioFrame::BuildInterface()
                                        .Name("navigation")
                                        .Caption(Display("프로젝트 탐색"))
                                        .Left()
+                                       .Layer(1)
+                                       .Position(0)
                                        .BestSize(FromDIP(wxSize(235, 600)))
                                        .MinSize(FromDIP(wxSize(180, 240)))
                                        .CloseButton(false));
@@ -171,14 +199,15 @@ void StudioFrame::BuildInterface()
     auto* center = new wxPanel(m_views);
     StudioTheme::BindSurface(*center);
     auto* centerSizer = new wxBoxSizer(wxVERTICAL);
-    auto* drawingTools = new wxWrapSizer(wxHORIZONTAL);
+    auto* drawingTools = new wxBoxSizer(wxVERTICAL);
     AddTool(center, drawingTools, IdSelect, "선택");
     AddTool(center, drawingTools, IdLine, "선");
     AddTool(center, drawingTools, IdArc, "원호");
-    AddTool(center, drawingTools, IdCoordinates, "좌표 입력");
-    AddTool(center, drawingTools, IdFit, "전체 보기");
+    AddTool(center, drawingTools, IdCoordinates, "좌표");
+    AddTool(center, drawingTools, IdFit, "맞춤");
     AddTool(center, drawingTools, IdDeleteShape, "삭제");
-    centerSizer->Add(drawingTools, 0, wxEXPAND | wxALL, FromDIP(StudioTheme::Space));
+    StyleDrawingRail({m_tools.at(IdSelect), m_tools.at(IdLine), m_tools.at(IdArc), m_tools.at(IdCoordinates),
+                      m_tools.at(IdFit), m_tools.at(IdDeleteShape)});
     auto* context = new wxWrapSizer(wxHORIZONTAL);
     AddTool(center, context, IdBoard, "사각 기판");
     AddTool(center, context, IdCircularBoard, "원형 기판");
@@ -204,7 +233,10 @@ void StudioFrame::BuildInterface()
     centerSizer->Add(context, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::Space));
     m_canvas = new DesignCanvas(center);
     m_canvas->SetStrokeWidth(m_width->GetValue());
-    centerSizer->Add(m_canvas, 1, wxEXPAND);
+    auto* drawingArea = new wxBoxSizer(wxHORIZONTAL);
+    drawingArea->Add(drawingTools, 0, wxTOP | wxBOTTOM, FromDIP(StudioTheme::Space));
+    drawingArea->Add(m_canvas, 1, wxEXPAND);
+    centerSizer->Add(drawingArea, 1, wxEXPAND);
     m_canvasHint = new wxStaticText(center, wxID_ANY, Display("프로젝트를 열고 기판과 도체층을 만들어 시작하세요."));
     StudioTheme::BindSecondary(*m_canvasHint);
     centerSizer->Add(m_canvasHint, 0, wxEXPAND | wxALL, FromDIP(StudioTheme::InputGap));
@@ -265,6 +297,7 @@ void StudioFrame::BuildInterface()
                                          .Name("properties")
                                          .Caption(Display("선택 속성"))
                                          .Right()
+                                         .Layer(1)
                                          .BestSize(FromDIP(wxSize(380, 600)))
                                          .MinSize(FromDIP(wxSize(320, 220)))
                                          .CloseButton(false));
@@ -309,6 +342,8 @@ void StudioFrame::BuildInterface()
                                      .BestSize(FromDIP(wxSize(900, 180)))
                                      .MinSize(FromDIP(wxSize(300, 110)))
                                      .CloseButton(false));
+    BuildWorkspacePages();
+    BuildWorkspaceLayers();
     m_manager->Update();
     m_defaultLayout = m_manager->SavePerspective();
     BindCanvas();

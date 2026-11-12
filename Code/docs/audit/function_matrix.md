@@ -182,11 +182,11 @@ rfad.target/0.1은 최대32개 사용자 목표의 대역/표본/port/Z0/출처�
 
 상태: partial. 담당 단계: 3/4
 
-내장 명시 치수 원호/평면 IFA 카드2종의 version/hash/입력/출처/지원 플래그와 template.list/get/context를 제공한다. GUI에서 기존 기판/도체층과 목표 개정을 선택하고 입력/2D 후보를 검토한다. 프로젝트는 카드와 생성 객체/원자료 사본을 소유한다. G031 문헌 원호/stub 카드는 원본 중첩 ZIP/Gerber/PDF 식별자와 원문 치수/가정/미정/생략을 보존한다. GUI는 원문 값과 사용자 수정/배치를 구분한다.
+내장 명시 치수 원호/평면 IFA 카드2종의 version/hash/입력/출처/지원 플래그와 template.list/get/context를 제공한다. GUI에서 기존 기판/도체층과 목표 개정을 선택하고 입력/2D 후보를 검토한다. 프로젝트는 카드와 생성 객체/원자료 사본을 소유한다. G031 문헌 원호/stub 카드는 원본 중첩 ZIP/Gerber/PDF 식별자와 원문 치수/가정/미정/생략을 보존한다. GUI는 원문 값과 사용자 수정/배치를 구분한다. 추가 G001/G008/G009는 PDF hash/페이지/부분 도체 치수/미정과 AN1088 두께 불일치를 고정 사본으로 보존하며 기존 GUI와 원자 적용을 재사용한다.
 
 남은 범위:
 
-- G031 전체 보드 재현, 추가 문헌 topology와 자료별 적용 범위/검증 근거를 보강해야 한다.
+- G031/AN1088 전체 보드 재현, 추가 문헌 topology와 범용 자료별 검증 근거를 보강해야 한다.
 - 범용 카드 importer/검색/갱신 관리와 통신 프리셋 기반 선택은 후속이다.
 
 코드:
@@ -196,18 +196,22 @@ rfad.target/0.1은 최대32개 사용자 목표의 대역/표본/port/Z0/출처�
 - [src/rfad/application/template_candidates.py](../../src/rfad/application/template_candidates.py)
 - [ui/wxwidgets/template_dialog.cpp](../../ui/wxwidgets/template_dialog.cpp)
 - [src/rfad/templates/g031.py](../../src/rfad/templates/g031.py)
+- [src/rfad/templates/printed_references.py](../../src/rfad/templates/printed_references.py)
 
 시험:
 
 - [tests/test_template_candidates.py](../../tests/test_template_candidates.py)
 - [tests/test_gui_target_template_process.py](../../tests/test_gui_target_template_process.py)
 - [tests/test_literature_templates.py](../../tests/test_literature_templates.py)
+- [tests/test_printed_seeds.py](../../tests/test_printed_seeds.py)
+- [tests/test_gui_printed_seed_process.py](../../tests/test_gui_printed_seed_process.py)
 
 기존 실행/설명 근거:
 
 - [docs/template_contract.md](../../docs/template_contract.md)
 - [docs/target_template_gui.md](../../docs/target_template_gui.md)
 - [docs/literature_templates.md](../../docs/literature_templates.md)
+- [docs/printed_templates_and_seeds.md](../../docs/printed_templates_and_seeds.md)
 
 계약 확인:
 
@@ -218,11 +222,11 @@ rfad.target/0.1은 최대32개 사용자 목표의 대역/표본/port/Z0/출처�
 
 상태: partial. 담당 단계: 3/4/9
 
-API-007 template.synthesize의 explicit_geometry 모드로 명시 치수 후보를 읽기 전용 생성한다. 기판 경계/IFA 접촉과 열린 급전 gap, 안정 UUID/표현식 매개변수, 선택 목표 사본을 검사한다. 검토 hash를 다시 확인한 template.apply는 한 명령으로 적용/undo/redo하며 기존 출처/물성을 유지한다. G031의 원래 stub-원호 끝 겹침과 사용자 배치를 보존하며 원문 수정 필드를 표시한다. 기하 생성/초기 추정/해석/수렴/실측/제조 상태를 분리한다.
+API-007 template.synthesize의 explicit_geometry 모드로 명시 치수 후보를 읽기 전용 생성한다. 기판 경계/IFA 접촉과 열린 급전 gap, 안정 UUID/표현식 매개변수, 선택 목표 사본을 검사한다. 검토 hash를 다시 확인한 template.apply는 한 명령으로 적용/undo/redo하며 기존 출처/물성을 유지한다. G031의 원래 stub-원호 끝 겹침과 사용자 배치를 보존하며 원문 수정 필드를 표시한다. 기하 생성/초기 추정/해석/수렴/실측/제조 상태를 분리한다. G001 initial_estimate는 이상적 자유공간 1/4 파장과 원문 2.45 GHz/1.5 mm 조건의 0.75 보정 및 20%/30% 조정 여유만 제공한다. 요청/조건 가정/추정 Quantity와 정확한 산술을 저장하고 범위 밖 요청을 거부한다. 현재 물성/접지 조건은 확인하지 않는다.
 
 남은 범위:
 
-- 목표 주파수/공간/고정 변수를 사용하는 초기 합성식과 source별 유효 영역은 미구현이다.
+- 목표 주파수/공간/고정 변수를 사용하는 원호/IFA RF 합성과 공진/정합 검증은 미구현이다.
 - 추가 문헌 원문 치수와 EQ/가정의 대응 및 실제 정합/공진 검증을 보강해야 한다.
 
 코드:
@@ -235,6 +239,9 @@ API-007 template.synthesize의 explicit_geometry 모드로 명시 치수 후보�
 - [src/rfad/domain/layer_surface.py](../../src/rfad/domain/layer_surface.py)
 - [src/rfad/domain/literature_geometry.py](../../src/rfad/domain/literature_geometry.py)
 - [src/rfad/domain/template_provenance.py](../../src/rfad/domain/template_provenance.py)
+- [src/rfad/domain/template_seeds.py](../../src/rfad/domain/template_seeds.py)
+- [src/rfad/domain/printed_geometry.py](../../src/rfad/domain/printed_geometry.py)
+- [ui/wxwidgets/template_seed_view.cpp](../../ui/wxwidgets/template_seed_view.cpp)
 
 시험:
 
@@ -242,23 +249,26 @@ API-007 template.synthesize의 explicit_geometry 모드로 명시 치수 후보�
 - [tests/test_template_native.py](../../tests/test_template_native.py)
 - [tests/test_gui_target_template_process.py](../../tests/test_gui_target_template_process.py)
 - [tests/test_literature_templates.py](../../tests/test_literature_templates.py)
+- [tests/test_printed_seeds.py](../../tests/test_printed_seeds.py)
+- [tests/test_gui_printed_seed_process.py](../../tests/test_gui_printed_seed_process.py)
 
 기존 실행/설명 근거:
 
 - [docs/template_contract.md](../../docs/template_contract.md)
 - [docs/target_template_gui.md](../../docs/target_template_gui.md)
 - [docs/literature_templates.md](../../docs/literature_templates.md)
+- [docs/printed_templates_and_seeds.md](../../docs/printed_templates_and_seeds.md)
 
 계약 확인:
 
 - tests/test_pcb_ifa.py의 ifa_document는 명시적 시험 가정 fixture다. 실제 납품 입력이나 제품 seed synthesizer로 승격하지 않는다.
-- 현재 모드는 seed synthesizer가 아니다. port:null은 geometry-only이며 물성/저항/유효 대역을 채우지 않는다. CAD 성공과 plan 입력 검사를 FDTD/실측 합격으로 표시하지 않는다.
+- G001의 제한된 추정 길이를 RF 공진/정합 합성으로 표시하지 않는다. port:null과 미정 물성/저항은 유지한다. CAD 성공이나 초기 길이를 FDTD/실측 합격으로 확대하지 않는다.
 
 ## FN-008
 
 상태: partial. 담당 단계: 3/4
 
-line_path/arc_path/planar_region(holes)/pad/via 원본과 수량/매개변수 결합, 생성/이동/삭제 및 2D DTO를 제공한다. CAD는 analytic 원호와 같은 net의 물리 union을 지원한다. 공통 라이트 표면/도킹/간격과 좁은 도구 영역의 줄바꿈을 실제 wxWidgets 작업 공간에 적용했다. 목표/템플릿 창은 native 폼과 기존 2D renderer를 재사용하고 비동기 요청 세대/불명 변경 잠금을 공유한다.
+line_path/arc_path/planar_region(holes)/pad/via 원본과 수량/매개변수 결합, 생성/이동/삭제 및 2D DTO를 제공한다. CAD는 analytic 원호와 같은 net의 물리 union을 지원한다. 공통 라이트 표면/도킹/간격과 좁은 도구 영역의 줄바꿈을 실제 wxWidgets 작업 공간에 적용했다. 목표/템플릿 창은 native 폼과 기존 2D renderer를 재사용하고 비동기 요청 세대/불명 변경 잠금을 공유한다. 시안의 작업 탭 5개/프로젝트와 레이어 분리/세로 도구/실제 작업 상태를 연결했다. 레이어 체크는 원본과 해석 포함 여부를 바꾸지 않는 2D 표시 상태다. 기존 OpenGL 3D와 실제 결과/보고서/STEP 흐름을 유지한다.
 
 남은 범위:
 
@@ -276,6 +286,9 @@ line_path/arc_path/planar_region(holes)/pad/via 원본과 수량/매개변수 �
 - [ui/wxwidgets/studio_layout.cpp](../../ui/wxwidgets/studio_layout.cpp)
 - [ui/wxwidgets/studio_design_setup.cpp](../../ui/wxwidgets/studio_design_setup.cpp)
 - [ui/wxwidgets/project_setup_dialog.cpp](../../ui/wxwidgets/project_setup_dialog.cpp)
+- [ui/wxwidgets/studio_workspace.cpp](../../ui/wxwidgets/studio_workspace.cpp)
+- [ui/wxwidgets/workspace_bar.cpp](../../ui/wxwidgets/workspace_bar.cpp)
+- [ui/wxwidgets/drawing_rail.cpp](../../ui/wxwidgets/drawing_rail.cpp)
 
 시험:
 
@@ -284,12 +297,15 @@ line_path/arc_path/planar_region(holes)/pad/via 원본과 수량/매개변수 �
 - [tests/test_planar.py](../../tests/test_planar.py)
 - [tests/test_cad_native.py](../../tests/test_cad_native.py)
 - [tests/test_gui_target_template_process.py](../../tests/test_gui_target_template_process.py)
+- [tests/test_printed_seeds.py](../../tests/test_printed_seeds.py)
+- [tests/test_gui_printed_seed_process.py](../../tests/test_gui_printed_seed_process.py)
 
 기존 실행/설명 근거:
 
 - [docs/canvas_contract.md](../../docs/canvas_contract.md)
 - [runtime_profiles/copper-ifa-worker-wsl.json](../../runtime_profiles/copper-ifa-worker-wsl.json)
 - [docs/studio_gui_design.md](../../docs/studio_gui_design.md)
+- [docs/printed_templates_and_seeds.md](../../docs/printed_templates_and_seeds.md)
 
 계약 확인:
 

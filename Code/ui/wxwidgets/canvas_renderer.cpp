@@ -96,7 +96,7 @@ void CanvasRenderer::DrawBoard(const CanvasScene::Model& scene)
                                                                               scene.boardCenter.y - scene.boardRadius}
                                                                       : Point{scene.boardWidth, 0.0});
         m_dc.SetPen(wxPen(wxColour(105, 153, 117), FromDIP(2)));
-        m_dc.SetBrush(wxBrush(wxColour(232, 243, 235), wxBRUSHSTYLE_BDIAGONAL_HATCH));
+        m_dc.SetBrush(wxBrush(wxColour(211, 237, 211)));
         if (scene.circularBoard)
         {
             m_dc.DrawEllipse(wxRect(leftTop, rightBottom));

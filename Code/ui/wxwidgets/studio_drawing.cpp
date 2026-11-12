@@ -58,6 +58,7 @@ void StudioFrame::BindCanvas()
                             {
                                 m_activeLayer = m_layerIds[index];
                                 m_canvas->SetDrawingLayer(m_activeLayer);
+                                RefreshLayerList();
                             }
                         });
     m_width->Bind(wxEVT_SPINCTRLDOUBLE,

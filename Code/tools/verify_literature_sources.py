@@ -12,6 +12,7 @@ CODE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(CODE / "src"))
 
 from rfad.templates.g031 import evidence
+from rfad.templates import printed_references as printed
 
 
 MAX_SOURCE_BYTES = 64 * 1024 * 1024
@@ -62,13 +63,31 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repository", type=Path, default=CODE.parent)
     parser.add_argument("--report", type=Path)
+    parser.add_argument("--printed", action="store_true", help="추가 nWP008/AN1088 PDF 원문 식별자 검사")
     args = parser.parse_args()
-    report = verify(args.repository)
+    report = verify_printed(args.repository) if args.printed else verify(args.repository)
     raw = json.dumps(report, ensure_ascii=False, indent=2) + "\n"
     if args.report:
         args.report.parent.mkdir(parents=True, exist_ok=True)
         args.report.write_text(raw, encoding="utf-8")
     print(raw)
+
+
+def verify_printed(repository: Path) -> dict:
+    """! @brief 원문 PDF의 bytes/hash만 검사하고 자동 시각 검수나 RF 수용을 주장하지 않는다."""
+    checked = []
+    for identity in printed.IDENTITIES:
+        source = printed.evidence(identity)
+        path = repository / source["path"]
+        if path.stat().st_size > MAX_SOURCE_BYTES:
+            raise ValueError("문헌 PDF의 제한 크기를 초과했습니다.")
+        raw = path.read_bytes()
+        if hashlib.sha256(raw).hexdigest() != source["sha256"]:
+            raise ValueError("문헌 PDF 해시가 다릅니다: " + source["geometry_id"])
+        checked.append({"geometry_id": source["geometry_id"], "path": source["path"], "sha256": source["sha256"],
+                        "bytes": len(raw), "pdf_pages_referenced": source["pdf_pages"]})
+    return {"schema": "rfad.printed-source-review/0.1", "sources": checked,
+            "source_identity_checked": True, "visual_review_automated": False, "physics_verified": False}
 
 
 if __name__ == "__main__":
