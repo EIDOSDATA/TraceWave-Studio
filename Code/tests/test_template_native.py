@@ -14,6 +14,8 @@ from rfad.application.cad_jobs import CadRuntime
 from rfad.application.projects import ProjectService
 from rfad.application.rpc import handle_frame
 from rfad.templates.cards import ARC, IFA, describe_card
+from rfad.templates.g031 import IDENTITY as G031
+from test_literature_templates import literature_input
 from test_cad_worker_process import cad_request, register_fixture, request, status
 from test_pcb_ifa import ifa_document
 from test_pcb_solver import fixture_document, quantity
@@ -24,11 +26,15 @@ CAD_PYTHON = os.environ.get("RFAD_CAD_PYTHON", "")
 
 def explicit_case(identity):
     """! @brief 제조값이 아닌 명시 기하 시험을 준비하고 모든 RF 물성은 미정으로 둔다."""
-    document = fixture_document(circle=True) if identity == ARC else ifa_document()
+    document = fixture_document(circle=True) if identity in (ARC, G031) else ifa_document()
+    if identity == G031:
+        document["board"]["outline"]["radius"] = quantity(10, "mm")
     document["geometry"], document["ports"], document["nets"] = [], [], []
     for material in document["materials"]:
         for key in ("epsilon_r", "tan_delta", "conductivity"):
             material[key].update(value_si=None, status="missing")
+    if identity == G031:
+        return document, literature_input(document, x="0", y="0")["explicit_inputs"]
     values = ({"center_x": 0, "center_y": 0, "radius": 6, "start_angle": 0, "sweep_angle": 90,
                "width": 0.8, "feed_start_x": 2, "feed_start_y": 0, "feed_width": 0.6}
               if identity == ARC else
@@ -60,8 +66,16 @@ class TemplateNativeTests(unittest.TestCase):
 
     def test_arc_and_ifa_sources_survive_real_step_and_runtime_free_reopen(self):
         """! @brief 기하 성공이 물성/급전/실물 성능을 채우지 않으며 같은 봉인 원본을 출력한다."""
+        self.run_cases((ARC, IFA))
+
+    def test_g031_sources_survive_real_step_and_runtime_free_reopen(self):
+        """! @brief 문헌의 부분 원호/stub도 같은 실제 CAD/봉인/재열기 경로를 사용한다."""
+        self.run_cases((G031,))
+
+    def run_cases(self, identities):
+        """! @brief 카드별로 독립 작업 영역에서 공개 API와 실제 worker를 실행한다."""
         evidence = []
-        for identity in (ARC, IFA):
+        for identity in identities:
             with self.subTest(template=identity), TemporaryDirectory(prefix="rfad template CAD ") as directory:
                 workspace = Path(directory)
                 with ProjectService(workspace, cad_runtime=CadRuntime(Path(CAD_PYTHON)), auto_run=False) as service:

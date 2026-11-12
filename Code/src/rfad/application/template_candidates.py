@@ -14,6 +14,7 @@ from rfad.domain.template_geometry import generate_geometry, all_ids, object_id
 from rfad.domain.template_instance import (EXTENSION_KEY, MAX_INSTANCES, record_hash, instance_status, object_ids)
 from rfad.domain.template_ports import generate_port
 from rfad.domain.template_inputs import normalize_inputs
+from rfad.domain.template_provenance import generation_report
 from rfad.templates.cards import list_cards, describe_card, resolve_card
 
 
@@ -149,6 +150,7 @@ class TemplateCandidateCoordinator:
             issues = [] if data["port"] is not None else [{"severity": "warning", "code": "E_PORT_UNKNOWN", "message": "포트 미정의 geometry-only 후보입니다. 저항과 급전 조건을 자동 생성하지 않습니다."}]
             result = {**base, "can_apply": True, "preview_hash": digest, "scene": build_canvas_dto(candidate),
                       "card": card, "generated_ids": object_ids(record), "issues": issues,
+                      "generation": generation_report(card, inputs),
                       "input_checks": {"scope": "input_only", "input_status": "blocked" if diagnostics else "valid", "solver_ready": False,
                                        "diagnostics": diagnostics[:32], "diagnostic_count": len(diagnostics)},
                       "size": {"document_bytes": size, "document_limit_bytes": MAX_DOCUMENT_BYTES}}

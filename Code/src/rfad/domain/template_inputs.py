@@ -15,6 +15,10 @@ def normalize_inputs(card: dict, inputs: object) -> dict:
     for key, descriptor in descriptors.items():
         value = inputs[key]
         field = "explicit_inputs." + key
+        reference = card.get("reference_inputs", {}).get(key)
+        if value == {"source": "card"} and reference is not None:
+            result[key] = deepcopy(reference["quantity"])
+            continue
         if type(value) is dict and set(value) == {"value", "unit"}:
             if type(value["value"]) is not str or not value["value"].strip() or len(value["value"]) > 128:
                 _fail("E_UNIT", "숫자 표시 입력은 비어 있지 않은 문자열이어야 합니다.", field)
@@ -25,5 +29,10 @@ def normalize_inputs(card: dict, inputs: object) -> dict:
         else:
             normalized = deepcopy(value)
         literal({"parameters": {}}, normalized, descriptor["dimension"], field)
+        if reference is not None:
+            original = reference["quantity"]
+            normalized["source_refs"] = list(dict.fromkeys([*normalized["source_refs"], *original["source_refs"]]))
+            if normalized["value_si"] != original["value_si"] and normalized["status"] == "source_default":
+                normalized["status"] = "user_entered"
         result[key] = normalized
     return result

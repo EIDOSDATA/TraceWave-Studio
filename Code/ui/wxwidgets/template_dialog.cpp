@@ -9,7 +9,7 @@
 #include <stdexcept>
 
 TemplateDialog::TemplateDialog(wxWindow* parent, const Json& context, DialogGateway gateway)
-    : ProjectSetupDialog(parent, "패턴 템플릿 / 명시 치수로 형상 만들기", context, std::move(gateway))
+    : ProjectSetupDialog(parent, "패턴 템플릿 / 직접 입력과 문헌 형상", context, std::move(gateway))
 {
     SetName("template.dialog");
     BuildInterface();
@@ -68,11 +68,15 @@ void TemplateDialog::SelectCard(int index)
     Json fields = Json::array();
     for (const auto& field : m_card.at("input_fields"))
     {
+        const auto references = m_card.value("reference_inputs", Json::object());
+        const std::string key = field.at("key");
+        const bool reference = references.contains(key);
         fields.push_back(Json{
             {"key", field.at("key")},
-            {"label", field.at("label").get<std::string>() + " (" + field.at("display_unit").get<std::string>() + ")"},
+            {"label", field.at("label").get<std::string>() + " (" + field.at("display_unit").get<std::string>() + ")" +
+                          (reference ? " / 원문" : "")},
             {"editor", "text"},
-            {"value", ""},
+            {"value", reference ? references.at(key).at("display_value").get<std::string>() : ""},
             {"readonly", false}});
     }
     m_inputs->SetFields(fields);
@@ -100,9 +104,28 @@ std::string TemplateDialog::CardDescription() const
     {
         text += kind == "circle" ? "원형 " : "직사각형 ";
     }
+    text += "\n출처 범위: " + m_card.at("source").at("scope").get<std::string>();
+    for (const auto& reference : m_card.at("source").at("references"))
+    {
+        text += "\n- " + reference.get<std::string>();
+    }
+    for (const auto& assumption : m_card.value("assumptions", Json::array()))
+    {
+        text += "\n- " + assumption.get<std::string>();
+    }
     for (const auto& limitation : m_card.value("limitations", Json::array()))
     {
         text += "\n- " + limitation.get<std::string>();
+    }
+    if (m_card.contains("evidence"))
+    {
+        for (const auto& key : {"omitted", "unknown", "source_reported"})
+        {
+            for (const auto& note : m_card.at("evidence").at(key))
+            {
+                text += "\n- " + note.get<std::string>();
+            }
+        }
     }
     return text + "\n\n형상만 생성합니다. 급전 포트와 실제 물성, 정합/방사 성능은 자동 확정하지 않습니다.";
 }
@@ -118,7 +141,9 @@ void TemplateDialog::Changed()
     m_preview = nullptr;
     m_canvas->Hide();
     m_notes->ChangeValue(Display(CardDescription()));
-    SetStatus("필요한 치수와 도체층을 직접 지정하고 형상 미리보기를 확인하세요. 미리보기 전에는 적용할 수 없습니다.");
+    SetStatus(m_card.contains("reference_inputs")
+                  ? "원문 치수를 확인하고 배치 이동 X/Y와 도체층을 지정하세요. 수정한 치수는 미리보기에서 구분합니다."
+                  : "필요한 치수와 도체층을 직접 지정하고 형상 미리보기를 확인하세요. 미리보기 전에는 적용할 수 없습니다.");
     UpdateActions();
     Layout();
 }
@@ -140,7 +165,10 @@ Json TemplateDialog::Specification() const
             throw std::runtime_error(field.at("label").get<std::string>() + ": 값을 직접 입력하세요.");
         }
         const std::string unit = field.at("display_unit");
-        quantities[key] = Json{{"value", value}, {"unit", unit}};
+        const auto references = m_card.value("reference_inputs", Json::object());
+        quantities[key] = references.contains(key) && references.at(key).at("display_value") == value
+                              ? Json{{"source", "card"}}
+                              : Json{{"value", value}, {"unit", unit}};
     }
     const auto& binding = m_context.at("bindings").at(static_cast<std::size_t>(bindingIndex));
     Json targets = Json::array();
@@ -181,6 +209,10 @@ void TemplateDialog::Preview()
                     m_preview = result;
                     m_reviewedInput = input;
                     std::string notes = CardDescription();
+                    if (result.contains("generation"))
+                    {
+                        notes = result.at("generation").at("summary").get<std::string>() + "\n\n" + notes;
+                    }
                     for (const auto& issue : result.value("issues", Json::array()))
                     {
                         notes += "\n- " + (issue.is_string() ? issue.get<std::string>() : DiagnosticMessage(issue));

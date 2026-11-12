@@ -166,6 +166,66 @@ void StudioSmokeDriver::SetupTemplateSmoke(TemplateDialog& dialog)
                      "IFA 템플릿을 두 번째 명령으로 적용하지 못했습니다.");
         m_setupExpectedRevision = dialog.m_revision;
         m_setupChecks.push_back("ifa_card_preview_apply_latest_revision");
+        m_setupStage = 28;
+    }
+    else if (m_setupStage == 28)
+    {
+        int index = 0;
+        for (const auto& card : dialog.m_context.at("cards"))
+        {
+            if (card.at("template_id") == "literature.g031_pca20006_arc")
+            {
+                break;
+            }
+            ++index;
+        }
+        CanvasAssert(index < static_cast<int>(dialog.m_context.at("cards").size()), "G031 문헌 카드가 없습니다.");
+        SetupSmoke::Choose(dialog.m_cards, index);
+        SetupSmoke::Choose(dialog.m_binding, 0);
+        CanvasAssert(dialog.m_inputs->FieldValue("offset_x") == "" &&
+                         dialog.m_inputs->FieldValue("width") == "1.27" && !dialog.m_applyButton->IsEnabled() &&
+                         dialog.CardDescription().find("전체 외곽") != std::string::npos,
+                     "문헌 치수와 미정 배치 또는 부분 기하 안내가 다릅니다.");
+        SetupSmoke::Click(dialog.m_previewButton);
+        CanvasAssert(dialog.m_preview.is_null() && dialog.m_revision == m_setupExpectedRevision,
+                     "미정 배치를 자동으로 채워 후보를 생성했습니다.");
+        dialog.m_inputs->SetFieldValue("offset_x", "55");
+        dialog.m_inputs->SetFieldValue("offset_y", "55");
+        m_setupStage = 29;
+        SetupSmoke::Click(dialog.m_previewButton);
+    }
+    else if (m_setupStage == 29)
+    {
+        CanvasAssert(!dialog.m_preview.is_null() && dialog.m_preview.value("can_apply", false) &&
+                         dialog.m_preview.at("generation").at("geometry").at("source_dimensions") == "reference" &&
+                         dialog.m_reviewedInput.at("explicit_inputs").at("radius") == Json{{"source", "card"}} &&
+                         dialog.m_preview.at("generation").at("analysis") == "not_performed" &&
+                         dialog.m_preview.at("generation").at("measurement") == "not_verified",
+                     "G031 원문/분리 상태의 미리보기가 다릅니다.");
+        m_setupChecks.push_back("literature_reference_dimensions_and_partial_scope");
+        dialog.m_inputs->SetFieldValue("width", "1.1");
+        CanvasAssert(dialog.m_preview.is_null() && !dialog.m_applyButton->IsEnabled(),
+                     "문헌 치수 수정이 검토 후보를 폐기하지 않았습니다.");
+        m_setupStage = 46;
+        SetupSmoke::Click(dialog.m_previewButton);
+    }
+    else if (m_setupStage == 46)
+    {
+        CanvasAssert(!dialog.m_preview.is_null() && dialog.m_preview.value("can_apply", false) &&
+                         dialog.m_preview.at("generation").at("geometry").at("modified_fields") == Json::array({"width"}) &&
+                         dialog.m_reviewedInput.at("explicit_inputs").at("width").at("value") == "1.1" &&
+                         dialog.m_notes->GetValue().Find(Display("원문 치수 수정")) != wxNOT_FOUND,
+                     "수정 문헌 치수와 원문 또는 검증 상태를 구분하지 않았습니다.");
+        m_setupChecks.push_back("literature_modified_dimensions_invalidate_and_keep_source");
+        m_setupStage = 47;
+        SetupSmoke::Click(dialog.m_applyButton);
+    }
+    else if (m_setupStage == 47)
+    {
+        CanvasAssert(dialog.m_context.at("instances").size() == 3 && dialog.m_revision != m_setupExpectedRevision,
+                     "G031 부분 기하를 세 번째 원자 명령으로 적용하지 못했습니다.");
+        m_setupChecks.push_back("literature_atomic_apply_without_physical_defaults");
+        m_setupExpectedRevision = dialog.m_revision;
         m_setupStage = 30;
         SetupSmoke::Click(dialog.m_cancel);
     }

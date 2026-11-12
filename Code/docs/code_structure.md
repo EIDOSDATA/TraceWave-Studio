@@ -68,6 +68,8 @@ StudioFrame은 화면 사이의 연결과 서비스 DTO 캐시를 유지한다. 
 
 화면은 `target_editor_dialog.*`/`target_editor_view.cpp`, `template_dialog.*`/`template_view.cpp`와 `studio_design_setup.cpp`의 주 창 연결로 분리한다. 공통 `ProjectSetupDialog`는 요청 세대, 닫힌 창, 변경 중 잠금과 결과 불명 상태를 관리한다. `EditorPanel`의 기본/고급 입력, 변경값 추출과 기존 `DesignCanvas` 미리보기를 재사용한다. 목표/템플릿 화면의 성공 응답은 같은 프로젝트 명령/undo/redo로 이어지며 별도 저장 형식을 만들지 않는다.
 
+문헌 카드는 `templates/g031.py`의 고정 버전 원문/치수/가정과 `domain/literature_geometry.py`의 실제 기하 생성, `template_provenance.py`의 생성/검증 축 표시로 분리한다. 기존 `template_inputs.py`는 명시 원문 marker와 수정값/출처를 처리하고, `template_instance.py`는 과거 원문/입력에서 최초 객체 사본도 대조한다. `tools/verify_literature_sources.py`의 제한된 ZIP/member 검사와 PDF 시각 검수는 개발 검증용이며 정상 후보 생성에 원문 archive/PDF 의존성을 추가하지 않는다.
+
 | 경계 | 모듈 | 책임 |
 | --- | --- | --- |
 | 공개 서비스 facade | `application/projects.py` | 저장소/조정기 수명, 요청 dispatch와 transaction 경계 |

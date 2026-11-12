@@ -7,6 +7,7 @@ from rfad.domain.design import _fail, _fields, _uuid
 from rfad.domain.template_geometry import object_id, parameter_roles
 from rfad.domain.template_inputs import normalize_inputs
 from rfad.templates.cards import validate_card_snapshot
+from rfad.domain.template_provenance import generation_report
 
 
 EXTENSION_KEY = "rfad.template-origin"
@@ -112,6 +113,11 @@ def _validate_original_design(record: dict) -> None:
         else:
             probe[name] = sorted([*probe[name], *deepcopy(additions)], key=lambda item: item["id"])
     validate_project(probe)
+    if record["card"]["schema"] == "rfad.template-card/0.2":
+        from rfad.domain.template_geometry import generate_geometry
+        generated = generate_geometry(source, record["id"], record["binding"], record["card"], record["inputs"])
+        if generated != record["objects"]:
+            _fail("E_HASH", "문헌 카드의 최초 생성 사본이 원문/입력/배치와 다릅니다.", "template_origin.objects")
     port_probe = deepcopy(record["objects"])
     port_probe["ports"] = []
     generate_port(source, port_probe, record["id"], record["binding"], record["card"], record["port_recipe"])
@@ -151,4 +157,5 @@ def instance_status(document: dict, record: dict) -> dict:
                 changes.append({"collection": name, "id": identity, "status": "removed" if identity not in current else "modified"})
     return {"instance_id": record["id"], "template_id": record["card"]["template_id"], "version": record["card"]["version"],
             "record_hash": record["record_hash"], "changes": changes, "support": deepcopy(record["card"]["support"]),
+            "generation": generation_report(record["card"], record["inputs"]),
             "evaluation_status": "not_evaluated"}

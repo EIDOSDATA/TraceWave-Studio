@@ -48,6 +48,8 @@
 
 ## 3. 상태/작업 계약
 
+문헌 카드의 첫 범위는 [G031 부분 기하](literature_templates.md)다. 원문 bytes/hash/locator와 문헌 치수, 사용자 수정/배치, 생략/미정 항목을 카드 0.2에 보존한다. 후보와 과거 생성 입력의 geometry/initial_estimate/analysis/convergence/measurement/manufacturing 축을 나눠 표시하며 전체 보드 재현 또는 물리 검증 상태를 만들지 않는다. 기존 0.1 내장 카드와 프로젝트/origin의 읽기 의미를 유지한다.
+
 - 현재 접수된 job은 queued부터 시작한다. draft/validating/planned는 계획 준비 단계이며 임의로 현재 journal JobState에 추가하지 않는다.
 - preparing/running/postprocessing/cancel_requested와 completed/failed/cancelled/interrupted 전이는 job_state.py를 단일 기준으로 사용한다. terminal job은 다시 실행 중으로 되돌리지 않는다.
 - outcome_unknown=true인 interrupted 작업의 resource_reserved는 실제 worker 종료 확인까지 유지한다. 종료 확인을 마친 interrupted와 구분하며 PID만 보고 새 작업을 대신 제출하지 않는다.

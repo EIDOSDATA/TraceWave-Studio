@@ -1,0 +1,451 @@
+{
+  "schema": "rfad.literature-templates-verification/0.1",
+  "recorded_at_utc": "2026-11-12T08:15:16.312617+00:00",
+  "client_date_kst": "2026-11-12",
+  "design_baseline": "RFAD-D0-3.4",
+  "base_commit": "dbc2982c5fc8f7bf957e2d4a74fafea39a938b00",
+  "branch": "main",
+  "working_tree_changes": true,
+  "development_steps": [
+    3,
+    4
+  ],
+  "scope": [
+    "G031 원문 원호/stub 부분 기하 카드",
+    "기존 후보/원자 적용/이력/저장/GUI 재사용",
+    "출처/수정/배치/미정과 검증 축 분리"
+  ],
+  "card": {
+    "template_id": "literature.g031_pca20006_arc",
+    "version": "0.1",
+    "schema": "rfad.template-card/0.2",
+    "content_hash": "365008ec3036424ed74c3f49e4fd9059b41db6baeb6ffe072d359b49bb9f662f"
+  },
+  "runtime": {
+    "python": "3.12.10",
+    "gui_executable": {
+      "path": "Code/build/windows-release/bin/tracewave_gui.exe",
+      "sha256": "f123c62a5bab42a01dddc3c7cdab9c7987574ae01fe17238a178f1aab56898c9",
+      "bytes": 19228880
+    }
+  },
+  "runs": [
+    {
+      "scope": "Windows 전체 서비스 회귀; 환경 조건 제외를 별도 집계",
+      "source_phase": "최종 사본 검사/상태 표현/표시 보완 전 수집 및 시작",
+      "tests_run": 870,
+      "passed": 779,
+      "skipped": 91,
+      "failures": 0,
+      "errors": 0,
+      "test_seconds": 386.49,
+      "log": {
+        "path": "Code/.local/literature-regression.log",
+        "sha256": "8ce110db276938f183aa6dc2871df801597975a8b89c7f58bf5b27c877acfff1",
+        "bytes": 218575
+      }
+    },
+    {
+      "scope": "template/target/domain/service/source capture/solver plan 관련 회귀",
+      "source_phase": "사본 검사/상태 표현 보강 후, 최종 표시 보완 전",
+      "tests_run": 106,
+      "passed": 106,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "test_seconds": 43.399,
+      "log": {
+        "path": "Code/.local/literature-final-service-tests.log",
+        "sha256": "d7f8735903dc359e29c6ae0cc632568ea2ee78389592a3f88dd15df9dcb7dd36",
+        "bytes": 104
+      }
+    },
+    {
+      "scope": "최종 문헌 시험; 이전 표시 문자열 호환 시험 1개 추가 포함",
+      "source_phase": "최종 제품 소스",
+      "tests_run": 10,
+      "passed": 10,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "test_seconds": 13.714,
+      "log": {
+        "path": "Code/.local/literature-display-tests.log",
+        "sha256": "d1ac8a1f164075f6bf6828837afdd575a059431c036c8034f94278510c8a1f9b",
+        "bytes": 3015
+      }
+    },
+    {
+      "scope": "전체 실제 GUI; 실제 CAD GUI 2개 포함, 실제 WSL 계산 2개 제외",
+      "source_phase": "최종 표시 보완 전",
+      "tests_run": 20,
+      "passed": 18,
+      "skipped": 2,
+      "failures": 0,
+      "errors": 0,
+      "test_seconds": 292.328,
+      "log": {
+        "path": "Code/.local/literature-gui-tests.log",
+        "sha256": "8573fddfaaea4337ff38dbe03b983736df3db91f6329bf0155a155efa965dc3f",
+        "bytes": 5482
+      }
+    },
+    {
+      "scope": "최종 목표/내장/G031 미리보기/수정/적용/undo/redo/저장/재열기 GUI",
+      "source_phase": "최종 제품 소스",
+      "tests_run": 1,
+      "passed": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "test_seconds": 135.52,
+      "log": {
+        "path": "Code/.local/literature-display-gui.log",
+        "sha256": "f20f6e01f968b1be922f4a0a80db9fd6261e2811bde7fcea489c9c07396fca6f",
+        "bytes": 381
+      }
+    },
+    {
+      "scope": "실제 G031 OCCT/STEP/출처/미정/과거 봉인/runtime 없는 재열기",
+      "source_phase": "최종 제품 소스",
+      "tests_run": 1,
+      "passed": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "test_seconds": 17.056,
+      "log": {
+        "path": "Code/.local/literature-native-display-final.log",
+        "sha256": "89a6ef1fc04b82dff1f700331a6d36dabac07638d78f6855a1a8ef29a372a79e",
+        "bytes": 375
+      }
+    },
+    {
+      "scope": "요구/AC/FN/VT/API 추적과 손상 검출",
+      "source_phase": "최종 문서/감사 생성 후",
+      "tests_run": 12,
+      "passed": 12,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "test_seconds": 1.238,
+      "log": {
+        "path": "Code/.local/literature-audit-final-tests.log",
+        "sha256": "b95f2c99f80872b7fb42fca93b8ed70756e22f80e1097e5d6ea5a85c34bbf11e",
+        "bytes": 102
+      }
+    }
+  ],
+  "build": {
+    "status": "passed",
+    "log": {
+      "path": "Code/.local/literature-build.log",
+      "sha256": "fb841175187e0c720a0b27dd3dcb821eb679a903cbfb58b1a47b6b18634d51b0",
+      "bytes": 248
+    }
+  },
+  "ctest": {
+    "status": "passed",
+    "tests_run": 9,
+    "passed": 9,
+    "seconds": 1.46,
+    "log": {
+      "path": "Code/.local/literature-ctest.log",
+      "sha256": "a4ac090aedd1e0586c3e484d3e5c7a468f8a6e522859993d9771d42e4e66a1cd",
+      "bytes": 1052
+    }
+  },
+  "source_review": {
+    "automated": {
+      "path": "Code/.local/literature-sources.json",
+      "sha256": "3d97898a4040d372435dd8ead395b2ca52134c5e775bf50cf8527f626c9a333c",
+      "bytes": 1531
+    },
+    "pdf_visual_review": {
+      "pages": [
+        1,
+        2,
+        3
+      ],
+      "scope": "같은 해시의 원문 회로/top/bottom PNG 직접 검수"
+    },
+    "g003_review": {
+      "source_sha256": "171aee519c0ed50ce162970b0135c2303762d2f1f6e36cedf79f6449e86a7529",
+      "pages": [
+        2
+      ],
+      "registered_as_generated_card": false,
+      "reason": "전체 board/ground/stackup의 companion CAD가 없으며 현재 단순 IFA로 치환하지 않음"
+    }
+  },
+  "compatibility": {
+    "path": "Code/.local/literature-compatibility.json",
+    "sha256": "c0b99277bdfa06e5fcad3c71e7f9b5898b35c86a9f0dd705ae6a58b6b0f49d77",
+    "bytes": 307
+  },
+  "wsl_read_only": {
+    "status": "passed",
+    "scope": "Windows 생성 G031 프로젝트 validator와 canonical bytes 불변; 새 FDTD 없음",
+    "document": {
+      "path": "Code/.local/literature-portability.json",
+      "sha256": "58a3b88f20c3f1b91fb4cefe337205f09ddc3dcf02274c8e0c639c3c558972be",
+      "bytes": 37704
+    },
+    "log": {
+      "path": "Code/.local/literature-portability.log",
+      "sha256": "80d1e4639d9f1b52b26ac4055440b22b8a8360c1c8f3a482104ed19a38d8ee7c",
+      "bytes": 170
+    }
+  },
+  "native_evidence": {
+    "path": "Code/.local/literature-native-display-final.json",
+    "sha256": "ed2cb8c4f7566816f767de92f7d43eed84a6136e3c03d3f21cbb576ed168648d",
+    "bytes": 10599
+  },
+  "gui_evidence": [
+    {
+      "path": "Code/.local/literature-gui/target-template-delayed.json",
+      "sha256": "5897643d42d4c3d1aad85725122417475225342a567d391c14d6648b449a8f0a",
+      "bytes": 2517
+    },
+    {
+      "path": "Code/.local/literature-gui/target-template.json",
+      "sha256": "ab10d7d92e24772e92718cbe03ca122265e7bf7e04891ab695632f6fa567fc23",
+      "bytes": 2517
+    },
+    {
+      "path": "Code/.local/literature-gui-final/target-template.json",
+      "sha256": "df0de6ebba651fb1998b4ddd8611062b765b0199b69781df021ca89923e44df9",
+      "bytes": 2518
+    }
+  ],
+  "manual_gui_review": {
+    "status": "passed_for_observed_scope",
+    "scope": [
+      "기존 표시 문자열을 가진 저장 프로젝트 재열기",
+      "G031 목록/빈 배치/원문 치수/부분 기하/출처 안내",
+      "최종 직접 좌표 표시의 float 잔여 자리 제거",
+      "Esc 복귀"
+    ],
+    "display_scope": "현재 디스플레이 약 1346 x 853 주 창과 1106 x 773 대화상자",
+    "review_instances_closed": true,
+    "all_dpi_ime_accessibility_tested": false,
+    "frame_budget_tested": false
+  },
+  "limits_preserved": {
+    "origin_bytes": 262144,
+    "project_bytes": 524288,
+    "worker_source_files": 192,
+    "cad_source_bytes": 2097152,
+    "solver_source_bytes": 4194304
+  },
+  "limitations": [
+    "G031 원호/stub 부분 기하만 생성; 전체 PCB/netlist/접지 재현 아님",
+    "초기 RF 합성/추천 치수 추가 없음",
+    "새 FDTD/수렴/제조/실측 검증 없음",
+    "RO4350B 국부 방사 도체 변화 2.788446%로 초기 2% 미확립 유지",
+    "GHz PTH 독립 물리 정확도 미확립 유지",
+    "실제 제작/납품/급전 실장/측정 미정값 유지",
+    "단계 3/4 전체, 60/30 fps와 전체 메모리, R1 수용 미완료",
+    "Linux GUI와 R2/R3 후속"
+  ],
+  "previous_approved_documents_and_verification_records_modified": false,
+  "changed_sources": [
+    {
+      "path": "Code/README.md",
+      "sha256": "3c1212996573a94c386c830d1bf20cd896a1a73100206b71b3bc7c94d1d2cea8",
+      "bytes": 23041
+    },
+    {
+      "path": "Code/docs/audit/design_functions.json",
+      "sha256": "1a6847a63ee708d8005a0c114b7d110e3d759dab2000beb1b5a8437321982e58",
+      "bytes": 32264
+    },
+    {
+      "path": "Code/docs/audit/function_matrix.md",
+      "sha256": "6cdc0fd38a9240c54ba591a5c0aaed4161340892728bd4e7fbbe4073a53a720a",
+      "bytes": 69917
+    },
+    {
+      "path": "Code/docs/audit/implementation_matrix.json",
+      "sha256": "332a6f77542f67e891b39f4ae45858b47a3bbb0453172bf6290dae9fdc75f46e",
+      "bytes": 478255
+    },
+    {
+      "path": "Code/docs/code_structure.md",
+      "sha256": "78e778f3ab4ddbd436bbe2a27125512cf276182363ad8589e9212ed2d3aa4b30",
+      "bytes": 19019
+    },
+    {
+      "path": "Code/docs/completion_plan.md",
+      "sha256": "146c23eb87ff2411a6c67b5181508d410d6c5599f5303dbf5c459e301c5e0e5f",
+      "bytes": 20066
+    },
+    {
+      "path": "Code/docs/development_status.md",
+      "sha256": "40a26506791a32350d992891703c63f90f382173994a22ff4755c7c738289232",
+      "bytes": 109233
+    },
+    {
+      "path": "Code/docs/implementation_audit.md",
+      "sha256": "0a8b5fc1dd885ebe51a2b0636c3402bbe8c156d20864aee6f2b93582b64058e6",
+      "bytes": 9056
+    },
+    {
+      "path": "Code/docs/literature_templates.md",
+      "sha256": "d2437675b264f3f1790c37228b190ea5af98f8113b069da947540b726c49db34",
+      "bytes": 10134
+    },
+    {
+      "path": "Code/docs/shared_contracts.md",
+      "sha256": "b1d44918cbfd2879110f110c1cba20795217be049ab59d02ccbe3f412e4a8722",
+      "bytes": 13023
+    },
+    {
+      "path": "Code/docs/studio_gui_design.md",
+      "sha256": "05cd29197b7f285cbdb0e7ce8aea348ba86da6251f38991059c4edbfc3767e1b",
+      "bytes": 31884
+    },
+    {
+      "path": "Code/docs/target_template_gui.md",
+      "sha256": "bd6e0d022900b719ba167830736bbe864347ade9e3cad4f7a3ccb32b0238cae2",
+      "bytes": 8224
+    },
+    {
+      "path": "Code/docs/template_contract.md",
+      "sha256": "a1f5d72350af4b502151cc82b220e1ef8d9e51101168564bc0e8a196e3b0c679",
+      "bytes": 18543
+    },
+    {
+      "path": "Code/src/rfad/application/template_candidates.py",
+      "sha256": "72b0d3ea6b4300474b96c9aac1c118c6cb7e51f1fe35ac050f3138f299c00407",
+      "bytes": 12082
+    },
+    {
+      "path": "Code/src/rfad/domain/literature_geometry.py",
+      "sha256": "b414dbfc04d4d2bf92d49d80e7375769e74282d78b9842dc7401c8e3ac9947a5",
+      "bytes": 2500
+    },
+    {
+      "path": "Code/src/rfad/domain/template_geometry.py",
+      "sha256": "b8036c8d7f9d48afc17b27344064a0b08e0ea73ddb3e9878be6283a956759cda",
+      "bytes": 16578
+    },
+    {
+      "path": "Code/src/rfad/domain/template_inputs.py",
+      "sha256": "74f8ffeb4c7edd2f2a7c4d27a85684cb9121cbebf38bc8a205e820516760a8a2",
+      "bytes": 2046
+    },
+    {
+      "path": "Code/src/rfad/domain/template_instance.py",
+      "sha256": "b7f04c5b9fc012d9e6a510f5e3678197253e23f2b0a908b3cf9e4783a1ad540c",
+      "bytes": 10372
+    },
+    {
+      "path": "Code/src/rfad/domain/template_ports.py",
+      "sha256": "4d11c9eec0523aa5331f8dff06f5e3928600a525fad5b94655fe5334fa1762d5",
+      "bytes": 8257
+    },
+    {
+      "path": "Code/src/rfad/domain/template_provenance.py",
+      "sha256": "9007aef85f79a74d60b4e5bbbe1404725e73c9664a569e0799f2ba2799e2398f",
+      "bytes": 1391
+    },
+    {
+      "path": "Code/src/rfad/templates/cards.py",
+      "sha256": "cdff540759d487a72b6c7a48e4c23a6bbf1c04ae1204f02fd92a628d0eb76a16",
+      "bytes": 8604
+    },
+    {
+      "path": "Code/src/rfad/templates/g031.py",
+      "sha256": "53e0d9ea1c222caf2500cec355c8e4728ebec8fb1fb2ae83fe7cc6343bfbff69",
+      "bytes": 10077
+    },
+    {
+      "path": "Code/tests/test_gui_target_template_process.py",
+      "sha256": "c888703134df74a5f21ab527abb85bdc479d0c02a04f357727db0433abb94418",
+      "bytes": 9837
+    },
+    {
+      "path": "Code/tests/test_literature_templates.py",
+      "sha256": "074757226a527263dafd5ffbdcd76ae45824d04c67ed0d456d2d31bbb701d610",
+      "bytes": 16292
+    },
+    {
+      "path": "Code/tests/test_template_candidates.py",
+      "sha256": "23d75b0c5333b64ee8e617bfbd9f9d5955898494dd4d99485247ecdc48914f06",
+      "bytes": 30379
+    },
+    {
+      "path": "Code/tests/test_template_native.py",
+      "sha256": "165e631335d6d5dd26b23a54fe5230499459e276f25593c94817c7d07120de64",
+      "bytes": 10396
+    },
+    {
+      "path": "Code/tools/verify_literature_sources.py",
+      "sha256": "3adc3d1a5806e2ae8bfe0b0eea2b990dffd0b95602b241295a9a5ced250ac31d",
+      "bytes": 3268
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_smoke_setup.cpp",
+      "sha256": "0e3a9d3edddd2d93f5bf8a64650bbf8468723d08665bc43235339d8c4c77db9a",
+      "bytes": 5716
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_smoke_templates.cpp",
+      "sha256": "e7bad25f6019f67b2d4f41ac6d45dd5b7738b0a4e0b4db8b369d95c30f9725c6",
+      "bytes": 12270
+    },
+    {
+      "path": "Code/ui/wxwidgets/template_dialog.cpp",
+      "sha256": "5a40bf5b63634136a1130bf326a74fbf6028654cc709fbb85fc9a03a32c5e826",
+      "bytes": 12807
+    },
+    {
+      "path": "Code/ui/wxwidgets/template_view.cpp",
+      "sha256": "a00bce36da7a0a8dc4a9216565b4057ff44a5ea975d4ae47f1ccfa48b4b480e9",
+      "bytes": 4862
+    }
+  ],
+  "precommit_review": {
+    "recorded_at_utc": "2026-11-12T08:21:54.606295+00:00",
+    "review_result": "수정이 필요한 문제 없음; 출처/미정/수정 입력/원자 적용/GUI 및 검증 기록 대조",
+    "recorded_source_hashes_matched": 31,
+    "service_and_audit_tests": {
+      "tests_run": 119,
+      "passed": 119,
+      "skipped": 0,
+      "seconds": 57.695,
+      "log": {
+        "path": "Code/.local/literature-precommit-tests.log",
+        "sha256": "5658466b470d6097f191abbe116751eb6617951fd225b53804fc6c46cd30407b",
+        "bytes": 104
+      }
+    },
+    "build": {
+      "status": "passed_no_pending_work",
+      "log": {
+        "path": "Code/.local/literature-precommit-build.log",
+        "sha256": "71aa391ec7d7e291b419a7f40fba91919e14ac2394ab4e8b66ed126e267d70f6",
+        "bytes": 23
+      }
+    },
+    "ctest": {
+      "tests_run": 9,
+      "passed": 9,
+      "seconds": 0.27,
+      "log": {
+        "path": "Code/.local/literature-precommit-ctest.log",
+        "sha256": "fee1346f9755ab2b2f1a1cfcf2c60b6ca5cc2a453edfc9cccfd9c328aac9c3ca",
+        "bytes": 1052
+      }
+    },
+    "source_review": {
+      "path": "Code/.local/literature-precommit-sources.json",
+      "sha256": "3d97898a4040d372435dd8ead395b2ca52134c5e775bf50cf8527f626c9a333c",
+      "bytes": 1531
+    },
+    "implementation_audit_check": "passed",
+    "origin_main_after_fetch": "dbc2982c5fc8f7bf957e2d4a74fafea39a938b00"
+  }
+}

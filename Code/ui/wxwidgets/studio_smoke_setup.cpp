@@ -110,14 +110,14 @@ void StudioSmokeDriver::SetupSmokeTick()
         {
             CanvasAssert(m_frame.m_revision == m_setupExpectedRevision, "여러 템플릿 적용 뒤 주 창의 개정이 다릅니다.");
             m_setupShapes = m_frame.m_scene.at("shapes");
-            CanvasAssert(m_setupShapes.size() == 7, "원호/IFA의 기하 수가 다릅니다.");
+            CanvasAssert(m_setupShapes.size() == 9, "원호/IFA/G031의 기하 수가 다릅니다.");
             m_setupStage = 31;
             m_frame.History("project.undo");
         }
         else if (m_setupStage == 31)
         {
-            CanvasAssert(m_frame.m_scene.at("shapes").size() == 2,
-                         "IFA 한 번 실행 취소가 모든 생성 객체를 회수하지 않았습니다.");
+            CanvasAssert(m_frame.m_scene.at("shapes").size() == 7,
+                         "G031 한 번 실행 취소가 모든 생성 객체를 회수하지 않았습니다.");
             m_setupStage = 32;
             m_frame.History("project.redo");
         }
@@ -125,6 +125,7 @@ void StudioSmokeDriver::SetupSmokeTick()
         {
             CanvasAssert(m_frame.m_scene.at("shapes") == m_setupShapes, "템플릿 재실행의 기하가 달라졌습니다.");
             m_setupChecks.push_back("template_single_command_undo_redo");
+            m_setupChecks.push_back("literature_single_command_undo_redo");
             m_setupStage = 33;
             m_frame.SaveProject();
         }

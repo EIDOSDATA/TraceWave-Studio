@@ -7848,7 +7848,8 @@
         "src/rfad/templates/cards.py",
         "src/rfad/domain/template_instance.py",
         "src/rfad/application/template_candidates.py",
-        "ui/wxwidgets/template_dialog.cpp"
+        "ui/wxwidgets/template_dialog.cpp",
+        "src/rfad/templates/g031.py"
       ],
       "contract_notes": [
         "재료 카탈로그의 제조업체 stackup template와 안테나 형상 template은 다른 의미다. 사용자 실행 script 확장은 R2다.",
@@ -7856,22 +7857,24 @@
       ],
       "evidence": [
         "docs/template_contract.md",
-        "docs/target_template_gui.md"
+        "docs/target_template_gui.md",
+        "docs/literature_templates.md"
       ],
       "gaps": [
-        "문헌 원본 형상 카드와 자료별 검증 근거, 추가 topology와 적용 범위를 보강해야 한다.",
+        "G031 전체 보드 재현, 추가 문헌 topology와 자료별 적용 범위/검증 근거를 보강해야 한다.",
         "범용 카드 importer/검색/갱신 관리와 통신 프리셋 기반 선택은 후속이다."
       ],
       "id": "FN-006",
       "implementation_status": "partial",
-      "implemented": "내장 명시 치수 원호/평면 IFA 카드2종의 version/hash/입력/출처/지원 플래그와 template.list/get/context를 제공한다. GUI에서 기존 기판/도체층과 목표 개정을 선택하고 입력/2D 후보를 검토한다. 프로젝트는 카드와 생성 객체/원자료 사본을 소유한다.",
+      "implemented": "내장 명시 치수 원호/평면 IFA 카드2종의 version/hash/입력/출처/지원 플래그와 template.list/get/context를 제공한다. GUI에서 기존 기판/도체층과 목표 개정을 선택하고 입력/2D 후보를 검토한다. 프로젝트는 카드와 생성 객체/원자료 사본을 소유한다. G031 문헌 원호/stub 카드는 원본 중첩 ZIP/Gerber/PDF 식별자와 원문 치수/가정/미정/생략을 보존한다. GUI는 원문 값과 사용자 수정/배치를 구분한다.",
       "next_steps": [
         3,
         4
       ],
       "tests": [
         "tests/test_template_candidates.py",
-        "tests/test_gui_target_template_process.py"
+        "tests/test_gui_target_template_process.py",
+        "tests/test_literature_templates.py"
       ]
     },
     {
@@ -7881,7 +7884,9 @@
         "src/rfad/domain/template_inputs.py",
         "src/rfad/domain/template_ports.py",
         "src/rfad/domain/template_command.py",
-        "src/rfad/domain/layer_surface.py"
+        "src/rfad/domain/layer_surface.py",
+        "src/rfad/domain/literature_geometry.py",
+        "src/rfad/domain/template_provenance.py"
       ],
       "contract_notes": [
         "tests/test_pcb_ifa.py의 ifa_document는 명시적 시험 가정 fixture다. 실제 납품 입력이나 제품 seed synthesizer로 승격하지 않는다.",
@@ -7889,15 +7894,16 @@
       ],
       "evidence": [
         "docs/template_contract.md",
-        "docs/target_template_gui.md"
+        "docs/target_template_gui.md",
+        "docs/literature_templates.md"
       ],
       "gaps": [
         "목표 주파수/공간/고정 변수를 사용하는 초기 합성식과 source별 유효 영역은 미구현이다.",
-        "문헌 원문 치수 복제와 EQ/가정의 대응 및 실제 정합/공진 검증을 보강해야 한다."
+        "추가 문헌 원문 치수와 EQ/가정의 대응 및 실제 정합/공진 검증을 보강해야 한다."
       ],
       "id": "FN-007",
       "implementation_status": "partial",
-      "implemented": "API-007 template.synthesize의 explicit_geometry 모드로 명시 치수 후보를 읽기 전용 생성한다. 기판 경계/IFA 접촉과 열린 급전 gap, 안정 UUID/표현식 매개변수, 선택 목표 사본을 검사한다. 검토 hash를 다시 확인한 template.apply는 한 명령으로 적용/undo/redo하며 기존 출처/물성을 유지한다.",
+      "implemented": "API-007 template.synthesize의 explicit_geometry 모드로 명시 치수 후보를 읽기 전용 생성한다. 기판 경계/IFA 접촉과 열린 급전 gap, 안정 UUID/표현식 매개변수, 선택 목표 사본을 검사한다. 검토 hash를 다시 확인한 template.apply는 한 명령으로 적용/undo/redo하며 기존 출처/물성을 유지한다. G031의 원래 stub-원호 끝 겹침과 사용자 배치를 보존하며 원문 수정 필드를 표시한다. 기하 생성/초기 추정/해석/수렴/실측/제조 상태를 분리한다.",
       "next_steps": [
         3,
         4,
@@ -7906,7 +7912,8 @@
       "tests": [
         "tests/test_template_candidates.py",
         "tests/test_template_native.py",
-        "tests/test_gui_target_template_process.py"
+        "tests/test_gui_target_template_process.py",
+        "tests/test_literature_templates.py"
       ]
     },
     {
@@ -12724,8 +12731,8 @@
   "review_inputs": [
     {
       "path": "Code/docs/audit/design_functions.json",
-      "text_sha256": "299b9b743505b5e28963006ad7790165b0cb22bcdad0b514f49885c41188635e",
-      "utf8_bytes": 30844
+      "text_sha256": "5dfc2fbb52e54257cfe9f30d9355dab25c9940ace0e189fb6816d766294c52d8",
+      "utf8_bytes": 31524
     },
     {
       "path": "Code/docs/audit/analysis_functions.json",
@@ -12763,6 +12770,11 @@
       "utf8_bytes": 9590
     },
     {
+      "path": "Code/docs/literature_templates.md",
+      "text_sha256": "d2437675b264f3f1790c37228b190ea5af98f8113b069da947540b726c49db34",
+      "utf8_bytes": 10134
+    },
+    {
       "path": "Code/docs/pcb_solver_contract.md",
       "text_sha256": "81520bb056a4eaff39dca1af772d6e9b359f41565fde0102d9b63576857b3bd5",
       "utf8_bytes": 15251
@@ -12779,8 +12791,8 @@
     },
     {
       "path": "Code/docs/studio_gui_design.md",
-      "text_sha256": "7a2f124c021fa0c579e39d2b9a51a93501a6572f628dbcafc04f955fc97b540e",
-      "utf8_bytes": 31502
+      "text_sha256": "05cd29197b7f285cbdb0e7ce8aea348ba86da6251f38991059c4edbfc3767e1b",
+      "utf8_bytes": 31884
     },
     {
       "path": "Code/docs/target_contract.md",
@@ -12794,13 +12806,13 @@
     },
     {
       "path": "Code/docs/target_template_gui.md",
-      "text_sha256": "d4688500aa157b9fa2fd1b538b27e27ae1534081442e96fc048fe2455cd6b358",
-      "utf8_bytes": 7535
+      "text_sha256": "9f63f896b36430517d26db8509122162c39aab67ecb360fb4a0fc2b577bab0bc",
+      "utf8_bytes": 8159
     },
     {
       "path": "Code/docs/template_contract.md",
-      "text_sha256": "11794b3922debbafdf124bf0cba1ba83c7f54a0db06862d3c61147173a58d9e6",
-      "utf8_bytes": 17623
+      "text_sha256": "a1f5d72350af4b502151cc82b220e1ef8d9e51101168564bc0e8a196e3b0c679",
+      "utf8_bytes": 18543
     },
     {
       "path": "Code/runtime_profiles/cad-worker-windows-x64.json",
@@ -13159,8 +13171,8 @@
     },
     {
       "path": "Code/src/rfad/application/template_candidates.py",
-      "text_sha256": "b0737f337cd014d4c79dcaa55afe7297b90a7c0ce8285a55f50d40eca570ab51",
-      "utf8_bytes": 11951
+      "text_sha256": "72b0d3ea6b4300474b96c9aac1c118c6cb7e51f1fe35ac050f3138f299c00407",
+      "utf8_bytes": 12082
     },
     {
       "path": "Code/src/rfad/application/wsl_process.py",
@@ -13218,6 +13230,11 @@
       "utf8_bytes": 1215
     },
     {
+      "path": "Code/src/rfad/domain/literature_geometry.py",
+      "text_sha256": "b414dbfc04d4d2bf92d49d80e7375769e74282d78b9842dc7401c8e3ac9947a5",
+      "utf8_bytes": 2500
+    },
+    {
       "path": "Code/src/rfad/domain/material_models.py",
       "text_sha256": "7447b0b5fedb971a31b1fd41f81219249a324e2d44da6fe2e7269a8efd1a2fa9",
       "utf8_bytes": 1604
@@ -13254,23 +13271,28 @@
     },
     {
       "path": "Code/src/rfad/domain/template_geometry.py",
-      "text_sha256": "99f884755ecb2586aed9e7c86259ac93d600d08448b747be7d6f413718f110cf",
-      "utf8_bytes": 15564
+      "text_sha256": "b8036c8d7f9d48afc17b27344064a0b08e0ea73ddb3e9878be6283a956759cda",
+      "utf8_bytes": 16578
     },
     {
       "path": "Code/src/rfad/domain/template_inputs.py",
-      "text_sha256": "6f8f99e30e22147815794315926291b09144200f36655171e70de9f4029aa06c",
-      "utf8_bytes": 1482
+      "text_sha256": "74f8ffeb4c7edd2f2a7c4d27a85684cb9121cbebf38bc8a205e820516760a8a2",
+      "utf8_bytes": 2046
     },
     {
       "path": "Code/src/rfad/domain/template_instance.py",
-      "text_sha256": "32a4b82ef3729ffda428b23fdd7922d5a25a513cdf3a17b918836b769ff0d4e4",
-      "utf8_bytes": 9809
+      "text_sha256": "b7f04c5b9fc012d9e6a510f5e3678197253e23f2b0a908b3cf9e4783a1ad540c",
+      "utf8_bytes": 10372
     },
     {
       "path": "Code/src/rfad/domain/template_ports.py",
-      "text_sha256": "eeadddffb4899bc49e8d8bfa530f549f49387a803674391e390165a9a4259f31",
-      "utf8_bytes": 8020
+      "text_sha256": "4d11c9eec0523aa5331f8dff06f5e3928600a525fad5b94655fe5334fa1762d5",
+      "utf8_bytes": 8257
+    },
+    {
+      "path": "Code/src/rfad/domain/template_provenance.py",
+      "text_sha256": "9007aef85f79a74d60b4e5bbbe1404725e73c9664a569e0799f2ba2799e2398f",
+      "utf8_bytes": 1391
     },
     {
       "path": "Code/src/rfad/domain/units.py",
@@ -13289,8 +13311,13 @@
     },
     {
       "path": "Code/src/rfad/templates/cards.py",
-      "text_sha256": "bc4024a00e7dbc6a9725f1e002bb37ad73f12219ce08d7411db7fd1262391c67",
-      "utf8_bytes": 8101
+      "text_sha256": "cdff540759d487a72b6c7a48e4c23a6bbf1c04ae1204f02fd92a628d0eb76a16",
+      "utf8_bytes": 8604
+    },
+    {
+      "path": "Code/src/rfad/templates/g031.py",
+      "text_sha256": "53e0d9ea1c222caf2500cec355c8e4728ebec8fb1fb2ae83fe7cc6343bfbff69",
+      "utf8_bytes": 10077
     },
     {
       "path": "Code/tests/radiation_pattern_test.cpp",
@@ -13374,8 +13401,13 @@
     },
     {
       "path": "Code/tests/test_gui_target_template_process.py",
-      "text_sha256": "c36208780e16bdf8a91c202c8aa03ce0be95bb05c42732b69f1341fdf5a65c33",
-      "utf8_bytes": 8809
+      "text_sha256": "49fa097da758ea3ee059f3b767e9fac11d6bb4f99e6e10c10ef5ef6bb3f7181c",
+      "utf8_bytes": 9689
+    },
+    {
+      "path": "Code/tests/test_literature_templates.py",
+      "text_sha256": "074757226a527263dafd5ffbdcd76ae45824d04c67ed0d456d2d31bbb701d610",
+      "utf8_bytes": 16292
     },
     {
       "path": "Code/tests/test_material_loss_models.py",
@@ -13494,13 +13526,13 @@
     },
     {
       "path": "Code/tests/test_template_candidates.py",
-      "text_sha256": "8467d95df7b5693443e754c50d53cc1f9d013becb6a4dba8420bbb01737ceb92",
-      "utf8_bytes": 30169
+      "text_sha256": "23d75b0c5333b64ee8e617bfbd9f9d5955898494dd4d99485247ecdc48914f06",
+      "utf8_bytes": 30379
     },
     {
       "path": "Code/tests/test_template_native.py",
-      "text_sha256": "2a929fb5a71a5d6c1a36e2b830b04df9ec4bf217d88de139b88d33321edefa34",
-      "utf8_bytes": 9678
+      "text_sha256": "165e631335d6d5dd26b23a54fe5230499459e276f25593c94817c7d07120de64",
+      "utf8_bytes": 10396
     },
     {
       "path": "Code/tests/test_wsl_readiness.py",
@@ -13574,8 +13606,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/template_dialog.cpp",
-      "text_sha256": "d6ab3f0174373fd588412fb46358b27ce6f45aaaed005becc562ba56460805d5",
-      "utf8_bytes": 10828
+      "text_sha256": "81aac5534a04fe8c942242d2434ef61367517e4dca87bbff45d0eacb9e68855d",
+      "utf8_bytes": 12478
     }
   ],
   "supplemental_design_conditions": [

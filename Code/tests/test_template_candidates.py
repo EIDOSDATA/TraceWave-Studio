@@ -364,8 +364,8 @@ class TemplateDomainTests(unittest.TestCase):
         self.assertEqual(restored["extensions"], document["extensions"])
 
 
-class TemplateServiceTests(unittest.TestCase):
-    """! @brief 공개 RPC와 실제 저장소의 이력/멱등/실패 경계를 검사한다."""
+class TemplateServiceCase(unittest.TestCase):
+    """! @brief 기존 저장소/공개 RPC를 사용하는 템플릿 통합 시험의 준비를 공유한다."""
 
     def setUp(self):
         """! @brief 실제 프로젝트 저장소를 worker 없이 준비한다."""
@@ -417,6 +417,10 @@ class TemplateServiceTests(unittest.TestCase):
         """! @brief 저장된 현재 문서를 공개 open 경로로 조회한다."""
         return self.complete("project.open", {"open_mode": "open", "path": "projects/template"}, context={})["document"]
 
+
+class TemplateServiceTests(TemplateServiceCase):
+    """! @brief 공개 RPC와 실제 저장소의 이력/멱등/실패 경계를 검사한다."""
+
     def test_public_preview_apply_save_restart_undo_redo_and_duplicate(self):
         """! @brief 단일 적용/재접수/재시작 후 inverse가 생성 당시 사본을 복원한다."""
         document = self.document()
@@ -424,7 +428,7 @@ class TemplateServiceTests(unittest.TestCase):
         before = self.service.journal.read()
         context = self.rpc("template.context", self.request({"expected_revision": self.revision}, mutation=False))
         self.assertEqual(context["board"]["id"], document["board"]["id"])
-        self.assertEqual(len(context["cards"]), 2)
+        self.assertTrue({ARC, IFA}.issubset({card["template_id"] for card in context["cards"]}))
         first = self.rpc("template.synthesize", self.request(data, mutation=False))
         self.assertTrue(first["can_apply"], first)
         self.assertEqual(self.service.journal.read(), before)

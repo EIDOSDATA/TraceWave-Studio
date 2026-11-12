@@ -13,11 +13,11 @@
 void TemplateDialog::BuildInterface()
 {
     auto* layout = new wxBoxSizer(wxVERTICAL);
-    auto* title = new wxStaticText(this, wxID_ANY, Display("원호 / 평면 IFA 패턴"));
+    auto* title = new wxStaticText(this, wxID_ANY, Display("직접 입력 / 문헌 형상 카드"));
     StudioTheme::Heading(*title);
     layout->Add(title, 0, wxALL, FromDIP(StudioTheme::PanelPadding));
     auto* help = new wxStaticText(
-        this, wxID_ANY, Display("치수를 직접 정한 형상 카드입니다. 주파수 자동 합성이나 제작 검증 결과가 아닙니다."));
+        this, wxID_ANY, Display("문헌 치수와 수정값, 생략 항목을 확인합니다. 형상 생성은 RF/제조/실측 검증과 구분합니다."));
     StudioTheme::BindSecondary(*help);
     layout->Add(help, 0, wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::PanelPadding));
     auto* selectors = new wxFlexGridSizer(2, FromDIP(StudioTheme::InputGap), FromDIP(StudioTheme::InputGap));

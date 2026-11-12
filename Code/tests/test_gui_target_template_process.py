@@ -101,7 +101,13 @@ class GuiTargetTemplateTests(unittest.TestCase):
                 self.assertNotIn("rfad.template-origin", stored["extensions"])
                 stored = service._load(state["projects"][small["project_id"]])
                 self.assertEqual(len(stored["targets"]), 1)
-                self.assertEqual(len(stored["geometry"]), 7)
+                self.assertEqual(len(stored["geometry"]), 9)
+                origin = next(item for item in stored["extensions"]["rfad.template-origin"]["instances"]
+                              if item["card"]["template_id"] == "literature.g031_pca20006_arc")
+                self.assertEqual(origin["inputs"]["width"]["status"], "user_entered")
+                self.assertEqual(origin["inputs"]["radius"]["status"], "source_default")
+                self.assertEqual(origin["card"]["reference_inputs"]["width"]["quantity"]["value_si"], 0.00127)
+                self.assertFalse(origin["card"]["evidence"]["whole_board_reproduced"])
                 self.assertEqual(stored["ports"], [])
                 self.assertEqual(stored["materials"], [])
                 self.assertIsNone(stored["stackup"][0]["thickness"]["value_si"])
@@ -126,7 +132,11 @@ class GuiTargetTemplateTests(unittest.TestCase):
                          "failed_target_selection_restores_authoritative_identity",
                          "post_apply_query_failure_locks_without_duplicate_create",
                          "template_card_drafts_and_close_confirmation",
-                         "oversized_template_origin_blocks_without_mutation"} <= set(report["setup_checks"]), report)
+                         "oversized_template_origin_blocks_without_mutation",
+                         "literature_reference_dimensions_and_partial_scope",
+                         "literature_modified_dimensions_invalidate_and_keep_source",
+                         "literature_atomic_apply_without_physical_defaults",
+                         "literature_single_command_undo_redo"} <= set(report["setup_checks"]), report)
 
     def test_delayed_queries_preserve_input_and_latest_selection(self):
         """! @brief 지연한 실제 응답이 수정한 입력이나 닫힌 화면을 덮지 않는다."""

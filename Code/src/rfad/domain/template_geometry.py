@@ -8,15 +8,22 @@ from rfad.domain.design import _fail, _fields, _uuid, resolve_scalar
 from rfad.domain.parameter_graph import evaluate_parameters, expression_record
 from rfad.domain.units import Quantity
 from rfad.templates.cards import ARC, IFA
+from rfad.templates.g031 import IDENTITY as G031
 
 
 _DERIVED_LABELS = {"arc_start_x": "원호 시작 X", "arc_start_y": "원호 시작 Y", "ground_right": "접지 오른쪽 X",
-                   "ground_top": "접지 위쪽 Y", "radiator_end_x": "방사 가지 끝 X", "pad_rotation": "패드 회전각"}
+                   "ground_top": "접지 위쪽 Y", "radiator_end_x": "방사 가지 끝 X", "pad_rotation": "패드 회전각",
+                   "placed_center_x": "배치 원호 중심 X", "placed_center_y": "배치 원호 중심 Y",
+                   "placed_feed_start_x": "배치 stub 시작 X", "placed_feed_start_y": "배치 stub 시작 Y",
+                   "placed_feed_end_x": "배치 stub 끝 X", "placed_feed_end_y": "배치 stub 끝 Y"}
 
 
 def parameter_roles(card: dict) -> list[str]:
     """! @brief 표시 이름과 무관한 고정 생성 역할로 ID 대응을 검사한다."""
-    derived = ("arc_start_x", "arc_start_y") if card["template_id"] == ARC else ("ground_right", "ground_top", "radiator_end_x", "pad_rotation")
+    if card["template_id"] == G031:
+        derived = tuple("placed_" + key for key in ("center_x", "center_y", "feed_start_x", "feed_start_y", "feed_end_x", "feed_end_y"))
+    else:
+        derived = ("arc_start_x", "arc_start_y") if card["template_id"] == ARC else ("ground_right", "ground_top", "radiator_end_x", "pad_rotation")
     return [*(item["key"] for item in card["input_fields"]), *derived]
 
 
@@ -89,13 +96,30 @@ def _on_arc(angle: float, start: float, sweep: float) -> bool:
     return ((angle - start) if sweep > 0 else (start - angle)) % math.tau <= abs(sweep) + 1e-12
 
 
+def validate_arc_envelope(document, cx, cy, radius, start, sweep, width):
+    """! @brief 기하 카드 종류와 무관하게 원호 극값과 round cap의 실제 외곽을 검사한다."""
+    angles = [start, start + sweep]
+    angles.extend(angle for angle in (0, math.pi / 2, math.pi, 3 * math.pi / 2) if _on_arc(angle, start, sweep))
+    outline = document["board"]["outline"]
+    if outline["kind"] == "circle":
+        center = [resolve_scalar(document, item, "length", "board.outline.center").value_si for item in outline["center"]]
+        if None in center:
+            _fail("E_GEOMETRY", "원형 보드 중심이 미정입니다.", "board.outline.center")
+        farthest = math.atan2(cy - center[1], cx - center[0])
+        if _on_arc(farthest, start, sweep):
+            angles.append(farthest)
+    for angle in angles:
+        _inside(document, (cx + radius * math.cos(angle), cy + radius * math.sin(angle)), width / 2, "explicit_inputs.radius")
+
+
 class _Builder:
     """! @brief 입력별 stable parameter와 기하식 DAG를 연결하는 일회성 생성기다."""
 
     def __init__(self, document, instance_id, binding, card, inputs):
         """! @brief 원본과 입력을 변경하지 않고 생성 영역을 분리한다."""
         self.document, self.instance_id, self.binding = document, instance_id, binding
-        self.label_prefix = ("원호 " if card["template_id"] == ARC else "IFA ") + instance_id[:8] + " / "
+        prefix = "G031 " if card["template_id"] == G031 else ("원호 " if card["template_id"] == ARC else "IFA ")
+        self.label_prefix = prefix + instance_id[:8] + " / "
         self.parameters, self.geometry, self.values = {}, [], {}
         descriptors = {item["key"]: item for item in card["input_fields"]}
         _fields(inputs, set(descriptors), "explicit_inputs")
@@ -153,18 +177,7 @@ def _arc(builder):
     if v["radius"] <= v["width"] / 2 or not 0 < abs(v["sweep_angle"]) < math.tau:
         _fail("E_GEOMETRY", "원호는 양의 inner radius와 0/360도 사이 signed sweep가 필요합니다.", "explicit_inputs.sweep_angle")
     cx, cy, radius, start, sweep = (v[key] for key in ("center_x", "center_y", "radius", "start_angle", "sweep_angle"))
-    angles = [start, start + sweep]
-    angles.extend(angle for angle in (0, math.pi / 2, math.pi, 3 * math.pi / 2) if _on_arc(angle, start, sweep))
-    outline = builder.document["board"]["outline"]
-    if outline["kind"] == "circle":
-        center = [resolve_scalar(builder.document, item, "length", "board.outline.center").value_si for item in outline["center"]]
-        if None in center:
-            _fail("E_GEOMETRY", "원형 보드 중심이 미정입니다.", "board.outline.center")
-        farthest = math.atan2(cy - center[1], cx - center[0])
-        if _on_arc(farthest, start, sweep):
-            angles.append(farthest)
-    for angle in angles:
-        _inside(builder.document, (cx + radius * math.cos(angle), cy + radius * math.sin(angle)), v["width"] / 2, "explicit_inputs.radius")
+    validate_arc_envelope(builder.document, cx, cy, radius, start, sweep, v["width"])
     end = (cx + radius * math.cos(start), cy + radius * math.sin(start))
     feed = (v["feed_start_x"], v["feed_start_y"])
     if math.dist(feed, end) <= 1e-12:
@@ -227,6 +240,9 @@ def generate_geometry(document: dict, instance_id: str, binding: dict, card: dic
         _arc(builder)
     elif card["template_id"] == IFA:
         _ifa(builder)
+    elif card["template_id"] == G031:
+        from rfad.domain.literature_geometry import generate_g031
+        generate_g031(builder)
     else:
         _fail("E_UNSUPPORTED", "기하 생성기를 찾을 수 없습니다.", "template.template_id")
     evaluate_parameters(builder.parameters, update=True)

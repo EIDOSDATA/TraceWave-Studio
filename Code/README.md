@@ -24,6 +24,8 @@
 
 목표 화면 배치와 구현 범위를 구분한 [완성형 UI 시안](docs/ui_concept.md)도 함께 관리한다.
 
+[문헌 기반 부분 기하 카드](docs/literature_templates.md)는 G031 PCA20006 원문 ZIP/Gerber/PDF의 해시와 치수를 확인하여 같은 후보/2D 미리보기/원자 적용/GUI에 연결한다. 원문 치수와 수정 입력, 배치 이동량을 구분해 보존한다. 원호/stub만 생성하며 탭을 포함한 전체 보드, 물성/포트와 초기 RF 합성, 해석/수렴/실측 검증은 완료로 표시하지 않는다.
+
 ```mermaid
 flowchart TD
     GUI["Windows C++ wxWidgets GUI"] -->|"JSON-RPC / NDJSON"| APP["Python application service"]
