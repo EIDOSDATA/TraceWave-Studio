@@ -69,7 +69,15 @@ void StudioSmokeDriver::OnConnected()
 
 void StudioSmokeDriver::OnOpened()
 {
-    if (m_frame.m_options.studySmoke)
+    if (m_frame.m_options.setupSmoke)
+    {
+        if (m_setupStage == 0)
+        {
+            m_setupStage = 1;
+            m_setupStarted = Clock::now();
+        }
+    }
+    else if (m_frame.m_options.studySmoke)
     {
         if (m_studyStage == 0)
         {

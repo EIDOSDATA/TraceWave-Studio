@@ -25,6 +25,8 @@ from rfad.application.pcb_selection import PcbSelectionCoordinator
 from rfad.application.pcb_selection_contract import MUTATION_METHODS as PCB_SELECTION_MUTATIONS
 from rfad.application.project_studies import StudyCoordinator
 from rfad.application.project_study_contract import MUTATIONS as STUDY_MUTATIONS
+from rfad.application import target_editor
+from rfad.application.template_candidates import TemplateCandidateCoordinator
 from rfad.domain.errors import ProjectError
 from rfad.storage.journal import Journal
 
@@ -33,7 +35,7 @@ ASYNC_METHODS = {
 } | CAD_METHODS | SOLVER_METHODS
 MUTATION_METHODS = ASYNC_METHODS | {
     "project.apply_command", "editor.apply", "canvas.apply", "project.undo", "project.redo", "job.cancel",
-} | PCB_SELECTION_MUTATIONS | STUDY_MUTATIONS
+} | PCB_SELECTION_MUTATIONS | STUDY_MUTATIONS | {"target.editor.apply", "template.apply"}
 
 
 class ProjectService:
@@ -69,6 +71,7 @@ class ProjectService:
         self.operations = ProjectOperations(self.repository, self._now)
         self.requests = RequestLedger(self.journal, self._now)
         self.pcb_selection = PcbSelectionCoordinator(self, catalog_database)
+        self.templates = TemplateCandidateCoordinator(self)
         try:
             self._initialize()
             if auto_run:
@@ -177,7 +180,11 @@ class ProjectService:
 
     def _preflight(self, method: str, context: dict, data: dict) -> None:
         """! @brief 기능별 요청 계약에 따라 접수 가능 여부를 검사한다."""
-        if method in STUDY_MUTATIONS:
+        if method == "target.editor.apply":
+            target_editor.validate_input(context, data)
+        elif method == "template.apply":
+            self.templates.validate_input(method, context, data)
+        elif method in STUDY_MUTATIONS:
             from rfad.application.project_study_contract import validate_input
 
             validate_input(method, context, data)
@@ -204,11 +211,17 @@ class ProjectService:
     def _dispatch_mutation(self, state: dict, method: str, context: dict, data: dict) -> dict:
         """! @brief 영수증과 동일한 transaction에서 기능별 명령을 실행한다."""
         self._preflight(method, context, data)
-        if method in STUDY_MUTATIONS:
+        if method == "target.editor.apply":
+            return target_editor.admit(self, state, context, data)
+        elif method == "template.apply":
+            return self.templates.apply(state, context, data)
+        elif method in STUDY_MUTATIONS:
             return self.studies.admit(state, method, context, data)
         elif method == "project.apply_command":
             if data["type"] == "pcb_stackup.apply":
                 raise ProjectError("E_UNSUPPORTED", "적층 적용은 pcb.selection.preview와 pcb.selection.apply를 사용하십시오.")
+            if isinstance(data["type"], str) and data["type"].startswith("template_instance."):
+                raise ProjectError("E_UNSUPPORTED", "템플릿 적용은 template.synthesize와 template.apply를 사용하십시오.")
             return self._apply(state, context, data)
         elif method == "pcb.selection.apply":
             return self.pcb_selection.apply(state, context, data)

@@ -17,7 +17,7 @@ bool RequiresCurrentValue(const std::string& key)
 {
     const auto separator = key.rfind('.');
     const std::string suffix = separator == std::string::npos ? key : key.substr(separator + 1);
-    return suffix == "mode" || suffix == "value" || suffix == "unit";
+    return suffix == "mode" || suffix == "value" || suffix == "unit" || key == "sampling.kind";
 }
 
 /** @brief 입력 모드와 고급 정보 선택에 따라 가용 상태를 계산한다. */
@@ -26,8 +26,14 @@ Availability Evaluate(const std::string& key, const Fields& fields, bool showDet
     const Json& descriptor = *fields.at(key).descriptor;
     bool enabled = !descriptor.value("readonly", false);
     bool visible = !descriptor.value("advanced", false) || showDetails;
-    if (key.size() >= 12 && key.substr(key.size() - 12) == "display_note" &&
-        descriptor.at("value") == "")
+    const auto sampling = fields.find("sampling.kind");
+    if (sampling != fields.end() && (key == "sampling.count" || key == "sampling.explicit"))
+    {
+        const bool active = sampling->second.value == (key == "sampling.count" ? "linear" : "explicit");
+        visible = visible && active;
+        enabled = enabled && active;
+    }
+    if (key.size() >= 12 && key.substr(key.size() - 12) == "display_note" && descriptor.at("value") == "")
     {
         visible = false;
     }
@@ -58,7 +64,7 @@ Availability Evaluate(const std::string& key, const Fields& fields, bool showDet
             if (suffix == "value")
             {
                 enabled = enabled && mode == "value";
-                visible = visible && mode != "missing";
+                visible = visible && mode != "missing" && mode != "absent";
             }
             else if (suffix == "unit")
             {
@@ -95,10 +101,13 @@ std::string ResolveDiagnosticField(const std::string& path, const Json& selectio
     }
     const std::string kind = selection.value("kind", "");
     const std::string identity = selection.value("id", "");
-    const std::map<std::string, std::string> collections = {
-        {"parameter", "parameters"}, {"new_parameter", "parameters"}, {"material", "materials"},
-        {"layer", "stackup"}, {"geometry", "geometry"}, {"port", "ports"}, {"net", "nets"}
-    };
+    const std::map<std::string, std::string> collections = {{"parameter", "parameters"},
+                                                            {"new_parameter", "parameters"},
+                                                            {"material", "materials"},
+                                                            {"layer", "stackup"},
+                                                            {"geometry", "geometry"},
+                                                            {"port", "ports"},
+                                                            {"net", "nets"}};
     auto collection = collections.find(kind);
     std::vector<std::string> prefixes;
     if (collection != collections.end() && !identity.empty())
@@ -168,9 +177,12 @@ std::string ValueLabel(const std::string& key, const Fields& fields)
         return "";
     }
     const std::string inputMode = mode->second.value.get<std::string>();
-    return inputMode == "missing" ? unit->second.descriptor->at("label").get<std::string>() :
-        ((rootValue && inputMode == "expression" ? std::string("마지막 적용값") :
-            fields.at(key).descriptor->at("label").get<std::string>() + (inputMode == "parameter" ? " (마지막 적용값)" : "")) + " / 단위");
+    return inputMode == "missing"
+               ? unit->second.descriptor->at("label").get<std::string>()
+               : ((rootValue && inputMode == "expression" ? std::string("마지막 적용값")
+                                                          : fields.at(key).descriptor->at("label").get<std::string>() +
+                                                                (inputMode == "parameter" ? " (마지막 적용값)" : "")) +
+                  " / 단위");
 }
 
 /** @brief 단위만 변경된 초안의 환산 안내를 실제 변경 상태에서 생성한다. */
@@ -188,8 +200,7 @@ std::string InputNotice(const Fields& fields)
         const std::string prefix = rootUnit ? "" : key.substr(0, key.size() - 4);
         const auto number = fields.find(prefix + "value");
         const auto mode = fields.find(prefix + "mode");
-        if (number == fields.end() || mode == fields.end() ||
-            item.second.value == item.second.descriptor->at("value"))
+        if (number == fields.end() || mode == fields.end() || item.second.value == item.second.descriptor->at("value"))
         {
             continue;
         }
@@ -201,8 +212,9 @@ std::string InputNotice(const Fields& fields)
             continue;
         }
         notices.push_back(number->second.descriptor->at("label").get<std::string>() +
-            ": 단위만 변경한 숫자는 적용 후 환산됩니다. 마지막 적용값: " + original + " " +
-            Text(item.second.descriptor->at("value")) + ". 값도 함께 수정하면 새 값과 단위를 사용합니다.");
+                          ": 단위만 변경한 숫자는 적용 후 환산됩니다. 마지막 적용값: " + original + " " +
+                          Text(item.second.descriptor->at("value")) +
+                          ". 값도 함께 수정하면 새 값과 단위를 사용합니다.");
     }
     std::string text = notices.empty() ? "" : notices.front();
     if (notices.size() > 1)

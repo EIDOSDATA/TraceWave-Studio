@@ -18,8 +18,7 @@ wxStaticText* SectionTitle(wxWindow* parent, const std::string& title)
 /** @brief 관련 명령 묶음 사이에 가벼운 native 경계를 둔다. */
 void ToolSeparator(wxWindow* parent, wxSizer* sizer)
 {
-    auto* line = new wxStaticLine(parent, wxID_ANY, wxDefaultPosition,
-                                  parent->FromDIP(wxSize(1, 20)), wxLI_VERTICAL);
+    auto* line = new wxStaticLine(parent, wxID_ANY, wxDefaultPosition, parent->FromDIP(wxSize(1, 20)), wxLI_VERTICAL);
     sizer->Add(line, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, parent->FromDIP(StudioTheme::Space));
 }
 }
@@ -47,6 +46,9 @@ void StudioFrame::BuildInterface()
     bar->Append(menu, Display("프로젝트"));
     bar->Append(edit, Display("편집"));
     auto* design = new wxMenu;
+    design->Append(IdTargets, Display("목표 / 대역 설정"));
+    design->Append(IdTemplates, Display("원호 / IFA 템플릿"));
+    design->AppendSeparator();
     design->Append(IdBoard, Display("직사각 기판 만들기"));
     design->Append(IdCircularBoard, Display("원형 기판 만들기"));
     design->Append(IdPcbSelection, Display("기판 설정 / 제조업체 자료"));
@@ -69,7 +71,13 @@ void StudioFrame::BuildInterface()
     analysis->Append(IdCancelSolver, Display("해석 작업 취소"));
     analysis->Append(IdRadiation, Display("방사 패턴 조회"));
     analysis->Append(IdProjectStudy, Display("프로젝트 연구 / 격자·방사·손실"));
-    Bind(wxEVT_MENU, [this](wxCommandEvent&) { OpenProjectStudy(); }, IdProjectStudy);
+    Bind(
+        wxEVT_MENU,
+        [this](wxCommandEvent&)
+        {
+            OpenProjectStudy();
+        },
+        IdProjectStudy);
     const int studyReportId = wxWindow::NewControlId();
     analysis->Append(studyReportId, Display("수렴 연구 보고서 비교"));
     Bind(
@@ -100,12 +108,13 @@ void StudioFrame::BuildInterface()
     StudioTheme::BindSurface(*this, StudioTheme::Surface::Workspace);
     m_manager = new wxAuiManager(this);
     StudioTheme::ConfigureDocking(*m_manager, *this);
-    Bind(wxEVT_SYS_COLOUR_CHANGED, [this](wxSysColourChangedEvent& event)
-    {
-        StudioTheme::ConfigureDocking(*m_manager, *this);
-        m_manager->Update();
-        event.Skip();
-    });
+    Bind(wxEVT_SYS_COLOUR_CHANGED,
+         [this](wxSysColourChangedEvent& event)
+         {
+             StudioTheme::ConfigureDocking(*m_manager, *this);
+             m_manager->Update();
+             event.Skip();
+         });
     auto* workspace = new wxPanel(this);
     StudioTheme::BindSurface(*workspace);
     auto* top = new wxBoxSizer(wxHORIZONTAL);
@@ -134,6 +143,8 @@ void StudioFrame::BuildInterface()
     auto* navigation = new wxPanel(this);
     StudioTheme::BindSurface(*navigation);
     auto* navigationSizer = new wxBoxSizer(wxVERTICAL);
+    AddTool(navigation, navigationSizer, IdTargets, "목표 / 대역 설정");
+    AddTool(navigation, navigationSizer, IdTemplates, "원호 / IFA 템플릿");
     navigationSizer->Add(SectionTitle(navigation, "설계 단계"), 0, wxALL, FromDIP(StudioTheme::PanelPadding));
     m_steps = new wxListBox(navigation, wxID_ANY);
     for (const auto& label : {"1  기판", "2  패턴", "3  재료", "4  급전", "5  입력 검사"})
@@ -441,6 +452,20 @@ void StudioFrame::BuildInterface()
             OpenPcbSelection();
         },
         IdPcbSelection);
+    Bind(
+        wxEVT_MENU,
+        [this](wxCommandEvent&)
+        {
+            OpenDesignSetup(false);
+        },
+        IdTargets);
+    Bind(
+        wxEVT_MENU,
+        [this](wxCommandEvent&)
+        {
+            OpenDesignSetup(true);
+        },
+        IdTemplates);
     UpdateControls();
 }
 

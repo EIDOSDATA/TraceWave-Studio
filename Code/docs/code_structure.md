@@ -64,6 +64,10 @@ StudioFrame은 화면 사이의 연결과 서비스 DTO 캐시를 유지한다. 
 
 사용자 목표 입력은 `domain/targets.py`가 대역/표본/지표/참조/미정값을 검증하고 목표 개정과 역명령을 만든다. `project.py`는 프로젝트 0.3과 0.1/0.2 읽기 호환을 관리하며 `ProjectHistory`/`RequestLedger`가 기존 원자 게시를 그대로 사용한다. 목표별로 별도 저장소나 작업 상태머신을 만들지 않는다. `target_input_status`는 입력 상태만 제공하고 solver 설정이나 성능 판정을 생성하지 않는다.
 
+목표 편집은 `application/target_editor.py`의 공개 요청/명령 연결, `target_editor_fields.py`의 폼/출처 DTO와 `target_editor_values.py`의 변경값/단위 처리로 나눈다. 템플릿은 `templates/cards.py`의 카드, `domain/template_inputs.py`의 입력 변환, `template_geometry.py`의 매개변수/기하, `template_ports.py`의 명시 급전, `template_instance.py`의 원본 사본 검증, `template_command.py`의 원자 명령으로 분리한다. `application/template_candidates.py`가 읽기 전용 미리보기와 검토 hash를 기존 writer에 연결한다. 단위 환산이나 출처 원본을 GUI가 별도로 계산하지 않는다.
+
+화면은 `target_editor_dialog.*`/`target_editor_view.cpp`, `template_dialog.*`/`template_view.cpp`와 `studio_design_setup.cpp`의 주 창 연결로 분리한다. 공통 `ProjectSetupDialog`는 요청 세대, 닫힌 창, 변경 중 잠금과 결과 불명 상태를 관리한다. `EditorPanel`의 기본/고급 입력, 변경값 추출과 기존 `DesignCanvas` 미리보기를 재사용한다. 목표/템플릿 화면의 성공 응답은 같은 프로젝트 명령/undo/redo로 이어지며 별도 저장 형식을 만들지 않는다.
+
 | 경계 | 모듈 | 책임 |
 | --- | --- | --- |
 | 공개 서비스 facade | `application/projects.py` | 저장소/조정기 수명, 요청 dispatch와 transaction 경계 |

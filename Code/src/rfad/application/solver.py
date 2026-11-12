@@ -17,6 +17,7 @@ from rfad.application.canonical import (
 )
 from rfad.domain.errors import ProjectError
 from rfad.domain.project import READABLE_SCHEMA_VERSIONS, validate_project
+from rfad.domain.resource_limits import MAX_WORKER_SOURCE_FILES
 
 
 PROFILE = "rfad.openems.rect-waveguide/0.1"
@@ -136,8 +137,8 @@ def _runtime(identity: object) -> None:
         _fail("E_VERSION", "해석 runtime profile이 일치하지 않습니다.", "runtime_identity.runtime_profile")
     _hash(identity["manifest_sha256"], "runtime_identity.manifest_sha256")
     files = identity["code_files"]
-    if type(files) is not list or not 1 <= len(files) <= 192:
-        _fail("E_RESOURCE", "runtime 소스 목록은 1개 이상 192개 이하여야 합니다.", "runtime_identity.code_files")
+    if type(files) is not list or not 1 <= len(files) <= MAX_WORKER_SOURCE_FILES:
+        _fail("E_RESOURCE", f"runtime 소스 목록은 1개 이상 {MAX_WORKER_SOURCE_FILES}개 이하여야 합니다.", "runtime_identity.code_files")
     seen = set()
     for index, item in enumerate(files):
         field = f"runtime_identity.code_files[{index}]"

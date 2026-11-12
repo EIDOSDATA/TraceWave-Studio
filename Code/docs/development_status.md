@@ -8,7 +8,24 @@
 
 [개별 손실 정밀도와 PTH 분할](pcb_loss_precision.md)을 추가했다. native QuarterCell 전도도 기여율과 sheet의 재료 계수 대체를 반영하여 유전체/평면 도체/비아를 독립 계산한다. 일반 연구는 개별 손실 기준과 임계 구간 최소 분할을 고정하고 비아 전력을 구분한다. WSL 제어 파일의 원자적 교체 읽기 경합과 8 MiB 초과 원시 필드의 스트리밍 검증/재후처리 전달도 보완했다. 코드 기능, 검사한 설정의 안정성과 실제 skin depth/제조/측정 정확도는 별개로 유지한다.
 
-제품 개발 영역은 `C:/Users/eidos/GitHub/TraceWave Studio/Code`다. 승인 기준선은 RFAD-D0-3.4, 커밋 `6ebeda156e9d31b893bf69046550f5df9b16dc64`다. 01_Docs와 승인 records는 변경하지 않았다. 기준선의 착수 전 표기는 당시 승인 기록이며 현재 상태는 R0 기초 구현 진행이다.
+제품 개발 영역은 `C:/Users/eidos/GitHub/TraceWave Studio/Code`다. 승인 기준선은 RFAD-D0-3.4, 커밋 `6ebeda156e9d31b893bf69046550f5df9b16dc64`다. 01_Docs와 승인 records는 변경하지 않았다. 기준선의 착수 전 표기는 당시 승인 기록이며 현재는 R1 내부 검증 제품을 향한 부분 구현 단계다. 전체 R1 수용은 완료하지 않았다.
+
+## 원호/IFA 템플릿과 목표 편집 (2026-11-12)
+
+요구 대조/목표 원본/Studio 기반까지의 변경은 `1ed9686b8eea5cec3b17931d8655565fbafc72e2`로 커밋하여 origin/main에 푸시했다. 이어 아래 구현을 추가했다. 이번 추가 변경과 앞서 푸시한 커밋을 구분한다.
+
+- [목표 편집 서비스](target_editor_contract.md)와 [wxWidgets 화면](target_template_gui.md): 다중 목표의 추가/수정/삭제, 단위와 미정 선택, 4개 지표 한계와 최대 1001개 명시 주파수 표본. 변경값만 적용하며 단위만 바꾼 입력과 기존 출처/근사를 보존한다. solver 설정과 목표 성능 판정은 생성하지 않는다.
+- [명시 기하 템플릿](template_contract.md): 원형/사각 보드의 원호와 사각 보드의 평면 IFA, 현재 도체층과 선택 목표 개정, 한국어 이름의 실제 매개변수/표현식/도형, 읽기 전용 2D 후보와 검토 hash, 한 명령의 적용/undo/redo. GUI의 첫 범위는 포트 미정인 형상 생성이며 기존 급전 편집으로 이어간다.
+- 최초 카드/입력/기준 core 원본/생성 사본을 프로젝트 소유 출처로 보존한다. 현재 도형을 직접 수정해도 과거 출처를 덮지 않고 변경 여부를 조회한다. 출처 256 KiB/프로젝트 512 KiB와 기존 객체 예산은 유한하게 유지한다.
+- 새 기능을 카드/입력/기하/포트/출처/명령/서비스와 화면/공통 비동기 수명으로 나눴다. worker 소스 파일 수는 공통 192개로 정리하고 CAD 2 MiB/solver 4 MiB 바이트 예산은 유지했다.
+
+실제 OCCT 시험은 원형 원호와 사각 IFA 각각의 공개 preview/apply/snapshot/STEP, 원본/미정 물성 보존, 과거 snapshot 봉인, CAD runtime 없는 재열기를 확인했다. 1001개 목표 표본의 출처 호환 보완 후 최종 소스에서 1개 시험의 두 사례가 24.986초에 통과했다. 같은 최종 소스의 목표/템플릿/저장/미지 확장/worker 예산 관련 97개 시험도 45.320초에 통과했다. 이는 기하/파일/재열기 통합 검사이며 이번 변경으로 FDTD나 제조/실측 검증을 새로 수행한 것은 아니다. 지원하지 않는 물성과 급전은 계속 차단하며 RO4350B 개별 손실과 GHz PTH 정확도의 미확립 상태를 유지한다.
+
+Windows 전체 서비스 회귀는 858개 중 768개 통과, 90개 환경 조건 스킵, 실패/오류 0으로 491.263초에 끝났다. 이 전체 수집은 마지막 1001개 출처 목록 호환 보완 전에 시작했으며, 보완 후 추가한 2개 사례를 포함한 최종 관련 97개 및 실제 CAD 검증을 별도로 수행했다. 스킵한 GUI/native/WSL 조건을 실행 성공에 합산하지 않는다. 새 템플릿 집중 시험은 최종 15개다. unknown 확장의 256개 목록 제한, 1002개 표본 거부와 실제 출처 256 KiB 초과의 원자 차단을 함께 확인했다.
+
+새 GUI는 조회 실패 후 목록/폼의 목표 ID를 다시 맞추고, 생성 성공 후 재조회가 실패하면 추가 적용을 잠근다. 다른 카드에 남긴 초안도 보존하며 닫을 때 미적용 입력의 폐기를 확인한다. 실제 목표/템플릿 프로세스 2개 시나리오는 182.702초에 통과했다. 긴 시나리오의 시험 전용 180초/외부 210초 한도는 제품 요청 timeout이나 성능 예산의 변경이 아니다. 상세 계약은 [화면 문서](target_template_gui.md), 로그/최종 소스와 실행 파일 해시는 [이번 검증 기록](../runtime_profiles/templates-target-editor.json)을 따른다. 이전 runtime profile은 당시 실행 기록으로 그대로 보존한다.
+
+최종 Release 빌드와 CTest 9개(0.38초)를 통과했다. 전체 실제 GUI 회귀는 20개 중 18개 통과/실제 WSL 계산 2개 조건부 제외로 344.431초에 끝났으며 실제 CAD GUI 2개를 포함한다. 현재 디스플레이에서 목표의 기본/출처 상세, 원호/IFA 입력 폼, 도체층 미선택 안내와 Esc 복귀를 시각/키보드로 확인했다. 2D 후보/적용/이력은 실제 GUI smoke로 확인했으며 수동 시각 검수와 구분한다. 모든 시험 창과 프로세스는 종료했다. 전체 DPI/IME/접근성, 실제 60/30 fps와 메모리 예산 수용은 후속이다.
 
 ## 요구 대조, 목표 입력과 Studio 기반 (2026-11-12)
 
@@ -105,7 +122,8 @@ wxWidgets, Windows 11+WSL2 우선, Linux GUI 후속, 원호/IFA, 내부 검증 �
 | 실제 설계 데이터 | 사각/원형 기판, 적층, 재료, net, 선/원호/구멍 포함 polygon/패드/비아, 단일 lumped port와 명시적 급전 좌표. 참조 무결성과 역명령 | 일반 접속 엔진과 제조 DRC, blind/buried via |
 | 목적별 입력 검사 | API-006 draft revision의 geometry/step/em, 고정 입력 TaskRef, 누락 진단 | snapshot 입력, 제조/물리 profile, solver 지원 검증 |
 | 명령/저장/스냅샷 | revision/receipt 원자 게시, 재시작, crash 경계. 0.1/0.2 원본과 봉인 유지, 첫 변경의 새 0.3 개정과 변환 기록. 영속 undo/redo와 history head 보호 | 이력 grouping/임의 이동, 독립 archive/import, GC, 정전 내구성 |
-| 목표 대역 입력 | target.set/remove, 다중 대역/주파수 표본/port/Z0와 4개 지표 한계, 목표별 개정/출처/미정 및 미평가 표시 | GUI/프리셋/관측/편파/제약, MetricRecord/Assessment 평가와 일반 raw 재사용 |
+| 목표 대역 입력 | target.set/remove와 wxWidgets 다중 목표 편집, 대역/주파수 표본/port/Z0와 4개 지표 한계, 목표별 개정/출처/미정 및 미평가 표시 | 프리셋/관측/편파/제약, MetricRecord/Assessment 평가와 일반 raw 재사용 |
+| 원호/IFA 템플릿 | 명시 치수 카드2종, 현재 기판/도체층/목표 개정 선택, 읽기 전용2D 후보, 검토 hash와 원자 적용/undo, 생성 당시 출처/원본 사본 | 문헌 원본 카드/초기 RF 합성/확장 topology, 제조/실물 정확도, 일반 연결/DRC |
 | Python 환경 | 서비스 .venv와 별도 .venv-cad, 44개 CAD 패키지 버전/wheel SHA256 고정 | 배포 패키지와 전체 라이선스 검증 |
 | CAD 환경 smoke | CadQuery 2.8.0/cadquery-ocp 7.9.3.1.1 박스 AP214 export/reimport의 초기 호환성 기록 | 배포 환경과 독립 수신 CAD 검증 |
 | CAD 기하와 STEP | 불변 snapshot을 mm로 투영, 사각/원형 유전체와 양수 두께 선/원호/영역/패드, 실제 drill과 중공 PTH barrel. 같은 층/net/재료 병합과 UUID mapping, AP242 schema/단위와 별도 OCCT reader 재입력, B-rep/sidecar | 독립 kernel 수신 CAD, 제조 및 RF 검증. 내부 기하 profile은 generated_unverified |

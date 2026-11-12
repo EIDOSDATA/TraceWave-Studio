@@ -4,6 +4,8 @@
 
 현행 상태 대조: 2026-11-12 KST. 이 이미지의 Studio 방향을 실제 wxWidgets 화면에 적용할 공통 계약과 단계별 검수는 [GUI 디자인과 화면 계약](studio_gui_design.md)을 따른다. 이미지를 현재 구현 화면으로 해석하지 않는다.
 
+현재 구성은 wxWidgets native 위젯, wxAUI 도킹, 사용자 정의 2D DesignCanvas와 wxGLCanvas/OpenGL ModelView다. 공통 라이트 스타일에 이어 [목표 편집/원호와 IFA 템플릿](target_template_gui.md)을 연결했다. 이미지에 있는 정밀 편집/작업별 전체 화면/3D 방사/다중 비교의 완료를 뜻하지 않는다.
+
 사용자의 완성형 UI 요청을 시각화한 개발 보조자료다. 승인된 RFAD-D0-3.4와 [05 화면 설계](../../01_Docs/05_RFAD_화면과_사용자_경험_설계.md)의 방향을 구체화한다. 시안은 구현 완료 화면이나 추가 설계 승인, RF 검증 근거가 아니다.
 
 ![TraceWave Studio GUI 목표 시안 v2](assets/tracewave-studio-ui-concept-v2.png)

@@ -3,11 +3,11 @@
 
 void StudioFrame::UpdateControls()
 {
-    const bool ready = m_connected && !m_busy && m_pcbDialog == nullptr;
+    const bool ready = m_connected && !m_busy && m_pcbDialog == nullptr && m_setupDialog == nullptr;
     const bool opened = ready && !m_project.empty();
     const bool cadRunning = m_cadPreparing || !m_cadTask.Id().empty();
-    const bool canSwitch = ready && m_studyDialog == nullptr && !cadRunning && !m_solverWorkflow.Active() && !m_solverRestoring &&
-                           !m_cadRestoring && !m_modelView->IsLoading();
+    const bool canSwitch = ready && m_studyDialog == nullptr && !cadRunning && !m_solverWorkflow.Active() &&
+                           !m_solverRestoring && !m_cadRestoring && !m_modelView->IsLoading();
     GetMenuBar()->Enable(IdCreate, canSwitch);
     GetMenuBar()->Enable(IdOpen, canSwitch);
     GetMenuBar()->Enable(IdSave, opened);
@@ -16,6 +16,8 @@ void StudioFrame::UpdateControls()
     GetMenuBar()->Enable(IdNewParameter, opened);
     GetMenuBar()->Enable(IdPcbSelection, opened && m_pcbSelectionSupported);
     GetMenuBar()->Enable(IdProjectStudy, opened && m_studySupported);
+    GetMenuBar()->Enable(IdTargets, opened && m_targetsSupported);
+    GetMenuBar()->Enable(IdTemplates, opened && m_templatesSupported);
     for (const int id : {IdNewMaterial, IdNewNet, IdNewPort})
     {
         GetMenuBar()->Enable(id, opened);
@@ -57,6 +59,10 @@ void StudioFrame::UpdateControls()
         {
             enabled = opened && m_pcbSelectionSupported;
         }
+        else if (item.first == IdTargets || item.first == IdTemplates)
+        {
+            enabled = opened && (item.first == IdTargets ? m_targetsSupported : m_templatesSupported);
+        }
         else if (item.first == IdLine || item.first == IdArc || item.first == IdCoordinates)
         {
             enabled = drawing;
@@ -87,7 +93,8 @@ void StudioFrame::UpdateControls()
         }
         else if (item.first == IdRadiation)
         {
-            enabled = opened && !m_solverSamples.empty() && m_solverSamples.at("metadata").contains("radiation_summary");
+            enabled =
+                opened && !m_solverSamples.empty() && m_solverSamples.at("metadata").contains("radiation_summary");
         }
         else if (item.first == IdProjectStudy)
         {
@@ -99,8 +106,9 @@ void StudioFrame::UpdateControls()
         }
         item.second->Enable(enabled);
     }
-    for (const int id : {IdBoard, IdCircularBoard, IdLayer, IdDielectric, IdCoordinates, IdDeleteShape, IdValidate,
-                         IdExportStep, IdBuild3D, IdCancelCad, IdOutputFolder, IdRunSolver, IdCancelSolver, IdRadiation})
+    for (const int id :
+         {IdBoard, IdCircularBoard, IdLayer, IdDielectric, IdCoordinates, IdDeleteShape, IdValidate, IdExportStep,
+          IdBuild3D, IdCancelCad, IdOutputFolder, IdRunSolver, IdCancelSolver, IdRadiation})
     {
         GetMenuBar()->Enable(id, m_tools.at(id)->IsEnabled());
     }

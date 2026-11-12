@@ -7,6 +7,7 @@ from pathlib import Path
 
 from rfad.application.canonical import canonical_bytes
 from rfad.domain.errors import ProjectError
+from rfad.domain.resource_limits import MAX_WORKER_SOURCE_FILES
 
 CODE_ROOT = Path(__file__).resolve().parents[3]
 
@@ -34,7 +35,7 @@ class CadRuntime:
         self.entry_bytes = self.entry.read_bytes()
         source_files = {path.relative_to(CODE_ROOT).as_posix(): path.read_bytes().decode("utf-8") for path in sorted((CODE_ROOT / "src/rfad").rglob("*.py"))}
         self.source_bytes = canonical_bytes(source_files)
-        if len(self.source_bytes) > 2 * 1024 * 1024 or len(source_files) > 128:
+        if len(self.source_bytes) > 2 * 1024 * 1024 or len(source_files) > MAX_WORKER_SOURCE_FILES:
             raise ProjectError("E_RESOURCE", "CAD worker 소스 묶음이 지원 상한을 초과했습니다.")
         self.manifest_bytes = self.manifest.read_bytes()
         if len(self.manifest_bytes) > 128 * 1024:

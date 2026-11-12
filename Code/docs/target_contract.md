@@ -70,7 +70,7 @@ undo/redo는 과거 의미 입력을 새 목표 개정으로 복원한다. 과�
 
 `tests/test_targets.py`는 다중 대역 저장, Hz/GHz SI 동등성, 미정/출처, 오류 rollback, 포트 의존성, 목표별 개정, 저장/재시작/재열기/snapshot/undo/redo/멱등성, 0.1/0.2 불변 읽기와 0.3 승격을 검증한다. 실제 CAD 및 PCB 계획 생성의 순수 경로로 목표가 물리 case와 solver 설정을 바꾸지 않는지도 확인한다. native CAD와 FDTD는 실행하지 않는다.
 
-후속 범위는 출처/원문/지역/version을 갖는 통신 프리셋, 목표 편집 GUI, 실현 이득/편파/관측 방향, 크기/제조 제약, parameter 참조, 주파수 데이터 가용성 안내, MetricRecord/Assessment 및 목표 평가이다. 기존 설계 승인과 실제 성능/제작/측정 검증을 구분한다.
+목표 편집은 [편집 서비스 계약](target_editor_contract.md)과 [wxWidgets 화면](target_template_gui.md)으로 연결했다. 변경한 입력만 적용하고 단위만 바꾼 값과 기존 출처/미정 상태를 보존한다. 후속 범위는 출처/원문/지역/version을 갖는 통신 프리셋, 실현 이득/편파/관측 방향, 크기/제조 제약, parameter 참조, 주파수 데이터 가용성 안내, MetricRecord/Assessment 및 목표 평가이다. 기존 설계 승인과 실제 성능/제작/측정 검증을 구분한다.
 
 ## 7. 공개 stdio 요청 예제
 

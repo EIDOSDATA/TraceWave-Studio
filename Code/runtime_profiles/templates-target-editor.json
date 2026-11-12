@@ -1,0 +1,971 @@
+{
+  "schema": "rfad.templates-target-editor-verification/0.1",
+  "recorded_at_utc": "2026-11-11T18:50:51.508225+00:00",
+  "design_baseline": "RFAD-D0-3.4",
+  "base_commit": "1ed9686b8eea5cec3b17931d8655565fbafc72e2",
+  "working_tree_changes": true,
+  "scope": [
+    "명시 치수 원호/평면 IFA와 출처 사본",
+    "다중 목표 편집과 wxWidgets 연결",
+    "CAD/STEP/재열기와 미정 입력 보존"
+  ],
+  "runs": [
+    {
+      "scope": "전체 서비스 회귀. 마지막1001개 출처 목록 보완 전에 수집/시작했으며 이후 아래 최종97개로 추가 검증.",
+      "tests_run": 858,
+      "passed": 768,
+      "skipped": 90,
+      "failures": 0,
+      "errors": 0,
+      "test_seconds": 491.263,
+      "log": {
+        "path": "Code/.local/templates-targets-windows-regression.log",
+        "sha256": "d1db89f23083339ba2a5adc81a32448ddaa887bd8065ae21c5ff9013fe3addb9",
+        "bytes": 215037
+      }
+    },
+    {
+      "scope": "최종 소스의 template15/target editor11/target13/domain19/service14/source capture3/solver plan22.",
+      "tests_run": 97,
+      "passed": 97,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "test_seconds": 45.32,
+      "log": {
+        "path": "Code/.local/templates-targets-final-contract-tests.log",
+        "sha256": "2fcf9b3509fbb48be4c06cd6f7505061a5a0d94adf59ced22dfc0d82485df9a0",
+        "bytes": 24125
+      }
+    },
+    {
+      "scope": "최종 소스의 실제 Windows OCCT 원호/IFA 두 사례와 runtime 없는 재열기.",
+      "tests_run": 1,
+      "passed": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "test_seconds": 24.986,
+      "log": {
+        "path": "Code/.local/template-native-final-tests.log",
+        "sha256": "060c20e623b0a1d998e6d76be0f7f5c5e5bac36f831ba73ed6b570506ed357d3",
+        "bytes": 404
+      }
+    },
+    {
+      "scope": "최종 wxWidgets 실제 프로세스 회귀. 조건부 native/WSL 스킵을 구분.",
+      "tests_run": 20,
+      "passed": 18,
+      "skipped": 2,
+      "failures": 0,
+      "errors": 0,
+      "test_seconds": 344.431,
+      "log": {
+        "path": "Code/.local/target-template-gui-regression.log",
+        "sha256": "614909a0bb4e875b14913d2edcf70c9aeb6ca432a3be1453bc31ac0a1c1ac69c",
+        "bytes": 5482
+      }
+    },
+    {
+      "scope": "최종 요구/AC/FN/VT/API 추적의 손상 검출과 연결 검사.",
+      "tests_run": 12,
+      "passed": 12,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "test_seconds": 0.627,
+      "log": {
+        "path": "Code/.local/template-implementation-audit-tests.log",
+        "sha256": "a676bc429747c92878654a783e0b42c9b389266e6a50a01fc5d8c712e3104b6f",
+        "bytes": 3349
+      }
+    }
+  ],
+  "ctest": {
+    "tests_run": 9,
+    "passed": 9,
+    "log": {
+      "path": "Code/.local/target-template-gui-ctest.log",
+      "sha256": "a67cab0c85749034ce39335760d0355c286d59ef399981fae8bfd695f22bf923",
+      "bytes": 1052
+    }
+  },
+  "gui_focused_log": {
+    "path": "Code/.local/target-template-gui-tests.log",
+    "sha256": "53580fc582df9bfa29c8ffab9609afc61d7cae42a257bc20b538da9fe16a6313",
+    "bytes": 657
+  },
+  "gui_smoke_reports": [
+    {
+      "path": "Code/.local/target-template-gui/target-template.json",
+      "sha256": "43d69e55f4e71225a2885b49172bc03627c989a75ae533180bad0e5502b34aee",
+      "bytes": 2296
+    },
+    {
+      "path": "Code/.local/target-template-gui/target-template-delayed.json",
+      "sha256": "fd12f8029dcb5533479f64c204fa3525fb974b8d3e174041a3d08e6e111a73d9",
+      "bytes": 2296
+    }
+  ],
+  "release_build_log": {
+    "path": "Code/.local/target-template-gui-build-final.log",
+    "sha256": "4d5a07cd511936c68c7cab1e0458e29d273ebe76d36cb779e6af6006217df852",
+    "bytes": 340
+  },
+  "manual_visual_review": {
+    "scope": [
+      "주 창 진입",
+      "목표 빈 값/미정/기본/출처 상세",
+      "원호/IFA 카드와 입력 폼",
+      "도체층 미선택 안내",
+      "Esc 복귀"
+    ],
+    "display_scope": "현재 Windows 디스플레이 조건",
+    "clipping_or_overlap_observed": false,
+    "candidate_canvas_evidence": "실제 GUI smoke assertion; 수동 시각 검수 범위와 구분",
+    "test_processes_closed": true,
+    "full_dpi_ime_accessibility_or_performance_accepted": false
+  },
+  "native_cases": [
+    {
+      "template_id": "builtin.explicit_arc",
+      "card_hash": "7cbc4a329aafd7d3b7fcc75282580faf80272dd37b4d80a35be0f7c8a9bd01a2",
+      "snapshot": {
+        "artifact": {
+          "bytes": 28519,
+          "sha256": "7f3dffbd063b6e14df0cf4000b034fb3a3325fcbb4751753608b1933d374850c",
+          "uri": "projects/CAD 한글 교환 검증/snapshots/535205ec-8fb0-4dfb-9f79-58efc9e27c11/c80eae5a-0904-4ded-b065-f1e7677e1585/project.json"
+        },
+        "canonical_version": "rfad.canonical/1.0",
+        "content_hash": "c82bdafde70f3c0c4da2346f4a97396e04dab391dbc0339cb2d8846880236817",
+        "description": "",
+        "project_id": "92080032-0c36-48ac-bd79-512d25525f9d",
+        "revision_id": "535205ec-8fb0-4dfb-9f79-58efc9e27c11",
+        "schema_version": "rfad.project/0.3",
+        "sealed_at": 1794422178.7749856,
+        "snapshot_id": "c80eae5a-0904-4ded-b065-f1e7677e1585",
+        "validation_state": "not_evaluated"
+      },
+      "result": {
+        "artifacts": [
+          {
+            "artifact_id": "ceb4f847-872f-47f8-b9d7-b4e6e36304b7",
+            "bytes": 48552,
+            "media_type": "model/step",
+            "producer": "rfad.cad/0.1",
+            "profile_id": "rfad.step.mechanical/0.1",
+            "role": "step",
+            "run_id": "7cc459a3-f281-4d78-9fb9-ce9312f38e3e",
+            "sha256": "6467b46b0a76975ffef381f7a2ea362fbab686444d70f527fdd736346c5b7c66",
+            "snapshot_id": "c80eae5a-0904-4ded-b065-f1e7677e1585",
+            "status": "generated_unverified",
+            "uri": "projects/CAD 한글 교환 검증/artifacts/7cc459a3-f281-4d78-9fb9-ce9312f38e3e/model.step"
+          },
+          {
+            "artifact_id": "579fdf8a-f48a-4ccc-83da-e7faa57f7a57",
+            "bytes": 13297,
+            "media_type": "application/vnd.opencascade.brep",
+            "producer": "rfad.cad/0.1",
+            "profile_id": "rfad.step.mechanical/0.1",
+            "role": "brep",
+            "run_id": "7cc459a3-f281-4d78-9fb9-ce9312f38e3e",
+            "sha256": "88764da956e9ccf2f3829c72a9dd5d53008998c8bd0958e7fff86ac1ff72abb1",
+            "snapshot_id": "c80eae5a-0904-4ded-b065-f1e7677e1585",
+            "status": "generated_unverified",
+            "uri": "projects/CAD 한글 교환 검증/artifacts/7cc459a3-f281-4d78-9fb9-ce9312f38e3e/model.brep"
+          },
+          {
+            "artifact_id": "ec8f80dd-043c-41c5-8244-24b682b778d7",
+            "bytes": 70743,
+            "media_type": "application/json",
+            "producer": "rfad.cad/0.1",
+            "profile_id": "rfad.step.mechanical/0.1",
+            "role": "display_mesh",
+            "run_id": "7cc459a3-f281-4d78-9fb9-ce9312f38e3e",
+            "sha256": "8b3aa1d2775876cfbeaa1c529b9e8230bf985cc171743844b507d27c2e5f36bf",
+            "snapshot_id": "c80eae5a-0904-4ded-b065-f1e7677e1585",
+            "status": "generated_unverified",
+            "uri": "projects/CAD 한글 교환 검증/artifacts/7cc459a3-f281-4d78-9fb9-ce9312f38e3e/mesh.json"
+          },
+          {
+            "artifact_id": "a0ac9641-2b34-4b28-8f39-8adac44d7eeb",
+            "bytes": 1529,
+            "media_type": "application/json",
+            "producer": "rfad.cad/0.1",
+            "profile_id": "rfad.step.mechanical/0.1",
+            "role": "validation",
+            "run_id": "7cc459a3-f281-4d78-9fb9-ce9312f38e3e",
+            "sha256": "31ba417f1f6fa40d2ecc358f3420233a3af2382efaa9201c9c47ab3c8fab2013",
+            "snapshot_id": "c80eae5a-0904-4ded-b065-f1e7677e1585",
+            "status": "generated_unverified",
+            "uri": "projects/CAD 한글 교환 검증/artifacts/7cc459a3-f281-4d78-9fb9-ce9312f38e3e/validation.json"
+          },
+          {
+            "artifact_id": "7134fc1c-6f95-4b9f-bb08-268cb10f6a10",
+            "bytes": 61742,
+            "media_type": "application/json",
+            "producer": "rfad.cad/0.1",
+            "profile_id": "rfad.step.mechanical/0.1",
+            "role": "sidecar",
+            "run_id": "7cc459a3-f281-4d78-9fb9-ce9312f38e3e",
+            "sha256": "1a50010ae53c5abb9dd22594bad1b3bbaad1908c375546b9297dc06a00dc798a",
+            "snapshot_id": "c80eae5a-0904-4ded-b065-f1e7677e1585",
+            "status": "generated_unverified",
+            "uri": "projects/CAD 한글 교환 검증/artifacts/7cc459a3-f281-4d78-9fb9-ce9312f38e3e/sidecar.json"
+          },
+          {
+            "artifact_id": "fae8cc96-4bc6-44e7-80cd-81b55dd3a152",
+            "bytes": 3730,
+            "media_type": "application/json",
+            "producer": "rfad.cad/0.1",
+            "profile_id": "rfad.step.mechanical/0.1",
+            "role": "manifest",
+            "run_id": "7cc459a3-f281-4d78-9fb9-ce9312f38e3e",
+            "sha256": "31a121de33954703528c96dd0afbb513b2f943dc2cc872bb8988c981df145170",
+            "snapshot_id": "c80eae5a-0904-4ded-b065-f1e7677e1585",
+            "status": "generated_unverified",
+            "uri": "projects/CAD 한글 교환 검증/artifacts/7cc459a3-f281-4d78-9fb9-ce9312f38e3e/manifest.json"
+          }
+        ],
+        "body_count": 2,
+        "kernel_independent": false,
+        "manufacturing_verified": false,
+        "physics_verified": false,
+        "profile": "rfad.step.mechanical/0.1",
+        "snapshot": {
+          "artifact": {
+            "bytes": 28519,
+            "sha256": "7f3dffbd063b6e14df0cf4000b034fb3a3325fcbb4751753608b1933d374850c",
+            "uri": "projects/CAD 한글 교환 검증/snapshots/535205ec-8fb0-4dfb-9f79-58efc9e27c11/c80eae5a-0904-4ded-b065-f1e7677e1585/project.json"
+          },
+          "canonical_version": "rfad.canonical/1.0",
+          "content_hash": "c82bdafde70f3c0c4da2346f4a97396e04dab391dbc0339cb2d8846880236817",
+          "description": "",
+          "project_id": "92080032-0c36-48ac-bd79-512d25525f9d",
+          "revision_id": "535205ec-8fb0-4dfb-9f79-58efc9e27c11",
+          "schema_version": "rfad.project/0.3",
+          "sealed_at": 1794422178.7749856,
+          "snapshot_id": "c80eae5a-0904-4ded-b065-f1e7677e1585",
+          "validation_state": "not_evaluated"
+        },
+        "solid_count": 2,
+        "status": "generated_unverified",
+        "step_schema": "AP242_MANAGED_MODEL_BASED_3D_ENGINEERING_MIM_LF {1 0 10303 442 1 1 4 }"
+      },
+      "artifacts": [
+        {
+          "artifact_id": "ceb4f847-872f-47f8-b9d7-b4e6e36304b7",
+          "bytes": 48552,
+          "media_type": "model/step",
+          "producer": "rfad.cad/0.1",
+          "profile_id": "rfad.step.mechanical/0.1",
+          "role": "step",
+          "run_id": "7cc459a3-f281-4d78-9fb9-ce9312f38e3e",
+          "sha256": "6467b46b0a76975ffef381f7a2ea362fbab686444d70f527fdd736346c5b7c66",
+          "snapshot_id": "c80eae5a-0904-4ded-b065-f1e7677e1585",
+          "status": "generated_unverified",
+          "uri": "projects/CAD 한글 교환 검증/artifacts/7cc459a3-f281-4d78-9fb9-ce9312f38e3e/model.step"
+        },
+        {
+          "artifact_id": "579fdf8a-f48a-4ccc-83da-e7faa57f7a57",
+          "bytes": 13297,
+          "media_type": "application/vnd.opencascade.brep",
+          "producer": "rfad.cad/0.1",
+          "profile_id": "rfad.step.mechanical/0.1",
+          "role": "brep",
+          "run_id": "7cc459a3-f281-4d78-9fb9-ce9312f38e3e",
+          "sha256": "88764da956e9ccf2f3829c72a9dd5d53008998c8bd0958e7fff86ac1ff72abb1",
+          "snapshot_id": "c80eae5a-0904-4ded-b065-f1e7677e1585",
+          "status": "generated_unverified",
+          "uri": "projects/CAD 한글 교환 검증/artifacts/7cc459a3-f281-4d78-9fb9-ce9312f38e3e/model.brep"
+        },
+        {
+          "artifact_id": "ec8f80dd-043c-41c5-8244-24b682b778d7",
+          "bytes": 70743,
+          "media_type": "application/json",
+          "producer": "rfad.cad/0.1",
+          "profile_id": "rfad.step.mechanical/0.1",
+          "role": "display_mesh",
+          "run_id": "7cc459a3-f281-4d78-9fb9-ce9312f38e3e",
+          "sha256": "8b3aa1d2775876cfbeaa1c529b9e8230bf985cc171743844b507d27c2e5f36bf",
+          "snapshot_id": "c80eae5a-0904-4ded-b065-f1e7677e1585",
+          "status": "generated_unverified",
+          "uri": "projects/CAD 한글 교환 검증/artifacts/7cc459a3-f281-4d78-9fb9-ce9312f38e3e/mesh.json"
+        },
+        {
+          "artifact_id": "a0ac9641-2b34-4b28-8f39-8adac44d7eeb",
+          "bytes": 1529,
+          "media_type": "application/json",
+          "producer": "rfad.cad/0.1",
+          "profile_id": "rfad.step.mechanical/0.1",
+          "role": "validation",
+          "run_id": "7cc459a3-f281-4d78-9fb9-ce9312f38e3e",
+          "sha256": "31ba417f1f6fa40d2ecc358f3420233a3af2382efaa9201c9c47ab3c8fab2013",
+          "snapshot_id": "c80eae5a-0904-4ded-b065-f1e7677e1585",
+          "status": "generated_unverified",
+          "uri": "projects/CAD 한글 교환 검증/artifacts/7cc459a3-f281-4d78-9fb9-ce9312f38e3e/validation.json"
+        },
+        {
+          "artifact_id": "7134fc1c-6f95-4b9f-bb08-268cb10f6a10",
+          "bytes": 61742,
+          "media_type": "application/json",
+          "producer": "rfad.cad/0.1",
+          "profile_id": "rfad.step.mechanical/0.1",
+          "role": "sidecar",
+          "run_id": "7cc459a3-f281-4d78-9fb9-ce9312f38e3e",
+          "sha256": "1a50010ae53c5abb9dd22594bad1b3bbaad1908c375546b9297dc06a00dc798a",
+          "snapshot_id": "c80eae5a-0904-4ded-b065-f1e7677e1585",
+          "status": "generated_unverified",
+          "uri": "projects/CAD 한글 교환 검증/artifacts/7cc459a3-f281-4d78-9fb9-ce9312f38e3e/sidecar.json"
+        },
+        {
+          "artifact_id": "fae8cc96-4bc6-44e7-80cd-81b55dd3a152",
+          "bytes": 3730,
+          "media_type": "application/json",
+          "producer": "rfad.cad/0.1",
+          "profile_id": "rfad.step.mechanical/0.1",
+          "role": "manifest",
+          "run_id": "7cc459a3-f281-4d78-9fb9-ce9312f38e3e",
+          "sha256": "31a121de33954703528c96dd0afbb513b2f943dc2cc872bb8988c981df145170",
+          "snapshot_id": "c80eae5a-0904-4ded-b065-f1e7677e1585",
+          "status": "generated_unverified",
+          "uri": "projects/CAD 한글 교환 검증/artifacts/7cc459a3-f281-4d78-9fb9-ce9312f38e3e/manifest.json"
+        }
+      ],
+      "materials_and_stackup_preserved": true,
+      "targets_preserved": true,
+      "runtime_free_reopen": true,
+      "original_snapshot_preserved": true,
+      "artifacts_retained_after_test": false
+    },
+    {
+      "template_id": "builtin.explicit_planar_ifa",
+      "card_hash": "e1b9ec1c63e0ee0b9dcfe80615f61569838871353bf4fc610d98259ac80af5d1",
+      "snapshot": {
+        "artifact": {
+          "bytes": 40084,
+          "sha256": "2b1c5d79507ce723e18c08174582697dfc0d8448a65bb21612573ced50accb67",
+          "uri": "projects/CAD 한글 교환 검증/snapshots/f64a59c3-aa10-4f09-b413-e54de7d9313b/3747045a-406e-44ee-ae3f-df979c60b0a9/project.json"
+        },
+        "canonical_version": "rfad.canonical/1.0",
+        "content_hash": "050001f7f4465859e5749bea844b9625c078325d4f81217255196456ed471a0b",
+        "description": "",
+        "project_id": "6d48e4b3-bc83-4aef-bbaf-13e7f907af7c",
+        "revision_id": "f64a59c3-aa10-4f09-b413-e54de7d9313b",
+        "schema_version": "rfad.project/0.3",
+        "sealed_at": 1794422192.0436938,
+        "snapshot_id": "3747045a-406e-44ee-ae3f-df979c60b0a9",
+        "validation_state": "not_evaluated"
+      },
+      "result": {
+        "artifacts": [
+          {
+            "artifact_id": "bafdf9d9-ec5c-4479-a872-54e8fbf14d06",
+            "bytes": 142860,
+            "media_type": "model/step",
+            "producer": "rfad.cad/0.1",
+            "profile_id": "rfad.step.mechanical/0.1",
+            "role": "step",
+            "run_id": "cb919c41-36d9-44e9-9bb7-f35031d91cb6",
+            "sha256": "e2808a525e568ee832de15697260d4f698819234bfb6110607a5af586c01f341",
+            "snapshot_id": "3747045a-406e-44ee-ae3f-df979c60b0a9",
+            "status": "generated_unverified",
+            "uri": "projects/CAD 한글 교환 검증/artifacts/cb919c41-36d9-44e9-9bb7-f35031d91cb6/model.step"
+          },
+          {
+            "artifact_id": "455fb2f8-0855-4bc5-8cb2-bec6de007e22",
+            "bytes": 29025,
+            "media_type": "application/vnd.opencascade.brep",
+            "producer": "rfad.cad/0.1",
+            "profile_id": "rfad.step.mechanical/0.1",
+            "role": "brep",
+            "run_id": "cb919c41-36d9-44e9-9bb7-f35031d91cb6",
+            "sha256": "224e0a7c86de1c02ca020531c0d2b434571ddf9c558d159690babf538a832f5a",
+            "snapshot_id": "3747045a-406e-44ee-ae3f-df979c60b0a9",
+            "status": "generated_unverified",
+            "uri": "projects/CAD 한글 교환 검증/artifacts/cb919c41-36d9-44e9-9bb7-f35031d91cb6/model.brep"
+          },
+          {
+            "artifact_id": "636bb183-26ba-489f-9824-1310260a2acf",
+            "bytes": 64539,
+            "media_type": "application/json",
+            "producer": "rfad.cad/0.1",
+            "profile_id": "rfad.step.mechanical/0.1",
+            "role": "display_mesh",
+            "run_id": "cb919c41-36d9-44e9-9bb7-f35031d91cb6",
+            "sha256": "9a44c97db168c38041a67fc21329701c1d1b66b170bae51fffc66d26b5d39ca7",
+            "snapshot_id": "3747045a-406e-44ee-ae3f-df979c60b0a9",
+            "status": "generated_unverified",
+            "uri": "projects/CAD 한글 교환 검증/artifacts/cb919c41-36d9-44e9-9bb7-f35031d91cb6/mesh.json"
+          },
+          {
+            "artifact_id": "1c2e1257-49e1-42de-ab25-3eb502b1063c",
+            "bytes": 1568,
+            "media_type": "application/json",
+            "producer": "rfad.cad/0.1",
+            "profile_id": "rfad.step.mechanical/0.1",
+            "role": "validation",
+            "run_id": "cb919c41-36d9-44e9-9bb7-f35031d91cb6",
+            "sha256": "57fa7a227e543baff2c5ae430105602ecb735753d16b9ec91c5e0c4fb137440f",
+            "snapshot_id": "3747045a-406e-44ee-ae3f-df979c60b0a9",
+            "status": "generated_unverified",
+            "uri": "projects/CAD 한글 교환 검증/artifacts/cb919c41-36d9-44e9-9bb7-f35031d91cb6/validation.json"
+          },
+          {
+            "artifact_id": "93c4913c-c77b-4872-be92-e7f3269bee91",
+            "bytes": 83405,
+            "media_type": "application/json",
+            "producer": "rfad.cad/0.1",
+            "profile_id": "rfad.step.mechanical/0.1",
+            "role": "sidecar",
+            "run_id": "cb919c41-36d9-44e9-9bb7-f35031d91cb6",
+            "sha256": "71b976deeddf2342f444db01e9918e77f8eaac618f077d77dd31b2f06cd805ae",
+            "snapshot_id": "3747045a-406e-44ee-ae3f-df979c60b0a9",
+            "status": "generated_unverified",
+            "uri": "projects/CAD 한글 교환 검증/artifacts/cb919c41-36d9-44e9-9bb7-f35031d91cb6/sidecar.json"
+          },
+          {
+            "artifact_id": "b2d9e8f6-6d00-4d6f-ba65-a8bf92dd6484",
+            "bytes": 3731,
+            "media_type": "application/json",
+            "producer": "rfad.cad/0.1",
+            "profile_id": "rfad.step.mechanical/0.1",
+            "role": "manifest",
+            "run_id": "cb919c41-36d9-44e9-9bb7-f35031d91cb6",
+            "sha256": "97786d6ec1822135bfb519324e528eb6c8fdaec3520ce3c574210c5ff94f7077",
+            "snapshot_id": "3747045a-406e-44ee-ae3f-df979c60b0a9",
+            "status": "generated_unverified",
+            "uri": "projects/CAD 한글 교환 검증/artifacts/cb919c41-36d9-44e9-9bb7-f35031d91cb6/manifest.json"
+          }
+        ],
+        "body_count": 2,
+        "kernel_independent": false,
+        "manufacturing_verified": false,
+        "physics_verified": false,
+        "profile": "rfad.step.mechanical/0.1",
+        "snapshot": {
+          "artifact": {
+            "bytes": 40084,
+            "sha256": "2b1c5d79507ce723e18c08174582697dfc0d8448a65bb21612573ced50accb67",
+            "uri": "projects/CAD 한글 교환 검증/snapshots/f64a59c3-aa10-4f09-b413-e54de7d9313b/3747045a-406e-44ee-ae3f-df979c60b0a9/project.json"
+          },
+          "canonical_version": "rfad.canonical/1.0",
+          "content_hash": "050001f7f4465859e5749bea844b9625c078325d4f81217255196456ed471a0b",
+          "description": "",
+          "project_id": "6d48e4b3-bc83-4aef-bbaf-13e7f907af7c",
+          "revision_id": "f64a59c3-aa10-4f09-b413-e54de7d9313b",
+          "schema_version": "rfad.project/0.3",
+          "sealed_at": 1794422192.0436938,
+          "snapshot_id": "3747045a-406e-44ee-ae3f-df979c60b0a9",
+          "validation_state": "not_evaluated"
+        },
+        "solid_count": 2,
+        "status": "generated_unverified",
+        "step_schema": "AP242_MANAGED_MODEL_BASED_3D_ENGINEERING_MIM_LF {1 0 10303 442 1 1 4 }"
+      },
+      "artifacts": [
+        {
+          "artifact_id": "bafdf9d9-ec5c-4479-a872-54e8fbf14d06",
+          "bytes": 142860,
+          "media_type": "model/step",
+          "producer": "rfad.cad/0.1",
+          "profile_id": "rfad.step.mechanical/0.1",
+          "role": "step",
+          "run_id": "cb919c41-36d9-44e9-9bb7-f35031d91cb6",
+          "sha256": "e2808a525e568ee832de15697260d4f698819234bfb6110607a5af586c01f341",
+          "snapshot_id": "3747045a-406e-44ee-ae3f-df979c60b0a9",
+          "status": "generated_unverified",
+          "uri": "projects/CAD 한글 교환 검증/artifacts/cb919c41-36d9-44e9-9bb7-f35031d91cb6/model.step"
+        },
+        {
+          "artifact_id": "455fb2f8-0855-4bc5-8cb2-bec6de007e22",
+          "bytes": 29025,
+          "media_type": "application/vnd.opencascade.brep",
+          "producer": "rfad.cad/0.1",
+          "profile_id": "rfad.step.mechanical/0.1",
+          "role": "brep",
+          "run_id": "cb919c41-36d9-44e9-9bb7-f35031d91cb6",
+          "sha256": "224e0a7c86de1c02ca020531c0d2b434571ddf9c558d159690babf538a832f5a",
+          "snapshot_id": "3747045a-406e-44ee-ae3f-df979c60b0a9",
+          "status": "generated_unverified",
+          "uri": "projects/CAD 한글 교환 검증/artifacts/cb919c41-36d9-44e9-9bb7-f35031d91cb6/model.brep"
+        },
+        {
+          "artifact_id": "636bb183-26ba-489f-9824-1310260a2acf",
+          "bytes": 64539,
+          "media_type": "application/json",
+          "producer": "rfad.cad/0.1",
+          "profile_id": "rfad.step.mechanical/0.1",
+          "role": "display_mesh",
+          "run_id": "cb919c41-36d9-44e9-9bb7-f35031d91cb6",
+          "sha256": "9a44c97db168c38041a67fc21329701c1d1b66b170bae51fffc66d26b5d39ca7",
+          "snapshot_id": "3747045a-406e-44ee-ae3f-df979c60b0a9",
+          "status": "generated_unverified",
+          "uri": "projects/CAD 한글 교환 검증/artifacts/cb919c41-36d9-44e9-9bb7-f35031d91cb6/mesh.json"
+        },
+        {
+          "artifact_id": "1c2e1257-49e1-42de-ab25-3eb502b1063c",
+          "bytes": 1568,
+          "media_type": "application/json",
+          "producer": "rfad.cad/0.1",
+          "profile_id": "rfad.step.mechanical/0.1",
+          "role": "validation",
+          "run_id": "cb919c41-36d9-44e9-9bb7-f35031d91cb6",
+          "sha256": "57fa7a227e543baff2c5ae430105602ecb735753d16b9ec91c5e0c4fb137440f",
+          "snapshot_id": "3747045a-406e-44ee-ae3f-df979c60b0a9",
+          "status": "generated_unverified",
+          "uri": "projects/CAD 한글 교환 검증/artifacts/cb919c41-36d9-44e9-9bb7-f35031d91cb6/validation.json"
+        },
+        {
+          "artifact_id": "93c4913c-c77b-4872-be92-e7f3269bee91",
+          "bytes": 83405,
+          "media_type": "application/json",
+          "producer": "rfad.cad/0.1",
+          "profile_id": "rfad.step.mechanical/0.1",
+          "role": "sidecar",
+          "run_id": "cb919c41-36d9-44e9-9bb7-f35031d91cb6",
+          "sha256": "71b976deeddf2342f444db01e9918e77f8eaac618f077d77dd31b2f06cd805ae",
+          "snapshot_id": "3747045a-406e-44ee-ae3f-df979c60b0a9",
+          "status": "generated_unverified",
+          "uri": "projects/CAD 한글 교환 검증/artifacts/cb919c41-36d9-44e9-9bb7-f35031d91cb6/sidecar.json"
+        },
+        {
+          "artifact_id": "b2d9e8f6-6d00-4d6f-ba65-a8bf92dd6484",
+          "bytes": 3731,
+          "media_type": "application/json",
+          "producer": "rfad.cad/0.1",
+          "profile_id": "rfad.step.mechanical/0.1",
+          "role": "manifest",
+          "run_id": "cb919c41-36d9-44e9-9bb7-f35031d91cb6",
+          "sha256": "97786d6ec1822135bfb519324e528eb6c8fdaec3520ce3c574210c5ff94f7077",
+          "snapshot_id": "3747045a-406e-44ee-ae3f-df979c60b0a9",
+          "status": "generated_unverified",
+          "uri": "projects/CAD 한글 교환 검증/artifacts/cb919c41-36d9-44e9-9bb7-f35031d91cb6/manifest.json"
+        }
+      ],
+      "materials_and_stackup_preserved": true,
+      "targets_preserved": true,
+      "runtime_free_reopen": true,
+      "original_snapshot_preserved": true,
+      "artifacts_retained_after_test": false
+    }
+  ],
+  "native_evidence": {
+    "path": "Code/.local/template-native-final-evidence.json",
+    "sha256": "90eddec7d66ad282260203b467fb21b2605389e0166a94147a1abbe0f179b720",
+    "bytes": 21175
+  },
+  "full_regression_source_capture": {
+    "path": "Code/.local/templates-targets-regression-source.json",
+    "sha256": "fee1a162d95de67f6e357e52130ce01c099fdb04ba01b324494fbd69691d0f43",
+    "bytes": 24021
+  },
+  "product_changes_after_full_regression_started": [
+    {
+      "path": "Code/src/rfad/domain/project.py",
+      "before_sha256": "3ce1de5fe5ed87df0ae7d422e4a3f63384a79e02c70990f0d16be9eb0ae29150",
+      "final_sha256": "bebe63c640be7b05c33d598460aa246ef687fefd026061a1e0326ac0351c8869"
+    }
+  ],
+  "gui_executable": {
+    "path": "Code/build/windows-release/bin/tracewave_gui.exe",
+    "sha256": "47a8b6ee3d8b0d079bb706dc48e68ec16528ea2fbb1854c80d140c293da1acc8",
+    "bytes": 19204214
+  },
+  "worker_source_budget": {
+    "module_count": 136,
+    "source_bytes": 1117758,
+    "max_files": 192,
+    "cad_max_source_bytes": 2097152,
+    "solver_max_source_bytes": 4194304
+  },
+  "source_and_document_files": [
+    {
+      "path": "Code/CMakeLists.txt",
+      "sha256": "70cc2ebdacbc75f0064ec8f6acb0e1c7f7fbf03d380f14eb640edbce0e5c3ca7",
+      "bytes": 12175
+    },
+    {
+      "path": "Code/README.md",
+      "sha256": "a7882046773729940ee1d100ef1340b9bcfa3911ac64a3c253bd05874fd8fd2a",
+      "bytes": 22595
+    },
+    {
+      "path": "Code/docs/audit/design_functions.json",
+      "sha256": "77659b7b1e7ff2e1386498cd7442073032ab53b5cb13a2e055da0ccfd991bdbe",
+      "bytes": 31577
+    },
+    {
+      "path": "Code/docs/audit/function_matrix.md",
+      "sha256": "82159489b2c57bb7b9f34a0e17c6c978e43d62aba8c7b46f9d9c7c0200a29870",
+      "bytes": 68983
+    },
+    {
+      "path": "Code/docs/audit/implementation_matrix.json",
+      "sha256": "83d8a7aec28d35f94cd7f1d7270e2df21fbb9bda7acee25ef4a4de77c2ee5f78",
+      "bytes": 476610
+    },
+    {
+      "path": "Code/docs/code_structure.md",
+      "sha256": "c6fbe36b6b58d5af533ea47e47739646b1169d1742f1d6179f1f235c72ed9661",
+      "bytes": 18436
+    },
+    {
+      "path": "Code/docs/completion_plan.md",
+      "sha256": "ba462efe6ca69b2ce1e9031c23d94d0d449aba1449528342e37336558215424f",
+      "bytes": 19921
+    },
+    {
+      "path": "Code/docs/development_status.md",
+      "sha256": "2ad764b3fdd5c4f949c59209e52afb58e20490c40b290011f4d3a34372736154",
+      "bytes": 104594
+    },
+    {
+      "path": "Code/docs/implementation_audit.md",
+      "sha256": "41766fc5874f2f276f2636e55dac2e7725856d3ff3496dc35a1836b93af2c39b",
+      "bytes": 8679
+    },
+    {
+      "path": "Code/docs/reboot_resume.md",
+      "sha256": "e39202cae6a8e8a0aed99676d5787af6095f87b8efcbbc9415fe7031ca0452aa",
+      "bytes": 30769
+    },
+    {
+      "path": "Code/docs/shared_contracts.md",
+      "sha256": "8f152345e36953f83c2a74dca681cee0f04b6a5b59a78b629a6bb980b3741ee9",
+      "bytes": 12531
+    },
+    {
+      "path": "Code/docs/studio_gui_design.md",
+      "sha256": "7a2f124c021fa0c579e39d2b9a51a93501a6572f628dbcafc04f955fc97b540e",
+      "bytes": 31502
+    },
+    {
+      "path": "Code/docs/target_contract.md",
+      "sha256": "9b0072e454608e95b3191fd39329adbb9e686914ca93988bcb34562025517c72",
+      "bytes": 11330
+    },
+    {
+      "path": "Code/docs/target_editor_contract.md",
+      "sha256": "f89127e1d0961593db1c0a53e1a2759f707ce25ba6f88cde22cdf24a74308ab8",
+      "bytes": 7711
+    },
+    {
+      "path": "Code/docs/target_template_gui.md",
+      "sha256": "fa391b172dadd798a1f0d85c91e9066acae20ce59655137de1d9f41557afbf99",
+      "bytes": 7598
+    },
+    {
+      "path": "Code/docs/template_contract.md",
+      "sha256": "11794b3922debbafdf124bf0cba1ba83c7f54a0db06862d3c61147173a58d9e6",
+      "bytes": 17623
+    },
+    {
+      "path": "Code/docs/template_design.md",
+      "sha256": "416af148d6e1e05e58d4fe8d7e7c84437be4453d8f2c4edd3e77705b3e8dfcd3",
+      "bytes": 14357
+    },
+    {
+      "path": "Code/docs/ui_concept.md",
+      "sha256": "c67f671fba0169897f5c57fd9f2f65268befd28adbf2e3e0e29f17ebea6b3e68",
+      "bytes": 11698
+    },
+    {
+      "path": "Code/docs/worker_integration.md",
+      "sha256": "18fd257f6b6a5faf7981c63f2bdde4d5a3c72bc84ac58059b0d69febbe6df392",
+      "bytes": 11571
+    },
+    {
+      "path": "Code/src/rfad/application/cad_runtime.py",
+      "sha256": "58a55ceadd29072f600c485531f9950c29611e2c2f0c35f9e0c520541757cfbf",
+      "bytes": 3889
+    },
+    {
+      "path": "Code/src/rfad/application/pcb_projection.py",
+      "sha256": "f29106da06a6e6f7132ab566d9817859bd0e28454c5385acbad46c74d587f353",
+      "bytes": 23466
+    },
+    {
+      "path": "Code/src/rfad/application/pcb_solver.py",
+      "sha256": "f517bc54b1661c988f962ccf19b4dbae127e5e26c54c8d86152ce297da54c7c2",
+      "bytes": 6717
+    },
+    {
+      "path": "Code/src/rfad/application/projects.py",
+      "sha256": "c9bb5bc416c5f94984ba485723410bf1929ac9b6c3cf875ba3ab2c2656942652",
+      "bytes": 23446
+    },
+    {
+      "path": "Code/src/rfad/application/rpc.py",
+      "sha256": "3a7869f10c754a40cedd63f87ab4a0bdf1990ccc77e0640333ed2f9cf4f17711",
+      "bytes": 21750
+    },
+    {
+      "path": "Code/src/rfad/application/solver.py",
+      "sha256": "49922769ec8d358b0afb0863b47fbc71a809f2d3e742c7d12e342f2a1d2d521c",
+      "bytes": 18559
+    },
+    {
+      "path": "Code/src/rfad/application/solver_runtime.py",
+      "sha256": "6ebdeaf2e7d009fcc3dfd8378f62f99ed12f5bcfdeb9ba4a3b377071a19f8e63",
+      "bytes": 4975
+    },
+    {
+      "path": "Code/src/rfad/application/target_editor.py",
+      "sha256": "364be24d20edc9424e91e327abd05f34858fe19e6ce6b930bd49c6fe4a8e4b39",
+      "bytes": 7746
+    },
+    {
+      "path": "Code/src/rfad/application/target_editor_fields.py",
+      "sha256": "564af630d8a0806cdbc90a1fbf79c800f36be8a502f89583ad4d3306dcfc1c34",
+      "bytes": 7759
+    },
+    {
+      "path": "Code/src/rfad/application/target_editor_values.py",
+      "sha256": "46be42aac951311cb605e17e356f2d3642b1b073822141a2db7eee14fbc73e2f",
+      "bytes": 9183
+    },
+    {
+      "path": "Code/src/rfad/application/template_candidates.py",
+      "sha256": "b0737f337cd014d4c79dcaa55afe7297b90a7c0ce8285a55f50d40eca570ab51",
+      "bytes": 11951
+    },
+    {
+      "path": "Code/src/rfad/domain/layer_surface.py",
+      "sha256": "95e1d645ad8210c80ec7fb6ff3326e9fb38ba2fbb0aca3b3fc47f4272222623f",
+      "bytes": 1215
+    },
+    {
+      "path": "Code/src/rfad/domain/project.py",
+      "sha256": "bebe63c640be7b05c33d598460aa246ef687fefd026061a1e0326ac0351c8869",
+      "bytes": 20030
+    },
+    {
+      "path": "Code/src/rfad/domain/resource_limits.py",
+      "sha256": "33768a724b610ab1c7b08b35fb6ebbe5a95a8685136778e86688e13154d9f2e0",
+      "bytes": 439
+    },
+    {
+      "path": "Code/src/rfad/domain/template_command.py",
+      "sha256": "b2038a0d3b2166a01109f85434db0c6a8a167817f84d33456e06d5842d6713a4",
+      "bytes": 4307
+    },
+    {
+      "path": "Code/src/rfad/domain/template_geometry.py",
+      "sha256": "99f884755ecb2586aed9e7c86259ac93d600d08448b747be7d6f413718f110cf",
+      "bytes": 15564
+    },
+    {
+      "path": "Code/src/rfad/domain/template_inputs.py",
+      "sha256": "6f8f99e30e22147815794315926291b09144200f36655171e70de9f4029aa06c",
+      "bytes": 1482
+    },
+    {
+      "path": "Code/src/rfad/domain/template_instance.py",
+      "sha256": "32a4b82ef3729ffda428b23fdd7922d5a25a513cdf3a17b918836b769ff0d4e4",
+      "bytes": 9809
+    },
+    {
+      "path": "Code/src/rfad/domain/template_ports.py",
+      "sha256": "eeadddffb4899bc49e8d8bfa530f549f49387a803674391e390165a9a4259f31",
+      "bytes": 8020
+    },
+    {
+      "path": "Code/src/rfad/templates/__init__.py",
+      "sha256": "86220e3976b4ff63dad9ac02ba4f1f8c209ec672491169e8edd5dd7e3be80863",
+      "bytes": 97
+    },
+    {
+      "path": "Code/src/rfad/templates/cards.py",
+      "sha256": "bc4024a00e7dbc6a9725f1e002bb37ad73f12219ce08d7411db7fd1262391c67",
+      "bytes": 8101
+    },
+    {
+      "path": "Code/tests/test_cad_source_capture.py",
+      "sha256": "4c064b6e8d982d7d73a20b9fc75ea5eed3112c0e1cf76b4bf1685f87c2931820",
+      "bytes": 10197
+    },
+    {
+      "path": "Code/tests/test_gui_target_template_process.py",
+      "sha256": "e7c3915b08f5380fddd2107fe66f7634f7d13f4860c4665dfb6073fa0da9a788",
+      "bytes": 8947
+    },
+    {
+      "path": "Code/tests/test_target_editor.py",
+      "sha256": "e1229328bff2d207444f23855f0bae6c4bf02a43aae1f935c7a04ca3342b3f25",
+      "bytes": 18477
+    },
+    {
+      "path": "Code/tests/test_template_candidates.py",
+      "sha256": "8467d95df7b5693443e754c50d53cc1f9d013becb6a4dba8420bbb01737ceb92",
+      "bytes": 30169
+    },
+    {
+      "path": "Code/tests/test_template_native.py",
+      "sha256": "2a929fb5a71a5d6c1a36e2b830b04df9ec4bf217d88de139b88d33321edefa34",
+      "bytes": 9678
+    },
+    {
+      "path": "Code/tools/build_implementation_audit.py",
+      "sha256": "cc87a3c69fbd0e4534d9927dc8a5a54cc28f139eb5cd575834428b018430df1e",
+      "bytes": 15508
+    },
+    {
+      "path": "Code/ui/wxwidgets/app_options.h",
+      "sha256": "1e47a369d8a64646c7118f36319b5549b107577c58bcd54a671a7ddb61d562f7",
+      "bytes": 902
+    },
+    {
+      "path": "Code/ui/wxwidgets/dialog_gateway.h",
+      "sha256": "ac8acd3447da254ed8f9fe4f08884249c720dd1a88664c796ca9fb4369aabdb6",
+      "bytes": 477
+    },
+    {
+      "path": "Code/ui/wxwidgets/editor_panel.cpp",
+      "sha256": "fb350572de56dc89a20d8a05a29f63bb8286cdb3d3bdf0b90293b3ddfefe0648",
+      "bytes": 26509
+    },
+    {
+      "path": "Code/ui/wxwidgets/editor_presentation.cpp",
+      "sha256": "17d45015266f0d7a875bda296f6e51e80f04d30bba52b1e89afaf9343d4da187",
+      "bytes": 8838
+    },
+    {
+      "path": "Code/ui/wxwidgets/main.cpp",
+      "sha256": "eb0818d22f900e3ce92c5603728a3be5bddb197f9f3bf497b502adf02221e931",
+      "bytes": 5798
+    },
+    {
+      "path": "Code/ui/wxwidgets/pcb_selection_dialog.h",
+      "sha256": "be66a137302d5d0fac90c735192de79013538bff777628554948345928774ec7",
+      "bytes": 5682
+    },
+    {
+      "path": "Code/ui/wxwidgets/project_setup_dialog.cpp",
+      "sha256": "0b3fdd7e88293c7e2063d36e0e9da42cdbb4fd10447f2e9a6e82b11b4bbd47fc",
+      "bytes": 7760
+    },
+    {
+      "path": "Code/ui/wxwidgets/project_setup_dialog.h",
+      "sha256": "451ebe4eab22f43a00706a2421ce60f01bb8d430bde6f7a213290fb34984f043",
+      "bytes": 2170
+    },
+    {
+      "path": "Code/ui/wxwidgets/setup_smoke_support.h",
+      "sha256": "75ae39855ed2e979a2d8998a4ef8daecb83c48ddec4a8905914a8807017ca592",
+      "bytes": 1977
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_controls.cpp",
+      "sha256": "cbf96c068241689f77e6d98dd562f8cb07b6131b497d79f94c229429692eef77",
+      "bytes": 8313
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_design_setup.cpp",
+      "sha256": "3f368908a929c5855d886d4f3bc2af27e0e2f6cfa591412c5a253745c5f0141f",
+      "bytes": 4756
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_frame.h",
+      "sha256": "ef7bbf5bd9f4f4fb755ce3d3eba81b960942e9da8f577594d65f6151c37cd86b",
+      "bytes": 14943
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_internal.h",
+      "sha256": "3a98faf2134ad6eadfcea4eeb295db2a4fbe1decb92f42a805890c91cbf13225",
+      "bytes": 1947
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_layout.cpp",
+      "sha256": "62a58bf170261b67943e3aec504973b12ac0f28861cc891aeef7e51955371384",
+      "bytes": 23236
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_lifecycle.cpp",
+      "sha256": "21f3d833aeae4a0be77230e43f50273395429e1ad76bbba91179a148817e3cee",
+      "bytes": 5145
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_session.cpp",
+      "sha256": "6a670d03a32312f3ea84ae6ecd0fb18b1bcbab3665bd839a05bfcd264abf4574",
+      "bytes": 11028
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_smoke.h",
+      "sha256": "9067676e480936fd01c0459582217712586e71052fcd4bc87996311d27d14c5e",
+      "bytes": 6799
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_smoke_events.cpp",
+      "sha256": "f5d646fc92d117336ea3aee0b9c33605f8d894ea95c8a128ef3d8377961c7241",
+      "bytes": 5961
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_smoke_report.cpp",
+      "sha256": "cf472d5b63daa4a1444ac5c15bd9044de49db35b2a3c3184c24b7496cc741357",
+      "bytes": 3995
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_smoke_setup.cpp",
+      "sha256": "59694117347659dbe51a35aad3bab7f93f754bdbc4be3b12163d2ca6e28a27ed",
+      "bytes": 5633
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_smoke_setup_safety.cpp",
+      "sha256": "342f6ea15864a461f1d93b1fa2b07e73c6121de06c262f4e4f1740d4d9c2d252",
+      "bytes": 7242
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_smoke_targets.cpp",
+      "sha256": "63297760387e3204582bf6996f1c0a5c6cc729107d1ead1689996ae77274b505",
+      "bytes": 8168
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_smoke_templates.cpp",
+      "sha256": "922019ee98189cd3e97af302f82cf9e29aff167e690e766813bad7130bb54eb3",
+      "bytes": 8632
+    },
+    {
+      "path": "Code/ui/wxwidgets/target_editor_dialog.cpp",
+      "sha256": "33d52fddde8182e8c91d208b23a13514c89c37255045c50b3fa23b755ce87151",
+      "bytes": 5726
+    },
+    {
+      "path": "Code/ui/wxwidgets/target_editor_dialog.h",
+      "sha256": "730e98adfd21281c6b304e67dfb4a001ecd76a0ecf1a4b3969b17db6d831cc7b",
+      "bytes": 1230
+    },
+    {
+      "path": "Code/ui/wxwidgets/target_editor_view.cpp",
+      "sha256": "f6acc82026cfb84236c855acb066d1e3221debd5104ec09941e1e4507930e66d",
+      "bytes": 4961
+    },
+    {
+      "path": "Code/ui/wxwidgets/template_dialog.cpp",
+      "sha256": "5ec25a656e36fbcf54e6449d063228d1569c1abcb019a306772f0db66aeecdfe",
+      "bytes": 11125
+    },
+    {
+      "path": "Code/ui/wxwidgets/template_dialog.h",
+      "sha256": "990273d4bd87355e55ba018b5e2de076aee319ad4f51b5deb9124b922647c928",
+      "bytes": 1501
+    },
+    {
+      "path": "Code/ui/wxwidgets/template_view.cpp",
+      "sha256": "e751cdc653d0d67b5f19c56bc4bc1325c6bd3210b99a249ff2ce2ebf331e38de",
+      "bytes": 4845
+    }
+  ],
+  "limits": [
+    "일반 60fps/대형30fps와 전체 메모리 예산은 미수용",
+    "형상 생성은 초기 RF 합성/정합/물리 검증이 아님",
+    "GUI 템플릿은 port:null이며 기존 급전 편집 사용",
+    "origin256KiB/프로젝트512KiB와 객체 예산 유지",
+    "실제 제작/납품 물성/측정 조건은 미정",
+    "RO4350B 개별 손실과 GHz PTH 물리 정확도는 미확립"
+  ],
+  "native_em_executed_for_this_change": false,
+  "physics_validated": false,
+  "fabrication_validated": false,
+  "measurement_validated": false
+}

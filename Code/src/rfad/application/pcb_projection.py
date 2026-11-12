@@ -170,15 +170,11 @@ def project_pcb(document, settings):
     layer_map = {item["id"]: item for item in layers}
     def sheet_surface(layer, field):
         """! @brief 외측 도체와 인접 유전체의 실제 접면을 유일하게 구한다."""
-        surfaces = []
-        for dielectric in dielectrics:
-            if math.isclose(layer["z_min_mm"], dielectric["z_min_mm"] + dielectric["thickness_mm"], abs_tol=1e-8):
-                surfaces.append(layer["z_min_mm"])
-            if math.isclose(layer["z_min_mm"] + layer["thickness_mm"], dielectric["z_min_mm"], abs_tol=1e-8):
-                surfaces.append(dielectric["z_min_mm"])
-        if len(surfaces) != 1:
-            fail("E_UNSUPPORTED", "외측 동박이 한 유전체 경계와 접하는 sheet 모델만 지원합니다.", field)
-        return surfaces[0]
+        from rfad.domain.layer_surface import single_dielectric_contact
+
+        return single_dielectric_contact(layer["z_min_mm"], layer["thickness_mm"],
+                                         [(item["z_min_mm"], item["thickness_mm"]) for item in dielectrics],
+                                         tolerance=1e-8, field=field)
     shapes, vias, omissions, polygons_by_id = [], [], [], {}
     polygon_points = 0
     for source in document["geometry"]:

@@ -2,6 +2,7 @@
 #include "studio_internal.h"
 #include "pcb_selection_dialog.h"
 #include "project_study_dialog.h"
+#include "project_setup_dialog.h"
 
 void StudioSmokeDriver::FinishSmoke(bool passed, const std::string& error)
 {
@@ -13,6 +14,11 @@ void StudioSmokeDriver::FinishSmoke(bool passed, const std::string& error)
     {
         m_frame.m_pcbDialog->ServiceDisconnected(error.empty() ? "GUI 시험을 종료합니다." : error);
         m_frame.m_pcbDialog->Close();
+    }
+    if (m_frame.m_setupDialog != nullptr)
+    {
+        m_frame.m_setupDialog->ServiceDisconnected(error.empty() ? "GUI 시험을 종료합니다." : error);
+        m_frame.m_setupDialog->Close(true);
     }
     m_frame.m_finishing = true;
     if (m_frame.m_studyDialog != nullptr)
@@ -46,6 +52,9 @@ void StudioSmokeDriver::FinishSmoke(bool passed, const std::string& error)
                 {"study_stage", m_studyStage},
                 {"study_checks", m_studyChecks},
                 {"study_view", m_studyView},
+                {"setup_stage", m_setupStage},
+                {"setup_checks", m_setupChecks},
+                {"setup_pending_ticks", m_setupPendingTicks},
                 {"solver_checks", m_solverChecks},
                 {"solver_result", m_frame.m_solverResult},
                 {"solver_sample_count", m_frame.m_solverChart->SampleCount()},

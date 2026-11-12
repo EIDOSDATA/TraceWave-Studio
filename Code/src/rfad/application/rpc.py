@@ -15,6 +15,9 @@ from rfad.application.catalog_api import METHODS as CATALOG_METHODS
 from rfad.application.catalog_api import describe as describe_catalog, query as query_catalog
 from rfad.application.pcb_selection_contract import READ_METHODS as PCB_SELECTION_READS, MUTATION_METHODS as PCB_SELECTION_MUTATIONS
 from rfad.application.project_study_contract import READS as STUDY_READS, MUTATIONS as STUDY_MUTATIONS
+from rfad.application import target_editor
+
+TEMPLATE_READS = {"template.list", "template.get", "template.context", "template.synthesize"}
 
 CONTRACT_VERSION = "rfad.api/2.0"
 from rfad.domain.resource_limits import MAX_FRAME_BYTES, MAX_DOCUMENT_BYTES, MAX_SELECTION_RESULT_BYTES
@@ -34,6 +37,7 @@ PROJECT_MUTATIONS = {"project.open", "project.apply_command", "editor.apply", "c
 PROJECT_MUTATIONS.update({"solver.plan", "solver.prepare", "job.submit"})
 PROJECT_MUTATIONS.update(PCB_SELECTION_MUTATIONS)
 PROJECT_MUTATIONS.update(STUDY_MUTATIONS)
+PROJECT_MUTATIONS.update({"target.editor.apply", "template.apply"})
 
 
 def capabilities(service=None, catalog=None) -> dict:
@@ -78,7 +82,7 @@ def capabilities(service=None, catalog=None) -> dict:
         result["project_profile"] = {
             "schema_version": SCHEMA_VERSION, "readable_schema_versions": list(READABLE_SCHEMA_VERSIONS),
             "expression_engine": ENGINE_VERSION, "open_modes": ["create", "open", "recover"],
-            "commands": [name for name in COMMANDS if name != "pcb_stackup.apply"],
+            "commands": [name for name in COMMANDS if name != "pcb_stackup.apply" and not name.startswith("template_instance.")],
             "max_document_bytes": MAX_DOCUMENT_BYTES, "mutating_batch": False, "mutating_notification": False,
             "scope": "workspace-local versioned projects and optional isolated host CAD worker",
             "design_validation": {"profile": "rfad.design/0.1", "purposes": ["geometry", "step", "em"], "source": "draft_revision", "max_returned_diagnostics": 64},
@@ -87,6 +91,17 @@ def capabilities(service=None, catalog=None) -> dict:
                              "evaluation_supported": False, "changes_solver_settings": False, "presets_supported": False},
         }
         result["features"][0]["status"] = "implemented"
+        result["methods"].update({name: {"status": "implemented", "extension_profile": target_editor.PROFILE}
+                                  for name in ("target.editor.get", "target.editor.apply")})
+        result["target_editor_profile"] = {"profile": target_editor.PROFILE, "source": "draft_revision",
+                                           "partial_edits": True, "preserves_sources": True, "evaluation_supported": False}
+        result["methods"].update({name: {"status": "implemented", "extension_profile": "rfad.template-candidate/0.1"}
+                                  for name in sorted(TEMPLATE_READS | {"template.apply"})})
+        result["methods"]["template.synthesize"]["api_id"] = "API-007"
+        result["template_profile"] = {"profile": "rfad.template-candidate/0.1", "modes": ["explicit_geometry"],
+                                      "preview_required": True, "atomic_apply": True, "source_copies_in_project": True,
+                                      "geometry_generator": True, "seed_synthesizer": False,
+                                      "physics_validated": False, "measurement_validated": False}
         result["methods"].update({name: {"status": "implemented", "extension_profile": "rfad.editor/0.1"} for name in ("editor.get", "editor.apply", "project.undo", "project.redo")})
         result["editor_profile"] = {"profile": "rfad.editor/0.1", "source": "draft_revision", "history_limit": 128, "history_persistent": True, "full_document_returned": False, "max_dto_bytes": 61440}
         result["methods"].update({name: {"status": "implemented", "extension_profile": "rfad.canvas/0.1"} for name in ("canvas.get", "canvas.apply")})
@@ -192,12 +207,16 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
         return _error(None, -32600, "Invalid Request")
     notification = "id" not in request
     method = request["method"]
-    if service is not None and method in PROJECT_MUTATIONS | PCB_SELECTION_READS | STUDY_READS | {"job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
+    if service is not None and method in PROJECT_MUTATIONS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | {"target.editor.get", "job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
         if notification and method in PROJECT_MUTATIONS:
             return None
         try:
             params = request.get("params")
-            if method in STUDY_READS:
+            if method == "target.editor.get":
+                result = target_editor.read(service, params)
+            elif method in TEMPLATE_READS:
+                result = service.templates.query(method, params)
+            elif method in STUDY_READS:
                 result = service.studies.read(method, params)
             elif method == "pcb.selection.context":
                 result = service.pcb_selection.context(params)

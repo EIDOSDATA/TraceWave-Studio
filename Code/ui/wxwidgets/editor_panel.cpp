@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <cmath>
 #include <stdexcept>
+#include <sstream>
 
 wxDEFINE_EVENT(wxEVT_RFAD_EDITOR_CHANGED, wxCommandEvent);
 
@@ -56,25 +57,28 @@ void EditorPanel::SetFields(const Json& fields, const Json& selection, const Jso
     m_inputNotice = new wxStaticText(this, wxID_ANY, wxEmptyString);
     m_layout->Add(m_inputNotice, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(6));
     m_inputNotice->Hide();
-    m_details = new wxCheckBox(this, wxID_ANY, Display("상세 식별 정보 표시"));
+    m_details = new wxCheckBox(this, wxID_ANY, Display("상세 정보 / 출처 표시"));
     m_layout->Add(m_details, 0, wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(6));
     m_details->Hide();
-    m_details->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent&)
-    {
-        UpdateModes();
-    });
+    m_details->Bind(wxEVT_CHECKBOX,
+                    [this](wxCommandEvent&)
+                    {
+                        UpdateModes();
+                    });
     for (const auto& descriptor : fields)
     {
         const std::string key = descriptor.at("key").get<std::string>();
         const std::string editor = descriptor.at("editor").get<std::string>();
-        const std::string valueKey = key == "unit" ? "value" :
-            (key.size() > 5 && key.substr(key.size() - 5) == ".unit" ? key.substr(0, key.size() - 4) + "value" : "");
+        const std::string valueKey = key == "unit" ? "value"
+                                                   : (key.size() > 5 && key.substr(key.size() - 5) == ".unit"
+                                                          ? key.substr(0, key.size() - 4) + "value"
+                                                          : "");
         const auto valueField = m_fields.find(valueKey);
         const bool paired = !valueKey.empty() && valueField != m_fields.end();
         auto* rowPanel = paired ? valueField->second.row : new wxPanel(this);
         auto* row = paired ? static_cast<wxBoxSizer*>(rowPanel->GetSizer()) : new wxBoxSizer(wxHORIZONTAL);
-        auto* label = paired ? valueField->second.label :
-            new wxStaticText(rowPanel, wxID_ANY, Display(descriptor.at("label").get<std::string>()));
+        auto* label = paired ? valueField->second.label
+                             : new wxStaticText(rowPanel, wxID_ANY, Display(descriptor.at("label").get<std::string>()));
         if (!paired)
         {
             StudioTheme::BindSurface(*rowPanel);
@@ -97,11 +101,12 @@ void EditorPanel::SetFields(const Json& fields, const Json& selection, const Jso
                 choice->Append(Display(item.at("label").get<std::string>()));
             }
             control = choice;
-            choice->Bind(wxEVT_CHOICE, [this](wxCommandEvent&)
-            {
-                UpdateModes();
-                NotifyChanged();
-            });
+            choice->Bind(wxEVT_CHOICE,
+                         [this](wxCommandEvent&)
+                         {
+                             UpdateModes();
+                             NotifyChanged();
+                         });
         }
         else if (editor == "multichoice")
         {
@@ -111,26 +116,29 @@ void EditorPanel::SetFields(const Json& fields, const Json& selection, const Jso
                 choice->Append(Display(item.at("label").get<std::string>()));
             }
             control = choice;
-            choice->Bind(wxEVT_CHECKLISTBOX, [this](wxCommandEvent&)
-            {
-                NotifyChanged();
-            });
+            choice->Bind(wxEVT_CHECKLISTBOX,
+                         [this](wxCommandEvent&)
+                         {
+                             NotifyChanged();
+                         });
         }
         else if (editor == "coordinate_table")
         {
             control = new wxButton(rowPanel, wxID_ANY, Display("좌표 편집"));
-            control->Bind(wxEVT_BUTTON, [this, key](wxCommandEvent&)
-            {
-                EditCoordinates(key);
-            });
+            control->Bind(wxEVT_BUTTON,
+                          [this, key](wxCommandEvent&)
+                          {
+                              EditCoordinates(key);
+                          });
         }
         else if (editor == "bool")
         {
             control = new wxCheckBox(rowPanel, wxID_ANY, Display("사용"));
-            control->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent&)
-            {
-                NotifyChanged();
-            });
+            control->Bind(wxEVT_CHECKBOX,
+                          [this](wxCommandEvent&)
+                          {
+                              NotifyChanged();
+                          });
         }
         else if (editor == "bindings")
         {
@@ -149,45 +157,51 @@ void EditorPanel::SetFields(const Json& fields, const Json& selection, const Jso
             buttons->Add(remove, 0);
             bindingButtons = buttons;
             const Json choices = descriptor.at("choices");
-            add->Bind(wxEVT_BUTTON, [this, grid, choices](wxCommandEvent&)
-            {
-                grid->AppendRows();
-                wxArrayString labels;
-                for (const auto& item : choices)
-                {
-                    labels.Add(Display(item.at("label").get<std::string>()));
-                }
-                grid->SetCellEditor(grid->GetNumberRows() - 1, 1, new wxGridCellChoiceEditor(labels, false));
-                grid->SetGridCursor(grid->GetNumberRows() - 1, 0);
-                grid->MakeCellVisible(grid->GetNumberRows() - 1, 0);
-                NotifyChanged();
-            });
-            remove->Bind(wxEVT_BUTTON, [this, grid](wxCommandEvent&)
-            {
-                if (grid->GetGridCursorRow() >= 0 && grid->GetGridCursorRow() < grid->GetNumberRows())
-                {
-                    grid->DeleteRows(grid->GetGridCursorRow());
-                    NotifyChanged();
-                }
-            });
-            grid->Bind(wxEVT_GRID_CELL_CHANGED, [this](wxGridEvent& event)
-            {
-                NotifyChanged();
-                event.Skip();
-            });
+            add->Bind(wxEVT_BUTTON,
+                      [this, grid, choices](wxCommandEvent&)
+                      {
+                          grid->AppendRows();
+                          wxArrayString labels;
+                          for (const auto& item : choices)
+                          {
+                              labels.Add(Display(item.at("label").get<std::string>()));
+                          }
+                          grid->SetCellEditor(grid->GetNumberRows() - 1, 1, new wxGridCellChoiceEditor(labels, false));
+                          grid->SetGridCursor(grid->GetNumberRows() - 1, 0);
+                          grid->MakeCellVisible(grid->GetNumberRows() - 1, 0);
+                          NotifyChanged();
+                      });
+            remove->Bind(wxEVT_BUTTON,
+                         [this, grid](wxCommandEvent&)
+                         {
+                             if (grid->GetGridCursorRow() >= 0 && grid->GetGridCursorRow() < grid->GetNumberRows())
+                             {
+                                 grid->DeleteRows(grid->GetGridCursorRow());
+                                 NotifyChanged();
+                             }
+                         });
+            grid->Bind(wxEVT_GRID_CELL_CHANGED,
+                       [this](wxGridEvent& event)
+                       {
+                           NotifyChanged();
+                           event.Skip();
+                       });
             add->Enable(!descriptor.value("readonly", false));
             remove->Enable(!descriptor.value("readonly", false));
             auxiliaries = {add, remove};
         }
-        else if (editor == "text")
+        else if (editor == "text" || editor == "string_lines")
         {
-            const bool multiline = key == "expression" || key == "description" || key == "assumptions";
-            control = new wxTextCtrl(rowPanel, wxID_ANY, wxEmptyString, wxDefaultPosition,
-                multiline ? FromDIP(wxSize(-1, 54)) : wxDefaultSize, multiline ? wxTE_MULTILINE : 0);
-            control->Bind(wxEVT_TEXT, [this](wxCommandEvent&)
-            {
-                NotifyChanged();
-            });
+            const bool multiline = descriptor.value("multiline", false) || editor == "string_lines" ||
+                                   key == "expression" || key == "description" || key == "assumptions";
+            control =
+                new wxTextCtrl(rowPanel, wxID_ANY, wxEmptyString, wxDefaultPosition,
+                               multiline ? FromDIP(wxSize(-1, 84)) : wxDefaultSize, multiline ? wxTE_MULTILINE : 0);
+            control->Bind(wxEVT_TEXT,
+                          [this](wxCommandEvent&)
+                          {
+                              NotifyChanged();
+                          });
         }
         else
         {
@@ -338,6 +352,21 @@ Json EditorPanel::ReadValue(const Field& field) const
         }
         return result;
     }
+    if (editor == "string_lines")
+    {
+        Json lines = Json::array();
+        std::istringstream stream(Utf8(static_cast<wxTextCtrl*>(field.control)->GetValue()));
+        std::string line;
+        while (std::getline(stream, line))
+        {
+            if (!line.empty() && line.back() == '\r')
+            {
+                line.pop_back();
+            }
+            lines.push_back(line);
+        }
+        return lines;
+    }
     return Utf8(static_cast<wxTextCtrl*>(field.control)->GetValue());
 }
 
@@ -397,8 +426,9 @@ void EditorPanel::WriteValue(Field& field, const Json& value)
             for (const auto& coordinate : point)
             {
                 const std::string mode = coordinate.at("mode");
-                if ((mode != "value" && mode != "missing" && mode != "parameter") || !coordinate.at("value").is_string() ||
-                    !coordinate.at("parameter_id").is_string() || !coordinate.at("unit").is_string())
+                if ((mode != "value" && mode != "missing" && mode != "parameter") ||
+                    !coordinate.at("value").is_string() || !coordinate.at("parameter_id").is_string() ||
+                    !coordinate.at("unit").is_string())
                 {
                     throw std::runtime_error("좌표 표의 입력 방식이나 값 형식이 유효하지 않습니다.");
                 }
@@ -438,10 +468,25 @@ void EditorPanel::WriteValue(Field& field, const Json& value)
             grid->SetCellEditor(row, 1, new wxGridCellChoiceEditor(labels, false));
         }
     }
+    else if (editor == "string_lines")
+    {
+        std::string text;
+        bool first = true;
+        for (const auto& line : value)
+        {
+            if (!first)
+            {
+                text += '\n';
+            }
+            first = false;
+            text += line.get<std::string>();
+        }
+        static_cast<wxTextCtrl*>(field.control)->ChangeValue(Display(text));
+    }
     else
     {
-        const Json displayValue = field.descriptor.value("readonly", false) ?
-            field.descriptor.value("display_value", value) : value;
+        const Json displayValue =
+            field.descriptor.value("readonly", false) ? field.descriptor.value("display_value", value) : value;
         static_cast<wxTextCtrl*>(field.control)->ChangeValue(Display(Text(displayValue)));
     }
 }
@@ -466,25 +511,27 @@ void EditorPanel::EditCoordinates(const std::string& key, const std::function<vo
 /** @brief 실제 좌표 대화상자의 grid와 확인 버튼 이벤트를 smoke에서 검사한다. */
 void EditorPanel::EditCoordinateCellForSmoke(const std::string& key, int point, int axis, const std::string& value)
 {
-    EditCoordinates(key, [point, axis, value](wxGrid& grid, wxDialog& dialog)
-    {
-        if (point < 0 || point >= grid.GetNumberRows() || axis < 0 || axis > 1)
-        {
-            throw std::runtime_error("좌표 표 smoke 셀 범위를 벗어났습니다.");
-        }
-        dialog.CallAfter([&grid, &dialog, point, axis, value]()
-        {
-            const int base = axis * 4;
-            grid.SetCellValue(point, base, Display("직접 입력"));
-            grid.SetCellValue(point, base + 1, Display(value));
-            wxGridEvent changed(grid.GetId(), wxEVT_GRID_CELL_CHANGED, &grid, point, base);
-            grid.GetEventHandler()->ProcessEvent(changed);
-            wxWindow* accept = dialog.FindWindow(wxID_OK);
-            wxCommandEvent clicked(wxEVT_BUTTON, wxID_OK);
-            clicked.SetEventObject(accept);
-            accept->GetEventHandler()->ProcessEvent(clicked);
-        });
-    });
+    EditCoordinates(key,
+                    [point, axis, value](wxGrid& grid, wxDialog& dialog)
+                    {
+                        if (point < 0 || point >= grid.GetNumberRows() || axis < 0 || axis > 1)
+                        {
+                            throw std::runtime_error("좌표 표 smoke 셀 범위를 벗어났습니다.");
+                        }
+                        dialog.CallAfter(
+                            [&grid, &dialog, point, axis, value]()
+                            {
+                                const int base = axis * 4;
+                                grid.SetCellValue(point, base, Display("직접 입력"));
+                                grid.SetCellValue(point, base + 1, Display(value));
+                                wxGridEvent changed(grid.GetId(), wxEVT_GRID_CELL_CHANGED, &grid, point, base);
+                                grid.GetEventHandler()->ProcessEvent(changed);
+                                wxWindow* accept = dialog.FindWindow(wxID_OK);
+                                wxCommandEvent clicked(wxEVT_BUTTON, wxID_OK);
+                                clicked.SetEventObject(accept);
+                                accept->GetEventHandler()->ProcessEvent(clicked);
+                            });
+                    });
 }
 
 /** @brief 실제 폼 컨트롤을 사용하여 개발 smoke 입력을 설정한다. */
@@ -507,8 +554,10 @@ EditorPresentation::Fields EditorPanel::PresentationFields() const
     for (const auto& item : m_fields)
     {
         result.emplace(item.first, EditorPresentation::Field{&item.second.descriptor,
-            EditorPresentation::RequiresCurrentValue(item.first) ? ReadValue(item.second) : Json(),
-            item.second.control->IsThisEnabled()});
+                                                             EditorPresentation::RequiresCurrentValue(item.first)
+                                                                 ? ReadValue(item.second)
+                                                                 : Json(),
+                                                             item.second.control->IsThisEnabled()});
     }
     return result;
 }
@@ -524,7 +573,8 @@ std::string EditorPanel::ShowDiagnostic(const std::string& field, const std::str
 {
     m_diagnosticField = ResolveDiagnosticField(field);
     const auto found = m_fields.find(m_diagnosticField);
-    const std::string label = found == m_fields.end() ? "설계 입력" : found->second.descriptor.at("label").get<std::string>();
+    const std::string label =
+        found == m_fields.end() ? "설계 입력" : found->second.descriptor.at("label").get<std::string>();
     const std::string displayMessage = message.empty() ? "" : label + ": " + message;
     m_diagnostic->SetLabel(Display(displayMessage));
     m_diagnostic->SetToolTip(Display(field));
@@ -543,7 +593,8 @@ std::string EditorPanel::ShowDiagnostic(const std::string& field, const std::str
         {
             found->second.control->SetFocus();
         }
-        const wxPoint position = CalcUnscrolledPosition(ScreenToClient(found->second.control->ClientToScreen(wxPoint(0, 0))));
+        const wxPoint position =
+            CalcUnscrolledPosition(ScreenToClient(found->second.control->ClientToScreen(wxPoint(0, 0))));
         Scroll(0, std::max(0, position.y / 12));
     }
     return displayMessage;

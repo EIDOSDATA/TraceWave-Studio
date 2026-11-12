@@ -188,7 +188,7 @@ def build():
     validate_trace_links(requirements, acs, cases, verification_groups, apis, supplemental)
     source_names = ["03_RFAD_사용자_요구사항.md", "06_RFAD_기능_설계.md", "11_RFAD_해석기_어댑터_계약.md", "14_RFAD_검증과_수용_기준.md", "17_RFAD_요구사항_추적표.md", "24_RFAD_GUI_선정과_성능_설계.md"]
     profile = {"schema": "rfad.implementation-audit/0.1", "design_baseline": "RFAD-D0-3.4",
-               "review_date_kst": "2026-11-12", "reviewed_commit": "47c96c70f7d07cd71a4cacffd3a977ec8c5485fd",
+               "review_date_kst": "2026-11-12", "reviewed_commit": "1ed9686b8eea5cec3b17931d8655565fbafc72e2",
                "working_tree_review": True,
                "scope": "implementation_gap_review_not_release_acceptance",
                "generator": reference(Path(__file__).resolve()),

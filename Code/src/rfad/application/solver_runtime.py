@@ -7,6 +7,7 @@ from pathlib import Path, PurePosixPath
 from rfad.application.canonical import canonical_bytes
 from rfad.application.solver import RUNTIME_PROFILE
 from rfad.domain.errors import ProjectError
+from rfad.domain.resource_limits import MAX_WORKER_SOURCE_FILES
 
 CODE_ROOT = Path(__file__).resolve().parents[3]
 
@@ -29,7 +30,7 @@ class SolverRuntime:
         files = [CODE_ROOT / "tools/openems_worker.py", *sorted((CODE_ROOT / "src/rfad").rglob("*.py"))]
         self.sources = {p.relative_to(CODE_ROOT).as_posix(): p.read_text(encoding="utf-8") for p in files}
         self.source_bytes = canonical_bytes(self.sources)
-        if len(self.source_bytes) > 4 * 1024 * 1024 or len(files) > 192:
+        if len(self.source_bytes) > 4 * 1024 * 1024 or len(files) > MAX_WORKER_SOURCE_FILES:
             raise ProjectError("E_RESOURCE", "해석 worker 소스 묶음이 상한을 초과했습니다.")
         self.identity = {"runtime_profile": RUNTIME_PROFILE, "manifest_sha256": hashlib.sha256(self.manifest_bytes).hexdigest(),
                          "code_files": [{"path": path, "sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(), "bytes": len(text.encode("utf-8"))} for path, text in self.sources.items()],

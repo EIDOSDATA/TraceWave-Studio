@@ -8,6 +8,8 @@
 class StudioFrame;
 class PcbSelectionDialog;
 class RadiationDialog;
+class TargetEditorDialog;
+class TemplateDialog;
 
 /** @brief 명시적 smoke 옵션에서만 실제 화면과 서비스를 구동하는 통합 시험 운전자다. */
 class StudioSmokeDriver final
@@ -22,6 +24,8 @@ public:
     void SolverSmokeTick();
     /** @brief 일반 프로젝트 연구의 실제 화면/취소/재개/재연결을 확인한다. */
     void StudySmokeTick();
+    /** @brief 목표 CRUD와 명시 카드 미리보기/적용을 실제 화면에서 확인한다. */
+    void SetupSmokeTick();
     /** @brief 실제 화면 이벤트와 결과를 검증한다. */
     void EditorSmokeNext();
     /** @brief 실제 화면 이벤트와 결과를 검증한다. */
@@ -61,6 +65,23 @@ public:
     void OnSelected();
 
 private:
+    /** @brief 실제 목표 입력/선택/적용 이벤트와 출처 보존을 검사한다. */
+    void SetupTargetSmoke(TargetEditorDialog& dialog);
+    /** @brief 원호/IFA 카드 입력과 미리보기 변경 폐기를 검사한다. */
+    void SetupTemplateSmoke(TemplateDialog& dialog);
+    /** @brief 응답 역전/종료 이후 응답/결과 불명의 잠금을 검사한다. */
+    void SetupSafetyChecks(const Json& context);
+    int m_setupStage = 0;
+    bool m_setupLargeChecked = false;
+    int m_setupPendingTicks = 0;
+    Clock::time_point m_setupStarted{};
+    Json m_setupChecks = Json::array();
+    Json m_setupSamples = Json::array();
+    Json m_setupShapes = Json::array();
+    std::string m_setupLayer;
+    std::string m_setupSeedTarget;
+    std::string m_setupAddedTarget;
+    std::string m_setupExpectedRevision;
     /** @brief 원형 보드와 기존 패턴 참조를 시험의 시작 상태로 만든다. */
     void PcbSmokePrepare();
     /** @brief 실제 대화상자 컨트롤에 이벤트를 보내고 비동기 결과를 관찰한다. */

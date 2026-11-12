@@ -31,7 +31,7 @@ workspace당 CAD 실행은 하나다. queued 취소는 실행 전에 cancelled�
 
 정상 서비스 닫기는 소유 native 프로세스를 회수하고 작업을 interrupted로 기록한다. 비정상 종료 뒤 running/cancel_requested였던 CAD 작업은 interrupted/outcome_unknown과 슬롯 예약을 유지하며 자동 재실행하지 않는다. PID나 lease 만료만으로 다른 프로세스를 종료하거나 자원을 반환하지 않는다. 공개 수동 조정 API는 아직 없으므로 해당 workspace의 새 CAD 접수는 차단되지만 기존 편집/저장/조회는 가능하다.
 
-기본 실행 시간은 120초, 출력은 파일별 64 MiB/전체 128 MiB/최대 16개, stdout+stderr는 합계 1 MiB와 각 마지막 16 KiB다. 출력 디렉터리를 주기적으로 검사하고 최종 봉인에서 크기/hash를 다시 검증한다. 검사 사이 일시적인 파일 상한 초과는 가능하며 OS 메모리 hard limit을 제공하는 것은 아니다. 소스 묶음/정규 입력/result에도 별도 크기 상한을 둔다. 취소 중 파일, disk-full, 손상 파일과 게시 실패는 성공으로 처리하지 않고 과거 정상 결과를 유지한다.
+기본 실행 시간은 120초, 출력은 파일별 64 MiB/전체 128 MiB/최대 16개, stdout+stderr는 합계 1 MiB와 각 마지막 16 KiB다. 출력 디렉터리를 주기적으로 검사하고 최종 봉인에서 크기/hash를 다시 검증한다. 검사 사이 일시적인 파일 상한 초과는 가능하며 OS 메모리 hard limit을 제공하는 것은 아니다. 소스 묶음/정규 입력/result에도 별도 크기 상한을 둔다. 기능별 모듈 분할을 지원하도록 worker 소스 파일 수를 공통 192개로 제한한다. CAD의 기존 2 MiB와 solver의 기존 4 MiB 소스 바이트 상한은 유지하며 개수/바이트 중 하나라도 초과하면 차단한다. 취소 중 파일, disk-full, 손상 파일과 게시 실패는 성공으로 처리하지 않고 과거 정상 결과를 유지한다.
 
 기존 `Journal.put_immutable`은 작은 입력/manifest용 단일 bytes 상한 8 MiB를 유지한다. CAD 파일은 별도 `Journal.seal_file`의 streaming 봉인을 사용하므로 큰 STEP/B-rep를 통째로 Python 메모리에 적재하지 않는다. staging과 제한된 로그는 실패 조사용으로 보존하며 자동 GC는 후속이다.
 

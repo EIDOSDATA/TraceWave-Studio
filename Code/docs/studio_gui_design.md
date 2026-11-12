@@ -57,6 +57,12 @@ GUI는 C++ wxWidgets로 유지하며 Studio 형태의 통합 작업 공간으로
 
 현재 구조를 재사용하면서 표시와 서비스 연결을 구분한다.
 
+GUI의 기술 구성은 C++ wxWidgets + wxAUI + 사용자 정의 2D 캔버스 + wxGLCanvas/OpenGL 3D 뷰다. wxWidgets는 입력/표/트리/메뉴, wxAUI는 도킹과 작업 영역 배치, DesignCanvas는 2D 패턴의 표시와 조작을 맡는다. ModelView는 OCCT worker가 생성한 표시 mesh를 OpenGL로 그린다. Open CASCADE는 형상 생성과 STEP 교환을 맡고, wxAUI와 OpenGL은 형상 원본을 소유하지 않는다.
+
+2D는 현재 wxGraphicsContext 기반 renderer이며 OpenGL로 전면 교체하지 않는다. 3D는 필요한 시점에 context를 생성하고 background에서 검증한 mesh를 소비한다. 방사 패턴의 3D 표시와 field 조회는 결과 화면의 후속 범위다. 도킹/색/간격/문맥 도구를 일관되게 구성하여 Studio 형태를 만들며, 입력 위젯의 native 편집/IME/접근성 동작을 유지한다.
+
+Python application service가 원본 데이터, 단위, 명령, 이력, snapshot과 작업을 관리한다. Open CASCADE와 openEMS는 별도 worker에서 실행한다. 따라서 화면이 계산 완료를 기다리는 동안에도 입력과 작업 상태를 처리할 수 있으며, 실제 메모리와 조작 지연은 GUI/service/worker 전체에서 별도로 측정한다. 이 구조 선택만으로 60/30 fps나 메모리 목표의 달성을 주장하지 않는다.
+
 | 책임 | 현재 재사용 대상 | 후속 계약 |
 | --- | --- | --- |
 | 주 창/화면 조립 | StudioFrame, studio_layout.cpp, studio_* 연결 파일 | 작업 탭과 도킹 구성을 조립. 물리 계산/파일 변환/영구 상태 소유 금지 |
@@ -202,3 +208,9 @@ GUI는 C++ wxWidgets로 유지하며 Studio 형태의 통합 작업 공간으로
 | 변경 검사 | `git diff --check` 통과. Python 도메인/수치 계산은 이 스타일 변경의 범위가 아님 |
 
 실제 창 확인은 현재 디스플레이 조건의 가독성 검수다. 100/150/200% 전체 DPI, 다중 모니터 이동, 고대비 전환, IME 조합, 스크린리더, 60/30 fps와 메모리 예산은 아직 수용 전이다. 기본/고급 입력을 포함한 모든 대화상자 스타일 통일, 아이콘, 다크 모드와 완성형 작업 탭은 후속이며 이 부분 구현을 계획 4번 전체 완료로 표시하지 않는다.
+
+## 12. 목표 편집과 원호/IFA 후보 화면
+
+같은 native 위젯과 StudioTheme 위에 [목표/템플릿 GUI](target_template_gui.md)를 연결했다. 목표는 목록과 기본 입력/단위/미정 상태를 우선 표시하고 출처/상태 상세를 접어 둔다. 템플릿은 카드/도체층/선택 목표와 명시 치수를 입력하고 기존 DesignCanvas에서 후보를 읽기 전용으로 검토한다. 입력 변경은 이전 후보를 무효화하며 적용은 한 명령으로 기존 프로젝트 이력에 기록한다.
+
+`ProjectSetupDialog`가 늦은 조회 폐기, 창 수명과 변경 중 잠금, 결과가 불명확한 변경의 재조회 경계를 공유한다. 목표/템플릿은 각각 기능별 View와 서비스 DTO를 사용한다. UI에서 SI 환산, RF 합성식 또는 물리 원본의 별도 해시를 구현하지 않는다. 문헌 원본 카드/자동 합성, 정밀 편집과 작업별 전체 화면은 남은 단계에서 확장한다. 최종 확인 범위와 제한은 [개발 상태](development_status.md)를 따른다.

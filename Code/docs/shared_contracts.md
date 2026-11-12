@@ -42,7 +42,9 @@
 
 복소수는 명시적 real/imag, 단위와 시간 규약을 갖는다. 화면용 dB/VSWR에서 원래 복소 network를 역으로 추정하지 않는다. 승인된 normalized HDF5의 축/real-imag 규칙은 08번을 따른다. 현재 pulse Fourier 전력 W*s^2를 절대 W나 1 W 여기로 바꾸지 않으며 absolute_power_w=null 상태를 존중한다.
 
-위 TargetDefinition의 첫 입력 부분은 [rfad.target/0.1](target_contract.md)로 구현했다. 대역/주파수 표본/port/Z0와 4개 지표 한계를 저장하지만 기준면/관측/편파/프리셋/평가와 GUI는 후속이다. 현재 목표 변경은 metric/assessment/export 무효화만 알리고 원시 파일을 보존한다. 새 Assessment 생성이나 개정 간 자동 raw 재사용을 구현 완료로 해석하지 않는다.
+위 TargetDefinition의 첫 입력 부분은 [rfad.target/0.1](target_contract.md)로 구현했다. 대역/주파수 표본/port/Z0와 4개 지표 한계를 저장하고 [목표 편집 GUI](target_template_gui.md)에 연결했다. 기준면/관측/편파/프리셋/평가는 후속이다. 현재 목표 변경은 metric/assessment/export 무효화만 알리고 원시 파일을 보존한다. 새 Assessment 생성이나 개정 간 자동 raw 재사용을 구현 완료로 해석하지 않는다.
+
+명시 치수 [템플릿](template_contract.md)은 core 객체를 생성하고 `rfad.template-origin/0.1` 확장에 카드/최초 입력/선택 목표/생성 사본을 보존한다. source_document는 중첩 확장을 제외한 core 사본이며 원래 전체 base_content_hash와 별도 해시를 가진다. 현재 편집 원본과 과거 출처 사본을 분리하고, 출처가 남아 있다는 이유로 과거 형상을 현재 형상으로 취급하지 않는다. 검토한 후보의 원자 적용/undo는 기존 명령/영수증을 사용한다.
 
 ## 3. 상태/작업 계약
 

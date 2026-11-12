@@ -80,6 +80,8 @@ enum
     IdDeleteShape,
     IdValidate,
     IdResetLayout,
+    IdTargets,
+    IdTemplates,
     IdTimer,
     IdShutdown
 };

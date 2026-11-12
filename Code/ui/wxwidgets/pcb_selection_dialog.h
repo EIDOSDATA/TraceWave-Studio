@@ -3,6 +3,7 @@
 
 #include "pcb_selection_model.h"
 #include "studio_types.h"
+#include "dialog_gateway.h"
 #include <wx/dialog.h>
 #include <functional>
 #include <array>
@@ -22,10 +23,6 @@ class wxPanel;
 class wxStaticText;
 class wxTextCtrl;
 class wxBoxSizer;
-
-/** @brief 공개 서비스 요청만 전달하며 프로젝트와 카탈로그 경로를 직접 열지 않는다. */
-using DialogGateway = std::function<void(const std::string&, const Json&, bool, std::function<void(const Json&)>,
-                                         std::function<void(const Json&)>)>;
 
 /** @brief 입력 폼은 초안을 소유하고 확정 값과 물리 검증은 서비스에 위임한다. */
 class PcbSelectionDialog final : public wxDialog

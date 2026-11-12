@@ -24,6 +24,7 @@ public:
         parser.AddOption("", "solver-settings", "Explicit solver smoke settings JSON path");
         parser.AddSwitch("", "study-smoke-test", "Run project study GUI workflow and exit");
         parser.AddSwitch("", "study-expect-failure", "Expect study source preflight rejection");
+        parser.AddSwitch("", "design-setup-smoke-test", "Run target/template GUI workflow and exit");
         parser.AddOption("", "study-specification", "Explicit study smoke specification JSON path");
         parser.AddOption("", "open-project", "Registered project path relative to workspace");
         parser.AddSwitch("", "smoke-test", "Run GUI/service smoke test and exit");
@@ -63,9 +64,11 @@ public:
         parser.Found("solver-settings", &options.solverSettings);
         options.studySmoke = parser.Found("study-smoke-test");
         options.studyExpectFailure = parser.Found("study-expect-failure");
+        options.setupSmoke = parser.Found("design-setup-smoke-test");
         parser.Found("study-specification", &options.studySpecification);
         options.smoke = parser.Found("smoke-test") || options.editorSmoke || options.canvasSmoke ||
-                        options.primitivesSmoke || options.cadSmoke || options.solverSmoke || options.pcbSmoke || options.studySmoke;
+                        options.primitivesSmoke || options.cadSmoke || options.solverSmoke || options.pcbSmoke ||
+                        options.studySmoke || options.setupSmoke;
         if (options.python.empty() || options.source.empty() || options.workspace.empty())
         {
             wxMessageBox(Display("--python, --source, --workspace 경로를 지정하십시오."), Display("실행 설정"),

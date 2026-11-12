@@ -20,7 +20,7 @@
 
 2번의 [승인 요구/구현 대조](docs/implementation_audit.md)와 [공통 계약](docs/shared_contracts.md), [Studio GUI 설계](docs/studio_gui_design.md)를 정리했다. 요구/AC 연결은 실제 수용 합격과 구분하며 기능별 코드/시험/누락 범위를 추적한다.
 
-3번의 첫 구현으로 [사용자 목표 입력](docs/target_contract.md)을 추가했다. 목표 대역/주파수 표본/port/Z0와 명시적 지표 한계를 저장하고 재열기/undo/redo를 제공한다. 쓰기는 프로젝트 0.3이며 기존 0.1/0.2 원본과 snapshot은 보존한다. 목표 저장은 solver 설정 변경이나 성능 평가가 아니다. GUI에는 공통 라이트 스타일과 도구 줄바꿈을 먼저 적용했으며 전체 Studio 작업 화면은 순차적으로 연결한다.
+3번의 첫 구현으로 [사용자 목표 입력](docs/target_contract.md)을 추가했다. 목표 대역/주파수 표본/port/Z0와 명시적 지표 한계를 저장하고 재열기/undo/redo를 제공한다. 쓰기는 프로젝트 0.3이며 기존 0.1/0.2 원본과 snapshot은 보존한다. 목표 저장은 solver 설정 변경이나 성능 평가가 아니다. GUI에는 공통 라이트 스타일과 도구 줄바꿈을 적용했다. 이어 [다중 목표 편집과 원호/IFA 템플릿 화면](docs/target_template_gui.md)을 연결했으며 [템플릿 계약](docs/template_contract.md)에 따라 명시 치수를 2D 미리보기 후 한 명령으로 적용한다. 출처와 최초 입력을 보존하고 기존 직접 편집/undo/redo를 유지한다. 목표 주파수 기반 자동 합성과 물리 성능 평가는 후속이다.
 
 목표 화면 배치와 구현 범위를 구분한 [완성형 UI 시안](docs/ui_concept.md)도 함께 관리한다.
 

@@ -11,7 +11,9 @@ from rfad.domain.parameter_graph import evaluate_parameters, expression_record, 
 from rfad.domain.design import apply_design_command, validate_design
 from rfad.domain.pcb_selection import validate_project_selection
 from rfad.domain.pcb_selection_command import apply_stackup_command
-from rfad.domain.targets import TARGET_COMMANDS, apply_target_command, validate_targets
+from rfad.domain.targets import MAX_SAMPLES, TARGET_COMMANDS, apply_target_command, validate_targets
+from rfad.domain.template_instance import EXTENSION_KEY as TEMPLATE_ORIGIN_KEY, validate_template_origins
+from rfad.domain.template_command import INTERNAL_COMMANDS as TEMPLATE_COMMANDS, apply_template_command
 
 
 SCHEMA_VERSION = "rfad.project/0.3"
@@ -98,8 +100,8 @@ def _quantity(value: object, field: str) -> dict:
     return quantity.to_dict()
 
 
-def _extension_json(value: object, field: str, depth: int = 0, ancestors: set[int] | None = None) -> None:
-    """! @brief 미지 extension의 JSON 값을 보존하되 실행하거나 해석하지 않는다."""
+def _extension_json(value: object, field: str, depth: int = 0, ancestors: set[int] | None = None, *, list_limit: int = 256) -> None:
+    """! @brief 미지 확장 예산을 유지하고 알려진 출처 사본의 목표 표본만 별도 상한으로 검사한다."""
     if depth > 32:
         _fail("E_RESOURCE", "extension 최대 깊이 32를 초과했습니다.", field)
     value_type = type(value)
@@ -118,7 +120,7 @@ def _extension_json(value: object, field: str, depth: int = 0, ancestors: set[in
         return
     if value_type not in (dict, list):
         _fail("E_SCHEMA", "extension에는 JSON 자료형만 허용합니다.", field)
-    if len(value) > 256:
+    if len(value) > (list_limit if value_type is list else 256):
         _fail("E_RESOURCE", "extension collection 상한을 초과했습니다.", field)
     if ancestors is None:
         ancestors = set()
@@ -129,10 +131,11 @@ def _extension_json(value: object, field: str, depth: int = 0, ancestors: set[in
         if value_type is dict:
             for key, item in value.items():
                 _text(key, field, max_chars=256)
-                _extension_json(item, field, depth + 1, ancestors)
+                child_limit = MAX_SAMPLES if depth == 0 and key == TEMPLATE_ORIGIN_KEY else list_limit
+                _extension_json(item, field, depth + 1, ancestors, list_limit=child_limit)
         else:
             for item in value:
-                _extension_json(item, field, depth + 1, ancestors)
+                _extension_json(item, field, depth + 1, ancestors, list_limit=list_limit)
     finally:
         ancestors.remove(id(value))
 
@@ -264,6 +267,7 @@ def validate_project(document: dict) -> None:
         _fail("E_SCHEMA", "extensions는 object여야 합니다.", "extensions")
     _extension_json(document["extensions"], "extensions")
     validate_project_selection(document)
+    validate_template_origins(document)
 
 
 def apply_command(document: dict, command: dict, expected_revision: str) -> tuple[dict, list[str], list[str], dict]:
@@ -336,6 +340,8 @@ def apply_command(document: dict, command: dict, expected_revision: str) -> tupl
         changed_ids, invalidation_set, inverse = apply_stackup_command(result, payload)
     elif command_type in TARGET_COMMANDS:
         changed_ids, invalidation_set, inverse = apply_target_command(result, command_type, payload)
+    elif command_type in TEMPLATE_COMMANDS:
+        changed_ids, invalidation_set, inverse = apply_template_command(result, payload)
     elif command_type in DESIGN_COMMANDS:
         changed_ids, invalidation_set, inverse = apply_design_command(result, command_type, payload)
     else:

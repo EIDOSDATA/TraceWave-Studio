@@ -13,6 +13,8 @@ from unittest.mock import patch
 from rfad.application.cad_jobs import CadRuntime, CODE_ROOT
 from rfad.application.canonical import canonical_bytes
 from rfad.application.projects import ProjectService
+from rfad.domain.errors import ProjectError
+from rfad.domain.resource_limits import MAX_WORKER_SOURCE_FILES
 from test_cad_jobs import _FAKE_WORKER
 from test_cad_worker_process import cad_request, register_fixture, status
 
@@ -34,6 +36,33 @@ Path("source-probe.json").write_text(json.dumps({
 
 class CadSourceCaptureTests(unittest.TestCase):
     """! @brief 원본 bytecode의 존재와 artifact 손상에 독립적인 worker 실행을 확인한다."""
+
+    def test_modular_source_bundle_keeps_count_and_byte_budgets(self):
+        """! @brief 128개보다 많은 모듈도 봉인하되 파일 수/전체 바이트 한도는 별도 검사한다."""
+        with TemporaryDirectory(prefix="rfad source budget ") as directory:
+            root = Path(directory)
+            with patch("rfad.application.cad_runtime.CODE_ROOT", root):
+                self.make_runtime(root, False)
+                package = root / "src/rfad"
+                for index in range(MAX_WORKER_SOURCE_FILES - 2):
+                    (package / f"module_{index}.py").write_text("VALUE = 1\n", encoding="utf-8")
+                def capture():
+                    """! @brief 같은 호스트 설정에서 새 소스 묶음을 확인한다."""
+                    return CadRuntime(Path(sys.executable), manifest=CODE_ROOT / "runtime_profiles/python-cad-windows-x64.json",
+                                      entry=root / "original worker.py")
+                accepted = capture()
+                self.assertEqual(len(json.loads(accepted.source_bytes)), MAX_WORKER_SOURCE_FILES)
+                accepted.verify(accepted.identity)
+                extra = package / "extra.py"
+                extra.write_text("VALUE = 2\n", encoding="utf-8")
+                with self.assertRaises(ProjectError) as count_error:
+                    capture()
+                self.assertEqual(count_error.exception.code, "E_RESOURCE")
+                extra.unlink()
+                (package / "module_0.py").write_text("#" * (2 * 1024 * 1024), encoding="utf-8")
+                with self.assertRaises(ProjectError) as bytes_error:
+                    capture()
+                self.assertEqual(bytes_error.exception.code, "E_RESOURCE")
 
     def make_runtime(self, root: Path, with_cache: bool) -> CadRuntime:
         """! @brief 원본 소스와 크기/mtime이 일치하는 다른 bytecode를 임시 경로에 준비한다."""

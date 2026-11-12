@@ -2,6 +2,7 @@
 #include "studio_internal.h"
 #include "pcb_selection_dialog.h"
 #include "project_study_dialog.h"
+#include "project_setup_dialog.h"
 
 void StudioFrame::Failure(const std::string& message, bool disconnected)
 {
@@ -11,6 +12,10 @@ void StudioFrame::Failure(const std::string& message, bool disconnected)
     m_jobComplete = {};
     if (disconnected)
     {
+        if (m_setupDialog != nullptr)
+        {
+            m_setupDialog->ServiceDisconnected(message);
+        }
         if (m_studyDialog != nullptr)
         {
             m_studyDialog->ServiceDisconnected(message);
@@ -67,6 +72,24 @@ void StudioFrame::OnClose(wxCloseEvent& event)
     if (m_studyDialog != nullptr)
     {
         m_studyDialog->Close();
+    }
+    if (m_setupDialog != nullptr)
+    {
+        const bool force = !event.CanVeto();
+        if (force)
+        {
+            m_setupDialog->ServiceDisconnected("프로그램 종료 요청으로 적용 결과를 다시 확인해야 합니다.");
+        }
+        if (m_setupDialog->Close(force))
+        {
+            m_closeAfterSetup = true;
+            m_forceCloseAfterSetup = force;
+        }
+        if (event.CanVeto())
+        {
+            event.Veto();
+        }
+        return;
     }
     /** @brief 스택 소유 대화상자가 반환되기 전에 부모와 자식을 파괴하지 않는다. */
     if (m_pcbDialog != nullptr)
