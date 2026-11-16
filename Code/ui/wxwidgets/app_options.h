@@ -27,6 +27,7 @@ struct Options
     bool studySmoke = false;
     bool studyExpectFailure = false;
     bool setupSmoke = false;
+    bool networkSmoke = false;
     bool printedSeedSmoke = false;
     bool designRulesSmoke = false;
     bool physicalSetupSmoke = false;

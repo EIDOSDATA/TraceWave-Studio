@@ -34,7 +34,8 @@ LABELS = {
 }
 VALUE_LABELS = {
     "length": "길이", "frequency": "주파수", "time": "시간", "angle": "각도",
-    "impedance": "임피던스", "conductivity": "전도도", "power": "전력", "dimensionless": "무차원",
+    "impedance": "임피던스", "inductance": "인덕턴스", "capacitance": "커패시턴스",
+    "conductivity": "전도도", "power": "전력", "dimensionless": "무차원",
     "user_entered": "직접 입력", "source_default": "자료 기본값", "estimated": "추정값",
     "missing": "미정", "not_applicable": "해당 없음", "unsupported": "미지원", "conflicting": "값 충돌",
     "conductor": "도체", "dielectric": "유전체", "coating": "코팅", "adhesive": "접착층", "air": "공기층",

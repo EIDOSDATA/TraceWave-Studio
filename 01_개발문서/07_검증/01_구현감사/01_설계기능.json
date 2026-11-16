@@ -611,29 +611,49 @@
   },
   {
     "id": "FN-017",
-    "implementation_status": "not_implemented",
-    "implemented": "해석 포트의 S11/임피던스/전력은 계산하지만 외부 RLC network graph와 raw EM 결합 서비스는 없다.",
+    "implementation_status": "partial",
+    "implemented": "rfad.ideal-rlc/0.1은 1포트 S 부하 앞에 EM 외부의 이상 R/L/C 직렬/병렬 요소를 1~16개 연결한다. open/short/DNP와 DC를 구분하고 원래 SI/출처/미정 값을 보존한다. network.preview/apply의 circuit_save와 circuit_apply는 회로 정의와 원본을 각각 참조하는 불변 파생 결과를 검토 해시 및 원자 명령으로 저장한다. native GUI의 회로도/입력 표/원본과 결합 결과 곡선, 저장/undo/redo/재열기를 연결했다.",
     "gaps": [
-      "networks schema/명령과 API-017 network.derive를 구현해야 한다.",
-      "주파수/Z0/기준면 검사, 회로 손실/조건수, raw 부모 참조와 파생 결과 identity가 필요하다.",
-      "field basis가 없는 경우 정합 후 방사/효율을 미평가로 반환하는 조건을 정해야 한다."
+      "일반 node/port network graph, 다중 포트 부하, 실제 부품의 Q/ESR/ESL/SRF, EM 내부 소자와 배선/패드 기생 모델은 현재 지원 범위 밖이다.",
+      "회로 개별 전력/손실 원장과 복소 field basis 결합은 미구현이다. 정합 후 방사/이득/효율을 기존 원본 값에서 승계하지 않으며 7/8번의 결과/독립 검증과 함께 보강해야 한다.",
+      "현재 유한 회로 profile과 내부 network.preview/apply를 승인 API-017 network.derive 및 FN-017 전체 수용 완료로 매핑하지 않는다. 일반 변환 계획과 기존 networks 컬렉션의 통합은 별도 계약과 검증이 필요하다."
     ],
     "code": [
       "src/rfad/domain/project.py",
       "src/rfad/application/rpc.py",
-      "src/rfad/application/pcb_results.py"
+      "src/rfad/application/pcb_results.py",
+      "src/rfad/domain/network_circuit.py",
+      "src/rfad/domain/network_library.py",
+      "src/rfad/adapters/network_backend.py",
+      "src/rfad/application/network_candidates.py",
+      "src/rfad/application/network_service.py",
+      "ui/wxwidgets/network_circuit_dialog.cpp",
+      "ui/wxwidgets/network_circuit_view.cpp"
     ],
-    "tests": [],
+    "tests": [
+      "tests/test_network_domain.py::NetworkCircuitTests.test_series_and_shunt_resistor_match_independent_load_formula",
+      "tests/test_network_domain.py::NetworkCircuitTests.test_reactive_sequence_and_phasor_sign_match_independent_rlc",
+      "tests/test_network_domain.py::NetworkCircuitTests.test_dc_open_short_are_topology_not_huge_values",
+      "tests/test_network_domain.py::NetworkCircuitTests.test_missing_quantity_stores_but_application_blocks",
+      "tests/test_network_domain.py::NetworkCircuitTests.test_original_and_component_sources_preserved_without_field_claim",
+      "tests/test_network_domain.py::NetworkCircuitTests.test_active_load_singular_connection_is_masked",
+      "tests/test_network_service.py::NetworkServiceTests.test_rlc_missing_save_derive_reference_and_parent_protection",
+      "tests/test_network_boundaries.py::NetworkBoundaryTests.test_1001_samples_16_elements_preserve_full_diagnostics",
+      "tests/test_network_review.py::NetworkReviewTests.test_saved_network_and_undo_redo_reopen_do_not_require_native_engine",
+      "tests/test_gui_network_process.py::GuiNetworkTests.test_native_import_rlc_assessment_history_and_reopen"
+    ],
     "evidence": [
-      "../01_개발문서/05_기능설계/04_해석결과/03_사용자기판_단일포트_해석.md"
+      "../01_개발문서/05_기능설계/04_해석결과/03_사용자기판_단일포트_해석.md",
+      "../01_개발문서/05_기능설계/04_해석결과/06_공통복소자료와_회로평가.md",
+      "runtime_profiles/python-network-windows-x64.json"
     ],
     "next_steps": [
-      5,
       7,
       8
     ],
     "contract_notes": [
-      "단일 포트 native lumped 저항은 사용자 외부 RLC 정합망이 아니다. networks는 비어 있지 않으면 현재 거절한다."
+      "단일 포트 native lumped 저항과 외부 이상 RLC는 구분한다. 기존 networks 예약 컬렉션은 그대로이며 현재 회로/자료는 extensions.rfad.network-library에 보존한다.",
+      "연결한 요소의 값/시간 규약/기준면이 미정이면 계산을 차단하되 미정 회로 저장은 허용한다. 정합 계산을 RF 수렴/실측 검증이나 실제 부품 손실 모델의 합격으로 확대하지 않는다."
     ]
   },
   {

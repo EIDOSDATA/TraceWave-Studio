@@ -42,6 +42,9 @@ class wxThreadEvent;
 class WorkspaceBar;
 class StudioShell;
 class wxSearchCtrl;
+class NetworkPanel;
+class NetworkAssessmentPanel;
+enum class NetworkAction;
 enum class WorkspaceArea;
 enum class DesignSetup
 {
@@ -85,6 +88,17 @@ private:
     void RefreshLayerList();
     void NavigateWorkspace(WorkspaceArea area);
     void ShowWorkspaceJob(long row, const std::string& state, const std::string& message);
+    /** @brief 네트워크 View와 현재 개정의 조회/도구 수명을 연결한다. */
+    void BuildNetworkInterface();
+    void UpdateNetworkViews();
+    void RefreshNetwork(const std::string& preferredId = "");
+    void LoadNetworkResult(const std::string& id, int row = 0, int column = 0, int offset = 0);
+    void OpenNetworkAction(NetworkAction action);
+    void ShowNetworkTool(NetworkAction action, const Json& context, const Json& selection);
+    void ResetNetwork();
+    void BuildNetworkAssessmentInterface(wxWindow* navigation);
+    void LoadNetworkAssessment(const std::string& id);
+    void LoadNetworkAssessmentPoints(int criterion, int offset);
     /** @brief 현재 프로젝트의 원본을 보존하는 연구 설정/진행 창을 연다. */
     void OpenProjectStudy();
     /** @brief 목표 또는 명시 기하 카드의 비동기 설정 화면을 연다. */
@@ -235,6 +249,16 @@ private:
     bool m_designRulesSupported = false;
     bool m_physicalSetupSupported = false;
     bool m_precisionSupported = false;
+    bool m_networkSupported = false;
+    bool m_networkPending = false;
+    bool m_networkRefreshQueued = false;
+    std::uint64_t m_networkGeneration = 0;
+    std::string m_networkAttemptedRevision;
+    std::string m_networkPreferredId;
+    NetworkPanel* m_networkPanel = nullptr;
+    NetworkAssessmentPanel* m_networkAssessmentPanel = nullptr;
+    std::string m_networkAssessmentPreferredId;
+    std::string m_networkAssessmentAttemptedId;
     ProjectStudyDialog* m_studyDialog = nullptr;
     bool m_studySupported = false;
     bool m_closeAfterPcb = false;

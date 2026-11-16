@@ -16,7 +16,7 @@ from rfad.application.catalog_api import describe as describe_catalog, query as 
 from rfad.application.pcb_selection_contract import READ_METHODS as PCB_SELECTION_READS, MUTATION_METHODS as PCB_SELECTION_MUTATIONS
 from rfad.application.project_study_contract import READS as STUDY_READS, MUTATIONS as STUDY_MUTATIONS
 from rfad.application import target_editor
-from rfad.application import design_rule_service, physical_setup_service, precision_service
+from rfad.application import design_rule_service, physical_setup_service, precision_service, network_service
 
 TEMPLATE_READS = {"template.list", "template.get", "template.context", "template.synthesize"}
 
@@ -38,7 +38,7 @@ PROJECT_MUTATIONS = {"project.open", "project.apply_command", "editor.apply", "c
 PROJECT_MUTATIONS.update({"solver.plan", "solver.prepare", "job.submit"})
 PROJECT_MUTATIONS.update(PCB_SELECTION_MUTATIONS)
 PROJECT_MUTATIONS.update(STUDY_MUTATIONS)
-PROJECT_MUTATIONS.update({"target.editor.apply", "template.apply", "design.rules.apply", physical_setup_service.MUTATION, precision_service.MUTATION})
+PROJECT_MUTATIONS.update({"target.editor.apply", "template.apply", "design.rules.apply", physical_setup_service.MUTATION, precision_service.MUTATION, network_service.MUTATION})
 
 
 def capabilities(service=None, catalog=None) -> dict:
@@ -98,6 +98,15 @@ def capabilities(service=None, catalog=None) -> dict:
                                   for name in physical_setup_service.READS | {physical_setup_service.MUTATION}})
         result["methods"].update({name: {"status": "implemented", "extension_profile": precision_service.PROFILE}
                                   for name in precision_service.READS | {precision_service.MUTATION}})
+        result["methods"].update({name: {"status": "implemented", "extension_profile": network_service.PROFILE}
+                                  for name in network_service.READS | {network_service.MUTATION}})
+        from rfad.adapters.network_backend import installation_metadata as network_engine_metadata
+        from rfad.adapters.network_hdf5 import installation_metadata as hdf5_metadata
+        result["network_profile"] = {"profile": network_service.PROFILE, "ports": 2, "samples": 1001,
+                                     "import_bytes": network_service.MAX_IMPORT_BYTES, "preview_required": True,
+                                     "formats": ["touchstone", "csv", "hdf5"], "engine": network_engine_metadata(),
+                                     "hdf5": hdf5_metadata(), "assessment": "rfad.target-assessment/0.1",
+                                     "automatic_interpolation": False, "physical_validation": False}
         result["precision_profile"] = {"profile": precision_service.PROFILE, "preview_required": True, "atomic_apply": True,
                                        "operations": list(precision_service.OPERATIONS), "limits": precision_service.LIMITS,
                                        "planar_engine": precision_service.installation_metadata(), "geometry_solver_supported": False}
@@ -196,12 +205,28 @@ def _reject_constant(value: str) -> None:
     raise ValueError(f"Non-finite constant: {value}")
 
 
-def _validate_tree(value: object, depth: int = 0) -> None:
+def _network_source_paths(message):
+    """! @brief 명시적 가져오기 원문 필드만 512 KiB의 base64 전송 예외로 지정한다."""
+    result = set()
+    requests = enumerate(message) if type(message) is list else [(None, message)]
+    for index, request in requests:
+        if type(request) is not dict or request.get("method") not in ("network.preview", "network.apply"):
+            continue
+        params = request.get("params")
+        data = params.get("input") if type(params) is dict else None
+        if type(data) is dict and data.get("operation") == "import":
+            prefix = () if index is None else (index,)
+            result.add(prefix + ("params", "input", "parameters", "source_base64"))
+    return result
+
+
+def _validate_tree(value: object, depth: int = 0, path=(), source_paths=frozenset()) -> None:
     """! @brief 깊이, 문자열과 부동소수점 입력의 경계를 검사한다."""
     if depth > MAX_DEPTH:
         raise ValueError("JSON nesting limit exceeded")
     if isinstance(value, str):
-        if len(value.encode("utf-8")) > MAX_STRING_BYTES:
+        limit = ((network_service.MAX_IMPORT_BYTES + 2) // 3) * 4 if path in source_paths else MAX_STRING_BYTES
+        if len(value.encode("utf-8")) > limit:
             raise ValueError("String limit exceeded")
     elif isinstance(value, float):
         if not math.isfinite(value):
@@ -209,10 +234,10 @@ def _validate_tree(value: object, depth: int = 0) -> None:
     elif isinstance(value, dict):
         for key, item in value.items():
             _validate_tree(key, depth + 1)
-            _validate_tree(item, depth + 1)
+            _validate_tree(item, depth + 1, path + (key,), source_paths)
     elif isinstance(value, list):
-        for item in value:
-            _validate_tree(item, depth + 1)
+        for index, item in enumerate(value):
+            _validate_tree(item, depth + 1, path + (index,), source_paths)
 
 
 def _dispatch(request: object, service=None, catalog=None) -> dict | None:
@@ -225,12 +250,14 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
         return _error(None, -32600, "Invalid Request")
     notification = "id" not in request
     method = request["method"]
-    if service is not None and method in PROJECT_MUTATIONS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | {"target.editor.get", "job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
+    if service is not None and method in PROJECT_MUTATIONS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | network_service.READS | {"target.editor.get", "job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
         if notification and method in PROJECT_MUTATIONS:
             return None
         try:
             params = request.get("params")
-            if method in precision_service.READS:
+            if method in network_service.READS:
+                result = network_service.read(service, method, params)
+            elif method in precision_service.READS:
                 result = precision_service.read(service, method, params)
             elif method in physical_setup_service.READS:
                 result = service.physical_setup.read(method, params)
@@ -315,7 +342,7 @@ def handle_frame(frame: bytes, service=None, catalog=None) -> dict | list | None
     except (ValueError, UnicodeError, RecursionError):
         return _error(None, -32700, "Parse error")
     try:
-        _validate_tree(message)
+        _validate_tree(message, source_paths=_network_source_paths(message))
     except (ValueError, UnicodeError, RecursionError):
         return _error(None, APPLICATION_ERRORS["E_SCHEMA"], "Input limits or numeric rules violated", "E_SCHEMA")
     if isinstance(message, list):

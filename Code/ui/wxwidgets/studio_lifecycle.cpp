@@ -26,6 +26,7 @@ void StudioFrame::Failure(const std::string& message, bool disconnected)
         }
         m_requests.Clear();
         m_connected = false;
+        ResetNetwork();
         m_cadPreparing = false;
         m_cadTask.AbandonPoll();
         if (!m_cadTask.Id().empty())

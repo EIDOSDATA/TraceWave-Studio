@@ -139,15 +139,33 @@ void StudioShell::SetCompact(bool compact)
 
 void StudioShell::ApplyVisibility()
 {
+    m_navigation.SetPageText(0, Display(m_resultContext ? "결과 목록" : "탐색"));
+    const int propertiesPage = m_navigation.FindPage(&m_properties);
+    if (propertiesPage != wxNOT_FOUND)
+    {
+        m_navigation.SetPageText(static_cast<std::size_t>(propertiesPage),
+                                 Display(m_resultContext ? "결과 조건" : "속성"));
+    }
     m_manager.GetPane("navigation").Show(m_visible[0] || (m_compact && m_visible[1]));
     m_manager.GetPane("properties").Show(!m_compact && m_visible[1]);
-    m_manager.GetPane("layers").Show(!m_compact && m_visible[2]);
+    m_manager.GetPane("layers").Show(!m_compact && m_visible[2] && !m_resultContext);
     if (m_layers != nullptr)
     {
-        m_layers->Show(m_visible[2]);
+        m_layers->Show(m_visible[2] && !m_resultContext);
         m_navigation.GetPage(0)->Layout();
     }
     m_manager.GetPane("problems").Show(m_visible[3]);
+}
+
+void StudioShell::SetResultContext(bool active)
+{
+    if (active == m_resultContext)
+    {
+        return;
+    }
+    m_resultContext = active;
+    ApplyVisibility();
+    m_manager.Update();
 }
 
 void StudioShell::RestoreLayout()
@@ -202,7 +220,14 @@ void StudioShell::ShowNavigation(bool focus)
     m_manager.Update();
     if (focus)
     {
-        m_tree.SetFocus();
+        if (m_tree.IsShownOnScreen())
+        {
+            m_tree.SetFocus();
+        }
+        else
+        {
+            m_navigation.GetPage(0)->SetFocus();
+        }
     }
     else if (previouslyFocused != nullptr && previouslyFocused->IsShownOnScreen() && previouslyFocused->IsEnabled())
     {
@@ -210,7 +235,7 @@ void StudioShell::ShowNavigation(bool focus)
     }
     else if (m_compact && previouslyFocused != nullptr && Contains(m_properties, previouslyFocused))
     {
-        m_tree.SetFocus();
+        m_navigation.GetPage(0)->SetFocus();
     }
 }
 

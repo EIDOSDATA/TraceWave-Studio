@@ -49,6 +49,8 @@ void StudioFrame::Connect()
              m_busy = false;
              SetStatusText(Display("준비됨"), 0);
              m_precisionSupported = result.value("methods", Json::object()).contains("precision.get");
+             m_networkSupported = result.value("methods", Json::object()).contains("network.library") &&
+                                  result.value("methods", Json::object()).contains("network.apply");
              Log("프로젝트 서비스에 연결했습니다.");
              UpdateControls();
              m_smoke->OnConnected();
@@ -83,11 +85,11 @@ void StudioFrame::Send(const std::string& method, const Json& input, bool mutati
         return;
     }
     const bool foreground =
-        method.rfind("precision.", 0) != 0 &&
-        method.rfind("target.editor.", 0) != 0 && method.rfind("template.", 0) != 0 &&
-        method.rfind("catalog.", 0) != 0 && method.rfind("pcb.selection.", 0) != 0 && method.rfind("study.", 0) != 0 &&
-        method != "cad.latest" && method != "solver.latest" && method != "solver.samples" && method != "result.open" &&
-        method != "job.cancel" && method != "solver.plan" && method != "solver.prepare" && method != "job.submit" &&
+        method.rfind("precision.", 0) != 0 && method.rfind("target.editor.", 0) != 0 &&
+        method.rfind("template.", 0) != 0 && method.rfind("catalog.", 0) != 0 &&
+        method.rfind("pcb.selection.", 0) != 0 && method.rfind("study.", 0) != 0 && method != "cad.latest" &&
+        method != "solver.latest" && method != "solver.samples" && method != "result.open" && method != "job.cancel" &&
+        method != "solver.plan" && method != "solver.prepare" && method != "job.submit" &&
         !(method == "snapshot.create" && input.value("description", "") == "GUI PCB 해석 입력") &&
         !(method == "job.status" &&
           (input.value("job_id", "") == m_cadTask.Id() || input.value("job_id", "") == m_solverTask.Id()));

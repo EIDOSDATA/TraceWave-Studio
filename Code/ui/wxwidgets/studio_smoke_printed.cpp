@@ -22,11 +22,11 @@ void StudioSmokeDriver::PrintedSeedSmokeTick()
     if (m_setupStage == 1)
     {
         const std::string revision = m_frame.m_revision;
-        const int pages[] = {0, 3, 2, 4, 5};
+        const int pages[] = {0, 3, 6, 4, 5};
         for (int index = 0; index < 5; ++index)
         {
-            auto* button = dynamic_cast<wxToggleButton*>(wxWindow::FindWindowByName(
-                Display("workspace.area." + std::to_string(index)), &m_frame));
+            auto* button = dynamic_cast<wxToggleButton*>(
+                wxWindow::FindWindowByName(Display("workspace.area." + std::to_string(index)), &m_frame));
             CanvasAssert(button != nullptr && button->IsEnabled(), "작업 영역 이동 버튼이 없습니다.");
             wxCommandEvent event(wxEVT_TOGGLEBUTTON, button->GetId());
             event.SetEventObject(button);
@@ -55,10 +55,11 @@ void StudioSmokeDriver::PrintedSeedSmokeTick()
                      "표시 조작이 원본 개정을 바꾸거나 실제 작업 행이 없습니다.");
         m_setupChecks.push_back("workspace_navigation_and_layer_visibility_without_mutation");
         m_setupStage = 10;
-        m_frame.CallAfter([this]()
-        {
-            m_frame.OpenDesignSetup(DesignSetup::Templates);
-        });
+        m_frame.CallAfter(
+            [this]()
+            {
+                m_frame.OpenDesignSetup(DesignSetup::Templates);
+            });
     }
     else if (m_setupStage == 30)
     {
@@ -126,7 +127,8 @@ void StudioSmokeDriver::PrintedSeedDialog(TemplateDialog& dialog)
             }
             m_setupChecks.push_back("seed_recipe_only_change_requires_discard_confirmation");
             dialog.m_seedInputs->SetFieldValue("frequency.value", "2.4");
-            dialog.m_seedInputs->SetFieldValue("assumption", "GUI 시험: 원문 충분한 접지 조건을 가정; 현재 실제 물성 미정");
+            dialog.m_seedInputs->SetFieldValue("assumption",
+                                               "GUI 시험: 원문 충분한 접지 조건을 가정; 현재 실제 물성 미정");
         }
         else if (m_printedCase == 1)
         {
@@ -186,7 +188,8 @@ void StudioSmokeDriver::PrintedSeedDialog(TemplateDialog& dialog)
     else if (m_setupStage == 14)
     {
         CanvasAssert(dialog.m_context.at("instances").size() == static_cast<std::size_t>(m_printedCase + 1) &&
-                         dialog.m_revision != m_setupExpectedRevision, "문헌 카드가 한 명령으로 적용되지 않았습니다.");
+                         dialog.m_revision != m_setupExpectedRevision,
+                     "문헌 카드가 한 명령으로 적용되지 않았습니다.");
         ++m_printedCase;
         if (m_printedCase < 3)
         {

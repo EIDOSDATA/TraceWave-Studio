@@ -25,11 +25,14 @@ public:
         parser.AddSwitch("", "study-smoke-test", "Run project study GUI workflow and exit");
         parser.AddSwitch("", "study-expect-failure", "Expect study source preflight rejection");
         parser.AddSwitch("", "design-setup-smoke-test", "Run target/template GUI workflow and exit");
-        parser.AddSwitch("", "printed-seed-smoke-test", "Run printed reference/seed and workspace GUI workflow and exit");
+        parser.AddSwitch("", "network-smoke-test", "Run network import, RLC, assessment and restart GUI workflow");
+        parser.AddSwitch("", "printed-seed-smoke-test",
+                         "Run printed reference/seed and workspace GUI workflow and exit");
         parser.AddSwitch("", "physical-setup-smoke-test", "Run physical stack, STEP placement and reopen workflow");
         parser.AddSwitch("", "design-rules-smoke-test", "Run design rules editing, checking and reopen workflow");
         parser.AddSwitch("", "precision-editor-smoke-test", "Run rename, precision preview/apply and restart workflow");
-        parser.AddSwitch("", "precision-planar-smoke-test", "Run planar selection, candidates, mirror and restart workflow");
+        parser.AddSwitch("", "precision-planar-smoke-test",
+                         "Run planar selection, candidates, mirror and restart workflow");
         parser.AddOption("", "study-specification", "Explicit study smoke specification JSON path");
         parser.AddOption("", "open-project", "Registered project path relative to workspace");
         parser.AddSwitch("", "smoke-test", "Run GUI/service smoke test and exit");
@@ -74,8 +77,10 @@ public:
         options.physicalSetupSmoke = parser.Found("physical-setup-smoke-test");
         options.precisionPlanarSmoke = parser.Found("precision-planar-smoke-test");
         options.precisionEditorSmoke = parser.Found("precision-editor-smoke-test") || options.precisionPlanarSmoke;
+        options.networkSmoke = parser.Found("network-smoke-test");
         options.setupSmoke = parser.Found("design-setup-smoke-test") || options.printedSeedSmoke ||
-                             options.designRulesSmoke || options.physicalSetupSmoke || options.precisionEditorSmoke;
+                             options.designRulesSmoke || options.physicalSetupSmoke || options.precisionEditorSmoke ||
+                             options.networkSmoke;
         parser.Found("study-specification", &options.studySpecification);
         options.smoke = parser.Found("smoke-test") || options.editorSmoke || options.canvasSmoke ||
                         options.primitivesSmoke || options.cadSmoke || options.solverSmoke || options.pcbSmoke ||

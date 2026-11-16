@@ -6,7 +6,7 @@ DialogGateway StudioFrame::ObjectToolGateway()
 {
     const std::string project = m_project;
     return [this, project](const std::string& method, const Json& input, bool mutation,
-                          std::function<void(const Json&)> success, std::function<void(const Json&)> rejected)
+                           std::function<void(const Json&)> success, std::function<void(const Json&)> rejected)
     {
         if (m_closing || !m_connected || project != m_project)
         {
@@ -31,6 +31,20 @@ void StudioFrame::ShowObjectTool(std::unique_ptr<ProjectSetupDialog> dialog, con
         if (!result.is_null())
         {
             m_revision = result.at("new_revision");
+            const std::string operation = result.value("operation", "");
+            if (result.contains("record_id") && (operation == "import" || operation == "solver" ||
+                                                 operation == "transform" || operation == "circuit_apply"))
+            {
+                m_networkPreferredId = result.at("record_id");
+            }
+            else if (result.contains("record_id") && operation == "evaluate")
+            {
+                m_networkAssessmentPreferredId = result.at("record_id");
+                if (m_views->GetSelection() == 6 || m_views->GetSelection() == 7)
+                {
+                    m_views->SetSelection(7);
+                }
+            }
         }
         if (m_closeAfterSetup)
         {
@@ -38,7 +52,11 @@ void StudioFrame::ShowObjectTool(std::unique_ptr<ProjectSetupDialog> dialog, con
             m_closeAfterSetup = false;
             m_forceCloseAfterSetup = false;
             m_busy = false;
-            CallAfter([this, force]() { Close(force); });
+            CallAfter(
+                [this, force]()
+                {
+                    Close(force);
+                });
             return;
         }
         if (needsReload && m_connected && !m_closing)
@@ -53,7 +71,11 @@ void StudioFrame::ShowObjectTool(std::unique_ptr<ProjectSetupDialog> dialog, con
             {
                 target = {{"kind", "geometry"}, {"id", result.at("selection_ids").front()}};
             }
-            RefreshEditor(target, [this]() { Ready("편집을 적용했습니다. 저장으로 현재 개정을 확정할 수 있습니다."); });
+            RefreshEditor(target,
+                          [this]()
+                          {
+                              Ready("편집을 적용했습니다. 저장으로 현재 개정을 확정할 수 있습니다.");
+                          });
         }
         else
         {

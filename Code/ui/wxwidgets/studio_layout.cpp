@@ -366,6 +366,7 @@ void StudioFrame::BuildInterface()
                                      .MinSize(FromDIP(wxSize(300, 110)))
                                      .CloseButton(true));
     BuildWorkspacePages();
+    BuildNetworkInterface();
     BuildWorkspaceLayers();
     m_manager->Update();
     m_defaultLayout = m_manager->SavePerspective();

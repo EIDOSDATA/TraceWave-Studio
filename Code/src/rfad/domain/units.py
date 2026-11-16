@@ -22,6 +22,8 @@ class Dimension(StrEnum):
     TIME = "time"
     ANGLE = "angle"
     IMPEDANCE = "impedance"
+    INDUCTANCE = "inductance"
+    CAPACITANCE = "capacitance"
     CONDUCTIVITY = "conductivity"
     POWER = "power"
     DIMENSIONLESS = "dimensionless"
@@ -63,6 +65,14 @@ _UNITS = MappingProxyType(
         "rad": _Unit(Dimension.ANGLE, 1.0),
         "deg": _Unit(Dimension.ANGLE, math.pi / 180.0),
         "ohm": _Unit(Dimension.IMPEDANCE, 1.0),
+        "kohm": _Unit(Dimension.IMPEDANCE, 1.0e3),
+        "H": _Unit(Dimension.INDUCTANCE, 1.0),
+        "uH": _Unit(Dimension.INDUCTANCE, 1.0e-6),
+        "nH": _Unit(Dimension.INDUCTANCE, 1.0e-9),
+        "F": _Unit(Dimension.CAPACITANCE, 1.0),
+        "uF": _Unit(Dimension.CAPACITANCE, 1.0e-6),
+        "nF": _Unit(Dimension.CAPACITANCE, 1.0e-9),
+        "pF": _Unit(Dimension.CAPACITANCE, 1.0e-12),
         "S/m": _Unit(Dimension.CONDUCTIVITY, 1.0),
         "W": _Unit(Dimension.POWER, 1.0),
         "mW": _Unit(Dimension.POWER, 1.0e-3),

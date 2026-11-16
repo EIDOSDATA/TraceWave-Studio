@@ -65,6 +65,16 @@ public:
     void OnSelected();
 
 private:
+    /** @brief 공통 복소 자료의 실제 창/원자 이력/저장 재시작을 검증한다. */
+    void NetworkSmokeTick();
+    void OpenNetworkSmokeDialog(int kind);
+    void NetworkImportSafetyChecks(const Json& context);
+    Json m_networkContext = Json::object();
+    std::string m_networkImportedId;
+    std::string m_networkDerivedId;
+    std::string m_networkCircuitId;
+    std::string m_networkAssessmentId;
+    bool m_networkAwaiting = false;
     /** @brief 추가 문헌/초기식과 표시 전용 작업 영역을 실제 서비스로 확인한다. */
     void PrintedSeedSmokeTick();
     void CanvasPrecisionSmokeNext();

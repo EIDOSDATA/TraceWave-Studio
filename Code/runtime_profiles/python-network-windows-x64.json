@@ -1,0 +1,415 @@
+{
+  "schema": "rfad.runtime.python/0.1",
+  "profile_id": "python-network-windows-x64",
+  "recorded_at": "2026-11-17",
+  "purpose": "development_only",
+  "python": {
+    "implementation": "CPython",
+    "version_series": "3.12",
+    "validated_version": "3.12.10",
+    "platform": "win32",
+    "architecture": "AMD64"
+  },
+  "resolver": {
+    "name": "pip",
+    "version": "25.0.1",
+    "only_binary": true
+  },
+  "qt_allowed": false,
+  "native_import_policy": "lazy_on_network_calculation_or_hdf5_io",
+  "packages": [
+    {
+      "name": "h5py",
+      "version": "3.16.0",
+      "wheel": "h5py-3.16.0-cp312-cp312-win_amd64.whl",
+      "sha256": "96b422019a1c8975c2d5dadcf61d4ba6f01c31f92bbde6e4649607885fe502d6",
+      "url": "https://files.pythonhosted.org/packages/03/c1/0976b235cf29ead553e22f2fb6385a8252b533715e00d0ae52ed7b900582/h5py-3.16.0-cp312-cp312-win_amd64.whl",
+      "pypi_metadata_url": "https://pypi.org/pypi/h5py/3.16.0/json",
+      "license_expression": "BSD-3-Clause",
+      "license_metadata": null,
+      "license_notices": [
+        {
+          "installed_relative_path": "h5py-3.16.0.dist-info/licenses/LICENSE",
+          "sha256": "b773bc7cf038637a7fd8087648cc28e05f0f24d53770d1827147a40a1d268ab5",
+          "bytes": 1550
+        },
+        {
+          "installed_relative_path": "h5py-3.16.0.dist-info/licenses/licenses/hdf5.txt",
+          "sha256": "d7c1924744336633bbaac5626107ab55c961715abc9f71744443e43a4db3f194",
+          "bytes": 3835
+        },
+        {
+          "installed_relative_path": "h5py-3.16.0.dist-info/licenses/licenses/license.txt",
+          "sha256": "9a6333afbf5c391994fe3e9f5241accb8c22a23eb50b2e7e9b00ea57dccf29d0",
+          "bytes": 1773
+        },
+        {
+          "installed_relative_path": "h5py-3.16.0.dist-info/licenses/licenses/pytables.txt",
+          "sha256": "635a613f100d7ee01946fa52413f612cfe402b01f5cc139c221898f25d04b057",
+          "bytes": 1673
+        },
+        {
+          "installed_relative_path": "h5py-3.16.0.dist-info/licenses/licenses/python.txt",
+          "sha256": "f44efbbdac3232645854843bec8e8a206621aab6c5d5cc3e4c3e838a2aa6d0cb",
+          "bytes": 2547
+        },
+        {
+          "installed_relative_path": "h5py-3.16.0.dist-info/licenses/licenses/stdint.txt",
+          "sha256": "30b76942adcfe2517aa56e7a81644b412a2a29d14ac5f0d299a567ec54a295e5",
+          "bytes": 1419
+        },
+        {
+          "installed_relative_path": "h5py-3.16.0.dist-info/licenses/lzf/LICENSE.txt",
+          "sha256": "d7b37a2bda245d5199b84a04cf4d91b899b4ad687076c8e0a92d792b521fd464",
+          "bytes": 1589
+        }
+      ]
+    },
+    {
+      "name": "numpy",
+      "version": "2.5.4",
+      "wheel": "numpy-2.5.4-cp312-cp312-win_amd64.whl",
+      "sha256": "a7b1b6353e36a7e50de2973a38d705c88ee93adcf120673cee7f45a4a3fa223a",
+      "url": "https://files.pythonhosted.org/packages/12/33/fefe62073dc8acfd0f2b9ed7c003af2f50aa61555e113e6db02b8f79f145/numpy-2.5.4-cp312-cp312-win_amd64.whl",
+      "pypi_metadata_url": "https://pypi.org/pypi/numpy/2.5.4/json",
+      "license_expression": "BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0",
+      "license_metadata": null,
+      "license_notices": [
+        {
+          "installed_relative_path": "numpy-2.5.4.dist-info/licenses/LICENSE.txt",
+          "sha256": "a804dff0ead9fadc5293456410bcbfc32bf024be9c4513459663fb7b442d2341",
+          "bytes": 45831
+        },
+        {
+          "installed_relative_path": "numpy-2.5.4.dist-info/licenses/numpy/_core/include/numpy/libdivide/LICENSE.txt",
+          "sha256": "d544761558b510866c21f7e8a2d5716fca76e0b98117e3b6b86314db7244d150",
+          "bytes": 1039
+        },
+        {
+          "installed_relative_path": "numpy-2.5.4.dist-info/licenses/numpy/_core/src/common/pythoncapi-compat/COPYING",
+          "sha256": "aea41976c720f91bd19725c16916a1ace40eb1ea42620d340e587a5de4bbcea0",
+          "bytes": 704
+        },
+        {
+          "installed_relative_path": "numpy-2.5.4.dist-info/licenses/numpy/_core/src/highway/LICENSE",
+          "sha256": "d208152e2777ffd0126eacc1bd21c0320d69e4e6b622d21a2a12a47e8ef73763",
+          "bytes": 21155
+        },
+        {
+          "installed_relative_path": "numpy-2.5.4.dist-info/licenses/numpy/_core/src/multiarray/dragon4_LICENSE.txt",
+          "sha256": "b0fd592d4ead563148e3977e7b589169d46a5ef2ff133c755a81af880a3fc919",
+          "bytes": 1441
+        },
+        {
+          "installed_relative_path": "numpy-2.5.4.dist-info/licenses/numpy/_core/src/npysort/x86-simd-sort/LICENSE.md",
+          "sha256": "a732977853530066790c42817087f4829b518dd98d340c916acbfd227e39d3cb",
+          "bytes": 1542
+        },
+        {
+          "installed_relative_path": "numpy-2.5.4.dist-info/licenses/numpy/_core/src/umath/svml/LICENSE",
+          "sha256": "585483905b13d4b42f800c55ba99e89d6e2e33ccd5f503e201c07531d148ff41",
+          "bytes": 1573
+        },
+        {
+          "installed_relative_path": "numpy-2.5.4.dist-info/licenses/numpy/fft/pocketfft/LICENSE.md",
+          "sha256": "8db000e158c162e7249787852d8c69764706502ccee725c06641b31c1e95c8af",
+          "bytes": 1523
+        },
+        {
+          "installed_relative_path": "numpy-2.5.4.dist-info/licenses/numpy/linalg/lapack_lite/LICENSE.txt",
+          "sha256": "19060ef465e1797d682ee0fc3081bd25ab1395e995e43d25c9d13c95d9a3cd6b",
+          "bytes": 2314
+        },
+        {
+          "installed_relative_path": "numpy-2.5.4.dist-info/licenses/numpy/ma/LICENSE",
+          "sha256": "d78dbb208b80d92b4d333e41a4baae50d12444f46e53199fa7726a91de6e2da7",
+          "bytes": 1616
+        },
+        {
+          "installed_relative_path": "numpy-2.5.4.dist-info/licenses/numpy/random/LICENSE.md",
+          "sha256": "b4bc2f4fa1c95778f1ed3dd8f14706bece399475b978f9f34b5d3cd72521b48a",
+          "bytes": 3582
+        },
+        {
+          "installed_relative_path": "numpy-2.5.4.dist-info/licenses/numpy/random/src/distributions/LICENSE.md",
+          "sha256": "cf5619f25b112d5ce7c896efffc8e610bcb345dfadcc19f2c1460aa48fff2c9e",
+          "bytes": 2805
+        },
+        {
+          "installed_relative_path": "numpy-2.5.4.dist-info/licenses/numpy/random/src/mt19937/LICENSE.md",
+          "sha256": "92c10699884321f1c2947fe2a70ab23b0fbf1507f756d89dd08f38c61fc3d4fa",
+          "bytes": 2986
+        },
+        {
+          "installed_relative_path": "numpy-2.5.4.dist-info/licenses/numpy/random/src/pcg64/LICENSE.md",
+          "sha256": "41190663b77bee5302386495a07b7eabfbfa571aa0ae2f11da6764162062fc4f",
+          "bytes": 1176
+        },
+        {
+          "installed_relative_path": "numpy-2.5.4.dist-info/licenses/numpy/random/src/philox/LICENSE.md",
+          "sha256": "322ac46d870c8aeead6c53adcccc839296fb3c8e456eae155081297daf7f8013",
+          "bytes": 1540
+        },
+        {
+          "installed_relative_path": "numpy-2.5.4.dist-info/licenses/numpy/random/src/sfc64/LICENSE.md",
+          "sha256": "28cad82ce1379dc529df30da78ec012d7d0d1d576b03ddcb93388aee53659f59",
+          "bytes": 1253
+        },
+        {
+          "installed_relative_path": "numpy-2.5.4.dist-info/licenses/numpy/random/src/splitmix64/LICENSE.md",
+          "sha256": "454ec7350e478e037061850b67395753b425b1cb0a34bbc26290b020bf89d763",
+          "bytes": 340
+        },
+        {
+          "installed_relative_path": "numpy/_core/include/numpy/random/LICENSE.txt",
+          "sha256": "d544761558b510866c21f7e8a2d5716fca76e0b98117e3b6b86314db7244d150",
+          "bytes": 1039
+        },
+        {
+          "installed_relative_path": "numpy/ma/LICENSE",
+          "sha256": "d78dbb208b80d92b4d333e41a4baae50d12444f46e53199fa7726a91de6e2da7",
+          "bytes": 1616
+        },
+        {
+          "installed_relative_path": "numpy/random/LICENSE.md",
+          "sha256": "b4bc2f4fa1c95778f1ed3dd8f14706bece399475b978f9f34b5d3cd72521b48a",
+          "bytes": 3582
+        }
+      ]
+    },
+    {
+      "name": "scipy",
+      "version": "1.18.1",
+      "wheel": "scipy-1.18.1-cp312-cp312-win_amd64.whl",
+      "sha256": "5e4d44984abc0020154ea81b247adeddcc3ac5527b975ff798bd1ba0adc513c2",
+      "url": "https://files.pythonhosted.org/packages/39/e7/979fd14e75008623df31ba70d6bb144700f68feadcea042021c06a05bf82/scipy-1.18.1-cp312-cp312-win_amd64.whl",
+      "pypi_metadata_url": "https://pypi.org/pypi/scipy/1.18.1/json",
+      "license_expression": null,
+      "license_metadata": null,
+      "license_notices": [
+        {
+          "installed_relative_path": "scipy-1.18.1.dist-info/LICENSE.txt",
+          "sha256": "f0f5c56b298ec9795df1199edc328a987242716d14a1bde6813112e22dc15f99",
+          "bytes": 45881
+        },
+        {
+          "installed_relative_path": "scipy/_lib/_uarray/LICENSE",
+          "sha256": "e4c4acc31e8287066d7c995d26e3ef902ca1977ee187b260b11c278366503811",
+          "bytes": 1543
+        },
+        {
+          "installed_relative_path": "scipy/fft/_duccfft/LICENSE.md",
+          "sha256": "c04661685cff9d8035fe1c4c3ab357e7f7633cafc06a73e9d90c3c5fede8a86a",
+          "bytes": 1523
+        },
+        {
+          "installed_relative_path": "scipy/integrate/LICENSE_DOP",
+          "sha256": "6cc2ed6e35b8f376ff3d8f86aeef4e0c34c2309bd6f4a0565936d577839ba023",
+          "bytes": 3648
+        },
+        {
+          "installed_relative_path": "scipy/spatial/qhull_src/COPYING_QHULL.txt",
+          "sha256": "2a6ebb495e26dd5f88cbc40c593733da6edb27b64936f70409cd5a1acafb1c32",
+          "bytes": 1759
+        }
+      ]
+    },
+    {
+      "name": "pandas",
+      "version": "3.1.1",
+      "wheel": "pandas-3.1.1-cp312-cp312-win_amd64.whl",
+      "sha256": "eef35cb3f07dbc8e10e298b8a55ee4aa04d6511f27d5277f13c3df45d3bbef5c",
+      "url": "https://files.pythonhosted.org/packages/c8/35/54c22df9e6bdb0fa001da2b8855f997addafd9575f14f25c166a8ef96b6e/pandas-3.1.1-cp312-cp312-win_amd64.whl",
+      "pypi_metadata_url": "https://pypi.org/pypi/pandas/3.1.1/json",
+      "license_expression": "BSD-3-Clause",
+      "license_metadata": null,
+      "license_notices": [
+        {
+          "installed_relative_path": "pandas-3.1.1.dist-info/licenses/LICENSE",
+          "sha256": "9850f6b5bdef7346503065807b878deb8058b976c5c329f4c4d23bf4796ce9ae",
+          "bytes": 1634
+        },
+        {
+          "installed_relative_path": "pandas-3.1.1.dist-info/licenses/LICENSES/BOTTLENECK_LICENCE",
+          "sha256": "053a90e30580f5d9d79817add1567f88b4a3eeb11bcded9ecf74619d17768066",
+          "bytes": 1360
+        },
+        {
+          "installed_relative_path": "pandas-3.1.1.dist-info/licenses/LICENSES/DATEUTIL_LICENSE",
+          "sha256": "ba00f51a0d92823b5a1cde27d8b5b9d2321e67ed8da9bc163eff96d5e17e577e",
+          "bytes": 2889
+        },
+        {
+          "installed_relative_path": "pandas-3.1.1.dist-info/licenses/LICENSES/HAVEN_LICENSE",
+          "sha256": "48216b40b3d1b19452923dd6fd74655bf5c0df9d76b51eb0efade7e0b88bfbcc",
+          "bytes": 1099
+        },
+        {
+          "installed_relative_path": "pandas-3.1.1.dist-info/licenses/LICENSES/HAVEN_MIT",
+          "sha256": "87217d0a79195441ab615a3abb3ab6777502e57804ea83f973df975a67ebd720",
+          "bytes": 1264
+        },
+        {
+          "installed_relative_path": "pandas-3.1.1.dist-info/licenses/LICENSES/KLIB_LICENSE",
+          "sha256": "7463172c3a23321c1838896eba437f70a6de80ac5a840b2960966c8c5444abf1",
+          "bytes": 1104
+        },
+        {
+          "installed_relative_path": "pandas-3.1.1.dist-info/licenses/LICENSES/MUSL_LICENSE",
+          "sha256": "50a343c1ce9e27cd6c58023f13b91d2cd679861fe7fb6bbbbfbec3dcafc3583f",
+          "bytes": 6203
+        },
+        {
+          "installed_relative_path": "pandas-3.1.1.dist-info/licenses/LICENSES/NUMPY_LICENSE",
+          "sha256": "81d42da02a56b611c35abc83d2241564b46bec3a5b1960b395d55cebca68fb6f",
+          "bytes": 1542
+        },
+        {
+          "installed_relative_path": "pandas-3.1.1.dist-info/licenses/LICENSES/PACKAGING_LICENSE",
+          "sha256": "1871330068a18f1f07c3f147a41c008e59f367f217041ca6eb20b0298639a128",
+          "bytes": 11519
+        },
+        {
+          "installed_relative_path": "pandas-3.1.1.dist-info/licenses/LICENSES/PSF_LICENSE",
+          "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf",
+          "bytes": 13936
+        },
+        {
+          "installed_relative_path": "pandas-3.1.1.dist-info/licenses/LICENSES/PYPERCLIP_LICENSE",
+          "sha256": "eafcd440e3570c6bc7b77dcec15dec398d13bc9b5e897336b221ff81ff19f345",
+          "bytes": 1486
+        },
+        {
+          "installed_relative_path": "pandas-3.1.1.dist-info/licenses/LICENSES/PYUPGRADE_LICENSE",
+          "sha256": "70aedcd6928272bd176e4fdc3384af22ee759d006fb15105d994756e4f2d1b7a",
+          "bytes": 1058
+        },
+        {
+          "installed_relative_path": "pandas-3.1.1.dist-info/licenses/LICENSES/SAS7BDAT_LICENSE",
+          "sha256": "458d5fd4175825440ad32d6bf6af45d1a19d4adb316b557d869c6560b6692e00",
+          "bytes": 1059
+        },
+        {
+          "installed_relative_path": "pandas-3.1.1.dist-info/licenses/LICENSES/STATSBASE_JL_LICENSE",
+          "sha256": "f371ccf0fb892a4cd9f2e550c4b8cf4362793d17028dc642ad55c1e01a41dfe1",
+          "bytes": 1249
+        },
+        {
+          "installed_relative_path": "pandas-3.1.1.dist-info/licenses/LICENSES/ULTRAJSON_LICENSE",
+          "sha256": "2bfbb5bb8ec66d136ec62d836ddc0c0019d44ef4d9389f1f6cab1c1109d774a2",
+          "bytes": 5974
+        },
+        {
+          "installed_relative_path": "pandas-3.1.1.dist-info/licenses/LICENSES/XSIMD_LICENSE",
+          "sha256": "501352acba62cc54e8e3d293754d606f919c9b425b962193c211f9fa29cd9940",
+          "bytes": 1606
+        },
+        {
+          "installed_relative_path": "pandas-3.1.1.dist-info/licenses/subprojects/fast_float-8.2.10/LICENSE-APACHE",
+          "sha256": "097a889aa954d04e088b790b10a4014d6189561d0a6013935a73ce3d4ddaaf06",
+          "bytes": 10767
+        },
+        {
+          "installed_relative_path": "pandas-3.1.1.dist-info/licenses/subprojects/fast_float-8.2.10/LICENSE-BOOST",
+          "sha256": "8d8291caf1cee26d23acf3eb67c9f9a2d58f1c681b16a4fbe8cbfb9e3c0b5a9b",
+          "bytes": 1337
+        },
+        {
+          "installed_relative_path": "pandas-3.1.1.dist-info/licenses/subprojects/fast_float-8.2.10/LICENSE-MIT",
+          "sha256": "e562f3f974ced7e69dd1db77b820b36bcf8f30377f1aa105723fba449c53c4e6",
+          "bytes": 1079
+        }
+      ]
+    },
+    {
+      "name": "scikit-rf",
+      "version": "2.2.0",
+      "wheel": "scikit_rf-2.2.0-py3-none-any.whl",
+      "sha256": "95db99c861cc925454d4a427e004b3281f7bf25b27874b9baaec6521058f9804",
+      "url": "https://files.pythonhosted.org/packages/86/5c/ca4cfb2d726a9cce12952ef59bb285ec493777d4b61bd5971d338692cebc/scikit_rf-2.2.0-py3-none-any.whl",
+      "pypi_metadata_url": "https://pypi.org/pypi/scikit-rf/2.2.0/json",
+      "license_expression": null,
+      "license_metadata": "LICENSE.txt",
+      "license_notices": []
+    },
+    {
+      "name": "typing-extensions",
+      "version": "4.16.0",
+      "wheel": "typing_extensions-4.16.0-py3-none-any.whl",
+      "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8",
+      "url": "https://files.pythonhosted.org/packages/49/d3/b8441a820a491ddfc024b0b0cf0393375b75ea13866d9c66727e54c2fc80/typing_extensions-4.16.0-py3-none-any.whl",
+      "pypi_metadata_url": "https://pypi.org/pypi/typing-extensions/4.16.0/json",
+      "license_expression": "PSF-2.0",
+      "license_metadata": null,
+      "license_notices": [
+        {
+          "installed_relative_path": "typing_extensions-4.16.0.dist-info/licenses/LICENSE",
+          "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf",
+          "bytes": 13936
+        }
+      ]
+    },
+    {
+      "name": "python-dateutil",
+      "version": "4.0.0",
+      "wheel": "python_dateutil-4.0.0-py3-none-any.whl",
+      "sha256": "a5e246f79eb80475e691bf93862cead98decd8a498cf53ba0516fcdc0f50dc1c",
+      "url": "https://files.pythonhosted.org/packages/2f/a9/52b89563d154433d79b51ed1eb4842bf7334cb2696891a7fe135618853d7/python_dateutil-4.0.0-py3-none-any.whl",
+      "pypi_metadata_url": "https://pypi.org/pypi/python-dateutil/4.0.0/json",
+      "license_expression": "BSD-3-Clause",
+      "license_metadata": null,
+      "license_notices": [
+        {
+          "installed_relative_path": "python_dateutil-4.0.0.dist-info/licenses/AUTHORS.md",
+          "sha256": "56004c45a95e9ee5582ea60f9a7ee42179c8594c7b9c245bbfb4a3445b4af640",
+          "bytes": 7031
+        },
+        {
+          "installed_relative_path": "python_dateutil-4.0.0.dist-info/licenses/LICENSE",
+          "sha256": "ba00f51a0d92823b5a1cde27d8b5b9d2321e67ed8da9bc163eff96d5e17e577e",
+          "bytes": 2889
+        }
+      ]
+    },
+    {
+      "name": "six",
+      "version": "1.17.0",
+      "wheel": "six-1.17.0-py2.py3-none-any.whl",
+      "sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274",
+      "url": "https://files.pythonhosted.org/packages/b7/ce/149a00dd41f10bc29e5921b496af8b574d8413afcd5e30dfa0ed46c2cc5e/six-1.17.0-py2.py3-none-any.whl",
+      "pypi_metadata_url": "https://pypi.org/pypi/six/1.17.0/json",
+      "license_expression": null,
+      "license_metadata": null,
+      "license_notices": [
+        {
+          "installed_relative_path": "six-1.17.0.dist-info/LICENSE",
+          "sha256": "4375ba20e2b9c6c4e7cad2940a628fd90e95cc3d50ee92aae755715d8ba1fbd0",
+          "bytes": 1066
+        }
+      ]
+    },
+    {
+      "name": "tzdata",
+      "version": "2026.6",
+      "wheel": "tzdata-2026.6-py2.py3-none-any.whl",
+      "sha256": "0a10eec6e13ef16b627fabed9a5f2ba61a62b1c67f327305f4e7e412a70b4aec",
+      "url": "https://files.pythonhosted.org/packages/0a/66/9a06c2227fedfd4919f0eaaa8b94377d9730882a7e4f95823c9a331ab5e1/tzdata-2026.6-py2.py3-none-any.whl",
+      "pypi_metadata_url": "https://pypi.org/pypi/tzdata/2026.6/json",
+      "license_expression": null,
+      "license_metadata": null,
+      "license_notices": [
+        {
+          "installed_relative_path": "tzdata-2026.6.dist-info/licenses/LICENSE",
+          "sha256": "df58f69ea88683035d720b5375bcef0cf5aeaa98a1d098d572e0992c378deb46",
+          "bytes": 625
+        },
+        {
+          "installed_relative_path": "tzdata-2026.6.dist-info/licenses/licenses/LICENSE_APACHE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "bytes": 11357
+        }
+      ]
+    }
+  ],
+  "license_scope": "Installed wheel notices recorded; final redistribution bundle remains completion plan 13."
+}

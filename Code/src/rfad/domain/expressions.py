@@ -39,6 +39,8 @@ _DIMENSIONS = {
     Dimension.TIME: _dim(0, 1, 0, 0, 0),
     Dimension.ANGLE: _dim(0, 0, 0, 0, 1),
     Dimension.IMPEDANCE: _dim(2, -3, 1, -2, 0),
+    Dimension.INDUCTANCE: _dim(2, -2, 1, -2, 0),
+    Dimension.CAPACITANCE: _dim(-2, 4, -1, 2, 0),
     Dimension.CONDUCTIVITY: _dim(-3, 3, -1, 2, 0),
     Dimension.POWER: _dim(2, -3, 1, 0, 0),
     Dimension.DIMENSIONLESS: _dim(0, 0, 0, 0, 0),

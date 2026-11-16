@@ -56,7 +56,7 @@ void StudioSmokeDriver::CanvasSmokeNext()
                      "Studio typography or design-only secondary tabs are missing.");
         wxWindow* originalCanvasPage = m_frame.m_views->GetPage(0);
         m_frame.m_views->SetSelection(2);
-        CanvasAssert(m_frame.m_views->VisiblePageCount() == 1 && m_frame.m_views->GetSelection() == 2,
+        CanvasAssert(m_frame.m_views->VisiblePageCount() == 3 && m_frame.m_views->GetSelection() == 2,
                      "Result area exposes unrelated secondary pages.");
         m_frame.m_views->SetSelection(0);
         CanvasAssert(m_frame.m_views->GetPage(0) == originalCanvasPage && m_frame.m_views->VisiblePageCount() == 2,

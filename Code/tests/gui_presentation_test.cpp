@@ -2,9 +2,11 @@
 #include "canvas_viewport.h"
 #include "canvas_gesture.h"
 #include "editor_presentation.h"
+#include "frequency_display.h"
 
 #include <cmath>
 #include <iostream>
+#include <limits>
 #include <stdexcept>
 
 namespace
@@ -20,20 +22,103 @@ void Check(bool condition, const char* message)
     }
 }
 
+/** @brief 같은 SI 표본의 표시 단위만 바꾸며 미정과 원문을 유지한다. */
+void FrequencyChecks()
+{
+    using namespace StudioFrequency;
+    Check(ForRange(0.0, 0.0).unit == "Hz" && ForRange(0.0, 999.0).unit == "Hz", "frequency zero and Hz range");
+    Check(ForRange(0.0, 1e3).unit == "kHz" && ForRange(0.0, 1e6).unit == "MHz" && ForRange(0.0, 1e9).unit == "GHz",
+          "frequency engineering unit boundaries");
+    Check(ForRange(-2e9, -1e9).unit == "GHz", "frequency scale uses absolute extent");
+    const Json page{
+        {"samples", Json::array({{{"frequency_hz", 1e9}}, {{"frequency_hz", 1.5e9}}, {{"frequency_hz", 2e9}}})}};
+    const Json original = page;
+    const auto automatic = ForPage(page);
+    const auto explicitMHz = ForPage(page, "MHz");
+    Check(automatic.unit == "GHz" && automatic.divisor == 1e9 &&
+              Value(page.at("samples").at(0).at("frequency_hz"), automatic) == "1",
+          "one billion Hz is displayed as one GHz");
+    Check(explicitMHz.unit == "MHz" && Value(1e9, explicitMHz) == "1000" && Value(1.5e9, automatic) == "1.5",
+          "frequency unit changes only displayed magnitude");
+    const Json partial{{"samples", Json::array({{{"frequency_hz", 0.5e9}}})}};
+    const Json descriptor{{"frequency_min_hz", 0.5e9}, {"frequency_max_hz", 2e9}};
+    Check(ForPage(partial).unit == "MHz" && ForDescriptor(descriptor).unit == "GHz" &&
+              Value(partial.at("samples").at(0).at("frequency_hz"), ForDescriptor(descriptor)) == "0.5",
+          "descriptor fixes frequency units across sample pages");
+    Check(WithUnit(1e9) == "1 GHz" && Range(1e9, 2e9).find("GHz") != std::string::npos,
+          "frequency summary includes engineering unit");
+    Check(Value(1e9, automatic) != Value(1e9 + 1.0, automatic),
+          "nearby representable samples remain distinct in frequency tables");
+    Check(Value(std::numeric_limits<double>::denorm_min(), automatic) == "표시 범위 미만" &&
+              Value(std::numeric_limits<double>::denorm_min(), ForRange(0.0, 0.0, "Hz")) != "0",
+          "display scaling underflow is not reported as a zero frequency");
+    Check(Value(nullptr, automatic) == "미정" &&
+              Value(Json(std::numeric_limits<double>::infinity()), automatic) == "유한값 없음",
+          "missing and nonfinite frequencies are not displayed as zero");
+    Check(page == original, "frequency presentation leaves original SI samples unchanged");
+    const Json assessed{
+        {"frequency_min_hz", 0.5e9},
+        {"frequency_max_hz", 2e9},
+        {"evidence",
+         {{"target_original", {{"band", {{"start", {{"value_si", 500.0}}}, {"end", {{"value_si", 1000.0}}}}}}}}}};
+    const Json assessedOriginal = assessed;
+    Check(ForAssessment(assessed, {{"frequency_min_hz", 1e6}, {"frequency_max_hz", 2e6}}).unit == "GHz",
+          "whole assessed sample range precedes original and descriptor frequency units");
+    const Json expressions{
+        {"evidence",
+         {{"target_original", {{"band", {{"start", {{"expression", "f0"}}}, {"end", {{"expression", "f1"}}}}}}}}}};
+    const Json expressionOriginal = expressions;
+    Check(ForAssessment(expressions, descriptor).unit == "GHz" && ForAssessment(Json(nullptr)).unit == "Hz",
+          "unknown target expressions use descriptor range or a fixed Hz fallback without evaluation");
+    Check(assessed == assessedOriginal && expressions == expressionOriginal,
+          "assessment frequency presentation preserves original source and unknown expressions");
+    const std::string artifactHash(64, 'a');
+    const Json selection{{"entry", {{"dataset", {{"sha256", artifactHash}}}}}, {"descriptor", descriptor}};
+    Json evidence = expressions;
+    evidence["dataset_hash"] = "sha256:" + artifactHash;
+    evidence["evidence"]["dataset"] = {{"sha256", artifactHash}};
+    const Json evidenceOriginal = evidence;
+    Check(AssessmentMatchesDataset(evidence, selection) &&
+              ForAssessment(evidence, selection.at("descriptor")).unit == "GHz",
+          "fallback matches sealed artifact hashes rather than canonical dataset hashes");
+    evidence["evidence"]["dataset"]["sha256"] = std::string(64, 'b');
+    evidence["dataset_hash"] = artifactHash;
+    Check(!AssessmentMatchesDataset(evidence, selection),
+          "a canonical hash cannot permit fallback to a different artifact");
+    evidence["evidence"]["dataset"] = nullptr;
+    Check(!AssessmentMatchesDataset(evidence, selection) && !AssessmentMatchesDataset(Json::object(), Json::object()) &&
+              !AssessmentMatchesDataset(evidenceOriginal, Json{{"entry", {{"dataset", {{"sha256", 1}}}}}}),
+          "missing malformed or empty artifact evidence never matches a selected dataset");
+    Check(evidenceOriginal.at("evidence").at("target_original") ==
+              expressionOriginal.at("evidence").at("target_original"),
+          "dataset identity checking preserves unknown target expressions");
+}
+
 Json Fixture()
 {
     return {{"board", {{"kind", "circle"}, {"center", {10.0, 20.0}}, {"radius", 5.0}}},
-        {"layers", Json::array({{{"id", "top"}}, {{"id", "bottom"}}})},
-        {"shapes", Json::array({
-            {{"id", "line"}, {"kind", "line_path"}, {"layer_id", "top"}, {"width", 1.0},
-                {"start", {7.0, 20.0}}, {"end", {13.0, 20.0}}, {"movable", true}},
-            {{"id", "ground"}, {"kind", "planar_region"}, {"layer_id", "bottom"},
-                {"outer", {{0.0, 0.0}, {4.0, 0.0}, {4.0, 4.0}, {0.0, 4.0}}},
-                {"holes", Json::array({{{1.0, 1.0}, {3.0, 1.0}, {3.0, 3.0}, {1.0, 3.0}}})}},
-            {{"id", "via"}, {"kind", "via"}, {"layer_id", "top"}, {"center", {10.0, 20.0}},
-                {"span_layer_ids", {"top", "bottom"}}, {"finished_hole_diameter", nullptr},
-                {"plating_thickness", nullptr}, {"tool_hole_diameter", nullptr}}
-        })}, {"omissions", Json::array({{{"id", "unfinished"}}})}};
+            {"layers", Json::array({{{"id", "top"}}, {{"id", "bottom"}}})},
+            {"shapes", Json::array({{{"id", "line"},
+                                     {"kind", "line_path"},
+                                     {"layer_id", "top"},
+                                     {"width", 1.0},
+                                     {"start", {7.0, 20.0}},
+                                     {"end", {13.0, 20.0}},
+                                     {"movable", true}},
+                                    {{"id", "ground"},
+                                     {"kind", "planar_region"},
+                                     {"layer_id", "bottom"},
+                                     {"outer", {{0.0, 0.0}, {4.0, 0.0}, {4.0, 4.0}, {0.0, 4.0}}},
+                                     {"holes", Json::array({{{1.0, 1.0}, {3.0, 1.0}, {3.0, 3.0}, {1.0, 3.0}}})}},
+                                    {{"id", "via"},
+                                     {"kind", "via"},
+                                     {"layer_id", "top"},
+                                     {"center", {10.0, 20.0}},
+                                     {"span_layer_ids", {"top", "bottom"}},
+                                     {"finished_hole_diameter", nullptr},
+                                     {"plating_thickness", nullptr},
+                                     {"tool_hole_diameter", nullptr}}})},
+            {"omissions", Json::array({{{"id", "unfinished"}}})}};
 }
 
 /** @brief 선택 순서/인덱스/구멍/비아/화면 범위를 같은 장면 모델로 확인한다. */
@@ -41,14 +126,16 @@ void SceneChecks()
 {
     const auto scene = CanvasScene::Model::Parse(Fixture());
     Check(scene.shapes.front().id == "ground" && scene.shapes.back().id == "via", "scene drawing order");
-    Check(scene.Find("line") != nullptr && scene.Find("line")->start.x == 7.0 && scene.Find("absent") == nullptr, "identity index");
+    Check(scene.Find("line") != nullptr && scene.Find("line")->start.x == 7.0 && scene.Find("absent") == nullptr,
+          "identity index");
     Check(scene.Find("via")->incomplete && scene.omissionCount == 1, "missing dimensions stay missing");
     Check(CanvasScene::DistanceTo(*scene.Find("ground"), {2.0, 2.0}) == 1.0, "polygon hole hit distance");
     Check(CanvasScene::DistanceTo(*scene.Find("ground"), {0.5, 0.5}) == 0.0, "polygon interior hit distance");
     Check(CanvasScene::Visible(*scene.Find("via"), {"top"}), "via visible on any span layer");
     Check(!CanvasScene::Visible(*scene.Find("via"), {"top", "bottom"}), "via hidden on all span layers");
     const auto bounds = scene.VisibleBounds({"bottom"});
-    Check(bounds.left == 5.0 && bounds.right == 15.0 && bounds.bottom == 15.0 && bounds.top == 25.0, "circular board bounds");
+    Check(bounds.left == 5.0 && bounds.right == 15.0 && bounds.bottom == 15.0 && bounds.top == 25.0,
+          "circular board bounds");
     auto invalid = Fixture();
     invalid["shapes"][1]["id"] = "line";
     bool rejected = false;
@@ -94,8 +181,9 @@ void GestureChecks()
 void EditorChecks()
 {
     Check(!EditorPresentation::RequiresCurrentValue("bindings") && !EditorPresentation::RequiresCurrentValue("outer") &&
-        EditorPresentation::RequiresCurrentValue("center.0.mode") && EditorPresentation::RequiresCurrentValue("width.value"),
-        "presentation does not commit unrelated grid drafts");
+              EditorPresentation::RequiresCurrentValue("center.0.mode") &&
+              EditorPresentation::RequiresCurrentValue("width.value"),
+          "presentation does not commit unrelated grid drafts");
     std::map<std::string, Json> descriptors;
     EditorPresentation::Fields fields;
     auto add = [&](const std::string& key, Json value, const std::string& label = "필드")
@@ -120,15 +208,23 @@ void EditorChecks()
     Check(!available.enabled && !available.visible, "value mode hides expression");
     fields.at("mode").value = "expression";
     available = EditorPresentation::Evaluate("value", fields, false);
-    Check(!available.enabled && available.visible && EditorPresentation::ValueLabel("value", fields) == "마지막 적용값 / 단위", "expression preserves readonly last value");
+    Check(!available.enabled && available.visible &&
+              EditorPresentation::ValueLabel("value", fields) == "마지막 적용값 / 단위",
+          "expression preserves readonly last value");
     fields.at("mode").value = "missing";
     Check(!EditorPresentation::Evaluate("value", fields, false).visible, "missing hides value");
-    Check(!EditorPresentation::Evaluate("center.0.unit", fields, false).enabled && EditorPresentation::Evaluate("center.0.parameter_id", fields, false).visible, "reference mode locks unit");
-    Check(!EditorPresentation::Evaluate("id", fields, false).visible && EditorPresentation::Evaluate("id", fields, true).visible, "advanced details visibility");
+    Check(!EditorPresentation::Evaluate("center.0.unit", fields, false).enabled &&
+              EditorPresentation::Evaluate("center.0.parameter_id", fields, false).visible,
+          "reference mode locks unit");
+    Check(!EditorPresentation::Evaluate("id", fields, false).visible &&
+              EditorPresentation::Evaluate("id", fields, true).visible,
+          "advanced details visibility");
     const Json selection{{"kind", "geometry"}, {"id", "shape"}};
-    Check(EditorPresentation::ResolveDiagnosticField("geometry.shape.outer[2][1]", selection, fields) == "outer", "coordinate diagnostic prefix");
+    Check(EditorPresentation::ResolveDiagnosticField("geometry.shape.outer[2][1]", selection, fields) == "outer",
+          "coordinate diagnostic prefix");
     fields.at("center.0.value").enabled = false;
-    Check(EditorPresentation::ResolveDiagnosticField("values.center[0]", selection, fields) == "center.0.parameter_id", "diagnostic selects enabled reference control");
+    Check(EditorPresentation::ResolveDiagnosticField("values.center[0]", selection, fields) == "center.0.parameter_id",
+          "diagnostic selects enabled reference control");
     fields.at("mode").value = "value";
     fields.at("unit").value = "m";
     Check(!EditorPresentation::InputNotice(fields).empty(), "unit-only change notice");
@@ -144,7 +240,8 @@ int main()
         SceneChecks();
         GestureChecks();
         EditorChecks();
-        std::cout << "scene, viewport, gesture and editor presentation checks passed\n";
+        FrequencyChecks();
+        std::cout << "scene, viewport, gesture, editor and frequency presentation checks passed\n";
         return 0;
     }
     catch (const std::exception& error)

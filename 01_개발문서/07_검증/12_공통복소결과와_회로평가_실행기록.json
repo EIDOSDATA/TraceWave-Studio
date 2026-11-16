@@ -1,0 +1,783 @@
+{
+  "schema": "rfad.network-step5-verification/0.1",
+  "record_date_kst": "2026-11-17",
+  "design_baseline": "RFAD-D0-3.4",
+  "completion_plan_step": 5,
+  "basis_commit": "dd9a20d319822d8f4269ed26b2ae4b0db92f409d",
+  "working_tree_review": true,
+  "scope": "bounded_internal_implementation_not_R1_or_physics_acceptance",
+  "runs": [
+    {
+      "name": "전체 서비스 수집",
+      "log": {
+        "path": "Code/.local/network-step5-service-initial.log",
+        "bytes": 119,
+        "sha256": "0bd1a17f82bf8be3a7bb2936f4937f6bd336b54bebc95ceec26f20435591ba43",
+        "last_write_utc": "2026-11-16T17:48:23.023005+00:00"
+      },
+      "collected": 1004,
+      "passed": 918,
+      "skipped": 86,
+      "failed": 0,
+      "duration_seconds": 549.696,
+      "scope": "후속 경계/GUI 보완 전"
+    },
+    {
+      "name": "관련 집중 회귀",
+      "log": {
+        "path": "Code/.local/network-step5-service-focused.log",
+        "bytes": 104,
+        "sha256": "309208dc882a92fd3134c3afa53ff64e389a33cf6a53f4f2fb167ff89e6e2485",
+        "last_write_utc": "2026-11-16T17:56:19.119789+00:00"
+      },
+      "collected": 118,
+      "passed": 118,
+      "skipped": 0,
+      "failed": 0,
+      "duration_seconds": 42.727,
+      "scope": "전체 수집 후 초기 보완"
+    },
+    {
+      "name": "독립 검토 후 회귀",
+      "log": {
+        "path": "Code/.local/network-step5-service-final.log",
+        "bytes": 104,
+        "sha256": "908ae20faa7f55e45e73da4c4ba5d3614e00d949c38e7846fd45c0ae1a05fa46",
+        "last_write_utc": "2026-11-16T18:07:51.516240+00:00"
+      },
+      "collected": 119,
+      "passed": 119,
+      "skipped": 0,
+      "failed": 0,
+      "duration_seconds": 81.566,
+      "scope": "재정규화 입력 근거 보존 포함"
+    },
+    {
+      "name": "극소 입력 경계",
+      "log": {
+        "path": "Code/.local/network-step5-quantity-boundary.log",
+        "bytes": 357,
+        "sha256": "51208a052078a69c4e5a540470e8d95a759f61f6b759a15d8c39c6dfae18e274",
+        "last_write_utc": "2026-11-16T18:07:34.898543+00:00"
+      },
+      "collected": 1,
+      "passed": 1,
+      "skipped": 0,
+      "failed": 0,
+      "duration_seconds": 5.348,
+      "scope": "119개 실행 후 underflow 입력 거절"
+    },
+    {
+      "name": "원문 내보내기 이름",
+      "log": {
+        "path": "Code/.local/network-step5-original-export.log",
+        "bytes": 366,
+        "sha256": "b00e4a48df816e361f2528c8f89fc506786047e565cdc90097d236d03b2d5700",
+        "last_write_utc": "2026-11-16T18:18:55.212950+00:00"
+      },
+      "collected": 1,
+      "passed": 1,
+      "skipped": 0,
+      "failed": 0,
+      "duration_seconds": 1.471,
+      "scope": "원래 확장자와 bytes로 재해석"
+    },
+    {
+      "name": "첫 GUI 실패",
+      "log": {
+        "path": "Code/.local/network-step5-gui-focused.log",
+        "bytes": 1121,
+        "sha256": "fed6767044bbd130f0c8c4ba0b4f86b9c3b15f2a9bad83817e9cf585990125d4",
+        "last_write_utc": "2026-11-16T18:13:03.412592+00:00"
+      },
+      "collected": 1,
+      "passed": 0,
+      "skipped": 0,
+      "failed": 1,
+      "duration_seconds": 8.492,
+      "scope": "한국어 wxString::Format 입력 생성 access violation; 수정 후 별도 재실행"
+    },
+    {
+      "name": "첫 GUI 수정 확인",
+      "log": {
+        "path": "Code/.local/network-step5-gui-focused-final.log",
+        "bytes": 367,
+        "sha256": "30b33154aebcc6b71ff1d3105053311e9e75b12f071f9ad362fe61117527d39a",
+        "last_write_utc": "2026-11-16T18:15:19.249800+00:00"
+      },
+      "collected": 1,
+      "passed": 1,
+      "skipped": 0,
+      "failed": 0,
+      "duration_seconds": 15.344,
+      "scope": "15개 검사; 뒤의 Studio 목표 평가 페이지 보완 전",
+      "gui_report": {
+        "path": "Code/.local/network-step5-gui-focused-reports/network.json",
+        "bytes": 1883,
+        "sha256": "d9e172f895811969eaa976315b82b72fbfcdc1709c7ac564f62059580d36d395",
+        "last_write_utc": "2026-11-16T18:15:19.168610+00:00"
+      },
+      "checks": [
+        "network_late_response_close_destroy_safe",
+        "network_definitive_rejection_preserves_draft",
+        "network_uncertain_mutation_locks_replay",
+        "network_dirty_close_requires_discard",
+        "network_invalid_source_keeps_draft_editable",
+        "network_unknown_preview_and_input_invalidation",
+        "network_import_single_command_undo_redo",
+        "network_rlc_missing_value_and_review_invalidation",
+        "network_rlc_saved_definition_and_derived_candidate",
+        "network_target_assessment_preserves_validation_boundary",
+        "network_explicit_s_to_z_preserves_source",
+        "network_csv_explicit_mapping_preserves_unknown",
+        "network_saved_service_restart_preserves_library",
+        "network_studio_results_marker_and_design_return",
+        "network_export_pair_and_existing_workspace_protection"
+      ],
+      "service_sessions": 2,
+      "physics_tested": false
+    },
+    {
+      "name": "전체 GUI",
+      "log": {
+        "path": "Code/.local/network-step5-gui.log",
+        "bytes": 7156,
+        "sha256": "7d3d0877650227c7e470708e2db97883bde826d1ded6d3f445dafd1544af345e",
+        "last_write_utc": "2026-11-16T18:29:08.666743+00:00"
+      },
+      "collected": 26,
+      "passed": 24,
+      "skipped": 2,
+      "failed": 0,
+      "duration_seconds": 431.645,
+      "scope": "실제 CAD 2개 포함; 이후 표시 문구/표 높이/선택 동기화/주파수 서식 변경 전",
+      "gui_report": {
+        "path": "Code/.local/network-step5-gui-final-reports/network.json",
+        "bytes": 1948,
+        "sha256": "a3c9f79a7dd9504a240b5b6ada74eae9bf8a383c383abf372e76bb329ccb76e0",
+        "last_write_utc": "2026-11-16T18:23:08.051877+00:00"
+      },
+      "checks": [
+        "network_late_response_close_destroy_safe",
+        "network_definitive_rejection_preserves_draft",
+        "network_uncertain_mutation_locks_replay",
+        "network_dirty_close_requires_discard",
+        "network_invalid_source_keeps_draft_editable",
+        "network_unknown_preview_and_input_invalidation",
+        "network_import_single_command_undo_redo",
+        "network_rlc_missing_value_and_review_invalidation",
+        "network_rlc_saved_definition_and_derived_candidate",
+        "network_target_assessment_preserves_validation_boundary",
+        "network_explicit_s_to_z_preserves_source",
+        "network_csv_explicit_mapping_preserves_unknown",
+        "network_saved_service_restart_preserves_library",
+        "network_studio_results_marker_and_design_return",
+        "network_studio_assessment_source_points_and_design_return",
+        "network_export_pair_and_existing_workspace_protection"
+      ],
+      "service_sessions": 2,
+      "physics_tested": false
+    },
+    {
+      "name": "기본 실행 파일 GUI",
+      "log": {
+        "path": "Code/.local/network-step5-canonical-gui.log",
+        "bytes": 367,
+        "sha256": "3eb5970462a214482d824566258f57ff14ac85cdf1531ae0c82525798548db05",
+        "last_write_utc": "2026-11-16T18:30:22.792629+00:00"
+      },
+      "collected": 1,
+      "passed": 1,
+      "skipped": 0,
+      "failed": 0,
+      "duration_seconds": 18.381,
+      "scope": "표시 문구 정리 뒤, 표 높이/선택 동기화 전",
+      "gui_report": {
+        "path": "Code/.local/network-step5-canonical-reports/network.json",
+        "bytes": 1948,
+        "sha256": "734faa49d3c56146ce88fa9af8618545037c1cdad03c6087ea3cb98057ca28a6",
+        "last_write_utc": "2026-11-16T18:30:22.661667+00:00"
+      },
+      "checks": [
+        "network_late_response_close_destroy_safe",
+        "network_definitive_rejection_preserves_draft",
+        "network_uncertain_mutation_locks_replay",
+        "network_dirty_close_requires_discard",
+        "network_invalid_source_keeps_draft_editable",
+        "network_unknown_preview_and_input_invalidation",
+        "network_import_single_command_undo_redo",
+        "network_rlc_missing_value_and_review_invalidation",
+        "network_rlc_saved_definition_and_derived_candidate",
+        "network_target_assessment_preserves_validation_boundary",
+        "network_explicit_s_to_z_preserves_source",
+        "network_csv_explicit_mapping_preserves_unknown",
+        "network_saved_service_restart_preserves_library",
+        "network_studio_results_marker_and_design_return",
+        "network_studio_assessment_source_points_and_design_return",
+        "network_export_pair_and_existing_workspace_protection"
+      ],
+      "service_sessions": 2,
+      "physics_tested": false
+    },
+    {
+      "name": "표 가시성/선택 동기화 GUI",
+      "log": {
+        "path": "Code/.local/network-step5-viewport-gui.log",
+        "bytes": 367,
+        "sha256": "18245a3d913520200a74fc4de196aa924d39b616c725d0ba47924f3cd001b7ca",
+        "last_write_utc": "2026-11-16T18:41:11.249073+00:00"
+      },
+      "collected": 1,
+      "passed": 1,
+      "skipped": 0,
+      "failed": 0,
+      "duration_seconds": 16.708,
+      "scope": "16개 검사에 실제 표 높이와 선택/초점 확인 추가; overflow가 있을 때만 스크롤 검사",
+      "gui_report": {
+        "path": "Code/.local/network-step5-viewport-reports/network.json",
+        "bytes": 1948,
+        "sha256": "fa411fcf581cc85bb85a4d5a74237fd6024ae880fb2b83e9d5066136745c67d3",
+        "last_write_utc": "2026-11-16T18:41:11.118957+00:00"
+      },
+      "checks": [
+        "network_late_response_close_destroy_safe",
+        "network_definitive_rejection_preserves_draft",
+        "network_uncertain_mutation_locks_replay",
+        "network_dirty_close_requires_discard",
+        "network_invalid_source_keeps_draft_editable",
+        "network_unknown_preview_and_input_invalidation",
+        "network_import_single_command_undo_redo",
+        "network_rlc_missing_value_and_review_invalidation",
+        "network_rlc_saved_definition_and_derived_candidate",
+        "network_target_assessment_preserves_validation_boundary",
+        "network_explicit_s_to_z_preserves_source",
+        "network_csv_explicit_mapping_preserves_unknown",
+        "network_saved_service_restart_preserves_library",
+        "network_studio_results_marker_and_design_return",
+        "network_studio_assessment_source_points_and_design_return",
+        "network_export_pair_and_existing_workspace_protection"
+      ],
+      "service_sessions": 2,
+      "physics_tested": false
+    },
+    {
+      "name": "초기 요구 추적 감사",
+      "log": {
+        "path": "Code/.local/network-step5-audit.log",
+        "bytes": 3976,
+        "sha256": "9d6174c3a5f05e85fb4823d9993aa3136acdf88c5e59a58245e5b21c16f262ba",
+        "last_write_utc": "2026-11-16T18:09:38.772116+00:00"
+      },
+      "collected": 14,
+      "passed": 14,
+      "skipped": 0,
+      "failed": 0,
+      "duration_seconds": 1.516,
+      "scope": "최종 표시 보완 전; 전체 AC 수용 아님"
+    },
+    {
+      "name": "평가 전체 주파수 범위",
+      "log": {
+        "path": "Code/.local/network-step5-assessment-range.log",
+        "bytes": 358,
+        "sha256": "85b8b42aabecbc7bcd52df9e37e2e42387fcdabc83d7c56a2894f7efa57bf1a6",
+        "last_write_utc": "2026-11-16T18:53:28.131344+00:00"
+      },
+      "collected": 1,
+      "passed": 1,
+      "skipped": 0,
+      "failed": 0,
+      "duration_seconds": 2.459,
+      "scope": "119개 실행 이후. 1001목표/요약8개/마지막 페이지의 표시 범위와 원본 artifact 불변"
+    },
+    {
+      "name": "주파수 표시 GUI 첫 조회 실패",
+      "log": {
+        "path": "Code/.local/network-step5-frequency-gui.log",
+        "bytes": 2361,
+        "sha256": "ea1f99221b4d385946639620e52bf21f0c3c74c87ceb5100bebb74fa9245c980",
+        "last_write_utc": "2026-11-16T18:57:12.416959+00:00"
+      },
+      "collected": 1,
+      "passed": 0,
+      "skipped": 0,
+      "failed": 1,
+      "duration_seconds": 4.295,
+      "scope": "시험의 wxListCtrl::GetColumn 읽기 mask 누락. 제품 서식 변경 없이 시험 조회를 수정하고 재실행"
+    },
+    {
+      "name": "주파수 표시 최종 GUI",
+      "log": {
+        "path": "Code/.local/network-step5-frequency-final-gui.log",
+        "bytes": 367,
+        "sha256": "a8202ea358b2fab8f90431c8510800be90e6645f07f302d9c373f6a5e2d450b2",
+        "last_write_utc": "2026-11-16T18:59:38.376505+00:00"
+      },
+      "gui_report": {
+        "path": "Code/.local/network-step5-frequency-final-reports/network.json",
+        "bytes": 2004,
+        "sha256": "200f3c8065e05dd51ba7317757d7c4d5bdc2208342a4158649cbb69df2fa8d79",
+        "last_write_utc": "2026-11-16T18:59:38.105281+00:00"
+      },
+      "collected": 1,
+      "passed": 1,
+      "skipped": 0,
+      "failed": 0,
+      "duration_seconds": 14.049,
+      "checks": [
+        "network_late_response_close_destroy_safe",
+        "network_definitive_rejection_preserves_draft",
+        "network_uncertain_mutation_locks_replay",
+        "network_dirty_close_requires_discard",
+        "network_invalid_source_keeps_draft_editable",
+        "network_unknown_preview_and_input_invalidation",
+        "network_import_single_command_undo_redo",
+        "network_rlc_missing_value_and_review_invalidation",
+        "network_rlc_saved_definition_and_derived_candidate",
+        "network_target_assessment_preserves_validation_boundary",
+        "network_explicit_s_to_z_preserves_source",
+        "network_csv_explicit_mapping_preserves_unknown",
+        "network_saved_service_restart_preserves_library",
+        "network_frequency_units_preserve_si_and_revision",
+        "network_studio_results_marker_and_design_return",
+        "network_studio_assessment_source_points_and_design_return",
+        "network_export_pair_and_existing_workspace_protection"
+      ],
+      "service_sessions": 2,
+      "physics_tested": false,
+      "scope": "17개 검사. 전체 범위 단위, GHz/MHz 표시 전환, SI/개정/이력 불변, 저장/서비스 재시작 포함"
+    },
+    {
+      "name": "최종 CTest",
+      "log": {
+        "path": "Code/.local/network-frequency-ctest-20261117.txt",
+        "bytes": 1052,
+        "sha256": "a47c82c896ad86aeaf3ded2acbeea016c8de7ae2e6d862f3fe74843c847270d8",
+        "last_write_utc": "2026-11-16T18:56:54.690112+00:00"
+      },
+      "collected": 9,
+      "passed": 9,
+      "skipped": 0,
+      "failed": 0,
+      "duration_seconds": 0.38,
+      "scope": "표시 경계/1 Hz 구분/전체 평가 범위/표현식 비평가와 기존 C++ 회귀"
+    },
+    {
+      "name": "최종 요구 추적 감사",
+      "log": {
+        "path": "Code/.local/network-step5-audit-final.log",
+        "bytes": 3976,
+        "sha256": "7b661980e37c95816ac71fc4e35890194cb216a6b4379b68a1b90072fa94c3d6",
+        "last_write_utc": "2026-11-16T18:59:46.636534+00:00"
+      },
+      "collected": 14,
+      "passed": 14,
+      "skipped": 0,
+      "failed": 0,
+      "duration_seconds": 1.265,
+      "scope": "최종 근거 재생성 후 시험; AC 합격 아님"
+    },
+    {
+      "name": "PCB 메타데이터 호환 첫 회귀",
+      "log": {
+        "path": "Code/.local/network-plan-compatibility.log",
+        "bytes": 6759,
+        "sha256": "be786c1bccf7f5adfa2819377dfe2b99cebb1c275d500400882b3f451c6b9f28",
+        "last_write_utc": "2026-11-16T19:22:40.535291+00:00"
+      },
+      "collected": 14,
+      "passed": 12,
+      "failed": 1,
+      "errors": 1,
+      "skipped": 0,
+      "duration_seconds": 3.549,
+      "scope": "새 시험의 선폭 변경이 포트 접촉을 깨뜨림. 유효한 방사선 길이 변경으로 시험 수정"
+    },
+    {
+      "name": "PCB 메타데이터 호환 최종 회귀",
+      "log": {
+        "path": "Code/.local/network-plan-compatibility-final.log",
+        "bytes": 3610,
+        "sha256": "07b93d56b37513504f069a53d9a05c867f893ecd6493bb3cbd59c9f89c04ea0c",
+        "last_write_utc": "2026-11-16T19:25:15.846269+00:00"
+      },
+      "collected": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "duration_seconds": 3.482,
+      "scope": "실제 저장 출처/미정 보존과 동일 물리 계획, 미지/변조 확장 거절, 256 KiB 계획 상한; native 실행 아님"
+    },
+    {
+      "name": "최종 평가 자료 동일성 CTest",
+      "log": {
+        "path": "Code/.local/network-step5-final-compat-ctest.log",
+        "bytes": 1052,
+        "sha256": "e636c5739f13538990f883793dae775427ebf062fc4b03414c550b241b6aa434",
+        "last_write_utc": "2026-11-16T19:25:17.465842+00:00"
+      },
+      "collected": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "duration_seconds": 0.38
+    },
+    {
+      "name": "최종 호환 Windows GUI",
+      "log": {
+        "path": "Code/.local/network-step5-final-compat-gui.log",
+        "bytes": 367,
+        "sha256": "615fdc3004e897221971f83effad5607c7cf5159c0a394fd17f491fd0efa830b",
+        "last_write_utc": "2026-11-16T19:26:03.788046+00:00"
+      },
+      "gui_report": {
+        "path": "Code/.local/network-step5-final-compat-reports/network.json",
+        "bytes": 2004,
+        "sha256": "62e4f37bbfb6cd8666bd82e8ab6159771ddf306c6d8e8aa1313850fd37ea97b3",
+        "last_write_utc": "2026-11-16T19:26:03.681149+00:00"
+      },
+      "collected": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "duration_seconds": 20.494,
+      "checks": [
+        "network_late_response_close_destroy_safe",
+        "network_definitive_rejection_preserves_draft",
+        "network_uncertain_mutation_locks_replay",
+        "network_dirty_close_requires_discard",
+        "network_invalid_source_keeps_draft_editable",
+        "network_unknown_preview_and_input_invalidation",
+        "network_import_single_command_undo_redo",
+        "network_rlc_missing_value_and_review_invalidation",
+        "network_rlc_saved_definition_and_derived_candidate",
+        "network_target_assessment_preserves_validation_boundary",
+        "network_explicit_s_to_z_preserves_source",
+        "network_csv_explicit_mapping_preserves_unknown",
+        "network_saved_service_restart_preserves_library",
+        "network_frequency_units_preserve_si_and_revision",
+        "network_studio_results_marker_and_design_return",
+        "network_studio_assessment_source_points_and_design_return",
+        "network_export_pair_and_existing_workspace_protection"
+      ],
+      "service_sessions": 2,
+      "physics_tested": false
+    },
+    {
+      "name": "최종 호환 요구 추적 감사",
+      "log": {
+        "path": "Code/.local/network-step5-final-compat-audit.log",
+        "bytes": 3976,
+        "sha256": "abccf91f5cbe5df53c2314666df5044ce553c16fa00f2f25a54d927d058b893b",
+        "last_write_utc": "2026-11-16T19:26:11.741422+00:00"
+      },
+      "collected": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "duration_seconds": 1.93
+    }
+  ],
+  "overlapping_runs_not_summed": true,
+  "historical_gui_binaries": [
+    {
+      "phase": "수동 초기 외형",
+      "sha256": "f3f05c393503ef5617d3cfc7d707fbc4f959fc6154da926424554820b127480a"
+    },
+    {
+      "phase": "전체 GUI 26개",
+      "sha256": "5064655d0e05c30176765e2a0eb60d4693bfcd0fe81a598a2696f0df51fd0056"
+    },
+    {
+      "phase": "표시 문구 정리와 원문 수동 가져오기",
+      "sha256": "e39a9865b3762032d305f2ddbaa83b12f90518a2a8f50726f407a92b6f5dd7bd"
+    },
+    {
+      "phase": "표 높이/선택 동기화와 수동 재열기",
+      "sha256": "cbb69880c3760d3a950c34a5d5691db2e5ef2cf317a2d52171649f075aeaf923"
+    }
+  ],
+  "manual_reopen": {
+    "schema": "rfad.network-manual-reopen/0.1",
+    "verified_at_utc": "2026-11-16T19:13:50.315168+00:00",
+    "passed": true,
+    "baseline_sha256": "7464ce5674aa067653a8e9c01e48adb4cbfc8f56b966c2088bcd61798f713880",
+    "current_sha256": "5793680ca03a87dd7c7bea820a0e47198116b2268d0359e8013ac474776889a8",
+    "current_revision": "11e90024-1443-4390-8c36-be8f664350f2",
+    "added_dataset": {
+      "circuit_id": null,
+      "created_revision": "645a8a52-a5ce-4f74-9835-d3ff802678cd",
+      "dataset": {
+        "bytes": 2206,
+        "sha256": "b1b836a78dd3ab3c9f49da70a5bb54dc990df0b1a3b477ef2d82a3f648b5ff6d",
+        "uri": "projects/CAD 한글 교환 검증/network/e0f6a23e-3cc9-5425-b9bb-a6c8aae28af5/dataset.json"
+      },
+      "diagnostics": null,
+      "id": "e0f6a23e-3cc9-5425-b9bb-a6c8aae28af5",
+      "inputs": [],
+      "kind": "imported",
+      "name": "수식 시험 원문",
+      "normalized_hdf5": {
+        "bytes": 11161,
+        "sha256": "777bede421a40c54db2e46dcb45fc69558cf04cac442d4133a0df4d94a272941",
+        "uri": "projects/CAD 한글 교환 검증/network/e0f6a23e-3cc9-5425-b9bb-a6c8aae28af5/normalized.h5"
+      },
+      "raw": {
+        "bytes": 92,
+        "sha256": "f44a585b3a3281c850e1d35653dc6d8ebf2feba48896089ed6e474c4d91ea3d0",
+        "uri": "projects/CAD 한글 교환 검증/network/e0f6a23e-3cc9-5425-b9bb-a6c8aae28af5/source.bin"
+      }
+    },
+    "preserved_artifacts": [
+      {
+        "bytes": 2353,
+        "sha256": "c0e5b1a406b622609beb8fe66cb4955de90cf7b76c86b6e2af102d508a1c9b73",
+        "uri": "projects/CAD 한글 교환 검증/network/1b9ac4ec-5d9d-5fcd-9a53-5eef8c991293/dataset.json"
+      },
+      {
+        "bytes": 11308,
+        "sha256": "06c7d1f7558e8001026151bf503f6d8135b5cc7c08cdba0a0b376e323b535f24",
+        "uri": "projects/CAD 한글 교환 검증/network/1b9ac4ec-5d9d-5fcd-9a53-5eef8c991293/normalized.h5"
+      },
+      {
+        "bytes": 92,
+        "sha256": "f44a585b3a3281c850e1d35653dc6d8ebf2feba48896089ed6e474c4d91ea3d0",
+        "uri": "projects/CAD 한글 교환 검증/network/1b9ac4ec-5d9d-5fcd-9a53-5eef8c991293/source.bin"
+      },
+      {
+        "bytes": 2603,
+        "sha256": "b25261c489f6aea63d001a4e5adb9da70960d99b853a9cbe94c04842862ac857",
+        "uri": "projects/CAD 한글 교환 검증/network/7aff322a-b358-5c99-a00a-05a9d6aacfdf/dataset.json"
+      },
+      {
+        "bytes": 11558,
+        "sha256": "f6840c2e3d3b76354d41bdf72284fb3a13a9d13ba17c9c374b6ccc54067bca17",
+        "uri": "projects/CAD 한글 교환 검증/network/7aff322a-b358-5c99-a00a-05a9d6aacfdf/normalized.h5"
+      },
+      {
+        "bytes": 92,
+        "sha256": "f44a585b3a3281c850e1d35653dc6d8ebf2feba48896089ed6e474c4d91ea3d0",
+        "uri": "projects/CAD 한글 교환 검증/network/7aff322a-b358-5c99-a00a-05a9d6aacfdf/source.bin"
+      },
+      {
+        "bytes": 2206,
+        "sha256": "b1b836a78dd3ab3c9f49da70a5bb54dc990df0b1a3b477ef2d82a3f648b5ff6d",
+        "uri": "projects/CAD 한글 교환 검증/network/e0f6a23e-3cc9-5425-b9bb-a6c8aae28af5/dataset.json"
+      },
+      {
+        "bytes": 11161,
+        "sha256": "777bede421a40c54db2e46dcb45fc69558cf04cac442d4133a0df4d94a272941",
+        "uri": "projects/CAD 한글 교환 검증/network/e0f6a23e-3cc9-5425-b9bb-a6c8aae28af5/normalized.h5"
+      },
+      {
+        "bytes": 92,
+        "sha256": "f44a585b3a3281c850e1d35653dc6d8ebf2feba48896089ed6e474c4d91ea3d0",
+        "uri": "projects/CAD 한글 교환 검증/network/e0f6a23e-3cc9-5425-b9bb-a6c8aae28af5/source.bin"
+      },
+      {
+        "bytes": 3881,
+        "sha256": "b49ebbc3435840027a76b8cc3a13ae55e7dd0980708e41c1fda31d98e2f0e353",
+        "uri": "projects/CAD 한글 교환 검증/network/fe6ba960-edcc-50ef-9a49-f846f9eb1b9b/dataset.json"
+      },
+      {
+        "bytes": 12836,
+        "sha256": "c3be0424512b953d178d37085ef32b0137dd4b8373ef4faaa66073cab10c3bbd",
+        "uri": "projects/CAD 한글 교환 검증/network/fe6ba960-edcc-50ef-9a49-f846f9eb1b9b/normalized.h5"
+      },
+      {
+        "bytes": 662,
+        "sha256": "2195b037fee1ad78ec8671701f08c86c3c3431d5997c82f01ece4029164c6a2a",
+        "uri": "projects/CAD 한글 교환 검증/network/fe6ba960-edcc-50ef-9a49-f846f9eb1b9b/diagnostics.json"
+      }
+    ],
+    "preserved_snapshot": {
+      "bytes": 11669,
+      "sha256": "d3e6274e1389f17823e90a4b19ca16e8df9d76be8b9069696f70d75dbe84b550",
+      "uri": "projects/CAD 한글 교환 검증/snapshots/761711d5-9db2-4eb3-b90c-648bb2fd957d/cedcd95b-318e-4ebd-810c-8090273e9556/project.json"
+    },
+    "checks": [
+      "GUI 원문 가져오기 1개와 저장 후 별도 서비스 재열기",
+      "기존 프로젝트 원본 전체 필드 동일(개정/부모 개정/변경 시각과 새 network entry 제외)",
+      "기존 자료/회로/평가 동일",
+      "모든 자료 artifact 크기와 SHA256 동일",
+      "원문 bytes 동일",
+      "파 정의/시간 규약/기준면/제작/측정 미정",
+      "원래 snapshot 동일"
+    ],
+    "physics_tested": false
+  },
+  "manual_baselines": [
+    {
+      "path": "Code/.local/network-visual-20261117-9359aa97/baseline-original.json",
+      "bytes": 11669,
+      "sha256": "d3e6274e1389f17823e90a4b19ca16e8df9d76be8b9069696f70d75dbe84b550",
+      "last_write_utc": "2026-11-16T18:03:50.035490+00:00"
+    },
+    {
+      "path": "Code/.local/network-visual-20261117-9359aa97/baseline-saved.json",
+      "bytes": 15642,
+      "sha256": "1f867a9d37dcabf19027a8ca2baaa772515aec276200118db73a1ab059293c4b",
+      "last_write_utc": "2026-11-16T18:03:50.035490+00:00"
+    },
+    {
+      "path": "Code/.local/network-visual-20261117-9359aa97/visual-manifest.json",
+      "bytes": 1386,
+      "sha256": "3e20e93e8ab39cb6144bcaff5be6b506f593359d4806940fd83c7902b341f696",
+      "last_write_utc": "2026-11-16T18:03:50.035490+00:00"
+    },
+    {
+      "path": "Code/.local/network-visual-20261117-9359aa97/수식 시험 원문.s1p",
+      "bytes": 92,
+      "sha256": "f44a585b3a3281c850e1d35653dc6d8ebf2feba48896089ed6e474c4d91ea3d0",
+      "last_write_utc": "2026-11-16T18:03:50.035490+00:00"
+    },
+    {
+      "path": "Code/.local/network-visual-20261117-9359aa97/manual-reopen-proof.json",
+      "bytes": 4912,
+      "sha256": "7c0586bfc185860997fcd1ae275bc9067e4da808c955fb801cc5d4441f0cfb68",
+      "last_write_utc": "2026-11-16T19:13:50.318677+00:00"
+    }
+  ],
+  "worker_source_budget": {
+    "cad_files": 182,
+    "cad_bytes": 1592926,
+    "cad_sha256": "93ceccacbaf4c8162ae8a0d8a978a7029b812c3751c10b6786d6a3acee8c27e3",
+    "solver_files": 183,
+    "solver_bytes": 1586694,
+    "solver_sha256": "4be5195170d160819720b94562dcf5fe31241c71110d3ee3db73212c18df8f2a",
+    "max_files": 192,
+    "cad_limit_bytes": 2097152,
+    "solver_limit_bytes": 4194304
+  },
+  "runtime_manifests": [
+    {
+      "path": "Code/runtime_profiles/python-network-windows-x64.json",
+      "bytes": 18952,
+      "sha256": "b3e3aab111856fa3e3eab610afea4787c040d7f7a4a9427d126c2b8b117f92d0",
+      "last_write_utc": "2026-11-16T17:24:35.824632+00:00"
+    },
+    {
+      "path": "Code/runtime_profiles/python-network-windows-x64.txt",
+      "bytes": 1004,
+      "sha256": "9ef788ce59ea2aba00b2ac23115dff275a045e0ebd3d4bc3c828286d2e2f7b6b",
+      "last_write_utc": "2026-11-16T17:16:42.814012+00:00"
+    }
+  ],
+  "physics_tested": false,
+  "fabrication_tested": false,
+  "measurement_tested": false,
+  "limitations": [
+    "전체 84개 화면 또는 모든 DPI/접근성/성능 수용 아님",
+    "표본 통과는 연속 대역 통과가 아님",
+    "RO4350B 국부 방사 도체 손실 변화 2.788446%의 초기 2% 기준 미확립",
+    "GHz PTH 독립 물리 정확도 미확립",
+    "새 FDTD/메쉬 수렴/실물 측정을 수행하지 않음",
+    "원문 로그와 격리 작업 공간은 Code/.local의 비추적 실행 자료이며 재현 명령/시험은 저장소에 보존"
+  ],
+  "finalization_pending": [],
+  "final_binary": {
+    "path": "Code/build/windows-release/bin/tracewave_gui.exe",
+    "bytes": 22439534,
+    "sha256": "02e2d4caf62ff142a43f2faf999366519ab85de3f8344d33b3dab039e4afc6cb",
+    "last_write_utc": "2026-11-16T19:24:55.700780+00:00"
+  },
+  "manual_screenshots": [
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/09_복소결과와_미정조건.jpg",
+      "bytes": 168324,
+      "sha256": "83c54e534a94d89d4052732299476a1c43e23e1910abd38117739cd9ff2019e9",
+      "last_write_utc": "2026-11-16T19:06:21.239708+00:00",
+      "binary_sha256": "c5f3e6b2a36e5692f9cfffef39ab4b14d12e5fd91bd6153f1b58d7c679069b61",
+      "capture_phase": "주파수 표시 수동 검수; 뒤의 평가 fallback hash 경계 보완 전",
+      "dimensions": [
+        1648,
+        954
+      ],
+      "capture_format": "JPEG original bytes from Windows capture, no edits"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/10_외부회로_구성과_출처.jpg",
+      "bytes": 86404,
+      "sha256": "a7d0cd06a09b1d3d35ab298d39b5d01358c6ab9d4d783f0a4db311f552e007ea",
+      "last_write_utc": "2026-11-16T19:08:20.484247+00:00",
+      "binary_sha256": "c5f3e6b2a36e5692f9cfffef39ab4b14d12e5fd91bd6153f1b58d7c679069b61",
+      "capture_phase": "주파수 표시 수동 검수; 뒤의 평가 fallback hash 경계 보완 전",
+      "dimensions": [
+        1108,
+        774
+      ],
+      "capture_format": "JPEG original bytes from Windows capture, no edits"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/11_목표평가와_실제표본.jpg",
+      "bytes": 187427,
+      "sha256": "cc6321ea0b6c4d7c33eea9c6c58fe06f44a8b979f09aa700a272bae33091ff09",
+      "last_write_utc": "2026-11-16T19:06:48.264365+00:00",
+      "binary_sha256": "c5f3e6b2a36e5692f9cfffef39ab4b14d12e5fd91bd6153f1b58d7c679069b61",
+      "capture_phase": "주파수 표시 수동 검수; 뒤의 평가 fallback hash 경계 보완 전",
+      "dimensions": [
+        1648,
+        954
+      ],
+      "capture_format": "JPEG original bytes from Windows capture, no edits"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/12_원문_가져오기_검토.jpg",
+      "bytes": 101118,
+      "sha256": "46855fae5c18a0f0c279e2f4692699ee1e8f422553826460ab0e65f83cd5ed25",
+      "last_write_utc": "2026-11-16T19:13:13.340511+00:00",
+      "binary_sha256": "c5f3e6b2a36e5692f9cfffef39ab4b14d12e5fd91bd6153f1b58d7c679069b61",
+      "capture_phase": "주파수 표시 수동 검수; 뒤의 평가 fallback hash 경계 보완 전",
+      "dimensions": [
+        1108,
+        774
+      ],
+      "capture_format": "JPEG original bytes from Windows capture, no edits"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/13_명시변환_후보검토.jpg",
+      "bytes": 86795,
+      "sha256": "5153ed3eaee31518ca4c3acb0d776729113ecec69f6fd82b872a47d7d59fd057",
+      "last_write_utc": "2026-11-16T19:07:46.524369+00:00",
+      "binary_sha256": "c5f3e6b2a36e5692f9cfffef39ab4b14d12e5fd91bd6153f1b58d7c679069b61",
+      "capture_phase": "주파수 표시 수동 검수; 뒤의 평가 fallback hash 경계 보완 전",
+      "dimensions": [
+        1108,
+        774
+      ],
+      "capture_format": "JPEG original bytes from Windows capture, no edits"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/14_외부회로_결합후보.jpg",
+      "bytes": 96225,
+      "sha256": "61d7c01a352c0fa2dd95a20b096339f23ad9161571cca52c34bbb0946366861e",
+      "last_write_utc": "2026-11-16T19:09:04.374942+00:00",
+      "binary_sha256": "c5f3e6b2a36e5692f9cfffef39ab4b14d12e5fd91bd6153f1b58d7c679069b61",
+      "capture_phase": "주파수 표시 수동 검수; 뒤의 평가 fallback hash 경계 보완 전",
+      "dimensions": [
+        1108,
+        774
+      ],
+      "capture_format": "JPEG original bytes from Windows capture, no edits"
+    }
+  ],
+  "manual_frequency_display": {
+    "scope": "actual Windows 1648x954 and native 1108x774 dialogs",
+    "checks": [
+      "재열기한 원문과 미정조건",
+      "GHz 자동 축/표/마커/조건",
+      "MHz 선택 후 같은 표본",
+      "목표 평가 표본 GHz 표시와 목록 동기화",
+      "가져오기 GHz 검토",
+      "S -> Z 독립 단위 축과 공통 주파수",
+      "이상 RLC 원본/결합 GHz 곡선"
+    ],
+    "physics_tested": false
+  },
+  "document_check": {
+    "path": "01_개발문서/04_화면설계/18_문서연결_검증.json",
+    "bytes": 4048,
+    "sha256": "cd2e854d3a5304bf7eba1e6ac9f1d17a69a83c098b7c63dfff5ea895c385a3ba",
+    "last_write_utc": "2026-11-16T19:26:59.153997+00:00"
+  }
+}

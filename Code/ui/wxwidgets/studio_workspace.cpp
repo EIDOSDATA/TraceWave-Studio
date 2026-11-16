@@ -85,17 +85,19 @@ void StudioFrame::BuildWorkspacePages()
     m_bottom->SetSelection(3);
     m_bottom->SetDisplayOrder({0, 3, 1, 2});
     m_views->SetGroups({0, 0, 2, 1, 3, 4});
-    m_views->SetPageText(2, Display("네트워크"));
+    m_views->SetPageText(2, Display("해석 결과"));
     m_views->onSelectionChanged = [this](int page)
     {
         m_workspaceBar->Select(page < 2 ? WorkspaceArea::Design
-                                        : static_cast<WorkspaceArea>(page == 2 ? 2 : (page == 3 ? 1 : page - 1)));
+                                        : static_cast<WorkspaceArea>(
+                                              page == 2 || page == 6 || page == 7 ? 2 : (page == 3 ? 1 : page - 1)));
+        UpdateNetworkViews();
     };
 }
 
 void StudioFrame::NavigateWorkspace(WorkspaceArea area)
 {
-    const int pages[] = {0, 3, 2, 4, 5};
+    const int pages[] = {0, 3, 6, 4, 5};
     m_views->SetSelection(pages[static_cast<int>(area)]);
     m_workspaceBar->Select(area);
 }
@@ -233,4 +235,5 @@ void StudioFrame::UpdateWorkspace()
                                           ? "CAD 환경 구성됨 / 출력 상태는 하단 작업/CAD 출력에서 확인합니다."
                                           : "CAD 환경이 구성되지 않았습니다. 기존 형상/출처와 저장은 유지합니다."));
     m_outputSummary->Wrap(FromDIP(440));
+    UpdateNetworkViews();
 }

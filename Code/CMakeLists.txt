@@ -80,6 +80,24 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/drawing_rail.cpp
     ui/wxwidgets/studio_theme.cpp
     ui/wxwidgets/studio_notebook.cpp
+    ui/wxwidgets/network_chart.cpp
+    ui/wxwidgets/frequency_display.cpp
+    ui/wxwidgets/frequency_assessment_display.cpp
+    ui/wxwidgets/network_panel.cpp
+    ui/wxwidgets/studio_network.cpp
+    ui/wxwidgets/network_assessment_panel.cpp
+    ui/wxwidgets/studio_network_assessment.cpp
+    ui/wxwidgets/network_import_dialog.cpp
+    ui/wxwidgets/network_import_form.cpp
+    ui/wxwidgets/network_import_review.cpp
+    ui/wxwidgets/network_circuit_dialog.cpp
+    ui/wxwidgets/network_circuit_view.cpp
+    ui/wxwidgets/network_assessment_dialog.cpp
+    ui/wxwidgets/network_transform_dialog.cpp
+    ui/wxwidgets/network_source_dialog.cpp
+    ui/wxwidgets/network_export.cpp
+    ui/wxwidgets/studio_smoke_network.cpp
+    ui/wxwidgets/studio_smoke_network_safety.cpp
     ui/wxwidgets/project_setup_dialog.cpp
     ui/wxwidgets/target_editor_dialog.cpp
     ui/wxwidgets/target_editor_view.cpp
@@ -207,7 +225,8 @@ if(BUILD_TESTING)
     set_target_properties(tracewave_pcb_suggestion_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
     add_test(NAME pcb_suggestions COMMAND tracewave_pcb_suggestion_tests)
     add_executable(tracewave_gui_presentation_tests tests/gui_presentation_test.cpp
-        ui/wxwidgets/canvas_scene.cpp ui/wxwidgets/canvas_viewport.cpp ui/wxwidgets/editor_presentation.cpp)
+        ui/wxwidgets/canvas_scene.cpp ui/wxwidgets/canvas_viewport.cpp ui/wxwidgets/editor_presentation.cpp
+        ui/wxwidgets/frequency_display.cpp ui/wxwidgets/frequency_assessment_display.cpp)
     target_include_directories(tracewave_gui_presentation_tests PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
     set_target_properties(tracewave_gui_presentation_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
     add_test(NAME gui_presentation COMMAND tracewave_gui_presentation_tests)

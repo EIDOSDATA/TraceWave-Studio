@@ -25,6 +25,7 @@ void StudioFrame::OpenProject(const std::string& mode, const std::string& path, 
                      {
                          m_project = result.at("project_id").get<std::string>();
                          m_revision = result.at("revision_id").get<std::string>();
+                         ResetNetwork();
                          m_path = path;
                          m_scene = Json::object();
                          m_modelView->Clear();
