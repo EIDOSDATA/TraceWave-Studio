@@ -58,6 +58,7 @@ def _describe(value):
         "source_document_role": value["source_document_role"], "is_current_design": current == source_revision,
         "stale_reasons": [] if current == source_revision else ["design_revision_differs"],
         "descriptor": deepcopy(value["descriptor"]), "states": deepcopy(value["states"]),
+        "reference_scope": deepcopy((value["dataset"].get("conditions") or {}).get("reference_scope")),
         "numerical_details": deepcopy(value["numerical_details"]),
         "source_time": value.get("source_time"), "source_time_kind": value.get("source_time_kind"),
         "available_views": {"network": True, "smith": value["dataset"]["parameter_kind"] == "S",

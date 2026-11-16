@@ -94,8 +94,15 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/smith_chart.cpp
     ui/wxwidgets/smith_view.cpp
     ui/wxwidgets/result_workspace.cpp
+    ui/wxwidgets/result_workspace_pinned.cpp
     ui/wxwidgets/result_workspace_compare.cpp
     ui/wxwidgets/studio_results.cpp
+    ui/wxwidgets/rf_validation_model.cpp
+    ui/wxwidgets/rf_validation_view.cpp
+    ui/wxwidgets/rf_validation_details.cpp
+    ui/wxwidgets/rf_validation_controller.cpp
+    ui/wxwidgets/studio_rf_validation.cpp
+    ui/wxwidgets/studio_smoke_validation.cpp
     ui/wxwidgets/frequency_display.cpp
     ui/wxwidgets/frequency_assessment_display.cpp
     ui/wxwidgets/network_panel.cpp
@@ -257,10 +264,22 @@ if(BUILD_TESTING)
     set_target_properties(tracewave_gui_presentation_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
     add_test(NAME gui_presentation COMMAND tracewave_gui_presentation_tests)
     add_executable(tracewave_result_view_tests tests/result_view_model_test.cpp
-        ui/wxwidgets/result_presentation.cpp ui/wxwidgets/frequency_display.cpp)
+        ui/wxwidgets/result_presentation.cpp ui/wxwidgets/frequency_display.cpp ui/wxwidgets/rf_validation_model.cpp)
     target_include_directories(tracewave_result_view_tests PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
     set_target_properties(tracewave_result_view_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
     add_test(NAME result_view_model COMMAND tracewave_result_view_tests)
+    add_executable(tracewave_network_export_tests tests/network_export_test.cpp
+        ui/wxwidgets/network_export.cpp ui/wxwidgets/studio_support.cpp)
+    target_include_directories(tracewave_network_export_tests PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
+    target_compile_definitions(tracewave_network_export_tests PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN NOMINMAX)
+    target_link_libraries(tracewave_network_export_tests PRIVATE ${RFAD_WX_LIBRARIES} ole32 bcrypt)
+    if(MSVC)
+        target_compile_options(tracewave_network_export_tests PRIVATE /W4 /utf-8)
+    else()
+        target_compile_options(tracewave_network_export_tests PRIVATE -Wall -Wextra -Wpedantic -finput-charset=UTF-8 -fexec-charset=UTF-8)
+    endif()
+    set_target_properties(tracewave_network_export_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
+    add_test(NAME network_export COMMAND tracewave_network_export_tests)
     add_executable(tracewave_gui_state_tests tests/gui_state_test.cpp
         ui/wxwidgets/async_state.cpp ui/wxwidgets/analysis_workflow.cpp)
     target_include_directories(tracewave_gui_state_tests PRIVATE "${RFAD_JSON_INCLUDE_DIR}")

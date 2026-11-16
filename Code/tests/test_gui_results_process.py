@@ -159,7 +159,8 @@ class GuiResultsTests(unittest.TestCase):
                         "context": {"project_id": saved["project_id"]}, "input": {"source": source}})
                     self.assertEqual(described["pin"], inputs["descriptions"][key]["pin"])
             exported = Path(directory) / "GUI 과거 결과.csv"
-            self.assertTrue(exported.is_file())
+            self.assertTrue(exported.is_file(), {"expected": str(exported),
+                "files": [entry.name for entry in Path(directory).iterdir()]})
             sidecar = json.loads(exported.with_name(exported.name + ".conditions.json").read_bytes())
             self.assertEqual(sidecar["source"], inputs["sources"]["first"])
             self.assertEqual(sidecar["pin"], inputs["descriptions"]["first"]["pin"])

@@ -371,6 +371,7 @@ def execute(request: dict, stage: Path) -> dict:
     """! @brief 검증한 계획의 단계 하나만 실행하고 봉인 대상 파일을 반환한다."""
     from rfad.application.solver import validate_reference_plan
     from rfad.application.pcb_solver import PROFILE as PCB_PROFILE, validate_pcb_plan
+    from rfad.application.rf_reference_contract import PROFILE as RF_REFERENCE_PROFILE, validate_plan as validate_rf_plan
 
     require(request.get('schema') == 'rfad.openems-worker/0.1' and request.get('phase') in ('prepare', 'analysis', 'postprocess_only'), 'worker 요청 버전 또는 단계가 올바르지 않습니다.', 'E_INVALID_ARGUMENT')
     pcb_profile = request['analysis_plan'].get('analysis_profile') == PCB_PROFILE
@@ -379,6 +380,11 @@ def execute(request: dict, stage: Path) -> dict:
 
         validate_pcb_plan(request['analysis_plan'])
         prepare_phase, solve_phase, postprocess_phase = pcb.prepare, pcb.solve, pcb.postprocess
+    elif request['analysis_plan'].get('analysis_profile') == RF_REFERENCE_PROFILE:
+        from . import reference_benchmark
+
+        validate_rf_plan(request['analysis_plan'])
+        prepare_phase, solve_phase, postprocess_phase = reference_benchmark.prepare, reference_benchmark.solve, reference_benchmark.postprocess
     else:
         validate_reference_plan(request['analysis_plan'])
         prepare_phase, solve_phase, postprocess_phase = prepare, solve, postprocess

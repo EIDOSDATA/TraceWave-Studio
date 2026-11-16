@@ -5,7 +5,8 @@ import math
 from pathlib import PurePosixPath
 
 from rfad.application.canonical import canonical_bytes, canonical_hash
-from rfad.application.solver_requests import PCB_PROFILE, require_fields
+from rfad.application.solver_requests import PCB_PROFILE, REFERENCE_PROFILE, require_fields
+from rfad.application.solver import PROFILE as WAVEGUIDE_PROFILE
 from rfad.domain.errors import ProjectError
 
 MAX_FILE_BYTES = 64 * 1024 * 1024
@@ -100,6 +101,13 @@ def check_prepared_outputs(journal, captured, preparation, files):
 
         validate_preparation(plan, preparation)
         return
+    if plan["analysis_profile"] == REFERENCE_PROFILE:
+        from rfad.application.rf_reference_contract import validate_preparation
+
+        validate_preparation(plan, preparation)
+        return
+    if plan["analysis_profile"] != WAVEGUIDE_PROFILE:
+        raise ProjectError("E_UNSUPPORTED", "준비 검증을 지원하지 않는 해석 profile입니다.")
     if (preparation["normalization"] != plan["normalization"] or mesh.get("fdtd_executed") is not False
             or mesh.get("native_preprocessing_executed") is not False or mesh.get("grid_mm") != plan["case"]["mesh"]["grid_mm"]
             or mesh.get("delta_unit_m") != 0.001 or mesh.get("native_length_unit") != "mm"
@@ -127,17 +135,25 @@ def check_solver_result(journal, job, result, files):
     from rfad.adapters.solvers.openems.reference import assess_samples, check_termination
 
     captured = job["solver"]
-    pcb = captured["analysis_plan"]["analysis_profile"] == PCB_PROFILE
+    profile = captured["analysis_plan"]["analysis_profile"]
+    pcb, reference = profile == PCB_PROFILE, profile == REFERENCE_PROFILE
     roles = {f["role"]: f for f in files}
     if pcb:
         from rfad.application.pcb_solver import read_statistics_values, check_termination as check_pcb_termination, validate_result
         from rfad.application.pcb_radiation import raw_names as pcb_raw_names
 
         raw_names = pcb_raw_names(captured["analysis_plan"])
-    else:
+    elif reference:
+        from rfad.application.pcb_results import read_statistics_values, check_termination as check_pcb_termination
+        from rfad.application.rf_reference_contract import raw_names as reference_raw_names, validate_result
+
+        raw_names = reference_raw_names(captured["analysis_plan"])
+    elif profile == WAVEGUIDE_PROFILE:
         raw_names = ("port_ut_1", "port_it_1", "port_ut_2", "port_it_2", "openEMS_stats.txt", "openEMS_run_stats.txt", "native.log", "waveguide.xml")
+    else:
+        raise ProjectError("E_UNSUPPORTED", "결과 검증을 지원하지 않는 해석 profile입니다.")
     raw_roles = {"raw/" + name for name in raw_names}
-    radiation = pcb and "radiation_recording" in captured["analysis_plan"]["case"]
+    radiation = (pcb or reference) and "radiation_recording" in captured["analysis_plan"]["case"]
     radiation_roles = {"radiation_result", "radiation_native"} if radiation else set()
     loss_recording = pcb and "loss_recording" in captured["analysis_plan"]["case"]
     if loss_recording:
@@ -146,7 +162,8 @@ def check_solver_result(journal, job, result, files):
         raise ProjectError("E_MISSING_ARTIFACT", "해석 결과의 필수 원시 파일이 없습니다.")
     manifest = json.loads(journal.read_artifact(roles["raw_manifest"]["artifact"]))
     provenance = json.loads(journal.read_artifact(roles["provenance"]["artifact"]))
-    if result.get("schema") != ("rfad.openems-pcb-result/0.1" if pcb else "rfad.openems-result/0.1") or provenance.get("schema") != "rfad.openems-provenance/0.1":
+    schema = "rfad.openems-reference-result/0.1" if reference else "rfad.openems-pcb-result/0.1" if pcb else "rfad.openems-result/0.1"
+    if result.get("schema") != schema or provenance.get("schema") != "rfad.openems-provenance/0.1":
         raise ProjectError("E_VERSION", "지원하지 않는 해석 결과 스키마입니다.")
     if (manifest != result.get("raw_manifest") or manifest.get("schema") != "rfad.openems-raw/0.1" or manifest.get("complete") is not True
             or manifest.get("analysis_plan_hash") != canonical_hash(captured["analysis_plan"])
@@ -159,18 +176,19 @@ def check_solver_result(journal, job, result, files):
         raise ProjectError("E_HASH", "원시 manifest와 실제 결과 파일 목록이 다릅니다.")
     native_input = next(f for f in captured["preparation"]["files"] if f["role"] == "native_input")
     execution = manifest.get("execution", {})
-    if roles["raw/pcb.xml" if pcb else "raw/waveguide.xml"]["sha256"] != native_input["sha256"] or execution.get("native_input_sha256") != native_input["sha256"] or execution.get("exit_code") != 0:
+    native_role = "raw/reference.xml" if reference else "raw/pcb.xml" if pcb else "raw/waveguide.xml"
+    if roles[native_role]["sha256"] != native_input["sha256"] or execution.get("native_input_sha256") != native_input["sha256"] or execution.get("exit_code") != 0:
         raise ProjectError("E_HASH", "실제 해석 입력 또는 종료 코드가 준비 계획과 다릅니다.")
     statistics_text = journal.read_artifact(roles["raw/openEMS_stats.txt"]["artifact"]).decode("utf-8")
     values = [float(line.split()[0]) for line in statistics_text.splitlines() if line.strip()]
-    maximum_steps = captured["analysis_plan"]["case"]["settings"]["max_timesteps"] if pcb else 20000
+    maximum_steps = captured["analysis_plan"]["case"]["settings"]["max_timesteps"] if pcb or reference else 20000
     if (len(values) < 6 or not all(math.isfinite(v) for v in values) or values[0] != int(values[0])
             or values[2] != int(values[2]) or not 0 < values[2] < maximum_steps or values[1] <= 0
             or values[0] != captured["preparation"]["mesh_statistics"]["native_grid_points"]):
         raise ProjectError("E_SOLVER", "실제 native 통계가 격자 또는 종료 조건과 다릅니다.")
     statistics = {"native_cells": int(values[0]), "timestep_seconds": values[1], "iterations": int(values[2]), "raw_values": values}
     native_log = journal.read_artifact(roles["raw/native.log"]["artifact"]).decode("utf-8")
-    if pcb:
+    if pcb or reference:
         statistics = read_statistics_values(statistics_text, maximum_steps)
         termination = check_pcb_termination(native_log, int(values[2]), captured["analysis_plan"]["case"]["settings"])
     else:
@@ -193,13 +211,17 @@ def check_solver_result(journal, job, result, files):
     if (type(samples) is not list or len(samples) != expected["count"] or any(
             type(row) is not dict or type(row.get("frequency_hz")) not in (int, float)
             or not math.isfinite(row["frequency_hz"])
-            or abs(row["frequency_hz"] - (expected["start"] + index * (expected["stop"] - expected["start"]) / (expected["count"] - 1))) > 1e-5
+            or abs(row["frequency_hz"] - (expected["start"] + index * (expected["stop"] - expected["start"]) / (expected["count"] - 1)
+                                         if expected["count"] > 1 else expected["start"])) > 1e-5
             for index, row in enumerate(samples))):
         raise ProjectError("E_HASH", "결과 주파수 축이 계획과 다릅니다.")
-    if pcb:
+    if pcb or reference:
         validate_result(captured["analysis_plan"], result, captured["prepared_plan"])
         if radiation:
-            from rfad.application.pcb_radiation import validate_result as validate_radiation, summary
+            if reference:
+                from rfad.application.rf_reference_contract import validate_radiation, radiation_summary as summary
+            else:
+                from rfad.application.pcb_radiation import validate_result as validate_radiation, summary
 
             field = json.loads(journal.read_artifact(roles["radiation_result"]["artifact"]))
             validate_radiation(captured["analysis_plan"], field)

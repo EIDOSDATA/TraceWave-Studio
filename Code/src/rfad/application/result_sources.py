@@ -79,7 +79,13 @@ def solver_labels(state, project_id):
             except (OverflowError, ValueError):
                 time_label = "기록 시각 표시 범위 초과"
         description = records[identity]["snapshot"].get("description") or "설명 미지정"
-        result[identity] = {"label": "해석 결과 " + str(ordinal) + " / " + time_label + " / " + description,
+        metadata = records[identity].get("metadata", {})
+        label = "해석 결과 " + str(ordinal)
+        if metadata.get("profile") == "rfad.openems.reference-benchmark/0.1":
+            grid = metadata.get("reference_grid_mm")
+            level = (3.0, 2.5, 2.0).index(grid) + 1 if type(grid) in (float, int) and grid in (3.0, 2.5, 2.0) else None
+            label = "PEC 다이폴 / " + ("격자 수준 " + str(level) + " / " if level is not None else "") + "합성 검증 사례"
+        result[identity] = {"label": label + " / " + time_label + " / " + description,
             "source_time": stamp, "source_time_kind": kind}
     return result
 
@@ -189,7 +195,7 @@ def _linked_solver(service, state, project, project_id, dataset, raw=None):
     """! @brief solver 출처를 주장하는 자료도 실제 원문과 투영 값이 같을 때만 연결한다."""
     provenance = dataset["provenance"]
     reference = provenance.get("normalized_source")
-    if provenance.get("adapter") != "rfad.network-pcb-projection/0.1" or type(reference) is not dict:
+    if provenance.get("adapter") not in ("rfad.network-pcb-projection/0.1", "rfad.network-reference-projection/0.1") or type(reference) is not dict:
         fail("해석 자료의 원본 투영 근거가 없습니다.", "E_HASH")
     matches = [key for key, value in state["solver_results"].items()
                if value["project_id"] == project_id and value["normalized"] == reference]

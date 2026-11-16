@@ -7,6 +7,7 @@ from rfad.application.solver import PROFILE, RUNTIME_PROFILE
 from rfad.domain.errors import ProjectError
 
 PCB_PROFILE = "rfad.openems.pcb-single-port/0.1"
+REFERENCE_PROFILE = "rfad.openems.reference-benchmark/0.1"
 SOLVER_METHODS = {"solver.plan", "solver.prepare", "job.submit"}
 
 
@@ -42,11 +43,17 @@ def validate_solver_input(method, context, data):
     if method == "solver.plan":
         require_fields(data, {"snapshot", "analysis_profile", "runtime_profile"}, {"grid_mm", "settings"})
         validate_reference(data["snapshot"], "snapshot_id")
-        if data["analysis_profile"] not in (PROFILE, PCB_PROFILE) or data["runtime_profile"] != RUNTIME_PROFILE:
+        if data["analysis_profile"] not in (PROFILE, PCB_PROFILE, REFERENCE_PROFILE) or data["runtime_profile"] != RUNTIME_PROFILE:
             raise ProjectError("E_UNSUPPORTED", "지원하는 해석 profile을 지정하십시오.")
         if data["analysis_profile"] == PROFILE:
             if "settings" in data or type(data.get("grid_mm")) not in (int, float) or data["grid_mm"] not in (1.0, 0.75):
                 raise ProjectError("E_UNSUPPORTED", "참조 격자는 1.0 또는 0.75 mm입니다.")
+        elif data["analysis_profile"] == REFERENCE_PROFILE:
+            from rfad.application.rf_reference_contract import validate_settings
+
+            if "grid_mm" in data:
+                raise ProjectError("E_SCHEMA", "RF 참조 격자는 settings에 명시해야 합니다.")
+            validate_settings(data.get("settings"))
         elif "grid_mm" in data or type(data.get("settings")) is not dict:
             raise ProjectError("E_SCHEMA", "사용자 PCB 해석에는 명시적인 settings가 필요합니다.")
     else:

@@ -10,6 +10,7 @@
 #include <cstring>
 #include <cwctype>
 #include <filesystem>
+#include <memory>
 #include <stdexcept>
 #include <vector>
 
@@ -26,20 +27,17 @@ void Require(bool condition, const char* message)
     }
 }
 
-/** @brief 열린 디렉터리의 실제 경로를 읽어 junction 별칭으로 workspace를 우회하지 않는다. */
-Path ActualDirectory(const Path& path)
+/** @brief 보유한 handle의 최종 경로를 읽고 Win32 확장 접두어를 같은 DOS/UNC 표현으로 맞춘다. */
+Path ActualPath(HANDLE handle)
 {
-    const HANDLE handle = CreateFileW(path.c_str(), FILE_READ_ATTRIBUTES, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr,
-                                      OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, nullptr);
-    Require(handle != INVALID_HANDLE_VALUE, "저장할 폴더를 열 수 없습니다.");
     const DWORD count = GetFinalPathNameByHandleW(handle, nullptr, 0, FILE_NAME_NORMALIZED | VOLUME_NAME_DOS);
+    Require(count > 0 && count <= 32768, "열린 파일의 최종 경로 길이를 확인할 수 없습니다.");
     std::vector<wchar_t> buffer(static_cast<std::size_t>(count) + 1);
     const DWORD written = count == 0
                               ? 0
                               : GetFinalPathNameByHandleW(handle, buffer.data(), static_cast<DWORD>(buffer.size()),
                                                           FILE_NAME_NORMALIZED | VOLUME_NAME_DOS);
-    CloseHandle(handle);
-    Require(written > 0 && written < buffer.size(), "저장 폴더의 실제 경로를 확인할 수 없습니다.");
+    Require(written > 0 && written < buffer.size(), "열린 파일의 최종 경로를 확인할 수 없습니다.");
     std::wstring name(buffer.data(), written);
     if (name.rfind(L"\\\\?\\UNC\\", 0) == 0)
     {
@@ -50,6 +48,16 @@ Path ActualDirectory(const Path& path)
         name.erase(0, 4);
     }
     return Path(name).lexically_normal();
+}
+
+/** @brief 열린 디렉터리의 실제 경로를 읽어 junction 별칭으로 workspace를 우회하지 않는다. */
+Path ActualDirectory(const Path& path)
+{
+    const HANDLE handle = CreateFileW(path.c_str(), FILE_READ_ATTRIBUTES, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr,
+                                      OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, nullptr);
+    Require(handle != INVALID_HANDLE_VALUE, "저장할 폴더를 열 수 없습니다.");
+    const std::unique_ptr<void, decltype(&CloseHandle)> owned(handle, &CloseHandle);
+    return ActualPath(handle);
 }
 
 /** @brief Windows의 대소문자 비교와 경로 요소 경계를 함께 적용한다. */
@@ -87,8 +95,8 @@ public:
     void Write(const Path& parent, const std::string& bytes)
     {
         m_path = parent / (L".tracewave-export-" + Display(Uuid()).ToStdWstring() + L".tmp");
-        m_handle = CreateFileW(m_path.c_str(), GENERIC_WRITE | DELETE, FILE_SHARE_READ, nullptr, CREATE_NEW,
-                               FILE_ATTRIBUTE_NORMAL, nullptr);
+        m_handle = CreateFileW(m_path.c_str(), GENERIC_WRITE | DELETE | FILE_READ_ATTRIBUTES, FILE_SHARE_READ, nullptr,
+                               CREATE_NEW, FILE_ATTRIBUTE_NORMAL, nullptr);
         Require(m_handle != INVALID_HANDLE_VALUE, "교환 임시 파일을 만들 수 없습니다.");
         std::size_t offset = 0;
         while (offset < bytes.size())
@@ -106,15 +114,23 @@ public:
     void Publish(const Path& target)
     {
         const std::wstring name = target.native();
-        std::vector<unsigned char> storage(offsetof(FILE_RENAME_INFO, FileName) + name.size() * sizeof(wchar_t));
+        /** @brief FileName은 NUL로 끝내되 FileNameLength에는 종료 문자를 제외한 바이트 수만 기록한다. */
+        std::vector<unsigned char> storage(offsetof(FILE_RENAME_INFO, FileName) + (name.size() + 1) * sizeof(wchar_t),
+                                           0);
         auto* rename = reinterpret_cast<FILE_RENAME_INFO*>(storage.data());
         rename->ReplaceIfExists = FALSE;
         rename->RootDirectory = nullptr;
         rename->FileNameLength = static_cast<DWORD>(name.size() * sizeof(wchar_t));
         std::memcpy(rename->FileName, name.data(), rename->FileNameLength);
+        rename->FileName[name.size()] = L'\0';
         Require(SetFileInformationByHandle(m_handle, FileRenameInfo, rename, static_cast<DWORD>(storage.size())) != 0,
                 "새 교환 파일을 게시하지 못했습니다. 기존 파일은 덮어쓰지 않습니다.");
         m_path = target;
+        const auto actual = ActualPath(m_handle);
+        m_path = actual;
+        /** @brief 잘못된 이름으로 게시된 자신의 파일은 commit하지 않고 보유 handle로 회수한다. */
+        Require(CompareStringOrdinal(actual.c_str(), -1, target.c_str(), -1, TRUE) == CSTR_EQUAL,
+                "게시된 파일의 실제 경로가 요청한 이름과 다릅니다. 새 파일을 회수합니다.");
     }
 
     void Commit()

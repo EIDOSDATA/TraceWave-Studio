@@ -28,6 +28,8 @@ public:
     }
     std::function<void(int)> onConditionPage;
     void Clear(const std::string& message);
+    void SetValidationAvailable(bool available);
+    std::function<void()> onValidation;
 
 private:
     friend class StudioSmokeDriver;
@@ -44,6 +46,7 @@ private:
     wxCollapsiblePane* m_validationGroup = nullptr;
     wxCollapsiblePane* m_advanced = nullptr;
     wxButton* m_copy = nullptr;
+    wxButton* m_validationButton = nullptr;
     wxPanel* m_pager = nullptr;
     wxStaticText* m_pageLabel = nullptr;
     wxButton* m_previous = nullptr;

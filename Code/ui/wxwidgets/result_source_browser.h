@@ -25,6 +25,8 @@ public:
     void SetAvailable(bool available);
     void ClearCatalog(const std::string& message);
     void Reset();
+    /** @brief 직접 연 보존 해석 원본의 종류를 바꾸되 다른 결과를 자동 선택하지 않는다. */
+    void SetSolverContext();
     std::function<void()> onContextChanged;
     std::function<void()> onRefresh;
     std::function<void(int)> onPage;

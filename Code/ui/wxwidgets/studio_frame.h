@@ -46,6 +46,7 @@ class NetworkPanel;
 class NetworkAssessmentPanel;
 class SweepPanel;
 class ResultWorkspace;
+class RfValidationController;
 enum class NetworkAction;
 enum class WorkspaceArea;
 enum class DesignSetup
@@ -95,6 +96,10 @@ private:
     /** @brief 공통 봉인 결과와 과거 개정 탐색을 독립 표시 컨트롤러에 연결한다. */
     void BuildResultInterface();
     void UpdateResultViews();
+    /** @brief 불변 검증 보고서의 조회를 기존 비교 작업 공간에 연결한다. */
+    void BuildValidationInterface();
+    void UpdateValidationViews();
+    void OpenValidationRecords();
     void UpdateNetworkViews();
     void RefreshNetwork(const std::string& preferredId = "");
     void LoadNetworkResult(const std::string& id, int row = 0, int column = 0, int offset = 0);
@@ -268,6 +273,8 @@ private:
     bool m_networkSupported = false;
     bool m_resultsSupported = false;
     std::unique_ptr<ResultWorkspace> m_results;
+    std::unique_ptr<RfValidationController> m_validation;
+    bool m_validationSupported = false;
     bool m_networkPending = false;
     bool m_networkRefreshQueued = false;
     std::uint64_t m_networkGeneration = 0;

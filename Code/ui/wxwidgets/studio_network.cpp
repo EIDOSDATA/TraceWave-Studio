@@ -63,7 +63,7 @@ void StudioFrame::UpdateNetworkViews()
     m_revisionLabel->Show(!active);
     if (m_shell)
     {
-        m_shell->SetResultContext(active, m_views->GetSelection() == 8);
+        m_shell->SetResultContext(active, m_views->GetSelection() == 8, m_views->GetSelection() == 15);
     }
     m_tree->GetParent()->Layout();
     m_properties->Layout();

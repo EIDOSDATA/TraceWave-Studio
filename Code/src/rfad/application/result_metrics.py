@@ -57,6 +57,7 @@ def metrics(service, params):
         result["warnings"].append("선택한 계산은 방사를 기록하지 않았습니다. 효율 표본과 독립 손실은 미기록 상태입니다.")
         return result
     normalized = resolved["normalized"]
+    result["reference_scope"] = deepcopy(normalized.get("reference_scope"))
     balance = normalized.get("power_balance")
     result["source_refs"].append(reference)
     if balance is not None:

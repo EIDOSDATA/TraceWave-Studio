@@ -22,10 +22,14 @@ public:
     void Update(const std::string& project, const std::string& epoch, const std::string& revision, bool available,
                 int page);
     void Reset();
+    /** @brief 보고서에 봉인된 원본 해시를 대조한 뒤 기존 결과 화면으로 연다. */
+    void OpenPinned(const Json& source, const Json& pin);
+    void SetValidationAvailable(bool available);
     wxWindow* NavigationView() const;
     wxWindow* ConditionsView() const;
     std::function<void()> onFocusSource;
     std::function<void()> onOpenTools;
+    std::function<void()> onOpenValidation;
     std::function<void(const Json&)> onExportResult;
 
 private:
@@ -45,7 +49,9 @@ private:
     void Refresh();
     void LoadAnchors(int offset);
     void LoadCatalog(int offset);
-    void Select(const Json& source);
+    void Select(const Json& source, const Json& expectedPin = nullptr);
+    void LocatePinnedSource(const Json& source, const Json& pin, int offset, std::uint64_t catalogGeneration,
+                            std::uint64_t selectionGeneration);
     void LoadActive();
     void Network(int row, int column, int offset);
     void Smith(int port, const std::string& chart, int offset);

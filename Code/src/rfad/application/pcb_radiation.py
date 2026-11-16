@@ -94,13 +94,13 @@ def _number(value):
         return False
 
 
-def validate_result(plan, value):
+def validate_result(plan, value, *, expected_schema=SCHEMA):
     """! @brief 주파수/각도/복소 필드와 전력 비율을 검증하며 물리 합격으로 승격하지 않는다."""
     from rfad.application.radiation import spectral_power_metrics
 
     expected = plan["case"].get("radiation_recording")
-    if expected is None or type(value) is not dict or value.get("schema") != SCHEMA:
-        fail("E_VERSION", "요청한 PCB 방사 결과가 아닙니다.")
+    if expected is None or type(value) is not dict or value.get("schema") != expected_schema:
+        fail("E_VERSION", "요청한 profile의 방사 결과가 아닙니다.")
     if (value.get("analysis_plan_id") != plan["plan_id"] or value.get("recording") != expected
             or value.get("physics_validated") is not False or value.get("absolute_power_w") is not None
             or value.get("power_unit") != "W*s^2" or value.get("electric_field_unit") != "V*s/m"):

@@ -36,8 +36,17 @@ def load(service, resolved):
         raise ProjectError("E_HASH", "방사 원본 참조가 중복되었습니다.")
     plan = normalized["provenance"]["analysis_plan"]
     value = json.loads(read_solver_artifact(service, resolved["project"], record, references[0]))
-    validate_result(plan, value)
-    if normalized.get("radiation_summary") != summary(value) or plan["snapshot"] != resolved["source_snapshot"]:
+    if plan.get("analysis_profile") == "rfad.openems.reference-benchmark/0.1":
+        from rfad.application.rf_reference_contract import validate_radiation, radiation_summary
+
+        validate_radiation(plan, value)
+        expected_summary = radiation_summary(value)
+    elif plan.get("analysis_profile") == "rfad.openems.pcb-single-port/0.1":
+        validate_result(plan, value)
+        expected_summary = summary(value)
+    else:
+        raise ProjectError("E_UNSUPPORTED", "이 해석 profile에는 지원하는 NF2FF 판독 계약이 없습니다.")
+    if normalized.get("radiation_summary") != expected_summary or plan["snapshot"] != resolved["source_snapshot"]:
         raise ProjectError("E_HASH", "방사 원본과 선택한 계산의 출처 또는 요약이 다릅니다.")
     return value, deepcopy(references[0])
 
@@ -76,6 +85,7 @@ def radiation(service, params):
     peak_quantity = row["metrics"][metric + "_linear"] if metric is not None else None
     peak_db = row["metrics"][metric + "_dbi"] if metric is not None else None
     result = {"profile": "rfad.result-radiation/0.1", "source": deepcopy(resolved["source"]), "pin": deepcopy(resolved["pin"]),
+              "reference_scope": deepcopy(resolved["normalized"].get("reference_scope")),
               "artifact_id": resolved["solver_result_id"], "snapshot": deepcopy(resolved["source_snapshot"]),
               "source_refs": [reference], "frequency_hz": deepcopy(recording["frequency_hz"]),
               "frequency_index": frequency, "theta_offset": offset, "theta_count": count, "returned_count": 0,

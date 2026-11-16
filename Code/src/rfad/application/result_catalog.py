@@ -79,12 +79,12 @@ def sources(service, context, data):
         labels = solver_labels(state, context["project_id"])
         for identity, display in labels.items():
             record = state["solver_results"][identity]
-            supported = record.get("metadata", {}).get("profile") == "rfad.openems.pcb-single-port/0.1"
+            supported = record.get("metadata", {}).get("profile") in ("rfad.openems.pcb-single-port/0.1", "rfad.openems.reference-benchmark/0.1")
             anchors.append({"source": {"kind": kind, "artifact_id": identity},
                 **display,
                 "source_kind": "solver", "source_revision_id": record["snapshot"]["revision_id"],
                 "result_state": "completed", "has_dataset": supported,
-                "unavailable_reason": None if supported else "공통 복소 투영은 보존 단일 포트 PCB 결과를 지원합니다. 원래 해석 결과 조회를 사용하세요.",
+                "unavailable_reason": None if supported else "이 profile은 공통 복소 투영을 지원하지 않습니다. 원래 해석 결과 조회를 사용하세요.",
                 "reference": record["normalized"]})
     elif kind == "sweep":
         if data["revision_id"] is not None or data["snapshot_id"] is not None:

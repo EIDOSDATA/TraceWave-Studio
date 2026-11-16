@@ -275,6 +275,14 @@ void ResultSourceBrowser::Reset()
     SetStudies(Json::object());
     ClearCatalog("현재 프로젝트의 결과를 선택하세요.");
 }
+void ResultSourceBrowser::SetSolverContext()
+{
+    m_loading = true;
+    m_kind->SetSelection(1);
+    m_loading = false;
+    ClearCatalog("검증 보고서에서 직접 연 해석 원본의 목록 위치를 확인합니다.");
+    UpdateLayout();
+}
 
 void ResultSourceBrowser::SetStatus(const std::string& message)
 {

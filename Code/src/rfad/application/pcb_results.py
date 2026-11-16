@@ -107,9 +107,9 @@ def validate_preparation(plan, preparation):
         fail("E_HASH", "PCB 준비된 격자/소비 보고 또는 정규화가 계획과 다릅니다.")
 
 
-def validate_result(plan, result, prepared_plan=None):
+def validate_result(plan, result, prepared_plan=None, *, expected_schema="rfad.openems-pcb-result/0.1"):
     """! @brief 유한 복소 결과와 계산 상태를 검사하되 물리 검증 합격을 만들지 않는다."""
-    if result.get("schema") != "rfad.openems-pcb-result/0.1" or result.get("analysis_plan_id") != plan["plan_id"] or result.get("normalization") != plan["normalization"]:
+    if result.get("schema") != expected_schema or result.get("analysis_plan_id") != plan["plan_id"] or result.get("normalization") != plan["normalization"]:
         fail("E_HASH", "PCB 정규화 결과의 계획 또는 단위가 다릅니다.")
     if prepared_plan is not None and result.get("prepared_plan_id") != prepared_plan["prepared_plan_id"]:
         fail("E_HASH", "PCB 결과의 준비 계획이 다릅니다.")
@@ -118,7 +118,8 @@ def validate_result(plan, result, prepared_plan=None):
     if len(samples) != frequency["count"]:
         fail("E_SOLVER", "PCB 결과 주파수 표본 수가 다릅니다.")
     for index, row in enumerate(samples):
-        target = frequency["start"] + (frequency["stop"] - frequency["start"]) * index / (frequency["count"] - 1)
+        target = (frequency["start"] + (frequency["stop"] - frequency["start"]) * index / (frequency["count"] - 1)
+                  if frequency["count"] > 1 else frequency["start"])
         if (type(row) is not dict or type(row.get("frequency_hz")) not in (int, float)
                 or not frequency["start"] <= row["frequency_hz"] <= frequency["stop"] or abs(row["frequency_hz"] - target) > 1e-5):
             fail("E_HASH", "PCB 결과 주파수 축이 계획과 다릅니다.")

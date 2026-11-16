@@ -66,6 +66,11 @@ public:
     void OnSelected();
 
 private:
+    /** @brief 검증 보고서 선택과 미정값의 읽기 전용 보존을 실제 창에서 확인한다. */
+    void ValidationSmokeTick();
+    void ValidationSafetyChecks();
+    Json m_validationFixture = Json::object();
+    std::string m_validationRevision;
     /** @brief 과거 원본/Smith/복수 결과의 실제 표시와 읽기 수명을 검증한다. */
     void ResultsSmokeTick();
     void ResultWorkspaceSafetyChecks();

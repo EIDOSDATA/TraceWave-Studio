@@ -62,6 +62,20 @@ ResultConditionsView::ResultConditionsView(wxWindow* parent) : wxPanel(parent)
     StudioTheme::Button(*m_copy);
     title->Add(m_copy, 0, wxALIGN_CENTER_VERTICAL);
     layout->Add(title, 0, wxEXPAND | wxALL, FromDIP(8));
+    m_validationButton = new wxButton(this, wxID_ANY, Display("프로젝트 검증 기록"));
+    m_validationButton->SetToolTip(
+        Display("프로젝트에 보존된 별도 검증 보고서를 조회합니다. 현재 결과의 판정으로 자동 연결하지 않습니다."));
+    StudioTheme::Button(*m_validationButton);
+    m_validationButton->Disable();
+    layout->Add(m_validationButton, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(8));
+    m_validationButton->Bind(wxEVT_BUTTON,
+                             [this](wxCommandEvent&)
+                             {
+                                 if (onValidation)
+                                 {
+                                     onValidation();
+                                 }
+                             });
     m_pager = new wxPanel(this);
     auto* pagerLayout = new wxBoxSizer(wxVERTICAL);
     m_pageLabel = new wxStaticText(m_pager, wxID_ANY, wxEmptyString);
@@ -162,6 +176,10 @@ void ResultConditionsView::SetText(wxTextCtrl* control, const std::string& value
     control->ShowPosition(0);
 }
 
+void ResultConditionsView::SetValidationAvailable(bool available)
+{
+    m_validationButton->Enable(available);
+}
 void ResultConditionsView::SetDescription(const Json& description)
 {
     ++m_conditionGeneration;
@@ -216,6 +234,16 @@ void ResultConditionsView::SetDescription(const Json& description)
         "\n\n제작 조건: " + RecordedCondition(conditions, "manufacturing") +
         "\n측정 조건: " + RecordedCondition(conditions, "measurement");
     const auto numerical = description.value("numerical_details", Json(nullptr));
+    const auto reference = description.value("reference_scope", Json(nullptr));
+    if (reference.is_object() && reference.value("kind", "") == "explicit_synthetic_reference" &&
+        reference.value("case", "") == "pec-dipole-nf2ff")
+    {
+        validation += "\n\n별도 합성 참조 사례 / 사용자 PCB 아님\n모델: " +
+                      ResultUi::Text(reference.value("native_model", Json(nullptr))) +
+                      "\n이상적인 얇은 반파장 해석식과 유한 반경 모델의 차이를 포함합니다."
+                      "\n독립 판정은 프로젝트 검증 기록에서 명시 보고서를 선택해 확인하세요."
+                      "\n제작 / 실측 검증은 미확립입니다.";
+    }
     if (numerical.is_object())
     {
         validation += "\n\n계산 종료 기록\n" + ResultUi::State(numerical.value("status", Json("not_recorded")));

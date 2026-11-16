@@ -54,6 +54,9 @@ void StudioFrame::Connect()
              m_resultsSupported = result.value("methods", Json::object()).contains("result.sources") &&
                                   result.value("methods", Json::object()).contains("result.describe") &&
                                   result.value("methods", Json::object()).contains("result.page");
+             m_validationSupported = result.value("methods", Json::object()).contains("rf.validation.list") &&
+                                     result.value("methods", Json::object()).contains("rf.validation.reports") &&
+                                     result.value("methods", Json::object()).contains("rf.validation.get");
              m_sweepSupported = result.value("methods", Json::object()).contains("sweep.context") &&
                                 result.value("methods", Json::object()).contains("sweep.create");
              Log("프로젝트 서비스에 연결했습니다.");
@@ -90,6 +93,7 @@ void StudioFrame::Send(const std::string& method, const Json& input, bool mutati
         return;
     }
     const bool foreground =
+        method != "rf.validation.list" && method != "rf.validation.get" && method != "rf.validation.reports" &&
         method.rfind("precision.", 0) != 0 && method.rfind("target.editor.", 0) != 0 &&
         method.rfind("result.", 0) != 0 && method.rfind("template.", 0) != 0 && method.rfind("catalog.", 0) != 0 &&
         method.rfind("pcb.selection.", 0) != 0 && method.rfind("study.", 0) != 0 && method != "cad.latest" &&

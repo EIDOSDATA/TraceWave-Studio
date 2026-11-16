@@ -27,7 +27,7 @@ public:
     /** @brief 검색과 객체 이름 변경 시 탐색 탭을 명시적으로 보인다. */
     void ShowNavigation(bool focus = false);
     /** @brief 결과 목록/조건 View에서는 설계 레이어를 숨기되 사용자 배치를 보존한다. */
-    void SetResultContext(bool active, bool study = false);
+    void SetResultContext(bool active, bool study = false, bool validation = false);
     /** @brief F6와 Shift+F6의 논리적 패널 순서로 키보드 초점을 옮긴다. */
     void FocusNext(bool reverse = false);
     /** @brief 현재 탐색/속성 탭 배치 여부를 반환한다. */
@@ -62,4 +62,5 @@ private:
     bool m_updating = false;
     bool m_resultContext = false;
     bool m_studyContext = false;
+    bool m_validationContext = false;
 };

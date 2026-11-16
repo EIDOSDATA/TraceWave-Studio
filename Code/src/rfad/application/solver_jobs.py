@@ -8,8 +8,8 @@ from uuid import uuid4
 
 from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.application.job_state import TERMINAL
-from rfad.application.solver import build_analysis_plan, make_prepared_plan, validate_reference_plan
-from rfad.application.solver_requests import PCB_PROFILE, SOLVER_METHODS, validate_solver_input
+from rfad.application.solver import PROFILE, build_analysis_plan, make_prepared_plan, validate_reference_plan
+from rfad.application.solver_requests import PCB_PROFILE, REFERENCE_PROFILE, SOLVER_METHODS, validate_solver_input
 from rfad.application.solver_runtime import SolverRuntime, stage_solver_job
 from rfad.application.solver_capture import compact_capture, hydrate_job
 from rfad.application.solver_artifacts import read_solver_result, seal_solver_outputs, check_prepared_outputs, check_solver_result, worker_error
@@ -82,8 +82,14 @@ class SolverCoordinator:
                 from rfad.application.pcb_solver import build_pcb_plan
 
                 captured["plan"] = build_pcb_plan(document, snapshot, self.runtime.identity, data["settings"])
-            else:
+            elif data["analysis_profile"] == REFERENCE_PROFILE:
+                from rfad.application.rf_reference_contract import build_plan
+
+                captured["plan"] = build_plan(document, snapshot, self.runtime.identity, data["settings"])
+            elif data["analysis_profile"] == PROFILE:
                 captured["plan"] = build_analysis_plan(document, snapshot, self.runtime.identity, data["grid_mm"])
+            else:
+                raise ProjectError("E_UNSUPPORTED", "지원하는 해석 profile이 아닙니다.")
             kind = "data_processing"
         elif method == "solver.prepare":
             record, plan = self._record(state, "analysis_plans", data["analysis_plan"], "plan_id", project_id)
@@ -109,8 +115,14 @@ class SolverCoordinator:
             from rfad.application.pcb_solver import validate_pcb_plan
 
             validate_pcb_plan(plan)
-        else:
+        elif plan["analysis_profile"] == REFERENCE_PROFILE:
+            from rfad.application.rf_reference_contract import validate_plan
+
+            validate_plan(plan)
+        elif plan["analysis_profile"] == PROFILE:
             validate_reference_plan(plan)
+        else:
+            raise ProjectError("E_UNSUPPORTED", "지원하는 해석 profile이 아닙니다.")
         if method != "solver.plan" and data["budget"]["timeout_seconds"] > plan["resource_estimate"]["max_wall_time_seconds"]:
             raise ProjectError("E_RESOURCE", "요청한 실행 시간이 해당 불변 계획의 예산을 초과했습니다.")
         if plan["runtime_identity"] != self.runtime.identity:
@@ -269,7 +281,9 @@ class SolverCoordinator:
                              "raw_files": [f for f in files if f["role"].startswith("raw/") or f["role"] == "raw_manifest"],
                              "metadata": {"schema": "rfad.openems-result-view/0.1", "profile": captured["analysis_plan"]["analysis_profile"], "assessment": result.get("assessment", {}),
                                           "normalization": result.get("normalization", {}), "sample_count": len(result.get("samples", [])),
-                                          "physics_scope": "user_pcb_single_port_computed_unvalidated" if captured["analysis_plan"]["analysis_profile"] == PCB_PROFILE else "rectangular_waveguide_reference_only",
+                                          "physics_scope": {PCB_PROFILE: "user_pcb_single_port_computed_unvalidated",
+                                                            REFERENCE_PROFILE: "synthetic_reference_benchmark_only",
+                                                            PROFILE: "rectangular_waveguide_reference_only"}[captured["analysis_plan"]["analysis_profile"]],
                                           "physics_validation_state": "not_validated" if captured["analysis_plan"]["analysis_profile"] == PCB_PROFILE else "reference_case_only"}}
             if not result_record["raw_files"] and job["input"]["task_plan"]["execution_mode"] == "postprocess_only":
                 result_record["raw_files"] = captured["raw_files"]
@@ -278,6 +292,9 @@ class SolverCoordinator:
             if "radiation_summary" in result:
                 result_record["metadata"]["radiation_summary"] = deepcopy(result["radiation_summary"])
                 operation["radiation_summary"] = deepcopy(result["radiation_summary"])
+            if captured["analysis_plan"]["analysis_profile"] == REFERENCE_PROFILE:
+                result_record["metadata"]["reference_scope"] = deepcopy(result["reference_scope"])
+                result_record["metadata"]["reference_grid_mm"] = captured["analysis_plan"]["case"]["mesh"]["interior_grid_mm"]
         def publish(state):
             active = state["jobs"][job["job_id"]]
             if active["solver"]["nonce"] != captured["nonce"]:

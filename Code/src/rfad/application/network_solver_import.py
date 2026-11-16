@@ -1,4 +1,4 @@
-"""! @brief 봉인된 PCB 계산의 복소 원본과 NF2FF 비율을 공통 자료로 투영한다."""
+"""! @brief 봉인된 계산의 명시 profile별 복소 원본과 NF2FF 비율을 공통 자료로 투영한다."""
 
 from copy import deepcopy
 import json
@@ -19,12 +19,20 @@ def solver_dataset(service, state, document, identity):
         fail("현재 프로젝트의 봉인된 계산 결과가 없습니다.", "artifact_id", "E_MISSING_ARTIFACT")
     raw = service.journal.read_artifact(record["normalized"])
     original = json.loads(raw)
-    if original.get("schema") != "rfad.openems-pcb-result/0.1":
-        fail("이 투영 profile은 기존 단일 포트 PCB 결과를 지원합니다.", "artifact_id", "E_UNSUPPORTED")
+    reference = original.get("schema") == "rfad.openems-reference-result/0.1"
+    if original.get("schema") != "rfad.openems-pcb-result/0.1" and not reference:
+        fail("이 투영 profile은 보존된 단일 포트 PCB와 고정 RF 참조 결과를 지원합니다.", "artifact_id", "E_UNSUPPORTED")
     plan = original.get("provenance", {}).get("analysis_plan")
     if type(plan) is not dict or plan.get("snapshot", {}).get("project_id") != document["project_id"]:
         fail("기존 계산의 프로젝트 입력 사본을 확인할 수 없습니다.", "artifact_id", "E_HASH")
-    validate_result(plan, original)
+    if not reference and plan.get("analysis_profile") == "rfad.openems.reference-benchmark/0.1":
+        fail("고정 RF 참조를 사용자 PCB 결과 schema로 표시할 수 없습니다.", "artifact_id", "E_HASH")
+    if reference:
+        from rfad.application.rf_reference_contract import validate_result as validate_reference_result
+
+        validate_reference_result(plan, original)
+    else:
+        validate_result(plan, original)
     norm = original["normalization"]
     if norm.get("wave_definition") != "voltage_wave_real_lumped_resistance" or norm.get("fourier_convention") != "exp(-j*2*pi*f*t)":
         fail("명시적으로 대응하지 않은 기존 파/시간 규약입니다.", "normalization", "E_UNSUPPORTED")
@@ -32,18 +40,23 @@ def solver_dataset(service, state, document, identity):
     frequencies = [row["frequency_hz"] for row in rows]
     resistance = norm["reference_impedance_ohm"]
     port = plan["case"]["port"]
+    conditions = {"manufacturing": None, "measurement": None, "physics_validated": False,
+                  "absolute_power_w": None, "power_normalization": "pulse_fourier_ratio_only"}
+    if reference:
+        conditions["reference_scope"] = deepcopy(original["reference_scope"])
+        conditions["interior_grid_mm"] = plan["case"]["mesh"]["interior_grid_mm"]
     dataset = make_dataset(parameter_kind="S", frequency_hz=frequencies, port_ids=[port["id"]],
         values_ri=[[[deepcopy(row["s11"])]] for row in rows],
-        z0_ohm=[[[float(resistance), 0.0]] for _ in rows], port_names=[None],
+        z0_ohm=[[[float(resistance), 0.0]] for _ in rows], port_names=["다이폴 이상 급전" if reference else None],
         reference_planes=[norm["reference_plane"]], port_modes=["single_ended"], current_orientation=["into_dut"],
         wave_definition="traveling", phasor_convention="exp(+j*omega*t)", sample_origin=["computed"] * len(rows),
         source_refs=["solver artifact: " + identity],
-        provenance={"adapter": "rfad.network-pcb-projection/0.1", "normalized_source": deepcopy(record["normalized"]),
+        provenance={"adapter": "rfad.network-reference-projection/0.1" if reference else "rfad.network-pcb-projection/0.1",
+                    "normalized_source": deepcopy(record["normalized"]),
                     "snapshot": deepcopy(plan["snapshot"]), "normalization_original": deepcopy(norm),
                     "solver_assessment_original": deepcopy(original["assessment"]),
                     "basis_mapping": "실수 lumped Z0의 전압파 반사 비와 exp(-jwt) Fourier 계수를 exp(+jwt) phasor로 표현"},
-        conditions={"manufacturing": None, "measurement": None, "physics_validated": False,
-                    "absolute_power_w": None, "power_normalization": "pulse_fourier_ratio_only"})
+        conditions=conditions)
     return dataset, raw
 
 

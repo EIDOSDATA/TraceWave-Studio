@@ -10,6 +10,7 @@
 #include <wx/listctrl.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
+#include <wx/wrapsizer.h>
 ResultMetricsView::ResultMetricsView(wxWindow* parent)
     : wxScrolledWindow(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxVSCROLL | wxTAB_TRAVERSAL)
 {
@@ -21,11 +22,24 @@ ResultMetricsView::ResultMetricsView(wxWindow* parent)
     m_heading->SetMinSize(wxSize(1, -1));
     StudioTheme::Title(*m_heading);
     layout->Add(m_heading, 0, wxEXPAND | wxALL, FromDIP(8));
-    auto* toolbar = new wxBoxSizer(wxHORIZONTAL);
+    auto* toolbar = new wxWrapSizer(wxHORIZONTAL);
     m_frequency = new wxChoice(this, wxID_ANY);
     toolbar->Add(m_frequency, 0, wxALL, FromDIP(4));
     auto* select = new wxButton(this, wxID_ANY, Display("원본 선택"));
     toolbar->Add(select, 0, wxALL, FromDIP(4));
+    m_validationButton = new wxButton(this, wxID_ANY, Display("프로젝트 검증 기록"));
+    m_validationButton->SetToolTip(
+        Display("프로젝트의 별도 검증 보고서를 엽니다. 현재 결과의 검증 합격을 뜻하지 않습니다."));
+    m_validationButton->Disable();
+    toolbar->Add(m_validationButton, 0, wxALL, FromDIP(4));
+    m_validationButton->Bind(wxEVT_BUTTON,
+                             [this](wxCommandEvent&)
+                             {
+                                 if (onValidation)
+                                 {
+                                     onValidation();
+                                 }
+                             });
     layout->Add(toolbar, 0, wxEXPAND | wxLEFT, FromDIP(4));
     m_table = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 300)), wxLC_REPORT);
     m_table->SetMinSize(FromDIP(wxSize(-1, 300)));
@@ -63,6 +77,10 @@ ResultMetricsView::ResultMetricsView(wxWindow* parent)
              FitInside();
              event.Skip();
          });
+}
+void ResultMetricsView::SetValidationAvailable(bool available)
+{
+    m_validationButton->Enable(available);
 }
 void ResultMetricsView::SetDescription(const Json& description)
 {

@@ -18,17 +18,17 @@
     "current_01_요구사항": 3,
     "current_02_시스템명세": 11,
     "current_03_아키텍처": 7,
-    "current_04_화면설계": 18,
-    "current_05_기능설계": 37,
+    "current_04_화면설계": 19,
+    "current_05_기능설계": 38,
     "current_06_분석연구": 13,
-    "current_07_검증": 15,
+    "current_07_검증": 16,
     "current_08_운영환경": 5,
     "current_09_개발계획": 4,
     "current_11_검토기록": 6,
     "current_traceability": 4,
     "document_catalog": 4,
     "document_navigation": 6,
-    "documentation_asset": 43,
+    "documentation_asset": 51,
     "documentation_validation_record": 1,
     "historical_proposal": 2,
     "historical_verification": 41,
@@ -28034,9 +28034,9 @@
       "path": "01_개발문서/04_화면설계/README.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 9923,
-      "working_tree_sha256": "321dc5a07dfd41a03b9908f09a680b8348e7023f406d4ca80112f335626856cc",
-      "text_lines": 74,
+      "bytes": 10243,
+      "working_tree_sha256": "8e71a6b7b730bd336d8e63584b30909f4f936e797fc1527cbbfce99621ab5bf8",
+      "text_lines": 76,
       "text_status": "utf8_read"
     },
     {
@@ -28286,9 +28286,9 @@
       "path": "01_개발문서/05_기능설계/04_해석결과/README.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 1106,
-      "working_tree_sha256": "6db0519ed999d8439ae72fe94ac1df57953dc4208be091e56193609079bfc379",
-      "text_lines": 18,
+      "bytes": 1287,
+      "working_tree_sha256": "4517700a7f587bcfd68a67082e76538af45e249a7c210a80b98f21826b2784fe",
+      "text_lines": 19,
       "text_status": "utf8_read"
     },
     {
@@ -28464,23 +28464,23 @@
       "path": "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
-      "bytes": 50114,
-      "working_tree_sha256": "246aaa8446a29a36d17cb22d26662ac629e48eecbad8e094b434e2be1dcc490a"
+      "bytes": 61177,
+      "working_tree_sha256": "24655c3e863e42587bec50ce63f5130f6c38f81fb196d27595d989b4d44c9107"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
-      "bytes": 551298,
-      "working_tree_sha256": "31d98f62b1fe3438732daf6e09bac551153eab551401c67d918f92640b785a3d"
+      "bytes": 567479,
+      "working_tree_sha256": "2febb6d8921d5f513f341c2d1c96b21ad267f216c16e2858bf5fb4be406ae548"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
-      "bytes": 120607,
-      "working_tree_sha256": "5baf707596e44426e6eae849ce8178a932ee9f156d3c1c875adc6d1f486722a2",
-      "text_lines": 1775,
+      "bytes": 135196,
+      "working_tree_sha256": "d926d828e3a0c6166ffb32e459489bd8217badc700a27b561202787fc419d6d3",
+      "text_lines": 1853,
       "text_status": "utf8_read"
     },
     {
@@ -28538,9 +28538,9 @@
       "path": "01_개발문서/07_검증/02_실행화면/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 9130,
-      "working_tree_sha256": "81d6503604af3915f0691dbc9ddc4545f87f368083fded33be8c17b474f458b5",
-      "text_lines": 50,
+      "bytes": 11148,
+      "working_tree_sha256": "272f55cd5e036767425d1f40e82d228399acc3ebc036011f8418fa56952f43ca",
+      "text_lines": 61,
       "text_status": "utf8_read"
     },
     {
@@ -28574,9 +28574,9 @@
       "path": "01_개발문서/07_검증/06_승인요구와_구현대조.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 11064,
-      "working_tree_sha256": "1d9829912542af01e2576eb57edeb3c2fcf0fad319913da2dc257142fcef4402",
-      "text_lines": 64,
+      "bytes": 11720,
+      "working_tree_sha256": "32812d591b97417c8fc29d6c916fcc3c7beafd4e2dbf9f2aed5cbc8d0cbe0603",
+      "text_lines": 66,
       "text_status": "utf8_read"
     },
     {
@@ -28608,9 +28608,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 3258,
-      "working_tree_sha256": "7616cda70296cb0884a67a39e49fb39b7724acaee23401edff0cff482afc1623",
-      "text_lines": 33,
+      "bytes": 3625,
+      "working_tree_sha256": "b8b41fb9ee6c1faaf92c29ad9f1d65ddb7f86ad5ac5fa36e688d0bacaf215019",
+      "text_lines": 35,
       "text_status": "utf8_read"
     },
     {
@@ -28671,18 +28671,18 @@
       "path": "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 119957,
-      "working_tree_sha256": "23af99e7b53b6896dcdca5655baec6874b19c29aa65513ab94100c55b98fe153",
-      "text_lines": 640,
+      "bytes": 121977,
+      "working_tree_sha256": "0f66ba2fdb3619a2b33243ccc1ec148dfd0e8ca082d242b9696e823b6a55393a",
+      "text_lines": 646,
       "text_status": "utf8_read"
     },
     {
       "path": "01_개발문서/09_개발계획/03_개발완료_계획.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 27169,
-      "working_tree_sha256": "4e28c0ce91f5a3bc902be88ec66074269b69840784b084b18259a54e31230bb0",
-      "text_lines": 153,
+      "bytes": 27731,
+      "working_tree_sha256": "fd2605b2ddc6fd17a1902338d6c0286cf2beebe551ca3d5b30da48a6fae5bd26",
+      "text_lines": 155,
       "text_status": "utf8_read"
     },
     {
@@ -29111,9 +29111,9 @@
       "path": "Code/README.md",
       "category": "repository_guide",
       "review_scope": "개발 문서 진입/현재 상태 검토",
-      "bytes": 12291,
-      "working_tree_sha256": "01437bd12a8eb7d9f2a85d2271a619a5a45ba3161f73f4f42582aa72edb9534c",
-      "text_lines": 84,
+      "bytes": 12684,
+      "working_tree_sha256": "7dc7bb5f9c989d73251a772628e5b38a8df6de98414cfb3385559b3fd997a181",
+      "text_lines": 85,
       "text_status": "utf8_read"
     },
     {
@@ -29401,9 +29401,9 @@
       "path": "Code/ui/wxwidgets/README.md",
       "category": "repository_guide",
       "review_scope": "개발 문서 진입/현재 상태 검토",
-      "bytes": 41394,
-      "working_tree_sha256": "0fb0e09b2c9a56fcd0102ac181ff097b372611a102b5f2e2b597d62132d39aae",
-      "text_lines": 238,
+      "bytes": 41956,
+      "working_tree_sha256": "820dc7991f0f81077d1ddc28a9bce970cdd4386af956a7813c90937be81b6308",
+      "text_lines": 240,
       "text_status": "utf8_read"
     },
     {
@@ -29766,6 +29766,89 @@
       "review_scope": "문서/시안 자산 보존",
       "bytes": 166463,
       "working_tree_sha256": "7612ed0e4ce4864e3d4748cd0f4f3f67158ba75a973bf4d638e7cb5f3adeb174"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/22_독립검증_기록화면.md",
+      "category": "current_04_화면설계",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 8921,
+      "working_tree_sha256": "7d609e5f14b45119afa5041b1d0f197c39a0794746f7b0cf4cf5fdb265a3c723",
+      "text_lines": 68,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/05_기능설계/04_해석결과/08_독립참조와_유한검증_계약.md",
+      "category": "current_05_기능설계",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 19180,
+      "working_tree_sha256": "c73206bed0a232f3a04467be9f2c5984027a5e9bb6a632faa38a8f57015bbed5",
+      "text_lines": 195,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/33_독립참조_보존판정과_조건.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 218099,
+      "working_tree_sha256": "832fb54aa4ecf4b1a2da35f5bdf0aa760dcf8abdcd831ccd54b2c49e44d31b72"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/34_미확정참조_실행차단.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 223790,
+      "working_tree_sha256": "a981dfcf2f77d990c84770282b277e5f6a9d53d0c4c224e25d5f2f5ac3ad1e43"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/35_고정원본_목록동기화와_주파수표시.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 201217,
+      "working_tree_sha256": "d6384f19a3dd70b9a6948b657f3757bed777c02a08b472900689dbd2d71c2d2c"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/36_독립참조_양방향방사절단면.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 188136,
+      "working_tree_sha256": "d741ad678919e7abad4738cf31a5d9679f53959b2734e464332749f27324659d"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/37_독립참조_삼차원방사_회전.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 195436,
+      "working_tree_sha256": "75820a1f7ce37aa19b737c5cd181f234191d5dd246f19051fa73c4549ad04213"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/38_독립판정_저장후_재열기.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 218099,
+      "working_tree_sha256": "832fb54aa4ecf4b1a2da35f5bdf0aa760dcf8abdcd831ccd54b2c49e44d31b72"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/39_최종계획_판정선택_안내.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 212122,
+      "working_tree_sha256": "17a152c6a666c0a2e30c78a32716592e3175a9a5538ee9a72b5d6a8620bd06ae"
+    },
+    {
+      "path": "01_개발문서/07_검증/19_독립참조와_유한검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 14487,
+      "working_tree_sha256": "5d6d7e9c883597c4d465207ed78d4a6556b7c99f2818ed13cef433d52011f314",
+      "text_lines": 85,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/20_독립참조와_유한검증_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 526134,
+      "working_tree_sha256": "c2347ba1a623177ee11ec89b64acf98eafc1d92e435ed70f729e41e06209ab13"
     }
   ],
   "identical_byte_groups": [
@@ -29910,36 +29993,35 @@
     [
       "00_참고자료/화면 디자인 시안.png",
       "01_개발문서/04_화면설계/01_그림자료/15_두번째_화면시안.png"
+    ],
+    [
+      "01_개발문서/07_검증/02_실행화면/33_독립참조_보존판정과_조건.jpg",
+      "01_개발문서/07_검증/02_실행화면/38_독립판정_저장후_재열기.jpg"
     ]
   ],
   "incremental_refresh": {
     "date_kst": "2026-11-17",
-    "mode": "step7_result_documents_only",
-    "previous_inventory_sha256": "8f26d5a241f6b8c3e6eeb2c2098050e7c0cedcb95104784b579f60feefdd7c53",
+    "mode": "step8_reference_documents_only",
+    "previous_inventory_sha256": "a461af9afa917df3639f6f56c8b2c6392e67288c8c5e4e500818a97962541fc2",
     "refreshed_paths": [
-      "01_개발문서/02_시스템명세/08_공통구현_계약.md",
-      "01_개발문서/03_아키텍처/03_코드구조와_유지보수.md",
-      "01_개발문서/04_화면설계/21_다중결과와_방사필드_화면.md",
+      "01_개발문서/04_화면설계/22_독립검증_기록화면.md",
       "01_개발문서/04_화면설계/README.md",
-      "01_개발문서/05_기능설계/04_해석결과/07_다중결과와_방사표시.md",
+      "01_개발문서/05_기능설계/04_해석결과/08_독립참조와_유한검증_계약.md",
       "01_개발문서/05_기능설계/04_해석결과/README.md",
-      "01_개발문서/07_검증/01_구현감사/01_설계기능.json",
       "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
       "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
       "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
-      "01_개발문서/07_검증/02_실행화면/23_결과검증_프로젝트재열기.jpg",
-      "01_개발문서/07_검증/02_실행화면/24_공통결과_주파수단위와_복소표본.jpg",
-      "01_개발문서/07_검증/02_실행화면/25_스미스차트와_실제임피던스.jpg",
-      "01_개발문서/07_검증/02_실행화면/26_효율과_전력수지_기준.jpg",
-      "01_개발문서/07_검증/02_실행화면/27_방사패턴_기록양방향절단면.jpg",
-      "01_개발문서/07_검증/02_실행화면/28_삼차원방사_회전.jpg",
-      "01_개발문서/07_검증/02_실행화면/29_편파_복소원문_표.jpg",
-      "01_개발문서/07_검증/02_실행화면/30_성분필드단면과_실제좌표.jpg",
-      "01_개발문서/07_검증/02_실행화면/31_다중결과와_비교조건.jpg",
-      "01_개발문서/07_검증/02_실행화면/32_최종결과검증후_저장재열기.jpg",
+      "01_개발문서/07_검증/02_실행화면/33_독립참조_보존판정과_조건.jpg",
+      "01_개발문서/07_검증/02_실행화면/34_미확정참조_실행차단.jpg",
+      "01_개발문서/07_검증/02_실행화면/35_고정원본_목록동기화와_주파수표시.jpg",
+      "01_개발문서/07_검증/02_실행화면/36_독립참조_양방향방사절단면.jpg",
+      "01_개발문서/07_검증/02_실행화면/37_독립참조_삼차원방사_회전.jpg",
+      "01_개발문서/07_검증/02_실행화면/38_독립판정_저장후_재열기.jpg",
+      "01_개발문서/07_검증/02_실행화면/39_최종계획_판정선택_안내.jpg",
       "01_개발문서/07_검증/02_실행화면/README.md",
-      "01_개발문서/07_검증/17_다중결과_표시검증.md",
-      "01_개발문서/07_검증/18_다중결과_표시_실행기록.json",
+      "01_개발문서/07_검증/06_승인요구와_구현대조.md",
+      "01_개발문서/07_검증/19_독립참조와_유한검증.md",
+      "01_개발문서/07_검증/20_독립참조와_유한검증_실행기록.json",
       "01_개발문서/07_검증/README.md",
       "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
       "01_개발문서/09_개발계획/03_개발완료_계획.md",
@@ -29947,20 +30029,17 @@
       "Code/ui/wxwidgets/README.md"
     ],
     "added_paths": [
-      "01_개발문서/04_화면설계/21_다중결과와_방사필드_화면.md",
-      "01_개발문서/05_기능설계/04_해석결과/07_다중결과와_방사표시.md",
-      "01_개발문서/07_검증/02_실행화면/23_결과검증_프로젝트재열기.jpg",
-      "01_개발문서/07_검증/02_실행화면/24_공통결과_주파수단위와_복소표본.jpg",
-      "01_개발문서/07_검증/02_실행화면/25_스미스차트와_실제임피던스.jpg",
-      "01_개발문서/07_검증/02_실행화면/26_효율과_전력수지_기준.jpg",
-      "01_개발문서/07_검증/02_실행화면/27_방사패턴_기록양방향절단면.jpg",
-      "01_개발문서/07_검증/02_실행화면/28_삼차원방사_회전.jpg",
-      "01_개발문서/07_검증/02_실행화면/29_편파_복소원문_표.jpg",
-      "01_개발문서/07_검증/02_실행화면/30_성분필드단면과_실제좌표.jpg",
-      "01_개발문서/07_검증/02_실행화면/31_다중결과와_비교조건.jpg",
-      "01_개발문서/07_검증/02_실행화면/32_최종결과검증후_저장재열기.jpg",
-      "01_개발문서/07_검증/17_다중결과_표시검증.md",
-      "01_개발문서/07_검증/18_다중결과_표시_실행기록.json"
+      "01_개발문서/04_화면설계/22_독립검증_기록화면.md",
+      "01_개발문서/05_기능설계/04_해석결과/08_독립참조와_유한검증_계약.md",
+      "01_개발문서/07_검증/02_실행화면/33_독립참조_보존판정과_조건.jpg",
+      "01_개발문서/07_검증/02_실행화면/34_미확정참조_실행차단.jpg",
+      "01_개발문서/07_검증/02_실행화면/35_고정원본_목록동기화와_주파수표시.jpg",
+      "01_개발문서/07_검증/02_실행화면/36_독립참조_양방향방사절단면.jpg",
+      "01_개발문서/07_검증/02_실행화면/37_독립참조_삼차원방사_회전.jpg",
+      "01_개발문서/07_검증/02_실행화면/38_독립판정_저장후_재열기.jpg",
+      "01_개발문서/07_검증/02_실행화면/39_최종계획_판정선택_안내.jpg",
+      "01_개발문서/07_검증/19_독립참조와_유한검증.md",
+      "01_개발문서/07_검증/20_독립참조와_유한검증_실행기록.json"
     ],
     "removed_paths": [],
     "preserved_reference_records": 3336,

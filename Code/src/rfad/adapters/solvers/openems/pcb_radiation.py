@@ -13,8 +13,8 @@ def create_box(csx, recording):
     return nf2ff(csx, recording["name"], recording["start_mm"], recording["stop_mm"], frequency=recording["frequency_hz"])
 
 
-def postprocess(stage, plan, raw):
-    """! @brief 원시 E/H와 포트 스펙트럼에서 방사량을 계산하며 FDTD는 시작하지 않는다."""
+def postprocess(stage, plan, raw, *, schema=SCHEMA, validator=validate_result, summarize=summary):
+    """! @brief 명시 profile의 원시 E/H와 포트에서 방사량을 계산하며 FDTD는 시작하지 않는다."""
     import numpy as np
     import CSXCAD
 
@@ -42,11 +42,11 @@ def postprocess(stage, plan, raw):
         rows.append({"frequency_hz": frequency, "metrics": metrics, "e_theta": complex_matrix(et),
                      "e_phi": complex_matrix(ep), "normalized_power": normalized.tolist(),
                      "directivity": (normalized * metrics["directivity_linear"]).tolist()})
-    result = {"schema": SCHEMA, "analysis_plan_id": plan["plan_id"], "recording": recording, "frequencies": rows,
+    result = {"schema": schema, "analysis_plan_id": plan["plan_id"], "recording": recording, "frequencies": rows,
               "electric_field_unit": "V*s/m", "power_unit": "W*s^2", "absolute_power_w": None,
               "physics_validated": False, "status": "computed_unvalidated"}
-    validate_result(plan, result)
+    validator(plan, result)
     path = stage / "output/radiation.json"
     write_json(path, result)
-    return summary(result), [descriptor(stage, path, "radiation_result"),
+    return summarize(result), [descriptor(stage, path, "radiation_result"),
                              descriptor(stage, raw / (recording["name"] + ".h5"), "radiation_native")]

@@ -65,6 +65,15 @@ ResultWorkspace::ResultWorkspace(StudioNotebook* views, wxWindow* navigation, wx
     m_network->onSelectSource = focus;
     m_smith->onSelectSource = focus;
     m_metrics->onSelectSource = focus;
+    const auto validation = [this]()
+    {
+        if (onOpenValidation)
+        {
+            onOpenValidation();
+        }
+    };
+    m_conditions->onValidation = validation;
+    m_metrics->onValidation = validation;
     m_radiation->onSelectSource = focus;
     m_network->onOpenTools = [this]()
     {
@@ -437,9 +446,32 @@ void ResultWorkspace::LoadCatalog(int offset)
             m_browser->SetCatalog(response, m_description.is_object() ? m_description.at("source") : Json(nullptr));
         });
 }
-void ResultWorkspace::Select(const Json& source)
+void ResultWorkspace::OpenPinned(const Json& source, const Json& pin)
+{
+    if (!m_available || !source.is_object() || !pin.is_object())
+    {
+        return;
+    }
+    if (source.value("kind", "") != "solver")
+    {
+        Error("검증 기록의 직접 결과 연결은 보존 해석 실행만 지원합니다.");
+        return;
+    }
+    ++m_catalogGeneration;
+    m_catalog = nullptr;
+    m_catalogHash.clear();
+    m_browser->SetSolverContext();
+    Select(source, pin);
+}
+void ResultWorkspace::SetValidationAvailable(bool available)
+{
+    m_conditions->SetValidationAvailable(available);
+    m_metrics->SetValidationAvailable(available);
+}
+void ResultWorkspace::Select(const Json& source, const Json& expectedPin)
 {
     const auto generation = ++m_selectionGeneration;
+    const auto catalogGeneration = m_catalogGeneration;
     ++m_viewGeneration;
     m_description = nullptr;
     m_pattern.Reset();
@@ -451,11 +483,15 @@ void ResultWorkspace::Select(const Json& source)
         {
             return generation == m_selectionGeneration;
         },
-        [this, source](const Json& description)
+        [this, source, expectedPin, generation, catalogGeneration](const Json& description)
         {
             if (description.at("source") != source || !description.value("pin", Json(nullptr)).is_object())
             {
                 throw std::runtime_error("선택한 결과의 원본 또는 고정 해시가 다릅니다.");
+            }
+            if (expectedPin.is_object() && description.at("pin") != expectedPin)
+            {
+                throw std::runtime_error("검증 보고서의 봉인 해시와 현재 조회한 원본이 다릅니다.");
             }
             m_description = description;
             m_conditions->SetDescription(description);
@@ -468,6 +504,10 @@ void ResultWorkspace::Select(const Json& source)
                 m_browser->SetCatalog(m_catalog, source);
             }
             LoadActive();
+            if (expectedPin.is_object() && catalogGeneration == m_catalogGeneration)
+            {
+                LocatePinnedSource(source, expectedPin, 0, catalogGeneration, generation);
+            }
         });
 }
 Json ResultWorkspace::Pinned() const
