@@ -82,7 +82,19 @@ def _network(service, project, document, specification):
 
 
 def application_source_manifest(package_root=None):
-    """! @brief 전체 host Python 의존 소스를 유한 manifest로 고정하며 native 모듈은 import하지 않는다."""
+    """! @brief 주입 서비스 호출까지 명시한 host 의존 소스를 고정하며 native import를 하지 않는다."""
+    if package_root is None:
+        from rfad.application.source_bundle import HOST, BundleError, build
+
+        try:
+            bundle = build(Path(__file__).resolve().parents[3], HOST, max_files=MAX_WORKER_SOURCE_FILES)
+        except BundleError as error:
+            fail(str(error), error.code)
+        return {"schema": "rfad.host-calculation-source/0.2",
+                "bundle_sha256": hashlib.sha256(bundle["source_bytes"]).hexdigest(),
+                "bundle_bytes": len(bundle["source_bytes"]), "code_files": bundle["code_files"],
+                "source_bundle": bundle["source_bundle"]}
+    # @brief 명시한 구형 시험/자료 트리의 전체 소스 manifest 읽기 형식은 유지한다.
     root = (Path(__file__).resolve().parents[1] if package_root is None else Path(package_root)).resolve()
     files = []
     for path in root.rglob("*.py"):

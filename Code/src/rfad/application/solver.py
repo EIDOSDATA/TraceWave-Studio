@@ -130,7 +130,7 @@ def _reference_source(document: dict, snapshot: dict) -> None:
 def _runtime(identity: object) -> None:
     """! @brief host가 관측한 runtime 증거를 추정 없이 보존할 수 있는지 확인한다."""
     required = {"runtime_profile", "manifest_sha256", "code_files", "transport"}
-    if type(identity) is not dict or set(identity) != required:
+    if type(identity) is not dict or set(identity) not in (required, required | {"source_bundle"}):
         _fail("E_SCHEMA", "host에서 확인한 runtime 식별 정보가 필요합니다.", "runtime_identity")
     _json(identity, "runtime_identity", 64 * 1024)
     if identity["runtime_profile"] != RUNTIME_PROFILE:
@@ -150,6 +150,15 @@ def _runtime(identity: object) -> None:
         seen.add(item["path"])
     if type(identity["transport"]) is not dict or not identity["transport"]:
         _fail("E_SCHEMA", "WSL runtime 소유 설정이 필요합니다.", "runtime_identity.transport")
+    if "source_bundle" in identity:
+        from rfad.application.source_bundle import SOLVER, BundleError, validate_descriptor
+
+        try:
+            validate_descriptor(identity["source_bundle"], files)
+            if identity["source_bundle"]["profile"] != SOLVER:
+                raise BundleError("solver 소스 profile이 다른 실행 계층을 가리킵니다.")
+        except BundleError as error:
+            _fail(error.code, str(error), "runtime_identity.source_bundle")
 
 
 def case_spec(grid_mm: float) -> dict:

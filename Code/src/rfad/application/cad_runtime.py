@@ -6,6 +6,7 @@ import math
 from pathlib import Path
 
 from rfad.application.canonical import canonical_bytes
+from rfad.application import source_bundle
 from rfad.domain.errors import ProjectError
 from rfad.domain.resource_limits import MAX_WORKER_SOURCE_FILES
 
@@ -33,7 +34,12 @@ class CadRuntime:
             raise ProjectError("E_SCHEMA", "CAD 실행 설정 또는 시간 제한이 유효하지 않습니다.")
         self.timeout_seconds = timeout_seconds
         self.entry_bytes = self.entry.read_bytes()
-        source_files = {path.relative_to(CODE_ROOT).as_posix(): path.read_bytes().decode("utf-8") for path in sorted((CODE_ROOT / "src/rfad").rglob("*.py"))}
+        try:
+            bundle = source_bundle.build(CODE_ROOT, source_bundle.CAD, overrides={"worker.py": self.entry_bytes},
+                                         max_files=MAX_WORKER_SOURCE_FILES)
+        except source_bundle.BundleError as error:
+            raise ProjectError(error.code, str(error)) from error
+        source_files = {name: text for name, text in bundle["sources"].items() if name.startswith("src/rfad/")}
         self.source_bytes = canonical_bytes(source_files)
         if len(self.source_bytes) > 2 * 1024 * 1024 or len(source_files) > MAX_WORKER_SOURCE_FILES:
             raise ProjectError("E_RESOURCE", "CAD worker 소스 묶음이 지원 상한을 초과했습니다.")
@@ -48,17 +54,28 @@ class CadRuntime:
             "manifest_sha256": hashlib.sha256(self.manifest_bytes).hexdigest(),
             "python_sha256": file_hash(self.python), "entry_sha256": hashlib.sha256(self.entry_bytes).hexdigest(),
             "source_sha256": hashlib.sha256(canonical_bytes({name: hashlib.sha256(text.encode("utf-8")).hexdigest() for name, text in source_files.items()})).hexdigest(),
+            "source_bundle": bundle["source_bundle"], "code_files": bundle["code_files"],
         }
 
     @staticmethod
-    def source_hash() -> str:
+    def source_hash(identity=None) -> str:
         """! @brief 실제 worker가 읽는 제품 Python 소스 묶음을 식별한다."""
+        if identity is not None and "source_bundle" in identity:
+            source_bundle.verify_stage(CODE_ROOT, identity["source_bundle"], identity["code_files"])
+            return source_bundle.source_hash([record for record in identity["code_files"] if record["path"].startswith("src/rfad/")])
         records = {path.relative_to(CODE_ROOT).as_posix(): file_hash(path) for path in sorted((CODE_ROOT / "src/rfad").rglob("*.py"))}
         return hashlib.sha256(canonical_bytes(records)).hexdigest()
 
     def verify(self, identity: dict) -> None:
         """! @brief 접수 뒤 실행 파일이나 소스가 바뀌었으면 자동 실행하지 않는다."""
+        try:
+            bundle = source_bundle.build(CODE_ROOT, source_bundle.CAD, overrides={"worker.py": self.entry.read_bytes()},
+                                         max_files=MAX_WORKER_SOURCE_FILES)
+        except source_bundle.BundleError as error:
+            raise ProjectError(error.code, str(error)) from error
         current = {**self.identity, "python_sha256": file_hash(self.python), "entry_sha256": file_hash(self.entry),
-                   "manifest_sha256": file_hash(self.manifest), "source_sha256": self.source_hash()}
+                   "manifest_sha256": file_hash(self.manifest),
+                   "source_sha256": source_bundle.source_hash([record for record in bundle["code_files"] if record["path"].startswith("src/rfad/")]),
+                   "source_bundle": bundle["source_bundle"], "code_files": bundle["code_files"]}
         if current != identity:
             raise ProjectError("E_VERSION", "접수한 CAD 런타임 또는 구현이 변경되었습니다. 새 작업으로 요청하십시오.")

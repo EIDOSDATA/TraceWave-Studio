@@ -101,6 +101,7 @@ class CadCoordinator:
                     target = stage / relative
                     target.parent.mkdir(parents=True, exist_ok=True)
                     target.write_text(text, encoding="utf-8", newline="")
+                self._verify_sources(stage, self.runtime.identity)
                 request = {"schema": "rfad.cad-worker/0.1", "operation": "inspect_step", "run_id": run_id,
                            "nonce": nonce, "input_sha256": digest, "runtime": self.runtime.identity}
                 process = run_native([str(self.runtime.python), "-I", "-B", "-X", "utf8", str(stage / "worker.py")],
@@ -235,6 +236,17 @@ class CadCoordinator:
             self._finish(job, error=diagnostic)
         return True
 
+    @staticmethod
+    def _verify_sources(stage, identity):
+        """! @brief 새 source profile은 custom 진입점을 포함한 실제 staging을 시작 전에 확인한다."""
+        if "source_bundle" in identity:
+            from rfad.application.source_bundle import BundleError, verify_stage
+
+            try:
+                verify_stage(stage, identity["source_bundle"], identity["code_files"])
+            except BundleError as error:
+                raise ProjectError(error.code, str(error)) from error
+
     def _execute(self, job: dict) -> tuple[dict, dict, Path]:
         """! @brief 호스트가 정한 진입점에 입력 확인용 작은 시작 메시지만 보낸다."""
         self.runtime.verify(job["cad"]["runtime"])
@@ -250,6 +262,7 @@ class CadCoordinator:
             target = self.service.journal._safe_path("cad-staging/" + job["run_id"] + "/" + relative)
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(source, encoding="utf-8", newline="")
+        self._verify_sources(stage, job["cad"]["runtime"])
         request = {"schema": "rfad.cad-worker/0.1", "run_id": job["run_id"], "nonce": job["cad"]["nonce"],
                    "input_sha256": job["cad"]["input"]["sha256"], "runtime": job["cad"]["runtime"]}
         def started(metadata):

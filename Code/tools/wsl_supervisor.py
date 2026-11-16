@@ -194,7 +194,7 @@ def _input_path(value):
     path = PurePosixPath(value)
     if not value or path.is_absolute() or ".." in path.parts or "\\" in value or str(path) != value:
         raise ValueError("invalid staged relative path")
-    if value in {"request.json", "runtime.json", "tools/openems_worker.py"}:
+    if value in {"request.json", "runtime.json", "tools/openems_worker.py", "tools/wsl_supervisor.py"}:
         return path
     if path.parts[0] == "src" and value.endswith(".py"):
         return path
@@ -227,7 +227,8 @@ def start(payload):
         path.mkdir(mode=0o700)
     except FileExistsError:
         existing, specification = run_path(payload)
-        if specification["files"] != manifest or specification["python"] != payload["python"]:
+        if (specification["files"] != manifest or specification["python"] != payload["python"]
+                or specification.get("source_identity") != payload.get("source_identity")):
             raise ValueError("existing run immutable inputs differ")
         return read_json(existing / "status.json")
     # @brief daemon은 이 잠금과 PID/시작 시각의 명시 인계 파일을 통과하기 전 worker를 시작할 수 없다.
@@ -421,6 +422,28 @@ def watchdog(payload):
         os.close(descriptor)
 
 
+def install_source_guard(path, specification):
+    """! @brief 새 실행은 supervisor가 소비하는 제품 소스도 봉인 밖으로 import하지 않는다."""
+    identity = specification.get("source_identity")
+    if identity is None:
+        sys.path.insert(0, str(path / "src"))
+        return
+    supervisor = next(item for item in identity["code_files"] if item["path"] == "tools/wsl_supervisor.py")
+    if digest(__file__) != supervisor["sha256"]:
+        raise ValueError("running supervisor source differs from sealed bundle")
+    relative = "src/rfad/application/source_bundle.py"
+    record = next(item for item in identity["code_files"] if item["path"] == relative)
+    if type(record["bytes"]) is not int or not 0 <= record["bytes"] <= 4 * 1024 * 1024:
+        raise ValueError("source bootstrap byte limit")
+    with (path / relative).open("rb") as stream:
+        raw = stream.read(record["bytes"] + 1)
+    if len(raw) != record["bytes"] or hashlib.sha256(raw).hexdigest() != record["sha256"]:
+        raise ValueError("source bootstrap hash mismatch")
+    loader = {"__name__": "_rfad_source_bootstrap", "__file__": str(path / relative)}
+    exec(compile(raw, str(path / relative), "exec"), loader)
+    loader["install_guard"](path, identity["source_bundle"], identity["code_files"])
+
+
 def daemon(payload):
     """! @brief 별도 세션에서 lease와 worker 그룹 및 유한 출력의 수명을 소유한다."""
     path, specification = run_path(payload)
@@ -438,7 +461,7 @@ def daemon(payload):
             if read_json(path / "control.json")["cancel"]:
                 publish(path, state="cancelled", termination_confirmed=True, outcome_unknown=False, not_started=True)
                 return
-    sys.path.insert(0, str(path / "src"))
+    install_source_guard(path, specification)
     from rfad.application.native_process import run_native
     os.environ["RFAD_WSL_RUN_TOKEN"] = payload["nonce"]
     cancel = threading.Event()
@@ -549,7 +572,7 @@ def export(payload):
     status = read_json(path / "status.json")
     if status["state"] not in TERMINAL or not status["termination_confirmed"] or status["outcome_unknown"]:
         raise ValueError("guest termination is not confirmed")
-    sys.path.insert(0, str(path / "src"))
+    install_source_guard(path, specification)
     from rfad.application.native_process import _scan_output
     limits = specification["limits"]
     observation = _scan_output(path / "output", path, limits["max_file_bytes"], limits["max_directory_bytes"], limits["max_files"])

@@ -17,18 +17,18 @@
     "approved_baseline_archive": 30,
     "current_01_요구사항": 3,
     "current_02_시스템명세": 11,
-    "current_03_아키텍처": 6,
+    "current_03_아키텍처": 7,
     "current_04_화면설계": 17,
     "current_05_기능설계": 36,
     "current_06_분석연구": 13,
-    "current_07_검증": 13,
+    "current_07_검증": 14,
     "current_08_운영환경": 5,
     "current_09_개발계획": 4,
     "current_11_검토기록": 6,
     "current_traceability": 4,
     "document_catalog": 4,
     "document_navigation": 6,
-    "documentation_asset": 31,
+    "documentation_asset": 32,
     "documentation_validation_record": 1,
     "historical_proposal": 2,
     "historical_verification": 41,
@@ -25851,9 +25851,9 @@
       "path": "01_개발문서/03_아키텍처/README.md",
       "category": "current_03_아키텍처",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 758,
-      "working_tree_sha256": "6e72f935bed23716f34b68cb37e529dd202ac1ed505f9a5fa0cc63941196a585",
-      "text_lines": 16,
+      "bytes": 910,
+      "working_tree_sha256": "7a1826624b4f502cb74f519d8d3a91daa4d55b8e11e94f7f83ecc2cca9ef2d7d",
+      "text_lines": 17,
       "text_status": "utf8_read"
     },
     {
@@ -28608,9 +28608,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 2611,
-      "working_tree_sha256": "4ee958cb6e7b90031743bf0a9dcc98f1bf3d9291faf205f4b0043baf32953942",
-      "text_lines": 29,
+      "bytes": 2931,
+      "working_tree_sha256": "ae4e64120adc6cbe390c7280bc28658ebc70fd07487b886ea2575adb667b0db3",
+      "text_lines": 31,
       "text_status": "utf8_read"
     },
     {
@@ -29637,6 +29637,31 @@
       "review_scope": "문서/시안 자산 보존",
       "bytes": 133608,
       "working_tree_sha256": "22aed3d9566bf498f7b47caa7164287ed624537d23732612b8906788457d70dc"
+    },
+    {
+      "path": "01_개발문서/03_아키텍처/06_실행소스_묶음과_환경식별.md",
+      "category": "current_03_아키텍처",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 7860,
+      "working_tree_sha256": "75cdaefe29dcc976c0dfa6b70ace67cbf4a5ae9004d900d2e1de69a5043b1b87",
+      "text_lines": 64,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/15_실행소스_묶음_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 9140,
+      "working_tree_sha256": "435cd554c05b0596a57bba7003b5dbdc492a33285e31a7375c41f949e630c077",
+      "text_lines": 77,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/16_실행소스_묶음_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 183745,
+      "working_tree_sha256": "fc625a1abed48bf7d6be5f843e1cb85eff9d169a314d057267614d56fde15261"
     }
   ],
   "identical_byte_groups": [
@@ -29785,57 +29810,24 @@
   ],
   "incremental_refresh": {
     "date_kst": "2026-11-17",
-    "mode": "changed_development_files_only",
-    "previous_inventory_sha256": "c4db4213e5e04102672d32c7891353d892c97bcf15ce4ff57a4c54ca126c10da",
-    "original_order_inventory_sha256": "c4db4213e5e04102672d32c7891353d892c97bcf15ce4ff57a4c54ca126c10da",
-    "record_order": "기존 목록 순서를 보존하고 신규 경로만 뒤에 추가",
+    "mode": "explicit_source_bundle_commit_documents_only",
+    "previous_inventory_sha256": "d7635e5f7705771ea9bb5e5945abe4ca32121508d9a04ba4443e53e72d0a259b",
     "refreshed_paths": [
-      "01_개발문서/03_아키텍처/03_코드구조와_유지보수.md",
-      "01_개발문서/04_화면설계/20_설계스윕과_연구_화면.md",
-      "01_개발문서/04_화면설계/README.md",
-      "01_개발문서/05_기능설계/06_연구/01_명시적스윕과_실행계약.md",
-      "01_개발문서/05_기능설계/06_연구/README.md",
-      "01_개발문서/05_기능설계/README.md",
-      "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
-      "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
-      "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
-      "01_개발문서/07_검증/02_실행화면/15_연구후보_복소곡선.jpg",
-      "01_개발문서/07_검증/02_실행화면/16_연구설정_유형과변수.jpg",
-      "01_개발문서/07_검증/02_실행화면/17_연구설정_주파수와방사.jpg",
-      "01_개발문서/07_검증/02_실행화면/18_연구설정_실행예산.jpg",
-      "01_개발문서/07_검증/02_실행화면/19_연구목록과_완료후보.jpg",
-      "01_개발문서/07_검증/02_실행화면/20_연구결과_표본과단위.jpg",
-      "01_개발문서/07_검증/02_실행화면/21_연구결과_조건과미평가.jpg",
-      "01_개발문서/07_검증/02_실행화면/22_연구초안_폐기확인.jpg",
-      "01_개발문서/07_검증/02_실행화면/README.md",
-      "01_개발문서/07_검증/13_설계스윕과_연구_검증.md",
-      "01_개발문서/07_검증/14_설계스윕과_연구_실행기록.json",
+      "01_개발문서/03_아키텍처/README.md",
+      "01_개발문서/03_아키텍처/06_실행소스_묶음과_환경식별.md",
       "01_개발문서/07_검증/README.md",
-      "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
-      "01_개발문서/09_개발계획/03_개발완료_계획.md",
-      "01_개발문서/11_검토기록/06_문서검증_기록.json",
-      "Code/README.md",
-      "Code/ui/wxwidgets/README.md"
+      "01_개발문서/07_검증/15_실행소스_묶음_검증.md",
+      "01_개발문서/07_검증/16_실행소스_묶음_실행기록.json"
     ],
     "added_paths": [
-      "01_개발문서/04_화면설계/20_설계스윕과_연구_화면.md",
-      "01_개발문서/05_기능설계/06_연구/01_명시적스윕과_실행계약.md",
-      "01_개발문서/05_기능설계/06_연구/README.md",
-      "01_개발문서/07_검증/02_실행화면/15_연구후보_복소곡선.jpg",
-      "01_개발문서/07_검증/02_실행화면/16_연구설정_유형과변수.jpg",
-      "01_개발문서/07_검증/02_실행화면/17_연구설정_주파수와방사.jpg",
-      "01_개발문서/07_검증/02_실행화면/18_연구설정_실행예산.jpg",
-      "01_개발문서/07_검증/02_실행화면/19_연구목록과_완료후보.jpg",
-      "01_개발문서/07_검증/02_실행화면/20_연구결과_표본과단위.jpg",
-      "01_개발문서/07_검증/02_실행화면/21_연구결과_조건과미평가.jpg",
-      "01_개발문서/07_검증/02_실행화면/22_연구초안_폐기확인.jpg",
-      "01_개발문서/07_검증/13_설계스윕과_연구_검증.md",
-      "01_개발문서/07_검증/14_설계스윕과_연구_실행기록.json"
+      "01_개발문서/03_아키텍처/06_실행소스_묶음과_환경식별.md",
+      "01_개발문서/07_검증/15_실행소스_묶음_검증.md",
+      "01_개발문서/07_검증/16_실행소스_묶음_실행기록.json"
     ],
     "removed_paths": [],
     "preserved_reference_records": 3336,
     "preserved_existing_runtime_records": 41,
-    "preserved_other_records": 455,
-    "preservation_scope": "보존 record의 기존 분류/검토 수준/바이트/hash를 그대로 승계. 이번에 참고자료와 기존 runtime 파일을 재읽기/재해시하지 않음."
+    "preservation_scope": "참고자료/기존 runtime/변경하지 않은 문서 record를 그대로 승계. 해당 원문 재읽기/재해시 없음.",
+    "record_order": "기존 목록 순서를 보존하고 신규 경로만 뒤에 추가"
   }
 }

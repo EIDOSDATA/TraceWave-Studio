@@ -1,6 +1,7 @@
 """! @brief supervisor 소유권 gate 이후에만 openEMS를 로딩하는 격리 진입점이다."""
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 import sys
@@ -24,7 +25,21 @@ def main() -> int:
     gate, request = json.loads(gate_raw), json.loads(raw)
     if gate.get('schema') != 'rfad.wsl-start/0.1' or any(gate.get(key) != request.get(key) for key in ('run_id', 'nonce')):
         return 2
-    sys.path.insert(0, str(stage / 'src'))
+    if 'source_bundle' in request['runtime']:
+        # @brief 패키지 초기화보다 먼저 bootstrap hash와 전체 의존 소스를 확인한다.
+        relative = 'src/rfad/application/source_bundle.py'
+        record = next(item for item in request['runtime']['code_files'] if item['path'] == relative)
+        if type(record['bytes']) is not int or not 0 <= record['bytes'] <= 4 * 1024 * 1024:
+            return 2
+        with (stage / relative).open('rb') as stream:
+            bootstrap = stream.read(record['bytes'] + 1)
+        if len(bootstrap) != record['bytes'] or hashlib.sha256(bootstrap).hexdigest() != record['sha256']:
+            return 2
+        loader = {'__name__': '_rfad_source_bootstrap', '__file__': str(stage / relative)}
+        exec(compile(bootstrap, str(stage / relative), 'exec'), loader)
+        loader['install_guard'](stage, request['runtime']['source_bundle'], request['runtime']['code_files'])
+    else:
+        sys.path.insert(0, str(stage / 'src'))
     from rfad.adapters.solvers.openems.native import execute, write_json
     from rfad.domain.errors import ProjectError
 

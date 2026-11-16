@@ -92,6 +92,7 @@ def check_prepared_outputs(journal, captured, preparation, files):
     plan, mesh, consumption = captured["analysis_plan"], preparation["mesh_statistics"], preparation["consumption_report"]
     observed = preparation["runtime_identity"]
     if (observed.get("manifest_sha256") != captured["runtime"]["manifest_sha256"] or observed.get("code_files") != captured["runtime"]["code_files"]
+            or observed.get("source_bundle") != captured["runtime"].get("source_bundle")
             or observed.get("qt_found") is not False):
         raise ProjectError("E_HASH", "실제 준비 런타임이 고정한 식별과 다릅니다.")
     if plan["analysis_profile"] == PCB_PROFILE:
@@ -184,7 +185,8 @@ def check_solver_result(journal, job, result, files):
             or result.get("mesh_statistics") != captured["preparation"]["mesh_statistics"]):
         raise ProjectError("E_HASH", "정규화 결과의 출처 또는 단위가 계획과 다릅니다.")
     observed = provenance.get("runtime", {})
-    if observed.get("manifest_sha256") != captured["runtime"]["manifest_sha256"] or observed.get("code_files") != captured["runtime"]["code_files"] or observed.get("qt_found") is not False:
+    if (observed.get("manifest_sha256") != captured["runtime"]["manifest_sha256"] or observed.get("code_files") != captured["runtime"]["code_files"]
+            or observed.get("source_bundle") != captured["runtime"].get("source_bundle") or observed.get("qt_found") is not False):
         raise ProjectError("E_HASH", "결과 런타임 출처가 현재 실행과 다릅니다.")
     samples = result.get("samples", [])
     expected = captured["analysis_plan"]["case"]["frequency_hz"]

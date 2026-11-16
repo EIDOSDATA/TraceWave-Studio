@@ -19,7 +19,21 @@ def main() -> int:
     if request.get("schema") != "rfad.cad-worker/0.1":
         return 2
     root = Path(__file__).resolve().parent
-    sys.path.insert(0, str(root / "src"))
+    if "source_bundle" in request["runtime"]:
+        # @brief 제품 패키지를 import하기 전에 bootstrap 자체의 봉인부터 대조한다.
+        relative = "src/rfad/application/source_bundle.py"
+        record = next(item for item in request["runtime"]["code_files"] if item["path"] == relative)
+        if type(record["bytes"]) is not int or not 0 <= record["bytes"] <= 2 * 1024 * 1024:
+            return 2
+        with (root / relative).open("rb") as stream:
+            bootstrap = stream.read(record["bytes"] + 1)
+        if len(bootstrap) != record["bytes"] or hashlib.sha256(bootstrap).hexdigest() != record["sha256"]:
+            return 2
+        loader = {"__name__": "_rfad_source_bootstrap", "__file__": str(root / relative)}
+        exec(compile(bootstrap, str(root / relative), "exec"), loader)
+        loader["install_guard"](root, request["runtime"]["source_bundle"], request["runtime"]["code_files"])
+    else:
+        sys.path.insert(0, str(root / "src"))
     from rfad.application.canonical import canonical_bytes
     from rfad.application.cad_runtime import CadRuntime, file_hash
     from rfad.domain.errors import ProjectError
@@ -29,7 +43,7 @@ def main() -> int:
     exit_code = 0
     try:
         expected = request["runtime"]
-        if file_hash(Path(__file__)) != expected["entry_sha256"] or file_hash(Path(sys.executable)) != expected["python_sha256"] or CadRuntime.source_hash() != expected["source_sha256"]:
+        if file_hash(Path(__file__)) != expected["entry_sha256"] or file_hash(Path(sys.executable)) != expected["python_sha256"] or CadRuntime.source_hash(expected) != expected["source_sha256"]:
             raise ProjectError("E_VERSION", "worker의 실제 Python 또는 구현 hash가 실행 계획과 다릅니다.")
         runtime_raw = Path("runtime.json").read_bytes()
         if len(runtime_raw) > 128 * 1024 or hashlib.sha256(runtime_raw).hexdigest() != expected["manifest_sha256"]:

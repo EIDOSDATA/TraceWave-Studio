@@ -105,6 +105,7 @@ def verify_runtime(stage: Path, expected: dict) -> dict:
     require(len(raw) <= 1024 * 1024 and hashlib.sha256(raw).hexdigest() == expected.get('manifest_sha256'), '런타임 명세 봉인이 다릅니다.', 'E_HASH')
     runtime = json.loads(raw)
     require(runtime.get('schema') == 'rfad.openems-worker-runtime/0.1', '런타임 명세 버전을 지원하지 않습니다.', 'E_VERSION')
+    require(runtime.get('source_bundle') == expected.get('source_bundle'), '실행 소스 profile이 runtime 명세와 다릅니다.', 'E_HASH')
     code_files = expected.get('code_files', [])
     require(code_files and any(record['path'] == 'tools/openems_worker.py' for record in code_files), 'worker 구현 해시가 없습니다.', 'E_HASH')
     for record in code_files:
@@ -134,11 +135,14 @@ def verify_runtime(stage: Path, expected: dict) -> dict:
     require(CSXCAD.__version__ == '0.7.0' and openEMS.__version__ == '0.37.0', '로드된 solver 모듈 버전이 다릅니다.', 'E_VERSION')
     loaded = _validate_mapped(_mapped_files(), native_files)
     require(any('libopenEMS' in record['path'] for record in loaded), '실제 openEMS native 로딩이 확인되지 않았습니다.', 'E_VERSION')
-    return {'schema': 'rfad.openems-runtime-observation/0.1', 'python': platform.python_version(),
+    observation = {'schema': 'rfad.openems-runtime-observation/0.1', 'python': platform.python_version(),
             'python_executable': {'path': str(Path(sys.executable).resolve()), **file_identity(Path(sys.executable).resolve())},
             'packages': installed, 'manifest_sha256': expected['manifest_sha256'], 'code_files': code_files,
             'native_files': [{'path': path, **identity} for path, identity in native_files.items()],
             'loaded_native_files': loaded, 'qt_found': False}
+    if 'source_bundle' in expected:
+        observation['source_bundle'] = expected['source_bundle']
+    return observation
 
 
 def _validate_mapped(paths: list[Path], native_files: dict) -> list[dict]:

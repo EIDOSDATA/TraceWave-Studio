@@ -44,21 +44,27 @@ class CadSourceCaptureTests(unittest.TestCase):
             with patch("rfad.application.cad_runtime.CODE_ROOT", root):
                 self.make_runtime(root, False)
                 package = root / "src/rfad"
-                for index in range(MAX_WORKER_SOURCE_FILES - 2):
-                    (package / f"module_{index}.py").write_text("VALUE = 1\n", encoding="utf-8")
+                for index in range(MAX_WORKER_SOURCE_FILES - 3):
+                    following = f"from rfad import module_{index + 1}\n" if index < MAX_WORKER_SOURCE_FILES - 4 else ""
+                    (package / f"module_{index}.py").write_text(following + "VALUE = 1\n", encoding="utf-8")
+                (package / "worker_probe.py").write_text("from rfad import module_0\nVALUE = 'captured source'\n", encoding="utf-8")
                 def capture():
                     """! @brief 같은 호스트 설정에서 새 소스 묶음을 확인한다."""
                     return CadRuntime(Path(sys.executable), manifest=CODE_ROOT / "runtime_profiles/python-cad-windows-x64.json",
                                       entry=root / "original worker.py")
                 accepted = capture()
-                self.assertEqual(len(json.loads(accepted.source_bytes)), MAX_WORKER_SOURCE_FILES)
+                self.assertEqual(len(json.loads(accepted.source_bytes)), MAX_WORKER_SOURCE_FILES - 1)
+                self.assertEqual(len(accepted.identity["code_files"]), MAX_WORKER_SOURCE_FILES)
                 accepted.verify(accepted.identity)
                 extra = package / "extra.py"
                 extra.write_text("VALUE = 2\n", encoding="utf-8")
+                self.assertEqual(capture().identity, accepted.identity)
+                (package / "worker_probe.py").write_text("from rfad import module_0, extra\nVALUE = 'captured source'\n", encoding="utf-8")
                 with self.assertRaises(ProjectError) as count_error:
                     capture()
                 self.assertEqual(count_error.exception.code, "E_RESOURCE")
                 extra.unlink()
+                (package / "worker_probe.py").write_text("from rfad import module_0\nVALUE = 'captured source'\n", encoding="utf-8")
                 (package / "module_0.py").write_text("#" * (2 * 1024 * 1024), encoding="utf-8")
                 with self.assertRaises(ProjectError) as bytes_error:
                     capture()

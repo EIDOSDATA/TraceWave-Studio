@@ -271,7 +271,7 @@ class WslRuntime:
             if stat.S_ISDIR(info.st_mode) and not bool(getattr(info, "st_file_attributes", 0) & 0x400):
                 continue
             relative = path.relative_to(stage).as_posix()
-            allowed = (relative in {"request.json", "runtime.json", "tools/openems_worker.py"}
+            allowed = (relative in {"request.json", "runtime.json", "tools/openems_worker.py", "tools/wsl_supervisor.py"}
                        or relative.startswith("src/") and relative.endswith(".py")
                        or relative.startswith("input/"))
             if not allowed or not _regular(info):
@@ -311,6 +311,10 @@ class WslRuntime:
                         "readiness": readiness}
             payload = {**self.identity(), "host_stage": self._linux_path(stage), "run_id": run_id, "nonce": nonce,
                        "files": manifest, "timeout_seconds": timeout_seconds, "limits": limits}
+            request = json.loads((stage / "request.json").read_bytes())
+            runtime = request.get("runtime", {})
+            if "source_bundle" in runtime:
+                payload["source_identity"] = {key: runtime[key] for key in ("source_bundle", "code_files")}
         except ProjectError as error:
             error.details.update({"termination_confirmed": True, "outcome_unknown": False, "not_started": True})
             if cancel.is_set():

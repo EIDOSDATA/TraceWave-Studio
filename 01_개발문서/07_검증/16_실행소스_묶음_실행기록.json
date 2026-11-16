@@ -1,0 +1,4218 @@
+{
+  "schema": "rfad.source-bundle-verification/0.1",
+  "status": "passed_with_recorded_intermediate_test_errors",
+  "baseline_commit": "a256bf51f7b0959f814b6b524a123421827e2edf",
+  "recorded_at_utc": "2026-11-16T21:17:15.566381+00:00",
+  "scope": "개발 완료 계획 7번 선행 실행 의존 소스 묶음. GUI/방사/필드 신규 기능의 완료 기록이 아니다.",
+  "counts_policy": "실행별 재실행/중복 시험을 별도 보존하며 전체 통과 수로 합산하지 않는다.",
+  "source_freeze": "최종 bootstrap bounded read/동일 검증 bytes 실행 및 max_files 1..192 경계 보강 뒤 final_source 실행. 이후 제품 Python/worker 변경 없음.",
+  "owned_code_and_tests": [
+    {
+      "path": "Code/src/rfad/application/source_bundle.py",
+      "bytes": 19454,
+      "sha256": "72bc2966b6a2628314d6a0e9c938a1168e96d29e32d5dd68528960187a9ff696",
+      "file_modified_at_utc": "2026-11-16T21:05:30.354393+00:00"
+    },
+    {
+      "path": "Code/src/rfad/adapters/solvers/openems/native.py",
+      "bytes": 28361,
+      "sha256": "e30f52489a60b49e1f1f18853aa9b269594aad9799313ec2e6226e0e359a22f6",
+      "file_modified_at_utc": "2026-11-16T20:52:33.154991+00:00"
+    },
+    {
+      "path": "Code/src/rfad/application/cad_jobs.py",
+      "bytes": 22266,
+      "sha256": "05efab855f24baad9a179778caee7fd49b9b38e68564660fc9b56b3f19390567",
+      "file_modified_at_utc": "2026-11-16T20:52:33.139731+00:00"
+    },
+    {
+      "path": "Code/src/rfad/application/cad_runtime.py",
+      "bytes": 5146,
+      "sha256": "265eaa8acbb1570398ee394b1a4207ad4811eb4099814205c22fe372966e1625",
+      "file_modified_at_utc": "2026-11-16T20:49:10.754574+00:00"
+    },
+    {
+      "path": "Code/src/rfad/application/design_sweep_service.py",
+      "bytes": 29671,
+      "sha256": "6a3cca088d262e8430e95d4096420e5de2101d145854cbb93b88b5fff2cf388d",
+      "file_modified_at_utc": "2026-11-16T20:50:28.213315+00:00"
+    },
+    {
+      "path": "Code/src/rfad/application/solver.py",
+      "bytes": 19082,
+      "sha256": "f3a0961ebc0db853b91433f31feaa75a70ae0a547d77baa5c4e68dc51c93cb3a",
+      "file_modified_at_utc": "2026-11-16T20:50:28.210114+00:00"
+    },
+    {
+      "path": "Code/src/rfad/application/solver_artifacts.py",
+      "bytes": 16637,
+      "sha256": "ca7e12fa49e959516ddda770d14781753355838cb9b9ccf042de55a810cd4d8c",
+      "file_modified_at_utc": "2026-11-16T20:52:33.154991+00:00"
+    },
+    {
+      "path": "Code/src/rfad/application/solver_runtime.py",
+      "bytes": 5764,
+      "sha256": "b15612b4098bae6b85968bbb76daf8691548e93147bfe2491a47a8ea18eb4686",
+      "file_modified_at_utc": "2026-11-16T20:49:10.756576+00:00"
+    },
+    {
+      "path": "Code/src/rfad/application/wsl_process.py",
+      "bytes": 22043,
+      "sha256": "3761cd4b6c1abd185872178d120f861b508a85deae1968f3881e06cf3badf38a",
+      "file_modified_at_utc": "2026-11-16T20:52:33.156512+00:00"
+    },
+    {
+      "path": "Code/tools/cad_worker.py",
+      "bytes": 5480,
+      "sha256": "14eb1f2277bb57d7b36abcc7e12143b53b148134d4e5b512ceab37f7c799f112",
+      "file_modified_at_utc": "2026-11-16T21:05:30.356381+00:00"
+    },
+    {
+      "path": "Code/tools/openems_worker.py",
+      "bytes": 2820,
+      "sha256": "802ee38b046bb710c5ed3960f3b96563192e369e3844bdd009c7a7cb198a7636",
+      "file_modified_at_utc": "2026-11-16T21:05:30.356381+00:00"
+    },
+    {
+      "path": "Code/tools/wsl_supervisor.py",
+      "bytes": 31241,
+      "sha256": "4d8d12992636562a7294f3b4a70240401b816bc64002c691e1d1bf0bc65691c8",
+      "file_modified_at_utc": "2026-11-16T21:05:30.357380+00:00"
+    },
+    {
+      "path": "Code/tests/test_cad_source_capture.py",
+      "bytes": 10913,
+      "sha256": "0fcb7d8234d96ee84632c61f73802750b7c7e6875c3a393e10231b8c66e74151",
+      "file_modified_at_utc": "2026-11-16T20:54:00.538213+00:00"
+    },
+    {
+      "path": "Code/tests/test_design_sweep_service.py",
+      "bytes": 17040,
+      "sha256": "17471c32075d526e2ee0cf229def69aceb6ded791c57fe8d409286265a51965f",
+      "file_modified_at_utc": "2026-11-16T21:08:37.552379+00:00"
+    },
+    {
+      "path": "Code/tests/test_solver_jobs.py",
+      "bytes": 37688,
+      "sha256": "53a666088baa4052d80158676ce4abc3c461a0b3ff2142978df7597a42a8959e",
+      "file_modified_at_utc": "2026-11-16T20:54:00.538213+00:00"
+    },
+    {
+      "path": "Code/tests/test_source_bundle.py",
+      "bytes": 14878,
+      "sha256": "29221f8fedb7444bc4fe04d178e988313a14c404d5cb8728fbe3186b503b36c8",
+      "file_modified_at_utc": "2026-11-16T21:06:09.027722+00:00"
+    },
+    {
+      "path": "Code/tests/test_source_bundle_cad.py",
+      "bytes": 10700,
+      "sha256": "b189ebdafdf6218418d3914596a6d11adeb4cddbc0be218d0d9ca8d91f190edd",
+      "file_modified_at_utc": "2026-11-16T21:03:46.127590+00:00"
+    }
+  ],
+  "profiles": [
+    {
+      "descriptor": {
+        "schema": "rfad.source-bundle/0.1",
+        "profile": "rfad.source.cad/0.1",
+        "entry_points": [
+          "worker.py"
+        ],
+        "dynamic_imports": [],
+        "source_sha256": "f58caa07adb998f09106345e5c2e6ea22cb2479f339f20785b6a0e4840722ea5"
+      },
+      "logical_file_count": 33,
+      "source_bytes_sum": 226929,
+      "source_json_bytes": 240299,
+      "source_json_sha256": "43cbf5087e9fa63d021889fc6d86b87b3023fbf0c5cabaa76a83bbadb3178452",
+      "file_limit": 192,
+      "json_bytes_limit": 2097152,
+      "code_files": [
+        {
+          "path": "src/rfad/__init__.py",
+          "sha256": "637407b3c13a348c03d6a167d2a90e3703c4fc70a421cd9918075c0463d81097",
+          "bytes": 110
+        },
+        {
+          "path": "src/rfad/adapters/__init__.py",
+          "sha256": "e4be3b367495a970767105766bbd0895df057c4a53a3a39087bfe316171d0837",
+          "bytes": 102
+        },
+        {
+          "path": "src/rfad/adapters/cad/__init__.py",
+          "sha256": "031a455542eba8f6df8c996b243a3210041b80cbb40b04208f0c639469e3df83",
+          "bytes": 99
+        },
+        {
+          "path": "src/rfad/adapters/cad/bodies.py",
+          "sha256": "b47d8f1ef8952c121e2257400194af0aa639b577230759ac4aabd95dca7cd601",
+          "bytes": 10430
+        },
+        {
+          "path": "src/rfad/adapters/cad/display.py",
+          "sha256": "41f4e966ea731bf7d4da8f52022b4ce04f1d04360d5b843330fd58330eb6138b",
+          "bytes": 3502
+        },
+        {
+          "path": "src/rfad/adapters/cad/geometry.py",
+          "sha256": "590f44b8ce1bcabbdc6923047f9861d9129f0ba285a7575ed71ce35a64b3d6fb",
+          "bytes": 16889
+        },
+        {
+          "path": "src/rfad/adapters/cad/native.py",
+          "sha256": "6835af5657bf571b6d087ce1f40713731dec6f32289eac97f63ef040a9adc709",
+          "bytes": 7431
+        },
+        {
+          "path": "src/rfad/adapters/cad/physical.py",
+          "sha256": "a21d32fd366c578963474ad7026105e3a437127549ace146afbd293c83b33bc4",
+          "bytes": 7154
+        },
+        {
+          "path": "src/rfad/adapters/cad/step_io.py",
+          "sha256": "fd4ac53d02c291118464b233ddce8c556107a6ffe644a04b478a2b8851f9f924",
+          "bytes": 7708
+        },
+        {
+          "path": "src/rfad/application/__init__.py",
+          "sha256": "883e15b18f72a85626c6634d255886596dc1bf71ae64b8aebb9b5c32b3896bc7",
+          "bytes": 325
+        },
+        {
+          "path": "src/rfad/application/cad_runtime.py",
+          "sha256": "265eaa8acbb1570398ee394b1a4207ad4811eb4099814205c22fe372966e1625",
+          "bytes": 5146
+        },
+        {
+          "path": "src/rfad/application/canonical.py",
+          "sha256": "f3b263089ad802d6924aea481c46a890e9baa7297bb5daef659394b1ef2be420",
+          "bytes": 5534
+        },
+        {
+          "path": "src/rfad/application/display_mesh.py",
+          "sha256": "03e9906ed97890dc378108ebd3a94d7ec088ee467441e10379f1f0318077511d",
+          "bytes": 5287
+        },
+        {
+          "path": "src/rfad/application/source_bundle.py",
+          "sha256": "72bc2966b6a2628314d6a0e9c938a1168e96d29e32d5dd68528960187a9ff696",
+          "bytes": 19454
+        },
+        {
+          "path": "src/rfad/domain/__init__.py",
+          "sha256": "f7905c21d7293db23c8736b154cfa4e737b28788376ae2314c73e75259356e67",
+          "bytes": 239
+        },
+        {
+          "path": "src/rfad/domain/boundary_distance.py",
+          "sha256": "6324951d5428ac3fa52a4bfd4774020ced3865edde193fce0306b2622d6e093c",
+          "bytes": 7491
+        },
+        {
+          "path": "src/rfad/domain/check_connections.py",
+          "sha256": "0c16d7ae6d06637f9e70a91c6d87dc0e92c56893980dc7e0f4b8fc09872b96b5",
+          "bytes": 6489
+        },
+        {
+          "path": "src/rfad/domain/check_constraints.py",
+          "sha256": "b10fc8cfb79115efba67edb4658cb553638323488e42c4ccee58071f1b3c2b25",
+          "bytes": 4049
+        },
+        {
+          "path": "src/rfad/domain/check_geometry.py",
+          "sha256": "9138ff07281a3343eb5291e92824ace45639be2aa19f9d853c474eb8f1a2f647",
+          "bytes": 8932
+        },
+        {
+          "path": "src/rfad/domain/check_manufacturing.py",
+          "sha256": "556ff09bcd6f9ab3eca2e31472c8be6f9a3fa3d1e32b3a44fce3c31847a6779c",
+          "bytes": 8149
+        },
+        {
+          "path": "src/rfad/domain/check_report.py",
+          "sha256": "8bad8d680e70d3f0c8c3a45bd6bbb81fe99f4ab8fa6347797ce355569ba17277",
+          "bytes": 5000
+        },
+        {
+          "path": "src/rfad/domain/design.py",
+          "sha256": "90a6841228469c7f58ab2bfb7744dac98b733abb8183f848cf9e8c4a421b2ad2",
+          "bytes": 37899
+        },
+        {
+          "path": "src/rfad/domain/design_checks.py",
+          "sha256": "2da7ffddaeb329b71031d6cb2124f218bb6d0518b8545e69fd63c1eb8fbe80c0",
+          "bytes": 4638
+        },
+        {
+          "path": "src/rfad/domain/design_rules.py",
+          "sha256": "d1b07bae77ae70d286627ab22bc730dc284d8e53164a0aa7cd0acce0936c0dcb",
+          "bytes": 5866
+        },
+        {
+          "path": "src/rfad/domain/errors.py",
+          "sha256": "e8dc2d8e54fd71ca35af28d538c214687cdefeba035443aeeaee992cc55697d6",
+          "bytes": 1059
+        },
+        {
+          "path": "src/rfad/domain/material_models.py",
+          "sha256": "7447b0b5fedb971a31b1fd41f81219249a324e2d44da6fe2e7269a8efd1a2fa9",
+          "bytes": 1604
+        },
+        {
+          "path": "src/rfad/domain/object_names.py",
+          "sha256": "20fa7425ecf2edf7924c67ce4b33ee5daf358da077eddd7532fe1c34233ebab7",
+          "bytes": 4129
+        },
+        {
+          "path": "src/rfad/domain/physical_setup.py",
+          "sha256": "e2c89334deaad8abdcfbed18091534c6db7d445c572679fb915f9fe56b59ca32",
+          "bytes": 13890
+        },
+        {
+          "path": "src/rfad/domain/planar.py",
+          "sha256": "a5fb63c7bfb7f1813917404095b696ab6e70eb71d7f0059508dbae31024e5e3f",
+          "bytes": 8072
+        },
+        {
+          "path": "src/rfad/domain/resource_limits.py",
+          "sha256": "33768a724b610ab1c7b08b35fb6ebbe5a95a8685136778e86688e13154d9f2e0",
+          "bytes": 439
+        },
+        {
+          "path": "src/rfad/domain/target_constraints.py",
+          "sha256": "0d958d559e552d98e8d72c24a0ce113c53fe322dfcf3a2f226922b5eeaaf1234",
+          "bytes": 4864
+        },
+        {
+          "path": "src/rfad/domain/units.py",
+          "sha256": "2d14560523f4b9dd986639b15befda6541b88a2f429e8a4797bce642728c3fe4",
+          "bytes": 9469
+        },
+        {
+          "path": "worker.py",
+          "sha256": "14eb1f2277bb57d7b36abcc7e12143b53b148134d4e5b512ceab37f7c799f112",
+          "bytes": 5480
+        }
+      ]
+    },
+    {
+      "descriptor": {
+        "schema": "rfad.source-bundle/0.1",
+        "profile": "rfad.source.openems/0.1",
+        "entry_points": [
+          "tools/openems_worker.py",
+          "tools/wsl_supervisor.py"
+        ],
+        "dynamic_imports": [],
+        "source_sha256": "5e52534bca59bc0c525d21c745b3c4c359520b784aaa314eb9c2d3697639de4c"
+      },
+      "logical_file_count": 79,
+      "source_bytes_sum": 659241,
+      "source_json_bytes": 697347,
+      "source_json_sha256": "47395ff7d3eb7d6689ad97994b10c96338462dc2a0a3277f9bf297d906952e0b",
+      "file_limit": 192,
+      "json_bytes_limit": 4194304,
+      "code_files": [
+        {
+          "path": "src/rfad/__init__.py",
+          "sha256": "637407b3c13a348c03d6a167d2a90e3703c4fc70a421cd9918075c0463d81097",
+          "bytes": 110
+        },
+        {
+          "path": "src/rfad/adapters/__init__.py",
+          "sha256": "e4be3b367495a970767105766bbd0895df057c4a53a3a39087bfe316171d0837",
+          "bytes": 102
+        },
+        {
+          "path": "src/rfad/adapters/network_backend.py",
+          "sha256": "dfad29fdd64f92a7feb75e86a52e3f759edcf05022f85cc34e7fc476c8f424e3",
+          "bytes": 5815
+        },
+        {
+          "path": "src/rfad/adapters/solvers/__init__.py",
+          "sha256": "64a5e0f0c806546fe9b2dab2f2394a02b77fb76afd1ff88a0979157ddd96bf5a",
+          "bytes": 73
+        },
+        {
+          "path": "src/rfad/adapters/solvers/openems/__init__.py",
+          "sha256": "975618264c1614c71937b4baa15138f7aca694e4700ec4df2d8a67100ee90c61",
+          "bytes": 77
+        },
+        {
+          "path": "src/rfad/adapters/solvers/openems/native.py",
+          "sha256": "920efd2623b75caa66038105c5242a37400f9e10a7a25af7b538349cf8aa8b99",
+          "bytes": 27956
+        },
+        {
+          "path": "src/rfad/adapters/solvers/openems/pcb.py",
+          "sha256": "c3a5484bb40f90bcea96b7fa71024cbdde21c11d0a69441ef39dcfbc63c3354c",
+          "bytes": 17751
+        },
+        {
+          "path": "src/rfad/adapters/solvers/openems/pcb_absorption.py",
+          "sha256": "9a451172fc409608ca0e0cb3dcfb4dc888a5e86f6c6ecc3c91a544aa0d890a4a",
+          "bytes": 10911
+        },
+        {
+          "path": "src/rfad/adapters/solvers/openems/pcb_loss_box.py",
+          "sha256": "68eb188b299cde6ff4a16fa7dde12def63a727c2a4fa931508870189cb187e71",
+          "bytes": 2932
+        },
+        {
+          "path": "src/rfad/adapters/solvers/openems/pcb_loss_partition.py",
+          "sha256": "74e09acaa5862ebc9b0371506a0a6ab0e47c18eba1e04718671b21d84ec6db5c",
+          "bytes": 6813
+        },
+        {
+          "path": "src/rfad/adapters/solvers/openems/pcb_mesh.py",
+          "sha256": "7edf8206be603296ab8fa57b2377c61d22bb51a9b0e436db9cc7d9db94020130",
+          "bytes": 8774
+        },
+        {
+          "path": "src/rfad/adapters/solvers/openems/pcb_ports.py",
+          "sha256": "b100fbe0365c56d39c12a067982bae3b3f2d92fee0092fa378a2040b3fa4d6d6",
+          "bytes": 986
+        },
+        {
+          "path": "src/rfad/adapters/solvers/openems/pcb_radiation.py",
+          "sha256": "6fe7c1a493783b97dd53c48e0a0899db59bb985a8fd693df8e870710ea4b96f5",
+          "bytes": 3194
+        },
+        {
+          "path": "src/rfad/adapters/solvers/openems/reference.py",
+          "sha256": "e3bdb5aa463aa971a62cde5f466827b2423d895285dea595d2be81417f282951",
+          "bytes": 6517
+        },
+        {
+          "path": "src/rfad/application/__init__.py",
+          "sha256": "883e15b18f72a85626c6634d255886596dc1bf71ae64b8aebb9b5c32b3896bc7",
+          "bytes": 325
+        },
+        {
+          "path": "src/rfad/application/canonical.py",
+          "sha256": "f3b263089ad802d6924aea481c46a890e9baa7297bb5daef659394b1ef2be420",
+          "bytes": 5534
+        },
+        {
+          "path": "src/rfad/application/native_process.py",
+          "sha256": "5f1b625eee607ab5a21fe304827f89542bc5fdb7fd1ede2b89c469088497badf",
+          "bytes": 20662
+        },
+        {
+          "path": "src/rfad/application/pcb_compute.py",
+          "sha256": "dd51b5a5a46bf26c9b06f8a188212e9aca3f154e617e24dccab178b89f1123d7",
+          "bytes": 1296
+        },
+        {
+          "path": "src/rfad/application/pcb_contacts.py",
+          "sha256": "3a5eddd3f269712c07c40e5906c81be0095381f3af32bfaf495c89fa948aa595",
+          "bytes": 15097
+        },
+        {
+          "path": "src/rfad/application/pcb_geometry.py",
+          "sha256": "fcf37f157251bce8a71a78290c3ea0b97c1459c113598eb918b9e662c547eca1",
+          "bytes": 8841
+        },
+        {
+          "path": "src/rfad/application/pcb_loss_components.py",
+          "sha256": "3a7a7268ca61c03f19ea1bafe670b19a7fb3c4be506b96108ed02d4bc72f016a",
+          "bytes": 5451
+        },
+        {
+          "path": "src/rfad/application/pcb_mesh.py",
+          "sha256": "c24746e7c8baf930f4042d6cf5a75568dcd31ae61316221b15b5b57a769333eb",
+          "bytes": 12563
+        },
+        {
+          "path": "src/rfad/application/pcb_power.py",
+          "sha256": "ca57938496df3a945a4507b967ceff01e397a4ee0e7d9751beae37a64674b597",
+          "bytes": 8637
+        },
+        {
+          "path": "src/rfad/application/pcb_projection.py",
+          "sha256": "67554b2240e02cc884b724ede83de66557f2eee43d15635dfb3fd017e062bb77",
+          "bytes": 23172
+        },
+        {
+          "path": "src/rfad/application/pcb_radiation.py",
+          "sha256": "1255fb06d6e0a39de51a2aea909c8886d11a00aec466c9694eb75b9397d09b5b",
+          "bytes": 9177
+        },
+        {
+          "path": "src/rfad/application/pcb_results.py",
+          "sha256": "9bc532710db10249211a1641a48900d40ab12a223135349ae6fa25c34a95e159",
+          "bytes": 13089
+        },
+        {
+          "path": "src/rfad/application/pcb_solver.py",
+          "sha256": "a187bca2fc462e6cbca7c9bcb6bbea7d6f780f548c11eb00b15a68877447461e",
+          "bytes": 7696
+        },
+        {
+          "path": "src/rfad/application/physical_projection.py",
+          "sha256": "8ae87729fb1a4183e7e099d725147ff85621cd66880cfb103fa3eb30f478578c",
+          "bytes": 3302
+        },
+        {
+          "path": "src/rfad/application/radiation.py",
+          "sha256": "c8fe3b44d4e24ec7b4d2a8adf659030e16ebc56afa44842cc66f6b71e165a184",
+          "bytes": 2169
+        },
+        {
+          "path": "src/rfad/application/solver.py",
+          "sha256": "f3a0961ebc0db853b91433f31feaa75a70ae0a547d77baa5c4e68dc51c93cb3a",
+          "bytes": 19082
+        },
+        {
+          "path": "src/rfad/application/source_bundle.py",
+          "sha256": "72bc2966b6a2628314d6a0e9c938a1168e96d29e32d5dd68528960187a9ff696",
+          "bytes": 19454
+        },
+        {
+          "path": "src/rfad/domain/__init__.py",
+          "sha256": "f7905c21d7293db23c8736b154cfa4e737b28788376ae2314c73e75259356e67",
+          "bytes": 239
+        },
+        {
+          "path": "src/rfad/domain/boundary_distance.py",
+          "sha256": "6324951d5428ac3fa52a4bfd4774020ced3865edde193fce0306b2622d6e093c",
+          "bytes": 7491
+        },
+        {
+          "path": "src/rfad/domain/check_connections.py",
+          "sha256": "0c16d7ae6d06637f9e70a91c6d87dc0e92c56893980dc7e0f4b8fc09872b96b5",
+          "bytes": 6489
+        },
+        {
+          "path": "src/rfad/domain/check_constraints.py",
+          "sha256": "b10fc8cfb79115efba67edb4658cb553638323488e42c4ccee58071f1b3c2b25",
+          "bytes": 4049
+        },
+        {
+          "path": "src/rfad/domain/check_geometry.py",
+          "sha256": "9138ff07281a3343eb5291e92824ace45639be2aa19f9d853c474eb8f1a2f647",
+          "bytes": 8932
+        },
+        {
+          "path": "src/rfad/domain/check_manufacturing.py",
+          "sha256": "556ff09bcd6f9ab3eca2e31472c8be6f9a3fa3d1e32b3a44fce3c31847a6779c",
+          "bytes": 8149
+        },
+        {
+          "path": "src/rfad/domain/check_report.py",
+          "sha256": "8bad8d680e70d3f0c8c3a45bd6bbb81fe99f4ab8fa6347797ce355569ba17277",
+          "bytes": 5000
+        },
+        {
+          "path": "src/rfad/domain/design.py",
+          "sha256": "90a6841228469c7f58ab2bfb7744dac98b733abb8183f848cf9e8c4a421b2ad2",
+          "bytes": 37899
+        },
+        {
+          "path": "src/rfad/domain/design_checks.py",
+          "sha256": "2da7ffddaeb329b71031d6cb2124f218bb6d0518b8545e69fd63c1eb8fbe80c0",
+          "bytes": 4638
+        },
+        {
+          "path": "src/rfad/domain/design_rules.py",
+          "sha256": "d1b07bae77ae70d286627ab22bc730dc284d8e53164a0aa7cd0acce0936c0dcb",
+          "bytes": 5866
+        },
+        {
+          "path": "src/rfad/domain/errors.py",
+          "sha256": "e8dc2d8e54fd71ca35af28d538c214687cdefeba035443aeeaee992cc55697d6",
+          "bytes": 1059
+        },
+        {
+          "path": "src/rfad/domain/expressions.py",
+          "sha256": "60ea67477ab925614073a2231efa215cc96c48a0fcb7bbf25bc875949086c7c8",
+          "bytes": 20181
+        },
+        {
+          "path": "src/rfad/domain/layer_surface.py",
+          "sha256": "95e1d645ad8210c80ec7fb6ff3326e9fb38ba2fbb0aca3b3fc47f4272222623f",
+          "bytes": 1215
+        },
+        {
+          "path": "src/rfad/domain/literature_geometry.py",
+          "sha256": "b414dbfc04d4d2bf92d49d80e7375769e74282d78b9842dc7401c8e3ac9947a5",
+          "bytes": 2500
+        },
+        {
+          "path": "src/rfad/domain/material_models.py",
+          "sha256": "7447b0b5fedb971a31b1fd41f81219249a324e2d44da6fe2e7269a8efd1a2fa9",
+          "bytes": 1604
+        },
+        {
+          "path": "src/rfad/domain/network_circuit.py",
+          "sha256": "3d4499d07398819c0b5d9c728aa553813858e60ad67618254a992fec025cfe02",
+          "bytes": 10152
+        },
+        {
+          "path": "src/rfad/domain/network_data.py",
+          "sha256": "ecf136526dc5bbbd716b275ddfbdd2867407199a83733ecb71b6601ff33d3408",
+          "bytes": 9861
+        },
+        {
+          "path": "src/rfad/domain/network_library.py",
+          "sha256": "1b06f80bf57c73d65fa6c2d10434c9b7eb13025aece29ec2edee72e7b8f98b82",
+          "bytes": 8297
+        },
+        {
+          "path": "src/rfad/domain/network_transform.py",
+          "sha256": "ae8a44f66232e6956b204352eae527847c2a3fb808fa72e1bed8b2d8cfc05099",
+          "bytes": 5639
+        },
+        {
+          "path": "src/rfad/domain/object_names.py",
+          "sha256": "20fa7425ecf2edf7924c67ce4b33ee5daf358da077eddd7532fe1c34233ebab7",
+          "bytes": 4129
+        },
+        {
+          "path": "src/rfad/domain/parameter_graph.py",
+          "sha256": "3afa704b61fe6cce2f64d175df455e227604223eab90c71166f957d5f24e4b36",
+          "bytes": 5343
+        },
+        {
+          "path": "src/rfad/domain/pcb_evidence_pool.py",
+          "sha256": "8ad93e1638b3f5a343acee606ed75ffc581dc725072a31c26b60b3e90ec843ea",
+          "bytes": 3673
+        },
+        {
+          "path": "src/rfad/domain/pcb_selection.py",
+          "sha256": "2607f41e26d5a1623914486996e76ca9f69d031f1f074184bda658451e8665e9",
+          "bytes": 12252
+        },
+        {
+          "path": "src/rfad/domain/pcb_selection_command.py",
+          "sha256": "62c6cceefc63dc87cb75489edc6c48522a125155de70962d0b92051b92328742",
+          "bytes": 2800
+        },
+        {
+          "path": "src/rfad/domain/pcb_selection_evidence.py",
+          "sha256": "b017b5ecdc9dfc1aea5a0e6baf054600f7f5f6c7af580d2759455b5619572ab6",
+          "bytes": 10053
+        },
+        {
+          "path": "src/rfad/domain/physical_setup.py",
+          "sha256": "e2c89334deaad8abdcfbed18091534c6db7d445c572679fb915f9fe56b59ca32",
+          "bytes": 13890
+        },
+        {
+          "path": "src/rfad/domain/planar.py",
+          "sha256": "a5fb63c7bfb7f1813917404095b696ab6e70eb71d7f0059508dbae31024e5e3f",
+          "bytes": 8072
+        },
+        {
+          "path": "src/rfad/domain/precision_command.py",
+          "sha256": "ba6e84590440d6c8acc94c72cd72dbbc938c818ed6f8fae4a5fb321bf0e9c693",
+          "bytes": 9343
+        },
+        {
+          "path": "src/rfad/domain/precision_transform.py",
+          "sha256": "83615f8ccdbb27d0a65fab2fd5ea5f6986e024414332ff602333f871ea251162",
+          "bytes": 7248
+        },
+        {
+          "path": "src/rfad/domain/printed_geometry.py",
+          "sha256": "79c6ff64ac89c42dc36e1aa847889a0d5f857ed3ed4d72de35ab0c6efcb5f704",
+          "bytes": 2897
+        },
+        {
+          "path": "src/rfad/domain/project.py",
+          "sha256": "350746c130e2c0844eb816845e07167f9b83282afc73f83f9596a95c51c369cc",
+          "bytes": 21504
+        },
+        {
+          "path": "src/rfad/domain/resource_limits.py",
+          "sha256": "367bd28fe19ef290a8ebde2ad3c413b3e24b79c7c7f396a149dddc1247fa0141",
+          "bytes": 428
+        },
+        {
+          "path": "src/rfad/domain/target_constraints.py",
+          "sha256": "0d958d559e552d98e8d72c24a0ce113c53fe322dfcf3a2f226922b5eeaaf1234",
+          "bytes": 4864
+        },
+        {
+          "path": "src/rfad/domain/targets.py",
+          "sha256": "57bec9e36e86f092d0103a87e6f5f0ebb288d41a82af80f4bb34ac11f8fa61f0",
+          "bytes": 11891
+        },
+        {
+          "path": "src/rfad/domain/template_command.py",
+          "sha256": "b2038a0d3b2166a01109f85434db0c6a8a167817f84d33456e06d5842d6713a4",
+          "bytes": 4307
+        },
+        {
+          "path": "src/rfad/domain/template_geometry.py",
+          "sha256": "1d50e47f04979140b5479fd0d48aa7cee798306a494e41aa85e8dd0d6ac89705",
+          "bytes": 18368
+        },
+        {
+          "path": "src/rfad/domain/template_inputs.py",
+          "sha256": "96f3b72e7ca300a919787f83a518a20c8a530c992993d44f710a958aa019e815",
+          "bytes": 2507
+        },
+        {
+          "path": "src/rfad/domain/template_instance.py",
+          "sha256": "797ff06c39c8f70dcf33e346fc661c0d07c93212dc7eb88b252f83dd82617abd",
+          "bytes": 11946
+        },
+        {
+          "path": "src/rfad/domain/template_ports.py",
+          "sha256": "4bc56f5cca0a877a9118904826a3ba4e5aaa7294117d7abff0d0a6da94770578",
+          "bytes": 8469
+        },
+        {
+          "path": "src/rfad/domain/template_provenance.py",
+          "sha256": "d75a63d40120226307f0edf16f0c496ed4aab09810d20e930ea0a9e039592096",
+          "bytes": 1848
+        },
+        {
+          "path": "src/rfad/domain/template_seeds.py",
+          "sha256": "ee31b55454863ae902cc195739f03bf0bbcd36abe976ddd803e734ef8ade7b37",
+          "bytes": 3699
+        },
+        {
+          "path": "src/rfad/domain/units.py",
+          "sha256": "2d14560523f4b9dd986639b15befda6541b88a2f429e8a4797bce642728c3fe4",
+          "bytes": 9469
+        },
+        {
+          "path": "src/rfad/templates/__init__.py",
+          "sha256": "86220e3976b4ff63dad9ac02ba4f1f8c209ec672491169e8edd5dd7e3be80863",
+          "bytes": 97
+        },
+        {
+          "path": "src/rfad/templates/cards.py",
+          "sha256": "9bccfb2c7ebccbf89eae0e8a93c82132b4b2cbd86109abe4b40e97033d6d9516",
+          "bytes": 9461
+        },
+        {
+          "path": "src/rfad/templates/g031.py",
+          "sha256": "53e0d9ea1c222caf2500cec355c8e4728ebec8fb1fb2ae83fe7cc6343bfbff69",
+          "bytes": 10077
+        },
+        {
+          "path": "src/rfad/templates/printed_references.py",
+          "sha256": "ffb1cdf2cb7de0623e3cad89935d375199b1c68b19afe67c21b8b0928510f5d5",
+          "bytes": 9727
+        },
+        {
+          "path": "tools/openems_worker.py",
+          "sha256": "802ee38b046bb710c5ed3960f3b96563192e369e3844bdd009c7a7cb198a7636",
+          "bytes": 2820
+        },
+        {
+          "path": "tools/wsl_supervisor.py",
+          "sha256": "4d8d12992636562a7294f3b4a70240401b816bc64002c691e1d1bf0bc65691c8",
+          "bytes": 31241
+        }
+      ]
+    },
+    {
+      "descriptor": {
+        "schema": "rfad.source-bundle/0.1",
+        "profile": "rfad.source.host-calculation/0.1",
+        "entry_points": [
+          "src/rfad/application/rpc.py",
+          "src/rfad/application/projects.py",
+          "src/rfad/application/design_sweep_service.py",
+          "src/rfad/application/design_sweep_runner.py",
+          "tools/wsl_supervisor.py"
+        ],
+        "dynamic_imports": [
+          "src/rfad/adapters/network_hdf5.py:h5py",
+          "src/rfad/adapters/network_hdf5.py:numpy"
+        ],
+        "source_sha256": "3d43f517752097172ddbb4327d5be1a2dfebfc534f71bbc641a62a6144620155"
+      },
+      "logical_file_count": 160,
+      "source_bytes_sum": 1440673,
+      "source_json_bytes": 1529602,
+      "source_json_sha256": "607af17a8e3f5d3f9cb16f67cb42a2d98ec78fb145ee232d6c8f466a8a3c2195",
+      "file_limit": 192,
+      "json_bytes_limit": 4194304,
+      "code_files": [
+        {
+          "path": "src/rfad/__init__.py",
+          "sha256": "637407b3c13a348c03d6a167d2a90e3703c4fc70a421cd9918075c0463d81097",
+          "bytes": 110
+        },
+        {
+          "path": "src/rfad/adapters/__init__.py",
+          "sha256": "e4be3b367495a970767105766bbd0895df057c4a53a3a39087bfe316171d0837",
+          "bytes": 102
+        },
+        {
+          "path": "src/rfad/adapters/network_backend.py",
+          "sha256": "dfad29fdd64f92a7feb75e86a52e3f759edcf05022f85cc34e7fc476c8f424e3",
+          "bytes": 5815
+        },
+        {
+          "path": "src/rfad/adapters/network_csv.py",
+          "sha256": "c2066d43aa9b44a37f6fceb1af5926269dd35be742656a0c26666f13b5496cb5",
+          "bytes": 8362
+        },
+        {
+          "path": "src/rfad/adapters/network_files.py",
+          "sha256": "28fc0577d8eb718bbb357214f597abb31a34522d7e19be8faa124a0db1be54ef",
+          "bytes": 1505
+        },
+        {
+          "path": "src/rfad/adapters/network_hdf5.py",
+          "sha256": "d557858c01143e87549975542cc2a7e9ac67b63acec0853c3d38f98eb2e6aa75",
+          "bytes": 10587
+        },
+        {
+          "path": "src/rfad/adapters/network_text.py",
+          "sha256": "64b6bae3747aad6731b869754710ba92a1dff89afcd46d9e8a0621fb419d36a9",
+          "bytes": 6347
+        },
+        {
+          "path": "src/rfad/adapters/network_touchstone.py",
+          "sha256": "828f86f0b317b59eb79b7fc220c9906b31da9ed2e77351a3f103e020bfe31afe",
+          "bytes": 11727
+        },
+        {
+          "path": "src/rfad/adapters/planar_backend.py",
+          "sha256": "15ccaedfe3f0d5d13aa1ca8a34a3c8dfbc6b89b82825fccc60273eef67c442e1",
+          "bytes": 7293
+        },
+        {
+          "path": "src/rfad/adapters/solvers/__init__.py",
+          "sha256": "64a5e0f0c806546fe9b2dab2f2394a02b77fb76afd1ff88a0979157ddd96bf5a",
+          "bytes": 73
+        },
+        {
+          "path": "src/rfad/adapters/solvers/openems/__init__.py",
+          "sha256": "975618264c1614c71937b4baa15138f7aca694e4700ec4df2d8a67100ee90c61",
+          "bytes": 77
+        },
+        {
+          "path": "src/rfad/adapters/solvers/openems/reference.py",
+          "sha256": "e3bdb5aa463aa971a62cde5f466827b2423d895285dea595d2be81417f282951",
+          "bytes": 6517
+        },
+        {
+          "path": "src/rfad/application/__init__.py",
+          "sha256": "883e15b18f72a85626c6634d255886596dc1bf71ae64b8aebb9b5c32b3896bc7",
+          "bytes": 325
+        },
+        {
+          "path": "src/rfad/application/cad.py",
+          "sha256": "62d5daea5d00a94ee55c74de3cc3b74b450deaa0e2f6b9377754ad71b91ccdb6",
+          "bytes": 16665
+        },
+        {
+          "path": "src/rfad/application/cad_artifacts.py",
+          "sha256": "f60086f8b18ddf8395adda7831e3393162adae5b3e4b8e7b6ab32bcdb6641766",
+          "bytes": 6733
+        },
+        {
+          "path": "src/rfad/application/cad_jobs.py",
+          "sha256": "05efab855f24baad9a179778caee7fd49b9b38e68564660fc9b56b3f19390567",
+          "bytes": 22266
+        },
+        {
+          "path": "src/rfad/application/cad_runtime.py",
+          "sha256": "265eaa8acbb1570398ee394b1a4207ad4811eb4099814205c22fe372966e1625",
+          "bytes": 5146
+        },
+        {
+          "path": "src/rfad/application/canonical.py",
+          "sha256": "f3b263089ad802d6924aea481c46a890e9baa7297bb5daef659394b1ef2be420",
+          "bytes": 5534
+        },
+        {
+          "path": "src/rfad/application/canvas.py",
+          "sha256": "02f4e24f1d95c9cde57075fee9a84edf77adc7aaf9bf39210d1d659e49e06d7a",
+          "bytes": 23425
+        },
+        {
+          "path": "src/rfad/application/catalog_api.py",
+          "sha256": "7be29a5e0e924fa591e0f9c2198649b05aeca0c789f518048969e9431266ccad",
+          "bytes": 4129
+        },
+        {
+          "path": "src/rfad/application/convergence.py",
+          "sha256": "7edef92292cfb5dc5fea84e7d5d474b43626477ebe20d498adde6969c376d9f1",
+          "bytes": 21100
+        },
+        {
+          "path": "src/rfad/application/design_rule_forms.py",
+          "sha256": "375a07bd10b112111e65a2064c81f7dcacebac5fd4c1261008dd2926da4646bf",
+          "bytes": 6032
+        },
+        {
+          "path": "src/rfad/application/design_rule_service.py",
+          "sha256": "2346accc2232f0f224c89d6840ebddee1299af18577e7cc886e9a25379db7f84",
+          "bytes": 8218
+        },
+        {
+          "path": "src/rfad/application/design_rule_values.py",
+          "sha256": "31c82a422749fe335a9af3dc9ade3c5b429cde3d7438784b539d3414fb2c4fb9",
+          "bytes": 3856
+        },
+        {
+          "path": "src/rfad/application/design_sweep_runner.py",
+          "sha256": "9a2ec366dbb5d9de553713c9d5b7e60ef3c0fd0c03dca3dadb30a8e43698a0d6",
+          "bytes": 28549
+        },
+        {
+          "path": "src/rfad/application/design_sweep_service.py",
+          "sha256": "6a3cca088d262e8430e95d4096420e5de2101d145854cbb93b88b5fff2cf388d",
+          "bytes": 29671
+        },
+        {
+          "path": "src/rfad/application/design_sweep_store.py",
+          "sha256": "67a1394941781c46bc234b428575a264e5df92007cb663f67e88e44dea572489",
+          "bytes": 8484
+        },
+        {
+          "path": "src/rfad/application/display_mesh.py",
+          "sha256": "03e9906ed97890dc378108ebd3a94d7ec088ee467441e10379f1f0318077511d",
+          "bytes": 5287
+        },
+        {
+          "path": "src/rfad/application/editor.py",
+          "sha256": "850d3a418d4b7ceb9b3e96568d53cebf52903f62be65b705cf60fa020bb47666",
+          "bytes": 30979
+        },
+        {
+          "path": "src/rfad/application/job_state.py",
+          "sha256": "cefaff8cb314d8e023b7abf89bd9a72ceb67bcf6515f92861dfc5746a47da142",
+          "bytes": 2384
+        },
+        {
+          "path": "src/rfad/application/native_process.py",
+          "sha256": "5f1b625eee607ab5a21fe304827f89542bc5fdb7fd1ede2b89c469088497badf",
+          "bytes": 20662
+        },
+        {
+          "path": "src/rfad/application/network_candidates.py",
+          "sha256": "b05d59798c1763cd15fdf22fc66033c1e71e7281f4326678751b7fae6ec0d6b9",
+          "bytes": 12181
+        },
+        {
+          "path": "src/rfad/application/network_compare.py",
+          "sha256": "582f447bad9658bc4ce1725455ebc275f1049fa5836f657cf2d64c285790cb1c",
+          "bytes": 4342
+        },
+        {
+          "path": "src/rfad/application/network_forms.py",
+          "sha256": "f15462804aba16b03258a008621370b501149c293457503f593d783e98bc8b3f",
+          "bytes": 4064
+        },
+        {
+          "path": "src/rfad/application/network_records.py",
+          "sha256": "a8fbbbec0529e02ba83fc7d5414bd41ced8e3056f002e11b402eed7074cbcd35",
+          "bytes": 8176
+        },
+        {
+          "path": "src/rfad/application/network_service.py",
+          "sha256": "0275acb3f92d4109bc8e687e95a419ba6380093ec208fa1bd6e9dbd3c8fff8d6",
+          "bytes": 14205
+        },
+        {
+          "path": "src/rfad/application/network_solver_import.py",
+          "sha256": "957ea911bac4d1e2ec5e215b9762dc85013ef02b560878c103707fd1bcdef366",
+          "bytes": 4858
+        },
+        {
+          "path": "src/rfad/application/pcb_compute.py",
+          "sha256": "dd51b5a5a46bf26c9b06f8a188212e9aca3f154e617e24dccab178b89f1123d7",
+          "bytes": 1296
+        },
+        {
+          "path": "src/rfad/application/pcb_contacts.py",
+          "sha256": "3a5eddd3f269712c07c40e5906c81be0095381f3af32bfaf495c89fa948aa595",
+          "bytes": 15097
+        },
+        {
+          "path": "src/rfad/application/pcb_geometry.py",
+          "sha256": "fcf37f157251bce8a71a78290c3ea0b97c1459c113598eb918b9e662c547eca1",
+          "bytes": 8841
+        },
+        {
+          "path": "src/rfad/application/pcb_loss_components.py",
+          "sha256": "3a7a7268ca61c03f19ea1bafe670b19a7fb3c4be506b96108ed02d4bc72f016a",
+          "bytes": 5451
+        },
+        {
+          "path": "src/rfad/application/pcb_loss_convergence.py",
+          "sha256": "144135b483f010b85a2ea2fae70f464449ad927b620c689b861f26ca1934a625",
+          "bytes": 4905
+        },
+        {
+          "path": "src/rfad/application/pcb_mesh.py",
+          "sha256": "c24746e7c8baf930f4042d6cf5a75568dcd31ae61316221b15b5b57a769333eb",
+          "bytes": 12563
+        },
+        {
+          "path": "src/rfad/application/pcb_power.py",
+          "sha256": "ca57938496df3a945a4507b967ceff01e397a4ee0e7d9751beae37a64674b597",
+          "bytes": 8637
+        },
+        {
+          "path": "src/rfad/application/pcb_projection.py",
+          "sha256": "67554b2240e02cc884b724ede83de66557f2eee43d15635dfb3fd017e062bb77",
+          "bytes": 23172
+        },
+        {
+          "path": "src/rfad/application/pcb_radiation.py",
+          "sha256": "1255fb06d6e0a39de51a2aea909c8886d11a00aec466c9694eb75b9397d09b5b",
+          "bytes": 9177
+        },
+        {
+          "path": "src/rfad/application/pcb_results.py",
+          "sha256": "9bc532710db10249211a1641a48900d40ab12a223135349ae6fa25c34a95e159",
+          "bytes": 13089
+        },
+        {
+          "path": "src/rfad/application/pcb_selection.py",
+          "sha256": "1c0dbc49c0ddd11f2255c680eea5477080b262dfd5a347463fc6d071a7df9cf8",
+          "bytes": 8695
+        },
+        {
+          "path": "src/rfad/application/pcb_selection_build.py",
+          "sha256": "3cdb2388b936294cbfe604552763006c6dbe8005dc9df89a00db8f29e283c974",
+          "bytes": 5744
+        },
+        {
+          "path": "src/rfad/application/pcb_selection_context.py",
+          "sha256": "fbc11df1836d434561e35b94175ad38f8d812614baf4527759f9a9cae8034813",
+          "bytes": 3029
+        },
+        {
+          "path": "src/rfad/application/pcb_selection_contract.py",
+          "sha256": "4a9552fed1cc7aa483e965107d8373cebc6f1000541452117be252b162422d84",
+          "bytes": 5764
+        },
+        {
+          "path": "src/rfad/application/pcb_selection_layers.py",
+          "sha256": "dc572a76f534ac39163083854451e69d6b879ee74c9ad294322de078e9741294",
+          "bytes": 8104
+        },
+        {
+          "path": "src/rfad/application/pcb_selection_review.py",
+          "sha256": "fc6d8df7b412a263e2ac45646cbef60a689e5ad1e521ac7d6a13452c3a58485c",
+          "bytes": 7534
+        },
+        {
+          "path": "src/rfad/application/pcb_solver.py",
+          "sha256": "a187bca2fc462e6cbca7c9bcb6bbea7d6f780f548c11eb00b15a68877447461e",
+          "bytes": 7696
+        },
+        {
+          "path": "src/rfad/application/physical_projection.py",
+          "sha256": "8ae87729fb1a4183e7e099d725147ff85621cd66880cfb103fa3eb30f478578c",
+          "bytes": 3302
+        },
+        {
+          "path": "src/rfad/application/physical_setup_service.py",
+          "sha256": "19f686692494ca3860ebece608d4ec254258b440064072e34edcbe3e89e018b3",
+          "bytes": 17298
+        },
+        {
+          "path": "src/rfad/application/precision_candidates.py",
+          "sha256": "39f283b2223fbd4a53f2fd746072f82b82d679e572d088a2becfe827dbc5a29e",
+          "bytes": 9081
+        },
+        {
+          "path": "src/rfad/application/precision_service.py",
+          "sha256": "e24fcb56676b3c8aafa5b252f7af1c772d8c18ce9a5b48221b1f76b5f69a00ec",
+          "bytes": 12535
+        },
+        {
+          "path": "src/rfad/application/project_contract.py",
+          "sha256": "86f26c1d85e8bbd5bbabf16e86639ef254a3246b925ff2786de12e94fedbb6ed",
+          "bytes": 5026
+        },
+        {
+          "path": "src/rfad/application/project_history.py",
+          "sha256": "e142d186417a3ea0ee50afcbb7a9630c964472791a33a4f8e3b28d1ecc1518f4",
+          "bytes": 7356
+        },
+        {
+          "path": "src/rfad/application/project_operations.py",
+          "sha256": "0483f8c600c698a538d5efcd88e39b59d368f6bda83edbd588179b2c2070f32e",
+          "bytes": 7845
+        },
+        {
+          "path": "src/rfad/application/project_repository.py",
+          "sha256": "f70a2541e1519c56fa93d8f1d43dfab2d41e75081df7cfcbbbe382325ac7e179",
+          "bytes": 2864
+        },
+        {
+          "path": "src/rfad/application/project_studies.py",
+          "sha256": "9359d4cfdbd89aa49f7a2181e94fbb0d1675931b1dc9449fba0c7ba1259be9d1",
+          "bytes": 8903
+        },
+        {
+          "path": "src/rfad/application/project_study_commands.py",
+          "sha256": "654dc052a2742909c619013a6c5012077176dfb83185341f049e555e8cdbb74f",
+          "bytes": 6683
+        },
+        {
+          "path": "src/rfad/application/project_study_contract.py",
+          "sha256": "6b017b2b24bf23afba6e2474c4ae4059ae4e1628a3a22d7a977f703f686220b1",
+          "bytes": 5621
+        },
+        {
+          "path": "src/rfad/application/project_study_results.py",
+          "sha256": "2e9315f7c42353a25f954fd428fadc5eefa3d79054948a9c5b73dc22e00c0b55",
+          "bytes": 7554
+        },
+        {
+          "path": "src/rfad/application/projects.py",
+          "sha256": "d4f36cd23879ee406a28595ac14383b9ee18f9e281c6c8f8c19f9374d5ac2e65",
+          "bytes": 25690
+        },
+        {
+          "path": "src/rfad/application/radiation.py",
+          "sha256": "c8fe3b44d4e24ec7b4d2a8adf659030e16ebc56afa44842cc66f6b71e165a184",
+          "bytes": 2169
+        },
+        {
+          "path": "src/rfad/application/radiation_comparison.py",
+          "sha256": "0aa7e258f41a82a74e3af3d17ec1706582e000a71c5fc23926a6ad006c8a5e1c",
+          "bytes": 7678
+        },
+        {
+          "path": "src/rfad/application/radiation_queries.py",
+          "sha256": "5889cd01230439d7650d7f9a5dccfafbb9a3e84d816709a13e21971f7aa158aa",
+          "bytes": 3827
+        },
+        {
+          "path": "src/rfad/application/radiation_study.py",
+          "sha256": "36e4f7944c57db51af7c037fe4498aea160030d94afd2c9968fca72a55f9993c",
+          "bytes": 5443
+        },
+        {
+          "path": "src/rfad/application/radiation_study_guards.py",
+          "sha256": "6cd9a14a488e672d164ed8301486b817c3fd1e221da41fba19cd9eb99cac14db",
+          "bytes": 3505
+        },
+        {
+          "path": "src/rfad/application/request_ledger.py",
+          "sha256": "59bfcdedaa6a5bbca8f3437a1b8e19477f91dfc4024f3c672d75a705d0355e02",
+          "bytes": 4858
+        },
+        {
+          "path": "src/rfad/application/rpc.py",
+          "sha256": "b4df6fce6682ffbba7f72e03314061341036bd6bf4f554dbdfd2150161111f16",
+          "bytes": 26957
+        },
+        {
+          "path": "src/rfad/application/solver.py",
+          "sha256": "f3a0961ebc0db853b91433f31feaa75a70ae0a547d77baa5c4e68dc51c93cb3a",
+          "bytes": 19082
+        },
+        {
+          "path": "src/rfad/application/solver_artifacts.py",
+          "sha256": "ca7e12fa49e959516ddda770d14781753355838cb9b9ccf042de55a810cd4d8c",
+          "bytes": 16637
+        },
+        {
+          "path": "src/rfad/application/solver_capture.py",
+          "sha256": "6bf4f7038c5ff6bd7712b11b2ce9fb65253d4870ca9a25d2ec04c5c5bb2e2ff8",
+          "bytes": 6078
+        },
+        {
+          "path": "src/rfad/application/solver_jobs.py",
+          "sha256": "b62c4060cb22008e5bc8fe9534a27d415c5347736f178bf1d6df0331da42af85",
+          "bytes": 26096
+        },
+        {
+          "path": "src/rfad/application/solver_queries.py",
+          "sha256": "8b9f63d88447084e4384f2ac4e47543893a070b8b780ee4eafe85db625f52905",
+          "bytes": 5802
+        },
+        {
+          "path": "src/rfad/application/solver_requests.py",
+          "sha256": "fb369b043366e6986f1143e10113c7a0b894606561617c2291f94af747989196",
+          "bytes": 3935
+        },
+        {
+          "path": "src/rfad/application/solver_runtime.py",
+          "sha256": "b15612b4098bae6b85968bbb76daf8691548e93147bfe2491a47a8ea18eb4686",
+          "bytes": 5764
+        },
+        {
+          "path": "src/rfad/application/source_bundle.py",
+          "sha256": "72bc2966b6a2628314d6a0e9c938a1168e96d29e32d5dd68528960187a9ff696",
+          "bytes": 19454
+        },
+        {
+          "path": "src/rfad/application/target_editor.py",
+          "sha256": "364be24d20edc9424e91e327abd05f34858fe19e6ce6b930bd49c6fe4a8e4b39",
+          "bytes": 7746
+        },
+        {
+          "path": "src/rfad/application/target_editor_fields.py",
+          "sha256": "564af630d8a0806cdbc90a1fbf79c800f36be8a502f89583ad4d3306dcfc1c34",
+          "bytes": 7759
+        },
+        {
+          "path": "src/rfad/application/target_editor_values.py",
+          "sha256": "46be42aac951311cb605e17e356f2d3642b1b073822141a2db7eee14fbc73e2f",
+          "bytes": 9183
+        },
+        {
+          "path": "src/rfad/application/template_candidates.py",
+          "sha256": "21e98e48739b349aa78b1436cda3312b7f0fdfbe1caaaaf1d4eee2f7d092c4aa",
+          "bytes": 13351
+        },
+        {
+          "path": "src/rfad/application/wsl_process.py",
+          "sha256": "3761cd4b6c1abd185872178d120f861b508a85deae1968f3881e06cf3badf38a",
+          "bytes": 22043
+        },
+        {
+          "path": "src/rfad/catalog/__init__.py",
+          "sha256": "f493ee69507a2eeef854f4cdbc3bfd482829ab5b34338743b71c84cb807b7de8",
+          "bytes": 116
+        },
+        {
+          "path": "src/rfad/catalog/material_selection.py",
+          "sha256": "2f3eedf37db13b7132d42b2e3d0fbca190b08f644d4ab21f2238e65e434d7036",
+          "bytes": 10360
+        },
+        {
+          "path": "src/rfad/catalog/models.py",
+          "sha256": "30f285ea3bc597d35fd72a3e200170c862522f240dc3fa0c70f73d62f216961b",
+          "bytes": 3340
+        },
+        {
+          "path": "src/rfad/catalog/query.py",
+          "sha256": "06e567696122f285083d8f772ef53abf2f0c429f8d192d003d90d478ac461a24",
+          "bytes": 8214
+        },
+        {
+          "path": "src/rfad/catalog/repository.py",
+          "sha256": "671d6c25ea6bdfa0fe895d390948c8a04fbb87473e737e55938191e7474a7206",
+          "bytes": 18240
+        },
+        {
+          "path": "src/rfad/catalog/review.py",
+          "sha256": "71a7bc5883805428f01798bcb734055cec7da6e9e6bd29ff775c8007d176b1ff",
+          "bytes": 4959
+        },
+        {
+          "path": "src/rfad/catalog/selection_reader.py",
+          "sha256": "e5ad72c0eb5a5852852a7be33230d8bac9dfda25ed121df9929483198bfe2d2d",
+          "bytes": 15074
+        },
+        {
+          "path": "src/rfad/catalog/selection_rules.py",
+          "sha256": "37765b18688473294ebf92483c85382ccf2c61124e53eb7edcc50519557bae52",
+          "bytes": 2956
+        },
+        {
+          "path": "src/rfad/catalog/service.py",
+          "sha256": "2eca3ffec08fa28db2dfb16c05bcdc0013ee959529eb77a9dc23d3a29e4efbe3",
+          "bytes": 7525
+        },
+        {
+          "path": "src/rfad/catalog/source.py",
+          "sha256": "fca01aad58763398caf269f4ba1ed81a0100a20ba9cde89a0f3a3c7742906a21",
+          "bytes": 13011
+        },
+        {
+          "path": "src/rfad/catalog/stackup_draft.py",
+          "sha256": "5287aa8998194bab02ead2b3a488e192d065f560fdf77462e2f7bd0e5d62a073",
+          "bytes": 4466
+        },
+        {
+          "path": "src/rfad/catalog/stackup_draft_common.py",
+          "sha256": "8e188553f62f111f1539a560388a4756f494d0b933de40a667c77095d4de32c4",
+          "bytes": 5533
+        },
+        {
+          "path": "src/rfad/catalog/stackup_draft_jlc.py",
+          "sha256": "ff554c07fbc41db3c87cbbf3d5b79bfab7c6722b29b21d336920ad99cba64eb2",
+          "bytes": 4478
+        },
+        {
+          "path": "src/rfad/catalog/stackup_draft_jlc_evidence.py",
+          "sha256": "a5ae02821a305a206442a0b3515808ad9b782f681b883df15f08fd74cc1c026c",
+          "bytes": 4801
+        },
+        {
+          "path": "src/rfad/catalog/stackup_draft_pcbway.py",
+          "sha256": "0e7ab15707fc1a2bee8b4baae7ca835c20eae68526ce26b50c4848c0264214c0",
+          "bytes": 4295
+        },
+        {
+          "path": "src/rfad/catalog/stackup_match.py",
+          "sha256": "db0145bd241904fb830fefebb1c3ba43d2d765203fedaa74d884fb8fcdc62ab8",
+          "bytes": 8820
+        },
+        {
+          "path": "src/rfad/catalog/stackup_suggestions.py",
+          "sha256": "5e99df25a0815217a1aaa8705082e33188c98b4cdd30ec83363d839c35940b84",
+          "bytes": 4080
+        },
+        {
+          "path": "src/rfad/catalog/suggested_properties.py",
+          "sha256": "04db8bf74380a8f4f3f579ca0226a7716733062bf1a3f32cf0590b56689a90f0",
+          "bytes": 4144
+        },
+        {
+          "path": "src/rfad/domain/__init__.py",
+          "sha256": "f7905c21d7293db23c8736b154cfa4e737b28788376ae2314c73e75259356e67",
+          "bytes": 239
+        },
+        {
+          "path": "src/rfad/domain/boundary_distance.py",
+          "sha256": "6324951d5428ac3fa52a4bfd4774020ced3865edde193fce0306b2622d6e093c",
+          "bytes": 7491
+        },
+        {
+          "path": "src/rfad/domain/check_connections.py",
+          "sha256": "0c16d7ae6d06637f9e70a91c6d87dc0e92c56893980dc7e0f4b8fc09872b96b5",
+          "bytes": 6489
+        },
+        {
+          "path": "src/rfad/domain/check_constraints.py",
+          "sha256": "b10fc8cfb79115efba67edb4658cb553638323488e42c4ccee58071f1b3c2b25",
+          "bytes": 4049
+        },
+        {
+          "path": "src/rfad/domain/check_geometry.py",
+          "sha256": "9138ff07281a3343eb5291e92824ace45639be2aa19f9d853c474eb8f1a2f647",
+          "bytes": 8932
+        },
+        {
+          "path": "src/rfad/domain/check_manufacturing.py",
+          "sha256": "556ff09bcd6f9ab3eca2e31472c8be6f9a3fa3d1e32b3a44fce3c31847a6779c",
+          "bytes": 8149
+        },
+        {
+          "path": "src/rfad/domain/check_report.py",
+          "sha256": "8bad8d680e70d3f0c8c3a45bd6bbb81fe99f4ab8fa6347797ce355569ba17277",
+          "bytes": 5000
+        },
+        {
+          "path": "src/rfad/domain/design.py",
+          "sha256": "90a6841228469c7f58ab2bfb7744dac98b733abb8183f848cf9e8c4a421b2ad2",
+          "bytes": 37899
+        },
+        {
+          "path": "src/rfad/domain/design_checks.py",
+          "sha256": "2da7ffddaeb329b71031d6cb2124f218bb6d0518b8545e69fd63c1eb8fbe80c0",
+          "bytes": 4638
+        },
+        {
+          "path": "src/rfad/domain/design_rules.py",
+          "sha256": "d1b07bae77ae70d286627ab22bc730dc284d8e53164a0aa7cd0acce0936c0dcb",
+          "bytes": 5866
+        },
+        {
+          "path": "src/rfad/domain/design_sweep.py",
+          "sha256": "ebd4c2e349dcde884b66ad8e9713c7a19343d692bae9a6da5058f928a2b7d58a",
+          "bytes": 21232
+        },
+        {
+          "path": "src/rfad/domain/errors.py",
+          "sha256": "e8dc2d8e54fd71ca35af28d538c214687cdefeba035443aeeaee992cc55697d6",
+          "bytes": 1059
+        },
+        {
+          "path": "src/rfad/domain/expressions.py",
+          "sha256": "60ea67477ab925614073a2231efa215cc96c48a0fcb7bbf25bc875949086c7c8",
+          "bytes": 20181
+        },
+        {
+          "path": "src/rfad/domain/layer_surface.py",
+          "sha256": "95e1d645ad8210c80ec7fb6ff3326e9fb38ba2fbb0aca3b3fc47f4272222623f",
+          "bytes": 1215
+        },
+        {
+          "path": "src/rfad/domain/literature_geometry.py",
+          "sha256": "b414dbfc04d4d2bf92d49d80e7375769e74282d78b9842dc7401c8e3ac9947a5",
+          "bytes": 2500
+        },
+        {
+          "path": "src/rfad/domain/material_models.py",
+          "sha256": "7447b0b5fedb971a31b1fd41f81219249a324e2d44da6fe2e7269a8efd1a2fa9",
+          "bytes": 1604
+        },
+        {
+          "path": "src/rfad/domain/network_assessment.py",
+          "sha256": "280edefa48251cc18d0ecf91955af06ab3a7bce9a5236a0fcada0575f9e4ee85",
+          "bytes": 12743
+        },
+        {
+          "path": "src/rfad/domain/network_circuit.py",
+          "sha256": "3d4499d07398819c0b5d9c728aa553813858e60ad67618254a992fec025cfe02",
+          "bytes": 10152
+        },
+        {
+          "path": "src/rfad/domain/network_data.py",
+          "sha256": "ecf136526dc5bbbd716b275ddfbdd2867407199a83733ecb71b6601ff33d3408",
+          "bytes": 9861
+        },
+        {
+          "path": "src/rfad/domain/network_library.py",
+          "sha256": "1b06f80bf57c73d65fa6c2d10434c9b7eb13025aece29ec2edee72e7b8f98b82",
+          "bytes": 8297
+        },
+        {
+          "path": "src/rfad/domain/network_transform.py",
+          "sha256": "ae8a44f66232e6956b204352eae527847c2a3fb808fa72e1bed8b2d8cfc05099",
+          "bytes": 5639
+        },
+        {
+          "path": "src/rfad/domain/object_names.py",
+          "sha256": "20fa7425ecf2edf7924c67ce4b33ee5daf358da077eddd7532fe1c34233ebab7",
+          "bytes": 4129
+        },
+        {
+          "path": "src/rfad/domain/parameter_graph.py",
+          "sha256": "3afa704b61fe6cce2f64d175df455e227604223eab90c71166f957d5f24e4b36",
+          "bytes": 5343
+        },
+        {
+          "path": "src/rfad/domain/pcb_evidence_pool.py",
+          "sha256": "8ad93e1638b3f5a343acee606ed75ffc581dc725072a31c26b60b3e90ec843ea",
+          "bytes": 3673
+        },
+        {
+          "path": "src/rfad/domain/pcb_selection.py",
+          "sha256": "2607f41e26d5a1623914486996e76ca9f69d031f1f074184bda658451e8665e9",
+          "bytes": 12252
+        },
+        {
+          "path": "src/rfad/domain/pcb_selection_command.py",
+          "sha256": "62c6cceefc63dc87cb75489edc6c48522a125155de70962d0b92051b92328742",
+          "bytes": 2800
+        },
+        {
+          "path": "src/rfad/domain/pcb_selection_evidence.py",
+          "sha256": "b017b5ecdc9dfc1aea5a0e6baf054600f7f5f6c7af580d2759455b5619572ab6",
+          "bytes": 10053
+        },
+        {
+          "path": "src/rfad/domain/pcb_selection_history.py",
+          "sha256": "ea6b7a818036a81429dbd6da95bdff1d00aa4a54d4d5a32cfb66df7200da389b",
+          "bytes": 2796
+        },
+        {
+          "path": "src/rfad/domain/physical_setup.py",
+          "sha256": "e2c89334deaad8abdcfbed18091534c6db7d445c572679fb915f9fe56b59ca32",
+          "bytes": 13890
+        },
+        {
+          "path": "src/rfad/domain/planar.py",
+          "sha256": "a5fb63c7bfb7f1813917404095b696ab6e70eb71d7f0059508dbae31024e5e3f",
+          "bytes": 8072
+        },
+        {
+          "path": "src/rfad/domain/precision_command.py",
+          "sha256": "ba6e84590440d6c8acc94c72cd72dbbc938c818ed6f8fae4a5fb321bf0e9c693",
+          "bytes": 9343
+        },
+        {
+          "path": "src/rfad/domain/precision_dimensions.py",
+          "sha256": "ff9944bf8b65b99a0ebb7c966513b4957f30758ee8c4630e886f14ca5f8a6ab0",
+          "bytes": 11304
+        },
+        {
+          "path": "src/rfad/domain/precision_transform.py",
+          "sha256": "83615f8ccdbb27d0a65fab2fd5ea5f6986e024414332ff602333f871ea251162",
+          "bytes": 7248
+        },
+        {
+          "path": "src/rfad/domain/printed_geometry.py",
+          "sha256": "79c6ff64ac89c42dc36e1aa847889a0d5f857ed3ed4d72de35ab0c6efcb5f704",
+          "bytes": 2897
+        },
+        {
+          "path": "src/rfad/domain/project.py",
+          "sha256": "350746c130e2c0844eb816845e07167f9b83282afc73f83f9596a95c51c369cc",
+          "bytes": 21504
+        },
+        {
+          "path": "src/rfad/domain/resource_limits.py",
+          "sha256": "367bd28fe19ef290a8ebde2ad3c413b3e24b79c7c7f396a149dddc1247fa0141",
+          "bytes": 428
+        },
+        {
+          "path": "src/rfad/domain/sweep_inputs.py",
+          "sha256": "f7ba16949209558d80e4be1e28b264b81022d2100f8d7f5d295474297f6348d5",
+          "bytes": 8793
+        },
+        {
+          "path": "src/rfad/domain/target_constraints.py",
+          "sha256": "0d958d559e552d98e8d72c24a0ce113c53fe322dfcf3a2f226922b5eeaaf1234",
+          "bytes": 4864
+        },
+        {
+          "path": "src/rfad/domain/targets.py",
+          "sha256": "57bec9e36e86f092d0103a87e6f5f0ebb288d41a82af80f4bb34ac11f8fa61f0",
+          "bytes": 11891
+        },
+        {
+          "path": "src/rfad/domain/template_command.py",
+          "sha256": "b2038a0d3b2166a01109f85434db0c6a8a167817f84d33456e06d5842d6713a4",
+          "bytes": 4307
+        },
+        {
+          "path": "src/rfad/domain/template_geometry.py",
+          "sha256": "1d50e47f04979140b5479fd0d48aa7cee798306a494e41aa85e8dd0d6ac89705",
+          "bytes": 18368
+        },
+        {
+          "path": "src/rfad/domain/template_inputs.py",
+          "sha256": "96f3b72e7ca300a919787f83a518a20c8a530c992993d44f710a958aa019e815",
+          "bytes": 2507
+        },
+        {
+          "path": "src/rfad/domain/template_instance.py",
+          "sha256": "797ff06c39c8f70dcf33e346fc661c0d07c93212dc7eb88b252f83dd82617abd",
+          "bytes": 11946
+        },
+        {
+          "path": "src/rfad/domain/template_ports.py",
+          "sha256": "4bc56f5cca0a877a9118904826a3ba4e5aaa7294117d7abff0d0a6da94770578",
+          "bytes": 8469
+        },
+        {
+          "path": "src/rfad/domain/template_provenance.py",
+          "sha256": "d75a63d40120226307f0edf16f0c496ed4aab09810d20e930ea0a9e039592096",
+          "bytes": 1848
+        },
+        {
+          "path": "src/rfad/domain/template_seeds.py",
+          "sha256": "ee31b55454863ae902cc195739f03bf0bbcd36abe976ddd803e734ef8ade7b37",
+          "bytes": 3699
+        },
+        {
+          "path": "src/rfad/domain/units.py",
+          "sha256": "2d14560523f4b9dd986639b15befda6541b88a2f429e8a4797bce642728c3fe4",
+          "bytes": 9469
+        },
+        {
+          "path": "src/rfad/storage/__init__.py",
+          "sha256": "ca4c257ab77186c72310cd6e4b1ae31e30f97b41d0ca4075b5760ad672a2e270",
+          "bytes": 152
+        },
+        {
+          "path": "src/rfad/storage/journal.py",
+          "sha256": "62f2f3a28dae5796baf71249078bca57b485647ed2fe0e261f18a7a27d134c03",
+          "bytes": 25360
+        },
+        {
+          "path": "src/rfad/storage/sealed_files.py",
+          "sha256": "fe10aecf164b4330acfee9f47c51852df5ef47bd3c14aef8190bc50726cc5388",
+          "bytes": 3313
+        },
+        {
+          "path": "src/rfad/templates/__init__.py",
+          "sha256": "86220e3976b4ff63dad9ac02ba4f1f8c209ec672491169e8edd5dd7e3be80863",
+          "bytes": 97
+        },
+        {
+          "path": "src/rfad/templates/cards.py",
+          "sha256": "9bccfb2c7ebccbf89eae0e8a93c82132b4b2cbd86109abe4b40e97033d6d9516",
+          "bytes": 9461
+        },
+        {
+          "path": "src/rfad/templates/g031.py",
+          "sha256": "53e0d9ea1c222caf2500cec355c8e4728ebec8fb1fb2ae83fe7cc6343bfbff69",
+          "bytes": 10077
+        },
+        {
+          "path": "src/rfad/templates/printed_references.py",
+          "sha256": "ffb1cdf2cb7de0623e3cad89935d375199b1c68b19afe67c21b8b0928510f5d5",
+          "bytes": 9727
+        },
+        {
+          "path": "tools/wsl_supervisor.py",
+          "sha256": "4d8d12992636562a7294f3b4a70240401b816bc64002c691e1d1bf0bc65691c8",
+          "bytes": 31241
+        }
+      ]
+    }
+  ],
+  "runs": [
+    {
+      "id": "source-bundle-cad-native-initial",
+      "source_stage": "intermediate",
+      "note_ko": "기존 실제 OCCT process 두 시험. 마지막 bootstrap 보강 전.",
+      "log": {
+        "path": "Code/.local/source-bundle-cad-native-initial.log",
+        "bytes": 683,
+        "sha256": "a5ec26dd19db26dd1db2675424e7bbf4434dfd2c4a56ba2b575f8c5ef627794f",
+        "file_modified_at_utc": "2026-11-16T20:56:15.964242+00:00"
+      },
+      "time_basis": "로그 mtime는 완료 로그의 파일 기록 시각이다. 시작 시각은 보고서에 있는 경우만 별도 보존한다.",
+      "kind": "unittest",
+      "collected": 2,
+      "passed": 2,
+      "skipped": 0,
+      "errors": 0,
+      "failures": 0,
+      "elapsed_seconds": 26.325,
+      "status": "passed",
+      "tests": [
+        [
+          "test_geometry_build_produces_brep_and_failed_native_does_not_publish",
+          "test_cad_worker_process.CadWorkerProcessTests.test_geometry_build_produces_brep_and_failed_native_does_not_publish"
+        ],
+        [
+          "test_service_to_native_export_snapshot_hashes_reopen_and_restart",
+          "test_cad_worker_process.CadWorkerProcessTests.test_service_to_native_export_snapshot_hashes_reopen_and_restart"
+        ]
+      ]
+    },
+    {
+      "id": "source-bundle-independent",
+      "source_stage": "intermediate",
+      "note_ko": "시험 metadata에 bytes를 JSON으로 기록한 시험 코드 오류. 제품 실행 오류가 아니며 수정 후 재실행.",
+      "log": {
+        "path": "Code/.local/source-bundle-independent.log",
+        "bytes": 4556,
+        "sha256": "619b06b76e1f924a6dc896cea2ded23a2fd6f139611adcc369c1a02d26e3b5ae",
+        "file_modified_at_utc": "2026-11-16T20:56:22.928962+00:00"
+      },
+      "time_basis": "로그 mtime는 완료 로그의 파일 기록 시각이다. 시작 시각은 보고서에 있는 경우만 별도 보존한다.",
+      "kind": "unittest",
+      "collected": 11,
+      "passed": 10,
+      "skipped": 0,
+      "errors": 1,
+      "failures": 0,
+      "elapsed_seconds": 5.284,
+      "status": "failed",
+      "tests": [
+        [
+          "test_dynamic_import_alias_and_unregistered_loader_are_rejected",
+          "test_source_bundle.SourceBundleTests.test_dynamic_import_alias_and_unregistered_loader_are_rejected"
+        ],
+        [
+          "test_extra_stage_source_and_changed_bytes_are_rejected",
+          "test_source_bundle.SourceBundleTests.test_extra_stage_source_and_changed_bytes_are_rejected"
+        ],
+        [
+          "test_file_count_192_boundary_and_aggregate_bytes",
+          "test_source_bundle.SourceBundleTests.test_file_count_192_boundary_and_aggregate_bytes"
+        ],
+        [
+          "test_hardlinks_and_symbolic_links_do_not_escape_source_capture",
+          "test_source_bundle.SourceBundleTests.test_hardlinks_and_symbolic_links_do_not_escape_source_capture"
+        ],
+        [
+          "test_manifest_duplicate_missing_entry_and_hash_tampering",
+          "test_source_bundle.SourceBundleTests.test_manifest_duplicate_missing_entry_and_hash_tampering"
+        ],
+        [
+          "test_missing_from_package_attribute_is_rejected",
+          "test_source_bundle.SourceBundleTests.test_missing_from_package_attribute_is_rejected"
+        ],
+        [
+          "test_missing_function_dependency_is_not_skipped",
+          "test_source_bundle.SourceBundleTests.test_missing_function_dependency_is_not_skipped"
+        ],
+        [
+          "test_profile_newline_rules_preserve_cad_bytes_and_normalize_solver",
+          "test_source_bundle.SourceBundleTests.test_profile_newline_rules_preserve_cad_bytes_and_normalize_solver"
+        ],
+        [
+          "test_subprocess_guard_rejects_installed_fallback_and_stale_bytecode",
+          "test_source_bundle.SourceBundleTests.test_subprocess_guard_rejects_installed_fallback_and_stale_bytecode"
+        ],
+        [
+          "test_transitive_branches_functions_relative_imports_and_parent_initializers",
+          "test_source_bundle.SourceBundleTests.test_transitive_branches_functions_relative_imports_and_parent_initializers"
+        ],
+        [
+          "test_unreferenced_modules_do_not_consume_closure_file_budget",
+          "test_source_bundle.SourceBundleTests.test_unreferenced_modules_do_not_consume_closure_file_budget"
+        ]
+      ]
+    },
+    {
+      "id": "source-bundle-independent-final",
+      "source_stage": "intermediate",
+      "note_ko": "최초 독립 closure/변조 회귀. 후속 경계 추가 전.",
+      "log": {
+        "path": "Code/.local/source-bundle-independent-final.log",
+        "bytes": 2995,
+        "sha256": "d2f5505cd44bc471824579bc560ef09b0b99483e224f6d4d995f01d255cd3a16",
+        "file_modified_at_utc": "2026-11-16T20:56:40.494754+00:00"
+      },
+      "time_basis": "로그 mtime는 완료 로그의 파일 기록 시각이다. 시작 시각은 보고서에 있는 경우만 별도 보존한다.",
+      "kind": "unittest",
+      "collected": 11,
+      "passed": 11,
+      "skipped": 0,
+      "errors": 0,
+      "failures": 0,
+      "elapsed_seconds": 2.496,
+      "status": "passed",
+      "tests": [
+        [
+          "test_dynamic_import_alias_and_unregistered_loader_are_rejected",
+          "test_source_bundle.SourceBundleTests.test_dynamic_import_alias_and_unregistered_loader_are_rejected"
+        ],
+        [
+          "test_extra_stage_source_and_changed_bytes_are_rejected",
+          "test_source_bundle.SourceBundleTests.test_extra_stage_source_and_changed_bytes_are_rejected"
+        ],
+        [
+          "test_file_count_192_boundary_and_aggregate_bytes",
+          "test_source_bundle.SourceBundleTests.test_file_count_192_boundary_and_aggregate_bytes"
+        ],
+        [
+          "test_hardlinks_and_symbolic_links_do_not_escape_source_capture",
+          "test_source_bundle.SourceBundleTests.test_hardlinks_and_symbolic_links_do_not_escape_source_capture"
+        ],
+        [
+          "test_manifest_duplicate_missing_entry_and_hash_tampering",
+          "test_source_bundle.SourceBundleTests.test_manifest_duplicate_missing_entry_and_hash_tampering"
+        ],
+        [
+          "test_missing_from_package_attribute_is_rejected",
+          "test_source_bundle.SourceBundleTests.test_missing_from_package_attribute_is_rejected"
+        ],
+        [
+          "test_missing_function_dependency_is_not_skipped",
+          "test_source_bundle.SourceBundleTests.test_missing_function_dependency_is_not_skipped"
+        ],
+        [
+          "test_profile_newline_rules_preserve_cad_bytes_and_normalize_solver",
+          "test_source_bundle.SourceBundleTests.test_profile_newline_rules_preserve_cad_bytes_and_normalize_solver"
+        ],
+        [
+          "test_subprocess_guard_rejects_installed_fallback_and_stale_bytecode",
+          "test_source_bundle.SourceBundleTests.test_subprocess_guard_rejects_installed_fallback_and_stale_bytecode"
+        ],
+        [
+          "test_transitive_branches_functions_relative_imports_and_parent_initializers",
+          "test_source_bundle.SourceBundleTests.test_transitive_branches_functions_relative_imports_and_parent_initializers"
+        ],
+        [
+          "test_unreferenced_modules_do_not_consume_closure_file_budget",
+          "test_source_bundle.SourceBundleTests.test_unreferenced_modules_do_not_consume_closure_file_budget"
+        ]
+      ]
+    },
+    {
+      "id": "source-bundle-initial",
+      "source_stage": "intermediate",
+      "note_ko": "CAD source capture/jobs 및 solver 계획/jobs 61개. 마지막 bootstrap 동일 bytes 실행 보강 전.",
+      "log": {
+        "path": "Code/.local/source-bundle-initial.log",
+        "bytes": 15615,
+        "sha256": "3b807db0cf3ebf03062d0efb866b6f5603a3b528eb29816197d892373f8a851f",
+        "file_modified_at_utc": "2026-11-16T20:57:26.510381+00:00"
+      },
+      "time_basis": "로그 mtime는 완료 로그의 파일 기록 시각이다. 시작 시각은 보고서에 있는 경우만 별도 보존한다.",
+      "kind": "unittest",
+      "collected": 61,
+      "passed": 61,
+      "skipped": 0,
+      "errors": 0,
+      "failures": 0,
+      "elapsed_seconds": 204.487,
+      "status": "passed",
+      "tests": [
+        [
+          "test_modular_source_bundle_keeps_count_and_byte_budgets",
+          "test_cad_source_capture.CadSourceCaptureTests.test_modular_source_bundle_keeps_count_and_byte_budgets"
+        ],
+        [
+          "test_sealed_sources_run_in_fresh_stage_even_with_stale_original_bytecode",
+          "test_cad_source_capture.CadSourceCaptureTests.test_sealed_sources_run_in_fresh_stage_even_with_stale_original_bytecode"
+        ],
+        [
+          "test_tampered_source_artifact_fails_before_native_process_starts",
+          "test_cad_source_capture.CadSourceCaptureTests.test_tampered_source_artifact_fails_before_native_process_starts"
+        ],
+        [
+          "test_cancel_wins_after_files_close_before_publication",
+          "test_cad_jobs.CadJobTests.test_cancel_wins_after_files_close_before_publication"
+        ],
+        [
+          "test_crash_and_invalid_native_outputs_never_publish",
+          "test_cad_jobs.CadJobTests.test_crash_and_invalid_native_outputs_never_publish"
+        ],
+        [
+          "test_edit_status_and_save_respond_during_native_execution",
+          "test_cad_jobs.CadJobTests.test_edit_status_and_save_respond_during_native_execution"
+        ],
+        [
+          "test_error_after_commit_preserves_the_published_success",
+          "test_cad_jobs.CadJobTests.test_error_after_commit_preserves_the_published_success"
+        ],
+        [
+          "test_invalid_snapshot_or_unapproved_fields_leave_no_receipt",
+          "test_cad_jobs.CadJobTests.test_invalid_snapshot_or_unapproved_fields_leave_no_receipt"
+        ],
+        [
+          "test_late_nonce_result_cannot_publish_or_release_another_reservation",
+          "test_cad_jobs.CadJobTests.test_late_nonce_result_cannot_publish_or_release_another_reservation"
+        ],
+        [
+          "test_preview_and_capability_queries_do_not_mutate_workspace",
+          "test_cad_jobs.CadJobTests.test_preview_and_capability_queries_do_not_mutate_workspace"
+        ],
+        [
+          "test_publication_failure_keeps_closed_files_unpublished",
+          "test_cad_jobs.CadJobTests.test_publication_failure_keeps_closed_files_unpublished"
+        ],
+        [
+          "test_queued_cancel_returns_slot_without_starting_process",
+          "test_cad_jobs.CadJobTests.test_queued_cancel_returns_slot_without_starting_process"
+        ],
+        [
+          "test_receipt_replay_reuses_job_before_and_after_restart",
+          "test_cad_jobs.CadJobTests.test_receipt_replay_reuses_job_before_and_after_restart"
+        ],
+        [
+          "test_recovery_keeps_unknown_native_reservation_and_blocks_reexecution",
+          "test_cad_jobs.CadJobTests.test_recovery_keeps_unknown_native_reservation_and_blocks_reexecution"
+        ],
+        [
+          "test_running_cancel_finishes_only_after_owned_process_exit",
+          "test_cad_jobs.CadJobTests.test_running_cancel_finishes_only_after_owned_process_exit"
+        ],
+        [
+          "test_runtime_change_after_acceptance_is_not_executed",
+          "test_cad_jobs.CadJobTests.test_runtime_change_after_acceptance_is_not_executed"
+        ],
+        [
+          "test_seal_failure_preserves_previous_published_package",
+          "test_cad_jobs.CadJobTests.test_seal_failure_preserves_previous_published_package"
+        ],
+        [
+          "test_snapshot_output_remains_bound_while_current_revision_changes",
+          "test_cad_jobs.CadJobTests.test_snapshot_output_remains_bound_while_current_revision_changes"
+        ],
+        [
+          "test_staged_input_hash_tampering_is_not_executed",
+          "test_cad_jobs.CadJobTests.test_staged_input_hash_tampering_is_not_executed"
+        ],
+        [
+          "test_tampered_snapshot_artifact_is_rejected_before_queueing",
+          "test_cad_jobs.CadJobTests.test_tampered_snapshot_artifact_is_rejected_before_queueing"
+        ],
+        [
+          "test_timeout_and_output_flood_reap_worker_without_artifact_refs",
+          "test_cad_jobs.CadJobTests.test_timeout_and_output_flood_reap_worker_without_artifact_refs"
+        ],
+        [
+          "test_boolean_nonfinite_and_unsupported_grids_are_rejected",
+          "test_solver_plan.SolverPlanTests.test_boolean_nonfinite_and_unsupported_grids_are_rejected"
+        ],
+        [
+          "test_build_preserves_all_inputs_and_full_snapshot",
+          "test_solver_plan.SolverPlanTests.test_build_preserves_all_inputs_and_full_snapshot"
+        ],
+        [
+          "test_case_and_normalization_helpers_return_fresh_objects",
+          "test_solver_plan.SolverPlanTests.test_case_and_normalization_helpers_return_fresh_objects"
+        ],
+        [
+          "test_each_plan_gets_independent_identity",
+          "test_solver_plan.SolverPlanTests.test_each_plan_gets_independent_identity"
+        ],
+        [
+          "test_estimates_are_labeled_and_do_not_claim_actual_mesh",
+          "test_solver_plan.SolverPlanTests.test_estimates_are_labeled_and_do_not_claim_actual_mesh"
+        ],
+        [
+          "test_fixed_case_and_stop_policy",
+          "test_solver_plan.SolverPlanTests.test_fixed_case_and_stop_policy"
+        ],
+        [
+          "test_normalization_does_not_turn_pulse_spectra_into_absolute_power",
+          "test_solver_plan.SolverPlanTests.test_normalization_does_not_turn_pulse_spectra_into_absolute_power"
+        ],
+        [
+          "test_plan_does_not_infer_board_material_or_claim_antenna_validation",
+          "test_solver_plan.SolverPlanTests.test_plan_does_not_infer_board_material_or_claim_antenna_validation"
+        ],
+        [
+          "test_prepared_plan_has_independent_identity_and_immutable_references",
+          "test_solver_plan.SolverPlanTests.test_prepared_plan_has_independent_identity_and_immutable_references"
+        ],
+        [
+          "test_prepared_plan_rejects_incomplete_or_unsafe_artifact_references",
+          "test_solver_plan.SolverPlanTests.test_prepared_plan_rejects_incomplete_or_unsafe_artifact_references"
+        ],
+        [
+          "test_runtime_fingerprint_requires_hashes_and_unique_sources",
+          "test_solver_plan.SolverPlanTests.test_runtime_fingerprint_requires_hashes_and_unique_sources"
+        ],
+        [
+          "test_runtime_is_required_and_mismatched_profile_is_rejected",
+          "test_solver_plan.SolverPlanTests.test_runtime_is_required_and_mismatched_profile_is_rejected"
+        ],
+        [
+          "test_snapshot_artifact_path_and_size_checks",
+          "test_solver_plan.SolverPlanTests.test_snapshot_artifact_path_and_size_checks"
+        ],
+        [
+          "test_snapshot_cannot_be_shortened",
+          "test_solver_plan.SolverPlanTests.test_snapshot_cannot_be_shortened"
+        ],
+        [
+          "test_snapshot_id_revision_and_hash_binding",
+          "test_solver_plan.SolverPlanTests.test_snapshot_id_revision_and_hash_binding"
+        ],
+        [
+          "test_source_hash_catches_post_seal_metadata_changes",
+          "test_solver_plan.SolverPlanTests.test_source_hash_catches_post_seal_metadata_changes"
+        ],
+        [
+          "test_user_design_is_not_silently_replaced_with_waveguide",
+          "test_solver_plan.SolverPlanTests.test_user_design_is_not_silently_replaced_with_waveguide"
+        ],
+        [
+          "test_user_parameters_and_extensions_are_not_ignored",
+          "test_solver_plan.SolverPlanTests.test_user_parameters_and_extensions_are_not_ignored"
+        ],
+        [
+          "test_worker_validator_rejects_mutated_fixed_conditions",
+          "test_solver_plan.SolverPlanTests.test_worker_validator_rejects_mutated_fixed_conditions"
+        ],
+        [
+          "test_worker_validator_rejects_mutated_snapshot_and_source",
+          "test_solver_plan.SolverPlanTests.test_worker_validator_rejects_mutated_snapshot_and_source"
+        ],
+        [
+          "test_worker_validator_rejects_schema_and_identity_confusion",
+          "test_solver_plan.SolverPlanTests.test_worker_validator_rejects_schema_and_identity_confusion"
+        ],
+        [
+          "test_worker_validator_rejects_type_aliases_and_extra_fields",
+          "test_solver_plan.SolverPlanTests.test_worker_validator_rejects_type_aliases_and_extra_fields"
+        ],
+        [
+          "test_bad_input_hash_and_unprepared_plan_are_rejected",
+          "test_solver_jobs.SolverJobTests.test_bad_input_hash_and_unprepared_plan_are_rejected"
+        ],
+        [
+          "test_bad_worker_outputs_never_publish_and_release_confirmed_slot",
+          "test_solver_jobs.SolverJobTests.test_bad_worker_outputs_never_publish_and_release_confirmed_slot"
+        ],
+        [
+          "test_budget_is_explicit_finite_and_within_plan_limit",
+          "test_solver_jobs.SolverJobTests.test_budget_is_explicit_finite_and_within_plan_limit"
+        ],
+        [
+          "test_plan_prepare_analysis_result_and_explicit_postprocess",
+          "test_solver_jobs.SolverJobTests.test_plan_prepare_analysis_result_and_explicit_postprocess"
+        ],
+        [
+          "test_plan_remains_bound_after_edit",
+          "test_solver_jobs.SolverJobTests.test_plan_remains_bound_after_edit"
+        ],
+        [
+          "test_postprocess_requires_registered_raw_result_and_never_falls_back",
+          "test_solver_jobs.SolverJobTests.test_postprocess_requires_registered_raw_result_and_never_falls_back"
+        ],
+        [
+          "test_preparation_semantics_must_match_plan_before_sealing",
+          "test_solver_jobs.SolverJobTests.test_preparation_semantics_must_match_plan_before_sealing"
+        ],
+        [
+          "test_queued_cancel_releases_slot_without_worker",
+          "test_solver_jobs.SolverJobTests.test_queued_cancel_releases_slot_without_worker"
+        ],
+        [
+          "test_receipt_replay_and_restart_do_not_repeat_work",
+          "test_solver_jobs.SolverJobTests.test_receipt_replay_and_restart_do_not_repeat_work"
+        ],
+        [
+          "test_restart_marks_unfinished_native_interrupted_without_reexecution",
+          "test_solver_jobs.SolverJobTests.test_restart_marks_unfinished_native_interrupted_without_reexecution"
+        ],
+        [
+          "test_result_semantics_must_match_raw_and_physics_assessment",
+          "test_solver_jobs.SolverJobTests.test_result_semantics_must_match_raw_and_physics_assessment"
+        ],
+        [
+          "test_running_cancel_wins_publish_race",
+          "test_solver_jobs.SolverJobTests.test_running_cancel_wins_publish_race"
+        ],
+        [
+          "test_runtime_drift_after_planning_requires_replan",
+          "test_solver_jobs.SolverJobTests.test_runtime_drift_after_planning_requires_replan"
+        ],
+        [
+          "test_service_close_reaps_preparation_and_preserves_confirmed_interruption",
+          "test_solver_jobs.SolverJobTests.test_service_close_reaps_preparation_and_preserves_confirmed_interruption"
+        ],
+        [
+          "test_stdio_openems_option_routes_capabilities_without_native_host_import",
+          "test_solver_jobs.SolverJobTests.test_stdio_openems_option_routes_capabilities_without_native_host_import"
+        ],
+        [
+          "test_stop_after_sealing_preserves_prior_result_without_publication",
+          "test_solver_jobs.SolverJobTests.test_stop_after_sealing_preserves_prior_result_without_publication"
+        ],
+        [
+          "test_transport_cancel_without_user_request_is_interrupted",
+          "test_solver_jobs.SolverJobTests.test_transport_cancel_without_user_request_is_interrupted"
+        ],
+        [
+          "test_unknown_exit_keeps_reservation_through_restart_until_reconcile",
+          "test_solver_jobs.SolverJobTests.test_unknown_exit_keeps_reservation_through_restart_until_reconcile"
+        ]
+      ]
+    },
+    {
+      "id": "source-bundle-independent-boundaries",
+      "source_stage": "intermediate",
+      "note_ko": "원문 합계 bytes, import 직전 bounded read, 미리 로딩된 rfad 거절까지 확장.",
+      "log": {
+        "path": "Code/.local/source-bundle-independent-boundaries.log",
+        "bytes": 3855,
+        "sha256": "0c40f79a49dabea03b8e404c73e328490985c44cb89d2aedee157755d2494811",
+        "file_modified_at_utc": "2026-11-16T20:58:12.602671+00:00"
+      },
+      "time_basis": "로그 mtime는 완료 로그의 파일 기록 시각이다. 시작 시각은 보고서에 있는 경우만 별도 보존한다.",
+      "kind": "unittest",
+      "collected": 14,
+      "passed": 14,
+      "skipped": 0,
+      "errors": 0,
+      "failures": 0,
+      "elapsed_seconds": 3.163,
+      "status": "passed",
+      "tests": [
+        [
+          "test_dynamic_import_alias_and_unregistered_loader_are_rejected",
+          "test_source_bundle.SourceBundleTests.test_dynamic_import_alias_and_unregistered_loader_are_rejected"
+        ],
+        [
+          "test_extra_stage_source_and_changed_bytes_are_rejected",
+          "test_source_bundle.SourceBundleTests.test_extra_stage_source_and_changed_bytes_are_rejected"
+        ],
+        [
+          "test_file_count_192_boundary_and_aggregate_bytes",
+          "test_source_bundle.SourceBundleTests.test_file_count_192_boundary_and_aggregate_bytes"
+        ],
+        [
+          "test_hardlinks_and_symbolic_links_do_not_escape_source_capture",
+          "test_source_bundle.SourceBundleTests.test_hardlinks_and_symbolic_links_do_not_escape_source_capture"
+        ],
+        [
+          "test_import_after_stage_growth_does_not_read_unbounded_bytes",
+          "test_source_bundle.SourceBundleTests.test_import_after_stage_growth_does_not_read_unbounded_bytes"
+        ],
+        [
+          "test_manifest_aggregate_bytes_are_rejected_before_stage_reads",
+          "test_source_bundle.SourceBundleTests.test_manifest_aggregate_bytes_are_rejected_before_stage_reads"
+        ],
+        [
+          "test_manifest_duplicate_missing_entry_and_hash_tampering",
+          "test_source_bundle.SourceBundleTests.test_manifest_duplicate_missing_entry_and_hash_tampering"
+        ],
+        [
+          "test_missing_from_package_attribute_is_rejected",
+          "test_source_bundle.SourceBundleTests.test_missing_from_package_attribute_is_rejected"
+        ],
+        [
+          "test_missing_function_dependency_is_not_skipped",
+          "test_source_bundle.SourceBundleTests.test_missing_function_dependency_is_not_skipped"
+        ],
+        [
+          "test_profile_newline_rules_preserve_cad_bytes_and_normalize_solver",
+          "test_source_bundle.SourceBundleTests.test_profile_newline_rules_preserve_cad_bytes_and_normalize_solver"
+        ],
+        [
+          "test_subprocess_guard_rejects_installed_fallback_and_stale_bytecode",
+          "test_source_bundle.SourceBundleTests.test_subprocess_guard_rejects_installed_fallback_and_stale_bytecode"
+        ],
+        [
+          "test_subprocess_rejects_already_loaded_product_even_at_same_stage_path",
+          "test_source_bundle.SourceBundleTests.test_subprocess_rejects_already_loaded_product_even_at_same_stage_path"
+        ],
+        [
+          "test_transitive_branches_functions_relative_imports_and_parent_initializers",
+          "test_source_bundle.SourceBundleTests.test_transitive_branches_functions_relative_imports_and_parent_initializers"
+        ],
+        [
+          "test_unreferenced_modules_do_not_consume_closure_file_budget",
+          "test_source_bundle.SourceBundleTests.test_unreferenced_modules_do_not_consume_closure_file_budget"
+        ]
+      ]
+    },
+    {
+      "id": "source-bundle-native-pcb-initial",
+      "source_stage": "intermediate",
+      "note_ko": "실제 compact 1후보 WSL PCB 스윕. 마지막 bootstrap 보강 전.",
+      "log": {
+        "path": "Code/.local/source-bundle-native-pcb-initial.log",
+        "bytes": 369,
+        "sha256": "aac0069d2793775aaff6cf1aa974bad4dc9bdd82a7c8b75e3515ab3f5ccb423b",
+        "file_modified_at_utc": "2026-11-16T20:58:19.746403+00:00"
+      },
+      "time_basis": "로그 mtime는 완료 로그의 파일 기록 시각이다. 시작 시각은 보고서에 있는 경우만 별도 보존한다.",
+      "kind": "unittest",
+      "collected": 1,
+      "passed": 1,
+      "skipped": 0,
+      "errors": 0,
+      "failures": 0,
+      "elapsed_seconds": 38.578,
+      "status": "passed",
+      "tests": [
+        [
+          "test_one_explicit_pcb_candidate_and_reopen_without_runtime",
+          "test_design_sweep_runner.ActualNativeSweepTests.test_one_explicit_pcb_candidate_and_reopen_without_runtime"
+        ]
+      ]
+    },
+    {
+      "id": "source-bundle-arc-ifa-native",
+      "source_stage": "intermediate",
+      "note_ko": "하나의 시험 안에서 실제 원호/IFA 두 STEP 생성. 마지막 bootstrap 보강 전.",
+      "log": {
+        "path": "Code/.local/source-bundle-arc-ifa-native.log",
+        "bytes": 404,
+        "sha256": "685fdbe10da41c4a28ca60d04866efbc9db9a826d868c6e689a867ca4143c209",
+        "file_modified_at_utc": "2026-11-16T21:01:19.669352+00:00"
+      },
+      "time_basis": "로그 mtime는 완료 로그의 파일 기록 시각이다. 시작 시각은 보고서에 있는 경우만 별도 보존한다.",
+      "kind": "unittest",
+      "collected": 1,
+      "passed": 1,
+      "skipped": 0,
+      "errors": 0,
+      "failures": 0,
+      "elapsed_seconds": 18.123,
+      "status": "passed",
+      "tests": [
+        [
+          "test_arc_and_ifa_sources_survive_real_step_and_runtime_free_reopen",
+          "test_template_native.TemplateNativeTests.test_arc_and_ifa_sources_survive_real_step_and_runtime_free_reopen"
+        ]
+      ]
+    },
+    {
+      "id": "source-bundle-power-native",
+      "source_stage": "intermediate",
+      "note_ko": "실제 PCB 준비/계산/NF2FF/E-J-rotH 손실/후처리/취소. 마지막 bootstrap 보강 전.",
+      "log": {
+        "path": "Code/.local/source-bundle-power-native.log",
+        "bytes": 172,
+        "sha256": "82cd62eb533a5937df167529ec9f08c1e8f9a21ec30d8dc59dc106836a0155de",
+        "file_modified_at_utc": "2026-11-16T21:02:23.672195+00:00"
+      },
+      "time_basis": "로그 mtime는 완료 로그의 파일 기록 시각이다. 시작 시각은 보고서에 있는 경우만 별도 보존한다.",
+      "kind": "workflow",
+      "status": "passed",
+      "report": {
+        "path": "Code/.local/source-bundle-power-initial/report.json",
+        "bytes": 5676,
+        "sha256": "dfdbf87ee4c72ba3209fcf415e02446c253eb5311e9621bbd8c5fb09fdd99052",
+        "file_modified_at_utc": "2026-11-16T21:02:23.671127+00:00"
+      },
+      "elapsed_seconds": 82.15700000000652,
+      "started_at": "2026-11-16T21:01:01.509466+00:00"
+    },
+    {
+      "id": "source-bundle-cad",
+      "source_stage": "intermediate",
+      "note_ko": "실제 두 CAD 생성/출처/미정 검사는 통과했으나 재열기 조회를 없는 coordinator 메서드로 호출한 시험 코드 오류 2개. 공개 RPC로 수정.",
+      "log": {
+        "path": "Code/.local/source-bundle-cad.log",
+        "bytes": 2621,
+        "sha256": "35047cf454c3f98cc19c7815e357bf6ee8ef00caa67459d4d3fc42328d1e270c",
+        "file_modified_at_utc": "2026-11-16T21:03:27.449805+00:00"
+      },
+      "time_basis": "로그 mtime는 완료 로그의 파일 기록 시각이다. 시작 시각은 보고서에 있는 경우만 별도 보존한다.",
+      "kind": "unittest",
+      "collected": 2,
+      "passed": 0,
+      "skipped": 0,
+      "errors": 2,
+      "failures": 0,
+      "elapsed_seconds": 26.131,
+      "status": "failed",
+      "tests": [
+        [
+          "test_real_staged_region_hole_pads_and_pth_preserve_source",
+          "test_source_bundle_cad.SourceBundleCadTests.test_real_staged_region_hole_pads_and_pth_preserve_source"
+        ],
+        [
+          "test_real_staged_surface_and_embedded_step_inspection",
+          "test_source_bundle_cad.SourceBundleCadTests.test_real_staged_surface_and_embedded_step_inspection"
+        ]
+      ]
+    },
+    {
+      "id": "source-bundle-cad-final",
+      "source_stage": "intermediate",
+      "note_ko": "수정한 실제 CAD 두 사례 재열기 통과. 마지막 bootstrap 보강 전.",
+      "log": {
+        "path": "Code/.local/source-bundle-cad-final.log",
+        "bytes": 665,
+        "sha256": "28afc58254daa15470393abd697dcadb33f127036a215573aa9c0ba59025adeb",
+        "file_modified_at_utc": "2026-11-16T21:04:12.138072+00:00"
+      },
+      "time_basis": "로그 mtime는 완료 로그의 파일 기록 시각이다. 시작 시각은 보고서에 있는 경우만 별도 보존한다.",
+      "kind": "unittest",
+      "collected": 2,
+      "passed": 2,
+      "skipped": 0,
+      "errors": 0,
+      "failures": 0,
+      "elapsed_seconds": 24.513,
+      "status": "passed",
+      "tests": [
+        [
+          "test_real_staged_region_hole_pads_and_pth_preserve_source",
+          "test_source_bundle_cad.SourceBundleCadTests.test_real_staged_region_hole_pads_and_pth_preserve_source"
+        ],
+        [
+          "test_real_staged_surface_and_embedded_step_inspection",
+          "test_source_bundle_cad.SourceBundleCadTests.test_real_staged_surface_and_embedded_step_inspection"
+        ]
+      ],
+      "report": {
+        "path": "Code/.local/source-bundle-cad-final-report.json",
+        "bytes": 33804,
+        "sha256": "e4708c06b523f8abad10124b917659e6d8b79e953c245ecad4075839339e3ca7",
+        "file_modified_at_utc": "2026-11-16T21:04:12.097335+00:00"
+      }
+    },
+    {
+      "id": "source-bundle-arc-ifa-final",
+      "source_stage": "final_source",
+      "note_ko": "마지막 bootstrap 보강 후 실제 원호/IFA 두 STEP 생성/원문/미정/재열기.",
+      "log": {
+        "path": "Code/.local/source-bundle-arc-ifa-final.log",
+        "bytes": 404,
+        "sha256": "180ddb1264eb6a1912f951e21445b129e1dfae3af8b2a13d4d4508c05648977c",
+        "file_modified_at_utc": "2026-11-16T21:06:36.195164+00:00"
+      },
+      "time_basis": "로그 mtime는 완료 로그의 파일 기록 시각이다. 시작 시각은 보고서에 있는 경우만 별도 보존한다.",
+      "kind": "unittest",
+      "collected": 1,
+      "passed": 1,
+      "skipped": 0,
+      "errors": 0,
+      "failures": 0,
+      "elapsed_seconds": 28.713,
+      "status": "passed",
+      "tests": [
+        [
+          "test_arc_and_ifa_sources_survive_real_step_and_runtime_free_reopen",
+          "test_template_native.TemplateNativeTests.test_arc_and_ifa_sources_survive_real_step_and_runtime_free_reopen"
+        ]
+      ]
+    },
+    {
+      "id": "source-bundle-host-final",
+      "source_stage": "final_source_invocation_error",
+      "note_ko": "70개 수집 중 없는 test_network_circuit/test_network_assessment 모듈명 호출 오류 2개. 실제 network domain 시험은 통과. 올바른 목록으로 뒤에 95개 재실행.",
+      "log": {
+        "path": "Code/.local/source-bundle-host-final.log",
+        "bytes": 19252,
+        "sha256": "db59f1b2ca051a2c6bac1a713a4cbe4c7bab7759e0781c27894bd28f8b32967e",
+        "file_modified_at_utc": "2026-11-16T21:06:37.096464+00:00"
+      },
+      "time_basis": "로그 mtime는 완료 로그의 파일 기록 시각이다. 시작 시각은 보고서에 있는 경우만 별도 보존한다.",
+      "kind": "unittest",
+      "collected": 70,
+      "passed": 66,
+      "skipped": 2,
+      "errors": 2,
+      "failures": 0,
+      "elapsed_seconds": 65.513,
+      "status": "failed",
+      "tests": [
+        [
+          "test_dynamic_import_alias_and_unregistered_loader_are_rejected",
+          "test_source_bundle.SourceBundleTests.test_dynamic_import_alias_and_unregistered_loader_are_rejected"
+        ],
+        [
+          "test_extra_stage_source_and_changed_bytes_are_rejected",
+          "test_source_bundle.SourceBundleTests.test_extra_stage_source_and_changed_bytes_are_rejected"
+        ],
+        [
+          "test_file_count_192_boundary_and_aggregate_bytes",
+          "test_source_bundle.SourceBundleTests.test_file_count_192_boundary_and_aggregate_bytes"
+        ],
+        [
+          "test_hardlinks_and_symbolic_links_do_not_escape_source_capture",
+          "test_source_bundle.SourceBundleTests.test_hardlinks_and_symbolic_links_do_not_escape_source_capture"
+        ],
+        [
+          "test_import_after_stage_growth_does_not_read_unbounded_bytes",
+          "test_source_bundle.SourceBundleTests.test_import_after_stage_growth_does_not_read_unbounded_bytes"
+        ],
+        [
+          "test_manifest_aggregate_bytes_are_rejected_before_stage_reads",
+          "test_source_bundle.SourceBundleTests.test_manifest_aggregate_bytes_are_rejected_before_stage_reads"
+        ],
+        [
+          "test_manifest_duplicate_missing_entry_and_hash_tampering",
+          "test_source_bundle.SourceBundleTests.test_manifest_duplicate_missing_entry_and_hash_tampering"
+        ],
+        [
+          "test_missing_from_package_attribute_is_rejected",
+          "test_source_bundle.SourceBundleTests.test_missing_from_package_attribute_is_rejected"
+        ],
+        [
+          "test_missing_function_dependency_is_not_skipped",
+          "test_source_bundle.SourceBundleTests.test_missing_function_dependency_is_not_skipped"
+        ],
+        [
+          "test_profile_newline_rules_preserve_cad_bytes_and_normalize_solver",
+          "test_source_bundle.SourceBundleTests.test_profile_newline_rules_preserve_cad_bytes_and_normalize_solver"
+        ],
+        [
+          "test_subprocess_guard_rejects_installed_fallback_and_stale_bytecode",
+          "test_source_bundle.SourceBundleTests.test_subprocess_guard_rejects_installed_fallback_and_stale_bytecode"
+        ],
+        [
+          "test_subprocess_rejects_already_loaded_product_even_at_same_stage_path",
+          "test_source_bundle.SourceBundleTests.test_subprocess_rejects_already_loaded_product_even_at_same_stage_path"
+        ],
+        [
+          "test_transitive_branches_functions_relative_imports_and_parent_initializers",
+          "test_source_bundle.SourceBundleTests.test_transitive_branches_functions_relative_imports_and_parent_initializers"
+        ],
+        [
+          "test_unreferenced_modules_do_not_consume_closure_file_budget",
+          "test_source_bundle.SourceBundleTests.test_unreferenced_modules_do_not_consume_closure_file_budget"
+        ],
+        [
+          "test_bounded_host_source_manifest_tracks_calculation_dependencies",
+          "test_design_sweep_service.DesignSweepServiceTests.test_bounded_host_source_manifest_tracks_calculation_dependencies"
+        ],
+        [
+          "test_definition_tamper_and_engine_change_block_resume_not_reading",
+          "test_design_sweep_service.DesignSweepServiceTests.test_definition_tamper_and_engine_change_block_resume_not_reading"
+        ],
+        [
+          "test_host_source_change_blocks_resume_without_rewriting_old_evidence",
+          "test_design_sweep_service.DesignSweepServiceTests.test_host_source_change_blocks_resume_without_rewriting_old_evidence"
+        ],
+        [
+          "test_preview_dedup_and_atomic_definition_preserve_all_originals",
+          "test_design_sweep_service.DesignSweepServiceTests.test_preview_dedup_and_atomic_definition_preserve_all_originals"
+        ],
+        [
+          "test_public_rpc_units_and_unknown_metadata_do_not_mutate",
+          "test_design_sweep_service.DesignSweepServiceTests.test_public_rpc_units_and_unknown_metadata_do_not_mutate"
+        ],
+        [
+          "test_rejected_creation_budget_leaves_no_snapshot_or_definition_files",
+          "test_design_sweep_service.DesignSweepServiceTests.test_rejected_creation_budget_leaves_no_snapshot_or_definition_files"
+        ],
+        [
+          "test_restart_consumes_elapsed_budget_and_requires_explicit_resume",
+          "test_design_sweep_service.DesignSweepServiceTests.test_restart_consumes_elapsed_budget_and_requires_explicit_resume"
+        ],
+        [
+          "test_review_stale_input_and_cross_project_are_rejected",
+          "test_design_sweep_service.DesignSweepServiceTests.test_review_stale_input_and_cross_project_are_rejected"
+        ],
+        [
+          "test_all_sample_pass_is_conditional_not_continuous_band_verification",
+          "test_network_domain.NetworkAssessmentTests.test_all_sample_pass_is_conditional_not_continuous_band_verification"
+        ],
+        [
+          "test_bandwidth_without_s11_threshold_does_not_invent_minus_10_db",
+          "test_network_domain.NetworkAssessmentTests.test_bandwidth_without_s11_threshold_does_not_invent_minus_10_db"
+        ],
+        [
+          "test_efficiency_cannot_be_reassigned_to_another_excitation_in_two_ports",
+          "test_network_domain.NetworkAssessmentTests.test_efficiency_cannot_be_reassigned_to_another_excitation_in_two_ports"
+        ],
+        [
+          "test_efficiency_requires_matching_dataset_hash_and_physical_range",
+          "test_network_domain.NetworkAssessmentTests.test_efficiency_requires_matching_dataset_hash_and_physical_range"
+        ],
+        [
+          "test_failed_sample_rejects_target_even_if_other_sample_missing",
+          "test_network_domain.NetworkAssessmentTests.test_failed_sample_rejects_target_even_if_other_sample_missing"
+        ],
+        [
+          "test_fractional_bandwidth_remains_sampled_estimate",
+          "test_network_domain.NetworkAssessmentTests.test_fractional_bandwidth_remains_sampled_estimate"
+        ],
+        [
+          "test_near_frequency_does_not_imply_nearest_or_interpolation",
+          "test_network_domain.NetworkAssessmentTests.test_near_frequency_does_not_imply_nearest_or_interpolation"
+        ],
+        [
+          "test_perfect_match_open_and_active_reflection_special_states",
+          "test_network_domain.NetworkAssessmentTests.test_perfect_match_open_and_active_reflection_special_states"
+        ],
+        [
+          "test_z0_plane_port_mapping_and_missing_limit_block_evaluation",
+          "test_network_domain.NetworkAssessmentTests.test_z0_plane_port_mapping_and_missing_limit_block_evaluation"
+        ],
+        [
+          "test_active_load_singular_connection_is_masked",
+          "test_network_domain.NetworkCircuitTests.test_active_load_singular_connection_is_masked"
+        ],
+        [
+          "test_dc_open_short_are_topology_not_huge_values",
+          "test_network_domain.NetworkCircuitTests.test_dc_open_short_are_topology_not_huge_values"
+        ],
+        [
+          "test_missing_quantity_stores_but_application_blocks",
+          "test_network_domain.NetworkCircuitTests.test_missing_quantity_stores_but_application_blocks"
+        ],
+        [
+          "test_original_and_component_sources_preserved_without_field_claim",
+          "test_network_domain.NetworkCircuitTests.test_original_and_component_sources_preserved_without_field_claim"
+        ],
+        [
+          "test_reactive_sequence_and_phasor_sign_match_independent_rlc",
+          "test_network_domain.NetworkCircuitTests.test_reactive_sequence_and_phasor_sign_match_independent_rlc"
+        ],
+        [
+          "test_reference_plane_em_scope_and_phasor_are_explicit",
+          "test_network_domain.NetworkCircuitTests.test_reference_plane_em_scope_and_phasor_are_explicit"
+        ],
+        [
+          "test_series_and_shunt_resistor_match_independent_load_formula",
+          "test_network_domain.NetworkCircuitTests.test_series_and_shunt_resistor_match_independent_load_formula"
+        ],
+        [
+          "test_bad_metadata_and_axes_fail_with_project_errors",
+          "test_network_domain.NetworkDataTests.test_bad_metadata_and_axes_fail_with_project_errors"
+        ],
+        [
+          "test_circuit_rejects_unrepresentable_display_quantity_before_saving",
+          "test_network_domain.NetworkDataTests.test_circuit_rejects_unrepresentable_display_quantity_before_saving"
+        ],
+        [
+          "test_duplicate_frequency_port_and_budgets_are_rejected",
+          "test_network_domain.NetworkDataTests.test_duplicate_frequency_port_and_budgets_are_rejected"
+        ],
+        [
+          "test_masked_missing_cell_and_measured_origin_remain_distinct",
+          "test_network_domain.NetworkDataTests.test_masked_missing_cell_and_measured_origin_remain_distinct"
+        ],
+        [
+          "test_metadata_and_model_import_do_not_import_native_modules",
+          "test_network_domain.NetworkDataTests.test_metadata_and_model_import_do_not_import_native_modules"
+        ],
+        [
+          "test_new_quantity_dimensions_do_not_reclassify_existing_parameter_names",
+          "test_network_domain.NetworkDataTests.test_new_quantity_dimensions_do_not_reclassify_existing_parameter_names"
+        ],
+        [
+          "test_quantity_inductance_capacitance_and_source_are_preserved",
+          "test_network_domain.NetworkDataTests.test_quantity_inductance_capacitance_and_source_are_preserved"
+        ],
+        [
+          "test_unknown_conditions_and_complex_z0_are_preserved",
+          "test_network_domain.NetworkDataTests.test_unknown_conditions_and_complex_z0_are_preserved"
+        ],
+        [
+          "test_asymmetric_two_port_unequal_z0_roundtrip",
+          "test_network_domain.NetworkTransformTests.test_asymmetric_two_port_unequal_z0_roundtrip"
+        ],
+        [
+          "test_complex_one_port_s_z_y_matches_analytic_impedance",
+          "test_network_domain.NetworkTransformTests.test_complex_one_port_s_z_y_matches_analytic_impedance"
+        ],
+        [
+          "test_explicit_renormalization_preserves_original_plane_and_sources",
+          "test_network_domain.NetworkTransformTests.test_explicit_renormalization_preserves_original_plane_and_sources"
+        ],
+        [
+          "test_mask_and_extreme_values_do_not_crash_or_become_zero",
+          "test_network_domain.NetworkTransformTests.test_mask_and_extreme_values_do_not_crash_or_become_zero"
+        ],
+        [
+          "test_singular_and_near_singular_s_to_z_are_masked_without_nudge",
+          "test_network_domain.NetworkTransformTests.test_singular_and_near_singular_s_to_z_are_masked_without_nudge"
+        ],
+        [
+          "test_unknown_and_complex_references_block_without_default",
+          "test_network_domain.NetworkTransformTests.test_unknown_and_complex_references_block_without_default"
+        ],
+        [
+          "test_network_circuit",
+          "unittest.loader._FailedTest.test_network_circuit"
+        ],
+        [
+          "test_network_assessment",
+          "unittest.loader._FailedTest.test_network_assessment"
+        ],
+        [
+          "test_killed_wsl_launcher_reconnects_and_cancels_guest",
+          "test_wsl_process.WslLiveTransportTests.test_killed_wsl_launcher_reconnects_and_cancels_guest"
+        ],
+        [
+          "test_windows_host_exports_verified_guest_result",
+          "test_wsl_process.WslLiveTransportTests.test_windows_host_exports_verified_guest_result"
+        ],
+        [
+          "test_ack_loss_reconnects_without_starting_again",
+          "test_wsl_process.WslProcessTests.test_ack_loss_reconnects_without_starting_again"
+        ],
+        [
+          "test_already_cancelled_does_not_read_stage_or_start_guest",
+          "test_wsl_process.WslProcessTests.test_already_cancelled_does_not_read_stage_or_start_guest"
+        ],
+        [
+          "test_command_uses_fixed_argv_and_stdin_not_shell",
+          "test_wsl_process.WslProcessTests.test_command_uses_fixed_argv_and_stdin_not_shell"
+        ],
+        [
+          "test_control_capture_has_live_output_and_time_bounds",
+          "test_wsl_process.WslProcessTests.test_control_capture_has_live_output_and_time_bounds"
+        ],
+        [
+          "test_export_failure_does_not_erase_termination_evidence",
+          "test_wsl_process.WslProcessTests.test_export_failure_does_not_erase_termination_evidence"
+        ],
+        [
+          "test_identity_is_pure_and_freezes_supervisor",
+          "test_wsl_process.WslProcessTests.test_identity_is_pure_and_freezes_supervisor"
+        ],
+        [
+          "test_input_allowlist_and_nonpositive_limits",
+          "test_wsl_process.WslProcessTests.test_input_allowlist_and_nonpositive_limits"
+        ],
+        [
+          "test_large_start_and_export_use_bounded_startup_timeout",
+          "test_wsl_process.WslProcessTests.test_large_start_and_export_use_bounded_startup_timeout"
+        ],
+        [
+          "test_transport_failure_preserves_unknown_outcome",
+          "test_wsl_process.WslProcessTests.test_transport_failure_preserves_unknown_outcome"
+        ],
+        [
+          "test_unconfirmed_guest_is_not_exported",
+          "test_wsl_process.WslProcessTests.test_unconfirmed_guest_is_not_exported"
+        ],
+        [
+          "test_wrong_nonce_response_is_not_accepted",
+          "test_wsl_process.WslProcessTests.test_wrong_nonce_response_is_not_accepted"
+        ],
+        [
+          "test_control_can_cancel_a_real_silent_launcher",
+          "test_wsl_readiness.WslReadinessTests.test_control_can_cancel_a_real_silent_launcher"
+        ],
+        [
+          "test_failure_is_known_not_started",
+          "test_wsl_readiness.WslReadinessTests.test_failure_is_known_not_started"
+        ],
+        [
+          "test_fixed_probe_has_separate_startup_budget",
+          "test_wsl_readiness.WslReadinessTests.test_fixed_probe_has_separate_startup_budget"
+        ]
+      ]
+    },
+    {
+      "id": "source-bundle-cad-frozen",
+      "source_stage": "final_source",
+      "note_ko": "독립 경계 15개와 실제 staged CAD 2개. 논리 파일 상한 인수 1/192 및 bool/0/193 거절 포함.",
+      "log": {
+        "path": "Code/.local/source-bundle-cad-frozen.log",
+        "bytes": 4660,
+        "sha256": "cf2203efde02f165b15445691a08a37064ed05da4d5315ae1e2c9efa6e5a3def",
+        "file_modified_at_utc": "2026-11-16T21:07:00.696707+00:00"
+      },
+      "time_basis": "로그 mtime는 완료 로그의 파일 기록 시각이다. 시작 시각은 보고서에 있는 경우만 별도 보존한다.",
+      "kind": "unittest",
+      "collected": 17,
+      "passed": 17,
+      "skipped": 0,
+      "errors": 0,
+      "failures": 0,
+      "elapsed_seconds": 48.243,
+      "status": "passed",
+      "tests": [
+        [
+          "test_dynamic_import_alias_and_unregistered_loader_are_rejected",
+          "test_source_bundle.SourceBundleTests.test_dynamic_import_alias_and_unregistered_loader_are_rejected"
+        ],
+        [
+          "test_extra_stage_source_and_changed_bytes_are_rejected",
+          "test_source_bundle.SourceBundleTests.test_extra_stage_source_and_changed_bytes_are_rejected"
+        ],
+        [
+          "test_file_count_192_boundary_and_aggregate_bytes",
+          "test_source_bundle.SourceBundleTests.test_file_count_192_boundary_and_aggregate_bytes"
+        ],
+        [
+          "test_hardlinks_and_symbolic_links_do_not_escape_source_capture",
+          "test_source_bundle.SourceBundleTests.test_hardlinks_and_symbolic_links_do_not_escape_source_capture"
+        ],
+        [
+          "test_import_after_stage_growth_does_not_read_unbounded_bytes",
+          "test_source_bundle.SourceBundleTests.test_import_after_stage_growth_does_not_read_unbounded_bytes"
+        ],
+        [
+          "test_manifest_aggregate_bytes_are_rejected_before_stage_reads",
+          "test_source_bundle.SourceBundleTests.test_manifest_aggregate_bytes_are_rejected_before_stage_reads"
+        ],
+        [
+          "test_manifest_duplicate_missing_entry_and_hash_tampering",
+          "test_source_bundle.SourceBundleTests.test_manifest_duplicate_missing_entry_and_hash_tampering"
+        ],
+        [
+          "test_missing_from_package_attribute_is_rejected",
+          "test_source_bundle.SourceBundleTests.test_missing_from_package_attribute_is_rejected"
+        ],
+        [
+          "test_missing_function_dependency_is_not_skipped",
+          "test_source_bundle.SourceBundleTests.test_missing_function_dependency_is_not_skipped"
+        ],
+        [
+          "test_profile_newline_rules_preserve_cad_bytes_and_normalize_solver",
+          "test_source_bundle.SourceBundleTests.test_profile_newline_rules_preserve_cad_bytes_and_normalize_solver"
+        ],
+        [
+          "test_requested_file_budget_cannot_disable_the_global_cap",
+          "test_source_bundle.SourceBundleTests.test_requested_file_budget_cannot_disable_the_global_cap"
+        ],
+        [
+          "test_subprocess_guard_rejects_installed_fallback_and_stale_bytecode",
+          "test_source_bundle.SourceBundleTests.test_subprocess_guard_rejects_installed_fallback_and_stale_bytecode"
+        ],
+        [
+          "test_subprocess_rejects_already_loaded_product_even_at_same_stage_path",
+          "test_source_bundle.SourceBundleTests.test_subprocess_rejects_already_loaded_product_even_at_same_stage_path"
+        ],
+        [
+          "test_transitive_branches_functions_relative_imports_and_parent_initializers",
+          "test_source_bundle.SourceBundleTests.test_transitive_branches_functions_relative_imports_and_parent_initializers"
+        ],
+        [
+          "test_unreferenced_modules_do_not_consume_closure_file_budget",
+          "test_source_bundle.SourceBundleTests.test_unreferenced_modules_do_not_consume_closure_file_budget"
+        ],
+        [
+          "test_real_staged_region_hole_pads_and_pth_preserve_source",
+          "test_source_bundle_cad.SourceBundleCadTests.test_real_staged_region_hole_pads_and_pth_preserve_source"
+        ],
+        [
+          "test_real_staged_surface_and_embedded_step_inspection",
+          "test_source_bundle_cad.SourceBundleCadTests.test_real_staged_surface_and_embedded_step_inspection"
+        ]
+      ],
+      "report": {
+        "path": "Code/.local/source-bundle-cad-frozen-report.json",
+        "bytes": 33804,
+        "sha256": "777eaea38aa469ef47e250aa89b635e729523599318ff90a6c93c68e00054cc1",
+        "file_modified_at_utc": "2026-11-16T21:07:00.628676+00:00"
+      }
+    },
+    {
+      "id": "source-bundle-power-final",
+      "source_stage": "final_source",
+      "note_ko": "실제 PCB NF2FF/독립 E-J 체적 및 E-rotH sheet 손실/후처리 동일성/종료 확인 취소/재열기.",
+      "log": {
+        "path": "Code/.local/source-bundle-power-final.log",
+        "bytes": 170,
+        "sha256": "5a4faa346e7d267129034629381b9512ca10e8b400416b19deaa01e063ff4653",
+        "file_modified_at_utc": "2026-11-16T21:07:41.142827+00:00"
+      },
+      "time_basis": "로그 mtime는 완료 로그의 파일 기록 시각이다. 시작 시각은 보고서에 있는 경우만 별도 보존한다.",
+      "kind": "workflow",
+      "status": "passed",
+      "report": {
+        "path": "Code/.local/source-bundle-power-final/report.json",
+        "bytes": 5674,
+        "sha256": "6d33113da38049849cc54b52d318c75c016b8412d219278701280193b57a5923",
+        "file_modified_at_utc": "2026-11-16T21:07:41.126026+00:00"
+      },
+      "elapsed_seconds": 93.79700000002049,
+      "started_at": "2026-11-16T21:06:07.318816+00:00"
+    },
+    {
+      "id": "source-bundle-supervisor-final",
+      "source_stage": "final_source",
+      "note_ko": "실제 Linux PID/start identity/flock/pidfd/시작 중 취소 및 launcher 소실 경계 16개.",
+      "log": {
+        "path": "Code/.local/source-bundle-supervisor-final.log",
+        "bytes": 3940,
+        "sha256": "bc13002297d2e6937376758a36fa1f9d293c5456014babb1e1ab972fa1dc1411",
+        "file_modified_at_utc": "2026-11-16T21:07:52.653280+00:00"
+      },
+      "time_basis": "로그 mtime는 완료 로그의 파일 기록 시각이다. 시작 시각은 보고서에 있는 경우만 별도 보존한다.",
+      "kind": "unittest",
+      "collected": 16,
+      "passed": 16,
+      "skipped": 0,
+      "errors": 0,
+      "failures": 0,
+      "elapsed_seconds": 94.787,
+      "status": "passed",
+      "tests": [
+        [
+          "test_cancel_reaps_descendant_in_different_process_group",
+          "test_wsl_guest.WslGuestTests.test_cancel_reaps_descendant_in_different_process_group"
+        ],
+        [
+          "test_cancel_reaps_nonce_inheriting_descendant_after_setsid",
+          "test_wsl_guest.WslGuestTests.test_cancel_reaps_nonce_inheriting_descendant_after_setsid"
+        ],
+        [
+          "test_cancel_reaps_worker_and_grandchild",
+          "test_wsl_guest.WslGuestTests.test_cancel_reaps_worker_and_grandchild"
+        ],
+        [
+          "test_completed_export_and_readonly_staging",
+          "test_wsl_guest.WslGuestTests.test_completed_export_and_readonly_staging"
+        ],
+        [
+          "test_duplicate_daemon_does_not_release_existing_active_worker",
+          "test_wsl_guest.WslGuestTests.test_duplicate_daemon_does_not_release_existing_active_worker"
+        ],
+        [
+          "test_heartbeat_loss_reaps_group",
+          "test_wsl_guest.WslGuestTests.test_heartbeat_loss_reaps_group"
+        ],
+        [
+          "test_normal_exit_reaps_descendant_in_different_process_group",
+          "test_wsl_guest.WslGuestTests.test_normal_exit_reaps_descendant_in_different_process_group"
+        ],
+        [
+          "test_old_start_without_owner_evidence_remains_unknown",
+          "test_wsl_guest.WslGuestTests.test_old_start_without_owner_evidence_remains_unknown"
+        ],
+        [
+          "test_output_limit_is_guest_enforced",
+          "test_wsl_guest.WslGuestTests.test_output_limit_is_guest_enforced"
+        ],
+        [
+          "test_startup_launcher_loss_releases_only_proven_unstarted_run",
+          "test_wsl_guest.WslGuestTests.test_startup_launcher_loss_releases_only_proven_unstarted_run"
+        ],
+        [
+          "test_sticky_cancel_during_input_copy_never_opens_worker_gate",
+          "test_wsl_guest.WslGuestTests.test_sticky_cancel_during_input_copy_never_opens_worker_gate"
+        ],
+        [
+          "test_supervisor_death_watchdog_reaps_owned_tree",
+          "test_wsl_guest.WslGuestTests.test_supervisor_death_watchdog_reaps_owned_tree"
+        ],
+        [
+          "test_timeout_and_host_death_lease_expiry",
+          "test_wsl_guest.WslGuestTests.test_timeout_and_host_death_lease_expiry"
+        ],
+        [
+          "test_timeout_reaps_descendant_in_different_process_group",
+          "test_wsl_guest.WslGuestTests.test_timeout_reaps_descendant_in_different_process_group"
+        ],
+        [
+          "test_unverifiable_session_member_preserves_unknown_outcome",
+          "test_wsl_guest.WslGuestTests.test_unverifiable_session_member_preserves_unknown_outcome"
+        ],
+        [
+          "test_wrong_nonce_and_mutated_input_fail_closed",
+          "test_wsl_guest.WslGuestTests.test_wrong_nonce_and_mutated_input_fail_closed"
+        ]
+      ]
+    },
+    {
+      "id": "source-bundle-host-corrected",
+      "source_stage": "final_source",
+      "note_ko": "독립 closure, host 연구/RLC/S-Z-Y/목표 평가, runner/PCB/WSL 수명 및 준비 회귀. 95개 중 실제 WSL 조건 3개 제외.",
+      "log": {
+        "path": "Code/.local/source-bundle-host-corrected.log",
+        "bytes": 25244,
+        "sha256": "7618daeac0abbf5b673a68968e6860c158ba98650890851e21dc16aa78537f23",
+        "file_modified_at_utc": "2026-11-16T21:10:53.288954+00:00"
+      },
+      "time_basis": "로그 mtime는 완료 로그의 파일 기록 시각이다. 시작 시각은 보고서에 있는 경우만 별도 보존한다.",
+      "kind": "unittest",
+      "collected": 95,
+      "passed": 92,
+      "skipped": 3,
+      "errors": 0,
+      "failures": 0,
+      "elapsed_seconds": 134.565,
+      "status": "passed",
+      "tests": [
+        [
+          "test_dynamic_import_alias_and_unregistered_loader_are_rejected",
+          "test_source_bundle.SourceBundleTests.test_dynamic_import_alias_and_unregistered_loader_are_rejected"
+        ],
+        [
+          "test_extra_stage_source_and_changed_bytes_are_rejected",
+          "test_source_bundle.SourceBundleTests.test_extra_stage_source_and_changed_bytes_are_rejected"
+        ],
+        [
+          "test_file_count_192_boundary_and_aggregate_bytes",
+          "test_source_bundle.SourceBundleTests.test_file_count_192_boundary_and_aggregate_bytes"
+        ],
+        [
+          "test_hardlinks_and_symbolic_links_do_not_escape_source_capture",
+          "test_source_bundle.SourceBundleTests.test_hardlinks_and_symbolic_links_do_not_escape_source_capture"
+        ],
+        [
+          "test_import_after_stage_growth_does_not_read_unbounded_bytes",
+          "test_source_bundle.SourceBundleTests.test_import_after_stage_growth_does_not_read_unbounded_bytes"
+        ],
+        [
+          "test_manifest_aggregate_bytes_are_rejected_before_stage_reads",
+          "test_source_bundle.SourceBundleTests.test_manifest_aggregate_bytes_are_rejected_before_stage_reads"
+        ],
+        [
+          "test_manifest_duplicate_missing_entry_and_hash_tampering",
+          "test_source_bundle.SourceBundleTests.test_manifest_duplicate_missing_entry_and_hash_tampering"
+        ],
+        [
+          "test_missing_from_package_attribute_is_rejected",
+          "test_source_bundle.SourceBundleTests.test_missing_from_package_attribute_is_rejected"
+        ],
+        [
+          "test_missing_function_dependency_is_not_skipped",
+          "test_source_bundle.SourceBundleTests.test_missing_function_dependency_is_not_skipped"
+        ],
+        [
+          "test_profile_newline_rules_preserve_cad_bytes_and_normalize_solver",
+          "test_source_bundle.SourceBundleTests.test_profile_newline_rules_preserve_cad_bytes_and_normalize_solver"
+        ],
+        [
+          "test_requested_file_budget_cannot_disable_the_global_cap",
+          "test_source_bundle.SourceBundleTests.test_requested_file_budget_cannot_disable_the_global_cap"
+        ],
+        [
+          "test_subprocess_guard_rejects_installed_fallback_and_stale_bytecode",
+          "test_source_bundle.SourceBundleTests.test_subprocess_guard_rejects_installed_fallback_and_stale_bytecode"
+        ],
+        [
+          "test_subprocess_rejects_already_loaded_product_even_at_same_stage_path",
+          "test_source_bundle.SourceBundleTests.test_subprocess_rejects_already_loaded_product_even_at_same_stage_path"
+        ],
+        [
+          "test_transitive_branches_functions_relative_imports_and_parent_initializers",
+          "test_source_bundle.SourceBundleTests.test_transitive_branches_functions_relative_imports_and_parent_initializers"
+        ],
+        [
+          "test_unreferenced_modules_do_not_consume_closure_file_budget",
+          "test_source_bundle.SourceBundleTests.test_unreferenced_modules_do_not_consume_closure_file_budget"
+        ],
+        [
+          "test_bounded_host_source_manifest_tracks_calculation_dependencies",
+          "test_design_sweep_service.DesignSweepServiceTests.test_bounded_host_source_manifest_tracks_calculation_dependencies"
+        ],
+        [
+          "test_definition_tamper_and_engine_change_block_resume_not_reading",
+          "test_design_sweep_service.DesignSweepServiceTests.test_definition_tamper_and_engine_change_block_resume_not_reading"
+        ],
+        [
+          "test_host_source_change_blocks_resume_without_rewriting_old_evidence",
+          "test_design_sweep_service.DesignSweepServiceTests.test_host_source_change_blocks_resume_without_rewriting_old_evidence"
+        ],
+        [
+          "test_legacy_source_profile_remains_readable_but_cannot_resume_under_new_profile",
+          "test_design_sweep_service.DesignSweepServiceTests.test_legacy_source_profile_remains_readable_but_cannot_resume_under_new_profile"
+        ],
+        [
+          "test_preview_dedup_and_atomic_definition_preserve_all_originals",
+          "test_design_sweep_service.DesignSweepServiceTests.test_preview_dedup_and_atomic_definition_preserve_all_originals"
+        ],
+        [
+          "test_public_rpc_units_and_unknown_metadata_do_not_mutate",
+          "test_design_sweep_service.DesignSweepServiceTests.test_public_rpc_units_and_unknown_metadata_do_not_mutate"
+        ],
+        [
+          "test_rejected_creation_budget_leaves_no_snapshot_or_definition_files",
+          "test_design_sweep_service.DesignSweepServiceTests.test_rejected_creation_budget_leaves_no_snapshot_or_definition_files"
+        ],
+        [
+          "test_restart_consumes_elapsed_budget_and_requires_explicit_resume",
+          "test_design_sweep_service.DesignSweepServiceTests.test_restart_consumes_elapsed_budget_and_requires_explicit_resume"
+        ],
+        [
+          "test_review_stale_input_and_cross_project_are_rejected",
+          "test_design_sweep_service.DesignSweepServiceTests.test_review_stale_input_and_cross_project_are_rejected"
+        ],
+        [
+          "test_one_explicit_pcb_candidate_and_reopen_without_runtime",
+          "test_design_sweep_runner.ActualNativeSweepTests.test_one_explicit_pcb_candidate_and_reopen_without_runtime"
+        ],
+        [
+          "test_compact_prepare_solve_and_legacy_plan_share_one_slot",
+          "test_design_sweep_runner.CompactSolverTests.test_compact_prepare_solve_and_legacy_plan_share_one_slot"
+        ],
+        [
+          "test_tampered_capture_or_plan_never_starts_transport",
+          "test_design_sweep_runner.CompactSolverTests.test_tampered_capture_or_plan_never_starts_transport"
+        ],
+        [
+          "test_unknown_guest_reservation_survives_capture_damage_until_reconcile",
+          "test_design_sweep_runner.CompactSolverTests.test_unknown_guest_reservation_survives_capture_damage_until_reconcile"
+        ],
+        [
+          "test_cancel_during_circuit_keeps_result_and_resume_does_not_recompute",
+          "test_design_sweep_runner.DesignSweepRunnerTests.test_cancel_during_circuit_keeps_result_and_resume_does_not_recompute"
+        ],
+        [
+          "test_circuit_lazy_failure_duplicate_and_results_keep_originals",
+          "test_design_sweep_runner.DesignSweepRunnerTests.test_circuit_lazy_failure_duplicate_and_results_keep_originals"
+        ],
+        [
+          "test_last_calculation_over_wall_budget_preserves_result_but_blocks_completion",
+          "test_design_sweep_runner.DesignSweepRunnerTests.test_last_calculation_over_wall_budget_preserves_result_but_blocks_completion"
+        ],
+        [
+          "test_ram_and_wall_budget_block_without_native_and_keep_source",
+          "test_design_sweep_runner.DesignSweepRunnerTests.test_ram_and_wall_budget_block_without_native_and_keep_source"
+        ],
+        [
+          "test_restart_and_tampered_retained_result_forbid_automatic_replacement",
+          "test_design_sweep_runner.DesignSweepRunnerTests.test_restart_and_tampered_retained_result_forbid_automatic_replacement"
+        ],
+        [
+          "test_busy_shared_slot_waits_without_commits_or_candidate_materialization",
+          "test_design_sweep_runner.NativeSweepRunnerTests.test_busy_shared_slot_waits_without_commits_or_candidate_materialization"
+        ],
+        [
+          "test_disk_reservation_stops_before_any_native_job",
+          "test_design_sweep_runner.NativeSweepRunnerTests.test_disk_reservation_stops_before_any_native_job"
+        ],
+        [
+          "test_lazy_compact_unknown_resume_preserves_prior_attempt",
+          "test_design_sweep_runner.NativeSweepRunnerTests.test_lazy_compact_unknown_resume_preserves_prior_attempt"
+        ],
+        [
+          "test_solve_attempt_budget_survives_failure_and_explicit_resume",
+          "test_design_sweep_runner.NativeSweepRunnerTests.test_solve_attempt_budget_survives_failure_and_explicit_resume"
+        ],
+        [
+          "test_structured_nonconvergence_survives_worker_and_sweep",
+          "test_design_sweep_runner.NativeSweepRunnerTests.test_structured_nonconvergence_survives_worker_and_sweep"
+        ],
+        [
+          "test_all_sample_pass_is_conditional_not_continuous_band_verification",
+          "test_network_domain.NetworkAssessmentTests.test_all_sample_pass_is_conditional_not_continuous_band_verification"
+        ],
+        [
+          "test_bandwidth_without_s11_threshold_does_not_invent_minus_10_db",
+          "test_network_domain.NetworkAssessmentTests.test_bandwidth_without_s11_threshold_does_not_invent_minus_10_db"
+        ],
+        [
+          "test_efficiency_cannot_be_reassigned_to_another_excitation_in_two_ports",
+          "test_network_domain.NetworkAssessmentTests.test_efficiency_cannot_be_reassigned_to_another_excitation_in_two_ports"
+        ],
+        [
+          "test_efficiency_requires_matching_dataset_hash_and_physical_range",
+          "test_network_domain.NetworkAssessmentTests.test_efficiency_requires_matching_dataset_hash_and_physical_range"
+        ],
+        [
+          "test_failed_sample_rejects_target_even_if_other_sample_missing",
+          "test_network_domain.NetworkAssessmentTests.test_failed_sample_rejects_target_even_if_other_sample_missing"
+        ],
+        [
+          "test_fractional_bandwidth_remains_sampled_estimate",
+          "test_network_domain.NetworkAssessmentTests.test_fractional_bandwidth_remains_sampled_estimate"
+        ],
+        [
+          "test_near_frequency_does_not_imply_nearest_or_interpolation",
+          "test_network_domain.NetworkAssessmentTests.test_near_frequency_does_not_imply_nearest_or_interpolation"
+        ],
+        [
+          "test_perfect_match_open_and_active_reflection_special_states",
+          "test_network_domain.NetworkAssessmentTests.test_perfect_match_open_and_active_reflection_special_states"
+        ],
+        [
+          "test_z0_plane_port_mapping_and_missing_limit_block_evaluation",
+          "test_network_domain.NetworkAssessmentTests.test_z0_plane_port_mapping_and_missing_limit_block_evaluation"
+        ],
+        [
+          "test_active_load_singular_connection_is_masked",
+          "test_network_domain.NetworkCircuitTests.test_active_load_singular_connection_is_masked"
+        ],
+        [
+          "test_dc_open_short_are_topology_not_huge_values",
+          "test_network_domain.NetworkCircuitTests.test_dc_open_short_are_topology_not_huge_values"
+        ],
+        [
+          "test_missing_quantity_stores_but_application_blocks",
+          "test_network_domain.NetworkCircuitTests.test_missing_quantity_stores_but_application_blocks"
+        ],
+        [
+          "test_original_and_component_sources_preserved_without_field_claim",
+          "test_network_domain.NetworkCircuitTests.test_original_and_component_sources_preserved_without_field_claim"
+        ],
+        [
+          "test_reactive_sequence_and_phasor_sign_match_independent_rlc",
+          "test_network_domain.NetworkCircuitTests.test_reactive_sequence_and_phasor_sign_match_independent_rlc"
+        ],
+        [
+          "test_reference_plane_em_scope_and_phasor_are_explicit",
+          "test_network_domain.NetworkCircuitTests.test_reference_plane_em_scope_and_phasor_are_explicit"
+        ],
+        [
+          "test_series_and_shunt_resistor_match_independent_load_formula",
+          "test_network_domain.NetworkCircuitTests.test_series_and_shunt_resistor_match_independent_load_formula"
+        ],
+        [
+          "test_bad_metadata_and_axes_fail_with_project_errors",
+          "test_network_domain.NetworkDataTests.test_bad_metadata_and_axes_fail_with_project_errors"
+        ],
+        [
+          "test_circuit_rejects_unrepresentable_display_quantity_before_saving",
+          "test_network_domain.NetworkDataTests.test_circuit_rejects_unrepresentable_display_quantity_before_saving"
+        ],
+        [
+          "test_duplicate_frequency_port_and_budgets_are_rejected",
+          "test_network_domain.NetworkDataTests.test_duplicate_frequency_port_and_budgets_are_rejected"
+        ],
+        [
+          "test_masked_missing_cell_and_measured_origin_remain_distinct",
+          "test_network_domain.NetworkDataTests.test_masked_missing_cell_and_measured_origin_remain_distinct"
+        ],
+        [
+          "test_metadata_and_model_import_do_not_import_native_modules",
+          "test_network_domain.NetworkDataTests.test_metadata_and_model_import_do_not_import_native_modules"
+        ],
+        [
+          "test_new_quantity_dimensions_do_not_reclassify_existing_parameter_names",
+          "test_network_domain.NetworkDataTests.test_new_quantity_dimensions_do_not_reclassify_existing_parameter_names"
+        ],
+        [
+          "test_quantity_inductance_capacitance_and_source_are_preserved",
+          "test_network_domain.NetworkDataTests.test_quantity_inductance_capacitance_and_source_are_preserved"
+        ],
+        [
+          "test_unknown_conditions_and_complex_z0_are_preserved",
+          "test_network_domain.NetworkDataTests.test_unknown_conditions_and_complex_z0_are_preserved"
+        ],
+        [
+          "test_asymmetric_two_port_unequal_z0_roundtrip",
+          "test_network_domain.NetworkTransformTests.test_asymmetric_two_port_unequal_z0_roundtrip"
+        ],
+        [
+          "test_complex_one_port_s_z_y_matches_analytic_impedance",
+          "test_network_domain.NetworkTransformTests.test_complex_one_port_s_z_y_matches_analytic_impedance"
+        ],
+        [
+          "test_explicit_renormalization_preserves_original_plane_and_sources",
+          "test_network_domain.NetworkTransformTests.test_explicit_renormalization_preserves_original_plane_and_sources"
+        ],
+        [
+          "test_mask_and_extreme_values_do_not_crash_or_become_zero",
+          "test_network_domain.NetworkTransformTests.test_mask_and_extreme_values_do_not_crash_or_become_zero"
+        ],
+        [
+          "test_singular_and_near_singular_s_to_z_are_masked_without_nudge",
+          "test_network_domain.NetworkTransformTests.test_singular_and_near_singular_s_to_z_are_masked_without_nudge"
+        ],
+        [
+          "test_unknown_and_complex_references_block_without_default",
+          "test_network_domain.NetworkTransformTests.test_unknown_and_complex_references_block_without_default"
+        ],
+        [
+          "test_analytic_contact_without_native_polygon_contact_is_rejected",
+          "test_pcb_solver.PcbPlanTests.test_analytic_contact_without_native_polygon_contact_is_rejected"
+        ],
+        [
+          "test_circle_and_rectangle_preserve_source",
+          "test_pcb_solver.PcbPlanTests.test_circle_and_rectangle_preserve_source"
+        ],
+        [
+          "test_circle_corner_is_not_admitted_by_bounding_rectangle",
+          "test_pcb_solver.PcbPlanTests.test_circle_corner_is_not_admitted_by_bounding_rectangle"
+        ],
+        [
+          "test_different_net_contact_is_rejected_in_plan",
+          "test_pcb_solver.PcbPlanTests.test_different_net_contact_is_rejected_in_plan"
+        ],
+        [
+          "test_full_ring_preserves_hole",
+          "test_pcb_solver.PcbPlanTests.test_full_ring_preserves_hole"
+        ],
+        [
+          "test_missing_material_and_port_geometry_are_blocked",
+          "test_pcb_solver.PcbPlanTests.test_missing_material_and_port_geometry_are_blocked"
+        ],
+        [
+          "test_nearly_closed_arc_caps_are_rejected",
+          "test_pcb_solver.PcbPlanTests.test_nearly_closed_arc_caps_are_rejected"
+        ],
+        [
+          "test_plan_tampering_and_mesh_budget_are_rejected",
+          "test_pcb_solver.PcbPlanTests.test_plan_tampering_and_mesh_budget_are_rejected"
+        ],
+        [
+          "test_result_rejects_nonfinite_frequency_and_false_vswr_status",
+          "test_pcb_solver.PcbPlanTests.test_result_rejects_nonfinite_frequency_and_false_vswr_status"
+        ],
+        [
+          "test_sheet_does_not_require_unconsumed_dielectric_properties",
+          "test_pcb_solver.PcbPlanTests.test_sheet_does_not_require_unconsumed_dielectric_properties"
+        ],
+        [
+          "test_step_limit_and_cancel_log_never_become_converged",
+          "test_pcb_solver.PcbPlanTests.test_step_limit_and_cancel_log_never_become_converged"
+        ],
+        [
+          "test_killed_wsl_launcher_reconnects_and_cancels_guest",
+          "test_wsl_process.WslLiveTransportTests.test_killed_wsl_launcher_reconnects_and_cancels_guest"
+        ],
+        [
+          "test_windows_host_exports_verified_guest_result",
+          "test_wsl_process.WslLiveTransportTests.test_windows_host_exports_verified_guest_result"
+        ],
+        [
+          "test_ack_loss_reconnects_without_starting_again",
+          "test_wsl_process.WslProcessTests.test_ack_loss_reconnects_without_starting_again"
+        ],
+        [
+          "test_already_cancelled_does_not_read_stage_or_start_guest",
+          "test_wsl_process.WslProcessTests.test_already_cancelled_does_not_read_stage_or_start_guest"
+        ],
+        [
+          "test_command_uses_fixed_argv_and_stdin_not_shell",
+          "test_wsl_process.WslProcessTests.test_command_uses_fixed_argv_and_stdin_not_shell"
+        ],
+        [
+          "test_control_capture_has_live_output_and_time_bounds",
+          "test_wsl_process.WslProcessTests.test_control_capture_has_live_output_and_time_bounds"
+        ],
+        [
+          "test_export_failure_does_not_erase_termination_evidence",
+          "test_wsl_process.WslProcessTests.test_export_failure_does_not_erase_termination_evidence"
+        ],
+        [
+          "test_identity_is_pure_and_freezes_supervisor",
+          "test_wsl_process.WslProcessTests.test_identity_is_pure_and_freezes_supervisor"
+        ],
+        [
+          "test_input_allowlist_and_nonpositive_limits",
+          "test_wsl_process.WslProcessTests.test_input_allowlist_and_nonpositive_limits"
+        ],
+        [
+          "test_large_start_and_export_use_bounded_startup_timeout",
+          "test_wsl_process.WslProcessTests.test_large_start_and_export_use_bounded_startup_timeout"
+        ],
+        [
+          "test_transport_failure_preserves_unknown_outcome",
+          "test_wsl_process.WslProcessTests.test_transport_failure_preserves_unknown_outcome"
+        ],
+        [
+          "test_unconfirmed_guest_is_not_exported",
+          "test_wsl_process.WslProcessTests.test_unconfirmed_guest_is_not_exported"
+        ],
+        [
+          "test_wrong_nonce_response_is_not_accepted",
+          "test_wsl_process.WslProcessTests.test_wrong_nonce_response_is_not_accepted"
+        ],
+        [
+          "test_control_can_cancel_a_real_silent_launcher",
+          "test_wsl_readiness.WslReadinessTests.test_control_can_cancel_a_real_silent_launcher"
+        ],
+        [
+          "test_failure_is_known_not_started",
+          "test_wsl_readiness.WslReadinessTests.test_failure_is_known_not_started"
+        ],
+        [
+          "test_fixed_probe_has_separate_startup_budget",
+          "test_wsl_readiness.WslReadinessTests.test_fixed_probe_has_separate_startup_budget"
+        ]
+      ]
+    },
+    {
+      "id": "source-bundle-te10-final",
+      "source_stage": "final_source",
+      "note_ko": "실제 TE10 1.0/0.75 mm 두 격자 준비/계산/후처리/원문 결과 재열기. 일반 수렴 수용은 아님.",
+      "log": {
+        "path": "Code/.local/source-bundle-te10-final.log",
+        "bytes": 782,
+        "sha256": "60022afea56d0d40e0dcf0b0518d725ca767a16fb30f25242c6136d985ad988c",
+        "file_modified_at_utc": "2026-11-16T21:11:51.630107+00:00"
+      },
+      "time_basis": "로그 mtime는 완료 로그의 파일 기록 시각이다. 시작 시각은 보고서에 있는 경우만 별도 보존한다.",
+      "kind": "workflow",
+      "status": "passed",
+      "report": {
+        "path": "Code/.local/source-bundle-te10-final/report.json",
+        "bytes": 8577,
+        "sha256": "a7cd4671671f64d95bd18ac02857816ede5a2659b75133aa29b16d37cc0e8817",
+        "file_modified_at_utc": "2026-11-16T21:11:51.630107+00:00"
+      },
+      "elapsed_seconds": 113.07799999997951,
+      "started_at": "2026-11-16T21:09:58.560546+00:00",
+      "finished_at": "2026-11-16T21:11:51.630106+00:00"
+    },
+    {
+      "id": "source-bundle-legacy-reopen",
+      "source_stage": "final_source",
+      "note_ko": "6번 실제 189파일 구형 bundle 결과를 복사본에서 native runtime 없이 동일 재열기. 원본 경로와 보고서 bytes는 변경하지 않음.",
+      "log": {
+        "path": "Code/.local/source-bundle-legacy-reopen.log",
+        "bytes": 678,
+        "sha256": "5d08495c16fb186f6c63087648ca72f24985015c625fe5d2d8b57724dcf8671f",
+        "file_modified_at_utc": "2026-11-16T21:11:55.235753+00:00"
+      },
+      "time_basis": "로그 mtime는 완료 로그의 파일 기록 시각이다. 시작 시각은 보고서에 있는 경우만 별도 보존한다.",
+      "kind": "workflow",
+      "status": "passed",
+      "report": {
+        "path": "Code/.local/source-bundle-legacy-reopen/report.json",
+        "bytes": 709,
+        "sha256": "146abfc061c8b1fed067939eed444c1c7f28e2eee12a5a25412a910ebb27782b",
+        "file_modified_at_utc": "2026-11-16T21:11:55.225796+00:00"
+      },
+      "elapsed_seconds": null
+    }
+  ],
+  "final_native_source_matches_current_manifest": true,
+  "native_pcb": {
+    "report": {
+      "path": "Code/.local/source-bundle-power-final/report.json",
+      "bytes": 5674,
+      "sha256": "6d33113da38049849cc54b52d318c75c016b8412d219278701280193b57a5923",
+      "file_modified_at_utc": "2026-11-16T21:07:41.126026+00:00"
+    },
+    "result_file": {
+      "path": "Code/.local/source-bundle-power-final/workspace/solver-artifacts/b8c8e827-ee94-4c28-88a9-54650ded341d/normalized.json",
+      "bytes": 155637,
+      "sha256": "965026dc6d995b71570bb05b421133ab08f6f6d97c8dba85ec05852423603d0d",
+      "file_modified_at_utc": "2026-11-16T21:07:07.831680+00:00"
+    },
+    "fixture_case": "circular_pcb",
+    "material_values": "explicit_test_assumptions",
+    "assessment": {
+      "converged": true,
+      "finite_samples": true,
+      "physics_validated": false,
+      "status": "computed_unvalidated"
+    },
+    "sample_count": 31,
+    "nf2ff_tested": true,
+    "formal_convergence_tested": false,
+    "postprocess_samples_identical": true,
+    "postprocess_radiation_identical": true,
+    "result_restored_without_solver": true,
+    "snapshot_preserved_during_edit": true,
+    "cancellation": {
+      "job_id": "3e841830-38d5-4d7b-83e5-6a47c54ff087",
+      "previous_result_preserved": true,
+      "state": "cancelled",
+      "termination_confirmed": true
+    },
+    "termination": {
+      "evidence": [
+        "40.00",
+        "1085",
+        "42.06"
+      ],
+      "exact_endcriterion_schedule": true,
+      "iterations": 1085,
+      "reported_decay_db": 42.06,
+      "reported_zero_energy": false,
+      "status": "end_criterion_reached",
+      "target_energy_ratio": 0.0001
+    },
+    "states": {
+      "analysis": [
+        "queued",
+        "running",
+        "postprocessing",
+        "completed"
+      ],
+      "postprocess_only": [
+        "queued",
+        "postprocessing",
+        "completed"
+      ],
+      "prepare": [
+        "queued",
+        "preparing",
+        "completed"
+      ]
+    },
+    "analysis_plan": {
+      "artifact": {
+        "bytes": 29179,
+        "sha256": "62d301bd2a756846780fadd080fa0c721a07d0b9aae57cdec0371f6f6e40fba1",
+        "uri": "solver-artifacts/1151b489-8779-477d-a535-0c082bfd5f52/analysis-plan.json"
+      },
+      "content_hash": "aa7009a449694726038995eb83b1bbddc2df4ef848ef7e9bfc44b1c8a08957d7",
+      "plan_id": "f289679f-0282-48a0-a49b-7b3150052267"
+    },
+    "prepared_plan": {
+      "artifact": {
+        "bytes": 13006,
+        "sha256": "1abbaea7efea858cd551753f67ad5cbb57d68184eba1e8286829d60e6aadbfb3",
+        "uri": "solver-artifacts/43dcce97-a245-4eb8-8935-f64ca9696ab7/prepared-plan.json"
+      },
+      "content_hash": "26a5452442e9d24b0612e2d04c328337ed43cbd0fe22ec0be4c0f6b8529d97d3",
+      "prepared_plan_id": "c3131628-cfb1-4583-bc2b-1bdafe45d295"
+    },
+    "snapshot": {
+      "artifact": {
+        "bytes": 9789,
+        "sha256": "1b54324929fab95906a5dd682da6f2375118f595f56210638277ebe4d071a30e",
+        "uri": "projects/pcb-ba00c4ed2d4e/snapshots/4b172718-5ad2-4b68-a92c-71528af54f5e/8739f7a3-adc2-4dbb-bcf6-b6ff8e9a826c/project.json"
+      },
+      "canonical_version": "rfad.canonical/1.0",
+      "content_hash": "5067994d03ae2489669a8b51becc744204b5c8fdfc51a6968e50cbed270f0d2b",
+      "description": "Explicit synthetic native interface test; not an IFA or measured material reference; source-bundle execution coverage only, not new physical validation",
+      "project_id": "c9b29ef0-4784-4693-b241-100569f478a3",
+      "revision_id": "4b172718-5ad2-4b68-a92c-71528af54f5e",
+      "schema_version": "rfad.project/0.5",
+      "sealed_at": 1794863171.5041823,
+      "snapshot_id": "8739f7a3-adc2-4dbb-bcf6-b6ff8e9a826c",
+      "validation_state": "not_evaluated"
+    },
+    "power_balance": {
+      "absolute_power_w": null,
+      "analysis_plan_id": "f289679f-0282-48a0-a49b-7b3150052267",
+      "fabrication_validated": false,
+      "frequencies": [
+        {
+          "accepted_power_w_s2": 2.775492669032129e-29,
+          "conductor_loss_w_s2": 1.1752701984773777e-31,
+          "dielectric_components": [
+            {
+              "entity_id": "7e577e9c-2e23-4f14-a23f-9dfca243edbb",
+              "loss_w_s2": 1.4048028857781485e-31
+            }
+          ],
+          "dielectric_loss_w_s2": 1.4048028857781485e-31,
+          "frequency_hz": 10000000000.0,
+          "incident_power_w_s2": 1.0029040435057644e-28,
+          "independent_absorption_power_w_s2": 2.580073084255526e-31,
+          "inferred_loss_w_s2": 1.41010816767799e-31,
+          "radiated_power_w_s2": 2.7613915873553493e-29,
+          "reflected_power_w_s2": 7.253547766025515e-29,
+          "relative_residual": -0.004215341404542519,
+          "residual_w_s2": -1.1699649165775362e-31,
+          "sheet_components": [
+            {
+              "entity_id": "481935f1-4adf-470b-a4cf-89833e18243d",
+              "loss_w_s2": 1.2768055106775783e-32
+            },
+            {
+              "entity_id": "72557e12-bc9f-4be2-a7de-8098c8514e81",
+              "loss_w_s2": 4.136628499813024e-32
+            },
+            {
+              "entity_id": "b8d6bae3-e3df-4f80-8895-749278d60c74",
+              "loss_w_s2": 6.339267974283174e-32
+            }
+          ],
+          "sheet_loss_w_s2": 1.1752701984773777e-31,
+          "status": "within_initial_numerical_budget",
+          "via_components": [],
+          "via_loss_w_s2": 0.0
+        }
+      ],
+      "full_energy_closure": "within_initial_numerical_budget",
+      "integration": {
+        "displacement_current": "reactive_real_work_zero_for_completed_fourier_spectrum",
+        "frequency_audits": [
+          {
+            "assigned_volume_work_w_s2": 1.4048028857781485e-31,
+            "material_current_max_mixed_relative_error": 1.7278979887031825e-06,
+            "volume_work_w_s2": 1.4048028857781487e-31
+          }
+        ],
+        "method": "yee_edge_e_j_and_sheet_e_roth",
+        "partition_method": "quarter_cell_volume_and_native_sheet_override/0.1",
+        "pml_excluded": true,
+        "rotH_timestamp_correction": "exp(-j*pi*f*dt)/cos(pi*f*dt)",
+        "sheet_coefficient_model": "native_ade_overrides_ec_g_c",
+        "sheet_edge_counts": [
+          49,
+          42,
+          43
+        ],
+        "sheet_material_current_excluded": true,
+        "source_resistor_excluded": true,
+        "via_edge_counts": [],
+        "via_resolution": [],
+        "volume_material_averaging": "native_quarter_cell_material_only"
+      },
+      "max_relative_residual": 0.03,
+      "measurement_validated": false,
+      "physics_validated": false,
+      "power_unit": "W*s^2",
+      "recording": {
+        "dump_mode": 0,
+        "dump_types": [
+          10,
+          12,
+          13
+        ],
+        "estimated_field_bytes": 441000,
+        "frequency_hz": [
+          10000000000.0
+        ],
+        "method": "yee_edge_e_j_and_sheet_e_roth",
+        "primitive_start_mm": [
+          -8.375,
+          -8.375,
+          -0.375
+        ],
+        "primitive_stop_mm": [
+          8.375,
+          8.375,
+          1.36105
+        ],
+        "schema": "rfad.pcb-loss-recording/0.1",
+        "start_indices": [
+          23,
+          23,
+          23
+        ],
+        "start_mm": [
+          -8.5,
+          -8.5,
+          -0.5
+        ],
+        "stop_indices": [
+          57,
+          57,
+          27
+        ],
+        "stop_mm": [
+          8.5,
+          8.5,
+          1.4814
+        ],
+        "volume_conductor_supported": false
+      },
+      "schema": "rfad.pcb-power-balance/0.1"
+    },
+    "radiation_summary": {
+      "absolute_power_w": null,
+      "frequency_hz": [
+        10000000000.0
+      ],
+      "metrics": [
+        {
+          "absolute_power_w": null,
+          "accepted_power_w_s2": 2.775492669032129e-29,
+          "directivity_dbi": 1.9191005283439626,
+          "directivity_linear": 1.5556434073722267,
+          "frequency_hz": 10000000000.0,
+          "gain_dbi": 1.8969796570466304,
+          "gain_linear": 1.5477398538906932,
+          "incident_power_w_s2": 1.0029040435057644e-28,
+          "normalization": "pulse_fourier_spectrum_common_squared_time_scale",
+          "physics_validated": false,
+          "power_balance_status": "nonnegative_loss",
+          "radiated_power_w_s2": 2.7613915873553493e-29,
+          "radiation_efficiency": 0.9949194311215035,
+          "realized_gain_dbi": -3.682213320402614,
+          "realized_gain_linear": 0.4283301723489149
+        }
+      ],
+      "physics_validated": false,
+      "power_unit": "W*s^2",
+      "profile": "rfad.pcb-radiation/0.1"
+    },
+    "raw_manifest": {
+      "analysis_plan_hash": "aa7009a449694726038995eb83b1bbddc2df4ef848ef7e9bfc44b1c8a08957d7",
+      "analysis_plan_id": "f289679f-0282-48a0-a49b-7b3150052267",
+      "complete": true,
+      "execution": {
+        "command": [
+          "/home/tracewave/rfad-runtime/openems/0.37.0/bin/openEMS",
+          "pcb.xml",
+          "--engine=multithreaded",
+          "--numThreads=2",
+          "--dump-statistics",
+          "--exact-endcriteria"
+        ],
+        "elapsed_seconds": 17.902637751999997,
+        "exit_code": 0,
+        "loaded_native_files": [
+          {
+            "bytes": 17560,
+            "path": "/home/tracewave/rfad-runtime/openems/0.37.0/bin/openEMS",
+            "sha256": "a30a6f017d89009044f1120db990d3461ad7010fab50e65d10269b7a5d31fda3"
+          },
+          {
+            "bytes": 876440,
+            "path": "/home/tracewave/rfad-runtime/openems/0.37.0/lib/libCSXCAD.so.0.7.0",
+            "sha256": "5eaa3f6a38d3f14ad372a3ff3602a10287cd59e2714fc77fef46f3ce22738e9c"
+          },
+          {
+            "bytes": 422000,
+            "path": "/home/tracewave/rfad-runtime/openems/0.37.0/lib/libfparser.so.4.5.1",
+            "sha256": "530335e4356f306f40942b106d84655546c6f5c3b3d19fe5dc50f36b8f0528ca"
+          },
+          {
+            "bytes": 1681368,
+            "path": "/home/tracewave/rfad-runtime/openems/0.37.0/lib/libopenEMS.so.0.37.0",
+            "sha256": "b42bbe58305255adca93eefd0d7a616a3bb509606f6067a5c2cf0594a7b612da"
+          },
+          {
+            "bytes": 143456,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkCommonColor-9.3.so.9.3",
+            "sha256": "6bac07682bf278f9c43896b3554552f16e11d4ad8ee98d541158e9698715349f"
+          },
+          {
+            "bytes": 271064,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkCommonComputationalGeometry-9.3.so.9.3",
+            "sha256": "999fb8b2f33515437f37f67bd6e3a4be579ccd24995159cc4473698a836033a1"
+          },
+          {
+            "bytes": 24623856,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkCommonCore-9.3.so.9.3",
+            "sha256": "773bc898e72c27119703b29e2999574e16185dce6bf7aba20a0b2bb859a226b1"
+          },
+          {
+            "bytes": 6492600,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkCommonDataModel-9.3.so.9.3",
+            "sha256": "2ae2397458191bcadbb1118ac42ae54ab6bc5a2f9e66059ad32a38aba96c449c"
+          },
+          {
+            "bytes": 1445872,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkCommonExecutionModel-9.3.so.9.3",
+            "sha256": "2c310cf8674fe3d64d7bb61262711c852e739fcaf17048d363dfaaab2d5147c6"
+          },
+          {
+            "bytes": 192464,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkCommonMath-9.3.so.9.3",
+            "sha256": "7ecc16c06de1e7e4d1a396916695ff1c64fb63b771cf5fe6b3e51123638f8478"
+          },
+          {
+            "bytes": 7321408,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkCommonMisc-9.3.so.9.3",
+            "sha256": "bbd032872c83ef0603a2f36c8b86d0fc56a27d4eee4ac06375752c38d6ca4338"
+          },
+          {
+            "bytes": 146384,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkCommonSystem-9.3.so.9.3",
+            "sha256": "90f10f5cd2087a31f845ba575ff57f13dd650533c50cd29322ff7e54c2711f76"
+          },
+          {
+            "bytes": 275768,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkCommonTransforms-9.3.so.9.3",
+            "sha256": "86ce3511ec5bd9d3a6a013cef5732edc4d1c219db58bb4f720aa85f0911b0fc9"
+          },
+          {
+            "bytes": 133576,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkDICOMParser-9.3.so.9.3",
+            "sha256": "45eea77160026c5b2d7b75a0dde87ba125f11f2ac431b8ecb7b4b1c642669132"
+          },
+          {
+            "bytes": 11795392,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkFiltersCore-9.3.so.9.3",
+            "sha256": "bdec4dbb4f8c36f61a23c81bc2d31579d0108ae0848628a5f7a17e3776a1fb3e"
+          },
+          {
+            "bytes": 5425520,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkFiltersGeneral-9.3.so.9.3",
+            "sha256": "814b2c0933b9b7aa0eb8dba4cda0a4489bcb57dc7d656addf553cce7bff82b4f"
+          },
+          {
+            "bytes": 1763632,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkFiltersGeometry-9.3.so.9.3",
+            "sha256": "fab96d8df2c857e0534e8b0ff26ad29ebd5d00ea362d1c63aa94862c9a065610"
+          },
+          {
+            "bytes": 1064416,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkFiltersHybrid-9.3.so.9.3",
+            "sha256": "88291abca578b7c72ee1b3107f72ebebb69a7456b97300bff03b8e7aca83c956"
+          },
+          {
+            "bytes": 1041096,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkFiltersSources-9.3.so.9.3",
+            "sha256": "e62e94d17e8c8160939bc862925c8518f9cfab307a833ad62b120490414daf4a"
+          },
+          {
+            "bytes": 314120,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkFiltersVerdict-9.3.so.9.3",
+            "sha256": "0da386c05120e100a9d9b557b0edb21df109259e79ff5987f92ac1bcbea60afb"
+          },
+          {
+            "bytes": 677120,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkIOCore-9.3.so.9.3",
+            "sha256": "af81e30f9b18f2fc3824d60074daa7ec0545b47b52817165cef2dcb29a2c1b53"
+          },
+          {
+            "bytes": 2264800,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkIOGeometry-9.3.so.9.3",
+            "sha256": "53374628c3544ca0282b2d573ff5eb1740a39bb566f83161841a6e44a51f6446"
+          },
+          {
+            "bytes": 2014544,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkIOImage-9.3.so.9.3",
+            "sha256": "b2416b8983948ec27e93be01c2316fd8b79acf2ba4804d0f75cdbf760f7549c8"
+          },
+          {
+            "bytes": 837504,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkIOLegacy-9.3.so.9.3",
+            "sha256": "236bf334b146f4ade2677f9c41301235c699cc512ddaa50ea25c722bb616cb2a"
+          },
+          {
+            "bytes": 151320,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkIOPLY-9.3.so.9.3",
+            "sha256": "c81c41e717647e37037a4abf278e409909d8cb91a3e1bd28d935d5acdcad4ca2"
+          },
+          {
+            "bytes": 1367872,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkIOXML-9.3.so.9.3",
+            "sha256": "d2399c6825b90772d14b64f3094645c983dfa14bbb35e05911d7e80376ef6b5f"
+          },
+          {
+            "bytes": 133504,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkIOXMLParser-9.3.so.9.3",
+            "sha256": "af408342ad40a5969f2f5135eb5ce035acddbca4f6e9335bb85ae8403a206fc3"
+          },
+          {
+            "bytes": 2338464,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkImagingCore-9.3.so.9.3",
+            "sha256": "ee48b17483281a4bf08b69e9a9c4d904bfb6df8392d3f61ef77cdebfcfbceba7"
+          },
+          {
+            "bytes": 291024,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkImagingSources-9.3.so.9.3",
+            "sha256": "29aa4387c52bbd105ca7cb4ecc0956004d4b0ec927b17c9d2ef2420cf3daeaf5"
+          },
+          {
+            "bytes": 2927008,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkRenderingCore-9.3.so.9.3",
+            "sha256": "16747b2b34346e89f305a85562762bbbea2a39bce650d3ba8e72d5aff0aba8fb"
+          },
+          {
+            "bytes": 66136,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkdoubleconversion-9.3.so.9.3",
+            "sha256": "86ef3bc64a4585150742a45c61ca50a40769f8158e4807ec14762d96564bdff8"
+          },
+          {
+            "bytes": 191840,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkexpat-9.3.so.9.3",
+            "sha256": "5425609897598ad4f5555d47733fd3f1abeea72f45ca91ebc8ee38dce51c3063"
+          },
+          {
+            "bytes": 186432,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkfmt-9.3.so.9.3",
+            "sha256": "0a0d4dc381094aeefdbc6949fe85957122b3a795c30d42fda7f6c22c80563e81"
+          },
+          {
+            "bytes": 448816,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkjpeg-9.3.so.9.3",
+            "sha256": "542fa2978526919d76847c5ac462f2e6aeb148525087fcac45330bc082298064"
+          },
+          {
+            "bytes": 25120,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkkissfft-9.3.so.9.3",
+            "sha256": "85a266f98e46bbeeac19adb2dcc767659bbcbacbd8b40f07837ed507eb347580"
+          },
+          {
+            "bytes": 94928,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkloguru-9.3.so.9.3",
+            "sha256": "676c3a734a88cdf6c4dc02db6818d207aa57c1379184dc509f079dcecb1cfcd1"
+          },
+          {
+            "bytes": 151192,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtklz4-9.3.so.9.3",
+            "sha256": "12f5da7acf6332b22016f80588f570cc7a8bd063d27007c0a6d909941543e378"
+          },
+          {
+            "bytes": 187424,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtklzma-9.3.so.9.3",
+            "sha256": "1c2be76537e2f83d1c084e2a2b9cecb5e36a56017a80de088f6ed3d2bad67e0d"
+          },
+          {
+            "bytes": 742848,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkmetaio-9.3.so.9.3",
+            "sha256": "34e92b1abf44adddf371e469b4a1ce9cbf3ad458459b8ed7fe5e92ca11f0a78a"
+          },
+          {
+            "bytes": 269376,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkpng-9.3.so.9.3",
+            "sha256": "6c870d18ac0d2c7c327332dd35c1e88a1688264b58595722518b36043572f1f3"
+          },
+          {
+            "bytes": 275696,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkpugixml-9.3.so.9.3",
+            "sha256": "8380f2f3b5289c092c63f03b8b2062a78e04d03405ce4e4a35669902874b875a"
+          },
+          {
+            "bytes": 415408,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtksys-9.3.so.9.3",
+            "sha256": "8a2eea00e5bdf08943861c16891b12745fbb7d03c41d9e3273834426783710af"
+          },
+          {
+            "bytes": 516168,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtktiff-9.3.so.9.3",
+            "sha256": "5034a77b99f3682fe2abe87d27ebcd35d1c8fed7ac73a41379707421dbdaecea"
+          },
+          {
+            "bytes": 180840,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkverdict-9.3.so.9.3",
+            "sha256": "eb8e891567ea72f8bb44119b0767728b7bb5effefed6ef25d54cda932d1e1634"
+          },
+          {
+            "bytes": 109720,
+            "path": "/home/tracewave/rfad-runtime/vtk/9.3.1/install/lib/libvtkzlib-9.3.so.9.3",
+            "sha256": "a728827b037485ce67bbe310246e5bc654d8f71e500219d9102fa8638a70b80e"
+          }
+        ],
+        "native_input_sha256": "6a466bf7c545cdcd03337b1d2c4aaf647616dae8a2d3db827430b9adf970b1fd",
+        "statistics": {
+          "iterations": 1085,
+          "native_cells": 341172,
+          "raw_values": [
+            341172.0,
+            9.505191550212967e-13,
+            1085.0,
+            1.031313283198107e-09,
+            15.091743,
+            24528089.30022198
+          ],
+          "timestep_seconds": 9.505191550212967e-13
+        },
+        "termination": {
+          "evidence": [
+            "40.00",
+            "1085",
+            "42.06"
+          ],
+          "exact_endcriterion_schedule": true,
+          "iterations": 1085,
+          "reported_decay_db": 42.06,
+          "reported_zero_energy": false,
+          "status": "end_criterion_reached",
+          "target_energy_ratio": 0.0001
+        }
+      },
+      "files": [
+        {
+          "bytes": 5106,
+          "media_type": "text/plain",
+          "path": "output/raw/port_ut_1",
+          "role": "raw/port_ut_1",
+          "sha256": "dc9c18155415e19345dd8d94fcea2e13c4e5d3387f0e77cd50b605eebbb7b41d"
+        },
+        {
+          "bytes": 5127,
+          "media_type": "text/plain",
+          "path": "output/raw/port_it_1",
+          "role": "raw/port_it_1",
+          "sha256": "8de94900b9eb32a73c7771d060590464323d285e3cb5a0eeac6100cfcafa9abd"
+        },
+        {
+          "bytes": 207,
+          "media_type": "text/plain",
+          "path": "output/raw/openEMS_stats.txt",
+          "role": "raw/openEMS_stats.txt",
+          "sha256": "ebe82ac6fe366c6d324b46726f41face9b904441a4213701572df0fdad7ba74e"
+        },
+        {
+          "bytes": 135,
+          "media_type": "text/plain",
+          "path": "output/raw/openEMS_run_stats.txt",
+          "role": "raw/openEMS_run_stats.txt",
+          "sha256": "fb983ddb6f907c8d106d0c7387e5088df3595a5d508fc6340c9cab9acfd64108"
+        },
+        {
+          "bytes": 1843,
+          "media_type": "text/plain",
+          "path": "output/raw/native.log",
+          "role": "raw/native.log",
+          "sha256": "16ecf5f99bbb2ed89a49066cc6ca4d7c372f274c8c5deed5eda3732fa6cb289c"
+        },
+        {
+          "bytes": 17075,
+          "media_type": "application/xml",
+          "path": "output/raw/pcb.xml",
+          "role": "raw/pcb.xml",
+          "sha256": "6a466bf7c545cdcd03337b1d2c4aaf647616dae8a2d3db827430b9adf970b1fd"
+        },
+        {
+          "bytes": 60616,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_E_0.h5",
+          "role": "raw/pcb_nf2ff_E_0.h5",
+          "sha256": "1b03c37d28bdfb04e17d0db92cb9467fc0372f4ef36326fc4b900af01cd37f7b"
+        },
+        {
+          "bytes": 60616,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_E_1.h5",
+          "role": "raw/pcb_nf2ff_E_1.h5",
+          "sha256": "96ab92b5f1736ce315d7b887d26cc50a8bbf526ab45ae67f34f02e800ac2b3f6"
+        },
+        {
+          "bytes": 60616,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_E_2.h5",
+          "role": "raw/pcb_nf2ff_E_2.h5",
+          "sha256": "9473bd9aadb763e85c764a21cf047706fcfbd8dc2a7a89a32e1deef47df45799"
+        },
+        {
+          "bytes": 60616,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_E_3.h5",
+          "role": "raw/pcb_nf2ff_E_3.h5",
+          "sha256": "ae1f6e96129f80beaf0f3ea54c764e2b69aa6e898d04d0f4cefe183c6294adfd"
+        },
+        {
+          "bytes": 103072,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_E_4.h5",
+          "role": "raw/pcb_nf2ff_E_4.h5",
+          "sha256": "3d0398cc524b9268bc241e956977d7014ba3ab21bc3fc3645ce4a9cbe8cfb62b"
+        },
+        {
+          "bytes": 103072,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_E_5.h5",
+          "role": "raw/pcb_nf2ff_E_5.h5",
+          "sha256": "0c466f632f8806fcc9bc054192e8bbe8c23d381f678f7c9ed8f245741105bd35"
+        },
+        {
+          "bytes": 60616,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_H_0.h5",
+          "role": "raw/pcb_nf2ff_H_0.h5",
+          "sha256": "347e1d7c2a3339ab0755f2bdbcd54527b3c6b2f5988e7133daea10854d499def"
+        },
+        {
+          "bytes": 60616,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_H_1.h5",
+          "role": "raw/pcb_nf2ff_H_1.h5",
+          "sha256": "857a83d614fbf61297e48d1f50106652fdf8738238e9e88494191346627d30df"
+        },
+        {
+          "bytes": 60616,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_H_2.h5",
+          "role": "raw/pcb_nf2ff_H_2.h5",
+          "sha256": "7d65892c6bf1af9b9f7497170d8b6e404a79b3dd3bcfe88b8cc7763d5ddb7d98"
+        },
+        {
+          "bytes": 60616,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_H_3.h5",
+          "role": "raw/pcb_nf2ff_H_3.h5",
+          "sha256": "3c77e2823b24e84e2b467b5fe720307f8ae828e2e1bd6ccffedade05068c48fd"
+        },
+        {
+          "bytes": 103072,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_H_4.h5",
+          "role": "raw/pcb_nf2ff_H_4.h5",
+          "sha256": "894dbfd202b9cb4b37be4fdedd7d7e9998f71ba971e606accfc93ca93c34c38e"
+        },
+        {
+          "bytes": 103072,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_nf2ff_H_5.h5",
+          "role": "raw/pcb_nf2ff_H_5.h5",
+          "sha256": "0152eb805611ab6694a7ded1331525942e67c7218f2e8c059553cebffeff4bf7"
+        },
+        {
+          "bytes": 160768,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_loss_E.h5",
+          "role": "raw/pcb_loss_E.h5",
+          "sha256": "381797217ae5415473a35237528ba89c2ef98b31bc65813713812f23636d87eb"
+        },
+        {
+          "bytes": 160768,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_loss_J.h5",
+          "role": "raw/pcb_loss_J.h5",
+          "sha256": "8438dd72484a596cccb641841bca692478739194a66a9e50c409f81ad9281b56"
+        },
+        {
+          "bytes": 160768,
+          "media_type": "text/plain",
+          "path": "output/raw/pcb_loss_rotH.h5",
+          "role": "raw/pcb_loss_rotH.h5",
+          "sha256": "f54f4297659110ee404e67fcadce690152335ffb3cac339ad3061870caf3a1a3"
+        }
+      ],
+      "prepared_plan_hash": "26a5452442e9d24b0612e2d04c328337ed43cbd0fe22ec0be4c0f6b8529d97d3",
+      "prepared_plan_id": "c3131628-cfb1-4583-bc2b-1bdafe45d295",
+      "schema": "rfad.openems-raw/0.1"
+    },
+    "pth_loss_coverage": false,
+    "coverage_note": "한 유전체 E/J 체적 및 세 도체 sheet E/rotH 손실 분기, 한 주파수 NF2FF. via_components는 비어 있어 PTH RF 검증으로 확대하지 않는다."
+  },
+  "native_te10": {
+    "status": "passed",
+    "elapsed_seconds": 113.07799999997951,
+    "started_at": "2026-11-16T21:09:58.560546+00:00",
+    "finished_at": "2026-11-16T21:11:51.630106+00:00",
+    "formal_convergence_tested": false,
+    "grid_comparison": {
+      "metrics": {
+        "max_grid_impedance_relative_delta": 0.003112996956515394,
+        "max_grid_transmission_amplitude_delta": 1.7403728244325123e-05
+      },
+      "passed": true
+    },
+    "result_open_after_restart_identical": true,
+    "cases": [
+      {
+        "grid_mm": 1.0,
+        "assessment": {
+          "metrics": {
+            "max_group_delay_relative_error": 0.0010704408812629573,
+            "max_impedance_relative_error": 0.006161201937818015,
+            "max_reflection_amplitude": 0.0030716618783026366,
+            "max_transmission_amplitude_error": 1.9406064992066874e-05
+          },
+          "passed": true
+        },
+        "analysis_plan": {
+          "artifact": {
+            "bytes": 17291,
+            "sha256": "7c5e50cafd575463d43f3930c800046c44f2b8474cc30df7c667d33e227f2f62",
+            "uri": "solver-artifacts/4fddeb27-5181-4290-a533-bf31010f7f4d/analysis-plan.json"
+          },
+          "content_hash": "c6aed2ce980b9faab9e5e57638226b30e2ee635b001c0821c3eca374682d1afd",
+          "plan_id": "08fc22e9-702e-4fae-acfa-292ae9c07d18"
+        },
+        "prepared_plan": {
+          "artifact": {
+            "bytes": 12893,
+            "sha256": "27d837823ff5680c1bdbf8be21d78c7481236779a98d171af8d4a482d1d79527",
+            "uri": "solver-artifacts/974f5337-2bdf-4973-8188-6f233fa90d9f/prepared-plan.json"
+          },
+          "content_hash": "3935a9e1bc7bc5f5f011377331bfca5669d29601b31ee331522aeaff0ef6d578",
+          "prepared_plan_id": "3abdf1f4-cdaf-4451-8565-9c1e81a27a83"
+        },
+        "result": {
+          "bytes": 127885,
+          "sha256": "298c09e6c1c610313b47f464f0c8978c4d5c96d4baf779a002abe8f7385a8883",
+          "uri": "solver-artifacts/5f448112-98c2-424a-913f-ccda5a1ddd55/normalized.json"
+        },
+        "termination": {
+          "evidence": [
+            "70.00",
+            "4305",
+            "71.24"
+          ],
+          "exact_endcriterion_schedule": true,
+          "iterations": 4305,
+          "reported_decay_db": 71.24,
+          "reported_zero_energy": false,
+          "status": "end_criterion_reached",
+          "target_energy_ratio": 1e-07
+        },
+        "postprocess_samples_identical": true,
+        "postprocess_raw_manifest_identical": true,
+        "qt_found": false
+      },
+      {
+        "grid_mm": 0.75,
+        "assessment": {
+          "metrics": {
+            "max_group_delay_relative_error": 0.0006512293749496578,
+            "max_impedance_relative_error": 0.0051522072341474425,
+            "max_reflection_amplitude": 0.0025703590211171383,
+            "max_transmission_amplitude_error": 1.9910594260985626e-05
+          },
+          "passed": true
+        },
+        "analysis_plan": {
+          "artifact": {
+            "bytes": 17293,
+            "sha256": "de6498384cde5306577c11de8621cf86b71810b68724bb626bd12741f148258c",
+            "uri": "solver-artifacts/e76d6a29-3c6e-4f24-a724-a1dc9abf70d7/analysis-plan.json"
+          },
+          "content_hash": "dfa43dde65970ba7069508505aff6374cdcf7fc1ef16be66662170a4305562f2",
+          "plan_id": "963e7bdf-0ed5-4643-8878-5dda9edec49b"
+        },
+        "prepared_plan": {
+          "artifact": {
+            "bytes": 12893,
+            "sha256": "7e1bec9c23eb5d358000a7d0a99cc8d24fc92cc76b159e896c0bc9c44c209665",
+            "uri": "solver-artifacts/2f9ebe97-d64c-435a-b658-4758f75d1bd0/prepared-plan.json"
+          },
+          "content_hash": "f182ec04d19461eeec6192ef8bb57dbf5bf62f91742e3385475794069ed880f2",
+          "prepared_plan_id": "2efb7f37-b6e3-4574-8182-1184e5d21ec9"
+        },
+        "result": {
+          "bytes": 132094,
+          "sha256": "6a91a2d1bcbe995872fccc394bad802179ee0e87b8b6a80bee37a7707e084520",
+          "uri": "solver-artifacts/9d927641-bbdd-43ae-aaa1-971c5b0363fc/normalized.json"
+        },
+        "termination": {
+          "evidence": [
+            "70.00",
+            "6003",
+            "71.28"
+          ],
+          "exact_endcriterion_schedule": true,
+          "iterations": 6003,
+          "reported_decay_db": 71.28,
+          "reported_zero_energy": false,
+          "status": "end_criterion_reached",
+          "target_energy_ratio": 1e-07
+        },
+        "postprocess_samples_identical": true,
+        "postprocess_raw_manifest_identical": true,
+        "qt_found": false
+      }
+    ]
+  },
+  "native_cad": {
+    "report": {
+      "path": "Code/.local/source-bundle-cad-frozen-report.json",
+      "bytes": 33804,
+      "sha256": "777eaea38aa469ef47e250aa89b635e729523599318ff90a6c93c68e00054cc1",
+      "file_modified_at_utc": "2026-11-16T21:07:00.628676+00:00"
+    },
+    "cases": [
+      {
+        "test": "test_real_staged_region_hole_pads_and_pth_preserve_source",
+        "job_id": "690f07b1-52aa-4130-9b91-7003c119d44b",
+        "artifacts": [
+          {
+            "artifact_id": "1f425063-b3ba-4306-a1a8-16dbd144a553",
+            "bytes": 86250,
+            "media_type": "model/step",
+            "producer": "rfad.cad/0.1",
+            "profile_id": "rfad.step.mechanical/0.1",
+            "role": "step",
+            "run_id": "bebcd29a-6275-47f6-85b5-8290d46988ae",
+            "sha256": "3077b1399773202de050a560d0ae94e6601687574f098bc327284c7acc27f324",
+            "snapshot_id": "3beb4d71-897d-4278-bfd3-e47ce52b0c51",
+            "status": "generated_unverified",
+            "uri": "projects/CAD 한글 교환 검증/artifacts/bebcd29a-6275-47f6-85b5-8290d46988ae/model.step"
+          },
+          {
+            "artifact_id": "8d6b9895-c0ab-4eda-a65f-6f1fbff5f819",
+            "bytes": 20224,
+            "media_type": "application/vnd.opencascade.brep",
+            "producer": "rfad.cad/0.1",
+            "profile_id": "rfad.step.mechanical/0.1",
+            "role": "brep",
+            "run_id": "bebcd29a-6275-47f6-85b5-8290d46988ae",
+            "sha256": "deded881da614a9d6b13d26fdff607d3be291d79755692da6b97bbb55d35f645",
+            "snapshot_id": "3beb4d71-897d-4278-bfd3-e47ce52b0c51",
+            "status": "generated_unverified",
+            "uri": "projects/CAD 한글 교환 검증/artifacts/bebcd29a-6275-47f6-85b5-8290d46988ae/model.brep"
+          },
+          {
+            "artifact_id": "8f298af1-8fdd-4ae4-9292-e41efade39fd",
+            "bytes": 122541,
+            "media_type": "application/json",
+            "producer": "rfad.cad/0.1",
+            "profile_id": "rfad.step.mechanical/0.1",
+            "role": "display_mesh",
+            "run_id": "bebcd29a-6275-47f6-85b5-8290d46988ae",
+            "sha256": "097ae04cd703f0dbcdd802a8f604261e3cb3e3ffb2ee2056e08c81bc4e6fd114",
+            "snapshot_id": "3beb4d71-897d-4278-bfd3-e47ce52b0c51",
+            "status": "generated_unverified",
+            "uri": "projects/CAD 한글 교환 검증/artifacts/bebcd29a-6275-47f6-85b5-8290d46988ae/mesh.json"
+          },
+          {
+            "artifact_id": "5dc469ad-323b-48e4-a11c-ba412ca37def",
+            "bytes": 2496,
+            "media_type": "application/json",
+            "producer": "rfad.cad/0.1",
+            "profile_id": "rfad.step.mechanical/0.1",
+            "role": "validation",
+            "run_id": "bebcd29a-6275-47f6-85b5-8290d46988ae",
+            "sha256": "5d992ca4f1eb25c927787a12d429cb4b503b2d841eab5be92bbc4639a848898a",
+            "snapshot_id": "3beb4d71-897d-4278-bfd3-e47ce52b0c51",
+            "status": "generated_unverified",
+            "uri": "projects/CAD 한글 교환 검증/artifacts/bebcd29a-6275-47f6-85b5-8290d46988ae/validation.json"
+          },
+          {
+            "artifact_id": "f5606220-6d11-4ad4-94d0-948b77d3448a",
+            "bytes": 24857,
+            "media_type": "application/json",
+            "producer": "rfad.cad/0.1",
+            "profile_id": "rfad.step.mechanical/0.1",
+            "role": "sidecar",
+            "run_id": "bebcd29a-6275-47f6-85b5-8290d46988ae",
+            "sha256": "2cff281fc72677c7b8473e19e5e141bb8ab78ff4eb7369b6fe72429380cd5126",
+            "snapshot_id": "3beb4d71-897d-4278-bfd3-e47ce52b0c51",
+            "status": "generated_unverified",
+            "uri": "projects/CAD 한글 교환 검증/artifacts/bebcd29a-6275-47f6-85b5-8290d46988ae/sidecar.json"
+          },
+          {
+            "artifact_id": "89753cb5-92e5-44ca-801b-c1e0e76b7195",
+            "bytes": 8360,
+            "media_type": "application/json",
+            "producer": "rfad.cad/0.1",
+            "profile_id": "rfad.step.mechanical/0.1",
+            "role": "manifest",
+            "run_id": "bebcd29a-6275-47f6-85b5-8290d46988ae",
+            "sha256": "2fe35ed2e2ed198cb9ea9a38294c7ffa2ce3288446b4274fc0e850404159116d",
+            "snapshot_id": "3beb4d71-897d-4278-bfd3-e47ce52b0c51",
+            "status": "generated_unverified",
+            "uri": "projects/CAD 한글 교환 검증/artifacts/bebcd29a-6275-47f6-85b5-8290d46988ae/manifest.json"
+          }
+        ],
+        "source_bundle": {
+          "dynamic_imports": [],
+          "entry_points": [
+            "worker.py"
+          ],
+          "profile": "rfad.source.cad/0.1",
+          "schema": "rfad.source-bundle/0.1",
+          "source_sha256": "f58caa07adb998f09106345e5c2e6ea22cb2479f339f20785b6a0e4840722ea5"
+        },
+        "source_and_missing_preserved": true,
+        "runtime_free_reopen": true,
+        "artifacts_retained_after_test": false
+      },
+      {
+        "test": "test_real_staged_surface_and_embedded_step_inspection",
+        "job_id": "fbbbe5a1-577f-4221-9121-de35539021ed",
+        "artifacts": [
+          {
+            "artifact_id": "785df620-60e1-43f1-b4a2-82f6d3cb47b5",
+            "bytes": 97999,
+            "media_type": "model/step",
+            "producer": "rfad.cad/0.1",
+            "profile_id": "rfad.step.mechanical/0.1",
+            "role": "step",
+            "run_id": "1fff421e-2bdf-4fc7-9ca1-f9e4773db2af",
+            "sha256": "96c242fa948d3be5794a6f941bd2a14b6461788987cd3297501c5478558c01a2",
+            "snapshot_id": "49e78eeb-0907-4394-85a1-569ce45a00b7",
+            "status": "generated_unverified",
+            "uri": "projects/CAD 한글 교환 검증/artifacts/1fff421e-2bdf-4fc7-9ca1-f9e4773db2af/model.step"
+          },
+          {
+            "artifact_id": "18abe1ab-aed8-4444-8c3d-30b6f278679c",
+            "bytes": 19544,
+            "media_type": "application/vnd.opencascade.brep",
+            "producer": "rfad.cad/0.1",
+            "profile_id": "rfad.step.mechanical/0.1",
+            "role": "brep",
+            "run_id": "1fff421e-2bdf-4fc7-9ca1-f9e4773db2af",
+            "sha256": "2508afa3d949b66397d05a160228dee43b48734c88384a5db7b572bcb58deab7",
+            "snapshot_id": "49e78eeb-0907-4394-85a1-569ce45a00b7",
+            "status": "generated_unverified",
+            "uri": "projects/CAD 한글 교환 검증/artifacts/1fff421e-2bdf-4fc7-9ca1-f9e4773db2af/model.brep"
+          },
+          {
+            "artifact_id": "7aba7bdb-2c6f-411e-9794-cdf94cb51b9d",
+            "bytes": 49047,
+            "media_type": "application/json",
+            "producer": "rfad.cad/0.1",
+            "profile_id": "rfad.step.mechanical/0.1",
+            "role": "display_mesh",
+            "run_id": "1fff421e-2bdf-4fc7-9ca1-f9e4773db2af",
+            "sha256": "87cd014c1bc9906ac6b79ac2b1a718db54f6edf2bac3b006e3f8aa3d708ff91a",
+            "snapshot_id": "49e78eeb-0907-4394-85a1-569ce45a00b7",
+            "status": "generated_unverified",
+            "uri": "projects/CAD 한글 교환 검증/artifacts/1fff421e-2bdf-4fc7-9ca1-f9e4773db2af/mesh.json"
+          },
+          {
+            "artifact_id": "66eec86c-841f-442b-bf7d-eff8046e80a2",
+            "bytes": 3137,
+            "media_type": "application/json",
+            "producer": "rfad.cad/0.1",
+            "profile_id": "rfad.step.mechanical/0.1",
+            "role": "validation",
+            "run_id": "1fff421e-2bdf-4fc7-9ca1-f9e4773db2af",
+            "sha256": "f6b1a3473311a927fdd7796582dc6f88595e8f41a9a7c2ef708d05a4520c8540",
+            "snapshot_id": "49e78eeb-0907-4394-85a1-569ce45a00b7",
+            "status": "generated_unverified",
+            "uri": "projects/CAD 한글 교환 검증/artifacts/1fff421e-2bdf-4fc7-9ca1-f9e4773db2af/validation.json"
+          },
+          {
+            "artifact_id": "286eb1c5-a6fe-40ac-8d5b-c74949c7cf3f",
+            "bytes": 51081,
+            "media_type": "application/json",
+            "producer": "rfad.cad/0.1",
+            "profile_id": "rfad.step.mechanical/0.1",
+            "role": "sidecar",
+            "run_id": "1fff421e-2bdf-4fc7-9ca1-f9e4773db2af",
+            "sha256": "fa21552871a9d511a382d668c7d60fbff6d57a590aad6317adfe5b9cc7d191c0",
+            "snapshot_id": "49e78eeb-0907-4394-85a1-569ce45a00b7",
+            "status": "generated_unverified",
+            "uri": "projects/CAD 한글 교환 검증/artifacts/1fff421e-2bdf-4fc7-9ca1-f9e4773db2af/sidecar.json"
+          },
+          {
+            "artifact_id": "cac7436b-752c-4ee8-8f33-143eb638ca05",
+            "bytes": 8317,
+            "media_type": "application/json",
+            "producer": "rfad.cad/0.1",
+            "profile_id": "rfad.step.mechanical/0.1",
+            "role": "manifest",
+            "run_id": "1fff421e-2bdf-4fc7-9ca1-f9e4773db2af",
+            "sha256": "098403318ead0fcbaaef4bc77393cb90f2da783440d7dbbf1351dd9b2bdd788f",
+            "snapshot_id": "49e78eeb-0907-4394-85a1-569ce45a00b7",
+            "status": "generated_unverified",
+            "uri": "projects/CAD 한글 교환 검증/artifacts/1fff421e-2bdf-4fc7-9ca1-f9e4773db2af/manifest.json"
+          }
+        ],
+        "source_bundle": {
+          "dynamic_imports": [],
+          "entry_points": [
+            "worker.py"
+          ],
+          "profile": "rfad.source.cad/0.1",
+          "schema": "rfad.source-bundle/0.1",
+          "source_sha256": "f58caa07adb998f09106345e5c2e6ea22cb2479f339f20785b6a0e4840722ea5"
+        },
+        "external_step_inspection": {
+          "preview_token": "81134df4-11e2-43b4-86ed-a528ed104fae",
+          "name": "기하 시험 상자.step",
+          "bbox_mm": [
+            -1.0,
+            -1.5,
+            -2.0,
+            1.0,
+            1.5,
+            2.0
+          ],
+          "center_mm": [
+            8.384496800554569e-18,
+            0.0,
+            3.700743415417189e-17
+          ],
+          "faces": 6,
+          "material_id": null,
+          "sha256": "c286a39a114b6a01fc1dce6bec2adb044760de8065e885f31a3cd2dbb2ec6ddf",
+          "shape": "single_solid",
+          "solid_count": 1,
+          "thickness_mm": 4.0,
+          "unit": "mm",
+          "valid_brep": true,
+          "volume_mm3": 23.999999999999996
+        },
+        "source_and_missing_preserved": true,
+        "runtime_free_reopen": true,
+        "artifacts_retained_after_test": false
+      }
+    ],
+    "retention_note": "실제 CAD 시험 TemporaryDirectory는 종료 후 제거한다. 여기에는 관측한 artifact 식별과 보고서만 보존하며 실파일이 현재 남아 있다고 주장하지 않는다.",
+    "arc_ifa": "source-bundle-arc-ifa-final 1개 시험 안의 실제 원호/IFA 두 사례는 별도 기록."
+  },
+  "legacy_reopen": {
+    "status": "passed",
+    "old_report_sha256": "3071fb4b38c824b8156c10339d35fa7bfcec74ce0f5779f556455cac3c62cd16",
+    "old_report": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\sweep-native-f1d5bb1a8b094b778edf6c2392dd037a\\report.json",
+    "original_source_workspace_read_only": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\sweep-native-f1d5bb1a8b094b778edf6c2392dd037a\\workspace",
+    "copy_workspace": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\source-bundle-legacy-reopen\\workspace",
+    "old_source_files": 189,
+    "old_runtime_descriptor_absent": true,
+    "old_result_identical": true,
+    "native_runtime_configured": false,
+    "physics_validated": false
+  },
+  "claims": {
+    "gui_revalidated": false,
+    "new_physics_validated": false,
+    "fabrication_validated": false,
+    "measurement_validated": false,
+    "formal_general_convergence_validated": false,
+    "independent_ghz_pth_loss_validated": false,
+    "ro4350b_2_percent_criterion_established": false,
+    "reference_source_rewritten": false,
+    "historical_runtime_rewritten": false
+  },
+  "limitations_ko": [
+    "RO4350B 국부 방사 도체 손실 변화 2.788446%로 초기 2% 기준은 미확립이다.",
+    "총 전력 수지/두 격자/종료 조건을 개별 손실이나 제작/실측 정확도 합격으로 확대하지 않는다.",
+    "host profile은 파일 식별 manifest이며 worker와 같은 전체 소스 본문 archive라는 주장을 하지 않는다.",
+    ".local 로그/실행 workspace는 로컬 증거다. 버전 관리되는 JSON에는 해시/관측값/시점을 보존한다."
+  ]
+}

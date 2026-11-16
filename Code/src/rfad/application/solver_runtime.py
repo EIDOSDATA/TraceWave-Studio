@@ -5,6 +5,7 @@ import json
 from pathlib import Path, PurePosixPath
 
 from rfad.application.canonical import canonical_bytes
+from rfad.application import source_bundle
 from rfad.application.solver import RUNTIME_PROFILE
 from rfad.domain.errors import ProjectError
 from rfad.domain.resource_limits import MAX_WORKER_SOURCE_FILES
@@ -26,15 +27,20 @@ class SolverRuntime:
         manifest_data = json.loads((manifest or CODE_ROOT / "runtime_profiles/python-openems-linux-x64.json").read_bytes())
         if audit_data.get("status") != "passed" or audit_data.get("qt_found") is not False or manifest_data.get("qt_allowed") is not False:
             raise ProjectError("E_VERSION", "검증된 Qt 없는 openEMS 설치 명세가 필요합니다.")
-        self.manifest_bytes = canonical_bytes({"schema": "rfad.openems-worker-runtime/0.1", "python_manifest": manifest_data, "native_audit": audit_data})
-        files = [CODE_ROOT / "tools/openems_worker.py", *sorted((CODE_ROOT / "src/rfad").rglob("*.py"))]
-        self.sources = {p.relative_to(CODE_ROOT).as_posix(): p.read_text(encoding="utf-8") for p in files}
-        self.source_bytes = canonical_bytes(self.sources)
-        if len(self.source_bytes) > 4 * 1024 * 1024 or len(files) > MAX_WORKER_SOURCE_FILES:
-            raise ProjectError("E_RESOURCE", "해석 worker 소스 묶음이 상한을 초과했습니다.")
+        try:
+            bundle = source_bundle.build(CODE_ROOT, source_bundle.SOLVER, max_files=MAX_WORKER_SOURCE_FILES)
+        except source_bundle.BundleError as error:
+            raise ProjectError(error.code, str(error)) from error
+        self.sources, self.source_bytes = bundle["sources"], bundle["source_bytes"]
+        self.manifest_bytes = canonical_bytes({"schema": "rfad.openems-worker-runtime/0.1", "python_manifest": manifest_data,
+                                              "native_audit": audit_data, "source_bundle": bundle["source_bundle"]})
         self.identity = {"runtime_profile": RUNTIME_PROFILE, "manifest_sha256": hashlib.sha256(self.manifest_bytes).hexdigest(),
-                         "code_files": [{"path": path, "sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(), "bytes": len(text.encode("utf-8"))} for path, text in self.sources.items()],
+                         "code_files": bundle["code_files"], "source_bundle": bundle["source_bundle"],
                          "transport": transport.identity()}
+        supervisor = next(record for record in bundle["code_files"] if record["path"] == "tools/wsl_supervisor.py")
+        if ("supervisor_sha256" in self.identity["transport"]
+                and self.identity["transport"]["supervisor_sha256"] != supervisor["sha256"]):
+            raise ProjectError("E_VERSION", "전송 supervisor와 봉인된 소스의 실제 바이트가 다릅니다.")
 
 
 def stage_solver_job(journal, runtime, job):
@@ -76,4 +82,9 @@ def stage_solver_job(journal, runtime, job):
         journal.copy_artifact(item["artifact"], target.relative_to(journal.root).as_posix())
         request["input_files"].append({"path": relative, "role": item["role"], "sha256": item["sha256"], "bytes": item["bytes"]})
     (stage / "request.json").write_bytes(canonical_bytes(request))
+    if "source_bundle" in captured["runtime"]:
+        try:
+            source_bundle.verify_stage(stage, captured["runtime"]["source_bundle"], captured["runtime"]["code_files"])
+        except source_bundle.BundleError as error:
+            raise ProjectError(error.code, str(error)) from error
     return stage, request

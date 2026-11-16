@@ -229,6 +229,26 @@ class DesignSweepServiceTests(unittest.TestCase):
                 with self.assertRaises(ProjectError):
                     sweep.application_source_manifest(root)
 
+    def test_legacy_source_profile_remains_readable_but_cannot_resume_under_new_profile(self):
+        """! @brief 같은 소스 해시라도 구형 전체 소스 profile을 새 closure 실행으로 소급하지 않는다."""
+        legacy = deepcopy(sweep.application_source_manifest())
+        legacy["schema"] = "rfad.host-calculation-source/0.1"
+        legacy.pop("source_bundle")
+        with patch.object(sweep, "application_source_manifest", return_value=legacy):
+            identity = self.create()
+            self.service.mutate("sweep.cancel", self.request({"study_id": identity}, mutation=True))
+        before = self.service.journal.read()
+        study = before["sweeps"][identity]
+        encoded = self.service.journal.read_artifact(study["definition"])
+        view = self.read("sweep.get", study_id=identity)
+        self.assertEqual(view["state"], "cancelled")
+        self.assertFalse(view["allowed_actions"]["resume"])
+        self.assertEqual(len(self.read("sweep.page", study_id=identity, offset=0, limit=25)["candidates"]), 3)
+        with self.assertRaises(ProjectError):
+            self.service.mutate("sweep.resume", self.request({"study_id": identity}, mutation=True))
+        self.assertEqual(self.service.journal.read_artifact(study["definition"]), encoded)
+        self.assertEqual(self.service.journal.read(), before)
+
     def test_public_rpc_units_and_unknown_metadata_do_not_mutate(self):
         """! @brief GHz와 MiB 입력 및 API 응답을 실제 RPC 직렬화 경계로 검사한다."""
         request = {"jsonrpc": "2.0", "id": 1, "method": "sweep.context", "params": self.request({})}

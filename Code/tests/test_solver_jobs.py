@@ -81,6 +81,8 @@ class FakeTransport:
         runtime = {"schema": "rfad.openems-runtime-observation/0.1", "python": "test-only", "manifest_sha256": request["runtime"]["manifest_sha256"],
                    "code_files": request["runtime"]["code_files"], "packages": {}, "native_files": [], "loaded_native_files": [], "qt_found": False,
                    "python_executable": {"path": "/fake/python", "sha256": "0" * 64, "bytes": 1}}
+        if "source_bundle" in request["runtime"]:
+            runtime["source_bundle"] = deepcopy(request["runtime"]["source_bundle"])
         if request["phase"] == "prepare":
             package["preparation"], package["files"] = self._prepare(stage, request, runtime)
         else:
