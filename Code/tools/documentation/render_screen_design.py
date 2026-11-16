@@ -47,6 +47,19 @@ class Sheet:
                                points=points, text=text, arrow=arrow,
                                color=color, width=width))
 
+    def endpoint_owner(self, point):
+        """! @brief 흐름의 종점을 도형에 연결하여 DrawIO 이동 시 선을 유지한다."""
+        matches = []
+        for item in self.items:
+            if item["kind"] != "rect" or item["fill"] == "none":
+                continue
+            x, y, w, h = (item[key] for key in ("x", "y", "w", "h"))
+            px, py = point
+            if x <= px <= x+w and y <= py <= y+h:
+                if min(abs(px-x), abs(px-x-w), abs(py-y), abs(py-y-h)) < 0.5:
+                    matches.append((w*h, item))
+        return min(matches, key=lambda pair: pair[0])[1] if matches else None
+
     def write(self, target):
         """! @brief 임베드 그림 대신 실제 도형 셀을 가진 비압축 DrawIO를 기록한다."""
         mxfile = ET.Element("mxfile", host="app.diagrams.net", type="device")
@@ -78,6 +91,14 @@ class Sheet:
                          f"strokeWidth={item['width']};endArrow={'block' if item['arrow'] else 'none'};")
                 cell = ET.SubElement(root, "mxCell", id=item["id"], value=item["text"],
                                      style=style, edge="1", parent="1")
+                if item["arrow"]:
+                    for point, role, prefix in ((points[0], "source", "exit"), (points[-1], "target", "entry")):
+                        owner = self.endpoint_owner(point)
+                        if owner is not None:
+                            cell.set(role, owner["id"])
+                            style += (f"{prefix}X={(point[0]-owner['x'])/owner['w']};"
+                                      f"{prefix}Y={(point[1]-owner['y'])/owner['h']};{prefix}Perimeter=0;")
+                    cell.set("style", style)
                 geo = ET.SubElement(cell, "mxGeometry", relative="1", attrib={"as": "geometry"})
                 for point, role in ((points[0], "sourcePoint"), (points[-1], "targetPoint")):
                     ET.SubElement(geo, "mxPoint", x=str(point[0]), y=str(point[1]), attrib={"as": role})
@@ -267,7 +288,7 @@ def dialogs():
     s.label(840, 172, 690, 50, "D15 / 이름 변경", 25, bold=True)
     s.box(850, 252, 670, 100, "01  현재 객체: 원호 01\n현재 도체층: Top Copper", PALE, 22)
     s.box(850, 380, 670, 70, "02  표시 이름  [주 방사 원호]", size=22)
-    s.box(850, 478, 670, 130, "03  같은 종류 이름과 중복이면 안내\n내부 ID와 수식 변수는 바뀌지 않음\n최초 문헌 / 생성 사본을 덮어쓰지 않음", AMBER, 20)
+    s.box(850, 478, 670, 130, "03  같은 객체 목록 안의 이름 중복 검사\n내부 ID와 수식 변수는 바뀌지 않음\n최초 문헌 / 생성 사본을 덮어쓰지 않음", AMBER, 20)
     s.box(850, 640, 670, 68, "04  상세 식별자  [펼치기 / 복사]", "#F8FAFC", 20)
     s.box(850, 788, 320, 60, "05  변경", BLUE, 20, "white", BLUE)
     s.box(1190, 788, 330, 60, "06  취소", size=20)
@@ -308,8 +329,13 @@ def lifecycle():
     s.edge([(910,300),(910,360),(600,360),(600,420)])
     s.edge([(1010,300),(1010,420)])
     s.edge([(1380,300),(1380,420)])
+    s.edge([(430,485),(400,485),(400,240),(430,240)])
+    s.box(40,420,340,130,"검증 오류: 초안으로 복귀\n수정 후 명시적으로 다시 적용", "white",19)
     s.box(430,670,730,100,"권위 상태 / 영수증 재조회\n개정과 현재 객체 확인 후 초안 대조", "white",22)
     s.edge([(990,550),(990,670)])
+    s.edge([(1160,720),(1184,720),(1184,240),(1210,240)])
+    s.edge([(430,720),(390,720),(390,310),(600,310),(600,300)])
+    s.box(40,650,340,120,"재조회 후 분기\n적용 확인: 저장 필요\n거절 확인: 초안 복귀\n여전히 불명: 잠금 유지",AMBER,18)
     s.box(1210,670,340,100,"저장 완료 / 재열기\n이름 / 출처 / 미정 확인",PALE,20)
     s.edge([(1380,550),(1380,670)])
     s.box(40,820,1510,80,"화면 이동 / 창 닫기: 영향받는 초안에 한해 적용 / 버리기 / 머무르기. 장시간 작업의 실제 취소는 별도 명령.", "white",20)

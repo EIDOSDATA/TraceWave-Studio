@@ -1,6 +1,8 @@
 # TraceWave Studio
 
-PCB RF 패턴 안테나 통합 설계 도구의 저장소입니다. 2026-11-07 사용자가 설계 기준선 3.4를 승인한 뒤 개발 착수를 지시했습니다. GUI를 포함한 제품 코드는 [Code](Code/README.md) 아래에서 개발하며 현재 R0 기반을 구현하고 있습니다. 실제 진행과 미구현 범위는 [개발 상태](Code/docs/development_status.md)를 따릅니다.
+PCB RF 패턴 안테나 통합 설계 도구의 저장소입니다. 2026-11-07 사용자가 설계 기준선 3.4를 승인한 뒤 개발 착수를 지시했습니다. GUI를 포함한 제품 코드는 [Code](Code/README.md) 아래에서 개발하며 현재 R1 내부 검증용 제품을 부분 구현하고 있습니다. 실제 진행과 미구현 범위는 [개발 상태](Code/docs/planning/development_status.md)를 따릅니다.
+
+현재 문서는 [분야별 문서 안내](Code/docs/README.md)에서 찾습니다. [Studio 화면설계서](Code/docs/screen_design/README.md)는 화면별 기능, 입출력, 버튼 동작, 전환/예외와 DrawIO/그림을 함께 관리합니다. 승인 원문, 현재 구현 계약, 분석 자료 및 과거 검증 기록을 구분합니다.
 
 01_Docs와 records는 커밋 `6ebeda156e9d31b893bf69046550f5df9b16dc64`의 승인 기준선으로 보존합니다. 해당 문서의 '착수 전'은 승인 당시 상태입니다. 승인 해시는 그 커밋의 파일을 식별하며 이후의 이 README와 개발 소스를 다시 승인한 해시가 아닙니다.
 

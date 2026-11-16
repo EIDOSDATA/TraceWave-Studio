@@ -4,7 +4,7 @@
 
 이 문서는 Studio의 객체를 읽기 쉬운 이름으로 찾고 수정하는 화면 설계다. 현재 코드 확인 결과와 후속 구현 규칙을 구분한다. 자동 이름 생성, 기판/도형 이름 저장, F2 이름 변경과 병합 바디의 원본 선택 목록은 이 문서 작성만으로 구현되거나 검증된 기능이 아니다.
 
-승인 근거는 [RFAD 05의 선택/접근성 및 2D/3D 화면 계약](../../../01_Docs/05_RFAD_화면과_사용자_경험_설계.md), [RFAD 01의 ADR-011 안정 UUID](../../../01_Docs/01_RFAD_설계_결정과_범위.md)다. 기존 [속성 편집 계약](../editor_contract.md), [저장 계약](../project_persistence.md)과 출처 보존 규칙을 유지한다. 화면 ID는 [화면 전환 시나리오](screen_scenarios.md)를 따른다.
+승인 근거는 [RFAD 05의 선택/접근성 및 2D/3D 화면 계약](../../../01_Docs/05_RFAD_화면과_사용자_경험_설계.md), [RFAD 01의 ADR-011 안정 UUID](../../../01_Docs/01_RFAD_설계_결정과_범위.md)다. 기존 [속성 편집 계약](../features/design/editor_contract.md), [저장 계약](../features/project/project_persistence.md)과 출처 보존 규칙을 유지한다. 화면 ID는 [화면 전환 시나리오](screen_scenarios.md)를 따른다.
 
 ## 1. 현재 상태와 해결할 문제
 
@@ -17,7 +17,7 @@
 | 재료, 적층, net, 포트 | `name`, 속성 편집 지원. 같은 collection의 이름 중복은 거절 | [design.py](../../src/rfad/domain/design.py), [editor.py](../../src/rfad/application/editor.py) | 새 공통 진입점으로 기존 편집 기능 노출 |
 | 기판 | `name` 없음. 트리는 `기판` 고정 표시 | [design.py](../../src/rfad/domain/design.py), [editor.py](../../src/rfad/application/editor.py) | 이름 저장과 편집은 버전이 있는 계약 확장 필요 |
 | 선, 원호, 면, 패드, 비아 | `name` 없음. 트리/참조 선택지 및 캔버스 DTO에 종류와 UUID 앞 8자 표시 | [editor.py의 _object_label](../../src/rfad/application/editor.py), [canvas.py](../../src/rfad/application/canvas.py) | 자동 이름과 사용자 이름 저장, 모든 표시 경로 통일 |
-| 목표 | 목표 모델의 `name`, 별도 목표 편집 화면 | [targets.py](../../src/rfad/domain/targets.py), [목표 편집 계약](../target_editor_contract.md) | 목표 화면의 기존 이름을 재사용. 일반 도형의 별도 별명 생성 금지 |
+| 목표 | 목표 모델의 `name`, 별도 목표 편집 화면 | [targets.py](../../src/rfad/domain/targets.py), [목표 편집 계약](../features/design/target_editor_contract.md) | 목표 화면의 기존 이름을 재사용. 일반 도형의 별도 별명 생성 금지 |
 | CAD 바디 | 원본 ID 목록을 가진 파생 바디. 내부 이름에 ID가 포함될 수 있음 | [bodies.py](../../src/rfad/adapters/cad/bodies.py) | 화면은 원본 이름/병합 관계 표시. 저장된 STEP와 과거 바디 이름은 유지 |
 
 `design.py`는 기판과 형상 필드를 정확히 검사하므로 현재 프로젝트에 임의로 `name`을 추가하면 오류가 된다. GUI 단독 패치로 해결하지 않는다. 현재 쓰기는 `rfad.project/0.4`이며 0.1/0.2/0.3도 읽는다. 후속 구현에서 읽기 호환, 쓰기 버전, API capability와 원본 보존 이관을 함께 정하고 해당 계약 문서를 갱신한다. 기존 파일과 템플릿의 생성 당시 원본 사본은 다시 쓰지 않는다.
@@ -62,6 +62,8 @@
 7. 실행 취소는 해당 객체 생성 또는 이름 변경 한 명령을 되돌린다. 다시 실행은 원래 UUID와 원래 배정 이름을 복원한다. 다른 편집으로 갈라진 redo 분기는 기존 이력 정책을 따른다.
 
 표면층, 외부 환경 부품과 향후 비평면 3D 안테나 객체도 자기 모델의 영속 이름과 UUID를 사용한다. 현재 별도 적층/환경 화면의 이름을 일반 geometry와 중복 저장하지 않는다. 장기 비평면 안테나의 primitive/assembly 계층은 별도 계약 확장으로 정의한다.
+
+현재 적층/환경 확장의 surface/scenario/part 이름 상한은 128자이며 UUID 중복은 차단하지만 같은 이름의 중복은 별도로 차단하지 않는다. 아래 256자/collection 중복 정책은 일반 도형 이름 도입 제안이다. 물리 확장까지 통합할 때는 기존 128자 저장 계약과 중복 이름을 보존한 채 표시 구분 및 schema 호환을 먼저 정하고, 기존 이름을 읽기만 해서 거부하거나 변경하지 않는다.
 
 ## 4. 사용자 이름 입력 규칙
 
@@ -113,7 +115,7 @@
 
 ## 8. 수용 시나리오와 개발 연계
 
-다음은 이후 구현 시 실행할 시험이며 이번 문서 작성의 시험 통과 기록이 아니다. [개발 완료 계획](../completion_plan.md)의 4번과 연결하고, 7번의 다중 결과, 10번 출력 이름, 12번 전체 UX/접근성 검수로 이어간다. 원래 번호와 우선순위를 바꾸지 않는다.
+다음은 이후 구현 시 실행할 시험이며 이번 문서 작성의 시험 통과 기록이 아니다. [개발 완료 계획](../planning/completion_plan.md)의 4번과 연결하고, 7번의 다중 결과, 10번 출력 이름, 12번 전체 UX/접근성 검수로 이어간다. 원래 번호와 우선순위를 바꾸지 않는다.
 
 | ID | 시험 절차 | 수용 조건 |
 | --- | --- | --- |

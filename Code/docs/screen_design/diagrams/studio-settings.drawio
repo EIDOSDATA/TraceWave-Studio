@@ -56,7 +56,7 @@
         <mxCell id="item-18" value="02  표시 이름  [주 방사 원호]" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=white;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=22;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
           <mxGeometry as="geometry" x="850" y="380" width="670" height="70" />
         </mxCell>
-        <mxCell id="item-19" value="03  같은 종류 이름과 중복이면 안내&#10;내부 ID와 수식 변수는 바뀌지 않음&#10;최초 문헌 / 생성 사본을 덮어쓰지 않음" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFF3D6;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=20;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+        <mxCell id="item-19" value="03  같은 객체 목록 안의 이름 중복 검사&#10;내부 ID와 수식 변수는 바뀌지 않음&#10;최초 문헌 / 생성 사본을 덮어쓰지 않음" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFF3D6;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=20;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
           <mxGeometry as="geometry" x="850" y="478" width="670" height="130" />
         </mxCell>
         <mxCell id="item-20" value="04  상세 식별자  [펼치기 / 복사]" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#F8FAFC;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=20;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">

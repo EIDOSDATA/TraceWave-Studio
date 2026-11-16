@@ -6,7 +6,7 @@
 
 상태: partial. 담당 단계: 3/12
 
-ProjectOperations.open은 workspace 안 projects/이름의 create/open/recover와 원본 해시 검사, 서비스 재시작 후 재열기를 제공한다. 0.1/0.2/0.3을 읽으며 기존 원본과 snapshot을 보존하고 변경 복제본만 0.3 새 개정으로 승격하여 변환 기록을 남긴다.
+ProjectOperations.open은 workspace 안 projects/이름의 create/open/recover와 원본 해시 검사, 서비스 재시작 후 재열기를 제공한다. 0.1/0.2/0.3/0.4를 읽으며 기존 원본과 snapshot을 보존하고 변경 복제본만 현재 0.4 새 개정으로 승격하여 변환 기록을 남긴다.
 
 남은 범위:
 
@@ -29,8 +29,8 @@ ProjectOperations.open은 workspace 안 projects/이름의 create/open/recover�
 
 기존 실행/설명 근거:
 
-- [docs/project_persistence.md](../../docs/project_persistence.md)
-- [docs/target_contract.md](../../docs/target_contract.md)
+- [docs/features/project/project_persistence.md](../../docs/features/project/project_persistence.md)
+- [docs/features/design/target_contract.md](../../docs/features/design/target_contract.md)
 
 계약 확인:
 
@@ -62,8 +62,8 @@ expected_revision, command_id, 영수증, 역명령과 새 revision을 journal t
 
 기존 실행/설명 근거:
 
-- [docs/project_persistence.md](../../docs/project_persistence.md)
-- [docs/editor_contract.md](../../docs/editor_contract.md)
+- [docs/features/project/project_persistence.md](../../docs/features/project/project_persistence.md)
+- [docs/features/design/editor_contract.md](../../docs/features/design/editor_contract.md)
 
 계약 확인:
 
@@ -73,11 +73,11 @@ expected_revision, command_id, 영수증, 역명령과 새 revision을 journal t
 
 상태: partial. 담당 단계: 3/6
 
-제한 문법 표현식, SI 차원 검사, UUID 변수 결합, 의존 그래프/순환 검출, 유한 값/정의역 검사와 출처/estimated 전파가 구현됐다.
+제한 문법 표현식, SI 차원 검사, UUID 변수 결합, 의존 그래프/순환 검출, 유한 값/정의역 검사와 출처/estimated 전파가 구현됐다. 0.4의 목표별 constraints는 기존 매개변수의 하한/상한과 무차원 정수 조건을 저장하며 현재 개정의 평가값을 검사한다.
 
 남은 범위:
 
-- 사용자 설정 bound와 정수/범주형 설계 변수 제약을 저장하는 공통 계약이 없다.
+- 범주형 설계 변수와 제약을 소비하는 일반 후보 스윕/최적화 계약은 없다. 현재 목표별 수치 범위/정수 검사를 일반 탐색 실행기로 확대하지 않는다.
 - 표시 단위만 바꿀 때 물리/solver hash가 유지되는 별도 의미 hash와 계층별 무효화 검증이 남는다.
 
 코드:
@@ -85,17 +85,21 @@ expected_revision, command_id, 영수증, 역명령과 새 revision을 journal t
 - [src/rfad/domain/expressions.py](../../src/rfad/domain/expressions.py)
 - [src/rfad/domain/parameter_graph.py](../../src/rfad/domain/parameter_graph.py)
 - [src/rfad/domain/units.py](../../src/rfad/domain/units.py)
+- [src/rfad/domain/target_constraints.py](../../src/rfad/domain/target_constraints.py)
+- [src/rfad/domain/check_constraints.py](../../src/rfad/domain/check_constraints.py)
 - [src/rfad/domain/project.py](../../src/rfad/domain/project.py)
 
 시험:
 
 - [tests/test_expressions.py](../../tests/test_expressions.py)
 - [tests/test_parameter_graph.py](../../tests/test_parameter_graph.py)
+- [tests/test_design_rules.py](../../tests/test_design_rules.py)
 - [tests/test_editor_service.py::EditorServiceTests.test_display_unit_only_preserves_si_and_provenance_and_explicit_value_is_converted](../../tests/test_editor_service.py)
 
 기존 실행/설명 근거:
 
-- [docs/design_data.md](../../docs/design_data.md)
+- [docs/specifications/design_data.md](../../docs/specifications/design_data.md)
+- [docs/features/design/design_rules.md](../../docs/features/design/design_rules.md)
 
 계약 확인:
 
@@ -140,10 +144,10 @@ rfad.target/0.1은 최대32개 사용자 목표의 대역/표본/port/Z0/출처�
 
 기존 실행/설명 근거:
 
-- [docs/target_contract.md](../../docs/target_contract.md)
-- [docs/target_editor_contract.md](../../docs/target_editor_contract.md)
-- [docs/target_template_gui.md](../../docs/target_template_gui.md)
-- [docs/design_rules.md](../../docs/design_rules.md)
+- [docs/features/design/target_contract.md](../../docs/features/design/target_contract.md)
+- [docs/features/design/target_editor_contract.md](../../docs/features/design/target_editor_contract.md)
+- [docs/screen_design/target_template_gui.md](../../docs/screen_design/target_template_gui.md)
+- [docs/features/design/design_rules.md](../../docs/features/design/design_rules.md)
 
 계약 확인:
 
@@ -158,7 +162,7 @@ rfad.target/0.1은 최대32개 사용자 목표의 대역/표본/port/Z0/출처�
 
 남은 범위:
 
-- API-009 import.preview/API-010 import.commit의 범용 staging, target와 catalog revision 충돌 처리가 없다.
+- API-009 import.preview/API-010 import.commit의 범용 staging 및 그 target/catalog revision 충돌 계약은 없다. 기존 pcb.selection의 개정/검토 hash 가드는 별도 구현되어 있다.
 - PCB 이외 geometry/template 자료의 importer와 변경/중복/상충 preview가 필요하다.
 
 코드:
@@ -214,10 +218,10 @@ rfad.target/0.1은 최대32개 사용자 목표의 대역/표본/port/Z0/출처�
 
 기존 실행/설명 근거:
 
-- [docs/template_contract.md](../../docs/template_contract.md)
-- [docs/target_template_gui.md](../../docs/target_template_gui.md)
-- [docs/literature_templates.md](../../docs/literature_templates.md)
-- [docs/printed_templates_and_seeds.md](../../docs/printed_templates_and_seeds.md)
+- [docs/features/design/template_contract.md](../../docs/features/design/template_contract.md)
+- [docs/screen_design/target_template_gui.md](../../docs/screen_design/target_template_gui.md)
+- [docs/features/design/literature_templates.md](../../docs/features/design/literature_templates.md)
+- [docs/features/design/printed_templates_and_seeds.md](../../docs/features/design/printed_templates_and_seeds.md)
 
 계약 확인:
 
@@ -260,10 +264,10 @@ API-007 template.synthesize의 explicit_geometry 모드로 명시 치수 후보�
 
 기존 실행/설명 근거:
 
-- [docs/template_contract.md](../../docs/template_contract.md)
-- [docs/target_template_gui.md](../../docs/target_template_gui.md)
-- [docs/literature_templates.md](../../docs/literature_templates.md)
-- [docs/printed_templates_and_seeds.md](../../docs/printed_templates_and_seeds.md)
+- [docs/features/design/template_contract.md](../../docs/features/design/template_contract.md)
+- [docs/screen_design/target_template_gui.md](../../docs/screen_design/target_template_gui.md)
+- [docs/features/design/literature_templates.md](../../docs/features/design/literature_templates.md)
+- [docs/features/design/printed_templates_and_seeds.md](../../docs/features/design/printed_templates_and_seeds.md)
 
 계약 확인:
 
@@ -308,10 +312,10 @@ line_path/arc_path/planar_region(holes)/pad/via 원본과 수량/매개변수 �
 
 기존 실행/설명 근거:
 
-- [docs/canvas_contract.md](../../docs/canvas_contract.md)
+- [docs/features/design/canvas_contract.md](../../docs/features/design/canvas_contract.md)
 - [runtime_profiles/copper-ifa-worker-wsl.json](../../runtime_profiles/copper-ifa-worker-wsl.json)
-- [docs/studio_gui_design.md](../../docs/studio_gui_design.md)
-- [docs/printed_templates_and_seeds.md](../../docs/printed_templates_and_seeds.md)
+- [docs/screen_design/studio_gui_design.md](../../docs/screen_design/studio_gui_design.md)
+- [docs/features/design/printed_templates_and_seeds.md](../../docs/features/design/printed_templates_and_seeds.md)
 
 계약 확인:
 
@@ -349,8 +353,8 @@ line_path/arc_path/planar_region(holes)/pad/via 원본과 수량/매개변수 �
 
 기존 실행/설명 근거:
 
-- [docs/copper_features.md](../../docs/copper_features.md)
-- [docs/design_rules.md](../../docs/design_rules.md)
+- [docs/features/design/copper_features.md](../../docs/features/design/copper_features.md)
+- [docs/features/design/design_rules.md](../../docs/features/design/design_rules.md)
 
 계약 확인:
 
@@ -360,11 +364,11 @@ line_path/arc_path/planar_region(holes)/pad/via 원본과 수량/매개변수 �
 
 상태: partial. 담당 단계: 3/10
 
-격리 CAD worker의 자체 포함 mm STEP 단일 고체 읽기, 단위/경계/면/해시 검토, 개정에 결합한 원자 채택을 연결했다.
+격리 CAD worker의 자체 포함 mm STEP 단일 고체 읽기, 단위/경계/면/해시 검토, 개정에 결합한 원자 채택을 연결했다. 프로젝트가 원본 바이트를 보존하므로 원래 파일 이동 뒤에도 재열기/재생성이 가능하다.
 
 남은 범위:
 
-- 외부 다중 제품/조립체와 혼합 단위 mapping은 후속이다.
+- 외부 다중 제품/조립체와 혼합 단위 mapping은 후속이다. 현재 STEP 조회는 최대 20초의 동기 RPC이며 별도 TaskRef/개별 취소와 응답성 수용을 보강해야 한다.
 - KiCad/Gerber 및 상세 교환 mapping과 손실 보고가 남아 있다.
 
 코드:
@@ -381,8 +385,8 @@ line_path/arc_path/planar_region(holes)/pad/via 원본과 수량/매개변수 �
 
 기존 실행/설명 근거:
 
-- [docs/cad_contract.md](../../docs/cad_contract.md)
-- [docs/physical_setup.md](../../docs/physical_setup.md)
+- [docs/features/exports/cad_contract.md](../../docs/features/exports/cad_contract.md)
+- [docs/features/design/physical_setup.md](../../docs/features/design/physical_setup.md)
 - [runtime_profiles/physical-setup.json](../../runtime_profiles/physical-setup.json)
 
 계약 확인:
@@ -423,7 +427,7 @@ line_path/arc_path/planar_region(holes)/pad/via 원본과 수량/매개변수 �
 
 - [runtime_profiles/copper-ifa-worker-wsl.json](../../runtime_profiles/copper-ifa-worker-wsl.json)
 - [runtime_profiles/pcb-selection.json](../../runtime_profiles/pcb-selection.json)
-- [docs/physical_setup.md](../../docs/physical_setup.md)
+- [docs/features/design/physical_setup.md](../../docs/features/design/physical_setup.md)
 - [runtime_profiles/physical-setup.json](../../runtime_profiles/physical-setup.json)
 
 계약 확인:
@@ -462,7 +466,7 @@ OCCT 분리 고체, 원호/같은 net union/PTH 및 표면층/외부 단일 고�
 
 - [runtime_profiles/gui-cad-windows-x64.json](../../runtime_profiles/gui-cad-windows-x64.json)
 - [runtime_profiles/cad-worker-windows-x64.json](../../runtime_profiles/cad-worker-windows-x64.json)
-- [docs/physical_setup.md](../../docs/physical_setup.md)
+- [docs/features/design/physical_setup.md](../../docs/features/design/physical_setup.md)
 - [runtime_profiles/physical-setup.json](../../runtime_profiles/physical-setup.json)
 
 계약 확인:
@@ -496,8 +500,8 @@ OCCT 분리 고체, 원호/같은 net union/PTH 및 표면층/외부 단일 고�
 
 기존 실행/설명 근거:
 
-- [docs/cad_contract.md](../../docs/cad_contract.md)
-- [docs/physical_setup.md](../../docs/physical_setup.md)
+- [docs/features/exports/cad_contract.md](../../docs/features/exports/cad_contract.md)
+- [docs/features/design/physical_setup.md](../../docs/features/design/physical_setup.md)
 - [runtime_profiles/physical-setup.json](../../runtime_profiles/physical-setup.json)
 
 계약 확인:
@@ -600,7 +604,7 @@ OCCT 분리 고체, 원호/같은 net union/PTH 및 표면층/외부 단일 고�
 기존 실행/설명 근거:
 
 - [runtime_profiles/copper-ifa-worker-wsl.json](../../runtime_profiles/copper-ifa-worker-wsl.json)
-- [docs/ro4350b_loss_refinement.md](../../docs/ro4350b_loss_refinement.md)
+- [docs/research/ro4350b_loss_refinement.md](../../docs/research/ro4350b_loss_refinement.md)
 
 계약 확인:
 
@@ -630,7 +634,7 @@ OCCT 분리 고체, 원호/같은 net union/PTH 및 표면층/외부 단일 고�
 
 기존 실행/설명 근거:
 
-- [docs/pcb_solver_contract.md](../../docs/pcb_solver_contract.md)
+- [docs/features/analysis/pcb_solver_contract.md](../../docs/features/analysis/pcb_solver_contract.md)
 
 계약 확인:
 
@@ -701,17 +705,19 @@ capabilities.get는 실제 등록 메서드, CAD/solver 설정 여부와 유한 
 
 상태: partial. 담당 단계: 3/6/8/12
 
-design.validate의 geometry/step/em 입력 검사와 별도 solver.plan이 전체 snapshot, 원본 의미, 실제 runtime, 수치 설정과 유한 자원 추정을 고정한다. 입력 해시/미정 소비 물성/미지원 확장을 검사하고 편집 후에도 원 계획을 유지한다.
+design.validate의 geometry/step/em 입력 검사와 별도 solver.plan이 전체 snapshot, 원본 의미, 실제 runtime, 수치 설정과 유한 자원 추정을 고정한다. 입력 해시/미정 소비 물성/미지원 확장을 검사하고 편집 후에도 원 계획을 유지한다. PCB 계획은 선언한 목표 크기/매개변수 제약, 기대 연결과 기본 제조 규칙의 확인된 위반을 차단한다. 표면층/외부 물체의 제외 사유를 보존하며 EM 포함 요청은 미지원으로 거절한다.
 
 남은 범위:
 
-- 현재 PCB 단일 포트와 고정 도파관 이외의 target/scenario/network, 일반 제조 DRC와 종합 경고 수용 정책은 미구현이다.
+- 현재 PCB 단일 포트와 고정 도파관 이외의 해석 profile, RF 목표의 자동 설정/평가, 외부 설치 시나리오의 EM 투영, 일반 network 및 복합 제조 DRC와 종합 경고 수용 정책은 미구현이다.
 - resource_estimate는 초기 계산값이며 실제 최고 RAM/디스크와 GUI 포함 admission의 최종 수용이 필요하다.
 
 코드:
 
 - [src/rfad/application/solver_jobs.py](../../src/rfad/application/solver_jobs.py)
 - [src/rfad/application/pcb_solver.py](../../src/rfad/application/pcb_solver.py)
+- [src/rfad/domain/design_checks.py](../../src/rfad/domain/design_checks.py)
+- [src/rfad/application/physical_projection.py](../../src/rfad/application/physical_projection.py)
 - [src/rfad/application/pcb_projection.py](../../src/rfad/application/pcb_projection.py)
 - [src/rfad/application/solver.py](../../src/rfad/application/solver.py)
 
@@ -721,6 +727,8 @@ design.validate의 geometry/step/em 입력 검사와 별도 solver.plan이 전�
 - [tests/test_solver_jobs.py::SolverJobTests.test_bad_input_hash_and_unprepared_plan_are_rejected](../../tests/test_solver_jobs.py)
 - [tests/test_project_studies.py::ProjectStudyTests.test_missing_material_or_stale_revision_is_rejected_atomically](../../tests/test_project_studies.py)
 - [tests/test_solver_plan.py::SolverPlanTests.test_estimates_are_labeled_and_do_not_claim_actual_mesh](../../tests/test_solver_plan.py)
+- [tests/test_design_rules.py](../../tests/test_design_rules.py)
+- [tests/test_physical_setup.py](../../tests/test_physical_setup.py)
 
 기존 실행/설명 근거:
 
@@ -1341,7 +1349,7 @@ instrument_acquisition과 VNA 직접 연결 adapter는 없다.
 
 기존 실행/설명 근거:
 
-- [docs/canvas_contract.md](../../docs/canvas_contract.md)
+- [docs/features/design/canvas_contract.md](../../docs/features/design/canvas_contract.md)
 
 계약 확인:
 
@@ -1351,18 +1359,19 @@ instrument_acquisition과 VNA 직접 연결 adapter는 없다.
 
 상태: partial. 담당 단계: 10
 
-AP242 고체 STEP, 원본 snapshot/재료/net/port sidecar, stable body map과 파일 hash를 생성하고 OCP reader로 다시 확인한다.
+AP242 고체 STEP, 원본 snapshot/재료/net/port sidecar, stable body map과 파일 hash를 생성하고 OCP reader로 다시 확인한다. 명시 피복/개구를 가진 표면층과 활성 시나리오의 간이 상자/단일 STEP 물체도 include_in_export에 따라 별도 바디로 출력한다.
 
 남은 범위:
 
 - 실제 수신 CAD/version별 재열기, 선택/측정/조립 검수가 남는다.
-- mask/표면층/외부 부품/슬롯 등 지원 profile 확장과 포함/생략 정책의 검수가 필요하다.
+- 복합 표면 피복/일반 조립체/슬롯 등의 지원 확대와 수신 도구에서의 포함/생략 정책 검수가 필요하다. 현재 기본 표면층/단일 외부 물체 출력 자체는 구현되어 있다.
 
 코드:
 
 - [src/rfad/adapters/cad/native.py](../../src/rfad/adapters/cad/native.py)
 - [src/rfad/adapters/cad/step_io.py](../../src/rfad/adapters/cad/step_io.py)
 - [src/rfad/application/cad_artifacts.py](../../src/rfad/application/cad_artifacts.py)
+- [src/rfad/application/physical_projection.py](../../src/rfad/application/physical_projection.py)
 - [src/rfad/application/cad.py](../../src/rfad/application/cad.py)
 
 시험:
@@ -1370,11 +1379,13 @@ AP242 고체 STEP, 원본 snapshot/재료/net/port sidecar, stable body map과 �
 - [tests/test_cad_native.py](../../tests/test_cad_native.py)
 - [tests/test_cad_copper_features.py](../../tests/test_cad_copper_features.py)
 - [tests/test_gui_cad_process.py](../../tests/test_gui_cad_process.py)
+- [tests/test_gui_physical_setup_process.py](../../tests/test_gui_physical_setup_process.py)
 
 기존 실행/설명 근거:
 
 - [runtime_profiles/cad-worker-windows-x64.json](../../runtime_profiles/cad-worker-windows-x64.json)
 - [runtime_profiles/gui-cad-windows-x64.json](../../runtime_profiles/gui-cad-windows-x64.json)
+- [runtime_profiles/physical-setup.json](../../runtime_profiles/physical-setup.json)
 
 계약 확인:
 
@@ -1402,7 +1413,7 @@ PCB 기하/net/적층과 STEP 출력 기반은 있으나 KiCad/Gerber/Excellon/J
 
 기존 실행/설명 근거:
 
-- [docs/cad_contract.md](../../docs/cad_contract.md)
+- [docs/features/exports/cad_contract.md](../../docs/features/exports/cad_contract.md)
 
 계약 확인:
 
@@ -1441,7 +1452,7 @@ STEP의 schema/단위/이름/solid/bbox/중심/체적/단면/홀/두께와 중�
 
 상태: partial. 담당 단계: 7/8/11/12
 
-도파관/PCB/방사/전력/손실 연구의 machine-readable 판정과 runtime evidence가 있고 실행/미확립/실측 미검증을 구분한다.
+도파관/PCB/방사/전력/손실 연구의 machine-readable 판정과 runtime evidence가 있고 실행/미확립/실측 미검증을 구분한다. 현재 프로젝트 격자 연구와 완료한 지원 IFA/방사 보고서는 제한된 읽기 전용 GUI로 조회한다.
 
 남은 범위:
 
@@ -1453,6 +1464,8 @@ STEP의 schema/단위/이름/solid/bbox/중심/체적/단면/홀/두께와 중�
 - [src/rfad/application/convergence.py](../../src/rfad/application/convergence.py)
 - [src/rfad/application/pcb_loss_convergence.py](../../src/rfad/application/pcb_loss_convergence.py)
 - [src/rfad/application/project_study_results.py](../../src/rfad/application/project_study_results.py)
+- [ui/wxwidgets/study_report_model.cpp](../../ui/wxwidgets/study_report_model.cpp)
+- [ui/wxwidgets/study_report_dialog.cpp](../../ui/wxwidgets/study_report_dialog.cpp)
 - [tools/verify_ro_loss_followup.py](../../tools/verify_ro_loss_followup.py)
 
 시험:
@@ -1495,7 +1508,7 @@ workspace journal/snapshot/결과 봉인은 있으나 선택 프로젝트를 이
 기존 실행/설명 근거:
 
 - [runtime_profiles/internal-validation-bundle.json](../../runtime_profiles/internal-validation-bundle.json)
-- [docs/project_persistence.md](../../docs/project_persistence.md)
+- [docs/features/project/project_persistence.md](../../docs/features/project/project_persistence.md)
 
 계약 확인:
 

@@ -13,10 +13,10 @@
   {
     "id": "FN-020",
     "implementation_status": "partial",
-    "implemented": "design.validate의 geometry/step/em 입력 검사와 별도 solver.plan이 전체 snapshot, 원본 의미, 실제 runtime, 수치 설정과 유한 자원 추정을 고정한다. 입력 해시/미정 소비 물성/미지원 확장을 검사하고 편집 후에도 원 계획을 유지한다.",
-    "gaps": ["현재 PCB 단일 포트와 고정 도파관 이외의 target/scenario/network, 일반 제조 DRC와 종합 경고 수용 정책은 미구현이다.", "resource_estimate는 초기 계산값이며 실제 최고 RAM/디스크와 GUI 포함 admission의 최종 수용이 필요하다."],
-    "code": ["src/rfad/application/solver_jobs.py", "src/rfad/application/pcb_solver.py", "src/rfad/application/pcb_projection.py", "src/rfad/application/solver.py"],
-    "tests": ["tests/test_solver_jobs.py::SolverJobTests.test_plan_remains_bound_after_edit", "tests/test_solver_jobs.py::SolverJobTests.test_bad_input_hash_and_unprepared_plan_are_rejected", "tests/test_project_studies.py::ProjectStudyTests.test_missing_material_or_stale_revision_is_rejected_atomically", "tests/test_solver_plan.py::SolverPlanTests.test_estimates_are_labeled_and_do_not_claim_actual_mesh"],
+    "implemented": "design.validate의 geometry/step/em 입력 검사와 별도 solver.plan이 전체 snapshot, 원본 의미, 실제 runtime, 수치 설정과 유한 자원 추정을 고정한다. 입력 해시/미정 소비 물성/미지원 확장을 검사하고 편집 후에도 원 계획을 유지한다. PCB 계획은 선언한 목표 크기/매개변수 제약, 기대 연결과 기본 제조 규칙의 확인된 위반을 차단한다. 표면층/외부 물체의 제외 사유를 보존하며 EM 포함 요청은 미지원으로 거절한다.",
+    "gaps": ["현재 PCB 단일 포트와 고정 도파관 이외의 해석 profile, RF 목표의 자동 설정/평가, 외부 설치 시나리오의 EM 투영, 일반 network 및 복합 제조 DRC와 종합 경고 수용 정책은 미구현이다.", "resource_estimate는 초기 계산값이며 실제 최고 RAM/디스크와 GUI 포함 admission의 최종 수용이 필요하다."],
+    "code": ["src/rfad/application/solver_jobs.py", "src/rfad/application/pcb_solver.py", "src/rfad/domain/design_checks.py", "src/rfad/application/physical_projection.py", "src/rfad/application/pcb_projection.py", "src/rfad/application/solver.py"],
+    "tests": ["tests/test_solver_jobs.py::SolverJobTests.test_plan_remains_bound_after_edit", "tests/test_solver_jobs.py::SolverJobTests.test_bad_input_hash_and_unprepared_plan_are_rejected", "tests/test_project_studies.py::ProjectStudyTests.test_missing_material_or_stale_revision_is_rejected_atomically", "tests/test_solver_plan.py::SolverPlanTests.test_estimates_are_labeled_and_do_not_claim_actual_mesh", "tests/test_design_rules.py", "tests/test_physical_setup.py"],
     "evidence": ["runtime_profiles/project-studies.json", "runtime_profiles/ro4350b-loss-refinement.json"],
     "next_steps": [3, 6, 8, 12],
     "contract_notes": ["design.validate 입력 유효성과 solver.plan의 해당 runtime 준비 가능성은 다르다. AnalysisPlan resource_estimate를 native 준비 통계나 실측 메모리로 표시하지 않는다.", "소비되지 않는 실제 납품 물성의 null은 보존하며, 소비되는 필수 물성의 누락은 차단한다."]

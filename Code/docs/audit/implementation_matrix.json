@@ -7730,8 +7730,8 @@
         "project_contract.validate_project_request는 create/open/recover만 허용한다. 시험명 upgrades_on_copy의 copy는 Python 원본 복제이며 project.open copy 지원이 아니다."
       ],
       "evidence": [
-        "docs/project_persistence.md",
-        "docs/target_contract.md"
+        "docs/features/project/project_persistence.md",
+        "docs/features/design/target_contract.md"
       ],
       "gaps": [
         "copy 모드, 외부 프로젝트/archive 가져오기와 새 project ID 발급이 없다.",
@@ -7740,7 +7740,7 @@
       ],
       "id": "FN-001",
       "implementation_status": "partial",
-      "implemented": "ProjectOperations.open은 workspace 안 projects/이름의 create/open/recover와 원본 해시 검사, 서비스 재시작 후 재열기를 제공한다. 0.1/0.2/0.3을 읽으며 기존 원본과 snapshot을 보존하고 변경 복제본만 0.3 새 개정으로 승격하여 변환 기록을 남긴다.",
+      "implemented": "ProjectOperations.open은 workspace 안 projects/이름의 create/open/recover와 원본 해시 검사, 서비스 재시작 후 재열기를 제공한다. 0.1/0.2/0.3/0.4를 읽으며 기존 원본과 snapshot을 보존하고 변경 복제본만 현재 0.4 새 개정으로 승격하여 변환 기록을 남긴다.",
       "next_steps": [
         3,
         12
@@ -7762,8 +7762,8 @@
         "현재 invalidation_set은 계층 이름의 보수적 목록이다. parameter.set은 표시 단위/이름 변경에도 geometry/physics 등을 무효화한다. 원시 결과 삭제는 하지 않지만 최적 재사용 구현과 같지 않다."
       ],
       "evidence": [
-        "docs/project_persistence.md",
-        "docs/editor_contract.md"
+        "docs/features/project/project_persistence.md",
+        "docs/features/design/editor_contract.md"
       ],
       "gaps": [
         "artifact별 regenerated/stale/unchanged와 물리 입력 동등성에 따른 정밀 무효화가 미완성이다.",
@@ -7787,21 +7787,24 @@
         "src/rfad/domain/expressions.py",
         "src/rfad/domain/parameter_graph.py",
         "src/rfad/domain/units.py",
+        "src/rfad/domain/target_constraints.py",
+        "src/rfad/domain/check_constraints.py",
         "src/rfad/domain/project.py"
       ],
       "contract_notes": [
         "표시 단위 시험은 SI 값/출처 보존을 확인한다. 이 시험을 solver 입력 hash 불변이나 cache 재사용 합격으로 확대하지 않는다."
       ],
       "evidence": [
-        "docs/design_data.md"
+        "docs/specifications/design_data.md",
+        "docs/features/design/design_rules.md"
       ],
       "gaps": [
-        "사용자 설정 bound와 정수/범주형 설계 변수 제약을 저장하는 공통 계약이 없다.",
+        "범주형 설계 변수와 제약을 소비하는 일반 후보 스윕/최적화 계약은 없다. 현재 목표별 수치 범위/정수 검사를 일반 탐색 실행기로 확대하지 않는다.",
         "표시 단위만 바꿀 때 물리/solver hash가 유지되는 별도 의미 hash와 계층별 무효화 검증이 남는다."
       ],
       "id": "FN-003",
       "implementation_status": "partial",
-      "implemented": "제한 문법 표현식, SI 차원 검사, UUID 변수 결합, 의존 그래프/순환 검출, 유한 값/정의역 검사와 출처/estimated 전파가 구현됐다.",
+      "implemented": "제한 문법 표현식, SI 차원 검사, UUID 변수 결합, 의존 그래프/순환 검출, 유한 값/정의역 검사와 출처/estimated 전파가 구현됐다. 0.4의 목표별 constraints는 기존 매개변수의 하한/상한과 무차원 정수 조건을 저장하며 현재 개정의 평가값을 검사한다.",
       "next_steps": [
         3,
         6
@@ -7809,6 +7812,7 @@
       "tests": [
         "tests/test_expressions.py",
         "tests/test_parameter_graph.py",
+        "tests/test_design_rules.py",
         "tests/test_editor_service.py::EditorServiceTests.test_display_unit_only_preserves_si_and_provenance_and_explicit_value_is_converted"
       ]
     },
@@ -7834,10 +7838,10 @@
         "target_input_statuses는 missing_target/not_evaluated와 누락 조건을 제공하며 합격 판정을 만들지 않는다. 기존 고정 연구 acceptance_profile은 제품 목표와 별개다."
       ],
       "evidence": [
-        "docs/target_contract.md",
-        "docs/target_editor_contract.md",
-        "docs/target_template_gui.md",
-        "docs/design_rules.md"
+        "docs/features/design/target_contract.md",
+        "docs/features/design/target_editor_contract.md",
+        "docs/screen_design/target_template_gui.md",
+        "docs/features/design/design_rules.md"
       ],
       "gaps": [
         "지역/원문/version을 보존하는 통신 프리셋이 없다.",
@@ -7877,7 +7881,7 @@
         "runtime_profiles/pcb-selection.json"
       ],
       "gaps": [
-        "API-009 import.preview/API-010 import.commit의 범용 staging, target와 catalog revision 충돌 처리가 없다.",
+        "API-009 import.preview/API-010 import.commit의 범용 staging 및 그 target/catalog revision 충돌 계약은 없다. 기존 pcb.selection의 개정/검토 hash 가드는 별도 구현되어 있다.",
         "PCB 이외 geometry/template 자료의 importer와 변경/중복/상충 preview가 필요하다."
       ],
       "id": "FN-005",
@@ -7907,10 +7911,10 @@
         "내장 카드는 로컬 기하 recipe이며 제조사 원본 재현이나 RF 검증 완료 카드가 아니다. 기하/합성/해석/수렴/실측/제조 지원 플래그를 분리한다."
       ],
       "evidence": [
-        "docs/template_contract.md",
-        "docs/target_template_gui.md",
-        "docs/literature_templates.md",
-        "docs/printed_templates_and_seeds.md"
+        "docs/features/design/template_contract.md",
+        "docs/screen_design/target_template_gui.md",
+        "docs/features/design/literature_templates.md",
+        "docs/features/design/printed_templates_and_seeds.md"
       ],
       "gaps": [
         "G031/AN1088 전체 보드 재현, 추가 문헌 topology와 범용 자료별 검증 근거를 보강해야 한다.",
@@ -7950,10 +7954,10 @@
         "G001의 제한된 추정 길이를 RF 공진/정합 합성으로 표시하지 않는다. port:null과 미정 물성/저항은 유지한다. CAD 성공이나 초기 길이를 FDTD/실측 합격으로 확대하지 않는다."
       ],
       "evidence": [
-        "docs/template_contract.md",
-        "docs/target_template_gui.md",
-        "docs/literature_templates.md",
-        "docs/printed_templates_and_seeds.md"
+        "docs/features/design/template_contract.md",
+        "docs/screen_design/target_template_gui.md",
+        "docs/features/design/literature_templates.md",
+        "docs/features/design/printed_templates_and_seeds.md"
       ],
       "gaps": [
         "목표 주파수/공간/고정 변수를 사용하는 원호/IFA RF 합성과 공진/정합 검증은 미구현이다.",
@@ -7995,10 +7999,10 @@
         "CAD writer 내부 union은 사용자가 편집 가능한 Boolean graph 명령과 같지 않다. 매개변수 결합된 형상의 직접 이동 거절은 결합 보존 규칙이다."
       ],
       "evidence": [
-        "docs/canvas_contract.md",
+        "docs/features/design/canvas_contract.md",
         "runtime_profiles/copper-ifa-worker-wsl.json",
-        "docs/studio_gui_design.md",
-        "docs/printed_templates_and_seeds.md"
+        "docs/screen_design/studio_gui_design.md",
+        "docs/features/design/printed_templates_and_seeds.md"
       ],
       "gaps": [
         "사용자 평면 Boolean/offset/회전/미러 명령과 결과 subentity 대응이 없다.",
@@ -8036,8 +8040,8 @@
         "0.4의 연결/규칙 원본과 검사 보고서는 별도다. 미정/지원 범위 밖 판정과 기생 도체 RF 결합은 미평가이며 판정은 공정이나 측정의 수용을 부여하지 않는다."
       ],
       "evidence": [
-        "docs/copper_features.md",
-        "docs/design_rules.md"
+        "docs/features/design/copper_features.md",
+        "docs/features/design/design_rules.md"
       ],
       "gaps": [
         "임의 다각형 목 폭, 복합 비아 절삭 접촉, 슬롯, 전층 keepout과 업체 규칙 자동 연동은 후속이다.",
@@ -8071,17 +8075,17 @@
         "외부 STEP은 단일 B-rep 고체에 한정한다. EDA 공통 import.preview/import.commit은 후속이다."
       ],
       "evidence": [
-        "docs/cad_contract.md",
-        "docs/physical_setup.md",
+        "docs/features/exports/cad_contract.md",
+        "docs/features/design/physical_setup.md",
         "runtime_profiles/physical-setup.json"
       ],
       "gaps": [
-        "외부 다중 제품/조립체와 혼합 단위 mapping은 후속이다.",
+        "외부 다중 제품/조립체와 혼합 단위 mapping은 후속이다. 현재 STEP 조회는 최대 20초의 동기 RPC이며 별도 TaskRef/개별 취소와 응답성 수용을 보강해야 한다.",
         "KiCad/Gerber 및 상세 교환 mapping과 손실 보고가 남아 있다."
       ],
       "id": "FN-010",
       "implementation_status": "partial",
-      "implemented": "격리 CAD worker의 자체 포함 mm STEP 단일 고체 읽기, 단위/경계/면/해시 검토, 개정에 결합한 원자 채택을 연결했다.",
+      "implemented": "격리 CAD worker의 자체 포함 mm STEP 단일 고체 읽기, 단위/경계/면/해시 검토, 개정에 결합한 원자 채택을 연결했다. 프로젝트가 원본 바이트를 보존하므로 원래 파일 이동 뒤에도 재열기/재생성이 가능하다.",
       "next_steps": [
         3,
         10
@@ -8107,7 +8111,7 @@
       "evidence": [
         "runtime_profiles/copper-ifa-worker-wsl.json",
         "runtime_profiles/pcb-selection.json",
-        "docs/physical_setup.md",
+        "docs/features/design/physical_setup.md",
         "runtime_profiles/physical-setup.json"
       ],
       "gaps": [
@@ -8147,7 +8151,7 @@
       "evidence": [
         "runtime_profiles/gui-cad-windows-x64.json",
         "runtime_profiles/cad-worker-windows-x64.json",
-        "docs/physical_setup.md",
+        "docs/features/design/physical_setup.md",
         "runtime_profiles/physical-setup.json"
       ],
       "gaps": [
@@ -8183,8 +8187,8 @@
         "접촉은 B-rep 간극이며 전기 연결은 미평가다. EM 포함 요청은 현재 PCB profile에서 명시적으로 차단한다."
       ],
       "evidence": [
-        "docs/cad_contract.md",
-        "docs/physical_setup.md",
+        "docs/features/exports/cad_contract.md",
+        "docs/features/design/physical_setup.md",
         "runtime_profiles/physical-setup.json"
       ],
       "gaps": [
@@ -8282,7 +8286,7 @@
       ],
       "evidence": [
         "runtime_profiles/copper-ifa-worker-wsl.json",
-        "docs/ro4350b_loss_refinement.md"
+        "docs/research/ro4350b_loss_refinement.md"
       ],
       "gaps": [
         "유한 폭/면적 포트, typed 기준면/좌표 변환, source/load와 복소 부하 데이터 보존이 필요하다.",
@@ -8313,7 +8317,7 @@
         "단일 포트 native lumped 저항은 사용자 외부 RLC 정합망이 아니다. networks는 비어 있지 않으면 현재 거절한다."
       ],
       "evidence": [
-        "docs/pcb_solver_contract.md"
+        "docs/features/analysis/pcb_solver_contract.md"
       ],
       "gaps": [
         "networks schema/명령과 API-017 network.derive를 구현해야 한다.",
@@ -8386,6 +8390,8 @@
       "code": [
         "src/rfad/application/solver_jobs.py",
         "src/rfad/application/pcb_solver.py",
+        "src/rfad/domain/design_checks.py",
+        "src/rfad/application/physical_projection.py",
         "src/rfad/application/pcb_projection.py",
         "src/rfad/application/solver.py"
       ],
@@ -8398,12 +8404,12 @@
         "runtime_profiles/ro4350b-loss-refinement.json"
       ],
       "gaps": [
-        "현재 PCB 단일 포트와 고정 도파관 이외의 target/scenario/network, 일반 제조 DRC와 종합 경고 수용 정책은 미구현이다.",
+        "현재 PCB 단일 포트와 고정 도파관 이외의 해석 profile, RF 목표의 자동 설정/평가, 외부 설치 시나리오의 EM 투영, 일반 network 및 복합 제조 DRC와 종합 경고 수용 정책은 미구현이다.",
         "resource_estimate는 초기 계산값이며 실제 최고 RAM/디스크와 GUI 포함 admission의 최종 수용이 필요하다."
       ],
       "id": "FN-020",
       "implementation_status": "partial",
-      "implemented": "design.validate의 geometry/step/em 입력 검사와 별도 solver.plan이 전체 snapshot, 원본 의미, 실제 runtime, 수치 설정과 유한 자원 추정을 고정한다. 입력 해시/미정 소비 물성/미지원 확장을 검사하고 편집 후에도 원 계획을 유지한다.",
+      "implemented": "design.validate의 geometry/step/em 입력 검사와 별도 solver.plan이 전체 snapshot, 원본 의미, 실제 runtime, 수치 설정과 유한 자원 추정을 고정한다. 입력 해시/미정 소비 물성/미지원 확장을 검사하고 편집 후에도 원 계획을 유지한다. PCB 계획은 선언한 목표 크기/매개변수 제약, 기대 연결과 기본 제조 규칙의 확인된 위반을 차단한다. 표면층/외부 물체의 제외 사유를 보존하며 EM 포함 요청은 미지원으로 거절한다.",
       "next_steps": [
         3,
         6,
@@ -8414,7 +8420,9 @@
         "tests/test_solver_jobs.py::SolverJobTests.test_plan_remains_bound_after_edit",
         "tests/test_solver_jobs.py::SolverJobTests.test_bad_input_hash_and_unprepared_plan_are_rejected",
         "tests/test_project_studies.py::ProjectStudyTests.test_missing_material_or_stale_revision_is_rejected_atomically",
-        "tests/test_solver_plan.py::SolverPlanTests.test_estimates_are_labeled_and_do_not_claim_actual_mesh"
+        "tests/test_solver_plan.py::SolverPlanTests.test_estimates_are_labeled_and_do_not_claim_actual_mesh",
+        "tests/test_design_rules.py",
+        "tests/test_physical_setup.py"
       ]
     },
     {
@@ -8921,7 +8929,7 @@
         "검증 그래프를 SVG로 저장하는 개발 도구는 치수 도면/FN-040 출력 기능이 아니다."
       ],
       "evidence": [
-        "docs/canvas_contract.md"
+        "docs/features/design/canvas_contract.md"
       ],
       "gaps": [
         "snapshot에서 도면 뷰/연관 치수/축척/검정선을 생성하고 drawing/fabrication_geometry 채널을 분리해야 한다.",
@@ -8941,6 +8949,7 @@
         "src/rfad/adapters/cad/native.py",
         "src/rfad/adapters/cad/step_io.py",
         "src/rfad/application/cad_artifacts.py",
+        "src/rfad/application/physical_projection.py",
         "src/rfad/application/cad.py"
       ],
       "contract_notes": [
@@ -8948,22 +8957,24 @@
       ],
       "evidence": [
         "runtime_profiles/cad-worker-windows-x64.json",
-        "runtime_profiles/gui-cad-windows-x64.json"
+        "runtime_profiles/gui-cad-windows-x64.json",
+        "runtime_profiles/physical-setup.json"
       ],
       "gaps": [
         "실제 수신 CAD/version별 재열기, 선택/측정/조립 검수가 남는다.",
-        "mask/표면층/외부 부품/슬롯 등 지원 profile 확장과 포함/생략 정책의 검수가 필요하다."
+        "복합 표면 피복/일반 조립체/슬롯 등의 지원 확대와 수신 도구에서의 포함/생략 정책 검수가 필요하다. 현재 기본 표면층/단일 외부 물체 출력 자체는 구현되어 있다."
       ],
       "id": "FN-041",
       "implementation_status": "partial",
-      "implemented": "AP242 고체 STEP, 원본 snapshot/재료/net/port sidecar, stable body map과 파일 hash를 생성하고 OCP reader로 다시 확인한다.",
+      "implemented": "AP242 고체 STEP, 원본 snapshot/재료/net/port sidecar, stable body map과 파일 hash를 생성하고 OCP reader로 다시 확인한다. 명시 피복/개구를 가진 표면층과 활성 시나리오의 간이 상자/단일 STEP 물체도 include_in_export에 따라 별도 바디로 출력한다.",
       "next_steps": [
         10
       ],
       "tests": [
         "tests/test_cad_native.py",
         "tests/test_cad_copper_features.py",
-        "tests/test_gui_cad_process.py"
+        "tests/test_gui_cad_process.py",
+        "tests/test_gui_physical_setup_process.py"
       ]
     },
     {
@@ -8975,7 +8986,7 @@
         "R1 기본 Job/DRC와 R2 정합 BOM/실장 변형, R3 추가 형식은 별도 범위다. 제조 미정 입력이 있는 파일을 verified_profile로 발행하지 않는다."
       ],
       "evidence": [
-        "docs/cad_contract.md"
+        "docs/features/exports/cad_contract.md"
       ],
       "gaps": [
         "선언한 보드/footprint/CAM profile과 단위/층/net/PTH/NPTH/slot mapping 및 writer/reader가 필요하다.",
@@ -9020,6 +9031,8 @@
         "src/rfad/application/convergence.py",
         "src/rfad/application/pcb_loss_convergence.py",
         "src/rfad/application/project_study_results.py",
+        "ui/wxwidgets/study_report_model.cpp",
+        "ui/wxwidgets/study_report_dialog.cpp",
         "tools/verify_ro_loss_followup.py"
       ],
       "contract_notes": [
@@ -9035,7 +9048,7 @@
       ],
       "id": "FN-044",
       "implementation_status": "partial",
-      "implemented": "도파관/PCB/방사/전력/손실 연구의 machine-readable 판정과 runtime evidence가 있고 실행/미확립/실측 미검증을 구분한다.",
+      "implemented": "도파관/PCB/방사/전력/손실 연구의 machine-readable 판정과 runtime evidence가 있고 실행/미확립/실측 미검증을 구분한다. 현재 프로젝트 격자 연구와 완료한 지원 IFA/방사 보고서는 제한된 읽기 전용 GUI로 조회한다.",
       "next_steps": [
         7,
         8,
@@ -9060,7 +9073,7 @@
       ],
       "evidence": [
         "runtime_profiles/internal-validation-bundle.json",
-        "docs/project_persistence.md"
+        "docs/features/project/project_persistence.md"
       ],
       "gaps": [
         "snapshot 기준 참조 closure, 선택 raw 포함/제외, 라이선스/비밀/경로/용량 검사와 패키지 원자 발행이 필요하다.",
@@ -9121,9 +9134,11 @@
   ],
   "generator": {
     "path": "Code/tools/build_implementation_audit.py",
-    "text_sha256": "806fdfd881706f7c08184c0d5175f53ac5486b1cb6d71e68a94c6a606cd3b499",
-    "utf8_bytes": 15261
+    "text_sha256": "ce9996fd85cb7c837ba852effe96c47b5c16b0489998b157ba240ad59a3fb44f",
+    "utf8_bytes": 15403
   },
+  "initial_review_date_kst": "2026-11-12",
+  "initial_reviewed_commit": "1ed9686b8eea5cec3b17931d8655565fbafc72e2",
   "measurement_validated": false,
   "physics_validated": false,
   "public_api": [
@@ -12825,107 +12840,107 @@
       ]
     }
   ],
-  "review_date_kst": "2026-11-12",
+  "review_date_kst": "2026-11-16",
   "review_inputs": [
     {
       "path": "Code/docs/audit/design_functions.json",
-      "text_sha256": "64d4fd31e0e3bef0f2fe27dba422543661c9cb002e4a0d069b8897c48c6cb575",
-      "utf8_bytes": 34337
+      "text_sha256": "f00e3747b976abb8200db8e36e81a49433c747a99c1732570f334b375eb64c2e",
+      "utf8_bytes": 36257
     },
     {
       "path": "Code/docs/audit/analysis_functions.json",
-      "text_sha256": "378d9f9ba9edd2d5e7849233fbbcb93f4bbd18d67e7f03630a20626b01585279",
-      "utf8_bytes": 27578
+      "text_sha256": "32d06eb958e70646bfb82e79a78de4d056a776c582ed0f7b6e27bd1f220de6a1",
+      "utf8_bytes": 28050
     }
   ],
-  "reviewed_commit": "1ed9686b8eea5cec3b17931d8655565fbafc72e2",
+  "reviewed_commit": "2c88d26b788309c4c9c4b869175e49e16fe9c2e2",
   "schema": "rfad.implementation-audit/0.1",
   "scope": "implementation_gap_review_not_release_acceptance",
   "source_and_test_files": [
     {
-      "path": "Code/docs/cad_contract.md",
-      "text_sha256": "2ec2401a3299adc18533f414324de6fd98ceb86d0e6a2ca04b5134c132095bc4",
-      "utf8_bytes": 23808
+      "path": "Code/docs/features/analysis/pcb_solver_contract.md",
+      "text_sha256": "87c3cd6ad051dff7ce3a9252184cf0c87380671a2c7f3b3cdc5ea47955688f54",
+      "utf8_bytes": 16337
     },
     {
-      "path": "Code/docs/canvas_contract.md",
-      "text_sha256": "ce0532312e994bd6ba5e678f292e9939c901ee0297d0cfe9d5c93268d87adabd",
-      "utf8_bytes": 9505
+      "path": "Code/docs/features/design/canvas_contract.md",
+      "text_sha256": "50a349722f164a4f3bed263d110ad0d940e86a134ba249699f021f35a0b4cb49",
+      "utf8_bytes": 12178
     },
     {
-      "path": "Code/docs/copper_features.md",
-      "text_sha256": "a68f2f05ab701c84b3aecceaba076af922e246ba5cdda9023f8346a1608e5b1d",
-      "utf8_bytes": 8763
+      "path": "Code/docs/features/design/copper_features.md",
+      "text_sha256": "88401e4e3796c6ec89cda02afe50470ef0ed30198263010f1ff6861e70e1b9c6",
+      "utf8_bytes": 9229
     },
     {
-      "path": "Code/docs/design_data.md",
-      "text_sha256": "15f10faf978d8fdf171a4963c7f7ca6b07a9b8aacf5a2c88490ddb066dea4c9e",
-      "utf8_bytes": 16022
+      "path": "Code/docs/features/design/design_rules.md",
+      "text_sha256": "a7120c611ebc29c8be045cabaa60a75b798e112a6568b03609faaf3e837b0752",
+      "utf8_bytes": 8218
     },
     {
-      "path": "Code/docs/design_rules.md",
-      "text_sha256": "611c44a54a73b61ccb6d6f87286340bc7860da9cbfc3c5d2dbcd25b030775c32",
-      "utf8_bytes": 7021
+      "path": "Code/docs/features/design/editor_contract.md",
+      "text_sha256": "dd8abae0c125a0332012d8692164f91f4e6c8d7199cdbc39907b50da9479d1af",
+      "utf8_bytes": 10181
     },
     {
-      "path": "Code/docs/editor_contract.md",
-      "text_sha256": "a16b237b7c2f6af7296a7fd9135df426073e22a3b9dd1388ea9b0e57f3ff9d6a",
-      "utf8_bytes": 9590
+      "path": "Code/docs/features/design/literature_templates.md",
+      "text_sha256": "ee8f2a929e8ef20b2150c8cc6b65c951a34008ff7756e9088dc2b12ca6de4b17",
+      "utf8_bytes": 10533
     },
     {
-      "path": "Code/docs/literature_templates.md",
-      "text_sha256": "d2437675b264f3f1790c37228b190ea5af98f8113b069da947540b726c49db34",
-      "utf8_bytes": 10134
+      "path": "Code/docs/features/design/physical_setup.md",
+      "text_sha256": "9e1e12ea0ea494efef72b859ea8b89d2e41b88dc868d53cfe83f1b2a3252fd8b",
+      "utf8_bytes": 9921
     },
     {
-      "path": "Code/docs/pcb_solver_contract.md",
-      "text_sha256": "81520bb056a4eaff39dca1af772d6e9b359f41565fde0102d9b63576857b3bd5",
-      "utf8_bytes": 15251
+      "path": "Code/docs/features/design/printed_templates_and_seeds.md",
+      "text_sha256": "44caaaa7fd5b727215f0ae6e25b96b6a752f6f07022decfb69ecb74f14cd6299",
+      "utf8_bytes": 9021
     },
     {
-      "path": "Code/docs/physical_setup.md",
-      "text_sha256": "ff7ab0bf91f07688fd99aeb0fa0312e8f26c14b0f52d7114e48de09a5476cf69",
-      "utf8_bytes": 5754
+      "path": "Code/docs/features/design/target_contract.md",
+      "text_sha256": "ea13d480e504a64fbbcc9392a9c412d5ddef361e749c9b7779c7c76c4abfc1c9",
+      "utf8_bytes": 12496
     },
     {
-      "path": "Code/docs/printed_templates_and_seeds.md",
-      "text_sha256": "fec4f3a631d3a8255136f32d96a467bb444466f652c8faea332a8396544cfe78",
-      "utf8_bytes": 8643
+      "path": "Code/docs/features/design/target_editor_contract.md",
+      "text_sha256": "d6b4e6c412cfa46a004812f468100f63abe12638b9fefbfd58388ecf08811dad",
+      "utf8_bytes": 8315
     },
     {
-      "path": "Code/docs/project_persistence.md",
-      "text_sha256": "c535fde1d695c7ed1766363b24aa62468beaee3b45015b81e50064e94ac5f67a",
-      "utf8_bytes": 15739
+      "path": "Code/docs/features/design/template_contract.md",
+      "text_sha256": "d5c74a324e27d3b1210e45f96496a5a64fddb7c3e696cd3b2813e3140d0aac48",
+      "utf8_bytes": 19223
     },
     {
-      "path": "Code/docs/ro4350b_loss_refinement.md",
-      "text_sha256": "4f3488d2478ad9f243a583d6d8e886e76413887c3a962ac9e867f5e99b677f33",
-      "utf8_bytes": 17502
+      "path": "Code/docs/features/exports/cad_contract.md",
+      "text_sha256": "879d359977a6bc8d2a0db5addbba0dc6cb27c9ad3c6e67849e187635371a06f8",
+      "utf8_bytes": 25310
     },
     {
-      "path": "Code/docs/studio_gui_design.md",
-      "text_sha256": "8a175cb8910454a2701f19702c8099bae506e088499a0e270b73eba206896e1f",
-      "utf8_bytes": 32715
+      "path": "Code/docs/features/project/project_persistence.md",
+      "text_sha256": "05effd785d804e7630d5415e6b866385122db6db463830ebf6f3074f1e3509a7",
+      "utf8_bytes": 16969
     },
     {
-      "path": "Code/docs/target_contract.md",
-      "text_sha256": "06f31890b0d3ec72dc0418e3b3572586f4831f496ce7d4c99f7a8d4f8033eaca",
-      "utf8_bytes": 11631
+      "path": "Code/docs/research/ro4350b_loss_refinement.md",
+      "text_sha256": "4ffb19beddc27d0f527173e4455f09c4b481e4c3df646bcb9387f97ba758f40d",
+      "utf8_bytes": 17526
     },
     {
-      "path": "Code/docs/target_editor_contract.md",
-      "text_sha256": "97160ba180524c85ae28490a87f602b477fc3ba77dc95f559d58db68108880a2",
-      "utf8_bytes": 7763
+      "path": "Code/docs/screen_design/studio_gui_design.md",
+      "text_sha256": "6b922fe3c1c61bcea04efdca8349e9712b68d4208324b8f5ead64fb8980939d1",
+      "utf8_bytes": 33277
     },
     {
-      "path": "Code/docs/target_template_gui.md",
-      "text_sha256": "946a8373def27cf491c8e3249200f530856e367076f3ce2c827cab17d375328b",
-      "utf8_bytes": 8519
+      "path": "Code/docs/screen_design/target_template_gui.md",
+      "text_sha256": "d643979cd714b1e1c85eca4abbb69372c95da12afa93041f313377b005122aca",
+      "utf8_bytes": 9055
     },
     {
-      "path": "Code/docs/template_contract.md",
-      "text_sha256": "705d57fa041d5c0f4b32e90eeb8f83d348df975d00d0d6069dc064e5eaae5937",
-      "utf8_bytes": 18984
+      "path": "Code/docs/specifications/design_data.md",
+      "text_sha256": "01db9103566ccc257cf9fcd13d3528dd92826a1565c689a040129ff3160461bf",
+      "utf8_bytes": 16856
     },
     {
       "path": "Code/runtime_profiles/cad-worker-windows-x64.json",
@@ -13356,6 +13371,11 @@
       "path": "Code/src/rfad/domain/boundary_distance.py",
       "text_sha256": "6324951d5428ac3fa52a4bfd4774020ced3865edde193fce0306b2622d6e093c",
       "utf8_bytes": 7491
+    },
+    {
+      "path": "Code/src/rfad/domain/check_constraints.py",
+      "text_sha256": "b10fc8cfb79115efba67edb4658cb553638323488e42c4ccee58071f1b3c2b25",
+      "utf8_bytes": 4049
     },
     {
       "path": "Code/src/rfad/domain/design.py",
@@ -13836,6 +13856,16 @@
       "path": "Code/ui/wxwidgets/studio_workspace.cpp",
       "text_sha256": "cf7d187b086cd6004ca7511fca903213c1802cc459456f54c1885cc0f22efbcd",
       "utf8_bytes": 9907
+    },
+    {
+      "path": "Code/ui/wxwidgets/study_report_dialog.cpp",
+      "text_sha256": "a13e5b1bcc06f57040c045c839a462b139c8c6c0dfff9e3e941306ef3dc59151",
+      "utf8_bytes": 3490
+    },
+    {
+      "path": "Code/ui/wxwidgets/study_report_model.cpp",
+      "text_sha256": "cb77ac8038dee720d64100b4979b5330ebb032743356f21d7b15be5be033489a",
+      "utf8_bytes": 7412
     },
     {
       "path": "Code/ui/wxwidgets/target_editor_dialog.cpp",

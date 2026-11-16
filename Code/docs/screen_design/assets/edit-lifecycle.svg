@@ -47,10 +47,21 @@
   <polyline stroke-width="2" points="910,300 910,360 600,360 600,420" fill="none" stroke="#536174" marker-end="url(#arrow)" />
   <polyline stroke-width="2" points="1010,300 1010,420" fill="none" stroke="#536174" marker-end="url(#arrow)" />
   <polyline stroke-width="2" points="1380,300 1380,420" fill="none" stroke="#536174" marker-end="url(#arrow)" />
+  <polyline stroke-width="2" points="430,485 400,485 400,240 430,240" fill="none" stroke="#536174" marker-end="url(#arrow)" />
+  <rect x="40" y="420" width="340" height="130" rx="6" fill="white" stroke="#D3DBE6" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="19" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="52" y="471.7" fill="#243247">검증 오류: 초안으로 복귀</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="19" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="52" y="498.3" fill="#243247">수정 후 명시적으로 다시 적용</text>
   <rect x="430" y="670" width="730" height="100" rx="6" fill="white" stroke="#D3DBE6" />
   <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="22" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="442" y="704.6" fill="#243247">권위 상태 / 영수증 재조회</text>
   <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="22" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="442" y="735.4" fill="#243247">개정과 현재 객체 확인 후 초안 대조</text>
   <polyline stroke-width="2" points="990,550 990,670" fill="none" stroke="#536174" marker-end="url(#arrow)" />
+  <polyline stroke-width="2" points="1160,720 1184,720 1184,240 1210,240" fill="none" stroke="#536174" marker-end="url(#arrow)" />
+  <polyline stroke-width="2" points="430,720 390,720 390,310 600,310 600,300" fill="none" stroke="#536174" marker-end="url(#arrow)" />
+  <rect x="40" y="650" width="340" height="120" rx="6" fill="#FFF3D6" stroke="#D3DBE6" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="18" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="52" y="672.2" fill="#243247">재조회 후 분기</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="18" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="52" y="697.4000000000001" fill="#243247">적용 확인: 저장 필요</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="18" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="52" y="722.6" fill="#243247">거절 확인: 초안 복귀</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="18" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="52" y="747.8000000000001" fill="#243247">여전히 불명: 잠금 유지</text>
   <rect x="1210" y="670" width="340" height="100" rx="6" fill="#EDF4FF" stroke="#D3DBE6" />
   <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="20" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="1222" y="706.0" fill="#243247">저장 완료 / 재열기</text>
   <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="20" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="1222" y="734.0" fill="#243247">이름 / 출처 / 미정 확인</text>

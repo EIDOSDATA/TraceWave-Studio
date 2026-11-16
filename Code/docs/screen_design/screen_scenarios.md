@@ -8,7 +8,7 @@
 
 Studio는 하나의 프로젝트를 다루는 작업 공간이다. 상단 `설계 / 해석 / 결과 / 비교 / 출력`은 중앙 내용과 문맥 도구를 바꾸며, 프로젝트를 복제하거나 solver를 자동 실행하지 않는다. 왼쪽 탐색, 오른쪽 속성, 하단 문제/작업과 상태 표시는 같은 프로젝트 문맥을 유지한다. CAD 형상의 3D 보기와 RF 방사 결과의 3D 보기는 서로 다른 화면이다.
 
-설계의 기준은 [승인 UI-01~24](../../../01_Docs/05_RFAD_화면과_사용자_경험_설계.md), [승인 GUI 구성](../../../01_Docs/24_RFAD_GUI_선정과_성능_설계.md), [공통 계약 CC-001~012](../shared_contracts.md)와 [기존 Studio 설계](../studio_gui_design.md)다. 새 화면 ID `S/D/P`는 탐색 설명용이며 승인 `UI-*`, 기능 `FN-*` 또는 저장 schema를 대체하지 않는다.
+설계의 기준은 [승인 UI-01~24](../../../01_Docs/05_RFAD_화면과_사용자_경험_설계.md), [승인 GUI 구성](../../../01_Docs/24_RFAD_GUI_선정과_성능_설계.md), [공통 계약 CC-001~012](../specifications/shared_contracts.md)와 [기존 Studio 설계](studio_gui_design.md)다. 새 화면 ID `S/D/P`는 탐색 설명용이며 승인 `UI-*`, 기능 `FN-*` 또는 저장 schema를 대체하지 않는다.
 
 ![Studio 작업 공간 이동 설계](assets/studio-navigation.svg)
 
@@ -238,4 +238,4 @@ Studio는 하나의 프로젝트를 다루는 작업 공간이다. 상단 `설�
 5. SC-08: 적용 성공/저장 실패/결과 불명/연결 끊김을 구분한다. 미정값과 과거 결과를 보존하고 변경을 중복 제출하지 않는다.
 6. 모든 경로: 마우스와 키보드로 수행하고 현재 포커스가 보이며, 대화상자 종료 후 호출 위치 또는 명확한 결과 위치로 복귀한다. DPI/고대비 등의 자세한 조건은 [접근성 수용 항목](usability_accessibility.md)을 따른다.
 
-현재 확인 근거는 [작업 탭/페이지](../../ui/wxwidgets/studio_workspace.cpp), [화면 조립](../../ui/wxwidgets/studio_layout.cpp), [프로젝트/저장](../../ui/wxwidgets/studio_project.cpp), [속성/이력](../../ui/wxwidgets/studio_editing.cpp), [초안/활성화](../../ui/wxwidgets/studio_controls.cpp), [설정 진입](../../ui/wxwidgets/studio_design_setup.cpp), [설정 요청/닫기](../../ui/wxwidgets/project_setup_dialog.cpp), [해석](../../ui/wxwidgets/studio_solver.cpp), [CAD](../../ui/wxwidgets/studio_cad.cpp), [연구](../../ui/wxwidgets/studio_study.cpp), [연결/응답](../../ui/wxwidgets/studio_session.cpp), [종료/연결 실패](../../ui/wxwidgets/studio_lifecycle.cpp)다. 실제 시험 이력은 [개발 상태](../development_status.md)와 각 기능 runtime profile을 따르며 이 문서로 소급 수정하지 않는다.
+현재 확인 근거는 [작업 탭/페이지](../../ui/wxwidgets/studio_workspace.cpp), [화면 조립](../../ui/wxwidgets/studio_layout.cpp), [프로젝트/저장](../../ui/wxwidgets/studio_project.cpp), [속성/이력](../../ui/wxwidgets/studio_editing.cpp), [초안/활성화](../../ui/wxwidgets/studio_controls.cpp), [설정 진입](../../ui/wxwidgets/studio_design_setup.cpp), [설정 요청/닫기](../../ui/wxwidgets/project_setup_dialog.cpp), [해석](../../ui/wxwidgets/studio_solver.cpp), [CAD](../../ui/wxwidgets/studio_cad.cpp), [연구](../../ui/wxwidgets/studio_study.cpp), [연결/응답](../../ui/wxwidgets/studio_session.cpp), [종료/연결 실패](../../ui/wxwidgets/studio_lifecycle.cpp)다. 실제 시험 이력은 [개발 상태](../planning/development_status.md)와 각 기능 runtime profile을 따르며 이 문서로 소급 수정하지 않는다.

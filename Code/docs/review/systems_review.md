@@ -1,0 +1,75 @@
+# 시스템, worker, 개발 환경 문서 검토
+
+검토일: 2026-11-16 KST. 승인 기준선: RFAD-D0-3.4. 분류: review. 검토 대상의 현재 코드 기준은 `2c88d26` 이후 스냅/끝점 편집이 남아 있는 작업 트리다. 이번 변경은 문서이며 제품 코드, 승인 원문, 과거 runtime 기록을 수정하거나 새 native/GUI/RF 시험을 실행하지 않았다.
+
+## 읽은 문서와 분류, 조치
+
+아래 Code 문서 10개의 본문 전체를 읽고 관련 서비스/GUI/worker 코드와 대조했다. 역사적 시험 수와 근거는 유지하며 현재 설명과 과거 기록의 역할을 구분했다. 같은 정책을 여러 문서에서 독립적으로 갱신하지 않도록 소유 문서를 지정했다.
+
+| 문서 | 분류와 소유 범위 | 조치와 남긴 이유 |
+| --- | --- | --- |
+| [code_structure](../architecture/code_structure.md) | architecture  | 원본 schema 0.3 설명을 현 0.4/0.1~0.4 읽기로 보완. 물리 구성 모듈, 진행 중인 정밀 편집, 이름 정책 미구현 경계 추가. 공개 계약/worker/화면의 중복 소유 제거 |
+| [worker_structure](../architecture/worker_structure.md) | architecture  | 실제 per-job native 프로세스와 승인 설계의 warm pool을 구분. 동기 STEP 검토 경로를 추가하고 전송/상한은 worker_integration으로 연결. 기존 상태도는 job_state.py와 일치하여 보존 |
+| [worker_integration](../architecture/worker_integration.md) | architecture  | `physical.step.preview`의 동기 RPC/20초 상한/단일 슬롯/검토 바이트/개별 취소 미지원과 응답성 후속 수용을 명시. 기존 비동기 출력 경계를 모든 조회로 확대하지 않음 |
+| [shared_contracts](../specifications/shared_contracts.md) | specifications  | wire/service/project 버전, 오류 DTO와 parser 오류, 자원과 성능, 동기 조회, 이름/캐시, 남은 복구 API의 현재 대응표 추가. 제안 DTO를 구현 schema로 오인하지 않게 함 |
+| [bootstrap_contract](../specifications/bootstrap_contract.md) | specifications  | `declared`, 변경/저장 미지원 설명은 workspace 없는 bootstrap 세션에만 한정. 현재 workspace 서비스/프로젝트 버전과 진입 링크 추가. codec/수량/전송 본문은 구현과 일치하여 보존 |
+| [python_environment](../operations/python_environment.md) | operations  | via/pad/hole을 현재 미구현으로 읽게 하는 문구를 제거하고 후속 계약에 연결. AP214 박스 환경 smoke와 제품 AP242 출력, 독립 검증을 계속 분리. 고정 버전/과거 수치는 보존 |
+| [wsl_environment](../operations/wsl_environment.md) | operations  | `현재 상태`를 설치 당시 상태로 명확히 함. WSL/커널 버전은 설치 기록이며 새로운 PC의 현재 값이 아님. setup_wsl.ps1의 비파괴 등록/실행 확인 계약은 유지 |
+| [linux_environment](../operations/linux_environment.md) | operations  | NF2FF 전체가 후속이라는 오래된 문구를 현재 PCB 기록/후처리/2D 계약과 연결. 설치/회귀 당시 수치, Linux GUI 후속 경계 보존 |
+| [reboot_resume](../operations/reboot_resume.md) | operations  | 현재 재개 판단과 과거 구현 경과를 분리. 현재 작업 순서는 completion_plan 단일 기준이며 과거 우선순위를 새 목록으로 쓰지 않음. 스냅 미구현은 초기 시점 기록으로 한정 |
+| [capacity_and_followup](../research/capacity_and_followup.md) | research  | 현재 계획/상태/계약의 소유 문서로 연결. 제조업체의 `현재도` 공급 설명을 실제 2026-11-11 조회 기록으로 한정. 과거 수렴/성능/실패/후처리 수치는 보존 |
+
+이력의 반복 문장은 임의로 지워 현재 합격 기록으로 합치지 않았다. 특히 reboot_resume/capacity의 시험 집계는 시점과 소스가 다르므로 단순 합산하거나 최신값 하나로 대체할 수 없다. 현재 기능/규칙을 판단할 경로는 하나로 모았고 과거 증거의 참조 역할은 남겼다.
+
+## 승인 문서 검토 범위
+
+승인 문서는 모두 읽기 전용으로 취급했다. 아래 14개 파일의 전체 텍스트를 구조 검사에 넣어 heading, 명시 anchor 중복, code fence 짝과 요구/AC 참조를 확인했다. 짧은 규범 문서는 본문을 검토했고 대용량 원문/요구/색인은 시스템 관련 본문과 전체 구조 검사를 나눴다. 모든 RF 수식, 모든 외부 URL 또는 PDF 원문 전체를 다시 검증한 것으로 표시하지 않는다.
+
+| 승인 문서 | 내용 검토 범위와 결정 |
+| --- | --- |
+| [00 전체 안내](../../../01_Docs/00_RFAD_전체_안내.md) | 본문: 승인 문서와 제품 상태의 분리, 단일 규범 소유권, 원본 A 부재. `착수 전`은 승인 당시 기록으로 유지 |
+| [01 범위/ADR](../../../01_Docs/01_RFAD_설계_결정과_범위.md) | 본문: Windows/WSL 우선, wxWidgets, 원호/IFA R1, GAP-001~015, 로컬 단일 writer. 범위 변경 없음 |
+| [02 병합 기록](../../../01_Docs/02_RFAD_원본_검토와_병합.md) | 범위/수치 채택, 현재 없는 원본/registry의 처리, 시스템 관련 B 대응과 전체 구조. B 원문의 과거 플랫폼 제안을 현 결정으로 되돌리지 않음 |
+| [03 사용자 요구](../../../01_Docs/03_RFAD_사용자_요구사항.md) | 전체 요구/AC ID 구조와 JOB/INT/NFR 중심 본문. 141 요구/404 AC를 구현 합격률로 환산하지 않음 |
+| [04 시스템](../../../01_Docs/04_RFAD_시스템_명세.md) | 본문: SYS-001~043, 독립 상태 축, errors, publish, cancel, resource/lease. 현재 API 부분 구현과 목표 계약을 구분 |
+| [07 구조](../../../01_Docs/07_RFAD_소프트웨어_아키텍처.md) | 본문: 모듈 소유권, hash dependency, worker, IPC/수명/복구. 현재 모듈 이름이 제안 폴더명과 달라도 책임을 추적 |
+| [15 구현 계획](../../../01_Docs/15_RFAD_구현_계획.md) | 본문: R0/R1 gate, WBS 선행과 DoD, 내부 검증 배포. 현 완료 계획 1~13 번호를 WBS 번호로 교체하지 않음 |
+| [16 인계](../../../01_Docs/16_RFAD_구현_인계와_독립_검토.md) | 본문: 승인/실행 분리, 미결 처리, 독립 증거, 코딩 규칙. 현재 세션에서 이미 허용된 개발을 재승인 대기로 되돌리지 않음 |
+| [17 추적표](../../../01_Docs/17_RFAD_요구사항_추적표.md) | 전체 ID/참조 구조와 추적/증거/단계 AND 규칙. 141 요구와 404 AC 모두 참조 존재, 참조 존재는 해당 assertion 실행과 별개 |
+| [18 출처](../../../01_Docs/18_RFAD_출처와_근거.md) | 출처 상태/가용성/제약/시스템 자료/승격 규칙과 전체 색인 구조. 250개 과거 source ID를 새 다운로드/원문 검증 건수로 세지 않음 |
+| [19 용어](../../../01_Docs/19_RFAD_공통_용어.md) | 본문: physical/projection/display, completed/converged/measured, cold/warm/commit/RSS. 문서 간 같은 이름의 다른 의미를 분리 |
+| [23 원본 B](../../../01_Docs/23_RFAD_원본_추가_요구사항.md) | 원본 전체 구조, NFR/검증 상태/환경과 입력 계약 관련 본문. 원본의 수치/플랫폼 제안을 소급 수정하지 않음 |
+| [24 GUI/성능](../../../01_Docs/24_RFAD_GUI_선정과_성능_설계.md) | 본문: F0~F5, PERF-001~010, GUI-SPIKE, 전체 프로세스와 실제 화면 측정. 단일 합성 benchmark를 제품 60/30 fps 합격으로 대체하지 않음 |
+| [25 승인](../../../01_Docs/25_RFAD_문서_검토와_승인.md) | 본문: DEC-D0와 승인 hash, 개발 중 결정/제작 전 확정/후속 출시 경계. 승인 원문과 실행 상태를 유지 |
+
+기계 구조 확인 결과: 위 14개 파일에서 명시 anchor 중복 0, code fence 짝 불일치 0. RFAD 03의 고유 요구 141개와 AC 404개가 RFAD 17에서 모두 참조된다. 이것은 제한된 구조 검사이며 모든 링크 target/anchor의 유효성 또는 407개 단계별 assertion의 의미 일치까지 검증한 결과는 아니다. 해당 전체 추적 검사는 기존 구현 감사 도구/시험과 함께 별도로 수행한다.
+
+## 코드 대조와 중요한 경계
+
+| 항목 | 현재 확인한 코드 | 결론 |
+| --- | --- | --- |
+| 저장/단위/명령 | `domain/project.py`, `domain/units.py`, `application/project_contract.py`, `application/rpc.py` | 원본 0.4, 읽기 0.1~0.4, Quantity의 미정 상태, frame/문서 제한. 새 표시 이름 schema는 아직 제안 |
+| 상태/오류 | `application/job_state.py`, `domain/errors.py`, `application/rpc.py` | queued 이후 허용 전이와 terminal 불변. 도메인 오류와 parser 오류의 진단 상세 차이. 승인 상태 enum을 무조건 현 wire로 쓰지 않음 |
+| CAD 수명 | `application/cad_jobs.py`, `cad_runtime.py`, `native_process.py` | 단일 슬롯, 실행별 native 격리, source/runtime 캡처, 종료 불명 예약. warm worker pool 또는 공개 CAD reconcile 구현으로 설명하지 않음 |
+| WSL 복구 | `application/solver_jobs.py`, `solver_runtime.py`, `wsl_process.py`, `tools/verify_openems_worker.py` | 종료 근거/예약, 유지보수 `--reconcile-job`, 새 실행과 재판정 구분. PC cold boot 전체 수용은 별도 |
+| 외부 STEP | `application/physical_setup_service.py`, `domain/physical_setup.py`, `cad_jobs.py` | 48 KiB 이하 보존 바이트, project/revision 검토 토큰, 동기 reader 최대 20초. 현재는 임의 assembly/큰 STEP/일반 3D 안테나 EM을 지원하지 않음 |
+| GUI/표시 | `studio_layout.cpp`, `studio_project.cpp`, `studio_workspace.cpp`, `drawing_rail.cpp`, `editor_panel.cpp`, `studio_theme.cpp` | wxWidgets/wxAUI/2D/wxGLCanvas 구조 유지. 화면 설계의 새 이름/탐색/접근성 정책을 현재 구현 완료로 세지 않음 |
+| 개발 운영 | `tools/launch_gui.ps1`, `setup_wsl.ps1`, `setup_openems_wsl.py`, `application/mcp.py` | 설치와 실행을 구분. 같은 writer/API를 쓰는 MCP는 특정 EDA adapter의 실제 호환 시험을 대체하지 않음 |
+
+## 열린 결정과 구현/수용 조건
+
+아래 항목은 새 우선순위 목록이 아니라 기존 완료 계획의 책임/완료 조건이다. 설계상 정할 수 있는 동작과 실제 증거가 필요한 값을 구분한다.
+
+| ID | 연결 요구/단계 | 남은 계약 또는 구현 | 담당과 완료 조건 |
+| --- | --- | --- | --- |
+| SYSR-01 | SYS-038, NFR-003, 4/12 | 동기 STEP 검토의 응답성/개별 취소 | application/GUI 담당. 느린 reader와 다른 요청의 실제 지연 측정, 예산 미달 시 TaskRef 기반 격리 전환. source/revision/token과 원본 보존 회귀 필수 |
+| SYSR-02 | SYS-017/018, JOB-004, 6/12 | CAD 종료 불명 수동 조정, 일반 큐 순서 변경과 재접속 UX | job 담당. nonce/소유 프로세스/실제 종료 근거, 권위 상태 재조회, 예약 해제와 중복 실행 금지 시험. 단순 PID/lease 만료에 따른 성공 처리 금지 |
+| SYSR-03 | SYS-039/040, PERF-F1/F2/F3, 4/7/12 | 큰 장면의 모델/DTO/표/renderer 예산 | storage/GUI 담당. 현재 128 parameter/총 엔티티 256 및 512 KiB 원본, 60 KiB DTO, 100000 triangle 표시 상한과 승인 대형 fixture의 차이를 명시. 페이지/증분/LOD/새 저장 profile을 먼저 설계하고 10000 primitive/1000 parameter와 대형 3D 수용은 별도 실행. 현재 상한을 묵시적으로 풀거나 승인 fixture를 축소하지 않음 |
+| SYSR-04 | SYS-019/021~024, JOB-005, 5~7 | 공통 복소 descriptor, derived network/metric/assessment와 선택적 재사용 | 결과 담당. 입력 hash/규약/Z0/기준면/유효 mask/표본 provenance, singular 처리, 목표 미평가와 호환 reader를 고정. 이름/표시 변경만으로 과거 판정을 승격하지 않음 |
+| SYSR-05 | SYS-035/037/042/043, 10/12 | 사용자 archive/import, migration 차이, 자동저장 비교, lease-aware 정리 | storage/GUI 담당. 경로/크기/hash/manifest, copy-on-write, 손상/공간 부족/활성 reader 회귀. 개발 소스 bundle을 완전한 프로젝트 archive로 표시하지 않음 |
+| SYSR-06 | SYS-011, INT-001, 8/12 | capability와 공개 검증 evidence의 연결 | adapter/검증 담당. implemented/runtime_configured/tested_envelopes/검증 상태를 구분하고 profile별 근거/실패/제외를 제공. 설치 성공을 RF 정확도로 표시하지 않음 |
+| SYSR-07 | SYS-007/008/027/028, 8/9/11 | 실제 제작/납품 물성, SMA/케이블/교정/시료/불확도 | RF/제작/측정 담당. 자료 확보와 비교 전 규칙 고정. 확보 전 미정 유지. RO4350B 국부 방사 도체 손실 2.788446%의 초기 2% 미확립과 GHz PTH 독립 정확도 미확립을 별도 추적 |
+| SYSR-08 | NFR-001/007, GUI-SPIKE, 12/13 | 실제 지원 조합과 패키지/라이선스 수용 | GUI/배포 담당. 실제 build/OS/driver/runtime/notice와 필수 gate. 문서 정리와 내부 source bundle이 R1 완료나 외부 배포 승인은 아님 |
+| SYSR-09 | SYS-002/004/008, 장기 로드맵 | 비평면 3차원 안테나의 의미/재질/포트/solver/출력 모델 | domain/CAD/RF 담당. PCB extrude, 외부 STEP 표시, 3D 방사 뷰와 별도로 규정. 현 평면 profile을 변형해 지원으로 표시하지 않고 전용 검증 근거 확보 후 활성화 |
+
+현재 물리/성능 미확립은 문서 교정으로 해소되지 않는다. 미정 외부 입력을 보존한 채 가능한 서비스/GUI/저장 작업은 진행하되, 영향을 받는 검증 상태만 미완료로 유지한다. 같은 경계의 설명을 바꿀 때에는 이 검토 기록과 소유 문서, 구현 감사 연결을 함께 갱신한다.

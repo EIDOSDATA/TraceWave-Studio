@@ -20,7 +20,7 @@
         <mxCell id="item-6" value="이름 변경 명령&#10;원호 01 -&gt; 주 방사 원호&#10;한 개정 / 실행 취소 / 저장" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=white;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=24;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
           <mxGeometry as="geometry" x="570" y="170" width="450" height="160" />
         </mxCell>
-        <mxCell id="item-7" value="" style="edgeStyle=none;html=0;rounded=0;strokeColor=#536174;strokeWidth=2;endArrow=block;" edge="1" parent="1">
+        <mxCell id="item-7" value="" style="edgeStyle=none;html=0;rounded=0;strokeColor=#536174;strokeWidth=2;endArrow=block;exitX=1.0;exitY=0.5;exitPerimeter=0;entryX=0.0;entryY=0.5;entryPerimeter=0;" edge="1" parent="1" source="item-5" target="item-6">
           <mxGeometry as="geometry" relative="1">
             <mxPoint as="sourcePoint" x="500" y="250" />
             <mxPoint as="targetPoint" x="570" y="250" />
@@ -30,7 +30,7 @@
         <mxCell id="item-8" value="변하지 않는 관계&#10;레이어 / net / 포트 참조&#10;수식 변수와 형상 치수" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFF3D6;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=24;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
           <mxGeometry as="geometry" x="1090" y="170" width="460" height="160" />
         </mxCell>
-        <mxCell id="item-9" value="" style="edgeStyle=none;html=0;rounded=0;strokeColor=#536174;strokeWidth=2;endArrow=block;" edge="1" parent="1">
+        <mxCell id="item-9" value="" style="edgeStyle=none;html=0;rounded=0;strokeColor=#536174;strokeWidth=2;endArrow=block;exitX=1.0;exitY=0.5;exitPerimeter=0;entryX=0.0;entryY=0.5;entryPerimeter=0;" edge="1" parent="1" source="item-6" target="item-8">
           <mxGeometry as="geometry" relative="1">
             <mxPoint as="sourcePoint" x="1020" y="250" />
             <mxPoint as="targetPoint" x="1090" y="250" />
@@ -52,28 +52,28 @@
         <mxCell id="item-14" value="선택 문맥 = 프로젝트 + 개정 + 객체 ID + 부분 역할 / 동일 문맥만 동기화" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF4FF;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=23;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
           <mxGeometry as="geometry" x="50" y="610" width="1500" height="90" />
         </mxCell>
-        <mxCell id="item-15" value="" style="edgeStyle=none;html=0;rounded=0;strokeColor=#536174;strokeWidth=2;endArrow=block;" edge="1" parent="1">
+        <mxCell id="item-15" value="" style="edgeStyle=none;html=0;rounded=0;strokeColor=#536174;strokeWidth=2;endArrow=block;exitX=0.5;exitY=1.0;exitPerimeter=0;entryX=0.11;entryY=0.0;entryPerimeter=0;" edge="1" parent="1" source="item-10" target="item-14">
           <mxGeometry as="geometry" relative="1">
             <mxPoint as="sourcePoint" x="215" y="550" />
             <mxPoint as="targetPoint" x="215" y="610" />
             <Array as="points" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="item-16" value="" style="edgeStyle=none;html=0;rounded=0;strokeColor=#536174;strokeWidth=2;endArrow=block;" edge="1" parent="1">
+        <mxCell id="item-16" value="" style="edgeStyle=none;html=0;rounded=0;strokeColor=#536174;strokeWidth=2;endArrow=block;exitX=0.5;exitY=1.0;exitPerimeter=0;entryX=0.37;entryY=0.0;entryPerimeter=0;" edge="1" parent="1" source="item-11" target="item-14">
           <mxGeometry as="geometry" relative="1">
             <mxPoint as="sourcePoint" x="605" y="550" />
             <mxPoint as="targetPoint" x="605" y="610" />
             <Array as="points" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="item-17" value="" style="edgeStyle=none;html=0;rounded=0;strokeColor=#536174;strokeWidth=2;endArrow=block;" edge="1" parent="1">
+        <mxCell id="item-17" value="" style="edgeStyle=none;html=0;rounded=0;strokeColor=#536174;strokeWidth=2;endArrow=block;exitX=0.5;exitY=1.0;exitPerimeter=0;entryX=0.63;entryY=0.0;entryPerimeter=0;" edge="1" parent="1" source="item-12" target="item-14">
           <mxGeometry as="geometry" relative="1">
             <mxPoint as="sourcePoint" x="995" y="550" />
             <mxPoint as="targetPoint" x="995" y="610" />
             <Array as="points" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="item-18" value="" style="edgeStyle=none;html=0;rounded=0;strokeColor=#536174;strokeWidth=2;endArrow=block;" edge="1" parent="1">
+        <mxCell id="item-18" value="" style="edgeStyle=none;html=0;rounded=0;strokeColor=#536174;strokeWidth=2;endArrow=block;exitX=0.5;exitY=1.0;exitPerimeter=0;entryX=0.89;entryY=0.0;entryPerimeter=0;" edge="1" parent="1" source="item-13" target="item-14">
           <mxGeometry as="geometry" relative="1">
             <mxPoint as="sourcePoint" x="1385" y="550" />
             <mxPoint as="targetPoint" x="1385" y="610" />

@@ -2,7 +2,7 @@
   {
     "id": "FN-001",
     "implementation_status": "partial",
-    "implemented": "ProjectOperations.open은 workspace 안 projects/이름의 create/open/recover와 원본 해시 검사, 서비스 재시작 후 재열기를 제공한다. 0.1/0.2/0.3을 읽으며 기존 원본과 snapshot을 보존하고 변경 복제본만 0.3 새 개정으로 승격하여 변환 기록을 남긴다.",
+    "implemented": "ProjectOperations.open은 workspace 안 projects/이름의 create/open/recover와 원본 해시 검사, 서비스 재시작 후 재열기를 제공한다. 0.1/0.2/0.3/0.4를 읽으며 기존 원본과 snapshot을 보존하고 변경 복제본만 현재 0.4 새 개정으로 승격하여 변환 기록을 남긴다.",
     "gaps": [
       "copy 모드, 외부 프로젝트/archive 가져오기와 새 project ID 발급이 없다.",
       "recover는 등록된 현재 문서를 여는 경로이며 복구 후보 선택/검사 보고서가 없다.",
@@ -20,8 +20,8 @@
       "tests/test_targets.py"
     ],
     "evidence": [
-      "docs/project_persistence.md",
-      "docs/target_contract.md"
+      "docs/features/project/project_persistence.md",
+      "docs/features/design/target_contract.md"
     ],
     "next_steps": [
       3,
@@ -51,8 +51,8 @@
       "tests/test_editor_service.py::EditorServiceTests.test_undo_redo_replay_restart_and_branch_preserve_saved_baseline"
     ],
     "evidence": [
-      "docs/project_persistence.md",
-      "docs/editor_contract.md"
+      "docs/features/project/project_persistence.md",
+      "docs/features/design/editor_contract.md"
     ],
     "next_steps": [
       3,
@@ -65,24 +65,28 @@
   {
     "id": "FN-003",
     "implementation_status": "partial",
-    "implemented": "제한 문법 표현식, SI 차원 검사, UUID 변수 결합, 의존 그래프/순환 검출, 유한 값/정의역 검사와 출처/estimated 전파가 구현됐다.",
+    "implemented": "제한 문법 표현식, SI 차원 검사, UUID 변수 결합, 의존 그래프/순환 검출, 유한 값/정의역 검사와 출처/estimated 전파가 구현됐다. 0.4의 목표별 constraints는 기존 매개변수의 하한/상한과 무차원 정수 조건을 저장하며 현재 개정의 평가값을 검사한다.",
     "gaps": [
-      "사용자 설정 bound와 정수/범주형 설계 변수 제약을 저장하는 공통 계약이 없다.",
+      "범주형 설계 변수와 제약을 소비하는 일반 후보 스윕/최적화 계약은 없다. 현재 목표별 수치 범위/정수 검사를 일반 탐색 실행기로 확대하지 않는다.",
       "표시 단위만 바꿀 때 물리/solver hash가 유지되는 별도 의미 hash와 계층별 무효화 검증이 남는다."
     ],
     "code": [
       "src/rfad/domain/expressions.py",
       "src/rfad/domain/parameter_graph.py",
       "src/rfad/domain/units.py",
+      "src/rfad/domain/target_constraints.py",
+      "src/rfad/domain/check_constraints.py",
       "src/rfad/domain/project.py"
     ],
     "tests": [
       "tests/test_expressions.py",
       "tests/test_parameter_graph.py",
+      "tests/test_design_rules.py",
       "tests/test_editor_service.py::EditorServiceTests.test_display_unit_only_preserves_si_and_provenance_and_explicit_value_is_converted"
     ],
     "evidence": [
-      "docs/design_data.md"
+      "docs/specifications/design_data.md",
+      "docs/features/design/design_rules.md"
     ],
     "next_steps": [
       3,
@@ -125,10 +129,10 @@
       "tests/test_gui_design_rules_process.py"
     ],
     "evidence": [
-      "docs/target_contract.md",
-      "docs/target_editor_contract.md",
-      "docs/target_template_gui.md",
-      "docs/design_rules.md"
+      "docs/features/design/target_contract.md",
+      "docs/features/design/target_editor_contract.md",
+      "docs/screen_design/target_template_gui.md",
+      "docs/features/design/design_rules.md"
     ],
     "next_steps": [
       3,
@@ -146,7 +150,7 @@
     "implementation_status": "partial",
     "implemented": "정리한 PCB source package의 manifest/hash/관측 schema를 확인해 SQLite를 원자 구축하고 페이지 조회한다. 선택한 관측은 프로젝트에 원문/출처/결정으로 보존한다.",
     "gaps": [
-      "API-009 import.preview/API-010 import.commit의 범용 staging, target와 catalog revision 충돌 처리가 없다.",
+      "API-009 import.preview/API-010 import.commit의 범용 staging 및 그 target/catalog revision 충돌 계약은 없다. 기존 pcb.selection의 개정/검토 hash 가드는 별도 구현되어 있다.",
       "PCB 이외 geometry/template 자료의 importer와 변경/중복/상충 preview가 필요하다."
     ],
     "code": [
@@ -197,10 +201,10 @@
       "tests/test_gui_printed_seed_process.py"
     ],
     "evidence": [
-      "docs/template_contract.md",
-      "docs/target_template_gui.md",
-      "docs/literature_templates.md",
-      "docs/printed_templates_and_seeds.md"
+      "docs/features/design/template_contract.md",
+      "docs/screen_design/target_template_gui.md",
+      "docs/features/design/literature_templates.md",
+      "docs/features/design/printed_templates_and_seeds.md"
     ],
     "next_steps": [
       3,
@@ -241,10 +245,10 @@
       "tests/test_gui_printed_seed_process.py"
     ],
     "evidence": [
-      "docs/template_contract.md",
-      "docs/target_template_gui.md",
-      "docs/literature_templates.md",
-      "docs/printed_templates_and_seeds.md"
+      "docs/features/design/template_contract.md",
+      "docs/screen_design/target_template_gui.md",
+      "docs/features/design/literature_templates.md",
+      "docs/features/design/printed_templates_and_seeds.md"
     ],
     "next_steps": [
       3,
@@ -288,10 +292,10 @@
       "tests/test_gui_printed_seed_process.py"
     ],
     "evidence": [
-      "docs/canvas_contract.md",
+      "docs/features/design/canvas_contract.md",
       "runtime_profiles/copper-ifa-worker-wsl.json",
-      "docs/studio_gui_design.md",
-      "docs/printed_templates_and_seeds.md"
+      "docs/screen_design/studio_gui_design.md",
+      "docs/features/design/printed_templates_and_seeds.md"
     ],
     "next_steps": [
       3,
@@ -327,8 +331,8 @@
       "tests/test_gui_design_rules_process.py"
     ],
     "evidence": [
-      "docs/copper_features.md",
-      "docs/design_rules.md"
+      "docs/features/design/copper_features.md",
+      "docs/features/design/design_rules.md"
     ],
     "next_steps": [
       3,
@@ -343,9 +347,9 @@
   {
     "id": "FN-010",
     "implementation_status": "partial",
-    "implemented": "격리 CAD worker의 자체 포함 mm STEP 단일 고체 읽기, 단위/경계/면/해시 검토, 개정에 결합한 원자 채택을 연결했다.",
+    "implemented": "격리 CAD worker의 자체 포함 mm STEP 단일 고체 읽기, 단위/경계/면/해시 검토, 개정에 결합한 원자 채택을 연결했다. 프로젝트가 원본 바이트를 보존하므로 원래 파일 이동 뒤에도 재열기/재생성이 가능하다.",
     "gaps": [
-      "외부 다중 제품/조립체와 혼합 단위 mapping은 후속이다.",
+      "외부 다중 제품/조립체와 혼합 단위 mapping은 후속이다. 현재 STEP 조회는 최대 20초의 동기 RPC이며 별도 TaskRef/개별 취소와 응답성 수용을 보강해야 한다.",
       "KiCad/Gerber 및 상세 교환 mapping과 손실 보고가 남아 있다."
     ],
     "code": [
@@ -359,8 +363,8 @@
       "tests/test_gui_physical_setup_process.py"
     ],
     "evidence": [
-      "docs/cad_contract.md",
-      "docs/physical_setup.md",
+      "docs/features/exports/cad_contract.md",
+      "docs/features/design/physical_setup.md",
       "runtime_profiles/physical-setup.json"
     ],
     "next_steps": [
@@ -399,7 +403,7 @@
     "evidence": [
       "runtime_profiles/copper-ifa-worker-wsl.json",
       "runtime_profiles/pcb-selection.json",
-      "docs/physical_setup.md",
+      "docs/features/design/physical_setup.md",
       "runtime_profiles/physical-setup.json"
     ],
     "next_steps": [
@@ -437,7 +441,7 @@
     "evidence": [
       "runtime_profiles/gui-cad-windows-x64.json",
       "runtime_profiles/cad-worker-windows-x64.json",
-      "docs/physical_setup.md",
+      "docs/features/design/physical_setup.md",
       "runtime_profiles/physical-setup.json"
     ],
     "next_steps": [
@@ -471,8 +475,8 @@
       "tests/test_gui_physical_setup_process.py"
     ],
     "evidence": [
-      "docs/cad_contract.md",
-      "docs/physical_setup.md",
+      "docs/features/exports/cad_contract.md",
+      "docs/features/design/physical_setup.md",
       "runtime_profiles/physical-setup.json"
     ],
     "next_steps": [
@@ -571,7 +575,7 @@
     ],
     "evidence": [
       "runtime_profiles/copper-ifa-worker-wsl.json",
-      "docs/ro4350b_loss_refinement.md"
+      "docs/research/ro4350b_loss_refinement.md"
     ],
     "next_steps": [
       3,
@@ -599,7 +603,7 @@
     ],
     "tests": [],
     "evidence": [
-      "docs/pcb_solver_contract.md"
+      "docs/features/analysis/pcb_solver_contract.md"
     ],
     "next_steps": [
       5,
@@ -642,7 +646,7 @@
     ],
     "tests": [],
     "evidence": [
-      "docs/canvas_contract.md"
+      "docs/features/design/canvas_contract.md"
     ],
     "next_steps": [
       4,
@@ -655,25 +659,28 @@
   {
     "id": "FN-041",
     "implementation_status": "partial",
-    "implemented": "AP242 고체 STEP, 원본 snapshot/재료/net/port sidecar, stable body map과 파일 hash를 생성하고 OCP reader로 다시 확인한다.",
+    "implemented": "AP242 고체 STEP, 원본 snapshot/재료/net/port sidecar, stable body map과 파일 hash를 생성하고 OCP reader로 다시 확인한다. 명시 피복/개구를 가진 표면층과 활성 시나리오의 간이 상자/단일 STEP 물체도 include_in_export에 따라 별도 바디로 출력한다.",
     "gaps": [
       "실제 수신 CAD/version별 재열기, 선택/측정/조립 검수가 남는다.",
-      "mask/표면층/외부 부품/슬롯 등 지원 profile 확장과 포함/생략 정책의 검수가 필요하다."
+      "복합 표면 피복/일반 조립체/슬롯 등의 지원 확대와 수신 도구에서의 포함/생략 정책 검수가 필요하다. 현재 기본 표면층/단일 외부 물체 출력 자체는 구현되어 있다."
     ],
     "code": [
       "src/rfad/adapters/cad/native.py",
       "src/rfad/adapters/cad/step_io.py",
       "src/rfad/application/cad_artifacts.py",
+      "src/rfad/application/physical_projection.py",
       "src/rfad/application/cad.py"
     ],
     "tests": [
       "tests/test_cad_native.py",
       "tests/test_cad_copper_features.py",
-      "tests/test_gui_cad_process.py"
+      "tests/test_gui_cad_process.py",
+      "tests/test_gui_physical_setup_process.py"
     ],
     "evidence": [
       "runtime_profiles/cad-worker-windows-x64.json",
-      "runtime_profiles/gui-cad-windows-x64.json"
+      "runtime_profiles/gui-cad-windows-x64.json",
+      "runtime_profiles/physical-setup.json"
     ],
     "next_steps": [
       10
@@ -696,7 +703,7 @@
     ],
     "tests": [],
     "evidence": [
-      "docs/cad_contract.md"
+      "docs/features/exports/cad_contract.md"
     ],
     "next_steps": [
       10
@@ -734,7 +741,7 @@
   {
     "id": "FN-044",
     "implementation_status": "partial",
-    "implemented": "도파관/PCB/방사/전력/손실 연구의 machine-readable 판정과 runtime evidence가 있고 실행/미확립/실측 미검증을 구분한다.",
+    "implemented": "도파관/PCB/방사/전력/손실 연구의 machine-readable 판정과 runtime evidence가 있고 실행/미확립/실측 미검증을 구분한다. 현재 프로젝트 격자 연구와 완료한 지원 IFA/방사 보고서는 제한된 읽기 전용 GUI로 조회한다.",
     "gaps": [
       "사용자 프로젝트의 요구-FN-VT evidence join과 통합 검토 보고서/PDF 생성, source promotion을 구현해야 한다.",
       "목표/측정/출력 변경에 따라 파생 보고서와 검증 범위를 갱신하는 제품 계약이 필요하다."
@@ -743,6 +750,8 @@
       "src/rfad/application/convergence.py",
       "src/rfad/application/pcb_loss_convergence.py",
       "src/rfad/application/project_study_results.py",
+      "ui/wxwidgets/study_report_model.cpp",
+      "ui/wxwidgets/study_report_dialog.cpp",
       "tools/verify_ro_loss_followup.py"
     ],
     "tests": [
@@ -781,7 +790,7 @@
     "tests": [],
     "evidence": [
       "runtime_profiles/internal-validation-bundle.json",
-      "docs/project_persistence.md"
+      "docs/features/project/project_persistence.md"
     ],
     "next_steps": [
       12,

@@ -64,6 +64,9 @@ def main():
                 geo = cell.find("mxGeometry")
                 assert geo.find("mxPoint[@as='sourcePoint']") is not None
                 assert geo.find("mxPoint[@as='targetPoint']") is not None
+                if drawing.stem in {"studio-navigation", "edit-lifecycle", "object-identity"}:
+                    assert cell.get("source") in ids, (drawing.name, cell.attrib)
+                    assert cell.get("target") in ids, (drawing.name, cell.attrib)
         image = CODE / "docs/screen_design/assets" / (drawing.stem + ".svg")
         svg = ET.parse(image).getroot()
         texts = [element.text for element in svg.findall("{http://www.w3.org/2000/svg}text")]
