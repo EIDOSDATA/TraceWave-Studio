@@ -5,6 +5,7 @@
 """
 
 from collections import Counter, defaultdict
+import argparse
 from pathlib import Path
 import hashlib
 import json
@@ -113,10 +114,16 @@ def build():
 
 def main():
     """! @brief 기계 목록과 사람이 읽는 집계를 함께 갱신한다."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--date", help="이번 목록을 작성한 KST 날짜. 과거 개별 기록의 날짜는 변경하지 않음")
+    options = parser.parse_args()
     CATALOG.mkdir(parents=True, exist_ok=True)
     inventory = build()
+    if options.date:
+        from datetime import date
+        inventory["date_kst"] = date.fromisoformat(options.date).isoformat()
     (CATALOG / "02_문서목록.json").write_text(json.dumps(inventory, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
-    lines = ["# 문서와 참고 자료 전수 파일 집계", "", "기준일: 2026-11-16 KST. `catalog_documents.py` 생성 결과다. 분류/파일 읽기와 전문 내용의 검토 수준은 다르며 각 파일의 review_scope를 함께 읽는다.", "", "| 분류 | 파일 수 |", "| --- | --- |"]
+    lines = ["# 문서와 참고 자료 전수 파일 집계", "", f"기준일: {inventory['date_kst']} KST. `catalog_documents.py` 생성 결과다. 분류/파일 읽기와 전문 내용의 검토 수준은 다르며 각 파일의 review_scope를 함께 읽는다.", "", "| 분류 | 파일 수 |", "| --- | --- |"]
     for role, count in inventory["counts_by_category"].items():
         lines.append(f"| {role} | {count} |")
     lines += ["", f"전체 {len(inventory['records'])}개 파일. 동일 작업트리 바이트 그룹 {len(inventory['identical_byte_groups'])}개를 기록했으며 자동 삭제하지 않았다.", "", "전체 경로/분류/검토 수준/바이트/작업트리 SHA256은 [02_문서목록.json](02_문서목록.json)에 있다. PDF 전 페이지 의미 검토, RF 정확도, 외부 링크의 최신 유효성은 이 생성기의 검증 범위가 아니다. 과거 승인/출처 hash와의 실제 비교는 [검토 기록](../11_검토기록/05_해석과_참고자료_검토.md)을 따른다.", "", "02_문서목록.json과 이 요약은 자기 참조 hash를 피하기 위해 목록에서 제외한다. 원문/추출/기존 runtime 파일은 수정하지 않는다."]

@@ -1,0 +1,302 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img">
+  <title>D13.active 적층 / 활성 시나리오 - 구현 목표 시안</title>
+  <desc>실제 제품 화면이 아닌 구현 설계. 표시 데이터는 설명용이며 물리 검증 근거가 아니다.</desc>
+  <rect x="0" y="0" width="1920" height="1080" rx="0" fill="#EFF2F6" stroke="none" stroke-width="1" />
+  <rect x="0" y="0" width="1920" height="32" rx="0" fill="#F4F7FC" stroke="#D0D8E3" stroke-width="1" />
+  <rect x="12" y="7" width="20" height="20" rx="2" fill="#0866D8" stroke="none" stroke-width="1" />
+  <polyline points="15.000,19.000 20.000,12.000 24.000,23.000 29.000,10.000" fill="none" stroke="#FFFFFF" stroke-width="1.5" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="600" text-anchor="start" x="42" y="22" fill="#192A3D" data-max-width="650">TraceWave Studio  /  원형 안테나</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="12" font-weight="400" text-anchor="start" x="1470" y="21" fill="#52657B" data-max-width="310">화면 설계안  |  예시 프로젝트</text>
+  <polyline points="1797.000,16.000 1811.000,16.000" fill="none" stroke="#52657B" stroke-width="1" />
+  <rect x="1844" y="10" width="12" height="12" rx="0" fill="none" stroke="#52657B" stroke-width="1" />
+  <polyline points="1883.600,10.600 1894.400,21.400" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <polyline points="1883.600,21.400 1894.400,10.600" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <rect x="0" y="32" width="1920" height="30" rx="0" fill="#FFFFFF" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="18" y="53" fill="#192A3D" data-max-width="83">파일(F)</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="99" y="53" fill="#192A3D" data-max-width="83">편집(E)</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="182" y="53" fill="#192A3D" data-max-width="83">보기(V)</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="266" y="53" fill="#192A3D" data-max-width="83">설계(D)</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="351" y="53" fill="#192A3D" data-max-width="83">도구(T)</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="437" y="53" fill="#192A3D" data-max-width="83">창(W)</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="514" y="53" fill="#192A3D" data-max-width="83">도움말(H)</text>
+  <rect x="0" y="62" width="1920" height="52" rx="0" fill="#F5F8FC" stroke="#D0D8E3" stroke-width="1" />
+  <rect x="14" y="71" width="92" height="34" rx="3" fill="#FFFFFF" stroke="#D0D8E3" stroke-width="1" />
+  <polygon points="26.700,80.800 37.500,80.800 40.200,83.500 40.200,95.200 25.800,95.200 25.800,80.800 26.700,80.800" fill="none" stroke="#192A3D" stroke-width="1.7" />
+  <polyline points="29.400,80.800 29.400,86.200 36.600,86.200 36.600,80.800" fill="none" stroke="#192A3D" stroke-width="1.7" />
+  <polyline points="29.400,95.200 29.400,89.800 36.600,89.800 36.600,95.200" fill="none" stroke="#192A3D" stroke-width="1.7" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="49" y="93.0" fill="#192A3D" data-max-width="49">저장</text>
+  <rect x="118" y="71" width="146" height="34" rx="3" fill="#FFFFFF" stroke="#D0D8E3" stroke-width="1" />
+  <polygon points="132.500,81.700 143.300,88.000 132.500,94.300" fill="#192A3D" stroke="#192A3D" stroke-width="1.7" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="153" y="93.0" fill="#192A3D" data-max-width="103">실행 전 확인</text>
+  <rect x="276" y="71" width="120" height="34" rx="3" fill="#FFFFFF" stroke="#D0D8E3" stroke-width="1" />
+  <polyline points="295.000,79.900 302.200,84.400 302.200,92.500 295.000,96.100 287.800,92.500 287.800,84.400 295.000,79.900" fill="none" stroke="#192A3D" stroke-width="1.7" />
+  <polyline points="287.800,84.400 295.000,88.000 302.200,84.400" fill="none" stroke="#192A3D" stroke-width="1.7" />
+  <polyline points="295.000,88.000 295.000,96.100" fill="none" stroke="#192A3D" stroke-width="1.7" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="311" y="93.0" fill="#192A3D" data-max-width="77">STEP 출력</text>
+  <rect x="438" y="71" width="86" height="34" rx="3" fill="#0866D8" stroke="none" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="481" y="94" fill="#FFFFFF" data-max-width="70">설계</text>
+  <rect x="532" y="71" width="86" height="34" rx="3" fill="#EAF0F7" stroke="none" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="16" font-weight="400" text-anchor="middle" x="575" y="94" fill="#52657B" data-max-width="70">해석</text>
+  <rect x="626" y="71" width="86" height="34" rx="3" fill="#EAF0F7" stroke="none" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="16" font-weight="400" text-anchor="middle" x="669" y="94" fill="#52657B" data-max-width="70">결과</text>
+  <rect x="720" y="71" width="86" height="34" rx="3" fill="#EAF0F7" stroke="none" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="16" font-weight="400" text-anchor="middle" x="763" y="94" fill="#52657B" data-max-width="70">비교</text>
+  <rect x="814" y="71" width="86" height="34" rx="3" fill="#EAF0F7" stroke="none" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="16" font-weight="400" text-anchor="middle" x="857" y="94" fill="#52657B" data-max-width="70">출력</text>
+  <ellipse cx="1644.75" cy="85.75" rx="4.95" ry="4.95" fill="none" stroke="#52657B" stroke-width="1.6" />
+  <polyline points="1648.800,89.800 1654.200,95.200" fill="none" stroke="#52657B" stroke-width="1.8" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="1666" y="94" fill="#52657B" data-max-width="105">명령 찾기</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="end" x="1884" y="94" fill="#167449" data-max-width="100">저장됨</text>
+  <rect x="8" y="122" width="280" height="922" rx="0" fill="#FFFFFF" stroke="#D0D8E3" stroke-width="1" />
+  <rect x="8" y="122" width="280" height="34" rx="0" fill="#EAF0F7" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="600" text-anchor="start" x="22" y="145" fill="#192A3D" data-max-width="200">프로젝트</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="18" font-weight="400" text-anchor="end" x="265" y="145" fill="#52657B" data-max-width="25">...</text>
+  <rect x="20" y="167" width="256" height="32" rx="3" fill="#F8FAFC" stroke="#D0D8E3" stroke-width="1" />
+  <ellipse cx="36.75" cy="180.75" rx="4.95" ry="4.95" fill="none" stroke="#52657B" stroke-width="1.6" />
+  <polyline points="40.800,184.800 46.200,190.200" fill="none" stroke="#52657B" stroke-width="1.8" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="57" y="189" fill="#52657B" data-max-width="200">객체 찾기</text>
+  <polygon points="25.000,222.000 32.000,222.000 34.000,225.000 43.000,225.000 41.000,234.000 25.000,234.000" fill="#E5EFFC" stroke="#0866D8" stroke-width="1.7" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="16" font-weight="600" text-anchor="start" x="52" y="233" fill="#192A3D" data-max-width="213">원형 안테나</text>
+  <ellipse cx="45.5" cy="268.5" rx="7.6" ry="7.6" fill="none" stroke="#52657B" stroke-width="1.5" />
+  <ellipse cx="45.5" cy="268.5" rx="3.8" ry="3.8" fill="none" stroke="#52657B" stroke-width="1.5" />
+  <polyline points="45.500,259.000 45.500,278.000" fill="none" stroke="#52657B" stroke-width="1" />
+  <polyline points="36.000,268.500 55.000,268.500" fill="none" stroke="#52657B" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="64" y="276" fill="#192A3D" data-max-width="202">설계 목표</text>
+  <polyline points="36.950,302.700 45.500,298.900 54.050,302.700 45.500,306.500 36.950,302.700" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <polyline points="36.950,307.450 45.500,303.650 54.050,307.450 45.500,311.250 36.950,307.450" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <polyline points="36.950,312.200 45.500,308.400 54.050,312.200 45.500,316.000 36.950,312.200" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="64" y="314" fill="#192A3D" data-max-width="202">기판 / 적층</text>
+  <polygon points="36.950,339.750 43.600,339.750 45.500,342.600 54.050,342.600 52.150,351.150 36.950,351.150" fill="#E5EFFC" stroke="#52657B" stroke-width="1.7" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="64" y="352" fill="#192A3D" data-max-width="202">패턴</text>
+  <rect x="16" y="366" width="264" height="34" rx="3" fill="#E8F1FE" stroke="none" stroke-width="1" />
+  <polyline points="56.900,388.200 57.660,386.417 58.420,384.677 59.180,383.025 59.940,381.499 60.700,380.139 61.460,378.977 62.220,378.043 62.980,377.358 63.740,376.940 64.500,376.800 65.260,376.940 66.020,377.358 66.780,378.043 67.540,378.977 68.300,380.139 69.060,381.499 69.820,383.025 70.580,384.677 71.340,386.417 72.100,388.200" fill="none" stroke="#0866D8" stroke-width="1.7" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="600" text-anchor="start" x="83" y="390" fill="#192A3D" data-max-width="183">원호 01</text>
+  <polyline points="57.850,427.150 71.150,413.850" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="83" y="428" fill="#192A3D" data-max-width="183">급전선</text>
+  <polyline points="55.950,454.700 64.500,450.900 73.050,454.700 64.500,458.500 55.950,454.700" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <polyline points="55.950,459.450 64.500,455.650 73.050,459.450 64.500,463.250 55.950,459.450" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <polyline points="55.950,464.200 64.500,460.400 73.050,464.200 64.500,468.000 55.950,464.200" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="83" y="466" fill="#192A3D" data-max-width="183">접지면</text>
+  <ellipse cx="45.5" cy="490.8" rx="3.8" ry="3.8" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <polyline points="45.500,494.600 45.500,504.100" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <polyline points="40.750,504.100 50.250,504.100" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="64" y="504" fill="#192A3D" data-max-width="202">급전</text>
+  <polyline points="36.950,530.700 45.500,526.900 54.050,530.700 45.500,534.500 36.950,530.700" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <polyline points="36.950,535.450 45.500,531.650 54.050,535.450 45.500,539.250 36.950,535.450" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <polyline points="36.950,540.200 45.500,536.400 54.050,540.200 45.500,544.000 36.950,540.200" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="64" y="542" fill="#192A3D" data-max-width="202">재료</text>
+  <polyline points="45.500,563.950 53.100,568.700 53.100,577.250 45.500,581.050 37.900,577.250 37.900,568.700 45.500,563.950" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <polyline points="37.900,568.700 45.500,572.500 53.100,568.700" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <polyline points="45.500,572.500 45.500,581.050" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="64" y="580" fill="#192A3D" data-max-width="202">외부 환경</text>
+  <polygon points="38.850,601.950 48.350,601.950 53.100,606.700 53.100,619.050 38.850,619.050" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <polyline points="48.350,601.950 48.350,606.700 53.100,606.700" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <polyline points="41.700,610.500 50.250,610.500" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <polyline points="41.700,614.300 50.250,614.300" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="64" y="618" fill="#192A3D" data-max-width="202">실행 / 결과</text>
+  <polyline points="8.000,715.000 288.000,715.000" fill="none" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="600" text-anchor="start" x="22" y="742" fill="#192A3D" data-max-width="160">레이어</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="12" font-weight="400" text-anchor="end" x="267" y="742" fill="#52657B" data-max-width="82">2D 표시</text>
+  <rect x="16" y="761" width="264" height="34" rx="3" fill="#E8F1FE" stroke="none" stroke-width="1" />
+  <rect x="28" y="770" width="16" height="16" rx="2" fill="#0866D8" stroke="#0866D8" stroke-width="1" />
+  <polyline points="31.100,777.000 34.600,780.500 41.600,772.800" fill="none" stroke="#FFFFFF" stroke-width="1.7" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="53" y="784" fill="#192A3D" data-max-width="0" />
+  <rect x="58" y="770" width="23" height="16" rx="2" fill="#F8A255" stroke="#93A2B2" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="94" y="785" fill="#192A3D" data-max-width="160">상단 동박</text>
+  <rect x="28" y="808" width="16" height="16" rx="2" fill="#0866D8" stroke="#0866D8" stroke-width="1" />
+  <polyline points="31.100,815.000 34.600,818.500 41.600,810.800" fill="none" stroke="#FFFFFF" stroke-width="1.7" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="53" y="822" fill="#192A3D" data-max-width="0" />
+  <rect x="58" y="808" width="23" height="16" rx="2" fill="#C7E4CC" stroke="#93A2B2" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="94" y="823" fill="#192A3D" data-max-width="160">기판</text>
+  <rect x="28" y="846" width="16" height="16" rx="2" fill="#0866D8" stroke="#0866D8" stroke-width="1" />
+  <polyline points="31.100,853.000 34.600,856.500 41.600,848.800" fill="none" stroke="#FFFFFF" stroke-width="1.7" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="53" y="860" fill="#192A3D" data-max-width="0" />
+  <rect x="58" y="846" width="23" height="16" rx="2" fill="#F8A255" stroke="#93A2B2" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="94" y="861" fill="#192A3D" data-max-width="160">하단 동박</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="22" y="908" fill="#0866D8" data-max-width="245">활성 층: 상단 동박</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="13" font-weight="400" text-anchor="start" x="22" y="937" fill="#52657B" data-max-width="246">표시 여부와 해석 포함은 별도</text>
+  <rect x="1570" y="122" width="342" height="922" rx="0" fill="#FFFFFF" stroke="#D0D8E3" stroke-width="1" />
+  <rect x="1570" y="122" width="342" height="34" rx="0" fill="#EAF0F7" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="600" text-anchor="start" x="1584" y="145" fill="#192A3D" data-max-width="230">속성</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="18" font-weight="400" text-anchor="end" x="1895" y="145" fill="#52657B" data-max-width="25">...</text>
+  <rect x="296" y="852" width="1266" height="192" rx="0" fill="#FFFFFF" stroke="#D0D8E3" stroke-width="1" />
+  <rect x="296" y="852" width="1266" height="42" rx="0" fill="#F8FAFC" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="middle" x="351.0" y="879" fill="#52657B" data-max-width="78">문제</text>
+  <rect x="396" y="853" width="90" height="40" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1" />
+  <rect x="404" y="890" width="74" height="3" rx="0" fill="#0866D8" stroke="none" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="441.0" y="879" fill="#0866D8" data-max-width="78">작업</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="middle" x="531.0" y="879" fill="#52657B" data-max-width="78">로그</text>
+  <rect x="308" y="904" width="1242" height="118" rx="0" fill="#FFFFFF" stroke="#D0D8E3" stroke-width="1" />
+  <rect x="308" y="904" width="1242" height="38" rx="0" fill="#F0F4F9" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="600" text-anchor="start" x="320" y="929" fill="#52657B" data-max-width="390.0">작업</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="600" text-anchor="start" x="734.0" y="929" fill="#52657B" data-max-width="183.0">입력 개정</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="600" text-anchor="start" x="941.0" y="929" fill="#52657B" data-max-width="286.5">상태</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="600" text-anchor="start" x="1251.5" y="929" fill="#52657B" data-max-width="286.5">다음 동작</text>
+  <polyline points="308.000,982.000 1550.000,982.000" fill="none" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="320" y="967.0" fill="#192A3D" data-max-width="390.0">형상 생성</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="734.0" y="967.0" fill="#192A3D" data-max-width="183.0">개정 12</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="941.0" y="967.0" fill="#167449" data-max-width="286.5">완료</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="1251.5" y="967.0" fill="#192A3D" data-max-width="286.5">3D 보기</text>
+  <rect x="309" y="982" width="1240" height="40" rx="0" fill="#FAFBFD" stroke="none" stroke-width="1" />
+  <polyline points="308.000,1022.000 1550.000,1022.000" fill="none" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="320" y="1007.0" fill="#192A3D" data-max-width="390.0">해석 준비</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="734.0" y="1007.0" fill="#192A3D" data-max-width="183.0">개정 12</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="941.0" y="1007.0" fill="#985A09" data-max-width="286.5">입력 확인 필요</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="1251.5" y="1007.0" fill="#192A3D" data-max-width="286.5">누락 입력 보기</text>
+  <rect x="0" y="1052" width="1920" height="28" rx="0" fill="#F1F5FA" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="12" font-weight="400" text-anchor="start" x="16" y="1071" fill="#52657B" data-max-width="660">설계 예시 / 실제 제작·해석 검증 자료 아님</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="13" font-weight="400" text-anchor="start" x="1125" y="1071" fill="#52657B" data-max-width="400">mm    |    상단 동박    |    스냅 켜짐</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="12" font-weight="400" text-anchor="start" x="1540" y="1071" fill="#52657B" data-max-width="365">서비스 준비  |  CAD 준비  |  해석 확인 필요</text>
+  <polyline points="1590.400,194.200 1591.360,191.947 1592.320,189.750 1593.280,187.663 1594.240,185.736 1595.200,184.018 1596.160,182.550 1597.120,181.370 1598.080,180.505 1599.040,179.977 1600.000,179.800 1600.960,179.977 1601.920,180.505 1602.880,181.370 1603.840,182.550 1604.800,184.018 1605.760,185.736 1606.720,187.663 1607.680,189.750 1608.640,191.947 1609.600,194.200" fill="none" stroke="#0866D8" stroke-width="1.7" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="18" font-weight="600" text-anchor="start" x="1624" y="195" fill="#192A3D" data-max-width="266">원호 01</text>
+  <rect x="1582" y="216" width="318" height="34" rx="0" fill="#F8FAFC" stroke="#D0D8E3" stroke-width="1" />
+  <polyline points="1594.500,230.200 1599.000,234.700 1603.500,230.200" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="600" text-anchor="start" x="1616" y="239" fill="#192A3D" data-max-width="273">형상</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="1594" y="287" fill="#52657B" data-max-width="105">반지름</text>
+  <rect x="1712" y="266" width="131" height="32" rx="2" fill="#FFFFFF" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="1722" y="288" fill="#192A3D" data-max-width="113">20.00</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="13" font-weight="400" text-anchor="start" x="1853" y="288" fill="#52657B" data-max-width="44">mm</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="1594" y="342" fill="#52657B" data-max-width="105">선폭</text>
+  <rect x="1712" y="321" width="131" height="32" rx="2" fill="#FFFFFF" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="1722" y="343" fill="#192A3D" data-max-width="113">1.20</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="13" font-weight="400" text-anchor="start" x="1853" y="343" fill="#52657B" data-max-width="44">mm</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="1594" y="397" fill="#52657B" data-max-width="105">시작각</text>
+  <rect x="1712" y="376" width="131" height="32" rx="2" fill="#FFFFFF" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="1722" y="398" fill="#192A3D" data-max-width="113">25.0</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="13" font-weight="400" text-anchor="start" x="1853" y="398" fill="#52657B" data-max-width="44">deg</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="1594" y="452" fill="#52657B" data-max-width="105">끝각</text>
+  <rect x="1712" y="431" width="131" height="32" rx="2" fill="#FFFFFF" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="1722" y="453" fill="#192A3D" data-max-width="113">155.0</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="13" font-weight="400" text-anchor="start" x="1853" y="453" fill="#52657B" data-max-width="44">deg</text>
+  <rect x="1582" y="500" width="318" height="34" rx="0" fill="#F8FAFC" stroke="#D0D8E3" stroke-width="1" />
+  <polyline points="1594.500,514.200 1599.000,518.700 1603.500,514.200" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="600" text-anchor="start" x="1616" y="523" fill="#192A3D" data-max-width="273">기판 / 재료</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="1594" y="563" fill="#52657B" data-max-width="85">재료</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="1712" y="563" fill="#192A3D" data-max-width="170">RO4350B</text>
+  <rect x="1582" y="581" width="318" height="42" rx="3" fill="#FFF7E7" stroke="#ECD6AE" stroke-width="1" />
+  <polygon points="1603.000,593.900 1612.000,610.100 1594.000,610.100" fill="#FFF4D6" stroke="#985A09" stroke-width="1.7" />
+  <polyline points="1603.000,599.300 1603.000,603.800" fill="none" stroke="#985A09" stroke-width="2" />
+  <ellipse cx="1603.0" cy="607.4" rx="0.9" ry="0.9" fill="#985A09" stroke="#985A09" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="600" text-anchor="start" x="1622" y="608" fill="#985A09" data-max-width="266">탐색용 근사</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="1594" y="654" fill="#52657B" data-max-width="185">제작 / 측정 조건</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="600" text-anchor="end" x="1884" y="654" fill="#985A09" data-max-width="60">미정</text>
+  <rect x="1582" y="680" width="318" height="34" rx="0" fill="#F8FAFC" stroke="#D0D8E3" stroke-width="1" />
+  <polyline points="1594.500,694.200 1599.000,698.700 1603.500,694.200" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="600" text-anchor="start" x="1616" y="703" fill="#192A3D" data-max-width="273">출처와 가정</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="1594" y="740" fill="#192A3D" data-max-width="286">직접 입력 / 명시 기하</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="13" font-weight="400" text-anchor="start" x="1594" y="769" fill="#52657B" data-max-width="286">초기 추정과 성능 검증은 별도</text>
+  <rect x="1582" y="954" width="150" height="34" rx="3" fill="#F0F2F5" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="middle" x="1657.0" y="976.0" fill="#778496" data-max-width="134">되돌리기</text>
+  <rect x="1742" y="954" width="158" height="34" rx="3" fill="#F0F2F5" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="middle" x="1821.0" y="976.0" fill="#778496" data-max-width="142">적용</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="13" font-weight="400" text-anchor="start" x="1594" y="1018" fill="#52657B" data-max-width="286">입력을 바꾸면 적용할 수 있습니다</text>
+  <rect x="0" y="114" width="1920" height="938" rx="0" fill="#E0E5EC" stroke="none" stroke-width="1" />
+  <rect x="295.0" y="138.0" width="1344" height="820" rx="5" fill="#CDD5E0" stroke="none" stroke-width="1" />
+  <rect x="288.0" y="130.0" width="1344" height="820" rx="4" fill="#FFFFFF" stroke="#9EADC0" stroke-width="1" />
+  <rect x="288.0" y="130.0" width="1344" height="44" rx="0" fill="#F1F5FA" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="18" font-weight="600" text-anchor="start" x="308.0" y="159.0" fill="#192A3D" data-max-width="1254">적층 / 활성 시나리오</text>
+  <polyline points="1601.000,146.000 1613.000,158.000" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <polyline points="1601.000,158.000 1613.000,146.000" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="312.0" y="207.0" fill="#52657B" data-max-width="1296">대상: 원형 안테나  |  시나리오를 선택해도 과거 실행 입력은 바뀌지 않습니다.</text>
+  <rect x="304.0" y="226.0" width="1312" height="42" rx="0" fill="#F8FAFC" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="middle" x="369.0" y="253.0" fill="#52657B" data-max-width="98">기본 적층</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="middle" x="503.0" y="253.0" fill="#52657B" data-max-width="146">표면층 / 개구</text>
+  <rect x="582.0" y="227.0" width="142" height="40" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1" />
+  <rect x="590.0" y="264.0" width="126" height="3" rx="0" fill="#0866D8" stroke="none" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="653.0" y="253.0" fill="#0866D8" data-max-width="130">활성 시나리오</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="middle" x="779.0" y="253.0" fill="#52657B" data-max-width="98">설치 조건</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="middle" x="889.0" y="253.0" fill="#52657B" data-max-width="98">외부 물체</text>
+  <polyline points="288.000,876.000 1632.000,876.000" fill="none" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="312.0" y="921.0" fill="#52657B" data-max-width="904">미적용 입력 / 저장 전 검토</text>
+  <rect x="1254.0" y="896.0" width="112" height="34" rx="3" fill="#FFFFFF" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="middle" x="1310.0" y="918.0" fill="#192A3D" data-max-width="96">되돌리기</text>
+  <rect x="1378.0" y="896.0" width="112" height="34" rx="3" fill="#FFFFFF" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="middle" x="1434.0" y="918.0" fill="#192A3D" data-max-width="96">닫기</text>
+  <rect x="1502.0" y="896.0" width="106" height="34" rx="3" fill="#0866D8" stroke="#0866D8" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="middle" x="1555.0" y="918.0" fill="#FFFFFF" data-max-width="90">적용</text>
+  <rect x="316" y="290" width="574" height="155" rx="0" fill="#FFFFFF" stroke="#D0D8E3" stroke-width="1" />
+  <rect x="316" y="290" width="574" height="38" rx="0" fill="#F0F4F9" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="600" text-anchor="start" x="328" y="315" fill="#52657B" data-max-width="231.11111111111111">시나리오</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="600" text-anchor="start" x="583.1111111111111" y="315" fill="#52657B" data-max-width="103.55555555555556">유형</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="600" text-anchor="start" x="710.6666666666666" y="315" fill="#52657B" data-max-width="167.33333333333334">현재 상태</text>
+  <polyline points="316.000,367.000 890.000,367.000" fill="none" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="328" y="352.5" fill="#192A3D" data-max-width="231.11111111111111">기본 환경</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="583.1111111111111" y="352.5" fill="#192A3D" data-max-width="103.55555555555556">설치</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="710.6666666666666" y="352.5" fill="#192A3D" data-max-width="167.33333333333334">활성</text>
+  <rect x="317" y="367" width="572" height="39" rx="0" fill="#E8F1FE" stroke="none" stroke-width="1" />
+  <polyline points="316.000,406.000 890.000,406.000" fill="none" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="328" y="391.5" fill="#192A3D" data-max-width="231.11111111111111">케이스 배치 검토</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="583.1111111111111" y="391.5" fill="#192A3D" data-max-width="103.55555555555556">설치</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="710.6666666666666" y="391.5" fill="#192A3D" data-max-width="167.33333333333334">저장됨</text>
+  <polyline points="316.000,445.000 890.000,445.000" fill="none" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="328" y="430.5" fill="#192A3D" data-max-width="231.11111111111111">측정 환경</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="583.1111111111111" y="430.5" fill="#192A3D" data-max-width="103.55555555555556">측정</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="710.6666666666666" y="430.5" fill="#985A09" data-max-width="167.33333333333334">조건 미정</text>
+  <rect x="316" y="478" width="240" height="34" rx="3" fill="#FFFFFF" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="middle" x="436.0" y="500.0" fill="#192A3D" data-max-width="224">선택 시나리오를 활성화</text>
+  <rect x="568" y="478" width="160" height="34" rx="3" fill="#FFFFFF" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="middle" x="648.0" y="500.0" fill="#192A3D" data-max-width="144">설치 조건 열기</text>
+  <rect x="316" y="548" width="574" height="34" rx="0" fill="#F8FAFC" stroke="#D0D8E3" stroke-width="1" />
+  <polyline points="328.500,562.200 333.000,566.700 337.500,562.200" fill="none" stroke="#52657B" stroke-width="1.7" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="600" text-anchor="start" x="350" y="571" fill="#192A3D" data-max-width="529">선택 변경의 영향</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="334" y="610" fill="#192A3D" data-max-width="538">현재 작업 사본의 환경 선택이 바뀝니다.</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="334" y="646" fill="#192A3D" data-max-width="538">기존 실행과 측정 조건은 그대로 남습니다.</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="334" y="682" fill="#192A3D" data-max-width="538">해석 전에 선택 환경의 지원 여부를 검사합니다.</text>
+  <rect x="918" y="290" width="686" height="380" rx="0" fill="#F5F8FC" stroke="#D0D8E3" stroke-width="1" />
+  <polyline points="1078.112,317.300 1596.000,379.446" fill="none" stroke="#DFE7F0" stroke-width="1" />
+  <polyline points="1068.684,319.497 926.000,505.420" fill="none" stroke="#DFE7F0" stroke-width="1" />
+  <polyline points="1054.720,347.781 1596.000,412.735" fill="none" stroke="#DFE7F0" stroke-width="1" />
+  <polyline points="1139.571,328.004 957.109,565.758" fill="none" stroke="#DFE7F0" stroke-width="1" />
+  <polyline points="1031.327,378.263 1584.243,444.612" fill="none" stroke="#DFE7F0" stroke-width="1" />
+  <polyline points="1210.458,336.510 1027.996,574.264" fill="none" stroke="#DFE7F0" stroke-width="1" />
+  <polyline points="1007.935,408.744 1560.851,475.094" fill="none" stroke="#DFE7F0" stroke-width="1" />
+  <polyline points="1281.344,345.017 1098.882,582.771" fill="none" stroke="#DFE7F0" stroke-width="1" />
+  <polyline points="984.542,439.225 1537.458,505.575" fill="none" stroke="#DFE7F0" stroke-width="1" />
+  <polyline points="1352.231,353.523 1169.769,591.277" fill="none" stroke="#DFE7F0" stroke-width="1" />
+  <polyline points="961.149,469.706 1514.065,536.056" fill="none" stroke="#DFE7F0" stroke-width="1" />
+  <polyline points="1423.118,362.029 1240.656,599.783" fill="none" stroke="#DFE7F0" stroke-width="1" />
+  <polyline points="937.757,500.188 1490.673,566.537" fill="none" stroke="#DFE7F0" stroke-width="1" />
+  <polyline points="1494.004,370.536 1311.542,608.290" fill="none" stroke="#DFE7F0" stroke-width="1" />
+  <polyline points="926.000,532.065 1467.280,597.019" fill="none" stroke="#DFE7F0" stroke-width="1" />
+  <polyline points="1564.891,379.042 1382.429,616.796" fill="none" stroke="#DFE7F0" stroke-width="1" />
+  <polyline points="926.000,565.354 1443.888,627.500" fill="none" stroke="#DFE7F0" stroke-width="1" />
+  <polyline points="1596.000,439.380 1453.316,625.303" fill="none" stroke="#DFE7F0" stroke-width="1" />
+  <polygon points="1473.660,512.919 1468.834,518.611 1463.188,524.179 1456.743,529.602 1449.526,534.859 1441.566,539.928 1432.892,544.790 1423.540,549.425 1413.547,553.816 1402.952,557.945 1391.796,561.795 1380.124,565.351 1367.982,568.600 1355.418,571.529 1342.482,574.125 1329.223,576.379 1315.696,578.282 1301.952,579.827 1288.047,581.006 1274.036,581.817 1259.973,582.254 1245.913,582.317 1231.914,582.006 1218.029,581.321 1204.314,580.266 1190.822,578.844 1177.608,577.061 1164.722,574.924 1152.217,572.442 1140.141,569.625 1128.541,566.482 1117.465,563.028 1106.955,559.275 1097.053,555.239 1087.798,550.935 1079.227,546.380 1071.372,541.592 1064.267,536.591 1057.938,531.395 1052.410,526.026 1047.705,520.504 1043.842,514.851 1040.836,509.091 1038.699,503.244 1037.440,497.336 1037.062,491.387 1037.569,485.424 1038.957,479.468 1041.221,473.543 1044.353,467.673 1048.340,461.881 1053.166,456.189 1058.812,450.621 1065.257,445.198 1072.474,439.941 1080.434,434.872 1089.108,430.010 1098.460,425.375 1108.453,420.984 1119.048,416.855 1130.204,413.005 1141.876,409.449 1154.018,406.200 1166.582,403.271 1179.518,400.675 1192.777,398.421 1206.304,396.518 1220.048,394.973 1233.953,393.794 1247.964,392.983 1262.027,392.546 1276.087,392.483 1290.086,392.794 1303.971,393.479 1317.686,394.534 1331.178,395.956 1344.392,397.739 1357.278,399.876 1369.783,402.358 1381.859,405.175 1393.459,408.318 1404.535,411.772 1415.045,415.525 1424.947,419.561 1434.202,423.865 1442.773,428.420 1450.628,433.208 1457.733,438.209 1464.062,443.405 1469.590,448.774 1474.295,454.296 1478.158,459.949 1481.164,465.709 1483.301,471.556 1484.560,477.464 1484.938,483.413 1484.431,489.376 1483.043,495.332 1480.779,501.257 1477.647,507.127 1473.660,512.919" fill="#91B79C" stroke="#688974" stroke-width="1" />
+  <polygon points="1473.660,497.919 1468.834,503.611 1463.188,509.179 1456.743,514.602 1449.526,519.859 1441.566,524.928 1432.892,529.790 1423.540,534.425 1413.547,538.816 1402.952,542.945 1391.796,546.795 1380.124,550.351 1367.982,553.600 1355.418,556.529 1342.482,559.125 1329.223,561.379 1315.696,563.282 1301.952,564.827 1288.047,566.006 1274.036,566.817 1259.973,567.254 1245.913,567.317 1231.914,567.006 1218.029,566.321 1204.314,565.266 1190.822,563.844 1177.608,562.061 1164.722,559.924 1152.217,557.442 1140.141,554.625 1128.541,551.482 1117.465,548.028 1106.955,544.275 1097.053,540.239 1087.798,535.935 1079.227,531.380 1071.372,526.592 1064.267,521.591 1057.938,516.395 1052.410,511.026 1047.705,505.504 1043.842,499.851 1040.836,494.091 1038.699,488.244 1037.440,482.336 1037.062,476.387 1037.569,470.424 1038.957,464.468 1041.221,458.543 1044.353,452.673 1048.340,446.881 1053.166,441.189 1058.812,435.621 1065.257,430.198 1072.474,424.941 1080.434,419.872 1089.108,415.010 1098.460,410.375 1108.453,405.984 1119.048,401.855 1130.204,398.005 1141.876,394.449 1154.018,391.200 1166.582,388.271 1179.518,385.675 1192.777,383.421 1206.304,381.518 1220.048,379.973 1233.953,378.794 1247.964,377.983 1262.027,377.546 1276.087,377.483 1290.086,377.794 1303.971,378.479 1317.686,379.534 1331.178,380.956 1344.392,382.739 1357.278,384.876 1369.783,387.358 1381.859,390.175 1393.459,393.318 1404.535,396.772 1415.045,400.525 1424.947,404.561 1434.202,408.865 1442.773,413.420 1450.628,418.208 1457.733,423.209 1464.062,428.405 1469.590,433.774 1474.295,439.296 1478.158,444.949 1481.164,450.709 1483.301,456.556 1484.560,462.464 1484.938,468.413 1484.431,474.376 1483.043,480.332 1480.779,486.257 1477.647,492.127 1473.660,497.919" fill="#C7E4CC" stroke="#688974" stroke-width="1.4" />
+  <polygon points="1042.322,496.090 1408.097,539.983 1407.141,540.371 1404.157,541.499 1401.130,542.606 1398.060,543.691 1394.949,544.754 1391.796,545.795 1388.604,546.813 1385.373,547.808 1382.104,548.780 1378.798,549.728 1375.456,550.652 1372.079,551.552 1368.669,552.428 1365.225,553.279 1361.750,554.105 1358.244,554.906 1354.709,555.682 1351.145,556.432 1347.554,557.156 1343.936,557.853 1340.293,558.525 1336.626,559.170 1332.935,559.788 1329.223,560.379 1325.490,560.944 1321.738,561.481 1317.967,561.990 1314.178,562.472 1310.374,562.926 1306.554,563.352 1302.721,563.751 1298.875,564.121 1295.017,564.462 1291.149,564.776 1287.271,565.061 1283.386,565.318 1279.494,565.546 1275.596,565.745 1271.694,565.915 1267.788,566.057 1263.881,566.170 1259.973,566.254 1256.064,566.309 1252.158,566.335 1248.254,566.333 1244.354,566.301 1240.459,566.241 1236.570,566.151 1232.689,566.033 1228.816,565.886 1224.954,565.710 1221.102,565.505 1217.262,565.272 1213.436,565.010 1209.624,564.720 1205.828,564.401 1202.048,564.054 1198.287,563.679 1194.544,563.275 1190.822,562.844 1187.121,562.385 1183.443,561.897 1179.789,561.383 1176.159,560.841 1172.555,560.272 1168.978,559.675 1165.429,559.052 1161.909,558.402 1158.419,557.726 1154.960,557.023 1151.534,556.294 1148.141,555.540 1144.783,554.760 1141.460,553.954 1138.173,553.123 1134.924,552.267 1131.713,551.387 1128.541,550.482 1125.410,549.554 1122.320,548.601 1119.273,547.625 1116.268,546.626 1113.308,545.603 1110.393,544.558 1107.523,543.491 1104.701,542.402 1101.926,541.292 1099.199,540.160 1096.521,539.007 1093.894,537.833 1091.318,536.639 1088.793,535.426 1086.321,534.192 1083.902,532.940 1081.537,531.669 1079.227,530.380 1076.972,529.072 1074.773,527.748 1072.630,526.405 1070.545,525.047 1068.519,523.671 1066.550,522.280 1064.641,520.874 1062.792,519.452 1061.003,518.016 1059.276,516.565 1057.609,515.101 1056.005,513.623 1054.463,512.133 1052.984,510.630 1051.568,509.115 1050.216,507.589 1048.928,506.052 1047.705,504.504 1046.547,502.946 1045.454,501.378 1044.427,499.802 1043.466,498.216 1042.571,496.623" fill="#F8A255" stroke="#9E693E" stroke-width="1" />
+  <polyline points="1443.363,457.676 1442.959,456.337 1442.500,455.003 1441.986,453.674 1441.416,452.349 1440.791,451.030 1440.112,449.717 1439.378,448.411 1438.590,447.111 1437.748,445.818 1436.852,444.532 1435.902,443.255 1434.899,441.986 1433.843,440.725 1432.734,439.473 1431.573,438.231 1430.361,436.999 1429.096,435.777 1427.780,434.565 1426.414,433.365 1424.997,432.175 1423.530,430.997 1422.014,429.832 1420.449,428.678 1418.835,427.537 1417.173,426.410 1415.463,425.296 1413.706,424.195 1411.903,423.109 1410.054,422.037 1408.160,420.979 1406.220,419.937 1404.237,418.910 1402.210,417.899 1400.139,416.904 1398.027,415.925 1395.872,414.963 1393.677,414.017 1391.441,413.089 1389.166,412.178 1386.851,411.285 1384.498,410.410 1382.107,409.553 1379.680,408.715 1377.216,407.896 1374.717,407.095 1372.184,406.314 1369.616,405.552 1367.015,404.811 1364.383,404.089 1361.718,403.387 1359.023,402.706 1356.298,402.045 1353.544,401.405 1350.762,400.787 1347.953,400.189 1345.117,399.613 1342.255,399.058 1339.369,398.525 1336.458,398.014 1333.525,397.525 1330.570,397.058 1327.593,396.614 1324.597,396.192 1321.580,395.793 1318.546,395.416 1315.494,395.062 1312.425,394.731 1309.341,394.424 1306.241,394.139 1303.128,393.878 1300.003,393.640 1296.865,393.425 1293.717,393.234 1290.558,393.066 1287.391,392.922 1284.215,392.801 1281.032,392.704 1277.844,392.631 1274.650,392.581 1271.452,392.555 1268.251,392.553 1265.047,392.574 1261.843,392.620 1258.638,392.689 1255.433,392.781 1252.231,392.897 1249.031,393.037 1245.835,393.201 1242.643,393.388 1239.458,393.598 1236.278,393.832 1233.106,394.089 1229.943,394.369 1226.789,394.673 1223.646,394.999 1220.513,395.349 1217.394,395.721 1214.287,396.116 1211.195,396.534 1208.118,396.974 1205.057,397.437 1202.013,397.922 1198.987,398.429 1195.980,398.958 1192.993,399.508 1190.026,400.080 1187.081,400.674 1184.159,401.289 1181.260,401.925 1178.385,402.582 1175.535,403.259 1172.712,403.957 1169.915,404.675 1167.146,405.413 1164.406,406.171 1161.695,406.949 1159.014,407.746 1156.365,408.562 1153.747,409.396 1151.162,410.250 1148.611,411.121 1146.093,412.011 1143.611,412.919 1141.164,413.844 1138.754,414.786 1136.382,415.745 1134.047,416.721 1131.750,417.713 1129.494,418.721 1127.277,419.745" fill="none" stroke="#A97546" stroke-width="16.03556" />
+  <polyline points="1443.363,457.676 1442.959,456.337 1442.500,455.003 1441.986,453.674 1441.416,452.349 1440.791,451.030 1440.112,449.717 1439.378,448.411 1438.590,447.111 1437.748,445.818 1436.852,444.532 1435.902,443.255 1434.899,441.986 1433.843,440.725 1432.734,439.473 1431.573,438.231 1430.361,436.999 1429.096,435.777 1427.780,434.565 1426.414,433.365 1424.997,432.175 1423.530,430.997 1422.014,429.832 1420.449,428.678 1418.835,427.537 1417.173,426.410 1415.463,425.296 1413.706,424.195 1411.903,423.109 1410.054,422.037 1408.160,420.979 1406.220,419.937 1404.237,418.910 1402.210,417.899 1400.139,416.904 1398.027,415.925 1395.872,414.963 1393.677,414.017 1391.441,413.089 1389.166,412.178 1386.851,411.285 1384.498,410.410 1382.107,409.553 1379.680,408.715 1377.216,407.896 1374.717,407.095 1372.184,406.314 1369.616,405.552 1367.015,404.811 1364.383,404.089 1361.718,403.387 1359.023,402.706 1356.298,402.045 1353.544,401.405 1350.762,400.787 1347.953,400.189 1345.117,399.613 1342.255,399.058 1339.369,398.525 1336.458,398.014 1333.525,397.525 1330.570,397.058 1327.593,396.614 1324.597,396.192 1321.580,395.793 1318.546,395.416 1315.494,395.062 1312.425,394.731 1309.341,394.424 1306.241,394.139 1303.128,393.878 1300.003,393.640 1296.865,393.425 1293.717,393.234 1290.558,393.066 1287.391,392.922 1284.215,392.801 1281.032,392.704 1277.844,392.631 1274.650,392.581 1271.452,392.555 1268.251,392.553 1265.047,392.574 1261.843,392.620 1258.638,392.689 1255.433,392.781 1252.231,392.897 1249.031,393.037 1245.835,393.201 1242.643,393.388 1239.458,393.598 1236.278,393.832 1233.106,394.089 1229.943,394.369 1226.789,394.673 1223.646,394.999 1220.513,395.349 1217.394,395.721 1214.287,396.116 1211.195,396.534 1208.118,396.974 1205.057,397.437 1202.013,397.922 1198.987,398.429 1195.980,398.958 1192.993,399.508 1190.026,400.080 1187.081,400.674 1184.159,401.289 1181.260,401.925 1178.385,402.582 1175.535,403.259 1172.712,403.957 1169.915,404.675 1167.146,405.413 1164.406,406.171 1161.695,406.949 1159.014,407.746 1156.365,408.562 1153.747,409.396 1151.162,410.250 1148.611,411.121 1146.093,412.011 1143.611,412.919 1141.164,413.844 1138.754,414.786 1136.382,415.745 1134.047,416.721 1131.750,417.713 1129.494,418.721 1127.277,419.745" fill="none" stroke="#F8A255" stroke-width="14.03556" />
+  <polygon points="1255.684,469.762 1266.316,471.038 1230.526,517.674 1219.893,516.398" fill="#F8A255" stroke="#9E693E" stroke-width="1" />
+  <ellipse cx="1261.0" cy="470.4" rx="9.0" ry="4.0" fill="#F8A255" stroke="#9E693E" stroke-width="1" />
+  <polygon points="1090.128,392.037 1579.246,450.731 1431.872,642.763 942.754,584.069" fill="none" stroke="#72869C" stroke-width="2" stroke-dasharray="6 4" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="938" y="325" fill="#52657B" data-max-width="646">외부 케이스 / 표시 포함 / EM 제외</text>
+  <polyline points="973.000,610.000 1013.000,620.000" fill="none" stroke="#B43434" stroke-width="2" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="13" font-weight="400" text-anchor="start" x="1018" y="620" fill="#B43434">X</text>
+  <polyline points="973.000,610.000 953.000,637.000" fill="none" stroke="#167449" stroke-width="2" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="13" font-weight="400" text-anchor="start" x="958" y="637" fill="#167449">Y</text>
+  <polyline points="973.000,610.000 973.000,570.000" fill="none" stroke="#0866D8" stroke-width="2" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="13" font-weight="400" text-anchor="start" x="978" y="570" fill="#0866D8">Z</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="13" font-weight="400" text-anchor="end" x="1586" y="652" fill="#52657B" data-max-width="220">정투영 / 기하 표시</text>
+  <rect x="918" y="696" width="686" height="70" rx="3" fill="#E8F1FE" stroke="#C5D9F5" stroke-width="1" />
+  <polygon points="932.700,708.900 941.700,708.900 946.200,713.400 946.200,725.100 932.700,725.100" fill="none" stroke="#0866D8" stroke-width="1.7" />
+  <polyline points="941.700,708.900 941.700,713.400 946.200,713.400" fill="none" stroke="#0866D8" stroke-width="1.7" />
+  <polyline points="935.400,717.000 943.500,717.000" fill="none" stroke="#0866D8" stroke-width="1.7" />
+  <polyline points="935.400,720.600 943.500,720.600" fill="none" stroke="#0866D8" stroke-width="1.7" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="600" text-anchor="start" x="958" y="723" fill="#0866D8" data-max-width="634">선택 후보: 케이스 배치 검토</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="958" y="749" fill="#52657B" data-max-width="634">표시 포함 1개 / STEP 포함 1개 / 외부 물체 EM 제외</text>
+  <rect x="316" y="754" width="574" height="42" rx="3" fill="#FFF7E7" stroke="#ECD6AE" stroke-width="1" />
+  <polygon points="337.000,766.900 346.000,783.100 328.000,783.100" fill="#FFF4D6" stroke="#985A09" stroke-width="1.7" />
+  <polyline points="337.000,772.300 337.000,776.800" fill="none" stroke="#985A09" stroke-width="2" />
+  <ellipse cx="337.0" cy="780.4" rx="0.9" ry="0.9" fill="#985A09" stroke="#985A09" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="600" text-anchor="start" x="356" y="781" fill="#985A09" data-max-width="522">실제 설치 / 측정 조건은 아직 미정</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="start" x="918" y="808" fill="#0866D8" data-max-width="686">활성화는 변경 검토 후 적용됩니다.</text>
+  <rect x="289" y="877" width="1342" height="72" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" font-weight="400" text-anchor="start" x="312" y="921" fill="#52657B" data-max-width="780">활성 환경 변경 초안 / 이전 시나리오와 결과를 보존합니다.</text>
+  <rect x="1194" y="896" width="112" height="34" rx="3" fill="#FFFFFF" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="middle" x="1250.0" y="918.0" fill="#192A3D" data-max-width="96">되돌리기</text>
+  <rect x="1318" y="896" width="112" height="34" rx="3" fill="#FFFFFF" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="middle" x="1374.0" y="918.0" fill="#192A3D" data-max-width="96">닫기</text>
+  <rect x="1442" y="896" width="166" height="34" rx="3" fill="#F0F2F5" stroke="#D0D8E3" stroke-width="1" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" font-weight="400" text-anchor="middle" x="1525.0" y="918.0" fill="#778496" data-max-width="150">검토한 변경 적용</text>
+</svg>

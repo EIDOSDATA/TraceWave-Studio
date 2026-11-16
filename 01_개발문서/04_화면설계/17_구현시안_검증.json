@@ -1,0 +1,1372 @@
+{
+  "schema": "tracewave.screen-visual-verification/0.1",
+  "date_kst": "2026-11-17",
+  "screens": 84,
+  "approved_ui_coverage": 24,
+  "asset_files": 252,
+  "text_width_or_viewport_failures": 0,
+  "renderer": "Windows Edge headless / Malgun Gothic / scale 1",
+  "scope": "static_screen_design_not_product_gui_or_rf_verification",
+  "native_wx_gui_test": "not_run",
+  "native_drawio_roundtrip": "not_run",
+  "records": [
+    {
+      "id": "S00",
+      "stem": "01_시작과_프로젝트",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 101,
+      "drawio_cells": 224,
+      "editable_polygon_stencils": 6,
+      "sha256": {
+        "png": "7bf4622b42f8e4d589947665b60c6dd4bba4b115f73a8d7be7ba2dd2b11210c2",
+        "svg": "3b942f98a186883bb971030136ffd18719896043275c967e8b3f32bd92cf5d66",
+        "drawio": "e42a39fadcc6367a5a1085489579e1be9b8a11b3684cc7d77183ba48bdd9da61"
+      }
+    },
+    {
+      "id": "S00.new",
+      "stem": "02_새_프로젝트",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 110,
+      "drawio_cells": 236,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "a48fe82b28f69edbc341e3a82125b0575bb286190ba1e4f493722ec3ec3c3dca",
+        "svg": "ffca4d1162f7f7f4a73a236f268e2fc91f3973fce37feaca124ebacb092c6903",
+        "drawio": "af5ec25ea218749d81b6ffa919ca197d86b2527e2a3b52cfd0cab0a60f270898"
+      }
+    },
+    {
+      "id": "S00.recovery",
+      "stem": "03_저장본과_복구",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 120,
+      "drawio_cells": 249,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "810d7c949fa82c2fa1aeb8a7d870de9c3d334cf5080c7dd9eac81d6343c84026",
+        "svg": "70e71ba174b2d0cb1eb0fdce53c67f00649c7b60defc6d5c6675360b71af6302",
+        "drawio": "d44baadb4401db90d1ef4afe2d27c33ec7389341bfe01f46f81c0e58aa9b4147"
+      }
+    },
+    {
+      "id": "S11",
+      "stem": "04_이차원_설계",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 107,
+      "drawio_cells": 362,
+      "editable_polygon_stencils": 11,
+      "sha256": {
+        "png": "e7c6b818c7d6f82d4800b33fdd9e080816494899bdf1ee458743136c7ea4873b",
+        "svg": "88ec9e435d978059afdb049a69f0a987b4571ff68c5ff958f6dc803729a17573",
+        "drawio": "01ebb5d85729abaf45364dfea490a837b451925d3f4f0a9940665842dc57ccb4"
+      }
+    },
+    {
+      "id": "S11.endpoint",
+      "stem": "05_끝점과_스냅",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 112,
+      "drawio_cells": 345,
+      "editable_polygon_stencils": 7,
+      "sha256": {
+        "png": "29de7595ec4122de95805f44132f9020741fc84958b4a50252e62ccfa21238a2",
+        "svg": "9aa983df0834b99bbbf3889e738de929ae326742e3348cef59066e0dfd46d5f9",
+        "drawio": "c08b6e6d653664cd1201001f6a1e39d1cc680f088662cba42453b4a1c323e2ed"
+      }
+    },
+    {
+      "id": "S12",
+      "stem": "06_삼차원_형상",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 90,
+      "drawio_cells": 236,
+      "editable_polygon_stencils": 7,
+      "sha256": {
+        "png": "b0e532fc29000a317be012b726de7bfb7d033852953d934df23a4444a4b9f892",
+        "svg": "40dfac5e03f32b319d3ba04083820a850b55ba48fcf39c2b97c4d815f029607a",
+        "drawio": "9a928901ccd9dd624bb5771173329ecf95b377937b70bd631dbc0c859f151693"
+      }
+    },
+    {
+      "id": "S12.section",
+      "stem": "07_삼차원_단면",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 95,
+      "drawio_cells": 244,
+      "editable_polygon_stencils": 7,
+      "sha256": {
+        "png": "2b5b64121c1100f9a5181744f076513d0f3c5eb156a002086e8023b47e8752f5",
+        "svg": "18566b29bede9d6b9f67d553654bd112bc6353c8132b60d1b1853146466d7ced",
+        "drawio": "1a3d7ba0aee0f830cccb1ba3cbbe2d9e8e39ecd4578d5463cabde5b246c11bf3"
+      }
+    },
+    {
+      "id": "D10.band",
+      "stem": "08_목표대역",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 153,
+      "drawio_cells": 307,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "6b11bd1ca40b4d60f0bb473ef05d75d3cc33a6f891452ca06afbcd0b24b0c6dc",
+        "svg": "414536b714bc68d62e37845af3da884a582549cbd9f2c73b7fb6b9038cc1bd98",
+        "drawio": "053003915188b4f98f2a4f318d882ed13a8d8db5221ef7906d7fd12746a805fd"
+      }
+    },
+    {
+      "id": "D10.criteria",
+      "stem": "09_목표성능",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 156,
+      "drawio_cells": 307,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "afbf73627bccc14da7e955884db866099037618a76a3629e587bfbfc7f9cf43a",
+        "svg": "ac7f947d5eecc5c7647699c5a28b475e1c9855b4ebb6f63e3d0a25f739462403",
+        "drawio": "99b8f32ed85808e9b51eac3fe1f7235e6156a5718f790411f9a89a7a54dbb5d2"
+      }
+    },
+    {
+      "id": "D11.cards",
+      "stem": "10_문헌카드",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 144,
+      "drawio_cells": 322,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "d90bce6632e768ea0252c39eb6a7575918e6e0fb32ef2ab04e419a859d6e5d1f",
+        "svg": "aa2b79b6d9979641d513621c63b7aa7c6f48f06e31fd6d7f13a9daca77f4f70b",
+        "drawio": "69d82545ba2ca74eee876eb0fa86de0e4780c58ecbbc4ae4f34e64894d6eb91c"
+      }
+    },
+    {
+      "id": "D11.preview",
+      "stem": "11_초기후보_검토",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 134,
+      "drawio_cells": 323,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "e4e8b46af12118e22028378b25a80d261ffa372cf7d3f5e78ac7e45d8c3d4034",
+        "svg": "bee35735c308934317b448ece00b8d6f4ab6dfb198b419ee4b7616cfc4d72b5a",
+        "drawio": "be0e7004e150e42d698ab25c3be2a4997f788cbdb6754fbbbd1fe26df7191b0d"
+      }
+    },
+    {
+      "id": "D12.search",
+      "stem": "12_기판자료_검색",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 143,
+      "drawio_cells": 298,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "641cd70fa8bab3ef8a995a4208a01c0e26ec8194d381f50718515c52bba291ea",
+        "svg": "795754080a4754a3961e590dfd2f3e03da2d88bf3015c2f70edd0363a727596f",
+        "drawio": "e098603525201cb4c07a0c7282ceabd6e54de220b5f68c0500621a565a28ddc9"
+      }
+    },
+    {
+      "id": "D12.layers",
+      "stem": "13_층과_연결",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 147,
+      "drawio_cells": 296,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "ad4dce6fc62350898b142f5dd39e58baf0f0545a8f6a434a37f841db6184a46b",
+        "svg": "0a627e4db8a8fd8e224b2d7ff85bb4a34fe849a4e1a1cb461740e143e9c842ed",
+        "drawio": "312c621e3e36b4781307d677397fa2479ba440faa527cb5d34dd2e5a95bd0d96"
+      }
+    },
+    {
+      "id": "D12.material",
+      "stem": "14_재료물성",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 140,
+      "drawio_cells": 294,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "acad2d84f63ed79afafb3c2729a02c44251b75b0eacc661de43142758979b44b",
+        "svg": "8390280371fed64e110887b122f9d69f31fc311b588d9847058a5f19f93026ab",
+        "drawio": "e1a22e351c2b30262e2c916f8bf8485a2eed881fba1e34395eda165804bd5f1d"
+      }
+    },
+    {
+      "id": "D12.feed",
+      "stem": "15_급전좌표",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 128,
+      "drawio_cells": 318,
+      "editable_polygon_stencils": 6,
+      "sha256": {
+        "png": "3aa2d19821bf688ce4fca99af8bb41d7fba0d378d8a4a43bfc808f203a236f72",
+        "svg": "f1c5d3254903f502aed60f604ae8153be199214cfd8cd4e7ff61fa4b9216bf18",
+        "drawio": "6ffc3b1e8e31f6712b9888c726aa48406bde8756e32fc95e10236c5ab478875e"
+      }
+    },
+    {
+      "id": "D12.review",
+      "stem": "16_기판변경_검토",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 143,
+      "drawio_cells": 284,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "4bab0fe9e0cdb7eeeb33dc2ac2986ad482c6897cd90b4a896b6e47f3b564da19",
+        "svg": "ff52e33d8396faf79d6423253f00a4185635aa537d1b8fd7f1d9834dd0392517",
+        "drawio": "a9a1dd1716c19390edc476094af9ff113b4846348f45d8c97d23a02add9b143c"
+      }
+    },
+    {
+      "id": "D13.stack",
+      "stem": "17_기본적층",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 146,
+      "drawio_cells": 295,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "10404645c5f9c4e37780695dd2df8e8831d65bc90aa497b3dc421bbd12ab1287",
+        "svg": "7e02e03ca7431772fa50162a678722aa4020cde0e4af46188ed85ee4bc6110cb",
+        "drawio": "65df8e09a42e683d2841cd35472342d8b13c9d80fed1c8d25fba8b94346170cd"
+      }
+    },
+    {
+      "id": "D13.surface",
+      "stem": "18_표면층과_개구",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 132,
+      "drawio_cells": 330,
+      "editable_polygon_stencils": 6,
+      "sha256": {
+        "png": "a5c30c87396bbb29b2c95cb22e7bd8cdfcc1f7434bd94f5651ba9b0a4cf2de40",
+        "svg": "10bfa08ff35f54add86ae6084fce58dbf420de15fbf9372bc931190c59eff970",
+        "drawio": "c114c1e2426d20a2d3badf6db6cd8b1faed8877c2ca1dd11b1a2e69ff4857512"
+      }
+    },
+    {
+      "id": "D13.active",
+      "stem": "19_활성_시나리오",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 131,
+      "drawio_cells": 299,
+      "editable_polygon_stencils": 9,
+      "sha256": {
+        "png": "0ea53059658c00585f48c867440dfc98e9b1ea3e1f2e478f73c01434beb4bae4",
+        "svg": "069cdf6b2d6bf7d21b6f57366f1133b1d6bd181486f2cd9030a429ca940538d2",
+        "drawio": "3136790990af833bb50850f766d43a32b15343832bdd6ca20637ba47bcb4d487"
+      }
+    },
+    {
+      "id": "D13.install",
+      "stem": "20_설치_조건",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 133,
+      "drawio_cells": 298,
+      "editable_polygon_stencils": 9,
+      "sha256": {
+        "png": "f3404f4f490b787882431ba9016cf51a11fa4f1f6f433180cd43e3f127c5844d",
+        "svg": "7fd8bc6459add9e5f01de64d9cba70775aeeb83aecf767181aaf8fd05d698b12",
+        "drawio": "eb937778d0f10dd53b6d5ee9d2898787b1857a2df8c6a828d239a82a408a4af8"
+      }
+    },
+    {
+      "id": "D13.external",
+      "stem": "21_외부물체",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 138,
+      "drawio_cells": 311,
+      "editable_polygon_stencils": 9,
+      "sha256": {
+        "png": "b79330fa6efe134232b4de6699f45cf8ca33a5922275f7b047833384ae27b935",
+        "svg": "7a267157a27672656fcf3fedcce2b8895e980510c6047b19ee9877d7fc90ff94",
+        "drawio": "34a05d78657cd678c08a212b616c838df7a846644a6b18e3026211cdd0c6fa07"
+      }
+    },
+    {
+      "id": "D14.board",
+      "stem": "22_기판제약",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 128,
+      "drawio_cells": 326,
+      "editable_polygon_stencils": 7,
+      "sha256": {
+        "png": "689ba7a68d9eabdb0227b830440e4e35efe52b44ceee449f2328db2d7a511983",
+        "svg": "fbe3f053d62e75879a38e13f8eb323d37bf58648faec9027f1b9599f15b9713e",
+        "drawio": "b1d39e34958a5608583a68a15f4918d37e5f9c251aa45f1d75bcd36ecce4488c"
+      }
+    },
+    {
+      "id": "D14.parameters",
+      "stem": "23_매개변수_제약",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 141,
+      "drawio_cells": 287,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "0d1708a4d5b844db4970434e74727d9541a51181732631f78212ea6981627763",
+        "svg": "00905fb0f73011d700e68c4358bb8c854b3eeaeb596c9c7c49f1914f53feb7fa",
+        "drawio": "4075b29b5c0cd4cc7e11b106a862c6b44e1ed01271d667ce12b94c9277e021e1"
+      }
+    },
+    {
+      "id": "D14.connect",
+      "stem": "24_기대연결과_분리",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 132,
+      "drawio_cells": 326,
+      "editable_polygon_stencils": 6,
+      "sha256": {
+        "png": "96fa9299d2c1b8ffacacbc9a82794514c07f4a91e15ba2c27c996b3ad7e259e2",
+        "svg": "cd99c2816980e7c63121c032a272594ed69f3fbd48753350a7b555f06c196d3b",
+        "drawio": "da53e4e40dbe324150b1b9b49efc95d08a82cb26e7f445785070965eeb9f485b"
+      }
+    },
+    {
+      "id": "D14.manufacture",
+      "stem": "25_제조규칙",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 143,
+      "drawio_cells": 285,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "e910934aaf069be22709b71735e39090602db04e23c9f2ccf6c29e1858b363ab",
+        "svg": "93a4f8f262218b0895c1c6889492837f46d272b6027b85566b89585e2f90ab44",
+        "drawio": "18c224dbdd1d9be1538238205ab18fabdba2b5bca66f74fd067f4b5e37c8e1b6"
+      }
+    },
+    {
+      "id": "D14.results",
+      "stem": "26_검사결과",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 132,
+      "drawio_cells": 265,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "6e6b27f26bfc2aefa895efd4a2c156dd325f6583d5740a35263d26685b3e8ab6",
+        "svg": "243e8d49a12684ff26bafe06b12fa67e73dca200e42e2fabd1728e9be35f69c2",
+        "drawio": "bb6c63edcfe956f19d181e4d65b113626d4844e1637fa0a5cc95d4001b594f8a"
+      }
+    },
+    {
+      "id": "D15",
+      "stem": "27_객체이름_변경",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 106,
+      "drawio_cells": 230,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "175e40ad0a473ebafcdd06aef52c917a15087817214f396a19d6bebf22b08ca0",
+        "svg": "33113353954bb7505b2494e6cd3110decc2ac91ca8c3ddfef7c77b6fceb844c5",
+        "drawio": "b3aeeec7c6ba31667ba428c9e453e467c488c61e3dba30a4a71b1c507bc327cf"
+      }
+    },
+    {
+      "id": "S11.port",
+      "stem": "28_급전과_포트",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 124,
+      "drawio_cells": 314,
+      "editable_polygon_stencils": 6,
+      "sha256": {
+        "png": "689feed439cf2d1a4e20711e69ea78e6f57cc5445dbc539574642563c0e67417",
+        "svg": "4c7a03d4cf868a02e2e428c51591502a1145e59baaca5c6cdc98db75e0dcd3e7",
+        "drawio": "954a4c304df93d0d8932bfceb53501d0462eafd000b322c526c5daaa503bb64d"
+      }
+    },
+    {
+      "id": "S11.matching",
+      "stem": "29_외부_정합망",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 132,
+      "drawio_cells": 284,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "0f291d6f33c5308eabe685beaf2871771cf5d9bbed263559b6adf3a328a1d6ae",
+        "svg": "6d3ec83d0d3035bd6ecac542e0983d871fb6295c69bd0e16eab4a1e8955ca466",
+        "drawio": "409c007f9e80724b1361aaf85398fac752ba5f73a6dae00c4952e24b126de208"
+      }
+    },
+    {
+      "id": "S20",
+      "stem": "30_해석_실행전검토",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 116,
+      "drawio_cells": 233,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "a7cbc67900c3b06dace5cae41be202295c97678f303babf9488de65853d27f21",
+        "svg": "15ebaa359ad0ace16d394da6197ad3001f041f26db9ab04bd051596ce01dba82",
+        "drawio": "c25c3e480d1ff4b87e531340e6998e4113c13402811d928433632fbeb38bb301"
+      }
+    },
+    {
+      "id": "D20",
+      "stem": "31_해석_조건",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 121,
+      "drawio_cells": 260,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "a4f962bfe1d7709f61767d079570396a75410d11cbe53ea6c4be8bd4cd46513e",
+        "svg": "80ba09be57369be74623cf8bfc1124ce2a95be226b87326e9935c6a84024363e",
+        "drawio": "9a16f7cdf582dc8c88b5090b60fe33571c71271f105c2e58d847eb6dcf84fcbd"
+      }
+    },
+    {
+      "id": "S20.mesh",
+      "stem": "32_메시와_자원검토",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 93,
+      "drawio_cells": 300,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "948dbb373dc8bda0b314b2d06c8b1f273c89f640617d1d59f5f0ac8d13738c39",
+        "svg": "0ade3716d946e6428faba1a51d65b3968c4c63fe4470f1c62cda6fe7e143f18c",
+        "drawio": "99ed9aea479783b157934b7e24fdd2a63a87321041948569fc5f8dc0e61fc6e8"
+      }
+    },
+    {
+      "id": "D21.setup",
+      "stem": "33_연구_조건",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 141,
+      "drawio_cells": 287,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "a1a0fed7f801d3988a29fabe2b61b1c9cccbcf766f7e0d4b14ab6ac09e01cf09",
+        "svg": "c176ca0ec0cd800952cf76fe0cf0b1ed1e3c0147381d4ae00d8a924cc980f862",
+        "drawio": "2f04acbebd0782aa079918d6574eb688e5e5ff6aca1fa7197e039d241e2bc6af"
+      }
+    },
+    {
+      "id": "D21.radiation",
+      "stem": "34_연구_방사와_손실",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 132,
+      "drawio_cells": 272,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "12529121118dd17759fa2cdd674174abbb0fb0610277c7b4118f1317e318f89e",
+        "svg": "afce0c30a9b0bd5441121905edc5fb7e1a01b8a3b58c0b3163fe5ae83a3ef2e0",
+        "drawio": "c5be5c561d04bf0df2b917db65b40858fa7cfc4041595eb80408600f26a8429e"
+      }
+    },
+    {
+      "id": "D21.criteria",
+      "stem": "35_연구_판정기준",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 134,
+      "drawio_cells": 268,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "2e5f02e7370200194944a418f78be47d311a2b2efb78a520450ebb7b126bd1c8",
+        "svg": "40fd33c860d7fe0cb3541269d9083fad1fec90cd92f7116bcf9e13411dc5f22e",
+        "drawio": "c4d53bd0f647685069c50c6fa6df987488fe1acf0884a37de12b6629e6aed755"
+      }
+    },
+    {
+      "id": "D21.progress",
+      "stem": "36_연구_진행",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 143,
+      "drawio_cells": 277,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "0fddf22ebd9a4d0a38545daa23b4335467bacc29f9fec98c9d3aac4f5f84ef7d",
+        "svg": "65674baf7b4dfeab13762fc3b8a175e1bcc252ff606be7d58d96a6a5202c0c50",
+        "drawio": "2bf21ab60ea3c1a7d7c31e3fecf2c5f8535296e07cb5aace9659081e259dde1d"
+      }
+    },
+    {
+      "id": "S30.network",
+      "stem": "37_네트워크_결과",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 123,
+      "drawio_cells": 251,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "cc56ed92beafd1e9832a5de24fe2157ba918ffdf321a190c79464fa3cddbe64e",
+        "svg": "a8627e99e59ba833be84ba9e0d1901f0c50ad953f09b3f52efd3135cc7044ecb",
+        "drawio": "283cb67e37d1ff923ef665795ccff02adc162a76aa5ed99eadb36dbbdc6b28f0"
+      }
+    },
+    {
+      "id": "S30.smith",
+      "stem": "38_스미스_차트",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 106,
+      "drawio_cells": 237,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "d2fb024ae36ccb9477ea148d6a43344246e2ccb67c69593bbca0fe3818a3f4ec",
+        "svg": "0d05605563f6960097ac32c297b279bac4978a88c2a6cb57d30bdbac87303f63",
+        "drawio": "2ef6c7428017ae8b29aa445275800f45398a0c061917199a4690e16600b6f83f"
+      }
+    },
+    {
+      "id": "S30.power",
+      "stem": "39_전력과_손실",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 120,
+      "drawio_cells": 232,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "17a504447684ee754f51551efc17dc00d09a40a98e6a3eee15c7d44105353b7c",
+        "svg": "f63837fe31a111196ebd34c93d269cb2589ba1d3a902bd3f0dd9cba7ec7a475c",
+        "drawio": "23b47ec90e92a7e9e8d23a156fc7e7bba6d7cb48a4f1f585020aaf038e5d4553"
+      }
+    },
+    {
+      "id": "S30.targets",
+      "stem": "40_목표_평가",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 118,
+      "drawio_cells": 234,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "dd170499b74379a0ba6e066f5fd4f3b0248d497b368e53a54d856a344a26b522",
+        "svg": "ebf0121ad89d8548f5ff1d4ccc37f5388441d6d501168171d1e5ab3d233f740f",
+        "drawio": "11ad07ef74d995c465c3a17799b8985d18a153bd51d099ba258a084d89a1cb0c"
+      }
+    },
+    {
+      "id": "D22",
+      "stem": "41_방사_절단면",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 121,
+      "drawio_cells": 251,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "49c9f00254a959dbab07351c5b14ba70a3539842eb8ca079f48273a37ff00a51",
+        "svg": "10cf66ee1e6bc09321dbe7444679ee9c02d4a4ea09d54363f4245e872ac34786",
+        "drawio": "b4a29e4d8890265227c7c41e2b8523baf98b7dc2da1e433f4af7ce8e15cc6fe6"
+      }
+    },
+    {
+      "id": "S30.radiation3d",
+      "stem": "42_삼차원_방사",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 109,
+      "drawio_cells": 271,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "1a8529d508d3b261bb09e5ff5c0d4f14ac4d2014ada7b3349acfe7f2d00e8dc5",
+        "svg": "7912fbc2507ac93e1d2d9eaa780fc0342523e2af913efffc3a0094b87b3f97dd",
+        "drawio": "bcfcd0dddcb65f4f009fef05e3288c294a671f78a0103e425dce6ec7ab439788"
+      }
+    },
+    {
+      "id": "S30.field",
+      "stem": "43_필드_단면",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 102,
+      "drawio_cells": 854,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "ee5e90335bc78ff7cc46b449f241af1daa9ca484db439f12a1ad7089aa98682b",
+        "svg": "6db9e827823565e081c995d32aeb12ba586e6ce253fee5bcab5f68f93b7430cd",
+        "drawio": "c6946f7944c769c5e73737c9f7cc9856a6ccaf954c5c5676b037e6ef0697badd"
+      }
+    },
+    {
+      "id": "S30.advanced",
+      "stem": "44_고급분석_지원범위",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 115,
+      "drawio_cells": 226,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "066b810e8942a335f1bb7299b45a111447f58b9a27a450b39466e7e3e6d88f97",
+        "svg": "41649dd9571c1e97776bab791dcf00b321f24f03fbe6a5124182ad3f119b3d36",
+        "drawio": "5a6bf43b11e72d35175779b276b8ec05cb5966d01ad6b7cd58bf481ab43e0241"
+      }
+    },
+    {
+      "id": "S40",
+      "stem": "45_결과와_후보비교",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 112,
+      "drawio_cells": 237,
+      "editable_polygon_stencils": 3,
+      "sha256": {
+        "png": "9c9f15429e66dc638659a88687f0675a0c5088d40891b2ae6a38a2e1bc4774ac",
+        "svg": "c405b136f0c68535cae60c3174360a084ea434dae9f7767ed583279dee5cdb21",
+        "drawio": "5899d8cf3bae9f2723792e6919a7c9259e5972ead5377603f67cc8a27ef7a5a3"
+      }
+    },
+    {
+      "id": "S40.import",
+      "stem": "46_측정자료_가져오기",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 124,
+      "drawio_cells": 258,
+      "editable_polygon_stencils": 6,
+      "sha256": {
+        "png": "fbd3f1463101246827b935c82d71b989cb4ce57263032d9838ebc0114d346c16",
+        "svg": "484dacbc70f8b30697dd666dc2f1dacbc583aa4de91208d195105e5da0bc7c35",
+        "drawio": "66d72226ff65c578da4c5118b76d38589f6b2ccd0001fc7bd7bec5973bc30cef"
+      }
+    },
+    {
+      "id": "S40.measurement",
+      "stem": "47_측정_비교",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 112,
+      "drawio_cells": 236,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "6aafee147bea51a5a1ed6ab5e3a2df0b7b457e8f1ace3ea97bcfe075e28aeeda",
+        "svg": "2e9731632f083626aa4395ada65449514a823a611356355721287a9a84a59251",
+        "drawio": "5858d68c6fe96b68d96034664cf498c5aea9ce34ccb022e820d92971566083cc"
+      }
+    },
+    {
+      "id": "D23",
+      "stem": "48_수렴_연구보고서",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 103,
+      "drawio_cells": 213,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "932f706dfb3f9e129b7b52b030b803e2ab836acb030da77aa8c41742d2ab93c6",
+        "svg": "b334ce1778be124e825b856969576792ff2bcf8050aeba36200d4663486e2759",
+        "drawio": "ce1f3f356fdd3d0202a40f87b04efcd56fb7af0c37266826687bfb65356b5ddf"
+      }
+    },
+    {
+      "id": "S50.drawing",
+      "stem": "49_기술도면_출력",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 101,
+      "drawio_cells": 261,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "f3120ff8bfc3883058cea426ce3770b3fa8116e1cf94e5e6dd67d553fb93688f",
+        "svg": "2690dd325177e9721c60274bb560bea6ac6f5011e5d78267479a5003b8edf5e6",
+        "drawio": "7a0c5894aa433205187ad4eb432a82ee917203480af9229da5412f1dfc1453d5"
+      }
+    },
+    {
+      "id": "S50.step",
+      "stem": "50_스텝_출력과_검수",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 103,
+      "drawio_cells": 247,
+      "editable_polygon_stencils": 8,
+      "sha256": {
+        "png": "6797def284d4e6d8281e9f7c7b4587dec44a5335240d90251c7681448f3da9ba",
+        "svg": "79fabb63199d4db36f5feecf642d64f0d8c7091a2af22bad63615f5db515996e",
+        "drawio": "cba8b68cb6e1f2cdbb6d542dd799192c843d9110a5c7f3acc3f3c8cb7a1f517a"
+      }
+    },
+    {
+      "id": "S50.pcb",
+      "stem": "51_기판_제조파일교환",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 110,
+      "drawio_cells": 227,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "204dd89e914542eabe36ef08e3fdb1de7c352ea7c237ad9bda09159351495a38",
+        "svg": "f3f1e337c2b597d26925b431664549194a944087e9446bcf7d9451d46b1c05a1",
+        "drawio": "c3954773d3fa6fe0b9770f0fbd5188b79e9a82645a54abde70672f4f5be700d6"
+      }
+    },
+    {
+      "id": "S50.report",
+      "stem": "52_보고서와_인계",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 106,
+      "drawio_cells": 223,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "4689e31d49f8c4f495b26e1c2bb6b56235c4edc1be2627cd0554ff45b98954f6",
+        "svg": "bada5dd5fa901f23e9ae2513625da758d8613841f172caa530b106dc1fc80503",
+        "drawio": "b56e531ef92d4f763b5744c437d10aa536417f30a4559172c0953a7e91e02388"
+      }
+    },
+    {
+      "id": "P11",
+      "stem": "53_작업과_취소",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 102,
+      "drawio_cells": 210,
+      "editable_polygon_stencils": 3,
+      "sha256": {
+        "png": "6a95efbb2eccd16985646fd3eb76b82b7d7c95847c4a8c50fdbb3612d800e45f",
+        "svg": "6ce0cadc4f9992d3ac7a791b6dd82a0b1330d6dbca8ca2a3b4ae26a989cc4798",
+        "drawio": "4259efe92253bd1934a1ce1d38fcd58ed080b4d1f688c30785194d290c00cc87"
+      }
+    },
+    {
+      "id": "P10",
+      "stem": "54_문제와_위치이동",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 104,
+      "drawio_cells": 214,
+      "editable_polygon_stencils": 3,
+      "sha256": {
+        "png": "d9be2b34f0112cb045877a14eb7239b416315489735a9f9f700eda6ee489f31f",
+        "svg": "c8ab119d7061690520caf39d990dea221a00ab3709d3f837179d559795b67cdd",
+        "drawio": "8579e354fdee9130ecc1a4b3517775148f98a7f7c26cb7b0386c46d0077b55cb"
+      }
+    },
+    {
+      "id": "P12",
+      "stem": "55_로그와_진단",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 101,
+      "drawio_cells": 210,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "1e66b494908284fba189090e16abe7d95d90e3f665f0f4b673968417a3567425",
+        "svg": "1ede4d7f78990aebb895ba1a65654709181bc0870fabdee1941731a0f9cd666e",
+        "drawio": "183b7eba8b01076bda18c108034d4a67d37a4ffd04d6f10b07dcb78866d449c2"
+      }
+    },
+    {
+      "id": "UI24.source",
+      "stem": "56_출처와_채택이력",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 134,
+      "drawio_cells": 270,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "3a8ed0e380467134069f9f9ca53720e4e424d78b6a9def7dab28bf9b117d3c3c",
+        "svg": "50d737e704a7cb031109fe25cb2db136b24eca2c7183b926dc5a7a98d52d6bad",
+        "drawio": "3773a115aa68c639919a9252176c3622a41cb5e1db8208642e37f37d1cca72c4"
+      }
+    },
+    {
+      "id": "UI23.environment",
+      "stem": "57_환경진단",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 133,
+      "drawio_cells": 268,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "b0f3687cb486e817c1bacfb5769fd3b640afb03791f596edc98d6df772d0c703",
+        "svg": "73dc3f80db259d6ee6c8e8fddaca666f328bb8b2719000a870c9fe78484248bd",
+        "drawio": "ef69343a15e42a84cd57b116a1d2eb23e57267ce27ca92c00da005ed6cd04dd3"
+      }
+    },
+    {
+      "id": "UI01.preferences",
+      "stem": "58_화면과_키보드설정",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 124,
+      "drawio_cells": 270,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "e57049c0063c00117b5660e1a070b3544f019086de9319a5f60a110554e24664",
+        "svg": "53c1b1920047975d57f91f6c30066c0b4b29d9ec6744df5e58e4aeb3859c4d8e",
+        "drawio": "16715da1efd07b0bc97d684ec8cde9b837023bfa382e36bbf5810f39d6b0319e"
+      }
+    },
+    {
+      "id": "UI01.commands",
+      "stem": "59_명령찾기",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 116,
+      "drawio_cells": 244,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "12062e5c0d3d886cc4e83c6badc7b10b313f1df177e7c7a0e7dc5c165fc7cee4",
+        "svg": "6ad4a4a2b8ebd0869cad54c524eb372679163d97a2604308371a7f99bf030ce7",
+        "drawio": "b7f3d4e50de424617db4af7a984096ef6129f53f3f96df5b9eea823c89591bec"
+      }
+    },
+    {
+      "id": "UI01.dirty",
+      "stem": "60_미적용입력_처리",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 111,
+      "drawio_cells": 238,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "65fb8dd698bf05263752d8b94a29d051205c092b3798c33c0ef8f14e5c549ddc",
+        "svg": "0d0287827f779d77aa1c89b60e3dae2438ae96329de50ec8faa22c50ffd337e5",
+        "drawio": "19383e80900aa0b659bf2bdeb2e180c5c3987fdaae437e4304e9309a7cbc455c"
+      }
+    },
+    {
+      "id": "UI01.unknown",
+      "stem": "61_응답불명과_복구",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 113,
+      "drawio_cells": 242,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "8ae6231cb5dffca8d2b5f6c45adc2fe4252f4c584f4fd0ae5e900ad0852c61f1",
+        "svg": "07759de3700ee046157a00faa21b43635964bb9eee07929c64a9a8860332866f",
+        "drawio": "bbd2d2f340af664a3a92917cf258c4acc0793923d7280f6e6d6879ef8984517f"
+      }
+    },
+    {
+      "id": "S30.empty",
+      "stem": "62_결과없음과_미기록",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 82,
+      "drawio_cells": 184,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "7270fc68593f82ac0bde3b3297dbac5c1deeac12b9a34f5f5ec3e3fec1a912fc",
+        "svg": "2948fd31759a2c58098e588c2ad1a216a2a3b5c2c61c97773902960850633b56",
+        "drawio": "a13fd6efd299d8eb34ee07b603efbdfb1b1ee9cbb52c43419ef2fb2b5dc82353"
+      }
+    },
+    {
+      "id": "S11.compact",
+      "stem": "63_작은창_편집배치",
+      "size": [
+        1366,
+        900
+      ],
+      "text_count": 50,
+      "drawio_cells": 203,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "773e6dfbe05637e2a0dbc2801979c9d8dae18e6b746ba0a663c7b1aa08c28445",
+        "svg": "e45f1a7914a08944cd836832814b7537b300755e11c5107bc8d335c4a8780124",
+        "drawio": "04fe2d474f75cb3492917d23a6a917ee8ce58a3ad3fdbde81622aada47c479dd"
+      }
+    },
+    {
+      "id": "D20.mesh",
+      "stem": "64_격자와_경계",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 146,
+      "drawio_cells": 290,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "6ea731a6d7cfef5c125d6df2ab5aae877955e440086b9bd210900a25082dae43",
+        "svg": "a4c427a69953fff5c06ba556a4c01686dd6e376a985dd570030cffda46bf3006",
+        "drawio": "2f787af6a101af0e2ecb38cd0fcc4b904c1710d00a131390011bb5bedb40c4cc"
+      }
+    },
+    {
+      "id": "D20.output",
+      "stem": "65_종료와_기록출력",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 121,
+      "drawio_cells": 261,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "f0867506146acbb9cc32d9084852fe8be701122ab697f3a702644421e3fd444f",
+        "svg": "044462904f6528f3526b5e44c2b9a591aafd81b7836415dcb7224e77b08e618a",
+        "drawio": "369be754be9b9ade8f67c10ccc015475433b4711e297303bf610bcdd8479b644"
+      }
+    },
+    {
+      "id": "S40.import.mapping",
+      "stem": "66_측정자료_열대응",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 136,
+      "drawio_cells": 275,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "902da2eb2202ff5469623842de0a9d02a6f4af8df42baf23315968d149ce40d8",
+        "svg": "e1cbc2f7f06dbf30bb2e4268a03a96076ae2a9a26c7e5c6231d9708f2f5b5c07",
+        "drawio": "309deceef2953e72f7e144907811e9d8f248f504290aa99eff3524dce847ec8a"
+      }
+    },
+    {
+      "id": "S40.import.calibration",
+      "stem": "67_시료와_교정",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 123,
+      "drawio_cells": 265,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "677c76c8e30b5d7dcf965627a817c67d0949523b25e810f53deddf531f2649d4",
+        "svg": "ba7d2a9f3b23169b4814005d1579a767de87bcd1e2faec6538367f58467f5b26",
+        "drawio": "3f843057179458d2730424d97ae8919b3f213eec4d472da82dee3f34c7fb3c80"
+      }
+    },
+    {
+      "id": "S40.import.review",
+      "stem": "68_측정자료_가져오기검토",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 128,
+      "drawio_cells": 265,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "28ddf5a6b3776ff944e8d5424a711f4d5d9b81fa4c2d27b3decd3fc1b775a399",
+        "svg": "3c9adf7618e014c70e84344fcffe10de9022387b49ad55860f14a56eb87a3831",
+        "drawio": "541a84fcdbecf3324c97dad892ffeeda4adb8d03bf391a76e98732409ed36289"
+      }
+    },
+    {
+      "id": "S30.polarization",
+      "stem": "69_편파와_방사수치",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 127,
+      "drawio_cells": 253,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "0ade45cd561d29981f86a4be62b7b6831933718e43a04d060e280d091648f513",
+        "svg": "2d54147ab8c667d7c63609da93a1c3a94dbb2406f68c25186587602bbdca1768",
+        "drawio": "091d9bfa00cd8598acc8900b220c3ff72370d5cb04f83bee187f16a9081ddd41"
+      }
+    },
+    {
+      "id": "S50.gerber",
+      "stem": "70_거버_교환",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 111,
+      "drawio_cells": 271,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "4d7611034f1f99035b8f55a6ba3591a608a2125a88417a703c767b77a5623235",
+        "svg": "360280b898409d1449ebd2575b8a2526134dcdeaca4fadf79f44a8b7ba24414d",
+        "drawio": "88ae6b0a1744c66f3ace8cfe1bf4ad9b2e174df38e1d9b83ab2290ce3181cc4f"
+      }
+    },
+    {
+      "id": "S50.drill",
+      "stem": "71_드릴_교환",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 118,
+      "drawio_cells": 239,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "0041c9f0c3674151e6c2ffd03fac5bb202f34f3ce13d0af70c4412cbfcaf892e",
+        "svg": "1a3693aca9dedda8ce6c0c25b39631970e453199931ba99c003c63a000b080db",
+        "drawio": "071fc8096c1e4c6651fc564a2ee2fa26d5735ce30be58b487e4354a45a6f93f5"
+      }
+    },
+    {
+      "id": "S50.job",
+      "stem": "72_제조파일_묶음",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 117,
+      "drawio_cells": 233,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "ba5b2210f5ebfa7a42560645fd11b8655b856e15682eea5203f5a760af40b6d7",
+        "svg": "66e369dceb1689fdc797437bcc1c13d71be4266c75dbe2675c5e7d9412c57e67",
+        "drawio": "f0a03d060957ea8189dcd11cc9adf49b7580da87ab0d027260cdfae5b7184848"
+      }
+    },
+    {
+      "id": "D10.history",
+      "stem": "73_목표출처와_변경이력",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 148,
+      "drawio_cells": 295,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "f8516fd6922daabc80a586781c1fbf02b456d082a5db4df02922dd88e41a48d4",
+        "svg": "7ec1de452c33d4c71af8ce8195640e16956cc5896fd9e25ba52012b83adfad44",
+        "drawio": "d9ffa8fc76cd77c03d7b8610a70db719cbe227a625ad9f496282ffafcbfa5d9c"
+      }
+    },
+    {
+      "id": "D11.input",
+      "stem": "74_문헌후보_입력과_초기식",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 136,
+      "drawio_cells": 282,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "95df8a4ded48d119b3b5a0ae19c460ee5794f3133a1ec9732b3c2d0b89338232",
+        "svg": "e9096ed30d8fd3e6fa53898c2593d29ce9b250ee145f63f2300738510f081413",
+        "drawio": "1bdb3e81d087c50ac21aaec2f13da6d1f9ff145717a43566edb8dd1d360ec9a6"
+      }
+    },
+    {
+      "id": "S11.port.terminals",
+      "stem": "75_포트단자와_연결",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 128,
+      "drawio_cells": 315,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "3718efeab6f7e1aa7fe6094398bf75d653b171e138c698edc55f285fee9b7ca0",
+        "svg": "cbc1cf5644b1a546774ad93733d114aff452179f32f939527d1adb003488b7ee",
+        "drawio": "ae33b28ca8c1cc74b169eca0c90a7f6e53e313fd57b8e072c48fb93befbe198b"
+      }
+    },
+    {
+      "id": "S11.port.reference",
+      "stem": "76_포트출처와_기준면",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 135,
+      "drawio_cells": 272,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "9276982f9822dcc819fc9e51bf287e135dcdeebf5a9fbd63f711da77e5e90369",
+        "svg": "0542774818297a3fb30d7b1ba441a315f826c349663cbcece3c09c21e87b14ef",
+        "drawio": "d452ddc0c5c70f98c45a64487c111d68ce895268185e1597bceef1496e31c600"
+      }
+    },
+    {
+      "id": "S11.matching.input",
+      "stem": "77_정합망_입력데이터",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 127,
+      "drawio_cells": 265,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "219ac473199bd7ecdf202ef1b95db2b7b5fcfdbfe3572c469be051b73e26aaba",
+        "svg": "ad7323c6cb701d47125db86e64ab663262167be56540fcfff12a6b61db7063e8",
+        "drawio": "791d8991ca8c2d706b28de4cec6c370c09b7bf3bd986fc5840adc8ccec98a465"
+      }
+    },
+    {
+      "id": "S11.matching.results",
+      "stem": "78_정합망_결합결과",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 130,
+      "drawio_cells": 273,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "e0d087c97fa01dc45f0c15de9b5b77a70a0022d980bfd4cd7eab43987038aa93",
+        "svg": "957961bf7b16bb42862ba80fa324dcf6f46dd95a96c8aa95c528829e8f237527",
+        "drawio": "99611a117cb8d306692abb1417fd49780cbab10ed028b939799071760ed7ee95"
+      }
+    },
+    {
+      "id": "UI24.assumptions",
+      "stem": "79_출처가정과_생략",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 129,
+      "drawio_cells": 265,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "a04684e4cc65b3fdf39c5c1510e85a2f99f1ea0caa72b442e83565f652a2b600",
+        "svg": "0cce58ae420f46676e7ee3e627b9a0abf8284feb94bbc3b1df1b82eca45836cb",
+        "drawio": "6a5cae1b6c716dfa39da895502218ef4fa7040f9811a7ce191fa1035c5f16cfd"
+      }
+    },
+    {
+      "id": "UI24.history",
+      "stem": "80_출처_변경이력",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 128,
+      "drawio_cells": 260,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "ce7712dd457a7438ffd321e3700a8970216e3f68bd14c672d962b12b88d7f69f",
+        "svg": "213701750b0e601036e6d66a8a155a5153f375ce67a29bf3ea4ab2642e9672d5",
+        "drawio": "a04bc9ca59d6f03c2049a812b8bbafc3dcdfa51d835a57b013f5ccae8315e98f"
+      }
+    },
+    {
+      "id": "UI23.paths",
+      "stem": "81_환경경로와_연결",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 123,
+      "drawio_cells": 263,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "726bd6de936cbc0ff8cd7068596ab171fef874e5e0508a2063c6e8c1ca9aa3e0",
+        "svg": "5795c9072c70722110a77e908ad45587ea0939d8f051a99646783e459280a9b7",
+        "drawio": "d56c5ea08b0cb90472c0e70a73630df1f0ebee2b81b6dc77d9fde1d367259760"
+      }
+    },
+    {
+      "id": "UI23.diagnostics",
+      "stem": "82_환경_진단기록",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 128,
+      "drawio_cells": 264,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "0e7917db61a44e55ed68161c9be6461c8248c2512fd6c52461a257e43d3a5bd9",
+        "svg": "1acb4326565d3109af9f435cfb0b455fc274623ac75327ad1adf4abbb125f812",
+        "drawio": "b8a0efb4a0980787a53fa87176095cec5f8a1614348b2287d3000edd6a5a407b"
+      }
+    },
+    {
+      "id": "UI01.keys",
+      "stem": "83_키보드_설정",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 132,
+      "drawio_cells": 272,
+      "editable_polygon_stencils": 4,
+      "sha256": {
+        "png": "7e961fc9341460be933b1f8aa43f30abb298c43028c337b85472bac4e6b49c59",
+        "svg": "7b190fb686d59a035b16697df92023846bc932819bcf1c33c850e114975acec9",
+        "drawio": "e94f89e140401f1534d80e7aeb5ca5d91f6f053ea626b0387c35cf41f437cecf"
+      }
+    },
+    {
+      "id": "UI01.accessibility",
+      "stem": "84_색상과_접근성",
+      "size": [
+        1920,
+        1080
+      ],
+      "text_count": 119,
+      "drawio_cells": 271,
+      "editable_polygon_stencils": 5,
+      "sha256": {
+        "png": "d2a0772aa11a4e877f915af5bd240f949b4c71c20f6095b45ea6a8b510549f59",
+        "svg": "64fd7044dcb7541b9dd8037e978d9404aa58de02aca89184132aebe8c360f949",
+        "drawio": "5638cda8230da66e11824d76ee2eb55044f6c35bc7e891734723bead00c39218"
+      }
+    }
+  ],
+  "gallery": {
+    "gallery_sha256": "4fe53aceeb0468f3f5bb77a6387593a5afc21e37daa4334e84fa9e65ee0fa79d",
+    "gallery_screens": 84,
+    "search": true,
+    "workspace_filter": true,
+    "modal_open": true,
+    "next_previous": true,
+    "keyboard_navigation": true,
+    "original_size": true,
+    "escape_close": true,
+    "local_images_loaded": 84,
+    "page_errors": [],
+    "missing_resources": []
+  }
+}

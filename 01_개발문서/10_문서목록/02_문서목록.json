@@ -1,6 +1,6 @@
 {
   "schema": "rfad.documentation-inventory/0.1",
-  "date_kst": "2026-11-16",
+  "date_kst": "2026-11-17",
   "scope": "current_development_docs_and_preserved_reference_files",
   "exclusions": [
     "Git/build/venv/.local",
@@ -17,7 +17,7 @@
     "current_01_요구사항": 3,
     "current_02_시스템명세": 11,
     "current_03_아키텍처": 6,
-    "current_04_화면설계": 12,
+    "current_04_화면설계": 15,
     "current_05_기능설계": 30,
     "current_06_분석연구": 13,
     "current_07_검증": 7,
@@ -27,7 +27,7 @@
     "current_traceability": 4,
     "document_catalog": 4,
     "document_navigation": 6,
-    "documentation_asset": 2,
+    "documentation_asset": 6,
     "documentation_validation_record": 1,
     "historical_proposal": 2,
     "historical_verification": 38,
@@ -38,7 +38,7 @@
     "reference_original_pdf": 1159,
     "reference_support_tool": 14,
     "repository_guide": 3,
-    "screen_design_asset": 34
+    "screen_design_asset": 286
   },
   "records": [
     {
@@ -25866,8 +25866,8 @@
       "path": "01_개발문서/04_화면설계/01_그림자료/01_스튜디오_전체전환.svg",
       "category": "screen_design_asset",
       "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
-      "bytes": 8855,
-      "working_tree_sha256": "8b5346cb9692fed8056a2603ea6d3224a0ae9fe0d82861649baa7bb9f8145798"
+      "bytes": 8800,
+      "working_tree_sha256": "d85fcd61bee2f546301832ce92515363b74ca6436fae2f0f00087a0e014c2f2d"
     },
     {
       "path": "01_개발문서/04_화면설계/01_그림자료/02_편집초안과_저장흐름.png",
@@ -25880,8 +25880,8 @@
       "path": "01_개발문서/04_화면설계/01_그림자료/02_편집초안과_저장흐름.svg",
       "category": "screen_design_asset",
       "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
-      "bytes": 11042,
-      "working_tree_sha256": "4b0bb3d0b8eddaecaad4b018f59de6111e438053cad330d9f1260e218b316dc6"
+      "bytes": 10972,
+      "working_tree_sha256": "9ccf33e86ad90ef4164af4cf25214ce51cbef996f90ccc0601db3c021e3e7105"
     },
     {
       "path": "01_개발문서/04_화면설계/01_그림자료/03_객체이름과_식별자.png",
@@ -25894,8 +25894,8 @@
       "path": "01_개발문서/04_화면설계/01_그림자료/03_객체이름과_식별자.svg",
       "category": "screen_design_asset",
       "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
-      "bytes": 7618,
-      "working_tree_sha256": "151782dbce02fe793002e4aa7df57a6d74ef6fbcc9af6c97aadb4b0432b22100"
+      "bytes": 7568,
+      "working_tree_sha256": "2697a2bb586c040447c93555871085044f05328235922ae097b41c922260dd00"
     },
     {
       "path": "01_개발문서/04_화면설계/01_그림자료/04_시작과_복구.png",
@@ -25908,8 +25908,8 @@
       "path": "01_개발문서/04_화면설계/01_그림자료/04_시작과_복구.svg",
       "category": "screen_design_asset",
       "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
-      "bytes": 6151,
-      "working_tree_sha256": "ec129d5c50e0806bfc074cf8674bb6ceaeb166bd586a8db03a8b7aaebe64702d"
+      "bytes": 6111,
+      "working_tree_sha256": "d66ff5398e68c4983c654feea2f8452e5c65ed897842ef0ee82a7257fea01d01"
     },
     {
       "path": "01_개발문서/04_화면설계/01_그림자료/05_설계와_이차원편집.png",
@@ -25922,8 +25922,8 @@
       "path": "01_개발문서/04_화면설계/01_그림자료/05_설계와_이차원편집.svg",
       "category": "screen_design_asset",
       "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
-      "bytes": 19368,
-      "working_tree_sha256": "e61557d0cee7d56f462a4ca4d32645ad1c8358c68985112dee07ab1cf8cf78c5"
+      "bytes": 19222,
+      "working_tree_sha256": "a7b24fe04d39ca6f0d04d1701a33a516b9fc5e29ae6718c3c683a39169f92f43"
     },
     {
       "path": "01_개발문서/04_화면설계/01_그림자료/06_해석준비.png",
@@ -25936,8 +25936,8 @@
       "path": "01_개발문서/04_화면설계/01_그림자료/06_해석준비.svg",
       "category": "screen_design_asset",
       "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
-      "bytes": 16494,
-      "working_tree_sha256": "dfeb35fb0e61007c3d92b3a6f44abdab9a43da8d5070492f17d603d55c556f4f"
+      "bytes": 16390,
+      "working_tree_sha256": "2c21ed30fc5a7655b3a50422dc180df7bc987d66e28f8189752c60aec5152fdb"
     },
     {
       "path": "01_개발문서/04_화면설계/01_그림자료/07_결과조회.png",
@@ -25950,8 +25950,8 @@
       "path": "01_개발문서/04_화면설계/01_그림자료/07_결과조회.svg",
       "category": "screen_design_asset",
       "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
-      "bytes": 14119,
-      "working_tree_sha256": "ace78852ad5cfc4ef4a8c042b3ff239e154e817b2d19cbb833a97a1d1ef36407"
+      "bytes": 14032,
+      "working_tree_sha256": "96778bc73ce51413dbd74d9149d09305da113dc910041ec1ad21e706845bbe8c"
     },
     {
       "path": "01_개발문서/04_화면설계/01_그림자료/08_결과비교.png",
@@ -25964,8 +25964,8 @@
       "path": "01_개발문서/04_화면설계/01_그림자료/08_결과비교.svg",
       "category": "screen_design_asset",
       "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
-      "bytes": 14194,
-      "working_tree_sha256": "f7bac99dbe327daf026a2a68167bf6cb67be0836607277f7d12981aae133f802"
+      "bytes": 14106,
+      "working_tree_sha256": "11262c069b1483f0c132bb3d0f648a7297904867447f2525a19a16bfcb49e16f"
     },
     {
       "path": "01_개발문서/04_화면설계/01_그림자료/09_출력과_검수.png",
@@ -25978,8 +25978,8 @@
       "path": "01_개발문서/04_화면설계/01_그림자료/09_출력과_검수.svg",
       "category": "screen_design_asset",
       "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
-      "bytes": 14335,
-      "working_tree_sha256": "e2d411ea5b00fd822f01b1f048bdc738e72935f1cd28e820aa1a46f47e2ed886"
+      "bytes": 14245,
+      "working_tree_sha256": "fdc62b1ba2c23979d1525e04cc670a8f3096b0be34382cfd94a9541b37208020"
     },
     {
       "path": "01_개발문서/04_화면설계/01_그림자료/10_설정과_이름변경.png",
@@ -25992,8 +25992,8 @@
       "path": "01_개발문서/04_화면설계/01_그림자료/10_설정과_이름변경.svg",
       "category": "screen_design_asset",
       "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
-      "bytes": 9810,
-      "working_tree_sha256": "1a0e6a815efe5a74b1b431d92284bf8579f3ece8bb263808b05591a885a118b3"
+      "bytes": 9748,
+      "working_tree_sha256": "9dad501f5bda62b05dcce24f1d9544b41e483ddc89eb7b08dd26de00d4f08387"
     },
     {
       "path": "01_개발문서/04_화면설계/01_그림자료/11_현재_도구영역.png",
@@ -26045,8 +26045,8 @@
       "path": "01_개발문서/04_화면설계/01_화면과_사용자_경험_설계.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 68403,
-      "working_tree_sha256": "7f269a6ffcbb1c9775193f574a54d467dc14e26c8383221f23b940d5073fa45e",
+      "bytes": 68781,
+      "working_tree_sha256": "eebb6d04760d6d8e4b4144041d826295559b8d47b9b7ce6a2445285bc5099157",
       "text_lines": 535,
       "text_status": "utf8_read"
     },
@@ -26054,87 +26054,1851 @@
       "path": "01_개발문서/04_화면설계/02_전환도원본/01_스튜디오_전체전환.drawio",
       "category": "screen_design_asset",
       "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
-      "bytes": 10007,
-      "working_tree_sha256": "4affe4f912259734add53b80886650345a3b5e97ce8b179ada9e55dee1927c24"
+      "bytes": 9906,
+      "working_tree_sha256": "b26b9380a17eb89a76c0826b0c593ba5402fbf1fbefeb6fac0431ea2662f96e5"
     },
     {
       "path": "01_개발문서/04_화면설계/02_전환도원본/02_편집초안과_저장흐름.drawio",
       "category": "screen_design_asset",
       "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
-      "bytes": 14170,
-      "working_tree_sha256": "d1f629c29ae2ab19cdfc6934450406bace8203eb0abb66a8b273b5ad855e2158"
+      "bytes": 14016,
+      "working_tree_sha256": "58c64e174b01e6fe5016fdc5da6e88dfcb0bed5c99f11e9cc0f620fab881a952"
     },
     {
       "path": "01_개발문서/04_화면설계/02_전환도원본/03_객체이름과_식별자.drawio",
       "category": "screen_design_asset",
       "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
-      "bytes": 9100,
-      "working_tree_sha256": "0872444a5bd69b6a44e3a48f49af623b010a5a3828725513533b633e07d95557"
+      "bytes": 9009,
+      "working_tree_sha256": "efbf9d69952cd2fe87b29a60c7eeb4519495eee0d8a8e834e5714c8ec9e877a5"
     },
     {
       "path": "01_개발문서/04_화면설계/02_전환도원본/04_시작과_복구.drawio",
       "category": "screen_design_asset",
       "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
-      "bytes": 6041,
-      "working_tree_sha256": "105f044abb5e81444e19302035e7f179cf5bce5df3cb1123ef04e6eeca60336f"
+      "bytes": 5992,
+      "working_tree_sha256": "ed48c3758dc920b3d06a8401e1af8d7563a6b77bdf1a35e490c544e5f1853328"
     },
     {
       "path": "01_개발문서/04_화면설계/02_전환도원본/05_설계와_이차원편집.drawio",
       "category": "screen_design_asset",
       "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
-      "bytes": 39504,
-      "working_tree_sha256": "affc9c595a53d601b7a1fc07a32079f85210175a1273f4ba98da7be27a7de31e"
+      "bytes": 38956,
+      "working_tree_sha256": "332154b3330eacae6da40ef4d48f15b996807547a2efe23187feb11cf2ec5dff"
     },
     {
       "path": "01_개발문서/04_화면설계/02_전환도원본/06_해석준비.drawio",
       "category": "screen_design_asset",
       "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
-      "bytes": 17646,
-      "working_tree_sha256": "936c6dc5b294d8492244e8b5d4acdc68dc8730600a18ec21beb555090dcf4866"
+      "bytes": 17507,
+      "working_tree_sha256": "b8795d1daa52b983445351c77c047ff83748ec0c04bd416a8ddcab5b9f7e8a50"
     },
     {
       "path": "01_개발문서/04_화면설계/02_전환도원본/07_결과조회.drawio",
       "category": "screen_design_asset",
       "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
-      "bytes": 13966,
-      "working_tree_sha256": "dea37e3e365bbb1eb867872dde0de4ae9508e3eb943b7fe9aa6d196138a51d33"
+      "bytes": 13857,
+      "working_tree_sha256": "581e42934bf8b5743083d70bcf21aad276a1dee7da3bc79aa571b6294d5bf812"
     },
     {
       "path": "01_개발문서/04_화면설계/02_전환도원본/08_결과비교.drawio",
       "category": "screen_design_asset",
       "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
-      "bytes": 14326,
-      "working_tree_sha256": "c6a5e33f4a20d20d54b56f9791c7ca63e63a7e21f7f5536d1c746c65d89ab3c1"
+      "bytes": 14214,
+      "working_tree_sha256": "6b3f010f7a68513fbba72bc6df9d24832a3146c719a8c979ac6a2f735533098a"
     },
     {
       "path": "01_개발문서/04_화면설계/02_전환도원본/09_출력과_검수.drawio",
       "category": "screen_design_asset",
       "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
-      "bytes": 15022,
-      "working_tree_sha256": "429cf89146f8635e4258950f156af9cf15acb761dba97c961b4ecc3acac72c0f"
+      "bytes": 14904,
+      "working_tree_sha256": "3f62e48e0098ff56c3319919e39da06b5d2773613762326494fe4612614e5891"
     },
     {
       "path": "01_개발문서/04_화면설계/02_전환도원본/10_설정과_이름변경.drawio",
       "category": "screen_design_asset",
       "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
-      "bytes": 9089,
-      "working_tree_sha256": "a20ee2998153dc9df9f577aad51528e39c775e5e1968bb2e0b9c4af21ade506c"
+      "bytes": 9016,
+      "working_tree_sha256": "c22e77fc99f44e931b0b5e1d14298115c89e159fb1a6687f7cbd7c455b8bface"
     },
     {
       "path": "01_개발문서/04_화면설계/02_화면_선정과_성능_설계.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 22253,
-      "working_tree_sha256": "4ede89d0565e245d43d09bb6e5014a14ca3632b96f06723c17b982c80dd4bbb6",
+      "bytes": 22475,
+      "working_tree_sha256": "669071f18500ad5c3b58a49c7592d63f08d9d51d7514bf1d1a5d73a2f76604e3",
       "text_lines": 132,
       "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/01_시작과_프로젝트.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 80625,
+      "working_tree_sha256": "95c3dd46707ceb9f407b5eef2739f4701c90157b5e79b844fbc68aa896845b68"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/01_시작과_프로젝트.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 79059,
+      "working_tree_sha256": "7bf4622b42f8e4d589947665b60c6dd4bba4b115f73a8d7be7ba2dd2b11210c2"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/01_시작과_프로젝트.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 33912,
+      "working_tree_sha256": "76bde5573fdaad90c30306b3ff3a2c35f42d39001f60f12c5bdb6cf740826435"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/02_새_프로젝트.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 84300,
+      "working_tree_sha256": "5e4899e6ed57affb3ee6c0e8033ebcffcaf4f78992766ebf54e5bdb8eb312bd7"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/02_새_프로젝트.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 49378,
+      "working_tree_sha256": "a48fe82b28f69edbc341e3a82125b0575bb286190ba1e4f493722ec3ec3c3dca"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/02_새_프로젝트.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 35727,
+      "working_tree_sha256": "38e2b35f11811d78e3c32f66145023b4ff0ccee70fa979f6fa4d3452e582e2bc"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/03_저장본과_복구.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 88872,
+      "working_tree_sha256": "0ed40cb6ad3e0c9e20e933c3331f8ef91e51006d45e7996e57d80831a0412f6f"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/03_저장본과_복구.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 53970,
+      "working_tree_sha256": "810d7c949fa82c2fa1aeb8a7d870de9c3d334cf5080c7dd9eac81d6343c84026"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/03_저장본과_복구.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 38192,
+      "working_tree_sha256": "92f3f9eed115a1bdc247312d86030c8db911903d3e7cb43fe2244a49502a0616"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/04_이차원_설계.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 180913,
+      "working_tree_sha256": "0fca0b81f375dbe9479be1a138d857aa49ab8f69cd3e53f5e67912a1a659d263"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/04_이차원_설계.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 150536,
+      "working_tree_sha256": "e7c6b818c7d6f82d4800b33fdd9e080816494899bdf1ee458743136c7ea4873b"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/04_이차원_설계.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 63413,
+      "working_tree_sha256": "5e02b1f2e1ba1e0aae62b61b6039c44f72489a183d74a0d872b0ec8ad50966ed"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/05_끝점과_스냅.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 145932,
+      "working_tree_sha256": "f21156b449dcbf8c8923a97ae3f4696c12c4c4a7e537736b7a222dd2f23e1e6c"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/05_끝점과_스냅.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 137149,
+      "working_tree_sha256": "29de7595ec4122de95805f44132f9020741fc84958b4a50252e62ccfa21238a2"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/05_끝점과_스냅.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 52426,
+      "working_tree_sha256": "2bc6876780a929e1fdd0d2a46ef54b727a37c8e1abc00ac12dc86bcdca65a829"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/06_삼차원_형상.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 114193,
+      "working_tree_sha256": "510683665b81f83bf1b389ac7c47449b4959a98870c735e8c1eda8900239dae6"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/06_삼차원_형상.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 155207,
+      "working_tree_sha256": "b0e532fc29000a317be012b726de7bfb7d033852953d934df23a4444a4b9f892"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/06_삼차원_형상.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 42836,
+      "working_tree_sha256": "7cddb283e60b32b4cfaa8740dc09e144b4a5dbb8d388cfeb2d4964c8cb9ef976"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/07_삼차원_단면.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 117166,
+      "working_tree_sha256": "e356de46b1213ae6db3e8cda67acc7454e5f915990e0153f8af18eb4f9695fbd"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/07_삼차원_단면.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 171451,
+      "working_tree_sha256": "2b5b64121c1100f9a5181744f076513d0f3c5eb156a002086e8023b47e8752f5"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/07_삼차원_단면.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 44230,
+      "working_tree_sha256": "2e19b23dfaf515c485bafbe260792aba26180442611266718dd4c3345026fd1d"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/08_목표대역.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 107339,
+      "working_tree_sha256": "612d18af234562622b523ca6a77396c701721abd0b7d5f11d1cbc11acf95a13a"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/08_목표대역.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 68497,
+      "working_tree_sha256": "6b11bd1ca40b4d60f0bb473ef05d75d3cc33a6f891452ca06afbcd0b24b0c6dc"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/08_목표대역.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 46801,
+      "working_tree_sha256": "31137d6df02e9b09bb699f583b1671079269e7c8585984b32b2daa5ed9d2132f"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/09_목표성능.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 108763,
+      "working_tree_sha256": "ca7ba3eb55aa986eb3738085577fdd8abcc4e3ce859937f8455748b5157a2c5c"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/09_목표성능.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 71106,
+      "working_tree_sha256": "afbf73627bccc14da7e955884db866099037618a76a3629e587bfbfc7f9cf43a"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/09_목표성능.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 47705,
+      "working_tree_sha256": "33a62dcafaed7e18e47610580f636c94a26c42ad62a5f74481c159a070f8a4b7"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/10_문헌카드.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 114928,
+      "working_tree_sha256": "c8727b0c500b1243ebb0aaac3aece71ef3c9453a0e5b339d49cc74ec6cd9a091"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/10_문헌카드.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 79451,
+      "working_tree_sha256": "d90bce6632e768ea0252c39eb6a7575918e6e0fb32ef2ab04e419a859d6e5d1f"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/10_문헌카드.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 47794,
+      "working_tree_sha256": "85f072a2f14531693ef4a148df4a92f3baa183ffc5faff66d19ba7b20d850b7f"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/11_초기후보_검토.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 116108,
+      "working_tree_sha256": "15acb2a64c2be7d1fec8641b95a9b3cb2368663259b5454f83481a8fe74c16a5"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/11_초기후보_검토.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 72459,
+      "working_tree_sha256": "e4e8b46af12118e22028378b25a80d261ffa372cf7d3f5e78ac7e45d8c3d4034"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/11_초기후보_검토.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 47115,
+      "working_tree_sha256": "229248e393e56f309e59a5f05837ee667673f57ae26535d0130996fe38c0b95c"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/12_기판자료_검색.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 105895,
+      "working_tree_sha256": "7b796ab44115627a5e9488b0af7823cbbb8654ac3bf1af82a587f7210051d12f"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/12_기판자료_검색.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 82850,
+      "working_tree_sha256": "641cd70fa8bab3ef8a995a4208a01c0e26ec8194d381f50718515c52bba291ea"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/12_기판자료_검색.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 45615,
+      "working_tree_sha256": "781d17fd050c7a4456a1c7076d75e45a9e21ba9353ad075f539d7b65085404ce"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/13_층과_연결.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 104785,
+      "working_tree_sha256": "f6e70bcb7da570a7112018d19000d4829726765d45eba9b1bd3a051bb1de04a4"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/13_층과_연결.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 81165,
+      "working_tree_sha256": "ad4dce6fc62350898b142f5dd39e58baf0f0545a8f6a434a37f841db6184a46b"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/13_층과_연결.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 45556,
+      "working_tree_sha256": "f1e8456350644a3892832cbc9d2f532a2c113c9824039ba83fc45150f341da3a"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/14_재료물성.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 103980,
+      "working_tree_sha256": "270ca2385e7c6da2a72e536bac8f760d3d89f6fa81c2b1edac037a6a045e13ff"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/14_재료물성.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 77601,
+      "working_tree_sha256": "acad2d84f63ed79afafb3c2729a02c44251b75b0eacc661de43142758979b44b"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/14_재료물성.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 44483,
+      "working_tree_sha256": "96681d05768b4e4fc0b4bd9e86b131663ede77b852e9d67239cdbcc5f2a86bb9"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/15_급전좌표.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 133236,
+      "working_tree_sha256": "ae9295875c8e02e4b1887f3b0925aeb20a40cbc74fe20349c88328eec6432881"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/15_급전좌표.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 88834,
+      "working_tree_sha256": "3aa2d19821bf688ce4fca99af8bb41d7fba0d378d8a4a43bfc808f203a236f72"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/15_급전좌표.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 50867,
+      "working_tree_sha256": "1532058dc4be65b46f25bf0b5d490429f753ed2efe1dc2cf5c34c163c7a2469c"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/16_기판변경_검토.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 100055,
+      "working_tree_sha256": "adb8294ceea8822d3934e82e96125a6c966dbe6e40d8d04ea6bb8e88a824da81"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/16_기판변경_검토.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 81246,
+      "working_tree_sha256": "4bab0fe9e0cdb7eeeb33dc2ac2986ad482c6897cd90b4a896b6e47f3b564da19"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/16_기판변경_검토.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 43740,
+      "working_tree_sha256": "f6b80f28edf75ede36d797203b1ef5a406ecc7483c54eeac62167ae691d34849"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/17_기본적층.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 104037,
+      "working_tree_sha256": "55581a90a6c9d862b4f0d398d98731852c4333dbecd8e5343259b9221f68060c"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/17_기본적층.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 75569,
+      "working_tree_sha256": "10404645c5f9c4e37780695dd2df8e8831d65bc90aa497b3dc421bbd12ab1287"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/17_기본적층.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 45240,
+      "working_tree_sha256": "0d59e875bc5192db19d8eadfd73a16360b0eea3b18e0aca90ab241fd7a8c7bc1"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/18_표면층과_개구.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 137443,
+      "working_tree_sha256": "4edfb809b232405ed0fd2047301ef8c5d371860a997511c5f6f917daec46d077"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/18_표면층과_개구.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 86988,
+      "working_tree_sha256": "a5c30c87396bbb29b2c95cb22e7bd8cdfcc1f7434bd94f5651ba9b0a4cf2de40"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/18_표면층과_개구.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 53000,
+      "working_tree_sha256": "3416ebca09c86dddd120746c67581ab5c6572cf557d70ecff8c8477b104df4b2"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/19_활성_시나리오.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 136110,
+      "working_tree_sha256": "25abf6bdc847e727f2b253d51d73030f30d86ee36bae7dbe86e53c63d5d2d136"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/19_활성_시나리오.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 120531,
+      "working_tree_sha256": "0ea53059658c00585f48c867440dfc98e9b1ea3e1f2e478f73c01434beb4bae4"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/19_활성_시나리오.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 54223,
+      "working_tree_sha256": "9fe4f4a3cd679982788bccf39387cf6610ff1da7cafc9e71dd2840b63a69bc35"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/20_설치_조건.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 134445,
+      "working_tree_sha256": "fd24224db11865302fdec061fefcc2e57d45d22218c4a7c350e8817ead09d692"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/20_설치_조건.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 113591,
+      "working_tree_sha256": "f3404f4f490b787882431ba9016cf51a11fa4f1f6f433180cd43e3f127c5844d"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/20_설치_조건.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 53743,
+      "working_tree_sha256": "a5cac48b2dccf5f558e3aa81c1de39df464bd16d00b3501826a9fcf1fa001c3f"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/21_외부물체.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 139356,
+      "working_tree_sha256": "dbedf405bfd19b7f9277dd52b62cb6f11a44e19cd4124ee9ae38eb1e047a7514"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/21_외부물체.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 117543,
+      "working_tree_sha256": "b79330fa6efe134232b4de6699f45cf8ca33a5922275f7b047833384ae27b935"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/21_외부물체.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 55801,
+      "working_tree_sha256": "f45a39e6ed938b254cf283c503e540f2edd600456f28dbeed03525406edc72fa"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/22_기판제약.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 136271,
+      "working_tree_sha256": "158764437f4e587cdb5c26da2c626434927411bb40fcfa200dbfadc94337f3a6"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/22_기판제약.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 85713,
+      "working_tree_sha256": "689ba7a68d9eabdb0227b830440e4e35efe52b44ceee449f2328db2d7a511983"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/22_기판제약.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 52118,
+      "working_tree_sha256": "25e6428b1a6cc806fcc0083aaffdfc7dc893c6f60a7991fca20e9683294d8e10"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/23_매개변수_제약.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 101426,
+      "working_tree_sha256": "7d28c7cf0d67ef1ea4620668f447aacae413798ff659e4630a15c26d65ce162d"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/23_매개변수_제약.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 72193,
+      "working_tree_sha256": "0d1708a4d5b844db4970434e74727d9541a51181732631f78212ea6981627763"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/23_매개변수_제약.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 43945,
+      "working_tree_sha256": "cd8ea7ef60f3b2b0518068425e88dd628fe3efa8e3a37f0c7172387d6fdc6ea0"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/24_기대연결과_분리.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 135499,
+      "working_tree_sha256": "c20b64aab69546cfda58d29d72ef8faa5a53f15ac3706956f75bcf8c588d0f01"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/24_기대연결과_분리.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 87026,
+      "working_tree_sha256": "96fa9299d2c1b8ffacacbc9a82794514c07f4a91e15ba2c27c996b3ad7e259e2"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/24_기대연결과_분리.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 52670,
+      "working_tree_sha256": "020ded9fbd42d9fa35fcb406ef17f30a7b29c9d377e6efa0e3c323887f2437db"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/25_제조규칙.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 100686,
+      "working_tree_sha256": "972f9d307a2eafdb2c7276112f828da4abc1acbf9bd4e20e7d5ee0d95c49e682"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/25_제조규칙.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 69709,
+      "working_tree_sha256": "e910934aaf069be22709b71735e39090602db04e23c9f2ccf6c29e1858b363ab"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/25_제조규칙.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 43672,
+      "working_tree_sha256": "64cd5ee27469c5c2b8083b2f280497475fb3e1b6a04c37adea478825964d4770"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/26_검사결과.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 94343,
+      "working_tree_sha256": "ba6ec5d7c3afe525f5bd6251ef416f5c7efc8d563a8edb06627ed46107341267"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/26_검사결과.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 71300,
+      "working_tree_sha256": "6e6b27f26bfc2aefa895efd4a2c156dd325f6583d5740a35263d26685b3e8ab6"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/26_검사결과.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 41266,
+      "working_tree_sha256": "61818f07ac496145ce320b47e6759d29d6a46f19ef9209964c04eccf46457e58"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/27_객체이름_변경.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 82518,
+      "working_tree_sha256": "2cba2bb140d108e013cdfb974164a9e9a02406d77868341180065bed5a68b50a"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/27_객체이름_변경.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 47728,
+      "working_tree_sha256": "175e40ad0a473ebafcdd06aef52c917a15087817214f396a19d6bebf22b08ca0"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/27_객체이름_변경.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 34721,
+      "working_tree_sha256": "9d0eef47f07532970334f6d65e68064eacef5c7e539dc9017577ae7d127c5d02"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/28_급전과_포트.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 131655,
+      "working_tree_sha256": "8e4ae2c0d69160a3d9185c8aa49d2414597550c9e253a0b6017aa549449dd24a"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/28_급전과_포트.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 83630,
+      "working_tree_sha256": "689feed439cf2d1a4e20711e69ea78e6f57cc5445dbc539574642563c0e67417"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/28_급전과_포트.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 50093,
+      "working_tree_sha256": "8b0cbcdeb36c2692ae77dfee4465d127597dc9b3962055218cc3bcdfbe50a8ab"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/29_외부_정합망.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 104959,
+      "working_tree_sha256": "edad2e0b19a086deccd4714a6efc16f7b061ccf29ad66ae6908fbb8fa5a9d663"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/29_외부_정합망.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 66198,
+      "working_tree_sha256": "0f291d6f33c5308eabe685beaf2871771cf5d9bbed263559b6adf3a328a1d6ae"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/29_외부_정합망.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 44133,
+      "working_tree_sha256": "761b01e34f0dad97165af20b9853a9d10130b33d7bb27f63894c5301256647da"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/30_해석_실행전검토.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 82568,
+      "working_tree_sha256": "b2dae4f5de02f6fe787af47b2631ce20cf961486877ad5ca159ea3c8891a6ad2"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/30_해석_실행전검토.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 106366,
+      "working_tree_sha256": "a7cbc67900c3b06dace5cae41be202295c97678f303babf9488de65853d27f21"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/30_해석_실행전검토.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 35614,
+      "working_tree_sha256": "73a767995cc0f99131106c75365307b07ea5963e9cb42462328b79adefd22efa"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/31_해석_조건.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 91928,
+      "working_tree_sha256": "ded7d2e409cc2ff086324b7f7a4a81932b9c81c1a644d00e480f6f1740b9c52f"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/31_해석_조건.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 56615,
+      "working_tree_sha256": "a4f962bfe1d7709f61767d079570396a75410d11cbe53ea6c4be8bd4cd46513e"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/31_해석_조건.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 39101,
+      "working_tree_sha256": "b39d85850cb778633d2e300c496cf03bc35afbd11d1da573f0f4d9941276530b"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/32_메시와_자원검토.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 129395,
+      "working_tree_sha256": "a82a29f41883d7f1076c2a854fe2115af302eb4af14218c0cfc92082e3f85a3e"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/32_메시와_자원검토.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 123089,
+      "working_tree_sha256": "948dbb373dc8bda0b314b2d06c8b1f273c89f640617d1d59f5f0ac8d13738c39"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/32_메시와_자원검토.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 45313,
+      "working_tree_sha256": "ff4339b7fc7730178eca8e7d92384e374ec50437eba063c3c0fc132ecf30abe5"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/33_연구_조건.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 101272,
+      "working_tree_sha256": "39e8bde362f38ba1ef54440a3e18a590c73db3efe26bc239906a2f2ee00e9287"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/33_연구_조건.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 68217,
+      "working_tree_sha256": "a1a0fed7f801d3988a29fabe2b61b1c9cccbcf766f7e0d4b14ab6ac09e01cf09"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/33_연구_조건.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 43936,
+      "working_tree_sha256": "edc6df61449fdb300f416a50ade6f804a832032b0e5e467978be35c5a24395b0"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/34_연구_방사와_손실.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 95889,
+      "working_tree_sha256": "2d2fade414923ea853567015750d6973cc65178fd7a919a63d557c541b255bdc"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/34_연구_방사와_손실.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 68709,
+      "working_tree_sha256": "12529121118dd17759fa2cdd674174abbb0fb0610277c7b4118f1317e318f89e"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/34_연구_방사와_손실.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 41526,
+      "working_tree_sha256": "f41121468ff0df4496e537a0698a232d1c87fce8e433926618596423e34b5f93"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/35_연구_판정기준.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 95676,
+      "working_tree_sha256": "f1e0be7c3287307665259c8c7a98454aec7e8e47bbda156cf03c6e2f533c517d"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/35_연구_판정기준.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 70308,
+      "working_tree_sha256": "2e5f02e7370200194944a418f78be47d311a2b2efb78a520450ebb7b126bd1c8"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/35_연구_판정기준.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 41805,
+      "working_tree_sha256": "a07fd443b663b9a792760eb8b2ec665f38f85686c632abd988ac8e9f07e52079"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/36_연구_진행.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 98149,
+      "working_tree_sha256": "4b695c1d8f108dd4669966ffe1ebd8d06b1f13b372f42ec4dffb0e786d3ee943"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/36_연구_진행.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 66009,
+      "working_tree_sha256": "0fddf22ebd9a4d0a38545daa23b4335467bacc29f9fec98c9d3aac4f5f84ef7d"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/36_연구_진행.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 43062,
+      "working_tree_sha256": "1bf86b8e352a11abc140ee50c47ad45d52fa08270cc50d9d465d6e6a9a2dfe45"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/37_네트워크_결과.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 97954,
+      "working_tree_sha256": "89c9d735873dc63520df3ed58a76a706bd540fecc87e1cd3c1b0665a782ff204"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/37_네트워크_결과.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 108313,
+      "working_tree_sha256": "cc56ed92beafd1e9832a5de24fe2157ba918ffdf321a190c79464fa3cddbe64e"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/37_네트워크_결과.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 39542,
+      "working_tree_sha256": "b6efac513156b0fd77698e9d4cd3a4a0c27b0818736e84c16917cff87ac9dd9e"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/38_스미스_차트.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 161507,
+      "working_tree_sha256": "3d525671bffc2147d24c7be1c131b8f9f2a924e72911711eff72e3fb32fb9a2e"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/38_스미스_차트.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 156016,
+      "working_tree_sha256": "d2fb024ae36ccb9477ea148d6a43344246e2ccb67c69593bbca0fe3818a3f4ec"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/38_스미스_차트.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 52592,
+      "working_tree_sha256": "604121ae0941bd790d1066f6ccb83d4122d58051ae76e6467cb052b6e6a410c7"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/39_전력과_손실.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 82447,
+      "working_tree_sha256": "b50b8b83dfd2c862ab9d5c367a0af3e27cad7be978c32a2694249e3002ff8405"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/39_전력과_손실.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 107104,
+      "working_tree_sha256": "17a504447684ee754f51551efc17dc00d09a40a98e6a3eee15c7d44105353b7c"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/39_전력과_손실.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 35760,
+      "working_tree_sha256": "6a5cfca8d79ff53b1ba1353e0a912b0338248797d8a6010f5bb9af21832e0a43"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/40_목표_평가.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 83748,
+      "working_tree_sha256": "894c00d888c1e331cd54ef53aec571777e8bc60feaebd93a45f044fcf0e24bff"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/40_목표_평가.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 101030,
+      "working_tree_sha256": "dd170499b74379a0ba6e066f5fd4f3b0248d497b368e53a54d856a344a26b522"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/40_목표_평가.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 36330,
+      "working_tree_sha256": "dd3ace35a5f8e07c18f19db6d9517bb5d32a5679ad6a816251eaece3ad90262d"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/41_방사_절단면.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 139191,
+      "working_tree_sha256": "4d468f097f6ab703b7e02f3c2166ea18ed2156181f006b85f14329104d8cd601"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/41_방사_절단면.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 155229,
+      "working_tree_sha256": "49c9f00254a959dbab07351c5b14ba70a3539842eb8ca079f48273a37ff00a51"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/41_방사_절단면.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 49036,
+      "working_tree_sha256": "40bd6295581130d0b42e465558e172259a990e7c5ccadfd5f38968c21faf4de6"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/42_삼차원_방사.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 236235,
+      "working_tree_sha256": "0bb383840a4746ce9298f4acc9bf6f9de71efc092631a11d066f4702130abcc4"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/42_삼차원_방사.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 221688,
+      "working_tree_sha256": "1a8529d508d3b261bb09e5ff5c0d4f14ac4d2014ada7b3349acfe7f2d00e8dc5"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/42_삼차원_방사.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 71239,
+      "working_tree_sha256": "fa1bbc8fc0506f1dce1871aa25eb4f7c47fe9ebe08485db0ea082a1cc11397a9"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/43_필드_단면.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 232185,
+      "working_tree_sha256": "75fb6decfd418ead8121167ff78e2d328fc1f11694302dcae82319fd4b7bec8f"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/43_필드_단면.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 97029,
+      "working_tree_sha256": "ee5e90335bc78ff7cc46b449f241af1daa9ca484db439f12a1ad7089aa98682b"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/43_필드_단면.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 98005,
+      "working_tree_sha256": "77f1ade309685977f3702d9fccecb9d661599d747f86262e923fc1c3624f81ee"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/44_고급분석_지원범위.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 81321,
+      "working_tree_sha256": "725e1e5ca950ca4210725b98b68f7111b8f79ddcc7df01c57cec90d69584cb6d"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/44_고급분석_지원범위.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 101059,
+      "working_tree_sha256": "066b810e8942a335f1bb7299b45a111447f58b9a27a450b39466e7e3e6d88f97"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/44_고급분석_지원범위.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 35254,
+      "working_tree_sha256": "ae8e251a4da1bba920b7c45743993d2263815bd40587f8f33db5b7d259324a88"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/45_결과와_후보비교.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 101291,
+      "working_tree_sha256": "e1d5c6431091038ed01f209af5ade05714ba998d4676d321a09a68d2a0a65b92"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/45_결과와_후보비교.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 110659,
+      "working_tree_sha256": "9c9f15429e66dc638659a88687f0675a0c5088d40891b2ae6a38a2e1bc4774ac"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/45_결과와_후보비교.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 39184,
+      "working_tree_sha256": "8b327254e3e222a9805996eecd10fe89cc6e1ff2fa787f8f8891eeb7cc058aff"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/46_측정자료_가져오기.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 91750,
+      "working_tree_sha256": "3ee39a717b065ae1ab3797154c3c96cf3a13b552946375ea2de212b32a8ee641"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/46_측정자료_가져오기.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 56408,
+      "working_tree_sha256": "fbd3f1463101246827b935c82d71b989cb4ce57263032d9838ebc0114d346c16"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/46_측정자료_가져오기.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 39502,
+      "working_tree_sha256": "dbf42719a1391c24bd51518a027426a462a99679f897c3fa86ea851441afc127"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/47_측정_비교.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 100478,
+      "working_tree_sha256": "1464b711c8393a7cb9e8cb7e977ec706d6fbe680be24b7d096aed852cb09c80e"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/47_측정_비교.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 109976,
+      "working_tree_sha256": "6aafee147bea51a5a1ed6ab5e3a2df0b7b457e8f1ace3ea97bcfe075e28aeeda"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/47_측정_비교.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 38981,
+      "working_tree_sha256": "3fc02e40d30911cb49bc4a5803cdb1f37a36e120e7e418c0decaf315d3cdc791"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/48_수렴_연구보고서.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 76161,
+      "working_tree_sha256": "07633973058ee937f7e5a31c32b3e7ea81f8ab64f16f4d0bef3159c6b9a19ef7"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/48_수렴_연구보고서.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 91227,
+      "working_tree_sha256": "932f706dfb3f9e129b7b52b030b803e2ab836acb030da77aa8c41742d2ab93c6"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/48_수렴_연구보고서.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 32325,
+      "working_tree_sha256": "c74ff1b8af364cc1bd1f6bfc9e126d259b4001d6363c1a34ab379c451241dd07"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/49_기술도면_출력.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 112744,
+      "working_tree_sha256": "05e5867f338a2ef69943724c3202d3030eb2ba2359427c87189d2b1d61bd3e1d"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/49_기술도면_출력.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 110537,
+      "working_tree_sha256": "f3120ff8bfc3883058cea426ce3770b3fa8116e1cf94e5e6dd67d553fb93688f"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/49_기술도면_출력.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 41999,
+      "working_tree_sha256": "4d57f52b274e83d9059859bb7ab04446ac3602c5856394cacb762be278d3a703"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/50_스텝_출력과_검수.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 117484,
+      "working_tree_sha256": "0d695160a1065537e4494d83ba4e4950522614c5abfa647f726bd5a949e3704b"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/50_스텝_출력과_검수.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 139787,
+      "working_tree_sha256": "6797def284d4e6d8281e9f7c7b4587dec44a5335240d90251c7681448f3da9ba"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/50_스텝_출력과_검수.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 45056,
+      "working_tree_sha256": "f0875d8ad230a1c94c2e64ad92280453813e8c408c5c16c2b9aec2a70ba0266b"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/51_기판_제조파일교환.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 80608,
+      "working_tree_sha256": "ee933bf02ee1cfb47e931985a83abb96c121b71de47b4d16fc0ca105525dd20f"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/51_기판_제조파일교환.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 99041,
+      "working_tree_sha256": "204dd89e914542eabe36ef08e3fdb1de7c352ea7c237ad9bda09159351495a38"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/51_기판_제조파일교환.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 34302,
+      "working_tree_sha256": "dc0a3f20c0d15778fce2363bdbaea3b16dd602c9ca52cc89d0246d00e92c10d8"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/52_보고서와_인계.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 79560,
+      "working_tree_sha256": "b1e93e131a25570f1310bcda80babd553d77b28b3351f5736ba37257fdde863f"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/52_보고서와_인계.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 94776,
+      "working_tree_sha256": "4689e31d49f8c4f495b26e1c2bb6b56235c4edc1be2627cd0554ff45b98954f6"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/52_보고서와_인계.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 33620,
+      "working_tree_sha256": "bfa0cf78650121cf0a7e5df1c3d11e82e7a2b63f9af984d871bf79172fdb1108"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/53_작업과_취소.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 75197,
+      "working_tree_sha256": "a0d0be5a79b5981de0d49d9641a2d15471223575f418c11e4d02fded385ec096"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/53_작업과_취소.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 92807,
+      "working_tree_sha256": "6a95efbb2eccd16985646fd3eb76b82b7d7c95847c4a8c50fdbb3612d800e45f"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/53_작업과_취소.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 31839,
+      "working_tree_sha256": "c30f1b97cc5e981caab8bc4330f4184390d371fe3ee5180df4a9352af3d29873"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/54_문제와_위치이동.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 77104,
+      "working_tree_sha256": "4da70b93ce4e94d00c4888c513407de66a9f97a22bb6690591cafd67c06fac87"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/54_문제와_위치이동.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 92460,
+      "working_tree_sha256": "d9be2b34f0112cb045877a14eb7239b416315489735a9f9f700eda6ee489f31f"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/54_문제와_위치이동.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 33019,
+      "working_tree_sha256": "c3bbfababe489e499419db0e4c0ce1dbf4b52f2db1280c9852fc8486315b7a3d"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/55_로그와_진단.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 75204,
+      "working_tree_sha256": "7cdbbac4847d522574370b74b7def6c33bcbacc6f790879bdb045d2b357ad02c"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/55_로그와_진단.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 90910,
+      "working_tree_sha256": "1e66b494908284fba189090e16abe7d95d90e3f665f0f4b673968417a3567425"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/55_로그와_진단.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 31740,
+      "working_tree_sha256": "25e87e7212baa82c01aad074bc24711b07a5c11daa4197bc103e29fb0548176e"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/56_출처와_채택이력.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 96561,
+      "working_tree_sha256": "ac61fb9683bc680ee6269f1a5683b88ece3853464a558a5700a54c34c7a785a1"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/56_출처와_채택이력.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 66673,
+      "working_tree_sha256": "3a8ed0e380467134069f9f9ca53720e4e424d78b6a9def7dab28bf9b117d3c3c"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/56_출처와_채택이력.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 41942,
+      "working_tree_sha256": "db616e60239817b86828f53b1643dbbb793e9d3e94172f7540c3fdd9d3ca8577"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/57_환경진단.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 95444,
+      "working_tree_sha256": "636404518fb40cb4cc3fe6f64e812918b36fa1332088824f8f2d70b2e35ca768"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/57_환경진단.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 72008,
+      "working_tree_sha256": "b0f3687cb486e817c1bacfb5769fd3b640afb03791f596edc98d6df772d0c703"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/57_환경진단.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 41646,
+      "working_tree_sha256": "812ffdd0418f214af0a237b8d35968dc6a28506346d0939a0d452528db2f4d34"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/58_화면과_키보드설정.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 96418,
+      "working_tree_sha256": "46a674196a0713a6ba5d84e9457d8b7c19835eff10bebb8e891ab681ebc5e384"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/58_화면과_키보드설정.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 65880,
+      "working_tree_sha256": "e57049c0063c00117b5660e1a070b3544f019086de9319a5f60a110554e24664"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/58_화면과_키보드설정.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 40987,
+      "working_tree_sha256": "50cd03312f914b19438d41bd69b2138560ff4f963a5437347d31b0e67c7838b6"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/59_명령찾기.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 86883,
+      "working_tree_sha256": "c14a2a33ba3ff87386934eba5c6d213eeff4601569bacac5ae9a57765a2a569f"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/59_명령찾기.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 49544,
+      "working_tree_sha256": "12062e5c0d3d886cc4e83c6badc7b10b313f1df177e7c7a0e7dc5c165fc7cee4"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/59_명령찾기.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 37148,
+      "working_tree_sha256": "c38cbdfa35e86482d14453b387f8fca8a55118915b65865e4d60d6d1080d6a58"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/60_미적용입력_처리.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 85243,
+      "working_tree_sha256": "ce55fe0a7868eb5d3b3b38aff03624b3e1a75c96d80e47551b0bbbcdda1da062"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/60_미적용입력_처리.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 49294,
+      "working_tree_sha256": "65fb8dd698bf05263752d8b94a29d051205c092b3798c33c0ef8f14e5c549ddc"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/60_미적용입력_처리.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 36115,
+      "working_tree_sha256": "e6e9e5c61e7355e3c2b936dbe1985f0cffcf0cd4e7126489eb51dae9e6fb403c"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/61_응답불명과_복구.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 86423,
+      "working_tree_sha256": "56b675aa6258e4b5777cf5a94ef19937043b7ce1a94a4a97ba2e4be9ff326128"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/61_응답불명과_복구.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 56513,
+      "working_tree_sha256": "8ae6231cb5dffca8d2b5f6c45adc2fe4252f4c584f4fd0ae5e900ad0852c61f1"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/61_응답불명과_복구.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 36857,
+      "working_tree_sha256": "ad05a18b97e24faff9a4bf1b00e3472243429f603896cd3bdf99ae3233fa2586"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/62_결과없음과_미기록.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 66460,
+      "working_tree_sha256": "4c302af9564d7bf92a451e1e0558bf52c4a52eb391e84ce6ecba2d0be5ac72ac"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/62_결과없음과_미기록.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 81968,
+      "working_tree_sha256": "7270fc68593f82ac0bde3b3297dbac5c1deeac12b9a34f5f5ec3e3fec1a912fc"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/62_결과없음과_미기록.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 27432,
+      "working_tree_sha256": "aac47a71609e62dcc737aee91c5c9335e573714c1601e5553ea0112807bcb40c"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/63_작은창_편집배치.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 92033,
+      "working_tree_sha256": "c9eff63fb43f5fe5a39049682c298f843bd693fbeb0a553f92d88bddfac8637e"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/63_작은창_편집배치.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 76685,
+      "working_tree_sha256": "773e6dfbe05637e2a0dbc2801979c9d8dae18e6b746ba0a663c7b1aa08c28445"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/63_작은창_편집배치.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 31171,
+      "working_tree_sha256": "442638386f1d584156218ebdfdba1b1f216944370399af2380f8ceb5e6b30b40"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/64_격자와_경계.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 101968,
+      "working_tree_sha256": "755add8e73c682e8a8d2f4df1a90430beb7f76878030293ffcbca223e5b62895"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/64_격자와_경계.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 74793,
+      "working_tree_sha256": "6ea731a6d7cfef5c125d6df2ab5aae877955e440086b9bd210900a25082dae43"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/64_격자와_경계.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 44452,
+      "working_tree_sha256": "1e1ddbbccecc6f9c689f7e15ee7ba81435c1b243b47b06a54b1240ba00ba99c8"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/65_종료와_기록출력.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 92624,
+      "working_tree_sha256": "ad582b2516d5dcc4012728d5997803aede2d03de5d13ff2f741da618e1022752"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/65_종료와_기록출력.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 69720,
+      "working_tree_sha256": "f0867506146acbb9cc32d9084852fe8be701122ab697f3a702644421e3fd444f"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/65_종료와_기록출력.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 39547,
+      "working_tree_sha256": "4c3e78c34a904faa54e602cf50d4a020ecfc5764844f689444763ee739588bda"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/66_측정자료_열대응.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 97811,
+      "working_tree_sha256": "8c4ea4eab2814dcbf321bf21928d5d33b531f3fb38606ad3c55c1a949dddc9f7"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/66_측정자료_열대응.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 68437,
+      "working_tree_sha256": "902da2eb2202ff5469623842de0a9d02a6f4af8df42baf23315968d149ce40d8"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/66_측정자료_열대응.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 42493,
+      "working_tree_sha256": "fc3c33e0d3536e8bfc9b4bc6e1f0641c7be8b8dc1d9bc16e6c2cfbf211a97d86"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/67_시료와_교정.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 94592,
+      "working_tree_sha256": "829db61955baab0d3f6912d2a9d13eee32528f034f1c0752fc7b4a99fa784169"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/67_시료와_교정.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 62485,
+      "working_tree_sha256": "677c76c8e30b5d7dcf965627a817c67d0949523b25e810f53deddf531f2649d4"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/67_시료와_교정.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 40037,
+      "working_tree_sha256": "eafa53b27c9a39463d02d37da47f7777d6f402dc3e9ba9c1e7dc47bac54cb588"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/68_측정자료_가져오기검토.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 93888,
+      "working_tree_sha256": "7fbec9bc7b5b6fdcd5d3033ba1250500c73424c8f3ff98c741f4979c32b04432"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/68_측정자료_가져오기검토.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 69097,
+      "working_tree_sha256": "28ddf5a6b3776ff944e8d5424a711f4d5d9b81fa4c2d27b3decd3fc1b775a399"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/68_측정자료_가져오기검토.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 40469,
+      "working_tree_sha256": "065fed4137dec39ff48b20774267e9e892cb35d998082d79ad5df7a528399251"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/69_편파와_방사수치.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 89351,
+      "working_tree_sha256": "1f2f37c9f8faab880857bd4f812071be39fc6e21b235c654f71da87caa1b0d32"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/69_편파와_방사수치.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 105189,
+      "working_tree_sha256": "0ade45cd561d29981f86a4be62b7b6831933718e43a04d060e280d091648f513"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/69_편파와_방사수치.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 38413,
+      "working_tree_sha256": "89056b978f2c7a6ac0a180e58aa2ce372d99e7bc8d5968a2deb652365be90716"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/70_거버_교환.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 116517,
+      "working_tree_sha256": "53f25885bd331667b9173b94f132e0c03873de8e9c7bfc485a2edc30e6f2d945"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/70_거버_교환.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 121475,
+      "working_tree_sha256": "4d7611034f1f99035b8f55a6ba3591a608a2125a88417a703c767b77a5623235"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/70_거버_교환.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 44707,
+      "working_tree_sha256": "26cc51e7829b8dbf552b340f3c213491386d14f967964d8bd7dc27c09bf8c4d4"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/71_드릴_교환.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 84309,
+      "working_tree_sha256": "413eb5f2238b97a0535b5b427f11e4a662a1e53a687ccdc3c1b51154434523ac"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/71_드릴_교환.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 101226,
+      "working_tree_sha256": "0041c9f0c3674151e6c2ffd03fac5bb202f34f3ce13d0af70c4412cbfcaf892e"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/71_드릴_교환.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 36285,
+      "working_tree_sha256": "886f56e00aa32117586f89d8261ff71189be8da8abcfc834dbdd2f6b829e1928"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/72_제조파일_묶음.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 82211,
+      "working_tree_sha256": "7762dab5092155f9ea6b9f90785ec70e413ea4e79369f1609ca189b693dc0de7"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/72_제조파일_묶음.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 107537,
+      "working_tree_sha256": "ba5b2210f5ebfa7a42560645fd11b8655b856e15682eea5203f5a760af40b6d7"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/72_제조파일_묶음.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 35573,
+      "working_tree_sha256": "8630aed76bf8cba31be63f8e2126974c0f9706c50d3472dfc33eec4c9083c140"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/73_목표출처와_변경이력.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 104707,
+      "working_tree_sha256": "27debe2ae288594a94ad0857970f0c5d1619df7b8878eca22e1b941fda5b3282"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/73_목표출처와_변경이력.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 72269,
+      "working_tree_sha256": "f8516fd6922daabc80a586781c1fbf02b456d082a5db4df02922dd88e41a48d4"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/73_목표출처와_변경이력.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 45871,
+      "working_tree_sha256": "cde617f8c9d52e8acac650a13742a27f034f1e9cf1a1f41fa99cd0202a9ec847"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/74_문헌후보_입력과_초기식.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 99703,
+      "working_tree_sha256": "1f3695faf7e5d872c50dde5dba1aca133e436f54726a5a3f8df4fbcef23c5420"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/74_문헌후보_입력과_초기식.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 81107,
+      "working_tree_sha256": "95df8a4ded48d119b3b5a0ae19c460ee5794f3133a1ec9732b3c2d0b89338232"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/74_문헌후보_입력과_초기식.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 42989,
+      "working_tree_sha256": "56b14cc43205f2edcf9ae74d8e6321c612b9ada92c42ba726d9dc55818928bee"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/75_포트단자와_연결.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 132467,
+      "working_tree_sha256": "4f2bf48489e44c65fdf6ea7de3d583f3eae91de4089e8f0328bb77665bcdbc74"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/75_포트단자와_연결.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 84272,
+      "working_tree_sha256": "3718efeab6f7e1aa7fe6094398bf75d653b171e138c698edc55f285fee9b7ca0"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/75_포트단자와_연결.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 50798,
+      "working_tree_sha256": "b63b864a45d109e782c16b8f3ce5effd0b6f2f85b489ca5fc829f65770e26c32"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/76_포트출처와_기준면.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 96787,
+      "working_tree_sha256": "4ae563bbac1b3330f4da9bd61f5e95d7330a01e36f674c4967288e2d1de385b9"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/76_포트출처와_기준면.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 65981,
+      "working_tree_sha256": "9276982f9822dcc819fc9e51bf287e135dcdeebf5a9fbd63f711da77e5e90369"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/76_포트출처와_기준면.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 41908,
+      "working_tree_sha256": "7628d81cf9ab576175e208930188437d282b19987380f87593da6505ed7f0c18"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/77_정합망_입력데이터.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 94148,
+      "working_tree_sha256": "5999a5a907bc27165cac9945dd68f0e792698bfab8fbebc9adf2f02dd9f29ffd"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/77_정합망_입력데이터.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 66376,
+      "working_tree_sha256": "219ac473199bd7ecdf202ef1b95db2b7b5fcfdbfe3572c469be051b73e26aaba"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/77_정합망_입력데이터.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 40639,
+      "working_tree_sha256": "5cbdaaa7d987116d2b6d9fe314709d44f58520511fedccb5b2dea4350ae93961"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/78_정합망_결합결과.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 116807,
+      "working_tree_sha256": "78dd16fc8f6c1c9b23ed9c7a578a75c7f713851a21d81d8bfa685722e9ce9e84"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/78_정합망_결합결과.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 84779,
+      "working_tree_sha256": "e0d087c97fa01dc45f0c15de9b5b77a70a0022d980bfd4cd7eab43987038aa93"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/78_정합망_결합결과.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 46404,
+      "working_tree_sha256": "5d38b548128bf8daac0ce2be7b9d54bf09020e9e96c142fb5e9c945cda520a0e"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/79_출처가정과_생략.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 94386,
+      "working_tree_sha256": "144d5ddb8c40b509fa3edb55787b4f21f8157d9682cd591cd2a8762fa4279850"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/79_출처가정과_생략.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 71315,
+      "working_tree_sha256": "a04684e4cc65b3fdf39c5c1510e85a2f99f1ea0caa72b442e83565f652a2b600"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/79_출처가정과_생략.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 40924,
+      "working_tree_sha256": "f17f9b94f94225a79fceccaf99f88629aa1f677dd9569a1762b9601e3c50f0dc"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/80_출처_변경이력.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 92253,
+      "working_tree_sha256": "254e97e06756cda6d9c73a7da487efb00fbcc3573d1886f104de1dd11347e233"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/80_출처_변경이력.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 62997,
+      "working_tree_sha256": "ce7712dd457a7438ffd321e3700a8970216e3f68bd14c672d962b12b88d7f69f"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/80_출처_변경이력.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 40117,
+      "working_tree_sha256": "8769319d02f1f5df8308b5a7df1310f40bf1fe62d0fce19da569a3d6a4c009e1"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/81_환경경로와_연결.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 93221,
+      "working_tree_sha256": "19c0eb1054d49c6e2e958483921fb8024368211930b4a8956f46cbb58a4648ab"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/81_환경경로와_연결.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 69222,
+      "working_tree_sha256": "726bd6de936cbc0ff8cd7068596ab171fef874e5e0508a2063c6e8c1ca9aa3e0"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/81_환경경로와_연결.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 39985,
+      "working_tree_sha256": "fa827498a95fcef2e33fed49118420796f3384b9c9d1660a3c53cfd6f053f14a"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/82_환경_진단기록.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 94434,
+      "working_tree_sha256": "71a3c4847194cd5fc16e5d9208bd416bb924792523af3bc4c31e86e3c2959378"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/82_환경_진단기록.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 65291,
+      "working_tree_sha256": "0e7917db61a44e55ed68161c9be6461c8248c2512fd6c52461a257e43d3a5bd9"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/82_환경_진단기록.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 40779,
+      "working_tree_sha256": "a195e9c9245e81cdc028696ee2525139c9bf246b8406e0ea94d8b38baf669256"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/83_키보드_설정.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 96263,
+      "working_tree_sha256": "0931d01faac60f2510461825b28eab642f0ab008af8fbebbc4f2ede738a0561a"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/83_키보드_설정.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 62265,
+      "working_tree_sha256": "7e961fc9341460be933b1f8aa43f30abb298c43028c337b85472bac4e6b49c59"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/83_키보드_설정.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 41384,
+      "working_tree_sha256": "cea1c1e16e01f65a6f9fcbc8f065a7c494eab6f62e1011496b7f202b7623a4a1"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/84_색상과_접근성.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 97172,
+      "working_tree_sha256": "3f3de3ec5cfdb77ac7361b300ad43d496977943c107c906f23391bc2c55d057a"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/84_색상과_접근성.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 73168,
+      "working_tree_sha256": "d2a0772aa11a4e877f915af5bd240f949b4c71c20f6095b45ea6a8b510549f59"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/03_구현시안/84_색상과_접근성.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 40755,
+      "working_tree_sha256": "e95578753bb0723aa3e4826f3537ca3dbcef8702994d17236d1ba9206d7c1f4b"
     },
     {
       "path": "01_개발문서/04_화면설계/03_화면별_상세설계.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 20238,
-      "working_tree_sha256": "deb427480a2558d94024ca355d779b34af4cd979d2ca52e7e0fe9eb185f5e71a",
+      "bytes": 21073,
+      "working_tree_sha256": "00156b8fcbaa69918f3b53a1eb51a0f5cf548ed7849104f29ba50c68ad275e7a",
       "text_lines": 196,
       "text_status": "utf8_read"
     },
@@ -26142,8 +27906,8 @@
       "path": "01_개발문서/04_화면설계/04_화면전환_시나리오.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 35877,
-      "working_tree_sha256": "a615f7fc152508c7697cd688a81f88f5e66955862ac127fdf2892dc0ebf6ec31",
+      "bytes": 36349,
+      "working_tree_sha256": "e67e1b5942d49d35afeb4485d68b5226693c5b451bd4dd76810dd1c91d5fbad2",
       "text_lines": 241,
       "text_status": "utf8_read"
     },
@@ -26151,8 +27915,8 @@
       "path": "01_개발문서/04_화면설계/05_객체이름과_선택연동.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 20056,
-      "working_tree_sha256": "fc164332d3ff11a68282e2a2481572228f0b4795917e6d47e273874b0066c0e8",
+      "bytes": 20343,
+      "working_tree_sha256": "bc57242efbb468fae0e45e826a785aeedd7b9bd65e96ea429c390bf3b9365288",
       "text_lines": 135,
       "text_status": "utf8_read"
     },
@@ -26160,26 +27924,26 @@
       "path": "01_개발문서/04_화면설계/06_사용성과_접근성.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 19503,
-      "working_tree_sha256": "997d073bd2b345381eb44e26eb0d090fbc1b737e13b5f1976638ebab34ab250f",
-      "text_lines": 81,
+      "bytes": 20152,
+      "working_tree_sha256": "47525f5b6019195924a5d2b4079f4fadcd53a24465684e7a9d9c55621bba98b7",
+      "text_lines": 85,
       "text_status": "utf8_read"
     },
     {
       "path": "01_개발문서/04_화면설계/07_화면설계_갱신과_검수.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 4513,
-      "working_tree_sha256": "8535dcfe7c61089f2d4fea715d70ce7af99ffb20fdbe79aaf74f7f7ce43190ab",
-      "text_lines": 53,
+      "bytes": 5164,
+      "working_tree_sha256": "e8424ab137ba40e985890a94cc2aef27e6045222b152f844dd0f4f8b371b45cd",
+      "text_lines": 55,
       "text_status": "utf8_read"
     },
     {
       "path": "01_개발문서/04_화면설계/08_스튜디오_화면계약.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 33521,
-      "working_tree_sha256": "4e1cf4783d5982100e979c2433d596c8362c6acf14d02d9cde2650e8112edf55",
+      "bytes": 34375,
+      "working_tree_sha256": "9daaa33a75879a5910f512a24e451b08fba82914f34fb34aa15f87f03f5fae73",
       "text_lines": 226,
       "text_status": "utf8_read"
     },
@@ -26187,8 +27951,8 @@
       "path": "01_개발문서/04_화면설계/09_스튜디오_화면시안.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 12169,
-      "working_tree_sha256": "eb66a8357d9c026f671faed2bd8ec8bcea47f8b703e78fc3577d58b489b64026",
+      "bytes": 12612,
+      "working_tree_sha256": "879d4f8f234ea7ce35a70b6b90692378a143e9221cd58cb39e2dd470a51fbcff",
       "text_lines": 89,
       "text_status": "utf8_read"
     },
@@ -26196,8 +27960,8 @@
       "path": "01_개발문서/04_화면설계/10_목표와_형상템플릿_화면.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 9200,
-      "working_tree_sha256": "2ec8069dd743beb167315c5b4e674a0ba4d541a87940632b760a362cf59b4629",
+      "bytes": 9488,
+      "working_tree_sha256": "efa5bfcfc48f511be0ddef4f57db5e86e68113e9ae11266a9463a5ee2f589768",
       "text_lines": 69,
       "text_status": "utf8_read"
     },
@@ -26205,18 +27969,73 @@
       "path": "01_개발문서/04_화면설계/11_제조업체와_적층선택_화면.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 10365,
-      "working_tree_sha256": "231c8d7f0f5f248adfe8468319ce9561ca59ca41283abb4e9bed9f15593b6c03",
+      "bytes": 10669,
+      "working_tree_sha256": "8c5dc8c43685bcd4fcda3e6a2de2d3431e98b79bcdcc13d3606369971cbe1b0f",
       "text_lines": 70,
       "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/12_구현화면_설계기준.md",
+      "category": "current_04_화면설계",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 17335,
+      "working_tree_sha256": "986e96677a66d63a991db46df0e4ed233d9c69f921cbdccd0feec1726b544acf",
+      "text_lines": 126,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/13_전체화면목록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 71981,
+      "working_tree_sha256": "0e3d766c9c611bd97b93d6b8c590119e58cd4a48a93c214cf29c1a0614f18769"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/14_참고도구와_적용근거.md",
+      "category": "current_04_화면설계",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 25421,
+      "working_tree_sha256": "83d611005e967c049e8e8d3af917b015d40bbd604996b7fa47a4871c4f8e6dfe",
+      "text_lines": 105,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/15_구현시안_검수.md",
+      "category": "current_04_화면설계",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 25716,
+      "working_tree_sha256": "6afd0b7def70597263a215dec688698be74da6efee6220b59af20aacb5de9ace",
+      "text_lines": 147,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/16_전체화면_둘러보기.html",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 88427,
+      "working_tree_sha256": "458a01fded7f6b4c5a68bd45476887aeae74bf6bb0b5e10c1ca024ce00b06588"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/17_구현시안_검증.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 42646,
+      "working_tree_sha256": "e4dbc0fac203b2835af0149db22b8d99fab9b1ede67299d3bc62b32d3c265382"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/18_문서연결_검증.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 3954,
+      "working_tree_sha256": "632cbe4b820af63a599357ed3c9c0b996636a3c3b4d306d8c0688859ed3c5854"
     },
     {
       "path": "01_개발문서/04_화면설계/README.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 6146,
-      "working_tree_sha256": "a2a002528b3e090498d76d1bde6bcde3b995e62a7a661fd493f080e724d50a71",
-      "text_lines": 53,
+      "bytes": 8804,
+      "working_tree_sha256": "9c4ad422b01fdb0d19ec2ab327a67d17fcb02b9245df85af8cab23049510408f",
+      "text_lines": 66,
       "text_status": "utf8_read"
     },
     {
@@ -26626,22 +28445,22 @@
       "path": "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
-      "bytes": 30877,
-      "working_tree_sha256": "30cffabb3bb9c578cbcbcbb2f70a558562fbf245c911869e5b20198c805eef1e"
+      "bytes": 30264,
+      "working_tree_sha256": "b79b0b1c9a14c18a5dbf748806e13b0a6c9dc83ccfc20d3431b315b5c5c6d432"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
-      "bytes": 497319,
-      "working_tree_sha256": "dcc92258dee9621c2574a99958084b1fc13d4f8785ccc7384e8659b862c13b44"
+      "bytes": 482633,
+      "working_tree_sha256": "d648ccc3f74936e9cd44a760114952c9a454afee7bc62a6db6b7571a4893a314"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
-      "bytes": 84438,
-      "working_tree_sha256": "87bda83c1cbbefbe7d605944247ea1dafc5660758fbf8c241e6fcdf6e5fc29dd",
+      "bytes": 82883,
+      "working_tree_sha256": "17625d6a9af37246b41f7463d2f34dc889cf928ba6f4e5a517e95542efb99ec4",
       "text_lines": 1555,
       "text_status": "utf8_read"
     },
@@ -26748,8 +28567,8 @@
       "path": "01_개발문서/09_개발계획/01_구현_계획.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 16680,
-      "working_tree_sha256": "55e286b9a256f6fbd07ecd2c70e0f212b81086869545464e4945ed3249f6eb1e",
+      "bytes": 16565,
+      "working_tree_sha256": "20f19cc44c47cad466ca6d338db704dabb09cc76a47b24bce17880d4b027f741",
       "text_lines": 115,
       "text_status": "utf8_read"
     },
@@ -26757,8 +28576,8 @@
       "path": "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 111963,
-      "working_tree_sha256": "0d1585a3d080786d41d47948f8e05cbad9b0543f7c6176757b4ae658610d016a",
+      "bytes": 111367,
+      "working_tree_sha256": "1a56a5db4856174292b97134a6d81b3c6917e6c991815e5ab8fe03ad94867505",
       "text_lines": 596,
       "text_status": "utf8_read"
     },
@@ -26784,8 +28603,8 @@
       "path": "01_개발문서/10_문서목록/01_이전경로대응.json",
       "category": "document_catalog",
       "review_scope": "분류/경로 대응",
-      "bytes": 81371,
-      "working_tree_sha256": "19ecaec8fa70d742556b21def5cdbb0261c7aaeb873e95df930e388acb84331c"
+      "bytes": 80756,
+      "working_tree_sha256": "6e351df07aa2f5c8858c527618b817f66876380b1683a23d4c09b7c9d436127c"
     },
     {
       "path": "01_개발문서/10_문서목록/04_기존설계분류.md",
@@ -26818,8 +28637,8 @@
       "path": "01_개발문서/11_검토기록/01_문서통합_검토.md",
       "category": "current_11_검토기록",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 7254,
-      "working_tree_sha256": "6ead1ea63fdad580329811ed16d400b2f6b75338cb577bc050902934e22f6ca2",
+      "bytes": 7206,
+      "working_tree_sha256": "dbaafb6c951aece06d99369ba33af31e6200d90f87e501edca898c7e395aef0a",
       "text_lines": 48,
       "text_status": "utf8_read"
     },
@@ -26863,8 +28682,8 @@
       "path": "01_개발문서/11_검토기록/06_문서검증_기록.json",
       "category": "documentation_validation_record",
       "review_scope": "문서 링크/그림 구조 검수; 제품 수용 아님",
-      "bytes": 4048,
-      "working_tree_sha256": "9b0712885ee886ea8f9b4bf32821498b13e2979ca6e77fafecb7459304f72779"
+      "bytes": 3954,
+      "working_tree_sha256": "17c60581445959f3306ed0a7fee5e762d6d6333893b9132884278a174b90c0a2"
     },
     {
       "path": "01_개발문서/11_검토기록/README.md",
