@@ -31,6 +31,50 @@ std::string Text(const Json& value)
 {
     return value.is_string() ? value.get<std::string>() : (value.is_null() ? "" : value.dump());
 }
+
+/** @brief 서비스 필드는 바꾸지 않고 화면의 기본/연결/출처 영역만 분류한다. */
+int FieldGroup(const std::string& key, const Json& descriptor, const std::string& kind)
+{
+    const auto separator = key.rfind('.');
+    const std::string leaf = separator == std::string::npos ? key : key.substr(separator + 1);
+    if (key.find("source") != std::string::npos || key.find("origin") != std::string::npos ||
+        key.find("assumption") != std::string::npos || key.find("provenance") != std::string::npos)
+    {
+        return 2;
+    }
+    if (descriptor.value("advanced", false) || leaf == "status" || leaf == "parameter_id" ||
+        (leaf == "mode" && separator != std::string::npos) ||
+        (kind == "geometry" &&
+         (key == "name" || key == "net_id" || key == "role" || key.find("flags.") == 0 || key.find("center.") == 0 ||
+          key == "include_in_analysis" || key == "include_in_em" || key == "include_in_export")) ||
+        (descriptor.value("readonly", false) && (leaf == "kind" || leaf == "model" || leaf == "fill")))
+    {
+        return 3;
+    }
+    if (key == "name" || key == "layer_id" || key == "material_id" || key == "material_ref" || key == "net_id" ||
+        key == "role" || key.find("flags.") == 0 || key == "include_in_analysis" || key == "include_in_em" ||
+        key == "include_in_export")
+    {
+        return 1;
+    }
+    return 0;
+}
+
+/** @brief 값/단위 열의 중복 접미어를 없애고 원래 라벨은 입력 접근성 이름에 유지한다. */
+wxString ShortLabel(const std::string& source)
+{
+    wxString label = Display(source);
+    for (const auto* suffix : {" / 단위", " 값"})
+    {
+        const wxString ending = Display(suffix);
+        if (label.EndsWith(ending))
+        {
+            label.RemoveLast(ending.size());
+        }
+    }
+    label.Replace(Display(" / "), " ");
+    return label;
+}
 }
 
 EditorPanel::EditorPanel(wxWindow* parent)
@@ -40,11 +84,12 @@ EditorPanel::EditorPanel(wxWindow* parent)
     SetScrollRate(FromDIP(12), FromDIP(12));
     m_layout = new wxBoxSizer(wxVERTICAL);
     SetSizer(m_layout);
-    Bind(wxEVT_SIZE, [this](wxSizeEvent& event)
-    {
-        ReflowRows();
-        event.Skip();
-    });
+    Bind(wxEVT_SIZE,
+         [this](wxSizeEvent& event)
+         {
+             ReflowRows();
+             event.Skip();
+         });
 }
 
 /** @brief 필드 형식과 선택 목록을 그대로 사용하며 도메인 계산을 수행하지 않는다. */
@@ -63,15 +108,78 @@ void EditorPanel::SetFields(const Json& fields, const Json& selection, const Jso
     m_inputNotice = new wxStaticText(this, wxID_ANY, wxEmptyString);
     m_layout->Add(m_inputNotice, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(6));
     m_inputNotice->Hide();
-    m_details = new wxCheckBox(this, wxID_ANY, Display("상세 정보 / 출처 표시"));
-    m_layout->Add(m_details, 0, wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(6));
-    m_details->Hide();
-    m_details->Bind(wxEVT_CHECKBOX,
-                    [this](wxCommandEvent&)
-                    {
-                        UpdateModes();
-                    });
-    for (const auto& descriptor : fields)
+    m_valueState = new wxStaticText(this, wxID_ANY, wxEmptyString);
+    m_valueState->SetForegroundColour(StudioTheme::Colours().secondary);
+    m_layout->Add(m_valueState, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(8));
+    const std::string kind = selection.value("kind", "");
+    const std::array<std::string, 4> names{
+        {kind == "material"
+             ? "재료 물성"
+             : (kind == "layer" ? "적층 치수"
+                                : (kind == "parameter" || kind == "new_parameter" ? "매개변수" : "형상 / 치수")),
+         "기판 / 재료", "출처와 가정", "고급 설정"}};
+    for (std::size_t index = 0; index < m_groups.size(); ++index)
+    {
+        auto& group = m_groups[index];
+        group.header =
+            new wxToggleButton(this, wxID_ANY, Display(names[index]), wxDefaultPosition, wxDefaultSize, wxBU_LEFT);
+        group.header->SetValue(index < 2);
+        group.header->SetFont(GetFont().Bold());
+        group.header->SetBackgroundColour(StudioTheme::Colours().panel);
+        group.header->SetMinSize(FromDIP(wxSize(-1, 34)));
+        group.header->SetToolTip(Display("그룹 펼치기 / 접기. 입력 초안은 유지됩니다."));
+        m_layout->Add(group.header, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxBOTTOM, FromDIP(8));
+        group.rows = new wxBoxSizer(wxVERTICAL);
+        m_layout->Add(group.rows, 0, wxEXPAND | wxBOTTOM, FromDIP(8));
+        group.header->Bind(wxEVT_TOGGLEBUTTON,
+                           [this](wxCommandEvent&)
+                           {
+                               UpdateModes();
+                           });
+    }
+    m_details = m_groups[3].header;
+    if (kind == "geometry" || kind == "board" || kind == "layer" || kind == "material")
+    {
+        auto* conditionNotice = new wxStaticText(
+            this, wxID_ANY, Display("제작 / 측정 조건은 별도 확인이 필요합니다.\n미정값은 자동 확정하지 않습니다."));
+        conditionNotice->SetForegroundColour(StudioTheme::Colours().secondary);
+        conditionNotice->Wrap(FromDIP(286));
+        m_layout->Add(conditionNotice, 0, wxEXPAND | wxALL, FromDIP(8));
+    }
+    std::vector<Json> ordered(fields.begin(), fields.end());
+    if (kind == "geometry")
+    {
+        std::string shapeKind;
+        for (const auto& descriptor : fields)
+        {
+            if (descriptor.at("key") == "kind")
+            {
+                shapeKind = descriptor.value("value", "");
+            }
+        }
+        const std::vector<std::string> order =
+            shapeKind == "arc_path"
+                ? std::vector<std::string>{"radius.", "width.", "start_angle.", "sweep_angle.", "center."}
+                : std::vector<std::string>{"start.", "end.", "center.", "width.", "height.", "rotation."};
+        const auto rank = [&order](const Json& descriptor)
+        {
+            const std::string key = descriptor.at("key");
+            for (std::size_t index = 0; index < order.size(); ++index)
+            {
+                if (key.rfind(order[index], 0) == 0)
+                {
+                    return static_cast<int>(index);
+                }
+            }
+            return static_cast<int>(order.size());
+        };
+        std::stable_sort(ordered.begin(), ordered.end(),
+                         [&](const Json& left, const Json& right)
+                         {
+                             return rank(left) < rank(right);
+                         });
+    }
+    for (const auto& descriptor : ordered)
     {
         const std::string key = descriptor.at("key").get<std::string>();
         const std::string editor = descriptor.at("editor").get<std::string>();
@@ -89,11 +197,14 @@ void EditorPanel::SetFields(const Json& fields, const Json& selection, const Jso
         if (!paired)
         {
             StudioTheme::BindSurface(*rowPanel);
-            label->Wrap(FromDIP(145));
+            label->SetLabel(key == "sweep_angle.value" ? Display("포함각")
+                                                       : ShortLabel(descriptor.at("label").get<std::string>()));
+            label->Wrap(FromDIP(100));
             row->Add(label, 0, wxBOTTOM | wxEXPAND, FromDIP(4));
             row->Add(inputs, 0, wxEXPAND);
             rowPanel->SetSizer(row);
-            m_layout->Add(rowPanel, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::InputGap));
+            m_groups[static_cast<std::size_t>(FieldGroup(key, descriptor, kind))].rows->Add(
+                rowPanel, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::InputGap));
         }
         auto* input = new wxBoxSizer(wxVERTICAL);
         inputs->Add(input, paired ? 0 : 1, wxEXPAND | (paired ? wxLEFT : 0), paired ? FromDIP(6) : 0);
@@ -215,6 +326,14 @@ void EditorPanel::SetFields(const Json& fields, const Json& selection, const Jso
             throw std::runtime_error("Unsupported editor field type: " + editor);
         }
         Field field{descriptor, control, auxiliaries, rowPanel, input, label, inputs};
+        field.group = paired ? valueField->second.group : FieldGroup(key, descriptor, kind);
+        const bool multiline = descriptor.value("multiline", false) || editor == "bindings" ||
+                               editor == "string_lines" || key == "expression" || key == "description" ||
+                               key == "assumptions";
+        if (!multiline && editor != "multichoice")
+        {
+            control->SetMinSize(FromDIP(wxSize(paired ? 68 : 0, 32)));
+        }
         WriteValue(field, descriptor.at("value"));
         control->SetName(Display(descriptor.at("label").get<std::string>()));
         if (descriptor.contains("help"))
@@ -226,10 +345,6 @@ void EditorPanel::SetFields(const Json& fields, const Json& selection, const Jso
         if (bindingButtons != nullptr)
         {
             input->Add(bindingButtons, 0, wxTOP, FromDIP(4));
-        }
-        if (descriptor.value("advanced", false))
-        {
-            m_details->Show();
         }
         m_fields.emplace(key, std::move(field));
     }
@@ -244,7 +359,7 @@ void EditorPanel::SetFields(const Json& fields, const Json& selection, const Jso
 
 void EditorPanel::ReflowRows(bool force)
 {
-    const bool compact = ToDIP(GetClientSize()).x < 450;
+    const bool compact = ToDIP(GetClientSize()).x < 292;
     if (m_reflowing || (!force && compact == m_compactRows))
     {
         return;
@@ -260,10 +375,15 @@ void EditorPanel::ReflowRows(bool force)
             continue;
         }
         auto* row = static_cast<wxBoxSizer*>(field.row->GetSizer());
-        row->SetOrientation(compact ? wxVERTICAL : wxHORIZONTAL);
-        field.label->SetMinSize(wxSize(compact ? 0 : FromDIP(150), -1));
-        row->GetItem(field.label)->SetFlag(compact ? wxBOTTOM | wxEXPAND : wxTOP | wxRIGHT);
-        row->GetItem(field.inputs)->SetProportion(compact ? 0 : 1);
+        const std::string editor = field.descriptor.at("editor");
+        const bool stacked = compact || editor == "bindings" || editor == "string_lines" ||
+                             editor == "coordinate_table" || field.descriptor.value("multiline", false) ||
+                             entry.first == "expression" || entry.first == "description" ||
+                             entry.first == "assumptions";
+        row->SetOrientation(stacked ? wxVERTICAL : wxHORIZONTAL);
+        field.label->SetMinSize(wxSize(stacked ? 0 : FromDIP(100), -1));
+        row->GetItem(field.label)->SetFlag(stacked ? wxBOTTOM | wxEXPAND : wxALIGN_CENTER_VERTICAL | wxRIGHT);
+        row->GetItem(field.inputs)->SetProportion(stacked ? 0 : 1);
         field.row->Layout();
     }
     Layout();
@@ -621,9 +741,9 @@ std::string EditorPanel::ShowDiagnostic(const std::string& field, const std::str
     FitInside();
     if (found != m_fields.end())
     {
-        if (found->second.descriptor.value("advanced", false))
+        if (!m_groups[static_cast<std::size_t>(found->second.group)].header->GetValue())
         {
-            m_details->SetValue(true);
+            m_groups[static_cast<std::size_t>(found->second.group)].header->SetValue(true);
             UpdateModes();
         }
         if (found->second.control->IsThisEnabled())
@@ -635,8 +755,7 @@ std::string EditorPanel::ShowDiagnostic(const std::string& field, const std::str
         int horizontal = 0;
         int vertical = 0;
         GetScrollPixelsPerUnit(&horizontal, &vertical);
-        Scroll(std::max(0, position.x / std::max(1, horizontal)),
-               std::max(0, position.y / std::max(1, vertical)));
+        Scroll(std::max(0, position.x / std::max(1, horizontal)), std::max(0, position.y / std::max(1, vertical)));
     }
     return displayMessage;
 }
@@ -646,12 +765,29 @@ void EditorPanel::UpdateModes()
 {
     const auto fields = PresentationFields();
     std::map<wxPanel*, bool> visibleRows;
+    std::array<bool, 4> hasFields{};
+    std::vector<wxString> missing;
     for (auto& item : m_fields)
     {
-        const auto state = EditorPresentation::Evaluate(item.first, fields, m_details->GetValue());
+        const auto group = static_cast<std::size_t>(item.second.group);
+        const auto state = EditorPresentation::Evaluate(
+            item.first, fields, group == 2 ? m_groups[2].header->GetValue() : m_details->GetValue());
         item.second.control->Enable(state.enabled);
         item.second.section->ShowItems(state.visible);
-        visibleRows[item.second.row] = visibleRows[item.second.row] || state.visible;
+        hasFields[group] = true;
+        visibleRows[item.second.row] =
+            visibleRows[item.second.row] || (state.visible && m_groups[group].header->GetValue());
+        if ((item.first == "mode" || (item.first.size() > 5 && item.first.substr(item.first.size() - 5) == ".mode")) &&
+            fields.at(item.first).value == "missing")
+        {
+            wxString label = Display(item.second.descriptor.at("label").get<std::string>());
+            const wxString ending = Display(" 입력 방식");
+            if (label.EndsWith(ending))
+            {
+                label.RemoveLast(ending.size());
+            }
+            missing.push_back(label);
+        }
         for (wxWindow* auxiliary : item.second.auxiliaries)
         {
             auxiliary->Enable(state.enabled);
@@ -659,8 +795,13 @@ void EditorPanel::UpdateModes()
         const std::string label = EditorPresentation::ValueLabel(item.first, fields);
         if (!label.empty())
         {
-            item.second.label->SetLabel(Display(label));
-            item.second.label->Wrap(FromDIP(145));
+            wxString displayLabel = ShortLabel(label);
+            if (item.first == "sweep_angle.value")
+            {
+                displayLabel.Replace(Display("회전 각도"), Display("포함각"));
+            }
+            item.second.label->SetLabel(displayLabel);
+            item.second.label->Wrap(FromDIP(100));
         }
     }
     for (const auto& row : visibleRows)
@@ -668,6 +809,23 @@ void EditorPanel::UpdateModes()
         row.first->Show(row.second);
         row.first->Layout();
     }
+    for (std::size_t index = 0; index < m_groups.size(); ++index)
+    {
+        m_groups[index].header->Show(hasFields[index]);
+    }
+    wxString stateText;
+    if (!missing.empty())
+    {
+        stateText = Display("미정 입력: ") + missing.front();
+        if (missing.size() > 1)
+        {
+            stateText += Display(" 외 ") + wxString::Format("%zu", missing.size() - 1) + Display("개");
+        }
+        stateText += Display(". 고급 설정의 입력 방식에서 확인하세요.");
+    }
+    m_valueState->SetLabel(stateText);
+    m_valueState->Wrap(std::max(FromDIP(200), GetClientSize().x - FromDIP(24)));
+    m_valueState->Show(!stateText.empty());
     Layout();
     FitInside();
 }

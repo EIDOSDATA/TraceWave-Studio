@@ -28,7 +28,7 @@ void StudioFrame::BuildInterface()
     edit->AppendSeparator();
     edit->Append(IdNewParameter, Display("매개변수 추가"));
     auto* bar = new wxMenuBar;
-    bar->Append(menu, Display("프로젝트"));
+    bar->Append(menu, Display("파일(&F)"));
     bar->Append(edit, Display("편집"));
     auto* design = new wxMenu;
     design->Append(IdTargets, Display("목표 / 대역 설정"));
@@ -81,6 +81,24 @@ void StudioFrame::BuildInterface()
     view->Append(IdBuild3D, Display("현재 설계로 3D 갱신"));
     view->Append(IdOutputFolder, Display("STEP 출력 폴더 열기"));
     view->Append(IdCancelCad, Display("CAD 작업 취소"));
+    view->AppendSeparator();
+    const int environmentHelp = wxWindow::NewControlId();
+    view->Append(environmentHelp, Display("실행 환경 안내"));
+    Bind(
+        wxEVT_MENU,
+        [this](wxCommandEvent&)
+        {
+            const std::string message = std::string("CAD: ") + (m_cadConfigured ? "연결됨" : "연결 필요") +
+                                        "\n해석: " + (m_solverConfigured ? "연결됨" : "연결 필요") +
+                                        "\n\n환경이 없어도 설계 편집과 저장, 기존 결과 조회는 가능합니다."
+                                        "\n현재 개발판은 프로그램을 다시 시작할 때 실행 환경을 연결합니다."
+                                        "\n\n개발 실행 도우미: Code/tools/launch_gui.ps1"
+                                        "\nCAD: -CadPython <CAD Python 경로>"
+                                        "\nWSL2 openEMS: -OpenEmsWsl"
+                                        "\n\n프로젝트 데이터가 실행 프로그램이나 경로를 결정하지 않습니다.";
+            wxMessageBox(Display(message), Display("실행 환경 안내"), wxOK | wxICON_INFORMATION, this);
+        },
+        environmentHelp);
     bar->Append(view, Display("보기"));
     SetMenuBar(bar);
     CreateStatusBar(3);
@@ -91,7 +109,7 @@ void StudioFrame::BuildInterface()
     SetStatusText(Display("Windows wxWidgets / 개발용"), 1);
     SetMinSize(FromDIP(wxSize(980, 680)));
     const wxRect workArea = wxGetClientDisplayRect();
-    const wxSize preferred = FromDIP(wxSize(1360, 860));
+    const wxSize preferred = FromDIP(wxSize(1660, 960));
     SetSize(wxSize(std::min(preferred.GetWidth(), workArea.GetWidth() - FromDIP(24)),
                    std::min(preferred.GetHeight(), workArea.GetHeight() - FromDIP(24))));
     Centre();
@@ -104,8 +122,8 @@ void StudioFrame::BuildInterface()
              StudioTheme::ConfigureDocking(*m_manager, *this);
              if (m_tools.count(IdDeleteShape) != 0)
              {
-                 StyleDrawingRail({m_tools.at(IdSelect), m_tools.at(IdLine), m_tools.at(IdArc), m_tools.at(IdCoordinates),
-                                   m_tools.at(IdFit), m_tools.at(IdDeleteShape)});
+                 StyleDrawingRail({m_tools.at(IdSelect), m_tools.at(IdLine), m_tools.at(IdArc),
+                                   m_tools.at(IdCoordinates), m_tools.at(IdFit), m_tools.at(IdDeleteShape)});
                  SelectDrawingRail({m_tools.at(IdSelect), m_tools.at(IdLine), m_tools.at(IdArc)},
                                    m_drawTool == "line" ? 1 : (m_drawTool == "arc" ? 2 : 0));
              }
@@ -131,12 +149,21 @@ void StudioFrame::BuildInterface()
     auto* commandHost = new wxPanel(this);
     commandHost->SetName("workspace.command-state");
     auto* commandSizer = new wxBoxSizer(wxVERTICAL);
-    for (const auto& command : std::vector<std::pair<int, std::string>>{
-        {IdCreate, "새 프로젝트"}, {IdOpen, "열기"}, {IdSave, "저장"}, {IdSnapshot, "스냅샷"},
-        {IdUndo, "실행 취소"}, {IdRedo, "다시 실행"}, {IdExportStep, "STEP 출력"},
-        {IdTargets, "목표 / 대역 설정"}, {IdTemplates, "문헌 / 형상 / 초기 후보"},
-        {IdPcbSelection, "기판 설정 / 자료 선택"}, {IdPhysicalSetup, "적층 / 외부 환경"},
-        {IdBoard, "사각 기판"}, {IdCircularBoard, "원형 기판"}, {IdLayer, "도체층"}, {IdDielectric, "유전체층"}})
+    for (const auto& command : std::vector<std::pair<int, std::string>>{{IdCreate, "새 프로젝트"},
+                                                                        {IdOpen, "열기"},
+                                                                        {IdSave, "저장"},
+                                                                        {IdSnapshot, "스냅샷"},
+                                                                        {IdUndo, "실행 취소"},
+                                                                        {IdRedo, "다시 실행"},
+                                                                        {IdExportStep, "STEP 출력"},
+                                                                        {IdTargets, "목표 / 대역 설정"},
+                                                                        {IdTemplates, "문헌 / 형상 / 초기 후보"},
+                                                                        {IdPcbSelection, "기판 설정 / 자료 선택"},
+                                                                        {IdPhysicalSetup, "적층 / 외부 환경"},
+                                                                        {IdBoard, "사각 기판"},
+                                                                        {IdCircularBoard, "원형 기판"},
+                                                                        {IdLayer, "도체층"},
+                                                                        {IdDielectric, "유전체층"}})
     {
         AddTool(commandHost, commandSizer, command.first, command.second);
     }
@@ -164,6 +191,7 @@ void StudioFrame::BuildInterface()
     StudioTheme::BindSurface(*navigation);
     auto* navigationSizer = new wxBoxSizer(wxVERTICAL);
     auto* navigationTabs = new wxNotebook(navigation, wxID_ANY);
+    navigationTabs->SetPadding(FromDIP(wxSize(16, 8)));
     navigationTabs->SetName("workspace.navigation-tabs");
     auto* navigationContent = new wxPanel(navigationTabs);
     StudioTheme::BindSurface(*navigationContent);
@@ -175,15 +203,16 @@ void StudioFrame::BuildInterface()
     navigation->SetSizer(navigationSizer);
     m_manager->AddPane(navigation, wxAuiPaneInfo()
                                        .Name("navigation")
-                                       .Caption(Display("프로젝트 탐색"))
+                                       .Caption(Display("프로젝트"))
                                        .Left()
                                        .Layer(1)
                                        .Position(0)
                                        .BestSize(FromDIP(wxSize(280, 600)))
                                        .MinSize(FromDIP(wxSize(220, 240)))
                                        .CloseButton(true));
+    m_manager->GetPane("navigation").dock_proportion = 2;
 
-    m_views = new wxNotebook(this, wxID_ANY);
+    m_views = new StudioNotebook(this);
     auto* center = new wxPanel(m_views);
     StudioTheme::BindSurface(*center);
     auto* centerSizer = new wxBoxSizer(wxVERTICAL);
@@ -191,8 +220,8 @@ void StudioFrame::BuildInterface()
     AddTool(center, drawingTools, IdSelect, "선택");
     AddTool(center, drawingTools, IdLine, "선");
     AddTool(center, drawingTools, IdArc, "원호");
-    AddTool(center, drawingTools, IdCoordinates, "좌표");
-    AddTool(center, drawingTools, IdFit, "맞춤");
+    AddTool(center, drawingTools, IdCoordinates, "좌표 입력");
+    AddTool(center, drawingTools, IdFit, "전체 보기");
     AddTool(center, drawingTools, IdDeleteShape, "삭제");
     StyleDrawingRail({m_tools.at(IdSelect), m_tools.at(IdLine), m_tools.at(IdArc), m_tools.at(IdCoordinates),
                       m_tools.at(IdFit), m_tools.at(IdDeleteShape)});
@@ -218,7 +247,7 @@ void StudioFrame::BuildInterface()
     m_snapCheck = new wxCheckBox(center, wxID_ANY, Display("스냅"));
     m_snapCheck->SetName("canvas.snap");
     m_snapCheck->SetToolTip(Display("보이는 같은 층의 선·원호 끝점과 표시 격자에 맞춥니다."));
-    context->Add(m_snapCheck, 0, wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(StudioTheme::Space));
+    drawingTools->Add(m_snapCheck, 0, wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(StudioTheme::InputGap));
     BuildPrecisionTools(center, context);
     centerSizer->Add(context, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::Space));
     m_canvas = new DesignCanvas(center);
@@ -259,7 +288,7 @@ void StudioFrame::BuildInterface()
     StudioTheme::BindSurface(*m_properties);
     auto* form = new wxBoxSizer(wxVERTICAL);
     m_selectionLabel = new wxStaticText(m_properties, wxID_ANY, Display("프로젝트 속성"));
-    StudioTheme::Heading(*m_selectionLabel);
+    StudioTheme::Title(*m_selectionLabel);
     form->Add(m_selectionLabel, 0, wxALL, FromDIP(StudioTheme::PanelPadding));
     m_metadataPanel = new wxPanel(m_properties);
     StudioTheme::BindSurface(*m_metadataPanel);
@@ -278,6 +307,7 @@ void StudioFrame::BuildInterface()
     form->Add(m_editorPanel, 1, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(StudioTheme::Space));
     m_editorPanel->Hide();
     m_apply = new wxButton(m_properties, IdApply, Display("변경 적용"));
+    StudioTheme::Button(*m_apply, true);
     form->Add(m_apply, 0, wxALL | wxALIGN_RIGHT, FromDIP(StudioTheme::PanelPadding));
     m_revisionLabel = new wxStaticText(m_properties, wxID_ANY, Display("프로젝트를 만들거나 열어 시작하세요."));
     StudioTheme::BindSecondary(*m_revisionLabel);
@@ -285,15 +315,15 @@ void StudioFrame::BuildInterface()
     m_properties->SetSizer(form);
     propertiesHost->GetSizer()->Add(m_properties, 1, wxEXPAND);
     m_manager->AddPane(propertiesHost, wxAuiPaneInfo()
-                                         .Name("properties")
-                                         .Caption(Display("선택 속성"))
-                                         .Right()
-                                         .Layer(1)
-                                         .BestSize(FromDIP(wxSize(342, 600)))
-                                         .MinSize(FromDIP(wxSize(320, 220)))
-                                         .CloseButton(true));
+                                           .Name("properties")
+                                           .Caption(Display("속성"))
+                                           .Right()
+                                           .Layer(1)
+                                           .BestSize(FromDIP(wxSize(342, 600)))
+                                           .MinSize(FromDIP(wxSize(320, 220)))
+                                           .CloseButton(true));
 
-    m_bottom = new wxNotebook(this, wxID_ANY);
+    m_bottom = new StudioNotebook(this);
     auto* problemPanel = new wxPanel(m_bottom);
     StudioTheme::BindSurface(*problemPanel);
     auto* problemSizer = new wxBoxSizer(wxVERTICAL);
@@ -305,6 +335,7 @@ void StudioFrame::BuildInterface()
     problemSizer->Add(problemHeader, 0, wxEXPAND);
     m_problems =
         new wxListCtrl(problemPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_SINGLE_SEL);
+    StudioTheme::Table(*m_problems);
     m_problems->AppendColumn(Display("상태"), wxLIST_FORMAT_LEFT, FromDIP(110));
     m_problems->AppendColumn(Display("내용 / 두 번 눌러 위치로 이동"), wxLIST_FORMAT_LEFT, FromDIP(650));
     problemSizer->Add(m_problems, 1, wxEXPAND);
@@ -329,17 +360,17 @@ void StudioFrame::BuildInterface()
     m_bottom->AddPage(cadPanel, Display("CAD 출력"));
     m_manager->AddPane(m_bottom, wxAuiPaneInfo()
                                      .Name("problems")
-                                     .Caption(Display("문제 / 작업 기록"))
+                                     .CaptionVisible(false)
                                      .Bottom()
-                                     .BestSize(FromDIP(wxSize(900, 180)))
+                                     .BestSize(FromDIP(wxSize(900, 192)))
                                      .MinSize(FromDIP(wxSize(300, 110)))
                                      .CloseButton(true));
     BuildWorkspacePages();
     BuildWorkspaceLayers();
     m_manager->Update();
     m_defaultLayout = m_manager->SavePerspective();
-    m_shell = std::make_unique<StudioShell>(*this, *m_manager, *navigationTabs, *m_tree,
-                                          *propertiesHost, *m_properties, *m_views, *m_bottom, *view);
+    m_shell = std::make_unique<StudioShell>(*this, *m_manager, *navigationTabs, *m_tree, *propertiesHost, *m_properties,
+                                            *m_views, *m_bottom, *view);
     BindCanvas();
     BindCad();
     BindSolver();
@@ -495,14 +526,20 @@ void StudioFrame::BuildInterface()
             OpenDesignSetup(DesignSetup::Templates);
         },
         IdTemplates);
-    Bind(wxEVT_MENU, [this](wxCommandEvent&)
-    {
-        OpenDesignSetup(DesignSetup::Rules);
-    }, IdDesignRules);
-    Bind(wxEVT_MENU, [this](wxCommandEvent&)
-    {
-        OpenDesignSetup(DesignSetup::Physical);
-    }, IdPhysicalSetup);
+    Bind(
+        wxEVT_MENU,
+        [this](wxCommandEvent&)
+        {
+            OpenDesignSetup(DesignSetup::Rules);
+        },
+        IdDesignRules);
+    Bind(
+        wxEVT_MENU,
+        [this](wxCommandEvent&)
+        {
+            OpenDesignSetup(DesignSetup::Physical);
+        },
+        IdPhysicalSetup);
     UpdateControls();
 }
 
@@ -510,9 +547,7 @@ void StudioFrame::BuildInterface()
 void StudioFrame::AddTool(wxWindow* parent, wxSizer* sizer, int id, const std::string& label)
 {
     auto* button = new wxButton(parent, id, Display(label), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-    const wxSize preferred = button->GetBestSize();
-    button->SetMinSize(wxSize(preferred.GetWidth() + parent->FromDIP(StudioTheme::InputGap),
-                              std::max(preferred.GetHeight(), parent->FromDIP(StudioTheme::ToolHeight))));
+    StudioTheme::Button(*button);
     sizer->Add(button, 0, wxALL | wxALIGN_CENTER_VERTICAL, parent->FromDIP(StudioTheme::Space));
     m_tools[id] = button;
     button->Bind(wxEVT_BUTTON,

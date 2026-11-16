@@ -1,11 +1,13 @@
 /** @file @brief 주 창의 frame 책임을 구현한다. */
 #include "studio_internal.h"
 #include "studio_shell.h"
+#include "studio_theme.h"
 
 StudioFrame::StudioFrame(Options options)
     : wxFrame(nullptr, wxID_ANY, Display("TraceWave Studio"), wxDefaultPosition, wxSize(1360, 860)),
       m_options(std::move(options)), m_timer(this, IdTimer), m_started(Clock::now())
 {
+    StudioTheme::ApplyTypography(*this);
     m_smoke = std::make_unique<StudioSmokeDriver>(*this);
     BuildInterface();
     Bind(wxEVT_TIMER, &StudioFrame::OnTimer, this, IdTimer);

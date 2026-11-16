@@ -21,22 +21,23 @@ bool Contains(const wxWindow& parent, const wxWindow* child)
 }
 }
 
-StudioShell::StudioShell(wxFrame& frame, wxAuiManager& manager, wxNotebook& navigation,
-                         wxWindow& tree, wxPanel& propertiesHost, wxPanel& properties,
-                         wxNotebook& views, wxNotebook& bottom, wxMenu& viewMenu)
-    : m_frame(frame), m_manager(manager), m_navigation(navigation), m_tree(tree),
-      m_propertiesHost(propertiesHost), m_properties(properties), m_views(views), m_bottom(bottom),
-      m_layersHost(manager.GetPane("layers").window),
+StudioShell::StudioShell(wxFrame& frame, wxAuiManager& manager, wxNotebook& navigation, wxWindow& tree,
+                         wxPanel& propertiesHost, wxPanel& properties, wxWindow& views, wxWindow& bottom,
+                         wxMenu& viewMenu)
+    : m_frame(frame), m_manager(manager), m_navigation(navigation), m_tree(tree), m_propertiesHost(propertiesHost),
+      m_properties(properties), m_views(views), m_bottom(bottom), m_layersHost(manager.GetPane("layers").window),
       m_layers(wxWindow::FindWindowByName("workspace.layer-content", &frame)),
       m_defaultLayout(manager.SavePerspective())
 {
     viewMenu.AppendSeparator();
-    const std::array<const char*, 4> labels{{"프로젝트 탐색 패널", "선택 속성 패널", "레이어 표시 패널", "문제 / 작업 / 로그 패널"}};
+    const std::array<const char*, 4> labels{
+        {"프로젝트 탐색 패널", "선택 속성 패널", "레이어 표시 패널", "문제 / 작업 / 로그 패널"}};
     for (std::size_t index = 0; index < m_menuIds.size(); ++index)
     {
         m_menuIds[index] = wxWindow::NewControlId();
         viewMenu.AppendCheckItem(m_menuIds[index], Display(labels[index]),
-            Display(index < 2 ? "작은 창에서는 탐색과 속성이 같은 패널의 탭입니다." : "F6 / Shift+F6으로 패널을 이동합니다."));
+                                 Display(index < 2 ? "작은 창에서는 탐색과 속성이 같은 패널의 탭입니다."
+                                                   : "F6 / Shift+F6으로 패널을 이동합니다."));
         m_frame.Bind(wxEVT_MENU, &StudioShell::OnMenu, this, m_menuIds[index]);
         m_frame.Bind(wxEVT_UPDATE_UI, &StudioShell::OnUpdateMenu, this, m_menuIds[index]);
     }
@@ -93,7 +94,8 @@ void StudioShell::SetCompact(bool compact)
             m_layers->SetMinSize(m_frame.FromDIP(wxSize(-1, 150)));
             navigationPage->GetSizer()->Add(m_layers, 0, wxEXPAND);
         }
-        m_manager.GetPane("navigation").MinSize(m_frame.FromDIP(wxSize(320, 240)))
+        m_manager.GetPane("navigation")
+            .MinSize(m_frame.FromDIP(wxSize(320, 240)))
             .BestSize(m_frame.FromDIP(wxSize(340, 600)));
     }
     else
@@ -113,7 +115,8 @@ void StudioShell::SetCompact(bool compact)
             m_layers->SetMinSize(wxDefaultSize);
             m_layersHost->GetSizer()->Add(m_layers, 1, wxEXPAND);
         }
-        m_manager.GetPane("navigation").MinSize(m_frame.FromDIP(wxSize(220, 240)))
+        m_manager.GetPane("navigation")
+            .MinSize(m_frame.FromDIP(wxSize(220, 240)))
             .BestSize(m_frame.FromDIP(wxSize(280, 600)));
     }
     m_compact = compact;
@@ -162,8 +165,8 @@ void StudioShell::RestoreLayout()
 void StudioShell::ShowProperties(bool focus)
 {
     auto* previouslyFocused = wxWindow::FindFocus();
-    const bool movingFocusedPanel = m_compact && Contains(m_navigation, previouslyFocused) &&
-                                    !Contains(m_properties, previouslyFocused);
+    const bool movingFocusedPanel =
+        m_compact && Contains(m_navigation, previouslyFocused) && !Contains(m_properties, previouslyFocused);
     m_visible[1] = true;
     ApplyVisibility();
     if (m_compact)
@@ -231,8 +234,8 @@ void StudioShell::FocusNext(bool reverse)
     {
         const int next = (current + (reverse ? -offset : offset) + 10) % 5;
         auto* target = regions[next];
-        const bool available = next == 0 ? m_visible[0] : (next == 2 ? m_visible[1] :
-            (target != nullptr && target->IsShownOnScreen()));
+        const bool available =
+            next == 0 ? m_visible[0] : (next == 2 ? m_visible[1] : (target != nullptr && target->IsShownOnScreen()));
         if (!available || target == nullptr || !target->IsEnabled())
         {
             continue;
@@ -262,8 +265,8 @@ void StudioShell::OnSize(wxSizeEvent& event)
 void StudioShell::OnKey(wxKeyEvent& event)
 {
     auto* focused = wxWindow::FindFocus();
-    if (event.GetKeyCode() == WXK_F6 && !event.ControlDown() && !event.AltDown() &&
-        focused != nullptr && wxGetTopLevelParent(focused) == &m_frame)
+    if (event.GetKeyCode() == WXK_F6 && !event.ControlDown() && !event.AltDown() && focused != nullptr &&
+        wxGetTopLevelParent(focused) == &m_frame)
     {
         FocusNext(event.ShiftDown());
         return;

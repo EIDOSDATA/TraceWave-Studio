@@ -3,6 +3,7 @@
 #include <wx/wx.h>
 #include <wx/scrolwin.h>
 #include <wx/grid.h>
+#include <wx/tglbtn.h>
 #include <nlohmann/json.hpp>
 #include "editor_presentation.h"
 
@@ -10,6 +11,7 @@
 #include <functional>
 #include <string>
 #include <vector>
+#include <array>
 
 wxDECLARE_EVENT(wxEVT_RFAD_EDITOR_CHANGED, wxCommandEvent);
 
@@ -19,7 +21,7 @@ class EditorPanel final : public wxScrolledWindow
 public:
     explicit EditorPanel(wxWindow* parent);
     void SetFields(const nlohmann::json& fields, const nlohmann::json& selection = nlohmann::json::object(),
-        const nlohmann::json& coordinateChoices = nlohmann::json::array());
+                   const nlohmann::json& coordinateChoices = nlohmann::json::array());
     nlohmann::json Changes() const;
     bool IsDirty() const;
     void SetFieldValue(const std::string& key, const nlohmann::json& value);
@@ -42,6 +44,7 @@ private:
         wxStaticText* label = nullptr;
         wxBoxSizer* inputs = nullptr;
         nlohmann::json coordinateValue = nlohmann::json::array();
+        int group = 0;
     };
 
     nlohmann::json ReadValue(const Field& field) const;
@@ -60,7 +63,14 @@ private:
     wxBoxSizer* m_layout = nullptr;
     wxStaticText* m_diagnostic = nullptr;
     wxStaticText* m_inputNotice = nullptr;
-    wxCheckBox* m_details = nullptr;
+    wxToggleButton* m_details = nullptr;
+    struct Group
+    {
+        wxToggleButton* header = nullptr;
+        wxBoxSizer* rows = nullptr;
+    };
+    std::array<Group, 4> m_groups{};
+    wxStaticText* m_valueState = nullptr;
     std::string m_diagnosticField;
     std::string m_inputNoticeText;
     bool m_notifying = false;

@@ -46,7 +46,7 @@ void CanvasRenderer::DrawGrid(bool visible)
     if (visible)
     {
         const double step = m_viewport.GridStep();
-        m_dc.SetPen(wxPen(wxColour(230, 234, 239), 1));
+        m_dc.SetPen(wxPen(wxColour(229, 237, 249), 1));
         const double startX = std::ceil(low.x / step) * step;
         const double startY = std::ceil(low.y / step) * step;
         for (int i = 0; i < 400 && startX + i * step <= high.x; ++i)
@@ -87,8 +87,8 @@ void CanvasRenderer::DrawBoard(const CanvasScene::Model& scene)
         const wxPoint rightBottom = WorldToScreen(scene.circularBoard ? Point{scene.boardCenter.x + scene.boardRadius,
                                                                               scene.boardCenter.y - scene.boardRadius}
                                                                       : Point{scene.boardWidth, 0.0});
-        m_dc.SetPen(wxPen(wxColour(105, 153, 117), FromDIP(2)));
-        m_dc.SetBrush(wxBrush(wxColour(211, 237, 211)));
+        m_dc.SetPen(wxPen(wxColour(118, 151, 131), FromDIP(1)));
+        m_dc.SetBrush(wxBrush(wxColour(198, 227, 203)));
         if (scene.circularBoard)
         {
             m_dc.DrawEllipse(wxRect(leftTop, rightBottom));

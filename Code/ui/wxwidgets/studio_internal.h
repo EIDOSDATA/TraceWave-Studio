@@ -35,6 +35,7 @@
 #include "polygon_input.h"
 
 #include "studio_frame.h"
+#include "studio_notebook.h"
 #include "studio_support.h"
 #include "studio_smoke.h"
 

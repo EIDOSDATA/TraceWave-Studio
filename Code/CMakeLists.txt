@@ -79,6 +79,7 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/workspace_bar.cpp
     ui/wxwidgets/drawing_rail.cpp
     ui/wxwidgets/studio_theme.cpp
+    ui/wxwidgets/studio_notebook.cpp
     ui/wxwidgets/project_setup_dialog.cpp
     ui/wxwidgets/target_editor_dialog.cpp
     ui/wxwidgets/target_editor_view.cpp

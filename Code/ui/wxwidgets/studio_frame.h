@@ -30,6 +30,7 @@ class wxChoice;
 class wxStaticText;
 class wxTextCtrl;
 class wxNotebook;
+class StudioNotebook;
 class wxListBox;
 class wxListCtrl;
 class wxSpinCtrlDouble;
@@ -42,7 +43,13 @@ class WorkspaceBar;
 class StudioShell;
 class wxSearchCtrl;
 enum class WorkspaceArea;
-enum class DesignSetup { Targets, Templates, Rules, Physical };
+enum class DesignSetup
+{
+    Targets,
+    Templates,
+    Rules,
+    Physical
+};
 
 /** @brief 표시와 이벤트 연결을 맡고 작업 진행은 독립 상태 객체에 위임하는 주 창이다. */
 class StudioFrame final : public wxFrame
@@ -260,7 +267,7 @@ private:
     std::vector<std::pair<int, wxButton*>> m_workspaceCommands;
     std::map<int, wxButton*> m_tools;
     DesignCanvas* m_canvas = nullptr;
-    wxNotebook* m_views = nullptr;
+    StudioNotebook* m_views = nullptr;
     ModelView* m_modelView = nullptr;
     wxStaticText* m_modelState = nullptr;
     wxStaticText* m_modelHint = nullptr;
@@ -282,7 +289,7 @@ private:
     wxCheckBox* m_snapCheck = nullptr;
     wxStaticText* m_canvasHint = nullptr;
     wxStaticText* m_problemSummary = nullptr;
-    wxNotebook* m_bottom = nullptr;
+    StudioNotebook* m_bottom = nullptr;
     wxListCtrl* m_problems = nullptr;
     std::vector<std::string> m_layerIds;
     std::string m_activeLayer;

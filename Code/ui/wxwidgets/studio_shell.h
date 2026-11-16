@@ -17,9 +17,8 @@ class wxWindow;
 class StudioShell final : public wxEvtHandler
 {
 public:
-    StudioShell(wxFrame& frame, wxAuiManager& manager, wxNotebook& navigation,
-                wxWindow& tree, wxPanel& propertiesHost, wxPanel& properties,
-                wxNotebook& views, wxNotebook& bottom, wxMenu& viewMenu);
+    StudioShell(wxFrame& frame, wxAuiManager& manager, wxNotebook& navigation, wxWindow& tree, wxPanel& propertiesHost,
+                wxPanel& properties, wxWindow& views, wxWindow& bottom, wxMenu& viewMenu);
     ~StudioShell() override;
     /** @brief 현재 창 폭에 맞는 기본 배치를 복원하고 숨긴 패널을 다시 보인다. */
     void RestoreLayout();
@@ -50,8 +49,8 @@ private:
     wxWindow& m_tree;
     wxPanel& m_propertiesHost;
     wxPanel& m_properties;
-    wxNotebook& m_views;
-    wxNotebook& m_bottom;
+    wxWindow& m_views;
+    wxWindow& m_bottom;
     wxWindow* m_layersHost = nullptr;
     wxWindow* m_layers = nullptr;
     wxString m_defaultLayout;

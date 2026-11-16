@@ -6,12 +6,49 @@
 #include <wx/settings.h>
 #include <algorithm>
 
+namespace
+{
+/** @brief native 버튼의 선택 상태에 맞춰 선형 아이콘의 대비를 유지한다. */
+void ColourTool(wxButton& button, bool selected)
+{
+    const auto colours = StudioTheme::Colours();
+    const wxColour foreground = selected ? wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT) : colours.text;
+    const wxColour background = selected ? colours.accent : colours.content;
+    if (button.GetBackgroundColour() == background && button.GetForegroundColour() == foreground)
+    {
+        return;
+    }
+    auto bitmap = button.GetBitmap();
+    if (bitmap.IsOk())
+    {
+        auto pixels = bitmap.ConvertToImage();
+        unsigned char* data = pixels.GetData();
+        const bool hasMask = pixels.HasMask();
+        for (int pixel = 0; pixel < pixels.GetWidth() * pixels.GetHeight(); ++pixel)
+        {
+            auto* rgb = data + pixel * 3;
+            if (!hasMask || rgb[0] != pixels.GetMaskRed() || rgb[1] != pixels.GetMaskGreen() ||
+                rgb[2] != pixels.GetMaskBlue())
+            {
+                rgb[0] = foreground.Red();
+                rgb[1] = foreground.Green();
+                rgb[2] = foreground.Blue();
+            }
+        }
+        button.SetBitmap(wxBitmap(pixels));
+    }
+    button.SetBackgroundColour(background);
+    button.SetForegroundColour(foreground);
+    button.Refresh();
+}
+}
+
 void StyleDrawingRail(const std::vector<wxButton*>& buttons)
 {
     for (std::size_t index = 0; index < buttons.size(); ++index)
     {
         auto* button = buttons[index];
-        const wxColour background = wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE);
+        const wxColour background(255, 0, 255);
         wxBitmap bitmap(button->FromDIP(18), button->FromDIP(18));
         wxMemoryDC dc(bitmap);
         dc.SetBackground(wxBrush(background));
@@ -57,6 +94,8 @@ void StyleDrawingRail(const std::vector<wxButton*>& buttons)
         const auto best = button->GetBestSize();
         button->SetMinSize(wxSize(std::max(best.GetWidth(), button->FromDIP(64)),
                                   std::max(best.GetHeight(), button->FromDIP(StudioTheme::ToolHeight))));
+        button->SetBackgroundColour(StudioTheme::Colours().content);
+        button->SetForegroundColour(StudioTheme::Colours().text);
     }
 }
 
@@ -65,6 +104,7 @@ void SelectDrawingRail(const std::vector<wxButton*>& buttons, std::size_t select
     for (std::size_t index = 0; index < buttons.size(); ++index)
     {
         auto* button = buttons[index];
+        ColourTool(*button, index == selected);
         const auto weight = index == selected ? wxFONTWEIGHT_BOLD : wxFONTWEIGHT_NORMAL;
         if (button->GetFont().GetWeight() != weight)
         {

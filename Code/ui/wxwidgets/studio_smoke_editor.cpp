@@ -45,6 +45,15 @@ void StudioSmokeDriver::EditorSmokeNext()
                 m_uxChecks.push_back("missing_value_hidden");
                 m_frame.m_editorPanel->SetFieldValue("mode", "value");
                 m_frame.m_editorPanel->SetFieldValue("value", "40");
+                const Json draft = m_frame.m_editorPanel->Changes();
+                m_frame.m_editorPanel->m_groups[0].header->SetValue(false);
+                m_frame.m_editorPanel->UpdateModes();
+                if (m_frame.m_editorPanel->Changes() != draft)
+                {
+                    throw std::runtime_error("Collapsed property group changed the numeric draft.");
+                }
+                m_frame.m_editorPanel->m_groups[0].header->SetValue(true);
+                m_frame.m_editorPanel->UpdateModes();
                 CheckUxState("draft", false);
                 m_uxChecks.push_back("unnamed_parameter_apply_disabled");
                 m_frame.m_editorPanel->SetFieldValue("name", "기판 폭");

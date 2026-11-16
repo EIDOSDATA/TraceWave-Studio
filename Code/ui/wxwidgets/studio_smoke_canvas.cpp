@@ -52,6 +52,15 @@ void StudioSmokeDriver::CanvasSmokeNext()
         CanvasAssert(m_frame.m_manager->GetPane("canvas").IsOk() && m_frame.m_manager->GetPane("properties").IsOk() &&
                          m_frame.m_manager->GetPane("problems").IsOk(),
                      "Docking shell missing.");
+        CanvasAssert(m_frame.GetFont().GetFractionalPointSize() >= 11.0 && m_frame.m_views->VisiblePageCount() == 2,
+                     "Studio typography or design-only secondary tabs are missing.");
+        wxWindow* originalCanvasPage = m_frame.m_views->GetPage(0);
+        m_frame.m_views->SetSelection(2);
+        CanvasAssert(m_frame.m_views->VisiblePageCount() == 1 && m_frame.m_views->GetSelection() == 2,
+                     "Result area exposes unrelated secondary pages.");
+        m_frame.m_views->SetSelection(0);
+        CanvasAssert(m_frame.m_views->GetPage(0) == originalCanvasPage && m_frame.m_views->VisiblePageCount() == 2,
+                     "Workspace switching replaced the existing canvas page.");
         for (const auto* name : {"workspace.0", "workspace.1", "workspace.2", "workspace.area.0", "workspace.area.4"})
         {
             const wxWindow* control = wxWindow::FindWindowByName(name, &m_frame);
@@ -70,18 +79,15 @@ void StudioSmokeDriver::CanvasSmokeNext()
         m_frame.m_name->ChangeValue(Display("패널 전환 중 초안"));
         m_frame.m_canvas->SetFocus();
         m_frame.m_shell->ShowProperties();
-        CanvasAssert(wxWindow::FindFocus() == m_frame.m_canvas,
-                     "Showing properties stole the canvas keyboard focus.");
+        CanvasAssert(wxWindow::FindFocus() == m_frame.m_canvas, "Showing properties stole the canvas keyboard focus.");
         if (m_frame.m_shell->IsCompact())
         {
             auto* tabs = dynamic_cast<wxNotebook*>(m_frame.m_properties->GetParent());
-            CanvasAssert(tabs != nullptr && tabs->GetPageCount() == 2 &&
-                             tabs->GetCurrentPage() == m_frame.m_properties,
+            CanvasAssert(tabs != nullptr && tabs->GetPageCount() == 2 && tabs->GetCurrentPage() == m_frame.m_properties,
                          "Compact properties tab is missing.");
         }
         m_frame.m_shell->ShowNavigation();
-        CanvasAssert(wxWindow::FindFocus() == m_frame.m_canvas,
-                     "Showing navigation stole the canvas keyboard focus.");
+        CanvasAssert(wxWindow::FindFocus() == m_frame.m_canvas, "Showing navigation stole the canvas keyboard focus.");
         m_frame.m_shell->ShowNavigation(true);
         m_frame.m_shell->FocusNext();
         auto* focused = wxWindow::FindFocus();

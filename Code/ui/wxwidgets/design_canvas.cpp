@@ -65,31 +65,33 @@ DesignCanvas::DesignCanvas(wxWindow* parent)
     Bind(wxEVT_LEFT_DOWN, &DesignCanvas::OnLeftDown, this);
     Bind(wxEVT_LEFT_UP, &DesignCanvas::OnLeftUp, this);
     Bind(wxEVT_MOTION, &DesignCanvas::OnMotion, this);
-    Bind(wxEVT_LEAVE_WINDOW, [this](wxMouseEvent& event)
-    {
-        if (!HasCapture() && m_snap)
-        {
-            m_snap.reset();
-            Refresh(false);
-        }
-        event.Skip();
-    });
+    Bind(wxEVT_LEAVE_WINDOW,
+         [this](wxMouseEvent& event)
+         {
+             if (!HasCapture() && m_snap)
+             {
+                 m_snap.reset();
+                 Refresh(false);
+             }
+             event.Skip();
+         });
     Bind(wxEVT_MIDDLE_DOWN, &DesignCanvas::OnMiddleDown, this);
     Bind(wxEVT_MIDDLE_UP, &DesignCanvas::OnMiddleUp, this);
     Bind(wxEVT_MOUSEWHEEL, &DesignCanvas::OnWheel, this);
     Bind(wxEVT_KEY_DOWN, &DesignCanvas::OnKeyDown, this);
-    Bind(wxEVT_KEY_UP, [this](wxKeyEvent& event)
-    {
-        if (m_clockwise != event.ShiftDown())
-        {
-            m_clockwise = event.ShiftDown();
-            if (m_tool == "arc" && !m_points.empty())
-            {
-                Refresh(false);
-            }
-        }
-        event.Skip();
-    });
+    Bind(wxEVT_KEY_UP,
+         [this](wxKeyEvent& event)
+         {
+             if (m_clockwise != event.ShiftDown())
+             {
+                 m_clockwise = event.ShiftDown();
+                 if (m_tool == "arc" && !m_points.empty())
+                 {
+                     Refresh(false);
+                 }
+             }
+             event.Skip();
+         });
     Bind(wxEVT_MOUSE_CAPTURE_LOST, &DesignCanvas::OnCaptureLost, this);
     Bind(wxEVT_SIZE, &DesignCanvas::OnSize, this);
 }
@@ -138,7 +140,7 @@ void DesignCanvas::SetSelection(const std::string& identity)
             CancelGesture();
         }
         m_selection = selected;
-          m_dimensions = Json::array();
+        m_dimensions = Json::array();
         Refresh(false);
     }
 }
@@ -156,8 +158,9 @@ void DesignCanvas::SetTool(const std::string& tool)
     CancelGesture();
     m_tool = tool;
     SetCursor(wxCursor(tool == "select" ? wxCURSOR_ARROW : wxCURSOR_CROSS));
-    Status(tool == "line" ? "선: 시작점과 끝점을 클릭하세요. Esc로 취소합니다." :
-        (tool == "arc" ? "원호: 중심, 시작점, 끝 방향을 클릭하세요. 기본 CCW, Shift는 CW입니다." : "선택: 파란 끝점은 끝점 편집, 도체 본체는 전체 이동. Esc로 취소합니다."));
+    Status(tool == "line" ? "선: 시작점과 끝점을 클릭하세요. Esc로 취소합니다."
+                          : (tool == "arc" ? "원호: 중심, 시작점, 끝 방향을 클릭하세요. 기본 CCW, Shift는 CW입니다."
+                                           : "선택: 파란 끝점은 끝점 편집, 도체 본체는 전체 이동. Esc로 취소합니다."));
 }
 
 void DesignCanvas::SetDrawingLayer(const std::string& identity)
@@ -249,13 +252,15 @@ void DesignCanvas::FitView()
     CancelGesture();
     const auto bounds = m_scene.VisibleBounds(m_hiddenLayers);
     const double left = bounds.left, bottom = bounds.bottom, right = bounds.right, top = bounds.top;
-    m_viewCenter = Point(std::clamp((left + right) / 2.0, -CanvasGeometry::MaxCoordinate, CanvasGeometry::MaxCoordinate),
-        std::clamp((bottom + top) / 2.0, -CanvasGeometry::MaxCoordinate, CanvasGeometry::MaxCoordinate));
+    m_viewCenter =
+        Point(std::clamp((left + right) / 2.0, -CanvasGeometry::MaxCoordinate, CanvasGeometry::MaxCoordinate),
+              std::clamp((bottom + top) / 2.0, -CanvasGeometry::MaxCoordinate, CanvasGeometry::MaxCoordinate));
     const wxSize size = GetClientSize();
     const double availableX = std::max(20, size.x - FromDIP(70));
     const double availableY = std::max(20, size.y - FromDIP(70));
-    m_pixelsPerMm = std::clamp(std::min(availableX / std::max(1e-6, right - left),
-        availableY / std::max(1e-6, top - bottom)), MinimumScale, MaximumScale);
+    m_pixelsPerMm =
+        std::clamp(std::min(availableX / std::max(1e-6, right - left), availableY / std::max(1e-6, top - bottom)),
+                   MinimumScale, MaximumScale);
     m_fitted = true;
     Refresh(false);
 }
@@ -291,7 +296,7 @@ wxPoint DesignCanvas::WorldToScreen(const Point& point) const
     }
     const auto pixel = Viewport().Project(GeometryPoint(point));
     return wxPoint(static_cast<int>(std::llround(std::clamp(pixel.x, -1e7, 1e7))),
-        static_cast<int>(std::llround(std::clamp(pixel.y, -1e7, 1e7))));
+                   static_cast<int>(std::llround(std::clamp(pixel.y, -1e7, 1e7))));
 }
 
 Point DesignCanvas::ScreenToWorld(const wxPoint& point) const
@@ -353,12 +358,16 @@ bool DesignCanvas::HasGesture() const
 
 std::size_t DesignCanvas::DisplayOmissionCount() const
 {
-    return m_scene.omissionCount + m_scene.rangeOmissionCount + static_cast<std::size_t>(std::count_if(m_scene.shapes.begin(), m_scene.shapes.end(), [&](const Shape& shape)
-    {
-        const Point offset = m_gesture.Dragging() && shape.id == m_selection ? m_dragOffset :
-            (shape.id == m_pendingId ? m_pendingOffset : Point(0.0, 0.0));
-        return Visible(shape) && !Renderable(shape, offset);
-    }));
+    return m_scene.omissionCount + m_scene.rangeOmissionCount +
+           static_cast<std::size_t>(std::count_if(
+               m_scene.shapes.begin(), m_scene.shapes.end(),
+               [&](const Shape& shape)
+               {
+                   const Point offset = m_gesture.Dragging() && shape.id == m_selection
+                                            ? m_dragOffset
+                                            : (shape.id == m_pendingId ? m_pendingOffset : Point(0.0, 0.0));
+                   return Visible(shape) && !Renderable(shape, offset);
+               }));
 }
 
 void DesignCanvas::Status(const std::string& message)
@@ -372,7 +381,7 @@ void DesignCanvas::Status(const std::string& message)
 void DesignCanvas::OnPaint(wxPaintEvent&)
 {
     wxAutoBufferedPaintDC dc(this);
-    dc.SetBackground(wxBrush(wxColour(250, 251, 253)));
+    dc.SetBackground(wxBrush(wxColour(248, 251, 255)));
     dc.Clear();
     CanvasRenderer renderer(*this, dc, Viewport());
     renderer.DrawGrid(m_showGrid);
@@ -380,7 +389,8 @@ void DesignCanvas::OnPaint(wxPaintEvent&)
     {
         renderer.DrawBoard(m_scene);
     }
-    const wxColour colours[] = {wxColour(241, 153, 67), wxColour(117, 87, 173), wxColour(27, 144, 138), wxColour(177, 74, 96)};
+    const wxColour colours[] = {wxColour(249, 164, 84), wxColour(117, 87, 173), wxColour(27, 144, 138),
+                                wxColour(177, 74, 96)};
     const auto preview = EndpointPreview();
     std::size_t nativeOmissions = m_scene.rangeOmissionCount;
     for (const Shape& shape : m_scene.shapes)
@@ -437,7 +447,8 @@ void DesignCanvas::OnPaint(wxPaintEvent&)
     }
     if (nativeOmissions > 0)
     {
-        dc.DrawText(Display("표시 범위를 초과한 형상 " + std::to_string(nativeOmissions) + "개"), FromDIP(10), FromDIP(50));
+        dc.DrawText(Display("표시 범위를 초과한 형상 " + std::to_string(nativeOmissions) + "개"), FromDIP(10),
+                    FromDIP(50));
     }
 }
 
@@ -447,9 +458,10 @@ DesignCanvas::Shape DesignCanvas::ArcPreview(bool clockwise) const
     arc.kind = "arc_path";
     arc.center = GeometryPoint(m_points.at(0));
     arc.radius = Distance(m_points.at(0), m_points.at(1));
-    arc.startAngle = CanvasGeometry::NormalizeDegrees(std::atan2(m_points[1].m_y - arc.center.y,
-        m_points[1].m_x - arc.center.x) * 180.0 / CanvasGeometry::Pi);
-    arc.sweepAngle = CanvasGeometry::SweepDegrees(GeometryPoint(arc.center), GeometryPoint(m_points[1]), GeometryPoint(m_cursor), clockwise);
+    arc.startAngle = CanvasGeometry::NormalizeDegrees(
+        std::atan2(m_points[1].m_y - arc.center.y, m_points[1].m_x - arc.center.x) * 180.0 / CanvasGeometry::Pi);
+    arc.sweepAngle = CanvasGeometry::SweepDegrees(GeometryPoint(arc.center), GeometryPoint(m_points[1]),
+                                                  GeometryPoint(m_cursor), clockwise);
     arc.width = m_strokeWidth;
     return arc;
 }
@@ -603,8 +615,11 @@ void DesignCanvas::CommitDrawing(bool clockwise)
             Status("시작점과 다른 끝점을 선택하세요.");
             return;
         }
-        const Json action{{"type", "create_line"}, {"layer_id", m_drawingLayer}, {"width", m_strokeWidth},
-            {"start", Coordinates(GeometryPoint(m_points[0]))}, {"end", Coordinates(GeometryPoint(m_cursor))}};
+        const Json action{{"type", "create_line"},
+                          {"layer_id", m_drawingLayer},
+                          {"width", m_strokeWidth},
+                          {"start", Coordinates(GeometryPoint(m_points[0]))},
+                          {"end", Coordinates(GeometryPoint(m_cursor))}};
         m_points.clear();
         Emit(action);
     }
@@ -626,8 +641,10 @@ void DesignCanvas::CommitDrawing(bool clockwise)
             Status("중심이나 시작 방향과 다른 끝 방향을 선택하세요.");
             return;
         }
-        const Json action{{"type", "create_arc"}, {"layer_id", m_drawingLayer}, {"width", m_strokeWidth},
-            {"center", Coordinates(arc.center)}, {"radius", arc.radius}, {"start_angle", arc.startAngle}, {"sweep_angle", arc.sweepAngle}};
+        const Json action{{"type", "create_arc"},         {"layer_id", m_drawingLayer},
+                          {"width", m_strokeWidth},       {"center", Coordinates(arc.center)},
+                          {"radius", arc.radius},         {"start_angle", arc.startAngle},
+                          {"sweep_angle", arc.sweepAngle}};
         m_points.clear();
         Emit(action);
     }
@@ -655,8 +672,10 @@ void DesignCanvas::OnMotion(wxMouseEvent& event)
     if (m_gesture.Panning())
     {
         const wxPoint movement = point - m_panLast;
-        m_viewCenter.m_x = std::clamp(m_viewCenter.m_x - movement.x / m_pixelsPerMm, -CanvasGeometry::MaxCoordinate, CanvasGeometry::MaxCoordinate);
-        m_viewCenter.m_y = std::clamp(m_viewCenter.m_y + movement.y / m_pixelsPerMm, -CanvasGeometry::MaxCoordinate, CanvasGeometry::MaxCoordinate);
+        m_viewCenter.m_x = std::clamp(m_viewCenter.m_x - movement.x / m_pixelsPerMm, -CanvasGeometry::MaxCoordinate,
+                                      CanvasGeometry::MaxCoordinate);
+        m_viewCenter.m_y = std::clamp(m_viewCenter.m_y + movement.y / m_pixelsPerMm, -CanvasGeometry::MaxCoordinate,
+                                      CanvasGeometry::MaxCoordinate);
         m_panLast = point;
         Refresh(false);
     }
@@ -665,7 +684,8 @@ void DesignCanvas::OnMotion(wxMouseEvent& event)
         const Shape* shape = FindShape(m_selection);
         const wxPoint distance = point - m_mouseDown;
         if (shape != nullptr && shape->movable &&
-            (m_gesture.Dragging() || std::hypot(static_cast<double>(distance.x), static_cast<double>(distance.y)) >= FromDIP(3)))
+            (m_gesture.Dragging() ||
+             std::hypot(static_cast<double>(distance.x), static_cast<double>(distance.y)) >= FromDIP(3)))
         {
             m_gesture.BeginDrag();
             m_dragOffset = Subtract(m_cursor, m_dragAnchor);
@@ -724,8 +744,10 @@ void DesignCanvas::OnWheel(wxMouseEvent& event)
     const double scale = std::clamp(m_pixelsPerMm * std::pow(1.2, turns), MinimumScale, MaximumScale);
     const wxSize size = GetClientSize();
     m_pixelsPerMm = scale;
-    m_viewCenter = Point(std::clamp(anchor.m_x - (point.x - size.x / 2.0) / scale, -CanvasGeometry::MaxCoordinate, CanvasGeometry::MaxCoordinate),
-        std::clamp(anchor.m_y + (point.y - size.y / 2.0) / scale, -CanvasGeometry::MaxCoordinate, CanvasGeometry::MaxCoordinate));
+    m_viewCenter = Point(std::clamp(anchor.m_x - (point.x - size.x / 2.0) / scale, -CanvasGeometry::MaxCoordinate,
+                                    CanvasGeometry::MaxCoordinate),
+                         std::clamp(anchor.m_y + (point.y - size.y / 2.0) / scale, -CanvasGeometry::MaxCoordinate,
+                                    CanvasGeometry::MaxCoordinate));
     UpdateCursor(point);
     Refresh(false);
 }
