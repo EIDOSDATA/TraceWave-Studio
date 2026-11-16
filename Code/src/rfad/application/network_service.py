@@ -98,37 +98,13 @@ def overview(document):
 
 def exported(service, project, document, data):
     """! @brief 원본 참조를 보존한 교환 파일과 조건 sidecar를 생성한다."""
-    from rfad.adapters.network_files import write_csv, write_touchstone, csv_export_mapping
+    from rfad.application.result_export import encode_files
     network, entry = read_dataset(service, project, library(document), data["dataset_id"])
-    format_name = data["format"]
-    mapping = None
-    original_name = None
-    if format_name == "touchstone":
-        raw = write_touchstone(network)
-        suffix = ".s" + str(len(network["port_ids"])) + "p"
-    elif format_name == "csv":
-        raw = write_csv(network)
-        mapping = csv_export_mapping(network)
-        suffix = ".csv"
-    elif format_name == "hdf5":
-        raw = service.journal.read_artifact(entry["normalized_hdf5"])
-        suffix = ".h5"
-    elif format_name == "source":
-        if entry["raw"] is None:
-            fail("파생 결과에는 가져온 원문 파일이 없습니다.", "format", "E_CONFLICT")
-        raw = service.journal.read_artifact(entry["raw"])
-        suffix = ".json" if entry["kind"] == "solver" else ".bin"
-        name = network["provenance"].get("source_file_name")
-        if type(name) is str and 0 < len(name) <= 128 and not any(char in name for char in '/\\:<>"|?*') and not name.endswith((".", " ")):
-            original_name = name
-    else:
-        fail("지원하지 않는 내보내기 형식입니다.", "format", "E_UNSUPPORTED")
-    if len(raw) > MAX_IMPORT_BYTES:
-        fail("이 전송 profile의 내보내기 상한 512 KiB를 초과했습니다.", "format", "E_RESOURCE")
+    raw, file_name, mapping = encode_files(service, project, network, entry, data["format"])
     sidecar = {"schema": "rfad.network-export/0.1", "dataset": deepcopy(entry), "descriptor": descriptor(network),
                "provenance": deepcopy(network["provenance"]), "mapping": mapping,
                "physical_validation": "not_established", "source_unmodified": True}
-    response = {"profile": PROFILE, "file_name": original_name or "network" + suffix, "content_base64": base64.b64encode(raw).decode("ascii"),
+    response = {"profile": PROFILE, "file_name": file_name, "content_base64": base64.b64encode(raw).decode("ascii"),
                 "sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw), "sidecar": sidecar}
     if len(canonical_bytes(response)) > 900 * 1024:
         fail("내보내기와 출처 응답이 전송 상한을 초과했습니다.", "response", "E_RESOURCE")

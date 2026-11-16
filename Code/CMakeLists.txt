@@ -81,6 +81,21 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/studio_theme.cpp
     ui/wxwidgets/studio_notebook.cpp
     ui/wxwidgets/network_chart.cpp
+    ui/wxwidgets/result_presentation.cpp
+    ui/wxwidgets/result_source_browser.cpp
+    ui/wxwidgets/result_conditions_view.cpp
+    ui/wxwidgets/result_network_view.cpp
+    ui/wxwidgets/result_compare_view.cpp
+    ui/wxwidgets/result_metrics_view.cpp
+    ui/wxwidgets/result_radiation_canvas.cpp
+    ui/wxwidgets/result_radiation_view.cpp
+    ui/wxwidgets/field_slice_canvas.cpp
+    ui/wxwidgets/field_result_view.cpp
+    ui/wxwidgets/smith_chart.cpp
+    ui/wxwidgets/smith_view.cpp
+    ui/wxwidgets/result_workspace.cpp
+    ui/wxwidgets/result_workspace_compare.cpp
+    ui/wxwidgets/studio_results.cpp
     ui/wxwidgets/frequency_display.cpp
     ui/wxwidgets/frequency_assessment_display.cpp
     ui/wxwidgets/network_panel.cpp
@@ -107,6 +122,7 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/studio_sweep.cpp
     ui/wxwidgets/studio_sweep_dialogs.cpp
     ui/wxwidgets/studio_smoke_sweep.cpp
+    ui/wxwidgets/studio_smoke_results.cpp
     ui/wxwidgets/project_setup_dialog.cpp
     ui/wxwidgets/target_editor_dialog.cpp
     ui/wxwidgets/target_editor_view.cpp
@@ -240,6 +256,11 @@ if(BUILD_TESTING)
     target_include_directories(tracewave_gui_presentation_tests PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
     set_target_properties(tracewave_gui_presentation_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
     add_test(NAME gui_presentation COMMAND tracewave_gui_presentation_tests)
+    add_executable(tracewave_result_view_tests tests/result_view_model_test.cpp
+        ui/wxwidgets/result_presentation.cpp ui/wxwidgets/frequency_display.cpp)
+    target_include_directories(tracewave_result_view_tests PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
+    set_target_properties(tracewave_result_view_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
+    add_test(NAME result_view_model COMMAND tracewave_result_view_tests)
     add_executable(tracewave_gui_state_tests tests/gui_state_test.cpp
         ui/wxwidgets/async_state.cpp ui/wxwidgets/analysis_workflow.cpp)
     target_include_directories(tracewave_gui_state_tests PRIVATE "${RFAD_JSON_INCLUDE_DIR}")

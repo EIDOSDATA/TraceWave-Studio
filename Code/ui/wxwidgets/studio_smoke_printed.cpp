@@ -22,7 +22,7 @@ void StudioSmokeDriver::PrintedSeedSmokeTick()
     if (m_setupStage == 1)
     {
         const std::string revision = m_frame.m_revision;
-        const int pages[] = {0, 3, 6, 4, 5};
+        const int pages[] = {0, 3, 9, 14, 5};
         for (int index = 0; index < 5; ++index)
         {
             auto* button = dynamic_cast<wxToggleButton*>(
@@ -33,6 +33,14 @@ void StudioSmokeDriver::PrintedSeedSmokeTick()
             button->GetEventHandler()->ProcessEvent(event);
             CanvasAssert(m_frame.m_views->GetSelection() == pages[index] && button->GetValue(),
                          "작업 탭과 실제 화면이 다릅니다.");
+        }
+        /** @brief 공통 결과 진입점을 추가해도 기존 자료/정합과 수렴 보고서 탭은 접근 가능해야 한다. */
+        for (const std::size_t page : {6U, 4U})
+        {
+            m_frame.m_views->SetSelection(page);
+            CanvasAssert(m_frame.m_views->GetSelection() == static_cast<int>(page) &&
+                             m_frame.m_views->GetPage(page)->IsShown() && m_frame.m_views->VisiblePageCount() >= 2,
+                         "기존 자료/정합 또는 수렴 연구 탭에 접근할 수 없습니다.");
         }
         m_frame.NavigateWorkspace(WorkspaceArea::Design);
         CanvasAssert(!m_frame.m_workspaceLayerIds.empty(), "표시 레이어 목록이 없습니다.");

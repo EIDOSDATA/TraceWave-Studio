@@ -29,6 +29,7 @@ struct Options
     bool setupSmoke = false;
     bool networkSmoke = false;
     bool sweepSmoke = false;
+    bool resultsSmoke = false;
     bool printedSeedSmoke = false;
     bool designRulesSmoke = false;
     bool physicalSetupSmoke = false;

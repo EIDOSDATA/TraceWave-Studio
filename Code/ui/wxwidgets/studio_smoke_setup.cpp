@@ -19,6 +19,11 @@ void StudioSmokeDriver::SetupSmokeTick()
         {
             ++m_setupPendingTicks;
         }
+        if (m_frame.m_options.resultsSmoke)
+        {
+            ResultsSmokeTick();
+            return;
+        }
         if (m_frame.m_options.sweepSmoke)
         {
             SweepSmokeTick();

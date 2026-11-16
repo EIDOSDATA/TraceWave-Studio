@@ -9,6 +9,7 @@
 #include "network_transform_dialog.h"
 #include "network_source_dialog.h"
 #include "network_export.h"
+#include "result_workspace.h"
 #include <wx/choicdlg.h>
 #include <wx/srchctrl.h>
 
@@ -46,7 +47,7 @@ void StudioFrame::UpdateNetworkViews()
     }
     const bool assessmentActive = m_views->GetSelection() == 7;
     const bool networkActive = m_views->GetSelection() == 6;
-    const bool active = networkActive || assessmentActive || m_views->GetSelection() == 8;
+    const bool active = networkActive || assessmentActive || m_views->GetSelection() >= 8;
     m_networkPanel->NavigationView()->Show(networkActive);
     m_networkPanel->ConditionsView()->Show(networkActive);
     m_networkAssessmentPanel->NavigationView()->Show(assessmentActive);
@@ -70,8 +71,8 @@ void StudioFrame::UpdateNetworkViews()
     const bool blocked = m_busy || m_networkPending || m_setupDialog != nullptr;
     m_networkPanel->SetEnabledState(available, blocked);
     m_networkAssessmentPanel->SetEnabledState(available, blocked);
-    if (active && available && !blocked && !m_networkRefreshQueued && m_networkAttemptedRevision != m_revision &&
-        m_networkPanel->Library().value("revision_id", "") != m_revision)
+    if ((networkActive || assessmentActive) && available && !blocked && !m_networkRefreshQueued &&
+        m_networkAttemptedRevision != m_revision && m_networkPanel->Library().value("revision_id", "") != m_revision)
     {
         m_networkRefreshQueued = true;
         CallAfter(
@@ -113,6 +114,10 @@ void StudioFrame::UpdateNetworkViews()
 
 void StudioFrame::ResetNetwork()
 {
+    if (m_results)
+    {
+        m_results->Reset();
+    }
     ResetSweeps();
     ++m_networkGeneration;
     m_networkPending = false;

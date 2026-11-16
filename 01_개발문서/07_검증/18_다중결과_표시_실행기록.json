@@ -1,0 +1,4366 @@
+{
+  "schema": "rfad.result-step7-verification/0.1",
+  "record_date_kst": "2026-11-17",
+  "basis_commit": "3e3121e37f42886a72d0e30c81859a17fea2b75f",
+  "design_baseline": "RFAD-D0-3.4",
+  "completion_plan_step": 7,
+  "overlapping_runs_not_summed": true,
+  "runs": [
+    {
+      "log": {
+        "path": "Code/.local/stage7-math-first.log",
+        "bytes": 2142,
+        "sha256": "e0f5412af534233151c0c150f5cb5cb1d6862e41f3a65d7ccb2f27e71cb565a1",
+        "modified_utc": "2026-11-16T21:07:26.217913+00:00"
+      },
+      "collected": 8,
+      "seconds": 0.013,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 8,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/stage7-sources-first.log",
+        "bytes": 14401,
+        "sha256": "8f660df83823753da97268ff81cee0b08249680c9c5ef348c1c668a1ec459a5a",
+        "modified_utc": "2026-11-16T21:08:28.220312+00:00"
+      },
+      "collected": 6,
+      "seconds": 6.06,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 8,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": -2,
+      "status": "failed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/stage7-sources-second.log",
+        "bytes": 1687,
+        "sha256": "f5831fa1782f8ee7b2d449c554dd035c9b9ada9284d29d2fdbc934b875643a32",
+        "modified_utc": "2026-11-16T21:09:08.735909+00:00"
+      },
+      "collected": 6,
+      "seconds": 6.333,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 6,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/stage7-integration-first.log",
+        "bytes": 1716,
+        "sha256": "9df1ca731c456ccaf7c578dd960f6263a7ade09de64545f4235ebed1e130b16c",
+        "modified_utc": "2026-11-16T21:11:04.904044+00:00"
+      },
+      "collected": 3,
+      "seconds": 19.248,
+      "skipped": 0,
+      "failures": 1,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 2,
+      "status": "failed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/stage7-sweep-integration.log",
+        "bytes": 661,
+        "sha256": "334da8c38a5f06692853cca34e9792f2b7476b2ae0eb5a81f9c96bc99c2955e7",
+        "modified_utc": "2026-11-16T21:11:40.077257+00:00"
+      },
+      "collected": 2,
+      "seconds": 18.102,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 2,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/stage7-sweep-cache.log",
+        "bytes": 941,
+        "sha256": "c021867aec5ba49d692e84e5b3f355c4e099820ae0daa03f8e02c6ed18c9f9d2",
+        "modified_utc": "2026-11-16T21:13:02.152864+00:00"
+      },
+      "collected": 3,
+      "seconds": 17.746,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 3,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/stage7-legacy-binding.log",
+        "bytes": 396,
+        "sha256": "c6ef09140734b1ff69ae74a7ff4938aa5045dbe90cc95c6a50c34cafb9c39a12",
+        "modified_utc": "2026-11-16T21:13:19.816279+00:00"
+      },
+      "collected": 1,
+      "seconds": 1.821,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 1,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/stage7-math-direction.log",
+        "bytes": 2142,
+        "sha256": "f4fdb20ca5ecfdab9d2a9894847a6fda24b80ee2a1295729681efb70d2c44123",
+        "modified_utc": "2026-11-16T21:14:36.111112+00:00"
+      },
+      "collected": 8,
+      "seconds": 0.005,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 8,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/stage7-export-first.log",
+        "bytes": 1299,
+        "sha256": "39c0f7b5067f3041170346b03ce242a6053abcfe17434be5bc5d28376134880a",
+        "modified_utc": "2026-11-16T21:17:18.267732+00:00"
+      },
+      "collected": 1,
+      "seconds": 1.108,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 1,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 0,
+      "status": "failed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/stage7-export-history.log",
+        "bytes": 392,
+        "sha256": "d79faefec189e4af6ceae6032849fa4e445dfae11d3208ae9bd7ca467695dc71",
+        "modified_utc": "2026-11-16T21:17:33.123812+00:00"
+      },
+      "collected": 1,
+      "seconds": 1.631,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 1,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/stage7-service-draft-final.log",
+        "bytes": 5149,
+        "sha256": "3d99e2de90d0bec13ea44d96192043f5a485c82409643a54808c7f5d8a8235bf",
+        "modified_utc": "2026-11-16T21:18:23.157901+00:00"
+      },
+      "collected": 19,
+      "seconds": 28.43,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 19,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-radiation-product-tests.log",
+        "bytes": 3369,
+        "sha256": "a9ba1bc93b71ea4b540e55d434c30fd09078bf104cbbc745ae5f6a546444516c",
+        "modified_utc": "2026-11-16T21:23:49.037814+00:00"
+      },
+      "collected": 13,
+      "seconds": 1.308,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 13,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/stage7-public-rpc.log",
+        "bytes": 352,
+        "sha256": "2ff5dfd319597254b8d1f4d915fe9d2869d3a7a87f1842f3ab446bf74345f2df",
+        "modified_utc": "2026-11-16T21:23:55.273708+00:00"
+      },
+      "collected": 1,
+      "seconds": 1.566,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 1,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/stage7-service-product.log",
+        "bytes": 7035,
+        "sha256": "5f341d8567d17af0df1872a5be810454aaf6fae0220c0cd5b3bc347f0c13ee61",
+        "modified_utc": "2026-11-16T21:24:18.414103+00:00"
+      },
+      "collected": 26,
+      "seconds": 50.965,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 26,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-build-first.log",
+        "bytes": 7800,
+        "sha256": "e87794d02ec4a417e79d0bf74af7f0c452f2079b99c09e894c2efb00297731a5",
+        "modified_utc": "2026-11-16T21:25:30.536632+00:00"
+      },
+      "status": "see_execution_scope"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-build-review.log",
+        "bytes": 1299,
+        "sha256": "496fc113ba5c8ff728a27440a2e9eb8168f31f33f5934099d7359cc9bb87178d",
+        "modified_utc": "2026-11-16T21:28:00.244119+00:00"
+      },
+      "status": "see_execution_scope"
+    },
+    {
+      "log": {
+        "path": "Code/.local/stage7-source-export-numerical.log",
+        "bytes": 4562,
+        "sha256": "2bf3a3bc1d4b3704cae2ec5174fd9318271b05dcb3e02664c31e36300bd0bbb2",
+        "modified_utc": "2026-11-16T21:29:00.054256+00:00"
+      },
+      "collected": 17,
+      "seconds": 11.851,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 17,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-fields-initial.log",
+        "bytes": 2257,
+        "sha256": "0b412582aa3ebb4a787b8add2472064b353164dee29327d982425cac8f76762f",
+        "modified_utc": "2026-11-16T21:29:05.265197+00:00"
+      },
+      "collected": 9,
+      "seconds": 1.252,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 9,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-build-smoke.log",
+        "bytes": 2001,
+        "sha256": "fc39028c4284ea747f3e8f71f09d563a186de1acf2c31e0c5e72863d33691b7f",
+        "modified_utc": "2026-11-16T21:30:32.139141+00:00"
+      },
+      "status": "see_execution_scope"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-fields-boundaries.log",
+        "bytes": 3413,
+        "sha256": "998e4aefef8b76d6680b87ef80631f39adca3c73f0cb8b01bdc67316e83bdbac",
+        "modified_utc": "2026-11-16T21:31:04.135790+00:00"
+      },
+      "collected": 13,
+      "seconds": 1.406,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 12,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-native-read-final.log",
+        "bytes": 146,
+        "sha256": "e86669e4dca0a6f045748643eb3274c79dc76edefd7a8f0f1d82391d01004dfc",
+        "modified_utc": "2026-11-16T21:31:20.794067+00:00"
+      },
+      "status": "see_execution_scope"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-fields-actual.log",
+        "bytes": 382,
+        "sha256": "4beed93d767d23af8945e1b31766343c5d73c3ff9c2548d1ec6376cb01c04d62",
+        "modified_utc": "2026-11-16T21:31:31.254138+00:00"
+      },
+      "collected": 1,
+      "seconds": 9.24,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 1,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-build-lifetime.log",
+        "bytes": 251,
+        "sha256": "251b2bb672d440bd01655f462a5e54c874b291d62cc1ac0b54bc700ee46acb1e",
+        "modified_utc": "2026-11-16T21:31:33.666821+00:00"
+      },
+      "status": "see_execution_scope"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-ctest-first.log",
+        "bytes": 1215,
+        "sha256": "8d4a5345d03f3b0ef6c6587bcd908af5ce767931f4746f63d468a12a03398389",
+        "modified_utc": "2026-11-16T21:31:34.283595+00:00"
+      },
+      "collected": 10,
+      "passed": 10,
+      "failures": 0,
+      "skipped": 0,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/stage7-source-labels.log",
+        "bytes": 2733,
+        "sha256": "c49145cde9e061cd525c8f01e0f03189ab1578235852983c180f2521d16dadb5",
+        "modified_utc": "2026-11-16T21:33:42.883176+00:00"
+      },
+      "collected": 10,
+      "seconds": 2.062,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 10,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-build-focused.log",
+        "bytes": 711,
+        "sha256": "98acd3f2da2001a5513cf702d1aa9481bae680ec7169af037ec57938f87e8b24",
+        "modified_utc": "2026-11-16T21:34:07.849330+00:00"
+      },
+      "status": "see_execution_scope"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-fields-frozen.log",
+        "bytes": 3614,
+        "sha256": "c7a4c61bb513dc2e25f5d46fffff9e4ad77994fc664f1a53b19c8667f27d9645",
+        "modified_utc": "2026-11-16T21:34:29.040192+00:00"
+      },
+      "collected": 14,
+      "seconds": 8.959,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 14,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-ctest-focused.log",
+        "bytes": 1215,
+        "sha256": "20f65445275b430dcdb9e2691bde972d97aa145f0729e48c382c124c98ada9c8",
+        "modified_utc": "2026-11-16T21:35:22.795526+00:00"
+      },
+      "collected": 10,
+      "passed": 10,
+      "failures": 0,
+      "skipped": 0,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-gui-first.log",
+        "bytes": 384,
+        "sha256": "a2e1ef13d36cf85c2c3c1f258f81e6aa880e46e18f5cbdb052a626a0e1a24e1e",
+        "modified_utc": "2026-11-16T21:37:04.269010+00:00"
+      },
+      "collected": 1,
+      "seconds": 14.62,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 1,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-native-read-frozen.log",
+        "bytes": 146,
+        "sha256": "e86669e4dca0a6f045748643eb3274c79dc76edefd7a8f0f1d82391d01004dfc",
+        "modified_utc": "2026-11-16T21:37:14.073242+00:00"
+      },
+      "status": "see_execution_scope"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-build-selection.log",
+        "bytes": 640,
+        "sha256": "9c0ed202c17188d40ec59352f0f4f744d9d05f71485771bf10bf548a824218a2",
+        "modified_utc": "2026-11-16T21:39:26.677855+00:00"
+      },
+      "status": "see_execution_scope"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-audit-generate.log",
+        "bytes": 911,
+        "sha256": "249e8b51e3624504554de68725e9d7b57be26d71fce89c1cb012562f3cd2c83a",
+        "modified_utc": "2026-11-16T21:40:49.118215+00:00"
+      },
+      "status": "see_execution_scope"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-gui-selection.log",
+        "bytes": 384,
+        "sha256": "d1aa28012e93d2ce7d9008f6416109bff8af1be2f074a5c1cce7b9009a6ca111",
+        "modified_utc": "2026-11-16T21:41:13.855238+00:00"
+      },
+      "collected": 1,
+      "seconds": 14.891,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 1,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-audit-generate-final.log",
+        "bytes": 161,
+        "sha256": "c3067cbbf4091ae3a1a495432feef39affae767e935915f06fa2392c99059df3",
+        "modified_utc": "2026-11-16T21:41:22.873667+00:00"
+      },
+      "status": "see_execution_scope"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-audit-tests.log",
+        "bytes": 3976,
+        "sha256": "a6a3d5b233909b0a849eccdb85722dcde40f9474b2daf9477f389f11fcf769a7",
+        "modified_utc": "2026-11-16T21:41:26.423648+00:00"
+      },
+      "collected": 14,
+      "seconds": 2.579,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 14,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-manual-reopen-first.log",
+        "bytes": 146,
+        "sha256": "dd797c149b1a85510cfe8b29b342bf32cde9f8f86cba4bbddc309d68ae76eb18",
+        "modified_utc": "2026-11-16T21:49:44.487372+00:00"
+      },
+      "status": "see_execution_scope"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-close-isolated.log",
+        "bytes": 410,
+        "sha256": "50dbf5d161bc24dac900d38fc859f996875e3a1fa721f4d1c9c41d0d33bf4fcd",
+        "modified_utc": "2026-11-16T21:50:00.253208+00:00"
+      },
+      "collected": 1,
+      "seconds": 4.225,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 1,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-conditions-compile.log",
+        "bytes": 8020,
+        "sha256": "5c9b4aaa7773aa024050c76aa111cf68f17847f281dd0951b49262903a6a883e",
+        "modified_utc": "2026-11-16T21:50:03.671131+00:00"
+      },
+      "status": "see_execution_scope"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-close-timing.log",
+        "bytes": 778,
+        "sha256": "f3eaf0afd679a47c6f93522e693a1ae1cb886a319eb552fe4f96685eb92b1565",
+        "modified_utc": "2026-11-16T21:50:28.818133+00:00"
+      },
+      "collected": 1,
+      "seconds": 4.73,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 1,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-service-full.log",
+        "bytes": 288269,
+        "sha256": "b392cf98a69e9e7408fa3b97a3881a117c5a6d2bb531141a4d34954270767909",
+        "modified_utc": "2026-11-16T21:50:32.596373+00:00"
+      },
+      "collected": 1132,
+      "seconds": 849.038,
+      "skipped": 98,
+      "failures": 1,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 1033,
+      "status": "failed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-conditions-compile-final.log",
+        "bytes": 151,
+        "sha256": "2528fe3c47d44b20051bf954eb986dbbf1f81cae05207eda7bf3e59c311f692f",
+        "modified_utc": "2026-11-16T21:50:33.330350+00:00"
+      },
+      "status": "see_execution_scope"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-build-visual.log",
+        "bytes": 1098,
+        "sha256": "10c64eaad14445a0ffa723e117cc55d3927ebc61e4ebf6554a64bed7f04303d4",
+        "modified_utc": "2026-11-16T21:51:30.876632+00:00"
+      },
+      "status": "see_execution_scope"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-build-visual-final.log",
+        "bytes": 23,
+        "sha256": "71aa391ec7d7e291b419a7f40fba91919e14ac2394ab4e8b66ed126e267d70f6",
+        "modified_utc": "2026-11-16T21:51:57.653928+00:00"
+      },
+      "status": "see_execution_scope"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-ctest-visual.log",
+        "bytes": 1215,
+        "sha256": "cee08499eb71a0682bb1e264e9b8a54765c25c671098b49e2f0d9febf15a8108",
+        "modified_utc": "2026-11-16T21:51:58.184456+00:00"
+      },
+      "collected": 10,
+      "passed": 10,
+      "failures": 0,
+      "skipped": 0,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-close-stable.log",
+        "bytes": 410,
+        "sha256": "967946469c91cce91c8b579dedcfe3281f9a43eacefbeac03b29f343228b61c0",
+        "modified_utc": "2026-11-16T21:52:53.168006+00:00"
+      },
+      "collected": 1,
+      "seconds": 4.645,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 1,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-conditions-paging-service.log",
+        "bytes": 413,
+        "sha256": "e059fe25b23c994880a65c715e7b1d7d1255a20076f39dbe1d8349c52f5f86fc",
+        "modified_utc": "2026-11-16T21:55:12.965547+00:00"
+      },
+      "collected": 1,
+      "seconds": 2.62,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 1,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-close-source-solver-regression.log",
+        "bytes": 15007,
+        "sha256": "3cd91cdb46b0595b80cc412ca9c58982e4fb88a31727e6265c0099c939922eca",
+        "modified_utc": "2026-11-16T21:56:02.079592+00:00"
+      },
+      "collected": 58,
+      "seconds": 171.915,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 58,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-conditions-paging-compile.log",
+        "bytes": 445,
+        "sha256": "4f3c80c6305fe68cb0b1198877c5c53e579c43c5f6e7b42b5d0166642b65b22c",
+        "modified_utc": "2026-11-16T21:56:04.516089+00:00"
+      },
+      "status": "see_execution_scope"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-build-fixed-titles.log",
+        "bytes": 381,
+        "sha256": "530de4db56ed072e60e17baf35c799a1e3602f7848ec16cac96d44e615cd94a4",
+        "modified_utc": "2026-11-16T21:57:20.843725+00:00"
+      },
+      "status": "see_execution_scope"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-build-final.log",
+        "bytes": 326,
+        "sha256": "dcfa3e6cf1a4da96570be2c42001470e5775cac3bab15c5996405bcfafc930e2",
+        "modified_utc": "2026-11-16T21:58:11.670409+00:00"
+      },
+      "status": "see_execution_scope"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-ctest-final.log",
+        "bytes": 1215,
+        "sha256": "80d2dac8142adbb3a190f930e646f2150a175c10f6a54f3d6701697fb6cf81ec",
+        "modified_utc": "2026-11-16T21:58:12.313481+00:00"
+      },
+      "collected": 10,
+      "passed": 10,
+      "failures": 0,
+      "skipped": 0,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-manual-reopen-final.log",
+        "bytes": 146,
+        "sha256": "dd797c149b1a85510cfe8b29b342bf32cde9f8f86cba4bbddc309d68ae76eb18",
+        "modified_utc": "2026-11-16T22:07:15.370552+00:00"
+      },
+      "status": "see_execution_scope"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-service-final.log",
+        "bytes": 287504,
+        "sha256": "1d555dc11010759855a537d57a37be091b1c0a4a09e9dd22a1df00f078579498",
+        "modified_utc": "2026-11-16T22:08:32.851937+00:00"
+      },
+      "collected": 1132,
+      "seconds": 887.196,
+      "skipped": 98,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 1034,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-build-workspace-test-object.log",
+        "bytes": 98,
+        "sha256": "93bcb8f5727a422a65639fc2a3e48a6c9afe9e16b9b44ba5bf45875ef56bb626",
+        "modified_utc": "2026-11-16T22:13:25.789377+00:00"
+      },
+      "status": "see_execution_scope"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-gui-full.log",
+        "bytes": 9793,
+        "sha256": "d6bac761f15dfd3bcdf36fc5f26a992ebda886a1e8557807d87bed793837e003",
+        "modified_utc": "2026-11-16T22:15:53.842251+00:00"
+      },
+      "collected": 29,
+      "seconds": 638.028,
+      "skipped": 2,
+      "failures": 1,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 26,
+      "status": "failed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-polarization-boundary-final.log",
+        "bytes": 3634,
+        "sha256": "693216d3dcbc9b58a2b44f99cf843cbedd8708fe6bd019071134517c13a285a2",
+        "modified_utc": "2026-11-16T22:16:23.284345+00:00"
+      },
+      "collected": 14,
+      "seconds": 0.738,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 14,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-metrics-bounds-final.log",
+        "bytes": 4795,
+        "sha256": "3ae70f457420094204f4466533f3138a87bbcdbfaa3cd040b821c19b3462afa0",
+        "modified_utc": "2026-11-16T22:17:10.208823+00:00"
+      },
+      "collected": 18,
+      "seconds": 0.622,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 18,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-build-workspace-test.log",
+        "bytes": 52,
+        "sha256": "c90063aa348e08ac96ea098493d8e11bc0f6dd5a262515adccd4fb6df9359557",
+        "modified_utc": "2026-11-16T22:17:56.289028+00:00"
+      },
+      "status": "see_execution_scope"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-metrics-compat-final.log",
+        "bytes": 8408,
+        "sha256": "3feab1187c56094ff0bc3852e06ffa5a8fe6222d0163829e042560f88b97a616",
+        "modified_utc": "2026-11-16T22:18:27.176720+00:00"
+      },
+      "collected": 21,
+      "seconds": 30.875,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 1,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 19,
+      "status": "failed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-numerical-boundaries-final.log",
+        "bytes": 4795,
+        "sha256": "dc10e2ca8ab8181d993f27af44be1df3a57f5fd9e619dacfb17ac45c30e6527e",
+        "modified_utc": "2026-11-16T22:18:27.511331+00:00"
+      },
+      "collected": 18,
+      "seconds": 1.357,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 18,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-gui-workspace-final.log",
+        "bytes": 358,
+        "sha256": "7484661df3bc183e535001f737e911752dd0a83a30590f7e10d51fc823de7080",
+        "modified_utc": "2026-11-16T22:18:35.408601+00:00"
+      },
+      "collected": 1,
+      "seconds": 22.004,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 1,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-native-read-boundaries.log",
+        "bytes": 146,
+        "sha256": "e86669e4dca0a6f045748643eb3274c79dc76edefd7a8f0f1d82391d01004dfc",
+        "modified_utc": "2026-11-16T22:19:05.325844+00:00"
+      },
+      "status": "see_execution_scope"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-metrics-compat-frozen.log",
+        "bytes": 5798,
+        "sha256": "8e3c69c81b74fdc29293d099c42d85174cf8782d33ce67295bd8a5542fdb8c1d",
+        "modified_utc": "2026-11-16T22:19:19.506566+00:00"
+      },
+      "collected": 21,
+      "seconds": 28.766,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 20,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-audit-generate-closed.log",
+        "bytes": 161,
+        "sha256": "c3067cbbf4091ae3a1a495432feef39affae767e935915f06fa2392c99059df3",
+        "modified_utc": "2026-11-16T22:23:06.738579+00:00"
+      },
+      "status": "see_execution_scope"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-audit-check-closed.log",
+        "bytes": 159,
+        "sha256": "13cc55e0129c3c93d4c0be19c5ebf4d87053ca467051d27c3fb54ae5a6cf51c5",
+        "modified_utc": "2026-11-16T22:23:08.417252+00:00"
+      },
+      "status": "see_execution_scope"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-audit-tests-closed.log",
+        "bytes": 3976,
+        "sha256": "590bb9b6fc59b98e61ae7f0d42ff5cd1454be1944805a4ecaac6e16b96f51385",
+        "modified_utc": "2026-11-16T22:23:11.291531+00:00"
+      },
+      "collected": 14,
+      "seconds": 2.1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "passed": 14,
+      "status": "passed"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-step7-document-check.log",
+        "bytes": 386,
+        "sha256": "a81391cb96ef7a4183ea057c8fc80ab8227aeeb3a32cec9e61d82c84013524e2",
+        "modified_utc": "2026-11-16T22:23:41.560185+00:00"
+      },
+      "status": "see_execution_scope"
+    },
+    {
+      "log": {
+        "path": "Code/.local/result-stage7-audit-check-confirmed.log",
+        "bytes": 159,
+        "sha256": "13cc55e0129c3c93d4c0be19c5ebf4d87053ca467051d27c3fb54ae5a6cf51c5",
+        "modified_utc": "2026-11-16T22:23:41.960780+00:00"
+      },
+      "status": "see_execution_scope"
+    }
+  ],
+  "reports": [
+    {
+      "artifact": {
+        "path": "Code/.local/result-stage7-native-read.json",
+        "bytes": 6229,
+        "sha256": "004b3d42bde26906be26803dbc3135d06943a46175733bd34deec0f170896e0f",
+        "modified_utc": "2026-11-16T22:19:05.316385+00:00"
+      },
+      "content": {
+        "status": "passed",
+        "scope": "actual_archived_nf2ff_via_public_rpc_and_runtime_free_reopen",
+        "project_id": "41a0b61e-1d43-4015-80de-2d6ed1f4f14a",
+        "source": {
+          "kind": "solver",
+          "artifact_id": "a73812c0-9c38-4b82-bd9b-99f7066752dc"
+        },
+        "pin": {
+          "identity_hash": "bef14eb863ed67ae6ee3d2cea81cf77e25e2fd26196160ff7d911d6db78eaf97",
+          "dataset_sha256": "a8b3d17b80edfcfc2bfefb3e997f63822427ae5725d66d4982370e5fb0ed7707"
+        },
+        "source_project_hash": "8f01aad8901c8eb83843e3484590daff5e673e47891f134e8e97f2ab475724f6",
+        "frequency_count": 3,
+        "pages_per_frequency": [
+          19,
+          19,
+          19
+        ],
+        "power_rows": 3,
+        "smith_points": 201,
+        "csv_bytes": 10225,
+        "csv_sha256": "dac3696ca559c6efb65c073bd6f2b85c6e5c142e57a6287e8775f0d6e989153b",
+        "reads": [
+          {
+            "method": "result.describe",
+            "response_bytes": 3722
+          },
+          {
+            "method": "result.metrics",
+            "response_bytes": 11951
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 108021
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110345
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110397
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110264
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110255
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110212
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110348
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110456
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110424
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110761
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110791
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110721
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110664
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110535
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110461
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110622
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110655
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110678
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 57605
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 107832
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110116
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110179
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110174
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110157
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110125
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110212
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110310
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110312
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110725
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110712
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110712
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110622
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110526
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110473
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110647
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110624
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110531
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 57519
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 108004
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110359
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110408
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110360
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110258
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110253
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110399
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110393
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110323
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110661
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110624
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110617
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110573
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110477
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110487
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110634
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110646
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110603
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 57552
+          },
+          {
+            "method": "result.smith",
+            "response_bytes": 132137
+          },
+          {
+            "method": "result.export",
+            "response_bytes": 20255
+          },
+          {
+            "method": "result.describe",
+            "response_bytes": 3723
+          }
+        ],
+        "source_workspace_untouched": true,
+        "read_only_journal_unchanged": true,
+        "runtime_free_reopen": true,
+        "manufacturing_measurement_unknown_preserved": true,
+        "physics_validated": false,
+        "new_fdtd_executed": false
+      }
+    },
+    {
+      "artifact": {
+        "path": "Code/.local/result-stage7-native-read-before-boundaries.json",
+        "bytes": 6229,
+        "sha256": "e48e7b3706470405443b1650ff18ef2458b00dd0fbb6f24f5a697ed4c47dde7f",
+        "modified_utc": "2026-11-16T21:37:14.048088+00:00"
+      },
+      "content": {
+        "status": "passed",
+        "scope": "actual_archived_nf2ff_via_public_rpc_and_runtime_free_reopen",
+        "project_id": "41a0b61e-1d43-4015-80de-2d6ed1f4f14a",
+        "source": {
+          "kind": "solver",
+          "artifact_id": "a73812c0-9c38-4b82-bd9b-99f7066752dc"
+        },
+        "pin": {
+          "identity_hash": "bef14eb863ed67ae6ee3d2cea81cf77e25e2fd26196160ff7d911d6db78eaf97",
+          "dataset_sha256": "a8b3d17b80edfcfc2bfefb3e997f63822427ae5725d66d4982370e5fb0ed7707"
+        },
+        "source_project_hash": "8f01aad8901c8eb83843e3484590daff5e673e47891f134e8e97f2ab475724f6",
+        "frequency_count": 3,
+        "pages_per_frequency": [
+          19,
+          19,
+          19
+        ],
+        "power_rows": 3,
+        "smith_points": 201,
+        "csv_bytes": 10225,
+        "csv_sha256": "dac3696ca559c6efb65c073bd6f2b85c6e5c142e57a6287e8775f0d6e989153b",
+        "reads": [
+          {
+            "method": "result.describe",
+            "response_bytes": 3722
+          },
+          {
+            "method": "result.metrics",
+            "response_bytes": 11807
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 108016
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110337
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110383
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110265
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110249
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110204
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110345
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110466
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110416
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110788
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110792
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110738
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110665
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110557
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110455
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110626
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110685
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110683
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 57603
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 107826
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110120
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110173
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110190
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110151
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110129
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110219
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110309
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110313
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110727
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110700
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110711
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110614
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110538
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110491
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110641
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110639
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110545
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 57520
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 108000
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110362
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110406
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110376
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110260
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110244
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110379
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110428
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110320
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110667
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110613
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110629
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110589
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110467
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110484
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110645
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110645
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 110608
+          },
+          {
+            "method": "result.radiation",
+            "response_bytes": 57546
+          },
+          {
+            "method": "result.smith",
+            "response_bytes": 132137
+          },
+          {
+            "method": "result.export",
+            "response_bytes": 20255
+          },
+          {
+            "method": "result.describe",
+            "response_bytes": 3723
+          }
+        ],
+        "source_workspace_untouched": true,
+        "read_only_journal_unchanged": true,
+        "runtime_free_reopen": true,
+        "manufacturing_measurement_unknown_preserved": true,
+        "physics_validated": false,
+        "new_fdtd_executed": false
+      }
+    },
+    {
+      "artifact": {
+        "path": "Code/.local/result-field-backend-evidence.json",
+        "bytes": 3530,
+        "sha256": "0bcc86860f728577e167bfcce5a9afc838899ed369ac8919a1eb5038c9269c73",
+        "modified_utc": "2026-11-16T21:36:36.500002+00:00"
+      },
+      "content": {
+        "schema": "rfad.field-view-verification/0.1",
+        "source_freeze": "실제 normalized 전체 격자선 읽기 보강 후 동결; 이후 최종14시험",
+        "files": [
+          {
+            "path": "src/rfad/adapters/field_hdf5.py",
+            "bytes": 9724,
+            "sha256": "2cb61bb00971e0afd0367b5d396de15bfd751dde131d7304143d33b158c7835b",
+            "file_modified_at_utc": "2026-11-16T21:30:02.362468+00:00"
+          },
+          {
+            "path": "src/rfad/application/result_fields.py",
+            "bytes": 13962,
+            "sha256": "0875bf3878572da29287ea19dfeec0bd14896f4c6451bb4ce4418d4f7dd73ab2",
+            "file_modified_at_utc": "2026-11-16T21:34:10.001969+00:00"
+          },
+          {
+            "path": "tests/test_result_fields.py",
+            "bytes": 23922,
+            "sha256": "1fbf3acef73597e166165d41b8ce3856d282fca24b96ef9774c666cf7de9a009",
+            "file_modified_at_utc": "2026-11-16T21:34:10.003441+00:00"
+          }
+        ],
+        "runs": [
+          {
+            "log": {
+              "path": ".local/result-fields-initial.log",
+              "bytes": 2257,
+              "sha256": "0b412582aa3ebb4a787b8add2472064b353164dee29327d982425cac8f76762f",
+              "file_modified_at_utc": "2026-11-16T21:29:05.265197+00:00"
+            },
+            "collected": 9,
+            "passed": 9,
+            "skipped": 0,
+            "elapsed_seconds": 1.252,
+            "source_stage": "intermediate",
+            "failures": 0,
+            "errors": 0
+          },
+          {
+            "log": {
+              "path": ".local/result-fields-boundaries.log",
+              "bytes": 3413,
+              "sha256": "998e4aefef8b76d6680b87ef80631f39adca3c73f0cb8b01bdc67316e83bdbac",
+              "file_modified_at_utc": "2026-11-16T21:31:04.135790+00:00"
+            },
+            "collected": 13,
+            "passed": 12,
+            "skipped": 1,
+            "elapsed_seconds": 1.406,
+            "source_stage": "intermediate",
+            "failures": 0,
+            "errors": 0
+          },
+          {
+            "log": {
+              "path": ".local/result-fields-actual.log",
+              "bytes": 382,
+              "sha256": "4beed93d767d23af8945e1b31766343c5d73c3ff9c2548d1ec6376cb01c04d62",
+              "file_modified_at_utc": "2026-11-16T21:31:31.254138+00:00"
+            },
+            "collected": 1,
+            "passed": 1,
+            "skipped": 0,
+            "elapsed_seconds": 9.24,
+            "source_stage": "intermediate",
+            "failures": 0,
+            "errors": 0
+          },
+          {
+            "log": {
+              "path": ".local/result-fields-frozen.log",
+              "bytes": 3614,
+              "sha256": "c7a4c61bb513dc2e25f5d46fffff9e4ad77994fc664f1a53b19c8667f27d9645",
+              "file_modified_at_utc": "2026-11-16T21:34:29.040192+00:00"
+            },
+            "collected": 14,
+            "passed": 14,
+            "skipped": 0,
+            "elapsed_seconds": 8.959,
+            "source_stage": "final",
+            "failures": 0,
+            "errors": 0
+          }
+        ],
+        "reports": [
+          {
+            "path": ".local/result-field-actual-report.json",
+            "bytes": 10349,
+            "sha256": "a74fffda9ae9afe2d7263d7ece62dbc89cb4923127b4b022d23e51505c44a7c2",
+            "file_modified_at_utc": "2026-11-16T21:31:31.236601+00:00"
+          },
+          {
+            "path": ".local/result-field-frozen-report.json",
+            "bytes": 10349,
+            "sha256": "a74fffda9ae9afe2d7263d7ece62dbc89cb4923127b4b022d23e51505c44a7c2",
+            "file_modified_at_utc": "2026-11-16T21:34:27.259820+00:00"
+          }
+        ],
+        "actual_hyperslabs_checked": 27,
+        "original_workspace_read_only": ".local/pcb-power-balance/workspace",
+        "isolated_copy": ".local/result-field-service-workspace",
+        "new_fdtd_executed": false,
+        "physics_validated": false,
+        "counts_policy": "실행별 중복/재실행을 더하지 않는다."
+      }
+    },
+    {
+      "artifact": {
+        "path": "Code/.local/result-field-frozen-report.json",
+        "bytes": 10349,
+        "sha256": "a74fffda9ae9afe2d7263d7ece62dbc89cb4923127b4b022d23e51505c44a7c2",
+        "modified_utc": "2026-11-16T21:34:27.259820+00:00"
+      },
+      "content": {
+        "status": "passed",
+        "workspace": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\result-field-service-workspace",
+        "source": {
+          "kind": "solver",
+          "artifact_id": "a73812c0-9c38-4b82-bd9b-99f7066752dc"
+        },
+        "pin": {
+          "identity_hash": "bef14eb863ed67ae6ee3d2cea81cf77e25e2fd26196160ff7d911d6db78eaf97",
+          "dataset_sha256": "a8b3d17b80edfcfc2bfefb3e997f63822427ae5725d66d4982370e5fb0ed7707"
+        },
+        "monitors": [
+          {
+            "monitor_id": "electric",
+            "label": "전기장 E / 기록 성분",
+            "unit": "V*s/m",
+            "normalization": "pulse_fourier_spectrum_native_2dt",
+            "frequency_hz": [
+              2400000000,
+              2441750000,
+              2483500000
+            ],
+            "source_ref": {
+              "bytes": 3701520,
+              "sha256": "b715c18261e5cd3e33145662360d823a56252db5321dbf47ccb3bcda4f1b035c",
+              "uri": "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/raw/pcb_loss_E.h5"
+            },
+            "coordinate_basis": "primary_Yee_electric_edge_midpoints",
+            "phase_correction": "none_raw_time_location"
+          },
+          {
+            "monitor_id": "material_current",
+            "label": "재료 전류 J / 기록 성분",
+            "unit": "A*s/m^2",
+            "normalization": "pulse_fourier_spectrum_native_2dt",
+            "frequency_hz": [
+              2400000000,
+              2441750000,
+              2483500000
+            ],
+            "source_ref": {
+              "bytes": 3701520,
+              "sha256": "1299da13fb0641501a859d9f591c7735ca93e2f791b52584b401b5789d4b917c",
+              "uri": "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/raw/pcb_loss_J.h5"
+            },
+            "coordinate_basis": "primary_Yee_electric_edge_midpoints",
+            "phase_correction": "none_raw_time_location"
+          },
+          {
+            "monitor_id": "total_current",
+            "label": "총 전류 rotH / 원문 시간 위치",
+            "unit": "A*s/m^2",
+            "normalization": "pulse_fourier_spectrum_native_2dt",
+            "frequency_hz": [
+              2400000000,
+              2441750000,
+              2483500000
+            ],
+            "source_ref": {
+              "bytes": 3701520,
+              "sha256": "faf30f900bb22fdf6530569e041508cb253136b324eadd96e9b2f553b9f84dcf",
+              "uri": "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/raw/pcb_loss_rotH.h5"
+            },
+            "coordinate_basis": "primary_Yee_electric_edge_midpoints",
+            "phase_correction": "none_raw_time_location"
+          }
+        ],
+        "checked_hyperslabs": [
+          {
+            "monitor": "electric",
+            "component": "x",
+            "normal_axis": "x",
+            "source_sha256": "b715c18261e5cd3e33145662360d823a56252db5321dbf47ccb3bcda4f1b035c",
+            "response_sha256": "650628dd10a41c05725b4c7217377d2e63c1242c45b68857eaf313f710c3dd50"
+          },
+          {
+            "monitor": "electric",
+            "component": "x",
+            "normal_axis": "y",
+            "source_sha256": "b715c18261e5cd3e33145662360d823a56252db5321dbf47ccb3bcda4f1b035c",
+            "response_sha256": "01a960a2fe53b52164d5d3a5c5813d239cd2119667933b76be4cf0629301032d"
+          },
+          {
+            "monitor": "electric",
+            "component": "x",
+            "normal_axis": "z",
+            "source_sha256": "b715c18261e5cd3e33145662360d823a56252db5321dbf47ccb3bcda4f1b035c",
+            "response_sha256": "2a777e83cbb29c1d58880b87a1c4d1fe673e087245233932e84b19210211d4a4"
+          },
+          {
+            "monitor": "electric",
+            "component": "y",
+            "normal_axis": "x",
+            "source_sha256": "b715c18261e5cd3e33145662360d823a56252db5321dbf47ccb3bcda4f1b035c",
+            "response_sha256": "fa1f8fc1d6e248d90025c29087d5619ce57dd18589b397b43096aec1baeebd80"
+          },
+          {
+            "monitor": "electric",
+            "component": "y",
+            "normal_axis": "y",
+            "source_sha256": "b715c18261e5cd3e33145662360d823a56252db5321dbf47ccb3bcda4f1b035c",
+            "response_sha256": "6e13a8ceb26cfacb741c3870bdb259fc174034db367351a4efa247083bf45dd0"
+          },
+          {
+            "monitor": "electric",
+            "component": "y",
+            "normal_axis": "z",
+            "source_sha256": "b715c18261e5cd3e33145662360d823a56252db5321dbf47ccb3bcda4f1b035c",
+            "response_sha256": "b909b9b92f6e0f955a99b4f1f3c0b9413677b825e0311347bb852ca07ac7bb01"
+          },
+          {
+            "monitor": "electric",
+            "component": "z",
+            "normal_axis": "x",
+            "source_sha256": "b715c18261e5cd3e33145662360d823a56252db5321dbf47ccb3bcda4f1b035c",
+            "response_sha256": "39c79ef0fb729b04b2e3c20c062302cc1256149ae316a2ba40f18df299afe56e"
+          },
+          {
+            "monitor": "electric",
+            "component": "z",
+            "normal_axis": "y",
+            "source_sha256": "b715c18261e5cd3e33145662360d823a56252db5321dbf47ccb3bcda4f1b035c",
+            "response_sha256": "e0d1778455bee250d39f8bb2a906d30b7ca9336e920cb12a67c7d797b54ca3fd"
+          },
+          {
+            "monitor": "electric",
+            "component": "z",
+            "normal_axis": "z",
+            "source_sha256": "b715c18261e5cd3e33145662360d823a56252db5321dbf47ccb3bcda4f1b035c",
+            "response_sha256": "50b305e527c19f15ccb69a04faeeaf50e34d1d3f0837e2c8382d8be7180cdb53"
+          },
+          {
+            "monitor": "material_current",
+            "component": "x",
+            "normal_axis": "x",
+            "source_sha256": "1299da13fb0641501a859d9f591c7735ca93e2f791b52584b401b5789d4b917c",
+            "response_sha256": "d555de6bf1e6a6b092246a0b165ff85c617af086f3e3405d5229e8b1c9d92d3d"
+          },
+          {
+            "monitor": "material_current",
+            "component": "x",
+            "normal_axis": "y",
+            "source_sha256": "1299da13fb0641501a859d9f591c7735ca93e2f791b52584b401b5789d4b917c",
+            "response_sha256": "a985d43d4ca7b4bf32437c62fa57738e122fe8eb6937e78b3a11b312b2e981e2"
+          },
+          {
+            "monitor": "material_current",
+            "component": "x",
+            "normal_axis": "z",
+            "source_sha256": "1299da13fb0641501a859d9f591c7735ca93e2f791b52584b401b5789d4b917c",
+            "response_sha256": "d856f3ee53de47af49152ee18789ebad911a09249f09a289fe7adb21c576de31"
+          },
+          {
+            "monitor": "material_current",
+            "component": "y",
+            "normal_axis": "x",
+            "source_sha256": "1299da13fb0641501a859d9f591c7735ca93e2f791b52584b401b5789d4b917c",
+            "response_sha256": "e59a761929e2012521b0fc957a6227f80c142e689f97d4ef9e2f3e9300d77eed"
+          },
+          {
+            "monitor": "material_current",
+            "component": "y",
+            "normal_axis": "y",
+            "source_sha256": "1299da13fb0641501a859d9f591c7735ca93e2f791b52584b401b5789d4b917c",
+            "response_sha256": "a6670b8ca9eb16a2547372cfaa259a1d32e0dca4f8d01d143e4c4c0953ed0423"
+          },
+          {
+            "monitor": "material_current",
+            "component": "y",
+            "normal_axis": "z",
+            "source_sha256": "1299da13fb0641501a859d9f591c7735ca93e2f791b52584b401b5789d4b917c",
+            "response_sha256": "3c03c9effe75a91b9bbfcb658012eedf5445c507fb17604427f41e37425d668f"
+          },
+          {
+            "monitor": "material_current",
+            "component": "z",
+            "normal_axis": "x",
+            "source_sha256": "1299da13fb0641501a859d9f591c7735ca93e2f791b52584b401b5789d4b917c",
+            "response_sha256": "7d50b24510ad1a98aa6d409b90cda82dd941238da71cbc50c0a4b5c37575b05a"
+          },
+          {
+            "monitor": "material_current",
+            "component": "z",
+            "normal_axis": "y",
+            "source_sha256": "1299da13fb0641501a859d9f591c7735ca93e2f791b52584b401b5789d4b917c",
+            "response_sha256": "49f42e8e072e4988f776101611f064c1154080bf03e46b771c2cef7d9debda38"
+          },
+          {
+            "monitor": "material_current",
+            "component": "z",
+            "normal_axis": "z",
+            "source_sha256": "1299da13fb0641501a859d9f591c7735ca93e2f791b52584b401b5789d4b917c",
+            "response_sha256": "4c0a37d77aaac3b4309bfee61bef8c889ffa99b41a5bdaad904f023ecce9fdb2"
+          },
+          {
+            "monitor": "total_current",
+            "component": "x",
+            "normal_axis": "x",
+            "source_sha256": "faf30f900bb22fdf6530569e041508cb253136b324eadd96e9b2f553b9f84dcf",
+            "response_sha256": "7ff1a1202c4f84ba65824867a432d8dbdb18b858daab41d30172b81c8f9abaa8"
+          },
+          {
+            "monitor": "total_current",
+            "component": "x",
+            "normal_axis": "y",
+            "source_sha256": "faf30f900bb22fdf6530569e041508cb253136b324eadd96e9b2f553b9f84dcf",
+            "response_sha256": "0f90a3ced6757ed2e62c217a781b07270f6d24edb75f4596a433e4c6c73a9de6"
+          },
+          {
+            "monitor": "total_current",
+            "component": "x",
+            "normal_axis": "z",
+            "source_sha256": "faf30f900bb22fdf6530569e041508cb253136b324eadd96e9b2f553b9f84dcf",
+            "response_sha256": "7248e59eeddbe02a676da5968245f3da7e28d80c47a9dfba2f7d5d61b4506770"
+          },
+          {
+            "monitor": "total_current",
+            "component": "y",
+            "normal_axis": "x",
+            "source_sha256": "faf30f900bb22fdf6530569e041508cb253136b324eadd96e9b2f553b9f84dcf",
+            "response_sha256": "ae8c2b3590eaf8a252d39a33dd1cd16add3c0aa6d722803822cee439532dbca2"
+          },
+          {
+            "monitor": "total_current",
+            "component": "y",
+            "normal_axis": "y",
+            "source_sha256": "faf30f900bb22fdf6530569e041508cb253136b324eadd96e9b2f553b9f84dcf",
+            "response_sha256": "71ccf2d39441cfa153d91e2124d0be535d9b26e1c61df663ece94fe252470876"
+          },
+          {
+            "monitor": "total_current",
+            "component": "y",
+            "normal_axis": "z",
+            "source_sha256": "faf30f900bb22fdf6530569e041508cb253136b324eadd96e9b2f553b9f84dcf",
+            "response_sha256": "29e7461be6a4ae17aee5c60d7a874acfefff199774801b2548061d7d36b7e59f"
+          },
+          {
+            "monitor": "total_current",
+            "component": "z",
+            "normal_axis": "x",
+            "source_sha256": "faf30f900bb22fdf6530569e041508cb253136b324eadd96e9b2f553b9f84dcf",
+            "response_sha256": "aa608f72725d553c37ccbe1ffa09eddb971bd6352f937ef58686b3601f89d5ad"
+          },
+          {
+            "monitor": "total_current",
+            "component": "z",
+            "normal_axis": "y",
+            "source_sha256": "faf30f900bb22fdf6530569e041508cb253136b324eadd96e9b2f553b9f84dcf",
+            "response_sha256": "b7d5a5db389d121b4b32af0c7296bbba7b5e79ced319276fe66b29991e66f39c"
+          },
+          {
+            "monitor": "total_current",
+            "component": "z",
+            "normal_axis": "z",
+            "source_sha256": "faf30f900bb22fdf6530569e041508cb253136b324eadd96e9b2f553b9f84dcf",
+            "response_sha256": "95a9037077f41820c3dbe9e9c4b8caf3f05092e394f5fdb906ad12a8beeec3cb"
+          }
+        ],
+        "normalized_unchanged": true,
+        "raw_unchanged": true,
+        "journal_unchanged_during_reads": true,
+        "runtime_free_reopen": true,
+        "new_fdtd_executed": false,
+        "physics_validated": false
+      }
+    },
+    {
+      "artifact": {
+        "path": "Code/.local/stage7-radiation-draft/native-polarization-check.json",
+        "bytes": 911,
+        "sha256": "1e4de16871cd69b699510520e82f0dd34cb8a9f8892e0d3b15c04d3be9f5f1a1",
+        "modified_utc": "2026-11-16T20:55:03.690876+00:00"
+      },
+      "content": {
+        "status": "passed",
+        "scope": "same_recorded_fields_against_installed_openems_0.37.0_reader",
+        "comparisons": 15984,
+        "frequency_count": 3,
+        "theta_count": 37,
+        "phi_count": 72,
+        "max_absolute_complex_error_v_s_per_m": 6.438560081239292e-20,
+        "relative_tolerance": 1e-12,
+        "max_native_angle_relative_difference": 2.2841811565137407e-07,
+        "max_corrected_complex_error_v_s_per_m": 1.262177448353619e-28,
+        "angle_precision_note": "native HDF5 phi and numpy sin/cos are float32; product uses original requested degree angles and double precision. Circular amplitudes use the same basis, raw native complex values remain unchanged.",
+        "radiation_sha256": "3ec462f340295c14d9c810a1aa0361a7d06cbe92f31d2d6225124d787c13c68b",
+        "native_sha256": "6c15f355470dd538c8812c539fd1edc7ca61807af7a0100b257e605267349b1c",
+        "new_fdtd_executed": false,
+        "independent_physics_validation": false
+      }
+    },
+    {
+      "artifact": {
+        "path": "Code/.local/stage7-radiation-draft/archived-radiation-check.json",
+        "bytes": 2261,
+        "sha256": "aacca591df4d29878df322d0696ab6a12623ffbc483da1ed5cd292a37cf8a1d2",
+        "modified_utc": "2026-11-16T21:03:17.038853+00:00"
+      },
+      "content": {
+        "status": "passed",
+        "scope": "draft_radiation_and_metrics_projection_from_archived_actual_nf2ff",
+        "source_resolver_integration": "pending",
+        "artifact_id": "a73812c0-9c38-4b82-bd9b-99f7066752dc",
+        "snapshot": {
+          "artifact": {
+            "bytes": 30581,
+            "sha256": "bdb6a4dd518bf9805fd94d31cd026578b750ad8b20b35ece87685c6fe8075e7a",
+            "uri": "projects/pcb-2516715c5ee5/snapshots/60dc8d59-dd05-4877-895a-71a522aded45/91c8d418-a592-43bc-ae25-fbbe69d1f2db/project.json"
+          },
+          "canonical_version": "rfad.canonical/1.0",
+          "content_hash": "8f01aad8901c8eb83843e3484590daff5e673e47891f134e8e97f2ab475724f6",
+          "description": "명시적 탐색 물성의 방사 수렴 연구; 제작 및 실측 미검증",
+          "project_id": "41a0b61e-1d43-4015-80de-2d6ed1f4f14a",
+          "revision_id": "60dc8d59-dd05-4877-895a-71a522aded45",
+          "schema_version": "rfad.project/0.2",
+          "sealed_at": 1794395556.691131,
+          "snapshot_id": "91c8d418-a592-43bc-ae25-fbbe69d1f2db",
+          "validation_state": "not_evaluated"
+        },
+        "frequency_hz": [
+          2400000000,
+          2441750000,
+          2483500000
+        ],
+        "pages_per_frequency": [
+          19,
+          19,
+          19
+        ],
+        "theta_rows_reassembled": [
+          37,
+          37,
+          37
+        ],
+        "max_response_bytes": 96456,
+        "power_rows": 3,
+        "source_hashes": {
+          "commits/346227f3-34a6-4e2f-a5dc-02b48125f684/state.json": "0292a7e95536c180055aeb01fb29f2adb334e3a06b0bcd8b41d220040394fb27",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/normalized.json": "fd06b5da7ab6c62e693f949a2bf21041f16da318ea92d350e5dc48570b86a74d",
+          "projects/pcb-2516715c5ee5/snapshots/60dc8d59-dd05-4877-895a-71a522aded45/91c8d418-a592-43bc-ae25-fbbe69d1f2db/project.json": "bdb6a4dd518bf9805fd94d31cd026578b750ad8b20b35ece87685c6fe8075e7a",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/radiation.json": "3ec462f340295c14d9c810a1aa0361a7d06cbe92f31d2d6225124d787c13c68b",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/power_balance.json": "d4a25e9229faedb770532b3268336d7ab0c7f0ad09e396b5faa03bdfa71c304f"
+        },
+        "original_pointer_unchanged": true,
+        "new_fdtd_executed": false,
+        "physics_validated": false,
+        "manufacturing_measurement_conditions": "unchanged_unknown"
+      }
+    },
+    {
+      "artifact": {
+        "path": "Code/.local/result-visual-manifest.json",
+        "bytes": 4849,
+        "sha256": "c25a069be2bf2dceb91d71efb126f40512f170ff274a05f2cde8d4737ca740e3",
+        "modified_utc": "2026-11-16T21:17:45.177993+00:00"
+      },
+      "content": {
+        "workspace": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\result-visual-20261117-8b1e6d2b",
+        "source_workspace": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\pcb-power-balance\\workspace",
+        "project_id": "41a0b61e-1d43-4015-80de-2d6ed1f4f14a",
+        "project_path": "projects/pcb-2516715c5ee5",
+        "solver_artifact_id": "a73812c0-9c38-4b82-bd9b-99f7066752dc",
+        "protected_original_files": {
+          "current.json": "e52a339916e1862a351291251ae12c9c5a812f02c04cf3e2dfcb877699103c5c",
+          "commits/346227f3-34a6-4e2f-a5dc-02b48125f684/state.json": "0292a7e95536c180055aeb01fb29f2adb334e3a06b0bcd8b41d220040394fb27",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/normalized.json": "fd06b5da7ab6c62e693f949a2bf21041f16da318ea92d350e5dc48570b86a74d",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/raw/port_ut_1": "020358df35313d9e2801023a1ed8855ea3553f2bd71666623c450f1ae651093c",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/raw/port_it_1": "b9c6a69d92cbd9b1ca5057f6bd9c22178eca480bf552e47eda4ab71c7dfe8f2e",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/raw/openEMS_stats.txt": "f68f9c454d0008d7f4bf9b7f8c8410aa1a4ea387cb8f5a4dab9e1616a259b860",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/raw/openEMS_run_stats.txt": "81c0e3751356517946ee5b7c3deeefd1a10b87ee7e02515eccf2ae7aed11134f",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/raw/native.log": "ecb260b6b6b6d7867d1083caaef2f6e809cbf416a9108453ebade410d1641105",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/raw/pcb.xml": "fb14361193caba491025d9e4a55fa3d5845ae34e840c84b90d24ecd93329ec1a",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/raw/pcb_nf2ff_E_0.h5": "a2f934abc56345abb577ee8d296e5cea472c6fe8ccfc343f243e2eb6143f1172",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/raw/pcb_nf2ff_E_1.h5": "e4f13599af3c759ff391943e6040b1d501f2a3bae510cac864b9bf74b847a560",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/raw/pcb_nf2ff_E_2.h5": "6a1cd1babdbb1683ea70e0cd0c2b285d73aab1a1971d880a2d73dc70a5fb90f4",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/raw/pcb_nf2ff_E_3.h5": "1ae365eba3dd0fb3d554e71a7695ca2a447fcdabcc42ea2c4eff5138dc32b9fc",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/raw/pcb_nf2ff_E_4.h5": "1fe2cd8fc21db6cc75e1040f3b550ae37241b6145542f15ee88523f3125bc697",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/raw/pcb_nf2ff_E_5.h5": "0da8edc408e32e771f621fe2aa56194564bdc7c1e3923cf6666881ebf3c759c1",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/raw/pcb_nf2ff_H_0.h5": "5b49506a5de12d8afbcca54a7e8adf3e90a83a2dbde691af4d1e1ba8c9f6a708",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/raw/pcb_nf2ff_H_1.h5": "e60bfe21dde734ec89a09804bf4f3777ae72d6bc47ec9b2d2adf928435c303b7",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/raw/pcb_nf2ff_H_2.h5": "a031d792a662781c80101c51e4361de31099b2e28980e8427567f10a6ccf1271",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/raw/pcb_nf2ff_H_3.h5": "8facafa0051af70ed1440505d64ee75e95cb780fdd0a8cdf668780945b4e1a8e",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/raw/pcb_nf2ff_H_4.h5": "3effd399be5e58d41db57d896c6c27e6c8d3e04208783699cd299be33807f693",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/raw/pcb_nf2ff_H_5.h5": "0c81cf58daf374c533587d9a876215d7901cf7361fd364fca317aff435037452",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/raw/pcb_loss_E.h5": "b715c18261e5cd3e33145662360d823a56252db5321dbf47ccb3bcda4f1b035c",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/raw/pcb_loss_J.h5": "1299da13fb0641501a859d9f591c7735ca93e2f791b52584b401b5789d4b917c",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/raw/pcb_loss_rotH.h5": "faf30f900bb22fdf6530569e041508cb253136b324eadd96e9b2f553b9f84dcf",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/raw_manifest.json": "4268395274d62ffaafc813168cb7e2006f2111dcaf2152c06bda1d2f20dc547c",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/radiation.json": "3ec462f340295c14d9c810a1aa0361a7d06cbe92f31d2d6225124d787c13c68b",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/raw/pcb_nf2ff.h5": "6c15f355470dd538c8812c539fd1edc7ca61807af7a0100b257e605267349b1c",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/power_balance.json": "d4a25e9229faedb770532b3268336d7ab0c7f0ad09e396b5faa03bdfa71c304f",
+          "solver-artifacts/92d0e2fb-8407-4137-80f3-c9cbb186841d/provenance.json": "8fe05a0c8dc23dd541cae7311ef7ad409b9dfee44852184b1cb299b4342ebdfb"
+        },
+        "source_pointer_unchanged": true,
+        "new_fdtd_executed": false,
+        "physics_validated": false,
+        "role": "isolated_copy_for_actual_windows_result_gui_verification"
+      }
+    },
+    {
+      "artifact": {
+        "path": "Code/.local/result-stage7-manual-proof.json",
+        "bytes": 1370,
+        "sha256": "520159006b070aeddecc80c74eedb9e6ea067af5a270e206545cc8cde8dab140",
+        "modified_utc": "2026-11-16T22:07:15.352060+00:00"
+      },
+      "content": {
+        "status": "passed",
+        "project_id": "41a0b61e-1d43-4015-80de-2d6ed1f4f14a",
+        "source": {
+          "kind": "solver",
+          "artifact_id": "a73812c0-9c38-4b82-bd9b-99f7066752dc"
+        },
+        "project_content_sha256": "8f01aad8901c8eb83843e3484590daff5e673e47891f134e8e97f2ab475724f6",
+        "pin": {
+          "identity_hash": "bef14eb863ed67ae6ee3d2cea81cf77e25e2fd26196160ff7d911d6db78eaf97",
+          "dataset_sha256": "a8b3d17b80edfcfc2bfefb3e997f63822427ae5725d66d4982370e5fb0ed7707"
+        },
+        "original_workspace_preserved": true,
+        "copied_solver_artifacts_preserved": true,
+        "document_and_provenance_preserved_after_gui_save": true,
+        "manufacturing_measurement_null": true,
+        "runtime_free_service_reopen": true,
+        "new_fdtd_executed": false,
+        "physics_validated": false,
+        "manual_scope": [
+          "network GHz and 201 actual samples",
+          "Smith actual input impedance",
+          "power and efficiency actual frequency",
+          "E component exact 32x32 slice and marker",
+          "3D OpenGL pattern and mouse rotation",
+          "polarization table and convention",
+          "Ctrl+S and app close",
+          "exact opposite recorded phi 0/180 degree cut",
+          "two actual results, explicit port map and 18 condition differences",
+          "Windows GUI reopen after final save and close"
+        ],
+        "visual_binary_sha256": "3833cf41d7a0736ad2843945f8f5161f676c89652276e3212c785473ef4efcac"
+      }
+    },
+    {
+      "artifact": {
+        "path": "Code/.local/result-stage7-manual-proof-first.json",
+        "bytes": 1188,
+        "sha256": "4f44bf0010eca4d32bca5de316444f05a8b2d1046a799cdc2d7fd6e3a37f1f18",
+        "modified_utc": "2026-11-16T21:49:44.474392+00:00"
+      },
+      "content": {
+        "status": "passed",
+        "project_id": "41a0b61e-1d43-4015-80de-2d6ed1f4f14a",
+        "source": {
+          "kind": "solver",
+          "artifact_id": "a73812c0-9c38-4b82-bd9b-99f7066752dc"
+        },
+        "project_content_sha256": "8f01aad8901c8eb83843e3484590daff5e673e47891f134e8e97f2ab475724f6",
+        "pin": {
+          "identity_hash": "bef14eb863ed67ae6ee3d2cea81cf77e25e2fd26196160ff7d911d6db78eaf97",
+          "dataset_sha256": "a8b3d17b80edfcfc2bfefb3e997f63822427ae5725d66d4982370e5fb0ed7707"
+        },
+        "original_workspace_preserved": true,
+        "copied_solver_artifacts_preserved": true,
+        "document_and_provenance_preserved_after_gui_save": true,
+        "manufacturing_measurement_null": true,
+        "runtime_free_service_reopen": true,
+        "new_fdtd_executed": false,
+        "physics_validated": false,
+        "manual_scope": [
+          "network GHz and 201 actual samples",
+          "Smith actual input impedance",
+          "power and efficiency actual frequency",
+          "E component exact 32x32 slice and marker",
+          "3D OpenGL pattern and mouse rotation",
+          "polarization table and convention",
+          "Ctrl+S and app close"
+        ],
+        "visual_binary_sha256": "2a5101b488e98dfed2474c439870fea5e9a7f44324dde42f1c6f818fcf7e70de"
+      }
+    },
+    {
+      "artifact": {
+        "path": "Code/.local/result-stage7-visual-captures.json",
+        "bytes": 4665,
+        "sha256": "d4ffa0b00f6bef36b24b79609f5448b42b4e160e23423ee23851c6d2763e0fd5",
+        "modified_utc": "2026-11-16T22:07:12.697995+00:00"
+      },
+      "content": [
+        {
+          "path": "C:/Users/eidos/GitHub/TraceWave Studio/01_개발문서/07_검증/02_실행화면/23_결과검증_프로젝트재열기.jpg",
+          "name": "23_결과검증_프로젝트재열기.jpg",
+          "width": 1648,
+          "height": 954,
+          "captured_utc": "2026-11-16T21:53:09.715Z",
+          "sha256": "b0a72c6aee06098d074ced6a3e11701f198b9aee2d7e17647377084dc74286bf",
+          "binary_sha256": "93b7ccfd588ab48bf3f1bd1c8e648b85b789b88fc8684407c9ec3f9fe7ee40ed"
+        },
+        {
+          "path": "C:/Users/eidos/GitHub/TraceWave Studio/01_개발문서/07_검증/02_실행화면/24_공통결과_주파수단위와_복소표본.jpg",
+          "name": "24_공통결과_주파수단위와_복소표본.jpg",
+          "width": 1648,
+          "height": 954,
+          "captured_utc": "2026-11-16T22:00:57.406Z",
+          "sha256": "94f88c2d740d863b6d84aa93c500610e45f4fabb0c40bba548255736dd9dabd0",
+          "binary_sha256": "3833cf41d7a0736ad2843945f8f5161f676c89652276e3212c785473ef4efcac"
+        },
+        {
+          "path": "C:/Users/eidos/GitHub/TraceWave Studio/01_개발문서/07_검증/02_실행화면/25_스미스차트와_실제임피던스.jpg",
+          "name": "25_스미스차트와_실제임피던스.jpg",
+          "width": 1648,
+          "height": 954,
+          "captured_utc": "2026-11-16T22:01:09.312Z",
+          "sha256": "3cda822f22e9030229b9e8393171f8d12882931a72c0ed96fd466bfaaf20563a",
+          "binary_sha256": "3833cf41d7a0736ad2843945f8f5161f676c89652276e3212c785473ef4efcac"
+        },
+        {
+          "path": "C:/Users/eidos/GitHub/TraceWave Studio/01_개발문서/07_검증/02_실행화면/26_효율과_전력수지_기준.jpg",
+          "name": "26_효율과_전력수지_기준.jpg",
+          "width": 1648,
+          "height": 954,
+          "captured_utc": "2026-11-16T22:01:16.437Z",
+          "sha256": "7b4cd440291ae915bb6a287946ffc8786b92c89e2070eec006f4721ec3101269",
+          "binary_sha256": "3833cf41d7a0736ad2843945f8f5161f676c89652276e3212c785473ef4efcac"
+        },
+        {
+          "path": "C:/Users/eidos/GitHub/TraceWave Studio/01_개발문서/07_검증/02_실행화면/27_방사패턴_기록양방향절단면.jpg",
+          "name": "27_방사패턴_기록양방향절단면.jpg",
+          "width": 1648,
+          "height": 954,
+          "captured_utc": "2026-11-16T22:01:37.176Z",
+          "sha256": "84017d5d2b1b7720f2a90f020edad277c2855e49fe783bad8c6ddd25f3dd6e55",
+          "binary_sha256": "3833cf41d7a0736ad2843945f8f5161f676c89652276e3212c785473ef4efcac"
+        },
+        {
+          "path": "C:/Users/eidos/GitHub/TraceWave Studio/01_개발문서/07_검증/02_실행화면/28_삼차원방사_회전.jpg",
+          "name": "28_삼차원방사_회전.jpg",
+          "width": 1648,
+          "height": 954,
+          "captured_utc": "2026-11-16T22:01:54.656Z",
+          "sha256": "8ad0f54650df2ecf1cef5784efec0e5ed469b4e9ec9b21a8ffac03b64f51dd77",
+          "binary_sha256": "3833cf41d7a0736ad2843945f8f5161f676c89652276e3212c785473ef4efcac"
+        },
+        {
+          "path": "C:/Users/eidos/GitHub/TraceWave Studio/01_개발문서/07_검증/02_실행화면/29_편파_복소원문_표.jpg",
+          "name": "29_편파_복소원문_표.jpg",
+          "width": 1648,
+          "height": 954,
+          "captured_utc": "2026-11-16T22:02:05.610Z",
+          "sha256": "5e92b858a63c7029a4b62792004e416b177145e087571636cc8966c185f860e3",
+          "binary_sha256": "3833cf41d7a0736ad2843945f8f5161f676c89652276e3212c785473ef4efcac"
+        },
+        {
+          "path": "C:/Users/eidos/GitHub/TraceWave Studio/01_개발문서/07_검증/02_실행화면/30_성분필드단면과_실제좌표.jpg",
+          "name": "30_성분필드단면과_실제좌표.jpg",
+          "width": 1648,
+          "height": 954,
+          "captured_utc": "2026-11-16T22:02:36.722Z",
+          "sha256": "936ec9622af20d8a8329ab561d9d194a8ff27d263cf4ff3ca8030989475c81e5",
+          "binary_sha256": "3833cf41d7a0736ad2843945f8f5161f676c89652276e3212c785473ef4efcac"
+        },
+        {
+          "path": "C:/Users/eidos/GitHub/TraceWave Studio/01_개발문서/07_검증/02_실행화면/31_다중결과와_비교조건.jpg",
+          "name": "31_다중결과와_비교조건.jpg",
+          "width": 1648,
+          "height": 954,
+          "captured_utc": "2026-11-16T22:03:51.222Z",
+          "sha256": "d49573ed7a75b5ae2f3960be087ddbe21a53ace468f35c01c7507db2568fe104",
+          "binary_sha256": "3833cf41d7a0736ad2843945f8f5161f676c89652276e3212c785473ef4efcac"
+        },
+        {
+          "path": "C:/Users/eidos/GitHub/TraceWave Studio/01_개발문서/07_검증/02_실행화면/32_최종결과검증후_저장재열기.jpg",
+          "name": "32_최종결과검증후_저장재열기.jpg",
+          "width": 1648,
+          "height": 954,
+          "captured_utc": "2026-11-16T22:04:57.616Z",
+          "sha256": "cf28610c15c1fdfe583a97a80339a498986aa3c86b2ffe2ef9ff4876c443c729",
+          "binary_sha256": "3833cf41d7a0736ad2843945f8f5161f676c89652276e3212c785473ef4efcac"
+        }
+      ]
+    },
+    {
+      "artifact": {
+        "path": "Code/.local/result-step7-document-check.json",
+        "bytes": 4048,
+        "sha256": "0e5c9ebcceff6ca52861c8206db44b803393ac50f156ea9ca7f5c761a1633c92",
+        "modified_utc": "2026-11-16T22:23:41.524153+00:00"
+      },
+      "content": {
+        "scope": "current_development_docs",
+        "approved_baseline_files_verified": 27,
+        "folder_names_verified": 28,
+        "numbered_files_verified": 475,
+        "archive_link_scope": "original_relative_context_preserved_not_current_links",
+        "documents": 135,
+        "links_checked": 7669,
+        "broken_links": [],
+        "diagrams": [
+          {
+            "name": "01_스튜디오_전체전환",
+            "cells": 22,
+            "edges": 7,
+            "drawio_sha256": "4affe4f912259734add53b80886650345a3b5e97ce8b179ada9e55dee1927c24",
+            "svg_sha256": "8b5346cb9692fed8056a2603ea6d3224a0ae9fe0d82861649baa7bb9f8145798",
+            "png_sha256": "7020f1d633dfe7421238e8fd54f7df02550e081a1c384c9dd364d0f0c5cdbaf5"
+          },
+          {
+            "name": "02_편집초안과_저장흐름",
+            "cells": 31,
+            "edges": 11,
+            "drawio_sha256": "d1f629c29ae2ab19cdfc6934450406bace8203eb0abb66a8b273b5ad855e2158",
+            "svg_sha256": "4b0bb3d0b8eddaecaad4b018f59de6111e438053cad330d9f1260e218b316dc6",
+            "png_sha256": "27d6dbfe5ef6671c414e94df207e77d33d7e2877f2367a67482a325b04c685f1"
+          },
+          {
+            "name": "03_객체이름과_식별자",
+            "cells": 21,
+            "edges": 6,
+            "drawio_sha256": "0872444a5bd69b6a44e3a48f49af623b010a5a3828725513533b633e07d95557",
+            "svg_sha256": "151782dbce02fe793002e4aa7df57a6d74ef6fbcc9af6c97aadb4b0432b22100",
+            "png_sha256": "2a13ed1ad66739c922e75e2d7a957324902dbbb0b3af26d2cd16a148c425c7cf"
+          },
+          {
+            "name": "04_시작과_복구",
+            "cells": 15,
+            "edges": 0,
+            "drawio_sha256": "105f044abb5e81444e19302035e7f179cf5bce5df3cb1123ef04e6eeca60336f",
+            "svg_sha256": "ec129d5c50e0806bfc074cf8674bb6ceaeb166bd586a8db03a8b7aaebe64702d",
+            "png_sha256": "ca730c1ba353a5a72fbaff517d54289cb1dc57202888b03d1c6b202d54d860b8"
+          },
+          {
+            "name": "05_설계와_이차원편집",
+            "cells": 96,
+            "edges": 54,
+            "drawio_sha256": "affc9c595a53d601b7a1fc07a32079f85210175a1273f4ba98da7be27a7de31e",
+            "svg_sha256": "e61557d0cee7d56f462a4ca4d32645ad1c8358c68985112dee07ab1cf8cf78c5",
+            "png_sha256": "f207704c0dd391ef721d3e15583d4914be80430b730f8d3eda50cfb02f30b6f3"
+          },
+          {
+            "name": "06_해석준비",
+            "cells": 45,
+            "edges": 0,
+            "drawio_sha256": "936c6dc5b294d8492244e8b5d4acdc68dc8730600a18ec21beb555090dcf4866",
+            "svg_sha256": "dfeb35fb0e61007c3d92b3a6f44abdab9a43da8d5070492f17d603d55c556f4f",
+            "png_sha256": "8fb83d29d11e04a0535d254ba28ff1c44338b316fd0398ba13ce4c8ee646257a"
+          },
+          {
+            "name": "07_결과조회",
+            "cells": 35,
+            "edges": 0,
+            "drawio_sha256": "dea37e3e365bbb1eb867872dde0de4ae9508e3eb943b7fe9aa6d196138a51d33",
+            "svg_sha256": "ace78852ad5cfc4ef4a8c042b3ff239e154e817b2d19cbb833a97a1d1ef36407",
+            "png_sha256": "1750bea11c3f1983cd4449be9d01101de6db69ee9838cbff94f13f6954cf710e"
+          },
+          {
+            "name": "08_결과비교",
+            "cells": 36,
+            "edges": 0,
+            "drawio_sha256": "c6a5e33f4a20d20d54b56f9791c7ca63e63a7e21f7f5536d1c746c65d89ab3c1",
+            "svg_sha256": "f7bac99dbe327daf026a2a68167bf6cb67be0836607277f7d12981aae133f802",
+            "png_sha256": "fcac5da570939aa35faa2765297b858880bc31960d0199d2cb9f256e7367bb32"
+          },
+          {
+            "name": "09_출력과_검수",
+            "cells": 38,
+            "edges": 0,
+            "drawio_sha256": "429cf89146f8635e4258950f156af9cf15acb761dba97c961b4ecc3acac72c0f",
+            "svg_sha256": "e2d411ea5b00fd822f01b1f048bdc738e72935f1cd28e820aa1a46f47e2ed886",
+            "png_sha256": "76a94a8d745bae8d7a8d0e80b01c6585ce1105495909ed31071e98ad1b59a2d0"
+          },
+          {
+            "name": "10_설정과_이름변경",
+            "cells": 23,
+            "edges": 0,
+            "drawio_sha256": "a20ee2998153dc9df9f577aad51528e39c775e5e1968bb2e0b9c4af21ade506c",
+            "svg_sha256": "1a0e6a815efe5a74b1b431d92284bf8579f3ece8bb263808b05591a885a118b3",
+            "png_sha256": "982b42efd33f2b4024d9da0b956e92ddbf036941dcecd51e2b902182af9c6e92"
+          }
+        ],
+        "native_gui_test": "not_run",
+        "native_drawio_roundtrip": "not_run"
+      }
+    },
+    {
+      "artifact": {
+        "path": "Code/.local/result-stage7-gui-first-reports/results.json",
+        "bytes": 1569,
+        "sha256": "336cc00c4fe26abc3995a253007f1bfa4e667320cffde8c830d76170e85a8cac",
+        "modified_utc": "2026-11-16T21:37:03.976364+00:00"
+      },
+      "content": {
+        "apply_enabled": false,
+        "cad_checks": [],
+        "cad_result": {},
+        "cad_stage": 0,
+        "canvas_checks": [],
+        "canvas_stage": 0,
+        "editor_checks": [],
+        "editor_stage": 0,
+        "editor_ui_state": "saved",
+        "error": "",
+        "frame_budget_tested": false,
+        "mesh_bodies": 0,
+        "mesh_triangles": 0,
+        "passed": true,
+        "pcb_checks": [],
+        "pcb_project_path": "",
+        "pcb_request_ticks": 0,
+        "pcb_stage": 0,
+        "pcb_ticks": 0,
+        "physics_tested": false,
+        "primitives_checks": [],
+        "primitives_stage": 0,
+        "project_id": "efc7c97e-9117-4b85-af04-76d7ed070372",
+        "rendered_frames": 0,
+        "renderer": "",
+        "revision_id": "dc1a0181-9309-4e5b-ae35-eadde756f379",
+        "saved_revision": "dc1a0181-9309-4e5b-ae35-eadde756f379",
+        "schema_version": "rfad.gui-smoke/0.1",
+        "service_sessions": 2,
+        "setup_checks": [
+          "results_late_selection_reset_destroy_safe",
+          "results_past_revision_named_catalog",
+          "results_unknown_source_preserved",
+          "results_smith_poles_active_and_units",
+          "results_explicit_port_comparison_and_conditions",
+          "results_exact_shared_frequency_marker",
+          "results_pinned_historical_export",
+          "results_saved_restart_preserves_source",
+          "results_return_design_preserves_selection"
+        ],
+        "setup_pending_ticks": 37,
+        "setup_stage": 15,
+        "snapshot_id": "",
+        "solver_checks": [],
+        "solver_frames": 0,
+        "solver_result": {},
+        "solver_sample_count": 0,
+        "solver_stage": 0,
+        "stage": 0,
+        "study_checks": [],
+        "study_stage": 0,
+        "study_view": {},
+        "sweep_circuit_id": "",
+        "sweep_grid_id": "",
+        "sweep_view": {},
+        "ux_checks": []
+      }
+    },
+    {
+      "artifact": {
+        "path": "Code/.local/result-stage7-gui-full-reports/catalog-cf9f420c.json",
+        "bytes": 2261,
+        "sha256": "f705b1c0e70722c9f921b57c0dcc941c339bf56d82e051529d82e97ad82aad74",
+        "modified_utc": "2026-11-16T22:06:55.726720+00:00"
+      },
+      "content": {
+        "apply_enabled": false,
+        "cad_checks": [],
+        "cad_result": {},
+        "cad_stage": 0,
+        "canvas_checks": [],
+        "canvas_stage": 0,
+        "editor_checks": [],
+        "editor_stage": 0,
+        "editor_ui_state": "saved",
+        "error": "",
+        "frame_budget_tested": false,
+        "mesh_bodies": 0,
+        "mesh_triangles": 0,
+        "passed": true,
+        "pcb_checks": [
+          "circular_outline_and_pattern_fixture",
+          "late_search_response_ignored",
+          "close_during_request_and_reopen",
+          "stackup_suggestions_published_and_missing",
+          "explicit_suggestion_use_preserves_missing_and_model",
+          "suggestion_duplicate_does_not_overwrite",
+          "search_controls_and_source_selection",
+          "suggestion_page_preserves_dirty_input_and_layers",
+          "suggestion_previous_page_preserves_material_assignment",
+          "accepted_suggestion_display_survives_page_change",
+          "material_form_catalog_dk_user_df_conductivity",
+          "layer_grid_input_and_explicit_mapping",
+          "suggestion_model_preserved_after_manual_edit",
+          "material_layer_assignment_preview",
+          "preview_is_read_only",
+          "preview_invalidated_on_input_change",
+          "suggestion_model_preserved_after_manual_edit",
+          "parent_close_veto_during_apply",
+          "single_apply_preserves_outline_and_pattern",
+          "single_step_undo_redo",
+          "saved_selection_dialog_reopened",
+          "saved_material_values_and_provenance",
+          "parent_close_during_lookup_safe_shutdown"
+        ],
+        "pcb_project_path": "projects/pcb-c74288ae-a95d-410d-838e-5245b1f00181",
+        "pcb_request_ticks": 4,
+        "pcb_stage": 35,
+        "pcb_ticks": 78,
+        "physics_tested": false,
+        "primitives_checks": [],
+        "primitives_stage": 0,
+        "project_id": "b0b3d20e-777b-4a68-97ab-0ddc2c678579",
+        "rendered_frames": 0,
+        "renderer": "",
+        "revision_id": "3cd76758-138f-445a-82c1-f152f7f32a2d",
+        "saved_revision": "3cd76758-138f-445a-82c1-f152f7f32a2d",
+        "schema_version": "rfad.gui-smoke/0.1",
+        "service_sessions": 1,
+        "setup_checks": [],
+        "setup_pending_ticks": 0,
+        "setup_stage": 0,
+        "snapshot_id": "",
+        "solver_checks": [],
+        "solver_frames": 0,
+        "solver_result": {},
+        "solver_sample_count": 0,
+        "solver_stage": 0,
+        "stage": 0,
+        "study_checks": [],
+        "study_stage": 0,
+        "study_view": {},
+        "sweep_circuit_id": "",
+        "sweep_grid_id": "",
+        "sweep_view": {},
+        "ux_checks": []
+      }
+    },
+    {
+      "artifact": {
+        "path": "Code/.local/result-stage7-gui-full-reports/delayed-db10d88c.json",
+        "bytes": 2263,
+        "sha256": "d1068285956cc8eb04dfa7c17808a0ec89799821b8925f3f4915c8d453faa28f",
+        "modified_utc": "2026-11-16T22:07:22.918807+00:00"
+      },
+      "content": {
+        "apply_enabled": false,
+        "cad_checks": [],
+        "cad_result": {},
+        "cad_stage": 0,
+        "canvas_checks": [],
+        "canvas_stage": 0,
+        "editor_checks": [],
+        "editor_stage": 0,
+        "editor_ui_state": "saved",
+        "error": "",
+        "frame_budget_tested": false,
+        "mesh_bodies": 0,
+        "mesh_triangles": 0,
+        "passed": true,
+        "pcb_checks": [
+          "circular_outline_and_pattern_fixture",
+          "late_search_response_ignored",
+          "close_during_request_and_reopen",
+          "stackup_suggestions_published_and_missing",
+          "explicit_suggestion_use_preserves_missing_and_model",
+          "suggestion_duplicate_does_not_overwrite",
+          "search_controls_and_source_selection",
+          "suggestion_page_preserves_dirty_input_and_layers",
+          "suggestion_previous_page_preserves_material_assignment",
+          "accepted_suggestion_display_survives_page_change",
+          "material_form_catalog_dk_user_df_conductivity",
+          "layer_grid_input_and_explicit_mapping",
+          "suggestion_model_preserved_after_manual_edit",
+          "material_layer_assignment_preview",
+          "preview_is_read_only",
+          "preview_invalidated_on_input_change",
+          "suggestion_model_preserved_after_manual_edit",
+          "parent_close_veto_during_apply",
+          "single_apply_preserves_outline_and_pattern",
+          "single_step_undo_redo",
+          "saved_selection_dialog_reopened",
+          "saved_material_values_and_provenance",
+          "parent_close_during_lookup_safe_shutdown"
+        ],
+        "pcb_project_path": "projects/pcb-ec09ec99-e9f3-4d6a-b8df-c74f0653af1c",
+        "pcb_request_ticks": 82,
+        "pcb_stage": 35,
+        "pcb_ticks": 155,
+        "physics_tested": false,
+        "primitives_checks": [],
+        "primitives_stage": 0,
+        "project_id": "2573e97c-429b-4ce0-b910-907036cfaf49",
+        "rendered_frames": 0,
+        "renderer": "",
+        "revision_id": "2a495f33-c998-499f-95c8-6ed85435f8c7",
+        "saved_revision": "2a495f33-c998-499f-95c8-6ed85435f8c7",
+        "schema_version": "rfad.gui-smoke/0.1",
+        "service_sessions": 1,
+        "setup_checks": [],
+        "setup_pending_ticks": 0,
+        "setup_stage": 0,
+        "snapshot_id": "",
+        "solver_checks": [],
+        "solver_frames": 0,
+        "solver_result": {},
+        "solver_sample_count": 0,
+        "solver_stage": 0,
+        "stage": 0,
+        "study_checks": [],
+        "study_stage": 0,
+        "study_view": {},
+        "sweep_circuit_id": "",
+        "sweep_grid_id": "",
+        "sweep_view": {},
+        "ux_checks": []
+      }
+    },
+    {
+      "artifact": {
+        "path": "Code/.local/result-stage7-gui-full-reports/design-rules.json",
+        "bytes": 1241,
+        "sha256": "84389eb22b9f16fa414322254a7027b7a3feaa4999fdfa9b0faef64c2013b0fe",
+        "modified_utc": "2026-11-16T22:06:02.448263+00:00"
+      },
+      "content": {
+        "apply_enabled": false,
+        "cad_checks": [],
+        "cad_result": {},
+        "cad_stage": 0,
+        "canvas_checks": [],
+        "canvas_stage": 0,
+        "editor_checks": [],
+        "editor_stage": 0,
+        "editor_ui_state": "saved",
+        "error": "",
+        "frame_budget_tested": false,
+        "mesh_bodies": 0,
+        "mesh_triangles": 0,
+        "passed": true,
+        "pcb_checks": [],
+        "pcb_project_path": "",
+        "pcb_request_ticks": 0,
+        "pcb_stage": 0,
+        "pcb_ticks": 0,
+        "physics_tested": false,
+        "primitives_checks": [],
+        "primitives_stage": 0,
+        "project_id": "f036079a-0092-4dca-bf0b-294bbe1acad1",
+        "rendered_frames": 0,
+        "renderer": "",
+        "revision_id": "1becb6d5-f650-4186-882a-40a2c9dbfeb9",
+        "saved_revision": "1becb6d5-f650-4186-882a-40a2c9dbfeb9",
+        "schema_version": "rfad.gui-smoke/0.1",
+        "service_sessions": 1,
+        "setup_checks": [
+          "design_rules_apply_and_overlay",
+          "design_rules_saved_reopen_and_recheck"
+        ],
+        "setup_pending_ticks": 35,
+        "setup_stage": 16,
+        "snapshot_id": "",
+        "solver_checks": [],
+        "solver_frames": 0,
+        "solver_result": {},
+        "solver_sample_count": 0,
+        "solver_stage": 0,
+        "stage": 0,
+        "study_checks": [],
+        "study_stage": 0,
+        "study_view": {},
+        "sweep_circuit_id": "",
+        "sweep_grid_id": "",
+        "sweep_view": {},
+        "ux_checks": []
+      }
+    },
+    {
+      "artifact": {
+        "path": "Code/.local/result-stage7-gui-full-reports/manual-14b4c40c.json",
+        "bytes": 1727,
+        "sha256": "0ab535d76bcd97a265cdd981749f06fc1090b2dbe967615a16ebc8381bf341e0",
+        "modified_utc": "2026-11-16T22:07:41.684850+00:00"
+      },
+      "content": {
+        "apply_enabled": false,
+        "cad_checks": [],
+        "cad_result": {},
+        "cad_stage": 0,
+        "canvas_checks": [],
+        "canvas_stage": 0,
+        "editor_checks": [],
+        "editor_stage": 0,
+        "editor_ui_state": "saved",
+        "error": "",
+        "frame_budget_tested": false,
+        "mesh_bodies": 0,
+        "mesh_triangles": 0,
+        "passed": true,
+        "pcb_checks": [
+          "circular_outline_and_pattern_fixture",
+          "manual_input_without_catalog",
+          "material_form_direct_values",
+          "layer_grid_input_and_explicit_mapping",
+          "material_layer_assignment_preview",
+          "preview_is_read_only",
+          "preview_invalidated_on_input_change",
+          "parent_close_veto_during_apply",
+          "single_apply_preserves_outline_and_pattern",
+          "single_step_undo_redo",
+          "saved_selection_dialog_reopened",
+          "saved_material_values_and_provenance",
+          "parent_close_during_lookup_safe_shutdown"
+        ],
+        "pcb_project_path": "projects/pcb-08ade9df-6adf-42a6-878e-82f1d37406aa",
+        "pcb_request_ticks": 4,
+        "pcb_stage": 35,
+        "pcb_ticks": 67,
+        "physics_tested": false,
+        "primitives_checks": [],
+        "primitives_stage": 0,
+        "project_id": "4ebf5094-784e-4695-910e-311cbf143037",
+        "rendered_frames": 0,
+        "renderer": "",
+        "revision_id": "4ca31d6d-720a-4c09-bd75-260107cea745",
+        "saved_revision": "4ca31d6d-720a-4c09-bd75-260107cea745",
+        "schema_version": "rfad.gui-smoke/0.1",
+        "service_sessions": 1,
+        "setup_checks": [],
+        "setup_pending_ticks": 0,
+        "setup_stage": 0,
+        "snapshot_id": "",
+        "solver_checks": [],
+        "solver_frames": 0,
+        "solver_result": {},
+        "solver_sample_count": 0,
+        "solver_stage": 0,
+        "stage": 0,
+        "study_checks": [],
+        "study_stage": 0,
+        "study_view": {},
+        "sweep_circuit_id": "",
+        "sweep_grid_id": "",
+        "sweep_view": {},
+        "ux_checks": []
+      }
+    },
+    {
+      "artifact": {
+        "path": "Code/.local/result-stage7-gui-full-reports/network.json",
+        "bytes": 2073,
+        "sha256": "45716070f0296587168c696e6095de77737db72fcda268118783cef39e4f9d3c",
+        "modified_utc": "2026-11-16T22:06:34.645255+00:00"
+      },
+      "content": {
+        "apply_enabled": false,
+        "cad_checks": [],
+        "cad_result": {},
+        "cad_stage": 0,
+        "canvas_checks": [],
+        "canvas_stage": 0,
+        "editor_checks": [],
+        "editor_stage": 0,
+        "editor_ui_state": "saved",
+        "error": "",
+        "frame_budget_tested": false,
+        "mesh_bodies": 0,
+        "mesh_triangles": 0,
+        "passed": true,
+        "pcb_checks": [],
+        "pcb_project_path": "",
+        "pcb_request_ticks": 0,
+        "pcb_stage": 0,
+        "pcb_ticks": 0,
+        "physics_tested": false,
+        "primitives_checks": [],
+        "primitives_stage": 0,
+        "project_id": "77977430-cc94-4aa7-bd5c-00b60981778a",
+        "rendered_frames": 0,
+        "renderer": "",
+        "revision_id": "014d600d-f844-44f3-bf10-98a850936957",
+        "saved_revision": "014d600d-f844-44f3-bf10-98a850936957",
+        "schema_version": "rfad.gui-smoke/0.1",
+        "service_sessions": 2,
+        "setup_checks": [
+          "network_late_response_close_destroy_safe",
+          "network_definitive_rejection_preserves_draft",
+          "network_uncertain_mutation_locks_replay",
+          "network_dirty_close_requires_discard",
+          "network_invalid_source_keeps_draft_editable",
+          "network_unknown_preview_and_input_invalidation",
+          "network_import_single_command_undo_redo",
+          "network_rlc_missing_value_and_review_invalidation",
+          "network_rlc_saved_definition_and_derived_candidate",
+          "network_target_assessment_preserves_validation_boundary",
+          "network_explicit_s_to_z_preserves_source",
+          "network_csv_explicit_mapping_preserves_unknown",
+          "network_saved_service_restart_preserves_library",
+          "network_frequency_units_preserve_si_and_revision",
+          "network_studio_results_marker_and_design_return",
+          "network_studio_assessment_source_points_and_design_return",
+          "network_export_pair_and_existing_workspace_protection"
+        ],
+        "setup_pending_ticks": 98,
+        "setup_stage": 23,
+        "snapshot_id": "",
+        "solver_checks": [],
+        "solver_frames": 0,
+        "solver_result": {},
+        "solver_sample_count": 0,
+        "solver_stage": 0,
+        "stage": 0,
+        "study_checks": [],
+        "study_stage": 0,
+        "study_view": {},
+        "sweep_circuit_id": "",
+        "sweep_grid_id": "",
+        "sweep_view": {},
+        "ux_checks": []
+      }
+    },
+    {
+      "artifact": {
+        "path": "Code/.local/result-stage7-gui-full-reports/physical-setup.json",
+        "bytes": 6723,
+        "sha256": "9119d46c2de4659c29a970092e1b3fe32d650c1bcd076e2a91fa405f1711d261",
+        "modified_utc": "2026-11-16T22:08:33.848173+00:00"
+      },
+      "content": {
+        "apply_enabled": false,
+        "cad_checks": [],
+        "cad_result": {
+          "artifacts": [
+            {
+              "artifact_id": "82c92bfc-519f-4ca3-b03c-5a1ac8c8451f",
+              "bytes": 97230,
+              "media_type": "model/step",
+              "producer": "rfad.cad/0.1",
+              "profile_id": "rfad.step.mechanical/0.1",
+              "role": "step",
+              "run_id": "38c215ad-0fe0-478c-b6f6-a69e04283bf5",
+              "sha256": "ac7e4d736a6d32aa12c0d1c207e04dab5e03f86d18322d8edf35f60c99f97f68",
+              "snapshot_id": "7eb3f708-c309-4860-8b17-4cc573fd8b0d",
+              "status": "generated_unverified",
+              "uri": "projects/CAD 한글 교환 검증/artifacts/38c215ad-0fe0-478c-b6f6-a69e04283bf5/model.step"
+            },
+            {
+              "artifact_id": "ec8ca17a-490b-4604-8e36-602b42b70d52",
+              "bytes": 18393,
+              "media_type": "application/vnd.opencascade.brep",
+              "producer": "rfad.cad/0.1",
+              "profile_id": "rfad.step.mechanical/0.1",
+              "role": "brep",
+              "run_id": "38c215ad-0fe0-478c-b6f6-a69e04283bf5",
+              "sha256": "97dd658533f4b6f563044ad6e76c938bb0f503a443bb5ce78eb00596a1587b7b",
+              "snapshot_id": "7eb3f708-c309-4860-8b17-4cc573fd8b0d",
+              "status": "generated_unverified",
+              "uri": "projects/CAD 한글 교환 검증/artifacts/38c215ad-0fe0-478c-b6f6-a69e04283bf5/model.brep"
+            },
+            {
+              "artifact_id": "885c948f-2cbd-4bb6-990a-f313531aa1f8",
+              "bytes": 48378,
+              "media_type": "application/json",
+              "producer": "rfad.cad/0.1",
+              "profile_id": "rfad.step.mechanical/0.1",
+              "role": "display_mesh",
+              "run_id": "38c215ad-0fe0-478c-b6f6-a69e04283bf5",
+              "sha256": "f959848a1c92e1763ea55e94855b50d713571e04da827158b9b2841645d259fb",
+              "snapshot_id": "7eb3f708-c309-4860-8b17-4cc573fd8b0d",
+              "status": "generated_unverified",
+              "uri": "projects/CAD 한글 교환 검증/artifacts/38c215ad-0fe0-478c-b6f6-a69e04283bf5/mesh.json"
+            },
+            {
+              "artifact_id": "d84003c7-4bba-4ca8-84b6-b5cc66d48529",
+              "bytes": 3067,
+              "media_type": "application/json",
+              "producer": "rfad.cad/0.1",
+              "profile_id": "rfad.step.mechanical/0.1",
+              "role": "validation",
+              "run_id": "38c215ad-0fe0-478c-b6f6-a69e04283bf5",
+              "sha256": "659edc963d5b447de6b8751530fbae9be612f20e2233ea1d19cafcf9f526bff8",
+              "snapshot_id": "7eb3f708-c309-4860-8b17-4cc573fd8b0d",
+              "status": "generated_unverified",
+              "uri": "projects/CAD 한글 교환 검증/artifacts/38c215ad-0fe0-478c-b6f6-a69e04283bf5/validation.json"
+            },
+            {
+              "artifact_id": "302f90d1-b7bb-488d-b549-86149574b39b",
+              "bytes": 51218,
+              "media_type": "application/json",
+              "producer": "rfad.cad/0.1",
+              "profile_id": "rfad.step.mechanical/0.1",
+              "role": "sidecar",
+              "run_id": "38c215ad-0fe0-478c-b6f6-a69e04283bf5",
+              "sha256": "bed99383acb39c70eee794521c585271b96bf7170d427e6a9bda2ade7ead7504",
+              "snapshot_id": "7eb3f708-c309-4860-8b17-4cc573fd8b0d",
+              "status": "generated_unverified",
+              "uri": "projects/CAD 한글 교환 검증/artifacts/38c215ad-0fe0-478c-b6f6-a69e04283bf5/sidecar.json"
+            },
+            {
+              "artifact_id": "5279539a-13a3-461f-9f6c-9cca8d14dbaa",
+              "bytes": 8338,
+              "media_type": "application/json",
+              "producer": "rfad.cad/0.1",
+              "profile_id": "rfad.step.mechanical/0.1",
+              "role": "manifest",
+              "run_id": "38c215ad-0fe0-478c-b6f6-a69e04283bf5",
+              "sha256": "f2420fccdefbcce2212048c3ec78e47afcea5da939a3078b831df9f6a228b28e",
+              "snapshot_id": "7eb3f708-c309-4860-8b17-4cc573fd8b0d",
+              "status": "generated_unverified",
+              "uri": "projects/CAD 한글 교환 검증/artifacts/38c215ad-0fe0-478c-b6f6-a69e04283bf5/manifest.json"
+            }
+          ],
+          "body_count": 5,
+          "environment_placement": [
+            {
+              "clearance_mm": 4.945,
+              "electrical_connection": "not_evaluated",
+              "id": "9ad98dba-465d-423d-8965-0a4f441ff96e",
+              "material_id": null,
+              "nearest_id": "10c321c5-8d99-4276-abe6-5746483d9c06",
+              "relation": "separated"
+            }
+          ],
+          "kernel_independent": false,
+          "manufacturing_verified": false,
+          "physics_verified": false,
+          "profile": "rfad.step.mechanical/0.1",
+          "projection_purpose": "geometry",
+          "snapshot": {
+            "artifact": {
+              "bytes": 30726,
+              "sha256": "516f8b295a51bd2bf7e6b4500bdf277de0f1baca55e6c359c6fd0cec7e37c3be",
+              "uri": "projects/CAD 한글 교환 검증/snapshots/cb43d7e3-64eb-42be-9f84-2218f5ae8120/7eb3f708-c309-4860-8b17-4cc573fd8b0d/project.json"
+            },
+            "canonical_version": "rfad.canonical/1.0",
+            "content_hash": "65a4893735c89be9aef5d2c687671542c01dacdf715e3b5bb674fc94f0030b3f",
+            "description": "GUI CAD 출력 입력",
+            "project_id": "ce62811c-1364-4dab-b390-bc975e1cde7c",
+            "revision_id": "cb43d7e3-64eb-42be-9f84-2218f5ae8120",
+            "schema_version": "rfad.project/0.5",
+            "sealed_at": 1794866904.4510467,
+            "snapshot_id": "7eb3f708-c309-4860-8b17-4cc573fd8b0d",
+            "validation_state": "not_evaluated"
+          },
+          "solid_count": 5,
+          "status": "generated_unverified",
+          "step_schema": "AP242_MANAGED_MODEL_BASED_3D_ENGINEERING_MIM_LF {1 0 10303 442 1 1 4 }"
+        },
+        "cad_stage": 0,
+        "canvas_checks": [],
+        "canvas_stage": 0,
+        "editor_checks": [],
+        "editor_stage": 0,
+        "editor_ui_state": "saved",
+        "error": "",
+        "frame_budget_tested": false,
+        "mesh_bodies": 5,
+        "mesh_triangles": 736,
+        "passed": true,
+        "pcb_checks": [],
+        "pcb_project_path": "",
+        "pcb_request_ticks": 0,
+        "pcb_stage": 0,
+        "pcb_ticks": 0,
+        "physics_tested": false,
+        "primitives_checks": [],
+        "primitives_stage": 0,
+        "project_id": "ce62811c-1364-4dab-b390-bc975e1cde7c",
+        "rendered_frames": 7,
+        "renderer": "4.6.0 - Build 32.0.101.7088 / Intel(R) Iris(R) Xe Graphics",
+        "revision_id": "cb43d7e3-64eb-42be-9f84-2218f5ae8120",
+        "saved_revision": "cb43d7e3-64eb-42be-9f84-2218f5ae8120",
+        "schema_version": "rfad.gui-smoke/0.1",
+        "service_sessions": 1,
+        "setup_checks": [
+          "physical_setup_surface_and_step_applied",
+          "physical_setup_native_opengl_clearance",
+          "physical_setup_step_visibility_independent",
+          "physical_setup_saved_reopen_sources_and_missing",
+          "physical_setup_rebuild_from_embedded_step"
+        ],
+        "setup_pending_ticks": 255,
+        "setup_stage": 20,
+        "snapshot_id": "7eb3f708-c309-4860-8b17-4cc573fd8b0d",
+        "solver_checks": [],
+        "solver_frames": 0,
+        "solver_result": {},
+        "solver_sample_count": 0,
+        "solver_stage": 0,
+        "stage": 0,
+        "study_checks": [],
+        "study_stage": 0,
+        "study_view": {},
+        "sweep_circuit_id": "",
+        "sweep_grid_id": "",
+        "sweep_view": {},
+        "ux_checks": []
+      }
+    },
+    {
+      "artifact": {
+        "path": "Code/.local/result-stage7-gui-full-reports/precision-editor.json",
+        "bytes": 1565,
+        "sha256": "40d467751346686fe63565d49229ad1f90cd8407bf70a44a9655d759031a7d52",
+        "modified_utc": "2026-11-16T22:09:13.821949+00:00"
+      },
+      "content": {
+        "apply_enabled": false,
+        "cad_checks": [],
+        "cad_result": {},
+        "cad_stage": 0,
+        "canvas_checks": [],
+        "canvas_stage": 0,
+        "editor_checks": [],
+        "editor_stage": 0,
+        "editor_ui_state": "saved",
+        "error": "",
+        "frame_budget_tested": false,
+        "mesh_bodies": 0,
+        "mesh_triangles": 0,
+        "passed": true,
+        "pcb_checks": [],
+        "pcb_project_path": "",
+        "pcb_request_ticks": 0,
+        "pcb_stage": 0,
+        "pcb_ticks": 0,
+        "physics_tested": false,
+        "primitives_checks": [],
+        "primitives_stage": 0,
+        "project_id": "df792446-4cad-4bcc-a8ce-6317b20c765d",
+        "rendered_frames": 0,
+        "renderer": "",
+        "revision_id": "4a0589c7-0f1d-42fa-a148-e52fdb646e17",
+        "saved_revision": "4a0589c7-0f1d-42fa-a148-e52fdb646e17",
+        "schema_version": "rfad.gui-smoke/0.1",
+        "service_sessions": 2,
+        "setup_checks": [
+          "rename_duplicate_rejection_keeps_draft",
+          "rename_and_search_keep_stable_selection",
+          "precision_null_scene_keeps_original_and_recovers",
+          "precision_input_change_invalidates_review",
+          "precision_dimension_atomic_apply",
+          "precision_rotate_one_command_undo_redo_selection",
+          "precision_parameter_binding_and_readonly_reopen",
+          "precision_saved_service_restart_preserves_geometry"
+        ],
+        "setup_pending_ticks": 61,
+        "setup_stage": 18,
+        "snapshot_id": "",
+        "solver_checks": [],
+        "solver_frames": 0,
+        "solver_result": {},
+        "solver_sample_count": 0,
+        "solver_stage": 0,
+        "stage": 0,
+        "study_checks": [],
+        "study_stage": 0,
+        "study_view": {},
+        "sweep_circuit_id": "",
+        "sweep_grid_id": "",
+        "sweep_view": {},
+        "ux_checks": []
+      }
+    },
+    {
+      "artifact": {
+        "path": "Code/.local/result-stage7-gui-full-reports/precision-planar.json",
+        "bytes": 1429,
+        "sha256": "e38002008f026bc48358313371dfa57166ae8616b3d420b9625b78813817d670",
+        "modified_utc": "2026-11-16T22:08:49.578264+00:00"
+      },
+      "content": {
+        "apply_enabled": false,
+        "cad_checks": [],
+        "cad_result": {},
+        "cad_stage": 0,
+        "canvas_checks": [],
+        "canvas_stage": 0,
+        "editor_checks": [],
+        "editor_stage": 0,
+        "editor_ui_state": "saved",
+        "error": "",
+        "frame_budget_tested": false,
+        "mesh_bodies": 0,
+        "mesh_triangles": 0,
+        "passed": true,
+        "pcb_checks": [],
+        "pcb_project_path": "",
+        "pcb_request_ticks": 0,
+        "pcb_stage": 0,
+        "pcb_ticks": 0,
+        "physics_tested": false,
+        "primitives_checks": [],
+        "primitives_stage": 0,
+        "project_id": "79b7313a-dfdb-4ff8-8665-08230b59c17d",
+        "rendered_frames": 0,
+        "renderer": "",
+        "revision_id": "3ece9469-8b3b-48a5-9383-d9153e120b16",
+        "saved_revision": "3ece9469-8b3b-48a5-9383-d9153e120b16",
+        "schema_version": "rfad.gui-smoke/0.1",
+        "service_sessions": 2,
+        "setup_checks": [
+          "planar_target_order_difference_intersection_union_preview",
+          "planar_union_atomic_replacement_selection",
+          "planar_empty_offset_blocks_without_deleting_source",
+          "planar_offset_mirror_apply_undo_redo",
+          "planar_saved_service_restart_preserves_geometry"
+        ],
+        "setup_pending_ticks": 59,
+        "setup_stage": 20,
+        "snapshot_id": "",
+        "solver_checks": [],
+        "solver_frames": 0,
+        "solver_result": {},
+        "solver_sample_count": 0,
+        "solver_stage": 0,
+        "stage": 0,
+        "study_checks": [],
+        "study_stage": 0,
+        "study_view": {},
+        "sweep_circuit_id": "",
+        "sweep_grid_id": "",
+        "sweep_view": {},
+        "ux_checks": []
+      }
+    },
+    {
+      "artifact": {
+        "path": "Code/.local/result-stage7-gui-full-reports/printed-seed-workspace.json",
+        "bytes": 1187,
+        "sha256": "faed847794c89aaef98f44e4ea27edb4edf73ec854477d0facca5e549f700aaa",
+        "modified_utc": "2026-11-16T22:10:26.633382+00:00"
+      },
+      "content": {
+        "apply_enabled": false,
+        "cad_checks": [],
+        "cad_result": {},
+        "cad_stage": 0,
+        "canvas_checks": [],
+        "canvas_stage": 0,
+        "editor_checks": [],
+        "editor_stage": 0,
+        "editor_ui_state": "saved",
+        "error": "설정 화면 단계 1: 작업 탭과 실제 화면이 다릅니다.",
+        "frame_budget_tested": false,
+        "mesh_bodies": 0,
+        "mesh_triangles": 0,
+        "passed": false,
+        "pcb_checks": [],
+        "pcb_project_path": "",
+        "pcb_request_ticks": 0,
+        "pcb_stage": 0,
+        "pcb_ticks": 0,
+        "physics_tested": false,
+        "primitives_checks": [],
+        "primitives_stage": 0,
+        "project_id": "0b58d8d1-3d20-4bc4-a8fa-8ba7fd052ad4",
+        "rendered_frames": 0,
+        "renderer": "",
+        "revision_id": "b9c63cfd-cd12-4caa-baf2-42156a835088",
+        "saved_revision": "",
+        "schema_version": "rfad.gui-smoke/0.1",
+        "service_sessions": 1,
+        "setup_checks": [],
+        "setup_pending_ticks": 2,
+        "setup_stage": 1,
+        "snapshot_id": "",
+        "solver_checks": [],
+        "solver_frames": 0,
+        "solver_result": {},
+        "solver_sample_count": 0,
+        "solver_stage": 0,
+        "stage": 0,
+        "study_checks": [],
+        "study_stage": 0,
+        "study_view": {},
+        "sweep_circuit_id": "",
+        "sweep_grid_id": "",
+        "sweep_view": {},
+        "ux_checks": []
+      }
+    },
+    {
+      "artifact": {
+        "path": "Code/.local/result-stage7-gui-full-reports/results.json",
+        "bytes": 1736,
+        "sha256": "a610a66fedc43cbe8c00a9cb84d14ba024f294ec219818564de6d9881d5d3de8",
+        "modified_utc": "2026-11-16T22:11:58.576550+00:00"
+      },
+      "content": {
+        "apply_enabled": false,
+        "cad_checks": [],
+        "cad_result": {},
+        "cad_stage": 0,
+        "canvas_checks": [],
+        "canvas_stage": 0,
+        "editor_checks": [],
+        "editor_stage": 0,
+        "editor_ui_state": "saved",
+        "error": "",
+        "frame_budget_tested": false,
+        "mesh_bodies": 0,
+        "mesh_triangles": 0,
+        "passed": true,
+        "pcb_checks": [],
+        "pcb_project_path": "",
+        "pcb_request_ticks": 0,
+        "pcb_stage": 0,
+        "pcb_ticks": 0,
+        "physics_tested": false,
+        "primitives_checks": [],
+        "primitives_stage": 0,
+        "project_id": "cc0c57f5-c566-468e-8a40-192e525e6c78",
+        "rendered_frames": 0,
+        "renderer": "",
+        "revision_id": "7789019a-07b7-4eb3-bafb-f4cbb6e3afa3",
+        "saved_revision": "7789019a-07b7-4eb3-bafb-f4cbb6e3afa3",
+        "schema_version": "rfad.gui-smoke/0.1",
+        "service_sessions": 2,
+        "setup_checks": [
+          "results_late_selection_reset_destroy_safe",
+          "results_past_revision_named_catalog",
+          "results_unknown_source_preserved",
+          "results_grouped_conditions_preserve_unknowns",
+          "results_smith_poles_active_and_units",
+          "results_explicit_port_comparison_and_conditions",
+          "results_conditions_pages_and_stale_selection",
+          "results_exact_shared_frequency_marker",
+          "results_comparison_selection_restores_source_conditions",
+          "results_pinned_historical_export",
+          "results_saved_restart_preserves_source",
+          "results_return_design_preserves_selection"
+        ],
+        "setup_pending_ticks": 41,
+        "setup_stage": 15,
+        "snapshot_id": "",
+        "solver_checks": [],
+        "solver_frames": 0,
+        "solver_result": {},
+        "solver_sample_count": 0,
+        "solver_stage": 0,
+        "stage": 0,
+        "study_checks": [],
+        "study_stage": 0,
+        "study_view": {},
+        "sweep_circuit_id": "",
+        "sweep_grid_id": "",
+        "sweep_view": {},
+        "ux_checks": []
+      }
+    },
+    {
+      "artifact": {
+        "path": "Code/.local/result-stage7-gui-full-reports/sweep.json",
+        "bytes": 9811,
+        "sha256": "1070b493623086c98bd1708c8211df2b10c07cde1c2a5aeae34360f8dab0554a",
+        "modified_utc": "2026-11-16T22:12:50.588613+00:00"
+      },
+      "content": {
+        "apply_enabled": false,
+        "cad_checks": [],
+        "cad_result": {},
+        "cad_stage": 0,
+        "canvas_checks": [],
+        "canvas_stage": 0,
+        "editor_checks": [],
+        "editor_stage": 0,
+        "editor_ui_state": "saved",
+        "error": "",
+        "frame_budget_tested": false,
+        "mesh_bodies": 0,
+        "mesh_triangles": 0,
+        "passed": true,
+        "pcb_checks": [],
+        "pcb_project_path": "",
+        "pcb_request_ticks": 0,
+        "pcb_stage": 0,
+        "pcb_ticks": 0,
+        "physics_tested": false,
+        "primitives_checks": [],
+        "primitives_stage": 0,
+        "project_id": "0130a70c-dff9-458a-bbdf-2366dc78e0ce",
+        "rendered_frames": 0,
+        "renderer": "",
+        "revision_id": "41ebb64e-af4f-448e-bcbb-8ed0fefee812",
+        "saved_revision": "41ebb64e-af4f-448e-bcbb-8ed0fefee812",
+        "schema_version": "rfad.gui-smoke/0.1",
+        "service_sessions": 2,
+        "setup_checks": [
+          "sweep_cartesian_preview_2_by_2",
+          "sweep_native_fields_and_viewport",
+          "sweep_frequency_display_preserves_review_and_si",
+          "sweep_changed_input_invalidates_review",
+          "sweep_value_mode_explicit_rows_safe_reset",
+          "sweep_create_does_not_start_or_change_design",
+          "sweep_circuit_units_and_duplicate_preserved",
+          "sweep_cancel_preserves_explicit_resume",
+          "sweep_real_circuit_completion_and_reuse",
+          "sweep_saved_service_restart_preserves_history",
+          "sweep_studio_titles_and_result_button",
+          "sweep_candidate_result_native_conditions",
+          "sweep_studio_candidates_and_design_return"
+        ],
+        "setup_pending_ticks": 424,
+        "setup_stage": 23,
+        "snapshot_id": "",
+        "solver_checks": [],
+        "solver_frames": 0,
+        "solver_result": {},
+        "solver_sample_count": 0,
+        "solver_stage": 0,
+        "stage": 0,
+        "study_checks": [],
+        "study_stage": 0,
+        "study_view": {},
+        "sweep_circuit_id": "1ee59ab2-d417-4491-8bc6-803fdf5521d4",
+        "sweep_grid_id": "9ae8b297-0a24-46d6-bba1-3d9d48226a0a",
+        "sweep_view": {
+          "allowed_actions": {
+            "cancel": false,
+            "resume": false,
+            "start": false
+          },
+          "budget_display": {
+            "disk_bytes": {
+              "text": "4",
+              "unit": "GiB"
+            },
+            "ram_bytes": {
+              "text": "2",
+              "unit": "GiB"
+            },
+            "wall_seconds": {
+              "text": "1",
+              "unit": "h"
+            }
+          },
+          "budget_usage": {
+            "disk_bytes": 838581,
+            "native_solves": 0,
+            "wall_seconds": 5.742505311965942
+          },
+          "convergence_status": "not_established",
+          "counts": {
+            "completed": 3,
+            "failed": 0,
+            "pending": 0,
+            "running": 0,
+            "skipped": 0,
+            "total": 3
+          },
+          "created_at": 1794867142.9999313,
+          "current_candidate": 3,
+          "current_job_id": null,
+          "message": "완료 결과와 미평가/실패 근거를 보존했습니다. 제작/측정 검증은 미확립입니다.",
+          "name": "GUI 외부 회로 3후보",
+          "original_specification": {
+            "budget": {
+              "concurrency": 1,
+              "disk_bytes": 4294967296,
+              "max_candidates": 128,
+              "max_native_solves": 0,
+              "ram_bytes": 2147483648,
+              "wall_seconds": 3600
+            },
+            "combination": "cartesian",
+            "name": "GUI 외부 회로 3후보",
+            "network": {
+              "circuit_id": "65f02060-ebc3-5022-be16-81c23f869a2c",
+              "dataset_id": "8bf906a4-a04d-5dd4-a8ca-074820025ac6"
+            },
+            "rows": [],
+            "schema": "rfad.design-sweep-spec/0.1",
+            "settings": null,
+            "source_refs": [
+              "GUI 명시 스윕 입력; 실측 아님"
+            ],
+            "target_contexts": [],
+            "target_ids": [
+              "00000000-0000-0000-0000-000000000064"
+            ],
+            "type": "circuit_sweep",
+            "variables": [
+              {
+                "dimension": "impedance",
+                "id": "736d9485-f009-4321-b362-af11382fdf6d",
+                "kind": "circuit_value",
+                "values": [
+                  {
+                    "source_refs": [
+                      "GUI 명시 스윕 입력; 실측 아님"
+                    ],
+                    "text": "50",
+                    "unit": "ohm"
+                  },
+                  {
+                    "source_refs": [
+                      "GUI 명시 스윕 입력; 실측 아님"
+                    ],
+                    "text": "100",
+                    "unit": "ohm"
+                  },
+                  {
+                    "source_refs": [
+                      "GUI 명시 스윕 입력; 실측 아님"
+                    ],
+                    "text": "0.05",
+                    "unit": "kohm"
+                  }
+                ]
+              }
+            ]
+          },
+          "physical_validation": "not_established",
+          "profile": "rfad.design-sweep/0.1",
+          "snapshot": {
+            "artifact": {
+              "bytes": 13942,
+              "sha256": "3e92bef721c8a37c43a29c4467ab3f900febe1df85e41148ab4b6bc3b57dfa77",
+              "uri": "projects/CAD 한글 교환 검증/snapshots/41ebb64e-af4f-448e-bcbb-8ed0fefee812/e6324dcf-bd80-4761-be61-3daabb2a9ccc/project.json"
+            },
+            "canonical_version": "rfad.canonical/1.0",
+            "content_hash": "08568b87dd1d3cfdd53cc521061bb86934eeb956cfd32bd5bcc2e94304ec141f",
+            "description": "명시적 연구: GUI 외부 회로 3후보",
+            "project_id": "0130a70c-dff9-458a-bbdf-2366dc78e0ce",
+            "revision_id": "41ebb64e-af4f-448e-bcbb-8ed0fefee812",
+            "schema_version": "rfad.project/0.5",
+            "sealed_at": 1794867142.9417405,
+            "snapshot_id": "e6324dcf-bd80-4761-be61-3daabb2a9ccc",
+            "validation_state": "not_evaluated"
+          },
+          "source_revision_matches_current": true,
+          "specification": {
+            "budget": {
+              "concurrency": 1,
+              "disk_bytes": 4294967296,
+              "max_candidates": 128,
+              "max_native_solves": 0,
+              "ram_bytes": 2147483648,
+              "wall_seconds": 3600
+            },
+            "combination": "cartesian",
+            "name": "GUI 외부 회로 3후보",
+            "network": {
+              "circuit_id": "65f02060-ebc3-5022-be16-81c23f869a2c",
+              "dataset_id": "8bf906a4-a04d-5dd4-a8ca-074820025ac6"
+            },
+            "rows": [],
+            "schema": "rfad.design-sweep-spec/0.1",
+            "settings": null,
+            "source_refs": [
+              "GUI 명시 스윕 입력; 실측 아님"
+            ],
+            "target_contexts": [],
+            "target_ids": [
+              "00000000-0000-0000-0000-000000000064"
+            ],
+            "type": "circuit_sweep",
+            "variables": [
+              {
+                "dimension": "impedance",
+                "id": "736d9485-f009-4321-b362-af11382fdf6d",
+                "kind": "circuit_value",
+                "values": [
+                  {
+                    "dimension": "impedance",
+                    "display_unit": "ohm",
+                    "source_refs": [
+                      "GUI 명시 스윕 입력; 실측 아님"
+                    ],
+                    "status": "user_entered",
+                    "value_si": 50.0
+                  },
+                  {
+                    "dimension": "impedance",
+                    "display_unit": "ohm",
+                    "source_refs": [
+                      "GUI 명시 스윕 입력; 실측 아님"
+                    ],
+                    "status": "user_entered",
+                    "value_si": 100.0
+                  },
+                  {
+                    "dimension": "impedance",
+                    "display_unit": "kohm",
+                    "source_refs": [
+                      "GUI 명시 스윕 입력; 실측 아님"
+                    ],
+                    "status": "user_entered",
+                    "value_si": 50.0
+                  }
+                ]
+              }
+            ]
+          },
+          "state": "completed",
+          "stop_reason": null,
+          "study_id": "1ee59ab2-d417-4491-8bc6-803fdf5521d4",
+          "type": "circuit_sweep",
+          "usage_display": {
+            "disk_bytes": {
+              "text": "818.927",
+              "unit": "KiB"
+            },
+            "native_solves": {
+              "text": "0",
+              "unit": "회"
+            },
+            "wall_seconds": {
+              "text": "5.74251",
+              "unit": "s"
+            }
+          },
+          "variable_labels": {
+            "circuit_state:1a7e26e5-2f79-4482-9f61-1aaad92d028c": "보조 R 1 실장 상태",
+            "circuit_state:352b1cd0-69e0-45dc-95ff-ba7121ec252c": "보조 R 3 실장 상태",
+            "circuit_state:3c589828-403a-4a69-ac44-31ad24fae306": "보조 R 7 실장 상태",
+            "circuit_state:736d9485-f009-4321-b362-af11382fdf6d": "R1 실장 상태",
+            "circuit_state:88aaf511-4188-41e6-88a3-0652795b5058": "보조 R 2 실장 상태",
+            "circuit_state:c33b696e-e22d-41bd-8004-8cf5bb3e5cdd": "보조 R 4 실장 상태",
+            "circuit_state:e18540a1-7bf9-4f5c-ba56-25e47f6f1fe2": "보조 R 6 실장 상태",
+            "circuit_state:e94ca99d-2753-4377-9b92-eabfd555d281": "보조 R 5 실장 상태",
+            "circuit_value:1a7e26e5-2f79-4482-9f61-1aaad92d028c": "보조 R 1 값",
+            "circuit_value:352b1cd0-69e0-45dc-95ff-ba7121ec252c": "보조 R 3 값",
+            "circuit_value:3c589828-403a-4a69-ac44-31ad24fae306": "보조 R 7 값",
+            "circuit_value:736d9485-f009-4321-b362-af11382fdf6d": "R1 값",
+            "circuit_value:88aaf511-4188-41e6-88a3-0652795b5058": "보조 R 2 값",
+            "circuit_value:c33b696e-e22d-41bd-8004-8cf5bb3e5cdd": "보조 R 4 값",
+            "circuit_value:e18540a1-7bf9-4f5c-ba56-25e47f6f1fe2": "보조 R 6 값",
+            "circuit_value:e94ca99d-2753-4377-9b92-eabfd555d281": "보조 R 5 값",
+            "parameter:c01cd225-9024-4a50-9db9-2b36c447fc06": "선폭 1",
+            "parameter:e772d008-a4ea-4e28-9710-5bdb984f3c00": "선폭 2",
+            "solver_setting:air_padding_mm": "공기 여백",
+            "solver_setting:curve_tolerance_mm": "곡선 근사 오차",
+            "solver_setting:end_criterion": "에너지 종료 기준",
+            "solver_setting:feature_subdivisions": "임계 구간 분할 수",
+            "solver_setting:frequency_hz.count": "주파수 표본 수",
+            "solver_setting:frequency_hz.start": "시작 주파수",
+            "solver_setting:frequency_hz.stop": "끝 주파수",
+            "solver_setting:grid_mm": "전역 격자 간격",
+            "solver_setting:max_timesteps": "시간 단계 상한",
+            "solver_setting:radiation.box_clearance_mm": "방사 기록 상자 거리",
+            "solver_setting:radiation.phi_step_deg": "방사 phi 간격",
+            "solver_setting:radiation.theta_step_deg": "방사 theta 간격"
+          }
+        },
+        "ux_checks": []
+      }
+    },
+    {
+      "artifact": {
+        "path": "Code/.local/result-stage7-gui-full-reports/target-template-delayed.json",
+        "bytes": 2586,
+        "sha256": "aeeb0cb270ad0a8a8c6ce508ae2cc187a68ad0e26867712918ba743910f19217",
+        "modified_utc": "2026-11-16T22:14:25.013269+00:00"
+      },
+      "content": {
+        "apply_enabled": false,
+        "cad_checks": [],
+        "cad_result": {},
+        "cad_stage": 0,
+        "canvas_checks": [],
+        "canvas_stage": 0,
+        "editor_checks": [],
+        "editor_stage": 0,
+        "editor_ui_state": "saved",
+        "error": "",
+        "frame_budget_tested": false,
+        "mesh_bodies": 0,
+        "mesh_triangles": 0,
+        "passed": true,
+        "pcb_checks": [],
+        "pcb_project_path": "",
+        "pcb_request_ticks": 0,
+        "pcb_stage": 0,
+        "pcb_ticks": 0,
+        "physics_tested": false,
+        "primitives_checks": [],
+        "primitives_stage": 0,
+        "project_id": "db637f9c-2309-4003-8d70-71bcfc4bcc2d",
+        "rendered_frames": 0,
+        "renderer": "",
+        "revision_id": "1c1761d0-14b4-456f-a9e2-dfd85518c791",
+        "saved_revision": "1c1761d0-14b4-456f-a9e2-dfd85518c791",
+        "schema_version": "rfad.gui-smoke/0.1",
+        "service_sessions": 1,
+        "setup_checks": [
+          "late_response_close_and_destroy_are_safe",
+          "definitive_rejection_keeps_draft_editable",
+          "uncertain_mutation_requires_reload",
+          "failed_target_selection_restores_authoritative_identity",
+          "post_apply_query_failure_locks_without_duplicate_create",
+          "dirty_close_requires_explicit_discard",
+          "new_target_has_no_physical_defaults",
+          "parent_close_veto_during_target_apply",
+          "unit_only_change_preserves_si_and_missing_conditions",
+          "invalid_target_preserves_draft_and_revision",
+          "target_add_edit_select_remove",
+          "explicit_1001_samples_and_origins_preserved",
+          "completed_changes_reloaded_after_dialog_disconnect",
+          "latest_target_revision_returned_to_frame",
+          "target_undo_redo",
+          "other_card_draft_survives_post_apply_query_failure",
+          "template_card_drafts_and_close_confirmation",
+          "late_preview_invalidated_by_edit",
+          "oversized_template_origin_blocks_without_mutation",
+          "template_card_drafts_and_close_confirmation",
+          "late_preview_invalidated_by_edit",
+          "arc_card_preview_apply_without_physics_defaults",
+          "ifa_card_preview_apply_latest_revision",
+          "literature_reference_dimensions_and_partial_scope",
+          "literature_modified_dimensions_invalidate_and_keep_source",
+          "literature_atomic_apply_without_physical_defaults",
+          "template_single_command_undo_redo",
+          "literature_single_command_undo_redo",
+          "saved_reopen_preserves_geometry"
+        ],
+        "setup_pending_ticks": 712,
+        "setup_stage": 35,
+        "snapshot_id": "",
+        "solver_checks": [],
+        "solver_frames": 0,
+        "solver_result": {},
+        "solver_sample_count": 0,
+        "solver_stage": 0,
+        "stage": 0,
+        "study_checks": [],
+        "study_stage": 0,
+        "study_view": {},
+        "sweep_circuit_id": "",
+        "sweep_grid_id": "",
+        "sweep_view": {},
+        "ux_checks": []
+      }
+    },
+    {
+      "artifact": {
+        "path": "Code/.local/result-stage7-gui-full-reports/target-template.json",
+        "bytes": 2586,
+        "sha256": "67dfeddcfc33679c2305d9f11df1e874108770755b18272c1c78c2bdd77f826b",
+        "modified_utc": "2026-11-16T22:15:52.502531+00:00"
+      },
+      "content": {
+        "apply_enabled": false,
+        "cad_checks": [],
+        "cad_result": {},
+        "cad_stage": 0,
+        "canvas_checks": [],
+        "canvas_stage": 0,
+        "editor_checks": [],
+        "editor_stage": 0,
+        "editor_ui_state": "saved",
+        "error": "",
+        "frame_budget_tested": false,
+        "mesh_bodies": 0,
+        "mesh_triangles": 0,
+        "passed": true,
+        "pcb_checks": [],
+        "pcb_project_path": "",
+        "pcb_request_ticks": 0,
+        "pcb_stage": 0,
+        "pcb_ticks": 0,
+        "physics_tested": false,
+        "primitives_checks": [],
+        "primitives_stage": 0,
+        "project_id": "525ba3cb-7363-4f3d-bc10-68927d73032c",
+        "rendered_frames": 0,
+        "renderer": "",
+        "revision_id": "0b54cbd1-8271-400c-8ef4-b45cbb957156",
+        "saved_revision": "0b54cbd1-8271-400c-8ef4-b45cbb957156",
+        "schema_version": "rfad.gui-smoke/0.1",
+        "service_sessions": 1,
+        "setup_checks": [
+          "late_response_close_and_destroy_are_safe",
+          "definitive_rejection_keeps_draft_editable",
+          "uncertain_mutation_requires_reload",
+          "failed_target_selection_restores_authoritative_identity",
+          "post_apply_query_failure_locks_without_duplicate_create",
+          "dirty_close_requires_explicit_discard",
+          "new_target_has_no_physical_defaults",
+          "parent_close_veto_during_target_apply",
+          "unit_only_change_preserves_si_and_missing_conditions",
+          "invalid_target_preserves_draft_and_revision",
+          "target_add_edit_select_remove",
+          "explicit_1001_samples_and_origins_preserved",
+          "completed_changes_reloaded_after_dialog_disconnect",
+          "latest_target_revision_returned_to_frame",
+          "target_undo_redo",
+          "other_card_draft_survives_post_apply_query_failure",
+          "template_card_drafts_and_close_confirmation",
+          "late_preview_invalidated_by_edit",
+          "oversized_template_origin_blocks_without_mutation",
+          "template_card_drafts_and_close_confirmation",
+          "late_preview_invalidated_by_edit",
+          "arc_card_preview_apply_without_physics_defaults",
+          "ifa_card_preview_apply_latest_revision",
+          "literature_reference_dimensions_and_partial_scope",
+          "literature_modified_dimensions_invalidate_and_keep_source",
+          "literature_atomic_apply_without_physical_defaults",
+          "template_single_command_undo_redo",
+          "literature_single_command_undo_redo",
+          "saved_reopen_preserves_geometry"
+        ],
+        "setup_pending_ticks": 653,
+        "setup_stage": 35,
+        "snapshot_id": "",
+        "solver_checks": [],
+        "solver_frames": 0,
+        "solver_result": {},
+        "solver_sample_count": 0,
+        "solver_stage": 0,
+        "stage": 0,
+        "study_checks": [],
+        "study_stage": 0,
+        "study_view": {},
+        "sweep_circuit_id": "",
+        "sweep_grid_id": "",
+        "sweep_view": {},
+        "ux_checks": []
+      }
+    },
+    {
+      "artifact": {
+        "path": "Code/.local/result-stage7-gui-selection-reports/results.json",
+        "bytes": 1632,
+        "sha256": "7fcaaea9089df8227c8b514f08ae1b5b4b87dbfd6322e5d87c65ab7abed68d9c",
+        "modified_utc": "2026-11-16T21:41:13.688206+00:00"
+      },
+      "content": {
+        "apply_enabled": false,
+        "cad_checks": [],
+        "cad_result": {},
+        "cad_stage": 0,
+        "canvas_checks": [],
+        "canvas_stage": 0,
+        "editor_checks": [],
+        "editor_stage": 0,
+        "editor_ui_state": "saved",
+        "error": "",
+        "frame_budget_tested": false,
+        "mesh_bodies": 0,
+        "mesh_triangles": 0,
+        "passed": true,
+        "pcb_checks": [],
+        "pcb_project_path": "",
+        "pcb_request_ticks": 0,
+        "pcb_stage": 0,
+        "pcb_ticks": 0,
+        "physics_tested": false,
+        "primitives_checks": [],
+        "primitives_stage": 0,
+        "project_id": "e6a96197-0ebb-46a0-b486-6a064dc2fef9",
+        "rendered_frames": 0,
+        "renderer": "",
+        "revision_id": "9a08cf0c-27dd-45ff-891a-990569ada0bd",
+        "saved_revision": "9a08cf0c-27dd-45ff-891a-990569ada0bd",
+        "schema_version": "rfad.gui-smoke/0.1",
+        "service_sessions": 2,
+        "setup_checks": [
+          "results_late_selection_reset_destroy_safe",
+          "results_past_revision_named_catalog",
+          "results_unknown_source_preserved",
+          "results_smith_poles_active_and_units",
+          "results_explicit_port_comparison_and_conditions",
+          "results_exact_shared_frequency_marker",
+          "results_comparison_selection_restores_source_conditions",
+          "results_pinned_historical_export",
+          "results_saved_restart_preserves_source",
+          "results_return_design_preserves_selection"
+        ],
+        "setup_pending_ticks": 40,
+        "setup_stage": 15,
+        "snapshot_id": "",
+        "solver_checks": [],
+        "solver_frames": 0,
+        "solver_result": {},
+        "solver_sample_count": 0,
+        "solver_stage": 0,
+        "stage": 0,
+        "study_checks": [],
+        "study_stage": 0,
+        "study_view": {},
+        "sweep_circuit_id": "",
+        "sweep_grid_id": "",
+        "sweep_view": {},
+        "ux_checks": []
+      }
+    },
+    {
+      "artifact": {
+        "path": "Code/.local/result-stage7-gui-workspace-final-reports/printed-seed-workspace.json",
+        "bytes": 1573,
+        "sha256": "ab233604881f49b52784de197f8db40850dd7798e8793de5f4082289c8670878",
+        "modified_utc": "2026-11-16T22:18:34.996771+00:00"
+      },
+      "content": {
+        "apply_enabled": false,
+        "cad_checks": [],
+        "cad_result": {},
+        "cad_stage": 0,
+        "canvas_checks": [],
+        "canvas_stage": 0,
+        "editor_checks": [],
+        "editor_stage": 0,
+        "editor_ui_state": "saved",
+        "error": "",
+        "frame_budget_tested": false,
+        "mesh_bodies": 0,
+        "mesh_triangles": 0,
+        "passed": true,
+        "pcb_checks": [],
+        "pcb_project_path": "",
+        "pcb_request_ticks": 0,
+        "pcb_stage": 0,
+        "pcb_ticks": 0,
+        "physics_tested": false,
+        "primitives_checks": [],
+        "primitives_stage": 0,
+        "project_id": "5b2b2357-54e9-441d-bc73-44562b88e4f4",
+        "rendered_frames": 0,
+        "renderer": "",
+        "revision_id": "55066bbf-6632-4cc2-8046-6a617c59c1a8",
+        "saved_revision": "55066bbf-6632-4cc2-8046-6a617c59c1a8",
+        "schema_version": "rfad.gui-smoke/0.1",
+        "service_sessions": 1,
+        "setup_checks": [
+          "workspace_navigation_and_layer_visibility_without_mutation",
+          "source_stackup_conflict_visible_without_default",
+          "seed_recipe_only_change_requires_discard_confirmation",
+          "seed_scope_block_and_separate_mode_drafts",
+          "estimated_seed_and_late_preview_invalidation",
+          "three_printed_cards_applied_without_physical_defaults",
+          "printed_seed_atomic_undo_redo",
+          "printed_seed_saved_reopen"
+        ],
+        "setup_pending_ticks": 119,
+        "setup_stage": 35,
+        "snapshot_id": "",
+        "solver_checks": [],
+        "solver_frames": 0,
+        "solver_result": {},
+        "solver_sample_count": 0,
+        "solver_stage": 0,
+        "stage": 0,
+        "study_checks": [],
+        "study_stage": 0,
+        "study_view": {},
+        "sweep_circuit_id": "",
+        "sweep_grid_id": "",
+        "sweep_view": {},
+        "ux_checks": []
+      }
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/23_결과검증_프로젝트재열기.jpg",
+      "bytes": 158738,
+      "sha256": "b0a72c6aee06098d074ced6a3e11701f198b9aee2d7e17647377084dc74286bf",
+      "modified_utc": "2026-11-16T21:53:09.714880+00:00"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/24_공통결과_주파수단위와_복소표본.jpg",
+      "bytes": 228624,
+      "sha256": "94f88c2d740d863b6d84aa93c500610e45f4fabb0c40bba548255736dd9dabd0",
+      "modified_utc": "2026-11-16T22:00:57.397068+00:00"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/25_스미스차트와_실제임피던스.jpg",
+      "bytes": 221117,
+      "sha256": "3cda822f22e9030229b9e8393171f8d12882931a72c0ed96fd466bfaaf20563a",
+      "modified_utc": "2026-11-16T22:01:09.313298+00:00"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/26_효율과_전력수지_기준.jpg",
+      "bytes": 217716,
+      "sha256": "7b4cd440291ae915bb6a287946ffc8786b92c89e2070eec006f4721ec3101269",
+      "modified_utc": "2026-11-16T22:01:16.438524+00:00"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/27_방사패턴_기록양방향절단면.jpg",
+      "bytes": 188546,
+      "sha256": "84017d5d2b1b7720f2a90f020edad277c2855e49fe783bad8c6ddd25f3dd6e55",
+      "modified_utc": "2026-11-16T22:01:37.176450+00:00"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/28_삼차원방사_회전.jpg",
+      "bytes": 196873,
+      "sha256": "8ad0f54650df2ecf1cef5784efec0e5ed469b4e9ec9b21a8ffac03b64f51dd77",
+      "modified_utc": "2026-11-16T22:01:54.657027+00:00"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/29_편파_복소원문_표.jpg",
+      "bytes": 252865,
+      "sha256": "5e92b858a63c7029a4b62792004e416b177145e087571636cc8966c185f860e3",
+      "modified_utc": "2026-11-16T22:02:05.609487+00:00"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/30_성분필드단면과_실제좌표.jpg",
+      "bytes": 207191,
+      "sha256": "936ec9622af20d8a8329ab561d9d194a8ff27d263cf4ff3ca8030989475c81e5",
+      "modified_utc": "2026-11-16T22:02:36.722709+00:00"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/31_다중결과와_비교조건.jpg",
+      "bytes": 218522,
+      "sha256": "d49573ed7a75b5ae2f3960be087ddbe21a53ace468f35c01c7507db2568fe104",
+      "modified_utc": "2026-11-16T22:03:51.222090+00:00"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/32_최종결과검증후_저장재열기.jpg",
+      "bytes": 158662,
+      "sha256": "cf28610c15c1fdfe583a97a80339a498986aa3c86b2ffe2ef9ff4876c443c729",
+      "modified_utc": "2026-11-16T22:04:57.615986+00:00"
+    }
+  ],
+  "product_working_bytes": [
+    {
+      "path": "Code/CMakeLists.txt",
+      "bytes": 15277,
+      "sha256": "529ce35dee6895aecdd1259caa860e8357df38e028bf67e7e1e3aba82e3ba000",
+      "modified_utc": "2026-11-16T21:29:22.681405+00:00"
+    },
+    {
+      "path": "Code/src/rfad/adapters/field_hdf5.py",
+      "bytes": 9724,
+      "sha256": "2cb61bb00971e0afd0367b5d396de15bfd751dde131d7304143d33b158c7835b",
+      "modified_utc": "2026-11-16T21:30:02.362468+00:00"
+    },
+    {
+      "path": "Code/src/rfad/application/network_service.py",
+      "bytes": 12986,
+      "sha256": "7328f63903a597dfc7e0a81bd5ec193b82ee5a8addb76af1723f7d19f2ab32f8",
+      "modified_utc": "2026-11-16T21:23:25.803925+00:00"
+    },
+    {
+      "path": "Code/src/rfad/application/result_catalog.py",
+      "bytes": 7371,
+      "sha256": "1c2b694bca0e5befabace6f97ebe108159e91c1730d7a9af60a231cf5953ee9d",
+      "modified_utc": "2026-11-16T21:33:39.504259+00:00"
+    },
+    {
+      "path": "Code/src/rfad/application/result_complex.py",
+      "bytes": 11399,
+      "sha256": "36b159e592ed9f1b69616b5a4286d0e2ad7db38db65aee62c6cfc3f7b3adc526",
+      "modified_utc": "2026-11-16T21:25:32.999199+00:00"
+    },
+    {
+      "path": "Code/src/rfad/application/result_export.py",
+      "bytes": 5099,
+      "sha256": "188e213d4d3b3bc48efd203fd2a7f96ae505595cd42d273b9111c2f0cae932f0",
+      "modified_utc": "2026-11-16T21:27:57.688653+00:00"
+    },
+    {
+      "path": "Code/src/rfad/application/result_fields.py",
+      "bytes": 13962,
+      "sha256": "0875bf3878572da29287ea19dfeec0bd14896f4c6451bb4ce4418d4f7dd73ab2",
+      "modified_utc": "2026-11-16T21:34:10.001969+00:00"
+    },
+    {
+      "path": "Code/src/rfad/application/result_metrics.py",
+      "bytes": 8001,
+      "sha256": "41210755bb62a96344ec0369c1e3424eea4e37db0e643b0c47bf8185d972687a",
+      "modified_utc": "2026-11-16T22:16:08.203805+00:00"
+    },
+    {
+      "path": "Code/src/rfad/application/result_radiation.py",
+      "bytes": 9051,
+      "sha256": "f39f1524510ac9a7339d6de804e083047851e1f91ed7f9450b5b6cbf3fa49786",
+      "modified_utc": "2026-11-16T21:23:09.162342+00:00"
+    },
+    {
+      "path": "Code/src/rfad/application/result_service.py",
+      "bytes": 7611,
+      "sha256": "3d3a510263e366395d79d476db02e7b9b54ca050f23ae5b27cc0f8a4afa559ad",
+      "modified_utc": "2026-11-16T21:33:39.505578+00:00"
+    },
+    {
+      "path": "Code/src/rfad/application/result_smith.py",
+      "bytes": 5182,
+      "sha256": "26c2faa40c8e9b4699a5ae874d168f26b5562814af41c14f1c6cc8454d907d51",
+      "modified_utc": "2026-11-16T21:22:13.448563+00:00"
+    },
+    {
+      "path": "Code/src/rfad/application/result_sources.py",
+      "bytes": 20031,
+      "sha256": "2207df30e9482a799d8508a71710f1fe5e57ba08343142ea004200080f9be200",
+      "modified_utc": "2026-11-16T21:33:39.503255+00:00"
+    },
+    {
+      "path": "Code/src/rfad/application/rpc.py",
+      "bytes": 27805,
+      "sha256": "e0bc5a5e7a2308a951adad6bd17a1c44e4fee18d64fe043f714a5f6f42c63274",
+      "modified_utc": "2026-11-16T21:22:42.021898+00:00"
+    },
+    {
+      "path": "Code/src/rfad/domain/radiation_polarization.py",
+      "bytes": 4336,
+      "sha256": "cbf14abfa2cf62d6010dc94b7e391af8a3f8940fa28e39d79664230f68f26ea7",
+      "modified_utc": "2026-11-16T22:18:24.120462+00:00"
+    },
+    {
+      "path": "Code/tests/result_view_model_test.cpp",
+      "bytes": 7565,
+      "sha256": "eee3d673ade6c81eff730e0dc6e502879332dfaff1c62f840f2492a1136319b5",
+      "modified_utc": "2026-11-16T21:50:48.227117+00:00"
+    },
+    {
+      "path": "Code/tests/test_gui_results_process.py",
+      "bytes": 11593,
+      "sha256": "56ae0769bfd4ae5afed39c225d5981d40c85390f3c2417d6593f61a9f343c27c",
+      "modified_utc": "2026-11-16T21:55:08.592273+00:00"
+    },
+    {
+      "path": "Code/tests/test_result_fields.py",
+      "bytes": 23922,
+      "sha256": "1fbf3acef73597e166165d41b8ce3856d282fca24b96ef9774c666cf7de9a009",
+      "modified_utc": "2026-11-16T21:34:10.003441+00:00"
+    },
+    {
+      "path": "Code/tests/test_result_integration.py",
+      "bytes": 10720,
+      "sha256": "6f692d26c237b9aedcbca5a9a63910cb1792a2ee0b19093a9eec4e0154c823a6",
+      "modified_utc": "2026-11-16T21:25:33.000049+00:00"
+    },
+    {
+      "path": "Code/tests/test_result_math.py",
+      "bytes": 10685,
+      "sha256": "02f463cb3c64616b560109990f65537567613a5b2046760a98a8c760fce7995d",
+      "modified_utc": "2026-11-16T21:33:39.506582+00:00"
+    },
+    {
+      "path": "Code/tests/test_result_metrics_bounds.py",
+      "bytes": 7072,
+      "sha256": "0b78a79f897623d6ce985777ca739be65c3b2d3a29f3eb8e557cc8e6304ee6d8",
+      "modified_utc": "2026-11-16T22:16:59.884684+00:00"
+    },
+    {
+      "path": "Code/tests/test_result_radiation.py",
+      "bytes": 15660,
+      "sha256": "23e41a7160a6ae17b831c0f943ac3806dac165b842ec4762c1f171e86ccb0d1d",
+      "modified_utc": "2026-11-16T22:18:24.123463+00:00"
+    },
+    {
+      "path": "Code/tests/test_result_sources.py",
+      "bytes": 11387,
+      "sha256": "b9d459b3a39b928822d970e5a0a28d2c8afb69a8b2c637bc047fa9bfbb983384",
+      "modified_utc": "2026-11-16T21:23:51.404412+00:00"
+    },
+    {
+      "path": "Code/tests/test_solver_jobs.py",
+      "bytes": 38884,
+      "sha256": "5f20f0c1da60a097aa9d06107a44c86182746c13006336bc52dd6d9de972c776",
+      "modified_utc": "2026-11-16T21:52:38.413846+00:00"
+    },
+    {
+      "path": "Code/tools/build_implementation_audit.py",
+      "bytes": 17714,
+      "sha256": "b7e2f4248e9dc642e76cdb5b953348bb2b475835c3b40ac020959705ba8effbe",
+      "modified_utc": "2026-11-16T21:40:31.866133+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/README.md",
+      "bytes": 41394,
+      "sha256": "0fb0e09b2c9a56fcd0102ac181ff097b372611a102b5f2e2b597d62132d39aae",
+      "modified_utc": "2026-11-16T22:22:43.673546+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/app_options.h",
+      "bytes": 1147,
+      "sha256": "93561f754be67a3f732e4ec0849a7847230525b45453cd1c358f24106def4734",
+      "modified_utc": "2026-11-16T21:21:15.695582+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/field_result_view.cpp",
+      "bytes": 20387,
+      "sha256": "f9e5d3e1c81002b784273a46a8d23d5e71c1235f6e58ad6754cd31a08122557f",
+      "modified_utc": "2026-11-16T21:45:00.454579+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/field_result_view.h",
+      "bytes": 2198,
+      "sha256": "328181fd4de465df470ec916acf3c936c00c898be8ab73c6f2ce711e7bfde897",
+      "modified_utc": "2026-11-16T21:32:28.204256+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/field_slice_canvas.cpp",
+      "bytes": 11017,
+      "sha256": "6e49d1f852b870ef6ad39783165f91e8e6e8a7ec3bb0090221d813672d2e83e9",
+      "modified_utc": "2026-11-16T21:16:53.877292+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/field_slice_canvas.h",
+      "bytes": 1004,
+      "sha256": "07c51fa98281d44a16f2018f786013ec03d3736cd2d1bd3da0970b7158e7ba51",
+      "modified_utc": "2026-11-16T21:16:53.877292+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/main.cpp",
+      "bytes": 7573,
+      "sha256": "1684aa1f477060d3abfd5b67df05580928ca4b79bd24ae4f1e3836511c78586b",
+      "modified_utc": "2026-11-16T21:21:15.699948+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/network_chart.cpp",
+      "bytes": 14052,
+      "sha256": "fa231ed7a080bc8314ef3cddf725f9aab6a5ca7a6884b9c13e042a22160b4aae",
+      "modified_utc": "2026-11-16T21:29:43.874724+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/network_chart.h",
+      "bytes": 2002,
+      "sha256": "6e38303589be4716998ae0a7a7dde6e11a87fe6ed992897910574cbc7627885a",
+      "modified_utc": "2026-11-16T21:29:22.679397+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/result_compare_view.cpp",
+      "bytes": 26688,
+      "sha256": "d19cd317d834ff66c1b3f620515ee7467344db7cc8c7e62cbb033fc1cd6c0aaa",
+      "modified_utc": "2026-11-16T21:39:01.210203+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/result_compare_view.h",
+      "bytes": 2408,
+      "sha256": "8bd1c68f55c91c54c97d979abdb0a8477cbb3e7d68a7da28726d5e87248a29b7",
+      "modified_utc": "2026-11-16T21:39:00.586597+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/result_conditions_view.cpp",
+      "bytes": 17759,
+      "sha256": "359d388e7b2111cd4571fd76c97216f101b36e27a94249ee8ea317d124100d67",
+      "modified_utc": "2026-11-16T21:55:40.216447+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/result_conditions_view.h",
+      "bytes": 2146,
+      "sha256": "7bcb63566423aece878ef81eee32f4ff4d0c41b9d99566f2a38512f25b7edc65",
+      "modified_utc": "2026-11-16T21:54:20.670511+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/result_metrics_view.cpp",
+      "bytes": 7040,
+      "sha256": "01ea8b71a492067769f7126b06548bed83001d94ced475ffae315bf23bfb6262",
+      "modified_utc": "2026-11-16T21:55:33.799438+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/result_metrics_view.h",
+      "bytes": 836,
+      "sha256": "3d6f44c0aec80cf3c3257bef619e9bacbda9fbf4d9fa68dd4f5a7668a0f251e0",
+      "modified_utc": "2026-11-16T21:16:22.882358+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/result_network_view.cpp",
+      "bytes": 12581,
+      "sha256": "577d07baad76fdf6c9ca64a497aa06df832fd527eae0d0642d27c9d627a581cf",
+      "modified_utc": "2026-11-16T21:55:33.799438+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/result_network_view.h",
+      "bytes": 1387,
+      "sha256": "6f9095da7ff9d15c3818ee0f49a15717a94ec4017aebf97834974764dbdcfcc0",
+      "modified_utc": "2026-11-16T21:19:40.460039+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/result_presentation.cpp",
+      "bytes": 13148,
+      "sha256": "80a840eb834a317f301fe4852a9bb8de5244422140f53007c749bacc23900397",
+      "modified_utc": "2026-11-16T21:33:38.117002+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/result_presentation.h",
+      "bytes": 788,
+      "sha256": "008326e797f5eb422448689a70044ac8de430bd18987d36299115feaf15b4372",
+      "modified_utc": "2026-11-16T20:56:39.368818+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/result_radiation_canvas.cpp",
+      "bytes": 9914,
+      "sha256": "93dd01d0b883c88c1641134551d035cdf1b1a0e806cf6f8eae10a7ed460a3d2d",
+      "modified_utc": "2026-11-16T21:50:48.097605+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/result_radiation_canvas.h",
+      "bytes": 965,
+      "sha256": "39df22c66f68a7c1bb7d76e606509f003bf806e3266fa8bb41184f9201e10064",
+      "modified_utc": "2026-11-16T21:16:22.983455+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/result_radiation_data.h",
+      "bytes": 7324,
+      "sha256": "f5a40117622781fcb4316c8940ba60db0f05635078c283c0cd3499c93e328fd4",
+      "modified_utc": "2026-11-16T21:27:30.587792+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/result_radiation_plane.h",
+      "bytes": 2379,
+      "sha256": "445b9b7d1f646a5cd46d4cdcd9525db1228c0d8e6d6c4f88e2d7234c1eba6d57",
+      "modified_utc": "2026-11-16T21:45:03.492145+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/result_radiation_view.cpp",
+      "bytes": 19240,
+      "sha256": "1c50151ff1123813f70dce2e70b6a77b42d1b3ec5b631147b220901b7ea66dba",
+      "modified_utc": "2026-11-16T21:55:33.805171+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/result_radiation_view.h",
+      "bytes": 1714,
+      "sha256": "381ec50fc4415cdecfd047db5390a2846abb15bed38d6e5e0b5dfa36187a7df1",
+      "modified_utc": "2026-11-16T21:33:38.117002+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/result_source_browser.cpp",
+      "bytes": 12529,
+      "sha256": "dab2d61008208f34ccec2b074054f8f817ab0c77ee11f82b93a54e4cbd1537a8",
+      "modified_utc": "2026-11-16T21:29:43.757929+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/result_source_browser.h",
+      "bytes": 1745,
+      "sha256": "1b2cba1b3556d185dbdc0347f7f2e892c93042d4d53504b6b08e005a6413eb44",
+      "modified_utc": "2026-11-16T20:54:44.232331+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/result_workspace.cpp",
+      "bytes": 21504,
+      "sha256": "4a405a3fa9002fe91a92b3a120ffa3957bf11a0e43e292699c5ec1e9d41b3065",
+      "modified_utc": "2026-11-16T21:54:20.699499+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/result_workspace.h",
+      "bytes": 3255,
+      "sha256": "93ccdc0c5e711d7f84693b7549fc8b61bb49af5239bb5751eb39a963dd8367ce",
+      "modified_utc": "2026-11-16T21:53:49.656175+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/result_workspace_compare.cpp",
+      "bytes": 11891,
+      "sha256": "7182eacf7ca9b2ce9866a7f6baf6884bdf791b09b82bd811caa04931a7dec3a4",
+      "modified_utc": "2026-11-16T21:54:20.754889+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/smith_chart.cpp",
+      "bytes": 9964,
+      "sha256": "c69d00f45b210a42388b551fafc87e1ac29cd51f2adb262b603cc86c2d41ec11",
+      "modified_utc": "2026-11-16T21:50:29.934810+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/smith_chart.h",
+      "bytes": 823,
+      "sha256": "59079bacc61f6007681fca4d55a18ab03d2be1715db140cd7f90f4379f5bb461",
+      "modified_utc": "2026-11-16T20:50:45.575795+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/smith_view.cpp",
+      "bytes": 12325,
+      "sha256": "9cde1797947876df1241fcbebac51229b5380979d73f5004bd0232634062180b",
+      "modified_utc": "2026-11-16T21:55:33.799438+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/smith_view.h",
+      "bytes": 1395,
+      "sha256": "40a45e9af4bda87ddb3641908272e96f6f79eef9fb61dc8b2c5e7a3756786a53",
+      "modified_utc": "2026-11-16T20:53:23.182342+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_frame.cpp",
+      "bytes": 1384,
+      "sha256": "fd2f2ef6a58570958819ee943ddbddd99c67a02f18031881e9ffc73815f69e28",
+      "modified_utc": "2026-11-16T21:17:37.892391+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_frame.h",
+      "bytes": 18759,
+      "sha256": "a830259e5a5c7bef8020955d27a4490b9bc000e3254ac8c8f6a118af1be45bd3",
+      "modified_utc": "2026-11-16T21:17:37.892391+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_layout.cpp",
+      "bytes": 27228,
+      "sha256": "3593ce215302ce85896743209c7342c61044fa640fee1e43f1197b26cd186940",
+      "modified_utc": "2026-11-16T21:17:37.892391+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_network.cpp",
+      "bytes": 15832,
+      "sha256": "cb6ed0e22e4ab5af244cd2d07faad6dde6896a5e70e467d18026b35f1b125af2",
+      "modified_utc": "2026-11-16T21:21:17.044695+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_results.cpp",
+      "bytes": 2264,
+      "sha256": "b0aba816d8fcf06cba9a2659cc58dc44f55d92b69af06f181ccdf262cde78dea",
+      "modified_utc": "2026-11-16T21:21:16.842355+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_session.cpp",
+      "bytes": 11850,
+      "sha256": "49a60d57e5ad7d11ab58a6a5cade1bf033b2a94b1b117d7dec6a1adcc852fbdf",
+      "modified_utc": "2026-11-16T21:21:17.099562+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_smoke.h",
+      "bytes": 8839,
+      "sha256": "1e31293b0b0b4c9e522706b076fd8d60df432058f149966ec5bb5e0d017777d4",
+      "modified_utc": "2026-11-16T21:21:15.701977+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_smoke_canvas.cpp",
+      "bytes": 16596,
+      "sha256": "8d62b2f1af3ffd321ee821dfdcdbc9d120c7eda019dbf3d67714c4537ce522c3",
+      "modified_utc": "2026-11-16T21:32:28.817645+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_smoke_network.cpp",
+      "bytes": 28015,
+      "sha256": "1eb619900ab56f53b3f63f5508be4c6334a36102e5c79ce92289568de70a82d1",
+      "modified_utc": "2026-11-16T21:17:37.908792+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_smoke_printed.cpp",
+      "bytes": 11064,
+      "sha256": "4199b87053e8e77664fb6cbcb9863fe42acab66c11d92a470388e074d61e2d7d",
+      "modified_utc": "2026-11-16T22:11:33.177218+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_smoke_results.cpp",
+      "bytes": 19989,
+      "sha256": "7ce19bb71daafd8d5a3624fa8165e657f1846ef888224fdf5a0f460eb4b3b5a6",
+      "modified_utc": "2026-11-16T21:55:09.304555+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_smoke_setup.cpp",
+      "bytes": 6469,
+      "sha256": "6282796129c6d1e22a3c9b5a320cc122a0c2345e4e436e30b667e35ed8230b35",
+      "modified_utc": "2026-11-16T21:29:22.681405+00:00"
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_workspace.cpp",
+      "bytes": 12788,
+      "sha256": "aafe1b2e7480b10d3da1e85d3f9b28393f25a0b4aee6cd901adeef09975ca5bf",
+      "modified_utc": "2026-11-16T21:21:17.005429+00:00"
+    }
+  ],
+  "executable": {
+    "path": "Code/build/windows-release/bin/tracewave_gui.exe",
+    "bytes": 24922589,
+    "sha256": "43b36d6e8c86ad2503e8fa137bd69cfce92e7610c1317e2d4fb0fa859449ce14",
+    "modified_utc": "2026-11-16T22:17:56.090357+00:00"
+  },
+  "source_bundles": {
+    "rfad.source.host-calculation/0.1": {
+      "files": 171,
+      "json_bytes": 1637368,
+      "descriptor": {
+        "schema": "rfad.source-bundle/0.1",
+        "profile": "rfad.source.host-calculation/0.1",
+        "entry_points": [
+          "src/rfad/application/rpc.py",
+          "src/rfad/application/projects.py",
+          "src/rfad/application/design_sweep_service.py",
+          "src/rfad/application/design_sweep_runner.py",
+          "tools/wsl_supervisor.py"
+        ],
+        "dynamic_imports": [
+          "src/rfad/adapters/network_hdf5.py:h5py",
+          "src/rfad/adapters/network_hdf5.py:numpy"
+        ],
+        "source_sha256": "9a767333722a72559f14b202a1b12fa983245a66a2589417c1f5f4149538becd"
+      },
+      "max_files": 192,
+      "max_bytes": 4194304
+    },
+    "rfad.source.openems/0.1": {
+      "files": 79,
+      "json_bytes": 697347,
+      "descriptor": {
+        "schema": "rfad.source-bundle/0.1",
+        "profile": "rfad.source.openems/0.1",
+        "entry_points": [
+          "tools/openems_worker.py",
+          "tools/wsl_supervisor.py"
+        ],
+        "dynamic_imports": [],
+        "source_sha256": "5e52534bca59bc0c525d21c745b3c4c359520b784aaa314eb9c2d3697639de4c"
+      },
+      "max_files": 192,
+      "max_bytes": 4194304
+    }
+  },
+  "intermediate_failures": [
+    {
+      "scope": "initial_native_polarization_direct_comparison",
+      "reason": "native float32 phi trigonometry and double requested-degree rotation differ",
+      "resolution": "separate angle precision effect; do not modify raw Etheta/Ephi"
+    },
+    {
+      "scope": "first_public_rpc_native_read_before_source_freeze",
+      "reason": "old resolver already imported while export module changed: KeyError numerical_details",
+      "resolution": "freeze product and repeat in fresh process; result-stage7-native-read-frozen.log",
+      "dedicated_failure_log_available": false
+    },
+    {
+      "scope": "first_full_service_regression",
+      "reason": "test_close_does_not_claim_remote_stopped_when_transport_ignores_stop waited only 3 seconds for source staging before it started the actual close phase",
+      "resolution": "prepare actual source/staging in the test main thread; verify its job identity; preserve actual coordinator thread, blocking transport, close assertions and existing timeouts; no product change",
+      "focused_followup": "58 passed in 171.915 seconds; result-stage7-close-source-solver-regression.log",
+      "final_followup": "result-stage7-service-final.log"
+    },
+    {
+      "scope": "full_windows_gui_printed_seed",
+      "reason": "smoke expected old result/compare default pages 6/4 instead of current 9/14",
+      "resolution": "test-only expectation update also checks preserved legacy tools 6/4; printed test and 8 checks passed in 22.004 seconds",
+      "product_cpp_unchanged_since_visual_binary": "3833cf41d7a0736ad2843945f8f5161f676c89652276e3212c785473ef4efcac",
+      "test_only_relinked_binary": "43b36d6e8c86ad2503e8fa137bd69cfce92e7610c1317e2d4fb0fa859449ce14"
+    },
+    {
+      "scope": "independent_numerical_review_after_full_collection",
+      "reason": "near-linear finite axial ratio cancellation and total efficiency/percent overflow",
+      "resolution": "exact original-float determinant and explicit derived overflow states; 18 focused tests and actual archived public RPC recheck",
+      "full_regression_precedes_these_two_python_boundary_fixes": true
+    },
+    {
+      "scope": "metrics_compatibility_first_run",
+      "reason": "source identity changed while polarization source was edited, causing correct E_CONFLICT on frozen study execution",
+      "resolution": "freeze both product modules and repeat; 20 passed, 1 environment skip in 28.766 seconds"
+    }
+  ],
+  "new_fdtd_executed": false,
+  "independent_physics_validated": false,
+  "measurement_validated": false,
+  "limitations": [
+    "RO4350B local conductor loss 2.788446% exceeds initial 2% and remains not established",
+    "GHz copper PTH independent accuracy remains not established",
+    "actual manufacturing/measurement conditions remain unknown",
+    "bounded internal result view implementation; not complete R1 or all DPI/accessibility/performance acceptance",
+    "working byte hashes differ from Git LF-normalized blobs; logs/workspaces under Code/.local are untracked evidence"
+  ]
+}

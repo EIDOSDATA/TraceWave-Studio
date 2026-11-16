@@ -51,6 +51,9 @@ void StudioFrame::Connect()
              m_precisionSupported = result.value("methods", Json::object()).contains("precision.get");
              m_networkSupported = result.value("methods", Json::object()).contains("network.library") &&
                                   result.value("methods", Json::object()).contains("network.apply");
+             m_resultsSupported = result.value("methods", Json::object()).contains("result.sources") &&
+                                  result.value("methods", Json::object()).contains("result.describe") &&
+                                  result.value("methods", Json::object()).contains("result.page");
              m_sweepSupported = result.value("methods", Json::object()).contains("sweep.context") &&
                                 result.value("methods", Json::object()).contains("sweep.create");
              Log("프로젝트 서비스에 연결했습니다.");
@@ -88,7 +91,7 @@ void StudioFrame::Send(const std::string& method, const Json& input, bool mutati
     }
     const bool foreground =
         method.rfind("precision.", 0) != 0 && method.rfind("target.editor.", 0) != 0 &&
-        method.rfind("template.", 0) != 0 && method.rfind("catalog.", 0) != 0 &&
+        method.rfind("result.", 0) != 0 && method.rfind("template.", 0) != 0 && method.rfind("catalog.", 0) != 0 &&
         method.rfind("pcb.selection.", 0) != 0 && method.rfind("study.", 0) != 0 && method != "cad.latest" &&
         method != "solver.latest" && method != "solver.samples" && method != "result.open" && method != "job.cancel" &&
         method != "solver.plan" && method != "solver.prepare" && method != "job.submit" &&

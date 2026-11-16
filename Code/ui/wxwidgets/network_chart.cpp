@@ -6,6 +6,7 @@
 #include <wx/graphics.h>
 #include <wx/control.h>
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <limits>
 #include <memory>
@@ -40,6 +41,7 @@ NetworkChart::NetworkChart(wxWindow* parent) : wxPanel(parent)
     SetMinSize(FromDIP(wxSize(320, 240)));
     SetName(Display("네트워크 실제 표본 곡선"));
     Bind(wxEVT_PAINT, &NetworkChart::Paint, this);
+    Bind(wxEVT_LEFT_DOWN, &NetworkChart::Select, this);
     Bind(wxEVT_SIZE,
          [this](wxSizeEvent& event)
          {
@@ -52,6 +54,15 @@ NetworkChart::NetworkChart(wxWindow* parent) : wxPanel(parent)
              Refresh();
              event.Skip();
          });
+}
+
+wxColour NetworkChart::SeriesColour(std::size_t index)
+{
+    const auto colours = StudioTheme::Colours();
+    const std::array<wxColour, 8> palette{{colours.accent, wxColour(208, 97, 18), wxColour(0, 128, 128),
+                                           wxColour(128, 70, 160), wxColour(176, 57, 82), wxColour(66, 120, 51),
+                                           wxColour(130, 91, 50), colours.secondary}};
+    return palette.at(index % palette.size());
 }
 
 void NetworkChart::ChooseDefaultMetric(const Json& page)
@@ -67,6 +78,9 @@ void NetworkChart::ChooseDefaultMetric(const Json& page)
 
 void NetworkChart::SetPage(const Json& page, const wxString& label)
 {
+    m_multiStyle = false;
+    m_externalLegend = false;
+    m_markers.clear();
     m_series.clear();
     m_marker = -1;
     if (page.is_object() && page.contains("samples") && page.at("samples").is_array())
@@ -80,6 +94,9 @@ void NetworkChart::SetPage(const Json& page, const wxString& label)
 void NetworkChart::SetComparison(const Json& originalPage, const Json& derivedPage, const wxString& originalLabel,
                                  const wxString& derivedLabel)
 {
+    m_multiStyle = false;
+    m_externalLegend = false;
+    m_markers.clear();
     m_series.clear();
     m_marker = -1;
     for (const auto& entry : std::vector<Series>{{originalPage, originalLabel}, {derivedPage, derivedLabel}})
@@ -108,6 +125,8 @@ void NetworkChart::Clear()
 {
     m_series.clear();
     m_marker = -1;
+    m_hits.clear();
+    m_markers.clear();
     Refresh();
 }
 
@@ -124,6 +143,64 @@ void NetworkChart::SetMarker(int sampleIndex)
     Refresh();
 }
 
+void NetworkChart::SetSeries(const std::vector<Json>& pages, const std::vector<wxString>& labels, bool externalLegend)
+{
+    if (pages.size() != labels.size() || pages.size() > 8)
+    {
+        throw std::invalid_argument("비교 곡선과 이름은 같은 수의 최대 8개여야 합니다.");
+    }
+    m_series.clear();
+    m_markers.assign(pages.size(), -1);
+    m_marker = -1;
+    m_multiStyle = true;
+    m_externalLegend = externalLegend;
+    for (std::size_t index = 0; index < pages.size(); ++index)
+    {
+        if (!pages[index].is_object() || !pages[index].value("samples", Json(nullptr)).is_array())
+        {
+            throw std::invalid_argument("실제 표본 페이지가 없는 비교 곡선입니다.");
+        }
+        m_series.push_back({pages[index], labels[index]});
+    }
+    if (!m_series.empty())
+    {
+        ChooseDefaultMetric(m_series.front().page);
+    }
+    Refresh(false);
+}
+
+void NetworkChart::SetMarkers(const std::vector<int>& sampleIndices)
+{
+    if (sampleIndices.size() != m_series.size())
+    {
+        throw std::invalid_argument("각 원본 곡선의 실제 마커 인덱스가 필요합니다.");
+    }
+    m_markers = sampleIndices;
+    Refresh(false);
+}
+
+void NetworkChart::Select(wxMouseEvent& event)
+{
+    const auto cursor = event.GetPosition();
+    const int limit = FromDIP(12);
+    int best = limit * limit;
+    const Hit* selected = nullptr;
+    for (const auto& hit : m_hits)
+    {
+        const auto delta = hit.position - cursor;
+        const int distance = delta.x * delta.x + delta.y * delta.y;
+        if (distance < best)
+        {
+            selected = &hit;
+            best = distance;
+        }
+    }
+    if (selected && onMarker)
+    {
+        onMarker(selected->series, selected->index, selected->frequency);
+    }
+}
+
 void NetworkChart::Paint(wxPaintEvent&)
 {
     wxAutoBufferedPaintDC dc(this);
@@ -132,6 +209,7 @@ void NetworkChart::Paint(wxPaintEvent&)
     dc.Clear();
     dc.SetFont(GetFont());
     dc.SetTextForeground(colours.text);
+    m_hits.clear();
     const wxSize size = GetClientSize();
     const int margin = FromDIP(16);
     if (size.x < FromDIP(180) || size.y < FromDIP(150))
@@ -144,7 +222,7 @@ void NetworkChart::Paint(wxPaintEvent&)
         return;
     }
     const int lineHeight = GetCharHeight() + FromDIP(4);
-    const int footerHeight = lineHeight * static_cast<int>(m_series.size() + 1);
+    const int footerHeight = lineHeight * static_cast<int>((m_externalLegend ? 0 : m_series.size()) + 1);
     const wxRect plot(FromDIP(88), FromDIP(34), std::max(1, size.x - FromDIP(110)),
                       std::max(1, size.y - FromDIP(80) - footerHeight));
     double minX = std::numeric_limits<double>::infinity();
@@ -215,8 +293,13 @@ void NetworkChart::Paint(wxPaintEvent&)
             for (std::size_t seriesIndex = 0; seriesIndex < m_series.size(); ++seriesIndex)
             {
                 const bool original = m_series.size() > 1 && seriesIndex == 0;
-                const wxColour colour = original ? colours.secondary : colours.accent;
-                graphics->SetPen(wxPen(colour, FromDIP(2), original ? wxPENSTYLE_SHORT_DASH : wxPENSTYLE_SOLID));
+                const wxColour colour = m_multiStyle ? SeriesColour(seriesIndex)
+                                        : original   ? colours.secondary
+                                                     : colours.accent;
+                const auto lineStyle = m_multiStyle ? (seriesIndex % 2 == 0 ? wxPENSTYLE_SOLID : wxPENSTYLE_SHORT_DASH)
+                                       : original   ? wxPENSTYLE_SHORT_DASH
+                                                    : wxPENSTYLE_SOLID;
+                graphics->SetPen(wxPen(colour, FromDIP(2), lineStyle));
                 graphics->SetBrush(wxBrush(colour));
                 bool previousValid = false;
                 int previousIndex = -1;
@@ -240,10 +323,13 @@ void NetworkChart::Paint(wxPaintEvent&)
                     }
                     const int radius = FromDIP(2);
                     graphics->DrawEllipse(point.m_x - radius, point.m_y - radius, radius * 2, radius * 2);
-                    if (index == m_marker)
+                    const int marker = seriesIndex < m_markers.size() ? m_markers[seriesIndex] : m_marker;
+                    if (index == marker)
                     {
                         graphics->DrawEllipse(point.m_x - radius * 2, point.m_y - radius * 2, radius * 4, radius * 4);
                     }
+                    m_hits.push_back(
+                        {wxPoint(static_cast<int>(point.m_x), static_cast<int>(point.m_y)), seriesIndex, index, x});
                     previous = point;
                     previousIndex = index;
                     previousValid = true;
@@ -261,7 +347,7 @@ void NetworkChart::Paint(wxPaintEvent&)
     dc.DrawText(frequencyLabel, plot.GetRight() - dc.GetTextExtent(frequencyLabel).x,
                 plot.GetBottom() + lineHeight + FromDIP(4));
     int footerY = size.y - footerHeight;
-    for (std::size_t index = 0; index < m_series.size(); ++index)
+    for (std::size_t index = 0; !m_externalLegend && index < m_series.size(); ++index)
     {
         const auto& series = m_series[index];
         const int offset = series.page.value("offset", 0);
@@ -270,8 +356,11 @@ void NetworkChart::Paint(wxPaintEvent&)
                               wxString::Format("%d-%d / %d", count == 0 ? 0 : offset + 1, offset + count,
                                                series.page.value("total", count));
         const bool original = m_series.size() > 1 && index == 0;
-        dc.SetPen(wxPen(original ? colours.secondary : colours.accent, FromDIP(2),
-                        original ? wxPENSTYLE_SHORT_DASH : wxPENSTYLE_SOLID));
+        const auto colour = m_multiStyle ? SeriesColour(index) : original ? colours.secondary : colours.accent;
+        const auto line = m_multiStyle ? (index % 2 == 0 ? wxPENSTYLE_SOLID : wxPENSTYLE_SHORT_DASH)
+                          : original   ? wxPENSTYLE_SHORT_DASH
+                                       : wxPENSTYLE_SOLID;
+        dc.SetPen(wxPen(colour, FromDIP(2), line));
         dc.DrawLine(margin, footerY + GetCharHeight() / 2, margin + FromDIP(24), footerY + GetCharHeight() / 2);
         dc.DrawText(wxControl::Ellipsize(text, dc, wxELLIPSIZE_END, std::max(1, size.x - FromDIP(64))),
                     margin + FromDIP(32), footerY);

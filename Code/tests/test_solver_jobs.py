@@ -24,6 +24,7 @@ from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.application.projects import ProjectService
 from rfad.application.solver import PROFILE, RUNTIME_PROFILE
 from rfad.application.solver_jobs import SolverRuntime
+from rfad.application.solver_runtime import stage_solver_job
 from rfad.domain.errors import ProjectError
 
 
@@ -432,24 +433,39 @@ class SolverJobTests(unittest.TestCase):
             "analysis_plan": {key: planned[key] for key in ("plan_id", "content_hash")},
             "budget": {"timeout_seconds": 120.0},
         }))
-        self.service.solver.start()
-        self.assertTrue(self.transport.started.wait(3.0))
-        errors = []
-        def close_service():
-            """! @brief 닫기 스레드의 예외를 시험 본문에서 확인한다."""
-            try:
-                self.service.close()
-            except Exception as error:
-                errors.append(error)
-        closer = threading.Thread(target=close_service)
-        self.runners.append(closer)
-        closer.start()
-        self.assertTrue(self.service.solver.stop.wait(3.0))
-        self.transport.mode = "cancelled"
-        self.transport.release.set()
-        closer.join(8.0)
-        self.assertFalse(closer.is_alive())
-        self.assertEqual(errors, [])
+        captured = self.job(task)
+        # @brief 실제 소스/입력 봉인은 먼저 검증하여 디스크 준비 비용과 종료 경쟁 대기를 분리한다.
+        staged = stage_solver_job(self.service.journal, self.runtime, captured)
+        self.assertEqual(staged[1]["run_id"], captured["run_id"])
+        self.assertEqual(staged[1]["nonce"], captured["solver"]["nonce"])
+        self.assertEqual(staged[1]["analysis_plan"], captured["solver"]["analysis_plan"])
+        def verified_stage(journal, runtime, job):
+            """! @brief 같은 작업의 검증된 준비 결과만 실제 조정기 스레드에 반환한다."""
+            self.assertIs(journal, self.service.journal)
+            self.assertIs(runtime, self.runtime)
+            for key in ("job_id", "run_id", "context", "input", "solver"):
+                self.assertEqual(job[key], captured[key])
+            return staged
+        with patch("rfad.application.solver_jobs.stage_solver_job", side_effect=verified_stage) as stage_call:
+            self.service.solver.start()
+            self.assertTrue(self.transport.started.wait(3.0))
+            errors = []
+            def close_service():
+                """! @brief 닫기 스레드의 예외를 시험 본문에서 확인한다."""
+                try:
+                    self.service.close()
+                except Exception as error:
+                    errors.append(error)
+            closer = threading.Thread(target=close_service)
+            self.runners.append(closer)
+            closer.start()
+            self.assertTrue(self.service.solver.stop.wait(3.0))
+            self.transport.mode = "cancelled"
+            self.transport.release.set()
+            closer.join(8.0)
+            self.assertFalse(closer.is_alive())
+            self.assertEqual(errors, [])
+            stage_call.assert_called_once()
         self.service = ProjectService(self.workspace, auto_run=False, solver_runtime=self.runtime)
         job = self.job(task)
         self.assertEqual(job["state"], "interrupted", job)

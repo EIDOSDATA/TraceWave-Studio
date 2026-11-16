@@ -385,7 +385,7 @@ void StudioSmokeDriver::NetworkSmokeTick()
                 m_networkAwaiting = false;
                 m_setupStage = 27;
                 m_frame.m_networkPreferredId = m_networkImportedId;
-                m_frame.NavigateWorkspace(WorkspaceArea::Results);
+                m_frame.m_views->SetSelection(6);
                 m_frame.RefreshNetwork(m_networkImportedId);
             },
             [this](const Json& error)
@@ -438,7 +438,7 @@ void StudioSmokeDriver::NetworkSmokeTick()
                      "2D 복귀가 원본 선택 또는 탐색 상태를 바꿨습니다.");
         m_setupChecks.push_back("network_studio_results_marker_and_design_return");
         m_setupStage = 28;
-        m_frame.NavigateWorkspace(WorkspaceArea::Results);
+        m_frame.m_views->SetSelection(6);
         m_frame.m_views->SetSelection(7);
         m_frame.UpdateNetworkViews();
     }

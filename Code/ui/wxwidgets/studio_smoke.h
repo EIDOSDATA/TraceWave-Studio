@@ -66,6 +66,14 @@ public:
     void OnSelected();
 
 private:
+    /** @brief 과거 원본/Smith/복수 결과의 실제 표시와 읽기 수명을 검증한다. */
+    void ResultsSmokeTick();
+    void ResultWorkspaceSafetyChecks();
+    Json m_resultsFixture = Json::object();
+    Json m_resultsFirst = Json::object();
+    Json m_resultsSecond = Json::object();
+    std::string m_resultsRevision;
+    bool m_resultsAwaiting = false;
     /** @brief 유한 연구 생성과 실제 회로 실행/취소/재개/재열기를 검증한다. */
     void SweepSmokeTick();
     void OpenSweepSmokeDialog();

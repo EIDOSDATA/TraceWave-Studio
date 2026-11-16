@@ -2,6 +2,7 @@
 #include "studio_internal.h"
 #include "studio_shell.h"
 #include "studio_theme.h"
+#include "result_workspace.h"
 
 StudioFrame::StudioFrame(Options options)
     : wxFrame(nullptr, wxID_ANY, Display("TraceWave Studio"), wxDefaultPosition, wxSize(1360, 860)),
@@ -23,6 +24,7 @@ StudioFrame::StudioFrame(Options options)
 
 StudioFrame::~StudioFrame()
 {
+    m_results.reset();
     m_shell.reset();
     m_manager->UnInit();
     delete m_manager;

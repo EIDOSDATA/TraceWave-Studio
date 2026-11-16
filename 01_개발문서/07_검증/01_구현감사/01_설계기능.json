@@ -612,7 +612,7 @@
   {
     "id": "FN-017",
     "implementation_status": "partial",
-    "implemented": "rfad.ideal-rlc/0.1은 1포트 S 부하 앞에 EM 외부의 이상 R/L/C 직렬/병렬 요소를 1~16개 연결한다. open/short/DNP와 DC를 구분하고 원래 SI/출처/미정 값을 보존한다. network.preview/apply의 circuit_save와 circuit_apply는 회로 정의와 원본을 각각 참조하는 불변 파생 결과를 검토 해시 및 원자 명령으로 저장한다. native GUI의 회로도/입력 표/원본과 결합 결과 곡선, 저장/undo/redo/재열기를 연결했다.",
+    "implemented": "rfad.ideal-rlc/0.1은 1포트 S 부하 앞에 EM 외부의 이상 R/L/C 직렬/병렬 요소를 1~16개 연결한다. open/short/DNP와 DC를 구분하고 원래 SI/출처/미정 값을 보존한다. network.preview/apply의 circuit_save와 circuit_apply는 회로 정의와 원본을 각각 참조하는 불변 파생 결과를 검토 해시 및 원자 명령으로 저장한다. native GUI의 회로도/입력 표/원본과 결합 결과 곡선, 저장/undo/redo/재열기를 연결했다. 공통 결과 카탈로그와 다중 비교에서 과거 회로 파생 결과 및 스윕 후보를 독립 원본으로 선택하고 이름/원래 값/조건을 표시한다. EM 원본 방사/효율을 회로 결과에 자동 승계하지 않는다.",
     "gaps": [
       "일반 node/port network graph, 다중 포트 부하, 실제 부품의 Q/ESR/ESL/SRF, EM 내부 소자와 배선/패드 기생 모델은 현재 지원 범위 밖이다.",
       "회로 개별 전력/손실 원장과 복소 field basis 결합은 미구현이다. 정합 후 방사/이득/효율을 기존 원본 값에서 승계하지 않으며 7/8번의 결과/독립 검증과 함께 보강해야 한다.",
@@ -628,7 +628,9 @@
       "src/rfad/application/network_candidates.py",
       "src/rfad/application/network_service.py",
       "ui/wxwidgets/network_circuit_dialog.cpp",
-      "ui/wxwidgets/network_circuit_view.cpp"
+      "ui/wxwidgets/network_circuit_view.cpp",
+      "src/rfad/application/result_sources.py",
+      "src/rfad/application/result_complex.py"
     ],
     "tests": [
       "tests/test_network_domain.py::NetworkCircuitTests.test_series_and_shunt_resistor_match_independent_load_formula",
@@ -640,15 +642,17 @@
       "tests/test_network_service.py::NetworkServiceTests.test_rlc_missing_save_derive_reference_and_parent_protection",
       "tests/test_network_boundaries.py::NetworkBoundaryTests.test_1001_samples_16_elements_preserve_full_diagnostics",
       "tests/test_network_review.py::NetworkReviewTests.test_saved_network_and_undo_redo_reopen_do_not_require_native_engine",
-      "tests/test_gui_network_process.py::GuiNetworkTests.test_native_import_rlc_assessment_history_and_reopen"
+      "tests/test_gui_network_process.py::GuiNetworkTests.test_native_import_rlc_assessment_history_and_reopen",
+      "tests/test_result_integration.py::ResultSweepTests.test_actual_circuit_and_duplicate_have_distinct_source_same_dataset"
     ],
     "evidence": [
       "../01_개발문서/05_기능설계/04_해석결과/03_사용자기판_단일포트_해석.md",
       "../01_개발문서/05_기능설계/04_해석결과/06_공통복소자료와_회로평가.md",
-      "runtime_profiles/python-network-windows-x64.json"
+      "runtime_profiles/python-network-windows-x64.json",
+      "../01_개발문서/05_기능설계/04_해석결과/07_다중결과와_방사표시.md",
+      "../01_개발문서/07_검증/17_다중결과_표시검증.md"
     ],
     "next_steps": [
-      7,
       8
     ],
     "contract_notes": [
@@ -783,7 +787,7 @@
   {
     "id": "FN-044",
     "implementation_status": "partial",
-    "implemented": "도파관/PCB/방사/전력/손실 연구의 machine-readable 판정과 runtime evidence가 있고 실행/미확립/실측 미검증을 구분한다. 현재 프로젝트 격자 연구와 완료한 지원 IFA/방사 보고서는 제한된 읽기 전용 GUI로 조회한다.",
+    "implemented": "도파관/PCB/방사/전력/손실 연구의 machine-readable 판정과 runtime evidence가 있고 실행/미확립/실측 미검증을 구분한다. 현재 프로젝트 격자 연구와 완료한 지원 IFA/방사 보고서는 제한된 읽기 전용 GUI로 조회한다. 공통 결과 화면에서 과거 개정과 해석/연구 후보를 고정해 복소 표본/Smith/다중 비교/전력/방사/기록 필드를 조회하고, 당시 수치 종료 사유 및 저장 목표 판정을 별도 표시한다. 과거 조건 sidecar와 원문 내보내기는 현재 설계를 변경하지 않는다.",
     "gaps": [
       "사용자 프로젝트의 요구-FN-VT evidence join과 통합 검토 보고서/PDF 생성, source promotion을 구현해야 한다.",
       "목표/측정/출력 변경에 따라 파생 보고서와 검증 범위를 갱신하는 제품 계약이 필요하다."
@@ -794,19 +798,26 @@
       "src/rfad/application/project_study_results.py",
       "ui/wxwidgets/study_report_model.cpp",
       "ui/wxwidgets/study_report_dialog.cpp",
-      "tools/verify_ro_loss_followup.py"
+      "tools/verify_ro_loss_followup.py",
+      "src/rfad/application/result_sources.py",
+      "src/rfad/application/result_export.py",
+      "ui/wxwidgets/result_conditions_view.cpp"
     ],
     "tests": [
       "tests/test_convergence.py",
       "tests/test_pcb_loss_convergence.py",
-      "tests/test_project_studies.py"
+      "tests/test_project_studies.py",
+      "tests/test_result_sources.py",
+      "tests/test_gui_results_process.py"
     ],
     "evidence": [
       "runtime_profiles/ro4350b-loss-refinement.json",
-      "runtime_profiles/project-studies.json"
+      "runtime_profiles/project-studies.json",
+      "../01_개발문서/05_기능설계/04_해석결과/07_다중결과와_방사표시.md",
+      "../01_개발문서/04_화면설계/21_다중결과와_방사필드_화면.md",
+      "../01_개발문서/07_검증/17_다중결과_표시검증.md"
     ],
     "next_steps": [
-      7,
       8,
       11,
       12

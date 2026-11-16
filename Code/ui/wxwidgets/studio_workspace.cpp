@@ -45,9 +45,8 @@ void StudioFrame::BuildWorkspacePages()
     m_analysisSummary = new wxStaticText(analysis, wxID_ANY, wxEmptyString);
     analysis->GetSizer()->Add(m_analysisSummary, 0, wxALL, FromDIP(StudioTheme::PanelPadding));
     m_views->AddPage(analysis, Display("해석 준비"));
-    auto* comparison = page(
-        "연구 비교",
-        "저장된 수렴 연구 보고서의 조건과 판정을 비교합니다.\n일반 다중 RF 결과/측정 곡선 비교는 후속 범위입니다.");
+    auto* comparison = page("수렴 연구", "저장된 수렴 연구 보고서의 조건과 판정을 확인합니다.\n여러 원본의 RF 곡선은 "
+                                         "결과 / 후보 비교 탭에서 비교합니다.");
     auto* open = new wxButton(comparison, wxID_ANY, Display("수렴 연구 보고서 열기"));
     comparison->GetSizer()->Add(open, 0, wxALL, FromDIP(StudioTheme::PanelPadding));
     open->Bind(wxEVT_BUTTON,
@@ -55,7 +54,7 @@ void StudioFrame::BuildWorkspacePages()
                {
                    ShowStudyReport(this);
                });
-    m_views->AddPage(comparison, Display("연구 비교"));
+    m_views->AddPage(comparison, Display("수렴 연구"));
     auto* output = page("출력", "현재 개정을 스냅샷으로 고정하여 STEP/3D 형상을 생성합니다.\n형상 생성 성공은 독립 "
                                 "교환 검수나 제조/RF/실측 합격을 뜻하지 않습니다.");
     action(output, output->GetSizer(), IdExportStep, "STEP 출력");
@@ -88,18 +87,20 @@ void StudioFrame::BuildWorkspacePages()
     m_views->SetPageText(2, Display("해석 결과"));
     m_views->onSelectionChanged = [this](int page)
     {
-        m_workspaceBar->Select(page < 2 ? WorkspaceArea::Design
-                                        : static_cast<WorkspaceArea>(page == 2 || page == 6 || page == 7
-                                                                         ? 2
-                                                                         : (page == 3 || page == 8 ? 1 : page - 1)));
+        m_workspaceBar->Select(page < 2                  ? WorkspaceArea::Design
+                               : page == 3 || page == 8  ? WorkspaceArea::Analysis
+                               : page == 4 || page == 14 ? WorkspaceArea::Comparison
+                               : page == 5               ? WorkspaceArea::Output
+                                                         : WorkspaceArea::Results);
         UpdateNetworkViews();
         UpdateSweepViews();
+        UpdateResultViews();
     };
 }
 
 void StudioFrame::NavigateWorkspace(WorkspaceArea area)
 {
-    const int pages[] = {0, 3, 6, 4, 5};
+    const int pages[] = {0, 3, 9, 14, 5};
     m_views->SetSelection(pages[static_cast<int>(area)]);
     m_workspaceBar->Select(area);
 }
@@ -239,4 +240,5 @@ void StudioFrame::UpdateWorkspace()
     m_outputSummary->Wrap(FromDIP(440));
     UpdateNetworkViews();
     UpdateSweepViews();
+    UpdateResultViews();
 }

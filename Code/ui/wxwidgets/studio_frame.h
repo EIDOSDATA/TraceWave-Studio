@@ -45,6 +45,7 @@ class wxSearchCtrl;
 class NetworkPanel;
 class NetworkAssessmentPanel;
 class SweepPanel;
+class ResultWorkspace;
 enum class NetworkAction;
 enum class WorkspaceArea;
 enum class DesignSetup
@@ -91,6 +92,9 @@ private:
     void ShowWorkspaceJob(long row, const std::string& state, const std::string& message);
     /** @brief 네트워크 View와 현재 개정의 조회/도구 수명을 연결한다. */
     void BuildNetworkInterface();
+    /** @brief 공통 봉인 결과와 과거 개정 탐색을 독립 표시 컨트롤러에 연결한다. */
+    void BuildResultInterface();
+    void UpdateResultViews();
     void UpdateNetworkViews();
     void RefreshNetwork(const std::string& preferredId = "");
     void LoadNetworkResult(const std::string& id, int row = 0, int column = 0, int offset = 0);
@@ -262,6 +266,8 @@ private:
     bool m_physicalSetupSupported = false;
     bool m_precisionSupported = false;
     bool m_networkSupported = false;
+    bool m_resultsSupported = false;
+    std::unique_ptr<ResultWorkspace> m_results;
     bool m_networkPending = false;
     bool m_networkRefreshQueued = false;
     std::uint64_t m_networkGeneration = 0;
