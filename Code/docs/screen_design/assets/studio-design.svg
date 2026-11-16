@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" aria-labelledby="title desc" width="1600" height="1000" viewBox="0 0 1600 1000" role="img">
+  <title id="title">S11 / 설계 - 2D 편집</title>
+  <desc id="desc">TraceWave Studio 화면 설계안. 기능별 번호는 화면 명세 표와 연결된다. 실제 실행 화면 또는 검증 결과가 아니다.</desc>
+  <rect width="100%" height="100%" fill="#F3F5F8" />
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#536174" />
+    </marker>
+  </defs>
+  <rect x="32" y="20" width="1536" height="44" rx="6" fill="none" stroke="none" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="27" dominant-baseline="central" font-weight="700" xml:space="preserve" text-anchor="start" x="44" y="42.0" fill="#243247">S11 / 설계 - 2D 편집</text>
+  <rect x="32" y="64" width="1536" height="42" rx="6" fill="none" stroke="none" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="44" y="85.0" fill="#536174">번호는 화면 명세의 요소 ID 끝 두 자리와 대응합니다. 물리 미정값과 과거 결과를 유지합니다.</text>
+  <rect x="32" y="950" width="1536" height="32" rx="6" fill="none" stroke="none" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="15" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="44" y="966.0" fill="#536174">화면 설계안 v0.1 / 2026-11-16 KST / 구현 및 사용성 수용과 별도 / 치수와 성능 예시 없음</text>
+  <rect x="32" y="120" width="1536" height="44" rx="6" fill="white" stroke="#D3DBE6" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="18" dominant-baseline="central" font-weight="700" xml:space="preserve" text-anchor="start" x="44" y="142.0" fill="#243247">01  TraceWave Studio  /  안테나 설계  /  저장 필요</text>
+  <rect x="32" y="170" width="1536" height="48" rx="6" fill="#EDF4FF" stroke="#D3DBE6" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="18" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="44" y="194.0" fill="#243247">02  저장      실행 전 확인      STEP 출력            설계      해석      결과      비교      출력</text>
+  <rect x="1240" y="170" width="290" height="48" rx="6" fill="none" stroke="none" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="700" xml:space="preserve" text-anchor="start" x="1252" y="194.0" fill="#175CD3">현재 작업: 설계</text>
+  <rect x="32" y="230" width="280" height="530" rx="6" fill="white" stroke="#D3DBE6" />
+  <rect x="40" y="236" width="260" height="40" rx="6" fill="none" stroke="none" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="20" dominant-baseline="central" font-weight="700" xml:space="preserve" text-anchor="start" x="52" y="256.0" fill="#243247">03  프로젝트 / 객체</text>
+  <rect x="48" y="284" width="248" height="40" rx="6" fill="#F8FAFC" stroke="#D3DBE6" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="16" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="60" y="304.0" fill="#536174">객체 찾기...</text>
+  <rect x="48" y="338" width="248" height="34" rx="6" fill="none" stroke="none" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="60" y="355.0" fill="#243247">안테나 설계</text>
+  <rect x="48" y="374" width="248" height="34" rx="6" fill="none" stroke="none" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="60" y="391.0" fill="#243247">  목표</text>
+  <rect x="48" y="410" width="248" height="34" rx="6" fill="none" stroke="none" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="60" y="427.0" fill="#243247">  PCB / 적층</text>
+  <rect x="48" y="446" width="248" height="34" rx="6" fill="none" stroke="none" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="60" y="463.0" fill="#243247">  패턴</text>
+  <rect x="48" y="482" width="248" height="34" rx="6" fill="#EDF4FF" stroke="none" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="700" xml:space="preserve" text-anchor="start" x="60" y="499.0" fill="#175CD3">    원호 01</text>
+  <rect x="48" y="518" width="248" height="34" rx="6" fill="none" stroke="none" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="60" y="535.0" fill="#243247">    접지면 01</text>
+  <rect x="48" y="554" width="248" height="34" rx="6" fill="none" stroke="none" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="60" y="571.0" fill="#243247">  급전</text>
+  <rect x="48" y="590" width="248" height="34" rx="6" fill="none" stroke="none" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="60" y="607.0" fill="#243247">  재료</text>
+  <rect x="48" y="626" width="248" height="34" rx="6" fill="none" stroke="none" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="60" y="643.0" fill="#243247">  외부 환경</text>
+  <rect x="48" y="662" width="248" height="34" rx="6" fill="none" stroke="none" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="60" y="679.0" fill="#243247">  실행 / 결과</text>
+  <rect x="32" y="770" width="280" height="154" rx="6" fill="white" stroke="#D3DBE6" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="44" y="811.3" fill="#243247">04  레이어 / 표시</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="44" y="835.0999999999999" fill="#243247">표시      활성 층</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="44" y="858.9" fill="#243247">[x]      Top Copper</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="44" y="882.6999999999999" fill="#243247">[x]      Substrate</text>
+  <rect x="324" y="230" width="910" height="530" rx="6" fill="white" stroke="#D3DBE6" />
+  <rect x="336" y="238" width="886" height="42" rx="6" fill="#F8FAFC" stroke="#D3DBE6" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="19" dominant-baseline="central" font-weight="700" xml:space="preserve" text-anchor="start" x="348" y="259.0" fill="#243247">05  2D 편집   |   3D 형상</text>
+  <rect x="1246" y="230" width="322" height="694" rx="6" fill="white" stroke="#D3DBE6" />
+  <rect x="1260" y="238" width="290" height="42" rx="6" fill="none" stroke="none" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="20" dominant-baseline="central" font-weight="700" xml:space="preserve" text-anchor="start" x="1272" y="259.0" fill="#243247">08  선택 속성</text>
+  <rect x="324" y="770" width="910" height="154" rx="6" fill="white" stroke="#D3DBE6" />
+  <rect x="338" y="778" width="880" height="35" rx="6" fill="none" stroke="none" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="18" dominant-baseline="central" font-weight="700" xml:space="preserve" text-anchor="start" x="350" y="795.5" fill="#243247">09  문제   /   작업   /   로그</text>
+  <rect x="338" y="816" width="880" height="82" rx="6" fill="none" stroke="none" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="350" y="845.1" fill="#536174">진행률은 worker가 제공한 범위만 표시</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="350" y="868.9" fill="#536174">취소 요청과 실제 종료 확인을 구분</text>
+  <rect x="32" y="930" width="1536" height="22" rx="6" fill="#E8EEF6" stroke="#D3DBE6" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="14" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="44" y="941.0" fill="#243247">10  단위 mm    |    활성 층 Top Copper    |    스냅 끔    |    worker 상태 별도 표시</text>
+  <rect x="336" y="292" width="886" height="40" rx="6" fill="#EDF4FF" stroke="#D3DBE6" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="348" y="312.0" fill="#243247">06  선택  /  선  /  원호    |    좌표 입력    |    스냅 설정    |    전체 맞춤</text>
+  <rect x="336" y="342" width="886" height="402" rx="6" fill="#F6FAFF" stroke="#D3DBE6" />
+  <polyline stroke-width="1" points="356,344 356,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="380,344 380,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="404,344 404,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="428,344 428,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="452,344 452,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="476,344 476,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="500,344 500,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="524,344 524,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="548,344 548,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="572,344 572,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="596,344 596,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="620,344 620,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="644,344 644,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="668,344 668,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="692,344 692,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="716,344 716,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="740,344 740,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="764,344 764,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="788,344 788,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="812,344 812,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="836,344 836,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="860,344 860,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="884,344 884,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="908,344 908,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="932,344 932,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="956,344 956,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="980,344 980,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="1004,344 1004,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="1028,344 1028,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="1052,344 1052,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="1076,344 1076,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="1100,344 1100,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="1124,344 1124,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="1148,344 1148,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="1172,344 1172,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="1196,344 1196,742" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="338,352 1220,352" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="338,376 1220,376" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="338,400 1220,400" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="338,424 1220,424" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="338,448 1220,448" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="338,472 1220,472" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="338,496 1220,496" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="338,520 1220,520" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="338,544 1220,544" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="338,568 1220,568" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="338,592 1220,592" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="338,616 1220,616" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="338,640 1220,640" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="338,664 1220,664" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="338,688 1220,688" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="338,712 1220,712" fill="none" stroke="#E6EDF5" />
+  <polyline stroke-width="1" points="338,736 1220,736" fill="none" stroke="#E6EDF5" />
+  <ellipse cx="799.0" cy="539.0" rx="177.0" ry="177.0" fill="#DDF0DC" stroke="#6B8C70" />
+  <polyline stroke-width="12" points="928.6,478.57 924.97,471.32 920.93,464.28 916.5,457.49 911.69,450.96 906.51,444.71 900.99,438.77 895.15,433.15 888.99,427.87 882.55,422.94 875.83,418.4 868.87,414.23 861.69,410.47 854.3,407.13 846.73,404.2 839.02,401.71 831.17,399.67 823.22,398.07 815.19,396.92 807.11,396.23 799.0,396.0 790.89,396.23 782.81,396.92 774.78,398.07 766.83,399.67 758.98,401.71 751.27,404.2 743.7,407.13 736.31,410.47 729.13,414.23 722.17,418.4 715.45,422.94 709.01,427.87 702.85,433.15 697.01,438.77 691.49,444.71 686.31,450.96 681.5,457.49 677.07,464.28 673.03,471.32 669.4,478.57" fill="none" stroke="#E29042" />
+  <rect x="923.6" y="473.57" width="10" height="10" rx="6" fill="#175CD3" stroke="#175CD3" />
+  <rect x="664.4" y="473.57" width="10" height="10" rx="6" fill="#175CD3" stroke="#175CD3" />
+  <rect x="736" y="540" width="240" height="50" rx="6" fill="none" stroke="none" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="19" dominant-baseline="central" font-weight="700" xml:space="preserve" text-anchor="start" x="748" y="565.0" fill="#175CD3">07  선택: 원호 01</text>
+  <rect x="1280" y="292" width="264" height="46" rx="6" fill="#EDF4FF" stroke="#D3DBE6" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="1292" y="315.0" fill="#243247">이름: 원호 01     [변경]</text>
+  <rect x="1270" y="354" width="280" height="182" rx="6" fill="none" stroke="none" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="1282" y="397.4" fill="#243247">형상</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="1282" y="421.2" fill="#243247">반지름   [현재 값] mm</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="1282" y="445.0" fill="#243247">선폭       [현재 값] mm</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="1282" y="468.79999999999995" fill="#243247">시작각   [현재 값] deg</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="1282" y="492.59999999999997" fill="#243247">끝각       [현재 값] deg</text>
+  <rect x="1270" y="560" width="280" height="78" rx="6" fill="#F8FAFC" stroke="#D3DBE6" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="1282" y="587.1" fill="#243247">출처 / 가정 열기</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="1282" y="610.9" fill="#243247">생성 당시 입력 보존</text>
+  <rect x="1270" y="650" width="280" height="80" rx="6" fill="#FFF3D6" stroke="#D3DBE6" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="1282" y="678.1" fill="#243247">제작 / 측정 조건 미정</text>
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="17" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="start" x="1282" y="701.9" fill="#243247">입력 완료와 검증은 별도</text>
+  <rect x="1280" y="838" width="118" height="46" rx="6" fill="#175CD3" stroke="#175CD3" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="18" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="middle" x="1339.0" y="861.0" fill="white">적용</text>
+  <rect x="1410" y="838" width="128" height="46" rx="6" fill="white" stroke="#D3DBE6" />
+  <text font-family="Malgun Gothic, Segoe UI, sans-serif" font-size="18" dominant-baseline="central" font-weight="400" xml:space="preserve" text-anchor="middle" x="1474.0" y="861.0" fill="#243247">되돌리기</text>
+</svg>

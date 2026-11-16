@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" type="device">
+  <diagram id="studio-output" name="S50 / 출력 - 생성과 검수">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="item-2" value="S50 / 출력 - 생성과 검수" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontFamily=Malgun Gothic;fontSize=27;fontColor=#243247;fontStyle=1;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="32" y="20" width="1536" height="44" />
+        </mxCell>
+        <mxCell id="item-3" value="번호는 화면 명세의 요소 ID 끝 두 자리와 대응합니다. 물리 미정값과 과거 결과를 유지합니다." style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontFamily=Malgun Gothic;fontSize=17;fontColor=#536174;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="32" y="64" width="1536" height="42" />
+        </mxCell>
+        <mxCell id="item-4" value="화면 설계안 v0.1 / 2026-11-16 KST / 구현 및 사용성 수용과 별도 / 치수와 성능 예시 없음" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontFamily=Malgun Gothic;fontSize=15;fontColor=#536174;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="32" y="950" width="1536" height="32" />
+        </mxCell>
+        <mxCell id="item-5" value="01  TraceWave Studio  /  안테나 설계  /  저장 필요" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=white;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=18;fontColor=#243247;fontStyle=1;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="32" y="120" width="1536" height="44" />
+        </mxCell>
+        <mxCell id="item-6" value="02  저장      실행 전 확인      STEP 출력            설계      해석      결과      비교      출력" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF4FF;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=18;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="32" y="170" width="1536" height="48" />
+        </mxCell>
+        <mxCell id="item-7" value="현재 작업: 출력" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontFamily=Malgun Gothic;fontSize=17;fontColor=#175CD3;fontStyle=1;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1240" y="170" width="290" height="48" />
+        </mxCell>
+        <mxCell id="item-8" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=white;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=18;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="32" y="230" width="280" height="530" />
+        </mxCell>
+        <mxCell id="item-9" value="03  프로젝트 / 객체" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontFamily=Malgun Gothic;fontSize=20;fontColor=#243247;fontStyle=1;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="40" y="236" width="260" height="40" />
+        </mxCell>
+        <mxCell id="item-10" value="객체 찾기..." style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#F8FAFC;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=16;fontColor=#536174;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="48" y="284" width="248" height="40" />
+        </mxCell>
+        <mxCell id="item-11" value="안테나 설계" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontFamily=Malgun Gothic;fontSize=17;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="48" y="338" width="248" height="34" />
+        </mxCell>
+        <mxCell id="item-12" value="  목표" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontFamily=Malgun Gothic;fontSize=17;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="48" y="374" width="248" height="34" />
+        </mxCell>
+        <mxCell id="item-13" value="  PCB / 적층" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontFamily=Malgun Gothic;fontSize=17;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="48" y="410" width="248" height="34" />
+        </mxCell>
+        <mxCell id="item-14" value="  패턴" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontFamily=Malgun Gothic;fontSize=17;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="48" y="446" width="248" height="34" />
+        </mxCell>
+        <mxCell id="item-15" value="    원호 01" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF4FF;strokeColor=none;fontFamily=Malgun Gothic;fontSize=17;fontColor=#175CD3;fontStyle=1;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="48" y="482" width="248" height="34" />
+        </mxCell>
+        <mxCell id="item-16" value="    접지면 01" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontFamily=Malgun Gothic;fontSize=17;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="48" y="518" width="248" height="34" />
+        </mxCell>
+        <mxCell id="item-17" value="  급전" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontFamily=Malgun Gothic;fontSize=17;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="48" y="554" width="248" height="34" />
+        </mxCell>
+        <mxCell id="item-18" value="  재료" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontFamily=Malgun Gothic;fontSize=17;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="48" y="590" width="248" height="34" />
+        </mxCell>
+        <mxCell id="item-19" value="  외부 환경" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontFamily=Malgun Gothic;fontSize=17;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="48" y="626" width="248" height="34" />
+        </mxCell>
+        <mxCell id="item-20" value="  실행 / 결과" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontFamily=Malgun Gothic;fontSize=17;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="48" y="662" width="248" height="34" />
+        </mxCell>
+        <mxCell id="item-21" value="04  레이어 / 표시&#10;표시      활성 층&#10;[x]      Top Copper&#10;[x]      Substrate" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=white;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=17;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="32" y="770" width="280" height="154" />
+        </mxCell>
+        <mxCell id="item-22" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=white;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=18;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="324" y="230" width="910" height="530" />
+        </mxCell>
+        <mxCell id="item-23" value="05  도면   |   STEP   |   PCB 교환   |   보고서 / 인계" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#F8FAFC;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=19;fontColor=#243247;fontStyle=1;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="336" y="238" width="886" height="42" />
+        </mxCell>
+        <mxCell id="item-24" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=white;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=18;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1246" y="230" width="322" height="694" />
+        </mxCell>
+        <mxCell id="item-25" value="08  선택 속성" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontFamily=Malgun Gothic;fontSize=20;fontColor=#243247;fontStyle=1;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1260" y="238" width="290" height="42" />
+        </mxCell>
+        <mxCell id="item-26" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=white;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=18;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="324" y="770" width="910" height="154" />
+        </mxCell>
+        <mxCell id="item-27" value="09  문제   /   작업   /   로그" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontFamily=Malgun Gothic;fontSize=18;fontColor=#243247;fontStyle=1;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="338" y="778" width="880" height="35" />
+        </mxCell>
+        <mxCell id="item-28" value="진행률은 worker가 제공한 범위만 표시&#10;취소 요청과 실제 종료 확인을 구분" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontFamily=Malgun Gothic;fontSize=17;fontColor=#536174;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="338" y="816" width="880" height="82" />
+        </mxCell>
+        <mxCell id="item-29" value="10  단위 mm    |    활성 층 Top Copper    |    스냅 끔    |    worker 상태 별도 표시" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#E8EEF6;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=14;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="32" y="930" width="1536" height="22" />
+        </mxCell>
+        <mxCell id="item-30" value="06  출력 입력 snapshot 고정    |    출력 형식 / profile 선택" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF4FF;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=17;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="350" y="300" width="856" height="54" />
+        </mxCell>
+        <mxCell id="item-31" value="STEP: 현재 기본 출력 지원" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#F8FAFC;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=18;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="350" y="372" width="856" height="48" />
+        </mxCell>
+        <mxCell id="item-32" value="PDF / SVG / DXF 도면: 10번 후속" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#F8FAFC;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=18;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="350" y="426" width="856" height="48" />
+        </mxCell>
+        <mxCell id="item-33" value="KiCad / Gerber / 드릴 / Job: 10번 후속" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#F8FAFC;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=18;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="350" y="480" width="856" height="48" />
+        </mxCell>
+        <mxCell id="item-34" value="프로젝트 인계 / 검수 보고서: 12번 후속" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#F8FAFC;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=18;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="350" y="534" width="856" height="48" />
+        </mxCell>
+        <mxCell id="item-35" value="07  미리보기 -&gt; 생성 -&gt; 파일 확인 -&gt; 지원 profile 검수&#10;생성 성공을 RF / 제조 / 독립 교환 합격으로 표시하지 않습니다." style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFF3D6;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=18;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="350" y="604" width="856" height="104" />
+        </mxCell>
+        <mxCell id="item-36" value="출력 계획&#10;입력 개정 / 범위&#10;단위 / 좌표계&#10;객체 / net / layer 대응&#10;생략 및 미지원 항목&#10;파일 경로 / 해시" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontFamily=Malgun Gothic;fontSize=17;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1270" y="292" width="280" height="240" />
+        </mxCell>
+        <mxCell id="item-37" value="독립 검수: 미평가&#10;현재 STEP 상태:&#10;generated_unverified" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF4FF;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=16;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1270" y="610" width="280" height="90" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

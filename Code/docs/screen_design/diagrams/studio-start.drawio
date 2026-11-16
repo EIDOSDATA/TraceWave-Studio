@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" type="device">
+  <diagram id="studio-start" name="S00 / 시작 - 프로젝트와 복구">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="item-2" value="S00 / 시작 - 프로젝트와 복구" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontFamily=Malgun Gothic;fontSize=27;fontColor=#243247;fontStyle=1;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="32" y="20" width="1536" height="44" />
+        </mxCell>
+        <mxCell id="item-3" value="신규 시작 화면의 제안입니다. 현재 GUI의 생성 / 열기 명령을 단계적으로 연결합니다." style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontFamily=Malgun Gothic;fontSize=17;fontColor=#536174;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="32" y="64" width="1536" height="42" />
+        </mxCell>
+        <mxCell id="item-4" value="화면 설계안 v0.1 / 2026-11-16 KST / 구현 및 사용성 수용과 별도 / 치수와 성능 예시 없음" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontFamily=Malgun Gothic;fontSize=15;fontColor=#536174;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="32" y="950" width="1536" height="32" />
+        </mxCell>
+        <mxCell id="item-5" value="TraceWave Studio        새 프로젝트        프로젝트 열기        환경 진단" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF4FF;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=24;fontColor=#243247;fontStyle=1;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="160" width="1480" height="80" />
+        </mxCell>
+        <mxCell id="item-6" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=white;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=18;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="270" width="880" height="600" />
+        </mxCell>
+        <mxCell id="item-7" value="01  최근 프로젝트" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontFamily=Malgun Gothic;fontSize=25;fontColor=#243247;fontStyle=1;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="90" y="294" width="800" height="50" />
+        </mxCell>
+        <mxCell id="item-8" value="아직 등록된 최근 프로젝트가 없습니다.&#10;프로젝트 이름과 저장 위치부터 지정하세요.&#10;물성 / 주파수 / 포트 값은 자동으로 채우지 않습니다." style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#F8FAFC;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=22;fontColor=#536174;fontStyle=0;align=center;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="90" y="370" width="800" height="210" />
+        </mxCell>
+        <mxCell id="item-9" value="02  빈 프로젝트 만들기" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#175CD3;strokeColor=#175CD3;fontFamily=Malgun Gothic;fontSize=20;fontColor=white;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="90" y="630" width="380" height="68" />
+        </mxCell>
+        <mxCell id="item-10" value="03  기존 프로젝트 열기" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF4FF;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=20;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="490" y="630" width="400" height="68" />
+        </mxCell>
+        <mxCell id="item-11" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=white;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=18;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="970" y="270" width="570" height="600" />
+        </mxCell>
+        <mxCell id="item-12" value="04  복구 / 환경 상태" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=none;strokeColor=none;fontFamily=Malgun Gothic;fontSize=25;fontColor=#243247;fontStyle=1;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1000" y="294" width="510" height="50" />
+        </mxCell>
+        <mxCell id="item-13" value="복구 후보가 있으면&#10;정식 저장본 / 후보의 시각과 차이를 표시&#10;원본을 덮기 전에 선택" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#FFF3D6;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=20;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1000" y="370" width="510" height="160" />
+        </mxCell>
+        <mxCell id="item-14" value="05  CAD / WSL 환경 확인&#10;환경 미구성 시 편집과 저장 가능&#10;실행에 필요한 항목만 안내" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;fillColor=#EDF4FF;strokeColor=#D3DBE6;fontFamily=Malgun Gothic;fontSize=20;fontColor=#243247;fontStyle=0;align=left;verticalAlign=middle;spacing=12;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1000" y="560" width="510" height="170" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
