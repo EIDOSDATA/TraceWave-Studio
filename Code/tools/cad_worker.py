@@ -55,9 +55,14 @@ def main() -> int:
         projection = json.loads(payload)
         if canonical_bytes(projection) != payload or projection.get("run_id") != request["run_id"]:
             raise ProjectError("E_HASH", "CAD 입력의 정규 바이트 또는 실행 식별자가 다릅니다.")
-        from rfad.adapters.cad.native import build_package
+        if request.get("operation") == "inspect_step":
+            from rfad.adapters.cad.physical import inspect_step
 
-        result["package"] = build_package(projection, Path.cwd() / "output")
+            result["inspection"] = inspect_step(projection["source"])
+        else:
+            from rfad.adapters.cad.native import build_package
+
+            result["package"] = build_package(projection, Path.cwd() / "output")
     except Exception as error:
         exit_code = 1
         result["error"] = error.diagnostic() if isinstance(error, ProjectError) else {"code": "E_GEOMETRY", "message_ko": str(error)[:2048]}

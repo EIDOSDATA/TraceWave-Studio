@@ -75,6 +75,9 @@ def validate_cad_contents(journal, job: dict, package: dict, files: list[dict]) 
     embedded = {item["path"]: item for item in sidecar.get("files", [])}
     if embedded != {item["path"]: item for item in files if item["path"] != "sidecar.json"}:
         raise ProjectError("E_HASH", "STEP sidecar가 실제 파일 목록과 다릅니다.")
+    if (sidecar.get("projection_purpose") != package.get("projection_purpose")
+            or validation.get("environment_placement") != package.get("environment_placement")):
+        raise ProjectError("E_HASH", "CAD 표시/출력 범위 또는 배치 검사 결과가 파일과 다릅니다.")
     if (validation.get("status") != "passed_same_kernel" or validation.get("kernel_independent") is not False
             or sidecar.get("verification") != validation or len(sidecar.get("body_map", [])) != package["body_count"]):
         raise ProjectError("E_HASH", "CAD 재입력 검증 근거 또는 body mapping이 다릅니다.")

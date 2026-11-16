@@ -73,7 +73,22 @@ def _read_step_shapes(path: Path) -> dict:
 
 def read_step(path: Path) -> dict:
     """! @brief 별도 reader가 복원한 이름별 측정값만 외부 호출자에 반환한다."""
-    return {name: _metrics(shape) for name, shape in _read_step_shapes(path).items()}
+    from rfad.adapters.cad.physical import external_metrics
+
+    return {name: (external_metrics if name.startswith("environment_") else _metrics)(shape)
+            for name, shape in _read_step_shapes(path).items()}
+
+
+def _compare_external(name, left, right, tolerance):
+    """! @brief 임의 방향 외부 고체의 경계, 중심과 부피만 대조한다."""
+    bbox_error = max(abs(a - b) for a, b in zip(left["bbox_mm"], right["bbox_mm"]))
+    center_error = max(abs(a - b) for a, b in zip(left["center_mm"], right["center_mm"]))
+    volume_error = abs(left["volume_mm3"] - right["volume_mm3"])
+    volume_tolerance = max(tolerance ** 3, left["volume_mm3"] * 1e-7)
+    _require(bbox_error <= tolerance and center_error <= tolerance and volume_error <= volume_tolerance,
+             "외부 고체의 경계, 중심 또는 부피가 STEP 재입력에서 달라졌습니다.")
+    return {"name": name, "bbox_error_mm": bbox_error, "center_error_mm": center_error,
+            "volume_error_mm3": volume_error, "volume_tolerance_mm3": volume_tolerance, "solid_count": 1}
 
 
 def _compare(expected: dict, actual: dict, tolerance: float) -> dict:
@@ -83,6 +98,9 @@ def _compare(expected: dict, actual: dict, tolerance: float) -> dict:
     for name in sorted(expected):
         left, right = expected[name], actual[name]
         _require(left["solid_count"] == right["solid_count"], "STEP 재입력에서 연결 성분 수가 달라졌습니다.")
+        if "section_loop_count" not in left:
+            comparisons.append(_compare_external(name, left, right, tolerance))
+            continue
         _require(left["section_loop_count"] == right["section_loop_count"] and left["through_hole_count"] == right["through_hole_count"],
                  "STEP 재입력에서 단면의 경계 또는 관통 구멍 수가 달라졌습니다.")
         bbox_error = max(abs(a - b) for a, b in zip(left["bbox_mm"], right["bbox_mm"]))

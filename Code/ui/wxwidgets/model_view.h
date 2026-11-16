@@ -28,6 +28,8 @@ public:
     std::string Error() const;
     std::string LoadedSnapshotId() const;
     std::string Selection() const;
+    /** @brief 선택 원본 ID에 연결된 3D 바디 역할을 조회한다. */
+    std::string SourceRole(const std::string& id) const;
     std::string RendererDescription() const;
     std::size_t TriangleCount() const;
     std::size_t BodyCount() const;

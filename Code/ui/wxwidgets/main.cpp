@@ -26,6 +26,7 @@ public:
         parser.AddSwitch("", "study-expect-failure", "Expect study source preflight rejection");
         parser.AddSwitch("", "design-setup-smoke-test", "Run target/template GUI workflow and exit");
         parser.AddSwitch("", "printed-seed-smoke-test", "Run printed reference/seed and workspace GUI workflow and exit");
+        parser.AddSwitch("", "physical-setup-smoke-test", "Run physical stack, STEP placement and reopen workflow");
         parser.AddSwitch("", "design-rules-smoke-test", "Run design rules editing, checking and reopen workflow");
         parser.AddOption("", "study-specification", "Explicit study smoke specification JSON path");
         parser.AddOption("", "open-project", "Registered project path relative to workspace");
@@ -68,7 +69,9 @@ public:
         options.studyExpectFailure = parser.Found("study-expect-failure");
         options.printedSeedSmoke = parser.Found("printed-seed-smoke-test");
         options.designRulesSmoke = parser.Found("design-rules-smoke-test");
-        options.setupSmoke = parser.Found("design-setup-smoke-test") || options.printedSeedSmoke || options.designRulesSmoke;
+        options.physicalSetupSmoke = parser.Found("physical-setup-smoke-test");
+        options.setupSmoke = parser.Found("design-setup-smoke-test") || options.printedSeedSmoke ||
+                             options.designRulesSmoke || options.physicalSetupSmoke;
         parser.Found("study-specification", &options.studySpecification);
         options.smoke = parser.Found("smoke-test") || options.editorSmoke || options.canvasSmoke ||
                         options.primitivesSmoke || options.cadSmoke || options.solverSmoke || options.pcbSmoke ||

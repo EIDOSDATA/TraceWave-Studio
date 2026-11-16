@@ -68,6 +68,7 @@ private:
     /** @brief 추가 문헌/초기식과 표시 전용 작업 영역을 실제 서비스로 확인한다. */
     void PrintedSeedSmokeTick();
     void DesignRulesSmokeTick();
+    void PhysicalSetupSmokeTick();
     void PrintedSeedDialog(TemplateDialog& dialog);
     int m_printedCase = 0;
     /** @brief 실제 목표 입력/선택/적용 이벤트와 출처 보존을 검사한다. */

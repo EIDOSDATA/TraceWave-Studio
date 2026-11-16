@@ -19,6 +19,7 @@ void StudioFrame::UpdateControls()
     GetMenuBar()->Enable(IdTargets, opened && m_targetsSupported);
     GetMenuBar()->Enable(IdTemplates, opened && m_templatesSupported);
     GetMenuBar()->Enable(IdDesignRules, opened && m_designRulesSupported);
+    GetMenuBar()->Enable(IdPhysicalSetup, opened && m_physicalSetupSupported);
     for (const int id : {IdNewMaterial, IdNewNet, IdNewPort})
     {
         GetMenuBar()->Enable(id, opened);
@@ -64,6 +65,10 @@ void StudioFrame::UpdateControls()
         {
             enabled = opened && (item.first == IdTargets ? m_targetsSupported : m_templatesSupported);
         }
+        else if (item.first == IdPhysicalSetup)
+        {
+            enabled = opened && m_physicalSetupSupported;
+        }
         else if (item.first == IdDesignRules)
         {
             enabled = opened && m_designRulesSupported;
@@ -86,7 +91,7 @@ void StudioFrame::UpdateControls()
         }
         else if (item.first == IdOutputFolder)
         {
-            enabled = !m_cadResult.empty();
+            enabled = !m_cadResult.empty() && m_cadResult.value("projection_purpose", "") != "geometry";
         }
         else if (item.first == IdRunSolver)
         {

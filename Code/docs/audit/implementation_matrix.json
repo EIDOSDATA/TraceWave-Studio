@@ -7346,6 +7346,12 @@
       "shared_evidence_supported": true,
       "source_copies_in_project": true
     },
+    "physical_setup_profile": {
+      "em_supported": false,
+      "profile": "rfad.physical-setup/0.1",
+      "step_geometry": "single_mm_solid",
+      "step_preview_requires_cad": true
+    },
     "profile": "rfad.projects/0.2",
     "project_profile": {
       "commands": [
@@ -7624,6 +7630,18 @@
     },
     "pcb.selection.preview": {
       "extension_profile": "rfad.pcb-selection/0.1",
+      "status": "implemented"
+    },
+    "physical.setup.apply": {
+      "extension_profile": "rfad.physical-setup/0.1",
+      "status": "implemented"
+    },
+    "physical.setup.get": {
+      "extension_profile": "rfad.physical-setup/0.1",
+      "status": "implemented"
+    },
+    "physical.step.preview": {
+      "extension_profile": "rfad.physical-setup/0.1",
       "status": "implemented"
     },
     "project.redo": {
@@ -8045,48 +8063,60 @@
     {
       "code": [
         "src/rfad/application/rpc.py",
-        "src/rfad/adapters/cad/step_io.py"
+        "src/rfad/adapters/cad/step_io.py",
+        "src/rfad/application/physical_setup_service.py",
+        "src/rfad/adapters/cad/physical.py"
       ],
       "contract_notes": [
-        "자체 STEP 검수용 read_step은 외부 CAD import 서비스가 아니다. import.preview/import.commit은 capabilities에서 제공하지 않는다."
+        "외부 STEP은 단일 B-rep 고체에 한정한다. EDA 공통 import.preview/import.commit은 후속이다."
       ],
       "evidence": [
-        "docs/cad_contract.md"
+        "docs/cad_contract.md",
+        "docs/physical_setup.md",
+        "runtime_profiles/physical-setup.json"
       ],
       "gaps": [
-        "KiCad/Gerber와 기본 외부 STEP reader, 지원 entity inventory와 단위/층/net/origin mapping preview가 필요하다.",
-        "source hash 재검사, 손실/미지원 보고와 project.geometry 원자 적용 명령을 연결해야 한다."
+        "외부 다중 제품/조립체와 혼합 단위 mapping은 후속이다.",
+        "KiCad/Gerber 및 상세 교환 mapping과 손실 보고가 남아 있다."
       ],
       "id": "FN-010",
-      "implementation_status": "not_implemented",
-      "implemented": "CAD worker의 자체 STEP 재입력은 구현됐으나 사용자 외부 CAD/EDA 파일을 편집 가능한 프로젝트로 가져오는 서비스는 없다.",
+      "implementation_status": "partial",
+      "implemented": "격리 CAD worker의 자체 포함 mm STEP 단일 고체 읽기, 단위/경계/면/해시 검토, 개정에 결합한 원자 채택을 연결했다.",
       "next_steps": [
         3,
         10
       ],
-      "tests": []
+      "tests": [
+        "tests/test_physical_setup.py",
+        "tests/test_gui_physical_setup_process.py"
+      ]
     },
     {
       "code": [
         "src/rfad/domain/design.py",
         "src/rfad/application/pcb_selection_layers.py",
         "src/rfad/adapters/cad/bodies.py",
-        "src/rfad/application/pcb_projection.py"
+        "src/rfad/application/pcb_projection.py",
+        "src/rfad/domain/physical_setup.py",
+        "src/rfad/adapters/cad/physical.py",
+        "ui/wxwidgets/physical_setup_review.cpp"
       ],
       "contract_notes": [
-        "coating/adhesive/air 역할의 저장 허용과 CAD/EM 투영 지원은 다르다. CAD는 해당 역할을 거절한다. 총두께에서 미정 코어/마스크를 임의 역산하지 않는다."
+        "기존 coverage 없는 coating/adhesive/air는 계속 CAD에서 거절한다. 명시 피복을 가진 표면층은 새 계약에 따른다."
       ],
       "evidence": [
         "runtime_profiles/copper-ifa-worker-wsl.json",
-        "runtime_profiles/pcb-selection.json"
+        "runtime_profiles/pcb-selection.json",
+        "docs/physical_setup.md",
+        "runtime_profiles/physical-setup.json"
       ],
       "gaps": [
-        "mask/coating coverage/opening, 일반 NPTH/slot과 기본 assembly 형상의 공통 의미가 필요하다.",
-        "제조 두께/도금/공칭 포함 범위와 허용 공차를 연결하는 제작 profile 및 전 범위 검수가 남는다."
+        "일반 NPTH/슬롯, 복합 피복 및 검증된 표면층 EM 모델이 남아 있다.",
+        "실제 제작 공차, 자료 확보와 전 범위 검수가 필요하다."
       ],
       "id": "FN-011",
       "implementation_status": "partial",
-      "implemented": "정렬된 층의 z/두께/재료와 미정값, polygon hole, 원형/사각 pad 및 명시적 중공 PTH의 도금/홀/패드 참조를 저장하고 CAD/제한 EM에 투영한다.",
+      "implemented": "기존 순서/z/재료/PTH와 함께 기본 층 합/명목 포함 범위 및 피복/사각 개구의 표면층을 저장하고 CAD에 투영한다.",
       "next_steps": [
         3,
         8,
@@ -8096,7 +8126,9 @@
         "tests/test_copper_design.py",
         "tests/test_cad_copper_features.py",
         "tests/test_pcb_ifa.py",
-        "tests/test_pcb_selection_service.py"
+        "tests/test_pcb_selection_service.py",
+        "tests/test_physical_setup.py",
+        "tests/test_gui_physical_setup_process.py"
       ]
     },
     {
@@ -8105,22 +8137,25 @@
         "src/rfad/adapters/cad/native.py",
         "src/rfad/adapters/cad/bodies.py",
         "src/rfad/adapters/cad/display.py",
-        "src/rfad/application/display_mesh.py"
+        "src/rfad/application/display_mesh.py",
+        "src/rfad/application/physical_projection.py",
+        "src/rfad/adapters/cad/physical.py"
       ],
       "contract_notes": [
-        "물리 BREP/표시 mesh/solver polygon의 tolerance와 의미를 공유하지 않는다. 현재 board transform은 거절되므로 좌표계 필드 존재만으로 assembly 지원을 주장하지 않는다."
+        "표시/STEP 목적의 투영은 독립이다. STEP은 같은 커널 재입력까지 검사한다."
       ],
       "evidence": [
         "runtime_profiles/gui-cad-windows-x64.json",
-        "runtime_profiles/cad-worker-windows-x64.json"
+        "runtime_profiles/cad-worker-windows-x64.json",
+        "docs/physical_setup.md",
+        "runtime_profiles/physical-setup.json"
       ],
       "gaps": [
-        "외부 부품 assembly/배치/변환과 표면층/슬롯 등 선언할 R1 physical profile을 확장해야 한다.",
-        "대형 표시 LOD와 100만 triangle 경로, 전체 topology/조립 독립 검수가 남는다."
+        "다중 조립체, 슬롯, 대형 표시 LOD 및 전체 토폴로지 독립 검수가 남아 있다."
       ],
       "id": "FN-012",
       "implementation_status": "partial",
-      "implemented": "불변 snapshot을 mm CAD DTO로 바꿔 OCCT에서 분리 고체/원호/같은 net union/중공 PTH를 생성하고 stable body map과 제한 표시 mesh를 제공한다.",
+      "implemented": "OCCT 분리 고체, 원호/같은 net union/PTH 및 표면층/외부 단일 고체 배치를 불변 snapshot에서 생성하고 선택 가능한 3D 표시를 제공한다.",
       "next_steps": [
         3,
         4,
@@ -8130,28 +8165,34 @@
       "tests": [
         "tests/test_cad_native.py",
         "tests/test_cad_projection.py",
-        "tests/test_display_mesh.py"
+        "tests/test_display_mesh.py",
+        "tests/test_physical_setup.py",
+        "tests/test_gui_physical_setup_process.py"
       ]
     },
     {
       "code": [
         "src/rfad/domain/project.py",
         "src/rfad/application/cad.py",
-        "src/rfad/application/pcb_projection.py"
+        "src/rfad/application/pcb_projection.py",
+        "src/rfad/domain/physical_setup.py",
+        "src/rfad/application/physical_setup_service.py",
+        "ui/wxwidgets/physical_setup_dialog.cpp"
       ],
       "contract_notes": [
-        "환경/assembly는 R1 기본 범위를 유지한다. 팬텀/굽힘/배열 전문 물리를 기본 R1 환경으로 추정하지 않는다."
+        "접촉은 B-rep 간극이며 전기 연결은 미평가다. EM 포함 요청은 현재 PCB profile에서 명시적으로 차단한다."
       ],
       "evidence": [
-        "docs/cad_contract.md"
+        "docs/cad_contract.md",
+        "docs/physical_setup.md",
+        "runtime_profiles/physical-setup.json"
       ],
       "gaps": [
-        "environment collection의 물체/재료/rigid transform와 baseline+delta schema 및 명령이 필요하다.",
-        "기본 하우징/배터리/케이블 포함 범위, 접촉과 scenario별 solver 정의를 검증해야 한다."
+        "환경 EM 모델과 전기 접촉/실장 조건의 독립 검증, 복합 조립체와 특수 환경 지원이 남아 있다."
       ],
       "id": "FN-013",
-      "implementation_status": "not_implemented",
-      "implemented": "현재 board/shape의 표시/해석/출력 포함 플래그는 있으나 환경 scenario와 외부 STEP 배치 기능은 없다.",
+      "implementation_status": "partial",
+      "implemented": "기준 PCB와 이름 있는 설치 시나리오 delta, 간이 상자/STEP의 XYZ·yaw, 독립 표시/출력/EM 포함과 실제 CAD 간극·접촉·관통 검사를 제공한다.",
       "next_steps": [
         3,
         8,
@@ -8159,7 +8200,9 @@
         11
       ],
       "tests": [
-        "tests/test_cad_projection.py::CadProjectionTests.test_unsupported_coverage_and_transforms_are_explicitly_rejected"
+        "tests/test_cad_projection.py::CadProjectionTests.test_unsupported_coverage_and_transforms_are_explicitly_rejected",
+        "tests/test_physical_setup.py",
+        "tests/test_gui_physical_setup_process.py"
       ]
     },
     {
@@ -12786,8 +12829,8 @@
   "review_inputs": [
     {
       "path": "Code/docs/audit/design_functions.json",
-      "text_sha256": "a77ca305b6e3ffb23d1500804a4faac23db3cc032fd233e769a89b0b57567506",
-      "utf8_bytes": 33796
+      "text_sha256": "64d4fd31e0e3bef0f2fe27dba422543661c9cb002e4a0d069b8897c48c6cb575",
+      "utf8_bytes": 34337
     },
     {
       "path": "Code/docs/audit/analysis_functions.json",
@@ -12840,6 +12883,11 @@
       "utf8_bytes": 15251
     },
     {
+      "path": "Code/docs/physical_setup.md",
+      "text_sha256": "ff7ab0bf91f07688fd99aeb0fa0312e8f26c14b0f52d7114e48de09a5476cf69",
+      "utf8_bytes": 5754
+    },
+    {
       "path": "Code/docs/printed_templates_and_seeds.md",
       "text_sha256": "fec4f3a631d3a8255136f32d96a467bb444466f652c8faea332a8396544cfe78",
       "utf8_bytes": 8643
@@ -12856,8 +12904,8 @@
     },
     {
       "path": "Code/docs/studio_gui_design.md",
-      "text_sha256": "86d132a06fa405fde1c6a75a3a8fde9069e5be0fc22975d9cdd617eda3c0b1cf",
-      "utf8_bytes": 32594
+      "text_sha256": "8a175cb8910454a2701f19702c8099bae506e088499a0e270b73eba206896e1f",
+      "utf8_bytes": 32715
     },
     {
       "path": "Code/docs/target_contract.md",
@@ -12955,6 +13003,11 @@
       "utf8_bytes": 34468
     },
     {
+      "path": "Code/runtime_profiles/physical-setup.json",
+      "text_sha256": "e17781203ec775c92181a5deaa58af7599ac3af9a30340e4a667f13c3c1d7cb3",
+      "utf8_bytes": 5079
+    },
+    {
       "path": "Code/runtime_profiles/project-studies.json",
       "text_sha256": "dec7626c489bc655004f46993dadd3a8d20331843a1fae82ebec1c811c16c13f",
       "utf8_bytes": 120617
@@ -12976,8 +13029,8 @@
     },
     {
       "path": "Code/src/rfad/adapters/cad/bodies.py",
-      "text_sha256": "3888b329266ef6e69e51009b3800561347aafbd74e3bfdfd619fe40a343f341a",
-      "utf8_bytes": 10106
+      "text_sha256": "b47d8f1ef8952c121e2257400194af0aa639b577230759ac4aabd95dca7cd601",
+      "utf8_bytes": 10430
     },
     {
       "path": "Code/src/rfad/adapters/cad/display.py",
@@ -12991,13 +13044,18 @@
     },
     {
       "path": "Code/src/rfad/adapters/cad/native.py",
-      "text_sha256": "ce449003671876da7b324f7a9462518e4df9b7d3ace88d0f5f4b5623fec334cd",
-      "utf8_bytes": 6831
+      "text_sha256": "6835af5657bf571b6d087ce1f40713731dec6f32289eac97f63ef040a9adc709",
+      "utf8_bytes": 7431
+    },
+    {
+      "path": "Code/src/rfad/adapters/cad/physical.py",
+      "text_sha256": "a21d32fd366c578963474ad7026105e3a437127549ace146afbd293c83b33bc4",
+      "utf8_bytes": 7154
     },
     {
       "path": "Code/src/rfad/adapters/cad/step_io.py",
-      "text_sha256": "a3b4e77091966ca809c92b735188c027b919f64ff4beedd4f6bd9b4bf4c86494",
-      "utf8_bytes": 6569
+      "text_sha256": "fd4ac53d02c291118464b233ddce8c556107a6ffe644a04b478a2b8851f9f924",
+      "utf8_bytes": 7708
     },
     {
       "path": "Code/src/rfad/adapters/solvers/openems/pcb.py",
@@ -13031,13 +13089,13 @@
     },
     {
       "path": "Code/src/rfad/application/cad.py",
-      "text_sha256": "54e295d3f22dc7d4ee07dab0e584d99507df1e1cc54278ba4d471d1cf108dc26",
-      "utf8_bytes": 16071
+      "text_sha256": "62d5daea5d00a94ee55c74de3cc3b74b450deaa0e2f6b9377754ad71b91ccdb6",
+      "utf8_bytes": 16665
     },
     {
       "path": "Code/src/rfad/application/cad_artifacts.py",
-      "text_sha256": "5291bee8f431f3793daebc6d84538f3d527e93523026d2c7d05ceefbc7ff0f44",
-      "utf8_bytes": 6437
+      "text_sha256": "f60086f8b18ddf8395adda7831e3393162adae5b3e4b8e7b6ab32bcdb6641766",
+      "utf8_bytes": 6733
     },
     {
       "path": "Code/src/rfad/application/cad_runtime.py",
@@ -13066,8 +13124,8 @@
     },
     {
       "path": "Code/src/rfad/application/display_mesh.py",
-      "text_sha256": "06325f60b351904c6833e317f27f1ff0a6dfd982acbf15c02cf3c91cdcc0049c",
-      "utf8_bytes": 5261
+      "text_sha256": "03e9906ed97890dc378108ebd3a94d7ec088ee467441e10379f1f0318077511d",
+      "utf8_bytes": 5287
     },
     {
       "path": "Code/src/rfad/application/job_state.py",
@@ -13131,8 +13189,18 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_solver.py",
-      "text_sha256": "ab7eabc988d6239f8bd75b1bd50949595501e22839465c3fdff74019ca5bf532",
-      "utf8_bytes": 6978
+      "text_sha256": "f158b565c227084d9b74c2eb03aa0c840d00e95c949459d5394fa1bc6e04e8af",
+      "utf8_bytes": 7265
+    },
+    {
+      "path": "Code/src/rfad/application/physical_projection.py",
+      "text_sha256": "8ae87729fb1a4183e7e099d725147ff85621cd66880cfb103fa3eb30f478578c",
+      "utf8_bytes": 3302
+    },
+    {
+      "path": "Code/src/rfad/application/physical_setup_service.py",
+      "text_sha256": "19f686692494ca3860ebece608d4ec254258b440064072e34edcbe3e89e018b3",
+      "utf8_bytes": 17298
     },
     {
       "path": "Code/src/rfad/application/project_contract.py",
@@ -13191,8 +13259,8 @@
     },
     {
       "path": "Code/src/rfad/application/rpc.py",
-      "text_sha256": "845919c7a3c3ed3f863c49252a61d75b1606ee42d9b0677c4052fdce9071d35e",
-      "utf8_bytes": 22244
+      "text_sha256": "80b358d7971d399ae5d33311f7c69c5fe9b716d83962b687eece42d86b4da2eb",
+      "utf8_bytes": 22914
     },
     {
       "path": "Code/src/rfad/application/solver.py",
@@ -13291,8 +13359,8 @@
     },
     {
       "path": "Code/src/rfad/domain/design.py",
-      "text_sha256": "84e54769eaeb876972a575f6e006fbb4b38a3eb63348fd40f0bb8fb6a9c80b00",
-      "utf8_bytes": 35595
+      "text_sha256": "b76811f64e923ce73bfce1f657244b6bd7fed995d43c1e2d75123130bc800da0",
+      "utf8_bytes": 37447
     },
     {
       "path": "Code/src/rfad/domain/design_checks.py",
@@ -13335,6 +13403,11 @@
       "utf8_bytes": 10053
     },
     {
+      "path": "Code/src/rfad/domain/physical_setup.py",
+      "text_sha256": "e2c89334deaad8abdcfbed18091534c6db7d445c572679fb915f9fe56b59ca32",
+      "utf8_bytes": 13890
+    },
+    {
       "path": "Code/src/rfad/domain/planar.py",
       "text_sha256": "a5fb63c7bfb7f1813917404095b696ab6e70eb71d7f0059508dbae31024e5e3f",
       "utf8_bytes": 8072
@@ -13346,8 +13419,8 @@
     },
     {
       "path": "Code/src/rfad/domain/project.py",
-      "text_sha256": "69ac37671770c8376e4807a82fbb31605ae77057e4aea177f280bc070c39ce53",
-      "utf8_bytes": 20567
+      "text_sha256": "b103ea3f35bee49809e97408a563e075924d51c7b368196439f93d89e49c257d",
+      "utf8_bytes": 20813
     },
     {
       "path": "Code/src/rfad/domain/target_constraints.py",
@@ -13510,6 +13583,11 @@
       "utf8_bytes": 4295
     },
     {
+      "path": "Code/tests/test_gui_physical_setup_process.py",
+      "text_sha256": "25a80925af1fe1f52a8da93770bfaa05a38141b7634281e34820af5a4effa536",
+      "utf8_bytes": 6419
+    },
+    {
       "path": "Code/tests/test_gui_printed_seed_process.py",
       "text_sha256": "900b66c4cc3907ab8315bdde43a30b85f1561f9603a86298289776a71a6dd481",
       "utf8_bytes": 4780
@@ -13593,6 +13671,11 @@
       "path": "Code/tests/test_pcb_selection_service.py",
       "text_sha256": "2afb884963d361e1b088c52c98b8e49ca82ce1b5f41063131635eb5d9b4206ce",
       "utf8_bytes": 22433
+    },
+    {
+      "path": "Code/tests/test_physical_setup.py",
+      "text_sha256": "bfbdec8607756fe95246a7223d0b21df6037d5c761ca419f601c89adf55b4648",
+      "utf8_bytes": 10892
     },
     {
       "path": "Code/tests/test_planar.py",
@@ -13700,6 +13783,16 @@
       "utf8_bytes": 1825
     },
     {
+      "path": "Code/ui/wxwidgets/physical_setup_dialog.cpp",
+      "text_sha256": "93b32b6213ab0516dbef2196f664fd78f7450ed323f481551011582a004b9b51",
+      "utf8_bytes": 10454
+    },
+    {
+      "path": "Code/ui/wxwidgets/physical_setup_review.cpp",
+      "text_sha256": "6f222fc134f75d3eb015b039895f32b0bbb65707530d8a2a52338c0d9c2306e7",
+      "utf8_bytes": 10777
+    },
+    {
       "path": "Code/ui/wxwidgets/project_setup_dialog.cpp",
       "text_sha256": "8a82aceb6666fa5c305cca86390d164cef6e5daefbcad55f471bd03c8e85670e",
       "utf8_bytes": 7527
@@ -13721,13 +13814,13 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_design_setup.cpp",
-      "text_sha256": "cc479a398074429f0c7afe70176b4f1d28f97cb7ec8e0c039a8f8fe150ed2b69",
-      "utf8_bytes": 5140
+      "text_sha256": "95ab97f860da204b2f2423f61e6dc8ca9ac302ad6a69a2a3863b4d52a64702a9",
+      "utf8_bytes": 5709
     },
     {
       "path": "Code/ui/wxwidgets/studio_layout.cpp",
-      "text_sha256": "880d74476a6a85b7f1fd6e94fbc4fd3938c9c366753b648ba3429744f0dfe6f2",
-      "utf8_bytes": 24510
+      "text_sha256": "e866e1851d173a07a5f8ba8b07d3623340fa2e8f4b3b39aef53e9f0976401df3",
+      "utf8_bytes": 24838
     },
     {
       "path": "Code/ui/wxwidgets/studio_theme.cpp",

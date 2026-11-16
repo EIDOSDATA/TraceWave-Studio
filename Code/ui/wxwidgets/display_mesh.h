@@ -184,7 +184,8 @@ inline Scene Parse(const Json& value, const Json& snapshot, const std::string& r
         body.id = Identity(source.at("id"));
         body.layer = Identity(source.at("layer_id"));
         body.role = Identity(source.at("role"));
-        Require(body.role == "dielectric" || body.role == "conductor", "지원하지 않는 3D body 역할입니다.");
+        Require(body.role == "dielectric" || body.role == "conductor" ||
+                body.role == "surface" || body.role == "environment", "지원하지 않는 3D body 역할입니다.");
         const auto& sources = source.at("source_entity_ids");
         Require(sources.is_array() && !sources.empty() && sources.size() <= 128, "3D 원본 객체 대응이 올바르지 않습니다.");
         std::set<std::string> uniqueSources;

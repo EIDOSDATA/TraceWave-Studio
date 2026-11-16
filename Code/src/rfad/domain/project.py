@@ -15,6 +15,7 @@ from rfad.domain.targets import MAX_SAMPLES, TARGET_COMMANDS, apply_target_comma
 from rfad.domain.template_instance import EXTENSION_KEY as TEMPLATE_ORIGIN_KEY, validate_template_origins
 from rfad.domain.template_command import INTERNAL_COMMANDS as TEMPLATE_COMMANDS, apply_template_command
 from rfad.domain.design_rules import COMMANDS as RULE_COMMANDS, apply_rule_command, validate_rules
+from rfad.domain.physical_setup import COMMAND as PHYSICAL_COMMAND, apply_setup, validate_setup
 
 
 SCHEMA_VERSION = "rfad.project/0.4"
@@ -273,6 +274,7 @@ def validate_project(document: dict) -> None:
     _extension_json(document["extensions"], "extensions")
     validate_project_selection(document)
     validate_template_origins(document)
+    validate_setup(document)
 
 
 def apply_command(document: dict, command: dict, expected_revision: str) -> tuple[dict, list[str], list[str], dict]:
@@ -343,6 +345,8 @@ def apply_command(document: dict, command: dict, expected_revision: str) -> tupl
         invalidation_set = ["revision", "geometry", "physics", "network", "metrics", "assessment", "exports"]
     elif command_type == "pcb_stackup.apply":
         changed_ids, invalidation_set, inverse = apply_stackup_command(result, payload)
+    elif command_type == PHYSICAL_COMMAND:
+        changed_ids, invalidation_set, inverse = apply_setup(result, payload)
     elif command_type in TARGET_COMMANDS:
         changed_ids, invalidation_set, inverse = apply_target_command(result, command_type, payload)
     elif command_type in RULE_COMMANDS:

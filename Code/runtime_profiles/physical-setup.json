@@ -1,0 +1,146 @@
+{
+  "schema": "rfad.physical-setup-verification/0.1",
+  "platform": "Windows x64",
+  "client_date_kst": "2026-11-16",
+  "recorded_at": "2026-11-16T20:20:43+09:00",
+  "base_revision": "5f9b6a8130caf1b1f3eb6ba9ae0b6cbd4fca4587",
+  "approved_baseline": "RFAD-D0-3.4",
+  "scope": "Software model, mechanical geometry, Windows wxWidgets GUI and persistence.",
+  "binary": {
+    "path": "Code/build/windows-release/bin/tracewave_gui.exe",
+    "sha256": "010d84aaa028fe4180f2be0072aae14bece4e8f035dd37cd9e2d759e3b7159ae",
+    "bytes": 19891005
+  },
+  "build_log": {
+    "path": "Code/.local/physical-setup-build-complete.log",
+    "sha256": "d76d03822975dea856d346927e0f6042ddfbc660311ad86f933535bcadba2d96",
+    "bytes": 151
+  },
+  "tests": {
+    "whole_service": {
+      "scope": "Windows full collection started before the final solver-plan test and GUI harness handshake. OCCT enabled; GUI, WSL and optional environments follow their test guards.",
+      "collected": 894,
+      "passed": 805,
+      "skipped": 89,
+      "elapsed_seconds": 943.034,
+      "log": {
+        "path": "Code/.local/physical-setup-regression.log",
+        "sha256": "79c5933c989fa8552cf7c806874ad3c246fe83b810750f621f0093a2c119db9f",
+        "bytes": 224878
+      }
+    },
+    "focused_service": {
+      "scope": "Final physical setup, STEP input boundaries, PCB plan and persistence.",
+      "collected": 4,
+      "passed": 4,
+      "skipped": 0,
+      "elapsed_seconds": 5.147,
+      "log": {
+        "path": "Code/.local/physical-setup-service-final.log",
+        "sha256": "fa92de2f08d591b4f67df3160418f5f41c4a8f83f1b6afd6eb4ee22b97117e10",
+        "bytes": 1183
+      }
+    },
+    "related_regression": {
+      "scope": "CAD projection, display mesh, design rules, target, audit and PCB plan regression before the extra solver-plan assertion.",
+      "collected": 68,
+      "passed": 68,
+      "skipped": 0,
+      "elapsed_seconds": 25.444,
+      "log": {
+        "path": "Code/.local/physical-setup-focused.log",
+        "sha256": "0787756df5ef364f4866a8920ae4bb1046f74bed2f1669007b41cbf78e6fd077",
+        "bytes": 17685
+      }
+    },
+    "windows_gui": {
+      "scope": "Windows wxWidgets physical setup, CAD and design rules. Native OCCT and wxGLCanvas.",
+      "collected": 4,
+      "passed": 4,
+      "skipped": 0,
+      "elapsed_seconds": 112.422,
+      "log": {
+        "path": "Code/.local/physical-setup-gui-complete.log",
+        "sha256": "fa42f4be66870c46b4c48dac6fe937433d8b4c4af90fcac4570b735aad0eb4af",
+        "bytes": 1178
+      }
+    },
+    "native_ctest": {
+      "collected": 9,
+      "passed": 9,
+      "log": {
+        "path": "Code/.local/physical-setup-ctest.log",
+        "sha256": "748c9afb58647e0e311eb0c1e01fe72ff1e1e7ac18b8f8696f1126ce9d83554c",
+        "bytes": 1052
+      }
+    },
+    "audit": {
+      "scope": "Approved baseline implementation audit and exact linkage regressions.",
+      "collected": 12,
+      "passed": 12,
+      "skipped": 0,
+      "elapsed_seconds": 1.681,
+      "log": {
+        "path": "Code/.local/physical-setup-audit.log",
+        "sha256": "98b88e5d1e27c4a373c23556867a317756c64bec09980b668ce6226e840f5237",
+        "bytes": 3349
+      }
+    }
+  },
+  "gui": {
+    "report": {
+      "path": "Code/.local/physical-setup-gui-final/physical-setup.json",
+      "sha256": "79ed92a09bfed079d787f99c62d2ddb843412e7f9e0958d6c10ccaa247ace6a6",
+      "bytes": 6654
+    },
+    "checks": [
+      "physical_setup_surface_and_step_applied",
+      "physical_setup_native_opengl_clearance",
+      "physical_setup_step_visibility_independent",
+      "physical_setup_saved_reopen_sources_and_missing",
+      "physical_setup_rebuild_from_embedded_step"
+    ],
+    "manual": [
+      "Opened project-panel entry in a disposable saved fixture.",
+      "Observed the measured z cross-section, material layer rows, nominal scope and unconfirmed manufacturing/measurement guidance."
+    ],
+    "nominal_review_mm": {
+      "base": 1.035,
+      "with_surface": 1.055,
+      "nominal": 1.08,
+      "difference": -0.025
+    },
+    "saved_then_moved_input_before_reopen": true,
+    "reopened_and_regenerated_from_embedded_step": true,
+    "source_recheck": "Original imported STEP bytes, prior snapshot SHA256, base geometry, material and unknown inputs compared after new service process."
+  },
+  "native_cad": {
+    "source_unit": "mm",
+    "source_shape": "closed single B-rep solid",
+    "example_rotation_deg": 90,
+    "transformed_bbox_mm": [
+      5,
+      4,
+      5,
+      8,
+      6,
+      9
+    ],
+    "nearest_clearance_mm": 4.945,
+    "surface_opening_dimensions_mm": [
+      4,
+      5
+    ],
+    "same_kernel_step_roundtrip": true,
+    "display_scope_and_export_scope_separately_verified": true,
+    "independent_kernel_verified": false
+  },
+  "verification_limits": {
+    "surface_and_environment_em_projection": "not_supported",
+    "new_fdtd_run": false,
+    "manufacturing_verified": false,
+    "measurement_verified": false,
+    "ro4350b_local_loss_initial_criterion": "unestablished",
+    "ghz_pth_independent_loss_accuracy": "unestablished"
+  }
+}

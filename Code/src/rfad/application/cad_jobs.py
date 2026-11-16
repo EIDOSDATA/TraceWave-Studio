@@ -1,9 +1,11 @@
 """! @brief CAD 작업의 접수, 격리 실행과 취소/게시 수명을 조정한다."""
 
 from copy import deepcopy
+import hashlib
 import json
 from pathlib import Path
 import threading
+from tempfile import TemporaryDirectory
 from uuid import UUID, uuid4
 
 from rfad.application.cad import PROFILE, build_cad_input
@@ -68,14 +70,65 @@ class CadCoordinator:
         if data["profile"] != PROFILE or data.get("projection_kind", "brep") != "brep" or data.get("format", "step") != "step":
             raise ProjectError("E_UNSUPPORTED", "현재 CAD profile은 B-rep와 AP242 STEP 기하 출력만 지원합니다.")
 
-    def _input(self, state: dict, context: dict, data: dict) -> tuple[dict, dict]:
+    def _input(self, state: dict, context: dict, data: dict, *, purpose: str = "step") -> tuple[dict, dict]:
         """! @brief 등록된 불변 스냅샷 바이트를 재검증하고 mm 입력을 만든다."""
         self.service._project(state, context)
         snapshot = state["snapshots"].get(data["snapshot"]["snapshot_id"])
         if snapshot is None or snapshot["project_id"] != context["project_id"] or snapshot["content_hash"] != data["snapshot"]["content_hash"]:
             raise ProjectError("E_HASH", "등록된 스냅샷과 요청한 프로젝트 또는 hash가 다릅니다.")
         document = self.service._load({"current": snapshot["artifact"]})
-        return deepcopy(snapshot), build_cad_input(document, snapshot, data["profile"])
+        return deepcopy(snapshot), build_cad_input(document, snapshot, data["profile"], purpose=purpose)
+
+    def inspect_step(self, source: dict) -> dict:
+        """! @brief 가벼운 미리보기도 기존 단일 CAD 슬롯과 고정 런타임에서 실행한다."""
+        if self.runtime is None:
+            raise ProjectError("E_UNSUPPORTED", "외부 STEP을 읽으려면 CAD 실행 환경을 연결하십시오.")
+        if not self._run_lock.acquire(blocking=False):
+            raise ProjectError("E_RESOURCE", "다른 CAD 작업이 실행 중입니다. 작업 종료 후 다시 읽으십시오.")
+        try:
+            if self.error is not None or any(job.get("cad", {}).get("resource_reserved") for job in self.service.journal.read()["jobs"].values()):
+                raise ProjectError("E_RESOURCE", "CAD 슬롯이 사용 중이거나 이전 실행의 종료 확인이 필요합니다.")
+            self.runtime.verify(self.runtime.identity)
+            with TemporaryDirectory(prefix="tracewave-step-") as directory:
+                stage = Path(directory)
+                run_id, nonce = str(uuid4()), str(uuid4())
+                payload = canonical_bytes({"run_id": run_id, "source": source})
+                digest = hashlib.sha256(payload).hexdigest()
+                (stage / "input.json").write_bytes(payload)
+                (stage / "runtime.json").write_bytes(self.runtime.manifest_bytes)
+                (stage / "worker.py").write_bytes(self.runtime.entry_bytes)
+                for relative, text in json.loads(self.runtime.source_bytes).items():
+                    target = stage / relative
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    target.write_text(text, encoding="utf-8", newline="")
+                request = {"schema": "rfad.cad-worker/0.1", "operation": "inspect_step", "run_id": run_id,
+                           "nonce": nonce, "input_sha256": digest, "runtime": self.runtime.identity}
+                process = run_native([str(self.runtime.python), "-I", "-B", "-X", "utf8", str(stage / "worker.py")],
+                                     cwd=stage, request_bytes=canonical_bytes(request) + b"\n", cancel=self.stop,
+                                     timeout_seconds=min(20.0, self.runtime.timeout_seconds))
+                if process["termination"] != "completed":
+                    raise ProjectError("E_RESOURCE", "외부 STEP 미리보기가 시간 또는 출력 상한에서 중단됐습니다.")
+                with (stage / "result.json").open("rb") as stream:
+                    raw = stream.read(MAX_RESULT_BYTES + 1)
+                if len(raw) > MAX_RESULT_BYTES:
+                    raise ProjectError("E_RESOURCE", "STEP 미리보기 응답이 상한을 초과했습니다.")
+                result = json.loads(raw)
+                if (result.get("schema"), result.get("run_id"), result.get("nonce"), result.get("input_sha256")) != (
+                        "rfad.cad-worker-result/0.1", run_id, nonce, digest):
+                    raise ProjectError("E_HASH", "STEP 미리보기 실행 응답의 식별자가 다릅니다.")
+                if process["returncode"] != 0:
+                    error = result.get("error", {})
+                    raise ProjectError(error.get("code", "E_GEOMETRY"), error.get("message_ko", "STEP reader가 실패했습니다."),
+                                       details=error.get("details", {}))
+                return result["inspection"]
+        except OSError as error:
+            raise ProjectError("E_DISK", "CAD 미리보기 자료를 읽거나 쓸 수 없습니다.") from error
+        except ProjectError as error:
+            if error.details.get("outcome_unknown"):
+                self.error = error
+            raise
+        finally:
+            self._run_lock.release()
 
     def preview(self, params: dict) -> dict:
         """! @brief 출력에 소비할 범위와 지원 제한을 저장 변경 없이 공개한다."""
@@ -85,6 +138,7 @@ class CadCoordinator:
         snapshot, projection = self._input(self.service.journal.read(), params["context"], params["input"])
         return {"profile": PROFILE, "status": "preview_only", "snapshot": snapshot,
                 "layer_count": len(projection["layers"]), "shape_count": len(projection["shapes"]),
+                "surface_count": len(projection.get("surface_layers", [])), "environment_count": len(projection.get("environment_parts", [])),
                 "omissions": projection.get("omissions", []), "runtime_configured": self.runtime is not None,
                 "manufacturing_verified": False, "physics_verified": False}
 
@@ -96,7 +150,7 @@ class CadCoordinator:
             raise ProjectError("E_RESOURCE", "CAD 슬롯이 사용 중이거나 이전 실행의 종료 확인이 필요합니다.")
         if len(state["jobs"]) >= 512:
             raise ProjectError("E_RESOURCE", "작업 보존 상한에 도달했습니다.")
-        snapshot, projection = self._input(state, context, data)
+        snapshot, projection = self._input(state, context, data, purpose="geometry" if method == "geometry.build" else "step")
         job_id, run_id, nonce = str(uuid4()), str(uuid4()), str(uuid4())
         projection["run_id"] = run_id
         payload = canonical_bytes(projection)
@@ -123,6 +177,7 @@ class CadCoordinator:
         job_id = str(uuid4())
         result = {"profile": PROFILE, "status": "preview_only", "snapshot": snapshot,
                   "layer_count": len(projection["layers"]), "shape_count": len(projection["shapes"]),
+                  "surface_count": len(projection.get("surface_layers", [])), "environment_count": len(projection.get("environment_parts", [])),
                   "omissions": projection.get("omissions", []), "runtime_configured": self.runtime is not None,
                   "manufacturing_verified": False, "physics_verified": False}
         job = {"job_id": job_id, "run_id": str(uuid4()), "kind": "export", "operation_method": "export.preview",
@@ -253,6 +308,8 @@ class CadCoordinator:
                 result = {"snapshot": job["snapshot"], "profile": PROFILE, "status": "generated_unverified",
                           "artifacts": artifacts, "step_schema": package["step_schema"],
                           "body_count": package["body_count"], "solid_count": package["solid_count"],
+                          **({"projection_purpose": package["projection_purpose"]} if "projection_purpose" in package else {}),
+                          **({"environment_placement": package["environment_placement"]} if "environment_placement" in package else {}),
                           "kernel_independent": False, "physics_verified": False, "manufacturing_verified": False}
                 job["artifacts"] = artifacts
                 self.service._event(job, "completed", operation_result=result)

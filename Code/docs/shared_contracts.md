@@ -10,7 +10,7 @@
 | --- | --- | --- |
 | CC-001 | ProjectDocument의 원본/명령/단위/hash는 domain/application 서비스가 소유한다. GUI/CLI/MCP는 같은 명령을 호출한다. | project.py, projects.py, canonical.py와 기존 명령/이력 재사용. GUI에서 별도 물리값/hash를 생성하지 않음 |
 | CC-002 | 입력의 missing, 명시한 가정, 출처 관측과 사용자 채택값을 보존한다. 필요한 연산만 부족 입력을 차단한다. | Quantity와 PCB 선택 계약 유지. 실제 납품 물성과 제작/측정 미정값 자동 보완 금지 |
-| CC-003 | 새로운 core collection을 활성화할 때 schema/validator/명령/역명령/migration을 함께 제공한다. | 0.3의 대역/지표 한계와 0.4의 목표 제약/연결/제조 규칙을 지원한다. 0.1~0.3 원본을 보존하며 변경 개정을 승격한다. networks/environment 등의 미구현 컬렉션에는 빈 배열을 사용한다. |
+| CC-003 | 새로운 core collection을 활성화할 때 schema/validator/명령/역명령/migration을 함께 제공한다. | 0.3의 대역/지표 한계와 0.4의 목표 제약/연결/제조 규칙을 지원한다. 0.1~0.3 원본을 보존하며 변경 개정을 승격한다. 설치 환경과 표면층의 기본 기능은 버전 있는 'rfad.physical_setup' 확장을 사용한다. 예약된 networks/environment 배열은 유지한다. |
 | CC-004 | entity UUID, revision, snapshot, artifact ID를 서로 대체하지 않는다. 표시 선택과 물리 관계는 stable ID로 연결한다. | editor/canvas DTO와 immutable snapshot 유지. 새 template/candidate 적용도 expected_revision을 검사하는 원자 명령 |
 | CC-005 | 변경 요청에는 request_key/epoch, 편집에는 expected_revision/command_id를 사용한다. 영수증과 변경을 같은 transaction으로 게시한다. | RequestLedger/ProjectHistory 재사용. 일반 import/copy/archive는 별도 미구현 범위이며 프로젝트 열기 성공으로 대체하지 않음 |
 | CC-006 | 준비, 실행, 후처리, 결과 판정은 별도 작업/산출물이다. | AnalysisPlan -> PreparedPlan -> em_analysis/postprocess_only 유지. 새 Study도 동일 작업 조정기에 연결 |

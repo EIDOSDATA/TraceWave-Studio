@@ -57,7 +57,7 @@ void StudioSmokeDriver::PrintedSeedSmokeTick()
         m_setupStage = 10;
         m_frame.CallAfter([this]()
         {
-            m_frame.OpenDesignSetup(true);
+            m_frame.OpenDesignSetup(DesignSetup::Templates);
         });
     }
     else if (m_setupStage == 30)

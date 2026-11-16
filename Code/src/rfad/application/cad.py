@@ -10,6 +10,8 @@ from uuid import UUID
 
 from rfad.application.canonical import CANONICAL_VERSION, canonical_hash
 from rfad.domain.design import resolve_scalar
+from rfad.application.physical_projection import project_setup
+from rfad.domain.physical_setup import KEY as PHYSICAL_KEY
 from rfad.domain.errors import ProjectError
 from rfad.domain.project import validate_project
 from rfad.domain.units import QuantityError
@@ -110,7 +112,7 @@ def _check_frame(document: dict, frame_id: str, field: str) -> None:
         _fail("E_UNSUPPORTED", "CAD 출력에 미지원 좌표계 변환을 적용할 수 없습니다.", field)
 
 
-def build_cad_input(document: dict, snapshot_ref: dict, profile: str = PROFILE) -> dict:
+def build_cad_input(document: dict, snapshot_ref: dict, profile: str = PROFILE, *, purpose: str = "step") -> dict:
     """! @brief 저장 원본과 분리된 mm/deg CAD worker 입력을 만든다.
 
     @param document snapshot artifact에서 읽어 해시를 확인할 원본 문서.
@@ -162,6 +164,12 @@ def build_cad_input(document: dict, snapshot_ref: dict, profile: str = PROFILE) 
         "layers": [], "shapes": [], "omissions": [],
         "source_semantics": deepcopy(document),
     }
+    if PHYSICAL_KEY in document["extensions"]:
+        surfaces, parts, omissions = project_setup(
+            document, purpose, lambda value, field, **flags: _length(document, value, field, **flags),
+            lambda value, field: _scalar(document, value, "angle", "deg", field), maximum=MAX_COORDINATE_MM)
+        result.update(surface_layers=surfaces, environment_parts=parts, purpose=purpose)
+        result["omissions"].extend(omissions)
     for layer in document["stackup"]:
         field = "stackup." + layer["id"]
         if layer["role"] not in ("dielectric", "conductor"):

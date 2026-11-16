@@ -17,6 +17,7 @@ from rfad.adapters.cad.geometry import _require
 from rfad.adapters.cad.bodies import _make_bodies, _metrics, _check_pairs, _check_via_contacts
 from rfad.adapters.cad.step_io import _write_step, _read_step_shapes, _compare, read_step
 from rfad.adapters.cad.display import _write_display_mesh
+from rfad.adapters.cad.physical import external_metrics, placement_review
 
 PROFILE = "rfad.step.mechanical/0.1"
 SCHEMA = "rfad.cad-input/0.1"
@@ -65,12 +66,16 @@ def build_package(projection: dict, output_dir: Path) -> dict:
     schema = match.group(1).strip().strip("'")
     expected = {body["name"]: body["metrics"] for body in bodies}
     restored_shapes = _read_step_shapes(paths["model.step"])
-    restored = {name: _metrics(shape) for name, shape in restored_shapes.items()}
+    external = {body["name"] for body in bodies if body["role"] == "environment"}
+    restored = {name: (external_metrics if name in external else _metrics)(shape) for name, shape in restored_shapes.items()}
     validation = _compare(expected, restored, tolerance)
     restored_bodies = [{**body, "shape": restored_shapes[body["name"]], "metrics": restored[body["name"]]} for body in bodies]
     _check_pairs(restored_bodies, tolerance)
     _check_via_contacts(restored_bodies, tolerance)
     validation["explicit_via_pad_contacts_checked_before_and_after"] = True
+    placement = placement_review(bodies, tolerance)
+    if placement:
+        validation["environment_placement"] = placement
     compound = cq.Compound.makeCompound([body["shape"] for body in bodies])
     _require(compound.exportBrep(str(paths["model.brep"])), "B-rep 파일 저장이 실패했습니다.", code="E_DISK")
     _write_display_mesh(bodies, projection, paths["mesh.json"])
@@ -91,10 +96,13 @@ def build_package(projection: dict, output_dir: Path) -> dict:
                "files": files, "body_map": [{key: value for key, value in body.items() if key != "shape"} for body in bodies],
                "source_semantics": deepcopy(projection["source_semantics"]), "omissions": deepcopy(projection.get("omissions", [])),
                "brep_identity_scope": "Compound geometry only. Stable identities are STEP product names and this body_map; file/body order is not an identity.",
+               **({"projection_purpose": projection["purpose"]} if "purpose" in projection else {}),
                "verification": validation, "manufacturing_verified": False, "rf_verified": False}
     paths["sidecar.json"].write_text(json.dumps(sidecar, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     files.append(_file(paths["sidecar.json"], "sidecar", "application/json"))
     return {"schema": "rfad.cad-package/0.1", "status": "generated_unverified", "profile": PROFILE,
             "source_snapshot": deepcopy(projection["snapshot"]), "files": files, "step_schema": schema,
             "body_count": len(bodies), "solid_count": sum(body["metrics"]["solid_count"] for body in bodies),
-            "runtime": runtime, "validation": {key: value for key, value in validation.items() if key != "bodies"}}
+            "runtime": runtime, **({"projection_purpose": projection["purpose"]} if "purpose" in projection else {}),
+            **({"environment_placement": placement} if placement else {}),
+            "validation": {key: value for key, value in validation.items() if key != "bodies"}}

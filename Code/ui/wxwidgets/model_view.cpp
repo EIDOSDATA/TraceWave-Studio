@@ -222,6 +222,14 @@ private:
             {
                 glColor3f(0.20f, 0.58f, 0.94f);
             }
+            else if (body.role == "surface")
+            {
+                glColor3f(0.30f, 0.60f, 0.70f);
+            }
+            else if (body.role == "environment")
+            {
+                glColor3f(0.57f, 0.54f, 0.69f);
+            }
             else if (body.role == "conductor")
             {
                 glColor3f(0.88f, 0.60f, 0.22f);
@@ -664,6 +672,21 @@ std::string ModelView::RendererDescription() const
 std::size_t ModelView::TriangleCount() const
 {
     return HasMesh() ? m_impl->scene->triangles : 0;
+}
+
+std::string ModelView::SourceRole(const std::string& id) const
+{
+    if (m_impl->scene != nullptr)
+    {
+        for (const auto& body : m_impl->scene->bodies)
+        {
+            if (std::find(body.sources.begin(), body.sources.end(), id) != body.sources.end())
+            {
+                return body.role;
+            }
+        }
+    }
+    return {};
 }
 
 std::size_t ModelView::BodyCount() const

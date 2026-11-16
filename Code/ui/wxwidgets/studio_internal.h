@@ -83,6 +83,7 @@ enum
     IdTargets,
     IdTemplates,
     IdDesignRules,
+    IdPhysicalSetup,
     IdTimer,
     IdShutdown
 };

@@ -20,6 +20,8 @@ from rfad.domain.project import validate_project
 from rfad.domain.pcb_selection import EXTENSION_KEY as PCB_SELECTION_EXTENSION
 from rfad.domain.template_instance import EXTENSION_KEY as TEMPLATE_ORIGIN_EXTENSION
 from rfad.domain.design_checks import declared_diagnostics
+from rfad.domain.physical_setup import KEY as PHYSICAL_KEY, em_exclusions
+from rfad.application.physical_projection import check_em
 from rfad.domain.errors import ProjectError
 
 PROFILE = "rfad.openems.pcb-single-port/0.1"
@@ -71,8 +73,10 @@ def _payload(document, snapshot, runtime, settings):
     validate_settings(settings)
     if snapshot["content_hash"] != canonical_hash(document) or any(snapshot[key] != document[key] for key in ("project_id", "revision_id", "schema_version")):
         fail("E_HASH", "PCB 원본과 스냅샷 참조가 다릅니다.", "snapshot")
-    if document["extensions"].keys() - {PCB_SELECTION_EXTENSION, TEMPLATE_ORIGIN_EXTENSION}:
+    if document["extensions"].keys() - {PCB_SELECTION_EXTENSION, TEMPLATE_ORIGIN_EXTENSION, PHYSICAL_KEY}:
         fail("E_UNSUPPORTED", "의미를 해석하지 않은 확장이 있는 PCB는 실행할 수 없습니다.", "extensions")
+    check_em(document)
+    omissions = em_exclusions(document)
     violations = declared_diagnostics(document, "em")
     if violations:
         issue = violations[0]
@@ -82,6 +86,7 @@ def _payload(document, snapshot, runtime, settings):
         fail("E_UNSUPPORTED", "PCB 해석은 항등 오른손 좌표계만 지원합니다.", "frames")
     return {"schema": "rfad.analysis-plan/0.1", "analysis_profile": PROFILE, "runtime_profile": runtime["runtime_profile"],
             "snapshot": deepcopy(snapshot), "source_semantics": deepcopy(document), "runtime_identity": deepcopy(runtime),
+            **({"physical_setup_omissions": omissions} if omissions else {}),
             **project_pcb(document, settings)}
 
 

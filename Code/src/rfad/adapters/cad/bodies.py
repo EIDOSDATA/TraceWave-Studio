@@ -4,6 +4,7 @@ from copy import deepcopy
 import math
 from uuid import NAMESPACE_URL, uuid5
 
+from rfad.adapters.cad.physical import external_metrics, part_bodies, surface_bodies
 from rfad.adapters.cad.geometry import _require, _number, _planar_solid, _inside_outline, _via_records, _drilled, _material
 
 
@@ -99,10 +100,13 @@ def _make_bodies(cq, projection: dict) -> list[dict]:
                        "vertical_span_mm": [via["z_min_mm"], via["z_max_mm"]], "finished_hole_diameter_mm": 2 * via["inner_radius_mm"],
                        "modeled_drill_diameter_mm": 2 * via["outer_radius_mm"], "tool_hole_diameter_mm": source["tool_hole_diameter_mm"],
                        "drill_basis": "finished_hole_diameter_plus_twice_plating", "fill": "none", "shape": via["shape"]})
+    bodies.extend(surface_bodies(cq, projection))
+    bodies.extend(part_bodies(cq, projection))
     _require(bool(bodies), "내보낼 CAD 고체가 없습니다.")
     tolerance = projection["tolerance_mm"]
     for body in bodies:
-        body["metrics"] = _metrics(body["shape"])
+        measure = external_metrics if body["role"] == "environment" else _metrics
+        body["metrics"] = measure(body["shape"])
     _check_pairs(bodies, tolerance)
     _check_via_contacts(bodies, tolerance)
     return sorted(bodies, key=lambda body: body["name"])
@@ -118,7 +122,8 @@ def _check_pairs(bodies: list[dict], tolerance: float) -> None:
                 continue
             common = body["shape"].intersect(other["shape"])
             _require(abs(common.Volume()) <= tolerance ** 3,
-                     "서로 다른 도체 또는 유전체 body의 부피가 중첩합니다.", code="E_CONNECTIVITY")
+                     "서로 다른 CAD 바디의 부피가 중첩합니다: " + body["name"] + " / " + other["name"],
+                     code="E_CONNECTIVITY", field=body["id"])
             if body["role"] == other["role"] == "conductor":
                 via_contact = ((body.get("feature_kind") == "via_barrel" and body["id"] in other.get("drill_source_ids", []))
                                or (other.get("feature_kind") == "via_barrel" and other["id"] in body.get("drill_source_ids", [])))

@@ -1,5 +1,7 @@
 # 승인 요구와 실제 구현의 대조
 
+2026-11-16 후속: [적층과 외부 환경](physical_setup.md)의 단면 두께 검토, 표면층/개구, 설치 시나리오와 단일 외부 STEP을 FN-010~013의 부분 구현 근거로 추가했다. 전체 AC 수용 상태는 열린 상태다.
+
 2026-11-12 후속: [추가 문헌 카드/조건부 초기 길이](printed_templates_and_seeds.md)와 작업 탭/레이어/세로 도구를 FN-006/007/008의 부분 구현에 반영했다. 상태/근거/남은 범위는 기계 판독 색인과 함께 갱신하며 수용 합격 수를 늘리지 않는다.
 
 검토일: 2026-11-12 KST. 기준선 RFAD-D0-3.4. 최초 감사 시작 코드는 47c96c70f7d07cd71a4cacffd3a977ec8c5485fd이며, 최신 후속 검토 기준은 1ed9686b8eea5cec3b17931d8655565fbafc72e2와 현재 작업 트리다. [개발 완료 계획](completion_plan.md) 2번의 산출물이다.
@@ -26,7 +28,7 @@
 | IG-004 | 연구 GUI는 격자축 1~6수준이며 일반 설계변수 스윕이나 전체 수치 행렬이 아님 | 6번. 기존 study.*와 API-020/021 지원을 명시적으로 연결 |
 | IG-005 | 결과 차트 DTO는 제한 201점 표시용이며 공통 복소 dataset/network 변환/목표 평가가 없음 | 5/7번. 원시 복소수/정규화/기준면/유효 mask를 갖춘 공통 조회/평가 |
 | IG-006 | 기본 외부 RLC, Touchstone/측정 CSV 및 기준면/교정 정렬이 없음 | 5/11번. 기본 파일 비교를 고급 R2 보정이나 직접 VNA 연결 뒤로 미루지 않음 |
-| IG-007 | 외부 STEP 환경/배치, 도면 PDF/SVG/DXF와 KiCad/Gerber/드릴 입출력이 없음 | 3/10번. geometry와 제조 profile을 따로 검수 |
+| IG-007 | 외부 STEP 기본 배치 범위를 구현했으며 다중 조립체, 도면 PDF/SVG/DXF와 KiCad/Gerber/드릴 입출력이 남음 | 3/10번. geometry와 제조 profile을 따로 검수 |
 | IG-008 | STEP은 같은 kernel 검사이며 API-025 독립 수신 검수와 verified_profile이 없음 | 10번. 수신 도구/version별 검수와 누락 범위를 기록 |
 | IG-009 | project.open copy/이동 가능한 archive/일반 migration/복구 후보 선택이 없음 | 3/12번. 기존 정상본/영수증/봉인과 호환되는 단계적 확장 |
 | IG-010 | capabilities implemented, runtime_configured와 물리 검증은 서로 다르며 tested_envelopes는 비어 있음 | 8/13번. 실제 profile별 근거를 공개 지원표에 연결 |

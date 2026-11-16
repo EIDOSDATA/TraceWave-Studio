@@ -25,9 +25,12 @@ def _board_sizes(document):
         except ProjectError:
             pass
     try:
+        from rfad.domain.physical_setup import setup, stack_review
+
         layers = [(scalar(document, row["z_min"]), scalar(document, row["thickness"])) for row in document["stackup"]]
         if layers:
-            sizes["board_thickness_max"] = max(z + t for z, t in layers) - min(z for z, _ in layers)
+            sizes["board_thickness_max"] = (stack_review(document)["full_extent_si"] if setup(document)["surfaces"]
+                                            else max(z + t for z, t in layers) - min(z for z, _ in layers))
     except ProjectError:
         pass
     return sizes

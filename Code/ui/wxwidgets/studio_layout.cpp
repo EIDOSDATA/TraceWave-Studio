@@ -56,6 +56,7 @@ void StudioFrame::BuildInterface()
     design->Append(IdBoard, Display("직사각 기판 만들기"));
     design->Append(IdCircularBoard, Display("원형 기판 만들기"));
     design->Append(IdPcbSelection, Display("기판 설정 / 제조업체 자료"));
+    design->Append(IdPhysicalSetup, Display("PCB / 적층과 외부 환경"));
     design->Append(IdNewMaterial, Display("재료 추가"));
     design->Append(IdNewNet, Display("네트 추가"));
     design->Append(IdNewPort, Display("급전 포트 추가"));
@@ -180,6 +181,7 @@ void StudioFrame::BuildInterface()
         navigation->Layout();
     });
     AddTool(navigation, navigationSizer, IdPcbSelection, "기판 설정 / 자료 선택");
+    AddTool(navigation, navigationSizer, IdPhysicalSetup, "적층 / 외부 환경");
     navigationSizer->Add(SectionTitle(navigation, "객체 / 레이어"), 0, wxALL, FromDIP(StudioTheme::PanelPadding));
     m_tree =
         new wxTreeCtrl(navigation, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxTR_LINES_AT_ROOT);
@@ -493,20 +495,24 @@ void StudioFrame::BuildInterface()
         wxEVT_MENU,
         [this](wxCommandEvent&)
         {
-            OpenDesignSetup(false);
+            OpenDesignSetup(DesignSetup::Targets);
         },
         IdTargets);
     Bind(
         wxEVT_MENU,
         [this](wxCommandEvent&)
         {
-            OpenDesignSetup(true);
+            OpenDesignSetup(DesignSetup::Templates);
         },
         IdTemplates);
     Bind(wxEVT_MENU, [this](wxCommandEvent&)
     {
-        OpenDesignSetup(false, true);
+        OpenDesignSetup(DesignSetup::Rules);
     }, IdDesignRules);
+    Bind(wxEVT_MENU, [this](wxCommandEvent&)
+    {
+        OpenDesignSetup(DesignSetup::Physical);
+    }, IdPhysicalSetup);
     UpdateControls();
 }
 

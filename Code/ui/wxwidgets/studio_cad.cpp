@@ -50,7 +50,7 @@ void StudioFrame::BindCad()
         wxEVT_MENU,
         [this](wxCommandEvent&)
         {
-            if (m_cadResult.empty())
+            if (m_cadResult.empty() || m_cadResult.value("projection_purpose", "") == "geometry")
             {
                 return;
             }
@@ -107,6 +107,12 @@ void StudioFrame::BindCad()
             SelectObject(Json{{"kind", "project"}, {"id", m_project}});
             return;
         }
+        const auto role = m_modelView->SourceRole(identity);
+        if (role == "surface" || role == "environment")
+        {
+            OpenDesignSetup(DesignSetup::Physical, {{"section", role == "surface" ? "surface" : "part"}, {"record_id", identity}});
+            return;
+        }
         for (const auto& item : m_editor.value("items", Json::array()))
         {
             if (item.value("id", "") == identity)
@@ -134,12 +140,13 @@ void StudioFrame::CadStatus(const std::string& state, const std::string& message
 /** @brief 파일에 기록된 입력과 현재 편집 개정을 구분하며 이전 형상을 숨기지 않는다. */
 void StudioFrame::UpdateModelState()
 {
-    if (!m_cadResult.empty() &&
-        m_modelView->LoadedSnapshotId() == m_cadResult.at("snapshot").value("snapshot_id", "") &&
-        (m_displayResult.empty() ||
-         m_displayResult.at("snapshot").at("snapshot_id") != m_cadResult.at("snapshot").at("snapshot_id")))
+    if (!m_loadingModel.empty() && !m_modelView->IsLoading())
     {
-        m_displayResult = m_cadResult;
+        if (m_modelView->LoadedSnapshotId() == m_loadingModel.at("snapshot").value("snapshot_id", ""))
+        {
+            m_displayResult = m_loadingModel;
+        }
+        m_loadingModel = Json::object();
     }
     std::string text = "아직 생성한 3D 형상이 없습니다. 층 위치와 두께를 입력한 뒤 갱신하세요.";
     if (!m_displayResult.empty())
@@ -294,6 +301,11 @@ void StudioFrame::RestoreCad()
                 m_cadTask.Id().empty() && !m_cadPreparing)
             {
                 AcceptCad(response.at("result"), false);
+                if (response.contains("view_result"))
+                {
+                    LoadCadMesh(response.at("view_result"));
+                    m_views->SetSelection(1);
+                }
             }
             UpdateControls();
         },
@@ -313,32 +325,58 @@ void StudioFrame::AcceptCad(const Json& result, bool show)
         throw std::runtime_error("CAD output is not bound to this project.");
     }
     m_cadResult = result;
-    std::string listing =
-        "STEP 생성 완료 / 제조 및 RF 검증 전\n입력 설계: " + result.at("snapshot").at("revision_id").get<std::string>();
+    const auto purpose = result.value("projection_purpose", "");
+    const std::string title = purpose == "geometry" ? "표시 범위 3D 생성 완료" : "STEP 생성 완료 / 제조 및 RF 검증 전";
+    std::string listing = title + "\n입력 설계: " + result.at("snapshot").at("revision_id").get<std::string>();
+    if (purpose != "geometry")
+    {
+        for (const auto& artifact : result.at("artifacts"))
+        {
+            listing += "\n" + artifact.at("uri").get<std::string>();
+        }
+    }
+    for (const auto& item : result.value("environment_placement", Json::array()))
+    {
+        const auto& clearance = item.at("clearance_mm");
+        const std::string description = item.at("relation") == "touching" ? "형상 접촉" : "최소 간극";
+        listing += "\n" + item.at("id").get<std::string>() + " / " + description + " " +
+                   (clearance.is_null() ? "미평가" : clearance.dump() + " mm") +
+                   " / " + (item.at("material_id").is_null() ? "물성 미정 / " : "") + "전기 연결 미평가";
+    }
+    if (purpose != "step")
+    {
+        LoadCadMesh(result);
+    }
+    CadStatus("completed", purpose == "geometry" ? title + ". STEP 교환 파일은 STEP 출력으로 만드세요."
+                                                  : "STEP 패키지를 생성했습니다. 출력 폴더에서 파일을 확인하세요.");
+    m_cadDetails->ChangeValue(Display(listing));
+    if (purpose != "step" && (show || m_modelView->IsLoading()))
+    {
+        m_views->SetSelection(1);
+    }
+    UpdateControls();
+}
+
+/** @brief 표시 전용 범위의 artifact만 읽고 출력 범위와 독립적으로 유지한다. */
+void StudioFrame::LoadCadMesh(const Json& result)
+{
     for (const auto& artifact : result.at("artifacts"))
     {
-        listing += "\n" + artifact.at("uri").get<std::string>();
         if (artifact.value("role", "") == "display_mesh")
         {
             if (m_modelView->LoadArtifact(m_options.workspace, artifact, result.at("snapshot"),
                                           artifact.at("run_id").get<std::string>()))
             {
+                m_loadingModel = result;
                 m_modelWasLoading = true;
             }
             else
             {
-                m_modelHint->SetLabel(
-                    Display("3D 파일 읽기를 시작하지 못했습니다. STEP 출력 파일은 보존되어 있습니다."));
+                m_modelHint->SetLabel(Display("3D 파일 읽기를 시작하지 못했습니다."));
             }
+            return;
         }
     }
-    CadStatus("completed", "STEP 패키지를 생성했습니다. 출력 폴더에서 파일을 확인하세요.");
-    m_cadDetails->ChangeValue(Display(listing));
-    if (show || m_modelView->IsLoading())
-    {
-        m_views->SetSelection(1);
-    }
-    UpdateControls();
 }
 
 /** @brief CAD 상태는 제한된 주기로 읽고 일반 편집 응답과 별도로 처리한다. */

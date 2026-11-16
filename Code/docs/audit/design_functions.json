@@ -342,51 +342,65 @@
   },
   {
     "id": "FN-010",
-    "implementation_status": "not_implemented",
-    "implemented": "CAD worker의 자체 STEP 재입력은 구현됐으나 사용자 외부 CAD/EDA 파일을 편집 가능한 프로젝트로 가져오는 서비스는 없다.",
+    "implementation_status": "partial",
+    "implemented": "격리 CAD worker의 자체 포함 mm STEP 단일 고체 읽기, 단위/경계/면/해시 검토, 개정에 결합한 원자 채택을 연결했다.",
     "gaps": [
-      "KiCad/Gerber와 기본 외부 STEP reader, 지원 entity inventory와 단위/층/net/origin mapping preview가 필요하다.",
-      "source hash 재검사, 손실/미지원 보고와 project.geometry 원자 적용 명령을 연결해야 한다."
+      "외부 다중 제품/조립체와 혼합 단위 mapping은 후속이다.",
+      "KiCad/Gerber 및 상세 교환 mapping과 손실 보고가 남아 있다."
     ],
     "code": [
       "src/rfad/application/rpc.py",
-      "src/rfad/adapters/cad/step_io.py"
+      "src/rfad/adapters/cad/step_io.py",
+      "src/rfad/application/physical_setup_service.py",
+      "src/rfad/adapters/cad/physical.py"
     ],
-    "tests": [],
+    "tests": [
+      "tests/test_physical_setup.py",
+      "tests/test_gui_physical_setup_process.py"
+    ],
     "evidence": [
-      "docs/cad_contract.md"
+      "docs/cad_contract.md",
+      "docs/physical_setup.md",
+      "runtime_profiles/physical-setup.json"
     ],
     "next_steps": [
       3,
       10
     ],
     "contract_notes": [
-      "자체 STEP 검수용 read_step은 외부 CAD import 서비스가 아니다. import.preview/import.commit은 capabilities에서 제공하지 않는다."
+      "외부 STEP은 단일 B-rep 고체에 한정한다. EDA 공통 import.preview/import.commit은 후속이다."
     ]
   },
   {
     "id": "FN-011",
     "implementation_status": "partial",
-    "implemented": "정렬된 층의 z/두께/재료와 미정값, polygon hole, 원형/사각 pad 및 명시적 중공 PTH의 도금/홀/패드 참조를 저장하고 CAD/제한 EM에 투영한다.",
+    "implemented": "기존 순서/z/재료/PTH와 함께 기본 층 합/명목 포함 범위 및 피복/사각 개구의 표면층을 저장하고 CAD에 투영한다.",
     "gaps": [
-      "mask/coating coverage/opening, 일반 NPTH/slot과 기본 assembly 형상의 공통 의미가 필요하다.",
-      "제조 두께/도금/공칭 포함 범위와 허용 공차를 연결하는 제작 profile 및 전 범위 검수가 남는다."
+      "일반 NPTH/슬롯, 복합 피복 및 검증된 표면층 EM 모델이 남아 있다.",
+      "실제 제작 공차, 자료 확보와 전 범위 검수가 필요하다."
     ],
     "code": [
       "src/rfad/domain/design.py",
       "src/rfad/application/pcb_selection_layers.py",
       "src/rfad/adapters/cad/bodies.py",
-      "src/rfad/application/pcb_projection.py"
+      "src/rfad/application/pcb_projection.py",
+      "src/rfad/domain/physical_setup.py",
+      "src/rfad/adapters/cad/physical.py",
+      "ui/wxwidgets/physical_setup_review.cpp"
     ],
     "tests": [
       "tests/test_copper_design.py",
       "tests/test_cad_copper_features.py",
       "tests/test_pcb_ifa.py",
-      "tests/test_pcb_selection_service.py"
+      "tests/test_pcb_selection_service.py",
+      "tests/test_physical_setup.py",
+      "tests/test_gui_physical_setup_process.py"
     ],
     "evidence": [
       "runtime_profiles/copper-ifa-worker-wsl.json",
-      "runtime_profiles/pcb-selection.json"
+      "runtime_profiles/pcb-selection.json",
+      "docs/physical_setup.md",
+      "runtime_profiles/physical-setup.json"
     ],
     "next_steps": [
       3,
@@ -394,32 +408,37 @@
       10
     ],
     "contract_notes": [
-      "coating/adhesive/air 역할의 저장 허용과 CAD/EM 투영 지원은 다르다. CAD는 해당 역할을 거절한다. 총두께에서 미정 코어/마스크를 임의 역산하지 않는다."
+      "기존 coverage 없는 coating/adhesive/air는 계속 CAD에서 거절한다. 명시 피복을 가진 표면층은 새 계약에 따른다."
     ]
   },
   {
     "id": "FN-012",
     "implementation_status": "partial",
-    "implemented": "불변 snapshot을 mm CAD DTO로 바꿔 OCCT에서 분리 고체/원호/같은 net union/중공 PTH를 생성하고 stable body map과 제한 표시 mesh를 제공한다.",
+    "implemented": "OCCT 분리 고체, 원호/같은 net union/PTH 및 표면층/외부 단일 고체 배치를 불변 snapshot에서 생성하고 선택 가능한 3D 표시를 제공한다.",
     "gaps": [
-      "외부 부품 assembly/배치/변환과 표면층/슬롯 등 선언할 R1 physical profile을 확장해야 한다.",
-      "대형 표시 LOD와 100만 triangle 경로, 전체 topology/조립 독립 검수가 남는다."
+      "다중 조립체, 슬롯, 대형 표시 LOD 및 전체 토폴로지 독립 검수가 남아 있다."
     ],
     "code": [
       "src/rfad/application/cad.py",
       "src/rfad/adapters/cad/native.py",
       "src/rfad/adapters/cad/bodies.py",
       "src/rfad/adapters/cad/display.py",
-      "src/rfad/application/display_mesh.py"
+      "src/rfad/application/display_mesh.py",
+      "src/rfad/application/physical_projection.py",
+      "src/rfad/adapters/cad/physical.py"
     ],
     "tests": [
       "tests/test_cad_native.py",
       "tests/test_cad_projection.py",
-      "tests/test_display_mesh.py"
+      "tests/test_display_mesh.py",
+      "tests/test_physical_setup.py",
+      "tests/test_gui_physical_setup_process.py"
     ],
     "evidence": [
       "runtime_profiles/gui-cad-windows-x64.json",
-      "runtime_profiles/cad-worker-windows-x64.json"
+      "runtime_profiles/cad-worker-windows-x64.json",
+      "docs/physical_setup.md",
+      "runtime_profiles/physical-setup.json"
     ],
     "next_steps": [
       3,
@@ -428,27 +447,33 @@
       12
     ],
     "contract_notes": [
-      "물리 BREP/표시 mesh/solver polygon의 tolerance와 의미를 공유하지 않는다. 현재 board transform은 거절되므로 좌표계 필드 존재만으로 assembly 지원을 주장하지 않는다."
+      "표시/STEP 목적의 투영은 독립이다. STEP은 같은 커널 재입력까지 검사한다."
     ]
   },
   {
     "id": "FN-013",
-    "implementation_status": "not_implemented",
-    "implemented": "현재 board/shape의 표시/해석/출력 포함 플래그는 있으나 환경 scenario와 외부 STEP 배치 기능은 없다.",
+    "implementation_status": "partial",
+    "implemented": "기준 PCB와 이름 있는 설치 시나리오 delta, 간이 상자/STEP의 XYZ·yaw, 독립 표시/출력/EM 포함과 실제 CAD 간극·접촉·관통 검사를 제공한다.",
     "gaps": [
-      "environment collection의 물체/재료/rigid transform와 baseline+delta schema 및 명령이 필요하다.",
-      "기본 하우징/배터리/케이블 포함 범위, 접촉과 scenario별 solver 정의를 검증해야 한다."
+      "환경 EM 모델과 전기 접촉/실장 조건의 독립 검증, 복합 조립체와 특수 환경 지원이 남아 있다."
     ],
     "code": [
       "src/rfad/domain/project.py",
       "src/rfad/application/cad.py",
-      "src/rfad/application/pcb_projection.py"
+      "src/rfad/application/pcb_projection.py",
+      "src/rfad/domain/physical_setup.py",
+      "src/rfad/application/physical_setup_service.py",
+      "ui/wxwidgets/physical_setup_dialog.cpp"
     ],
     "tests": [
-      "tests/test_cad_projection.py::CadProjectionTests.test_unsupported_coverage_and_transforms_are_explicitly_rejected"
+      "tests/test_cad_projection.py::CadProjectionTests.test_unsupported_coverage_and_transforms_are_explicitly_rejected",
+      "tests/test_physical_setup.py",
+      "tests/test_gui_physical_setup_process.py"
     ],
     "evidence": [
-      "docs/cad_contract.md"
+      "docs/cad_contract.md",
+      "docs/physical_setup.md",
+      "runtime_profiles/physical-setup.json"
     ],
     "next_steps": [
       3,
@@ -457,7 +482,7 @@
       11
     ],
     "contract_notes": [
-      "환경/assembly는 R1 기본 범위를 유지한다. 팬텀/굽힘/배열 전문 물리를 기본 R1 환경으로 추정하지 않는다."
+      "접촉은 B-rep 간극이며 전기 연결은 미평가다. EM 포함 요청은 현재 PCB profile에서 명시적으로 차단한다."
     ]
   },
   {

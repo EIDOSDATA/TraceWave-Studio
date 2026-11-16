@@ -26,7 +26,8 @@ from rfad.application.pcb_selection_contract import MUTATION_METHODS as PCB_SELE
 from rfad.application.project_studies import StudyCoordinator
 from rfad.application.project_study_contract import MUTATIONS as STUDY_MUTATIONS
 from rfad.application import target_editor
-from rfad.application import design_rule_service
+from rfad.application import design_rule_service, physical_setup_service
+from rfad.domain.physical_setup import COMMAND as PHYSICAL_COMMAND
 from rfad.application.template_candidates import TemplateCandidateCoordinator
 from rfad.domain.errors import ProjectError
 from rfad.storage.journal import Journal
@@ -36,7 +37,7 @@ ASYNC_METHODS = {
 } | CAD_METHODS | SOLVER_METHODS
 MUTATION_METHODS = ASYNC_METHODS | {
     "project.apply_command", "editor.apply", "canvas.apply", "project.undo", "project.redo", "job.cancel",
-} | PCB_SELECTION_MUTATIONS | STUDY_MUTATIONS | {"target.editor.apply", "template.apply", "design.rules.apply"}
+} | PCB_SELECTION_MUTATIONS | STUDY_MUTATIONS | {"target.editor.apply", "template.apply", "design.rules.apply", physical_setup_service.MUTATION}
 
 
 class ProjectService:
@@ -61,6 +62,7 @@ class ProjectService:
         self._thread = None
         self._worker_error = None
         self.cad = CadCoordinator(self, cad_runtime)
+        self.physical_setup = physical_setup_service.PhysicalSetupService(self)
         self.solver = SolverCoordinator(self, solver_runtime)
         self.studies = StudyCoordinator(self)
         self.journal = Journal(self.workspace, {
@@ -181,7 +183,9 @@ class ProjectService:
 
     def _preflight(self, method: str, context: dict, data: dict) -> None:
         """! @brief 기능별 요청 계약에 따라 접수 가능 여부를 검사한다."""
-        if method == "design.rules.apply":
+        if method == physical_setup_service.MUTATION:
+            physical_setup_service.validate_input(context, data)
+        elif method == "design.rules.apply":
             design_rule_service.validate_input(context, data)
         elif method == "target.editor.apply":
             target_editor.validate_input(context, data)
@@ -214,7 +218,9 @@ class ProjectService:
     def _dispatch_mutation(self, state: dict, method: str, context: dict, data: dict) -> dict:
         """! @brief 영수증과 동일한 transaction에서 기능별 명령을 실행한다."""
         self._preflight(method, context, data)
-        if method == "design.rules.apply":
+        if method == physical_setup_service.MUTATION:
+            return self.physical_setup.admit(state, context, data)
+        elif method == "design.rules.apply":
             return design_rule_service.admit(self, state, context, data)
         elif method == "target.editor.apply":
             return target_editor.admit(self, state, context, data)
@@ -223,6 +229,8 @@ class ProjectService:
         elif method in STUDY_MUTATIONS:
             return self.studies.admit(state, method, context, data)
         elif method == "project.apply_command":
+            if data["type"] == PHYSICAL_COMMAND:
+                raise ProjectError("E_UNSUPPORTED", "물리 구성은 physical.setup.apply를 사용하십시오.")
             if data["type"] == "pcb_stackup.apply":
                 raise ProjectError("E_UNSUPPORTED", "적층 적용은 pcb.selection.preview와 pcb.selection.apply를 사용하십시오.")
             if isinstance(data["type"], str) and data["type"].startswith("template_instance."):
@@ -365,8 +373,14 @@ class ProjectService:
         if not completed:
             return {"profile": "rfad.cad-view/0.1", "result": None, "job_id": None}
         job = max(completed, key=lambda item: (item["events"][-1]["timestamp"], item["job_id"]))
-        return {"profile": "rfad.cad-view/0.1", "result": deepcopy(job["events"][-1]["operation_result"]),
-                "job_id": job["job_id"]}
+        result = job["events"][-1]["operation_result"]
+        response = {"profile": "rfad.cad-view/0.1", "result": deepcopy(result), "job_id": job["job_id"]}
+        if result.get("projection_purpose") == "step":
+            views = [item for item in completed if item["events"][-1]["operation_result"].get("projection_purpose") != "step"]
+            if views:
+                view = max(views, key=lambda item: (item["events"][-1]["timestamp"], item["job_id"]))
+                response["view_result"] = deepcopy(view["events"][-1]["operation_result"])
+        return response
 
     def status(self, params: dict) -> dict:
         """! @brief 영속 상태와 마지막 cursor 이후 event를 반환한다."""

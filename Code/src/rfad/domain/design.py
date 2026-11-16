@@ -567,6 +567,35 @@ def preflight_design(document: dict, purpose: str) -> list[dict]:
                 minimum, maximum = _range(document, materials[identity]["validity_hz"], f"materials.{identity}.validity_hz")
                 if None not in (lower, upper, minimum, maximum) and (lower < minimum or upper > maximum):
                     missing("E_MATERIAL_RANGE", f"materials.{identity}.validity_hz", "포트 검증 대역이 재료 모델의 유효 대역을 벗어납니다.")
+    if purpose != "em":
+        from rfad.domain.physical_setup import candidates, read_scalar, stack_review
+
+        surfaces, parts = candidates(document)
+        flag = "visible" if purpose == "geometry" else "include_in_export"
+        intervals = {row["id"]: row["interval_si"] for row in stack_review(document)["surfaces"]} if surfaces else {}
+        for row in surfaces:
+            if not row[flag]:
+                continue
+            field = f"surface.{row['id']}"
+            if intervals[row["id"]] is None:
+                missing("E_GEOMETRY", field, "표면층의 기본 적층 z, 간격 또는 두께가 미정입니다.")
+            rectangles = [row, *row["openings"]] if row["coverage"] == "rectangle" else row["openings"]
+            if any(read_scalar(document, rectangle[key]) is None for rectangle in rectangles for key in ("x", "y", "width", "height")):
+                missing("E_GEOMETRY", field, "표면층의 피복 또는 개구 치수가 미정입니다.")
+        for row in parts:
+            if not row[flag]:
+                continue
+            field = f"part.{row['id']}"
+            keys = ("x", "y", "z", "width", "height", "depth") if row["kind"] == "box" else ("x", "y", "z")
+            if any(read_scalar(document, row[key]) is None for key in keys) or read_scalar(document, row["yaw"], "angle") is None:
+                missing("E_GEOMETRY", field, "외부 배치 좌표, 회전 또는 간이 형상 치수가 미정입니다.")
+    else:
+        from rfad.domain.physical_setup import em_exclusions
+
+        for row in em_exclusions(document):
+            if row["reason"] == "unsupported_in_profile":
+                missing("E_UNSUPPORTED", f"{row['section']}.{row['id']}.include_in_em",
+                        "현재 PCB 해석에서 표면층/외부 물체의 포함을 지원하지 않습니다.")
     from rfad.domain.design_checks import declared_diagnostics
     diagnostics.extend(declared_diagnostics(document, purpose))
     return diagnostics

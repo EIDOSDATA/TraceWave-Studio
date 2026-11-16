@@ -61,7 +61,7 @@ def validate_display_mesh(mesh: dict, *, snapshot: dict, run_id: str, body_map: 
         _require({key: body.get(key) for key in MAPPING_KEYS} == expected[identity],
                  "표시 body의 원본 UUID 또는 층/역할 대응이 다릅니다.")
         sources = body.get("source_entity_ids")
-        _require(_identity(body.get("layer_id")) and body.get("role") in ("conductor", "dielectric") and
+        _require(_identity(body.get("layer_id")) and body.get("role") in ("conductor", "dielectric", "surface", "environment") and
                  type(sources) is list and 0 < len(sources) <= 128 and all(_identity(value) for value in sources) and
                  len(set(sources)) == len(sources), "표시 body의 원본 식별자 대응이 유효하지 않습니다.")
         vertices, triangles = body.get("vertices"), body.get("triangles")

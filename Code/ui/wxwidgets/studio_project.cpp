@@ -30,6 +30,7 @@ void StudioFrame::OpenProject(const std::string& mode, const std::string& path, 
                          m_modelView->Clear();
                          m_cadResult = Json::object();
                          m_displayResult = Json::object();
+                         m_loadingModel = Json::object();
                          m_solverChart->Clear();
                          m_solverResult = Json::object();
                          m_solverSamples = Json::object();

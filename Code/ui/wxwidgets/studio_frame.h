@@ -39,6 +39,7 @@ class ProjectSetupDialog;
 class wxThreadEvent;
 class WorkspaceBar;
 enum class WorkspaceArea;
+enum class DesignSetup { Targets, Templates, Rules, Physical };
 
 /** @brief 표시와 이벤트 연결을 맡고 작업 진행은 독립 상태 객체에 위임하는 주 창이다. */
 class StudioFrame final : public wxFrame
@@ -68,9 +69,9 @@ private:
     /** @brief 현재 프로젝트의 원본을 보존하는 연구 설정/진행 창을 연다. */
     void OpenProjectStudy();
     /** @brief 목표 또는 명시 기하 카드의 비동기 설정 화면을 연다. */
-    void OpenDesignSetup(bool templates, bool rules = false);
+    void OpenDesignSetup(DesignSetup kind, const Json& selection = nullptr);
     /** @brief 조회 이벤트가 반환된 뒤 모달 화면과 개정 갱신을 연결한다. */
-    void ShowDesignSetup(const Json& context, bool templates, bool rules);
+    void ShowDesignSetup(const Json& context, DesignSetup kind);
     /** @brief 기존 입력을 적용한 뒤 PCB 자료 검색과 적층 검토 화면을 연다. */
     void OpenPcbSelection();
     /** @brief 응답 처리 타이머가 반환한 뒤 별도 이벤트에서 모달 화면을 표시한다. */
@@ -119,6 +120,7 @@ private:
     void RestoreCad();
     /** @brief 작은 참조만 GUI로 받아 파일 읽기와 hash 검사를 3D loader에 맡긴다. */
     void AcceptCad(const Json& result, bool show);
+    void LoadCadMesh(const Json& result);
     /** @brief CAD 상태는 제한된 주기로 읽고 일반 편집 응답과 별도로 처리한다. */
     void PollCad(Clock::time_point now);
     /** @brief 해석 작업 상태와 결과 그래프를 기존 설계 탭과 분리하여 구성한다. */
@@ -212,6 +214,7 @@ private:
     bool m_targetsSupported = false;
     bool m_templatesSupported = false;
     bool m_designRulesSupported = false;
+    bool m_physicalSetupSupported = false;
     ProjectStudyDialog* m_studyDialog = nullptr;
     bool m_studySupported = false;
     bool m_closeAfterPcb = false;
@@ -258,6 +261,7 @@ private:
     Json m_cadSnapshot = Json::object();
     Json m_cadResult = Json::object();
     Json m_displayResult = Json::object();
+    Json m_loadingModel = Json::object();
     wxListBox* m_steps = nullptr;
     wxChoice* m_layerChoice = nullptr;
     wxSpinCtrlDouble* m_width = nullptr;

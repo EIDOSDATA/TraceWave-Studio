@@ -24,6 +24,11 @@ void StudioSmokeDriver::SetupSmokeTick()
             PrintedSeedSmokeTick();
             return;
         }
+        if (m_frame.m_options.physicalSetupSmoke)
+        {
+            PhysicalSetupSmokeTick();
+            return;
+        }
         if (m_frame.m_options.designRulesSmoke)
         {
             DesignRulesSmokeTick();
@@ -60,7 +65,7 @@ void StudioSmokeDriver::SetupSmokeTick()
             m_frame.CallAfter(
                 [this]()
                 {
-                    m_frame.OpenDesignSetup(false);
+                    m_frame.OpenDesignSetup(DesignSetup::Targets);
                 });
         }
         else if (m_setupStage == 12)
@@ -83,7 +88,7 @@ void StudioSmokeDriver::SetupSmokeTick()
             m_frame.CallAfter(
                 [this]()
                 {
-                    m_frame.OpenDesignSetup(true);
+                    m_frame.OpenDesignSetup(DesignSetup::Templates);
                 });
         }
         else if (m_setupStage == 40)
@@ -113,7 +118,7 @@ void StudioSmokeDriver::SetupSmokeTick()
             m_frame.CallAfter(
                 [this]()
                 {
-                    m_frame.OpenDesignSetup(true);
+                    m_frame.OpenDesignSetup(DesignSetup::Templates);
                 });
         }
         else if (m_setupStage == 30)
