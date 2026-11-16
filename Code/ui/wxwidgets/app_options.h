@@ -28,5 +28,6 @@ struct Options
     bool studyExpectFailure = false;
     bool setupSmoke = false;
     bool printedSeedSmoke = false;
+    bool designRulesSmoke = false;
     wxString studySpecification;
 };

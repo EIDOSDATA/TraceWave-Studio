@@ -82,6 +82,7 @@ enum
     IdResetLayout,
     IdTargets,
     IdTemplates,
+    IdDesignRules,
     IdTimer,
     IdShutdown
 };

@@ -18,6 +18,7 @@ void StudioFrame::UpdateControls()
     GetMenuBar()->Enable(IdProjectStudy, opened && m_studySupported);
     GetMenuBar()->Enable(IdTargets, opened && m_targetsSupported);
     GetMenuBar()->Enable(IdTemplates, opened && m_templatesSupported);
+    GetMenuBar()->Enable(IdDesignRules, opened && m_designRulesSupported);
     for (const int id : {IdNewMaterial, IdNewNet, IdNewPort})
     {
         GetMenuBar()->Enable(id, opened);
@@ -62,6 +63,10 @@ void StudioFrame::UpdateControls()
         else if (item.first == IdTargets || item.first == IdTemplates)
         {
             enabled = opened && (item.first == IdTargets ? m_targetsSupported : m_templatesSupported);
+        }
+        else if (item.first == IdDesignRules)
+        {
+            enabled = opened && m_designRulesSupported;
         }
         else if (item.first == IdLine || item.first == IdArc || item.first == IdCoordinates)
         {

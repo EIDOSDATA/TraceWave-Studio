@@ -567,4 +567,6 @@ def preflight_design(document: dict, purpose: str) -> list[dict]:
                 minimum, maximum = _range(document, materials[identity]["validity_hz"], f"materials.{identity}.validity_hz")
                 if None not in (lower, upper, minimum, maximum) and (lower < minimum or upper > maximum):
                     missing("E_MATERIAL_RANGE", f"materials.{identity}.validity_hz", "포트 검증 대역이 재료 모델의 유효 대역을 벗어납니다.")
+    from rfad.domain.design_checks import declared_diagnostics
+    diagnostics.extend(declared_diagnostics(document, purpose))
     return diagnostics

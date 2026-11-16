@@ -110,6 +110,13 @@ void DesignCanvas::SetScene(const Json& scene)
     Refresh(false);
 }
 
+void DesignCanvas::SetInspection(const std::vector<std::string>& identities, std::optional<wxPoint2DDouble> location)
+{
+    m_inspection = identities;
+    m_inspectionLocation = location;
+    Refresh(false);
+}
+
 void DesignCanvas::SetSelection(const std::string& identity)
 {
     const Shape* shape = FindShape(identity);
@@ -373,7 +380,9 @@ void DesignCanvas::OnPaint(wxPaintEvent&)
         {
             offset = m_pendingOffset;
         }
-        if (!renderer.DrawShape(shape, GeometryPoint(offset), colours[index], shape.id == m_selection))
+        const bool highlighted = shape.id == m_selection ||
+                                 std::find(m_inspection.begin(), m_inspection.end(), shape.id) != m_inspection.end();
+        if (!renderer.DrawShape(shape, GeometryPoint(offset), colours[index], highlighted))
         {
             ++nativeOmissions;
         }
@@ -381,6 +390,16 @@ void DesignCanvas::OnPaint(wxPaintEvent&)
     renderer.Flush();
     DrawPreview(dc, renderer);
     renderer.Flush();
+    if (m_inspectionLocation)
+    {
+        const wxPoint point = WorldToScreen(*m_inspectionLocation);
+        const int radius = FromDIP(7);
+        dc.SetPen(wxPen(wxColour(174, 52, 42), FromDIP(2)));
+        dc.SetBrush(*wxTRANSPARENT_BRUSH);
+        dc.DrawCircle(point, radius);
+        dc.DrawLine(point.x - radius, point.y, point.x + radius, point.y);
+        dc.DrawLine(point.x, point.y - radius, point.x, point.y + radius);
+    }
     dc.SetTextForeground(wxColour(73, 86, 103));
     dc.DrawText(Display("2D 설계 / mm"), FromDIP(10), FromDIP(10));
     if (m_scene.omissionCount > 0)

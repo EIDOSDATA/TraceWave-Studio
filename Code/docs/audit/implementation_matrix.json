@@ -7313,6 +7313,12 @@
         "state": "unconfigured"
       }
     },
+    "design_rules_profile": {
+      "manufacturing_verified": false,
+      "profile": "rfad.design-rules-editor/0.1",
+      "report": "rfad.design-checks/0.1",
+      "source": "draft_revision"
+    },
     "editor_profile": {
       "create_selections": [
         "new_parameter",
@@ -7332,7 +7338,7 @@
       "max_result_bytes": 393216,
       "preview_required": true,
       "profile": "rfad.pcb-selection/0.1",
-      "project_schema": "rfad.project/0.3",
+      "project_schema": "rfad.project/0.4",
       "readable_selection_schemas": [
         "rfad.pcb-selection/0.1",
         "rfad.pcb-selection/0.2"
@@ -7361,7 +7367,12 @@
         "port.remove",
         "board.set",
         "target.set",
-        "target.remove"
+        "target.remove",
+        "target.constraints.set",
+        "connection.set",
+        "connection.remove",
+        "manufacturing_profile.set",
+        "manufacturing_profile.remove"
       ],
       "design_validation": {
         "max_returned_diagnostics": 64,
@@ -7399,9 +7410,10 @@
       "readable_schema_versions": [
         "rfad.project/0.1",
         "rfad.project/0.2",
-        "rfad.project/0.3"
+        "rfad.project/0.3",
+        "rfad.project/0.4"
       ],
-      "schema_version": "rfad.project/0.3",
+      "schema_version": "rfad.project/0.4",
       "scope": "workspace-local versioned projects and optional isolated host CAD worker",
       "target_input": {
         "changes_solver_settings": false,
@@ -7576,6 +7588,18 @@
     },
     "catalog.status": {
       "extension_profile": "rfad.catalog/0.1",
+      "status": "implemented"
+    },
+    "design.rules.apply": {
+      "extension_profile": "rfad.design-rules-editor/0.1",
+      "status": "implemented"
+    },
+    "design.rules.check": {
+      "extension_profile": "rfad.design-rules-editor/0.1",
+      "status": "implemented"
+    },
+    "design.rules.get": {
+      "extension_profile": "rfad.design-rules-editor/0.1",
       "status": "implemented"
     },
     "editor.apply": {
@@ -7782,7 +7806,10 @@
         "src/rfad/application/target_editor_fields.py",
         "src/rfad/application/target_editor_values.py",
         "ui/wxwidgets/target_editor_dialog.cpp",
-        "ui/wxwidgets/project_setup_dialog.cpp"
+        "ui/wxwidgets/project_setup_dialog.cpp",
+        "src/rfad/domain/target_constraints.py",
+        "src/rfad/application/design_rule_service.py",
+        "ui/wxwidgets/design_rules_dialog.cpp"
       ],
       "contract_notes": [
         "0.1/0.2는 비어 있지 않은 targets를 거부하며 기존 봉인 원본은 변경하지 않는다. 목표 입력은 solver 주파수/물성/port 저항을 변경하지 않고 geometry/physics/network 무효화를 추가하지 않는다.",
@@ -7791,16 +7818,17 @@
       "evidence": [
         "docs/target_contract.md",
         "docs/target_editor_contract.md",
-        "docs/target_template_gui.md"
+        "docs/target_template_gui.md",
+        "docs/design_rules.md"
       ],
       "gaps": [
         "지역/원문/version을 보존하는 통신 프리셋이 없다.",
-        "관측 방향/편파/실현 이득/크기 및 제조 제약, parameter 참조와 필요한 데이터 사전 도출은 후속이다.",
+        "관측 방향/편파/실현 이득, 외부 설치 공간/복합 환경 제약과 필요한 데이터 사전 도출은 후속이다.",
         "MetricRecord/Assessment 실제 평가와 개정 간 자동 raw 재사용은 미구현이다."
       ],
       "id": "FN-004",
       "implementation_status": "partial",
-      "implemented": "rfad.target/0.1은 최대32개 사용자 목표의 대역/표본/port/Z0/출처와 S11/방사효율/전체효율/비율대역폭 한계를 target.set/remove로 저장한다. 0.3 개정, 저장/재열기/snapshot/영속 undo/redo를 연결하고 미정 입력과 not_evaluated를 구분한다. target.editor.get/apply와 wxWidgets 다중 목표 편집을 연결하고 변경값만 처리한다. 기존 SI/출처, 미정/근사 상태와 최대1001개 명시 표본을 보존한다.",
+      "implemented": "rfad.target/0.1은 최대32개 사용자 목표의 대역/표본/port/Z0/출처와 S11/방사효율/전체효율/비율대역폭 한계를 저장한다. 프로젝트 0.4는 선택적 기판 크기/적층 두께/매개변수 범위와 정수 조건 및 제조 규칙 연결을 추가한다. 기존 SI/출처, 미정/근사 상태와 최대1001개 표본을 보존하고 두 GUI 편집 경로의 저장/재열기/undo/redo를 연결한다.",
       "next_steps": [
         3,
         4,
@@ -7810,7 +7838,9 @@
       "tests": [
         "tests/test_targets.py",
         "tests/test_target_editor.py",
-        "tests/test_gui_target_template_process.py"
+        "tests/test_gui_target_template_process.py",
+        "tests/test_design_rules.py",
+        "tests/test_gui_design_rules_process.py"
       ]
     },
     {
@@ -7978,21 +8008,26 @@
         "src/rfad/domain/design.py",
         "src/rfad/domain/planar.py",
         "src/rfad/application/pcb_contacts.py",
-        "src/rfad/application/pcb_selection_review.py"
+        "src/rfad/application/pcb_selection_review.py",
+        "src/rfad/domain/design_rules.py",
+        "src/rfad/domain/design_checks.py",
+        "src/rfad/domain/boundary_distance.py",
+        "ui/wxwidgets/design_rules_review.cpp"
       ],
       "contract_notes": [
-        "pcb_contacts는 제한된 solver polygon 접촉 검사이며 완전한 제조 DRC가 아니다. connections/manufacturing_profiles는 현재 빈 collection만 허용한다."
+        "0.4의 연결/규칙 원본과 검사 보고서는 별도다. 미정/지원 범위 밖 판정과 기생 도체 RF 결합은 미평가이며 판정은 공정이나 측정의 수용을 부여하지 않는다."
       ],
       "evidence": [
-        "docs/copper_features.md"
+        "docs/copper_features.md",
+        "docs/design_rules.md"
       ],
       "gaps": [
-        "expected connectivity graph와 제조업체 width/gap/edge/hole/annular profile 검사 서비스가 없다.",
-        "issue별 측정값/허용값/위치와 미평가 규칙, 공간 index와 사용자 제약 모델이 필요하다."
+        "임의 다각형 목 폭, 복합 비아 절삭 접촉, 슬롯, 전층 keepout과 업체 규칙 자동 연동은 후속이다.",
+        "R2 기하 구속 solver, 충돌 집합, 자동 repair와 전체 제조/CAM 검수는 후속이다."
       ],
       "id": "FN-009",
       "implementation_status": "partial",
-      "implemented": "기본 양수/참조/자기교차 검사, native polygon의 급전 접촉/단락, sheet/PTH 연결 성분과 IFA short 관계를 검사한다.",
+      "implemented": "기대 연결/분리/기생 DC 분리와 사용자 제조 규칙을 저장한다. 해석적 선분/원호 경계와 AABB로 실제 도체 성분 및 최소 폭/간격/외곽/공구 드릴/환형 링/비아 종횡비를 검사한다. 문제별 위치/측정/한계/출처와 미평가를 제공하고 GUI에서 2D로 강조한다. PCB solver 계획에 확인된 선언 제약 위반을 연결한다.",
       "next_steps": [
         3,
         4,
@@ -8002,7 +8037,9 @@
       "tests": [
         "tests/test_pcb_contacts.py",
         "tests/test_planar.py",
-        "tests/test_copper_design.py"
+        "tests/test_copper_design.py",
+        "tests/test_design_rules.py",
+        "tests/test_gui_design_rules_process.py"
       ]
     },
     {
@@ -12749,8 +12786,8 @@
   "review_inputs": [
     {
       "path": "Code/docs/audit/design_functions.json",
-      "text_sha256": "e5ef79b7d9d3772645b25f499b55ffd7b5d6ee47f4d874bd4660d0ae50d483ef",
-      "utf8_bytes": 32997
+      "text_sha256": "a77ca305b6e3ffb23d1500804a4faac23db3cc032fd233e769a89b0b57567506",
+      "utf8_bytes": 33796
     },
     {
       "path": "Code/docs/audit/analysis_functions.json",
@@ -12783,6 +12820,11 @@
       "utf8_bytes": 16022
     },
     {
+      "path": "Code/docs/design_rules.md",
+      "text_sha256": "611c44a54a73b61ccb6d6f87286340bc7860da9cbfc3c5d2dbcd25b030775c32",
+      "utf8_bytes": 7021
+    },
+    {
       "path": "Code/docs/editor_contract.md",
       "text_sha256": "a16b237b7c2f6af7296a7fd9135df426073e22a3b9dd1388ea9b0e57f3ff9d6a",
       "utf8_bytes": 9590
@@ -12804,8 +12846,8 @@
     },
     {
       "path": "Code/docs/project_persistence.md",
-      "text_sha256": "55cdf9a9b9182e3552235e554a2752a65b8daa8ac437fbcc9030bc73214d1bb2",
-      "utf8_bytes": 15821
+      "text_sha256": "c535fde1d695c7ed1766363b24aa62468beaee3b45015b81e50064e94ac5f67a",
+      "utf8_bytes": 15739
     },
     {
       "path": "Code/docs/ro4350b_loss_refinement.md",
@@ -12814,18 +12856,18 @@
     },
     {
       "path": "Code/docs/studio_gui_design.md",
-      "text_sha256": "9c3ab204d6357ead82b5cc5c1c50a133b739cbe5a1b9e592e8c699385923bc09",
-      "utf8_bytes": 32332
+      "text_sha256": "86d132a06fa405fde1c6a75a3a8fde9069e5be0fc22975d9cdd617eda3c0b1cf",
+      "utf8_bytes": 32594
     },
     {
       "path": "Code/docs/target_contract.md",
-      "text_sha256": "9b0072e454608e95b3191fd39329adbb9e686914ca93988bcb34562025517c72",
-      "utf8_bytes": 11330
+      "text_sha256": "06f31890b0d3ec72dc0418e3b3572586f4831f496ce7d4c99f7a8d4f8033eaca",
+      "utf8_bytes": 11631
     },
     {
       "path": "Code/docs/target_editor_contract.md",
-      "text_sha256": "f89127e1d0961593db1c0a53e1a2759f707ce25ba6f88cde22cdf24a74308ab8",
-      "utf8_bytes": 7711
+      "text_sha256": "97160ba180524c85ae28490a87f602b477fc3ba77dc95f559d58db68108880a2",
+      "utf8_bytes": 7763
     },
     {
       "path": "Code/docs/target_template_gui.md",
@@ -13018,6 +13060,11 @@
       "utf8_bytes": 21100
     },
     {
+      "path": "Code/src/rfad/application/design_rule_service.py",
+      "text_sha256": "2346accc2232f0f224c89d6840ebddee1299af18577e7cc886e9a25379db7f84",
+      "utf8_bytes": 8218
+    },
+    {
       "path": "Code/src/rfad/application/display_mesh.py",
       "text_sha256": "06325f60b351904c6833e317f27f1ff0a6dfd982acbf15c02cf3c91cdcc0049c",
       "utf8_bytes": 5261
@@ -13084,8 +13131,8 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_solver.py",
-      "text_sha256": "77fbccd35d5cd0c1be5c43b01b79b942b9ebbd17b4fefa58caf43f160aff2053",
-      "utf8_bytes": 6618
+      "text_sha256": "ab7eabc988d6239f8bd75b1bd50949595501e22839465c3fdff74019ca5bf532",
+      "utf8_bytes": 6978
     },
     {
       "path": "Code/src/rfad/application/project_contract.py",
@@ -13144,8 +13191,8 @@
     },
     {
       "path": "Code/src/rfad/application/rpc.py",
-      "text_sha256": "ccff8e8608a2c1291415f7623988c4775863f18550acdefbe0d8706edf587240",
-      "utf8_bytes": 21580
+      "text_sha256": "845919c7a3c3ed3f863c49252a61d75b1606ee42d9b0677c4052fdce9071d35e",
+      "utf8_bytes": 22244
     },
     {
       "path": "Code/src/rfad/application/solver.py",
@@ -13238,9 +13285,24 @@
       "utf8_bytes": 11085
     },
     {
+      "path": "Code/src/rfad/domain/boundary_distance.py",
+      "text_sha256": "6324951d5428ac3fa52a4bfd4774020ced3865edde193fce0306b2622d6e093c",
+      "utf8_bytes": 7491
+    },
+    {
       "path": "Code/src/rfad/domain/design.py",
-      "text_sha256": "56d6ba6792abf5da5b636f19dc8072442e75a28428f01fc1304bfc8ae3f9c24a",
-      "utf8_bytes": 35468
+      "text_sha256": "84e54769eaeb876972a575f6e006fbb4b38a3eb63348fd40f0bb8fb6a9c80b00",
+      "utf8_bytes": 35595
+    },
+    {
+      "path": "Code/src/rfad/domain/design_checks.py",
+      "text_sha256": "2da7ffddaeb329b71031d6cb2124f218bb6d0518b8545e69fd63c1eb8fbe80c0",
+      "utf8_bytes": 4638
+    },
+    {
+      "path": "Code/src/rfad/domain/design_rules.py",
+      "text_sha256": "d1b07bae77ae70d286627ab22bc730dc284d8e53164a0aa7cd0acce0936c0dcb",
+      "utf8_bytes": 5866
     },
     {
       "path": "Code/src/rfad/domain/expressions.py",
@@ -13284,13 +13346,18 @@
     },
     {
       "path": "Code/src/rfad/domain/project.py",
-      "text_sha256": "bebe63c640be7b05c33d598460aa246ef687fefd026061a1e0326ac0351c8869",
-      "utf8_bytes": 20030
+      "text_sha256": "69ac37671770c8376e4807a82fbb31605ae77057e4aea177f280bc070c39ce53",
+      "utf8_bytes": 20567
+    },
+    {
+      "path": "Code/src/rfad/domain/target_constraints.py",
+      "text_sha256": "0d958d559e552d98e8d72c24a0ce113c53fe322dfcf3a2f226922b5eeaaf1234",
+      "utf8_bytes": 4864
     },
     {
       "path": "Code/src/rfad/domain/targets.py",
-      "text_sha256": "c1fdc25612713eec8e36b44a0addb510c13e388eeaa612192e29e341383ed2a3",
-      "utf8_bytes": 11052
+      "text_sha256": "d31487e4f863e647bced9bfd965c6db19d8c8f665f665b3ffd251a4eee717bf2",
+      "utf8_bytes": 11865
     },
     {
       "path": "Code/src/rfad/domain/template_command.py",
@@ -13329,8 +13396,8 @@
     },
     {
       "path": "Code/src/rfad/domain/units.py",
-      "text_sha256": "f02c8095e7ae3b8022ac3d7718363d1cbffdd6b876506122ecd259cf4cda2247",
-      "utf8_bytes": 8754
+      "text_sha256": "3bbc79e91fd95e46e1d4bd012f63d1842aee01e0e4bc4a4be3a136f969de0081",
+      "utf8_bytes": 9002
     },
     {
       "path": "Code/src/rfad/storage/journal.py",
@@ -13408,6 +13475,11 @@
       "utf8_bytes": 21314
     },
     {
+      "path": "Code/tests/test_design_rules.py",
+      "text_sha256": "1b95a72c13454a31571ba3f6bff17d13e557a3bb3e65ae02dd29796273787e27",
+      "utf8_bytes": 13718
+    },
+    {
       "path": "Code/tests/test_display_mesh.py",
       "text_sha256": "ea8ac29db5a198cd370435c07ed8098f0935289a3d2584b61cf76bc5c3940630",
       "utf8_bytes": 5433
@@ -13431,6 +13503,11 @@
       "path": "Code/tests/test_gui_cad_process.py",
       "text_sha256": "41c34de1eec10491e713aa5200fc1f619d09607154cd147500a77fdac6db3add",
       "utf8_bytes": 5409
+    },
+    {
+      "path": "Code/tests/test_gui_design_rules_process.py",
+      "text_sha256": "24f9caff6507e86142f9848cb7ae3bd44a229828b1d68b87f4d8104062c002d8",
+      "utf8_bytes": 4295
     },
     {
       "path": "Code/tests/test_gui_printed_seed_process.py",
@@ -13569,8 +13646,8 @@
     },
     {
       "path": "Code/tests/test_targets.py",
-      "text_sha256": "5dfe9365fb51fc1c9f015dee345fff184b16ddd927afa75a02983fef706dd09a",
-      "utf8_bytes": 23523
+      "text_sha256": "fb992e6ed420674c662b2e9bf45c76399b839eeabc413263301378f27ce1aa8f",
+      "utf8_bytes": 23672
     },
     {
       "path": "Code/tests/test_template_candidates.py",
@@ -13608,6 +13685,16 @@
       "utf8_bytes": 9902
     },
     {
+      "path": "Code/ui/wxwidgets/design_rules_dialog.cpp",
+      "text_sha256": "77f1cd52ce556c1d8a6071169fbcf7b9489c9c319ed5c193ef73c94e46c9b996",
+      "utf8_bytes": 11076
+    },
+    {
+      "path": "Code/ui/wxwidgets/design_rules_review.cpp",
+      "text_sha256": "a7b754051fb1dc440aed657e00b490dcf3d0095f6ead50f0b12996ca9fbd302e",
+      "utf8_bytes": 4054
+    },
+    {
       "path": "Code/ui/wxwidgets/drawing_rail.cpp",
       "text_sha256": "2ade107d86f79e8294698bff60869a33b4251601c0a86867f040697cc730e051",
       "utf8_bytes": 1825
@@ -13634,13 +13721,13 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_design_setup.cpp",
-      "text_sha256": "3f368908a929c5855d886d4f3bc2af27e0e2f6cfa591412c5a253745c5f0141f",
-      "utf8_bytes": 4756
+      "text_sha256": "cc479a398074429f0c7afe70176b4f1d28f97cb7ec8e0c039a8f8fe150ed2b69",
+      "utf8_bytes": 5140
     },
     {
       "path": "Code/ui/wxwidgets/studio_layout.cpp",
-      "text_sha256": "0a1410c2b8ada958da37becaba61e4f685323778c84858ddf24f48103b411425",
-      "utf8_bytes": 24233
+      "text_sha256": "880d74476a6a85b7f1fd6e94fbc4fd3938c9c366753b648ba3429744f0dfe6f2",
+      "utf8_bytes": 24510
     },
     {
       "path": "Code/ui/wxwidgets/studio_theme.cpp",

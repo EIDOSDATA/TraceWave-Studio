@@ -1,4 +1,5 @@
 #pragma once
+#include <optional>
 
 #include <wx/wx.h>
 #include <wx/geometry.h>
@@ -24,6 +25,8 @@ public:
     ~DesignCanvas() override;
     void SetScene(const Json& scene);
     void SetSelection(const std::string& identity);
+    /** @brief 읽기 전용 검사 오버레이가 강조할 객체와 서비스 좌표를 설정한다. */
+    void SetInspection(const std::vector<std::string>& identities, std::optional<wxPoint2DDouble> location);
     void SetTool(const std::string& tool);
     void SetDrawingLayer(const std::string& identity);
     void SetStrokeWidth(double widthMm);
@@ -76,6 +79,8 @@ private:
     wxPoint2DDouble m_viewCenter{0.0, 0.0};
     double m_pixelsPerMm = 8.0;
     std::string m_selection;
+    std::vector<std::string> m_inspection;
+    std::optional<wxPoint2DDouble> m_inspectionLocation;
     std::string m_tool = "select";
     std::string m_drawingLayer;
     double m_strokeWidth = 1.0;

@@ -26,6 +26,7 @@ from rfad.application.pcb_selection_contract import MUTATION_METHODS as PCB_SELE
 from rfad.application.project_studies import StudyCoordinator
 from rfad.application.project_study_contract import MUTATIONS as STUDY_MUTATIONS
 from rfad.application import target_editor
+from rfad.application import design_rule_service
 from rfad.application.template_candidates import TemplateCandidateCoordinator
 from rfad.domain.errors import ProjectError
 from rfad.storage.journal import Journal
@@ -35,7 +36,7 @@ ASYNC_METHODS = {
 } | CAD_METHODS | SOLVER_METHODS
 MUTATION_METHODS = ASYNC_METHODS | {
     "project.apply_command", "editor.apply", "canvas.apply", "project.undo", "project.redo", "job.cancel",
-} | PCB_SELECTION_MUTATIONS | STUDY_MUTATIONS | {"target.editor.apply", "template.apply"}
+} | PCB_SELECTION_MUTATIONS | STUDY_MUTATIONS | {"target.editor.apply", "template.apply", "design.rules.apply"}
 
 
 class ProjectService:
@@ -180,7 +181,9 @@ class ProjectService:
 
     def _preflight(self, method: str, context: dict, data: dict) -> None:
         """! @brief 기능별 요청 계약에 따라 접수 가능 여부를 검사한다."""
-        if method == "target.editor.apply":
+        if method == "design.rules.apply":
+            design_rule_service.validate_input(context, data)
+        elif method == "target.editor.apply":
             target_editor.validate_input(context, data)
         elif method == "template.apply":
             self.templates.validate_input(method, context, data)
@@ -211,7 +214,9 @@ class ProjectService:
     def _dispatch_mutation(self, state: dict, method: str, context: dict, data: dict) -> dict:
         """! @brief 영수증과 동일한 transaction에서 기능별 명령을 실행한다."""
         self._preflight(method, context, data)
-        if method == "target.editor.apply":
+        if method == "design.rules.apply":
+            return design_rule_service.admit(self, state, context, data)
+        elif method == "target.editor.apply":
             return target_editor.admit(self, state, context, data)
         elif method == "template.apply":
             return self.templates.apply(state, context, data)

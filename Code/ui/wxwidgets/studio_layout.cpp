@@ -51,6 +51,7 @@ void StudioFrame::BuildInterface()
     auto* design = new wxMenu;
     design->Append(IdTargets, Display("목표 / 대역 설정"));
     design->Append(IdTemplates, Display("문헌 / 형상 / 초기 후보"));
+    design->Append(IdDesignRules, Display("목표 제약 / 연결 / 기본 DRC"));
     design->AppendSeparator();
     design->Append(IdBoard, Display("직사각 기판 만들기"));
     design->Append(IdCircularBoard, Display("원형 기판 만들기"));
@@ -310,6 +311,7 @@ void StudioFrame::BuildInterface()
     m_problemSummary = new wxStaticText(problemPanel, wxID_ANY, Display("입력 검사를 실행하지 않았습니다."));
     problemHeader->Add(m_problemSummary, 1, wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(StudioTheme::InputGap));
     AddTool(problemPanel, problemHeader, IdValidate, "해석 입력 검사");
+    AddTool(problemPanel, problemHeader, IdDesignRules, "제약 / 연결 / DRC");
     problemSizer->Add(problemHeader, 0, wxEXPAND);
     m_problems =
         new wxListCtrl(problemPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_SINGLE_SEL);
@@ -501,6 +503,10 @@ void StudioFrame::BuildInterface()
             OpenDesignSetup(true);
         },
         IdTemplates);
+    Bind(wxEVT_MENU, [this](wxCommandEvent&)
+    {
+        OpenDesignSetup(false, true);
+    }, IdDesignRules);
     UpdateControls();
 }
 

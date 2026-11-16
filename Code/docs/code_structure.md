@@ -1,5 +1,7 @@
 # 코드 구조와 유지보수 규칙
 
+목표 제약과 기대 연결/제조 규칙은 `domain/target_constraints.py`, `domain/design_rules.py`에서 검증한다. `domain/design_checks.py`가 해석적 경계, 비교, 연결 성분과 제조 판정을 조정하며 서비스 편집은 `application/design_rule_service.py`에서 기존 이력에 연결한다. `design_rules_dialog.cpp`와 `design_rules_review.cpp`는 편집·표시를 담당한다. [설계 규칙 계약](design_rules.md)
+
 갱신일: 2026-11-12 KST
 
 추가 문헌/초기식은 `templates/printed_references.py`의 고정 원문/치수/범위, `domain/template_seeds.py`의 단위/산술/가정 검사, `domain/printed_geometry.py`의 기하로 분리했다. 기존 후보/원자 명령/출처 검증 모듈을 재사용한다. GUI 초기식 입력은 `template_seed_view.cpp`, 작업 이동/레이어/실제 작업 표는 `studio_workspace.cpp`와 `workspace_bar.*`, 세로 도구 아이콘은 `drawing_rail.*`에서 관리한다. GUI에 물리 계산이나 원본 쓰기를 복제하지 않는다. 상세 계약은 [추가 문헌과 초기 길이](printed_templates_and_seeds.md)다.

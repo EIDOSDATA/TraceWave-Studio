@@ -68,9 +68,9 @@ private:
     /** @brief 현재 프로젝트의 원본을 보존하는 연구 설정/진행 창을 연다. */
     void OpenProjectStudy();
     /** @brief 목표 또는 명시 기하 카드의 비동기 설정 화면을 연다. */
-    void OpenDesignSetup(bool templates);
+    void OpenDesignSetup(bool templates, bool rules = false);
     /** @brief 조회 이벤트가 반환된 뒤 모달 화면과 개정 갱신을 연결한다. */
-    void ShowDesignSetup(const Json& context, bool templates);
+    void ShowDesignSetup(const Json& context, bool templates, bool rules);
     /** @brief 기존 입력을 적용한 뒤 PCB 자료 검색과 적층 검토 화면을 연다. */
     void OpenPcbSelection();
     /** @brief 응답 처리 타이머가 반환한 뒤 별도 이벤트에서 모달 화면을 표시한다. */
@@ -211,6 +211,7 @@ private:
     bool m_forceCloseAfterSetup = false;
     bool m_targetsSupported = false;
     bool m_templatesSupported = false;
+    bool m_designRulesSupported = false;
     ProjectStudyDialog* m_studyDialog = nullptr;
     bool m_studySupported = false;
     bool m_closeAfterPcb = false;

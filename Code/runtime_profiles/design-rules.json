@@ -1,0 +1,147 @@
+{
+  "schema": "rfad.design-rules-verification/0.1",
+  "recorded_at_utc": "2026-11-16T10:38:13.151598+00:00",
+  "client_date_kst": "2026-11-16",
+  "design_baseline": "RFAD-D0-3.4",
+  "base_commit": "155ea8645d47299653fa3c7fdb3d973a3819cc50",
+  "development_steps": [
+    3
+  ],
+  "project_schema": "rfad.project/0.4",
+  "python": "3.12.10",
+  "worker_source_files": 154,
+  "gui_executable": {
+    "path": "Code/build/windows-release/bin/tracewave_gui.exe",
+    "bytes": 19646938,
+    "sha256": "965db6d4efd18ee11fe744bc48c4bfb7c5569393237c44d15ea23b8231150a53"
+  },
+  "full_gui_suite_executable_sha256": "0095fb6443664e3b6147d835faafeb6e5bbd6f64f0b1dde8200f9ef929b77f3d",
+  "runs": [
+    {
+      "phase": "전체 서비스 회귀. 최종 개정 선택/비아 상태 보완에 앞서 수집",
+      "collected": 889,
+      "passed": 795,
+      "skipped": 94,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 970.042,
+      "log": {
+        "path": "Code/.local/design-rules-service-regression.log",
+        "bytes": 118,
+        "sha256": "255e57a6b5443a36012e42dbe0fbe66bd150dc417a74418a7f51144cd4a2be36"
+      }
+    },
+    {
+      "phase": "목표/편집/연결/기본 DRC와 PCB 계획 집중 회귀",
+      "collected": 61,
+      "passed": 61,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 28.906,
+      "log": {
+        "path": "Code/.local/design-rules-final-focused.log",
+        "bytes": 103,
+        "sha256": "3ee913c8c3445cea30f1287aa6308cb1a3f9b6f0f7965455ba14a9792b2d2626"
+      }
+    },
+    {
+      "phase": "최종 읽기/쓰기/출처와 경계/연결 계산 집중 시험",
+      "collected": 7,
+      "passed": 7,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 1.152,
+      "log": {
+        "path": "Code/.local/design-rules-rpc-final.log",
+        "bytes": 1832,
+        "sha256": "6e8881341622ed22afd68d582642cc6a4203b2a57b2d495cb35b7ee1d9c25656"
+      }
+    },
+    {
+      "phase": "전체 wxWidgets 회귀. 최초 캔버스 배율 보완 전 빌드",
+      "collected": 22,
+      "passed": 20,
+      "skipped": 2,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 628.981,
+      "log": {
+        "path": "Code/.local/design-rules-gui-regression.log",
+        "bytes": 116,
+        "sha256": "2883866954c68dd0d07c1af9bb78753b15c9efdcea5f888104908ce346fc03d8"
+      }
+    },
+    {
+      "phase": "초기 캔버스 맞춤/실제 폼 편집/저장/재열기와 봉인 원본 확인",
+      "collected": 1,
+      "passed": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 19.063,
+      "log": {
+        "path": "Code/.local/design-rules-gui-final.log",
+        "bytes": 386,
+        "sha256": "636dedc7f647635d9dd83c09b36b099e2df027e0c4a398c43ade7cae5934ec01"
+      }
+    },
+    {
+      "phase": "요구 추적 산출물의 일관성과 제약/연결의 증거 경로 확인",
+      "collected": 12,
+      "passed": 12,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 1.03,
+      "log": {
+        "path": "Code/.local/design-rules-audit.log",
+        "bytes": 102,
+        "sha256": "890d4cdd3430a1b4196db46c19adf05bf3c5018f8493c59eb456be565ce910c2"
+      }
+    }
+  ],
+  "ctest": {
+    "collected": 9,
+    "passed": 9,
+    "log": {
+      "path": "Code/.local/design-rules-ctest.log",
+      "bytes": 1052,
+      "sha256": "cd0ff476735eae079d5515fcf1673a8c08145b22d34167b6e3bf20e9eb0a2458"
+    }
+  },
+  "gui_report": {
+    "path": "Code/.local/design-rules-gui-final/design-rules.json",
+    "bytes": 1172,
+    "sha256": "8879357b4c36aa6b79998cd3a476a9827709fcfb5c81e427b3bb594f96bc730d"
+  },
+  "gui_checks": [
+    "design_rules_apply_and_overlay",
+    "design_rules_saved_reopen_and_recheck"
+  ],
+  "saved_reopen_checked": {
+    "old_quantity_si_status_and_sources": true,
+    "unknown_rule_values_and_material_preserved": true,
+    "original_rf_band_port_criteria_preserved": true,
+    "original_sealed_snapshot_hash_preserved": true,
+    "drawn_violation_at_2mm_with_2_5mm_limit": true
+  },
+  "windows_visual_review": {
+    "entry": "하단 문제 탭의 제약 / 연결 / DRC",
+    "detected_initial_fit_issue": true,
+    "fit_fix": "레이아웃 확정 후 캔버스로 맞춤. 첫 표시의 기판 픽셀 폭을 GUI 시험에서 확인",
+    "main_window_and_dialog_checked": true,
+    "final_initial_fit_verified": true,
+    "gap_row_highlights_both_objects_and_marks_8_6_mm": true,
+    "inspection_window_closed": true,
+    "full_dpi_accessibility_and_performance_acceptance": false
+  },
+  "manufacturing_verified": false,
+  "new_fdtd_or_measurement": false,
+  "existing_unestablished_conditions": [
+    "RO4350B 국부 방사 도체 손실 변화 2.788446%, 초기 2% 기준 미확립",
+    "GHz PTH 독립 물리 정확도 미확립",
+    "실제 제작/납품/급전 실장/측정 조건 미정"
+  ]
+}

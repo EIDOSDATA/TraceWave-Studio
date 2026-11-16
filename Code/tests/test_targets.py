@@ -172,7 +172,7 @@ class TargetDomainTests(unittest.TestCase):
             validate_project(corrupted)
 
     def test_old_schemas_remain_read_only_and_next_command_migrates(self):
-        """! @brief 0.1/0.2 읽기는 바이트를 유지하고 변경 복사본만 0.3이 된다."""
+        """! @brief 과거 원본 바이트를 유지하고 0.3의 목표 의미를 보존하며 새 복사본만 승격한다."""
         for schema in READABLE_SCHEMA_VERSIONS[:-1]:
             document = new_project("과거 원본") if schema.endswith("0.1") else build_design(with_port=True)
             document["schema_version"] = schema
@@ -184,8 +184,11 @@ class TargetDomainTests(unittest.TestCase):
             self.assertEqual(updated["parent_revision_ids"], [document["revision_id"]])
             invalid_legacy = deepcopy(updated)
             invalid_legacy["schema_version"] = schema
-            with self.assertRaises(ProjectError):
+            if schema == "rfad.project/0.3":
                 validate_project(invalid_legacy)
+            else:
+                with self.assertRaises(ProjectError):
+                    validate_project(invalid_legacy)
             self.assertEqual(updated["materials"], document["materials"])
 
     def test_unknown_fields_duplicate_metrics_and_target_budget_are_rejected(self):

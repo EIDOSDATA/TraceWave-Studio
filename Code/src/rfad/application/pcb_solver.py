@@ -19,6 +19,8 @@ from rfad.application.solver import _snapshot, _runtime, _uuid
 from rfad.domain.project import validate_project
 from rfad.domain.pcb_selection import EXTENSION_KEY as PCB_SELECTION_EXTENSION
 from rfad.domain.template_instance import EXTENSION_KEY as TEMPLATE_ORIGIN_EXTENSION
+from rfad.domain.design_checks import declared_diagnostics
+from rfad.domain.errors import ProjectError
 
 PROFILE = "rfad.openems.pcb-single-port/0.1"
 
@@ -71,6 +73,10 @@ def _payload(document, snapshot, runtime, settings):
         fail("E_HASH", "PCB 원본과 스냅샷 참조가 다릅니다.", "snapshot")
     if document["extensions"].keys() - {PCB_SELECTION_EXTENSION, TEMPLATE_ORIGIN_EXTENSION}:
         fail("E_UNSUPPORTED", "의미를 해석하지 않은 확장이 있는 PCB는 실행할 수 없습니다.", "extensions")
+    violations = declared_diagnostics(document, "em")
+    if violations:
+        issue = violations[0]
+        raise ProjectError("E_DESIGN_CONSTRAINT", "선언한 설계 제약/연결/제조 규칙 위반을 해결하십시오.", details=issue["details"])
     identity = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
     if any(frame["rotation"] != identity or frame["translation_si"] != [0.0, 0.0, 0.0] or frame["handedness"] != "right" for frame in document["frames"].values()):
         fail("E_UNSUPPORTED", "PCB 해석은 항등 오른손 좌표계만 지원합니다.", "frames")

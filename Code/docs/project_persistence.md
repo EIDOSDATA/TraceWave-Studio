@@ -31,7 +31,7 @@ python -X utf8 -m rfad serve --workspace .local/projects-workspace
 
 project.open의 copy, 외부 독립 프로젝트 import, 다른 target으로 저장, archive/migration/GC는 아직 지원하지 않는다. recover는 현재 journal의 정상 pointer와 hash를 검증해 다시 여는 모드다. 손상된 파일을 임의 수정하거나 과거 revision을 자동 선택하는 복구는 수행하지 않는다.
 
-새 프로젝트에는 project/revision/world/board의 별도 UUID와 오른손 identity 좌표계, 빈 컬렉션을 만든다. 물성, 포트, 결과를 임의 생성하지 않는다. 지원 설계 객체와 [목표 입력](target_contract.md)은 명시적 명령으로 편집하고 미구현 핵심 컬렉션의 임의 쓰기는 거부한다. 새 문서는 rfad.project/0.3이며 0.1/0.2 원본은 그대로 읽고 다음 편집의 새 개정만 0.3으로 전환한다. 전환 응답/command journal의 schema_migration에 from/to/original_revision을 남기고 기존 봉인 bytes/hash는 유지한다. 미지 extensions의 JSON은 보존하되 실행하지 않는다.
+새 프로젝트에는 project/revision/world/board의 별도 UUID와 오른손 identity 좌표계, 빈 컬렉션을 만든다. 지원 설계 객체, 목표, 기대 연결과 제조 규칙은 명시적 명령으로 편집한다. 새 문서는 rfad.project/0.4이며 0.1~0.3 원본을 그대로 읽고 다음 편집의 새 개정을 0.4로 전환한다. 전환 응답/command journal의 schema_migration에 from/to/original_revision을 남기고 기존 봉인 bytes/hash를 유지한다. 미지 extensions의 JSON은 그대로 보존한다. [목표 제약과 설계 규칙](design_rules.md)
 
 PCB 선택은 알려진 `extensions["rfad.pcb-selection"]`에 원문 사본과 채택 근거를 저장한다. `pcb.selection.apply`는 현재 개정과 검토한 미리보기 해시를 다시 확인한 뒤 내부 `pcb_stackup.apply` 한 명령으로 재료/적층/급전 좌표/출처를 변경한다. 일반 `project.apply_command`로 이 내부 명령을 호출하여 검토를 우회할 수 없다. 기존 영수증 transaction과 undo/redo를 재사용하고, 설치 카탈로그가 없어도 저장된 선택과 snapshot을 읽을 수 있다. 상세 계약과 출처 보존 한도는 [PCB 선택](pcb_selection_contract.md)을 따른다.
 

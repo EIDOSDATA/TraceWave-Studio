@@ -85,6 +85,9 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/template_view.cpp
     ui/wxwidgets/template_seed_view.cpp
     ui/wxwidgets/studio_design_setup.cpp
+    ui/wxwidgets/design_rules_dialog.cpp
+    ui/wxwidgets/design_rules_review.cpp
+    ui/wxwidgets/studio_smoke_rules.cpp
     ui/wxwidgets/studio_smoke_setup.cpp
     ui/wxwidgets/studio_smoke_targets.cpp
     ui/wxwidgets/studio_smoke_templates.cpp

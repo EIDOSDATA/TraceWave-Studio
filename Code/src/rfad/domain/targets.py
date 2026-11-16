@@ -12,7 +12,7 @@ from rfad.domain.design import _fields, _fail, _strings, _text, _uuid, resolve_s
 
 
 TARGET_PROFILE = "rfad.target/0.1"
-TARGET_COMMANDS = ("target.set", "target.remove")
+TARGET_COMMANDS = ("target.set", "target.remove", "target.constraints.set")
 MAX_TARGETS = 32
 MAX_SAMPLES = 1001
 METRICS = {
@@ -124,7 +124,10 @@ def validate_targets(document: dict) -> None:
     identities = []
     for index, target in enumerate(targets):
         field = f"targets[{index}]"
-        _fields(target, _TARGET_FIELDS, field)
+        extended = type(target) is dict and "constraints" in target
+        if extended and document["schema_version"] != "rfad.project/0.4":
+            _fail("E_VERSION", "목표 제약은 프로젝트 0.4가 필요합니다.", field + ".constraints")
+        _fields(target, _TARGET_FIELDS | ({"constraints"} if extended else set()), field)
         for key in ("id", "revision_id"):
             identity = _uuid(target[key], field + "." + key)
             if identity in used:
@@ -143,6 +146,9 @@ def validate_targets(document: dict) -> None:
                 _fail("E_CONFLICT", "목표가 참조한 포트가 없습니다.", field + ".port_id")
         _quantity(document, target["reference_impedance"], "impedance", field + ".reference_impedance", missing=True)
         _criteria(target["criteria"], field + ".criteria")
+        if extended:
+            from rfad.domain.target_constraints import validate_constraints
+            validate_constraints(document, target["constraints"], field + ".constraints")
     if identities != sorted(identities):
         _fail("E_SCHEMA", "목표 목록은 UUID 오름차순으로 저장해야 합니다.", "targets")
 
@@ -164,9 +170,13 @@ def target_input_status(target: dict) -> dict:
 
 def apply_target_command(document: dict, command_type: str, payload: dict) -> tuple[list[str], list[str], dict]:
     """! @brief 복제본에 목표 변경과 의미상 역명령을 만들고 새 목표 개정을 부여한다."""
+    if command_type == "target.constraints.set":
+        from rfad.domain.target_constraints import apply_constraints
+        return apply_constraints(document, payload)
     _fields(payload, {"target"} if command_type == "target.set" else {"id"}, "command.payload")
     if command_type == "target.set":
-        _fields(payload["target"], _INPUT_FIELDS, "command.payload.target")
+        extended = type(payload["target"]) is dict and "constraints" in payload["target"]
+        _fields(payload["target"], _INPUT_FIELDS | ({"constraints"} if extended else set()), "command.payload.target")
         identity = _uuid(payload["target"]["id"], "command.payload.target.id")
     else:
         identity = _uuid(payload["id"], "command.payload.id")

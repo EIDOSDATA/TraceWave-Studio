@@ -2,20 +2,21 @@
 #include "studio_internal.h"
 #include "target_editor_dialog.h"
 #include "template_dialog.h"
+#include "design_rules_dialog.h"
 
-void StudioFrame::OpenDesignSetup(bool templates)
+void StudioFrame::OpenDesignSetup(bool templates, bool rules)
 {
     if (!m_connected || m_busy || m_project.empty() || m_setupDialog != nullptr ||
-        !(templates ? m_templatesSupported : m_targetsSupported))
+        !(rules ? m_designRulesSupported : (templates ? m_templatesSupported : m_targetsSupported)))
     {
         return;
     }
     if (HasDraft())
     {
         ApplyCurrent(
-            [this, templates]()
+            [this, templates, rules]()
             {
-                OpenDesignSetup(templates);
+                OpenDesignSetup(templates, rules);
             });
         return;
     }
@@ -25,13 +26,17 @@ void StudioFrame::OpenDesignSetup(bool templates)
     const std::string project = m_project;
     const std::string revision = m_revision;
     Json input{{"expected_revision", revision}};
-    if (!templates)
+    if (rules)
+    {
+        input["selection"] = DesignRulesDialog::InitialSelection();
+    }
+    else if (!templates)
     {
         input["target_id"] = nullptr;
     }
     Send(
-        templates ? "template.context" : "target.editor.get", input, false, Context(),
-        [this, project, revision, templates](const Json& context)
+        rules ? "design.rules.get" : (templates ? "template.context" : "target.editor.get"), input, false, Context(),
+        [this, project, revision, templates, rules](const Json& context)
         {
             if (m_closing || project != m_project || revision != m_revision || context.at("project_id") != project ||
                 context.value("revision_id", context.value("expected_revision", std::string())) != revision)
@@ -40,9 +45,9 @@ void StudioFrame::OpenDesignSetup(bool templates)
                 return;
             }
             CallAfter(
-                [this, context, templates]()
+                [this, context, templates, rules]()
                 {
-                    ShowDesignSetup(context, templates);
+                    ShowDesignSetup(context, templates, rules);
                 });
         },
         [this](const Json& error)
@@ -53,7 +58,7 @@ void StudioFrame::OpenDesignSetup(bool templates)
         });
 }
 
-void StudioFrame::ShowDesignSetup(const Json& context, bool templates)
+void StudioFrame::ShowDesignSetup(const Json& context, bool templates, bool rules)
 {
     if (m_closing || !m_connected || context.at("project_id") != m_project ||
         context.value("revision_id", context.value("expected_revision", std::string())) != m_revision)
@@ -78,7 +83,11 @@ void StudioFrame::ShowDesignSetup(const Json& context, bool templates)
             Send(method, input, mutation, Context(), std::move(success), std::move(rejected));
         };
         std::unique_ptr<ProjectSetupDialog> dialog;
-        if (templates)
+        if (rules)
+        {
+            dialog = std::make_unique<DesignRulesDialog>(this, context, gateway);
+        }
+        else if (templates)
         {
             dialog = std::make_unique<TemplateDialog>(this, context, gateway);
         }

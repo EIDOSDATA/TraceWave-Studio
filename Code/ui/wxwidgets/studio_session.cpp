@@ -27,6 +27,7 @@ void StudioFrame::Connect()
              }
              m_epoch = result.at("idempotency_policy").at("request_key_epoch").get<std::string>();
              m_connected = true;
+             m_designRulesSupported = result.contains("design_rules_profile");
              m_studySupported = result.value("methods", Json::object()).contains("study.context");
              m_targetsSupported = result.value("methods", Json::object()).contains("target.editor.get") &&
                                   result.value("methods", Json::object()).contains("target.editor.apply");

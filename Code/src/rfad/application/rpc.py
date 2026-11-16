@@ -16,6 +16,7 @@ from rfad.application.catalog_api import describe as describe_catalog, query as 
 from rfad.application.pcb_selection_contract import READ_METHODS as PCB_SELECTION_READS, MUTATION_METHODS as PCB_SELECTION_MUTATIONS
 from rfad.application.project_study_contract import READS as STUDY_READS, MUTATIONS as STUDY_MUTATIONS
 from rfad.application import target_editor
+from rfad.application import design_rule_service
 
 TEMPLATE_READS = {"template.list", "template.get", "template.context", "template.synthesize"}
 
@@ -37,7 +38,7 @@ PROJECT_MUTATIONS = {"project.open", "project.apply_command", "editor.apply", "c
 PROJECT_MUTATIONS.update({"solver.plan", "solver.prepare", "job.submit"})
 PROJECT_MUTATIONS.update(PCB_SELECTION_MUTATIONS)
 PROJECT_MUTATIONS.update(STUDY_MUTATIONS)
-PROJECT_MUTATIONS.update({"target.editor.apply", "template.apply"})
+PROJECT_MUTATIONS.update({"target.editor.apply", "template.apply", "design.rules.apply"})
 
 
 def capabilities(service=None, catalog=None) -> dict:
@@ -91,6 +92,10 @@ def capabilities(service=None, catalog=None) -> dict:
                              "evaluation_supported": False, "changes_solver_settings": False, "presets_supported": False},
         }
         result["features"][0]["status"] = "implemented"
+        result["methods"].update({name: {"status": "implemented", "extension_profile": design_rule_service.PROFILE}
+                                  for name in design_rule_service.READS | {"design.rules.apply"}})
+        result["design_rules_profile"] = {"profile": design_rule_service.PROFILE, "source": "draft_revision",
+                                          "report": "rfad.design-checks/0.1", "manufacturing_verified": False}
         result["methods"].update({name: {"status": "implemented", "extension_profile": target_editor.PROFILE}
                                   for name in ("target.editor.get", "target.editor.apply")})
         result["target_editor_profile"] = {"profile": target_editor.PROFILE, "source": "draft_revision",
@@ -208,12 +213,14 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
         return _error(None, -32600, "Invalid Request")
     notification = "id" not in request
     method = request["method"]
-    if service is not None and method in PROJECT_MUTATIONS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | {"target.editor.get", "job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
+    if service is not None and method in PROJECT_MUTATIONS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | {"target.editor.get", "job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
         if notification and method in PROJECT_MUTATIONS:
             return None
         try:
             params = request.get("params")
-            if method == "target.editor.get":
+            if method in design_rule_service.READS:
+                result = design_rule_service.read(service, method, params)
+            elif method == "target.editor.get":
                 result = target_editor.read(service, params)
             elif method in TEMPLATE_READS:
                 result = service.templates.query(method, params)

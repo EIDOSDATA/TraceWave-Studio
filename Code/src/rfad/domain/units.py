@@ -79,6 +79,11 @@ _NUMERIC_STATUSES = frozenset(
 )
 
 
+def units_for_dimension(dimension: str) -> tuple[str, ...]:
+    """! @brief 편집 서비스에 차원별 지원 단위 이름만 공개한다."""
+    return tuple(name for name, definition in _UNITS.items() if definition.dimension == dimension)
+
+
 def _unit_definition(unit: str) -> _Unit:
     """! @brief 지원 단위의 정의를 조회하고 알 수 없는 단위를 거부한다."""
     if not isinstance(unit, str) or unit not in _UNITS:

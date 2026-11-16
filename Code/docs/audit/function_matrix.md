@@ -105,12 +105,12 @@ expected_revision, command_id, 영수증, 역명령과 새 revision을 journal t
 
 상태: partial. 담당 단계: 3/4/5/7
 
-rfad.target/0.1은 최대32개 사용자 목표의 대역/표본/port/Z0/출처와 S11/방사효율/전체효율/비율대역폭 한계를 target.set/remove로 저장한다. 0.3 개정, 저장/재열기/snapshot/영속 undo/redo를 연결하고 미정 입력과 not_evaluated를 구분한다. target.editor.get/apply와 wxWidgets 다중 목표 편집을 연결하고 변경값만 처리한다. 기존 SI/출처, 미정/근사 상태와 최대1001개 명시 표본을 보존한다.
+rfad.target/0.1은 최대32개 사용자 목표의 대역/표본/port/Z0/출처와 S11/방사효율/전체효율/비율대역폭 한계를 저장한다. 프로젝트 0.4는 선택적 기판 크기/적층 두께/매개변수 범위와 정수 조건 및 제조 규칙 연결을 추가한다. 기존 SI/출처, 미정/근사 상태와 최대1001개 표본을 보존하고 두 GUI 편집 경로의 저장/재열기/undo/redo를 연결한다.
 
 남은 범위:
 
 - 지역/원문/version을 보존하는 통신 프리셋이 없다.
-- 관측 방향/편파/실현 이득/크기 및 제조 제약, parameter 참조와 필요한 데이터 사전 도출은 후속이다.
+- 관측 방향/편파/실현 이득, 외부 설치 공간/복합 환경 제약과 필요한 데이터 사전 도출은 후속이다.
 - MetricRecord/Assessment 실제 평가와 개정 간 자동 raw 재사용은 미구현이다.
 
 코드:
@@ -126,18 +126,24 @@ rfad.target/0.1은 최대32개 사용자 목표의 대역/표본/port/Z0/출처�
 - [src/rfad/application/target_editor_values.py](../../src/rfad/application/target_editor_values.py)
 - [ui/wxwidgets/target_editor_dialog.cpp](../../ui/wxwidgets/target_editor_dialog.cpp)
 - [ui/wxwidgets/project_setup_dialog.cpp](../../ui/wxwidgets/project_setup_dialog.cpp)
+- [src/rfad/domain/target_constraints.py](../../src/rfad/domain/target_constraints.py)
+- [src/rfad/application/design_rule_service.py](../../src/rfad/application/design_rule_service.py)
+- [ui/wxwidgets/design_rules_dialog.cpp](../../ui/wxwidgets/design_rules_dialog.cpp)
 
 시험:
 
 - [tests/test_targets.py](../../tests/test_targets.py)
 - [tests/test_target_editor.py](../../tests/test_target_editor.py)
 - [tests/test_gui_target_template_process.py](../../tests/test_gui_target_template_process.py)
+- [tests/test_design_rules.py](../../tests/test_design_rules.py)
+- [tests/test_gui_design_rules_process.py](../../tests/test_gui_design_rules_process.py)
 
 기존 실행/설명 근거:
 
 - [docs/target_contract.md](../../docs/target_contract.md)
 - [docs/target_editor_contract.md](../../docs/target_editor_contract.md)
 - [docs/target_template_gui.md](../../docs/target_template_gui.md)
+- [docs/design_rules.md](../../docs/design_rules.md)
 
 계약 확인:
 
@@ -315,12 +321,12 @@ line_path/arc_path/planar_region(holes)/pad/via 원본과 수량/매개변수 �
 
 상태: partial. 담당 단계: 3/4/8/10
 
-기본 양수/참조/자기교차 검사, native polygon의 급전 접촉/단락, sheet/PTH 연결 성분과 IFA short 관계를 검사한다.
+기대 연결/분리/기생 DC 분리와 사용자 제조 규칙을 저장한다. 해석적 선분/원호 경계와 AABB로 실제 도체 성분 및 최소 폭/간격/외곽/공구 드릴/환형 링/비아 종횡비를 검사한다. 문제별 위치/측정/한계/출처와 미평가를 제공하고 GUI에서 2D로 강조한다. PCB solver 계획에 확인된 선언 제약 위반을 연결한다.
 
 남은 범위:
 
-- expected connectivity graph와 제조업체 width/gap/edge/hole/annular profile 검사 서비스가 없다.
-- issue별 측정값/허용값/위치와 미평가 규칙, 공간 index와 사용자 제약 모델이 필요하다.
+- 임의 다각형 목 폭, 복합 비아 절삭 접촉, 슬롯, 전층 keepout과 업체 규칙 자동 연동은 후속이다.
+- R2 기하 구속 solver, 충돌 집합, 자동 repair와 전체 제조/CAM 검수는 후속이다.
 
 코드:
 
@@ -328,20 +334,27 @@ line_path/arc_path/planar_region(holes)/pad/via 원본과 수량/매개변수 �
 - [src/rfad/domain/planar.py](../../src/rfad/domain/planar.py)
 - [src/rfad/application/pcb_contacts.py](../../src/rfad/application/pcb_contacts.py)
 - [src/rfad/application/pcb_selection_review.py](../../src/rfad/application/pcb_selection_review.py)
+- [src/rfad/domain/design_rules.py](../../src/rfad/domain/design_rules.py)
+- [src/rfad/domain/design_checks.py](../../src/rfad/domain/design_checks.py)
+- [src/rfad/domain/boundary_distance.py](../../src/rfad/domain/boundary_distance.py)
+- [ui/wxwidgets/design_rules_review.cpp](../../ui/wxwidgets/design_rules_review.cpp)
 
 시험:
 
 - [tests/test_pcb_contacts.py](../../tests/test_pcb_contacts.py)
 - [tests/test_planar.py](../../tests/test_planar.py)
 - [tests/test_copper_design.py](../../tests/test_copper_design.py)
+- [tests/test_design_rules.py](../../tests/test_design_rules.py)
+- [tests/test_gui_design_rules_process.py](../../tests/test_gui_design_rules_process.py)
 
 기존 실행/설명 근거:
 
 - [docs/copper_features.md](../../docs/copper_features.md)
+- [docs/design_rules.md](../../docs/design_rules.md)
 
 계약 확인:
 
-- pcb_contacts는 제한된 solver polygon 접촉 검사이며 완전한 제조 DRC가 아니다. connections/manufacturing_profiles는 현재 빈 collection만 허용한다.
+- 0.4의 연결/규칙 원본과 검사 보고서는 별도다. 미정/지원 범위 밖 판정과 기생 도체 RF 결합은 미평가이며 판정은 공정이나 측정의 수용을 부여하지 않는다.
 
 ## FN-010
 
