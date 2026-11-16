@@ -1,4 +1,19 @@
 #include "canvas_viewport.h"
+
+double CanvasViewport::GridStep() const
+{
+    const double decade = std::pow(10.0, std::floor(std::log10(50.0 / pixelsPerMm)));
+    const double spacing = decade * pixelsPerMm;
+    if (spacing < 20.0)
+    {
+        return decade * 5.0;
+    }
+    if (spacing < 35.0)
+    {
+        return decade * 2.0;
+    }
+    return decade;
+}
 #include <algorithm>
 #include <cmath>
 

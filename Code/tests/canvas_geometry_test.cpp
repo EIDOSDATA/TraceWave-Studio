@@ -1,4 +1,5 @@
 #include "../ui/wxwidgets/canvas_geometry.h"
+#include "../ui/wxwidgets/canvas_precision.h"
 #include "../ui/wxwidgets/polygon_input.h"
 
 #include <cstdio>
@@ -32,6 +33,40 @@ int main()
     Check(std::abs(ArcDistance({0, 1}, {0, 0}, 1, 0, 90)) < 1e-10);
     Check(ArcDistance({-1, 0}, {0, 0}, 1, 0, 90) > 1.4);
     Check(std::abs(ArcDistance({0, -1}, {0, 0}, 1, 0, -90)) < 1e-10);
+    const CanvasPrecision::Circle circle{{1, 1}, 5};
+    CanvasPrecision::Nearest nearest({1.2, 5.9}, 0.75, circle);
+    nearest.Consider({1.2, 5.9}, CanvasPrecision::SnapKind::Endpoint);
+    Check(!nearest.Result());
+    nearest.Consider({1, 6}, CanvasPrecision::SnapKind::Endpoint);
+    Check(nearest.Result() && nearest.Result()->point.y == 6);
+    const auto grid = CanvasPrecision::GridPoint({-4.8, 5.15}, 5);
+    Check(grid.x == -5 && grid.y == 5);
+    CanvasScene::Shape preview;
+    preview.kind = "arc_path";
+    preview.center = {1, 1};
+    preview.radius = 5;
+    preview.startAngle = 0;
+    preview.sweepAngle = -90;
+    Check(CanvasPrecision::EndpointUnchanged(preview, CanvasPrecision::Endpoint::Start, {20, 1}));
+    Check(CanvasPrecision::EndpointUnchanged(preview, CanvasPrecision::Endpoint::End, {1, -20}));
+    Check(!CanvasPrecision::EndpointUnchanged(preview, CanvasPrecision::Endpoint::End, {1, 20}));
+    Check(!CanvasPrecision::EndpointUnchanged(preview, CanvasPrecision::Endpoint::Start, {1, 1}));
+    Check(CanvasPrecision::Preview(preview, CanvasPrecision::Endpoint::Start, {1, 20}));
+    Check(std::abs(preview.startAngle - 90) < 1e-10 && std::abs(preview.sweepAngle + 180) < 1e-10);
+    Check(preview.radius == 5 && preview.center.x == 1 && preview.center.y == 1);
+    Check(!CanvasPrecision::Preview(preview, CanvasPrecision::Endpoint::End, {1, 1}));
+    preview.startAngle = 350;
+    preview.sweepAngle = 20;
+    Check(CanvasPrecision::EndpointUnchanged(preview, CanvasPrecision::Endpoint::End, ArcPoint({1, 1}, 20, 10)));
+    preview.sweepAngle = 360;
+    Check(CanvasPrecision::EndpointUnchanged(preview, CanvasPrecision::Endpoint::End, ArcPoint({1, 1}, 20, 350)));
+    preview.kind = "line_path";
+    preview.start = {10, 20};
+    preview.end = {20, 20};
+    Check(CanvasPrecision::EndpointUnchanged(preview, CanvasPrecision::Endpoint::Start, {10, 20}));
+    Check(!CanvasPrecision::EndpointUnchanged(preview, CanvasPrecision::Endpoint::Start, {10.0000000001, 20}));
+    Check(!CanvasPrecision::EndpointUnchanged(preview, CanvasPrecision::Endpoint::End, {10, 20}));
+    Check(!CanvasPrecision::EndpointUnchanged(preview, CanvasPrecision::Endpoint::End, {std::numeric_limits<double>::infinity(), 20}));
     Check(Valid({1e9, -1e9}));
     Check(!Valid({1e10, 0}));
     Check(!Valid({std::numeric_limits<double>::infinity(), 0}));

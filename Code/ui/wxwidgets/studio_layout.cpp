@@ -101,7 +101,10 @@ void StudioFrame::BuildInterface()
     view->Append(IdCancelCad, Display("CAD 작업 취소"));
     bar->Append(view, Display("보기"));
     SetMenuBar(bar);
-    CreateStatusBar(2);
+    CreateStatusBar(3);
+    const int statusWidths[] = {-2, -1, FromDIP(123)};
+    SetStatusWidths(3, statusWidths);
+    SetStatusText(Display("mm / 스냅 끔"), 2);
     SetStatusText(Display("서비스 연결 중"), 0);
     SetStatusText(Display("Windows wxWidgets / 개발용"), 1);
     SetMinSize(FromDIP(wxSize(980, 680)));
@@ -233,6 +236,10 @@ void StudioFrame::BuildInterface()
     widthTools->Add(new wxStaticText(center, wxID_ANY, "mm"), 0, wxALIGN_CENTER_VERTICAL | wxLEFT,
                     FromDIP(StudioTheme::Space));
     context->Add(widthTools, 0, wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(StudioTheme::Space));
+    m_snapCheck = new wxCheckBox(center, wxID_ANY, Display("스냅"));
+    m_snapCheck->SetName("canvas.snap");
+    m_snapCheck->SetToolTip(Display("보이는 같은 층의 선·원호 끝점과 표시 격자에 맞춥니다."));
+    context->Add(m_snapCheck, 0, wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(StudioTheme::Space));
     centerSizer->Add(context, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::Space));
     m_canvas = new DesignCanvas(center);
     m_canvas->SetStrokeWidth(m_width->GetValue());

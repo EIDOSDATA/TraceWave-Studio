@@ -50,6 +50,13 @@ void StudioFrame::BindCanvas()
         }
         CanvasCommand(type, values);
     };
+    m_snapCheck->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent&)
+    {
+        const bool enabled = m_snapCheck->GetValue();
+        m_canvas->SetSnapEnabled(enabled);
+        SetStatusText(Display(enabled ? "mm / 스냅 켬" : "mm / 스냅 끔"), 2);
+        m_canvas->SetFocus();
+    });
     m_layerChoice->Bind(wxEVT_CHOICE,
                         [this](wxCommandEvent&)
                         {

@@ -126,6 +126,7 @@ void StudioFrame::UpdateControls()
     m_recordRadiation->Enable(opened && m_solverConfigured && !m_solverWorkflow.Active() && !m_solverRestoring);
     m_layerChoice->Enable(drawing);
     m_width->Enable(drawing);
+    m_snapCheck->Enable(opened && synchronized);
     m_canvas->SetEditingEnabled(opened && synchronized);
     if (opened && !synchronized)
     {

@@ -45,15 +45,7 @@ void CanvasRenderer::DrawGrid(bool visible)
     const Point high = m_viewport.Unproject({static_cast<double>(size.x), 0.0});
     if (visible)
     {
-        double step = std::pow(10.0, std::floor(std::log10(50.0 / m_viewport.pixelsPerMm)));
-        if (step * m_viewport.pixelsPerMm < 20.0)
-        {
-            step *= 5.0;
-        }
-        else if (step * m_viewport.pixelsPerMm < 35.0)
-        {
-            step *= 2.0;
-        }
+        const double step = m_viewport.GridStep();
         m_dc.SetPen(wxPen(wxColour(230, 234, 239), 1));
         const double startX = std::ceil(low.x / step) * step;
         const double startY = std::ceil(low.y / step) * step;

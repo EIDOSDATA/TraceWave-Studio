@@ -11,6 +11,8 @@ struct CanvasViewport
     Point center;
     double pixelsPerMm;
 
+    /** @brief 그리드와 스냅이 동일한 표시 눈금을 사용한다. */
+    double GridStep() const;
     Point Project(Point point, Point offset = {0.0, 0.0}) const;
     Point Unproject(Point pixel) const;
     bool Renderable(const CanvasScene::Shape& shape, Point offset = {0.0, 0.0}) const;

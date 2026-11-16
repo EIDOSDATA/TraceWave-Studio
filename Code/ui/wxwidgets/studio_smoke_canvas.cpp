@@ -41,6 +41,11 @@ void StudioSmokeDriver::CanvasAssert(bool condition, const std::string& message)
 /** @brief 도킹 창과 선/원호의 입력, 선택, 이동, 이력 및 재시작을 통합 검사한다. */
 void StudioSmokeDriver::CanvasSmokeNext()
 {
+    if (m_canvasStage >= 20)
+    {
+        CanvasPrecisionSmokeNext();
+        return;
+    }
     if (m_canvasStage == 0)
     {
         CanvasAssert(m_frame.m_manager->GetPane("canvas").IsOk() && m_frame.m_manager->GetPane("properties").IsOk() &&
@@ -252,22 +257,8 @@ void StudioSmokeDriver::CanvasSmokeNext()
                      "View-only pan mutated geometry or failed.");
         m_frame.m_canvas->FitView();
         m_canvasChecks.push_back("view_controls_do_not_edit");
-        m_canvasSavedShapes = m_frame.m_scene.at("shapes");
-        m_canvasStage = 12;
-        m_frame.ValidateInput(
-            [this]()
-            {
-                CanvasAssert(!m_frame.m_diagnostics.empty() && m_frame.m_problemRevision == m_frame.m_revision,
-                             "Missing EM inputs were not shown.");
-                for (std::size_t index = 0; index < m_frame.m_diagnostics.size(); ++index)
-                {
-                    CanvasAssert(Utf8(m_frame.m_problems->GetItemText(static_cast<long>(index), 1)) ==
-                                     m_frame.m_diagnostics.at(index).at("message_ko").get<std::string>(),
-                                 "The problem list lost the service's Korean diagnostic message.");
-                }
-                m_canvasChecks.push_back("input_check_not_simulation");
-                m_frame.SaveProject();
-            });
+        m_canvasStage = 20;
+        CanvasPrecisionSmokeNext();
     }
     else if (m_canvasStage == 14)
     {
@@ -279,4 +270,24 @@ void StudioSmokeDriver::CanvasSmokeNext()
         m_canvasStage = 15;
         FinishSmoke(true, "");
     }
+}
+
+void StudioSmokeDriver::CanvasSmokeSave()
+{
+    m_canvasSavedShapes = m_frame.m_scene.at("shapes");
+    m_canvasStage = 12;
+    m_frame.ValidateInput(
+        [this]()
+        {
+            CanvasAssert(!m_frame.m_diagnostics.empty() && m_frame.m_problemRevision == m_frame.m_revision,
+                         "Missing EM inputs were not shown.");
+            for (std::size_t index = 0; index < m_frame.m_diagnostics.size(); ++index)
+            {
+                CanvasAssert(Utf8(m_frame.m_problems->GetItemText(static_cast<long>(index), 1)) ==
+                                 m_frame.m_diagnostics.at(index).at("message_ko").get<std::string>(),
+                             "The problem list lost the service's Korean diagnostic message.");
+            }
+            m_canvasChecks.push_back("input_check_not_simulation");
+            m_frame.SaveProject();
+        });
 }

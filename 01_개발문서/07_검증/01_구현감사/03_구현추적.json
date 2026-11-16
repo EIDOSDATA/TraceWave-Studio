@@ -7317,6 +7317,7 @@
         "create_pad",
         "create_via",
         "translate",
+        "move_endpoint",
         "remove"
       ],
       "profile": "rfad.canvas/0.1",
@@ -8026,7 +8027,8 @@
         "ui/wxwidgets/project_setup_dialog.cpp",
         "ui/wxwidgets/studio_workspace.cpp",
         "ui/wxwidgets/workspace_bar.cpp",
-        "ui/wxwidgets/drawing_rail.cpp"
+        "ui/wxwidgets/drawing_rail.cpp",
+        "ui/wxwidgets/design_canvas_precision.cpp"
       ],
       "contract_notes": [
         "CAD writer 내부 union은 사용자가 편집 가능한 Boolean graph 명령과 같지 않다. 매개변수 결합된 형상의 직접 이동 거절은 결합 보존 규칙이다."
@@ -8039,11 +8041,11 @@
       ],
       "gaps": [
         "사용자 평면 Boolean/offset/회전/미러 명령과 결과 subentity 대응이 없다.",
-        "스냅/끝점/연관 치수와 영역 길이/면적/최소 gap의 공통 조회를 보강해야 한다."
+        "연관 치수와 영역 길이/면적/최소 gap의 공통 조회를 보강해야 한다."
       ],
       "id": "FN-008",
       "implementation_status": "partial",
-      "implemented": "line_path/arc_path/planar_region(holes)/pad/via 원본과 수량/매개변수 결합, 생성/이동/삭제 및 2D DTO를 제공한다. CAD는 analytic 원호와 같은 net의 물리 union을 지원한다. 공통 라이트 표면/도킹/간격과 좁은 도구 영역의 줄바꿈을 실제 wxWidgets 작업 공간에 적용했다. 목표/템플릿 창은 native 폼과 기존 2D renderer를 재사용하고 비동기 요청 세대/불명 변경 잠금을 공유한다. 시안의 작업 탭 5개/프로젝트와 레이어 분리/세로 도구/실제 작업 상태를 연결했다. 레이어 체크는 원본과 해석 포함 여부를 바꾸지 않는 2D 표시 상태다. 기존 OpenGL 3D와 실제 결과/보고서/STEP 흐름을 유지한다.",
+      "implemented": "line_path/arc_path/planar_region(holes)/pad/via 원본과 수량/매개변수 결합, 생성/이동/삭제 및 2D DTO를 제공한다. CAD는 analytic 원호와 같은 net의 물리 union을 지원한다. 공통 라이트 표면/도킹/간격과 좁은 도구 영역의 줄바꿈을 실제 wxWidgets 작업 공간에 적용했다. 목표/템플릿 창은 native 폼과 기존 2D renderer를 재사용하고 비동기 요청 세대/불명 변경 잠금을 공유한다. 시안의 작업 탭 5개/프로젝트와 레이어 분리/세로 도구/실제 작업 상태를 연결했다. 레이어 체크는 원본과 해석 포함 여부를 바꾸지 않는 2D 표시 상태다. 기존 OpenGL 3D와 실제 결과/보고서/STEP 흐름을 유지한다. 스냅과 선/원호의 끝점 드래그, 미리보기 및 단일 프로젝트 명령을 연결했다.",
       "next_steps": [
         3,
         4
@@ -8055,7 +8057,8 @@
         "tests/test_cad_native.py",
         "tests/test_gui_target_template_process.py",
         "tests/test_printed_seeds.py",
-        "tests/test_gui_printed_seed_process.py"
+        "tests/test_gui_printed_seed_process.py",
+        "tests/test_gui_process.py::GuiProcessTests.test_canvas_mouse_line_arc_drag_properties_history_and_restart"
       ]
     },
     {
@@ -12877,8 +12880,8 @@
   "review_inputs": [
     {
       "path": "01_개발문서/07_검증/01_구현감사/01_설계기능.json",
-      "text_sha256": "f2d3b316eba4a407209660c118b2668b39a400122fef288593bb0c91677483c7",
-      "utf8_bytes": 37799
+      "text_sha256": "2facffcc0e235589f65d737448812f56b0c5129ca62813937058687c99a53b6e",
+      "utf8_bytes": 38053
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
@@ -12917,8 +12920,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/02_설계편집/03_이차원표시와_직접편집.md",
-      "text_sha256": "69684be1ff41f9968ed5e886dbc36c8534c1f8fd00e885fe9054c7297f526f6d",
-      "utf8_bytes": 12309
+      "text_sha256": "92d7f4e09739969c5df1cd758c9db9511298d5ba0acc92148b33baeb73feac0d",
+      "utf8_bytes": 12282
     },
     {
       "path": "01_개발문서/05_기능설계/02_설계편집/05_도체영역과_급전모델.md",
@@ -13152,8 +13155,8 @@
     },
     {
       "path": "Code/src/rfad/application/canvas.py",
-      "text_sha256": "5b4d34afa804d3443fe697a8da96aee268972ef9f3c92089f5e583000559d9c7",
-      "utf8_bytes": 18449
+      "text_sha256": "ce41e52e4edbc148a4b7d240bdade072bd93ae4d09b49ca237308290fea3c9fa",
+      "utf8_bytes": 23348
     },
     {
       "path": "Code/src/rfad/application/catalog_api.py",
@@ -13307,8 +13310,8 @@
     },
     {
       "path": "Code/src/rfad/application/rpc.py",
-      "text_sha256": "80b358d7971d399ae5d33311f7c69c5fe9b716d83962b687eece42d86b4da2eb",
-      "utf8_bytes": 22914
+      "text_sha256": "02b0e60543fee02be1e7545cb6ad5e772034151a629d52f26ff6c064d0e9a2dc",
+      "utf8_bytes": 22931
     },
     {
       "path": "Code/src/rfad/application/solver.py",
@@ -13572,8 +13575,8 @@
     },
     {
       "path": "Code/tests/test_canvas_service.py",
-      "text_sha256": "4ccfc99135acccb24cf21f441a085e08639f7c06571cb8898b53310c26b39f74",
-      "utf8_bytes": 23398
+      "text_sha256": "87be998fbffd6bdf954ae7586c74e18d67afc50272adec8c49b024e209a43a31",
+      "utf8_bytes": 27114
     },
     {
       "path": "Code/tests/test_catalog_api.py",
@@ -13644,6 +13647,11 @@
       "path": "Code/tests/test_gui_printed_seed_process.py",
       "text_sha256": "900b66c4cc3907ab8315bdde43a30b85f1561f9603a86298289776a71a6dd481",
       "utf8_bytes": 4780
+    },
+    {
+      "path": "Code/tests/test_gui_process.py",
+      "text_sha256": "140161cad37b4a17e4f0f0973e986141d3745f547377db5aa0bb67041b238706",
+      "utf8_bytes": 9042
     },
     {
       "path": "Code/tests/test_gui_solver_process.py",
@@ -13821,6 +13829,11 @@
       "utf8_bytes": 9902
     },
     {
+      "path": "Code/ui/wxwidgets/design_canvas_precision.cpp",
+      "text_sha256": "00cf711482bade3c86c43651b5887c70903122eca4aae449340778cac99dde89",
+      "utf8_bytes": 6744
+    },
+    {
       "path": "Code/ui/wxwidgets/design_rules_dialog.cpp",
       "text_sha256": "77f1cd52ce556c1d8a6071169fbcf7b9489c9c319ed5c193ef73c94e46c9b996",
       "utf8_bytes": 11076
@@ -13872,8 +13885,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_layout.cpp",
-      "text_sha256": "e866e1851d173a07a5f8ba8b07d3623340fa2e8f4b3b39aef53e9f0976401df3",
-      "utf8_bytes": 24838
+      "text_sha256": "9cd43181de022b3eaa9cde530a47e011d817a211d43eeb420f4ae9a47ccf4cfa",
+      "utf8_bytes": 25307
     },
     {
       "path": "Code/ui/wxwidgets/studio_theme.cpp",

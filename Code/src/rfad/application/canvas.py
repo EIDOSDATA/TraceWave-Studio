@@ -24,6 +24,7 @@ OPERATIONS = {
     "create_pad": {"id", "layer_id", "pad_shape", "center", "width_mm", "height_mm", "rotation_deg"},
     "create_via": {"id", "layer_id", "end_layer_id", "center", "finished_hole_diameter_mm", "plating_thickness_mm", "tool_hole_diameter_mm", "pad_ids"},
     "translate": {"id", "dx_mm", "dy_mm"},
+    "move_endpoint": {"id", "endpoint", "point"},
     "remove": {"id"},
 }
 
@@ -129,6 +130,83 @@ def _movable(geometry: dict) -> bool:
     return all("parameter_id" not in value and value.get("value_si") is not None for _, point in _coordinate_points(geometry) for value in point)
 
 
+def _literal(values) -> bool:
+    """! @brief 직접 편집은 값이 있는 리터럴만 바꾼다."""
+    return all("parameter_id" not in value and value.get("value_si") is not None for value in values)
+
+
+def _endpoint_mask(geometry: dict) -> int:
+    """! @brief 시작점과 끝점이 바꾸는 원본 필드를 독립 검사한다."""
+    if geometry["kind"] == "line_path":
+        return int(_literal(geometry["start"])) | (int(_literal(geometry["end"])) << 1)
+    if geometry["kind"] == "arc_path" and _literal([geometry["sweep_angle"]]):
+        return 2 | int(_literal([geometry["start_angle"]]))
+    return 0
+
+
+def _replace_quantity(original: dict, replacement: dict) -> dict:
+    """! @brief 변경된 수량에 원래 표시 단위와 출처를 유지한다."""
+    return {**original, "value_si": replacement["value_si"], "status": "user_entered"}
+
+
+def _move_endpoint(document: dict, geometry: dict, endpoint: object, point: object) -> dict:
+    """! @brief 끝점 하나를 바꾸는 원본 후보를 만들고 다른 필드는 보존한다."""
+    if geometry["kind"] not in ("line_path", "arc_path"):
+        _fail("선과 원호의 끝점만 직접 편집할 수 있습니다.", "values.id", "E_UNSUPPORTED")
+    if endpoint not in ("start", "end"):
+        _fail("시작점 또는 끝점을 선택하십시오.", "values.endpoint")
+    if not _endpoint_mask(geometry) & (1 if endpoint == "start" else 2):
+        _fail("매개변수에 연결되었거나 미정인 끝점은 속성에서 편집하십시오.", "values.endpoint", "E_CONFLICT")
+    changed = deepcopy(geometry)
+    quantities = _point(point, "values.point")
+    target = _display_point(document, quantities, "values.point")
+    other = "end" if endpoint == "start" else "start"
+    if geometry["kind"] == "line_path":
+        previous = _display_point(document, geometry[endpoint], "geometry." + endpoint)
+        fixed = _display_point(document, geometry[other], "geometry." + other)
+        if math.dist(target, fixed) <= DISPLAY_RANGES["min_line_length_mm"]:
+            _fail("선의 양 끝점은 서로 달라야 합니다.", "values.point", "E_GEOMETRY")
+        for index, value in enumerate(point):
+            if value != previous[index] and quantities[index]["value_si"] != geometry[endpoint][index]["value_si"]:
+                changed[endpoint][index] = _replace_quantity(geometry[endpoint][index], quantities[index])
+    else:
+        _retarget_arc(document, changed, endpoint, target)
+    if changed == geometry:
+        _fail("끝점이 바뀌지 않았습니다.", "values.point", "E_CONFLICT")
+    return {"type": "geometry.set", "payload": {"geometry": changed}}
+
+
+def _retarget_arc(document: dict, arc: dict, endpoint: str, target: list[float]) -> None:
+    """! @brief 고정 중심/반지름과 반대쪽 끝점에서 기존 회전 방향을 유지한다."""
+    center = _display_point(document, arc["center"], "geometry.center")
+    _display_length(document, arc["radius"], "geometry.radius")
+    if math.dist(center, target) <= DISPLAY_RANGES["min_line_length_mm"]:
+        _fail("원호 중심과 다른 끝 방향을 선택하십시오.", "values.point", "E_GEOMETRY")
+    start = _display(document, arc["start_angle"], "angle", "deg", "geometry.start_angle")
+    sweep = _display(document, arc["sweep_angle"], "angle", "deg", "geometry.sweep_angle")
+    phase = start % 360.0
+    end = (phase + sweep) % 360.0
+    direction = math.degrees(math.atan2(target[1] - center[1], target[0] - center[0]))
+    precision = DISPLAY_RANGES["min_abs_sweep_deg"]
+    old_direction = phase if endpoint == "start" else end
+    if abs(math.remainder(direction - old_direction, 360.0)) <= precision:
+        return
+    if endpoint == "start":
+        updated_start = _quantity(start + math.remainder(direction - phase, 360.0), "deg", "geometry.start_angle")
+        new_phase = _display(document, updated_start, "angle", "deg", "geometry.start_angle") % 360.0
+        if abs(math.remainder(new_phase - direction, 360.0)) > precision:
+            _fail("원래 시작각의 표현 정밀도로 새 방향을 보존할 수 없습니다.", "values.point", "E_UNIT")
+        arc["start_angle"] = _replace_quantity(arc["start_angle"], updated_start)
+        phase = new_phase
+    else:
+        end = direction
+    ccw = (end - phase) % 360.0
+    if ccw <= precision or ccw >= 360.0 - precision:
+        _fail("원호의 양 끝 방향은 서로 달라야 합니다.", "values.point", "E_GEOMETRY")
+    new_sweep = ccw if sweep > 0.0 else ccw - 360.0
+    arc["sweep_angle"] = _replace_quantity(arc["sweep_angle"], _quantity(new_sweep, "deg", "geometry.sweep_angle"))
+
+
 def build_canvas_dto(document: dict) -> dict:
     """! @brief mm/deg의 표시 모델만 만들며 미정 형상과 생략 사유를 분리한다."""
     result = {"profile": PROFILE, "project_id": document["project_id"], "revision_id": document["revision_id"],
@@ -162,6 +240,7 @@ def build_canvas_dto(document: dict) -> dict:
                      "movable": _movable(geometry)}
             if kind in ("line_path", "arc_path"):
                 shape["width"] = _display_length(document, geometry["width"], prefix + ".width")
+                shape["endpoint_mask"] = _endpoint_mask(geometry)
             if kind == "planar_region":
                 shape["outer"] = [_display_point(document, point, prefix + f".outer.{index}") for index, point in enumerate(geometry["outer"])]
                 shape["holes"] = [[_display_point(document, point, prefix + f".holes.{i}.{j}") for j, point in enumerate(loop)] for i, loop in enumerate(geometry["holes"])]
@@ -262,6 +341,8 @@ def canvas_command(document: dict, operation: str, values: dict) -> dict:
         _fail("선택한 패턴이 없습니다.", "values.id", "E_CONFLICT")
     if operation == "remove":
         return {"type": "geometry.remove", "payload": {"id": identity}}
+    if operation == "move_endpoint":
+        return _move_endpoint(document, geometry, values["endpoint"], values["point"])
     if not _movable(geometry):
         _fail("매개변수에 연결되었거나 미정인 좌표는 직접 이동할 수 없습니다. 원래 속성을 편집하십시오.", "values.id", "E_CONFLICT")
     offsets = [Quantity(**_quantity(values[key], "mm", "values." + key)).value_si for key in ("dx_mm", "dy_mm")]

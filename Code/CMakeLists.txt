@@ -116,6 +116,7 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/studio_lifecycle.cpp
     ui/wxwidgets/studio_smoke_editor.cpp
     ui/wxwidgets/studio_smoke_canvas.cpp
+    ui/wxwidgets/studio_smoke_precision.cpp
     ui/wxwidgets/studio_smoke_primitives.cpp
     ui/wxwidgets/studio_smoke_workers.cpp
     ui/wxwidgets/studio_smoke_report.cpp
@@ -124,6 +125,7 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/analysis_workflow.cpp
     ui/wxwidgets/editor_panel.cpp
     ui/wxwidgets/design_canvas.cpp
+    ui/wxwidgets/design_canvas_precision.cpp
     ui/wxwidgets/model_view.cpp
     ui/wxwidgets/service_client.cpp
     ${RFAD_RESOURCE}

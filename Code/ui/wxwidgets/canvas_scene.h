@@ -32,6 +32,7 @@ struct Shape
     double holeRadius = 0.0;
     bool incomplete = false;
     bool movable = false;
+    unsigned endpointMask = 0;
 };
 
 /** @brief 화면 맞춤에 사용할 전체 mm 경계이다. */

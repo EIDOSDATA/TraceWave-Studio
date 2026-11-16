@@ -67,6 +67,8 @@ public:
 private:
     /** @brief 추가 문헌/초기식과 표시 전용 작업 영역을 실제 서비스로 확인한다. */
     void PrintedSeedSmokeTick();
+    void CanvasPrecisionSmokeNext();
+    void CanvasSmokeSave();
     void DesignRulesSmokeTick();
     void PhysicalSetupSmokeTick();
     void PrintedSeedDialog(TemplateDialog& dialog);
@@ -144,6 +146,9 @@ private:
     Json m_canvasOriginalLine;
     Json m_canvasMovedLine;
     Json m_canvasSavedShapes;
+    std::string m_canvasSnappedLine;
+    Json m_canvasBeforeEndpoint;
+    Json m_canvasAfterEndpoint;
     Json m_canvasChecks = Json::array();
     int m_smokeStage = 0;
     int m_editorStage = 0;

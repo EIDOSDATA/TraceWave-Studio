@@ -9,6 +9,7 @@ public:
         Idle,
         Selecting,
         Dragging,
+        Reshaping,
         DrawingClick,
         Panning
     };
@@ -16,6 +17,11 @@ public:
     void BeginSelection()
     {
         m_state = State::Selecting;
+    }
+
+    void BeginReshape()
+    {
+        m_state = State::Reshaping;
     }
 
     void BeginDrawing()
@@ -52,6 +58,11 @@ public:
     bool Dragging() const
     {
         return m_state == State::Dragging;
+    }
+
+    bool Reshaping() const
+    {
+        return m_state == State::Reshaping;
     }
 
     bool DrawingClick() const

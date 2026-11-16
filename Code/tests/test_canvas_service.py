@@ -118,7 +118,60 @@ class CanvasServiceTests(unittest.TestCase):
         capabilities = handle_frame(json.dumps(request).encode(), self.service)["result"]
         self.assertEqual(capabilities["methods"]["canvas.apply"]["extension_profile"], "rfad.canvas/0.1")
         self.assertIn("translate", capabilities["canvas_profile"]["operations"])
+        self.assertIn("move_endpoint", capabilities["canvas_profile"]["operations"])
         self.assertIn("create_dielectric_layer", capabilities["canvas_profile"]["operations"])
+
+    def test_line_endpoint_preserves_opposite_reference_and_existing_sources(self):
+        """! @brief 끝점 한 곳만 갱신하고 반대쪽 변수 및 출처를 그대로 보존한다."""
+        _, layer = self.board_layer()
+        identity = self.line(layer)
+        parameter_id = str(uuid4())
+        quantity = Quantity.from_value(1, "mm").to_dict()
+        self.command("parameter.set", {"id": parameter_id, "name": "p", "quantity": quantity})
+        before = self.shape(identity)
+        before["start"][0] = {"parameter_id": parameter_id}
+        before["end"][0] = Quantity.from_value(10000, "um", status="estimated", source_refs=["검토 자료 p.2"]).to_dict()
+        before["end"][1] = Quantity.from_value(2, "mm", source_refs=["유지할 Y 원문"]).to_dict()
+        self.command("geometry.set", {"geometry": before})
+        self.assertEqual(self.canvas()["shapes"][0]["endpoint_mask"], 2)
+        self.assertEqual(self.assert_rejected("move_endpoint", {"id": identity, "endpoint": "start", "point": [2, 3]}).code,
+                         "E_CONFLICT")
+        self.assertEqual(self.assert_rejected("move_endpoint", {"id": identity, "endpoint": "end", "point": [1, 2]}).code,
+                         "E_GEOMETRY")
+        saved_replay = self.params("move_endpoint", {"id": identity, "endpoint": "end", "point": [11, 2]})
+        result = self.service.mutate("canvas.apply", saved_replay)
+        self.revision = result["new_revision"]
+        self.assertEqual(self.service.mutate("canvas.apply", saved_replay), result)
+        edited = self.shape(identity)
+        self.assertEqual(edited["end"][1], before["end"][1])
+        self.assertEqual(edited["end"][0], {**before["end"][0], "value_si": .011, "status": "user_entered"})
+        self.assertEqual({**edited, "end": before["end"]}, before)
+        self.history("undo")
+        self.assertEqual(self.shape(identity), before)
+        self.history("redo")
+        self.assertEqual(self.shape(identity), edited)
+
+    def test_arc_start_and_end_preserve_circle_direction_and_other_endpoint(self):
+        """! @brief 양쪽 손잡이는 시계/반시계 원호에서 원주와 고정된 반대 끝을 보존한다."""
+        _, layer = self.board_layer()
+        for initial in (-90, 90):
+            identity = self.arc(layer, initial)
+            original = self.shape(identity)
+            self.apply("move_endpoint", {"id": identity, "endpoint": "start", "point": [12, 21]})
+            updated = self.shape(identity)
+            start = Quantity(**updated["start_angle"]).as_unit("deg")
+            sweep = Quantity(**updated["sweep_angle"]).as_unit("deg")
+            self.assertAlmostEqual(start, 90)
+            self.assertAlmostEqual((start + sweep - 30 - initial) % 360, 0)
+            self.assertEqual(sweep < 0, initial < 0)
+            self.assertEqual({**updated, "start_angle": original["start_angle"], "sweep_angle": original["sweep_angle"]}, original)
+            self.apply("move_endpoint", {"id": identity, "endpoint": "end", "point": [20, 13]})
+            moved = self.shape(identity)
+            self.assertEqual(Quantity(**moved["sweep_angle"]).as_unit("deg"), -90 if initial < 0 else 270)
+            self.assertEqual({**moved, "sweep_angle": updated["sweep_angle"]}, updated)
+            for point, code in (([12, 13], "E_GEOMETRY"), ([12, 21], "E_GEOMETRY"), ([22, 13], "E_CONFLICT")):
+                self.assertEqual(self.assert_rejected("move_endpoint", {"id": identity, "endpoint": "end", "point": point}).code, code)
+            self.assert_rejected("move_endpoint", {"id": identity, "endpoint": "end", "point": [True, 0]})
 
     def test_canvas_mutating_notification_and_batch_never_modify_project(self):
         params = self.params("create_board", {"id": str(uuid4()), "width_mm": 40, "height_mm": 60})

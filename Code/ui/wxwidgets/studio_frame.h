@@ -265,6 +265,7 @@ private:
     wxListBox* m_steps = nullptr;
     wxChoice* m_layerChoice = nullptr;
     wxSpinCtrlDouble* m_width = nullptr;
+    wxCheckBox* m_snapCheck = nullptr;
     wxStaticText* m_canvasHint = nullptr;
     wxStaticText* m_problemSummary = nullptr;
     wxNotebook* m_bottom = nullptr;

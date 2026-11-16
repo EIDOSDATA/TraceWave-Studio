@@ -263,10 +263,10 @@
   {
     "id": "FN-008",
     "implementation_status": "partial",
-    "implemented": "line_path/arc_path/planar_region(holes)/pad/via 원본과 수량/매개변수 결합, 생성/이동/삭제 및 2D DTO를 제공한다. CAD는 analytic 원호와 같은 net의 물리 union을 지원한다. 공통 라이트 표면/도킹/간격과 좁은 도구 영역의 줄바꿈을 실제 wxWidgets 작업 공간에 적용했다. 목표/템플릿 창은 native 폼과 기존 2D renderer를 재사용하고 비동기 요청 세대/불명 변경 잠금을 공유한다. 시안의 작업 탭 5개/프로젝트와 레이어 분리/세로 도구/실제 작업 상태를 연결했다. 레이어 체크는 원본과 해석 포함 여부를 바꾸지 않는 2D 표시 상태다. 기존 OpenGL 3D와 실제 결과/보고서/STEP 흐름을 유지한다.",
+    "implemented": "line_path/arc_path/planar_region(holes)/pad/via 원본과 수량/매개변수 결합, 생성/이동/삭제 및 2D DTO를 제공한다. CAD는 analytic 원호와 같은 net의 물리 union을 지원한다. 공통 라이트 표면/도킹/간격과 좁은 도구 영역의 줄바꿈을 실제 wxWidgets 작업 공간에 적용했다. 목표/템플릿 창은 native 폼과 기존 2D renderer를 재사용하고 비동기 요청 세대/불명 변경 잠금을 공유한다. 시안의 작업 탭 5개/프로젝트와 레이어 분리/세로 도구/실제 작업 상태를 연결했다. 레이어 체크는 원본과 해석 포함 여부를 바꾸지 않는 2D 표시 상태다. 기존 OpenGL 3D와 실제 결과/보고서/STEP 흐름을 유지한다. 스냅과 선/원호의 끝점 드래그, 미리보기 및 단일 프로젝트 명령을 연결했다.",
     "gaps": [
       "사용자 평면 Boolean/offset/회전/미러 명령과 결과 subentity 대응이 없다.",
-      "스냅/끝점/연관 치수와 영역 길이/면적/최소 gap의 공통 조회를 보강해야 한다."
+      "연관 치수와 영역 길이/면적/최소 gap의 공통 조회를 보강해야 한다."
     ],
     "code": [
       "src/rfad/domain/design.py",
@@ -280,7 +280,8 @@
       "ui/wxwidgets/project_setup_dialog.cpp",
       "ui/wxwidgets/studio_workspace.cpp",
       "ui/wxwidgets/workspace_bar.cpp",
-      "ui/wxwidgets/drawing_rail.cpp"
+      "ui/wxwidgets/drawing_rail.cpp",
+      "ui/wxwidgets/design_canvas_precision.cpp"
     ],
     "tests": [
       "tests/test_canvas_service.py",
@@ -289,7 +290,8 @@
       "tests/test_cad_native.py",
       "tests/test_gui_target_template_process.py",
       "tests/test_printed_seeds.py",
-      "tests/test_gui_printed_seed_process.py"
+      "tests/test_gui_printed_seed_process.py",
+      "tests/test_gui_process.py::GuiProcessTests.test_canvas_mouse_line_arc_drag_properties_history_and_restart"
     ],
     "evidence": [
       "../01_개발문서/05_기능설계/02_설계편집/03_이차원표시와_직접편집.md",

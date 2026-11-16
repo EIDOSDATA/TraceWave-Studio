@@ -104,7 +104,9 @@ class GuiProcessTests(unittest.TestCase):
             "drag_undo_redo", "property_to_canvas", "delete_undo", "save_snapshot_restart",
             "input_check_not_simulation",
             "display_limits_preserve_valid_shapes", "view_controls_do_not_edit",
-            "rejected_gesture_restores_selection",
+            "rejected_gesture_restores_selection", "grid_and_endpoint_snap",
+            "endpoint_escape_then_one_command", "endpoint_undo_redo", "arc_endpoint_fixed_radius",
+            "endpoint_noop_omits_command",
         })
         self.assertFalse(result["physics_tested"])
         self.assertFalse(result["frame_budget_tested"])

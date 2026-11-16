@@ -118,6 +118,15 @@ Model Model::Parse(const nlohmann::json& scene)
             shape.role = item.value("role", std::string("conductor"));
             shape.width = (shape.kind == "line_path" || shape.kind == "arc_path") ? Positive(item.at("width")) : 0.0;
             shape.movable = item.value("movable", false);
+            if (item.contains("endpoint_mask"))
+            {
+                const auto& mask = item.at("endpoint_mask");
+                if (!mask.is_number_integer() || mask < 0 || mask > 3)
+                {
+                    throw std::runtime_error("2D 끝점 편집 상태가 유효하지 않습니다.");
+                }
+                shape.endpointMask = mask.get<unsigned>();
+            }
             if (shape.id.empty() || !identities.insert(shape.id).second || !layers.count(shape.layer))
             {
                 throw std::runtime_error("표시 객체의 식별자 또는 층 참조가 유효하지 않습니다.");

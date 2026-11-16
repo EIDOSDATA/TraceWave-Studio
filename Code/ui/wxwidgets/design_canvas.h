@@ -7,6 +7,7 @@
 #include "canvas_scene.h"
 #include "canvas_viewport.h"
 #include "canvas_gesture.h"
+#include "canvas_precision.h"
 
 class CanvasRenderer;
 
@@ -36,6 +37,7 @@ public:
     void SetBoardVisible(bool visible);
     bool IsBoardVisible() const;
     void SetGridVisible(bool visible);
+    void SetSnapEnabled(bool enabled);
     void FitView();
     void CancelGesture();
 
@@ -66,6 +68,12 @@ private:
     void Status(const std::string& message);
     void ReleaseOwnedCapture();
     void DrawPreview(wxDC& dc, CanvasRenderer& renderer) const;
+    void DrawPrecision(wxDC& dc, const Shape* selected) const;
+    void UpdateCursor(const wxPoint& pixel);
+    std::optional<CanvasPrecision::Endpoint> HitEndpoint(const Shape& shape, const wxPoint& pixel) const;
+    const Shape* SelectedPath() const;
+    std::optional<Shape> EndpointPreview() const;
+    void FinishEndpoint(const wxPoint& pixel);
     bool Visible(const Shape& shape) const;
     bool Renderable(const Shape& shape, const wxPoint2DDouble& offset = wxPoint2DDouble(0.0, 0.0)) const;
     CanvasViewport Viewport() const;
@@ -86,9 +94,12 @@ private:
     double m_strokeWidth = 1.0;
     bool m_editingEnabled = true;
     bool m_showGrid = true;
+    bool m_snapEnabled = false;
     bool m_showBoard = true;
     bool m_fitted = false;
     CanvasGestureState m_gesture;
+    std::optional<CanvasPrecision::Endpoint> m_endpoint;
+    std::optional<CanvasPrecision::Snap> m_snap;
     bool m_clockwise = false;
     wxPoint m_mouseDown;
     wxPoint m_panLast;

@@ -65,6 +65,15 @@ DesignCanvas::DesignCanvas(wxWindow* parent)
     Bind(wxEVT_LEFT_DOWN, &DesignCanvas::OnLeftDown, this);
     Bind(wxEVT_LEFT_UP, &DesignCanvas::OnLeftUp, this);
     Bind(wxEVT_MOTION, &DesignCanvas::OnMotion, this);
+    Bind(wxEVT_LEAVE_WINDOW, [this](wxMouseEvent& event)
+    {
+        if (!HasCapture() && m_snap)
+        {
+            m_snap.reset();
+            Refresh(false);
+        }
+        event.Skip();
+    });
     Bind(wxEVT_MIDDLE_DOWN, &DesignCanvas::OnMiddleDown, this);
     Bind(wxEVT_MIDDLE_UP, &DesignCanvas::OnMiddleUp, this);
     Bind(wxEVT_MOUSEWHEEL, &DesignCanvas::OnWheel, this);
@@ -123,6 +132,10 @@ void DesignCanvas::SetSelection(const std::string& identity)
     const std::string selected = shape != nullptr && Visible(*shape) && Renderable(*shape) ? identity : std::string();
     if (m_selection != selected)
     {
+        if (m_gesture.Reshaping())
+        {
+            CancelGesture();
+        }
         m_selection = selected;
         Refresh(false);
     }
@@ -142,7 +155,7 @@ void DesignCanvas::SetTool(const std::string& tool)
     m_tool = tool;
     SetCursor(wxCursor(tool == "select" ? wxCURSOR_ARROW : wxCURSOR_CROSS));
     Status(tool == "line" ? "선: 시작점과 끝점을 클릭하세요. Esc로 취소합니다." :
-        (tool == "arc" ? "원호: 중심, 시작점, 끝 방향을 클릭하세요. 기본 CCW, Shift는 CW입니다." : "선택: 클릭 또는 드래그. 휠 확대, 가운데 버튼 이동."));
+        (tool == "arc" ? "원호: 중심, 시작점, 끝 방향을 클릭하세요. 기본 CCW, Shift는 CW입니다." : "선택: 파란 끝점은 끝점 편집, 도체 본체는 전체 이동. Esc로 취소합니다."));
 }
 
 void DesignCanvas::SetDrawingLayer(const std::string& identity)
@@ -211,6 +224,7 @@ void DesignCanvas::SetLayerVisible(const std::string& identity, bool visible)
     const Shape* shape = FindShape(m_selection);
     if (shape != nullptr && !Visible(*shape))
     {
+        CancelGesture();
         m_selection.clear();
     }
     if (m_drawingLayer == identity && !visible)
@@ -223,6 +237,7 @@ void DesignCanvas::SetLayerVisible(const std::string& identity, bool visible)
 void DesignCanvas::SetGridVisible(bool visible)
 {
     m_showGrid = visible;
+    m_snap.reset();
     Refresh(false);
 }
 
@@ -253,8 +268,10 @@ void DesignCanvas::ReleaseOwnedCapture()
 
 void DesignCanvas::CancelGesture()
 {
-    const bool changed = HasGesture();
+    const bool changed = HasGesture() || m_snap.has_value();
     m_points.clear();
+    m_endpoint.reset();
+    m_snap.reset();
     m_gesture.Reset();
     m_dragOffset = Point(0.0, 0.0);
     ReleaseOwnedCapture();
@@ -362,6 +379,7 @@ void DesignCanvas::OnPaint(wxPaintEvent&)
         renderer.DrawBoard(m_scene);
     }
     const wxColour colours[] = {wxColour(241, 153, 67), wxColour(117, 87, 173), wxColour(27, 144, 138), wxColour(177, 74, 96)};
+    const auto preview = EndpointPreview();
     std::size_t nativeOmissions = m_scene.rangeOmissionCount;
     for (const Shape& shape : m_scene.shapes)
     {
@@ -382,7 +400,8 @@ void DesignCanvas::OnPaint(wxPaintEvent&)
         }
         const bool highlighted = shape.id == m_selection ||
                                  std::find(m_inspection.begin(), m_inspection.end(), shape.id) != m_inspection.end();
-        if (!renderer.DrawShape(shape, GeometryPoint(offset), colours[index], highlighted))
+        const auto& drawn = preview && preview->id == shape.id ? *preview : shape;
+        if (!renderer.DrawShape(drawn, GeometryPoint(offset), colours[index], highlighted))
         {
             ++nativeOmissions;
         }
@@ -390,6 +409,10 @@ void DesignCanvas::OnPaint(wxPaintEvent&)
     renderer.Flush();
     DrawPreview(dc, renderer);
     renderer.Flush();
+    if (!m_gesture.Dragging())
+    {
+        DrawPrecision(dc, preview ? &*preview : SelectedPath());
+    }
     if (m_inspectionLocation)
     {
         const wxPoint point = WorldToScreen(*m_inspectionLocation);
@@ -465,7 +488,7 @@ void DesignCanvas::OnLeftDown(wxMouseEvent& event)
         return;
     }
     m_mouseDown = event.GetPosition();
-    m_cursor = ScreenToWorld(m_mouseDown);
+    UpdateCursor(m_mouseDown);
     m_clockwise = event.ShiftDown();
     if (m_tool != "select")
     {
@@ -478,10 +501,28 @@ void DesignCanvas::OnLeftDown(wxMouseEvent& event)
     }
     else
     {
-        m_selection = HitTest(m_mouseDown);
-        m_gesture.BeginSelection();
-        m_dragAnchor = m_cursor;
-        m_dragOffset = Point(0.0, 0.0);
+        const auto* selected = SelectedPath();
+        const auto handle = selected ? HitEndpoint(*selected, m_mouseDown) : std::nullopt;
+        if (handle)
+        {
+            if (!CanvasPrecision::Editable(*selected, *handle))
+            {
+                Status("참조나 미정값으로 잠긴 끝점은 속성에서 편집하세요.");
+                return;
+            }
+            m_endpoint = handle;
+            m_gesture.BeginReshape();
+            const auto position = CanvasPrecision::At(*selected, *handle);
+            m_cursor = Point(position.x, position.y);
+            Status("끝점을 드래그하세요. Esc로 취소합니다.");
+        }
+        else
+        {
+            m_selection = HitTest(m_mouseDown);
+            m_gesture.BeginSelection();
+            m_dragAnchor = m_cursor;
+            m_dragOffset = Point(0.0, 0.0);
+        }
     }
     if (!HasCapture())
     {
@@ -497,7 +538,12 @@ void DesignCanvas::OnLeftUp(wxMouseEvent& event)
         CancelGesture();
         return;
     }
-    m_cursor = ScreenToWorld(event.GetPosition());
+    UpdateCursor(event.GetPosition());
+    if (m_gesture.Reshaping())
+    {
+        FinishEndpoint(event.GetPosition());
+        return;
+    }
     if (m_gesture.DrawingClick())
     {
         m_gesture.Reset();
@@ -597,7 +643,8 @@ void DesignCanvas::Emit(const Json& action)
 void DesignCanvas::OnMotion(wxMouseEvent& event)
 {
     const wxPoint point = event.GetPosition();
-    m_cursor = ScreenToWorld(point);
+    const bool hadSnap = m_snap.has_value();
+    UpdateCursor(point);
     m_clockwise = event.ShiftDown();
     if (m_gesture.Panning())
     {
@@ -623,7 +670,7 @@ void DesignCanvas::OnMotion(wxMouseEvent& event)
             Status("참조나 표현식에 연결된 형상은 속성에서 편집하세요.");
         }
     }
-    else if (!m_points.empty())
+    else if (m_gesture.Reshaping() || !m_points.empty() || hadSnap || m_snap)
     {
         Refresh(false);
     }
@@ -631,10 +678,11 @@ void DesignCanvas::OnMotion(wxMouseEvent& event)
 
 void DesignCanvas::OnMiddleDown(wxMouseEvent& event)
 {
-    if (m_gesture.Selecting() || m_gesture.DrawingClick())
+    if (m_gesture.Selecting() || m_gesture.DrawingClick() || m_gesture.Reshaping())
     {
         CancelGesture();
     }
+    m_snap.reset();
     m_gesture.BeginPan();
     m_panLast = event.GetPosition();
     SetFocus();
@@ -660,7 +708,7 @@ void DesignCanvas::OnWheel(wxMouseEvent& event)
     {
         return;
     }
-    if (m_gesture.Selecting() || m_gesture.DrawingClick())
+    if (m_gesture.Selecting() || m_gesture.DrawingClick() || m_gesture.Reshaping())
     {
         CancelGesture();
     }
@@ -672,7 +720,7 @@ void DesignCanvas::OnWheel(wxMouseEvent& event)
     m_pixelsPerMm = scale;
     m_viewCenter = Point(std::clamp(anchor.m_x - (point.x - size.x / 2.0) / scale, -CanvasGeometry::MaxCoordinate, CanvasGeometry::MaxCoordinate),
         std::clamp(anchor.m_y + (point.y - size.y / 2.0) / scale, -CanvasGeometry::MaxCoordinate, CanvasGeometry::MaxCoordinate));
-    m_cursor = ScreenToWorld(point);
+    UpdateCursor(point);
     Refresh(false);
 }
 
@@ -713,6 +761,8 @@ void DesignCanvas::OnCaptureLost(wxMouseCaptureLostEvent&)
 {
     m_gesture.Reset();
     m_points.clear();
+    m_endpoint.reset();
+    m_snap.reset();
     m_dragOffset = Point(0.0, 0.0);
     Status("입력 초점을 잃어 진행 중인 제스처를 취소했습니다.");
     Refresh(false);
@@ -720,7 +770,7 @@ void DesignCanvas::OnCaptureLost(wxMouseCaptureLostEvent&)
 
 void DesignCanvas::OnSize(wxSizeEvent& event)
 {
-    if (m_gesture.Selecting() || m_gesture.DrawingClick() || m_gesture.Panning())
+    if (m_gesture.Active())
     {
         CancelGesture();
     }
