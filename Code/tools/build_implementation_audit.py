@@ -4,6 +4,7 @@ import argparse
 import ast
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import sys
@@ -15,9 +16,42 @@ from rfad.application.projects import ProjectService
 from rfad.application.rpc import capabilities
 
 
+def documents():
+    """! @brief 제품 코드와 분리한 통합 개발 문서 위치를 반환한다."""
+    return CODE.parent / "01_개발문서"
+
+
+def design_path(name):
+    """! @brief 이력 사본을 제외한 유일한 현행 설계 편집본을 찾는다."""
+    mapping = documents() / "10_문서목록/01_이전경로대응.json"
+    relative = None
+    if mapping.is_file():
+        relative = json.loads(mapping.read_text(encoding="utf-8"))["paths"].get("01_Docs/" + name)
+    if relative is not None:
+        path = (CODE.parent / relative).resolve()
+        require(path.is_relative_to(documents()) and path.is_file()
+                and "12_보관이력" not in path.relative_to(documents()).parts,
+                "현행 설계 문서의 누락/중복: " + name)
+        name = path.name
+    matches = [path for path in documents().rglob(name)
+               if "12_보관이력" not in path.relative_to(documents()).parts]
+    require(len(matches) == 1, "현행 설계 문서의 누락/중복: " + name)
+    return matches[0]
+
+
+def approved_design_path(name):
+    """! @brief 승인 manifest의 원래 경로를 한글로 재배치한 보관 사본에 연결한다."""
+    mapping = documents() / "10_문서목록/01_이전경로대응.json"
+    relative = json.loads(mapping.read_text(encoding="utf-8"))["approved_baseline_paths"]["01_Docs/" + name]
+    path = (CODE.parent / relative).resolve()
+    require(path.is_relative_to(documents() / "12_보관이력/01_승인기준선") and path.is_file(),
+            "승인 보관본 없음: " + name)
+    return path
+
+
 def read(name):
-    """! @brief 승인 원문을 수정 없이 읽는다."""
-    return (CODE.parent / "01_Docs" / name).read_text(encoding="utf-8")
+    """! @brief 승인 식별자를 유지한 현행 편집본을 읽는다."""
+    return design_path(name).read_text(encoding="utf-8")
 
 
 def require(condition, message):
@@ -37,7 +71,8 @@ def check_reference(value):
     """! @brief 저장소 내부 파일과 지정한 Python 시험 심볼의 존재를 검사한다."""
     parts = value.split("::")
     path = (CODE / parts[0]).resolve()
-    require(path.is_relative_to(CODE) and path.is_file(), "근거 파일 없음: " + value)
+    require((path.is_relative_to(CODE) or path.is_relative_to(documents()))
+            and path.is_file(), "근거 파일 없음: " + value)
     if len(parts) > 1:
         tree = ast.parse(path.read_text(encoding="utf-8-sig"))
         nodes = tree.body
@@ -109,9 +144,9 @@ def validate_trace_links(requirements, acs, cases, verification_groups, apis, su
 
 def build():
     """! @brief 141개 요구/404개 AC/407개 검수 subcase를 함수 감사와 연결한다."""
-    directory = CODE / "docs/audit"
+    directory = documents() / "07_검증/01_구현감사"
     functions = []
-    for name in ("design_functions.json", "analysis_functions.json"):
+    for name in ("01_설계기능.json", "02_해석기능.json"):
         functions.extend(json.loads((directory / name).read_text(encoding="utf-8")))
     function_map = {row["id"]: row for row in functions}
     require(len(functions) == len(function_map) == 46, "46개 FN의 고유 감사가 필요합니다.")
@@ -194,8 +229,10 @@ def build():
                "working_tree_review": True,
                "scope": "implementation_gap_review_not_release_acceptance",
                "generator": reference(Path(__file__).resolve()),
-               "review_inputs": [reference(directory / name) for name in ("design_functions.json", "analysis_functions.json")],
-               "design_sources": [reference(CODE.parent / "01_Docs" / name) for name in source_names],
+               "review_inputs": [reference(directory / name) for name in ("01_설계기능.json", "02_해석기능.json")],
+               "design_sources": [reference(design_path(name)) for name in source_names],
+               "approved_design_sources": [reference(approved_design_path(name)) for name in source_names],
+               "design_source_scope": "current_edited_specs_with_preserved_approved_baseline_not_new_approval",
                "functions": sorted(functions, key=lambda r: r["id"]), "requirements": requirements,
                "acceptance_criteria": list(acs.values()), "acceptance_subcases": cases,
                "verification_groups": verification_groups, "public_api": apis,
@@ -215,7 +252,7 @@ def main():
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
     profile = build()
-    target = CODE / "docs/audit/implementation_matrix.json"
+    target = documents() / "07_검증/01_구현감사/03_구현추적.json"
     encoded = json.dumps(profile, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
     if args.check:
         require(target.read_text(encoding="utf-8") == encoded, "감사 산출물이 현재 근거와 다릅니다.")
@@ -227,14 +264,16 @@ def main():
         lines.extend("- " + item for item in row["gaps"])
         for category, label in (("code", "코드"), ("tests", "시험"), ("evidence", "기존 실행/설명 근거")):
             lines.extend(["", label + ":", ""])
-            lines.extend("- [" + value + "](../../" + value.split("::")[0] + ")" for value in row[category])
+            lines.extend("- [" + value + "](<" + Path(os.path.relpath(
+                (CODE / value.split("::")[0]).resolve(), target.parent)).as_posix() + ">)"
+                         for value in row[category])
             if not row[category]:
                 lines.append("- 해당 제품 기능의 근거 없음.")
         lines.extend(["", "계약 확인:", ""])
         lines.extend("- " + item for item in row["contract_notes"])
         lines.append("")
     markdown = "\n".join(lines)
-    path = CODE / "docs/audit/function_matrix.md"
+    path = documents() / "07_검증/01_구현감사/04_기능구현대조.md"
     if args.check:
         require(path.read_text(encoding="utf-8") == markdown, "기능 대조 문서가 다릅니다.")
     else:

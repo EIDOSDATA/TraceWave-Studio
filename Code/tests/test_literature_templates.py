@@ -47,7 +47,7 @@ class LiteratureDomainTests(unittest.TestCase):
         spec = importlib.util.spec_from_file_location("literature_source_verifier", path)
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
-        if not (code.parent / g031.ARCHIVE_PATH).is_file():
+        if not module.source_path(code.parent, g031.ARCHIVE_PATH).is_file():
             self.skipTest("G031 원본 archive를 포함한 저장소에서 실행합니다.")
         result = module.verify(code.parent)
         self.assertEqual(len(result["members"]), 3)

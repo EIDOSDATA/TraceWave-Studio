@@ -18,6 +18,14 @@ from rfad.templates import printed_references as printed
 MAX_SOURCE_BYTES = 64 * 1024 * 1024
 
 
+def source_path(repository: Path, logical_path: str) -> Path:
+    """! @brief 카드의 과거 출처 경로를 유지하고 저장소 참고자료 루트 이름만 대응한다."""
+    original = repository / logical_path
+    if original.exists() or not logical_path.startswith("00_REF/"):
+        return original
+    return repository / "00_참고자료" / logical_path.removeprefix("00_REF/")
+
+
 def checked_bytes(archive, name, expected):
     """! @brief 압축 해제 크기를 먼저 제한하고 실제 bytes의 SHA256을 대조한다."""
     info = archive.getinfo(name)
@@ -32,7 +40,7 @@ def checked_bytes(archive, name, expected):
 def verify(repository: Path) -> dict:
     """! @brief 외부 원문을 변경하지 않고 중첩 archive, 좌표 줄과 PDF 식별자를 검사한다."""
     source = evidence()
-    path = repository / source["archive_path"]
+    path = source_path(repository, source["archive_path"])
     if path.stat().st_size > MAX_SOURCE_BYTES:
         raise ValueError("원문 archive의 제한 크기를 초과했습니다.")
     raw = path.read_bytes()
@@ -78,7 +86,7 @@ def verify_printed(repository: Path) -> dict:
     checked = []
     for identity in printed.IDENTITIES:
         source = printed.evidence(identity)
-        path = repository / source["path"]
+        path = source_path(repository, source["path"])
         if path.stat().st_size > MAX_SOURCE_BYTES:
             raise ValueError("문헌 PDF의 제한 크기를 초과했습니다.")
         raw = path.read_bytes()

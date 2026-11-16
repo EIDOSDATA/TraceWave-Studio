@@ -211,7 +211,7 @@ def main():
     parser.add_argument("--workspace", type=Path, required=True)
     parser.add_argument("--report", type=Path, required=True)
     parser.add_argument("--database", type=Path, default=CODE_ROOT / ".local/pcb-catalog/catalog.sqlite")
-    parser.add_argument("--reference-root", type=Path, default=CODE_ROOT.parent / "00_REF/PCB RF ANT/05_PCB_Dielectric_Data_2026")
+    parser.add_argument("--reference-root", type=Path, default=CODE_ROOT.parent / "00_참고자료/PCB RF ANT/05_PCB_Dielectric_Data_2026")
     parser.add_argument("--fixture", type=Path, default=CODE_ROOT / "fixtures/pcb_worker_smoke.json")
     options = parser.parse_args()
     try:

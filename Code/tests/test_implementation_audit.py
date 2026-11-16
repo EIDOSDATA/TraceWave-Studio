@@ -142,9 +142,11 @@ class ImplementationAuditTests(unittest.TestCase):
         """! @brief 같은 검토 입력의 반복 검사와 JSON/문서 변조 검출을 실제 main에서 확인한다."""
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            output = root / "docs/audit"
+            code = root / "Code"
+            code.mkdir()
+            output = root / "01_개발문서/07_검증/01_구현감사"
             output.mkdir(parents=True)
-            with patch.object(audit, "CODE", root), patch.object(audit, "build", return_value=self.profile), redirect_stdout(io.StringIO()):
+            with patch.object(audit, "CODE", code), patch.object(audit, "build", return_value=self.profile), redirect_stdout(io.StringIO()):
                 with patch.object(audit.sys, "argv", ["audit"]):
                     audit.main()
                 saved = {path.name: path.read_bytes() for path in output.iterdir()}
@@ -152,14 +154,47 @@ class ImplementationAuditTests(unittest.TestCase):
                     audit.main()
                     audit.main()
                     self.assertEqual({path.name: path.read_bytes() for path in output.iterdir()}, saved)
-                    for name in ("implementation_matrix.json", "function_matrix.md"):
+                    for name in ("03_구현추적.json", "04_기능구현대조.md"):
                         with self.subTest(artifact=name):
                             path = output / name
                             path.write_bytes(saved[name] + b"changed\n")
                             with self.assertRaises(ValueError):
                                 audit.main()
                             path.write_bytes(saved[name])
-                self.assertEqual(json.loads((output / "implementation_matrix.json").read_text(encoding="utf-8")), self.profile)
+                self.assertEqual(json.loads((output / "03_구현추적.json").read_text(encoding="utf-8")), self.profile)
+
+    def test_document_evidence_allows_docs_but_rejects_other_sibling_paths(self):
+        """! @brief 재배치한 문서만 근거로 허용하고 저장소 밖이나 다른 폴더의 우회를 거부한다."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            code = root / "Code"
+            code.mkdir()
+            docs = root / "01_개발문서"
+            docs.mkdir()
+            document = docs / "contract.md"
+            document.write_text("contract", encoding="utf-8")
+            (root / "unrelated.md").write_text("unrelated", encoding="utf-8")
+            with patch.object(audit, "CODE", code):
+                self.assertEqual(audit.check_reference("../01_개발문서/contract.md"), document)
+                for value in ("../unrelated.md", "../01_개발문서/../unrelated.md", "../01_개발문서/missing.md"):
+                    with self.subTest(value=value), self.assertRaisesRegex(ValueError, "근거 파일 없음"):
+                        audit.check_reference(value)
+
+    def test_current_design_lookup_excludes_archive_and_rejects_ambiguity(self):
+        """! @brief 같은 이름의 승인 사본을 현행 문서로 읽거나 중복 현행본을 임의 선택하지 않는다."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            current = root / "01_개발문서/02_시스템명세/contract.md"
+            archived = root / "01_개발문서/12_보관이력/01_승인기준선/contract.md"
+            for path in (current, archived):
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(path.parent.name, encoding="utf-8")
+            with patch.object(audit, "CODE", root / "Code"):
+                self.assertEqual(audit.design_path("contract.md"), current)
+                duplicate = root / "01_개발문서/contract.md"
+                duplicate.write_text("duplicate", encoding="utf-8")
+                with self.assertRaisesRegex(ValueError, "현행 설계 문서의 누락/중복"):
+                    audit.design_path("contract.md")
 
 
 if __name__ == "__main__":

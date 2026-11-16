@@ -1,7 +1,0 @@
-# 기능별 문서
-
-[프로젝트](project/README.md), [설계와 편집](design/README.md), [재료와 출처](materials/README.md), [해석과 결과](analysis/README.md), [출력과 교환](exports/README.md)으로 나누어 관리한다.
-
-각 기능의 실제 지원, 입력/출력, 명령/이력, 오류/미지원과 근거는 해당 계약이 소유한다. 일반 UI 동작과 배치는 [화면설계서](../screen_design/README.md), 원본/버전/공통 DTO는 [시스템 명세](../specifications/README.md), 미래 구현의 승인 상세는 [승인 분류](../catalog/approved_design.md)를 따른다.
-
-공통 복소 결과/기본 RLC/Touchstone/측정 파일, 다축 연구와 CAM 등의 후속 기능은 승인 설계 및 [R1 설계 준비표](../specifications/r1_design_readiness.md)에서 찾는다. 현재 제품에 없는 기능을 빈 계약 파일의 존재만으로 구현되었다고 표시하지 않는다.

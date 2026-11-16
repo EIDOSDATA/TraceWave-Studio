@@ -1,0 +1,94 @@
+{
+  "scope": "current_development_docs",
+  "approved_baseline_files_verified": 27,
+  "folder_names_verified": 25,
+  "numbered_files_verified": 162,
+  "archive_link_scope": "original_relative_context_preserved_not_current_links",
+  "documents": 113,
+  "links_checked": 6813,
+  "broken_links": [],
+  "diagrams": [
+    {
+      "name": "01_스튜디오_전체전환",
+      "cells": 22,
+      "edges": 7,
+      "drawio_sha256": "4affe4f912259734add53b80886650345a3b5e97ce8b179ada9e55dee1927c24",
+      "svg_sha256": "8b5346cb9692fed8056a2603ea6d3224a0ae9fe0d82861649baa7bb9f8145798",
+      "png_sha256": "7020f1d633dfe7421238e8fd54f7df02550e081a1c384c9dd364d0f0c5cdbaf5"
+    },
+    {
+      "name": "02_편집초안과_저장흐름",
+      "cells": 31,
+      "edges": 11,
+      "drawio_sha256": "d1f629c29ae2ab19cdfc6934450406bace8203eb0abb66a8b273b5ad855e2158",
+      "svg_sha256": "4b0bb3d0b8eddaecaad4b018f59de6111e438053cad330d9f1260e218b316dc6",
+      "png_sha256": "27d6dbfe5ef6671c414e94df207e77d33d7e2877f2367a67482a325b04c685f1"
+    },
+    {
+      "name": "03_객체이름과_식별자",
+      "cells": 21,
+      "edges": 6,
+      "drawio_sha256": "0872444a5bd69b6a44e3a48f49af623b010a5a3828725513533b633e07d95557",
+      "svg_sha256": "151782dbce02fe793002e4aa7df57a6d74ef6fbcc9af6c97aadb4b0432b22100",
+      "png_sha256": "2a13ed1ad66739c922e75e2d7a957324902dbbb0b3af26d2cd16a148c425c7cf"
+    },
+    {
+      "name": "04_시작과_복구",
+      "cells": 15,
+      "edges": 0,
+      "drawio_sha256": "105f044abb5e81444e19302035e7f179cf5bce5df3cb1123ef04e6eeca60336f",
+      "svg_sha256": "ec129d5c50e0806bfc074cf8674bb6ceaeb166bd586a8db03a8b7aaebe64702d",
+      "png_sha256": "ca730c1ba353a5a72fbaff517d54289cb1dc57202888b03d1c6b202d54d860b8"
+    },
+    {
+      "name": "05_설계와_이차원편집",
+      "cells": 96,
+      "edges": 54,
+      "drawio_sha256": "affc9c595a53d601b7a1fc07a32079f85210175a1273f4ba98da7be27a7de31e",
+      "svg_sha256": "e61557d0cee7d56f462a4ca4d32645ad1c8358c68985112dee07ab1cf8cf78c5",
+      "png_sha256": "f207704c0dd391ef721d3e15583d4914be80430b730f8d3eda50cfb02f30b6f3"
+    },
+    {
+      "name": "06_해석준비",
+      "cells": 45,
+      "edges": 0,
+      "drawio_sha256": "936c6dc5b294d8492244e8b5d4acdc68dc8730600a18ec21beb555090dcf4866",
+      "svg_sha256": "dfeb35fb0e61007c3d92b3a6f44abdab9a43da8d5070492f17d603d55c556f4f",
+      "png_sha256": "8fb83d29d11e04a0535d254ba28ff1c44338b316fd0398ba13ce4c8ee646257a"
+    },
+    {
+      "name": "07_결과조회",
+      "cells": 35,
+      "edges": 0,
+      "drawio_sha256": "dea37e3e365bbb1eb867872dde0de4ae9508e3eb943b7fe9aa6d196138a51d33",
+      "svg_sha256": "ace78852ad5cfc4ef4a8c042b3ff239e154e817b2d19cbb833a97a1d1ef36407",
+      "png_sha256": "1750bea11c3f1983cd4449be9d01101de6db69ee9838cbff94f13f6954cf710e"
+    },
+    {
+      "name": "08_결과비교",
+      "cells": 36,
+      "edges": 0,
+      "drawio_sha256": "c6a5e33f4a20d20d54b56f9791c7ca63e63a7e21f7f5536d1c746c65d89ab3c1",
+      "svg_sha256": "f7bac99dbe327daf026a2a68167bf6cb67be0836607277f7d12981aae133f802",
+      "png_sha256": "fcac5da570939aa35faa2765297b858880bc31960d0199d2cb9f256e7367bb32"
+    },
+    {
+      "name": "09_출력과_검수",
+      "cells": 38,
+      "edges": 0,
+      "drawio_sha256": "429cf89146f8635e4258950f156af9cf15acb761dba97c961b4ecc3acac72c0f",
+      "svg_sha256": "e2d411ea5b00fd822f01b1f048bdc738e72935f1cd28e820aa1a46f47e2ed886",
+      "png_sha256": "76a94a8d745bae8d7a8d0e80b01c6585ce1105495909ed31071e98ad1b59a2d0"
+    },
+    {
+      "name": "10_설정과_이름변경",
+      "cells": 23,
+      "edges": 0,
+      "drawio_sha256": "a20ee2998153dc9df9f577aad51528e39c775e5e1968bb2e0b9c4af21ade506c",
+      "svg_sha256": "1a0e6a815efe5a74b1b431d92284bf8579f3ece8bb263808b05591a885a118b3",
+      "png_sha256": "982b42efd33f2b4024d9da0b956e92ddbf036941dcecd51e2b902182af9c6e92"
+    }
+  ],
+  "native_gui_test": "not_run",
+  "native_drawio_roundtrip": "not_run"
+}

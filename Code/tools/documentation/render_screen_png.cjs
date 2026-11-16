@@ -12,7 +12,7 @@ async function main()
         throw new Error('사용법: node render_screen_png.cjs <node_modules> <브라우저 실행 파일>');
     }
     const { chromium } = require(path.join(moduleRoot, 'playwright'));
-    const folder = path.resolve(__dirname, '../../docs/screen_design/assets');
+    const folder = path.resolve(__dirname, '../../../01_개발문서/04_화면설계/01_그림자료');
     const browser = await chromium.launch({executablePath: browserPath, headless: true});
     const report = [];
     try

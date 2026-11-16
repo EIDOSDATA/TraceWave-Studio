@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# 승인 보관본은 이동/checkout 시 원래 바이트를 보존한다.
+01_개발문서/12_보관이력/01_승인기준선/** -text

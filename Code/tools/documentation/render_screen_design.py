@@ -9,7 +9,19 @@ import argparse
 import math
 import xml.etree.ElementTree as ET
 
-DESTINATION = Path(__file__).resolve().parents[2] / "docs/screen_design"
+DESTINATION = Path(__file__).resolve().parents[3] / "01_개발문서/04_화면설계"
+DIAGRAM_IDS = {
+    "01_스튜디오_전체전환": "studio-navigation",
+    "02_편집초안과_저장흐름": "edit-lifecycle",
+    "03_객체이름과_식별자": "object-identity",
+    "04_시작과_복구": "studio-start",
+    "05_설계와_이차원편집": "studio-design",
+    "06_해석준비": "studio-analysis",
+    "07_결과조회": "studio-results",
+    "08_결과비교": "studio-comparison",
+    "09_출력과_검수": "studio-output",
+    "10_설정과_이름변경": "studio-settings",
+}
 BLUE = "#175CD3"
 INK = "#243247"
 MUTED = "#536174"
@@ -61,9 +73,9 @@ class Sheet:
         return min(matches, key=lambda pair: pair[0])[1] if matches else None
 
     def write(self, target):
-        """! @brief 임베드 그림 대신 실제 도형 셀을 가진 비압축 DrawIO를 기록한다."""
+        """! @brief 한글 파일명과 기존 문서 ID를 분리하여 실제 도형 셀을 기록한다."""
         mxfile = ET.Element("mxfile", host="app.diagrams.net", type="device")
-        diagram = ET.SubElement(mxfile, "diagram", id=self.slug, name=self.title)
+        diagram = ET.SubElement(mxfile, "diagram", id=DIAGRAM_IDS[self.slug], name=self.title)
         model = ET.SubElement(diagram, "mxGraphModel", dx=str(self.width), dy=str(self.height),
                               grid="1", gridSize="10", guides="1", tooltips="1", connect="1",
                               arrows="1", fold="1", page="1", pageScale="1",
@@ -139,7 +151,7 @@ class Sheet:
                                                 "{http://www.w3.org/XML/1998/namespace}space": "preserve",
                                                 "text-anchor": "middle" if item["align"]=="center" else "start"})
                 element.text = line
-        for folder, suffix, document in (("diagrams", ".drawio", mxfile), ("assets", ".svg", svg)):
+        for folder, suffix, document in (("02_전환도원본", ".drawio", mxfile), ("01_그림자료", ".svg", svg)):
             path = target / folder / (self.slug + suffix)
             path.parent.mkdir(parents=True, exist_ok=True)
             ET.indent(document, space="  ")
@@ -180,7 +192,7 @@ def shell(slug, title, tab, center_title):
 
 def design():
     """! @brief 도구 레일과 탐색 공간을 개선한 설계 화면을 그린다."""
-    s = shell("studio-design", "S11 / 설계 - 2D 편집", "설계", "2D 편집   |   3D 형상")
+    s = shell("05_설계와_이차원편집", "S11 / 설계 - 2D 편집", "설계", "2D 편집   |   3D 형상")
     s.box(336, 292, 886, 40, "06  선택  /  선  /  원호    |    좌표 입력    |    스냅 설정    |    전체 맞춤", PALE, 17)
     s.box(336, 342, 886, 402, "", "#F6FAFF")
     for x in range(356, 1220, 24):
@@ -205,7 +217,7 @@ def design():
 
 def analysis():
     """! @brief 실행 전 검토 및 실행 상태의 화면을 그린다."""
-    s=shell("studio-analysis", "S20 / 해석 - 입력 확인과 실행", "해석", "입력 검사   |   해석 조건   |   연구 계획")
+    s=shell("06_해석준비", "S20 / 해석 - 입력 확인과 실행", "해석", "입력 검사   |   해석 조건   |   연구 계획")
     s.box(350, 300, 856, 70, "06  현재 입력 개정과 실행할 snapshot을 확인합니다.\n표면층 / 외부 환경의 EM 포함은 지원 여부 확인 필요", AMBER, 18)
     rows=[("기판 / 도체 / 급전", "입력 검사 결과"), ("재료 / 출처 / 가정", "미정 또는 채택 근거"), ("경계 / 격자 / 종료", "사용자 설정"), ("시간 / 메모리 예산", "계획값 / 실제값 구분"), ("목표 대역", "solver 설정과 비교")]
     for i,(a,b) in enumerate(rows):
@@ -220,7 +232,7 @@ def analysis():
 
 def results():
     """! @brief 실데이터가 없는 결과 화면의 빈 상태를 그린다."""
-    s=shell("studio-results", "S30 / 결과 - 원본과 판정", "결과", "네트워크   |   전력 / 손실   |   방사 / 필드")
+    s=shell("07_결과조회", "S30 / 결과 - 원본과 판정", "결과", "네트워크   |   전력 / 손실   |   방사 / 필드")
     s.box(350, 300, 856, 52, "06  실행 선택  [아직 없음]    /    기준면  [미정]    /    Z0  [미정]", PALE, 17)
     s.box(350, 368, 856, 230, "07  표시할 계산 결과가 없습니다.\n해석을 실행하거나 저장된 완료 결과를 여세요.\n곡선을 임의로 그리지 않습니다.", "#F8FAFC", 21, MUTED, align="center")
     s.box(350, 614, 856, 94, "수치 표  /  주파수  /  실수  /  허수  /  단위  /  유효 상태\n결과가 선택되면 실제 표본을 조회합니다.", size=17)
@@ -231,7 +243,7 @@ def results():
 
 def compare():
     """! @brief 비교 전 정렬과 실측 미확보 상태를 그린다."""
-    s=shell("studio-comparison", "S40 / 비교 - 조건과 근거", "비교", "계산 결과   |   수렴 연구   |   측정 비교")
+    s=shell("08_결과비교", "S40 / 비교 - 조건과 근거", "비교", "계산 결과   |   수렴 연구   |   측정 비교")
     s.box(350, 300, 856, 54, "06  비교 자료 추가    |    주파수 / 포트 / 기준면 / Z0 확인", PALE, 17)
     s.box(350, 370, 856, 104, "자료 A: 선택 필요       자료 B: 선택 필요\n조건이 다르면 일치 항목 / 변환 필요 / 비교 불가를 구분", size=18)
     s.box(350, 490, 856, 110, "07  비교 준비 전\n보간과 기준면 변환은 명시적 검토 뒤 파생 자료로 보존", "#F8FAFC", 20, MUTED, align="center")
@@ -243,7 +255,7 @@ def compare():
 
 def output():
     """! @brief 동일 개정의 출력과 검수를 구분해 그린다."""
-    s=shell("studio-output", "S50 / 출력 - 생성과 검수", "출력", "도면   |   STEP   |   PCB 교환   |   보고서 / 인계")
+    s=shell("09_출력과_검수", "S50 / 출력 - 생성과 검수", "출력", "도면   |   STEP   |   PCB 교환   |   보고서 / 인계")
     s.box(350, 300, 856, 54, "06  출력 입력 snapshot 고정    |    출력 형식 / profile 선택", PALE, 17)
     for i,text in enumerate(["STEP: 현재 기본 출력 지원", "PDF / SVG / DXF 도면: 10번 후속", "KiCad / Gerber / 드릴 / Job: 10번 후속", "프로젝트 인계 / 검수 보고서: 12번 후속"]):
         s.box(350, 372+i*54, 856, 48, text, "#F8FAFC", 18)
@@ -255,7 +267,7 @@ def output():
 
 def startup():
     """! @brief 시작 및 복구 화면의 제안 배치를 그린다."""
-    s=Sheet("studio-start", "S00 / 시작 - 프로젝트와 복구")
+    s=Sheet("04_시작과_복구", "S00 / 시작 - 프로젝트와 복구")
     header(s, s.title, "신규 시작 화면의 제안입니다. 현재 GUI의 생성 / 열기 명령을 단계적으로 연결합니다.")
     s.box(60, 160, 1480, 80, "TraceWave Studio        새 프로젝트        프로젝트 열기        환경 진단", PALE, 24, bold=True)
     s.box(60, 270, 880, 600, "")
@@ -272,7 +284,7 @@ def startup():
 
 def dialogs():
     """! @brief 입력과 검토 두 단계 대화상자의 번호를 그린다."""
-    s=Sheet("studio-settings", "D10-D15 / 설정과 이름 변경")
+    s=Sheet("10_설정과_이름변경", "D10-D15 / 설정과 이름 변경")
     header(s, s.title, "대화상자 별 세부 필드는 화면 명세 표를 따릅니다. 미적용 입력 / 적용됨 / 저장됨을 구분합니다.")
     s.box(50, 150, 730, 740, "")
     s.label(70, 172, 690, 50, "01  설정 제목 / 현재 대상", 25, bold=True)
@@ -297,7 +309,7 @@ def dialogs():
 
 def navigation():
     """! @brief 선택과 초안을 보존하는 Studio 화면 전환을 그린다."""
-    s=Sheet("studio-navigation", "Studio 화면 전환도")
+    s=Sheet("01_스튜디오_전체전환", "Studio 화면 전환도")
     header(s, s.title, "실선은 사용자 동작입니다. 화면 이동만으로 적용 / 계산 / 취소를 실행하지 않는 목표 계약입니다.")
     s.box(40, 150, 280, 100, "S00 시작 / 복구\n새 프로젝트 또는 열기", PALE, 22)
     s.box(410, 150, 1140, 100, "공통 프레임: 프로젝트 / 저장 상태 / 선택 / 작업 알림\n설계 - 해석 - 결과 - 비교 - 출력 탭은 언제든 이동 가능", PALE, 24)
@@ -315,7 +327,7 @@ def navigation():
 
 def lifecycle():
     """! @brief 미적용 입력과 적용, 저장, 불명 응답의 전이를 그린다."""
-    s=Sheet("edit-lifecycle", "편집 / 적용 / 저장 / 재열기 상태도")
+    s=Sheet("02_편집초안과_저장흐름", "편집 / 적용 / 저장 / 재열기 상태도")
     header(s, s.title, "화면 상태와 원본 상태는 별개입니다. 적용 성공을 디스크 저장 완료로 표시하지 않습니다.")
     boxes=[(40,180,"저장됨\n권위 원본 조회"),(430,180,"미적용 입력\n화면 초안만 변경"),(820,180,"적용 중\n중복 적용 잠금"),(1210,180,"적용됨 / 저장 필요\n새 개정 + undo 한 번")]
     for x,y,t in boxes:s.box(x,y,340,120,t,PALE,22)
@@ -344,7 +356,7 @@ def lifecycle():
 
 def identity():
     """! @brief 이름, ID, 원본 출처와 과거 결과의 분리를 그린다."""
-    s=Sheet("object-identity", "객체 이름과 안정 ID / 선택 연결")
+    s=Sheet("03_객체이름과_식별자", "객체 이름과 안정 ID / 선택 연결")
     header(s,s.title,"표시 이름은 사람이 읽고 수정합니다. 내부 ID는 참조와 이력을 연결하며 기본 화면에서 접습니다.")
     s.box(50,170,450,160,"현재 객체\n표시 이름: 주 방사 원호\n불변 ID: 내부 상세에서 확인",PALE,25)
     s.box(570,170,450,160,"이름 변경 명령\n원호 01 -> 주 방사 원호\n한 개정 / 실행 취소 / 저장", "white",24)
