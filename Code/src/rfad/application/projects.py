@@ -26,7 +26,7 @@ from rfad.application.pcb_selection_contract import MUTATION_METHODS as PCB_SELE
 from rfad.application.project_studies import StudyCoordinator
 from rfad.application.project_study_contract import MUTATIONS as STUDY_MUTATIONS
 from rfad.application import target_editor
-from rfad.application import design_rule_service, physical_setup_service, precision_service, network_service
+from rfad.application import design_rule_service, physical_setup_service, precision_service, network_service, design_sweep_service
 from rfad.domain.physical_setup import COMMAND as PHYSICAL_COMMAND
 from rfad.application.template_candidates import TemplateCandidateCoordinator
 from rfad.domain.errors import ProjectError
@@ -37,7 +37,7 @@ ASYNC_METHODS = {
 } | CAD_METHODS | SOLVER_METHODS
 MUTATION_METHODS = ASYNC_METHODS | {
     "project.apply_command", "editor.apply", "canvas.apply", "project.undo", "project.redo", "job.cancel",
-} | PCB_SELECTION_MUTATIONS | STUDY_MUTATIONS | {"target.editor.apply", "template.apply", "design.rules.apply", physical_setup_service.MUTATION, precision_service.MUTATION, network_service.MUTATION}
+} | PCB_SELECTION_MUTATIONS | STUDY_MUTATIONS | design_sweep_service.MUTATIONS | {"target.editor.apply", "template.apply", "design.rules.apply", physical_setup_service.MUTATION, precision_service.MUTATION, network_service.MUTATION}
 
 
 class ProjectService:
@@ -124,8 +124,10 @@ class ProjectService:
                 raise ProjectError("E_VERSION", "지원하지 않는 작업 영역 버전입니다.")
             if recover:
                 self.studies.recover(state)
+                design_sweep_service.recover(self, state)
             else:
                 state.setdefault("studies", {})
+                state.setdefault("sweeps", {})
             for name in ("analysis_plans", "prepared_plans", "solver_results"):
                 state.setdefault(name, {})
             self.history.restore(state, limit=MAX_HISTORY)
@@ -183,7 +185,9 @@ class ProjectService:
 
     def _preflight(self, method: str, context: dict, data: dict) -> None:
         """! @brief 기능별 요청 계약에 따라 접수 가능 여부를 검사한다."""
-        if method == network_service.MUTATION:
+        if method in design_sweep_service.MUTATIONS:
+            design_sweep_service.validate_input(method, context, data)
+        elif method == network_service.MUTATION:
             network_service.validate_input(context, data)
         elif method == precision_service.MUTATION:
             precision_service.validate_input(context, data)
@@ -222,7 +226,9 @@ class ProjectService:
     def _dispatch_mutation(self, state: dict, method: str, context: dict, data: dict) -> dict:
         """! @brief 영수증과 동일한 transaction에서 기능별 명령을 실행한다."""
         self._preflight(method, context, data)
-        if method == network_service.MUTATION:
+        if method in design_sweep_service.MUTATIONS:
+            return design_sweep_service.admit(self, state, method, context, data)
+        elif method == network_service.MUTATION:
             return network_service.admit(self, state, context, data)
         elif method == precision_service.MUTATION:
             return precision_service.admit(self, state, context, data)

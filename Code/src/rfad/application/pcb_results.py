@@ -5,6 +5,7 @@ import re
 
 from rfad.application.pcb_geometry import fail, shape_polygons
 from rfad.application.pcb_mesh import mesh_lines
+from rfad.domain.errors import ProjectError
 
 RAW_NAMES = ("port_ut_1", "port_it_1", "openEMS_stats.txt", "openEMS_run_stats.txt", "native.log", "pcb.xml")
 
@@ -28,6 +29,12 @@ def normalization_contract(port, *, radiation=False):
 def read_statistics_values(text, max_timesteps):
     """! @brief 유한 native 통계와 time step 상한 미도달을 검사한다."""
     values = [float(line.split()[0]) for line in text.splitlines() if line.strip()]
+    if (len(values) >= 6 and all(math.isfinite(value) for value in values)
+            and values[0] == int(values[0]) and values[0] > 0 and values[1] > 0
+            and values[2] == int(values[2]) and values[2] >= max_timesteps):
+        raise ProjectError("E_SOLVER", "PCB 계산이 시간 단계 상한에 도달해 에너지 종료를 확인하지 못했습니다.",
+                           details={"convergence_state": "not_converged", "criterion": "native_timestep_limit",
+                                    "iterations": int(values[2]), "max_timesteps": max_timesteps})
     if (len(values) < 6 or not all(math.isfinite(v) for v in values) or values[0] != int(values[0])
             or values[2] != int(values[2]) or not 0 < values[2] < max_timesteps or values[1] <= 0):
         fail("E_SOLVER", "PCB native 통계가 불완전하거나 시간 상한에 도달했습니다.")
@@ -37,6 +44,10 @@ def read_statistics_values(text, max_timesteps):
 def check_termination(log, iterations, settings):
     """! @brief 요청한 에너지 종료 목표를 실제 native 로그에서 확인한다."""
     lowered = log.lower()
+    if "max. number of timesteps was reached" in lowered:
+        raise ProjectError("E_SOLVER", "PCB 계산이 시간 단계 상한에 도달해 에너지 종료를 확인하지 못했습니다.",
+                           details={"convergence_state": "not_converged", "criterion": "native_timestep_limit",
+                                    "iterations": iterations, "max_timesteps": settings["max_timesteps"]})
     if any(token in lowered for token in ("checkabortcond", "aborting simulation", "max. number of timesteps was reached", "fallback to pec")) or "Exact-endcriteria: evaluating the end criteria every " not in log:
         fail("E_SOLVER", "PCB 해석이 정상 에너지 종료 조건을 충족하지 못했습니다.")
     pattern = r"RunFDTD: end-criteria of -([0-9.]+)dB reached after ([0-9]+) timesteps \(-([0-9.]+|inf)dB\)"

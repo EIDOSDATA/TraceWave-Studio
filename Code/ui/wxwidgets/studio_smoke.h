@@ -4,6 +4,7 @@
 #include <wx/event.h>
 #include <wx/weakref.h>
 #include <string>
+#include <functional>
 
 class StudioFrame;
 class PcbSelectionDialog;
@@ -65,6 +66,16 @@ public:
     void OnSelected();
 
 private:
+    /** @brief 유한 연구 생성과 실제 회로 실행/취소/재개/재열기를 검증한다. */
+    void SweepSmokeTick();
+    void OpenSweepSmokeDialog();
+    void SweepSmokeRequest(const std::string& method, const Json& input, bool mutation,
+                           std::function<void(const Json&)> completed);
+    Json m_sweepContext = Json::object();
+    Json m_sweepView = Json::object();
+    std::string m_sweepGridId;
+    std::string m_sweepCircuitId;
+    bool m_sweepAwaiting = false;
     /** @brief 공통 복소 자료의 실제 창/원자 이력/저장 재시작을 검증한다. */
     void NetworkSmokeTick();
     void OpenNetworkSmokeDialog(int kind);

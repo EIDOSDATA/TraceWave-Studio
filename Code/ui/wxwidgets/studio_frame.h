@@ -44,6 +44,7 @@ class StudioShell;
 class wxSearchCtrl;
 class NetworkPanel;
 class NetworkAssessmentPanel;
+class SweepPanel;
 enum class NetworkAction;
 enum class WorkspaceArea;
 enum class DesignSetup
@@ -99,6 +100,17 @@ private:
     void BuildNetworkAssessmentInterface(wxWindow* navigation);
     void LoadNetworkAssessment(const std::string& id);
     void LoadNetworkAssessmentPoints(int criterion, int offset);
+    /** @brief 유한 연구의 공통 작업 공간과 원문 보존 설정 창을 서비스에 연결한다. */
+    void BuildSweepInterface();
+    void UpdateSweepViews();
+    void ResetSweeps();
+    void RefreshSweeps(const std::string& preferred = "");
+    void LoadSweep(const std::string& id, int offset = 0);
+    void SweepCommand(const std::string& action);
+    void OpenSweepSetup();
+    void ShowSweepSetup(const Json& context);
+    void OpenSweepResult(int index);
+    void PollSweep(Clock::time_point now);
     /** @brief 현재 프로젝트의 원본을 보존하는 연구 설정/진행 창을 연다. */
     void OpenProjectStudy();
     /** @brief 목표 또는 명시 기하 카드의 비동기 설정 화면을 연다. */
@@ -259,6 +271,14 @@ private:
     NetworkAssessmentPanel* m_networkAssessmentPanel = nullptr;
     std::string m_networkAssessmentPreferredId;
     std::string m_networkAssessmentAttemptedId;
+    SweepPanel* m_sweepPanel = nullptr;
+    bool m_sweepSupported = false;
+    bool m_sweepPending = false;
+    bool m_sweepUncertain = false;
+    bool m_sweepRefreshQueued = false;
+    std::uint64_t m_sweepGeneration = 0;
+    std::string m_sweepAttemptedRevision;
+    Clock::time_point m_sweepNextPoll{};
     ProjectStudyDialog* m_studyDialog = nullptr;
     bool m_studySupported = false;
     bool m_closeAfterPcb = false;

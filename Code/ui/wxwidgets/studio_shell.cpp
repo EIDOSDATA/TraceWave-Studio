@@ -139,12 +139,21 @@ void StudioShell::SetCompact(bool compact)
 
 void StudioShell::ApplyVisibility()
 {
-    m_navigation.SetPageText(0, Display(m_resultContext ? "결과 목록" : "탐색"));
+    m_navigation.SetPageText(0, Display(m_studyContext ? "연구 목록" : m_resultContext ? "결과 목록" : "탐색"));
+    m_manager.GetPane("navigation")
+        .Caption(Display(m_studyContext    ? "연구 목록"
+                         : m_resultContext ? "결과"
+                                           : "프로젝트"));
+    m_manager.GetPane("properties")
+        .Caption(Display(m_studyContext    ? "연구 조건과 출처"
+                         : m_resultContext ? "조건과 출처"
+                                           : "속성"));
     const int propertiesPage = m_navigation.FindPage(&m_properties);
     if (propertiesPage != wxNOT_FOUND)
     {
-        m_navigation.SetPageText(static_cast<std::size_t>(propertiesPage),
-                                 Display(m_resultContext ? "결과 조건" : "속성"));
+        m_navigation.SetPageText(static_cast<std::size_t>(propertiesPage), Display(m_studyContext    ? "연구 조건"
+                                                                                   : m_resultContext ? "결과 조건"
+                                                                                                     : "속성"));
     }
     m_manager.GetPane("navigation").Show(m_visible[0] || (m_compact && m_visible[1]));
     m_manager.GetPane("properties").Show(!m_compact && m_visible[1]);
@@ -157,13 +166,14 @@ void StudioShell::ApplyVisibility()
     m_manager.GetPane("problems").Show(m_visible[3]);
 }
 
-void StudioShell::SetResultContext(bool active)
+void StudioShell::SetResultContext(bool active, bool study)
 {
-    if (active == m_resultContext)
+    if (active == m_resultContext && study == m_studyContext)
     {
         return;
     }
     m_resultContext = active;
+    m_studyContext = active && study;
     ApplyVisibility();
     m_manager.Update();
 }

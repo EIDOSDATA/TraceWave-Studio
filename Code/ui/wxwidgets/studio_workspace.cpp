@@ -89,9 +89,11 @@ void StudioFrame::BuildWorkspacePages()
     m_views->onSelectionChanged = [this](int page)
     {
         m_workspaceBar->Select(page < 2 ? WorkspaceArea::Design
-                                        : static_cast<WorkspaceArea>(
-                                              page == 2 || page == 6 || page == 7 ? 2 : (page == 3 ? 1 : page - 1)));
+                                        : static_cast<WorkspaceArea>(page == 2 || page == 6 || page == 7
+                                                                         ? 2
+                                                                         : (page == 3 || page == 8 ? 1 : page - 1)));
         UpdateNetworkViews();
+        UpdateSweepViews();
     };
 }
 
@@ -236,4 +238,5 @@ void StudioFrame::UpdateWorkspace()
                                           : "CAD 환경이 구성되지 않았습니다. 기존 형상/출처와 저장은 유지합니다."));
     m_outputSummary->Wrap(FromDIP(440));
     UpdateNetworkViews();
+    UpdateSweepViews();
 }

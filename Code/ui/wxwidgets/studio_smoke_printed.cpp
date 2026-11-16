@@ -51,7 +51,10 @@ void StudioSmokeDriver::PrintedSeedSmokeTick()
             m_frame.m_workspaceLayers->GetEventHandler()->ProcessEvent(event);
             CanvasAssert(m_frame.m_canvas->IsLayerVisible(layer) == visible, "표시 층과 캔버스가 다릅니다.");
         }
-        CanvasAssert(m_frame.m_revision == revision && m_frame.m_workspaceJobs->GetItemCount() == 2,
+        CanvasAssert(m_frame.m_revision == revision && m_frame.m_workspaceJobs->GetItemCount() >= 3 &&
+                         m_frame.m_workspaceJobs->GetItemText(0) == Display("CAD / STEP") &&
+                         m_frame.m_workspaceJobs->GetItemText(1) == Display("해석") &&
+                         m_frame.m_workspaceJobs->GetItemText(2) == Display("설계 연구"),
                      "표시 조작이 원본 개정을 바꾸거나 실제 작업 행이 없습니다.");
         m_setupChecks.push_back("workspace_navigation_and_layer_visibility_without_mutation");
         m_setupStage = 10;

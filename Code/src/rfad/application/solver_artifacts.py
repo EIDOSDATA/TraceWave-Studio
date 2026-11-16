@@ -4,7 +4,7 @@ import json
 import math
 from pathlib import PurePosixPath
 
-from rfad.application.canonical import canonical_hash
+from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.application.solver_requests import PCB_PROFILE, require_fields
 from rfad.domain.errors import ProjectError
 
@@ -21,7 +21,28 @@ def read_solver_result(stage, request):
     for key, expected in (("schema", "rfad.openems-worker-result/0.1"), ("phase", request["phase"]), ("run_id", request["run_id"]), ("nonce", request["nonce"]), ("analysis_plan_id", request["analysis_plan"]["plan_id"])):
         if result.get(key) != expected:
             raise ProjectError("E_HASH", "해석 결과의 입력 또는 실행 식별이 다릅니다.")
+    if "error" in result:
+        worker_error(result)
     return result
+
+
+def worker_error(package):
+    """! @brief worker의 유한 구조화 오류를 검증하고 미수렴 근거를 잃지 않고 전달한다."""
+    error = package.get("error")
+    if (type(error) is not dict or type(error.get("code")) is not str
+            or not error["code"].startswith("E_") or len(error["code"]) > 64
+            or type(error.get("message_ko")) is not str or len(error["message_ko"]) > 2048
+            or type(error.get("details", {})) is not dict):
+        raise ProjectError("E_HASH", "worker 오류 봉투의 코드/문장/세부 근거가 유효하지 않습니다.")
+    try:
+        if len(canonical_bytes(error)) > 64 * 1024:
+            raise ValueError("oversized worker diagnostic")
+    except (ValueError, TypeError, RecursionError) as exception:
+        raise ProjectError("E_HASH", "worker 오류 봉투가 유한 크기 계약을 벗어났습니다.") from exception
+    details = error.get("details", {})
+    if "convergence_state" in details and details["convergence_state"] != "not_converged":
+        raise ProjectError("E_HASH", "실패 봉투에는 명시적 미수렴 근거만 허용합니다.")
+    return ProjectError(error["code"], error["message_ko"], details=details)
 
 
 def seal_solver_outputs(journal, job, stage, package):

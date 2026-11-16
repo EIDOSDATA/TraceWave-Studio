@@ -11,7 +11,8 @@ from rfad.application.job_state import TERMINAL
 from rfad.application.solver import build_analysis_plan, make_prepared_plan, validate_reference_plan
 from rfad.application.solver_requests import PCB_PROFILE, SOLVER_METHODS, validate_solver_input
 from rfad.application.solver_runtime import SolverRuntime, stage_solver_job
-from rfad.application.solver_artifacts import read_solver_result, seal_solver_outputs, check_prepared_outputs, check_solver_result
+from rfad.application.solver_capture import compact_capture, hydrate_job
+from rfad.application.solver_artifacts import read_solver_result, seal_solver_outputs, check_prepared_outputs, check_solver_result, worker_error
 from rfad.application.solver_queries import open_solver_result, latest_solver_result, solver_samples
 from rfad.application.radiation_queries import radiation_chart
 from rfad.domain.errors import ProjectError
@@ -59,7 +60,7 @@ class SolverCoordinator:
             raise ProjectError("E_HASH", "해석 계획 내용이 변경되었습니다.")
         return record, document
 
-    def admit(self, state, method, context, data):
+    def admit(self, state, method, context, data, *, compact=False):
         """! @brief 불변 계획과 원시 입력 참조를 캡처하고 슬롯을 예약한다."""
         if self.runtime is None:
             raise ProjectError("E_UNSUPPORTED", "서비스 실행 시 --openems-wsl 설정이 필요합니다.")
@@ -71,6 +72,7 @@ class SolverCoordinator:
         project_id = context["project_id"]
         job_id, run_id, nonce = str(uuid4()), str(uuid4()), uuid4().hex
         captured = {"nonce": nonce, "runtime": deepcopy(self.runtime.identity), "resource_reserved": True}
+        prepared_reference, preparation_artifact = None, None
         if method == "solver.plan":
             snapshot = state["snapshots"].get(data["snapshot"]["snapshot_id"])
             if snapshot is None or snapshot["project_id"] != project_id or snapshot["content_hash"] != data["snapshot"]["content_hash"]:
@@ -93,6 +95,7 @@ class SolverCoordinator:
             plan_record = state["analysis_plans"][record["analysis_plan_id"]]
             _, plan = self._record(state, "analysis_plans", {k: plan_record["reference"][k] for k in ("plan_id", "content_hash")}, "plan_id", project_id)
             preparation = json.loads(self.service.journal.read_artifact(record["preparation_artifact"]))
+            prepared_reference, preparation_artifact = record["reference"], record["preparation_artifact"]
             captured.update(analysis_plan=plan, analysis_plan_ref=plan_record["reference"], prepared_plan=prepared,
                             preparation=preparation, preparation_files=record["files"])
             if task["execution_mode"] == "postprocess_only":
@@ -117,6 +120,10 @@ class SolverCoordinator:
         captured["source"] = self.service.journal.put_immutable(base + "/source.json", self.runtime.source_bytes)
         job = {"job_id": job_id, "run_id": run_id, "kind": kind, "operation_method": method,
                "context": deepcopy(context), "input": deepcopy(data), "solver": captured, "events": []}
+        if compact:
+            job["solver"] = compact_capture(self.service.journal, base, job,
+                                             prepared_reference=prepared_reference,
+                                             preparation_artifact=preparation_artifact)
         self.service._event(job, "queued")
         state["jobs"][job_id] = job
         return {"job_id": job_id, "state": "queued", "events_cursor": 1}
@@ -157,30 +164,29 @@ class SolverCoordinator:
         job = self.service.journal.transaction(begin)
         if job is None:
             return False
-        process = {"state": "failed", "termination_confirmed": True, "outcome_unknown": False}
+        process = {"state": "failed", "termination_confirmed": True, "outcome_unknown": False, "not_started": True}
         try:
+            job = hydrate_job(self.service.journal, job)
             if job["operation_method"] == "solver.plan":
                 self._publish_plan(job)
                 return True
             stage, request = stage_solver_job(self.service.journal, self.runtime, job)
-            process = {"state": "failed", "termination_confirmed": False, "outcome_unknown": True}
+            process = {"state": "failed", "termination_confirmed": False, "outcome_unknown": True, "not_started": False}
             process = self.runtime.transport.execute(stage, run_id=job["run_id"], nonce=job["solver"]["nonce"], cancel=self.cancel,
                                                      timeout_seconds=job["input"]["budget"]["timeout_seconds"], on_state=lambda value: self._progress(job, value))
             if process.get("state") == "failed" and process.get("termination_confirmed") and (stage / "output/result.json").is_file():
-                failed = read_solver_result(stage, request).get("error", {})
-                raise ProjectError(failed.get("code", "E_SOLVER"), str(failed.get("message_ko", "openEMS worker 실행 실패"))[:2048])
+                raise worker_error(read_solver_result(stage, request))
             if process.get("state") != "completed" or not process.get("termination_confirmed") or process.get("outcome_unknown", False):
                 self._finish(job, process)
                 return True
             package = read_solver_result(stage, request)
             if "error" in package:
-                error = package["error"]
-                raise ProjectError(error.get("code", "E_SOLVER"), str(error.get("message_ko", error.get("message", "openEMS 작업 실패")))[:2048])
+                raise worker_error(package)
             files = self._seal(job, stage, package)
             self._publish_result(job, package, files, process)
         except Exception as error:
             if isinstance(error, ProjectError) and error.details.get("not_started") is True and error.details.get("termination_confirmed") is True:
-                process = {"state": "failed", "termination_confirmed": True, "outcome_unknown": False}
+                process = {"state": "failed", "termination_confirmed": True, "outcome_unknown": False, "not_started": True}
             diagnostic = error if isinstance(error, ProjectError) else ProjectError("E_DISK" if isinstance(error, OSError) else "E_SOLVER", str(error)[:2048])
             self._finish(job, process, diagnostic)
         return True
@@ -280,6 +286,8 @@ class SolverCoordinator:
                 return
             active["solver"]["resource_reserved"] = False
             active["solver"]["termination_confirmed"] = True
+            active["solver"]["process_outcome"] = {key: process.get(key) for key in
+                ("state", "termination_confirmed", "outcome_unknown", "not_started", "guest_disk_bytes")}
             if active["state"] == "cancel_requested":
                 self.service._event(active, "cancelled", termination_confirmed=True)
                 return
@@ -313,7 +321,11 @@ class SolverCoordinator:
                 return
             active["solver"]["resource_reserved"] = not confirmed
             active["solver"]["termination_confirmed"] = confirmed
-            active["solver"]["process_outcome"] = {k: process.get(k) for k in ("state", "termination_confirmed", "outcome_unknown")}
+            active["solver"]["process_outcome"] = {k: process.get(k) for k in
+                ("state", "termination_confirmed", "outcome_unknown", "not_started", "guest_disk_bytes")}
+            for key in ("transport_error", "export_error", "error", "reason"):
+                if key in process:
+                    active["solver"]["process_outcome"][key] = str(process[key])[:2048]
             if not confirmed:
                 terminal = "interrupted"
             elif active["state"] == "cancel_requested":
@@ -331,7 +343,9 @@ class SolverCoordinator:
         job = self.service.journal.read()["jobs"].get(job_id)
         if self.runtime is None or job is None or not job.get("solver", {}).get("resource_reserved") or job["state"] != "interrupted":
             raise ProjectError("E_CONFLICT", "종료 확인이 필요한 이전 해석 실행이 아닙니다.")
-        if job["solver"]["runtime"]["transport"] != self.runtime.identity["transport"]:
+        captured = job["solver"]
+        transport = captured.get("runtime_transport") if "capture_profile" in captured else captured["runtime"]["transport"]
+        if transport != self.runtime.identity["transport"]:
             raise ProjectError("E_VERSION", "이전 실행의 WSL 소유 설정이 필요합니다.")
         status = self.runtime.transport.cancel(job["run_id"], job["solver"]["nonce"])
         deadline = time.monotonic() + 20
@@ -344,6 +358,8 @@ class SolverCoordinator:
                 active["solver"]["resource_reserved"] = False
                 active["solver"]["termination_confirmed"] = True
                 active["solver"]["reconciled_at"] = self.service._now()
+                if type(status.get("guest_disk_bytes")) is int and status["guest_disk_bytes"] >= 0:
+                    active["solver"].setdefault("process_outcome", {})["guest_disk_bytes"] = status["guest_disk_bytes"]
             self.service.journal.transaction(release)
         return {"job_id": job_id, "state": "interrupted", "termination_confirmed": status.get("termination_confirmed") is True and not status.get("outcome_unknown", False)}
 

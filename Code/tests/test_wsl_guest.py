@@ -122,6 +122,90 @@ class WslGuestTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             SUPERVISOR.control({**self.payload, "nonce": "0" * 32}, "cancel")
 
+    def gated_starter(self):
+        """! @brief 실제 시작 프로세스를 복사 직전 멈춰 소유 잠금 경합을 재현한다."""
+        request = self.request("Path('output/should-not-run').write_text('unexpected')\n")
+        request_path = self.base / "startup-request.json"
+        request_path.write_text(json.dumps(request), encoding="utf-8")
+        script = ("import importlib.util,json,sys,time\nfrom pathlib import Path\n"
+                  "s=importlib.util.spec_from_file_location('guest',sys.argv[1]);m=importlib.util.module_from_spec(s);s.loader.exec_module(m)\n"
+                  "original=m._copy_and_start\n"
+                  "def gated(payload,path,manifest):\n"
+                  " m.atomic(path/'fixture-start-ready.json',{'ready':True})\n"
+                  " deadline=time.monotonic()+8\n"
+                  " while not (path/'fixture-start-release').exists():\n"
+                  "  if time.monotonic()>deadline: raise RuntimeError('fixture release timeout')\n"
+                  "  time.sleep(.01)\n"
+                  " return original(payload,path,manifest)\n"
+                  "m._copy_and_start=gated\n"
+                  "print(json.dumps(m.start(json.loads(Path(sys.argv[2]).read_bytes()))))\n")
+        process = subprocess.Popen([sys.executable, "-I", "-B", "-c", script,
+                                    str(CODE / "tools/wsl_supervisor.py"), str(request_path)],
+                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        self.addCleanup(lambda: process.kill() if process.poll() is None else None)
+        deadline = time.monotonic() + 5
+        while time.monotonic() < deadline and not (self.root / self.run_id / "fixture-start-ready.json").exists():
+            time.sleep(0.01)
+        self.assertTrue((self.root / self.run_id / "fixture-start-ready.json").exists())
+        self.started = True
+        return process
+
+    def test_sticky_cancel_during_input_copy_never_opens_worker_gate(self):
+        """! @brief 초기 입력 복사 중 취소도 누락되지 않고 실제 미시작 종료를 확인한다."""
+        process = self.gated_starter()
+        status = SUPERVISOR.control(self.payload, "cancel")
+        self.assertFalse(status["termination_confirmed"])
+        (self.root / self.run_id / "fixture-start-release").write_text("release")
+        stdout, stderr = process.communicate(timeout=5)
+        self.assertEqual(process.returncode, 0, stderr)
+        status = json.loads(stdout)
+        self.assertEqual(status["state"], "cancelled")
+        self.assertTrue(status["not_started"])
+        self.assertFalse((self.root / self.run_id / "output/should-not-run").exists())
+
+    def test_startup_launcher_loss_releases_only_proven_unstarted_run(self):
+        """! @brief 시작 PID가 사라지고 잠금이 풀린 미인계 작업만 종료를 확정한다."""
+        process = self.gated_starter()
+        owner = SUPERVISOR.read_json(self.root / self.run_id / "starter.json")
+        self.assertEqual(owner["identity"]["pid"], process.pid)
+        process.kill()
+        process.communicate(timeout=5)
+        status = SUPERVISOR.control(self.payload, "status")
+        self.assertEqual(status["state"], "failed")
+        self.assertEqual(status["reason"], "startup_owner_lost")
+        self.assertTrue(status["termination_confirmed"])
+        self.assertTrue(status["not_started"])
+        self.assertFalse(status["outcome_unknown"])
+        self.assertGreater(status["guest_disk_bytes"], 0)
+
+    def test_duplicate_daemon_does_not_release_existing_active_worker(self):
+        """! @brief 중복 daemon 진입은 다른 PID가 소유한 활성 실행의 종료를 선언하지 않는다."""
+        self.start("Path('output/ready.json').write_text(json.dumps({'pid':os.getpid()}))\ntime.sleep(30)\n")
+        self.wait_worker()
+        before = SUPERVISOR.control(self.payload, "status")
+        SUPERVISOR.daemon(self.payload)
+        after = SUPERVISOR.control(self.payload, "status")
+        self.assertEqual(after["state"], before["state"])
+        self.assertEqual(after["worker_pid"], before["worker_pid"])
+        self.assertFalse(after["termination_confirmed"])
+        SUPERVISOR.control(self.payload, "cancel")
+        self.assertTrue(self.wait_terminal()["termination_confirmed"])
+
+    def test_old_start_without_owner_evidence_remains_unknown(self):
+        """! @brief 구형 시작 기록은 새 소유권 근거가 없으므로 종료를 소급 추정하지 않는다."""
+        process = self.gated_starter()
+        path = self.root / self.run_id
+        specification = SUPERVISOR.read_json(path / "supervisor.json")
+        specification.pop("startup_profile")
+        SUPERVISOR.atomic(path / "supervisor.json", specification)
+        process.kill()
+        process.communicate(timeout=5)
+        status = SUPERVISOR.control(self.payload, "status")
+        self.assertEqual(status["state"], "starting")
+        self.assertFalse(status["termination_confirmed"])
+        self.assertTrue(status["outcome_unknown"])
+        self.started = False
+
     def test_cancel_reaps_worker_and_grandchild(self):
         """! @brief 취소 ACK 뒤에 실제 worker와 손자 종료가 확인되어야 terminal이 된다."""
         self.start("child=subprocess.Popen([sys.executable,'-c','import time;time.sleep(30)'])\n"

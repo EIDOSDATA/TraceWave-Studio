@@ -16,7 +16,7 @@ from rfad.application.catalog_api import describe as describe_catalog, query as 
 from rfad.application.pcb_selection_contract import READ_METHODS as PCB_SELECTION_READS, MUTATION_METHODS as PCB_SELECTION_MUTATIONS
 from rfad.application.project_study_contract import READS as STUDY_READS, MUTATIONS as STUDY_MUTATIONS
 from rfad.application import target_editor
-from rfad.application import design_rule_service, physical_setup_service, precision_service, network_service
+from rfad.application import design_rule_service, physical_setup_service, precision_service, network_service, design_sweep_service
 
 TEMPLATE_READS = {"template.list", "template.get", "template.context", "template.synthesize"}
 
@@ -38,6 +38,7 @@ PROJECT_MUTATIONS = {"project.open", "project.apply_command", "editor.apply", "c
 PROJECT_MUTATIONS.update({"solver.plan", "solver.prepare", "job.submit"})
 PROJECT_MUTATIONS.update(PCB_SELECTION_MUTATIONS)
 PROJECT_MUTATIONS.update(STUDY_MUTATIONS)
+PROJECT_MUTATIONS.update(design_sweep_service.MUTATIONS)
 PROJECT_MUTATIONS.update({"target.editor.apply", "template.apply", "design.rules.apply", physical_setup_service.MUTATION, precision_service.MUTATION, network_service.MUTATION})
 
 
@@ -100,6 +101,11 @@ def capabilities(service=None, catalog=None) -> dict:
                                   for name in precision_service.READS | {precision_service.MUTATION}})
         result["methods"].update({name: {"status": "implemented", "extension_profile": network_service.PROFILE}
                                   for name in network_service.READS | {network_service.MUTATION}})
+        result["methods"].update({name: {"status": "implemented", "extension_profile": design_sweep_service.PROFILE}
+                                  for name in design_sweep_service.READS | design_sweep_service.MUTATIONS})
+        result["sweep_profile"] = {"profile": design_sweep_service.PROFILE, "max_candidates": 128,
+            "page_size": 25, "native_concurrency": 1, "lazy_candidates": True, "preview_required": True,
+            "native_checkpoint_resume": False, "physical_validation": False}
         from rfad.adapters.network_backend import installation_metadata as network_engine_metadata
         from rfad.adapters.network_hdf5 import installation_metadata as hdf5_metadata
         result["network_profile"] = {"profile": network_service.PROFILE, "ports": 2, "samples": 1001,
@@ -250,12 +256,14 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
         return _error(None, -32600, "Invalid Request")
     notification = "id" not in request
     method = request["method"]
-    if service is not None and method in PROJECT_MUTATIONS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | network_service.READS | {"target.editor.get", "job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
+    if service is not None and method in PROJECT_MUTATIONS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | network_service.READS | design_sweep_service.READS | {"target.editor.get", "job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
         if notification and method in PROJECT_MUTATIONS:
             return None
         try:
             params = request.get("params")
-            if method in network_service.READS:
+            if method in design_sweep_service.READS:
+                result = design_sweep_service.read(service, method, params)
+            elif method in network_service.READS:
                 result = network_service.read(service, method, params)
             elif method in precision_service.READS:
                 result = precision_service.read(service, method, params)

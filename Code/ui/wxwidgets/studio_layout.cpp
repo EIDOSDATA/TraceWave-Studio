@@ -367,6 +367,7 @@ void StudioFrame::BuildInterface()
                                      .CloseButton(true));
     BuildWorkspacePages();
     BuildNetworkInterface();
+    BuildSweepInterface();
     BuildWorkspaceLayers();
     m_manager->Update();
     m_defaultLayout = m_manager->SavePerspective();

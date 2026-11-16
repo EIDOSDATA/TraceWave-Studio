@@ -58,7 +58,10 @@ def stage_solver_job(journal, runtime, job):
         target = stage / relative
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(raw)
-    (stage / "runtime.json").write_bytes(journal.read_artifact(captured["manifest"]))
+    manifest = journal.read_artifact(captured["manifest"])
+    if hashlib.sha256(manifest).hexdigest() != captured["runtime"]["manifest_sha256"]:
+        raise ProjectError("E_HASH", "worker runtime 명세 해시가 변경되었습니다.")
+    (stage / "runtime.json").write_bytes(manifest)
     phase = "prepare" if job["kind"] == "em_prepare" else "analysis"
     if job["input"].get("task_plan", {}).get("execution_mode") == "postprocess_only":
         phase = "postprocess_only"

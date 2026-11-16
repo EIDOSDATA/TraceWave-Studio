@@ -69,7 +69,8 @@ def control(service, state, method, context, data):
         permitted = {"ready"} if method == "study.start" else {"cancelled", "interrupted", "failed", "blocked"}
         if study["state"] not in permitted:
             raise ProjectError("E_CONFLICT", "현재 연구 상태에서 실행/재개할 수 없습니다.")
-        if any(row["study_id"] != study["study_id"] and row["state"] in ACTIVE for row in state["studies"].values()):
+        if any(row["study_id"] != study["study_id"] and row["state"] in ACTIVE
+               for collection in ("studies", "sweeps") for row in state.get(collection, {}).values()):
             raise ProjectError("E_RESOURCE", "다른 연구가 실행 중입니다.")
         if service.solver.runtime is None or service.solver.runtime.identity != study["runtime_identity"]:
             raise ProjectError("E_VERSION", "연구를 고정한 worker와 다릅니다. 원본을 보존하고 새 연구를 만드십시오.")

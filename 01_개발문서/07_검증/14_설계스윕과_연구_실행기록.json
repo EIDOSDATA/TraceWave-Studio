@@ -1,0 +1,3216 @@
+{
+  "schema": "rfad.development-verification/0.1",
+  "stage": 6,
+  "baseline_commit": "f79edaaf9d8740ffcc7c93c7a0d6f8ecf6fca479",
+  "recorded_at_utc": "2026-11-16T20:41:07.324445+00:00",
+  "status": "verified_with_stated_limits",
+  "physics_validated": false,
+  "manufacturing_conditions_confirmed": false,
+  "measurement_conditions_confirmed": false,
+  "scope": {
+    "supported": "유한 명시 설계/수치/외부 이상 회로 스윕, 검토/불변 저장, 공유 단일 native 슬롯, 예산/취소/명시 재개, 후보 조회와 정확 표본 목표 평가",
+    "max_candidates": 128,
+    "max_native_solves": 128,
+    "concurrency": 1,
+    "core_project_schema_changed": false,
+    "numeric_convergence_automatically_established": false,
+    "automatic_candidate_adoption": false,
+    "test_runs_overlap": true,
+    "do_not_sum_run_counts": true,
+    "disk_usage": "host plus guest retained logical bytes; unobserved guest usage conservatively reserved",
+    "physical_vhd_allocation_measured": false,
+    "peak_ram_measured": false,
+    "source_file_limit": 192,
+    "solver_source_json_limit_bytes": 4194304,
+    "new_fdtd_run_is_synthetic_interface_case": true,
+    "grid_convergence_established": false,
+    "physical_measurement_validation": false,
+    "reference_files_modified": false,
+    "historical_failure_records_rewritten": false,
+    "hash_basis": "runtime worker hashes describe staged UTF-8 source; current_owned_files describe checkout file bytes"
+  },
+  "collection_evidence": {
+    "path": "Code/.local/sweep-backend-evidence.json",
+    "bytes": 96714,
+    "sha256": "f9a889cee69a1928c07eea1a8a7650b8afa7e664dffcb06f178aa611d65d2177",
+    "last_written_utc": "2026-11-16T20:12:41.582947+00:00"
+  },
+  "runs": [
+    {
+      "run_id": "design-sweep-domain-initial",
+      "environment": "Windows",
+      "log": {
+        "path": "Code/.local/design-sweep-domain-initial.log",
+        "bytes": 3914,
+        "sha256": "a603ef0a14c9f94394cb347783a59dd15bf723771b4ed28fbaa0247409a6172c",
+        "last_written_utc": "2026-11-16T19:35:37.421026+00:00"
+      },
+      "tests": 14,
+      "passed": 14,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 0.112,
+      "status": "passed",
+      "scope_and_timing": "초기 domain 14개. 이후 실제 기판 DRC/경계 시험이 추가됨.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start"
+    },
+    {
+      "run_id": "design-sweep-domain-expanded",
+      "environment": "Windows",
+      "log": {
+        "path": "Code/.local/design-sweep-domain-expanded.log",
+        "bytes": 5643,
+        "sha256": "480e949d1deb0bd5c6fcc6602005373518b03938862b7657cb3583e9497d375a",
+        "last_written_utc": "2026-11-16T19:37:20.135264+00:00"
+      },
+      "tests": 20,
+      "passed": 20,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 0.132,
+      "status": "passed",
+      "scope_and_timing": "domain 20개. 고정 방사 주파수, 매개변수 일괄 처리, 후보 무효와 원문 보존 포함.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start"
+    },
+    {
+      "run_id": "sweep-service-initial",
+      "environment": "Windows",
+      "log": {
+        "path": "Code/.local/sweep-service-initial.log",
+        "bytes": 1538,
+        "sha256": "58fbc8ba6c9386a6362b7ba9fb5d3d14142160733386c786d1de995911e1610a",
+        "last_written_utc": "2026-11-16T19:37:50.651317+00:00"
+      },
+      "tests": 5,
+      "passed": 5,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 7.069,
+      "status": "passed",
+      "scope_and_timing": "초기 service 5개. 검토 hash/원본 불변/명시 재개/공개 RPC와 단위 경계.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start"
+    },
+    {
+      "run_id": "sweep-existing-study-service",
+      "environment": "Windows",
+      "log": {
+        "path": "Code/.local/sweep-existing-study-service.log",
+        "bytes": 5043,
+        "sha256": "fd9f94c2f235cc081759c39a499e5215cb7901ed537217d4677ff152b2deae95",
+        "last_written_utc": "2026-11-16T19:39:13.509595+00:00"
+      },
+      "tests": 18,
+      "passed": 18,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 20.405,
+      "status": "passed",
+      "scope_and_timing": "기존 한 축 study 13개와 새 service 5개. 후속 snapshot/host 계산 소스 보강 전.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start"
+    },
+    {
+      "run_id": "design-sweep-domain-final",
+      "environment": "Windows",
+      "log": {
+        "path": "Code/.local/design-sweep-domain-final.log",
+        "bytes": 5934,
+        "sha256": "fddfd091977fdb14ebf9f67550ea1609f5979a76022b366de24c5d303c0818e0",
+        "last_written_utc": "2026-11-16T19:43:14.431883+00:00"
+      },
+      "tests": 21,
+      "passed": 21,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 0.142,
+      "status": "passed",
+      "scope_and_timing": "domain 21개. 수치 설정의 정수/실수 동치 cache key 보강 후.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start"
+    },
+    {
+      "run_id": "sweep-service-display",
+      "environment": "Windows",
+      "log": {
+        "path": "Code/.local/sweep-service-display.log",
+        "bytes": 1538,
+        "sha256": "5004d0c150bbb81a52cdd75c567020d59e8d4612e7e1db430a2de3b89aafb4a7",
+        "last_written_utc": "2026-11-16T19:43:32.965098+00:00"
+      },
+      "tests": 5,
+      "passed": 5,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 7.096,
+      "status": "passed",
+      "scope_and_timing": "service 5개. 표시 단위와 입력 원문을 보존하는 서비스 폼 보강 후.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start"
+    },
+    {
+      "phase": 10,
+      "environment": "Windows fake transport + actual journal/RLC",
+      "log": {
+        "path": "Code/.local/sweep-runner-tests.log",
+        "bytes": 4888,
+        "sha256": "d469f63209e54c0c98e1290422af4bf15e1cb64051f71f8fbb3ebda99e24993b",
+        "last_written_utc": "2026-11-16T19:43:52.537289+00:00"
+      },
+      "tests": 11,
+      "passed": 10,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 1,
+      "elapsed_seconds": 24.272,
+      "status": "failed",
+      "scope_and_timing": "중간 fixture 오류: queued에서 completed로 직접 전이해 1개 오류. preparing 전이 추가 후 뒤 회귀에서 통과.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start",
+      "run_id": "sweep-runner-tests"
+    },
+    {
+      "run_id": "design-sweep-domain-and-gui-collection",
+      "environment": "Windows",
+      "log": {
+        "path": "Code/.local/design-sweep-domain-and-gui-collection.log",
+        "bytes": 6274,
+        "sha256": "ec99128f75b257455bbfb2f7b651a0f1ccf8cb743f1f46bdaf08fd291eea968f",
+        "last_written_utc": "2026-11-16T19:46:31.992752+00:00"
+      },
+      "tests": 22,
+      "passed": 21,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 0.141,
+      "status": "passed",
+      "scope_and_timing": "domain 21개와 GUI 1개 수집. GUI 실행 파일 미지정으로 1개 제외; 실제 GUI 실행 증거가 아님.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start"
+    },
+    {
+      "phase": 20,
+      "environment": "Windows",
+      "log": {
+        "path": "Code/.local/sweep-runner-regression.log",
+        "bytes": 17098,
+        "sha256": "ce67692133d6f4844daf8e7e537990817b68fe8eeaecd8d3b07450a8436b09f6",
+        "last_written_utc": "2026-11-16T19:46:56.681700+00:00"
+      },
+      "tests": 66,
+      "passed": 66,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 112.312,
+      "status": "passed",
+      "scope_and_timing": "compact/runner 12개와 solver_jobs, PCB solver, native_process, 기존 project_studies. WSL 시작 소유 보강 전.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start",
+      "run_id": "sweep-runner-regression"
+    },
+    {
+      "phase": 30,
+      "environment": "Windows",
+      "log": {
+        "path": "Code/.local/sweep-compact-final.log",
+        "bytes": 2068,
+        "sha256": "30edae18a7666b0a85e18d287b8f84391851a4a89b268a91f575697eb37bc7a3",
+        "last_written_utc": "2026-11-16T19:47:40.562993+00:00"
+      },
+      "tests": 7,
+      "passed": 7,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 19.176,
+      "status": "passed",
+      "scope_and_timing": "snapshot과 prepared-plan 결합 재검증을 보강한 뒤 compact/runner 영향 7개.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start",
+      "run_id": "sweep-compact-final"
+    },
+    {
+      "phase": 40,
+      "environment": "Windows",
+      "log": {
+        "path": "Code/.local/sweep-runner-final.log",
+        "bytes": 4255,
+        "sha256": "342ad88aa3956c6e0812283e9c61832e7c743fee657b3a51fb97e2612cb24c5a",
+        "last_written_utc": "2026-11-16T19:49:18.077249+00:00"
+      },
+      "tests": 14,
+      "passed": 13,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 29.673,
+      "status": "passed",
+      "scope_and_timing": "회로 진단 보존, 마지막 후보 시간 초과, 공유 슬롯 대기 경계 포함. 실제 WSL 1개 환경 제외.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start",
+      "run_id": "sweep-runner-final"
+    },
+    {
+      "phase": 50,
+      "environment": "Windows + actual WSL",
+      "log": {
+        "path": "Code/.local/sweep-actual-native-initial-failed.log",
+        "bytes": 3222,
+        "sha256": "41c40b37ce7cf7cb447433824fbc5aceca47cf3cea5bb1ce94787e7cfc2b5065",
+        "last_written_utc": "2026-11-16T19:49:56.998632+00:00"
+      },
+      "tests": 1,
+      "passed": 0,
+      "skipped": 0,
+      "failures": 1,
+      "errors": 0,
+      "elapsed_seconds": 24.335,
+      "status": "failed",
+      "scope_and_timing": "구형 시작 복사/인계 구간의 종료 불명. 계산 0회, 예약 유지. 원문 상태는 보존하며 소급 종료 확정하지 않음.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start",
+      "run_id": "sweep-actual-native-initial-failed"
+    },
+    {
+      "run_id": "sweep-step6-ctest-first",
+      "environment": "Windows CTest",
+      "log": {
+        "path": "Code/.local/sweep-step6-ctest-first.log",
+        "bytes": 1052,
+        "sha256": "9be86234edf266dc5916faa7a5e84ae9992821c1596e60c58ce4f8766cd3364b",
+        "last_written_utc": "2026-11-16T19:55:33.277412+00:00"
+      },
+      "tests": 9,
+      "passed": 9,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 0.47,
+      "status": "passed",
+      "scope_and_timing": "최초 GUI 통합 뒤 CTest. 이후 표시/수동 검수 보완 전.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start"
+    },
+    {
+      "run_id": "sweep-gui-focused",
+      "environment": "actual Windows wxWidgets GUI + application service",
+      "log": {
+        "path": "Code/.local/sweep-gui-focused.log",
+        "bytes": 9213,
+        "sha256": "10288a68747d847bdc877d67fc6d6aef791f87485b072b004b15f67710f947f6",
+        "last_written_utc": "2026-11-16T19:56:00.820668+00:00"
+      },
+      "tests": 1,
+      "passed": 0,
+      "skipped": 0,
+      "failures": 1,
+      "errors": 0,
+      "elapsed_seconds": 12.226,
+      "status": "failed",
+      "scope_and_timing": "최초 실제 GUI 1개 실패. 회로 자료의 nullable port name을 string으로 읽어 설정 단계7에서 JSON type_error. 앞서 끝난 GUI 검사 5개를 전체 완료로 표시하지 않음.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start",
+      "executable_sha256": "a5e111dec248c9c6099ff20b85685f462fb696a51fdf49a34a860bdf508e0fc3",
+      "executable_identity_basis": "GUI execution agent retained executable SHA256 at this run"
+    },
+    {
+      "phase": 60,
+      "environment": "Windows",
+      "log": {
+        "path": "Code/.local/sweep-startup-host.log",
+        "bytes": 8186,
+        "sha256": "667cf095c46dfcbfb8e104c904d5ab497ab39f6863fb60f6676911b431439916",
+        "last_written_utc": "2026-11-16T19:57:40.176707+00:00"
+      },
+      "tests": 30,
+      "passed": 27,
+      "skipped": 3,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 32.784,
+      "status": "passed",
+      "scope_and_timing": "시작 소유/guest 비용 보강 후 runner+WSL host/readiness 30개. 실제환경 3개 제외.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start",
+      "run_id": "sweep-startup-host"
+    },
+    {
+      "run_id": "design-sweep-domain-source-bound",
+      "environment": "Windows",
+      "log": {
+        "path": "Code/.local/design-sweep-domain-source-bound.log",
+        "bytes": 6225,
+        "sha256": "0338261d09feefcdf07c93cf6df15672c637c6dce04795d85be37af1c1b6324e",
+        "last_written_utc": "2026-11-16T19:58:33.434856+00:00"
+      },
+      "tests": 22,
+      "passed": 22,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 0.315,
+      "status": "passed",
+      "scope_and_timing": "domain 22개. range 양끝 출처 합집합 128개 초과의 명시 거절까지 보강 후.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start"
+    },
+    {
+      "phase": 70,
+      "environment": "actual WSL Linux PID/flock/pidfd",
+      "log": {
+        "path": "Code/.local/sweep-startup-guest.log",
+        "bytes": 3409,
+        "sha256": "89e5767cedd2f4ec4bfd633510621ef779018549d26670fc69cf0d1f74d43ec0",
+        "last_written_utc": "2026-11-16T19:58:53.103362+00:00"
+      },
+      "tests": 14,
+      "passed": 14,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 75.729,
+      "status": "passed",
+      "scope_and_timing": "입력 복사 중 sticky 취소, 시작 PID 강제 종료, 기존 watchdog/후손 회수 14개. FDTD 없음.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start",
+      "run_id": "sweep-startup-guest"
+    },
+    {
+      "phase": 80,
+      "environment": "Windows + actual WSL openEMS",
+      "log": {
+        "path": "Code/.local/sweep-actual-native-final.log",
+        "bytes": 369,
+        "sha256": "511eae47249be54efc5e3c3f9ebdc33aa47c9c626f6c66d7ca3caed675bcb8fe",
+        "last_written_utc": "2026-11-16T20:00:04.811304+00:00"
+      },
+      "tests": 1,
+      "passed": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 55.315,
+      "status": "passed",
+      "scope_and_timing": "첫 보강 후 실제 PCB 1후보/31표본/소스189개/재열기. 이후 snapshot prepare/publish와 중복 daemon 가드가 추가됨.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start",
+      "run_id": "sweep-actual-native-final"
+    },
+    {
+      "run_id": "sweep-gui-port-fix",
+      "environment": "actual Windows wxWidgets GUI + application service",
+      "log": {
+        "path": "Code/.local/sweep-gui-port-fix.log",
+        "bytes": 369,
+        "sha256": "d4239e5a5427b917396c9fdbfb666d0f1f02358a4cd46f1af558c141c6833fae",
+        "last_written_utc": "2026-11-16T20:00:08.104641+00:00"
+      },
+      "tests": 1,
+      "passed": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 29.625,
+      "status": "passed",
+      "scope_and_timing": "nullable port 표시 이름 보강 뒤 실제 GUI 1개 통과. 뒤의 수동 외형 보완 전.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start",
+      "executable_sha256": "8df2bbf51711c0c22e4e468102f7eae3243869e6e6821f0238825fe66ecef8ce",
+      "executable_identity_basis": "GUI execution agent retained executable SHA256 at this run",
+      "explicit_gui_checks": 10
+    },
+    {
+      "run_id": "sweep-full-service",
+      "environment": "Windows",
+      "log": {
+        "path": "Code/.local/sweep-full-service.log",
+        "bytes": 266784,
+        "sha256": "181d3a1cf678aea9c825c83c31287be151e95de8e2dec392109191c79e1d35a7",
+        "last_written_utc": "2026-11-16T20:01:37.149018+00:00"
+      },
+      "tests": 1056,
+      "passed": 967,
+      "skipped": 89,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 614.675,
+      "status": "passed",
+      "scope_and_timing": "전체 서비스 수집 1056개. 967 통과/89 환경 제외. 실행 중 일부 병렬 보완이 있었으므로 최종 동결 소스 전체를 한 번에 재수집한 결과로 주장하지 않는다. 아래 후속 snapshot/host identity/guest/실제 WSL 집중 결과를 구분한다.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start"
+    },
+    {
+      "phase": 90,
+      "environment": "Windows",
+      "log": {
+        "path": "Code/.local/sweep-solver-final.log",
+        "bytes": 4779,
+        "sha256": "3f9f725c4ef0c5e5fefca0da7efa14721e52abbbf06118531f4bf927b2d5ef2e",
+        "last_written_utc": "2026-11-16T20:02:41.904029+00:00"
+      },
+      "tests": 18,
+      "passed": 18,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 72.891,
+      "status": "passed",
+      "scope_and_timing": "guest 관측/transport 오류 보존을 추가한 뒤 기존 solver_jobs 18개 영향 회귀.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start",
+      "run_id": "sweep-solver-final"
+    },
+    {
+      "phase": 100,
+      "environment": "actual WSL Linux",
+      "log": {
+        "path": "Code/.local/sweep-startup-final-guards.log",
+        "bytes": 1379,
+        "sha256": "90e21cac4d452cab288af2e39c5f9b95b462a5bbe56d635762addd21540c23aa",
+        "last_written_utc": "2026-11-16T20:03:51.219573+00:00"
+      },
+      "tests": 2,
+      "passed": 1,
+      "skipped": 0,
+      "failures": 1,
+      "errors": 0,
+      "elapsed_seconds": 9.768,
+      "status": "failed",
+      "scope_and_timing": "중복 daemon 가드의 수정 위치 오적용으로 1개 실패. 기존 watchdog 조건 복원 및 daemon gate 한정 뒤 전체 guest 재검증.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start",
+      "run_id": "sweep-startup-final-guards"
+    },
+    {
+      "run_id": "sweep-prepublication-budget",
+      "environment": "Windows",
+      "log": {
+        "path": "Code/.local/sweep-prepublication-budget.log",
+        "bytes": 8636,
+        "sha256": "0c7f76fc2dca11c0ea8deaed7b6b6a09596dee83f21655ebfea600e2cf750eae",
+        "last_written_utc": "2026-11-16T20:04:21.279655+00:00"
+      },
+      "tests": 33,
+      "passed": 32,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 1,
+      "elapsed_seconds": 28.884,
+      "status": "failed",
+      "scope_and_timing": "snapshot prepare/publish 분리 후 기존 프로젝트/격자 연구+새 서비스 33개. 새 시험이 사용 중인 Windows workspace lock 파일까지 read_bytes하여 시험 오류 1개. 나머지 32개 통과.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start"
+    },
+    {
+      "run_id": "sweep-prepublication-budget-fixed",
+      "environment": "Windows",
+      "log": {
+        "path": "Code/.local/sweep-prepublication-budget-fixed.log",
+        "bytes": 411,
+        "sha256": "d010fb669836987e573173e416861a8e1be1f3ce131071d1797040aba4341091",
+        "last_written_utc": "2026-11-16T20:04:50.630240+00:00"
+      },
+      "tests": 1,
+      "passed": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 1.381,
+      "status": "passed",
+      "scope_and_timing": "직전 시험의 lock 파일 제외를 수정한 뒤 비용 거절 시 snapshot/definition 파일 누수가 없는 단일 시험 통과. 제품 코드를 완화하지 않음.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start"
+    },
+    {
+      "run_id": "sweep-step6-ctest-review",
+      "environment": "Windows CTest",
+      "log": {
+        "path": "Code/.local/sweep-step6-ctest-review.log",
+        "bytes": 1052,
+        "sha256": "12aa66775d4aaf63e06b5adca1b275059a25323a61999d794a97f76f101c7f46",
+        "last_written_utc": "2026-11-16T20:05:09.125170+00:00"
+      },
+      "tests": 9,
+      "passed": 9,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 0.41,
+      "status": "passed",
+      "scope_and_timing": "초기 리뷰와 결과 창 보강 뒤 CTest. 마지막 수동 수정 전.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start",
+      "executable_sha256": "da3e1ee82eaa6ba170c214f4327b7882ca6fe0b5264741056eb1b1e81a7ab413"
+    },
+    {
+      "phase": 110,
+      "environment": "actual WSL Linux PID/flock/pidfd",
+      "log": {
+        "path": "Code/.local/sweep-startup-guest-final.log",
+        "bytes": 3940,
+        "sha256": "04108f3cb069aa68b66a2ee4d04c30f144cf5853c02dd8e8521edfda6616c365",
+        "last_written_utc": "2026-11-16T20:06:02.634048+00:00"
+      },
+      "tests": 16,
+      "passed": 16,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 76.26,
+      "status": "passed",
+      "scope_and_timing": "중복 진입과 구형 소유 증거 부재를 포함한 최종 16개 guest 검증.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start",
+      "run_id": "sweep-startup-guest-final"
+    },
+    {
+      "run_id": "sweep-host-source-identity",
+      "environment": "Windows",
+      "log": {
+        "path": "Code/.local/sweep-host-source-identity.log",
+        "bytes": 8600,
+        "sha256": "1ccbc645a13b494982cd1e6c88be65a8c7b0277daccd3550f93b62f4d7c6d25c",
+        "last_written_utc": "2026-11-16T20:08:46.578400+00:00"
+      },
+      "tests": 30,
+      "passed": 30,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 24.055,
+      "status": "passed",
+      "scope_and_timing": "최종 회로 host 계산 소스 manifest/Python ABI 경계 보강 뒤 service 8개와 domain 22개. 계산 소스 변경은 재개를 차단하며 과거 결과 조회는 유지.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start"
+    },
+    {
+      "run_id": "sweep-audit-intermediate",
+      "environment": "Windows",
+      "log": {
+        "path": "Code/.local/sweep-audit-intermediate.log",
+        "bytes": 3976,
+        "sha256": "099b0b31015d349fce30c6362e4203081385f47966eb1c30765136d8af91fd75",
+        "last_written_utc": "2026-11-16T20:11:37.138739+00:00"
+      },
+      "tests": 14,
+      "passed": 14,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 2.56,
+      "status": "passed",
+      "scope_and_timing": "요구 추적 감사 14개 중간 확인. 최종 문서 마감 후 감사와 구분.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start"
+    },
+    {
+      "phase": 121,
+      "environment": "Windows actual network engine",
+      "log": {
+        "path": "Code/.local/sweep-circuit-final-source.log",
+        "bytes": 1601,
+        "sha256": "67961fa1c6c0802c9551ef86cc2f8477583ad48d9de930a7f32dcb4c2a0db563",
+        "last_written_utc": "2026-11-16T20:11:55.985580+00:00"
+      },
+      "tests": 5,
+      "passed": 5,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 18.919,
+      "status": "passed",
+      "scope_and_timing": "최종 snapshot/앱 계산소스 식별을 반영한 회로 실패/동치캐시/취소/재개/미정/예산 영향 5개.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start",
+      "run_id": "sweep-circuit-final-source"
+    },
+    {
+      "phase": 120,
+      "environment": "Windows + actual WSL openEMS",
+      "log": {
+        "path": "Code/.local/sweep-actual-native-final-source.log",
+        "bytes": 369,
+        "sha256": "207d1346ac273c5030888b2a9c112d8f16d3df66dde99489e862a275c7405f4c",
+        "last_written_utc": "2026-11-16T20:12:03.705472+00:00"
+      },
+      "tests": 1,
+      "passed": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 54.133,
+      "status": "passed",
+      "scope_and_timing": "최종 snapshot prepare/publish, 회로 앱 소스 식별, 최종 supervisor를 반영한 실제 PCB 재검증.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start",
+      "run_id": "sweep-actual-native-final-source"
+    },
+    {
+      "run_id": "sweep-step6-ctest-manual-corrections",
+      "environment": "Windows CTest",
+      "log": {
+        "path": "Code/.local/sweep-step6-ctest-manual-corrections.log",
+        "bytes": 1052,
+        "sha256": "99195aadaad201f76421eb968d64e4d8c9262440a2109bdf24a4fcf4275f67a7",
+        "last_written_utc": "2026-11-16T20:15:55.556182+00:00"
+      },
+      "tests": 9,
+      "passed": 9,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 0.51,
+      "status": "passed",
+      "scope_and_timing": "수동 외형 보완 뒤 CTest. 명시행 mapping 보강 전.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start"
+    },
+    {
+      "run_id": "sweep-gui-manual-fixes",
+      "environment": "actual Windows wxWidgets GUI + application service",
+      "log": {
+        "path": "Code/.local/sweep-gui-manual-fixes.log",
+        "bytes": 369,
+        "sha256": "59dc62b2a3b7fa9886c2afbadfd9b72d8ac2edb59a127bd22d51c999871d350e",
+        "last_written_utc": "2026-11-16T20:16:36.508578+00:00"
+      },
+      "tests": 1,
+      "passed": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 26.32,
+      "status": "passed",
+      "scope_and_timing": "수동 외형 보완 뒤 실제 GUI 1개/12개 검사 통과. b021bb9a 빌드. 이후 명시행 mapping 경계 보완과 구분.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start",
+      "explicit_gui_checks": 12,
+      "executable_sha256": "b021bb9a5f6c4c1c83108c54016154506a693f079274745a40a89dc4c9d28f5e",
+      "executable_identity_basis": "GUI execution agent retained executable SHA256 at this run",
+      "gui_report": {
+        "path": "Code/.local/sweep-gui-manual-fixes-reports/sweep.json",
+        "bytes": 9762,
+        "sha256": "ccf72527624fcfaf7efef71413a0750837b59201a6f2568807fd912793b3d76d",
+        "last_written_utc": "2026-11-16T20:16:36.276769+00:00"
+      },
+      "gui_observation": {
+        "passed": true,
+        "setup_checks": [
+          "sweep_cartesian_preview_2_by_2",
+          "sweep_native_fields_and_viewport",
+          "sweep_frequency_display_preserves_review_and_si",
+          "sweep_changed_input_invalidates_review",
+          "sweep_create_does_not_start_or_change_design",
+          "sweep_circuit_units_and_duplicate_preserved",
+          "sweep_cancel_preserves_explicit_resume",
+          "sweep_real_circuit_completion_and_reuse",
+          "sweep_saved_service_restart_preserves_history",
+          "sweep_studio_titles_and_result_button",
+          "sweep_candidate_result_native_conditions",
+          "sweep_studio_candidates_and_design_return"
+        ],
+        "service_sessions": 2,
+        "saved_revision": "dfb75cde-5231-453d-9ec1-38a173328b45",
+        "physics_tested": false,
+        "frame_budget_tested": false
+      }
+    },
+    {
+      "run_id": "sweep-step6-ctest-final-review",
+      "environment": "Windows CTest",
+      "log": {
+        "path": "Code/.local/sweep-step6-ctest-final-review.log",
+        "bytes": 1052,
+        "sha256": "90ce2df26e11e35eda470e40df8f17b524fa8b19af039bbb22e6d93b920d7330",
+        "last_written_utc": "2026-11-16T20:27:49.123429+00:00"
+      },
+      "tests": 9,
+      "passed": 9,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 0.28,
+      "status": "passed",
+      "scope_and_timing": "명시행 입력방식 전환/연구 전환의 이전 후보 비우기까지 반영한 최종 C++ 빌드. 뒤의 실제 GUI/전체 GUI와 구분.",
+      "executable_sha256": "6f6eb63042a726b1a095a8b264b793c2e1af075678e59b61e2e6d90714dbd92a",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start"
+    },
+    {
+      "run_id": "sweep-gui-final-rows",
+      "environment": "actual Windows wxWidgets GUI + application service",
+      "log": {
+        "path": "Code/.local/sweep-gui-final-rows.log",
+        "bytes": 369,
+        "sha256": "d5f50f980602d4cfcd73d3d96b34a4005f0a8ebced733d815c59805aff30c3cc",
+        "last_written_utc": "2026-11-16T20:30:24.235195+00:00"
+      },
+      "tests": 1,
+      "passed": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 25.99,
+      "status": "passed",
+      "scope_and_timing": "최종 canonical 실행 파일. 명시 값 목록/범위 전환 취소 시 원문/행/검토 보존, 승인 시 행 삭제/검토 무효화와 목록 복귀 후 이전 index 부재까지 13개 실제 검사.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start",
+      "executable_sha256": "6f6eb63042a726b1a095a8b264b793c2e1af075678e59b61e2e6d90714dbd92a",
+      "explicit_gui_checks": 13,
+      "gui_report": {
+        "path": "Code/.local/sweep-gui-final-rows-reports/sweep.json",
+        "bytes": 9811,
+        "sha256": "cf53f5123ad1f7567b54e7a58d1e826853ec703e2366474d58fd8a7669edf635",
+        "last_written_utc": "2026-11-16T20:30:24.010059+00:00"
+      },
+      "gui_observation": {
+        "passed": true,
+        "setup_checks": [
+          "sweep_cartesian_preview_2_by_2",
+          "sweep_native_fields_and_viewport",
+          "sweep_frequency_display_preserves_review_and_si",
+          "sweep_changed_input_invalidates_review",
+          "sweep_value_mode_explicit_rows_safe_reset",
+          "sweep_create_does_not_start_or_change_design",
+          "sweep_circuit_units_and_duplicate_preserved",
+          "sweep_cancel_preserves_explicit_resume",
+          "sweep_real_circuit_completion_and_reuse",
+          "sweep_saved_service_restart_preserves_history",
+          "sweep_studio_titles_and_result_button",
+          "sweep_candidate_result_native_conditions",
+          "sweep_studio_candidates_and_design_return"
+        ],
+        "service_sessions": 2,
+        "saved_revision": "17722b9c-5164-4556-a2e1-1ba50f930f38",
+        "physics_tested": false,
+        "frame_budget_tested": false
+      }
+    },
+    {
+      "run_id": "sweep-gui-full-final",
+      "environment": "actual Windows wxWidgets GUI + native OCCT CAD; RFAD_TEST_WSL unset",
+      "log": {
+        "path": "Code/.local/sweep-gui-full-final.log",
+        "bytes": 7422,
+        "sha256": "4bf6338349900a6259bd6074d252ed658165f2b20595aac3fb5950cc6d2ed7c6",
+        "last_written_utc": "2026-11-16T20:38:48.429888+00:00"
+      },
+      "tests": 27,
+      "passed": 25,
+      "skipped": 2,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 481.421,
+      "status": "passed",
+      "scope_and_timing": "최종 6f6eb630 기본 실행 파일의 전체 GUI 회귀. 실제 CAD GUI 2개와 새 스윕/기존 목표/문헌/정밀 편집/복소자료 포함. 실제 WSL 해석 GUI 2개는 환경 제외이며 별도 actual native 스윕의 성공을 GUI2개 통과로 대신 표시하지 않는다.",
+      "timestamp_basis": "log file last-write time; not reconstructed wall-clock start",
+      "executable_sha256": "6f6eb63042a726b1a095a8b264b793c2e1af075678e59b61e2e6d90714dbd92a",
+      "sweep_explicit_gui_checks": 13,
+      "sweep_gui_report": {
+        "path": "Code/.local/sweep-gui-full-reports/sweep.json",
+        "bytes": 9810,
+        "sha256": "76f4918759a7bedf077a56cca45f1f13fdb8c114893cfae283d08c9ce5c42d80",
+        "last_written_utc": "2026-11-16T20:36:14.305763+00:00"
+      },
+      "sweep_gui_observation": {
+        "passed": true,
+        "setup_checks": [
+          "sweep_cartesian_preview_2_by_2",
+          "sweep_native_fields_and_viewport",
+          "sweep_frequency_display_preserves_review_and_si",
+          "sweep_changed_input_invalidates_review",
+          "sweep_value_mode_explicit_rows_safe_reset",
+          "sweep_create_does_not_start_or_change_design",
+          "sweep_circuit_units_and_duplicate_preserved",
+          "sweep_cancel_preserves_explicit_resume",
+          "sweep_real_circuit_completion_and_reuse",
+          "sweep_saved_service_restart_preserves_history",
+          "sweep_studio_titles_and_result_button",
+          "sweep_candidate_result_native_conditions",
+          "sweep_studio_candidates_and_design_return"
+        ],
+        "service_sessions": 2,
+        "saved_revision": "35363ff9-63c5-4bf9-b123-f0fa6f67b725",
+        "physics_tested": false,
+        "frame_budget_tested": false
+      },
+      "native_cad_test_symbols": [
+        "test_gui_cad_process.GuiCadProcessTests.test_missing_geometry_input_does_not_publish_or_display",
+        "test_gui_cad_process.GuiCadProcessTests.test_step_mesh_edit_save_cancel_and_restart"
+      ]
+    }
+  ],
+  "actual_native_runs": [
+    {
+      "report": {
+        "path": "Code/.local/sweep-native-cbcf4e6cf18546de9dfd40fb085d37fe/report.json",
+        "bytes": 52579,
+        "sha256": "b7fa702f563ea70ed74964205a2607f991af1611a9240a0dd5db82473a30f083",
+        "last_written_utc": "2026-11-16T20:00:04.804604+00:00"
+      },
+      "source_profile": "explicit_synthetic_pcb_gap_not_manufacturing_reference",
+      "study_id": "dedda380-4422-4ab5-b42c-b27c748c7ff6",
+      "candidate_count": 1,
+      "sample_count": 31,
+      "budget_usage": {
+        "disk_bytes": 14166126,
+        "guest_disk_bytes": 4770244,
+        "native_solves": 1,
+        "wall_seconds": 54.13384532928467
+      },
+      "source_count": 189,
+      "source_json_bytes": 1697456,
+      "runtime_identity": {
+        "code_files": [
+          {
+            "bytes": 1854,
+            "path": "tools/openems_worker.py",
+            "sha256": "a71e56e21aff057f4b673dd43131e22da3bdf4698099ec124946e65b152e582f"
+          },
+          {
+            "bytes": 110,
+            "path": "src/rfad/__init__.py",
+            "sha256": "637407b3c13a348c03d6a167d2a90e3703c4fc70a421cd9918075c0463d81097"
+          },
+          {
+            "bytes": 2818,
+            "path": "src/rfad/__main__.py",
+            "sha256": "354888f3b9a8851b80520b2876cc77d3c09e666f4e04f8221eb7c0e218a36af3"
+          },
+          {
+            "bytes": 102,
+            "path": "src/rfad/adapters/__init__.py",
+            "sha256": "e4be3b367495a970767105766bbd0895df057c4a53a3a39087bfe316171d0837"
+          },
+          {
+            "bytes": 99,
+            "path": "src/rfad/adapters/cad/__init__.py",
+            "sha256": "031a455542eba8f6df8c996b243a3210041b80cbb40b04208f0c639469e3df83"
+          },
+          {
+            "bytes": 10430,
+            "path": "src/rfad/adapters/cad/bodies.py",
+            "sha256": "b47d8f1ef8952c121e2257400194af0aa639b577230759ac4aabd95dca7cd601"
+          },
+          {
+            "bytes": 3442,
+            "path": "src/rfad/adapters/cad/display.py",
+            "sha256": "f9dcca816110978ff318a17c2136cda9d973ded99e129fa260a4805eba4ff949"
+          },
+          {
+            "bytes": 16629,
+            "path": "src/rfad/adapters/cad/geometry.py",
+            "sha256": "48305c116a58ab5a8dc0941c2574fcbf3739f05177c2e2eddf8865fb702e5445"
+          },
+          {
+            "bytes": 7431,
+            "path": "src/rfad/adapters/cad/native.py",
+            "sha256": "6835af5657bf571b6d087ce1f40713731dec6f32289eac97f63ef040a9adc709"
+          },
+          {
+            "bytes": 7154,
+            "path": "src/rfad/adapters/cad/physical.py",
+            "sha256": "a21d32fd366c578963474ad7026105e3a437127549ace146afbd293c83b33bc4"
+          },
+          {
+            "bytes": 7708,
+            "path": "src/rfad/adapters/cad/step_io.py",
+            "sha256": "fd4ac53d02c291118464b233ddce8c556107a6ffe644a04b478a2b8851f9f924"
+          },
+          {
+            "bytes": 5815,
+            "path": "src/rfad/adapters/network_backend.py",
+            "sha256": "dfad29fdd64f92a7feb75e86a52e3f759edcf05022f85cc34e7fc476c8f424e3"
+          },
+          {
+            "bytes": 8362,
+            "path": "src/rfad/adapters/network_csv.py",
+            "sha256": "c2066d43aa9b44a37f6fceb1af5926269dd35be742656a0c26666f13b5496cb5"
+          },
+          {
+            "bytes": 1505,
+            "path": "src/rfad/adapters/network_files.py",
+            "sha256": "28fc0577d8eb718bbb357214f597abb31a34522d7e19be8faa124a0db1be54ef"
+          },
+          {
+            "bytes": 10587,
+            "path": "src/rfad/adapters/network_hdf5.py",
+            "sha256": "d557858c01143e87549975542cc2a7e9ac67b63acec0853c3d38f98eb2e6aa75"
+          },
+          {
+            "bytes": 6347,
+            "path": "src/rfad/adapters/network_text.py",
+            "sha256": "64b6bae3747aad6731b869754710ba92a1dff89afcd46d9e8a0621fb419d36a9"
+          },
+          {
+            "bytes": 11727,
+            "path": "src/rfad/adapters/network_touchstone.py",
+            "sha256": "828f86f0b317b59eb79b7fc220c9906b31da9ed2e77351a3f103e020bfe31afe"
+          },
+          {
+            "bytes": 7293,
+            "path": "src/rfad/adapters/planar_backend.py",
+            "sha256": "15ccaedfe3f0d5d13aa1ca8a34a3c8dfbc6b89b82825fccc60273eef67c442e1"
+          },
+          {
+            "bytes": 73,
+            "path": "src/rfad/adapters/solvers/__init__.py",
+            "sha256": "64a5e0f0c806546fe9b2dab2f2394a02b77fb76afd1ff88a0979157ddd96bf5a"
+          },
+          {
+            "bytes": 77,
+            "path": "src/rfad/adapters/solvers/openems/__init__.py",
+            "sha256": "975618264c1614c71937b4baa15138f7aca694e4700ec4df2d8a67100ee90c61"
+          },
+          {
+            "bytes": 27680,
+            "path": "src/rfad/adapters/solvers/openems/native.py",
+            "sha256": "2ac0e46f88de23fa8b222d22fac4f13f79e502cef6dbb67b0c180fd6df71f22f"
+          },
+          {
+            "bytes": 17751,
+            "path": "src/rfad/adapters/solvers/openems/pcb.py",
+            "sha256": "c3a5484bb40f90bcea96b7fa71024cbdde21c11d0a69441ef39dcfbc63c3354c"
+          },
+          {
+            "bytes": 10911,
+            "path": "src/rfad/adapters/solvers/openems/pcb_absorption.py",
+            "sha256": "9a451172fc409608ca0e0cb3dcfb4dc888a5e86f6c6ecc3c91a544aa0d890a4a"
+          },
+          {
+            "bytes": 2932,
+            "path": "src/rfad/adapters/solvers/openems/pcb_loss_box.py",
+            "sha256": "68eb188b299cde6ff4a16fa7dde12def63a727c2a4fa931508870189cb187e71"
+          },
+          {
+            "bytes": 6813,
+            "path": "src/rfad/adapters/solvers/openems/pcb_loss_partition.py",
+            "sha256": "74e09acaa5862ebc9b0371506a0a6ab0e47c18eba1e04718671b21d84ec6db5c"
+          },
+          {
+            "bytes": 8774,
+            "path": "src/rfad/adapters/solvers/openems/pcb_mesh.py",
+            "sha256": "7edf8206be603296ab8fa57b2377c61d22bb51a9b0e436db9cc7d9db94020130"
+          },
+          {
+            "bytes": 986,
+            "path": "src/rfad/adapters/solvers/openems/pcb_ports.py",
+            "sha256": "b100fbe0365c56d39c12a067982bae3b3f2d92fee0092fa378a2040b3fa4d6d6"
+          },
+          {
+            "bytes": 3194,
+            "path": "src/rfad/adapters/solvers/openems/pcb_radiation.py",
+            "sha256": "6fe7c1a493783b97dd53c48e0a0899db59bb985a8fd693df8e870710ea4b96f5"
+          },
+          {
+            "bytes": 6517,
+            "path": "src/rfad/adapters/solvers/openems/reference.py",
+            "sha256": "e3bdb5aa463aa971a62cde5f466827b2423d895285dea595d2be81417f282951"
+          },
+          {
+            "bytes": 325,
+            "path": "src/rfad/application/__init__.py",
+            "sha256": "883e15b18f72a85626c6634d255886596dc1bf71ae64b8aebb9b5c32b3896bc7"
+          },
+          {
+            "bytes": 16665,
+            "path": "src/rfad/application/cad.py",
+            "sha256": "62d5daea5d00a94ee55c74de3cc3b74b450deaa0e2f6b9377754ad71b91ccdb6"
+          },
+          {
+            "bytes": 6733,
+            "path": "src/rfad/application/cad_artifacts.py",
+            "sha256": "f60086f8b18ddf8395adda7831e3393162adae5b3e4b8e7b6ab32bcdb6641766"
+          },
+          {
+            "bytes": 21621,
+            "path": "src/rfad/application/cad_jobs.py",
+            "sha256": "4e59a459eb37bfe5468f23b34d64a55789060cf11fa1fc2433aedb8d898edad6"
+          },
+          {
+            "bytes": 3889,
+            "path": "src/rfad/application/cad_runtime.py",
+            "sha256": "58a55ceadd29072f600c485531f9950c29611e2c2f0c35f9e0c520541757cfbf"
+          },
+          {
+            "bytes": 5534,
+            "path": "src/rfad/application/canonical.py",
+            "sha256": "f3b263089ad802d6924aea481c46a890e9baa7297bb5daef659394b1ef2be420"
+          },
+          {
+            "bytes": 23425,
+            "path": "src/rfad/application/canvas.py",
+            "sha256": "02f4e24f1d95c9cde57075fee9a84edf77adc7aaf9bf39210d1d659e49e06d7a"
+          },
+          {
+            "bytes": 4129,
+            "path": "src/rfad/application/catalog_api.py",
+            "sha256": "7be29a5e0e924fa591e0f9c2198649b05aeca0c789f518048969e9431266ccad"
+          },
+          {
+            "bytes": 21100,
+            "path": "src/rfad/application/convergence.py",
+            "sha256": "7edef92292cfb5dc5fea84e7d5d474b43626477ebe20d498adde6969c376d9f1"
+          },
+          {
+            "bytes": 6032,
+            "path": "src/rfad/application/design_rule_forms.py",
+            "sha256": "375a07bd10b112111e65a2064c81f7dcacebac5fd4c1261008dd2926da4646bf"
+          },
+          {
+            "bytes": 8218,
+            "path": "src/rfad/application/design_rule_service.py",
+            "sha256": "2346accc2232f0f224c89d6840ebddee1299af18577e7cc886e9a25379db7f84"
+          },
+          {
+            "bytes": 3856,
+            "path": "src/rfad/application/design_rule_values.py",
+            "sha256": "31c82a422749fe335a9af3dc9ade3c5b429cde3d7438784b539d3414fb2c4fb9"
+          },
+          {
+            "bytes": 28549,
+            "path": "src/rfad/application/design_sweep_runner.py",
+            "sha256": "9a2ec366dbb5d9de553713c9d5b7e60ef3c0fd0c03dca3dadb30a8e43698a0d6"
+          },
+          {
+            "bytes": 25690,
+            "path": "src/rfad/application/design_sweep_service.py",
+            "sha256": "d62a7551f1af0510c2f358d2b326e94bc069544fdb3d529ac8a88a578bb2b88d"
+          },
+          {
+            "bytes": 8484,
+            "path": "src/rfad/application/design_sweep_store.py",
+            "sha256": "67a1394941781c46bc234b428575a264e5df92007cb663f67e88e44dea572489"
+          },
+          {
+            "bytes": 5287,
+            "path": "src/rfad/application/display_mesh.py",
+            "sha256": "03e9906ed97890dc378108ebd3a94d7ec088ee467441e10379f1f0318077511d"
+          },
+          {
+            "bytes": 30979,
+            "path": "src/rfad/application/editor.py",
+            "sha256": "850d3a418d4b7ceb9b3e96568d53cebf52903f62be65b705cf60fa020bb47666"
+          },
+          {
+            "bytes": 2384,
+            "path": "src/rfad/application/job_state.py",
+            "sha256": "cefaff8cb314d8e023b7abf89bd9a72ceb67bcf6515f92861dfc5746a47da142"
+          },
+          {
+            "bytes": 4965,
+            "path": "src/rfad/application/mcp.py",
+            "sha256": "9042a72767d7395af9f51b0d9452d34bd85e8f1e6650c5288e187dd6ef78d920"
+          },
+          {
+            "bytes": 20662,
+            "path": "src/rfad/application/native_process.py",
+            "sha256": "5f1b625eee607ab5a21fe304827f89542bc5fdb7fd1ede2b89c469088497badf"
+          },
+          {
+            "bytes": 12181,
+            "path": "src/rfad/application/network_candidates.py",
+            "sha256": "b05d59798c1763cd15fdf22fc66033c1e71e7281f4326678751b7fae6ec0d6b9"
+          },
+          {
+            "bytes": 4342,
+            "path": "src/rfad/application/network_compare.py",
+            "sha256": "582f447bad9658bc4ce1725455ebc275f1049fa5836f657cf2d64c285790cb1c"
+          },
+          {
+            "bytes": 4064,
+            "path": "src/rfad/application/network_forms.py",
+            "sha256": "f15462804aba16b03258a008621370b501149c293457503f593d783e98bc8b3f"
+          },
+          {
+            "bytes": 8176,
+            "path": "src/rfad/application/network_records.py",
+            "sha256": "a8fbbbec0529e02ba83fc7d5414bd41ced8e3056f002e11b402eed7074cbcd35"
+          },
+          {
+            "bytes": 14205,
+            "path": "src/rfad/application/network_service.py",
+            "sha256": "0275acb3f92d4109bc8e687e95a419ba6380093ec208fa1bd6e9dbd3c8fff8d6"
+          },
+          {
+            "bytes": 4858,
+            "path": "src/rfad/application/network_solver_import.py",
+            "sha256": "957ea911bac4d1e2ec5e215b9762dc85013ef02b560878c103707fd1bcdef366"
+          },
+          {
+            "bytes": 1296,
+            "path": "src/rfad/application/pcb_compute.py",
+            "sha256": "dd51b5a5a46bf26c9b06f8a188212e9aca3f154e617e24dccab178b89f1123d7"
+          },
+          {
+            "bytes": 15097,
+            "path": "src/rfad/application/pcb_contacts.py",
+            "sha256": "3a5eddd3f269712c07c40e5906c81be0095381f3af32bfaf495c89fa948aa595"
+          },
+          {
+            "bytes": 8841,
+            "path": "src/rfad/application/pcb_geometry.py",
+            "sha256": "fcf37f157251bce8a71a78290c3ea0b97c1459c113598eb918b9e662c547eca1"
+          },
+          {
+            "bytes": 5451,
+            "path": "src/rfad/application/pcb_loss_components.py",
+            "sha256": "3a7a7268ca61c03f19ea1bafe670b19a7fb3c4be506b96108ed02d4bc72f016a"
+          },
+          {
+            "bytes": 4905,
+            "path": "src/rfad/application/pcb_loss_convergence.py",
+            "sha256": "144135b483f010b85a2ea2fae70f464449ad927b620c689b861f26ca1934a625"
+          },
+          {
+            "bytes": 5848,
+            "path": "src/rfad/application/pcb_loss_study.py",
+            "sha256": "f9213cb4df71df40a5a508b5fa70dd449bafefef042222521d3a7b2828a159ac"
+          },
+          {
+            "bytes": 12563,
+            "path": "src/rfad/application/pcb_mesh.py",
+            "sha256": "c24746e7c8baf930f4042d6cf5a75568dcd31ae61316221b15b5b57a769333eb"
+          },
+          {
+            "bytes": 8637,
+            "path": "src/rfad/application/pcb_power.py",
+            "sha256": "ca57938496df3a945a4507b967ceff01e397a4ee0e7d9751beae37a64674b597"
+          },
+          {
+            "bytes": 23172,
+            "path": "src/rfad/application/pcb_projection.py",
+            "sha256": "67554b2240e02cc884b724ede83de66557f2eee43d15635dfb3fd017e062bb77"
+          },
+          {
+            "bytes": 9177,
+            "path": "src/rfad/application/pcb_radiation.py",
+            "sha256": "1255fb06d6e0a39de51a2aea909c8886d11a00aec466c9694eb75b9397d09b5b"
+          },
+          {
+            "bytes": 13089,
+            "path": "src/rfad/application/pcb_results.py",
+            "sha256": "9bc532710db10249211a1641a48900d40ab12a223135349ae6fa25c34a95e159"
+          },
+          {
+            "bytes": 8695,
+            "path": "src/rfad/application/pcb_selection.py",
+            "sha256": "1c0dbc49c0ddd11f2255c680eea5477080b262dfd5a347463fc6d071a7df9cf8"
+          },
+          {
+            "bytes": 5744,
+            "path": "src/rfad/application/pcb_selection_build.py",
+            "sha256": "3cdb2388b936294cbfe604552763006c6dbe8005dc9df89a00db8f29e283c974"
+          },
+          {
+            "bytes": 3029,
+            "path": "src/rfad/application/pcb_selection_context.py",
+            "sha256": "fbc11df1836d434561e35b94175ad38f8d812614baf4527759f9a9cae8034813"
+          },
+          {
+            "bytes": 5764,
+            "path": "src/rfad/application/pcb_selection_contract.py",
+            "sha256": "4a9552fed1cc7aa483e965107d8373cebc6f1000541452117be252b162422d84"
+          },
+          {
+            "bytes": 8104,
+            "path": "src/rfad/application/pcb_selection_layers.py",
+            "sha256": "dc572a76f534ac39163083854451e69d6b879ee74c9ad294322de078e9741294"
+          },
+          {
+            "bytes": 7534,
+            "path": "src/rfad/application/pcb_selection_review.py",
+            "sha256": "fc6d8df7b412a263e2ac45646cbef60a689e5ad1e521ac7d6a13452c3a58485c"
+          },
+          {
+            "bytes": 7696,
+            "path": "src/rfad/application/pcb_solver.py",
+            "sha256": "a187bca2fc462e6cbca7c9bcb6bbea7d6f780f548c11eb00b15a68877447461e"
+          },
+          {
+            "bytes": 3302,
+            "path": "src/rfad/application/physical_projection.py",
+            "sha256": "8ae87729fb1a4183e7e099d725147ff85621cd66880cfb103fa3eb30f478578c"
+          },
+          {
+            "bytes": 17298,
+            "path": "src/rfad/application/physical_setup_service.py",
+            "sha256": "19f686692494ca3860ebece608d4ec254258b440064072e34edcbe3e89e018b3"
+          },
+          {
+            "bytes": 9081,
+            "path": "src/rfad/application/precision_candidates.py",
+            "sha256": "39f283b2223fbd4a53f2fd746072f82b82d679e572d088a2becfe827dbc5a29e"
+          },
+          {
+            "bytes": 12535,
+            "path": "src/rfad/application/precision_service.py",
+            "sha256": "e24fcb56676b3c8aafa5b252f7af1c772d8c18ce9a5b48221b1f76b5f69a00ec"
+          },
+          {
+            "bytes": 5026,
+            "path": "src/rfad/application/project_contract.py",
+            "sha256": "86f26c1d85e8bbd5bbabf16e86639ef254a3246b925ff2786de12e94fedbb6ed"
+          },
+          {
+            "bytes": 7356,
+            "path": "src/rfad/application/project_history.py",
+            "sha256": "e142d186417a3ea0ee50afcbb7a9630c964472791a33a4f8e3b28d1ecc1518f4"
+          },
+          {
+            "bytes": 6468,
+            "path": "src/rfad/application/project_operations.py",
+            "sha256": "28b57fd62f448179e7f75ca483ddaeed46d74b80a25f4ed719f27dfa18e6e5f5"
+          },
+          {
+            "bytes": 2864,
+            "path": "src/rfad/application/project_repository.py",
+            "sha256": "f70a2541e1519c56fa93d8f1d43dfab2d41e75081df7cfcbbbe382325ac7e179"
+          },
+          {
+            "bytes": 8903,
+            "path": "src/rfad/application/project_studies.py",
+            "sha256": "9359d4cfdbd89aa49f7a2181e94fbb0d1675931b1dc9449fba0c7ba1259be9d1"
+          },
+          {
+            "bytes": 6683,
+            "path": "src/rfad/application/project_study_commands.py",
+            "sha256": "654dc052a2742909c619013a6c5012077176dfb83185341f049e555e8cdbb74f"
+          },
+          {
+            "bytes": 5621,
+            "path": "src/rfad/application/project_study_contract.py",
+            "sha256": "6b017b2b24bf23afba6e2474c4ae4059ae4e1628a3a22d7a977f703f686220b1"
+          },
+          {
+            "bytes": 7554,
+            "path": "src/rfad/application/project_study_results.py",
+            "sha256": "2e9315f7c42353a25f954fd428fadc5eefa3d79054948a9c5b73dc22e00c0b55"
+          },
+          {
+            "bytes": 25690,
+            "path": "src/rfad/application/projects.py",
+            "sha256": "d4f36cd23879ee406a28595ac14383b9ee18f9e281c6c8f8c19f9374d5ac2e65"
+          },
+          {
+            "bytes": 2169,
+            "path": "src/rfad/application/radiation.py",
+            "sha256": "c8fe3b44d4e24ec7b4d2a8adf659030e16ebc56afa44842cc66f6b71e165a184"
+          },
+          {
+            "bytes": 2975,
+            "path": "src/rfad/application/radiation_assessment.py",
+            "sha256": "297528793354159a7872c5e6f5d50135bb2f219adb41e588623d2a26d2cd56a2"
+          },
+          {
+            "bytes": 7678,
+            "path": "src/rfad/application/radiation_comparison.py",
+            "sha256": "0aa7e258f41a82a74e3af3d17ec1706582e000a71c5fc23926a6ad006c8a5e1c"
+          },
+          {
+            "bytes": 3827,
+            "path": "src/rfad/application/radiation_queries.py",
+            "sha256": "5889cd01230439d7650d7f9a5dccfafbb9a3e84d816709a13e21971f7aa158aa"
+          },
+          {
+            "bytes": 5443,
+            "path": "src/rfad/application/radiation_study.py",
+            "sha256": "36e4f7944c57db51af7c037fe4498aea160030d94afd2c9968fca72a55f9993c"
+          },
+          {
+            "bytes": 3505,
+            "path": "src/rfad/application/radiation_study_guards.py",
+            "sha256": "6cd9a14a488e672d164ed8301486b817c3fd1e221da41fba19cd9eb99cac14db"
+          },
+          {
+            "bytes": 4858,
+            "path": "src/rfad/application/request_ledger.py",
+            "sha256": "59bfcdedaa6a5bbca8f3437a1b8e19477f91dfc4024f3c672d75a705d0355e02"
+          },
+          {
+            "bytes": 26957,
+            "path": "src/rfad/application/rpc.py",
+            "sha256": "b4df6fce6682ffbba7f72e03314061341036bd6bf4f554dbdfd2150161111f16"
+          },
+          {
+            "bytes": 18559,
+            "path": "src/rfad/application/solver.py",
+            "sha256": "49922769ec8d358b0afb0863b47fbc71a809f2d3e742c7d12e342f2a1d2d521c"
+          },
+          {
+            "bytes": 16457,
+            "path": "src/rfad/application/solver_artifacts.py",
+            "sha256": "a56b364946066ea57362fc17bb5b79d18690a2968bc49b50410167d04574dde1"
+          },
+          {
+            "bytes": 6078,
+            "path": "src/rfad/application/solver_capture.py",
+            "sha256": "6bf4f7038c5ff6bd7712b11b2ce9fb65253d4870ca9a25d2ec04c5c5bb2e2ff8"
+          },
+          {
+            "bytes": 26096,
+            "path": "src/rfad/application/solver_jobs.py",
+            "sha256": "b62c4060cb22008e5bc8fe9534a27d415c5347736f178bf1d6df0331da42af85"
+          },
+          {
+            "bytes": 5802,
+            "path": "src/rfad/application/solver_queries.py",
+            "sha256": "8b9f63d88447084e4384f2ac4e47543893a070b8b780ee4eafe85db625f52905"
+          },
+          {
+            "bytes": 3935,
+            "path": "src/rfad/application/solver_requests.py",
+            "sha256": "fb369b043366e6986f1143e10113c7a0b894606561617c2291f94af747989196"
+          },
+          {
+            "bytes": 5181,
+            "path": "src/rfad/application/solver_runtime.py",
+            "sha256": "84ab872883ebbe074efb2df3a655d7b16432104452582c84215b6499d020d5e2"
+          },
+          {
+            "bytes": 7746,
+            "path": "src/rfad/application/target_editor.py",
+            "sha256": "364be24d20edc9424e91e327abd05f34858fe19e6ce6b930bd49c6fe4a8e4b39"
+          },
+          {
+            "bytes": 7759,
+            "path": "src/rfad/application/target_editor_fields.py",
+            "sha256": "564af630d8a0806cdbc90a1fbf79c800f36be8a502f89583ad4d3306dcfc1c34"
+          },
+          {
+            "bytes": 9183,
+            "path": "src/rfad/application/target_editor_values.py",
+            "sha256": "46be42aac951311cb605e17e356f2d3642b1b073822141a2db7eee14fbc73e2f"
+          },
+          {
+            "bytes": 13351,
+            "path": "src/rfad/application/template_candidates.py",
+            "sha256": "21e98e48739b349aa78b1436cda3312b7f0fdfbe1caaaaf1d4eee2f7d092c4aa"
+          },
+          {
+            "bytes": 21744,
+            "path": "src/rfad/application/wsl_process.py",
+            "sha256": "cd1aea3816dfdb571ea0858a8326df892de648b4efcd05b8295a6bd4e5274e93"
+          },
+          {
+            "bytes": 116,
+            "path": "src/rfad/catalog/__init__.py",
+            "sha256": "f493ee69507a2eeef854f4cdbc3bfd482829ab5b34338743b71c84cb807b7de8"
+          },
+          {
+            "bytes": 19438,
+            "path": "src/rfad/catalog/build.py",
+            "sha256": "0b838211c01c105b68fbcf9247759362896b9217fdfe35cd8156f95b1e4475ef"
+          },
+          {
+            "bytes": 10360,
+            "path": "src/rfad/catalog/material_selection.py",
+            "sha256": "2f3eedf37db13b7132d42b2e3d0fbca190b08f644d4ab21f2238e65e434d7036"
+          },
+          {
+            "bytes": 3340,
+            "path": "src/rfad/catalog/models.py",
+            "sha256": "30f285ea3bc597d35fd72a3e200170c862522f240dc3fa0c70f73d62f216961b"
+          },
+          {
+            "bytes": 3301,
+            "path": "src/rfad/catalog/native.py",
+            "sha256": "d505114664c66861b6a79c039f73b3ac6656ffcdf627df8ecab2b8fac536219e"
+          },
+          {
+            "bytes": 8038,
+            "path": "src/rfad/catalog/native_common.py",
+            "sha256": "556902f3e45bb71255451d2437546f0265ff26a9adf1662872d13905a2dbbc68"
+          },
+          {
+            "bytes": 5063,
+            "path": "src/rfad/catalog/native_jlc.py",
+            "sha256": "fe662a96a35bd3a0e2d4c1b261c7cf78cb17d6a903ff8b680e17977e9e3c1c2c"
+          },
+          {
+            "bytes": 2413,
+            "path": "src/rfad/catalog/native_pcbway.py",
+            "sha256": "c13777b1c66e342540fb71d15c9427f0844c6ab9d9533f9fac202a88f5b4d7ae"
+          },
+          {
+            "bytes": 3353,
+            "path": "src/rfad/catalog/native_we.py",
+            "sha256": "f6904f5c87d8a146154a71a553af755d5412cbcb34c6c9971d50b3e4777ea036"
+          },
+          {
+            "bytes": 6098,
+            "path": "src/rfad/catalog/properties.py",
+            "sha256": "67d01c6d83bf3bb2d1139e733490d577f7e5d67450e034a73ec8296dff121e56"
+          },
+          {
+            "bytes": 8214,
+            "path": "src/rfad/catalog/query.py",
+            "sha256": "06e567696122f285083d8f772ef53abf2f0c429f8d192d003d90d478ac461a24"
+          },
+          {
+            "bytes": 18240,
+            "path": "src/rfad/catalog/repository.py",
+            "sha256": "671d6c25ea6bdfa0fe895d390948c8a04fbb87473e737e55938191e7474a7206"
+          },
+          {
+            "bytes": 4959,
+            "path": "src/rfad/catalog/review.py",
+            "sha256": "71a7bc5883805428f01798bcb734055cec7da6e9e6bd29ff775c8007d176b1ff"
+          },
+          {
+            "bytes": 4856,
+            "path": "src/rfad/catalog/schema.py",
+            "sha256": "a9d77e4bcf796bc568b9fb65c5a6a47c3bee96dcbffc543a2304a8aa99e95d40"
+          },
+          {
+            "bytes": 15074,
+            "path": "src/rfad/catalog/selection_reader.py",
+            "sha256": "e5ad72c0eb5a5852852a7be33230d8bac9dfda25ed121df9929483198bfe2d2d"
+          },
+          {
+            "bytes": 2956,
+            "path": "src/rfad/catalog/selection_rules.py",
+            "sha256": "37765b18688473294ebf92483c85382ccf2c61124e53eb7edcc50519557bae52"
+          },
+          {
+            "bytes": 7525,
+            "path": "src/rfad/catalog/service.py",
+            "sha256": "2eca3ffec08fa28db2dfb16c05bcdc0013ee959529eb77a9dc23d3a29e4efbe3"
+          },
+          {
+            "bytes": 13011,
+            "path": "src/rfad/catalog/source.py",
+            "sha256": "fca01aad58763398caf269f4ba1ed81a0100a20ba9cde89a0f3a3c7742906a21"
+          },
+          {
+            "bytes": 4466,
+            "path": "src/rfad/catalog/stackup_draft.py",
+            "sha256": "5287aa8998194bab02ead2b3a488e192d065f560fdf77462e2f7bd0e5d62a073"
+          },
+          {
+            "bytes": 5533,
+            "path": "src/rfad/catalog/stackup_draft_common.py",
+            "sha256": "8e188553f62f111f1539a560388a4756f494d0b933de40a667c77095d4de32c4"
+          },
+          {
+            "bytes": 4478,
+            "path": "src/rfad/catalog/stackup_draft_jlc.py",
+            "sha256": "ff554c07fbc41db3c87cbbf3d5b79bfab7c6722b29b21d336920ad99cba64eb2"
+          },
+          {
+            "bytes": 4801,
+            "path": "src/rfad/catalog/stackup_draft_jlc_evidence.py",
+            "sha256": "a5ae02821a305a206442a0b3515808ad9b782f681b883df15f08fd74cc1c026c"
+          },
+          {
+            "bytes": 4295,
+            "path": "src/rfad/catalog/stackup_draft_pcbway.py",
+            "sha256": "0e7ab15707fc1a2bee8b4baae7ca835c20eae68526ce26b50c4848c0264214c0"
+          },
+          {
+            "bytes": 8820,
+            "path": "src/rfad/catalog/stackup_match.py",
+            "sha256": "db0145bd241904fb830fefebb1c3ba43d2d765203fedaa74d884fb8fcdc62ab8"
+          },
+          {
+            "bytes": 4080,
+            "path": "src/rfad/catalog/stackup_suggestions.py",
+            "sha256": "5e99df25a0815217a1aaa8705082e33188c98b4cdd30ec83363d839c35940b84"
+          },
+          {
+            "bytes": 4144,
+            "path": "src/rfad/catalog/suggested_properties.py",
+            "sha256": "04db8bf74380a8f4f3f579ca0226a7716733062bf1a3f32cf0590b56689a90f0"
+          },
+          {
+            "bytes": 96,
+            "path": "src/rfad/cli/__init__.py",
+            "sha256": "5ffd0914ed2f6746b578e0d30eabda8bd5b306c5a368ec8ec0dd87b3a669aa1b"
+          },
+          {
+            "bytes": 4917,
+            "path": "src/rfad/cli/catalog.py",
+            "sha256": "098cd24482fcb1037263772fa82599b1e1ca6a4863ea879f00229c6e72b60272"
+          },
+          {
+            "bytes": 11085,
+            "path": "src/rfad/cli/doctor.py",
+            "sha256": "80be1ab1fc4d387178f6b70cc4a1241b21c793d33648660c443ce9a3946139fb"
+          },
+          {
+            "bytes": 239,
+            "path": "src/rfad/domain/__init__.py",
+            "sha256": "f7905c21d7293db23c8736b154cfa4e737b28788376ae2314c73e75259356e67"
+          },
+          {
+            "bytes": 7491,
+            "path": "src/rfad/domain/boundary_distance.py",
+            "sha256": "6324951d5428ac3fa52a4bfd4774020ced3865edde193fce0306b2622d6e093c"
+          },
+          {
+            "bytes": 6489,
+            "path": "src/rfad/domain/check_connections.py",
+            "sha256": "0c16d7ae6d06637f9e70a91c6d87dc0e92c56893980dc7e0f4b8fc09872b96b5"
+          },
+          {
+            "bytes": 4049,
+            "path": "src/rfad/domain/check_constraints.py",
+            "sha256": "b10fc8cfb79115efba67edb4658cb553638323488e42c4ccee58071f1b3c2b25"
+          },
+          {
+            "bytes": 8932,
+            "path": "src/rfad/domain/check_geometry.py",
+            "sha256": "9138ff07281a3343eb5291e92824ace45639be2aa19f9d853c474eb8f1a2f647"
+          },
+          {
+            "bytes": 8149,
+            "path": "src/rfad/domain/check_manufacturing.py",
+            "sha256": "556ff09bcd6f9ab3eca2e31472c8be6f9a3fa3d1e32b3a44fce3c31847a6779c"
+          },
+          {
+            "bytes": 5000,
+            "path": "src/rfad/domain/check_report.py",
+            "sha256": "8bad8d680e70d3f0c8c3a45bd6bbb81fe99f4ab8fa6347797ce355569ba17277"
+          },
+          {
+            "bytes": 37899,
+            "path": "src/rfad/domain/design.py",
+            "sha256": "90a6841228469c7f58ab2bfb7744dac98b733abb8183f848cf9e8c4a421b2ad2"
+          },
+          {
+            "bytes": 4638,
+            "path": "src/rfad/domain/design_checks.py",
+            "sha256": "2da7ffddaeb329b71031d6cb2124f218bb6d0518b8545e69fd63c1eb8fbe80c0"
+          },
+          {
+            "bytes": 5866,
+            "path": "src/rfad/domain/design_rules.py",
+            "sha256": "d1b07bae77ae70d286627ab22bc730dc284d8e53164a0aa7cd0acce0936c0dcb"
+          },
+          {
+            "bytes": 21232,
+            "path": "src/rfad/domain/design_sweep.py",
+            "sha256": "ebd4c2e349dcde884b66ad8e9713c7a19343d692bae9a6da5058f928a2b7d58a"
+          },
+          {
+            "bytes": 1059,
+            "path": "src/rfad/domain/errors.py",
+            "sha256": "e8dc2d8e54fd71ca35af28d538c214687cdefeba035443aeeaee992cc55697d6"
+          },
+          {
+            "bytes": 20181,
+            "path": "src/rfad/domain/expressions.py",
+            "sha256": "60ea67477ab925614073a2231efa215cc96c48a0fcb7bbf25bc875949086c7c8"
+          },
+          {
+            "bytes": 1215,
+            "path": "src/rfad/domain/layer_surface.py",
+            "sha256": "95e1d645ad8210c80ec7fb6ff3326e9fb38ba2fbb0aca3b3fc47f4272222623f"
+          },
+          {
+            "bytes": 2500,
+            "path": "src/rfad/domain/literature_geometry.py",
+            "sha256": "b414dbfc04d4d2bf92d49d80e7375769e74282d78b9842dc7401c8e3ac9947a5"
+          },
+          {
+            "bytes": 1604,
+            "path": "src/rfad/domain/material_models.py",
+            "sha256": "7447b0b5fedb971a31b1fd41f81219249a324e2d44da6fe2e7269a8efd1a2fa9"
+          },
+          {
+            "bytes": 12743,
+            "path": "src/rfad/domain/network_assessment.py",
+            "sha256": "280edefa48251cc18d0ecf91955af06ab3a7bce9a5236a0fcada0575f9e4ee85"
+          },
+          {
+            "bytes": 10152,
+            "path": "src/rfad/domain/network_circuit.py",
+            "sha256": "3d4499d07398819c0b5d9c728aa553813858e60ad67618254a992fec025cfe02"
+          },
+          {
+            "bytes": 9861,
+            "path": "src/rfad/domain/network_data.py",
+            "sha256": "ecf136526dc5bbbd716b275ddfbdd2867407199a83733ecb71b6601ff33d3408"
+          },
+          {
+            "bytes": 8297,
+            "path": "src/rfad/domain/network_library.py",
+            "sha256": "1b06f80bf57c73d65fa6c2d10434c9b7eb13025aece29ec2edee72e7b8f98b82"
+          },
+          {
+            "bytes": 5639,
+            "path": "src/rfad/domain/network_transform.py",
+            "sha256": "ae8a44f66232e6956b204352eae527847c2a3fb808fa72e1bed8b2d8cfc05099"
+          },
+          {
+            "bytes": 4129,
+            "path": "src/rfad/domain/object_names.py",
+            "sha256": "20fa7425ecf2edf7924c67ce4b33ee5daf358da077eddd7532fe1c34233ebab7"
+          },
+          {
+            "bytes": 5343,
+            "path": "src/rfad/domain/parameter_graph.py",
+            "sha256": "3afa704b61fe6cce2f64d175df455e227604223eab90c71166f957d5f24e4b36"
+          },
+          {
+            "bytes": 3673,
+            "path": "src/rfad/domain/pcb_evidence_pool.py",
+            "sha256": "8ad93e1638b3f5a343acee606ed75ffc581dc725072a31c26b60b3e90ec843ea"
+          },
+          {
+            "bytes": 12252,
+            "path": "src/rfad/domain/pcb_selection.py",
+            "sha256": "2607f41e26d5a1623914486996e76ca9f69d031f1f074184bda658451e8665e9"
+          },
+          {
+            "bytes": 2800,
+            "path": "src/rfad/domain/pcb_selection_command.py",
+            "sha256": "62c6cceefc63dc87cb75489edc6c48522a125155de70962d0b92051b92328742"
+          },
+          {
+            "bytes": 10053,
+            "path": "src/rfad/domain/pcb_selection_evidence.py",
+            "sha256": "b017b5ecdc9dfc1aea5a0e6baf054600f7f5f6c7af580d2759455b5619572ab6"
+          },
+          {
+            "bytes": 2796,
+            "path": "src/rfad/domain/pcb_selection_history.py",
+            "sha256": "ea6b7a818036a81429dbd6da95bdff1d00aa4a54d4d5a32cfb66df7200da389b"
+          },
+          {
+            "bytes": 13890,
+            "path": "src/rfad/domain/physical_setup.py",
+            "sha256": "e2c89334deaad8abdcfbed18091534c6db7d445c572679fb915f9fe56b59ca32"
+          },
+          {
+            "bytes": 8072,
+            "path": "src/rfad/domain/planar.py",
+            "sha256": "a5fb63c7bfb7f1813917404095b696ab6e70eb71d7f0059508dbae31024e5e3f"
+          },
+          {
+            "bytes": 9343,
+            "path": "src/rfad/domain/precision_command.py",
+            "sha256": "ba6e84590440d6c8acc94c72cd72dbbc938c818ed6f8fae4a5fb321bf0e9c693"
+          },
+          {
+            "bytes": 11304,
+            "path": "src/rfad/domain/precision_dimensions.py",
+            "sha256": "ff9944bf8b65b99a0ebb7c966513b4957f30758ee8c4630e886f14ca5f8a6ab0"
+          },
+          {
+            "bytes": 7248,
+            "path": "src/rfad/domain/precision_transform.py",
+            "sha256": "83615f8ccdbb27d0a65fab2fd5ea5f6986e024414332ff602333f871ea251162"
+          },
+          {
+            "bytes": 2897,
+            "path": "src/rfad/domain/printed_geometry.py",
+            "sha256": "79c6ff64ac89c42dc36e1aa847889a0d5f857ed3ed4d72de35ab0c6efcb5f704"
+          },
+          {
+            "bytes": 21504,
+            "path": "src/rfad/domain/project.py",
+            "sha256": "350746c130e2c0844eb816845e07167f9b83282afc73f83f9596a95c51c369cc"
+          },
+          {
+            "bytes": 428,
+            "path": "src/rfad/domain/resource_limits.py",
+            "sha256": "367bd28fe19ef290a8ebde2ad3c413b3e24b79c7c7f396a149dddc1247fa0141"
+          },
+          {
+            "bytes": 8793,
+            "path": "src/rfad/domain/sweep_inputs.py",
+            "sha256": "f7ba16949209558d80e4be1e28b264b81022d2100f8d7f5d295474297f6348d5"
+          },
+          {
+            "bytes": 4864,
+            "path": "src/rfad/domain/target_constraints.py",
+            "sha256": "0d958d559e552d98e8d72c24a0ce113c53fe322dfcf3a2f226922b5eeaaf1234"
+          },
+          {
+            "bytes": 11891,
+            "path": "src/rfad/domain/targets.py",
+            "sha256": "57bec9e36e86f092d0103a87e6f5f0ebb288d41a82af80f4bb34ac11f8fa61f0"
+          },
+          {
+            "bytes": 4307,
+            "path": "src/rfad/domain/template_command.py",
+            "sha256": "b2038a0d3b2166a01109f85434db0c6a8a167817f84d33456e06d5842d6713a4"
+          },
+          {
+            "bytes": 18368,
+            "path": "src/rfad/domain/template_geometry.py",
+            "sha256": "1d50e47f04979140b5479fd0d48aa7cee798306a494e41aa85e8dd0d6ac89705"
+          },
+          {
+            "bytes": 2507,
+            "path": "src/rfad/domain/template_inputs.py",
+            "sha256": "96f3b72e7ca300a919787f83a518a20c8a530c992993d44f710a958aa019e815"
+          },
+          {
+            "bytes": 11946,
+            "path": "src/rfad/domain/template_instance.py",
+            "sha256": "797ff06c39c8f70dcf33e346fc661c0d07c93212dc7eb88b252f83dd82617abd"
+          },
+          {
+            "bytes": 8469,
+            "path": "src/rfad/domain/template_ports.py",
+            "sha256": "4bc56f5cca0a877a9118904826a3ba4e5aaa7294117d7abff0d0a6da94770578"
+          },
+          {
+            "bytes": 1848,
+            "path": "src/rfad/domain/template_provenance.py",
+            "sha256": "d75a63d40120226307f0edf16f0c496ed4aab09810d20e930ea0a9e039592096"
+          },
+          {
+            "bytes": 3699,
+            "path": "src/rfad/domain/template_seeds.py",
+            "sha256": "ee31b55454863ae902cc195739f03bf0bbcd36abe976ddd803e734ef8ade7b37"
+          },
+          {
+            "bytes": 9469,
+            "path": "src/rfad/domain/units.py",
+            "sha256": "2d14560523f4b9dd986639b15befda6541b88a2f429e8a4797bce642728c3fe4"
+          },
+          {
+            "bytes": 152,
+            "path": "src/rfad/storage/__init__.py",
+            "sha256": "ca4c257ab77186c72310cd6e4b1ae31e30f97b41d0ca4075b5760ad672a2e270"
+          },
+          {
+            "bytes": 25360,
+            "path": "src/rfad/storage/journal.py",
+            "sha256": "62f2f3a28dae5796baf71249078bca57b485647ed2fe0e261f18a7a27d134c03"
+          },
+          {
+            "bytes": 3313,
+            "path": "src/rfad/storage/sealed_files.py",
+            "sha256": "fe10aecf164b4330acfee9f47c51852df5ef47bd3c14aef8190bc50726cc5388"
+          },
+          {
+            "bytes": 97,
+            "path": "src/rfad/templates/__init__.py",
+            "sha256": "86220e3976b4ff63dad9ac02ba4f1f8c209ec672491169e8edd5dd7e3be80863"
+          },
+          {
+            "bytes": 9461,
+            "path": "src/rfad/templates/cards.py",
+            "sha256": "9bccfb2c7ebccbf89eae0e8a93c82132b4b2cbd86109abe4b40e97033d6d9516"
+          },
+          {
+            "bytes": 10077,
+            "path": "src/rfad/templates/g031.py",
+            "sha256": "53e0d9ea1c222caf2500cec355c8e4728ebec8fb1fb2ae83fe7cc6343bfbff69"
+          },
+          {
+            "bytes": 9727,
+            "path": "src/rfad/templates/printed_references.py",
+            "sha256": "ffb1cdf2cb7de0623e3cad89935d375199b1c68b19afe67c21b8b0928510f5d5"
+          }
+        ],
+        "manifest_sha256": "538c7d75a7820f2ee0a6d48fb0d9f3687c6a10c66c09962398dfd4dd2dbd7a9c",
+        "runtime_profile": "openems-wsl-reference/0.1",
+        "transport": {
+          "distribution": "TraceWave-Dev",
+          "guest_root": "/home/tracewave/rfad-runtime/worker-runs",
+          "lease_seconds": 10.0,
+          "protocol": "rfad.wsl-supervisor/0.1",
+          "python": "/home/tracewave/rfad-runtime/openems-venv/bin/python",
+          "supervisor_sha256": "3eb53691f71003319fb12a44e3cb6cb872ea152d0a1bd5b56dc11c5fb8943b37",
+          "user": "tracewave"
+        }
+      },
+      "attempts": [
+        {
+          "disk_accounted_bytes": 4078520,
+          "guest_disk_accounted_bytes": 2052607,
+          "guest_reserved_bytes": 137189530,
+          "guest_usage_basis": "observed_logical_bytes",
+          "job_id": "44f72567-9bee-4bb9-a0e6-915504aa44ca",
+          "phase": "prepare"
+        },
+        {
+          "disk_accounted_bytes": 5010119,
+          "guest_disk_accounted_bytes": 2717637,
+          "guest_reserved_bytes": 137305752,
+          "guest_usage_basis": "observed_logical_bytes",
+          "job_id": "531a154c-cd2b-4ce6-83f1-828c182a8565",
+          "phase": "solve"
+        }
+      ],
+      "original_project_hash": "240f6d6a767924e5b3f5a18585c05aeaaa6e679190fde913c12794b5a6de7f89",
+      "physics_validated": false,
+      "candidate_outcome": "not_evaluated",
+      "convergence_state": "solver_end_criterion_only",
+      "reopened_without_runtime": true
+    },
+    {
+      "report": {
+        "path": "Code/.local/sweep-native-f1d5bb1a8b094b778edf6c2392dd037a/report.json",
+        "bytes": 52576,
+        "sha256": "3071fb4b38c824b8156c10339d35fa7bfcec74ce0f5779f556455cac3c62cd16",
+        "last_written_utc": "2026-11-16T20:12:03.696184+00:00"
+      },
+      "source_profile": "explicit_synthetic_pcb_gap_not_manufacturing_reference",
+      "study_id": "52879185-72db-42fb-9978-9809ee67809b",
+      "candidate_count": 1,
+      "sample_count": 31,
+      "budget_usage": {
+        "disk_bytes": 14194472,
+        "guest_disk_bytes": 4779541,
+        "native_solves": 1,
+        "wall_seconds": 53.02228307723999
+      },
+      "source_count": 189,
+      "source_json_bytes": 1702324,
+      "runtime_identity": {
+        "code_files": [
+          {
+            "bytes": 1854,
+            "path": "tools/openems_worker.py",
+            "sha256": "a71e56e21aff057f4b673dd43131e22da3bdf4698099ec124946e65b152e582f"
+          },
+          {
+            "bytes": 110,
+            "path": "src/rfad/__init__.py",
+            "sha256": "637407b3c13a348c03d6a167d2a90e3703c4fc70a421cd9918075c0463d81097"
+          },
+          {
+            "bytes": 2818,
+            "path": "src/rfad/__main__.py",
+            "sha256": "354888f3b9a8851b80520b2876cc77d3c09e666f4e04f8221eb7c0e218a36af3"
+          },
+          {
+            "bytes": 102,
+            "path": "src/rfad/adapters/__init__.py",
+            "sha256": "e4be3b367495a970767105766bbd0895df057c4a53a3a39087bfe316171d0837"
+          },
+          {
+            "bytes": 99,
+            "path": "src/rfad/adapters/cad/__init__.py",
+            "sha256": "031a455542eba8f6df8c996b243a3210041b80cbb40b04208f0c639469e3df83"
+          },
+          {
+            "bytes": 10430,
+            "path": "src/rfad/adapters/cad/bodies.py",
+            "sha256": "b47d8f1ef8952c121e2257400194af0aa639b577230759ac4aabd95dca7cd601"
+          },
+          {
+            "bytes": 3442,
+            "path": "src/rfad/adapters/cad/display.py",
+            "sha256": "f9dcca816110978ff318a17c2136cda9d973ded99e129fa260a4805eba4ff949"
+          },
+          {
+            "bytes": 16629,
+            "path": "src/rfad/adapters/cad/geometry.py",
+            "sha256": "48305c116a58ab5a8dc0941c2574fcbf3739f05177c2e2eddf8865fb702e5445"
+          },
+          {
+            "bytes": 7431,
+            "path": "src/rfad/adapters/cad/native.py",
+            "sha256": "6835af5657bf571b6d087ce1f40713731dec6f32289eac97f63ef040a9adc709"
+          },
+          {
+            "bytes": 7154,
+            "path": "src/rfad/adapters/cad/physical.py",
+            "sha256": "a21d32fd366c578963474ad7026105e3a437127549ace146afbd293c83b33bc4"
+          },
+          {
+            "bytes": 7708,
+            "path": "src/rfad/adapters/cad/step_io.py",
+            "sha256": "fd4ac53d02c291118464b233ddce8c556107a6ffe644a04b478a2b8851f9f924"
+          },
+          {
+            "bytes": 5815,
+            "path": "src/rfad/adapters/network_backend.py",
+            "sha256": "dfad29fdd64f92a7feb75e86a52e3f759edcf05022f85cc34e7fc476c8f424e3"
+          },
+          {
+            "bytes": 8362,
+            "path": "src/rfad/adapters/network_csv.py",
+            "sha256": "c2066d43aa9b44a37f6fceb1af5926269dd35be742656a0c26666f13b5496cb5"
+          },
+          {
+            "bytes": 1505,
+            "path": "src/rfad/adapters/network_files.py",
+            "sha256": "28fc0577d8eb718bbb357214f597abb31a34522d7e19be8faa124a0db1be54ef"
+          },
+          {
+            "bytes": 10587,
+            "path": "src/rfad/adapters/network_hdf5.py",
+            "sha256": "d557858c01143e87549975542cc2a7e9ac67b63acec0853c3d38f98eb2e6aa75"
+          },
+          {
+            "bytes": 6347,
+            "path": "src/rfad/adapters/network_text.py",
+            "sha256": "64b6bae3747aad6731b869754710ba92a1dff89afcd46d9e8a0621fb419d36a9"
+          },
+          {
+            "bytes": 11727,
+            "path": "src/rfad/adapters/network_touchstone.py",
+            "sha256": "828f86f0b317b59eb79b7fc220c9906b31da9ed2e77351a3f103e020bfe31afe"
+          },
+          {
+            "bytes": 7293,
+            "path": "src/rfad/adapters/planar_backend.py",
+            "sha256": "15ccaedfe3f0d5d13aa1ca8a34a3c8dfbc6b89b82825fccc60273eef67c442e1"
+          },
+          {
+            "bytes": 73,
+            "path": "src/rfad/adapters/solvers/__init__.py",
+            "sha256": "64a5e0f0c806546fe9b2dab2f2394a02b77fb76afd1ff88a0979157ddd96bf5a"
+          },
+          {
+            "bytes": 77,
+            "path": "src/rfad/adapters/solvers/openems/__init__.py",
+            "sha256": "975618264c1614c71937b4baa15138f7aca694e4700ec4df2d8a67100ee90c61"
+          },
+          {
+            "bytes": 27680,
+            "path": "src/rfad/adapters/solvers/openems/native.py",
+            "sha256": "2ac0e46f88de23fa8b222d22fac4f13f79e502cef6dbb67b0c180fd6df71f22f"
+          },
+          {
+            "bytes": 17751,
+            "path": "src/rfad/adapters/solvers/openems/pcb.py",
+            "sha256": "c3a5484bb40f90bcea96b7fa71024cbdde21c11d0a69441ef39dcfbc63c3354c"
+          },
+          {
+            "bytes": 10911,
+            "path": "src/rfad/adapters/solvers/openems/pcb_absorption.py",
+            "sha256": "9a451172fc409608ca0e0cb3dcfb4dc888a5e86f6c6ecc3c91a544aa0d890a4a"
+          },
+          {
+            "bytes": 2932,
+            "path": "src/rfad/adapters/solvers/openems/pcb_loss_box.py",
+            "sha256": "68eb188b299cde6ff4a16fa7dde12def63a727c2a4fa931508870189cb187e71"
+          },
+          {
+            "bytes": 6813,
+            "path": "src/rfad/adapters/solvers/openems/pcb_loss_partition.py",
+            "sha256": "74e09acaa5862ebc9b0371506a0a6ab0e47c18eba1e04718671b21d84ec6db5c"
+          },
+          {
+            "bytes": 8774,
+            "path": "src/rfad/adapters/solvers/openems/pcb_mesh.py",
+            "sha256": "7edf8206be603296ab8fa57b2377c61d22bb51a9b0e436db9cc7d9db94020130"
+          },
+          {
+            "bytes": 986,
+            "path": "src/rfad/adapters/solvers/openems/pcb_ports.py",
+            "sha256": "b100fbe0365c56d39c12a067982bae3b3f2d92fee0092fa378a2040b3fa4d6d6"
+          },
+          {
+            "bytes": 3194,
+            "path": "src/rfad/adapters/solvers/openems/pcb_radiation.py",
+            "sha256": "6fe7c1a493783b97dd53c48e0a0899db59bb985a8fd693df8e870710ea4b96f5"
+          },
+          {
+            "bytes": 6517,
+            "path": "src/rfad/adapters/solvers/openems/reference.py",
+            "sha256": "e3bdb5aa463aa971a62cde5f466827b2423d895285dea595d2be81417f282951"
+          },
+          {
+            "bytes": 325,
+            "path": "src/rfad/application/__init__.py",
+            "sha256": "883e15b18f72a85626c6634d255886596dc1bf71ae64b8aebb9b5c32b3896bc7"
+          },
+          {
+            "bytes": 16665,
+            "path": "src/rfad/application/cad.py",
+            "sha256": "62d5daea5d00a94ee55c74de3cc3b74b450deaa0e2f6b9377754ad71b91ccdb6"
+          },
+          {
+            "bytes": 6733,
+            "path": "src/rfad/application/cad_artifacts.py",
+            "sha256": "f60086f8b18ddf8395adda7831e3393162adae5b3e4b8e7b6ab32bcdb6641766"
+          },
+          {
+            "bytes": 21621,
+            "path": "src/rfad/application/cad_jobs.py",
+            "sha256": "4e59a459eb37bfe5468f23b34d64a55789060cf11fa1fc2433aedb8d898edad6"
+          },
+          {
+            "bytes": 3889,
+            "path": "src/rfad/application/cad_runtime.py",
+            "sha256": "58a55ceadd29072f600c485531f9950c29611e2c2f0c35f9e0c520541757cfbf"
+          },
+          {
+            "bytes": 5534,
+            "path": "src/rfad/application/canonical.py",
+            "sha256": "f3b263089ad802d6924aea481c46a890e9baa7297bb5daef659394b1ef2be420"
+          },
+          {
+            "bytes": 23425,
+            "path": "src/rfad/application/canvas.py",
+            "sha256": "02f4e24f1d95c9cde57075fee9a84edf77adc7aaf9bf39210d1d659e49e06d7a"
+          },
+          {
+            "bytes": 4129,
+            "path": "src/rfad/application/catalog_api.py",
+            "sha256": "7be29a5e0e924fa591e0f9c2198649b05aeca0c789f518048969e9431266ccad"
+          },
+          {
+            "bytes": 21100,
+            "path": "src/rfad/application/convergence.py",
+            "sha256": "7edef92292cfb5dc5fea84e7d5d474b43626477ebe20d498adde6969c376d9f1"
+          },
+          {
+            "bytes": 6032,
+            "path": "src/rfad/application/design_rule_forms.py",
+            "sha256": "375a07bd10b112111e65a2064c81f7dcacebac5fd4c1261008dd2926da4646bf"
+          },
+          {
+            "bytes": 8218,
+            "path": "src/rfad/application/design_rule_service.py",
+            "sha256": "2346accc2232f0f224c89d6840ebddee1299af18577e7cc886e9a25379db7f84"
+          },
+          {
+            "bytes": 3856,
+            "path": "src/rfad/application/design_rule_values.py",
+            "sha256": "31c82a422749fe335a9af3dc9ade3c5b429cde3d7438784b539d3414fb2c4fb9"
+          },
+          {
+            "bytes": 28549,
+            "path": "src/rfad/application/design_sweep_runner.py",
+            "sha256": "9a2ec366dbb5d9de553713c9d5b7e60ef3c0fd0c03dca3dadb30a8e43698a0d6"
+          },
+          {
+            "bytes": 28958,
+            "path": "src/rfad/application/design_sweep_service.py",
+            "sha256": "379abef16a4b31d9a07b4b523c044d8f836da60754483c3967939938d4edfb52"
+          },
+          {
+            "bytes": 8484,
+            "path": "src/rfad/application/design_sweep_store.py",
+            "sha256": "67a1394941781c46bc234b428575a264e5df92007cb663f67e88e44dea572489"
+          },
+          {
+            "bytes": 5287,
+            "path": "src/rfad/application/display_mesh.py",
+            "sha256": "03e9906ed97890dc378108ebd3a94d7ec088ee467441e10379f1f0318077511d"
+          },
+          {
+            "bytes": 30979,
+            "path": "src/rfad/application/editor.py",
+            "sha256": "850d3a418d4b7ceb9b3e96568d53cebf52903f62be65b705cf60fa020bb47666"
+          },
+          {
+            "bytes": 2384,
+            "path": "src/rfad/application/job_state.py",
+            "sha256": "cefaff8cb314d8e023b7abf89bd9a72ceb67bcf6515f92861dfc5746a47da142"
+          },
+          {
+            "bytes": 4965,
+            "path": "src/rfad/application/mcp.py",
+            "sha256": "9042a72767d7395af9f51b0d9452d34bd85e8f1e6650c5288e187dd6ef78d920"
+          },
+          {
+            "bytes": 20662,
+            "path": "src/rfad/application/native_process.py",
+            "sha256": "5f1b625eee607ab5a21fe304827f89542bc5fdb7fd1ede2b89c469088497badf"
+          },
+          {
+            "bytes": 12181,
+            "path": "src/rfad/application/network_candidates.py",
+            "sha256": "b05d59798c1763cd15fdf22fc66033c1e71e7281f4326678751b7fae6ec0d6b9"
+          },
+          {
+            "bytes": 4342,
+            "path": "src/rfad/application/network_compare.py",
+            "sha256": "582f447bad9658bc4ce1725455ebc275f1049fa5836f657cf2d64c285790cb1c"
+          },
+          {
+            "bytes": 4064,
+            "path": "src/rfad/application/network_forms.py",
+            "sha256": "f15462804aba16b03258a008621370b501149c293457503f593d783e98bc8b3f"
+          },
+          {
+            "bytes": 8176,
+            "path": "src/rfad/application/network_records.py",
+            "sha256": "a8fbbbec0529e02ba83fc7d5414bd41ced8e3056f002e11b402eed7074cbcd35"
+          },
+          {
+            "bytes": 14205,
+            "path": "src/rfad/application/network_service.py",
+            "sha256": "0275acb3f92d4109bc8e687e95a419ba6380093ec208fa1bd6e9dbd3c8fff8d6"
+          },
+          {
+            "bytes": 4858,
+            "path": "src/rfad/application/network_solver_import.py",
+            "sha256": "957ea911bac4d1e2ec5e215b9762dc85013ef02b560878c103707fd1bcdef366"
+          },
+          {
+            "bytes": 1296,
+            "path": "src/rfad/application/pcb_compute.py",
+            "sha256": "dd51b5a5a46bf26c9b06f8a188212e9aca3f154e617e24dccab178b89f1123d7"
+          },
+          {
+            "bytes": 15097,
+            "path": "src/rfad/application/pcb_contacts.py",
+            "sha256": "3a5eddd3f269712c07c40e5906c81be0095381f3af32bfaf495c89fa948aa595"
+          },
+          {
+            "bytes": 8841,
+            "path": "src/rfad/application/pcb_geometry.py",
+            "sha256": "fcf37f157251bce8a71a78290c3ea0b97c1459c113598eb918b9e662c547eca1"
+          },
+          {
+            "bytes": 5451,
+            "path": "src/rfad/application/pcb_loss_components.py",
+            "sha256": "3a7a7268ca61c03f19ea1bafe670b19a7fb3c4be506b96108ed02d4bc72f016a"
+          },
+          {
+            "bytes": 4905,
+            "path": "src/rfad/application/pcb_loss_convergence.py",
+            "sha256": "144135b483f010b85a2ea2fae70f464449ad927b620c689b861f26ca1934a625"
+          },
+          {
+            "bytes": 5848,
+            "path": "src/rfad/application/pcb_loss_study.py",
+            "sha256": "f9213cb4df71df40a5a508b5fa70dd449bafefef042222521d3a7b2828a159ac"
+          },
+          {
+            "bytes": 12563,
+            "path": "src/rfad/application/pcb_mesh.py",
+            "sha256": "c24746e7c8baf930f4042d6cf5a75568dcd31ae61316221b15b5b57a769333eb"
+          },
+          {
+            "bytes": 8637,
+            "path": "src/rfad/application/pcb_power.py",
+            "sha256": "ca57938496df3a945a4507b967ceff01e397a4ee0e7d9751beae37a64674b597"
+          },
+          {
+            "bytes": 23172,
+            "path": "src/rfad/application/pcb_projection.py",
+            "sha256": "67554b2240e02cc884b724ede83de66557f2eee43d15635dfb3fd017e062bb77"
+          },
+          {
+            "bytes": 9177,
+            "path": "src/rfad/application/pcb_radiation.py",
+            "sha256": "1255fb06d6e0a39de51a2aea909c8886d11a00aec466c9694eb75b9397d09b5b"
+          },
+          {
+            "bytes": 13089,
+            "path": "src/rfad/application/pcb_results.py",
+            "sha256": "9bc532710db10249211a1641a48900d40ab12a223135349ae6fa25c34a95e159"
+          },
+          {
+            "bytes": 8695,
+            "path": "src/rfad/application/pcb_selection.py",
+            "sha256": "1c0dbc49c0ddd11f2255c680eea5477080b262dfd5a347463fc6d071a7df9cf8"
+          },
+          {
+            "bytes": 5744,
+            "path": "src/rfad/application/pcb_selection_build.py",
+            "sha256": "3cdb2388b936294cbfe604552763006c6dbe8005dc9df89a00db8f29e283c974"
+          },
+          {
+            "bytes": 3029,
+            "path": "src/rfad/application/pcb_selection_context.py",
+            "sha256": "fbc11df1836d434561e35b94175ad38f8d812614baf4527759f9a9cae8034813"
+          },
+          {
+            "bytes": 5764,
+            "path": "src/rfad/application/pcb_selection_contract.py",
+            "sha256": "4a9552fed1cc7aa483e965107d8373cebc6f1000541452117be252b162422d84"
+          },
+          {
+            "bytes": 8104,
+            "path": "src/rfad/application/pcb_selection_layers.py",
+            "sha256": "dc572a76f534ac39163083854451e69d6b879ee74c9ad294322de078e9741294"
+          },
+          {
+            "bytes": 7534,
+            "path": "src/rfad/application/pcb_selection_review.py",
+            "sha256": "fc6d8df7b412a263e2ac45646cbef60a689e5ad1e521ac7d6a13452c3a58485c"
+          },
+          {
+            "bytes": 7696,
+            "path": "src/rfad/application/pcb_solver.py",
+            "sha256": "a187bca2fc462e6cbca7c9bcb6bbea7d6f780f548c11eb00b15a68877447461e"
+          },
+          {
+            "bytes": 3302,
+            "path": "src/rfad/application/physical_projection.py",
+            "sha256": "8ae87729fb1a4183e7e099d725147ff85621cd66880cfb103fa3eb30f478578c"
+          },
+          {
+            "bytes": 17298,
+            "path": "src/rfad/application/physical_setup_service.py",
+            "sha256": "19f686692494ca3860ebece608d4ec254258b440064072e34edcbe3e89e018b3"
+          },
+          {
+            "bytes": 9081,
+            "path": "src/rfad/application/precision_candidates.py",
+            "sha256": "39f283b2223fbd4a53f2fd746072f82b82d679e572d088a2becfe827dbc5a29e"
+          },
+          {
+            "bytes": 12535,
+            "path": "src/rfad/application/precision_service.py",
+            "sha256": "e24fcb56676b3c8aafa5b252f7af1c772d8c18ce9a5b48221b1f76b5f69a00ec"
+          },
+          {
+            "bytes": 5026,
+            "path": "src/rfad/application/project_contract.py",
+            "sha256": "86f26c1d85e8bbd5bbabf16e86639ef254a3246b925ff2786de12e94fedbb6ed"
+          },
+          {
+            "bytes": 7356,
+            "path": "src/rfad/application/project_history.py",
+            "sha256": "e142d186417a3ea0ee50afcbb7a9630c964472791a33a4f8e3b28d1ecc1518f4"
+          },
+          {
+            "bytes": 7845,
+            "path": "src/rfad/application/project_operations.py",
+            "sha256": "0483f8c600c698a538d5efcd88e39b59d368f6bda83edbd588179b2c2070f32e"
+          },
+          {
+            "bytes": 2864,
+            "path": "src/rfad/application/project_repository.py",
+            "sha256": "f70a2541e1519c56fa93d8f1d43dfab2d41e75081df7cfcbbbe382325ac7e179"
+          },
+          {
+            "bytes": 8903,
+            "path": "src/rfad/application/project_studies.py",
+            "sha256": "9359d4cfdbd89aa49f7a2181e94fbb0d1675931b1dc9449fba0c7ba1259be9d1"
+          },
+          {
+            "bytes": 6683,
+            "path": "src/rfad/application/project_study_commands.py",
+            "sha256": "654dc052a2742909c619013a6c5012077176dfb83185341f049e555e8cdbb74f"
+          },
+          {
+            "bytes": 5621,
+            "path": "src/rfad/application/project_study_contract.py",
+            "sha256": "6b017b2b24bf23afba6e2474c4ae4059ae4e1628a3a22d7a977f703f686220b1"
+          },
+          {
+            "bytes": 7554,
+            "path": "src/rfad/application/project_study_results.py",
+            "sha256": "2e9315f7c42353a25f954fd428fadc5eefa3d79054948a9c5b73dc22e00c0b55"
+          },
+          {
+            "bytes": 25690,
+            "path": "src/rfad/application/projects.py",
+            "sha256": "d4f36cd23879ee406a28595ac14383b9ee18f9e281c6c8f8c19f9374d5ac2e65"
+          },
+          {
+            "bytes": 2169,
+            "path": "src/rfad/application/radiation.py",
+            "sha256": "c8fe3b44d4e24ec7b4d2a8adf659030e16ebc56afa44842cc66f6b71e165a184"
+          },
+          {
+            "bytes": 2975,
+            "path": "src/rfad/application/radiation_assessment.py",
+            "sha256": "297528793354159a7872c5e6f5d50135bb2f219adb41e588623d2a26d2cd56a2"
+          },
+          {
+            "bytes": 7678,
+            "path": "src/rfad/application/radiation_comparison.py",
+            "sha256": "0aa7e258f41a82a74e3af3d17ec1706582e000a71c5fc23926a6ad006c8a5e1c"
+          },
+          {
+            "bytes": 3827,
+            "path": "src/rfad/application/radiation_queries.py",
+            "sha256": "5889cd01230439d7650d7f9a5dccfafbb9a3e84d816709a13e21971f7aa158aa"
+          },
+          {
+            "bytes": 5443,
+            "path": "src/rfad/application/radiation_study.py",
+            "sha256": "36e4f7944c57db51af7c037fe4498aea160030d94afd2c9968fca72a55f9993c"
+          },
+          {
+            "bytes": 3505,
+            "path": "src/rfad/application/radiation_study_guards.py",
+            "sha256": "6cd9a14a488e672d164ed8301486b817c3fd1e221da41fba19cd9eb99cac14db"
+          },
+          {
+            "bytes": 4858,
+            "path": "src/rfad/application/request_ledger.py",
+            "sha256": "59bfcdedaa6a5bbca8f3437a1b8e19477f91dfc4024f3c672d75a705d0355e02"
+          },
+          {
+            "bytes": 26957,
+            "path": "src/rfad/application/rpc.py",
+            "sha256": "b4df6fce6682ffbba7f72e03314061341036bd6bf4f554dbdfd2150161111f16"
+          },
+          {
+            "bytes": 18559,
+            "path": "src/rfad/application/solver.py",
+            "sha256": "49922769ec8d358b0afb0863b47fbc71a809f2d3e742c7d12e342f2a1d2d521c"
+          },
+          {
+            "bytes": 16457,
+            "path": "src/rfad/application/solver_artifacts.py",
+            "sha256": "a56b364946066ea57362fc17bb5b79d18690a2968bc49b50410167d04574dde1"
+          },
+          {
+            "bytes": 6078,
+            "path": "src/rfad/application/solver_capture.py",
+            "sha256": "6bf4f7038c5ff6bd7712b11b2ce9fb65253d4870ca9a25d2ec04c5c5bb2e2ff8"
+          },
+          {
+            "bytes": 26096,
+            "path": "src/rfad/application/solver_jobs.py",
+            "sha256": "b62c4060cb22008e5bc8fe9534a27d415c5347736f178bf1d6df0331da42af85"
+          },
+          {
+            "bytes": 5802,
+            "path": "src/rfad/application/solver_queries.py",
+            "sha256": "8b9f63d88447084e4384f2ac4e47543893a070b8b780ee4eafe85db625f52905"
+          },
+          {
+            "bytes": 3935,
+            "path": "src/rfad/application/solver_requests.py",
+            "sha256": "fb369b043366e6986f1143e10113c7a0b894606561617c2291f94af747989196"
+          },
+          {
+            "bytes": 5181,
+            "path": "src/rfad/application/solver_runtime.py",
+            "sha256": "84ab872883ebbe074efb2df3a655d7b16432104452582c84215b6499d020d5e2"
+          },
+          {
+            "bytes": 7746,
+            "path": "src/rfad/application/target_editor.py",
+            "sha256": "364be24d20edc9424e91e327abd05f34858fe19e6ce6b930bd49c6fe4a8e4b39"
+          },
+          {
+            "bytes": 7759,
+            "path": "src/rfad/application/target_editor_fields.py",
+            "sha256": "564af630d8a0806cdbc90a1fbf79c800f36be8a502f89583ad4d3306dcfc1c34"
+          },
+          {
+            "bytes": 9183,
+            "path": "src/rfad/application/target_editor_values.py",
+            "sha256": "46be42aac951311cb605e17e356f2d3642b1b073822141a2db7eee14fbc73e2f"
+          },
+          {
+            "bytes": 13351,
+            "path": "src/rfad/application/template_candidates.py",
+            "sha256": "21e98e48739b349aa78b1436cda3312b7f0fdfbe1caaaaf1d4eee2f7d092c4aa"
+          },
+          {
+            "bytes": 21744,
+            "path": "src/rfad/application/wsl_process.py",
+            "sha256": "cd1aea3816dfdb571ea0858a8326df892de648b4efcd05b8295a6bd4e5274e93"
+          },
+          {
+            "bytes": 116,
+            "path": "src/rfad/catalog/__init__.py",
+            "sha256": "f493ee69507a2eeef854f4cdbc3bfd482829ab5b34338743b71c84cb807b7de8"
+          },
+          {
+            "bytes": 19438,
+            "path": "src/rfad/catalog/build.py",
+            "sha256": "0b838211c01c105b68fbcf9247759362896b9217fdfe35cd8156f95b1e4475ef"
+          },
+          {
+            "bytes": 10360,
+            "path": "src/rfad/catalog/material_selection.py",
+            "sha256": "2f3eedf37db13b7132d42b2e3d0fbca190b08f644d4ab21f2238e65e434d7036"
+          },
+          {
+            "bytes": 3340,
+            "path": "src/rfad/catalog/models.py",
+            "sha256": "30f285ea3bc597d35fd72a3e200170c862522f240dc3fa0c70f73d62f216961b"
+          },
+          {
+            "bytes": 3301,
+            "path": "src/rfad/catalog/native.py",
+            "sha256": "d505114664c66861b6a79c039f73b3ac6656ffcdf627df8ecab2b8fac536219e"
+          },
+          {
+            "bytes": 8038,
+            "path": "src/rfad/catalog/native_common.py",
+            "sha256": "556902f3e45bb71255451d2437546f0265ff26a9adf1662872d13905a2dbbc68"
+          },
+          {
+            "bytes": 5063,
+            "path": "src/rfad/catalog/native_jlc.py",
+            "sha256": "fe662a96a35bd3a0e2d4c1b261c7cf78cb17d6a903ff8b680e17977e9e3c1c2c"
+          },
+          {
+            "bytes": 2413,
+            "path": "src/rfad/catalog/native_pcbway.py",
+            "sha256": "c13777b1c66e342540fb71d15c9427f0844c6ab9d9533f9fac202a88f5b4d7ae"
+          },
+          {
+            "bytes": 3353,
+            "path": "src/rfad/catalog/native_we.py",
+            "sha256": "f6904f5c87d8a146154a71a553af755d5412cbcb34c6c9971d50b3e4777ea036"
+          },
+          {
+            "bytes": 6098,
+            "path": "src/rfad/catalog/properties.py",
+            "sha256": "67d01c6d83bf3bb2d1139e733490d577f7e5d67450e034a73ec8296dff121e56"
+          },
+          {
+            "bytes": 8214,
+            "path": "src/rfad/catalog/query.py",
+            "sha256": "06e567696122f285083d8f772ef53abf2f0c429f8d192d003d90d478ac461a24"
+          },
+          {
+            "bytes": 18240,
+            "path": "src/rfad/catalog/repository.py",
+            "sha256": "671d6c25ea6bdfa0fe895d390948c8a04fbb87473e737e55938191e7474a7206"
+          },
+          {
+            "bytes": 4959,
+            "path": "src/rfad/catalog/review.py",
+            "sha256": "71a7bc5883805428f01798bcb734055cec7da6e9e6bd29ff775c8007d176b1ff"
+          },
+          {
+            "bytes": 4856,
+            "path": "src/rfad/catalog/schema.py",
+            "sha256": "a9d77e4bcf796bc568b9fb65c5a6a47c3bee96dcbffc543a2304a8aa99e95d40"
+          },
+          {
+            "bytes": 15074,
+            "path": "src/rfad/catalog/selection_reader.py",
+            "sha256": "e5ad72c0eb5a5852852a7be33230d8bac9dfda25ed121df9929483198bfe2d2d"
+          },
+          {
+            "bytes": 2956,
+            "path": "src/rfad/catalog/selection_rules.py",
+            "sha256": "37765b18688473294ebf92483c85382ccf2c61124e53eb7edcc50519557bae52"
+          },
+          {
+            "bytes": 7525,
+            "path": "src/rfad/catalog/service.py",
+            "sha256": "2eca3ffec08fa28db2dfb16c05bcdc0013ee959529eb77a9dc23d3a29e4efbe3"
+          },
+          {
+            "bytes": 13011,
+            "path": "src/rfad/catalog/source.py",
+            "sha256": "fca01aad58763398caf269f4ba1ed81a0100a20ba9cde89a0f3a3c7742906a21"
+          },
+          {
+            "bytes": 4466,
+            "path": "src/rfad/catalog/stackup_draft.py",
+            "sha256": "5287aa8998194bab02ead2b3a488e192d065f560fdf77462e2f7bd0e5d62a073"
+          },
+          {
+            "bytes": 5533,
+            "path": "src/rfad/catalog/stackup_draft_common.py",
+            "sha256": "8e188553f62f111f1539a560388a4756f494d0b933de40a667c77095d4de32c4"
+          },
+          {
+            "bytes": 4478,
+            "path": "src/rfad/catalog/stackup_draft_jlc.py",
+            "sha256": "ff554c07fbc41db3c87cbbf3d5b79bfab7c6722b29b21d336920ad99cba64eb2"
+          },
+          {
+            "bytes": 4801,
+            "path": "src/rfad/catalog/stackup_draft_jlc_evidence.py",
+            "sha256": "a5ae02821a305a206442a0b3515808ad9b782f681b883df15f08fd74cc1c026c"
+          },
+          {
+            "bytes": 4295,
+            "path": "src/rfad/catalog/stackup_draft_pcbway.py",
+            "sha256": "0e7ab15707fc1a2bee8b4baae7ca835c20eae68526ce26b50c4848c0264214c0"
+          },
+          {
+            "bytes": 8820,
+            "path": "src/rfad/catalog/stackup_match.py",
+            "sha256": "db0145bd241904fb830fefebb1c3ba43d2d765203fedaa74d884fb8fcdc62ab8"
+          },
+          {
+            "bytes": 4080,
+            "path": "src/rfad/catalog/stackup_suggestions.py",
+            "sha256": "5e99df25a0815217a1aaa8705082e33188c98b4cdd30ec83363d839c35940b84"
+          },
+          {
+            "bytes": 4144,
+            "path": "src/rfad/catalog/suggested_properties.py",
+            "sha256": "04db8bf74380a8f4f3f579ca0226a7716733062bf1a3f32cf0590b56689a90f0"
+          },
+          {
+            "bytes": 96,
+            "path": "src/rfad/cli/__init__.py",
+            "sha256": "5ffd0914ed2f6746b578e0d30eabda8bd5b306c5a368ec8ec0dd87b3a669aa1b"
+          },
+          {
+            "bytes": 4917,
+            "path": "src/rfad/cli/catalog.py",
+            "sha256": "098cd24482fcb1037263772fa82599b1e1ca6a4863ea879f00229c6e72b60272"
+          },
+          {
+            "bytes": 11085,
+            "path": "src/rfad/cli/doctor.py",
+            "sha256": "80be1ab1fc4d387178f6b70cc4a1241b21c793d33648660c443ce9a3946139fb"
+          },
+          {
+            "bytes": 239,
+            "path": "src/rfad/domain/__init__.py",
+            "sha256": "f7905c21d7293db23c8736b154cfa4e737b28788376ae2314c73e75259356e67"
+          },
+          {
+            "bytes": 7491,
+            "path": "src/rfad/domain/boundary_distance.py",
+            "sha256": "6324951d5428ac3fa52a4bfd4774020ced3865edde193fce0306b2622d6e093c"
+          },
+          {
+            "bytes": 6489,
+            "path": "src/rfad/domain/check_connections.py",
+            "sha256": "0c16d7ae6d06637f9e70a91c6d87dc0e92c56893980dc7e0f4b8fc09872b96b5"
+          },
+          {
+            "bytes": 4049,
+            "path": "src/rfad/domain/check_constraints.py",
+            "sha256": "b10fc8cfb79115efba67edb4658cb553638323488e42c4ccee58071f1b3c2b25"
+          },
+          {
+            "bytes": 8932,
+            "path": "src/rfad/domain/check_geometry.py",
+            "sha256": "9138ff07281a3343eb5291e92824ace45639be2aa19f9d853c474eb8f1a2f647"
+          },
+          {
+            "bytes": 8149,
+            "path": "src/rfad/domain/check_manufacturing.py",
+            "sha256": "556ff09bcd6f9ab3eca2e31472c8be6f9a3fa3d1e32b3a44fce3c31847a6779c"
+          },
+          {
+            "bytes": 5000,
+            "path": "src/rfad/domain/check_report.py",
+            "sha256": "8bad8d680e70d3f0c8c3a45bd6bbb81fe99f4ab8fa6347797ce355569ba17277"
+          },
+          {
+            "bytes": 37899,
+            "path": "src/rfad/domain/design.py",
+            "sha256": "90a6841228469c7f58ab2bfb7744dac98b733abb8183f848cf9e8c4a421b2ad2"
+          },
+          {
+            "bytes": 4638,
+            "path": "src/rfad/domain/design_checks.py",
+            "sha256": "2da7ffddaeb329b71031d6cb2124f218bb6d0518b8545e69fd63c1eb8fbe80c0"
+          },
+          {
+            "bytes": 5866,
+            "path": "src/rfad/domain/design_rules.py",
+            "sha256": "d1b07bae77ae70d286627ab22bc730dc284d8e53164a0aa7cd0acce0936c0dcb"
+          },
+          {
+            "bytes": 21232,
+            "path": "src/rfad/domain/design_sweep.py",
+            "sha256": "ebd4c2e349dcde884b66ad8e9713c7a19343d692bae9a6da5058f928a2b7d58a"
+          },
+          {
+            "bytes": 1059,
+            "path": "src/rfad/domain/errors.py",
+            "sha256": "e8dc2d8e54fd71ca35af28d538c214687cdefeba035443aeeaee992cc55697d6"
+          },
+          {
+            "bytes": 20181,
+            "path": "src/rfad/domain/expressions.py",
+            "sha256": "60ea67477ab925614073a2231efa215cc96c48a0fcb7bbf25bc875949086c7c8"
+          },
+          {
+            "bytes": 1215,
+            "path": "src/rfad/domain/layer_surface.py",
+            "sha256": "95e1d645ad8210c80ec7fb6ff3326e9fb38ba2fbb0aca3b3fc47f4272222623f"
+          },
+          {
+            "bytes": 2500,
+            "path": "src/rfad/domain/literature_geometry.py",
+            "sha256": "b414dbfc04d4d2bf92d49d80e7375769e74282d78b9842dc7401c8e3ac9947a5"
+          },
+          {
+            "bytes": 1604,
+            "path": "src/rfad/domain/material_models.py",
+            "sha256": "7447b0b5fedb971a31b1fd41f81219249a324e2d44da6fe2e7269a8efd1a2fa9"
+          },
+          {
+            "bytes": 12743,
+            "path": "src/rfad/domain/network_assessment.py",
+            "sha256": "280edefa48251cc18d0ecf91955af06ab3a7bce9a5236a0fcada0575f9e4ee85"
+          },
+          {
+            "bytes": 10152,
+            "path": "src/rfad/domain/network_circuit.py",
+            "sha256": "3d4499d07398819c0b5d9c728aa553813858e60ad67618254a992fec025cfe02"
+          },
+          {
+            "bytes": 9861,
+            "path": "src/rfad/domain/network_data.py",
+            "sha256": "ecf136526dc5bbbd716b275ddfbdd2867407199a83733ecb71b6601ff33d3408"
+          },
+          {
+            "bytes": 8297,
+            "path": "src/rfad/domain/network_library.py",
+            "sha256": "1b06f80bf57c73d65fa6c2d10434c9b7eb13025aece29ec2edee72e7b8f98b82"
+          },
+          {
+            "bytes": 5639,
+            "path": "src/rfad/domain/network_transform.py",
+            "sha256": "ae8a44f66232e6956b204352eae527847c2a3fb808fa72e1bed8b2d8cfc05099"
+          },
+          {
+            "bytes": 4129,
+            "path": "src/rfad/domain/object_names.py",
+            "sha256": "20fa7425ecf2edf7924c67ce4b33ee5daf358da077eddd7532fe1c34233ebab7"
+          },
+          {
+            "bytes": 5343,
+            "path": "src/rfad/domain/parameter_graph.py",
+            "sha256": "3afa704b61fe6cce2f64d175df455e227604223eab90c71166f957d5f24e4b36"
+          },
+          {
+            "bytes": 3673,
+            "path": "src/rfad/domain/pcb_evidence_pool.py",
+            "sha256": "8ad93e1638b3f5a343acee606ed75ffc581dc725072a31c26b60b3e90ec843ea"
+          },
+          {
+            "bytes": 12252,
+            "path": "src/rfad/domain/pcb_selection.py",
+            "sha256": "2607f41e26d5a1623914486996e76ca9f69d031f1f074184bda658451e8665e9"
+          },
+          {
+            "bytes": 2800,
+            "path": "src/rfad/domain/pcb_selection_command.py",
+            "sha256": "62c6cceefc63dc87cb75489edc6c48522a125155de70962d0b92051b92328742"
+          },
+          {
+            "bytes": 10053,
+            "path": "src/rfad/domain/pcb_selection_evidence.py",
+            "sha256": "b017b5ecdc9dfc1aea5a0e6baf054600f7f5f6c7af580d2759455b5619572ab6"
+          },
+          {
+            "bytes": 2796,
+            "path": "src/rfad/domain/pcb_selection_history.py",
+            "sha256": "ea6b7a818036a81429dbd6da95bdff1d00aa4a54d4d5a32cfb66df7200da389b"
+          },
+          {
+            "bytes": 13890,
+            "path": "src/rfad/domain/physical_setup.py",
+            "sha256": "e2c89334deaad8abdcfbed18091534c6db7d445c572679fb915f9fe56b59ca32"
+          },
+          {
+            "bytes": 8072,
+            "path": "src/rfad/domain/planar.py",
+            "sha256": "a5fb63c7bfb7f1813917404095b696ab6e70eb71d7f0059508dbae31024e5e3f"
+          },
+          {
+            "bytes": 9343,
+            "path": "src/rfad/domain/precision_command.py",
+            "sha256": "ba6e84590440d6c8acc94c72cd72dbbc938c818ed6f8fae4a5fb321bf0e9c693"
+          },
+          {
+            "bytes": 11304,
+            "path": "src/rfad/domain/precision_dimensions.py",
+            "sha256": "ff9944bf8b65b99a0ebb7c966513b4957f30758ee8c4630e886f14ca5f8a6ab0"
+          },
+          {
+            "bytes": 7248,
+            "path": "src/rfad/domain/precision_transform.py",
+            "sha256": "83615f8ccdbb27d0a65fab2fd5ea5f6986e024414332ff602333f871ea251162"
+          },
+          {
+            "bytes": 2897,
+            "path": "src/rfad/domain/printed_geometry.py",
+            "sha256": "79c6ff64ac89c42dc36e1aa847889a0d5f857ed3ed4d72de35ab0c6efcb5f704"
+          },
+          {
+            "bytes": 21504,
+            "path": "src/rfad/domain/project.py",
+            "sha256": "350746c130e2c0844eb816845e07167f9b83282afc73f83f9596a95c51c369cc"
+          },
+          {
+            "bytes": 428,
+            "path": "src/rfad/domain/resource_limits.py",
+            "sha256": "367bd28fe19ef290a8ebde2ad3c413b3e24b79c7c7f396a149dddc1247fa0141"
+          },
+          {
+            "bytes": 8793,
+            "path": "src/rfad/domain/sweep_inputs.py",
+            "sha256": "f7ba16949209558d80e4be1e28b264b81022d2100f8d7f5d295474297f6348d5"
+          },
+          {
+            "bytes": 4864,
+            "path": "src/rfad/domain/target_constraints.py",
+            "sha256": "0d958d559e552d98e8d72c24a0ce113c53fe322dfcf3a2f226922b5eeaaf1234"
+          },
+          {
+            "bytes": 11891,
+            "path": "src/rfad/domain/targets.py",
+            "sha256": "57bec9e36e86f092d0103a87e6f5f0ebb288d41a82af80f4bb34ac11f8fa61f0"
+          },
+          {
+            "bytes": 4307,
+            "path": "src/rfad/domain/template_command.py",
+            "sha256": "b2038a0d3b2166a01109f85434db0c6a8a167817f84d33456e06d5842d6713a4"
+          },
+          {
+            "bytes": 18368,
+            "path": "src/rfad/domain/template_geometry.py",
+            "sha256": "1d50e47f04979140b5479fd0d48aa7cee798306a494e41aa85e8dd0d6ac89705"
+          },
+          {
+            "bytes": 2507,
+            "path": "src/rfad/domain/template_inputs.py",
+            "sha256": "96f3b72e7ca300a919787f83a518a20c8a530c992993d44f710a958aa019e815"
+          },
+          {
+            "bytes": 11946,
+            "path": "src/rfad/domain/template_instance.py",
+            "sha256": "797ff06c39c8f70dcf33e346fc661c0d07c93212dc7eb88b252f83dd82617abd"
+          },
+          {
+            "bytes": 8469,
+            "path": "src/rfad/domain/template_ports.py",
+            "sha256": "4bc56f5cca0a877a9118904826a3ba4e5aaa7294117d7abff0d0a6da94770578"
+          },
+          {
+            "bytes": 1848,
+            "path": "src/rfad/domain/template_provenance.py",
+            "sha256": "d75a63d40120226307f0edf16f0c496ed4aab09810d20e930ea0a9e039592096"
+          },
+          {
+            "bytes": 3699,
+            "path": "src/rfad/domain/template_seeds.py",
+            "sha256": "ee31b55454863ae902cc195739f03bf0bbcd36abe976ddd803e734ef8ade7b37"
+          },
+          {
+            "bytes": 9469,
+            "path": "src/rfad/domain/units.py",
+            "sha256": "2d14560523f4b9dd986639b15befda6541b88a2f429e8a4797bce642728c3fe4"
+          },
+          {
+            "bytes": 152,
+            "path": "src/rfad/storage/__init__.py",
+            "sha256": "ca4c257ab77186c72310cd6e4b1ae31e30f97b41d0ca4075b5760ad672a2e270"
+          },
+          {
+            "bytes": 25360,
+            "path": "src/rfad/storage/journal.py",
+            "sha256": "62f2f3a28dae5796baf71249078bca57b485647ed2fe0e261f18a7a27d134c03"
+          },
+          {
+            "bytes": 3313,
+            "path": "src/rfad/storage/sealed_files.py",
+            "sha256": "fe10aecf164b4330acfee9f47c51852df5ef47bd3c14aef8190bc50726cc5388"
+          },
+          {
+            "bytes": 97,
+            "path": "src/rfad/templates/__init__.py",
+            "sha256": "86220e3976b4ff63dad9ac02ba4f1f8c209ec672491169e8edd5dd7e3be80863"
+          },
+          {
+            "bytes": 9461,
+            "path": "src/rfad/templates/cards.py",
+            "sha256": "9bccfb2c7ebccbf89eae0e8a93c82132b4b2cbd86109abe4b40e97033d6d9516"
+          },
+          {
+            "bytes": 10077,
+            "path": "src/rfad/templates/g031.py",
+            "sha256": "53e0d9ea1c222caf2500cec355c8e4728ebec8fb1fb2ae83fe7cc6343bfbff69"
+          },
+          {
+            "bytes": 9727,
+            "path": "src/rfad/templates/printed_references.py",
+            "sha256": "ffb1cdf2cb7de0623e3cad89935d375199b1c68b19afe67c21b8b0928510f5d5"
+          }
+        ],
+        "manifest_sha256": "538c7d75a7820f2ee0a6d48fb0d9f3687c6a10c66c09962398dfd4dd2dbd7a9c",
+        "runtime_profile": "openems-wsl-reference/0.1",
+        "transport": {
+          "distribution": "TraceWave-Dev",
+          "guest_root": "/home/tracewave/rfad-runtime/worker-runs",
+          "lease_seconds": 10.0,
+          "protocol": "rfad.wsl-supervisor/0.1",
+          "python": "/home/tracewave/rfad-runtime/openems-venv/bin/python",
+          "supervisor_sha256": "7d6d70050e954cb7d6138d2f266d96b179be5089792b00c8a5e6e6f160447ce8",
+          "user": "tracewave"
+        }
+      },
+      "attempts": [
+        {
+          "disk_accounted_bytes": 4088033,
+          "guest_disk_accounted_bytes": 2057249,
+          "guest_reserved_bytes": 137194398,
+          "guest_usage_basis": "observed_logical_bytes",
+          "job_id": "eed533ab-101d-4db7-82e6-b5b7841c85b6",
+          "phase": "prepare"
+        },
+        {
+          "disk_accounted_bytes": 5019652,
+          "guest_disk_accounted_bytes": 2722292,
+          "guest_reserved_bytes": 137310620,
+          "guest_usage_basis": "observed_logical_bytes",
+          "job_id": "6d15c633-7797-4f17-8c85-ebc0b0848f71",
+          "phase": "solve"
+        }
+      ],
+      "original_project_hash": "33b64a86e38fa172820b8fc3ea06f0c913545872aed346741ee98d308055653d",
+      "physics_validated": false,
+      "candidate_outcome": "not_evaluated",
+      "convergence_state": "solver_end_criterion_only",
+      "reopened_without_runtime": true
+    }
+  ],
+  "initial_unknown_preserved": {
+    "workspace": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\sweep-native-b6f7dca936254ab49c6351cc550e365e\\workspace",
+    "journal_state": {
+      "path": "Code/.local/sweep-native-b6f7dca936254ab49c6351cc550e365e/workspace/commits/a26e2c66-685e-4498-8ac6-c3f6f8ea621d/state.json",
+      "bytes": 11479,
+      "sha256": "93c2be1d57ff7bb57d651d4ef0f3f68efcf9409c7b1515b7f2ee071ff38156de",
+      "last_written_utc": "2026-11-16T19:49:56.857755+00:00"
+    },
+    "job_id": "70a73453-34cd-468a-89a0-2b3b27527f2e",
+    "run_id": "7cf31f26-7d71-45ed-9ecb-5ea01386c8c5",
+    "state": "interrupted",
+    "resource_reserved": true,
+    "termination_confirmed": false,
+    "transport_reason_was_not_recorded_by_old_code": true,
+    "diagnosis": "old start copied only part of inputs before acknowledgement loss; no persisted starter identity/handoff/control; 10s start-control timeout was a contributing hypothesis, not a recorded transport reason"
+  },
+  "backend_source_files_at_final_native_run": [
+    {
+      "path": "Code/src/rfad/application/design_sweep_runner.py",
+      "bytes": 28549,
+      "sha256": "9a2ec366dbb5d9de553713c9d5b7e60ef3c0fd0c03dca3dadb30a8e43698a0d6",
+      "last_written_utc": "2026-11-16T19:57:06.162862+00:00"
+    },
+    {
+      "path": "Code/src/rfad/application/solver_capture.py",
+      "bytes": 6078,
+      "sha256": "6bf4f7038c5ff6bd7712b11b2ce9fb65253d4870ca9a25d2ec04c5c5bb2e2ff8",
+      "last_written_utc": "2026-11-16T19:47:07.323517+00:00"
+    },
+    {
+      "path": "Code/src/rfad/application/solver_jobs.py",
+      "bytes": 26488,
+      "sha256": "722f9a4abe17a076f6f45d1473370970b79bebdcf4f1766bbe01658276f558cb",
+      "last_written_utc": "2026-11-16T19:56:07.329380+00:00"
+    },
+    {
+      "path": "Code/src/rfad/application/solver_runtime.py",
+      "bytes": 5181,
+      "sha256": "84ab872883ebbe074efb2df3a655d7b16432104452582c84215b6499d020d5e2",
+      "last_written_utc": "2026-11-16T19:32:51.054056+00:00"
+    },
+    {
+      "path": "Code/src/rfad/application/solver_artifacts.py",
+      "bytes": 16457,
+      "sha256": "a56b364946066ea57362fc17bb5b79d18690a2968bc49b50410167d04574dde1",
+      "last_written_utc": "2026-11-16T19:44:35.643265+00:00"
+    },
+    {
+      "path": "Code/src/rfad/application/pcb_results.py",
+      "bytes": 13251,
+      "sha256": "73901478ddd4c4ef81e9243347b1a722109f58b2c6a1b330d8a23776257f2054",
+      "last_written_utc": "2026-11-16T19:45:03.039366+00:00"
+    },
+    {
+      "path": "Code/src/rfad/application/wsl_process.py",
+      "bytes": 21744,
+      "sha256": "cd1aea3816dfdb571ea0858a8326df892de648b4efcd05b8295a6bd4e5274e93",
+      "last_written_utc": "2026-11-16T19:55:03.543920+00:00"
+    },
+    {
+      "path": "Code/tools/wsl_supervisor.py",
+      "bytes": 29807,
+      "sha256": "7d6d70050e954cb7d6138d2f266d96b179be5089792b00c8a5e6e6f160447ce8",
+      "last_written_utc": "2026-11-16T20:04:40.008185+00:00"
+    },
+    {
+      "path": "Code/tests/test_design_sweep_runner.py",
+      "bytes": 27665,
+      "sha256": "d5f86d800c01722d80b4a60c3885fde18f4634dab1f8c50e6adc9328f37cc09c",
+      "last_written_utc": "2026-11-16T19:49:31.198261+00:00"
+    },
+    {
+      "path": "Code/tests/test_wsl_process.py",
+      "bytes": 15186,
+      "sha256": "8f7a689f210d8cf28f59e2559b47392a72947809d7ea9102585bebe65e65700e",
+      "last_written_utc": "2026-11-16T19:57:06.166643+00:00"
+    },
+    {
+      "path": "Code/tests/test_wsl_guest.py",
+      "bytes": 18908,
+      "sha256": "720c57c502b0df2e659a3bad92bf9a6949b2baac68a1844e11839f113615d7e2",
+      "last_written_utc": "2026-11-16T20:03:35.112661+00:00"
+    }
+  ],
+  "retained_limits": {
+    "project_bytes": 524288,
+    "origin_bytes": 262144,
+    "worker_source_files": 192,
+    "cad_source_bytes": 2097152,
+    "solver_source_bytes": 4194304
+  },
+  "finalization_pending": [],
+  "build_records": [
+    {
+      "log": {
+        "path": "Code/.local/sweep-step6-build-initial.log",
+        "bytes": 3541,
+        "sha256": "127767a9baa2289d6f1ade2f29ea611e62a818c9e793ccac8d193392db43106a",
+        "last_written_utc": "2026-11-16T19:47:54.326214+00:00"
+      },
+      "status": "failed",
+      "scope": "C++ string literal끼리 덧셈한 결과 요약 작성 오류"
+    },
+    {
+      "log": {
+        "path": "Code/.local/sweep-step6-build-followup.log",
+        "bytes": 4162,
+        "sha256": "d794a0b43f37c198c1304f1723291c7fd31ac7ffc5cf2ef09ae2d581de90cf7a",
+        "last_written_utc": "2026-11-16T19:52:55.655795+00:00"
+      },
+      "status": "passed",
+      "scope": "명시 std::string 구성으로 수정 후 실제 링크 성공"
+    },
+    {
+      "log": {
+        "path": "Code/.local/sweep-step6-build-manual-corrections.log",
+        "bytes": 5929,
+        "sha256": "81d61b84f310d9c82d391498e00171fb385476fc61a602ff94701820a879433d",
+        "last_written_utc": "2026-11-16T20:15:04.664120+00:00"
+      },
+      "status": "failed",
+      "scope": "wxGenericCollapsiblePane와 wxCollapsiblePane 포인터 선언 불일치"
+    },
+    {
+      "log": {
+        "path": "Code/.local/sweep-step6-build-manual-corrections-final.log",
+        "bytes": 1243,
+        "sha256": "b5d63cad70a0a331b59c082a7fd081f94faa4a779b08e8aa6ffb8b2ec906a948",
+        "last_written_utc": "2026-11-16T20:15:48.597948+00:00"
+      },
+      "status": "passed",
+      "scope": "공통 generic pane 타입으로 일치시킨 뒤 GUI/presentation 링크 성공"
+    },
+    {
+      "log": {
+        "path": "Code/.local/sweep-step6-build-final-review.log",
+        "bytes": 513,
+        "sha256": "cd3a54ce1214b7cb1dc4c4dc57c08495357c90a8bba19e53035087d9ddaec261",
+        "last_written_utc": "2026-11-16T20:27:23.294656+00:00"
+      },
+      "status": "passed",
+      "scope": "명시행 stale mapping와 다른 연구 조회 중 이전 후보/조건 표시를 보강한 최종 canonical 링크",
+      "executable_sha256": "6f6eb63042a726b1a095a8b264b793c2e1af075678e59b61e2e6d90714dbd92a"
+    }
+  ],
+  "manual_windows_visual": {
+    "status": "passed_on_capture_build",
+    "reviewer": "root agent direct Windows interaction",
+    "main_window_pixels": [
+      1648,
+      954
+    ],
+    "result_dialog_pixels": [
+      1108,
+      774
+    ],
+    "captures": [
+      {
+        "file": {
+          "path": "01_개발문서/07_검증/02_실행화면/19_연구목록과_완료후보.jpg",
+          "bytes": 176184,
+          "sha256": "853b69df71f005d40312e5bb865f9c46273061e70a7734b4f42f7ee0488d3469",
+          "last_written_utc": "2026-11-16T20:18:17.215216+00:00"
+        },
+        "checked": "연구 문맥/완료 후보/결과 버튼이 잘리지 않음"
+      },
+      {
+        "file": {
+          "path": "01_개발문서/07_검증/02_실행화면/20_연구결과_표본과단위.jpg",
+          "bytes": 99534,
+          "sha256": "88895bb9aa268c2eace72ccc04914cec1ba66a42f88dd88cd04321e67eab1a10",
+          "last_written_utc": "2026-11-16T20:18:35.721509+00:00"
+        },
+        "checked": "실제 201표본과 GHz 표시, 수치의 8유효숫자 표시"
+      },
+      {
+        "file": {
+          "path": "01_개발문서/07_검증/02_실행화면/21_연구결과_조건과미평가.jpg",
+          "bytes": 74724,
+          "sha256": "cc066f4a9ec5f68c4285c0e57418c3a40775fea7d19e6eaa9b316bb872b7603b",
+          "last_written_utc": "2026-11-16T20:19:05.205166+00:00"
+        },
+        "checked": "목표 이름/미평가 사유, 제작/측정 미정, 접힌 원문"
+      },
+      {
+        "file": {
+          "path": "01_개발문서/07_검증/02_실행화면/22_연구초안_폐기확인.jpg",
+          "bytes": 82214,
+          "sha256": "e188dd74a74bde44b26ff626e7ed0e19974c4611ea09755d055c86d9b2165831",
+          "last_written_utc": "2026-11-16T20:19:47.052788+00:00"
+        },
+        "checked": "미적용 이름 입력 뒤 Esc, 아니요 기본/거절 시 입력 유지, 예 선택 시 폐기"
+      }
+    ],
+    "reopen_log": {
+      "path": "Code/.local/sweep-manual-reopen-final.log",
+      "bytes": 1574,
+      "sha256": "c628176974dce69e14d0836ecedefb537c700ea1eb257890777f7ccf80d679fd",
+      "last_written_utc": "2026-11-16T20:20:17.736324+00:00"
+    },
+    "reopen_report": {
+      "path": "Code/.local/sweep-visual-20261117-b1525e3b/reopen-verification.json",
+      "bytes": 1829,
+      "sha256": "f0d4b822930acf964c1e59a1aa93483ba9cf110963197a623f0a68c561547780",
+      "last_written_utc": "2026-11-16T20:20:17.718137+00:00"
+    },
+    "reopen_observation": {
+      "passed": true,
+      "source_hash": "5033e125ecf39f73e74306e8b7a023d5cf669e8c195391ab8ea20805409d83c0",
+      "revision_id": "2879a818-ac63-4017-81da-f347bb367410",
+      "workspace": "C:\\Users\\eidos\\GitHub\\TraceWave Studio\\Code\\.local\\sweep-visual-20261117-b1525e3b",
+      "saved_reopened_original_unchanged": true,
+      "studies": 3,
+      "candidate_results": 3,
+      "measurements_added": 0,
+      "physics_validated": false,
+      "artifacts": [
+        {
+          "role": "raw",
+          "sha256": "f393d9b503490303d9be5a83386c42f8834995c782e9329dd3b76f2f9d9230d2",
+          "bytes": 3458
+        },
+        {
+          "role": "dataset",
+          "sha256": "479c946902d65a16a2bf36e1d91ee69bd13268f54dbaf75ca7fd287ad762780a",
+          "bytes": 16863
+        },
+        {
+          "role": "normalized_hdf5",
+          "sha256": "106e784b92f6f8cf199899f6dd0fdb09b4480755a7b01e578483711985551ddb",
+          "bytes": 32472
+        },
+        {
+          "role": "candidate_result",
+          "bytes": 23283,
+          "sha256": "ef8d01f534ed20bca141aafa3501d3e4d2ce4b0635fd2d64cda07dd049e8b272",
+          "uri": "projects/CAD 한글 교환 검증/sweeps/4b980853-1f48-46cb-8fb6-91ec11d81f0a/results/0/7da9c913-fa3a-472b-94ee-7b57d0935855/dataset.json"
+        },
+        {
+          "role": "candidate_result",
+          "bytes": 23083,
+          "sha256": "1a7911fbf50313d49b0df3a9b5765080ac9b3baea2a7e7e268412d01588a2c08",
+          "uri": "projects/CAD 한글 교환 검증/sweeps/4b980853-1f48-46cb-8fb6-91ec11d81f0a/results/1/145a38d2-8351-4a41-b479-26c5f3fbbb54/dataset.json"
+        },
+        {
+          "role": "candidate_result",
+          "bytes": 23283,
+          "sha256": "ef8d01f534ed20bca141aafa3501d3e4d2ce4b0635fd2d64cda07dd049e8b272",
+          "uri": "projects/CAD 한글 교환 검증/sweeps/4b980853-1f48-46cb-8fb6-91ec11d81f0a/results/2/413befda-8a47-447a-86ca-c92d3dd47411/dataset.json"
+        }
+      ]
+    },
+    "all_dpi_accessibility_accepted": false,
+    "physics_validated": false,
+    "capture_bytes_edited": false,
+    "note": "후속 명시행 mapping 수정 빌드에 캡처 출처를 소급하지 않는다.",
+    "capture_build_sha256": "b021bb9a5f6c4c1c83108c54016154506a693f079274745a40a89dc4c9d28f5e",
+    "followup_final_build": "전용 13개 실제 검사와 전체 GUI 회귀를 최종 6f6eb630 빌드로 실행. 최종 빌드 추가 수동 촬영/재검수는 하지 않았으며 기존 b021 캡처를 유지한다."
+  },
+  "final_executable": {
+    "sha256": "6f6eb63042a726b1a095a8b264b793c2e1af075678e59b61e2e6d90714dbd92a",
+    "path": "Code/build/windows-release/bin/tracewave_gui.exe",
+    "identity_basis": "canonical executable bytes independently read and SHA256 checked",
+    "captures_from_final_executable": false,
+    "capture_build_preserved": "b021bb9a5f6c4c1c83108c54016154506a693f079274745a40a89dc4c9d28f5e",
+    "changes_after_capture": [
+      "값 목록/범위 전환 승인 시 명시행 삭제와 검토 무효화; 취소 시 기존 입력/행/검토 유지",
+      "다른 연구를 선택해 get/page 응답을 기다리는 동안 이전 후보/조건 표시를 비움"
+    ],
+    "full_gui_verification_pending": false,
+    "bytes": 23447593,
+    "last_written_utc": "2026-11-16T20:27:23.160770+00:00"
+  },
+  "document_verification": {
+    "status": "passed",
+    "log": {
+      "path": "Code/.local/sweep-document-check.log",
+      "bytes": 386,
+      "sha256": "2e029181834c4b12f850eaf996e24212ddec539e54cb0a9d7b06223dfccdecd4",
+      "last_written_utc": "2026-11-16T20:39:05.708792+00:00"
+    },
+    "report": {
+      "path": "01_개발문서/11_검토기록/06_문서검증_기록.json",
+      "bytes": 4048,
+      "sha256": "c4db24269794d7a2baab1b926c4f607a4d2a1a06b2fef24ede6b396a3fddfc6c",
+      "last_written_utc": "2026-11-16T20:39:05.689697+00:00"
+    },
+    "counts": {
+      "scope": "current_development_docs",
+      "approved_baseline_files_verified": 27,
+      "folder_names_verified": 28,
+      "numbered_files_verified": 458,
+      "archive_link_scope": "original_relative_context_preserved_not_current_links",
+      "documents": 130,
+      "links_checked": 7535,
+      "broken_links": [],
+      "native_gui_test": "not_run",
+      "native_drawio_roundtrip": "not_run"
+    },
+    "drawio_svg_png_structural_pairs": 10,
+    "native_drawio_roundtrip": "not_run",
+    "scope": "현행 문서 구조/링크/승인 hash 보존. GUI/물리 수용 시험이 아님."
+  },
+  "requirement_audit": {
+    "status": "passed",
+    "generation_and_check_log": {
+      "path": "Code/.local/sweep-audit-generation-final.log",
+      "bytes": 320,
+      "sha256": "52c3ae6ac5d4df403d50daf74255a176a2ac3be6f0ffb79c36fa3a8dbbafa088",
+      "last_written_utc": "2026-11-16T20:31:55.209478+00:00"
+    },
+    "records": [
+      {
+        "requirements": 141,
+        "acs": 404,
+        "subcases": 407,
+        "functions": 46,
+        "verification_groups": 30,
+        "apis": 30,
+        "acceptance_passes_claimed": 0,
+        "mode": "generated"
+      },
+      {
+        "requirements": 141,
+        "acs": 404,
+        "subcases": 407,
+        "functions": 46,
+        "verification_groups": 30,
+        "apis": 30,
+        "acceptance_passes_claimed": 0,
+        "mode": "checked"
+      }
+    ],
+    "unit_test_run_id": "sweep-audit-intermediate",
+    "scope": "입력/생성 추적표의 일치 검사. 전체 승인 API와 기능 수용을 새로 합격 처리하지 않음."
+  },
+  "initial_manual_captures": {
+    "reviewer": "root agent direct Windows interaction",
+    "capture_build_sha256": "da3e1ee82eaa6ba170c214f4327b7882ca6fe0b5264741056eb1b1e81a7ab413",
+    "build_stage": "초기 결과 창/설정 폼, 마지막 수동 외형 보완 전",
+    "ctest_run_id": "sweep-step6-ctest-review",
+    "captures": [
+      {
+        "file": {
+          "path": "01_개발문서/07_검증/02_실행화면/15_연구후보_복소곡선.jpg",
+          "bytes": 58183,
+          "sha256": "1072e45709dfaf76c94cb571c1d4fc5eec74ec8c195d364644dc1f1bd19d406e",
+          "last_written_utc": "2026-11-16T20:07:27.920390+00:00"
+        },
+        "observed": "저장된 회로 후보의 1~2 GHz 복소 곡선"
+      },
+      {
+        "file": {
+          "path": "01_개발문서/07_검증/02_실행화면/16_연구설정_유형과변수.jpg",
+          "bytes": 75259,
+          "sha256": "1767d7140dd14076702815e0a1117d236507ef77838a2d033a22a4f98b6e43f1",
+          "last_written_utc": "2026-11-16T20:09:22.961137+00:00"
+        },
+        "observed": "연구 유형 선택과 명시 변수 폼"
+      },
+      {
+        "file": {
+          "path": "01_개발문서/07_검증/02_실행화면/17_연구설정_주파수와방사.jpg",
+          "bytes": 88129,
+          "sha256": "7cae7109c464f50404fe088846e799b59d5d3537727fc2f9796c9b9922c23d18",
+          "last_written_utc": "2026-11-16T20:09:40.130328+00:00"
+        },
+        "observed": "GHz 입력과 명시 방사 옵션; 초기값 꺼짐"
+      },
+      {
+        "file": {
+          "path": "01_개발문서/07_검증/02_실행화면/18_연구설정_실행예산.jpg",
+          "bytes": 73899,
+          "sha256": "fd0090b8cf660ffef693f19816d5b021318606cba889190583d5935b5dbcc1ee",
+          "last_written_utc": "2026-11-16T20:09:52.253179+00:00"
+        },
+        "observed": "min/GiB 입력 예산; 서비스에서 SI/byte 정규화"
+      }
+    ],
+    "observed_defects": [
+      "Studio 연구 문맥/제목 표시",
+      "후보 결과 버튼의 공간 부족",
+      "표본 표시와 주파수 단위",
+      "조건 요약과 원문 접기"
+    ],
+    "followup": "수동 보완 뒤 b021bb9a 빌드의 19~22 원문 캡처와 재열기로 다시 확인. 최종 6f6eb630의 자동13검사/전체GUI와 각각 분리.",
+    "capture_bytes_edited": false,
+    "physics_validated": false
+  }
+}

@@ -1,6 +1,7 @@
 """! @brief 작은 프로젝트 파일 작업의 실행을 문서 저장소와 결합한다."""
 
 from copy import deepcopy
+import hashlib
 from typing import Callable
 from uuid import uuid4
 
@@ -104,13 +105,17 @@ class ProjectOperations:
 
     def snapshot(self, state: dict, project: dict, document: dict, raw: bytes, data: dict) -> dict:
         """! @brief 접수 시점의 바이트로 독립 snapshot을 봉인한다."""
+        snapshot = self.prepare_snapshot(state, project, document, raw, data)
+        return self.publish_snapshot(state, snapshot, raw)
+
+    def prepare_snapshot(self, state: dict, project: dict, document: dict, raw: bytes, data: dict) -> dict:
+        """! @brief 파일을 쓰기 전에 정확한 봉인 참조와 비용 검토용 descriptor를 만든다."""
         if len(state["snapshots"]) >= MAX_SNAPSHOTS:
             raise ProjectError("E_RESOURCE", "스냅샷 보존 상한에 도달했습니다.")
         snapshot_id = str(uuid4())
-        reference = self.repository.journal.put_immutable(
-            f"{project['path']}/snapshots/{document['revision_id']}/{snapshot_id}/project.json", raw,
-        )
-        snapshot = {
+        reference = {"uri": f"{project['path']}/snapshots/{document['revision_id']}/{snapshot_id}/project.json",
+                     "sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw)}
+        return {
             "snapshot_id": snapshot_id,
             "project_id": document["project_id"],
             "revision_id": document["revision_id"],
@@ -122,5 +127,17 @@ class ProjectOperations:
             "artifact": reference,
             "validation_state": "not_evaluated",
         }
-        state["snapshots"][snapshot_id] = snapshot
+
+    def publish_snapshot(self, state: dict, snapshot: dict, raw: bytes) -> dict:
+        """! @brief 검토한 바이트와 descriptor가 같을 때만 파일과 현재 transaction 참조를 게시한다."""
+        if len(state["snapshots"]) >= MAX_SNAPSHOTS:
+            raise ProjectError("E_RESOURCE", "스냅샷 보존 상한에 도달했습니다.")
+        reference = snapshot["artifact"]
+        if reference["sha256"] != hashlib.sha256(raw).hexdigest() or reference["bytes"] != len(raw):
+            raise ProjectError("E_HASH", "게시할 스냅샷과 검토한 원본 바이트가 다릅니다.")
+        if snapshot["snapshot_id"] in state["snapshots"]:
+            raise ProjectError("E_CONFLICT", "이미 게시된 스냅샷 식별자입니다.")
+        if self.repository.journal.put_immutable(reference["uri"], raw) != reference:
+            raise ProjectError("E_HASH", "게시한 스냅샷 참조가 검토한 참조와 다릅니다.")
+        state["snapshots"][snapshot["snapshot_id"]] = deepcopy(snapshot)
         return deepcopy(snapshot)

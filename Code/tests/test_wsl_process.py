@@ -68,6 +68,16 @@ class WslProcessTests(unittest.TestCase):
             self.runtime.inspect(self.run_id, self.nonce)
         self.assertEqual(caught.exception.code, "E_HASH")
 
+    def test_large_start_and_export_use_bounded_startup_timeout(self):
+        """! @brief 소스 복사/출력 교환은 짧은 상태 조회 timeout과 구분하되 유한하다."""
+        response = subprocess.CompletedProcess([], 0, json.dumps(self.status()).encode(), b"")
+        with patch("rfad.application.wsl_process._run_control", return_value=response) as launcher:
+            for command in ("start", "export"):
+                self.runtime._invoke(command, {"run_id": self.run_id, "nonce": self.nonce}, bootstrap=command == "start")
+                self.assertEqual(launcher.call_args.args[2], self.runtime.startup_timeout_seconds)
+            self.runtime.inspect(self.run_id, self.nonce)
+            self.assertEqual(launcher.call_args.args[2], self.runtime.control_timeout_seconds)
+
     def test_ack_loss_reconnects_without_starting_again(self):
         """! @brief 시작 응답 유실 시 같은 실행을 조회하며 solve를 중복 실행하지 않는다."""
         commands = []

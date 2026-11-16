@@ -26,6 +26,7 @@ public:
         parser.AddSwitch("", "study-expect-failure", "Expect study source preflight rejection");
         parser.AddSwitch("", "design-setup-smoke-test", "Run target/template GUI workflow and exit");
         parser.AddSwitch("", "network-smoke-test", "Run network import, RLC, assessment and restart GUI workflow");
+        parser.AddSwitch("", "sweep-smoke-test", "Run finite study create, cancel, resume and reopen GUI workflow");
         parser.AddSwitch("", "printed-seed-smoke-test",
                          "Run printed reference/seed and workspace GUI workflow and exit");
         parser.AddSwitch("", "physical-setup-smoke-test", "Run physical stack, STEP placement and reopen workflow");
@@ -78,9 +79,10 @@ public:
         options.precisionPlanarSmoke = parser.Found("precision-planar-smoke-test");
         options.precisionEditorSmoke = parser.Found("precision-editor-smoke-test") || options.precisionPlanarSmoke;
         options.networkSmoke = parser.Found("network-smoke-test");
+        options.sweepSmoke = parser.Found("sweep-smoke-test");
         options.setupSmoke = parser.Found("design-setup-smoke-test") || options.printedSeedSmoke ||
                              options.designRulesSmoke || options.physicalSetupSmoke || options.precisionEditorSmoke ||
-                             options.networkSmoke;
+                             options.networkSmoke || options.sweepSmoke;
         parser.Found("study-specification", &options.studySpecification);
         options.smoke = parser.Found("smoke-test") || options.editorSmoke || options.canvasSmoke ||
                         options.primitivesSmoke || options.cadSmoke || options.solverSmoke || options.pcbSmoke ||

@@ -23,10 +23,9 @@ class StudyCoordinator:
         self.polling = False
 
     def start(self):
-        """! @brief runtime이 구성된 경우에만 연구 조정기를 시작한다."""
-        if self.service.solver.runtime is not None:
-            self.thread = threading.Thread(target=self._loop, name="rfad-study-coordinator", daemon=False)
-            self.thread.start()
+        """! @brief 회로 스윕도 처리하되 native 실행 여부는 각 연구의 고정 환경을 따른다."""
+        self.thread = threading.Thread(target=self._loop, name="rfad-study-coordinator", daemon=False)
+        self.thread.start()
 
     def close(self):
         """! @brief solver 종료 전에 새 단계 접수를 중지한다."""
@@ -67,14 +66,20 @@ class StudyCoordinator:
 
     def run_next(self):
         """! @brief 잠금 밖의 종료 확인/판정과 원자적 단계 접수를 분리한다."""
-        if self.service.solver.runtime is None or self.stop.is_set() or not self.lock.acquire(blocking=False):
+        if self.stop.is_set() or not self.lock.acquire(blocking=False):
             return False
         identity = None
         try:
             state = self.service.journal.read()
+            sweep_active = any(row["state"] in ACTIVE for row in state.get("sweeps", {}).values())
+            if sweep_active:
+                from rfad.application.design_sweep_runner import run_next
+
+                self.polling = True
+                return run_next(self.service, self.stop)
             study = next((row for row in state.get("studies", {}).values() if row["state"] in ACTIVE), None)
             self.polling = study is not None
-            if study is None:
+            if study is None or self.service.solver.runtime is None:
                 return False
             identity = study["study_id"]
             job = state["jobs"].get(study["current_job_id"])

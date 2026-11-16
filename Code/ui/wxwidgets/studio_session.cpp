@@ -51,6 +51,8 @@ void StudioFrame::Connect()
              m_precisionSupported = result.value("methods", Json::object()).contains("precision.get");
              m_networkSupported = result.value("methods", Json::object()).contains("network.library") &&
                                   result.value("methods", Json::object()).contains("network.apply");
+             m_sweepSupported = result.value("methods", Json::object()).contains("sweep.context") &&
+                                result.value("methods", Json::object()).contains("sweep.create");
              Log("프로젝트 서비스에 연결했습니다.");
              UpdateControls();
              m_smoke->OnConnected();
@@ -197,6 +199,7 @@ void StudioFrame::OnTimer(wxTimerEvent&)
         const auto now = Clock::now();
         PollCad(now);
         PollSolver(now);
+        PollSweep(now);
         m_smoke->CadSmokeTick();
         m_smoke->SolverSmokeTick();
         m_smoke->StudySmokeTick();

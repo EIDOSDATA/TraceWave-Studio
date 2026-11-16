@@ -98,6 +98,15 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/network_export.cpp
     ui/wxwidgets/studio_smoke_network.cpp
     ui/wxwidgets/studio_smoke_network_safety.cpp
+    ui/wxwidgets/sweep_model.cpp
+    ui/wxwidgets/sweep_result_model.cpp
+    ui/wxwidgets/sweep_dialog.cpp
+    ui/wxwidgets/sweep_form.cpp
+    ui/wxwidgets/sweep_panel.cpp
+    ui/wxwidgets/sweep_result_dialog.cpp
+    ui/wxwidgets/studio_sweep.cpp
+    ui/wxwidgets/studio_sweep_dialogs.cpp
+    ui/wxwidgets/studio_smoke_sweep.cpp
     ui/wxwidgets/project_setup_dialog.cpp
     ui/wxwidgets/target_editor_dialog.cpp
     ui/wxwidgets/target_editor_view.cpp
@@ -226,7 +235,8 @@ if(BUILD_TESTING)
     add_test(NAME pcb_suggestions COMMAND tracewave_pcb_suggestion_tests)
     add_executable(tracewave_gui_presentation_tests tests/gui_presentation_test.cpp
         ui/wxwidgets/canvas_scene.cpp ui/wxwidgets/canvas_viewport.cpp ui/wxwidgets/editor_presentation.cpp
-        ui/wxwidgets/frequency_display.cpp ui/wxwidgets/frequency_assessment_display.cpp)
+        ui/wxwidgets/frequency_display.cpp ui/wxwidgets/frequency_assessment_display.cpp
+        ui/wxwidgets/sweep_model.cpp ui/wxwidgets/sweep_result_model.cpp)
     target_include_directories(tracewave_gui_presentation_tests PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
     set_target_properties(tracewave_gui_presentation_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
     add_test(NAME gui_presentation COMMAND tracewave_gui_presentation_tests)

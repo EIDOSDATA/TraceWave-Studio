@@ -84,6 +84,62 @@ def locked(path):
         yield
 
 
+def _process_identity(pid):
+    """! @brief PID 재사용과 재부팅을 구분하는 guest 시작 식별자를 읽는다."""
+    try:
+        fields = Path(f"/proc/{pid}/stat").read_text().rsplit(")", 1)[1].split()
+        if fields[0] in {"Z", "X"}:
+            return None
+        return {"pid": pid, "started": fields[19], "boot_id": Path("/proc/sys/kernel/random/boot_id").read_text().strip()}
+    except (FileNotFoundError, ProcessLookupError):
+        return None
+
+
+def _logical_bytes(path):
+    """! @brief guest 보존 파일의 논리 크기이며 가상디스크 할당량 측정은 아니다."""
+    total = 0
+    for item in path.rglob("*"):
+        try:
+            status = item.lstat()
+        except FileNotFoundError:
+            # @brief 상태 파일 atomic replace가 회수한 임시 inode는 다음 관측에서 집계한다.
+            continue
+        if stat.S_ISLNK(status.st_mode):
+            raise ValueError("guest storage link")
+        if stat.S_ISREG(status.st_mode):
+            total += status.st_size
+    return total
+
+
+def _startup_lost(path, specification):
+    """! @brief 시작 소유자가 사라지고 인계 권한이 없을 때만 미시작 종료를 확정한다."""
+    import fcntl
+    if specification.get("startup_profile") != "rfad.wsl-start-owner/0.1":
+        return None
+    with (path / "start.lock").open("a+b") as stream:
+        try:
+            fcntl.flock(stream, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            return None
+        status = read_json(path / "status.json") if (path / "status.json").exists() else {"state": "starting"}
+        if status.get("state") != "starting":
+            return None
+        owner = read_json(path / "starter.json") if (path / "starter.json").exists() else None
+        if owner is not None and owner.get("nonce") != specification["nonce"]:
+            raise ValueError("startup owner nonce")
+        if owner is not None and _process_identity(owner["identity"]["pid"]) == owner["identity"]:
+            return None
+        if (path / "handoff.json").exists():
+            handoff = read_json(path / "handoff.json")
+            if handoff.get("nonce") != specification["nonce"]:
+                raise ValueError("startup handoff nonce")
+            if _process_identity(handoff["identity"]["pid"]) == handoff["identity"]:
+                return None
+        return publish(path, protocol=PROTOCOL, run_id=specification["run_id"], nonce=specification["nonce"],
+                       state="failed", termination_confirmed=True, outcome_unknown=False,
+                       not_started=True, reason="startup_owner_lost", error="startup owner exited before worker gate")
+
+
 def validate_identity(run_id, nonce):
     """! @brief 디렉터리 경로에 UUID와 충분한 길이의 실행 nonce만 허용한다."""
     if type(run_id) is not str or str(uuid.UUID(run_id)) != run_id:
@@ -174,15 +230,40 @@ def start(payload):
         if specification["files"] != manifest or specification["python"] != payload["python"]:
             raise ValueError("existing run immutable inputs differ")
         return read_json(existing / "status.json")
-    specification = {**payload, "protocol": PROTOCOL}
-    atomic(path / "supervisor.json", specification)
-    publish(path, protocol=PROTOCOL, run_id=payload["run_id"], nonce=payload["nonce"], state="starting",
-            phase="preparing", termination_confirmed=False, outcome_unknown=True)
+    # @brief daemon은 이 잠금과 PID/시작 시각의 명시 인계 파일을 통과하기 전 worker를 시작할 수 없다.
+    with locked(path / "start.lock"):
+        specification = {**payload, "protocol": PROTOCOL, "startup_profile": "rfad.wsl-start-owner/0.1"}
+        atomic(path / "supervisor.json", specification)
+        atomic(path / "starter.json", {"nonce": payload["nonce"], "identity": _process_identity(os.getpid())})
+        with locked(path / "control.lock"):
+            control_path = path / "control.json"
+            control_value = read_json(control_path) if control_path.exists() else {"nonce": payload["nonce"], "heartbeat": 0, "cancel": False}
+            atomic(control_path, control_value)
+        publish(path, protocol=PROTOCOL, run_id=payload["run_id"], nonce=payload["nonce"], state="starting",
+                phase="preparing", termination_confirmed=False, outcome_unknown=True)
+        return _copy_and_start(payload, path, manifest)
+
+
+def _copy_and_start(payload, path, manifest):
+    """! @brief 시작 소유 잠금 아래 입력을 복사하며 취소를 daemon 시작 전까지 누적한다."""
     try:
+        supervisor_hash = digest(__file__)
+        if supervisor_hash != payload["supervisor_sha256"]:
+            raise ValueError("supervisor hash mismatch")
+        installed = path.parent / ("supervisor-" + supervisor_hash + ".py")
+        if not installed.exists():
+            temporary = path.parent / ("supervisor-" + uuid.uuid4().hex + ".partial")
+            shutil.copyfile(__file__, temporary)
+            temporary.chmod(0o400)
+            os.replace(temporary, installed)
+        if digest(installed) != supervisor_hash:
+            raise ValueError("installed supervisor hash mismatch")
         stage = Path(payload["host_stage"])
         if not stage.is_absolute() or ".." in stage.parts:
             raise ValueError("absolute host staging required")
         for item in manifest:
+            if read_json(path / "control.json")["cancel"]:
+                return publish(path, state="cancelled", termination_confirmed=True, outcome_unknown=False, not_started=True)
             relative = _input_path(item["path"])
             source = stage / relative
             for current in [stage, *[stage / parent for parent in reversed(relative.parents) if str(parent) != "."]]:
@@ -215,38 +296,24 @@ def start(payload):
         if request.get("run_id") != payload["run_id"] or request.get("nonce") != payload["nonce"]:
             raise ValueError("worker request ownership mismatch")
         (path / "output").mkdir(mode=0o700)
-        atomic(path / "control.json", {"nonce": payload["nonce"], "heartbeat": 0, "cancel": False})
-        supervisor_hash = digest(__file__)
-        if supervisor_hash != payload["supervisor_sha256"]:
-            raise ValueError("supervisor hash mismatch")
-        installed = root / ("supervisor-" + supervisor_hash + ".py")
-        if not installed.exists():
-            temporary = root / ("supervisor-" + uuid.uuid4().hex + ".partial")
-            shutil.copyfile(__file__, temporary)
-            temporary.chmod(0o400)
-            os.replace(temporary, installed)
-        if digest(installed) != supervisor_hash:
-            raise ValueError("installed supervisor hash mismatch")
+        if read_json(path / "control.json")["cancel"]:
+            return publish(path, state="cancelled", termination_confirmed=True, outcome_unknown=False, not_started=True)
         child = subprocess.Popen([sys.executable, "-I", "-B", str(installed), "daemon",
                                   base64.b64encode(encoded({key: payload[key] for key in ("guest_root", "run_id", "nonce")})).decode("ascii")],
                                  stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
                                  start_new_session=True, close_fds=True,
                                  env={key: value for key, value in os.environ.items() if key != "RFAD_WSL_RUN_TOKEN"})
+        identity = _process_identity(child.pid)
+        if identity is None:
+            raise RuntimeError("supervisor exited before ownership handoff")
+        atomic(path / "handoff.json", {"nonce": payload["nonce"], "identity": identity})
         threading.Thread(target=child.wait, daemon=True, name="rfad-supervisor-reap").start()
-        # @brief ACK는 worker 종료 증거가 아니며 이후 독립 status 조회가 권위 상태다.
-        deadline = time.monotonic() + 5
-        while time.monotonic() < deadline:
-            status = read_json(path / "status.json")
-            if status["state"] != "starting":
-                return status
-            if child.poll() is not None:
-                raise RuntimeError("supervisor exited before acknowledgement")
-            time.sleep(0.02)
+        # @brief 잠금 해제 뒤 daemon이 권한을 대조한다. 시작 ACK는 실행/종료 증거가 아니다.
         return read_json(path / "status.json")
     except Exception as error:
         status = read_json(path / "status.json")
         if status["state"] == "starting" and "child" not in locals():
-            return publish(path, state="failed", termination_confirmed=True, outcome_unknown=False,
+            return publish(path, state="failed", termination_confirmed=True, outcome_unknown=False, not_started=True,
                            error=str(error)[:2048])
         raise
 
@@ -254,13 +321,19 @@ def start(payload):
 def control(payload, command):
     """! @brief nonce 검증 뒤 heartbeat 또는 취소를 누적하고 현재 상태를 반환한다."""
     path, specification = run_path(payload)
+    recovered = _startup_lost(path, specification)
+    if recovered is not None:
+        return {**recovered, "guest_disk_bytes": _logical_bytes(path)}
     if command in {"heartbeat", "cancel"}:
         with locked(path / "control.lock"):
-            value = read_json(path / "control.json")
+            value = read_json(path / "control.json") if (path / "control.json").exists() else {"nonce": payload["nonce"], "heartbeat": 0, "cancel": False}
             value["heartbeat"] += 1
             value["cancel"] = value["cancel"] or command == "cancel"
             atomic(path / "control.json", value)
-    return read_json(path / "status.json")
+    status = read_json(path / "status.json") if (path / "status.json").exists() else {
+        "protocol": PROTOCOL, "run_id": payload["run_id"], "nonce": payload["nonce"],
+        "state": "starting", "termination_confirmed": False, "outcome_unknown": True}
+    return {**status, "guest_disk_bytes": _logical_bytes(path)}
 
 
 def _owned_members(group, nonce):
@@ -351,6 +424,20 @@ def watchdog(payload):
 def daemon(payload):
     """! @brief 별도 세션에서 lease와 worker 그룹 및 유한 출력의 수명을 소유한다."""
     path, specification = run_path(payload)
+    if specification.get("startup_profile") == "rfad.wsl-start-owner/0.1":
+        with locked(path / "start.lock"):
+            status = read_json(path / "status.json")
+            if status.get("state") != "starting":
+                return
+            handoff = read_json(path / "handoff.json") if (path / "handoff.json").exists() else None
+            if (handoff is None or handoff.get("nonce") != payload["nonce"]
+                    or handoff.get("identity") != _process_identity(os.getpid())):
+                publish(path, state="failed", termination_confirmed=True, outcome_unknown=False,
+                        not_started=True, reason="startup_handoff_missing")
+                return
+            if read_json(path / "control.json")["cancel"]:
+                publish(path, state="cancelled", termination_confirmed=True, outcome_unknown=False, not_started=True)
+                return
     sys.path.insert(0, str(path / "src"))
     from rfad.application.native_process import run_native
     os.environ["RFAD_WSL_RUN_TOKEN"] = payload["nonce"]
@@ -483,7 +570,7 @@ def export(payload):
                 writer.flush()
                 os.fsync(writer.fileno())
             files.append({"path": "output/" + relative.as_posix(), "bytes": source.stat().st_size, "sha256": digest(source)})
-    return {**status, "exported_files": files}
+    return {**status, "exported_files": files, "guest_disk_bytes": _logical_bytes(path)}
 
 
 def main():

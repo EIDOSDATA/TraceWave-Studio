@@ -86,6 +86,7 @@ enum
     IdDesignRules,
     IdPhysicalSetup,
     IdPrecision,
+    IdSweep,
     IdTimer,
     IdShutdown
 };

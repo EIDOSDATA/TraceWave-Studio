@@ -46,7 +46,7 @@ void StudioFrame::UpdateNetworkViews()
     }
     const bool assessmentActive = m_views->GetSelection() == 7;
     const bool networkActive = m_views->GetSelection() == 6;
-    const bool active = networkActive || assessmentActive;
+    const bool active = networkActive || assessmentActive || m_views->GetSelection() == 8;
     m_networkPanel->NavigationView()->Show(networkActive);
     m_networkPanel->ConditionsView()->Show(networkActive);
     m_networkAssessmentPanel->NavigationView()->Show(assessmentActive);
@@ -60,11 +60,9 @@ void StudioFrame::UpdateNetworkViews()
     m_editorPanel->Show(!active && !metadata);
     m_apply->Show(!active);
     m_revisionLabel->Show(!active);
-    m_manager->GetPane("navigation").Caption(Display(active ? "결과" : "프로젝트"));
-    m_manager->GetPane("properties").Caption(Display(active ? "조건과 출처" : "속성"));
     if (m_shell)
     {
-        m_shell->SetResultContext(active);
+        m_shell->SetResultContext(active, m_views->GetSelection() == 8);
     }
     m_tree->GetParent()->Layout();
     m_properties->Layout();
@@ -115,6 +113,7 @@ void StudioFrame::UpdateNetworkViews()
 
 void StudioFrame::ResetNetwork()
 {
+    ResetSweeps();
     ++m_networkGeneration;
     m_networkPending = false;
     m_networkRefreshQueued = false;

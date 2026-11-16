@@ -3,6 +3,7 @@
 #include "canvas_gesture.h"
 #include "editor_presentation.h"
 #include "frequency_display.h"
+#include "sweep_model.h"
 
 #include <cmath>
 #include <iostream>
@@ -20,6 +21,58 @@ void Check(bool condition, const char* message)
     {
         throw std::runtime_error(message);
     }
+}
+
+/** @brief 결과 요약은 미정/미평가 이유를 보존하며 원문 객체와 긴 숫자를 숨긴다. */
+void SweepResultChecks()
+{
+    const Json sample{
+        {"real", 0.37931034482758624}, {"vswr", 2.2222222222222228}, {"imag", nullptr},
+        {"status", "missing"},         {"magnitude_db", nullptr},    {"magnitude_db_state", "negative_infinity"}};
+    const auto originalSample = sample;
+    Check(SweepUi::SampleValue(sample, "real") == "0.37931034" && SweepUi::SampleValue(sample, "vswr") == "2.2222222" &&
+              SweepUi::SampleValue(sample, "imag") == "미정" &&
+              SweepUi::SampleValue(sample, "magnitude_db") == "-inf (크기 0)",
+          "readable numeric values retain missing and infinite states");
+    Check(SweepUi::SampleValue({{"real", nullptr}, {"status", "nonfinite"}}, "real") == "유한값 없음",
+          "nonfinite samples differ from missing originals");
+    Json result{{"descriptor",
+                 {{"frequency_min_hz", 1e9},
+                  {"frequency_max_hz", 2e9},
+                  {"parameter_kind", "S"},
+                  {"unit", "1"},
+                  {"sample_count", 201},
+                  {"port_ids", {"internal-port-identity"}},
+                  {"port_names", {nullptr}},
+                  {"reference_planes", {nullptr}},
+                  {"z0_ohm", {{50.0, 0.0}}},
+                  {"wave_definition", "unknown"},
+                  {"port_modes", {"single_ended"}},
+                  {"current_orientation", {"into_dut"}},
+                  {"conditions", {{"manufacturing", nullptr}, {"measurement", nullptr}}},
+                  {"source_refs", {"원본 조건 미정의 수식 시험"}}}},
+                {"assessments",
+                 {{{"status", "not_evaluated"},
+                   {"criteria", Json::array()},
+                   {"reason", "목표와 자료의 명시 포트/기준면 대응이 없습니다."},
+                   {"evidence", {{"target_original", {{"name", "보존한 목표 이름"}}}}}}}}};
+    const auto original = result;
+    const auto text = SweepUi::ResultConditions(result);
+    Check(text.find("1 ~ 2 GHz") != std::string::npos && text.find("제작 조건: 미정") != std::string::npos &&
+              text.find("측정 조건: 미정") != std::string::npos && text.find("기준면: 미정") != std::string::npos &&
+              text.find("자료 포트 1: 미정") != std::string::npos && text.find("기준 Z0: 50 ohm") != std::string::npos,
+          "summary preserves independently unknown conditions and readable impedance");
+    Check(text.find("보존한 목표 이름 / 미평가") != std::string::npos &&
+              text.find("명시 포트/기준면 대응이 없습니다") != std::string::npos &&
+              text.find("internal-port-identity") == std::string::npos && text.find("source_refs") == std::string::npos,
+          "summary exposes the actual reason and name without internal JSON or IDs");
+    Check(result == original && sample == originalSample, "formatting leaves source DTOs unchanged");
+    result["assessments"][0]["evidence"] = {{"target_original_summary", {{"name", "큰 목표 원문"}}}};
+    result["assessments"][0]["reason"] = nullptr;
+    result["assessments"][0]["diagnostic"] = {{"message_ko", "원문 조건을 확인해야 합니다."}};
+    Check(SweepUi::ResultConditions(result).find("큰 목표 원문 / 미평가") != std::string::npos &&
+              SweepUi::ResultConditions(result).find("원문 조건을 확인해야 합니다.") != std::string::npos,
+          "large original summaries and diagnostic reasons remain accessible");
 }
 
 /** @brief 같은 SI 표본의 표시 단위만 바꾸며 미정과 원문을 유지한다. */
@@ -241,6 +294,7 @@ int main()
         GestureChecks();
         EditorChecks();
         FrequencyChecks();
+        SweepResultChecks();
         std::cout << "scene, viewport, gesture, editor and frequency presentation checks passed\n";
         return 0;
     }

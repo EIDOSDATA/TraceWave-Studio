@@ -222,7 +222,8 @@ class WslRuntime:
         argv = ["wsl.exe", "--distribution", self.distribution, "--user", self.user, "--exec", "/usr/bin/python3",
                 "-I", "-B", "-c", BOOTSTRAP, script, self._supervisor_sha256, command]
         try:
-            result = _run_control(argv, raw, self.control_timeout_seconds)
+            timeout = self.startup_timeout_seconds if command in {"start", "export"} else self.control_timeout_seconds
+            result = _run_control(argv, raw, timeout)
         except (OSError, subprocess.TimeoutExpired) as error:
             raise ProjectError("E_RESOURCE", "WSL 제어 연결의 응답을 확인하지 못했습니다.",
                                details={"outcome_unknown": True, "command": command}) from error
