@@ -7,6 +7,7 @@ from rfad.domain.design import _fail, _fields, _text, resolve_scalar
 from rfad.domain.planar import point_in_loop
 from rfad.domain.layer_surface import single_dielectric_contact
 from rfad.domain.template_geometry import literal, object_id
+from rfad.domain.object_names import allocate_name
 from rfad.templates.cards import IFA
 from rfad.templates.g031 import IDENTITY as G031
 from rfad.templates.printed_references import IDENTITIES as PRINTED_CARDS
@@ -54,7 +55,7 @@ def _inside(document, shape, point, *, boundary=False):
     _fail("E_UNSUPPORTED", "첫 템플릿 포트의 기준 도체는 면/선/패드여야 합니다.", "port.reference_geometry_id")
 
 
-def generate_port(document: dict, additions: dict, instance_id: str, binding: dict, card: dict, recipe: object) -> None:
+def generate_port(document: dict, additions: dict, instance_id: str, binding: dict, card: dict, recipe: object, *, named=False) -> None:
     """! @brief 포트 생성을 명시한 경우만 연결하고 누락을 50 ohm 등으로 보완하지 않는다."""
     if recipe is None:
         return
@@ -110,6 +111,6 @@ def generate_port(document: dict, additions: dict, instance_id: str, binding: di
         _fail("E_PORT", "급전 gap의 시작/끝이 기준 도체와 생성 급전 도체에 연결되지 않습니다.", "port.excitation_box")
     if _inside(probe, positive, start[:2]) or _inside(probe, reference, stop[:2]):
         _fail("E_PORT", "급전 gap이 두 도체에 동시에 닿습니다.", "port.excitation_box")
-    additions["ports"] = [{"id": object_id(instance_id, "port"), "name": "template port " + instance_id, "kind": "lumped",
+    additions["ports"] = [{"id": object_id(instance_id, "port"), "name": allocate_name(document, {}, "ports") if named else "template port " + instance_id, "kind": "lumped",
                            "positive_geometry_id": positive_id, "reference_geometry_id": reference_id,
                            **{key: deepcopy(recipe[key]) for key in recipe if key != "reference_geometry_id"}}]

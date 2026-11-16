@@ -135,6 +135,7 @@ public:
     std::function<void()> onFrame;
     std::function<void(const std::string&)> onError;
     std::function<void(const std::string&)> onSelection;
+    std::function<void(const std::vector<std::string>&)> onSelectionCandidates;
     std::function<void(const std::string&)> onHint;
     std::string renderer;
     std::uint64_t frames = 0;
@@ -321,6 +322,11 @@ private:
             const double unit = 2.0 * m_camera.HalfHeight(m_scene->radius) / std::max(1, size.y);
             const int index = DisplayMesh::Pick(*m_scene, m_camera,
                 (event.GetX() - size.x / 2.0) * unit, (size.y / 2.0 - event.GetY()) * unit, m_hiddenLayers);
+            if (index >= 0 && m_scene->bodies[static_cast<std::size_t>(index)].sources.size() > 1 && onSelectionCandidates)
+            {
+                onSelectionCandidates(m_scene->bodies[static_cast<std::size_t>(index)].sources);
+                return;
+            }
             m_selection = index >= 0 ? m_scene->bodies[static_cast<std::size_t>(index)].sources.front() : "";
             Refresh(false);
             if (onSelection)
@@ -401,6 +407,7 @@ struct ModelView::Impl
             canvas->onFrame = nullptr;
             canvas->onError = nullptr;
             canvas->onSelection = nullptr;
+            canvas->onSelectionCandidates = nullptr;
             canvas->onHint = nullptr;
         }
     }
@@ -481,6 +488,13 @@ struct ModelView::Impl
             if (owner->onSelection)
             {
                 owner->onSelection(identity);
+            }
+        };
+        canvas->onSelectionCandidates = [this](const std::vector<std::string>& sources)
+        {
+            if (owner->onSelectionCandidates)
+            {
+                owner->onSelectionCandidates(sources);
             }
         };
         canvas->onHint = [this](const std::string& text)

@@ -14,7 +14,7 @@ constexpr int Space = 4;
 constexpr int InputGap = 8;
 constexpr int PanelPadding = 12;
 constexpr int GroupGap = 16;
-constexpr int ToolHeight = 30;
+constexpr int ToolHeight = 34;
 
 /** @brief 입력 값의 의미를 바꾸지 않는 패널 역할이다. */
 enum class Surface

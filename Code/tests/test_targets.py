@@ -184,12 +184,16 @@ class TargetDomainTests(unittest.TestCase):
             self.assertEqual(updated["parent_revision_ids"], [document["revision_id"]])
             invalid_legacy = deepcopy(updated)
             invalid_legacy["schema_version"] = schema
-            if schema == "rfad.project/0.3":
+            if schema in ("rfad.project/0.3", "rfad.project/0.4"):
                 validate_project(invalid_legacy)
             else:
                 with self.assertRaises(ProjectError):
                     validate_project(invalid_legacy)
             self.assertEqual(updated["materials"], document["materials"])
+        future = deepcopy(updated)
+        future["schema_version"] = "rfad.project/0.6"
+        with self.assertRaises(ProjectError):
+            validate_project(future)
 
     def test_unknown_fields_duplicate_metrics_and_target_budget_are_rejected(self):
         """! @brief 범위가 없는 확장 입력과 자원 상한 초과를 조용히 허용하지 않는다."""

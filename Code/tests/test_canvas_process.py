@@ -126,7 +126,8 @@ class CanvasProcessTests(unittest.TestCase):
         """! @brief 음수 호각과 독립 치수를 저장, 재실행 및 재시작에서 보존한다."""
         board, layer, line, arc = self.create_scene()
         initial = self.view()
-        self.assertEqual(initial["board"], {"id": board, "width": 40, "height": 20})
+        self.assertEqual(initial["board"], {"id": board, "width": 40, "height": 20,
+                                            "name": "기판 01", "name_state": "stored", "label": "기판 01"})
         self.assertEqual(initial["layers"], [{"id": layer, "label": "상단 도체", "role": "conductor"}])
         self.assertEqual(initial["omissions"], [])
         initial_shapes = self.shapes(initial)

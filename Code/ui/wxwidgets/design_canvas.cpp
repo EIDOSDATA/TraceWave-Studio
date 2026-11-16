@@ -108,6 +108,7 @@ void DesignCanvas::SetScene(const Json& scene)
     m_pendingId.clear();
     m_pendingOffset = Point(0.0, 0.0);
     m_scene = std::move(parsed);
+    m_dimensions = Json::array();
     if (FindShape(m_selection) == nullptr)
     {
         m_selection.clear();
@@ -137,6 +138,7 @@ void DesignCanvas::SetSelection(const std::string& identity)
             CancelGesture();
         }
         m_selection = selected;
+          m_dimensions = Json::array();
         Refresh(false);
     }
 }
@@ -325,7 +327,7 @@ std::string DesignCanvas::HitTest(const wxPoint& point) const
     const Point world = ScreenToWorld(point);
     for (auto shape = m_scene.shapes.rbegin(); shape != m_scene.shapes.rend(); ++shape)
     {
-        if (!Visible(*shape) || !Renderable(*shape))
+        if (!Selectable(*shape) || !Renderable(*shape))
         {
             continue;
         }
@@ -412,6 +414,10 @@ void DesignCanvas::OnPaint(wxPaintEvent&)
     if (!m_gesture.Dragging())
     {
         DrawPrecision(dc, preview ? &*preview : SelectedPath());
+        if (!HasGesture())
+        {
+            DrawDimensions(dc);
+        }
     }
     if (m_inspectionLocation)
     {

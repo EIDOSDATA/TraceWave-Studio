@@ -7,6 +7,7 @@
 #include <functional>
 #include <memory>
 #include <string>
+#include <vector>
 
 /** @brief 게시된 표시용 삼각형만 비동기로 읽는 지연 생성 3D 화면이다. */
 class ModelView final : public wxPanel
@@ -37,6 +38,8 @@ public:
 
     std::function<void(const std::string&)> onStatus;
     std::function<void(const std::string&)> onSelection;
+    /** @brief 병합 바디의 원본을 사용자에게 고르게 하며 첫 원본을 자동 채택하지 않는다. */
+    std::function<void(const std::vector<std::string>&)> onSelectionCandidates;
 
 private:
     struct Impl;

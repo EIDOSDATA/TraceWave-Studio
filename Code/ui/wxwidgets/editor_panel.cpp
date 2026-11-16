@@ -7,6 +7,7 @@
 #include <cmath>
 #include <stdexcept>
 #include <sstream>
+#include <set>
 
 wxDEFINE_EVENT(wxEVT_RFAD_EDITOR_CHANGED, wxCommandEvent);
 
@@ -33,12 +34,17 @@ std::string Text(const Json& value)
 }
 
 EditorPanel::EditorPanel(wxWindow* parent)
-    : wxScrolledWindow(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxVSCROLL)
+    : wxScrolledWindow(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxVSCROLL | wxHSCROLL)
 {
     StudioTheme::BindSurface(*this);
-    SetScrollRate(0, 12);
+    SetScrollRate(FromDIP(12), FromDIP(12));
     m_layout = new wxBoxSizer(wxVERTICAL);
     SetSizer(m_layout);
+    Bind(wxEVT_SIZE, [this](wxSizeEvent& event)
+    {
+        ReflowRows();
+        event.Skip();
+    });
 }
 
 /** @brief 필드 형식과 선택 목록을 그대로 사용하며 도메인 계산을 수행하지 않는다. */
@@ -76,20 +82,21 @@ void EditorPanel::SetFields(const Json& fields, const Json& selection, const Jso
         const auto valueField = m_fields.find(valueKey);
         const bool paired = !valueKey.empty() && valueField != m_fields.end();
         auto* rowPanel = paired ? valueField->second.row : new wxPanel(this);
-        auto* row = paired ? static_cast<wxBoxSizer*>(rowPanel->GetSizer()) : new wxBoxSizer(wxHORIZONTAL);
+        auto* row = paired ? static_cast<wxBoxSizer*>(rowPanel->GetSizer()) : new wxBoxSizer(wxVERTICAL);
+        auto* inputs = paired ? valueField->second.inputs : new wxBoxSizer(wxHORIZONTAL);
         auto* label = paired ? valueField->second.label
                              : new wxStaticText(rowPanel, wxID_ANY, Display(descriptor.at("label").get<std::string>()));
         if (!paired)
         {
             StudioTheme::BindSurface(*rowPanel);
             label->Wrap(FromDIP(145));
-            label->SetMinSize(wxSize(FromDIP(150), -1));
-            row->Add(label, 0, wxTOP | wxRIGHT, FromDIP(4));
+            row->Add(label, 0, wxBOTTOM | wxEXPAND, FromDIP(4));
+            row->Add(inputs, 0, wxEXPAND);
             rowPanel->SetSizer(row);
             m_layout->Add(rowPanel, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::InputGap));
         }
         auto* input = new wxBoxSizer(wxVERTICAL);
-        row->Add(input, paired ? 0 : 1, wxEXPAND | (paired ? wxLEFT : 0), paired ? FromDIP(6) : 0);
+        inputs->Add(input, paired ? 0 : 1, wxEXPAND | (paired ? wxLEFT : 0), paired ? FromDIP(6) : 0);
         wxWindow* control = nullptr;
         wxBoxSizer* bindingButtons = nullptr;
         std::vector<wxWindow*> auxiliaries;
@@ -207,7 +214,7 @@ void EditorPanel::SetFields(const Json& fields, const Json& selection, const Jso
         {
             throw std::runtime_error("Unsupported editor field type: " + editor);
         }
-        Field field{descriptor, control, auxiliaries, rowPanel, input, label};
+        Field field{descriptor, control, auxiliaries, rowPanel, input, label, inputs};
         WriteValue(field, descriptor.at("value"));
         control->SetName(Display(descriptor.at("label").get<std::string>()));
         if (descriptor.contains("help"))
@@ -227,11 +234,41 @@ void EditorPanel::SetFields(const Json& fields, const Json& selection, const Jso
         m_fields.emplace(key, std::move(field));
     }
     UpdateModes();
+    ReflowRows(true);
     UpdateInputNotice();
     Layout();
     FitInside();
     Scroll(0, 0);
     Thaw();
+}
+
+void EditorPanel::ReflowRows(bool force)
+{
+    const bool compact = ToDIP(GetClientSize()).x < 450;
+    if (m_reflowing || (!force && compact == m_compactRows))
+    {
+        return;
+    }
+    m_reflowing = true;
+    m_compactRows = compact;
+    std::set<wxPanel*> visited;
+    for (auto& entry : m_fields)
+    {
+        auto& field = entry.second;
+        if (!visited.insert(field.row).second)
+        {
+            continue;
+        }
+        auto* row = static_cast<wxBoxSizer*>(field.row->GetSizer());
+        row->SetOrientation(compact ? wxVERTICAL : wxHORIZONTAL);
+        field.label->SetMinSize(wxSize(compact ? 0 : FromDIP(150), -1));
+        row->GetItem(field.label)->SetFlag(compact ? wxBOTTOM | wxEXPAND : wxTOP | wxRIGHT);
+        row->GetItem(field.inputs)->SetProportion(compact ? 0 : 1);
+        field.row->Layout();
+    }
+    Layout();
+    FitInside();
+    m_reflowing = false;
 }
 
 /** @brief 입력 중인 grid cell을 확정하고 값 변경분만 반환한다. */
@@ -595,7 +632,11 @@ std::string EditorPanel::ShowDiagnostic(const std::string& field, const std::str
         }
         const wxPoint position =
             CalcUnscrolledPosition(ScreenToClient(found->second.control->ClientToScreen(wxPoint(0, 0))));
-        Scroll(0, std::max(0, position.y / 12));
+        int horizontal = 0;
+        int vertical = 0;
+        GetScrollPixelsPerUnit(&horizontal, &vertical);
+        Scroll(std::max(0, position.x / std::max(1, horizontal)),
+               std::max(0, position.y / std::max(1, vertical)));
     }
     return displayMessage;
 }

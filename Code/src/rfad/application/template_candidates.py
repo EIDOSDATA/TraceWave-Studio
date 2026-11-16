@@ -8,7 +8,8 @@ from rfad.application.canvas import build_canvas_dto
 from rfad.application.project_contract import MAX_DOCUMENT_BYTES, _fields, _uuid
 from rfad.domain.design import preflight_design
 from rfad.domain.errors import ProjectError
-from rfad.domain.project import validate_project
+from rfad.domain.project import SCHEMA_VERSION, validate_project
+from rfad.domain.object_names import PROFILE as NAME_PROFILE
 from rfad.domain.template_command import apply_template_command
 from rfad.domain.template_geometry import generate_geometry, all_ids, object_id
 from rfad.domain.template_instance import (EXTENSION_KEY, MAX_INSTANCES, record_hash, instance_status, object_ids)
@@ -126,8 +127,8 @@ class TemplateCandidateCoordinator:
             if len(existing) >= MAX_INSTANCES or any(item["id"] == data["instance_id"] for item in existing):
                 raise ProjectError("E_CONFLICT", "인스턴스가 이미 존재하거나 템플릿 8개 상한에 도달했습니다.")
             inputs, estimate = normalize_candidate(card, data["explicit_inputs"], data["mode"], data.get("seed"))
-            additions = generate_geometry(document, data["instance_id"], data["binding"], card, inputs)
-            generate_port(document, additions, data["instance_id"], data["binding"], card, data["port"])
+            additions = generate_geometry(document, data["instance_id"], data["binding"], card, inputs, named=True)
+            generate_port(document, additions, data["instance_id"], data["binding"], card, data["port"], named=True)
             if additions["ports"] and object_id(data["instance_id"], "port") in all_ids(document):
                 raise ProjectError("E_CONFLICT", "생성할 포트 UUID가 기존 객체와 충돌합니다.")
             source_document = deepcopy(document)
@@ -136,12 +137,13 @@ class TemplateCandidateCoordinator:
                       "base_content_hash": canonical_hash(document), "binding": deepcopy(data["binding"]),
                       "inputs": inputs, "requested_inputs": deepcopy(data["explicit_inputs"]), "port_recipe": deepcopy(data["port"]),
                       "target_snapshots": targets, "objects": additions, "source_document": source_document,
-                      "source_document_hash": canonical_hash(source_document)}
+                      "source_document_hash": canonical_hash(source_document), "naming_profile": NAME_PROFILE}
             if card["schema"] == "rfad.template-card/0.3":
                 record.update(mode=data["mode"], initial_estimate=estimate)
             record["record_hash"] = record_hash(record)
             payload = {"instance_id": data["instance_id"], "expected_instance_hash": None, "replacement": record}
             candidate = deepcopy(document)
+            candidate["schema_version"] = SCHEMA_VERSION
             apply_template_command(candidate, payload)
             validate_project(candidate)
             size = len(canonical_bytes(candidate))

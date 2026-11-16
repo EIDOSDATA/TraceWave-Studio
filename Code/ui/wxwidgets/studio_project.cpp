@@ -58,54 +58,20 @@ void StudioFrame::RefreshProject()
     m_refreshing = true;
     m_name->ChangeValue(Display(m_editor.at("metadata").at("name").get<std::string>()));
     m_description->ChangeValue(Display(m_editor.at("metadata").at("description").get<std::string>()));
-    m_tree->Freeze();
-    m_tree->DeleteAllItems();
-    const wxTreeItemId root =
-        m_tree->AddRoot(m_name->GetValue(), 0, 0, new SelectionData(Json{{"kind", "project"}, {"id", m_project}}));
-    std::map<std::string, wxTreeItemId> categories;
-    const std::pair<const char*, const char*> names[] = {
-        {"parameter", "매개변수"}, {"board", "기판"},    {"material", "재료"}, {"layer", "적층"},
-        {"net", "네트"},           {"geometry", "형상"}, {"port", "포트"}};
-    for (const auto& name : names)
-    {
-        categories.emplace(name.first, m_tree->AppendItem(root, Display(name.second), 0, 0));
-    }
-    wxTreeItemId selected = root;
+    RebuildNavigation();
     std::string selectedLabel = "프로젝트 속성";
     for (const auto& item : m_editor.at("items"))
     {
-        const std::string kind = item.at("kind").get<std::string>();
-        if (kind == "project")
+        if (item.at("kind") == m_selection.at("kind") && item.at("id") == m_selection.at("id"))
         {
-            continue;
-        }
-        const Json selection{{"kind", kind}, {"id", item.at("id")}};
-        const auto parent = categories.find(kind);
-        const wxTreeItemId node =
-            m_tree->AppendItem(parent == categories.end() ? root : parent->second,
-                               Display(item.at("label").get<std::string>()), -1, -1, new SelectionData(selection));
-        if (selection == m_selection)
-        {
-            selected = node;
             selectedLabel = item.at("label").get<std::string>();
+            break;
         }
     }
     if (m_selection.at("kind").get<std::string>().rfind("new_", 0) == 0)
     {
-        const std::string kind = m_selection.at("kind").get<std::string>().substr(4);
-        selectedLabel = kind == "parameter"
-                            ? "새 매개변수"
-                            : (kind == "material" ? "새 재료" : (kind == "net" ? "새 네트" : "새 급전 포트"));
-        selected =
-            m_tree->AppendItem(categories.at(kind), Display(selectedLabel), -1, -1, new SelectionData(m_selection));
+        selectedLabel = "새 객체 / 미적용 입력";
     }
-    m_tree->Expand(root);
-    if (m_tree->GetItemParent(selected).IsOk())
-    {
-        m_tree->Expand(m_tree->GetItemParent(selected));
-    }
-    m_tree->SelectItem(selected);
-    m_tree->Thaw();
     m_selectionLabel->SetLabel(Display(selectedLabel));
     const bool metadata = m_selection.at("kind") == "project";
     m_metadataPanel->Show(metadata);

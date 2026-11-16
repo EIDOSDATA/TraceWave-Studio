@@ -7,6 +7,7 @@ from uuid import UUID, uuid5
 from rfad.domain.design import _fail, _fields, _uuid, resolve_scalar
 from rfad.domain.parameter_graph import evaluate_parameters, expression_record
 from rfad.domain.units import Quantity
+from rfad.domain.object_names import allocate_name
 from rfad.templates.cards import ARC, IFA
 from rfad.templates.g031 import IDENTITY as G031
 from rfad.templates import printed_references as printed
@@ -122,20 +123,29 @@ def validate_arc_envelope(document, cx, cy, radius, start, sweep, width):
 class _Builder:
     """! @brief 입력별 stable parameter와 기하식 DAG를 연결하는 일회성 생성기다."""
 
-    def __init__(self, document, instance_id, binding, card, inputs):
+    def __init__(self, document, instance_id, binding, card, inputs, *, named=False):
         """! @brief 원본과 입력을 변경하지 않고 생성 영역을 분리한다."""
         self.document, self.instance_id, self.binding = document, instance_id, binding
         prefix = (card["evidence"]["geometry_id"] + " " if card["template_id"] in printed.IDENTITIES else
                   ("G031 " if card["template_id"] == G031 else ("원호 " if card["template_id"] == ARC else "IFA ")))
         self.label_prefix = prefix + instance_id[:8] + " / "
+        self.named = named
+        self.named_prefix = prefix
         self.parameters, self.geometry, self.values = {}, [], {}
         descriptors = {item["key"]: item for item in card["input_fields"]}
         _fields(inputs, set(descriptors), "explicit_inputs")
         for key, descriptor in descriptors.items():
             self.values[key] = literal(document, inputs[key], descriptor["dimension"], "explicit_inputs." + key)
             identity = self.identity("parameter:" + key)
-            self.parameters[identity] = {"id": identity, "name": self.label_prefix + descriptor["label"], "quantity": deepcopy(inputs[key])}
-        self.net = {"id": self.identity("net"), "name": "template:" + instance_id}
+            label = self.parameter_name(descriptor["label"])
+            self.parameters[identity] = {"id": identity, "name": label, "quantity": deepcopy(inputs[key])}
+        self.net = {"id": self.identity("net"), "name": allocate_name(document, {}, "nets", prefix="템플릿 네트") if named else "template:" + instance_id}
+
+    def parameter_name(self, label):
+        """! @brief 새 후보에는 읽기 쉬운 이름을 배정하고 과거 재현은 당시 명명식을 유지한다."""
+        if not self.named:
+            return self.label_prefix + label
+        return allocate_name(self.document, {}, "parameters", (row["name"] for row in self.parameters.values()), prefix=self.named_prefix + label)
 
     def identity(self, role):
         """! @brief 같은 후보 요청이 같은 객체 ID를 사용하도록 한다."""
@@ -153,7 +163,7 @@ class _Builder:
         """! @brief 좌표 유도식을 기존 표현식 엔진의 명시 DAG로 저장한다."""
         identity = self.identity("parameter:" + key)
         self.parameters[identity] = {
-            "id": identity, "name": self.label_prefix + _DERIVED_LABELS[key],
+            "id": identity, "name": self.parameter_name(_DERIVED_LABELS[key]),
             "quantity": Quantity.missing(dimension, unit).to_dict(),
             "expression": expression_record(expression, {name: self.identity("parameter:" + role) for name, role in bindings.items()}),
         }
@@ -164,6 +174,8 @@ class _Builder:
                   "frame_id": self.binding["frame_id"], "layer_id": self.binding["layer_id"],
                   "net_id": self.net["id"], "material_ref": self.binding["material_id"],
                   "source_ref": "template:" + self.instance_id, "include_in_em": True, "include_in_export": True, **values}
+        if self.named:
+            result["name"] = allocate_name(self.document, result, reserved=(row["name"] for row in self.geometry))
         self.geometry.append(result)
         return result
 
@@ -239,11 +251,11 @@ def _ifa(builder):
     pad["role"] = "feed"
 
 
-def generate_geometry(document: dict, instance_id: str, binding: dict, card: dict, inputs: dict) -> dict:
+def generate_geometry(document: dict, instance_id: str, binding: dict, card: dict, inputs: dict, *, named=False) -> dict:
     """! @brief 기존 프로젝트를 변경하지 않고 매개변수/네트/기하의 작은 patch를 만든다."""
     _uuid(instance_id, "instance_id")
     validate_binding(document, binding, card)
-    builder = _Builder(document, instance_id, binding, card, inputs)
+    builder = _Builder(document, instance_id, binding, card, inputs, named=named)
     if card["template_id"] == ARC:
         _arc(builder)
     elif card["template_id"] == IFA:

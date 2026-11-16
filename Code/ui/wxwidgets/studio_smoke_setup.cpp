@@ -24,6 +24,11 @@ void StudioSmokeDriver::SetupSmokeTick()
             PrintedSeedSmokeTick();
             return;
         }
+        if (m_frame.m_options.precisionEditorSmoke)
+        {
+            PrecisionEditorSmokeTick();
+            return;
+        }
         if (m_frame.m_options.physicalSetupSmoke)
         {
             PhysicalSetupSmokeTick();

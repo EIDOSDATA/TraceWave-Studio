@@ -1,5 +1,6 @@
 /** @file @brief 주 창의 smoke_canvas 책임을 구현한다. */
 #include "studio_internal.h"
+#include "studio_shell.h"
 
 /** @brief 실제 캔버스 이벤트 처리기로 좌표 입력을 보내 서비스 저장까지 확인한다. */
 void StudioSmokeDriver::CanvasMouse(wxEventType type, double x, double y, bool left, bool middle)
@@ -51,14 +52,50 @@ void StudioSmokeDriver::CanvasSmokeNext()
         CanvasAssert(m_frame.m_manager->GetPane("canvas").IsOk() && m_frame.m_manager->GetPane("properties").IsOk() &&
                          m_frame.m_manager->GetPane("problems").IsOk(),
                      "Docking shell missing.");
-        for (const int id : {IdCreate, IdOpen, IdSave, IdSnapshot, IdUndo, IdRedo})
+        for (const auto* name : {"workspace.0", "workspace.1", "workspace.2", "workspace.area.0", "workspace.area.4"})
         {
-            const wxButton* button = m_frame.m_tools.at(id);
-            const wxSize area = button->GetParent()->GetClientSize();
-            CanvasAssert(button->GetRect().GetBottom() <= area.GetHeight() &&
-                             button->GetRect().GetRight() <= area.GetWidth() && button->GetSize().GetHeight() > 0,
+            const wxWindow* control = wxWindow::FindWindowByName(name, &m_frame);
+            CanvasAssert(control != nullptr && control->IsShownOnScreen(), "Workspace command is hidden.");
+            const wxSize area = control->GetParent()->GetClientSize();
+            CanvasAssert(control->GetRect().GetBottom() <= area.GetHeight() &&
+                             control->GetRect().GetRight() <= area.GetWidth() && control->GetSize().GetHeight() > 0,
                          "Workspace toolbar is clipped.");
         }
+        const wxButton* select = m_frame.m_tools.at(IdSelect);
+        const wxButton* line = m_frame.m_tools.at(IdLine);
+        CanvasAssert(select->IsShownOnScreen() && line->GetPosition().y == select->GetPosition().y &&
+                         line->GetPosition().x > select->GetPosition().x,
+                     "Drawing tools are not in a horizontal row.");
+        const wxString draft = m_frame.m_name->GetValue();
+        m_frame.m_name->ChangeValue(Display("패널 전환 중 초안"));
+        m_frame.m_canvas->SetFocus();
+        m_frame.m_shell->ShowProperties();
+        CanvasAssert(wxWindow::FindFocus() == m_frame.m_canvas,
+                     "Showing properties stole the canvas keyboard focus.");
+        if (m_frame.m_shell->IsCompact())
+        {
+            auto* tabs = dynamic_cast<wxNotebook*>(m_frame.m_properties->GetParent());
+            CanvasAssert(tabs != nullptr && tabs->GetPageCount() == 2 &&
+                             tabs->GetCurrentPage() == m_frame.m_properties,
+                         "Compact properties tab is missing.");
+        }
+        m_frame.m_shell->ShowNavigation();
+        CanvasAssert(wxWindow::FindFocus() == m_frame.m_canvas,
+                     "Showing navigation stole the canvas keyboard focus.");
+        m_frame.m_shell->ShowNavigation(true);
+        m_frame.m_shell->FocusNext();
+        auto* focused = wxWindow::FindFocus();
+        CanvasAssert(focused == m_frame.m_views || m_frame.m_views->IsDescendant(focused),
+                     "F6 does not enter the central work area.");
+        m_frame.m_shell->FocusNext(true);
+        CanvasAssert(wxWindow::FindFocus() == m_frame.m_tree, "Shift+F6 does not return to navigation.");
+        m_frame.m_manager->GetPane("problems").Hide();
+        m_frame.m_manager->Update();
+        m_frame.m_shell->RestoreLayout();
+        CanvasAssert(m_frame.m_manager->GetPane("problems").IsShown() &&
+                         m_frame.m_name->GetValue() == Display("패널 전환 중 초안"),
+                     "Layout restoration changed the draft or left a panel hidden.");
+        m_frame.m_name->ChangeValue(draft);
         m_canvasChecks.push_back("docking_shell");
         m_canvasStage = 1;
         m_frame.CanvasCommand("create_board", Json{{"id", Uuid()}, {"width_mm", 40.0}, {"height_mm", 60.0}});

@@ -1,0 +1,451 @@
+{
+  "schema": "rfad.studio-step4-verification/0.1",
+  "recorded_on": "2026-11-17",
+  "timezone": "Asia/Seoul",
+  "basis_commit": "d0cfa79a361ca396467e6d3c79c98c1a6e6e8ab2",
+  "implementation_state": "기준 커밋 이후 Studio 공통 화면/이름/정밀 편집 작업 트리. 이후 게시 커밋을 당시 실행 기준으로 소급하지 않음.",
+  "plan_step": 4,
+  "project_schema": "rfad.project/0.5",
+  "scope": [
+    "S10/S11/S12/D15 공통 화면과 작은 창 배치",
+    "이름/검색/선택 및 모델 연관 치수",
+    "회전/미러와 제한된 다각형 평면 연산",
+    "출처/미정값/원본 사본의 원자 이력과 저장/재열기"
+  ],
+  "conditions": {
+    "os": "Windows 11",
+    "python": "저장소 CPython 3.12 .venv",
+    "gui": "wxWidgets Release + wxAUI + 사용자 정의 2D 캔버스 + wxGLCanvas/OpenGL",
+    "planar_engine": {
+      "shapely": "2.2.0",
+      "geos": "3.14.1",
+      "pinned_wheels": {
+        "path": "Code/runtime_profiles/python-planar-windows-x64.txt",
+        "bytes": 494,
+        "sha256": "269dd688f23fc44827fcfb8e9c0290e58b26eb51940ef6b0b18a4c9fd0fe2b98"
+      }
+    },
+    "gui_regression": "최종 Release 실행 파일과 별도 고정 Windows CAD 환경. RFAD_TEST_WSL=1을 요구하는 실제 계산 2개는 제외.",
+    "service_regression": "실제 GUI/CAD/native solver/WSL/Linux 조건이 없는 시험은 해당 사유로 제외. 별도 GUI 실행과 합산하지 않음.",
+    "evidence_location": "Code/.local 및 Code/build는 비추적 개발 산출물. 확보한 원본 파일의 bytes/SHA256을 기록하며 전체 로그를 이 JSON에 포함하지 않음.",
+    "gui_event_vs_manual": "자동 GUI 시험은 실제 wx 이벤트 루프/별도 서비스의 시험 입력이며 아래 Windows 직접 조작 기록과 구분.",
+    "gui_binary": {
+      "path": "Code/build/windows-release/bin/tracewave_gui.exe",
+      "bytes": 20658844,
+      "sha256": "50ddae581a788b73918d94e3c7b51626bcc74e73ed9dd414fce9ca0c49f253c3"
+    }
+  },
+  "runs": {
+    "baseline_service_after_first_commit": {
+      "tests_reported": 899,
+      "passed": 804,
+      "skipped": 95,
+      "failures": 0,
+      "errors": 0,
+      "duration_seconds": 452.441,
+      "evidence": {
+        "kind": "local_test_log",
+        "path": "Code/.local/precision-service-review.log",
+        "bytes": 226847,
+        "sha256": "ebbe77fe4d38707d87ad2be7ee30ee9223aeb6bd5e0c673fdef89b0c8e85bc77"
+      }
+    },
+    "initial_full_service_failed": {
+      "tests_reported": 922,
+      "passed": null,
+      "skipped": 87,
+      "failures": 2,
+      "errors": 1,
+      "duration_seconds": 538.556,
+      "evidence": {
+        "kind": "local_test_log",
+        "path": "Code/.local/studio-step4-service.log",
+        "bytes": 233334,
+        "sha256": "b20a5b1a836ec7a18ddc35f2d902cd4ec089d0f5838e8f9c92b6d295c701dd12"
+      },
+      "note": "클래스 초기화 오류가 포함되어 통과 수를 총수에서 임의 계산하지 않는다. 이 실행은 실패이며 최종 회귀와 구분한다.",
+      "issues": [
+        {
+          "test": "test_implementation_audit.ImplementationAuditTests.setUpClass",
+          "result": "error",
+          "cause": "작성 전인 08 검증 문서를 감사가 참조",
+          "correction": "근거 문서 작성 후 전체 재실행"
+        },
+        {
+          "test": "test_solver_jobs.SolverJobTests.test_stdio_openems_option_routes_capabilities_without_native_host_import",
+          "result": "failure",
+          "cause": "capabilities 조회의 선택 평면 엔진이 NumPy를 즉시 불러옴",
+          "correction": "선택 native 엔진을 연산 시점에 불러오도록 분리"
+        },
+        {
+          "test": "test_targets.TargetDomainTests.test_old_schemas_remain_read_only_and_next_command_migrates",
+          "result": "failure",
+          "cause": "과거 schema 시험이 0.4 목표 읽기를 거절해야 한다고 가정",
+          "correction": "0.3/0.4 읽기 보존과 미래 0.6 거절로 기대 조건 갱신"
+        }
+      ]
+    },
+    "final_focused_precision": {
+      "tests_reported": 30,
+      "passed": 30,
+      "skipped": 0,
+      "duration_seconds": 32.972,
+      "evidence": {
+        "kind": "reported_test_output",
+        "source": "정밀 서비스 담당의 실제 실행 결과 전달",
+        "log": null,
+        "note": "별도 원본 로그 파일은 확보하지 않아 hash를 기록하지 않음."
+      }
+    },
+    "final_focused_precision_gui": {
+      "tests_reported": 2,
+      "passed": 2,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "duration_seconds": 28.03,
+      "evidence": {
+        "kind": "local_test_log",
+        "path": "Code/.local/studio-precision-gui.log",
+        "bytes": 709,
+        "sha256": "a8250683cb6b3f2088f16982b7552f724d49d63a1a43239a6c3e68a8c821bb42"
+      }
+    },
+    "final_full_service": {
+      "tests_reported": 939,
+      "passed": 852,
+      "skipped": 87,
+      "failures": 0,
+      "errors": 0,
+      "duration_seconds": 555.691,
+      "evidence": {
+        "kind": "local_test_log",
+        "path": "Code/.local/studio-step4-service-final.log",
+        "bytes": 235355,
+        "sha256": "d32f452e6246baa6e524a4f7dd46f73cf8da72b88578e920f33fc6bd8c1f85e7"
+      },
+      "skip_reasons": {
+        "RFAD_CAD_PYTHON으로 고정 Windows CAD 환경을 지정해야 합니다.": 3,
+        "RFAD_CAD_PYTHON으로 실제 Windows CAD 환경을 지정해야 합니다.": 3,
+        "RFAD_GUI_EXE로 Windows GUI 실행 파일을 지정해야 합니다.": 7,
+        "RFAD_GUI_EXE로 Windows GUI를 지정합니다.": 6,
+        "RFAD_GUI_EXE와 RFAD_CAD_PYTHON으로 Windows wxWidgets/OCCT를 지정합니다.": 1,
+        "RFAD_OPENEMS_NATIVE=1인 고정 Linux solver venv가 필요합니다.": 1,
+        "RFAD_TEST_WSL=1과 RFAD_CAD_PYTHON으로 실제 WSL/CAD 환경을 함께 지정해야 합니다.": 1,
+        "RFAD_TEST_WSL=1과 승인된 실제 TraceWave-Dev WSL 환경이 필요합니다.": 2,
+        "Windows GUI 실행 파일을 RFAD_GUI_EXE로 지정합니다.": 5,
+        "Windows GUI와 CAD 실행 환경을 명시해야 합니다.": 2,
+        "Windows GUI와 고정 WSL 런타임 감사가 필요합니다.": 3,
+        "Windows GUI와 기존 WSL 감사 기록이 필요합니다.": 1,
+        "native CSXCAD/numpy가 필요합니다.": 3,
+        "native 환경의 h5py가 필요합니다.": 1,
+        "격리 CAD Python 환경이 필요합니다.": 20,
+        "격리 native CSXCAD/numpy 환경이 필요합니다.": 1,
+        "고정 Linux solver venv와 RFAD_OPENEMS_NATIVE=1이 필요합니다.": 9,
+        "실제 DB 경로를 지정한 조회 검증에서 실행": 1,
+        "실제 Linux process group과 pidfd가 필요합니다.": 12,
+        "실제 TraceWave-Dev WSL과 RFAD_TEST_WSL=1이 필요합니다.": 2,
+        "실제 ext4 inode/link와 O_NOFOLLOW가 필요합니다.": 2,
+        "실제 연구 중단/재개는 RFAD_TEST_WSL=1이 필요합니다.": 1
+      }
+    },
+    "final_full_gui": {
+      "tests_reported": 25,
+      "passed": 23,
+      "skipped": 2,
+      "failures": 0,
+      "errors": 0,
+      "duration_seconds": 434.867,
+      "evidence": {
+        "kind": "local_test_log",
+        "path": "Code/.local/studio-step4-gui-final.log",
+        "bytes": 6892,
+        "sha256": "e832fb52302d40f60b80b52c0fb2e89d09a3cfeebe7a276cc817f35dfbe7ea37"
+      },
+      "skip_reasons": {
+        "실제 WSL 계산은 RFAD_TEST_WSL=1로 명시합니다.": 2
+      }
+    },
+    "final_ctest": {
+      "tests_reported": 9,
+      "passed": 9,
+      "skipped": 0,
+      "failures": 0,
+      "duration_seconds": 0.32,
+      "duration_evidence": "실제 CTest 실행 출력",
+      "evidence": {
+        "kind": "ctest_last_test_log",
+        "path": "Code/build/windows-release/Testing/Temporary/LastTest.log",
+        "bytes": 6442,
+        "sha256": "9bfa668cae6a301325750fda8820ad563875bacb68167d24c26981c1e02947e0"
+      }
+    },
+    "final_audit": {
+      "tests_reported": 14,
+      "passed": 14,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "duration_seconds": 1.354,
+      "evidence": {
+        "path": "Code/.local/studio-step4-audit-final.log",
+        "bytes": 3976,
+        "sha256": "de979a70340c1d437af14283e139ee00d0c9ab904e81112882eaa42b7aebb348"
+      },
+      "note": "제품 코드 회귀 이후 감사 메타데이터와 문서 근거만 갱신하고 재검사함. 전체 수용 합격 선언 아님."
+    },
+    "final_document_check": {
+      "markdown_documents": 121,
+      "links_checked": 7297,
+      "broken_links": 0,
+      "approved_baseline_hashes_verified": 27,
+      "folders": 27,
+      "numbered_files": 432,
+      "structural_diagrams": 10,
+      "evidence": {
+        "path": "01_개발문서/04_화면설계/18_문서연결_검증.json",
+        "bytes": 4048,
+        "sha256": "ce7fcfcb4092d4acbe02d0da19e572332f238904a46635d2249da03dc5052961"
+      }
+    }
+  },
+  "manual_saved_reopen": {
+    "evidence": {
+      "path": "Code/.local/studio-step4-manual.json",
+      "bytes": 1627,
+      "sha256": "0d413430e395e6937a9870ca2bc3b26199f2be316a26266bde1737ceb97c66cc"
+    },
+    "check_count": 15,
+    "result": {
+      "schema": "rfad.manual-studio-check/0.1",
+      "project_schema": "rfad.project/0.5",
+      "revision_id": "50535b89-5a20-42b3-b899-6b15669e8118",
+      "checks": {
+        "board_preserved": true,
+        "stackup_preserved": true,
+        "materials_preserved": true,
+        "ports_preserved": true,
+        "targets_preserved": true,
+        "parameters_preserved": true,
+        "nets_preserved": true,
+        "manufacturing_profiles_preserved": true,
+        "connections_preserved": true,
+        "stable_id": true,
+        "korean_name_saved": true,
+        "unselected_geometry_preserved": true,
+        "line_quantity_sources_preserved": true,
+        "rotation_origin_saved": true,
+        "previous_extensions_preserved": true
+      },
+      "position_si": {
+        "start": [
+          {
+            "dimension": "length",
+            "display_unit": "mm",
+            "source_refs": [],
+            "status": "user_entered",
+            "value_si": 0.035
+          },
+          {
+            "dimension": "length",
+            "display_unit": "mm",
+            "source_refs": [],
+            "status": "user_entered",
+            "value_si": 0.0
+          }
+        ],
+        "end": [
+          {
+            "dimension": "length",
+            "display_unit": "mm",
+            "source_refs": [],
+            "status": "user_entered",
+            "value_si": 0.035
+          },
+          {
+            "dimension": "length",
+            "display_unit": "mm",
+            "source_refs": [],
+            "status": "user_entered",
+            "value_si": 0.028
+          }
+        ]
+      },
+      "origin_count": 1,
+      "note": "Windows 직접 이름 변경/중심(30,20)mm 90deg 회전/GUI 저장 후 독립 서비스 재열기 대조. 별도 테스트 workspace."
+    },
+    "source_scope": "수동 fixture의 선 좌표 source_refs는 빈 목록이었다. 비어 있지 않은 출처와 제작 Df 등 미정 상태의 보존은 test_gui_precision_process.py 및 test_precision_service.py의 별도 fixture 검사로 구분한다."
+  },
+  "manual_final_gui": {
+    "kind": "Windows 직접 마우스/키보드 조작",
+    "checks": {
+      "canvas_selection_f2_open_cancel": true,
+      "compact_1348x854_mm_unit_not_clipped": true,
+      "compact_vertical_28mm_dimension_offset": true,
+      "wide_1707x1019_tree_layer_left_properties_right": true,
+      "precision_current_length_28mm_width_0_5mm_fit": true,
+      "merged_body_native_source_a_b_chooser": true,
+      "selected_source_b_properties_and_3d_body": true,
+      "selected_source_b_2d_border_and_tree": true
+    },
+    "display_mesh_triangle_count": 40,
+    "merged_cad_evidence": {
+      "path": "Code/.local/studio-step4-merged-cad.json",
+      "bytes": 4789,
+      "sha256": "d2be435fff17157fa3cbd787005aa72d383008b83a72e38484e1d18e2f40dce2"
+    },
+    "merged_cad_summary": {
+      "profile": "rfad.step.mechanical/0.1",
+      "status": "generated_unverified",
+      "body_count": 2,
+      "solid_count": 2,
+      "kernel_independent": false,
+      "manufacturing_verified": false,
+      "physics_verified": false,
+      "step_schema": "AP242_MANAGED_MODEL_BASED_3D_ENGINEERING_MIM_LF {1 0 10303 442 1 1 4 }",
+      "snapshot": {
+        "artifact": {
+          "bytes": 8745,
+          "sha256": "0d1f271d99ca8045f6dafe121e3ff621fe7a4883642d97c6977fc40163f0d45b",
+          "uri": "projects/CAD 한글 교환 검증/snapshots/8ed67746-d4ae-4220-bba0-23be7ebcaf5a/ccd1cfd8-5087-4004-9f7c-2b3fa95e8db5/project.json"
+        },
+        "canonical_version": "rfad.canonical/1.0",
+        "content_hash": "46f0cfaf43e65fded387fca273bf110cd988078e212ab79af7c2dc9bb719a71e",
+        "description": "기하 교환 fixture, RF 검증 IFA 아님",
+        "project_id": "70dfd967-49bf-47f9-9ea0-2adca7c699bd",
+        "revision_id": "8ed67746-d4ae-4220-bba0-23be7ebcaf5a",
+        "schema_version": "rfad.project/0.5",
+        "sealed_at": 1794847438.5446134,
+        "snapshot_id": "ccd1cfd8-5087-4004-9f7c-2b3fa95e8db5",
+        "validation_state": "not_evaluated"
+      },
+      "artifacts": [
+        {
+          "artifact_id": "2c6c35d2-e6df-4387-b0fe-345ba79460e9",
+          "bytes": 49129,
+          "media_type": "model/step",
+          "producer": "rfad.cad/0.1",
+          "profile_id": "rfad.step.mechanical/0.1",
+          "role": "step",
+          "run_id": "ee13f809-986b-4411-af65-1a08ae2e1dc3",
+          "sha256": "7940972575ae7af987181f8faeb0299781b473e758f1442d547308aba016a489",
+          "snapshot_id": "ccd1cfd8-5087-4004-9f7c-2b3fa95e8db5",
+          "status": "generated_unverified",
+          "uri": "projects/CAD 한글 교환 검증/artifacts/ee13f809-986b-4411-af65-1a08ae2e1dc3/model.step"
+        },
+        {
+          "artifact_id": "e942483a-2bb0-4412-8faa-bf4340726a82",
+          "bytes": 9107,
+          "media_type": "application/vnd.opencascade.brep",
+          "producer": "rfad.cad/0.1",
+          "profile_id": "rfad.step.mechanical/0.1",
+          "role": "brep",
+          "run_id": "ee13f809-986b-4411-af65-1a08ae2e1dc3",
+          "sha256": "816fbc101b2cd3e015779f14aa6508b1acda1f3cd101dacf369e3add1d41ae81",
+          "snapshot_id": "ccd1cfd8-5087-4004-9f7c-2b3fa95e8db5",
+          "status": "generated_unverified",
+          "uri": "projects/CAD 한글 교환 검증/artifacts/ee13f809-986b-4411-af65-1a08ae2e1dc3/model.brep"
+        },
+        {
+          "artifact_id": "8ac45fad-d992-4bd8-b461-92691c537381",
+          "bytes": 2980,
+          "media_type": "application/json",
+          "producer": "rfad.cad/0.1",
+          "profile_id": "rfad.step.mechanical/0.1",
+          "role": "display_mesh",
+          "run_id": "ee13f809-986b-4411-af65-1a08ae2e1dc3",
+          "sha256": "c7c82493e2c9b6a13959fe58904812789871f05601354505fcd70479088933e7",
+          "snapshot_id": "ccd1cfd8-5087-4004-9f7c-2b3fa95e8db5",
+          "status": "generated_unverified",
+          "uri": "projects/CAD 한글 교환 검증/artifacts/ee13f809-986b-4411-af65-1a08ae2e1dc3/mesh.json"
+        },
+        {
+          "artifact_id": "0fb38438-b891-4257-a3bb-e456dfc29582",
+          "bytes": 1461,
+          "media_type": "application/json",
+          "producer": "rfad.cad/0.1",
+          "profile_id": "rfad.step.mechanical/0.1",
+          "role": "validation",
+          "run_id": "ee13f809-986b-4411-af65-1a08ae2e1dc3",
+          "sha256": "9f0c85d363750e1cfa118a0f7e121eb1eb96ffb72ed7930a8b834b7fa11576e9",
+          "snapshot_id": "ccd1cfd8-5087-4004-9f7c-2b3fa95e8db5",
+          "status": "generated_unverified",
+          "uri": "projects/CAD 한글 교환 검증/artifacts/ee13f809-986b-4411-af65-1a08ae2e1dc3/validation.json"
+        },
+        {
+          "artifact_id": "46f82fe5-e2b0-4acf-beba-0af21faf236a",
+          "bytes": 22842,
+          "media_type": "application/json",
+          "producer": "rfad.cad/0.1",
+          "profile_id": "rfad.step.mechanical/0.1",
+          "role": "sidecar",
+          "run_id": "ee13f809-986b-4411-af65-1a08ae2e1dc3",
+          "sha256": "5829b2deabdf2b5b71d7062e5dda3e39e42c4651ae8b1bc952699e92352302b7",
+          "snapshot_id": "ccd1cfd8-5087-4004-9f7c-2b3fa95e8db5",
+          "status": "generated_unverified",
+          "uri": "projects/CAD 한글 교환 검증/artifacts/ee13f809-986b-4411-af65-1a08ae2e1dc3/sidecar.json"
+        },
+        {
+          "artifact_id": "b24236ac-7571-4d9c-83db-520223f6f667",
+          "bytes": 3770,
+          "media_type": "application/json",
+          "producer": "rfad.cad/0.1",
+          "profile_id": "rfad.step.mechanical/0.1",
+          "role": "manifest",
+          "run_id": "ee13f809-986b-4411-af65-1a08ae2e1dc3",
+          "sha256": "1f81ddede8a6aee932888b5b849d2b52469fc7956f8ac8518ddd4fc2d7f5e684",
+          "snapshot_id": "ccd1cfd8-5087-4004-9f7c-2b3fa95e8db5",
+          "status": "generated_unverified",
+          "uri": "projects/CAD 한글 교환 검증/artifacts/ee13f809-986b-4411-af65-1a08ae2e1dc3/manifest.json"
+        }
+      ]
+    },
+    "screenshots": [
+      {
+        "path": "01_개발문서/07_검증/02_실행화면/01_작은창_속성과_연관치수.jpg",
+        "bytes": 112820,
+        "sha256": "e3860fa9951d844c5a7403aa7912345630eb731c324bb2aa255c49d6b0c87ca0"
+      },
+      {
+        "path": "01_개발문서/07_검증/02_실행화면/02_넓은창_탐색과_속성.jpg",
+        "bytes": 154973,
+        "sha256": "3e89622cc3b75065dfbe744c4c28f9a8b242db33ba79b8274274da9eb5273ac4"
+      },
+      {
+        "path": "01_개발문서/07_검증/02_실행화면/03_정밀편집_현재치수.jpg",
+        "bytes": 125724,
+        "sha256": "081bfb8bed15d48a61742059d4cfacd254777fb8da09f11ce3e1d07617d8dd01"
+      },
+      {
+        "path": "01_개발문서/07_검증/02_실행화면/04_병합도체_원본선택.jpg",
+        "bytes": 112677,
+        "sha256": "963018b4627d00ee40db3888133e6d69c1b1230914b5af80d6eb7e37fc55b87d"
+      },
+      {
+        "path": "01_개발문서/07_검증/02_실행화면/05_삼차원과_속성_선택연동.jpg",
+        "bytes": 96573,
+        "sha256": "f8bcebdb02b4d700f3ea6b8c1f89e6b7b1d7b5172911974d87a2a894a4adaed9"
+      },
+      {
+        "path": "01_개발문서/07_검증/02_실행화면/06_이차원_원본선택_동기화.jpg",
+        "bytes": 112975,
+        "sha256": "68cb05cd92e23d312257eb6139d90b7eb7431292d60baf7041b5a3ef77235482"
+      }
+    ],
+    "limits": "현재 환경/대상 fixture의 실제 조작이다. 모든 DPI/해상도/프로젝트나 독립 STEP 수신 CAD 검수를 대표하지 않는다."
+  },
+  "acceptance_limits": {
+    "all_84_screens_complete": false,
+    "whole_r1_accepted": false,
+    "performance_60_30_fps_accepted": false,
+    "all_dpi_ime_accessibility_multimonitor_accepted": false,
+    "new_fdtd_run": false,
+    "new_physical_measurement": false,
+    "manufacturing_measurement_conditions": "자료 확보 전 미정",
+    "ro4350b_local_conductor_loss_change_percent": 2.788446,
+    "initial_loss_threshold_percent": 2.0,
+    "initial_loss_threshold_established": false,
+    "ghz_pth_independent_accuracy_established": false,
+    "historical_approvals_and_reference_files_modified": false
+  }
+}

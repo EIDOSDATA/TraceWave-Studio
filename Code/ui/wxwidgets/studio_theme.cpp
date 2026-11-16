@@ -48,8 +48,8 @@ Palette Colours()
                 wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT),
                 wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT)};
     }
-    return {wxColour(243, 245, 248), wxColour(255, 255, 255), wxColour(216, 222, 232),
-            wxColour(32, 39, 51), wxColour(83, 97, 116)};
+    return {wxColour(239, 242, 246), wxColour(248, 250, 252), wxColour(208, 216, 227),
+            wxColour(25, 42, 61), wxColour(82, 101, 123)};
 }
 
 void BindSurface(wxWindow& window, Surface surface)

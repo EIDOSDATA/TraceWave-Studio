@@ -28,6 +28,8 @@ public:
         parser.AddSwitch("", "printed-seed-smoke-test", "Run printed reference/seed and workspace GUI workflow and exit");
         parser.AddSwitch("", "physical-setup-smoke-test", "Run physical stack, STEP placement and reopen workflow");
         parser.AddSwitch("", "design-rules-smoke-test", "Run design rules editing, checking and reopen workflow");
+        parser.AddSwitch("", "precision-editor-smoke-test", "Run rename, precision preview/apply and restart workflow");
+        parser.AddSwitch("", "precision-planar-smoke-test", "Run planar selection, candidates, mirror and restart workflow");
         parser.AddOption("", "study-specification", "Explicit study smoke specification JSON path");
         parser.AddOption("", "open-project", "Registered project path relative to workspace");
         parser.AddSwitch("", "smoke-test", "Run GUI/service smoke test and exit");
@@ -70,8 +72,10 @@ public:
         options.printedSeedSmoke = parser.Found("printed-seed-smoke-test");
         options.designRulesSmoke = parser.Found("design-rules-smoke-test");
         options.physicalSetupSmoke = parser.Found("physical-setup-smoke-test");
+        options.precisionPlanarSmoke = parser.Found("precision-planar-smoke-test");
+        options.precisionEditorSmoke = parser.Found("precision-editor-smoke-test") || options.precisionPlanarSmoke;
         options.setupSmoke = parser.Found("design-setup-smoke-test") || options.printedSeedSmoke ||
-                             options.designRulesSmoke || options.physicalSetupSmoke;
+                             options.designRulesSmoke || options.physicalSetupSmoke || options.precisionEditorSmoke;
         parser.Found("study-specification", &options.studySpecification);
         options.smoke = parser.Found("smoke-test") || options.editorSmoke || options.canvasSmoke ||
                         options.primitivesSmoke || options.cadSmoke || options.solverSmoke || options.pcbSmoke ||

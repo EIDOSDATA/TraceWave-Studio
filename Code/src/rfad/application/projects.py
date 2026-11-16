@@ -26,7 +26,7 @@ from rfad.application.pcb_selection_contract import MUTATION_METHODS as PCB_SELE
 from rfad.application.project_studies import StudyCoordinator
 from rfad.application.project_study_contract import MUTATIONS as STUDY_MUTATIONS
 from rfad.application import target_editor
-from rfad.application import design_rule_service, physical_setup_service
+from rfad.application import design_rule_service, physical_setup_service, precision_service
 from rfad.domain.physical_setup import COMMAND as PHYSICAL_COMMAND
 from rfad.application.template_candidates import TemplateCandidateCoordinator
 from rfad.domain.errors import ProjectError
@@ -37,7 +37,7 @@ ASYNC_METHODS = {
 } | CAD_METHODS | SOLVER_METHODS
 MUTATION_METHODS = ASYNC_METHODS | {
     "project.apply_command", "editor.apply", "canvas.apply", "project.undo", "project.redo", "job.cancel",
-} | PCB_SELECTION_MUTATIONS | STUDY_MUTATIONS | {"target.editor.apply", "template.apply", "design.rules.apply", physical_setup_service.MUTATION}
+} | PCB_SELECTION_MUTATIONS | STUDY_MUTATIONS | {"target.editor.apply", "template.apply", "design.rules.apply", physical_setup_service.MUTATION, precision_service.MUTATION}
 
 
 class ProjectService:
@@ -183,7 +183,9 @@ class ProjectService:
 
     def _preflight(self, method: str, context: dict, data: dict) -> None:
         """! @brief 기능별 요청 계약에 따라 접수 가능 여부를 검사한다."""
-        if method == physical_setup_service.MUTATION:
+        if method == precision_service.MUTATION:
+            precision_service.validate_input(context, data)
+        elif method == physical_setup_service.MUTATION:
             physical_setup_service.validate_input(context, data)
         elif method == "design.rules.apply":
             design_rule_service.validate_input(context, data)
@@ -218,7 +220,9 @@ class ProjectService:
     def _dispatch_mutation(self, state: dict, method: str, context: dict, data: dict) -> dict:
         """! @brief 영수증과 동일한 transaction에서 기능별 명령을 실행한다."""
         self._preflight(method, context, data)
-        if method == physical_setup_service.MUTATION:
+        if method == precision_service.MUTATION:
+            return precision_service.admit(self, state, context, data)
+        elif method == physical_setup_service.MUTATION:
             return self.physical_setup.admit(state, context, data)
         elif method == "design.rules.apply":
             return design_rule_service.admit(self, state, context, data)
@@ -229,6 +233,8 @@ class ProjectService:
         elif method in STUDY_MUTATIONS:
             return self.studies.admit(state, method, context, data)
         elif method == "project.apply_command":
+            if data["type"] == "geometry.precision.apply":
+                raise ProjectError("E_UNSUPPORTED", "정밀 편집은 precision.preview와 precision.apply를 사용하십시오.")
             if data["type"] == PHYSICAL_COMMAND:
                 raise ProjectError("E_UNSUPPORTED", "물리 구성은 physical.setup.apply를 사용하십시오.")
             if data["type"] == "pcb_stackup.apply":

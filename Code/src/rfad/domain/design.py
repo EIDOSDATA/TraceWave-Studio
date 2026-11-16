@@ -13,6 +13,7 @@ from rfad.domain.material_models import (LEGACY_MODEL, TOTAL_TAN_DELTA_MODEL,
                                         material_input_fields as model_input_fields, validate_material_model)
 from rfad.domain.planar import MAX_REGION_HOLES, MAX_REGION_POINTS, validate_region
 from rfad.domain.units import Quantity, QuantityError
+from rfad.domain.object_names import NAMED_SCHEMA, validate_name
 
 
 DESIGN_COLLECTIONS = ("materials", "stackup", "nets", "geometry", "ports")
@@ -181,7 +182,10 @@ def validate_design(document: dict) -> None:
     indexes = _indexes(document)
     board = document.get("board")
     if board is not None:
-        _fields(board, {"id", "frame_id", "outline", "thickness_convention"}, "board")
+        named = "name" in board and document.get("schema_version") == NAMED_SCHEMA
+        _fields(board, {"id", "frame_id", "outline", "thickness_convention"} | ({"name"} if named else set()), "board")
+        if named:
+            validate_name(board["name"], "board.name")
         _reference(board["frame_id"], indexes["frames"], "board.frame_id")
         if board["thickness_convention"] != "finished":
             _fail("E_UNSUPPORTED", "현재 완성 적층 두께 규약만 지원합니다.", "board.thickness_convention")
@@ -258,7 +262,10 @@ def validate_design(document: dict) -> None:
             specific = {"center", "end_layer_id", "finished_hole_diameter", "plating_thickness", "tool_hole_diameter", "fill", "pad_ids"}
         else:
             _fail("E_UNSUPPORTED", "지원하지 않는 도체 의미 모델입니다.", field + ".kind")
-        _fields(geometry, _GEOMETRY_FIELDS | specific, field)
+        named = "name" in geometry and document.get("schema_version") == NAMED_SCHEMA
+        _fields(geometry, _GEOMETRY_FIELDS | specific | ({"name"} if named else set()), field)
+        if named:
+            validate_name(geometry["name"], field + ".name")
         if geometry["role"] not in ("radiator", "ground", "feed", "short", "conductor"):
             _fail("E_UNSUPPORTED", "지원하지 않는 패턴 역할입니다.", field + ".role")
         _reference(geometry["frame_id"], indexes["frames"], field + ".frame_id")

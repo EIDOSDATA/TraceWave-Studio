@@ -14,6 +14,7 @@
 #include <vector>
 #include "async_state.h"
 #include "analysis_workflow.h"
+#include "dialog_gateway.h"
 
 class StudioSmokeDriver;
 class PcbSelectionDialog;
@@ -38,6 +39,8 @@ class ProjectStudyDialog;
 class ProjectSetupDialog;
 class wxThreadEvent;
 class WorkspaceBar;
+class StudioShell;
+class wxSearchCtrl;
 enum class WorkspaceArea;
 enum class DesignSetup { Targets, Templates, Rules, Physical };
 
@@ -60,6 +63,15 @@ private:
 
     /** @brief 프로젝트 메타데이터와 선택 객체의 서비스 기반 입력 폼을 구성한다. */
     void BuildInterface();
+    /** @brief 탐색과 이름 변경의 표시 상태를 별도 모듈에서 구성한다. */
+    void BuildNavigation(wxWindow* parent, wxSizer* layout);
+    void RebuildNavigation();
+    void OpenRename();
+    void BuildPrecisionTools(wxWindow* parent, wxSizer* layout);
+    void OpenPrecision();
+    void RefreshDimensions();
+    DialogGateway ObjectToolGateway();
+    void ShowObjectTool(std::unique_ptr<ProjectSetupDialog> dialog, const Json& selection);
     void BuildWorkspacePages();
     void BuildWorkspaceLayers();
     void UpdateWorkspace();
@@ -215,6 +227,7 @@ private:
     bool m_templatesSupported = false;
     bool m_designRulesSupported = false;
     bool m_physicalSetupSupported = false;
+    bool m_precisionSupported = false;
     ProjectStudyDialog* m_studyDialog = nullptr;
     bool m_studySupported = false;
     bool m_closeAfterPcb = false;
@@ -237,6 +250,7 @@ private:
     wxAuiManager* m_manager = nullptr;
     wxString m_defaultLayout;
     WorkspaceBar* m_workspaceBar = nullptr;
+    std::unique_ptr<StudioShell> m_shell;
     wxCheckListBox* m_workspaceLayers = nullptr;
     wxCheckBox* m_workspaceBoard = nullptr;
     wxListCtrl* m_workspaceJobs = nullptr;
@@ -285,6 +299,9 @@ private:
     std::thread m_shutdown;
     wxTimer m_timer;
     wxTreeCtrl* m_tree = nullptr;
+    wxSearchCtrl* m_objectSearch = nullptr;
+    wxChoice* m_objectFilter = nullptr;
+    std::string m_navigationProject;
     wxPanel* m_properties = nullptr;
     wxPanel* m_metadataPanel = nullptr;
     EditorPanel* m_editorPanel = nullptr;

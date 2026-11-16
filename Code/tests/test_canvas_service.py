@@ -206,7 +206,7 @@ class CanvasServiceTests(unittest.TestCase):
         self.assertEqual([shape["id"] for shape in dto["shapes"]], [normal])
         self.assertEqual({item["id"] for item in dto["omissions"]}, omitted | {board})
         self.assertTrue(all("표시 profile" in item["message"] for item in dto["omissions"]))
-        self.assertEqual(dto["board"], {"id": board, "width": None, "height": 60.0})
+        self.assertEqual(dto["board"], {"id": board, "width": None, "height": 60.0, "name": "기판 01", "name_state": "stored", "label": "기판 01"})
         self.assertEqual(self.document(), original)
 
     def test_display_profile_keeps_boundary_coordinates_and_small_representable_geometry(self):
@@ -227,7 +227,7 @@ class CanvasServiceTests(unittest.TestCase):
     def test_board_layer_creation_preserves_missing_physics_and_has_separate_undo(self):
         board, layer = self.board_layer()
         dto = self.canvas()
-        self.assertEqual(dto["board"], {"id": board, "width": 40.0, "height": 60.0})
+        self.assertEqual(dto["board"], {"id": board, "width": 40.0, "height": 60.0, "name": "기판 01", "name_state": "stored", "label": "기판 01"})
         self.assertEqual(dto["layers"], [{"id": layer, "label": "도체 1", "role": "conductor"}])
         stored = self.document()["stackup"][0]
         self.assertEqual(stored["order"], 0)

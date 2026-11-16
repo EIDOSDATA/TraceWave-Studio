@@ -1,8 +1,24 @@
 /** @file @brief 주 창의 drawing 책임을 구현한다. */
 #include "studio_internal.h"
+#include "studio_shell.h"
 
 void StudioFrame::BindCanvas()
 {
+    m_canvas->Bind(wxEVT_KEY_DOWN, [this](wxKeyEvent& event)
+    {
+        if (event.GetKeyCode() == WXK_F2)
+        {
+            OpenRename();
+        }
+        else if (event.GetKeyCode() == 'D' && !event.HasAnyModifiers())
+        {
+            OpenPrecision();
+        }
+        else
+        {
+            event.Skip();
+        }
+    });
     m_canvas->onStatus = [this](const std::string& message)
     {
         m_canvasHint->SetLabel(Display(message));
@@ -91,6 +107,7 @@ void StudioFrame::BindCanvas()
                     {
                         m_drawTool = name;
                         m_canvas->SetTool(name);
+                        UpdateWorkspace();
                         m_canvas->SetFocus();
                     };
                     if (HasDraft())
@@ -121,7 +138,7 @@ void StudioFrame::BindCanvas()
         wxEVT_MENU,
         [this](wxCommandEvent&)
         {
-            m_manager->LoadPerspective(m_defaultLayout);
+            m_shell->RestoreLayout();
         },
         IdResetLayout);
     Bind(

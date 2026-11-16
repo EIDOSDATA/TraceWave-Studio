@@ -1,5 +1,6 @@
 /** @file @brief 주 창의 editing 책임을 구현한다. */
 #include "studio_internal.h"
+#include "studio_shell.h"
 
 /** @brief 전체 원본 대신 목록과 선택 객체의 작은 편집 DTO만 조회한다. */
 void StudioFrame::RefreshEditor(const Json& selection, std::function<void()> completed)
@@ -28,6 +29,7 @@ void StudioFrame::RefreshScene(std::function<void()> completed)
     if (m_scene.value("revision_id", "") == m_revision)
     {
         m_canvas->SetSelection(m_selection.value("kind", "") == "geometry" ? m_selection.value("id", "") : "");
+        RefreshDimensions();
         completed();
         return;
     }
@@ -78,6 +80,7 @@ void StudioFrame::RefreshScene(std::function<void()> completed)
                  Log("표시 생략: " + omission.at("message").get<std::string>());
              }
              ShowProblems();
+             RefreshDimensions();
              completed();
          });
 }
@@ -92,6 +95,10 @@ void StudioFrame::SelectObject(const Json& selection, bool restoreTreeFocus)
                       if (restoreTreeFocus)
                       {
                           m_tree->SetFocus();
+                      }
+                      else if (m_shell)
+                      {
+                          m_shell->ShowProperties(false);
                       }
                       m_smoke->OnSelected();
                   });
@@ -178,18 +185,32 @@ void StudioFrame::History(const std::string& method, std::function<void()> compl
     }
     m_busy = true;
     UpdateControls();
+    const Json previousSelection = m_selection;
     Send(method, Json{{"expected_revision", m_revision}, {"command_id", Uuid()}}, true, Context(),
-         [this, completed](const Json& result)
+         [this, completed, previousSelection](const Json& result)
          {
              m_revision = result.at("new_revision").get<std::string>();
              RefreshEditor(Json{{"kind", "project"}, {"id", m_project}},
-                           [this, completed]()
+                           [this, completed, previousSelection]()
                            {
-                               Ready("편집 이력을 적용했습니다.");
-                               if (completed)
+                               const auto finish = [this, completed]()
                                {
-                                   completed();
+                                   Ready("편집 이력을 적용했습니다.");
+                                   if (completed)
+                                   {
+                                       completed();
+                                   }
+                               };
+                               for (const auto& item : m_editor.at("items"))
+                               {
+                                   if (item.at("kind") == previousSelection.value("kind", "") &&
+                                       item.at("id") == previousSelection.value("id", ""))
+                                   {
+                                       RefreshEditor(previousSelection, finish);
+                                       return;
+                                   }
                                }
+                               finish();
                            });
          });
 }

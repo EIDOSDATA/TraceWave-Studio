@@ -125,7 +125,7 @@ def validate_targets(document: dict) -> None:
     for index, target in enumerate(targets):
         field = f"targets[{index}]"
         extended = type(target) is dict and "constraints" in target
-        if extended and document["schema_version"] != "rfad.project/0.4":
+        if extended and document["schema_version"] not in ("rfad.project/0.4", "rfad.project/0.5"):
             _fail("E_VERSION", "목표 제약은 프로젝트 0.4가 필요합니다.", field + ".constraints")
         _fields(target, _TARGET_FIELDS | ({"constraints"} if extended else set()), field)
         for key in ("id", "revision_id"):

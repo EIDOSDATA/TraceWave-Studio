@@ -38,6 +38,9 @@ public:
     bool IsBoardVisible() const;
     void SetGridVisible(bool visible);
     void SetSnapEnabled(bool enabled);
+    /** @brief 선택 필터와 연관 치수는 표시 상태이며 원본을 변경하지 않는다. */
+    void SetSelectionFilter(const std::string& kind, bool activeLayerOnly);
+    void SetDimensions(const Json& dimensions);
     void FitView();
     void CancelGesture();
 
@@ -69,6 +72,8 @@ private:
     void ReleaseOwnedCapture();
     void DrawPreview(wxDC& dc, CanvasRenderer& renderer) const;
     void DrawPrecision(wxDC& dc, const Shape* selected) const;
+    void DrawDimensions(wxDC& dc) const;
+    bool Selectable(const Shape& shape) const;
     void UpdateCursor(const wxPoint& pixel);
     std::optional<CanvasPrecision::Endpoint> HitEndpoint(const Shape& shape, const wxPoint& pixel) const;
     const Shape* SelectedPath() const;
@@ -87,6 +92,9 @@ private:
     wxPoint2DDouble m_viewCenter{0.0, 0.0};
     double m_pixelsPerMm = 8.0;
     std::string m_selection;
+    std::string m_selectionKind;
+    bool m_activeLayerOnly = false;
+    Json m_dimensions = Json::array();
     std::vector<std::string> m_inspection;
     std::optional<wxPoint2DDouble> m_inspectionLocation;
     std::string m_tool = "select";

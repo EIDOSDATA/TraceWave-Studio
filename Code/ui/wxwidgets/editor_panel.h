@@ -31,6 +31,7 @@ public:
     void EditCoordinateCellForSmoke(const std::string& key, int point, int axis, const std::string& value);
 
 private:
+    friend class StudioSmokeDriver;
     struct Field
     {
         nlohmann::json descriptor;
@@ -39,6 +40,7 @@ private:
         wxPanel* row = nullptr;
         wxSizer* section = nullptr;
         wxStaticText* label = nullptr;
+        wxBoxSizer* inputs = nullptr;
         nlohmann::json coordinateValue = nlohmann::json::array();
     };
 
@@ -46,6 +48,8 @@ private:
     void WriteValue(Field& field, const nlohmann::json& value);
     void EditCoordinates(const std::string& key, const std::function<void(wxGrid&, wxDialog&)>& opened = {});
     void UpdateModes();
+    /** @brief 좁은 속성 창에서는 설명을 위로 옮기고 값/단위 행의 폭을 확보한다. */
+    void ReflowRows(bool force = false);
     void NotifyChanged();
     void UpdateInputNotice();
     EditorPresentation::Fields PresentationFields() const;
@@ -60,4 +64,6 @@ private:
     std::string m_diagnosticField;
     std::string m_inputNoticeText;
     bool m_notifying = false;
+    bool m_compactRows = true;
+    bool m_reflowing = false;
 };

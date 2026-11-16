@@ -2,6 +2,7 @@
 #include "studio_internal.h"
 #include "workspace_bar.h"
 #include "studio_theme.h"
+#include "drawing_rail.h"
 #include "study_report_dialog.h"
 #include <wx/artprov.h>
 #include <wx/imaglist.h>
@@ -84,7 +85,11 @@ void StudioFrame::NavigateWorkspace(WorkspaceArea area)
 
 void StudioFrame::BuildWorkspaceLayers()
 {
-    auto* panel = new wxPanel(this);
+    auto* host = new wxPanel(this);
+    StudioTheme::BindSurface(*host);
+    host->SetSizer(new wxBoxSizer(wxVERTICAL));
+    auto* panel = new wxPanel(host);
+    panel->SetName("workspace.layer-content");
     StudioTheme::BindSurface(*panel);
     auto* layout = new wxBoxSizer(wxVERTICAL);
     m_workspaceBoard = new wxCheckBox(panel, wxID_ANY, Display("기판 외곽 / 2D 표시"));
@@ -100,8 +105,9 @@ void StudioFrame::BuildWorkspaceLayers()
     m_workspaceLayers->SetToolTip(Display("선택: 활성 도체층 / 체크: 도체층 2D 표시. 유전체 적층은 프로젝트 트리에서 편집합니다. 저장 원본과 해석 포함 여부는 변경하지 않습니다."));
     layout->Add(m_workspaceLayers, 1, wxEXPAND | wxALL, FromDIP(StudioTheme::Space));
     panel->SetSizer(layout);
-    m_manager->AddPane(panel, wxAuiPaneInfo().Name("layers").Caption(Display("레이어 / 2D 표시")).Left().Layer(1).Position(1)
-                          .BestSize(FromDIP(wxSize(235, 170))).MinSize(FromDIP(wxSize(180, 100))).CloseButton(false));
+    host->GetSizer()->Add(panel, 1, wxEXPAND);
+    m_manager->AddPane(host, wxAuiPaneInfo().Name("layers").Caption(Display("레이어 / 2D 표시")).Left().Layer(1).Position(1)
+                          .BestSize(FromDIP(wxSize(280, 170))).MinSize(FromDIP(wxSize(220, 100))).CloseButton(true));
     m_workspaceLayers->Bind(wxEVT_CHECKLISTBOX, [this](wxCommandEvent& event)
     {
         const int index = event.GetInt();
@@ -173,6 +179,8 @@ void StudioFrame::ShowWorkspaceJob(long row, const std::string& state, const std
 
 void StudioFrame::UpdateWorkspace()
 {
+    SelectDrawingRail({m_tools.at(IdSelect), m_tools.at(IdLine), m_tools.at(IdArc)},
+                      m_drawTool == "line" ? 1 : (m_drawTool == "arc" ? 2 : 0));
     if (m_workspaceBar == nullptr || m_workspaceJobs == nullptr)
     {
         return;

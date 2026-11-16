@@ -75,6 +75,7 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/studio_frame.cpp
     ui/wxwidgets/studio_layout.cpp
     ui/wxwidgets/studio_workspace.cpp
+    ui/wxwidgets/studio_shell.cpp
     ui/wxwidgets/workspace_bar.cpp
     ui/wxwidgets/drawing_rail.cpp
     ui/wxwidgets/studio_theme.cpp
@@ -92,6 +93,8 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/studio_smoke_physical.cpp
     ui/wxwidgets/studio_smoke_rules.cpp
     ui/wxwidgets/studio_smoke_setup.cpp
+    ui/wxwidgets/studio_smoke_precision_editor.cpp
+    ui/wxwidgets/studio_smoke_precision_planar.cpp
     ui/wxwidgets/studio_smoke_targets.cpp
     ui/wxwidgets/studio_smoke_templates.cpp
     ui/wxwidgets/studio_smoke_printed.cpp
@@ -112,6 +115,12 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/studio_controls.cpp
     ui/wxwidgets/studio_session.cpp
     ui/wxwidgets/studio_project.cpp
+    ui/wxwidgets/studio_navigation.cpp
+    ui/wxwidgets/studio_object_tools.cpp
+    ui/wxwidgets/studio_precision.cpp
+    ui/wxwidgets/precision_dialog.cpp
+    ui/wxwidgets/design_canvas_dimensions.cpp
+    ui/wxwidgets/object_rename_dialog.cpp
     ui/wxwidgets/studio_editing.cpp
     ui/wxwidgets/studio_lifecycle.cpp
     ui/wxwidgets/studio_smoke_editor.cpp

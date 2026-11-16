@@ -43,7 +43,8 @@ class CircularBoardTests(unittest.TestCase):
         self.assertEqual(result["board"]["outline"]["center"][0]["value_si"], -0.004)
         self.assertEqual(result["board"]["outline"]["radius"]["value_si"], 0.020)
         dto = build_canvas_dto(result)
-        self.assertEqual(dto["board"], {"id": result["board"]["id"], "kind": "circle", "center": [-4.0, 9.0], "radius": 20.0})
+        self.assertEqual(dto["board"], {"id": result["board"]["id"], "kind": "circle", "center": [-4.0, 9.0], "radius": 20.0,
+                                        "name": "기판 01", "name_state": "stored", "label": "기판 01"})
         self.assertEqual(result["materials"], [])
         self.assertEqual(result["geometry"], [])
         restored = json.loads(canonical_bytes(result))
@@ -121,7 +122,8 @@ class CircularBoardTests(unittest.TestCase):
         """! @brief 직사각 기존 문서는 새 외곽 필드를 강제하지 않는다."""
         document = cad_fixture()
         dto = build_canvas_dto(document)
-        self.assertEqual(dto["board"], {"id": document["board"]["id"], "width": 60.0, "height": 40.0})
+        self.assertEqual(dto["board"], {"id": document["board"]["id"], "width": 60.0, "height": 40.0,
+                                        "name": None, "name_state": "temporary", "label": "기판 01"})
         self.assertEqual(build_cad_input(document, snapshot_for(document))["board"], {"id": document["board"]["id"], "width_mm": 60.0, "height_mm": 40.0})
 
     def test_optional_port_box_preserves_units_unknowns_and_legacy_ports(self):

@@ -8,6 +8,7 @@ from uuid import UUID
 from rfad.domain.design import resolve_scalar
 from rfad.domain.errors import ProjectError
 from rfad.domain.units import Quantity, QuantityError
+from rfad.domain.object_names import allocate_name, name_dto
 
 
 PROFILE = "rfad.canvas/0.1"
@@ -218,6 +219,7 @@ def build_canvas_dto(document: dict) -> dict:
         outline = board["outline"]
         circular = outline["kind"] == "circle"
         visible = {"id": board["id"], "kind": "circle", "center": None, "radius": None} if circular else {"id": board["id"], "width": None, "height": None}
+        visible.update(name_dto(document, board, "board"))
         for name in ("center", "radius") if circular else ("width", "height"):
             try:
                 visible[name] = _display_point(document, outline[name], "board.outline." + name) if name == "center" else _display_length(document, outline[name], "board.outline." + name)
@@ -233,9 +235,8 @@ def build_canvas_dto(document: dict) -> dict:
         try:
             prefix = "geometry." + geometry["id"]
             kind = geometry["kind"]
-            labels = {"line_path": "선 패턴", "arc_path": "원호 패턴", "planar_region": "면 패턴", "pad": "패드", "via": "도금 비아"}
             shape = {"id": geometry["id"], "kind": geometry["kind"],
-                     "label": labels[kind] + " " + geometry["id"][:8],
+                     **name_dto(document, geometry),
                      "layer_id": geometry["layer_id"], "role": geometry["role"],
                      "movable": _movable(geometry)}
             if kind in ("line_path", "arc_path"):
@@ -295,6 +296,7 @@ def canvas_command(document: dict, operation: str, values: dict) -> dict:
             outline = {"kind": "rectangle", "width": _quantity(values["width_mm"], "mm", "values.width_mm"),
                        "height": _quantity(values["height_mm"], "mm", "values.height_mm")}
         board = {"id": identity, "frame_id": document["frames"]["board"]["id"], "thickness_convention": "finished", "outline": outline}
+        board["name"] = allocate_name(document, board, "board")
         return {"type": "board.set", "payload": {"board": board}}
     if operation in ("create_layer", "create_dielectric_layer"):
         dielectric = operation == "create_dielectric_layer"
@@ -335,6 +337,7 @@ def canvas_command(document: dict, operation: str, values: dict) -> dict:
             for name in ("finished_hole_diameter", "plating_thickness", "tool_hole_diameter"):
                 value = values[name + "_mm"]
                 geometry[name] = Quantity.missing("length", "mm").to_dict() if value is None else _quantity(value, "mm", "values." + name + "_mm")
+        geometry["name"] = allocate_name(document, geometry)
         return {"type": "geometry.set", "payload": {"geometry": geometry}}
     geometry = next((item for item in document["geometry"] if item["id"] == identity), None)
     if geometry is None:

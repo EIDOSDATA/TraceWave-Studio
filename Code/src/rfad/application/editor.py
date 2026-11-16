@@ -7,6 +7,7 @@ from uuid import UUID
 
 from rfad.domain.design import resolve_scalar
 from rfad.domain.errors import ProjectError
+from rfad.domain.object_names import allocate_name, object_label, name_dto, validate_name
 from rfad.domain.parameter_graph import restore_parameter_command
 from rfad.domain.units import Quantity, QuantityError, _UNITS
 
@@ -100,7 +101,7 @@ def selected_object(document: dict, selection: dict) -> tuple[str, dict]:
             _fail("포트를 생성하려면 기판과 서로 다른 도체 패턴 두 개가 필요합니다.", "ports", "E_PORT")
         if document["ports"]:
             _fail("현재 단일 포트만 지원합니다. 기존 포트 속성을 편집하십시오.", "ports", "E_PORT")
-        return kind, {"id": identity, "name": "", "kind": "lumped", "positive_geometry_id": "", "reference_geometry_id": "",
+        return kind, {"id": identity, "name": allocate_name(document, {}, "ports"), "kind": "lumped", "positive_geometry_id": "", "reference_geometry_id": "",
             "resistance": Quantity.missing("impedance", "ohm").to_dict(), "reference_plane": "집중 포트의 급전 영역",
             "polarity": 1, "direction": [1.0, 0.0, 0.0], "validity_hz": frequency_range,
             "excitation_box": {key: [Quantity.missing("length", "mm").to_dict() for _ in range(3)] for key in ("start", "stop")}}
@@ -133,14 +134,6 @@ def _field(key: str, label: str, value, *, editor="text", choices=None, readonly
     if name in FIELD_HELP:
         result["help"] = FIELD_HELP[name]
     return result
-
-
-def _object_label(obj: dict, fallback: str = "객체") -> str:
-    """! @brief 사용자가 정한 이름은 그대로 두고 무명 객체 종류만 한국어로 표시한다."""
-    if "name" in obj:
-        return obj["name"]
-    kind = obj.get("kind", fallback)
-    return VALUE_LABELS.get(kind, kind) + " " + obj["id"][:8]
 
 
 def _parameter_choices(document: dict, dimension: str | None = None) -> list[dict]:
@@ -248,6 +241,10 @@ def fields_for(document: dict, selection: dict) -> list[dict]:
             _field("display_note", "표시 안내", note, readonly=True),
         ]
     fields = []
+    if kind in ("board", "geometry") and "name" not in obj:
+        field = _field("name", "이름", "")
+        field["help"] = "이름 미지정 / 임시 표시: " + object_label(document, obj, "board" if kind == "board" else "geometry") + ". 이름을 입력하고 적용하면 저장됩니다."
+        fields.append(field)
 
     def walk(value, path: list[str], labels: list[str]) -> None:
         """! @brief 알려진 객체의 값만 순회하고 필드 경로는 객체 밖으로 벗어나지 않는다."""
@@ -265,7 +262,7 @@ def fields_for(document: dict, selection: dict) -> list[dict]:
                 fields.append(_field(key, label, "\n".join(value), readonly=True))
             elif path[-1] == "pad_ids":
                 layer_names = {layer["id"]: layer["name"] for layer in document["stackup"]}
-                choices = [_choice(item["id"], _object_label(item) + " / " + layer_names[item["layer_id"]])
+                choices = [_choice(item["id"], object_label(document, item) + " / " + layer_names[item["layer_id"]])
                            for item in document["geometry"] if item["kind"] == "pad"]
                 fields.append(_field(key, label, deepcopy(value), editor="multichoice", choices=choices))
             else:
@@ -278,7 +275,7 @@ def fields_for(document: dict, selection: dict) -> list[dict]:
             choices = None
             references = {"material_id": "materials", "material_ref": "materials", "net_id": "nets", "layer_id": "stackup", "end_layer_id": "stackup", "positive_geometry_id": "geometry", "reference_geometry_id": "geometry"}
             if name in references:
-                choices = [_choice(item["id"], _object_label(item)) for item in document[references[name]]]
+                choices = [_choice(item["id"], object_label(document, item, references[name])) for item in document[references[name]]]
                 if name in ("material_id", "material_ref", "net_id"):
                     choices.insert(0, _choice("", "선택 없음"))
                 elif kind == "new_port" and name in ("positive_geometry_id", "reference_geometry_id"):
@@ -300,12 +297,12 @@ def fields_for(document: dict, selection: dict) -> list[dict]:
 
 def build_dto(document: dict, saved_revision: str, history: dict, selection: dict | None) -> dict:
     """! @brief 객체 목록과 선택 속성만 전송하며 전체 원본과 계산 캐시는 내보내지 않는다."""
-    items = [{"kind": "project", "id": document["project_id"], "label": document["metadata"]["name"]}]
-    items += [{"kind": "parameter", "id": identity, "label": obj["name"]} for identity, obj in sorted(document["parameters"].items())]
+    items = [{"kind": "project", "id": document["project_id"], "name": document["metadata"]["name"], "name_state": "stored", "label": document["metadata"]["name"]}]
+    items += [{"kind": "parameter", "id": identity, **name_dto(document, obj, "parameters")} for identity, obj in sorted(document["parameters"].items())]
     if document["board"] is not None:
-        items.append({"kind": "board", "id": document["board"]["id"], "label": "기판"})
+        items.append({"kind": "board", "id": document["board"]["id"], **name_dto(document, document["board"], "board")})
     for kind, collection in COLLECTIONS.items():
-        items += [{"kind": kind, "id": obj["id"], "label": _object_label(obj, kind)} for obj in document[collection]]
+        items += [{"kind": kind, "id": obj["id"], **name_dto(document, obj, collection)} for obj in document[collection]]
     selected = {"kind": "project", "id": document["project_id"]} if selection is None else selection
     selected_fields = fields_for(document, selected)
     result = {"profile": PROFILE, "project_id": document["project_id"], "revision_id": document["revision_id"], "saved_revision": saved_revision,
@@ -386,6 +383,8 @@ def edit_command(document: dict, selection: dict, changes: dict) -> dict:
             _fail("허용된 선택지를 사용하십시오.", key)
         values[key] = deepcopy(value)
     changed = {key for key in changes if changes[key] != descriptors[key]["value"]}
+    if "name" in changed or kind.startswith("new_"):
+        validate_name(values["name"], "name")
     if not changed and not kind.startswith("new_"):
         _fail("변경된 속성이 없습니다.", "values", "E_CONFLICT")
     if kind == "project":
@@ -420,6 +419,8 @@ def edit_command(document: dict, selection: dict, changes: dict) -> dict:
             _fail("원본을 변경하지 않는 입력입니다.", "values", "E_CONFLICT")
         return result
     obj = deepcopy(original)
+    if "name" in changed and "name" not in obj:
+        obj["name"] = values["name"]
 
     def update(value, path: list[str]):
         """! @brief DTO에 노출한 기존 필드만 바꾸고 수량은 한 번만 변환한다."""

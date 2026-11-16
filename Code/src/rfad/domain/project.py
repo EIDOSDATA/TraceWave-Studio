@@ -16,11 +16,12 @@ from rfad.domain.template_instance import EXTENSION_KEY as TEMPLATE_ORIGIN_KEY, 
 from rfad.domain.template_command import INTERNAL_COMMANDS as TEMPLATE_COMMANDS, apply_template_command
 from rfad.domain.design_rules import COMMANDS as RULE_COMMANDS, apply_rule_command, validate_rules
 from rfad.domain.physical_setup import COMMAND as PHYSICAL_COMMAND, apply_setup, validate_setup
+from rfad.domain.precision_command import COMMANDS as PRECISION_COMMANDS, apply_precision_command, validate_precision_origins
 
 
-SCHEMA_VERSION = "rfad.project/0.4"
+SCHEMA_VERSION = "rfad.project/0.5"
 LEGACY_SCHEMA_VERSION = "rfad.project/0.1"
-READABLE_SCHEMA_VERSIONS = (LEGACY_SCHEMA_VERSION, "rfad.project/0.2", "rfad.project/0.3", SCHEMA_VERSION)
+READABLE_SCHEMA_VERSIONS = (LEGACY_SCHEMA_VERSION, "rfad.project/0.2", "rfad.project/0.3", "rfad.project/0.4", SCHEMA_VERSION)
 MAX_PARAMETERS = 128
 _EMPTY_COLLECTIONS = (
     "geometry", "materials", "ports", "stackup", "nets", "connections", "targets",
@@ -254,9 +255,9 @@ def validate_project(document: dict) -> None:
     for field in _EMPTY_COLLECTIONS:
         if not legacy and field in _DESIGN_COLLECTIONS:
             continue
-        if document["schema_version"] in ("rfad.project/0.3", SCHEMA_VERSION) and field == "targets":
+        if document["schema_version"] in ("rfad.project/0.3", "rfad.project/0.4", SCHEMA_VERSION) and field == "targets":
             continue
-        if document["schema_version"] == SCHEMA_VERSION and field in ("connections", "manufacturing_profiles"):
+        if document["schema_version"] in ("rfad.project/0.4", SCHEMA_VERSION) and field in ("connections", "manufacturing_profiles"):
             continue
         if type(document[field]) is not list:
             _fail("E_SCHEMA", "미구현 컬렉션은 빈 목록이어야 합니다.", field)
@@ -265,9 +266,9 @@ def validate_project(document: dict) -> None:
     if not legacy:
         evaluate_parameters(parameters)
         validate_design(document)
-    if document["schema_version"] in ("rfad.project/0.3", SCHEMA_VERSION):
+    if document["schema_version"] in ("rfad.project/0.3", "rfad.project/0.4", SCHEMA_VERSION):
         validate_targets(document)
-    if document["schema_version"] == SCHEMA_VERSION:
+    if document["schema_version"] in ("rfad.project/0.4", SCHEMA_VERSION):
         validate_rules(document)
     if type(document["extensions"]) is not dict:
         _fail("E_SCHEMA", "extensions는 object여야 합니다.", "extensions")
@@ -275,6 +276,7 @@ def validate_project(document: dict) -> None:
     validate_project_selection(document)
     validate_template_origins(document)
     validate_setup(document)
+    validate_precision_origins(document)
 
 
 def apply_command(document: dict, command: dict, expected_revision: str) -> tuple[dict, list[str], list[str], dict]:
@@ -353,6 +355,8 @@ def apply_command(document: dict, command: dict, expected_revision: str) -> tupl
         changed_ids, invalidation_set, inverse = apply_rule_command(result, command_type, payload)
     elif command_type in TEMPLATE_COMMANDS:
         changed_ids, invalidation_set, inverse = apply_template_command(result, payload)
+    elif command_type in PRECISION_COMMANDS:
+        changed_ids, invalidation_set, inverse = apply_precision_command(result, payload)
     elif command_type in DESIGN_COMMANDS:
         changed_ids, invalidation_set, inverse = apply_design_command(result, command_type, payload)
     else:

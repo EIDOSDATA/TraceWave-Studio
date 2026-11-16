@@ -9,6 +9,7 @@ from rfad.domain.template_inputs import normalize_inputs
 from rfad.templates.cards import validate_card_snapshot
 from rfad.domain.template_provenance import generation_report
 from rfad.domain.template_seeds import normalize_candidate
+from rfad.domain.object_names import NAMED_SCHEMA, PROFILE as NAME_PROFILE
 
 
 EXTENSION_KEY = "rfad.template-origin"
@@ -34,7 +35,10 @@ def object_ids(record: dict) -> dict[str, list[str]]:
 def validate_record(record: object) -> None:
     """! @brief 카드가 외부 라이브러리에 없어도 과거 입력/객체 사본을 검증한다."""
     new_reference = type(record) is dict and type(record.get("card")) is dict and record["card"].get("schema") == "rfad.template-card/0.3"
-    _fields(record, _RECORD_FIELDS | ({"mode", "initial_estimate"} if new_reference else set()), "template_origin.instance")
+    named = type(record) is dict and "naming_profile" in record
+    _fields(record, _RECORD_FIELDS | ({"mode", "initial_estimate"} if new_reference else set()) | ({"naming_profile"} if named else set()), "template_origin.instance")
+    if named and record["naming_profile"] != NAME_PROFILE:
+        _fail("E_VERSION", "지원하지 않는 템플릿 객체 명명 규칙입니다.", "template_origin.naming_profile")
     instance_id = _uuid(record["id"], "template_origin.instance.id")
     _uuid(record["base_revision"], "template_origin.base_revision")
     digest = record["base_content_hash"]
@@ -116,6 +120,9 @@ def _validate_original_design(record: dict) -> None:
         if targets.get(target["id"]) != target:
             _fail("E_HASH", "템플릿 목표 사본이 적용 당시 core 원본과 다릅니다.", "template_origin.target_snapshots")
     probe = deepcopy(source)
+    named = record.get("naming_profile") == NAME_PROFILE
+    if named:
+        probe["schema_version"] = NAMED_SCHEMA
     for name in OBJECT_COLLECTIONS:
         additions = record["objects"][name]
         if name == "parameters":
@@ -125,14 +132,15 @@ def _validate_original_design(record: dict) -> None:
         else:
             probe[name] = sorted([*probe[name], *deepcopy(additions)], key=lambda item: item["id"])
     validate_project(probe)
-    if record["card"]["schema"] in ("rfad.template-card/0.2", "rfad.template-card/0.3"):
+    if named or record["card"]["schema"] in ("rfad.template-card/0.2", "rfad.template-card/0.3"):
         from rfad.domain.template_geometry import generate_geometry
-        generated = generate_geometry(source, record["id"], record["binding"], record["card"], record["inputs"])
-        if generated != record["objects"]:
+        generated = generate_geometry(source, record["id"], record["binding"], record["card"], record["inputs"], named=named)
+        expected = {**record["objects"], "ports": []}
+        if generated != expected:
             _fail("E_HASH", "문헌 카드의 최초 생성 사본이 원문/입력/배치와 다릅니다.", "template_origin.objects")
     port_probe = deepcopy(record["objects"])
     port_probe["ports"] = []
-    generate_port(source, port_probe, record["id"], record["binding"], record["card"], record["port_recipe"])
+    generate_port(source, port_probe, record["id"], record["binding"], record["card"], record["port_recipe"], named=named)
     if port_probe["ports"] != record["objects"]["ports"]:
         _fail("E_HASH", "과거 포트 recipe와 생성 포트가 다릅니다.", "template_origin.port_recipe")
 

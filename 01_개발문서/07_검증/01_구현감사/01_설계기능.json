@@ -2,7 +2,7 @@
   {
     "id": "FN-001",
     "implementation_status": "partial",
-    "implemented": "ProjectOperations.open은 workspace 안 projects/이름의 create/open/recover와 원본 해시 검사, 서비스 재시작 후 재열기를 제공한다. 0.1/0.2/0.3/0.4를 읽으며 기존 원본과 snapshot을 보존하고 변경 복제본만 현재 0.4 새 개정으로 승격하여 변환 기록을 남긴다.",
+    "implemented": "ProjectOperations.open은 workspace 안 projects/이름의 create/open/recover와 원본 해시 검사, 서비스 재시작 후 재열기를 제공한다. 0.1/0.2/0.3/0.4/0.5를 읽으며 기존 원본과 snapshot을 보존하고 변경 복제본만 현재 0.5 새 개정으로 승격하여 변환 기록을 남긴다.",
     "gaps": [
       "copy 모드, 외부 프로젝트/archive 가져오기와 새 project ID 발급이 없다.",
       "recover는 등록된 현재 문서를 여는 경로이며 복구 후보 선택/검사 보고서가 없다.",
@@ -263,10 +263,10 @@
   {
     "id": "FN-008",
     "implementation_status": "partial",
-    "implemented": "line_path/arc_path/planar_region(holes)/pad/via 원본과 수량/매개변수 결합, 생성/이동/삭제 및 2D DTO를 제공한다. CAD는 analytic 원호와 같은 net의 물리 union을 지원한다. 공통 라이트 표면/도킹/간격과 좁은 도구 영역의 줄바꿈을 실제 wxWidgets 작업 공간에 적용했다. 목표/템플릿 창은 native 폼과 기존 2D renderer를 재사용하고 비동기 요청 세대/불명 변경 잠금을 공유한다. 시안의 작업 탭 5개/프로젝트와 레이어 분리/세로 도구/실제 작업 상태를 연결했다. 레이어 체크는 원본과 해석 포함 여부를 바꾸지 않는 2D 표시 상태다. 기존 OpenGL 3D와 실제 결과/보고서/STEP 흐름을 유지한다. 스냅과 선/원호의 끝점 드래그, 미리보기 및 단일 프로젝트 명령을 연결했다.",
+    "implemented": "line_path/arc_path/planar_region(holes)/pad/via 원본과 수량/매개변수 결합, 생성/이동/삭제 및 2D DTO를 제공한다. CAD는 analytic 원호와 같은 net의 물리 union을 지원한다. 공통 라이트 표면/도킹/간격과 좁은 도구 영역의 줄바꿈을 실제 wxWidgets 작업 공간에 적용했다. 목표/템플릿 창은 native 폼과 기존 2D renderer를 재사용하고 비동기 요청 세대/불명 변경 잠금을 공유한다. 이전 단계에서 작업 탭 5개/프로젝트와 레이어 분리/세로 도구/실제 작업 상태를 연결했고 이번 단계에서 수평 도구와 작은 창의 탭 배치로 보강했다. 레이어 체크는 원본과 해석 포함 여부를 바꾸지 않는 2D 표시 상태다. 기존 OpenGL 3D와 실제 결과/보고서/STEP 흐름을 유지한다. 스냅과 선/원호의 끝점 드래그, 미리보기 및 단일 프로젝트 명령을 연결했다. 공통 Studio 상단/수평 도구/검색/작은 창 탐색·속성 탭, 이름 저장/F2, 선택 필터, 연관 치수/매개변수 결합, 회전/미러와 동일 층/넷/역할 다각형의 union/intersection/difference/offset을 서비스 후보/검토 hash/원자 명령으로 연결했다. 3D 병합 바디는 원본 후보 목록에서 사용자가 선택한다.",
     "gaps": [
-      "사용자 평면 Boolean/offset/회전/미러 명령과 결과 subentity 대응이 없다.",
-      "연관 치수와 영역 길이/면적/최소 gap의 공통 조회를 보강해야 한다."
+      "일반 곡선의 평면 Boolean 입력 변환, 결과 subentity/기하 구속 그래프와 도면 출력의 연관 치수는 남는다.",
+      "연관 최소 gap의 공통 조회와 전체 DPI/도킹/접근성/성능 수용은 별도 증거가 필요하다."
     ],
     "code": [
       "src/rfad/domain/design.py",
@@ -281,7 +281,20 @@
       "ui/wxwidgets/studio_workspace.cpp",
       "ui/wxwidgets/workspace_bar.cpp",
       "ui/wxwidgets/drawing_rail.cpp",
-      "ui/wxwidgets/design_canvas_precision.cpp"
+      "ui/wxwidgets/design_canvas_precision.cpp",
+      "src/rfad/domain/object_names.py",
+      "src/rfad/domain/precision_command.py",
+      "src/rfad/domain/precision_dimensions.py",
+      "src/rfad/domain/precision_transform.py",
+      "src/rfad/application/precision_service.py",
+      "src/rfad/application/precision_candidates.py",
+      "src/rfad/adapters/planar_backend.py",
+      "ui/wxwidgets/studio_shell.cpp",
+      "ui/wxwidgets/studio_navigation.cpp",
+      "ui/wxwidgets/studio_precision.cpp",
+      "ui/wxwidgets/precision_dialog.cpp",
+      "ui/wxwidgets/object_rename_dialog.cpp",
+      "ui/wxwidgets/design_canvas_dimensions.cpp"
     ],
     "tests": [
       "tests/test_canvas_service.py",
@@ -291,20 +304,27 @@
       "tests/test_gui_target_template_process.py",
       "tests/test_printed_seeds.py",
       "tests/test_gui_printed_seed_process.py",
-      "tests/test_gui_process.py::GuiProcessTests.test_canvas_mouse_line_arc_drag_properties_history_and_restart"
+      "tests/test_gui_process.py::GuiProcessTests.test_canvas_mouse_line_arc_drag_properties_history_and_restart",
+      "tests/test_object_names.py",
+      "tests/test_precision_service.py",
+      "tests/test_planar_backend.py",
+      "tests/test_gui_precision_process.py"
     ],
     "evidence": [
       "../01_개발문서/05_기능설계/02_설계편집/03_이차원표시와_직접편집.md",
       "runtime_profiles/copper-ifa-worker-wsl.json",
       "../01_개발문서/04_화면설계/08_스튜디오_화면계약.md",
-      "../01_개발문서/05_기능설계/02_설계편집/10_추가문헌과_조건부_초기길이.md"
+      "../01_개발문서/05_기능설계/02_설계편집/10_추가문헌과_조건부_초기길이.md",
+      "../01_개발문서/05_기능설계/02_설계편집/13_정밀편집과_평면연산.md",
+      "../01_개발문서/07_검증/08_스튜디오와_정밀편집_검증.md"
     ],
     "next_steps": [
       3,
       4
     ],
     "contract_notes": [
-      "CAD writer 내부 union은 사용자가 편집 가능한 Boolean graph 명령과 같지 않다. 매개변수 결합된 형상의 직접 이동 거절은 결합 보존 규칙이다."
+      "CAD writer 내부 union은 사용자가 편집 가능한 Boolean graph 명령과 같지 않다. 매개변수 결합된 형상의 직접 이동 거절은 결합 보존 규칙이다.",
+      "정밀 연산은 검토한 명시 기하를 게시한다. 현재 제약/DRC는 적용 후 재검사하며 물리적 연결이나 제조 합격을 자동 보증하지 않는다."
     ]
   },
   {

@@ -303,7 +303,8 @@ class DesignEditorTests(unittest.TestCase):
         self.assertEqual(next(item["label"] for item in dto["items"] if item["id"] == material["id"]), material["name"])
         port_fields = {item["key"]: item for item in dto["selection"]["fields"]}
         choice = next(item for item in port_fields["positive_geometry_id"]["choices"] if item["value"] == geometry["id"])
-        self.assertTrue(choice["label"].startswith(("선 패턴 ", "원호 패턴 ")))
+        self.assertEqual(choice["label"], next(item["label"] for item in dto["items"] if item["id"] == geometry["id"]))
+        self.assertNotIn(geometry["id"][:8], choice["label"])
 
 
 if __name__ == "__main__":

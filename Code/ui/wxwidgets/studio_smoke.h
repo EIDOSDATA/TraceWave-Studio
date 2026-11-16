@@ -71,6 +71,14 @@ private:
     void CanvasSmokeSave();
     void DesignRulesSmokeTick();
     void PhysicalSetupSmokeTick();
+    /** @brief 이름 오류 복구와 검토 무효화, 원자 편집 및 서비스 재시작을 실제 폼으로 검사한다. */
+    void PrecisionEditorSmokeTick();
+    void PrecisionPlanarSmokeTick();
+    std::string m_precisionId;
+    Json m_precisionBeforeShapes;
+    Json m_precisionDimensionShapes;
+    Json m_precisionAppliedShapes;
+    int m_precisionUndoBefore = 0;
     void PrintedSeedDialog(TemplateDialog& dialog);
     int m_printedCase = 0;
     /** @brief 실제 목표 입력/선택/적용 이벤트와 출처 보존을 검사한다. */

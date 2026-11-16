@@ -28,7 +28,7 @@ const DesignCanvas::Shape* DesignCanvas::SelectedPath() const
 {
     const auto* shape = FindShape(m_selection);
     return m_editingEnabled && m_tool == "select" && shape && CanvasPrecision::HasEndpoints(*shape) &&
-        Visible(*shape) && Renderable(*shape) ? shape : nullptr;
+        Selectable(*shape) && Renderable(*shape) ? shape : nullptr;
 }
 
 std::optional<CanvasPrecision::Endpoint> DesignCanvas::HitEndpoint(const Shape& shape, const wxPoint& pixel) const

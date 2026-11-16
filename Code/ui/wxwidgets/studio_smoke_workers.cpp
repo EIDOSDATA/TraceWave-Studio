@@ -78,6 +78,13 @@ void StudioSmokeDriver::CadSmokeTick()
                      "CAD mesh or package was not connected.");
         CanvasAssert(Utf8(m_frame.m_modelState->GetLabel()).find("이전 설계") != std::string::npos,
                      "Stale CAD view was not labelled.");
+        const Json selectionBefore = m_frame.m_selection;
+        const std::string stalePick = m_frame.m_scene.at("shapes").front().at("id");
+        m_frame.m_modelView->SetSelection(stalePick);
+        m_frame.m_modelView->onSelection(stalePick);
+        CanvasAssert(m_frame.m_selection == selectionBefore &&
+                         m_frame.m_modelView->Selection() == selectionBefore.value("id", ""),
+                     "이전 개정의 3D 클릭이 현재 선택과 강조를 바꾸었습니다.");
         CanvasAssert(m_cadErrorProbeSeen && m_frame.m_tools.at(IdBuild3D)->IsEnabled() &&
                          m_frame.m_tools.at(IdFit3D)->IsEnabled(),
                      "Responses or controls did not recover after CAD loading.");

@@ -1,5 +1,6 @@
 /** @file @brief 주 창의 controls 책임을 구현한다. */
 #include "studio_internal.h"
+#include <wx/srchctrl.h>
 
 void StudioFrame::UpdateControls()
 {
@@ -28,6 +29,8 @@ void StudioFrame::UpdateControls()
     GetMenuBar()->Enable(IdUndo, opened && history.value("can_undo", false));
     GetMenuBar()->Enable(IdRedo, opened && history.value("can_redo", false));
     m_tree->Enable(opened);
+    m_objectSearch->Enable(opened);
+    m_objectFilter->Enable(opened);
     m_name->Enable(opened);
     m_description->Enable(opened);
     m_editorPanel->Enable(opened);
@@ -81,6 +84,10 @@ void StudioFrame::UpdateControls()
         {
             enabled = opened && m_selection.value("kind", "") == "geometry";
         }
+        else if (item.first == IdPrecision)
+        {
+            enabled = opened && synchronized && m_precisionSupported;
+        }
         else if (item.first == IdExportStep || item.first == IdBuild3D)
         {
             enabled = opened && m_cadConfigured && !cadRunning && !m_cadRestoring && !m_modelView->IsLoading();
@@ -123,6 +130,7 @@ void StudioFrame::UpdateControls()
         GetMenuBar()->Enable(id, m_tools.at(id)->IsEnabled());
     }
     m_steps->Enable(opened);
+    GetMenuBar()->Enable(IdPrecision, opened && synchronized && m_precisionSupported);
     m_recordRadiation->Enable(opened && m_solverConfigured && !m_solverWorkflow.Active() && !m_solverRestoring);
     m_layerChoice->Enable(drawing);
     m_width->Enable(drawing);
