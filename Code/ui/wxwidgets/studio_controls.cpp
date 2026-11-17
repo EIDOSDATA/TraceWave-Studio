@@ -1,11 +1,13 @@
 /** @file @brief 주 창의 controls 책임을 구현한다. */
 #include "studio_internal.h"
+#include "editor_sync.h"
 #include <wx/srchctrl.h>
 
 void StudioFrame::UpdateControls()
 {
     const bool ready = m_connected && !m_busy && m_pcbDialog == nullptr && m_setupDialog == nullptr;
-    const bool opened = ready && !m_project.empty();
+    const bool hasProject = !m_project.empty();
+    const bool opened = ready && Studio::EditableProject(m_editor, m_scene, m_project, m_revision);
     const bool cadRunning = m_cadPreparing || !m_cadTask.Id().empty();
     const bool canSwitch = ready && m_studyDialog == nullptr && !cadRunning && !m_solverWorkflow.Active() &&
                            !m_solverRestoring && !m_cadRestoring && !m_modelView->IsLoading();
@@ -13,7 +15,7 @@ void StudioFrame::UpdateControls()
     GetMenuBar()->Enable(IdOpen, canSwitch);
     GetMenuBar()->Enable(IdSave, opened);
     GetMenuBar()->Enable(IdSnapshot, opened);
-    GetMenuBar()->Enable(IdRefresh, opened && canSwitch);
+    GetMenuBar()->Enable(IdRefresh, hasProject && canSwitch);
     GetMenuBar()->Enable(IdNewParameter, opened);
     GetMenuBar()->Enable(IdPcbSelection, opened && m_pcbSelectionSupported);
     GetMenuBar()->Enable(IdProjectStudy, opened && m_studySupported);
@@ -35,7 +37,7 @@ void StudioFrame::UpdateControls()
     m_description->Enable(opened);
     m_editorPanel->Enable(opened);
     const bool board = m_scene.contains("board") && !m_scene.at("board").is_null();
-    const bool synchronized = m_scene.value("revision_id", "") == m_revision;
+    const bool synchronized = Studio::EditableProject(m_editor, m_scene, m_project, m_revision);
     const bool drawing = opened && synchronized && board && !m_activeLayer.empty();
     for (const int id : {IdPolygon, IdCirclePad, IdRectanglePad, IdVia})
     {
@@ -136,9 +138,16 @@ void StudioFrame::UpdateControls()
     m_width->Enable(drawing);
     m_snapCheck->Enable(opened && synchronized);
     m_canvas->SetEditingEnabled(opened && synchronized);
-    if (opened && !synchronized)
+    if (hasProject && !synchronized)
     {
-        m_canvasHint->SetLabel(Display("이전 설계의 표시입니다. F5로 최신 상태를 다시 읽으세요."));
+        m_canvasHint->SetLabel(
+            Display("편집 원본과 화면이 일치하지 않아 편집을 잠갔습니다. F5로 최신 프로젝트를 다시 읽으세요."));
+    }
+    else if (synchronized && m_canvasHint->GetLabel().StartsWith(Display("편집 원본과 화면이")))
+    {
+        m_canvasHint->SetLabel(Display(m_activeLayer.empty()
+                                           ? "도체층을 추가한 뒤 선 또는 원호 도구를 선택하세요."
+                                           : "선택: 객체 속성 / 휠: 확대·축소 / 가운데 버튼: 이동 / Esc: 취소"));
     }
     UpdateDraftState();
     UpdateModelState();
@@ -155,7 +164,8 @@ void StudioFrame::UpdateDraftState()
     m_updatingDraft = true;
     try
     {
-        const bool opened = !m_project.empty() && !m_editor.empty();
+        const bool hasProject = !m_project.empty();
+        const bool opened = Studio::EditableProject(m_editor, m_scene, m_project, m_revision);
         const bool draft = opened && HasDraft();
         bool canApply = draft;
         if (opened && m_selection.value("kind", "project") == "new_parameter")
@@ -165,7 +175,16 @@ void StudioFrame::UpdateDraftState()
             canApply = canApply && !name.empty();
         }
         m_apply->Enable(m_connected && !m_busy && canApply);
-        if (!opened)
+        if (hasProject && !opened)
+        {
+            m_editState = "stale";
+            SetTitle(Display("TraceWave Studio - 편집 상태 재조회 필요"));
+            m_revisionLabel->SetLabel(Display("편집 잠금 / F5로 다시 읽기"));
+            m_revisionLabel->SetToolTip(
+                Display("현재 프로젝트와 같은 개정의 속성/2D 조회가 모두 완료되어야 편집할 수 있습니다."));
+            SetStatusText(Display("표시 동기화 필요"), 1);
+        }
+        else if (!opened)
         {
             m_editState = "empty";
             SetTitle(Display("TraceWave Studio"));
@@ -196,7 +215,7 @@ void StudioFrame::UpdateDraftState()
 /** @brief 적용 전 입력이 선택 변경이나 종료로 조용히 사라지지 않도록 한다. */
 bool StudioFrame::HasDraft() const
 {
-    if (m_editor.empty())
+    if (!Studio::EditableProject(m_editor, m_scene, m_project, m_revision))
     {
         return false;
     }

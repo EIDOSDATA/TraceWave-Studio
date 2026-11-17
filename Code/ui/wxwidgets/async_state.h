@@ -35,7 +35,8 @@ public:
     SubmitResult Submit(const std::string& method, const Json& input, bool mutation, const Json& context,
                         const std::string& epoch, bool foreground, Callback success, Callback failure,
                         const std::function<std::string()>& identifier,
-                        const std::function<bool(const std::string&)>& transport, Clock::time_point now);
+                        const std::function<bool(const std::string&)>& transport, Clock::time_point now,
+                        const std::string& requestKey = "");
     /** @brief 같은 응답을 두 번 전달하지 않도록 콜백을 먼저 소유권 이동한다. */
     std::optional<Pending> Take(const Json& response);
     /** @brief 시간 초과는 재전송하지 않고 호출자에게 연결 확인 필요를 알린다. */

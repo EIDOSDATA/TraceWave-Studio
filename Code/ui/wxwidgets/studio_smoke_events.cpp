@@ -15,7 +15,7 @@ void StudioSmokeDriver::OnConnected()
     }
     else if (m_frame.m_options.cadSmoke || !m_frame.m_options.openProject.empty())
     {
-        m_frame.OpenProject("open", Utf8(m_frame.m_options.openProject));
+        m_frame.OpenProject("open", m_frame.m_path.empty() ? Utf8(m_frame.m_options.openProject) : m_frame.m_path);
     }
     else if (m_frame.m_options.primitivesSmoke)
     {

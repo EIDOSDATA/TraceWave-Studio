@@ -42,6 +42,10 @@ void StudioFrame::BuildSweepInterface()
     {
         OpenSweepResult(index);
     };
+    m_sweepPanel->onAdopt = [this](int index)
+    {
+        OpenSweepSelection(index);
+    };
     auto* analysis = GetMenuBar()->FindItem(IdProjectStudy)->GetMenu();
     analysis->Append(IdSweep, Display("설계 스윕 / 다축 연구"));
     Bind(
@@ -76,6 +80,7 @@ void StudioFrame::UpdateSweepViews()
     const bool available = m_connected && m_sweepSupported && !m_project.empty() && !m_closing;
     const bool busy = m_busy || m_sweepPending || m_setupDialog != nullptr;
     m_sweepPanel->SetEnabledState(available, busy, m_sweepUncertain);
+    m_sweepPanel->SetSelectionSupported(m_sweepSelectionSupported);
     GetMenuBar()->Enable(IdSweep, available);
     if (active && available && !busy && !m_sweepRefreshQueued && m_sweepAttemptedRevision != m_revision)
     {

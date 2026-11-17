@@ -3,6 +3,7 @@
 #include "result_radiation_plane.h"
 #include "result_presentation.h"
 #include "rf_validation_model.h"
+#include "sweep_selection_model.h"
 #include <iostream>
 #include <limits>
 #include <functional>
@@ -239,6 +240,52 @@ int main()
         auto other = description;
         other["source"]["artifact_id"] = "other-original";
         Check(!ResultUi::Matches(other, description), "같은 해시의 다른 원본을 같은 선택으로 취급했습니다.");
+        const Json selectionContext{{"project_id", "original"},
+                                    {"revision_id", "original-revision"},
+                                    {"study_id", "study"},
+                                    {"index", 2},
+                                    {"source_pin", {{"identity_hash", "identity"}, {"dataset_sha256", "dataset"}}}};
+        const Json copy{{"source_project_id", "original"},
+                        {"source_revision_id", "original-revision"},
+                        {"study_id", "study"},
+                        {"index", 2},
+                        {"source_pin", selectionContext.at("source_pin")},
+                        {"new_project_id", "copy"},
+                        {"revision_id", "copy-revision"},
+                        {"path", "projects/copy"}};
+        Check(SweepSelectionUi::MatchesCopy(copy, selectionContext), "일치하는 별도 사본 응답을 거절했습니다.");
+        for (const auto* field : {"source_project_id", "source_revision_id", "study_id", "index", "source_pin", "path"})
+        {
+            auto changed = copy;
+            changed[field] = nullptr;
+            Check(!SweepSelectionUi::MatchesCopy(changed, selectionContext),
+                  "다른 선택 / 불완전한 사본 응답을 수용했습니다.");
+        }
+        auto same = copy;
+        same["new_project_id"] = "original";
+        Check(!SweepSelectionUi::MatchesCopy(same, selectionContext), "원본 프로젝트 변경을 새 사본으로 표시했습니다.");
+        const Json selectionView{{"index", 2},
+                                 {"calculated_ordinal", 0},
+                                 {"source", {{"kind", "sweep"}}},
+                                 {"states", {{"numerical", "not_established"}, {"measurement", nullptr}}},
+                                 {"copy_summary", {{"source_revision_matches_current", false}, {"artifact_count", 2}}}};
+        const auto frozenSelection = selectionView;
+        Check(SweepSelectionUi::Issues(Json::array({{{"code", "E_UNSUPPORTED"},
+                                                     {"message_ko", "리터럴 설계 스윕의 완료 후보만 채택합니다."}}}))
+                      .find("완료 후보") != std::string::npos,
+              "서비스의 한국어 진단 이유를 미정으로 표시했습니다.");
+        const auto summary = SweepSelectionUi::Conditions(selectionView);
+        Check(summary.find("연구 후보 3") != std::string::npos && summary.find("실제 계산 후보 1") != std::string::npos,
+              "선택 후보와 재사용한 계산 순번을 구분하지 않았습니다.");
+        Check(summary.find("미확립") != std::string::npos && summary.find("미정") != std::string::npos,
+              "사본 검토가 원문의 미확립 / 미정을 숨겼습니다.");
+        Check(SweepSelectionUi::CopySummary(selectionView).find("후속 편집") != std::string::npos,
+              "연구 당시 개정과 현재 개정의 차이를 누락했습니다.");
+        Check(selectionView == frozenSelection, "표시 요약이 원본을 변경했습니다.");
+        Check(!SweepSelectionUi::Rejected({{"code", "E_DISCONNECTED"}}) &&
+                  !SweepSelectionUi::Rejected({{"code", "E_UNCERTAIN"}}) &&
+                  SweepSelectionUi::Rejected({{"data", {{"domain_code", "E_CONFLICT"}}}}),
+              "결과 불명과 변경 전 확정 거절을 혼동했습니다.");
         std::cout << "result view model checks passed\n";
         return 0;
     }

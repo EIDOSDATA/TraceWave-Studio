@@ -119,6 +119,9 @@ private:
     void OpenSweepSetup();
     void ShowSweepSetup(const Json& context);
     void OpenSweepResult(int index);
+    /** @brief 검토한 연구 후보를 원본과 별도 프로젝트로 생성하고 명시적으로 연다. */
+    void OpenSweepSelection(int index);
+    void ShowSweepSelection(const Json& context);
     void PollSweep(Clock::time_point now);
     /** @brief 현재 프로젝트의 원본을 보존하는 연구 설정/진행 창을 연다. */
     void OpenProjectStudy();
@@ -219,13 +222,15 @@ private:
     void Connect();
     /** @brief 요청 관리 객체를 통해 명령을 전달한다. */
     void Send(const std::string& method, const Json& input, bool mutation, const Json& context,
-              std::function<void(const Json&)> success, std::function<void(const Json&)> failure = {});
+              std::function<void(const Json&)> success, std::function<void(const Json&)> failure = {},
+              const std::string& requestKey = "", const std::string& requestEpoch = "");
     /** @brief 현재 프로젝트의 요청 문맥을 만든다. */
     Json Context() const;
     /** @brief 일반 작업의 완료 콜백과 조회 대상을 등록한다. */
     void WaitJob(const Json& task, std::function<void(const Json&)> completed);
     /** @brief 작업 중 프로젝트 전환을 차단하고 요청한 프로젝트를 연다. */
-    void OpenProject(const std::string& mode, const std::string& path, const std::string& name = "");
+    void OpenProject(const std::string& mode, const std::string& path, const std::string& name = "",
+                     std::function<void()> opened = {});
     /** @brief 전체 원본 대신 목록과 선택 객체의 작은 편집 DTO만 조회한다. */
     void RefreshEditor(const Json& selection, std::function<void()> completed);
     /** @brief 같은 revision의 표시 DTO는 재사용하고 변경된 표시 데이터만 다시 읽는다. */
@@ -286,6 +291,7 @@ private:
     std::string m_networkAssessmentAttemptedId;
     SweepPanel* m_sweepPanel = nullptr;
     bool m_sweepSupported = false;
+    bool m_sweepSelectionSupported = false;
     bool m_sweepPending = false;
     bool m_sweepUncertain = false;
     bool m_sweepRefreshQueued = false;
@@ -394,6 +400,9 @@ private:
     std::string m_project;
     std::string m_revision;
     std::string m_path;
+    /** @brief 같은 경로를 재조회하여 편집/형상 동기화를 끝낸 뒤에만 새 사본 확인을 마친다. */
+    std::function<void()> m_projectOpenCompletion;
+    std::string m_projectOpenCompletionPath;
     std::string m_savedRevision;
     std::string m_snapshot;
 };

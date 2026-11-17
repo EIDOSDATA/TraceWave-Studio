@@ -66,6 +66,13 @@ public:
     void OnSelected();
 
 private:
+    /** @brief 선택한 후보의 검토/새 사본/원본 보존과 영수증 복구를 확인한다. */
+    void SelectionSmokeTick();
+    void SelectionSafetyChecks();
+    Json m_selectionFixture = Json::object();
+    Json m_selectionBefore = Json::object();
+    Json m_selectionResult = Json::object();
+    std::string m_selectionOriginalProject;
     /** @brief 검증 보고서 선택과 미정값의 읽기 전용 보존을 실제 창에서 확인한다. */
     void ValidationSmokeTick();
     void ValidationSafetyChecks();

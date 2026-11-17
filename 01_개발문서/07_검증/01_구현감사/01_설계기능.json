@@ -2,9 +2,9 @@
   {
     "id": "FN-001",
     "implementation_status": "partial",
-    "implemented": "ProjectOperations.open은 workspace 안 projects/이름의 create/open/recover와 원본 해시 검사, 서비스 재시작 후 재열기를 제공한다. 0.1/0.2/0.3/0.4/0.5를 읽으며 기존 원본과 snapshot을 보존하고 변경 복제본만 현재 0.5 새 개정으로 승격하여 변환 기록을 남긴다.",
+    "implemented": "ProjectOperations.open은 workspace 안 projects/이름의 create/open/recover와 원본 해시 검사, 서비스 재시작 후 재열기를 제공한다. 0.1/0.2/0.3/0.4/0.5를 읽으며 기존 원본과 snapshot을 보존하고 변경 복제본만 현재 0.5 새 개정으로 승격하여 변환 기록을 남긴다. sweep.selection.*는 완료된 리터럴 매개변수 후보에 한해 별도 project ID와 새 경로의 편집 사본을 원자 등록한다. 원본과 과거 결과는 보존하고 일반 project.open copy 모드와 구분한다.",
     "gaps": [
-      "copy 모드, 외부 프로젝트/archive 가져오기와 새 project ID 발급이 없다.",
+      "일반 project.open copy 모드와 외부 프로젝트/archive 가져오기는 미지원이다. 후보 채택 사본도 미지 extension, solver 자료 연결/보존 평가가 있는 library는 명시 차단한다.",
       "recover는 등록된 현재 문서를 여는 경로이며 복구 후보 선택/검사 보고서가 없다.",
       "범용 migration graph, 백업/rollback 보고서와 read-only open 정책은 미구현이다."
     ],
@@ -12,16 +12,22 @@
       "src/rfad/application/project_contract.py",
       "src/rfad/application/project_operations.py",
       "src/rfad/application/project_repository.py",
-      "src/rfad/domain/project.py"
+      "src/rfad/domain/project.py",
+      "src/rfad/application/sweep_selection.py",
+      "src/rfad/application/sweep_copy.py"
     ],
     "tests": [
       "tests/test_project_service.py::ProjectServiceTests.test_create_apply_save_reopen_after_service_restart",
       "tests/test_parameter_graph.py::ParameterGraphTests.test_old_schema_remains_unchanged_and_upgrades_on_copy",
-      "tests/test_targets.py"
+      "tests/test_targets.py",
+      "tests/test_sweep_selection.py",
+      "tests/test_sweep_selection_review.py"
     ],
     "evidence": [
       "../01_개발문서/05_기능설계/01_프로젝트/01_프로젝트_명령과_저장.md",
-      "../01_개발문서/05_기능설계/02_설계편집/06_대역목표_입력계약.md"
+      "../01_개발문서/05_기능설계/02_설계편집/06_대역목표_입력계약.md",
+      "../01_개발문서/05_기능설계/06_연구/02_후보채택과_새작업사본.md",
+      "../01_개발문서/07_검증/21_후보채택과_원호아이에프에이_검증.md"
     ],
     "next_steps": [
       3,
@@ -34,7 +40,7 @@
   {
     "id": "FN-002",
     "implementation_status": "partial",
-    "implemented": "expected_revision, command_id, 영수증, 역명령과 새 revision을 journal transaction으로 게시한다. 저장 기준점, 독립 snapshot ID/hash와 영속 undo/redo를 보존한다.",
+    "implemented": "expected_revision, command_id, 영수증, 역명령과 새 revision을 journal transaction으로 게시한다. 저장 기준점, 독립 snapshot ID/hash와 영속 undo/redo를 보존한다. 후보 채택은 새 사본 안의 한 명령으로 리터럴 값과 유한 출처 체인을 적용하며, saved는 채택 상태이고 한 번 undo는 사본 기준 형상으로 돌아간다. 원본과 요청 영수증을 같은 commit 경계에서 보존한다.",
     "gaps": [
       "artifact별 regenerated/stale/unchanged와 물리 입력 동등성에 따른 정밀 무효화가 미완성이다.",
       "공통 묶음 편집 및 영속 이력 확장 정책은 현재 제한 명령/128 undo/2048 command 예산을 넘어 별도 정의가 필요하다."
@@ -43,16 +49,22 @@
       "src/rfad/application/project_history.py",
       "src/rfad/application/project_operations.py",
       "src/rfad/storage/journal.py",
-      "src/rfad/domain/project.py"
+      "src/rfad/domain/project.py",
+      "src/rfad/domain/sweep_selection.py",
+      "src/rfad/application/sweep_selection.py"
     ],
     "tests": [
       "tests/test_project_service.py::ProjectServiceTests.test_snapshot_stays_sealed_after_edit_and_save",
       "tests/test_project_service.py::ProjectServiceTests.test_failed_publish_does_not_commit_command_or_receipt",
-      "tests/test_editor_service.py::EditorServiceTests.test_undo_redo_replay_restart_and_branch_preserve_saved_baseline"
+      "tests/test_editor_service.py::EditorServiceTests.test_undo_redo_replay_restart_and_branch_preserve_saved_baseline",
+      "tests/test_sweep_selection.py",
+      "tests/test_sweep_selection_review.py"
     ],
     "evidence": [
       "../01_개발문서/05_기능설계/01_프로젝트/01_프로젝트_명령과_저장.md",
-      "../01_개발문서/05_기능설계/02_설계편집/02_속성편집과_실행취소.md"
+      "../01_개발문서/05_기능설계/02_설계편집/02_속성편집과_실행취소.md",
+      "../01_개발문서/05_기능설계/06_연구/02_후보채택과_새작업사본.md",
+      "../01_개발문서/07_검증/21_후보채택과_원호아이에프에이_검증.md"
     ],
     "next_steps": [
       3,

@@ -19,6 +19,11 @@ void StudioSmokeDriver::SetupSmokeTick()
         {
             ++m_setupPendingTicks;
         }
+        if (m_frame.m_options.selectionSmoke)
+        {
+            SelectionSmokeTick();
+            return;
+        }
         if (m_frame.m_options.validationSmoke)
         {
             ValidationSmokeTick();

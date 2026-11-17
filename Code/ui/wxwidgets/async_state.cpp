@@ -10,7 +10,7 @@ RequestDispatcher::SubmitResult RequestDispatcher::Submit(const std::string& met
                                                           bool foreground, Callback success, Callback failure,
                                                           const std::function<std::string()>& identifier,
                                                           const std::function<bool(const std::string&)>& transport,
-                                                          Clock::time_point now)
+                                                          Clock::time_point now, const std::string& requestKey)
 {
     if (m_pending.size() >= 16)
     {
@@ -20,7 +20,7 @@ RequestDispatcher::SubmitResult RequestDispatcher::Submit(const std::string& met
     Json parameters{{"contract_version", "rfad.api/2.0"}, {"context", context}, {"input", input}};
     if (mutation)
     {
-        parameters["request_key"] = identifier();
+        parameters["request_key"] = requestKey.empty() ? identifier() : requestKey;
         parameters["request_key_epoch"] = epoch;
     }
     Json request{{"jsonrpc", "2.0"}, {"id", id}, {"method", method}, {"params", parameters}};

@@ -59,18 +59,23 @@ void StudioFrame::Connect()
                                      result.value("methods", Json::object()).contains("rf.validation.get");
              m_sweepSupported = result.value("methods", Json::object()).contains("sweep.context") &&
                                 result.value("methods", Json::object()).contains("sweep.create");
+             m_sweepSelectionSupported = result.value("methods", Json::object()).contains("sweep.selection.context") &&
+                                         result.value("methods", Json::object()).contains("sweep.selection.preview") &&
+                                         result.value("methods", Json::object()).contains("sweep.selection.apply") &&
+                                         result.value("methods", Json::object()).contains("sweep.selection.receipt");
              Log("프로젝트 서비스에 연결했습니다.");
              UpdateControls();
              m_smoke->OnConnected();
-             if (!m_options.smoke && !m_options.openProject.empty())
+             if (!m_options.smoke && (!m_path.empty() || !m_options.openProject.empty()))
              {
-                 OpenProject("open", Utf8(m_options.openProject));
+                 OpenProject("open", m_path.empty() ? Utf8(m_options.openProject) : m_path);
              }
          });
 }
 
 void StudioFrame::Send(const std::string& method, const Json& input, bool mutation, const Json& context,
-                       std::function<void(const Json&)> success, std::function<void(const Json&)> failure)
+                       std::function<void(const Json&)> success, std::function<void(const Json&)> failure,
+                       const std::string& requestKey, const std::string& requestEpoch)
 {
     if (m_requests.Size() >= 16)
     {
@@ -103,12 +108,13 @@ void StudioFrame::Send(const std::string& method, const Json& input, bool mutati
         !(method == "job.status" &&
           (input.value("job_id", "") == m_cadTask.Id() || input.value("job_id", "") == m_solverTask.Id()));
     const auto submitted = m_requests.Submit(
-        method, input, mutation, context, m_epoch, foreground, std::move(success), std::move(failure), Uuid,
+        method, input, mutation, context, requestEpoch.empty() ? m_epoch : requestEpoch, foreground, std::move(success),
+        std::move(failure), Uuid,
         [this](const std::string& frame)
         {
             return m_client.Send(frame);
         },
-        Clock::now());
+        Clock::now(), requestKey);
     if (submitted == Studio::RequestDispatcher::SubmitResult::Full)
     {
         Failure("Unexpected concurrent GUI request queue overflow.", true);

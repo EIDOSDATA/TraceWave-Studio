@@ -101,7 +101,10 @@ SweepPanel::SweepPanel(wxWindow* parent, wxWindow* navigation, wxWindow* conditi
     m_pageLabel = new wxStaticText(this, wxID_ANY, Display("후보 없음"));
     m_result = new wxButton(this, wxID_ANY, Display("선택 후보 결과 보기"));
     m_result->SetName("sweep.result");
-    for (auto* button : {m_previous, m_next, m_result})
+    m_adopt = new wxButton(this, wxID_ANY, Display("새 작업 사본으로 채택"));
+    m_adopt->SetName("sweep.selection");
+    m_adopt->SetToolTip(Display("현재 설계를 바꾸지 않고, 선택 후보와 새 저장 위치를 먼저 검토합니다."));
+    for (auto* button : {m_previous, m_next, m_result, m_adopt})
     {
         StudioTheme::Button(*button);
     }
@@ -109,6 +112,7 @@ SweepPanel::SweepPanel(wxWindow* parent, wxWindow* navigation, wxWindow* conditi
     paging->Add(m_next, 0, wxALL, FromDIP(4));
     paging->Add(m_pageLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, FromDIP(4));
     paging->Add(m_result, 0, wxALL, FromDIP(4));
+    paging->Add(m_adopt, 0, wxALL, FromDIP(4));
     layout->Add(paging, 0, wxEXPAND | wxALL, FromDIP(12));
     m_detail = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, FromDIP(wxSize(-1, 100)),
                               wxTE_MULTILINE | wxTE_READONLY);
@@ -117,6 +121,15 @@ SweepPanel::SweepPanel(wxWindow* parent, wxWindow* navigation, wxWindow* conditi
     m_status = new wxStaticText(this, wxID_ANY, wxEmptyString);
     layout->Add(m_status, 0, wxEXPAND | wxALL, FromDIP(12));
     SetSizer(layout);
+    m_adopt->Bind(wxEVT_BUTTON,
+                  [this](wxCommandEvent&)
+                  {
+                      const long row = m_candidates->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+                      if (onAdopt && row >= 0 && static_cast<std::size_t>(row) < m_rows.size())
+                      {
+                          onAdopt(m_rows.at(row).value("ordinal", m_offset + static_cast<int>(row)));
+                      }
+                  });
     m_refresh->Bind(wxEVT_BUTTON,
                     [this](wxCommandEvent&)
                     {
@@ -404,6 +417,11 @@ void SweepPanel::SetEnabledState(bool available, bool busy, bool uncertain)
     m_uncertain = uncertain;
     UpdateActions();
 }
+void SweepPanel::SetSelectionSupported(bool supported)
+{
+    m_selectionSupported = supported;
+    UpdateActions();
+}
 void SweepPanel::SetStatus(const std::string& text)
 {
     m_status->SetLabel(Display(text));
@@ -449,6 +467,8 @@ void SweepPanel::UpdateActions()
     const long row = m_candidates->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
     m_result->Enable(enabled && row >= 0 && static_cast<std::size_t>(row) < m_rows.size() &&
                      m_rows.at(row).value("results", Json::object()).contains("dataset"));
+    m_adopt->Enable(enabled && !m_uncertain && m_selectionSupported && row >= 0 &&
+                    static_cast<std::size_t>(row) < m_rows.size());
 }
 void SweepPanel::RefreshLayout()
 {

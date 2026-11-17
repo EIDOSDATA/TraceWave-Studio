@@ -1,0 +1,89 @@
+"""! @brief 새 작업 사본에 필요한 자기완결 원본과 봉인 파일만 유한하게 준비한다."""
+
+from copy import deepcopy
+import hashlib
+
+from rfad.application.canonical import canonical_bytes
+from rfad.application.project_repository import ProjectRepository
+from rfad.domain.errors import ProjectError
+from rfad.domain.network_library import KEY as LIBRARY_KEY, validate_library
+from rfad.domain.project import validate_project
+
+MAX_COPY_REFERENCES = 32
+MAX_COPY_BYTES = 16 * 1024 * 1024
+KNOWN_EXTENSIONS = {"rfad.template-origin", "rfad.precision-origin", "rfad.pcb-selection",
+                    "rfad.physical_setup", "rfad.sweep-selection", LIBRARY_KEY}
+
+
+def prepare_artifacts(service, source_project, document, destination):
+    """! @brief 역사 사본의 UUID/출처는 그대로 두고 활성 library 참조에만 새 소유 경로를 부여한다."""
+    validate_project(document)
+    unknown = document["extensions"].keys() - KNOWN_EXTENSIONS
+    if unknown:
+        raise ProjectError("E_UNSUPPORTED", "미지 확장의 복사 소유권을 확인할 수 없습니다. 원본을 보존하며 사본 생성을 차단합니다.",
+                           details={"extensions": sorted(unknown)})
+    if "rfad.sweep-selection" in document["extensions"] and document["extensions"]["rfad.sweep-selection"] is None:
+        raise ProjectError("E_UNSUPPORTED", "기존 후보 채택 확장이 null인 원문은 의미를 확인할 수 없어 복사하지 않습니다. 원문은 삭제하지 않습니다.")
+    result, blobs, mapping = deepcopy(document), {}, {}
+    library = result["extensions"].get(LIBRARY_KEY)
+    if library is None:
+        return result, blobs, []
+    validate_library(library)
+    if library["assessments"] or any(row["kind"] == "solver" for row in library["datasets"]):
+        raise ProjectError("E_UNSUPPORTED", "해석 원문 연결 또는 보존 평가가 있는 자료 목록의 프로젝트 간 이관은 아직 지원하지 않습니다.")
+    from rfad.application.network_records import read_dataset
+
+    for row in library["datasets"]:
+        read_dataset(service, source_project, document["extensions"][LIBRARY_KEY], row["id"])
+        for key in ("dataset", "normalized_hdf5", "raw", "diagnostics"):
+            reference = row[key]
+            if reference is None:
+                continue
+            original = reference["uri"]
+            if not original.startswith(source_project["path"] + "/"):
+                raise ProjectError("E_HASH", "복사할 자료 파일이 원본 프로젝트 저장 영역 밖에 있습니다.")
+            if original not in mapping:
+                if len(mapping) >= MAX_COPY_REFERENCES:
+                    raise ProjectError("E_RESOURCE", "사본의 자료 참조는 최대 32개입니다.")
+                raw = service.journal.read_artifact(reference)
+                if sum(len(item) for item in blobs.values()) + len(raw) > MAX_COPY_BYTES:
+                    raise ProjectError("E_RESOURCE", "사본의 봉인 자료는 최대 16 MiB입니다.")
+                target = destination + "/copied-artifacts/" + reference["sha256"] + ".bin"
+                blobs[target] = raw
+                mapping[original] = {"uri": target, "sha256": reference["sha256"], "bytes": reference["bytes"]}
+            elif mapping[original]["sha256"] != reference["sha256"] or mapping[original]["bytes"] != reference["bytes"]:
+                raise ProjectError("E_HASH", "같은 원본 파일의 참조 해시/크기가 서로 다릅니다.")
+            row[key] = deepcopy(mapping[original])
+    validate_project(result)
+    return result, blobs, [{"original_uri": key, "copy": deepcopy(value)} for key, value in mapping.items()]
+
+
+class BufferedRepository(ProjectRepository):
+    """! @brief 기존 단일 명령/이력을 실제 게시 전에 같은 검증으로 메모리에 준비한다."""
+
+    def __init__(self, repository):
+        """! @brief 저장소 안전 경계는 재사용하고 신규 바이트만 임시 보관한다."""
+        super().__init__(repository.workspace, repository.journal, max_document_bytes=repository.max_document_bytes)
+        self.documents = {}
+        self.blobs = {}
+
+    def store(self, path, document):
+        """! @brief 프로젝트 크기와 계약을 검증하되 파일을 아직 쓰지 않는다."""
+        validate_project(document)
+        raw = canonical_bytes(document)
+        if len(raw) > self.max_document_bytes:
+            raise ProjectError("E_RESOURCE", "새 작업 사본이 프로젝트 512 KiB 상한을 초과했습니다.")
+        uri = path + "/revisions/" + document["revision_id"] + "/project.json"
+        reference = {"uri": uri, "sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw)}
+        self.blobs[uri] = raw
+        self.documents[uri] = (deepcopy(reference), deepcopy(document))
+        return reference
+
+    def read(self, reference):
+        """! @brief 준비한 원본도 참조/해시가 같은 경우에만 읽는다."""
+        if reference["uri"] in self.documents:
+            expected, document = self.documents[reference["uri"]]
+            if expected != reference:
+                raise ProjectError("E_HASH", "준비 중인 사본 참조가 다릅니다.")
+            return self.blobs[reference["uri"]], deepcopy(document)
+        return super().read(reference)

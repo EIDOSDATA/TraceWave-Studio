@@ -1,24 +1,31 @@
 /** @file @brief 주 창의 drawing 책임을 구현한다. */
 #include "studio_internal.h"
+#include "editor_sync.h"
 #include "studio_shell.h"
 
 void StudioFrame::BindCanvas()
 {
-    m_canvas->Bind(wxEVT_KEY_DOWN, [this](wxKeyEvent& event)
-    {
-        if (event.GetKeyCode() == WXK_F2)
-        {
-            OpenRename();
-        }
-        else if (event.GetKeyCode() == 'D' && !event.HasAnyModifiers())
-        {
-            OpenPrecision();
-        }
-        else
-        {
-            event.Skip();
-        }
-    });
+    m_canvas->Bind(wxEVT_KEY_DOWN,
+                   [this](wxKeyEvent& event)
+                   {
+                       if (!Studio::EditableProject(m_editor, m_scene, m_project, m_revision))
+                       {
+                           event.Skip();
+                           return;
+                       }
+                       if (event.GetKeyCode() == WXK_F2)
+                       {
+                           OpenRename();
+                       }
+                       else if (event.GetKeyCode() == 'D' && !event.HasAnyModifiers())
+                       {
+                           OpenPrecision();
+                       }
+                       else
+                       {
+                           event.Skip();
+                       }
+                   });
     m_canvas->onStatus = [this](const std::string& message)
     {
         m_canvasHint->SetLabel(Display(message));
@@ -66,13 +73,14 @@ void StudioFrame::BindCanvas()
         }
         CanvasCommand(type, values);
     };
-    m_snapCheck->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent&)
-    {
-        const bool enabled = m_snapCheck->GetValue();
-        m_canvas->SetSnapEnabled(enabled);
-        SetStatusText(Display(enabled ? "mm / 스냅 켬" : "mm / 스냅 끔"), 2);
-        m_canvas->SetFocus();
-    });
+    m_snapCheck->Bind(wxEVT_CHECKBOX,
+                      [this](wxCommandEvent&)
+                      {
+                          const bool enabled = m_snapCheck->GetValue();
+                          m_canvas->SetSnapEnabled(enabled);
+                          SetStatusText(Display(enabled ? "mm / 스냅 켬" : "mm / 스냅 끔"), 2);
+                          m_canvas->SetFocus();
+                      });
     m_layerChoice->Bind(wxEVT_CHOICE,
                         [this](wxCommandEvent&)
                         {

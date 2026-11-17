@@ -1,7 +1,9 @@
 /** @file @brief 주 창의 project 책임을 구현한다. */
 #include "studio_internal.h"
+#include "editor_sync.h"
 
-void StudioFrame::OpenProject(const std::string& mode, const std::string& path, const std::string& name)
+void StudioFrame::OpenProject(const std::string& mode, const std::string& path, const std::string& name,
+                              std::function<void()> opened)
 {
     if (m_cadPreparing || !m_cadTask.Id().empty() || m_modelView->IsLoading() || m_cadRestoring ||
         m_solverWorkflow.Active() || m_solverRestoring)
@@ -10,6 +12,16 @@ void StudioFrame::OpenProject(const std::string& mode, const std::string& path, 
         return;
     }
     m_canvas->CancelGesture();
+    if (opened)
+    {
+        m_projectOpenCompletion = std::move(opened);
+        m_projectOpenCompletionPath = path;
+    }
+    else if (m_projectOpenCompletionPath != path)
+    {
+        m_projectOpenCompletion = {};
+        m_projectOpenCompletionPath.clear();
+    }
     m_busy = true;
     UpdateControls();
     Json input{{"open_mode", mode}, {"path", path}};
@@ -43,11 +55,17 @@ void StudioFrame::OpenProject(const std::string& mode, const std::string& path, 
                          m_diagnosticCount = 0;
                          m_diagnosticsTruncated = false;
                          RefreshEditor(Json{{"kind", "project"}, {"id", m_project}},
-                                       [this]()
+                                       [this, path]()
                                        {
                                            Ready("프로젝트를 열었습니다.");
                                            RestoreCad();
                                            RestoreSolver();
+                                           if (m_projectOpenCompletion && m_projectOpenCompletionPath == path)
+                                           {
+                                               auto opened = std::move(m_projectOpenCompletion);
+                                               m_projectOpenCompletionPath.clear();
+                                               opened();
+                                           }
                                            m_smoke->OnOpened();
                                        });
                      });
@@ -86,6 +104,12 @@ void StudioFrame::RefreshProject()
 
 void StudioFrame::SaveProject()
 {
+    if (!Studio::EditableProject(m_editor, m_scene, m_project, m_revision))
+    {
+        Log("현재 프로젝트의 속성/2D 조회가 완료된 뒤 저장할 수 있습니다.");
+        UpdateControls();
+        return;
+    }
     if (HasDraft())
     {
         ApplyCurrent(
@@ -113,6 +137,12 @@ void StudioFrame::SaveProject()
 
 void StudioFrame::Snapshot()
 {
+    if (!Studio::EditableProject(m_editor, m_scene, m_project, m_revision))
+    {
+        Log("현재 프로젝트의 속성/2D 조회가 완료된 뒤 스냅샷을 만들 수 있습니다.");
+        UpdateControls();
+        return;
+    }
     if (HasDraft())
     {
         ApplyCurrent(

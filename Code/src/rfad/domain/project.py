@@ -18,6 +18,7 @@ from rfad.domain.design_rules import COMMANDS as RULE_COMMANDS, apply_rule_comma
 from rfad.domain.physical_setup import COMMAND as PHYSICAL_COMMAND, apply_setup, validate_setup
 from rfad.domain.precision_command import COMMANDS as PRECISION_COMMANDS, apply_precision_command, validate_precision_origins
 from rfad.domain.network_library import COMMAND as NETWORK_COMMAND, apply_library_command, validate_project_library
+from rfad.domain.sweep_selection import COMMAND as SELECTION_COMMAND, apply_selection_command, validate_origin as validate_selection_origin
 
 
 SCHEMA_VERSION = "rfad.project/0.5"
@@ -279,6 +280,7 @@ def validate_project(document: dict) -> None:
     validate_setup(document)
     validate_precision_origins(document)
     validate_project_library(document)
+    validate_selection_origin(document)
 
 
 def apply_command(document: dict, command: dict, expected_revision: str) -> tuple[dict, list[str], list[str], dict]:
@@ -359,6 +361,8 @@ def apply_command(document: dict, command: dict, expected_revision: str) -> tupl
         changed_ids, invalidation_set, inverse = apply_template_command(result, payload)
     elif command_type in PRECISION_COMMANDS:
         changed_ids, invalidation_set, inverse = apply_precision_command(result, payload)
+    elif command_type == SELECTION_COMMAND:
+        changed_ids, invalidation_set, inverse = apply_selection_command(result, payload)
     elif command_type == NETWORK_COMMAND:
         changed_ids, invalidation_set, inverse = apply_library_command(result, payload)
     elif command_type in DESIGN_COMMANDS:

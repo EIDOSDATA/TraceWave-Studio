@@ -1,5 +1,6 @@
 /** @file @brief 프로젝트 탐색, 표시 필터와 이름 변경을 서비스 선택에 연결한다. */
 #include "studio_internal.h"
+#include "editor_sync.h"
 #include "object_rename_dialog.h"
 #include "studio_theme.h"
 #include <wx/srchctrl.h>
@@ -103,7 +104,8 @@ void StudioFrame::BuildNavigation(wxWindow* parent, wxSizer* layout)
     m_tree->Bind(wxEVT_TREE_ITEM_MENU,
                  [this](wxTreeEvent& event)
                  {
-                     if (m_busy || !event.GetItem().IsOk())
+                     if (m_busy || !event.GetItem().IsOk() ||
+                         !Studio::EditableProject(m_editor, m_scene, m_project, m_revision))
                      {
                          return;
                      }
@@ -264,7 +266,8 @@ void StudioFrame::RebuildNavigation()
 
 void StudioFrame::OpenRename()
 {
-    if (m_busy || !m_connected || m_project.empty() || m_setupDialog || !ConfirmDiscard())
+    if (m_busy || !m_connected || m_project.empty() || m_setupDialog ||
+        !Studio::EditableProject(m_editor, m_scene, m_project, m_revision) || !ConfirmDiscard())
     {
         return;
     }
@@ -295,7 +298,9 @@ void StudioFrame::OpenRename()
     CallAfter(
         [this, context]()
         {
-            if (m_closing || m_busy || m_setupDialog || !m_connected || context.at("revision_id") != m_revision)
+            if (m_closing || m_busy || m_setupDialog || !m_connected || context.at("project_id") != m_project ||
+                context.at("revision_id") != m_revision ||
+                !Studio::EditableProject(m_editor, m_scene, m_project, m_revision))
             {
                 return;
             }

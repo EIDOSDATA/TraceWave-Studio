@@ -1,6 +1,7 @@
 /** @file @brief 위젯 없이 취소/지연 응답/재진입과 해석 입력 고정을 검증한다. */
 #include "../ui/wxwidgets/async_state.h"
 #include "../ui/wxwidgets/analysis_workflow.h"
+#include "../ui/wxwidgets/editor_sync.h"
 #include <cstdlib>
 #include <iostream>
 #include <vector>
@@ -34,6 +35,27 @@ int main()
 {
     using namespace Studio;
     const auto now = Clock::time_point(std::chrono::seconds(100));
+    const Json editor{{"profile", "rfad.editor/0.1"}, {"project_id", "new-project"}, {"revision_id", "new-revision"}};
+    const Json canvas{{"profile", "rfad.canvas/0.1"},
+                      {"project_id", "new-project"},
+                      {"revision_id", "new-revision"},
+                      {"unit", "mm"},
+                      {"angle_unit", "deg"}};
+    Check(EditableProject(editor, canvas, "new-project", "new-revision"));
+    for (const auto* key : {"project_id", "revision_id", "profile"})
+    {
+        auto oldEditor = editor;
+        oldEditor[key] = "old";
+        Check(!MatchesEditor(oldEditor, "new-project", "new-revision"));
+        Check(!EditableProject(oldEditor, canvas, "new-project", "new-revision"));
+        auto oldCanvas = canvas;
+        oldCanvas[key] = "old";
+        Check(!MatchesCanvas(oldCanvas, "new-project", "new-revision"));
+        Check(!EditableProject(editor, oldCanvas, "new-project", "new-revision"));
+    }
+    Check(!EditableProject(editor, Json::object(), "new-project", "new-revision"));
+    Check(!EditableProject(Json::object(), canvas, "new-project", "new-revision"));
+    Check(!EditableProject(editor, canvas, "", "new-revision"));
     JobTracker jobs;
     jobs.Assign("old");
     Check(jobs.BeginPoll(now, std::chrono::milliseconds(100)));
@@ -104,6 +126,20 @@ int main()
               },
               now) == RequestDispatcher::SubmitResult::TransportClosed);
     Check(requests.Size() == 0);
+
+    Check(requests.Submit("sweep.selection.apply", {{"review_hash", "review"}}, true, {{"project_id", "original"}},
+                          "retained-epoch", true, callback, {}, identifiers, transport, now,
+                          "retained-receipt-key") == RequestDispatcher::SubmitResult::Queued);
+    Check(sent.back().at("params").at("request_key") == "retained-receipt-key");
+    Check(sent.back().at("params").at("request_key_epoch") == "retained-epoch");
+    Check(sent.back().at("id") != "retained-receipt-key");
+    requests.Clear();
+    Check(requests.Submit("sweep.selection.receipt", {{"request_key", "retained-receipt-key"}}, false,
+                          {{"project_id", "original"}}, "current-epoch", false, callback, {}, identifiers, transport,
+                          now) == RequestDispatcher::SubmitResult::Queued);
+    Check(!sent.back().at("params").contains("request_key"));
+    Check(sent.back().at("params").at("input").at("request_key") == "retained-receipt-key");
+    requests.Clear();
 
     AnalysisWorkflow flow;
     Json settings{{"grid_mm", 0.4}};

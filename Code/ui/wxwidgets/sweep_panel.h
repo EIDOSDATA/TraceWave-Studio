@@ -29,6 +29,7 @@ public:
     void SetStudy(const Json& study);
     void SetPage(const Json& page);
     void SetEnabledState(bool available, bool busy, bool uncertain = false);
+    void SetSelectionSupported(bool supported);
     void SetStatus(const std::string& text);
     void Clear(const std::string& text);
     void ClearSelection(const std::string& text);
@@ -41,6 +42,7 @@ public:
     std::function<void(const std::string&)> onCommand;
     std::function<void(int)> onPage;
     std::function<void(int)> onResult;
+    std::function<void(int)> onAdopt;
 
 private:
     friend class StudioSmokeDriver;
@@ -64,6 +66,7 @@ private:
     wxButton* m_previous = nullptr;
     wxButton* m_next = nullptr;
     wxButton* m_result = nullptr;
+    wxButton* m_adopt = nullptr;
     std::map<std::string, wxButton*> m_actions;
     std::vector<std::string> m_ids;
     std::string m_id;
@@ -75,4 +78,5 @@ private:
     bool m_available = false;
     bool m_busy = false;
     bool m_uncertain = false;
+    bool m_selectionSupported = false;
 };

@@ -16,7 +16,7 @@ from rfad.application.catalog_api import describe as describe_catalog, query as 
 from rfad.application.pcb_selection_contract import READ_METHODS as PCB_SELECTION_READS, MUTATION_METHODS as PCB_SELECTION_MUTATIONS
 from rfad.application.project_study_contract import READS as STUDY_READS, MUTATIONS as STUDY_MUTATIONS
 from rfad.application import target_editor
-from rfad.application import design_rule_service, physical_setup_service, precision_service, network_service, design_sweep_service, result_service, rf_validation_records
+from rfad.application import design_rule_service, physical_setup_service, precision_service, network_service, design_sweep_service, result_service, rf_validation_records, sweep_selection
 
 TEMPLATE_READS = {"template.list", "template.get", "template.context", "template.synthesize"}
 
@@ -40,6 +40,7 @@ PROJECT_MUTATIONS.update(PCB_SELECTION_MUTATIONS)
 PROJECT_MUTATIONS.update(STUDY_MUTATIONS)
 PROJECT_MUTATIONS.update(design_sweep_service.MUTATIONS)
 PROJECT_MUTATIONS.update(rf_validation_records.MUTATIONS)
+PROJECT_MUTATIONS.update(sweep_selection.MUTATIONS)
 PROJECT_MUTATIONS.update({"target.editor.apply", "template.apply", "design.rules.apply", physical_setup_service.MUTATION, precision_service.MUTATION, network_service.MUTATION})
 
 
@@ -106,6 +107,8 @@ def capabilities(service=None, catalog=None) -> dict:
                                   for name in design_sweep_service.READS | design_sweep_service.MUTATIONS})
         result["methods"].update({name: {"status": "implemented", "extension_profile": rf_validation_records.PROFILE}
                                   for name in rf_validation_records.READS | rf_validation_records.MUTATIONS})
+        result["methods"].update({name: {"status": "implemented", "extension_profile": sweep_selection.PROFILE}
+                                  for name in sweep_selection.READS | sweep_selection.MUTATIONS})
         result["sweep_profile"] = {"profile": design_sweep_service.PROFILE, "max_candidates": 128,
             "page_size": 25, "native_concurrency": 1, "lazy_candidates": True, "preview_required": True,
             "native_checkpoint_resume": False, "physical_validation": False}
@@ -268,12 +271,14 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
         return _error(None, -32600, "Invalid Request")
     notification = "id" not in request
     method = request["method"]
-    if service is not None and method in PROJECT_MUTATIONS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | network_service.READS | design_sweep_service.READS | result_service.READS | rf_validation_records.READS | {"target.editor.get", "job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
+    if service is not None and method in PROJECT_MUTATIONS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | network_service.READS | design_sweep_service.READS | result_service.READS | rf_validation_records.READS | sweep_selection.READS | {"target.editor.get", "job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
         if notification and method in PROJECT_MUTATIONS:
             return None
         try:
             params = request.get("params")
-            if method in rf_validation_records.READS:
+            if method in sweep_selection.READS:
+                result = sweep_selection.read(service, method, params)
+            elif method in rf_validation_records.READS:
                 result = rf_validation_records.read(service, method, params)
             elif method in result_service.READS:
                 result = result_service.read(service, method, params)

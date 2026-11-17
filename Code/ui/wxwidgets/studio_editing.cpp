@@ -1,5 +1,6 @@
 /** @file @brief 주 창의 editing 책임을 구현한다. */
 #include "studio_internal.h"
+#include "editor_sync.h"
 #include "studio_shell.h"
 
 /** @brief 전체 원본 대신 목록과 선택 객체의 작은 편집 DTO만 조회한다. */
@@ -7,10 +8,16 @@ void StudioFrame::RefreshEditor(const Json& selection, std::function<void()> com
 {
     m_busy = true;
     UpdateControls();
+    const auto project = m_project;
+    const auto revision = m_revision;
     Send("editor.get", Json{{"expected_revision", m_revision}, {"selection", selection}}, false, Context(),
-         [this, completed](const Json& result)
+         [this, project, revision, completed](const Json& result)
          {
-             if (result.at("profile") != "rfad.editor/0.1" || result.at("revision_id") != m_revision)
+             if (m_closing || project != m_project || revision != m_revision)
+             {
+                 return;
+             }
+             if (!Studio::MatchesEditor(result, project, revision))
              {
                  throw std::runtime_error("Unexpected editor profile or revision.");
              }
@@ -26,18 +33,23 @@ void StudioFrame::RefreshEditor(const Json& selection, std::function<void()> com
 /** @brief 같은 revision의 표시 DTO는 재사용하고 변경된 표시 데이터만 다시 읽는다. */
 void StudioFrame::RefreshScene(std::function<void()> completed)
 {
-    if (m_scene.value("revision_id", "") == m_revision)
+    if (Studio::MatchesCanvas(m_scene, m_project, m_revision))
     {
         m_canvas->SetSelection(m_selection.value("kind", "") == "geometry" ? m_selection.value("id", "") : "");
         RefreshDimensions();
         completed();
         return;
     }
+    const auto project = m_project;
+    const auto revision = m_revision;
     Send("canvas.get", Json{{"expected_revision", m_revision}}, false, Context(),
-         [this, completed](const Json& result)
+         [this, project, revision, completed](const Json& result)
          {
-             if (result.at("profile") != "rfad.canvas/0.1" || result.at("revision_id") != m_revision ||
-                 result.at("unit") != "mm" || result.at("angle_unit") != "deg")
+             if (m_closing || project != m_project || revision != m_revision)
+             {
+                 return;
+             }
+             if (!Studio::MatchesCanvas(result, project, revision))
              {
                  throw std::runtime_error("Unexpected canvas profile, unit or revision.");
              }
@@ -107,6 +119,19 @@ void StudioFrame::SelectObject(const Json& selection, bool restoreTreeFocus)
 /** @brief 폼 변경분을 한 서비스 명령으로 적용하고 권위 DTO로 다시 표시한다. */
 void StudioFrame::ApplyCurrent(std::function<void()> completed, std::function<void(const Json&)> rejected)
 {
+    if (!Studio::EditableProject(m_editor, m_scene, m_project, m_revision))
+    {
+        const Json error{
+            {"code", "E_CONFLICT"},
+            {"message", "현재 프로젝트의 속성/2D 조회가 완료되지 않아 적용하지 않았습니다. F5로 다시 읽으세요."}};
+        if (rejected)
+        {
+            rejected(error);
+        }
+        Log(error.at("message").get<std::string>());
+        UpdateControls();
+        return;
+    }
     Json values = Json::object();
     try
     {
@@ -179,6 +204,12 @@ void StudioFrame::ApplyProperties()
 /** @brief undo/redo의 원본과 이력은 서비스가 소유하며 GUI에는 결과 개정만 반영한다. */
 void StudioFrame::History(const std::string& method, std::function<void()> completed)
 {
+    if (!Studio::EditableProject(m_editor, m_scene, m_project, m_revision))
+    {
+        Log("현재 프로젝트의 속성/2D 조회가 완료된 뒤 이력을 변경할 수 있습니다.");
+        UpdateControls();
+        return;
+    }
     if (!ConfirmDiscard())
     {
         return;
