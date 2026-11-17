@@ -23,6 +23,7 @@ Code는 개발 코드 영역이다. 제품 소스, 빌드 설정, 시험, fixtur
 | wxGLCanvas/OpenGL ModelView | OCCT의 표시 mesh를 읽는 3D 보기. CAD B-rep나 일반 3D 안테나 RF 원본이 아님 |
 | Python application service | 원본/단위/표현식/명령/undo/저장/snapshot/작업. `src/rfad/domain/`, `application/`, `storage/` |
 | 별도 OCCT worker | 정확 형상, STEP/B-rep, 표시 mesh. `adapters/cad/`, `tools/cad_worker.py` |
+| 별도 출력 worker | 같은 snapshot의 연관 PDF/SVG/DXF 생성과 파일 재입력. `adapters/exchange/`, `tools/exchange_worker.py` |
 | 별도 WSL2 openEMS worker | 해석 계획/준비/실행/취소/결과와 후처리. `adapters/solvers/openems/`, `tools/openems_worker.py` |
 
 Qt와 필수 유료 GUI 부품을 사용하지 않는다. Linux GUI는 별도 후속이다. 일반 60 fps/대형 30 fps와 메모리 예산은 초기 목표이며 전체 앱 실측 합격이 아니다. 현재 CAD 보기와 장기 비평면 3차원 안테나 해석을 구분한다.
@@ -42,8 +43,9 @@ Qt와 필수 유료 GUI 부품을 사용하지 않는다. Linux GUI는 별도 �
 | 독립 참조 | 사전 고정한 PEC 다이폴 3수준, 독립 패턴/지향성 비교, 유한 예산과 불변 판정 기록. [계약](../01_개발문서/05_기능설계/04_해석결과/08_독립참조와_유한검증_계약.md), [실행 근거](../01_개발문서/07_검증/19_독립참조와_유한검증.md). 평면 도체/유한 급전 native 6사례는 미확정 조건으로 차단 |
 | 설계 스윕 | 리터럴 매개변수/명시 수치 설정/외부 회로의 유한 다축 후보, 예산/취소/명시 재개, 원본과 후보 결과 보존. [연구 계약](../01_개발문서/05_기능설계/06_연구/01_명시적스윕과_실행계약.md), [Windows/WSL 검증](../01_개발문서/07_검증/13_설계스윕과_연구_검증.md) |
 | 후보 채택 | 완료된 grid_sweep의 리터럴 매개변수 후보를 별도 프로젝트로 채택. 선택 순번의 Quantity/출처와 실제 계산 pin을 구분하며 원본 개정/저장/undo를 보존. [새 사본 계약](../01_개발문서/05_기능설계/06_연구/02_후보채택과_새작업사본.md), [화면과 복구](../01_개발문서/04_화면설계/23_후보채택과_새사본_화면.md) |
+| 도면/재검수 | 고정 snapshot의 연관 PDF/SVG/DXF, 검토 hash와 실제 종이 미리보기, 별도 출력 worker. 기존 STEP의 새 reader 검수는 원래 파일을 보존하고 동일 OCCT 범위를 표시. [출력 계약](../01_개발문서/05_기능설계/05_출력교환/04_연관도면과_출력재검수.md), [화면 계약](../01_개발문서/04_화면설계/24_기술도면과_스텝검수_화면.md) |
 
-스냅/끝점, 공통 작업 공간, 객체 이름과 검색, 연관 치수/회전/미러/제한된 다각형 평면 연산을 서비스와 GUI에 연결했다. [정밀 편집 계약](../01_개발문서/05_기능설계/02_설계편집/13_정밀편집과_평면연산.md)과 [단계 검증](../01_개발문서/07_검증/08_스튜디오와_정밀편집_검증.md)을 따른다. 평면 연산에는 명시적으로 고정한 Shapely/GEOS 환경이 필요하며, 없으면 해당 작업만 차단한다. 기존 프로젝트 열기/저장과 봉인된 이력의 undo/redo는 이 엔진을 요구하지 않는다. 7번의 공통 결과 화면은 위 유한 profile로 연결했으며 84개 시안의 후속 화면, 도면/CAM 및 전체 UX 수용은 해당 계획의 남은 범위다.
+스냅/끝점, 공통 작업 공간, 객체 이름과 검색, 연관 치수/회전/미러/제한된 다각형 평면 연산을 서비스와 GUI에 연결했다. [정밀 편집 계약](../01_개발문서/05_기능설계/02_설계편집/13_정밀편집과_평면연산.md)과 [단계 검증](../01_개발문서/07_검증/08_스튜디오와_정밀편집_검증.md)을 따른다. 평면 연산에는 명시적으로 고정한 Shapely/GEOS 환경이 필요하며, 없으면 해당 작업만 차단한다. 기존 프로젝트 열기/저장과 봉인된 이력의 undo/redo는 이 엔진을 요구하지 않는다. 7번의 공통 결과 화면은 위 유한 profile로 연결했으며 84개 시안의 후속 화면, PCB/CAM 교환과 독립 수신 검수 및 전체 UX 수용은 해당 계획의 남은 범위다.
 
 결과 조회는 원본 source/pin을 고정하고 정확히 같은 주파수에서만 비교한다. 과거 목표 판정과 실제 수치 종료 기록을 독립 수렴/물리 수용과 구분한다. 외부 회로나 변환 자료에 원래 안테나의 방사/효율을 자동 승계하지 않으며 기록되지 않은 필드를 생성하지 않는다. 오른쪽 조건은 원본/기준/검증 상태 그룹과 접힌 원문으로 나누고 비교 조건은 최대 32개씩 조회한다. 큰 복소 표본은 201개 페이지, 필드는 최대 4096점의 명시 ROI/stride를 사용한다.
 
@@ -60,7 +62,9 @@ $env:PYTHONPATH = 'src'
 .\tools\launch_gui.ps1
 ```
 
-GUI 실행 스크립트는 존재하는 `.venv-cad`와 `.local/pcb-catalog/catalog.sqlite`를 연결한다. `-CadPython <경로>`, `-Catalog <경로>`, `-NoCatalog`로 선택할 수 있다. 해석 환경 구성 후에는 `launch_gui.ps1 -OpenEmsWsl`을 사용한다. CAD/solver가 없어도 가능한 편집/저장과 보존 결과 읽기는 유지한다.
+GUI 실행 스크립트는 존재하는 `.venv-cad`, `.venv-exchange`와 `.local/pcb-catalog/catalog.sqlite`를 연결한다. `-CadPython <경로>`, `-ExchangePython <경로>`, `-Catalog <경로>`, `-NoCatalog`로 선택할 수 있다. 해석 환경 구성 후에는 `launch_gui.ps1 -OpenEmsWsl`을 사용한다. CAD/출력/solver가 없어도 가능한 편집/저장과 보존 결과 읽기는 유지한다.
+
+연관 도면의 별도 환경은 `tools/setup_exchange.ps1 -Python .venv/Scripts/python.exe`로 준비한다. 서비스 직접 실행에는 `--exchange-python .venv-exchange/Scripts/python.exe`를 전달한다. [고정 wheel 목록](runtime_profiles/python-exchange-windows-x64.txt)과 runtime manifest의 글꼴 identity를 확인하며 한글 PDF 글꼴은 Windows의 기존 TTF를 부분 포함한다. 원래 OS 글꼴을 저장소에 복사하지 않는다. 기하/파일 검수와 제조/실측 수용은 별개다.
 
 복소 계산과 HDF5 교환은 Windows x64 CPython 3.12용 [고정 wheel 목록](runtime_profiles/python-network-windows-x64.txt)을 사용한다. `pip install --only-binary=:all: --require-hashes -r runtime_profiles/python-network-windows-x64.txt` 후 `pip check`로 확인한다. 수치 엔진이 없어도 기존 정규 JSON 조회, 프로젝트 저장/재열기 및 이력 복원은 가능하다. 실제 계산과 HDF5 입출력 때만 선택 의존성을 읽는다.
 

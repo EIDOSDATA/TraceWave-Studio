@@ -18,17 +18,19 @@ SCHEMA = "rfad.source-bundle/0.1"
 CAD = "rfad.source.cad/0.1"
 SOLVER = "rfad.source.openems/0.1"
 HOST = "rfad.source.host-calculation/0.1"
+EXCHANGE = "rfad.source.exchange/0.1"
 MAX_FILES = 192
 ROOTS = {
     CAD: ("worker.py",),
+    EXCHANGE: ("tools/exchange_worker.py",),
     SOLVER: ("tools/openems_worker.py", "tools/wsl_supervisor.py"),
     HOST: ("src/rfad/application/rpc.py", "src/rfad/application/projects.py",
            "src/rfad/application/design_sweep_service.py", "src/rfad/application/design_sweep_runner.py",
            "tools/wsl_supervisor.py"),
 }
-LIMITS = {CAD: 2 * 1024**2, SOLVER: 4 * 1024**2, HOST: 4 * 1024**2}
+LIMITS = {CAD: 2 * 1024**2, SOLVER: 4 * 1024**2, HOST: 4 * 1024**2, EXCHANGE: 4 * 1024**2}
 # @brief 가변 이름의 로더는 manifest 경로를 사용하는 이 모듈과 고정 worker bootstrap만 허용한다.
-BOOTSTRAPS = {"src/rfad/application/source_bundle.py", "worker.py", "tools/openems_worker.py", "tools/wsl_supervisor.py"}
+BOOTSTRAPS = {"src/rfad/application/source_bundle.py", "worker.py", "tools/openems_worker.py", "tools/wsl_supervisor.py", "tools/exchange_worker.py"}
 DYNAMIC = {"src/rfad/adapters/network_hdf5.py": {"h5py", "numpy"}}
 
 
@@ -179,8 +181,9 @@ def build(root, profile, *, overrides=None, max_files=MAX_FILES):
     overrides = {} if overrides is None else overrides
     if any(_path(key) != key for key in overrides):
         raise BundleError("덮어쓸 진입점 경로가 유효하지 않습니다.")
-    if overrides and (profile != CAD or set(overrides) != {"worker.py"}):
-        raise BundleError("호스트가 명시한 CAD 진입점만 별도 바이트로 제공할 수 있습니다.")
+    if overrides and not ((profile == CAD and set(overrides) == {"worker.py"})
+                          or (profile == EXCHANGE and set(overrides) == {"tools/exchange_worker.py"})):
+        raise BundleError("호스트가 명시한 CAD/출력 진입점만 별도 바이트로 제공할 수 있습니다.")
     sources, dynamic, pending = {}, set(), set(ROOTS[profile])
     limit = LIMITS[profile]
     try:
@@ -191,7 +194,7 @@ def build(root, profile, *, overrides=None, max_files=MAX_FILES):
                 continue
             if len(sources) >= max_files:
                 raise BundleError("실행 의존 소스 파일 수가 공통 상한을 초과했습니다.", "E_RESOURCE")
-            text = _text(root, relative, overrides, limit, profile != CAD and relative != "tools/wsl_supervisor.py")
+            text = _text(root, relative, overrides, limit, profile not in (CAD, EXCHANGE) and relative != "tools/wsl_supervisor.py")
             sources[relative] = text
             dependencies, imports = _dependencies(root, relative, text, overrides)
             dynamic.update(imports)

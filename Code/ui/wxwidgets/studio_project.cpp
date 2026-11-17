@@ -1,10 +1,16 @@
 /** @file @brief 주 창의 project 책임을 구현한다. */
 #include "studio_internal.h"
 #include "editor_sync.h"
+#include "output_controller.h"
 
 void StudioFrame::OpenProject(const std::string& mode, const std::string& path, const std::string& name,
                               std::function<void()> opened)
 {
+    if (m_output && m_output->Active() && path != m_path)
+    {
+        Log("출력 요청의 접수/완료 여부를 확인한 뒤 다른 프로젝트를 여세요. 기존 요청 키와 파일은 보존합니다.");
+        return;
+    }
     if (m_cadPreparing || !m_cadTask.Id().empty() || m_modelView->IsLoading() || m_cadRestoring ||
         m_solverWorkflow.Active() || m_solverRestoring)
     {

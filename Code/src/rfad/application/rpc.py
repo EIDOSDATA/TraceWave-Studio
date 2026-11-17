@@ -16,6 +16,7 @@ from rfad.application.catalog_api import describe as describe_catalog, query as 
 from rfad.application.pcb_selection_contract import READ_METHODS as PCB_SELECTION_READS, MUTATION_METHODS as PCB_SELECTION_MUTATIONS
 from rfad.application.project_study_contract import READS as STUDY_READS, MUTATIONS as STUDY_MUTATIONS
 from rfad.application import target_editor
+from rfad.application import exchange_service, exchange_contract
 from rfad.application import design_rule_service, physical_setup_service, precision_service, network_service, design_sweep_service, result_service, rf_validation_records, sweep_selection
 
 TEMPLATE_READS = {"template.list", "template.get", "template.context", "template.synthesize"}
@@ -36,6 +37,7 @@ APPLICATION_ERRORS = {
 }
 PROJECT_MUTATIONS = {"project.open", "project.apply_command", "editor.apply", "canvas.apply", "project.undo", "project.redo", "project.save", "snapshot.create", "design.validate", "job.cancel", "geometry.build", "export.build", "export.preview"}
 PROJECT_MUTATIONS.update({"solver.plan", "solver.prepare", "job.submit"})
+PROJECT_MUTATIONS.add("export.verify")
 PROJECT_MUTATIONS.update(PCB_SELECTION_MUTATIONS)
 PROJECT_MUTATIONS.update(STUDY_MUTATIONS)
 PROJECT_MUTATIONS.update(design_sweep_service.MUTATIONS)
@@ -160,6 +162,14 @@ def capabilities(service=None, catalog=None) -> dict:
             "step_schema": "AP242", "result_status": "generated_unverified", "kernel_independent": False,
             "manufacturing_verified": False, "physics_verified": False, "resume_supported": False,
             "max_file_bytes": 67108864, "max_package_bytes": 134217728}
+        result["methods"].update({name: {"status": "implemented", "extension_profile": exchange_contract.PROFILE}
+                                  for name in exchange_contract.READS})
+        result["methods"]["export.verify"] = {"status": "implemented", "api_id": "API-025", "extension_profile": exchange_contract.PROFILE}
+        result["exchange_profile"] = {"profile": exchange_contract.PROFILE, "runtime_configured": service.exchange.runtime is not None,
+            "source": "immutable_snapshot", "formats": ["pdf", "svg", "dxf"], "preview_required": True,
+            "native_slots": 1, "max_file_bytes": exchange_contract.MAX_FILE_BYTES,
+            "max_package_bytes": exchange_contract.MAX_PACKAGE_BYTES, "max_files": exchange_contract.MAX_FILES,
+            "manufacturing_verified": False, "physics_verified": False}
         result["project_profile"]["job_kinds"] = ["data_processing", "cad_build", "export"]
         result["features"][1]["status"] = "implemented"
         result["methods"].update({name: {"status": "implemented", "api_id": api_id, "extension_profile": "rfad.openems.rect-waveguide/0.1"} for name, api_id in (("solver.plan", "API-011"), ("solver.prepare", "API-012"), ("job.submit", "API-013"), ("result.open", "API-016"))})
@@ -271,12 +281,14 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
         return _error(None, -32600, "Invalid Request")
     notification = "id" not in request
     method = request["method"]
-    if service is not None and method in PROJECT_MUTATIONS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | network_service.READS | design_sweep_service.READS | result_service.READS | rf_validation_records.READS | sweep_selection.READS | {"target.editor.get", "job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
+    if service is not None and method in PROJECT_MUTATIONS | exchange_contract.READS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | network_service.READS | design_sweep_service.READS | result_service.READS | rf_validation_records.READS | sweep_selection.READS | {"target.editor.get", "job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
         if notification and method in PROJECT_MUTATIONS:
             return None
         try:
             params = request.get("params")
-            if method in sweep_selection.READS:
+            if method in exchange_contract.READS:
+                result = exchange_service.read(service, method, params)
+            elif method in sweep_selection.READS:
                 result = sweep_selection.read(service, method, params)
             elif method in rf_validation_records.READS:
                 result = rf_validation_records.read(service, method, params)

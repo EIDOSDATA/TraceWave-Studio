@@ -9,6 +9,17 @@
 #include <stdexcept>
 #include <numeric>
 
+void StudioNotebook::SetTabRowVisible(bool visible)
+{
+    if (visible == m_tabRowVisible)
+    {
+        return;
+    }
+    m_tabRowVisible = visible;
+    m_book->SetTabCtrlHeight(visible ? -1 : 0);
+    Layout();
+}
+
 namespace
 {
 /** @brief 시안의 평면 탭과 선택 밑줄을 DPI 및 시스템 글꼴에 맞춰 표시한다. */

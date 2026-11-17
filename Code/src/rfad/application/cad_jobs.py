@@ -12,6 +12,7 @@ from rfad.application.cad import PROFILE, build_cad_input
 from rfad.application.canonical import canonical_bytes
 from rfad.application.cad_runtime import CODE_ROOT, CadRuntime, file_hash
 from rfad.application.cad_artifacts import MAX_FILE_BYTES, MAX_PACKAGE_BYTES, seal_cad_outputs
+from rfad.application.cad_verification import verification_input, seal_verification
 from rfad.application.native_process import run_native
 from rfad.domain.errors import ProjectError
 
@@ -78,6 +79,49 @@ class CadCoordinator:
             raise ProjectError("E_HASH", "등록된 스냅샷과 요청한 프로젝트 또는 hash가 다릅니다.")
         document = self.service._load({"current": snapshot["artifact"]})
         return deepcopy(snapshot), build_cad_input(document, snapshot, data["profile"], purpose=purpose)
+
+    @staticmethod
+    def validate_verify_input(context: dict, data: dict) -> None:
+        """! @brief 파일 경로 대신 검토한 완료 작업과 manifest SHA256만 받는다."""
+        if type(context) is not dict or set(context) != {"project_id"} or type(data) is not dict or set(data) != {"job_id", "manifest_sha256"}:
+            raise ProjectError("E_SCHEMA", "STEP 재검수 요청의 필드가 유효하지 않습니다.")
+        try:
+            if str(UUID(context["project_id"])) != context["project_id"] or str(UUID(data["job_id"])) != data["job_id"]:
+                raise ValueError()
+        except (ValueError, TypeError, AttributeError) as error:
+            raise ProjectError("E_SCHEMA", "STEP 재검수의 프로젝트 및 작업 참조가 유효하지 않습니다.") from error
+        digest = data["manifest_sha256"]
+        if type(digest) is not str or len(digest) != 64 or any(character not in "0123456789abcdef" for character in digest):
+            raise ProjectError("E_HASH", "STEP 재검수의 manifest SHA256이 유효하지 않습니다.")
+
+    def admit_verify(self, state: dict, context: dict, data: dict) -> dict:
+        """! @brief 원본을 그대로 둔 별도 검수 작업을 기존 단일 CAD 슬롯에 접수한다."""
+        self.validate_verify_input(context, data)
+        if self.runtime is None:
+            raise ProjectError("E_UNSUPPORTED", "STEP을 다시 읽으려면 --cad-python 환경을 연결하십시오.")
+        if self.error is not None or any(job.get("cad", {}).get("resource_reserved") for job in state["jobs"].values()):
+            raise ProjectError("E_RESOURCE", "CAD 슬롯이 사용 중이거나 이전 실행의 종료 확인이 필요합니다.")
+        if len(state["jobs"]) >= 512:
+            raise ProjectError("E_RESOURCE", "작업 보존 상한에 도달했습니다.")
+        snapshot, projection = verification_input(self.service, state, context, data)
+        job_id, run_id, nonce = str(uuid4()), str(uuid4()), str(uuid4())
+        projection["run_id"] = run_id
+        payload = canonical_bytes(projection)
+        if len(payload) > 128 * 1024:
+            raise ProjectError("E_RESOURCE", "STEP 재검수 입력은 최대 128 KiB입니다.")
+        base = state["projects"][context["project_id"]]["path"] + "/cad-inputs/" + run_id
+        job = {"job_id": job_id, "run_id": run_id, "kind": "export", "operation_method": "export.verify",
+               "context": deepcopy(context), "input": deepcopy(data), "events": [],
+               "captured": deepcopy(snapshot["artifact"]), "snapshot": snapshot,
+               "cad": {"nonce": nonce, "operation": "verify_step", "resource_reserved": True,
+                       "input": self.service.journal.put_immutable(base + "/input.json", payload),
+                       "runtime_manifest": self.service.journal.put_immutable(base + "/runtime.json", self.runtime.manifest_bytes),
+                       "source": self.service.journal.put_immutable(base + "/source.json", self.runtime.source_bytes),
+                       "entry": self.service.journal.put_immutable(base + "/worker.py", self.runtime.entry_bytes),
+                       "timeout_seconds": self.runtime.timeout_seconds, "runtime": deepcopy(self.runtime.identity)}}
+        self.service._event(job, "queued")
+        state["jobs"][job_id] = job
+        return {"job_id": job_id, "state": "queued", "events_cursor": 1}
 
     def inspect_step(self, source: dict) -> dict:
         """! @brief 가벼운 미리보기도 기존 단일 CAD 슬롯과 고정 런타임에서 실행한다."""
@@ -265,6 +309,11 @@ class CadCoordinator:
         self._verify_sources(stage, job["cad"]["runtime"])
         request = {"schema": "rfad.cad-worker/0.1", "run_id": job["run_id"], "nonce": job["cad"]["nonce"],
                    "input_sha256": job["cad"]["input"]["sha256"], "runtime": job["cad"]["runtime"]}
+        if job["cad"].get("operation") == "verify_step":
+            request["operation"] = "verify_step"
+            projection = json.loads(self.service.journal.read_artifact(job["cad"]["input"]))
+            for name in ("model.step", "sidecar.json", "manifest.json"):
+                self.service.journal.copy_artifact(projection["files"][name], "cad-staging/" + job["run_id"] + "/source/" + name)
         def started(metadata):
             def update(state):
                 active = state["jobs"][job["job_id"]]
@@ -295,6 +344,8 @@ class CadCoordinator:
 
     def _seal(self, job: dict, package: dict, output: Path) -> list[dict]:
         """! @brief 검증된 CAD 파일을 게시 전 불변 저장소로 봉인한다."""
+        if job["cad"].get("operation") == "verify_step":
+            return seal_verification(self.service.journal, job, package, output)
         return seal_cad_outputs(self.service.journal, job, package, output)
 
 
@@ -324,6 +375,10 @@ class CadCoordinator:
                           **({"projection_purpose": package["projection_purpose"]} if "projection_purpose" in package else {}),
                           **({"environment_placement": package["environment_placement"]} if "environment_placement" in package else {}),
                           "kernel_independent": False, "physics_verified": False, "manufacturing_verified": False}
+                if job["cad"].get("operation") == "verify_step":
+                    result.update({"original_job_id": package["original_job_id"],
+                                   "source_manifest_sha256": package["source_manifest_sha256"],
+                                   "verification": package["verification"]})
                 job["artifacts"] = artifacts
                 self.service._event(job, "completed", operation_result=result)
         self.service.journal.transaction(publish)

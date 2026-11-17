@@ -66,6 +66,12 @@ public:
     void OnSelected();
 
 private:
+    /** @brief 실제 출력 입력, 검토, 생성 및 새 읽기 검수의 원문 보존을 검사한다. */
+    void OutputSmokeTick();
+    void OutputSafetyChecks();
+    Json m_outputFixture = Json::object();
+    Json m_outputBuilt = nullptr;
+    std::string m_outputRevision, m_outputBuildId, m_outputVerifyId;
     /** @brief 선택한 후보의 검토/새 사본/원본 보존과 영수증 복구를 확인한다. */
     void SelectionSmokeTick();
     void SelectionSafetyChecks();

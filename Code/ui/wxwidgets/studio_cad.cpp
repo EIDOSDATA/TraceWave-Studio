@@ -8,7 +8,7 @@ void StudioFrame::BindCad()
         wxEVT_MENU,
         [this](wxCommandEvent&)
         {
-            StartCad(true);
+            OpenOutputStep();
         },
         IdExportStep);
     Bind(
@@ -145,7 +145,8 @@ void StudioFrame::BindCad()
         const auto role = m_modelView->SourceRole(identity);
         if (role == "surface" || role == "environment")
         {
-            OpenDesignSetup(DesignSetup::Physical, {{"section", role == "surface" ? "surface" : "part"}, {"record_id", identity}});
+            OpenDesignSetup(DesignSetup::Physical,
+                            {{"section", role == "surface" ? "surface" : "part"}, {"record_id", identity}});
             return;
         }
         for (const auto& item : m_editor.value("items", Json::array()))
@@ -375,15 +376,15 @@ void StudioFrame::AcceptCad(const Json& result, bool show)
         const auto& clearance = item.at("clearance_mm");
         const std::string description = item.at("relation") == "touching" ? "형상 접촉" : "최소 간극";
         listing += "\n" + item.at("id").get<std::string>() + " / " + description + " " +
-                   (clearance.is_null() ? "미평가" : clearance.dump() + " mm") +
-                   " / " + (item.at("material_id").is_null() ? "물성 미정 / " : "") + "전기 연결 미평가";
+                   (clearance.is_null() ? "미평가" : clearance.dump() + " mm") + " / " +
+                   (item.at("material_id").is_null() ? "물성 미정 / " : "") + "전기 연결 미평가";
     }
     if (purpose != "step")
     {
         LoadCadMesh(result);
     }
     CadStatus("completed", purpose == "geometry" ? title + ". STEP 교환 파일은 STEP 출력으로 만드세요."
-                                                  : "STEP 패키지를 생성했습니다. 출력 폴더에서 파일을 확인하세요.");
+                                                 : "STEP 패키지를 생성했습니다. 출력 폴더에서 파일을 확인하세요.");
     m_cadDetails->ChangeValue(Display(listing));
     if (purpose != "step" && (show || m_modelView->IsLoading()))
     {

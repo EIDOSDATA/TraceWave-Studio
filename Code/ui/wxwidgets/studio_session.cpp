@@ -1,5 +1,6 @@
 /** @file @brief 주 창의 session 책임을 구현한다. */
 #include "studio_internal.h"
+#include "output_controller.h"
 
 void StudioFrame::Connect()
 {
@@ -12,7 +13,8 @@ void StudioFrame::Connect()
     std::string error;
     if (!m_client.Start(m_options.python.ToStdWstring(), m_options.source.ToStdWstring(),
                         m_options.workspace.ToStdWstring(), error, m_options.cadPython.ToStdWstring(),
-                        m_options.openEmsWsl, m_options.catalog.ToStdWstring()))
+                        m_options.openEmsWsl, m_options.catalog.ToStdWstring(),
+                        m_options.exchangePython.ToStdWstring()))
     {
         Failure(error, true);
         return;
@@ -57,6 +59,8 @@ void StudioFrame::Connect()
              m_validationSupported = result.value("methods", Json::object()).contains("rf.validation.list") &&
                                      result.value("methods", Json::object()).contains("rf.validation.reports") &&
                                      result.value("methods", Json::object()).contains("rf.validation.get");
+             m_outputSupported = result.value("methods", Json::object()).contains("export.context") &&
+                                 result.value("methods", Json::object()).contains("export.receipt");
              m_sweepSupported = result.value("methods", Json::object()).contains("sweep.context") &&
                                 result.value("methods", Json::object()).contains("sweep.create");
              m_sweepSelectionSupported = result.value("methods", Json::object()).contains("sweep.selection.context") &&
@@ -100,13 +104,15 @@ void StudioFrame::Send(const std::string& method, const Json& input, bool mutati
     const bool foreground =
         method != "rf.validation.list" && method != "rf.validation.get" && method != "rf.validation.reports" &&
         method.rfind("precision.", 0) != 0 && method.rfind("target.editor.", 0) != 0 &&
-        method.rfind("result.", 0) != 0 && method.rfind("template.", 0) != 0 && method.rfind("catalog.", 0) != 0 &&
-        method.rfind("pcb.selection.", 0) != 0 && method.rfind("study.", 0) != 0 && method != "cad.latest" &&
-        method != "solver.latest" && method != "solver.samples" && method != "result.open" && method != "job.cancel" &&
-        method != "solver.plan" && method != "solver.prepare" && method != "job.submit" &&
+        method.rfind("result.", 0) != 0 && method.rfind("export.", 0) != 0 && method.rfind("template.", 0) != 0 &&
+        method.rfind("catalog.", 0) != 0 && method.rfind("pcb.selection.", 0) != 0 && method.rfind("study.", 0) != 0 &&
+        method != "cad.latest" && method != "solver.latest" && method != "solver.samples" && method != "result.open" &&
+        method != "job.cancel" && method != "solver.plan" && method != "solver.prepare" && method != "job.submit" &&
         !(method == "snapshot.create" && input.value("description", "") == "GUI PCB 해석 입력") &&
+        !(method == "snapshot.create" && input.value("description", "") == "GUI 출력 검토 입력") &&
         !(method == "job.status" &&
-          (input.value("job_id", "") == m_cadTask.Id() || input.value("job_id", "") == m_solverTask.Id()));
+          (input.value("job_id", "") == m_cadTask.Id() || input.value("job_id", "") == m_solverTask.Id() ||
+           (m_output && m_output->OwnsJob(input.value("job_id", "")))));
     const auto submitted = m_requests.Submit(
         method, input, mutation, context, requestEpoch.empty() ? m_epoch : requestEpoch, foreground, std::move(success),
         std::move(failure), Uuid,
@@ -213,6 +219,7 @@ void StudioFrame::OnTimer(wxTimerEvent&)
         PollCad(now);
         PollSolver(now);
         PollSweep(now);
+        PollOutput(now);
         m_smoke->CadSmokeTick();
         m_smoke->SolverSmokeTick();
         m_smoke->StudySmokeTick();

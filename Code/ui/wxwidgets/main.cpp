@@ -17,6 +17,7 @@ public:
         parser.AddOption("", "source", "rfad source directory");
         parser.AddOption("", "workspace", "Project workspace directory");
         parser.AddOption("", "cad-python", "Isolated CAD Python executable path");
+        parser.AddOption("", "exchange-python", "Isolated drawing and exchange Python executable path");
         parser.AddOption("", "catalog", "Read-only PCB catalog SQLite path");
         parser.AddSwitch("", "openems-wsl", "Enable fixed WSL openEMS runtime");
         parser.AddSwitch("", "solver-smoke-test", "Run PCB solver GUI workflow and exit");
@@ -30,6 +31,7 @@ public:
         parser.AddSwitch("", "results-smoke-test", "Run pinned results, Smith and source comparison GUI workflow");
         parser.AddSwitch("", "validation-smoke-test", "Run immutable RF validation reports GUI workflow");
         parser.AddSwitch("", "selection-smoke-test", "Run candidate editing-copy review and preservation workflow");
+        parser.AddSwitch("", "output-smoke-test", "Run frozen-input drawing output and fresh verification workflow");
         parser.AddSwitch("", "printed-seed-smoke-test",
                          "Run printed reference/seed and workspace GUI workflow and exit");
         parser.AddSwitch("", "physical-setup-smoke-test", "Run physical stack, STEP placement and reopen workflow");
@@ -60,6 +62,7 @@ public:
         parser.Found("source", &options.source);
         parser.Found("workspace", &options.workspace);
         parser.Found("cad-python", &options.cadPython);
+        parser.Found("exchange-python", &options.exchangePython);
         parser.Found("catalog", &options.catalog);
         parser.Found("open-project", &options.openProject);
         parser.Found("smoke-report", &options.smokeReport);
@@ -86,10 +89,11 @@ public:
         options.resultsSmoke = parser.Found("results-smoke-test");
         options.validationSmoke = parser.Found("validation-smoke-test");
         options.selectionSmoke = parser.Found("selection-smoke-test");
+        options.outputSmoke = parser.Found("output-smoke-test");
         options.setupSmoke = parser.Found("design-setup-smoke-test") || options.printedSeedSmoke ||
                              options.designRulesSmoke || options.physicalSetupSmoke || options.precisionEditorSmoke ||
                              options.networkSmoke || options.sweepSmoke || options.resultsSmoke ||
-                             options.validationSmoke || options.selectionSmoke;
+                             options.validationSmoke || options.selectionSmoke || options.outputSmoke;
         parser.Found("study-specification", &options.studySpecification);
         options.smoke = parser.Found("smoke-test") || options.editorSmoke || options.canvasSmoke ||
                         options.primitivesSmoke || options.cadSmoke || options.solverSmoke || options.pcbSmoke ||
@@ -104,6 +108,7 @@ public:
         if (!wxFileName(options.python).IsAbsolute() || !wxFileName(options.source).IsAbsolute() ||
             !wxFileName(options.workspace).IsAbsolute() ||
             (!options.cadPython.empty() && !wxFileName(options.cadPython).IsAbsolute()) ||
+            (!options.exchangePython.empty() && !wxFileName(options.exchangePython).IsAbsolute()) ||
             (!options.catalog.empty() && !wxFileName(options.catalog).IsAbsolute()))
         {
             wxMessageBox(Display("실행 경로는 절대 경로로 지정하십시오."), Display("실행 설정"), wxOK | wxICON_ERROR);

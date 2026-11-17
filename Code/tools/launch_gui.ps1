@@ -3,6 +3,7 @@
 @param Workspace 비어 있으면 Code/.local/gui-workspace를 사용한다.
 @param Python 비어 있으면 Code/.venv/Scripts/python.exe를 사용한다.
 @param CadPython 비어 있으면 존재하는 Code/.venv-cad/Scripts/python.exe를 사용하며 없으면 CAD 없이 실행한다.
+@param ExchangePython 비어 있으면 존재하는 Code/.venv-exchange/Scripts/python.exe를 사용하며 없으면 도면 생성 없이 실행한다.
 @param OpenEmsWsl 설치/감사된 고정 WSL openEMS 런타임을 명시적으로 연결한다.
 @param Catalog 읽기 전용 PCB SQLite 경로이며 비우면 존재하는 로컬 개발 카탈로그를 사용한다.
 @param NoCatalog 로컬 기본 카탈로그 연결을 생략한다. 직접 입력과 저장된 출처 조회는 유지한다.
@@ -12,6 +13,7 @@ param(
     [string]$Workspace = '',
     [string]$Python = '',
     [string]$CadPython = '',
+    [string]$ExchangePython = '',
     [string]$Catalog = '',
     [switch]$NoCatalog,
     [switch]$OpenEmsWsl
@@ -48,6 +50,18 @@ elseif (-not (Test-Path -LiteralPath $CadPython -PathType Leaf))
 {
     throw 'Prepare the CAD environment first or pass -CadPython with its executable path.'
 }
+if ([string]::IsNullOrWhiteSpace($ExchangePython))
+{
+    $defaultExchangePython = Join-Path $codeRoot '.venv-exchange/Scripts/python.exe'
+    if (Test-Path -LiteralPath $defaultExchangePython -PathType Leaf)
+    {
+        $ExchangePython = $defaultExchangePython
+    }
+}
+elseif (-not (Test-Path -LiteralPath $ExchangePython -PathType Leaf))
+{
+    throw 'Prepare the exchange environment first or pass -ExchangePython with its executable path.'
+}
 $guiArguments = @(
     '--python', [System.IO.Path]::GetFullPath($Python),
     '--source', (Join-Path $codeRoot 'src'),
@@ -71,6 +85,10 @@ if (-not $NoCatalog)
 if (-not [string]::IsNullOrWhiteSpace($CadPython))
 {
     $guiArguments += @('--cad-python', [System.IO.Path]::GetFullPath($CadPython))
+}
+if (-not [string]::IsNullOrWhiteSpace($ExchangePython))
+{
+    $guiArguments += @('--exchange-python', [System.IO.Path]::GetFullPath($ExchangePython))
 }
 if ($OpenEmsWsl)
 {

@@ -73,6 +73,10 @@ def main() -> int:
             from rfad.adapters.cad.physical import inspect_step
 
             result["inspection"] = inspect_step(projection["source"])
+        elif request.get("operation") == "verify_step":
+            from rfad.adapters.cad.verification import verify_package
+
+            result["package"] = verify_package(projection, Path.cwd() / "source", Path.cwd() / "output")
         else:
             from rfad.adapters.cad.native import build_package
 

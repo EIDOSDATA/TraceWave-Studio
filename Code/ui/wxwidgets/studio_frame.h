@@ -47,6 +47,7 @@ class NetworkAssessmentPanel;
 class SweepPanel;
 class ResultWorkspace;
 class RfValidationController;
+class OutputController;
 enum class NetworkAction;
 enum class WorkspaceArea;
 enum class DesignSetup
@@ -86,6 +87,11 @@ private:
     DialogGateway ObjectToolGateway();
     void ShowObjectTool(std::unique_ptr<ProjectSetupDialog> dialog, const Json& selection);
     void BuildWorkspacePages();
+    /** @brief 고정 입력의 도면/STEP 생성과 새 읽기 검수를 출력 페이지에 연결한다. */
+    void BuildOutputInterface();
+    void UpdateOutputViews();
+    void OpenOutputStep();
+    void PollOutput(Clock::time_point now);
     void BuildWorkspaceLayers();
     void UpdateWorkspace();
     void RefreshLayerList();
@@ -279,6 +285,8 @@ private:
     bool m_resultsSupported = false;
     std::unique_ptr<ResultWorkspace> m_results;
     std::unique_ptr<RfValidationController> m_validation;
+    std::unique_ptr<OutputController> m_output;
+    bool m_outputSupported = false;
     bool m_validationSupported = false;
     bool m_networkPending = false;
     bool m_networkRefreshQueued = false;

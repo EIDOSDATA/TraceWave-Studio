@@ -11,6 +11,8 @@ from uuid import uuid4
 from rfad.application.canvas import build_canvas_dto, canvas_command
 from rfad.application.editor import build_dto, edit_command
 from rfad.application.cad_jobs import CAD_METHODS, CadCoordinator, CadRuntime
+from rfad.application.exchange_jobs import ExchangeCoordinator
+from rfad.application import exchange_service, exchange_contract
 from rfad.application.solver_jobs import SOLVER_METHODS, SolverCoordinator, SolverRuntime
 from rfad.application.job_state import TERMINAL, append_event
 from rfad.application.project_contract import (
@@ -33,7 +35,7 @@ from rfad.domain.errors import ProjectError
 from rfad.storage.journal import Journal
 
 ASYNC_METHODS = {
-    "project.open", "project.save", "snapshot.create", "design.validate", "export.preview",
+    "project.open", "project.save", "snapshot.create", "design.validate", "export.preview", "export.verify",
 } | CAD_METHODS | SOLVER_METHODS
 MUTATION_METHODS = ASYNC_METHODS | {
     "project.apply_command", "editor.apply", "canvas.apply", "project.undo", "project.redo", "job.cancel",
@@ -51,6 +53,7 @@ class ProjectService:
         auto_run: bool = True,
         fault_hook=None,
         cad_runtime: CadRuntime | None = None,
+        exchange_runtime=None,
         solver_runtime: SolverRuntime | None = None,
         catalog_database: Path | None = None,
     ):
@@ -62,6 +65,7 @@ class ProjectService:
         self._thread = None
         self._worker_error = None
         self.cad = CadCoordinator(self, cad_runtime)
+        self.exchange = ExchangeCoordinator(self, exchange_runtime)
         self.physical_setup = physical_setup_service.PhysicalSetupService(self)
         self.solver = SolverCoordinator(self, solver_runtime)
         self.studies = StudyCoordinator(self)
@@ -82,6 +86,7 @@ class ProjectService:
                 self._thread.start()
                 self._wake.set()
                 self.cad.start()
+                self.exchange.start()
                 self.solver.start()
                 self.studies.start()
         except BaseException:
@@ -102,6 +107,7 @@ class ProjectService:
         self._wake.set()
         self.studies.close()
         self.cad.close()
+        self.exchange.close()
         self.solver.close()
         if self._thread is not None:
             if self._thread.ident is not None:
@@ -144,6 +150,10 @@ class ProjectService:
                                 "E_CONFLICT", "이전 해석 작업을 자동 재실행하지 않습니다. guest 종료 상태를 확인하십시오.",
                             ).diagnostic(),
                         )
+                    elif "exchange" in job and job["state"] in {"running", "cancel_requested"}:
+                        job["exchange"]["resource_reserved"] = True
+                        self._event(job, "interrupted", outcome_unknown=True,
+                                    error=ProjectError("E_CONFLICT", "이전 출력 worker의 종료를 확인하지 못했습니다. 자동 재실행하지 않습니다.").diagnostic())
                     elif "cad" in job and job["state"] in {"running", "cancel_requested"}:
                         job["cad"]["resource_reserved"] = True
                         self._event(
@@ -209,6 +219,8 @@ class ProjectService:
             validate_input(method, context, data)
         elif method in PCB_SELECTION_MUTATIONS:
             self.pcb_selection.validate_input(method, context, data)
+        elif method == "export.verify" or (method in {"export.build", "export.preview"} and data.get("profile") == exchange_contract.PROFILE):
+            exchange_contract.validate_request(method, context, data)
         elif method in CAD_METHODS | {"export.preview"}:
             self.cad.validate_input(method, context, data)
         elif method in SOLVER_METHODS:
@@ -223,6 +235,7 @@ class ProjectService:
         result = self.requests.execute(method, params, self._dispatch_mutation)
         self._wake.set()
         self.cad.wake.set()
+        self.exchange.wake.set()
         self.solver.wake.set()
         self.studies.wake.set()
         return result
@@ -230,7 +243,14 @@ class ProjectService:
     def _dispatch_mutation(self, state: dict, method: str, context: dict, data: dict) -> dict:
         """! @brief 영수증과 동일한 transaction에서 기능별 명령을 실행한다."""
         self._preflight(method, context, data)
-        if method in sweep_selection.MUTATIONS:
+        if method == "export.verify":
+            original = exchange_service.owned_job(self, state, context, data["job_id"])
+            if "cad" in original:
+                return self.cad.admit_verify(state, context, data)
+            return exchange_service.admit(self, state, method, context, data)
+        elif method in {"export.build", "export.preview"} and data.get("profile") == exchange_contract.PROFILE:
+            return exchange_service.admit(self, state, method, context, data)
+        elif method in sweep_selection.MUTATIONS:
             return sweep_selection.admit(self, state, method, context, data)
         elif method in rf_validation_records.MUTATIONS:
             return rf_validation_records.admit(self, state, method, context, data)
@@ -378,7 +398,9 @@ class ProjectService:
         job = state["jobs"].get(data["job_id"])
         if job is None:
             raise ProjectError("E_SCHEMA", "작업을 찾을 수 없습니다.")
-        if "cad" in job:
+        if "exchange" in job:
+            self.exchange.cancel_job(job, data.get("reason", ""))
+        elif "cad" in job:
             self.cad.cancel_job(job, data.get("reason", ""))
         elif "solver" in job:
             self.solver.cancel_job(job, data.get("reason", ""))
@@ -396,7 +418,7 @@ class ProjectService:
         state = self.journal.read()
         self._project(state, params["context"])
         completed = [job for job in state["jobs"].values()
-                     if "cad" in job and job["state"] == "completed"
+                     if "cad" in job and job["state"] == "completed" and job["operation_method"] != "export.verify"
                      and job["context"].get("project_id") == params["context"]["project_id"]]
         if not completed:
             return {"profile": "rfad.cad-view/0.1", "result": None, "job_id": None}
@@ -438,12 +460,12 @@ class ProjectService:
         def begin(state):
             """! @brief worker가 소유할 미시작 자료 처리 작업 하나를 선택한다."""
             for job in state["jobs"].values():
-                if job["state"] == "queued" and "cad" not in job and "solver" not in job:
+                if job["state"] == "queued" and "cad" not in job and "solver" not in job and "exchange" not in job:
                     self._event(job, "running")
                     return job["job_id"]
             return None
         if not any(
-            job["state"] == "queued" and "cad" not in job and "solver" not in job
+            job["state"] == "queued" and "cad" not in job and "solver" not in job and "exchange" not in job
             for job in self.journal.read()["jobs"].values()
         ):
             return False

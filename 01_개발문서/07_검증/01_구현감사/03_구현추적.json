@@ -7366,6 +7366,23 @@
       "profile": "rfad.editor/0.1",
       "source": "draft_revision"
     },
+    "exchange_profile": {
+      "formats": [
+        "pdf",
+        "svg",
+        "dxf"
+      ],
+      "manufacturing_verified": false,
+      "max_file_bytes": 16777216,
+      "max_files": 35,
+      "max_package_bytes": 67108864,
+      "native_slots": 1,
+      "physics_verified": false,
+      "preview_required": true,
+      "profile": "rfad.exchange.drawing/0.1",
+      "runtime_configured": false,
+      "source": "immutable_snapshot"
+    },
     "network_profile": {
       "assessment": "rfad.target-assessment/0.1",
       "automatic_interpolation": false,
@@ -7709,8 +7726,8 @@
     },
     {
       "path": "01_개발문서/02_시스템명세/05_해석기_어댑터_계약.md",
-      "text_sha256": "04cdbae9913a96d7718b660e40df8b249956a71be3a7be499bffe311e1c5708a",
-      "utf8_bytes": 34621
+      "text_sha256": "7f8a621c5cc0ac9e041e47b55eecc6677a1be6586f5e1401a98892398dc5931a",
+      "utf8_bytes": 35447
     },
     {
       "path": "01_개발문서/07_검증/01_검증과_수용_기준.md",
@@ -7779,6 +7796,22 @@
     },
     "editor.get": {
       "extension_profile": "rfad.editor/0.1",
+      "status": "implemented"
+    },
+    "export.context": {
+      "extension_profile": "rfad.exchange.drawing/0.1",
+      "status": "implemented"
+    },
+    "export.get": {
+      "extension_profile": "rfad.exchange.drawing/0.1",
+      "status": "implemented"
+    },
+    "export.list": {
+      "extension_profile": "rfad.exchange.drawing/0.1",
+      "status": "implemented"
+    },
+    "export.receipt": {
+      "extension_profile": "rfad.exchange.drawing/0.1",
       "status": "implemented"
     },
     "network.apply": {
@@ -9598,27 +9631,46 @@
     },
     {
       "code": [
-        "src/rfad/application/rpc.py",
-        "src/rfad/application/canvas.py"
+        "src/rfad/domain/drawing_layout.py",
+        "src/rfad/application/exchange_contract.py",
+        "src/rfad/application/exchange_service.py",
+        "src/rfad/application/exchange_jobs.py",
+        "src/rfad/application/exchange_artifacts.py",
+        "src/rfad/adapters/exchange/drawing.py",
+        "src/rfad/adapters/exchange/drawing_writers.py",
+        "src/rfad/adapters/exchange/drawing_readers.py",
+        "ui/wxwidgets/drawing_sheet_canvas.cpp",
+        "ui/wxwidgets/output_controller.cpp"
       ],
       "contract_notes": [
-        "검증 그래프를 SVG로 저장하는 개발 도구는 치수 도면/FN-040 출력 기능이 아니다."
+        "검증 그래프를 SVG로 저장하는 개발 도구는 치수 도면/FN-040 출력 기능이 아니다.",
+        "출력 원본/출처/미정과 과거 파일을 보존한다. 실제 parser 재입력 성공과 수신 도구/제조/RF 검증은 별도 상태다."
       ],
       "evidence": [
-        "../01_개발문서/05_기능설계/02_설계편집/03_이차원표시와_직접편집.md"
+        "../01_개발문서/05_기능설계/05_출력교환/04_연관도면과_출력재검수.md",
+        "../01_개발문서/04_화면설계/24_기술도면과_스텝검수_화면.md",
+        "../01_개발문서/07_검증/23_연관도면과_스텝재검수_검증.md",
+        "../01_개발문서/07_검증/24_연관도면과_스텝재검수_실행기록.json"
       ],
       "gaps": [
-        "snapshot에서 도면 뷰/연관 치수/축척/검정선을 생성하고 drawing/fabrication_geometry 채널을 분리해야 한다.",
-        "단위/양자화/원호 chord tolerance와 FN-043 reader 검수를 구현해야 한다."
+        "실제 수신 도구의 글꼴/단위/표현, 지원을 확장할 NPTH/slot/cutout/footprint/paste와 제조 도면 수용이 남는다.",
+        "일반 Boolean 절단 및 임의 외부 3D 환경의 2D 투영은 미지원이다. PDF 원호 표본 오차 검사를 연속 오차 증명이나 제조 공차로 확대하지 않는다."
       ],
       "id": "FN-040",
-      "implementation_status": "not_implemented",
-      "implemented": "화면 캔버스와 수치 그래프 도구는 있으나 연관 기술 도면 PDF/SVG/DXF 제품 출력이 없다.",
+      "implementation_status": "partial",
+      "implemented": "고정 snapshot의 연관 PDF/SVG/DXF, 실제 용지/축척/층·외곽·상세·적층 뷰와 독립 worker를 연결했다. drawing/fabrication_geometry를 구분하며 GUI와 writer가 서비스의 같은 종이 mm 배치를 사용한다.",
       "next_steps": [
-        4,
-        10
+        10,
+        12
       ],
-      "tests": []
+      "tests": [
+        "tests/test_exchange_drawing.py",
+        "tests/test_exchange_service.py",
+        "tests/test_exchange_jobs.py",
+        "tests/test_exchange_native.py",
+        "tests/output_model_test.cpp",
+        "tests/test_gui_output_process.py"
+      ]
     },
     {
       "code": [
@@ -9626,7 +9678,9 @@
         "src/rfad/adapters/cad/step_io.py",
         "src/rfad/application/cad_artifacts.py",
         "src/rfad/application/physical_projection.py",
-        "src/rfad/application/cad.py"
+        "src/rfad/application/cad.py",
+        "src/rfad/application/cad_verification.py",
+        "src/rfad/adapters/cad/verification.py"
       ],
       "contract_notes": [
         "현재 status=generated_unverified, kernel_independent=false다. 동일 OCCT reader와 독립 산술 기대값 통과를 수신 CAD 또는 제조 검증으로 승격하지 않는다."
@@ -9634,7 +9688,10 @@
       "evidence": [
         "runtime_profiles/cad-worker-windows-x64.json",
         "runtime_profiles/gui-cad-windows-x64.json",
-        "runtime_profiles/physical-setup.json"
+        "runtime_profiles/physical-setup.json",
+        "../01_개발문서/05_기능설계/05_출력교환/04_연관도면과_출력재검수.md",
+        "../01_개발문서/07_검증/23_연관도면과_스텝재검수_검증.md",
+        "../01_개발문서/07_검증/24_연관도면과_스텝재검수_실행기록.json"
       ],
       "gaps": [
         "실제 수신 CAD/version별 재열기, 선택/측정/조립 검수가 남는다.",
@@ -9642,7 +9699,7 @@
       ],
       "id": "FN-041",
       "implementation_status": "partial",
-      "implemented": "AP242 고체 STEP, 원본 snapshot/재료/net/port sidecar, stable body map과 파일 hash를 생성하고 OCP reader로 다시 확인한다. 명시 피복/개구를 가진 표면층과 활성 시나리오의 간이 상자/단일 STEP 물체도 include_in_export에 따라 별도 바디로 출력한다.",
+      "implemented": "AP242 고체 STEP, 원본 snapshot/재료/net/port sidecar, stable body map과 파일 hash를 생성하고 OCP reader로 다시 확인한다. 명시 피복/개구를 가진 표면층과 활성 시나리오의 간이 상자/단일 STEP 물체도 include_in_export에 따라 별도 바디로 출력한다. 공개 export.verify는 원래 manifest/snapshot을 고정한 별도 CAD 작업에서 STEP을 다시 읽고 새 검수 보고서만 게시한다. 원본 출력과 3D 최신 mesh 선택을 보존한다.",
       "next_steps": [
         10
       ],
@@ -9650,7 +9707,10 @@
         "tests/test_cad_native.py",
         "tests/test_cad_copper_features.py",
         "tests/test_gui_cad_process.py",
-        "tests/test_gui_physical_setup_process.py"
+        "tests/test_gui_physical_setup_process.py",
+        "tests/test_cad_verification.py",
+        "tests/test_cad_latest.py",
+        "tests/test_gui_output_process.py"
       ]
     },
     {
@@ -9679,27 +9739,39 @@
     {
       "code": [
         "src/rfad/adapters/cad/step_io.py",
-        "src/rfad/application/rpc.py"
+        "src/rfad/application/rpc.py",
+        "src/rfad/application/cad_verification.py",
+        "src/rfad/adapters/cad/verification.py",
+        "src/rfad/application/exchange_artifacts.py",
+        "src/rfad/adapters/exchange/drawing_readers.py"
       ],
       "contract_notes": [
         "step_io 비교는 passed_same_kernel이며 not_evaluated에 독립 kernel/제조 DRC/전체 의도 net/슬롯/assembly가 명시돼 있다."
       ],
       "evidence": [
-        "runtime_profiles/cad-worker-windows-x64.json"
+        "runtime_profiles/cad-worker-windows-x64.json",
+        "../01_개발문서/05_기능설계/05_출력교환/04_연관도면과_출력재검수.md",
+        "../01_개발문서/04_화면설계/24_기술도면과_스텝검수_화면.md",
+        "../01_개발문서/07_검증/23_연관도면과_스텝재검수_검증.md",
+        "../01_개발문서/07_검증/24_연관도면과_스텝재검수_실행기록.json"
       ],
       "gaps": [
-        "독립 수신 reader 및 2D/CAM 경로, critical gap/연결/net topology와 bounded boundary 차이의 검사가 필요하다.",
-        "공개 API-025 export.verify와 reader/version/tolerance provenance별 상태를 제공해야 한다."
+        "독립 수신 CAD 및 CAM 경로, 일반 critical gap/연결/net topology와 연속 boundary 차이의 전체 수용이 남는다.",
+        "같은 OCCT의 새 프로세스와 DXF 동일 라이브러리 분리 reader를 독립 kernel 검수로 판정하지 않는다."
       ],
       "id": "FN-043",
       "implementation_status": "partial",
-      "implemented": "STEP의 schema/단위/이름/solid/bbox/중심/체적/단면/홀/두께와 중첩을 같은 kernel reader로 검사한다.",
+      "implemented": "STEP의 schema/단위/이름/solid/bbox/중심/체적/단면/홀/두께와 중첩을 같은 kernel reader로 검사한다. PDF/SVG/DXF는 분리된 parser로 실제 좌표/원호/외곽·구멍/치수 원문을 대조한다. API-025 export.verify는 별도 작업과 reader/writer identity를 보존하며 원래 패키지를 바꾸지 않는다.",
       "next_steps": [
         10
       ],
       "tests": [
         "tests/test_cad_native.py",
-        "tests/test_cad_copper_features.py"
+        "tests/test_cad_copper_features.py",
+        "tests/test_cad_verification.py",
+        "tests/test_exchange_drawing.py",
+        "tests/test_exchange_native.py",
+        "tests/test_gui_output_process.py"
       ]
     },
     {
@@ -9817,7 +9889,7 @@
   ],
   "generator": {
     "path": "Code/tools/build_implementation_audit.py",
-    "text_sha256": "43d4fe59a1e8ab0217952533361441ea1126d6d7394d317161f8b2c4b61533d4",
+    "text_sha256": "ce209e1a7d046942fc531ffc103369fa45345e9300966df78e5f95c1eb3b8ce9",
     "utf8_bytes": 17426
   },
   "initial_review_date_kst": "2026-11-12",
@@ -10050,8 +10122,12 @@
       "method": "export.build"
     },
     {
-      "advertised": false,
-      "descriptor": null,
+      "advertised": true,
+      "descriptor": {
+        "api_id": "API-025",
+        "extension_profile": "rfad.exchange.drawing/0.1",
+        "status": "implemented"
+      },
       "full_contract_accepted": false,
       "id": "API-025",
       "method": "export.verify"
@@ -10627,7 +10703,8 @@
       "next_steps": [
         3,
         4,
-        10
+        10,
+        12
       ],
       "stage": "M/R1",
       "verification_groups": [
@@ -11070,9 +11147,9 @@
       "id": "PHY-068",
       "next_steps": [
         3,
-        4,
         6,
-        10
+        10,
+        12
       ],
       "stage": "M/R1",
       "verification_groups": [
@@ -12438,8 +12515,8 @@
       ],
       "id": "OUT-001",
       "next_steps": [
-        4,
-        10
+        10,
+        12
       ],
       "stage": "M/R1",
       "verification_groups": [
@@ -12624,8 +12701,8 @@
       ],
       "id": "OUT-009",
       "next_steps": [
-        4,
-        10
+        10,
+        12
       ],
       "stage": "M/R1",
       "verification_groups": [
@@ -13494,8 +13571,8 @@
   "review_inputs": [
     {
       "path": "01_개발문서/07_검증/01_구현감사/01_설계기능.json",
-      "text_sha256": "d71078a6be96939a23b4561b6f3df9164f3d643938be808925ffb24b15ca81b2",
-      "utf8_bytes": 45148
+      "text_sha256": "5a871820eea52e577dd8e65bcd6989b32bb1bd9caddad2a50628afbdb1be1aaf",
+      "utf8_bytes": 48103
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
@@ -13503,7 +13580,7 @@
       "utf8_bytes": 62209
     }
   ],
-  "reviewed_commit": "3e3121e37f42886a72d0e30c81859a17fea2b75f",
+  "reviewed_commit": "ce9b6186515f981ccddbc69968916dd0b3926ad1",
   "schema": "rfad.implementation-audit/0.1",
   "scope": "implementation_gap_review_not_release_acceptance",
   "source_and_test_files": [
@@ -13526,6 +13603,11 @@
       "path": "01_개발문서/04_화면설계/21_다중결과와_방사필드_화면.md",
       "text_sha256": "ad2fc1e1e5ec0c111a72ecfaa76df43326a83994c81a354c36bcd32bd982c3a1",
       "utf8_bytes": 10759
+    },
+    {
+      "path": "01_개발문서/04_화면설계/24_기술도면과_스텝검수_화면.md",
+      "text_sha256": "d85100d7d41c5a317fa1dc04c874729412b20e66da04dd154c8339b8d83a1fc2",
+      "utf8_bytes": 7044
     },
     {
       "path": "01_개발문서/05_기능설계/01_프로젝트/01_프로젝트_명령과_저장.md",
@@ -13609,13 +13691,18 @@
     },
     {
       "path": "01_개발문서/05_기능설계/05_출력교환/02_기계형상_입력과_출력계약.md",
-      "text_sha256": "749dd5a41d94816a338e24c00266497d6496ba64b58bb3c45c017f2e728aa655",
-      "utf8_bytes": 25395
+      "text_sha256": "17c59da0029d13555b6975ce708ab90de29a1d8098d0d55c4d789b8f5835b92f",
+      "utf8_bytes": 25628
     },
     {
       "path": "01_개발문서/05_기능설계/05_출력교환/03_복소결과_파일교환.md",
       "text_sha256": "13c5a0819215e492c3d66a32ae360a24b799b9a3aad95bc7e369046f6208d460",
       "utf8_bytes": 13393
+    },
+    {
+      "path": "01_개발문서/05_기능설계/05_출력교환/04_연관도면과_출력재검수.md",
+      "text_sha256": "fbf8f957490285ef17921865c04ebe6e1629a0ae6714f47a33f7e332e4283ad6",
+      "utf8_bytes": 12421
     },
     {
       "path": "01_개발문서/05_기능설계/06_연구/01_명시적스윕과_실행계약.md",
@@ -13656,6 +13743,16 @@
       "path": "01_개발문서/07_검증/21_후보채택과_원호아이에프에이_검증.md",
       "text_sha256": "1273b0ba6aa3e27bbd5a5488ec5209c1295d6c993dd4bd132dd72c96c44dfdf2",
       "utf8_bytes": 11174
+    },
+    {
+      "path": "01_개발문서/07_검증/23_연관도면과_스텝재검수_검증.md",
+      "text_sha256": "529e6392337d99e65595858155f4f5e3628ea7927d9cd99faa4139857c2998bc",
+      "utf8_bytes": 11630
+    },
+    {
+      "path": "01_개발문서/07_검증/24_연관도면과_스텝재검수_실행기록.json",
+      "text_sha256": "8af324f5a601152babd1fa5c5a931fcdbd9d89b7b93e15085e2176dcaba3ab20",
+      "utf8_bytes": 535005
     },
     {
       "path": "Code/runtime_profiles/cad-worker-windows-x64.json",
@@ -13793,6 +13890,26 @@
       "utf8_bytes": 7708
     },
     {
+      "path": "Code/src/rfad/adapters/cad/verification.py",
+      "text_sha256": "58dd3ddb64fb6effe07b9e374466f74e9982d139b7958ceddb9aa5af85e19fcc",
+      "utf8_bytes": 5330
+    },
+    {
+      "path": "Code/src/rfad/adapters/exchange/drawing.py",
+      "text_sha256": "b4aea1217a956669db336c428a46ead3f83fcb6d5f0ff7b4a50c9d7a12391127",
+      "utf8_bytes": 8961
+    },
+    {
+      "path": "Code/src/rfad/adapters/exchange/drawing_readers.py",
+      "text_sha256": "2e36f77f48512a6e2613c9189635259e44c52b6a0251bfe31a75040c261d33d1",
+      "utf8_bytes": 24139
+    },
+    {
+      "path": "Code/src/rfad/adapters/exchange/drawing_writers.py",
+      "text_sha256": "21141d8d141f615b0472f661b3cb4b06bb0222217a3db5fa018bb757650b0ebf",
+      "utf8_bytes": 14497
+    },
+    {
       "path": "Code/src/rfad/adapters/field_hdf5.py",
       "text_sha256": "2cb61bb00971e0afd0367b5d396de15bfd751dde131d7304143d33b158c7835b",
       "utf8_bytes": 9724
@@ -13873,6 +13990,11 @@
       "utf8_bytes": 5146
     },
     {
+      "path": "Code/src/rfad/application/cad_verification.py",
+      "text_sha256": "a9120d53ac3eea9e5bc0c1c07e6554682c2b8d3adf256cb8b8ff5201cfe69efe",
+      "utf8_bytes": 8513
+    },
+    {
       "path": "Code/src/rfad/application/canvas.py",
       "text_sha256": "02f4e24f1d95c9cde57075fee9a84edf77adc7aaf9bf39210d1d659e49e06d7a",
       "utf8_bytes": 23425
@@ -13906,6 +14028,26 @@
       "path": "Code/src/rfad/application/display_mesh.py",
       "text_sha256": "03e9906ed97890dc378108ebd3a94d7ec088ee467441e10379f1f0318077511d",
       "utf8_bytes": 5287
+    },
+    {
+      "path": "Code/src/rfad/application/exchange_artifacts.py",
+      "text_sha256": "40accce3d41dc67089dc27298644629f44df048d145641ea38d9b88b355f5996",
+      "utf8_bytes": 9658
+    },
+    {
+      "path": "Code/src/rfad/application/exchange_contract.py",
+      "text_sha256": "d627d993b9afa367425587701b93edb8fe42327dcb4171cb0ef2078e141471dc",
+      "utf8_bytes": 6796
+    },
+    {
+      "path": "Code/src/rfad/application/exchange_jobs.py",
+      "text_sha256": "53fe92f2fb75a0edcc9307fb13e7b53eb75783d0a10e28ade25ad67277cfa620",
+      "utf8_bytes": 11141
+    },
+    {
+      "path": "Code/src/rfad/application/exchange_service.py",
+      "text_sha256": "407d28e131e97c2067a7bbd46fc7ee650b89d317c7a29ccfdbd4bcff2c2aac32",
+      "utf8_bytes": 22620
     },
     {
       "path": "Code/src/rfad/application/job_state.py",
@@ -14144,8 +14286,8 @@
     },
     {
       "path": "Code/src/rfad/application/rpc.py",
-      "text_sha256": "28f78b980e6d1f82ce9bb708b640713a1dafbed883f48d6fefdee46b8f842f88",
-      "utf8_bytes": 28891
+      "text_sha256": "656691b80b8d32dfbbbca2a7954f6948a90802a22d90783d868ff7849babe8ea",
+      "utf8_bytes": 29978
     },
     {
       "path": "Code/src/rfad/application/solver.py",
@@ -14276,6 +14418,11 @@
       "path": "Code/src/rfad/domain/design_sweep.py",
       "text_sha256": "5d030ed70cfb7d046221423a688441090716c3f50bdc29fafc2654af79a8af42",
       "utf8_bytes": 21256
+    },
+    {
+      "path": "Code/src/rfad/domain/drawing_layout.py",
+      "text_sha256": "2a984b8ceb5a09ef0832aadac062632affcb5ee35f251c3b29e0145285f80c83",
+      "utf8_bytes": 30514
     },
     {
       "path": "Code/src/rfad/domain/expressions.py",
@@ -14468,6 +14615,11 @@
       "utf8_bytes": 17124
     },
     {
+      "path": "Code/tests/output_model_test.cpp",
+      "text_sha256": "018156ab91423f7764d252f70da1240dee2c5fa6ac1e825f29420357ee1e7809",
+      "utf8_bytes": 8663
+    },
+    {
       "path": "Code/tests/radiation_pattern_test.cpp",
       "text_sha256": "21b1392cd33c603e6ca95d06eb084e40639416914e4f85b1fcc35774b8db0e07",
       "utf8_bytes": 3342
@@ -14483,6 +14635,11 @@
       "utf8_bytes": 17953
     },
     {
+      "path": "Code/tests/test_cad_latest.py",
+      "text_sha256": "68f6f7cd0fa8a5e1de4ae35bdd5e1b97a72d8d5ba953551ef5fbff78ea2e015f",
+      "utf8_bytes": 7444
+    },
+    {
       "path": "Code/tests/test_cad_native.py",
       "text_sha256": "4bd7b5f45c949d865eb4b6e7bec5e9c94ce45fc673acffd673206c6dedbc6af1",
       "utf8_bytes": 14915
@@ -14491,6 +14648,11 @@
       "path": "Code/tests/test_cad_projection.py",
       "text_sha256": "b38e931040380a7c2641101aaead95316fa88879cd03f20beb85de98effc2899",
       "utf8_bytes": 13915
+    },
+    {
+      "path": "Code/tests/test_cad_verification.py",
+      "text_sha256": "90fb76653733c42a20a2cfcd2d450414ec87b275d1f8fb2b4ffd151d4b5fef3e",
+      "utf8_bytes": 14249
     },
     {
       "path": "Code/tests/test_canvas_service.py",
@@ -14558,6 +14720,26 @@
       "utf8_bytes": 18923
     },
     {
+      "path": "Code/tests/test_exchange_drawing.py",
+      "text_sha256": "e1dc226c9a99c18dd1b8c6c8b233c0db34eaddb578977cceb1ecc1f8d9cbbc6c",
+      "utf8_bytes": 22911
+    },
+    {
+      "path": "Code/tests/test_exchange_jobs.py",
+      "text_sha256": "7bcbde730dcdcf8c70585c38372d3bda85e7fae1f2ec1192263ed1d3f3b623a8",
+      "utf8_bytes": 5631
+    },
+    {
+      "path": "Code/tests/test_exchange_native.py",
+      "text_sha256": "de22f3a7ae43ba65a55d88b15b11d4859610d8a2c5c263fbf23cdc4d7fdc4884",
+      "utf8_bytes": 11820
+    },
+    {
+      "path": "Code/tests/test_exchange_service.py",
+      "text_sha256": "093e3b5e16d4652598f2b1ad88c6b5068d201ff1c10adc5f36026cf6307cf30e",
+      "utf8_bytes": 12495
+    },
+    {
       "path": "Code/tests/test_expressions.py",
       "text_sha256": "65cd22e7ebe17821554c13951aea55ee8ccccd1cd4ac562fa321fd0c34e6ccdb",
       "utf8_bytes": 9455
@@ -14576,6 +14758,11 @@
       "path": "Code/tests/test_gui_network_process.py",
       "text_sha256": "c5781009668d02ab7bfa924c137ad7b748c932062e6c159610eb5e8f8c88bb91",
       "utf8_bytes": 12335
+    },
+    {
+      "path": "Code/tests/test_gui_output_process.py",
+      "text_sha256": "6bd434732d7146e5152d19045aee25d287913e5e41ba2d87034fa17dc7b3d439",
+      "utf8_bytes": 7220
     },
     {
       "path": "Code/tests/test_gui_physical_setup_process.py",
@@ -14933,6 +15120,11 @@
       "utf8_bytes": 4275
     },
     {
+      "path": "Code/ui/wxwidgets/drawing_sheet_canvas.cpp",
+      "text_sha256": "12d72d77154b74e6782d640cb4caa6b9d69d3507e287a23c78557fb3f7cf075a",
+      "utf8_bytes": 9101
+    },
+    {
       "path": "Code/ui/wxwidgets/field_result_view.cpp",
       "text_sha256": "f9e5d3e1c81002b784273a46a8d23d5e71c1235f6e58ad6754cd31a08122557f",
       "utf8_bytes": 20387
@@ -14991,6 +15183,11 @@
       "path": "Code/ui/wxwidgets/object_rename_dialog.cpp",
       "text_sha256": "1553548a4df001df11fe305e87a8056d70e322c3b44e31d9029a881387a82dd1",
       "utf8_bytes": 3189
+    },
+    {
+      "path": "Code/ui/wxwidgets/output_controller.cpp",
+      "text_sha256": "9d4a5f00b81806adefdd3eede5e38bef325811efe0b4f29644282a906979b6ae",
+      "utf8_bytes": 13439
     },
     {
       "path": "Code/ui/wxwidgets/physical_setup_dialog.cpp",
@@ -15084,8 +15281,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/service_client.cpp",
-      "text_sha256": "5826318d8b24803cac54c9dfac62d78189e173c732ae65183eb2ea4f8b7ee199",
-      "utf8_bytes": 11734
+      "text_sha256": "9d92f33e3c6a82100d6076d9f54dac30e0f5b66dba6bd20db9b0ab4c883d1963",
+      "utf8_bytes": 11882
     },
     {
       "path": "Code/ui/wxwidgets/smith_chart.cpp",
@@ -15119,8 +15316,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_shell.cpp",
-      "text_sha256": "aa53d4718600d2f268c77536050bf651fff5f2805bbb2506b6a0347504b59c68",
-      "utf8_bytes": 13385
+      "text_sha256": "750f79764e445fe776fe8961ebaca962c65f6d72d09c111f582664c095d7f9b0",
+      "utf8_bytes": 13671
     },
     {
       "path": "Code/ui/wxwidgets/studio_sweep_selection.cpp",
@@ -15144,8 +15341,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_workspace.cpp",
-      "text_sha256": "3d6384c051cfa7ac65227c71653272f8d6d33cd0f03abed863faef61925fa82f",
-      "utf8_bytes": 12920
+      "text_sha256": "2fa89302acbf2e11788a4c432461083fce53c91f444a343a529e61b21c099420",
+      "utf8_bytes": 11924
     },
     {
       "path": "Code/ui/wxwidgets/study_report_dialog.cpp",

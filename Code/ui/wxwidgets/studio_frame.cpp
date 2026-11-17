@@ -4,6 +4,7 @@
 #include "studio_theme.h"
 #include "result_workspace.h"
 #include "rf_validation_controller.h"
+#include "output_controller.h"
 
 StudioFrame::StudioFrame(Options options)
     : wxFrame(nullptr, wxID_ANY, Display("TraceWave Studio"), wxDefaultPosition, wxSize(1360, 860)),
@@ -25,6 +26,7 @@ StudioFrame::StudioFrame(Options options)
 
 StudioFrame::~StudioFrame()
 {
+    m_output.reset();
     m_validation.reset();
     m_results.reset();
     m_shell.reset();

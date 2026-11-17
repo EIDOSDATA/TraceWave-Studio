@@ -55,14 +55,7 @@ void StudioFrame::BuildWorkspacePages()
                    ShowStudyReport(this);
                });
     m_views->AddPage(comparison, Display("수렴 연구"));
-    auto* output = page("출력", "현재 개정을 스냅샷으로 고정하여 STEP/3D 형상을 생성합니다.\n형상 생성 성공은 독립 "
-                                "교환 검수나 제조/RF/실측 합격을 뜻하지 않습니다.");
-    action(output, output->GetSizer(), IdExportStep, "STEP 출력");
-    action(output, output->GetSizer(), IdBuild3D, "현재 설계의 3D 갱신");
-    action(output, output->GetSizer(), IdOutputFolder, "완료 출력 폴더 열기");
-    m_outputSummary = new wxStaticText(output, wxID_ANY, wxEmptyString);
-    output->GetSizer()->Add(m_outputSummary, 0, wxALL, FromDIP(StudioTheme::PanelPadding));
-    m_views->AddPage(output, Display("출력"));
+    BuildOutputInterface();
     m_workspaceJobs = new wxListCtrl(m_bottom, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_HRULES);
     StudioTheme::Table(*m_workspaceJobs);
     m_workspaceJobs->SetName("workspace.jobs");
@@ -96,6 +89,7 @@ void StudioFrame::BuildWorkspacePages()
         UpdateSweepViews();
         UpdateResultViews();
         UpdateValidationViews();
+        UpdateOutputViews();
     };
 }
 
@@ -235,12 +229,9 @@ void StudioFrame::UpdateWorkspace()
                                             ? "해석 환경 구성됨 / 입력 검사와 해석 실행은 별도입니다."
                                             : "해석 환경이 구성되지 않았습니다. 편집/저장은 계속 사용할 수 있습니다."));
     m_analysisSummary->Wrap(FromDIP(440));
-    m_outputSummary->SetLabel(Display(m_cadConfigured
-                                          ? "CAD 환경 구성됨 / 출력 상태는 하단 작업/CAD 출력에서 확인합니다."
-                                          : "CAD 환경이 구성되지 않았습니다. 기존 형상/출처와 저장은 유지합니다."));
-    m_outputSummary->Wrap(FromDIP(440));
     UpdateNetworkViews();
     UpdateSweepViews();
     UpdateResultViews();
     UpdateValidationViews();
+    UpdateOutputViews();
 }

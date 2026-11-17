@@ -1,6 +1,7 @@
 /** @file @brief 주 창의 controls 책임을 구현한다. */
 #include "studio_internal.h"
 #include "editor_sync.h"
+#include "output_controller.h"
 #include <wx/srchctrl.h>
 
 void StudioFrame::UpdateControls()
@@ -9,8 +10,10 @@ void StudioFrame::UpdateControls()
     const bool hasProject = !m_project.empty();
     const bool opened = ready && Studio::EditableProject(m_editor, m_scene, m_project, m_revision);
     const bool cadRunning = m_cadPreparing || !m_cadTask.Id().empty();
-    const bool canSwitch = ready && m_studyDialog == nullptr && !cadRunning && !m_solverWorkflow.Active() &&
-                           !m_solverRestoring && !m_cadRestoring && !m_modelView->IsLoading();
+    const bool outputRunning = m_output && m_output->Active();
+    const bool canSwitch = ready && m_studyDialog == nullptr && !cadRunning && !outputRunning &&
+                           !m_solverWorkflow.Active() && !m_solverRestoring && !m_cadRestoring &&
+                           !m_modelView->IsLoading();
     GetMenuBar()->Enable(IdCreate, canSwitch);
     GetMenuBar()->Enable(IdOpen, canSwitch);
     GetMenuBar()->Enable(IdSave, opened);
@@ -92,7 +95,8 @@ void StudioFrame::UpdateControls()
         }
         else if (item.first == IdExportStep || item.first == IdBuild3D)
         {
-            enabled = opened && m_cadConfigured && !cadRunning && !m_cadRestoring && !m_modelView->IsLoading();
+            enabled = opened && m_cadConfigured && !cadRunning && !outputRunning && !m_cadRestoring &&
+                      !m_modelView->IsLoading();
         }
         else if (item.first == IdCancelCad)
         {

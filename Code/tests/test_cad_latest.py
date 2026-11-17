@@ -95,6 +95,21 @@ class CadLatestTests(unittest.TestCase):
         self.service = ProjectService(self.workspace, auto_run=False)
         self.assertEqual(self.rpc(self.params())["result"], {"profile": "rfad.cad-view/0.1", "result": result, "job_id": selected})
 
+    def test_newer_verification_does_not_replace_the_display_mesh(self):
+        """! @brief 별도 STEP 재검수 보고서를 최신 3D 형상으로 선택하지 않는다."""
+        selected, result = self.record(self.first, 200)
+        verification, _ = self.record(self.first, 300)
+
+        def mark_verification(state):
+            """! @brief 더 늦게 완료된 검수 작업에 mesh 없는 실제 결과 역할을 부여한다."""
+            job = state["jobs"][verification]
+            job["operation_method"] = "export.verify"
+            job["cad"]["operation"] = "verify_step"
+            job["events"][-1]["operation_result"]["artifacts"] = [{"role": "verification", "uri": "projects/검수/verification.json"}]
+
+        self.service.journal.transaction(mark_verification)
+        self.assertEqual(self.rpc(self.params())["result"], {"profile": "rfad.cad-view/0.1", "result": result, "job_id": selected})
+
     def test_invalid_project_envelope_and_input_are_rejected_without_mutation(self):
         """! @brief 등록되지 않은 프로젝트와 미지원 필드를 조회로 우회할 수 없다."""
         cases = []

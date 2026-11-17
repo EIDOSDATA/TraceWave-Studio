@@ -48,6 +48,7 @@ void StudioFrame::UpdateNetworkViews()
     const bool assessmentActive = m_views->GetSelection() == 7;
     const bool networkActive = m_views->GetSelection() == 6;
     const bool active = networkActive || assessmentActive || m_views->GetSelection() >= 8;
+    const bool output = m_views->GetSelection() == 5;
     m_networkPanel->NavigationView()->Show(networkActive);
     m_networkPanel->ConditionsView()->Show(networkActive);
     m_networkAssessmentPanel->NavigationView()->Show(assessmentActive);
@@ -55,15 +56,15 @@ void StudioFrame::UpdateNetworkViews()
     m_tree->Show(!active);
     m_objectSearch->Show(!active);
     m_objectFilter->Show(!active);
-    m_selectionLabel->Show(!active);
+    m_selectionLabel->Show(!active && !output);
     const bool metadata = m_selection.value("kind", "project") == "project";
-    m_metadataPanel->Show(!active && metadata);
-    m_editorPanel->Show(!active && !metadata);
-    m_apply->Show(!active);
-    m_revisionLabel->Show(!active);
+    m_metadataPanel->Show(!active && !output && metadata);
+    m_editorPanel->Show(!active && !output && !metadata);
+    m_apply->Show(!active && !output);
+    m_revisionLabel->Show(!active && !output);
     if (m_shell)
     {
-        m_shell->SetResultContext(active, m_views->GetSelection() == 8, m_views->GetSelection() == 15);
+        m_shell->SetResultContext(active, m_views->GetSelection() == 8, m_views->GetSelection() == 15, output);
     }
     m_tree->GetParent()->Layout();
     m_properties->Layout();

@@ -102,6 +102,20 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/rf_validation_details.cpp
     ui/wxwidgets/rf_validation_controller.cpp
     ui/wxwidgets/studio_rf_validation.cpp
+    ui/wxwidgets/drawing_sheet_model.cpp
+    ui/wxwidgets/drawing_sheet_canvas.cpp
+    ui/wxwidgets/drawing_output_view.cpp
+    ui/wxwidgets/drawing_output_detail.cpp
+    ui/wxwidgets/step_output_view.cpp
+    ui/wxwidgets/output_model.cpp
+    ui/wxwidgets/output_conditions_view.cpp
+    ui/wxwidgets/output_record_dialog.cpp
+    ui/wxwidgets/output_workspace.cpp
+    ui/wxwidgets/output_pending_store.cpp
+    ui/wxwidgets/output_controller.cpp
+    ui/wxwidgets/output_controller_jobs.cpp
+    ui/wxwidgets/studio_output.cpp
+    ui/wxwidgets/studio_smoke_output.cpp
     ui/wxwidgets/studio_smoke_validation.cpp
     ui/wxwidgets/frequency_display.cpp
     ui/wxwidgets/frequency_assessment_display.cpp
@@ -274,6 +288,11 @@ if(BUILD_TESTING)
     target_include_directories(tracewave_result_view_tests PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
     set_target_properties(tracewave_result_view_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
     add_test(NAME result_view_model COMMAND tracewave_result_view_tests)
+    add_executable(tracewave_output_model_tests tests/output_model_test.cpp
+        ui/wxwidgets/drawing_sheet_model.cpp ui/wxwidgets/output_model.cpp)
+    target_include_directories(tracewave_output_model_tests PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
+    set_target_properties(tracewave_output_model_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
+    add_test(NAME output_model COMMAND tracewave_output_model_tests)
     add_executable(tracewave_network_export_tests tests/network_export_test.cpp
         ui/wxwidgets/network_export.cpp ui/wxwidgets/studio_support.cpp)
     target_include_directories(tracewave_network_export_tests PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")

@@ -225,7 +225,7 @@ def build():
     profile = {"schema": "rfad.implementation-audit/0.1", "design_baseline": "RFAD-D0-3.4",
                "initial_review_date_kst": "2026-11-12",
                "initial_reviewed_commit": "1ed9686b8eea5cec3b17931d8655565fbafc72e2",
-               "review_date_kst": "2026-11-17", "reviewed_commit": "3e3121e37f42886a72d0e30c81859a17fea2b75f",
+               "review_date_kst": "2026-11-17", "reviewed_commit": "ce9b6186515f981ccddbc69968916dd0b3926ad1",
                "working_tree_review": True,
                "scope": "implementation_gap_review_not_release_acceptance",
                "generator": reference(Path(__file__).resolve()),

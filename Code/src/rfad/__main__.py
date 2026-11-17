@@ -24,6 +24,7 @@ def main(argv: list[str] | None = None) -> int:
     serve_parser.add_argument("--workspace", type=Path, help="프로젝트 journal을 관리할 작업 영역")
     serve_parser.add_argument("--catalog", type=Path, help="선택적으로 연결할 읽기 전용 PCB 카탈로그 SQLite 파일")
     serve_parser.add_argument("--cad-python", type=Path, help="격리 CAD worker의 고정 Python 실행 파일")
+    serve_parser.add_argument("--exchange-python", type=Path, help="격리 도면 출력 worker의 고정 Python 실행 파일")
     serve_parser.add_argument("--openems-wsl", action="store_true", help="TraceWave-Dev의 검증된 openEMS 참조 worker 사용")
     options = serve_parser.parse_args(remainder)
     from rfad.application.rpc import serve
@@ -36,17 +37,19 @@ def main(argv: list[str] | None = None) -> int:
         catalog = CatalogService(options.catalog)
 
     if options.workspace is None:
-        if options.cad_python is not None or options.openems_wsl:
+        if options.cad_python is not None or options.exchange_python is not None or options.openems_wsl:
             serve_parser.error("native worker 설정에는 --workspace가 필요합니다.")
         return serve(sys.stdin.buffer, sys.stdout.buffer, sys.stderr, catalog=catalog)
     from rfad.application.projects import ProjectService
     from rfad.domain.errors import ProjectError
     from rfad.application.cad_jobs import CadRuntime
     from rfad.application.solver_jobs import SolverRuntime
+    from rfad.application.exchange_runtime import ExchangeRuntime
     try:
         runtime = None if options.cad_python is None else CadRuntime(options.cad_python)
+        exchange_runtime = None if options.exchange_python is None else ExchangeRuntime(options.exchange_python)
         solver_runtime = SolverRuntime() if options.openems_wsl else None
-        with ProjectService(options.workspace, cad_runtime=runtime, solver_runtime=solver_runtime,
+        with ProjectService(options.workspace, cad_runtime=runtime, exchange_runtime=exchange_runtime, solver_runtime=solver_runtime,
                             catalog_database=options.catalog) as service:
             return serve(sys.stdin.buffer, sys.stdout.buffer, sys.stderr, service, catalog)
     except (ProjectError, OSError, ValueError) as error:

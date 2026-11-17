@@ -9,6 +9,7 @@ struct Options
     wxString source;
     wxString workspace;
     wxString cadPython;
+    wxString exchangePython;
     wxString catalog;
     wxString openProject;
     wxString smokeReport;
@@ -32,6 +33,7 @@ struct Options
     bool resultsSmoke = false;
     bool validationSmoke = false;
     bool selectionSmoke = false;
+    bool outputSmoke = false;
     bool printedSeedSmoke = false;
     bool designRulesSmoke = false;
     bool physicalSetupSmoke = false;
