@@ -184,14 +184,14 @@ class TargetDomainTests(unittest.TestCase):
             self.assertEqual(updated["parent_revision_ids"], [document["revision_id"]])
             invalid_legacy = deepcopy(updated)
             invalid_legacy["schema_version"] = schema
-            if schema in ("rfad.project/0.3", "rfad.project/0.4"):
+            if schema in ("rfad.project/0.3", "rfad.project/0.4", "rfad.project/0.5"):
                 validate_project(invalid_legacy)
             else:
                 with self.assertRaises(ProjectError):
                     validate_project(invalid_legacy)
             self.assertEqual(updated["materials"], document["materials"])
         future = deepcopy(updated)
-        future["schema_version"] = "rfad.project/0.6"
+        future["schema_version"] = "rfad.project/0.7"
         with self.assertRaises(ProjectError):
             validate_project(future)
 

@@ -38,6 +38,10 @@ void StudioFrame::Connect()
                                     result.value("methods", Json::object()).contains("template.apply");
              m_pcbSelectionSupported = result.contains("pcb_selection_profile") &&
                                        result.value("methods", Json::object()).contains("pcb.selection.context");
+             m_pcbFeaturesSupported = result.value("methods", Json::object()).contains("pcb.features.get") &&
+                                      result.value("methods", Json::object()).contains("pcb.features.preview") &&
+                                      result.value("methods", Json::object()).contains("pcb.features.apply") &&
+                                      result.value("methods", Json::object()).contains("pcb.features.receipt");
              m_cadConfigured = result.value("cad_profile", Json::object()).value("runtime_configured", false);
              m_solverConfigured = result.value("solver_profile", Json::object()).value("runtime_configured", false);
              SolverStatus("idle", m_solverConfigured
@@ -61,6 +65,10 @@ void StudioFrame::Connect()
                                      result.value("methods", Json::object()).contains("rf.validation.get");
              m_outputSupported = result.value("methods", Json::object()).contains("export.context") &&
                                  result.value("methods", Json::object()).contains("export.receipt");
+             m_pcbImportSupported = result.value("methods", Json::object()).contains("pcb.import.context") &&
+                                    result.value("methods", Json::object()).contains("pcb.import.preview") &&
+                                    result.value("methods", Json::object()).contains("pcb.import.apply") &&
+                                    result.value("methods", Json::object()).contains("pcb.import.receipt");
              m_sweepSupported = result.value("methods", Json::object()).contains("sweep.context") &&
                                 result.value("methods", Json::object()).contains("sweep.create");
              m_sweepSelectionSupported = result.value("methods", Json::object()).contains("sweep.selection.context") &&
@@ -81,6 +89,26 @@ void StudioFrame::Send(const std::string& method, const Json& input, bool mutati
                        std::function<void(const Json&)> success, std::function<void(const Json&)> failure,
                        const std::string& requestKey, const std::string& requestEpoch)
 {
+    const bool recoveryReopen =
+        method == "project.open" && input.value("open_mode", "") == "open" && input.value("path", "") == m_path;
+    if (mutation && !recoveryReopen && method != "job.cancel" &&
+        ((m_pcbFeatureUncertain && method != "pcb.features.apply") ||
+         (m_pcbImportUncertain && method.rfind("pcb.import.", 0) != 0)))
+    {
+        const Json error{{"code", "E_UNCERTAIN"},
+                         {"message", "이전 PCB 적용 결과를 확인하기 전에는 다른 변경을 보낼 수 없습니다."}};
+        if (failure)
+        {
+            failure(error);
+        }
+        else
+        {
+            m_busy = false;
+            Log(error.at("message").get<std::string>());
+            UpdateControls();
+        }
+        return;
+    }
     if (m_requests.Size() >= 16)
     {
         const Json error{{"code", "E_LIMIT"}, {"message", "요청 대기열이 가득 차 전송하지 않았습니다."}};
@@ -101,18 +129,20 @@ void StudioFrame::Send(const std::string& method, const Json& input, bool mutati
         }
         return;
     }
-    const bool foreground =
-        method != "rf.validation.list" && method != "rf.validation.get" && method != "rf.validation.reports" &&
-        method.rfind("precision.", 0) != 0 && method.rfind("target.editor.", 0) != 0 &&
-        method.rfind("result.", 0) != 0 && method.rfind("export.", 0) != 0 && method.rfind("template.", 0) != 0 &&
-        method.rfind("catalog.", 0) != 0 && method.rfind("pcb.selection.", 0) != 0 && method.rfind("study.", 0) != 0 &&
-        method != "cad.latest" && method != "solver.latest" && method != "solver.samples" && method != "result.open" &&
-        method != "job.cancel" && method != "solver.plan" && method != "solver.prepare" && method != "job.submit" &&
-        !(method == "snapshot.create" && input.value("description", "") == "GUI PCB 해석 입력") &&
-        !(method == "snapshot.create" && input.value("description", "") == "GUI 출력 검토 입력") &&
-        !(method == "job.status" &&
-          (input.value("job_id", "") == m_cadTask.Id() || input.value("job_id", "") == m_solverTask.Id() ||
-           (m_output && m_output->OwnsJob(input.value("job_id", "")))));
+    const bool foreground = method != "rf.validation.list" && method != "rf.validation.get" &&
+                            method != "rf.validation.reports" && method.rfind("precision.", 0) != 0 &&
+                            method.rfind("target.editor.", 0) != 0 && method.rfind("result.", 0) != 0 &&
+                            method.rfind("export.", 0) != 0 && method.rfind("template.", 0) != 0 &&
+                            method.rfind("catalog.", 0) != 0 && method.rfind("pcb.selection.", 0) != 0 &&
+                            method.rfind("pcb.features.", 0) != 0 && method.rfind("pcb.import.", 0) != 0 &&
+                            method.rfind("study.", 0) != 0 && method != "cad.latest" && method != "solver.latest" &&
+                            method != "solver.samples" && method != "result.open" && method != "job.cancel" &&
+                            method != "solver.plan" && method != "solver.prepare" && method != "job.submit" &&
+                            !(method == "snapshot.create" && input.value("description", "") == "GUI PCB 해석 입력") &&
+                            !(method == "snapshot.create" && input.value("description", "") == "GUI 출력 검토 입력") &&
+                            !(method == "job.status" && (input.value("job_id", "") == m_cadTask.Id() ||
+                                                         input.value("job_id", "") == m_solverTask.Id() ||
+                                                         (m_output && m_output->OwnsJob(input.value("job_id", "")))));
     const auto submitted = m_requests.Submit(
         method, input, mutation, context, requestEpoch.empty() ? m_epoch : requestEpoch, foreground, std::move(success),
         std::move(failure), Uuid,

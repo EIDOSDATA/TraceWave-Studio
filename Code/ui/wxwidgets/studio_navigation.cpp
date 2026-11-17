@@ -24,6 +24,18 @@ int NavigationIcon(const std::string& kind)
                                            {"layer", 3},    {"geometry", 4},  {"port", 5},        {"net", 5},
                                            {"material", 6}, {"parameter", 7}, {"environment", 8}, {"rules", 9}};
     const auto found = icons.find(kind);
+    if (kind == "hole" || kind == "cutout")
+    {
+        return 14;
+    }
+    if (kind == "footprint" || kind == "aperture" || kind == "artwork_layer")
+    {
+        return 13;
+    }
+    if (kind == "keepout")
+    {
+        return 9;
+    }
     return found == icons.end() ? 7 : found->second;
 }
 }
@@ -37,7 +49,8 @@ void StudioFrame::BuildNavigation(wxWindow* parent, wxSizer* layout)
     m_objectSearch->SetMinSize(FromDIP(wxSize(-1, 34)));
     layout->Add(m_objectSearch, 0, wxEXPAND | wxALL, FromDIP(8));
     m_objectFilter = new wxChoice(parent, wxID_ANY);
-    for (const auto* name : {"모든 객체", "패턴", "기판 / 적층", "재료", "급전 / 네트", "매개변수"})
+    for (const auto* name :
+         {"모든 객체", "패턴", "기판 / 적층", "재료", "급전 / 네트", "매개변수", "기계 형상", "풋프린트 / 제조 이미지"})
     {
         m_objectFilter->Append(Display(name));
     }
@@ -83,8 +96,26 @@ void StudioFrame::BuildNavigation(wxWindow* parent, wxSizer* layout)
                      if (action && action->commandId != wxID_NONE && !m_busy && !m_project.empty() &&
                          GetMenuBar()->IsEnabled(action->commandId))
                      {
+                         if (action->commandId == IdPcbFeatures)
+                         {
+                             OpenPcbFeatures(action->key);
+                             return;
+                         }
                          wxCommandEvent command(wxEVT_MENU, action->commandId);
                          GetEventHandler()->ProcessEvent(command);
+                     }
+                     else if (!action && !m_busy && m_pcbFeaturesSupported)
+                     {
+                         auto* data = dynamic_cast<SelectionData*>(m_tree->GetItemData(event.GetItem()));
+                         if (data)
+                         {
+                             const auto kind = data->selection.value("kind", "");
+                             if (kind == "cutout" || kind == "hole" || kind == "footprint" || kind == "artwork_layer" ||
+                                 kind == "aperture" || kind == "keepout")
+                             {
+                                 OpenPcbFeatures(kind, data->selection.at("id"));
+                             }
+                         }
                      }
                  });
     m_tree->Bind(wxEVT_KEY_DOWN,
@@ -194,9 +225,50 @@ void StudioFrame::RebuildNavigation()
     group("parameter", "매개변수", IdNewParameter);
     group("environment", "외부 환경", IdPhysicalSetup);
     group("rules", "제약 / 연결 / DRC", IdDesignRules);
+    if (m_pcbFeaturesSupported)
+    {
+        group("hole", "기계 형상 / 홀과 절삭", IdPcbFeatures);
+        groups["cutout"] = groups["hole"];
+        group("footprint", "풋프린트", IdPcbFeatures);
+        group("artwork_layer", "제조 이미지 / 개구", IdPcbFeatures);
+        groups["aperture"] = groups["artwork_layer"];
+        group("keepout", "금지 영역", IdPcbFeatures);
+    }
     const wxString query = m_objectSearch->GetValue().Lower();
     const int filter = m_objectFilter->GetSelection();
     wxTreeItemId selected;
+    std::map<std::string, wxTreeItemId> footprintNodes;
+    std::map<std::string, std::string> owners;
+    for (const auto* collection : {"shapes", "pcb_features"})
+    {
+        for (const auto& shape : m_scene.value(collection, Json::array()))
+        {
+            const auto owner = shape.value("owner_footprint_id", Json(nullptr));
+            if (owner.is_string())
+            {
+                owners[shape.at("id").get<std::string>()] = owner.get<std::string>();
+            }
+        }
+    }
+    if (m_pcbFeaturesSupported && query.empty() && (filter == 0 || filter == 7))
+    {
+        for (const auto& item : m_editor.at("items"))
+        {
+            if (item.at("kind") == "footprint")
+            {
+                const Json selection{{"kind", "footprint"}, {"id", item.at("id")}};
+                const int icon = NavigationIcon("footprint");
+                const auto node =
+                    m_tree->AppendItem(groups.at("footprint"), Display(item.at("label").get<std::string>()), icon, icon,
+                                       new SelectionData(selection));
+                footprintNodes[item.at("id").get<std::string>()] = node;
+                if (selection == m_selection)
+                {
+                    selected = node;
+                }
+            }
+        }
+    }
     for (const auto& item : m_editor.at("items"))
     {
         const std::string kind = item.at("kind");
@@ -204,10 +276,17 @@ void StudioFrame::RebuildNavigation()
         {
             continue;
         }
-        const bool matches = filter == 0 || (filter == 1 && kind == "geometry") ||
-                             (filter == 2 && (kind == "board" || kind == "layer")) ||
-                             (filter == 3 && kind == "material") ||
-                             (filter == 4 && (kind == "port" || kind == "net")) || (filter == 5 && kind == "parameter");
+        if (kind == "footprint" && footprintNodes.count(item.at("id").get<std::string>()))
+        {
+            continue;
+        }
+        const bool matches =
+            filter == 0 || (filter == 1 && kind == "geometry") ||
+            (filter == 2 && (kind == "board" || kind == "layer")) || (filter == 3 && kind == "material") ||
+            (filter == 4 && (kind == "port" || kind == "net")) || (filter == 5 && kind == "parameter") ||
+            (filter == 6 && (kind == "hole" || kind == "cutout")) ||
+            (filter == 7 &&
+             (kind == "footprint" || kind == "artwork_layer" || kind == "aperture" || kind == "keepout"));
         const wxString label = Display(item.at("label").get<std::string>());
         if (!matches || (!query.empty() && label.Lower().Find(query) == wxNOT_FOUND))
         {
@@ -229,8 +308,13 @@ void StudioFrame::RebuildNavigation()
                 }
             }
         }
-        const auto node = m_tree->AppendItem(groups.count(kind) ? groups.at(kind) : root, label, icon, icon,
-                                             new SelectionData(selection));
+        auto parent = groups.count(kind) ? groups.at(kind) : root;
+        const auto owner = owners.find(item.at("id").get<std::string>());
+        if (owner != owners.end() && footprintNodes.count(owner->second))
+        {
+            parent = footprintNodes.at(owner->second);
+        }
+        const auto node = m_tree->AppendItem(parent, label, icon, icon, new SelectionData(selection));
         if (selection == m_selection)
         {
             selected = node;
@@ -269,6 +353,13 @@ void StudioFrame::OpenRename()
     if (m_busy || !m_connected || m_project.empty() || m_setupDialog ||
         !Studio::EditableProject(m_editor, m_scene, m_project, m_revision) || !ConfirmDiscard())
     {
+        return;
+    }
+    const auto kind = m_selection.value("kind", "");
+    if (kind == "cutout" || kind == "hole" || kind == "footprint" || kind == "artwork_layer" || kind == "aperture" ||
+        kind == "keepout")
+    {
+        OpenPcbFeatures(kind, m_selection.at("id"));
         return;
     }
     std::string name;

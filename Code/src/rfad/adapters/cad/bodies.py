@@ -6,6 +6,7 @@ from uuid import NAMESPACE_URL, uuid5
 
 from rfad.adapters.cad.physical import external_metrics, part_bodies, surface_bodies
 from rfad.adapters.cad.geometry import _require, _number, _planar_solid, _inside_outline, _via_records, _drilled, _material
+from rfad.adapters.cad.mechanical import board_solid, records as mechanical_records, barrel_bodies
 
 
 def _metrics(shape) -> dict:
@@ -35,23 +36,13 @@ def _make_bodies(cq, projection: dict) -> list[dict]:
     _require(len(layers) == len(projection["layers"]) and len(layers) <= 64,
              "중복 층 또는 지원 상한을 넘는 층이 있습니다.")
     board = projection["board"]
-    circular = board.get("kind", "rectangle") == "circle"
-    _require(board.get("kind", "rectangle") in ("rectangle", "circle"), "해당 기판 외곽은 지원하지 않습니다.", code="E_UNSUPPORTED")
-    if circular:
-        center = [_number(value, "board.outline.center") for value in board["center_mm"]]
-        _require(len(center) == 2, "원형 기판 중심에는 두 좌표가 필요합니다.")
-        radius = _number(board["radius_mm"], "board.outline.radius", positive=True)
-    else:
-        width = _number(board["width_mm"], "board.outline.width", positive=True)
-        height = _number(board["height_mm"], "board.outline.height", positive=True)
     bodies = []
     for layer in layers.values():
         _number(layer["z_min_mm"], "stackup." + layer["id"] + ".z_min")
         _number(layer["thickness_mm"], "stackup." + layer["id"] + ".thickness", positive=True)
         _require(layer["role"] in ("dielectric", "conductor"), "해당 층 역할의 CAD coverage를 지원하지 않습니다.", code="E_UNSUPPORTED")
         if layer["role"] == "dielectric":
-            solid = (cq.Solid.makeCylinder(radius, layer["thickness_mm"], (center[0], center[1], layer["z_min_mm"])) if circular
-                     else cq.Solid.makeBox(width, height, layer["thickness_mm"], (0.0, 0.0, layer["z_min_mm"])))
+            solid = board_solid(cq, board, layer["z_min_mm"], layer["thickness_mm"])
             bodies.append({"id": layer["id"], "name": "dielectric_" + layer["id"], "role": "dielectric",
                            "layer_id": layer["id"], "net_id": None, "material_id": layer["material_id"],
                            "source_entity_ids": [board["id"], layer["id"]], "shape": solid})
@@ -71,13 +62,15 @@ def _make_bodies(cq, projection: dict) -> list[dict]:
         _inside_outline(cq, solid, board, layer["z_min_mm"], layer["thickness_mm"], projection["tolerance_mm"], "geometry." + source["id"])
         planar[source["id"]] = (source, solid)
     vias = _via_records(cq, projection, layers, planar)
+    mechanical = mechanical_records(cq, projection, layers, planar, vias)
+    drilling = vias + mechanical
     for body in bodies:
-        body["shape"], drill_ids = _drilled(body["shape"], vias)
+        body["shape"], drill_ids = _drilled(body["shape"], drilling)
         if drill_ids:
             body["source_entity_ids"] += sorted(drill_ids)
             body["drill_source_ids"] = sorted(drill_ids)
     for source, original in planar.values():
-        solid, drill_ids = _drilled(original, vias)
+        solid, drill_ids = _drilled(original, drilling)
         material = _material(source, layers[source["layer_id"]])
         key = (source["layer_id"], source["net_id"], material, None if source["net_id"] is not None else source["id"])
         groups.setdefault(key, []).append((source["id"], solid, drill_ids))
@@ -100,7 +93,8 @@ def _make_bodies(cq, projection: dict) -> list[dict]:
                        "vertical_span_mm": [via["z_min_mm"], via["z_max_mm"]], "finished_hole_diameter_mm": 2 * via["inner_radius_mm"],
                        "modeled_drill_diameter_mm": 2 * via["outer_radius_mm"], "tool_hole_diameter_mm": source["tool_hole_diameter_mm"],
                        "drill_basis": "finished_hole_diameter_plus_twice_plating", "fill": "none", "shape": via["shape"]})
-    bodies.extend(surface_bodies(cq, projection))
+    bodies.extend(barrel_bodies(mechanical))
+    bodies.extend(surface_bodies(cq, projection, mechanical))
     bodies.extend(part_bodies(cq, projection))
     _require(bool(bodies), "내보낼 CAD 고체가 없습니다.")
     tolerance = projection["tolerance_mm"]
@@ -125,8 +119,9 @@ def _check_pairs(bodies: list[dict], tolerance: float) -> None:
                      "서로 다른 CAD 바디의 부피가 중첩합니다: " + body["name"] + " / " + other["name"],
                      code="E_CONNECTIVITY", field=body["id"])
             if body["role"] == other["role"] == "conductor":
-                via_contact = ((body.get("feature_kind") == "via_barrel" and body["id"] in other.get("drill_source_ids", []))
-                               or (other.get("feature_kind") == "via_barrel" and other["id"] in body.get("drill_source_ids", [])))
+                barrel_kinds = ("via_barrel", "plated_hole_barrel")
+                via_contact = ((body.get("feature_kind") in barrel_kinds and body["id"] in other.get("drill_source_ids", []))
+                               or (other.get("feature_kind") in barrel_kinds and other["id"] in body.get("drill_source_ids", [])))
                 compatible = body["net_id"] is not None and body["net_id"] == other["net_id"] and body["material_id"] == other["material_id"]
                 _require((via_contact and compatible) or body["shape"].distance(other["shape"]) > tolerance,
                          "분리된 net/재료 또는 미지정 net의 도체가 접촉하거나 CAD 허용오차보다 가깝습니다.", code="E_CONNECTIVITY")
@@ -135,11 +130,11 @@ def _check_pairs(bodies: list[dict], tolerance: float) -> None:
 def _check_via_contacts(bodies, tolerance):
     """! @brief 생성과 재입력 모두에서 명시적 via-pad 연결이 실제 접면으로 남았는지 확인한다."""
     for barrel in bodies:
-        if barrel.get("feature_kind") != "via_barrel":
+        if barrel.get("feature_kind") not in ("via_barrel", "plated_hole_barrel"):
             continue
         _require(barrel["metrics"]["through_hole_count"] == 1 and barrel["metrics"]["solid_count"] == 1,
                  "관통 비아의 실제 중공 단면 또는 연결 성분이 다릅니다.", code="E_CONNECTIVITY")
         for identity in barrel["pad_ids"]:
-            matches = [body for body in bodies if body["role"] == "conductor" and body.get("feature_kind") != "via_barrel" and identity in body["source_entity_ids"]]
+            matches = [body for body in bodies if body["role"] == "conductor" and body.get("feature_kind") not in ("via_barrel", "plated_hole_barrel") and identity in body["source_entity_ids"]]
             _require(len(matches) == 1 and barrel["shape"].distance(matches[0]["shape"]) <= tolerance,
                      "STEP 기하에서 명시적 via-pad 접속이 끊어졌습니다.", code="E_CONNECTIVITY")

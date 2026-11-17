@@ -34,11 +34,11 @@ void StudioFrame::BindCanvas()
     {
         if (m_busy || !ConfirmDiscard())
         {
-            m_canvas->SetSelection(m_selection.value("kind", "") == "geometry" ? m_selection.value("id", "") : "");
+            m_canvas->SetSelection(m_selection.value("id", ""));
             return;
         }
-        SelectObject(identity.empty() ? Json{{"kind", "project"}, {"id", m_project}}
-                                      : Json{{"kind", "geometry"}, {"id", identity}});
+        const auto selection = m_canvas->SelectionInfo(identity);
+        SelectObject(selection.is_object() ? selection : Json{{"kind", "project"}, {"id", m_project}});
     };
     m_canvas->onAction = [this](const Json& action)
     {
@@ -358,5 +358,5 @@ void StudioFrame::CanvasCommand(const std::string& operation, const Json& values
 void StudioFrame::RestoreCanvas()
 {
     m_canvas->SetScene(m_scene);
-    m_canvas->SetSelection(m_selection.value("kind", "") == "geometry" ? m_selection.value("id", "") : "");
+    m_canvas->SetSelection(m_selection.value("id", ""));
 }

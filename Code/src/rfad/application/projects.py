@@ -29,6 +29,8 @@ from rfad.application.project_studies import StudyCoordinator
 from rfad.application.project_study_contract import MUTATIONS as STUDY_MUTATIONS
 from rfad.application import target_editor
 from rfad.application import design_rule_service, physical_setup_service, precision_service, network_service, design_sweep_service, rf_validation_records, sweep_selection
+from rfad.application import pcb_exchange_service
+from rfad.application import pcb_import_service
 from rfad.domain.physical_setup import COMMAND as PHYSICAL_COMMAND
 from rfad.application.template_candidates import TemplateCandidateCoordinator
 from rfad.domain.errors import ProjectError
@@ -39,7 +41,7 @@ ASYNC_METHODS = {
 } | CAD_METHODS | SOLVER_METHODS
 MUTATION_METHODS = ASYNC_METHODS | {
     "project.apply_command", "editor.apply", "canvas.apply", "project.undo", "project.redo", "job.cancel",
-} | PCB_SELECTION_MUTATIONS | STUDY_MUTATIONS | design_sweep_service.MUTATIONS | rf_validation_records.MUTATIONS | sweep_selection.MUTATIONS | {"target.editor.apply", "template.apply", "design.rules.apply", physical_setup_service.MUTATION, precision_service.MUTATION, network_service.MUTATION}
+} | PCB_SELECTION_MUTATIONS | STUDY_MUTATIONS | design_sweep_service.MUTATIONS | rf_validation_records.MUTATIONS | sweep_selection.MUTATIONS | pcb_import_service.MUTATIONS | {"target.editor.apply", "template.apply", "design.rules.apply", physical_setup_service.MUTATION, precision_service.MUTATION, network_service.MUTATION, pcb_exchange_service.MUTATION}
 
 
 class ProjectService:
@@ -195,7 +197,11 @@ class ProjectService:
 
     def _preflight(self, method: str, context: dict, data: dict) -> None:
         """! @brief 기능별 요청 계약에 따라 접수 가능 여부를 검사한다."""
-        if method in sweep_selection.MUTATIONS:
+        if method in pcb_import_service.MUTATIONS:
+            pcb_import_service.validate_input(method, context, data)
+        elif method == pcb_exchange_service.MUTATION:
+            pcb_exchange_service.validate_input(context, data)
+        elif method in sweep_selection.MUTATIONS:
             sweep_selection.validate_input(method, context, data)
         elif method in rf_validation_records.MUTATIONS:
             rf_validation_records.validate_input(method, context, data)
@@ -219,7 +225,7 @@ class ProjectService:
             validate_input(method, context, data)
         elif method in PCB_SELECTION_MUTATIONS:
             self.pcb_selection.validate_input(method, context, data)
-        elif method == "export.verify" or (method in {"export.build", "export.preview"} and data.get("profile") == exchange_contract.PROFILE):
+        elif method == "export.verify" or (method in {"export.build", "export.preview"} and exchange_contract.supported_profile(data.get("profile"))):
             exchange_contract.validate_request(method, context, data)
         elif method in CAD_METHODS | {"export.preview"}:
             self.cad.validate_input(method, context, data)
@@ -243,13 +249,17 @@ class ProjectService:
     def _dispatch_mutation(self, state: dict, method: str, context: dict, data: dict) -> dict:
         """! @brief 영수증과 동일한 transaction에서 기능별 명령을 실행한다."""
         self._preflight(method, context, data)
-        if method == "export.verify":
+        if method in pcb_import_service.MUTATIONS:
+            return pcb_import_service.admit(self, state, method, context, data)
+        elif method == "export.verify":
             original = exchange_service.owned_job(self, state, context, data["job_id"])
             if "cad" in original:
                 return self.cad.admit_verify(state, context, data)
             return exchange_service.admit(self, state, method, context, data)
-        elif method in {"export.build", "export.preview"} and data.get("profile") == exchange_contract.PROFILE:
+        elif method in {"export.build", "export.preview"} and exchange_contract.supported_profile(data.get("profile")):
             return exchange_service.admit(self, state, method, context, data)
+        elif method == pcb_exchange_service.MUTATION:
+            return pcb_exchange_service.admit(self, state, context, data)
         elif method in sweep_selection.MUTATIONS:
             return sweep_selection.admit(self, state, method, context, data)
         elif method in rf_validation_records.MUTATIONS:
@@ -271,6 +281,8 @@ class ProjectService:
         elif method in STUDY_MUTATIONS:
             return self.studies.admit(state, method, context, data)
         elif method == "project.apply_command":
+            if data["type"] in ("pcb.features.replace", "pcb.features.replay"):
+                raise ProjectError("E_UNSUPPORTED", "PCB 원본 편집은 pcb.features.preview/apply를 사용하십시오.")
             if data["type"] == "sweep.selection.apply":
                 raise ProjectError("E_UNSUPPORTED", "후보 채택은 sweep.selection.preview/apply를 사용하십시오.")
             if data["type"] == "network.library.replace":

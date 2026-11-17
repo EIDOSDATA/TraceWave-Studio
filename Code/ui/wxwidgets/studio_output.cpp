@@ -23,6 +23,10 @@ void StudioFrame::BuildOutputInterface()
     m_output->View()->ConditionsView()->Hide();
     m_views->AddPage(m_output->View(), Display("출력"));
     m_outputSummary = m_output->View()->StatusLabel();
+    m_output->View()->onImport = [this]()
+    {
+        OpenPcbImport();
+    };
     m_output->onStatus = [this](const std::string& state, const std::string& message)
     {
         if (m_workspaceJobs != nullptr && m_workspaceJobs->GetItemCount() > 3)
@@ -53,8 +57,11 @@ void StudioFrame::UpdateOutputViews()
     }
     const bool active = m_views->GetSelection() == 5;
     const bool available = !m_closing && !m_busy && m_setupDialog == nullptr && m_pcbDialog == nullptr &&
+                           !m_pcbFeatureUncertain && !m_pcbImportUncertain &&
                            Studio::EditableProject(m_editor, m_scene, m_project, m_revision);
     m_output->Update(m_project, m_revision, m_epoch, m_connected, m_outputSupported, available, active);
+    m_output->View()->SetImportAvailable(available && m_connected && m_pcbImportSupported && !m_pcbFeatureUncertain &&
+                                         !m_pcbImportUncertain && !m_output->Active());
     m_views->SetTabRowVisible(!active);
     m_properties->Layout();
 }

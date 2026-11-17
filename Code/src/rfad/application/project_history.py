@@ -6,6 +6,7 @@ from rfad.application.canonical import canonical_hash
 from rfad.application.project_repository import ProjectRepository
 from rfad.domain.errors import ProjectError
 from rfad.domain.project import apply_command
+from rfad.domain.pcb_features import REPLAY_COMMAND
 
 
 class ProjectHistory:
@@ -49,6 +50,12 @@ class ProjectHistory:
         self.check_head(project, old["revision_id"])
         command = {key: data[key] for key in ("command_id", "type", "payload")}
         document, changed, invalidation, inverse = apply_command(old, command, data["expected_revision"])
+        if inverse["type"] == REPLAY_COMMAND and command["type"] != REPLAY_COMMAND:
+            command = {"command_id": command_id, "type": REPLAY_COMMAND,
+                       "payload": {"command": {key: deepcopy(command[key]) for key in ("type", "payload")},
+                                   "metadata": [{"id": row["id"], "expected": deepcopy(row["replacement"]),
+                                                 "replacement": deepcopy(row["expected"])}
+                                                for row in inverse["payload"]["metadata"]]}}
         reference = self.repository.store(project["path"], document)
         project["current"] = reference
         state["commands"][command_id] = {

@@ -11,6 +11,7 @@ from uuid import UUID
 from rfad.application.canonical import CANONICAL_VERSION, canonical_hash
 from rfad.domain.design import resolve_scalar
 from rfad.application.physical_projection import project_setup
+from rfad.application.pcb_exchange_projection import mechanical_projection
 from rfad.domain.physical_setup import KEY as PHYSICAL_KEY
 from rfad.domain.errors import ProjectError
 from rfad.domain.project import validate_project
@@ -43,6 +44,8 @@ def profile_definition() -> dict:
         "region_boundary": "straight_segments_with_explicit_holes",
         "pad_shapes": ["circle", "rectangle"],
         "via_model": "through_plated_hollow_barrel_with_explicit_pads",
+        "mechanical_features": "through_npth_plated_circle_straight_capsule_and_explicit_cutouts",
+        "surface_cut_policy": "explicit_surface_ids_finished_shape_only",
     }
 
 
@@ -112,6 +115,47 @@ def _check_frame(document: dict, frame_id: str, field: str) -> None:
         _fail("E_UNSUPPORTED", "CAD 출력에 미지원 좌표계 변환을 적용할 수 없습니다.", field)
 
 
+def _mechanical_dimensions(item: dict) -> None:
+    """! @brief 저장 가능한 미정 기계 치수를 실제 CAD 접수에서 명시 차단한다."""
+    shape = item["shape"]
+    field = "pcb." + item["id"]
+    def known(value, path, positive=False):
+        if type(value) not in (int, float) or not math.isfinite(value) or abs(value) > MAX_COORDINATE_MM:
+            _fail("E_GEOMETRY", "CAD 기계 치수는 알려진 유한 mm/deg 값이어야 합니다.", field + path)
+        if positive and value < MIN_FEATURE_MM:
+            _fail("E_GEOMETRY", "기계 치수가 CAD 최소 형상보다 작습니다.", field + path)
+    if shape["kind"] == "polygon":
+        for loop in [shape["outer_mm"], *shape.get("holes_mm", [])]:
+            for point in loop:
+                for value in point:
+                    known(value, ".shape.outer")
+            if any(math.dist(a, b) < MIN_FEATURE_MM for a, b in zip(loop, loop[1:] + loop[:1])):
+                _fail("E_GEOMETRY", "기계 절삭 경계의 변이 CAD 최소 형상보다 작습니다.", field)
+    else:
+        for value in shape["center_mm"]:
+            known(value, ".shape.center")
+        if shape["kind"] == "circle":
+            known(shape["diameter_mm"], ".shape.diameter", True)
+        else:
+            known(shape["rotation_deg"], ".shape.rotation")
+            if shape["kind"] == "rectangle":
+                for value in shape["size_mm"]:
+                    known(value, ".shape.size", True)
+            else:
+                known(shape["finished_length_mm"], ".shape.finished_length", True)
+                known(shape["finished_width_mm"], ".shape.finished_width", True)
+                if shape["finished_length_mm"] - shape["finished_width_mm"] < MIN_FEATURE_MM:
+                    _fail("E_GEOMETRY", "슬롯 전체 길이는 폭보다 CAD 최소 형상 이상 커야 합니다.", field)
+    if "plating" in item:
+        state = item["plating"]["state"]
+        if state not in ("unplated", "plated"):
+            _fail("E_GEOMETRY", "도금 여부가 미정인 홀은 CAD 실체를 생성할 수 없습니다.", field)
+        if state == "plated":
+            known(item["plating"]["thickness_mm"], ".plating.thickness", True)
+        if item["tool_diameter_mm"] is not None:
+            known(item["tool_diameter_mm"], ".tool_diameter", True)
+
+
 def build_cad_input(document: dict, snapshot_ref: dict, profile: str = PROFILE, *, purpose: str = "step") -> dict:
     """! @brief 저장 원본과 분리된 mm/deg CAD worker 입력을 만든다.
 
@@ -138,6 +182,9 @@ def build_cad_input(document: dict, snapshot_ref: dict, profile: str = PROFILE, 
                            "radius_mm": _length(document, outline["radius"], "board.outline.radius", positive=True)}
         if any(abs(coordinate) + projected_board["radius_mm"] > MAX_COORDINATE_MM for coordinate in projected_board["center_mm"]):
             _fail("E_GEOMETRY", "원형 기판 외곽이 CAD 좌표 상한을 벗어났습니다.", "board.outline")
+    elif outline["kind"] == "polygon":
+        projected_board = {"id": board["id"], "kind": "polygon",
+                           "outer_mm": [_point(document, value, f"board.outline.outer[{index}]") for index, value in enumerate(outline["outer"])]}
     else:
         projected_board = {"id": board["id"],
                            "width_mm": _length(document, outline["width"], "board.outline.width", positive=True),
@@ -164,6 +211,11 @@ def build_cad_input(document: dict, snapshot_ref: dict, profile: str = PROFILE, 
         "layers": [], "shapes": [], "omissions": [],
         "source_semantics": deepcopy(document),
     }
+    mechanical = mechanical_projection(document)
+    if mechanical["holes"] or mechanical["cutouts"]:
+        for item in mechanical["holes"] + mechanical["cutouts"]:
+            _mechanical_dimensions(item)
+        result["mechanical"] = mechanical
     if PHYSICAL_KEY in document["extensions"]:
         surfaces, parts, omissions = project_setup(
             document, purpose, lambda value, field, **flags: _length(document, value, field, **flags),
@@ -252,4 +304,6 @@ def build_cad_input(document: dict, snapshot_ref: dict, profile: str = PROFILE, 
         else:
             _fail("E_UNSUPPORTED", "현재 CAD profile이 지원하지 않는 도체 형상입니다.", field + ".kind")
         result["shapes"].append(shape)
+    if len(result["shapes"]) + len(mechanical["holes"]) + len(mechanical["cutouts"]) > MAX_SHAPES:
+        _fail("E_RESOURCE", "도체와 기계 절삭을 합한 CAD 형상 상한을 초과했습니다.", "pcb")
     return result

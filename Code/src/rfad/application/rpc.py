@@ -17,6 +17,8 @@ from rfad.application.pcb_selection_contract import READ_METHODS as PCB_SELECTIO
 from rfad.application.project_study_contract import READS as STUDY_READS, MUTATIONS as STUDY_MUTATIONS
 from rfad.application import target_editor
 from rfad.application import exchange_service, exchange_contract
+from rfad.application import pcb_exchange_service
+from rfad.application import pcb_import_service
 from rfad.application import design_rule_service, physical_setup_service, precision_service, network_service, design_sweep_service, result_service, rf_validation_records, sweep_selection
 
 TEMPLATE_READS = {"template.list", "template.get", "template.context", "template.synthesize"}
@@ -38,6 +40,8 @@ APPLICATION_ERRORS = {
 PROJECT_MUTATIONS = {"project.open", "project.apply_command", "editor.apply", "canvas.apply", "project.undo", "project.redo", "project.save", "snapshot.create", "design.validate", "job.cancel", "geometry.build", "export.build", "export.preview"}
 PROJECT_MUTATIONS.update({"solver.plan", "solver.prepare", "job.submit"})
 PROJECT_MUTATIONS.add("export.verify")
+PROJECT_MUTATIONS.add(pcb_exchange_service.MUTATION)
+PROJECT_MUTATIONS.update(pcb_import_service.MUTATIONS)
 PROJECT_MUTATIONS.update(PCB_SELECTION_MUTATIONS)
 PROJECT_MUTATIONS.update(STUDY_MUTATIONS)
 PROJECT_MUTATIONS.update(design_sweep_service.MUTATIONS)
@@ -97,6 +101,18 @@ def capabilities(service=None, catalog=None) -> dict:
                              "evaluation_supported": False, "changes_solver_settings": False, "presets_supported": False},
         }
         result["features"][0]["status"] = "implemented"
+        result["methods"].update({name: {"status": "implemented", "extension_profile": pcb_exchange_service.PROFILE}
+                                  for name in pcb_exchange_service.READS | {pcb_exchange_service.MUTATION}})
+        result["methods"].update({name: {"status": "implemented", "extension_profile": pcb_import_service.PROFILE}
+                                  for name in pcb_import_service.READS | pcb_import_service.MUTATIONS})
+        result["pcb_import_profile"] = {"profile": pcb_import_service.PROFILE, "formats": sorted(pcb_import_service.FORMATS),
+            "runtime_configured": service.exchange.runtime is not None, "max_files": pcb_import_service.MAX_FILES,
+            "source_and_report_bytes": pcb_import_service.MAX_BYTES, "chunk_bytes": pcb_import_service.CHUNK_BYTES,
+            "preview_required": True, "atomic_apply": True, "manufacturing_verified": False, "physics_verified": False}
+        result["pcb_features_profile"] = {"profile": pcb_exchange_service.PROFILE, "project_schema": SCHEMA_VERSION,
+            "operations": sorted(pcb_exchange_service.OPERATIONS), "limits": pcb_exchange_service.LIMITS,
+            "preview_required": True, "atomic_apply": True, "solver_mechanical_supported": False,
+            "manufacturing_verified": False, "measurement_verified": False}
         result["methods"].update({name: {"status": "implemented", "extension_profile": design_rule_service.PROFILE}
                                   for name in design_rule_service.READS | {"design.rules.apply"}})
         result["methods"].update({name: {"status": "implemented", "extension_profile": physical_setup_service.PROFILE}
@@ -166,9 +182,10 @@ def capabilities(service=None, catalog=None) -> dict:
                                   for name in exchange_contract.READS})
         result["methods"]["export.verify"] = {"status": "implemented", "api_id": "API-025", "extension_profile": exchange_contract.PROFILE}
         result["exchange_profile"] = {"profile": exchange_contract.PROFILE, "runtime_configured": service.exchange.runtime is not None,
-            "source": "immutable_snapshot", "formats": ["pdf", "svg", "dxf"], "preview_required": True,
+            "source": "immutable_snapshot", "formats": ["pdf", "svg", "dxf", *exchange_contract.PCB_PROFILES.values()], "preview_required": True,
             "native_slots": 1, "max_file_bytes": exchange_contract.MAX_FILE_BYTES,
             "max_package_bytes": exchange_contract.MAX_PACKAGE_BYTES, "max_files": exchange_contract.MAX_FILES,
+            "pcb_max_files": exchange_contract.MAX_PCB_FILES, "pcb_profiles": dict(exchange_contract.PCB_PROFILES),
             "manufacturing_verified": False, "physics_verified": False}
         result["project_profile"]["job_kinds"] = ["data_processing", "cad_build", "export"]
         result["features"][1]["status"] = "implemented"
@@ -241,10 +258,14 @@ def _network_source_paths(message):
     result = set()
     requests = enumerate(message) if type(message) is list else [(None, message)]
     for index, request in requests:
-        if type(request) is not dict or request.get("method") not in ("network.preview", "network.apply"):
+        if type(request) is not dict or request.get("method") not in ("network.preview", "network.apply", "pcb.import.chunk"):
             continue
         params = request.get("params")
         data = params.get("input") if type(params) is dict else None
+        if type(data) is dict and request.get("method") == "pcb.import.chunk":
+            prefix = () if index is None else (index,)
+            result.add(prefix + ("params", "input", "content_base64"))
+            continue
         if type(data) is dict and data.get("operation") == "import":
             prefix = () if index is None else (index,)
             result.add(prefix + ("params", "input", "parameters", "source_base64"))
@@ -256,7 +277,8 @@ def _validate_tree(value: object, depth: int = 0, path=(), source_paths=frozense
     if depth > MAX_DEPTH:
         raise ValueError("JSON nesting limit exceeded")
     if isinstance(value, str):
-        limit = ((network_service.MAX_IMPORT_BYTES + 2) // 3) * 4 if path in source_paths else MAX_STRING_BYTES
+        source_limit = pcb_import_service.CHUNK_BYTES if path and path[-1] == "content_base64" else network_service.MAX_IMPORT_BYTES
+        limit = ((source_limit + 2) // 3) * 4 if path in source_paths else MAX_STRING_BYTES
         if len(value.encode("utf-8")) > limit:
             raise ValueError("String limit exceeded")
     elif isinstance(value, float):
@@ -281,12 +303,16 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
         return _error(None, -32600, "Invalid Request")
     notification = "id" not in request
     method = request["method"]
-    if service is not None and method in PROJECT_MUTATIONS | exchange_contract.READS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | network_service.READS | design_sweep_service.READS | result_service.READS | rf_validation_records.READS | sweep_selection.READS | {"target.editor.get", "job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
+    if service is not None and method in PROJECT_MUTATIONS | pcb_import_service.READS | pcb_exchange_service.READS | exchange_contract.READS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | network_service.READS | design_sweep_service.READS | result_service.READS | rf_validation_records.READS | sweep_selection.READS | {"target.editor.get", "job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
         if notification and method in PROJECT_MUTATIONS:
             return None
         try:
             params = request.get("params")
-            if method in exchange_contract.READS:
+            if method in pcb_import_service.READS:
+                result = pcb_import_service.read(service, method, params)
+            elif method in pcb_exchange_service.READS:
+                result = pcb_exchange_service.read(service, method, params)
+            elif method in exchange_contract.READS:
                 result = exchange_service.read(service, method, params)
             elif method in sweep_selection.READS:
                 result = sweep_selection.read(service, method, params)

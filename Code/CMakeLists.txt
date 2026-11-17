@@ -56,6 +56,7 @@ endif()
 add_executable(tracewave_gui WIN32
     ui/wxwidgets/main.cpp
     ui/wxwidgets/canvas_scene.cpp
+    ui/wxwidgets/canvas_pcb_features.cpp
     ui/wxwidgets/canvas_viewport.cpp
     ui/wxwidgets/canvas_renderer.cpp
     ui/wxwidgets/editor_presentation.cpp
@@ -70,6 +71,25 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/pcb_selection_suggestions.cpp
     ui/wxwidgets/pcb_selection_review.cpp
     ui/wxwidgets/studio_pcb.cpp
+    ui/wxwidgets/studio_pcb_features.cpp
+    ui/wxwidgets/studio_pcb_import.cpp
+    ui/wxwidgets/pcb_import_dialog.cpp
+    ui/wxwidgets/pcb_import_form.cpp
+    ui/wxwidgets/pcb_import_transfer.cpp
+    ui/wxwidgets/pcb_import_review.cpp
+    ui/wxwidgets/pcb_import_model.cpp
+    ui/wxwidgets/pcb_feature_model.cpp
+    ui/wxwidgets/pcb_feature_form.cpp
+    ui/wxwidgets/pcb_feature_scalar.cpp
+    ui/wxwidgets/pcb_feature_lists.cpp
+        ui/wxwidgets/pcb_feature_loops.cpp
+    ui/wxwidgets/pcb_feature_list_dialog.cpp
+    ui/wxwidgets/pcb_feature_dialog.cpp
+    ui/wxwidgets/pcb_feature_review.cpp
+        ui/wxwidgets/pcb_feature_modes.cpp
+        ui/wxwidgets/pcb_cam_output_view.cpp
+        ui/wxwidgets/pcb_cam_output_data.cpp
+    ui/wxwidgets/reviewed_request_store.cpp
     ui/wxwidgets/studio_smoke_pcb.cpp
     ui/wxwidgets/studio_smoke_events.cpp
     ui/wxwidgets/studio_frame.cpp
@@ -116,6 +136,8 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/output_controller_jobs.cpp
     ui/wxwidgets/studio_output.cpp
     ui/wxwidgets/studio_smoke_output.cpp
+    ui/wxwidgets/studio_smoke_features.cpp
+    ui/wxwidgets/studio_smoke_pcb_exchange.cpp
     ui/wxwidgets/studio_smoke_validation.cpp
     ui/wxwidgets/frequency_display.cpp
     ui/wxwidgets/frequency_assessment_display.cpp
@@ -214,7 +236,7 @@ target_compile_definitions(tracewave_gui PRIVATE UNICODE _UNICODE WIN32_LEAN_AND
 target_link_libraries(tracewave_gui PRIVATE ${RFAD_WX_LIBRARIES} ole32 opengl32 bcrypt)
 
 add_executable(tracewave_canvas_benchmark tools/canvas_render_benchmark.cpp
-    ui/wxwidgets/canvas_renderer.cpp ui/wxwidgets/canvas_scene.cpp ui/wxwidgets/canvas_viewport.cpp)
+    ui/wxwidgets/canvas_renderer.cpp ui/wxwidgets/canvas_scene.cpp ui/wxwidgets/canvas_pcb_features.cpp ui/wxwidgets/canvas_viewport.cpp)
 target_include_directories(tracewave_canvas_benchmark PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
 target_compile_definitions(tracewave_canvas_benchmark PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN NOMINMAX)
 target_link_libraries(tracewave_canvas_benchmark PRIVATE ${RFAD_WX_LIBRARIES} psapi)
@@ -276,7 +298,7 @@ if(BUILD_TESTING)
     set_target_properties(tracewave_pcb_suggestion_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
     add_test(NAME pcb_suggestions COMMAND tracewave_pcb_suggestion_tests)
     add_executable(tracewave_gui_presentation_tests tests/gui_presentation_test.cpp
-        ui/wxwidgets/canvas_scene.cpp ui/wxwidgets/canvas_viewport.cpp ui/wxwidgets/editor_presentation.cpp
+        ui/wxwidgets/canvas_scene.cpp ui/wxwidgets/canvas_pcb_features.cpp ui/wxwidgets/canvas_viewport.cpp ui/wxwidgets/editor_presentation.cpp
         ui/wxwidgets/frequency_display.cpp ui/wxwidgets/frequency_assessment_display.cpp
         ui/wxwidgets/sweep_model.cpp ui/wxwidgets/sweep_result_model.cpp)
     target_include_directories(tracewave_gui_presentation_tests PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
@@ -293,6 +315,12 @@ if(BUILD_TESTING)
     target_include_directories(tracewave_output_model_tests PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
     set_target_properties(tracewave_output_model_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
     add_test(NAME output_model COMMAND tracewave_output_model_tests)
+    add_executable(tracewave_pcb_feature_tests tests/pcb_feature_model_test.cpp
+        ui/wxwidgets/pcb_feature_model.cpp ui/wxwidgets/pcb_import_model.cpp ui/wxwidgets/output_model.cpp
+        ui/wxwidgets/canvas_scene.cpp ui/wxwidgets/canvas_pcb_features.cpp)
+    target_include_directories(tracewave_pcb_feature_tests PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
+    set_target_properties(tracewave_pcb_feature_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
+    add_test(NAME pcb_features COMMAND tracewave_pcb_feature_tests)
     add_executable(tracewave_network_export_tests tests/network_export_test.cpp
         ui/wxwidgets/network_export.cpp ui/wxwidgets/studio_support.cpp)
     target_include_directories(tracewave_network_export_tests PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")

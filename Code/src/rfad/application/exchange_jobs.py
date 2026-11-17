@@ -75,7 +75,11 @@ class ExchangeCoordinator:
                 elif self.cancel.is_set() or self.stop.is_set():
                     self._finish(job, process=process)
                 else:
-                    value = seal(self.service.journal, job, returned.get("package", returned), output)
+                    if job["exchange"]["operation"] == "parse":
+                        from rfad.application.pcb_import_service import seal_parsed
+                        value = seal_parsed(self.service.journal, job, returned, output)
+                    else:
+                        value = seal(self.service.journal, job, returned.get("package", returned), output)
                     self._finish(job, process=process, result=value)
             except Exception as error:
                 diagnostic = error if isinstance(error, ProjectError) else ProjectError("E_DISK" if isinstance(error, OSError) else "E_GEOMETRY", str(error)[:2048])
@@ -107,6 +111,16 @@ class ExchangeCoordinator:
             (stage / "fonts/primary.ttf").write_bytes(self.runtime.font_bytes)
         request = {"schema": "rfad.exchange-worker/0.1", "run_id": job["run_id"], "nonce": native["nonce"],
                    "input_sha256": native["input"]["sha256"], "runtime": native["runtime"], "operation": native["operation"]}
+        if native["operation"] == "parse":
+            value = json.loads(journal.read_artifact(native["input"]))
+            target = stage / "input-files"
+            target.mkdir()
+            from rfad.application.pcb_import_service import filename, MAX_FILES, MAX_BYTES
+            if not 1 <= len(value["files"]) <= MAX_FILES or sum(row["artifact"]["bytes"] for row in value["files"]) > MAX_BYTES:
+                raise ProjectError("E_RESOURCE", "PCB 원문 개수/합계가 봉인 입력 상한을 초과했습니다.")
+            for row in value["files"]:
+                filename(row["path"])
+                copy_sealed(journal._safe_path(row["artifact"]["uri"]), target / row["path"], row["artifact"])
         if native["operation"] == "verify":
             from rfad.application.exchange_service import manifest_reference
             original = journal.read()["jobs"][native["original_job_id"]]
@@ -138,7 +152,8 @@ class ExchangeCoordinator:
         process = run_native([str(self.runtime.python), "-I", "-B", "-X", "utf8", str(stage / "tools/exchange_worker.py")],
             cwd=stage, request_bytes=canonical_bytes(request) + b"\n", cancel=self.cancel, timeout_seconds=native["timeout_seconds"],
             max_output_bytes=1024 * 1024, on_started=started, output_directory=stage / "output",
-            max_file_bytes=contract.MAX_FILE_BYTES, max_directory_bytes=contract.MAX_PACKAGE_BYTES, max_files=contract.MAX_FILES)
+            max_file_bytes=contract.MAX_FILE_BYTES, max_directory_bytes=contract.MAX_PACKAGE_BYTES,
+            max_files=contract.file_limit(native.get("profile", contract.PROFILE)))
         (stage / "process.json").write_bytes(canonical_bytes(process))
         if process["termination"] != "completed":
             return {}, process, stage / "output"

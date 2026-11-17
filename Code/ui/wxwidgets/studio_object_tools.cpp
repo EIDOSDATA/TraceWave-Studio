@@ -67,7 +67,11 @@ void StudioFrame::ShowObjectTool(std::unique_ptr<ProjectSetupDialog> dialog, con
         else if (!result.is_null() && m_connected && !m_closing)
         {
             Json target = selection;
-            if (result.contains("selection_ids") && !result.at("selection_ids").empty())
+            if (result.value("selection", Json(nullptr)).is_object())
+            {
+                target = result.at("selection");
+            }
+            else if (result.contains("selection_ids") && !result.at("selection_ids").empty())
             {
                 target = {{"kind", "geometry"}, {"id", result.at("selection_ids").front()}};
             }

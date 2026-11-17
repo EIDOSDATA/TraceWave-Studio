@@ -18,6 +18,9 @@ KNOWN_EXTENSIONS = {"rfad.template-origin", "rfad.precision-origin", "rfad.pcb-s
 def prepare_artifacts(service, source_project, document, destination):
     """! @brief 역사 사본의 UUID/출처는 그대로 두고 활성 library 참조에만 새 소유 경로를 부여한다."""
     validate_project(document)
+    if document.get("pcb", {}).get("imports"):
+        raise ProjectError("E_UNSUPPORTED", "PCB 수입 원본의 프로젝트 간 파일 소유권 복사는 아직 지원하지 않습니다. 원문을 보존하고 후보 채택을 차단합니다.",
+                           details={"field_path": "pcb.imports"})
     unknown = document["extensions"].keys() - KNOWN_EXTENSIONS
     if unknown:
         raise ProjectError("E_UNSUPPORTED", "미지 확장의 복사 소유권을 확인할 수 없습니다. 원본을 보존하며 사본 생성을 차단합니다.",

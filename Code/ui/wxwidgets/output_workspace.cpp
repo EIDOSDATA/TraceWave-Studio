@@ -2,6 +2,7 @@
 #include "output_workspace.h"
 #include "drawing_output_view.h"
 #include "step_output_view.h"
+#include "pcb_cam_output_view.h"
 #include "output_conditions_view.h"
 #include "output_model.h"
 #include "rf_validation_model.h"
@@ -56,20 +57,8 @@ OutputWorkspace::OutputWorkspace(wxWindow* parent, wxWindow* conditions) : wxPan
     m_step = new StepOutputView(m_tabs);
     m_tabs->AddPage(m_drawing, Display("기술 도면"));
     m_tabs->AddPage(m_step, Display("STEP"));
-    auto* cam = new wxPanel(m_tabs);
-    StudioTheme::BindSurface(*cam);
-    cam->SetSizer(new wxBoxSizer(wxVERTICAL));
-    auto* heading = new wxStaticText(cam, wxID_ANY, Display("PCB / CAM 교환"));
-    StudioTheme::Title(*heading);
-    cam->GetSizer()->Add(heading, 0, wxALL, FromDIP(12));
-    auto* note = new wxStaticText(
-        cam, wxID_ANY,
-        Display("현재 연결한 서비스에는 검증된 PCB / CAM 출력 profile이 없습니다.\n"
-                "KiCad / Gerber / 드릴 / Job은 형식별 생성과 재입력 검수 계약이 연결된 경우에만 실행할 수 있습니다.\n"
-                "기존 STEP과 기술 도면 출력은 다른 탭에서 사용할 수 있습니다."));
-    note->Wrap(FromDIP(700));
-    cam->GetSizer()->Add(note, 0, wxEXPAND | wxALL, FromDIP(12));
-    m_tabs->AddPage(cam, Display("PCB / CAM"));
+    m_pcb = new PcbCamOutputView(m_tabs);
+    m_tabs->AddPage(m_pcb, Display("PCB / CAM"));
     layout->Add(m_tabs, 1, wxEXPAND);
     auto* history = new wxWrapSizer(wxHORIZONTAL);
     history->Add(new wxStaticText(this, wxID_ANY, Display("출력 기록")), 0, wxALIGN_CENTER_VERTICAL | wxALL,
@@ -100,6 +89,14 @@ OutputWorkspace::OutputWorkspace(wxWindow* parent, wxWindow* conditions) : wxPan
             onChanged();
         }
     };
+    m_pcb->onChanged = m_drawing->onChanged;
+    m_pcb->onImport = [this]()
+    {
+        if (onImport)
+        {
+            onImport();
+        }
+    };
     m_tabs->onSelectionChanged = [this](int)
     {
         if (!m_refreshing && onChanged)
@@ -123,8 +120,10 @@ OutputWorkspace::OutputWorkspace(wxWindow* parent, wxWindow* conditions) : wxPan
     };
     m_drawing->onPreview = preview;
     m_step->onPreview = preview;
+    m_pcb->onPreview = preview;
     m_drawing->onBuild = build;
     m_step->onBuild = build;
+    m_pcb->onBuild = build;
     m_step->onVerify = [this]()
     {
         if (onVerify)
@@ -303,6 +302,7 @@ void OutputWorkspace::SetContext(const Json& context, bool resetOptions)
     if (resetOptions)
     {
         m_drawing->SetContext(context);
+        m_pcb->SetContext(context);
     }
     m_refreshing = false;
 }
@@ -350,6 +350,12 @@ Json OutputWorkspace::Snapshot() const
 
 Json OutputWorkspace::Input() const
 {
+    if (Kind() == 2)
+    {
+        auto input = m_pcb->Input();
+        input["snapshot"] = Snapshot();
+        return input;
+    }
     Json value{{"snapshot", Snapshot()},
                {"profile", Kind() == 1 ? "rfad.step.mechanical/0.1" : "rfad.exchange.drawing/0.1"},
                {"format", Kind() == 1 ? "step" : m_drawing->Format()}};
@@ -358,6 +364,20 @@ Json OutputWorkspace::Input() const
         value["options"] = m_drawing->Options();
     }
     return value;
+}
+
+Json OutputWorkspace::PreviewInput() const
+{
+    auto input = Input();
+    if (Kind() == 2)
+    {
+        const auto selection = m_pcb->DisplaySelection();
+        for (const auto& [key, value] : selection.items())
+        {
+            input[key] = value;
+        }
+    }
+    return input;
 }
 
 void OutputWorkspace::SetCatalog(const Json& catalog, const std::string& preferredJob)
@@ -408,6 +428,10 @@ void OutputWorkspace::SetPreview(const Json& review)
     {
         m_step->SetPreview(review);
     }
+    else if (Kind() == 2)
+    {
+        m_pcb->SetPreview(review);
+    }
     m_conditions->SetRecord(review, m_context.value("source_name", m_context.value("project_name", "고정 입력")));
 }
 
@@ -433,6 +457,13 @@ void OutputWorkspace::SetRecord(const Json& record, const wxString& workspace)
             m_tabs->SetSelection(0);
             m_refreshing = false;
         }
+        else if (result.value("profile", "").rfind("rfad.exchange.", 0) == 0)
+        {
+            m_refreshing = true;
+            m_tabs->SetSelection(2);
+            m_pcb->SetRecord(combined);
+            m_refreshing = false;
+        }
     }
     const auto found = std::find(m_jobIds.begin(), m_jobIds.end(), m_selectedJob);
     m_records->SetSelection(found == m_jobIds.end() ? wxNOT_FOUND
@@ -452,6 +483,7 @@ void OutputWorkspace::ClearPreview(const std::string& message)
     m_preview = nullptr;
     m_drawing->ClearPreview(message);
     m_step->Clear(message);
+    m_pcb->Clear(message);
     m_conditions->Clear(message);
     SetStatus(message);
 }
@@ -492,6 +524,11 @@ void OutputWorkspace::ShowRecord(bool review)
     dialog.ShowModal();
 }
 
+void OutputWorkspace::SetImportAvailable(bool available)
+{
+    m_pcb->SetImportAvailable(available);
+}
+
 void OutputWorkspace::SetAvailable(bool available, bool busy, bool reviewed, bool canCancel, bool uncertain)
 {
     const bool ready = available && !busy && !uncertain;
@@ -517,4 +554,5 @@ void OutputWorkspace::SetAvailable(bool available, bool busy, bool reviewed, boo
     m_drawing->SetAvailable(ready && context, false, reviewed && Kind() == 0, snapshot);
     m_step->SetAvailable(ready && context && snapshot, false,
                          reviewed && Kind() == 1 && m_context.value("cad_runtime_configured", false), canVerify);
+    m_pcb->SetAvailable(ready && context, reviewed && Kind() == 2, snapshot);
 }

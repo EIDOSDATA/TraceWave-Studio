@@ -19,6 +19,16 @@ void StudioSmokeDriver::SetupSmokeTick()
         {
             ++m_setupPendingTicks;
         }
+        if (m_frame.m_options.pcbExchangeSmoke)
+        {
+            PcbExchangeSmokeTick();
+            return;
+        }
+        if (m_frame.m_options.featuresSmoke)
+        {
+            FeaturesSmokeTick();
+            return;
+        }
         if (m_frame.m_options.outputSmoke)
         {
             OutputSmokeTick();

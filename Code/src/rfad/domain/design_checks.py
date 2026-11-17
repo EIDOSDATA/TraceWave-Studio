@@ -32,6 +32,9 @@ def check_design(document, *, inclusion="all", target_ids=None, manufacturing_pr
     for row in rows:
         try:
             shape = footprint(document,row)
+            if document.get("pcb", {}).get("holes") or (document.get("board") or {}).get("cutouts"):
+                from rfad.application.pcb_exchange_projection import effective_footprint
+                shape = effective_footprint(document, row, shape)
             shapes[row["id"]] = shape
             try:
                 margin, location = board_clearance(document,shape)
@@ -55,6 +58,9 @@ def check_design(document, *, inclusion="all", target_ids=None, manufacturing_pr
                        objects=sorted(unknown),paths=["manufacturing_profiles."+identity])
     if not selected_profiles:
         report.add("manufacturing_profile","not_evaluated","검사에 적용할 제조 규칙이 지정되지 않았습니다.",paths=["manufacturing_profiles"])
+    if "pcb" in document:
+        from rfad.application.pcb_exchange_projection import extra_diagnostics
+        extra_diagnostics(document, shapes, report)
     return report.result(connectivity,{**statistics,"resolved_shapes":len(shapes),"unresolved_shapes":len(unknown),
                                        "omitted_by_inclusion":len(document["geometry"])-len(rows)})
 

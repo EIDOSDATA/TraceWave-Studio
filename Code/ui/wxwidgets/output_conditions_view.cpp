@@ -59,11 +59,11 @@ wxTextCtrl* OutputConditionsView::Group(const std::string& title, bool collapsed
 void OutputConditionsView::SetRecord(const Json& record, const std::string& sourceName)
 {
     std::string input = sourceName.empty() ? "고정 입력 이름 미기록" : sourceName;
-    input += "\n출력 형식: " + OutputUi::Text(record.value("format", Json(nullptr)));
+    input += "\n출력 형식: " + (record.value("format", "") == "verification"
+                                    ? std::string("재검수 / 원래 형식은 상세 확인")
+                                    : OutputUi::Text(record.value("format", Json(nullptr))));
     const auto options = record.value("options", Json::object());
-    input += "\n용도: " + std::string(record.value("profile", "") == "rfad.step.mechanical/0.1"    ? "STEP 기계 형상"
-                                      : options.value("mode", "drawing") == "fabrication_geometry" ? "1:1 형상"
-                                                                                                   : "기술 도면");
+    input += "\n용도: " + OutputUi::Purpose(record);
     input += "\n좌표 / 단위: 프로젝트 원점 / mm";
     if (options.contains("scale"))
     {

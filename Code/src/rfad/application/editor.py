@@ -10,6 +10,7 @@ from rfad.domain.errors import ProjectError
 from rfad.domain.object_names import allocate_name, object_label, name_dto, validate_name
 from rfad.domain.parameter_graph import restore_parameter_command
 from rfad.domain.units import Quantity, QuantityError, _UNITS
+from rfad.domain.pcb_features import COLLECTIONS as PCB_COLLECTIONS, records as pcb_records
 
 
 PROFILE = "rfad.editor/0.1"
@@ -110,6 +111,10 @@ def selected_object(document: dict, selection: dict) -> tuple[str, dict]:
         return kind, document["parameters"][identity]
     if kind == "board" and document["board"] is not None and document["board"]["id"] == identity:
         return kind, document["board"]
+    if kind in {*PCB_COLLECTIONS, "cutout"} and kind != "import":
+        for row in pcb_records(document, "board.cutouts" if kind == "cutout" else "pcb." + PCB_COLLECTIONS[kind]):
+            if row["id"] == identity:
+                return kind, row
     if type(kind) is str and kind in COLLECTIONS:
         for item in document[COLLECTIONS[kind]]:
             if item["id"] == identity:
@@ -225,6 +230,11 @@ def _edited_coordinate_table(document, original, incoming, key):
 def fields_for(document: dict, selection: dict) -> list[dict]:
     """! @brief 선택 객체의 현재 지원 속성만 표시하고 원본 provenance는 읽기 전용으로 보존한다."""
     kind, obj = selected_object(document, selection)
+    if kind in {*PCB_COLLECTIONS, "cutout"}:
+        return [_field("name", "이름", obj["name"], readonly=True),
+                _field("editing", "편집", "PCB 형상과 제조 입력에서 원자 검토 후 편집하십시오.", readonly=True),
+                _field("source_refs", "출처 기록", "\n".join(obj["source_refs"]), readonly=True),
+                _field("origin", "수입 원본", "직접 입력" if obj["origin"] is None else "보존된 수입 원본 참조", readonly=True)]
     if kind in ("parameter", "new_parameter"):
         quantity = Quantity(**obj["quantity"])
         number, unit, note = _display_quantity(quantity)
@@ -257,6 +267,9 @@ def fields_for(document: dict, selection: dict) -> list[dict]:
                 for name, child in value.items():
                     walk(child, [*path, name], [*labels, LABELS.get(name, name)])
         elif type(value) is list:
+            if kind == "board" and path == ["cutouts"]:
+                fields.append(_field(key, "기판 내부 절삭", f"{len(value)}개 / PCB 전용 편집", readonly=True))
+                return
             if path[-1] == "outer" or (len(path) >= 2 and path[-2] == "holes"):
                 fields.append(_field(key, label, _coordinate_table(document, value, key), editor="coordinate_table"))
             elif path[-1] in ("source_refs", "assumptions"):
@@ -304,6 +317,9 @@ def build_dto(document: dict, saved_revision: str, history: dict, selection: dic
         items.append({"kind": "board", "id": document["board"]["id"], **name_dto(document, document["board"], "board")})
     for kind, collection in COLLECTIONS.items():
         items += [{"kind": kind, "id": obj["id"], **name_dto(document, obj, collection)} for obj in document[collection]]
+    for kind in ["cutout", *[key for key in PCB_COLLECTIONS if key != "import"]]:
+        for row in pcb_records(document, "board.cutouts" if kind == "cutout" else "pcb." + PCB_COLLECTIONS[kind]):
+            items.append({"kind": kind, "id": row["id"], "name": row["name"], "label": row["name"], "name_state": "stored"})
     selected = {"kind": "project", "id": document["project_id"]} if selection is None else selection
     selected_fields = fields_for(document, selected)
     result = {"profile": PROFILE, "project_id": document["project_id"], "revision_id": document["revision_id"], "saved_revision": saved_revision,

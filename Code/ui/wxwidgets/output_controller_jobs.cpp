@@ -230,6 +230,7 @@ void OutputController::Complete(const Json& result)
                 throw std::runtime_error("검토 옵션 또는 해시가 다릅니다.");
             }
             m_previewInput = input;
+            m_previewInput.erase("view_layer_id");
             m_view->SetPreview(result);
         }
         else if (method == "export.verify" &&

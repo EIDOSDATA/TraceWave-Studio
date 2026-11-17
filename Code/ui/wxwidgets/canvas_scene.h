@@ -20,6 +20,9 @@ struct Shape
     std::string label;
     std::string layer;
     std::string role;
+    /** @brief 표시 primitive와 구분되는 실제 편집 객체 종류 및 소유자이다. */
+    std::string selectionKind = "geometry";
+    std::string ownerFootprint;
     Point start{0.0, 0.0};
     Point end{0.0, 0.0};
     Point center{0.0, 0.0};
@@ -59,6 +62,7 @@ public:
     bool circularBoard = false;
     Point boardCenter{0.0, 0.0};
     double boardRadius = 0.0;
+    std::vector<Point> boardOuter;
     std::size_t omissionCount = 0;
     std::size_t rangeOmissionCount = 0;
 
@@ -68,4 +72,6 @@ private:
 
 bool Visible(const Shape& shape, const std::set<std::string>& hiddenLayers);
 double DistanceTo(const Shape& shape, Point point);
+/** @brief PCB 표시용 mm 형상을 해석하며 원본 객체를 도체로 바꾸지 않는다. */
+std::vector<Shape> ParsePcbFeatures(const nlohmann::json& values);
 }

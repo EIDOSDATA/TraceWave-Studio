@@ -87,6 +87,8 @@ enum
     IdPhysicalSetup,
     IdPrecision,
     IdSweep,
+    IdPcbFeatures,
+    IdPcbImport,
     IdTimer,
     IdShutdown
 };

@@ -60,10 +60,23 @@ def source(service, state, context, data, run_id):
 def display_omissions(document, omissions):
     """! @brief 누락 사유/식별자는 보존하고 당시 원본의 이름만 조회용으로 덧붙인다."""
     names = {row["id"]: name_dto(document, row) for row in document["geometry"]}
+    if document.get("board"):
+        names[document["board"]["id"]] = name_dto(document, document["board"], "board")
+    names.update({row["id"]: {"name": row["name"], "name_state": "stored", "label": row["name"]} for row in document["ports"]})
     physical = document["extensions"].get("rfad.physical_setup", {})
     names.update({row["id"]: {"name": row["name"], "name_state": "stored", "label": row["name"]}
                   for key in ("surfaces", "parts") for row in physical.get(key, [])})
-    return [{**deepcopy(row), **names.get(row.get("id"),
+    names.update({row["id"]: {"name": row["name"], "name_state": "stored", "label": row["name"]}
+                  for key in ("holes", "footprints", "artwork_layers", "apertures", "keepouts") for row in document.get("pcb", {}).get(key, [])})
+    names.update({row["id"]: {"name": row["name"], "name_state": "stored", "label": row["name"]}
+                  for row in (document.get("board") or {}).get("cutouts", [])})
+    descriptions = {"outside_selected_footprint": "선택한 부품 밖의 객체로 파일에서 제외; 원문은 sidecar에 보존",
+                    "sidecar_only_rf_port": "RF 포트와 기준면 의미는 원문 sidecar에 보존",
+                    "sidecar_only_footprint_ownership": "패턴 기하는 출력; 부품 소유와 핀 편집 의미는 원문 sidecar에 보존",
+                    "sidecar_only_keepout_rule": "배치/배선 금지 규칙은 원문 sidecar에 보존; CAM 기하로 변환하지 않음",
+                    "artwork_use_state=unknown": "제조 이미지 사용 여부 미정으로 파일에서 제외",
+                    "artwork_use_state=not_used": "사용 안 함으로 명시한 제조 이미지 층"}
+    return [{**deepcopy(row), "reason_label": descriptions.get(row.get("reason"), row.get("reason", "")), **names.get(row.get("id"),
             {"name": None, "name_state": "unresolved", "label": "원본 항목 (이름 확인 불가)"})}
             for row in omissions]
 
@@ -98,9 +111,10 @@ def preview(service, state, context, data):
     """! @brief writer와 공유하는 실제 용지 배치를 계산하고 검토 hash를 반환한다."""
     document, snapshot, value = source(service, state, context, data, "00000000-0000-4000-8000-000000000000")
     runtime = service.exchange.runtime
-    pages = layout(value)
+    pcb = contract.pcb_preview(value, data.get("view_layer_id")) if value["profile"] in contract.PCB_PROFILES else None
+    pages = layout(value) if pcb is None else pcb["pages"]
     return bounded({"project_id": context["project_id"], "revision_id": snapshot["revision_id"],
-        "snapshot": deepcopy(snapshot), "profile": contract.PROFILE, "status": "preview_only",
+        "snapshot": deepcopy(snapshot), "profile": value["profile"], "status": "preview_only",
         "format": data["format"], "options": deepcopy(data["options"]), "can_build": runtime is not None,
         "review_hash": contract.review_hash(value, None if runtime is None else runtime.identity),
         "runtime_configured": runtime is not None, "pages": pages,
@@ -109,7 +123,8 @@ def preview(service, state, context, data):
         "omissions": display_omissions(document, value["projection"]["omissions"]),
         "issues": [] if runtime is not None else [ProjectError("E_UNSUPPORTED", "별도 출력 실행 환경을 연결하십시오.").diagnostic()],
         "manufacturing_verified": False, "physics_verified": False,
-        "notice": "고정 스냅샷의 도면 검토입니다. 제작 조건과 실측 정확도의 합격을 뜻하지 않습니다."})
+        "notice": "고정 스냅샷의 출력 검토입니다. 제작 조건과 실측 정확도의 합격을 뜻하지 않습니다.",
+        **({"pcb_preview": pcb["pcb_preview"]} if pcb is not None else {})})
 
 
 def _item(job):
@@ -157,6 +172,8 @@ def _step_report(service, state, context, job, value):
         names[document["board"]["id"]] = object_label(document, document["board"], "board")
     physical = document["extensions"].get("rfad.physical_setup", {})
     names.update({row["id"]: row["name"] for key in ("surfaces", "parts") for row in physical.get(key, [])})
+    names.update({row["id"]: row["name"] for row in document.get("pcb", {}).get("holes", [])})
+    names.update({row["id"]: row["name"] for row in (document.get("board") or {}).get("cutouts", [])})
     mapped = {row["name"]: row for row in sidecar.get("body_map", [])}
     if len(mapped) != len(bodies) or set(mapped) != {body.get("name") for body in bodies}:
         raise ProjectError("E_HASH", "STEP 검수 body와 원본 표시 연결이 다릅니다.")
@@ -215,13 +232,23 @@ def read(service, method, params):
         layers = [{key: row[key] for key in ("id", "name", "role")} for row in source_document["stackup"]]
         chosen = next((row["id"] for row in reversed(layers) if row["role"] == "conductor"), None)
         views = [{"kind": "outline"}] if chosen is None else [{"kind": "layer", "layer_id": chosen}, {"kind": "stackup"}]
+        pcb = source_document.get("pcb", {})
+        artwork = [{key: row[key] for key in ("id", "name", "role", "side", "use_state")}
+                   for row in pcb.get("artwork_layers", [])]
+        footprints = [{key: row[key] for key in ("id", "name")} for row in pcb.get("footprints", [])]
         return bounded({"project_id": context["project_id"], "revision_id": document["revision_id"],
             "project_name": document["metadata"]["name"], "revision_label": "현재 편집 개정", "layers": layers,
             "source_snapshot": deepcopy(selected_snapshot), "source_name": source_document["metadata"]["name"],
             "source_revision_id": source_document["revision_id"],
             "source_revision_label": "현재 편집 개정" if selected_snapshot is None else selected_snapshot["description"] or "보존된 출력 스냅샷",
             "profiles": [{"id": contract.PROFILE, "label": "연관 기술 도면", "formats": ["pdf", "svg", "dxf"], "supported": True},
-                         {"id": "rfad.step.mechanical/0.1", "label": "STEP 기계 형상", "formats": ["step"], "supported": True}],
+                         {"id": "rfad.step.mechanical/0.1", "label": "STEP 기계 형상", "formats": ["step"], "supported": True},
+                         {"id": "rfad.exchange.kicad-board/0.1", "label": "KiCad 보드", "formats": ["kicad_pcb"], "supported": True},
+                         {"id": "rfad.exchange.kicad-footprint/0.1", "label": "KiCad 풋프린트", "formats": ["kicad_mod"], "supported": True},
+                         {"id": "rfad.exchange.cam/0.1", "label": "Gerber / XNC / Job", "formats": ["gerber_job"], "supported": True}],
+            "pcb": {"artwork_layers": artwork, "footprints": footprints,
+                    "default_cam_layer_ids": [row["id"] for row in layers if row["role"] == "conductor"]
+                                             + [row["id"] for row in artwork if row["use_state"] == "used"]},
             "runtime_configured": service.exchange.runtime is not None, "cad_runtime_configured": service.cad.runtime is not None,
             "snapshots": deepcopy(snapshots[offset:offset + 25]), "snapshot_offset": offset,
             "snapshot_total": len(snapshots), "snapshot_next_offset": offset + 25 if offset + 25 < len(snapshots) else None,
@@ -264,7 +291,7 @@ def admit(service, state, method, context, data):
             snapshot = state["snapshots"].get(data["snapshot"]["snapshot_id"])
             if snapshot is None or snapshot["project_id"] != context["project_id"] or snapshot["content_hash"] != data["snapshot"]["content_hash"]:
                 raise
-            value = {"project_id": context["project_id"], "snapshot": deepcopy(snapshot), "profile": contract.PROFILE,
+            value = {"project_id": context["project_id"], "snapshot": deepcopy(snapshot), "profile": data["profile"],
                 "revision_id": snapshot["revision_id"], "format": data["format"], "options": deepcopy(data["options"]),
                 "status": "preview_only", "can_build": False, "review_hash": None, "pages": [], "issues": [error.diagnostic()]}
         job = {"job_id": job_id, "run_id": run_id, "kind": "export", "operation_method": method,
@@ -286,11 +313,14 @@ def admit(service, state, method, context, data):
         _, snapshot, value = source(service, state, context, data, run_id)
         if contract.review_hash(value, runtime.identity) != data["review_hash"]:
             raise ProjectError("E_CONFLICT", "검토한 원본/옵션/실행 환경이 변경되었습니다.")
-        layout(value)
+        if value["profile"] in contract.PCB_PROFILES:
+            contract.pcb_preview(value)
+        else:
+            layout(value)
     else:
         original = owned_job(service, state, context, data["job_id"])
         if original["operation_method"] != "export.build" or "exchange" not in original:
-            raise ProjectError("E_UNSUPPORTED", "이 경로는 완료된 연관 도면 패키지만 재검수합니다.")
+            raise ProjectError("E_UNSUPPORTED", "이 경로는 완료된 도면/PCB 교환 패키지만 재검수합니다.")
         reference = manifest_reference(original)
         if reference["sha256"] != data["manifest_sha256"]:
             raise ProjectError("E_HASH", "재검수할 원본 manifest hash가 다릅니다.")
@@ -299,7 +329,7 @@ def admit(service, state, method, context, data):
     base = service._project(state, context)["path"] + "/exchange-inputs/" + run_id
     blobs = {"input.json": canonical_bytes(value), "runtime.json": runtime.manifest_bytes, "source.json": runtime.source_bytes}
     refs = {name: {"uri": base + "/" + name, "bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()} for name, raw in blobs.items()}
-    native = {"nonce": str(uuid4()), "runtime": deepcopy(runtime.identity), "input": refs["input.json"],
+    native = {"nonce": str(uuid4()), "runtime": deepcopy(runtime.identity), "input": refs["input.json"], "profile": value["profile"],
               "runtime_manifest": refs["runtime.json"], "source": refs["source.json"],
               "timeout_seconds": runtime.timeout_seconds, "resource_reserved": True,
               "operation": "generate" if original is None else "verify", "original_job_id": None if original is None else original["job_id"]}

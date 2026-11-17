@@ -71,17 +71,61 @@ def main():
         if len(payload) > 1024 * 1024 or hashlib.sha256(payload).hexdigest() != request["input_sha256"]:
             raise ProjectError("E_HASH", "출력 입력 hash/크기가 다릅니다.")
         value = json.loads(payload)
-        if canonical_bytes(value) != payload or value.get("schema") != "rfad.exchange-input/0.1":
+        expected_schema = "rfad.pcb-import-input/0.1" if request["operation"] == "parse" else "rfad.exchange-input/0.1"
+        if canonical_bytes(value) != payload or value.get("schema") != expected_schema:
             raise ProjectError("E_HASH", "출력 입력의 정규 바이트/profile이 다릅니다.")
         output = root / "output"
-        if request["operation"] == "generate":
+        if request["operation"] == "parse":
+            from rfad.adapters.exchange.pcb import parse_package
+            if value.get("run_id") != request["run_id"]:
+                raise ProjectError("E_HASH", "PCB 입력 parser 실행 ID가 다릅니다.")
+            records = value.get("files")
+            if type(records) is not list or not 1 <= len(records) <= 40:
+                raise ProjectError("E_RESOURCE", "PCB 입력은 1~40개 원문 파일이어야 합니다.")
+            files = {}
+            seen = set()
+            total = 0
+            for record in records:
+                name = record.get("path")
+                artifact = record.get("artifact", {})
+                size = artifact.get("bytes")
+                if (type(name) is not str or not 1 <= len(name) <= 120 or name in (".", "..")
+                        or any(char in name for char in ("/", "\\", ":")) or any(ord(char) < 32 for char in name)
+                        or name.casefold() in seen or type(size) is not int or not 0 < size <= 16 * 1024 * 1024):
+                    raise ProjectError("E_SCHEMA", "PCB 원문 파일명/크기가 유효하지 않습니다.")
+                seen.add(name.casefold())
+                total += size
+                if total > 16 * 1024 * 1024:
+                    raise ProjectError("E_RESOURCE", "PCB 원문 합계는 16 MiB 이하입니다.")
+                source = root / "input-files" / name
+                stat = source.lstat()
+                if source.is_symlink() or getattr(stat, "st_file_attributes", 0) & 0x400 or not source.is_file() or stat.st_size != size:
+                    raise ProjectError("E_HASH", "봉인 PCB 원문 파일의 종류/크기가 다릅니다.")
+                with source.open("rb") as stream:
+                    raw = stream.read(size + 1)
+                if len(raw) != size or hashlib.sha256(raw).hexdigest() != artifact.get("sha256"):
+                    raise ProjectError("E_HASH", "봉인 PCB 원문 파일의 바이트 hash가 다릅니다.")
+                files[name] = raw
+            parsed = canonical_bytes(parse_package(files, value["format"], value["options"]))
+            if len(parsed) > 768 * 1024 or total + len(parsed) > 16 * 1024 * 1024:
+                raise ProjectError("E_RESOURCE", "PCB parser 결과 768 KiB 또는 원문/결과 합계 16 MiB 상한을 초과했습니다.")
+            output.mkdir()
+            (output / "parse.json").write_bytes(parsed)
+            result["parsed"] = {"path": "parse.json", "bytes": len(parsed), "sha256": hashlib.sha256(parsed).hexdigest()}
+        elif value.get("profile") == "rfad.exchange.drawing/0.1":
+            from rfad.adapters.exchange.drawing import generate, verify
+        elif value.get("profile") in ("rfad.exchange.kicad-board/0.1", "rfad.exchange.kicad-footprint/0.1", "rfad.exchange.cam/0.1"):
+            from rfad.adapters.exchange.pcb import generate, verify
+        else:
+            raise ProjectError("E_UNSUPPORTED", "지원하지 않는 교환 worker profile입니다.")
+        if request["operation"] == "parse":
+            pass
+        elif request["operation"] == "generate":
             if value["run_id"] != request["run_id"]:
                 raise ProjectError("E_HASH", "출력 실행 ID가 다릅니다.")
-            from rfad.adapters.exchange.drawing import generate
             output.mkdir()
             result["package"] = generate(value, output, font_path=font_path)
         elif request["operation"] == "verify":
-            from rfad.adapters.exchange.drawing import verify
             with (root / "verification-package.json").open("rb") as stream:
                 package_raw = stream.read(256 * 1024 + 1)
             if len(package_raw) > 256 * 1024 or hashlib.sha256(package_raw).hexdigest() != request["package_sha256"]:

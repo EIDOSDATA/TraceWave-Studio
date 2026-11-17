@@ -81,6 +81,18 @@ void CanvasRenderer::DrawBoard(const CanvasScene::Model& scene)
 {
     if (scene.hasBoard)
     {
+        if (!scene.boardOuter.empty())
+        {
+            std::vector<wxPoint> points;
+            for (const auto& point : scene.boardOuter)
+            {
+                points.push_back(WorldToScreen(point));
+            }
+            m_dc.SetPen(wxPen(wxColour(118, 151, 131), FromDIP(1)));
+            m_dc.SetBrush(wxBrush(wxColour(198, 227, 203)));
+            m_dc.DrawPolygon(static_cast<int>(points.size()), points.data());
+            return;
+        }
         const wxPoint leftTop = WorldToScreen(scene.circularBoard ? Point{scene.boardCenter.x - scene.boardRadius,
                                                                           scene.boardCenter.y + scene.boardRadius}
                                                                   : Point{0.0, scene.boardHeight});
@@ -101,8 +113,15 @@ void CanvasRenderer::DrawBoard(const CanvasScene::Model& scene)
 }
 
 /** @brief 한 frame에서 native context를 재사용하고 선/원호/영역의 표시 순서를 유지한다. */
-bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, const wxColour& colour, bool highlight)
+bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, const wxColour& suppliedColour,
+                               bool highlight)
 {
+    const bool removal = shape.selectionKind == "cutout" || shape.selectionKind == "hole";
+    const bool outline = shape.selectionKind == "keepout" || shape.selectionKind == "footprint";
+    const wxColour colour = removal                             ? wxColour(248, 251, 255)
+                            : outline                           ? wxColour(178, 66, 112)
+                            : shape.selectionKind == "aperture" ? wxColour(95, 158, 183)
+                                                                : suppliedColour;
     if (!m_viewport.Renderable(shape, offset))
     {
         return false;
@@ -121,7 +140,34 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
         return false;
     }
     wxGraphicsPath path = graphics->CreatePath();
-    if (shape.kind == "line_path")
+    if (shape.kind == "line_path" && outline)
+    {
+        const auto start = m_viewport.Project(shape.start, offset);
+        const auto end = m_viewport.Project(shape.end, offset);
+        const double angle = std::atan2(end.y - start.y, end.x - start.x);
+        const double radius = shape.width * m_viewport.pixelsPerMm / 2;
+        for (int side = 0; side < 2; ++side)
+        {
+            const auto center = side == 0 ? end : start;
+            for (int step = 0; step <= 24; ++step)
+            {
+                const double theta =
+                    angle - CanvasGeometry::Pi / 2 + side * CanvasGeometry::Pi + step * CanvasGeometry::Pi / 24;
+                const double x = center.x + radius * std::cos(theta);
+                const double y = center.y + radius * std::sin(theta);
+                if (side == 0 && step == 0)
+                {
+                    path.MoveToPoint(x, y);
+                }
+                else
+                {
+                    path.AddLineToPoint(x, y);
+                }
+            }
+        }
+        path.CloseSubpath();
+    }
+    else if (shape.kind == "line_path")
     {
         CanvasGeometry::Point start = m_viewport.Project(shape.start, offset);
         CanvasGeometry::Point end = m_viewport.Project(shape.end, offset);
@@ -181,7 +227,7 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
             graphics->StrokePath(marker);
         }
     }
-    if (shape.kind != "line_path" && shape.kind != "arc_path")
+    if (outline || (shape.kind != "line_path" && shape.kind != "arc_path"))
     {
         Flush();
         if (highlight)
@@ -189,9 +235,10 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
             graphics->SetPen(wxPen(wxColour(36, 141, 225), FromDIP(5)));
             graphics->StrokePath(path);
         }
-        graphics->SetPen(wxPen(colour, FromDIP(1)));
-        graphics->SetBrush(wxBrush(colour));
-        if (shape.kind == "via" && (shape.incomplete || shape.holeRadius >= shape.radius))
+        graphics->SetPen(wxPen(removal ? wxColour(92, 107, 122) : colour, FromDIP(1),
+                               outline || shape.incomplete ? wxPENSTYLE_SHORT_DASH : wxPENSTYLE_SOLID));
+        graphics->SetBrush(outline ? *wxTRANSPARENT_BRUSH : wxBrush(colour));
+        if (outline || (shape.kind == "via" && (shape.incomplete || shape.holeRadius >= shape.radius)))
         {
             graphics->StrokePath(path);
         }
@@ -210,6 +257,17 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
         return true;
     }
     const double width = std::max(shape.width * m_viewport.pixelsPerMm, 1.0);
+    if (removal)
+    {
+        wxGraphicsPenInfo boundary(wxColour(92, 107, 122), width + FromDIP(highlight ? 5 : 2));
+        boundary.Cap(wxCAP_ROUND);
+        if (highlight)
+        {
+            boundary.Colour(wxColour(36, 141, 225));
+        }
+        graphics->SetPen(graphics->CreatePen(boundary));
+        graphics->StrokePath(path);
+    }
     if (highlight)
     {
         Flush();

@@ -8,17 +8,19 @@ void StudioFrame::UpdateControls()
 {
     const bool ready = m_connected && !m_busy && m_pcbDialog == nullptr && m_setupDialog == nullptr;
     const bool hasProject = !m_project.empty();
-    const bool opened = ready && Studio::EditableProject(m_editor, m_scene, m_project, m_revision);
+    const bool opened = ready && !m_pcbFeatureUncertain && !m_pcbImportUncertain &&
+                        Studio::EditableProject(m_editor, m_scene, m_project, m_revision);
     const bool cadRunning = m_cadPreparing || !m_cadTask.Id().empty();
     const bool outputRunning = m_output && m_output->Active();
-    const bool canSwitch = ready && m_studyDialog == nullptr && !cadRunning && !outputRunning &&
-                           !m_solverWorkflow.Active() && !m_solverRestoring && !m_cadRestoring &&
-                           !m_modelView->IsLoading();
+    const bool canSwitch = ready && !m_pcbFeatureUncertain && !m_pcbImportUncertain && m_studyDialog == nullptr &&
+                           !cadRunning && !outputRunning && !m_solverWorkflow.Active() && !m_solverRestoring &&
+                           !m_cadRestoring && !m_modelView->IsLoading();
     GetMenuBar()->Enable(IdCreate, canSwitch);
     GetMenuBar()->Enable(IdOpen, canSwitch);
     GetMenuBar()->Enable(IdSave, opened);
     GetMenuBar()->Enable(IdSnapshot, opened);
-    GetMenuBar()->Enable(IdRefresh, hasProject && canSwitch);
+    GetMenuBar()->Enable(IdRefresh,
+                         hasProject && (canSwitch || (ready && (m_pcbFeatureUncertain || m_pcbImportUncertain))));
     GetMenuBar()->Enable(IdNewParameter, opened);
     GetMenuBar()->Enable(IdPcbSelection, opened && m_pcbSelectionSupported);
     GetMenuBar()->Enable(IdProjectStudy, opened && m_studySupported);
@@ -26,6 +28,10 @@ void StudioFrame::UpdateControls()
     GetMenuBar()->Enable(IdTemplates, opened && m_templatesSupported);
     GetMenuBar()->Enable(IdDesignRules, opened && m_designRulesSupported);
     GetMenuBar()->Enable(IdPhysicalSetup, opened && m_physicalSetupSupported);
+    GetMenuBar()->Enable(IdPcbFeatures, ready && hasProject && m_pcbFeaturesSupported && !m_pcbImportUncertain &&
+                                            (opened || m_pcbFeatureUncertain));
+    GetMenuBar()->Enable(IdPcbImport, ready && hasProject && m_pcbImportSupported && !m_pcbFeatureUncertain &&
+                                          (opened || m_pcbImportUncertain));
     for (const int id : {IdNewMaterial, IdNewNet, IdNewPort})
     {
         GetMenuBar()->Enable(id, opened);

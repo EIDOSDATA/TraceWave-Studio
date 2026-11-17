@@ -73,7 +73,25 @@ OutputRecordDialog::OutputRecordDialog(wxWindow* parent, const Json& record, boo
         Row(*scopeTable,
             {item.is_object() ? OutputUi::Text(item.value("label", item.value("name", Json(nullptr))), "원본 항목")
                               : "원본 항목",
-             "제외", "범위 확인", OutputUi::Issues(Json::array({item}))});
+             "제외 / 의미 보존 범위", "범위 확인", OutputUi::Issues(Json::array({item}))});
+    }
+    const auto pcb = record.value("pcb_preview", Json::object());
+    for (const auto& layer : pcb.value("layers", Json::array()))
+    {
+        Row(*scopeTable, {OutputUi::Text(layer.value("name", Json(nullptr)), "층 이름 미정"),
+                          OutputUi::Text(layer.value("target_label", Json(nullptr))),
+                          layer.value("selected", false) ? "포함" : "사용 여부 / 제외 확인",
+                          "고정 원본의 층 대응. 일부 층만 누락한 Job은 만들지 않습니다."});
+    }
+    const auto names = pcb.value("names", Json::object());
+    for (const auto* collection : {"holes", "cutouts"})
+    {
+        for (const auto& item : pcb.value(collection, Json::array()))
+        {
+            Row(*scopeTable, {OutputUi::Text(names.value(item.at("id").get<std::string>(), Json(nullptr)), "기계 형상"),
+                              std::string(collection) == "holes" ? "드릴 / 슬롯" : "내부 절삭", "실제 원문 형상",
+                              "완성 치수와 공구 지름 / 도금 미정값은 구분합니다."});
+        }
     }
     const auto summary = record.value("summary", Json::object());
     for (const auto& item : std::vector<std::pair<std::string, std::string>>{

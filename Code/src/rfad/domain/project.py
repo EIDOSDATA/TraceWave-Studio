@@ -19,11 +19,13 @@ from rfad.domain.physical_setup import COMMAND as PHYSICAL_COMMAND, apply_setup,
 from rfad.domain.precision_command import COMMANDS as PRECISION_COMMANDS, apply_precision_command, validate_precision_origins
 from rfad.domain.network_library import COMMAND as NETWORK_COMMAND, apply_library_command, validate_project_library
 from rfad.domain.sweep_selection import COMMAND as SELECTION_COMMAND, apply_selection_command, validate_origin as validate_selection_origin
+from rfad.domain.pcb_features import (COMMAND as PCB_COMMAND, REPLAY_COMMAND as PCB_REPLAY_COMMAND,
+    apply_pcb_command, validate_pcb, finalize_pcb_edits, apply_metadata_replay)
 
 
-SCHEMA_VERSION = "rfad.project/0.5"
+SCHEMA_VERSION = "rfad.project/0.6"
 LEGACY_SCHEMA_VERSION = "rfad.project/0.1"
-READABLE_SCHEMA_VERSIONS = (LEGACY_SCHEMA_VERSION, "rfad.project/0.2", "rfad.project/0.3", "rfad.project/0.4", SCHEMA_VERSION)
+READABLE_SCHEMA_VERSIONS = (LEGACY_SCHEMA_VERSION, "rfad.project/0.2", "rfad.project/0.3", "rfad.project/0.4", "rfad.project/0.5", SCHEMA_VERSION)
 MAX_PARAMETERS = 128
 _EMPTY_COLLECTIONS = (
     "geometry", "materials", "ports", "stackup", "nets", "connections", "targets",
@@ -189,7 +191,7 @@ def validate_project(document: dict) -> None:
     if document.get("schema_version") not in READABLE_SCHEMA_VERSIONS:
         _fail("E_VERSION", "지원하지 않는 프로젝트 schema입니다.", "schema_version")
     legacy = document["schema_version"] == LEGACY_SCHEMA_VERSION
-    _fields(document, _PROJECT_FIELDS, "project")
+    _fields(document, _PROJECT_FIELDS | ({"pcb"} if document["schema_version"] == SCHEMA_VERSION and "pcb" in document else set()), "project")
     project_id = _uuid(document["project_id"], "project_id")
     revision_id = _uuid(document["revision_id"], "revision_id")
     if project_id == revision_id:
@@ -257,9 +259,9 @@ def validate_project(document: dict) -> None:
     for field in _EMPTY_COLLECTIONS:
         if not legacy and field in _DESIGN_COLLECTIONS:
             continue
-        if document["schema_version"] in ("rfad.project/0.3", "rfad.project/0.4", SCHEMA_VERSION) and field == "targets":
+        if document["schema_version"] in ("rfad.project/0.3", "rfad.project/0.4", "rfad.project/0.5", SCHEMA_VERSION) and field == "targets":
             continue
-        if document["schema_version"] in ("rfad.project/0.4", SCHEMA_VERSION) and field in ("connections", "manufacturing_profiles"):
+        if document["schema_version"] in ("rfad.project/0.4", "rfad.project/0.5", SCHEMA_VERSION) and field in ("connections", "manufacturing_profiles"):
             continue
         if type(document[field]) is not list:
             _fail("E_SCHEMA", "미구현 컬렉션은 빈 목록이어야 합니다.", field)
@@ -268,9 +270,9 @@ def validate_project(document: dict) -> None:
     if not legacy:
         evaluate_parameters(parameters)
         validate_design(document)
-    if document["schema_version"] in ("rfad.project/0.3", "rfad.project/0.4", SCHEMA_VERSION):
+    if document["schema_version"] in ("rfad.project/0.3", "rfad.project/0.4", "rfad.project/0.5", SCHEMA_VERSION):
         validate_targets(document)
-    if document["schema_version"] in ("rfad.project/0.4", SCHEMA_VERSION):
+    if document["schema_version"] in ("rfad.project/0.4", "rfad.project/0.5", SCHEMA_VERSION):
         validate_rules(document)
     if type(document["extensions"]) is not dict:
         _fail("E_SCHEMA", "extensions는 object여야 합니다.", "extensions")
@@ -281,6 +283,7 @@ def validate_project(document: dict) -> None:
     validate_precision_origins(document)
     validate_project_library(document)
     validate_selection_origin(document)
+    validate_pcb(document)
 
 
 def apply_command(document: dict, command: dict, expected_revision: str) -> tuple[dict, list[str], list[str], dict]:
@@ -302,6 +305,15 @@ def apply_command(document: dict, command: dict, expected_revision: str) -> tupl
     if type(command_type) is not str:
         _fail("E_SCHEMA", "명령 type은 문자열이어야 합니다.", "command.type")
     payload = command["payload"]
+    replay = None
+    if command_type == PCB_REPLAY_COMMAND:
+        _fields(payload, {"command", "metadata"}, "pcb.replay")
+        _fields(payload["command"], {"type", "payload"}, "pcb.replay.command")
+        command_type = payload["command"]["type"]
+        if command_type == PCB_REPLAY_COMMAND or type(command_type) is not str:
+            _fail("E_SCHEMA", "이력 metadata 명령은 중첩할 수 없습니다.", "pcb.replay.command")
+        replay = payload["metadata"]
+        payload = payload["command"]["payload"]
     result = deepcopy(document)
     result["schema_version"] = SCHEMA_VERSION
     if command_type == "metadata.set":
@@ -365,11 +377,26 @@ def apply_command(document: dict, command: dict, expected_revision: str) -> tupl
         changed_ids, invalidation_set, inverse = apply_selection_command(result, payload)
     elif command_type == NETWORK_COMMAND:
         changed_ids, invalidation_set, inverse = apply_library_command(result, payload)
+    elif command_type == PCB_COMMAND:
+        changed_ids, invalidation_set, inverse = apply_pcb_command(result, payload)
     elif command_type in DESIGN_COMMANDS:
+        if command_type == "board.set" and type(payload) is dict and type(payload.get("board")) is dict:
+            before_cuts = (document.get("board") or {}).get("cutouts")
+            if payload["board"].get("cutouts") != before_cuts:
+                _fail("E_UNSUPPORTED", "기판 절삭은 PCB 전용 원자 편집으로 변경하십시오.", "board.cutouts")
         changed_ids, invalidation_set, inverse = apply_design_command(result, command_type, payload)
     else:
         _fail("E_UNSUPPORTED", "지원하지 않는 프로젝트 명령입니다.", "command.type")
     derived_changes = evaluate_parameters(result["parameters"], update=True)
+    if replay is not None:
+        inverse_metadata = apply_metadata_replay(result, replay)
+    else:
+        metadata_changes = finalize_pcb_edits(document, result, command_type)
+        inverse_metadata = [{"id": row["id"], "expected": row["replacement"], "replacement": row["expected"]}
+                            for row in metadata_changes]
+    if inverse_metadata:
+        inverse = {"type": PCB_REPLAY_COMMAND, "payload": {"command": inverse, "metadata": inverse_metadata}}
+        changed_ids = [*changed_ids, *(row["id"] for row in inverse_metadata)]
     changed_ids = list(dict.fromkeys([*changed_ids, *derived_changes]))
     result["parent_revision_ids"] = [document["revision_id"]]
     result["revision_id"] = str(uuid4())

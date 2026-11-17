@@ -218,11 +218,12 @@ def build_canvas_dto(document: dict) -> dict:
     if board is not None:
         outline = board["outline"]
         circular = outline["kind"] == "circle"
-        visible = {"id": board["id"], "kind": "circle", "center": None, "radius": None} if circular else {"id": board["id"], "width": None, "height": None}
+        polygon = outline["kind"] == "polygon"
+        visible = {"id": board["id"], "kind": "polygon", "outer": None} if polygon else {"id": board["id"], "kind": "circle", "center": None, "radius": None} if circular else {"id": board["id"], "width": None, "height": None}
         visible.update(name_dto(document, board, "board"))
-        for name in ("center", "radius") if circular else ("width", "height"):
+        for name in ("outer",) if polygon else ("center", "radius") if circular else ("width", "height"):
             try:
-                visible[name] = _display_point(document, outline[name], "board.outline." + name) if name == "center" else _display_length(document, outline[name], "board.outline." + name)
+                visible[name] = [_display_point(document, point, "board.outline.outer") for point in outline[name]] if polygon else _display_point(document, outline[name], "board.outline." + name) if name == "center" else _display_length(document, outline[name], "board.outline." + name)
             except ProjectError as error:
                 result["omissions"].append({"id": board["id"], "message": error.message})
         if circular and visible["center"] is not None and visible["radius"] is not None:
@@ -272,6 +273,13 @@ def build_canvas_dto(document: dict) -> dict:
             result["shapes"].append(shape)
         except ProjectError as error:
             result["omissions"].append({"id": geometry["id"], "message": error.message})
+    if "pcb" in document or (board is not None and "cutouts" in board):
+        from rfad.application.pcb_exchange_projection import feature_scene
+        from rfad.domain.pcb_features import owner_map
+        result["pcb_features"] = feature_scene(document)
+        owners = owner_map(document)
+        for row in result["shapes"]:
+            row["owner_footprint_id"] = owners.get(("geometry", row["id"]))
     if len(json.dumps(result, ensure_ascii=False, allow_nan=False).encode("utf-8")) > MAX_DTO_BYTES:
         _fail("2D 표시 DTO가 초기 전송 크기 상한을 초과했습니다.", "canvas", "E_RESOURCE")
     return result

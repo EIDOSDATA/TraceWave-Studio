@@ -35,6 +35,45 @@ int main()
 {
     try
     {
+        const Json omission{{"reason", "sidecar_only"}, {"reason_label", "핀 의미는 보존 원문에만 기록"}};
+        const auto omissionBefore = omission;
+        Check(OutputUi::Issues(Json::array({omission})) == "핀 의미는 보존 원문에만 기록" && omission == omissionBefore,
+              "display reason did not preserve the raw omission code");
+        Check(OutputUi::Issues(Json::array({{{"reason", "original reason"}}})) == "original reason",
+              "historical omission reason was changed");
+        const Json camVerification{{"format", "verification"},
+                                   {"result", {{"profile", "rfad.exchange.cam/0.1"}}},
+                                   {"report",
+                                    {{"status", "passed_profile"},
+                                     {"reader", {{"reader", "bounded Gerber/XNC/Job parsers"}, {"files", 6}}},
+                                     {"kernel_independent", false}}}};
+        const auto preservedCam = camVerification;
+        const auto displayedCam = OutputUi::RecordForDisplay(camVerification);
+        Check(displayedCam.at("format") == "gerber_job" &&
+                  OutputUi::Purpose(displayedCam) == "Gerber / 드릴 / Job 패키지" &&
+                  OutputUi::Reader(displayedCam.at("report").at("reader")) == "bounded Gerber/XNC/Job parsers" &&
+                  displayedCam.at("report").at("kernel_independent") == false && camVerification == preservedCam,
+              "CAM verification displayed a drawing or lost the actual reader / source");
+        for (const auto& item : Json::array({{"rfad.exchange.kicad-board/0.1", "kicad_pcb"},
+                                             {"rfad.exchange.kicad-footprint/0.1", "kicad_mod"},
+                                             {"rfad.step.mechanical/0.1", "step"}}))
+        {
+            auto record = camVerification;
+            record["result"]["profile"] = item.at(0);
+            Check(OutputUi::RecordForDisplay(record).at("format") == item.at(1),
+                  "known verification profile was replaced with operation name");
+        }
+        auto drawingVerification = camVerification;
+        drawingVerification["result"] = {{"profile", "rfad.exchange.drawing/0.1"},
+                                         {"format", "svg"},
+                                         {"options", {{"mode", "fabrication_geometry"}}}};
+        Check(OutputUi::RecordForDisplay(drawingVerification).at("format") == "svg" &&
+                  OutputUi::Purpose(OutputUi::RecordForDisplay(drawingVerification)) == "1:1 형상",
+              "verification overwrote recorded drawing format or fabrication purpose");
+        Check(OutputUi::Purpose({{"profile", "future"}, {"format", "verification"}}) != "기술 도면" &&
+                  OutputUi::Reader({{"formats", Json::array({{{"reader", "existing PDF parser"}}})}}) ==
+                      "existing PDF parser",
+              "unknown profile was inferred as a drawing or historical reader was lost");
         const Json loop =
             Json::array({{{"kind", "arc"}, {"center", {0, 0}}, {"radius", 12}, {"start_deg", 0}, {"sweep_deg", 360}}});
         Json hole = loop;

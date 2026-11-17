@@ -34,6 +34,8 @@ struct Options
     bool validationSmoke = false;
     bool selectionSmoke = false;
     bool outputSmoke = false;
+    bool featuresSmoke = false;
+    bool pcbExchangeSmoke = false;
     bool printedSeedSmoke = false;
     bool designRulesSmoke = false;
     bool physicalSetupSmoke = false;

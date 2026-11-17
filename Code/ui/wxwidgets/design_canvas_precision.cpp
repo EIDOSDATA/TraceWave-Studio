@@ -27,8 +27,10 @@ void DesignCanvas::SetSnapEnabled(bool enabled)
 const DesignCanvas::Shape* DesignCanvas::SelectedPath() const
 {
     const auto* shape = FindShape(m_selection);
-    return m_editingEnabled && m_tool == "select" && shape && CanvasPrecision::HasEndpoints(*shape) &&
-        Selectable(*shape) && Renderable(*shape) ? shape : nullptr;
+    return m_editingEnabled && m_tool == "select" && shape && shape->selectionKind == "geometry" &&
+                   CanvasPrecision::HasEndpoints(*shape) && Selectable(*shape) && Renderable(*shape)
+               ? shape
+               : nullptr;
 }
 
 std::optional<CanvasPrecision::Endpoint> DesignCanvas::HitEndpoint(const Shape& shape, const wxPoint& pixel) const
@@ -77,8 +79,8 @@ void DesignCanvas::UpdateCursor(const wxPoint& pixel)
     Nearest nearest(cursor, FromDIP(8) / viewport.pixelsPerMm, circle);
     for (auto shape = m_scene.shapes.rbegin(); shape != m_scene.shapes.rend(); ++shape)
     {
-        if (shape->layer != layer || (editing && shape->id == editing->id) ||
-            !HasEndpoints(*shape) || !Visible(*shape) || !Renderable(*shape))
+        if (shape->layer != layer || (editing && shape->id == editing->id) || !HasEndpoints(*shape) ||
+            !Visible(*shape) || !Renderable(*shape))
         {
             continue;
         }
@@ -123,11 +125,13 @@ void DesignCanvas::FinishEndpoint(const wxPoint& pixel)
 {
     const auto candidate = EndpointPreview();
     const auto endpoint = m_endpoint;
-    const double distance = std::hypot(static_cast<double>(pixel.x - m_mouseDown.x), static_cast<double>(pixel.y - m_mouseDown.y));
+    const double distance =
+        std::hypot(static_cast<double>(pixel.x - m_mouseDown.x), static_cast<double>(pixel.y - m_mouseDown.y));
     const bool dropped = GetClientRect().Contains(pixel) && distance >= FromDIP(3);
     const wxPoint2DDouble cursor = m_cursor;
     const auto* current = SelectedPath();
-    const bool unchanged = current && endpoint && CanvasPrecision::EndpointUnchanged(*current, *endpoint, GeometryPoint(cursor));
+    const bool unchanged =
+        current && endpoint && CanvasPrecision::EndpointUnchanged(*current, *endpoint, GeometryPoint(cursor));
     CancelGesture();
     if (!dropped)
     {
@@ -143,7 +147,8 @@ void DesignCanvas::FinishEndpoint(const wxPoint& pixel)
         Status("끝점 위치를 적용할 수 없습니다. 반대쪽 끝점과 원호 중심을 확인하세요.");
         return;
     }
-    Emit(Json{{"type", "move_endpoint"}, {"id", candidate->id},
+    Emit(Json{{"type", "move_endpoint"},
+              {"id", candidate->id},
               {"endpoint", *endpoint == CanvasPrecision::Endpoint::Start ? "start" : "end"},
               {"point", Json::array({cursor.m_x, cursor.m_y})}});
 }
@@ -180,8 +185,10 @@ void DesignCanvas::DrawPrecision(wxDC& dc, const Shape* selected) const
         dc.SetBrush(*wxTRANSPARENT_BRUSH);
         if (m_snap->kind == SnapKind::Endpoint)
         {
-            const wxPoint diamond[] = {{pixel.x, pixel.y - radius}, {pixel.x + radius, pixel.y},
-                                       {pixel.x, pixel.y + radius}, {pixel.x - radius, pixel.y}};
+            const wxPoint diamond[] = {{pixel.x, pixel.y - radius},
+                                       {pixel.x + radius, pixel.y},
+                                       {pixel.x, pixel.y + radius},
+                                       {pixel.x - radius, pixel.y}};
             dc.DrawPolygon(4, diamond);
         }
         else

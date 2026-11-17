@@ -139,6 +139,13 @@ private:
     void OpenPcbSelection();
     /** @brief 응답 처리 타이머가 반환한 뒤 별도 이벤트에서 모달 화면을 표시한다. */
     void ShowPcbSelection(const Json& context);
+    /** @brief 기계 형상과 제조 입력의 검토/복구를 같은 프로젝트에 연결한다. */
+    void OpenPcbFeatures(const std::string& section = "hole", const Json& identity = nullptr);
+    void ShowPcbFeatures(const Json& context);
+    void ReadPcbFeatureRecovery();
+    void OpenPcbImport();
+    void ShowPcbImport(const Json& context);
+    void ReadPcbImportRecovery();
     /** @brief 메뉴와 도구 버튼이 같은 명령 처리기를 사용하도록 연결한다. */
     void AddTool(wxWindow* parent, wxSizer* sizer, int id, const std::string& label);
     /** @brief 키보드만으로 좌표를 지정하며 유한 수치의 판정 후 서비스에 전달한다. */
@@ -311,6 +318,11 @@ private:
     bool m_closeAfterPcb = false;
     bool m_forceCloseAfterPcb = false;
     bool m_pcbSelectionSupported = false;
+    bool m_pcbFeaturesSupported = false;
+    bool m_pcbFeatureUncertain = false;
+    bool m_pcbImportSupported = false;
+    bool m_pcbImportUncertain = false;
+    std::string m_pcbFeatureRecoveryProject;
     SolverChart* m_solverChart = nullptr;
     wxChoice* m_solverMetric = nullptr;
     wxStaticText* m_solverStatus = nullptr;

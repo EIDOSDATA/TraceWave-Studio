@@ -9,6 +9,7 @@ import math
 import re
 
 from rfad.domain.errors import ProjectError
+from rfad.domain.curve_boolean import difference
 
 
 PROFILE = "rfad.exchange.drawing/0.1"
@@ -68,13 +69,19 @@ def board_bounds(board):
         x, y = point(board["center_mm"])
         r = number(board["radius_mm"], positive=True)
         return [x - r, y - r, x + r, y + r]
+    if board.get("kind") == "polygon":
+        points = [point(value) for value in board["outer_mm"]]
+        return [min(value[0] for value in points), min(value[1] for value in points),
+                max(value[0] for value in points), max(value[1] for value in points)]
     return [0.0, 0.0, number(board["width_mm"], positive=True), number(board["height_mm"], positive=True)]
 
 
 def board_loops(board):
-    """! @brief 사각 또는 원형 기판 경계를 정확한 원시 도형으로 만든다."""
+    """! @brief 사각/원형/직선 다각형 외곽을 정확한 원시 도형으로 만든다."""
     if board.get("kind") == "circle":
         return [[arc(point(board["center_mm"]), number(board["radius_mm"], positive=True))]]
+    if board.get("kind") == "polygon":
+        return [polygon([point(value) for value in board["outer_mm"]])]
     x0, y0, x1, y1 = board_bounds(board)
     return [polygon([[x0, y0], [x1, y0], [x1, y1], [x0, y1]])]
 
@@ -186,6 +193,79 @@ def _drilled(loops, vias, entity_id):
         if _inside(center, loops):
             result.append([arc(center, radius)])
     return result
+
+
+def mechanical_loops(shape, offset=0.0):
+    """! @brief 기계 원본의 완성 치수와 도금 offset을 해석형 경계로 만든다."""
+    kind = shape["kind"]
+    if kind == "circle":
+        return [[arc(point(shape["center_mm"]), number(shape["diameter_mm"], positive=True) / 2 + offset)]]
+    if kind == "capsule":
+        center = point(shape["center_mm"])
+        length, width = number(shape["finished_length_mm"], positive=True), number(shape["finished_width_mm"], positive=True)
+        if length - width < 1e-5:
+            fail("슬롯 전체 길이는 폭보다 최소 길이만큼 커야 합니다.", code="E_GEOMETRY")
+        angle = number(shape["rotation_deg"])
+        return shape_loops({"kind": "line_path", "start_mm": polar(center, (length - width) / 2, angle + 180),
+                            "end_mm": polar(center, (length - width) / 2, angle), "width_mm": width + 2 * offset})
+    if offset:
+        fail("이 기계 경계의 도금 offset은 지원하지 않습니다.")
+    if kind == "polygon":
+        return [polygon([point(p) for p in loop]) for loop in [shape["outer_mm"], *shape.get("holes_mm", [])]]
+    if kind == "rectangle":
+        return shape_loops({"kind": "pad", "pad_shape": "rectangle", "center_mm": shape["center_mm"],
+                            "size_mm": shape["size_mm"], "rotation_deg": shape["rotation_deg"]})
+    fail("지원하지 않는 기계 절삭 경계입니다.")
+
+
+def _mechanical_removed(loops, projection, *, surface_id=None, outline_only=False):
+    """! @brief 실제 절삭 뒤 연결 성분과 원호를 도면에서도 유지한다."""
+    data = projection.get("mechanical", {})
+    records = [(item, False) for item in data.get("cutouts", [])]
+    if not outline_only:
+        records += [(item, True) for item in data.get("holes", [])]
+    result = loops
+    for item, hole in records:
+        if surface_id is not None and surface_id not in item["surface_cut_ids"]:
+            continue
+        offset = 0.0
+        if hole:
+            plating = item["plating"]
+            if plating["state"] not in ("plated", "unplated"):
+                fail("도금 여부가 미정인 기계 홀을 도면에서 추정하지 않습니다.")
+            if plating["state"] == "plated" and surface_id is None:
+                offset = number(plating["thickness_mm"], positive=True)
+        result = difference(result, mechanical_loops(item["shape"], offset), _inside)
+        if not result:
+            fail("기계 절삭으로 도면의 원본 재료 전체가 제거됩니다. 명시적인 형상 수정을 검토하십시오.", code="E_GEOMETRY")
+    return result
+
+
+def _plated_mechanical(projection):
+    """! @brief 기본 적층을 관통하는 명시 도금 shell만 반환한다."""
+    return [item for item in projection.get("mechanical", {}).get("holes", []) if item["plating"]["state"] == "plated"]
+
+
+def mechanical_shell(item):
+    """! @brief 완성 홀과 외부 도금 경계가 만든 중공 단면을 보존한다."""
+    return mechanical_loops(item["shape"], number(item["plating"]["thickness_mm"], positive=True)) + mechanical_loops(item["shape"])
+
+
+def copper_loops(projection, shape):
+    """! @brief 도면/CAM이 같은 실제 비아와 기계 절삭 후 도체 경계를 사용한다."""
+    if shape["kind"] == "via":
+        return shape_loops(shape)
+    vias = [item for item in projection["shapes"] if item["kind"] == "via"]
+    return _mechanical_removed(_drilled(shape_loops(shape), vias, shape["id"]), projection)
+
+
+def substrate_loops(projection, *, outline_only=False):
+    """! @brief 외곽/기판 절삭과 실제 적층의 관통 제거를 구분해 반환한다."""
+    loops = board_loops(projection["board"])
+    if not outline_only:
+        vias = [item for item in projection["shapes"] if item["kind"] == "via"]
+        loops = _drilled(loops, vias, projection["board"]["id"])
+    return _mechanical_removed(loops, projection, outline_only=outline_only)
 
 
 def _transform_edge(edge, scale, x, y, mirror):
@@ -310,7 +390,7 @@ def _section(data, vias, bounds):
                                 identity, layer_id, net, fill))
     for layer in layers.values():
         if layer["role"] == "dielectric":
-            add(_drilled(board_loops(projection["board"]), vias, projection["board"]["id"]), layer["z_min_mm"],
+            add(_mechanical_removed(_drilled(board_loops(projection["board"]), vias, projection["board"]["id"]), projection), layer["z_min_mm"],
                 layer["thickness_mm"], layer["id"], layer["id"], None, [214, 233, 218])
     for shape in projection["shapes"]:
         layer = layers[shape["layer_id"]]
@@ -320,15 +400,19 @@ def _section(data, vias, bounds):
             upper = max(item["z_min_mm"] + item["thickness_mm"] for item in ends)
             add(shape_loops(shape), lower, upper - lower, shape["id"], None, shape["net_id"], COPPER)
         else:
-            add(_drilled(shape_loops(shape), vias, shape["id"]), layer["z_min_mm"], layer["thickness_mm"],
+            add(_mechanical_removed(_drilled(shape_loops(shape), vias, shape["id"]), projection), layer["z_min_mm"], layer["thickness_mm"],
                 shape["id"], layer["id"], shape["net_id"], COPPER)
+    for item in _plated_mechanical(projection):
+        lower = min(layer["z_min_mm"] for layer in layers.values())
+        upper = max(layer["z_min_mm"] + layer["thickness_mm"] for layer in layers.values())
+        add(mechanical_shell(item), lower, upper - lower, item["id"], None, item["plating"]["net_id"], COPPER)
     for surface in projection.get("surface_layers", []):
         if surface["coverage"] == "board":
             loops = board_loops(projection["board"])
         else:
             x, yy, width, height = surface["rectangle_mm"]
             loops = [polygon([[x, yy], [x + width, yy], [x + width, yy + height], [x, yy + height]])]
-        intervals = _section_intervals(loops, y)
+        intervals = _section_intervals(_mechanical_removed(loops, projection, surface_id=surface["id"]), y)
         for x, yy, width, height in surface["openings_mm"]:
             if yy <= y <= yy + height:
                 remaining = []
@@ -367,19 +451,21 @@ def _view(data, option):
         mirror = -1 if bottom and data["options"]["mode"] == "drawing" else 1
         label = layer["name"] + (" / 뒤면에서 봄 / X 반전" if mirror < 0 else " / 위에서 봄")
         for shape in selected:
-            shapes.append(_path(_drilled(shape_loops(shape), vias, shape["id"]), shape["id"], layer_id, shape["net_id"]))
+            shapes.append(_path(_mechanical_removed(_drilled(shape_loops(shape), vias, shape["id"]), projection), shape["id"], layer_id, shape["net_id"]))
         if layer["role"] == "dielectric":
-            shapes.insert(0, _path(_drilled(board_loops(projection["board"]), vias, projection["board"]["id"]),
+            shapes.insert(0, _path(_mechanical_removed(_drilled(board_loops(projection["board"]), vias, projection["board"]["id"]), projection),
                                    projection["board"]["id"], layer_id, fill=[214, 233, 218]))
         for via in vias:
             lower = min(layers[via["layer_id"]]["z_min_mm"], layers[via["end_layer_id"]]["z_min_mm"])
             upper = max(layers[via["layer_id"]]["z_min_mm"], layers[via["end_layer_id"]]["z_min_mm"])
             if lower <= layer["z_min_mm"] <= upper:
                 shapes.append(_path(shape_loops(via), via["id"], layer_id, via["net_id"]))
+        for item in _plated_mechanical(projection):
+            shapes.append(_path(mechanical_shell(item), item["id"], layer_id, item["plating"]["net_id"]))
     elif option["kind"] != "outline":
         fail("지원하지 않는 도면 뷰입니다.", "options.views")
     if data["options"]["mode"] == "drawing" or option["kind"] == "outline":
-        shapes.insert(0, _path(board_loops(projection["board"]), projection["board"]["id"], fill=None))
+        shapes.insert(0, _path(_mechanical_removed(board_loops(projection["board"]), projection, outline_only=True), projection["board"]["id"], fill=None))
     if option["kind"] == "detail":
         bounds = [number(value) for value in option["bounds_mm"]]
         label = option["label"] + " / 명시 영역 상세 / " + label
@@ -437,6 +523,11 @@ def layout(data):
         x = rect[0] + rect[2] / 2 - mirror * scale * (bounds[0] + bounds[2]) / 2
         y = rect[1] + rect[3] / 2 - scale * (bounds[1] + bounds[3]) / 2
         ids = {shape["source_id"] for shape in shapes}
+        if options["dimensions"]:
+            mechanical = projection.get("mechanical", {})
+            ids.update(item["id"] for item in mechanical.get("cutouts", []))
+            if option["kind"] != "outline":
+                ids.update(item["id"] for item in mechanical.get("holes", []))
         dimensions = _dimension_rows(data, ids) if options["dimensions"] else []
         page["viewports"] = [{"rect_mm": rect, "world_bounds_mm": bounds, "label": label,
                               "transform": {"scale": scale, "x_mm": x, "y_mm": y, "mirror_x": mirror < 0},
@@ -536,3 +627,18 @@ def layout(data):
             number(value)
     finite(pages)
     return pages
+
+
+def pcb_layer_targets(projection, format_name, layer_ids=None):
+    """! @brief GUI 검토와 writer가 같은 명시 층 대응을 공유하며 없는 층을 만들지 않는다."""
+    if format_name in ("kicad_pcb", "kicad_mod"):
+        copper = sorted((row for row in projection["layers"] if row["role"] == "conductor"), key=lambda row: row["z_min_mm"], reverse=True)
+        if not 2 <= len(copper) <= 32 or len(copper) % 2:
+            raise ProjectError("E_UNSUPPORTED", "KiCad 교환은 짝수 2~32개 명시 구리층을 지원합니다.")
+        names = ["F.Cu", *["In" + str(index) + ".Cu" for index in range(1, len(copper) - 1)], "B.Cu"]
+        output = {row["id"]: name for row, name in zip(copper, names)}
+        for row in projection.get("artwork_layers", []):
+            if row["use_state"] == "used":
+                output[row["id"]] = ("F." if row["side"] == "top" else "B.") + ("Mask" if row["role"] == "solder_mask" else "Paste")
+        return output
+    return {identity: "layer-" + str(index + 1).zfill(2) + ".gbr" for index, identity in enumerate(layer_ids or [])}

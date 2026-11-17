@@ -37,6 +37,8 @@ private:
 };
 /** @brief 복합 reader 기록을 내부 JSON 없이 실제 도구 이름으로 나열한다. */
 std::string Reader(const Json& value);
+/** @brief 재검수 작업 이름과 원래 출력 profile을 구분해 실제 용도를 표시한다. */
+std::string Purpose(const Json& record);
 std::string Text(const Json& value, const std::string& missing = "미정");
 std::string State(const std::string& state);
 std::string Issues(const Json& issues);

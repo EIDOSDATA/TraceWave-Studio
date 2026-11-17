@@ -14,9 +14,7 @@ using Json = nlohmann::json;
 class DisplayRangeError final : public std::runtime_error
 {
 public:
-    explicit DisplayRangeError(const char* message) : std::runtime_error(message)
-    {
-    }
+    explicit DisplayRangeError(const char* message) : std::runtime_error(message) {}
 };
 
 Point ReadPoint(const Json& value)
@@ -63,25 +61,52 @@ Model Model::Parse(const nlohmann::json& scene)
     std::set<std::string> layers;
     std::set<std::string> identities;
     const Json& board = scene.at("board");
-    if (!board.is_null() && board.value("kind", "rectangle") != "rectangle" && board.value("kind", "rectangle") != "circle")
+    if (!board.is_null() && board.value("kind", "rectangle") != "rectangle" &&
+        board.value("kind", "rectangle") != "circle" && board.value("kind", "rectangle") != "polygon")
     {
         throw std::runtime_error("지원하지 않는 기판 외곽 표시 형식입니다.");
     }
     const bool circular = !board.is_null() && board.value("kind", "rectangle") == "circle";
-    bool hasBoard = !board.is_null() && (circular ?
-        (!board.at("radius").is_null() && board.at("center").is_array() && board.at("center").size() == 2 &&
-            !board.at("center").at(0).is_null() && !board.at("center").at(1).is_null()) :
-        (!board.at("width").is_null() && !board.at("height").is_null()));
+    const bool polygon = !board.is_null() && board.value("kind", "rectangle") == "polygon";
+    bool hasBoard =
+        !board.is_null() && (polygon    ? board.value("outer", Json(nullptr)).is_array()
+                             : circular ? (!board.at("radius").is_null() && board.at("center").is_array() &&
+                                           board.at("center").size() == 2 && !board.at("center").at(0).is_null() &&
+                                           !board.at("center").at(1).is_null())
+                                        : (!board.at("width").is_null() && !board.at("height").is_null()));
     double boardWidth = 0.0;
     double boardHeight = 0.0;
     double boardRadius = 0.0;
     Point boardCenter{0.0, 0.0};
+    std::vector<Point> boardOuter;
     std::size_t rangeOmissions = 0;
+    if (polygon && hasBoard)
+    {
+        for (const auto& point : board.at("outer"))
+        {
+            if (!point.is_array() || point.size() != 2 || point.at(0).is_null() || point.at(1).is_null())
+            {
+                hasBoard = false;
+                break;
+            }
+        }
+    }
     if (hasBoard)
     {
         try
         {
-            if (circular)
+            if (polygon)
+            {
+                if (board.at("outer").size() < 3 || board.at("outer").size() > 64)
+                {
+                    throw std::runtime_error("기판 표시 외곽의 꼭짓점 수가 유효하지 않습니다.");
+                }
+                for (const auto& point : board.at("outer"))
+                {
+                    boardOuter.push_back(ReadPoint(point));
+                }
+            }
+            else if (circular)
             {
                 boardCenter = ReadPoint(board.at("center"));
                 boardRadius = Positive(board.at("radius"));
@@ -116,6 +141,8 @@ Model Model::Parse(const nlohmann::json& scene)
             shape.label = item.value("label", shape.id);
             shape.layer = item.at("layer_id").get<std::string>();
             shape.role = item.value("role", std::string("conductor"));
+            const auto owner = item.value("owner_footprint_id", Json(nullptr));
+            shape.ownerFootprint = owner.is_string() ? owner.get<std::string>() : "";
             shape.width = (shape.kind == "line_path" || shape.kind == "arc_path") ? Positive(item.at("width")) : 0.0;
             shape.movable = item.value("movable", false);
             if (item.contains("endpoint_mask"))
@@ -146,8 +173,8 @@ Model Model::Parse(const nlohmann::json& scene)
                 shape.radius = Positive(item.at("radius"));
                 shape.startAngle = item.at("start_angle").get<double>();
                 shape.sweepAngle = item.at("sweep_angle").get<double>();
-                if (!std::isfinite(shape.startAngle) || !std::isfinite(shape.sweepAngle) ||
-                    shape.sweepAngle == 0.0 || std::abs(shape.sweepAngle) > 360.0 + 1e-10)
+                if (!std::isfinite(shape.startAngle) || !std::isfinite(shape.sweepAngle) || shape.sweepAngle == 0.0 ||
+                    std::abs(shape.sweepAngle) > 360.0 + 1e-10)
                 {
                     throw std::runtime_error("표시 원호의 각도 구간이 유효하지 않습니다.");
                 }
@@ -255,9 +282,9 @@ Model Model::Parse(const nlohmann::json& scene)
             }
             if ((shape.kind == "via" || shape.kind == "pad") && shape.rings.empty() && shape.radius > 0.0 &&
                 (std::abs(shape.center.x) + shape.radius > CanvasGeometry::MaxCoordinate ||
-                    std::abs(shape.center.y) + shape.radius > CanvasGeometry::MaxCoordinate ||
-                    shape.center.x - shape.radius >= shape.center.x + shape.radius ||
-                    shape.center.y - shape.radius >= shape.center.y + shape.radius))
+                 std::abs(shape.center.y) + shape.radius > CanvasGeometry::MaxCoordinate ||
+                 shape.center.x - shape.radius >= shape.center.x + shape.radius ||
+                 shape.center.y - shape.radius >= shape.center.y + shape.radius))
             {
                 throw DisplayRangeError("패드/비아 외곽이 표시 범위 또는 좌표 정밀도를 벗어났습니다.");
             }
@@ -268,15 +295,26 @@ Model Model::Parse(const nlohmann::json& scene)
             ++rangeOmissions;
         }
     }
-    std::stable_sort(shapes.begin(), shapes.end(), [](const Shape& left, const Shape& right)
-    {
-        auto order = [](const Shape& shape)
-        {
-            return shape.kind == "planar_region" ? 0 : (shape.kind == "pad" ? 2 : (shape.kind == "via" ? 3 : 1));
-        };
-        return order(left) < order(right);
-    });
+    std::stable_sort(shapes.begin(), shapes.end(),
+                     [](const Shape& left, const Shape& right)
+                     {
+                         auto order = [](const Shape& shape)
+                         {
+                             return shape.kind == "planar_region"
+                                        ? 0
+                                        : (shape.kind == "pad" ? 2 : (shape.kind == "via" ? 3 : 1));
+                         };
+                         return order(left) < order(right);
+                     });
     Model result;
+    for (auto& shape : ParsePcbFeatures(scene.value("pcb_features", Json::array())))
+    {
+        if (!identities.insert(shape.id).second)
+        {
+            throw std::runtime_error("도체와 PCB 표시 객체의 식별자가 중복됩니다.");
+        }
+        shapes.push_back(std::move(shape));
+    }
     result.shapes = std::move(shapes);
     result.layers = std::move(layers);
     result.hasBoard = hasBoard;
@@ -285,7 +323,16 @@ Model Model::Parse(const nlohmann::json& scene)
     result.circularBoard = circular;
     result.boardCenter = boardCenter;
     result.boardRadius = boardRadius;
-    result.omissionCount = scene.contains("omissions") && scene.at("omissions").is_array() ? scene.at("omissions").size() : 0;
+    result.boardOuter = std::move(boardOuter);
+    result.omissionCount =
+        scene.contains("omissions") && scene.at("omissions").is_array() ? scene.at("omissions").size() : 0;
+    for (const auto& feature : scene.value("pcb_features", Json::array()))
+    {
+        if (feature.value("missing", false) || feature.value("shape_mm", Json(nullptr)).is_null())
+        {
+            ++result.omissionCount;
+        }
+    }
     result.rangeOmissionCount = rangeOmissions;
     for (std::size_t index = 0; index < result.shapes.size(); ++index)
     {
@@ -306,10 +353,11 @@ bool Visible(const Shape& shape, const std::set<std::string>& hiddenLayers)
 {
     if (shape.kind == "via" && !shape.spanLayers.empty())
     {
-        return std::any_of(shape.spanLayers.begin(), shape.spanLayers.end(), [&](const std::string& layer)
-        {
-            return hiddenLayers.count(layer) == 0;
-        });
+        return std::any_of(shape.spanLayers.begin(), shape.spanLayers.end(),
+                           [&](const std::string& layer)
+                           {
+                               return hiddenLayers.count(layer) == 0;
+                           });
     }
     return hiddenLayers.count(shape.layer) == 0;
 }
@@ -352,7 +400,14 @@ Bounds Model::VisibleBounds(const std::set<std::string>& hiddenLayers) const
     };
     if (hasBoard)
     {
-        if (circularBoard)
+        if (!boardOuter.empty())
+        {
+            for (const auto& point : boardOuter)
+            {
+                include(point.x, point.y, 0);
+            }
+        }
+        else if (circularBoard)
         {
             include(boardCenter.x, boardCenter.y, boardRadius);
         }

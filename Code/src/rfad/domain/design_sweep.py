@@ -283,6 +283,8 @@ def _evaluation_key(document, settings, circuit, specification):
     ignored_extensions = {"rfad.network-library", "rfad.precision-origin", "rfad.template-origin", "rfad.pcb-selection", "rfad.sweep-selection"}
     fields = ("schema_version", "frames", "board", "materials", "stackup", "nets", "geometry", "ports", "environment")
     model = {key: _physical(document[key], document) for key in fields}
+    if document.get("pcb", {}).get("holes"):
+        model["mechanical_holes"] = _physical(document["pcb"]["holes"], document)
     model["extensions"] = {key: _physical(value, document) for key, value in document["extensions"].items()
                            if key not in ignored_extensions}
     return canonical_hash({"profile": "rfad.sweep-evaluation/0.1", "model": model,

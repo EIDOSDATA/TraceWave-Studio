@@ -5,6 +5,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from rfad.adapters.cad.geometry import _require
+from rfad.adapters.cad.mechanical import board_solid, cut_surface
 from rfad.domain.physical_setup import KEY, step_bytes
 
 
@@ -64,13 +65,10 @@ def inspect_step(item):
 
 def cover_board(cq, board, z, depth):
     """! @brief 기준 외곽의 바뀐 위치나 형상을 있는 그대로 사용한다."""
-    if board.get("kind") == "circle":
-        x, y = board["center_mm"]
-        return cq.Solid.makeCylinder(board["radius_mm"], depth, (x, y, z))
-    return cq.Solid.makeBox(board["width_mm"], board["height_mm"], depth, (0.0, 0.0, z))
+    return board_solid(cq, board, z, depth)
 
 
-def surface_bodies(cq, projection):
+def surface_bodies(cq, projection, mechanical=()):
     """! @brief 피복을 돌출하고 명시한 개구만 절삭한다."""
     result = []
     tolerance = projection["tolerance_mm"]
@@ -90,8 +88,10 @@ def surface_bodies(cq, projection):
                      abs(shape.intersect(opening).Volume() - opening.Volume()) <= max(tolerance ** 3, opening.Volume() * 1e-10),
                      "표면층 개구가 피복을 벗어나거나 다른 개구와 겹칩니다.", field="surface." + row["id"])
             shape = shape.cut(opening)
+        shape, mechanical_ids = cut_surface(cq, shape, row, mechanical)
         result.append({"id": row["id"], "name": "surface_" + row["id"], "role": "surface",
                        "layer_id": row["id"], "net_id": None, "material_id": row["material_id"], "source_entity_ids": [row["id"]],
+                       **({"mechanical_cut_source_ids": mechanical_ids} if mechanical_ids else {}),
                        "feature_kind": row["kind"], "shape": shape})
     return result
 

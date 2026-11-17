@@ -111,7 +111,7 @@ void DesignCanvas::SetScene(const Json& scene)
     m_pendingOffset = Point(0.0, 0.0);
     m_scene = std::move(parsed);
     m_dimensions = Json::array();
-    if (FindShape(m_selection) == nullptr)
+    if (SelectionInfo(m_selection).is_null())
     {
         m_selection.clear();
     }
@@ -132,7 +132,14 @@ void DesignCanvas::SetInspection(const std::vector<std::string>& identities, std
 void DesignCanvas::SetSelection(const std::string& identity)
 {
     const Shape* shape = FindShape(identity);
-    const std::string selected = shape != nullptr && Visible(*shape) && Renderable(*shape) ? identity : std::string();
+    const bool owner = std::any_of(m_scene.shapes.begin(), m_scene.shapes.end(),
+                                   [&identity, this](const Shape& item)
+                                   {
+                                       return !identity.empty() && item.ownerFootprint == identity && Visible(item) &&
+                                              Renderable(item);
+                                   });
+    const std::string selected =
+        (shape != nullptr && Visible(*shape) && Renderable(*shape)) || owner ? identity : std::string();
     if (m_selection != selected)
     {
         if (m_gesture.Reshaping())
@@ -143,6 +150,26 @@ void DesignCanvas::SetSelection(const std::string& identity)
         m_dimensions = Json::array();
         Refresh(false);
     }
+}
+
+DesignCanvas::Json DesignCanvas::SelectionInfo(const std::string& identity) const
+{
+    if (identity.empty())
+    {
+        return nullptr;
+    }
+    if (const auto* shape = FindShape(identity))
+    {
+        return {{"kind", shape->selectionKind}, {"id", identity}};
+    }
+    for (const auto& shape : m_scene.shapes)
+    {
+        if (shape.ownerFootprint == identity)
+        {
+            return {{"kind", "footprint"}, {"id", identity}};
+        }
+    }
+    return nullptr;
 }
 
 void DesignCanvas::SetTool(const std::string& tool)
@@ -411,6 +438,7 @@ void DesignCanvas::OnPaint(wxPaintEvent&)
             offset = m_pendingOffset;
         }
         const bool highlighted = shape.id == m_selection ||
+                                 (!m_selection.empty() && shape.ownerFootprint == m_selection) ||
                                  std::find(m_inspection.begin(), m_inspection.end(), shape.id) != m_inspection.end();
         const auto& drawn = preview && preview->id == shape.id ? *preview : shape;
         if (!renderer.DrawShape(drawn, GeometryPoint(offset), colours[index], highlighted))
@@ -768,7 +796,7 @@ void DesignCanvas::OnKeyDown(wxKeyEvent& event)
     {
         CancelGesture();
         const Shape* shape = FindShape(m_selection);
-        if (shape != nullptr && Visible(*shape) && Renderable(*shape))
+        if (shape != nullptr && shape->selectionKind == "geometry" && Visible(*shape) && Renderable(*shape))
         {
             Emit(Json{{"type", "remove"}, {"id", m_selection}});
         }

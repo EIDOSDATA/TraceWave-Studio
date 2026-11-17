@@ -42,6 +42,8 @@ public:
     void SetSelectionFilter(const std::string& kind, bool activeLayerOnly);
     void SetDimensions(const Json& dimensions);
     void FitView();
+    /** @brief 도체와 PCB 객체를 혼동하지 않는 서비스 선택 정체성이다. */
+    Json SelectionInfo(const std::string& identity) const;
     void CancelGesture();
 
     wxPoint WorldToScreen(const wxPoint2DDouble& point) const;

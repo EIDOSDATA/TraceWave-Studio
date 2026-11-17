@@ -39,6 +39,8 @@ void StudioFrame::BuildInterface()
     design->Append(IdCircularBoard, Display("원형 기판 만들기"));
     design->Append(IdPcbSelection, Display("기판 설정 / 제조업체 자료"));
     design->Append(IdPhysicalSetup, Display("PCB / 적층과 외부 환경"));
+    design->Append(IdPcbFeatures, Display("PCB 형상 / 풋프린트 / 제조 입력"));
+    design->Append(IdPcbImport, Display("PCB / CAM 원문 가져오기"));
     design->Append(IdNewMaterial, Display("재료 추가"));
     design->Append(IdNewNet, Display("네트 추가"));
     design->Append(IdNewPort, Display("급전 포트 추가"));
@@ -544,6 +546,20 @@ void StudioFrame::BuildInterface()
             OpenDesignSetup(DesignSetup::Physical);
         },
         IdPhysicalSetup);
+    Bind(
+        wxEVT_MENU,
+        [this](wxCommandEvent&)
+        {
+            OpenPcbFeatures();
+        },
+        IdPcbFeatures);
+    Bind(
+        wxEVT_MENU,
+        [this](wxCommandEvent&)
+        {
+            OpenPcbImport();
+        },
+        IdPcbImport);
     UpdateControls();
 }
 

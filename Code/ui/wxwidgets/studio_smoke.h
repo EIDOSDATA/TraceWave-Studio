@@ -66,6 +66,15 @@ public:
     void OnSelected();
 
 private:
+    /** @brief 실제 PCB 특징 입력과 원문/소유/영수증 보존을 검사한다. */
+    void FeaturesSmokeTick();
+    void PcbExchangeSmokeTick();
+    void PcbExchangeSafetyChecks();
+    Json m_pcbExchangeFixture = Json::object(), m_pcbExchangeBefore = nullptr, m_pcbExchangeResult = nullptr;
+    std::string m_pcbExchangeRevision, m_pcbExchangeUploadId, m_pcbExchangeBuildId;
+    void FeaturesSafetyChecks();
+    Json m_featuresFixture = Json::object();
+    std::string m_featuresHoleId, m_featuresFootprintId, m_featuresOriginalRevision;
     /** @brief 실제 출력 입력, 검토, 생성 및 새 읽기 검수의 원문 보존을 검사한다. */
     void OutputSmokeTick();
     void OutputSafetyChecks();

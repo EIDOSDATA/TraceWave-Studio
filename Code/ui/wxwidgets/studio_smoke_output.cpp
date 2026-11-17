@@ -52,7 +52,7 @@ private:
             for (long row = 0; row < table->GetItemCount(); ++row)
             {
                 if (table->GetColumnCount() >= 4 && table->GetItemText(row) == Display(m_expectedLabel) &&
-                    table->GetItemText(row, 1) == Display("제외") &&
+                    table->GetItemText(row, 1) == Display("제외 / 의미 보존 범위") &&
                     table->GetItemText(row, 3).Contains("include_in_export=false"))
                 {
                     return true;

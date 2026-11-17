@@ -173,7 +173,14 @@ def _planar_solid(cq, source, layer):
 def _inside_outline(cq, solid, board, z_min, thickness, tolerance, field):
     """! @brief 실제 생성 고체를 기판 외곽과 비교하며 자동 clipping을 금지한다."""
     box = solid.BoundingBox()
-    if board.get("kind", "rectangle") == "circle":
+    if board.get("kind", "rectangle") == "polygon":
+        from rfad.adapters.cad.mechanical import board_solid
+
+        coverage = board_solid(cq, board, z_min - tolerance, thickness + 2 * tolerance)
+        outside = solid.cut(coverage)
+        _require(outside.isValid(), "다각형 기판 외곽의 Boolean 포함 검증이 실패했습니다.", field=field)
+        contained = not outside.Solids() or outside.Volume() <= tolerance ** 3
+    elif board.get("kind", "rectangle") == "circle":
         cx, cy = board["center_mm"]
         coverage = cq.Solid.makeCylinder(board["radius_mm"] + tolerance, thickness + 2 * tolerance, (cx, cy, z_min - tolerance))
         outside = solid.cut(coverage)
@@ -248,11 +255,11 @@ def _via_records(cq, projection, layers, planar):
 
 
 def _drilled(solid, records):
-    """! @brief 명시적 관통 PTH의 실제 outer barrel 공간을 해당 body에서 제거한다."""
+    """! @brief 명시한 비아/기계 절삭의 실제 재료 제거를 해당 body에 적용한다."""
     sources = []
     for record in records:
         common = solid.intersect(record["drill"])
-        _require(common.isValid(), "비아 drill 교집합 계산이 실패했습니다.")
+        _require(common.isValid(), "관통 절삭 교집합 계산이 실패했습니다.")
         if common.Volume() > 1e-18:
             solid = solid.cut(record["drill"])
             _require(solid.isValid() and bool(solid.Solids()), "drill 후 원본 도체 또는 유전체가 사라지거나 유효하지 않습니다.")

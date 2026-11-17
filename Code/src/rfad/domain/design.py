@@ -13,7 +13,7 @@ from rfad.domain.material_models import (LEGACY_MODEL, TOTAL_TAN_DELTA_MODEL,
                                         material_input_fields as model_input_fields, validate_material_model)
 from rfad.domain.planar import MAX_REGION_HOLES, MAX_REGION_POINTS, validate_region
 from rfad.domain.units import Quantity, QuantityError
-from rfad.domain.object_names import NAMED_SCHEMA, validate_name
+from rfad.domain.object_names import NAMED_SCHEMAS, validate_name
 
 
 DESIGN_COLLECTIONS = ("materials", "stackup", "nets", "geometry", "ports")
@@ -182,8 +182,9 @@ def validate_design(document: dict) -> None:
     indexes = _indexes(document)
     board = document.get("board")
     if board is not None:
-        named = "name" in board and document.get("schema_version") == NAMED_SCHEMA
-        _fields(board, {"id", "frame_id", "outline", "thickness_convention"} | ({"name"} if named else set()), "board")
+        named = "name" in board and document.get("schema_version") in NAMED_SCHEMAS
+        cutouts = "cutouts" in board and document.get("schema_version") == "rfad.project/0.6"
+        _fields(board, {"id", "frame_id", "outline", "thickness_convention"} | ({"name"} if named else set()) | ({"cutouts"} if cutouts else set()), "board")
         if named:
             validate_name(board["name"], "board.name")
         _reference(board["frame_id"], indexes["frames"], "board.frame_id")
@@ -200,6 +201,10 @@ def validate_design(document: dict) -> None:
             _fields(outline, {"kind", "center", "radius"}, "board.outline")
             _vector2(document, outline["center"], "board.outline.center")
             _number(document, outline["radius"], "length", "board.outline.radius", positive=True)
+        elif outline.get("kind") == "polygon" and document.get("schema_version") == "rfad.project/0.6":
+            from rfad.domain.pcb_features import validate_shape
+            _fields(outline, {"kind", "outer"}, "board.outline")
+            validate_shape(document, {**outline, "holes": []}, "board.outline")
         else:
             _fail("E_UNSUPPORTED", "기판 외곽은 rectangle 또는 circle이어야 합니다.", "board.outline.kind")
     elif document["stackup"] or document["geometry"] or document["ports"]:
@@ -262,7 +267,7 @@ def validate_design(document: dict) -> None:
             specific = {"center", "end_layer_id", "finished_hole_diameter", "plating_thickness", "tool_hole_diameter", "fill", "pad_ids"}
         else:
             _fail("E_UNSUPPORTED", "지원하지 않는 도체 의미 모델입니다.", field + ".kind")
-        named = "name" in geometry and document.get("schema_version") == NAMED_SCHEMA
+        named = "name" in geometry and document.get("schema_version") in NAMED_SCHEMAS
         _fields(geometry, _GEOMETRY_FIELDS | specific | ({"name"} if named else set()), field)
         if named:
             validate_name(geometry["name"], field + ".name")
@@ -479,10 +484,14 @@ def preflight_design(document: dict, purpose: str) -> list[dict]:
         if outline["kind"] == "rectangle":
             for field in ("width", "height"):
                 require(outline[field], "length", "board.outline." + field)
-        else:
+        elif outline["kind"] == "circle":
             require(outline["radius"], "length", "board.outline.radius")
             for index, coordinate in enumerate(outline["center"]):
                 require(coordinate, "length", f"board.outline.center[{index}]")
+        else:
+            for index, point in enumerate(outline["outer"]):
+                for axis, coordinate in enumerate(point):
+                    require(coordinate, "length", f"board.outline.outer[{index}][{axis}]")
     geometries = [item for item in document["geometry"] if item["include_in_em"]] if purpose == "em" else [item for item in document["geometry"] if item["include_in_export"]] if purpose == "step" else document["geometry"]
     if not geometries:
         missing("E_GEOMETRY", "geometry", "목적에 포함할 도체 패턴이 필요합니다.")

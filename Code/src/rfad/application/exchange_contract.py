@@ -5,17 +5,33 @@ from uuid import UUID
 
 from rfad.application.cad import build_cad_input
 from rfad.application.canonical import canonical_bytes, canonical_hash
+from rfad.application.pcb_exchange_projection import exchange_projection
 from rfad.domain.errors import ProjectError
+from rfad.domain.design import resolve_scalar
 from rfad.domain.object_names import object_label
 from rfad.domain.precision_dimensions import dimensions
+from rfad.domain import drawing_layout
 
 PROFILE = "rfad.exchange.drawing/0.1"
+PCB_PROFILES = {"rfad.exchange.kicad-board/0.1": "kicad_pcb", "rfad.exchange.kicad-footprint/0.1": "kicad_mod",
+                "rfad.exchange.cam/0.1": "gerber_job"}
 MAX_INPUT_BYTES = 1024 * 1024
 MAX_RESPONSE_BYTES = 768 * 1024
 MAX_FILE_BYTES = 16 * 1024 * 1024
 MAX_PACKAGE_BYTES = 64 * 1024 * 1024
 MAX_FILES = 35
+MAX_PCB_FILES = 43
 READS = {"export.context", "export.list", "export.get", "export.receipt"}
+
+
+def supported_profile(value):
+    """! @brief 임의 profile을 CAD 경로로 잘못 보내지 않는 닫힌 출력 집합을 제공한다."""
+    return type(value) is str and (value == PROFILE or value in PCB_PROFILES)
+
+
+def file_limit(profile):
+    """! @brief 도면의 기존 35개와 전체 32층 PCB 패키지의 43개 상한을 구분한다."""
+    return MAX_PCB_FILES if type(profile) is str and profile in PCB_PROFILES else MAX_FILES
 
 
 def fields(value, required, optional=()):
@@ -51,10 +67,22 @@ def validate_request(method, context, data):
         identity(data["job_id"])
         hash_value(data["manifest_sha256"])
         return
-    fields(data, {"snapshot", "profile", "format", "options"} | ({"review_hash"} if method == "export.build" else set()))
+    fields(data, {"snapshot", "profile", "format", "options"} | ({"review_hash"} if method == "export.build" else set()),
+           {"view_layer_id"} if method == "export.preview" else set())
+    if "view_layer_id" in data:
+        identity(data["view_layer_id"])
+        if type(data["profile"]) is not str or data["profile"] not in PCB_PROFILES:
+            raise ProjectError("E_SCHEMA", "PCB/CAM 미리보기에만 표시 층 선택을 사용할 수 있습니다.")
     fields(data["snapshot"], {"snapshot_id", "content_hash"})
     identity(data["snapshot"]["snapshot_id"])
     hash_value(data["snapshot"]["content_hash"])
+    if data["profile"] != PROFILE and type(data["profile"]) is str and data["profile"] in PCB_PROFILES:
+        if data["format"] != PCB_PROFILES[data["profile"]]:
+            raise ProjectError("E_UNSUPPORTED", "PCB 교환 profile과 파일 형식이 다릅니다.")
+        pcb_options(data["options"], data["format"])
+        if method == "export.build":
+            hash_value(data["review_hash"])
+        return
     if data["profile"] != PROFILE or data["format"] not in ("pdf", "svg", "dxf"):
         raise ProjectError("E_UNSUPPORTED", "지원하는 연관 도면 profile/형식을 선택하십시오.")
     if method == "export.build":
@@ -101,19 +129,202 @@ def options(value, format_name, document=None):
     return deepcopy(value)
 
 
+def pcb_options(value, format_name, projection=None):
+    """! @brief PCB/CAM의 고정 원점/1:1와 명시 풋프린트 또는 전체 사용 층만 받는다."""
+    if format_name == "kicad_pcb":
+        fields(value, set())
+    elif format_name == "kicad_mod":
+        fields(value, {"footprint_id"})
+        identity(value["footprint_id"])
+        if projection is not None and value["footprint_id"] not in {row["id"] for row in projection["footprints"]}:
+            raise ProjectError("E_REFERENCE", "선택한 풋프린트가 고정 입력에 없습니다.")
+    elif format_name == "gerber_job":
+        fields(value, {"layer_ids"})
+        if type(value["layer_ids"]) is not list or not 1 <= len(value["layer_ids"]) <= 36:
+            raise ProjectError("E_RESOURCE", "CAM은 명시한 1~36개 사용 층이 필요합니다.")
+        for item in value["layer_ids"]:
+            identity(item)
+        if len(set(value["layer_ids"])) != len(value["layer_ids"]):
+            raise ProjectError("E_SCHEMA", "CAM 출력 층이 중복되었습니다.")
+        if projection is not None:
+            required = {row["id"] for row in projection["layers"] if row["role"] == "conductor"}
+            required.update(row["id"] for row in projection["artwork_layers"] if row["use_state"] == "used")
+            if set(value["layer_ids"]) != required:
+                raise ProjectError("E_REFERENCE", "Job 패키지에는 모든 명시 도체층과 사용 중인 마스크/페이스트 층을 함께 선택하십시오.")
+    else:
+        raise ProjectError("E_UNSUPPORTED", "지원하지 않는 PCB/CAM 형식입니다.")
+    return deepcopy(value)
+
+
 def build_input(document, snapshot, data, run_id):
     """! @brief 원본 전체와 실제 평가 치수를 별도 파생 입력으로 고정한다."""
+    if data["profile"] in PCB_PROFILES:
+        projection = exchange_projection(document, snapshot)
+        projection["omissions"] = deepcopy(projection.get("diagnostics", []))
+        projection["omissions"] += [{"id": row["id"], "reason": "artwork_use_state=" + row["use_state"]}
+                                    for row in projection["artwork_layers"] if row["use_state"] != "used"]
+        projection["omissions"] += [{"id": row["id"], "reason": "sidecar_only_rf_port"} for row in document["ports"]]
+        if data["format"] == "gerber_job":
+            projection["omissions"] += [{"id": row["id"], "reason": "sidecar_only_footprint_ownership"} for row in projection["footprints"]]
+            projection["omissions"] += [{"id": row["id"], "reason": "sidecar_only_keepout_rule"} for row in projection["keepouts"]]
+        selected = pcb_options(data["options"], data["format"], projection)
+        if data["format"] == "kicad_mod":
+            owner = next(row for row in projection["footprints"] if row["id"] == selected["footprint_id"])
+            included = {row["id"] for row in owner["members"]} | {owner["id"]}
+            projection["omissions"] += [{"id": row["id"], "reason": "outside_selected_footprint"}
+                for rows in (projection["shapes"], projection["mechanical"]["holes"], projection["mechanical"]["cutouts"],
+                             projection["footprints"], projection["apertures"], projection["keepouts"], [projection["board"]])
+                for row in rows if row["id"] not in included]
+        result = {"schema": "rfad.exchange-input/0.1", "profile": data["profile"], "run_id": run_id,
+                  "snapshot": deepcopy(snapshot), "format": data["format"], "options": selected,
+                  "projection": projection, "names": deepcopy(projection["names"]), "dimensions": []}
+        if len(canonical_bytes(result)) > MAX_INPUT_BYTES:
+            raise ProjectError("E_RESOURCE", "PCB 교환 입력과 원문 사본이 1 MiB를 초과했습니다.")
+        return result
     selected = options(data["options"], data["format"], document)
     projection = build_cad_input(document, snapshot, purpose="step")
     names = {item["id"]: object_label(document, item) for item in document["geometry"]}
     records = [{"entity_id": item["id"], "label": names[item["id"]], "items": dimensions(document, item)}
                for item in document["geometry"]]
+    for prefix, items in (("board.cutouts", (document.get("board") or {}).get("cutouts", [])),
+                          ("pcb.holes", document.get("pcb", {}).get("holes", []))):
+        for item in items:
+            names[item["id"]] = item["name"]
+            records.append({"entity_id": item["id"], "label": item["name"], "items": mechanical_dimensions(document, item, prefix)})
     result = {"schema": "rfad.exchange-input/0.1", "profile": PROFILE, "run_id": run_id,
               "snapshot": deepcopy(snapshot), "format": data["format"], "options": selected,
               "projection": projection, "names": names, "dimensions": records}
     if len(canonical_bytes(result)) > MAX_INPUT_BYTES:
         raise ProjectError("E_RESOURCE", "출력 입력과 원문 사본의 합계가 1 MiB를 초과했습니다.")
     return result
+
+
+def mechanical_dimensions(document, item, prefix):
+    """! @brief 완성 치수와 미정 공구를 원래 Quantity에 연관된 도면 표로 만든다."""
+    shape = item["shape"]
+    fields = []
+    for key, label, unit in (("diameter", "완성 지름", "mm"), ("finished_length", "완성 전체 길이", "mm"),
+                             ("finished_width", "완성 폭", "mm"), ("rotation", "회전각", "deg")):
+        if key in shape:
+            fields.append(("shape." + key, label, unit, shape[key]))
+    if "size" in shape:
+        fields += [("shape.size." + str(index), label, "mm", value) for index, (value, label) in enumerate(zip(shape["size"], ("폭", "높이")))]
+    if "tool_diameter" in item:
+        fields.append(("tool_diameter", "실제 공구 지름", "mm", item["tool_diameter"]))
+        fields.append(("plating.thickness", "도금 두께", "mm", item["plating"]["thickness"]))
+    result = []
+    for path, label, unit, original in fields:
+        quantity = resolve_scalar(document, original, "angle" if unit == "deg" else "length")
+        result.append({"key": "mechanical." + path, "label": label, "unit": unit,
+                       "value": None if quantity.value_si is None else quantity.as_unit(unit), "status": quantity.status.value,
+                       "field_path": prefix + "." + item["id"] + "." + path, "parameter_id": original.get("parameter_id"),
+                       "anchors_mm": [], "source_refs": list(quantity.source_refs)})
+    return result
+
+
+def _footprint_view(projection, footprint_id):
+    """! @brief 전체 원문은 유지하고 선택 부품의 파일에 실제 포함되는 객체만 표시한다."""
+    result = deepcopy(projection)
+    owner = next(row for row in result["footprints"] if row["id"] == footprint_id)
+    members = {row["id"] for row in owner["members"]}
+    for key in ("shapes", "apertures", "keepouts"):
+        result[key] = [row for row in result[key] if row["id"] in members]
+    if any(row["kind"] != "pad" for row in result["shapes"]):
+        raise ProjectError("E_UNSUPPORTED", "이 KiCad 풋프린트 profile은 소유 패드 형상을 지원합니다. 다른 소유 구리를 생략하지 않습니다.")
+    result["mechanical"]["holes"] = [row for row in result["mechanical"]["holes"] if row["id"] in members]
+    result["mechanical"]["cutouts"] = []
+    result["footprints"] = [owner]
+    return result, owner
+
+
+def _local_footprint_paths(paths, placement):
+    """! @brief writer와 같은 역배치를 표시 경계에 한 번 적용하며 Y는 위쪽으로 유지한다."""
+    origin = placement["origin_mm"]
+    angle = math.radians(placement["rotation_deg"])
+    def local(point):
+        x, y = point[0] - origin[0], point[1] - origin[1]
+        return [x * math.cos(angle) + y * math.sin(angle), -x * math.sin(angle) + y * math.cos(angle)]
+    samples = []
+    for path in paths:
+        for loop in path["loops"]:
+            for edge in loop:
+                if edge["kind"] == "line":
+                    edge["start"], edge["end"] = local(edge["start"]), local(edge["end"])
+                    samples.extend((edge["start"], edge["end"]))
+                else:
+                    edge["center"] = local(edge["center"])
+                    edge["start_deg"] -= placement["rotation_deg"]
+                    x, y = edge["center"]
+                    radius = edge["radius"]
+                    samples.extend(([x - radius, y - radius], [x + radius, y + radius]))
+    if not samples:
+        return [-1.0, -1.0, 1.0, 1.0]
+    return [min(row[0] for row in samples) - 1, min(row[1] for row in samples) - 1,
+            max(row[0] for row in samples) + 1, max(row[1] for row in samples) + 1]
+
+
+def pcb_preview(value, view_layer_id=None):
+    """! @brief 같은 원본의 실제 평면/대응표를 검토하며 수신 도구의 성공을 미리 확정하지 않는다."""
+    projection = value["projection"]
+    footprint = None
+    if value["format"] == "kicad_mod":
+        projection, footprint = _footprint_view(projection, value["options"]["footprint_id"])
+    conductors = [row for row in projection["layers"] if row["role"] == "conductor"]
+    targets = drawing_layout.pcb_layer_targets(projection, value["format"], value["options"].get("layer_ids"))
+    artwork = projection["artwork_layers"]
+    used = [row for row in artwork if row["use_state"] == "used"]
+    selectable = conductors + used
+    if not selectable:
+        raise ProjectError("E_GEOMETRY", "PCB 교환에는 명시된 도체 또는 사용 제조층이 필요합니다.")
+    selected = next((row for row in selectable if row["id"] == view_layer_id), None) if view_layer_id else (conductors[-1] if conductors else used[-1])
+    if selected is None:
+        raise ProjectError("E_REFERENCE", "미리볼 제조/도체층이 고정 입력에 없거나 사용 여부가 미정입니다.")
+    paths = []
+    def path(loops, identity, net_id=None, fill=None):
+        return {"kind": "path", "loops": loops, "source_id": identity, "source_name": projection["names"].get(identity, ""),
+                "layer_id": selected["id"], "net_id": net_id, "role": "geometry", "stroke": drawing_layout.INK,
+                "stroke_width_mm": 0.12, "fill": fill}
+    if footprint is None:
+        paths.append(path(drawing_layout.substrate_loops(projection, outline_only=True), projection["board"]["id"]))
+    elif footprint["placement_envelope"] is not None:
+        paths.append(path(drawing_layout.mechanical_loops(footprint["placement_envelope"]), footprint["id"]))
+    is_copper = selected in conductors
+    if is_copper:
+        for shape in projection["shapes"]:
+            if shape["kind"] != "via" and shape["layer_id"] == selected["id"]:
+                paths.append(path(drawing_layout.copper_loops(projection, shape), shape["id"], shape["net_id"], drawing_layout.COPPER))
+            elif shape["kind"] == "via" and next(row["z_min_mm"] for row in conductors if row["id"] == shape["layer_id"]) <= selected["z_min_mm"] <= next(row["z_min_mm"] for row in conductors if row["id"] == shape["end_layer_id"]):
+                paths.append(path(drawing_layout.shape_loops(shape), shape["id"], shape["net_id"], drawing_layout.COPPER))
+        for item in projection["mechanical"]["holes"]:
+            if item["plating"]["state"] == "plated":
+                paths.append(path(drawing_layout.mechanical_shell(item), item["id"], item["plating"]["net_id"], drawing_layout.COPPER))
+    else:
+        for item in projection["apertures"]:
+            if item["artwork_layer_id"] == selected["id"]:
+                paths.append(path(drawing_layout.mechanical_loops(item["shape"]), item["id"], fill=[125, 182, 160]))
+    for item in projection["mechanical"]["holes"]:
+        paths.append(path(drawing_layout.mechanical_loops(item["shape"]), item["id"]))
+    bounds = drawing_layout.board_bounds(projection["board"])
+    coordinate = "world_mm_top_view_no_mirror"
+    label = selected["name"] + " / 위에서 본 원본 좌표 / 1:1"
+    if footprint is not None:
+        bounds = _local_footprint_paths(paths, footprint["placement"])
+        coordinate = "footprint_local_mm_y_up_no_mirror"
+        label = footprint["name"] + " / 부품 로컬 좌표 / 1:1"
+    page = {"unit": "mm", "width_mm": bounds[2] - bounds[0], "height_mm": bounds[3] - bounds[1],
+            "view_box_mm": [bounds[0], bounds[1], bounds[2] - bounds[0], bounds[3] - bounds[1]],
+            "primitives": paths, "viewports": [{"rect_mm": [bounds[0], bounds[1], bounds[2] - bounds[0], bounds[3] - bounds[1]], "world_bounds_mm": bounds,
+                "label": label, "dimensions": [], "primitives": [],
+                "transform": {"scale": 1, "x_mm": 0, "y_mm": 0, "mirror_x": False}}]}
+    mapping = [{"id": row["id"], "name": row["name"], "role": row["role"], "side": row.get("side"),
+                "state": row.get("use_state", "explicit_conductor"), "selected": row in selectable,
+                "target_label": targets.get(row["id"])} for row in conductors + artwork]
+    omissions = deepcopy(projection["omissions"])
+    return {"pages": [page], "omissions": omissions, "pcb_preview": {"view_layer_id": selected["id"], "layers": mapping,
+            "holes": deepcopy(projection["mechanical"]["holes"]), "cutouts": deepcopy(projection["mechanical"]["cutouts"]),
+            "footprints": deepcopy(projection["footprints"]), "names": deepcopy(projection["names"]),
+            "coordinate_policy": coordinate, "scale": 1,
+            "scope": "source_geometry_preview; recipient_refill_and_file_readback_not_yet_performed"}}
 
 
 def review_hash(value, runtime):

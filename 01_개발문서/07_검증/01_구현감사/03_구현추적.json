@@ -7370,13 +7370,22 @@
       "formats": [
         "pdf",
         "svg",
-        "dxf"
+        "dxf",
+        "kicad_pcb",
+        "kicad_mod",
+        "gerber_job"
       ],
       "manufacturing_verified": false,
       "max_file_bytes": 16777216,
       "max_files": 35,
       "max_package_bytes": 67108864,
       "native_slots": 1,
+      "pcb_max_files": 43,
+      "pcb_profiles": {
+        "rfad.exchange.cam/0.1": "gerber_job",
+        "rfad.exchange.kicad-board/0.1": "kicad_pcb",
+        "rfad.exchange.kicad-footprint/0.1": "kicad_mod"
+      },
       "physics_verified": false,
       "preview_required": true,
       "profile": "rfad.exchange.drawing/0.1",
@@ -7436,15 +7445,68 @@
       "legacy_names_persisted_on_read": false,
       "maximum_characters": 256,
       "profile": "rfad.object-name/0.1",
-      "project_schema": "rfad.project/0.5",
+      "project_schema": "rfad.project/0.6",
       "rename_method": "editor.apply"
+    },
+    "pcb_features_profile": {
+      "atomic_apply": true,
+      "limits": {
+        "apertures": 128,
+        "artwork_layers": 4,
+        "cutouts": 16,
+        "footprints": 32,
+        "holes": 64,
+        "imports": 16,
+        "keepouts": 64
+      },
+      "manufacturing_verified": false,
+      "measurement_verified": false,
+      "operations": [
+        "aperture.remove",
+        "aperture.set",
+        "artwork_layer.remove",
+        "artwork_layer.set",
+        "cutout.remove",
+        "cutout.set",
+        "footprint.detach",
+        "footprint.member_edit",
+        "footprint.place",
+        "footprint.remove",
+        "footprint.set",
+        "hole.remove",
+        "hole.set",
+        "keepout.remove",
+        "keepout.set"
+      ],
+      "preview_required": true,
+      "profile": "rfad.pcb-features-editor/0.1",
+      "project_schema": "rfad.project/0.6",
+      "solver_mechanical_supported": false
+    },
+    "pcb_import_profile": {
+      "atomic_apply": true,
+      "chunk_bytes": 262144,
+      "formats": [
+        "gerber_job",
+        "gerber_x2",
+        "kicad_mod",
+        "kicad_pcb",
+        "xnc"
+      ],
+      "manufacturing_verified": false,
+      "max_files": 40,
+      "physics_verified": false,
+      "preview_required": true,
+      "profile": "rfad.pcb-import/0.1",
+      "runtime_configured": false,
+      "source_and_report_bytes": 16777216
     },
     "pcb_selection_profile": {
       "atomic_apply": true,
       "max_result_bytes": 393216,
       "preview_required": true,
       "profile": "rfad.pcb-selection/0.1",
-      "project_schema": "rfad.project/0.5",
+      "project_schema": "rfad.project/0.6",
       "readable_selection_schemas": [
         "rfad.pcb-selection/0.1",
         "rfad.pcb-selection/0.2"
@@ -7562,9 +7624,10 @@
         "rfad.project/0.2",
         "rfad.project/0.3",
         "rfad.project/0.4",
-        "rfad.project/0.5"
+        "rfad.project/0.5",
+        "rfad.project/0.6"
       ],
-      "schema_version": "rfad.project/0.5",
+      "schema_version": "rfad.project/0.6",
       "scope": "workspace-local versioned projects and optional isolated host CAD worker",
       "target_input": {
         "changes_solver_settings": false,
@@ -7854,6 +7917,58 @@
       "extension_profile": "rfad.network-workspace/0.1",
       "status": "implemented"
     },
+    "pcb.features.apply": {
+      "extension_profile": "rfad.pcb-features-editor/0.1",
+      "status": "implemented"
+    },
+    "pcb.features.get": {
+      "extension_profile": "rfad.pcb-features-editor/0.1",
+      "status": "implemented"
+    },
+    "pcb.features.preview": {
+      "extension_profile": "rfad.pcb-features-editor/0.1",
+      "status": "implemented"
+    },
+    "pcb.features.receipt": {
+      "extension_profile": "rfad.pcb-features-editor/0.1",
+      "status": "implemented"
+    },
+    "pcb.import.abandon": {
+      "extension_profile": "rfad.pcb-import/0.1",
+      "status": "implemented"
+    },
+    "pcb.import.apply": {
+      "extension_profile": "rfad.pcb-import/0.1",
+      "status": "implemented"
+    },
+    "pcb.import.begin": {
+      "extension_profile": "rfad.pcb-import/0.1",
+      "status": "implemented"
+    },
+    "pcb.import.chunk": {
+      "extension_profile": "rfad.pcb-import/0.1",
+      "status": "implemented"
+    },
+    "pcb.import.context": {
+      "extension_profile": "rfad.pcb-import/0.1",
+      "status": "implemented"
+    },
+    "pcb.import.get": {
+      "extension_profile": "rfad.pcb-import/0.1",
+      "status": "implemented"
+    },
+    "pcb.import.parse": {
+      "extension_profile": "rfad.pcb-import/0.1",
+      "status": "implemented"
+    },
+    "pcb.import.preview": {
+      "extension_profile": "rfad.pcb-import/0.1",
+      "status": "implemented"
+    },
+    "pcb.import.receipt": {
+      "extension_profile": "rfad.pcb-import/0.1",
+      "status": "implemented"
+    },
     "pcb.selection.apply": {
       "extension_profile": "rfad.pcb-selection/0.1",
       "status": "implemented"
@@ -8129,7 +8244,8 @@
         "../01_개발문서/05_기능설계/01_프로젝트/01_프로젝트_명령과_저장.md",
         "../01_개발문서/05_기능설계/02_설계편집/06_대역목표_입력계약.md",
         "../01_개발문서/05_기능설계/06_연구/02_후보채택과_새작업사본.md",
-        "../01_개발문서/07_검증/21_후보채택과_원호아이에프에이_검증.md"
+        "../01_개발문서/07_검증/21_후보채택과_원호아이에프에이_검증.md",
+        "../01_개발문서/05_기능설계/05_출력교환/05_기판형상과_제조파일_교환.md"
       ],
       "gaps": [
         "일반 project.open copy 모드와 외부 프로젝트/archive 가져오기는 미지원이다. 후보 채택 사본도 미지 extension, solver 자료 연결/보존 평가가 있는 library는 명시 차단한다.",
@@ -8138,7 +8254,7 @@
       ],
       "id": "FN-001",
       "implementation_status": "partial",
-      "implemented": "ProjectOperations.open은 workspace 안 projects/이름의 create/open/recover와 원본 해시 검사, 서비스 재시작 후 재열기를 제공한다. 0.1/0.2/0.3/0.4/0.5를 읽으며 기존 원본과 snapshot을 보존하고 변경 복제본만 현재 0.5 새 개정으로 승격하여 변환 기록을 남긴다. sweep.selection.*는 완료된 리터럴 매개변수 후보에 한해 별도 project ID와 새 경로의 편집 사본을 원자 등록한다. 원본과 과거 결과는 보존하고 일반 project.open copy 모드와 구분한다.",
+      "implemented": "ProjectOperations.open은 workspace 안 projects/이름의 create/open/recover와 원본 해시 검사, 서비스 재시작 후 재열기를 제공한다. 0.1/0.2/0.3/0.4/0.5/0.6를 읽으며 기존 원본과 snapshot을 보존하고 변경 복제본만 현재 0.6 새 개정으로 승격하여 변환 기록을 남긴다. sweep.selection.*는 완료된 리터럴 매개변수 후보에 한해 별도 project ID와 새 경로의 편집 사본을 원자 등록한다. 원본과 과거 결과는 보존하고 일반 project.open copy 모드와 구분한다. PCB 원본은 선택 필드이며 옛 파일 조회만으로 추가하지 않는다. 첫 PCB 명령의 undo는 원래 컨테이너 부재까지 복원한다.",
       "next_steps": [
         3,
         12
@@ -8148,7 +8264,8 @@
         "tests/test_parameter_graph.py::ParameterGraphTests.test_old_schema_remains_unchanged_and_upgrades_on_copy",
         "tests/test_targets.py",
         "tests/test_sweep_selection.py",
-        "tests/test_sweep_selection_review.py"
+        "tests/test_sweep_selection_review.py",
+        "tests/test_pcb_features.py::PcbFeatureDomainTests.test_old_named_schema_query_unchanged_and_first_undo_removes_absent_container"
       ]
     },
     {
@@ -8413,7 +8530,14 @@
         "ui/wxwidgets/studio_precision.cpp",
         "ui/wxwidgets/precision_dialog.cpp",
         "ui/wxwidgets/object_rename_dialog.cpp",
-        "ui/wxwidgets/design_canvas_dimensions.cpp"
+        "ui/wxwidgets/design_canvas_dimensions.cpp",
+        "src/rfad/domain/pcb_features.py",
+        "src/rfad/application/pcb_exchange_service.py",
+        "ui/wxwidgets/pcb_feature_dialog.cpp",
+        "ui/wxwidgets/pcb_feature_form.cpp",
+        "ui/wxwidgets/pcb_feature_model.cpp",
+        "ui/wxwidgets/canvas_pcb_features.cpp",
+        "ui/wxwidgets/reviewed_request_store.cpp"
       ],
       "contract_notes": [
         "CAD writer 내부 union은 사용자가 편집 가능한 Boolean graph 명령과 같지 않다. 매개변수 결합된 형상의 직접 이동 거절은 결합 보존 규칙이다.",
@@ -8425,18 +8549,24 @@
         "../01_개발문서/04_화면설계/08_스튜디오_화면계약.md",
         "../01_개발문서/05_기능설계/02_설계편집/10_추가문헌과_조건부_초기길이.md",
         "../01_개발문서/05_기능설계/02_설계편집/13_정밀편집과_평면연산.md",
-        "../01_개발문서/07_검증/08_스튜디오와_정밀편집_검증.md"
+        "../01_개발문서/07_검증/08_스튜디오와_정밀편집_검증.md",
+        "../01_개발문서/05_기능설계/05_출력교환/05_기판형상과_제조파일_교환.md",
+        "../01_개발문서/04_화면설계/25_기판교환과_원문수입_화면.md",
+        "../01_개발문서/07_검증/25_기판교환과_원문수입_검증.md",
+        "../01_개발문서/07_검증/26_기판교환과_원문수입_실행기록.json"
       ],
       "gaps": [
-        "일반 곡선의 평면 Boolean 입력 변환, 결과 subentity/기하 구속 그래프와 도면 출력의 연관 치수는 남는다.",
+        "일반 곡선의 사용자 평면 Boolean 입력 변환, 결과 subentity/기하 구속 그래프는 남는다. 도면의 유한 연관 치수와 기계 절삭의 해석형 차집합은 별도 출력 경로로 구현했다.",
         "연관 최소 gap의 공통 조회와 전체 DPI/도킹/접근성/성능 수용은 별도 증거가 필요하다."
       ],
       "id": "FN-008",
       "implementation_status": "partial",
-      "implemented": "line_path/arc_path/planar_region(holes)/pad/via 원본과 수량/매개변수 결합, 생성/이동/삭제 및 2D DTO를 제공한다. CAD는 analytic 원호와 같은 net의 물리 union을 지원한다. 공통 라이트 표면/도킹/간격과 좁은 도구 영역의 줄바꿈을 실제 wxWidgets 작업 공간에 적용했다. 목표/템플릿 창은 native 폼과 기존 2D renderer를 재사용하고 비동기 요청 세대/불명 변경 잠금을 공유한다. 이전 단계에서 작업 탭 5개/프로젝트와 레이어 분리/세로 도구/실제 작업 상태를 연결했고 이번 단계에서 수평 도구와 작은 창의 탭 배치로 보강했다. 레이어 체크는 원본과 해석 포함 여부를 바꾸지 않는 2D 표시 상태다. 기존 OpenGL 3D와 실제 결과/보고서/STEP 흐름을 유지한다. 스냅과 선/원호의 끝점 드래그, 미리보기 및 단일 프로젝트 명령을 연결했다. 공통 Studio 상단/수평 도구/검색/작은 창 탐색·속성 탭, 이름 저장/F2, 선택 필터, 연관 치수/매개변수 결합, 회전/미러와 동일 층/넷/역할 다각형의 union/intersection/difference/offset을 서비스 후보/검토 hash/원자 명령으로 연결했다. 3D 병합 바디는 원본 후보 목록에서 사용자가 선택한다.",
+      "implemented": "line_path/arc_path/planar_region(holes)/pad/via 원본과 수량/매개변수 결합, 생성/이동/삭제 및 2D DTO를 제공한다. CAD는 analytic 원호와 같은 net의 물리 union을 지원한다. 공통 라이트 표면/도킹/간격과 좁은 도구 영역의 줄바꿈을 실제 wxWidgets 작업 공간에 적용했다. 목표/템플릿 창은 native 폼과 기존 2D renderer를 재사용하고 비동기 요청 세대/불명 변경 잠금을 공유한다. 이전 단계에서 작업 탭 5개/프로젝트와 레이어 분리/세로 도구/실제 작업 상태를 연결했고 이번 단계에서 수평 도구와 작은 창의 탭 배치로 보강했다. 레이어 체크는 원본과 해석 포함 여부를 바꾸지 않는 2D 표시 상태다. 기존 OpenGL 3D와 실제 결과/보고서/STEP 흐름을 유지한다. 스냅과 선/원호의 끝점 드래그, 미리보기 및 단일 프로젝트 명령을 연결했다. 공통 Studio 상단/수평 도구/검색/작은 창 탐색·속성 탭, 이름 저장/F2, 선택 필터, 연관 치수/매개변수 결합, 회전/미러와 동일 층/넷/역할 다각형의 union/intersection/difference/offset을 서비스 후보/검토 hash/원자 명령으로 연결했다. 3D 병합 바디는 원본 후보 목록에서 사용자가 선택한다. 0.6의 내부 절삭/홀·슬롯/풋프린트/제조 이미지 층/개구/금지 영역을 종류별 native 폼, 별도 2D 표시·선택과 이름 편집에 연결했다. 단위만 바꿀 때 원문 Quantity/출처와 검토 hash를 보존하며 전후 형상/변경표 검토 뒤 한 명령으로 적용한다. 소유 도체의 직접 편집 상태와 undo를 서비스가 보존한다.",
       "next_steps": [
         3,
-        4
+        4,
+        10,
+        12
       ],
       "tests": [
         "tests/test_canvas_service.py",
@@ -8450,7 +8580,11 @@
         "tests/test_object_names.py",
         "tests/test_precision_service.py",
         "tests/test_planar_backend.py",
-        "tests/test_gui_precision_process.py"
+        "tests/test_gui_precision_process.py",
+        "tests/test_pcb_features.py",
+        "tests/test_pcb_exchange_service.py",
+        "tests/pcb_feature_model_test.cpp",
+        "tests/test_gui_features_process.py"
       ]
     },
     {
@@ -8462,22 +8596,26 @@
         "src/rfad/domain/design_rules.py",
         "src/rfad/domain/design_checks.py",
         "src/rfad/domain/boundary_distance.py",
-        "ui/wxwidgets/design_rules_review.cpp"
+        "ui/wxwidgets/design_rules_review.cpp",
+        "src/rfad/domain/check_geometry.py",
+        "src/rfad/domain/curve_boolean.py"
       ],
       "contract_notes": [
         "0.4의 연결/규칙 원본과 검사 보고서는 별도다. 미정/지원 범위 밖 판정과 기생 도체 RF 결합은 미평가이며 판정은 공정이나 측정의 수용을 부여하지 않는다."
       ],
       "evidence": [
         "../01_개발문서/05_기능설계/02_설계편집/05_도체영역과_급전모델.md",
-        "../01_개발문서/05_기능설계/02_설계편집/11_목표제약과_연결_설계규칙검사.md"
+        "../01_개발문서/05_기능설계/02_설계편집/11_목표제약과_연결_설계규칙검사.md",
+        "../01_개발문서/05_기능설계/05_출력교환/05_기판형상과_제조파일_교환.md",
+        "../01_개발문서/07_검증/25_기판교환과_원문수입_검증.md"
       ],
       "gaps": [
-        "임의 다각형 목 폭, 복합 비아 절삭 접촉, 슬롯, 전층 keepout과 업체 규칙 자동 연동은 후속이다.",
+        "임의 다각형 목 폭, 새 도금 홀/슬롯의 전체 수직 연결 그래프, 전층 keepout과 업체 규칙 자동 연동은 후속이다. CAD 접촉 검사를 제조 DRC 전체 수용으로 확대하지 않는다.",
         "R2 기하 구속 solver, 충돌 집합, 자동 repair와 전체 제조/CAM 검수는 후속이다."
       ],
       "id": "FN-009",
       "implementation_status": "partial",
-      "implemented": "기대 연결/분리/기생 DC 분리와 사용자 제조 규칙을 저장한다. 해석적 선분/원호 경계와 AABB로 실제 도체 성분 및 최소 폭/간격/외곽/공구 드릴/환형 링/비아 종횡비를 검사한다. 문제별 위치/측정/한계/출처와 미평가를 제공하고 GUI에서 2D로 강조한다. PCB solver 계획에 확인된 선언 제약 위반을 연결한다.",
+      "implemented": "기대 연결/분리/기생 DC 분리와 사용자 제조 규칙을 저장한다. 해석적 선분/원호 경계와 AABB로 실제 도체 성분 및 최소 폭/간격/외곽/공구 드릴/환형 링/비아 종횡비를 검사한다. 문제별 위치/측정/한계/출처와 미평가를 제공하고 GUI에서 2D로 강조한다. PCB solver 계획에 확인된 선언 제약 위반을 연결한다. 명시 기계 절삭 후의 해석형 선/원호 경계를 거리와 단락 검사에 사용한다. 한 객체가 여러 도체 섬으로 분리되면 연결 그래프를 합격으로 간주하지 않고 미평가로 남긴다.",
       "next_steps": [
         3,
         4,
@@ -8489,7 +8627,9 @@
         "tests/test_planar.py",
         "tests/test_copper_design.py",
         "tests/test_design_rules.py",
-        "tests/test_gui_design_rules_process.py"
+        "tests/test_gui_design_rules_process.py",
+        "tests/test_curve_boolean.py",
+        "tests/test_drawing_mechanical.py"
       ]
     },
     {
@@ -8497,30 +8637,45 @@
         "src/rfad/application/rpc.py",
         "src/rfad/adapters/cad/step_io.py",
         "src/rfad/application/physical_setup_service.py",
-        "src/rfad/adapters/cad/physical.py"
+        "src/rfad/adapters/cad/physical.py",
+        "src/rfad/application/pcb_import_service.py",
+        "src/rfad/application/pcb_import_mapping.py",
+        "src/rfad/adapters/exchange/kicad_reader.py",
+        "src/rfad/adapters/exchange/cam_reader.py",
+        "ui/wxwidgets/pcb_import_dialog.cpp",
+        "ui/wxwidgets/pcb_import_transfer.cpp",
+        "ui/wxwidgets/pcb_import_review.cpp"
       ],
       "contract_notes": [
-        "외부 STEP은 단일 B-rep 고체에 한정한다. EDA 공통 import.preview/import.commit은 후속이다."
+        "외부 STEP은 단일 B-rep 고체에 한정한다. PCB 교환은 pcb.import.*의 명시한 유한 profile이며 승인 import.preview/import.commit 전체 계약과 동일하다고 주장하지 않는다.",
+        "기존 기판/층/net 대응을 명시하고 파일의 기본 FR4/유전율/도금/공구를 확정 물성으로 채택하지 않는다. 원문 파일과 parser 보고서는 적용 여부와 분리해 보존한다."
       ],
       "evidence": [
         "../01_개발문서/05_기능설계/05_출력교환/02_기계형상_입력과_출력계약.md",
         "../01_개발문서/05_기능설계/02_설계편집/12_적층과_외부환경.md",
-        "runtime_profiles/physical-setup.json"
+        "runtime_profiles/physical-setup.json",
+        "../01_개발문서/05_기능설계/05_출력교환/05_기판형상과_제조파일_교환.md",
+        "../01_개발문서/04_화면설계/25_기판교환과_원문수입_화면.md",
+        "../01_개발문서/07_검증/25_기판교환과_원문수입_검증.md",
+        "../01_개발문서/07_검증/26_기판교환과_원문수입_실행기록.json"
       ],
       "gaps": [
         "외부 다중 제품/조립체와 혼합 단위 mapping은 후속이다. 현재 STEP 조회는 최대 20초의 동기 RPC이며 별도 TaskRef/개별 취소와 응답성 수용을 보강해야 한다.",
-        "KiCad/Gerber 및 상세 교환 mapping과 손실 보고가 남아 있다."
+        "범용 EDA 형식, 임의 Gerber 곡선 region/clear polarity 합성 및 정확히 표현할 수 없는 형상의 편집 수입은 미지원이다. 원문 보존/손실 확인은 미지원 기하를 생략하고 적용할 권한이 아니다."
       ],
       "id": "FN-010",
       "implementation_status": "partial",
-      "implemented": "격리 CAD worker의 자체 포함 mm STEP 단일 고체 읽기, 단위/경계/면/해시 검토, 개정에 결합한 원자 채택을 연결했다. 프로젝트가 원본 바이트를 보존하므로 원래 파일 이동 뒤에도 재열기/재생성이 가능하다.",
+      "implemented": "격리 CAD worker의 자체 포함 mm STEP 단일 고체 읽기, 단위/경계/면/해시 검토, 개정에 결합한 원자 채택을 연결했다. 프로젝트가 원본 바이트를 보존하므로 원래 파일 이동 뒤에도 재열기/재생성이 가능하다. KiCad 보드/풋프린트와 Gerber X2/XNC/Job의 유한 원문 수입을 별도 worker, 256 KiB 청크 전송, 명시 층/net 대응과 손실 확인으로 연결했다. 원문/보고서를 보존하고 전후 후보와 검토 hash를 확인한 한 명령만 현재 개정에 적용한다. 기존 적층/물성과 null, 가져오기 출처, undo/redo와 runtime 없는 재열기를 유지한다.",
       "next_steps": [
         3,
         10
       ],
       "tests": [
         "tests/test_physical_setup.py",
-        "tests/test_gui_physical_setup_process.py"
+        "tests/test_gui_physical_setup_process.py",
+        "tests/test_pcb_import_service.py",
+        "tests/test_pcb_import_mapping.py",
+        "tests/test_gui_pcb_exchange_process.py"
       ]
     },
     {
@@ -9640,7 +9795,8 @@
         "src/rfad/adapters/exchange/drawing_writers.py",
         "src/rfad/adapters/exchange/drawing_readers.py",
         "ui/wxwidgets/drawing_sheet_canvas.cpp",
-        "ui/wxwidgets/output_controller.cpp"
+        "ui/wxwidgets/output_controller.cpp",
+        "src/rfad/domain/curve_boolean.py"
       ],
       "contract_notes": [
         "검증 그래프를 SVG로 저장하는 개발 도구는 치수 도면/FN-040 출력 기능이 아니다.",
@@ -9650,15 +9806,18 @@
         "../01_개발문서/05_기능설계/05_출력교환/04_연관도면과_출력재검수.md",
         "../01_개발문서/04_화면설계/24_기술도면과_스텝검수_화면.md",
         "../01_개발문서/07_검증/23_연관도면과_스텝재검수_검증.md",
-        "../01_개발문서/07_검증/24_연관도면과_스텝재검수_실행기록.json"
+        "../01_개발문서/07_검증/24_연관도면과_스텝재검수_실행기록.json",
+        "../01_개발문서/05_기능설계/05_출력교환/05_기판형상과_제조파일_교환.md",
+        "../01_개발문서/07_검증/25_기판교환과_원문수입_검증.md",
+        "../01_개발문서/07_검증/26_기판교환과_원문수입_실행기록.json"
       ],
       "gaps": [
-        "실제 수신 도구의 글꼴/단위/표현, 지원을 확장할 NPTH/slot/cutout/footprint/paste와 제조 도면 수용이 남는다.",
-        "일반 Boolean 절단 및 임의 외부 3D 환경의 2D 투영은 미지원이다. PDF 원호 표본 오차 검사를 연속 오차 증명이나 제조 공차로 확대하지 않는다."
+        "실제 수신 도구별 글꼴/단위/표현과 제조 도면 전체 수용은 남는다. NPTH/slot/cutout/footprint/paste의 유한 원본과 출력 연결은 10b 범위로 별도 검증한다.",
+        "임의 외부 3D 환경의 2D 투영과 범용 Boolean 절단은 미지원이다. 지원 기계 절삭의 불명 접선/중첩은 거절하고 PDF 원호 표본 오차 검사를 연속 오차 증명이나 제조 공차로 확대하지 않는다."
       ],
       "id": "FN-040",
       "implementation_status": "partial",
-      "implemented": "고정 snapshot의 연관 PDF/SVG/DXF, 실제 용지/축척/층·외곽·상세·적층 뷰와 독립 worker를 연결했다. drawing/fabrication_geometry를 구분하며 GUI와 writer가 서비스의 같은 종이 mm 배치를 사용한다.",
+      "implemented": "고정 snapshot의 연관 PDF/SVG/DXF, 실제 용지/축척/층·외곽·상세·적층 뷰와 독립 worker를 연결했다. drawing/fabrication_geometry를 구분하며 GUI와 writer가 서비스의 같은 종이 mm 배치를 사용한다. 내부 절삭과 원형/슬롯 홀, 제조 이미지 개구를 같은 원본에 연결하고 해석형 차집합의 여러 외곽/구멍을 보존한다.",
       "next_steps": [
         10,
         12
@@ -9669,7 +9828,9 @@
         "tests/test_exchange_jobs.py",
         "tests/test_exchange_native.py",
         "tests/output_model_test.cpp",
-        "tests/test_gui_output_process.py"
+        "tests/test_gui_output_process.py",
+        "tests/test_drawing_mechanical.py",
+        "tests/test_curve_boolean.py"
       ]
     },
     {
@@ -9680,7 +9841,8 @@
         "src/rfad/application/physical_projection.py",
         "src/rfad/application/cad.py",
         "src/rfad/application/cad_verification.py",
-        "src/rfad/adapters/cad/verification.py"
+        "src/rfad/adapters/cad/verification.py",
+        "src/rfad/adapters/cad/mechanical.py"
       ],
       "contract_notes": [
         "현재 status=generated_unverified, kernel_independent=false다. 동일 OCCT reader와 독립 산술 기대값 통과를 수신 CAD 또는 제조 검증으로 승격하지 않는다."
@@ -9691,15 +9853,18 @@
         "runtime_profiles/physical-setup.json",
         "../01_개발문서/05_기능설계/05_출력교환/04_연관도면과_출력재검수.md",
         "../01_개발문서/07_검증/23_연관도면과_스텝재검수_검증.md",
-        "../01_개발문서/07_검증/24_연관도면과_스텝재검수_실행기록.json"
+        "../01_개발문서/07_검증/24_연관도면과_스텝재검수_실행기록.json",
+        "../01_개발문서/05_기능설계/05_출력교환/05_기판형상과_제조파일_교환.md",
+        "../01_개발문서/07_검증/25_기판교환과_원문수입_검증.md",
+        "../01_개발문서/07_검증/26_기판교환과_원문수입_실행기록.json"
       ],
       "gaps": [
         "실제 수신 CAD/version별 재열기, 선택/측정/조립 검수가 남는다.",
-        "복합 표면 피복/일반 조립체/슬롯 등의 지원 확대와 수신 도구에서의 포함/생략 정책 검수가 필요하다. 현재 기본 표면층/단일 외부 물체 출력 자체는 구현되어 있다."
+        "복합 표면 피복/일반 조립체/blind·buried 기계 홀 및 수신 도구에서의 포함/생략 정책 검수가 필요하다. 명시 전체 관통 홀/슬롯, 기본 표면층/단일 외부 물체 출력은 유한 범위로 구현되어 있다."
       ],
       "id": "FN-041",
       "implementation_status": "partial",
-      "implemented": "AP242 고체 STEP, 원본 snapshot/재료/net/port sidecar, stable body map과 파일 hash를 생성하고 OCP reader로 다시 확인한다. 명시 피복/개구를 가진 표면층과 활성 시나리오의 간이 상자/단일 STEP 물체도 include_in_export에 따라 별도 바디로 출력한다. 공개 export.verify는 원래 manifest/snapshot을 고정한 별도 CAD 작업에서 STEP을 다시 읽고 새 검수 보고서만 게시한다. 원본 출력과 3D 최신 mesh 선택을 보존한다.",
+      "implemented": "AP242 고체 STEP, 원본 snapshot/재료/net/port sidecar, stable body map과 파일 hash를 생성하고 OCP reader로 다시 확인한다. 명시 피복/개구를 가진 표면층과 활성 시나리오의 간이 상자/단일 STEP 물체도 include_in_export에 따라 별도 바디로 출력한다. 공개 export.verify는 원래 manifest/snapshot을 고정한 별도 CAD 작업에서 STEP을 다시 읽고 새 검수 보고서만 게시한다. 원본 출력과 3D 최신 mesh 선택을 보존한다. 명시 기판 내부 절삭/완성 홀/슬롯과 도금 배럴을 실제 고체에 적용하고 별도 배럴의 재료/net/접촉을 검사한다. 공구 미정은 완성 홀의 파생 치수로 채우지 않는다.",
       "next_steps": [
         10
       ],
@@ -9710,31 +9875,54 @@
         "tests/test_gui_physical_setup_process.py",
         "tests/test_cad_verification.py",
         "tests/test_cad_latest.py",
-        "tests/test_gui_output_process.py"
+        "tests/test_gui_output_process.py",
+        "tests/test_cad_pcb_features.py"
       ]
     },
     {
       "code": [
         "src/rfad/application/rpc.py",
-        "src/rfad/domain/design.py"
+        "src/rfad/domain/design.py",
+        "src/rfad/domain/pcb_features.py",
+        "src/rfad/application/pcb_exchange_projection.py",
+        "src/rfad/application/pcb_import_service.py",
+        "src/rfad/application/pcb_import_mapping.py",
+        "src/rfad/adapters/exchange/pcb.py",
+        "src/rfad/adapters/exchange/pcb_geometry.py",
+        "src/rfad/adapters/exchange/kicad_writer.py",
+        "src/rfad/adapters/exchange/cam_writer.py",
+        "ui/wxwidgets/pcb_cam_output_view.cpp",
+        "ui/wxwidgets/pcb_cam_output_data.cpp",
+        "ui/wxwidgets/pcb_import_dialog.cpp"
       ],
       "contract_notes": [
-        "R1 기본 Job/DRC와 R2 정합 BOM/실장 변형, R3 추가 형식은 별도 범위다. 제조 미정 입력이 있는 파일을 verified_profile로 발행하지 않는다."
+        "R1 기본 Job과 R2 정합 BOM/실장 변형, R3 추가 형식은 별도 범위다. passed_profile은 선언한 파일 profile의 재입력 판정이며 recipient_application_verified/kernel_independent/manufacturing_verified/physics_verified는 false를 유지한다.",
+        "새 기계 절삭의 CAD/파일 출력 성공은 PCB openEMS 지원을 뜻하지 않는다. 현재 미지원 절삭을 무시한 해석은 차단한다. 실제 제작/측정 미정값은 원문에 남는다."
       ],
       "evidence": [
-        "../01_개발문서/05_기능설계/05_출력교환/02_기계형상_입력과_출력계약.md"
+        "../01_개발문서/05_기능설계/05_출력교환/02_기계형상_입력과_출력계약.md",
+        "../01_개발문서/05_기능설계/05_출력교환/05_기판형상과_제조파일_교환.md",
+        "../01_개발문서/04_화면설계/25_기판교환과_원문수입_화면.md",
+        "../01_개발문서/07_검증/25_기판교환과_원문수입_검증.md",
+        "../01_개발문서/07_검증/26_기판교환과_원문수입_실행기록.json"
       ],
       "gaps": [
-        "선언한 보드/footprint/CAM profile과 단위/층/net/PTH/NPTH/slot mapping 및 writer/reader가 필요하다.",
-        "zone refill과 최소 gap/thermal/clearance 변화를 확인하는 DRC/roundtrip을 연결해야 한다."
+        "범용 KiCad/Gerber/XNC 문법과 모든 공정, 임의 zone thermal/clearance/연결 의미 및 제조 DRC 전체 수용은 남는다. 한정된 수신 도구 시험을 전체 EDA 상호 운용으로 확대하지 않는다.",
+        "CAM의 풋프린트 소유/핀/금지 규칙과 PCB 출력의 RF 포트 등 파일 자체로 전달하지 못하는 의미는 sidecar 보존 범위로 명시한다. 파일만으로 원래 RF/제조 의도가 복원됐다고 표시하지 않는다."
       ],
       "id": "FN-042",
-      "implementation_status": "not_implemented",
-      "implemented": "PCB 기하/net/적층과 STEP 출력 기반은 있으나 KiCad/Gerber/Excellon/Job 제조 교환 경로는 없다.",
+      "implementation_status": "partial",
+      "implemented": "고정 snapshot의 KiCad 보드/선택 풋프린트와 Gerber X2/XNC/기본 Job 패키지 출력, 별도 parser 재검수와 원문 수입을 구현했다. 실제 층/net/완성 홀·슬롯/도금 분류/명시 공구, 마스크·페이스트 개구를 대응하며 모든 도체층과 사용 중인 제조층을 완전한 CAM Job으로 묶는다. GUI의 네 출력 탭과 네 수입 탭에서 표시 층, 명시 대응/손실, 전후 후보, 한 명령 적용과 저장·재열기를 연결했다. 실제 KiCad 재열기/재채움 시험은 TraceWave 내부 parser 판정과 별도 기록한다.",
       "next_steps": [
         10
       ],
-      "tests": []
+      "tests": [
+        "tests/test_pcb_exchange_formats.py",
+        "tests/test_pcb_receiver.py",
+        "tests/test_pcb_import_service.py",
+        "tests/test_pcb_import_mapping.py",
+        "tests/test_gui_pcb_exchange_process.py"
+      ]
     },
     {
       "code": [
@@ -9743,25 +9931,32 @@
         "src/rfad/application/cad_verification.py",
         "src/rfad/adapters/cad/verification.py",
         "src/rfad/application/exchange_artifacts.py",
-        "src/rfad/adapters/exchange/drawing_readers.py"
+        "src/rfad/adapters/exchange/drawing_readers.py",
+        "src/rfad/adapters/exchange/pcb_verification.py",
+        "src/rfad/adapters/exchange/kicad_reader.py",
+        "src/rfad/adapters/exchange/cam_reader.py"
       ],
       "contract_notes": [
-        "step_io 비교는 passed_same_kernel이며 not_evaluated에 독립 kernel/제조 DRC/전체 의도 net/슬롯/assembly가 명시돼 있다."
+        "STEP 비교는 passed_same_kernel이다. 새 프로세스/독립 산술 확인 또는 KiCad의 별도 수신 성공을 STEP 독립 kernel/전체 제조 DRC/assembly 수용으로 확대하지 않는다."
       ],
       "evidence": [
         "runtime_profiles/cad-worker-windows-x64.json",
         "../01_개발문서/05_기능설계/05_출력교환/04_연관도면과_출력재검수.md",
         "../01_개발문서/04_화면설계/24_기술도면과_스텝검수_화면.md",
         "../01_개발문서/07_검증/23_연관도면과_스텝재검수_검증.md",
-        "../01_개발문서/07_검증/24_연관도면과_스텝재검수_실행기록.json"
+        "../01_개발문서/07_검증/24_연관도면과_스텝재검수_실행기록.json",
+        "../01_개발문서/05_기능설계/05_출력교환/05_기판형상과_제조파일_교환.md",
+        "../01_개발문서/04_화면설계/25_기판교환과_원문수입_화면.md",
+        "../01_개발문서/07_검증/25_기판교환과_원문수입_검증.md",
+        "../01_개발문서/07_검증/26_기판교환과_원문수입_실행기록.json"
       ],
       "gaps": [
-        "독립 수신 CAD 및 CAM 경로, 일반 critical gap/연결/net topology와 연속 boundary 차이의 전체 수용이 남는다.",
+        "독립 수신 CAD의 STEP 검수, 추가 수신 도구/버전 및 일반 critical gap/연결/net topology와 연속 boundary 차이의 전체 수용이 남는다.",
         "같은 OCCT의 새 프로세스와 DXF 동일 라이브러리 분리 reader를 독립 kernel 검수로 판정하지 않는다."
       ],
       "id": "FN-043",
       "implementation_status": "partial",
-      "implemented": "STEP의 schema/단위/이름/solid/bbox/중심/체적/단면/홀/두께와 중첩을 같은 kernel reader로 검사한다. PDF/SVG/DXF는 분리된 parser로 실제 좌표/원호/외곽·구멍/치수 원문을 대조한다. API-025 export.verify는 별도 작업과 reader/writer identity를 보존하며 원래 패키지를 바꾸지 않는다.",
+      "implemented": "STEP의 schema/단위/이름/solid/bbox/중심/체적/단면/홀/두께와 중첩을 같은 kernel reader로 검사한다. PDF/SVG/DXF는 분리된 parser로 실제 좌표/원호/외곽·구멍/치수 원문을 대조한다. API-025 export.verify는 별도 작업과 reader/writer identity를 보존하며 원래 패키지를 바꾸지 않는다. KiCad/Gerber/XNC/Job의 유한 parser 재입력과 파일/층/넷/홀/기하·면적 검사를 연결했다. 실제 KiCad 수신·재채움 시험은 별도 과정이며 일반 파일 parser의 판정 필드를 독립 수신 합격으로 변경하지 않는다.",
       "next_steps": [
         10
       ],
@@ -9771,7 +9966,10 @@
         "tests/test_cad_verification.py",
         "tests/test_exchange_drawing.py",
         "tests/test_exchange_native.py",
-        "tests/test_gui_output_process.py"
+        "tests/test_gui_output_process.py",
+        "tests/test_pcb_exchange_formats.py",
+        "tests/test_pcb_receiver.py",
+        "tests/test_gui_pcb_exchange_process.py"
       ]
     },
     {
@@ -9889,7 +10087,7 @@
   ],
   "generator": {
     "path": "Code/tools/build_implementation_audit.py",
-    "text_sha256": "ce209e1a7d046942fc531ffc103369fa45345e9300966df78e5f95c1eb3b8ce9",
+    "text_sha256": "c97ab63defa6ac4e31140dab7a37a08796404859dbbeb2010e70c533290f7050",
     "utf8_bytes": 17426
   },
   "initial_review_date_kst": "2026-11-12",
@@ -10494,7 +10692,8 @@
       "next_steps": [
         3,
         4,
-        10
+        10,
+        12
       ],
       "stage": "M/R1",
       "verification_groups": [
@@ -10630,7 +10829,9 @@
       "id": "CAD-002",
       "next_steps": [
         3,
-        4
+        4,
+        10,
+        12
       ],
       "stage": "M/R1",
       "verification_groups": [
@@ -10681,7 +10882,8 @@
         3,
         4,
         8,
-        10
+        10,
+        12
       ],
       "stage": "M/R1",
       "verification_groups": [
@@ -10727,7 +10929,8 @@
         3,
         4,
         8,
-        10
+        10,
+        12
       ],
       "stage": "M/R1",
       "verification_groups": [
@@ -10842,7 +11045,9 @@
       "next_steps": [
         3,
         4,
-        9
+        9,
+        10,
+        12
       ],
       "stage": "M/R1",
       "verification_groups": [
@@ -10866,7 +11071,9 @@
       "next_steps": [
         3,
         4,
-        9
+        9,
+        10,
+        12
       ],
       "stage": "M/R1",
       "verification_groups": [
@@ -10892,7 +11099,8 @@
         3,
         4,
         8,
-        10
+        10,
+        12
       ],
       "stage": "M/R1",
       "verification_groups": [
@@ -10915,7 +11123,9 @@
       "next_steps": [
         3,
         4,
-        9
+        9,
+        10,
+        12
       ],
       "stage": "M/R1",
       "verification_groups": [
@@ -10939,7 +11149,8 @@
         3,
         4,
         8,
-        10
+        10,
+        12
       ],
       "stage": "M/R1",
       "verification_groups": [
@@ -10959,7 +11170,9 @@
       "id": "PHY-015",
       "next_steps": [
         3,
-        4
+        4,
+        10,
+        12
       ],
       "stage": "S/R2",
       "verification_groups": [
@@ -10983,7 +11196,9 @@
       "next_steps": [
         3,
         4,
-        9
+        9,
+        10,
+        12
       ],
       "stage": "M/R2",
       "verification_groups": [
@@ -11027,7 +11242,9 @@
       "id": "PHY-018",
       "next_steps": [
         3,
-        4
+        4,
+        10,
+        12
       ],
       "stage": "S/R3",
       "verification_groups": [
@@ -11048,7 +11265,9 @@
       "id": "PHY-019",
       "next_steps": [
         3,
-        4
+        4,
+        10,
+        12
       ],
       "stage": "S/R3",
       "verification_groups": [
@@ -13571,8 +13790,8 @@
   "review_inputs": [
     {
       "path": "01_개발문서/07_검증/01_구현감사/01_설계기능.json",
-      "text_sha256": "5a871820eea52e577dd8e65bcd6989b32bb1bd9caddad2a50628afbdb1be1aaf",
-      "utf8_bytes": 48103
+      "text_sha256": "4cc59e185304669704dd87162fcb2c15bbda7a282789eb2353853b13606ed748",
+      "utf8_bytes": 56645
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
@@ -13580,7 +13799,7 @@
       "utf8_bytes": 62209
     }
   ],
-  "reviewed_commit": "ce9b6186515f981ccddbc69968916dd0b3926ad1",
+  "reviewed_commit": "de8b5ac8ca5cfc47d955e557bc76b07e12919e23",
   "schema": "rfad.implementation-audit/0.1",
   "scope": "implementation_gap_review_not_release_acceptance",
   "source_and_test_files": [
@@ -13606,13 +13825,18 @@
     },
     {
       "path": "01_개발문서/04_화면설계/24_기술도면과_스텝검수_화면.md",
-      "text_sha256": "d85100d7d41c5a317fa1dc04c874729412b20e66da04dd154c8339b8d83a1fc2",
-      "utf8_bytes": 7044
+      "text_sha256": "f2efa3b03ec0fe6480bfbac0526407b1b113f1d146a46adb67283e422f5f28d1",
+      "utf8_bytes": 7096
+    },
+    {
+      "path": "01_개발문서/04_화면설계/25_기판교환과_원문수입_화면.md",
+      "text_sha256": "4894a0e7f763227c202e0772db13be8e6e95c6473da006b07579cfc6cc94ab30",
+      "utf8_bytes": 7701
     },
     {
       "path": "01_개발문서/05_기능설계/01_프로젝트/01_프로젝트_명령과_저장.md",
-      "text_sha256": "063cb9dfb20c8b79d4822372cdb6eb7743a3ff0955904158109d0b7e375b750e",
-      "utf8_bytes": 18867
+      "text_sha256": "a50e4f45ae2bcaf3cf75c49f8874d9120e87e953d21c37147b379ec7b5a5c39b",
+      "utf8_bytes": 19070
     },
     {
       "path": "01_개발문서/05_기능설계/02_설계편집/02_속성편집과_실행취소.md",
@@ -13691,8 +13915,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/05_출력교환/02_기계형상_입력과_출력계약.md",
-      "text_sha256": "17c59da0029d13555b6975ce708ab90de29a1d8098d0d55c4d789b8f5835b92f",
-      "utf8_bytes": 25628
+      "text_sha256": "903f407b43b4919300a36cbdfc830e03261b1e4875442ce797831367c0218bfd",
+      "utf8_bytes": 25989
     },
     {
       "path": "01_개발문서/05_기능설계/05_출력교환/03_복소결과_파일교환.md",
@@ -13701,8 +13925,13 @@
     },
     {
       "path": "01_개발문서/05_기능설계/05_출력교환/04_연관도면과_출력재검수.md",
-      "text_sha256": "fbf8f957490285ef17921865c04ebe6e1629a0ae6714f47a33f7e332e4283ad6",
-      "utf8_bytes": 12421
+      "text_sha256": "f98070b60ac02cead241fef720c16c3f522a6660013aafbd69d5edc6c91695a6",
+      "utf8_bytes": 12704
+    },
+    {
+      "path": "01_개발문서/05_기능설계/05_출력교환/05_기판형상과_제조파일_교환.md",
+      "text_sha256": "dcc71429ab238eb6ae15153d3042a0e0cb24f0cb0a56522b65bf02a43b77ec18",
+      "utf8_bytes": 14294
     },
     {
       "path": "01_개발문서/05_기능설계/06_연구/01_명시적스윕과_실행계약.md",
@@ -13753,6 +13982,16 @@
       "path": "01_개발문서/07_검증/24_연관도면과_스텝재검수_실행기록.json",
       "text_sha256": "8af324f5a601152babd1fa5c5a931fcdbd9d89b7b93e15085e2176dcaba3ab20",
       "utf8_bytes": 535005
+    },
+    {
+      "path": "01_개발문서/07_검증/25_기판교환과_원문수입_검증.md",
+      "text_sha256": "b4a2cda06966cc0e0fb819657b5bd70e68a4682241ac887bbd534cb60dd6afd2",
+      "utf8_bytes": 15886
+    },
+    {
+      "path": "01_개발문서/07_검증/26_기판교환과_원문수입_실행기록.json",
+      "text_sha256": "f1f2c6013fd1ffdb6e027fff44d5c4fdd378bfce54129608ac19cc4dcd7f091b",
+      "utf8_bytes": 232012
     },
     {
       "path": "Code/runtime_profiles/cad-worker-windows-x64.json",
@@ -13861,8 +14100,8 @@
     },
     {
       "path": "Code/src/rfad/adapters/cad/bodies.py",
-      "text_sha256": "b47d8f1ef8952c121e2257400194af0aa639b577230759ac4aabd95dca7cd601",
-      "utf8_bytes": 10430
+      "text_sha256": "a0482ed724435def91bf3421aa7ad94aa2302c323abad1a56e01e7f9535ad2eb",
+      "utf8_bytes": 10000
     },
     {
       "path": "Code/src/rfad/adapters/cad/display.py",
@@ -13871,8 +14110,13 @@
     },
     {
       "path": "Code/src/rfad/adapters/cad/geometry.py",
-      "text_sha256": "48305c116a58ab5a8dc0941c2574fcbf3739f05177c2e2eddf8865fb702e5445",
-      "utf8_bytes": 16629
+      "text_sha256": "e57fa8aad83ace1fde5eb4c0cde1f79c8a4781cfeab4bba20338e912340bff3b",
+      "utf8_bytes": 17076
+    },
+    {
+      "path": "Code/src/rfad/adapters/cad/mechanical.py",
+      "text_sha256": "c3eb3845997719ef6e368c52b0f77bc9330a423920f551a58912c948f9d1b8db",
+      "utf8_bytes": 12407
     },
     {
       "path": "Code/src/rfad/adapters/cad/native.py",
@@ -13881,8 +14125,8 @@
     },
     {
       "path": "Code/src/rfad/adapters/cad/physical.py",
-      "text_sha256": "a21d32fd366c578963474ad7026105e3a437127549ace146afbd293c83b33bc4",
-      "utf8_bytes": 7154
+      "text_sha256": "99c709460574f0da7d909d0f10b068006dd46fd7ef6abc044f5dc22f2bb68ca4",
+      "utf8_bytes": 7215
     },
     {
       "path": "Code/src/rfad/adapters/cad/step_io.py",
@@ -13893,6 +14137,16 @@
       "path": "Code/src/rfad/adapters/cad/verification.py",
       "text_sha256": "58dd3ddb64fb6effe07b9e374466f74e9982d139b7958ceddb9aa5af85e19fcc",
       "utf8_bytes": 5330
+    },
+    {
+      "path": "Code/src/rfad/adapters/exchange/cam_reader.py",
+      "text_sha256": "f11b6cf80f650bc33d6a542f2860a4246b0e8597c396958a013d137864afafb6",
+      "utf8_bytes": 19441
+    },
+    {
+      "path": "Code/src/rfad/adapters/exchange/cam_writer.py",
+      "text_sha256": "65cbf12a913bfd001199fe2cb0dcc63f9d8f93227d830e9919149729c5d3906a",
+      "utf8_bytes": 13673
     },
     {
       "path": "Code/src/rfad/adapters/exchange/drawing.py",
@@ -13906,8 +14160,33 @@
     },
     {
       "path": "Code/src/rfad/adapters/exchange/drawing_writers.py",
-      "text_sha256": "21141d8d141f615b0472f661b3cb4b06bb0222217a3db5fa018bb757650b0ebf",
-      "utf8_bytes": 14497
+      "text_sha256": "5b2af5cc95b26bd4df611a6e950cde2c8508127a20c5aa3b11c2c459cf42f134",
+      "utf8_bytes": 14879
+    },
+    {
+      "path": "Code/src/rfad/adapters/exchange/kicad_reader.py",
+      "text_sha256": "96e292daef15b6ff872607fb8e036cd8968ddb93f4f47f304f998f8aa7ba4395",
+      "utf8_bytes": 15385
+    },
+    {
+      "path": "Code/src/rfad/adapters/exchange/kicad_writer.py",
+      "text_sha256": "3466f271ce9efa8675ef62eca9efc42d04659af69d5283b3cd83611a98767a78",
+      "utf8_bytes": 24087
+    },
+    {
+      "path": "Code/src/rfad/adapters/exchange/pcb.py",
+      "text_sha256": "0c0c5d40ab49feb22147c6b1b759e3377a6ec0943d1183b024b44aed23e81392",
+      "utf8_bytes": 13326
+    },
+    {
+      "path": "Code/src/rfad/adapters/exchange/pcb_geometry.py",
+      "text_sha256": "b5a38ca370efc46a58247595228f937c84311520d542fe01ead48ee996aa2aa9",
+      "utf8_bytes": 4914
+    },
+    {
+      "path": "Code/src/rfad/adapters/exchange/pcb_verification.py",
+      "text_sha256": "2e9fceb622e6b672f7fd71fe8e4585c7b7e33b699c1bf74e2cddf0623ceed1ff",
+      "utf8_bytes": 29783
     },
     {
       "path": "Code/src/rfad/adapters/field_hdf5.py",
@@ -13976,8 +14255,8 @@
     },
     {
       "path": "Code/src/rfad/application/cad.py",
-      "text_sha256": "62d5daea5d00a94ee55c74de3cc3b74b450deaa0e2f6b9377754ad71b91ccdb6",
-      "utf8_bytes": 16665
+      "text_sha256": "e17e687af294ecb18360256fd20bfa8557db015eae4e68b665c5d563633726ab",
+      "utf8_bytes": 19969
     },
     {
       "path": "Code/src/rfad/application/cad_artifacts.py",
@@ -13996,8 +14275,8 @@
     },
     {
       "path": "Code/src/rfad/application/canvas.py",
-      "text_sha256": "02f4e24f1d95c9cde57075fee9a84edf77adc7aaf9bf39210d1d659e49e06d7a",
-      "utf8_bytes": 23425
+      "text_sha256": "81d4d3186e30689a6cd6958279fa565e37290e0893dcc682c8abbb832ce7267b",
+      "utf8_bytes": 24078
     },
     {
       "path": "Code/src/rfad/application/catalog_api.py",
@@ -14031,23 +14310,23 @@
     },
     {
       "path": "Code/src/rfad/application/exchange_artifacts.py",
-      "text_sha256": "40accce3d41dc67089dc27298644629f44df048d145641ea38d9b88b355f5996",
-      "utf8_bytes": 9658
+      "text_sha256": "1cd78498679e0846a30a8aa471f495c5728b5cf50635f667f66c5b6131c1e05a",
+      "utf8_bytes": 12984
     },
     {
       "path": "Code/src/rfad/application/exchange_contract.py",
-      "text_sha256": "d627d993b9afa367425587701b93edb8fe42327dcb4171cb0ef2078e141471dc",
-      "utf8_bytes": 6796
+      "text_sha256": "42b5201372f1d58c5fbfc19d978422c58b70d81b10ed4343fb95c98871d33cda",
+      "utf8_bytes": 21007
     },
     {
       "path": "Code/src/rfad/application/exchange_jobs.py",
-      "text_sha256": "53fe92f2fb75a0edcc9307fb13e7b53eb75783d0a10e28ade25ad67277cfa620",
-      "utf8_bytes": 11141
+      "text_sha256": "5a55d0d0f46dbe233e55da0d5cfc69d5a3c6afa4e962f66a45d6ab9a6862f167",
+      "utf8_bytes": 12178
     },
     {
       "path": "Code/src/rfad/application/exchange_service.py",
-      "text_sha256": "407d28e131e97c2067a7bbd46fc7ee650b89d317c7a29ccfdbd4bcff2c2aac32",
-      "utf8_bytes": 22620
+      "text_sha256": "583e4e3c97c2910df286bc73412526e6a4e9f2006b5d59054a733f2375d4078c",
+      "utf8_bytes": 25688
     },
     {
       "path": "Code/src/rfad/application/job_state.py",
@@ -14088,6 +14367,26 @@
       "path": "Code/src/rfad/application/pcb_contacts.py",
       "text_sha256": "3a5eddd3f269712c07c40e5906c81be0095381f3af32bfaf495c89fa948aa595",
       "utf8_bytes": 15097
+    },
+    {
+      "path": "Code/src/rfad/application/pcb_exchange_projection.py",
+      "text_sha256": "d107eed8fa6ec4f8c90a7da3b7191be57c8ce2d60db893e989edf601cab1366c",
+      "utf8_bytes": 14826
+    },
+    {
+      "path": "Code/src/rfad/application/pcb_exchange_service.py",
+      "text_sha256": "03e1dc380b22e39651e4a942edc464eccdbe56a4db8a115085683eef4ba7c139",
+      "utf8_bytes": 45470
+    },
+    {
+      "path": "Code/src/rfad/application/pcb_import_mapping.py",
+      "text_sha256": "c2587fe31de0d1990f3710fa5489aa7eaf8b2f12d72a45bbcf75e18421791264",
+      "utf8_bytes": 44943
+    },
+    {
+      "path": "Code/src/rfad/application/pcb_import_service.py",
+      "text_sha256": "abcf6bcb05fdd15f7ac3cdf1199959bd126910414eb3a99970f4f4b4370d5e5f",
+      "utf8_bytes": 22817
     },
     {
       "path": "Code/src/rfad/application/pcb_loss_convergence.py",
@@ -14136,8 +14435,8 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_solver.py",
-      "text_sha256": "8f5573a77c4d982a4cf5bfa3c5cf8e624d1b6a785c29fba3aa2e0ac967ed716a",
-      "utf8_bytes": 7720
+      "text_sha256": "97a20fd785ee14aa3b294cd3649688dda13a05dc39938d5fb109161b8d8b0791",
+      "utf8_bytes": 8085
     },
     {
       "path": "Code/src/rfad/application/physical_projection.py",
@@ -14166,8 +14465,8 @@
     },
     {
       "path": "Code/src/rfad/application/project_history.py",
-      "text_sha256": "e142d186417a3ea0ee50afcbb7a9630c964472791a33a4f8e3b28d1ecc1518f4",
-      "utf8_bytes": 7356
+      "text_sha256": "2884ff25df4e352f3330c56917a0993e44799549d76e5fd1acdc262f976585c7",
+      "utf8_bytes": 7965
     },
     {
       "path": "Code/src/rfad/application/project_operations.py",
@@ -14286,8 +14585,8 @@
     },
     {
       "path": "Code/src/rfad/application/rpc.py",
-      "text_sha256": "656691b80b8d32dfbbbca2a7954f6948a90802a22d90783d868ff7849babe8ea",
-      "utf8_bytes": 29978
+      "text_sha256": "b6eb79488180b15c415acc67a402d1822431e7d66a1fa0632315735269ad5cac",
+      "utf8_bytes": 32334
     },
     {
       "path": "Code/src/rfad/application/solver.py",
@@ -14321,8 +14620,8 @@
     },
     {
       "path": "Code/src/rfad/application/sweep_copy.py",
-      "text_sha256": "ba7b54eebcd5e3bcfa2bad88155241b956d1efa0485a88e36f3eb15c7b8e4b17",
-      "utf8_bytes": 5365
+      "text_sha256": "f26e4b5a5257c1c90f6b6a0f21bfb619732e546a122531329dd94ad8811f8fea",
+      "utf8_bytes": 5681
     },
     {
       "path": "Code/src/rfad/application/sweep_selection.py",
@@ -14400,14 +14699,24 @@
       "utf8_bytes": 4049
     },
     {
+      "path": "Code/src/rfad/domain/check_geometry.py",
+      "text_sha256": "aeca10fb6ccfe86bd8b618def3fa7c34a45bc0253ddd0341ab8794d541451dce",
+      "utf8_bytes": 9595
+    },
+    {
+      "path": "Code/src/rfad/domain/curve_boolean.py",
+      "text_sha256": "3249719274331c9008cbdf4bafc3b8d60ab7e33fa1c7b4c50af1e65e6561ad99",
+      "utf8_bytes": 10306
+    },
+    {
       "path": "Code/src/rfad/domain/design.py",
-      "text_sha256": "90a6841228469c7f58ab2bfb7744dac98b733abb8183f848cf9e8c4a421b2ad2",
-      "utf8_bytes": 37899
+      "text_sha256": "07a02d71925d064aa5f6a33021e2df74bb0db51134e353a2a9154f125c94427a",
+      "utf8_bytes": 38599
     },
     {
       "path": "Code/src/rfad/domain/design_checks.py",
-      "text_sha256": "2da7ffddaeb329b71031d6cb2124f218bb6d0518b8545e69fd63c1eb8fbe80c0",
-      "utf8_bytes": 4638
+      "text_sha256": "49ae75db0159f5453e0e13831d569cc27f75a442f6df76e0a79af560480ea693",
+      "utf8_bytes": 5051
     },
     {
       "path": "Code/src/rfad/domain/design_rules.py",
@@ -14416,13 +14725,13 @@
     },
     {
       "path": "Code/src/rfad/domain/design_sweep.py",
-      "text_sha256": "5d030ed70cfb7d046221423a688441090716c3f50bdc29fafc2654af79a8af42",
-      "utf8_bytes": 21256
+      "text_sha256": "fa173214908a973c43a159fc51f9c8dd9f2647422493be275c3427f9c87f3d04",
+      "utf8_bytes": 21383
     },
     {
       "path": "Code/src/rfad/domain/drawing_layout.py",
-      "text_sha256": "2a984b8ceb5a09ef0832aadac062632affcb5ee35f251c3b29e0145285f80c83",
-      "utf8_bytes": 30514
+      "text_sha256": "aadfa12e1b15ad41b04703d14b8246625529bb1bcd4012f78950f259383e6109",
+      "utf8_bytes": 37034
     },
     {
       "path": "Code/src/rfad/domain/expressions.py",
@@ -14471,13 +14780,18 @@
     },
     {
       "path": "Code/src/rfad/domain/object_names.py",
-      "text_sha256": "20fa7425ecf2edf7924c67ce4b33ee5daf358da077eddd7532fe1c34233ebab7",
-      "utf8_bytes": 4129
+      "text_sha256": "50ab8818687df3abdcaeb77a0acbc2c030255856a645f4db087f104ef79f3e94",
+      "utf8_bytes": 4180
     },
     {
       "path": "Code/src/rfad/domain/parameter_graph.py",
       "text_sha256": "3afa704b61fe6cce2f64d175df455e227604223eab90c71166f957d5f24e4b36",
       "utf8_bytes": 5343
+    },
+    {
+      "path": "Code/src/rfad/domain/pcb_features.py",
+      "text_sha256": "169f9d328250fb12744a44ca33a2276bb0565f34332da88451da58333a659a33",
+      "utf8_bytes": 34040
     },
     {
       "path": "Code/src/rfad/domain/pcb_selection_evidence.py",
@@ -14516,8 +14830,8 @@
     },
     {
       "path": "Code/src/rfad/domain/project.py",
-      "text_sha256": "43980bccc006ffe38441f734f17e340c95e8d7657985f6772e2cdbe50fd39993",
-      "utf8_bytes": 21818
+      "text_sha256": "a602489a4925a01e4715c8c62f39192dd9a517bd6c7cbb45af0a8d1f2622c750",
+      "utf8_bytes": 23795
     },
     {
       "path": "Code/src/rfad/domain/radiation_polarization.py",
@@ -14541,8 +14855,8 @@
     },
     {
       "path": "Code/src/rfad/domain/targets.py",
-      "text_sha256": "57bec9e36e86f092d0103a87e6f5f0ebb288d41a82af80f4bb34ac11f8fa61f0",
-      "utf8_bytes": 11891
+      "text_sha256": "50043e4ce40576f2fb2abfd243d7a80048ff31e462970090f745e5f323f288f6",
+      "utf8_bytes": 11911
     },
     {
       "path": "Code/src/rfad/domain/template_command.py",
@@ -14561,8 +14875,8 @@
     },
     {
       "path": "Code/src/rfad/domain/template_instance.py",
-      "text_sha256": "797ff06c39c8f70dcf33e346fc661c0d07c93212dc7eb88b252f83dd82617abd",
-      "utf8_bytes": 11946
+      "text_sha256": "5f059b3c48a8f94ac416254d39032c44e2192e9ad3fa8ae2d9dedf788ec4be2a",
+      "utf8_bytes": 12008
     },
     {
       "path": "Code/src/rfad/domain/template_ports.py",
@@ -14616,8 +14930,13 @@
     },
     {
       "path": "Code/tests/output_model_test.cpp",
-      "text_sha256": "018156ab91423f7764d252f70da1240dee2c5fa6ac1e825f29420357ee1e7809",
-      "utf8_bytes": 8663
+      "text_sha256": "9442a7db18dbecc6650f4b65a33169708799d7ae33063cdfe3f9880768546854",
+      "utf8_bytes": 11698
+    },
+    {
+      "path": "Code/tests/pcb_feature_model_test.cpp",
+      "text_sha256": "596ffc72619c867b4287f9045426a0c7f5b58434216336dcb1bb9c04c305225a",
+      "utf8_bytes": 6891
     },
     {
       "path": "Code/tests/radiation_pattern_test.cpp",
@@ -14643,6 +14962,11 @@
       "path": "Code/tests/test_cad_native.py",
       "text_sha256": "4bd7b5f45c949d865eb4b6e7bec5e9c94ce45fc673acffd673206c6dedbc6af1",
       "utf8_bytes": 14915
+    },
+    {
+      "path": "Code/tests/test_cad_pcb_features.py",
+      "text_sha256": "44cda016325cbb11c772cf7ba125771155357a70c85b495b88d1504bac37dd6d",
+      "utf8_bytes": 12540
     },
     {
       "path": "Code/tests/test_cad_projection.py",
@@ -14680,6 +15004,11 @@
       "utf8_bytes": 15220
     },
     {
+      "path": "Code/tests/test_curve_boolean.py",
+      "text_sha256": "75d18fbb8d33be5482a1f2dfd4ada7c4b7076d75d950c24391b93c6393f1d106",
+      "utf8_bytes": 7182
+    },
+    {
       "path": "Code/tests/test_design.py",
       "text_sha256": "75efb027de2bcfd0a2b36d7f9cb22ded31bcd21456d41fdcb3654ecbfff686fb",
       "utf8_bytes": 21314
@@ -14713,6 +15042,11 @@
       "path": "Code/tests/test_doctor.py",
       "text_sha256": "c6c35c47c028945c185e118c86be94e3b3bb5378155eacbd3ef49888ff45c28e",
       "utf8_bytes": 8489
+    },
+    {
+      "path": "Code/tests/test_drawing_mechanical.py",
+      "text_sha256": "0affa32c6af0900b4a99fcceaefc06a10d2575157f87afa1a739770b32d457b8",
+      "utf8_bytes": 4244
     },
     {
       "path": "Code/tests/test_editor_service.py",
@@ -14755,6 +15089,11 @@
       "utf8_bytes": 4295
     },
     {
+      "path": "Code/tests/test_gui_features_process.py",
+      "text_sha256": "520f66e12ae2c3caf898019012e98c6e1a005ecec137a2c8431e1d5115f421a8",
+      "utf8_bytes": 7091
+    },
+    {
       "path": "Code/tests/test_gui_network_process.py",
       "text_sha256": "c5781009668d02ab7bfa924c137ad7b748c932062e6c159610eb5e8f8c88bb91",
       "utf8_bytes": 12335
@@ -14763,6 +15102,11 @@
       "path": "Code/tests/test_gui_output_process.py",
       "text_sha256": "6bd434732d7146e5152d19045aee25d287913e5e41ba2d87034fa17dc7b3d439",
       "utf8_bytes": 7220
+    },
+    {
+      "path": "Code/tests/test_gui_pcb_exchange_process.py",
+      "text_sha256": "468b9ab2a3e0d6a36014b18505f9c0329bfb8c8e19b627b06500accb5e8ef30c",
+      "utf8_bytes": 8264
     },
     {
       "path": "Code/tests/test_gui_physical_setup_process.py",
@@ -14885,9 +15229,34 @@
       "utf8_bytes": 7958
     },
     {
+      "path": "Code/tests/test_pcb_exchange_formats.py",
+      "text_sha256": "04a872db57fa115f3232d692e4034fa5373b1bed263057dd282a347208c5a9ea",
+      "utf8_bytes": 22487
+    },
+    {
+      "path": "Code/tests/test_pcb_exchange_service.py",
+      "text_sha256": "720a5fe77abd455e9a5e1debb30758dbe1a20e0826e1cddd188e0953451f2f02",
+      "utf8_bytes": 9781
+    },
+    {
+      "path": "Code/tests/test_pcb_features.py",
+      "text_sha256": "7470d3e61850ee16f55062dfcc73f035fc38dd5dfb77d01d8d2e5ebc50a0762b",
+      "utf8_bytes": 22083
+    },
+    {
       "path": "Code/tests/test_pcb_ifa.py",
       "text_sha256": "b33928a2e9c3619e2109c407b3b9e2c233443f0b1a80d83ca20192c75215efd3",
       "utf8_bytes": 12785
+    },
+    {
+      "path": "Code/tests/test_pcb_import_mapping.py",
+      "text_sha256": "7baf867357fca4c8e1fe8aaa583879de893054f4c3b7951175bae4892aaf7fef",
+      "utf8_bytes": 22950
+    },
+    {
+      "path": "Code/tests/test_pcb_import_service.py",
+      "text_sha256": "304f3495a21cb379d24e88e24bdb2e398bd34d4895c007d0ef73e3d93abdf136",
+      "utf8_bytes": 13952
     },
     {
       "path": "Code/tests/test_pcb_loss_convergence.py",
@@ -14908,6 +15277,11 @@
       "path": "Code/tests/test_pcb_radiation.py",
       "text_sha256": "0b6c6a812fa6b2b249ba9ba4f444b0a565431f6821be2a766ad93ce038eef45c",
       "utf8_bytes": 9618
+    },
+    {
+      "path": "Code/tests/test_pcb_receiver.py",
+      "text_sha256": "6e1dbe3f7c046fdb200312aac044be57b943e8e5a3bf193d3672886cc142ff9e",
+      "utf8_bytes": 12104
     },
     {
       "path": "Code/tests/test_pcb_selection_service.py",
@@ -15046,8 +15420,8 @@
     },
     {
       "path": "Code/tests/test_targets.py",
-      "text_sha256": "f75cfe5532409cd4bda7a70124ffbfe7cf61cb64ff42857d8774b7d4382ba915",
-      "utf8_bytes": 23866
+      "text_sha256": "e8e2c3dbfb66560f8d9071d36a628e4e7a61f9c40e908070ace3f2b04d5d6183",
+      "utf8_bytes": 23886
     },
     {
       "path": "Code/tests/test_template_candidates.py",
@@ -15095,14 +15469,19 @@
       "utf8_bytes": 9902
     },
     {
+      "path": "Code/ui/wxwidgets/canvas_pcb_features.cpp",
+      "text_sha256": "262e0fc2fbf14f716a2d814559d1784215fb4b5eda64edd001ccc852a6ff900c",
+      "utf8_bytes": 6410
+    },
+    {
       "path": "Code/ui/wxwidgets/design_canvas_dimensions.cpp",
       "text_sha256": "b2782d4b03435a7037ff6e5ffc3dd2c75abdee6ac79d78b0151a4304e9acb4de",
       "utf8_bytes": 3518
     },
     {
       "path": "Code/ui/wxwidgets/design_canvas_precision.cpp",
-      "text_sha256": "bdbad0f1e8fff1b5227d2ab56e14b23c193d658d64a7cb221932396d1613bb52",
-      "utf8_bytes": 6747
+      "text_sha256": "da4465b328d10df695b5f46adf879906aa94d8a42707c6a12e191ececda0a28b",
+      "utf8_bytes": 6934
     },
     {
       "path": "Code/ui/wxwidgets/design_rules_dialog.cpp",
@@ -15186,8 +15565,48 @@
     },
     {
       "path": "Code/ui/wxwidgets/output_controller.cpp",
-      "text_sha256": "9d4a5f00b81806adefdd3eede5e38bef325811efe0b4f29644282a906979b6ae",
-      "utf8_bytes": 13439
+      "text_sha256": "914512099d09b05df893e9604d23784e06527e9153f1cf56305f402a119f15b7",
+      "utf8_bytes": 13424
+    },
+    {
+      "path": "Code/ui/wxwidgets/pcb_cam_output_data.cpp",
+      "text_sha256": "8b04c84e7040b76a8b1890315dbfa5ce9bf58656ac4bafcdb6128acecc3d259b",
+      "utf8_bytes": 8247
+    },
+    {
+      "path": "Code/ui/wxwidgets/pcb_cam_output_view.cpp",
+      "text_sha256": "29cb5812cad0b3c6e3580c2383aab8dc0caaa04e86e7793f892d3142bdac9c6f",
+      "utf8_bytes": 10629
+    },
+    {
+      "path": "Code/ui/wxwidgets/pcb_feature_dialog.cpp",
+      "text_sha256": "dac03bd1a875f00c393d577c8175a5eea36f9d14819abcd2ae010162f824e35f",
+      "utf8_bytes": 12285
+    },
+    {
+      "path": "Code/ui/wxwidgets/pcb_feature_form.cpp",
+      "text_sha256": "243442631d97ed194bef2fc127a00c5affbbe7151da6ee62b9501699de828564",
+      "utf8_bytes": 10647
+    },
+    {
+      "path": "Code/ui/wxwidgets/pcb_feature_model.cpp",
+      "text_sha256": "7e18d68ecaccb84bf86ece95069594f498014968886665a7ee1ba8fa11c2fccf",
+      "utf8_bytes": 5982
+    },
+    {
+      "path": "Code/ui/wxwidgets/pcb_import_dialog.cpp",
+      "text_sha256": "35d4150dc1af316916221dbc748216838a430958e63f9f0ba2ee2d05d68acb47",
+      "utf8_bytes": 7681
+    },
+    {
+      "path": "Code/ui/wxwidgets/pcb_import_review.cpp",
+      "text_sha256": "88592692b0febdeec214578aa9afc38a3aaa7e6f4081295467a7b90ce5f300f7",
+      "utf8_bytes": 9390
+    },
+    {
+      "path": "Code/ui/wxwidgets/pcb_import_transfer.cpp",
+      "text_sha256": "494a1fed7cff3ba337ddab579f3f88c3aa7cf8a91b63cc7bf82cd54183e3f260",
+      "utf8_bytes": 13138
     },
     {
       "path": "Code/ui/wxwidgets/physical_setup_dialog.cpp",
@@ -15265,6 +15684,11 @@
       "utf8_bytes": 11891
     },
     {
+      "path": "Code/ui/wxwidgets/reviewed_request_store.cpp",
+      "text_sha256": "533da0db2224dec2f7e7f69572a7c8eea59edf99984badd13b8e1891cba1c97e",
+      "utf8_bytes": 4913
+    },
+    {
       "path": "Code/ui/wxwidgets/rf_validation_controller.cpp",
       "text_sha256": "17335919b54e5e2a562200e133c21ea1337ffcce2a9f2376c71bc75b4c57cde7",
       "utf8_bytes": 10067
@@ -15301,13 +15725,13 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_layout.cpp",
-      "text_sha256": "2bb32d6c4e49cf67ddf8a689c314288f011b2f27f589a9c884d2583ab16095f7",
-      "utf8_bytes": 27260
+      "text_sha256": "f60d23288e88a90887f68e257a97dbfb94e840df1ce116594b89ef293acdfc1b",
+      "utf8_bytes": 27696
     },
     {
       "path": "Code/ui/wxwidgets/studio_navigation.cpp",
-      "text_sha256": "31f964c209b9cb354d9b8650bdf73aed8af8ea8ee423b1ca8f1a936145f5e936",
-      "utf8_bytes": 13154
+      "text_sha256": "76684f76c6af476173a44002a8992d4e599a7877db487777d0e57b006d29d76b",
+      "utf8_bytes": 16897
     },
     {
       "path": "Code/ui/wxwidgets/studio_precision.cpp",

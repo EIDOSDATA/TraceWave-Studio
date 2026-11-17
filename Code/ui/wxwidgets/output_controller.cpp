@@ -169,7 +169,7 @@ void OutputController::Update(const std::string& project, const std::string& rev
 void OutputController::Actions()
 {
     bool reviewed = m_previewInput.is_object() && m_view->Input() == m_previewInput;
-    if (reviewed && m_view->Kind() == 0)
+    if (reviewed && m_view->Kind() != 1)
     {
         reviewed = OutputUi::MatchesPreview(m_view->Preview(), m_previewInput);
     }
@@ -346,13 +346,13 @@ void OutputController::Capture()
 
 void OutputController::Preview()
 {
-    if (!m_available || Active() || m_reads > 0 || !m_view->Snapshot().is_object() || m_view->Kind() > 1)
+    if (!m_available || Active() || m_reads > 0 || !m_view->Snapshot().is_object())
     {
         return;
     }
     m_previewInput = nullptr;
     m_view->ClearRecord("선택한 고정 입력의 출력 내용을 검토하고 있습니다.");
-    Start("export.preview", m_view->Input());
+    Start("export.preview", m_view->PreviewInput());
 }
 
 void OutputController::Build()
@@ -362,7 +362,7 @@ void OutputController::Build()
         return;
     }
     Json input = m_previewInput;
-    if (m_view->Kind() == 0)
+    if (m_view->Kind() != 1)
     {
         if (!OutputUi::MatchesPreview(m_view->Preview(), input))
         {

@@ -160,6 +160,15 @@ def board_clearance(document, shape):
         width, height = scalar(document, outline["width"]), scalar(document, outline["height"])
         candidates = ((min(x, y, width - x, height - y), [x, y]) for x, y in points)
         return min(candidates, key=lambda row: row[0])
+    if outline["kind"] == "polygon":
+        loop = [tuple(scalar(document, value) for value in point) for point in outline["outer"]]
+        edges = [Segment(a, b) for a, b in zip(loop, loop[1:] + loop[:1])]
+        nearest = min((boundary_distance(a, b) for a in shape.edges for b in edges), key=lambda item: item[0])
+        if any(not _inside_loop(point, loop) for point in points):
+            return -max(nearest[0], MIN_FEATURE_MM), list(nearest[1])
+        if nearest[0] == 0:
+            raise ProjectError("E_CHECK_UNSUPPORTED", "다각형 외곽과 맞닿은 경계의 포함 여부는 미평가입니다.")
+        return nearest[0], list(nearest[1])
     center = tuple(scalar(document, value) for value in outline["center"])
     radius = scalar(document, outline["radius"])
     points = [point for edge in shape.edges for point in extreme_points(edge, center)]

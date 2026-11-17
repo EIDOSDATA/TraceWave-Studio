@@ -8,6 +8,7 @@ from rfad.domain.errors import ProjectError
 
 PROFILE = "rfad.object-name/0.1"
 NAMED_SCHEMA = "rfad.project/0.5"
+NAMED_SCHEMAS = (NAMED_SCHEMA, "rfad.project/0.6")
 PREFIXES = {"line_path": "선", "arc_path": "원호", "planar_region": "면", "pad": "패드", "via": "비아"}
 
 

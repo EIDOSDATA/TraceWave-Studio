@@ -6,7 +6,7 @@ from pathlib import Path
 import unicodedata
 import xml.etree.ElementTree as ET
 
-from rfad.domain.drawing_layout import fail, polar
+from rfad.domain.drawing_layout import fail, polar, _inside
 from rfad.domain.errors import ProjectError
 
 
@@ -86,7 +86,11 @@ def write_svg(page, path):
 def _dxf_path(hatch, loops):
     """! @brief 외곽과 구멍을 DXF 해석형 HATCH edge path에 분리한다."""
     for index, loop in enumerate(loops):
-        boundary = hatch.paths.add_edge_path(flags=1 if index == 0 else 0)
+        first = loop[0]
+        sample = ([(a + b) / 2 for a, b in zip(first["start"], first["end"])] if first["kind"] == "line"
+                  else polar(first["center"], first["radius"], first["start_deg"] + first["sweep_deg"] / 2))
+        depth = sum(_inside(sample, [other]) for other_index, other in enumerate(loops) if other_index != index)
+        boundary = hatch.paths.add_edge_path(flags=1 if depth == 0 else 16 if depth == 1 else 0)
         for edge in loop:
             if edge["kind"] == "line":
                 boundary.add_line(edge["start"], edge["end"])

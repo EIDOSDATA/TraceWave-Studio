@@ -14,7 +14,8 @@ DOCS = ROOT / "01_개발문서"
 BASELINE = DOCS / "12_보관이력/01_승인기준선/01_삼점사"
 SCREEN_NAMES = {"05_설계와_이차원편집", "06_해석준비", "07_결과조회", "08_결과비교",
                 "09_출력과_검수", "04_시작과_복구", "10_설정과_이름변경", "01_스튜디오_전체전환",
-                "02_편집초안과_저장흐름", "03_객체이름과_식별자"}
+                "02_편집초안과_저장흐름", "03_객체이름과_식별자", "11_기판교환과_원문수입"}
+SCREEN_ASSETS = {"11_기판교환과_원문수입": ("17_기판교환과_원문수입", 1420, 800)}
 
 
 def check_link(path, destination):
@@ -74,18 +75,19 @@ def main():
                 geo = cell.find("mxGeometry")
                 assert geo.find("mxPoint[@as='sourcePoint']") is not None
                 assert geo.find("mxPoint[@as='targetPoint']") is not None
-                if drawing.stem in {"01_스튜디오_전체전환", "02_편집초안과_저장흐름", "03_객체이름과_식별자"}:
+                if drawing.stem in {"01_스튜디오_전체전환", "02_편집초안과_저장흐름", "03_객체이름과_식별자", "11_기판교환과_원문수입"}:
                     assert cell.get("source") in ids, (drawing.name, cell.attrib)
                     assert cell.get("target") in ids, (drawing.name, cell.attrib)
-        image = DOCS / "04_화면설계/01_그림자료" / (drawing.stem + ".svg")
+        image_name, expected_width, expected_height = SCREEN_ASSETS.get(drawing.stem, (drawing.stem, 1600, 1000))
+        image = DOCS / "04_화면설계/01_그림자료" / (image_name + ".svg")
         svg = ET.parse(image).getroot()
         texts = [element.text for element in svg.findall("{http://www.w3.org/2000/svg}text")]
         assert labels == texts, drawing.name
         png = image.with_suffix(".png")
         data = png.read_bytes()
         assert data[:8] == b"\x89PNG\r\n\x1a\n"
-        assert int.from_bytes(data[16:20], "big") == 1600
-        assert int.from_bytes(data[20:24], "big") == 1000
+        assert int.from_bytes(data[16:20], "big") == expected_width
+        assert int.from_bytes(data[20:24], "big") == expected_height
         diagrams.append({"name": drawing.stem, "cells": len(cells), "edges": edges,
                          "drawio_sha256": hashlib.sha256(drawing.read_bytes()).hexdigest(),
                          "svg_sha256": hashlib.sha256(image.read_bytes()).hexdigest(),

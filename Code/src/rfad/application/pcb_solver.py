@@ -70,6 +70,8 @@ def validate_settings(settings):
 def _payload(document, snapshot, runtime, settings):
     """! @brief 보존한 사용자 설계에서 native 소비 조건을 결정적으로 만든다."""
     validate_project(document)
+    if (document.get("board") or {}).get("cutouts") or document.get("pcb", {}).get("holes") or (document.get("board") or {}).get("outline", {}).get("kind") == "polygon":
+        fail("E_UNSUPPORTED", "현재 PCB 해석 profile은 다각형 기판/기계 절삭/홀을 소비하지 않습니다. 원본을 보존하고 해석을 차단합니다.", "pcb.mechanical")
     _snapshot(snapshot)
     _runtime(runtime)
     validate_settings(settings)

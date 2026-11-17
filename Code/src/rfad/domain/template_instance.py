@@ -122,7 +122,8 @@ def _validate_original_design(record: dict) -> None:
     probe = deepcopy(source)
     named = record.get("naming_profile") == NAME_PROFILE
     if named:
-        probe["schema_version"] = NAMED_SCHEMA
+        if probe["schema_version"] != "rfad.project/0.6":
+            probe["schema_version"] = NAMED_SCHEMA
     for name in OBJECT_COLLECTIONS:
         additions = record["objects"][name]
         if name == "parameters":

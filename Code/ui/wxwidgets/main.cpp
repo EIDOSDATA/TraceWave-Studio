@@ -32,6 +32,8 @@ public:
         parser.AddSwitch("", "validation-smoke-test", "Run immutable RF validation reports GUI workflow");
         parser.AddSwitch("", "selection-smoke-test", "Run candidate editing-copy review and preservation workflow");
         parser.AddSwitch("", "output-smoke-test", "Run frozen-input drawing output and fresh verification workflow");
+        parser.AddSwitch("", "features-smoke-test", "Run PCB mechanical and artwork edit preservation workflow");
+        parser.AddSwitch("", "pcb-exchange-smoke-test", "Run PCB CAM export and preserved source import workflow");
         parser.AddSwitch("", "printed-seed-smoke-test",
                          "Run printed reference/seed and workspace GUI workflow and exit");
         parser.AddSwitch("", "physical-setup-smoke-test", "Run physical stack, STEP placement and reopen workflow");
@@ -90,10 +92,13 @@ public:
         options.validationSmoke = parser.Found("validation-smoke-test");
         options.selectionSmoke = parser.Found("selection-smoke-test");
         options.outputSmoke = parser.Found("output-smoke-test");
+        options.featuresSmoke = parser.Found("features-smoke-test");
+        options.pcbExchangeSmoke = parser.Found("pcb-exchange-smoke-test");
         options.setupSmoke = parser.Found("design-setup-smoke-test") || options.printedSeedSmoke ||
                              options.designRulesSmoke || options.physicalSetupSmoke || options.precisionEditorSmoke ||
                              options.networkSmoke || options.sweepSmoke || options.resultsSmoke ||
-                             options.validationSmoke || options.selectionSmoke || options.outputSmoke;
+                             options.validationSmoke || options.selectionSmoke || options.outputSmoke ||
+                             options.featuresSmoke || options.pcbExchangeSmoke;
         parser.Found("study-specification", &options.studySpecification);
         options.smoke = parser.Found("smoke-test") || options.editorSmoke || options.canvasSmoke ||
                         options.primitivesSmoke || options.cadSmoke || options.solverSmoke || options.pcbSmoke ||

@@ -7,6 +7,7 @@
 class StudioNotebook;
 class DrawingOutputView;
 class StepOutputView;
+class PcbCamOutputView;
 class OutputConditionsView;
 class wxChoice;
 class wxButton;
@@ -26,9 +27,11 @@ public:
     void ClearRecord(const std::string& message);
     void SetStatus(const std::string& message);
     void SetAvailable(bool available, bool busy, bool reviewed, bool canCancel, bool uncertain);
+    void SetImportAvailable(bool available);
     void SelectSnapshot(const Json& snapshot);
     Json Snapshot() const;
     Json Input() const;
+    Json PreviewInput() const;
     std::string SelectedJob() const;
     int Kind() const;
     void SelectKind(int kind);
@@ -40,6 +43,7 @@ public:
     std::function<void(const std::string&)> onSelectJob;
     std::function<void(int)> onSnapshotPage, onCatalogPage;
     std::function<void()> onChanged;
+    std::function<void()> onImport;
 
 private:
     friend class StudioSmokeDriver;
@@ -47,6 +51,7 @@ private:
     StudioNotebook* m_tabs = nullptr;
     DrawingOutputView* m_drawing = nullptr;
     StepOutputView* m_step = nullptr;
+    PcbCamOutputView* m_pcb = nullptr;
     OutputConditionsView* m_conditions = nullptr;
     wxChoice* m_snapshots = nullptr;
     wxChoice* m_records = nullptr;

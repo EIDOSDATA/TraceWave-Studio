@@ -6,6 +6,12 @@
 void StudioFrame::OpenProject(const std::string& mode, const std::string& path, const std::string& name,
                               std::function<void()> opened)
 {
+    if ((m_pcbFeatureUncertain || m_pcbImportUncertain) && path != m_path)
+    {
+        Log("이전 PCB 편집 결과를 확인한 뒤 다른 프로젝트를 여세요. 설계 메뉴의 PCB 형상에서 같은 영수증을 조회할 수 "
+            "있습니다.");
+        return;
+    }
     if (m_output && m_output->Active() && path != m_path)
     {
         Log("출력 요청의 접수/완료 여부를 확인한 뒤 다른 프로젝트를 여세요. 기존 요청 키와 파일은 보존합니다.");
@@ -45,6 +51,8 @@ void StudioFrame::OpenProject(const std::string& mode, const std::string& path, 
                          m_revision = result.at("revision_id").get<std::string>();
                          ResetNetwork();
                          m_path = path;
+                         ReadPcbFeatureRecovery();
+                         ReadPcbImportRecovery();
                          m_scene = Json::object();
                          m_modelView->Clear();
                          m_cadResult = Json::object();
