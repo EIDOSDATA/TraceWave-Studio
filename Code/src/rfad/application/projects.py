@@ -43,7 +43,7 @@ from rfad.storage.journal import Journal
 
 ASYNC_METHODS = {
     "project.open", "project.save", "snapshot.create", "design.validate", "export.preview", "export.verify",
-} | CAD_METHODS | SOLVER_METHODS | {large_results.REGISTER}
+} | CAD_METHODS | SOLVER_METHODS | large_results.MUTATIONS
 MUTATION_METHODS = ASYNC_METHODS | {
     "project.apply_command", "editor.apply", "canvas.apply", "project.undo", "project.redo", "job.cancel",
 } | {archive_export_service.MUTATION} | archive_receiver.MUTATIONS | HOST_MUTATIONS | PCB_SELECTION_MUTATIONS | STUDY_MUTATIONS | design_sweep_service.MUTATIONS | rf_validation_records.MUTATIONS | sweep_selection.MUTATIONS | pcb_import_service.MUTATIONS | {"target.editor.apply", "template.apply", "design.rules.apply", physical_setup_service.MUTATION, precision_service.MUTATION, network_service.MUTATION, pcb_exchange_service.MUTATION, handoff_service.MUTATION}
@@ -201,8 +201,8 @@ class ProjectService:
 
     def _preflight(self, method: str, context: dict, data: dict) -> None:
         """! @brief 기능별 요청 계약에 따라 접수 가능 여부를 검사한다."""
-        if method == large_results.REGISTER:
-            large_results.validate(context, data)
+        if method in large_results.MUTATIONS:
+            large_results.validate(method, context, data)
         elif method in archive_receiver.MUTATIONS:
             archive_receiver.validate_input(method, context, data)
         elif method == archive_export_service.MUTATION:
@@ -262,8 +262,8 @@ class ProjectService:
     def _dispatch_mutation(self, state: dict, method: str, context: dict, data: dict) -> dict:
         """! @brief 영수증과 동일한 transaction에서 기능별 명령을 실행한다."""
         self._preflight(method, context, data)
-        if method == large_results.REGISTER:
-            return large_results.admit(self, state, context, data)
+        if method in large_results.MUTATIONS:
+            return large_results.admit(self, state, method, context, data)
         if method in archive_receiver.MUTATIONS:
             return archive_receiver.admit(self, state, method, data)
         elif method == archive_export_service.MUTATION:
@@ -503,7 +503,7 @@ class ProjectService:
             for job in state["jobs"].values():
                 if job["state"] == "queued" and "cad" not in job and "solver" not in job and "exchange" not in job:
                     self._event(job, "running")
-                    return job["job_id"], deepcopy(job) if job["operation_method"] == large_results.REGISTER else None
+                    return job["job_id"], deepcopy(job) if job["operation_method"] in large_results.MUTATIONS else None
             return None
         if not any(
             job["state"] == "queued" and "cad" not in job and "solver" not in job and "exchange" not in job
@@ -513,10 +513,10 @@ class ProjectService:
         admission = self.journal.transaction(begin)
         if admission is None:
             return False
-        job_id, registration = admission
+        job_id, large_result_job = admission
         prepared = None
         try:
-            prepared = large_results.prepare(self, registration) if registration is not None else None
+            prepared = large_results.prepare(self, large_result_job) if large_result_job is not None else None
             def finish(state):
                 """! @brief 결과와 terminal event를 같은 commit으로 게시한다."""
                 job = state["jobs"][job_id]

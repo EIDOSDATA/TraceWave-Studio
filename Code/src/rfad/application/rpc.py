@@ -55,7 +55,7 @@ PROJECT_MUTATIONS.update(STUDY_MUTATIONS)
 PROJECT_MUTATIONS.update(design_sweep_service.MUTATIONS)
 PROJECT_MUTATIONS.update(rf_validation_records.MUTATIONS)
 PROJECT_MUTATIONS.update(sweep_selection.MUTATIONS)
-PROJECT_MUTATIONS.add(large_results.REGISTER)
+PROJECT_MUTATIONS.update(large_results.MUTATIONS)
 PROJECT_MUTATIONS.update({"target.editor.apply", "template.apply", "design.rules.apply", physical_setup_service.MUTATION, precision_service.MUTATION, network_service.MUTATION})
 
 
@@ -111,7 +111,7 @@ def capabilities(service=None, catalog=None) -> dict:
         }
         result["features"][0]["status"] = "implemented"
         result["methods"].update({name: {"status": "implemented", "extension_profile": large_results.PROFILE}
-                                  for name in large_results.READS | {large_results.REGISTER}})
+                                  for name in large_results.READS | large_results.MUTATIONS})
         result["methods"][handoff_evidence.METHOD] = {"status": "implemented", "api_id": "API-027",
                                                     "extension_profile": handoff_evidence.PROFILE}
         result["methods"][handoff_service.MUTATION] = {"status": "implemented", "api_id": "API-026",

@@ -136,6 +136,70 @@ class LargeResultTests(unittest.TestCase):
                 with self.assertRaisesRegex(AssertionError, "E_HASH"):
                     rpc(service, document, "result.large.slice", query)
 
+    def test_result_transfer_preserves_origin_and_rejects_changed_header_or_payload(self):
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            producer, receiver = root / "보낸 작업", root / "받은 작업"
+            raw = root / "출처가 있는 곡선.h5"
+            make_curves(raw, count=512)
+
+            def submit(service, document, source, kind):
+                """! @brief GUI와 같은 배타 수신 파일 및 작업 접수 경로를 사용한다."""
+                project = service.journal.read()["projects"][document["project_id"]]
+                inbox = service.workspace / project["path"] / "result-inbox"
+                inbox.mkdir(exist_ok=True)
+                token = str(uuid4())
+                shutil.copyfile(source, inbox / (token + ".h5"))
+                task = rpc(service, document, "result.large.register", {
+                    "revision_id": document["revision_id"], "kind": kind, "token": token,
+                    "name": source.stem, "source_name": source.name}, mutate=True)
+                self.assertTrue(service.run_next())
+                self.assertFalse(list(inbox.iterdir()))
+                return service.journal.read()["jobs"][task["job_id"]]["events"][-1]
+
+            def publish(service, document, record):
+                """! @brief 실제 작업 완료 참조의 길이와 해시로 사본을 확인한다."""
+                task = rpc(service, document, "result.large.transfer", {"id": record["id"]}, mutate=True)
+                self.assertTrue(service.run_next())
+                event = service.journal.read()["jobs"][task["job_id"]]["events"][-1]
+                reference = event["operation_result"]["artifact"]
+                path = service.workspace / reference["uri"]
+                package = path.read_bytes()
+                self.assertEqual(reference["bytes"], len(package))
+                self.assertEqual(reference["sha256"], hashlib.sha256(package).hexdigest())
+                return package
+
+            with ProjectService(producer, auto_run=False) as service:
+                document, _ = register_fixture(service)
+                reference = submit(service, document, raw, "traces")["operation_result"]
+                package = publish(service, document, reference)
+            transfer = root / "이관할 결과.rfadres"
+            transfer.write_bytes(package)
+            with ProjectService(receiver, auto_run=False) as service:
+                destination, _ = register_fixture(service)
+                self.assertNotEqual(destination["project_id"], document["project_id"])
+                for offset in (16, len(package) - 1):
+                    changed = bytearray(package)
+                    changed[offset] ^= 1
+                    damaged = root / "손상된 사본.rfadres"
+                    damaged.write_bytes(changed)
+                    failure = submit(service, destination, damaged, "package")
+                    self.assertEqual(failure["error"]["code"], "E_HASH")
+                    self.assertEqual(rpc(service, destination, "result.large.list", {})["records"], [])
+                restored = submit(service, destination, transfer, "package")["operation_result"]
+                self.assertEqual(restored["origin"], {key: document[key] for key in ("project_id", "revision_id")})
+                self.assertEqual(restored["revision_id"], destination["revision_id"])
+                for key in ("name", "source_name", "details", "conditions"):
+                    self.assertEqual(restored[key], reference[key])
+                self.assertEqual(restored["artifact"]["sha256"], reference["artifact"]["sha256"])
+                self.assertEqual(publish(service, destination, restored), package)
+            with ProjectService(receiver, auto_run=False) as service:
+                self.assertEqual(rpc(service, destination, "result.large.list", {})["records"], [restored])
+                raw_page = rpc(service, destination, "result.large.curves", {
+                    "id": restored["id"], "mode": "exact", "offset": 510, "metric": "imag"})
+                self.assertFalse(raw_page["pages"][7]["samples"][0]["valid"])
+                self.assertEqual(raw_page["pages"][7]["samples"][1]["imag"], -8)
+
     @unittest.skipUnless(sys.platform == "win32" and GUI and os.environ.get("RFAD_TEST_F3_PRODUCT"),
                          "1 GiB 원문과 실제 Windows Studio 계측을 명시적으로 활성화해야 합니다.")
     def test_windows_registered_field_and_eight_curves_save_reopen_and_memory(self):
@@ -195,3 +259,61 @@ class LargeResultTests(unittest.TestCase):
                         self.assertEqual(row["artifact"]["sha256"], hashlib.file_digest(stream, "sha256").hexdigest())
             if output := os.environ.get("RFAD_GUI_TEST_ARTIFACT_DIR"):
                 (Path(output) / "large-result-f3.json").write_bytes(canonical_bytes(results))
+
+    @unittest.skipUnless(sys.platform == "win32" and GUI and os.environ.get("RFAD_TEST_F3_TRANSFER"),
+                         "1 GiB 이관 원문과 실제 Windows Studio를 명시적으로 활성화해야 합니다.")
+    def test_windows_f3_transfer_between_workspaces_keeps_payload_and_provenance(self):
+        with TemporaryDirectory(prefix="TraceWave F3 이관 ") as directory:
+            root = Path(directory)
+            field, traces = root / "두 주파수 필드.h5", root / "여덟 복소 곡선.h5"
+            make_field(field, large=True)
+            make_curves(traces)
+            exported = {kind: str(root / (kind + ".rfadres")) for kind in ("field", "traces")}
+            workspaces = {}
+            for name in ("producer", "receiver"):
+                workspace = root / name
+                with ProjectService(workspace, auto_run=False) as service:
+                    document, _ = register_fixture(service)
+                    project = service.journal.read()["projects"][document["project_id"]]
+                workspaces[name] = (workspace, document, project["path"])
+            results = {}
+            for mode in ("import", "receive", "reopen"):
+                host = "producer" if mode == "import" else "receiver"
+                workspace, document, project = workspaces[host]
+                smoke, evidence = root / f"{mode}-studio.json", root / f"{mode}-view.json"
+                configuration = {"mode": mode, "phases": str(root / f"{mode}-phases.txt"), "evidence": str(evidence)}
+                if mode == "import":
+                    configuration.update(field=str(field), traces=str(traces), export=exported)
+                elif mode == "receive":
+                    configuration.update(exported)
+                (workspace / "large-results-fixture.json").write_bytes(canonical_bytes(configuration))
+                command = [GUI, "--python", sys.executable, "--source", str(CODE / "src"),
+                           "--workspace", str(workspace), "--open-project", project,
+                           "--large-results-smoke-test", "--smoke-report", str(smoke)]
+                process = subprocess.run(command, stdin=subprocess.DEVNULL, capture_output=True,
+                                         timeout=240, check=False)
+                report = json.loads(smoke.read_bytes()) if smoke.exists() else {}
+                view = json.loads(evidence.read_bytes()) if evidence.exists() else {}
+                self.assertEqual(process.returncode, 0, (report, view, process.stderr[-4000:]))
+                self.assertTrue(report["passed"] and view["passed"])
+                self.assertEqual(report["saved_revision"], document["revision_id"])
+                results[mode] = {"studio": report, "view": view}
+            initial = workspaces["producer"][1]
+            wanted = {key: initial[key] for key in ("project_id", "revision_id")}
+            sent = {row["kind"]: row for row in results["import"]["view"]["records"]}
+            for row in results["reopen"]["view"]["records"]:
+                original = sent[row["kind"]]
+                self.assertEqual(row["origin"], wanted)
+                self.assertEqual(row["artifact"]["sha256"], original["artifact"]["sha256"])
+                for key in ("name", "source_name", "details", "conditions"):
+                    self.assertEqual(row[key], original[key])
+            self.assertEqual(results["import"]["view"]["slices"], results["reopen"]["view"]["slices"])
+            original_tail = dict(results["import"]["view"]["tail"])
+            restored_tail = dict(results["reopen"]["view"]["tail"])
+            self.assertNotEqual(original_tail.pop("id"), restored_tail.pop("id"))
+            self.assertEqual(original_tail, restored_tail)
+            self.assertEqual(results["receive"]["view"]["records"], results["reopen"]["view"]["records"])
+            if output := os.environ.get("RFAD_GUI_TEST_ARTIFACT_DIR"):
+                sizes = {kind: Path(file).stat().st_size for kind, file in exported.items()}
+                (Path(output) / "large-result-transfer.json").write_bytes(canonical_bytes({"sizes": sizes,
+                                                                                         "sessions": results}))

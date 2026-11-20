@@ -72,11 +72,11 @@ void LargeResultDialog::SmokeTick()
             {
                 return;
             }
-            if (m_fixture.at("mode") == "import")
+            if (m_fixture.at("mode") == "import" || m_fixture.at("mode") == "receive")
             {
                 Check(m_catalog.empty(), "새 시험 프로젝트에 기존 등록 자료가 있습니다.");
                 Mark(m_fixture, "import-start");
-                StartImport(FileName(m_fixture.at("field")), "field");
+                StartImport(FileName(m_fixture.at("field")), m_fixture.at("mode") == "receive" ? "package" : "field");
                 m_smokeStep = 3;
             }
             else
@@ -88,7 +88,7 @@ void LargeResultDialog::SmokeTick()
         if (m_smokeStep == 3)
         {
             Check(m_catalog.size() == 1, "단일 필드 등록이 완료되지 않았습니다.");
-            StartImport(FileName(m_fixture.at("traces")), "traces");
+            StartImport(FileName(m_fixture.at("traces")), m_fixture.at("mode") == "receive" ? "package" : "traces");
             m_smokeStep = 4;
             return;
         }
@@ -186,6 +186,39 @@ void LargeResultDialog::SmokeTick()
                       "마지막 복소값 또는 원본 결측 상태가 예상 기록과 다릅니다.");
             }
             m_evidence["tail"] = m_curvePage;
+            if (m_fixture.contains("export"))
+            {
+                StartTransfer(FileName(m_fixture.at("export").at("traces")));
+                m_smokeStep = 8;
+                return;
+            }
+            SmokeFinish();
+        }
+        if (m_smokeStep == 8)
+        {
+            Check(std::filesystem::is_regular_file(FileName(m_fixture.at("export").at("traces"))),
+                  "복소 곡선 이관 사본을 저장하지 못했습니다.");
+            for (std::size_t index = 0; index < m_catalog.size(); ++index)
+            {
+                if (m_catalog.at(index).at("kind") == "field")
+                {
+                    Select(static_cast<int>(index));
+                }
+            }
+            m_smokeStep = 9;
+            return;
+        }
+        if (m_smokeStep == 9)
+        {
+            Check(m_record.at("kind") == "field", "필드 이관 전에 원본을 선택하지 못했습니다.");
+            StartTransfer(FileName(m_fixture.at("export").at("field")));
+            m_smokeStep = 10;
+            return;
+        }
+        if (m_smokeStep == 10)
+        {
+            Check(std::filesystem::is_regular_file(FileName(m_fixture.at("export").at("field"))),
+                  "필드 이관 사본을 저장하지 못했습니다.");
             SmokeFinish();
         }
     }

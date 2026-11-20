@@ -7,8 +7,11 @@
 #include "studio_support.h"
 #include "studio_theme.h"
 #include <windows.h>
+#include <bcrypt.h>
 #include <algorithm>
+#include <array>
 #include <chrono>
+#include <fstream>
 #include <wx/button.h>
 #include <wx/choice.h>
 #include <wx/filedlg.h>
@@ -22,6 +25,10 @@
 
 namespace
 {
+constexpr std::uintmax_t FieldLimit = 1056ULL * 1024 * 1024;
+constexpr std::uintmax_t CurveLimit = 32ULL * 1024 * 1024;
+constexpr std::uintmax_t PackageLimit = FieldLimit + 4140;
+
 /** @brief UI가 선택한 원문을 같은 프로젝트의 배타적인 수신 파일로 복사한다. */
 std::string CopyIncoming(const std::filesystem::path& source, const std::filesystem::path& destination,
                          std::uintmax_t limit)
@@ -33,7 +40,7 @@ std::string CopyIncoming(const std::filesystem::path& source, const std::filesys
         if (sourceAttributes == INVALID_FILE_ATTRIBUTES ||
             (sourceAttributes & (FILE_ATTRIBUTE_DIRECTORY | FILE_ATTRIBUTE_REPARSE_POINT)) != 0)
         {
-            return "링크가 없는 HDF5 일반 파일을 선택하십시오.";
+            return "링크가 없는 결과 파일을 선택하십시오.";
         }
         const auto size = std::filesystem::file_size(source);
         if (size < 8 || size > limit)
@@ -82,6 +89,77 @@ std::string CopyIncoming(const std::filesystem::path& source, const std::filesys
         return "선택한 결과의 복사에 실패했습니다. 파일과 작업 영역을 확인하십시오.";
     }
 }
+
+/** @brief 전송 사본의 전체 SHA256을 1 MiB 버퍼로 계산한다. */
+bool HasPackageDigest(const std::filesystem::path& path, std::uintmax_t size, const std::string& digest)
+{
+    std::ifstream input(path, std::ios::binary);
+    std::vector<unsigned char> buffer(1024 * 1024);
+    BCRYPT_ALG_HANDLE algorithm = nullptr;
+    if (!input || BCryptOpenAlgorithmProvider(&algorithm, BCRYPT_SHA256_ALGORITHM, nullptr, 0) < 0)
+    {
+        return false;
+    }
+    BCRYPT_HASH_HANDLE hash = nullptr;
+    auto status = BCryptCreateHash(algorithm, &hash, nullptr, 0, nullptr, 0, 0);
+    while (status >= 0 && size > 0)
+    {
+        const auto count = static_cast<ULONG>(std::min<std::uintmax_t>(size, buffer.size()));
+        if (!input.read(reinterpret_cast<char*>(buffer.data()), count))
+        {
+            break;
+        }
+        status = BCryptHashData(hash, buffer.data(), count, 0);
+        size -= count;
+    }
+    std::array<unsigned char, 32> value{};
+    const bool finished = size == 0 && input.peek() == std::char_traits<char>::eof() && status >= 0 &&
+                          BCryptFinishHash(hash, value.data(), static_cast<ULONG>(value.size()), 0) >= 0;
+    if (hash != nullptr)
+    {
+        BCryptDestroyHash(hash);
+    }
+    BCryptCloseAlgorithmProvider(algorithm, 0);
+    static constexpr char Hex[] = "0123456789abcdef";
+    std::string actual;
+    for (auto byte : value)
+    {
+        actual += Hex[byte >> 4];
+        actual += Hex[byte & 0xf];
+    }
+    return finished && actual == digest;
+}
+
+/** @brief 검증한 임시 사본만 이동하며 목적지의 기존 파일은 보존한다. */
+std::string CopyTransfer(const std::filesystem::path& source, const std::filesystem::path& destination,
+                         const std::filesystem::path& temporary, std::uintmax_t size, const std::string& digest)
+{
+    const auto attrs = GetFileAttributesW(source.c_str());
+    if (attrs == INVALID_FILE_ATTRIBUTES || (attrs & (FILE_ATTRIBUTE_DIRECTORY | FILE_ATTRIBUTE_REPARSE_POINT)) != 0)
+    {
+        return "봉인한 이관 원문을 열 수 없습니다.";
+    }
+    try
+    {
+        if (std::filesystem::exists(destination) || std::filesystem::file_size(source) != size ||
+            !std::filesystem::copy_file(source, temporary))
+        {
+            return "새 저장 경로를 선택하고 원본 이관 상태를 확인하십시오.";
+        }
+        if (HasPackageDigest(temporary, size, digest) &&
+            MoveFileExW(temporary.c_str(), destination.c_str(), MOVEFILE_WRITE_THROUGH))
+        {
+            return {};
+        }
+    }
+    catch (const std::exception&)
+    {
+        /** @brief 임시 사본의 실패를 상태에 남기고 기존 파일은 건드리지 않는다. */
+    }
+    std::error_code ignored;
+    std::filesystem::remove(temporary, ignored);
+    return "이관 사본을 검증해 저장하지 못했습니다. 파일과 남은 공간을 확인하십시오.";
+}
 }
 
 LargeResultDialog::LargeResultDialog(wxWindow* parent, std::filesystem::path project, std::string revision,
@@ -95,9 +173,12 @@ LargeResultDialog::LargeResultDialog(wxWindow* parent, std::filesystem::path pro
     auto* toolbar = new wxBoxSizer(wxHORIZONTAL);
     m_importField = new wxButton(this, wxID_ANY, Display("필드 HDF5 등록"));
     m_importTraces = new wxButton(this, wxID_ANY, Display("복소 곡선 HDF5 등록"));
+    m_importPackage = new wxButton(this, wxID_ANY, Display("이관 파일 등록"));
+    m_exportPackage = new wxButton(this, wxID_ANY, Display("선택 결과 이관..."));
     auto* reload = new wxButton(this, wxID_ANY, Display("목록 새로 고침"));
     toolbar->Add(m_importField, 0, wxRIGHT, FromDIP(8));
     toolbar->Add(m_importTraces, 0, wxRIGHT, FromDIP(8));
+    toolbar->Add(m_importPackage, 0, wxRIGHT, FromDIP(8));
     toolbar->Add(reload);
     main->Add(toolbar, 0, wxEXPAND | wxALL, FromDIP(10));
     auto* content = new wxBoxSizer(wxHORIZONTAL);
@@ -109,6 +190,7 @@ LargeResultDialog::LargeResultDialog(wxWindow* parent, std::filesystem::path pro
     m_records->AppendColumn(Display("유형"), wxLIST_FORMAT_LEFT, FromDIP(78));
     StudioTheme::Table(*m_records);
     side->Add(m_records, 1, wxEXPAND);
+    side->Add(m_exportPackage, 0, wxEXPAND | wxTOP, FromDIP(8));
     m_details = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, FromDIP(wxSize(-1, 139)),
                               wxTE_MULTILINE | wxTE_READONLY);
     m_details->SetName(Display("결과 원본과 당시 개정"));
@@ -180,6 +262,8 @@ LargeResultDialog::LargeResultDialog(wxWindow* parent, std::filesystem::path pro
     m_field->onSlice = [this](const Json& selection) { ReadField(selection); };
     m_importField->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { ChooseFile("field"); });
     m_importTraces->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { ChooseFile("traces"); });
+    m_importPackage->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { ChooseFile("package"); });
+    m_exportPackage->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { ChooseTransferDestination(); });
     reload->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { Reload(); });
     m_readCurves->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { ReadCurves(); });
     m_mode->Bind(wxEVT_CHOICE, [this](wxCommandEvent&)
@@ -243,6 +327,8 @@ void LargeResultDialog::Status(const std::string& message, bool pending)
     m_status->SetToolTip(Display(message));
     m_importField->Enable(!pending);
     m_importTraces->Enable(!pending);
+    m_importPackage->Enable(!pending);
+    m_exportPackage->Enable(!pending && m_record.is_object());
     m_records->Enable(!pending);
     m_readCurves->Enable(!pending);
     m_mode->Enable(!pending);
@@ -253,6 +339,7 @@ void LargeResultDialog::Status(const std::string& message, bool pending)
 void LargeResultDialog::Error(const Json& error)
 {
     m_job.clear();
+    m_transferDestination.clear();
     m_field->SetBusy(false);
     Status(DiagnosticMessage(error));
     if (!m_fixture.is_null())
@@ -293,7 +380,9 @@ void LargeResultDialog::Reload()
 void LargeResultDialog::ChooseFile(const std::string& kind)
 {
     wxFileDialog choose(this, Display("결과 원본 선택"), wxEmptyString, wxEmptyString,
-                        Display("HDF5 파일 (*.h5;*.hdf5)|*.h5;*.hdf5"), wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+                        Display(kind == "package" ? "TraceWave 결과 이관 (*.rfadres)|*.rfadres"
+                                                  : "HDF5 파일 (*.h5;*.hdf5)|*.h5;*.hdf5"),
+                        wxFD_OPEN | wxFD_FILE_MUST_EXIST);
     if (choose.ShowModal() == wxID_OK)
     {
         StartImport(std::filesystem::path(choose.GetPath().ToStdWstring()), kind);
@@ -317,9 +406,52 @@ void LargeResultDialog::StartImport(const std::filesystem::path& file, const std
     m_import = {{"token", token}, {"kind", kind}, {"name", name}, {"source_name", sourceName},
                 {"revision_id", m_revision}};
     const auto destination = m_project / "result-inbox" / (token + ".h5");
-    const std::uintmax_t limit = (kind == "field" ? 1056ULL : 32ULL) * 1024 * 1024;
+    const auto limit = kind == "field" ? FieldLimit : kind == "traces" ? CurveLimit : PackageLimit;
     m_copy = std::async(std::launch::async, CopyIncoming, file, destination, limit);
     Status("선택한 원문을 복사하고 있습니다.", true);
+}
+
+void LargeResultDialog::ChooseTransferDestination()
+{
+    wxFileDialog choose(this, Display("선택한 원문과 출처를 이관"), wxEmptyString, Display("TraceWave-결과.rfadres"),
+                        Display("TraceWave 결과 이관 (*.rfadres)|*.rfadres"), wxFD_SAVE);
+    if (choose.ShowModal() == wxID_OK)
+    {
+        StartTransfer(std::filesystem::path(choose.GetPath().ToStdWstring()));
+    }
+}
+
+void LargeResultDialog::StartTransfer(const std::filesystem::path& file)
+{
+    if (m_busy || !m_record.is_object())
+    {
+        return;
+    }
+    m_transferDestination = file;
+    Status("등록 원문과 당시 출처를 확인해 이관 파일을 준비합니다.", true);
+    wxWeakRef<LargeResultDialog> weak(this);
+    m_gateway("result.large.transfer", {{"id", m_record.at("id")}}, true, [weak](const Json& value)
+    {
+        if (weak)
+        {
+            weak->m_job = value.at("job_id").get<std::string>();
+        }
+    }, [weak](const Json& error) { if (weak) { weak->Error(error); } });
+}
+
+void LargeResultDialog::SaveTransfer(const Json& artifact)
+{
+    const auto size = artifact.at("bytes").get<std::uintmax_t>();
+    const auto& digest = artifact.at("sha256").get_ref<const std::string&>();
+    if (!size || size > PackageLimit || digest.size() != 64)
+    {
+        Error({{"message", "이관 응답의 파일 크기 또는 SHA256이 올바르지 않습니다."}});
+        return;
+    }
+    const auto source = m_project / "large-results" / m_record.at("id").get<std::string>() / "transfer.rfadres";
+    const auto temporary = std::filesystem::path(m_transferDestination.wstring() + L"." + Display(Uuid()).ToStdWstring() + L".partial");
+    m_copy = std::async(std::launch::async, CopyTransfer, source, m_transferDestination, temporary, size, digest);
+    Status("이관 사본을 복사하고 SHA256을 확인합니다.", true);
 }
 
 bool LargeResultDialog::SameRecord(const Json& value) const
@@ -335,9 +467,16 @@ void LargeResultDialog::Select(int index)
     }
     m_record = m_catalog.at(index);
     const auto reference = m_record.at("artifact");
+    std::string origin;
+    if (m_record.contains("origin"))
+    {
+        const auto& initial = m_record.at("origin");
+        origin = "\n원래 프로젝트  " + initial.at("project_id").get<std::string>() +
+                 "\n원래 개정  " + initial.at("revision_id").get<std::string>();
+    }
     m_details->ChangeValue(Display("원문  " + m_record.at("source_name").get<std::string>() +
         "\n개정  " + m_record.at("revision_id").get<std::string>() +
-        "\nSHA256  " + reference.at("sha256").get<std::string>() +
+        origin + "\nSHA256  " + reference.at("sha256").get<std::string>() +
         "\n제작·측정 조건 미정. 독립 물리 검증 전."));
     if (m_record.at("kind") == "traces")
     {
@@ -352,8 +491,8 @@ void LargeResultDialog::Select(int index)
         for (const auto& curve : curves)
         {
             m_sources->InsertItem(row, Display(curve.at("label").get<std::string>()));
-            m_sources->SetItem(row, 1, wxString::Format("%d", curve.at("count").get<int>()));
             m_sources->SetItemTextColour(row, NetworkChart::SeriesColour(static_cast<std::size_t>(row)));
+            m_sources->SetItem(row, 1, wxString::Format("%d", curve.at("count").get<int>()));
             m_sources->SetItem(row++, 2, curve.at("reference_ohm").is_null() ? Display("미정")
                 : Display(ResultUi::Number(curve.at("reference_ohm"), 10) + " Ω"));
         }
@@ -441,6 +580,12 @@ void LargeResultDialog::Poll(wxTimerEvent&)
             Error({{"message", error}});
             return;
         }
+        if (!m_transferDestination.empty())
+        {
+            m_transferDestination.clear();
+            Status("원문과 출처가 포함된 이관 사본을 저장했습니다.");
+            return;
+        }
         Status("원문과 블록 해시를 검증해 등록하고 있습니다.", true);
         m_gateway("result.large.register", m_import, true, [weak](const Json& value)
         {
@@ -464,8 +609,15 @@ void LargeResultDialog::Poll(wxTimerEvent&)
             if (state == "completed")
             {
                 weak->m_job.clear();
-                weak->Status("원문을 등록했습니다.");
-                weak->Reload();
+                if (weak->m_transferDestination.empty())
+                {
+                    weak->Status("원문을 등록했습니다.");
+                    weak->Reload();
+                }
+                else
+                {
+                    weak->SaveTransfer(value.at("events").back().at("operation_result").at("artifact"));
+                }
             }
             else if (state == "failed" || state == "cancelled" || state == "interrupted")
             {

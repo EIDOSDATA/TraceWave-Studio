@@ -28,6 +28,9 @@ private:
     void Select(int index);
     void ChooseFile(const std::string& kind);
     void StartImport(const std::filesystem::path& file, const std::string& kind);
+    void ChooseTransferDestination();
+    void StartTransfer(const std::filesystem::path& file);
+    void SaveTransfer(const Json& artifact);
     void Poll(wxTimerEvent&);
     void ReadField(const Json& selection);
     void ReadCurves();
@@ -53,9 +56,12 @@ private:
     wxSpinCtrl* m_offset = nullptr;
     wxButton* m_importField = nullptr;
     wxButton* m_importTraces = nullptr;
+    wxButton* m_importPackage = nullptr;
+    wxButton* m_exportPackage = nullptr;
     wxButton* m_readCurves = nullptr;
     Json m_catalog = Json::array(), m_record, m_curvePage, m_import;
     std::future<std::string> m_copy;
+    std::filesystem::path m_transferDestination;
     std::string m_job;
     bool m_busy = false;
     bool m_poll = false;
