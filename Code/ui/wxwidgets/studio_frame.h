@@ -108,6 +108,7 @@ private:
     /** @brief 공통 봉인 결과와 과거 개정 탐색을 독립 표시 컨트롤러에 연결한다. */
     void BuildResultInterface();
     void ShowLargeResultLibrary();
+    int RunLargeResultLibrary(Json fixture);
     void UpdateResultViews();
     /** @brief 불변 검증 보고서의 조회를 기존 비교 작업 공간에 연결한다. */
     void BuildValidationInterface();

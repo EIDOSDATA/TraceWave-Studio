@@ -10,6 +10,7 @@
 class StudioFrame;
 class PcbSelectionDialog;
 class StudioCatalogDisplayProbe;
+class StudioModelDisplayProbe;
 class RadiationDialog;
 class TargetEditorDialog;
 class TemplateDialog;
@@ -177,6 +178,7 @@ private:
     Json m_projectSwitchOpen;
     Clock::time_point m_projectSwitchExpires{}, m_projectSwitchSettled{};
     int m_projectSwitchStage = 0;
+    std::shared_ptr<StudioModelDisplayProbe> m_projectModelDisplay;
     StudioFrame& m_frame;
     int m_pcbStage = 0;
     int m_pcbTicks = 0;

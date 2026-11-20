@@ -9,10 +9,43 @@
 /** @brief 선택한 원문을 현재 프로젝트의 결과 보관 영역으로 연결한다. */
 void StudioFrame::ShowLargeResultLibrary()
 {
+    Json fixture;
+    if (m_options.largeResultsSmoke)
+    {
+        try
+        {
+            const auto workspace = std::filesystem::path(m_options.workspace.ToStdWstring());
+            std::ifstream input(workspace / "large-results-fixture.json", std::ios::binary);
+            input >> fixture;
+        }
+        catch (const std::exception&)
+        {
+            m_smoke->FinishSmoke(false, "대용량 결과 시험 자료를 읽을 수 없습니다.");
+            return;
+        }
+    }
+    const int result = RunLargeResultLibrary(std::move(fixture));
+    if (m_options.largeResultsSmoke)
+    {
+        if (result == wxID_OK)
+        {
+            wxCommandEvent save(wxEVT_MENU, IdSave);
+            GetEventHandler()->ProcessEvent(save);
+        }
+        else
+        {
+            m_smoke->FinishSmoke(false, "대용량 결과 화면의 검증이 완료되지 않았습니다.");
+        }
+    }
+}
+
+/** @brief 같은 View 수명과 실제 서비스 게이트웨이로 사용자 입력과 통합 시험을 연다. */
+int StudioFrame::RunLargeResultLibrary(Json fixture)
+{
     if (!m_connected || m_closing || m_busy || m_project.empty())
     {
         Log("프로젝트를 연 뒤 대용량 결과를 등록하고 조회하십시오.");
-        return;
+        return wxID_CANCEL;
     }
     const auto project = m_project;
     const auto epoch = m_epoch;
@@ -31,34 +64,11 @@ void StudioFrame::ShowLargeResultLibrary()
              std::move(success), std::move(failure));
     };
     LargeResultDialog dialog(this, projectPath, m_revision, std::move(gateway));
-    if (m_options.largeResultsSmoke)
+    if (!fixture.is_null())
     {
-        try
-        {
-            std::ifstream input(workspace / "large-results-fixture.json", std::ios::binary);
-            Json fixture;
-            input >> fixture;
-            dialog.StartSmoke(std::move(fixture));
-        }
-        catch (const std::exception&)
-        {
-            m_smoke->FinishSmoke(false, "대용량 결과 시험 자료를 읽을 수 없습니다.");
-            return;
-        }
+        dialog.StartSmoke(std::move(fixture));
     }
-    const int result = dialog.ShowModal();
-    if (m_options.largeResultsSmoke)
-    {
-        if (result == wxID_OK)
-        {
-            wxCommandEvent save(wxEVT_MENU, IdSave);
-            GetEventHandler()->ProcessEvent(save);
-        }
-        else
-        {
-            m_smoke->FinishSmoke(false, "대용량 결과 화면의 검증이 완료되지 않았습니다.");
-        }
-    }
+    return dialog.ShowModal();
 }
 void StudioFrame::BuildResultInterface()
 {

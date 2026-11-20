@@ -1,6 +1,8 @@
 #include "model_view.h"
 #include "display_mesh_picking.h"
+#include "display_mesh_preview.h"
 #include "model_vertex_buffer.h"
+#include "system_appearance.h"
 
 #include <wx/glcanvas.h>
 #include <wx/dcclient.h>
@@ -16,6 +18,8 @@ namespace
 using Scene = DisplayMesh::Scene;
 using Camera = DisplayMesh::Camera;
 constexpr int EmptyContextIdleMs = 120000;
+constexpr double PreviewEnterPx = 0.65;
+constexpr double PreviewLeavePx = 0.8;
 
 wxString Text(const std::string& text)
 {
@@ -27,9 +31,12 @@ class MeshCanvas final : public wxGLCanvas
 {
 public:
     explicit MeshCanvas(wxWindow* parent, const int* attributes)
-        : wxGLCanvas(parent, wxID_ANY, attributes), m_context(std::make_unique<wxGLContext>(this))
+        : wxGLCanvas(parent, wxID_ANY, attributes, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS),
+          m_context(std::make_unique<wxGLContext>(this)), m_colours(StudioAppearance::CanvasColours::Read())
     {
         SetBackgroundStyle(wxBG_STYLE_PAINT);
+        SetName(Text("3D 형상 보기"));
+        SetToolTip(Text("방향키: 회전 / Shift+방향키: 이동 / +, -: 확대·축소 / F: 전체 보기"));
         Bind(wxEVT_PAINT, &MeshCanvas::Paint, this);
         Bind(wxEVT_SIZE, [this](wxSizeEvent& event)
         {
@@ -53,18 +60,44 @@ public:
                 Refresh(false);
             }
         });
+        Bind(wxEVT_SYS_COLOUR_CHANGED, [this](wxSysColourChangedEvent& event)
+        {
+            m_colours = StudioAppearance::CanvasColours::Read();
+            Refresh(false);
+            event.Skip();
+        });
         Bind(wxEVT_KEY_DOWN, [this](wxKeyEvent& event)
         {
-            if (event.GetKeyCode() == 'F')
+            const auto key = event.GetKeyCode();
+            if (key == 'F')
             {
                 Fit();
             }
-            else if (event.GetKeyCode() == WXK_ESCAPE)
+            else if (key == WXK_ESCAPE)
             {
                 m_dragging = false;
                 if (HasCapture())
                 {
                     ReleaseMouse();
+                }
+            }
+            else if (key == WXK_ADD || key == WXK_NUMPAD_ADD || key == '+' ||
+                     key == WXK_SUBTRACT || key == WXK_NUMPAD_SUBTRACT || key == '-')
+            {
+                m_camera.Zoom(key == WXK_ADD || key == WXK_NUMPAD_ADD || key == '+' ? 1.0 : -1.0);
+                Refresh(false);
+            }
+            else if (key == WXK_LEFT || key == WXK_RIGHT || key == WXK_UP || key == WXK_DOWN)
+            {
+                const double dx = key == WXK_LEFT ? -12.0 : key == WXK_RIGHT ? 12.0 : 0.0;
+                const double dy = key == WXK_UP ? -12.0 : key == WXK_DOWN ? 12.0 : 0.0;
+                if (event.ShiftDown())
+                {
+                    PanView(dx, dy);
+                }
+                else
+                {
+                    RotateView(dx, dy);
                 }
             }
             else
@@ -98,16 +131,23 @@ public:
 
     void SetScene(std::shared_ptr<const Scene> scene)
     {
-        if (m_scene != scene)
+        const bool changed = m_scene != scene;
+        if (changed)
         {
             m_vertices.Invalidate();
+            m_previewVertices.Invalidate();
+            m_showingPreview = false;
         }
         m_scene = std::move(scene);
-        if (m_scene == nullptr && m_vertices.Bytes() != 0)
+        if (changed && ((m_scene == nullptr && m_vertices.Bytes() != 0) || m_previewVertices.Bytes() != 0))
         {
             if (IsShownOnScreen() && Ready() && SetCurrent(*m_context))
             {
-                m_vertices.Release();
+                if (m_scene == nullptr)
+                {
+                    m_vertices.Release();
+                }
+                m_previewVertices.Release();
             }
             else
             {
@@ -119,7 +159,18 @@ public:
 
     ModelView::Json VertexBufferDiagnostics() const
     {
-        return {{"bytes", m_vertices.Bytes()}, {"uploads", m_vertices.Uploads()}};
+        ModelView::Json state{{"bytes", m_vertices.Bytes()}, {"uploads", m_vertices.Uploads()}};
+        if (m_previewVertices.Uploads() != 0)
+        {
+            state["preview_bytes"] = m_previewVertices.Bytes();
+            state["preview_uploads"] = m_previewVertices.Uploads();
+        }
+        return state;
+    }
+
+    bool ShowingPreview() const
+    {
+        return m_showingPreview;
     }
 
     void Fit()
@@ -207,6 +258,8 @@ private:
     {
         m_context.reset();
         m_vertices.ContextDiscarded();
+        m_previewVertices.ContextDiscarded();
+        m_showingPreview = false;
         renderer.clear();
     }
 
@@ -254,7 +307,15 @@ private:
         const double halfHeight = m_camera.HalfHeight(m_scene->radius);
         const double halfWidth = halfHeight * width / height;
         glViewport(0, 0, width, height);
-        glClearColor(0.92f, 0.945f, 0.965f, 1.0f);
+        if (m_colours.HighContrast())
+        {
+            const auto& background = m_colours.background;
+            glClearColor(background.Red() / 255.0f, background.Green() / 255.0f, background.Blue() / 255.0f, 1.0f);
+        }
+        else
+        {
+            glClearColor(0.92f, 0.945f, 0.965f, 1.0f);
+        }
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_LEQUAL);
@@ -271,28 +332,42 @@ private:
         glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
         glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambient);
         glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
-        glEnable(GL_LIGHTING);
+        if (!m_colours.HighContrast())
+        {
+            glEnable(GL_LIGHTING);
+        }
         glEnable(GL_LIGHT0);
         glEnable(GL_COLOR_MATERIAL);
         glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
         glTranslated(m_camera.panX, m_camera.panY, 0.0);
         glRotated(m_camera.pitch, 1.0, 0.0, 0.0);
         glRotated(m_camera.yaw, 0.0, 0.0, 1.0);
-        const bool buffered = m_vertices.Bind(*m_scene);
+        const double unitsPerPixel = 2.0 * halfHeight / height;
+        const double threshold = m_showingPreview ? PreviewLeavePx : PreviewEnterPx;
+        m_showingPreview = m_scene->preview != nullptr && m_selection.empty() && m_camera.zoom <= 0.5 &&
+                           m_scene->preview->maximumDisplacement <= unitsPerPixel * threshold;
+        const auto& drawingScene = m_showingPreview ? m_scene->preview->mesh : *m_scene;
+        auto& vertices = m_showingPreview ? m_previewVertices : m_vertices;
+        const bool buffered = vertices.Bind(drawingScene);
         submittedTriangles = 0;
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_NORMAL_ARRAY);
-        for (std::size_t index = 0; index < m_scene->bodies.size(); ++index)
+        for (std::size_t index = 0; index < drawingScene.bodies.size(); ++index)
         {
-            const auto& body = m_scene->bodies[index];
+            const auto& body = drawingScene.bodies[index];
             if (m_hiddenLayers.count(body.layer) != 0 ||
-                !DisplayMesh::MayIntersectView(*m_scene, index, m_camera, halfWidth, halfHeight))
+                !DisplayMesh::MayIntersectView(*m_scene, index, m_camera, halfWidth + unitsPerPixel, halfHeight + unitsPerPixel))
             {
                 continue;
             }
             const bool selected = body.id == m_selection ||
                 std::find(body.sources.begin(), body.sources.end(), m_selection) != body.sources.end();
-            if (selected)
+            if (m_colours.HighContrast())
+            {
+                const auto& color = selected ? m_colours.focus : m_colours.ink;
+                glColor3ub(color.Red(), color.Green(), color.Blue());
+            }
+            else if (selected)
             {
                 glColor3f(0.20f, 0.58f, 0.94f);
             }
@@ -314,7 +389,7 @@ private:
             }
             if (buffered)
             {
-                m_vertices.BodyPointers(index);
+                vertices.BodyPointers(index);
             }
             else
             {
@@ -328,7 +403,7 @@ private:
         glDisableClientState(GL_VERTEX_ARRAY);
         if (buffered)
         {
-            m_vertices.Unbind();
+            vertices.Unbind();
         }
         glDisable(GL_LIGHTING);
         glDisable(GL_COLOR_MATERIAL);
@@ -435,6 +510,7 @@ private:
 
     std::unique_ptr<wxGLContext> m_context;
     ModelVertexBuffer m_vertices;
+    ModelVertexBuffer m_previewVertices;
     std::shared_ptr<const Scene> m_scene;
     Camera m_camera;
     std::set<std::string> m_hiddenLayers;
@@ -444,6 +520,8 @@ private:
     bool m_dragging = false;
     bool m_moved = false;
     bool m_panning = false;
+    bool m_showingPreview = false;
+    StudioAppearance::CanvasColours m_colours;
 };
 }
 
@@ -464,6 +542,7 @@ struct ModelView::Impl
     std::set<std::string> hiddenLayers;
     bool discard = false;
     bool recovering = false;
+    bool reportedPreview = false;
 
     explicit Impl(ModelView* window) : owner(window), timer(window), idleTimer(window)
     {
@@ -568,6 +647,15 @@ struct ModelView::Impl
         };
         canvas->onFrame = [this]()
         {
+            if (reportedPreview != canvas->ShowingPreview())
+            {
+                reportedPreview = canvas->ShowingPreview();
+                if (scene != nullptr && owner->onStatus)
+                {
+                    owner->onStatus(reportedPreview ? "저해상도 표시 | 확대하거나 객체를 선택하면 원본 표시로 돌아옵니다."
+                                                    : "원본 해상도 표시 | 드래그로 회전, 휠로 확대");
+                }
+            }
             if (candidate != nullptr)
             {
                 scene = std::move(candidate);
@@ -651,6 +739,16 @@ ModelView::ModelView(wxWindow* parent) : wxPanel(parent), m_impl(std::make_uniqu
 
 ModelView::~ModelView() = default;
 
+void ModelView::SetDisplayMarker(std::function<void(wxWindow&)> marker)
+{
+    onDrawDisplayMarker = std::move(marker);
+    if (m_impl->canvas != nullptr)
+    {
+        m_impl->canvas->onDrawDisplayMarker = onDrawDisplayMarker;
+        m_impl->canvas->Refresh(false);
+    }
+}
+
 bool ModelView::LoadArtifact(const wxString& workspace, const Json& artifact, const Json& snapshot, const std::string& runId)
 {
     if (IsLoading())
@@ -677,6 +775,14 @@ bool ModelView::LoadArtifact(const wxString& workspace, const Json& artifact, co
             {
                 /** @brief 할당할 수 없으면 검증을 마친 장면의 기존 선택 경로를 사용한다. */
                 scene.pickIndex.reset();
+            }
+            try
+            {
+                scene.preview = DisplayMesh::BuildPreview(scene, cancelled.get());
+            }
+            catch (const std::bad_alloc&)
+            {
+                /** @brief 미리보기의 예산을 확보할 수 없으면 원본 표시를 유지한다. */
             }
             return scene;
         });

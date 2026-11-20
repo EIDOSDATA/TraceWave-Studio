@@ -47,11 +47,13 @@ struct Body
 };
 
 struct PickIndex;
+struct Preview;
 
 struct Scene
 {
     std::vector<Body> bodies;
     std::shared_ptr<const PickIndex> pickIndex;
+    std::shared_ptr<const Preview> preview;
     Point center;
     double radius = 1.0;
     std::size_t triangles = 0;

@@ -106,6 +106,7 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/studio_smoke_pcb.cpp
     ui/wxwidgets/studio_smoke_lifetime.cpp
     ui/wxwidgets/studio_catalog_display_probe.cpp
+    ui/wxwidgets/studio_model_display_probe.cpp
     tools/windows_display_marker.cpp
     ui/wxwidgets/studio_smoke_events.cpp
     ui/wxwidgets/studio_frame.cpp
@@ -271,6 +272,7 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/design_canvas_precision.cpp
     ui/wxwidgets/model_view.cpp
     ui/wxwidgets/display_mesh_picking.cpp
+    ui/wxwidgets/display_mesh_preview.cpp
     ui/wxwidgets/model_vertex_buffer.cpp
     ui/wxwidgets/service_client.cpp
     ${RFAD_RESOURCE}
@@ -291,7 +293,8 @@ add_executable(tracewave_canvas_display_probe EXCLUDE_FROM_ALL
     ui/wxwidgets/design_canvas.cpp ui/wxwidgets/design_canvas_precision.cpp ui/wxwidgets/design_canvas_dimensions.cpp
     ui/wxwidgets/canvas_renderer.cpp ui/wxwidgets/canvas_scene.cpp ui/wxwidgets/canvas_pcb_features.cpp
     ui/wxwidgets/canvas_viewport.cpp ui/wxwidgets/studio_support.cpp
-    ui/wxwidgets/model_view.cpp ui/wxwidgets/model_vertex_buffer.cpp ui/wxwidgets/display_mesh_picking.cpp ${RFAD_RESOURCE})
+    ui/wxwidgets/model_view.cpp ui/wxwidgets/model_vertex_buffer.cpp ui/wxwidgets/display_mesh_picking.cpp
+    ui/wxwidgets/display_mesh_preview.cpp ${RFAD_RESOURCE})
 target_include_directories(tracewave_canvas_display_probe PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
 target_compile_definitions(tracewave_canvas_display_probe PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN NOMINMAX)
 target_link_libraries(tracewave_canvas_display_probe PRIVATE ${RFAD_WX_LIBRARIES} d3d11 dxgi dxguid ole32 opengl32 bcrypt)
@@ -305,7 +308,8 @@ target_link_libraries(tracewave_model_vertex_buffer_probe PRIVATE ${RFAD_WX_LIBR
 set_target_properties(tracewave_model_vertex_buffer_probe PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
 add_executable(tracewave_model_lifetime_probe EXCLUDE_FROM_ALL
     tools/model_lifetime_probe.cpp
-    ui/wxwidgets/model_view.cpp ui/wxwidgets/model_vertex_buffer.cpp ui/wxwidgets/display_mesh_picking.cpp ${RFAD_RESOURCE})
+    ui/wxwidgets/model_view.cpp ui/wxwidgets/model_vertex_buffer.cpp ui/wxwidgets/display_mesh_picking.cpp
+    ui/wxwidgets/display_mesh_preview.cpp ${RFAD_RESOURCE})
 target_include_directories(tracewave_model_lifetime_probe PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
 target_compile_definitions(tracewave_model_lifetime_probe PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN NOMINMAX)
 target_link_libraries(tracewave_model_lifetime_probe PRIVATE ${RFAD_WX_LIBRARIES} dxgi dxguid opengl32 bcrypt psapi)
