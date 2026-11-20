@@ -65,6 +65,8 @@ public:
     void OnOpened();
     /** @brief 제품 이벤트 이후 필요한 시험 단계만 진행한다. */
     void OnSaved();
+    /** @brief 디스크 쓰기 실패를 주입한 저장 시험에서 수동 재시도 경로를 확인한다. */
+    void OnSaveNotPublished();
     /** @brief 제품 이벤트 이후 필요한 시험 단계만 진행한다. */
     void OnSnapshotCreated();
     /** @brief 제품 이벤트 이후 필요한 시험 단계만 진행한다. */

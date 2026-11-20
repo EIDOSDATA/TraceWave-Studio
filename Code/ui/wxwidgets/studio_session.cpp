@@ -212,10 +212,12 @@ Json StudioFrame::Context() const
     return Json{{"project_id", m_project}};
 }
 
-void StudioFrame::WaitJob(const Json& task, std::function<void(const Json&)> completed)
+void StudioFrame::WaitJob(const Json& task, std::function<void(const Json&)> completed,
+                          std::function<bool(const Json&)> failed)
 {
     m_foregroundTask.Assign(task.at("job_id").get<std::string>());
     m_jobComplete = std::move(completed);
+    m_jobFailed = std::move(failed);
     SetStatusText(Display("작업 처리 중"), 0);
 }
 
@@ -334,12 +336,25 @@ void StudioFrame::OnTimer(wxTimerEvent&)
                     {
                         const Json finalResult = result.at("events").back().at("operation_result");
                         auto callback = std::move(m_jobComplete);
+                        m_jobFailed = {};
                         m_foregroundTask.Reset();
                         callback(finalResult);
                     }
                     else if (state == "failed" || state == "interrupted" || state == "cancelled")
                     {
-                        Failure("작업이 완료되지 않았습니다: " + state + " / " + result.at("events").back().dump());
+                        const auto& event = result.at("events").back();
+                        const auto diagnostic = event.value("error", Json::object());
+                        if (state == "failed" && m_jobFailed)
+                        {
+                            auto callback = std::move(m_jobFailed);
+                            m_jobComplete = {};
+                            m_foregroundTask.Reset();
+                            if (callback(diagnostic))
+                            {
+                                return;
+                            }
+                        }
+                        Failure(diagnostic.empty() ? "작업이 완료되지 않았습니다." : DiagnosticMessage(diagnostic));
                     }
                 },
                 [this, job](const Json& error)

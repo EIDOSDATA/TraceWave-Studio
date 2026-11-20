@@ -21,7 +21,8 @@ _PWSH = shutil.which("pwsh")
 class GuiProcessTests(unittest.TestCase):
     """! @brief 실제 wx 이벤트 루프에서 저장 복구와 비정상 pipe 응답을 확인한다."""
 
-    def run_gui(self, directory: Path, *, source: Path = _SOURCE, python: Path | None = None, editor: bool = False, canvas: bool = False) -> tuple[int, dict]:
+    def run_gui(self, directory: Path, *, source: Path = _SOURCE, python: Path | None = None,
+                editor: bool = False, canvas: bool = False, environment=None) -> tuple[int, dict]:
         """! @brief 공백과 한글이 포함된 작업 영역으로 smoke를 실행하고 결과를 읽는다."""
         report = directory / "한글 결과 smoke.json"
         startup = subprocess.STARTUPINFO()
@@ -33,7 +34,7 @@ class GuiProcessTests(unittest.TestCase):
              "--source", str(source), "--workspace", str(directory / "한글 작업 영역"),
              "--canvas-smoke-test" if canvas else ("--editor-smoke-test" if editor else "--smoke-test"), "--smoke-report", str(report)],
             stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-            timeout=90, startupinfo=startup, check=False,
+            timeout=90, startupinfo=startup, env=environment, check=False,
         )
         self.assertTrue(report.is_file(), f"GUI did not write its report: exit={process.returncode}, stderr={process.stderr!r}")
         result = json.loads(report.read_text(encoding="utf-8"))
@@ -195,6 +196,64 @@ class GuiProcessTests(unittest.TestCase):
         })
         self.assertFalse(result["physics_tested"])
         self.assertFalse(result["frame_budget_tested"])
+
+    def test_windows_recovers_from_save_disk_full_before_publication(self):
+        """! @brief 저널 상태 쓰기 직전 디스크 부족으로 실패시킨 뒤 같은 편집을 수동 저장한다."""
+        from rfad.application.projects import ProjectService
+
+        with TemporaryDirectory(prefix="rfad GUI 저장 공간 ") as temporary:
+            directory = Path(temporary)
+            program = """
+import errno
+import runpy
+from rfad.application.projects import ProjectService
+from rfad.storage.journal import Journal
+
+execute = ProjectService._execute
+write_new = Journal._write_new
+first_save = True
+pending_write = False
+
+def arm_save(service, state, job):
+    global first_save, pending_write
+    result = execute(service, state, job)
+    if first_save and job["operation_method"] == "project.save":
+        first_save = False
+        pending_write = True
+    return result
+
+def write(journal, path, payload):
+    global pending_write
+    if pending_write and path.name == "state.json":
+        pending_write = False
+        raise OSError(errno.ENOSPC, "Windows save ENOSPC fixture")
+    return write_new(journal, path, payload)
+
+ProjectService._execute = arm_save
+Journal._write_new = write
+"""
+            program += f"runpy.run_path({str(_SOURCE / 'rfad' / '__main__.py')!r}, run_name='__main__')\n"
+            source = self.source_stub(directory, program)
+            environment = dict(os.environ, RFAD_TEST_SAVE_DISK_FAILURE="1")
+            code, result = self.run_gui(directory, source=source, editor=True, environment=environment)
+            self.assertEqual(code, 0, result)
+            self.assertTrue(result["passed"])
+            self.assertIn("save_disk_failure_preserved", result["ux_checks"])
+            self.assertEqual(result["service_sessions"], 2)
+            self.assertEqual(result["saved_revision"], result["revision_id"])
+            with ProjectService(directory / "한글 작업 영역", auto_run=False) as service:
+                state = service.journal.read()
+                saves = [job for job in state["jobs"].values() if job["operation_method"] == "project.save"]
+                self.assertCountEqual([job["state"] for job in saves], ["failed", "completed"])
+                failed = next(job for job in saves if job["state"] == "failed")
+                completed = next(job for job in saves if job["state"] == "completed")
+                self.assertEqual(failed["captured"], completed["captured"])
+                diagnostic = failed["events"][-1]["error"]
+                self.assertEqual(diagnostic["code"], "E_DISK")
+                self.assertIs(diagnostic["details"]["committed"], False)
+                project = state["projects"][result["project_id"]]
+                self.assertEqual(project["saved"], completed["captured"])
+                self.assertEqual(project["current"], project["saved"])
 
     def test_stderr_flood_does_not_displace_protocol(self):
         """! @brief 긴 로그와 로그 폭주 중에도 stdout 응답과 전체 smoke가 처리되는지 확인한다."""

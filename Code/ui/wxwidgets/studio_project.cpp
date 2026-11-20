@@ -53,6 +53,7 @@ void StudioFrame::OpenProject(const std::string& mode, const std::string& path, 
                      {
                          m_project = result.at("project_id").get<std::string>();
                          m_revision = result.at("revision_id").get<std::string>();
+                         m_savedRevision = result.at("saved_revision").get<std::string>();
                          ResetNetwork();
                          m_path = path;
                          ReadPcbFeatureRecovery();
@@ -150,6 +151,20 @@ void StudioFrame::SaveProject()
                          m_editor["saved_revision"] = m_savedRevision;
                          Ready("현재 설계 버전을 저장했습니다.");
                          m_smoke->OnSaved();
+                     },
+                     [this](const Json& diagnostic)
+                     {
+                         const auto details = diagnostic.value("details", Json::object());
+                         if (diagnostic.value("code", "") != "E_DISK" || details.value("committed", Json()) != false)
+                         {
+                             return false;
+                         }
+                         m_busy = false;
+                         UpdateControls();
+                         SetStatusText(Display("저장 실패"), 0);
+                         Log("마지막 저장본과 현재 편집을 보존했습니다. 디스크 여유 공간과 쓰기 권한을 확인한 뒤 다시 저장하세요.");
+                         m_smoke->OnSaveNotPublished();
+                         return true;
                      });
          });
 }

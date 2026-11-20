@@ -1,5 +1,30 @@
 /** @file @brief 주 창의 smoke_editor 책임을 구현한다. */
 #include "studio_internal.h"
+#include <wx/utils.h>
+
+void StudioSmokeDriver::OnSaveNotPublished()
+{
+    if (!m_frame.m_options.smoke)
+    {
+        return;
+    }
+    wxString injectFailure;
+    if (!m_frame.m_options.editorSmoke || m_editorStage != 8 ||
+        !wxGetEnv("RFAD_TEST_SAVE_DISK_FAILURE", &injectFailure) || injectFailure != "1" ||
+        std::find(m_uxChecks.begin(), m_uxChecks.end(), "save_disk_failure_preserved") != m_uxChecks.end())
+    {
+        FinishSmoke(false, "저장 기록을 게시하지 못했습니다.");
+        return;
+    }
+    CanvasAssert(m_frame.m_revision != m_frame.m_savedRevision &&
+                     m_frame.m_savedRevision == m_frame.m_editor.at("saved_revision") &&
+                     m_frame.GetMenuBar()->IsEnabled(IdSave) && m_frame.GetStatusBar()->GetStatusText(0) == Display("저장 실패"),
+                 "게시 전 실패에서 이전 저장 기준과 수동 재시도를 보존하지 못했습니다.");
+    CheckUxState("applied", false);
+    m_uxChecks.push_back("save_disk_failure_preserved");
+    wxCommandEvent retry(wxEVT_MENU, IdSave);
+    m_frame.GetEventHandler()->ProcessEvent(retry);
+}
 
 /** @brief 실제 입력 폼과 동일한 명령 경로에서 의존 수식과 영속 이력을 검증한다. */
 void StudioSmokeDriver::EditorSmokeNext()

@@ -11,6 +11,7 @@ void StudioFrame::Failure(const std::string& message, bool disconnected)
     m_busy = false;
     m_foregroundTask.Reset();
     m_jobComplete = {};
+    m_jobFailed = {};
     if (disconnected)
     {
         if (m_setupDialog != nullptr)

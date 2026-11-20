@@ -252,7 +252,8 @@ private:
     /** @brief 현재 프로젝트의 요청 문맥을 만든다. */
     Json Context() const;
     /** @brief 일반 작업의 완료 콜백과 조회 대상을 등록한다. */
-    void WaitJob(const Json& task, std::function<void(const Json&)> completed);
+    void WaitJob(const Json& task, std::function<void(const Json&)> completed,
+                 std::function<bool(const Json&)> failed = {});
     /** @brief 작업 중 프로젝트 전환을 차단하고 요청한 프로젝트를 연다. */
     void OpenProject(const std::string& mode, const std::string& path, const std::string& name = "",
                      std::function<void()> opened = {});
@@ -434,6 +435,7 @@ private:
     bool m_updatingDraft = false;
     Clock::time_point m_started;
     std::function<void(const Json&)> m_jobComplete;
+    std::function<bool(const Json&)> m_jobFailed;
     Json m_editor = Json::object();
     Json m_selection = Json::object();
     std::string m_editState = "empty";
