@@ -1,0 +1,36 @@
+{
+  "schema": "rfad.windows-bundle-external-workers-verification/0.1",
+  "date_kst": "2026-11-20",
+  "source_revision": "82baee09efbee95cd97d05671f3f1e362c21bb32",
+  "archive": {
+    "file": "TraceWave-Studio-internal-windows-x64.zip",
+    "bytes": 13876949,
+    "sha256": "487cdcd4beda585848c900c30e011af46e14bcfac1821b982b294970a72c84ee"
+  },
+  "external_wsl_audit": {
+    "file": "native-audit.json",
+    "bytes": 182775,
+    "sha256": "5b8f487c451ff00d8cd05c40cec009644634b67010254af0f85b2b2cda9f75f2"
+  },
+  "runtime_used": {
+    "cad": "existing_pinned_OCCT",
+    "em": "existing_audited_WSL2_openEMS"
+  },
+  "tests": {
+    "passed": 3,
+    "seconds": 227.547,
+    "log": {
+      "file": "stage13-package-optional-runtime.log",
+      "bytes": 917,
+      "sha256": "613dd023194d88a5383317e065751b52454f813b3fee6d7ee4c78244ec4c53ec"
+    },
+    "checks": [
+      "unresolved_thickness_blocks_cad_publish",
+      "actual_STEP_and_OpenGL_save_cancel_reopen",
+      "running_WSL_guest_cancel_checked_and_prior_result_reopened"
+    ]
+  },
+  "separate_os_install": false,
+  "external_worker_setup_repeated": false,
+  "r1_acceptance_established": false
+}
