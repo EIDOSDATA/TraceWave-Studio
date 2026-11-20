@@ -10257,16 +10257,17 @@
         "runtime_profiles/pcb-radiation.json",
         "runtime_profiles/project-studies.json",
         "runtime_profiles/internal-validation-bundle.json",
-        "../01_개발문서/07_검증/39_엠시피와_키캐드_교환_검증.md"
+        "../01_개발문서/07_검증/39_엠시피와_키캐드_교환_검증.md",
+        "../01_개발문서/07_검증/47_키캐드재저장본_엠시피왕복_검증.md"
       ],
       "gaps": [
         "실제 F1/F2 조작에서 60/30 fps, 전체 프로세스 메모리/입력 지연과 DPI/도킹/GPU/WSL 복구의 R1 수용이 남는다.",
         "명시적 지원표/설치 진단, 새 PC 오프라인 설치/패키지/라이선스, 전체 GUI-CLI workflow와 접근성 검증이 필요하다.",
-        "MCP를 통한 수입/대응 적용, 여러 외부 host와 다른 EDA의 단위/좌표/net/port 의미 변환은 추가 검증이 필요하다. Linux GUI와 remote/HPC는 후속이다."
+        "KiCad 보드 외 다른 EDA의 단위/좌표/net/port 의미 변환과 여러 외부 host는 추가 검증이 필요하다. Linux GUI와 remote/HPC는 후속이다."
       ],
       "id": "FN-046",
       "implementation_status": "partial",
-      "implemented": "C++ wxWidgets GUI와 stdio CLI/MCP가 같은 ProjectService, 명령/영수증/worker를 사용한다. host CAD와 local WSL2 solver를 격리하고 한국어/공백 경로 및 결과 재열기/취소를 개별 시험했다. Qt 없는 native build와 내부 검증 묶음 도구가 있다. 공식 MCP SDK에서 고정 KiCad 보드의 검토/발행/재검수와 실제 KiCad 수신을 확인했다.",
+      "implemented": "C++ wxWidgets GUI와 stdio CLI/MCP가 같은 ProjectService, 명령/영수증/worker를 사용한다. host CAD와 local WSL2 solver를 격리하고 한국어/공백 경로 및 결과 재열기/취소를 개별 시험했다. Qt 없는 native build와 내부 검증 묶음 도구가 있다. 공식 MCP SDK에서 고정 KiCad 보드의 검토/발행/재검수, 실제 KiCad 재저장, 수입 대응/적용과 원문 재열기를 확인했다.",
       "next_steps": [
         4,
         6,
@@ -10279,7 +10280,7 @@
       "tests": [
         "tests/test_mcp.py::McpTests.test_real_stdio_discovery_emits_only_protocol",
         "tests/test_mcp.py::McpTests.test_discovery_and_mutation_replay_use_the_same_receipt",
-        "tests/test_mcp_pcb_exchange_process.py::McpPcbExchangeTests.test_review_export_replay_reopen_and_native_kicad_load",
+        "tests/test_mcp_pcb_exchange_process.py::McpPcbExchangeTests.test_native_kicad_and_mcp_board_round_trip",
         "tests/test_gui_solver_process.py::GuiSolverProcessTests.test_circle_arc_native_results_save_cancel_and_restart",
         "tests/test_wsl_readiness.py::WslReadinessTests.test_control_can_cancel_a_real_silent_launcher"
       ]
@@ -14007,8 +14008,8 @@
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
-      "text_sha256": "8b13353a8c474567b977a71bb2feb07d5c89321b825b27f0be73608c72dbf8e4",
-      "utf8_bytes": 63903
+      "text_sha256": "e5bceabac22c49f23d3489f0a005d93ca615ebebbd892e7d2aa01c05f4a275c4",
+      "utf8_bytes": 64004
     }
   ],
   "reviewed_commit": "de8b5ac8ca5cfc47d955e557bc76b07e12919e23",
@@ -14062,8 +14063,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/01_프로젝트/01_프로젝트_명령과_저장.md",
-      "text_sha256": "dd9433e0f338eed739798660ac7d494421c0486c37b73d88676cb0218abf6af6",
-      "utf8_bytes": 19454
+      "text_sha256": "587cc564d8eda27be791f6c7b83b0d0afe0bc11a912c4122c28198b5d8bb91e7",
+      "utf8_bytes": 19635
     },
     {
       "path": "01_개발문서/05_기능설계/01_프로젝트/02_프로젝트_보존묶음과_편집복원.md",
@@ -14259,6 +14260,11 @@
       "path": "01_개발문서/07_검증/39_엠시피와_키캐드_교환_검증.md",
       "text_sha256": "98f36bae0be28238fbe664b6b45e5e2ebab35571ec60fdd95aee5be75dadf410",
       "utf8_bytes": 3716
+    },
+    {
+      "path": "01_개발문서/07_검증/47_키캐드재저장본_엠시피왕복_검증.md",
+      "text_sha256": "24d54746a3444529adfb90f3690caee8eeafcd713e80c7aa9f7f2324e375feea",
+      "utf8_bytes": 1991
     },
     {
       "path": "Code/runtime_profiles/cad-worker-windows-x64.json",
@@ -15507,8 +15513,8 @@
     },
     {
       "path": "Code/tests/test_mcp_pcb_exchange_process.py",
-      "text_sha256": "732e5b336e9625c01c975bc751b1e57ac612198a78bb3beeec4ecc6be445f9f7",
-      "utf8_bytes": 8198
+      "text_sha256": "2e1c5c1d2053fe186eaf1eec134faf85011bcd124378187ba0ce84e6d5338919",
+      "utf8_bytes": 13667
     },
     {
       "path": "Code/tests/test_measurement_alignment.py",

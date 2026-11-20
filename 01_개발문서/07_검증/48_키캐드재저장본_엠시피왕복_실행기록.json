@@ -1,0 +1,44 @@
+{
+  "schema": "rfad.mcp-kicad-roundtrip-verification/0.1",
+  "date_kst": "2026-11-20",
+  "baseline_commit": "5c2c9f4f94f829c49b5cdf1c2fb379e25bc44fd5",
+  "execution": {
+    "mcp_python_sdk": "1.26.0",
+    "mcp_protocol": "2025-11-25",
+    "kicad": "10.0.8",
+    "platform": "Windows 11"
+  },
+  "test": {
+    "passed": 3,
+    "seconds": 42.764,
+    "log": {
+      "file": "stage12j-mcp-roundtrip-final.log",
+      "bytes": 1233,
+      "sha256": "3a3cafa5f51bd31922142f38ce2243e5b71d82e6b2b078d8f48c53f0cdb5d92c"
+    }
+  },
+  "verify": {
+    "frozen_project_export": true,
+    "native_kicad_load_and_save_copy": true,
+    "source_board_bytes_preserved": true,
+    "incoming_chunk_bytes": 1024,
+    "incoming_chunk_count_gt_one": true,
+    "explicit_layers": [
+      "F.Cu",
+      "B.Cu"
+    ],
+    "reviewed_net_mapping_and_loss_acknowledgement": true,
+    "same_request_receipt": true,
+    "saved_revision_equal_to_current": true,
+    "original_revision_preserved": true,
+    "sealed_incoming_bytes_equal": true,
+    "stackup_material_and_unknown_tool_preserved": true,
+    "runtime_free_mcp_reopen": true
+  },
+  "scope": {
+    "fixture": "synthetic_two_copper_board",
+    "other_eda_or_hosts": "not_assessed",
+    "manufacturing_and_rf_acceptance": "not_assessed",
+    "windows_gui": "prior_evidence_retained"
+  }
+}
