@@ -32,6 +32,7 @@ from rfad.application.project_studies import StudyCoordinator
 from rfad.application.project_study_contract import MUTATIONS as STUDY_MUTATIONS
 from rfad.application import target_editor
 from rfad.application import design_rule_service, physical_setup_service, precision_service, network_service, design_sweep_service, rf_validation_records, sweep_selection
+from rfad.application import large_results
 from rfad.application import pcb_exchange_service
 from rfad.application import pcb_import_service
 from rfad.application import archive_export_service, archive_receiver, handoff_service
@@ -42,7 +43,7 @@ from rfad.storage.journal import Journal
 
 ASYNC_METHODS = {
     "project.open", "project.save", "snapshot.create", "design.validate", "export.preview", "export.verify",
-} | CAD_METHODS | SOLVER_METHODS
+} | CAD_METHODS | SOLVER_METHODS | {large_results.REGISTER}
 MUTATION_METHODS = ASYNC_METHODS | {
     "project.apply_command", "editor.apply", "canvas.apply", "project.undo", "project.redo", "job.cancel",
 } | {archive_export_service.MUTATION} | archive_receiver.MUTATIONS | HOST_MUTATIONS | PCB_SELECTION_MUTATIONS | STUDY_MUTATIONS | design_sweep_service.MUTATIONS | rf_validation_records.MUTATIONS | sweep_selection.MUTATIONS | pcb_import_service.MUTATIONS | {"target.editor.apply", "template.apply", "design.rules.apply", physical_setup_service.MUTATION, precision_service.MUTATION, network_service.MUTATION, pcb_exchange_service.MUTATION, handoff_service.MUTATION}
@@ -200,7 +201,9 @@ class ProjectService:
 
     def _preflight(self, method: str, context: dict, data: dict) -> None:
         """! @brief 기능별 요청 계약에 따라 접수 가능 여부를 검사한다."""
-        if method in archive_receiver.MUTATIONS:
+        if method == large_results.REGISTER:
+            large_results.validate(context, data)
+        elif method in archive_receiver.MUTATIONS:
             archive_receiver.validate_input(method, context, data)
         elif method == archive_export_service.MUTATION:
             archive_export_service.validate_input(method, context, data)
@@ -259,6 +262,8 @@ class ProjectService:
     def _dispatch_mutation(self, state: dict, method: str, context: dict, data: dict) -> dict:
         """! @brief 영수증과 동일한 transaction에서 기능별 명령을 실행한다."""
         self._preflight(method, context, data)
+        if method == large_results.REGISTER:
+            return large_results.admit(self, state, context, data)
         if method in archive_receiver.MUTATIONS:
             return archive_receiver.admit(self, state, method, data)
         elif method == archive_export_service.MUTATION:
@@ -498,25 +503,32 @@ class ProjectService:
             for job in state["jobs"].values():
                 if job["state"] == "queued" and "cad" not in job and "solver" not in job and "exchange" not in job:
                     self._event(job, "running")
-                    return job["job_id"]
+                    return job["job_id"], deepcopy(job) if job["operation_method"] == large_results.REGISTER else None
             return None
         if not any(
             job["state"] == "queued" and "cad" not in job and "solver" not in job and "exchange" not in job
             for job in self.journal.read()["jobs"].values()
         ):
             return False
-        job_id = self.journal.transaction(begin)
-        if job_id is None:
+        admission = self.journal.transaction(begin)
+        if admission is None:
             return False
+        job_id, registration = admission
+        prepared = None
         try:
+            prepared = large_results.prepare(self, registration) if registration is not None else None
             def finish(state):
                 """! @brief 결과와 terminal event를 같은 commit으로 게시한다."""
                 job = state["jobs"][job_id]
                 if job["state"] != "running":
                     return
-                result = self._execute(state, job)
+                result = (large_results.publish(state, job, prepared) if prepared is not None
+                          else self._execute(state, job))
                 self._event(job, "completed", operation_result=result)
-            self.journal.transaction(finish)
+                return True
+            published = self.journal.transaction(finish)
+            if prepared is not None and not published:
+                large_results.discard(self, prepared)
         except (ProjectError, OSError) as error:
             def fail(state):
                 """! @brief 이전 terminal 상태를 덮어쓰지 않고 실패 진단을 기록한다."""
@@ -528,6 +540,8 @@ class ProjectService:
                     )
                     self._event(job, "failed", error=diagnostic)
             self.journal.transaction(fail)
+            if prepared is not None and self.journal.read()["jobs"][job_id]["state"] != "completed":
+                large_results.discard(self, prepared)
         return True
 
     def _execute(self, state: dict, job: dict) -> dict:

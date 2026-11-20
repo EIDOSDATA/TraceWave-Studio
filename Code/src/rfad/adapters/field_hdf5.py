@@ -116,13 +116,15 @@ def _child(parent, name, h5py, seen, group=False):
     return value
 
 
-def inspect(handle, h5py, np, expected):
+def inspect(handle, h5py, np, expected, *, max_points=None, max_bytes=None):
     """! @brief 배열 본문을 읽기 전에 계획/축/shape/dtype/속성/저장방식을 대조한다."""
     shape = expected["shape"]
     frequencies = expected["frequency_hz"]
+    max_points = MAX_POINTS if max_points is None else max_points
+    max_bytes = MAX_FILE_BYTES if max_bytes is None else max_bytes
     if (len(shape) != 3 or any(type(n) is not int or not 1 <= n <= MAX_AXIS_LENGTH for n in shape)
-            or math.prod(shape) > MAX_POINTS or not 1 <= len(frequencies) <= 3
-            or math.prod(shape) * 3 * 8 * len(frequencies) > MAX_FILE_BYTES):
+            or math.prod(shape) > max_points or not 1 <= len(frequencies) <= 3
+            or math.prod(shape) * 3 * 8 * len(frequencies) > max_bytes):
         fail("필드 배열의 명시 크기/주파수 예산을 초과했습니다.", "E_RESOURCE")
     if len(handle) != 2 or set(handle.keys()) != {"Mesh", "FieldData"}:
         fail("필드 HDF5 root 객체가 지원 profile과 다릅니다.")

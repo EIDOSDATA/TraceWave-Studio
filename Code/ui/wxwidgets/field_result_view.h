@@ -28,6 +28,7 @@ public:
 
 private:
     friend class StudioSmokeDriver;
+    friend class LargeResultDialog;
     void RebuildMonitor();
     void RebuildComponent();
     void RebuildPlane();

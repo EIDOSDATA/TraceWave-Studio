@@ -34,6 +34,7 @@ struct Options
     bool networkSmoke = false;
     bool sweepSmoke = false;
     bool resultsSmoke = false;
+    bool largeResultsSmoke = false;
     bool validationSmoke = false;
     bool selectionSmoke = false;
     bool outputSmoke = false;

@@ -69,6 +69,11 @@ void StudioSmokeDriver::OnConnected()
 
 void StudioSmokeDriver::OnOpened()
 {
+    if (m_frame.m_options.largeResultsSmoke)
+    {
+        m_frame.CallAfter([this]() { m_frame.ShowLargeResultLibrary(); });
+        return;
+    }
     if (m_frame.m_options.projectSwitchSmoke)
     {
         return;
@@ -164,7 +169,12 @@ void StudioSmokeDriver::OnOpened()
 
 void StudioSmokeDriver::OnSaved()
 {
-    if (m_frame.m_options.pcbSmoke && m_pcbStage == 31)
+    if (m_frame.m_options.largeResultsSmoke)
+    {
+        const bool saved = m_frame.m_revision == m_frame.m_savedRevision;
+        FinishSmoke(saved, saved ? "" : "저장된 개정을 확인하십시오.");
+    }
+    else if (m_frame.m_options.pcbSmoke && m_pcbStage == 31)
     {
         m_pcbStage = 32;
     }

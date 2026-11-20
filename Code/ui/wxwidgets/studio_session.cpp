@@ -373,7 +373,8 @@ void StudioFrame::PollService()
                     m_options.studySmoke
                         ? 1200
                         : (m_options.solverSmoke ? 600
-                             : (m_options.cadSmoke || m_options.setupSmoke || m_options.catalogTableSmoke ? 180 : 60))))
+                             : (m_options.cadSmoke || m_options.setupSmoke || m_options.catalogTableSmoke ||
+                                    m_options.largeResultsSmoke ? 180 : 60))))
         {
             m_smoke->FinishSmoke(false, "GUI smoke timeout");
         }

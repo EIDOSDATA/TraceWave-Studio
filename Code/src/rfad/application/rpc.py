@@ -24,6 +24,7 @@ from rfad.application import pcb_import_service
 from rfad.application import measurement_service, measurement_contract
 from rfad.application import archive_export_service, archive_receiver, handoff_evidence, handoff_service
 from rfad.application import design_rule_service, physical_setup_service, precision_service, network_service, design_sweep_service, result_service, rf_validation_records, sweep_selection
+from rfad.application import large_results
 
 TEMPLATE_READS = {"template.list", "template.get", "template.context", "template.synthesize"}
 
@@ -54,6 +55,7 @@ PROJECT_MUTATIONS.update(STUDY_MUTATIONS)
 PROJECT_MUTATIONS.update(design_sweep_service.MUTATIONS)
 PROJECT_MUTATIONS.update(rf_validation_records.MUTATIONS)
 PROJECT_MUTATIONS.update(sweep_selection.MUTATIONS)
+PROJECT_MUTATIONS.add(large_results.REGISTER)
 PROJECT_MUTATIONS.update({"target.editor.apply", "template.apply", "design.rules.apply", physical_setup_service.MUTATION, precision_service.MUTATION, network_service.MUTATION})
 
 
@@ -108,6 +110,8 @@ def capabilities(service=None, catalog=None) -> dict:
                              "evaluation_supported": False, "changes_solver_settings": False, "presets_supported": False},
         }
         result["features"][0]["status"] = "implemented"
+        result["methods"].update({name: {"status": "implemented", "extension_profile": large_results.PROFILE}
+                                  for name in large_results.READS | {large_results.REGISTER}})
         result["methods"][handoff_evidence.METHOD] = {"status": "implemented", "api_id": "API-027",
                                                     "extension_profile": handoff_evidence.PROFILE}
         result["methods"][handoff_service.MUTATION] = {"status": "implemented", "api_id": "API-026",
@@ -345,7 +349,7 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
         return _error(None, -32600, "Invalid Request")
     notification = "id" not in request
     method = request["method"]
-    if service is not None and method in PROJECT_MUTATIONS | archive_receiver.READS | archive_export_service.READS | handoff_service.READS | measurement_service.READS | pcb_import_service.READS | pcb_exchange_service.READS | exchange_contract.READS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | network_service.READS | design_sweep_service.READS | result_service.READS | rf_validation_records.READS | sweep_selection.READS | {handoff_evidence.METHOD, "target.editor.get", "job.status", "editor.get", "canvas.get", "editor.page", "canvas.page", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
+    if service is not None and method in PROJECT_MUTATIONS | archive_receiver.READS | archive_export_service.READS | handoff_service.READS | measurement_service.READS | pcb_import_service.READS | pcb_exchange_service.READS | exchange_contract.READS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | network_service.READS | design_sweep_service.READS | result_service.READS | large_results.READS | rf_validation_records.READS | sweep_selection.READS | {handoff_evidence.METHOD, "target.editor.get", "job.status", "editor.get", "canvas.get", "editor.page", "canvas.page", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
         if notification and method in PROJECT_MUTATIONS | archive_receiver.READS:
             return None
         try:
@@ -372,6 +376,8 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
                 result = rf_validation_records.read(service, method, params)
             elif method in result_service.READS:
                 result = result_service.read(service, method, params)
+            elif method in large_results.READS:
+                result = large_results.read(service, method, params)
             elif method in design_sweep_service.READS:
                 result = design_sweep_service.read(service.host_calculation_context, method, params)
             elif method in network_service.READS:

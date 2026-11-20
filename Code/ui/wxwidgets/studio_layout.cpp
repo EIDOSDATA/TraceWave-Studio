@@ -77,6 +77,9 @@ void StudioFrame::BuildInterface()
             ShowStudyReport(this);
         },
         studyReportId);
+    const int largeResultsId = wxWindow::NewControlId();
+    analysis->Append(largeResultsId, Display("대용량 결과 / 등록과 비교"));
+    Bind(wxEVT_MENU, [this](wxCommandEvent&) { ShowLargeResultLibrary(); }, largeResultsId);
     bar->Append(analysis, Display("해석"));
     auto* view = new wxMenu;
     view->Append(IdResetLayout, Display("기본 패널 배치 복원"), Display("패널 이동: F6 / 이전 패널: Shift+F6"));

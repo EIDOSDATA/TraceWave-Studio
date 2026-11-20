@@ -3,6 +3,63 @@
 #include "result_workspace.h"
 #include "network_export.h"
 #include "studio_shell.h"
+#include "large_result_dialog.h"
+#include <fstream>
+
+/** @brief 선택한 원문을 현재 프로젝트의 결과 보관 영역으로 연결한다. */
+void StudioFrame::ShowLargeResultLibrary()
+{
+    if (!m_connected || m_closing || m_busy || m_project.empty())
+    {
+        Log("프로젝트를 연 뒤 대용량 결과를 등록하고 조회하십시오.");
+        return;
+    }
+    const auto project = m_project;
+    const auto epoch = m_epoch;
+    const auto workspace = std::filesystem::path(m_options.workspace.ToStdWstring());
+    const auto projectPath = workspace / std::filesystem::path(Display(m_path).ToStdWstring());
+    DialogGateway gateway = [this, project, epoch](const std::string& method, const Json& input, bool mutation,
+                                                  std::function<void(const Json&)> success,
+                                                  std::function<void(const Json&)> failure)
+    {
+        if (!m_connected || m_closing || m_project != project || m_epoch != epoch)
+        {
+            failure({{"message", "프로젝트 연결이 바뀌었습니다. 상태를 확인한 뒤 다시 여십시오."}});
+            return;
+        }
+        Send(method, input, mutation, method == "job.status" ? Json::object() : Context(),
+             std::move(success), std::move(failure));
+    };
+    LargeResultDialog dialog(this, projectPath, m_revision, std::move(gateway));
+    if (m_options.largeResultsSmoke)
+    {
+        try
+        {
+            std::ifstream input(workspace / "large-results-fixture.json", std::ios::binary);
+            Json fixture;
+            input >> fixture;
+            dialog.StartSmoke(std::move(fixture));
+        }
+        catch (const std::exception&)
+        {
+            m_smoke->FinishSmoke(false, "대용량 결과 시험 자료를 읽을 수 없습니다.");
+            return;
+        }
+    }
+    const int result = dialog.ShowModal();
+    if (m_options.largeResultsSmoke)
+    {
+        if (result == wxID_OK)
+        {
+            wxCommandEvent save(wxEVT_MENU, IdSave);
+            GetEventHandler()->ProcessEvent(save);
+        }
+        else
+        {
+            m_smoke->FinishSmoke(false, "대용량 결과 화면의 검증이 완료되지 않았습니다.");
+        }
+    }
+}
 void StudioFrame::BuildResultInterface()
 {
     DialogGateway gateway = [this](const std::string& method, const Json& input, bool mutation,

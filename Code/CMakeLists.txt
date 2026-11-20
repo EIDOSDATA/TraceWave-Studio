@@ -128,6 +128,8 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/result_radiation_view.cpp
     ui/wxwidgets/field_slice_canvas.cpp
     ui/wxwidgets/field_result_view.cpp
+    ui/wxwidgets/large_result_dialog.cpp
+    ui/wxwidgets/large_result_smoke.cpp
     ui/wxwidgets/smith_chart.cpp
     ui/wxwidgets/smith_view.cpp
     ui/wxwidgets/result_workspace.cpp
