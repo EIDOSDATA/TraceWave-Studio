@@ -1,0 +1,314 @@
+{
+  "schema": "rfad.windows-modelview-idle-context-verification/0.1",
+  "date_kst": "2026-11-20",
+  "source_parent": "817e02ce6e6ee2747bb17084603c9fc9573f9cd7",
+  "studio": {
+    "file": "tracewave_gui.exe",
+    "bytes": 30495771,
+    "sha256": "ac49a4ab95620c97468bb2782000fa4b485a0ac29068e2dad124cf8965b86921"
+  },
+  "probe": {
+    "file": "tracewave_model_lifetime_probe.exe",
+    "bytes": 13084705,
+    "sha256": "3c6657055bc2b24d289393c4d098ea8875e9d6b5ef44a3ffb64e5a5b5b75b098"
+  },
+  "actual_idle": {
+    "file": {
+      "file": "stage12v-idle-native.jsonl",
+      "bytes": 1982,
+      "sha256": "6a8a7b2f8e2d4f3215ea6f30ce481384ba8453b0891100ab45f1c42b9506a5b3"
+    },
+    "observed_ms_after_clear": 150017.318,
+    "context_reclaimed_and_reopened": true,
+    "events": [
+      {
+        "artifact": {
+          "bytes": 37489347,
+          "role": "display_mesh",
+          "run_id": "00000000-0000-0000-0000-000000000003",
+          "sha256": "89db886307ca72cf5ca2f43a8c97254a899d596ffea184d880c9a8667bc710d4",
+          "snapshot_id": "00000000-0000-0000-0000-000000000001",
+          "uri": "mesh.json"
+        },
+        "canvas": [
+          1920,
+          1080
+        ],
+        "elapsed_ms": 42.629,
+        "event": "start",
+        "expected_cycles": 2,
+        "minimum_closed_ms": 150000
+      },
+      {
+        "cycle": 0,
+        "elapsed_ms": 47.741,
+        "event": "baseline",
+        "gpu_usage": [
+          {
+            "local_bytes": 0,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 221,
+        "peak_working_set_bytes": 24133632,
+        "private_commit_bytes": 4186112,
+        "renderer_context_visible": false,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 0
+        },
+        "working_set_bytes": 24133632
+      },
+      {
+        "cycle": 1,
+        "elapsed_ms": 1904.678,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 186716160,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 323,
+        "peak_working_set_bytes": 302223360,
+        "private_commit_bytes": 201326592,
+        "renderer_context_visible": true,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 1
+        },
+        "working_set_bytes": 302223360
+      },
+      {
+        "cycle": 1,
+        "elapsed_ms": 1923.252,
+        "event": "cleared",
+        "gpu_usage": [
+          {
+            "local_bytes": 150671360,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 321,
+        "peak_working_set_bytes": 313094144,
+        "private_commit_bytes": 120401920,
+        "renderer_context_visible": true,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 1
+        },
+        "working_set_bytes": 211320832
+      },
+      {
+        "cycle": 1,
+        "elapsed_ms": 151940.57,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 0,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 290,
+        "peak_working_set_bytes": 313094144,
+        "private_commit_bytes": 24633344,
+        "renderer_context_visible": false,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 1
+        },
+        "working_set_bytes": 48369664
+      },
+      {
+        "cycle": 2,
+        "elapsed_ms": 153732.689,
+        "event": "reopened",
+        "gpu_usage": [
+          {
+            "local_bytes": 186716160,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 321,
+        "peak_working_set_bytes": 319246336,
+        "private_commit_bytes": 201117696,
+        "renderer_context_visible": true,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 2
+        },
+        "working_set_bytes": 302501888
+      },
+      {
+        "cycles": 2,
+        "elapsed_ms": 153744.071,
+        "event": "complete"
+      }
+    ]
+  },
+  "warm_smoke": {
+    "file": {
+      "file": "stage12v-warm-native.jsonl",
+      "bytes": 1815,
+      "sha256": "6cc5f781dcfb62585c7f01c667832e8cd78a852c3aea57f28d736a2a422c252e"
+    },
+    "events": [
+      {
+        "artifact": {
+          "bytes": 37489347,
+          "role": "display_mesh",
+          "run_id": "00000000-0000-0000-0000-000000000003",
+          "sha256": "89db886307ca72cf5ca2f43a8c97254a899d596ffea184d880c9a8667bc710d4",
+          "snapshot_id": "00000000-0000-0000-0000-000000000001",
+          "uri": "mesh.json"
+        },
+        "canvas": [
+          1920,
+          1080
+        ],
+        "elapsed_ms": 34.66,
+        "event": "start",
+        "expected_cycles": 2,
+        "minimum_closed_ms": 300
+      },
+      {
+        "cycle": 0,
+        "elapsed_ms": 47.194,
+        "event": "baseline",
+        "gpu_usage": [
+          {
+            "local_bytes": 0,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 244,
+        "peak_working_set_bytes": 26390528,
+        "private_commit_bytes": 4354048,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 0
+        },
+        "working_set_bytes": 26390528
+      },
+      {
+        "cycle": 1,
+        "elapsed_ms": 1705.447,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 186716160,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 323,
+        "peak_working_set_bytes": 301830144,
+        "private_commit_bytes": 200392704,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 1
+        },
+        "working_set_bytes": 301830144
+      },
+      {
+        "cycle": 1,
+        "elapsed_ms": 2032.072,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 150671360,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 320,
+        "peak_working_set_bytes": 312643584,
+        "private_commit_bytes": 119439360,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 1
+        },
+        "working_set_bytes": 195862528
+      },
+      {
+        "cycle": 2,
+        "elapsed_ms": 3663.938,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 232329216,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 330,
+        "peak_working_set_bytes": 466550784,
+        "private_commit_bytes": 209330176,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 2
+        },
+        "working_set_bytes": 346943488
+      },
+      {
+        "cycle": 2,
+        "elapsed_ms": 3999.05,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 159191040,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 320,
+        "peak_working_set_bytes": 466550784,
+        "private_commit_bytes": 128299008,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 2
+        },
+        "working_set_bytes": 204926976
+      },
+      {
+        "cycles": 2,
+        "elapsed_ms": 4010.291,
+        "event": "complete"
+      }
+    ]
+  },
+  "tests": {
+    "cad_gui_passed": 2,
+    "trace_passed": 2,
+    "ctest_passed": 13,
+    "logs": [
+      {
+        "file": "stage12v-gui-cad.log",
+        "bytes": 1185,
+        "sha256": "8b1b20d73895e3158b37fd87e20d7271a4a1c7c2493694167afbd0d9e992dd65"
+      },
+      {
+        "file": "stage12v-ctest.log",
+        "bytes": 1526,
+        "sha256": "d26a1aeb78c75f87521cdde5d1c5d70357162c846026558938090e76c5d5169d"
+      }
+    ]
+  },
+  "f5_full_acceptance_measured": false
+}

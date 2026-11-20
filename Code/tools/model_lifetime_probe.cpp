@@ -14,6 +14,7 @@ using Json = nlohmann::json;
 using Clock = std::chrono::steady_clock;
 constexpr int ReleaseCycles = 30;
 constexpr int ReleaseWaitMs = 30000;
+constexpr int IdleWaitMs = 150000;
 constexpr int ModelTriangleCount = 1000000;
 
 struct ComRelease
@@ -102,10 +103,11 @@ private:
 class LifetimeFrame final : public wxFrame
 {
 public:
-    LifetimeFrame(const std::filesystem::path& workspace, HANDLE output, bool smoke, int& result)
+    LifetimeFrame(const std::filesystem::path& workspace, HANDLE output, bool smoke, bool idle, int& result)
         : wxFrame(nullptr, wxID_ANY, "TraceWave 3D lifetime probe"), m_timer(this), m_workspace(workspace),
           m_fixture(ReadLargeDisplayFixture(workspace)), m_model(new ModelView(this)), m_output(output),
-          m_cycles(smoke ? 2 : ReleaseCycles), m_waitMs(smoke ? 300 : ReleaseWaitMs), m_result(result)
+          m_cycles(smoke || idle ? 2 : ReleaseCycles), m_waitMs(idle ? IdleWaitMs : (smoke ? 300 : ReleaseWaitMs)),
+          m_result(result), m_idle(idle)
     {
         SetClientSize(1920, 1080);
         auto* layout = new wxBoxSizer(wxVERTICAL);
@@ -149,6 +151,10 @@ private:
         row["event"] = phase;
         row["cycle"] = m_cycle;
         row["vertex_buffer"] = buffer;
+        if (m_idle)
+        {
+            row["renderer_context_visible"] = !m_model->RendererDescription().empty();
+        }
         Write(std::move(row));
     }
 
@@ -182,9 +188,27 @@ private:
                     {
                         throw std::runtime_error("GPU에 올린 100만 삼각형 장면이 필요합니다.");
                     }
+                    if (m_idle && m_cycle == 2)
+                    {
+                        if (m_model->RendererDescription().empty() || vertex.value("uploads", 0u) != 2u)
+                        {
+                            throw std::runtime_error("유휴 뒤 3D context를 다시 준비하지 못했습니다.");
+                        }
+                        Sample("reopened", vertex);
+                        Complete();
+                        return;
+                    }
                     Sample("open", vertex);
                     m_model->Clear();
                     m_closedAt = Clock::now();
+                    if (m_idle)
+                    {
+                        if (m_model->RendererDescription().empty())
+                        {
+                            throw std::runtime_error("초기 닫기 단계에서 context가 즉시 사라졌습니다.");
+                        }
+                        Sample("cleared", m_model->VertexBufferDiagnostics());
+                    }
                     m_loading = false;
                 }
                 return;
@@ -198,16 +222,17 @@ private:
             {
                 throw std::runtime_error("장면을 닫은 뒤 제품 정점 버퍼가 남았습니다.");
             }
+            if (m_idle && !m_model->RendererDescription().empty())
+            {
+                throw std::runtime_error("기본 유휴와 유예 시간 뒤에도 context를 유지하고 있습니다.");
+            }
             Sample("closed", vertex);
             if (m_cycle < m_cycles)
             {
                 StartLoad();
                 return;
             }
-            Write({{"event", "complete"}, {"cycles", m_cycle}});
-            m_result = 0;
-            m_timer.Stop();
-            Close();
+            Complete();
         }
         catch (const std::exception& error)
         {
@@ -215,6 +240,14 @@ private:
             m_timer.Stop();
             Close();
         }
+    }
+
+    void Complete()
+    {
+        Write({{"event", "complete"}, {"cycles", m_cycle}});
+        m_result = 0;
+        m_timer.Stop();
+        Close();
     }
 
     void OnClose(wxCloseEvent& event)
@@ -231,6 +264,7 @@ private:
     const int m_cycles;
     const int m_waitMs;
     int& m_result;
+    const bool m_idle;
     ResourceCounters m_counters;
     Clock::time_point m_start = Clock::now();
     Clock::time_point m_loadStart, m_closedAt;
@@ -254,7 +288,8 @@ wxIMPLEMENT_APP_NO_MAIN(LifetimeApp);
 int main(int argc, char** argv)
 {
     const bool smoke = argc == 4 && std::string_view(argv[3]) == "--smoke";
-    if ((argc != 3 && !smoke) || !wxEntryStart(argc, argv))
+    const bool idle = argc == 4 && std::string_view(argv[3]) == "--idle";
+    if ((argc != 3 && !smoke && !idle) || !wxEntryStart(argc, argv))
     {
         return 2;
     }
@@ -275,7 +310,7 @@ int main(int argc, char** argv)
         const std::unique_ptr<void, decltype(closer)> trackedFile(handle, closer);
         if (wxTheApp->CallOnInit())
         {
-            auto* window = new LifetimeFrame(std::filesystem::absolute(std::filesystem::path(argv[1])), handle, smoke, result);
+            auto* window = new LifetimeFrame(std::filesystem::absolute(std::filesystem::path(argv[1])), handle, smoke, idle, result);
             wxTheApp->SetTopWindow(window);
             window->Show();
             wxTheApp->OnRun();

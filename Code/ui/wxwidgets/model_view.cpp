@@ -15,6 +15,7 @@ namespace
 {
 using Scene = DisplayMesh::Scene;
 using Camera = DisplayMesh::Camera;
+constexpr int EmptyContextIdleMs = 120000;
 
 wxString Text(const std::string& text)
 {
@@ -127,6 +128,15 @@ public:
         m_camera.panX = 0.0;
         m_camera.panY = 0.0;
         Refresh(false);
+    }
+
+    /** @brief 장면을 비운 뷰의 native context를 유휴 상태에서 반환한다. */
+    void ReleaseWhenEmpty()
+    {
+        if (m_scene == nullptr)
+        {
+            DropContext();
+        }
     }
 
     void RecreateContext()
@@ -438,6 +448,7 @@ struct ModelView::Impl
 {
     ModelView* owner;
     wxTimer timer;
+    wxTimer idleTimer;
     wxStaticText* message = nullptr;
     MeshCanvas* canvas = nullptr;
     std::future<Scene> pendingLoad;
@@ -450,7 +461,7 @@ struct ModelView::Impl
     bool discard = false;
     bool recovering = false;
 
-    explicit Impl(ModelView* window) : owner(window), timer(window)
+    explicit Impl(ModelView* window) : owner(window), timer(window), idleTimer(window)
     {
         auto* sizer = new wxBoxSizer(wxVERTICAL);
         message = new wxStaticText(window, wxID_ANY, Text("3D 형상을 생성하면 여기에 표시합니다. 물성/해석 결과와 구분되는 기하 보기입니다."));
@@ -461,11 +472,19 @@ struct ModelView::Impl
         {
             Poll();
         }, timer.GetId());
+        window->Bind(wxEVT_TIMER, [this](wxTimerEvent&)
+        {
+            if (canvas != nullptr && scene == nullptr && candidate == nullptr)
+            {
+                canvas->ReleaseWhenEmpty();
+            }
+        }, idleTimer.GetId());
     }
 
     ~Impl()
     {
         timer.Stop();
+        idleTimer.Stop();
         if (cancelled != nullptr)
         {
             cancelled->store(true);
@@ -506,6 +525,10 @@ struct ModelView::Impl
             canvas->SetScene(scene);
         }
         Status(text);
+        if (scene == nullptr && canvas != nullptr)
+        {
+            idleTimer.StartOnce(EmptyContextIdleMs);
+        }
     }
 
     bool EnsureCanvas()
@@ -630,6 +653,7 @@ bool ModelView::LoadArtifact(const wxString& workspace, const Json& artifact, co
     {
         return false;
     }
+    m_impl->idleTimer.Stop();
     m_impl->discard = false;
     m_impl->recovering = false;
     m_impl->error.clear();
@@ -687,6 +711,7 @@ void ModelView::Clear()
     {
         m_impl->canvas->SetScene(nullptr);
         m_impl->canvas->Hide();
+        m_impl->idleTimer.StartOnce(EmptyContextIdleMs);
     }
     m_impl->Status("3D 형상을 생성하면 여기에 표시합니다.");
 }
