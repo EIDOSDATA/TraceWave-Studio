@@ -1,0 +1,243 @@
+{
+  "schema": "rfad.windows-integrated-bundle-receiver/0.1",
+  "date_kst": "2026-11-20",
+  "source_revision": "c253881003ff788d5b0e016ba2145c26e43f4e15",
+  "archives": [
+    {
+      "path": "TraceWave-Studio-internal-windows-x64-c253881.zip",
+      "files": 932,
+      "bytes": 13881765,
+      "source_revision": "c253881003ff788d5b0e016ba2145c26e43f4e15",
+      "sha256": "7dcdee2a5c3513e007c337b23973efcba2c9e151269592e52a2393f217ab9d48",
+      "status": "contents_verified"
+    },
+    {
+      "path": "stage13-integrated-repeat.zip",
+      "files": 932,
+      "bytes": 13881765,
+      "source_revision": "c253881003ff788d5b0e016ba2145c26e43f4e15",
+      "sha256": "7dcdee2a5c3513e007c337b23973efcba2c9e151269592e52a2393f217ab9d48",
+      "status": "contents_verified"
+    }
+  ],
+  "windows_executable": {
+    "sha256": "4b48e0e25006c9f0518788efb77b95f323f030daa488340c6e491fd8d36a9223",
+    "bytes": 30437987,
+    "matched": true,
+    "independent_changed_source_files": [
+      "ui/wxwidgets/editor_sync.h",
+      "ui/wxwidgets/studio_editing.cpp",
+      "ui/wxwidgets/studio_frame.h",
+      "ui/wxwidgets/studio_session.cpp"
+    ],
+    "same_host_two_build_paths": true,
+    "comparison_timestamp": 0,
+    "paths_with_matching_bytes": [
+      "primary",
+      "independent",
+      "received"
+    ],
+    "archive_manifest_reference": {
+      "bytes": 30437987,
+      "path": "Code/build/windows-release/bin/tracewave_gui.exe",
+      "sha256": "4b48e0e25006c9f0518788efb77b95f323f030daa488340c6e491fd8d36a9223"
+    }
+  },
+  "ctest": {
+    "primary": {
+      "passed": 13,
+      "seconds": 0.8,
+      "log": {
+        "name": "stage12y-ctest.log",
+        "bytes": 1526,
+        "sha256": "bff08b601ac95043b67552cef355580b76fbab2adc137fd65b24c881d5a830a1"
+      }
+    },
+    "independent": {
+      "passed": 13,
+      "seconds": 0.83,
+      "log": {
+        "name": "stage13-integrated-independent-ctest.log",
+        "bytes": 1554,
+        "sha256": "1519a30293bbf88b081af746c50b7f0e905f1f387980c05fbfa02530a589aa8c"
+      }
+    }
+  },
+  "basic_receiver": {
+    "archive": {
+      "path": "TraceWave-Studio-internal-windows-x64-c253881.zip",
+      "files": 932,
+      "bytes": 13881765,
+      "source_revision": "c253881003ff788d5b0e016ba2145c26e43f4e15",
+      "sha256": "7dcdee2a5c3513e007c337b23973efcba2c9e151269592e52a2393f217ab9d48",
+      "status": "contents_verified"
+    },
+    "windows_new_extraction": true,
+    "base_python": "3.12.10",
+    "native_path": "Windows System32 and Windows only",
+    "optional_python_imports_absent": true,
+    "no_optional_workers": true,
+    "studio": {
+      "apply_enabled": false,
+      "cad_checks": [],
+      "cad_result": {},
+      "cad_stage": 0,
+      "canvas_checks": [
+        "drawing_icons_keep_logical_size_and_mask",
+        "docking_shell",
+        "wide_compact_visibility_separated",
+        "escape_cancels_preview",
+        "two_click_line",
+        "three_click_arc_and_hit_test",
+        "selection_sync",
+        "drag_one_command",
+        "drag_undo_redo",
+        "property_to_canvas",
+        "rejected_gesture_restores_selection",
+        "delete_undo",
+        "display_limits_preserve_valid_shapes",
+        "view_controls_do_not_edit",
+        "grid_and_endpoint_snap",
+        "endpoint_escape_then_one_command",
+        "endpoint_undo_redo",
+        "endpoint_noop_omits_command",
+        "arc_endpoint_fixed_radius",
+        "input_check_not_simulation",
+        "save_snapshot_restart"
+      ],
+      "canvas_stage": 15,
+      "editor_checks": [],
+      "editor_stage": 0,
+      "editor_ui_state": "saved",
+      "error": "",
+      "frame_budget_tested": false,
+      "mesh_bodies": 0,
+      "mesh_triangles": 0,
+      "mesh_vertex_buffer": {
+        "bytes": 0,
+        "uploads": 0
+      },
+      "passed": true,
+      "pcb_checks": [],
+      "pcb_project_path": "",
+      "pcb_request_ticks": 0,
+      "pcb_stage": 0,
+      "pcb_ticks": 0,
+      "physics_tested": false,
+      "primitives_checks": [],
+      "primitives_stage": 0,
+      "project_id": "d037ab68-d470-4f9e-b199-5d71295aadd9",
+      "rendered_frames": 0,
+      "renderer": "",
+      "revision_id": "bc091732-885a-4f73-99fa-227cefae86b1",
+      "saved_revision": "bc091732-885a-4f73-99fa-227cefae86b1",
+      "schema_version": "rfad.gui-smoke/0.1",
+      "service_sessions": 2,
+      "setup_checks": [],
+      "setup_pending_ticks": 0,
+      "setup_stage": 0,
+      "snapshot_id": "ba161252-261d-40eb-9b20-f51609a3c63f",
+      "solver_cancel_trace": {},
+      "solver_checks": [],
+      "solver_frames": 0,
+      "solver_result": {},
+      "solver_sample_count": 0,
+      "solver_stage": 0,
+      "stage": 0,
+      "study_checks": [],
+      "study_stage": 0,
+      "study_view": {},
+      "sweep_circuit_id": "",
+      "sweep_grid_id": "",
+      "sweep_view": {},
+      "ux_checks": []
+    }
+  },
+  "large_receiver": {
+    "passed": 2,
+    "seconds": 17.057,
+    "test_log": {
+      "name": "대형 설계 검증.log",
+      "bytes": 657,
+      "sha256": "cab885b24ecca956f64b4c3e51f2f2c54b0332649d51abcb73574942b00ecd1e"
+    },
+    "geometry_count": 250,
+    "preserved_project_fields": [
+      "board",
+      "geometry",
+      "materials",
+      "stackup",
+      "ports"
+    ],
+    "studio": {
+      "apply_enabled": false,
+      "cad_checks": [],
+      "cad_result": {},
+      "cad_stage": 0,
+      "canvas_checks": [],
+      "canvas_stage": 0,
+      "editor_checks": [],
+      "editor_stage": 0,
+      "editor_ui_state": "saved",
+      "error": "",
+      "frame_budget_tested": false,
+      "mesh_bodies": 0,
+      "mesh_triangles": 0,
+      "mesh_vertex_buffer": {
+        "bytes": 0,
+        "uploads": 0
+      },
+      "passed": true,
+      "pcb_checks": [],
+      "pcb_project_path": "",
+      "pcb_request_ticks": 0,
+      "pcb_stage": 0,
+      "pcb_ticks": 0,
+      "physics_tested": false,
+      "primitives_checks": [],
+      "primitives_stage": 0,
+      "project_id": "125028d1-f95e-4b30-825d-5beb2f009dec",
+      "rendered_frames": 0,
+      "renderer": "",
+      "revision_id": "9ba75305-ca6c-4b97-971d-7d6084b2a9bb",
+      "saved_revision": "9ba75305-ca6c-4b97-971d-7d6084b2a9bb",
+      "schema_version": "rfad.gui-smoke/0.1",
+      "service_sessions": 2,
+      "setup_checks": [],
+      "setup_pending_ticks": 0,
+      "setup_stage": 0,
+      "snapshot_id": "09197769-574b-4e77-bb3d-cc529e2b014d",
+      "solver_cancel_trace": {},
+      "solver_checks": [],
+      "solver_frames": 0,
+      "solver_result": {},
+      "solver_sample_count": 0,
+      "solver_stage": 0,
+      "stage": 5,
+      "study_checks": [],
+      "study_stage": 0,
+      "study_view": {},
+      "sweep_circuit_id": "",
+      "sweep_grid_id": "",
+      "sweep_view": {},
+      "ux_checks": []
+    }
+  },
+  "scope": {
+    "independent_os_installation_tested": false,
+    "optional_workers_tested_in_this_run": false,
+    "full_service_regression_in_this_record": false,
+    "r1_acceptance": false
+  },
+  "bundle_and_audit": {
+    "passed": 17,
+    "bundle": 3,
+    "implementation_audit": 14,
+    "seconds": 3.726,
+    "log": {
+      "name": "stage13-integrated-package-tests.log",
+      "bytes": 121,
+      "sha256": "c7b342e935d1c0e14f098fd19653224b6bdeaa2335bf525218bb558721a586cb"
+    }
+  }
+}
