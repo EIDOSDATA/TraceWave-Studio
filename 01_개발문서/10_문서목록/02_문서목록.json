@@ -21,14 +21,14 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 44,
     "current_06_분석연구": 13,
-    "current_07_검증": 29,
+    "current_07_검증": 30,
     "current_08_운영환경": 5,
     "current_09_개발계획": 4,
     "current_11_검토기록": 6,
     "current_traceability": 4,
     "document_catalog": 4,
     "document_navigation": 6,
-    "documentation_asset": 129,
+    "documentation_asset": 130,
     "documentation_validation_record": 1,
     "historical_proposal": 2,
     "historical_verification": 41,
@@ -28609,9 +28609,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 7610,
-      "working_tree_sha256": "28bef9331e8278f0cee9772a9d7377e2105a30774f50907997b9d7e4f404fc15",
-      "text_lines": 61,
+      "bytes": 7906,
+      "working_tree_sha256": "99e4c5e311bdd482505de96d0d017d49f8f9595b56df6f69b0c5517bc14daa3f",
+      "text_lines": 63,
       "text_status": "utf8_read"
     },
     {
@@ -28672,9 +28672,9 @@
       "path": "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 133835,
-      "working_tree_sha256": "c4ef7cde7f6d8fe37481ab92191eb54c285f783b0bad011f0242b72beea10727",
-      "text_lines": 721,
+      "bytes": 134232,
+      "working_tree_sha256": "19d460c0f334befc77fc9ea8b5802815bd4504bbfa1be6f7dc79045255fce043",
+      "text_lines": 725,
       "text_status": "utf8_read"
     },
     {
@@ -30677,6 +30677,22 @@
       "review_scope": "문서/시안 자산 보존",
       "bytes": 2354,
       "working_tree_sha256": "a07e6236dbb2ea2d0d5e531b4d0565c99802006fddec917049fa65c5291151c1"
+    },
+    {
+      "path": "01_개발문서/07_검증/45_유휴확인주기_비교_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1963,
+      "working_tree_sha256": "cfd3ddb113e1d317be7dbc987f12037d1ed2ece916152a2f032f11a925a49639",
+      "text_lines": 16,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/46_유휴확인주기_비교_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 71160,
+      "working_tree_sha256": "eb51ee45ea593df0cdb398db0da73c907b8ab6525000444b88fa366e26132263"
     }
   ],
   "identical_byte_groups": [
@@ -30833,27 +30849,17 @@
   ],
   "incremental_refresh": {
     "date_kst": "2026-11-20",
-    "mode": "step12_studio_dpi_toolbar_evidence",
-    "previous_inventory_sha256": "d930e966298c85a03327754935436c455df243b258c024ca391f772d2440e6b9",
+    "mode": "step12_idle_cadence_comparison",
+    "previous_inventory_sha256": "52637da6f79b554057796b3b36e8c08bec83e1b61ddfdfdd7b87eb1d120b570c",
     "refreshed_paths": [
-      "01_개발문서/04_화면설계/08_스튜디오_화면계약.md",
-      "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
-      "01_개발문서/07_검증/02_실행화면/100_이백퍼센트_원호도구와_좌표입력.jpg",
-      "01_개발문서/07_검증/02_실행화면/101_백퍼센트_편집도구와_재열기.jpg",
-      "01_개발문서/07_검증/02_실행화면/98_이백퍼센트_좌표입력과_도구아이콘_재현.jpg",
-      "01_개발문서/07_검증/02_실행화면/99_백오십퍼센트_선택도구_표시.jpg",
-      "01_개발문서/07_검증/43_윈도우배율별_편집도구_검증.md",
-      "01_개발문서/07_검증/44_윈도우배율별_편집도구_실행기록.json",
+      "01_개발문서/07_검증/45_유휴확인주기_비교_검증.md",
+      "01_개발문서/07_검증/46_유휴확인주기_비교_실행기록.json",
       "01_개발문서/07_검증/README.md",
       "01_개발문서/09_개발계획/02_개발착수와_현재상태.md"
     ],
     "added_paths": [
-      "01_개발문서/07_검증/02_실행화면/100_이백퍼센트_원호도구와_좌표입력.jpg",
-      "01_개발문서/07_검증/02_실행화면/101_백퍼센트_편집도구와_재열기.jpg",
-      "01_개발문서/07_검증/02_실행화면/98_이백퍼센트_좌표입력과_도구아이콘_재현.jpg",
-      "01_개발문서/07_검증/02_실행화면/99_백오십퍼센트_선택도구_표시.jpg",
-      "01_개발문서/07_검증/43_윈도우배율별_편집도구_검증.md",
-      "01_개발문서/07_검증/44_윈도우배율별_편집도구_실행기록.json"
+      "01_개발문서/07_검증/45_유휴확인주기_비교_검증.md",
+      "01_개발문서/07_검증/46_유휴확인주기_비교_실행기록.json"
     ],
     "removed_paths": [],
     "preserved_reference_records": 3336,
