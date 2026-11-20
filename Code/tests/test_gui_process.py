@@ -99,7 +99,7 @@ class GuiProcessTests(unittest.TestCase):
         self.assertEqual(result["revision_id"], result["saved_revision"])
         self.assertTrue(result["snapshot_id"])
         self.assertEqual(set(result["canvas_checks"]), {
-            "docking_shell", "escape_cancels_preview", "two_click_line",
+            "docking_shell", "wide_compact_visibility_separated", "escape_cancels_preview", "two_click_line",
             "three_click_arc_and_hit_test", "selection_sync", "drag_one_command",
             "drag_undo_redo", "property_to_canvas", "delete_undo", "save_snapshot_restart",
             "input_check_not_simulation",

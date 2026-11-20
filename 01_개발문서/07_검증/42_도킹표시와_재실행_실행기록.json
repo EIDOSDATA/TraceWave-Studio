@@ -1,0 +1,95 @@
+{
+  "schema": "rfad.studio-docking-verification/0.1",
+  "date_kst": "2026-11-20",
+  "baseline_commit": "f5e7598354b0a9a72ac5260777e15a2e0775a9f1",
+  "final_binary": {
+    "file": "tracewave_gui.exe",
+    "bytes": 30416067,
+    "sha256": "127a4d20b93c0eae083e7f2f40499c2fb99093557a0a3b51320fe57353ac9027"
+  },
+  "tests": {
+    "focused_windows_actual_gui": {
+      "passed": 1,
+      "seconds": 30.001,
+      "log": {
+        "file": "stage12g-docking-smoke-first.log",
+        "bytes": 377,
+        "sha256": "da274269636bb518fdea0ca746994526e0a39dae0d1012d80656d821f7d703de"
+      }
+    },
+    "windows_actual_gui_regression": {
+      "passed": 7,
+      "seconds": 94.33,
+      "log": {
+        "file": "stage12g-gui-regression.log",
+        "bytes": 1814,
+        "sha256": "e64e36949b25b3eabc2023b0cdecb9d1f7336458cb5639063fe16cbd15493a5b"
+      }
+    },
+    "ctest": {
+      "passed": 13,
+      "seconds": 0.61,
+      "log": {
+        "file": "stage12g-ctest.log",
+        "bytes": 1526,
+        "sha256": "ca7fb430135273704d417106f0bedc913daf840349921a872562e5a2ae5d285f"
+      }
+    }
+  },
+  "manual_windows": {
+    "same_project_filename": "projects/CAD 한글 교환 검증",
+    "independent_wide_and_compact_choices": true,
+    "restart_preserves_both_choices": true,
+    "native_menu_default_restore_persists_after_next_restart": true,
+    "unchanged_project_files": 8,
+    "project_file_hashes_before_and_after": {
+      "CAD 한글 교환 검증/host-calculation-sources/cd8f873c4d386cdecdb1e0cabadbc6327b63d02761924c2614afeb993afe0f5a.json": "cd8f873c4d386cdecdb1e0cabadbc6327b63d02761924c2614afeb993afe0f5a",
+      "CAD 한글 교환 검증/network/7290f612-797c-5a0f-ad8b-77b73290b2db/dataset.json": "58a50bd62a1364976291db073c1385dee66e8d066e7d95b4d60716ca19408d1f",
+      "CAD 한글 교환 검증/network/7290f612-797c-5a0f-ad8b-77b73290b2db/normalized.h5": "55815d376fc26018c2fa4f32f97c9f7963143b44cc0880709116bf8b9e16677f",
+      "CAD 한글 교환 검증/network/7290f612-797c-5a0f-ad8b-77b73290b2db/source.bin": "f44a585b3a3281c850e1d35653dc6d8ebf2feba48896089ed6e474c4d91ea3d0",
+      "CAD 한글 교환 검증/revisions/13c56ff1-21a7-42eb-a00f-44c0c3490044/project.json": "274390c96bc816f3e02bce747dc18711de9f99b863f7d78f6f7b22ad4f4eca1a",
+      "CAD 한글 교환 검증/revisions/f0b5172b-e49d-4ba6-bf35-803c4fd61f13/project.json": "45872957753d13ae66b490557546d4a7e1c0f2b1cd009f4c076e5f2e8b1fafd7",
+      "CAD 한글 교환 검증/snapshots/13c56ff1-21a7-42eb-a00f-44c0c3490044/2b3bfc7c-cd45-4f2e-8c1b-228c0d53aa66/project.json": "274390c96bc816f3e02bce747dc18711de9f99b863f7d78f6f7b22ad4f4eca1a",
+      "CAD 한글 교환 검증/snapshots/f0b5172b-e49d-4ba6-bf35-803c4fd61f13/28872c2c-cf81-4632-bf04-b5c310cdb86c/project.json": "45872957753d13ae66b490557546d4a7e1c0f2b1cd009f4c076e5f2e8b1fafd7"
+    },
+    "multiple_monitor_dpi_and_gpu_acceptance": "not_measured"
+  },
+  "screens": [
+    {
+      "file": "92_넓은보기_탐색패널소실_재현.jpg",
+      "bytes": 128832,
+      "sha256": "46e413693e2ef27c9e0e0296543942b3dcf6fe45e7c1f7550d919cfe745ca7b0",
+      "binary_sha256": "a4c4940b5a37a980f7983993bda164e0e53da445293c3591bcf3cf25221e76f0"
+    },
+    {
+      "file": "93_좁은보기_탐색속성_공용탭.jpg",
+      "bytes": 128881,
+      "sha256": "a9959b05e050dc431380c34f0759d3a3f74a6edc9823937502852b328e4ec6d6",
+      "binary_sha256": "127a4d20b93c0eae083e7f2f40499c2fb99093557a0a3b51320fe57353ac9027"
+    },
+    {
+      "file": "94_넓은보기_탐색복귀와_속성숨김.jpg",
+      "bytes": 147366,
+      "sha256": "79af7405fcdc93365aec9e1bd0cf218d043f43ef9cd63f91dc944045ccbb86d3",
+      "binary_sha256": "127a4d20b93c0eae083e7f2f40499c2fb99093557a0a3b51320fe57353ac9027"
+    },
+    {
+      "file": "95_스튜디오_재실행_패널숨김.jpg",
+      "bytes": 142027,
+      "sha256": "555f83bd84ded51a624bf4b24f60a86f7858e6330320ba4e777db76b0e216cf7",
+      "binary_sha256": "127a4d20b93c0eae083e7f2f40499c2fb99093557a0a3b51320fe57353ac9027"
+    },
+    {
+      "file": "96_좁은보기_재실행_공용패널숨김.jpg",
+      "bytes": 106528,
+      "sha256": "15d25f465697185e55e6fcb6f0e5f10b99944b1a7de6f247b9f7dbbc40e3939f",
+      "binary_sha256": "127a4d20b93c0eae083e7f2f40499c2fb99093557a0a3b51320fe57353ac9027"
+    },
+    {
+      "file": "97_스튜디오_기본배치_복원.jpg",
+      "bytes": 154607,
+      "sha256": "3434062c32e6fdae683501c7a029aadec4f5da0e979f17cef5348dfd0884a38e",
+      "binary_sha256": "127a4d20b93c0eae083e7f2f40499c2fb99093557a0a3b51320fe57353ac9027"
+    }
+  ]
+}

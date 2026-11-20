@@ -21,14 +21,14 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 44,
     "current_06_분석연구": 13,
-    "current_07_검증": 27,
+    "current_07_검증": 28,
     "current_08_운영환경": 5,
     "current_09_개발계획": 4,
     "current_11_검토기록": 6,
     "current_traceability": 4,
     "document_catalog": 4,
     "document_navigation": 6,
-    "documentation_asset": 117,
+    "documentation_asset": 124,
     "documentation_validation_record": 1,
     "historical_proposal": 2,
     "historical_verification": 41,
@@ -27944,8 +27944,8 @@
       "path": "01_개발문서/04_화면설계/08_스튜디오_화면계약.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 34789,
-      "working_tree_sha256": "98a2dd3dc057c15f1c42428889b1fb9fde4f1f31fae54d62bdba6e27ad87a984",
+      "bytes": 35165,
+      "working_tree_sha256": "a057b201474040fad96a33669441ed19313c77ec4ba6e76f1e1fdc96324a6a37",
       "text_lines": 228,
       "text_status": "utf8_read"
     },
@@ -27980,8 +27980,8 @@
       "path": "01_개발문서/04_화면설계/12_구현화면_설계기준.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 21915,
-      "working_tree_sha256": "ae45aba025f25bef8744da5a82c245713bd172c05eb875166467a4ae7b11ccf8",
+      "bytes": 22141,
+      "working_tree_sha256": "90721a1f20f955f6e23bc2cf820cf5bffe3b60cb2fb22792406a6542cb8c3abf",
       "text_lines": 144,
       "text_status": "utf8_read"
     },
@@ -28473,7 +28473,7 @@
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
       "bytes": 618808,
-      "working_tree_sha256": "603dcbf0382f85130a9752e74d047f1ed8234fdf7eac0ec5132aa96f02e7b9c7"
+      "working_tree_sha256": "eab9e6afc2f7d157adf351d7d3936c1906247ab309eb9e4ac0cfe2bc6b5cd63a"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -28609,9 +28609,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 7046,
-      "working_tree_sha256": "2b6018142f63ec83cc58006b4ccd354cc611020e21938f8ddb94c2d6d26198af",
-      "text_lines": 57,
+      "bytes": 7335,
+      "working_tree_sha256": "c2a10a3fa1f774bec8d48ff0fc0553d6b10f04696d7b586143797fd9f269de83",
+      "text_lines": 59,
       "text_status": "utf8_read"
     },
     {
@@ -28672,9 +28672,9 @@
       "path": "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 133020,
-      "working_tree_sha256": "7a9b303ec274238b4b5d222fd03529f376828938f710f16fe19d981ccbcbea27",
-      "text_lines": 713,
+      "bytes": 133448,
+      "working_tree_sha256": "a0dcdd3b0d0a5805128caa84b18c7cbff74e7a6dac8d9444c8f5156f10e1d868",
+      "text_lines": 717,
       "text_status": "utf8_read"
     },
     {
@@ -30575,6 +30575,64 @@
       "review_scope": "문서/시안 자산 보존",
       "bytes": 2504,
       "working_tree_sha256": "94e763da9fbed732a76a520039dfa5a53dacf0513393ef665ff915235ff39d15"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/92_넓은보기_탐색패널소실_재현.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 128832,
+      "working_tree_sha256": "46e413693e2ef27c9e0e0296543942b3dcf6fe45e7c1f7550d919cfe745ca7b0"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/93_좁은보기_탐색속성_공용탭.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 128881,
+      "working_tree_sha256": "a9959b05e050dc431380c34f0759d3a3f74a6edc9823937502852b328e4ec6d6"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/94_넓은보기_탐색복귀와_속성숨김.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 147366,
+      "working_tree_sha256": "79af7405fcdc93365aec9e1bd0cf218d043f43ef9cd63f91dc944045ccbb86d3"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/95_스튜디오_재실행_패널숨김.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 142027,
+      "working_tree_sha256": "555f83bd84ded51a624bf4b24f60a86f7858e6330320ba4e777db76b0e216cf7"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/96_좁은보기_재실행_공용패널숨김.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 106528,
+      "working_tree_sha256": "15d25f465697185e55e6fcb6f0e5f10b99944b1a7de6f247b9f7dbbc40e3939f"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/97_스튜디오_기본배치_복원.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 154607,
+      "working_tree_sha256": "3434062c32e6fdae683501c7a029aadec4f5da0e979f17cef5348dfd0884a38e"
+    },
+    {
+      "path": "01_개발문서/07_검증/41_도킹표시와_재실행_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2676,
+      "working_tree_sha256": "68eb1f98147356c2456a4efaae5632ec4d682a70aa67d356b73b76de53aed3f3",
+      "text_lines": 20,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/42_도킹표시와_재실행_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 4550,
+      "working_tree_sha256": "18bba3da8aa23d2d088ed0aed35aef2ff497dcfd7a479ada2d6afd7103f8e965"
     }
   ],
   "identical_byte_groups": [
@@ -30731,21 +30789,32 @@
   ],
   "incremental_refresh": {
     "date_kst": "2026-11-20",
-    "mode": "step12_mcp_kicad_exchange_evidence",
-    "previous_inventory_sha256": "465b3e9076e311c6e7df2f6cc86160bf04181d2ccefa7466446948cab7d07f7f",
+    "mode": "step12_studio_dock_visibility_evidence",
+    "previous_inventory_sha256": "9e6e5328314b13c6ca970ff7502f05b0fc8ed9099dba83e9cd780f99c2484ef9",
     "refreshed_paths": [
-      "01_개발문서/05_기능설계/01_프로젝트/01_프로젝트_명령과_저장.md",
-      "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
+      "01_개발문서/04_화면설계/08_스튜디오_화면계약.md",
+      "01_개발문서/04_화면설계/12_구현화면_설계기준.md",
       "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
-      "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
-      "01_개발문서/07_검증/39_엠시피와_키캐드_교환_검증.md",
-      "01_개발문서/07_검증/40_엠시피와_키캐드_교환_실행기록.json",
+      "01_개발문서/07_검증/02_실행화면/92_넓은보기_탐색패널소실_재현.jpg",
+      "01_개발문서/07_검증/02_실행화면/93_좁은보기_탐색속성_공용탭.jpg",
+      "01_개발문서/07_검증/02_실행화면/94_넓은보기_탐색복귀와_속성숨김.jpg",
+      "01_개발문서/07_검증/02_실행화면/95_스튜디오_재실행_패널숨김.jpg",
+      "01_개발문서/07_검증/02_실행화면/96_좁은보기_재실행_공용패널숨김.jpg",
+      "01_개발문서/07_검증/02_실행화면/97_스튜디오_기본배치_복원.jpg",
+      "01_개발문서/07_검증/41_도킹표시와_재실행_검증.md",
+      "01_개발문서/07_검증/42_도킹표시와_재실행_실행기록.json",
       "01_개발문서/07_검증/README.md",
       "01_개발문서/09_개발계획/02_개발착수와_현재상태.md"
     ],
     "added_paths": [
-      "01_개발문서/07_검증/39_엠시피와_키캐드_교환_검증.md",
-      "01_개발문서/07_검증/40_엠시피와_키캐드_교환_실행기록.json"
+      "01_개발문서/07_검증/02_실행화면/92_넓은보기_탐색패널소실_재현.jpg",
+      "01_개발문서/07_검증/02_실행화면/93_좁은보기_탐색속성_공용탭.jpg",
+      "01_개발문서/07_검증/02_실행화면/94_넓은보기_탐색복귀와_속성숨김.jpg",
+      "01_개발문서/07_검증/02_실행화면/95_스튜디오_재실행_패널숨김.jpg",
+      "01_개발문서/07_검증/02_실행화면/96_좁은보기_재실행_공용패널숨김.jpg",
+      "01_개발문서/07_검증/02_실행화면/97_스튜디오_기본배치_복원.jpg",
+      "01_개발문서/07_검증/41_도킹표시와_재실행_검증.md",
+      "01_개발문서/07_검증/42_도킹표시와_재실행_실행기록.json"
     ],
     "removed_paths": [],
     "preserved_reference_records": 3336,

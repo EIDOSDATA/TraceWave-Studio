@@ -104,8 +104,42 @@ void StudioSmokeDriver::CanvasSmokeNext()
         CanvasAssert(m_frame.m_manager->GetPane("problems").IsShown() &&
                          m_frame.m_name->GetValue() == Display("패널 전환 중 초안"),
                      "Layout restoration changed the draft or left a panel hidden.");
+        const wxSize originalSize = m_frame.GetClientSize();
+        const int originalHeight = m_frame.ToDIP(originalSize).GetHeight();
+        const auto resize = [this, originalHeight](int width)
+        {
+            m_frame.SetClientSize(m_frame.FromDIP(wxSize(width, originalHeight)));
+        };
+        const auto closePane = [this](const char* name)
+        {
+            wxAuiManagerEvent close(wxEVT_AUI_PANE_BUTTON);
+            close.SetManager(m_frame.m_manager);
+            close.SetPane(&m_frame.m_manager->GetPane(name));
+            close.SetButton(wxAUI_BUTTON_CLOSE);
+            m_frame.m_manager->ProcessEvent(close);
+        };
+        resize(1560);
+        CanvasAssert(!m_frame.m_shell->IsCompact(), "Wide layout did not open.");
+        closePane("properties");
+        CanvasAssert(!m_frame.m_manager->GetPane("properties").IsShown(), "Wide properties pane did not close.");
+        resize(1260);
+        CanvasAssert(m_frame.m_shell->IsCompact() && m_frame.m_manager->GetPane("navigation").IsShown(),
+                     "Compact navigation did not open independently of wide properties.");
+        closePane("navigation");
+        CanvasAssert(!m_frame.m_manager->GetPane("navigation").IsShown(), "Compact navigation did not close.");
+        resize(1560);
+        CanvasAssert(!m_frame.m_shell->IsCompact() && m_frame.m_manager->GetPane("navigation").IsShown() &&
+                         !m_frame.m_manager->GetPane("properties").IsShown(),
+                     "Closing the compact pane changed wide layout visibility.");
+        resize(1260);
+        CanvasAssert(m_frame.m_shell->IsCompact() && !m_frame.m_manager->GetPane("navigation").IsShown() &&
+                         m_frame.m_name->GetValue() == Display("패널 전환 중 초안"),
+                     "Compact visibility or the unapplied draft was lost after a round trip.");
+        m_frame.SetClientSize(originalSize);
+        m_frame.m_shell->RestoreLayout();
         m_frame.m_name->ChangeValue(draft);
         m_canvasChecks.push_back("docking_shell");
+        m_canvasChecks.push_back("wide_compact_visibility_separated");
         m_canvasStage = 1;
         m_frame.CanvasCommand("create_board", Json{{"id", Uuid()}, {"width_mm", 40.0}, {"height_mm", 60.0}});
     }

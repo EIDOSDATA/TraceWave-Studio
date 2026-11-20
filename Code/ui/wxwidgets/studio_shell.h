@@ -18,7 +18,7 @@ class StudioShell final : public wxEvtHandler
 {
 public:
     StudioShell(wxFrame& frame, wxAuiManager& manager, wxNotebook& navigation, wxWindow& tree, wxPanel& propertiesHost,
-                wxPanel& properties, wxWindow& views, wxWindow& bottom, wxMenu& viewMenu);
+                wxPanel& properties, wxWindow& views, wxWindow& bottom, wxMenu& viewMenu, bool usePreferences);
     ~StudioShell() override;
     /** @brief 현재 창 폭에 맞는 기본 배치를 복원하고 숨긴 패널을 다시 보인다. */
     void RestoreLayout();
@@ -40,6 +40,10 @@ private:
     void ApplyResponsiveLayout();
     void SetCompact(bool compact);
     void ApplyVisibility();
+    /** @brief 좁은 보기의 두 메뉴는 한 패널 상태를 공유한다. */
+    std::size_t VisibilityIndex(std::size_t index) const;
+    /** @brief 명시적인 메뉴, 닫기 및 기본 배치 선택만 사용자 설정으로 기록한다. */
+    void SaveVisibility(std::size_t index);
     void OnSize(wxSizeEvent& event);
     void OnKey(wxKeyEvent& event);
     void OnMenu(wxCommandEvent& event);
@@ -57,7 +61,9 @@ private:
     wxWindow* m_layers = nullptr;
     wxString m_defaultLayout;
     std::array<int, 4> m_menuIds{};
-    std::array<bool, 4> m_visible{{true, true, true, true}};
+    static constexpr std::size_t CompactNavigation = 4;
+    std::array<bool, 5> m_visible{{true, true, true, true, true}};
+    bool m_usePreferences = false;
     bool m_compact = false;
     bool m_updating = false;
     bool m_resultContext = false;

@@ -3,6 +3,7 @@
 #include "studio_support.h"
 #include "studio_theme.h"
 #include <wx/aui/aui.h>
+#include <wx/config.h>
 #include <wx/frame.h>
 #include <wx/menu.h>
 #include <wx/notebook.h>
@@ -13,6 +14,15 @@
 namespace
 {
 const std::array<const char*, 4> PaneNames{{"navigation", "properties", "layers", "problems"}};
+constexpr auto VisibilityGroup = "/workspace_ui/v1/pane_visibility";
+const std::array<const char*, 5> VisibilityNames{
+    {"wide_navigation", "wide_properties", "layers", "problems", "compact_navigation"}};
+
+/** @brief 모드별 명시 선택을 키로 분리하고 다른 패널의 설정을 건드리지 않는다. */
+wxString VisibilityKey(std::size_t index)
+{
+    return wxString(VisibilityGroup) + "/" + VisibilityNames[index];
+}
 
 /** @brief 입력 위젯의 현재 초점이 특정 패널 내부에 있는지 확인한다. */
 bool Contains(const wxWindow& parent, const wxWindow* child)
@@ -23,12 +33,21 @@ bool Contains(const wxWindow& parent, const wxWindow* child)
 
 StudioShell::StudioShell(wxFrame& frame, wxAuiManager& manager, wxNotebook& navigation, wxWindow& tree,
                          wxPanel& propertiesHost, wxPanel& properties, wxWindow& views, wxWindow& bottom,
-                         wxMenu& viewMenu)
+                         wxMenu& viewMenu, bool usePreferences)
     : m_frame(frame), m_manager(manager), m_navigation(navigation), m_tree(tree), m_propertiesHost(propertiesHost),
       m_properties(properties), m_views(views), m_bottom(bottom), m_layersHost(manager.GetPane("layers").window),
       m_layers(wxWindow::FindWindowByName("workspace.layer-content", &frame)),
-      m_defaultLayout(manager.SavePerspective())
+      m_defaultLayout(manager.SavePerspective()), m_usePreferences(usePreferences)
 {
+    if (m_usePreferences)
+    {
+        wxConfig configuration("TraceWaveStudio", "TraceWave");
+        for (std::size_t index = 0; index < m_visible.size(); ++index)
+        {
+            long value = 1;
+            m_visible[index] = !configuration.Read(VisibilityKey(index), &value) || value != 0;
+        }
+    }
     viewMenu.AppendSeparator();
     const std::array<const char*, 4> labels{
         {"프로젝트 탐색 패널", "선택 속성 패널", "레이어 표시 패널", "문제 / 작업 / 로그 패널"}};
@@ -45,6 +64,8 @@ StudioShell::StudioShell(wxFrame& frame, wxAuiManager& manager, wxNotebook& navi
     m_frame.Bind(wxEVT_CHAR_HOOK, &StudioShell::OnKey, this);
     m_frame.Bind(wxEVT_AUI_PANE_CLOSE, &StudioShell::OnPaneClose, this);
     ApplyResponsiveLayout();
+    ApplyVisibility();
+    m_manager.Update();
 }
 
 StudioShell::~StudioShell()
@@ -163,7 +184,7 @@ void StudioShell::ApplyVisibility()
                                                                                    : m_resultContext     ? "결과 조건"
                                                                                                          : "속성"));
     }
-    m_manager.GetPane("navigation").Show(m_visible[0] || (m_compact && m_visible[1]));
+    m_manager.GetPane("navigation").Show(m_visible[VisibilityIndex(0)]);
     m_manager.GetPane("properties").Show(!m_compact && m_visible[1]);
     m_manager.GetPane("layers").Show(!m_compact && m_visible[2] && !m_resultContext);
     if (m_layers != nullptr)
@@ -194,6 +215,15 @@ void StudioShell::RestoreLayout()
     SetCompact(false);
     m_updating = true;
     m_visible.fill(true);
+    if (m_usePreferences)
+    {
+        wxConfig configuration("TraceWaveStudio", "TraceWave");
+        if (configuration.HasGroup(VisibilityGroup) &&
+            (!configuration.DeleteGroup(VisibilityGroup) || !configuration.Flush()))
+        {
+            m_frame.SetStatusText(Display("기본 패널 표시 설정을 저장하지 못했습니다."));
+        }
+    }
     m_manager.LoadPerspective(m_defaultLayout, false);
     ApplyVisibility();
     m_manager.Update();
@@ -206,11 +236,10 @@ void StudioShell::ShowProperties(bool focus)
     auto* previouslyFocused = wxWindow::FindFocus();
     const bool movingFocusedPanel =
         m_compact && Contains(m_navigation, previouslyFocused) && !Contains(m_properties, previouslyFocused);
-    m_visible[1] = true;
+    m_visible[VisibilityIndex(1)] = true;
     ApplyVisibility();
     if (m_compact)
     {
-        m_visible[0] = true;
         const int page = m_navigation.FindPage(&m_properties);
         if (page != wxNOT_FOUND)
         {
@@ -231,11 +260,7 @@ void StudioShell::ShowProperties(bool focus)
 void StudioShell::ShowNavigation(bool focus)
 {
     auto* previouslyFocused = wxWindow::FindFocus();
-    m_visible[0] = true;
-    if (m_compact)
-    {
-        m_visible[1] = true;
-    }
+    m_visible[VisibilityIndex(0)] = true;
     ApplyVisibility();
     m_navigation.SetSelection(0);
     m_manager.Update();
@@ -280,8 +305,8 @@ void StudioShell::FocusNext(bool reverse)
     {
         const int next = (current + (reverse ? -offset : offset) + 10) % 5;
         auto* target = regions[next];
-        const bool available =
-            next == 0 ? m_visible[0] : (next == 2 ? m_visible[1] : (target != nullptr && target->IsShownOnScreen()));
+        const bool available = next == 0 || next == 2 ? m_visible[VisibilityIndex(next == 0 ? 0 : 1)]
+                                                      : (target != nullptr && target->IsShownOnScreen());
         if (!available || target == nullptr || !target->IsEnabled())
         {
             continue;
@@ -329,12 +354,12 @@ void StudioShell::OnMenu(wxCommandEvent& event)
         return;
     }
     const std::size_t index = static_cast<std::size_t>(found - m_menuIds.begin());
-    m_visible[index] = event.IsChecked();
+    const auto preference = VisibilityIndex(index);
+    m_visible[preference] = event.IsChecked();
+    SaveVisibility(preference);
     if (m_compact && index < 2)
     {
         // @brief 작은 창의 두 항목은 같은 탭 패널을 보이거나 숨긴다.
-        m_visible[0] = event.IsChecked();
-        m_visible[1] = event.IsChecked();
         m_navigation.SetSelection(index == 1 ? 1 : 0);
     }
     ApplyVisibility();
@@ -370,7 +395,7 @@ void StudioShell::OnUpdateMenu(wxUpdateUIEvent& event)
     if (found != m_menuIds.end())
     {
         const std::size_t index = static_cast<std::size_t>(found - m_menuIds.begin());
-        event.Check(m_compact && index < 2 ? m_manager.GetPane("navigation").IsShown() : m_visible[index]);
+        event.Check(m_visible[VisibilityIndex(index)]);
     }
 }
 
@@ -382,13 +407,29 @@ void StudioShell::OnPaneClose(wxAuiManagerEvent& event)
         {
             if (event.GetPane()->name == PaneNames[index])
             {
-                m_visible[index] = false;
-                if (m_compact && index == 0)
-                {
-                    m_visible[1] = false;
-                }
+                const auto preference = VisibilityIndex(index);
+                m_visible[preference] = false;
+                SaveVisibility(preference);
+                break;
             }
         }
     }
     event.Skip();
+}
+
+std::size_t StudioShell::VisibilityIndex(std::size_t index) const
+{
+    return m_compact && index < 2 ? CompactNavigation : index;
+}
+
+void StudioShell::SaveVisibility(std::size_t index)
+{
+    if (m_usePreferences)
+    {
+        wxConfig configuration("TraceWaveStudio", "TraceWave");
+        if (!configuration.Write(VisibilityKey(index), m_visible[index] ? 1L : 0L) || !configuration.Flush())
+        {
+            m_frame.SetStatusText(Display("패널 표시 설정을 저장하지 못했습니다."));
+        }
+    }
 }
