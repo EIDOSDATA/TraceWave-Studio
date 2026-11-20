@@ -23,6 +23,8 @@ public:
     void SetMarkers(const std::vector<int>& sampleIndices);
     /** @brief 곡선, 범례와 비교 목록이 같은 표시 색을 공유한다. */
     static wxColour SeriesColour(std::size_t index);
+    /** @brief 선택 목록과 그래프의 선 및 점 모양을 같은 이름으로 표시한다. */
+    static std::string SeriesStyleText(std::size_t index);
     std::function<void(std::size_t, int, double)> onMarker;
     void Clear();
 

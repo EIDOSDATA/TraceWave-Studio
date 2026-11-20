@@ -47,6 +47,14 @@ ResultCompareView::ResultCompareView(wxWindow* parent, bool measurementMode)
         new wxListCtrl(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 150)), wxLC_REPORT | wxLC_SINGLE_SEL);
     m_sources->SetMinSize(FromDIP(wxSize(-1, 150)));
     StudioTheme::Table(*m_sources);
+    m_sources->Bind(wxEVT_SYS_COLOUR_CHANGED, [this](wxSysColourChangedEvent& event)
+    {
+        for (long row = 0; row < m_sources->GetItemCount(); ++row)
+        {
+            m_sources->SetItemTextColour(row, NetworkChart::SeriesColour(static_cast<std::size_t>(row)));
+        }
+        event.Skip();
+    });
     for (const auto& entry :
          std::vector<std::pair<std::string, int>>{{"곡선 / 원본", 260},
                                                   {measurementMode ? "시료 / 기록" : "당시 개정", 180},
@@ -319,12 +327,9 @@ void ResultCompareView::RefreshRows()
     for (std::size_t index = 0; index < m_descriptions.size(); ++index)
     {
         const auto& description = m_descriptions[index];
-        const auto row =
-            m_sources->InsertItem(static_cast<long>(index), Display(std::to_string(index + 1) +
-                                                                    (index == 0       ? " 기준 / "
-                                                                     : index % 2 == 0 ? " 실선 / "
-                                                                                      : " 점선 / ") +
-                                                                    ResultUi::Text(description.at("label"))));
+        const auto row = m_sources->InsertItem(static_cast<long>(index), Display(
+            std::to_string(index + 1) + (index == 0 ? " 기준 / " : " / ") +
+            ResultUi::Text(description.at("label")) + " / " + NetworkChart::SeriesStyleText(index)));
         m_sources->SetItemTextColour(row, NetworkChart::SeriesColour(index));
         m_sources->SetItem(
             row, 1,

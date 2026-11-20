@@ -1,5 +1,6 @@
 /** @file @brief 작업 공간 스타일을 native 위젯의 입력 동작과 독립적으로 적용한다. */
 #include "studio_theme.h"
+#include "system_appearance.h"
 
 #include <wx/aui/aui.h>
 #include <wx/settings.h>
@@ -11,28 +12,10 @@
 #include <wx/imaglist.h>
 #include <algorithm>
 
-#ifdef __WXMSW__
-#include <wx/msw/wrapwin.h>
-#endif
-
 namespace StudioTheme
 {
 namespace
 {
-/** @brief 접근성 색을 강제 라이트 팔레트로 덮지 않도록 검사한다. */
-bool UsesHighContrast()
-{
-#ifdef __WXMSW__
-    HIGHCONTRASTW settings{};
-    settings.cbSize = sizeof(settings);
-    if (SystemParametersInfoW(SPI_GETHIGHCONTRAST, sizeof(settings), &settings, 0))
-    {
-        return (settings.dwFlags & HCF_HIGHCONTRASTON) != 0;
-    }
-#endif
-    return false;
-}
-
 /** @brief native 편집기/캔버스를 순회하지 않고 지정한 표면만 갱신한다. */
 void ApplySurface(wxWindow& window, Surface surface)
 {
@@ -45,7 +28,7 @@ void ApplySurface(wxWindow& window, Surface surface)
 
 Palette Colours()
 {
-    if (UsesHighContrast())
+    if (StudioAppearance::HighContrast())
     {
         return {
             wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW),      wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW),
@@ -120,6 +103,14 @@ void Table(wxListCtrl& list)
     list.AssignImageList(images, wxIMAGE_LIST_SMALL);
     list.SetBackgroundColour(Colours().content);
     list.SetTextColour(Colours().text);
+    list.Bind(wxEVT_SYS_COLOUR_CHANGED, [&list](wxSysColourChangedEvent& event)
+    {
+        const auto colours = Colours();
+        list.SetBackgroundColour(colours.content);
+        list.SetTextColour(colours.text);
+        list.Refresh(false);
+        event.Skip();
+    });
 }
 
 wxBitmap Icon(wxWindow& window, const std::string& kind, int size, int rowHeight)

@@ -8,6 +8,7 @@
 #include "canvas_viewport.h"
 #include "canvas_gesture.h"
 #include "canvas_precision.h"
+#include "system_appearance.h"
 
 class CanvasRenderer;
 
@@ -95,6 +96,7 @@ private:
     void Emit(const Json& action);
 
     CanvasScene::Model m_scene;
+    StudioAppearance::CanvasColours m_colours;
     std::set<std::string> m_hiddenLayers;
     wxPoint2DDouble m_viewCenter{0.0, 0.0};
     double m_pixelsPerMm = 8.0;

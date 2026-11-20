@@ -240,6 +240,14 @@ LargeResultDialog::LargeResultDialog(wxWindow* parent, std::filesystem::path pro
     m_sources->AppendColumn(Display("원본 표본"), wxLIST_FORMAT_RIGHT, FromDIP(95));
     m_sources->AppendColumn(Display("기준 임피던스"), wxLIST_FORMAT_LEFT, FromDIP(114));
     StudioTheme::Table(*m_sources);
+    m_sources->Bind(wxEVT_SYS_COLOUR_CHANGED, [this](wxSysColourChangedEvent& event)
+    {
+        for (long row = 0; row < m_sources->GetItemCount(); ++row)
+        {
+            m_sources->SetItemTextColour(row, NetworkChart::SeriesColour(static_cast<std::size_t>(row)));
+        }
+        event.Skip();
+    });
     graph->Add(m_sources, 0, wxEXPAND | wxTOP, FromDIP(8));
     m_sourceDetail = new wxTextCtrl(curves, wxID_ANY, wxEmptyString, wxDefaultPosition,
                                     FromDIP(wxSize(-1, 66)), wxTE_MULTILINE | wxTE_READONLY);
@@ -277,7 +285,8 @@ LargeResultDialog::LargeResultDialog(wxWindow* parent, std::filesystem::path pro
     {
         const auto& row = m_record.at("details").at("curves").at(event.GetIndex());
         const auto note = [](const Json& value) { return value.is_string() ? value.get<std::string>() : "미정"; };
-        m_sourceDetail->ChangeValue(Display("출처  " + note(row.at("source")) +
+        m_sourceDetail->ChangeValue(Display("그래프  " + NetworkChart::SeriesStyleText(event.GetIndex()) +
+                                             "\n출처  " + note(row.at("source")) +
                                              "\n측정 조건  " + note(row.at("measurement"))));
     });
     m_chart->onMarker = [this](std::size_t series, int index, double frequency)

@@ -7,8 +7,9 @@ namespace
 using Point = CanvasGeometry::Point;
 }
 
-CanvasRenderer::CanvasRenderer(wxWindow& window, wxDC& dc, CanvasViewport viewport)
-    : m_window(window), m_dc(dc), m_viewport(viewport), m_pathPadding(window.FromDIP(8))
+CanvasRenderer::CanvasRenderer(wxWindow& window, wxDC& dc, CanvasViewport viewport,
+                               StudioAppearance::CanvasColours colours)
+    : m_window(window), m_dc(dc), m_viewport(viewport), m_colours(std::move(colours)), m_pathPadding(window.FromDIP(8))
 {
 }
 
@@ -47,7 +48,8 @@ void CanvasRenderer::DrawGrid(bool visible)
     if (visible)
     {
         const double step = m_viewport.GridStep();
-        m_dc.SetPen(wxPen(wxColour(229, 237, 249), 1));
+        m_dc.SetPen(wxPen(m_colours.Detail(wxColour(229, 237, 249)), 1,
+                         m_colours.HighContrast() ? wxPENSTYLE_DOT : wxPENSTYLE_SOLID));
         const double startX = std::ceil(low.x / step) * step;
         const double startY = std::ceil(low.y / step) * step;
         for (int i = 0; i < 400 && startX + i * step <= high.x; ++i)
@@ -62,7 +64,7 @@ void CanvasRenderer::DrawGrid(bool visible)
         }
     }
     const wxPoint origin = WorldToScreen(Point{0.0, 0.0});
-    m_dc.SetPen(wxPen(wxColour(151, 163, 176), 1));
+    m_dc.SetPen(wxPen(m_colours.Detail(wxColour(151, 163, 176)), 1));
     if (origin.x >= 0 && origin.x <= size.x)
     {
         m_dc.DrawLine(origin.x, 0, origin.x, size.y);
@@ -71,7 +73,7 @@ void CanvasRenderer::DrawGrid(bool visible)
     {
         m_dc.DrawLine(0, origin.y, size.x, origin.y);
     }
-    m_dc.SetTextForeground(wxColour(94, 107, 121));
+    m_dc.SetTextForeground(m_colours.Detail(wxColour(94, 107, 121)));
     m_dc.DrawText("X / mm", std::max(2, size.x - FromDIP(60)),
                   std::clamp(origin.y + 4, 2, std::max(2, size.y - FromDIP(22))));
     m_dc.DrawText("Y / mm", std::clamp(origin.x + 4, 2, std::max(2, size.x - FromDIP(60))), FromDIP(4));
@@ -82,6 +84,8 @@ void CanvasRenderer::DrawBoard(const CanvasScene::Model& scene)
 {
     if (scene.hasBoard)
     {
+        const wxColour outline = m_colours.Detail(wxColour(118, 151, 131));
+        const wxColour fill = m_colours.HighContrast() ? m_colours.background : wxColour(198, 227, 203);
         if (!scene.boardOuter.empty())
         {
             std::vector<wxPoint> points;
@@ -89,8 +93,8 @@ void CanvasRenderer::DrawBoard(const CanvasScene::Model& scene)
             {
                 points.push_back(WorldToScreen(point));
             }
-            m_dc.SetPen(wxPen(wxColour(118, 151, 131), FromDIP(1)));
-            m_dc.SetBrush(wxBrush(wxColour(198, 227, 203)));
+            m_dc.SetPen(wxPen(outline, FromDIP(1)));
+            m_dc.SetBrush(wxBrush(fill));
             m_dc.DrawPolygon(static_cast<int>(points.size()), points.data());
             return;
         }
@@ -100,8 +104,8 @@ void CanvasRenderer::DrawBoard(const CanvasScene::Model& scene)
         const wxPoint rightBottom = WorldToScreen(scene.circularBoard ? Point{scene.boardCenter.x + scene.boardRadius,
                                                                               scene.boardCenter.y - scene.boardRadius}
                                                                       : Point{scene.boardWidth, 0.0});
-        m_dc.SetPen(wxPen(wxColour(118, 151, 131), FromDIP(1)));
-        m_dc.SetBrush(wxBrush(wxColour(198, 227, 203)));
+        m_dc.SetPen(wxPen(outline, FromDIP(1)));
+        m_dc.SetBrush(wxBrush(fill));
         if (scene.circularBoard)
         {
             m_dc.DrawEllipse(wxRect(leftTop, rightBottom));
@@ -149,10 +153,10 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
             return true;
         }
     }
-    const wxColour colour = removal                             ? wxColour(248, 251, 255)
-                            : outline                           ? wxColour(178, 66, 112)
-                            : shape.selectionKind == "aperture" ? wxColour(95, 158, 183)
-                                                                : suppliedColour;
+    const wxColour colour = removal ? m_colours.background
+                            : m_colours.Detail(outline ? wxColour(178, 66, 112)
+                                               : shape.selectionKind == "aperture" ? wxColour(95, 158, 183)
+                                                                                  : suppliedColour);
     if (!m_graphics)
     {
         m_graphics.reset(wxGraphicsContext::CreateFromUnknownDC(m_dc));
@@ -239,7 +243,8 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
             marker.MoveToPoint(center.x, center.y - half);
             marker.AddLineToPoint(center.x, center.y + half);
             graphics->SetPen(
-                wxPen(highlight ? wxColour(36, 141, 225) : wxColour(105, 113, 121), FromDIP(2), wxPENSTYLE_SHORT_DASH));
+                wxPen(highlight ? m_colours.Focus(wxColour(36, 141, 225)) : m_colours.Detail(wxColour(105, 113, 121)),
+                      FromDIP(2), wxPENSTYLE_SHORT_DASH));
             graphics->StrokePath(marker);
         }
     }
@@ -248,10 +253,10 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
         Flush();
         if (highlight)
         {
-            graphics->SetPen(wxPen(wxColour(36, 141, 225), FromDIP(5)));
+            graphics->SetPen(wxPen(m_colours.Focus(wxColour(36, 141, 225)), FromDIP(5)));
             graphics->StrokePath(path);
         }
-        graphics->SetPen(wxPen(removal ? wxColour(92, 107, 122) : colour, FromDIP(1),
+        graphics->SetPen(wxPen(removal ? m_colours.Detail(wxColour(92, 107, 122)) : colour, FromDIP(1),
                                outline || shape.incomplete ? wxPENSTYLE_SHORT_DASH : wxPENSTYLE_SOLID));
         graphics->SetBrush(outline ? *wxTRANSPARENT_BRUSH : wxBrush(colour));
         if (outline || (shape.kind == "via" && (shape.incomplete || shape.holeRadius >= shape.radius)))
@@ -267,7 +272,7 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
             const Point center = m_viewport.Project(shape.center, offset);
             const double radius = shape.holeRadius * m_viewport.pixelsPerMm;
             graphics->SetPen(*wxTRANSPARENT_PEN);
-            graphics->SetBrush(wxBrush(wxColour(250, 251, 253)));
+            graphics->SetBrush(wxBrush(m_colours.HighContrast() ? m_colours.background : wxColour(250, 251, 253)));
             graphics->DrawEllipse(center.x - radius, center.y - radius, radius * 2.0, radius * 2.0);
         }
         m_unflushed = true;
@@ -275,11 +280,11 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
     }
     if (removal)
     {
-        wxGraphicsPenInfo boundary(wxColour(92, 107, 122), width + FromDIP(highlight ? 5 : 2));
+        wxGraphicsPenInfo boundary(m_colours.Detail(wxColour(92, 107, 122)), width + FromDIP(highlight ? 5 : 2));
         boundary.Cap(wxCAP_ROUND);
         if (highlight)
         {
-            boundary.Colour(wxColour(36, 141, 225));
+            boundary.Colour(m_colours.Focus(wxColour(36, 141, 225)));
         }
         graphics->SetPen(graphics->CreatePen(boundary));
         graphics->StrokePath(path);
@@ -287,7 +292,7 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
     if (highlight)
     {
         Flush();
-        wxGraphicsPenInfo halo(wxColour(36, 141, 225), width + FromDIP(5));
+        wxGraphicsPenInfo halo(m_colours.Focus(wxColour(36, 141, 225)), width + FromDIP(5));
         halo.Cap(wxCAP_ROUND);
         graphics->SetPen(graphics->CreatePen(halo));
         graphics->StrokePath(path);

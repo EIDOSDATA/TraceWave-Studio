@@ -171,9 +171,12 @@ void DesignCanvas::DrawPrecision(wxDC& dc, const Shape* selected) const
             {
                 continue;
             }
-            const auto colour = Editable(*selected, end) ? wxColour(34, 113, 213) : wxColour(104, 113, 123);
+            const auto colour = Editable(*selected, end) ? m_colours.Focus(wxColour(34, 113, 213))
+                                                         : m_colours.Detail(wxColour(104, 113, 123));
             dc.SetPen(wxPen(colour, FromDIP(1)));
-            dc.SetBrush(wxBrush(Editable(*selected, end) ? colour : wxColour(249, 251, 255)));
+            dc.SetBrush(wxBrush(Editable(*selected, end) ? colour
+                                                       : m_colours.HighContrast() ? m_colours.background
+                                                                                  : wxColour(249, 251, 255)));
             dc.DrawRectangle(pixel.x - half, pixel.y - half, 2 * half + 1, 2 * half + 1);
         }
     }
@@ -181,7 +184,7 @@ void DesignCanvas::DrawPrecision(wxDC& dc, const Shape* selected) const
     {
         const auto pixel = WorldToScreen(DisplayPoint(m_snap->point));
         const int radius = FromDIP(7);
-        dc.SetPen(wxPen(wxColour(13, 113, 100), FromDIP(2)));
+        dc.SetPen(wxPen(m_colours.Focus(wxColour(13, 113, 100)), FromDIP(2)));
         dc.SetBrush(*wxTRANSPARENT_BRUSH);
         if (m_snap->kind == SnapKind::Endpoint)
         {

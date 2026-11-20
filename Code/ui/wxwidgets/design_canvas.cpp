@@ -57,7 +57,8 @@ double Distance(const Point& left, const Point& right)
 }
 
 DesignCanvas::DesignCanvas(wxWindow* parent)
-    : wxPanel(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS | wxBORDER_NONE)
+    : wxPanel(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS | wxBORDER_NONE),
+      m_colours(StudioAppearance::CanvasColours::Read())
 {
     SetBackgroundStyle(wxBG_STYLE_PAINT);
     SetMinSize(FromDIP(wxSize(260, 220)));
@@ -94,6 +95,12 @@ DesignCanvas::DesignCanvas(wxWindow* parent)
          });
     Bind(wxEVT_MOUSE_CAPTURE_LOST, &DesignCanvas::OnCaptureLost, this);
     Bind(wxEVT_SIZE, &DesignCanvas::OnSize, this);
+    Bind(wxEVT_SYS_COLOUR_CHANGED, [this](wxSysColourChangedEvent& event)
+    {
+        m_colours = StudioAppearance::CanvasColours::Read();
+        Refresh(false);
+        event.Skip();
+    });
 }
 
 /** @brief 창 종료 중에도 자신이 얻은 마우스 capture를 남기지 않는다. */
@@ -430,9 +437,9 @@ void DesignCanvas::OnPaint(wxPaintEvent&)
 
 void DesignCanvas::PaintScene(wxDC& dc)
 {
-    dc.SetBackground(wxBrush(wxColour(248, 251, 255)));
+    dc.SetBackground(wxBrush(m_colours.background));
     dc.Clear();
-    CanvasRenderer renderer(*this, dc, Viewport());
+    CanvasRenderer renderer(*this, dc, Viewport(), m_colours);
     renderer.DrawGrid(m_showGrid);
     if (m_showBoard)
     {
@@ -483,13 +490,13 @@ void DesignCanvas::PaintScene(wxDC& dc)
     {
         const wxPoint point = WorldToScreen(*m_inspectionLocation);
         const int radius = FromDIP(7);
-        dc.SetPen(wxPen(wxColour(174, 52, 42), FromDIP(2)));
+        dc.SetPen(wxPen(m_colours.Focus(wxColour(174, 52, 42)), FromDIP(2)));
         dc.SetBrush(*wxTRANSPARENT_BRUSH);
         dc.DrawCircle(point, radius);
         dc.DrawLine(point.x - radius, point.y, point.x + radius, point.y);
         dc.DrawLine(point.x, point.y - radius, point.x, point.y + radius);
     }
-    dc.SetTextForeground(wxColour(73, 86, 103));
+    dc.SetTextForeground(m_colours.Detail(wxColour(73, 86, 103)));
     dc.DrawText(Display("2D 설계 / mm"), FromDIP(10), FromDIP(10));
     if (m_scene.omissionCount > 0)
     {
@@ -522,7 +529,7 @@ void DesignCanvas::DrawPreview(wxDC& dc, CanvasRenderer& renderer) const
     {
         return;
     }
-    dc.SetPen(wxPen(wxColour(41, 132, 202), FromDIP(1), wxPENSTYLE_SHORT_DASH));
+    dc.SetPen(wxPen(m_colours.Focus(wxColour(41, 132, 202)), FromDIP(1), wxPENSTYLE_SHORT_DASH));
     dc.SetBrush(*wxTRANSPARENT_BRUSH);
     const wxPoint first = WorldToScreen(m_points[0]);
     const wxPoint cursor = WorldToScreen(m_cursor);

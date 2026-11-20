@@ -1,0 +1,25 @@
+{
+  "schema": "rfad.stage12.windows-ux/0.1",
+  "date_kst": "2026-11-21",
+  "display_scale_percent": 150,
+  "active_display_count": 1,
+  "windows_ui_automation": {
+    "keys": ["Tab", "F6", "Ctrl+S"],
+    "sample_tree_items": ["선 01", "선 02"],
+    "property_name": "이름",
+    "reopened_title": "한글 저장 확인 - 저장됨 - TraceWave Studio",
+    "reopened_value": "한글 저장 확인",
+    "save_status": "저장됨",
+    "reopen_executable_sha256": "0a5f72026787e3d0dc5de2933ea203114471f35b0b8622ca77e1f2415d31e0ef"
+  },
+  "windows_integration": {
+    "past_sources_smith_compare_export_reopen": true,
+    "recorded_field_move_and_reopen": true,
+    "ctest_passed": 13
+  },
+  "full_accessibility_acceptance": false,
+  "ime_composition_observed": false,
+  "narrator_audio_observed": false,
+  "contrast_theme_transition_observed": false,
+  "mixed_dpi_display_transition_observed": false
+}

@@ -1,6 +1,7 @@
 /** @file @brief 실제 표본의 페이지 범위와 결측을 숨기지 않는 공통 결과 곡선이다. */
 #include "network_chart.h"
 #include "studio_theme.h"
+#include "system_appearance.h"
 #include "frequency_display.h"
 #include <wx/dcbuffer.h>
 #include <wx/graphics.h>
@@ -33,6 +34,14 @@ wxString Label(double value)
 {
     return wxString::Format("%.4g", value);
 }
+
+/** @brief 선과 점의 형태로 여덟 곡선을 색 없이 구분한다. */
+wxPenStyle SeriesStroke(std::size_t index)
+{
+    constexpr std::array<wxPenStyle, 4> styles{
+        wxPENSTYLE_SOLID, wxPENSTYLE_SHORT_DASH, wxPENSTYLE_LONG_DASH, wxPENSTYLE_DOT_DASH};
+    return styles[index % styles.size()];
+}
 }
 
 NetworkChart::NetworkChart(wxWindow* parent) : wxPanel(parent)
@@ -59,10 +68,20 @@ NetworkChart::NetworkChart(wxWindow* parent) : wxPanel(parent)
 wxColour NetworkChart::SeriesColour(std::size_t index)
 {
     const auto colours = StudioTheme::Colours();
+    if (StudioAppearance::HighContrast())
+    {
+        return colours.text;
+    }
     const std::array<wxColour, 8> palette{{colours.accent, wxColour(208, 97, 18), wxColour(0, 128, 128),
                                            wxColour(128, 70, 160), wxColour(176, 57, 82), wxColour(66, 120, 51),
                                            wxColour(130, 91, 50), colours.secondary}};
     return palette.at(index % palette.size());
+}
+
+std::string NetworkChart::SeriesStyleText(std::size_t index)
+{
+    static const std::array<std::string, 4> names{"실선", "짧은 점선", "긴 점선", "일점쇄선"};
+    return names[index % names.size()] + (index % 8 < 4 ? " · 원" : " · 사각");
 }
 
 void NetworkChart::ChooseDefaultMetric(const Json& page)
@@ -296,14 +315,19 @@ void NetworkChart::Paint(wxPaintEvent&)
                 const wxColour colour = m_multiStyle ? SeriesColour(seriesIndex)
                                         : original   ? colours.secondary
                                                      : colours.accent;
-                const auto lineStyle = m_multiStyle ? (seriesIndex % 2 == 0 ? wxPENSTYLE_SOLID : wxPENSTYLE_SHORT_DASH)
+                const auto lineStyle = m_multiStyle ? SeriesStroke(seriesIndex)
                                        : original   ? wxPENSTYLE_SHORT_DASH
                                                     : wxPENSTYLE_SOLID;
                 graphics->SetPen(wxPen(colour, FromDIP(2), lineStyle));
                 graphics->SetBrush(wxBrush(colour));
+                auto curve = graphics->CreatePath();
+                auto symbols = graphics->CreatePath();
+                auto selected = graphics->CreatePath();
                 bool previousValid = false;
                 int previousIndex = -1;
-                wxPoint2DDouble previous;
+                double nextSymbolX = 0.0;
+                const int radius = FromDIP(2);
+                const int marker = seriesIndex < m_markers.size() ? m_markers[seriesIndex] : m_marker;
                 for (const auto& sample : m_series[seriesIndex].page.at("samples"))
                 {
                     double x = 0.0;
@@ -317,23 +341,41 @@ void NetworkChart::Paint(wxPaintEvent&)
                     }
                     const wxPoint2DDouble point(plot.x + (x - minX) / (maxX - minX) * plot.width,
                                                 plot.GetBottom() - (y - minY) / (maxY - minY) * plot.height);
-                    if (previousValid && index == previousIndex + 1)
+                    const bool continues = previousValid && index == previousIndex + 1;
+                    if (continues)
                     {
-                        graphics->StrokeLine(previous.m_x, previous.m_y, point.m_x, point.m_y);
+                        curve.AddLineToPoint(point.m_x, point.m_y);
                     }
-                    const int radius = FromDIP(2);
-                    graphics->DrawEllipse(point.m_x - radius, point.m_y - radius, radius * 2, radius * 2);
-                    const int marker = seriesIndex < m_markers.size() ? m_markers[seriesIndex] : m_marker;
+                    else
+                    {
+                        curve.MoveToPoint(point.m_x, point.m_y);
+                    }
+                    // @brief 촘촘한 표본에서도 점 기호가 선의 점선 간격을 덮지 않게 한다.
+                    if (!m_multiStyle || !continues || point.m_x >= nextSymbolX)
+                    {
+                        if (m_multiStyle && (seriesIndex % 8) >= 4)
+                        {
+                            symbols.AddRectangle(point.m_x - radius, point.m_y - radius, radius * 2, radius * 2);
+                        }
+                        else
+                        {
+                            symbols.AddCircle(point.m_x, point.m_y, radius);
+                        }
+                        nextSymbolX = point.m_x + FromDIP(18);
+                    }
                     if (index == marker)
                     {
-                        graphics->DrawEllipse(point.m_x - radius * 2, point.m_y - radius * 2, radius * 4, radius * 4);
+                        selected.AddCircle(point.m_x, point.m_y, radius * 2);
                     }
                     m_hits.push_back(
                         {wxPoint(static_cast<int>(point.m_x), static_cast<int>(point.m_y)), seriesIndex, index, x});
-                    previous = point;
                     previousIndex = index;
                     previousValid = true;
                 }
+                graphics->StrokePath(curve);
+                graphics->FillPath(symbols, wxWINDING_RULE);
+                graphics->SetPen(wxPen(colours.text, FromDIP(2)));
+                graphics->StrokePath(selected);
             }
         }
     }
@@ -357,11 +399,26 @@ void NetworkChart::Paint(wxPaintEvent&)
                                                series.page.value("total", count));
         const bool original = m_series.size() > 1 && index == 0;
         const auto colour = m_multiStyle ? SeriesColour(index) : original ? colours.secondary : colours.accent;
-        const auto line = m_multiStyle ? (index % 2 == 0 ? wxPENSTYLE_SOLID : wxPENSTYLE_SHORT_DASH)
+        const auto line = m_multiStyle ? SeriesStroke(index)
                           : original   ? wxPENSTYLE_SHORT_DASH
                                        : wxPENSTYLE_SOLID;
         dc.SetPen(wxPen(colour, FromDIP(2), line));
-        dc.DrawLine(margin, footerY + GetCharHeight() / 2, margin + FromDIP(24), footerY + GetCharHeight() / 2);
+        const int middle = footerY + GetCharHeight() / 2;
+        dc.DrawLine(margin, middle, margin + FromDIP(24), middle);
+        if (m_multiStyle)
+        {
+            dc.SetPen(*wxTRANSPARENT_PEN);
+            dc.SetBrush(wxBrush(colour));
+            const int radius = FromDIP(3);
+            if ((index % 8) >= 4)
+            {
+                dc.DrawRectangle(margin + FromDIP(12) - radius, middle - radius, radius * 2, radius * 2);
+            }
+            else
+            {
+                dc.DrawCircle(margin + FromDIP(12), middle, radius);
+            }
+        }
         dc.DrawText(wxControl::Ellipsize(text, dc, wxELLIPSIZE_END, std::max(1, size.x - FromDIP(64))),
                     margin + FromDIP(32), footerY);
         footerY += lineHeight;
