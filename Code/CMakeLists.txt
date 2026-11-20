@@ -16,6 +16,13 @@ if(NOT EXISTS "${RFAD_JSON_INCLUDE_DIR}/nlohmann/json.hpp")
     message(FATAL_ERROR "Set RFAD_JSON_INCLUDE_DIR to the verified nlohmann single-header include directory")
 endif()
 
+if(MINGW AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    # @brief 진단과 디버그 정보의 로컬 빌드 절대 경로를 고정 상대 경로로 치환한다.
+    add_compile_options(
+        "$<$<COMPILE_LANGUAGE:C,CXX>:-ffile-prefix-map=${CMAKE_CURRENT_SOURCE_DIR}=.>"
+        "$<$<COMPILE_LANGUAGE:C,CXX>:-ffile-prefix-map=${CMAKE_CURRENT_BINARY_DIR}=.build>")
+endif()
+
 if(RFAD_WX_SOURCE_DIR)
     set(wxBUILD_SHARED OFF CACHE BOOL "" FORCE)
     set(wxBUILD_SAMPLES OFF CACHE BOOL "" FORCE)
@@ -28,6 +35,11 @@ if(RFAD_WX_SOURCE_DIR)
     set(wxUSE_STC OFF CACHE BOOL "" FORCE)
     set(wxUSE_RIBBON OFF CACHE BOOL "" FORCE)
     add_subdirectory("${RFAD_WX_SOURCE_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/wxwidgets" EXCLUDE_FROM_ALL)
+    if(MINGW AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        # @brief wxWidgets 빌드 정보가 읽는 컴파일러 시각은 Release 프리셋에서 설정한다.
+        set_property(SOURCE "${RFAD_WX_SOURCE_DIR}/src/common/utilscmn.cpp" TARGET_DIRECTORY wxcore
+            APPEND PROPERTY OBJECT_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/CMakePresets.json")
+    endif()
     set(RFAD_WX_LIBRARIES wx::aui wx::gl wx::core wx::base)
 else()
     find_package(wxWidgets 3.2 REQUIRED COMPONENTS aui gl core base)

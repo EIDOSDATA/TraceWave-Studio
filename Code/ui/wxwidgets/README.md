@@ -61,6 +61,8 @@ Code 폴더에서 실행한다.
 
 스크립트는 고정한 wxWidgets 3.2.12와 nlohmann/json 3.12.0을 준비하고 SHA256을 검사한다. 이미 추출한 wxWidgets 폴더는 재사용한다. 수정된 의존성 소스까지 검증하는 기능은 없으므로 검증 빌드에서는 새로 추출한 원본 소스를 사용해야 한다. 컴파일러와 CMake는 PATH에서 제공해야 하며 스크립트가 설치하거나 업데이트하지 않는다.
 
+GNU MinGW의 Windows Release 프리셋은 PE 링크 시각, 빌드 루트 경로와 wxWidgets 빌드 정보 시각을 고정한다. 동일한 테스트 도구 버전과 원본 소스에서 독립 경로 EXE의 SHA256을 비교했다. [재빌드 검증](../../../01_개발문서/07_검증/79_윈도우_독립경로_재빌드검증.md)
+
 wxWidgets는 core/base/aui/gl을 정적으로 연결한다. 3D는 wxGLCanvas와 Windows OpenGL(opengl32), 표시 파일 SHA256은 Windows BCrypt를 사용한다. webview, media, STC, ribbon은 제외한다. CAD Python의 기존 44개 고정 패키지 환경은 유지하며 GUI에 OCCT나 Python을 내장하지 않는다. MinGW의 C++/thread runtime DLL은 설치된 컴파일러 폴더에서 실행 파일 옆으로 복사한다. Qt와 필수 유료 GUI 부품은 사용하지 않는다.
 
 의존성이 이미 준비된 경우 다음 명령도 사용할 수 있다. 이 방법은 runtime DLL을 복사하지 않으므로 컴파일러의 bin이 PATH에 있어야 한다.
