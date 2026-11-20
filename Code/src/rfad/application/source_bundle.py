@@ -5,6 +5,7 @@
 """
 
 import ast
+from functools import cache
 import hashlib
 import importlib.util
 import json
@@ -107,14 +108,19 @@ def _module_path(root, module, overrides):
     return matches[0] if matches else None
 
 
-def _dependencies(root, relative, text, overrides):
-    """! @brief 모든 AST 분기/함수와 상대 import를 보수적으로 읽고 동적 호출을 등록 대조한다."""
-    tree = ast.parse(text, filename=relative)
+def _dependency_nodes(relative, text):
+    """! @brief 원문 순서를 유지한 채 의존성 검증에 필요한 AST 노드만 한 번 수집한다."""
+    return tuple(node for node in ast.walk(ast.parse(text, filename=relative))
+                 if isinstance(node, (ast.Import, ast.ImportFrom, ast.Call)))
+
+
+def _dependencies(root, relative, nodes, overrides):
+    """! @brief 모든 분기/함수의 import와 호출을 실제 경로 및 등록 목록과 대조한다."""
     module = relative[4:-3].replace("/", ".") if relative.startswith("src/") else ""
     package = module.rpartition(".")[0]
     dependencies, dynamic = set(), set()
     aliases = {}
-    for node in ast.walk(tree):
+    for node in nodes:
         if isinstance(node, ast.Import):
             for item in node.names:
                 aliases[item.asname or item.name.split(".")[0]] = item.name if item.asname else item.name.split(".")[0]
@@ -140,14 +146,17 @@ def _dependencies(root, relative, text, overrides):
                         base_path = _module_path(root, base, overrides)
                         if base_path and base_path.endswith("/__init__.py"):
                             body = ast.parse(_text(root, base_path, overrides, 4 * 1024**2, False))
-                            exported = {node.name for node in ast.walk(body) if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef))}
-                            exported.update(node.id for node in ast.walk(body) if isinstance(node, ast.Name) and isinstance(node.ctx, ast.Store))
+                            exported = set()
                             for declaration in ast.walk(body):
-                                if isinstance(declaration, (ast.Import, ast.ImportFrom)):
+                                if isinstance(declaration, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                                    exported.add(declaration.name)
+                                elif isinstance(declaration, ast.Name) and isinstance(declaration.ctx, ast.Store):
+                                    exported.add(declaration.id)
+                                elif isinstance(declaration, (ast.Import, ast.ImportFrom)):
                                     exported.update(alias.asname or alias.name.split(".")[0] for alias in declaration.names)
                             if item.name not in exported:
                                 raise BundleError("패키지가 제공하지 않는 제품 의존 이름입니다: " + child)
-    for node in ast.walk(tree):
+    for node in nodes:
         if not isinstance(node, ast.Call):
             continue
         parts = []
@@ -178,6 +187,22 @@ def source_hash(records):
 
 def build(root, profile, *, overrides=None, max_files=MAX_FILES):
     """! @brief 명시 진입점부터 전이 의존 소스 원문 전체를 유한 묶음으로 캡처한다."""
+    return _build(root, profile, overrides, max_files, _dependency_nodes)
+
+
+def build_host_pair(root):
+    """! @brief 한 캡처 동안만 동일 경로와 원문의 AST를 공유한다.
+
+    @details 두 profile이 각각 파일을 읽고 경로를 검사한다. 원문이 다르면
+    다른 AST를 사용하며 호출자가 공통 파일의 바이트 대조를 유지한다.
+    """
+    dependency_nodes = cache(_dependency_nodes)
+    return (_build(root, HOST_CONTROL, None, MAX_FILES, dependency_nodes),
+            _build(root, HOST_MATH, None, MAX_FILES, dependency_nodes))
+
+
+def _build(root, profile, overrides, max_files, dependency_nodes):
+    """! @brief 원문과 경로 검증은 모든 profile에 같은 규칙을 적용한다."""
     if profile not in ROOTS:
         raise BundleError("지원하지 않는 소스 묶음 profile입니다.", "E_VERSION")
     if type(max_files) is not int or not 1 <= max_files <= MAX_FILES:
@@ -191,6 +216,8 @@ def build(root, profile, *, overrides=None, max_files=MAX_FILES):
         raise BundleError("호스트가 명시한 CAD/출력 진입점만 별도 바이트로 제공할 수 있습니다.")
     sources, dynamic, pending = {}, set(), set(ROOTS[profile])
     limit = LIMITS[profile]
+    total_bytes = 0
+    records = []
     try:
         while pending:
             relative = min(pending)
@@ -201,7 +228,10 @@ def build(root, profile, *, overrides=None, max_files=MAX_FILES):
                 raise BundleError("실행 의존 소스 파일 수가 공통 상한을 초과했습니다.", "E_RESOURCE")
             text = _text(root, relative, overrides, limit, profile not in (CAD, EXCHANGE, HOST_CONTROL, HOST_MATH) and relative != "tools/wsl_supervisor.py")
             sources[relative] = text
-            dependencies, imports = _dependencies(root, relative, text, overrides)
+            file_bytes = text.encode("utf-8")
+            total_bytes += len(file_bytes)
+            records.append({"path": relative, "sha256": hashlib.sha256(file_bytes).hexdigest(), "bytes": len(file_bytes)})
+            dependencies, imports = _dependencies(root, relative, dependency_nodes(relative, text), overrides)
             dynamic.update(imports)
             for module in dependencies:
                 parts = module.split(".")
@@ -212,7 +242,7 @@ def build(root, profile, *, overrides=None, max_files=MAX_FILES):
                         raise BundleError("제품 의존 소스가 없습니다: " + needed)
                     if path not in sources:
                         pending.add(path)
-            if sum(len(value.encode("utf-8")) for value in sources.values()) > limit:
+            if total_bytes > limit:
                 raise BundleError("실행 의존 소스 바이트가 상한을 초과했습니다.", "E_RESOURCE")
         sources = dict(sorted(sources.items()))
         raw = canonical(sources)
@@ -220,8 +250,7 @@ def build(root, profile, *, overrides=None, max_files=MAX_FILES):
             raise BundleError("실행 소스 JSON 묶음이 상한을 초과했습니다.", "E_RESOURCE")
     except (OSError, UnicodeError, SyntaxError, RecursionError) as error:
         raise BundleError("실행 의존 소스를 읽거나 분석할 수 없습니다: " + str(error)[:512], "E_VERSION") from error
-    records = [{"path": path, "sha256": hashlib.sha256(value.encode("utf-8")).hexdigest(), "bytes": len(value.encode("utf-8"))}
-               for path, value in sources.items()]
+    records.sort(key=lambda record: record["path"])
     descriptor = {"schema": SCHEMA, "profile": profile, "entry_points": list(ROOTS[profile]),
                   "dynamic_imports": sorted(dynamic), "source_sha256": source_hash(records)}
     return {"sources": sources, "source_bytes": raw, "code_files": records, "source_bundle": descriptor}

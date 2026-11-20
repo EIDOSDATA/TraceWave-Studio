@@ -14,7 +14,7 @@ from rfad import _source_loading
 from rfad.adapters.network_backend import installation_metadata
 from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.application.native_process import run_native
-from rfad.application.source_bundle import build, HOST_CONTROL, HOST_MATH, MAX_FILES, LIMITS, BundleError
+from rfad.application.source_bundle import build_host_pair, HOST_CONTROL, MAX_FILES, LIMITS, BundleError
 from rfad.domain.errors import ProjectError
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -24,7 +24,7 @@ MAX_BYTES = 8 * 1024**2
 def capture():
     """! @brief 별도 closure의 동일 경로를 한 번만 계수하며 합집합의 기존 상한을 유지한다."""
     try:
-        control, math = build(ROOT, HOST_CONTROL), build(ROOT, HOST_MATH)
+        control, math = build_host_pair(ROOT)
         sources = dict(control["sources"])
         for path, raw in math["sources"].items():
             if path in sources and sources[path] != raw:

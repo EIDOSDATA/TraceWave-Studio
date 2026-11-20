@@ -73,6 +73,33 @@ class SourceBundleTests(unittest.TestCase):
         with self.assertRaises(bundle.BundleError):
             self.capture()
 
+    def test_pair_reads_changed_shared_source_and_resolves_its_new_import(self):
+        """! @brief 동일 경로의 원문이 두 캡처 사이에 바뀌면 두 번째 원문과 의존성을 읽는다."""
+        self.write("tools/control.py", b"import rfad.probe\n")
+        self.write("tools/math.py", b"import rfad.probe\n")
+        self.write("src/rfad/first.py", b"VALUE = 1\n")
+        self.write("src/rfad/second.py", b"VALUE = 2\n")
+        shared = "src/rfad/probe.py"
+        first, second = "import rfad.first\n", "import rfad.second\n"
+        self.write(shared, first.encode("utf-8"))
+        read = bundle._text
+
+        def change_after_read(root, relative, overrides, limit, normalize):
+            """! @brief 제어 캡처가 읽은 직후 시험 파일의 원문을 교체한다."""
+            source = read(root, relative, overrides, limit, normalize)
+            if relative == shared and source == first:
+                self.write(shared, second.encode("utf-8"))
+            return source
+
+        entry_points = {bundle.HOST_CONTROL: ("tools/control.py",), bundle.HOST_MATH: ("tools/math.py",)}
+        with patch.dict(bundle.ROOTS, entry_points), patch.object(bundle, "_text", side_effect=change_after_read):
+            control, math = bundle.build_host_pair(self.source)
+        self.assertEqual(control["sources"][shared], first)
+        self.assertEqual(math["sources"][shared], second)
+        self.assertIn("src/rfad/first.py", control["sources"])
+        self.assertIn("src/rfad/second.py", math["sources"])
+        self.assertNotIn("src/rfad/first.py", math["sources"])
+
     def test_requested_file_budget_cannot_disable_the_global_cap(self):
         """! @brief bool/0/193 입력으로 전역 192개 상한을 우회하지 않는다."""
         for maximum in (True, 0, 193):

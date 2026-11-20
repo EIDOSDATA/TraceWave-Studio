@@ -58,9 +58,10 @@ class HostCalculationBoundaryTests(unittest.TestCase):
         """! @brief 합성 source 집합으로 두 profile의 상한 우회를 직접 검사한다."""
         control = {f"src/rfad/a{index}.py": "value = 1\n" for index in range(171)}
         math = {f"src/rfad/a{index}.py": "value = 1\n" for index in range(150, 192)}
-        def bundle(root, profile):
-            return {"sources": control if profile == runtime.HOST_CONTROL else math, "source_bundle": {}, "code_files": []}
-        with patch.object(runtime, "build", side_effect=bundle):
+        def bundles(_root):
+            """! @brief 두 profile의 합성 계약을 생산 함수와 같은 순서로 돌려준다."""
+            return tuple({"sources": items, "source_bundle": {}, "code_files": []} for items in (control, math))
+        with patch.object(runtime, "build_host_pair", side_effect=bundles):
             self.assertEqual(len(runtime.capture()[0]["code_files"]), 192)
             math["src/rfad/a192.py"] = "value = 1\n"
             with self.assertRaises(ProjectError) as error:
