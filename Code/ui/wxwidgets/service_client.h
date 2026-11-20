@@ -4,6 +4,7 @@
 #include <atomic>
 #include <condition_variable>
 #include <deque>
+#include <functional>
 #include <mutex>
 #include <string>
 #include <thread>
@@ -27,7 +28,8 @@ public:
     /** @brief 셸을 거치지 않고 호스트가 지정한 서비스/CAD Python과 작업 영역으로 서비스를 시작한다. */
     bool Start(const std::wstring& python, const std::wstring& source, const std::wstring& workspace,
                std::string& error, const std::wstring& cadPython = L"", bool openEmsWsl = false,
-               const std::wstring& catalog = L"", const std::wstring& exchangePython = L"");
+               const std::wstring& catalog = L"", const std::wstring& exchangePython = L"",
+               std::function<void()> protocolReady = {});
     /** @brief 한 프레임을 제한된 쓰기 큐에 넣고 즉시 반환한다. */
     bool Send(const std::string& frame);
     /** @brief GUI가 현재 도착한 메시지를 제한된 개수만 가져온다. */
@@ -61,6 +63,7 @@ private:
     std::deque<std::string> m_outgoing;
     std::deque<Message> m_incoming;
     std::deque<Message> m_logs;
+    std::function<void()> m_protocolReady;
     std::size_t m_droppedLogs = 0;
     std::string m_error;
 };

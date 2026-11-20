@@ -75,7 +75,8 @@ std::wstring ServiceClient::Quote(const std::wstring& argument)
 
 bool ServiceClient::Start(const std::wstring& python, const std::wstring& source, const std::wstring& workspace,
                           std::string& error, const std::wstring& cadPython, bool openEmsWsl,
-                          const std::wstring& catalog, const std::wstring& exchangePython)
+                          const std::wstring& catalog, const std::wstring& exchangePython,
+                          std::function<void()> protocolReady)
 {
     Stop();
     SECURITY_ATTRIBUTES security{sizeof(SECURITY_ATTRIBUTES), nullptr, TRUE};
@@ -163,6 +164,7 @@ bool ServiceClient::Start(const std::wstring& python, const std::wstring& source
         m_incoming.clear();
         m_logs.clear();
         m_droppedLogs = 0;
+        m_protocolReady = std::move(protocolReady);
     }
     m_stopping = false;
     if (ResumeThread(process.hThread) == static_cast<DWORD>(-1))
@@ -229,7 +231,12 @@ bool ServiceClient::Push(bool protocol, std::string text)
         }
         return !protocol;
     }
+    const bool notify = protocol && queue.empty() && static_cast<bool>(m_protocolReady);
     queue.push_back({protocol, std::move(text)});
+    if (notify)
+    {
+        m_protocolReady();
+    }
     return true;
 }
 
@@ -360,6 +367,7 @@ void ServiceClient::Stop()
     {
         std::lock_guard<std::mutex> guard(m_mutex);
         m_stopping = true;
+        m_protocolReady = {};
     }
     m_ready.notify_all();
     if (m_writer.joinable())

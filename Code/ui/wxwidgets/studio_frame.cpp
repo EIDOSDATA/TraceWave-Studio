@@ -14,7 +14,8 @@ StudioFrame::StudioFrame(Options options)
     StudioTheme::ApplyTypography(*this);
     m_smoke = std::make_unique<StudioSmokeDriver>(*this);
     BuildInterface();
-    Bind(wxEVT_TIMER, &StudioFrame::OnTimer, this, IdTimer);
+    Bind(wxEVT_TIMER, [this](wxTimerEvent&) { PollService(); }, IdTimer);
+    Bind(wxEVT_THREAD, [this](wxThreadEvent&) { PollService(); }, IdProtocolReady);
     Bind(wxEVT_CLOSE_WINDOW, &StudioFrame::OnClose, this);
     Bind(wxEVT_THREAD, &StudioFrame::OnShutdown, this, IdShutdown);
     m_timer.Start(50);

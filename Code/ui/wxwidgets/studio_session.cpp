@@ -22,7 +22,8 @@ void StudioFrame::Connect()
     if (!m_client.Start(m_options.python.ToStdWstring(), m_options.source.ToStdWstring(),
                         m_options.workspace.ToStdWstring(), error, m_options.cadPython.ToStdWstring(),
                         m_options.openEmsWsl, m_options.catalog.ToStdWstring(),
-                        m_options.exchangePython.ToStdWstring()))
+                        m_options.exchangePython.ToStdWstring(),
+                        [this]() { wxQueueEvent(this, new wxThreadEvent(wxEVT_THREAD, IdProtocolReady)); }))
     {
         Failure(error, true);
         return;
@@ -221,7 +222,8 @@ void StudioFrame::WaitJob(const Json& task, std::function<void(const Json&)> com
     SetStatusText(Display("작업 처리 중"), 0);
 }
 
-void StudioFrame::OnTimer(wxTimerEvent&)
+/** @brief 서비스 응답은 도착 신호에서 읽고 타이머는 기한, 이력 조회와 로그 처리를 유지한다. */
+void StudioFrame::PollService()
 {
     if ((m_finishing && !m_waitingClose) || m_restarting || m_closing)
     {

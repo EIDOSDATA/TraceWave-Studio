@@ -280,7 +280,7 @@ private:
     /** @brief 일반 작업 완료 후 편집 가능 상태를 복원한다. */
     void Ready(const std::string& message);
     /** @brief 비동기 응답과 작업 진행을 제한된 주기로 처리한다. */
-    void OnTimer(wxTimerEvent&);
+    void PollService();
     /** @brief 취소와 프로세스 회수를 요청한 뒤 창을 닫는다. */
     void OnClose(wxCloseEvent& event);
     /** @brief 화면 수명을 유지한 채 서비스 종료와 pipe join을 UI 밖에서 수행한다. */

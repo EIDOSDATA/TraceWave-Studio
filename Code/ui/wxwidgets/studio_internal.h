@@ -91,7 +91,8 @@ enum
     IdPcbFeatures,
     IdPcbImport,
     IdTimer,
-    IdShutdown
+    IdShutdown,
+    IdProtocolReady
 };
 
 /** @brief 트리 항목을 서비스가 사용하는 안정 객체 ID에 결합한다. */
