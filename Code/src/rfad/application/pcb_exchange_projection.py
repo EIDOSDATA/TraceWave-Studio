@@ -5,7 +5,7 @@ import math
 
 from rfad.domain.design import resolve_scalar
 from rfad.domain.errors import ProjectError
-from rfad.domain.object_names import object_label
+from rfad.domain.object_names import display_names
 from rfad.domain.pcb_features import empty_pcb, owner_map, fail
 
 
@@ -112,10 +112,11 @@ def exchange_projection(document, snapshot):
     from rfad.application.cad import build_cad_input
     cad = build_cad_input(document, snapshot)
     model = document.get("pcb", empty_pcb())
+    labels = display_names(document)
     result = {"schema": "rfad.pcb-projection/0.1", "snapshot": deepcopy(snapshot), "source_semantics": deepcopy(document),
               **{key: deepcopy(cad[key]) for key in ("board", "layers", "shapes")}, "mechanical": mechanical_projection(document),
               "footprints": [], "artwork_layers": deepcopy(model["artwork_layers"]), "apertures": [], "keepouts": [],
-              "names": {row["id"]: object_label(document, row) for row in document["geometry"]}, "diagnostics": deepcopy(cad["omissions"])}
+              "names": {row["id"]: labels[row["id"]] for row in document["geometry"]}, "diagnostics": deepcopy(cad["omissions"])}
     for row in model["footprints"]:
         result["footprints"].append({**{key: deepcopy(value) for key, value in row.items() if key not in ("placement", "placement_envelope")},
             "placement": {"origin_mm": point(document, row["placement"]["origin"]),

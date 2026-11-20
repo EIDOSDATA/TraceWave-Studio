@@ -8,7 +8,7 @@ from rfad.application import exchange_contract as contract
 from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.domain.errors import ProjectError
 from rfad.domain.drawing_layout import layout
-from rfad.domain.object_names import name_dto, object_label
+from rfad.domain.object_names import display_names, name_dto, object_label
 from rfad.storage.journal import MAX_STATE_BYTES
 
 
@@ -59,7 +59,8 @@ def source(service, state, context, data, run_id):
 
 def display_omissions(document, omissions):
     """! @brief 누락 사유/식별자는 보존하고 당시 원본의 이름만 조회용으로 덧붙인다."""
-    names = {row["id"]: name_dto(document, row) for row in document["geometry"]}
+    labels = display_names(document)
+    names = {row["id"]: name_dto(document, row, labels=labels) for row in document["geometry"]}
     if document.get("board"):
         names[document["board"]["id"]] = name_dto(document, document["board"], "board")
     names.update({row["id"]: {"name": row["name"], "name_state": "stored", "label": row["name"]} for row in document["ports"]})
@@ -166,7 +167,7 @@ def _step_report(service, state, context, job, value):
     document = service._load({"current": job["snapshot"]["artifact"]})
     if sidecar.get("source_semantics") != document or sidecar.get("snapshot") != job["snapshot"]:
         raise ProjectError("E_HASH", "STEP body 이름의 원본 snapshot 결합이 다릅니다.")
-    names = {row["id"]: object_label(document, row) for row in document["geometry"]}
+    names = display_names(document)
     names.update({row["id"]: row["name"] for row in document["stackup"]})
     if document.get("board"):
         names[document["board"]["id"]] = object_label(document, document["board"], "board")

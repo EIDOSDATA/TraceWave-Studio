@@ -8,7 +8,7 @@ from rfad.domain.design_rules import RULES, CONNECTION_KINDS
 from rfad.domain.target_constraints import BOARD_LIMITS, empty_constraints
 from rfad.domain.units import Quantity, units_for_dimension
 from rfad.domain.errors import ProjectError
-from rfad.domain.object_names import object_label
+from rfad.domain.object_names import display_names
 
 
 SECTIONS = ("target","parameter","connection","manufacturing_profile")
@@ -80,7 +80,8 @@ def forms(document,selection):
         labels = ("연결 필요","의도적 분리","기생 도체의 DC 분리")
         fields = [field("name","연결 의도 이름",record["name"]),field("kind","연결 의도",record["kind"],editor="choice",
                   choices=[("","선택 필요")]+list(zip(CONNECTION_KINDS,labels)))]
-        choices = [("","미정")]+[(row["id"],object_label(document,row)) for row in document["geometry"]]
+        display_labels = display_names(document)
+        choices = [("", "미정")] + [(row["id"], display_labels[row["id"]]) for row in document["geometry"]]
         fields += [field("object_a","첫 도체",record["object_ids"][0] or "",editor="choice",choices=choices),
                    field("object_b","둘째 도체",record["object_ids"][1] or "",editor="choice",choices=choices)]
     else:

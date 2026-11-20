@@ -42,12 +42,16 @@ def name_prefix(obj: dict, collection: str = "geometry") -> str:
     return PREFIXES.get(kind, "객체")
 
 
-def _next_name(used: set[str], prefix: str) -> str:
-    """! @brief 현재 접두어의 최대 번호 다음을 배정하고 기존 문자열은 보존한다."""
+def _next_number(used: set[str], prefix: str) -> int:
+    """! @brief 접두어와 숫자가 정확히 일치하는 기존 이름에서 다음 번호를 찾는다."""
     pattern = re.compile(re.escape(prefix) + r" ([0-9]+)$")
     numbers = [int(match.group(1)) for name in used if (match := pattern.fullmatch(name))]
-    number = max(numbers, default=0) + 1
-    return prefix + " " + format(number, "02d")
+    return max(numbers, default=0) + 1
+
+
+def _next_name(used: set[str], prefix: str) -> str:
+    """! @brief 새 이름은 기존 접두어와 두 자리 이상 번호 형식으로 만든다."""
+    return f"{prefix} {_next_number(used, prefix):02d}"
 
 
 def display_names(document: dict, collection: str = "geometry") -> dict[str, str]:
@@ -55,11 +59,14 @@ def display_names(document: dict, collection: str = "geometry") -> dict[str, str
     rows = _rows(document, collection)
     result = {obj["id"]: obj["name"] for obj in rows if "name" in obj}
     used = set(result.values())
+    next_numbers: dict[str, int] = {}
     for obj in sorted(rows, key=lambda row: row["id"]):
         if "name" not in obj:
-            name = _next_name(used, name_prefix(obj, collection))
-            result[obj["id"]] = name
-            used.add(name)
+            prefix = name_prefix(obj, collection)
+            if prefix not in next_numbers:
+                next_numbers[prefix] = _next_number(used, prefix)
+            result[obj["id"]] = f"{prefix} {next_numbers[prefix]:02d}"
+            next_numbers[prefix] += 1
     return result
 
 
@@ -68,7 +75,9 @@ def object_label(document: dict, obj: dict, collection: str = "geometry") -> str
     if "name" in obj:
         return obj["name"]
     names = display_names(document, collection)
-    return names.get(obj["id"], _next_name(set(names.values()), name_prefix(obj, collection)))
+    if obj["id"] in names:
+        return names[obj["id"]]
+    return _next_name(set(names.values()), name_prefix(obj, collection))
 
 
 def object_name_state(obj: dict) -> str:
@@ -76,9 +85,10 @@ def object_name_state(obj: dict) -> str:
     return "stored" if "name" in obj else "temporary"
 
 
-def name_dto(document: dict, obj: dict, collection: str = "geometry") -> dict:
-    """! @brief 실제 미지정 이름은 null로 유지하고 사람이 읽는 label만 별도로 제공한다."""
-    return {"name": obj.get("name"), "name_state": object_name_state(obj), "label": object_label(document, obj, collection)}
+def name_dto(document: dict, obj: dict, collection: str = "geometry", *, labels: dict[str, str] | None = None) -> dict:
+    """! @brief 실제 이름 미정은 null로 유지하며 같은 개정의 표시 이름 목록을 재사용할 수 있다."""
+    label = object_label(document, obj, collection) if labels is None else labels[obj["id"]]
+    return {"name": obj.get("name"), "name_state": object_name_state(obj), "label": label}
 
 
 def allocate_name(document: dict, obj: dict, collection: str = "geometry", reserved=(), *, prefix: str | None = None) -> str:

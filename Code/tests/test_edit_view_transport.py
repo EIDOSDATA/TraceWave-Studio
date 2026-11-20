@@ -15,13 +15,14 @@ from rfad.application.edit_view_contract import PROFILE
 from rfad.application.projects import ProjectService
 from rfad.application.rpc import handle_frame
 from rfad.domain.design import DESIGN_COLLECTIONS, MAX_ENTITIES
+from rfad.domain.object_names import name_prefix
 from rfad.domain.resource_limits import MAX_DOCUMENT_BYTES, MAX_SELECTION_RESULT_BYTES
 from rfad.domain.units import Quantity
 from test_cad_worker_process import CODE_ROOT, register_fixture
 from test_cad_projection import cad_fixture
 
 
-def large_project():
+def large_project(*, legacy_names=False):
     """! @brief 저장 한도 안에서 전체 이름과 도체 좌표가 60 KiB 조회 한도를 넘는 설계를 구성한다."""
     document = cad_fixture()
     amount = MAX_ENTITIES - sum(len(document[key]) for key in DESIGN_COLLECTIONS)
@@ -34,6 +35,16 @@ def large_project():
         row["end"] = [Quantity.from_value(value, "mm").to_dict() for value in (28, y)]
         row["width"] = Quantity.from_value(0.05, "mm", source_refs=["fixture: geometry width"]).to_dict()
         document["geometry"].append(row)
+    if legacy_names:
+        document["schema_version"] = "rfad.project/0.5"
+        for row in document["geometry"]:
+            row.pop("name", None)
+        stored = document["geometry"][-1]
+        stored["name"] = name_prefix(stored) + " 00103"
+        document["geometry"][-2]["name"] = "사용자 도체"
+        loss = Quantity.missing("dimensionless", "1").to_dict()
+        loss["source_refs"] = ["시험: 사용자 제조 조건 미정"]
+        document["materials"][0]["tan_delta"] = loss
     return document
 
 
@@ -81,14 +92,54 @@ class EditViewTransportTests(unittest.TestCase):
                     self.assertEqual(stale["error"]["data"]["domain_code"], "E_CONFLICT")
             self.assertEqual(service.journal.read(), before)
 
+    def test_legacy_design_keeps_assigned_and_temporary_labels_separate(self):
+        """! @brief 같은 접두어의 명시 번호를 피하고 세 표시 경로에서 임시 상태를 일치시킨다."""
+        with TemporaryDirectory(prefix="rfad legacy names ") as temporary, ProjectService(Path(temporary), auto_run=False) as service:
+            document, _ = register_fixture(service, large_project(legacy_names=True))
+            before = service.journal.read()
+            query = {"expected_revision": document["revision_id"]}
+            lookup = {row["id"]: row for row in document["geometry"]}
+            views = []
+            for method, key in (("editor.get", "items"), ("canvas.get", "shapes"), ("precision.get", "items")):
+                with self.subTest(method=method):
+                    fields = {"selection_ids": []} if method == "precision.get" else {"display_profile": PROFILE}
+                    result = call(service, method, document, {**query, **fields})["result"]
+                    views.append({row["id"]: (row["name"], row["name_state"], row["label"]) for row in result[key] if row["id"] in lookup})
+            self.assertEqual(views[0], views[1])
+            self.assertEqual(views[0], views[2])
+            self.assertEqual(len(views[0]), len(lookup))
+            for identity, obj in lookup.items():
+                name, state, label = views[0][identity]
+                if "name" in obj:
+                    self.assertEqual((name, state, label), (obj["name"], "stored", obj["name"]))
+                else:
+                    self.assertEqual((name, state), (None, "temporary"))
+                    self.assertNotIn(identity[:8], label)
+            stored = document["geometry"][-1]
+            prefix = name_prefix(stored)
+            legacy_ids = sorted(row["id"] for row in lookup.values() if "name" not in row and name_prefix(row) == prefix)
+            self.assertGreater(len(legacy_ids), 200)
+            self.assertEqual([views[0][identity][2] for identity in legacy_ids],
+                             [f"{prefix} {number:02d}" for number in range(104, 104 + len(legacy_ids))])
+            self.assertEqual(service.journal.read(), before)
+
     @unittest.skipUnless(sys.platform == "win32" and os.environ.get("RFAD_GUI_EXE"), "Windows Studio 실행 파일이 필요합니다.")
     def test_windows_reopens_a_project_larger_than_legacy_views(self):
-        """! @brief 실제 새 GUI가 선택 DTO와 장면을 읽고 저장 후 원문 설계를 그대로 연다."""
+        """! @brief 표시 응답이 큰 명시 이름 설계를 실제 Windows에서 저장하고 다시 연다."""
+        self._assert_windows_reopens(large_project(), "edit-view-transport.json")
+
+    @unittest.skipUnless(sys.platform == "win32" and os.environ.get("RFAD_GUI_EXE"), "Windows Studio 실행 파일이 필요합니다.")
+    def test_windows_reopens_legacy_design_with_temporary_labels(self):
+        """! @brief 실제 Windows에서 구버전 무명 도체와 미정 재료를 저장하고 다시 연다."""
+        self._assert_windows_reopens(large_project(legacy_names=True), "edit-view-legacy-names.json")
+
+    def _assert_windows_reopens(self, fixture, output_name):
+        """! @brief 두 서비스 세션의 저장 개정과 도체/미정 재료 원본을 대조한다."""
         with TemporaryDirectory(prefix="rfad Windows 큰 표시 ") as temporary:
             directory = Path(temporary)
             workspace = directory / "한글 작업 영역"
             with ProjectService(workspace, auto_run=False) as service:
-                document, _ = register_fixture(service, large_project())
+                document, _ = register_fixture(service, fixture)
                 path = service.journal.read()["projects"][document["project_id"]]["path"]
             report = directory / "화면 실행 기록.json"
             gui = Path(os.environ["RFAD_GUI_EXE"]).resolve()
@@ -109,4 +160,4 @@ class EditViewTransportTests(unittest.TestCase):
                 for key in ("board", "geometry", "materials", "stackup", "ports"):
                     self.assertEqual(saved[key], document[key], key)
             if output := os.environ.get("RFAD_GUI_TEST_ARTIFACT_DIR"):
-                (Path(output) / "edit-view-transport.json").write_bytes(report.read_bytes())
+                (Path(output) / output_name).write_bytes(report.read_bytes())

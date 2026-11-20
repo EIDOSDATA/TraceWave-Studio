@@ -8,7 +8,7 @@ from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.application.pcb_exchange_projection import exchange_projection
 from rfad.domain.errors import ProjectError
 from rfad.domain.design import resolve_scalar
-from rfad.domain.object_names import object_label
+from rfad.domain.object_names import display_names
 from rfad.domain.precision_dimensions import dimensions
 from rfad.domain import drawing_layout
 
@@ -183,7 +183,7 @@ def build_input(document, snapshot, data, run_id):
         return result
     selected = options(data["options"], data["format"], document)
     projection = build_cad_input(document, snapshot, purpose="step")
-    names = {item["id"]: object_label(document, item) for item in document["geometry"]}
+    names = display_names(document)
     records = [{"entity_id": item["id"], "label": names[item["id"]], "items": dimensions(document, item)}
                for item in document["geometry"]]
     for prefix, items in (("board.cutouts", (document.get("board") or {}).get("cutouts", [])),

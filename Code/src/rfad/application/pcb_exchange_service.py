@@ -9,7 +9,7 @@ from rfad.application.pcb_exchange_projection import aperture_projection, featur
 from rfad.application.project_contract import _fields, _uuid
 from rfad.domain.design import resolve_scalar, _text
 from rfad.domain.errors import ProjectError
-from rfad.domain.object_names import object_label
+from rfad.domain.object_names import display_names
 from rfad.domain.pcb_features import (COMMAND, COLLECTIONS, LIMITS, PROJECT_SCHEMA, apply_pcb_command,
     empty_pcb, fail, finalize_pcb_edits, make_patch, owner_map, records, validate_pcb)
 from rfad.domain.units import Quantity, units_for_dimension
@@ -234,6 +234,7 @@ def get(document, data):
             rows.append({"collection": collection(key), "section": key, "id": row["id"], "label": row["name"], "name": row["name"],
                          "owner_footprint_id": owners.get((COLLECTIONS.get(key, "cutouts"), row["id"])), "record": deepcopy(row),
                          "missing_fields": missing_fields(row)})
+    labels = display_names(document)
     result = {"profile": PROFILE, "project_id": document["project_id"], "revision_id": document["revision_id"],
               "source_revision_id": document["revision_id"], "rows": rows, "limits": {**LIMITS, "max_dto_bytes": MAX_DTO_BYTES},
               "layers": [deepcopy(row) for row in document["stackup"] if row["role"] == "conductor"],
@@ -241,12 +242,12 @@ def get(document, data):
               "surfaces": deepcopy(document["extensions"].get("rfad.physical_setup", {}).get("surfaces", [])),
               "frames": [{"id": row["id"], "label": {"world": "전체 좌표계", "board": "기판 좌표계"}[key]} for key, row in document["frames"].items()],
               "parameters": [{"id": row["id"], "label": row["name"], "dimension": row["quantity"]["dimension"], "derived": "expression" in row} for row in document["parameters"].values()],
-              "pads": [{"id": row["id"], "label": object_label(document, row)} for row in document["geometry"] if row["kind"] == "pad"],
-              "holes": [{"id": row["id"], "label": row["name"]} for row in model["holes"]] + [{"id": row["id"], "label": object_label(document, row)} for row in document["geometry"] if row["kind"] == "via"],
+              "pads": [{"id": row["id"], "label": labels[row["id"]]} for row in document["geometry"] if row["kind"] == "pad"],
+              "holes": [{"id": row["id"], "label": row["name"]} for row in model["holes"]] + [{"id": row["id"], "label": labels[row["id"]]} for row in document["geometry"] if row["kind"] == "via"],
               "artwork_layers": deepcopy(model["artwork_layers"]), "form": None, "operation_inputs": {},
               "scene": build_canvas_dto(document),
               "preflight": {"manufacturing_verified": False, "measurement_verified": False, "solver_mechanical_supported": False}}
-    result["member_choices"] = [{"value": {"collection": "geometry", "id": row["id"]}, "label": object_label(document, row)} for row in document["geometry"]]
+    result["member_choices"] = [{"value": {"collection": "geometry", "id": row["id"]}, "label": labels[row["id"]]} for row in document["geometry"]]
     result["member_choices"] += [{"value": {"collection": key, "id": row["id"]}, "label": row["name"]} for key in ("holes", "apertures", "keepouts") for row in model[key]]
     result["operations"] = [{"id": op, "label": SECTIONS[op.split(".")[0]] + " " + {"set": "저장", "remove": "삭제", "place": "배치", "member_edit": "멤버 편집", "detach": "그룹 해제"}[op.split(".")[1]],
                             "allowed": document["board"] is not None, "reason": "" if document["board"] is not None else "기판이 필요합니다."} for op in sorted(OPERATIONS)]

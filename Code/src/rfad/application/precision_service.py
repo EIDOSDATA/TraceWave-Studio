@@ -11,7 +11,7 @@ from rfad.application.precision_candidates import (OPERATIONS, PLANAR_OPERATIONS
 from rfad.application.project_contract import _fields, _uuid
 from rfad.domain.design import _text
 from rfad.domain.errors import ProjectError
-from rfad.domain.object_names import name_dto
+from rfad.domain.object_names import display_names, name_dto
 from rfad.domain.precision_command import (COMMANDS, EXTENSION_KEY, MAX_ORIGIN_BYTES, MAX_RECORDS,
                                           apply_precision_command, record_hash)
 from rfad.domain.precision_dimensions import dimensions
@@ -93,9 +93,10 @@ def get(document, identities):
     for operation, (label, _) in OPERATIONS.items():
         reason = operation_reason(document, rows, operation)
         operations.append({"id": operation, "label": label, "enabled": not reason, "reason": reason})
+    labels = display_names(document)
     return bounded({"profile": PROFILE, "project_id": document["project_id"], "revision_id": document["revision_id"],
-                    "selection": [{"id": row["id"], **name_dto(document, row), "kind": row["kind"]} for row in rows],
-                    "items": [{"id": row["id"], **name_dto(document, row), "kind": row["kind"], "layer_id": row["layer_id"]} for row in document["geometry"]],
+                    "selection": [{"id": row["id"], **name_dto(document, row, labels=labels), "kind": row["kind"]} for row in rows],
+                    "items": [{"id": row["id"], **name_dto(document, row, labels=labels), "kind": row["kind"], "layer_id": row["layer_id"]} for row in document["geometry"]],
                     "operations": operations, "dimensions": _dimension_rows(document, rows),
                     "parameters": [{"id": identity, "label": row["name"], "dimension": row["quantity"]["dimension"],
                                     "status": row["quantity"]["status"], "derived": "expression" in row}

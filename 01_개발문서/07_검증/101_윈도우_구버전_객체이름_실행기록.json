@@ -1,0 +1,125 @@
+{
+  "schema": "rfad.windows-legacy-label-comparison/0.1",
+  "date_kst": "2026-11-21",
+  "baseline": "2c49d401d139296432fef78ec0b6e2447bcb2eb4",
+  "python": "3.12.10",
+  "diagnostic_fixture": {
+    "schema": "rfad.project/0.5",
+    "bytes": 224150,
+    "geometry": 250,
+    "names_missing": 247,
+    "fixture_sha256": "4cd6845e9ff9148d45c9c13b17d6317cd417d141c5acdac15ca51529764db657"
+  },
+  "diagnostic_path_timings": {
+    "canvas": {
+      "baseline": {
+        "timings_ms": [
+          2473.2872,
+          2782.0912,
+          2812.4569,
+          2860.4564,
+          2747.3809,
+          2444.2372
+        ],
+        "dto_bytes": 69380,
+        "dto_sha256": "d0b00c293e82319deb9e9f5bb629f8921c126c6048040b4554ef9a4ff03676a5",
+        "median_ms": 2764.736
+      },
+      "candidate": {
+        "timings_ms": [
+          6.6582,
+          6.2612,
+          5.9694,
+          5.6771,
+          5.5283,
+          5.4959
+        ],
+        "dto_bytes": 69380,
+        "dto_sha256": "d0b00c293e82319deb9e9f5bb629f8921c126c6048040b4554ef9a4ff03676a5",
+        "median_ms": 5.8232
+      }
+    },
+    "editor": {
+      "baseline": {
+        "timings_ms": [
+          8270.3021,
+          7971.9857,
+          8046.5974,
+          7947.6988,
+          7681.3107,
+          8289.5625
+        ],
+        "dto_bytes": 82034,
+        "dto_sha256": "d14b273c6d40973aa3f4c7fcb82ff08568b27967a134dd6572049d52cd364827",
+        "median_ms": 8009.2915
+      },
+      "candidate": {
+        "timings_ms": [
+          1.3494,
+          1.2103,
+          1.1989,
+          1.1878,
+          1.5863,
+          1.2209
+        ],
+        "dto_bytes": 82034,
+        "dto_sha256": "d14b273c6d40973aa3f4c7fcb82ff08568b27967a134dd6572049d52cd364827",
+        "median_ms": 1.2156
+      }
+    },
+    "precision": {
+      "baseline": {
+        "timings_ms": [
+          2600.2602,
+          2792.9019,
+          3006.9939,
+          2779.2853,
+          2686.1995,
+          2618.9421
+        ],
+        "dto_bytes": 45774,
+        "dto_sha256": "885227ae631348b2a289c7e2a16fd35e2a7acd57f7ba090e2370274023b4c725",
+        "median_ms": 2732.7424
+      },
+      "candidate": {
+        "timings_ms": [
+          2.3043,
+          1.5854,
+          1.5443,
+          1.6597,
+          1.682,
+          1.4106
+        ],
+        "dto_bytes": 45774,
+        "dto_sha256": "885227ae631348b2a289c7e2a16fd35e2a7acd57f7ba090e2370274023b4c725",
+        "median_ms": 1.6225
+      }
+    }
+  },
+  "source_sha256": {
+    "src/rfad/domain/object_names.py": "be1f9bd3e7587d134c15b2de9053c768975f8d65bea9e4e1569dd46d627b3181",
+    "src/rfad/application/canvas.py": "5fa244880869aa7681f73c4512d1739f521b303d025622a1ccb7e675b28ca34e",
+    "src/rfad/application/editor.py": "bb3dcdabbfe5ecd14d0992d6a225cd536773e154e648b21d0ca806db3517d3a1",
+    "src/rfad/application/precision_service.py": "15fc465e1b950de866c345479d7a78def9d9e45ba9d739e13a957f82dd3343b3"
+  },
+  "source_document_same_before_and_after": true,
+  "windows_gui_sha256": "4b48e0e25006c9f0518788efb77b95f323f030daa488340c6e491fd8d36a9223",
+  "native_windows_save_reopen": {
+    "edit-view-legacy-names.json": {
+      "report_sha256": "5e03c74d3fd267b2f2a0cbc109ddf46e8bf4a62e761a8e6e3475a5843e293190",
+      "revision_id": "c5ccdf64-aac5-40f6-a429-1e636960486d",
+      "snapshot_id": "6b5ef15f-a5b2-4e3e-821c-ea6b8f0fc3e6",
+      "service_sessions": 2
+    },
+    "edit-view-transport.json": {
+      "report_sha256": "f8ccf3b702a8bea0de920f2a447d8fa23abeaed315c9c79c270b22ae6fc1ec50",
+      "revision_id": "81dcfa36-f61d-4ca0-a2d0-71deb99556f1",
+      "snapshot_id": "47233c6c-de5d-4b47-a0af-29168102fca5",
+      "service_sessions": 2
+    }
+  },
+  "windows_and_transport_log_sha256": "18d73f16f7507e5b3d90e5c02e4992c72556153ee734e56ebd8bdac2709b69dc",
+  "service_regression_log_sha256": "f88cf8fe84022d6535e2445d5dc0645838eb910ae204be0967269487e050f9cd",
+  "native_exchange_regression_log_sha256": "de1c131273fd94a88b3e177b6be27b2a8bd1029e214e003cb09ddf4093c413e4",
+  "f1_acceptance": "remaining"
+}

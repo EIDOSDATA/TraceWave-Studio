@@ -7,7 +7,7 @@ from uuid import UUID
 
 from rfad.domain.design import resolve_scalar
 from rfad.domain.errors import ProjectError
-from rfad.domain.object_names import allocate_name, object_label, name_dto, validate_name
+from rfad.domain.object_names import allocate_name, display_names, name_dto, object_label, validate_name
 from rfad.domain.parameter_graph import restore_parameter_command
 from rfad.domain.units import Quantity, QuantityError, _UNITS
 from rfad.domain.pcb_features import COLLECTIONS as PCB_COLLECTIONS, records as pcb_records
@@ -277,7 +277,8 @@ def fields_for(document: dict, selection: dict) -> list[dict]:
                 fields.append(_field(key, label, "\n".join(value), readonly=True))
             elif path[-1] == "pad_ids":
                 layer_names = {layer["id"]: layer["name"] for layer in document["stackup"]}
-                choices = [_choice(item["id"], object_label(document, item) + " / " + layer_names[item["layer_id"]])
+                labels = display_names(document)
+                choices = [_choice(item["id"], labels[item["id"]] + " / " + layer_names[item["layer_id"]])
                            for item in document["geometry"] if item["kind"] == "pad"]
                 fields.append(_field(key, label, deepcopy(value), editor="multichoice", choices=choices))
             else:
@@ -290,7 +291,9 @@ def fields_for(document: dict, selection: dict) -> list[dict]:
             choices = None
             references = {"material_id": "materials", "material_ref": "materials", "net_id": "nets", "layer_id": "stackup", "end_layer_id": "stackup", "positive_geometry_id": "geometry", "reference_geometry_id": "geometry"}
             if name in references:
-                choices = [_choice(item["id"], object_label(document, item, references[name])) for item in document[references[name]]]
+                collection = references[name]
+                labels = display_names(document, collection)
+                choices = [_choice(item["id"], labels[item["id"]]) for item in document[collection]]
                 if name in ("material_id", "material_ref", "net_id"):
                     choices.insert(0, _choice("", "선택 없음"))
                 elif kind == "new_port" and name in ("positive_geometry_id", "reference_geometry_id"):
@@ -317,7 +320,8 @@ def build_dto(document: dict, saved_revision: str, history: dict, selection: dic
     if document["board"] is not None:
         items.append({"kind": "board", "id": document["board"]["id"], **name_dto(document, document["board"], "board")})
     for kind, collection in COLLECTIONS.items():
-        items += [{"kind": kind, "id": obj["id"], **name_dto(document, obj, collection)} for obj in document[collection]]
+        labels = display_names(document, collection)
+        items += [{"kind": kind, "id": obj["id"], **name_dto(document, obj, collection, labels=labels)} for obj in document[collection]]
     for kind in ["cutout", *[key for key in PCB_COLLECTIONS if key != "import"]]:
         for row in pcb_records(document, "board.cutouts" if kind == "cutout" else "pcb." + PCB_COLLECTIONS[kind]):
             items.append({"kind": kind, "id": row["id"], "name": row["name"], "label": row["name"], "name_state": "stored"})

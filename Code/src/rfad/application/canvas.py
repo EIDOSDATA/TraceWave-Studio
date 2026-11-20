@@ -8,7 +8,7 @@ from uuid import UUID
 from rfad.domain.design import resolve_scalar
 from rfad.domain.errors import ProjectError
 from rfad.domain.units import Quantity, QuantityError
-from rfad.domain.object_names import allocate_name, name_dto
+from rfad.domain.object_names import allocate_name, display_names, name_dto
 from rfad.application.edit_view_contract import result_limit
 
 
@@ -233,12 +233,13 @@ def build_canvas_dto(document: dict, *, extended: bool = False) -> dict:
                 visible["radius"] = None
                 result["omissions"].append({"id": board["id"], "message": "원형 기판 외곽이 2D 좌표 범위 또는 표현 정밀도를 벗어났습니다."})
         result["board"] = visible
+    labels = display_names(document)
     for geometry in document["geometry"]:
         try:
             prefix = "geometry." + geometry["id"]
             kind = geometry["kind"]
             shape = {"id": geometry["id"], "kind": geometry["kind"],
-                     **name_dto(document, geometry),
+                     **name_dto(document, geometry, labels=labels),
                      "layer_id": geometry["layer_id"], "role": geometry["role"],
                      "movable": _movable(geometry)}
             if kind in ("line_path", "arc_path"):
