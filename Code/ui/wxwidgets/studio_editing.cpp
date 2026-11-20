@@ -15,24 +15,43 @@ void StudioFrame::RefreshEditor(const Json& selection, std::function<void()> com
     {
         input["display_profile"] = Studio::EditViewTransportProfile;
     }
-    Send("editor.get", input, false, Context(),
-         [this, project, revision, completed](const Json& result)
-         {
-             if (m_closing || project != m_project || revision != m_revision)
-             {
-                 return;
-             }
-             if (!Studio::MatchesEditor(result, project, revision))
-             {
-                 throw std::runtime_error("Unexpected editor profile or revision.");
-             }
-             m_editor = result;
-             m_selection = result.at("selection");
-             m_selection.erase("fields");
-             m_modelView->SetSelection(m_selection.value("id", ""));
-             RefreshProject();
-             RefreshScene(completed);
-         });
+    const bool reuseItems = m_pagedEditView && Studio::MatchesEditor(m_editor, project, revision);
+    const auto accept = [this, project, revision, completed, reuseItems](Json result)
+    {
+        if (m_closing || project != m_project || revision != m_revision)
+        {
+            return;
+        }
+        if (!Studio::MatchesEditor(result, project, revision))
+        {
+            throw std::runtime_error("Unexpected editor profile or revision.");
+        }
+        if (reuseItems)
+        {
+            result["items"] = std::move(m_editor.at("items"));
+        }
+        m_editor = std::move(result);
+        m_selection = m_editor.at("selection");
+        m_selection.erase("fields");
+        m_modelView->SetSelection(m_selection.value("id", ""));
+        RefreshScene(
+            [this, completed]()
+            {
+                RefreshProject();
+                completed();
+            });
+    };
+    if (m_pagedEditView)
+    {
+        input.erase("display_profile");
+        input["offset"] = 0;
+        input["include_items"] = !reuseItems;
+        ReadEditPages(false, std::move(input), std::make_shared<Json>(), accept);
+    }
+    else
+    {
+        Send("editor.get", input, false, Context(), accept);
+    }
 }
 
 /** @brief 같은 revision의 표시 DTO는 재사용하고 변경된 표시 데이터만 다시 읽는다. */
@@ -52,59 +71,68 @@ void StudioFrame::RefreshScene(std::function<void()> completed)
     {
         input["display_profile"] = Studio::EditViewTransportProfile;
     }
-    Send("canvas.get", input, false, Context(),
-         [this, project, revision, completed](const Json& result)
-         {
-             if (m_closing || project != m_project || revision != m_revision)
-             {
-                 return;
-             }
-             if (!Studio::MatchesCanvas(result, project, revision))
-             {
-                 throw std::runtime_error("Unexpected canvas profile, unit or revision.");
-             }
-             const bool first = m_scene.empty();
-             m_canvas->SetScene(result);
-             m_scene = result;
-             m_layerChoice->Clear();
-             m_layerIds.clear();
-             for (const auto& layer : result.at("layers"))
-             {
-                 if (layer.at("role") == "conductor")
-                 {
-                     m_layerIds.push_back(layer.at("id"));
-                     m_layerChoice->Append(Display(layer.at("label").get<std::string>()));
-                 }
-             }
-             auto active = std::find(m_layerIds.begin(), m_layerIds.end(), m_activeLayer);
-             if (active == m_layerIds.end())
-             {
-                 m_activeLayer = m_layerIds.empty() ? "" : m_layerIds.front();
-                 active = m_layerIds.begin();
-             }
-             if (!m_layerIds.empty())
-             {
-                 m_layerChoice->SetSelection(static_cast<int>(active - m_layerIds.begin()));
-             }
-             m_canvas->SetDrawingLayer(m_activeLayer);
-             RefreshLayerList();
-             m_canvas->SetSelection(m_selection.value("kind", "") == "geometry" ? m_selection.value("id", "") : "");
-             if (first)
-             {
-                 m_canvas->FitView();
-                 m_canvasHint->SetLabel(
-                     Display(m_activeLayer.empty()
-                                 ? "도체층을 추가한 뒤 선 또는 원호 도구를 선택하세요."
-                                 : "선 또는 원호 도구를 선택하세요. 휠: 확대/축소, 가운데 버튼: 이동, Esc: 취소"));
-             }
-             for (const auto& omission : result.at("omissions"))
-             {
-                 Log("표시 생략: " + omission.at("message").get<std::string>());
-             }
-             ShowProblems();
-             RefreshDimensions();
-             completed();
-         });
+    const auto accept = [this, project, revision, completed](Json result)
+    {
+        if (m_closing || project != m_project || revision != m_revision)
+        {
+            return;
+        }
+        if (!Studio::MatchesCanvas(result, project, revision))
+        {
+            throw std::runtime_error("Unexpected canvas profile, unit or revision.");
+        }
+        const bool first = m_scene.empty();
+        m_canvas->SetScene(result);
+        m_layerChoice->Clear();
+        m_layerIds.clear();
+        for (const auto& layer : result.at("layers"))
+        {
+            if (layer.at("role") == "conductor")
+            {
+                m_layerIds.push_back(layer.at("id"));
+                m_layerChoice->Append(Display(layer.at("label").get<std::string>()));
+            }
+        }
+        auto active = std::find(m_layerIds.begin(), m_layerIds.end(), m_activeLayer);
+        if (active == m_layerIds.end())
+        {
+            m_activeLayer = m_layerIds.empty() ? "" : m_layerIds.front();
+            active = m_layerIds.begin();
+        }
+        if (!m_layerIds.empty())
+        {
+            m_layerChoice->SetSelection(static_cast<int>(active - m_layerIds.begin()));
+        }
+        m_canvas->SetDrawingLayer(m_activeLayer);
+        m_scene = std::move(result);
+        RefreshLayerList();
+        m_canvas->SetSelection(m_selection.value("kind", "") == "geometry" ? m_selection.value("id", "") : "");
+        if (first)
+        {
+            m_canvas->FitView();
+            m_canvasHint->SetLabel(
+                Display(m_activeLayer.empty()
+                            ? "도체층을 추가한 뒤 선 또는 원호 도구를 선택하세요."
+                            : "선 또는 원호 도구를 선택하세요. 휠: 확대/축소, 가운데 버튼: 이동, Esc: 취소"));
+        }
+        for (const auto& omission : m_scene.at("omissions"))
+        {
+            Log("표시 생략: " + omission.at("message").get<std::string>());
+        }
+        ShowProblems();
+        RefreshDimensions();
+        completed();
+    };
+    if (m_pagedEditView)
+    {
+        input.erase("display_profile");
+        input["offset"] = 0;
+        ReadEditPages(true, std::move(input), std::make_shared<Json>(), accept);
+    }
+    else
+    {
+        Send("canvas.get", input, false, Context(), accept);
+    }
 }
 
 /** @brief 비동기 조회 중 비활성화한 트리의 키보드 초점을 완료 후 복원한다. */

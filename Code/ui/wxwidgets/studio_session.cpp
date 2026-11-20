@@ -34,6 +34,8 @@ void StudioFrame::Connect()
              const auto editTransport = result.value("edit_view_transport", Json::object());
              m_extendedEditView = editTransport.is_object() &&
                                   editTransport.value("profile", Json(nullptr)) == Studio::EditViewTransportProfile;
+             const auto pages = result.value("edit_view_pages", Json::object());
+             m_pagedEditView = pages.is_object() && pages.value("profile", Json(nullptr)) == Studio::EditViewPagesProfile;
              m_designRulesSupported = result.contains("design_rules_profile");
              m_physicalSetupSupported = result.contains("physical_setup_profile");
              m_studySupported = result.value("methods", Json::object()).contains("study.context");

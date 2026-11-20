@@ -34,6 +34,20 @@ void StudioSmokeDriver::FinishSmoke(bool passed, const std::string& error)
                 {"saved_revision", m_frame.m_savedRevision},
                 {"snapshot_id", m_frame.m_snapshot},
                 {"service_sessions", m_serviceSessions},
+                {"canvas_shapes", m_frame.m_scene.contains("shapes") ? m_frame.m_scene.at("shapes").size() : 0},
+                {"canvas_omissions", m_frame.m_canvas->DisplayOmissionCount()},
+                {"editor_parameters", [this]()
+                 {
+                     const auto items = m_frame.m_editor.find("items");
+                     if (items == m_frame.m_editor.end())
+                     {
+                         return std::size_t{0};
+                     }
+                     return static_cast<std::size_t>(std::count_if(items->begin(), items->end(), [](const Json& item)
+                     {
+                         return item.at("kind") == "parameter";
+                     }));
+                 }()},
                 {"editor_stage", m_editorStage},
                 {"editor_checks", m_editorChecks},
                 {"canvas_stage", m_canvasStage},

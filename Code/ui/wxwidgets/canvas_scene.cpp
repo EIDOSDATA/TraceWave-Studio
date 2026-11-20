@@ -127,9 +127,9 @@ Model Model::Parse(const nlohmann::json& scene)
     {
         layers.insert(layer.at("id").get<std::string>());
     }
-    if (!scene.at("shapes").is_array() || scene.at("shapes").size() > 4096)
+    if (!scene.at("shapes").is_array() || scene.at("shapes").size() > 10000)
     {
-        throw std::runtime_error("초기 캔버스 표시 객체 수를 초과했습니다.");
+        throw std::runtime_error("캔버스의 형상 10000개 표시 상한을 초과했습니다.");
     }
     for (const auto& item : scene.at("shapes"))
     {

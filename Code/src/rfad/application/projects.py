@@ -11,6 +11,7 @@ from uuid import uuid4
 from rfad.application.canvas import build_canvas_dto, canvas_command
 from rfad.application.editor import build_dto, edit_command
 from rfad.application.edit_view_contract import extended_view
+from rfad.application.edit_view_pages import EditViewPages
 from rfad.application.cad_jobs import CAD_METHODS, CadCoordinator, CadRuntime
 from rfad.application.exchange_jobs import ExchangeCoordinator
 from rfad.application import exchange_service, exchange_contract
@@ -66,6 +67,7 @@ class ProjectService:
         self.workspace = Path(os.path.abspath(workspace))
         self.clock = clock
         self.archive_receiver = archive_receiver.ArchiveReceiver(self._now)
+        self.edit_view_pages = EditViewPages()
         self._wake = threading.Event()
         self._stop = threading.Event()
         self._thread = None

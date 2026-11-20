@@ -239,10 +239,23 @@ void StudioFrame::RebuildNavigation()
     wxTreeItemId selected;
     std::map<std::string, wxTreeItemId> footprintNodes;
     std::map<std::string, std::string> owners;
+    std::map<std::string, int> shapeIconById;
+    const std::map<std::string, int> shapeIcons{
+        {"line_path", 10}, {"arc_path", 11}, {"planar_region", 12}, {"pad", 13}, {"via", 14}};
     for (const auto* collection : {"shapes", "pcb_features"})
     {
-        for (const auto& shape : m_scene.value(collection, Json::array()))
+        const auto rows = m_scene.find(collection);
+        if (rows == m_scene.end())
         {
+            continue;
+        }
+        for (const auto& shape : *rows)
+        {
+            const auto icon = shapeIcons.find(shape.value("kind", ""));
+            if (icon != shapeIcons.end())
+            {
+                shapeIconById.emplace(shape.at("id").get<std::string>(), icon->second);
+            }
             const auto owner = shape.value("owner_footprint_id", Json(nullptr));
             if (owner.is_string())
             {
@@ -296,16 +309,10 @@ void StudioFrame::RebuildNavigation()
         int icon = NavigationIcon(kind);
         if (kind == "geometry")
         {
-            const std::map<std::string, int> shapeIcons{
-                {"line_path", 10}, {"arc_path", 11}, {"planar_region", 12}, {"pad", 13}, {"via", 14}};
-            for (const auto& shape : m_scene.value("shapes", Json::array()))
+            const auto match = shapeIconById.find(item.at("id").get<std::string>());
+            if (match != shapeIconById.end())
             {
-                const auto match = shapeIcons.find(shape.value("kind", ""));
-                if (shape.at("id") == item.at("id") && match != shapeIcons.end())
-                {
-                    icon = match->second;
-                    break;
-                }
+                icon = match->second;
             }
         }
         auto parent = groups.count(kind) ? groups.at(kind) : root;

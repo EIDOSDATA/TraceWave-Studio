@@ -37,6 +37,10 @@ void StudioFrame::OpenProject(const std::string& mode, const std::string& path, 
     m_busy = true;
     UpdateControls();
     Json input{{"open_mode", mode}, {"path", path}};
+    if (m_pagedEditView)
+    {
+        input["result_mode"] = "summary";
+    }
     if (mode == "create")
     {
         input["name"] = name;

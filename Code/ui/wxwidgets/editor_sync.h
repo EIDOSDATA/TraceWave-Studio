@@ -7,6 +7,7 @@ namespace Studio
 {
 /** @brief 새 Studio는 같은 DTO의 더 큰 전송 한도를 서비스가 공개할 때만 요청한다. */
 inline constexpr const char* EditViewTransportProfile = "rfad.edit-view-transport/0.1";
+inline constexpr const char* EditViewPagesProfile = "rfad.edit-view-pages/0.1";
 
 /** @brief 응답의 프로필과 프로젝트/개정 소유권이 모두 일치해야 속성을 편집할 수 있다. */
 inline bool MatchesEditor(const Json& editor, const std::string& project, const std::string& revision)

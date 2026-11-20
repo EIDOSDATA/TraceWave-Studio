@@ -260,6 +260,8 @@ private:
     void RefreshEditor(const Json& selection, std::function<void()> completed);
     /** @brief 같은 revision의 표시 DTO는 재사용하고 변경된 표시 데이터만 다시 읽는다. */
     void RefreshScene(std::function<void()> completed);
+    void ReadEditPages(bool canvas, Json input, std::shared_ptr<Json> assembled,
+                       std::function<void(Json)> completed);
     /** @brief 비동기 조회 중 비활성화한 트리의 키보드 초점을 완료 후 복원한다. */
     void SelectObject(const Json& selection, bool restoreTreeFocus = false);
     /** @brief 작은 편집 DTO로 탐색 트리와 속성 폼을 갱신한다. */
@@ -296,6 +298,7 @@ private:
     bool m_closeAfterSetup = false;
     bool m_forceCloseAfterSetup = false;
     bool m_extendedEditView = false;
+    bool m_pagedEditView = false;
     bool m_targetsSupported = false;
     bool m_templatesSupported = false;
     bool m_designRulesSupported = false;

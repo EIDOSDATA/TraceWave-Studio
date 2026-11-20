@@ -21,14 +21,14 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 44,
     "current_06_분석연구": 13,
-    "current_07_검증": 60,
+    "current_07_검증": 61,
     "current_08_운영환경": 7,
     "current_09_개발계획": 4,
     "current_11_검토기록": 6,
     "current_traceability": 4,
     "document_catalog": 4,
     "document_navigation": 6,
-    "documentation_asset": 160,
+    "documentation_asset": 161,
     "documentation_validation_record": 1,
     "historical_proposal": 2,
     "historical_verification": 41,
@@ -28472,8 +28472,8 @@
       "path": "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
-      "bytes": 619618,
-      "working_tree_sha256": "fc037410a84a561b1f2f5ed13a832d096bf1c33f408d21482ce82737360fa15f"
+      "bytes": 619852,
+      "working_tree_sha256": "812f10fdd74043fa886e43071f5276972f0f12909087dc3960216ba6b2be7b98"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -28609,9 +28609,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 17710,
-      "working_tree_sha256": "cf2b8c5fa1dd1d4c662710dd26461f849d1e1295bf98de74736de331c6f9c03f",
-      "text_lines": 123,
+      "bytes": 18014,
+      "working_tree_sha256": "071759abed703358bb2fedf07d540300942008a847984f12ddc8467ccbb2e0b6",
+      "text_lines": 125,
       "text_status": "utf8_read"
     },
     {
@@ -31198,6 +31198,22 @@
       "working_tree_sha256": "a580609c7d50c98cda41d9e21d65c356d1de660aeab150378fad2a2e6a5ccdaf",
       "text_lines": 9,
       "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/107_대형설계_윈도우_페이지_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2264,
+      "working_tree_sha256": "cf1d86aad9541de45e4b57aa930ff0c5c33fea731b8f6c52e322bd68e228095e",
+      "text_lines": 18,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/108_대형설계_윈도우_재열기_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 769,
+      "working_tree_sha256": "c2a0b93c7b6687bc677d7edc088419720353d6372982ac55f5e4abca5a8d6a1d"
     }
   ],
   "identical_byte_groups": [
@@ -31354,15 +31370,17 @@
   ],
   "incremental_refresh": {
     "date_kst": "2026-11-21",
-    "mode": "step12_f1_large_canonical_project_storage",
-    "previous_inventory_sha256": "fb2459ed4aaa49768ba4cf09e490553cc969466ba082da69335883c47da987a2",
+    "mode": "step12_f1_large_editor_pages_windows",
+    "previous_inventory_sha256": "495b011b7ec26a769978d9dfaebc5d7b989b707a993e3e66f54fd9b3d2f765aa",
     "refreshed_paths": [
       "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
-      "01_개발문서/07_검증/106_대형설계_원본저장_검증.md",
+      "01_개발문서/07_검증/107_대형설계_윈도우_페이지_검증.md",
+      "01_개발문서/07_검증/108_대형설계_윈도우_재열기_실행기록.json",
       "01_개발문서/07_검증/README.md"
     ],
     "added_paths": [
-      "01_개발문서/07_검증/106_대형설계_원본저장_검증.md"
+      "01_개발문서/07_검증/107_대형설계_윈도우_페이지_검증.md",
+      "01_개발문서/07_검증/108_대형설계_윈도우_재열기_실행기록.json"
     ],
     "removed_paths": [],
     "preserved_reference_records": 3336,

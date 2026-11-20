@@ -16,7 +16,7 @@ from rfad.application.catalog_api import describe as describe_catalog, query as 
 from rfad.application.pcb_selection_contract import READ_METHODS as PCB_SELECTION_READS, MUTATION_METHODS as PCB_SELECTION_MUTATIONS
 from rfad.application.project_study_contract import READS as STUDY_READS, MUTATIONS as STUDY_MUTATIONS
 from rfad.application import target_editor
-from rfad.application import edit_view_contract
+from rfad.application import edit_view_contract, edit_view_pages
 from rfad.application import exchange_service, exchange_contract
 from rfad.application import pcb_exchange_service
 from rfad.application import pcb_import_service
@@ -201,6 +201,10 @@ def capabilities(service=None, catalog=None) -> dict:
         result["methods"].update({name: {"status": "implemented", "extension_profile": "rfad.canvas/0.1"} for name in ("canvas.get", "canvas.apply")})
         result["canvas_profile"] = {"profile": "rfad.canvas/0.1", "source": "draft_revision", "unit": "mm", "angle_unit": "deg", "operations": ["create_board", "create_circular_board", "create_layer", "create_dielectric_layer", "create_line", "create_arc", "create_polygon", "create_pad", "create_via", "translate", "move_endpoint", "remove"], "full_document_returned": False, "max_dto_bytes": 61440}
         result["edit_view_transport"] = {"profile": edit_view_contract.PROFILE, "max_dto_bytes": MAX_SELECTION_RESULT_BYTES}
+        result["edit_view_pages"] = {"profile": edit_view_pages.PROFILE, "max_dto_bytes": edit_view_pages.MAX_PAGE_BYTES,
+                                      "max_rows": edit_view_pages.MAX_ROWS}
+        result["methods"].update({name: {"status": "implemented", "extension_profile": edit_view_pages.PROFILE}
+                                  for name in ("editor.page", "canvas.page")})
         result["project_profile"]["geometry_kinds"] = ["line_path", "arc_path", "planar_region", "pad", "via"]
         result["methods"]["cad.latest"] = {"status": "implemented", "extension_profile": "rfad.cad-view/0.1"}
         result["methods"].update({name: {"status": "implemented", "api_id": api_id, "extension_profile": "rfad.step.mechanical/0.1"} for name, api_id in (("geometry.build", "API-008"), ("export.preview", "API-023"), ("export.build", "API-024"))})
@@ -341,7 +345,7 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
         return _error(None, -32600, "Invalid Request")
     notification = "id" not in request
     method = request["method"]
-    if service is not None and method in PROJECT_MUTATIONS | archive_receiver.READS | archive_export_service.READS | handoff_service.READS | measurement_service.READS | pcb_import_service.READS | pcb_exchange_service.READS | exchange_contract.READS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | network_service.READS | design_sweep_service.READS | result_service.READS | rf_validation_records.READS | sweep_selection.READS | {handoff_evidence.METHOD, "target.editor.get", "job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
+    if service is not None and method in PROJECT_MUTATIONS | archive_receiver.READS | archive_export_service.READS | handoff_service.READS | measurement_service.READS | pcb_import_service.READS | pcb_exchange_service.READS | exchange_contract.READS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | network_service.READS | design_sweep_service.READS | result_service.READS | rf_validation_records.READS | sweep_selection.READS | {handoff_evidence.METHOD, "target.editor.get", "job.status", "editor.get", "canvas.get", "editor.page", "canvas.page", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
         if notification and method in PROJECT_MUTATIONS | archive_receiver.READS:
             return None
         try:
@@ -396,6 +400,8 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
                 result = service.editor_state(params)
             elif method == "canvas.get":
                 result = service.canvas_state(params)
+            elif method in ("editor.page", "canvas.page"):
+                result = service.edit_view_pages.read(service, params, canvas=method == "canvas.page")
             elif method == "cad.latest":
                 result = service.cad_latest(params)
             elif method == "result.open":

@@ -313,8 +313,8 @@ def fields_for(document: dict, selection: dict) -> list[dict]:
     return fields
 
 
-def build_dto(document: dict, saved_revision: str, history: dict, selection: dict | None, *, extended: bool = False) -> dict:
-    """! @brief 객체 목록과 선택 속성만 전송하며 전체 원본과 계산 캐시는 내보내지 않는다."""
+def editor_items(document: dict) -> list[dict]:
+    """! @brief 현재 개정의 전체 탐색 목록을 만든다."""
     items = [{"kind": "project", "id": document["project_id"], "name": document["metadata"]["name"], "name_state": "stored", "label": document["metadata"]["name"]}]
     items += [{"kind": "parameter", "id": identity, **name_dto(document, obj, "parameters")} for identity, obj in sorted(document["parameters"].items())]
     if document["board"] is not None:
@@ -325,13 +325,25 @@ def build_dto(document: dict, saved_revision: str, history: dict, selection: dic
     for kind in ["cutout", *[key for key in PCB_COLLECTIONS if key != "import"]]:
         for row in pcb_records(document, "board.cutouts" if kind == "cutout" else "pcb." + PCB_COLLECTIONS[kind]):
             items.append({"kind": kind, "id": row["id"], "name": row["name"], "label": row["name"], "name_state": "stored"})
+    return items
+
+
+def editor_selection(document: dict, saved_revision: str, history: dict, selection: dict | None) -> dict:
+    """! @brief 같은 개정에서 목록과 독립적으로 선택 속성과 저장 상태를 구한다."""
     selected = {"kind": "project", "id": document["project_id"]} if selection is None else selection
     selected_fields = fields_for(document, selected)
     result = {"profile": PROFILE, "project_id": document["project_id"], "revision_id": document["revision_id"], "saved_revision": saved_revision,
-              "metadata": {key: document["metadata"][key] for key in ("name", "description")}, "history": history, "items": items,
+              "metadata": {key: document["metadata"][key] for key in ("name", "description")}, "history": history,
               "selection": {**selected, "fields": selected_fields}}
     if any(field["editor"] == "coordinate_table" for field in selected_fields):
         result["coordinate_choices"] = _parameter_choices(document, "length")
+    return result
+
+
+def build_dto(document: dict, saved_revision: str, history: dict, selection: dict | None, *, extended: bool = False) -> dict:
+    """! @brief 기존 단일 응답 경로에서는 목록과 선택을 하나의 전송 예산으로 보낸다."""
+    result = editor_selection(document, saved_revision, history, selection)
+    result["items"] = editor_items(document)
     if len(json.dumps(result, ensure_ascii=False).encode("utf-8")) > result_limit(MAX_DTO_BYTES, extended):
         _fail("선택 속성 DTO가 해당 전송 크기 상한을 초과합니다.", "selection", "E_RESOURCE")
     return result

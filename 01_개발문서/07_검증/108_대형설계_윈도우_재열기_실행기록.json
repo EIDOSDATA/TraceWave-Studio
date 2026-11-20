@@ -1,0 +1,18 @@
+{
+  "schema": "rfad.windows-f1-edit-pages/0.1",
+  "date_kst": "2026-11-21",
+  "storage_base": "141472437ab2ffb6c1758d9e198cc218d8aaf4e9",
+  "executable_sha256": "a4e90840d0d99f6e22f961fdbaa74a018766305433ee33ede4bf2252ccb7c7d9",
+  "save_reopen": {
+    "canvas_shapes": 10000,
+    "canvas_omissions": 0,
+    "editor_parameters": 1000,
+    "saved_revision": "6b6e917b-7c0d-4812-b663-5032069af611",
+    "snapshot_id": "ec10ef0d-3938-4cde-9c66-1d8de97876ba",
+    "service_sessions": 2
+  },
+  "windows_regression_sha256": "b8e9a25bb8ec7ab5aba9ea80be972add085783ee9f0e449f53b3d4f53bcd1494",
+  "service_regression_sha256": "2465be27b00d44d8a9801a889e155d8e90ab36ef851ea96d92b55810531ce187",
+  "gui_fixture_source_and_unknown_preserved": true,
+  "frame_budget_tested": false
+}

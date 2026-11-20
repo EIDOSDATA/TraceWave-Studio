@@ -209,7 +209,7 @@ def _retarget_arc(document: dict, arc: dict, endpoint: str, target: list[float])
     arc["sweep_angle"] = _replace_quantity(arc["sweep_angle"], _quantity(new_sweep, "deg", "geometry.sweep_angle"))
 
 
-def build_canvas_dto(document: dict, *, extended: bool = False) -> dict:
+def project_canvas(document: dict) -> dict:
     """! @brief mm/deg의 표시 모델만 만들며 미정 형상과 생략 사유를 분리한다."""
     result = {"profile": PROFILE, "project_id": document["project_id"], "revision_id": document["revision_id"],
               "unit": "mm", "angle_unit": "deg", "ranges": dict(DISPLAY_RANGES), "board": None,
@@ -282,6 +282,12 @@ def build_canvas_dto(document: dict, *, extended: bool = False) -> dict:
         owners = owner_map(document)
         for row in result["shapes"]:
             row["owner_footprint_id"] = owners.get(("geometry", row["id"]))
+    return result
+
+
+def build_canvas_dto(document: dict, *, extended: bool = False) -> dict:
+    """! @brief 기존 한 응답 계약에만 이전 전송 예산을 적용한다."""
+    result = project_canvas(document)
     if len(json.dumps(result, ensure_ascii=False, allow_nan=False).encode("utf-8")) > result_limit(MAX_DTO_BYTES, extended):
         _fail("2D 표시 DTO가 해당 전송 크기 상한을 초과했습니다.", "canvas", "E_RESOURCE")
     return result

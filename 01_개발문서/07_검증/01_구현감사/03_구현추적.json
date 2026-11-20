@@ -7905,6 +7905,10 @@
       "extension_profile": "rfad.canvas/0.1",
       "status": "implemented"
     },
+    "canvas.page": {
+      "extension_profile": "rfad.edit-view-pages/0.1",
+      "status": "implemented"
+    },
     "catalog.get": {
       "extension_profile": "rfad.catalog/0.1",
       "status": "implemented"
@@ -7943,6 +7947,10 @@
     },
     "editor.get": {
       "extension_profile": "rfad.editor/0.1",
+      "status": "implemented"
+    },
+    "editor.page": {
+      "extension_profile": "rfad.edit-view-pages/0.1",
       "status": "implemented"
     },
     "export.context": {
@@ -14568,8 +14576,8 @@
     },
     {
       "path": "Code/src/rfad/application/canvas.py",
-      "text_sha256": "5fa244880869aa7681f73c4512d1739f521b303d025622a1ccb7e675b28ca34e",
-      "utf8_bytes": 24257
+      "text_sha256": "a915e87ab320ea7b91759deeb63bcae1746995625bafa72aa868fd5de2d95151",
+      "utf8_bytes": 24447
     },
     {
       "path": "Code/src/rfad/application/catalog_api.py",
@@ -14923,8 +14931,8 @@
     },
     {
       "path": "Code/src/rfad/application/rpc.py",
-      "text_sha256": "5c69bc799444dc4855dd87be6c128d7d01242e5c0520aa09cfa1b41b1df196e9",
-      "utf8_bytes": 36523
+      "text_sha256": "334c7cb89dae81e4b83b086d840291e20499609e8c813e9d611e09bfcc6695af",
+      "utf8_bytes": 37121
     },
     {
       "path": "Code/src/rfad/application/solver.py",
@@ -16143,8 +16151,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_navigation.cpp",
-      "text_sha256": "76684f76c6af476173a44002a8992d4e599a7877db487777d0e57b006d29d76b",
-      "utf8_bytes": 16897
+      "text_sha256": "6dfd981622738d0061e9d7dbb0ae2ee461aa58fb2ade237029a3d098030a74fc",
+      "utf8_bytes": 17079
     },
     {
       "path": "Code/ui/wxwidgets/studio_precision.cpp",

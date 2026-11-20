@@ -247,6 +247,7 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/design_canvas_dimensions.cpp
     ui/wxwidgets/object_rename_dialog.cpp
     ui/wxwidgets/studio_editing.cpp
+    ui/wxwidgets/studio_edit_view.cpp
     ui/wxwidgets/studio_lifecycle.cpp
     ui/wxwidgets/studio_smoke_editor.cpp
     ui/wxwidgets/studio_smoke_canvas.cpp
