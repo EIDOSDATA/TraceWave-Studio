@@ -107,6 +107,32 @@ int main()
     IndexedPicking();
     const auto fixture = Fixture(snapshot);
     const auto scene = Parse(fixture, snapshot, "run-1");
+    std::vector<Coordinates> compactCoordinates;
+    const Json compact = ReadPackedMesh(fixture.dump(), compactCoordinates, nullptr);
+    Check(compactCoordinates.size() == 2 && compactCoordinates[0].vertices.size() == 3 &&
+              compactCoordinates[0].triangles.size() == 1,
+          "packed numeric row counts");
+    Check(compact.at("bodies").at(0).at("vertices").empty() &&
+              compact.at("bodies").at(0).at("triangles").empty(),
+          "coordinates do not accumulate in the JSON tree");
+    const auto packedScene = Parse(compact, snapshot, "run-1", nullptr, 0, &compactCoordinates);
+    Check(packedScene.bodies[0].positions == scene.bodies[0].positions &&
+              packedScene.bodies[1].normals == scene.bodies[1].normals &&
+              packedScene.bodies[1].sources == scene.bodies[1].sources,
+          "packed coordinates preserve display and source pairing");
+    Reject([&]()
+    {
+        auto bad = fixture;
+        bad["bodies"][0]["vertices"].push_back("malformed row");
+        std::vector<Coordinates> rejected;
+        ReadPackedMesh(bad.dump(), rejected, nullptr);
+    }, "packed coordinates reject scalar rows");
+    Reject([&]()
+    {
+        std::vector<Coordinates> rejected;
+        std::atomic<bool> cancelled = true;
+        ReadPackedMesh(fixture.dump(), rejected, &cancelled);
+    }, "packed parser cancellation");
     Check(scene.bodies.size() == 2 && scene.triangles == 2 && scene.vertices == 6, "counts");
     Check(scene.bodies[1].sources == std::vector<std::string>({"arc-a", "line-b"}), "merged source mapping");
     Check(std::abs(scene.center.z - 0.0175) < 1e-12, "physical thin copper retained");

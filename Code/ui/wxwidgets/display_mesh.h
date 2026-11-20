@@ -3,6 +3,7 @@
 #include <windows.h>
 #include <bcrypt.h>
 #include <nlohmann/json.hpp>
+#include "display_mesh_packed.h"
 
 #include <algorithm>
 #include <array>
@@ -20,21 +21,11 @@
 /** @brief CAD 원본과 분리된 표시 mesh의 검증, 카메라와 선택 계산이다. */
 namespace DisplayMesh
 {
-using Json = nlohmann::json;
 constexpr std::size_t MaxBytes = 16 * 1024 * 1024;
 constexpr std::size_t MaxTriangles = 100000;
 constexpr std::size_t MaxVertices = 300000;
 constexpr std::size_t MaxLargeBytes = 64 * 1024 * 1024;
-constexpr std::size_t MaxLargeTriangles = 1000000;
-constexpr std::size_t MaxLargeVertices = MaxLargeTriangles * 3;
 constexpr double Pi = 3.14159265358979323846;
-
-struct Point
-{
-    double x = 0.0;
-    double y = 0.0;
-    double z = 0.0;
-};
 
 struct Body
 {
@@ -105,22 +96,6 @@ struct Camera
     }
 };
 
-inline void Require(bool condition, const char* message)
-{
-    if (!condition)
-    {
-        throw std::runtime_error(message);
-    }
-}
-
-inline void CheckCancelled(const std::atomic<bool>* cancelled)
-{
-    if (cancelled != nullptr && cancelled->load())
-    {
-        throw std::runtime_error("3D 파일 읽기를 취소했습니다.");
-    }
-}
-
 inline std::string Identity(const Json& value)
 {
     Require(value.is_string(), "3D 객체 식별자가 올바르지 않습니다.");
@@ -130,23 +105,10 @@ inline std::string Identity(const Json& value)
     return result;
 }
 
-inline Point ReadPoint(const Json& value)
-{
-    Require(value.is_array() && value.size() == 3, "3D 정점 좌표가 올바르지 않습니다.");
-    std::array<double, 3> numbers{};
-    for (std::size_t index = 0; index < 3; ++index)
-    {
-        Require(value[index].is_number(), "3D 정점에는 숫자가 필요합니다.");
-        numbers[index] = value[index].get<double>();
-        Require(std::isfinite(numbers[index]) && std::abs(numbers[index]) <= 1000001.0,
-            "3D 정점이 표시 범위를 벗어났습니다.");
-    }
-    return {numbers[0], numbers[1], numbers[2]};
-}
-
 /** @brief 제한된 JSON을 검증한 뒤 중심 기준의 렌더링 버퍼만 남긴다. */
 inline Scene Parse(const Json& value, const Json& snapshot, const std::string& runId,
-    const std::atomic<bool>* cancelled = nullptr, std::size_t byteCount = 0)
+    const std::atomic<bool>* cancelled = nullptr, std::size_t byteCount = 0,
+    const std::vector<Coordinates>* packed = nullptr)
 {
     Require(value.is_object(), "지원하지 않는 3D 표시 파일입니다.");
     const std::string schema = value.value("schema", "");
@@ -162,6 +124,7 @@ inline Scene Parse(const Json& value, const Json& snapshot, const std::string& r
     const auto& sourceBodies = value.at("bodies");
     Require(sourceBodies.is_array() && !sourceBodies.empty() && sourceBodies.size() <= 256,
         "3D body 수가 지원 범위를 벗어났습니다.");
+    Require(packed == nullptr || packed->size() == sourceBodies.size(), "3D body 좌표 목록이 올바르지 않습니다.");
     Scene result;
     result.snapshotId = Identity(snapshot.at("snapshot_id"));
     result.revisionId = Identity(snapshot.at("revision_id"));
@@ -170,21 +133,24 @@ inline Scene Parse(const Json& value, const Json& snapshot, const std::string& r
     Point minimum{infinity, infinity, infinity};
     Point maximum{-infinity, -infinity, -infinity};
     std::set<std::string> identities;
-    for (const auto& source : sourceBodies)
+    for (std::size_t bodyIndex = 0; bodyIndex < sourceBodies.size(); ++bodyIndex)
     {
         CheckCancelled(cancelled);
+        const auto& source = sourceBodies[bodyIndex];
         Require(identities.insert(Identity(source.at("id"))).second, "3D body 식별자가 중복되었습니다.");
         const auto& vertices = source.at("vertices");
         const auto& triangles = source.at("triangles");
-        Require(vertices.is_array() && !vertices.empty() && triangles.is_array() && !triangles.empty(),
+        const auto vertexCount = packed ? (*packed)[bodyIndex].vertices.size() : vertices.size();
+        const auto triangleCount = packed ? (*packed)[bodyIndex].triangles.size() : triangles.size();
+        Require(vertices.is_array() && vertexCount != 0 && triangles.is_array() && triangleCount != 0,
             "3D body의 정점 또는 삼각형이 비어 있습니다.");
-        Require(vertices.size() <= maxVertices - result.vertices && triangles.size() <= maxTriangles - result.triangles,
+        Require(vertexCount <= maxVertices - result.vertices && triangleCount <= maxTriangles - result.triangles,
             "3D 표시 크기가 선언한 profile 상한을 넘었습니다.");
-        result.vertices += vertices.size();
-        result.triangles += triangles.size();
-        for (const auto& vertex : vertices)
+        result.vertices += vertexCount;
+        result.triangles += triangleCount;
+        for (std::size_t vertex = 0; vertex < vertexCount; ++vertex)
         {
-            const Point point = ReadPoint(vertex);
+            const Point point = packed ? (*packed)[bodyIndex].vertices[vertex] : ReadPoint(vertices[vertex]);
             minimum = {std::min(minimum.x, point.x), std::min(minimum.y, point.y), std::min(minimum.z, point.z)};
             maximum = {std::max(maximum.x, point.x), std::max(maximum.y, point.y), std::max(maximum.z, point.z)};
         }
@@ -192,9 +158,10 @@ inline Scene Parse(const Json& value, const Json& snapshot, const std::string& r
     result.center = {(minimum.x + maximum.x) / 2.0, (minimum.y + maximum.y) / 2.0, (minimum.z + maximum.z) / 2.0};
     result.radius = std::hypot(std::hypot(maximum.x - minimum.x, maximum.y - minimum.y), maximum.z - minimum.z) / 2.0;
     Require(result.radius > 0.0, "3D 표시 범위가 비어 있습니다.");
-    for (const auto& source : sourceBodies)
+    for (std::size_t bodyIndex = 0; bodyIndex < sourceBodies.size(); ++bodyIndex)
     {
         CheckCancelled(cancelled);
+        const auto& source = sourceBodies[bodyIndex];
         Body body;
         body.id = Identity(source.at("id"));
         body.layer = Identity(source.at("layer_id"));
@@ -212,20 +179,21 @@ inline Scene Parse(const Json& value, const Json& snapshot, const std::string& r
         }
         const auto& vertices = source.at("vertices");
         const auto& triangles = source.at("triangles");
-        body.positions.reserve(triangles.size() * 9);
-        body.normals.reserve(triangles.size() * 9);
-        for (const auto& triangle : triangles)
+        const auto* coordinates = packed ? &(*packed)[bodyIndex] : nullptr;
+        const auto vertexCount = coordinates ? coordinates->vertices.size() : vertices.size();
+        const auto triangleCount = coordinates ? coordinates->triangles.size() : triangles.size();
+        body.positions.reserve(triangleCount * 9);
+        body.normals.reserve(triangleCount * 9);
+        for (std::size_t row = 0; row < triangleCount; ++row)
         {
             CheckCancelled(cancelled);
-            Require(triangle.is_array() && triangle.size() == 3, "3D 삼각형 인덱스가 올바르지 않습니다.");
+            const auto triangle = coordinates ? coordinates->triangles[row] : ReadTriangle(triangles[row]);
             std::array<Point, 3> points{};
             for (std::size_t corner = 0; corner < 3; ++corner)
             {
-                Require(triangle[corner].is_number_integer() && triangle[corner].get<std::int64_t>() >= 0,
-                    "3D 삼각형 인덱스는 음수가 아닌 정수여야 합니다.");
-                const auto index = triangle[corner].get<std::uint64_t>();
-                Require(index < vertices.size(), "3D 삼각형이 없는 정점을 참조합니다.");
-                points[corner] = ReadPoint(vertices[index]);
+                const auto index = triangle[corner];
+                Require(index < vertexCount, "3D 삼각형이 없는 정점을 참조합니다.");
+                points[corner] = coordinates ? coordinates->vertices[index] : ReadPoint(vertices[index]);
             }
             const Point a{points[1].x - points[0].x, points[1].y - points[0].y, points[1].z - points[0].z};
             const Point b{points[2].x - points[0].x, points[2].y - points[0].y, points[2].z - points[0].z};
@@ -429,13 +397,9 @@ inline Scene Load(const std::filesystem::path& workspace, const Json& artifact, 
         offset += received;
     }
     Require(Sha256(bytes) == artifact.at("sha256").get<std::string>(), "3D 파일 SHA256이 게시된 값과 다릅니다.");
-    const Json value = Json::parse(bytes, [cancelled](int depth, Json::parse_event_t, Json&)
-    {
-        CheckCancelled(cancelled);
-        Require(depth <= 32, "3D 파일 중첩 깊이가 너무 큽니다.");
-        return true;
-    });
+    std::vector<Coordinates> coordinates;
+    const Json value = ReadPackedMesh(bytes, coordinates, cancelled);
     std::string{}.swap(bytes);
-    return Parse(value, snapshot, runId, cancelled, static_cast<std::size_t>(byteCount));
+    return Parse(value, snapshot, runId, cancelled, static_cast<std::size_t>(byteCount), &coordinates);
 }
 }

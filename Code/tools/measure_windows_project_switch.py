@@ -95,7 +95,7 @@ def _combined_fixture(service, document, workspace, location, project):
             raise RuntimeError(job["events"][-1])
 
 
-def run(executable, location, cycles, *, combined=False, idle=False, profile_3d=False, quality_3d=False):
+def run(executable, location, cycles, *, combined=False, idle=False, profile_3d=False, quality_3d=False, diagnostic=""):
     """! @brief 사용자 저장소와 분리된 새 시험 디렉터리에 두 원본을 등록한다."""
     code = Path(__file__).resolve().parents[1]
     sys.path[:0] = [str(code / "src"), str(code / "tests")]
@@ -119,7 +119,7 @@ def run(executable, location, cycles, *, combined=False, idle=False, profile_3d=
         if combined:
             _combined_fixture(service, document, workspace, location, large)
     fixture = {"standby_path": standby, "large_path": large, "cycles": cycles, "combined": combined, "idle": idle,
-               "profile_3d": profile_3d, "quality_3d": quality_3d}
+               "profile_3d": profile_3d, "quality_3d": quality_3d, "diagnostic": diagnostic}
     (workspace / "project-switch-smoke-fixture.json").write_text(json.dumps(fixture), encoding="utf-8")
     report = location / "studio.json"
     command = [str(executable), "--python", sys.executable, "--source", str(code / "src"),
@@ -150,14 +150,19 @@ def main():
                          help="전체 도킹 상태에서 35초 합성과 저해상도 표시를 검증합니다.")
     collect.add_argument("--quality-3d", action="store_true",
                          help="다른 창의 합성 조건과 분리해 저해상도 표시와 원본 복귀를 검증합니다.")
+    collect.add_argument("--diagnostic", choices=("display", "results"),
+                         help="원인 진단만 수행합니다. 3D 또는 결과를 하나만 열고 1초 후 계측합니다.")
     read = commands.add_parser("summarize")
     read.add_argument("report", type=Path)
     args = parser.parse_args()
     if args.action == "run":
         if (args.profile_3d or args.quality_3d) and (not args.combined or args.cycles != 1):
             parser.error("3D 계측은 --combined --cycles 1을 사용하십시오.")
+        if args.diagnostic and (args.idle or args.profile_3d or args.quality_3d or not args.combined or args.cycles == 30):
+            parser.error("원인 진단은 --combined 및 30회 미만에서 다른 계측과 분리하십시오.")
         result = run(args.executable.resolve(strict=True), args.directory.resolve(), args.cycles,
-                     combined=args.combined, idle=args.idle, profile_3d=args.profile_3d, quality_3d=args.quality_3d)
+                     combined=args.combined, idle=args.idle, profile_3d=args.profile_3d, quality_3d=args.quality_3d,
+                     diagnostic=args.diagnostic or "")
         output = summarize(result) if args.cycles == 30 else {"cycles": args.cycles, "passed": True}
         if args.profile_3d:
             from summarize_windows_canvas_display import summarize as display_summary

@@ -175,13 +175,18 @@ void StudioSmokeDriver::ProjectSwitchSmokeTick()
             const auto rounds = m_projectSwitchFixture.at("cycles").get<int>();
             CanvasAssert(rounds >= 1 && rounds <= 30, "프로젝트 전환의 회차가 지원 범위를 벗어났습니다.");
             const bool idle = m_projectSwitchFixture.value("idle", false);
-            const int settle = idle ? 150 : 30;
+            const auto diagnostic = m_projectSwitchFixture.value("diagnostic", std::string());
+            CanvasAssert(diagnostic.empty() || ((diagnostic == "display" || diagnostic == "results") && !idle &&
+                         rounds < 30 && m_projectSwitchFixture.value("combined", false)),
+                         "원인 진단은 정식 반복 회수와 분리해야 합니다.");
+            const int settle = diagnostic.empty() ? (idle ? 150 : 30) : 1;
             if (m_projectSwitchFixture.value("combined", false) && !idle)
             {
                 m_frame.m_modelView->KeepContextForMeasurement();
             }
             m_projectSwitchRecord["settle_seconds"] = settle;
             m_projectSwitchRecord["policy"] = idle ? "idle" : "warm";
+            m_projectSwitchRecord["diagnostic"] = diagnostic;
             m_projectSwitchExpires = now + std::chrono::seconds(90 + rounds * (settle + 100));
             m_projectSwitchStage = 1;
         }
@@ -195,6 +200,9 @@ void StudioSmokeDriver::ProjectSwitchSmokeTick()
         const auto standby = m_projectSwitchFixture.at("standby_path").get<std::string>();
         const auto large = m_projectSwitchFixture.at("large_path").get<std::string>();
         const bool combined = m_projectSwitchFixture.value("combined", false);
+        const auto diagnostic = m_projectSwitchFixture.value("diagnostic", std::string());
+        const bool openDisplay = combined && diagnostic != "results";
+        const bool openResults = combined && diagnostic != "display";
         const auto workspace = std::filesystem::path(m_frame.m_options.workspace.ToStdWstring());
         const auto readOpenState = [this, combined, &standby]()
         {
@@ -227,7 +235,7 @@ void StudioSmokeDriver::ProjectSwitchSmokeTick()
                              m_frame.m_editor.at("saved_revision") == m_frame.m_revision &&
                              m_frame.m_canvas->DisplayOmissionCount() == 0,
                          "반복 전환에서 대형 설계 또는 저장된 개정을 읽지 못했습니다.");
-            if (combined)
+            if (openDisplay)
             {
                 const auto folder = workspace / "combined-display";
                 const auto fixture = ReadLargeDisplayFixture(folder);
@@ -237,6 +245,10 @@ void StudioSmokeDriver::ProjectSwitchSmokeTick()
                              fixture.at("snapshot"), artifact.at("run_id").get<std::string>()),
                              "Studio에서 대형 3D 표시 원문을 열 수 없습니다.");
                 m_projectSwitchStage = 5;
+            }
+            else if (openResults)
+            {
+                m_projectSwitchStage = 8;
             }
             else
             {
@@ -257,7 +269,14 @@ void StudioSmokeDriver::ProjectSwitchSmokeTick()
             {
                 m_projectSwitchRecord["display_quality"] = CheckDisplayQuality(*m_frame.m_modelView);
             }
-            m_projectSwitchStage = 8;
+            if (openResults)
+            {
+                m_projectSwitchStage = 8;
+            }
+            else
+            {
+                readOpenState();
+            }
         }
         else if (m_projectSwitchStage == 7 && m_projectModelDisplay->Complete())
         {
@@ -295,14 +314,14 @@ void StudioSmokeDriver::ProjectSwitchSmokeTick()
                 CanvasAssert(m_frame.m_modelView->TriangleCount() == 0,
                              "대기 프로젝트로 이동한 뒤 대형 3D 장면이 남았습니다.");
                 const bool context = !m_frame.m_modelView->RendererDescription().empty();
-                CanvasAssert(m_projectSwitchFixture.value("idle", false) != context,
+                CanvasAssert(context == (openDisplay && !m_projectSwitchFixture.value("idle", false)),
                              "설정한 유지/유휴 정책과 실제 OpenGL context의 상태가 다릅니다.");
                 sample["opened_gpu"] = m_projectSwitchRecord.at("current_open_gpu");
                 sample["settled_gpu"] = StudioSmoke::GpuMemorySamples();
                 sample["context_retained"] = context;
-                sample["display_triangles"] = 1000000;
-                sample["field_slices"] = 10;
-                sample["complex_curves"] = 8;
+                sample["display_triangles"] = openDisplay ? 1000000 : 0;
+                sample["field_slices"] = openResults ? 10 : 0;
+                sample["complex_curves"] = openResults ? 8 : 0;
             }
             samples.push_back(sample);
             auto output = std::filesystem::path(m_frame.m_options.smokeReport.ToStdWstring());
