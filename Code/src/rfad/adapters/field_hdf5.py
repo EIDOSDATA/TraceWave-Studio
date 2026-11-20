@@ -184,4 +184,4 @@ def read(path, reference, expected, selection=None):
             slices.append(selection[axis])
         # @brief 남은 축은 항상 x/y/z 순서의 u,v이므로 반환 행/열은 v,u로 전치한다.
         data = datasets[selection["frequency_index"]][tuple(slices)]
-        return {"primary_coordinates_mm": primary, "values": data.astype(np.complex128).T}
+        return {"primary_coordinates_mm": primary, "values": data.T}

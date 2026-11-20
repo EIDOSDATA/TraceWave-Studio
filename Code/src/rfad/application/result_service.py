@@ -120,7 +120,9 @@ def read(service, method, params):
     if method in ("result.field.describe", "result.field.page"):
         from rfad.application import result_fields
 
-        return bounded(result_fields.describe(service, value) if method == "result.field.describe" else result_fields.page(service, value, arguments))
+        if method == "result.field.describe":
+            return result_fields.describe(service, value)
+        return result_fields.page(service, value, arguments)
     if method == "result.page":
         payload = {"page": samples(value["dataset"], **arguments)}
     elif method == "result.marker":

@@ -14470,8 +14470,8 @@
     },
     {
       "path": "Code/src/rfad/adapters/field_hdf5.py",
-      "text_sha256": "2cb61bb00971e0afd0367b5d396de15bfd751dde131d7304143d33b158c7835b",
-      "utf8_bytes": 9724
+      "text_sha256": "748ca0586d257c40a0d28b5dd2ce0fe55f93d8e400418089e7fac914d0881a33",
+      "utf8_bytes": 9702
     },
     {
       "path": "Code/src/rfad/adapters/network_backend.py",
@@ -14865,8 +14865,8 @@
     },
     {
       "path": "Code/src/rfad/application/result_fields.py",
-      "text_sha256": "0875bf3878572da29287ea19dfeec0bd14896f4c6451bb4ce4418d4f7dd73ab2",
-      "utf8_bytes": 13962
+      "text_sha256": "d5ebd9248c889cd55dd38444b51e95373822f89b60f302f233ee4981f26a26ec",
+      "utf8_bytes": 14517
     },
     {
       "path": "Code/src/rfad/application/result_metrics.py",
@@ -14880,8 +14880,8 @@
     },
     {
       "path": "Code/src/rfad/application/result_service.py",
-      "text_sha256": "050d77a3ee95d7853ac9e8fea04547f2bb3a2367a9f3b2b39fd5483d63c40de6",
-      "utf8_bytes": 7715
+      "text_sha256": "6c0b20eb307fa3c61ddf559486829667eed411d4423a525949a07d83a0a2e69c",
+      "utf8_bytes": 7729
     },
     {
       "path": "Code/src/rfad/application/result_smith.py",
@@ -15475,8 +15475,8 @@
     },
     {
       "path": "Code/tests/test_gui_results_process.py",
-      "text_sha256": "951c977867a4df18e7595da76a9718977ba9017c79dfb2d815f6ab8d7b0ca973",
-      "utf8_bytes": 11725
+      "text_sha256": "07aa51db38b64172f7fdd4b76a10b02fa2045dd4f3d7f987cd2e867ee9dba166",
+      "utf8_bytes": 15501
     },
     {
       "path": "Code/tests/test_gui_solver_process.py",

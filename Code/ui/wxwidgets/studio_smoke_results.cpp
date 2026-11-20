@@ -5,6 +5,8 @@
 #include "result_network_view.h"
 #include "result_compare_view.h"
 #include "result_conditions_view.h"
+#include "field_result_view.h"
+#include "field_slice_canvas.h"
 #include "smith_view.h"
 #include "smith_chart.h"
 #include "network_chart.h"
@@ -13,6 +15,9 @@
 #include "setup_smoke_support.h"
 #include <wx/choicdlg.h>
 #include <wx/scrolwin.h>
+#include <wx/spinctrl.h>
+#include <wx/textctrl.h>
+#include <algorithm>
 #include <fstream>
 
 namespace
@@ -110,10 +115,96 @@ void StudioSmokeDriver::ResultsSmokeTick()
         m_resultsRevision = m_frame.m_revision;
         m_setupShapes = m_frame.m_selection;
         CanvasAssert(m_resultsRevision == m_resultsFixture.at("revision_id"), "결과 시험의 저장 개정이 다릅니다.");
+        if (m_resultsFixture.contains("field_source"))
+        {
+            m_setupStage = 100;
+            m_frame.m_views->SetSelection(13);
+            m_frame.UpdateResultViews();
+            workspace.Select(m_resultsFixture.at("field_source"));
+            return;
+        }
         ResultWorkspaceSafetyChecks();
         m_frame.m_views->SetSelection(9);
         m_frame.UpdateResultViews();
         m_setupStage = 2;
+    }
+    else if (m_setupStage >= 100)
+    {
+        if (!idle())
+        {
+            return;
+        }
+        auto& field = *workspace.m_field;
+        if (m_setupStage == 100 || m_setupStage == 104)
+        {
+            CanvasAssert(field.m_description.value("status", "") == "available" &&
+                             field.m_monitor->GetCount() == 3 && field.m_frequency->GetCount() >= 2 &&
+                             field.m_canvas->IsShownOnScreen() &&
+                             workspace.Pinned().at("pin") == m_resultsFixture.at("pin"),
+                         "실제 기록 필드나 고정 원본을 열지 못했습니다.");
+            const int step = m_setupStage == 104 ? 0 : static_cast<int>(m_setupChecks.size());
+            const int frequency = step % static_cast<int>(field.m_frequency->GetCount());
+            SetupSmoke::Choose(field.m_frequency, frequency);
+            field.m_uCount->SetValue(std::min(24, field.m_uCount->GetMax()));
+            field.m_vCount->SetValue(std::min(24, field.m_vCount->GetMax()));
+            field.m_uStart->SetValue(std::min(step, field.m_uCount->GetMax() - field.m_uCount->GetValue()));
+            field.m_vStart->SetValue(std::min(step, field.m_vCount->GetMax() - field.m_vCount->GetValue()));
+            ++m_setupStage;
+            SetupSmoke::Click(field.m_load);
+        }
+        else if (m_setupStage == 101 || m_setupStage == 105)
+        {
+            const auto& slice = field.m_slice;
+            CanvasAssert(slice.is_object() && slice.at("pin") == m_resultsFixture.at("pin") &&
+                             !slice.at("physics_validated").get<bool>() &&
+                             slice.at("selection").at("frequency_index").get<int>() == field.m_frequency->GetSelection() &&
+                             slice.at("selection").at("roi").at("u_start").get<int>() == field.m_uStart->GetValue() &&
+                             slice.at("selection").at("roi").at("v_start").get<int>() == field.m_vStart->GetValue(),
+                         "필드 화면이 선택과 다른 기록 주파수 또는 ROI를 표시했습니다.");
+            const auto rows = slice.at("v_coordinates_mm").size();
+            const auto columns = slice.at("u_coordinates_mm").size();
+            CanvasAssert(rows > 1 && columns > 1 && field.m_canvas->m_colors.size() == rows * columns &&
+                             field.m_point->IsEnabled() && field.m_marker->GetValue().Contains(Display("복소값")),
+                         "필드 화면에 색 셀 또는 실제 표본 마커가 없습니다.");
+            field.m_canvas->Update();
+            CanvasAssert(field.m_canvas->m_plot.width > 0 && field.m_canvas->m_plot.height > 0,
+                         "필드 화면의 실제 그리기를 확인하지 못했습니다.");
+            if (m_setupStage == 105)
+            {
+                CanvasAssert(slice == m_resultsFirst && m_frame.m_revision == m_resultsRevision,
+                             "저장과 서비스 재시작 뒤 필드 원문이나 설계 개정이 바뀌었습니다.");
+                m_setupChecks.push_back("field_raw_roi_and_pin_survive_reopen");
+                FinishSmoke(true, "");
+                return;
+            }
+            if (m_setupChecks.empty())
+            {
+                m_resultsFirst = slice;
+            }
+            m_setupChecks.push_back("field_roi_" + std::to_string(m_setupChecks.size() + 1));
+            m_setupStage = 100;
+            if (m_setupChecks.size() == 10)
+            {
+                CanvasAssert(m_frame.m_revision == m_resultsRevision, "읽기 전용 필드가 프로젝트를 변경했습니다.");
+                m_setupStage = 102;
+                m_frame.SaveProject();
+            }
+        }
+        else if (m_setupStage == 102 && m_frame.m_savedRevision == m_frame.m_revision)
+        {
+            m_setupStage = 103;
+            m_frame.m_connected = false;
+            m_frame.m_transportFailed = false;
+            m_frame.m_restarting = true;
+            m_frame.BeginShutdown();
+        }
+        else if (m_setupStage == 103 && m_serviceSessions >= 2)
+        {
+            m_setupStage = 104;
+            m_frame.m_views->SetSelection(13);
+            m_frame.UpdateResultViews();
+            workspace.Select(m_resultsFixture.at("field_source"));
+        }
     }
     else if (m_setupStage == 2 && idle() && workspace.m_catalog.is_object())
     {

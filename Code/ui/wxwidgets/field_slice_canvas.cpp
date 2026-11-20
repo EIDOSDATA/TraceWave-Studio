@@ -86,14 +86,6 @@ bool FieldSliceCanvas::SetSlice(const Json& slice)
             Clear("기록 필드의 좌표 또는 표시 크기가 유효하지 않습니다.");
             return false;
         }
-        for (const auto& row : slice.at("color"))
-        {
-            if (!row.is_array() || row.size() != m_u.size())
-            {
-                Clear("기록 필드의 행 크기가 좌표와 다릅니다.");
-                return false;
-            }
-        }
         const auto& range = slice.at("color_range");
         if (!range.is_array() || range.size() != 2 || !range[0].is_number() || !range[1].is_number()
             || !std::isfinite(range[0].get<double>()) || !std::isfinite(range[1].get<double>())
@@ -102,7 +94,32 @@ bool FieldSliceCanvas::SetSlice(const Json& slice)
             Clear("필드 색 범위가 유효하지 않습니다.");
             return false;
         }
-        m_slice = slice;
+        m_minimum = range[0].get<double>();
+        m_maximum = range[1].get<double>();
+        m_uLabel = slice.value("u_axis", "u") + " / mm";
+        m_vLabel = slice.value("v_axis", "v") + " / mm";
+        m_unit = slice.value("unit", "");
+        m_colors.clear();
+        m_colors.reserve(m_u.size() * m_v.size());
+        for (const auto& row : slice.at("color"))
+        {
+            if (!row.is_array() || row.size() != m_u.size())
+            {
+                Clear("기록 필드의 행 크기가 좌표와 다릅니다.");
+                return false;
+            }
+            for (const auto& cell : row)
+            {
+                const double value = cell.is_number() ? cell.get<double>() : std::numeric_limits<double>::quiet_NaN();
+                if (!std::isfinite(value))
+                {
+                    m_colors.emplace_back();
+                    continue;
+                }
+                const double position = m_maximum > m_minimum ? (value - m_minimum) / (m_maximum - m_minimum) : 0.5;
+                m_colors.push_back(Colour(position));
+            }
+        }
         m_message.clear();
         Refresh();
         return true;
@@ -116,7 +133,7 @@ bool FieldSliceCanvas::SetSlice(const Json& slice)
 
 void FieldSliceCanvas::Clear(const std::string& message)
 {
-    m_slice = nullptr;
+    m_colors.clear();
     m_u.clear();
     m_v.clear();
     m_message = message;
@@ -154,7 +171,7 @@ void FieldSliceCanvas::Paint(wxPaintEvent&)
         return;
     }
     context->SetFont(GetFont(), colours.text);
-    if (m_slice.is_null() || m_u.empty() || m_v.empty())
+    if (m_colors.empty())
     {
         context->DrawText(Display(m_message.empty() ? "기록된 필드 단면을 선택하십시오." : m_message), FromDIP(16), FromDIP(22));
         return;
@@ -173,16 +190,14 @@ void FieldSliceCanvas::Paint(wxPaintEvent&)
         m_plot.width = width;
         m_plot.height = height;
     }
-    const double minimum = m_slice.at("color_range")[0].get<double>();
-    const double maximum = m_slice.at("color_range")[1].get<double>();
     context->SetPen(*wxTRANSPARENT_PEN);
     context->Clip(m_plot.x, m_plot.y, m_plot.width, m_plot.height);
     for (std::size_t row = 0; row < m_v.size(); ++row)
     {
         for (std::size_t column = 0; column < m_u.size(); ++column)
         {
-            const auto& value = m_slice.at("color")[row][column];
-            if (!value.is_number() || !std::isfinite(value.get<double>()))
+            const auto& color = m_colors[row * m_u.size() + column];
+            if (!color.IsOk())
             {
                 continue;
             }
@@ -194,7 +209,7 @@ void FieldSliceCanvas::Paint(wxPaintEvent&)
                 : (row + 1 == m_v.size() ? PixelV(row) : (PixelV(row + 1) + PixelV(row)) * 0.5);
             const double bottom = m_v.size() == 1 ? PixelV(row) + FromDIP(6)
                 : (row == 0 ? PixelV(row) : (PixelV(row - 1) + PixelV(row)) * 0.5);
-            context->SetBrush(wxBrush(Colour(maximum > minimum ? (value.get<double>() - minimum) / (maximum - minimum) : 0.5)));
+            context->SetBrush(wxBrush(color));
             context->DrawRectangle(left, top, std::max(1.0, right - left), std::max(1.0, bottom - top));
         }
     }
@@ -202,8 +217,8 @@ void FieldSliceCanvas::Paint(wxPaintEvent&)
     context->SetPen(wxPen(colours.border));
     context->SetBrush(*wxTRANSPARENT_BRUSH);
     context->DrawRectangle(m_plot.x, m_plot.y, m_plot.width, m_plot.height);
-    context->DrawText(Display(m_slice.value("v_axis", "v") + " / mm"), FromDIP(8), FromDIP(5));
-    context->DrawText(Display(m_slice.value("u_axis", "u") + " / mm"), m_plot.x + m_plot.width * 0.5, m_plot.GetBottom() + FromDIP(30));
+    context->DrawText(Display(m_vLabel), FromDIP(8), FromDIP(5));
+    context->DrawText(Display(m_uLabel), m_plot.x + m_plot.width * 0.5, m_plot.GetBottom() + FromDIP(30));
     context->DrawText(wxString::Format("%.6g", m_u.front()), m_plot.x, m_plot.GetBottom() + FromDIP(7));
     context->DrawText(wxString::Format("%.6g", m_u.back()), m_plot.GetRight() - FromDIP(40), m_plot.GetBottom() + FromDIP(7));
     context->DrawText(wxString::Format("%.6g", m_v.front()), FromDIP(3), m_plot.GetBottom() - FromDIP(15));
@@ -216,9 +231,9 @@ void FieldSliceCanvas::Paint(wxPaintEvent&)
         context->SetBrush(wxBrush(Colour(1.0 - static_cast<double>(i) / 63.0)));
         context->DrawRectangle(legendX, m_plot.y + m_plot.height * i / 64.0, legendWidth, m_plot.height / 64.0 + 1);
     }
-    context->DrawText(wxString::Format("%.4g", maximum), legendX + legendWidth + FromDIP(5), m_plot.y);
-    context->DrawText(wxString::Format("%.4g", minimum), legendX + legendWidth + FromDIP(5), m_plot.GetBottom() - FromDIP(16));
-    context->DrawText(Display(m_slice.value("unit", "")), legendX, m_plot.GetBottom() + FromDIP(22));
+    context->DrawText(wxString::Format("%.4g", m_maximum), legendX + legendWidth + FromDIP(5), m_plot.y);
+    context->DrawText(wxString::Format("%.4g", m_minimum), legendX + legendWidth + FromDIP(5), m_plot.GetBottom() - FromDIP(16));
+    context->DrawText(Display(m_unit), legendX, m_plot.GetBottom() + FromDIP(22));
     const double markerX = PixelU(m_marker % m_u.size());
     const double markerY = PixelV(m_marker / m_u.size());
     context->SetPen(wxPen(*wxWHITE, FromDIP(3)));

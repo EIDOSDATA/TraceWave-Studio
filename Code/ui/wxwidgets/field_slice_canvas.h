@@ -24,7 +24,12 @@ private:
     void Key(wxKeyEvent& event);
     double PixelU(std::size_t index) const;
     double PixelV(std::size_t index) const;
-    Json m_slice = nullptr;
+    std::vector<wxColour> m_colors;
+    double m_minimum = 0.0;
+    double m_maximum = 0.0;
+    std::string m_uLabel;
+    std::string m_vLabel;
+    std::string m_unit;
     std::vector<double> m_u;
     std::vector<double> m_v;
     wxRect m_plot;

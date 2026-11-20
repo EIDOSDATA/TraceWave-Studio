@@ -139,6 +139,16 @@ def _coordinates(model, primary, component):
     return result
 
 
+def _coordinate(model, primary, axis, component, index):
+    """! @brief 반환 ROI에 들어가는 원본 좌표만 성분의 실제 edge 위치로 변환한다."""
+    values = primary[axis]
+    position = values[index]
+    if axis == component:
+        following = values[index + 1] if index + 1 < len(values) else model["next_nodes_mm"][axis]
+        return (position + following) * 0.5
+    return position
+
+
 def describe(service, resolved):
     """! @brief 실제 기록한 성분과 좌표만 열거하며 없는 모니터를 생성하지 않는다."""
     response = _base(resolved)
@@ -185,10 +195,10 @@ def _selection(model, parameters):
                 or start+count > model["shape"]["xyz".index(axis)]):
             fail("필드 ROI가 실제 원문 격자를 벗어났습니다.")
         selection[axis] = slice(start, start+count, stride)
-        indices.append(list(range(start, start+count, stride)))
+        indices.append(range(start, start+count, stride))
     if len(indices[0])*len(indices[1]) > MAX_PAGE:
         fail("필드 한 응답의 최대4096표본을 초과했습니다.", "E_RESOURCE")
-    return axes, selection, indices
+    return axes, selection, [list(axis) for axis in indices]
 
 
 def page(service, resolved, parameters):
@@ -198,7 +208,9 @@ def page(service, resolved, parameters):
         fail("선택한 원본에 표시할 복소 필드가 없습니다.", "E_MISSING_ARTIFACT")
     axes, selection, indices = _selection(model, parameters)
     observed, reference = _read(service, resolved, model, parameters["monitor_id"], selection)
-    coordinates = _coordinates(model, observed["primary_coordinates_mm"], parameters["component"])
+    coordinates = observed["primary_coordinates_mm"]
+    component = parameters["component"]
+    normal = parameters["plane"]["normal_axis"]
     values, magnitudes, phases, states = [], [], [], []
     maximum = 0.0
     for row in observed["values"]:
@@ -216,9 +228,11 @@ def page(service, resolved, parameters):
         values.append(vr); magnitudes.append(mr); phases.append(pr); states.append(sr)
     response = _base(resolved)
     response.update(selection=deepcopy(parameters), u_axis=axes[0], v_axis=axes[1],
-        normal_position_mm=coordinates[parameters["plane"]["normal_axis"]][parameters["plane"]["index"]],
-        u_indices=indices[0], v_indices=indices[1], u_coordinates_mm=[coordinates[axes[0]][i] for i in indices[0]],
-        v_coordinates_mm=[coordinates[axes[1]][i] for i in indices[1]], values_ri=values, magnitude=magnitudes,
+        normal_position_mm=_coordinate(model, coordinates, normal, component, parameters["plane"]["index"]),
+        u_indices=indices[0], v_indices=indices[1],
+        u_coordinates_mm=[_coordinate(model, coordinates, axes[0], component, i) for i in indices[0]],
+        v_coordinates_mm=[_coordinate(model, coordinates, axes[1], component, i) for i in indices[1]],
+        values_ri=values, magnitude=magnitudes,
         phase_deg=phases, state=states, color=deepcopy(magnitudes), color_range=[0.0, maximum],
         color_scope="returned_page_magnitude", unit=MONITORS[parameters["monitor_id"]][4],
         normalization="pulse_fourier_spectrum_native_2dt", phase_correction="none_raw_time_location",

@@ -6,6 +6,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 from tempfile import TemporaryDirectory
@@ -165,6 +166,57 @@ class GuiResultsTests(unittest.TestCase):
             self.assertEqual(sidecar["source"], inputs["sources"]["first"])
             self.assertEqual(sidecar["pin"], inputs["descriptions"]["first"]["pin"])
             self.assertIsNone(sidecar["descriptor"]["conditions"]["measurement"])
+
+
+@unittest.skipUnless(sys.platform == "win32" and GUI and os.environ.get("RFAD_TEST_FIELD_WORKSPACE"),
+                     "Windows GUI와 실제 기록 필드가 필요합니다.")
+class GuiRecordedFieldTests(unittest.TestCase):
+    """! @brief 기록된 필드를 실제 wx 입력, 저장과 서비스 재시작으로 검증한다."""
+
+    def test_recorded_field_moves_and_reopens_without_native_solver(self):
+        """! @brief 두 주파수의 실제 ROI 10회 및 재열기 뒤 동일 응답/원문을 확인한다."""
+        with TemporaryDirectory(prefix="TraceWave 실제 필드 ") as directory:
+            workspace = Path(directory) / "필드 검증"
+            shutil.copytree(Path(os.environ["RFAD_TEST_FIELD_WORKSPACE"]), workspace)
+            identity = os.environ.get("RFAD_TEST_FIELD_ARTIFACT", "a73812c0-9c38-4b82-bd9b-99f7066752dc")
+            source = {"kind": "solver", "artifact_id": identity}
+            with ProjectService(workspace, auto_run=False) as service:
+                state = service.journal.read()
+                record = state["solver_results"][identity]
+                project = state["projects"][record["project_id"]]
+                original = service._load(project)
+                params = {"contract_version": "rfad.api/2.0", "context": {"project_id": record["project_id"]},
+                          "input": {"source": source}}
+                description = result_service.read(service, "result.describe", params)
+                raw = [item["artifact"] for item in record["raw_files"] if "pcb_loss_" in item["role"]]
+                self.assertEqual(len(raw), 3)
+            inputs = {"field_source": source, "pin": description["pin"], "revision_id": original["revision_id"]}
+            (workspace / "results-smoke-fixture.json").write_bytes(canonical_bytes(inputs))
+            report_path = Path(directory) / "필드 화면 검증.json"
+            process = subprocess.run([str(Path(GUI).resolve()), "--python", sys.executable, "--source", str(ROOT / "src"),
+                "--workspace", str(workspace), "--open-project", project["path"], "--results-smoke-test",
+                "--smoke-report", str(report_path)], stdin=subprocess.DEVNULL, capture_output=True, timeout=185, check=False)
+            self.assertTrue(report_path.is_file(), (process.returncode, process.stderr))
+            report = json.loads(report_path.read_bytes())
+            if output := os.environ.get("RFAD_GUI_TEST_ARTIFACT_DIR"):
+                destination = Path(output) / "field.json"
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                destination.write_bytes(report_path.read_bytes())
+            self.assertEqual(process.returncode, 0, report)
+            self.assertTrue(report["passed"], report)
+            self.assertGreaterEqual(report["service_sessions"], 2)
+            self.assertEqual(report["setup_checks"], [f"field_roi_{i}" for i in range(1, 11)]
+                             + ["field_raw_roi_and_pin_survive_reopen"])
+            with ProjectService(workspace, auto_run=False) as service:
+                reopened = service._load(service.journal.read()["projects"][record["project_id"]])
+                self.assertEqual(reopened, original)
+                observed = result_service.read(service, "result.describe", params)
+                self.assertEqual(observed["pin"], description["pin"])
+                for condition in ("measurement", "manufacturing"):
+                    self.assertEqual(observed["states"][condition], "unknown")
+                for reference in raw:
+                    with (workspace / reference["uri"]).open("rb") as stream:
+                        self.assertEqual(hashlib.file_digest(stream, "sha256").hexdigest(), reference["sha256"])
 
 
 if __name__ == "__main__":
