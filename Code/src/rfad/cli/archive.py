@@ -12,15 +12,15 @@ from types import SimpleNamespace
 from rfad.application import project_archive
 from rfad.application.project_repository import ProjectRepository
 from rfad.domain.errors import ProjectError
-from rfad.storage.journal import Journal, MAX_ARTIFACT_BYTES, new_workspace_state
+from rfad.storage.journal import Journal, new_workspace_state
 
 
 def _read(path):
     """! @brief 유한 크기의 사용자가 선택한 원본을 한 번 읽는다."""
     with path.open("rb") as stream:
-        raw = stream.read(MAX_ARTIFACT_BYTES + 1)
-    if not 0 < len(raw) <= MAX_ARTIFACT_BYTES:
-        raise ProjectError("E_RESOURCE", "복원 묶음은 8 MiB 이내의 파일입니다.")
+        raw = stream.read(project_archive.MAX_ARCHIVE_BYTES + 1)
+    if not 0 < len(raw) <= project_archive.MAX_ARCHIVE_BYTES:
+        raise ProjectError("E_RESOURCE", "복원 묶음은 64 MiB 이내의 파일입니다.")
     return raw
 
 

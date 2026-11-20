@@ -5,12 +5,12 @@ import json
 import math
 
 from rfad.application import handoff_archive as codec
-from rfad.application.canonical import canonical_bytes, canonical_hash
+from rfad.application.canonical import canonical_bytes, canonical_hash_from_bytes
 from rfad.application.project_contract import MAX_DOCUMENT_BYTES, MAX_HISTORY, MAX_SNAPSHOTS, _fields, _path, _uuid
 from rfad.domain.measurement import registry as measurement_registry
 from rfad.domain.network_library import digest, library
 from rfad.domain.project import validate_project
-from rfad.storage.sealed_files import validate_reference
+from rfad.storage.sealed_files import MAX_FILE_BYTES, validate_reference
 
 
 PROFILE = "rfad.project-archive/0.1"
@@ -49,7 +49,7 @@ def document_from(raw):
     validate_project(result)
     if canonical_bytes(result) != raw:
         codec.fail("복원 개정의 정규 바이트가 다릅니다.", "E_HASH")
-    return result
+    return result, canonical_hash_from_bytes(raw)
 
 
 def reference(value):
@@ -81,10 +81,15 @@ def validate_index(index, plan, read):
     if type(revisions) is not dict or not 1 <= len(revisions) <= codec.MAX_FILES - 1:
         codec.fail("복원할 개정 수의 지원 범위를 초과했습니다.", "E_RESOURCE")
     documents, required = {}, {}
+    document_bytes = 0
 
     def require(value, uri):
         """! @brief 승인한 소유 경로의 정확한 봉인 참조만 필수 원문으로 등록한다."""
+        nonlocal document_bytes
         item = reference(value)
+        document_bytes += item["bytes"]
+        if document_bytes > MAX_FILE_BYTES:
+            codec.fail("보존할 설계 개정과 스냅샷이 복원 ZIP 한도를 초과했습니다.", "E_RESOURCE")
         if item["uri"] != uri or uri in required:
             codec.fail("복원 색인의 필수 원문 경로가 중복되거나 다릅니다.", "E_HASH")
         required[uri] = item
@@ -95,13 +100,16 @@ def validate_index(index, plan, read):
 
     for identity, value in revisions.items():
         _uuid(identity)
-        doc = require(value, _revision_path(path, identity))
+        doc, content_hash = require(value, _revision_path(path, identity))
         if doc["project_id"] != project_id or doc["revision_id"] != identity:
             codec.fail("봉인 개정의 프로젝트 또는 개정 식별자가 다릅니다.", "E_HASH")
-        documents[identity] = doc
+        documents[identity] = {field: doc[field] for field in ("schema_version", "parent_revision_ids", "extensions")}
+        documents[identity]["content_hash"] = content_hash
+        documents[identity]["pcb"] = {"imports": doc.get("pcb", {}).get("imports", [])}
+        del doc
     head = plan["revision_id"]
     if (head not in documents or revisions[head] != project["current"] or project["saved"] not in revisions.values()
-            or canonical_hash(documents[head]) != plan["content_hash"]):
+            or documents[head]["content_hash"] != plan["content_hash"]):
         codec.fail("복원 대상의 현재/저장 개정이 봉인 원본과 다릅니다.", "E_HASH")
 
     commands = index["commands"]
@@ -147,8 +155,9 @@ def validate_index(index, plan, read):
                 or type(row["sealed_at"]) not in (int, float) or not math.isfinite(row["sealed_at"]) or row["sealed_at"] < 0
                 or type(row["description"]) is not str or len(row["description"]) > 1024):
             codec.fail("복원 스냅샷의 소유자/개정 또는 정규화 계약이 다릅니다.", "E_HASH")
-        doc = require(row["artifact"], f"{path}/snapshots/{revision}/{identity}/project.json")
-        if doc != documents[revision] or canonical_hash(doc) != row["content_hash"]:
+        snapshot, content_hash = require(row["artifact"], f"{path}/snapshots/{revision}/{identity}/project.json")
+        del snapshot
+        if row["artifact"]["sha256"] != revisions[revision]["sha256"] or row["content_hash"] != content_hash:
             codec.fail("복원 스냅샷의 실제 설계가 봉인 개정과 다릅니다.", "E_HASH")
     return documents, required
 

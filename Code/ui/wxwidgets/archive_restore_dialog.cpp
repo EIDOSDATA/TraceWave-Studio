@@ -21,7 +21,7 @@
 namespace
 {
 constexpr std::size_t ChunkBytes = 128U * 1024U;
-constexpr std::size_t Limit = 8U * 1024U * 1024U;
+constexpr std::size_t Limit = 64U * 1024U * 1024U;
 constexpr auto Receiver = "rfad.archive-receive/0.1";
 constexpr auto Archive = "rfad.project-archive/0.1";
 
@@ -182,7 +182,7 @@ void ArchiveRestoreDialog::Browse()
         const auto size = file.IsOpened() ? file.Length() : wxInvalidOffset;
         if (size <= 0 || size > static_cast<wxFileOffset>(Limit))
         {
-            throw std::runtime_error("읽을 수 있는 8 MiB 이하의 ZIP을 선택하세요.");
+            throw std::runtime_error("읽을 수 있는 64 MiB 이하의 ZIP을 선택하세요.");
         }
         std::string raw(static_cast<std::size_t>(size), '\0');
         if (file.Read(raw.data(), raw.size()) != size || file.Length() != size)

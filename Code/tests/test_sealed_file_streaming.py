@@ -44,6 +44,15 @@ class SealedFileStreamingTests(unittest.TestCase):
         with copied.open("rb") as stream:
             self.assertEqual(hashlib.file_digest(stream, "sha256").hexdigest(), self.reference["sha256"])
 
+    def test_large_read_range_checks_whole_hash_and_crosses_blocks(self):
+        """! @brief 원문 전체를 검증한 뒤 요청한 교차 구간만 반환한다."""
+        actual = self.journal.read_file_chunk(self.reference, 1024 * 1024 - 3, 6)
+        self.assertEqual(actual, bytes([0, 0, 0, 1, 1, 1]))
+        self.assertEqual(self.journal.read_file_chunk(self.reference, self.reference["bytes"] - 2, 4), bytes([8, 8]))
+        wrong = {**self.reference, "sha256": "0" * 64}
+        with self.assertRaises(ProjectError):
+            self.journal.read_file_chunk(wrong, 0, 1)
+
     def test_tampered_field_never_publishes_copy(self):
         """! @brief 봉인 hash가 다르면 부분 복사만 회수하고 원본/정상 대상으로 교체하지 않는다."""
         wrong = {**self.reference, "sha256": "0" * 64}

@@ -14,7 +14,8 @@
 namespace
 {
 constexpr std::size_t ChunkBytes = 128U * 1024U;
-constexpr std::size_t MaxZipBytes = 8U * 1024U * 1024U;
+constexpr std::size_t MaxReportBytes = 8U * 1024U * 1024U;
+constexpr std::size_t MaxArchiveBytes = 64U * 1024U * 1024U;
 constexpr int EvidencePageSize = 12;
 constexpr auto ReadOnlyProfile = "rfad.project-handoff/0.1";
 constexpr auto ArchiveProfile = "rfad.project-archive/0.1";
@@ -31,7 +32,7 @@ bool ValidPackage(const Json& package, const std::string& project, bool archive)
            package.at("file_name").is_string() && package.at("artifact").at("sha256").is_string() &&
            package.at("artifact").at("bytes").is_number_unsigned() &&
            package.at("artifact").at("bytes").get<std::size_t>() > 0 &&
-           package.at("artifact").at("bytes").get<std::size_t>() <= MaxZipBytes;
+           package.at("artifact").at("bytes").get<std::size_t>() <= (archive ? MaxArchiveBytes : MaxReportBytes);
 }
 }
 

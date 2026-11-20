@@ -10,7 +10,7 @@ from rfad.application import handoff_archive as codec, project_archive
 from rfad.application.canonical import canonical_bytes
 from rfad.application.project_contract import _fields, _uuid
 from rfad.domain.network_library import digest
-from rfad.storage.journal import MAX_ARTIFACT_BYTES, MAX_STATE_BYTES
+from rfad.storage.journal import MAX_STATE_BYTES
 
 
 PROFILE = "rfad.archive-receive/0.1"
@@ -39,11 +39,11 @@ def validate_input(method, context, data):
     for key in ("archive_sha256", "review_hash"):
         if key in data:
             digest(data[key], key)
-    if method == "archive.receive.begin" and (type(data["bytes"]) is not int or not 0 < data["bytes"] <= MAX_ARTIFACT_BYTES):
-        codec.fail("복원 ZIP을 1 B~8 MiB 범위에서 선택하십시오.", "E_RESOURCE")
+    if method == "archive.receive.begin" and (type(data["bytes"]) is not int or not 0 < data["bytes"] <= project_archive.MAX_ARCHIVE_BYTES):
+        codec.fail("복원 ZIP을 1 B~64 MiB 범위에서 선택하십시오.", "E_RESOURCE")
     if method == "archive.receive.chunk":
         offset = data["offset"]
-        if type(offset) is not int or not 0 <= offset < MAX_ARTIFACT_BYTES or offset % CHUNK_BYTES:
+        if type(offset) is not int or not 0 <= offset < project_archive.MAX_ARCHIVE_BYTES or offset % CHUNK_BYTES:
             codec.fail("정상적인 복원 청크 위치가 필요합니다.")
         if type(data["content_base64"]) is not str or not 0 < len(data["content_base64"]) <= ((CHUNK_BYTES + 2) // 3) * 4:
             codec.fail("복원 청크 크기의 상한은 128 KiB입니다.", "E_RESOURCE")

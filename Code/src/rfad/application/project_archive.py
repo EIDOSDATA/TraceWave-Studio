@@ -5,6 +5,7 @@ from copy import deepcopy
 from hashlib import sha256
 from io import BytesIO
 from pathlib import Path
+from shutil import copyfileobj
 from tempfile import TemporaryDirectory
 from unicodedata import normalize
 
@@ -13,7 +14,8 @@ from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.application.network_records import reference as byte_reference
 from rfad.application.project_contract import MAX_PROJECTS, MAX_SNAPSHOTS, _fields, _uuid
 from rfad.domain.network_library import digest
-from rfad.storage.journal import MAX_ARTIFACT_BYTES, MAX_STATE_BYTES
+from rfad.storage.journal import MAX_STATE_BYTES
+from rfad.storage.sealed_files import CHUNK_BYTES, MAX_FILE_BYTES as MAX_ARCHIVE_BYTES
 
 
 OMISSION_REASONS = {"external_reference", "source_missing", "source_omitted"}
@@ -42,7 +44,7 @@ def prepare(service, project_id, expected_revision, include_sources):
     plan = {"schema": model.PROFILE, "project_id": project_id, "project_path": project["path"],
             "revision_id": expected_revision, "content_hash": canonical_hash(current),
             "limitations": deepcopy(model.LIMITATIONS), "files": []}
-    documents, references = model.validate_index(index, plan, service.journal.read_artifact)
+    documents, references = model.validate_index(index, plan, service.journal.read_document)
     omitted = {}
 
     def retain(row, *, read=False):
@@ -84,8 +86,8 @@ def prepare(service, project_id, expected_revision, include_sources):
     plan["files"] = [files[key] for key in sorted(files)]
     model.manifest(plan)
     size = _size(files, plan)
-    if size > MAX_ARTIFACT_BYTES:
-        codec.fail("현재 복원 묶음은 최대 8 MiB입니다.", "E_RESOURCE")
+    if size > MAX_ARCHIVE_BYTES:
+        codec.fail("현재 복원 묶음은 최대 64 MiB입니다.", "E_RESOURCE")
     return {"profile": model.PROFILE, "plan": plan, "references": references, "index_raw": index_raw,
             "review_hash": canonical_hash({"manifest": plan, "include_sources": include_sources}),
             "project_id": project_id, "revision_id": expected_revision, "zip_bytes": size,
@@ -169,8 +171,8 @@ def _validate_archive_contents(archive, plan):
 @contextmanager
 def read_verified(raw):
     """! @brief 구조와 데이터의 정합성이 검증된 활성 복원 묶음만 연다."""
-    if type(raw) is not bytes or not 0 < len(raw) <= MAX_ARTIFACT_BYTES:
-        codec.fail("복원 묶음 크기는 1 B~8 MiB입니다.", "E_RESOURCE")
+    if type(raw) is not bytes or not 0 < len(raw) <= MAX_ARCHIVE_BYTES:
+        codec.fail("복원 묶음 크기는 1 B~64 MiB입니다.", "E_RESOURCE")
     checks = []
 
     def verify(archive, plan):
@@ -273,7 +275,8 @@ def publish_state(service, state, raw, archive, plan, index, details):
             elif item["bytes"] == 0:
                 service.journal.put_immutable(item["uri"], b"")
             else:
-                temp.write_bytes(archive.read(row["uri"]))
+                with archive.open(row["uri"]) as incoming, temp.open("wb") as outgoing:
+                    copyfileobj(incoming, outgoing, CHUNK_BYTES)
                 sealed = service.journal.seal_file(item["uri"], temp, expected_sha256=item["sha256"],
                                                    expected_bytes=item["bytes"])
                 if sealed != item:

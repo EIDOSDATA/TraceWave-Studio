@@ -336,6 +336,12 @@ class Journal:
         """! @brief 새 불변 artifact를 기록하고 실제 파일 hash 참조를 반환한다."""
         return self._put_immutable(relative_path, payload, MAX_ARTIFACT_BYTES)
 
+    def put_archive(self, relative_path: str, payload: bytes) -> dict:
+        """! @brief 편집 복원 묶음은 큰 봉인 파일 예산에서 별도로 기록한다."""
+        from rfad.storage.sealed_files import MAX_FILE_BYTES
+
+        return self._put_immutable(relative_path, payload, MAX_FILE_BYTES)
+
     def put_document(self, relative_path: str, payload: bytes) -> dict:
         """! @brief 정규 프로젝트 개정과 스냅샷에만 확장 문서 예산을 사용한다."""
         return self._put_immutable(relative_path, payload, MAX_DOCUMENT_BYTES)
@@ -442,6 +448,16 @@ class Journal:
         with self._mutex:
             self._ensure_open()
             return self._read_artifact(reference, limit=MAX_DOCUMENT_BYTES)
+
+    def read_file_chunk(self, reference: dict, offset: int, size: int) -> bytes:
+        """! @brief 같은 파일의 봉인과 요청 범위를 확인하며 전체 파일을 메모리에 반환하지 않는다."""
+        from rfad.storage.sealed_files import read_range, validate_reference
+
+        validate_reference(reference)
+        with self._mutex:
+            self._ensure_open()
+            path = self._safe_path(reference["uri"])
+        return read_range(path, reference, offset, size)
 
     def verify_file(self, reference: dict) -> None:
         """! @brief 메타데이터 읽기 상한은 유지하며 큰 봉인 파일의 전체 바이트를 스트리밍 확인한다."""

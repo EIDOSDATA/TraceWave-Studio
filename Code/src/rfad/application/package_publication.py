@@ -11,6 +11,7 @@ from rfad.application.project_contract import _fields, _uuid
 from rfad.application.result_sources import owned_reference
 from rfad.domain.network_library import digest
 from rfad.storage.journal import MAX_ARTIFACT_BYTES, MAX_STATE_BYTES
+from rfad.storage.sealed_files import MAX_FILE_BYTES
 
 
 MAX_PACKAGES = 32
@@ -49,8 +50,9 @@ def publish(service, state, plan, review, namespace, file_name, raw_factory):
     if len(stored) >= MAX_PACKAGES:
         codec.fail("인계 묶음 보존 상한 32개에 도달했습니다.", "E_RESOURCE")
     raw = raw_factory()
-    if len(raw) > MAX_ARTIFACT_BYTES:
-        codec.fail("인계 ZIP의 실제 크기가 8 MiB를 초과했습니다.", "E_RESOURCE")
+    limit = MAX_FILE_BYTES if namespace == "archive" else MAX_ARTIFACT_BYTES
+    if len(raw) > limit:
+        codec.fail(f"인계 ZIP의 실제 크기가 {limit // 1024**2} MiB를 초과했습니다.", "E_RESOURCE")
     path = plan["project_path"] + "/handoff/" + identity + ".rfad.zip"
     result = {"profile": plan["schema"], "project_id": plan["project_id"], "package_id": identity,
               "revision_id": plan["revision_id"], "artifact": reference(path, raw), "review_hash": review,
@@ -60,7 +62,8 @@ def publish(service, state, plan, review, namespace, file_name, raw_factory):
     staged = {**state, "handoff_packages": {**stored, identity: result}}
     if len(canonical_bytes(staged)) + len(canonical_bytes(result)) + 4096 > MAX_STATE_BYTES:
         codec.fail("인계 파일의 확정 기록과 영수증 공간이 부족합니다.", "E_RESOURCE")
-    if service.journal.put_immutable(path, raw) != result["artifact"]:
+    put = service.journal.put_archive if namespace == "archive" else service.journal.put_immutable
+    if put(path, raw) != result["artifact"]:
         codec.fail("인계 파일 해시가 게시 직전에 달라졌습니다.", "E_HASH")
     state["handoff_packages"] = staged["handoff_packages"]
     return deepcopy(result)
@@ -89,9 +92,12 @@ def read(service, state, context, project, suffix, data, profile, mutation):
     offset = data["offset"]
     if offset >= artifact["bytes"]:
         codec.fail("인계 파일의 실제 크기 밖을 읽을 수 없습니다.", "E_RESOURCE")
-    raw = service.journal.read_artifact(artifact)
-    chunk = raw[offset:offset + CHUNK_BYTES]
+    total = artifact["bytes"]
+    if total > MAX_ARTIFACT_BYTES:
+        chunk = service.journal.read_file_chunk(artifact, offset, CHUNK_BYTES)
+    else:
+        chunk = service.journal.read_artifact(artifact)[offset:offset + CHUNK_BYTES]
     end = offset + len(chunk)
     return {"profile": profile, "project_id": context["project_id"], "package_id": stored["package_id"],
-            "sha256": artifact["sha256"], "total": len(raw), "offset": offset, "next_offset": end if end < len(raw) else None,
+            "sha256": artifact["sha256"], "total": total, "offset": offset, "next_offset": end if end < total else None,
             "content_base64": base64.b64encode(chunk).decode("ascii")}

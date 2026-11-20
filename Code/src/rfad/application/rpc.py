@@ -14,6 +14,7 @@ from rfad.domain.expressions import ENGINE_VERSION
 from rfad.application.catalog_api import METHODS as CATALOG_METHODS
 from rfad.application.catalog_api import describe as describe_catalog, query as query_catalog
 from rfad.application.pcb_selection_contract import READ_METHODS as PCB_SELECTION_READS, MUTATION_METHODS as PCB_SELECTION_MUTATIONS
+from rfad.application.project_archive import MAX_ARCHIVE_BYTES
 from rfad.application.project_study_contract import READS as STUDY_READS, MUTATIONS as STUDY_MUTATIONS
 from rfad.application import target_editor
 from rfad.application import edit_view_contract, edit_view_pages
@@ -22,7 +23,6 @@ from rfad.application import pcb_exchange_service
 from rfad.application import pcb_import_service
 from rfad.application import measurement_service, measurement_contract
 from rfad.application import archive_export_service, archive_receiver, handoff_evidence, handoff_service
-from rfad.storage.journal import MAX_ARTIFACT_BYTES
 from rfad.application import design_rule_service, physical_setup_service, precision_service, network_service, design_sweep_service, result_service, rf_validation_records, sweep_selection
 
 TEMPLATE_READS = {"template.list", "template.get", "template.context", "template.synthesize"}
@@ -121,7 +121,7 @@ def capabilities(service=None, catalog=None) -> dict:
                                   for name in archive_export_service.READS | {archive_export_service.MUTATION}})
         result["methods"].update({name: {"status": "implemented", "extension_profile": archive_receiver.PROFILE}
                                   for name in archive_receiver.READS | archive_receiver.MUTATIONS})
-        result["archive_receive_profile"] = {"profile": archive_receiver.PROFILE, "zip_bytes": MAX_ARTIFACT_BYTES,
+        result["archive_receive_profile"] = {"profile": archive_receiver.PROFILE, "zip_bytes": MAX_ARCHIVE_BYTES,
             "chunk_bytes": archive_receiver.CHUNK_BYTES, "preview_required": True, "execution_on_restore": False}
         result["methods"].update({name: {"status": "implemented", "extension_profile": pcb_exchange_service.PROFILE}
                                   for name in pcb_exchange_service.READS | {pcb_exchange_service.MUTATION}})

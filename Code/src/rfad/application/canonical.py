@@ -48,7 +48,14 @@ def canonical_hash(value: object) -> str:
     @details 해시 입력은 b'rfad.canonical/1.0\\n' + canonical_bytes(value)이다.
     이 prefix는 canonical JSON payload 자체에는 포함되지 않는다.
     """
-    return hashlib.sha256(_HASH_PREFIX + canonical_bytes(value)).hexdigest()
+    return canonical_hash_from_bytes(canonical_bytes(value))
+
+
+def canonical_hash_from_bytes(raw: bytes) -> str:
+    """! @brief 검증한 정규 바이트에 같은 버전 구분자를 적용한다."""
+    digest = hashlib.sha256(_HASH_PREFIX)
+    digest.update(raw)
+    return digest.hexdigest()
 
 
 def _encode(value: object, depth: int, active_ids: set[int]) -> str:

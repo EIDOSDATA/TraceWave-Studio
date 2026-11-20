@@ -72,7 +72,7 @@ original_dispatch = rpc._dispatch
 def fault_once(request, service=None, catalog=None):
     method = request.get("method") if isinstance(request, dict) else None
     project = request.get("params", {}).get("context", {}).get("project_id") if isinstance(request, dict) else None
-    if project and project != ORIGINAL_PROJECT and method in ("editor.get", "canvas.get"):
+    if project and project != ORIGINAL_PROJECT and method in ("editor.page", "canvas.page"):
         marker = Path(MARKER_DIRECTORY) / ("fault-" + method + ".json")
         if not marker.exists():
             marker.write_text(json.dumps({"method": method, "project_id": project}), encoding="utf-8")
@@ -123,7 +123,7 @@ raise SystemExit(module.main())
                 created = set(state["projects"]) - set(before["projects"])
                 self.assertEqual(len(created), 1)
                 identity = created.pop()
-                for method in ("editor.get", "canvas.get"):
+                for method in ("editor.page", "canvas.page"):
                     fault = json.loads((Path(directory) / ("fault-" + method + ".json")).read_text(encoding="utf-8"))
                     self.assertEqual(fault, {"method": method, "project_id": identity})
                 project = state["projects"][identity]

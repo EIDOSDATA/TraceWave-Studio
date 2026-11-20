@@ -22,9 +22,10 @@ def validate_reference(reference):
         raise ProjectError("E_HASH", "봉인 파일의 참조/크기/hash가 유효하지 않습니다.")
 
 
-def _transfer(source, reference, outgoing=None):
+def _transfer(source, reference, outgoing=None, window=None):
     """! @brief 동일하게 연 파일의 유형/길이/SHA256을 검사하고 한 번에 1 MiB만 소비한다."""
     digest, count = hashlib.sha256(), 0
+    collected = bytearray()
     try:
         info = source.lstat()
         if not stat.S_ISREG(info.st_mode) or info.st_nlink != 1 or getattr(info, "st_file_attributes", 0) & 0x400:
@@ -40,10 +41,25 @@ def _transfer(source, reference, outgoing=None):
                 digest.update(block)
                 if outgoing is not None:
                     outgoing.write(block)
+                if window is not None:
+                    start, end = window
+                    block_start = count - len(block)
+                    left, right = max(start, block_start), min(end, count)
+                    if left < right:
+                        collected.extend(block[left - block_start:right - block_start])
     except OSError as error:
         raise ProjectError("E_HASH", "봉인 파일을 스트리밍 검증할 수 없습니다.") from error
     if count != reference["bytes"] or digest.hexdigest() != reference["sha256"]:
         raise ProjectError("E_HASH", "봉인 파일의 실제 길이 또는 SHA256이 다릅니다.")
+    return bytes(collected)
+
+
+def read_range(source, reference, start, size):
+    """! @brief 전체 해시는 스트리밍으로 대조하고 요청 구간만 반환한다."""
+    validate_reference(reference)
+    if type(start) is not int or type(size) is not int or not 0 <= start < reference["bytes"] or not 0 < size <= CHUNK_BYTES:
+        raise ProjectError("E_RESOURCE", "봉인 파일의 읽기 구간이 유효하지 않습니다.")
+    return _transfer(Path(source), reference, window=(start, start + size))
 
 
 def verify(source, reference):
