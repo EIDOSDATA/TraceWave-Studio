@@ -102,11 +102,19 @@ void StudioSmokeDriver::CanvasSmokeNext()
         m_frame.m_shell->ShowNavigation();
         CanvasAssert(wxWindow::FindFocus() == m_frame.m_canvas, "Showing navigation stole the canvas keyboard focus.");
         m_frame.m_shell->ShowNavigation(true);
-        m_frame.m_shell->FocusNext();
+        const auto pressF6 = [this](bool reverse)
+        {
+            wxKeyEvent key(wxEVT_CHAR_HOOK);
+            key.m_keyCode = WXK_F6;
+            key.SetShiftDown(reverse);
+            key.SetEventObject(wxWindow::FindFocus());
+            CanvasAssert(m_frame.GetEventHandler()->ProcessEvent(key), "Studio did not handle the F6 shortcut.");
+        };
+        pressF6(false);
         auto* focused = wxWindow::FindFocus();
         CanvasAssert(focused == m_frame.m_views || m_frame.m_views->IsDescendant(focused),
                      "F6 does not enter the central work area.");
-        m_frame.m_shell->FocusNext(true);
+        pressF6(true);
         CanvasAssert(wxWindow::FindFocus() == m_frame.m_tree, "Shift+F6 does not return to navigation.");
         m_frame.m_manager->GetPane("problems").Hide();
         m_frame.m_manager->Update();
