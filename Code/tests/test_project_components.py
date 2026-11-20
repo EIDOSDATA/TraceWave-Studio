@@ -55,10 +55,11 @@ class ProjectComponentTests(unittest.TestCase):
         """! @brief coordinator 시작 실패 뒤 자료 처리 thread와 writer 잠금이 남지 않는다."""
         for owner in ("CadCoordinator", "SolverCoordinator"):
             captured = []
+            service = ProjectService.__new__(ProjectService)
 
-            def fail_start(coordinator):
+            def fail_start(_coordinator):
                 """! @brief 실제 자료 처리 thread가 시작된 뒤 연결 실패를 주입한다."""
-                captured.append((coordinator.service, coordinator.service._thread))
+                captured.append(service._thread)
                 raise RuntimeError("injected coordinator start failure")
 
             with self.subTest(owner=owner), TemporaryDirectory() as temporary:
@@ -66,13 +67,12 @@ class ProjectComponentTests(unittest.TestCase):
                 try:
                     with patch("rfad.application.projects." + owner + ".start", fail_start):
                         with self.assertRaisesRegex(RuntimeError, "injected coordinator"):
-                            ProjectService(workspace)
+                            service.__init__(workspace)
                     self.assertEqual(len(captured), 1)
-                    self.assertFalse(captured[0][1].is_alive())
+                    self.assertFalse(captured[0].is_alive())
                     with ProjectService(workspace, auto_run=False) as reopened:
                         self.assertTrue(reopened.policy()["mutations_enabled"])
                 finally:
-                    for service, _ in captured:
                         service.close()
 
     def test_snapshot_rejects_hash_valid_but_noncanonical_captured_document(self):

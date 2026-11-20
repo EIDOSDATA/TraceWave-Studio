@@ -7,7 +7,7 @@ import re
 from uuid import UUID, uuid5
 
 from rfad.application.canonical import canonical_bytes, canonical_hash
-from rfad.application import measurement_contract as contract, measurement_candidates as candidates
+from rfad.application import measurement_contract as contract
 from rfad.application import measurement_forms as forms, measurement_records as records
 from rfad.application.network_records import reference
 from rfad.application.project_contract import MAX_HISTORY
@@ -77,6 +77,8 @@ def _preflight_files(service, staged, files, response):
 
 def _prepare(service, state, context, data, command_id):
     """! @brief 미리보기/적용 모두 같은 명령 이력을 메모리에서 검증해 원자 게시를 준비한다."""
+    from rfad.application import measurement_candidates as candidates
+
     project, document = records.current(service, state, context, data["expected_revision"])
     output, payload, files, fingerprint = candidates.build(service, state, project, document, data)
     repository = BufferedRepository(service.repository)

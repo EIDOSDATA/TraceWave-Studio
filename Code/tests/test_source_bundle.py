@@ -100,6 +100,22 @@ class SourceBundleTests(unittest.TestCase):
         self.assertIn("src/rfad/second.py", math["sources"])
         self.assertNotIn("src/rfad/first.py", math["sources"])
 
+    def test_new_ambiguous_module_cannot_pass_cached_path_selection(self):
+        """! @brief 첫 탐색 뒤 같은 이름의 패키지가 생기면 경로 재검사에서 거절한다."""
+        self.write("src/rfad/probe.py", b"VALUE = 1\n")
+        original = bundle._text
+
+        def changed(root, relative, overrides, limit, normalize):
+            """! @brief 실제 모듈 바이트를 읽은 뒤 새 이름 충돌을 격리 fixture에 만든다."""
+            source = original(root, relative, overrides, limit, normalize)
+            if relative == "src/rfad/probe.py":
+                self.write("src/rfad/probe/__init__.py", b"VALUE = 2\n")
+            return source
+
+        with patch.object(bundle, "_text", side_effect=changed):
+            with self.assertRaisesRegex(bundle.BundleError, "중복"):
+                self.capture()
+
     def test_requested_file_budget_cannot_disable_the_global_cap(self):
         """! @brief bool/0/193 입력으로 전역 192개 상한을 우회하지 않는다."""
         for maximum in (True, 0, 193):

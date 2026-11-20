@@ -6,7 +6,7 @@ from rfad.application.canonical import canonical_bytes
 from rfad.application.project_contract import _fields, _uuid
 from rfad.application.network_records import samples
 from rfad.application.result_sources import fail, resolve, validate_pin
-from rfad.application import result_catalog, result_complex, result_smith
+from rfad.application import result_catalog, result_complex
 
 
 PROFILE = "rfad.result-workspace/0.1"
@@ -128,5 +128,7 @@ def read(service, method, params):
     elif method == "result.marker":
         payload = result_complex.marker(value["dataset"], **arguments)
     else:
+        from rfad.application import result_smith
+
         payload = result_smith.project(value["dataset"], **arguments)
     return bounded({"profile": "rfad." + method.removeprefix("result.") + "-view/0.1", **_identity(value), **payload})

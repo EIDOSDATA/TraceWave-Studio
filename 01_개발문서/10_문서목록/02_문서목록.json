@@ -21,14 +21,14 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 44,
     "current_06_분석연구": 13,
-    "current_07_검증": 47,
+    "current_07_검증": 48,
     "current_08_운영환경": 7,
     "current_09_개발계획": 4,
     "current_11_검토기록": 6,
     "current_traceability": 4,
     "document_catalog": 4,
     "document_navigation": 6,
-    "documentation_asset": 148,
+    "documentation_asset": 149,
     "documentation_validation_record": 1,
     "historical_proposal": 2,
     "historical_verification": 41,
@@ -28473,7 +28473,7 @@
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
       "bytes": 619557,
-      "working_tree_sha256": "2fce98df974439fe2e3394acf53fef73f2dcead1b42e185d1cf564d5c12ac4c0"
+      "working_tree_sha256": "9531616544a8f3499e3f22ad49bb816fa0b5e7ee99fdb0c9488edb5b8138bcc1"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -28609,9 +28609,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 13553,
-      "working_tree_sha256": "a1807cb1b112a3b470a590707728dcc43bd9c0b1286a7b22dfb70b899eec5e25",
-      "text_lines": 98,
+      "bytes": 13891,
+      "working_tree_sha256": "f8b82005d6ef4539727b11f441da8c02fc53e61d8e63347599ee09c6a5f3b398",
+      "text_lines": 100,
       "text_status": "utf8_read"
     },
     {
@@ -28672,17 +28672,17 @@
       "path": "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 143512,
-      "working_tree_sha256": "b99f1a04eca415659031705d28ccf12d8755ad21a86bc36c30b2fccc69d6f8fc",
-      "text_lines": 791,
+      "bytes": 144094,
+      "working_tree_sha256": "4b621f0013cdd8ec86866210242ae6ae95ad355a0ff0085a3d1f41752a9ab9ed",
+      "text_lines": 795,
       "text_status": "utf8_read"
     },
     {
       "path": "01_개발문서/09_개발계획/03_개발완료_계획.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 36059,
-      "working_tree_sha256": "e83aefbbcc15c26f1f2fe7cc707c5cf5434b663dfa59a2a44a868b10fe90b3f2",
+      "bytes": 36144,
+      "working_tree_sha256": "bfeb9a1378bb9ad512db25de1988ecf9d57497b4efee6b89de2358083348e53f",
       "text_lines": 171,
       "text_status": "utf8_read"
     },
@@ -30997,6 +30997,22 @@
       "review_scope": "문서/시안 자산 보존",
       "bytes": 3906,
       "working_tree_sha256": "f8cb0c5d307347c4efc70aecb25ad5c08e0551c990bf734404f7984020ac8687"
+    },
+    {
+      "path": "01_개발문서/07_검증/82_윈도우_시작과_출처탐색_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2358,
+      "working_tree_sha256": "43ddab06f39d112912fd7fdc9c893a9968badb79375ffdd451e48a6ad0d7f48a",
+      "text_lines": 14,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/83_윈도우_시작과_출처탐색_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 40165,
+      "working_tree_sha256": "8b3560ea7d4977865dc8beb149cc64d3d6b220465f12530f5704ea1daf585437"
     }
   ],
   "identical_byte_groups": [
@@ -31153,15 +31169,19 @@
   ],
   "incremental_refresh": {
     "date_kst": "2026-11-20",
-    "mode": "step13_windows_reproducible_bundle_receiver",
-    "previous_inventory_sha256": "052430339ee03699b169178fc87474449a51e4a4ee2a2e6983282d67b9ed31ee",
+    "mode": "step12_windows_lazy_import_and_source_lookup",
+    "previous_inventory_sha256": "6a86a93c749d07d2c711dfdd5a0899ad994ae16951a91a29250ff01f74e49e6a",
     "refreshed_paths": [
-      "01_개발문서/07_검증/81_윈도우_재현빌드_수신실행기록.json",
+      "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
+      "01_개발문서/07_검증/82_윈도우_시작과_출처탐색_검증.md",
+      "01_개발문서/07_검증/83_윈도우_시작과_출처탐색_실행기록.json",
       "01_개발문서/07_검증/README.md",
-      "01_개발문서/09_개발계획/02_개발착수와_현재상태.md"
+      "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
+      "01_개발문서/09_개발계획/03_개발완료_계획.md"
     ],
     "added_paths": [
-      "01_개발문서/07_검증/81_윈도우_재현빌드_수신실행기록.json"
+      "01_개발문서/07_검증/82_윈도우_시작과_출처탐색_검증.md",
+      "01_개발문서/07_검증/83_윈도우_시작과_출처탐색_실행기록.json"
     ],
     "removed_paths": [],
     "preserved_reference_records": 3336,

@@ -114,7 +114,7 @@ def _dependency_nodes(relative, text):
                  if isinstance(node, (ast.Import, ast.ImportFrom, ast.Call)))
 
 
-def _dependencies(root, relative, nodes, overrides):
+def _dependencies(root, relative, nodes, overrides, module_path):
     """! @brief 모든 분기/함수의 import와 호출을 실제 경로 및 등록 목록과 대조한다."""
     module = relative[4:-3].replace("/", ".") if relative.startswith("src/") else ""
     package = module.rpartition(".")[0]
@@ -140,10 +140,10 @@ def _dependencies(root, relative, nodes, overrides):
                 dependencies.add(base)
                 for item in node.names:
                     child = base + "." + item.name
-                    if item.name != "*" and _module_path(root, child, overrides):
+                    if item.name != "*" and module_path(child):
                         dependencies.add(child)
                     elif item.name != "*":
-                        base_path = _module_path(root, base, overrides)
+                        base_path = module_path(base)
                         if base_path and base_path.endswith("/__init__.py"):
                             body = ast.parse(_text(root, base_path, overrides, 4 * 1024**2, False))
                             exported = set()
@@ -218,6 +218,14 @@ def _build(root, profile, overrides, max_files, dependency_nodes):
     limit = LIMITS[profile]
     total_bytes = 0
     records = []
+    resolved_modules = {}
+
+    def module_path(name):
+        """! @brief 한 캡처에서 같은 모듈의 경로 후보만 한 번 탐색한다."""
+        if name not in resolved_modules:
+            resolved_modules[name] = _module_path(root, name, overrides)
+        return resolved_modules[name]
+
     try:
         while pending:
             relative = min(pending)
@@ -231,19 +239,22 @@ def _build(root, profile, overrides, max_files, dependency_nodes):
             file_bytes = text.encode("utf-8")
             total_bytes += len(file_bytes)
             records.append({"path": relative, "sha256": hashlib.sha256(file_bytes).hexdigest(), "bytes": len(file_bytes)})
-            dependencies, imports = _dependencies(root, relative, dependency_nodes(relative, text), overrides)
+            dependencies, imports = _dependencies(root, relative, dependency_nodes(relative, text), overrides, module_path)
             dynamic.update(imports)
             for module in dependencies:
                 parts = module.split(".")
                 for length in range(1, len(parts) + 1):
                     needed = ".".join(parts[:length])
-                    path = _module_path(root, needed, overrides)
+                    path = module_path(needed)
                     if path is None:
                         raise BundleError("제품 의존 소스가 없습니다: " + needed)
                     if path not in sources:
                         pending.add(path)
             if total_bytes > limit:
                 raise BundleError("실행 의존 소스 바이트가 상한을 초과했습니다.", "E_RESOURCE")
+        for module, selected in resolved_modules.items():
+            if _module_path(root, module, overrides) != selected:
+                raise BundleError("캡처 도중 실행 의존 소스의 경로가 변경되었습니다: " + module, "E_VERSION")
         sources = dict(sorted(sources.items()))
         raw = canonical(sources)
         if len(raw) > limit:

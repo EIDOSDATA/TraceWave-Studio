@@ -9,7 +9,6 @@ from rfad.application.network_forms import input_quantity
 from rfad.application.project_contract import _fields
 from rfad.domain.measurement import SECTIONS, EVIDENCE, bounded, validate_record, validate_uncertainty
 from rfad.domain.network_data import finite, validate_dataset
-from rfad.domain.measurement_alignment import validate_alignment_specification
 from rfad.domain.units import Quantity, QuantityError
 
 TOP_LEVEL = {"data_class", "author", "source_refs", "uncertainty", "external_processing", "attachments", "extra"}
@@ -335,4 +334,6 @@ def alignment_input(specification, dataset):
             sample_count = len(values)
         else:
             fail("지원하지 않는 정렬 작업입니다.", "E_UNSUPPORTED")
+    from rfad.domain.measurement_alignment import validate_alignment_specification
+
     return validate_alignment_specification(result, dataset)
