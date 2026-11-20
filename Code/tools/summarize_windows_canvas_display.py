@@ -75,9 +75,15 @@ def summarize(trace):
         raise ValueError("초기 또는 확대 화면 표식을 관찰하지 못했습니다.")
     times = list(visible.values())
     intervals = [(later - earlier) * scale for earlier, later in zip(times, times[1:])]
-    limits = 1000 / 60
+    target_fps = trace.get("target_fps", 60)
+    if type(target_fps) is not int or target_fps not in (30, 60):
+        raise ValueError("현재 Windows 표시 검증은 30 또는 60 fps 목표를 사용합니다.")
+    limit = 1000 / target_fps
     return {
         "workload": trace["workload"], "shapes": trace["shapes"], "layers": trace["layers"],
+        "triangles": trace.get("triangles", 0), "frame_interval_target_fps": target_fps,
+        "frame_interval_target_ms": limit, "renderer": trace.get("renderer"),
+        "swap_interval": trace.get("swap_interval"), "vertex_buffer": trace.get("vertex_buffer"),
         "duration_s": (end - start) / frequency, "canvas": trace["canvas"], "display": trace["display"],
         "timer": trace.get("timer", "wx-timer"), "requested_timer_ms": trace["requested_timer_ms"],
         "dpi": trace["dpi"], "refresh_hz": trace["refresh_hz"],
@@ -93,12 +99,14 @@ def summarize(trace):
         "desktop_updates_without_marker": without_marker,
         "input_interval": _statistics([(later - earlier) * scale for earlier, later in zip(inputs, inputs[1:])]),
         "observed_frame_interval": _statistics(intervals),
-        "observed_frame_intervals_over_60_fps_budget": sum(value > limits for value in intervals),
+        "observed_frame_intervals_over_60_fps_budget": sum(value > 1000 / 60 for value in intervals),
+        "observed_frame_intervals_over_target": sum(value > limit for value in intervals),
         "observed_input_to_display": _statistics(
             [(when - inputs[sequence - 1]) * scale for sequence, when in visible.items()]),
         "first_observed_after_start_ms": (times[0] - start) * scale,
         "end_after_last_observed_ms": (end - times[-1]) * scale,
         "full_f1_acceptance_measured": False,
+        "full_f2_acceptance_measured": False,
     }
 
 

@@ -44,3 +44,15 @@ class WindowsCanvasDisplayTraceTests(unittest.TestCase):
         trace["desktop_updates"].append([192, 1, 3])
         with self.assertRaisesRegex(ValueError, "표식이 일치하지"):
             summarize(trace)
+
+    def test_model_trace_uses_its_30_fps_target(self):
+        """! @brief 대형 회전의 표시 간격을 30 fps 기준에서 별도로 센다."""
+        trace = self.trace()
+        trace.update(workload="model-rotate-pan", shapes=0, triangles=1000000, target_fps=30)
+        trace["desktop_updates"].insert(3, [146, 1, 3])
+        result = summarize(trace)
+        self.assertEqual(result["frame_interval_target_fps"], 30)
+        self.assertEqual(result["triangles"], 1000000)
+        self.assertEqual(result["observed_frame_intervals_over_target"], 1)
+        self.assertEqual(result["observed_frame_intervals_over_60_fps_budget"], 2)
+        self.assertFalse(result["full_f2_acceptance_measured"])

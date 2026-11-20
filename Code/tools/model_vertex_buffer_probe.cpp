@@ -1,11 +1,11 @@
 /** @file @brief 실제 wxGLCanvas에서 정점 버퍼와 CPU 배열의 픽셀과 context 수명을 비교한다. */
 #include "model_vertex_buffer.h"
 #include "display_mesh.h"
+#include "large_display_fixture.h"
 
 #include <wx/glcanvas.h>
 #include <wx/wx.h>
 #include <chrono>
-#include <fstream>
 #include <iostream>
 #include <memory>
 
@@ -115,13 +115,7 @@ std::vector<unsigned char> Pixels(const wxSize& size)
 /** @brief 실제 표시 파일 로더에서 크기, 해시, 역할과 실행 결합을 검사한다. */
 Scene LoadFixture(const std::filesystem::path& directory)
 {
-    std::ifstream metadata(directory / "fixture.json", std::ios::binary);
-    std::string bytes(65537, '\0');
-    metadata.read(bytes.data(), static_cast<std::streamsize>(bytes.size()));
-    Check(metadata.eof() && metadata.gcount() > 0 && metadata.gcount() <= 65536,
-          "대형 표시 시험의 fixture.json을 읽을 수 없습니다.");
-    bytes.resize(static_cast<std::size_t>(metadata.gcount()));
-    const auto value = Json::parse(bytes);
+    const auto value = ReadLargeDisplayFixture(directory);
     const auto& artifact = value.at("artifact");
     auto scene = DisplayMesh::Load(directory, artifact, value.at("snapshot"), artifact.at("run_id").get<std::string>());
     Check(scene.triangles == DisplayMesh::MaxLargeTriangles, "대형 표시 시험에 100만 삼각형이 필요합니다.");

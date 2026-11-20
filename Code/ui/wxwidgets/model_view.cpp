@@ -143,6 +143,25 @@ public:
         Refresh(false);
     }
 
+    void RotateView(double dx, double dy)
+    {
+        m_camera.Rotate(dx, dy);
+        Refresh(false);
+    }
+
+    void PanView(double dx, double dy)
+    {
+        if (m_scene == nullptr || !std::isfinite(dx) || !std::isfinite(dy))
+        {
+            return;
+        }
+        const double unit = 2.0 * m_camera.HalfHeight(m_scene->radius) / std::max(1, GetClientSize().y);
+        const double limit = m_scene->radius * 100.0;
+        m_camera.panX = std::clamp(m_camera.panX + dx * unit, -limit, limit);
+        m_camera.panY = std::clamp(m_camera.panY - dy * unit, -limit, limit);
+        Refresh(false);
+    }
+
     void Selection(const std::string& identity)
     {
         m_selection = identity;
@@ -163,6 +182,7 @@ public:
     }
 
     std::function<void()> onFrame;
+    std::function<void(wxWindow&)> onDrawDisplayMarker;
     std::function<void(const std::string&)> onError;
     std::function<void(const std::string&)> onSelection;
     std::function<void(const std::vector<std::string>&)> onSelectionCandidates;
@@ -298,6 +318,10 @@ private:
         }
         glDisable(GL_LIGHTING);
         glDisable(GL_COLOR_MATERIAL);
+        if (onDrawDisplayMarker)
+        {
+            onDrawDisplayMarker(*this);
+        }
         const GLenum error = glGetError();
         if (error != GL_NO_ERROR || !SwapBuffers())
         {
@@ -342,16 +366,12 @@ private:
         {
             if (m_panning)
             {
-                const double unit = 2.0 * m_camera.HalfHeight(m_scene->radius) / std::max(1, GetClientSize().y);
-                const double limit = m_scene->radius * 100.0;
-                m_camera.panX = std::clamp(m_camera.panX + dx * unit, -limit, limit);
-                m_camera.panY = std::clamp(m_camera.panY - dy * unit, -limit, limit);
+                PanView(dx, dy);
             }
             else
             {
-                m_camera.Rotate(dx, dy);
+                RotateView(dx, dy);
             }
-            Refresh(false);
         }
         m_last = current;
     }
@@ -457,6 +477,7 @@ struct ModelView::Impl
         if (canvas != nullptr)
         {
             canvas->onFrame = nullptr;
+            canvas->onDrawDisplayMarker = nullptr;
             canvas->onError = nullptr;
             canvas->onSelection = nullptr;
             canvas->onSelectionCandidates = nullptr;
@@ -506,6 +527,7 @@ struct ModelView::Impl
             return false;
         }
         owner->GetSizer()->Add(canvas, 1, wxEXPAND);
+        canvas->onDrawDisplayMarker = owner->onDrawDisplayMarker;
         for (const auto& layer : hiddenLayers)
         {
             canvas->Layer(layer, false);
@@ -702,6 +724,22 @@ void ModelView::SetView(const std::string& view)
     if (m_impl->canvas != nullptr)
     {
         m_impl->canvas->View(view);
+    }
+}
+
+void ModelView::RotateView(double dx, double dy)
+{
+    if (m_impl->canvas != nullptr)
+    {
+        m_impl->canvas->RotateView(dx, dy);
+    }
+}
+
+void ModelView::PanView(double dx, double dy)
+{
+    if (m_impl->canvas != nullptr)
+    {
+        m_impl->canvas->PanView(dx, dy);
     }
 }
 

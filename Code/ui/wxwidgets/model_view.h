@@ -24,6 +24,9 @@ public:
     void SetLayerVisible(const std::string& identity, bool visible);
     void FitView();
     void SetView(const std::string& view);
+    /** @brief 드래그와 같은 카메라 회전/이동을 픽셀 변화량으로 적용한다. */
+    void RotateView(double dx, double dy);
+    void PanView(double dx, double dy);
     bool HasMesh() const;
     bool IsLoading() const;
     std::string Error() const;
@@ -39,6 +42,8 @@ public:
     std::uint64_t RenderedFrameCount() const;
 
     std::function<void(const std::string&)> onStatus;
+    /** @brief 전용 계측 창에서 첫 파일을 열기 전에 지정하는 OpenGL 버퍼 표식이다. */
+    std::function<void(wxWindow&)> onDrawDisplayMarker;
     std::function<void(const std::string&)> onSelection;
     /** @brief 병합 바디의 원본을 사용자에게 고르게 하며 첫 원본을 자동 채택하지 않는다. */
     std::function<void(const std::vector<std::string>&)> onSelectionCandidates;

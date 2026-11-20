@@ -1,12 +1,18 @@
-/** @file @brief 실제 DesignCanvas 창에서 확대 입력과 합성 화면 시각을 함께 기록한다. */
+/** @file @brief 실제 2D/3D 제품 View의 입력과 Windows 합성 화면 시각을 함께 기록한다. */
 #include "design_canvas.h"
+#include "large_display_fixture.h"
+#include "model_view.h"
 #include "windows_display_marker.h"
 
+#include <GL/gl.h>
 #include <atomic>
 #include <charconv>
+#include <cstring>
 #include <filesystem>
 #include <iostream>
+#include <optional>
 #include <string>
+#include <string_view>
 #include <thread>
 #include <vector>
 
@@ -22,6 +28,7 @@ constexpr int PreparePollMs = 25;
 constexpr int InputPeriodMs = 8;
 constexpr int InputEventId = wxID_HIGHEST + 1;
 constexpr int RunSeconds = 35;
+constexpr std::size_t ModelTriangles = 1000000;
 
 std::int64_t Counter()
 {
@@ -73,25 +80,49 @@ struct Stamp
 class ProbeFrame final : public wxFrame
 {
 public:
-    ProbeFrame(unsigned shapes, HANDLE out, int& result)
-        : wxFrame(nullptr, wxID_ANY, "TraceWave 2D display probe"), m_timer(this), m_shapes(shapes), m_out(out),
-          m_result(result)
+    ProbeFrame(unsigned shapes, const std::filesystem::path& directory, HANDLE out, int& result)
+        : wxFrame(nullptr, wxID_ANY, directory.empty() ? "TraceWave 2D display probe" : "TraceWave 3D display probe"),
+          m_timer(this), m_shapes(shapes), m_out(out), m_result(result)
     {
         LARGE_INTEGER frequency{};
         QueryPerformanceFrequency(&frequency);
         m_frequency = frequency.QuadPart;
-        SetClientSize(1000, 700);
+        m_size = directory.empty() ? wxSize(1000, 700) : wxSize(1920, 1080);
+        SetClientSize(m_size);
         auto* sizer = new wxBoxSizer(wxVERTICAL);
-        m_canvas = new DesignCanvas(this);
-        sizer->Add(m_canvas, 1, wxEXPAND);
+        if (directory.empty())
+        {
+            m_canvas = new DesignCanvas(this);
+            m_surface = m_canvas;
+            sizer->Add(m_canvas, 1, wxEXPAND);
+            m_canvas->onDrawDisplayMarker = [this](wxDC& dc)
+            {
+                DrawMarker(dc);
+            };
+        }
+        else
+        {
+            const auto fixture = ReadLargeDisplayFixture(directory);
+            const auto& artifact = fixture.at("artifact");
+            m_model = new ModelView(this);
+            sizer->Add(m_model, 1, wxEXPAND);
+            m_model->onDrawDisplayMarker = [this](wxWindow& surface)
+            {
+                DrawModelMarker(surface);
+            };
+            if (!m_model->LoadArtifact(wxString(directory.wstring()), artifact, fixture.at("snapshot"),
+                                       artifact.at("run_id").get<std::string>()))
+            {
+                throw std::runtime_error("대형 표시 자료 로딩을 시작하지 못했습니다.");
+            }
+        }
         SetSizer(sizer);
         Layout();
-        m_canvas->SetScene(Fixture(shapes));
-        m_canvas->FitView();
-        m_canvas->onDrawDisplayMarker = [this](wxDC& dc)
+        if (m_canvas != nullptr)
         {
-            DrawMarker(dc);
-        };
+            m_canvas->SetScene(Fixture(shapes));
+            m_canvas->FitView();
+        }
         Bind(wxEVT_TIMER, &ProbeFrame::OnTimer, this);
         Bind(wxEVT_THREAD, &ProbeFrame::OnInput, this, InputEventId);
         Bind(wxEVT_CLOSE_WINDOW, &ProbeFrame::OnClose, this);
@@ -117,6 +148,62 @@ private:
             dc.SetBrush((code & (1u << cell)) != 0 ? *wxWHITE_BRUSH : *wxBLACK_BRUSH);
             dc.DrawRectangle(MarkerX + cell * Marker::CellWidth, MarkerY, Marker::CellWidth, MarkerHeight);
         }
+        StampPaint(sequence);
+    }
+
+    /** @brief 같은 ModelView의 SwapBuffers 직전에 작은 번호 표식을 그린다. */
+    void DrawModelMarker(wxWindow& surface)
+    {
+        m_surface = &surface;
+        if (!m_swapIntervalChecked)
+        {
+            m_swapIntervalChecked = true;
+            const auto proc = wglGetProcAddress("wglGetSwapIntervalEXT");
+            const auto raw = reinterpret_cast<std::uintptr_t>(proc);
+            if (raw > 3 && raw != UINTPTR_MAX)
+            {
+                int (APIENTRY* interval)() = nullptr;
+                static_assert(sizeof(interval) == sizeof(proc));
+                std::memcpy(&interval, &proc, sizeof(interval));
+                m_swapInterval = interval();
+            }
+        }
+        const auto size = surface.GetClientSize();
+        const double scale = surface.GetContentScaleFactor();
+        const auto sequence = static_cast<unsigned>(m_inputs.size());
+        const std::uint32_t code = Marker::Signature | sequence;
+        glPushAttrib(GL_ENABLE_BIT | GL_CURRENT_BIT);
+        glDisable(GL_DEPTH_TEST);
+        glDisable(GL_DITHER);
+        glMatrixMode(GL_PROJECTION);
+        glPushMatrix();
+        glLoadIdentity();
+        glOrtho(0.0, size.x * scale, size.y * scale, 0.0, -1.0, 1.0);
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glLoadIdentity();
+        glBegin(GL_QUADS);
+        for (int cell = 0; cell < Marker::Cells; ++cell)
+        {
+            const float shade = (code & (1u << cell)) != 0 ? 1.0f : 0.0f;
+            const int left = MarkerX + cell * Marker::CellWidth;
+            glColor3f(shade, shade, shade);
+            glVertex2i(left, MarkerY);
+            glVertex2i(left + Marker::CellWidth, MarkerY);
+            glVertex2i(left + Marker::CellWidth, MarkerY + MarkerHeight);
+            glVertex2i(left, MarkerY + MarkerHeight);
+        }
+        glEnd();
+        glPopMatrix();
+        glMatrixMode(GL_PROJECTION);
+        glPopMatrix();
+        glMatrixMode(GL_MODELVIEW);
+        glPopAttrib();
+        StampPaint(sequence);
+    }
+
+    void StampPaint(unsigned sequence)
+    {
         if (m_paints.empty() || m_paints.back().sequence != sequence)
         {
             m_paints.push_back({sequence, Counter()});
@@ -126,7 +213,7 @@ private:
     void StartReader()
     {
         const auto frame = static_cast<HWND>(GetHandle());
-        const auto canvas = static_cast<HWND>(m_canvas->GetHandle());
+        const auto canvas = static_cast<HWND>(m_surface->GetHandle());
         m_reader = std::make_unique<Marker::Reader>(frame, canvas, POINT{MarkerX, MarkerY + MarkerHeight / 2});
         m_capture = std::thread([this]()
         {
@@ -155,7 +242,7 @@ private:
                 m_failed.store(true);
             }
         });
-        m_canvas->Refresh(false);
+        m_surface->Refresh(false);
     }
 
     /** @brief 고해상도 대기 타이머를 시험 프로세스 안에서 열고 대기 입력을 하나로 제한한다. */
@@ -223,6 +310,20 @@ private:
         {
             return;
         }
+        if (m_model != nullptr)
+        {
+            const auto step = m_inputs.size();
+            m_inputs.push_back(now);
+            if ((step / 120) % 2 == 0)
+            {
+                m_model->RotateView(1.2, 0.0);
+            }
+            else
+            {
+                m_model->PanView(step % 120 < 60 ? 0.75 : -0.75, 0.0);
+            }
+            return;
+        }
         const auto size = m_canvas->GetClientSize();
         const bool zoomIn = m_inputs.size() % 2 == 0;
         wxMouseEvent event(wxEVT_MOUSEWHEEL);
@@ -243,7 +344,17 @@ private:
         try
         {
             const auto now = Counter();
-            if (!m_reader && !m_paints.empty() && GetForegroundWindow() == static_cast<HWND>(GetHandle()))
+            if (m_model != nullptr && !m_model->Error().empty())
+            {
+                throw std::runtime_error(m_model->Error());
+            }
+            if (m_model != nullptr && m_model->HasMesh() && m_model->TriangleCount() != ModelTriangles)
+            {
+                throw std::runtime_error("3D 합성 시험에 100만 삼각형이 필요합니다.");
+            }
+            if (!m_reader && m_surface != nullptr && m_surface->GetClientSize() == m_size && !m_paints.empty() &&
+                (m_model == nullptr || m_model->HasMesh()) &&
+                GetForegroundWindow() == static_cast<HWND>(GetHandle()))
             {
                 StartReader();
             }
@@ -308,12 +419,18 @@ private:
                                 frame.sequence ? Json(*frame.sequence) : Json(nullptr)});
         }
         const auto display = m_reader ? m_reader->OutputSize() : SIZE{};
-        const auto size = m_canvas->GetClientSize();
+        const auto size = m_surface != nullptr ? m_surface->GetClientSize() : wxSize{};
+        const bool model = m_model != nullptr;
         const Json report{{"schema", "rfad.windows-canvas-display-trace/0.1"}, {"ok", success},
                           {"error", problem}, {"qpc_frequency", m_frequency},
                           {"display", {display.cx, display.cy}}, {"refresh_hz", m_reader ? m_reader->RefreshRate() : 0},
-                          {"canvas", {size.x, size.y}}, {"dpi", m_canvas->GetDPI().x},
-                          {"shapes", m_shapes}, {"layers", 4}, {"workload", "canvas-wheel-zoom"},
+                          {"canvas", {size.x, size.y}}, {"dpi", m_surface != nullptr ? m_surface->GetDPI().x : GetDPI().x},
+                          {"shapes", model ? 0 : m_shapes}, {"layers", model ? 2 : 4},
+                          {"triangles", model ? m_model->TriangleCount() : 0}, {"target_fps", model ? 30 : 60},
+                          {"workload", model ? "model-rotate-pan" : "canvas-wheel-zoom"},
+                          {"renderer", model ? m_model->RendererDescription() : "wxGraphicsContext"},
+                          {"swap_interval", m_swapInterval ? Json(*m_swapInterval) : Json(nullptr)},
+                          {"vertex_buffer", model ? m_model->VertexBufferDiagnostics() : Json(nullptr)},
                           {"start_qpc", m_start}, {"end_qpc", m_end}, {"requested_timer_ms", InputPeriodMs},
                           {"timer", "high-resolution-waitable"}, {"offers_qpc", m_offers},
                           {"inputs_qpc", m_inputs}, {"painted", paints}, {"desktop_updates", presents}};
@@ -326,6 +443,11 @@ private:
 
     wxTimer m_timer;
     DesignCanvas* m_canvas = nullptr;
+    ModelView* m_model = nullptr;
+    wxWindow* m_surface = nullptr;
+    wxSize m_size;
+    std::optional<int> m_swapInterval;
+    bool m_swapIntervalChecked = false;
     unsigned m_shapes;
     HANDLE m_out;
     int& m_result;
@@ -358,6 +480,12 @@ wxIMPLEMENT_APP_NO_MAIN(ProbeApp);
 int main(int argc, char** argv)
 {
     unsigned shapes = 4096;
+    std::filesystem::path directory;
+    const bool model = argc == 4 && std::string_view(argv[2]) == "--model";
+    if (model)
+    {
+        directory = std::filesystem::absolute(std::filesystem::path(argv[3]));
+    }
     if (argc == 3)
     {
         const std::string argument = argv[2];
@@ -367,7 +495,7 @@ int main(int argc, char** argv)
             return 2;
         }
     }
-    if (argc != 2 && argc != 3)
+    if (argc != 2 && argc != 3 && !model)
     {
         return 2;
     }
@@ -388,7 +516,7 @@ int main(int argc, char** argv)
     {
         if (wxTheApp->CallOnInit())
         {
-            auto* window = new ProbeFrame(shapes, out.get(), result);
+            auto* window = new ProbeFrame(shapes, directory, out.get(), result);
             wxTheApp->SetTopWindow(window);
             window->Show();
             wxTheApp->OnRun();
