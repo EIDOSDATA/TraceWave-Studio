@@ -5,9 +5,11 @@
 #include <wx/weakref.h>
 #include <string>
 #include <functional>
+#include <memory>
 
 class StudioFrame;
 class PcbSelectionDialog;
+class StudioCatalogDisplayProbe;
 class RadiationDialog;
 class TargetEditorDialog;
 class TemplateDialog;
@@ -184,6 +186,7 @@ private:
     Json m_pcbExpectedMaterial;
     Json m_pcbChecks = Json::array();
     Json m_pcbCatalogMetrics = Json::object();
+    std::shared_ptr<StudioCatalogDisplayProbe> m_pcbCatalogDisplay;
     Clock::time_point m_pcbCatalogAction{};
     std::string m_solverFirstResult;
     Json m_solverChecks = Json::array();

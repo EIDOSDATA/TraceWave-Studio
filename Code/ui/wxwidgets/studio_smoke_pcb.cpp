@@ -2,6 +2,8 @@
 #include "studio_internal.h"
 #include "pcb_selection_dialog.h"
 #include "pcb_catalog_table.h"
+#include "studio_catalog_display_probe.h"
+#include <wx/utils.h>
 #include <wx/combobox.h>
 #include <wx/grid.h>
 #ifdef __WXMSW__
@@ -61,7 +63,7 @@ void StudioSmokeDriver::PcbSmokeTick()
     ++m_pcbTicks;
     try
     {
-        if (Clock::now() - m_pcbStarted > std::chrono::seconds(60))
+        if (Clock::now() - m_pcbStarted > std::chrono::seconds(m_pcbCatalogDisplay ? 110 : 60))
         {
             throw std::runtime_error("PCB smoke 단계 " + std::to_string(m_pcbStage) +
                                      "의 전체 제한 시간을 초과했습니다.");
@@ -596,6 +598,16 @@ void StudioSmokeDriver::OnPcbShutdownComplete()
 /** @brief 큰 설계가 열린 실제 Windows 표에서 필터, 행 접근과 native 스크롤을 검증한다. */
 void StudioSmokeDriver::PcbSmokeLargeCatalog(PcbSelectionDialog& dialog)
 {
+    if (m_pcbCatalogDisplay)
+    {
+        if (!m_pcbCatalogDisplay->Complete())
+        {
+            return;
+        }
+        m_pcbCatalogMetrics["display_trace"] = m_pcbCatalogDisplay->Finish();
+        m_pcbCatalogDisplay.reset();
+        m_pcbStage = 86;
+    }
     if (m_frame.m_requests.Size() != 0)
     {
         return;
@@ -660,6 +672,16 @@ void StudioSmokeDriver::PcbSmokeLargeCatalog(PcbSelectionDialog& dialog)
                      "native 페이지 스크롤이 인접한 검색 행을 가져오지 않았습니다.");
         m_pcbCatalogMetrics["scroll_top_row"] = top;
         m_pcbCatalogMetrics["scroll_observed_ms"] = elapsed();
+        wxString enableDisplay;
+        if (wxGetEnv("RFAD_TEST_CATALOG_SCROLL_DISPLAY", &enableDisplay) && enableDisplay == "1")
+        {
+            m_pcbCatalogDisplay = std::make_shared<StudioCatalogDisplayProbe>(*dialog.m_results);
+            return;
+        }
+        m_pcbStage = 86;
+    }
+    if (m_pcbStage == 86)
+    {
         dialog.m_query->SetValue(Display("조건 그룹 A"));
         m_pcbCatalogAction = Clock::now();
         m_pcbStage = 84;

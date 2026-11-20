@@ -2,7 +2,7 @@
 
 import unittest
 
-from tools.summarize_windows_canvas_display import summarize
+from tools.summarize_windows_canvas_display import summarize, summarize_catalog
 
 
 class WindowsCanvasDisplayTraceTests(unittest.TestCase):
@@ -44,6 +44,19 @@ class WindowsCanvasDisplayTraceTests(unittest.TestCase):
         trace["desktop_updates"].append([192, 1, 3])
         with self.assertRaisesRegex(ValueError, "표식이 일치하지"):
             summarize(trace)
+
+    def test_native_table_preserves_unmatched_markers_and_display_gaps(self):
+        """! @brief 표식의 시각이 뒤섞이면 원시 값을 보존하고 표시 간격을 이어서 계산한다."""
+        trace = self.trace()
+        trace.update(workload="catalog_scroll", catalog_rows=100000, top_rows_not_yet_loaded=1)
+        trace["desktop_updates"].insert(1, [119, 1, 2])
+        trace["desktop_updates"].append([192, 1, 3])
+        result = summarize_catalog({"passed": True, "pcb_catalog_metrics": {"display_trace": trace}})
+        self.assertEqual(result["uncorrelated_markers"], [[119, 1, 2], [192, 1, 3]])
+        self.assertEqual(result["desktop_updates_without_marker"], 3)
+        self.assertEqual(result["observed_frame_interval"]["p95_ms"], 64.0)
+        self.assertEqual(result["catalog_rows"], 100000)
+        self.assertEqual(result["top_rows_not_yet_loaded"], 1)
 
     def test_model_trace_uses_its_30_fps_target(self):
         """! @brief 대형 회전의 표시 간격을 30 fps 기준에서 별도로 센다."""

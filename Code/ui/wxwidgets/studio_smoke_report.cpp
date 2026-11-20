@@ -10,6 +10,7 @@ void StudioSmokeDriver::FinishSmoke(bool passed, const std::string& error)
     {
         return;
     }
+    m_pcbCatalogDisplay.reset();
     if (m_frame.m_pcbDialog != nullptr)
     {
         m_frame.m_pcbDialog->ServiceDisconnected(error.empty() ? "GUI 시험을 종료합니다." : error);

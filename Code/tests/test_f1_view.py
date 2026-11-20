@@ -144,10 +144,11 @@ class F1ViewTests(unittest.TestCase):
             f1_catalog(catalog)
             before_catalog = hashlib.sha256(catalog.read_bytes()).hexdigest()
             executable = Path(os.environ["RFAD_GUI_EXE"]).resolve()
+            display_probe = os.environ.get("RFAD_TEST_CATALOG_SCROLL_DISPLAY") == "1"
             process = subprocess.run([str(executable), "--python", sys.executable, "--source", str(CODE_ROOT / "src"),
                 "--workspace", str(workspace), "--open-project", path, "--catalog", str(catalog),
                 "--catalog-table-smoke-test", "--smoke-report", str(artifact)],
-                stdin=subprocess.DEVNULL, capture_output=True, timeout=125, check=False)
+                stdin=subprocess.DEVNULL, capture_output=True, timeout=200 if display_probe else 125, check=False)
             self.assertTrue(artifact.is_file(), (process.returncode, process.stderr))
             report = json.loads(artifact.read_bytes())
             self.assertEqual(process.returncode, 0, report)
@@ -160,6 +161,12 @@ class F1ViewTests(unittest.TestCase):
             self.assertEqual(report["pcb_catalog_metrics"]["rows"], 100_000)
             self.assertEqual(report["pcb_catalog_metrics"]["filtered_rows"], 50_000)
             self.assertIn("virtual_catalog_scroll_filter_and_last_row", report["pcb_checks"])
+            if display_probe:
+                trace = report["pcb_catalog_metrics"]["display_trace"]
+                self.assertEqual(trace["catalog_rows"], 100_000)
+                self.assertGreaterEqual(trace["end_qpc"] - trace["start_qpc"], 35 * trace["qpc_frequency"])
+                visible = {row[2] for row in trace["desktop_updates"] if row[2] is not None and row[2] > 0}
+                self.assertGreaterEqual(len(visible), 1001, "표 합성 간격 1000개를 확보하지 못했습니다.")
             self.assertEqual(hashlib.sha256(catalog.read_bytes()).hexdigest(), before_catalog)
             with ProjectService(workspace, auto_run=False) as service:
                 state = service.journal.read()

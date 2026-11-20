@@ -8,12 +8,36 @@
 #include <cstddef>
 #include <cstdio>
 #include <stdexcept>
+#include <type_traits>
 
 namespace WindowsDisplayMarker
 {
 namespace
 {
 using Microsoft::WRL::ComPtr;
+using SystemLibrary = std::unique_ptr<std::remove_pointer_t<HMODULE>, decltype(&FreeLibrary)>;
+
+/** @brief 표시 계측을 실행할 때만 Windows 그래픽 진단 DLL을 가져온다. */
+SystemLibrary LoadSystemLibrary(const wchar_t* name)
+{
+    SystemLibrary module(LoadLibraryExW(name, nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32), &FreeLibrary);
+    if (!module)
+    {
+        throw std::runtime_error("Windows 합성 계측 라이브러리를 열지 못했습니다.");
+    }
+    return module;
+}
+
+template <class Function>
+Function LoadEntry(const SystemLibrary& library, const char* name)
+{
+    const auto entry = GetProcAddress(library.get(), name);
+    if (entry == nullptr)
+    {
+        throw std::runtime_error(std::string("Windows 합성 계측 함수가 없습니다: ") + name);
+    }
+    return reinterpret_cast<Function>(entry);
+}
 
 /** @brief 실패 HRESULT를 보고서에 남기도록 읽기 단계와 연결한다. */
 void Check(HRESULT status, const char* operation)
@@ -64,6 +88,8 @@ std::optional<unsigned> Decode(const std::byte* pixels)
 
 struct Reader::State
 {
+    SystemLibrary dxgi = LoadSystemLibrary(L"dxgi.dll");
+    SystemLibrary d3d = LoadSystemLibrary(L"d3d11.dll");
     HWND frame;
     HWND canvas;
     RECT canvasRect{};
@@ -91,7 +117,9 @@ Reader::Reader(HWND frame, HWND canvas, POINT marker) : m_state(std::make_unique
                       state.origin.x + marker.x + Width, state.origin.y + marker.y + 1};
     const HMONITOR monitor = MonitorFromRect(&target, MONITOR_DEFAULTTONULL);
     ComPtr<IDXGIFactory1> factory;
-    Check(CreateDXGIFactory1(IID_PPV_ARGS(factory.GetAddressOf())), "CreateDXGIFactory1");
+    const auto createFactory = LoadEntry<decltype(&CreateDXGIFactory1)>(state.dxgi, "CreateDXGIFactory1");
+    const auto createDevice = LoadEntry<decltype(&D3D11CreateDevice)>(state.d3d, "D3D11CreateDevice");
+    Check(createFactory(IID_PPV_ARGS(factory.GetAddressOf())), "CreateDXGIFactory1");
     for (UINT adapterIndex = 0;; ++adapterIndex)
     {
         ComPtr<IDXGIAdapter1> adapter;
@@ -123,8 +151,8 @@ Reader::Reader(HWND frame, HWND canvas, POINT marker) : m_state(std::make_unique
                 throw std::runtime_error("시험 표식을 포함한 회전 없는 단일 출력이 필요합니다.");
             }
             ComPtr<ID3D11Device> device;
-            Check(D3D11CreateDevice(adapter.Get(), D3D_DRIVER_TYPE_UNKNOWN, nullptr, 0, nullptr, 0,
-                                    D3D11_SDK_VERSION, device.GetAddressOf(), nullptr, state.context.GetAddressOf()),
+            Check(createDevice(adapter.Get(), D3D_DRIVER_TYPE_UNKNOWN, nullptr, 0, nullptr, 0,
+                               D3D11_SDK_VERSION, device.GetAddressOf(), nullptr, state.context.GetAddressOf()),
                   "D3D11CreateDevice");
             ComPtr<IDXGIOutput1> capture;
             Check(output.As(&capture), "IDXGIOutput1");

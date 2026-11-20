@@ -104,6 +104,8 @@ add_executable(tracewave_gui WIN32
         ui/wxwidgets/pcb_cam_output_data.cpp
     ui/wxwidgets/reviewed_request_store.cpp
     ui/wxwidgets/studio_smoke_pcb.cpp
+    ui/wxwidgets/studio_catalog_display_probe.cpp
+    tools/windows_display_marker.cpp
     ui/wxwidgets/studio_smoke_events.cpp
     ui/wxwidgets/studio_frame.cpp
     ui/wxwidgets/startup_probe.cpp
@@ -272,7 +274,7 @@ add_executable(tracewave_gui WIN32
 )
 target_include_directories(tracewave_gui PRIVATE "${RFAD_JSON_INCLUDE_DIR}")
 target_compile_definitions(tracewave_gui PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN NOMINMAX)
-target_link_libraries(tracewave_gui PRIVATE ${RFAD_WX_LIBRARIES} ole32 opengl32 bcrypt)
+target_link_libraries(tracewave_gui PRIVATE ${RFAD_WX_LIBRARIES} ole32 opengl32 bcrypt dxguid winmm)
 
 add_executable(tracewave_canvas_benchmark EXCLUDE_FROM_ALL tools/canvas_render_benchmark.cpp
     ui/wxwidgets/canvas_renderer.cpp ui/wxwidgets/canvas_scene.cpp ui/wxwidgets/canvas_pcb_features.cpp ui/wxwidgets/canvas_viewport.cpp)

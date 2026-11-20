@@ -110,17 +110,41 @@ def summarize(trace):
     }
 
 
+def summarize_catalog(report):
+    """! @brief 시각이 뒤섞인 표 표식은 원시 행을 남기고 대응 불가 합성으로 센다."""
+    trace = report["pcb_catalog_metrics"]["display_trace"]
+    if report["passed"] is not True or trace["workload"] != "catalog_scroll":
+        raise ValueError("완료된 Windows 카탈로그 표 표시 기록이 필요합니다.")
+    paint_times = dict(trace["painted"])
+    previous_sequence = -1
+    rejected = []
+    correlated = []
+    for when, count, sequence in trace["desktop_updates"]:
+        if sequence is not None:
+            if when < paint_times[sequence] or sequence < previous_sequence:
+                rejected.append([when, count, sequence])
+                sequence = None
+            else:
+                previous_sequence = sequence
+        correlated.append([when, count, sequence])
+    return {**summarize({**trace, "desktop_updates": correlated}),
+            "catalog_rows": trace["catalog_rows"], "top_rows_not_yet_loaded": trace["top_rows_not_yet_loaded"],
+            "uncorrelated_markers": rejected}
+
+
 def main():
     """! @brief 유한한 파일을 읽고 새 실행 요약을 출력한다."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("trace", type=Path)
+    parser.add_argument("--catalog", action="store_true", help="실제 카탈로그 표 통합 시험 기록을 읽습니다.")
     args = parser.parse_args()
     try:
         with args.trace.open("rb") as stream:
             raw = stream.read(8 * 1024**2 + 1)
         if len(raw) > 8 * 1024**2:
             raise ValueError("최대 8 MiB의 시험 파일을 지정하세요.")
-        summary = summarize(json.loads(raw))
+        data = json.loads(raw)
+        summary = summarize_catalog(data) if args.catalog else summarize(data)
         print(json.dumps(summary, ensure_ascii=False, indent=2))
     except (OSError, KeyError, ValueError, TypeError, AttributeError) as error:
         parser.error(str(error))
