@@ -1,0 +1,52 @@
+{
+  "schema": "rfad.runtime.windows-internal-bundle/0.1",
+  "platform": "windows-11-x64",
+  "compiler": {
+    "name": "WinLibs GCC 16.1.0 MinGW-w64 14.0.0 UCRT MCF",
+    "release": "https://github.com/brechtsanders/winlibs_mingw/releases/tag/16.1.0mcf-14.0.0-ucrt-r1",
+    "runtime_files": {
+      "libgcc_s_seh-1.dll": "bfe09e594e9d7148214ff8698f9352a351350a09a0bb425b7d8707cd6960019c",
+      "libstdc++-6.dll": "d3c3b5a0a5160f8e9aecd1d319d8a436a03c12bf2f15bf322d633e04f414ac45",
+      "libmcfgthread-2.dll": "aaba226b141e87e97d2cbea82493cfb876c6937a9a613bf7cdd801f4dc59c775"
+    }
+  },
+  "wx": {
+    "url": "https://github.com/wxWidgets/wxWidgets/releases/download/v3.2.12/wxWidgets-3.2.12.tar.bz2",
+    "sha256": "a62719bb5e1dcc41c1a6fc1eecd499c7ee8521f70402c7b1bb3342a1e16344e0",
+    "files": {
+      "wxwindows-licence.txt": "docs/licence.txt",
+      "wxwindows-lgpl.txt": "docs/lgpl.txt",
+      "wxwindows-gpl.txt": "docs/gpl.txt",
+      "pcre2-notice.txt": "3rdparty/pcre/LICENCE",
+      "zlib-license.txt": "src/zlib/LICENSE",
+      "ijg-jpeg-readme.txt": "src/jpeg/README",
+      "libpng-license.txt": "src/png/LICENSE",
+      "libtiff-copyright.txt": "src/tiff/COPYRIGHT",
+      "nanosvg-license.txt": "3rdparty/nanosvg/LICENSE.txt"
+    }
+  },
+  "external_notices": {
+    "gcc-GPL-3.0.txt": {
+      "url": "https://raw.githubusercontent.com/gcc-mirror/gcc/releases/gcc-16.1.0/COPYING3",
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    },
+    "gcc-runtime-exception.txt": {
+      "url": "https://raw.githubusercontent.com/gcc-mirror/gcc/releases/gcc-16.1.0/COPYING.RUNTIME",
+      "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74"
+    },
+    "mingw-w64-copying.txt": {
+      "url": "https://raw.githubusercontent.com/mingw-w64/mingw-w64/v14.0.0/COPYING",
+      "sha256": "99a69660981156c21336fdb5661f89341b013c94e4bf9e1c7467b4745718397f"
+    },
+    "nlohmann-json-mit.txt": {
+      "url": "https://raw.githubusercontent.com/nlohmann/json/v3.12.0/LICENSE.MIT",
+      "sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+    },
+    "mcfgthread-license.txt": {
+      "url": "https://raw.githubusercontent.com/lhmouse/mcfgthread/v2.3-ga.2/LICENSE.TXT",
+      "sha256": "a198407db31e4755c1cdfae4781c46d3c92aa692bad1bb4417aeb3efd38b8421",
+      "build_version_observed": "2.3.ga",
+      "exact_upstream_source_commit_for_winlibs_binary": null
+    }
+  }
+}

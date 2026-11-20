@@ -63,6 +63,8 @@ $env:PYTHONPATH = 'src'
 .\tools\launch_gui.ps1
 ```
 
+내부 검증 배포의 고정 ZIP 생성, Windows 수신과 저장·재열기 검증은 [운영 안내](../01_개발문서/08_운영환경/05_윈도우_내부검증_배포.md)를 따른다.
+
 GUI 실행 스크립트는 존재하는 `.venv-cad`, `.venv-exchange`와 `.local/pcb-catalog/catalog.sqlite`를 연결한다. `-CadPython <경로>`, `-ExchangePython <경로>`, `-Catalog <경로>`, `-NoCatalog`로 선택할 수 있다. 해석 환경 구성 후에는 `launch_gui.ps1 -OpenEmsWsl`을 사용한다. CAD/출력/solver가 없어도 가능한 편집/저장과 보존 결과 읽기는 유지한다.
 
 연관 도면의 별도 환경은 `tools/setup_exchange.ps1 -Python .venv/Scripts/python.exe`로 준비한다. 서비스 직접 실행에는 `--exchange-python .venv-exchange/Scripts/python.exe`를 전달한다. [고정 wheel 목록](runtime_profiles/python-exchange-windows-x64.txt)과 runtime manifest의 글꼴 identity를 확인하며 한글 PDF 글꼴은 Windows의 기존 TTF를 부분 포함한다. 원래 OS 글꼴을 저장소에 복사하지 않는다. 기하/파일 검수와 제조/실측 수용은 별개다.

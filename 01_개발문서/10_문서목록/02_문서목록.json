@@ -22,7 +22,7 @@
     "current_05_기능설계": 44,
     "current_06_분석연구": 13,
     "current_07_검증": 43,
-    "current_08_운영환경": 5,
+    "current_08_운영환경": 7,
     "current_09_개발계획": 4,
     "current_11_검토기록": 6,
     "current_traceability": 4,
@@ -39,7 +39,7 @@
     "reference_original_pdf": 1159,
     "reference_support_tool": 14,
     "repository_guide": 3,
-    "runtime_definition": 2,
+    "runtime_definition": 3,
     "screen_design_asset": 292
   },
   "records": [
@@ -28654,9 +28654,9 @@
       "path": "01_개발문서/08_운영환경/README.md",
       "category": "current_08_운영환경",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 672,
-      "working_tree_sha256": "c5761dd9bddad0bbf850c2fdd655a8e2a9cb4a1416e1247b8846fad18bc0a1c1",
-      "text_lines": 12,
+      "bytes": 924,
+      "working_tree_sha256": "a645eac2c1ee7c2da911fd4a801fecd11d1b76fe819bfe79a015ddf8cd6d4183",
+      "text_lines": 14,
       "text_status": "utf8_read"
     },
     {
@@ -29112,9 +29112,9 @@
       "path": "Code/README.md",
       "category": "repository_guide",
       "review_scope": "개발 문서 진입/현재 상태 검토",
-      "bytes": 16645,
-      "working_tree_sha256": "1f3f7756a8cd4e177b4d8b7f4f030c6cd949f516c7ab9dfefafdfaed3f7c3495",
-      "text_lines": 95,
+      "bytes": 16839,
+      "working_tree_sha256": "9ca22d773ac8c704b9875ff9fcbbfeaa07d4cf2c382af5fe30b38cf03a5ab6c2",
+      "text_lines": 97,
       "text_status": "utf8_read"
     },
     {
@@ -30901,6 +30901,31 @@
       "review_scope": "문서/시안 자산 보존",
       "bytes": 8342,
       "working_tree_sha256": "688f12b2a1e439d57cd0a0d41603af1dfbf581acf42cf565b8194fc6f8e5fa2c"
+    },
+    {
+      "path": "01_개발문서/08_운영환경/05_윈도우_내부검증_배포.md",
+      "category": "current_08_운영환경",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 4514,
+      "working_tree_sha256": "2b088b2c7fbc05e5de9b20f21ffb6d7466c9493f5a7fffd4c6db0c71131a841b",
+      "text_lines": 47,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/08_운영환경/06_내부검증_지원범위와_미결.md",
+      "category": "current_08_운영환경",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2744,
+      "working_tree_sha256": "496d1d46b60fe98b76db40291f508f4f4a210eee9510d00325bf3a4c05148da3",
+      "text_lines": 19,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "Code/runtime_profiles/windows-internal-bundle-x64.json",
+      "category": "runtime_definition",
+      "review_scope": "새 출력 환경의 의존성/글꼴 고정 정의; 과거 실행 기록 아님",
+      "bytes": 2449,
+      "working_tree_sha256": "ba28e300ab4bc8b60dbd0137ebe95b7ba436879c03acb4aac10c35fec6d3172a"
     }
   ],
   "identical_byte_groups": [
@@ -31057,18 +31082,19 @@
   ],
   "incremental_refresh": {
     "date_kst": "2026-11-20",
-    "mode": "step12_windows_empty_model_context_release",
-    "previous_inventory_sha256": "3cd1f361c45677e203f001d157cb3e0b876a16860535b014bdecb16a7646d8c1",
+    "mode": "step13_windows_internal_bundle_profile",
+    "previous_inventory_sha256": "ff9637e8df605b6b7a76bb62d4489e0e879b5ac47174ed573dce7f31cb864249",
     "refreshed_paths": [
-      "01_개발문서/07_검증/71_윈도우_삼차원_유휴회수_검증.md",
-      "01_개발문서/07_검증/72_윈도우_삼차원_유휴회수실행기록.json",
-      "01_개발문서/07_검증/README.md",
-      "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
-      "01_개발문서/09_개발계획/03_개발완료_계획.md"
+      "01_개발문서/08_운영환경/05_윈도우_내부검증_배포.md",
+      "01_개발문서/08_운영환경/06_내부검증_지원범위와_미결.md",
+      "01_개발문서/08_운영환경/README.md",
+      "Code/README.md",
+      "Code/runtime_profiles/windows-internal-bundle-x64.json"
     ],
     "added_paths": [
-      "01_개발문서/07_검증/71_윈도우_삼차원_유휴회수_검증.md",
-      "01_개발문서/07_검증/72_윈도우_삼차원_유휴회수실행기록.json"
+      "01_개발문서/08_운영환경/05_윈도우_내부검증_배포.md",
+      "01_개발문서/08_운영환경/06_내부검증_지원범위와_미결.md",
+      "Code/runtime_profiles/windows-internal-bundle-x64.json"
     ],
     "removed_paths": [],
     "preserved_reference_records": 3336,
