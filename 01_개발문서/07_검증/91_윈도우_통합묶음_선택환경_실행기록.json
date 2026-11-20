@@ -1,0 +1,153 @@
+{
+  "schema": "rfad.windows-integrated-bundle-optional-runtime/0.1",
+  "date_kst": "2026-11-20",
+  "archive": {
+    "path": "TraceWave-Studio-internal-windows-x64-c253881.zip",
+    "files": 932,
+    "bytes": 13881765,
+    "source_revision": "c253881003ff788d5b0e016ba2145c26e43f4e15",
+    "sha256": "7dcdee2a5c3513e007c337b23973efcba2c9e151269592e52a2393f217ab9d48",
+    "status": "contents_verified"
+  },
+  "executable_sha256": "4b48e0e25006c9f0518788efb77b95f323f030daa488340c6e491fd8d36a9223",
+  "wsl_audit": {
+    "bytes": 182775,
+    "sha256": "5b8f487c451ff00d8cd05c40cec009644634b67010254af0f85b2b2cda9f75f2",
+    "matches_received_copy": true
+  },
+  "native_windows_tests": {
+    "passed": 3,
+    "seconds": 105.737,
+    "methods": [
+      "test_missing_geometry_input_does_not_publish_or_display",
+      "test_step_mesh_edit_save_cancel_and_restart",
+      "test_active_analysis_cancel_acknowledgement_and_restore"
+    ],
+    "log": {
+      "name": "선택 환경 검증.log",
+      "bytes": 917,
+      "sha256": "91b98d29eda0ed8e5b06a50a0e1f36461580e1b7a0d345db4825f6bc6cefc508"
+    }
+  },
+  "real_solver": {
+    "apply_enabled": false,
+    "cad_checks": [],
+    "cad_result": {},
+    "cad_stage": 0,
+    "canvas_checks": [],
+    "canvas_stage": 0,
+    "editor_checks": [],
+    "editor_stage": 0,
+    "editor_ui_state": "saved",
+    "error": "",
+    "frame_budget_tested": false,
+    "mesh_bodies": 0,
+    "mesh_triangles": 0,
+    "mesh_vertex_buffer": {
+      "bytes": 0,
+      "uploads": 0
+    },
+    "passed": true,
+    "pcb_checks": [],
+    "pcb_project_path": "",
+    "pcb_request_ticks": 0,
+    "pcb_stage": 0,
+    "pcb_ticks": 0,
+    "physics_tested": false,
+    "primitives_checks": [],
+    "primitives_stage": 0,
+    "project_id": "71a66aa6-2d02-4e60-a4d5-1aab082b14aa",
+    "rendered_frames": 0,
+    "renderer": "",
+    "revision_id": "d3b80c2b-53be-4b60-9593-ccd11cafcefc",
+    "saved_revision": "d3b80c2b-53be-4b60-9593-ccd11cafcefc",
+    "schema_version": "rfad.gui-smoke/0.1",
+    "service_sessions": 2,
+    "setup_checks": [],
+    "setup_pending_ticks": 0,
+    "setup_stage": 0,
+    "snapshot_id": "",
+    "solver_cancel_trace": {
+      "control": {
+        "button_enabled": false,
+        "elapsed_ms": 25.726,
+        "state": "cancel_requested"
+      },
+      "guest_worker_attached": true,
+      "job_id": "b937bea2-2333-4593-8d37-aa8a8a2d1ad7",
+      "phase_before": "analysis",
+      "receipt": {
+        "elapsed_ms": 251.168,
+        "events_cursor": 3,
+        "state": "cancel_requested"
+      },
+      "state_before": "running",
+      "terminal": {
+        "elapsed_ms": 1691.976,
+        "events_cursor": 4,
+        "outcome_unknown": false,
+        "state": "cancelled",
+        "termination_confirmed": true
+      }
+    },
+    "solver_checks": [
+      "circular_board_display",
+      "editing_enabled_during_solver",
+      "snapshot_fixed_and_stale_label",
+      "bounded_results_rendered",
+      "save_during_solver",
+      "cancel_preserves_previous_result",
+      "restart_restores_result"
+    ],
+    "solver_frames": 16,
+    "solver_result": {
+      "artifact_id": "f77d4da6-b9d4-4960-bbe6-4d9a6e33dec2",
+      "assessment": {
+        "converged": true,
+        "finite_samples": true,
+        "physics_validated": false,
+        "status": "computed_unvalidated"
+      },
+      "normalized_result": {
+        "bytes": 148260,
+        "sha256": "e98706ea52624229f741e0ed18b1331ddd00a9bfc7daf01782c55f18697aca2f",
+        "uri": "solver-artifacts/248ac434-bc51-4206-a623-8ac2dd154be9/normalized.json"
+      },
+      "profile": "rfad.openems.pcb-single-port/0.1",
+      "snapshot": {
+        "artifact": {
+          "bytes": 9751,
+          "sha256": "5c6b47489889af335ac8038254f1b2c41b75f7ae590a1a3482c4c2cc3e33f5e1",
+          "uri": "projects/CAD 한글 교환 검증/snapshots/942d8faf-4e26-40d2-b8f1-5b87d2b00ec2/8070898d-02f7-42b0-898a-1ff9dcd800ab/project.json"
+        },
+        "canonical_version": "rfad.canonical/1.0",
+        "content_hash": "0476fe2be1d36c9d509e550042cfa64a1014bc0b279e8434484caa692cb8b869",
+        "description": "GUI PCB 해석 입력",
+        "project_id": "71a66aa6-2d02-4e60-a4d5-1aab082b14aa",
+        "revision_id": "942d8faf-4e26-40d2-b8f1-5b87d2b00ec2",
+        "schema_version": "rfad.project/0.6",
+        "sealed_at": 1795186480.4224443,
+        "snapshot_id": "8070898d-02f7-42b0-898a-1ff9dcd800ab",
+        "validation_state": "not_evaluated"
+      }
+    },
+    "solver_sample_count": 31,
+    "solver_stage": 7,
+    "stage": 0,
+    "study_checks": [],
+    "study_stage": 0,
+    "study_view": {},
+    "sweep_circuit_id": "",
+    "sweep_grid_id": "",
+    "sweep_view": {},
+    "ux_checks": []
+  },
+  "scope": {
+    "same_windows_host": true,
+    "preinstalled_workers": true,
+    "concurrent_full_service_suite": true,
+    "f4_acceptance": false,
+    "independent_os_installation_tested": false,
+    "physics_acceptance": false
+  }
+}
