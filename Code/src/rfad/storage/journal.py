@@ -17,6 +17,7 @@ import os
 from pathlib import Path, PurePosixPath
 import re
 import shutil
+import stat
 import threading
 from typing import Any, Callable
 from uuid import UUID, uuid4
@@ -54,7 +55,7 @@ def _check_path_parts(path: Path) -> None:
             continue
         except OSError as error:
             raise ProjectError("E_DISK", "저장 경로의 상태를 검사할 수 없습니다.", details={"path": str(candidate)}) from error
-        if candidate.is_symlink() or getattr(info, "st_file_attributes", 0) & 0x400:
+        if stat.S_ISLNK(info.st_mode) or getattr(info, "st_file_attributes", 0) & 0x400:
             raise ProjectError("E_SCHEMA", "링크 또는 reparse 경로는 저장소에서 지원하지 않습니다.", details={"path": str(candidate)})
 
 

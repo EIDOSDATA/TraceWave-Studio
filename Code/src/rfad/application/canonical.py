@@ -11,7 +11,7 @@ SI 정규화, hash 대상 subset 선택, snapshot 및 cache 의존성은 호출�
 """
 
 import hashlib
-import json
+from json.encoder import encode_basestring
 import math
 
 
@@ -120,4 +120,4 @@ def _encode_string(value: str) -> str:
         value.encode("utf-8", errors="strict")
     except UnicodeEncodeError as error:
         raise CanonicalEncodingError("문자열에 UTF-8로 인코딩할 수 없는 surrogate가 있습니다.") from error
-    return json.dumps(value, ensure_ascii=False, allow_nan=False)
+    return encode_basestring(value)
