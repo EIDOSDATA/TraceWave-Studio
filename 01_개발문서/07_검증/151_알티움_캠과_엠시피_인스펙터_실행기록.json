@@ -1,0 +1,88 @@
+{
+  "date_kst": "2026-11-21",
+  "altium": {
+    "application": "Altium Designer Enterprise 26.9.1",
+    "imported": [
+      "layer-02.gbr",
+      "outline.gbr",
+      "nonplated.drl"
+    ],
+    "empty_layer_skipped": "layer-01.gbr",
+    "modal_origin_out_of_range": true,
+    "origin_adjustment_applied": false,
+    "quick_load_report": {
+      "warnings": 0,
+      "errors": 0,
+      "information": 6
+    },
+    "drill_settings": {
+      "units": "Metric",
+      "position": "Absolute",
+      "zero_suppression": "None",
+      "integer_digits_setting": 2,
+      "decimal_digits_setting": 3
+    },
+    "source_inputs": [
+      {
+        "source_name": "layer-01.gbr",
+        "received_name": "layer-01.gbr",
+        "bytes": 299,
+        "sha256": "6fe1470c39571165386d26ce1159bfab741a4fc9985f2e744389de72b01cec2c"
+      },
+      {
+        "source_name": "layer-02.gbr",
+        "received_name": "layer-02.gbr",
+        "bytes": 576,
+        "sha256": "1fe2ab625e9e5f0a13ef01136fcd99d465854d10918c242972a063af113fe543"
+      },
+      {
+        "source_name": "nonplated.xnc",
+        "received_name": "nonplated.drl",
+        "bytes": 204,
+        "sha256": "3737000f646e81dd46192546b6a5ee3ceaecb9487b43c0b9ab277ccc8f629c16"
+      },
+      {
+        "source_name": "outline.gbr",
+        "received_name": "outline.gbr",
+        "bytes": 447,
+        "sha256": "28e3e694ae77a1bda9e9b4d2f528020f892f8ecafe7d4caed96cf476d4ec2c12"
+      }
+    ],
+    "local_cam": {
+      "bytes": 13234,
+      "sha256": "013eab9e9416dce852304759dfbf4346fc2db0a189e2b19e9477aac4854389c1",
+      "reopened": true
+    },
+    "coordinate_equivalence_measured": false
+  },
+  "mcp": {
+    "client": "@modelcontextprotocol/inspector",
+    "client_version": "2.16.0",
+    "node": "24.22.3",
+    "transport": "stdio",
+    "initialize": {
+      "serverInfo": {
+        "name": "tracewave-studio",
+        "version": "0.1.0"
+      },
+      "protocolVersion": "2025-11-25",
+      "capabilities": {
+        "tools": {
+          "listChanged": false
+        }
+      },
+      "instructions": "공개 API의 expected_revision, preview_hash와 request_key를 유지하십시오. 미정 물성을 채우지 마십시오."
+    },
+    "tools_listed": 160,
+    "capabilities_get": {
+      "contract_version": "rfad.api/2.0",
+      "profile": "rfad.projects/0.2",
+      "service_version": "0.1.0.dev0"
+    },
+    "verified_methods": [
+      "initialize",
+      "tools/list",
+      "capabilities.get"
+    ]
+  }
+}
