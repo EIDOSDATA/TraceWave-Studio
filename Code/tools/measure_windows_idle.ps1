@@ -25,15 +25,20 @@ function Get-StudioProcessTree {
     param([int]$RootId)
 
     $processTable = Get-CimInstance -ClassName Win32_Process |
-        Select-Object ProcessId, ParentProcessId
+        Select-Object ProcessId, ParentProcessId, CreationDate
+    $byId = @{}
+    foreach ($entry in $processTable) {
+        $byId[[int]$entry.ProcessId] = $entry
+    }
     $remaining = [System.Collections.Generic.Queue[int]]::new()
     $visited = [System.Collections.Generic.HashSet[int]]::new()
     $remaining.Enqueue($RootId)
     while ($remaining.Count -gt 0) {
         $current = $remaining.Dequeue()
-        if ($visited.Add($current)) {
+        if ($byId.ContainsKey($current) -and $visited.Add($current)) {
             foreach ($child in $processTable) {
-                if ($child.ParentProcessId -eq $current) {
+                if ($child.ParentProcessId -eq $current -and $null -ne $child.CreationDate -and
+                        $child.CreationDate -ge $byId[$current].CreationDate) {
                     $remaining.Enqueue([int]$child.ProcessId)
                 }
             }

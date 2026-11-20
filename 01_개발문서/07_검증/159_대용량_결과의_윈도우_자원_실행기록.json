@@ -1,0 +1,3393 @@
+{
+  "schema": "rfad.stage12.f3-windows-resources/0.1",
+  "date_kst": "2026-11-21",
+  "executable_sha256": "099c23e852cfb3c2a69be6cf619e2124249289cae46fabce846b4b2287fd0339",
+  "same_process_identity": "pid and Windows creation FILETIME",
+  "curves": 8,
+  "points_per_curve": 100000,
+  "modes": {
+    "import": {
+      "passed": true,
+      "records": [
+        {
+          "bytes": 1075856824,
+          "sha256": "e776080d4c727629d68b94ad30e483ba25d13f86f6797c764ea72a8aa5c840b3"
+        },
+        {
+          "bytes": 20020480,
+          "sha256": "1b686e074faefc9630ee40d7dc95a61b273d8337070d72e0d4333fcbfcc2ca0c"
+        }
+      ],
+      "gpu": {
+        "before": [
+          {
+            "local_bytes": 18866176,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "exact": [
+          {
+            "local_bytes": 18866176,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "overview": [
+          {
+            "local_bytes": 18866176,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "slices": [
+          [
+            {
+              "local_bytes": 18866176,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          [
+            {
+              "local_bytes": 18866176,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          [
+            {
+              "local_bytes": 18866176,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          [
+            {
+              "local_bytes": 18866176,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          [
+            {
+              "local_bytes": 18866176,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          [
+            {
+              "local_bytes": 18866176,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          [
+            {
+              "local_bytes": 18866176,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          [
+            {
+              "local_bytes": 18866176,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          [
+            {
+              "local_bytes": 18866176,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          [
+            {
+              "local_bytes": 18866176,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        ]
+      },
+      "sample_count": 299,
+      "interval_ms_median": 117.58434999501333,
+      "baseline_private_commit_bytes": 114008064,
+      "active_peak_private_commit_bytes": 127717376,
+      "active_peak_working_set_bytes": 201867264,
+      "baseline_processes": [
+        {
+          "created_100ns": "134396870683589890",
+          "gui": false,
+          "peak_commit_bytes": 1273856,
+          "pid": 6832,
+          "private_commit_bytes": 1249280,
+          "working_set_bytes": 8134656
+        },
+        {
+          "created_100ns": "134396870683412564",
+          "gui": false,
+          "peak_commit_bytes": 1015808,
+          "pid": 19488,
+          "private_commit_bytes": 1007616,
+          "working_set_bytes": 5111808
+        },
+        {
+          "created_100ns": "134396870682891598",
+          "gui": true,
+          "peak_commit_bytes": 42622976,
+          "pid": 28404,
+          "private_commit_bytes": 42512384,
+          "working_set_bytes": 84082688
+        },
+        {
+          "created_100ns": "134396870683914799",
+          "gui": false,
+          "peak_commit_bytes": 73359360,
+          "pid": 31060,
+          "private_commit_bytes": 69238784,
+          "working_set_bytes": 83861504
+        }
+      ],
+      "same_process_samples": [
+        {
+          "seconds": 0.11636939994059503,
+          "phase": "startup",
+          "private_commit_bytes": 13877248,
+          "working_set_bytes": 48463872,
+          "sum_os_peak_commit_bytes": 14200832
+        },
+        {
+          "seconds": 0.23231679992750287,
+          "phase": "startup",
+          "private_commit_bytes": 22650880,
+          "working_set_bytes": 57114624,
+          "sum_os_peak_commit_bytes": 22708224
+        },
+        {
+          "seconds": 0.34732820000499487,
+          "phase": "startup",
+          "private_commit_bytes": 22347776,
+          "working_set_bytes": 61042688,
+          "sum_os_peak_commit_bytes": 25137152
+        },
+        {
+          "seconds": 0.46531579992733896,
+          "phase": "startup",
+          "private_commit_bytes": 24670208,
+          "working_set_bytes": 63782912,
+          "sum_os_peak_commit_bytes": 29294592
+        },
+        {
+          "seconds": 0.5825849999673665,
+          "phase": "startup",
+          "private_commit_bytes": 27389952,
+          "working_set_bytes": 65806336,
+          "sum_os_peak_commit_bytes": 31858688
+        },
+        {
+          "seconds": 0.7003250999841839,
+          "phase": "startup",
+          "private_commit_bytes": 28598272,
+          "working_set_bytes": 66924544,
+          "sum_os_peak_commit_bytes": 32808960
+        },
+        {
+          "seconds": 0.8154747999506071,
+          "phase": "startup",
+          "private_commit_bytes": 29347840,
+          "working_set_bytes": 67731456,
+          "sum_os_peak_commit_bytes": 33546240
+        },
+        {
+          "seconds": 0.9316977999405935,
+          "phase": "startup",
+          "private_commit_bytes": 32313344,
+          "working_set_bytes": 70475776,
+          "sum_os_peak_commit_bytes": 36777984
+        },
+        {
+          "seconds": 1.0498297999147326,
+          "phase": "startup",
+          "private_commit_bytes": 32665600,
+          "working_set_bytes": 70811648,
+          "sum_os_peak_commit_bytes": 37351424
+        },
+        {
+          "seconds": 1.1685653999447823,
+          "phase": "startup",
+          "private_commit_bytes": 33341440,
+          "working_set_bytes": 71528448,
+          "sum_os_peak_commit_bytes": 37367808
+        },
+        {
+          "seconds": 1.285638100001961,
+          "phase": "startup",
+          "private_commit_bytes": 34996224,
+          "working_set_bytes": 73134080,
+          "sum_os_peak_commit_bytes": 39641088
+        },
+        {
+          "seconds": 1.4026967999525368,
+          "phase": "startup",
+          "private_commit_bytes": 34742272,
+          "working_set_bytes": 73682944,
+          "sum_os_peak_commit_bytes": 39997440
+        },
+        {
+          "seconds": 1.5190872999373823,
+          "phase": "startup",
+          "private_commit_bytes": 37572608,
+          "working_set_bytes": 75841536,
+          "sum_os_peak_commit_bytes": 42287104
+        },
+        {
+          "seconds": 1.6400379999540746,
+          "phase": "startup",
+          "private_commit_bytes": 37675008,
+          "working_set_bytes": 76611584,
+          "sum_os_peak_commit_bytes": 42479616
+        },
+        {
+          "seconds": 1.7576614998979494,
+          "phase": "startup",
+          "private_commit_bytes": 42065920,
+          "working_set_bytes": 79900672,
+          "sum_os_peak_commit_bytes": 46395392
+        },
+        {
+          "seconds": 1.877184999990277,
+          "phase": "startup",
+          "private_commit_bytes": 44146688,
+          "working_set_bytes": 82849792,
+          "sum_os_peak_commit_bytes": 49213440
+        },
+        {
+          "seconds": 1.9949986999854445,
+          "phase": "startup",
+          "private_commit_bytes": 47595520,
+          "working_set_bytes": 85569536,
+          "sum_os_peak_commit_bytes": 51105792
+        },
+        {
+          "seconds": 2.1151588999200612,
+          "phase": "startup",
+          "private_commit_bytes": 51937280,
+          "working_set_bytes": 89829376,
+          "sum_os_peak_commit_bytes": 56250368
+        },
+        {
+          "seconds": 2.233356999931857,
+          "phase": "startup",
+          "private_commit_bytes": 59944960,
+          "working_set_bytes": 98332672,
+          "sum_os_peak_commit_bytes": 60022784
+        },
+        {
+          "seconds": 2.3513026000000536,
+          "phase": "startup",
+          "private_commit_bytes": 59240448,
+          "working_set_bytes": 98004992,
+          "sum_os_peak_commit_bytes": 63537152
+        },
+        {
+          "seconds": 2.469621099997312,
+          "phase": "startup",
+          "private_commit_bytes": 61853696,
+          "working_set_bytes": 101146624,
+          "sum_os_peak_commit_bytes": 67219456
+        },
+        {
+          "seconds": 2.591683999984525,
+          "phase": "startup",
+          "private_commit_bytes": 64405504,
+          "working_set_bytes": 102649856,
+          "sum_os_peak_commit_bytes": 68681728
+        },
+        {
+          "seconds": 2.714282799977809,
+          "phase": "startup",
+          "private_commit_bytes": 70008832,
+          "working_set_bytes": 106864640,
+          "sum_os_peak_commit_bytes": 70569984
+        },
+        {
+          "seconds": 2.834818199975416,
+          "phase": "startup",
+          "private_commit_bytes": 73703424,
+          "working_set_bytes": 109629440,
+          "sum_os_peak_commit_bytes": 73789440
+        },
+        {
+          "seconds": 2.952389999991283,
+          "phase": "startup",
+          "private_commit_bytes": 76124160,
+          "working_set_bytes": 112799744,
+          "sum_os_peak_commit_bytes": 76214272
+        },
+        {
+          "seconds": 3.0729671999579296,
+          "phase": "startup",
+          "private_commit_bytes": 74788864,
+          "working_set_bytes": 113496064,
+          "sum_os_peak_commit_bytes": 79921152
+        },
+        {
+          "seconds": 3.1919729999499395,
+          "phase": "startup",
+          "private_commit_bytes": 75587584,
+          "working_set_bytes": 113954816,
+          "sum_os_peak_commit_bytes": 79941632
+        },
+        {
+          "seconds": 3.3109753999160603,
+          "phase": "startup",
+          "private_commit_bytes": 82853888,
+          "working_set_bytes": 124370944,
+          "sum_os_peak_commit_bytes": 82931712
+        },
+        {
+          "seconds": 3.4300010999431834,
+          "phase": "startup",
+          "private_commit_bytes": 102694912,
+          "working_set_bytes": 154992640,
+          "sum_os_peak_commit_bytes": 113807360
+        },
+        {
+          "seconds": 3.554743599961512,
+          "phase": "startup",
+          "private_commit_bytes": 107233280,
+          "working_set_bytes": 157274112,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 3.6742069999454543,
+          "phase": "startup",
+          "private_commit_bytes": 103022592,
+          "working_set_bytes": 154898432,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 3.7955019999062642,
+          "phase": "startup",
+          "private_commit_bytes": 107253760,
+          "working_set_bytes": 156680192,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 3.915494699962437,
+          "phase": "startup",
+          "private_commit_bytes": 103059456,
+          "working_set_bytes": 154947584,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 4.033297699992545,
+          "phase": "startup",
+          "private_commit_bytes": 104013824,
+          "working_set_bytes": 160157696,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 4.15321249992121,
+          "phase": "startup",
+          "private_commit_bytes": 99184640,
+          "working_set_bytes": 154308608,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 4.270706699928269,
+          "phase": "startup",
+          "private_commit_bytes": 99205120,
+          "working_set_bytes": 154333184,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 4.388622400001623,
+          "phase": "startup",
+          "private_commit_bytes": 99205120,
+          "working_set_bytes": 154402816,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 4.506083299987949,
+          "phase": "startup",
+          "private_commit_bytes": 99254272,
+          "working_set_bytes": 154456064,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 4.6225117999129,
+          "phase": "startup",
+          "private_commit_bytes": 99282944,
+          "working_set_bytes": 154488832,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 4.741211699903943,
+          "phase": "startup",
+          "private_commit_bytes": 99303424,
+          "working_set_bytes": 154513408,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 4.862319899955764,
+          "phase": "startup",
+          "private_commit_bytes": 99303424,
+          "working_set_bytes": 154533888,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 4.9812143999151886,
+          "phase": "startup",
+          "private_commit_bytes": 99315712,
+          "working_set_bytes": 154583040,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 5.099193000001833,
+          "phase": "startup",
+          "private_commit_bytes": 99360768,
+          "working_set_bytes": 154632192,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 5.215231099980883,
+          "phase": "startup",
+          "private_commit_bytes": 99397632,
+          "working_set_bytes": 154664960,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 5.328641999978572,
+          "phase": "startup",
+          "private_commit_bytes": 99397632,
+          "working_set_bytes": 154669056,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 5.445294099976309,
+          "phase": "startup",
+          "private_commit_bytes": 99397632,
+          "working_set_bytes": 154689536,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 5.564544299966656,
+          "phase": "startup",
+          "private_commit_bytes": 99446784,
+          "working_set_bytes": 154828800,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 5.68413809989579,
+          "phase": "startup",
+          "private_commit_bytes": 99459072,
+          "working_set_bytes": 154841088,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 5.802822199999355,
+          "phase": "startup",
+          "private_commit_bytes": 99479552,
+          "working_set_bytes": 154906624,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 5.921869699959643,
+          "phase": "startup",
+          "private_commit_bytes": 99479552,
+          "working_set_bytes": 154906624,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 6.042756999959238,
+          "phase": "startup",
+          "private_commit_bytes": 99479552,
+          "working_set_bytes": 154906624,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 6.164505699998699,
+          "phase": "startup",
+          "private_commit_bytes": 99594240,
+          "working_set_bytes": 155090944,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 6.2828972999705,
+          "phase": "startup",
+          "private_commit_bytes": 99594240,
+          "working_set_bytes": 155152384,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 6.405009299982339,
+          "phase": "startup",
+          "private_commit_bytes": 99897344,
+          "working_set_bytes": 158318592,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 6.524968799902126,
+          "phase": "startup",
+          "private_commit_bytes": 101654528,
+          "working_set_bytes": 161390592,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 6.644520599977113,
+          "phase": "startup",
+          "private_commit_bytes": 102809600,
+          "working_set_bytes": 162672640,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 6.761848800000735,
+          "phase": "startup",
+          "private_commit_bytes": 102809600,
+          "working_set_bytes": 162680832,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 6.879789599915966,
+          "phase": "startup",
+          "private_commit_bytes": 102809600,
+          "working_set_bytes": 162680832,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 6.999710600008257,
+          "phase": "startup",
+          "private_commit_bytes": 102809600,
+          "working_set_bytes": 162680832,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 7.117486799950711,
+          "phase": "startup",
+          "private_commit_bytes": 102862848,
+          "working_set_bytes": 163041280,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 7.234688899945468,
+          "phase": "startup",
+          "private_commit_bytes": 102862848,
+          "working_set_bytes": 163483648,
+          "sum_os_peak_commit_bytes": 117587968
+        },
+        {
+          "seconds": 7.353170199901797,
+          "phase": "startup",
+          "private_commit_bytes": 109764608,
+          "working_set_bytes": 170102784,
+          "sum_os_peak_commit_bytes": 118214656
+        },
+        {
+          "seconds": 7.472712899907492,
+          "phase": "startup",
+          "private_commit_bytes": 109764608,
+          "working_set_bytes": 170143744,
+          "sum_os_peak_commit_bytes": 118218752
+        },
+        {
+          "seconds": 7.590937800006941,
+          "phase": "startup",
+          "private_commit_bytes": 109764608,
+          "working_set_bytes": 170143744,
+          "sum_os_peak_commit_bytes": 118218752
+        },
+        {
+          "seconds": 7.711620899965055,
+          "phase": "startup",
+          "private_commit_bytes": 109764608,
+          "working_set_bytes": 170426368,
+          "sum_os_peak_commit_bytes": 118218752
+        },
+        {
+          "seconds": 7.829741099965759,
+          "phase": "startup",
+          "private_commit_bytes": 109764608,
+          "working_set_bytes": 170426368,
+          "sum_os_peak_commit_bytes": 118218752
+        },
+        {
+          "seconds": 7.947298299986869,
+          "phase": "startup",
+          "private_commit_bytes": 109826048,
+          "working_set_bytes": 170729472,
+          "sum_os_peak_commit_bytes": 118218752
+        },
+        {
+          "seconds": 8.064858099911362,
+          "phase": "startup",
+          "private_commit_bytes": 109826048,
+          "working_set_bytes": 170835968,
+          "sum_os_peak_commit_bytes": 118218752
+        },
+        {
+          "seconds": 8.18645389995072,
+          "phase": "startup",
+          "private_commit_bytes": 109826048,
+          "working_set_bytes": 170835968,
+          "sum_os_peak_commit_bytes": 118222848
+        },
+        {
+          "seconds": 8.306140500004403,
+          "phase": "startup",
+          "private_commit_bytes": 109826048,
+          "working_set_bytes": 170840064,
+          "sum_os_peak_commit_bytes": 118222848
+        },
+        {
+          "seconds": 8.423397099948488,
+          "phase": "startup",
+          "private_commit_bytes": 109826048,
+          "working_set_bytes": 170987520,
+          "sum_os_peak_commit_bytes": 118222848
+        },
+        {
+          "seconds": 8.539861799916252,
+          "phase": "startup",
+          "private_commit_bytes": 109834240,
+          "working_set_bytes": 171024384,
+          "sum_os_peak_commit_bytes": 118231040
+        },
+        {
+          "seconds": 8.657228299998678,
+          "phase": "startup",
+          "private_commit_bytes": 109834240,
+          "working_set_bytes": 171028480,
+          "sum_os_peak_commit_bytes": 118231040
+        },
+        {
+          "seconds": 8.775115799973719,
+          "phase": "startup",
+          "private_commit_bytes": 109871104,
+          "working_set_bytes": 171061248,
+          "sum_os_peak_commit_bytes": 118259712
+        },
+        {
+          "seconds": 8.892982099903747,
+          "phase": "startup",
+          "private_commit_bytes": 109871104,
+          "working_set_bytes": 171065344,
+          "sum_os_peak_commit_bytes": 118259712
+        },
+        {
+          "seconds": 9.009931199951097,
+          "phase": "startup",
+          "private_commit_bytes": 109871104,
+          "working_set_bytes": 171069440,
+          "sum_os_peak_commit_bytes": 118259712
+        },
+        {
+          "seconds": 9.128462399938144,
+          "phase": "startup",
+          "private_commit_bytes": 109871104,
+          "working_set_bytes": 171073536,
+          "sum_os_peak_commit_bytes": 118259712
+        },
+        {
+          "seconds": 9.247245399979874,
+          "phase": "startup",
+          "private_commit_bytes": 109871104,
+          "working_set_bytes": 171073536,
+          "sum_os_peak_commit_bytes": 118259712
+        },
+        {
+          "seconds": 9.364574500010349,
+          "phase": "startup",
+          "private_commit_bytes": 109871104,
+          "working_set_bytes": 171073536,
+          "sum_os_peak_commit_bytes": 118259712
+        },
+        {
+          "seconds": 9.481684800004587,
+          "phase": "startup",
+          "private_commit_bytes": 109875200,
+          "working_set_bytes": 171089920,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 9.59916969994083,
+          "phase": "startup",
+          "private_commit_bytes": 109486080,
+          "working_set_bytes": 170819584,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 9.718498099944554,
+          "phase": "startup",
+          "private_commit_bytes": 109572096,
+          "working_set_bytes": 171184128,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 9.839917699922808,
+          "phase": "startup",
+          "private_commit_bytes": 109776896,
+          "working_set_bytes": 172056576,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 9.958598600002006,
+          "phase": "startup",
+          "private_commit_bytes": 110903296,
+          "working_set_bytes": 176353280,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 10.078374299919233,
+          "phase": "startup",
+          "private_commit_bytes": 111353856,
+          "working_set_bytes": 177115136,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 10.195833200006746,
+          "phase": "startup",
+          "private_commit_bytes": 113745920,
+          "working_set_bytes": 179236864,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 10.318434699904174,
+          "phase": "ready",
+          "private_commit_bytes": 114008064,
+          "working_set_bytes": 181190656,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 10.436275999993086,
+          "phase": "ready",
+          "private_commit_bytes": 114008064,
+          "working_set_bytes": 181190656,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 10.555002599954605,
+          "phase": "ready",
+          "private_commit_bytes": 114008064,
+          "working_set_bytes": 181190656,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 10.670058099902235,
+          "phase": "ready",
+          "private_commit_bytes": 114008064,
+          "working_set_bytes": 181190656,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 10.786958999931812,
+          "phase": "ready",
+          "private_commit_bytes": 114008064,
+          "working_set_bytes": 181190656,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 10.905153599916957,
+          "phase": "ready",
+          "private_commit_bytes": 114008064,
+          "working_set_bytes": 181190656,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 11.021944999927655,
+          "phase": "ready",
+          "private_commit_bytes": 114008064,
+          "working_set_bytes": 181190656,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 11.138348799897358,
+          "phase": "ready",
+          "private_commit_bytes": 114008064,
+          "working_set_bytes": 181190656,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 11.254206799902022,
+          "phase": "ready",
+          "private_commit_bytes": 114008064,
+          "working_set_bytes": 181190656,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 11.379495200002566,
+          "phase": "ready",
+          "private_commit_bytes": 114008064,
+          "working_set_bytes": 181190656,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 11.495987099944614,
+          "phase": "ready",
+          "private_commit_bytes": 114008064,
+          "working_set_bytes": 181190656,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 11.612248899997212,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 11.728660099906847,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 11.84394449996762,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 11.961259000003338,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 12.076738799922168,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 12.19114529993385,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 12.303651299909689,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 12.42149320000317,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 12.539557899930514,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 12.6554618999362,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 12.771972399903461,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 12.88599889993202,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 13.00052139989566,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 13.115529099944979,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 13.23363359994255,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 13.350070899934508,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 13.467763199936599,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 13.5835346999811,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 13.701115899952129,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 13.813119899947196,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 13.926328199915588,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 14.04269079992082,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 14.161003699991852,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 14.282489600009285,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 14.395876499940641,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 14.511484099901281,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 14.627247500000522,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 14.74367070000153,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 14.858339699916542,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 14.976108799921349,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 15.093696299940348,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 15.212115800008178,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 15.329794499906711,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 15.447529900004156,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 15.565130800008774,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 15.678007699898444,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 15.795008099987172,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 15.911207599914633,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 16.028447899967432,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 16.14618399995379,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 16.262874899897724,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 16.380420599947684,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 16.49788069992792,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 16.61242019990459,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 16.72917539998889,
+          "phase": "import-start",
+          "private_commit_bytes": 114040832,
+          "working_set_bytes": 181288960,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 16.846590999979526,
+          "phase": "import-start",
+          "private_commit_bytes": 114008064,
+          "working_set_bytes": 181301248,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 16.959495799965225,
+          "phase": "import-start",
+          "private_commit_bytes": 114008064,
+          "working_set_bytes": 181317632,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 17.076729299966246,
+          "phase": "import-start",
+          "private_commit_bytes": 116113408,
+          "working_set_bytes": 183439360,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 17.192299799993634,
+          "phase": "import-start",
+          "private_commit_bytes": 116113408,
+          "working_set_bytes": 182796288,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 17.3092156999046,
+          "phase": "import-start",
+          "private_commit_bytes": 115060736,
+          "working_set_bytes": 182386688,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 17.426052799914032,
+          "phase": "import-start",
+          "private_commit_bytes": 116113408,
+          "working_set_bytes": 183439360,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 17.542885900009423,
+          "phase": "import-start",
+          "private_commit_bytes": 115060736,
+          "working_set_bytes": 182386688,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 17.658495199983008,
+          "phase": "import-start",
+          "private_commit_bytes": 116113408,
+          "working_set_bytes": 182390784,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 17.774404499912634,
+          "phase": "import-start",
+          "private_commit_bytes": 116113408,
+          "working_set_bytes": 183439360,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 17.888043699902482,
+          "phase": "import-start",
+          "private_commit_bytes": 115060736,
+          "working_set_bytes": 182386688,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 18.005475299898535,
+          "phase": "import-start",
+          "private_commit_bytes": 116113408,
+          "working_set_bytes": 183541760,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 18.1204644999234,
+          "phase": "import-start",
+          "private_commit_bytes": 115060736,
+          "working_set_bytes": 182489088,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 18.237572299898602,
+          "phase": "import-start",
+          "private_commit_bytes": 115060736,
+          "working_set_bytes": 182489088,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 18.34750689996872,
+          "phase": "import-start",
+          "private_commit_bytes": 115060736,
+          "working_set_bytes": 182489088,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 18.462604100001045,
+          "phase": "import-start",
+          "private_commit_bytes": 115060736,
+          "working_set_bytes": 182489088,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 18.577969399979338,
+          "phase": "import-start",
+          "private_commit_bytes": 115060736,
+          "working_set_bytes": 182489088,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 18.73353239998687,
+          "phase": "import-start",
+          "private_commit_bytes": 115060736,
+          "working_set_bytes": 182489088,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 18.88319819991011,
+          "phase": "import-start",
+          "private_commit_bytes": 115060736,
+          "working_set_bytes": 182489088,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 19.01623509998899,
+          "phase": "import-start",
+          "private_commit_bytes": 116113408,
+          "working_set_bytes": 183541760,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 19.133957299985923,
+          "phase": "import-start",
+          "private_commit_bytes": 115060736,
+          "working_set_bytes": 182489088,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 19.25172229995951,
+          "phase": "import-start",
+          "private_commit_bytes": 115060736,
+          "working_set_bytes": 182489088,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 19.372758899931796,
+          "phase": "import-start",
+          "private_commit_bytes": 115064832,
+          "working_set_bytes": 184197120,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 19.497002099989913,
+          "phase": "import-start",
+          "private_commit_bytes": 115064832,
+          "working_set_bytes": 184426496,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 19.616013399907388,
+          "phase": "import-start",
+          "private_commit_bytes": 116117504,
+          "working_set_bytes": 185479168,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 19.735428099986166,
+          "phase": "import-start",
+          "private_commit_bytes": 115064832,
+          "working_set_bytes": 184426496,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 19.850889800000004,
+          "phase": "import-start",
+          "private_commit_bytes": 116117504,
+          "working_set_bytes": 184537088,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 19.96982749993913,
+          "phase": "import-start",
+          "private_commit_bytes": 115064832,
+          "working_set_bytes": 184426496,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 20.088208699948154,
+          "phase": "import-start",
+          "private_commit_bytes": 115064832,
+          "working_set_bytes": 184426496,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 20.21190339990426,
+          "phase": "import-start",
+          "private_commit_bytes": 115064832,
+          "working_set_bytes": 184426496,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 20.326968399924226,
+          "phase": "import-start",
+          "private_commit_bytes": 115064832,
+          "working_set_bytes": 184426496,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 20.444525299943052,
+          "phase": "import-start",
+          "private_commit_bytes": 116117504,
+          "working_set_bytes": 185421824,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 20.562748799915425,
+          "phase": "import-start",
+          "private_commit_bytes": 116117504,
+          "working_set_bytes": 185479168,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 20.68158809992019,
+          "phase": "import-start",
+          "private_commit_bytes": 115064832,
+          "working_set_bytes": 184426496,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 20.799052099930122,
+          "phase": "import-start",
+          "private_commit_bytes": 115064832,
+          "working_set_bytes": 184426496,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 20.915197999915108,
+          "phase": "import-start",
+          "private_commit_bytes": 116117504,
+          "working_set_bytes": 185479168,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 21.027949000010267,
+          "phase": "import-start",
+          "private_commit_bytes": 115064832,
+          "working_set_bytes": 184426496,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 21.145109199918807,
+          "phase": "import-start",
+          "private_commit_bytes": 116117504,
+          "working_set_bytes": 185167872,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 21.26255250000395,
+          "phase": "import-start",
+          "private_commit_bytes": 115064832,
+          "working_set_bytes": 184426496,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 21.38022519997321,
+          "phase": "import-start",
+          "private_commit_bytes": 115064832,
+          "working_set_bytes": 184426496,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 21.496550799929537,
+          "phase": "import-start",
+          "private_commit_bytes": 116117504,
+          "working_set_bytes": 185479168,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 21.610485399956815,
+          "phase": "import-start",
+          "private_commit_bytes": 116117504,
+          "working_set_bytes": 185122816,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 21.728641299996525,
+          "phase": "import-start",
+          "private_commit_bytes": 114012160,
+          "working_set_bytes": 183373824,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 21.844752199947834,
+          "phase": "import-start",
+          "private_commit_bytes": 114012160,
+          "working_set_bytes": 183373824,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 21.9619010000024,
+          "phase": "import-start",
+          "private_commit_bytes": 114012160,
+          "working_set_bytes": 183373824,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 22.078044999972917,
+          "phase": "import-start",
+          "private_commit_bytes": 114012160,
+          "working_set_bytes": 183373824,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 22.194509099936113,
+          "phase": "import-start",
+          "private_commit_bytes": 116117504,
+          "working_set_bytes": 185483264,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 22.314751699916087,
+          "phase": "import-start",
+          "private_commit_bytes": 116117504,
+          "working_set_bytes": 185483264,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 22.43315959989559,
+          "phase": "import-start",
+          "private_commit_bytes": 116117504,
+          "working_set_bytes": 185483264,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 22.54990220000036,
+          "phase": "import-start",
+          "private_commit_bytes": 116117504,
+          "working_set_bytes": 185483264,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 22.66619199991692,
+          "phase": "import-start",
+          "private_commit_bytes": 115064832,
+          "working_set_bytes": 184430592,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 22.782766999909654,
+          "phase": "import-start",
+          "private_commit_bytes": 116117504,
+          "working_set_bytes": 184463360,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 22.89757169992663,
+          "phase": "import-start",
+          "private_commit_bytes": 115064832,
+          "working_set_bytes": 184430592,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 23.019262499990873,
+          "phase": "import-start",
+          "private_commit_bytes": 116117504,
+          "working_set_bytes": 184864768,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 23.13866049994249,
+          "phase": "import-start",
+          "private_commit_bytes": 116117504,
+          "working_set_bytes": 185483264,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 23.2533121999586,
+          "phase": "import-start",
+          "private_commit_bytes": 115064832,
+          "working_set_bytes": 184430592,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 23.36579479998909,
+          "phase": "import-start",
+          "private_commit_bytes": 116117504,
+          "working_set_bytes": 185483264,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 23.4798935999861,
+          "phase": "import-start",
+          "private_commit_bytes": 116117504,
+          "working_set_bytes": 185483264,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 23.591724999947473,
+          "phase": "import-start",
+          "private_commit_bytes": 116117504,
+          "working_set_bytes": 185483264,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 23.709680399973877,
+          "phase": "import-start",
+          "private_commit_bytes": 115064832,
+          "working_set_bytes": 184430592,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 23.827052899985574,
+          "phase": "import-start",
+          "private_commit_bytes": 114278400,
+          "working_set_bytes": 183664640,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 23.943540999898687,
+          "phase": "import-start",
+          "private_commit_bytes": 114278400,
+          "working_set_bytes": 183668736,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 24.058250700007193,
+          "phase": "import-start",
+          "private_commit_bytes": 114278400,
+          "working_set_bytes": 183668736,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 24.176395599963143,
+          "phase": "import-start",
+          "private_commit_bytes": 114311168,
+          "working_set_bytes": 183824384,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 24.29133469995577,
+          "phase": "import-start",
+          "private_commit_bytes": 114278400,
+          "working_set_bytes": 183808000,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 24.40842289989814,
+          "phase": "import-start",
+          "private_commit_bytes": 114278400,
+          "working_set_bytes": 183812096,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 24.526441999943927,
+          "phase": "import-start",
+          "private_commit_bytes": 115331072,
+          "working_set_bytes": 183873536,
+          "sum_os_peak_commit_bytes": 118272000
+        },
+        {
+          "seconds": 24.64648519991897,
+          "phase": "import-start",
+          "private_commit_bytes": 123768832,
+          "working_set_bytes": 193482752,
+          "sum_os_peak_commit_bytes": 123940864
+        },
+        {
+          "seconds": 24.76474999997299,
+          "phase": "import-start",
+          "private_commit_bytes": 116678656,
+          "working_set_bytes": 186355712,
+          "sum_os_peak_commit_bytes": 124268544
+        },
+        {
+          "seconds": 24.88327729993034,
+          "phase": "import-start",
+          "private_commit_bytes": 114573312,
+          "working_set_bytes": 184250368,
+          "sum_os_peak_commit_bytes": 124268544
+        },
+        {
+          "seconds": 25.00069849996362,
+          "phase": "import-start",
+          "private_commit_bytes": 114573312,
+          "working_set_bytes": 184250368,
+          "sum_os_peak_commit_bytes": 124268544
+        },
+        {
+          "seconds": 25.11963019997347,
+          "phase": "field-start",
+          "private_commit_bytes": 114647040,
+          "working_set_bytes": 184307712,
+          "sum_os_peak_commit_bytes": 124268544
+        },
+        {
+          "seconds": 25.236262199934572,
+          "phase": "field-start",
+          "private_commit_bytes": 114647040,
+          "working_set_bytes": 184307712,
+          "sum_os_peak_commit_bytes": 124268544
+        },
+        {
+          "seconds": 25.355570199899375,
+          "phase": "field-start",
+          "private_commit_bytes": 114647040,
+          "working_set_bytes": 184369152,
+          "sum_os_peak_commit_bytes": 124268544
+        },
+        {
+          "seconds": 25.473086699959822,
+          "phase": "field-start",
+          "private_commit_bytes": 114962432,
+          "working_set_bytes": 184668160,
+          "sum_os_peak_commit_bytes": 124547072
+        },
+        {
+          "seconds": 25.591198399895802,
+          "phase": "field-start",
+          "private_commit_bytes": 115138560,
+          "working_set_bytes": 184795136,
+          "sum_os_peak_commit_bytes": 124723200
+        },
+        {
+          "seconds": 25.7104859999381,
+          "phase": "field-start",
+          "private_commit_bytes": 115769344,
+          "working_set_bytes": 185176064,
+          "sum_os_peak_commit_bytes": 125362176
+        },
+        {
+          "seconds": 25.82740259997081,
+          "phase": "field-start",
+          "private_commit_bytes": 115941376,
+          "working_set_bytes": 185335808,
+          "sum_os_peak_commit_bytes": 125534208
+        },
+        {
+          "seconds": 25.945091599947773,
+          "phase": "field-start",
+          "private_commit_bytes": 116129792,
+          "working_set_bytes": 185532416,
+          "sum_os_peak_commit_bytes": 125714432
+        },
+        {
+          "seconds": 26.063332799938507,
+          "phase": "field-start",
+          "private_commit_bytes": 117469184,
+          "working_set_bytes": 190758912,
+          "sum_os_peak_commit_bytes": 127053824
+        },
+        {
+          "seconds": 26.1819603999611,
+          "phase": "field-start",
+          "private_commit_bytes": 117469184,
+          "working_set_bytes": 190791680,
+          "sum_os_peak_commit_bytes": 127053824
+        },
+        {
+          "seconds": 26.29950789990835,
+          "phase": "field-start",
+          "private_commit_bytes": 120643584,
+          "working_set_bytes": 193994752,
+          "sum_os_peak_commit_bytes": 127066112
+        },
+        {
+          "seconds": 26.415663299965672,
+          "phase": "field-start",
+          "private_commit_bytes": 118042624,
+          "working_set_bytes": 191692800,
+          "sum_os_peak_commit_bytes": 127631360
+        },
+        {
+          "seconds": 26.533084700000472,
+          "phase": "field-start",
+          "private_commit_bytes": 118087680,
+          "working_set_bytes": 191807488,
+          "sum_os_peak_commit_bytes": 127676416
+        },
+        {
+          "seconds": 26.64977239992004,
+          "phase": "field-start",
+          "private_commit_bytes": 118087680,
+          "working_set_bytes": 191811584,
+          "sum_os_peak_commit_bytes": 127676416
+        },
+        {
+          "seconds": 26.767175199929625,
+          "phase": "field-start",
+          "private_commit_bytes": 118087680,
+          "working_set_bytes": 191811584,
+          "sum_os_peak_commit_bytes": 127676416
+        },
+        {
+          "seconds": 26.885590699966997,
+          "phase": "field-start",
+          "private_commit_bytes": 118087680,
+          "working_set_bytes": 191963136,
+          "sum_os_peak_commit_bytes": 127676416
+        },
+        {
+          "seconds": 27.001399499946274,
+          "phase": "field-start",
+          "private_commit_bytes": 118132736,
+          "working_set_bytes": 192012288,
+          "sum_os_peak_commit_bytes": 127721472
+        },
+        {
+          "seconds": 27.12098139990121,
+          "phase": "field-start",
+          "private_commit_bytes": 118132736,
+          "working_set_bytes": 192012288,
+          "sum_os_peak_commit_bytes": 127721472
+        },
+        {
+          "seconds": 27.234081199974753,
+          "phase": "field-start",
+          "private_commit_bytes": 119185408,
+          "working_set_bytes": 192528384,
+          "sum_os_peak_commit_bytes": 127721472
+        },
+        {
+          "seconds": 27.352108099963516,
+          "phase": "field-start",
+          "private_commit_bytes": 118132736,
+          "working_set_bytes": 192225280,
+          "sum_os_peak_commit_bytes": 127721472
+        },
+        {
+          "seconds": 27.469567299936898,
+          "phase": "field-start",
+          "private_commit_bytes": 118132736,
+          "working_set_bytes": 192225280,
+          "sum_os_peak_commit_bytes": 127721472
+        },
+        {
+          "seconds": 27.587751999963075,
+          "phase": "field-start",
+          "private_commit_bytes": 118132736,
+          "working_set_bytes": 192225280,
+          "sum_os_peak_commit_bytes": 127721472
+        },
+        {
+          "seconds": 27.705515899928287,
+          "phase": "field-start",
+          "private_commit_bytes": 118132736,
+          "working_set_bytes": 192225280,
+          "sum_os_peak_commit_bytes": 127721472
+        },
+        {
+          "seconds": 27.823534699971788,
+          "phase": "field-start",
+          "private_commit_bytes": 118132736,
+          "working_set_bytes": 192249856,
+          "sum_os_peak_commit_bytes": 127721472
+        },
+        {
+          "seconds": 27.940948999952525,
+          "phase": "field-start",
+          "private_commit_bytes": 118210560,
+          "working_set_bytes": 192323584,
+          "sum_os_peak_commit_bytes": 127799296
+        },
+        {
+          "seconds": 28.0575833999319,
+          "phase": "field-start",
+          "private_commit_bytes": 118214656,
+          "working_set_bytes": 192327680,
+          "sum_os_peak_commit_bytes": 127803392
+        },
+        {
+          "seconds": 28.174906299915165,
+          "phase": "field-start",
+          "private_commit_bytes": 124551168,
+          "working_set_bytes": 198656000,
+          "sum_os_peak_commit_bytes": 127815680
+        },
+        {
+          "seconds": 28.292850699974224,
+          "phase": "field-start",
+          "private_commit_bytes": 118226944,
+          "working_set_bytes": 192393216,
+          "sum_os_peak_commit_bytes": 127815680
+        },
+        {
+          "seconds": 28.41020689997822,
+          "phase": "field-start",
+          "private_commit_bytes": 118226944,
+          "working_set_bytes": 192393216,
+          "sum_os_peak_commit_bytes": 127815680
+        },
+        {
+          "seconds": 28.527763599995524,
+          "phase": "field-start",
+          "private_commit_bytes": 118226944,
+          "working_set_bytes": 192393216,
+          "sum_os_peak_commit_bytes": 127815680
+        },
+        {
+          "seconds": 28.6467536999844,
+          "phase": "field-start",
+          "private_commit_bytes": 127717376,
+          "working_set_bytes": 201867264,
+          "sum_os_peak_commit_bytes": 127815680
+        },
+        {
+          "seconds": 28.76045309996698,
+          "phase": "field-start",
+          "private_commit_bytes": 118304768,
+          "working_set_bytes": 192483328,
+          "sum_os_peak_commit_bytes": 127893504
+        },
+        {
+          "seconds": 28.876069899997674,
+          "phase": "field-start",
+          "private_commit_bytes": 118280192,
+          "working_set_bytes": 192471040,
+          "sum_os_peak_commit_bytes": 127893504
+        },
+        {
+          "seconds": 28.99338179989718,
+          "phase": "field-start",
+          "private_commit_bytes": 118304768,
+          "working_set_bytes": 192483328,
+          "sum_os_peak_commit_bytes": 127893504
+        },
+        {
+          "seconds": 29.110753999906592,
+          "phase": "field-start",
+          "private_commit_bytes": 121466880,
+          "working_set_bytes": 195641344,
+          "sum_os_peak_commit_bytes": 127893504
+        },
+        {
+          "seconds": 29.231039199978113,
+          "phase": "field-start",
+          "private_commit_bytes": 118304768,
+          "working_set_bytes": 192491520,
+          "sum_os_peak_commit_bytes": 127893504
+        },
+        {
+          "seconds": 29.347651099902578,
+          "phase": "field-start",
+          "private_commit_bytes": 118304768,
+          "working_set_bytes": 192491520,
+          "sum_os_peak_commit_bytes": 127893504
+        },
+        {
+          "seconds": 29.467021699994802,
+          "phase": "field-start",
+          "private_commit_bytes": 118304768,
+          "working_set_bytes": 192491520,
+          "sum_os_peak_commit_bytes": 127893504
+        },
+        {
+          "seconds": 29.594620699994266,
+          "phase": "field-start",
+          "private_commit_bytes": 126738432,
+          "working_set_bytes": 200912896,
+          "sum_os_peak_commit_bytes": 127893504
+        },
+        {
+          "seconds": 29.742543899919838,
+          "phase": "field-start",
+          "private_commit_bytes": 118304768,
+          "working_set_bytes": 192491520,
+          "sum_os_peak_commit_bytes": 127893504
+        },
+        {
+          "seconds": 29.869019599980675,
+          "phase": "field-start",
+          "private_commit_bytes": 118304768,
+          "working_set_bytes": 192507904,
+          "sum_os_peak_commit_bytes": 127893504
+        },
+        {
+          "seconds": 29.99165829992853,
+          "phase": "field-start",
+          "private_commit_bytes": 118304768,
+          "working_set_bytes": 192507904,
+          "sum_os_peak_commit_bytes": 127893504
+        },
+        {
+          "seconds": 30.118256599991582,
+          "phase": "field-start",
+          "private_commit_bytes": 118247424,
+          "working_set_bytes": 192479232,
+          "sum_os_peak_commit_bytes": 127893504
+        },
+        {
+          "seconds": 30.23691459989641,
+          "phase": "field-start",
+          "private_commit_bytes": 119300096,
+          "working_set_bytes": 193531904,
+          "sum_os_peak_commit_bytes": 127893504
+        },
+        {
+          "seconds": 30.35472609999124,
+          "phase": "field-start",
+          "private_commit_bytes": 118247424,
+          "working_set_bytes": 192479232,
+          "sum_os_peak_commit_bytes": 127893504
+        },
+        {
+          "seconds": 30.472664200002328,
+          "phase": "field-start",
+          "private_commit_bytes": 118247424,
+          "working_set_bytes": 192479232,
+          "sum_os_peak_commit_bytes": 127893504
+        },
+        {
+          "seconds": 30.590289299958386,
+          "phase": "field-start",
+          "private_commit_bytes": 118247424,
+          "working_set_bytes": 192479232,
+          "sum_os_peak_commit_bytes": 127893504
+        },
+        {
+          "seconds": 30.70813319995068,
+          "phase": "field-start",
+          "private_commit_bytes": 125628416,
+          "working_set_bytes": 199847936,
+          "sum_os_peak_commit_bytes": 127893504
+        },
+        {
+          "seconds": 30.826083799940534,
+          "phase": "field-start",
+          "private_commit_bytes": 118247424,
+          "working_set_bytes": 192483328,
+          "sum_os_peak_commit_bytes": 127893504
+        },
+        {
+          "seconds": 30.940832299995236,
+          "phase": "field-start",
+          "private_commit_bytes": 118247424,
+          "working_set_bytes": 192483328,
+          "sum_os_peak_commit_bytes": 127893504
+        },
+        {
+          "seconds": 31.05747459991835,
+          "phase": "curves-start",
+          "private_commit_bytes": 118247424,
+          "working_set_bytes": 192487424,
+          "sum_os_peak_commit_bytes": 127893504
+        },
+        {
+          "seconds": 31.17839609994553,
+          "phase": "curves-start",
+          "private_commit_bytes": 126685184,
+          "working_set_bytes": 200962048,
+          "sum_os_peak_commit_bytes": 127893504
+        },
+        {
+          "seconds": 31.30049960000906,
+          "phase": "curves-start",
+          "private_commit_bytes": 126685184,
+          "working_set_bytes": 200970240,
+          "sum_os_peak_commit_bytes": 127893504
+        },
+        {
+          "seconds": 31.42964319989551,
+          "phase": "curves-start",
+          "private_commit_bytes": 120582144,
+          "working_set_bytes": 194838528,
+          "sum_os_peak_commit_bytes": 130228224
+        },
+        {
+          "seconds": 31.551788699929602,
+          "phase": "curves-start",
+          "private_commit_bytes": 116219904,
+          "working_set_bytes": 190922752,
+          "sum_os_peak_commit_bytes": 130228224
+        },
+        {
+          "seconds": 31.671429399983026,
+          "phase": "closed",
+          "private_commit_bytes": 116785152,
+          "working_set_bytes": 191021056,
+          "sum_os_peak_commit_bytes": 130228224
+        },
+        {
+          "seconds": 31.791409399942495,
+          "phase": "closed",
+          "private_commit_bytes": 116125696,
+          "working_set_bytes": 190910464,
+          "sum_os_peak_commit_bytes": 130244608
+        },
+        {
+          "seconds": 31.91093159990851,
+          "phase": "closed",
+          "private_commit_bytes": 115597312,
+          "working_set_bytes": 190308352,
+          "sum_os_peak_commit_bytes": 130244608
+        },
+        {
+          "seconds": 32.02957979997154,
+          "phase": "closed",
+          "private_commit_bytes": 115597312,
+          "working_set_bytes": 190308352,
+          "sum_os_peak_commit_bytes": 130244608
+        },
+        {
+          "seconds": 32.14947409997694,
+          "phase": "closed",
+          "private_commit_bytes": 115597312,
+          "working_set_bytes": 190308352,
+          "sum_os_peak_commit_bytes": 130244608
+        },
+        {
+          "seconds": 32.2674141000025,
+          "phase": "closed",
+          "private_commit_bytes": 115978240,
+          "working_set_bytes": 190468096,
+          "sum_os_peak_commit_bytes": 130244608
+        },
+        {
+          "seconds": 32.38471019989811,
+          "phase": "closed",
+          "private_commit_bytes": 115978240,
+          "working_set_bytes": 190472192,
+          "sum_os_peak_commit_bytes": 130244608
+        },
+        {
+          "seconds": 32.50215209997259,
+          "phase": "closed",
+          "private_commit_bytes": 115978240,
+          "working_set_bytes": 190472192,
+          "sum_os_peak_commit_bytes": 130244608
+        },
+        {
+          "seconds": 32.61962369992398,
+          "phase": "closed",
+          "private_commit_bytes": 115978240,
+          "working_set_bytes": 190472192,
+          "sum_os_peak_commit_bytes": 130244608
+        },
+        {
+          "seconds": 32.737905799993314,
+          "phase": "closed",
+          "private_commit_bytes": 115978240,
+          "working_set_bytes": 190472192,
+          "sum_os_peak_commit_bytes": 130244608
+        },
+        {
+          "seconds": 32.854284500004724,
+          "phase": "closed",
+          "private_commit_bytes": 48852992,
+          "working_set_bytes": 105009152,
+          "sum_os_peak_commit_bytes": 130244608
+        }
+      ]
+    },
+    "reopen": {
+      "passed": true,
+      "records": [
+        {
+          "bytes": 1075856824,
+          "sha256": "e776080d4c727629d68b94ad30e483ba25d13f86f6797c764ea72a8aa5c840b3"
+        },
+        {
+          "bytes": 20020480,
+          "sha256": "1b686e074faefc9630ee40d7dc95a61b273d8337070d72e0d4333fcbfcc2ca0c"
+        }
+      ],
+      "gpu": {
+        "before": [
+          {
+            "local_bytes": 18866176,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "exact": [
+          {
+            "local_bytes": 18866176,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "overview": [
+          {
+            "local_bytes": 18866176,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "slices": [
+          [
+            {
+              "local_bytes": 18866176,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          [
+            {
+              "local_bytes": 18866176,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          [
+            {
+              "local_bytes": 18866176,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          [
+            {
+              "local_bytes": 18866176,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          [
+            {
+              "local_bytes": 18866176,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          [
+            {
+              "local_bytes": 18866176,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          [
+            {
+              "local_bytes": 18866176,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          [
+            {
+              "local_bytes": 18866176,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          [
+            {
+              "local_bytes": 18866176,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          [
+            {
+              "local_bytes": 18866176,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        ]
+      },
+      "sample_count": 168,
+      "interval_ms_median": 118.36930003482848,
+      "baseline_private_commit_bytes": 112910336,
+      "active_peak_private_commit_bytes": 123711488,
+      "active_peak_working_set_bytes": 198152192,
+      "baseline_processes": [
+        {
+          "created_100ns": "134396871037581959",
+          "gui": false,
+          "peak_commit_bytes": 73080832,
+          "pid": 4204,
+          "private_commit_bytes": 68300800,
+          "working_set_bytes": 83939328
+        },
+        {
+          "created_100ns": "134396871036227129",
+          "gui": true,
+          "peak_commit_bytes": 42446848,
+          "pid": 21328,
+          "private_commit_bytes": 42409984,
+          "working_set_bytes": 83644416
+        },
+        {
+          "created_100ns": "134396871036955009",
+          "gui": false,
+          "peak_commit_bytes": 946176,
+          "pid": 23968,
+          "private_commit_bytes": 937984,
+          "working_set_bytes": 5058560
+        },
+        {
+          "created_100ns": "134396871037180160",
+          "gui": false,
+          "peak_commit_bytes": 1286144,
+          "pid": 24360,
+          "private_commit_bytes": 1261568,
+          "working_set_bytes": 8134656
+        }
+      ],
+      "same_process_samples": [
+        {
+          "seconds": 0.12160660000517964,
+          "phase": "startup",
+          "private_commit_bytes": 7536640,
+          "working_set_bytes": 36163584,
+          "sum_os_peak_commit_bytes": 8237056
+        },
+        {
+          "seconds": 0.23902890004683286,
+          "phase": "startup",
+          "private_commit_bytes": 19410944,
+          "working_set_bytes": 55275520,
+          "sum_os_peak_commit_bytes": 22372352
+        },
+        {
+          "seconds": 0.35824289999436587,
+          "phase": "startup",
+          "private_commit_bytes": 24039424,
+          "working_set_bytes": 61247488,
+          "sum_os_peak_commit_bytes": 28303360
+        },
+        {
+          "seconds": 0.47978410008363426,
+          "phase": "startup",
+          "private_commit_bytes": 26845184,
+          "working_set_bytes": 64303104,
+          "sum_os_peak_commit_bytes": 30461952
+        },
+        {
+          "seconds": 0.597766200080514,
+          "phase": "startup",
+          "private_commit_bytes": 27705344,
+          "working_set_bytes": 65298432,
+          "sum_os_peak_commit_bytes": 33017856
+        },
+        {
+          "seconds": 0.7203646000707522,
+          "phase": "startup",
+          "private_commit_bytes": 29634560,
+          "working_set_bytes": 66654208,
+          "sum_os_peak_commit_bytes": 33693696
+        },
+        {
+          "seconds": 0.8395386000629514,
+          "phase": "startup",
+          "private_commit_bytes": 31358976,
+          "working_set_bytes": 69009408,
+          "sum_os_peak_commit_bytes": 36286464
+        },
+        {
+          "seconds": 0.9608037000289187,
+          "phase": "startup",
+          "private_commit_bytes": 32059392,
+          "working_set_bytes": 69873664,
+          "sum_os_peak_commit_bytes": 37339136
+        },
+        {
+          "seconds": 1.0783316000597551,
+          "phase": "startup",
+          "private_commit_bytes": 33710080,
+          "working_set_bytes": 72056832,
+          "sum_os_peak_commit_bytes": 37793792
+        },
+        {
+          "seconds": 1.2037923000752926,
+          "phase": "startup",
+          "private_commit_bytes": 34537472,
+          "working_set_bytes": 72310784,
+          "sum_os_peak_commit_bytes": 39510016
+        },
+        {
+          "seconds": 1.3220673000905663,
+          "phase": "startup",
+          "private_commit_bytes": 35246080,
+          "working_set_bytes": 74256384,
+          "sum_os_peak_commit_bytes": 40062976
+        },
+        {
+          "seconds": 1.4404170999769121,
+          "phase": "startup",
+          "private_commit_bytes": 41504768,
+          "working_set_bytes": 78688256,
+          "sum_os_peak_commit_bytes": 41771008
+        },
+        {
+          "seconds": 1.5556576000526547,
+          "phase": "startup",
+          "private_commit_bytes": 37724160,
+          "working_set_bytes": 76201984,
+          "sum_os_peak_commit_bytes": 42479616
+        },
+        {
+          "seconds": 1.6760948000010103,
+          "phase": "startup",
+          "private_commit_bytes": 43560960,
+          "working_set_bytes": 81608704,
+          "sum_os_peak_commit_bytes": 47984640
+        },
+        {
+          "seconds": 1.7910366000141948,
+          "phase": "startup",
+          "private_commit_bytes": 49057792,
+          "working_set_bytes": 86417408,
+          "sum_os_peak_commit_bytes": 53100544
+        },
+        {
+          "seconds": 1.9100825000787154,
+          "phase": "startup",
+          "private_commit_bytes": 55603200,
+          "working_set_bytes": 92057600,
+          "sum_os_peak_commit_bytes": 56754176
+        },
+        {
+          "seconds": 2.027509200037457,
+          "phase": "startup",
+          "private_commit_bytes": 57012224,
+          "working_set_bytes": 95334400,
+          "sum_os_peak_commit_bytes": 60489728
+        },
+        {
+          "seconds": 2.1474200000520796,
+          "phase": "startup",
+          "private_commit_bytes": 61726720,
+          "working_set_bytes": 100253696,
+          "sum_os_peak_commit_bytes": 65425408
+        },
+        {
+          "seconds": 2.266848100000061,
+          "phase": "startup",
+          "private_commit_bytes": 63094784,
+          "working_set_bytes": 101924864,
+          "sum_os_peak_commit_bytes": 67399680
+        },
+        {
+          "seconds": 2.3881499000126496,
+          "phase": "startup",
+          "private_commit_bytes": 68718592,
+          "working_set_bytes": 107577344,
+          "sum_os_peak_commit_bytes": 72749056
+        },
+        {
+          "seconds": 2.5050474000163376,
+          "phase": "startup",
+          "private_commit_bytes": 72228864,
+          "working_set_bytes": 110370816,
+          "sum_os_peak_commit_bytes": 75124736
+        },
+        {
+          "seconds": 2.6211443999782205,
+          "phase": "startup",
+          "private_commit_bytes": 74022912,
+          "working_set_bytes": 112099328,
+          "sum_os_peak_commit_bytes": 78856192
+        },
+        {
+          "seconds": 2.7395714999875054,
+          "phase": "startup",
+          "private_commit_bytes": 77283328,
+          "working_set_bytes": 115294208,
+          "sum_os_peak_commit_bytes": 79654912
+        },
+        {
+          "seconds": 2.856597400037572,
+          "phase": "startup",
+          "private_commit_bytes": 82825216,
+          "working_set_bytes": 117080064,
+          "sum_os_peak_commit_bytes": 83476480
+        },
+        {
+          "seconds": 2.9752062000334263,
+          "phase": "startup",
+          "private_commit_bytes": 82812928,
+          "working_set_bytes": 117719040,
+          "sum_os_peak_commit_bytes": 83476480
+        },
+        {
+          "seconds": 3.0939381000353023,
+          "phase": "startup",
+          "private_commit_bytes": 79446016,
+          "working_set_bytes": 120254464,
+          "sum_os_peak_commit_bytes": 83546112
+        },
+        {
+          "seconds": 3.214526000083424,
+          "phase": "startup",
+          "private_commit_bytes": 72200192,
+          "working_set_bytes": 114184192,
+          "sum_os_peak_commit_bytes": 83668992
+        },
+        {
+          "seconds": 3.334888800047338,
+          "phase": "startup",
+          "private_commit_bytes": 72261632,
+          "working_set_bytes": 114253824,
+          "sum_os_peak_commit_bytes": 83697664
+        },
+        {
+          "seconds": 3.451699700090103,
+          "phase": "startup",
+          "private_commit_bytes": 72282112,
+          "working_set_bytes": 114286592,
+          "sum_os_peak_commit_bytes": 83718144
+        },
+        {
+          "seconds": 3.5720926000503823,
+          "phase": "startup",
+          "private_commit_bytes": 72298496,
+          "working_set_bytes": 114348032,
+          "sum_os_peak_commit_bytes": 83734528
+        },
+        {
+          "seconds": 3.6897826000349596,
+          "phase": "startup",
+          "private_commit_bytes": 72376320,
+          "working_set_bytes": 114442240,
+          "sum_os_peak_commit_bytes": 83845120
+        },
+        {
+          "seconds": 3.807218800066039,
+          "phase": "startup",
+          "private_commit_bytes": 72413184,
+          "working_set_bytes": 114499584,
+          "sum_os_peak_commit_bytes": 83849216
+        },
+        {
+          "seconds": 3.924806100083515,
+          "phase": "startup",
+          "private_commit_bytes": 72441856,
+          "working_set_bytes": 114581504,
+          "sum_os_peak_commit_bytes": 83890176
+        },
+        {
+          "seconds": 4.044374700053595,
+          "phase": "startup",
+          "private_commit_bytes": 72519680,
+          "working_set_bytes": 114688000,
+          "sum_os_peak_commit_bytes": 83955712
+        },
+        {
+          "seconds": 4.163133900030516,
+          "phase": "startup",
+          "private_commit_bytes": 72568832,
+          "working_set_bytes": 114778112,
+          "sum_os_peak_commit_bytes": 84004864
+        },
+        {
+          "seconds": 4.282901099999435,
+          "phase": "startup",
+          "private_commit_bytes": 72597504,
+          "working_set_bytes": 114831360,
+          "sum_os_peak_commit_bytes": 84033536
+        },
+        {
+          "seconds": 4.401129100006074,
+          "phase": "startup",
+          "private_commit_bytes": 72630272,
+          "working_set_bytes": 114917376,
+          "sum_os_peak_commit_bytes": 84066304
+        },
+        {
+          "seconds": 4.517798000015318,
+          "phase": "startup",
+          "private_commit_bytes": 72650752,
+          "working_set_bytes": 114946048,
+          "sum_os_peak_commit_bytes": 84086784
+        },
+        {
+          "seconds": 4.6340730000520125,
+          "phase": "startup",
+          "private_commit_bytes": 72650752,
+          "working_set_bytes": 114962432,
+          "sum_os_peak_commit_bytes": 84086784
+        },
+        {
+          "seconds": 4.7545538999838755,
+          "phase": "startup",
+          "private_commit_bytes": 72650752,
+          "working_set_bytes": 114962432,
+          "sum_os_peak_commit_bytes": 84086784
+        },
+        {
+          "seconds": 4.8773465000558645,
+          "phase": "startup",
+          "private_commit_bytes": 72704000,
+          "working_set_bytes": 115052544,
+          "sum_os_peak_commit_bytes": 84140032
+        },
+        {
+          "seconds": 4.997914400068112,
+          "phase": "startup",
+          "private_commit_bytes": 72704000,
+          "working_set_bytes": 115056640,
+          "sum_os_peak_commit_bytes": 84140032
+        },
+        {
+          "seconds": 5.122485000058077,
+          "phase": "startup",
+          "private_commit_bytes": 72740864,
+          "working_set_bytes": 115126272,
+          "sum_os_peak_commit_bytes": 84176896
+        },
+        {
+          "seconds": 5.245100200059824,
+          "phase": "startup",
+          "private_commit_bytes": 72802304,
+          "working_set_bytes": 115204096,
+          "sum_os_peak_commit_bytes": 84238336
+        },
+        {
+          "seconds": 5.365217500017025,
+          "phase": "startup",
+          "private_commit_bytes": 72802304,
+          "working_set_bytes": 115208192,
+          "sum_os_peak_commit_bytes": 84238336
+        },
+        {
+          "seconds": 5.4857205000007525,
+          "phase": "startup",
+          "private_commit_bytes": 72802304,
+          "working_set_bytes": 115208192,
+          "sum_os_peak_commit_bytes": 84238336
+        },
+        {
+          "seconds": 5.6060958000598475,
+          "phase": "startup",
+          "private_commit_bytes": 72925184,
+          "working_set_bytes": 115380224,
+          "sum_os_peak_commit_bytes": 84393984
+        },
+        {
+          "seconds": 5.727894400013611,
+          "phase": "startup",
+          "private_commit_bytes": 93630464,
+          "working_set_bytes": 129429504,
+          "sum_os_peak_commit_bytes": 105066496
+        },
+        {
+          "seconds": 5.853140700026415,
+          "phase": "startup",
+          "private_commit_bytes": 97550336,
+          "working_set_bytes": 153513984,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 5.974993300042115,
+          "phase": "startup",
+          "private_commit_bytes": 97558528,
+          "working_set_bytes": 153526272,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 6.096928699989803,
+          "phase": "startup",
+          "private_commit_bytes": 97591296,
+          "working_set_bytes": 153595904,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 6.218281000037678,
+          "phase": "startup",
+          "private_commit_bytes": 97591296,
+          "working_set_bytes": 153595904,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 6.339078400051221,
+          "phase": "startup",
+          "private_commit_bytes": 97591296,
+          "working_set_bytes": 153600000,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 6.45744770008605,
+          "phase": "startup",
+          "private_commit_bytes": 97591296,
+          "working_set_bytes": 153608192,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 6.578719299985096,
+          "phase": "startup",
+          "private_commit_bytes": 97591296,
+          "working_set_bytes": 153608192,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 6.7014704999746755,
+          "phase": "startup",
+          "private_commit_bytes": 97591296,
+          "working_set_bytes": 153616384,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 6.821261600009166,
+          "phase": "startup",
+          "private_commit_bytes": 97591296,
+          "working_set_bytes": 153628672,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 6.944261100026779,
+          "phase": "startup",
+          "private_commit_bytes": 97603584,
+          "working_set_bytes": 153653248,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 7.067863799980842,
+          "phase": "startup",
+          "private_commit_bytes": 97640448,
+          "working_set_bytes": 153690112,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 7.1892665000632405,
+          "phase": "startup",
+          "private_commit_bytes": 97640448,
+          "working_set_bytes": 153690112,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 7.3110766999889165,
+          "phase": "startup",
+          "private_commit_bytes": 97660928,
+          "working_set_bytes": 153714688,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 7.429447200032882,
+          "phase": "startup",
+          "private_commit_bytes": 97660928,
+          "working_set_bytes": 153763840,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 7.549107400001958,
+          "phase": "startup",
+          "private_commit_bytes": 97660928,
+          "working_set_bytes": 153772032,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 7.6701780000003055,
+          "phase": "startup",
+          "private_commit_bytes": 97689600,
+          "working_set_bytes": 153804800,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 7.790158600080758,
+          "phase": "startup",
+          "private_commit_bytes": 97726464,
+          "working_set_bytes": 153849856,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 7.910333200008608,
+          "phase": "startup",
+          "private_commit_bytes": 97751040,
+          "working_set_bytes": 153878528,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 8.029834700049832,
+          "phase": "startup",
+          "private_commit_bytes": 97751040,
+          "working_set_bytes": 153886720,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 8.143443600041792,
+          "phase": "startup",
+          "private_commit_bytes": 97751040,
+          "working_set_bytes": 153890816,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 8.265548900002614,
+          "phase": "startup",
+          "private_commit_bytes": 97771520,
+          "working_set_bytes": 153915392,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 8.394653400056995,
+          "phase": "startup",
+          "private_commit_bytes": 97771520,
+          "working_set_bytes": 153915392,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 8.520864500082098,
+          "phase": "startup",
+          "private_commit_bytes": 97771520,
+          "working_set_bytes": 153915392,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 8.646733700064942,
+          "phase": "startup",
+          "private_commit_bytes": 97771520,
+          "working_set_bytes": 153956352,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 8.768629500060342,
+          "phase": "startup",
+          "private_commit_bytes": 97771520,
+          "working_set_bytes": 153964544,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 8.888198300031945,
+          "phase": "startup",
+          "private_commit_bytes": 97730560,
+          "working_set_bytes": 153980928,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 9.011077800067142,
+          "phase": "startup",
+          "private_commit_bytes": 97787904,
+          "working_set_bytes": 154030080,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 9.135231900028884,
+          "phase": "startup",
+          "private_commit_bytes": 97787904,
+          "working_set_bytes": 154030080,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 9.25476530008018,
+          "phase": "startup",
+          "private_commit_bytes": 97808384,
+          "working_set_bytes": 154062848,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 9.376110200071707,
+          "phase": "startup",
+          "private_commit_bytes": 97808384,
+          "working_set_bytes": 154062848,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 9.49618030001875,
+          "phase": "startup",
+          "private_commit_bytes": 97849344,
+          "working_set_bytes": 154116096,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 9.619232000084594,
+          "phase": "startup",
+          "private_commit_bytes": 97849344,
+          "working_set_bytes": 154116096,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 9.73754760005977,
+          "phase": "startup",
+          "private_commit_bytes": 97931264,
+          "working_set_bytes": 154296320,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 9.859762600040995,
+          "phase": "startup",
+          "private_commit_bytes": 97931264,
+          "working_set_bytes": 154296320,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 9.979335100040771,
+          "phase": "startup",
+          "private_commit_bytes": 97943552,
+          "working_set_bytes": 154304512,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 10.102625800063834,
+          "phase": "startup",
+          "private_commit_bytes": 97943552,
+          "working_set_bytes": 154304512,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 10.219540500082076,
+          "phase": "startup",
+          "private_commit_bytes": 97959936,
+          "working_set_bytes": 154370048,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 10.337369400076568,
+          "phase": "startup",
+          "private_commit_bytes": 97959936,
+          "working_set_bytes": 154370048,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 10.455667400034145,
+          "phase": "startup",
+          "private_commit_bytes": 97959936,
+          "working_set_bytes": 154370048,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 10.577690900070593,
+          "phase": "startup",
+          "private_commit_bytes": 97959936,
+          "working_set_bytes": 154370048,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 10.696817900054157,
+          "phase": "startup",
+          "private_commit_bytes": 98033664,
+          "working_set_bytes": 154480640,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 10.818248399998993,
+          "phase": "startup",
+          "private_commit_bytes": 98054144,
+          "working_set_bytes": 154550272,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 10.938145200023428,
+          "phase": "startup",
+          "private_commit_bytes": 98054144,
+          "working_set_bytes": 154562560,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 11.06112289999146,
+          "phase": "startup",
+          "private_commit_bytes": 98250752,
+          "working_set_bytes": 156524544,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 11.182179600000381,
+          "phase": "startup",
+          "private_commit_bytes": 99061760,
+          "working_set_bytes": 158261248,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 11.297615500050597,
+          "phase": "startup",
+          "private_commit_bytes": 100651008,
+          "working_set_bytes": 160690176,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 11.411821100045927,
+          "phase": "startup",
+          "private_commit_bytes": 102649856,
+          "working_set_bytes": 162320384,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 11.536270200042054,
+          "phase": "startup",
+          "private_commit_bytes": 102649856,
+          "working_set_bytes": 162320384,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 11.651093100081198,
+          "phase": "startup",
+          "private_commit_bytes": 102797312,
+          "working_set_bytes": 162496512,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 11.771200300077908,
+          "phase": "startup",
+          "private_commit_bytes": 102797312,
+          "working_set_bytes": 162504704,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 11.887339600012638,
+          "phase": "startup",
+          "private_commit_bytes": 102858752,
+          "working_set_bytes": 162832384,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 12.00288340006955,
+          "phase": "startup",
+          "private_commit_bytes": 102400000,
+          "working_set_bytes": 162463744,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 12.118265900062397,
+          "phase": "startup",
+          "private_commit_bytes": 102428672,
+          "working_set_bytes": 162631680,
+          "sum_os_peak_commit_bytes": 117395456
+        },
+        {
+          "seconds": 12.2348181999987,
+          "phase": "startup",
+          "private_commit_bytes": 108716032,
+          "working_set_bytes": 169365504,
+          "sum_os_peak_commit_bytes": 117485568
+        },
+        {
+          "seconds": 12.350449800025672,
+          "phase": "startup",
+          "private_commit_bytes": 108748800,
+          "working_set_bytes": 169402368,
+          "sum_os_peak_commit_bytes": 117485568
+        },
+        {
+          "seconds": 12.466585700050928,
+          "phase": "startup",
+          "private_commit_bytes": 108748800,
+          "working_set_bytes": 169406464,
+          "sum_os_peak_commit_bytes": 117485568
+        },
+        {
+          "seconds": 12.578897200059146,
+          "phase": "startup",
+          "private_commit_bytes": 108748800,
+          "working_set_bytes": 169406464,
+          "sum_os_peak_commit_bytes": 117485568
+        },
+        {
+          "seconds": 12.690927000017837,
+          "phase": "startup",
+          "private_commit_bytes": 108748800,
+          "working_set_bytes": 169689088,
+          "sum_os_peak_commit_bytes": 117485568
+        },
+        {
+          "seconds": 12.806394400075078,
+          "phase": "startup",
+          "private_commit_bytes": 108748800,
+          "working_set_bytes": 169689088,
+          "sum_os_peak_commit_bytes": 117485568
+        },
+        {
+          "seconds": 12.918824800057337,
+          "phase": "startup",
+          "private_commit_bytes": 108748800,
+          "working_set_bytes": 169689088,
+          "sum_os_peak_commit_bytes": 117485568
+        },
+        {
+          "seconds": 13.032492600032128,
+          "phase": "startup",
+          "private_commit_bytes": 108748800,
+          "working_set_bytes": 170000384,
+          "sum_os_peak_commit_bytes": 117485568
+        },
+        {
+          "seconds": 13.14770990004763,
+          "phase": "startup",
+          "private_commit_bytes": 108748800,
+          "working_set_bytes": 170041344,
+          "sum_os_peak_commit_bytes": 117485568
+        },
+        {
+          "seconds": 13.262298500048928,
+          "phase": "startup",
+          "private_commit_bytes": 108748800,
+          "working_set_bytes": 170115072,
+          "sum_os_peak_commit_bytes": 117485568
+        },
+        {
+          "seconds": 13.377165500074625,
+          "phase": "startup",
+          "private_commit_bytes": 108748800,
+          "working_set_bytes": 170135552,
+          "sum_os_peak_commit_bytes": 117489664
+        },
+        {
+          "seconds": 13.490832300041802,
+          "phase": "startup",
+          "private_commit_bytes": 108748800,
+          "working_set_bytes": 170139648,
+          "sum_os_peak_commit_bytes": 117489664
+        },
+        {
+          "seconds": 13.604427000042051,
+          "phase": "startup",
+          "private_commit_bytes": 108748800,
+          "working_set_bytes": 170274816,
+          "sum_os_peak_commit_bytes": 117489664
+        },
+        {
+          "seconds": 13.720639800070785,
+          "phase": "startup",
+          "private_commit_bytes": 108793856,
+          "working_set_bytes": 170348544,
+          "sum_os_peak_commit_bytes": 117526528
+        },
+        {
+          "seconds": 13.831729899975471,
+          "phase": "startup",
+          "private_commit_bytes": 108793856,
+          "working_set_bytes": 170356736,
+          "sum_os_peak_commit_bytes": 117526528
+        },
+        {
+          "seconds": 13.94260559999384,
+          "phase": "startup",
+          "private_commit_bytes": 108797952,
+          "working_set_bytes": 170369024,
+          "sum_os_peak_commit_bytes": 117538816
+        },
+        {
+          "seconds": 14.051148200058378,
+          "phase": "startup",
+          "private_commit_bytes": 108797952,
+          "working_set_bytes": 170409984,
+          "sum_os_peak_commit_bytes": 117538816
+        },
+        {
+          "seconds": 14.16647950001061,
+          "phase": "startup",
+          "private_commit_bytes": 108830720,
+          "working_set_bytes": 170688512,
+          "sum_os_peak_commit_bytes": 117563392
+        },
+        {
+          "seconds": 14.282011799979955,
+          "phase": "startup",
+          "private_commit_bytes": 109895680,
+          "working_set_bytes": 174366720,
+          "sum_os_peak_commit_bytes": 117760000
+        },
+        {
+          "seconds": 14.398601600085385,
+          "phase": "startup",
+          "private_commit_bytes": 111054848,
+          "working_set_bytes": 176586752,
+          "sum_os_peak_commit_bytes": 117760000
+        },
+        {
+          "seconds": 14.515963800018653,
+          "phase": "startup",
+          "private_commit_bytes": 112144384,
+          "working_set_bytes": 178728960,
+          "sum_os_peak_commit_bytes": 117760000
+        },
+        {
+          "seconds": 14.63107190001756,
+          "phase": "ready",
+          "private_commit_bytes": 112939008,
+          "working_set_bytes": 180752384,
+          "sum_os_peak_commit_bytes": 117760000
+        },
+        {
+          "seconds": 14.745448100031354,
+          "phase": "ready",
+          "private_commit_bytes": 112939008,
+          "working_set_bytes": 180752384,
+          "sum_os_peak_commit_bytes": 117760000
+        },
+        {
+          "seconds": 14.859360000002198,
+          "phase": "ready",
+          "private_commit_bytes": 112939008,
+          "working_set_bytes": 180752384,
+          "sum_os_peak_commit_bytes": 117760000
+        },
+        {
+          "seconds": 14.97362589999102,
+          "phase": "ready",
+          "private_commit_bytes": 112939008,
+          "working_set_bytes": 180752384,
+          "sum_os_peak_commit_bytes": 117760000
+        },
+        {
+          "seconds": 15.08352320000995,
+          "phase": "ready",
+          "private_commit_bytes": 112939008,
+          "working_set_bytes": 180752384,
+          "sum_os_peak_commit_bytes": 117760000
+        },
+        {
+          "seconds": 15.197181300027296,
+          "phase": "ready",
+          "private_commit_bytes": 112939008,
+          "working_set_bytes": 180752384,
+          "sum_os_peak_commit_bytes": 117760000
+        },
+        {
+          "seconds": 15.317405499983579,
+          "phase": "ready",
+          "private_commit_bytes": 112910336,
+          "working_set_bytes": 180752384,
+          "sum_os_peak_commit_bytes": 117760000
+        },
+        {
+          "seconds": 15.43388240004424,
+          "phase": "ready",
+          "private_commit_bytes": 112910336,
+          "working_set_bytes": 180752384,
+          "sum_os_peak_commit_bytes": 117760000
+        },
+        {
+          "seconds": 15.573492700001225,
+          "phase": "ready",
+          "private_commit_bytes": 112910336,
+          "working_set_bytes": 180752384,
+          "sum_os_peak_commit_bytes": 117760000
+        },
+        {
+          "seconds": 15.687396800029092,
+          "phase": "ready",
+          "private_commit_bytes": 112910336,
+          "working_set_bytes": 180752384,
+          "sum_os_peak_commit_bytes": 117760000
+        },
+        {
+          "seconds": 15.800426800036803,
+          "phase": "ready",
+          "private_commit_bytes": 112910336,
+          "working_set_bytes": 180752384,
+          "sum_os_peak_commit_bytes": 117760000
+        },
+        {
+          "seconds": 15.913578400039114,
+          "phase": "ready",
+          "private_commit_bytes": 112910336,
+          "working_set_bytes": 180776960,
+          "sum_os_peak_commit_bytes": 117760000
+        },
+        {
+          "seconds": 16.02224429999478,
+          "phase": "field-start",
+          "private_commit_bytes": 114208768,
+          "working_set_bytes": 187990016,
+          "sum_os_peak_commit_bytes": 118476800
+        },
+        {
+          "seconds": 16.130536900018342,
+          "phase": "field-start",
+          "private_commit_bytes": 114876416,
+          "working_set_bytes": 188989440,
+          "sum_os_peak_commit_bytes": 124452864
+        },
+        {
+          "seconds": 16.23902870004531,
+          "phase": "field-start",
+          "private_commit_bytes": 114876416,
+          "working_set_bytes": 189009920,
+          "sum_os_peak_commit_bytes": 124469248
+        },
+        {
+          "seconds": 16.346789699979126,
+          "phase": "field-start",
+          "private_commit_bytes": 113790976,
+          "working_set_bytes": 188502016,
+          "sum_os_peak_commit_bytes": 124477440
+        },
+        {
+          "seconds": 16.45438600005582,
+          "phase": "field-start",
+          "private_commit_bytes": 114212864,
+          "working_set_bytes": 188641280,
+          "sum_os_peak_commit_bytes": 124485632
+        },
+        {
+          "seconds": 16.565860599977896,
+          "phase": "field-start",
+          "private_commit_bytes": 123711488,
+          "working_set_bytes": 198119424,
+          "sum_os_peak_commit_bytes": 124489728
+        },
+        {
+          "seconds": 16.681199499987997,
+          "phase": "field-start",
+          "private_commit_bytes": 122654720,
+          "working_set_bytes": 197083136,
+          "sum_os_peak_commit_bytes": 124489728
+        },
+        {
+          "seconds": 16.791805700049736,
+          "phase": "field-start",
+          "private_commit_bytes": 114225152,
+          "working_set_bytes": 188669952,
+          "sum_os_peak_commit_bytes": 124497920
+        },
+        {
+          "seconds": 16.90557980001904,
+          "phase": "field-start",
+          "private_commit_bytes": 114225152,
+          "working_set_bytes": 188682240,
+          "sum_os_peak_commit_bytes": 124497920
+        },
+        {
+          "seconds": 17.014846900012344,
+          "phase": "field-start",
+          "private_commit_bytes": 114229248,
+          "working_set_bytes": 188719104,
+          "sum_os_peak_commit_bytes": 124502016
+        },
+        {
+          "seconds": 17.124936899985187,
+          "phase": "field-start",
+          "private_commit_bytes": 122662912,
+          "working_set_bytes": 197144576,
+          "sum_os_peak_commit_bytes": 124502016
+        },
+        {
+          "seconds": 17.241394600016065,
+          "phase": "field-start",
+          "private_commit_bytes": 114229248,
+          "working_set_bytes": 188878848,
+          "sum_os_peak_commit_bytes": 124502016
+        },
+        {
+          "seconds": 17.362193100037985,
+          "phase": "field-start",
+          "private_commit_bytes": 114229248,
+          "working_set_bytes": 188878848,
+          "sum_os_peak_commit_bytes": 124502016
+        },
+        {
+          "seconds": 17.48238040006254,
+          "phase": "field-start",
+          "private_commit_bytes": 122671104,
+          "working_set_bytes": 197464064,
+          "sum_os_peak_commit_bytes": 124502016
+        },
+        {
+          "seconds": 17.60329930006992,
+          "phase": "field-start",
+          "private_commit_bytes": 113815552,
+          "working_set_bytes": 188506112,
+          "sum_os_peak_commit_bytes": 124502016
+        },
+        {
+          "seconds": 17.729444900061935,
+          "phase": "curves-start",
+          "private_commit_bytes": 113815552,
+          "working_set_bytes": 188522496,
+          "sum_os_peak_commit_bytes": 124502016
+        },
+        {
+          "seconds": 17.84458789997734,
+          "phase": "curves-start",
+          "private_commit_bytes": 123310080,
+          "working_set_bytes": 198152192,
+          "sum_os_peak_commit_bytes": 124502016
+        },
+        {
+          "seconds": 17.958609700086527,
+          "phase": "curves-start",
+          "private_commit_bytes": 116883456,
+          "working_set_bytes": 191688704,
+          "sum_os_peak_commit_bytes": 127156224
+        },
+        {
+          "seconds": 18.07556840009056,
+          "phase": "curves-start",
+          "private_commit_bytes": 116883456,
+          "working_set_bytes": 191696896,
+          "sum_os_peak_commit_bytes": 127156224
+        },
+        {
+          "seconds": 18.192566900048405,
+          "phase": "closed",
+          "private_commit_bytes": 114536448,
+          "working_set_bytes": 188956672,
+          "sum_os_peak_commit_bytes": 127156224
+        },
+        {
+          "seconds": 18.313415399985388,
+          "phase": "closed",
+          "private_commit_bytes": 114933760,
+          "working_set_bytes": 188968960,
+          "sum_os_peak_commit_bytes": 127156224
+        },
+        {
+          "seconds": 18.42322850006167,
+          "phase": "closed",
+          "private_commit_bytes": 114933760,
+          "working_set_bytes": 188981248,
+          "sum_os_peak_commit_bytes": 127156224
+        },
+        {
+          "seconds": 18.537095900042914,
+          "phase": "closed",
+          "private_commit_bytes": 114933760,
+          "working_set_bytes": 188981248,
+          "sum_os_peak_commit_bytes": 127156224
+        },
+        {
+          "seconds": 18.655653499998152,
+          "phase": "closed",
+          "private_commit_bytes": 114933760,
+          "working_set_bytes": 188981248,
+          "sum_os_peak_commit_bytes": 127156224
+        },
+        {
+          "seconds": 18.77659180003684,
+          "phase": "closed",
+          "private_commit_bytes": 108916736,
+          "working_set_bytes": 183685120,
+          "sum_os_peak_commit_bytes": 127156224
+        }
+      ]
+    }
+  }
+}

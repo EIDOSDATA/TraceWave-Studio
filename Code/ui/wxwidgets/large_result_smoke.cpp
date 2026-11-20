@@ -1,6 +1,7 @@
 /** @file @brief 실제 Windows 표시 창에서 등록, 10회 단면 위치·주파수 변경, 복소 비교를 검증한다. */
 #include "large_result_dialog.h"
 #include "field_result_view.h"
+#include "studio_smoke_gpu.h"
 #include "studio_support.h"
 #include <cmath>
 #include <fstream>
@@ -72,6 +73,7 @@ void LargeResultDialog::SmokeTick()
             {
                 return;
             }
+            m_evidence["gpu"]["before"] = StudioSmoke::GpuMemorySamples();
             if (m_fixture.at("mode") == "import" || m_fixture.at("mode") == "receive")
             {
                 Check(m_catalog.empty(), "새 시험 프로젝트에 기존 등록 자료가 있습니다.");
@@ -128,6 +130,7 @@ void LargeResultDialog::SmokeTick()
                       "실제 단면의 복소값, 주파수 또는 단위 미정값이 다릅니다.");
                 m_evidence["slices"].push_back({{"selection", slice.at("selection")}, {"value", value},
                                                  {"frequency", slice.at("frequency_hz")}});
+                m_evidence["gpu"]["slices"].push_back(StudioSmoke::GpuMemorySamples());
             }
             if (m_smokeSlices == 10)
             {
@@ -165,6 +168,7 @@ void LargeResultDialog::SmokeTick()
                 Check(count == 100000, "등록한 곡선의 원본 표본 수가 다릅니다.");
             }
             m_evidence["overview_counts"] = m_curvePage.at("counts");
+            m_evidence["gpu"]["overview"] = StudioSmoke::GpuMemorySamples();
             m_mode->SetSelection(1);
             m_metric->SetSelection(1);
             m_offset->SetValue(99999);
@@ -186,6 +190,7 @@ void LargeResultDialog::SmokeTick()
                       "마지막 복소값 또는 원본 결측 상태가 예상 기록과 다릅니다.");
             }
             m_evidence["tail"] = m_curvePage;
+            m_evidence["gpu"]["exact"] = StudioSmoke::GpuMemorySamples();
             if (m_fixture.contains("export"))
             {
                 StartTransfer(FileName(m_fixture.at("export").at("traces")));

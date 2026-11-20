@@ -1,6 +1,7 @@
 """! @brief 환경 진단, 프로젝트 서비스와 오프라인 카탈로그 진입점을 제공한다."""
 
 import argparse
+import os
 import sys
 
 
@@ -33,6 +34,9 @@ def main(argv: list[str] | None = None) -> int:
     serve_parser.add_argument("--exchange-python", type=Path, help="격리 도면 출력 worker의 고정 Python 실행 파일")
     serve_parser.add_argument("--openems-wsl", action="store_true", help="TraceWave-Dev의 검증된 openEMS 참조 worker 사용")
     options = serve_parser.parse_args(remainder)
+    if os.name == "nt" and options.workspace is not None:
+        # @brief Windows 서비스의 작은 수치 조회가 OpenBLAS 전체 코어 버퍼를 예약하지 않게 한다.
+        os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
     from rfad.application.rpc import serve
 
     catalog = None

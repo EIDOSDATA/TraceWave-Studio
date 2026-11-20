@@ -105,6 +105,7 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/reviewed_request_store.cpp
     ui/wxwidgets/studio_smoke_pcb.cpp
     ui/wxwidgets/studio_smoke_lifetime.cpp
+    ui/wxwidgets/studio_smoke_gpu.cpp
     ui/wxwidgets/studio_catalog_display_probe.cpp
     ui/wxwidgets/studio_model_display_probe.cpp
     tools/windows_display_marker.cpp

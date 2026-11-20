@@ -542,6 +542,7 @@ struct ModelView::Impl
     std::set<std::string> hiddenLayers;
     bool discard = false;
     bool recovering = false;
+    bool keepContextForMeasurement = false;
     bool reportedPreview = false;
 
     explicit Impl(ModelView* window) : owner(window), timer(window), idleTimer(window)
@@ -608,7 +609,7 @@ struct ModelView::Impl
             canvas->SetScene(scene);
         }
         Status(text);
-        if (scene == nullptr && canvas != nullptr)
+        if (scene == nullptr && canvas != nullptr && !keepContextForMeasurement)
         {
             idleTimer.StartOnce(EmptyContextIdleMs);
         }
@@ -821,9 +822,18 @@ void ModelView::Clear()
     {
         m_impl->canvas->SetScene(nullptr);
         m_impl->canvas->Hide();
-        m_impl->idleTimer.StartOnce(EmptyContextIdleMs);
+        if (!m_impl->keepContextForMeasurement)
+        {
+            m_impl->idleTimer.StartOnce(EmptyContextIdleMs);
+        }
     }
     m_impl->Status("3D 형상을 생성하면 여기에 표시합니다.");
+}
+
+void ModelView::KeepContextForMeasurement()
+{
+    m_impl->keepContextForMeasurement = true;
+    m_impl->idleTimer.Stop();
 }
 
 void ModelView::SetSelection(const std::string& identity)

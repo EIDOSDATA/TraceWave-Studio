@@ -1,78 +1,43 @@
 /** @file @brief 같은 Windows Studio에서 대형 설계와 대기 프로젝트의 전환 자원을 측정한다. */
 #include "studio_internal.h"
 #include "studio_model_display_probe.h"
+#include "studio_smoke_gpu.h"
 #include "../../tools/large_display_fixture.h"
 #include <windows.h>
-#include <dxgi1_4.h>
 #include <psapi.h>
 #include <tlhelp32.h>
-#include <wrl/client.h>
 #include <algorithm>
-#include <cstring>
 #include <fstream>
-#include <set>
-#include <type_traits>
+#include <map>
 #include <utility>
 #include <vector>
 #include <wx/glcanvas.h>
 
 namespace
 {
-/** @brief GPU 계측을 활성화한 실행에서만 Studio 프로세스의 DXGI node 0 사용량을 읽는다. */
-Json VideoSamples()
+/** @brief Windows가 PID를 재사용해도 실제 생성 순서를 확인한다. */
+std::optional<FILETIME> StartedAt(DWORD pid)
 {
-    using Microsoft::WRL::ComPtr;
-    const std::unique_ptr<std::remove_pointer_t<HMODULE>, decltype(&FreeLibrary)> module(
-        LoadLibraryExW(L"dxgi.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32), &FreeLibrary);
-    if (!module)
+    const std::unique_ptr<void, decltype(&CloseHandle)> process(
+        OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, pid), &CloseHandle);
+    FILETIME started{}, ended{}, kernel{}, user{};
+    if (!process || !GetProcessTimes(process.get(), &started, &ended, &kernel, &user))
     {
-        return Json::array();
+        return std::nullopt;
     }
-    const auto entry = GetProcAddress(module.get(), "CreateDXGIFactory1");
-    decltype(&CreateDXGIFactory1) create = nullptr;
-    static_assert(sizeof(create) == sizeof(entry));
-    std::memcpy(&create, &entry, sizeof(create));
-    ComPtr<IDXGIFactory1> factory;
-    if (create == nullptr || FAILED(create(IID_PPV_ARGS(factory.GetAddressOf()))))
-    {
-        return Json::array();
-    }
-    auto rows = Json::array();
-    for (UINT ordinal = 0;; ++ordinal)
-    {
-        ComPtr<IDXGIAdapter1> adapter;
-        if (FAILED(factory->EnumAdapters1(ordinal, adapter.GetAddressOf())))
-        {
-            break;
-        }
-        DXGI_ADAPTER_DESC1 description{};
-        ComPtr<IDXGIAdapter3> memory;
-        if (FAILED(adapter->GetDesc1(&description)) ||
-            (description.Flags & DXGI_ADAPTER_FLAG_SOFTWARE) != 0 || FAILED(adapter.As(&memory)))
-        {
-            continue;
-        }
-        const auto usage = [&](DXGI_MEMORY_SEGMENT_GROUP group) -> Json
-        {
-            DXGI_QUERY_VIDEO_MEMORY_INFO info{};
-            if (FAILED(memory->QueryVideoMemoryInfo(0, group, &info)))
-            {
-                return nullptr;
-            }
-            return info.CurrentUsage;
-        };
-        rows.push_back({{"ordinal", ordinal}, {"node", 0},
-                        {"local_bytes", usage(DXGI_MEMORY_SEGMENT_GROUP_LOCAL)},
-                        {"nonlocal_bytes", usage(DXGI_MEMORY_SEGMENT_GROUP_NON_LOCAL)}});
-    }
-    return rows;
+    return started;
 }
 
 /** @brief 같은 Studio와 현재 하위 서비스의 CPU/GPU 이외 프로세스 자원을 기록한다. */
 Json CurrentProcessSamples()
 {
     const auto root = GetCurrentProcessId();
-    std::set<DWORD> descendants{root};
+    const auto started = StartedAt(root);
+    if (!started)
+    {
+        throw std::runtime_error("Studio 프로세스의 생성 시각을 읽지 못했습니다.");
+    }
+    std::map<DWORD, FILETIME> descendants{{root, *started}};
     std::vector<std::pair<DWORD, DWORD>> tree;
     const auto handle = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
     if (handle == INVALID_HANDLE_VALUE)
@@ -97,20 +62,30 @@ Json CurrentProcessSamples()
         changed = false;
         for (const auto& [process, parent] : tree)
         {
-            if (descendants.count(parent) && descendants.insert(process).second)
+            const auto owner = descendants.find(parent);
+            if (owner == descendants.end() || descendants.count(process))
             {
+                continue;
+            }
+            const auto childStarted = StartedAt(process);
+            if (childStarted && CompareFileTime(&*childStarted, &owner->second) >= 0)
+            {
+                descendants.emplace(process, *childStarted);
                 changed = true;
             }
         }
     }
     Json rows = Json::array();
-    for (const auto process : descendants)
+    for (const auto& [process, creation] : descendants)
     {
         std::unique_ptr<void, decltype(&CloseHandle)> owner(
             OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, process), &CloseHandle);
         PROCESS_MEMORY_COUNTERS_EX counters{};
+        FILETIME current{}, ended{}, kernel{}, user{};
         DWORD handles = 0;
-        if (!owner || !GetProcessMemoryInfo(owner.get(), reinterpret_cast<PROCESS_MEMORY_COUNTERS*>(&counters),
+        if (!owner || !GetProcessTimes(owner.get(), &current, &ended, &kernel, &user) ||
+            CompareFileTime(&current, &creation) != 0 ||
+            !GetProcessMemoryInfo(owner.get(), reinterpret_cast<PROCESS_MEMORY_COUNTERS*>(&counters),
                                             sizeof(counters)) ||
             !GetProcessHandleCount(owner.get(), &handles))
         {
@@ -201,6 +176,10 @@ void StudioSmokeDriver::ProjectSwitchSmokeTick()
             CanvasAssert(rounds >= 1 && rounds <= 30, "프로젝트 전환의 회차가 지원 범위를 벗어났습니다.");
             const bool idle = m_projectSwitchFixture.value("idle", false);
             const int settle = idle ? 150 : 30;
+            if (m_projectSwitchFixture.value("combined", false) && !idle)
+            {
+                m_frame.m_modelView->KeepContextForMeasurement();
+            }
             m_projectSwitchRecord["settle_seconds"] = settle;
             m_projectSwitchRecord["policy"] = idle ? "idle" : "warm";
             m_projectSwitchExpires = now + std::chrono::seconds(90 + rounds * (settle + 100));
@@ -222,7 +201,7 @@ void StudioSmokeDriver::ProjectSwitchSmokeTick()
             m_projectSwitchOpen = CurrentProcessSamples();
             if (combined)
             {
-                m_projectSwitchRecord["current_open_gpu"] = VideoSamples();
+                m_projectSwitchRecord["current_open_gpu"] = StudioSmoke::GpuMemorySamples();
             }
             m_projectSwitchStage = 3;
             m_frame.OpenProject("open", standby);
@@ -232,7 +211,7 @@ void StudioSmokeDriver::ProjectSwitchSmokeTick()
             m_projectSwitchRecord["baseline"] = CurrentProcessSamples();
             if (combined)
             {
-                m_projectSwitchRecord["baseline_gpu"] = VideoSamples();
+                m_projectSwitchRecord["baseline_gpu"] = StudioSmoke::GpuMemorySamples();
             }
             m_projectSwitchStage = 2;
             m_frame.OpenProject("open", large);
@@ -319,7 +298,7 @@ void StudioSmokeDriver::ProjectSwitchSmokeTick()
                 CanvasAssert(m_projectSwitchFixture.value("idle", false) != context,
                              "설정한 유지/유휴 정책과 실제 OpenGL context의 상태가 다릅니다.");
                 sample["opened_gpu"] = m_projectSwitchRecord.at("current_open_gpu");
-                sample["settled_gpu"] = VideoSamples();
+                sample["settled_gpu"] = StudioSmoke::GpuMemorySamples();
                 sample["context_retained"] = context;
                 sample["display_triangles"] = 1000000;
                 sample["field_slices"] = 10;

@@ -33,30 +33,58 @@ def sampler():
     open_process.restype = wt.HANDLE
     close = system.CloseHandle
     close.argtypes = [wt.HANDLE]
+    process_times = system.GetProcessTimes
+    process_times.argtypes = [wt.HANDLE, *(ctypes.POINTER(wt.FILETIME) for _ in range(4))]
+    process_times.restype = wt.BOOL
     memory = ctypes.windll.psapi.GetProcessMemoryInfo
     memory.argtypes = [wt.HANDLE, ctypes.POINTER(Counters), wt.DWORD]
     memory.restype = wt.BOOL
+
+    def creation_time(process):
+        """! @brief 프로세스 핸들의 실제 Windows 생성 시각을 읽는다."""
+        creation, exit_time, kernel, user = (wt.FILETIME() for _ in range(4))
+        if process_times(process, creation, exit_time, kernel, user):
+            return (creation.dwHighDateTime << 32) | creation.dwLowDateTime
+        return None
+
+    def created(pid):
+        """! @brief PID를 재사용한 부모보다 먼저 생성된 프로세스를 구별한다."""
+        process = open_process(0x1000, False, pid)
+        if process is None:
+            return None
+        try:
+            return creation_time(process)
+        finally:
+            close(process)
 
     def sample(pid):
         """! @brief 소유한 프로세스 트리 밖의 메모리는 샘플에서 제외한다."""
         tree = snapshot(2, 0)
         if tree in (None, wt.HANDLE(-1).value):
             raise ctypes.WinError()
-        edges = []
+        children = {}
         try:
             entry = ProcessEntry(size=ctypes.sizeof(ProcessEntry))
             ok = first(tree, ctypes.byref(entry))
             while ok:
-                edges.append((entry.pid, entry.parent))
+                children.setdefault(entry.parent, []).append(entry.pid)
                 ok = next_entry(tree, ctypes.byref(entry))
         finally:
             close(tree)
-        pids = {pid}
-        while True:
-            following = pids | {child for child, parent in edges if parent in pids}
-            if following == pids:
-                break
-            pids = following
+        started = created(pid)
+        if started is None:
+            return []
+        pids = {pid: started}
+        pending = [pid]
+        while pending:
+            parent = pending.pop()
+            for child in children.get(parent, ()):
+                if child in pids:
+                    continue
+                child_started = created(child)
+                if child_started is not None and child_started >= pids[parent]:
+                    pids[child] = child_started
+                    pending.append(child)
         rows = []
         for current in sorted(pids):
             process = open_process(0x0410, False, current)
@@ -64,8 +92,9 @@ def sampler():
                 continue
             try:
                 counters = Counters(size=ctypes.sizeof(Counters))
-                if memory(process, ctypes.byref(counters), counters.size):
-                    rows.append({"pid": current, "gui": current == pid, "private_commit_bytes": counters.private,
+                if creation_time(process) == pids[current] and memory(process, ctypes.byref(counters), counters.size):
+                    rows.append({"pid": current, "created_100ns": str(pids[current]),
+                                 "gui": current == pid, "private_commit_bytes": counters.private,
                                  "working_set_bytes": counters.working, "peak_commit_bytes": counters.peak_commit})
             finally:
                 close(process)

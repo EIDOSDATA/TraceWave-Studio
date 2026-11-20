@@ -239,9 +239,10 @@ class LargeResultTests(unittest.TestCase):
                 self.assertEqual(view["overview_counts"], [100000]*8)
                 ready = [row for row in samples if row["phase"] == "ready" and len(row["processes"]) >= 2]
                 self.assertGreaterEqual(len(ready), 5)
-                pids = {row["pid"] for row in ready[-1]["processes"]}
+                owners = lambda row: {(proc["pid"], proc["created_100ns"]) for proc in row["processes"]}
+                pids = owners(ready[-1])
                 active = [row for row in samples if row["phase"] in ("field-start", "curves-start", "import-start")
-                          and {proc["pid"] for proc in row["processes"]} == pids]
+                          and owners(row) == pids]
                 self.assertTrue(active)
                 total = lambda row: sum(proc["private_commit_bytes"] for proc in row["processes"])
                 baseline, peak = total(ready[-1]), max(total(row) for row in active)

@@ -44,6 +44,8 @@ public:
     std::uint64_t RenderedFrameCount() const;
     /** @brief 명시적인 계측에서 이미 생성된 OpenGL 캔버스의 표시 기록을 전환한다. */
     void SetDisplayMarker(std::function<void(wxWindow&)> marker);
+    /** @brief 반복 전환의 명시적 유지 시험에서 비어 있는 OpenGL 문맥을 유지한다. */
+    void KeepContextForMeasurement();
 
     std::function<void(const std::string&)> onStatus;
     /** @brief 전용 계측 창에서 첫 파일을 열기 전에 지정하는 OpenGL 버퍼 표식이다. */
