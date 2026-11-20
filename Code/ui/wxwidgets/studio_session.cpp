@@ -4,6 +4,12 @@
 #include "startup_probe.h"
 #include "output_controller.h"
 
+namespace
+{
+constexpr int ActivePollMs = 50;
+constexpr int EmptyWorkspacePollMs = 250;
+}
+
 void StudioFrame::Connect()
 {
     if (m_closing || m_finishing)
@@ -175,6 +181,10 @@ void StudioFrame::Send(const std::string& method, const Json& input, bool mutati
         !(method == "job.status" &&
           (input.value("job_id", "") == m_cadTask.Id() || input.value("job_id", "") == m_solverTask.Id() ||
            (m_output && m_output->OwnsJob(input.value("job_id", "")))));
+    if (m_timer.IsRunning() && m_timer.GetInterval() != ActivePollMs)
+    {
+        m_timer.Start(ActivePollMs);
+    }
     const auto submitted = m_requests.Submit(
         method, input, mutation, context, requestEpoch.empty() ? m_epoch : requestEpoch, foreground, std::move(success),
         std::move(failure), Uuid,
@@ -343,6 +353,12 @@ void StudioFrame::OnTimer(wxTimerEvent&)
                         : (m_options.solverSmoke ? 600 : (m_options.cadSmoke || m_options.setupSmoke ? 180 : 60))))
         {
             m_smoke->FinishSmoke(false, "GUI smoke timeout");
+        }
+        // @brief 빈 창만 저빈도로 확인하며 조회 요청이 들어오면 즉시 기본 주기로 돌아간다.
+        if (!m_options.smoke && m_connected && !m_busy && m_project.empty() &&
+            m_requests.Size() == 0 && m_timer.GetInterval() != EmptyWorkspacePollMs)
+        {
+            m_timer.Start(EmptyWorkspacePollMs);
         }
     }
     catch (const std::exception& error)
