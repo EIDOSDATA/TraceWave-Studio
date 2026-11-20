@@ -23,15 +23,16 @@ HAS_RUNTIME = (ROOT / ".local/wsl/native-audit.json").is_file()
 class GuiSolverProcessTests(unittest.TestCase):
     """! @brief GUI의 표시/상태 검증과 실제 안테나의 물리 정확도 판정을 구분한다."""
 
-    def run_gui(self, directory, document, *, settings=None, invalid=False):
+    def run_gui(self, directory, document, *, settings=None, invalid=False, active_cancel=False):
         """! @brief 실제 서비스를 등록된 작업 영역으로 열고 GUI가 API 사슬을 수행하게 한다."""
         workspace = directory / "한글 PCB 해석 작업"
         with ProjectService(workspace, auto_run=False) as service:
             register_fixture(service, document)
         report = directory / "GUI solver 검증.json"
+        smoke_switch = "--solver-active-cancel-smoke-test" if active_cancel else "--solver-smoke-test"
         args = [str(Path(GUI).resolve()), "--python", sys.executable, "--source", str(ROOT / "src"),
                 "--workspace", str(workspace), "--open-project", "projects/CAD 한글 교환 검증",
-                "--openems-wsl", "--solver-smoke-test", "--smoke-report", str(report)]
+                "--openems-wsl", smoke_switch, "--smoke-report", str(report)]
         if invalid:
             args.append("--solver-expect-failure")
         if settings is not None:
@@ -58,6 +59,7 @@ class GuiSolverProcessTests(unittest.TestCase):
             self.assertEqual(result["solver_checks"], ["circular_board_created", "circular_board_display", "invalid_physics_not_published"])
             self.assertFalse(result["solver_result"])
             self.assertEqual(result["solver_sample_count"], 0)
+            self.assertEqual(result["solver_cancel_trace"], {})
             self.assertFalse(list(workspace.rglob("normalized.json")))
             with ProjectService(workspace, auto_run=False) as service:
                 project = service.journal.read()["projects"][result["project_id"]]
@@ -77,6 +79,42 @@ class GuiSolverProcessTests(unittest.TestCase):
             self.assertGreater(result["solver_frames"], 0)
             self.assertTrue(result["solver_result"]["artifact_id"])
             self.assertTrue(list(workspace.rglob("normalized.json")))
+            cancel = result["solver_cancel_trace"]
+            self.assertEqual(cancel["control"]["state"], "cancel_requested")
+            self.assertFalse(cancel["control"]["button_enabled"])
+            self.assertGreaterEqual(cancel["receipt"]["elapsed_ms"], cancel["control"]["elapsed_ms"])
+            self.assertGreaterEqual(cancel["terminal"]["elapsed_ms"], cancel["control"]["elapsed_ms"])
+            self.assertGreaterEqual(cancel["terminal"]["events_cursor"], cancel["receipt"]["events_cursor"])
+            with ProjectService(workspace, auto_run=False) as service:
+                job = service.journal.read()["jobs"][cancel["job_id"]]
+                self.assertIn(job["state"], ("cancelled", "completed"))
+                self.assertEqual(job["state"], cancel["terminal"]["state"])
+                self.assertEqual(len(job["events"]), cancel["terminal"]["events_cursor"])
+
+    @unittest.skipUnless(os.environ.get("RFAD_TEST_WSL") == "1", "실제 WSL 계산은 RFAD_TEST_WSL=1로 명시합니다.")
+    def test_active_analysis_cancel_acknowledgement_and_restore(self):
+        """! @brief 스냅샷이 아니라 실행 중인 해석을 취소하고 영속 종료와 결과 재열기를 대조한다."""
+        with TemporaryDirectory(prefix="TraceWave GUI PCB active cancel ") as temporary:
+            workspace, result = self.run_gui(Path(temporary), fixture_document(circle=True, arc=True),
+                                             settings=SETTINGS, active_cancel=True)
+            cancel = result["solver_cancel_trace"]
+            self.assertEqual(cancel["phase_before"], "analysis")
+            self.assertEqual(cancel["state_before"], "running")
+            self.assertIs(cancel["guest_worker_attached"], True)
+            self.assertFalse(cancel["control"]["button_enabled"])
+            self.assertIn(cancel["receipt"]["state"], ("cancel_requested", "cancelled"))
+            self.assertEqual(cancel["terminal"]["state"], "cancelled")
+            self.assertIs(cancel["terminal"]["termination_confirmed"], True)
+            self.assertIs(cancel["terminal"]["outcome_unknown"], False)
+            self.assertIn("restart_restores_result", result["solver_checks"])
+            self.assertTrue(result["solver_result"]["artifact_id"])
+            with ProjectService(workspace, auto_run=False) as service:
+                job = service.journal.read()["jobs"][cancel["job_id"]]
+                self.assertEqual(job["kind"], "em_analysis")
+                self.assertEqual(job["state"], "cancelled")
+                self.assertEqual(len(job["events"]), cancel["terminal"]["events_cursor"])
+                self.assertIs(job["solver"]["guest_worker_attached"], True)
+                self.assertIsNot(job["solver"]["process_outcome"].get("not_started"), True)
 
     @unittest.skipUnless(os.environ.get("RFAD_TEST_WSL") == "1", "실제 WSL 계산은 RFAD_TEST_WSL=1로 명시합니다.")
     def test_radiation_pages_display_with_snapshot_and_restart(self):

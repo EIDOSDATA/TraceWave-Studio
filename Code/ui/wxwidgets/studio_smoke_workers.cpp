@@ -132,6 +132,22 @@ void StudioSmokeDriver::CadSmokeTick()
     }
 }
 
+void StudioSmokeDriver::RecordSolverCancellation(const std::string& job, const char* milestone, Json details)
+{
+    if (m_solverCancelTrace.value("job_id", "") != job || m_solverCancelStarted == Clock::time_point{} ||
+        m_solverCancelTrace.contains(milestone))
+    {
+        return;
+    }
+    details["elapsed_ms"] = std::chrono::duration<double, std::milli>(Clock::now() - m_solverCancelStarted).count();
+    m_solverCancelTrace[milestone] = std::move(details);
+}
+
+void StudioSmokeDriver::ObserveSolverGuest(const std::string& job)
+{
+    m_solverGuestJob = job;
+}
+
 /** @brief 실제 GUI 작업 사슬과 결과 유지/재열기를 정해진 입력으로 검증한다. */
 void StudioSmokeDriver::SolverSmokeTick()
 {
@@ -255,10 +271,31 @@ void StudioSmokeDriver::SolverSmokeTick()
         m_solverSmokeStage = 4;
         m_frame.StartSolver();
     }
-    else if (m_solverSmokeStage == 4 && !m_frame.m_solverTask.Id().empty())
+    else if (m_solverSmokeStage == 4)
     {
+        if (m_frame.m_options.solverActiveCancelSmoke)
+        {
+            CanvasAssert(m_frame.m_solverWorkflow.Active(), "Analysis completed before the active cancellation probe.");
+            if (m_frame.m_solverWorkflow.CurrentPhase() != Studio::AnalysisWorkflow::Phase::Analysis ||
+                m_frame.m_solverState != "running" || m_solverGuestJob != m_frame.m_solverTask.Id())
+            {
+                return;
+            }
+        }
+        if (m_frame.m_solverTask.Id().empty())
+        {
+            return;
+        }
         m_solverSmokeStage = 5;
-        m_frame.CancelSolver();
+        auto* button = m_frame.m_tools.at(IdCancelSolver);
+        CanvasAssert(button->IsEnabled(), "Solver cancel button is disabled before the request.");
+        m_solverCancelTrace = {{"job_id", m_frame.m_solverTask.Id()}, {"state_before", m_frame.m_solverState},
+                               {"phase_before", m_frame.m_solverWorkflow.PhaseName()},
+                               {"guest_worker_attached", m_solverGuestJob == m_frame.m_solverTask.Id()}};
+        wxCommandEvent click(wxEVT_BUTTON, IdCancelSolver);
+        click.SetEventObject(button);
+        m_solverCancelStarted = Clock::now();
+        CanvasAssert(button->GetEventHandler()->ProcessEvent(click), "Solver cancel button event was not processed.");
     }
     else if (m_solverSmokeStage == 5 && !m_frame.m_solverWorkflow.Active() && m_frame.m_solverState == "cancelled")
     {

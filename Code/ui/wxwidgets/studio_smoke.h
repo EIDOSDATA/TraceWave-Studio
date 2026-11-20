@@ -23,6 +23,10 @@ public:
     void CadSmokeTick();
     /** @brief 실제 화면 이벤트와 결과를 검증한다. */
     void SolverSmokeTick();
+    /** @brief 같은 취소 요청에 연결한 화면·접수·종료 시각을 통합 시험에 남긴다. */
+    void RecordSolverCancellation(const std::string& job, const char* milestone, Json details);
+    /** @brief WSL 조정기가 실제 guest worker를 관찰한 작업 ID를 기록한다. */
+    void ObserveSolverGuest(const std::string& job);
     /** @brief 일반 프로젝트 연구의 실제 화면/취소/재개/재연결을 확인한다. */
     void StudySmokeTick();
     /** @brief 목표 CRUD와 명시 카드 미리보기/적용을 실제 화면에서 확인한다. */
@@ -180,6 +184,9 @@ private:
     Json m_pcbChecks = Json::array();
     std::string m_solverFirstResult;
     Json m_solverChecks = Json::array();
+    Clock::time_point m_solverCancelStarted{};
+    std::string m_solverGuestJob;
+    Json m_solverCancelTrace = Json::object();
     int m_solverSmokeStage = 0;
     int m_studyStage = 0;
     Json m_studyChecks = Json::array();

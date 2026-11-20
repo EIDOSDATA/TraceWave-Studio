@@ -472,13 +472,16 @@ class ProjectService:
         job = state["jobs"].get(data["job_id"])
         if job is None or cursor > len(job["events"]):
             raise ProjectError("E_SCHEMA", "작업 또는 cursor가 유효하지 않습니다.")
-        return {
+        result = {
             "job_id": job["job_id"],
             "state": job["state"],
             "events_cursor": len(job["events"]),
             "events": deepcopy(job["events"][cursor:]),
             "artifacts": deepcopy(job.get("artifacts", [])),
         }
+        if job.get("solver", {}).get("guest_worker_attached") is True:
+            result["guest_worker_attached"] = True
+        return result
 
     def run_next(self) -> bool:
         """! @brief queued 작업 하나를 실제 처리하고 terminal 결과를 영속화한다."""

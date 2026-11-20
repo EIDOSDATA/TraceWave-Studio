@@ -14935,8 +14935,8 @@
     },
     {
       "path": "Code/src/rfad/application/solver_jobs.py",
-      "text_sha256": "ae20cb3b1c380fa775807e4cda753ad0cb4075a97af159cb20924ca71e902641",
-      "utf8_bytes": 28911
+      "text_sha256": "b8d26eb871231cce2c46ec07ce193cd5c9b8ca5219413397440f7ddf41d2c1a2",
+      "utf8_bytes": 29466
     },
     {
       "path": "Code/src/rfad/application/solver_queries.py",
@@ -15480,8 +15480,8 @@
     },
     {
       "path": "Code/tests/test_gui_solver_process.py",
-      "text_sha256": "1a726d431f82a1af2fc39b0f470198c9c36557eae642d80303a7af01f3a4da6b",
-      "utf8_bytes": 5879
+      "text_sha256": "95056cfacc0c8effc4b6123f43661a9253e1a28577cc6fa7815dc3b2198d72b6",
+      "utf8_bytes": 8840
     },
     {
       "path": "Code/tests/test_gui_sweep_process.py",
@@ -15760,8 +15760,8 @@
     },
     {
       "path": "Code/tests/test_solver_jobs.py",
-      "text_sha256": "5f20f0c1da60a097aa9d06107a44c86182746c13006336bc52dd6d9de972c776",
-      "utf8_bytes": 38884
+      "text_sha256": "01ca0315264e95b88ebfb0f740334fbd106c34f53a1239583d2ff767d5a6e237",
+      "utf8_bytes": 39583
     },
     {
       "path": "Code/tests/test_solver_plan.py",

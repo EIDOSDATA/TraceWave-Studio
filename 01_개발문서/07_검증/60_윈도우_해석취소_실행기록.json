@@ -1,0 +1,634 @@
+{
+  "schema": "rfad.windows-analysis-cancel-verification/0.1",
+  "date_kst": "2026-11-20",
+  "source_parent": "ccc529dad9823dac235ff3a9ced032c6f5545f98",
+  "studio_binary": {
+    "file": "tracewave_gui.exe",
+    "bytes": 30470796,
+    "sha256": "4c4e18f9622a6272f0647394ef22e21b8f3d3f4ad1e70ad6a0752b2ad09f6216"
+  },
+  "local_wsl_native_audit": {
+    "file": "native-audit.json",
+    "bytes": 182775,
+    "sha256": "5b8f487c451ff00d8cd05c40cec009644634b67010254af0f85b2b2cda9f75f2"
+  },
+  "early_snapshot_cancel_experiments": {
+    "raw_file": {
+      "file": "stage12p-solver-traces.json",
+      "bytes": 3105,
+      "sha256": "0be07d2bf272fad61f23573f7e51b8f3371b024f3d4fe9a1fd07fae8d0c66743"
+    },
+    "record": [
+      {
+        "test": "test_circle_arc_native_results_save_cancel_and_restart",
+        "invalid_geometry": false,
+        "trace": {
+          "control": {
+            "button_enabled": false,
+            "elapsed_ms": 14.9,
+            "state": "cancel_requested"
+          },
+          "job_id": "d769f73c-fa3c-489d-a7e7-6efa3a1e186b",
+          "phase_before": "snapshot",
+          "receipt": {
+            "elapsed_ms": 486.828,
+            "events_cursor": 3,
+            "state": "completed"
+          },
+          "state_before": "queued",
+          "terminal": {
+            "elapsed_ms": 486.872,
+            "events_cursor": 3,
+            "outcome_unknown": null,
+            "state": "completed",
+            "termination_confirmed": null
+          }
+        },
+        "service_sessions": 2,
+        "checks": [
+          "circular_board_display",
+          "editing_enabled_during_solver",
+          "snapshot_fixed_and_stale_label",
+          "bounded_results_rendered",
+          "save_during_solver",
+          "cancel_preserves_previous_result",
+          "restart_restores_result"
+        ],
+        "method": "snapshot.create",
+        "kind": "data_processing",
+        "durable_events": [
+          {
+            "state": "queued",
+            "timestamp": 1795175200.4067135
+          },
+          {
+            "state": "running",
+            "timestamp": 1795175200.6047397
+          },
+          {
+            "state": "completed",
+            "timestamp": 1795175200.7718654
+          }
+        ]
+      },
+      {
+        "test": "test_create_circle_then_reject_missing_physics",
+        "invalid_geometry": true,
+        "trace": {},
+        "service_sessions": 1,
+        "checks": [
+          "circular_board_created",
+          "circular_board_display",
+          "invalid_physics_not_published"
+        ]
+      },
+      {
+        "test": "test_radiation_pages_display_with_snapshot_and_restart",
+        "invalid_geometry": false,
+        "trace": {
+          "control": {
+            "button_enabled": false,
+            "elapsed_ms": 12.685,
+            "state": "cancel_requested"
+          },
+          "job_id": "68510724-aff8-493c-858c-4b7a7a5264e9",
+          "phase_before": "snapshot",
+          "receipt": {
+            "elapsed_ms": 429.582,
+            "events_cursor": 3,
+            "state": "completed"
+          },
+          "state_before": "queued",
+          "terminal": {
+            "elapsed_ms": 488.713,
+            "events_cursor": 3,
+            "outcome_unknown": null,
+            "state": "completed",
+            "termination_confirmed": null
+          }
+        },
+        "service_sessions": 2,
+        "checks": [
+          "circular_board_display",
+          "editing_enabled_during_solver",
+          "radiation_paged_view_and_phi_metric_selection",
+          "snapshot_fixed_and_stale_label",
+          "bounded_results_rendered",
+          "save_during_solver",
+          "cancel_preserves_previous_result",
+          "restart_restores_result"
+        ],
+        "method": "snapshot.create",
+        "kind": "data_processing",
+        "durable_events": [
+          {
+            "state": "queued",
+            "timestamp": 1795175260.5889273
+          },
+          {
+            "state": "running",
+            "timestamp": 1795175260.7787514
+          },
+          {
+            "state": "completed",
+            "timestamp": 1795175260.9463022
+          }
+        ]
+      }
+    ]
+  },
+  "fixed_delay_trial_before_guest_ownership": {
+    "raw_file": {
+      "file": "stage12p-solver-final-traces.json",
+      "bytes": 4916,
+      "sha256": "a89a87ad55a6bf10885602a7ceb5739268057bb3e51caa52563d427e7dac3bdb"
+    },
+    "record": [
+      {
+        "test": "test_active_analysis_cancel_acknowledgement_and_restore",
+        "invalid_geometry": false,
+        "trace": {
+          "control": {
+            "button_enabled": false,
+            "elapsed_ms": 23.876,
+            "state": "cancel_requested"
+          },
+          "job_id": "7ccc87bf-8b5c-4df4-8952-a42b84428f3e",
+          "phase_before": "analysis",
+          "receipt": {
+            "elapsed_ms": 256.438,
+            "events_cursor": 3,
+            "state": "cancel_requested"
+          },
+          "state_before": "running",
+          "terminal": {
+            "elapsed_ms": 1874.442,
+            "events_cursor": 4,
+            "outcome_unknown": false,
+            "state": "cancelled",
+            "termination_confirmed": true
+          }
+        },
+        "service_sessions": 2,
+        "checks": [
+          "circular_board_display",
+          "editing_enabled_during_solver",
+          "snapshot_fixed_and_stale_label",
+          "bounded_results_rendered",
+          "save_during_solver",
+          "cancel_preserves_previous_result",
+          "restart_restores_result"
+        ],
+        "method": "job.submit",
+        "kind": "em_analysis",
+        "durable_events": [
+          {
+            "state": "queued",
+            "timestamp": 1795175609.561065
+          },
+          {
+            "state": "running",
+            "timestamp": 1795175609.8543081
+          },
+          {
+            "state": "cancel_requested",
+            "timestamp": 1795175610.8978746
+          },
+          {
+            "state": "cancelled",
+            "timestamp": 1795175612.4970999,
+            "termination_confirmed": true,
+            "outcome_unknown": false
+          }
+        ],
+        "native_outcome": {
+          "state": "cancelled",
+          "termination_confirmed": true,
+          "outcome_unknown": false,
+          "not_started": true
+        }
+      },
+      {
+        "test": "test_circle_arc_native_results_save_cancel_and_restart",
+        "invalid_geometry": false,
+        "trace": {
+          "control": {
+            "button_enabled": false,
+            "elapsed_ms": 42.565,
+            "state": "cancel_requested"
+          },
+          "job_id": "d0bb1b6c-22dd-4a73-b815-f98b12106386",
+          "phase_before": "snapshot",
+          "receipt": {
+            "elapsed_ms": 458.946,
+            "events_cursor": 4,
+            "state": "cancelled"
+          },
+          "state_before": "queued",
+          "terminal": {
+            "elapsed_ms": 583.105,
+            "events_cursor": 4,
+            "outcome_unknown": null,
+            "state": "cancelled",
+            "termination_confirmed": null
+          }
+        },
+        "service_sessions": 2,
+        "checks": [
+          "circular_board_display",
+          "editing_enabled_during_solver",
+          "snapshot_fixed_and_stale_label",
+          "bounded_results_rendered",
+          "save_during_solver",
+          "cancel_preserves_previous_result",
+          "restart_restores_result"
+        ],
+        "method": "snapshot.create",
+        "kind": "data_processing",
+        "durable_events": [
+          {
+            "state": "queued",
+            "timestamp": 1795175661.7299938
+          },
+          {
+            "state": "running",
+            "timestamp": 1795175662.0981
+          },
+          {
+            "state": "cancel_requested",
+            "timestamp": 1795175662.244075
+          },
+          {
+            "state": "cancelled",
+            "timestamp": 1795175662.244075
+          }
+        ]
+      },
+      {
+        "test": "test_create_circle_then_reject_missing_physics",
+        "invalid_geometry": true,
+        "trace": {},
+        "service_sessions": 1,
+        "checks": [
+          "circular_board_created",
+          "circular_board_display",
+          "invalid_physics_not_published"
+        ]
+      },
+      {
+        "test": "test_radiation_pages_display_with_snapshot_and_restart",
+        "invalid_geometry": false,
+        "trace": {
+          "control": {
+            "button_enabled": false,
+            "elapsed_ms": 19.777,
+            "state": "cancel_requested"
+          },
+          "job_id": "6b8594ad-3b53-4d06-ab03-ce15fdc05ac9",
+          "phase_before": "snapshot",
+          "receipt": {
+            "elapsed_ms": 608.586,
+            "events_cursor": 3,
+            "state": "completed"
+          },
+          "state_before": "queued",
+          "terminal": {
+            "elapsed_ms": 737.374,
+            "events_cursor": 3,
+            "outcome_unknown": null,
+            "state": "completed",
+            "termination_confirmed": null
+          }
+        },
+        "service_sessions": 2,
+        "checks": [
+          "circular_board_display",
+          "editing_enabled_during_solver",
+          "radiation_paged_view_and_phi_metric_selection",
+          "snapshot_fixed_and_stale_label",
+          "bounded_results_rendered",
+          "save_during_solver",
+          "cancel_preserves_previous_result",
+          "restart_restores_result"
+        ],
+        "method": "snapshot.create",
+        "kind": "data_processing",
+        "durable_events": [
+          {
+            "state": "queued",
+            "timestamp": 1795175722.7529802
+          },
+          {
+            "state": "running",
+            "timestamp": 1795175722.979393
+          },
+          {
+            "state": "completed",
+            "timestamp": 1795175723.2052314
+          }
+        ]
+      }
+    ]
+  },
+  "final_windows_wsl_gui": {
+    "raw_file": {
+      "file": "stage12p-solver-guest-traces.json",
+      "bytes": 5035,
+      "sha256": "f7b9c8a69c8183bdc6afb7e9a335482eba22591ea6eef90d4ddc6c9190512cea"
+    },
+    "record": [
+      {
+        "test": "test_active_analysis_cancel_acknowledgement_and_restore",
+        "invalid_geometry": false,
+        "trace": {
+          "control": {
+            "button_enabled": false,
+            "elapsed_ms": 24.546,
+            "state": "cancel_requested"
+          },
+          "guest_worker_attached": true,
+          "job_id": "cedb046f-338c-4401-91d1-af7c94f821d9",
+          "phase_before": "analysis",
+          "receipt": {
+            "elapsed_ms": 241.666,
+            "events_cursor": 3,
+            "state": "cancel_requested"
+          },
+          "state_before": "running",
+          "terminal": {
+            "elapsed_ms": 1514.816,
+            "events_cursor": 4,
+            "outcome_unknown": false,
+            "state": "cancelled",
+            "termination_confirmed": true
+          }
+        },
+        "service_sessions": 2,
+        "checks": [
+          "circular_board_display",
+          "editing_enabled_during_solver",
+          "snapshot_fixed_and_stale_label",
+          "bounded_results_rendered",
+          "save_during_solver",
+          "cancel_preserves_previous_result",
+          "restart_restores_result"
+        ],
+        "method": "job.submit",
+        "kind": "em_analysis",
+        "durable_events": [
+          {
+            "state": "queued",
+            "timestamp": 1795176142.4089534
+          },
+          {
+            "state": "running",
+            "timestamp": 1795176142.7298238
+          },
+          {
+            "state": "cancel_requested",
+            "timestamp": 1795176152.3084733
+          },
+          {
+            "state": "cancelled",
+            "timestamp": 1795176153.508498,
+            "termination_confirmed": true,
+            "outcome_unknown": false
+          }
+        ],
+        "native_outcome": {
+          "state": "cancelled",
+          "termination_confirmed": true,
+          "outcome_unknown": false,
+          "not_started": null
+        }
+      },
+      {
+        "test": "test_circle_arc_native_results_save_cancel_and_restart",
+        "invalid_geometry": false,
+        "trace": {
+          "control": {
+            "button_enabled": false,
+            "elapsed_ms": 14.81,
+            "state": "cancel_requested"
+          },
+          "guest_worker_attached": false,
+          "job_id": "3d97b173-babd-4e12-8e0d-973ea1f82207",
+          "phase_before": "snapshot",
+          "receipt": {
+            "elapsed_ms": 360.659,
+            "events_cursor": 4,
+            "state": "cancelled"
+          },
+          "state_before": "queued",
+          "terminal": {
+            "elapsed_ms": 429.087,
+            "events_cursor": 4,
+            "outcome_unknown": null,
+            "state": "cancelled",
+            "termination_confirmed": null
+          }
+        },
+        "service_sessions": 2,
+        "checks": [
+          "circular_board_display",
+          "editing_enabled_during_solver",
+          "snapshot_fixed_and_stale_label",
+          "bounded_results_rendered",
+          "save_during_solver",
+          "cancel_preserves_previous_result",
+          "restart_restores_result"
+        ],
+        "method": "snapshot.create",
+        "kind": "data_processing",
+        "durable_events": [
+          {
+            "state": "queued",
+            "timestamp": 1795176201.3282018
+          },
+          {
+            "state": "running",
+            "timestamp": 1795176201.545441
+          },
+          {
+            "state": "cancel_requested",
+            "timestamp": 1795176201.6779342
+          },
+          {
+            "state": "cancelled",
+            "timestamp": 1795176201.6779342
+          }
+        ]
+      },
+      {
+        "test": "test_create_circle_then_reject_missing_physics",
+        "invalid_geometry": true,
+        "trace": {},
+        "service_sessions": 1,
+        "checks": [
+          "circular_board_created",
+          "circular_board_display",
+          "invalid_physics_not_published"
+        ]
+      },
+      {
+        "test": "test_radiation_pages_display_with_snapshot_and_restart",
+        "invalid_geometry": false,
+        "trace": {
+          "control": {
+            "button_enabled": false,
+            "elapsed_ms": 11.964,
+            "state": "cancel_requested"
+          },
+          "guest_worker_attached": false,
+          "job_id": "4d9f602c-293b-4e4f-8ce3-de939eb50680",
+          "phase_before": "snapshot",
+          "receipt": {
+            "elapsed_ms": 554.824,
+            "events_cursor": 3,
+            "state": "completed"
+          },
+          "state_before": "queued",
+          "terminal": {
+            "elapsed_ms": 554.852,
+            "events_cursor": 3,
+            "outcome_unknown": null,
+            "state": "completed",
+            "termination_confirmed": null
+          }
+        },
+        "service_sessions": 2,
+        "checks": [
+          "circular_board_display",
+          "editing_enabled_during_solver",
+          "radiation_paged_view_and_phi_metric_selection",
+          "snapshot_fixed_and_stale_label",
+          "bounded_results_rendered",
+          "save_during_solver",
+          "cancel_preserves_previous_result",
+          "restart_restores_result"
+        ],
+        "method": "snapshot.create",
+        "kind": "data_processing",
+        "durable_events": [
+          {
+            "state": "queued",
+            "timestamp": 1795176261.0817304
+          },
+          {
+            "state": "running",
+            "timestamp": 1795176261.307606
+          },
+          {
+            "state": "completed",
+            "timestamp": 1795176261.5073571
+          }
+        ]
+      }
+    ]
+  },
+  "windows_native_log_stress": {
+    "raw_file": {
+      "file": "stage12p-log-cancel-final.json",
+      "bytes": 1337,
+      "sha256": "5c6b2fc9e658c5c4cbf385c48e641716afa4b46014feffd18594e6274fdded97"
+    },
+    "record": {
+      "schema": "rfad.native-log-cancel-measurement/0.1",
+      "scope": "windows-native-job-object",
+      "wsl_and_gui_load": false,
+      "runs": [
+        {
+          "target_lines_per_second": 1000,
+          "before_request_lines": 2000,
+          "before_request_seconds": 2.0004140000091866,
+          "before_request_lines_per_second": 999.7930428355407,
+          "drained_stdout_lines": 2020,
+          "stderr_bytes": 0,
+          "cancel_to_native_return_ms": 10.354000027291477,
+          "descendant_signaled": true,
+          "termination": "cancelled"
+        },
+        {
+          "target_lines_per_second": 1000,
+          "before_request_lines": 2000,
+          "before_request_seconds": 2.0021793000632897,
+          "before_request_lines_per_second": 998.9115360131728,
+          "drained_stdout_lines": 2020,
+          "stderr_bytes": 0,
+          "cancel_to_native_return_ms": 5.2559999749064445,
+          "descendant_signaled": true,
+          "termination": "cancelled"
+        },
+        {
+          "target_lines_per_second": 1000,
+          "before_request_lines": 2000,
+          "before_request_seconds": 2.0004716000985354,
+          "before_request_lines_per_second": 999.7642555392878,
+          "drained_stdout_lines": 2020,
+          "stderr_bytes": 0,
+          "cancel_to_native_return_ms": 10.143399937078357,
+          "descendant_signaled": true,
+          "termination": "cancelled"
+        }
+      ]
+    }
+  },
+  "tests": {
+    "windows_wsl_gui": {
+      "passed": 4,
+      "seconds": 181.526,
+      "log": {
+        "file": "stage12p-solver-guest-tests.log",
+        "bytes": 1223,
+        "sha256": "3ea71b3a1d8f981f5fd14410a2420f521fff80b0be779fc5dc67eaefe103e992"
+      }
+    },
+    "windows_gui": {
+      "passed": 10,
+      "seconds": 68.762,
+      "log": {
+        "file": "stage12p-gui-final-tests.log",
+        "bytes": 2556,
+        "sha256": "e1077356a23d82e9f9f961b49eb88e0b14ccf4f8e99480583c40904f5a6746db"
+      }
+    },
+    "solver_and_rpc": {
+      "passed": 31,
+      "seconds": 246.784,
+      "log": {
+        "file": "stage12p-solver-service-tests.log",
+        "bytes": 6352,
+        "sha256": "a5d5e54b1f533746da95fba42a14b385a63bf3f16dcc07ec93f58ef386809877"
+      }
+    },
+    "guest_marker_regression": {
+      "passed": 1,
+      "seconds": 11.284,
+      "log": {
+        "file": "stage12p-guest-state-test.log",
+        "bytes": 314,
+        "sha256": "573bedf2933b17059b08fd192fb0f5509180e46c004c0a637accac6f12c7b5d8"
+      }
+    },
+    "native_process": {
+      "passed": 12,
+      "seconds": 4.012,
+      "log": {
+        "file": "stage12p-native-final-tests.log",
+        "bytes": 2816,
+        "sha256": "65b1dd3454d25881a7d8bd5c12d1373f9339e6257033debd892de6abde084f03"
+      }
+    },
+    "ctest": {
+      "passed": 13,
+      "seconds": 0.52,
+      "log": {
+        "file": "stage12p-ctest-final.log",
+        "bytes": 1526,
+        "sha256": "e85246c6ddf881e22c7638a77304ece867c564856d22b6978e80d088343e0463"
+      }
+    }
+  },
+  "simultaneous_gui_wsl_log_stress_measured": false,
+  "full_f4_acceptance_measured": false
+}

@@ -59,6 +59,7 @@ void StudioSmokeDriver::FinishSmoke(bool passed, const std::string& error)
                 {"sweep_view", m_sweepView},
                 {"setup_pending_ticks", m_setupPendingTicks},
                 {"solver_checks", m_solverChecks},
+                {"solver_cancel_trace", m_solverCancelTrace},
                 {"solver_result", m_frame.m_solverResult},
                 {"solver_sample_count", m_frame.m_solverChart->SampleCount()},
                 {"solver_frames", m_frame.m_solverChart->RenderedFrames()},

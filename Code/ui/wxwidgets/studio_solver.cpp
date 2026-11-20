@@ -237,10 +237,20 @@ void StudioFrame::CancelSolver()
     if (!m_solverTask.Id().empty())
     {
         const std::string job = m_solverTask.Id();
+        if (m_options.solverSmoke)
+        {
+            m_smoke->RecordSolverCancellation(job, "control", Json{{"state", m_solverState},
+                {"button_enabled", m_tools.at(IdCancelSolver)->IsEnabled()}});
+        }
         Send(
             "job.cancel", Json{{"job_id", job}, {"reason", "GUI 해석 작업 취소"}}, true, Json::object(),
-            [](const Json&)
+            [this, job](const Json& result)
             {
+                if (m_options.solverSmoke && result.value("job_id", "") == job)
+                {
+                    m_smoke->RecordSolverCancellation(job, "receipt", Json{{"state", result.at("state")},
+                        {"events_cursor", result.at("events_cursor")}});
+                }
             },
             [this, job](const Json& error)
             {
@@ -272,6 +282,19 @@ void StudioFrame::PollSolver(Clock::time_point now)
                 return;
             }
             const std::string state = status.at("state");
+            if (m_options.solverActiveCancelSmoke && status.value("guest_worker_attached", false))
+            {
+                m_smoke->ObserveSolverGuest(job);
+            }
+            if (m_options.solverSmoke && (state == "completed" || state == "failed" || state == "cancelled" ||
+                                          state == "interrupted"))
+            {
+                const auto& terminal = status.at("events").back();
+                m_smoke->RecordSolverCancellation(job, "terminal", Json{{"state", state},
+                    {"events_cursor", status.at("events_cursor")},
+                    {"termination_confirmed", terminal.value("termination_confirmed", Json(nullptr))},
+                    {"outcome_unknown", terminal.value("outcome_unknown", Json(nullptr))}});
+            }
             if (state == "completed")
             {
                 m_solverTask.Reset();

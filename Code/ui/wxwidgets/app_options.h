@@ -23,6 +23,7 @@ struct Options
     bool cadExpectFailure = false;
     bool openEmsWsl = false;
     bool solverSmoke = false;
+    bool solverActiveCancelSmoke = false;
     bool solverExpectFailure = false;
     wxString solverSettings;
     bool studySmoke = false;

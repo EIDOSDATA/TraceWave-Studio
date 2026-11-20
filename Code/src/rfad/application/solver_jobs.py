@@ -235,16 +235,23 @@ class SolverCoordinator:
     def _progress(self, job, value):
         """! @brief 제한된 phase와 소유 정보만 저장하고 계산 출력은 로그 파일로 둔다."""
         phase = value.get("phase")
+        pid = value.get("worker_pid")
+        worker_attached = value.get("state") == "active" and type(pid) is int and pid > 0
         def update(state):
+            """! @brief 현재 소유 작업에서 확인한 게스트 준비만 한 번 기록한다."""
             active = state["jobs"][job["job_id"]]
             if active["solver"]["nonce"] != job["solver"]["nonce"]:
                 raise ProjectError("E_CONFLICT", "해석 실행 소유권이 변경되었습니다.")
             if active["state"] == "cancel_requested" or self.stop.is_set():
                 self.cancel.set()
+            if worker_attached and active["state"] not in TERMINAL:
+                active["solver"]["guest_worker_attached"] = True
             if phase == "postprocessing" and active["state"] == "running":
                 self.service._event(active, "postprocessing")
         current = self.service.journal.read()["jobs"][job["job_id"]]
-        if phase == "postprocessing" and current["state"] == "running":
+        new_attachment = (worker_attached and current["state"] not in TERMINAL
+                          and not current["solver"].get("guest_worker_attached", False))
+        if new_attachment or (phase == "postprocessing" and current["state"] == "running"):
             self.service.journal.transaction(update)
         elif current["state"] == "cancel_requested" or self.stop.is_set():
             self.cancel.set()

@@ -21,6 +21,7 @@ public:
         parser.AddOption("", "catalog", "Read-only PCB catalog SQLite path");
         parser.AddSwitch("", "openems-wsl", "Enable fixed WSL openEMS runtime");
         parser.AddSwitch("", "solver-smoke-test", "Run PCB solver GUI workflow and exit");
+        parser.AddSwitch("", "solver-active-cancel-smoke-test", "Cancel the second PCB analysis after it starts");
         parser.AddSwitch("", "solver-expect-failure", "Verify missing PCB physics inputs are rejected");
         parser.AddOption("", "solver-settings", "Explicit solver smoke settings JSON path");
         parser.AddSwitch("", "study-smoke-test", "Run project study GUI workflow and exit");
@@ -77,7 +78,8 @@ public:
         options.cadSmoke = parser.Found("cad-smoke-test");
         options.cadExpectFailure = parser.Found("cad-expect-failure");
         options.openEmsWsl = parser.Found("openems-wsl");
-        options.solverSmoke = parser.Found("solver-smoke-test");
+        options.solverActiveCancelSmoke = parser.Found("solver-active-cancel-smoke-test");
+        options.solverSmoke = parser.Found("solver-smoke-test") || options.solverActiveCancelSmoke;
         options.solverExpectFailure = parser.Found("solver-expect-failure");
         parser.Found("solver-settings", &options.solverSettings);
         options.studySmoke = parser.Found("study-smoke-test");
@@ -122,6 +124,11 @@ public:
             return false;
         }
         const bool measureStartup = parser.Found("measure-startup");
+        if (options.solverActiveCancelSmoke && options.solverExpectFailure)
+        {
+            ExitCode = 2;
+            return false;
+        }
         if (measureStartup && (options.smoke || !options.openProject.empty() || !options.cadPython.empty() ||
                                !options.exchangePython.empty() || !options.catalog.empty() || options.openEmsWsl))
         {
