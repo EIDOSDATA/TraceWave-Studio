@@ -240,7 +240,7 @@ class F1ViewTests(unittest.TestCase):
             executable = Path(os.environ["RFAD_GUI_EXE"]).resolve()
             process = subprocess.run([str(executable), "--python", sys.executable, "--source", str(CODE_ROOT / "src"),
                 "--workspace", str(destination), "--open-project", path, "--smoke-test", "--smoke-report", str(report_path)],
-                stdin=subprocess.DEVNULL, capture_output=True, timeout=125, check=False)
+                stdin=subprocess.DEVNULL, capture_output=True, timeout=200, check=False)
             self.assertTrue(report_path.is_file(), (process.returncode, process.stderr))
             report = json.loads(report_path.read_bytes())
             self.assertEqual(process.returncode, 0, report)

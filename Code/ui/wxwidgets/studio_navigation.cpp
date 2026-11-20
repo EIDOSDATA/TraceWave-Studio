@@ -17,12 +17,25 @@ public:
     int commandId;
 };
 
+/** @brief 같은 개정과 필터에서 기존 native 행으로 바로 이동한다. */
+class NavigationRows final : public wxClientData
+{
+public:
+    std::string project;
+    std::string revision;
+    wxString query;
+    int filter = 0;
+    bool pcbFeatures = false;
+    bool draft = false;
+    std::map<std::pair<std::string, std::string>, wxTreeItemId> items;
+};
+
 /** @brief 폴더/파일 대신 서비스 객체 종류에 대응하는 표시 아이콘을 선택한다. */
 int NavigationIcon(const std::string& kind)
 {
-    const std::map<std::string, int> icons{{"project", 0},  {"templates", 1}, {"targets", 2},     {"board", 3},
-                                           {"layer", 3},    {"geometry", 4},  {"port", 5},        {"net", 5},
-                                           {"material", 6}, {"parameter", 7}, {"environment", 8}, {"rules", 9}};
+    static const std::map<std::string, int> icons{
+        {"project", 0}, {"templates", 1}, {"targets", 2}, {"board", 3}, {"layer", 3}, {"geometry", 4},
+        {"port", 5}, {"net", 5}, {"material", 6}, {"parameter", 7}, {"environment", 8}, {"rules", 9}};
     const auto found = icons.find(kind);
     if (kind == "hole" || kind == "cutout")
     {
@@ -184,6 +197,35 @@ void StudioFrame::RebuildNavigation()
     }
     const bool refreshing = m_refreshing;
     m_refreshing = true;
+    const auto selectionKind = m_selection.value("kind", "");
+    const bool draft = selectionKind.rfind("new_", 0) == 0;
+    const auto query = m_objectSearch->GetValue().Lower();
+    const int filter = m_objectFilter->GetSelection();
+    const auto* previous = dynamic_cast<const NavigationRows*>(m_tree->GetClientObject());
+    if (previous && !previous->draft && !draft && previous->project == m_project && previous->revision == m_revision &&
+        previous->query == query && previous->filter == filter && previous->pcbFeatures == m_pcbFeaturesSupported)
+    {
+        const auto selected = previous->items.find({selectionKind, m_selection.value("id", "")});
+        if (selected == previous->items.end())
+        {
+            m_tree->Unselect();
+        }
+        else if (m_tree->GetSelection() != selected->second)
+        {
+            m_tree->SelectItem(selected->second);
+            m_tree->EnsureVisible(selected->second);
+        }
+        m_refreshing = refreshing;
+        return;
+    }
+    auto rows = std::make_unique<NavigationRows>();
+    rows->project = m_project;
+    rows->revision = m_revision;
+    rows->query = query;
+    rows->filter = filter;
+    rows->pcbFeatures = m_pcbFeaturesSupported;
+    rows->draft = draft;
+
     std::set<std::string> expanded;
     const auto oldRoot = m_tree->GetRootItem();
     if (m_navigationProject == m_project && oldRoot.IsOk())
@@ -206,6 +248,7 @@ void StudioFrame::RebuildNavigation()
     const auto root = m_tree->AddRoot(Display(m_editor.at("metadata").at("name").get<std::string>()), 0, 0,
                                       new SelectionData({{"kind", "project"}, {"id", m_project}}));
     m_tree->SetItemBold(root);
+    rows->items.emplace(std::make_pair("project", m_project), root);
     std::map<std::string, wxTreeItemId> groups;
     const auto group = [&](const std::string& key, const std::string& label, int command)
     {
@@ -234,9 +277,21 @@ void StudioFrame::RebuildNavigation()
         groups["aperture"] = groups["artwork_layer"];
         group("keepout", "금지 영역", IdPcbFeatures);
     }
-    const wxString query = m_objectSearch->GetValue().Lower();
-    const int filter = m_objectFilter->GetSelection();
     wxTreeItemId selected;
+    std::map<void*, wxTreeItemId> groupAnchors;
+    // @brief 뒤에서부터 같은 위치에 넣어 표시 순서를 보존하며 native 트리에서 끝 탐색을 줄인다.
+    const auto insertObject = [&](wxTreeItemId parent, const wxString& label, int icon, const Json& selection)
+    {
+        auto position = groupAnchors.find(parent.GetID());
+        if (position == groupAnchors.end())
+        {
+            position = groupAnchors.emplace(parent.GetID(), m_tree->GetLastChild(parent)).first;
+        }
+        const auto& anchor = position->second;
+        auto* data = new SelectionData(selection);
+        return anchor.IsOk() ? m_tree->InsertItem(parent, anchor, label, icon, icon, data)
+                             : m_tree->PrependItem(parent, label, icon, icon, data);
+    };
     std::map<std::string, wxTreeItemId> footprintNodes;
     std::map<std::string, std::string> owners;
     std::map<std::string, int> shapeIconById;
@@ -263,18 +318,21 @@ void StudioFrame::RebuildNavigation()
             }
         }
     }
+    const auto& items = m_editor.at("items");
     if (m_pcbFeaturesSupported && query.empty() && (filter == 0 || filter == 7))
     {
-        for (const auto& item : m_editor.at("items"))
+        for (auto position = items.rbegin(); position != items.rend(); ++position)
         {
+            const auto& item = *position;
             if (item.at("kind") == "footprint")
             {
                 const Json selection{{"kind", "footprint"}, {"id", item.at("id")}};
                 const int icon = NavigationIcon("footprint");
-                const auto node =
-                    m_tree->AppendItem(groups.at("footprint"), Display(item.at("label").get<std::string>()), icon, icon,
-                                       new SelectionData(selection));
-                footprintNodes[item.at("id").get<std::string>()] = node;
+                const auto node = m_tree->PrependItem(groups.at("footprint"), Display(item.at("label").get<std::string>()),
+                                                      icon, icon, new SelectionData(selection));
+                const auto id = item.at("id").get<std::string>();
+                footprintNodes[id] = node;
+                rows->items.emplace(std::make_pair("footprint", id), node);
                 if (selection == m_selection)
                 {
                     selected = node;
@@ -282,8 +340,9 @@ void StudioFrame::RebuildNavigation()
             }
         }
     }
-    for (const auto& item : m_editor.at("items"))
+    for (auto position = items.rbegin(); position != items.rend(); ++position)
     {
+        const auto& item = *position;
         const std::string kind = item.at("kind");
         if (kind == "project")
         {
@@ -321,17 +380,17 @@ void StudioFrame::RebuildNavigation()
         {
             parent = footprintNodes.at(owner->second);
         }
-        const auto node = m_tree->AppendItem(parent, label, icon, icon, new SelectionData(selection));
+        const auto node = insertObject(parent, label, icon, selection);
+        rows->items.emplace(std::make_pair(kind, item.at("id").get<std::string>()), node);
         if (selection == m_selection)
         {
             selected = node;
         }
     }
-    const std::string selectionKind = m_selection.value("kind", "");
-    if (selectionKind.rfind("new_", 0) == 0)
+    if (draft)
     {
-        const std::string kind = selectionKind.substr(4);
-        selected = m_tree->AppendItem(groups.count(kind) ? groups.at(kind) : root, Display("새 객체 / 미적용 입력"), 1,
+        const auto groupKind = selectionKind.substr(4);
+        selected = m_tree->AppendItem(groups.count(groupKind) ? groups.at(groupKind) : root, Display("새 객체 / 미적용 입력"), 1,
                                       1, new SelectionData(m_selection));
     }
     m_tree->Expand(root);
@@ -352,6 +411,7 @@ void StudioFrame::RebuildNavigation()
         m_tree->EnsureVisible(selected);
     }
     m_tree->Thaw();
+    m_tree->SetClientObject(rows.release());
     m_refreshing = refreshing;
 }
 
