@@ -58,6 +58,7 @@ void StudioSmokeDriver::FinishSmoke(bool passed, const std::string& error)
                 {"pcb_stage", m_pcbStage},
                 {"pcb_checks", m_pcbChecks},
                 {"pcb_catalog_metrics", m_pcbCatalogMetrics},
+                {"project_switch", m_projectSwitchRecord},
                 {"pcb_ticks", m_pcbTicks},
                 {"pcb_request_ticks", m_pcbRequestTicks},
                 {"pcb_project_path", m_frame.m_options.pcbSmoke ? m_smokePath : ""},

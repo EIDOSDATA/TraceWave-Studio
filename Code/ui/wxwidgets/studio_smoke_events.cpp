@@ -69,6 +69,10 @@ void StudioSmokeDriver::OnConnected()
 
 void StudioSmokeDriver::OnOpened()
 {
+    if (m_frame.m_options.projectSwitchSmoke)
+    {
+        return;
+    }
     if (m_frame.m_options.setupSmoke)
     {
         if (m_setupStage == 0)

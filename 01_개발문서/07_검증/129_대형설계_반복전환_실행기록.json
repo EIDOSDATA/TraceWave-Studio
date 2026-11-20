@@ -1,0 +1,1971 @@
+{
+  "date_kst": "2026-11-21",
+  "profile": "rfad.stage12.f5-native-project-switch/0.1",
+  "source_baseline_at_launch": "1baecbe",
+  "exe_sha256": "3d9ae3ca9457b2df69e5720c6999c828b56b04f91db4e3ec3330d4820c58ce7c",
+  "passed": true,
+  "service_sessions": 1,
+  "canvas_shapes": 0,
+  "canvas_omissions": 0,
+  "project_switch": {
+    "baseline": [
+      {
+        "gui": false,
+        "handles": 97,
+        "pid": 12580,
+        "private_commit_bytes": 1232896,
+        "working_set_bytes": 8097792
+      },
+      {
+        "gui": true,
+        "handles": 290,
+        "pid": 18776,
+        "private_commit_bytes": 41938944,
+        "working_set_bytes": 79994880
+      },
+      {
+        "gui": false,
+        "handles": 190,
+        "pid": 23564,
+        "private_commit_bytes": 65007616,
+        "working_set_bytes": 72556544
+      },
+      {
+        "gui": false,
+        "handles": 66,
+        "pid": 32576,
+        "private_commit_bytes": 937984,
+        "working_set_bytes": 5046272
+      }
+    ],
+    "cycles": [
+      {
+        "cycle": 1,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1232896,
+            "working_set_bytes": 8097792
+          },
+          {
+            "gui": true,
+            "handles": 298,
+            "pid": 18776,
+            "private_commit_bytes": 88387584,
+            "working_set_bytes": 122937344
+          },
+          {
+            "gui": false,
+            "handles": 224,
+            "pid": 23564,
+            "private_commit_bytes": 84692992,
+            "working_set_bytes": 95608832
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 937984,
+            "working_set_bytes": 5046272
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1232896,
+            "working_set_bytes": 8097792
+          },
+          {
+            "gui": true,
+            "handles": 298,
+            "pid": 18776,
+            "private_commit_bytes": 44843008,
+            "working_set_bytes": 82268160
+          },
+          {
+            "gui": false,
+            "handles": 224,
+            "pid": 23564,
+            "private_commit_bytes": 72146944,
+            "working_set_bytes": 83599360
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 5013504
+          }
+        ]
+      },
+      {
+        "cycle": 2,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1232896,
+            "working_set_bytes": 8097792
+          },
+          {
+            "gui": true,
+            "handles": 298,
+            "pid": 18776,
+            "private_commit_bytes": 89337856,
+            "working_set_bytes": 123564032
+          },
+          {
+            "gui": false,
+            "handles": 224,
+            "pid": 23564,
+            "private_commit_bytes": 84574208,
+            "working_set_bytes": 95608832
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 5013504
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1232896,
+            "working_set_bytes": 8097792
+          },
+          {
+            "gui": true,
+            "handles": 298,
+            "pid": 18776,
+            "private_commit_bytes": 44519424,
+            "working_set_bytes": 82980864
+          },
+          {
+            "gui": false,
+            "handles": 222,
+            "pid": 23564,
+            "private_commit_bytes": 74792960,
+            "working_set_bytes": 86626304
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 5013504
+          }
+        ]
+      },
+      {
+        "cycle": 3,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1232896,
+            "working_set_bytes": 8097792
+          },
+          {
+            "gui": true,
+            "handles": 298,
+            "pid": 18776,
+            "private_commit_bytes": 89362432,
+            "working_set_bytes": 123269120
+          },
+          {
+            "gui": false,
+            "handles": 222,
+            "pid": 23564,
+            "private_commit_bytes": 84914176,
+            "working_set_bytes": 95604736
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 5013504
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1232896,
+            "working_set_bytes": 8097792
+          },
+          {
+            "gui": true,
+            "handles": 298,
+            "pid": 18776,
+            "private_commit_bytes": 45539328,
+            "working_set_bytes": 83832832
+          },
+          {
+            "gui": false,
+            "handles": 222,
+            "pid": 23564,
+            "private_commit_bytes": 77623296,
+            "working_set_bytes": 88338432
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 5013504
+          }
+        ]
+      },
+      {
+        "cycle": 4,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1232896,
+            "working_set_bytes": 8097792
+          },
+          {
+            "gui": true,
+            "handles": 298,
+            "pid": 18776,
+            "private_commit_bytes": 89669632,
+            "working_set_bytes": 123445248
+          },
+          {
+            "gui": false,
+            "handles": 222,
+            "pid": 23564,
+            "private_commit_bytes": 85106688,
+            "working_set_bytes": 95961088
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 5013504
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1232896,
+            "working_set_bytes": 8097792
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 45436928,
+            "working_set_bytes": 83689472
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 77348864,
+            "working_set_bytes": 88899584
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 5013504
+          }
+        ]
+      },
+      {
+        "cycle": 5,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1232896,
+            "working_set_bytes": 8097792
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 89812992,
+            "working_set_bytes": 123092992
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 82771968,
+            "working_set_bytes": 94351360
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 5013504
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1232896,
+            "working_set_bytes": 8097792
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 45264896,
+            "working_set_bytes": 83820544
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 79785984,
+            "working_set_bytes": 91381760
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 5013504
+          }
+        ]
+      },
+      {
+        "cycle": 6,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1232896,
+            "working_set_bytes": 8097792
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 89522176,
+            "working_set_bytes": 123351040
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 85037056,
+            "working_set_bytes": 95744000
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 5013504
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1232896,
+            "working_set_bytes": 8097792
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 45191168,
+            "working_set_bytes": 83730432
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 83001344,
+            "working_set_bytes": 93741056
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 5013504
+          }
+        ]
+      },
+      {
+        "cycle": 7,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1232896,
+            "working_set_bytes": 8097792
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 89702400,
+            "working_set_bytes": 123228160
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 84992000,
+            "working_set_bytes": 95817728
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 5013504
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1323008,
+            "working_set_bytes": 8138752
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 46440448,
+            "working_set_bytes": 85057536
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 82411520,
+            "working_set_bytes": 94085120
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 946176,
+            "working_set_bytes": 5009408
+          }
+        ]
+      },
+      {
+        "cycle": 8,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1323008,
+            "working_set_bytes": 8138752
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 89911296,
+            "working_set_bytes": 123588608
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 87502848,
+            "working_set_bytes": 98934784
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 946176,
+            "working_set_bytes": 5009408
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1327104,
+            "working_set_bytes": 8163328
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 49430528,
+            "working_set_bytes": 86319104
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 82767872,
+            "working_set_bytes": 95318016
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 946176,
+            "working_set_bytes": 5029888
+          }
+        ]
+      },
+      {
+        "cycle": 9,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1327104,
+            "working_set_bytes": 8163328
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 90292224,
+            "working_set_bytes": 123527168
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 85114880,
+            "working_set_bytes": 97230848
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 946176,
+            "working_set_bytes": 5029888
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1327104,
+            "working_set_bytes": 8163328
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 47108096,
+            "working_set_bytes": 85970944
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 85159936,
+            "working_set_bytes": 97325056
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 946176,
+            "working_set_bytes": 5029888
+          }
+        ]
+      },
+      {
+        "cycle": 10,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1327104,
+            "working_set_bytes": 8163328
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 89907200,
+            "working_set_bytes": 123588608
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 85880832,
+            "working_set_bytes": 97775616
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 946176,
+            "working_set_bytes": 5029888
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1327104,
+            "working_set_bytes": 8163328
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 48799744,
+            "working_set_bytes": 86142976
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 85880832,
+            "working_set_bytes": 97775616
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 946176,
+            "working_set_bytes": 5029888
+          }
+        ]
+      },
+      {
+        "cycle": 11,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1327104,
+            "working_set_bytes": 8163328
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 90087424,
+            "working_set_bytes": 123822080
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 85327872,
+            "working_set_bytes": 96878592
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 946176,
+            "working_set_bytes": 5029888
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 47423488,
+            "working_set_bytes": 86384640
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 85344256,
+            "working_set_bytes": 96940032
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ]
+      },
+      {
+        "cycle": 12,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 90157056,
+            "working_set_bytes": 123715584
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 96817152,
+            "working_set_bytes": 108711936
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 48828416,
+            "working_set_bytes": 87179264
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 82690048,
+            "working_set_bytes": 95268864
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ]
+      },
+      {
+        "cycle": 13,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 90148864,
+            "working_set_bytes": 123940864
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 88760320,
+            "working_set_bytes": 100335616
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 49090560,
+            "working_set_bytes": 86962176
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 88760320,
+            "working_set_bytes": 100339712
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ]
+      },
+      {
+        "cycle": 14,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 90132480,
+            "working_set_bytes": 123822080
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 87851008,
+            "working_set_bytes": 99540992
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 49147904,
+            "working_set_bytes": 87281664
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 83406848,
+            "working_set_bytes": 96047104
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ]
+      },
+      {
+        "cycle": 15,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 89927680,
+            "working_set_bytes": 123977728
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 86720512,
+            "working_set_bytes": 99061760
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 50966528,
+            "working_set_bytes": 88096768
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 83529728,
+            "working_set_bytes": 96133120
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ]
+      },
+      {
+        "cycle": 16,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1286144,
+            "working_set_bytes": 8138752
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 89948160,
+            "working_set_bytes": 123899904
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 85487616,
+            "working_set_bytes": 97423360
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 913408,
+            "working_set_bytes": 5009408
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1286144,
+            "working_set_bytes": 8138752
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 50700288,
+            "working_set_bytes": 88399872
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 85512192,
+            "working_set_bytes": 97497088
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 913408,
+            "working_set_bytes": 5009408
+          }
+        ]
+      },
+      {
+        "cycle": 17,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1286144,
+            "working_set_bytes": 8138752
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 90427392,
+            "working_set_bytes": 124203008
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 86327296,
+            "working_set_bytes": 98025472
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 913408,
+            "working_set_bytes": 5009408
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 49905664,
+            "working_set_bytes": 88178688
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 83505152,
+            "working_set_bytes": 96145408
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ]
+      },
+      {
+        "cycle": 18,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 90664960,
+            "working_set_bytes": 124174336
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 86102016,
+            "working_set_bytes": 98381824
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 51527680,
+            "working_set_bytes": 88637440
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 83697664,
+            "working_set_bytes": 96178176
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ]
+      },
+      {
+        "cycle": 19,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 90710016,
+            "working_set_bytes": 124231680
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 86048768,
+            "working_set_bytes": 98144256
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 50290688,
+            "working_set_bytes": 88621056
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 86048768,
+            "working_set_bytes": 98230272
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ]
+      },
+      {
+        "cycle": 20,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 90685440,
+            "working_set_bytes": 124231680
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 83636224,
+            "working_set_bytes": 96292864
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 52510720,
+            "working_set_bytes": 89640960
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 83419136,
+            "working_set_bytes": 96034816
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ]
+      },
+      {
+        "cycle": 21,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 90947584,
+            "working_set_bytes": 124293120
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 85479424,
+            "working_set_bytes": 97554432
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 53166080,
+            "working_set_bytes": 90103808
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 85512192,
+            "working_set_bytes": 97624064
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ]
+      },
+      {
+        "cycle": 22,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 90411008,
+            "working_set_bytes": 124399616
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 83869696,
+            "working_set_bytes": 96415744
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 50159616,
+            "working_set_bytes": 89120768
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 83582976,
+            "working_set_bytes": 96051200
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ]
+      },
+      {
+        "cycle": 23,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 90763264,
+            "working_set_bytes": 124424192
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 86351872,
+            "working_set_bytes": 98402304
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 52158464,
+            "working_set_bytes": 90705920
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 86364160,
+            "working_set_bytes": 98414592
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ]
+      },
+      {
+        "cycle": 24,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 90701824,
+            "working_set_bytes": 124289024
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 85950464,
+            "working_set_bytes": 97935360
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 51875840,
+            "working_set_bytes": 89989120
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 84013056,
+            "working_set_bytes": 96604160
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ]
+      },
+      {
+        "cycle": 25,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 90947584,
+            "working_set_bytes": 124268544
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 86200320,
+            "working_set_bytes": 98304000
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 54030336,
+            "working_set_bytes": 91320320
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 86200320,
+            "working_set_bytes": 98304000
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ]
+      },
+      {
+        "cycle": 26,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 91181056,
+            "working_set_bytes": 124256256
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 103456768,
+            "working_set_bytes": 114827264
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 53219328,
+            "working_set_bytes": 90574848
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 103456768,
+            "working_set_bytes": 114827264
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ]
+      },
+      {
+        "cycle": 27,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 90890240,
+            "working_set_bytes": 124346368
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 90116096,
+            "working_set_bytes": 100065280
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 53391360,
+            "working_set_bytes": 91414528
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 84115456,
+            "working_set_bytes": 96612352
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ]
+      },
+      {
+        "cycle": 28,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 91021312,
+            "working_set_bytes": 124411904
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 86073344,
+            "working_set_bytes": 98373632
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 52699136,
+            "working_set_bytes": 91107328
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 84168704,
+            "working_set_bytes": 96665600
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ]
+      },
+      {
+        "cycle": 29,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 91193344,
+            "working_set_bytes": 124399616
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 85659648,
+            "working_set_bytes": 97705984
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 55128064,
+            "working_set_bytes": 91971584
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 84176896,
+            "working_set_bytes": 96534528
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ]
+      },
+      {
+        "cycle": 30,
+        "opened": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 90968064,
+            "working_set_bytes": 124579840
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 103452672,
+            "working_set_bytes": 115044352
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ],
+        "settled_after_switch": [
+          {
+            "gui": false,
+            "handles": 97,
+            "pid": 12580,
+            "private_commit_bytes": 1245184,
+            "working_set_bytes": 8118272
+          },
+          {
+            "gui": true,
+            "handles": 294,
+            "pid": 18776,
+            "private_commit_bytes": 76656640,
+            "working_set_bytes": 113127424
+          },
+          {
+            "gui": false,
+            "handles": 214,
+            "pid": 23564,
+            "private_commit_bytes": 84611072,
+            "working_set_bytes": 96956416
+          },
+          {
+            "gui": false,
+            "handles": 66,
+            "pid": 32576,
+            "private_commit_bytes": 876544,
+            "working_set_bytes": 4988928
+          }
+        ]
+      }
+    ],
+    "settle_seconds": 30
+  },
+  "summary": {
+    "cycles": 30,
+    "baseline_private_mib": 104.0625,
+    "opened_peak_private_mib": 187.64453125,
+    "settled_peak_private_mib": 155.8203125,
+    "initial_5_median_private_mib": 119.109375,
+    "final_10_median_private_mib": 134.203125,
+    "settled_delta_private_mib": 15.09375,
+    "settled_delta_budget_mib": 32,
+    "settled_handles": {
+      "12580": {
+        "first": 97,
+        "last": 97,
+        "minimum": 97,
+        "maximum": 97
+      },
+      "18776": {
+        "first": 298,
+        "last": 294,
+        "minimum": 294,
+        "maximum": 298
+      },
+      "23564": {
+        "first": 224,
+        "last": 214,
+        "minimum": 214,
+        "maximum": 224
+      },
+      "32576": {
+        "first": 66,
+        "last": 66,
+        "minimum": 66,
+        "maximum": 66
+      }
+    }
+  }
+}

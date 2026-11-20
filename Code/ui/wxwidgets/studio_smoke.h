@@ -51,6 +51,7 @@ public:
     void PrimitivesSmokeTick();
     /** @brief 실제 PCB 대화상자와 서비스의 선택, 검토, 적용 및 이력을 검증한다. */
     void PcbSmokeTick();
+    void ProjectSwitchSmokeTick();
     /** @brief 부모 종료 요청 뒤 모달 반환과 서비스 회수 완료를 확인하고 보고한다. */
     void OnPcbShutdownComplete();
     /** @brief 실제 화면 이벤트와 결과를 검증한다. */
@@ -169,6 +170,11 @@ private:
     void PcbSmokeMaterial(PcbSelectionDialog& dialog);
     /** @brief 닫힌 대화상자의 적용 결과, 이력과 저장 후 재열기를 검증한다. */
     void PcbSmokeHistory();
+    Json m_projectSwitchFixture = Json::object();
+    Json m_projectSwitchRecord = {{"cycles", Json::array()}, {"settle_seconds", 30}};
+    Json m_projectSwitchOpen;
+    Clock::time_point m_projectSwitchExpires{}, m_projectSwitchSettled{};
+    int m_projectSwitchStage = 0;
     StudioFrame& m_frame;
     int m_pcbStage = 0;
     int m_pcbTicks = 0;

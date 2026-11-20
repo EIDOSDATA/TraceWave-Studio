@@ -46,6 +46,7 @@ public:
         parser.AddOption("", "open-project", "Registered project path relative to workspace");
         parser.AddSwitch("", "smoke-test", "Run GUI/service smoke test and exit");
         parser.AddSwitch("", "editor-smoke-test", "Run editor/undo/restart smoke test and exit");
+        parser.AddSwitch("", "project-switch-smoke-test", "Observe repeated project switching in the running Studio");
         parser.AddSwitch("", "catalog-table-smoke-test", "Verify the large catalog table after reopening a saved project");
         parser.AddSwitch("", "pcb-selection-smoke-test", "Run PCB catalog selection and preview workflow and exit");
         parser.AddSwitch("", "canvas-smoke-test", "Run 2D mouse/command/history/restart smoke test and exit");
@@ -74,6 +75,7 @@ public:
         options.editorSmoke = parser.Found("editor-smoke-test");
         options.pcbSmoke = parser.Found("pcb-selection-smoke-test");
         options.catalogTableSmoke = parser.Found("catalog-table-smoke-test");
+        options.projectSwitchSmoke = parser.Found("project-switch-smoke-test");
         options.canvasSmoke = parser.Found("canvas-smoke-test");
         options.coordinatesSmoke = parser.Found("coordinate-table-smoke-test");
         options.primitivesSmoke = parser.Found("primitives-smoke-test") || options.coordinatesSmoke;
@@ -107,7 +109,7 @@ public:
         parser.Found("study-specification", &options.studySpecification);
         options.smoke = parser.Found("smoke-test") || options.editorSmoke || options.canvasSmoke ||
                         options.primitivesSmoke || options.cadSmoke || options.solverSmoke || options.pcbSmoke ||
-                        options.studySmoke || options.setupSmoke || options.catalogTableSmoke;
+                        options.studySmoke || options.setupSmoke || options.catalogTableSmoke || options.projectSwitchSmoke;
         if (options.python.empty() || options.source.empty() || options.workspace.empty())
         {
             wxMessageBox(Display("--python, --source, --workspace 경로를 지정하십시오."), Display("실행 설정"),

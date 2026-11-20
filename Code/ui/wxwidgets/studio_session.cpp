@@ -301,6 +301,7 @@ void StudioFrame::OnTimer(wxTimerEvent&)
         m_smoke->StudySmokeTick();
         m_smoke->PrimitivesSmokeTick();
         m_smoke->PcbSmokeTick();
+        m_smoke->ProjectSwitchSmokeTick();
         m_smoke->SetupSmokeTick();
         if (m_waitingClose &&
             ((!m_solverWorkflow.Active() && m_cadTask.Id().empty() && !m_cadPreparing) || now >= m_closeDeadline))
@@ -349,7 +350,7 @@ void StudioFrame::OnTimer(wxTimerEvent&)
                     }
                 });
         }
-        if (m_options.smoke &&
+        if (m_options.smoke && !m_options.projectSwitchSmoke &&
             now - m_started >
                 std::chrono::seconds(
                     m_options.studySmoke
