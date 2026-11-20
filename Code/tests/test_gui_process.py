@@ -76,7 +76,7 @@ class GuiProcessTests(unittest.TestCase):
             "invalid_input_preserved", "undo_recalculated", "redo_recalculated", "restart_preserved",
         })
         self.assertEqual(set(result["ux_checks"]), {
-            "saved_state", "redo_aliases_registered", "blank_parameter_apply_disabled",
+            "saved_state", "loading_and_recovery_separated", "redo_aliases_registered", "blank_parameter_apply_disabled",
             "missing_value_hidden", "expression_fields_visible", "expression_error_localized",
             "unnamed_parameter_apply_disabled", "draft_state_and_apply_enabled",
             "applied_state_and_apply_disabled", "unchanged_input_apply_disabled",

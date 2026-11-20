@@ -1,0 +1,1427 @@
+{
+  "schema": "rfad.windows-idle-verification/0.1",
+  "date_kst": "2026-11-20",
+  "published_baseline_commit": "e174a2c116cdcbd8c0d93b1724e3b2738c70d3d4",
+  "scope": "완료 계획 12번의 Windows 재열기 상태 및 F0 Release 프로세스 트리",
+  "test_results": {
+    "windows_service_gui": {
+      "passed": 7,
+      "seconds": 81.839,
+      "log": {
+        "file": "stage12e-gui-tests.log",
+        "bytes": 1814,
+        "sha256": "f76d10b23d5076e2fe4dcf1d86e8c6f218a6021cf3e590a1310be89b1b9533c7"
+      }
+    },
+    "ctest": {
+      "passed": 13,
+      "seconds": 0.77,
+      "log": {
+        "file": "stage12e-ctest.log",
+        "bytes": 1526,
+        "sha256": "15e5d741150d128b80e4094a27cea2ebde7eed221236c05b76510412b94df8ad"
+      }
+    },
+    "recorder_guards": [
+      "reject_existing_output",
+      "reject_unrelated_process_without_output"
+    ],
+    "manual_open": "앞서 복원한 Windows 합성 검증 프로젝트의 저장 상태 및 기하를 새 프로세스에서 확인"
+  },
+  "performance": {
+    "thresholds": {
+      "perf_003_gui_mib": 150,
+      "perf_003_combined_mib": 300,
+      "perf_008_one_logical_cpu_percent": 1
+    },
+    "perf_003_sampled_this_host": true,
+    "perf_008_this_host": false,
+    "perf_001_002_and_f1_to_f5": "not_measured",
+    "gpu_memory_dpi_and_interactive_frames": "not_measured",
+    "rejected_measurements": [
+      "초기 집계 주체 자료형 문제로 생긴 무효 0%/null 집계",
+      "마지막 표본이 30초 전에 읽혀 유효성 검사에서 중단된 관찰"
+    ],
+    "diagnostic": "스레드의 Windows UI Automation 및 시스템 테마 조회 표본. 분리된 기여율 미확립. 버튼 색 변경은 되돌림.",
+    "raw_runs": [
+      {
+        "schema": "rfad.windows-idle-measurement/0.1",
+        "recorded_utc": "2026-11-20T08:32:50.1647436+00:00",
+        "scope": "사용자가 빈 작업 영역의 초기 연결을 확인한 Windows Studio와 그 하위 프로세스",
+        "elapsed_seconds": 30.0059436,
+        "studio_pid": 6700,
+        "executable_sha256": "af9b7039f8e5130e2f21436279bf968d6ecda0d3ff6b564aa3eb7fa8fbafd02d",
+        "operating_system": {
+          "Caption": "Microsoft Windows 11 Pro",
+          "Version": "10.0.26300",
+          "BuildNumber": "26300"
+        },
+        "processor": [
+          {
+            "Name": "13th Gen Intel(R) Core(TM) i7-1365U",
+            "NumberOfLogicalProcessors": 12
+          }
+        ],
+        "display_adapter": [
+          {
+            "Name": "Intel(R) Iris(R) Xe Graphics",
+            "CurrentHorizontalResolution": 2560,
+            "CurrentVerticalResolution": 1600,
+            "CurrentRefreshRate": 120
+          }
+        ],
+        "total_cpu_seconds": 6.40625,
+        "percent_of_one_logical_cpu": 21.349936817184446,
+        "peak_sampled_gui_private_commit_bytes": 42737664.0,
+        "peak_sampled_combined_private_commit_bytes": 78639104.0,
+        "samples": [
+          {
+            "elapsed_seconds": 0.0023139,
+            "processes": [
+              {
+                "pid": 6700,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:31:07.4239146Z",
+                "cpu_seconds": 26.875,
+                "private_commit_bytes": 42737664,
+                "working_set_bytes": 79249408,
+                "handle_count": 340
+              },
+              {
+                "pid": 10636,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:31:10.0382169Z",
+                "cpu_seconds": 2.96875,
+                "private_commit_bytes": 33898496,
+                "working_set_bytes": 44642304,
+                "handle_count": 206
+              },
+              {
+                "pid": 19572,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:31:09.9939195Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 786432,
+                "working_set_bytes": 4407296,
+                "handle_count": 56
+              },
+              {
+                "pid": 20640,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:31:10.0059698Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 1216512,
+                "working_set_bytes": 8093696,
+                "handle_count": 97
+              }
+            ],
+            "combined_private_commit_bytes": 78639104.0,
+            "combined_working_set_bytes": 136392704.0
+          },
+          {
+            "elapsed_seconds": 5.0260257,
+            "processes": [
+              {
+                "pid": 6700,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:31:07.4239146Z",
+                "cpu_seconds": 27.921875,
+                "private_commit_bytes": 42737664,
+                "working_set_bytes": 79257600,
+                "handle_count": 340
+              },
+              {
+                "pid": 10636,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:31:10.0382169Z",
+                "cpu_seconds": 2.96875,
+                "private_commit_bytes": 33898496,
+                "working_set_bytes": 44642304,
+                "handle_count": 206
+              },
+              {
+                "pid": 19572,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:31:09.9939195Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 786432,
+                "working_set_bytes": 4407296,
+                "handle_count": 56
+              },
+              {
+                "pid": 20640,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:31:10.0059698Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 1216512,
+                "working_set_bytes": 8093696,
+                "handle_count": 97
+              }
+            ],
+            "combined_private_commit_bytes": 78639104.0,
+            "combined_working_set_bytes": 136400896.0
+          },
+          {
+            "elapsed_seconds": 10.022457,
+            "processes": [
+              {
+                "pid": 6700,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:31:07.4239146Z",
+                "cpu_seconds": 28.875,
+                "private_commit_bytes": 42737664,
+                "working_set_bytes": 79257600,
+                "handle_count": 340
+              },
+              {
+                "pid": 10636,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:31:10.0382169Z",
+                "cpu_seconds": 2.96875,
+                "private_commit_bytes": 33898496,
+                "working_set_bytes": 44642304,
+                "handle_count": 206
+              },
+              {
+                "pid": 19572,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:31:09.9939195Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 786432,
+                "working_set_bytes": 4407296,
+                "handle_count": 56
+              },
+              {
+                "pid": 20640,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:31:10.0059698Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 1216512,
+                "working_set_bytes": 8093696,
+                "handle_count": 97
+              }
+            ],
+            "combined_private_commit_bytes": 78639104.0,
+            "combined_working_set_bytes": 136400896.0
+          },
+          {
+            "elapsed_seconds": 15.0035867,
+            "processes": [
+              {
+                "pid": 6700,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:31:07.4239146Z",
+                "cpu_seconds": 29.640625,
+                "private_commit_bytes": 42737664,
+                "working_set_bytes": 79257600,
+                "handle_count": 340
+              },
+              {
+                "pid": 10636,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:31:10.0382169Z",
+                "cpu_seconds": 2.96875,
+                "private_commit_bytes": 33898496,
+                "working_set_bytes": 44642304,
+                "handle_count": 206
+              },
+              {
+                "pid": 19572,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:31:09.9939195Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 786432,
+                "working_set_bytes": 4407296,
+                "handle_count": 56
+              },
+              {
+                "pid": 20640,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:31:10.0059698Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 1216512,
+                "working_set_bytes": 8093696,
+                "handle_count": 97
+              }
+            ],
+            "combined_private_commit_bytes": 78639104.0,
+            "combined_working_set_bytes": 136400896.0
+          },
+          {
+            "elapsed_seconds": 20.014423,
+            "processes": [
+              {
+                "pid": 6700,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:31:07.4239146Z",
+                "cpu_seconds": 31.15625,
+                "private_commit_bytes": 42737664,
+                "working_set_bytes": 79249408,
+                "handle_count": 340
+              },
+              {
+                "pid": 10636,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:31:10.0382169Z",
+                "cpu_seconds": 2.96875,
+                "private_commit_bytes": 33898496,
+                "working_set_bytes": 44642304,
+                "handle_count": 206
+              },
+              {
+                "pid": 19572,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:31:09.9939195Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 786432,
+                "working_set_bytes": 4407296,
+                "handle_count": 56
+              },
+              {
+                "pid": 20640,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:31:10.0059698Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 1216512,
+                "working_set_bytes": 8093696,
+                "handle_count": 97
+              }
+            ],
+            "combined_private_commit_bytes": 78639104.0,
+            "combined_working_set_bytes": 136392704.0
+          },
+          {
+            "elapsed_seconds": 25.0060142,
+            "processes": [
+              {
+                "pid": 6700,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:31:07.4239146Z",
+                "cpu_seconds": 32.484375,
+                "private_commit_bytes": 42708992,
+                "working_set_bytes": 79241216,
+                "handle_count": 338
+              },
+              {
+                "pid": 10636,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:31:10.0382169Z",
+                "cpu_seconds": 2.96875,
+                "private_commit_bytes": 33898496,
+                "working_set_bytes": 44642304,
+                "handle_count": 206
+              },
+              {
+                "pid": 19572,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:31:09.9939195Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 786432,
+                "working_set_bytes": 4407296,
+                "handle_count": 56
+              },
+              {
+                "pid": 20640,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:31:10.0059698Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 1216512,
+                "working_set_bytes": 8093696,
+                "handle_count": 97
+              }
+            ],
+            "combined_private_commit_bytes": 78610432.0,
+            "combined_working_set_bytes": 136384512.0
+          },
+          {
+            "elapsed_seconds": 30.0082575,
+            "processes": [
+              {
+                "pid": 6700,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:31:07.4239146Z",
+                "cpu_seconds": 33.28125,
+                "private_commit_bytes": 42708992,
+                "working_set_bytes": 79241216,
+                "handle_count": 338
+              },
+              {
+                "pid": 10636,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:31:10.0382169Z",
+                "cpu_seconds": 2.96875,
+                "private_commit_bytes": 33861632,
+                "working_set_bytes": 44630016,
+                "handle_count": 202
+              },
+              {
+                "pid": 19572,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:31:09.9939195Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 786432,
+                "working_set_bytes": 4407296,
+                "handle_count": 56
+              },
+              {
+                "pid": 20640,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:31:10.0059698Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 1216512,
+                "working_set_bytes": 8093696,
+                "handle_count": 97
+              }
+            ],
+            "combined_private_commit_bytes": 78573568.0,
+            "combined_working_set_bytes": 136372224.0
+          }
+        ],
+        "startup_measured": false,
+        "interactive_frames_measured": false,
+        "sample_file_sha256": "87e8fb724a095134b14bd6b2f191263ea4d6389531d508d1d2486e553cdfaed7",
+        "case": "baseline_after_screen_observation"
+      },
+      {
+        "schema": "rfad.windows-idle-measurement/0.1",
+        "recorded_utc": "2026-11-20T08:39:59.3845543+00:00",
+        "scope": "초기 연결이 완료된 빈 Windows Studio와 그 하위 프로세스",
+        "elapsed_seconds": 30.0038025,
+        "studio_pid": 15192,
+        "executable_sha256": "af9b7039f8e5130e2f21436279bf968d6ecda0d3ff6b564aa3eb7fa8fbafd02d",
+        "operating_system": {
+          "Caption": "Microsoft Windows 11 Pro",
+          "Version": "10.0.26300",
+          "BuildNumber": "26300"
+        },
+        "processor": [
+          {
+            "Name": "13th Gen Intel(R) Core(TM) i7-1365U",
+            "NumberOfLogicalProcessors": 12
+          }
+        ],
+        "display_adapter": [
+          {
+            "Name": "Intel(R) Iris(R) Xe Graphics",
+            "CurrentHorizontalResolution": 2560,
+            "CurrentVerticalResolution": 1600,
+            "CurrentRefreshRate": 120
+          }
+        ],
+        "total_cpu_seconds": 6.8125,
+        "percent_of_one_logical_cpu": 22.705455416859248,
+        "peak_sampled_gui_private_commit_bytes": 42565632.0,
+        "peak_sampled_combined_private_commit_bytes": 80199680.0,
+        "samples": [
+          {
+            "elapsed_seconds": 0.0023713,
+            "processes": [
+              {
+                "pid": 15008,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:39:00.7027055Z",
+                "cpu_seconds": 2.765625,
+                "private_commit_bytes": 35651584,
+                "working_set_bytes": 46301184,
+                "handle_count": 208
+              },
+              {
+                "pid": 15192,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:38:58.3748770Z",
+                "cpu_seconds": 19.03125,
+                "private_commit_bytes": 42565632,
+                "working_set_bytes": 79118336,
+                "handle_count": 338
+              },
+              {
+                "pid": 15824,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:39:00.6518437Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 778240,
+                "working_set_bytes": 4403200,
+                "handle_count": 56
+              },
+              {
+                "pid": 24560,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:39:00.6679025Z",
+                "cpu_seconds": 0.03125,
+                "private_commit_bytes": 1204224,
+                "working_set_bytes": 8093696,
+                "handle_count": 97
+              }
+            ],
+            "combined_private_commit_bytes": 80199680.0,
+            "combined_working_set_bytes": 137916416.0
+          },
+          {
+            "elapsed_seconds": 5.0179379,
+            "processes": [
+              {
+                "pid": 15008,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:39:00.7027055Z",
+                "cpu_seconds": 2.765625,
+                "private_commit_bytes": 35532800,
+                "working_set_bytes": 46231552,
+                "handle_count": 206
+              },
+              {
+                "pid": 15192,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:38:58.3748770Z",
+                "cpu_seconds": 20.46875,
+                "private_commit_bytes": 42565632,
+                "working_set_bytes": 79118336,
+                "handle_count": 336
+              },
+              {
+                "pid": 15824,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:39:00.6518437Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 778240,
+                "working_set_bytes": 4403200,
+                "handle_count": 56
+              },
+              {
+                "pid": 24560,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:39:00.6679025Z",
+                "cpu_seconds": 0.03125,
+                "private_commit_bytes": 1204224,
+                "working_set_bytes": 8093696,
+                "handle_count": 97
+              }
+            ],
+            "combined_private_commit_bytes": 80080896.0,
+            "combined_working_set_bytes": 137846784.0
+          },
+          {
+            "elapsed_seconds": 10.0226469,
+            "processes": [
+              {
+                "pid": 15008,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:39:00.7027055Z",
+                "cpu_seconds": 2.765625,
+                "private_commit_bytes": 35532800,
+                "working_set_bytes": 46231552,
+                "handle_count": 206
+              },
+              {
+                "pid": 15192,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:38:58.3748770Z",
+                "cpu_seconds": 21.3125,
+                "private_commit_bytes": 42565632,
+                "working_set_bytes": 79118336,
+                "handle_count": 336
+              },
+              {
+                "pid": 15824,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:39:00.6518437Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 778240,
+                "working_set_bytes": 4403200,
+                "handle_count": 56
+              },
+              {
+                "pid": 24560,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:39:00.6679025Z",
+                "cpu_seconds": 0.03125,
+                "private_commit_bytes": 1204224,
+                "working_set_bytes": 8093696,
+                "handle_count": 97
+              }
+            ],
+            "combined_private_commit_bytes": 80080896.0,
+            "combined_working_set_bytes": 137846784.0
+          },
+          {
+            "elapsed_seconds": 15.0072477,
+            "processes": [
+              {
+                "pid": 15008,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:39:00.7027055Z",
+                "cpu_seconds": 2.765625,
+                "private_commit_bytes": 35532800,
+                "working_set_bytes": 46231552,
+                "handle_count": 206
+              },
+              {
+                "pid": 15192,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:38:58.3748770Z",
+                "cpu_seconds": 23.078125,
+                "private_commit_bytes": 42565632,
+                "working_set_bytes": 79118336,
+                "handle_count": 336
+              },
+              {
+                "pid": 15824,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:39:00.6518437Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 778240,
+                "working_set_bytes": 4403200,
+                "handle_count": 56
+              },
+              {
+                "pid": 24560,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:39:00.6679025Z",
+                "cpu_seconds": 0.03125,
+                "private_commit_bytes": 1204224,
+                "working_set_bytes": 8093696,
+                "handle_count": 97
+              }
+            ],
+            "combined_private_commit_bytes": 80080896.0,
+            "combined_working_set_bytes": 137846784.0
+          },
+          {
+            "elapsed_seconds": 20.0072163,
+            "processes": [
+              {
+                "pid": 15008,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:39:00.7027055Z",
+                "cpu_seconds": 2.765625,
+                "private_commit_bytes": 35532800,
+                "working_set_bytes": 46231552,
+                "handle_count": 206
+              },
+              {
+                "pid": 15192,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:38:58.3748770Z",
+                "cpu_seconds": 23.625,
+                "private_commit_bytes": 42565632,
+                "working_set_bytes": 79118336,
+                "handle_count": 336
+              },
+              {
+                "pid": 15824,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:39:00.6518437Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 778240,
+                "working_set_bytes": 4403200,
+                "handle_count": 56
+              },
+              {
+                "pid": 24560,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:39:00.6679025Z",
+                "cpu_seconds": 0.03125,
+                "private_commit_bytes": 1204224,
+                "working_set_bytes": 8093696,
+                "handle_count": 97
+              }
+            ],
+            "combined_private_commit_bytes": 80080896.0,
+            "combined_working_set_bytes": 137846784.0
+          },
+          {
+            "elapsed_seconds": 25.0219753,
+            "processes": [
+              {
+                "pid": 15008,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:39:00.7027055Z",
+                "cpu_seconds": 2.765625,
+                "private_commit_bytes": 35532800,
+                "working_set_bytes": 46231552,
+                "handle_count": 206
+              },
+              {
+                "pid": 15192,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:38:58.3748770Z",
+                "cpu_seconds": 24.546875,
+                "private_commit_bytes": 42565632,
+                "working_set_bytes": 79118336,
+                "handle_count": 336
+              },
+              {
+                "pid": 15824,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:39:00.6518437Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 778240,
+                "working_set_bytes": 4403200,
+                "handle_count": 56
+              },
+              {
+                "pid": 24560,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:39:00.6679025Z",
+                "cpu_seconds": 0.03125,
+                "private_commit_bytes": 1204224,
+                "working_set_bytes": 8093696,
+                "handle_count": 97
+              }
+            ],
+            "combined_private_commit_bytes": 80080896.0,
+            "combined_working_set_bytes": 137846784.0
+          },
+          {
+            "elapsed_seconds": 30.0061738,
+            "processes": [
+              {
+                "pid": 15008,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:39:00.7027055Z",
+                "cpu_seconds": 2.765625,
+                "private_commit_bytes": 35532800,
+                "working_set_bytes": 46231552,
+                "handle_count": 206
+              },
+              {
+                "pid": 15192,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:38:58.3748770Z",
+                "cpu_seconds": 25.84375,
+                "private_commit_bytes": 42565632,
+                "working_set_bytes": 79126528,
+                "handle_count": 336
+              },
+              {
+                "pid": 15824,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:39:00.6518437Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 778240,
+                "working_set_bytes": 4403200,
+                "handle_count": 56
+              },
+              {
+                "pid": 24560,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:39:00.6679025Z",
+                "cpu_seconds": 0.03125,
+                "private_commit_bytes": 1204224,
+                "working_set_bytes": 8093696,
+                "handle_count": 97
+              }
+            ],
+            "combined_private_commit_bytes": 80080896.0,
+            "combined_working_set_bytes": 137854976.0
+          }
+        ],
+        "startup_measured": false,
+        "interactive_frames_measured": false,
+        "gpu_memory_measured": false,
+        "sample_file_sha256": "4769b009ff89be7101a274c14e730825f4388c2168194ac57d67469d51c51fcc",
+        "case": "baseline_without_direct_screen_observation"
+      },
+      {
+        "schema": "rfad.windows-idle-measurement/0.1",
+        "recorded_utc": "2026-11-20T08:42:42.1594543+00:00",
+        "scope": "초기 연결이 완료된 빈 Windows Studio와 그 하위 프로세스",
+        "elapsed_seconds": 30.020082199999997,
+        "studio_pid": 6360,
+        "executable_sha256": "3ab9f94554dd0e414ba3a472a57b54f7ca72b424dd8def5f964e031fbe7bd9dd",
+        "operating_system": {
+          "Caption": "Microsoft Windows 11 Pro",
+          "Version": "10.0.26300",
+          "BuildNumber": "26300"
+        },
+        "processor": [
+          {
+            "Name": "13th Gen Intel(R) Core(TM) i7-1365U",
+            "NumberOfLogicalProcessors": 12
+          }
+        ],
+        "display_adapter": [
+          {
+            "Name": "Intel(R) Iris(R) Xe Graphics",
+            "CurrentHorizontalResolution": 2560,
+            "CurrentVerticalResolution": 1600,
+            "CurrentRefreshRate": 120
+          }
+        ],
+        "total_cpu_seconds": 7.703125,
+        "percent_of_one_logical_cpu": 25.659906420909135,
+        "peak_sampled_gui_private_commit_bytes": 43266048.0,
+        "peak_sampled_combined_private_commit_bytes": 82415616.0,
+        "samples": [
+          {
+            "elapsed_seconds": 0.0018631,
+            "processes": [
+              {
+                "pid": 6360,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:42:35.3639163Z",
+                "cpu_seconds": 3.65625,
+                "private_commit_bytes": 43266048,
+                "working_set_bytes": 79536128,
+                "handle_count": 339
+              },
+              {
+                "pid": 10584,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:42:38.0629228Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 1228800,
+                "working_set_bytes": 8101888,
+                "handle_count": 97
+              },
+              {
+                "pid": 23724,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:42:38.1033625Z",
+                "cpu_seconds": 2.421875,
+                "private_commit_bytes": 37076992,
+                "working_set_bytes": 47337472,
+                "handle_count": 208
+              },
+              {
+                "pid": 30380,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:42:38.0528079Z",
+                "cpu_seconds": 0.03125,
+                "private_commit_bytes": 843776,
+                "working_set_bytes": 4435968,
+                "handle_count": 56
+              }
+            ],
+            "combined_private_commit_bytes": 82415616.0,
+            "combined_working_set_bytes": 139411456.0
+          },
+          {
+            "elapsed_seconds": 5.0205072,
+            "processes": [
+              {
+                "pid": 6360,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:42:35.3639163Z",
+                "cpu_seconds": 5.1875,
+                "private_commit_bytes": 42901504,
+                "working_set_bytes": 79171584,
+                "handle_count": 339
+              },
+              {
+                "pid": 10584,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:42:38.0629228Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 1228800,
+                "working_set_bytes": 8101888,
+                "handle_count": 97
+              },
+              {
+                "pid": 23724,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:42:38.1033625Z",
+                "cpu_seconds": 2.421875,
+                "private_commit_bytes": 37076992,
+                "working_set_bytes": 47337472,
+                "handle_count": 208
+              },
+              {
+                "pid": 30380,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:42:38.0528079Z",
+                "cpu_seconds": 0.03125,
+                "private_commit_bytes": 843776,
+                "working_set_bytes": 4435968,
+                "handle_count": 56
+              }
+            ],
+            "combined_private_commit_bytes": 82051072.0,
+            "combined_working_set_bytes": 139046912.0
+          },
+          {
+            "elapsed_seconds": 10.0152703,
+            "processes": [
+              {
+                "pid": 6360,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:42:35.3639163Z",
+                "cpu_seconds": 6.671875,
+                "private_commit_bytes": 42901504,
+                "working_set_bytes": 79171584,
+                "handle_count": 339
+              },
+              {
+                "pid": 10584,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:42:38.0629228Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 1228800,
+                "working_set_bytes": 8101888,
+                "handle_count": 97
+              },
+              {
+                "pid": 23724,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:42:38.1033625Z",
+                "cpu_seconds": 2.421875,
+                "private_commit_bytes": 37076992,
+                "working_set_bytes": 47337472,
+                "handle_count": 208
+              },
+              {
+                "pid": 30380,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:42:38.0528079Z",
+                "cpu_seconds": 0.03125,
+                "private_commit_bytes": 843776,
+                "working_set_bytes": 4435968,
+                "handle_count": 56
+              }
+            ],
+            "combined_private_commit_bytes": 82051072.0,
+            "combined_working_set_bytes": 139046912.0
+          },
+          {
+            "elapsed_seconds": 15.0198386,
+            "processes": [
+              {
+                "pid": 6360,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:42:35.3639163Z",
+                "cpu_seconds": 7.515625,
+                "private_commit_bytes": 42901504,
+                "working_set_bytes": 79179776,
+                "handle_count": 339
+              },
+              {
+                "pid": 10584,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:42:38.0629228Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 1228800,
+                "working_set_bytes": 8101888,
+                "handle_count": 97
+              },
+              {
+                "pid": 23724,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:42:38.1033625Z",
+                "cpu_seconds": 2.421875,
+                "private_commit_bytes": 37076992,
+                "working_set_bytes": 47337472,
+                "handle_count": 208
+              },
+              {
+                "pid": 30380,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:42:38.0528079Z",
+                "cpu_seconds": 0.03125,
+                "private_commit_bytes": 843776,
+                "working_set_bytes": 4435968,
+                "handle_count": 56
+              }
+            ],
+            "combined_private_commit_bytes": 82051072.0,
+            "combined_working_set_bytes": 139055104.0
+          },
+          {
+            "elapsed_seconds": 20.0111363,
+            "processes": [
+              {
+                "pid": 6360,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:42:35.3639163Z",
+                "cpu_seconds": 9.328125,
+                "private_commit_bytes": 42901504,
+                "working_set_bytes": 79187968,
+                "handle_count": 339
+              },
+              {
+                "pid": 10584,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:42:38.0629228Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 1228800,
+                "working_set_bytes": 8101888,
+                "handle_count": 97
+              },
+              {
+                "pid": 23724,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:42:38.1033625Z",
+                "cpu_seconds": 2.421875,
+                "private_commit_bytes": 37076992,
+                "working_set_bytes": 47337472,
+                "handle_count": 208
+              },
+              {
+                "pid": 30380,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:42:38.0528079Z",
+                "cpu_seconds": 0.03125,
+                "private_commit_bytes": 843776,
+                "working_set_bytes": 4435968,
+                "handle_count": 56
+              }
+            ],
+            "combined_private_commit_bytes": 82051072.0,
+            "combined_working_set_bytes": 139063296.0
+          },
+          {
+            "elapsed_seconds": 25.0041908,
+            "processes": [
+              {
+                "pid": 6360,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:42:35.3639163Z",
+                "cpu_seconds": 10.3125,
+                "private_commit_bytes": 42901504,
+                "working_set_bytes": 79196160,
+                "handle_count": 339
+              },
+              {
+                "pid": 10584,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:42:38.0629228Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 1228800,
+                "working_set_bytes": 8101888,
+                "handle_count": 97
+              },
+              {
+                "pid": 23724,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:42:38.1033625Z",
+                "cpu_seconds": 2.421875,
+                "private_commit_bytes": 37076992,
+                "working_set_bytes": 47337472,
+                "handle_count": 208
+              },
+              {
+                "pid": 30380,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:42:38.0528079Z",
+                "cpu_seconds": 0.03125,
+                "private_commit_bytes": 843776,
+                "working_set_bytes": 4435968,
+                "handle_count": 56
+              }
+            ],
+            "combined_private_commit_bytes": 82051072.0,
+            "combined_working_set_bytes": 139071488.0
+          },
+          {
+            "elapsed_seconds": 30.0219453,
+            "processes": [
+              {
+                "pid": 6360,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:42:35.3639163Z",
+                "cpu_seconds": 11.359375,
+                "private_commit_bytes": 42901504,
+                "working_set_bytes": 79200256,
+                "handle_count": 339
+              },
+              {
+                "pid": 10584,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:42:38.0629228Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 1228800,
+                "working_set_bytes": 8101888,
+                "handle_count": 97
+              },
+              {
+                "pid": 23724,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:42:38.1033625Z",
+                "cpu_seconds": 2.421875,
+                "private_commit_bytes": 37076992,
+                "working_set_bytes": 47337472,
+                "handle_count": 208
+              },
+              {
+                "pid": 30380,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:42:38.0528079Z",
+                "cpu_seconds": 0.03125,
+                "private_commit_bytes": 786432,
+                "working_set_bytes": 4407296,
+                "handle_count": 56
+              }
+            ],
+            "combined_private_commit_bytes": 81993728.0,
+            "combined_working_set_bytes": 139046912.0
+          }
+        ],
+        "startup_measured": false,
+        "interactive_frames_measured": false,
+        "gpu_memory_measured": false,
+        "sample_file_sha256": "768c22793333fd4dcf7ae43435152cb0ff3a4cd0b7cdce80d4e00c704b4b1476",
+        "case": "diagnostic_button_colour_change_reverted"
+      },
+      {
+        "schema": "rfad.windows-idle-measurement/0.1",
+        "recorded_utc": "2026-11-20T08:44:48.9348107+00:00",
+        "scope": "초기 연결이 완료된 빈 Windows Studio와 그 하위 프로세스",
+        "elapsed_seconds": 30.0005167,
+        "studio_pid": 20680,
+        "executable_sha256": "a4c4940b5a37a980f7983993bda164e0e53da445293c3591bcf3cf25221e76f0",
+        "operating_system": {
+          "Caption": "Microsoft Windows 11 Pro",
+          "Version": "10.0.26300",
+          "BuildNumber": "26300"
+        },
+        "processor": [
+          {
+            "Name": "13th Gen Intel(R) Core(TM) i7-1365U",
+            "NumberOfLogicalProcessors": 12
+          }
+        ],
+        "display_adapter": [
+          {
+            "Name": "Intel(R) Iris(R) Xe Graphics",
+            "CurrentHorizontalResolution": 2560,
+            "CurrentVerticalResolution": 1600,
+            "CurrentRefreshRate": 120
+          }
+        ],
+        "total_cpu_seconds": 8.421875,
+        "percent_of_one_logical_cpu": 28.072433165792777,
+        "peak_sampled_gui_private_commit_bytes": 43438080.0,
+        "peak_sampled_combined_private_commit_bytes": 82251776.0,
+        "samples": [
+          {
+            "elapsed_seconds": 0.0017229,
+            "processes": [
+              {
+                "pid": 2212,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:44:45.1496858Z",
+                "cpu_seconds": 2.40625,
+                "private_commit_bytes": 36741120,
+                "working_set_bytes": 47247360,
+                "handle_count": 208
+              },
+              {
+                "pid": 20680,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:44:42.4189136Z",
+                "cpu_seconds": 3.21875,
+                "private_commit_bytes": 43438080,
+                "working_set_bytes": 79908864,
+                "handle_count": 341
+              },
+              {
+                "pid": 20900,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:44:45.1190789Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 1228800,
+                "working_set_bytes": 8097792,
+                "handle_count": 97
+              },
+              {
+                "pid": 26344,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:44:45.1115862Z",
+                "cpu_seconds": 0.0,
+                "private_commit_bytes": 843776,
+                "working_set_bytes": 4440064,
+                "handle_count": 56
+              }
+            ],
+            "combined_private_commit_bytes": 82251776.0,
+            "combined_working_set_bytes": 139694080.0
+          },
+          {
+            "elapsed_seconds": 5.0207818,
+            "processes": [
+              {
+                "pid": 2212,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:44:45.1496858Z",
+                "cpu_seconds": 2.40625,
+                "private_commit_bytes": 36741120,
+                "working_set_bytes": 47247360,
+                "handle_count": 208
+              },
+              {
+                "pid": 20680,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:44:42.4189136Z",
+                "cpu_seconds": 4.828125,
+                "private_commit_bytes": 42881024,
+                "working_set_bytes": 79364096,
+                "handle_count": 341
+              },
+              {
+                "pid": 20900,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:44:45.1190789Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 1228800,
+                "working_set_bytes": 8097792,
+                "handle_count": 97
+              },
+              {
+                "pid": 26344,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:44:45.1115862Z",
+                "cpu_seconds": 0.0,
+                "private_commit_bytes": 843776,
+                "working_set_bytes": 4440064,
+                "handle_count": 56
+              }
+            ],
+            "combined_private_commit_bytes": 81694720.0,
+            "combined_working_set_bytes": 139149312.0
+          },
+          {
+            "elapsed_seconds": 10.0114161,
+            "processes": [
+              {
+                "pid": 2212,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:44:45.1496858Z",
+                "cpu_seconds": 2.40625,
+                "private_commit_bytes": 36741120,
+                "working_set_bytes": 47247360,
+                "handle_count": 208
+              },
+              {
+                "pid": 20680,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:44:42.4189136Z",
+                "cpu_seconds": 6.625,
+                "private_commit_bytes": 42881024,
+                "working_set_bytes": 79364096,
+                "handle_count": 341
+              },
+              {
+                "pid": 20900,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:44:45.1190789Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 1228800,
+                "working_set_bytes": 8097792,
+                "handle_count": 97
+              },
+              {
+                "pid": 26344,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:44:45.1115862Z",
+                "cpu_seconds": 0.0,
+                "private_commit_bytes": 843776,
+                "working_set_bytes": 4440064,
+                "handle_count": 56
+              }
+            ],
+            "combined_private_commit_bytes": 81694720.0,
+            "combined_working_set_bytes": 139149312.0
+          },
+          {
+            "elapsed_seconds": 15.0105273,
+            "processes": [
+              {
+                "pid": 2212,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:44:45.1496858Z",
+                "cpu_seconds": 2.40625,
+                "private_commit_bytes": 36741120,
+                "working_set_bytes": 47247360,
+                "handle_count": 208
+              },
+              {
+                "pid": 20680,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:44:42.4189136Z",
+                "cpu_seconds": 7.609375,
+                "private_commit_bytes": 42881024,
+                "working_set_bytes": 79372288,
+                "handle_count": 341
+              },
+              {
+                "pid": 20900,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:44:45.1190789Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 1228800,
+                "working_set_bytes": 8097792,
+                "handle_count": 97
+              },
+              {
+                "pid": 26344,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:44:45.1115862Z",
+                "cpu_seconds": 0.0,
+                "private_commit_bytes": 843776,
+                "working_set_bytes": 4440064,
+                "handle_count": 56
+              }
+            ],
+            "combined_private_commit_bytes": 81694720.0,
+            "combined_working_set_bytes": 139157504.0
+          },
+          {
+            "elapsed_seconds": 20.0093205,
+            "processes": [
+              {
+                "pid": 2212,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:44:45.1496858Z",
+                "cpu_seconds": 2.40625,
+                "private_commit_bytes": 36741120,
+                "working_set_bytes": 47247360,
+                "handle_count": 208
+              },
+              {
+                "pid": 20680,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:44:42.4189136Z",
+                "cpu_seconds": 9.015625,
+                "private_commit_bytes": 42881024,
+                "working_set_bytes": 79372288,
+                "handle_count": 341
+              },
+              {
+                "pid": 20900,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:44:45.1190789Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 1228800,
+                "working_set_bytes": 8097792,
+                "handle_count": 97
+              },
+              {
+                "pid": 26344,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:44:45.1115862Z",
+                "cpu_seconds": 0.0,
+                "private_commit_bytes": 843776,
+                "working_set_bytes": 4440064,
+                "handle_count": 56
+              }
+            ],
+            "combined_private_commit_bytes": 81694720.0,
+            "combined_working_set_bytes": 139157504.0
+          },
+          {
+            "elapsed_seconds": 25.0112054,
+            "processes": [
+              {
+                "pid": 2212,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:44:45.1496858Z",
+                "cpu_seconds": 2.40625,
+                "private_commit_bytes": 36741120,
+                "working_set_bytes": 47247360,
+                "handle_count": 208
+              },
+              {
+                "pid": 20680,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:44:42.4189136Z",
+                "cpu_seconds": 10.40625,
+                "private_commit_bytes": 42881024,
+                "working_set_bytes": 79380480,
+                "handle_count": 341
+              },
+              {
+                "pid": 20900,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:44:45.1190789Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 1228800,
+                "working_set_bytes": 8097792,
+                "handle_count": 97
+              },
+              {
+                "pid": 26344,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:44:45.1115862Z",
+                "cpu_seconds": 0.0,
+                "private_commit_bytes": 843776,
+                "working_set_bytes": 4440064,
+                "handle_count": 56
+              }
+            ],
+            "combined_private_commit_bytes": 81694720.0,
+            "combined_working_set_bytes": 139165696.0
+          },
+          {
+            "elapsed_seconds": 30.0022396,
+            "processes": [
+              {
+                "pid": 2212,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:44:45.1496858Z",
+                "cpu_seconds": 2.40625,
+                "private_commit_bytes": 36741120,
+                "working_set_bytes": 47247360,
+                "handle_count": 208
+              },
+              {
+                "pid": 20680,
+                "name": "tracewave_gui",
+                "start_time_utc": "2026-11-20T08:44:42.4189136Z",
+                "cpu_seconds": 11.640625,
+                "private_commit_bytes": 42885120,
+                "working_set_bytes": 79384576,
+                "handle_count": 341
+              },
+              {
+                "pid": 20900,
+                "name": "conhost",
+                "start_time_utc": "2026-11-20T08:44:45.1190789Z",
+                "cpu_seconds": 0.015625,
+                "private_commit_bytes": 1228800,
+                "working_set_bytes": 8097792,
+                "handle_count": 97
+              },
+              {
+                "pid": 26344,
+                "name": "python",
+                "start_time_utc": "2026-11-20T08:44:45.1115862Z",
+                "cpu_seconds": 0.0,
+                "private_commit_bytes": 782336,
+                "working_set_bytes": 4407296,
+                "handle_count": 56
+              }
+            ],
+            "combined_private_commit_bytes": 81637376.0,
+            "combined_working_set_bytes": 139137024.0
+          }
+        ],
+        "startup_measured": false,
+        "interactive_frames_measured": false,
+        "gpu_memory_measured": false,
+        "sample_file_sha256": "db24cf546fa9e41aa97d78033aab812cb9d1ccf8f6bbe8148cb3aec3c0242963",
+        "case": "final_without_direct_screen_observation"
+      }
+    ]
+  },
+  "captures": [
+    {
+      "file": "89_빈스튜디오_색갱신진단화면.jpg",
+      "bytes": 126879,
+      "sha256": "081f6a25f403b4d1508067f0ea7c128d1f2b0b8d0f2cadafabe2f28df08c8dce",
+      "number": 89,
+      "binary_sha256": "3ab9f94554dd0e414ba3a472a57b54f7ca72b424dd8def5f964e031fbe7bd9dd"
+    },
+    {
+      "file": "90_스튜디오_빈화면_유휴계측.jpg",
+      "bytes": 126452,
+      "sha256": "673318355ac21471f5681a75459e1f30d50abddf95c4cdb24323c520c6d9761f",
+      "number": 90,
+      "binary_sha256": "a4c4940b5a37a980f7983993bda164e0e53da445293c3591bcf3cf25221e76f0"
+    },
+    {
+      "file": "91_스튜디오_복원프로젝트_준비완료.jpg",
+      "bytes": 149817,
+      "sha256": "440b455f2fc181fd5dad6f60fa5b74bad9bdb4fcd2cebe1d634e4d702230fca1",
+      "number": 91,
+      "binary_sha256": "a4c4940b5a37a980f7983993bda164e0e53da445293c3591bcf3cf25221e76f0"
+    }
+  ]
+}

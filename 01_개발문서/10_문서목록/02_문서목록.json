@@ -21,14 +21,14 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 44,
     "current_06_분석연구": 13,
-    "current_07_검증": 25,
+    "current_07_검증": 26,
     "current_08_운영환경": 5,
     "current_09_개발계획": 4,
     "current_11_검토기록": 6,
     "current_traceability": 4,
     "document_catalog": 4,
     "document_navigation": 6,
-    "documentation_asset": 112,
+    "documentation_asset": 116,
     "documentation_validation_record": 1,
     "historical_proposal": 2,
     "historical_verification": 41,
@@ -27944,9 +27944,9 @@
       "path": "01_개발문서/04_화면설계/08_스튜디오_화면계약.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 34601,
-      "working_tree_sha256": "e3b5964b8a84a75544696501eabd169f2ce08269d5e7b7ca15a825e304343f37",
-      "text_lines": 226,
+      "bytes": 34789,
+      "working_tree_sha256": "98a2dd3dc057c15f1c42428889b1fb9fde4f1f31fae54d62bdba6e27ad87a984",
+      "text_lines": 228,
       "text_status": "utf8_read"
     },
     {
@@ -28473,7 +28473,7 @@
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
       "bytes": 618031,
-      "working_tree_sha256": "e2924129ac0bc87fbc24a416847c693eb71e8d63d13cd0ebb19d8820a27edcaa"
+      "working_tree_sha256": "6bbcdbe3819b5467812ab84c5f96487cf7bd15efdb27179d19d1a24b7cd10a22"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -28609,9 +28609,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 6473,
-      "working_tree_sha256": "8ef734c3411eb11e26a1cde0400c7a7ad08516166a8ac77a7438e21be05bd53f",
-      "text_lines": 53,
+      "bytes": 6758,
+      "working_tree_sha256": "069884e2329000a6b8cb25e740e1457f012a77729dd6db4e86a609ec8083b42d",
+      "text_lines": 55,
       "text_status": "utf8_read"
     },
     {
@@ -28672,9 +28672,9 @@
       "path": "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 132731,
-      "working_tree_sha256": "c618c854ec23d385d4215a134219506f653debfe6c667b36208269f9c797e10b",
-      "text_lines": 705,
+      "bytes": 132552,
+      "working_tree_sha256": "339fc9fd2f2c67cad901f1512a2c8c717e42030c8be6fea10362e172c8e953bd",
+      "text_lines": 709,
       "text_status": "utf8_read"
     },
     {
@@ -30522,6 +30522,43 @@
       "review_scope": "문서/시안 자산 보존",
       "bytes": 4032,
       "working_tree_sha256": "83b3f9e31192900ee8b7ffa6e618d1a58baeabd007f48790aeae010a66f26e92"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/89_빈스튜디오_색갱신진단화면.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 126879,
+      "working_tree_sha256": "081f6a25f403b4d1508067f0ea7c128d1f2b0b8d0f2cadafabe2f28df08c8dce"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/90_스튜디오_빈화면_유휴계측.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 126452,
+      "working_tree_sha256": "673318355ac21471f5681a75459e1f30d50abddf95c4cdb24323c520c6d9761f"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/91_스튜디오_복원프로젝트_준비완료.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 149817,
+      "working_tree_sha256": "440b455f2fc181fd5dad6f60fa5b74bad9bdb4fcd2cebe1d634e4d702230fca1"
+    },
+    {
+      "path": "01_개발문서/07_검증/37_스튜디오_재열기와_유휴성능_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 3794,
+      "working_tree_sha256": "31f2b08bc53636ce1664e3f3fd66331ae9ca21b483463f22224c9fde765d4020",
+      "text_lines": 32,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/38_스튜디오_재열기와_유휴성능_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 52423,
+      "working_tree_sha256": "1e705c9d69904e6b614560ce815604360041847a8777b65053d623f2017918f3"
     }
   ],
   "identical_byte_groups": [
@@ -30670,37 +30707,33 @@
     [
       "01_개발문서/07_검증/02_실행화면/33_독립참조_보존판정과_조건.jpg",
       "01_개발문서/07_검증/02_실행화면/38_독립판정_저장후_재열기.jpg"
+    ],
+    [
+      "01_개발문서/07_검증/02_실행화면/88_스튜디오발행본_수신재열기.jpg",
+      "01_개발문서/07_검증/02_실행화면/91_스튜디오_복원프로젝트_준비완료.jpg"
     ]
   ],
   "incremental_refresh": {
     "date_kst": "2026-11-20",
-    "mode": "step12_studio_archive_export_documents_only",
-    "previous_inventory_sha256": "bb810c24c44cbfd368c18db806458e4a899260194889d122ab80f1b11ee8ad8f",
+    "mode": "step12_windows_editor_idle_evidence",
+    "previous_inventory_sha256": "a6848c7ba18bac962d3f7da3c72179ba81485867c9a3e56a944307f1356dbfa6",
     "refreshed_paths": [
-      "01_개발문서/04_화면설계/27_보고서와_인계_화면.md",
-      "01_개발문서/05_기능설계/01_프로젝트/02_프로젝트_보존묶음과_편집복원.md",
-      "01_개발문서/07_검증/01_구현감사/01_설계기능.json",
+      "01_개발문서/04_화면설계/08_스튜디오_화면계약.md",
       "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
-      "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
-      "01_개발문서/07_검증/02_실행화면/84_편집복원용_묶음범위검토.jpg",
-      "01_개발문서/07_검증/02_실행화면/85_보존발행기록_사본저장.jpg",
-      "01_개발문서/07_검증/02_실행화면/86_형식전환_읽기전용기록보존.jpg",
-      "01_개발문서/07_검증/02_실행화면/87_스튜디오발행본_수신검토.jpg",
-      "01_개발문서/07_검증/02_실행화면/88_스튜디오발행본_수신재열기.jpg",
-      "01_개발문서/07_검증/35_스튜디오_보존묶음발행_검증.md",
-      "01_개발문서/07_검증/36_스튜디오_보존묶음발행_실행기록.json",
+      "01_개발문서/07_검증/02_실행화면/89_빈스튜디오_색갱신진단화면.jpg",
+      "01_개발문서/07_검증/02_실행화면/90_스튜디오_빈화면_유휴계측.jpg",
+      "01_개발문서/07_검증/02_실행화면/91_스튜디오_복원프로젝트_준비완료.jpg",
+      "01_개발문서/07_검증/37_스튜디오_재열기와_유휴성능_검증.md",
+      "01_개발문서/07_검증/38_스튜디오_재열기와_유휴성능_실행기록.json",
       "01_개발문서/07_검증/README.md",
-      "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
-      "01_개발문서/09_개발계획/03_개발완료_계획.md"
+      "01_개발문서/09_개발계획/02_개발착수와_현재상태.md"
     ],
     "added_paths": [
-      "01_개발문서/07_검증/02_실행화면/84_편집복원용_묶음범위검토.jpg",
-      "01_개발문서/07_검증/02_실행화면/85_보존발행기록_사본저장.jpg",
-      "01_개발문서/07_검증/02_실행화면/86_형식전환_읽기전용기록보존.jpg",
-      "01_개발문서/07_검증/02_실행화면/87_스튜디오발행본_수신검토.jpg",
-      "01_개발문서/07_검증/02_실행화면/88_스튜디오발행본_수신재열기.jpg",
-      "01_개발문서/07_검증/35_스튜디오_보존묶음발행_검증.md",
-      "01_개발문서/07_검증/36_스튜디오_보존묶음발행_실행기록.json"
+      "01_개발문서/07_검증/02_실행화면/89_빈스튜디오_색갱신진단화면.jpg",
+      "01_개발문서/07_검증/02_실행화면/90_스튜디오_빈화면_유휴계측.jpg",
+      "01_개발문서/07_검증/02_실행화면/91_스튜디오_복원프로젝트_준비완료.jpg",
+      "01_개발문서/07_검증/37_스튜디오_재열기와_유휴성능_검증.md",
+      "01_개발문서/07_검증/38_스튜디오_재열기와_유휴성능_실행기록.json"
     ],
     "removed_paths": [],
     "preserved_reference_records": 3336,

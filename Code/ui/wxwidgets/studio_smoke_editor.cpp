@@ -12,6 +12,24 @@ void StudioSmokeDriver::EditorSmokeNext()
     {
         CheckUxState("saved", false);
         m_uxChecks.push_back("saved_state");
+        auto scene = std::move(m_frame.m_scene);
+        const bool busy = m_frame.m_busy;
+        m_frame.m_scene = Json::object();
+        m_frame.m_busy = true;
+        m_frame.UpdateControls();
+        CanvasAssert(m_frame.m_editState == "loading" && !m_frame.m_apply->IsEnabled() &&
+                         m_frame.m_canvasHint->GetLabel().Contains(Display("불러오는 중")),
+                     "A pending project load must show loading while editing remains disabled.");
+        m_frame.m_busy = false;
+        m_frame.UpdateControls();
+        CanvasAssert(m_frame.m_editState == "stale" && !m_frame.m_apply->IsEnabled() &&
+                         m_frame.m_canvasHint->GetLabel().Contains(Display("F5")),
+                     "A settled project with unsynchronized views must retain the recovery message.");
+        m_frame.m_scene = std::move(scene);
+        m_frame.m_busy = busy;
+        m_frame.UpdateControls();
+        CheckUxState("saved", false);
+        m_uxChecks.push_back("loading_and_recovery_separated");
         const wxMenuItem* redo = m_frame.GetMenuBar()->FindItem(IdRedo);
         const std::unique_ptr<wxAcceleratorEntry> primary(redo->GetAccel());
         bool alternate = false;
