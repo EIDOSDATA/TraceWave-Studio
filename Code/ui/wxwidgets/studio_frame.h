@@ -295,6 +295,7 @@ private:
     ProjectSetupDialog* m_setupDialog = nullptr;
     bool m_closeAfterSetup = false;
     bool m_forceCloseAfterSetup = false;
+    bool m_extendedEditView = false;
     bool m_targetsSupported = false;
     bool m_templatesSupported = false;
     bool m_designRulesSupported = false;

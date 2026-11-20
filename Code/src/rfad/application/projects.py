@@ -10,6 +10,7 @@ from uuid import uuid4
 
 from rfad.application.canvas import build_canvas_dto, canvas_command
 from rfad.application.editor import build_dto, edit_command
+from rfad.application.edit_view_contract import extended_view
 from rfad.application.cad_jobs import CAD_METHODS, CadCoordinator, CadRuntime
 from rfad.application.exchange_jobs import ExchangeCoordinator
 from rfad.application import exchange_service, exchange_contract
@@ -363,30 +364,33 @@ class ProjectService:
         _fields(params, {"contract_version", "context", "input"})
         if params["contract_version"] != "rfad.api/2.0":
             raise ProjectError("E_VERSION", "지원하지 않는 API 버전입니다.")
-        data = _fields(params["input"], {"expected_revision"}, {"selection"})
+        data = _fields(params["input"], {"expected_revision"}, {"selection", "display_profile"})
         _uuid(data["expected_revision"])
+        extended = extended_view(data)
         state = self.journal.read()
         project = self._project(state, params["context"])
         document = self._load(project)
         self._check_history_head(project, document["revision_id"])
         if document["revision_id"] != data["expected_revision"]:
             raise ProjectError("E_CONFLICT", "속성 조회의 기준 개정이 현재 개정과 다릅니다.", details={"field_path": "expected_revision"})
-        return build_dto(document, self._saved_revision(project), self._history_status(project), data.get("selection"))
+        return build_dto(document, self._saved_revision(project), self._history_status(project), data.get("selection"),
+                         extended=extended)
 
     def canvas_state(self, params: dict) -> dict:
         """! @brief 개정에 결합된 2D 표시 데이터만 조회하며 전체 원본을 전송하지 않는다."""
         _fields(params, {"contract_version", "context", "input"})
         if params["contract_version"] != "rfad.api/2.0":
             raise ProjectError("E_VERSION", "지원하지 않는 API 버전입니다.")
-        data = _fields(params["input"], {"expected_revision"})
+        data = _fields(params["input"], {"expected_revision"}, {"display_profile"})
         _uuid(data["expected_revision"])
+        extended = extended_view(data)
         state = self.journal.read()
         project = self._project(state, params["context"])
         document = self._load(project)
         self._check_history_head(project, document["revision_id"])
         if document["revision_id"] != data["expected_revision"]:
             raise ProjectError("E_CONFLICT", "2D 조회의 기준 개정이 현재 개정과 다릅니다.", details={"field_path": "expected_revision"})
-        return build_canvas_dto(document)
+        return build_canvas_dto(document, extended=extended)
 
     def _admit(self, state: dict, method: str, context: dict, data: dict) -> dict:
         """! @brief 작은 작업도 queued TaskRef로만 접수한다."""

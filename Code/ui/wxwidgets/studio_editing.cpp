@@ -10,7 +10,12 @@ void StudioFrame::RefreshEditor(const Json& selection, std::function<void()> com
     UpdateControls();
     const auto project = m_project;
     const auto revision = m_revision;
-    Send("editor.get", Json{{"expected_revision", m_revision}, {"selection", selection}}, false, Context(),
+    Json input{{"expected_revision", revision}, {"selection", selection}};
+    if (m_extendedEditView)
+    {
+        input["display_profile"] = Studio::EditViewTransportProfile;
+    }
+    Send("editor.get", input, false, Context(),
          [this, project, revision, completed](const Json& result)
          {
              if (m_closing || project != m_project || revision != m_revision)
@@ -42,7 +47,12 @@ void StudioFrame::RefreshScene(std::function<void()> completed)
     }
     const auto project = m_project;
     const auto revision = m_revision;
-    Send("canvas.get", Json{{"expected_revision", m_revision}}, false, Context(),
+    Json input{{"expected_revision", revision}};
+    if (m_extendedEditView)
+    {
+        input["display_profile"] = Studio::EditViewTransportProfile;
+    }
+    Send("canvas.get", input, false, Context(),
          [this, project, revision, completed](const Json& result)
          {
              if (m_closing || project != m_project || revision != m_revision)

@@ -1,5 +1,6 @@
 /** @file @brief 주 창의 session 책임을 구현한다. */
 #include "studio_internal.h"
+#include "editor_sync.h"
 #include "startup_probe.h"
 #include "output_controller.h"
 
@@ -30,6 +31,9 @@ void StudioFrame::Connect()
              }
              m_epoch = result.at("idempotency_policy").at("request_key_epoch").get<std::string>();
              m_connected = true;
+             const auto editTransport = result.value("edit_view_transport", Json::object());
+             m_extendedEditView = editTransport.is_object() &&
+                                  editTransport.value("profile", Json(nullptr)) == Studio::EditViewTransportProfile;
              m_designRulesSupported = result.contains("design_rules_profile");
              m_physicalSetupSupported = result.contains("physical_setup_profile");
              m_studySupported = result.value("methods", Json::object()).contains("study.context");

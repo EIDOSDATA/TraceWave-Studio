@@ -1,0 +1,120 @@
+{
+  "schema": "rfad.windows-large-edit-view-verification/0.1",
+  "date_kst": "2026-11-20",
+  "source_parent": "f5fbd946d6836bbaae82cf8d7709db71f353fdef",
+  "capabilities": {
+    "display_profile": "rfad.edit-view-transport/0.1",
+    "legacy_dto_bytes": 61440,
+    "negotiated_dto_bytes": 393216,
+    "rpc_frame_bytes": 1048576,
+    "project_limit_bytes": 524288
+  },
+  "fixture": {
+    "geometry": 250,
+    "project_bytes": 337682,
+    "views": {
+      "editor.get": {
+        "legacy_error": "E_RESOURCE",
+        "items": 258,
+        "frame_bytes": 251697,
+        "frame_sha256": "28468271098f610ff5138f7b72938fa3189d2a02f846e72d88131f4d083484f4",
+        "dto_bytes": 254283
+      },
+      "canvas.get": {
+        "legacy_error": "E_RESOURCE",
+        "items": 250,
+        "frame_bytes": 288730,
+        "frame_sha256": "e8fef7131ed1a0f2280e32ae4e45bd2e658caf0d08b68448c92d0ccecc1ba6bc",
+        "dto_bytes": 295227
+      }
+    }
+  },
+  "native_gui": {
+    "executable": "tracewave_gui.exe",
+    "sha256": "4b48e0e25006c9f0518788efb77b95f323f030daa488340c6e491fd8d36a9223",
+    "report": {
+      "apply_enabled": false,
+      "cad_checks": [],
+      "cad_result": {},
+      "cad_stage": 0,
+      "canvas_checks": [],
+      "canvas_stage": 0,
+      "editor_checks": [],
+      "editor_stage": 0,
+      "editor_ui_state": "saved",
+      "error": "",
+      "frame_budget_tested": false,
+      "mesh_bodies": 0,
+      "mesh_triangles": 0,
+      "mesh_vertex_buffer": {
+        "bytes": 0,
+        "uploads": 0
+      },
+      "passed": true,
+      "pcb_checks": [],
+      "pcb_project_path": "",
+      "pcb_request_ticks": 0,
+      "pcb_stage": 0,
+      "pcb_ticks": 0,
+      "physics_tested": false,
+      "primitives_checks": [],
+      "primitives_stage": 0,
+      "project_id": "a363cf23-262b-4362-937b-c26f1873ba8a",
+      "rendered_frames": 0,
+      "renderer": "",
+      "revision_id": "2c4dbe5f-20d6-423d-b72f-50b321083ae5",
+      "saved_revision": "2c4dbe5f-20d6-423d-b72f-50b321083ae5",
+      "schema_version": "rfad.gui-smoke/0.1",
+      "service_sessions": 2,
+      "setup_checks": [],
+      "setup_pending_ticks": 0,
+      "setup_stage": 0,
+      "snapshot_id": "13ec9318-69fe-483d-9736-f9e45ab59591",
+      "solver_cancel_trace": {},
+      "solver_checks": [],
+      "solver_frames": 0,
+      "solver_result": {},
+      "solver_sample_count": 0,
+      "solver_stage": 0,
+      "stage": 5,
+      "study_checks": [],
+      "study_stage": 0,
+      "study_view": {},
+      "sweep_circuit_id": "",
+      "sweep_grid_id": "",
+      "sweep_view": {},
+      "ux_checks": []
+    },
+    "unchanged_fields_after_reopen": [
+      "board",
+      "geometry",
+      "materials",
+      "stackup",
+      "ports"
+    ]
+  },
+  "test_runs": {
+    "views_and_windows": {
+      "passed": 3,
+      "actual_gui_count": 2,
+      "seconds": 33.569,
+      "log": {
+        "file": "stage12y-gui-final.log",
+        "bytes": 931,
+        "sha256": "9820faa83b6bb972398e03b0c60cd2f1b657f20cc47ca205724b8b9f73119cb2"
+      }
+    },
+    "ctest": {
+      "passed": 13,
+      "log": {
+        "file": "stage12y-ctest.log",
+        "bytes": 1526,
+        "sha256": "bff08b601ac95043b67552cef355580b76fbab2adc137fd65b24c881d5a830a1"
+      }
+    },
+    "implementation_audit": {
+      "passed": 14
+    }
+  },
+  "f1_large_fixture_performance_accepted": false
+}

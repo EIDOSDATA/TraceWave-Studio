@@ -9,6 +9,7 @@ from rfad.domain.design import resolve_scalar
 from rfad.domain.errors import ProjectError
 from rfad.domain.units import Quantity, QuantityError
 from rfad.domain.object_names import allocate_name, name_dto
+from rfad.application.edit_view_contract import result_limit
 
 
 PROFILE = "rfad.canvas/0.1"
@@ -208,7 +209,7 @@ def _retarget_arc(document: dict, arc: dict, endpoint: str, target: list[float])
     arc["sweep_angle"] = _replace_quantity(arc["sweep_angle"], _quantity(new_sweep, "deg", "geometry.sweep_angle"))
 
 
-def build_canvas_dto(document: dict) -> dict:
+def build_canvas_dto(document: dict, *, extended: bool = False) -> dict:
     """! @brief mm/deg의 표시 모델만 만들며 미정 형상과 생략 사유를 분리한다."""
     result = {"profile": PROFILE, "project_id": document["project_id"], "revision_id": document["revision_id"],
               "unit": "mm", "angle_unit": "deg", "ranges": dict(DISPLAY_RANGES), "board": None,
@@ -280,8 +281,8 @@ def build_canvas_dto(document: dict) -> dict:
         owners = owner_map(document)
         for row in result["shapes"]:
             row["owner_footprint_id"] = owners.get(("geometry", row["id"]))
-    if len(json.dumps(result, ensure_ascii=False, allow_nan=False).encode("utf-8")) > MAX_DTO_BYTES:
-        _fail("2D 표시 DTO가 초기 전송 크기 상한을 초과했습니다.", "canvas", "E_RESOURCE")
+    if len(json.dumps(result, ensure_ascii=False, allow_nan=False).encode("utf-8")) > result_limit(MAX_DTO_BYTES, extended):
+        _fail("2D 표시 DTO가 해당 전송 크기 상한을 초과했습니다.", "canvas", "E_RESOURCE")
     return result
 
 

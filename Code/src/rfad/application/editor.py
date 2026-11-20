@@ -11,6 +11,7 @@ from rfad.domain.object_names import allocate_name, object_label, name_dto, vali
 from rfad.domain.parameter_graph import restore_parameter_command
 from rfad.domain.units import Quantity, QuantityError, _UNITS
 from rfad.domain.pcb_features import COLLECTIONS as PCB_COLLECTIONS, records as pcb_records
+from rfad.application.edit_view_contract import result_limit
 
 
 PROFILE = "rfad.editor/0.1"
@@ -309,7 +310,7 @@ def fields_for(document: dict, selection: dict) -> list[dict]:
     return fields
 
 
-def build_dto(document: dict, saved_revision: str, history: dict, selection: dict | None) -> dict:
+def build_dto(document: dict, saved_revision: str, history: dict, selection: dict | None, *, extended: bool = False) -> dict:
     """! @brief 객체 목록과 선택 속성만 전송하며 전체 원본과 계산 캐시는 내보내지 않는다."""
     items = [{"kind": "project", "id": document["project_id"], "name": document["metadata"]["name"], "name_state": "stored", "label": document["metadata"]["name"]}]
     items += [{"kind": "parameter", "id": identity, **name_dto(document, obj, "parameters")} for identity, obj in sorted(document["parameters"].items())]
@@ -327,8 +328,8 @@ def build_dto(document: dict, saved_revision: str, history: dict, selection: dic
               "selection": {**selected, "fields": selected_fields}}
     if any(field["editor"] == "coordinate_table" for field in selected_fields):
         result["coordinate_choices"] = _parameter_choices(document, "length")
-    if len(json.dumps(result, ensure_ascii=False).encode("utf-8")) > MAX_DTO_BYTES:
-        _fail("선택 속성 DTO가 초기 전송 크기 상한을 초과합니다.", "selection", "E_RESOURCE")
+    if len(json.dumps(result, ensure_ascii=False).encode("utf-8")) > result_limit(MAX_DTO_BYTES, extended):
+        _fail("선택 속성 DTO가 해당 전송 크기 상한을 초과합니다.", "selection", "E_RESOURCE")
     return result
 
 

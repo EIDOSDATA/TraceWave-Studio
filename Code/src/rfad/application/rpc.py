@@ -16,6 +16,7 @@ from rfad.application.catalog_api import describe as describe_catalog, query as 
 from rfad.application.pcb_selection_contract import READ_METHODS as PCB_SELECTION_READS, MUTATION_METHODS as PCB_SELECTION_MUTATIONS
 from rfad.application.project_study_contract import READS as STUDY_READS, MUTATIONS as STUDY_MUTATIONS
 from rfad.application import target_editor
+from rfad.application import edit_view_contract
 from rfad.application import exchange_service, exchange_contract
 from rfad.application import pcb_exchange_service
 from rfad.application import pcb_import_service
@@ -199,6 +200,7 @@ def capabilities(service=None, catalog=None) -> dict:
         result["editor_profile"] = {"profile": "rfad.editor/0.1", "source": "draft_revision", "history_limit": 128, "history_persistent": True, "full_document_returned": False, "max_dto_bytes": 61440}
         result["methods"].update({name: {"status": "implemented", "extension_profile": "rfad.canvas/0.1"} for name in ("canvas.get", "canvas.apply")})
         result["canvas_profile"] = {"profile": "rfad.canvas/0.1", "source": "draft_revision", "unit": "mm", "angle_unit": "deg", "operations": ["create_board", "create_circular_board", "create_layer", "create_dielectric_layer", "create_line", "create_arc", "create_polygon", "create_pad", "create_via", "translate", "move_endpoint", "remove"], "full_document_returned": False, "max_dto_bytes": 61440}
+        result["edit_view_transport"] = {"profile": edit_view_contract.PROFILE, "max_dto_bytes": MAX_SELECTION_RESULT_BYTES}
         result["project_profile"]["geometry_kinds"] = ["line_path", "arc_path", "planar_region", "pad", "via"]
         result["methods"]["cad.latest"] = {"status": "implemented", "extension_profile": "rfad.cad-view/0.1"}
         result["methods"].update({name: {"status": "implemented", "api_id": api_id, "extension_profile": "rfad.step.mechanical/0.1"} for name, api_id in (("geometry.build", "API-008"), ("export.preview", "API-023"), ("export.build", "API-024"))})
