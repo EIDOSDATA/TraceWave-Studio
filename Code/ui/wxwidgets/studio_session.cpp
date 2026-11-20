@@ -1,5 +1,6 @@
 /** @file @brief 주 창의 session 책임을 구현한다. */
 #include "studio_internal.h"
+#include "startup_probe.h"
 #include "output_controller.h"
 
 void StudioFrame::Connect()
@@ -91,6 +92,16 @@ void StudioFrame::Connect()
                                          result.value("methods", Json::object()).contains("sweep.selection.receipt");
              Log("프로젝트 서비스에 연결했습니다.");
              UpdateControls();
+             if (m_startupProbe)
+             {
+                 const auto openStatus = methods.value("project.open", Json::object()).value("status", "");
+                 if (!GetMenuBar()->IsEnabled(IdCreate) || openStatus != "implemented")
+                 {
+                     m_startupProbe->Fail("Project creation is unavailable.");
+                     return;
+                 }
+                 m_startupProbe->ServiceReady();
+             }
              m_smoke->OnConnected();
              if (!m_options.smoke && (!m_path.empty() || !m_options.openProject.empty()))
              {

@@ -407,7 +407,25 @@ void DesignCanvas::Status(const std::string& message)
 
 void DesignCanvas::OnPaint(wxPaintEvent&)
 {
-    wxAutoBufferedPaintDC dc(this);
+    {
+        wxAutoBufferedPaintDC dc(this);
+        PaintScene(dc);
+    }
+    if (!onFirstVisiblePaint || !IsShownOnScreen())
+    {
+        return;
+    }
+    const auto size = GetClientSize();
+    if (size.GetWidth() > 0 && size.GetHeight() > 0)
+    {
+        auto painted = std::move(onFirstVisiblePaint);
+        onFirstVisiblePaint = {};
+        painted();
+    }
+}
+
+void DesignCanvas::PaintScene(wxDC& dc)
+{
     dc.SetBackground(wxBrush(wxColour(248, 251, 255)));
     dc.Clear();
     CanvasRenderer renderer(*this, dc, Viewport());

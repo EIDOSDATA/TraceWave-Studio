@@ -10258,7 +10258,8 @@
         "runtime_profiles/project-studies.json",
         "runtime_profiles/internal-validation-bundle.json",
         "../01_개발문서/07_검증/39_엠시피와_키캐드_교환_검증.md",
-        "../01_개발문서/07_검증/47_키캐드재저장본_엠시피왕복_검증.md"
+        "../01_개발문서/07_검증/47_키캐드재저장본_엠시피왕복_검증.md",
+        "../01_개발문서/07_검증/49_윈도우_에프영_시작시간_검증.md"
       ],
       "gaps": [
         "실제 F1/F2 조작에서 60/30 fps, 전체 프로세스 메모리/입력 지연과 DPI/도킹/GPU/WSL 복구의 R1 수용이 남는다.",
@@ -10281,6 +10282,7 @@
         "tests/test_mcp.py::McpTests.test_real_stdio_discovery_emits_only_protocol",
         "tests/test_mcp.py::McpTests.test_discovery_and_mutation_replay_use_the_same_receipt",
         "tests/test_mcp_pcb_exchange_process.py::McpPcbExchangeTests.test_native_kicad_and_mcp_board_round_trip",
+        "tests/test_gui_process.py::GuiProcessTests.test_f0_startup_records_real_display_and_editor_ready",
         "tests/test_gui_solver_process.py::GuiSolverProcessTests.test_circle_arc_native_results_save_cancel_and_restart",
         "tests/test_wsl_readiness.py::WslReadinessTests.test_control_can_cancel_a_real_silent_launcher"
       ]
@@ -14008,8 +14010,8 @@
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
-      "text_sha256": "e5bceabac22c49f23d3489f0a005d93ca615ebebbd892e7d2aa01c05f4a275c4",
-      "utf8_bytes": 64004
+      "text_sha256": "a68419b405a40565b937555fdc553b8639c19794729428568b47c0f7b115df61",
+      "utf8_bytes": 64194
     }
   ],
   "reviewed_commit": "de8b5ac8ca5cfc47d955e557bc76b07e12919e23",
@@ -14265,6 +14267,11 @@
       "path": "01_개발문서/07_검증/47_키캐드재저장본_엠시피왕복_검증.md",
       "text_sha256": "24d54746a3444529adfb90f3690caee8eeafcd713e80c7aa9f7f2324e375feea",
       "utf8_bytes": 1991
+    },
+    {
+      "path": "01_개발문서/07_검증/49_윈도우_에프영_시작시간_검증.md",
+      "text_sha256": "9068b69619d3fd3d9ab6a4327c633e22bd2b31ac73291a556238a3273893bafa",
+      "utf8_bytes": 3615
     },
     {
       "path": "Code/runtime_profiles/cad-worker-windows-x64.json",
@@ -15463,8 +15470,8 @@
     },
     {
       "path": "Code/tests/test_gui_process.py",
-      "text_sha256": "64f306f2a0dd1a284eff842469f03f42827cb88f53619a3118d384d57e8d5312",
-      "utf8_bytes": 9169
+      "text_sha256": "0220b5bf382920e93fc978d7ce95a50a908a39a4fd39e1779ba479cfbd002a0f",
+      "utf8_bytes": 14834
     },
     {
       "path": "Code/tests/test_gui_results_process.py",

@@ -2,6 +2,7 @@
 
 import json
 import os
+import shutil
 from pathlib import Path
 import subprocess
 import sys
@@ -12,6 +13,8 @@ import unittest
 
 _GUI = os.environ.get("RFAD_GUI_EXE", "")
 _SOURCE = Path(__file__).resolve().parents[1] / "src"
+_STARTUP_TOOL = _SOURCE.parent / "tools" / "measure_windows_startup.ps1"
+_PWSH = shutil.which("pwsh")
 
 
 @unittest.skipUnless(sys.platform == "win32" and _GUI, "RFAD_GUI_EXE로 Windows GUI 실행 파일을 지정해야 합니다.")
@@ -47,6 +50,87 @@ class GuiProcessTests(unittest.TestCase):
         (package / "__init__.py").write_text(initialization, encoding="utf-8")
         (package / "__main__.py").write_text(program, encoding="utf-8")
         return source
+
+    @unittest.skipUnless(_PWSH, "F0 수집에 PowerShell 7이 필요합니다.")
+    def test_f0_startup_records_real_display_and_editor_ready(self):
+        """! @brief 첫 캔버스와 새 프로젝트 준비의 서로 다른 실제 시점을 검증한다."""
+        with TemporaryDirectory(prefix="rfad F0 시작 ") as temporary:
+            report = Path(temporary) / "시작 기록.json"
+            command = [_PWSH, "-NoProfile", "-File", str(_STARTUP_TOOL), "-Gui", str(Path(_GUI).resolve()),
+                       "-Python", sys.executable, "-Source", str(_SOURCE), "-SampleCount", "1", "-Output", str(report)]
+            result = subprocess.run(command, capture_output=True, timeout=100, check=False)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            original = report.read_bytes()
+            overwrite = subprocess.run(command, capture_output=True, timeout=30, check=False)
+            self.assertNotEqual(overwrite.returncode, 0)
+            self.assertEqual(report.read_bytes(), original)
+            self.assertFalse(list(Path(str(report) + ".workspace").rglob("*.rfad")))
+        data = json.loads(original)
+        self.assertTrue(data["warmup"]["ok"])
+        self.assertEqual(data["summary"]["sample_count"], 1)
+        self.assertTrue(data["summary"]["complete"])
+        self.assertIsNone(data["summary"]["timing_ms"]["first_window_ms"]["within_target"])
+        sample, = data["samples"]
+        paint = sample["probe"]["canvas_painted_qpc"]
+        ready = sample["probe"]["service_ready_qpc"]
+        scale = 1000 / data["qpc_frequency"]
+        self.assertGreater(sample["first_window_ms"], 0)
+        self.assertAlmostEqual(sample["first_window_ms"], (paint - sample["launch_qpc"]) * scale)
+        self.assertAlmostEqual(sample["new_project_ready_ms"], (max(paint, ready) - sample["launch_qpc"]) * scale)
+
+    @unittest.skipUnless(_PWSH, "F0 수집에 PowerShell 7이 필요합니다.")
+    def test_f0_startup_fails_when_service_disconnects(self):
+        """! @brief 창만 그려지고 서비스가 종료하는 경우 합격값을 만들지 않는다."""
+        with TemporaryDirectory(prefix="rfad F0 오류 ") as temporary:
+            directory = Path(temporary)
+            source = self.source_stub(directory, "raise SystemExit(1)\n")
+            report = directory / "실패.json"
+            result = subprocess.run(
+                [_PWSH, "-NoProfile", "-File", str(_STARTUP_TOOL), "-Gui", str(Path(_GUI).resolve()),
+                 "-Python", sys.executable, "-Source", str(source), "-SampleCount", "1", "-Output", str(report)],
+                capture_output=True, timeout=100, check=False)
+            self.assertNotEqual(result.returncode, 0)
+            data = json.loads(report.read_bytes())
+        self.assertFalse(data["warmup"]["probe"]["ok"])
+        self.assertFalse(data["summary"]["complete"])
+        self.assertIsNone(data["summary"]["timing_ms"]["new_project_ready_ms"]["p95"])
+
+    @unittest.skipUnless(_PWSH, "F0 합산에 PowerShell 7이 필요합니다.")
+    def test_f0_cold_summary_requires_distinct_matching_boot_records(self):
+        """! @brief 합성 표본으로 동일 부팅 거절과 소표본 p95 산식을 검사한다."""
+        with TemporaryDirectory(prefix="rfad F0 합산 ") as temporary:
+            directory = Path(temporary)
+            records = []
+            for index, elapsed in enumerate((1000, 2000, 2200, 2300, 3100), start=1):
+                record = directory / f"cold-{index}.json"
+                record.write_text(json.dumps({
+                    "schema": "rfad.windows-startup-measurement/0.1", "mode": "Cold",
+                    "boot_started_utc": f"2026-01-{index:02}T00:00:00Z",
+                    "cold_first_launch_asserted_by_operator": True, "fixture": {"profile": "synthetic"},
+                    "samples": [{"ok": True, "first_window_ms": elapsed, "new_project_ready_ms": elapsed + 900}],
+                }), encoding="utf-8")
+                records.append(str(record))
+            command = [_PWSH, "-NoProfile", "-Command", "& $env:RFAD_F0_TOOL "
+                       "-ColdReports (Get-ChildItem -LiteralPath $env:RFAD_F0_FIXTURES -Filter 'cold-*.json').FullName "
+                       "-Output $env:RFAD_F0_OUTPUT"]
+            output = directory / "합산.json"
+            environment = dict(os.environ, RFAD_F0_TOOL=str(_STARTUP_TOOL), RFAD_F0_FIXTURES=temporary,
+                               RFAD_F0_OUTPUT=str(output))
+            result = subprocess.run(command, capture_output=True, timeout=30, env=environment, check=False)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            summary = json.loads(output.read_bytes())["summary"]
+            self.assertEqual(summary["sample_count"], 5)
+            self.assertEqual(summary["timing_ms"]["first_window_ms"]["median"], 2200)
+            self.assertEqual(summary["timing_ms"]["first_window_ms"]["p95"], 3100)
+            self.assertFalse(summary["timing_ms"]["first_window_ms"]["within_target"])
+            self.assertTrue(summary["timing_ms"]["new_project_ready_ms"]["within_target"])
+
+            duplicate = directory / "cold-duplicate.json"
+            shutil.copyfile(records[0], duplicate)
+            environment["RFAD_F0_OUTPUT"] = str(directory / "중복.json")
+            result = subprocess.run(command, capture_output=True, timeout=30, env=environment, check=False)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertFalse(Path(environment["RFAD_F0_OUTPUT"]).exists())
 
     def test_real_service_save_snapshot_restart_and_korean_paths(self):
         """! @brief 두 서비스 세션 사이에서 변경 내용과 저장 기준점이 보존되는지 검증한다."""

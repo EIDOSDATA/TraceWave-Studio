@@ -861,6 +861,7 @@
       "tests/test_mcp.py::McpTests.test_real_stdio_discovery_emits_only_protocol",
       "tests/test_mcp.py::McpTests.test_discovery_and_mutation_replay_use_the_same_receipt",
       "tests/test_mcp_pcb_exchange_process.py::McpPcbExchangeTests.test_native_kicad_and_mcp_board_round_trip",
+      "tests/test_gui_process.py::GuiProcessTests.test_f0_startup_records_real_display_and_editor_ready",
       "tests/test_gui_solver_process.py::GuiSolverProcessTests.test_circle_arc_native_results_save_cancel_and_restart",
       "tests/test_wsl_readiness.py::WslReadinessTests.test_control_can_cancel_a_real_silent_launcher"
     ],
@@ -870,7 +871,8 @@
       "runtime_profiles/project-studies.json",
       "runtime_profiles/internal-validation-bundle.json",
       "../01_개발문서/07_검증/39_엠시피와_키캐드_교환_검증.md",
-      "../01_개발문서/07_검증/47_키캐드재저장본_엠시피왕복_검증.md"
+      "../01_개발문서/07_검증/47_키캐드재저장본_엠시피왕복_검증.md",
+      "../01_개발문서/07_검증/49_윈도우_에프영_시작시간_검증.md"
     ],
     "next_steps": [
       4,

@@ -1,5 +1,6 @@
 /** @file @brief 주 창의 frame 책임을 구현한다. */
 #include "studio_internal.h"
+#include "startup_probe.h"
 #include "studio_shell.h"
 #include "studio_theme.h"
 #include "result_workspace.h"
@@ -22,6 +23,15 @@ StudioFrame::StudioFrame(Options options)
         {
             Connect();
         });
+}
+
+void StudioFrame::EnableStartupProbe()
+{
+    m_startupProbe = std::make_unique<StartupProbe>(*this);
+    m_canvas->onFirstVisiblePaint = [this]()
+    {
+        m_startupProbe->CanvasPainted();
+    };
 }
 
 StudioFrame::~StudioFrame()

@@ -56,11 +56,14 @@ public:
     std::function<void(const Json&)> onAction;
     std::function<void(const std::string&)> onSelection;
     std::function<void(const std::string&)> onStatus;
+    /** @brief 화면이 보이는 상태의 첫 그리기 후 한 번만 호출한다. */
+    std::function<void()> onFirstVisiblePaint;
 
 private:
     using Shape = CanvasScene::Shape;
 
     void OnPaint(wxPaintEvent& event);
+    void PaintScene(wxDC& dc);
     void OnLeftDown(wxMouseEvent& event);
     void OnLeftUp(wxMouseEvent& event);
     void OnMotion(wxMouseEvent& event);

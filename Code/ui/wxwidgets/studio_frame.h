@@ -17,6 +17,7 @@
 #include "dialog_gateway.h"
 
 class StudioSmokeDriver;
+class StartupProbe;
 class PcbSelectionDialog;
 class SolverChart;
 class DesignCanvas;
@@ -65,10 +66,13 @@ class StudioFrame final : public wxFrame
 public:
     explicit StudioFrame(Options options);
     ~StudioFrame() override;
+    /** @brief 창을 표시하기 전에만 F0 계측을 연결한다. */
+    void EnableStartupProbe();
 
 private:
     friend class StudioSmokeDriver;
     std::unique_ptr<StudioSmokeDriver> m_smoke;
+    std::unique_ptr<StartupProbe> m_startupProbe;
     struct NumericField
     {
         std::string key;

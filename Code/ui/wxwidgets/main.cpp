@@ -54,6 +54,7 @@ public:
         parser.AddSwitch("", "cad-smoke-test", "Run CAD export/view/cancel/restart smoke test and exit");
         parser.AddSwitch("", "cad-expect-failure", "Verify invalid CAD input without publishing output");
         parser.AddOption("", "smoke-report", "Smoke JSON output path");
+        parser.AddSwitch("", "measure-startup", "Write F0 startup timing to redirected stdout and close");
         parser.AddSwitch("h", "help", "Show help", wxCMD_LINE_OPTION_HELP);
         if (parser.Parse() != 0)
         {
@@ -120,7 +121,18 @@ public:
             ExitCode = 2;
             return false;
         }
+        const bool measureStartup = parser.Found("measure-startup");
+        if (measureStartup && (options.smoke || !options.openProject.empty() || !options.cadPython.empty() ||
+                               !options.exchangePython.empty() || !options.catalog.empty() || options.openEmsWsl))
+        {
+            ExitCode = 2;
+            return false;
+        }
         auto* frame = new StudioFrame(std::move(options));
+        if (measureStartup)
+        {
+            frame->EnableStartupProbe();
+        }
         SetTopWindow(frame);
         frame->Show();
         return true;

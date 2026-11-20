@@ -1,5 +1,6 @@
 /** @file @brief 주 창의 lifecycle 책임을 구현한다. */
 #include "studio_internal.h"
+#include "startup_probe.h"
 #include "pcb_selection_dialog.h"
 #include "project_study_dialog.h"
 #include "project_setup_dialog.h"
@@ -50,6 +51,10 @@ void StudioFrame::Failure(const std::string& message, bool disconnected)
         CadStatus("failed", message);
     }
     UpdateControls();
+    if (m_startupProbe)
+    {
+        m_startupProbe->Fail(message);
+    }
     if (m_options.smoke)
     {
         m_smoke->FinishSmoke(false, message);
