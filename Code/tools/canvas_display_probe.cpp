@@ -13,6 +13,7 @@
 #include <fstream>
 #include <iostream>
 #include <optional>
+#include <set>
 #include <string>
 #include <string_view>
 #include <thread>
@@ -30,7 +31,8 @@ constexpr int PreparePollMs = 25;
 constexpr int InputPeriodMs = 8;
 constexpr int InputEventId = wxID_HIGHEST + 1;
 constexpr int RunSeconds = 35;
-constexpr std::size_t ModelTriangles = 1000000;
+constexpr std::size_t LargeModelTriangles = 1000000;
+constexpr std::size_t GeneralModelTriangles = 100000;
 
 std::int64_t Counter()
 {
@@ -82,9 +84,10 @@ struct Stamp
 class ProbeFrame final : public wxFrame
 {
 public:
-    ProbeFrame(unsigned shapes, const std::filesystem::path& directory, Json scene, HANDLE out, int& result)
+    ProbeFrame(unsigned shapes, const std::filesystem::path& directory, Json scene, bool pan, bool drag,
+               std::size_t modelTriangles, HANDLE out, int& result)
         : wxFrame(nullptr, wxID_ANY, directory.empty() ? "TraceWave 2D display probe" : "TraceWave 3D display probe"),
-          m_timer(this), m_shapes(shapes), m_out(out), m_result(result)
+          m_timer(this), m_pan(pan), m_drag(drag), m_modelTriangles(modelTriangles), m_shapes(shapes), m_out(out), m_result(result)
     {
         LARGE_INTEGER frequency{};
         QueryPerformanceFrequency(&frequency);
@@ -131,6 +134,10 @@ public:
             m_layers = scene.at("layers").size();
             m_canvas->SetScene(scene);
             m_canvas->FitView();
+            if (m_drag)
+            {
+                ChooseDragShape(scene);
+            }
         }
         Bind(wxEVT_TIMER, &ProbeFrame::OnTimer, this);
         Bind(wxEVT_THREAD, &ProbeFrame::OnInput, this, InputEventId);
@@ -310,7 +317,7 @@ private:
         }
     }
 
-    /** @brief 시스템 입력을 바꾸지 않고 평소 확대 입력 처리기에 같은 종류의 이벤트를 전달한다. */
+    /** @brief 입력 타이머의 이벤트를 제품 확대, 이동 또는 3D 처리기에 전달한다. */
     void OnInput(wxThreadEvent&)
     {
         m_pending.store(false);
@@ -333,6 +340,11 @@ private:
             }
             return;
         }
+        if (m_pan || m_drag)
+        {
+            MoveCanvas(now);
+            return;
+        }
         const auto size = m_canvas->GetClientSize();
         const bool zoomIn = m_inputs.size() % 2 == 0;
         wxMouseEvent event(wxEVT_MOUSEWHEEL);
@@ -344,6 +356,78 @@ private:
         if (!m_canvas->GetEventHandler()->ProcessEvent(event))
         {
             Finish("확대 이벤트가 제품 캔버스에 전달되지 않았습니다.");
+            Close();
+        }
+    }
+
+    /** @brief 캔버스가 실제로 선택할 수 있는 움직이는 선을 시험 대상으로 찾는다. */
+    void ChooseDragShape(const Json& scene)
+    {
+        m_canvas->SetEditingEnabled(true);
+        const auto size = m_canvas->GetClientSize();
+        std::set<std::string> movableLines;
+        for (const auto& row : scene.at("shapes"))
+        {
+            if (row.value("kind", "") == "line_path" && row.value("movable", false))
+            {
+                movableLines.insert(row.at("id").get<std::string>());
+            }
+        }
+        for (const auto& row : scene.at("shapes"))
+        {
+            if (row.value("kind", "") != "line_path" || !row.value("movable", false))
+            {
+                continue;
+            }
+            const auto& start = row.at("start");
+            const auto& end = row.at("end");
+            const wxPoint pixel = m_canvas->WorldToScreen({
+                (start.at(0).get<double>() + end.at(0).get<double>()) / 2.0,
+                (start.at(1).get<double>() + end.at(1).get<double>()) / 2.0});
+            if (pixel.x > 90 && pixel.y > 90 && pixel.x < size.x - 90 && pixel.y < size.y - 90)
+            {
+                const auto hit = m_canvas->HitTest(pixel);
+                if (movableLines.count(hit) != 0)
+                {
+                    m_dragAnchor = pixel;
+                    m_dragIdentity = hit;
+                    return;
+                }
+            }
+        }
+        throw std::runtime_error("표시 영역에서 드래그할 수 있는 시험 선을 찾지 못했습니다.");
+    }
+
+    /** @brief 실제 가운데 버튼 이동 또는 선택된 선의 드래그를 반복한다. */
+    void MoveCanvas(std::int64_t now)
+    {
+        auto* handler = m_canvas->GetEventHandler();
+        const auto size = m_canvas->GetClientSize();
+        const wxPoint center = m_drag ? m_dragAnchor : wxPoint(size.x / 2, size.y / 2);
+        if (m_inputs.empty())
+        {
+            wxMouseEvent down(m_drag ? wxEVT_LEFT_DOWN : wxEVT_MIDDLE_DOWN);
+            down.SetEventObject(m_canvas);
+            down.SetPosition(center);
+            if (!handler->ProcessEvent(down) || !m_canvas->HasCapture() ||
+                (m_drag && m_canvas->Selection() != m_dragIdentity))
+            {
+                Finish("캔버스 이동 또는 선택된 선의 드래그를 시작하지 못했습니다.");
+                Close();
+                return;
+            }
+        }
+        const int step = static_cast<int>((m_inputs.size() + 1) % 120);
+        const int distance = step <= 60 ? step : 120 - step;
+        wxMouseEvent motion(wxEVT_MOTION);
+        motion.SetEventObject(m_canvas);
+        motion.SetPosition(center + wxPoint(distance + (m_drag ? 6 : 0), 0));
+        motion.SetMiddleDown(!m_drag);
+        motion.SetLeftDown(m_drag);
+        m_inputs.push_back(now);
+        if (!handler->ProcessEvent(motion) || !m_canvas->HasCapture())
+        {
+            Finish("캔버스 이동 또는 드래그가 끊겼습니다.");
             Close();
         }
     }
@@ -391,9 +475,9 @@ private:
             {
                 throw std::runtime_error(m_model->Error());
             }
-            if (m_model != nullptr && m_model->HasMesh() && m_model->TriangleCount() != ModelTriangles)
+            if (m_model != nullptr && m_model->HasMesh() && m_model->TriangleCount() != m_modelTriangles)
             {
-                throw std::runtime_error("3D 합성 시험에 100만 삼각형이 필요합니다.");
+                throw std::runtime_error("3D 합성 시험의 삼각형 수가 지정한 자료와 다릅니다.");
             }
             if (!m_reader && m_surface != nullptr && m_surface->GetClientSize() == m_size && !m_paints.empty() &&
                 (m_model == nullptr || m_model->HasMesh()) &&
@@ -454,6 +538,10 @@ private:
         m_finished = true;
         m_timer.Stop();
         StopThreads();
+        if (m_pan || m_drag)
+        {
+            m_canvas->CancelGesture();
+        }
         const auto& problem = !error.empty() ? error : (!m_readerError.empty() ? m_readerError : m_sourceError);
         const bool success = problem.empty();
         Json paints = Json::array(), presents = Json::array();
@@ -475,8 +563,8 @@ private:
                           {"canvas", {size.x, size.y}}, {"dpi", m_surface != nullptr ? m_surface->GetDPI().x : GetDPI().x},
                           {"shapes", model ? 0 : m_shapes}, {"layers", model ? m_model->BodyCount() : m_layers},
                           {"model_clicks_after_navigation", m_modelClicks},
-                          {"triangles", model ? m_model->TriangleCount() : 0}, {"target_fps", model ? 30 : 60},
-                          {"workload", model ? "model-rotate-pan" : "canvas-wheel-zoom"},
+                          {"triangles", model ? m_model->TriangleCount() : 0}, {"target_fps", m_modelTriangles == LargeModelTriangles ? 30 : 60},
+                          {"workload", model ? "model-rotate-pan" : (m_pan ? "canvas-middle-pan" : (m_drag ? "canvas-geometry-drag" : "canvas-wheel-zoom"))},
                           {"renderer", model ? m_model->RendererDescription() : "wxGraphicsContext"},
                           {"swap_interval", m_swapInterval ? Json(*m_swapInterval) : Json(nullptr)},
                           {"vertex_buffer", model ? m_model->VertexBufferDiagnostics() : Json(nullptr)},
@@ -500,6 +588,11 @@ private:
     bool m_swapIntervalChecked = false;
     bool m_knownPickingFixture = false;
     Json m_modelClicks = Json::array();
+    bool m_pan;
+    bool m_drag;
+    wxPoint m_dragAnchor;
+    std::string m_dragIdentity;
+    std::size_t m_modelTriangles;
     unsigned m_shapes;
     HANDLE m_out;
     int& m_result;
@@ -533,7 +626,9 @@ int main(int argc, char** argv)
 {
     unsigned shapes = 4096;
     std::filesystem::path directory;
-    const bool model = argc == 4 && std::string_view(argv[2]) == "--model";
+    const bool largeModel = argc == 4 && std::string_view(argv[2]) == "--model";
+    const bool generalModel = argc == 4 && std::string_view(argv[2]) == "--model-general";
+    const bool model = largeModel || generalModel;
     if (model)
     {
         directory = std::filesystem::absolute(std::filesystem::path(argv[3]));
@@ -547,7 +642,9 @@ int main(int argc, char** argv)
             return 2;
         }
     }
-    const bool projectedScene = argc == 4 && std::string_view(argv[2]) == "--scene";
+    const bool pan = argc == 4 && std::string_view(argv[2]) == "--scene-pan";
+    const bool drag = argc == 4 && std::string_view(argv[2]) == "--scene-drag";
+    const bool projectedScene = pan || drag || (argc == 4 && std::string_view(argv[2]) == "--scene");
     if (argc != 2 && argc != 3 && !model && !projectedScene)
     {
         return 2;
@@ -581,7 +678,8 @@ int main(int argc, char** argv)
                 scene = Json::parse(stream);
                 shapes = static_cast<unsigned>(scene.at("shapes").size());
             }
-            auto* window = new ProbeFrame(shapes, directory, std::move(scene), out.get(), result);
+            const std::size_t triangles = largeModel ? LargeModelTriangles : generalModel ? GeneralModelTriangles : 0;
+            auto* window = new ProbeFrame(shapes, directory, std::move(scene), pan, drag, triangles, out.get(), result);
             wxTheApp->SetTopWindow(window);
             window->Show();
             wxTheApp->OnRun();
