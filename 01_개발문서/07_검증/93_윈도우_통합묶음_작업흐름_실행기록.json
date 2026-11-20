@@ -1,0 +1,730 @@
+{
+  "schema": "rfad.windows-integrated-bundle-workflows/0.1",
+  "date_kst": "2026-11-21",
+  "archive": {
+    "files": 932,
+    "bytes": 13881765,
+    "source_revision": "c253881003ff788d5b0e016ba2145c26e43f4e15",
+    "sha256": "7dcdee2a5c3513e007c337b23973efcba2c9e151269592e52a2393f217ab9d48",
+    "status": "contents_verified"
+  },
+  "base_environment_run": {
+    "collected": 5,
+    "seconds": 91.496,
+    "methods": [
+      "test_target_crud_sources_templates_history_and_reopen",
+      "test_constraints_connectivity_drc_sources_after_reopen",
+      "test_rename_precision_recovery_atomic_history_and_source_preservation",
+      "test_native_sweep_preview_cancel_resume_save_and_reopen",
+      "test_native_past_sources_smith_compare_export_and_reopen"
+    ],
+    "log": {
+      "name": "기본 작업 흐름 검증.log",
+      "bytes": 4412,
+      "sha256": "e8d7c8a6f2792868f90b6a185186356da3408a44421732d6e44eb2c7452ec1a6"
+    },
+    "passed": 3,
+    "blocked_at_fixture_preparation": 2,
+    "observed_domain_error": "E_CAPABILITY",
+    "optional_packages_installed": false
+  },
+  "network_environment_retry": {
+    "collected": 2,
+    "seconds": 70.41,
+    "methods": [
+      "test_native_sweep_preview_cancel_resume_save_and_reopen",
+      "test_native_past_sources_smith_compare_export_and_reopen"
+    ],
+    "log": {
+      "name": "복소 계산 검증.log",
+      "bytes": 651,
+      "sha256": "aee2348f51267ad9786313ba436a494650ab978d70951f5c3e1fbe49edda3284"
+    },
+    "passed": 2,
+    "optional_packages_installed": true,
+    "rerun_of": [
+      "test_native_sweep_preview_cancel_resume_save_and_reopen",
+      "test_native_past_sources_smith_compare_export_and_reopen"
+    ]
+  },
+  "network_environment": {
+    "profile": "python-network-windows-x64",
+    "python": "3.12.10",
+    "pip": "25.0.1",
+    "packages": [
+      {
+        "name": "h5py",
+        "version": "3.16.0",
+        "wheel": "h5py-3.16.0-cp312-cp312-win_amd64.whl",
+        "sha256": "96b422019a1c8975c2d5dadcf61d4ba6f01c31f92bbde6e4649607885fe502d6",
+        "checked_license_notices": 7
+      },
+      {
+        "name": "numpy",
+        "version": "2.5.4",
+        "wheel": "numpy-2.5.4-cp312-cp312-win_amd64.whl",
+        "sha256": "a7b1b6353e36a7e50de2973a38d705c88ee93adcf120673cee7f45a4a3fa223a",
+        "checked_license_notices": 20
+      },
+      {
+        "name": "scipy",
+        "version": "1.18.1",
+        "wheel": "scipy-1.18.1-cp312-cp312-win_amd64.whl",
+        "sha256": "5e4d44984abc0020154ea81b247adeddcc3ac5527b975ff798bd1ba0adc513c2",
+        "checked_license_notices": 5
+      },
+      {
+        "name": "pandas",
+        "version": "3.1.1",
+        "wheel": "pandas-3.1.1-cp312-cp312-win_amd64.whl",
+        "sha256": "eef35cb3f07dbc8e10e298b8a55ee4aa04d6511f27d5277f13c3df45d3bbef5c",
+        "checked_license_notices": 19
+      },
+      {
+        "name": "scikit-rf",
+        "version": "2.2.0",
+        "wheel": "scikit_rf-2.2.0-py3-none-any.whl",
+        "sha256": "95db99c861cc925454d4a427e004b3281f7bf25b27874b9baaec6521058f9804",
+        "checked_license_notices": 0
+      },
+      {
+        "name": "typing-extensions",
+        "version": "4.16.0",
+        "wheel": "typing_extensions-4.16.0-py3-none-any.whl",
+        "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8",
+        "checked_license_notices": 1
+      },
+      {
+        "name": "python-dateutil",
+        "version": "4.0.0",
+        "wheel": "python_dateutil-4.0.0-py3-none-any.whl",
+        "sha256": "a5e246f79eb80475e691bf93862cead98decd8a498cf53ba0516fcdc0f50dc1c",
+        "checked_license_notices": 2
+      },
+      {
+        "name": "six",
+        "version": "1.17.0",
+        "wheel": "six-1.17.0-py2.py3-none-any.whl",
+        "sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274",
+        "checked_license_notices": 1
+      },
+      {
+        "name": "tzdata",
+        "version": "2026.6",
+        "wheel": "tzdata-2026.6-py2.py3-none-any.whl",
+        "sha256": "0a10eec6e13ef16b627fabed9a5f2ba61a62b1c67f327305f4e7e412a70b4aec",
+        "checked_license_notices": 2
+      }
+    ],
+    "pip_check": true
+  },
+  "reports": {
+    "target-template": {
+      "environment": "base",
+      "file": {
+        "name": "target-template.json",
+        "bytes": 2679,
+        "sha256": "9d5878a47f303f8de53f6407267955fdb0a5ef21c80ef28e9d70da31933cab41"
+      },
+      "report": {
+        "apply_enabled": false,
+        "cad_checks": [],
+        "cad_result": {},
+        "cad_stage": 0,
+        "canvas_checks": [],
+        "canvas_stage": 0,
+        "editor_checks": [],
+        "editor_stage": 0,
+        "editor_ui_state": "saved",
+        "error": "",
+        "frame_budget_tested": false,
+        "mesh_bodies": 0,
+        "mesh_triangles": 0,
+        "mesh_vertex_buffer": {
+          "bytes": 0,
+          "uploads": 0
+        },
+        "passed": true,
+        "pcb_checks": [],
+        "pcb_project_path": "",
+        "pcb_request_ticks": 0,
+        "pcb_stage": 0,
+        "pcb_ticks": 0,
+        "physics_tested": false,
+        "primitives_checks": [],
+        "primitives_stage": 0,
+        "project_id": "0311bc0d-41c9-40d4-86f4-0088ad1ecd36",
+        "rendered_frames": 0,
+        "renderer": "",
+        "revision_id": "34abc2d9-a09d-47c1-bb86-c52410e687fd",
+        "saved_revision": "34abc2d9-a09d-47c1-bb86-c52410e687fd",
+        "schema_version": "rfad.gui-smoke/0.1",
+        "service_sessions": 1,
+        "setup_checks": [
+          "late_response_close_and_destroy_are_safe",
+          "definitive_rejection_keeps_draft_editable",
+          "uncertain_mutation_requires_reload",
+          "failed_target_selection_restores_authoritative_identity",
+          "post_apply_query_failure_locks_without_duplicate_create",
+          "dirty_close_requires_explicit_discard",
+          "new_target_has_no_physical_defaults",
+          "parent_close_veto_during_target_apply",
+          "unit_only_change_preserves_si_and_missing_conditions",
+          "invalid_target_preserves_draft_and_revision",
+          "target_add_edit_select_remove",
+          "explicit_1001_samples_and_origins_preserved",
+          "completed_changes_reloaded_after_dialog_disconnect",
+          "latest_target_revision_returned_to_frame",
+          "target_undo_redo",
+          "other_card_draft_survives_post_apply_query_failure",
+          "template_card_drafts_and_close_confirmation",
+          "late_preview_invalidated_by_edit",
+          "oversized_template_origin_blocks_without_mutation",
+          "template_card_drafts_and_close_confirmation",
+          "late_preview_invalidated_by_edit",
+          "arc_card_preview_apply_without_physics_defaults",
+          "ifa_card_preview_apply_latest_revision",
+          "literature_reference_dimensions_and_partial_scope",
+          "literature_modified_dimensions_invalidate_and_keep_source",
+          "literature_atomic_apply_without_physical_defaults",
+          "template_single_command_undo_redo",
+          "literature_single_command_undo_redo",
+          "saved_reopen_preserves_geometry"
+        ],
+        "setup_pending_ticks": 410,
+        "setup_stage": 35,
+        "snapshot_id": "",
+        "solver_cancel_trace": {},
+        "solver_checks": [],
+        "solver_frames": 0,
+        "solver_result": {},
+        "solver_sample_count": 0,
+        "solver_stage": 0,
+        "stage": 0,
+        "study_checks": [],
+        "study_stage": 0,
+        "study_view": {},
+        "sweep_circuit_id": "",
+        "sweep_grid_id": "",
+        "sweep_view": {},
+        "ux_checks": []
+      }
+    },
+    "design-rules": {
+      "environment": "base",
+      "file": {
+        "name": "design-rules.json",
+        "bytes": 1334,
+        "sha256": "9e8282aa7144001e807c88816eff998ce525c1f63d5e8907270735f2db46fb67"
+      },
+      "report": {
+        "apply_enabled": false,
+        "cad_checks": [],
+        "cad_result": {},
+        "cad_stage": 0,
+        "canvas_checks": [],
+        "canvas_stage": 0,
+        "editor_checks": [],
+        "editor_stage": 0,
+        "editor_ui_state": "saved",
+        "error": "",
+        "frame_budget_tested": false,
+        "mesh_bodies": 0,
+        "mesh_triangles": 0,
+        "mesh_vertex_buffer": {
+          "bytes": 0,
+          "uploads": 0
+        },
+        "passed": true,
+        "pcb_checks": [],
+        "pcb_project_path": "",
+        "pcb_request_ticks": 0,
+        "pcb_stage": 0,
+        "pcb_ticks": 0,
+        "physics_tested": false,
+        "primitives_checks": [],
+        "primitives_stage": 0,
+        "project_id": "f1a3b902-8b7e-47bf-b5a4-3ccf17bdf5bf",
+        "rendered_frames": 0,
+        "renderer": "",
+        "revision_id": "68cfbb1f-a31f-46e8-b77c-f9f62fabfdb5",
+        "saved_revision": "68cfbb1f-a31f-46e8-b77c-f9f62fabfdb5",
+        "schema_version": "rfad.gui-smoke/0.1",
+        "service_sessions": 1,
+        "setup_checks": [
+          "design_rules_apply_and_overlay",
+          "design_rules_saved_reopen_and_recheck"
+        ],
+        "setup_pending_ticks": 29,
+        "setup_stage": 16,
+        "snapshot_id": "",
+        "solver_cancel_trace": {},
+        "solver_checks": [],
+        "solver_frames": 0,
+        "solver_result": {},
+        "solver_sample_count": 0,
+        "solver_stage": 0,
+        "stage": 0,
+        "study_checks": [],
+        "study_stage": 0,
+        "study_view": {},
+        "sweep_circuit_id": "",
+        "sweep_grid_id": "",
+        "sweep_view": {},
+        "ux_checks": []
+      }
+    },
+    "precision-editor": {
+      "environment": "base",
+      "file": {
+        "name": "precision-editor.json",
+        "bytes": 1658,
+        "sha256": "a1ac06fa13446677ae97c8f7da82ad2388aa10f699417155b44edd3a8b5e53cd"
+      },
+      "report": {
+        "apply_enabled": false,
+        "cad_checks": [],
+        "cad_result": {},
+        "cad_stage": 0,
+        "canvas_checks": [],
+        "canvas_stage": 0,
+        "editor_checks": [],
+        "editor_stage": 0,
+        "editor_ui_state": "saved",
+        "error": "",
+        "frame_budget_tested": false,
+        "mesh_bodies": 0,
+        "mesh_triangles": 0,
+        "mesh_vertex_buffer": {
+          "bytes": 0,
+          "uploads": 0
+        },
+        "passed": true,
+        "pcb_checks": [],
+        "pcb_project_path": "",
+        "pcb_request_ticks": 0,
+        "pcb_stage": 0,
+        "pcb_ticks": 0,
+        "physics_tested": false,
+        "primitives_checks": [],
+        "primitives_stage": 0,
+        "project_id": "089aece8-29e5-4bac-a6d2-b5091cd002c4",
+        "rendered_frames": 0,
+        "renderer": "",
+        "revision_id": "90640d36-3555-41c6-ac3d-3d511326865e",
+        "saved_revision": "90640d36-3555-41c6-ac3d-3d511326865e",
+        "schema_version": "rfad.gui-smoke/0.1",
+        "service_sessions": 2,
+        "setup_checks": [
+          "rename_duplicate_rejection_keeps_draft",
+          "rename_and_search_keep_stable_selection",
+          "precision_null_scene_keeps_original_and_recovers",
+          "precision_input_change_invalidates_review",
+          "precision_dimension_atomic_apply",
+          "precision_rotate_one_command_undo_redo_selection",
+          "precision_parameter_binding_and_readonly_reopen",
+          "precision_saved_service_restart_preserves_geometry"
+        ],
+        "setup_pending_ticks": 63,
+        "setup_stage": 18,
+        "snapshot_id": "",
+        "solver_cancel_trace": {},
+        "solver_checks": [],
+        "solver_frames": 0,
+        "solver_result": {},
+        "solver_sample_count": 0,
+        "solver_stage": 0,
+        "stage": 0,
+        "study_checks": [],
+        "study_stage": 0,
+        "study_view": {},
+        "sweep_circuit_id": "",
+        "sweep_grid_id": "",
+        "sweep_view": {},
+        "ux_checks": []
+      }
+    },
+    "sweep": {
+      "environment": "network",
+      "file": {
+        "name": "sweep.json",
+        "bytes": 9906,
+        "sha256": "e9ad3fa0f628b40db146a05a0251a8ad1688b72db0f1197b51de4104fa934299"
+      },
+      "report": {
+        "apply_enabled": false,
+        "cad_checks": [],
+        "cad_result": {},
+        "cad_stage": 0,
+        "canvas_checks": [],
+        "canvas_stage": 0,
+        "editor_checks": [],
+        "editor_stage": 0,
+        "editor_ui_state": "saved",
+        "error": "",
+        "frame_budget_tested": false,
+        "mesh_bodies": 0,
+        "mesh_triangles": 0,
+        "mesh_vertex_buffer": {
+          "bytes": 0,
+          "uploads": 0
+        },
+        "passed": true,
+        "pcb_checks": [],
+        "pcb_project_path": "",
+        "pcb_request_ticks": 0,
+        "pcb_stage": 0,
+        "pcb_ticks": 0,
+        "physics_tested": false,
+        "primitives_checks": [],
+        "primitives_stage": 0,
+        "project_id": "3561df73-bd2c-4d99-95f6-c45a7ba5f73e",
+        "rendered_frames": 0,
+        "renderer": "",
+        "revision_id": "926fdb40-947e-455a-b277-d33113bf3d42",
+        "saved_revision": "926fdb40-947e-455a-b277-d33113bf3d42",
+        "schema_version": "rfad.gui-smoke/0.1",
+        "service_sessions": 2,
+        "setup_checks": [
+          "sweep_cartesian_preview_2_by_2",
+          "sweep_native_fields_and_viewport",
+          "sweep_frequency_display_preserves_review_and_si",
+          "sweep_changed_input_invalidates_review",
+          "sweep_value_mode_explicit_rows_safe_reset",
+          "sweep_create_does_not_start_or_change_design",
+          "sweep_circuit_units_and_duplicate_preserved",
+          "sweep_cancel_preserves_explicit_resume",
+          "sweep_real_circuit_completion_and_reuse",
+          "sweep_saved_service_restart_preserves_history",
+          "sweep_studio_titles_and_result_button",
+          "sweep_candidate_result_native_conditions",
+          "sweep_studio_candidates_and_design_return"
+        ],
+        "setup_pending_ticks": 202,
+        "setup_stage": 23,
+        "snapshot_id": "",
+        "solver_cancel_trace": {},
+        "solver_checks": [],
+        "solver_frames": 0,
+        "solver_result": {},
+        "solver_sample_count": 0,
+        "solver_stage": 0,
+        "stage": 0,
+        "study_checks": [],
+        "study_stage": 0,
+        "study_view": {},
+        "sweep_circuit_id": "40907a83-80b0-4bef-9035-4247885078d8",
+        "sweep_grid_id": "7cc4e0a7-65d9-4c14-986a-b824c37293cf",
+        "sweep_view": {
+          "allowed_actions": {
+            "cancel": false,
+            "resume": false,
+            "start": false
+          },
+          "budget_display": {
+            "disk_bytes": {
+              "text": "4",
+              "unit": "GiB"
+            },
+            "ram_bytes": {
+              "text": "2",
+              "unit": "GiB"
+            },
+            "wall_seconds": {
+              "text": "1",
+              "unit": "h"
+            }
+          },
+          "budget_usage": {
+            "disk_bytes": 2575430,
+            "native_solves": 0,
+            "wall_seconds": 22.235623359680176
+          },
+          "convergence_status": "not_established",
+          "counts": {
+            "completed": 3,
+            "failed": 0,
+            "pending": 0,
+            "running": 0,
+            "skipped": 0,
+            "total": 3
+          },
+          "created_at": 1795187110.0049574,
+          "current_candidate": 3,
+          "current_job_id": null,
+          "message": "완료 결과와 미평가/실패 근거를 보존했습니다. 제작/측정 검증은 미확립입니다.",
+          "name": "GUI 외부 회로 3후보",
+          "original_specification": {
+            "budget": {
+              "concurrency": 1,
+              "disk_bytes": 4294967296,
+              "max_candidates": 128,
+              "max_native_solves": 0,
+              "ram_bytes": 2147483648,
+              "wall_seconds": 3600
+            },
+            "combination": "cartesian",
+            "name": "GUI 외부 회로 3후보",
+            "network": {
+              "circuit_id": "73b84281-d24f-560a-b788-231ef2bcd88b",
+              "dataset_id": "d58288f3-d7a3-502e-a1b0-31a307487a30"
+            },
+            "rows": [],
+            "schema": "rfad.design-sweep-spec/0.1",
+            "settings": null,
+            "source_refs": [
+              "GUI 명시 스윕 입력; 실측 아님"
+            ],
+            "target_contexts": [],
+            "target_ids": [
+              "00000000-0000-0000-0000-000000000064"
+            ],
+            "type": "circuit_sweep",
+            "variables": [
+              {
+                "dimension": "impedance",
+                "id": "02cbd1a2-0d69-4cb7-86f9-4ddfe85c8ade",
+                "kind": "circuit_value",
+                "values": [
+                  {
+                    "source_refs": [
+                      "GUI 명시 스윕 입력; 실측 아님"
+                    ],
+                    "text": "50",
+                    "unit": "ohm"
+                  },
+                  {
+                    "source_refs": [
+                      "GUI 명시 스윕 입력; 실측 아님"
+                    ],
+                    "text": "100",
+                    "unit": "ohm"
+                  },
+                  {
+                    "source_refs": [
+                      "GUI 명시 스윕 입력; 실측 아님"
+                    ],
+                    "text": "0.05",
+                    "unit": "kohm"
+                  }
+                ]
+              }
+            ]
+          },
+          "physical_validation": "not_established",
+          "profile": "rfad.design-sweep/0.1",
+          "snapshot": {
+            "artifact": {
+              "bytes": 13942,
+              "sha256": "bd53ea3c9518549463a0c61792211f2875f2dea97bad31bf22cb48cf0732242a",
+              "uri": "projects/CAD 한글 교환 검증/snapshots/926fdb40-947e-455a-b277-d33113bf3d42/de9dfe4a-7c12-4acd-a8d3-133fb7a506e4/project.json"
+            },
+            "canonical_version": "rfad.canonical/1.0",
+            "content_hash": "61f30e581ed7c67520aa2fd9cb6176c3a83121bb0cde860d1d15efdf8575e360",
+            "description": "명시적 연구: GUI 외부 회로 3후보",
+            "project_id": "3561df73-bd2c-4d99-95f6-c45a7ba5f73e",
+            "revision_id": "926fdb40-947e-455a-b277-d33113bf3d42",
+            "schema_version": "rfad.project/0.6",
+            "sealed_at": 1795187109.7775416,
+            "snapshot_id": "de9dfe4a-7c12-4acd-a8d3-133fb7a506e4",
+            "validation_state": "not_evaluated"
+          },
+          "source_revision_matches_current": true,
+          "specification": {
+            "budget": {
+              "concurrency": 1,
+              "disk_bytes": 4294967296,
+              "max_candidates": 128,
+              "max_native_solves": 0,
+              "ram_bytes": 2147483648,
+              "wall_seconds": 3600
+            },
+            "combination": "cartesian",
+            "name": "GUI 외부 회로 3후보",
+            "network": {
+              "circuit_id": "73b84281-d24f-560a-b788-231ef2bcd88b",
+              "dataset_id": "d58288f3-d7a3-502e-a1b0-31a307487a30"
+            },
+            "rows": [],
+            "schema": "rfad.design-sweep-spec/0.1",
+            "settings": null,
+            "source_refs": [
+              "GUI 명시 스윕 입력; 실측 아님"
+            ],
+            "target_contexts": [],
+            "target_ids": [
+              "00000000-0000-0000-0000-000000000064"
+            ],
+            "type": "circuit_sweep",
+            "variables": [
+              {
+                "dimension": "impedance",
+                "id": "02cbd1a2-0d69-4cb7-86f9-4ddfe85c8ade",
+                "kind": "circuit_value",
+                "values": [
+                  {
+                    "dimension": "impedance",
+                    "display_unit": "ohm",
+                    "source_refs": [
+                      "GUI 명시 스윕 입력; 실측 아님"
+                    ],
+                    "status": "user_entered",
+                    "value_si": 50.0
+                  },
+                  {
+                    "dimension": "impedance",
+                    "display_unit": "ohm",
+                    "source_refs": [
+                      "GUI 명시 스윕 입력; 실측 아님"
+                    ],
+                    "status": "user_entered",
+                    "value_si": 100.0
+                  },
+                  {
+                    "dimension": "impedance",
+                    "display_unit": "kohm",
+                    "source_refs": [
+                      "GUI 명시 스윕 입력; 실측 아님"
+                    ],
+                    "status": "user_entered",
+                    "value_si": 50.0
+                  }
+                ]
+              }
+            ]
+          },
+          "state": "completed",
+          "stop_reason": null,
+          "study_id": "40907a83-80b0-4bef-9035-4247885078d8",
+          "type": "circuit_sweep",
+          "usage_display": {
+            "disk_bytes": {
+              "text": "2.45612",
+              "unit": "MiB"
+            },
+            "native_solves": {
+              "text": "0",
+              "unit": "회"
+            },
+            "wall_seconds": {
+              "text": "22.2356",
+              "unit": "s"
+            }
+          },
+          "variable_labels": {
+            "circuit_state:02cbd1a2-0d69-4cb7-86f9-4ddfe85c8ade": "R1 실장 상태",
+            "circuit_state:0611fbb7-d3ce-4e7f-a761-60b3bfb8ac03": "보조 R 1 실장 상태",
+            "circuit_state:0d74f4d7-214a-48af-8a82-456573cba18a": "보조 R 7 실장 상태",
+            "circuit_state:39879885-a4f1-492b-a7df-a966af0f17c6": "보조 R 6 실장 상태",
+            "circuit_state:3d262612-3080-4548-a744-cf1a63854ca9": "보조 R 4 실장 상태",
+            "circuit_state:7cf5384a-350f-4afd-8fa1-eaab98142a04": "보조 R 3 실장 상태",
+            "circuit_state:81177567-58de-42a2-95e8-0ee7d027e864": "보조 R 2 실장 상태",
+            "circuit_state:fec3ff63-af0b-4427-b2c6-8273f4fc1616": "보조 R 5 실장 상태",
+            "circuit_value:02cbd1a2-0d69-4cb7-86f9-4ddfe85c8ade": "R1 값",
+            "circuit_value:0611fbb7-d3ce-4e7f-a761-60b3bfb8ac03": "보조 R 1 값",
+            "circuit_value:0d74f4d7-214a-48af-8a82-456573cba18a": "보조 R 7 값",
+            "circuit_value:39879885-a4f1-492b-a7df-a966af0f17c6": "보조 R 6 값",
+            "circuit_value:3d262612-3080-4548-a744-cf1a63854ca9": "보조 R 4 값",
+            "circuit_value:7cf5384a-350f-4afd-8fa1-eaab98142a04": "보조 R 3 값",
+            "circuit_value:81177567-58de-42a2-95e8-0ee7d027e864": "보조 R 2 값",
+            "circuit_value:fec3ff63-af0b-4427-b2c6-8273f4fc1616": "보조 R 5 값",
+            "parameter:96b0c584-05ba-4fcb-a1a5-c6f96ca2e19a": "선폭 2",
+            "parameter:de868d53-8e84-4f7f-8a6e-31a83feadca2": "선폭 1",
+            "solver_setting:air_padding_mm": "공기 여백",
+            "solver_setting:curve_tolerance_mm": "곡선 근사 오차",
+            "solver_setting:end_criterion": "에너지 종료 기준",
+            "solver_setting:feature_subdivisions": "임계 구간 분할 수",
+            "solver_setting:frequency_hz.count": "주파수 표본 수",
+            "solver_setting:frequency_hz.start": "시작 주파수",
+            "solver_setting:frequency_hz.stop": "끝 주파수",
+            "solver_setting:grid_mm": "전역 격자 간격",
+            "solver_setting:max_timesteps": "시간 단계 상한",
+            "solver_setting:radiation.box_clearance_mm": "방사 기록 상자 거리",
+            "solver_setting:radiation.phi_step_deg": "방사 phi 간격",
+            "solver_setting:radiation.theta_step_deg": "방사 theta 간격"
+          }
+        },
+        "ux_checks": []
+      }
+    },
+    "results": {
+      "environment": "network",
+      "file": {
+        "name": "results.json",
+        "bytes": 1829,
+        "sha256": "f9e45971e9e6eeb95d22a09e4cf4a58bd2a00658d2176e7fbf59be55924b6562"
+      },
+      "report": {
+        "apply_enabled": false,
+        "cad_checks": [],
+        "cad_result": {},
+        "cad_stage": 0,
+        "canvas_checks": [],
+        "canvas_stage": 0,
+        "editor_checks": [],
+        "editor_stage": 0,
+        "editor_ui_state": "saved",
+        "error": "",
+        "frame_budget_tested": false,
+        "mesh_bodies": 0,
+        "mesh_triangles": 0,
+        "mesh_vertex_buffer": {
+          "bytes": 0,
+          "uploads": 0
+        },
+        "passed": true,
+        "pcb_checks": [],
+        "pcb_project_path": "",
+        "pcb_request_ticks": 0,
+        "pcb_stage": 0,
+        "pcb_ticks": 0,
+        "physics_tested": false,
+        "primitives_checks": [],
+        "primitives_stage": 0,
+        "project_id": "d6a7af15-0d3e-4426-b069-81b5a9121608",
+        "rendered_frames": 0,
+        "renderer": "",
+        "revision_id": "d55ff886-2b39-4f4e-81db-4037a354ef1d",
+        "saved_revision": "d55ff886-2b39-4f4e-81db-4037a354ef1d",
+        "schema_version": "rfad.gui-smoke/0.1",
+        "service_sessions": 2,
+        "setup_checks": [
+          "results_late_selection_reset_destroy_safe",
+          "results_past_revision_named_catalog",
+          "results_unknown_source_preserved",
+          "results_grouped_conditions_preserve_unknowns",
+          "results_smith_poles_active_and_units",
+          "results_explicit_port_comparison_and_conditions",
+          "results_conditions_pages_and_stale_selection",
+          "results_exact_shared_frequency_marker",
+          "results_comparison_selection_restores_source_conditions",
+          "results_pinned_historical_export",
+          "results_saved_restart_preserves_source",
+          "results_return_design_preserves_selection"
+        ],
+        "setup_pending_ticks": 29,
+        "setup_stage": 15,
+        "snapshot_id": "",
+        "solver_cancel_trace": {},
+        "solver_checks": [],
+        "solver_frames": 0,
+        "solver_result": {},
+        "solver_sample_count": 0,
+        "solver_stage": 0,
+        "stage": 0,
+        "study_checks": [],
+        "study_stage": 0,
+        "study_view": {},
+        "sweep_circuit_id": "",
+        "sweep_grid_id": "",
+        "sweep_view": {},
+        "ux_checks": []
+      }
+    }
+  },
+  "scope": {
+    "same_host_separate_environment": true,
+    "full_gui_and_accessibility_accepted": false,
+    "grounded_measurement_hardware_tested": false
+  }
+}

@@ -1,6 +1,6 @@
 {
   "schema": "rfad.documentation-inventory/0.1",
-  "date_kst": "2026-11-20",
+  "date_kst": "2026-11-21",
   "scope": "current_development_docs_and_preserved_reference_files",
   "exclusions": [
     "Git/build/venv/.local",
@@ -21,14 +21,14 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 44,
     "current_06_분석연구": 13,
-    "current_07_검증": 52,
+    "current_07_검증": 53,
     "current_08_운영환경": 7,
     "current_09_개발계획": 4,
     "current_11_검토기록": 6,
     "current_traceability": 4,
     "document_catalog": 4,
     "document_navigation": 6,
-    "documentation_asset": 153,
+    "documentation_asset": 154,
     "documentation_validation_record": 1,
     "historical_proposal": 2,
     "historical_verification": 41,
@@ -28609,9 +28609,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 15246,
-      "working_tree_sha256": "8bf41853241949b8fe23ceb357fa0be3b3c9b4e2db3171ec9cd2ffac96065d33",
-      "text_lines": 108,
+      "bytes": 15586,
+      "working_tree_sha256": "aeddd1d3071ce77c8c36e7eaaf8499daafaa14574f5c03596381f5a5745af00c",
+      "text_lines": 110,
       "text_status": "utf8_read"
     },
     {
@@ -28672,9 +28672,9 @@
       "path": "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 146099,
-      "working_tree_sha256": "651efadec4e0d2211832324fd4413cba995703a83c6bfc29cf3d42126c74d181",
-      "text_lines": 809,
+      "bytes": 146527,
+      "working_tree_sha256": "3abae28d3e8018ee4f2d4219952fffa9bce5c83ad557af5eed46d87dc0cec267",
+      "text_lines": 813,
       "text_status": "utf8_read"
     },
     {
@@ -30915,9 +30915,9 @@
       "path": "01_개발문서/08_운영환경/06_내부검증_지원범위와_미결.md",
       "category": "current_08_운영환경",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 2834,
-      "working_tree_sha256": "51ad202c3fe88e5afc8f0c84bf579298881d2907cbf513f5dc113cdefc0d858c",
-      "text_lines": 19,
+      "bytes": 3146,
+      "working_tree_sha256": "9aab6897df01fbb52d9131e4e94ac79affb7886aab598489787596baed88a637",
+      "text_lines": 20,
       "text_status": "utf8_read"
     },
     {
@@ -31077,6 +31077,22 @@
       "review_scope": "문서/시안 자산 보존",
       "bytes": 5073,
       "working_tree_sha256": "ee9767c48791a2003bf27e523baa3fbea48b43cea3dd6f5672212e8c967a3f71"
+    },
+    {
+      "path": "01_개발문서/07_검증/92_윈도우_통합묶음_작업흐름검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2018,
+      "working_tree_sha256": "44cea7fc6118360e79c9969921d394c05bee4186e0b314a954217aec7b7e684e",
+      "text_lines": 15,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/93_윈도우_통합묶음_작업흐름_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 27027,
+      "working_tree_sha256": "a08ba6fda1c43a88da0280d5823b821aa5eac59a02ff00f040e8b6aaf1ac1326"
     }
   ],
   "identical_byte_groups": [
@@ -31232,19 +31248,19 @@
     ]
   ],
   "incremental_refresh": {
-    "date_kst": "2026-11-20",
-    "mode": "step13_integrated_windows_bundle_optional_runtime",
-    "previous_inventory_sha256": "92ec325ed790657ec9a6b4077b9e3746ea92b7832a3b2ec2191320cc0884ed6c",
+    "date_kst": "2026-11-21",
+    "mode": "step13_integrated_windows_bundle_workflows",
+    "previous_inventory_sha256": "bc9c1e41c9af16963a59b89c758e150ef03022d19c53042b6db32fa0c94a8011",
     "refreshed_paths": [
-      "01_개발문서/07_검증/90_윈도우_통합묶음_선택환경검증.md",
-      "01_개발문서/07_검증/91_윈도우_통합묶음_선택환경_실행기록.json",
+      "01_개발문서/07_검증/92_윈도우_통합묶음_작업흐름검증.md",
+      "01_개발문서/07_검증/93_윈도우_통합묶음_작업흐름_실행기록.json",
       "01_개발문서/07_검증/README.md",
       "01_개발문서/08_운영환경/06_내부검증_지원범위와_미결.md",
       "01_개발문서/09_개발계획/02_개발착수와_현재상태.md"
     ],
     "added_paths": [
-      "01_개발문서/07_검증/90_윈도우_통합묶음_선택환경검증.md",
-      "01_개발문서/07_검증/91_윈도우_통합묶음_선택환경_실행기록.json"
+      "01_개발문서/07_검증/92_윈도우_통합묶음_작업흐름검증.md",
+      "01_개발문서/07_검증/93_윈도우_통합묶음_작업흐름_실행기록.json"
     ],
     "removed_paths": [],
     "preserved_reference_records": 3336,
