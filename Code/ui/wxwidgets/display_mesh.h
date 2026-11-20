@@ -11,6 +11,7 @@
 #include <cstdint>
 #include <filesystem>
 #include <limits>
+#include <memory>
 #include <set>
 #include <stdexcept>
 #include <string>
@@ -45,9 +46,12 @@ struct Body
     std::vector<float> normals;
 };
 
+struct PickIndex;
+
 struct Scene
 {
     std::vector<Body> bodies;
+    std::shared_ptr<const PickIndex> pickIndex;
     Point center;
     double radius = 1.0;
     std::size_t triangles = 0;
@@ -257,7 +261,35 @@ inline Scene Parse(const Json& value, const Json& snapshot, const std::string& r
     return result;
 }
 
-/** @brief 같은 렌더링 좌표의 가장 가까운 삼각형을 안정 body 인덱스로 찾는다. */
+/** @brief 한 삼각형을 실제 화면 좌표계로 투영해 보이는 위치의 깊이를 구한다. */
+inline double PickTriangleDepth(const Body& body, std::size_t offset, const Camera& camera, double x, double y)
+{
+    constexpr double miss = -std::numeric_limits<double>::infinity();
+    std::array<Point, 3> points{};
+    for (std::size_t corner = 0; corner < 3; ++corner)
+    {
+        const std::size_t index = offset + corner * 3;
+        points[corner] = camera.Transform({body.positions[index], body.positions[index + 1], body.positions[index + 2]});
+    }
+    const auto& a = points[0];
+    const auto& b = points[1];
+    const auto& c = points[2];
+    const double denominator = (b.y - c.y) * (a.x - c.x) + (c.x - b.x) * (a.y - c.y);
+    if (std::abs(denominator) <= 1e-24)
+    {
+        return miss;
+    }
+    const double u = ((b.y - c.y) * (x - c.x) + (c.x - b.x) * (y - c.y)) / denominator;
+    const double v = ((c.y - a.y) * (x - c.x) + (a.x - c.x) * (y - c.y)) / denominator;
+    const double w = 1.0 - u - v;
+    if (u >= -1e-9 && v >= -1e-9 && w >= -1e-9)
+    {
+        return u * a.z + v * b.z + w * c.z;
+    }
+    return miss;
+}
+
+/** @brief 작은 장면과 인덱스 없는 장면의 삼각형을 원래 순서로 검사한다. */
 inline int Pick(const Scene& scene, const Camera& camera, double x, double y,
     const std::set<std::string>& hiddenLayers = {})
 {
@@ -272,25 +304,8 @@ inline int Pick(const Scene& scene, const Camera& camera, double x, double y,
         }
         for (std::size_t offset = 0; offset < body.positions.size(); offset += 9)
         {
-            std::array<Point, 3> points{};
-            for (std::size_t corner = 0; corner < 3; ++corner)
-            {
-                const std::size_t index = offset + corner * 3;
-                points[corner] = camera.Transform({body.positions[index], body.positions[index + 1], body.positions[index + 2]});
-            }
-            const auto& a = points[0];
-            const auto& b = points[1];
-            const auto& c = points[2];
-            const double denominator = (b.y - c.y) * (a.x - c.x) + (c.x - b.x) * (a.y - c.y);
-            if (std::abs(denominator) <= 1e-24)
-            {
-                continue;
-            }
-            const double u = ((b.y - c.y) * (x - c.x) + (c.x - b.x) * (y - c.y)) / denominator;
-            const double v = ((c.y - a.y) * (x - c.x) + (a.x - c.x) * (y - c.y)) / denominator;
-            const double w = 1.0 - u - v;
-            const double depth = u * a.z + v * b.z + w * c.z;
-            if (u >= -1e-9 && v >= -1e-9 && w >= -1e-9 && depth > closest)
+            const double depth = PickTriangleDepth(body, offset, camera, x, y);
+            if (depth > closest)
             {
                 closest = depth;
                 selected = static_cast<int>(bodyIndex);

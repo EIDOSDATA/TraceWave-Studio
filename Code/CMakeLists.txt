@@ -249,6 +249,7 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/design_canvas.cpp
     ui/wxwidgets/design_canvas_precision.cpp
     ui/wxwidgets/model_view.cpp
+    ui/wxwidgets/display_mesh_picking.cpp
     ui/wxwidgets/model_vertex_buffer.cpp
     ui/wxwidgets/service_client.cpp
     ${RFAD_RESOURCE}
@@ -269,7 +270,7 @@ add_executable(tracewave_canvas_display_probe EXCLUDE_FROM_ALL
     ui/wxwidgets/design_canvas.cpp ui/wxwidgets/design_canvas_precision.cpp ui/wxwidgets/design_canvas_dimensions.cpp
     ui/wxwidgets/canvas_renderer.cpp ui/wxwidgets/canvas_scene.cpp ui/wxwidgets/canvas_pcb_features.cpp
     ui/wxwidgets/canvas_viewport.cpp ui/wxwidgets/studio_support.cpp
-    ui/wxwidgets/model_view.cpp ui/wxwidgets/model_vertex_buffer.cpp ${RFAD_RESOURCE})
+    ui/wxwidgets/model_view.cpp ui/wxwidgets/model_vertex_buffer.cpp ui/wxwidgets/display_mesh_picking.cpp ${RFAD_RESOURCE})
 target_include_directories(tracewave_canvas_display_probe PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
 target_compile_definitions(tracewave_canvas_display_probe PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN NOMINMAX)
 target_link_libraries(tracewave_canvas_display_probe PRIVATE ${RFAD_WX_LIBRARIES} d3d11 dxgi dxguid ole32 opengl32 bcrypt)
@@ -281,6 +282,13 @@ target_include_directories(tracewave_model_vertex_buffer_probe PRIVATE ui/wxwidg
 target_compile_definitions(tracewave_model_vertex_buffer_probe PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN NOMINMAX)
 target_link_libraries(tracewave_model_vertex_buffer_probe PRIVATE ${RFAD_WX_LIBRARIES} opengl32 bcrypt)
 set_target_properties(tracewave_model_vertex_buffer_probe PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
+add_executable(tracewave_model_pick_probe EXCLUDE_FROM_ALL
+    tools/model_pick_probe.cpp ui/wxwidgets/display_mesh_picking.cpp)
+target_include_directories(tracewave_model_pick_probe PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
+target_compile_definitions(tracewave_model_pick_probe PRIVATE WIN32_LEAN_AND_MEAN NOMINMAX)
+target_link_libraries(tracewave_model_pick_probe PRIVATE bcrypt)
+set_target_properties(tracewave_model_pick_probe PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
+
 if(MSVC)
     target_compile_options(tracewave_gui PRIVATE "$<$<COMPILE_LANGUAGE:CXX>:/W4;/utf-8>")
 else()
@@ -382,7 +390,7 @@ if(BUILD_TESTING)
     target_include_directories(tracewave_canvas_geometry_tests PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
     set_target_properties(tracewave_canvas_geometry_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
     add_test(NAME canvas_geometry COMMAND tracewave_canvas_geometry_tests)
-    add_executable(tracewave_display_mesh_tests tests/display_mesh_test.cpp)
+    add_executable(tracewave_display_mesh_tests tests/display_mesh_test.cpp ui/wxwidgets/display_mesh_picking.cpp)
     target_include_directories(tracewave_display_mesh_tests PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
     target_compile_definitions(tracewave_display_mesh_tests PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN NOMINMAX)
     target_link_libraries(tracewave_display_mesh_tests PRIVATE bcrypt)

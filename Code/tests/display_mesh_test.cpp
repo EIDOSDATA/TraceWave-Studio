@@ -1,4 +1,4 @@
-#include "../ui/wxwidgets/display_mesh.h"
+#include "../ui/wxwidgets/display_mesh_picking.h"
 
 #include <cstdio>
 #include <cstdlib>
@@ -45,10 +45,57 @@ Json Fixture(const Json& snapshot)
         })}};
 }
 
+/** @brief 겹친 면, 숨긴 층, 회전과 모서리는 인덱스 유무와 무관해야 한다. */
+void IndexedPicking()
+{
+    Scene scene;
+    scene.bodies.resize(2);
+    auto& base = scene.bodies.front();
+    base.layer = "base";
+    for (int row = 0; row < 64; ++row)
+    {
+        for (int column = 0; column < 64; ++column)
+        {
+            const float x = static_cast<float>(column);
+            const float y = static_cast<float>(row);
+            base.positions.insert(base.positions.end(), {x, y, 0.0f, x + 1.0f, y, 0.0f, x, y + 1.0f, 0.0f});
+        }
+    }
+    scene.bodies.back().positions = base.positions;
+    scene.bodies.back().layer = "front";
+    std::atomic<bool> cancelled = true;
+    Reject([&]()
+    {
+        BuildPickIndex(scene, &cancelled);
+    }, "picking index cancellation");
+    Check(scene.pickIndex == nullptr, "cancelled tree is unpublished");
+    BuildPickIndex(scene);
+    Check(scene.pickIndex != nullptr && scene.pickIndex->bodies.front().nodes.size() > 1, "picking index built");
+    Camera camera;
+    camera.yaw = 0.0;
+    camera.pitch = 0.0;
+    Check(PickIndexed(scene, camera, -0.5e-9, 0.2) == 0, "triangle edge tolerance and coincident body order");
+    Check(PickIndexed(scene, camera, 0.2, 0.2, {"base"}) == 1, "index hidden layer");
+    for (int angle = 0; angle < 3; ++angle)
+    {
+        camera.Rotate(13.0, 28.0);
+        camera.panX += 3.0;
+        camera.panY -= 1.0;
+        for (int step = 0; step < 16; ++step)
+        {
+            const auto point = camera.Transform({2.0 + 3.0 * step, 2.0 + 2.0 * step, 0.0});
+            Check(PickIndexed(scene, camera, point.x, point.y) == Pick(scene, camera, point.x, point.y),
+                "indexed rotated and panned corner");
+            Check(PickIndexed(scene, camera, point.x + 100.0, point.y) == -1, "indexed outside");
+        }
+    }
+}
+
 /** @brief 파일 무결성, 원본 대응, picking 깊이와 표시 상한을 함께 검증한다. */
 int main()
 {
     const Json snapshot{{"snapshot_id", "snapshot-1"}, {"revision_id", "revision-1"}, {"content_hash", "sealed"}};
+    IndexedPicking();
     const auto fixture = Fixture(snapshot);
     const auto scene = Parse(fixture, snapshot, "run-1");
     Check(scene.bodies.size() == 2 && scene.triangles == 2 && scene.vertices == 6, "counts");

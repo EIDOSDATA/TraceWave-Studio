@@ -1,5 +1,6 @@
 /** @file @brief 실제 2D/3D 제품 View의 입력과 Windows 합성 화면 시각을 함께 기록한다. */
 #include "design_canvas.h"
+#include "display_mesh.h"
 #include "large_display_fixture.h"
 #include "model_view.h"
 #include "windows_display_marker.h"
@@ -104,6 +105,8 @@ public:
         {
             const auto fixture = ReadLargeDisplayFixture(directory);
             const auto& artifact = fixture.at("artifact");
+            m_knownPickingFixture = artifact.value("sha256", "") ==
+                "89db886307ca72cf5ca2f43a8c97254a899d596ffea184d880c9a8667bc710d4";
             m_model = new ModelView(this);
             sizer->Add(m_model, 1, wxEXPAND);
             m_model->onDrawDisplayMarker = [this](wxWindow& surface)
@@ -339,6 +342,40 @@ private:
         }
     }
 
+    /** @brief 합성 구간 종료 뒤 실제 wxGLCanvas 클릭으로 두 바디와 숨긴 층을 확인한다. */
+    void CheckModelClicks()
+    {
+        m_model->SetView("top");
+        m_model->FitView();
+        const auto size = m_surface->GetClientSize();
+        const auto click = [this](const wxPoint& point, const std::string& expected)
+        {
+            wxMouseEvent down(wxEVT_LEFT_DOWN);
+            wxMouseEvent up(wxEVT_LEFT_UP);
+            const auto start = Counter();
+            for (auto* event : {&down, &up})
+            {
+                event->SetEventObject(m_surface);
+                event->SetPosition(point);
+                DisplayMesh::Require(m_surface->GetEventHandler()->ProcessEvent(*event),
+                    "3D 클릭이 제품 캔버스에 전달되지 않았습니다.");
+            }
+            const auto end = Counter();
+            const auto actual = m_model->Selection();
+            DisplayMesh::Require(actual == expected, "3D 클릭의 실제 원본 ID가 예상과 다릅니다.");
+            m_modelClicks.push_back({{"x", point.x}, {"y", point.y}, {"source_id", actual},
+                {"input_handler_ms", 1000.0 * (end - start) / m_frequency}});
+        };
+        const wxPoint top(size.x / 2, size.y / 4);
+        click({size.x / 2, size.y * 3 / 4}, "00000000-0000-0000-0000-000000000014");
+        click(top, "00000000-0000-0000-0000-000000000015");
+        m_model->SetLayerVisible("00000000-0000-0000-0000-00000000001f", false);
+        click(top, "");
+        m_model->SetLayerVisible("00000000-0000-0000-0000-00000000001f", true);
+        click(top, "00000000-0000-0000-0000-000000000015");
+        click({size.x / 8, size.y / 2}, "");
+    }
+
     void OnTimer(wxTimerEvent&)
     {
         try
@@ -381,6 +418,11 @@ private:
             }
             if (now - m_end >= m_frequency / 4)
             {
+                if (m_knownPickingFixture)
+                {
+                    StopThreads();
+                    CheckModelClicks();
+                }
                 Finish("");
                 Close();
             }
@@ -425,7 +467,8 @@ private:
                           {"error", problem}, {"qpc_frequency", m_frequency},
                           {"display", {display.cx, display.cy}}, {"refresh_hz", m_reader ? m_reader->RefreshRate() : 0},
                           {"canvas", {size.x, size.y}}, {"dpi", m_surface != nullptr ? m_surface->GetDPI().x : GetDPI().x},
-                          {"shapes", model ? 0 : m_shapes}, {"layers", model ? 2 : 4},
+                          {"shapes", model ? 0 : m_shapes}, {"layers", model ? m_model->BodyCount() : 4},
+                          {"model_clicks_after_navigation", m_modelClicks},
                           {"triangles", model ? m_model->TriangleCount() : 0}, {"target_fps", model ? 30 : 60},
                           {"workload", model ? "model-rotate-pan" : "canvas-wheel-zoom"},
                           {"renderer", model ? m_model->RendererDescription() : "wxGraphicsContext"},
@@ -448,6 +491,8 @@ private:
     wxSize m_size;
     std::optional<int> m_swapInterval;
     bool m_swapIntervalChecked = false;
+    bool m_knownPickingFixture = false;
+    Json m_modelClicks = Json::array();
     unsigned m_shapes;
     HANDLE m_out;
     int& m_result;

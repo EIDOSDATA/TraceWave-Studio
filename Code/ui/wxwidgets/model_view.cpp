@@ -1,5 +1,5 @@
 #include "model_view.h"
-#include "display_mesh.h"
+#include "display_mesh_picking.h"
 #include "model_vertex_buffer.h"
 
 #include <wx/glcanvas.h>
@@ -391,7 +391,7 @@ private:
         {
             const wxSize size = GetClientSize();
             const double unit = 2.0 * m_camera.HalfHeight(m_scene->radius) / std::max(1, size.y);
-            const int index = DisplayMesh::Pick(*m_scene, m_camera,
+            const int index = DisplayMesh::PickIndexed(*m_scene, m_camera,
                 (event.GetX() - size.x / 2.0) * unit, (size.y / 2.0 - event.GetY()) * unit, m_hiddenLayers);
             if (index >= 0 && m_scene->bodies[static_cast<std::size_t>(index)].sources.size() > 1 && onSelectionCandidates)
             {
@@ -640,7 +640,17 @@ bool ModelView::LoadArtifact(const wxString& workspace, const Json& artifact, co
     {
         m_impl->pendingLoad = std::async(std::launch::async, [root, artifact, snapshot, runId, cancelled]()
         {
-            return DisplayMesh::Load(root, artifact, snapshot, runId, cancelled.get());
+            auto scene = DisplayMesh::Load(root, artifact, snapshot, runId, cancelled.get());
+            try
+            {
+                DisplayMesh::BuildPickIndex(scene, cancelled.get());
+            }
+            catch (const std::bad_alloc&)
+            {
+                /** @brief 할당할 수 없으면 검증을 마친 장면의 기존 선택 경로를 사용한다. */
+                scene.pickIndex.reset();
+            }
+            return scene;
         });
     }
     catch (const std::exception& exception)
