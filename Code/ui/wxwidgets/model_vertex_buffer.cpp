@@ -11,7 +11,7 @@ namespace
 {
 constexpr GLenum ArrayBuffer = 0x8892;
 constexpr GLenum StaticDraw = 0x88e4;
-constexpr std::size_t MaxBytes = DisplayMesh::MaxTriangles * 3 * 3 * 2 * sizeof(GLfloat);
+constexpr std::size_t MaxBytes = DisplayMesh::MaxLargeTriangles * 3 * 3 * 2 * sizeof(GLfloat);
 
 /** @brief 해당 context가 제공한 확장 주소만 사용한다. */
 template<typename Function>

@@ -115,6 +115,18 @@ int main()
     {
         Parse(wrong, snapshot, "run-1");
     }, "aggregate triangle limit");
+    Reject([&]()
+    {
+        Parse(fixture, snapshot, "run-1", nullptr, MaxBytes + 1);
+    }, "legacy byte limit");
+    auto large = wrong;
+    large["schema"] = "rfad.display-mesh/0.2";
+    const auto expanded = Parse(large, snapshot, "run-1", nullptr, MaxBytes + 1);
+    Check(expanded.triangles == MaxTriangles + 1, "large profile allows more triangles");
+    Reject([&]()
+    {
+        Parse(large, snapshot, "run-1", nullptr, MaxLargeBytes + 1);
+    }, "large byte limit");
     wrong = fixture;
     wrong["bodies"][0]["vertices"] = Json::array({{0.0, 0.0, 0.0}, {1000000.0, 0.0, 0.0}, {0.0, 1000000.0, 0.0}});
     wrong["bodies"][1]["vertices"] = Json::array({{600000.0, 600000.0, 0.035},

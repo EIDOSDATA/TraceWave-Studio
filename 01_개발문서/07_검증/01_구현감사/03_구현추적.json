@@ -14155,8 +14155,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/05_출력교환/02_기계형상_입력과_출력계약.md",
-      "text_sha256": "903f407b43b4919300a36cbdfc830e03261b1e4875442ce797831367c0218bfd",
-      "utf8_bytes": 25989
+      "text_sha256": "780917efc875e845aa03454ca0ae76e3ff21d461e2fce834bc9139f8c46feaf7",
+      "utf8_bytes": 26102
     },
     {
       "path": "01_개발문서/05_기능설계/05_출력교환/03_복소결과_파일교환.md",
@@ -14385,8 +14385,8 @@
     },
     {
       "path": "Code/src/rfad/adapters/cad/display.py",
-      "text_sha256": "f9dcca816110978ff318a17c2136cda9d973ded99e129fa260a4805eba4ff949",
-      "utf8_bytes": 3442
+      "text_sha256": "074a924f74e17be07a5a2292da3289949e85210fb2494987701d83ab3a7d685b",
+      "utf8_bytes": 3660
     },
     {
       "path": "Code/src/rfad/adapters/cad/geometry.py",
@@ -14550,8 +14550,8 @@
     },
     {
       "path": "Code/src/rfad/application/cad_artifacts.py",
-      "text_sha256": "f60086f8b18ddf8395adda7831e3393162adae5b3e4b8e7b6ab32bcdb6641766",
-      "utf8_bytes": 6733
+      "text_sha256": "f759c6ea13946df61a115d7fa633412ef6f3e31f0cbbd191fe020d81956a49c9",
+      "utf8_bytes": 6880
     },
     {
       "path": "Code/src/rfad/application/cad_runtime.py",
@@ -14595,8 +14595,8 @@
     },
     {
       "path": "Code/src/rfad/application/display_mesh.py",
-      "text_sha256": "03e9906ed97890dc378108ebd3a94d7ec088ee467441e10379f1f0318077511d",
-      "utf8_bytes": 5287
+      "text_sha256": "3c5d94d85224d48e3cde85ef64a9f06a18b5e34a6c04ca0b6cfea160e8f0f726",
+      "utf8_bytes": 6030
     },
     {
       "path": "Code/src/rfad/application/exchange_artifacts.py",
@@ -15380,8 +15380,8 @@
     },
     {
       "path": "Code/tests/test_display_mesh.py",
-      "text_sha256": "ea8ac29db5a198cd370435c07ed8098f0935289a3d2584b61cf76bc5c3940630",
-      "utf8_bytes": 5433
+      "text_sha256": "6071be321318c6cc30e87aad2e353dced30b8e894c471b87a8694fc3710e39e9",
+      "utf8_bytes": 6553
     },
     {
       "path": "Code/tests/test_doctor.py",

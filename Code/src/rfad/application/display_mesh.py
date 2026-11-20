@@ -7,9 +7,14 @@ from rfad.domain.errors import ProjectError
 
 
 SCHEMA = "rfad.display-mesh/0.1"
+LARGE_SCHEMA = "rfad.display-mesh/0.2"
 MAX_MESH_BYTES = 16 * 1024 * 1024
 MAX_TRIANGLES = 100000
 MAX_VERTICES = 300000
+# @brief 별도 대형 표시 자료도 CAD 파일 하나의 기존 64 MiB 상한 안에 둔다.
+MAX_LARGE_MESH_BYTES = 64 * 1024 * 1024
+MAX_LARGE_TRIANGLES = 1000000
+MAX_LARGE_VERTICES = MAX_LARGE_TRIANGLES * 3
 LINEAR_DEFLECTION_MM = 0.05
 ANGULAR_DEFLECTION_RAD = 0.15
 MAPPING_KEYS = ("id", "source_entity_ids", "layer_id", "role")
@@ -29,12 +34,18 @@ def _identity(value: object) -> bool:
         return False
 
 
-def validate_display_mesh(mesh: dict, *, snapshot: dict, run_id: str, body_map: list[dict]) -> None:
+def validate_display_mesh(mesh: dict, *, snapshot: dict, run_id: str, body_map: list[dict], byte_count=None) -> None:
     """! @brief 실제 소비할 JSON의 입력 결합, 상한, 유한 좌표와 색인을 검증한다.
 
     @details mesh는 화면 표시 전용이며 STEP 정확도나 solver mesh를 대체하지 않는다.
     """
-    _require(type(mesh) is dict and mesh.get("schema") == SCHEMA, "지원하지 않는 표시 mesh 계약입니다.")
+    _require(type(mesh) is dict and mesh.get("schema") in (SCHEMA, LARGE_SCHEMA), "지원하지 않는 표시 mesh 계약입니다.")
+    large = mesh["schema"] == LARGE_SCHEMA
+    max_bytes = MAX_LARGE_MESH_BYTES if large else MAX_MESH_BYTES
+    max_vertices = MAX_LARGE_VERTICES if large else MAX_VERTICES
+    max_triangles = MAX_LARGE_TRIANGLES if large else MAX_TRIANGLES
+    if byte_count is not None and (type(byte_count) is not int or not 0 < byte_count <= max_bytes):
+        raise ProjectError("E_RESOURCE", "표시 mesh 바이트가 선언한 profile 상한을 초과했습니다.")
     _require(mesh.get("snapshot") == snapshot and mesh.get("run_id") == run_id,
              "표시 mesh가 출력 snapshot 또는 실행에 결합되지 않았습니다.")
     _require(mesh.get("unit") == "mm" and mesh.get("purpose") == "display_only",
@@ -69,7 +80,7 @@ def validate_display_mesh(mesh: dict, *, snapshot: dict, run_id: str, body_map: 
                  "표시 body에 정점 또는 삼각형이 없습니다.")
         total_vertices += len(vertices)
         total_triangles += len(triangles)
-        if total_vertices > MAX_VERTICES or total_triangles > MAX_TRIANGLES:
+        if total_vertices > max_vertices or total_triangles > max_triangles:
             raise ProjectError("E_RESOURCE", "표시 mesh 정점 또는 삼각형 상한을 초과했습니다.")
         for vertex in vertices:
             _require(type(vertex) is list and len(vertex) == 3 and all(type(value) in (int, float) and

@@ -83,8 +83,10 @@ class SourceBundleCadTests(unittest.TestCase):
             self.assertEqual(latest["result"], evidence["result"])
             self.assertFalse(reopened.cad.run_next())
             for reference in evidence["artifacts"]:
-                raw = reopened.journal.read_artifact(reference)
-                self.assertEqual(hashlib.sha256(raw).hexdigest(), reference["sha256"])
+                path = reopened.journal._safe_path(reference["uri"])
+                self.assertEqual(path.stat().st_size, reference["bytes"])
+                with path.open("rb") as stream:
+                    self.assertEqual(hashlib.file_digest(stream, "sha256").hexdigest(), reference["sha256"])
         report = os.environ.get("RFAD_SOURCE_BUNDLE_CAD_REPORT")
         if report:
             path = Path(report)
@@ -157,6 +159,48 @@ class SourceBundleCadTests(unittest.TestCase):
                 snapshot = self.complete(service, "snapshot.create", saved, {"expected_revision": saved["revision_id"]})
                 evidence = self.export(service, saved, snapshot)
                 evidence["external_step_inspection"] = preview
+                self.complete(service, "project.save", saved, {"expected_revision": saved["revision_id"]})
+            self.reopen(workspace, saved, original_snapshot, original, evidence)
+
+    def test_real_large_step_publishes_large_display_profile(self):
+        """! @brief 큰 표시 자료는 원본 STEP과 미정값을 유지하며 별도 profile로 봉인한다."""
+        with TemporaryDirectory(prefix="rfad 실제 대형 표시 ") as temporary:
+            root = Path(temporary)
+            source = root / "토러스 시험 기하.step"
+            program = ("import sys, cadquery as cq; "
+                       "cq.exporters.export(cq.Solid.makeTorus(700, 150), sys.argv[1])")
+            generated = subprocess.run([CAD_PYTHON, "-I", "-X", "utf8", "-c", program, str(source)],
+                                       capture_output=True, timeout=60, check=False)
+            self.assertEqual(generated.returncode, 0, generated.stderr.decode("utf-8", errors="replace"))
+            raw = source.read_bytes()
+            self.assertLessEqual(len(raw), 48 * 1024)
+            encoded = base64.b64encode(raw).decode("ascii")
+            workspace = root / "저장소"
+            with ProjectService(workspace, auto_run=False, cad_runtime=CadRuntime(Path(CAD_PYTHON))) as service:
+                original, original_snapshot = register_fixture(service, fixture())
+                preview = service.physical_setup.read("physical.step.preview", {
+                    "contract_version": "rfad.api/2.0", "context": {"project_id": original["project_id"]},
+                    "input": {"expected_revision": original["revision_id"], "name": source.name,
+                              "chunks": [encoded[i:i + 4096] for i in range(0, len(encoded), 4096)]}})
+                service.mutate("physical.setup.apply", parameters(service, original, "part", {
+                    "name": "대형 표시 시험 기하", "kind": "step", "x": "1500", "y": "5", "z": "530", "yaw": "0",
+                    "scenario_id": setup(original)["active_scenario_id"], "include_in_export": True},
+                    step_token=preview["preview_token"]))
+                saved = load(service, original)
+                part = next(item for item in setup(saved)["parts"] if item["kind"] == "step")
+                self.assertEqual(base64.b64decode("".join(part["step"]["chunks"])), raw)
+                self.assertIsNone(part["material_id"])
+                self.assertFalse(part["include_in_em"])
+                snapshot = self.complete(service, "snapshot.create", saved, {"expected_revision": saved["revision_id"]})
+                evidence = self.export(service, saved, snapshot)
+                artifact = next(item for item in evidence["artifacts"] if item["role"] == "display_mesh")
+                mesh = json.loads(service.journal._safe_path(artifact["uri"]).read_bytes())
+                self.assertEqual(mesh["schema"], "rfad.display-mesh/0.2")
+                self.assertEqual(mesh["snapshot"], snapshot)
+                triangles = sum(len(body["triangles"]) for body in mesh["bodies"])
+                self.assertTrue(100000 < triangles <= 1000000)
+                evidence["display_profile"] = {"schema": mesh["schema"], "triangles": triangles,
+                                               "bytes": artifact["bytes"], "sha256": artifact["sha256"]}
                 self.complete(service, "project.save", saved, {"expected_revision": saved["revision_id"]})
             self.reopen(workspace, saved, original_snapshot, original, evidence)
 

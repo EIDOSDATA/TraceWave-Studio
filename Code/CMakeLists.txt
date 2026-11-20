@@ -278,7 +278,7 @@ add_executable(tracewave_model_vertex_buffer_probe EXCLUDE_FROM_ALL
     tools/model_vertex_buffer_probe.cpp ui/wxwidgets/model_vertex_buffer.cpp ${RFAD_RESOURCE})
 target_include_directories(tracewave_model_vertex_buffer_probe PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
 target_compile_definitions(tracewave_model_vertex_buffer_probe PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN NOMINMAX)
-target_link_libraries(tracewave_model_vertex_buffer_probe PRIVATE ${RFAD_WX_LIBRARIES} opengl32)
+target_link_libraries(tracewave_model_vertex_buffer_probe PRIVATE ${RFAD_WX_LIBRARIES} opengl32 bcrypt)
 set_target_properties(tracewave_model_vertex_buffer_probe PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
 if(MSVC)
     target_compile_options(tracewave_gui PRIVATE "$<$<COMPILE_LANGUAGE:CXX>:/W4;/utf-8>")

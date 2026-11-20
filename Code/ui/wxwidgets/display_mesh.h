@@ -23,6 +23,9 @@ using Json = nlohmann::json;
 constexpr std::size_t MaxBytes = 16 * 1024 * 1024;
 constexpr std::size_t MaxTriangles = 100000;
 constexpr std::size_t MaxVertices = 300000;
+constexpr std::size_t MaxLargeBytes = 64 * 1024 * 1024;
+constexpr std::size_t MaxLargeTriangles = 1000000;
+constexpr std::size_t MaxLargeVertices = MaxLargeTriangles * 3;
 constexpr double Pi = 3.14159265358979323846;
 
 struct Point
@@ -137,11 +140,17 @@ inline Point ReadPoint(const Json& value)
 
 /** @brief 제한된 JSON을 검증한 뒤 중심 기준의 렌더링 버퍼만 남긴다. */
 inline Scene Parse(const Json& value, const Json& snapshot, const std::string& runId,
-    const std::atomic<bool>* cancelled = nullptr)
+    const std::atomic<bool>* cancelled = nullptr, std::size_t byteCount = 0)
 {
-    Require(value.is_object() && value.value("schema", "") == "rfad.display-mesh/0.1" &&
+    Require(value.is_object(), "지원하지 않는 3D 표시 파일입니다.");
+    const std::string schema = value.value("schema", "");
+    const bool large = schema == "rfad.display-mesh/0.2";
+    Require((large || schema == "rfad.display-mesh/0.1") &&
         value.value("unit", "") == "mm" && value.value("purpose", "") == "display_only",
         "지원하지 않는 3D 표시 파일입니다.");
+    Require(byteCount <= (large ? MaxLargeBytes : MaxBytes), "3D 표시 파일 크기가 선언한 profile 상한을 넘었습니다.");
+    const auto maxVertices = large ? MaxLargeVertices : MaxVertices;
+    const auto maxTriangles = large ? MaxLargeTriangles : MaxTriangles;
     Require(value.at("snapshot") == snapshot && value.value("run_id", "") == runId,
         "3D 표시 파일과 요청한 스냅샷이 다릅니다.");
     const auto& sourceBodies = value.at("bodies");
@@ -163,8 +172,8 @@ inline Scene Parse(const Json& value, const Json& snapshot, const std::string& r
         const auto& triangles = source.at("triangles");
         Require(vertices.is_array() && !vertices.empty() && triangles.is_array() && !triangles.empty(),
             "3D body의 정점 또는 삼각형이 비어 있습니다.");
-        Require(vertices.size() <= MaxVertices - result.vertices && triangles.size() <= MaxTriangles - result.triangles,
-            "3D 표시 크기가 초기 profile 상한을 넘었습니다.");
+        Require(vertices.size() <= maxVertices - result.vertices && triangles.size() <= maxTriangles - result.triangles,
+            "3D 표시 크기가 선언한 profile 상한을 넘었습니다.");
         result.vertices += vertices.size();
         result.triangles += triangles.size();
         for (const auto& vertex : vertices)
@@ -366,7 +375,7 @@ inline Scene Load(const std::filesystem::path& workspace, const Json& artifact, 
         artifact.value("snapshot_id", "") == snapshot.value("snapshot_id", ""), "3D 파일 참조가 실행과 다릅니다.");
     Require(artifact.at("bytes").is_number_integer(), "3D 파일 크기가 올바르지 않습니다.");
     const auto byteCount = artifact.at("bytes").get<std::int64_t>();
-    Require(byteCount > 0 && static_cast<std::uint64_t>(byteCount) <= MaxBytes, "3D 표시 파일은 최대 16 MiB입니다.");
+    Require(byteCount > 0 && static_cast<std::uint64_t>(byteCount) <= MaxLargeBytes, "3D 표시 파일은 최대 64 MiB입니다.");
     const std::string uri = artifact.at("uri").get<std::string>();
     Require(!uri.empty() && uri.size() <= 2048 && uri.find_first_of("\\:\0", 0, 3) == std::string::npos && uri.front() != '/',
         "3D 파일 경로는 workspace 기준 상대 경로여야 합니다.");
@@ -409,6 +418,7 @@ inline Scene Load(const std::filesystem::path& workspace, const Json& artifact, 
         Require(depth <= 32, "3D 파일 중첩 깊이가 너무 큽니다.");
         return true;
     });
-    return Parse(value, snapshot, runId, cancelled);
+    std::string{}.swap(bytes);
+    return Parse(value, snapshot, runId, cancelled, static_cast<std::size_t>(byteCount));
 }
 }

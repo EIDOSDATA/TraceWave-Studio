@@ -4,7 +4,10 @@ from copy import deepcopy
 import unittest
 from uuid import NAMESPACE_URL, uuid5
 
-from rfad.application.display_mesh import MAX_TRIANGLES, MAX_VERTICES, validate_display_mesh
+from rfad.application.display_mesh import (
+    LARGE_SCHEMA, MAX_LARGE_MESH_BYTES, MAX_LARGE_TRIANGLES, MAX_MESH_BYTES, MAX_TRIANGLES, MAX_VERTICES,
+    validate_display_mesh,
+)
 from rfad.domain.errors import ProjectError
 
 
@@ -28,9 +31,10 @@ class DisplayMeshTests(unittest.TestCase):
         self.snapshot = deepcopy(self.mesh["snapshot"])
         self.body_map = deepcopy(self.mesh["bodies"])
 
-    def validate(self):
+    def validate(self, *, byte_count=None):
         """! @brief 원본 실행의 별도 기대값을 기준으로 표시 자료를 검사한다."""
-        validate_display_mesh(self.mesh, snapshot=self.snapshot, run_id="fixed-run", body_map=self.body_map)
+        validate_display_mesh(self.mesh, snapshot=self.snapshot, run_id="fixed-run", body_map=self.body_map,
+                              byte_count=byte_count)
 
     def test_thin_geometry_mapping_and_source_are_preserved(self):
         """! @brief 유효 자료의 얇은 두께와 원본 데이터를 변경하지 않는다."""
@@ -100,6 +104,21 @@ class DisplayMeshTests(unittest.TestCase):
         with self.assertRaises(ProjectError):
             self.validate()
 
+    def test_large_profile_is_bounded_independently_of_legacy_profile(self):
+        """! @brief 기존 바이트 제한과 대형 정점 수 제한을 각 profile의 계약으로 확인한다."""
+        with self.assertRaises(ProjectError) as caught:
+            self.validate(byte_count=MAX_MESH_BYTES + 1)
+        self.assertEqual(caught.exception.code, "E_RESOURCE")
+        self.mesh["schema"] = LARGE_SCHEMA
+        self.mesh["bodies"][0]["triangles"] = [[0, 2, 1]] * (MAX_TRIANGLES + 1)
+        self.validate(byte_count=MAX_MESH_BYTES + 1)
+        with self.assertRaises(ProjectError) as caught:
+            self.validate(byte_count=MAX_LARGE_MESH_BYTES + 1)
+        self.assertEqual(caught.exception.code, "E_RESOURCE")
+        self.mesh["bodies"][0]["triangles"] = [[0, 2, 1]] * (MAX_LARGE_TRIANGLES + 1)
+        with self.assertRaises(ProjectError) as caught:
+            self.validate()
+        self.assertEqual(caught.exception.code, "E_RESOURCE")
 
 if __name__ == "__main__":
     unittest.main()

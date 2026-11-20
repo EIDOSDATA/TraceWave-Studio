@@ -5,9 +5,11 @@ import json
 from pathlib import Path
 
 from rfad.adapters.cad.geometry import _require
-from rfad.application.display_mesh import (ANGULAR_DEFLECTION_RAD, LINEAR_DEFLECTION_MM, MAX_MESH_BYTES,
-                                          MAX_TRIANGLES, MAX_VERTICES, MAPPING_KEYS, SCHEMA as MESH_SCHEMA,
-                                          validate_display_mesh)
+from rfad.application.display_mesh import (
+    ANGULAR_DEFLECTION_RAD, LARGE_SCHEMA, LINEAR_DEFLECTION_MM, MAPPING_KEYS,
+    MAX_LARGE_MESH_BYTES, MAX_LARGE_TRIANGLES, MAX_LARGE_VERTICES,
+    MAX_MESH_BYTES, MAX_TRIANGLES, MAX_VERTICES, SCHEMA as MESH_SCHEMA, validate_display_mesh,
+)
 
 
 def _write_display_mesh(bodies: list[dict], projection: dict, path: Path) -> None:
@@ -36,7 +38,7 @@ def _write_display_mesh(bodies: list[dict], projection: dict, path: Path) -> Non
                      "CAD 표시 삼각화에 누락된 면이 있습니다.")
             vertex_count += poly.NbNodes()
             triangle_count += poly.NbTriangles()
-            _require(vertex_count <= MAX_VERTICES and triangle_count <= MAX_TRIANGLES,
+            _require(vertex_count <= MAX_LARGE_VERTICES and triangle_count <= MAX_LARGE_TRIANGLES,
                      "표시 mesh 정점 또는 삼각형 상한을 초과했습니다.", code="E_RESOURCE")
             offset = len(vertices)
             transform = location.Transformation()
@@ -49,6 +51,10 @@ def _write_display_mesh(bodies: list[dict], projection: dict, path: Path) -> Non
                 triangles.append([offset + a - 1, offset + (c if reverse else b) - 1, offset + (b if reverse else c) - 1])
         item.update(vertices=vertices, triangles=triangles)
         mesh["bodies"].append(item)
+    large = vertex_count > MAX_VERTICES or triangle_count > MAX_TRIANGLES
+    if large:
+        mesh["schema"] = LARGE_SCHEMA
+    max_bytes = MAX_LARGE_MESH_BYTES if large else MAX_MESH_BYTES
     validate_display_mesh(mesh, snapshot=projection["snapshot"], run_id=projection.get("run_id"), body_map=bodies)
     encoder = json.JSONEncoder(ensure_ascii=False, allow_nan=False, separators=(",", ":"))
     written = 0
@@ -56,5 +62,5 @@ def _write_display_mesh(bodies: list[dict], projection: dict, path: Path) -> Non
         for chunk in encoder.iterencode(mesh):
             raw = chunk.encode("utf-8")
             written += len(raw)
-            _require(written <= MAX_MESH_BYTES, "표시 mesh 파일이 16 MiB 상한을 초과했습니다.", code="E_RESOURCE")
+            _require(written <= max_bytes, "표시 mesh 파일이 선언한 profile 상한을 초과했습니다.", code="E_RESOURCE")
             stream.write(raw)

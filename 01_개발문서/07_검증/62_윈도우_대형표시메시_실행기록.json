@@ -1,0 +1,462 @@
+{
+  "schema": "rfad.large-display-asset-verification/0.1",
+  "date_kst": "2026-11-20",
+  "source_parent": "e748676c7df5054bfa22c733d5788c0c4773ed0d",
+  "studio_binary": {
+    "file": "tracewave_gui.exe",
+    "bytes": 30472848,
+    "sha256": "a48312f93df0c08cd900bbc1c17bf669b310f6db4b01cf8d315024a499b53e49"
+  },
+  "probe_binary": {
+    "file": "tracewave_model_vertex_buffer_probe.exe",
+    "bytes": 12778488,
+    "sha256": "589429b8183ccd03418d9119946e728d2c2715ac71b50a49bac21a0c8d12fbaf"
+  },
+  "synthetic_fixture": {
+    "raw_file": {
+      "file": "stage12q-fixture.json",
+      "bytes": 621,
+      "sha256": "4c9f32a01e5b2247f96691a1b4997a5632eeea4d70e68cf83dc6cfc9655ac9ae"
+    },
+    "record": {
+      "snapshot": {
+        "snapshot_id": "00000000-0000-0000-0000-000000000001",
+        "revision_id": "00000000-0000-0000-0000-000000000002",
+        "content_hash": "19e6c1107eb770f1b55a3f5dc5bf46b6b75c20cc61707eac3cb085cae872c1ac"
+      },
+      "artifact": {
+        "uri": "mesh.json",
+        "sha256": "89db886307ca72cf5ca2f43a8c97254a899d596ffea184d880c9a8667bc710d4",
+        "bytes": 37489347,
+        "snapshot_id": "00000000-0000-0000-0000-000000000001",
+        "run_id": "00000000-0000-0000-0000-000000000003",
+        "role": "display_mesh"
+      },
+      "triangles": 1000000,
+      "vertices": 502002,
+      "source": "synthetic-display-only"
+    }
+  },
+  "host_validation": {
+    "raw_file": {
+      "file": "stage12q-large-validate.json",
+      "bytes": 133,
+      "sha256": "272ee2dd31cdf32c698edb322bdce0b9921fe5f2848c2fdff2ca086e727bbd93"
+    },
+    "record": {
+      "ok": true,
+      "triangles": 1000000,
+      "bytes": 37489347,
+      "sha256": "89db886307ca72cf5ca2f43a8c97254a899d596ffea184d880c9a8667bc710d4"
+    }
+  },
+  "large_windows_opengl": [
+    {
+      "raw_file": {
+        "file": "stage12q-large-gl-1.json",
+        "bytes": 925,
+        "sha256": "849e33670d1bb4e1c2bc0744a705f18e715174c38ed151018cfe83f0e412672d"
+      },
+      "record": {
+        "bodies": 2,
+        "buffered_gl_finish_ms": [
+          6.915,
+          6.816,
+          7.004,
+          7.15,
+          6.984,
+          6.944,
+          7.022,
+          7.584,
+          7.459,
+          7.354,
+          6.982,
+          7.138,
+          6.736,
+          6.934,
+          6.857,
+          6.942,
+          6.807,
+          6.929,
+          7.258,
+          6.563,
+          6.96,
+          7.031,
+          6.842,
+          7.474,
+          6.401,
+          6.049,
+          5.985,
+          6.072,
+          6.254,
+          6.079,
+          6.428,
+          6.134,
+          6.52,
+          6.835,
+          6.505,
+          6.338,
+          6.414,
+          7.579,
+          6.594,
+          6.838
+        ],
+        "cpu_fallback_after_bad_layout": true,
+        "cpu_gl_finish_ms": [
+          13.68,
+          13.905,
+          15.035,
+          16.708,
+          16.218,
+          16.863,
+          16.403,
+          17.63,
+          16.843,
+          19.07,
+          14.879,
+          16.568,
+          14.591,
+          16.775,
+          14.683,
+          17.179,
+          15.392,
+          17.954,
+          13.599,
+          14.549,
+          14.153,
+          17.417,
+          16.377,
+          14.256,
+          14.699,
+          15.27,
+          15.123,
+          15.805,
+          13.778,
+          16.104,
+          14.467,
+          15.461,
+          15.168,
+          16.64,
+          15.518,
+          16.126,
+          14.257,
+          16.344,
+          14.536,
+          17.362
+        ],
+        "gpu_bytes": 72000000,
+        "load_ms": 1426.03,
+        "ok": true,
+        "pixel_equal": true,
+        "present_intervals_measured": false,
+        "renderer": "Intel(R) Iris(R) Xe Graphics",
+        "schema": "rfad.windows-vertex-buffer-probe/0.1",
+        "sealed_file_loaded": true,
+        "size": [
+          1920,
+          1080
+        ],
+        "triangles": 1000000,
+        "uploads_after_new_context": 3,
+        "uploads_after_rotation": 1
+      },
+      "summary": {
+        "cpu": {
+          "median_ms": 15.4895,
+          "p95_ms": 17.63,
+          "maximum_ms": 19.07
+        },
+        "buffer": {
+          "median_ms": 6.8495,
+          "p95_ms": 7.474,
+          "maximum_ms": 7.584
+        }
+      }
+    },
+    {
+      "raw_file": {
+        "file": "stage12q-large-gl-2.json",
+        "bytes": 923,
+        "sha256": "e3a69c0d2ab1c04bf343bb1c64b7704e271ebe7a3f266995a2d4313e48821f6a"
+      },
+      "record": {
+        "bodies": 2,
+        "buffered_gl_finish_ms": [
+          8.186,
+          8.261,
+          7.99,
+          8.439,
+          8.337,
+          8.386,
+          7.093,
+          7.068,
+          7.394,
+          7.445,
+          6.845,
+          7.308,
+          7.392,
+          7.775,
+          7.56,
+          7.755,
+          6.365,
+          6.56,
+          6.472,
+          6.605,
+          7.031,
+          6.631,
+          6.27,
+          6.245,
+          6.318,
+          6.352,
+          6.328,
+          6.462,
+          7.183,
+          6.568,
+          6.466,
+          6.351,
+          6.497,
+          6.643,
+          7.4,
+          6.06,
+          6.049,
+          6.143,
+          6.587,
+          6.651
+        ],
+        "cpu_fallback_after_bad_layout": true,
+        "cpu_gl_finish_ms": [
+          16.334,
+          18.265,
+          16.783,
+          16.768,
+          17.234,
+          18.882,
+          15.839,
+          19.114,
+          16.206,
+          19.809,
+          17.241,
+          19.077,
+          15.359,
+          19.737,
+          19.277,
+          18.393,
+          14.937,
+          17.814,
+          14.684,
+          15.487,
+          14.07,
+          16.462,
+          14.572,
+          16.342,
+          13.903,
+          15.432,
+          14.97,
+          16.743,
+          14.605,
+          15.188,
+          15.948,
+          16.755,
+          16.098,
+          18.126,
+          13.67,
+          11.994,
+          12.685,
+          13.633,
+          15.972,
+          17.104
+        ],
+        "gpu_bytes": 72000000,
+        "load_ms": 1419.41,
+        "ok": true,
+        "pixel_equal": true,
+        "present_intervals_measured": false,
+        "renderer": "Intel(R) Iris(R) Xe Graphics",
+        "schema": "rfad.windows-vertex-buffer-probe/0.1",
+        "sealed_file_loaded": true,
+        "size": [
+          1920,
+          1080
+        ],
+        "triangles": 1000000,
+        "uploads_after_new_context": 3,
+        "uploads_after_rotation": 1
+      },
+      "summary": {
+        "cpu": {
+          "median_ms": 16.27,
+          "p95_ms": 19.277,
+          "maximum_ms": 19.809
+        },
+        "buffer": {
+          "median_ms": 6.647,
+          "p95_ms": 8.337,
+          "maximum_ms": 8.439
+        }
+      }
+    }
+  ],
+  "standard_opengl_regression": {
+    "raw_file": {
+      "file": "stage12q-small-gl.json",
+      "bytes": 879,
+      "sha256": "421d81a84557911b849a24320aa43938877f482a6f40a1f92b2f2b9f69f8e8ea"
+    },
+    "record": {
+      "bodies": 2,
+      "buffered_gl_finish_ms": [
+        1.296,
+        4.108,
+        5.055,
+        1.094,
+        1.076,
+        1.009,
+        1.225,
+        5.096,
+        1.769,
+        1.092,
+        1.069,
+        4.841,
+        5.049,
+        1.232,
+        1.146,
+        0.917,
+        1.024,
+        1.292,
+        1.251,
+        4.443,
+        4.469,
+        1.752,
+        1.457,
+        1.298,
+        1.147,
+        0.98,
+        1.02,
+        1.074,
+        1.027,
+        0.847,
+        1.934,
+        1.33,
+        0.913,
+        1.099,
+        0.983,
+        0.843,
+        1.28,
+        1.157,
+        2.118,
+        1.068
+      ],
+      "cpu_fallback_after_bad_layout": true,
+      "cpu_gl_finish_ms": [
+        2.03,
+        1.883,
+        1.966,
+        1.843,
+        5.26,
+        5.259,
+        2.764,
+        1.971,
+        5.891,
+        5.831,
+        1.948,
+        1.926,
+        1.961,
+        1.927,
+        5.321,
+        5.576,
+        1.776,
+        4.667,
+        2.793,
+        2.051,
+        3.275,
+        7.807,
+        3.838,
+        1.778,
+        5.4,
+        3.514,
+        1.907,
+        1.816,
+        3.169,
+        1.776,
+        1.645,
+        1.746,
+        1.674,
+        2.16,
+        1.738,
+        1.704,
+        2.342,
+        1.861,
+        1.746,
+        1.953
+      ],
+      "gpu_bytes": 7200000,
+      "load_ms": 6.467,
+      "ok": true,
+      "pixel_equal": true,
+      "present_intervals_measured": false,
+      "renderer": "Intel(R) Iris(R) Xe Graphics",
+      "schema": "rfad.windows-vertex-buffer-probe/0.1",
+      "sealed_file_loaded": false,
+      "size": [
+        512,
+        384
+      ],
+      "triangles": 100000,
+      "uploads_after_new_context": 3,
+      "uploads_after_rotation": 1
+    }
+  },
+  "occ": {
+    "raw_file": {
+      "file": "stage12q-cad-final-traces.json",
+      "bytes": 74069,
+      "sha256": "b105a6cba9ef4beebedb333553ae751c85aa18a7b8ac301a45ece8ccfbdb1469"
+    },
+    "display_profile": {
+      "schema": "rfad.display-mesh/0.2",
+      "triangles": 142552,
+      "bytes": 6909083,
+      "sha256": "b5aacf16b2993af9504ce68b0880653128527dc9bcbad5386d4364fbb676b890"
+    },
+    "source_and_missing_preserved": true,
+    "runtime_free_reopen": true
+  },
+  "initial_sphere_rejection": {
+    "reason": "degenerate triangle",
+    "log": {
+      "file": "stage12q-native-tests.log",
+      "bytes": 3631,
+      "sha256": "b99dca9238f398b5c6b20e11b11e20eb3d57767f32efb26e23e2b0daee9c3b87"
+    }
+  },
+  "tests": {
+    "python_display_and_source": {
+      "passed": 24,
+      "seconds": 3.921,
+      "log": {
+        "file": "stage12q-python-tests.log",
+        "bytes": 6340,
+        "sha256": "110f909bdb7f94c395c2e5290df754b744ca7aaea210b7f14a3f6ff7f667498a"
+      }
+    },
+    "windows_occ_and_gui": {
+      "passed": 6,
+      "seconds": 111.266,
+      "log": {
+        "file": "stage12q-native-final-tests.log",
+        "bytes": 1720,
+        "sha256": "0046489ce1cdf7792f5ee346468aa4957c2038e2e79bdf64639bdb507d913d3d"
+      }
+    },
+    "ctest": {
+      "passed": 13,
+      "seconds": 0.81,
+      "log": {
+        "file": "stage12q-ctest.log",
+        "bytes": 1526,
+        "sha256": "7e310dcab8d3b8fbc59bf826776c83ba5822a8bc7943b68d45db958a3d0888d3"
+      }
+    }
+  },
+  "actual_f2_composition_or_memory_accepted": false
+}

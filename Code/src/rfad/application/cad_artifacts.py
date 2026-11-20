@@ -8,7 +8,7 @@ from uuid import uuid4
 
 from rfad.application.cad import PROFILE
 from rfad.application.canonical import canonical_bytes, canonical_hash
-from rfad.application.display_mesh import MAX_MESH_BYTES, validate_display_mesh
+from rfad.application.display_mesh import MAX_LARGE_MESH_BYTES, validate_display_mesh
 from rfad.domain.errors import ProjectError
 
 MAX_FILE_BYTES = 64 * 1024 * 1024
@@ -81,8 +81,10 @@ def validate_cad_contents(journal, job: dict, package: dict, files: list[dict]) 
     if (validation.get("status") != "passed_same_kernel" or validation.get("kernel_independent") is not False
             or sidecar.get("verification") != validation or len(sidecar.get("body_map", [])) != package["body_count"]):
         raise ProjectError("E_HASH", "CAD 재입력 검증 근거 또는 body mapping이 다릅니다.")
-    mesh = read_small("mesh.json", MAX_MESH_BYTES)
-    validate_display_mesh(mesh, snapshot=job["snapshot"], run_id=job["run_id"], body_map=sidecar["body_map"])
+    mesh = read_small("mesh.json", MAX_LARGE_MESH_BYTES)
+    mesh_bytes = next(item["bytes"] for item in files if item["path"] == "mesh.json")
+    validate_display_mesh(mesh, snapshot=job["snapshot"], run_id=job["run_id"], body_map=sidecar["body_map"],
+                          byte_count=mesh_bytes)
     with journal._safe_path(base + "model.step").open("rb") as stream:
         header = stream.read(65536).decode("ascii")
     match = re.search(r"FILE_SCHEMA\s*\(\s*\(\s*'([^']+)'\s*\)\s*\)", header)
