@@ -23,6 +23,7 @@ from rfad.application.project_history import ProjectHistory
 from rfad.application.project_operations import ProjectOperations
 from rfad.application.project_repository import ProjectRepository
 from rfad.application.request_ledger import RequestLedger
+from rfad.application.host_calculation_context import HostCalculationContext, MUTATIONS as HOST_MUTATIONS
 from rfad.application.pcb_selection import PcbSelectionCoordinator
 from rfad.application.pcb_selection_contract import MUTATION_METHODS as PCB_SELECTION_MUTATIONS
 from rfad.application.project_studies import StudyCoordinator
@@ -41,7 +42,7 @@ ASYNC_METHODS = {
 } | CAD_METHODS | SOLVER_METHODS
 MUTATION_METHODS = ASYNC_METHODS | {
     "project.apply_command", "editor.apply", "canvas.apply", "project.undo", "project.redo", "job.cancel",
-} | PCB_SELECTION_MUTATIONS | STUDY_MUTATIONS | design_sweep_service.MUTATIONS | rf_validation_records.MUTATIONS | sweep_selection.MUTATIONS | pcb_import_service.MUTATIONS | {"target.editor.apply", "template.apply", "design.rules.apply", physical_setup_service.MUTATION, precision_service.MUTATION, network_service.MUTATION, pcb_exchange_service.MUTATION}
+} | HOST_MUTATIONS | PCB_SELECTION_MUTATIONS | STUDY_MUTATIONS | design_sweep_service.MUTATIONS | rf_validation_records.MUTATIONS | sweep_selection.MUTATIONS | pcb_import_service.MUTATIONS | {"target.editor.apply", "template.apply", "design.rules.apply", physical_setup_service.MUTATION, precision_service.MUTATION, network_service.MUTATION, pcb_exchange_service.MUTATION}
 
 
 class ProjectService:
@@ -69,16 +70,11 @@ class ProjectService:
         self.cad = CadCoordinator(self, cad_runtime)
         self.exchange = ExchangeCoordinator(self, exchange_runtime)
         self.physical_setup = physical_setup_service.PhysicalSetupService(self)
-        self.solver = SolverCoordinator(self, solver_runtime)
-        self.studies = StudyCoordinator(self)
-        self.journal = Journal(self.workspace, {
-            "schema_version": "rfad.workspace/0.1", "epochs": {}, "projects": {},
-            "paths": {}, "receipts": {}, "jobs": {}, "snapshots": {}, "commands": {},
-        }, fault_hook=fault_hook)
-        self.repository = ProjectRepository(self.workspace, self.journal, max_document_bytes=MAX_DOCUMENT_BYTES)
-        self.history = ProjectHistory(self.repository)
-        self.operations = ProjectOperations(self.repository, self._now)
-        self.requests = RequestLedger(self.journal, self._now)
+        self.host_calculation_context = HostCalculationContext(self.workspace, clock=clock, fault_hook=fault_hook, solver_runtime=solver_runtime)
+        context = self.host_calculation_context
+        self.journal, self.repository, self.history = context.journal, context.repository, context.history
+        self.operations, self.requests = context.operations, context.requests
+        self.solver, self.studies = context.solver, context.studies
         self.pcb_selection = PcbSelectionCoordinator(self, catalog_database)
         self.templates = TemplateCandidateCoordinator(self)
         try:
@@ -106,6 +102,7 @@ class ProjectService:
     def close(self) -> None:
         """! @brief 실행 중인 원자적 작업을 마친 뒤 종료한다."""
         self._stop.set()
+        self.host_calculation_context.calculation_runtime.stop.set()
         self._wake.set()
         self.studies.close()
         self.cad.close()
@@ -131,8 +128,7 @@ class ProjectService:
             if state.get("schema_version") != "rfad.workspace/0.1":
                 raise ProjectError("E_VERSION", "지원하지 않는 작업 영역 버전입니다.")
             if recover:
-                self.studies.recover(state)
-                design_sweep_service.recover(self, state)
+                self.host_calculation_context.recover(state)
             else:
                 state.setdefault("studies", {})
                 state.setdefault("sweeps", {})
@@ -238,7 +234,8 @@ class ProjectService:
         """! @brief 원자 접수 후 작업자에게 변경 사실만 알린다."""
         if self._worker_error is not None:
             raise ProjectError("E_RESOURCE", "자료 처리 worker가 중단되었습니다. 서비스를 다시 열고 작업 상태를 확인하십시오.")
-        result = self.requests.execute(method, params, self._dispatch_mutation)
+        result = (self.host_calculation_context.mutate(method, params) if method in HOST_MUTATIONS
+                  else self.requests.execute(method, params, self._dispatch_mutation))
         self._wake.set()
         self.cad.wake.set()
         self.exchange.wake.set()
@@ -265,9 +262,9 @@ class ProjectService:
         elif method in rf_validation_records.MUTATIONS:
             return rf_validation_records.admit(self, state, method, context, data)
         elif method in design_sweep_service.MUTATIONS:
-            return design_sweep_service.admit(self, state, method, context, data)
+            return self.host_calculation_context._dispatch(state, method, context, data)
         elif method == network_service.MUTATION:
-            return network_service.admit(self, state, context, data)
+            return self.host_calculation_context._dispatch(state, method, context, data)
         elif method == precision_service.MUTATION:
             return precision_service.admit(self, state, context, data)
         elif method == physical_setup_service.MUTATION:
@@ -281,6 +278,8 @@ class ProjectService:
         elif method in STUDY_MUTATIONS:
             return self.studies.admit(state, method, context, data)
         elif method == "project.apply_command":
+            if data["type"] in ("measurement.registry.replace", "measurement.workspace.replace"):
+                raise ProjectError("E_UNSUPPORTED", "측정 원본 편집은 검토된 측정 API를 사용하십시오.")
             if data["type"] in ("pcb.features.replace", "pcb.features.replay"):
                 raise ProjectError("E_UNSUPPORTED", "PCB 원본 편집은 pcb.features.preview/apply를 사용하십시오.")
             if data["type"] == "sweep.selection.apply":

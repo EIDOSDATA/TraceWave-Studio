@@ -19,6 +19,7 @@ from rfad.application import target_editor
 from rfad.application import exchange_service, exchange_contract
 from rfad.application import pcb_exchange_service
 from rfad.application import pcb_import_service
+from rfad.application import measurement_service, measurement_contract
 from rfad.application import design_rule_service, physical_setup_service, precision_service, network_service, design_sweep_service, result_service, rf_validation_records, sweep_selection
 
 TEMPLATE_READS = {"template.list", "template.get", "template.context", "template.synthesize"}
@@ -36,12 +37,14 @@ APPLICATION_ERRORS = {
     "E_GEOMETRY": 1012, "E_PORT": 1013, "E_CONNECTIVITY": 1014,
     "E_MATERIAL_UNKNOWN": 1015, "E_MATERIAL_RANGE": 1016,
     "E_SOLVER": 1017, "E_MISSING_ARTIFACT": 1018,
+    "E_NUMERIC": 1020,
 }
 PROJECT_MUTATIONS = {"project.open", "project.apply_command", "editor.apply", "canvas.apply", "project.undo", "project.redo", "project.save", "snapshot.create", "design.validate", "job.cancel", "geometry.build", "export.build", "export.preview"}
 PROJECT_MUTATIONS.update({"solver.plan", "solver.prepare", "job.submit"})
 PROJECT_MUTATIONS.add("export.verify")
 PROJECT_MUTATIONS.add(pcb_exchange_service.MUTATION)
 PROJECT_MUTATIONS.update(pcb_import_service.MUTATIONS)
+PROJECT_MUTATIONS.update(measurement_service.MUTATIONS)
 PROJECT_MUTATIONS.update(PCB_SELECTION_MUTATIONS)
 PROJECT_MUTATIONS.update(STUDY_MUTATIONS)
 PROJECT_MUTATIONS.update(design_sweep_service.MUTATIONS)
@@ -121,6 +124,14 @@ def capabilities(service=None, catalog=None) -> dict:
                                   for name in precision_service.READS | {precision_service.MUTATION}})
         result["methods"].update({name: {"status": "implemented", "extension_profile": network_service.PROFILE}
                                   for name in network_service.READS | {network_service.MUTATION}})
+        result["methods"].update({name: {"status": "implemented", "api_id": "API-022", "extension_profile": measurement_service.PROFILE}
+                                  for name in measurement_service.READS | measurement_service.MUTATIONS})
+        result["measurement_profile"] = {"profile": measurement_service.PROFILE,
+            "preview_required": True, "atomic_apply": True, "immutable_record_versions": True,
+            "alignment": ["permute_ports", "renormalize", "linear_ri"], "automatic_interpolation": False,
+            "uncertainty_propagation": False, "physical_validation": False,
+            "attachment_bytes": measurement_contract.MAX_ATTACHMENT_BYTES,
+            "attachment_count": measurement_contract.MAX_ATTACHMENTS}
         result["methods"].update({name: {"status": "implemented", "extension_profile": design_sweep_service.PROFILE}
                                   for name in design_sweep_service.READS | design_sweep_service.MUTATIONS})
         result["methods"].update({name: {"status": "implemented", "extension_profile": rf_validation_records.PROFILE}
@@ -254,31 +265,36 @@ def _reject_constant(value: str) -> None:
 
 
 def _network_source_paths(message):
-    """! @brief 명시적 가져오기 원문 필드만 512 KiB의 base64 전송 예외로 지정한다."""
-    result = set()
+    """! @brief 명시 원문 필드별로 기존 파일/청크 상한의 base64 전송만 허용한다."""
+    result = {}
     requests = enumerate(message) if type(message) is list else [(None, message)]
     for index, request in requests:
-        if type(request) is not dict or request.get("method") not in ("network.preview", "network.apply", "pcb.import.chunk"):
+        if type(request) is not dict:
             continue
+        method = request.get("method")
         params = request.get("params")
         data = params.get("input") if type(params) is dict else None
-        if type(data) is dict and request.get("method") == "pcb.import.chunk":
-            prefix = () if index is None else (index,)
-            result.add(prefix + ("params", "input", "content_base64"))
+        if type(data) is not dict:
             continue
-        if type(data) is dict and data.get("operation") == "import":
-            prefix = () if index is None else (index,)
-            result.add(prefix + ("params", "input", "parameters", "source_base64"))
+        prefix = (() if index is None else (index,)) + ("params", "input")
+        if method == "pcb.import.chunk":
+            result[prefix + ("content_base64",)] = pcb_import_service.CHUNK_BYTES
+        elif method == "measurement.attachment.add":
+            result[prefix + ("content_base64",)] = measurement_contract.MAX_ATTACHMENT_BYTES
+        elif method in ("network.preview", "network.apply") and data.get("operation") == "import":
+            result[prefix + ("parameters", "source_base64")] = network_service.MAX_IMPORT_BYTES
+        elif method in ("measurement.preview", "measurement.apply") and data.get("operation") == "import_record":
+            result[prefix + ("parameters", "network", "source_base64")] = network_service.MAX_IMPORT_BYTES
     return result
 
 
-def _validate_tree(value: object, depth: int = 0, path=(), source_paths=frozenset()) -> None:
+def _validate_tree(value: object, depth: int = 0, path=(), source_paths=None) -> None:
     """! @brief 깊이, 문자열과 부동소수점 입력의 경계를 검사한다."""
     if depth > MAX_DEPTH:
         raise ValueError("JSON nesting limit exceeded")
     if isinstance(value, str):
-        source_limit = pcb_import_service.CHUNK_BYTES if path and path[-1] == "content_base64" else network_service.MAX_IMPORT_BYTES
-        limit = ((source_limit + 2) // 3) * 4 if path in source_paths else MAX_STRING_BYTES
+        source_limit = None if source_paths is None else source_paths.get(path)
+        limit = ((source_limit + 2) // 3) * 4 if source_limit is not None else MAX_STRING_BYTES
         if len(value.encode("utf-8")) > limit:
             raise ValueError("String limit exceeded")
     elif isinstance(value, float):
@@ -303,12 +319,14 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
         return _error(None, -32600, "Invalid Request")
     notification = "id" not in request
     method = request["method"]
-    if service is not None and method in PROJECT_MUTATIONS | pcb_import_service.READS | pcb_exchange_service.READS | exchange_contract.READS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | network_service.READS | design_sweep_service.READS | result_service.READS | rf_validation_records.READS | sweep_selection.READS | {"target.editor.get", "job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
+    if service is not None and method in PROJECT_MUTATIONS | measurement_service.READS | pcb_import_service.READS | pcb_exchange_service.READS | exchange_contract.READS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | network_service.READS | design_sweep_service.READS | result_service.READS | rf_validation_records.READS | sweep_selection.READS | {"target.editor.get", "job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
         if notification and method in PROJECT_MUTATIONS:
             return None
         try:
             params = request.get("params")
-            if method in pcb_import_service.READS:
+            if method in measurement_service.READS:
+                result = measurement_service.read(service.host_calculation_context, method, params)
+            elif method in pcb_import_service.READS:
                 result = pcb_import_service.read(service, method, params)
             elif method in pcb_exchange_service.READS:
                 result = pcb_exchange_service.read(service, method, params)
@@ -321,9 +339,9 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
             elif method in result_service.READS:
                 result = result_service.read(service, method, params)
             elif method in design_sweep_service.READS:
-                result = design_sweep_service.read(service, method, params)
+                result = design_sweep_service.read(service.host_calculation_context, method, params)
             elif method in network_service.READS:
-                result = network_service.read(service, method, params)
+                result = network_service.read(service.host_calculation_context, method, params)
             elif method in precision_service.READS:
                 result = precision_service.read(service, method, params)
             elif method in physical_setup_service.READS:

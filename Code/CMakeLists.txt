@@ -116,6 +116,21 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/result_workspace.cpp
     ui/wxwidgets/result_workspace_pinned.cpp
     ui/wxwidgets/result_workspace_compare.cpp
+    ui/wxwidgets/result_workspace_measurement.cpp
+    ui/wxwidgets/measurement_compare_view.cpp
+    ui/wxwidgets/measurement_model.cpp
+    ui/wxwidgets/measurement_record_form.cpp
+    ui/wxwidgets/measurement_record_collections.cpp
+    ui/wxwidgets/measurement_collection_dialog.cpp
+    ui/wxwidgets/measurement_uncertainty_dialog.cpp
+    ui/wxwidgets/measurement_processing_dialog.cpp
+    ui/wxwidgets/measurement_record_dialog.cpp
+    ui/wxwidgets/measurement_attachment_dialog.cpp
+    ui/wxwidgets/measurement_history_dialog.cpp
+    ui/wxwidgets/measurement_operation_dialog.cpp
+    ui/wxwidgets/measurement_operation_form.cpp
+    ui/wxwidgets/measurement_quantity_group.cpp
+    ui/wxwidgets/studio_measurement.cpp
     ui/wxwidgets/studio_results.cpp
     ui/wxwidgets/rf_validation_model.cpp
     ui/wxwidgets/rf_validation_view.cpp
@@ -148,6 +163,7 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/network_import_dialog.cpp
     ui/wxwidgets/network_import_form.cpp
     ui/wxwidgets/network_import_review.cpp
+    ui/wxwidgets/network_import_measurement.cpp
     ui/wxwidgets/network_circuit_dialog.cpp
     ui/wxwidgets/network_circuit_view.cpp
     ui/wxwidgets/network_assessment_dialog.cpp

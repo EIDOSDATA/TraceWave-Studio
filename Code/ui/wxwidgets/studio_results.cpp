@@ -50,6 +50,7 @@ void StudioFrame::UpdateResultViews()
     {
         return;
     }
+    m_results->SetMeasurementAvailable(m_measurementSupported);
     m_results->Update(m_project, m_epoch, m_revision,
                       m_connected && m_resultsSupported && !m_project.empty() && !m_closing && !m_busy &&
                           m_setupDialog == nullptr,

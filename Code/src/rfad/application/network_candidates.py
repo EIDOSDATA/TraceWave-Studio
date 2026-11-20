@@ -90,17 +90,14 @@ def imported(parameters, document, identity):
 
 def resolved_target(document, target):
     """! @brief 평가 순간의 매개변수 값만 별도 사본에 해석하고 목표 원본은 보존한다."""
-    output = deepcopy(target)
-    for key in ("start", "end", "reference"):
-        if key in output["band"]:
-            output["band"][key] = resolve_scalar(document, output["band"][key], "frequency", "target.band." + key).to_dict()
-    output["reference_impedance"] = resolve_scalar(document, output["reference_impedance"], "impedance", "target.reference_impedance").to_dict()
-    return output
+    from rfad.domain.host_calculation import resolved_target as resolve
+    return resolve(document, target)
 
 
 def build_candidate(service, state, project, document, request):
     """! @brief 바이트와 명령을 계산하되 writer 게시 전에는 원본/파일을 변경하지 않는다."""
     operation, parameters = request["operation"], request["parameters"]
+    service.verify_calculation()
     if type(operation) is not str or operation not in OPERATIONS:
         fail("지원하지 않는 네트워크 작업입니다.", "operation", "E_UNSUPPORTED")
     _fields(parameters, OPERATIONS[operation])
@@ -108,7 +105,10 @@ def build_candidate(service, state, project, document, request):
     seed = canonical_hash({"base": canonical_hash(document), "operation": operation, "parameters": parameters})
     identity = str(uuid5(UUID(document["project_id"]), "network:" + seed))
     folder = project["path"] + "/network/" + identity
-    artifacts = {}
+    host_identity = service.calculation_identity()
+    source_bytes = service.calculation_runtime.source_bytes
+    host_source = reference(project["path"] + "/host-calculation-sources/" + host_identity["application_source"]["bundle_sha256"] + ".json", source_bytes)
+    artifacts = {host_source["uri"]: source_bytes}
     output = {"operation": operation, "record_id": identity, "descriptor": None, "page": None,
               "assessment": None, "diagnostics": [], "engine": None}
     if "name" in parameters:
@@ -128,18 +128,11 @@ def build_candidate(service, state, project, document, request):
         source, source_entry = read_dataset(service, project, model, parameters["dataset_id"])
         inputs = [source_entry["id"]]
         if operation == "transform":
-            from rfad.domain.network_transform import transform_dataset
-            from rfad.application.network_forms import input_quantity, transform_input
-            derived = transform_dataset(source, transform_input(source, parameters["options"]))
-            if "reference" in parameters["options"]:
-                operation_source = derived["dataset"]["provenance"]["network_operations"][-1]
-                operation_source["original_options"] = deepcopy(parameters["options"])
-                operation_source["reference_quantity"] = input_quantity(parameters["options"]["reference"], "impedance", "reference")
+            derived, execution = service.calculate("network.transform", {"dataset": source, "options": parameters["options"]})
         else:
-            from rfad.domain.network_circuit import apply_circuit
             circuit = find_record(model, "circuits", parameters["circuit_id"])
             circuit_id = circuit["id"]
-            derived = apply_circuit(source, circuit["definition"])
+            derived, execution = service.calculate("network.circuit", {"dataset": source, "circuit": circuit["definition"]})
         data = derived["dataset"]
         diagnostics_payload = canonical_bytes({"schema": "rfad.network-diagnostics/0.1", "samples": derived["diagnostics"]})
         diagnostics_path = folder + "/diagnostics.json"
@@ -150,7 +143,8 @@ def build_candidate(service, state, project, document, request):
         output["diagnostics_artifact"] = diagnostics_ref
         output["diagnostics_preview_limit"] = 8
         output["all_diagnostics_method"] = "network.diagnostics"
-        output["engine"] = derived["engine"]
+        output["engine"] = {**derived["engine"], "host_execution": execution}
+        data["provenance"]["host_execution"] = deepcopy(execution)
     elif operation == "circuit_save":
         from rfad.domain.network_circuit import validate_circuit
         from rfad.application.network_forms import circuit_input, circuit_display
@@ -159,7 +153,6 @@ def build_candidate(service, state, project, document, request):
         model["circuits"].append({**common, "definition": definition})
         output["circuit_display"] = circuit_display(definition)
     elif operation == "evaluate":
-        from rfad.domain.network_assessment import evaluate_target
         source, source_entry = read_dataset(service, project, model, parameters["dataset_id"])
         target = next((row for row in document["targets"] if row["id"] == parameters["target_id"]), None)
         if target is None:
@@ -169,10 +162,12 @@ def build_candidate(service, state, project, document, request):
         if context["target_port_id"] != target["port_id"]:
             fail("명시한 목표 포트 대응이 현재 목표와 다릅니다.", "context.target_port_id", "E_CONFLICT")
         from rfad.application.network_solver_import import radiation_metrics
-        assessment = evaluate_target(resolved_target(document, target), source, context,
-                                     metrics=radiation_metrics(service, project, source_entry, source))
+        assessment, execution = service.calculate("network.evaluate", {"document": document, "target": target,
+            "dataset": source, "context": context, "metrics": radiation_metrics(service, project, source_entry, source)})
         assessment["evidence"] = {"dataset": deepcopy(source_entry["dataset"]), "target_original": deepcopy(target),
-                                  "project_revision": document["revision_id"], "context": deepcopy(parameters["context"])}
+                                  "project_revision": document["revision_id"], "context": deepcopy(parameters["context"]),
+                                  "host_execution": execution, "host_source": deepcopy(host_source)}
+        output["engine"] = {"host_execution": execution}
         payload = canonical_bytes(assessment)
         path = folder + "/assessment.json"
         artifacts[path] = payload
@@ -189,6 +184,7 @@ def build_candidate(service, state, project, document, request):
         output["record_id"] = entry["id"]
     if data is not None:
         from rfad.adapters.network_hdf5 import encode_network_hdf5
+        data["provenance"]["host_source"] = deepcopy(host_source)
         validate_dataset(data)
         payload = canonical_bytes(data)
         path = folder + "/dataset.json"
@@ -206,6 +202,8 @@ def build_candidate(service, state, project, document, request):
             "raw": raw_ref, "inputs": inputs, "circuit_id": circuit_id, "diagnostics": diagnostics_ref})
         output["descriptor"] = descriptor(data)
         output["page"] = samples(data)
+    service.verify_calculation()
+    output["engine"] = {**(output["engine"] or {}), "host_identity_hash": canonical_hash(host_identity), "host_source": host_source}
     for collection in ("datasets", "circuits", "assessments"):
         model[collection].sort(key=lambda row: row["id"])
     validate_library(model)

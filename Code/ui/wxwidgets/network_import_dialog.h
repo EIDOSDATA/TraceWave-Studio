@@ -2,7 +2,9 @@
 #pragma once
 
 #include "project_setup_dialog.h"
+#include "measurement_recovery.h"
 #include <array>
+#include <memory>
 #include <string>
 
 class wxButton;
@@ -15,15 +17,25 @@ class wxPanel;
 class wxSpinCtrl;
 class wxTextCtrl;
 class NetworkChart;
+class MeasurementRecordForm;
 
 /** @brief 수치 해석은 서비스에 맡기고 동일 검토 해시의 후보만 한 명령으로 가져온다. */
 class NetworkImportDialog final : public ProjectSetupDialog
 {
 public:
-    NetworkImportDialog(wxWindow* parent, const Json& context, DialogGateway gateway);
+    NetworkImportDialog(wxWindow* parent, const Json& context, DialogGateway gateway,
+                        std::shared_ptr<MeasurementRecovery> recovery = {});
 
 private:
     friend class StudioSmokeDriver;
+    /** @brief 표시 순서와 의미를 함께 고정하여 시료 탭 삽입 후 검토 화면을 잘못 열지 않는다. */
+    enum Page
+    {
+        FilePage = 0,
+        MappingPage = 1,
+        MeasurementPage = 2,
+        ReviewPage = 3
+    };
     /** @brief 원문 조건을 유지하는 기본 선택과 사용자가 명시한 변경을 분리한다. */
     struct PortInputs
     {
@@ -41,6 +53,10 @@ private:
     void BuildFilePage(wxWindow* page);
     void BuildMappingPage(wxWindow* page);
     void BuildReviewPage(wxWindow* page);
+    void BuildMeasurementPage(wxWindow* page, DialogGateway gateway);
+    void RecoverMeasurement();
+    bool MeasurementSelected() const;
+    bool MeasurementUncertain() const;
     void RebuildPairs();
     void ResetConditions();
     void ChangeInputs(bool sourceChanged = false);
@@ -53,6 +69,7 @@ private:
     void Preview();
     void RenderReview(const Json& result);
     void Apply();
+    void AcceptImport(const Json& result);
 
     Json m_context;
     Json m_review = nullptr;
@@ -60,6 +77,13 @@ private:
     Json m_sourceDescriptor = nullptr;
     bool m_dirty = false;
     bool m_loading = true;
+    bool m_recovering = false;
+    std::string m_draftTime;
+    DialogGateway m_gateway;
+    std::shared_ptr<MeasurementRecovery> m_recovery;
+    MeasurementRecordForm* m_measurementForm = nullptr;
+    wxCheckBox* m_measurementEnabled = nullptr;
+    wxButton* m_recoverMeasurement = nullptr;
     std::string m_fileName;
     std::string m_encoded;
     wxNotebook* m_tabs = nullptr;

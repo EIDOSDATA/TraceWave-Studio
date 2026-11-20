@@ -9,6 +9,11 @@
 
 namespace
 {
+/** @brief 측정 원문 512 KiB의 base64와 유한 metadata만 새 복구 범위에 허용한다. */
+std::size_t Limit(const std::string& scope)
+{
+    return (scope == "measurement" ? 900U : scope == "pcb_import" ? 512U : 256U) * 1024U;
+}
 std::string Identity(const std::string& workspace)
 {
     auto path = std::filesystem::weakly_canonical(
@@ -75,7 +80,7 @@ Json ReviewedRequestStore::Read(const std::string& scope, const std::string& wor
         return nullptr;
     }
     const auto encoded = Utf8(text);
-    if (encoded.size() > (scope == "pcb_import" ? 512U : 256U) * 1024U)
+    if (encoded.size() > Limit(scope))
     {
         throw std::runtime_error("편집 요청 복구 항목이 상한을 초과했습니다.");
     }
@@ -99,7 +104,7 @@ void ReviewedRequestStore::Write(const std::string& scope, const std::string& wo
                     {"project_id", project},
                     {"request", request}};
     const auto text = data.dump();
-    if (text.size() > (scope == "pcb_import" ? 512U : 256U) * 1024U)
+    if (text.size() > Limit(scope))
     {
         throw std::runtime_error("편집 복구 요청의 저장 상한을 초과하여 전송하지 않았습니다.");
     }

@@ -79,7 +79,7 @@ def _payload(document, snapshot, runtime, settings):
         fail("E_HASH", "PCB 원본과 스냅샷 참조가 다릅니다.", "snapshot")
     # @brief validate_project가 검증한 편집 출처/외부 복소 자료는 원문에 보존하며 EM 형상에 투영하지 않는다.
     supported_extensions = {PCB_SELECTION_EXTENSION, TEMPLATE_ORIGIN_EXTENSION, PHYSICAL_KEY,
-                            PRECISION_ORIGIN_EXTENSION, NETWORK_LIBRARY_EXTENSION, "rfad.sweep-selection"}
+                            PRECISION_ORIGIN_EXTENSION, NETWORK_LIBRARY_EXTENSION, "rfad.sweep-selection", "rfad.measurement"}
     if document["extensions"].keys() - supported_extensions:
         fail("E_UNSUPPORTED", "의미를 해석하지 않은 확장이 있는 PCB는 실행할 수 없습니다.", "extensions")
     check_em(document)

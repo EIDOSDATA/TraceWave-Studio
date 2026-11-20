@@ -48,6 +48,7 @@ class SweepPanel;
 class ResultWorkspace;
 class RfValidationController;
 class OutputController;
+struct MeasurementRecovery;
 enum class NetworkAction;
 enum class WorkspaceArea;
 enum class DesignSetup
@@ -106,6 +107,12 @@ private:
     void BuildValidationInterface();
     void UpdateValidationViews();
     void OpenValidationRecords();
+    void BuildMeasurementInterface();
+    void OpenMeasurementTool(const std::string& operation, const Json& record = nullptr,
+                             const Json& selection = nullptr);
+    void ReadMeasurementRecovery();
+    std::shared_ptr<MeasurementRecovery> MeasurementRecoveryState();
+    DialogGateway MeasurementGateway(std::shared_ptr<MeasurementRecovery> recovery);
     void UpdateNetworkViews();
     void RefreshNetwork(const std::string& preferredId = "");
     void LoadNetworkResult(const std::string& id, int row = 0, int column = 0, int offset = 0);
@@ -290,6 +297,8 @@ private:
     bool m_precisionSupported = false;
     bool m_networkSupported = false;
     bool m_resultsSupported = false;
+    bool m_measurementSupported = false;
+    bool m_measurementUncertain = false;
     std::unique_ptr<ResultWorkspace> m_results;
     std::unique_ptr<RfValidationController> m_validation;
     std::unique_ptr<OutputController> m_output;

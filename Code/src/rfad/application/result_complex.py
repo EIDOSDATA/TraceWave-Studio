@@ -3,7 +3,12 @@
 from copy import deepcopy
 import math
 
-from rfad.application.result_sources import fail
+from rfad.domain.errors import ProjectError
+
+
+def fail(message, code="E_SCHEMA"):
+    """! @brief 순수 비교 계산이 저장소나 원본 선택 서비스를 역으로 호출하지 않는다."""
+    raise ProjectError(code, message)
 
 
 REASONS = {"port_count_mismatch": "포트 수가 다릅니다.", "parameter_kind_mismatch": "자료의 S/Z/Y 종류가 다릅니다.",

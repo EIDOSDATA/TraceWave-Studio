@@ -48,7 +48,7 @@ def fixture(workspace):
                     **{f"검토조건{index:02d}": None if index % 2 == 0 else f"보존 조건 {index}"
                        for index in range(40)}}
             data = {"expected_revision": document["revision_id"], "operation": "import", "parameters": parameters}
-            preview = network_service.read(service, "network.preview", {"contract_version": "rfad.api/2.0", "context": {"project_id": document["project_id"]}, "input": data})
+            preview = network_service.read(service.host_calculation_context, "network.preview", {"contract_version": "rfad.api/2.0", "context": {"project_id": document["project_id"]}, "input": data})
             if not preview["can_apply"]:
                 raise AssertionError(preview)
             applied = service.mutate("network.apply", request(service, document["project_id"], {**data,

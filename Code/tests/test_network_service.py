@@ -76,7 +76,7 @@ class NetworkServiceTests(unittest.TestCase):
 
     def read(self, method, **values):
         """! @brief 읽기 요청의 기준 개정을 명시한다."""
-        return network_service.read(self.service, method, self.request({"expected_revision": self.revision, **values}))
+        return network_service.read(self.service.host_calculation_context, method, self.request({"expected_revision": self.revision, **values}))
 
     def preview(self, operation, parameters):
         """! @brief 검토 전후 journal이 동일한지 함께 확인한다."""

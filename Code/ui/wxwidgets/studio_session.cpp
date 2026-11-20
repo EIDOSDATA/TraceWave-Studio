@@ -60,6 +60,9 @@ void StudioFrame::Connect()
              m_resultsSupported = result.value("methods", Json::object()).contains("result.sources") &&
                                   result.value("methods", Json::object()).contains("result.describe") &&
                                   result.value("methods", Json::object()).contains("result.page");
+             m_measurementSupported = result.value("methods", Json::object()).contains("measurement.context") &&
+                                      result.value("methods", Json::object()).contains("measurement.apply") &&
+                                      result.value("methods", Json::object()).contains("measurement.receipt");
              m_validationSupported = result.value("methods", Json::object()).contains("rf.validation.list") &&
                                      result.value("methods", Json::object()).contains("rf.validation.reports") &&
                                      result.value("methods", Json::object()).contains("rf.validation.get");
@@ -93,7 +96,8 @@ void StudioFrame::Send(const std::string& method, const Json& input, bool mutati
         method == "project.open" && input.value("open_mode", "") == "open" && input.value("path", "") == m_path;
     if (mutation && !recoveryReopen && method != "job.cancel" &&
         ((m_pcbFeatureUncertain && method != "pcb.features.apply") ||
-         (m_pcbImportUncertain && method.rfind("pcb.import.", 0) != 0)))
+         (m_pcbImportUncertain && method.rfind("pcb.import.", 0) != 0) ||
+         (m_measurementUncertain && method.rfind("measurement.", 0) != 0)))
     {
         const Json error{{"code", "E_UNCERTAIN"},
                          {"message", "이전 PCB 적용 결과를 확인하기 전에는 다른 변경을 보낼 수 없습니다."}};
@@ -129,20 +133,20 @@ void StudioFrame::Send(const std::string& method, const Json& input, bool mutati
         }
         return;
     }
-    const bool foreground = method != "rf.validation.list" && method != "rf.validation.get" &&
-                            method != "rf.validation.reports" && method.rfind("precision.", 0) != 0 &&
-                            method.rfind("target.editor.", 0) != 0 && method.rfind("result.", 0) != 0 &&
-                            method.rfind("export.", 0) != 0 && method.rfind("template.", 0) != 0 &&
-                            method.rfind("catalog.", 0) != 0 && method.rfind("pcb.selection.", 0) != 0 &&
-                            method.rfind("pcb.features.", 0) != 0 && method.rfind("pcb.import.", 0) != 0 &&
-                            method.rfind("study.", 0) != 0 && method != "cad.latest" && method != "solver.latest" &&
-                            method != "solver.samples" && method != "result.open" && method != "job.cancel" &&
-                            method != "solver.plan" && method != "solver.prepare" && method != "job.submit" &&
-                            !(method == "snapshot.create" && input.value("description", "") == "GUI PCB 해석 입력") &&
-                            !(method == "snapshot.create" && input.value("description", "") == "GUI 출력 검토 입력") &&
-                            !(method == "job.status" && (input.value("job_id", "") == m_cadTask.Id() ||
-                                                         input.value("job_id", "") == m_solverTask.Id() ||
-                                                         (m_output && m_output->OwnsJob(input.value("job_id", "")))));
+    const bool foreground =
+        method != "rf.validation.list" && method != "rf.validation.get" && method != "rf.validation.reports" &&
+        method.rfind("precision.", 0) != 0 && method.rfind("target.editor.", 0) != 0 &&
+        method.rfind("result.", 0) != 0 && method.rfind("export.", 0) != 0 && method.rfind("template.", 0) != 0 &&
+        method.rfind("catalog.", 0) != 0 && method.rfind("pcb.selection.", 0) != 0 &&
+        method.rfind("pcb.features.", 0) != 0 && method.rfind("pcb.import.", 0) != 0 &&
+        method.rfind("measurement.", 0) != 0 && method.rfind("study.", 0) != 0 && method != "cad.latest" &&
+        method != "solver.latest" && method != "solver.samples" && method != "result.open" && method != "job.cancel" &&
+        method != "solver.plan" && method != "solver.prepare" && method != "job.submit" &&
+        !(method == "snapshot.create" && input.value("description", "") == "GUI PCB 해석 입력") &&
+        !(method == "snapshot.create" && input.value("description", "") == "GUI 출력 검토 입력") &&
+        !(method == "job.status" &&
+          (input.value("job_id", "") == m_cadTask.Id() || input.value("job_id", "") == m_solverTask.Id() ||
+           (m_output && m_output->OwnsJob(input.value("job_id", "")))));
     const auto submitted = m_requests.Submit(
         method, input, mutation, context, requestEpoch.empty() ? m_epoch : requestEpoch, foreground, std::move(success),
         std::move(failure), Uuid,

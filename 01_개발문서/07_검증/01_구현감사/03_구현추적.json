@@ -7392,6 +7392,22 @@
       "runtime_configured": false,
       "source": "immutable_snapshot"
     },
+    "measurement_profile": {
+      "alignment": [
+        "permute_ports",
+        "renormalize",
+        "linear_ri"
+      ],
+      "atomic_apply": true,
+      "attachment_bytes": 524288,
+      "attachment_count": 16,
+      "automatic_interpolation": false,
+      "immutable_record_versions": true,
+      "physical_validation": false,
+      "preview_required": true,
+      "profile": "rfad.measurement-workspace/0.1",
+      "uncertainty_propagation": false
+    },
     "network_profile": {
       "assessment": "rfad.target-assessment/0.1",
       "automatic_interpolation": false,
@@ -7789,8 +7805,8 @@
     },
     {
       "path": "01_개발문서/02_시스템명세/05_해석기_어댑터_계약.md",
-      "text_sha256": "7f8a621c5cc0ac9e041e47b55eecc6677a1be6586f5e1401a98892398dc5931a",
-      "utf8_bytes": 35447
+      "text_sha256": "0379a8cc3f6de3ac7300da89335c5feb7d26550905cb9ff14ccaa9900e434640",
+      "utf8_bytes": 35609
     },
     {
       "path": "01_개발문서/07_검증/01_검증과_수용_기준.md",
@@ -7875,6 +7891,61 @@
     },
     "export.receipt": {
       "extension_profile": "rfad.exchange.drawing/0.1",
+      "status": "implemented"
+    },
+    "measurement.apply": {
+      "api_id": "API-022",
+      "extension_profile": "rfad.measurement-workspace/0.1",
+      "status": "implemented"
+    },
+    "measurement.attachment.add": {
+      "api_id": "API-022",
+      "extension_profile": "rfad.measurement-workspace/0.1",
+      "status": "implemented"
+    },
+    "measurement.attachment.read": {
+      "api_id": "API-022",
+      "extension_profile": "rfad.measurement-workspace/0.1",
+      "status": "implemented"
+    },
+    "measurement.compare": {
+      "api_id": "API-022",
+      "extension_profile": "rfad.measurement-workspace/0.1",
+      "status": "implemented"
+    },
+    "measurement.conditions": {
+      "api_id": "API-022",
+      "extension_profile": "rfad.measurement-workspace/0.1",
+      "status": "implemented"
+    },
+    "measurement.context": {
+      "api_id": "API-022",
+      "extension_profile": "rfad.measurement-workspace/0.1",
+      "status": "implemented"
+    },
+    "measurement.get": {
+      "api_id": "API-022",
+      "extension_profile": "rfad.measurement-workspace/0.1",
+      "status": "implemented"
+    },
+    "measurement.history": {
+      "api_id": "API-022",
+      "extension_profile": "rfad.measurement-workspace/0.1",
+      "status": "implemented"
+    },
+    "measurement.preview": {
+      "api_id": "API-022",
+      "extension_profile": "rfad.measurement-workspace/0.1",
+      "status": "implemented"
+    },
+    "measurement.quantity": {
+      "api_id": "API-022",
+      "extension_profile": "rfad.measurement-workspace/0.1",
+      "status": "implemented"
+    },
+    "measurement.receipt": {
+      "api_id": "API-022",
+      "extension_profile": "rfad.measurement-workspace/0.1",
       "status": "implemented"
     },
     "network.apply": {
@@ -9661,10 +9732,13 @@
         "src/rfad/application/result_export.py",
         "src/rfad/application/result_sources.py",
         "ui/wxwidgets/result_source_browser.cpp",
-        "ui/wxwidgets/network_export.cpp"
+        "ui/wxwidgets/network_export.cpp",
+        "src/rfad/application/measurement_service.py",
+        "src/rfad/application/measurement_records.py",
+        "ui/wxwidgets/network_import_measurement.cpp"
       ],
       "contract_notes": [
-        "승인 API의 project.measurements target과 현재 예약 measurement_sets 명칭은 차기 schema/API 매핑에서 명시적으로 해결해야 한다. 현재 파일 자료는 extensions.rfad.network-library에 저장하며 이 경로를 승인 측정 저장 계약과 동일시하지 않는다.",
+        "측정 색인은 extensions.rfad.measurement에, 복소 원문 자료는 extensions.rfad.network-library에 둔다. 고정 artifact와 최초 생성 개정이 기록과 원문을 연결한다.",
         "자료가 없으면 실측값을 생성하지 않으며 fixture 입력 시험과 실제 측정 검증을 구분한다. imported 표본을 measured로 추정하지 않는다. Touchstone 기본 R=50은 spec_default로 명시하여 원문 지정과 구분하고, 원문 미정 조건은 사용자 채택 이후에도 원본 사본에 보존한다.",
         "결과 파일과 조건 파일의 정상 저장 완료를 확인하고 실패 시 회수한다. 두 파일을 순서대로 게시하는 동안 전원 손실까지 파일 쌍의 원자성을 보장하는 것은 아니다."
       ],
@@ -9673,16 +9747,18 @@
         "../01_개발문서/05_기능설계/05_출력교환/03_복소결과_파일교환.md",
         "../01_개발문서/05_기능설계/04_해석결과/07_다중결과와_방사표시.md",
         "../01_개발문서/04_화면설계/21_다중결과와_방사필드_화면.md",
-        "../01_개발문서/07_검증/17_다중결과_표시검증.md"
+        "../01_개발문서/07_검증/17_다중결과_표시검증.md",
+        "../01_개발문서/05_기능설계/04_해석결과/09_측정기록과_정렬비교.md",
+        "../01_개발문서/04_화면설계/26_측정기록과_정렬비교_화면.md"
       ],
       "gaps": [
-        "measurement_sets와 승인 import.preview/import.commit의 project.measurements 통합, sample/assembly revision/교정/환경/시각의 전용 측정 모델은 11번 후속이다.",
-        "3포트 이상, mixed-mode/noise, 방사/패턴 실측, 일반 HDF5 자동 해석과 지원 profile 밖 Touchstone 문법은 미지원이다. 11번의 실제 측정 자료/교정 흐름을 추가해야 한다.",
+        "승인 import.preview/import.commit의 범용 project.measurements target은 후속이다. 현재 유한 계약은 measurement.preview/apply와 extensions.rfad.measurement를 제공한다.",
+        "3포트 이상, mixed-mode/noise, 방사/패턴 실측, 일반 HDF5 자동 해석과 지원 profile 밖 Touchstone 문법은 후속 범위다.",
         "실제 시료와 교정/측정 조건을 확보한 수용 시험은 별도다. 현재 파일 fixture/왕복/GUI 저장 시험을 측정 정확도 검증으로 확대하지 않는다."
       ],
       "id": "FN-036",
       "implementation_status": "partial",
-      "implemented": "Touchstone 1.0/2.0/2.1의 단일종단 S 1~2포트 Full RI/MA/DB와 명시 열 대응 CSV S/Z/Y, 정규 rfad.network-hdf5/0.1의 가져오기/내보내기를 구현했다. 최대 1001표본의 원문 bytes/hash, 포트 축/단위/복소 표현, mask와 알려지지 않은 기준면/제작/측정 조건을 보존한다. native 가져오기 화면의 파일/열 대응/조건 검토를 network.preview/apply의 원자 저장과 연결하며 외부 원문과 사용자가 채택한 조건을 구분한다. 공통 결과 카탈로그에서 과거 개정의 입력 자료도 source/pin으로 선택한다. result.export는 해당 불변 자료의 CSV/Touchstone/정규 HDF5와 존재하는 보존 원문만 읽기 전용으로 반환하고 조건 sidecar에 원본 개정/해시/과거 평가를 포함한다. GUI는 기존 출력이나 workspace 원문을 덮지 않고 파일 쌍의 게시 실패를 보고한다.",
+      "implemented": "Touchstone 1.0/2.0/2.1의 단일종단 S 1~2포트 Full RI/MA/DB와 명시 열 대응 CSV S/Z/Y, 정규 rfad.network-hdf5/0.1의 가져오기/내보내기를 구현했다. 최대 1001표본의 원문 bytes/hash, 포트 축/단위/복소 표현, mask와 알려지지 않은 기준면/제작/측정 조건을 보존한다. native 가져오기 화면의 파일/열 대응/조건 검토를 network.preview/apply의 원자 저장과 연결하며 외부 원문과 사용자가 채택한 조건을 구분한다. 공통 결과 카탈로그에서 과거 개정의 입력 자료도 source/pin으로 선택한다. result.export는 해당 불변 자료의 CSV/Touchstone/정규 HDF5와 존재하는 보존 원문만 읽기 전용으로 반환하고 조건 sidecar에 원본 개정/해시/과거 평가를 포함한다. GUI는 기존 출력이나 workspace 원문을 덮지 않고 파일 쌍의 게시 실패를 보고한다. 측정 가져오기는 파일, 열/포트, 시료/교정, 검토 네 탭으로 연결한다. 원문 및 시료/교정/불확도/설치 기록을 한 명령으로 적용하며 record 개정과 첨부 원문을 고정한다.",
       "next_steps": [
         11
       ],
@@ -9701,7 +9777,9 @@
         "tests/test_gui_network_process.py::GuiNetworkTests.test_native_import_rlc_assessment_history_and_reopen",
         "tests/test_result_sources.py::ResultSourceTests.test_historical_export_preserves_original_bytes_unknowns_and_pin",
         "tests/test_result_integration.py",
-        "tests/test_gui_results_process.py"
+        "tests/test_gui_results_process.py",
+        "tests/test_measurement_service.py::MeasurementServiceTests.test_import_record_is_one_undo_and_original_bytes_survive_reopen",
+        "tests/test_measurement_service.py::MeasurementServiceTests.test_large_attachment_rpc_raw_preservation_and_bounded_reads"
       ]
     },
     {
@@ -9714,7 +9792,11 @@
         "src/rfad/application/result_catalog.py",
         "ui/wxwidgets/result_compare_view.cpp",
         "ui/wxwidgets/result_workspace_compare.cpp",
-        "ui/wxwidgets/result_conditions_view.cpp"
+        "ui/wxwidgets/result_conditions_view.cpp",
+        "src/rfad/application/measurement_candidates.py",
+        "src/rfad/domain/measurement_alignment.py",
+        "ui/wxwidgets/measurement_compare_view.cpp",
+        "ui/wxwidgets/measurement_history_dialog.cpp"
       ],
       "contract_notes": [
         "R1 초기 SMA 기준면 비교를 고급 R2 de-embedding 구현까지 미루지 않는다. 현재 이상적 안테나 gap 결과를 SMA 실측과 같은 기준면으로 표시하지 않는다.",
@@ -9724,16 +9806,18 @@
         "../01_개발문서/05_기능설계/04_해석결과/06_공통복소자료와_회로평가.md",
         "../01_개발문서/05_기능설계/04_해석결과/07_다중결과와_방사표시.md",
         "../01_개발문서/04_화면설계/21_다중결과와_방사필드_화면.md",
-        "../01_개발문서/07_검증/17_다중결과_표시검증.md"
+        "../01_개발문서/07_검증/17_다중결과_표시검증.md",
+        "../01_개발문서/05_기능설계/04_해석결과/09_측정기록과_정렬비교.md",
+        "../01_개발문서/04_화면설계/26_측정기록과_정렬비교_화면.md"
       ],
       "gaps": [
-        "교정/fixture/기준면 이동과 명시 불확도를 가진 supported correction chain, sample/assembly 식별 및 승인 measurement.align 계약은 11번에서 구현해야 한다.",
-        "주파수 보간, 조립/측정 조건의 물리적 동등성 판정과 불확도 결합은 미구현이다. 종합 비교 보고서는 12번 후속이며 화면의 수학적 차이를 실측 검증으로 확대하지 않는다.",
+        "고급 fixture 보정/기준면 이동, 불확도 전파, 미지 파/복소 또는 변동 Z0의 보간은 현재 profile 밖이다.",
+        "조건의 물리적 동등성 및 종합 통합 보고서는 별도 범위다. 실제 자료가 확보되면 수치 차이와 물리 검증을 대조한다.",
         "실제 시료/교정/케이블/반복성 자료가 확보된 범위에서 수용 판정을 수행해야 한다."
       ],
       "id": "FN-037",
       "implementation_status": "partial",
-      "implemented": "network.compare는 사용자가 명시한 오른쪽 포트 순서를 양쪽 행렬 축과 Z0/기준면에 대응하고 정확히 같은 주파수에서 복소 차이를 조회한다. 파/시간 규약/포트 모드/전류 방향/기준면/Z0 불일치, 없는 주파수 또는 비유효 표본은 not_comparable과 이유로 남긴다. 원본을 바꾸지 않으며 제조/측정 조건 object의 동일 여부를 별도 표시한다. 측정 교정/fixture 보상과 measurement.align은 아직 없다. result.compare/conditions와 최대8개 원본 비교 화면은 명시 source/pin/포트 대응, exact Hz 마커와 복소 차이 right-minus-left를 제공한다. 현재 자료와 과거 해석/연구 후보를 함께 비교하며, 서로 다른 기하/매개변수/제작 조건을 읽을 수 있는 차이 표로 제공한다. 설계 조건의 차이는 수학 비교 가능성과 분리하고 물리 동등성 및 과거 목표 평가는 독립 상태로 남긴다.",
+      "implemented": "network.compare는 사용자가 명시한 오른쪽 포트 순서를 양쪽 행렬 축과 Z0/기준면에 대응하고 정확히 같은 주파수에서 복소 차이를 조회한다. 파/시간 규약/포트 모드/전류 방향/기준면/Z0 불일치, 없는 주파수 또는 비유효 표본은 not_comparable과 이유로 남긴다. 원본을 바꾸지 않으며 제조/측정 조건 object의 동일 여부를 별도 표시한다. result.compare/conditions와 최대8개 원본 비교 화면은 명시 source/pin/포트 대응, exact Hz 마커와 복소 차이 right-minus-left를 제공한다. 현재 자료와 과거 해석/연구 후보를 함께 비교하며, 서로 다른 기하/매개변수/제작 조건을 읽을 수 있는 차이 표로 제공한다. 설계 조건의 차이는 수학 비교 가능성과 분리하고 물리 동등성 및 과거 목표 평가는 독립 상태로 남긴다. measurement.align의 명시 포트 순열, 양의 실수 Z0, 선형 RI 보간과 보존 이력을 연결했다. 시료/교정/환경과 불확도 근거 차이, 1001개 전체 표본과 조건의 고정 보고서와 과거 조회를 제공한다.",
       "next_steps": [
         11,
         12
@@ -9745,7 +9829,10 @@
         "tests/test_network_boundaries.py::NetworkSolverProjectionTests.test_existing_pcb_complex_and_unknown_physical_conditions",
         "tests/test_result_math.py",
         "tests/test_result_sources.py",
-        "tests/test_gui_results_process.py"
+        "tests/test_gui_results_process.py",
+        "tests/test_measurement_alignment.py",
+        "tests/test_measurement_records.py",
+        "tests/test_measurement_service.py::MeasurementServiceTests.test_comparison_preserves_unknown_conditions_and_full_historical_report"
       ]
     },
     {
@@ -10291,8 +10378,12 @@
       "method": "optimization.submit"
     },
     {
-      "advertised": false,
-      "descriptor": null,
+      "advertised": true,
+      "descriptor": {
+        "api_id": "API-022",
+        "extension_profile": "rfad.measurement-workspace/0.1",
+        "status": "implemented"
+      },
       "full_contract_accepted": false,
       "id": "API-022",
       "method": "measurement.align"
@@ -13795,8 +13886,8 @@
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
-      "text_sha256": "3b0f8ba25ab17bb3a084b7e33facce52af36aaf2e6a4d9739a47937e6d1c8e31",
-      "utf8_bytes": 62209
+      "text_sha256": "e3ee9b0cbd02f5ed92f42625b5750c66ba1243333cc06f0392046070d403bc4a",
+      "utf8_bytes": 63543
     }
   ],
   "reviewed_commit": "de8b5ac8ca5cfc47d955e557bc76b07e12919e23",
@@ -13832,6 +13923,11 @@
       "path": "01_개발문서/04_화면설계/25_기판교환과_원문수입_화면.md",
       "text_sha256": "4894a0e7f763227c202e0772db13be8e6e95c6473da006b07579cfc6cc94ab30",
       "utf8_bytes": 7701
+    },
+    {
+      "path": "01_개발문서/04_화면설계/26_측정기록과_정렬비교_화면.md",
+      "text_sha256": "90a53782d3f6c84deb2224770a107e26e1bb83b20812cf61289674414e84ba55",
+      "utf8_bytes": 3818
     },
     {
       "path": "01_개발문서/05_기능설계/01_프로젝트/01_프로젝트_명령과_저장.md",
@@ -13914,6 +14010,11 @@
       "utf8_bytes": 19180
     },
     {
+      "path": "01_개발문서/05_기능설계/04_해석결과/09_측정기록과_정렬비교.md",
+      "text_sha256": "abe22431bcc5b742da19dd0c04e4591f01ce6eea174164b8d7af2ab96baf4cd2",
+      "utf8_bytes": 10697
+    },
+    {
       "path": "01_개발문서/05_기능설계/05_출력교환/02_기계형상_입력과_출력계약.md",
       "text_sha256": "903f407b43b4919300a36cbdfc830e03261b1e4875442ce797831367c0218bfd",
       "utf8_bytes": 25989
@@ -13985,7 +14086,7 @@
     },
     {
       "path": "01_개발문서/07_검증/25_기판교환과_원문수입_검증.md",
-      "text_sha256": "b4a2cda06966cc0e0fb819657b5bd70e68a4682241ac887bbd534cb60dd6afd2",
+      "text_sha256": "7fc06886539b86bda4e1e9fcb54b9f9a2dd08a03e62f4f5fef6df7786a52e7f0",
       "utf8_bytes": 15886
     },
     {
@@ -14295,13 +14396,13 @@
     },
     {
       "path": "Code/src/rfad/application/design_sweep_runner.py",
-      "text_sha256": "9a2ec366dbb5d9de553713c9d5b7e60ef3c0fd0c03dca3dadb30a8e43698a0d6",
-      "utf8_bytes": 28549
+      "text_sha256": "89bebf64efe9cbf521fa73cd811116cfff64ab01c80791c4dd7c6a051139275a",
+      "utf8_bytes": 27442
     },
     {
       "path": "Code/src/rfad/application/design_sweep_service.py",
-      "text_sha256": "6a3cca088d262e8430e95d4096420e5de2101d145854cbb93b88b5fff2cf388d",
-      "utf8_bytes": 29671
+      "text_sha256": "4ae231ecd3edd4aac96e235d3112a73bf922ef6b191c233412517168bd5dafa6",
+      "utf8_bytes": 29055
     },
     {
       "path": "Code/src/rfad/application/display_mesh.py",
@@ -14339,9 +14440,24 @@
       "utf8_bytes": 4965
     },
     {
+      "path": "Code/src/rfad/application/measurement_candidates.py",
+      "text_sha256": "9b0434a41ef448efb896517f52248a37f35e3dfd3d1ba3d64d2f4abe58c5ecbf",
+      "utf8_bytes": 19286
+    },
+    {
+      "path": "Code/src/rfad/application/measurement_records.py",
+      "text_sha256": "ecd54c432ba0b2673f3910cc16d7c916320c2627f3460785749b4d034a3b6965",
+      "utf8_bytes": 18520
+    },
+    {
+      "path": "Code/src/rfad/application/measurement_service.py",
+      "text_sha256": "e70462ff3256c64ba1295aeddaaa3932504838b2bc17778cdef1957589fae9fc",
+      "utf8_bytes": 18902
+    },
+    {
       "path": "Code/src/rfad/application/network_candidates.py",
-      "text_sha256": "b05d59798c1763cd15fdf22fc66033c1e71e7281f4326678751b7fae6ec0d6b9",
-      "utf8_bytes": 12181
+      "text_sha256": "135fb893eb4266ae4644f5a44fce95b8a94c0d75d64763427ae9fd6bd34e3e59",
+      "utf8_bytes": 12182
     },
     {
       "path": "Code/src/rfad/application/network_compare.py",
@@ -14355,8 +14471,8 @@
     },
     {
       "path": "Code/src/rfad/application/network_service.py",
-      "text_sha256": "7328f63903a597dfc7e0a81bd5ec193b82ee5a8addb76af1723f7d19f2ab32f8",
-      "utf8_bytes": 12986
+      "text_sha256": "5e9bced234f88da9176f26b66cd245526ae14f3edc3258a9660366ea6afd0039",
+      "utf8_bytes": 13112
     },
     {
       "path": "Code/src/rfad/application/network_solver_import.py",
@@ -14435,8 +14551,8 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_solver.py",
-      "text_sha256": "97a20fd785ee14aa3b294cd3649688dda13a05dc39938d5fb109161b8d8b0791",
-      "utf8_bytes": 8085
+      "text_sha256": "3daad59addd2cc5c10922c32afee3e63548b38f965fc93d2bb82d7c1609b48df",
+      "utf8_bytes": 8105
     },
     {
       "path": "Code/src/rfad/application/physical_projection.py",
@@ -14480,8 +14596,8 @@
     },
     {
       "path": "Code/src/rfad/application/project_studies.py",
-      "text_sha256": "9359d4cfdbd89aa49f7a2181e94fbb0d1675931b1dc9449fba0c7ba1259be9d1",
-      "utf8_bytes": 8903
+      "text_sha256": "51d45b8493ead01d048c18abad9e19db120900d9f4d3c7044cec6971d618d09a",
+      "utf8_bytes": 8949
     },
     {
       "path": "Code/src/rfad/application/project_study_commands.py",
@@ -14520,8 +14636,8 @@
     },
     {
       "path": "Code/src/rfad/application/result_complex.py",
-      "text_sha256": "36b159e592ed9f1b69616b5a4286d0e2ad7db38db65aee62c6cfc3f7b3adc526",
-      "utf8_bytes": 11399
+      "text_sha256": "4354cae32485b14d4314b09dd7a1bda94fd5ca2cbb93a4f77bfde47cb4d9920e",
+      "utf8_bytes": 11587
     },
     {
       "path": "Code/src/rfad/application/result_export.py",
@@ -14585,8 +14701,8 @@
     },
     {
       "path": "Code/src/rfad/application/rpc.py",
-      "text_sha256": "b6eb79488180b15c415acc67a402d1822431e7d66a1fa0632315735269ad5cac",
-      "utf8_bytes": 32334
+      "text_sha256": "0aedbe31678d08f0c4887432e99c0413131638c5ca2bd42e488ea28a8f4db44e",
+      "utf8_bytes": 33735
     },
     {
       "path": "Code/src/rfad/application/solver.py",
@@ -14600,8 +14716,8 @@
     },
     {
       "path": "Code/src/rfad/application/solver_jobs.py",
-      "text_sha256": "2fde83697f3a69d013c4f3c6f48579f82ddcaaf41f67d0c06b065546dcdc6503",
-      "utf8_bytes": 27333
+      "text_sha256": "ae20cb3b1c380fa775807e4cda753ad0cb4075a97af159cb20924ca71e902641",
+      "utf8_bytes": 28911
     },
     {
       "path": "Code/src/rfad/application/solver_queries.py",
@@ -14620,13 +14736,13 @@
     },
     {
       "path": "Code/src/rfad/application/sweep_copy.py",
-      "text_sha256": "f26e4b5a5257c1c90f6b6a0f21bfb619732e546a122531329dd94ad8811f8fea",
-      "utf8_bytes": 5681
+      "text_sha256": "f8c73ef3c69deb28811892247149c5c273781961e367bf7854a01dcb55e6966c",
+      "utf8_bytes": 8866
     },
     {
       "path": "Code/src/rfad/application/sweep_selection.py",
-      "text_sha256": "a0c3da3291eb8021df0107550ae7cdcc459fba3001dbea1fbdb711e9716020bf",
-      "utf8_bytes": 17862
+      "text_sha256": "c297f502f15cc1bf45f7c8b7fa73698b13c727fabc8fa15c21288e783813cb64",
+      "utf8_bytes": 17947
     },
     {
       "path": "Code/src/rfad/application/target_editor.py",
@@ -14725,8 +14841,8 @@
     },
     {
       "path": "Code/src/rfad/domain/design_sweep.py",
-      "text_sha256": "fa173214908a973c43a159fc51f9c8dd9f2647422493be275c3427f9c87f3d04",
-      "utf8_bytes": 21383
+      "text_sha256": "408182bc8bdd26b419fa9ed487fb46b1c486a7e56ef3ae3c17c6524c5f23009e",
+      "utf8_bytes": 21403
     },
     {
       "path": "Code/src/rfad/domain/drawing_layout.py",
@@ -14752,6 +14868,11 @@
       "path": "Code/src/rfad/domain/material_models.py",
       "text_sha256": "7447b0b5fedb971a31b1fd41f81219249a324e2d44da6fe2e7269a8efd1a2fa9",
       "utf8_bytes": 1604
+    },
+    {
+      "path": "Code/src/rfad/domain/measurement_alignment.py",
+      "text_sha256": "c73b98d8c12dc29932a30c8a4a4cb35382be149197cec2ec6fb2e4e8572ed8cb",
+      "utf8_bytes": 12083
     },
     {
       "path": "Code/src/rfad/domain/network_assessment.py",
@@ -14830,8 +14951,8 @@
     },
     {
       "path": "Code/src/rfad/domain/project.py",
-      "text_sha256": "a602489a4925a01e4715c8c62f39192dd9a517bd6c7cbb45af0a8d1f2622c750",
-      "utf8_bytes": 23795
+      "text_sha256": "67fdd1eecf4a7f1ae83d1dbd5ad6685a3047a447e44ddb86cf16e5ac45825843",
+      "utf8_bytes": 24874
     },
     {
       "path": "Code/src/rfad/domain/radiation_polarization.py",
@@ -15025,13 +15146,13 @@
     },
     {
       "path": "Code/tests/test_design_sweep_runner.py",
-      "text_sha256": "d5f86d800c01722d80b4a60c3885fde18f4634dab1f8c50e6adc9328f37cc09c",
-      "utf8_bytes": 27665
+      "text_sha256": "a6da80285a853add5fa5fe2a870774b6ae38739ce11a4307712ea7ffaee948b5",
+      "utf8_bytes": 28339
     },
     {
       "path": "Code/tests/test_design_sweep_service.py",
-      "text_sha256": "17471c32075d526e2ee0cf229def69aceb6ded791c57fe8d409286265a51965f",
-      "utf8_bytes": 17040
+      "text_sha256": "e4e6dc058f0a79b4136d75dc2c01e5a16afb9e162527e10fc45ae39d0e15e4d2",
+      "utf8_bytes": 17428
     },
     {
       "path": "Code/tests/test_display_mesh.py",
@@ -15095,8 +15216,8 @@
     },
     {
       "path": "Code/tests/test_gui_network_process.py",
-      "text_sha256": "c5781009668d02ab7bfa924c137ad7b748c932062e6c159610eb5e8f8c88bb91",
-      "utf8_bytes": 12335
+      "text_sha256": "695ed5ad629cbcc92696aeffa6a109330602afece7bbd54eb92b2bd556dee047",
+      "utf8_bytes": 12360
     },
     {
       "path": "Code/tests/test_gui_output_process.py",
@@ -15130,8 +15251,8 @@
     },
     {
       "path": "Code/tests/test_gui_results_process.py",
-      "text_sha256": "6f422688079f7ba60ba3f8b48ae8409208022258b770b3656f2ff0e3471e86fd",
-      "utf8_bytes": 11700
+      "text_sha256": "951c977867a4df18e7595da76a9718977ba9017c79dfb2d815f6ab8d7b0ca973",
+      "utf8_bytes": 11725
     },
     {
       "path": "Code/tests/test_gui_solver_process.py",
@@ -15140,8 +15261,8 @@
     },
     {
       "path": "Code/tests/test_gui_sweep_process.py",
-      "text_sha256": "22e4242172501bd13e4e1cab4008f0c0f89e1a1e91623dadcb68984dcf6caf2c",
-      "utf8_bytes": 10482
+      "text_sha256": "5ea4486fc67e776e9fbc308f71bb8dd165865c574d1f357df8123a9f57160df7",
+      "utf8_bytes": 10507
     },
     {
       "path": "Code/tests/test_gui_target_template_process.py",
@@ -15169,6 +15290,21 @@
       "utf8_bytes": 3326
     },
     {
+      "path": "Code/tests/test_measurement_alignment.py",
+      "text_sha256": "60d7937a05a2642485d1b542faadf528ce53f7dc7764b54a4420f5fe093182e2",
+      "utf8_bytes": 13250
+    },
+    {
+      "path": "Code/tests/test_measurement_records.py",
+      "text_sha256": "03891f47a7326e921cbe5542050feeedbb597efba5b01312f5fd5462a1978bb1",
+      "utf8_bytes": 22745
+    },
+    {
+      "path": "Code/tests/test_measurement_service.py",
+      "text_sha256": "7652db7c930ce023be721104c572d8f2f0101d99e3fcfb17d0b0c695c1d25478",
+      "utf8_bytes": 16347
+    },
+    {
       "path": "Code/tests/test_network_boundaries.py",
       "text_sha256": "0f7c3827c5c85f5ffb8897009a9f9add67f780385a374b32c890812f1c2528c4",
       "utf8_bytes": 14306
@@ -15190,8 +15326,8 @@
     },
     {
       "path": "Code/tests/test_network_plan_compatibility.py",
-      "text_sha256": "e1228e963b266a8e26496f4a5bfe05643bf8d497fd27a548b4447784b604336a",
-      "utf8_bytes": 7550
+      "text_sha256": "87afb37d83b59d4d237e0074817f1ba9869ea3262e9d9f8d56063aeacef31c53",
+      "utf8_bytes": 7575
     },
     {
       "path": "Code/tests/test_network_review.py",
@@ -15200,8 +15336,8 @@
     },
     {
       "path": "Code/tests/test_network_service.py",
-      "text_sha256": "753e8db3ce61fc062fe61f4e62ef93bd4160b6c157c1319b91952b4c55827591",
-      "utf8_bytes": 15716
+      "text_sha256": "0dbf8d1b366267491511f6ec26f537e9edb77a3439167768846b5f750f596517",
+      "utf8_bytes": 15741
     },
     {
       "path": "Code/tests/test_object_names.py",
@@ -15405,8 +15541,8 @@
     },
     {
       "path": "Code/tests/test_sweep_selection.py",
-      "text_sha256": "c925bcfcc17ec870f863eea7f5872a7f6ae65581f1487bd3f2be484f69087135",
-      "utf8_bytes": 22009
+      "text_sha256": "c369ce59ffdfbff6d11e7ad0d1f60d1bbb48c723725780d12619d49f8aba1927",
+      "utf8_bytes": 22059
     },
     {
       "path": "Code/tests/test_sweep_selection_review.py",
@@ -15519,6 +15655,16 @@
       "utf8_bytes": 3959
     },
     {
+      "path": "Code/ui/wxwidgets/measurement_compare_view.cpp",
+      "text_sha256": "c1273c85f22733c7743747387d2eda2338e26a600eff604be7f9a042950a6a99",
+      "utf8_bytes": 9615
+    },
+    {
+      "path": "Code/ui/wxwidgets/measurement_history_dialog.cpp",
+      "text_sha256": "86d6ec4e362437aa0c171c6a0996d87c03d291d69422094c15528503b61e4b43",
+      "utf8_bytes": 14603
+    },
+    {
       "path": "Code/ui/wxwidgets/network_assessment_dialog.cpp",
       "text_sha256": "54538443f9a20bd8680852a29c0896fdf24e681350cd6c71915aea5ab6445893",
       "utf8_bytes": 26085
@@ -15545,8 +15691,13 @@
     },
     {
       "path": "Code/ui/wxwidgets/network_import_dialog.cpp",
-      "text_sha256": "94ced1a0cfd99980e021ada4566e980b5a42bd37317c02f7b55d2564a31ce6f4",
-      "utf8_bytes": 9107
+      "text_sha256": "86815d7c0295924c0323cb0f8abbca9b7c65ed8b7e97f28a0d620a8eacf7520a",
+      "utf8_bytes": 10239
+    },
+    {
+      "path": "Code/ui/wxwidgets/network_import_measurement.cpp",
+      "text_sha256": "10037b5a5fbb3bde68648c892c4980e4ce3541f591be4754ebde8b836fd0b30f",
+      "utf8_bytes": 4169
     },
     {
       "path": "Code/ui/wxwidgets/network_panel.cpp",
@@ -15640,13 +15791,13 @@
     },
     {
       "path": "Code/ui/wxwidgets/result_compare_view.cpp",
-      "text_sha256": "d19cd317d834ff66c1b3f620515ee7467344db7cc8c7e62cbb033fc1cd6c0aaa",
-      "utf8_bytes": 26688
+      "text_sha256": "159527128282d58c4f783c5e5689fef5cdfedbf5ba60ff5f83137830baaf6c03",
+      "utf8_bytes": 27685
     },
     {
       "path": "Code/ui/wxwidgets/result_conditions_view.cpp",
-      "text_sha256": "610fdf9d5a2784799ca23801adeea6cc19550c807699b31cad732690137a7587",
-      "utf8_bytes": 19407
+      "text_sha256": "a98ba7fc1baf8578deb0c2bc9db0923f4464684945d7b3a485a0804f41b7f78a",
+      "utf8_bytes": 19688
     },
     {
       "path": "Code/ui/wxwidgets/result_metrics_view.cpp",
@@ -15675,18 +15826,18 @@
     },
     {
       "path": "Code/ui/wxwidgets/result_workspace.cpp",
-      "text_sha256": "99a5b2922cebbe6bcb5f82f911011904b75bff5218b397839991550b1e6fca9d",
-      "utf8_bytes": 22932
+      "text_sha256": "bda528056098d1e114d0f4b6a8ae81cb0741ffcfa250ef32133260bd95364e1e",
+      "utf8_bytes": 21239
     },
     {
       "path": "Code/ui/wxwidgets/result_workspace_compare.cpp",
-      "text_sha256": "7182eacf7ca9b2ce9866a7f6baf6884bdf791b09b82bd811caa04931a7dec3a4",
-      "utf8_bytes": 11891
+      "text_sha256": "b25fe1e4301a791e5721b9c040fcc4529fb9841e0101a23096070649764b1ecf",
+      "utf8_bytes": 15188
     },
     {
       "path": "Code/ui/wxwidgets/reviewed_request_store.cpp",
-      "text_sha256": "533da0db2224dec2f7e7f69572a7c8eea59edf99984badd13b8e1891cba1c97e",
-      "utf8_bytes": 4913
+      "text_sha256": "326eda479733bbf0da833438a581648febe7cb3bf694c5eec8ca5519707c8a3b",
+      "utf8_bytes": 5088
     },
     {
       "path": "Code/ui/wxwidgets/rf_validation_controller.cpp",
@@ -15725,8 +15876,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_layout.cpp",
-      "text_sha256": "f60d23288e88a90887f68e257a97dbfb94e840df1ce116594b89ef293acdfc1b",
-      "utf8_bytes": 27696
+      "text_sha256": "9519db1aaa13b81eca09839206c82037e5c660b16aea76dd8216ba3f4e8f7394",
+      "utf8_bytes": 27729
     },
     {
       "path": "Code/ui/wxwidgets/studio_navigation.cpp",
@@ -15765,8 +15916,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_workspace.cpp",
-      "text_sha256": "2fa89302acbf2e11788a4c432461083fce53c91f444a343a529e61b21c099420",
-      "utf8_bytes": 11924
+      "text_sha256": "2e616ef86ba1f4feefb154a96cc63141520790b1e064414ad9c6648e86a04ffe",
+      "utf8_bytes": 11994
     },
     {
       "path": "Code/ui/wxwidgets/study_report_dialog.cpp",

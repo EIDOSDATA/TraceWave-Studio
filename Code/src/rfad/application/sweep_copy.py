@@ -2,17 +2,63 @@
 
 from copy import deepcopy
 import hashlib
+import json
 
 from rfad.application.canonical import canonical_bytes
 from rfad.application.project_repository import ProjectRepository
 from rfad.domain.errors import ProjectError
-from rfad.domain.network_library import KEY as LIBRARY_KEY, validate_library
+from rfad.domain.network_library import KEY as LIBRARY_KEY, validate_library, artifact
 from rfad.domain.project import validate_project
 
 MAX_COPY_REFERENCES = 32
 MAX_COPY_BYTES = 16 * 1024 * 1024
 KNOWN_EXTENSIONS = {"rfad.template-origin", "rfad.precision-origin", "rfad.pcb-selection",
                     "rfad.physical_setup", "rfad.sweep-selection", LIBRARY_KEY}
+
+
+def _registered_host_source(service, project, project_id, reference):
+    """! @brief 명령에 등록된 계산 source 또는 이전 사본의 정확한 별도 mapping만 따라간다."""
+    artifact(reference, "provenance.host_source")
+    if not 0 < reference["bytes"] <= 4 * 1024**2:
+        raise ProjectError("E_RESOURCE", "복사할 host 계산 source는 최대 4 MiB입니다.")
+    state = service.journal.read()
+    owned = state["projects"].get(project_id)
+    if owned is None or owned["path"] != project["path"]:
+        raise ProjectError("E_HASH", "계산 source를 복사할 원본 프로젝트의 소유자가 다릅니다.")
+    resolved = None
+    for command in state["commands"].values():
+        if command["project_id"] != project_id:
+            continue
+        registered = command.get("host_calculation", {}).get("host_source")
+        if registered == reference:
+            if reference["uri"] != project["path"] + "/host-calculation-sources/" + reference["sha256"] + ".json":
+                raise ProjectError("E_HASH", "등록한 host 계산 source의 저장 경로가 다릅니다.")
+            resolved = reference
+        for mapping in command.get("source_artifact_copies", []):
+            if mapping["original_uri"] != reference["uri"]:
+                continue
+            copied = mapping["copy"]
+            artifact(copied, "source_artifact_copies.copy")
+            if (copied["sha256"] != reference["sha256"] or copied["bytes"] != reference["bytes"]
+                    or copied["uri"] != project["path"] + "/copied-artifacts/" + reference["sha256"] + ".bin"):
+                raise ProjectError("E_HASH", "과거 사본의 계산 source mapping이 원본과 다릅니다.")
+            if resolved is not None and resolved != copied:
+                raise ProjectError("E_HASH", "같은 계산 source의 등록 경로가 서로 다릅니다.")
+            resolved = copied
+    if resolved is None:
+        raise ProjectError("E_HASH", "원본 프로젝트 명령에 등록되지 않은 계산 source 참조입니다.")
+    raw = service.journal.read_artifact(resolved)
+    try:
+        sources = json.loads(raw)
+        from rfad.application.source_bundle import MAX_FILES, _path
+        if (type(sources) is not dict or not 1 <= len(sources) <= MAX_FILES
+                or any(type(value) is not str for value in sources.values()) or canonical_bytes(sources) != raw):
+            raise ValueError("source union")
+        for path in sources:
+            _path(path)
+    except (ValueError, UnicodeError, RecursionError) as error:
+        raise ProjectError("E_HASH", "등록한 host source 합집합 원문의 구조가 다릅니다.") from error
+    return raw
 
 
 def prepare_artifacts(service, source_project, document, destination):
@@ -36,8 +82,27 @@ def prepare_artifacts(service, source_project, document, destination):
         raise ProjectError("E_UNSUPPORTED", "해석 원문 연결 또는 보존 평가가 있는 자료 목록의 프로젝트 간 이관은 아직 지원하지 않습니다.")
     from rfad.application.network_records import read_dataset
 
+    def retain(reference, raw):
+        """! @brief 원문 bytes를 바꾸지 않고 현재 사본의 한도와 파일 참조만 준비한다."""
+        original = reference["uri"]
+        if original not in mapping:
+            if len(mapping) >= MAX_COPY_REFERENCES:
+                raise ProjectError("E_RESOURCE", "사본의 자료 참조는 최대 32개입니다.")
+            target = destination + "/copied-artifacts/" + reference["sha256"] + ".bin"
+            additional = 0 if target in blobs else len(raw)
+            if sum(len(item) for item in blobs.values()) + additional > MAX_COPY_BYTES:
+                raise ProjectError("E_RESOURCE", "사본의 봉인 자료는 최대 16 MiB입니다.")
+            blobs[target] = raw
+            mapping[original] = {"uri": target, "sha256": reference["sha256"], "bytes": reference["bytes"]}
+        elif mapping[original]["sha256"] != reference["sha256"] or mapping[original]["bytes"] != reference["bytes"]:
+            raise ProjectError("E_HASH", "같은 원본 파일의 참조 해시/크기가 서로 다릅니다.")
+        return deepcopy(mapping[original])
+
     for row in library["datasets"]:
-        read_dataset(service, source_project, document["extensions"][LIBRARY_KEY], row["id"])
+        dataset, _ = read_dataset(service, source_project, document["extensions"][LIBRARY_KEY], row["id"])
+        host_source = dataset["provenance"].get("host_source")
+        if host_source is not None:
+            retain(host_source, _registered_host_source(service, source_project, document["project_id"], host_source))
         for key in ("dataset", "normalized_hdf5", "raw", "diagnostics"):
             reference = row[key]
             if reference is None:
@@ -45,18 +110,7 @@ def prepare_artifacts(service, source_project, document, destination):
             original = reference["uri"]
             if not original.startswith(source_project["path"] + "/"):
                 raise ProjectError("E_HASH", "복사할 자료 파일이 원본 프로젝트 저장 영역 밖에 있습니다.")
-            if original not in mapping:
-                if len(mapping) >= MAX_COPY_REFERENCES:
-                    raise ProjectError("E_RESOURCE", "사본의 자료 참조는 최대 32개입니다.")
-                raw = service.journal.read_artifact(reference)
-                if sum(len(item) for item in blobs.values()) + len(raw) > MAX_COPY_BYTES:
-                    raise ProjectError("E_RESOURCE", "사본의 봉인 자료는 최대 16 MiB입니다.")
-                target = destination + "/copied-artifacts/" + reference["sha256"] + ".bin"
-                blobs[target] = raw
-                mapping[original] = {"uri": target, "sha256": reference["sha256"], "bytes": reference["bytes"]}
-            elif mapping[original]["sha256"] != reference["sha256"] or mapping[original]["bytes"] != reference["bytes"]:
-                raise ProjectError("E_HASH", "같은 원본 파일의 참조 해시/크기가 서로 다릅니다.")
-            row[key] = deepcopy(mapping[original])
+            row[key] = retain(reference, service.journal.read_artifact(reference))
     validate_project(result)
     return result, blobs, [{"original_uri": key, "copy": deepcopy(value)} for key, value in mapping.items()]
 

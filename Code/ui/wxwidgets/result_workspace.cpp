@@ -8,6 +8,7 @@
 #include "result_radiation_view.h"
 #include "field_result_view.h"
 #include "result_compare_view.h"
+#include "measurement_compare_view.h"
 #include "result_presentation.h"
 #include "studio_notebook.h"
 #include "studio_support.h"
@@ -107,85 +108,10 @@ ResultWorkspace::ResultWorkspace(StudioNotebook* views, wxWindow* navigation, wx
     {
         FieldSlice(options);
     };
-    m_compare->onAddSelected = [this]()
-    {
-        if (m_description.is_object())
-        {
-            m_compare->Add(m_description);
-        }
-        else
-        {
-            m_browser->SetStatus("먼저 원본을 선택하세요.");
-            if (onFocusSource)
-            {
-                onFocusSource();
-            }
-        }
-    };
-    m_compare->onChanged = [this]()
-    {
-        ++m_markerGeneration;
-        if (m_page == 14)
-        {
-            const auto& descriptions = m_compare->Descriptions();
-            const int selected = m_compare->Selected();
-            if (selected >= 0 && static_cast<std::size_t>(selected) < descriptions.size())
-            {
-                m_conditions->SetDescription(descriptions[static_cast<std::size_t>(selected)]);
-            }
-            else
-            {
-                m_conditions->Clear("비교 목록의 원본을 선택하면 그 기록의 조건을 표시합니다.");
-            }
-        }
-    };
-    m_compare->onPage = [this](std::size_t index, int offset)
-    {
-        ComparePage(index, offset);
-    };
-    m_compare->onCompare = [this](std::size_t index)
-    {
-        Compare(index);
-    };
-    m_compare->onComparePage = [this](std::size_t index, int offset)
-    {
-        Compare(index, offset);
-    };
-    m_compare->onMarkers = [this](double frequency)
-    {
-        Markers(frequency);
-    };
-    m_compare->onConditions = [this](const Json& response)
-    {
-        if (m_page == 14)
-        {
-            const auto& descriptions = m_compare->Descriptions();
-            const int selected = m_compare->Selected();
-            if (selected > 0 && static_cast<std::size_t>(selected) < descriptions.size())
-            {
-                m_conditions->SetComparison(
-                    response, descriptions.front().value("label", std::string()),
-                    descriptions[static_cast<std::size_t>(selected)].value("label", std::string()));
-            }
-        }
-    };
+    BindComparison(m_compare, 14);
     m_conditions->onConditionPage = [this](int offset)
     {
         Conditions(offset);
-    };
-    m_compare->onInspect = [this](const Json& description)
-    {
-        if (m_page == 14)
-        {
-            if (description.is_object())
-            {
-                m_conditions->SetDescription(description);
-            }
-            else
-            {
-                m_conditions->Clear("비교 목록의 원본을 선택하세요.");
-            }
-        }
     };
 }
 ResultWorkspace::~ResultWorkspace()
@@ -304,15 +230,21 @@ void ResultWorkspace::Update(const std::string& project, const std::string& epoc
     {
         m_revision = revision;
         m_refreshNeeded = true;
+        m_measurementsRefreshNeeded = true;
     }
     m_available = available;
     m_browser->SetAvailable(available);
     m_compare->SetAvailable(available);
+    if (m_measurement != nullptr)
+    {
+        m_measurement->SetAvailable(available && m_measurementAvailable);
+        m_measurement->SetSelectionAvailable(m_description.is_object());
+    }
     for (wxWindow* view : std::vector<wxWindow*>{m_network, m_smith, m_metrics, m_radiation, m_field, m_compare})
     {
         view->Enable(available);
     }
-    const bool active = page >= 9 && page <= 14;
+    const bool active = (page >= 9 && page <= 14) || page == 16;
     m_browser->Show(active);
     m_conditions->Show(active);
     const bool changed = page != m_page;
@@ -336,6 +268,11 @@ void ResultWorkspace::Update(const std::string& project, const std::string& epoc
             LoadActive();
         }
     }
+    if (page == 16 && available && m_measurementAvailable && (changed || m_measurementsRefreshNeeded))
+    {
+        m_measurementsRefreshNeeded = false;
+        LoadMeasurements();
+    }
     Pump();
 }
 void ResultWorkspace::Reset()
@@ -353,10 +290,15 @@ void ResultWorkspace::Reset()
     m_catalogHash.clear();
     m_anchorHash.clear();
     m_refreshNeeded = true;
+    m_measurementsRefreshNeeded = true;
     m_page = -1;
     m_revision.clear();
     m_browser->Reset();
     m_compare->Clear();
+    if (m_measurement != nullptr)
+    {
+        m_measurement->Clear();
+    }
     ClearViews("현재 프로젝트의 보존 원본을 선택하세요.");
     m_conditions->Clear("원본을 선택하면 당시 조건을 표시합니다.");
 }
@@ -545,9 +487,9 @@ void ResultWorkspace::LoadActive()
     {
         FieldDescribe();
     }
-    else if (m_page == 14)
+    else if (m_page == 14 || m_page == 16)
     {
-        m_compare->InspectSelection();
+        ComparisonView()->InspectSelection();
     }
 }
 void ResultWorkspace::Network(int row, int column, int offset)

@@ -1,6 +1,6 @@
 {
   "schema": "rfad.documentation-inventory/0.1",
-  "date_kst": "2026-11-17",
+  "date_kst": "2026-11-20",
   "scope": "current_development_docs_and_preserved_reference_files",
   "exclusions": [
     "Git/build/venv/.local",
@@ -18,17 +18,17 @@
     "current_01_요구사항": 3,
     "current_02_시스템명세": 11,
     "current_03_아키텍처": 7,
-    "current_04_화면설계": 22,
-    "current_05_기능설계": 41,
+    "current_04_화면설계": 23,
+    "current_05_기능설계": 42,
     "current_06_분석연구": 13,
-    "current_07_검증": 20,
+    "current_07_검증": 21,
     "current_08_운영환경": 5,
     "current_09_개발계획": 4,
     "current_11_검토기록": 6,
     "current_traceability": 4,
     "document_catalog": 4,
     "document_navigation": 6,
-    "documentation_asset": 80,
+    "documentation_asset": 89,
     "documentation_validation_record": 1,
     "historical_proposal": 2,
     "historical_verification": 41,
@@ -40,7 +40,7 @@
     "reference_support_tool": 14,
     "repository_guide": 3,
     "runtime_definition": 2,
-    "screen_design_asset": 289
+    "screen_design_asset": 292
   },
   "records": [
     {
@@ -25744,8 +25744,8 @@
       "path": "01_개발문서/02_시스템명세/05_해석기_어댑터_계약.md",
       "category": "current_02_시스템명세",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 35447,
-      "working_tree_sha256": "7f8a621c5cc0ac9e041e47b55eecc6677a1be6586f5e1401a98892398dc5931a",
+      "bytes": 35609,
+      "working_tree_sha256": "0379a8cc3f6de3ac7300da89335c5feb7d26550905cb9ff14ccaa9900e434640",
       "text_lines": 235,
       "text_status": "utf8_read"
     },
@@ -28035,9 +28035,9 @@
       "path": "01_개발문서/04_화면설계/README.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 11621,
-      "working_tree_sha256": "c0222f34f47cc60a8c609b3200e8fcaff1a8971e312fa9f2b77c39e7975a4443",
-      "text_lines": 82,
+      "bytes": 11821,
+      "working_tree_sha256": "70863324578b19ebc93f86a45c7a1e111a1c0f1d54a92c8bbc3c90cbef1b93a3",
+      "text_lines": 84,
       "text_status": "utf8_read"
     },
     {
@@ -28287,9 +28287,9 @@
       "path": "01_개발문서/05_기능설계/04_해석결과/README.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 1287,
-      "working_tree_sha256": "4517700a7f587bcfd68a67082e76538af45e249a7c210a80b98f21826b2784fe",
-      "text_lines": 19,
+      "bytes": 1441,
+      "working_tree_sha256": "d6384cba82904b1d9e19753d7229ac8e0da3adc8c6ce2202bba1f3b019105e0b",
+      "text_lines": 20,
       "text_status": "utf8_read"
     },
     {
@@ -28465,23 +28465,23 @@
       "path": "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
-      "bytes": 63079,
-      "working_tree_sha256": "73cb259761ac72d3e92c7fbf017caa4a05f3caf8551615b7804e22d7b16c58e7"
+      "bytes": 64429,
+      "working_tree_sha256": "e225a569deae21c06d5f74afb04c7ded1c0702c0ed7bc778c94310cdb8b417ba"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
-      "bytes": 601691,
-      "working_tree_sha256": "cc1b96ac88ae5e60f1345b8363245bec08df51f77b9392fadc30b28c6e07aa67"
+      "bytes": 607863,
+      "working_tree_sha256": "2d4b0cc9ffff63c4c1c03158842708045111fa4c5cfa3c14a391d461c1fd56fc"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
-      "bytes": 156085,
-      "working_tree_sha256": "cfcfe288953ab5ed2d9ec95deb4ff2d3d3ca8b8a2a0ce4f216b3ef75bd163e33",
-      "text_lines": 1991,
+      "bytes": 158323,
+      "working_tree_sha256": "bd27fa7c84f52d2020e1c2c30668f3c4a2cc8967b8b70a7499ab6acfe27b72e9",
+      "text_lines": 2007,
       "text_status": "utf8_read"
     },
     {
@@ -28609,9 +28609,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 4912,
-      "working_tree_sha256": "a154c6a0bd6e3809ba6761e68bb8d399c9c1b0fd3d0e43fd3de93aecdb51c55b",
-      "text_lines": 43,
+      "bytes": 5246,
+      "working_tree_sha256": "3118f2ad96681e52e68068f77c767bf9df0e17261c9fa0ae3be907628645e51e",
+      "text_lines": 45,
       "text_status": "utf8_read"
     },
     {
@@ -28672,17 +28672,17 @@
       "path": "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 129588,
-      "working_tree_sha256": "b7b1300f307067b86d1edf789878920de653bfa663395e69744461f71c50f5e4",
-      "text_lines": 679,
+      "bytes": 130515,
+      "working_tree_sha256": "79daa7cffd5d705975bf0b17e7177294ac0551e2730710408f3662469c51cdac",
+      "text_lines": 685,
       "text_status": "utf8_read"
     },
     {
       "path": "01_개발문서/09_개발계획/03_개발완료_계획.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 31324,
-      "working_tree_sha256": "b24f5756d33c4475b87c636b85b09108e10c035d37c87208335802be98f7afad",
+      "bytes": 31397,
+      "working_tree_sha256": "01508d3b3cb6ebfb213a136db081e7790854779ede373095b4e078280fceaf02",
       "text_lines": 159,
       "text_status": "utf8_read"
     },
@@ -30178,6 +30178,117 @@
       "review_scope": "문서/시안 자산 보존",
       "bytes": 238122,
       "working_tree_sha256": "1392ad2e4fb6d47dcda1d30d2a2050cb3410deacbcdc3db4053c0c73259985d0"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/01_그림자료/18_측정기록과_정렬비교.png",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 76167,
+      "working_tree_sha256": "097fa6c76816d9ef22d1062fbb5af73fe827964a9f74df2cd652e3f8cec33a12"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/01_그림자료/18_측정기록과_정렬비교.svg",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 7835,
+      "working_tree_sha256": "0c19e4163877e14a2481e582c33f348beba9fdf12f07daa15a76e7fcc7dc2f06"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/02_전환도원본/12_측정기록과_정렬비교.drawio",
+      "category": "screen_design_asset",
+      "review_scope": "화면 근거 또는 설계 그림; 실제 GUI 시험과 별도",
+      "bytes": 6409,
+      "working_tree_sha256": "83e3d8acb84adaf7352bf4b0303db3c86966c53d504760c04f12002a21c2733d"
+    },
+    {
+      "path": "01_개발문서/04_화면설계/26_측정기록과_정렬비교_화면.md",
+      "category": "current_04_화면설계",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 3818,
+      "working_tree_sha256": "90a53782d3f6c84deb2224770a107e26e1bb83b20812cf61289674414e84ba55",
+      "text_lines": 32,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/05_기능설계/04_해석결과/09_측정기록과_정렬비교.md",
+      "category": "current_05_기능설계",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 10697,
+      "working_tree_sha256": "abe22431bcc5b742da19dd0c04e4591f01ce6eea174164b8d7af2ab96baf4cd2",
+      "text_lines": 85,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/62_시료와_교정_미정.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 170443,
+      "working_tree_sha256": "e66b6db02491732d04d8aeb8d97119105cc42c5c5e2ebb3022cc0377e073b65b"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/63_측정자료_가져오기검토.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 169045,
+      "working_tree_sha256": "c58c69176775f6b6c2976549dd10997155b4f55c33ab0f40c2823e828f39c6f2"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/64_측정비교와_조건미정.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 208201,
+      "working_tree_sha256": "26422d3415a1ea3c5cc74d6e7fd190777f66216715deaf1156c6325061930e58"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/65_저장후_당시측정보고서.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 153539,
+      "working_tree_sha256": "a6b717d0a50250ae5e2d7e455043178a56862f4b2ef50679de496f7145dbe412"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/66_재열기_교정조건비교.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 153390,
+      "working_tree_sha256": "2e3424ea5cdc46530c0dc865ef69c0dda0bde55e72268289ff0e60d4f0c1278f"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/67_명시정렬_후보검토.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 142337,
+      "working_tree_sha256": "9f324ffdff09188ca1c841c8c3a313836b2eb59ca5fbf68b281e8c7858e14f80"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/68_정렬후_이력자동갱신.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 178026,
+      "working_tree_sha256": "0b33735d3b2a195cab72156a3250d9940e8d81561f9eb5c7cd25f9f72bd93864"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/69_보존정렬_포트계보.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 151860,
+      "working_tree_sha256": "09deec986f51d8102af8a6d2cf85a3c35b79bc41ba7c2c8e681880a2246f5e84"
+    },
+    {
+      "path": "01_개발문서/07_검증/27_측정기록과_정렬비교_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 4649,
+      "working_tree_sha256": "3018613c513048a8511fad8a24e12447ff23e350781df3e050d2809bea872d50",
+      "text_lines": 25,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/28_측정기록과_정렬비교_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 7727,
+      "working_tree_sha256": "a317f321dc56762f6dab39504abb709239ad51bece0dd49644d772aa8a45652c"
     }
   ],
   "identical_byte_groups": [
@@ -30329,66 +30440,51 @@
     ]
   ],
   "incremental_refresh": {
-    "date_kst": "2026-11-17",
-    "mode": "step10b_pcb_exchange_documents_only",
-    "previous_inventory_sha256": "dc591203baf140c505569b6b7b0d6d049ed6d56e4b21649443f92ddba531f9d9",
+    "date_kst": "2026-11-20",
+    "mode": "step11_measurement_documents_only",
+    "previous_inventory_sha256": "0bcd5f9396540ba3697cdde9e7c5567d0dac8127466b8522b8cda8b29cbe33a5",
     "refreshed_paths": [
-      "01_개발문서/02_시스템명세/08_공통구현_계약.md",
-      "01_개발문서/03_아키텍처/03_코드구조와_유지보수.md",
-      "01_개발문서/04_화면설계/01_그림자료/17_기판교환과_원문수입.png",
-      "01_개발문서/04_화면설계/01_그림자료/17_기판교환과_원문수입.svg",
-      "01_개발문서/04_화면설계/02_전환도원본/11_기판교환과_원문수입.drawio",
-      "01_개발문서/04_화면설계/24_기술도면과_스텝검수_화면.md",
-      "01_개발문서/04_화면설계/25_기판교환과_원문수입_화면.md",
+      "01_개발문서/02_시스템명세/05_해석기_어댑터_계약.md",
+      "01_개발문서/04_화면설계/01_그림자료/18_측정기록과_정렬비교.png",
+      "01_개발문서/04_화면설계/01_그림자료/18_측정기록과_정렬비교.svg",
+      "01_개발문서/04_화면설계/02_전환도원본/12_측정기록과_정렬비교.drawio",
+      "01_개발문서/04_화면설계/26_측정기록과_정렬비교_화면.md",
       "01_개발문서/04_화면설계/README.md",
-      "01_개발문서/05_기능설계/01_프로젝트/01_프로젝트_명령과_저장.md",
-      "01_개발문서/05_기능설계/05_출력교환/02_기계형상_입력과_출력계약.md",
-      "01_개발문서/05_기능설계/05_출력교환/04_연관도면과_출력재검수.md",
-      "01_개발문서/05_기능설계/05_출력교환/05_기판형상과_제조파일_교환.md",
-      "01_개발문서/05_기능설계/05_출력교환/README.md",
-      "01_개발문서/07_검증/01_구현감사/01_설계기능.json",
+      "01_개발문서/05_기능설계/04_해석결과/09_측정기록과_정렬비교.md",
+      "01_개발문서/05_기능설계/04_해석결과/README.md",
+      "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
       "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
       "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
-      "01_개발문서/07_검증/02_실행화면/51_기판형상_기존홀_치수.jpg",
-      "01_개발문서/07_검증/02_실행화면/52_기판형상_공구지름_미정.jpg",
-      "01_개발문서/07_검증/02_실행화면/53_기판형상_출처와_적용범위.jpg",
-      "01_개발문서/07_검증/02_실행화면/54_기판교환_원문층_대응.jpg",
-      "01_개발문서/07_검증/02_실행화면/55_기판교환_완성치수와_미정공구.jpg",
-      "01_개발문서/07_검증/02_실행화면/56_기판교환_실제캠_생성.jpg",
-      "01_개발문서/07_검증/02_실행화면/57_기판수입_청크원문_읽기완료.jpg",
-      "01_개발문서/07_검증/02_실행화면/58_기판수입_명시대응_미선택.jpg",
-      "01_개발문서/07_검증/02_실행화면/59_기판수입_원문해시와_미검증.jpg",
-      "01_개발문서/07_검증/02_실행화면/60_기판교환_재열기_실제검수도구.jpg",
-      "01_개발문서/07_검증/02_실행화면/61_기판수입_환경없는_재열기.jpg",
-      "01_개발문서/07_검증/02_실행화면/README.md",
-      "01_개발문서/07_검증/06_승인요구와_구현대조.md",
-      "01_개발문서/07_검증/25_기판교환과_원문수입_검증.md",
-      "01_개발문서/07_검증/26_기판교환과_원문수입_실행기록.json",
+      "01_개발문서/07_검증/02_실행화면/62_시료와_교정_미정.jpg",
+      "01_개발문서/07_검증/02_실행화면/63_측정자료_가져오기검토.jpg",
+      "01_개발문서/07_검증/02_실행화면/64_측정비교와_조건미정.jpg",
+      "01_개발문서/07_검증/02_실행화면/65_저장후_당시측정보고서.jpg",
+      "01_개발문서/07_검증/02_실행화면/66_재열기_교정조건비교.jpg",
+      "01_개발문서/07_검증/02_실행화면/67_명시정렬_후보검토.jpg",
+      "01_개발문서/07_검증/02_실행화면/68_정렬후_이력자동갱신.jpg",
+      "01_개발문서/07_검증/02_실행화면/69_보존정렬_포트계보.jpg",
+      "01_개발문서/07_검증/27_측정기록과_정렬비교_검증.md",
+      "01_개발문서/07_검증/28_측정기록과_정렬비교_실행기록.json",
       "01_개발문서/07_검증/README.md",
       "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
-      "01_개발문서/09_개발계획/03_개발완료_계획.md",
-      "Code/README.md",
-      "Code/ui/wxwidgets/README.md"
+      "01_개발문서/09_개발계획/03_개발완료_계획.md"
     ],
     "added_paths": [
-      "01_개발문서/04_화면설계/01_그림자료/17_기판교환과_원문수입.png",
-      "01_개발문서/04_화면설계/01_그림자료/17_기판교환과_원문수입.svg",
-      "01_개발문서/04_화면설계/02_전환도원본/11_기판교환과_원문수입.drawio",
-      "01_개발문서/04_화면설계/25_기판교환과_원문수입_화면.md",
-      "01_개발문서/05_기능설계/05_출력교환/05_기판형상과_제조파일_교환.md",
-      "01_개발문서/07_검증/02_실행화면/51_기판형상_기존홀_치수.jpg",
-      "01_개발문서/07_검증/02_실행화면/52_기판형상_공구지름_미정.jpg",
-      "01_개발문서/07_검증/02_실행화면/53_기판형상_출처와_적용범위.jpg",
-      "01_개발문서/07_검증/02_실행화면/54_기판교환_원문층_대응.jpg",
-      "01_개발문서/07_검증/02_실행화면/55_기판교환_완성치수와_미정공구.jpg",
-      "01_개발문서/07_검증/02_실행화면/56_기판교환_실제캠_생성.jpg",
-      "01_개발문서/07_검증/02_실행화면/57_기판수입_청크원문_읽기완료.jpg",
-      "01_개발문서/07_검증/02_실행화면/58_기판수입_명시대응_미선택.jpg",
-      "01_개발문서/07_검증/02_실행화면/59_기판수입_원문해시와_미검증.jpg",
-      "01_개발문서/07_검증/02_실행화면/60_기판교환_재열기_실제검수도구.jpg",
-      "01_개발문서/07_검증/02_실행화면/61_기판수입_환경없는_재열기.jpg",
-      "01_개발문서/07_검증/25_기판교환과_원문수입_검증.md",
-      "01_개발문서/07_검증/26_기판교환과_원문수입_실행기록.json"
+      "01_개발문서/04_화면설계/01_그림자료/18_측정기록과_정렬비교.png",
+      "01_개발문서/04_화면설계/01_그림자료/18_측정기록과_정렬비교.svg",
+      "01_개발문서/04_화면설계/02_전환도원본/12_측정기록과_정렬비교.drawio",
+      "01_개발문서/04_화면설계/26_측정기록과_정렬비교_화면.md",
+      "01_개발문서/05_기능설계/04_해석결과/09_측정기록과_정렬비교.md",
+      "01_개발문서/07_검증/02_실행화면/62_시료와_교정_미정.jpg",
+      "01_개발문서/07_검증/02_실행화면/63_측정자료_가져오기검토.jpg",
+      "01_개발문서/07_검증/02_실행화면/64_측정비교와_조건미정.jpg",
+      "01_개발문서/07_검증/02_실행화면/65_저장후_당시측정보고서.jpg",
+      "01_개발문서/07_검증/02_실행화면/66_재열기_교정조건비교.jpg",
+      "01_개발문서/07_검증/02_실행화면/67_명시정렬_후보검토.jpg",
+      "01_개발문서/07_검증/02_실행화면/68_정렬후_이력자동갱신.jpg",
+      "01_개발문서/07_검증/02_실행화면/69_보존정렬_포트계보.jpg",
+      "01_개발문서/07_검증/27_측정기록과_정렬비교_검증.md",
+      "01_개발문서/07_검증/28_측정기록과_정렬비교_실행기록.json"
     ],
     "removed_paths": [],
     "preserved_reference_records": 3336,

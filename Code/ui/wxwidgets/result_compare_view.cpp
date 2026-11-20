@@ -1,6 +1,7 @@
 /** @file @brief 수학적 차이와 물리 조건 차이를 섞지 않는 비교 View다. */
 #include "result_compare_view.h"
 #include "result_presentation.h"
+#include "measurement_model.h"
 #include "network_chart.h"
 #include "frequency_display.h"
 #include "studio_support.h"
@@ -20,20 +21,22 @@ namespace
 const std::array<std::string, 6> Metrics{"magnitude_db", "phase_deg", "vswr", "real", "imag", "magnitude"};
 const std::array<std::string, 6> Labels{"크기 (dB)", "위상 (deg)", "VSWR", "실수부", "허수부", "크기"};
 }
-ResultCompareView::ResultCompareView(wxWindow* parent)
-    : wxScrolledWindow(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxVSCROLL | wxTAB_TRAVERSAL)
+ResultCompareView::ResultCompareView(wxWindow* parent, bool measurementMode)
+    : wxScrolledWindow(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxVSCROLL | wxTAB_TRAVERSAL),
+      m_measurementMode(measurementMode)
 {
     SetScrollRate(0, FromDIP(16));
     StudioTheme::BindSurface(*this);
     auto* layout = new wxBoxSizer(wxVERTICAL);
-    auto* heading = new wxStaticText(this, wxID_ANY, Display("결과 / 후보 비교"));
+    auto* heading = new wxStaticText(this, wxID_ANY, Display(measurementMode ? "측정 비교" : "결과 / 후보 비교"));
     StudioTheme::Title(*heading);
     layout->Add(heading, 0, wxALL, FromDIP(8));
     auto* tools = new wxWrapSizer(wxHORIZONTAL);
-    m_add = new wxButton(this, wxID_ANY, Display("선택 원본 추가"));
+    m_add = new wxButton(this, wxID_ANY, Display(measurementMode ? "선택 원본을 기준에 추가" : "선택 원본 추가"));
     m_remove = new wxButton(this, wxID_ANY, Display("목록에서 제외"));
     m_map = new wxButton(this, wxID_ANY, Display("포트 대응 지정"));
-    m_compare = new wxButton(this, wxID_ANY, Display("조건 / 수학 차이 확인"));
+    m_compare =
+        new wxButton(this, wxID_ANY, Display(measurementMode ? "측정 조건 / 차이 확인" : "조건 / 수학 차이 확인"));
     for (wxButton* button : {m_add, m_remove, m_map, m_compare})
     {
         StudioTheme::Button(*button);
@@ -44,8 +47,11 @@ ResultCompareView::ResultCompareView(wxWindow* parent)
         new wxListCtrl(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 150)), wxLC_REPORT | wxLC_SINGLE_SEL);
     m_sources->SetMinSize(FromDIP(wxSize(-1, 150)));
     StudioTheme::Table(*m_sources);
-    for (const auto& entry : std::vector<std::pair<std::string, int>>{
-             {"곡선 / 원본", 260}, {"당시 개정", 150}, {"표본 페이지", 120}, {"포트 대응 / 비교", 270}})
+    for (const auto& entry :
+         std::vector<std::pair<std::string, int>>{{"곡선 / 원본", 260},
+                                                  {measurementMode ? "시료 / 기록" : "당시 개정", 180},
+                                                  {"표본 페이지", 120},
+                                                  {"포트 대응 / 비교", 270}})
     {
         m_sources->AppendColumn(Display(entry.first), wxLIST_FORMAT_LEFT, FromDIP(entry.second));
     }
@@ -240,7 +246,8 @@ bool ResultCompareView::Add(const Json& description)
     }
     for (const auto& existing : m_descriptions)
     {
-        if (ResultUi::Matches(description, existing))
+        if (ResultUi::Matches(description, existing) &&
+            description.value("measurement_ref", Json(nullptr)) == existing.value("measurement_ref", Json(nullptr)))
         {
             m_status->SetLabel(Display("이미 같은 원본과 개정이 목록에 있습니다."));
             return false;
@@ -297,6 +304,13 @@ int ResultCompareView::Selected() const
 {
     return static_cast<int>(m_sources->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED));
 }
+void ResultCompareView::SetNotice(const std::string& message)
+{
+    m_status->SetLabel(Display(message));
+    m_status->Wrap(std::max(FromDIP(240), GetClientSize().x - FromDIP(24)));
+    Layout();
+    FitInside();
+}
 void ResultCompareView::RefreshRows()
 {
     const int selected = Selected();
@@ -312,9 +326,12 @@ void ResultCompareView::RefreshRows()
                                                                                       : " 점선 / ") +
                                                                     ResultUi::Text(description.at("label"))));
         m_sources->SetItemTextColour(row, NetworkChart::SeriesColour(index));
-        m_sources->SetItem(row, 1,
-                           Display(ResultUi::Text(
-                               description.value("source_revision", Json::object()).value("label", Json(nullptr)))));
+        m_sources->SetItem(
+            row, 1,
+            Display(ResultUi::Text(
+                m_measurementMode && description.value("measurement_label", Json(nullptr)).is_string()
+                    ? description.at("measurement_label")
+                    : description.value("source_revision", Json::object()).value("label", Json(nullptr)))));
         m_sources->SetItem(row, 2,
                            Display(m_pages[index].is_object()
                                        ? std::to_string(m_pages[index].value("offset", 0) + 1) + "부터 " +
@@ -421,8 +438,8 @@ void ResultCompareView::MapPorts()
         {
             return;
         }
-        if (!m_available || index >= m_descriptions.size() || !ResultUi::Matches(leftSource, m_descriptions.front()) ||
-            !ResultUi::Matches(rightSource, m_descriptions[index]))
+        if (!m_available || index >= m_descriptions.size() || !MeasurementUi::SameRecord(leftSource, m_descriptions.front()) ||
+            !MeasurementUi::SameRecord(rightSource, m_descriptions[index]))
         {
             return;
         }
@@ -601,6 +618,10 @@ void ResultCompareView::Actions()
     m_differenceNext->Enable(
         m_available && compared &&
         !m_comparisons[static_cast<std::size_t>(selected)].value("next_offset", Json(nullptr)).is_null());
+    if (onActionsChanged)
+    {
+        onActionsChanged();
+    }
 }
 void ResultCompareView::SetAvailable(bool available)
 {

@@ -131,12 +131,12 @@ class DesignSweepRunnerTests(unittest.TestCase):
         identity = self.fixture.create()
         self.command("start", identity)
         self.assertEqual(self.study(identity)["records"], {})
-        with patch("rfad.domain.network_circuit.apply_circuit", wraps=__import__(
-                "rfad.domain.network_circuit", fromlist=["apply_circuit"]).apply_circuit) as calculate:
+        context = self.service.host_calculation_context
+        with patch.object(context, "calculate", wraps=context.calculate) as calculate:
             study = self.run_all(identity)
         self.assertEqual(study["state"], "completed", study)
         self.assertEqual(study["counts"], {"total": 3, "completed": 2, "failed": 1, "pending": 0, "running": 0, "skipped": 0})
-        self.assertEqual(calculate.call_count, 1)
+        self.assertEqual(sum(call.args[0] == "network.circuit" for call in calculate.call_args_list), 1)
         self.assertEqual(study["usage"]["native_solves"], 0)
         self.assertEqual(load_candidate(self.service, study, 0)["outcome"], "invalid_input")
         self.assertIsNone(self.service.solver.runtime)
@@ -154,16 +154,18 @@ class DesignSweepRunnerTests(unittest.TestCase):
         self.fixture.spec["variables"][0]["values"] = self.fixture.spec["variables"][0]["values"][1:2]
         identity = self.fixture.create()
         self.command("start", identity)
-        from rfad.domain.network_circuit import apply_circuit
-        def cancel_after_calculation(*args):
+        context = self.service.host_calculation_context
+        original_calculate = context.calculate
+        def cancel_after_calculation(operation, inputs):
             """! @brief 느린 계산 직후 들어온 실제 취소 요청을 재현한다."""
-            result = apply_circuit(*args)
-            self.command("cancel", identity)
+            result = original_calculate(operation, inputs)
+            if operation == "network.circuit":
+                self.command("cancel", identity)
             return result
-        with patch("rfad.domain.network_circuit.apply_circuit", side_effect=cancel_after_calculation) as calculate:
+        with patch.object(context, "calculate", side_effect=cancel_after_calculation) as calculate:
             self.service.studies.run_next()
             self.service.studies.run_next()
-            self.assertEqual(calculate.call_count, 1)
+            self.assertEqual(sum(call.args[0] == "network.circuit" for call in calculate.call_args_list), 1)
         study = self.study(identity)
         self.assertEqual(study["state"], "cancelled", study)
         candidate = load_candidate(self.service, study, 0)
@@ -171,7 +173,12 @@ class DesignSweepRunnerTests(unittest.TestCase):
         self.assertIn("dataset", candidate["results"])
         original_diagnostics = json.loads(self.service.journal.read_artifact(candidate["results"]["diagnostics"]))["items"]
         self.command("resume", identity)
-        with patch("rfad.domain.network_circuit.apply_circuit", side_effect=AssertionError("재계산 금지")):
+        def retained_only(operation, inputs):
+            """! @brief 원래 회로 worker 재실행은 막고 보존 자료의 목표 평가는 실제 worker로 한다."""
+            if operation == "network.circuit":
+                raise AssertionError("재계산 금지")
+            return original_calculate(operation, inputs)
+        with patch.object(context, "calculate", side_effect=retained_only):
             self.assertEqual(self.run_all(identity)["state"], "completed")
         retained = load_candidate(self.service, self.study(identity), 0)
         current_diagnostics = json.loads(self.service.journal.read_artifact(retained["results"]["diagnostics"]))["items"]
@@ -195,13 +202,15 @@ class DesignSweepRunnerTests(unittest.TestCase):
         self.fixture.spec["budget"]["wall_seconds"] = 1
         identity = self.fixture.create()
         self.command("start", identity)
-        from rfad.domain.network_circuit import apply_circuit
-        def elapsed_calculation(*args):
+        context = self.service.host_calculation_context
+        original_calculate = context.calculate
+        def elapsed_calculation(operation, inputs):
             """! @brief 실제 계산 반환 직전 서비스 시계의 경과를 재현한다."""
-            result = apply_circuit(*args)
-            self.fixture.now += 2
+            result = original_calculate(operation, inputs)
+            if operation == "network.circuit":
+                self.fixture.now += 2
             return result
-        with patch("rfad.domain.network_circuit.apply_circuit", side_effect=elapsed_calculation):
+        with patch.object(context, "calculate", side_effect=elapsed_calculation):
             self.service.studies.run_next()
         study = self.study(identity)
         self.assertEqual(study["state"], "blocked")
@@ -257,7 +266,7 @@ class NativeSweepRunnerTests(unittest.TestCase):
         request = self.fixture.request({"expected_revision": self.document["revision_id"], "specification": self.spec})
         request.pop("request_key")
         request.pop("request_key_epoch")
-        preview = design_sweep_service.read(self.service, "sweep.preview", request)
+        preview = design_sweep_service.read(self.service.host_calculation_context, "sweep.preview", request)
         result = self.service.mutate("sweep.create", self.fixture.request({**request["input"], "review_hash": preview["review_hash"]}))
         identity = result["study_id"]
         self.control("start", identity)
@@ -431,7 +440,7 @@ class ActualNativeSweepTests(unittest.TestCase):
             return value
         with ProjectService(workspace, solver_runtime=runtime) as service:
             inputs = {"expected_revision": original["revision_id"], "specification": spec}
-            preview = design_sweep_service.read(service, "sweep.preview", request(service, inputs))
+            preview = design_sweep_service.read(service.host_calculation_context, "sweep.preview", request(service, inputs))
             created = service.mutate("sweep.create", request(service, {**inputs, "review_hash": preview["review_hash"]}, True))
             identity = created["study_id"]
             service.mutate("sweep.start", request(service, {"study_id": identity}, True))
@@ -450,7 +459,7 @@ class ActualNativeSweepTests(unittest.TestCase):
             self.assertEqual(candidate["convergence_state"], "solver_end_criterion_only")
             self.assertFalse(candidate["physics_validated"])
             self.assertEqual(service._load(service.journal.read()["projects"][original["project_id"]]), original)
-            result = design_sweep_service.read(service, "sweep.result", request(service,
+            result = design_sweep_service.read(service.host_calculation_context, "sweep.result", request(service,
                 {"study_id": identity, "index": 0, "offset": 0, "limit": 201, "row": 0, "column": 0}))
             self.assertEqual(result["page"]["total"], 31)
             self.assertIsNone(result["descriptor"]["conditions"]["measurement"])
@@ -459,7 +468,7 @@ class ActualNativeSweepTests(unittest.TestCase):
                 "runtime_identity": runtime.identity, "study": study, "candidate": candidate,
                 "original_project_hash": canonical_hash(original), "result": result, "physics_validated": False}
         with ProjectService(workspace, auto_run=False) as reopened:
-            repeated = design_sweep_service.read(reopened, "sweep.result", request(reopened,
+            repeated = design_sweep_service.read(reopened.host_calculation_context, "sweep.result", request(reopened,
                 {"study_id": identity, "index": 0, "offset": 0, "limit": 201, "row": 0, "column": 0}))
             self.assertEqual(result, repeated)
             self.assertFalse(reopened.studies.run_next())

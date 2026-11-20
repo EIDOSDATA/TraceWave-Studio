@@ -37,7 +37,7 @@ def apply_network(service, project, operation, parameters):
     """! @brief 실제 import/회로 원자 명령으로 계산할 기준 원본을 저장한다."""
     document = service._load(service.journal.read()["projects"][project])
     data = {"expected_revision": document["revision_id"], "operation": operation, "parameters": parameters}
-    preview = network_service.read(service, "network.preview", request(service, project, data))
+    preview = network_service.read(service.host_calculation_context, "network.preview", request(service, project, data))
     if not preview["can_apply"]:
         raise AssertionError(preview)
     return service.mutate("network.apply", request(service, project,

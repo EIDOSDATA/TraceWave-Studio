@@ -191,8 +191,10 @@ def admit(service, state, context, data):
         fail("자료 후보의 차단 원인을 해결한 뒤 다시 검토하십시오.", "parameters", "E_CONFLICT")
     if reviewed["review_hash"] != data["review_hash"]:
         fail("원본/입력/엔진 또는 검토한 결과가 바뀌었습니다.", "review_hash", "E_CONFLICT")
+    service.verify_calculation()
     for path, payload in files.items():
         service.journal.put_immutable(path, payload)
     result = service._apply(state, context, {"expected_revision": data["expected_revision"], "command_id": data["command_id"],
         "type": COMMAND, "payload": {"expected_hash": canonical_hash(document["extensions"].get(KEY)), "replacement": model}})
+    state["commands"][data["command_id"]]["host_calculation"] = deepcopy(reviewed["engine"])
     return {**result, "record_id": reviewed["record_id"], "operation": data["operation"], "review_hash": reviewed["review_hash"]}

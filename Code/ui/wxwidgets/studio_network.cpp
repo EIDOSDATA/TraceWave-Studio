@@ -377,7 +377,34 @@ void StudioFrame::ShowNetworkTool(NetworkAction action, const Json& context, con
         std::unique_ptr<ProjectSetupDialog> dialog;
         if (action == NetworkAction::Import)
         {
-            dialog = std::make_unique<NetworkImportDialog>(this, context, ObjectToolGateway());
+            if (m_measurementSupported && !context.contains("measurement"))
+            {
+                const auto project = m_project, revision = m_revision;
+                Send(
+                    "measurement.context", {{"revision_id", nullptr}, {"offset", 0}, {"limit", 32}}, false, Context(),
+                    [this, project, revision, context, action, selection](const Json& measurement)
+                    {
+                        auto merged = context;
+                        merged["measurement"] = measurement;
+                        CallAfter(
+                            [this, project, revision, action, merged, selection]()
+                            {
+                                if (!m_closing && m_connected && m_project == project && m_revision == revision)
+                                {
+                                    ShowNetworkTool(action, merged, selection);
+                                }
+                            });
+                    },
+                    [this](const Json& error)
+                    {
+                        m_busy = false;
+                        Log(DiagnosticMessage(error));
+                        UpdateControls();
+                    });
+                return;
+            }
+            auto recovery = MeasurementRecoveryState();
+            dialog = std::make_unique<NetworkImportDialog>(this, context, MeasurementGateway(recovery), recovery);
         }
         else if (action == NetworkAction::Circuit)
         {

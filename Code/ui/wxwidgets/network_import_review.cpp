@@ -1,6 +1,8 @@
 /** @file @brief 서비스가 검증한 복소 표본과 미정 조건을 보여 주고 원자 적용한다. */
 #include "network_import_dialog.h"
 #include "network_chart.h"
+#include "measurement_record_form.h"
+#include "measurement_model.h"
 #include "frequency_display.h"
 #include "studio_support.h"
 #include "studio_theme.h"
@@ -98,20 +100,30 @@ Json NetworkImportDialog::Input() const
     {
         throw std::runtime_error("자료 이름을 입력하세요.");
     }
-    return {{"expected_revision", m_revision},
-            {"operation", "import"},
-            {"parameters",
-             {{"name", Utf8(m_name->GetValue())},
-              {"file_name", m_fileName},
-              {"format", Format()},
-              {"source_base64", m_encoded},
-              {"mapping", Mapping()},
-              {"declarations", Declarations()}}}};
+    Json input{{"expected_revision", m_revision},
+               {"operation", "import"},
+               {"parameters",
+                {{"name", Utf8(m_name->GetValue())},
+                 {"file_name", m_fileName},
+                 {"format", Format()},
+                 {"source_base64", m_encoded},
+                 {"mapping", Mapping()},
+                 {"declarations", Declarations()}}}};
+    if (MeasurementSelected())
+    {
+        input["parameters"] = {{"network", input.at("parameters")},
+                               {"name", m_measurementForm->Name()},
+                               {"changes", m_measurementForm->Changes()},
+                               {"reason", m_measurementForm->Reason()}};
+        input["operation"] = "import_record";
+        input["draft_time_utc"] = m_draftTime;
+    }
+    return input;
 }
 
 void NetworkImportDialog::Preview()
 {
-    if (!Editable() || m_pending)
+    if (!Editable() || m_pending || MeasurementUncertain() || m_measurementForm->Pending())
     {
         return;
     }
@@ -129,11 +141,11 @@ void NetworkImportDialog::Preview()
         m_chart->Clear();
         m_summary->ChangeValue(Display("원문 형식, 유한 표본과 명시 조건을 서비스에서 검사하고 있습니다."));
         SetStatus("파일 / 조건을 검토하는 중입니다.");
-        Request("network.preview", input, false,
+        Request(MeasurementSelected() ? "measurement.preview" : "network.preview", input, false,
                 [this, input](const Json& result)
                 {
                     if (result.at("project_id") != m_projectId || result.at("revision_id") != m_revision ||
-                        (result.value("can_apply", false) && result.value("operation", "") != "import"))
+                        (result.value("can_apply", false) && result.value("operation", "") != input.at("operation")))
                     {
                         throw std::runtime_error("다른 프로젝트 또는 개정의 가져오기 응답입니다.");
                     }
@@ -144,7 +156,7 @@ void NetworkImportDialog::Preview()
                         m_sourceDescriptor = result.at("descriptor");
                     }
                     RenderReview(result);
-                    m_tabs->SetSelection(2);
+                    m_tabs->SetSelection(ReviewPage);
                     SetStatus(
                         result.value("can_apply", false)
                             ? "후보를 확인했습니다. 필요하면 열 / 포트 대응에서 미정 조건을 명시한 뒤 다시 검토하세요."
@@ -165,6 +177,10 @@ void NetworkImportDialog::RenderReview(const Json& result)
     m_samples->DeleteAllItems();
     m_chart->Clear();
     std::string text = "자료: " + Utf8(m_name->GetValue()) + "\n원문: " + m_fileName + "\n";
+    if (MeasurementSelected())
+    {
+        text += MeasurementUi::Summary(result.value("record", Json(nullptr))) + "\n";
+    }
     if (!result.value("can_apply", false))
     {
         for (const auto& issue : result.value("issues", Json::array()))
@@ -180,6 +196,7 @@ void NetworkImportDialog::RenderReview(const Json& result)
         return;
     }
     const auto& descriptor = result.at("descriptor");
+    m_measurementForm->SetDescriptor(descriptor);
     text += "자료 종류: " + descriptor.at("parameter_kind").get<std::string>() +
             " / 단위: " + descriptor.at("unit").get<std::string>() +
             " / 표본 수: " + std::to_string(descriptor.at("sample_count").get<std::size_t>()) + "\n";
@@ -238,7 +255,8 @@ void NetworkImportDialog::Apply()
         m_pairs->SaveEditControlValue();
         m_pairs->HideCellEditControl();
     }
-    if (!Editable() || m_pending || m_review.is_null() || !m_review.value("can_apply", false))
+    if (!Editable() || m_pending || MeasurementUncertain() || m_measurementForm->Pending() || m_review.is_null() ||
+        !m_review.value("can_apply", false))
     {
         return;
     }
@@ -253,12 +271,10 @@ void NetworkImportDialog::Apply()
         Json input = m_reviewInput;
         input["command_id"] = Uuid();
         input["review_hash"] = m_review.at("review_hash");
-        Request("network.apply", input, true,
+        Request(MeasurementSelected() ? "measurement.apply" : "network.apply", input, true,
                 [this](const Json& result)
                 {
-                    AcceptMutation(result);
-                    m_dirty = false;
-                    CloseDialog();
+                    AcceptImport(result);
                 });
     }
     catch (const std::exception& error)

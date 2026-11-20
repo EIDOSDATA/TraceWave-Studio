@@ -1,0 +1,199 @@
+{
+  "schema": "rfad.verification.measurement-workspace/0.1",
+  "date_kst": "2026-11-20",
+  "plan_step": 11,
+  "base_commit": "3c8c66354186ae4216d73322aee4c04ee61f65e3",
+  "profile": "rfad.measurement-workspace/0.1",
+  "runs": [
+    {
+      "scope": "진입점 보완 뒤 서비스 회귀. 이후 비교 검토/계보 표시 보강 전",
+      "collected": 113,
+      "passed": 112,
+      "skipped": 1,
+      "seconds": 871.006,
+      "log": "stage11-service-final.log",
+      "log_sha256": "f5620df028767b2f177a076100c184a442ef4fe7324fdb5d0c0e7dd08f1a3e63"
+    },
+    {
+      "scope": "최종 Python의 측정 API, 1001표본, 계보 페이지, HOST 실제 worker와 복사",
+      "collected": 23,
+      "passed": 23,
+      "skipped": 0,
+      "seconds": 219.231,
+      "log": "stage11-final-measurement.log",
+      "log_sha256": "a7938adf4bd20c502027eac1632e5bef4f37f135bab636987060c7c5017d3b6e"
+    },
+    {
+      "scope": "진입점 보완 직후 RPC, 원문 소스 묶음. 실제 CAD는 별도 실행",
+      "collected": 31,
+      "passed": 29,
+      "skipped": 2,
+      "seconds": 11.649,
+      "log": "stage11-transport.log",
+      "log_sha256": "f092a29227efbccee6376d2ebc0b86915c7825a6eabbccdcb0374e51e1373a2c"
+    },
+    {
+      "scope": "Windows 기존 복소/결과/스윕 회귀. 측정 목록/보고서 조작 보완 전",
+      "collected": 4,
+      "passed": 4,
+      "skipped": 0,
+      "seconds": 315.861,
+      "log": "stage11-gui-compatibility-2.log",
+      "log_sha256": "2ab297a53d3cc2b17c2ded7e54c8a2043bf92326c3a0550695f5decff9673f11"
+    },
+    {
+      "scope": "요구 추적 감사",
+      "collected": 14,
+      "passed": 14,
+      "skipped": 0,
+      "seconds": 5.019,
+      "log": "stage11-final-audit.log",
+      "log_sha256": "35913a5d37c681b76df2d81b749180f05c10075dea47e39fb4e9026d1a0f4b8e"
+    },
+    {
+      "scope": "실제 OCCT 원문 묶음과 STEP 입력/출력",
+      "collected": 2,
+      "passed": 2,
+      "skipped": 0,
+      "seconds": 56.586,
+      "log": "stage11-final-cad-boundary.log",
+      "log_sha256": "cfe63a0f85fe4927ced480a81e913fbeb0f142a385dad2f6137ab1bc1d40caf4"
+    },
+    {
+      "scope": "최종 Windows 실행 파일의 다중 결과/Smith/조건/저장 재열기",
+      "collected": 2,
+      "passed": 2,
+      "skipped": 0,
+      "seconds": 41.414,
+      "log": "stage11-release-results.log",
+      "log_sha256": "8c82577d3e29940fd51cf849801619dcd76d6d7690140c8779cdc69a5514d828"
+    }
+  ],
+  "native_ctest": {
+    "passed": 13,
+    "failed": 0,
+    "log_sha256": "f369243e27122a835724a1272c9789a3f52c2db88c7cc8647335229dafcf9ff4"
+  },
+  "release_binary_sha256": "6f35849b932350bfb457d854c119797d70f48941bb2ce18b7e934c0a8f9909f1",
+  "source_bundles": {
+    "host": {
+      "path_count": 136,
+      "bundle_bytes": 1431542,
+      "sha256": "cd8f873c4d386cdecdb1e0cabadbc6327b63d02761924c2614afeb993afe0f5a",
+      "control_paths": 135,
+      "math_paths": 69
+    },
+    "rfad.source.cad/0.1": {
+      "path_count": 73,
+      "source_bundle": {
+        "schema": "rfad.source-bundle/0.1",
+        "profile": "rfad.source.cad/0.1",
+        "entry_points": [
+          "worker.py"
+        ],
+        "dynamic_imports": [],
+        "source_sha256": "0844266492adfa16c8cc9f02d4d91c217d51710ec7e005fed7e532f9cc6ceea1"
+      }
+    },
+    "rfad.source.openems/0.1": {
+      "path_count": 89,
+      "source_bundle": {
+        "schema": "rfad.source-bundle/0.1",
+        "profile": "rfad.source.openems/0.1",
+        "entry_points": [
+          "tools/openems_worker.py",
+          "tools/wsl_supervisor.py"
+        ],
+        "dynamic_imports": [],
+        "source_sha256": "a6868399a0fd932138ce57b79db48add5a8f4d64432ede506ca96c20fa594f46"
+      }
+    },
+    "rfad.source.exchange/0.1": {
+      "path_count": 24,
+      "source_bundle": {
+        "schema": "rfad.source-bundle/0.1",
+        "profile": "rfad.source.exchange/0.1",
+        "entry_points": [
+          "tools/exchange_worker.py"
+        ],
+        "dynamic_imports": [],
+        "source_sha256": "09f8b374b24cc06fe6c1f568818734cc7d42278619bc51d2b01a3f6f0216d975"
+      }
+    }
+  },
+  "manual_windows": {
+    "resolution": [
+      1648,
+      954
+    ],
+    "before_interaction_fixes_binary_sha256": "6b1607631aec6dffaead3614d8f70ccd6adb8321e6168c36b19a7ae813a6ed56",
+    "screens_62_to_64": "가져오기/곡선 비교. 목록 새로고침으로 이력을 조회한 초기 실행",
+    "screens_65_to_69": "재열기/정렬/자동 목록 갱신. 최종 서식 정돈과 순번 텍스트 조정 전 실행",
+    "screens": [
+      {
+        "path": "02_실행화면/62_시료와_교정_미정.jpg",
+        "sha256": "e66b6db02491732d04d8aeb8d97119105cc42c5c5e2ebb3022cc0377e073b65b"
+      },
+      {
+        "path": "02_실행화면/63_측정자료_가져오기검토.jpg",
+        "sha256": "c58c69176775f6b6c2976549dd10997155b4f55c33ab0f40c2823e828f39c6f2"
+      },
+      {
+        "path": "02_실행화면/64_측정비교와_조건미정.jpg",
+        "sha256": "26422d3415a1ea3c5cc74d6e7fd190777f66216715deaf1156c6325061930e58"
+      },
+      {
+        "path": "02_실행화면/65_저장후_당시측정보고서.jpg",
+        "sha256": "a6b717d0a50250ae5e2d7e455043178a56862f4b2ef50679de496f7145dbe412"
+      },
+      {
+        "path": "02_실행화면/66_재열기_교정조건비교.jpg",
+        "sha256": "2e3424ea5cdc46530c0dc865ef69c0dda0bde55e72268289ff0e60d4f0c1278f"
+      },
+      {
+        "path": "02_실행화면/67_명시정렬_후보검토.jpg",
+        "sha256": "9f324ffdff09188ca1c841c8c3a313836b2eb59ca5fbf68b281e8c7858e14f80"
+      },
+      {
+        "path": "02_실행화면/68_정렬후_이력자동갱신.jpg",
+        "sha256": "0b33735d3b2a195cab72156a3250d9940e8d81561f9eb5c7cd25f9f72bd93864"
+      },
+      {
+        "path": "02_실행화면/69_보존정렬_포트계보.jpg",
+        "sha256": "09deec986f51d8102af8a6d2cf85a3c35b79bc41ba7c2c8e681880a2246f5e84"
+      }
+    ],
+    "saved_project": {
+      "profile": "rfad.measurement-workspace/0.1",
+      "saved_revision": "ffdb05f3-2609-4720-ac80-e64ab974571d",
+      "raw_import_sha256": "b6d2932a948a0142bd316dbfeb6801be330377cfd753f538bc80688960211a70",
+      "record_count": 2,
+      "alignment_count": 1,
+      "comparison_count": 1,
+      "original_record_ref": {
+        "id": "98359cb1-63bb-5a9f-976c-3a3ec85910fa",
+        "sha256": "e82ac397cc146c85eb437689b19dd0c915f8aaea392d3e2b8192f707c57cf214",
+        "revision_id": "4d16907f-1111-4bc5-bb35-64462f5df5e7"
+      },
+      "reported_points": 3,
+      "reported_conditions": 60,
+      "source_and_unknowns_preserved": true,
+      "physical_acceptance": "not_established"
+    }
+  },
+  "earlier_failures": [
+    "미완성 GUI의 모듈/함수 연결과 컴파일 오류를 보완",
+    "측정 통합 첫 수집의 3개 실패는 수량 source_refs와 미정 leaf를 실제 계약과 맞춰 재검증",
+    "python -m에서 source loader의 get_code 누락으로 Windows 서비스 시작 실패. 수정 뒤 별도 회귀 통과",
+    "적용 뒤 같은 개정 목록과 비교 버튼의 상태 갱신을 보강하고 새 실행에서 정렬 이력을 확인"
+  ],
+  "physical_acceptance": "not_established",
+  "fabrication_validated": false,
+  "new_fdtd_run": false,
+  "limitations": [
+    "합성 Touchstone과 선언 조건만 사용",
+    "실제 VNA/OTA 및 독립 물리 정확도 검수 미수행",
+    "독립 STEP 수신 검수와 전체 UX/성능 수용은 별도",
+    "RO4350B 개별 손실 2.788446% 및 GHz PTH 독립 정확도 미확립"
+  ]
+}

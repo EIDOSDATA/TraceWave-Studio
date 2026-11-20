@@ -14,8 +14,9 @@ DOCS = ROOT / "01_개발문서"
 BASELINE = DOCS / "12_보관이력/01_승인기준선/01_삼점사"
 SCREEN_NAMES = {"05_설계와_이차원편집", "06_해석준비", "07_결과조회", "08_결과비교",
                 "09_출력과_검수", "04_시작과_복구", "10_설정과_이름변경", "01_스튜디오_전체전환",
-                "02_편집초안과_저장흐름", "03_객체이름과_식별자", "11_기판교환과_원문수입"}
-SCREEN_ASSETS = {"11_기판교환과_원문수입": ("17_기판교환과_원문수입", 1420, 800)}
+                "02_편집초안과_저장흐름", "03_객체이름과_식별자", "11_기판교환과_원문수입", "12_측정기록과_정렬비교"}
+SCREEN_ASSETS = {"11_기판교환과_원문수입": ("17_기판교환과_원문수입", 1420, 800),
+                 "12_측정기록과_정렬비교": ("18_측정기록과_정렬비교", 1600, 1000)}
 
 
 def check_link(path, destination):
@@ -75,7 +76,7 @@ def main():
                 geo = cell.find("mxGeometry")
                 assert geo.find("mxPoint[@as='sourcePoint']") is not None
                 assert geo.find("mxPoint[@as='targetPoint']") is not None
-                if drawing.stem in {"01_스튜디오_전체전환", "02_편집초안과_저장흐름", "03_객체이름과_식별자", "11_기판교환과_원문수입"}:
+                if drawing.stem in {"01_스튜디오_전체전환", "02_편집초안과_저장흐름", "03_객체이름과_식별자", *SCREEN_ASSETS}:
                     assert cell.get("source") in ids, (drawing.name, cell.attrib)
                     assert cell.get("target") in ids, (drawing.name, cell.attrib)
         image_name, expected_width, expected_height = SCREEN_ASSETS.get(drawing.stem, (drawing.stem, 1600, 1000))

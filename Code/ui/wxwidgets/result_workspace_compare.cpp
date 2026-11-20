@@ -5,24 +5,107 @@
 #include "result_network_view.h"
 #include "result_source_browser.h"
 #include "result_presentation.h"
+#include "measurement_model.h"
 #include "studio_support.h"
 #include <wx/choicdlg.h>
-bool ResultWorkspace::ComparisonCurrent(std::size_t index, const Json& description, const Json& order, int row,
-                                        int column) const
+void ResultWorkspace::BindComparison(ResultCompareView* view, int page)
 {
-    const auto& descriptions = m_compare->Descriptions();
-    return index < descriptions.size() && ResultUi::Matches(description, descriptions[index]) &&
-           m_compare->PortOrder(index) == order && m_compare->Row() == row && m_compare->Column() == column;
+    view->onAddSelected = [this, view, page]()
+    {
+        if (m_description.is_object())
+        {
+            view->Add(m_description);
+        }
+        else
+        {
+            m_browser->SetStatus("먼저 원본을 선택하세요.");
+            if (onFocusSource)
+            {
+                onFocusSource();
+            }
+        }
+    };
+    view->onChanged = [this, view, page]()
+    {
+        ++m_markerGeneration;
+        if (m_page == page)
+        {
+            const auto& descriptions = view->Descriptions();
+            const int selected = view->Selected();
+            if (selected >= 0 && static_cast<std::size_t>(selected) < descriptions.size())
+            {
+                m_conditions->SetDescription(descriptions[static_cast<std::size_t>(selected)]);
+            }
+            else
+            {
+                m_conditions->Clear("비교 목록의 원본을 선택하면 그 기록의 조건을 표시합니다.");
+            }
+        }
+    };
+    view->onPage = [this, view, page](std::size_t index, int offset)
+    {
+        ComparePage(view, index, offset);
+    };
+    view->onCompare = [this, view, page](std::size_t index)
+    {
+        Compare(view, index);
+    };
+    view->onComparePage = [this, view, page](std::size_t index, int offset)
+    {
+        Compare(view, index, offset);
+    };
+    view->onMarkers = [this, view, page](double frequency)
+    {
+        Markers(view, frequency);
+    };
+    view->onConditions = [this, view, page](const Json& response)
+    {
+        if (m_page == page)
+        {
+            const auto& descriptions = view->Descriptions();
+            const int selected = view->Selected();
+            if (selected > 0 && static_cast<std::size_t>(selected) < descriptions.size())
+            {
+                m_conditions->SetComparison(
+                    response, descriptions.front().value("label", std::string()),
+                    descriptions[static_cast<std::size_t>(selected)].value("label", std::string()));
+            }
+        }
+    };
+    view->onInspect = [this, view, page](const Json& description)
+    {
+        if (m_page == page)
+        {
+            if (description.is_object())
+            {
+                m_conditions->SetDescription(description);
+            }
+            else
+            {
+                m_conditions->Clear("비교 목록의 원본을 선택하세요.");
+            }
+        }
+    };
 }
-void ResultWorkspace::ComparePage(std::size_t index, int offset)
+
+bool ResultWorkspace::ComparisonCurrent(ResultCompareView* view, std::size_t index, const Json& description,
+                                        const Json& order, int row, int column) const
 {
-    const auto descriptions = m_compare->Descriptions();
+    const auto& descriptions = view->Descriptions();
+    return index < descriptions.size() && ResultUi::Matches(description, descriptions[index]) &&
+           description.value("measurement_ref", Json(nullptr)) ==
+               descriptions[index].value("measurement_ref", Json(nullptr)) &&
+           view->PortOrder(index) == order && view->Row() == row && view->Column() == column;
+}
+void ResultWorkspace::ComparePage(ResultCompareView* view, std::size_t index, int offset)
+{
+    const auto descriptions = view->Descriptions();
     if (index >= descriptions.size())
     {
         return;
     }
-    const auto description = descriptions[index], order = m_compare->PortOrder(index);
-    const int row = m_compare->Row(), column = m_compare->Column();
+    const auto description = descriptions[index], order = view->PortOrder(index);
+    const int row = view->Row(), column = view->Column();
     const int actualRow = index == 0 ? row : order.is_array() ? order.at(static_cast<std::size_t>(row)).get<int>() : 0;
     const int actualColumn = index == 0         ? column
                              : order.is_array() ? order.at(static_cast<std::size_t>(column)).get<int>()
@@ -35,11 +118,11 @@ void ResultWorkspace::ComparePage(std::size_t index, int offset)
                {"limit", 201}};
     Read(
         "result.page", input,
-        [this, index, description, order, row, column]()
+        [this, view, index, description, order, row, column]()
         {
-            return ComparisonCurrent(index, description, order, row, column);
+            return ComparisonCurrent(view, index, description, order, row, column);
         },
-        [this, index, description, actualRow, actualColumn, offset](const Json& response)
+        [this, view, index, description, actualRow, actualColumn, offset](const Json& response)
         {
             if (!ResultUi::Matches(response, description) ||
                 response.at("page").at("channel") != Json{{"row", actualRow}, {"column", actualColumn}} ||
@@ -47,39 +130,44 @@ void ResultWorkspace::ComparePage(std::size_t index, int offset)
             {
                 throw std::runtime_error("비교 곡선의 원본/채널/페이지가 요청과 다릅니다.");
             }
-            m_compare->SetPage(index, response);
+            view->SetPage(index, response);
         },
         [this](const Json& error)
         {
             m_browser->SetStatus("비교 원본의 실제 표본 조회 실패: " + DiagnosticMessage(error));
         });
 }
-void ResultWorkspace::Compare(std::size_t index, int offset)
+void ResultWorkspace::Compare(ResultCompareView* view, std::size_t index, int offset)
 {
-    const auto descriptions = m_compare->Descriptions();
+    const auto descriptions = view->Descriptions();
     if (index == 0 || index >= descriptions.size())
     {
         return;
     }
-    const auto left = descriptions.front(), right = descriptions[index], order = m_compare->PortOrder(index);
+    const auto left = descriptions.front(), right = descriptions[index], order = view->PortOrder(index);
     if (!order.is_array())
     {
         return;
     }
-    const int row = m_compare->Row(), column = m_compare->Column();
-    const Json leftPin{{"source", left.at("source")}, {"pin", left.at("pin")}},
+    const int row = view->Row(), column = view->Column();
+    Json leftPin{{"source", left.at("source")}, {"pin", left.at("pin")}},
         rightPin{{"source", right.at("source")}, {"pin", right.at("pin")}};
+    if (view->MeasurementMode())
+    {
+        leftPin["record"] = left.value("measurement_ref", Json(nullptr));
+        rightPin["record"] = right.value("measurement_ref", Json(nullptr));
+    }
     Json input{{"left", leftPin},  {"right", rightPin}, {"right_port_order", order},
                {"row", row},       {"column", column},  {"frequency_policy", "exact_only"},
                {"offset", offset}, {"limit", 201}};
     Read(
-        "result.compare", input,
-        [this, index, left, right, order, row, column]()
+        view->MeasurementMode() ? "measurement.compare" : "result.compare", input,
+        [this, view, index, left, right, order, row, column]()
         {
-            return !m_compare->Descriptions().empty() && ResultUi::Matches(left, m_compare->Descriptions().front()) &&
-                   ComparisonCurrent(index, right, order, row, column);
+            return !view->Descriptions().empty() && MeasurementUi::SameRecord(left, view->Descriptions().front()) &&
+                   ComparisonCurrent(view, index, right, order, row, column);
         },
-        [this, index, leftPin, rightPin, row, column, offset](const Json& response)
+        [this, view, index, leftPin, rightPin, row, column, offset](const Json& response)
         {
             if (response.at("left") != leftPin || response.at("right") != rightPin ||
                 response.at("channel") != Json{{"row", row}, {"column", column}} ||
@@ -88,7 +176,7 @@ void ResultWorkspace::Compare(std::size_t index, int offset)
             {
                 throw std::runtime_error("수학 비교 응답의 원본, 채널 또는 검증 상태가 다릅니다.");
             }
-            m_compare->SetComparison(index, response);
+            view->SetComparison(index, response);
         },
         [this](const Json& error)
         {
@@ -97,34 +185,40 @@ void ResultWorkspace::Compare(std::size_t index, int offset)
 }
 void ResultWorkspace::Conditions(int offset)
 {
-    const auto descriptions = m_compare->Descriptions();
-    const int selected = m_compare->Selected();
-    if (m_page != 14 || selected <= 0 || static_cast<std::size_t>(selected) >= descriptions.size())
+    auto* view = ComparisonView();
+    const auto descriptions = view->Descriptions();
+    const int selected = view->Selected();
+    if ((m_page != 14 && m_page != 16) || selected <= 0 || static_cast<std::size_t>(selected) >= descriptions.size())
     {
         return;
     }
     const auto index = static_cast<std::size_t>(selected);
-    const auto left = descriptions.front(), right = descriptions[index], order = m_compare->PortOrder(index);
-    const int row = m_compare->Row(), column = m_compare->Column(), total = m_conditions->ConditionTotal();
+    const auto left = descriptions.front(), right = descriptions[index], order = view->PortOrder(index);
+    const int row = view->Row(), column = view->Column(), total = m_conditions->ConditionTotal();
     if (offset < 0 || offset >= total)
     {
         return;
     }
     const auto generation = m_conditions->ConditionGeneration(), selection = m_selectionGeneration;
-    const Json leftPin{{"source", left.at("source")}, {"pin", left.at("pin")}},
+    Json leftPin{{"source", left.at("source")}, {"pin", left.at("pin")}},
         rightPin{{"source", right.at("source")}, {"pin", right.at("pin")}};
+    if (view->MeasurementMode())
+    {
+        leftPin["record"] = left.value("measurement_ref", Json(nullptr));
+        rightPin["record"] = right.value("measurement_ref", Json(nullptr));
+    }
     m_conditions->ConditionsPending(true);
     Read(
-        "result.conditions", {{"left", leftPin}, {"right", rightPin}, {"offset", offset}, {"limit", 32}},
-        [this, index, left, right, order, row, column, generation, selection]()
+        view->MeasurementMode() ? "measurement.conditions" : "result.conditions",
+        {{"left", leftPin}, {"right", rightPin}, {"offset", offset}, {"limit", 32}},
+        [this, view, index, left, right, order, row, column, generation, selection]()
         {
-            return m_page == 14 && m_selectionGeneration == selection &&
-                   m_conditions->ConditionGeneration() == generation &&
-                   m_compare->Selected() == static_cast<int>(index) && !m_compare->Descriptions().empty() &&
-                   ResultUi::Matches(left, m_compare->Descriptions().front()) &&
-                   ComparisonCurrent(index, right, order, row, column);
+            return (m_page == 14 || m_page == 16) && ComparisonView() == view && m_selectionGeneration == selection &&
+                   m_conditions->ConditionGeneration() == generation && view->Selected() == static_cast<int>(index) &&
+                   !view->Descriptions().empty() && MeasurementUi::SameRecord(left, view->Descriptions().front()) &&
+                   ComparisonCurrent(view, index, right, order, row, column);
         },
-        [this, leftPin, rightPin, offset, total](const Json& response)
+        [this, view, leftPin, rightPin, offset, total](const Json& response)
         {
             const auto& items = response.at("items");
             if (response.at("left") != leftPin || response.at("right") != rightPin || response.at("offset") != offset ||
@@ -148,14 +242,14 @@ void ResultWorkspace::Conditions(int offset)
         });
 }
 
-void ResultWorkspace::Markers(double frequency)
+void ResultWorkspace::Markers(ResultCompareView* view, double frequency)
 {
-    const auto descriptions = m_compare->Descriptions();
+    const auto descriptions = view->Descriptions();
     const auto generation = ++m_markerGeneration;
-    const int row = m_compare->Row(), column = m_compare->Column();
+    const int row = view->Row(), column = view->Column();
     for (std::size_t index = 0; index < descriptions.size(); ++index)
     {
-        const auto description = descriptions[index], order = m_compare->PortOrder(index);
+        const auto description = descriptions[index], order = view->PortOrder(index);
         const int actualRow = index == 0         ? row
                               : order.is_array() ? order.at(static_cast<std::size_t>(row)).get<int>()
                                                  : 0;
@@ -169,27 +263,28 @@ void ResultWorkspace::Markers(double frequency)
                    {"column", actualColumn}};
         Read(
             "result.marker", input,
-            [this, index, description, order, row, column, generation]()
+            [this, view, index, description, order, row, column, generation]()
             {
-                return generation == m_markerGeneration && ComparisonCurrent(index, description, order, row, column);
+                return generation == m_markerGeneration &&
+                       ComparisonCurrent(view, index, description, order, row, column);
             },
-            [this, index, description, frequency](const Json& response)
+            [this, view, index, description, frequency](const Json& response)
             {
                 if (!ResultUi::Matches(response, description) ||
                     (response.value("found", false) && response.at("point").at("frequency_hz") != frequency))
                 {
                     throw std::runtime_error("마커가 같은 원본의 정확한 주파수 표본이 아닙니다.");
                 }
-                m_compare->SetMarker(index, response);
+                view->SetMarker(index, response);
             },
-            [this, index, description](const Json& error)
+            [this, view, index, description](const Json& error)
             {
                 Json missing{{"source", description.at("source")},
                              {"pin", description.at("pin")},
                              {"found", false},
                              {"point", nullptr},
                              {"reason", DiagnosticMessage(error)}};
-                m_compare->SetMarker(index, missing);
+                view->SetMarker(index, missing);
             });
     }
 }

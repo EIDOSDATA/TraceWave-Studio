@@ -137,38 +137,17 @@ def _reject(service, study, definition, previous, candidate, error=None):
     service.journal.transaction(reject)
 
 
-def _assess(source, definition, dataset, metrics=None):
+def _assess(service, source, definition, dataset, metrics=None):
     """! @brief 명시 대응이 없는 목표는 미평가로 보존하고 실제 표본만 평가한다."""
-    from rfad.application.network_candidates import resolved_target
-    from rfad.domain.network_assessment import evaluate_target
-
-    spec, document = definition["specification"], source["document"]
-    contexts = {item["target_id"]: item["context"] for item in spec["target_contexts"]}
-    results = []
-    for identity in spec["target_ids"]:
-        target = next(item for item in document["targets"] if item["id"] == identity)
-        context = contexts.get(identity)
-        if context is None or context["target_port_id"] != target["port_id"]:
-            result = {"target_id": identity, "target_revision_id": target["revision_id"],
-                      "status": "not_evaluated", "criteria": [], "continuous_band_verified": False,
-                      "physics_validated": False, "reason": "목표와 자료의 명시 포트/기준면 대응이 없습니다."}
-        else:
-            try:
-                result = evaluate_target(resolved_target(document, target), dataset, context, metrics=metrics)
-            except ProjectError as error:
-                result = {"target_id": identity, "target_revision_id": target["revision_id"],
-                          "status": "not_evaluated", "criteria": [], "continuous_band_verified": False,
-                          "physics_validated": False, "diagnostic": error.diagnostic()}
-        result["evidence"] = {"target_original": deepcopy(target), "project_revision": document["revision_id"],
-                              "context": deepcopy(context), "dataset_hash": canonical_hash(dataset)}
-        results.append(result)
-    return {"schema": "rfad.sweep-assessments/0.1", "assessments": results,
-            "continuous_band_verified": False, "physics_validated": False}
+    result, execution = service.calculate("sweep.assess", {"document": source["document"],
+        "specification": definition["specification"], "dataset": dataset, "metrics": metrics})
+    result["host_execution"] = execution
+    return result
 
 
 def _completed(service, study, definition, previous, candidate, source, dataset, diagnostics, *, metrics=None, job=None, extra_payloads=None):
     """! @brief 계산 결과와 목표 원문을 봉인한 뒤 취소 경합 없이 완료 후보를 게시한다."""
-    assessment = _assess(source, definition, dataset, metrics)
+    assessment = _assess(service, source, definition, dataset, metrics)
     payloads = {"dataset": canonical_bytes(dataset), "assessment": canonical_bytes(assessment),
                 "diagnostics": canonical_bytes({"schema": "rfad.sweep-diagnostics/0.1", "items": diagnostics})}
     if metrics is not None:
@@ -184,6 +163,7 @@ def _completed(service, study, definition, previous, candidate, source, dataset,
         row["status"] != "not_evaluated" for row in assessment["assessments"]) else "not_evaluated")
     def publish(state):
         """! @brief 별도 network 자료 목록에 자동 등록하지 않고 연구 결과로만 남긴다."""
+        service.verify_calculation()
         current = _current(state, study)
         _charge(service, current)
         if job is not None:
@@ -233,11 +213,11 @@ def _materialize(service, study, definition, previous):
                    [*diagnostics, {"code": "I_REUSED", "source_ordinal": cached_index, "original_candidate_preserved": True}], metrics=metrics)
         return
     if study["type"] == "circuit_sweep":
-        from rfad.domain.network_circuit import apply_circuit
         original = read_json(service, definition["network"]["dataset"])
         _budget(study, definition, ram=4 * len(canonical_bytes(original)) + 32 * 1024**2)
         try:
-            derived = apply_circuit(original, source["circuit"])
+            derived, execution = service.calculate("network.circuit", {"dataset": original, "circuit": source["circuit"]})
+            derived["dataset"]["provenance"]["host_execution"] = execution
         except ProjectError as error:
             if error.code in {"E_CONFLICT", "E_UNSUPPORTED", "E_GEOMETRY", "E_SCHEMA"}:
                 _reject(service, study, definition, previous, candidate, error)
@@ -399,6 +379,9 @@ def run_next(service, stop_event):
         return False
     try:
         definition = load_definition(service, study)
+        service.verify_calculation()
+        if definition["engine_identity"] != service.calculation_identity():
+            raise ProjectError("E_VERSION", "연구의 제어/계산 source가 현재 세션과 다릅니다. 기존 결과는 보존합니다.")
         job = state["jobs"].get(study["current_job_id"])
         if job is not None and study["state"] == "resuming" and job["solver"].get("resource_reserved"):
             service.solver.reconcile(job["job_id"])

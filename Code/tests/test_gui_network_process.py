@@ -63,7 +63,7 @@ class GuiNetworkTests(unittest.TestCase):
                 original, snapshot = register_fixture(service, original)
                 parameters = import_parameters(declared=False)
                 parameters["name"] = "과거 미정 자료"
-                preview = network_service.read(service, "network.preview", request(service, project,
+                preview = network_service.read(service.host_calculation_context, "network.preview", request(service, project,
                     {"expected_revision": original["revision_id"], "operation": "import", "parameters": parameters}))
                 self.assertTrue(preview["can_apply"], preview)
                 result = service.mutate("network.apply", request(service, project,

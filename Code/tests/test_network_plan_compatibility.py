@@ -42,7 +42,7 @@ class NetworkPlanCompatibilityTests(unittest.TestCase):
                             "review_hash": preview["review_hash"], "reason": "내부 호환 시험; 실측 아님"}, mutation=True))
         current = self.document()
         data = {"expected_revision": current["revision_id"], "operation": "import", "parameters": import_parameters(declared=False)}
-        preview = network_service.read(self.service, "network.preview", self.request(data))
+        preview = network_service.read(self.service.host_calculation_context, "network.preview", self.request(data))
         self.assertTrue(preview["can_apply"], preview)
         self.service.mutate("network.apply", self.request({**data, "command_id": str(uuid4()),
                             "review_hash": preview["review_hash"]}, mutation=True))

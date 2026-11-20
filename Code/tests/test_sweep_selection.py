@@ -55,7 +55,7 @@ class SelectionFixture:
         self.document = self.service._load(self.service.journal.read()["projects"][self.project])
         self.runner.document = self.document
         request = self.request({"expected_revision": self.document["revision_id"], "specification": self.runner.spec})
-        preview = design_sweep_service.read(self.service, "sweep.preview", request)
+        preview = design_sweep_service.read(self.service.host_calculation_context, "sweep.preview", request)
         created = self.service.mutate("sweep.create", self.request({**request["input"], "review_hash": preview["review_hash"]}, True))
         self.study = created["study_id"]
         study = self.service.journal.read()["sweeps"][self.study]
@@ -269,7 +269,7 @@ class SweepSelectionCopyTests(unittest.TestCase):
         f = self.fixture
         current = f.service._load(f.service.journal.read()["projects"][f.project])
         data = {"expected_revision": current["revision_id"], "operation": operation, "parameters": parameters}
-        review = network_service.read(f.service, "network.preview", f.request(data))
+        review = network_service.read(f.service.host_calculation_context, "network.preview", f.request(data))
         self.assertTrue(review["can_apply"], review)
         return f.service.mutate("network.apply", f.request({**data, "review_hash": review["review_hash"], "command_id": str(uuid4())}, True))["record_id"]
 

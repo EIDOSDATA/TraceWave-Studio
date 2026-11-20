@@ -372,6 +372,7 @@ void StudioFrame::BuildInterface()
     BuildSweepInterface();
     BuildResultInterface();
     BuildValidationInterface();
+    BuildMeasurementInterface();
     BuildWorkspaceLayers();
     m_manager->Update();
     m_defaultLayout = m_manager->SavePerspective();

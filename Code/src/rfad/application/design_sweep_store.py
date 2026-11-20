@@ -125,6 +125,7 @@ def seal_result(service, study, index, role_bytes):
         fail("결과 후보 순번이 유효하지 않습니다.")
     if type(role_bytes) is not dict or not 1 <= len(role_bytes) <= 16:
         fail("결과 파일 목록은 1~16개여야 합니다.")
+    service.verify_calculation()
     root = folder(service, study) + f"/results/{index}/{uuid4()}"
     result = {}
     for role, raw in role_bytes.items():
@@ -139,6 +140,15 @@ def seal_result(service, study, index, role_bytes):
 def verify_retained(service, study):
     """! @brief 재개 전에 완료 근거와 시도 계획을 읽고 변조를 자동 복구하지 않는다."""
     definition, _ = baseline(service, study)
+    if "calculation_source" in definition:
+        import hashlib
+        engine = definition["engine_identity"]["application_source"]
+        project = service.journal.read()["projects"][study["project_id"]]
+        if definition["calculation_source"]["uri"] != project["path"] + "/host-calculation-sources/" + engine["bundle_sha256"] + ".json":
+            fail("연구 계산 source의 소유 프로젝트/경로가 다릅니다.", "E_HASH")
+        source = service.journal.read_artifact(definition["calculation_source"])
+        if len(source) != engine["bundle_bytes"] or hashlib.sha256(source).hexdigest() != engine["bundle_sha256"]:
+            fail("연구의 보존 계산 source와 고정 환경이 다릅니다.", "E_HASH")
     network = definition["network"]
     if network is not None:
         service.journal.read_artifact(network["dataset"])

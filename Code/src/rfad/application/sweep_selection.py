@@ -150,6 +150,7 @@ def _prepare(service, state, context, data, command_id):
     staged["paths"][data["path"]] = project_id
     applied = ProjectHistory(repository).apply(staged, {"project_id": project_id}, {
         "command_id": command_id, "expected_revision": copied["revision_id"], "type": COMMAND, "payload": payload}, limit=MAX_HISTORY)
+    staged["commands"][command_id]["source_artifact_copies"] = deepcopy(copied_refs)
     final_project = staged["projects"][project_id]
     final_project["saved"] = deepcopy(final_project["current"])
     final_document = repository.load(final_project)

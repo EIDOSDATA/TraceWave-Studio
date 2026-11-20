@@ -14,6 +14,7 @@ class ResultMetricsView;
 class RadiationResultView;
 class FieldResultView;
 class ResultCompareView;
+class MeasurementCompareView;
 class ResultWorkspace final
 {
 public:
@@ -25,12 +26,15 @@ public:
     /** @brief 보고서에 봉인된 원본 해시를 대조한 뒤 기존 결과 화면으로 연다. */
     void OpenPinned(const Json& source, const Json& pin);
     void SetValidationAvailable(bool available);
+    void BuildMeasurementPage(StudioNotebook* views);
+    void SetMeasurementAvailable(bool available);
     wxWindow* NavigationView() const;
     wxWindow* ConditionsView() const;
     std::function<void()> onFocusSource;
     std::function<void()> onOpenTools;
     std::function<void()> onOpenValidation;
     std::function<void(const Json&)> onExportResult;
+    std::function<void(const std::string&, const Json&, const Json&)> onMeasurementTool;
 
 private:
     friend class StudioSmokeDriver;
@@ -53,6 +57,8 @@ private:
     void LocatePinnedSource(const Json& source, const Json& pin, int offset, std::uint64_t catalogGeneration,
                             std::uint64_t selectionGeneration);
     void LoadActive();
+    void LoadMeasurements();
+    void AddMeasurement(const Json& record);
     void Network(int row, int column, int offset);
     void Smith(int port, const std::string& chart, int offset);
     void Metrics();
@@ -60,12 +66,15 @@ private:
     void RadiationPage(const Json& options, std::uint64_t generation);
     void FieldDescribe();
     void FieldSlice(const Json& options);
-    void ComparePage(std::size_t index, int offset);
-    void Compare(std::size_t index, int offset = 0);
+    ResultCompareView* ComparisonView() const;
+    void BindComparison(ResultCompareView* view, int page);
+    void ComparePage(ResultCompareView* view, std::size_t index, int offset);
+    void Compare(ResultCompareView* view, std::size_t index, int offset = 0);
     void Conditions(int offset);
-    void Markers(double frequency);
+    void Markers(ResultCompareView* view, double frequency);
     void Export();
-    bool ComparisonCurrent(std::size_t index, const Json& description, const Json& order, int row, int column) const;
+    bool ComparisonCurrent(ResultCompareView* view, std::size_t index, const Json& description, const Json& order,
+                           int row, int column) const;
     Json Pinned() const;
     void ClearViews(const std::string& reason);
     void Error(const std::string& message);
@@ -90,4 +99,7 @@ private:
     RadiationResultView* m_radiation = nullptr;
     FieldResultView* m_field = nullptr;
     ResultCompareView* m_compare = nullptr;
+    MeasurementCompareView* m_measurement = nullptr;
+    bool m_measurementAvailable = false;
+    bool m_measurementsRefreshNeeded = true;
 };

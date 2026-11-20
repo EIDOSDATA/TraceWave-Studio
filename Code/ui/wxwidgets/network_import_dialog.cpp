@@ -1,6 +1,7 @@
 /** @file @brief 복소 자료 가져오기 화면의 원문 읽기와 비동기 검토 수명을 관리한다. */
 #include "network_import_dialog.h"
 #include "network_chart.h"
+#include "measurement_record_form.h"
 #include "studio_support.h"
 #include "studio_theme.h"
 #include <wx/base64.h>
@@ -21,8 +22,10 @@
 #include <stdexcept>
 #include <vector>
 
-NetworkImportDialog::NetworkImportDialog(wxWindow* parent, const Json& context, DialogGateway gateway)
-    : ProjectSetupDialog(parent, "복소 자료 가져오기", context, std::move(gateway)), m_context(context)
+NetworkImportDialog::NetworkImportDialog(wxWindow* parent, const Json& context, DialogGateway gateway,
+                                         std::shared_ptr<MeasurementRecovery> recovery)
+    : ProjectSetupDialog(parent, "복소 자료 가져오기", context, gateway), m_context(context), m_gateway(gateway),
+      m_recovery(recovery ? std::move(recovery) : std::make_shared<MeasurementRecovery>())
 {
     SetName("network.import.dialog");
     StudioTheme::ApplyTypography(*this);
@@ -41,8 +44,11 @@ NetworkImportDialog::NetworkImportDialog(wxWindow* parent, const Json& context, 
     BuildFilePage(file);
     BuildMappingPage(mapping);
     BuildReviewPage(review);
+    auto* measurement = new wxPanel(m_tabs);
+    BuildMeasurementPage(measurement, gateway);
     m_tabs->AddPage(file, Display("파일과 형식"));
     m_tabs->AddPage(mapping, Display("열 / 포트 대응"));
+    m_tabs->AddPage(measurement, Display("시료와 교정"));
     m_tabs->AddPage(review, Display("가져오기 검토"));
     layout->Add(m_tabs, 1, wxEXPAND | wxLEFT | wxRIGHT, pad);
     m_status = new wxStaticText(this, wxID_ANY, wxEmptyString);
@@ -55,7 +61,8 @@ NetworkImportDialog::NetworkImportDialog(wxWindow* parent, const Json& context, 
     m_preview->SetName("network.import.preview");
     m_apply = new wxButton(this, wxID_APPLY, Display("가져오기"));
     m_apply->SetName("network.import.apply");
-    for (auto* button : {close, m_preview, m_apply})
+    m_recoverMeasurement = new wxButton(this, wxID_ANY, Display("이전 가져오기 결과 확인"));
+    for (auto* button : {close, m_preview, m_apply, m_recoverMeasurement})
     {
         StudioTheme::Button(*button, button == m_apply);
         actions->Add(button, 0, wxLEFT, FromDIP(8));
@@ -72,6 +79,11 @@ NetworkImportDialog::NetworkImportDialog(wxWindow* parent, const Json& context, 
                   {
                       Apply();
                   });
+    m_recoverMeasurement->Bind(wxEVT_BUTTON,
+                               [this](wxCommandEvent&)
+                               {
+                                   RecoverMeasurement();
+                               });
     m_loading = false;
     SetStatus("Touchstone / 명시 CSV / TraceWave 정규 HDF5를 지원합니다. 원문 상한은 512 KiB입니다.");
     UpdateActions();
@@ -159,7 +171,7 @@ bool NetworkImportDialog::LoadFile(const wxString& path)
     }
     m_loading = false;
     ChangeInputs(true);
-    m_tabs->SetSelection(0);
+    m_tabs->SetSelection(FilePage);
     SetStatus("파일을 읽었습니다. CSV는 열 대응을 확인하고, 파일 / 조건 검토를 실행하세요.");
     return true;
 }
@@ -211,7 +223,7 @@ void NetworkImportDialog::UpdateActions()
     {
         return;
     }
-    const bool available = Editable() && !m_pending;
+    const bool available = Editable() && !m_pending && !MeasurementUncertain() && !m_measurementForm->Pending();
     m_tabs->Enable(available);
     m_browse->Enable(available);
     m_csv->Enable(available && Format() == "csv");
@@ -226,6 +238,10 @@ void NetworkImportDialog::UpdateActions()
     }
     m_preview->Enable(available && !m_encoded.empty());
     m_apply->Enable(available && !m_review.is_null() && m_review.value("can_apply", false));
+    m_measurementEnabled->Enable(available && m_context.value("measurement", Json(nullptr)).is_object());
+    m_measurementForm->Enable(available && MeasurementSelected());
+    m_recoverMeasurement->Show(MeasurementUncertain());
+    m_recoverMeasurement->Enable(MeasurementUncertain() && !m_pending && !m_recovering && !m_mutating);
 }
 
 void NetworkImportDialog::ShowRequestFailure(const Json& error)

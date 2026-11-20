@@ -82,6 +82,7 @@ class StudyCoordinator:
             if study is None or self.service.solver.runtime is None:
                 return False
             identity = study["study_id"]
+            self.service.verify_calculation()
             job = state["jobs"].get(study["current_job_id"])
             if study["state"] == "resuming" and job is not None and job["solver"].get("resource_reserved") and job["state"] == "interrupted":
                 self.service.solver.reconcile(job["job_id"])

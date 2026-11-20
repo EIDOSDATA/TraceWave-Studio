@@ -3,9 +3,6 @@
 from copy import deepcopy
 import hashlib
 from pathlib import Path
-import platform
-import struct
-import sys
 from uuid import uuid4
 
 from rfad.adapters.network_backend import installation_metadata
@@ -84,16 +81,8 @@ def _network(service, project, document, specification):
 def application_source_manifest(package_root=None):
     """! @brief 주입 서비스 호출까지 명시한 host 의존 소스를 고정하며 native import를 하지 않는다."""
     if package_root is None:
-        from rfad.application.source_bundle import HOST, BundleError, build
-
-        try:
-            bundle = build(Path(__file__).resolve().parents[3], HOST, max_files=MAX_WORKER_SOURCE_FILES)
-        except BundleError as error:
-            fail(str(error), error.code)
-        return {"schema": "rfad.host-calculation-source/0.2",
-                "bundle_sha256": hashlib.sha256(bundle["source_bytes"]).hexdigest(),
-                "bundle_bytes": len(bundle["source_bytes"]), "code_files": bundle["code_files"],
-                "source_bundle": bundle["source_bundle"]}
+        from rfad.application.host_calculation_runtime import capture
+        return capture()[0]
     # @brief 명시한 구형 시험/자료 트리의 전체 소스 manifest 읽기 형식은 유지한다.
     root = (Path(__file__).resolve().parents[1] if package_root is None else Path(package_root)).resolve()
     files = []
@@ -130,18 +119,10 @@ def application_source_manifest(package_root=None):
                 for path, text in sources.items()]}
 
 
-def _host_engine_identity():
-    """! @brief 패키지 버전뿐 아니라 계산 구현과 host ABI를 함께 재개 조건에 고정한다."""
-    return {**installation_metadata(), "application_source": application_source_manifest(),
-            "python": {"implementation": sys.implementation.name, "version": platform.python_version(),
-                       "system": platform.system(), "machine": platform.machine(),
-                       "pointer_bits": struct.calcsize("P") * 8, "byteorder": sys.byteorder}}
-
-
 def _environment(service, kind):
     """! @brief 생성 시점의 실제 환경을 고정하며 없는 runtime을 만들지 않는다."""
     return (None if service.solver.runtime is None or kind == "circuit_sweep" else deepcopy(service.solver.runtime.identity),
-            _host_engine_identity() if kind == "circuit_sweep" else None)
+            service.calculation_identity())
 
 
 def _labels(document, circuit):
@@ -440,10 +421,15 @@ def admit(service, state, method, context_data, data):
             "original_specification": deepcopy(data["specification"]), "specification": specification,
             "network": network, "runtime_identity": runtime, "engine_identity": engine,
             "candidate_count": response["candidate_count"], "review_hash": data["review_hash"]}
+        source_bytes = service.calculation_runtime.source_bytes
+        source_path = project["path"] + "/host-calculation-sources/" + hashlib.sha256(source_bytes).hexdigest() + ".json"
+        definition["calculation_source"] = {"uri": source_path, "sha256": hashlib.sha256(source_bytes).hexdigest(), "bytes": len(source_bytes)}
         encoded = canonical_bytes(definition)
-        retained_bytes = len(encoded) + len(raw)
+        retained_bytes = len(encoded) + len(raw) + len(source_bytes)
         if retained_bytes > specification["budget"]["disk_bytes"]:
             fail("정의와 원본 보존 비용이 지정한 디스크 예산을 초과했습니다.", "E_RESOURCE")
+        service.verify_calculation()
+        service.journal.put_immutable(source_path, source_bytes)
         service.operations.publish_snapshot(state, snapshot, raw)
         reference = service.journal.put_immutable(project["path"] + "/sweeps/" + identity + "/definition.json", encoded)
         count = response["candidate_count"]

@@ -280,7 +280,7 @@ def _physical(value, document):
 
 def _evaluation_key(document, settings, circuit, specification):
     """! @brief 계산에 필요한 전체 물리 입력을 보존하고 표시/출처 차이만 재사용에서 제외한다."""
-    ignored_extensions = {"rfad.network-library", "rfad.precision-origin", "rfad.template-origin", "rfad.pcb-selection", "rfad.sweep-selection"}
+    ignored_extensions = {"rfad.network-library", "rfad.precision-origin", "rfad.template-origin", "rfad.pcb-selection", "rfad.sweep-selection", "rfad.measurement"}
     fields = ("schema_version", "frames", "board", "materials", "stackup", "nets", "geometry", "ports", "environment")
     model = {key: _physical(document[key], document) for key in fields}
     if document.get("pcb", {}).get("holes"):

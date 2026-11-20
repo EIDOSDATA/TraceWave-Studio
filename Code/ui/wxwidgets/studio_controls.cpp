@@ -8,19 +8,20 @@ void StudioFrame::UpdateControls()
 {
     const bool ready = m_connected && !m_busy && m_pcbDialog == nullptr && m_setupDialog == nullptr;
     const bool hasProject = !m_project.empty();
-    const bool opened = ready && !m_pcbFeatureUncertain && !m_pcbImportUncertain &&
+    const bool opened = ready && !m_pcbFeatureUncertain && !m_pcbImportUncertain && !m_measurementUncertain &&
                         Studio::EditableProject(m_editor, m_scene, m_project, m_revision);
     const bool cadRunning = m_cadPreparing || !m_cadTask.Id().empty();
     const bool outputRunning = m_output && m_output->Active();
-    const bool canSwitch = ready && !m_pcbFeatureUncertain && !m_pcbImportUncertain && m_studyDialog == nullptr &&
-                           !cadRunning && !outputRunning && !m_solverWorkflow.Active() && !m_solverRestoring &&
-                           !m_cadRestoring && !m_modelView->IsLoading();
+    const bool canSwitch = ready && !m_pcbFeatureUncertain && !m_pcbImportUncertain && !m_measurementUncertain &&
+                           m_studyDialog == nullptr && !cadRunning && !outputRunning && !m_solverWorkflow.Active() &&
+                           !m_solverRestoring && !m_cadRestoring && !m_modelView->IsLoading();
     GetMenuBar()->Enable(IdCreate, canSwitch);
     GetMenuBar()->Enable(IdOpen, canSwitch);
     GetMenuBar()->Enable(IdSave, opened);
     GetMenuBar()->Enable(IdSnapshot, opened);
     GetMenuBar()->Enable(IdRefresh,
-                         hasProject && (canSwitch || (ready && (m_pcbFeatureUncertain || m_pcbImportUncertain))));
+                         hasProject && (canSwitch || (ready && (m_pcbFeatureUncertain || m_pcbImportUncertain ||
+                                                                m_measurementUncertain))));
     GetMenuBar()->Enable(IdNewParameter, opened);
     GetMenuBar()->Enable(IdPcbSelection, opened && m_pcbSelectionSupported);
     GetMenuBar()->Enable(IdProjectStudy, opened && m_studySupported);

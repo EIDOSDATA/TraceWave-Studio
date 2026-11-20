@@ -1,5 +1,6 @@
 /** @file @brief 원본, 기준과 검증 상태를 시안의 접기 그룹으로 나누는 결과 속성 View다. */
 #include "result_conditions_view.h"
+#include "measurement_model.h"
 #include "result_presentation.h"
 #include "frequency_display.h"
 #include "studio_support.h"
@@ -224,6 +225,11 @@ void ResultConditionsView::SetDescription(const Json& description)
     if (descriptor.value("z0_frequency_dependent", false))
     {
         basis += "\nZ0는 주파수별입니다. 위 값은 첫 표본입니다.";
+    }
+    if (description.value("measurement_record", Json(nullptr)).is_object())
+    {
+        m_basisGroup->SetLabel(Display("시료 / 교정 / 기준"));
+        basis = MeasurementUi::Summary(description.at("measurement_record")) + "\n" + basis;
     }
     SetText(m_basis, basis, 206);
     const auto conditions = descriptor.value("conditions", Json(nullptr));

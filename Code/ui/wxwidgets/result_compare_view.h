@@ -12,7 +12,7 @@ class wxButton;
 class ResultCompareView final : public wxScrolledWindow
 {
 public:
-    explicit ResultCompareView(wxWindow* parent);
+    explicit ResultCompareView(wxWindow* parent, bool measurementMode = false);
     bool Add(const Json& description);
     void SetPage(std::size_t index, const Json& response);
     void SetComparison(std::size_t index, const Json& response);
@@ -29,8 +29,16 @@ public:
     int Row() const;
     int Column() const;
     int Selected() const;
+    /** @brief 외부 측정 기록 검토 상태를 원문 곡선과 분리하여 안내한다. */
+    void SetNotice(const std::string& message);
+    bool MeasurementMode() const
+    {
+        return m_measurementMode;
+    }
     std::function<void()> onAddSelected;
     std::function<void()> onChanged;
+    /** @brief 선택 행과 포트 대응을 사용하는 상위 화면의 동작 상태를 갱신한다. */
+    std::function<void()> onActionsChanged;
     std::function<void(std::size_t, int)> onPage;
     std::function<void(std::size_t)> onCompare;
     std::function<void(std::size_t, int)> onComparePage;
@@ -69,4 +77,5 @@ private:
     std::vector<int> m_markerIndices;
     bool m_loading = false;
     bool m_available = false;
+    bool m_measurementMode = false;
 };

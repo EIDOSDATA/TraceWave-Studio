@@ -18,6 +18,7 @@ from rfad.domain.design_rules import COMMANDS as RULE_COMMANDS, apply_rule_comma
 from rfad.domain.physical_setup import COMMAND as PHYSICAL_COMMAND, apply_setup, validate_setup
 from rfad.domain.precision_command import COMMANDS as PRECISION_COMMANDS, apply_precision_command, validate_precision_origins
 from rfad.domain.network_library import COMMAND as NETWORK_COMMAND, apply_library_command, validate_project_library
+from rfad.domain.measurement import COMMAND as MEASUREMENT_COMMAND, apply_measurement_command, validate_project_registry
 from rfad.domain.sweep_selection import COMMAND as SELECTION_COMMAND, apply_selection_command, validate_origin as validate_selection_origin
 from rfad.domain.pcb_features import (COMMAND as PCB_COMMAND, REPLAY_COMMAND as PCB_REPLAY_COMMAND,
     apply_pcb_command, validate_pcb, finalize_pcb_edits, apply_metadata_replay)
@@ -282,6 +283,7 @@ def validate_project(document: dict) -> None:
     validate_setup(document)
     validate_precision_origins(document)
     validate_project_library(document)
+    validate_project_registry(document)
     validate_selection_origin(document)
     validate_pcb(document)
 
@@ -377,6 +379,18 @@ def apply_command(document: dict, command: dict, expected_revision: str) -> tupl
         changed_ids, invalidation_set, inverse = apply_selection_command(result, payload)
     elif command_type == NETWORK_COMMAND:
         changed_ids, invalidation_set, inverse = apply_library_command(result, payload)
+    elif command_type == MEASUREMENT_COMMAND:
+        changed_ids, invalidation_set, inverse = apply_measurement_command(result, payload)
+    elif command_type == "measurement.workspace.replace":
+        _fields(payload, {"registry", "network"}, "command.payload")
+        changed_ids, invalidation_set, registry_inverse = apply_measurement_command(result, payload["registry"])
+        network_inverse = None
+        if payload["network"] is not None:
+            network_ids, network_invalidation, network_command = apply_library_command(result, payload["network"])
+            changed_ids = list(dict.fromkeys([*changed_ids, *network_ids]))
+            invalidation_set = list(dict.fromkeys([*invalidation_set, *network_invalidation]))
+            network_inverse = network_command["payload"]
+        inverse = {"type": command_type, "payload": {"registry": registry_inverse["payload"], "network": network_inverse}}
     elif command_type == PCB_COMMAND:
         changed_ids, invalidation_set, inverse = apply_pcb_command(result, payload)
     elif command_type in DESIGN_COMMANDS:

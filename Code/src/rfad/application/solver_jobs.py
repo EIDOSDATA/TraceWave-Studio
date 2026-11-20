@@ -62,6 +62,7 @@ class SolverCoordinator:
 
     def admit(self, state, method, context, data, *, compact=False):
         """! @brief 불변 계획과 원시 입력 참조를 캡처하고 슬롯을 예약한다."""
+        host_identity = self.service.calculation_identity()
         if self.runtime is None:
             raise ProjectError("E_UNSUPPORTED", "서비스 실행 시 --openems-wsl 설정이 필요합니다.")
         if self.error is not None or any(j.get("solver", {}).get("resource_reserved") for j in state["jobs"].values()):
@@ -128,10 +129,13 @@ class SolverCoordinator:
         if plan["runtime_identity"] != self.runtime.identity:
             raise ProjectError("E_VERSION", "계획을 작성한 런타임과 현재 실행 설정이 다릅니다.")
         base = project["path"] + "/solver-inputs/" + run_id
+        host_reference, host_source = self.service.calculation_source(project)
+        self.service.journal.put_immutable(host_reference["uri"], host_source)
         captured["manifest"] = self.service.journal.put_immutable(base + "/runtime.json", self.runtime.manifest_bytes)
         captured["source"] = self.service.journal.put_immutable(base + "/source.json", self.runtime.source_bytes)
         job = {"job_id": job_id, "run_id": run_id, "kind": kind, "operation_method": method,
                "context": deepcopy(context), "input": deepcopy(data), "solver": captured, "events": []}
+        job["host_calculation"] = {"identity_hash": canonical_hash(host_identity), "source": host_reference}
         if compact:
             job["solver"] = compact_capture(self.service.journal, base, job,
                                              prepared_reference=prepared_reference,
@@ -179,6 +183,7 @@ class SolverCoordinator:
         process = {"state": "failed", "termination_confirmed": True, "outcome_unknown": False, "not_started": True}
         try:
             job = hydrate_job(self.service.journal, job)
+            self._verify_host(job)
             if job["operation_method"] == "solver.plan":
                 self._publish_plan(job)
                 return True
@@ -205,6 +210,7 @@ class SolverCoordinator:
 
     def _publish_plan(self, job):
         """! @brief 계획 본문은 불변 파일로 저장하고 작은 참조만 게시한다."""
+        self._verify_host(job)
         plan = job["solver"]["plan"]
         artifact = self.service.journal.put_immutable("solver-artifacts/" + job["run_id"] + "/analysis-plan.json", canonical_bytes(plan))
         ref = {"plan_id": plan["plan_id"], "content_hash": canonical_hash(plan), "artifact": artifact}
@@ -218,6 +224,7 @@ class SolverCoordinator:
             if active["state"] == "cancel_requested":
                 self.service._event(active, "cancelled", termination_confirmed=True)
                 return
+            self._verify_host(job)
             state["analysis_plans"][plan["plan_id"]] = {"project_id": job["context"]["project_id"], "reference": ref}
             active["artifacts"] = [{"role": "analysis_plan", **artifact}]
             self.service._event(active, "completed", operation_result={"analysis_plan": ref, "profile": plan["analysis_profile"],
@@ -245,10 +252,27 @@ class SolverCoordinator:
 
     def _seal(self, job, stage, package):
         """! @brief 종료된 worker 파일을 불변 저장소로 봉인한다."""
+        self._verify_host(job)
         return seal_solver_outputs(self.service.journal, job, stage, package)
+
+    def _verify_host(self, job):
+        """! @brief 구형 결과 읽기는 유지하되 새 작업의 제어 pin과 원문 소유를 게시 전에 대조한다."""
+        identity = self.service.calculation_identity()
+        captured = job.get("host_calculation")
+        if captured is None:
+            return
+        expected = identity["application_source"]
+        project = self.service.journal.read()["projects"][job["context"]["project_id"]]
+        reference = captured.get("source", {})
+        if (set(captured) != {"identity_hash", "source"} or captured["identity_hash"] != canonical_hash(identity)
+                or reference.get("uri") != project["path"] + "/host-calculation-sources/" + expected["bundle_sha256"] + ".json"
+                or reference.get("sha256") != expected["bundle_sha256"] or reference.get("bytes") != expected["bundle_bytes"]):
+            raise ProjectError("E_VERSION", "해석 작업을 접수한 host 계산 source와 현재 세션이 다릅니다.")
+        self.service.journal.read_artifact(reference)
 
     def _publish_result(self, job, package, files, process):
         """! @brief 준비 계획 또는 결과 manifest를 마지막 journal commit으로 게시한다."""
+        self._verify_host(job)
         captured = job["solver"]
         project_id = job["context"]["project_id"]
         prepared_ref, prepared_record, result_record = None, None, None
@@ -312,6 +336,7 @@ class SolverCoordinator:
                 self.service._event(active, "interrupted", termination_confirmed=True, outcome_unknown=False,
                                     reason="서비스 종료 또는 명시적 사용자 요청 외의 중단으로 결과를 게시하지 않았습니다.")
                 return
+            self._verify_host(job)
             if prepared_record is not None:
                 state["prepared_plans"][prepared_ref["prepared_plan_id"]] = prepared_record
             else:

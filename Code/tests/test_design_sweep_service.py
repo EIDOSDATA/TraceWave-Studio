@@ -61,12 +61,12 @@ class DesignSweepServiceTests(unittest.TestCase):
 
     def read(self, method, **data):
         """! @brief 현재 API와 동일한 조회 경계를 사용한다."""
-        return sweep.read(self.service, method, self.request(data))
+        return sweep.read(self.service.host_calculation_context, method, self.request(data))
 
     def network_apply(self, operation, parameters):
         """! @brief 시험 준비도 제품 원자 명령으로 자료 출처를 저장한다."""
         data = {"expected_revision": self.document()["revision_id"], "operation": operation, "parameters": parameters}
-        preview = network_service.read(self.service, "network.preview", self.request(data))
+        preview = network_service.read(self.service.host_calculation_context, "network.preview", self.request(data))
         self.assertTrue(preview["can_apply"], preview)
         result = self.service.mutate("network.apply", self.request({**data, "review_hash": preview["review_hash"],
             "command_id": str(uuid4())}, mutation=True))
@@ -127,7 +127,7 @@ class DesignSweepServiceTests(unittest.TestCase):
         request = self.request({"study_id": identity})
         request["context"]["project_id"] = str(uuid4())
         with self.assertRaises(ProjectError):
-            sweep.read(self.service, "sweep.get", request)
+            sweep.read(self.service.host_calculation_context, "sweep.get", request)
         with self.assertRaises(ProjectError):
             self.read("sweep.page", study_id=identity, offset=0, limit=26)
         self.assertEqual(self.document(), self.original)
@@ -166,7 +166,10 @@ class DesignSweepServiceTests(unittest.TestCase):
     def test_definition_tamper_and_engine_change_block_resume_not_reading(self):
         """! @brief 없는 런타임/달라진 엔진으로 저장 연구의 출처를 바꿔 재개하지 않는다."""
         identity = self.create()
-        with patch.object(sweep, "installation_metadata", return_value={"available": False, "installed": {}}):
+        context = self.service.host_calculation_context
+        changed = context.calculation_identity()
+        changed.update(available=False, installed={})
+        with patch.object(context, "calculation_identity", return_value=changed):
             view = self.read("sweep.get", study_id=identity)
             self.assertFalse(view["allowed_actions"]["start"])
             with self.assertRaises(ProjectError):
@@ -187,9 +190,10 @@ class DesignSweepServiceTests(unittest.TestCase):
         definition = load_definition(self.service, study)
         encoded = self.service.journal.read_artifact(study["definition"])
         original = definition["engine_identity"]
-        changed = deepcopy(original["application_source"])
-        changed["bundle_sha256"] = "f" * 64
-        with patch.object(sweep, "application_source_manifest", return_value=changed):
+        changed = deepcopy(original)
+        changed["application_source"]["bundle_sha256"] = "f" * 64
+        context = self.service.host_calculation_context
+        with patch.object(context, "calculation_identity", return_value=changed):
             view = self.read("sweep.get", study_id=identity)
             self.assertEqual(view["state"], "cancelled")
             self.assertFalse(view["allowed_actions"]["resume"])
@@ -197,7 +201,7 @@ class DesignSweepServiceTests(unittest.TestCase):
             with self.assertRaises(ProjectError) as error:
                 self.service.mutate("sweep.resume", self.request({"study_id": identity}, mutation=True))
             self.assertEqual(error.exception.code, "E_CONFLICT")
-        with patch.object(sweep, "application_source_manifest", side_effect=ProjectError("E_VERSION", "source unavailable")):
+        with patch.object(context, "calculation_identity", side_effect=ProjectError("E_VERSION", "source unavailable")):
             self.assertFalse(self.read("sweep.get", study_id=identity)["allowed_actions"]["resume"])
         self.assertEqual(self.service.journal.read(), before)
         self.assertEqual(self.service.journal.read_artifact(study["definition"]), encoded)
@@ -231,10 +235,12 @@ class DesignSweepServiceTests(unittest.TestCase):
 
     def test_legacy_source_profile_remains_readable_but_cannot_resume_under_new_profile(self):
         """! @brief 같은 소스 해시라도 구형 전체 소스 profile을 새 closure 실행으로 소급하지 않는다."""
-        legacy = deepcopy(sweep.application_source_manifest())
-        legacy["schema"] = "rfad.host-calculation-source/0.1"
-        legacy.pop("source_bundle")
-        with patch.object(sweep, "application_source_manifest", return_value=legacy):
+        context = self.service.host_calculation_context
+        legacy = context.calculation_identity()
+        legacy["application_source"]["schema"] = "rfad.host-calculation-source/0.1"
+        legacy["application_source"].pop("control_bundle")
+        legacy["application_source"].pop("math_bundle")
+        with patch.object(context, "calculation_identity", return_value=legacy):
             identity = self.create()
             self.service.mutate("sweep.cancel", self.request({"study_id": identity}, mutation=True))
         before = self.service.journal.read()
