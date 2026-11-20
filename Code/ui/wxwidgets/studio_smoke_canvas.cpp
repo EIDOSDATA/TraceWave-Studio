@@ -78,6 +78,16 @@ void StudioSmokeDriver::CanvasSmokeNext()
         CanvasAssert(select->IsShownOnScreen() && line->GetPosition().y == select->GetPosition().y &&
                          line->GetPosition().x > select->GetPosition().x,
                      "Drawing tools are not in a horizontal row.");
+        for (const int id : {IdSelect, IdLine, IdArc, IdCoordinates, IdFit, IdDeleteShape})
+        {
+            const auto bitmap = m_frame.m_tools.at(id)->GetBitmap();
+            CanvasAssert(bitmap.IsOk() && bitmap.GetMask() != nullptr && bitmap.GetDIPSize() == wxSize(18, 18),
+                         "A drawing icon lost its mask or logical size.");
+        }
+        CanvasAssert(select->GetFont().GetWeight() == wxFONTWEIGHT_BOLD &&
+                         select->GetToolTipText().Contains(Display("현재 도구")),
+                     "The selected tool is not distinguished by its label and weight.");
+        m_canvasChecks.push_back("drawing_icons_keep_logical_size_and_mask");
         const wxString draft = m_frame.m_name->GetValue();
         m_frame.m_name->ChangeValue(Display("패널 전환 중 초안"));
         m_frame.m_canvas->SetFocus();

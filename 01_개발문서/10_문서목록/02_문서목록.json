@@ -21,14 +21,14 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 44,
     "current_06_분석연구": 13,
-    "current_07_검증": 28,
+    "current_07_검증": 29,
     "current_08_운영환경": 5,
     "current_09_개발계획": 4,
     "current_11_검토기록": 6,
     "current_traceability": 4,
     "document_catalog": 4,
     "document_navigation": 6,
-    "documentation_asset": 124,
+    "documentation_asset": 129,
     "documentation_validation_record": 1,
     "historical_proposal": 2,
     "historical_verification": 41,
@@ -27944,9 +27944,9 @@
       "path": "01_개발문서/04_화면설계/08_스튜디오_화면계약.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 35165,
-      "working_tree_sha256": "a057b201474040fad96a33669441ed19313c77ec4ba6e76f1e1fdc96324a6a37",
-      "text_lines": 228,
+      "bytes": 35438,
+      "working_tree_sha256": "35f60034648a5e852c4df3553f43d3fa49d46a26767f191e8cfc405b633c2e1f",
+      "text_lines": 230,
       "text_status": "utf8_read"
     },
     {
@@ -28473,7 +28473,7 @@
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
       "bytes": 618808,
-      "working_tree_sha256": "eab9e6afc2f7d157adf351d7d3936c1906247ab309eb9e4ac0cfe2bc6b5cd63a"
+      "working_tree_sha256": "8230dc8891a425efc9509aba1f29d5633cbc18dc4ba894c190ef31e3e58e3539"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -28609,9 +28609,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 7335,
-      "working_tree_sha256": "c2a10a3fa1f774bec8d48ff0fc0553d6b10f04696d7b586143797fd9f269de83",
-      "text_lines": 59,
+      "bytes": 7610,
+      "working_tree_sha256": "28bef9331e8278f0cee9772a9d7377e2105a30774f50907997b9d7e4f404fc15",
+      "text_lines": 61,
       "text_status": "utf8_read"
     },
     {
@@ -28672,9 +28672,9 @@
       "path": "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 133448,
-      "working_tree_sha256": "a0dcdd3b0d0a5805128caa84b18c7cbff74e7a6dac8d9444c8f5156f10e1d868",
-      "text_lines": 717,
+      "bytes": 133835,
+      "working_tree_sha256": "c4ef7cde7f6d8fe37481ab92191eb54c285f783b0bad011f0242b72beea10727",
+      "text_lines": 721,
       "text_status": "utf8_read"
     },
     {
@@ -30633,6 +30633,50 @@
       "review_scope": "문서/시안 자산 보존",
       "bytes": 4550,
       "working_tree_sha256": "18bba3da8aa23d2d088ed0aed35aef2ff497dcfd7a479ada2d6afd7103f8e965"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/100_이백퍼센트_원호도구와_좌표입력.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 115184,
+      "working_tree_sha256": "49bf06c70a0d4d781d51c5c249f8447e9e04847b4bdbfd12faf29c2a92e5e2bb"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/101_백퍼센트_편집도구와_재열기.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 160961,
+      "working_tree_sha256": "a58a2e0063c152f7c31bdd3aa81d36aa21b2a18672d3a418cc8dcec12e3b0d10"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/98_이백퍼센트_좌표입력과_도구아이콘_재현.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 115483,
+      "working_tree_sha256": "4fdef36ea2f4715386d3829c22c2da98d1669aaec6e1080aa6ba6fa9c480d819"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/99_백오십퍼센트_선택도구_표시.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 150723,
+      "working_tree_sha256": "92a817af75c7695419da45abe29abbad746f8d13600f331bb9d4d40656b49bce"
+    },
+    {
+      "path": "01_개발문서/07_검증/43_윈도우배율별_편집도구_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2313,
+      "working_tree_sha256": "25970f184b60c7537a6b660261db4baf7ab8cd7540bdc2a67f213373400d20d3",
+      "text_lines": 17,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/44_윈도우배율별_편집도구_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 2354,
+      "working_tree_sha256": "a07e6236dbb2ea2d0d5e531b4d0565c99802006fddec917049fa65c5291151c1"
     }
   ],
   "identical_byte_groups": [
@@ -30789,32 +30833,27 @@
   ],
   "incremental_refresh": {
     "date_kst": "2026-11-20",
-    "mode": "step12_studio_dock_visibility_evidence",
-    "previous_inventory_sha256": "9e6e5328314b13c6ca970ff7502f05b0fc8ed9099dba83e9cd780f99c2484ef9",
+    "mode": "step12_studio_dpi_toolbar_evidence",
+    "previous_inventory_sha256": "d930e966298c85a03327754935436c455df243b258c024ca391f772d2440e6b9",
     "refreshed_paths": [
       "01_개발문서/04_화면설계/08_스튜디오_화면계약.md",
-      "01_개발문서/04_화면설계/12_구현화면_설계기준.md",
       "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
-      "01_개발문서/07_검증/02_실행화면/92_넓은보기_탐색패널소실_재현.jpg",
-      "01_개발문서/07_검증/02_실행화면/93_좁은보기_탐색속성_공용탭.jpg",
-      "01_개발문서/07_검증/02_실행화면/94_넓은보기_탐색복귀와_속성숨김.jpg",
-      "01_개발문서/07_검증/02_실행화면/95_스튜디오_재실행_패널숨김.jpg",
-      "01_개발문서/07_검증/02_실행화면/96_좁은보기_재실행_공용패널숨김.jpg",
-      "01_개발문서/07_검증/02_실행화면/97_스튜디오_기본배치_복원.jpg",
-      "01_개발문서/07_검증/41_도킹표시와_재실행_검증.md",
-      "01_개발문서/07_검증/42_도킹표시와_재실행_실행기록.json",
+      "01_개발문서/07_검증/02_실행화면/100_이백퍼센트_원호도구와_좌표입력.jpg",
+      "01_개발문서/07_검증/02_실행화면/101_백퍼센트_편집도구와_재열기.jpg",
+      "01_개발문서/07_검증/02_실행화면/98_이백퍼센트_좌표입력과_도구아이콘_재현.jpg",
+      "01_개발문서/07_검증/02_실행화면/99_백오십퍼센트_선택도구_표시.jpg",
+      "01_개발문서/07_검증/43_윈도우배율별_편집도구_검증.md",
+      "01_개발문서/07_검증/44_윈도우배율별_편집도구_실행기록.json",
       "01_개발문서/07_검증/README.md",
       "01_개발문서/09_개발계획/02_개발착수와_현재상태.md"
     ],
     "added_paths": [
-      "01_개발문서/07_검증/02_실행화면/92_넓은보기_탐색패널소실_재현.jpg",
-      "01_개발문서/07_검증/02_실행화면/93_좁은보기_탐색속성_공용탭.jpg",
-      "01_개발문서/07_검증/02_실행화면/94_넓은보기_탐색복귀와_속성숨김.jpg",
-      "01_개발문서/07_검증/02_실행화면/95_스튜디오_재실행_패널숨김.jpg",
-      "01_개발문서/07_검증/02_실행화면/96_좁은보기_재실행_공용패널숨김.jpg",
-      "01_개발문서/07_검증/02_실행화면/97_스튜디오_기본배치_복원.jpg",
-      "01_개발문서/07_검증/41_도킹표시와_재실행_검증.md",
-      "01_개발문서/07_검증/42_도킹표시와_재실행_실행기록.json"
+      "01_개발문서/07_검증/02_실행화면/100_이백퍼센트_원호도구와_좌표입력.jpg",
+      "01_개발문서/07_검증/02_실행화면/101_백퍼센트_편집도구와_재열기.jpg",
+      "01_개발문서/07_검증/02_실행화면/98_이백퍼센트_좌표입력과_도구아이콘_재현.jpg",
+      "01_개발문서/07_검증/02_실행화면/99_백오십퍼센트_선택도구_표시.jpg",
+      "01_개발문서/07_검증/43_윈도우배율별_편집도구_검증.md",
+      "01_개발문서/07_검증/44_윈도우배율별_편집도구_실행기록.json"
     ],
     "removed_paths": [],
     "preserved_reference_records": 3336,

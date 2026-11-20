@@ -1,5 +1,6 @@
 /** @file @brief 주 창의 controls 책임을 구현한다. */
 #include "studio_internal.h"
+#include "drawing_rail.h"
 #include "editor_sync.h"
 #include "output_controller.h"
 #include <wx/srchctrl.h>
@@ -137,6 +138,8 @@ void StudioFrame::UpdateControls()
         }
         item.second->Enable(enabled);
     }
+    SelectDrawingRail({m_tools.at(IdSelect), m_tools.at(IdLine), m_tools.at(IdArc)},
+                      m_drawTool == "line" ? 1 : (m_drawTool == "arc" ? 2 : 0));
     for (const int id :
          {IdBoard, IdCircularBoard, IdLayer, IdDielectric, IdCoordinates, IdDeleteShape, IdValidate, IdExportStep,
           IdBuild3D, IdCancelCad, IdOutputFolder, IdRunSolver, IdCancelSolver, IdRadiation})

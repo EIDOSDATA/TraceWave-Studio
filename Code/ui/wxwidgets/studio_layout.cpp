@@ -570,7 +570,10 @@ void StudioFrame::BuildInterface()
 void StudioFrame::AddTool(wxWindow* parent, wxSizer* sizer, int id, const std::string& label)
 {
     auto* button = new wxButton(parent, id, Display(label), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-    StudioTheme::Button(*button);
+    if (id != IdSelect && id != IdLine && id != IdArc)
+    {
+        StudioTheme::Button(*button);
+    }
     sizer->Add(button, 0, wxALL | wxALIGN_CENTER_VERTICAL, parent->FromDIP(StudioTheme::Space));
     m_tools[id] = button;
     button->Bind(wxEVT_BUTTON,

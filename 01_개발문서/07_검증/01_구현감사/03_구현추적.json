@@ -14022,8 +14022,8 @@
     },
     {
       "path": "01_개발문서/04_화면설계/08_스튜디오_화면계약.md",
-      "text_sha256": "a057b201474040fad96a33669441ed19313c77ec4ba6e76f1e1fdc96324a6a37",
-      "utf8_bytes": 35165
+      "text_sha256": "35f60034648a5e852c4df3553f43d3fa49d46a26767f191e8cfc405b633c2e1f",
+      "utf8_bytes": 35438
     },
     {
       "path": "01_개발문서/04_화면설계/10_목표와_형상템플릿_화면.md",
@@ -15457,8 +15457,8 @@
     },
     {
       "path": "Code/tests/test_gui_process.py",
-      "text_sha256": "247eae12e504f0a797a4695b8cdc6e0ae4b6f762df987870ebf467cb578e91de",
-      "utf8_bytes": 9113
+      "text_sha256": "64f306f2a0dd1a284eff842469f03f42827cb88f53619a3118d384d57e8d5312",
+      "utf8_bytes": 9169
     },
     {
       "path": "Code/tests/test_gui_results_process.py",
@@ -15862,8 +15862,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/drawing_rail.cpp",
-      "text_sha256": "b907a30b9ac553ae31a7db56401af816e6090f34a4dfe1e1d86d8c6515134364",
-      "utf8_bytes": 4275
+      "text_sha256": "1f3c14dbb753595afc76fcc41fb7ca2c7a73c2f913bfeb623d9d2b317c06b165",
+      "utf8_bytes": 4145
     },
     {
       "path": "Code/ui/wxwidgets/drawing_sheet_canvas.cpp",
@@ -16122,8 +16122,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_layout.cpp",
-      "text_sha256": "ef82f5f8a90a1d55840828068776fdbf91db26309f633123218837e25cbdc5e5",
-      "utf8_bytes": 27923
+      "text_sha256": "c4a04ffbddb8f704e5e9533bf2a74313015aabd0e7f25b82a7699476c37079ae",
+      "utf8_bytes": 27994
     },
     {
       "path": "Code/ui/wxwidgets/studio_navigation.cpp",

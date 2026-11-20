@@ -1,0 +1,75 @@
+{
+  "schema": "rfad.studio-dpi-tool-verification/0.1",
+  "date_kst": "2026-11-20",
+  "baseline_commit": "5ed753643534a264e65af75394a946e5e5bb81ac",
+  "baseline_binary_sha256": "127a4d20b93c0eae083e7f2f40499c2fb99093557a0a3b51320fe57353ac9027",
+  "final_binary": {
+    "file": "tracewave_gui.exe",
+    "bytes": 30418274,
+    "sha256": "0da0861cc5f19a62243a23b6e0bcc9e30dc10b56480def8037573be922eb4dd7"
+  },
+  "verification": {
+    "actual_windows_display_percent": [
+      100,
+      150,
+      200
+    ],
+    "initial_and_final_display_percent": 150,
+    "new_process_at_each_scale": true,
+    "drawing_toolbar_icons_18_dip_and_mask": true,
+    "arc_coordinate_form_at_200_percent": true,
+    "coordinate_input_cancelled_with_escape": true,
+    "project_files_same_sha256": 8,
+    "other_monitors_all_dialogs_and_high_contrast": "not_assessed"
+  },
+  "tests": {
+    "actual_windows_gui_150_percent": {
+      "passed": 1,
+      "seconds": 39.724,
+      "log": {
+        "file": "stage12h-dpi150-gui.log",
+        "bytes": 377,
+        "sha256": "d152e66483f93695f79fb46bdbba05db6d9b5078621cd157124a8d23604a9e3e"
+      }
+    },
+    "ctest": {
+      "passed": 13,
+      "seconds": 0.6,
+      "log": {
+        "file": "stage12h-ctest.log",
+        "bytes": 1526,
+        "sha256": "e90d80a7161d0959998ef1215c4a5312a14c015d7d37bf4078db13912cad4215"
+      }
+    }
+  },
+  "screens": [
+    {
+      "file": "98_이백퍼센트_좌표입력과_도구아이콘_재현.jpg",
+      "bytes": 115483,
+      "sha256": "4fdef36ea2f4715386d3829c22c2da98d1669aaec6e1080aa6ba6fa9c480d819",
+      "display_percent": 200,
+      "build": "baseline"
+    },
+    {
+      "file": "99_백오십퍼센트_선택도구_표시.jpg",
+      "bytes": 150723,
+      "sha256": "92a817af75c7695419da45abe29abbad746f8d13600f331bb9d4d40656b49bce",
+      "display_percent": 150,
+      "build": "final"
+    },
+    {
+      "file": "100_이백퍼센트_원호도구와_좌표입력.jpg",
+      "bytes": 115184,
+      "sha256": "49bf06c70a0d4d781d51c5c249f8447e9e04847b4bdbfd12faf29c2a92e5e2bb",
+      "display_percent": 200,
+      "build": "final"
+    },
+    {
+      "file": "101_백퍼센트_편집도구와_재열기.jpg",
+      "bytes": 160961,
+      "sha256": "a58a2e0063c152f7c31bdd3aa81d36aa21b2a18672d3a418cc8dcec12e3b0d10",
+      "display_percent": 100,
+      "build": "final"
+    }
+  ]
+}
