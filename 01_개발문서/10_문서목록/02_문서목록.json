@@ -21,14 +21,14 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 44,
     "current_06_분석연구": 13,
-    "current_07_검증": 44,
+    "current_07_검증": 45,
     "current_08_운영환경": 7,
     "current_09_개발계획": 4,
     "current_11_검토기록": 6,
     "current_traceability": 4,
     "document_catalog": 4,
     "document_navigation": 6,
-    "documentation_asset": 144,
+    "documentation_asset": 145,
     "documentation_validation_record": 1,
     "historical_proposal": 2,
     "historical_verification": 41,
@@ -28609,9 +28609,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 12459,
-      "working_tree_sha256": "55bf41b5e2114b368e90354f3801cc590eb715196fe18245f78c6282b5602125",
-      "text_lines": 91,
+      "bytes": 12764,
+      "working_tree_sha256": "795347235ef2ab110369159b3c614e027eeaec5f49831eed5f77ab77cb5f5272",
+      "text_lines": 93,
       "text_status": "utf8_read"
     },
     {
@@ -30942,6 +30942,22 @@
       "review_scope": "문서/시안 자산 보존",
       "bytes": 6969,
       "working_tree_sha256": "31499b732d52471e5fa6cf4deb425a26a20cd40cd145af03ddbc126b4d42d66c"
+    },
+    {
+      "path": "01_개발문서/07_검증/75_윈도우_같은입력_재링크검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1316,
+      "working_tree_sha256": "3db992c2a4054e250bcb9ec6cb5e5eab054c7ed811dc89c19a57b5929a95836f",
+      "text_lines": 11,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/76_윈도우_같은입력_재링크실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 1462,
+      "working_tree_sha256": "03f0b584db401ec91e46e45b0f5fbe3dfa6e01f35ad962c45935e10cd09eb02a"
     }
   ],
   "identical_byte_groups": [
@@ -31098,18 +31114,16 @@
   ],
   "incremental_refresh": {
     "date_kst": "2026-11-20",
-    "mode": "step13_windows_internal_bundle_receiver",
-    "previous_inventory_sha256": "e4dc6ac97d38480ed3fb698a28fafe295757d50673d8b42c1dfff24c3a560d80",
+    "mode": "step13_windows_release_relink",
+    "previous_inventory_sha256": "0d33cb6535d0ea2e5337f87a34a9982f4baae6f533c2dc9af24d35e48fd65a38",
     "refreshed_paths": [
-      "01_개발문서/07_검증/73_윈도우_내부묶음_수신검증.md",
-      "01_개발문서/07_검증/74_윈도우_내부묶음_실행기록.json",
-      "01_개발문서/07_검증/README.md",
-      "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
-      "01_개발문서/09_개발계획/03_개발완료_계획.md"
+      "01_개발문서/07_검증/75_윈도우_같은입력_재링크검증.md",
+      "01_개발문서/07_검증/76_윈도우_같은입력_재링크실행기록.json",
+      "01_개발문서/07_검증/README.md"
     ],
     "added_paths": [
-      "01_개발문서/07_검증/73_윈도우_내부묶음_수신검증.md",
-      "01_개발문서/07_검증/74_윈도우_내부묶음_실행기록.json"
+      "01_개발문서/07_검증/75_윈도우_같은입력_재링크검증.md",
+      "01_개발문서/07_검증/76_윈도우_같은입력_재링크실행기록.json"
     ],
     "removed_paths": [],
     "preserved_reference_records": 3336,

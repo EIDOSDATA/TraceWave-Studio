@@ -258,7 +258,7 @@ target_include_directories(tracewave_gui PRIVATE "${RFAD_JSON_INCLUDE_DIR}")
 target_compile_definitions(tracewave_gui PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN NOMINMAX)
 target_link_libraries(tracewave_gui PRIVATE ${RFAD_WX_LIBRARIES} ole32 opengl32 bcrypt)
 
-add_executable(tracewave_canvas_benchmark tools/canvas_render_benchmark.cpp
+add_executable(tracewave_canvas_benchmark EXCLUDE_FROM_ALL tools/canvas_render_benchmark.cpp
     ui/wxwidgets/canvas_renderer.cpp ui/wxwidgets/canvas_scene.cpp ui/wxwidgets/canvas_pcb_features.cpp ui/wxwidgets/canvas_viewport.cpp)
 target_include_directories(tracewave_canvas_benchmark PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
 target_compile_definitions(tracewave_canvas_benchmark PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN NOMINMAX)
@@ -301,6 +301,10 @@ if(MSVC)
     target_compile_options(tracewave_gui PRIVATE "$<$<COMPILE_LANGUAGE:CXX>:/W4;/utf-8>")
 else()
     target_compile_options(tracewave_gui PRIVATE "$<$<COMPILE_LANGUAGE:CXX>:-Wall;-Wextra;-Wpedantic;-finput-charset=UTF-8;-fexec-charset=UTF-8>")
+endif()
+if(MINGW AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    # @brief 고정 Windows Release 링크의 PE 시각을 고정한다.
+    target_link_options(tracewave_gui PRIVATE "LINKER:--no-insert-timestamp")
 endif()
 set_target_properties(tracewave_gui PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
 

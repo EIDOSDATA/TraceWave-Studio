@@ -1,0 +1,47 @@
+{
+  "schema": "rfad.windows-release-relink-verification/0.1",
+  "date_kst": "2026-11-20",
+  "source_parent": "6a2f3479132505aea179368eb958c1423bae31b6",
+  "previous_package_binary": {
+    "file": "tracewave_gui.exe",
+    "bytes": 30495771,
+    "sha256": "ac49a4ab95620c97468bb2782000fa4b485a0ac29068e2dad124cf8965b86921",
+    "pe_timestamp_seconds": 1795180290
+  },
+  "same_directory_relinks": [
+    {
+      "file": "stage13c-relink-1.exe",
+      "bytes": 30495771,
+      "sha256": "128eaf649270bf204d65b5f2e1cb01f234cdcb26a5e06464711ac37f129fb302",
+      "pe_timestamp_seconds": 0
+    },
+    {
+      "file": "stage13c-relink-2.exe",
+      "bytes": 30495771,
+      "sha256": "128eaf649270bf204d65b5f2e1cb01f234cdcb26a5e06464711ac37f129fb302",
+      "pe_timestamp_seconds": 0
+    }
+  ],
+  "native_ctest": {
+    "passed": 13,
+    "log": {
+      "file": "stage13c-ctest.log",
+      "bytes": 1526,
+      "sha256": "cdb91017ec9a020f9886dd8fcde32a7cca4e4766806c7c084e1dd0cff0f677d2"
+    }
+  },
+  "project_build_configuration": [
+    {
+      "file": "CMakeLists.txt",
+      "bytes": 23965,
+      "sha256": "1a94c34cab2f79f58857ec85d1085672e73431bd7c92f035619734da2ef8a9ab"
+    },
+    {
+      "file": "CMakePresets.json",
+      "bytes": 773,
+      "sha256": "73bbbd18388cbef3fb9d6e28142e34457999de708399530fa50aa665562c18d5"
+    }
+  ],
+  "independent_path_recompile_verified": false,
+  "r1_acceptance_established": false
+}
