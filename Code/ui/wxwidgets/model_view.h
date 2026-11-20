@@ -37,6 +37,8 @@ public:
     std::string RendererDescription() const;
     /** @brief 실제 상태와 전송 횟수를 시험 기록에 제공한다. */
     Json VertexBufferDiagnostics() const;
+    /** @brief 마지막 그리기에서 OpenGL에 제출한 삼각형 수다. */
+    std::size_t SubmittedTriangleCount() const;
     std::size_t TriangleCount() const;
     std::size_t BodyCount() const;
     std::uint64_t RenderedFrameCount() const;

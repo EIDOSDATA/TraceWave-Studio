@@ -464,6 +464,17 @@ private:
         m_model->SetLayerVisible("00000000-0000-0000-0000-00000000001f", true);
         click(top, "00000000-0000-0000-0000-000000000015");
         click({size.x / 8, size.y / 2}, "");
+        m_surface->Update();
+        const auto fit = m_model->SubmittedTriangleCount();
+        m_model->PanView(2.0 * size.x, 0.0);
+        m_surface->Update();
+        const auto outside = m_model->SubmittedTriangleCount();
+        m_model->FitView();
+        m_surface->Update();
+        const auto restored = m_model->SubmittedTriangleCount();
+        DisplayMesh::Require(fit == m_model->TriangleCount() && outside == 0 && restored == fit,
+            "3D 화면 범위 최적화가 보이는 삼각형을 빼거나 화면 밖 바디를 그렸습니다.");
+        m_modelVisibleTriangles = {fit, outside, restored};
     }
 
     void OnTimer(wxTimerEvent&)
@@ -563,6 +574,7 @@ private:
                           {"canvas", {size.x, size.y}}, {"dpi", m_surface != nullptr ? m_surface->GetDPI().x : GetDPI().x},
                           {"shapes", model ? 0 : m_shapes}, {"layers", model ? m_model->BodyCount() : m_layers},
                           {"model_clicks_after_navigation", m_modelClicks},
+                          {"model_visible_triangles", m_modelVisibleTriangles},
                           {"triangles", model ? m_model->TriangleCount() : 0}, {"target_fps", m_modelTriangles == LargeModelTriangles ? 30 : 60},
                           {"workload", model ? "model-rotate-pan" : (m_pan ? "canvas-middle-pan" : (m_drag ? "canvas-geometry-drag" : "canvas-wheel-zoom"))},
                           {"renderer", model ? m_model->RendererDescription() : "wxGraphicsContext"},
@@ -588,6 +600,7 @@ private:
     bool m_swapIntervalChecked = false;
     bool m_knownPickingFixture = false;
     Json m_modelClicks = Json::array();
+    Json m_modelVisibleTriangles = Json::array();
     bool m_pan;
     bool m_drag;
     wxPoint m_dragAnchor;

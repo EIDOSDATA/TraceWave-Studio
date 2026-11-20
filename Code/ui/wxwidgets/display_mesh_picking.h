@@ -29,6 +29,10 @@ struct PickIndex final
 /** @brief 검증 이후 작업 스레드에서 인덱스를 생성하며 로딩과 함께 취소할 수 있다. */
 void BuildPickIndex(Scene& scene, const std::atomic<bool>* cancelled = nullptr);
 
+/** @brief 화면 범위와 접할 가능성이 있는 바디는 전체 삼각형을 그린다. */
+bool MayIntersectView(const Scene& scene, std::size_t bodyIndex, const Camera& camera,
+    double halfWidth, double halfHeight);
+
 /** @brief 숨긴 층, 화면 투영의 실제 깊이와 기존 바디 순서의 동률 우선을 유지한다. */
 int PickIndexed(const Scene& scene, const Camera& camera, double x, double y,
     const std::set<std::string>& hiddenLayers = {});

@@ -199,6 +199,7 @@ public:
     std::function<void(const std::string&)> onHint;
     std::string renderer;
     std::uint64_t frames = 0;
+    std::size_t submittedTriangles = 0;
 
 private:
     /** @brief 숨겨진 뷰나 유실된 context에서도 파기와 함께 GPU 자원을 회수한다. */
@@ -278,12 +279,14 @@ private:
         glRotated(m_camera.pitch, 1.0, 0.0, 0.0);
         glRotated(m_camera.yaw, 0.0, 0.0, 1.0);
         const bool buffered = m_vertices.Bind(*m_scene);
+        submittedTriangles = 0;
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_NORMAL_ARRAY);
         for (std::size_t index = 0; index < m_scene->bodies.size(); ++index)
         {
             const auto& body = m_scene->bodies[index];
-            if (m_hiddenLayers.count(body.layer) != 0)
+            if (m_hiddenLayers.count(body.layer) != 0 ||
+                !DisplayMesh::MayIntersectView(*m_scene, index, m_camera, halfWidth, halfHeight))
             {
                 continue;
             }
@@ -319,6 +322,7 @@ private:
                 glNormalPointer(GL_FLOAT, 0, body.normals.data());
             }
             glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(body.positions.size() / 3));
+            submittedTriangles += body.positions.size() / 9;
         }
         glDisableClientState(GL_NORMAL_ARRAY);
         glDisableClientState(GL_VERTEX_ARRAY);
@@ -811,6 +815,11 @@ std::string ModelView::RendererDescription() const
 ModelView::Json ModelView::VertexBufferDiagnostics() const
 {
     return m_impl->canvas != nullptr ? m_impl->canvas->VertexBufferDiagnostics() : Json{{"bytes", 0}, {"uploads", 0}};
+}
+
+std::size_t ModelView::SubmittedTriangleCount() const
+{
+    return HasMesh() && m_impl->canvas != nullptr ? m_impl->canvas->submittedTriangles : 0;
 }
 
 std::size_t ModelView::TriangleCount() const

@@ -1,0 +1,337 @@
+{
+  "schema": "rfad.windows-model-view-bounds/1",
+  "composition_trace_sha256": "55aa33b7eaaed8ce2cd60876ac6136b0587e4c90b2f5c67c0c37ba5dabdc6d6c",
+  "display_fixture_sha256": "89db886307ca72cf5ca2f43a8c97254a899d596ffea184d880c9a8667bc710d4",
+  "display_probe_binary_sha256": "a0bec0e9c5b60533d9971c44f7dc5f747f6f4c0b2f691041af35019a9c66b856",
+  "composition": {
+    "workload": "model-rotate-pan",
+    "shapes": 0,
+    "layers": 2,
+    "triangles": 1000000,
+    "frame_interval_target_fps": 30,
+    "frame_interval_target_ms": 33.333333333333336,
+    "renderer": "4.6.0 - Build 32.0.101.7088 / Intel(R) Iris(R) Xe Graphics",
+    "swap_interval": 1,
+    "vertex_buffer": {
+      "bytes": 72000000,
+      "uploads": 1
+    },
+    "duration_s": 35.0,
+    "canvas": [
+      1920,
+      1080
+    ],
+    "display": [
+      2560,
+      1600
+    ],
+    "timer": "high-resolution-waitable",
+    "requested_timer_ms": 8,
+    "dpi": 144,
+    "refresh_hz": 120,
+    "timer_offers": 4208,
+    "timer_offers_without_input": 0,
+    "timer_interval": {
+      "samples": 4207,
+      "median_ms": 8.311300000000001,
+      "p95_ms": 8.6206,
+      "p99_ms": 8.7502,
+      "maximum_ms": 10.4356
+    },
+    "inputs": 4208,
+    "painted_inputs": 4208,
+    "observed_inputs": 3934,
+    "inputs_without_paint": 0,
+    "paints_without_observed_display": 274,
+    "desktop_updates_during_input": 4077,
+    "additional_accumulated_desktop_updates": 7,
+    "desktop_updates_without_marker": 0,
+    "input_interval": {
+      "samples": 4207,
+      "median_ms": 8.308,
+      "p95_ms": 8.647400000000001,
+      "p99_ms": 8.8152,
+      "maximum_ms": 10.4284
+    },
+    "observed_frame_interval": {
+      "samples": 3933,
+      "median_ms": 8.360800000000001,
+      "p95_ms": 16.1523,
+      "p99_ms": 17.078400000000002,
+      "maximum_ms": 21.2543
+    },
+    "observed_frame_intervals_over_60_fps_budget": 108,
+    "observed_frame_intervals_over_target": 0,
+    "observed_input_to_display": {
+      "samples": 3934,
+      "median_ms": 9.97295,
+      "p95_ms": 13.7912,
+      "p99_ms": 14.3129,
+      "maximum_ms": 17.125600000000002
+    },
+    "first_observed_after_start_ms": 25.3886,
+    "end_after_last_observed_ms": -8.0367,
+    "full_f1_acceptance_measured": false,
+    "full_f2_acceptance_measured": false
+  },
+  "submitted_triangles": [
+    1000000,
+    0,
+    1000000
+  ],
+  "clicks": [
+    {
+      "input_handler_ms": 5.4793,
+      "source_id": "00000000-0000-0000-0000-000000000014",
+      "x": 960,
+      "y": 810
+    },
+    {
+      "input_handler_ms": 1.2056,
+      "source_id": "00000000-0000-0000-0000-000000000015",
+      "x": 960,
+      "y": 270
+    },
+    {
+      "input_handler_ms": 1.0392,
+      "source_id": "",
+      "x": 960,
+      "y": 270
+    },
+    {
+      "input_handler_ms": 0.5679,
+      "source_id": "00000000-0000-0000-0000-000000000015",
+      "x": 960,
+      "y": 270
+    },
+    {
+      "input_handler_ms": 0.785,
+      "source_id": "",
+      "x": 240,
+      "y": 540
+    }
+  ],
+  "resources": {
+    "probe_pid": 20552,
+    "sample_interval_ms_requested": 1000,
+    "sample_scope": "ModelView and DXGI marker capture in the same process",
+    "points": [
+      {
+        "elapsed_ms": 1499.6716,
+        "private_commit_bytes": 87576576,
+        "working_set_bytes": 106901504,
+        "peak_working_set_bytes": 295772160,
+        "handles": 241,
+        "gpu": {
+          "dedicated_usage_bytes": null,
+          "shared_usage_bytes": null,
+          "total_committed_bytes": null
+        }
+      },
+      {
+        "elapsed_ms": 3595.6014,
+        "private_commit_bytes": 226009088,
+        "working_set_bytes": 295145472,
+        "peak_working_set_bytes": 327458816,
+        "handles": 350,
+        "gpu": {
+          "dedicated_usage_bytes": 0,
+          "shared_usage_bytes": 172695552,
+          "total_committed_bytes": 172711936
+        }
+      },
+      {
+        "elapsed_ms": 5640.1088,
+        "private_commit_bytes": 226930688,
+        "working_set_bytes": 296103936,
+        "peak_working_set_bytes": 327458816,
+        "handles": 350,
+        "gpu": {
+          "dedicated_usage_bytes": 0,
+          "shared_usage_bytes": 173613056,
+          "total_committed_bytes": 173629440
+        }
+      },
+      {
+        "elapsed_ms": 7690.694,
+        "private_commit_bytes": 226930688,
+        "working_set_bytes": 296136704,
+        "peak_working_set_bytes": 327458816,
+        "handles": 350,
+        "gpu": {
+          "dedicated_usage_bytes": 0,
+          "shared_usage_bytes": 165670912,
+          "total_committed_bytes": 165687296
+        }
+      },
+      {
+        "elapsed_ms": 9738.6543,
+        "private_commit_bytes": 226967552,
+        "working_set_bytes": 296194048,
+        "peak_working_set_bytes": 327458816,
+        "handles": 350,
+        "gpu": {
+          "dedicated_usage_bytes": 0,
+          "shared_usage_bytes": 165801984,
+          "total_committed_bytes": 165818368
+        }
+      },
+      {
+        "elapsed_ms": 11772.2967,
+        "private_commit_bytes": 227815424,
+        "working_set_bytes": 296247296,
+        "peak_working_set_bytes": 327458816,
+        "handles": 350,
+        "gpu": {
+          "dedicated_usage_bytes": 0,
+          "shared_usage_bytes": 165801984,
+          "total_committed_bytes": 165818368
+        }
+      },
+      {
+        "elapsed_ms": 13822.3446,
+        "private_commit_bytes": 227815424,
+        "working_set_bytes": 296259584,
+        "peak_working_set_bytes": 327458816,
+        "handles": 350,
+        "gpu": {
+          "dedicated_usage_bytes": 0,
+          "shared_usage_bytes": 165670912,
+          "total_committed_bytes": 165687296
+        }
+      },
+      {
+        "elapsed_ms": 15858.6802,
+        "private_commit_bytes": 220004352,
+        "working_set_bytes": 288468992,
+        "peak_working_set_bytes": 327458816,
+        "handles": 350,
+        "gpu": {
+          "dedicated_usage_bytes": 0,
+          "shared_usage_bytes": 165801984,
+          "total_committed_bytes": 165818368
+        }
+      },
+      {
+        "elapsed_ms": 17909.0805,
+        "private_commit_bytes": 220004352,
+        "working_set_bytes": 288477184,
+        "peak_working_set_bytes": 327458816,
+        "handles": 350,
+        "gpu": {
+          "dedicated_usage_bytes": 0,
+          "shared_usage_bytes": 165801984,
+          "total_committed_bytes": 165818368
+        }
+      },
+      {
+        "elapsed_ms": 19941.8838,
+        "private_commit_bytes": 220004352,
+        "working_set_bytes": 288591872,
+        "peak_working_set_bytes": 327458816,
+        "handles": 350,
+        "gpu": {
+          "dedicated_usage_bytes": 0,
+          "shared_usage_bytes": 165670912,
+          "total_committed_bytes": 165687296
+        }
+      },
+      {
+        "elapsed_ms": 21972.8586,
+        "private_commit_bytes": 220004352,
+        "working_set_bytes": 288600064,
+        "peak_working_set_bytes": 327458816,
+        "handles": 350,
+        "gpu": {
+          "dedicated_usage_bytes": 0,
+          "shared_usage_bytes": 165670912,
+          "total_committed_bytes": 165687296
+        }
+      },
+      {
+        "elapsed_ms": 24006.1487,
+        "private_commit_bytes": 220004352,
+        "working_set_bytes": 288616448,
+        "peak_working_set_bytes": 327458816,
+        "handles": 350,
+        "gpu": {
+          "dedicated_usage_bytes": 0,
+          "shared_usage_bytes": 165801984,
+          "total_committed_bytes": 165818368
+        }
+      },
+      {
+        "elapsed_ms": 26048.7296,
+        "private_commit_bytes": 220004352,
+        "working_set_bytes": 288624640,
+        "peak_working_set_bytes": 327458816,
+        "handles": 350,
+        "gpu": {
+          "dedicated_usage_bytes": 0,
+          "shared_usage_bytes": 165801984,
+          "total_committed_bytes": 165818368
+        }
+      },
+      {
+        "elapsed_ms": 28098.341,
+        "private_commit_bytes": 220004352,
+        "working_set_bytes": 288641024,
+        "peak_working_set_bytes": 327458816,
+        "handles": 350,
+        "gpu": {
+          "dedicated_usage_bytes": 0,
+          "shared_usage_bytes": 165670912,
+          "total_committed_bytes": 165687296
+        }
+      },
+      {
+        "elapsed_ms": 30131.5656,
+        "private_commit_bytes": 220041216,
+        "working_set_bytes": 288690176,
+        "peak_working_set_bytes": 327458816,
+        "handles": 351,
+        "gpu": {
+          "dedicated_usage_bytes": 0,
+          "shared_usage_bytes": 165801984,
+          "total_committed_bytes": 165818368
+        }
+      },
+      {
+        "elapsed_ms": 32187.6472,
+        "private_commit_bytes": 220041216,
+        "working_set_bytes": 288698368,
+        "peak_working_set_bytes": 327458816,
+        "handles": 351,
+        "gpu": {
+          "dedicated_usage_bytes": 0,
+          "shared_usage_bytes": 165801984,
+          "total_committed_bytes": 165818368
+        }
+      },
+      {
+        "elapsed_ms": 34231.6862,
+        "private_commit_bytes": 220041216,
+        "working_set_bytes": 288710656,
+        "peak_working_set_bytes": 327458816,
+        "handles": 351,
+        "gpu": {
+          "dedicated_usage_bytes": 0,
+          "shared_usage_bytes": 165670912,
+          "total_committed_bytes": 165687296
+        }
+      },
+      {
+        "elapsed_ms": 36280.4977,
+        "private_commit_bytes": 220041216,
+        "working_set_bytes": 288821248,
+        "peak_working_set_bytes": 327458816,
+        "handles": 351,
+        "gpu": {
+          "dedicated_usage_bytes": 0,
+          "shared_usage_bytes": 165801984,
+          "total_committed_bytes": 165818368
+        }
+      }
+    ]
+  }
+}

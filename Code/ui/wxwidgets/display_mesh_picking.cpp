@@ -84,7 +84,7 @@ public:
             std::abs(std::sin(pitch))};
     }
 
-    bool Contains(const PickIndex::Node& node, double x, double y) const
+    bool Contains(const PickIndex::Node& node, double x, double y, double marginX = 0.0, double marginY = 0.0) const
     {
         std::array<double, 3> center{};
         double extentX = 0.0;
@@ -101,8 +101,8 @@ public:
         const auto point = m_camera.Transform({center[0], center[1], center[2]});
         const double arithmetic = 1e-12 * std::max({1.0, std::abs(point.x), std::abs(point.y),
             std::abs(center[0]), std::abs(center[1]), std::abs(center[2]), extentX, extentY});
-        return std::abs(x - point.x) <= extentX * (1.0 + 4e-9) + arithmetic &&
-            std::abs(y - point.y) <= extentY * (1.0 + 4e-9) + arithmetic;
+        return std::abs(x - point.x) <= extentX * (1.0 + 4e-9) + arithmetic + marginX &&
+            std::abs(y - point.y) <= extentY * (1.0 + 4e-9) + arithmetic + marginY;
     }
 
 private:
@@ -178,6 +178,24 @@ void BuildPickIndex(Scene& scene, const std::atomic<bool>* cancelled)
     {
         scene.pickIndex = std::move(index);
     }
+}
+
+/** @brief 이미 검증한 루트 경계를 재사용하며 GPU 부동소수점 오차만큼 범위를 넓힌다. */
+bool MayIntersectView(const Scene& scene, std::size_t bodyIndex, const Camera& camera,
+    double halfWidth, double halfHeight)
+{
+    if (scene.pickIndex == nullptr || bodyIndex >= scene.pickIndex->bodies.size())
+    {
+        return true;
+    }
+    const auto& nodes = scene.pickIndex->bodies[bodyIndex].nodes;
+    if (nodes.empty())
+    {
+        return true;
+    }
+    const double margin = 32.0 * std::numeric_limits<float>::epsilon() *
+        std::max({1.0, scene.radius, halfWidth, halfHeight, std::abs(camera.panX), std::abs(camera.panY)});
+    return ProjectedBounds(camera).Contains(nodes.front(), 0.0, 0.0, halfWidth + margin, halfHeight + margin);
 }
 
 int PickIndexed(const Scene& scene, const Camera& camera, double x, double y,

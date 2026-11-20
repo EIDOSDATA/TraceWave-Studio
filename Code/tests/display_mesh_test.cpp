@@ -76,6 +76,15 @@ void IndexedPicking()
     camera.pitch = 0.0;
     Check(PickIndexed(scene, camera, -0.5e-9, 0.2) == 0, "triangle edge tolerance and coincident body order");
     Check(PickIndexed(scene, camera, 0.2, 0.2, {"base"}) == 1, "index hidden layer");
+    Check(MayIntersectView(scene, 0, camera, 1.0, 1.0), "intersecting body keeps every triangle");
+    camera.panX = 1.0;
+    Check(MayIntersectView(scene, 0, camera, 1.0, 1.0), "viewport edge remains visible");
+    camera.panX = 3.0;
+    Check(!MayIntersectView(scene, 0, camera, 1.0, 1.0), "entirely offscreen body is excluded");
+    scene.pickIndex.reset();
+    Check(MayIntersectView(scene, 0, camera, 1.0, 1.0), "missing bounds keep the body");
+    BuildPickIndex(scene);
+    camera.panX = 0.0;
     for (int angle = 0; angle < 3; ++angle)
     {
         camera.Rotate(13.0, 28.0);
