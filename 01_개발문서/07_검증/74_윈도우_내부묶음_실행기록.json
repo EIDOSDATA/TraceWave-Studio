@@ -1,0 +1,205 @@
+{
+  "schema": "rfad.windows-internal-bundle-install-verification/0.1",
+  "date_kst": "2026-11-20",
+  "source_revision": "82baee09efbee95cd97d05671f3f1e362c21bb32",
+  "archive": {
+    "file": "TraceWave-Studio-internal-windows-x64.zip",
+    "bytes": 13876949,
+    "sha256": "487cdcd4beda585848c900c30e011af46e14bcfac1821b982b294970a72c84ee"
+  },
+  "recorded_members": 930,
+  "rebuild_same_bundle_inputs_match": true,
+  "repeat_archive": {
+    "file": "stage13-final-repeat.zip",
+    "bytes": 13876949,
+    "sha256": "487cdcd4beda585848c900c30e011af46e14bcfac1821b982b294970a72c84ee"
+  },
+  "native_imports": {
+    "libgcc_s_seh-1.dll": [
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-private-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "kernel32.dll",
+      "libmcfgthread-2.dll"
+    ],
+    "libmcfgthread-2.dll": [
+      "kernel32.dll",
+      "ntdll.dll"
+    ],
+    "libstdc++-6.dll": [
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-environment-l1-1-0.dll",
+      "api-ms-win-crt-filesystem-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-private-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-time-l1-1-0.dll",
+      "api-ms-win-crt-utility-l1-1-0.dll",
+      "kernel32.dll",
+      "libgcc_s_seh-1.dll",
+      "libmcfgthread-2.dll"
+    ],
+    "tracewave_gui.exe": [
+      "advapi32.dll",
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-environment-l1-1-0.dll",
+      "api-ms-win-crt-filesystem-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-private-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-time-l1-1-0.dll",
+      "api-ms-win-crt-utility-l1-1-0.dll",
+      "bcrypt.dll",
+      "comctl32.dll",
+      "comdlg32.dll",
+      "gdi32.dll",
+      "kernel32.dll",
+      "libgcc_s_seh-1.dll",
+      "libmcfgthread-2.dll",
+      "libstdc++-6.dll",
+      "ole32.dll",
+      "oleacc.dll",
+      "oleaut32.dll",
+      "opengl32.dll",
+      "shell32.dll",
+      "shlwapi.dll",
+      "user32.dll",
+      "uxtheme.dll",
+      "version.dll",
+      "winspool.drv"
+    ]
+  },
+  "third_party_notices": [
+    {
+      "bytes": 35147,
+      "path": "third-party-notices/gcc-GPL-3.0.txt",
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    },
+    {
+      "bytes": 3324,
+      "path": "third-party-notices/gcc-runtime-exception.txt",
+      "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74"
+    },
+    {
+      "bytes": 18584,
+      "path": "third-party-notices/ijg-jpeg-readme.txt",
+      "sha256": "3dc4e4a145c907a96bd6a0e40be3f722fecf061951909143cdff5365cba9c78c"
+    },
+    {
+      "bytes": 5345,
+      "path": "third-party-notices/libpng-license.txt",
+      "sha256": "bf5e22b9dce8464064ae17a48ea1133c3369ac9e1d80ef9e320e5219aa14ea9b"
+    },
+    {
+      "bytes": 1146,
+      "path": "third-party-notices/libtiff-copyright.txt",
+      "sha256": "fbd6fed7938541d2c809c0826225fc85e551fdbfa8732b10f0c87e0847acafd7"
+    },
+    {
+      "bytes": 2678,
+      "path": "third-party-notices/mcfgthread-license.txt",
+      "sha256": "a198407db31e4755c1cdfae4781c46d3c92aa692bad1bb4417aeb3efd38b8421"
+    },
+    {
+      "bytes": 2326,
+      "path": "third-party-notices/mingw-w64-copying.txt",
+      "sha256": "99a69660981156c21336fdb5661f89341b013c94e4bf9e1c7467b4745718397f"
+    },
+    {
+      "bytes": 880,
+      "path": "third-party-notices/nanosvg-license.txt",
+      "sha256": "e82bc3dd03400aecabe12201219ba14750dbc4b36faab58663a7a6068548d372"
+    },
+    {
+      "bytes": 1076,
+      "path": "third-party-notices/nlohmann-json-mit.txt",
+      "sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+    },
+    {
+      "bytes": 3464,
+      "path": "third-party-notices/pcre2-notice.txt",
+      "sha256": "9c9488256e3612ec5ea40fd12abe7ec55a58f23bd36e6f465116c2b3cbffba02"
+    },
+    {
+      "bytes": 2448,
+      "path": "third-party-notices/source-inventory.json",
+      "sha256": "0137bda8e78e3a5d2a0a87b4ad2cb4441cae22e7705bd5f2275aa91c4a7a04f9"
+    },
+    {
+      "bytes": 17984,
+      "path": "third-party-notices/wxwindows-gpl.txt",
+      "sha256": "edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6"
+    },
+    {
+      "bytes": 25270,
+      "path": "third-party-notices/wxwindows-lgpl.txt",
+      "sha256": "cc535c21133c895b56b374c8a1dc1eb948d99003ed2b47372069456b62f42b24"
+    },
+    {
+      "bytes": 2386,
+      "path": "third-party-notices/wxwindows-licence.txt",
+      "sha256": "7132837c2af55bd7ce8bfc72ef837e0caafee6b1e5eefb9cecdee713c29f57cc"
+    },
+    {
+      "bytes": 1002,
+      "path": "third-party-notices/zlib-license.txt",
+      "sha256": "845efc77857d485d91fb3e0b884aaa929368c717ae8186b66fe1ed2495753243"
+    }
+  ],
+  "verified_receiver": {
+    "clean_extraction": true,
+    "base_python": "3.12.10",
+    "native_path": "Windows System32 and Windows only",
+    "optional_python_imports_absent": true,
+    "service_sessions": 2,
+    "actual_canvas_checks": [
+      "drawing_icons_keep_logical_size_and_mask",
+      "docking_shell",
+      "wide_compact_visibility_separated",
+      "escape_cancels_preview",
+      "two_click_line",
+      "three_click_arc_and_hit_test",
+      "selection_sync",
+      "drag_one_command",
+      "drag_undo_redo",
+      "property_to_canvas",
+      "rejected_gesture_restores_selection",
+      "delete_undo",
+      "display_limits_preserve_valid_shapes",
+      "view_controls_do_not_edit",
+      "grid_and_endpoint_snap",
+      "endpoint_escape_then_one_command",
+      "endpoint_undo_redo",
+      "endpoint_noop_omits_command",
+      "arc_endpoint_fixed_radius",
+      "input_check_not_simulation",
+      "save_snapshot_restart"
+    ],
+    "saved_snapshot_id": "b7ffb86a-43fa-4b76-ad96-c7c0ebc9176d",
+    "saved_revision": "432d5d25-06dc-46df-9fc7-f74666eb0370",
+    "source_copied_in_runtime": true
+  },
+  "tests": {
+    "bundle_tools_passed": 3,
+    "audit_passed": 14,
+    "targeted_log": {
+      "file": "stage13-targeted-tests.log",
+      "bytes": 4719,
+      "sha256": "d1d09dcbe1c6f291f6316f5eb7bcfa5f9fc42d90c08fd8062090ea1028c82f3f"
+    }
+  },
+  "independent_windows_image_verified": false,
+  "independent_compiler_rebuild_verified": false,
+  "external_workers_installed_by_archive": false,
+  "r1_acceptance_established": false
+}
