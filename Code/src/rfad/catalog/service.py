@@ -71,10 +71,12 @@ class CatalogService:
     def search(self, value: dict) -> dict:
         """! @brief 정확 필터와 리터럴 부분 문자열 검색을 안정 순서로 페이지화한다."""
         request = parse_search(value)
-        metadata, rows = self.repository.search(request)
+        metadata, rows, total = self.repository.search(request)
         result = {"catalog_id": metadata["catalog_id"], "entity": request.entity, "readiness": "not_assessed",
                   "offset": request.offset, "limit": request.limit, "items": [], "returned_count": 0,
                   "has_more": False, "next_offset": None, "limited_by_bytes": False}
+        if total is not None:
+            result["total_count"] = total
         if "frequency_ghz" in request.filters:
             prop = request.filters["frequency_property"]
             result["frequency_scope"] = {
@@ -83,13 +85,14 @@ class CatalogService:
                     "record_frequency_not_property_assignment" if prop == "record" else "dk_present_record_frequency"),
                 "interpolated": False,
             }
+        size = _size(result)
         for row in rows[:request.limit]:
             item = _summary(row)
-            result["items"].append(item)
-            if _size(result) > MAX_RESULT_BYTES - 256:
-                result["items"].pop()
+            size += _size(item) + bool(result["items"])
+            if size > MAX_RESULT_BYTES - 256:
                 result["limited_by_bytes"] = True
                 break
+            result["items"].append(item)
         result["returned_count"] = len(result["items"])
         result["has_more"] = len(rows) > len(result["items"])
         if result["has_more"]:

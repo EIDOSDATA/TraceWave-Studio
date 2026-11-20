@@ -1,7 +1,10 @@
 /** @file @brief 카탈로그 검색과 읽기 전용 근거 요약 화면을 구성한다. */
 #include "pcb_selection_dialog.h"
+#include "pcb_catalog_table.h"
 #include "pcb_selection_view_support.h"
 #include "pcb_suggestion_model.h"
+#include <algorithm>
+#include <utility>
 #include <wx/button.h>
 #include <wx/choice.h>
 #include <wx/combobox.h>
@@ -14,27 +17,6 @@
 
 namespace
 {
-/** @brief 내부 템플릿 해시 대신 서비스가 연결한 공개 적층 표기를 우선한다. */
-std::string NativeLabel(const Json& row)
-{
-    if (row.contains("stackup_label") && row.at("stackup_label").is_string() &&
-        !row.at("stackup_label").get<std::string>().empty())
-    {
-        return row.at("stackup_label");
-    }
-    if (row.value("kind", std::string()) == "jlc_user_defined_template")
-    {
-        return "사용자 정의 구성 (공개 적층명 없음)";
-    }
-    return "공개 적층명 미연결 (상세 확인)";
-}
-
-/** @brief 공개 층수와 공칭값을 완성 두께 또는 해석 준비로 단정하지 않는다. */
-std::string NativeDimensions(const Json& row)
-{
-    return PcbView::Text(row, "layer_count") + "층 / 공칭 " + PcbView::Text(row, "nominal_thickness_mm") + " mm";
-}
-
 /** @brief Df 전용 주파수와 기록 공통 조건을 합치지 않고 표시한다. */
 std::string FrequencySummary(const Json& frequency)
 {
@@ -153,7 +135,7 @@ wxPanel* PcbSelectionDialog::BuildCatalogPage()
     filters->Add(m_query, 1, wxRIGHT, FromDIP(8));
     filters->Add(m_search);
     layout->Add(filters, 0, wxEXPAND | wxALL, FromDIP(10));
-    m_results = new wxListCtrl(panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_SINGLE_SEL);
+    m_results = new PcbCatalogTable(panel, [this](long row) { QueueCatalogPage(row); });
     m_results->SetName("pcb.results");
     const char* columns[] = {"공개 주체", "제품 / 적층 표기", "구성 / 형태", "Dk", "Df", "보고 주파수 GHz"};
     const int widths[] = {150, 260, 180, 75, 75, 130};
@@ -168,11 +150,19 @@ wxPanel* PcbSelectionDialog::BuildCatalogPage()
     m_next = new wxButton(panel, wxID_ANY, Display("다음"));
     m_next->SetName("pcb.next");
     m_pageLabel = new wxStaticText(panel, wxID_ANY, Display("검색 전"));
+    auto* rowLabel = new wxStaticText(panel, wxID_ANY, Display("행으로 이동"));
+    m_catalogRowEntry = new wxTextCtrl(panel, wxID_ANY, wxString(), wxDefaultPosition,
+                                     FromDIP(wxSize(84, -1)), wxTE_PROCESS_ENTER);
+    m_catalogRowEntry->SetName(Display("검색 결과 행으로 이동"));
+    m_catalogRowEntry->SetHint(Display("행 번호"));
+    m_catalogRowEntry->SetMaxLength(7);
     m_useSource = new wxButton(panel, wxID_ANY, Display("선택 적층과 물성 제안 보기"));
     m_useSource->SetName("pcb.use_source");
     paging->Add(m_previous, 0, wxRIGHT, FromDIP(6));
     paging->Add(m_next, 0, wxRIGHT, FromDIP(12));
     paging->Add(m_pageLabel, 1, wxALIGN_CENTER_VERTICAL);
+    paging->Add(rowLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(6));
+    paging->Add(m_catalogRowEntry, 0, wxRIGHT, FromDIP(12));
     paging->Add(m_useSource);
     layout->Add(paging, 0, wxEXPAND | wxALL, FromDIP(10));
     m_detail = new wxTextCtrl(
@@ -183,12 +173,7 @@ wxPanel* PcbSelectionDialog::BuildCatalogPage()
     panel->SetSizer(layout);
     const auto change = [this](wxCommandEvent&)
     {
-        ++m_filterRevision;
-        ++m_detailRevision;
-        m_selected = nullptr;
-        m_searchResult = Json::object();
-        m_results->DeleteAllItems();
-        m_pageOffsets = {0};
+        ResetCatalogRows();
         Changed();
     };
     m_entity->Bind(wxEVT_CHOICE, change);
@@ -207,26 +192,41 @@ wxPanel* PcbSelectionDialog::BuildCatalogPage()
     m_previous->Bind(wxEVT_BUTTON,
                      [this](wxCommandEvent&)
                      {
-                         if (m_pageOffsets.size() > 1)
-                         {
-                             m_pageOffsets.pop_back();
-                             Search(m_pageOffsets.back());
-                         }
+                         MoveCatalogView(m_results->GetTopItem() - std::max(1, m_results->GetCountPerPage()));
                      });
     m_next->Bind(wxEVT_BUTTON,
                  [this](wxCommandEvent&)
                  {
-                     if (m_searchResult.value("has_more", false))
-                     {
-                         const int offset = m_searchResult.at("next_offset").get<int>();
-                         m_pageOffsets.push_back(offset);
-                         Search(offset);
-                     }
+                     MoveCatalogView(m_results->GetTopItem() + 2 * std::max(1, m_results->GetCountPerPage()) - 1);
                  });
+    m_catalogRowEntry->Bind(wxEVT_TEXT_ENTER,
+                            [this](wxCommandEvent&)
+                            {
+                                long row = 0;
+                                if (m_catalogRowEntry->GetValue().ToLong(&row) && row >= 1 && row <= m_catalogRowCount)
+                                {
+                                    MoveCatalogView(row - 1);
+                                }
+                                else
+                                {
+                                    SetStatus("결과 범위 안의 행 번호를 입력하세요.");
+                                }
+                            });
     m_results->Bind(wxEVT_LIST_ITEM_SELECTED,
                     [this](wxListEvent& event)
                     {
                         SelectResult(event.GetIndex());
+                    });
+    m_results->Bind(wxEVT_LIST_ITEM_DESELECTED,
+                    [this](wxListEvent&)
+                    {
+                        if (m_results->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED) < 0)
+                        {
+                            ++m_detailRevision;
+                            m_selected = nullptr;
+                            m_detail->ChangeValue(Display("표에서 자료를 선택해 원문 요약과 시험 조건을 확인하세요."));
+                            UpdateControls();
+                        }
                     });
     m_useSource->Bind(wxEVT_BUTTON,
                       [this](wxCommandEvent&)
@@ -236,8 +236,25 @@ wxPanel* PcbSelectionDialog::BuildCatalogPage()
     return panel;
 }
 
-/** @brief 검색어와 개정에 묶인 제한된 페이지 한 개만 표시한다. */
-void PcbSelectionDialog::Search(int offset)
+/** @brief 이전 검색 세대를 폐기하고 상세/선택과 행 범위를 함께 초기화한다. */
+void PcbSelectionDialog::ResetCatalogRows()
+{
+    ++m_filterRevision;
+    ++m_detailRevision;
+    m_selected = nullptr;
+    m_catalogSearchInput = Json::object();
+    m_catalogRowCount = 0;
+    m_catalogWantedRow = -1;
+    m_catalogPageQueued = false;
+    m_catalogPageLoading = false;
+    m_results->Reset();
+    m_pageLabel->SetLabel(Display("검색 전"));
+    m_catalogRowEntry->ChangeValue(wxString());
+    m_detail->ChangeValue(Display("표에서 자료를 선택해 원문 요약과 시험 조건을 확인하세요."));
+}
+
+/** @brief 검색 범위와 첫 페이지를 동일 카탈로그 개정에서 가져온다. */
+void PcbSelectionDialog::Search()
 {
     if (m_closed || m_applying || m_disconnected)
     {
@@ -245,69 +262,54 @@ void PcbSelectionDialog::Search(int offset)
     }
     try
     {
-        if (offset == 0)
-        {
-            m_pageOffsets = {0};
-        }
+        ResetCatalogRows();
         const std::string entity = m_entity->GetSelection() == 0 ? "native_templates" : "observations";
         Json input = {{"entity", entity},
                       {"query", Utf8(m_query->GetValue())},
                       {"filters", Json::object()},
-                      {"limit", 25},
-                      {"offset", offset}};
+                      {"limit", PcbCatalogTable::PageSize},
+                      {"include_total", true}};
         if (!m_publisher->GetValue().empty())
         {
             input["filters"]["publisher"] = Utf8(m_publisher->GetValue());
         }
-        if (offset > 0)
-        {
-            input["catalog_id"] = m_searchResult.at("catalog_id");
-        }
-        m_selected = nullptr;
-        ++m_detailRevision;
         const auto filter = m_filterRevision;
         const auto token = m_model.BeginRequest("search");
-        SetStatus("카탈로그의 제한된 목록을 읽고 있습니다. 직접 층 구성도 사용할 수 있습니다.");
+        m_pageLabel->SetLabel(Display("검색 중"));
+        SetStatus("카탈로그 검색 결과를 읽고 있습니다. 직접 층 구성도 사용할 수 있습니다.");
         UpdateControls();
         wxWeakRef<PcbSelectionDialog> weak(this);
         m_gateway(
             "catalog.search", input, false,
-            [weak, token, filter, entity](const Json& result)
+            [weak, token, filter, input, entity](const Json& result)
             {
                 if (!weak || weak->m_closed || weak->m_disconnected || filter != weak->m_filterRevision ||
                     !weak->m_model.AcceptSearch(token, result))
                 {
                     return;
                 }
-                weak->m_searchResult = result;
-                weak->m_results->DeleteAllItems();
-                for (const auto& row : result.at("items"))
-                {
-                    const long index = weak->m_results->InsertItem(weak->m_results->GetItemCount(),
-                                                                   Display(PcbView::Text(row, "publisher")));
-                    weak->m_results->SetItem(
-                        index, 1,
-                        Display(entity == "native_templates" ? NativeLabel(row) : PcbView::Text(row, "product")));
-                    weak->m_results->SetItem(index, 2,
-                                             Display(entity == "native_templates"
-                                                         ? NativeDimensions(row)
-                                                         : PcbView::Text(row, "material_form")));
-                    for (int column = 3; column < 6; ++column)
-                    {
-                        const char* field = column == 3 ? "dk" : (column == 4 ? "df" : "frequency_ghz");
-                        weak->m_results->SetItem(index, column, Display(PcbView::Text(row, field)));
-                    }
-                }
-                weak->m_pageLabel->SetLabel(Display(std::to_string(result.at("offset").get<int>() + 1) + "번째부터 " +
-                                                    std::to_string(result.at("returned_count").get<int>()) + "개"));
-                weak->SetStatus("검색 결과는 공개 자료 요약입니다. 제품이나 해석 준비가 확인되었다는 뜻은 아닙니다.");
+                const auto total = result.at("total_count").get<long long>();
+                constexpr long SearchableRows = 1000001;
+                weak->m_catalogRowCount = static_cast<long>(std::min<long long>(total, SearchableRows));
+                weak->m_catalogSearchInput = input;
+                weak->m_catalogSearchInput.erase("include_total");
+                weak->m_catalogSearchInput["catalog_id"] = result.at("catalog_id");
+                weak->m_results->Begin(entity, weak->m_catalogRowCount, result.at("items"));
+                const std::string count = total > SearchableRows
+                    ? std::to_string(SearchableRows) + " / " + std::to_string(total) + "건 (검색 범위를 좁히세요)"
+                    : std::to_string(total) + "건";
+                weak->m_pageLabel->SetLabel(Display(count));
+                weak->SetStatus(total == 0 ? "검색 조건과 일치하는 공개 자료가 없습니다."
+                                           : "검색 결과는 공개 자료 요약입니다. 상세에서 원문과 시험 조건을 확인하세요.");
                 weak->UpdateControls();
+                weak->m_pageLabel->GetParent()->Layout();
             },
             [weak, token, filter](const Json& error)
             {
                 if (weak && !weak->m_closed && !weak->m_disconnected && filter == weak->m_filterRevision &&
                     weak->m_model.Fail(token, error))
                 {
+                    weak->m_pageLabel->SetLabel(Display("검색 실패"));
                     weak->ShowFailure(error);
                 }
             });
@@ -318,25 +320,135 @@ void PcbSelectionDialog::Search(int offset)
     }
 }
 
-/** @brief 선택한 관측의 조건을 읽기 전용 문구로 표시한다. 큰 원문을 재작성하지 않는다. */
-void PcbSelectionDialog::SelectResult(long index)
+/** @brief 필요한 행만 한 요청씩 가져오며 포커스를 둔 행을 먼저 처리한다. */
+void PcbSelectionDialog::QueueCatalogPage(long row, bool selected)
 {
-    if (!m_searchResult.contains("items") || index < 0 ||
-        static_cast<std::size_t>(index) >= m_searchResult.at("items").size())
+    if (m_closed || m_disconnected || m_applying || row < 0 || row >= m_catalogRowCount ||
+        m_catalogSearchInput.empty() || m_results->Row(row) != nullptr)
     {
         return;
     }
+    if (selected || m_catalogWantedRow < 0)
+    {
+        m_catalogWantedRow = row;
+    }
+    if (!m_catalogPageQueued && !m_catalogPageLoading)
+    {
+        m_catalogPageQueued = true;
+        const auto filter = m_filterRevision;
+        CallAfter(
+            [this, filter]()
+            {
+                if (filter == m_filterRevision)
+                {
+                    m_catalogPageQueued = false;
+                    LoadCatalogPage();
+                }
+            });
+    }
+}
+
+/** @brief 표시용 페이지를 읽되 초안과 변경 검토 토큰을 건드리지 않는다. */
+void PcbSelectionDialog::LoadCatalogPage()
+{
+    if (m_closed || m_disconnected || m_applying || m_catalogSearchInput.empty() || m_catalogWantedRow < 0)
+    {
+        return;
+    }
+    const long row = std::exchange(m_catalogWantedRow, -1);
+    if (m_results->Row(row) != nullptr)
+    {
+        return;
+    }
+    const long offset = m_results->MissingOffset(row);
+    Json input = m_catalogSearchInput;
+    input["offset"] = offset;
+    const long blockEnd = (offset / PcbCatalogTable::PageSize + 1) * PcbCatalogTable::PageSize;
+    input["limit"] = std::min(blockEnd, m_catalogRowCount) - offset;
+    m_catalogPageLoading = true;
+    const auto filter = m_filterRevision;
+    wxWeakRef<PcbSelectionDialog> weak(this);
+    m_gateway(
+        "catalog.search", input, false,
+        [weak, filter, offset, row](const Json& result)
+        {
+            if (!weak || weak->m_closed || weak->m_disconnected || filter != weak->m_filterRevision)
+            {
+                return;
+            }
+            weak->m_catalogPageLoading = false;
+            if (result.at("items").empty() || result.at("offset") != offset ||
+                result.at("catalog_id") != weak->m_catalogSearchInput.at("catalog_id"))
+            {
+                weak->ResetCatalogRows();
+                weak->SetStatus("검색 범위가 변경되었습니다. 다시 검색하세요.");
+                weak->UpdateControls();
+                return;
+            }
+            weak->m_results->StorePage(offset, result.at("items"));
+            const long selected = weak->m_results->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+            if (selected >= 0 && weak->m_selected.is_null() && weak->m_results->Row(selected))
+            {
+                weak->SelectResult(selected);
+            }
+            const long top = weak->m_results->GetTopItem();
+            const long visibleEnd = std::min<long>(weak->m_catalogRowCount, top + weak->m_results->GetCountPerPage() + 1);
+            const long pending = std::exchange(weak->m_catalogWantedRow, -1);
+            weak->QueueCatalogPage(pending);
+            if ((row >= top && row < visibleEnd) || selected == row)
+            {
+                weak->QueueCatalogPage(row);
+            }
+            for (long visible = top; visible < visibleEnd && weak->m_catalogWantedRow < 0; ++visible)
+            {
+                weak->QueueCatalogPage(visible);
+            }
+        },
+        [weak, filter](const Json& error)
+        {
+            if (weak && !weak->m_closed && !weak->m_disconnected && filter == weak->m_filterRevision)
+            {
+                weak->ResetCatalogRows();
+                weak->ShowFailure(error);
+            }
+        });
+}
+
+/** @brief 마우스 스크롤과 같은 표를 키보드로도 원하는 행까지 이동한다. */
+void PcbSelectionDialog::MoveCatalogView(long row)
+{
+    if (m_catalogRowCount > 0)
+    {
+        row = std::clamp(row, 0L, m_catalogRowCount - 1);
+        m_results->EnsureVisible(row);
+        QueueCatalogPage(row, true);
+    }
+}
+
+/** @brief 선택한 관측의 조건을 읽기 전용 문구로 표시한다. 큰 원문을 재작성하지 않는다. */
+void PcbSelectionDialog::SelectResult(long index)
+{
+    ++m_detailRevision;
+    m_selected = nullptr;
     if (m_model.CurrentStage() == Studio::PcbSelectionModel::Stage::LoadingDraft)
     {
         m_model.Invalidate();
     }
-    m_selected = m_searchResult.at("items").at(static_cast<std::size_t>(index));
-    m_selectedCatalog = m_searchResult.at("catalog_id");
-    m_selectedEntity = m_searchResult.at("entity");
+    const Json* row = m_results->Row(index);
+    if (row == nullptr)
+    {
+        m_detail->ChangeValue(Display("선택한 행을 읽고 있습니다."));
+        QueueCatalogPage(index, true);
+        UpdateControls();
+        return;
+    }
+    m_selected = *row;
+    m_selectedCatalog = m_catalogSearchInput.at("catalog_id");
+    m_selectedEntity = m_catalogSearchInput.at("entity");
     const auto detail = ++m_detailRevision;
     m_detail->ChangeValue(Display(
         "선택: " + PcbView::Text(m_selected, "publisher") + " / " +
-        (m_selectedEntity == "native_templates" ? NativeLabel(m_selected) : PcbView::Text(m_selected, "product")) +
+        (m_selectedEntity == "native_templates" ? PcbCatalogTable::NativeLabel(m_selected) : PcbView::Text(m_selected, "product")) +
         "\n자료 ID: " + m_selected.at("id").get<std::string>() + "\n상세 조건을 읽고 있습니다."));
     UpdateControls();
     wxWeakRef<PcbSelectionDialog> weak(this);
@@ -358,7 +470,7 @@ void PcbSelectionDialog::SelectResult(long index)
                 "공개 주체: " + PcbView::Text(item, "publisher") + "\n자료 ID: " + PcbView::Text(item, "id");
             if (result.value("entity", std::string()) == "native_templates")
             {
-                summary += "\n공개 적층명: " + NativeLabel(item) + "\n공개 구성: " + NativeDimensions(item) +
+                summary += "\n공개 적층명: " + PcbCatalogTable::NativeLabel(item) + "\n공개 구성: " + PcbCatalogTable::NativeDimensions(item) +
                            "\n공칭값은 원문의 완성 두께 포함 범위와 공차를 별도로 확인해야 합니다.";
             }
             for (const char* field :

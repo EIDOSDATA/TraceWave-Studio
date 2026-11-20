@@ -1,8 +1,12 @@
 /** @file @brief 실제 PCB 설정 컨트롤과 공개 서비스의 비동기 통합 시험이다. */
 #include "studio_internal.h"
 #include "pcb_selection_dialog.h"
+#include "pcb_catalog_table.h"
 #include <wx/combobox.h>
 #include <wx/grid.h>
+#ifdef __WXMSW__
+#include <wx/msw/wrapwin.h>
+#endif
 
 namespace
 {
@@ -50,7 +54,7 @@ void EditPcbCell(wxGrid* grid, int row, int column, const std::string& value)
 
 void StudioSmokeDriver::PcbSmokeTick()
 {
-    if (!m_frame.m_options.pcbSmoke || m_frame.m_finishing || !m_frame.m_connected || m_pcbStage == 0)
+    if ((!m_frame.m_options.pcbSmoke && m_pcbStage < 80) || m_frame.m_finishing || !m_frame.m_connected || m_pcbStage == 0)
     {
         return;
     }
@@ -68,7 +72,23 @@ void StudioSmokeDriver::PcbSmokeTick()
             {
                 ++m_pcbRequestTicks;
             }
-            PcbSmokeDialog(*m_frame.m_pcbDialog);
+            if (m_pcbStage >= 80)
+            {
+                PcbSmokeLargeCatalog(*m_frame.m_pcbDialog);
+            }
+            else
+            {
+                PcbSmokeDialog(*m_frame.m_pcbDialog);
+            }
+        }
+        else if (m_pcbStage >= 80)
+        {
+            if (m_pcbStage == 85 && !m_frame.m_busy)
+            {
+                CanvasAssert(m_frame.m_revision == m_frame.m_savedRevision,
+                             "카탈로그 조회가 저장된 편집 개정을 바꿨습니다.");
+                FinishSmoke(true, "");
+            }
         }
         else if (!m_frame.m_busy && !m_frame.m_cadRestoring && !m_frame.m_solverRestoring)
         {
@@ -148,7 +168,7 @@ void StudioSmokeDriver::PcbSmokeDialog(PcbSelectionDialog& dialog)
     }
     if (m_pcbStage == 5 || m_pcbStage == 8 || m_pcbStage == 33)
     {
-        if (requestPending || (!dialog.m_searchResult.contains("items") && dialog.m_model.Error().is_null()))
+        if (requestPending || (dialog.m_catalogSearchInput.empty() && dialog.m_model.Error().is_null()))
         {
             return;
         }
@@ -247,14 +267,13 @@ void StudioSmokeDriver::PcbSmokeDialog(PcbSelectionDialog& dialog)
     }
     else if (m_pcbStage == 9 && !requestPending)
     {
-        CanvasAssert(dialog.m_searchResult.contains("items") && !dialog.m_searchResult.at("items").empty(),
-                     "실제 카탈로그 검색 결과가 없습니다.");
+        CanvasAssert(dialog.m_results->GetItemCount() > 0, "실제 카탈로그 검색 결과가 없습니다.");
         long selected = -1;
-        for (std::size_t index = 0; index < dialog.m_searchResult.at("items").size(); ++index)
+        for (long index = 0; index < std::min<long>(dialog.m_results->GetItemCount(), PcbCatalogTable::PageSize); ++index)
         {
-            if (dialog.m_searchResult.at("items").at(index).at("id") == "PCB056952")
+            if (const Json* row = dialog.m_results->Row(index); row && row->at("id") == "PCB056952")
             {
-                selected = static_cast<long>(index);
+                selected = index;
             }
         }
         CanvasAssert(selected >= 0, "검증용 2층 관측을 찾지 못했습니다.");
@@ -570,5 +589,91 @@ void StudioSmokeDriver::OnPcbShutdownComplete()
     catch (const std::exception& error)
     {
         FinishSmoke(false, error.what());
+    }
+}
+
+
+/** @brief 큰 설계가 열린 실제 Windows 표에서 필터, 행 접근과 native 스크롤을 검증한다. */
+void StudioSmokeDriver::PcbSmokeLargeCatalog(PcbSelectionDialog& dialog)
+{
+    if (m_frame.m_requests.Size() != 0)
+    {
+        return;
+    }
+    const auto elapsed = [this]()
+    {
+        return std::chrono::duration<double, std::milli>(Clock::now() - m_pcbCatalogAction).count();
+    };
+    if (m_pcbStage == 80)
+    {
+        ChoosePcbValue(dialog.m_entity, 1);
+        m_pcbCatalogAction = Clock::now();
+        m_pcbStage = 81;
+        ClickPcbButton(dialog.m_search);
+    }
+    else if (m_pcbStage == 81)
+    {
+        CanvasAssert(dialog.m_results->GetItemCount() == 100000 && dialog.m_results->Row(0) != nullptr,
+                     "10만 건 검색 결과와 첫 행을 찾을 수 없습니다.");
+        m_pcbCatalogMetrics["rows"] = dialog.m_results->GetItemCount();
+        m_pcbCatalogMetrics["first_search_observed_ms"] = elapsed();
+        dialog.m_catalogRowEntry->SetValue("100000");
+        wxCommandEvent enter(wxEVT_TEXT_ENTER, dialog.m_catalogRowEntry->GetId());
+        enter.SetEventObject(dialog.m_catalogRowEntry);
+        m_pcbCatalogAction = Clock::now();
+        m_pcbStage = 82;
+        dialog.m_catalogRowEntry->GetEventHandler()->ProcessEvent(enter);
+    }
+    else if (m_pcbStage == 82)
+    {
+        const Json* last = dialog.m_results->Row(99999);
+        if (last == nullptr)
+        {
+            return;
+        }
+        CanvasAssert(last->at("id") == "fixture-100000" && last->at("df").is_null() &&
+                         dialog.m_results->GetItemText(99999, 1).Contains("100000"),
+                     "표 마지막 행의 원본 식별자, 미정값 또는 표시가 다릅니다.");
+        const auto top = dialog.m_results->GetTopItem();
+        CanvasAssert(top > 99000, "행 이동이 실제 표의 표시 범위를 바꾸지 않았습니다.");
+        m_pcbCatalogMetrics["last_row_observed_ms"] = elapsed();
+        m_pcbCatalogMetrics["top_row_after_jump"] = top;
+        m_pcbCatalogAction = Clock::now();
+        m_pcbStage = 83;
+#ifdef __WXMSW__
+        SendMessageW(static_cast<HWND>(dialog.m_results->GetHandle()), WM_VSCROLL, SB_PAGEUP, 0);
+#else
+        ClickPcbButton(dialog.m_previous);
+#endif
+    }
+    else if (m_pcbStage == 83)
+    {
+        const auto top = dialog.m_results->GetTopItem();
+        const Json* row = dialog.m_results->Row(top);
+        if (row == nullptr)
+        {
+            dialog.QueueCatalogPage(top, true);
+            return;
+        }
+        CanvasAssert(top < m_pcbCatalogMetrics.at("top_row_after_jump").get<long>() && top > 99000 &&
+                         !dialog.m_results->GetItemText(top, 1).empty(),
+                     "native 페이지 스크롤이 인접한 검색 행을 가져오지 않았습니다.");
+        m_pcbCatalogMetrics["scroll_top_row"] = top;
+        m_pcbCatalogMetrics["scroll_observed_ms"] = elapsed();
+        dialog.m_query->SetValue(Display("조건 그룹 A"));
+        m_pcbCatalogAction = Clock::now();
+        m_pcbStage = 84;
+        ClickPcbButton(dialog.m_search);
+    }
+    else if (m_pcbStage == 84)
+    {
+        const Json* row = dialog.m_results->Row(0);
+        CanvasAssert(dialog.m_results->GetItemCount() == 50000 && row && row->at("id") == "fixture-000002",
+                     "표 필터 결과에 이전 검색의 행이나 잘못된 개수가 남았습니다.");
+        m_pcbCatalogMetrics["filtered_rows"] = dialog.m_results->GetItemCount();
+        m_pcbCatalogMetrics["filtered_search_observed_ms"] = elapsed();
+        m_pcbChecks.push_back("virtual_catalog_scroll_filter_and_last_row");
+        m_pcbStage = 85;
+        ClickPcbButton(dialog.m_cancelButton);
     }
 }

@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+class PcbCatalogTable;
 class StudioSmokeDriver;
 class wxButton;
 class wxCheckBox;
@@ -54,7 +55,11 @@ private:
     wxPanel* BuildMaterialsPage();
     wxPanel* BuildPortsPage();
     wxPanel* BuildReviewPage();
-    void Search(int offset = 0);
+    void Search();
+    void ResetCatalogRows();
+    void QueueCatalogPage(long row, bool selected = false);
+    void LoadCatalogPage();
+    void MoveCatalogView(long row);
     void SelectResult(long row);
     void UseSource();
     void UseManual();
@@ -96,13 +101,16 @@ private:
     Json m_materialIds = Json::object();
     Json m_selected = nullptr;
     Json m_sectionLayers = Json::array();
-    Json m_searchResult = Json::object();
     Json m_suggestionData = nullptr;
     Json m_materialProposalDisplays = Json::object();
     std::string m_catalogId;
     std::string m_selectedCatalog;
     std::string m_selectedEntity;
-    std::vector<int> m_pageOffsets{0};
+    Json m_catalogSearchInput = Json::object();
+    long m_catalogRowCount = 0;
+    long m_catalogWantedRow = -1;
+    bool m_catalogPageQueued = false;
+    bool m_catalogPageLoading = false;
     std::vector<int> m_suggestionOffsets{0};
     std::vector<std::string> m_layerIds;
     std::vector<std::string> m_layerLabels;
@@ -127,7 +135,7 @@ private:
     wxChoice* m_entity = nullptr;
     wxComboBox* m_publisher = nullptr;
     wxTextCtrl* m_query = nullptr;
-    wxListCtrl* m_results = nullptr;
+    PcbCatalogTable* m_results = nullptr;
     wxTextCtrl* m_detail = nullptr;
     wxButton* m_search = nullptr;
     wxButton* m_previous = nullptr;
@@ -135,6 +143,7 @@ private:
     wxButton* m_useSource = nullptr;
     wxButton* m_manualButton = nullptr;
     wxStaticText* m_pageLabel = nullptr;
+    wxTextCtrl* m_catalogRowEntry = nullptr;
     wxGrid* m_layers = nullptr;
     wxTextCtrl* m_layoutReason = nullptr;
     wxTextCtrl* m_zOrigin = nullptr;

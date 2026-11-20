@@ -91,6 +91,18 @@ class CatalogQueryTests(unittest.TestCase):
         self.connection.commit()
         self.assertEqual(self.service.status()["state"], "invalid")
 
+    def test_exact_total_is_optional_and_uses_the_page_filter(self):
+        """! @brief 일치 건수는 페이지 이동과 공통 필터를 따르고 기존 요청은 그대로 둔다."""
+        request = {"entity": "observations", "filters": {"publisher": "Fabricator"}, "query": "FR-4", "limit": 1}
+        first = self.service.search(request)
+        self.assertNotIn("total_count", first)
+        tail = self.service.search(request | {"include_total": True, "offset": 2, "catalog_id": first["catalog_id"]})
+        self.assertEqual(tail["total_count"], 3)
+        self.assertEqual([row["id"] for row in tail["items"]], ["r03"])
+        self.assertFalse(tail["has_more"])
+        with self.assertRaises(CatalogError):
+            self.service.search(request | {"include_total": 1})
+
     def test_dk_df_and_record_frequency_are_not_conflated(self):
         """! @brief 공통 주파수를 Df로 전용하거나 Df만 있는 행을 Dk로 표시하지 않는다."""
         self.assertEqual([item["id"] for item in self.search(frequency_ghz=2.4, frequency_property="dk")["items"]],

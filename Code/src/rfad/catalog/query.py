@@ -11,6 +11,7 @@ ENTITIES = (
 )
 MAX_RESULT_BYTES = 48 * 1024
 MAX_PAGE_SIZE = 100
+MAX_SEARCH_OFFSET = 1_000_000
 MAX_RAW_CHARACTERS = 8192
 MAX_TEXT_CHARACTERS = 512
 
@@ -45,6 +46,7 @@ class SearchQuery:
     limit: int
     offset: int
     catalog_id: str | None
+    include_total: bool
 
 
 @dataclass(frozen=True)
@@ -113,7 +115,7 @@ def _revision(data: dict, offset: int) -> str | None:
 
 def parse_search(value: object) -> SearchQuery:
     """! @brief 개체별 조건을 검사하며 query는 원시 적층에 연결된 공개 표기도 검색한다."""
-    data = _fields(value, {"entity"}, {"filters", "query", "limit", "offset", "catalog_id"})
+    data = _fields(value, {"entity"}, {"filters", "query", "limit", "offset", "catalog_id", "include_total"})
     entity = _entity(data["entity"])
     filters = data.get("filters", {})
     allowed = (TEXT_FILTERS[entity] | NUMBER_FILTERS.get(entity, set())
@@ -148,9 +150,12 @@ def parse_search(value: object) -> SearchQuery:
         if low is not None and high is not None and low > high:
             raise CatalogError("E_SCHEMA", "두께 검색의 최솟값이 최댓값보다 큽니다.")
     limit = _integer(data.get("limit", 25), "limit", 1, MAX_PAGE_SIZE)
-    offset = _integer(data.get("offset", 0), "offset", 0, 1000000)
+    offset = _integer(data.get("offset", 0), "offset", 0, MAX_SEARCH_OFFSET)
+    include_total = data.get("include_total", False)
+    if type(include_total) is not bool:
+        raise CatalogError("E_SCHEMA", "검색 건수 조회 여부는 bool이어야 합니다.")
     return SearchQuery(entity, checked, _text(data.get("query", ""), "query", maximum=256, empty=True),
-                       limit, offset, _revision(data, offset))
+                       limit, offset, _revision(data, offset), include_total)
 
 
 def parse_detail(value: object) -> DetailQuery:

@@ -1,5 +1,6 @@
 /** @file @brief 선택 대화상자의 요청 수명과 미리보기/적용 상태를 연결한다. */
 #include "pcb_selection_dialog.h"
+#include "pcb_catalog_table.h"
 #include "pcb_selection_view_support.h"
 #include <wx/button.h>
 #include <wx/combobox.h>
@@ -196,8 +197,9 @@ void PcbSelectionDialog::UpdateControls()
                           m_model.CurrentStage() != Studio::PcbSelectionModel::Stage::Stale;
     m_notebook->Enable(editable);
     m_search->Enable(editable);
-    m_previous->Enable(editable && m_pageOffsets.size() > 1);
-    m_next->Enable(editable && m_searchResult.value("has_more", false));
+    m_previous->Enable(editable && m_catalogRowCount > 1);
+    m_next->Enable(editable && m_catalogRowCount > 1);
+    m_catalogRowEntry->Enable(editable && m_catalogRowCount > 0);
     m_useSource->Enable(editable && !m_selected.is_null());
     const bool loadingDraft = m_model.CurrentStage() == Studio::PcbSelectionModel::Stage::LoadingDraft;
     m_useSuggestion->Enable(

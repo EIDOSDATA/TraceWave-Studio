@@ -247,16 +247,20 @@ class CatalogRepository:
         with self.connection() as (_, metadata):
             return metadata
 
-    def search(self, request: SearchQuery) -> tuple[dict, list[dict]]:
+    def search(self, request: SearchQuery) -> tuple[dict, list[dict], int | None]:
         """! @brief 안정 ID 순서로 요청 크기보다 하나 많은 행만 조회한다."""
         with self.connection() as (connection, metadata):
             self._check_revision(metadata, request.catalog_id)
             where, parameters = self._where(request)
             order = "c.template_id,c.component_order,c.component_id" if request.entity == "native_components" else "c." + IDS[request.entity]
-            rows = connection.execute("SELECT " + self._selection(request.entity) + " FROM " + self._source(request.entity)
+            source = self._source(request.entity)
+            rows = connection.execute("SELECT " + self._selection(request.entity) + " FROM " + source
                                       + where + " ORDER BY " + order + " LIMIT ? OFFSET ?",
                                       parameters + [request.limit + 1, request.offset]).fetchall()
-            return metadata, self._rows(connection, request.entity, rows)
+            total = None
+            if request.include_total:
+                total = connection.execute("SELECT count(*) FROM " + source + where, parameters).fetchone()[0]
+            return metadata, self._rows(connection, request.entity, rows), total
 
     def get(self, request: DetailQuery) -> tuple[dict, dict, dict]:
         """! @brief 원문 JSON을 파싱하지 않고 SQLite에서 필요한 조각만 읽는다."""

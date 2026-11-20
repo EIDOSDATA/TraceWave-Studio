@@ -1,19 +1,60 @@
 """! @brief 대형 설계의 표시 페이지와 실제 Windows 재열기를 검증한다."""
+import hashlib
 import json
 import os
+import sqlite3
 from pathlib import Path
 import subprocess
 import sys
 from tempfile import TemporaryDirectory
 import unittest
 
+from contextlib import closing
 from rfad.application.canonical import canonical_bytes
 from rfad.application.edit_view_pages import PROFILE, MAX_PAGE_BYTES, MAX_ROWS
 from rfad.application.projects import ProjectService
 from rfad.application.rpc import handle_frame
+from rfad.catalog.models import CATALOG_IMPORT_VERSION, CATALOG_SCHEMA, canonical_json
+from rfad.catalog.schema import create_indexes, create_schema
 from test_cad_worker_process import CODE_ROOT, register_fixture
 from test_design import build_design
 from test_f1_project import f1_project
+
+
+def f1_catalog(database):
+    """! @brief 원문과 미정 Df를 가진 10만 건의 합성 SQLite 조회 자료를 만든다."""
+    properties = canonical_json({"fixture": True})
+    with closing(sqlite3.connect(database)) as connection, connection:
+        create_schema(connection)
+        metadata = {"schema": CATALOG_SCHEMA, "import_version": CATALOG_IMPORT_VERSION,
+                    "catalog_id": "perf:f1-table-100000", "counts": {"observations": 100000}}
+        connection.executemany("INSERT INTO meta VALUES (?,?)",
+                               ((key, canonical_json(value)) for key, value in metadata.items()))
+        source = '{"kind":"synthetic fixture"}'
+        digest = hashlib.sha256(source.encode("utf-8")).hexdigest()
+        connection.execute(
+            "INSERT INTO sources VALUES (?,?,?,?,?,?,?,?)",
+            ("fixture-source", "F1", "합성 조회 자료", "https://example.test/fixture", None, 0, source, digest))
+        connection.execute(
+            "INSERT INTO products VALUES (?,?,?,?,?,?,?)",
+            ("fixture-product", "F1", "합성 기판", "fixture", None, source, digest))
+
+        def records():
+            """! @brief 입력을 전량 쌓지 않고 안정 정렬 키와 원문 해시를 생성한다."""
+            for index in range(1, 100001):
+                record_id = f"fixture-{index:06d}"
+                group = "A" if index % 2 == 0 else "B"
+                product = f"조건 그룹 {group} / {index:06d}"
+                text = canonical_json({"record_id": record_id, "product": product, "dk": 4.2, "df": None})
+                # @brief 끝 페이지에 긴 표기를 넣어 프레임 바이트 제한으로 나뉘는 조회를 검증한다.
+                display_product, form = (product + " 원문" * 160, "직조" * 256) if index > 99950 else (product, "core")
+                yield (record_id, "fixture-product", "fixture-source", "F1", display_product, "fixture", form, 4.2,
+                       None, text, hashlib.sha256(text.encode("utf-8")).hexdigest(), properties)
+
+        connection.executemany(
+            "INSERT INTO observations(record_id,product_id,source_id,publisher,product,dataset_role,material_form,"
+            "dk,df,raw_json,raw_sha256,properties_json) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", records())
+        create_indexes(connection)
 
 
 def read(service, document, method, **input_data):
@@ -96,9 +137,13 @@ class F1ViewTests(unittest.TestCase):
                 document, _ = register_fixture(service, f1_project())
                 path = service.journal.read()["projects"][document["project_id"]]["path"]
             artifact = directory / "studio.json"
+            catalog = directory / "자료 검색.sqlite"
+            f1_catalog(catalog)
+            before_catalog = hashlib.sha256(catalog.read_bytes()).hexdigest()
             executable = Path(os.environ["RFAD_GUI_EXE"]).resolve()
             process = subprocess.run([str(executable), "--python", sys.executable, "--source", str(CODE_ROOT / "src"),
-                "--workspace", str(workspace), "--open-project", path, "--smoke-test", "--smoke-report", str(artifact)],
+                "--workspace", str(workspace), "--open-project", path, "--catalog", str(catalog),
+                "--catalog-table-smoke-test", "--smoke-report", str(artifact)],
                 stdin=subprocess.DEVNULL, capture_output=True, timeout=125, check=False)
             self.assertTrue(artifact.is_file(), (process.returncode, process.stderr))
             report = json.loads(artifact.read_bytes())
@@ -109,6 +154,10 @@ class F1ViewTests(unittest.TestCase):
             self.assertEqual(report["canvas_shapes"], 10_000)
             self.assertEqual(report["canvas_omissions"], 0)
             self.assertEqual(report["editor_parameters"], 1_000)
+            self.assertEqual(report["pcb_catalog_metrics"]["rows"], 100_000)
+            self.assertEqual(report["pcb_catalog_metrics"]["filtered_rows"], 50_000)
+            self.assertIn("virtual_catalog_scroll_filter_and_last_row", report["pcb_checks"])
+            self.assertEqual(hashlib.sha256(catalog.read_bytes()).hexdigest(), before_catalog)
             with ProjectService(workspace, auto_run=False) as service:
                 state = service.journal.read()
                 item = state["projects"][document["project_id"]]

@@ -16,6 +16,7 @@ struct Options
     bool smoke = false;
     bool editorSmoke = false;
     bool pcbSmoke = false;
+    bool catalogTableSmoke = false;
     bool canvasSmoke = false;
     bool primitivesSmoke = false;
     bool coordinatesSmoke = false;

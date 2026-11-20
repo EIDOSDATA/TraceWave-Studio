@@ -139,7 +139,22 @@ void StudioSmokeDriver::OnOpened()
             return;
         }
         m_smokeStage = 5;
-        FinishSmoke(true, "");
+        if (m_frame.m_options.catalogTableSmoke)
+        {
+            if (m_frame.m_options.openProject.empty() || m_frame.m_options.catalog.empty() ||
+                m_frame.m_scene.at("shapes").size() != 10000)
+            {
+                FinishSmoke(false, "대형 설계와 카탈로그 시험 입력이 필요합니다.");
+                return;
+            }
+            m_pcbStage = 80;
+            m_pcbStarted = Clock::now();
+            m_frame.CallAfter([this]() { m_frame.OpenPcbSelection(); });
+        }
+        else
+        {
+            FinishSmoke(true, "");
+        }
     }
 }
 

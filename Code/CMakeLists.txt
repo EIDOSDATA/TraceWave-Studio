@@ -78,6 +78,7 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/pcb_suggestion_model.cpp
     ui/wxwidgets/pcb_selection_dialog.cpp
     ui/wxwidgets/pcb_selection_view.cpp
+    ui/wxwidgets/pcb_catalog_table.cpp
     ui/wxwidgets/pcb_selection_layers.cpp
     ui/wxwidgets/pcb_selection_materials.cpp
     ui/wxwidgets/pcb_selection_suggestions.cpp

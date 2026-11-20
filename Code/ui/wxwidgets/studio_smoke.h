@@ -162,6 +162,7 @@ private:
     void PcbSmokePrepare();
     /** @brief 실제 대화상자 컨트롤에 이벤트를 보내고 비동기 결과를 관찰한다. */
     void PcbSmokeDialog(PcbSelectionDialog& dialog);
+    void PcbSmokeLargeCatalog(PcbSelectionDialog& dialog);
     /** @brief 실제 재료 폼에서 물성별 출처와 직접 입력 이유를 독립적으로 지정한다. */
     void PcbSmokeMaterial(PcbSelectionDialog& dialog);
     /** @brief 닫힌 대화상자의 적용 결과, 이력과 저장 후 재열기를 검증한다. */
@@ -182,6 +183,8 @@ private:
     Json m_pcbAppliedLayers;
     Json m_pcbExpectedMaterial;
     Json m_pcbChecks = Json::array();
+    Json m_pcbCatalogMetrics = Json::object();
+    Clock::time_point m_pcbCatalogAction{};
     std::string m_solverFirstResult;
     Json m_solverChecks = Json::array();
     Clock::time_point m_solverCancelStarted{};
