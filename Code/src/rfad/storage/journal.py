@@ -82,6 +82,14 @@ def _strict_json(payload: bytes) -> Any:
         raise ProjectError("E_HASH", "journal JSON의 형식 또는 정규 바이트가 손상되었습니다.") from error
 
 
+def _encode_state(state: dict) -> bytes:
+    """! @brief 상태를 게시할 정규 바이트로 만들고 입력 오류를 저장소 계약으로 변환한다."""
+    try:
+        return canonical_bytes(state)
+    except CanonicalEncodingError as error:
+        raise ProjectError("E_SCHEMA", "journal 상태가 정규 JSON 계약을 위반합니다.") from error
+
+
 class Journal:
     """! @brief workspace의 유일한 writer를 소유하며 불변 commit을 게시한다.
 
@@ -115,7 +123,7 @@ class Journal:
                     raise ProjectError("E_HASH", "commit 자료는 있지만 current pointer가 없습니다. 원본을 보존하고 복구해야 합니다.")
                 if type(initial_state) is not dict:
                     raise ProjectError("E_SCHEMA", "초기 journal 상태는 object여야 합니다.")
-                self._commit(copy.deepcopy(initial_state))
+                self._commit(_encode_state(copy.deepcopy(initial_state)))
         except BaseException:
             self.close()
             raise
@@ -230,12 +238,8 @@ class Journal:
         if self.fault_hook is not None:
             self.fault_hook(stage)
 
-    def _commit(self, state: dict) -> str:
-        """! @brief 모든 payload 검증 뒤 current pointer 하나만 교체한다."""
-        try:
-            payload = canonical_bytes(state)
-        except CanonicalEncodingError as error:
-            raise ProjectError("E_SCHEMA", "journal 상태가 정규 JSON 계약을 위반합니다.") from error
+    def _commit(self, payload: bytes) -> str:
+        """! @brief 정규 상태 바이트를 작성하고 검증한 뒤 current pointer 하나만 교체한다."""
         if len(payload) > MAX_STATE_BYTES:
             raise ProjectError("E_RESOURCE", "journal 상태가 8 MiB 한도를 초과합니다.")
         self._check_space(len(payload))
@@ -272,30 +276,35 @@ class Journal:
     def read(self) -> dict:
         """! @brief pointer/manifest/payload hash를 매번 확인한 새 상태 사본을 읽는다."""
         with self._mutex:
-            self._ensure_open()
-            pointer = _strict_json(self._read_bytes(self._safe_path("current.json", internal=True), 16384))
-            if type(pointer) is not dict or set(pointer) != {"schema_version", "commit_id", "manifest_sha256"} or pointer["schema_version"] != JOURNAL_SCHEMA:
-                raise ProjectError("E_HASH", "current pointer 구조가 손상되었거나 지원하지 않습니다.")
-            commit_id = pointer["commit_id"]
-            try:
-                if type(commit_id) is not str or str(UUID(commit_id)) != commit_id:
-                    raise ValueError("invalid UUID")
-            except ValueError as error:
-                raise ProjectError("E_HASH", "current commit ID가 잘못되었습니다.") from error
-            manifest_bytes = self._read_bytes(self._safe_path(f"commits/{commit_id}/manifest.json", internal=True), 16384)
-            if _digest(manifest_bytes) != pointer["manifest_sha256"]:
-                raise ProjectError("E_HASH", "commit manifest의 SHA256이 일치하지 않습니다.")
-            manifest = _strict_json(manifest_bytes)
-            if type(manifest) is not dict or set(manifest) != {"schema_version", "commit_id", "state"} or manifest["schema_version"] != JOURNAL_SCHEMA or manifest["commit_id"] != commit_id:
-                raise ProjectError("E_HASH", "commit manifest 구조가 손상되었습니다.")
-            reference = manifest["state"]
-            if type(reference) is not dict or reference.get("uri") != f"commits/{commit_id}/state.json":
-                raise ProjectError("E_HASH", "commit의 상태 파일 참조가 일치하지 않습니다.")
-            payload = self._read_artifact(reference, internal=True)
-            state = _strict_json(payload)
-            if type(state) is not dict:
-                raise ProjectError("E_HASH", "journal 최상위 상태는 object여야 합니다.")
-            return copy.deepcopy(state)
+            state, _ = self._read_state()
+            return state
+
+    def _read_state(self) -> tuple[dict, bytes]:
+        """! @brief 잠금 안에서 새 상태와 검증한 정규 바이트를 함께 얻는다."""
+        self._ensure_open()
+        pointer = _strict_json(self._read_bytes(self._safe_path("current.json", internal=True), 16384))
+        if type(pointer) is not dict or set(pointer) != {"schema_version", "commit_id", "manifest_sha256"} or pointer["schema_version"] != JOURNAL_SCHEMA:
+            raise ProjectError("E_HASH", "current pointer 구조가 손상되었거나 지원하지 않습니다.")
+        commit_id = pointer["commit_id"]
+        try:
+            if type(commit_id) is not str or str(UUID(commit_id)) != commit_id:
+                raise ValueError("invalid UUID")
+        except ValueError as error:
+            raise ProjectError("E_HASH", "current commit ID가 잘못되었습니다.") from error
+        manifest_bytes = self._read_bytes(self._safe_path(f"commits/{commit_id}/manifest.json", internal=True), 16384)
+        if _digest(manifest_bytes) != pointer["manifest_sha256"]:
+            raise ProjectError("E_HASH", "commit manifest의 SHA256이 일치하지 않습니다.")
+        manifest = _strict_json(manifest_bytes)
+        if type(manifest) is not dict or set(manifest) != {"schema_version", "commit_id", "state"} or manifest["schema_version"] != JOURNAL_SCHEMA or manifest["commit_id"] != commit_id:
+            raise ProjectError("E_HASH", "commit manifest 구조가 손상되었습니다.")
+        reference = manifest["state"]
+        if type(reference) is not dict or reference.get("uri") != f"commits/{commit_id}/state.json":
+            raise ProjectError("E_HASH", "commit의 상태 파일 참조가 일치하지 않습니다.")
+        payload = self._read_artifact(reference, internal=True)
+        state = _strict_json(payload)
+        if type(state) is not dict:
+            raise ProjectError("E_HASH", "journal 최상위 상태는 object여야 합니다.")
+        return state, payload
 
     def transaction(self, mutator: Callable[[dict], Any]) -> Any:
         """! @brief 상태 사본 변경과 같은 commit의 receipt를 한 번에 게시한다.
@@ -309,19 +318,14 @@ class Journal:
             self._ensure_open()
             if self._in_transaction:
                 raise ProjectError("E_CONFLICT", "중첩 journal transaction은 지원하지 않습니다.")
-            state = self.read()
-            previous_bytes = canonical_bytes(state)
+            state, previous_bytes = self._read_state()
             self._in_transaction = True
             try:
                 result = mutator(state)
                 result_copy = copy.deepcopy(result)
-                try:
-                    unchanged = canonical_bytes(state) == previous_bytes
-                except CanonicalEncodingError as error:
-                    raise ProjectError("E_SCHEMA", "journal 상태가 정규 JSON 계약을 위반합니다.") from error
-                if unchanged:
-                    return result_copy
-                self._commit(state)
+                payload = _encode_state(state)
+                if payload != previous_bytes:
+                    self._commit(payload)
                 return result_copy
             finally:
                 self._in_transaction = False

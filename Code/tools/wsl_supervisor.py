@@ -530,19 +530,23 @@ def daemon(payload):
             time.sleep(0.01)
         raise RuntimeError("watchdog acknowledgement missing")
 
+    def reap_descendants(pid):
+        """! @brief 새 session으로 이동해 출력 pipe를 상속한 소유 후손도 먼저 회수한다."""
+        if not _terminate_owned(pid, payload["nonce"]):
+            raise RuntimeError("owned descendants are still active")
+
     thread = threading.Thread(target=monitor, daemon=True)
     thread.start()
     try:
         result = run_native([specification["python"], "-I", "-B", "tools/openems_worker.py", "--request", "request.json"],
                             path, encoded({"schema": "rfad.wsl-start/0.1", "run_id": payload["run_id"], "nonce": payload["nonce"]}) + b"\n",
                             cancel, timeout_seconds=specification["timeout_seconds"], on_started=started,
-                            output_directory=path / "output", **specification["limits"])
+                            output_directory=path / "output", reap_remaining_descendants=reap_descendants,
+                            **specification["limits"])
         state = result["termination"]
         if state == "completed" and result["returncode"] != 0:
             state = "failed"
-        # @brief run_native는 원래 process group을 회수하며 전체 실행 후손은 별도로 확인한다.
-        confirmed = _terminate_owned(worker_pid, payload["nonce"])
-        publish(path, state=state if confirmed else "failed", termination_confirmed=confirmed, outcome_unknown=not confirmed,
+        publish(path, state=state, termination_confirmed=True, outcome_unknown=False,
                 native=result, reason=reason["value"], control_error=reason["control_error"])
     except Exception as error:
         unknown = bool(getattr(error, "details", {}).get("outcome_unknown"))

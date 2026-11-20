@@ -21,14 +21,14 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 44,
     "current_06_분석연구": 13,
-    "current_07_검증": 48,
+    "current_07_검증": 49,
     "current_08_운영환경": 7,
     "current_09_개발계획": 4,
     "current_11_검토기록": 6,
     "current_traceability": 4,
     "document_catalog": 4,
     "document_navigation": 6,
-    "documentation_asset": 149,
+    "documentation_asset": 150,
     "documentation_validation_record": 1,
     "historical_proposal": 2,
     "historical_verification": 41,
@@ -28473,7 +28473,7 @@
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
       "bytes": 619557,
-      "working_tree_sha256": "9531616544a8f3499e3f22ad49bb816fa0b5e7ee99fdb0c9488edb5b8138bcc1"
+      "working_tree_sha256": "24169d410cca03cf5c09c22abe8ae16654f79c6c723dc5c0129128433abbbab8"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -28609,9 +28609,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 13891,
-      "working_tree_sha256": "f8b82005d6ef4539727b11f441da8c02fc53e61d8e63347599ee09c6a5f3b398",
-      "text_lines": 100,
+      "bytes": 14255,
+      "working_tree_sha256": "366b2ea0e0a02d43c40f622d1ccdddf7fa5b69736236c3eefebd5d277a6a269e",
+      "text_lines": 102,
       "text_status": "utf8_read"
     },
     {
@@ -28672,18 +28672,18 @@
       "path": "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 144094,
-      "working_tree_sha256": "4b621f0013cdd8ec86866210242ae6ae95ad355a0ff0085a3d1f41752a9ab9ed",
-      "text_lines": 795,
+      "bytes": 144710,
+      "working_tree_sha256": "c6150f4e4d8bafa56f26e33028e3c3f272ca180669b9cc6ef942dc7c18dd4cd3",
+      "text_lines": 799,
       "text_status": "utf8_read"
     },
     {
       "path": "01_개발문서/09_개발계획/03_개발완료_계획.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 36144,
-      "working_tree_sha256": "bfeb9a1378bb9ad512db25de1988ecf9d57497b4efee6b89de2358083348e53f",
-      "text_lines": 171,
+      "bytes": 36583,
+      "working_tree_sha256": "63a6e12b820e6b81f1ad2bdce2a83e27cfc5ec301afd4a3afa5f84d182c87504",
+      "text_lines": 173,
       "text_status": "utf8_read"
     },
     {
@@ -31013,6 +31013,22 @@
       "review_scope": "문서/시안 자산 보존",
       "bytes": 40165,
       "working_tree_sha256": "8b3560ea7d4977865dc8beb149cc64d3d6b220465f12530f5704ea1daf585437"
+    },
+    {
+      "path": "01_개발문서/07_검증/84_윈도우_취소접수와_더블유에스엘_로그_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 3024,
+      "working_tree_sha256": "a0f64da711f8d216c1c9b461c913578e639cec009252b5ea4cc1ac82744f72cc",
+      "text_lines": 22,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/85_윈도우_취소접수와_더블유에스엘_로그_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 28318,
+      "working_tree_sha256": "fd9fa2918f158f54fc733100fee7603088d50b2a6b2aea32136fdadcfa1f4bb4"
     }
   ],
   "identical_byte_groups": [
@@ -31169,19 +31185,19 @@
   ],
   "incremental_refresh": {
     "date_kst": "2026-11-20",
-    "mode": "step12_windows_lazy_import_and_source_lookup",
-    "previous_inventory_sha256": "6a86a93c749d07d2c711dfdd5a0899ad994ae16951a91a29250ff01f74e49e6a",
+    "mode": "step12_windows_cancel_and_wsl_output",
+    "previous_inventory_sha256": "4df5ae74ced8ffaa8bf0a3d9510db5a49ebb9c11953e3a42bbdee3e30e614f72",
     "refreshed_paths": [
       "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
-      "01_개발문서/07_검증/82_윈도우_시작과_출처탐색_검증.md",
-      "01_개발문서/07_검증/83_윈도우_시작과_출처탐색_실행기록.json",
+      "01_개발문서/07_검증/84_윈도우_취소접수와_더블유에스엘_로그_검증.md",
+      "01_개발문서/07_검증/85_윈도우_취소접수와_더블유에스엘_로그_실행기록.json",
       "01_개발문서/07_검증/README.md",
       "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
       "01_개발문서/09_개발계획/03_개발완료_계획.md"
     ],
     "added_paths": [
-      "01_개발문서/07_검증/82_윈도우_시작과_출처탐색_검증.md",
-      "01_개발문서/07_검증/83_윈도우_시작과_출처탐색_실행기록.json"
+      "01_개발문서/07_검증/84_윈도우_취소접수와_더블유에스엘_로그_검증.md",
+      "01_개발문서/07_검증/85_윈도우_취소접수와_더블유에스엘_로그_실행기록.json"
     ],
     "removed_paths": [],
     "preserved_reference_records": 3336,

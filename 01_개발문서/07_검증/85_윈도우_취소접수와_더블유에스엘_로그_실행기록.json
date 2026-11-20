@@ -1,0 +1,795 @@
+{
+  "schema": "rfad.windows-cancel-journal-and-wsl-output/0.1",
+  "date_kst": "2026-11-20",
+  "source_parent": "b103c019ec64a3603ad677691b68deb37c8fcc2b",
+  "journal_diagnostic": {
+    "input": {
+      "bytes": 67145,
+      "sha256": "cc85d807ce0fcf76a38759ab38c390169751b007915374efc35f064cdae3043a"
+    },
+    "cases": [
+      {
+        "synthetic_completed_job_copies": 0,
+        "initial_bytes": 67778,
+        "samples": {
+          "baseline": [
+            {
+              "commit_ms": 80.4211,
+              "replay_ms": 14.7179,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 83.4061,
+              "replay_ms": 15.4987,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 85.0839,
+              "replay_ms": 16.5226,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 89.4999,
+              "replay_ms": 20.4884,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 101.7937,
+              "replay_ms": 17.3817,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 88.9021,
+              "replay_ms": 17.2253,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 91.3208,
+              "replay_ms": 16.7705,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 90.1106,
+              "replay_ms": 17.193,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 95.2976,
+              "replay_ms": 18.8787,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 100.0924,
+              "replay_ms": 25.2718,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 84.1173,
+              "replay_ms": 16.5058,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 83.5791,
+              "replay_ms": 15.7166,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 76.2464,
+              "replay_ms": 14.8677,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 82.925,
+              "replay_ms": 16.9678,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 75.886,
+              "replay_ms": 16.3191,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 83.0882,
+              "replay_ms": 18.2924,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 82.7915,
+              "replay_ms": 14.4036,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 76.7917,
+              "replay_ms": 15.3057,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 83.2771,
+              "replay_ms": 14.7864,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 90.5521,
+              "replay_ms": 15.5851,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            }
+          ],
+          "candidate": [
+            {
+              "commit_ms": 79.1025,
+              "replay_ms": 9.2537,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 69.6021,
+              "replay_ms": 12.3043,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 70.3001,
+              "replay_ms": 10.0965,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 83.0313,
+              "replay_ms": 11.6738,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 77.9184,
+              "replay_ms": 12.5054,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 84.6886,
+              "replay_ms": 11.5326,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 81.5297,
+              "replay_ms": 10.9135,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 83.3589,
+              "replay_ms": 12.6276,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 91.6202,
+              "replay_ms": 13.677,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 85.4252,
+              "replay_ms": 11.8445,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 78.861,
+              "replay_ms": 9.7132,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 76.8313,
+              "replay_ms": 10.0422,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 74.2959,
+              "replay_ms": 10.8206,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 70.6787,
+              "replay_ms": 9.352,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 71.6807,
+              "replay_ms": 9.8426,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 70.2607,
+              "replay_ms": 10.2715,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 71.2267,
+              "replay_ms": 10.1229,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 79.7885,
+              "replay_ms": 9.5108,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 76.2269,
+              "replay_ms": 10.0595,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            },
+            {
+              "commit_ms": 75.1988,
+              "replay_ms": 10.3723,
+              "state_sha256": "5a2a7fac7e91ea934d09ca897e2f7c57c0d5afa1aebb180c563e6461ade91fbf",
+              "state_bytes": 68471
+            }
+          ]
+        },
+        "summary": {
+          "baseline": {
+            "commit_ms": {
+              "median": 83.84819999999999,
+              "p95": 100.177465,
+              "max": 101.7937
+            },
+            "replay_ms": {
+              "median": 16.514200000000002,
+              "p95": 20.727569999999996,
+              "max": 25.2718
+            }
+          },
+          "candidate": {
+            "commit_ms": {
+              "median": 77.37485000000001,
+              "p95": 85.73495,
+              "max": 91.6202
+            },
+            "replay_ms": {
+              "median": 10.3219,
+              "p95": 12.680069999999999,
+              "max": 13.677
+            }
+          }
+        }
+      },
+      {
+        "synthetic_completed_job_copies": 128,
+        "initial_bytes": 463719,
+        "samples": {
+          "baseline": [
+            {
+              "commit_ms": 218.5699,
+              "replay_ms": 120.4545,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 253.621,
+              "replay_ms": 126.3409,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 231.1475,
+              "replay_ms": 135.9667,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 253.1211,
+              "replay_ms": 126.011,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 249.3732,
+              "replay_ms": 129.776,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 229.3876,
+              "replay_ms": 120.759,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 249.7983,
+              "replay_ms": 126.1532,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 243.3782,
+              "replay_ms": 134.6459,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 239.3716,
+              "replay_ms": 125.1046,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 240.0786,
+              "replay_ms": 124.627,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 230.6243,
+              "replay_ms": 127.6279,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 237.0775,
+              "replay_ms": 139.3233,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 203.5623,
+              "replay_ms": 107.2973,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 334.6238,
+              "replay_ms": 141.1773,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 204.0216,
+              "replay_ms": 100.606,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 312.4746,
+              "replay_ms": 180.2437,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 206.1863,
+              "replay_ms": 95.9115,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 194.7485,
+              "replay_ms": 96.5662,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 228.4801,
+              "replay_ms": 119.7454,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 244.0984,
+              "replay_ms": 139.2333,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            }
+          ],
+          "candidate": [
+            {
+              "commit_ms": 135.6296,
+              "replay_ms": 62.6177,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 147.748,
+              "replay_ms": 75.4859,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 144.9619,
+              "replay_ms": 72.4119,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 160.5572,
+              "replay_ms": 80.0506,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 159.3482,
+              "replay_ms": 80.5578,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 156.2608,
+              "replay_ms": 76.2531,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 144.8026,
+              "replay_ms": 74.9545,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 134.4445,
+              "replay_ms": 87.3348,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 158.1276,
+              "replay_ms": 90.4949,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 163.0126,
+              "replay_ms": 81.2106,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 167.3483,
+              "replay_ms": 81.4676,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 143.7055,
+              "replay_ms": 66.765,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 139.5324,
+              "replay_ms": 67.0768,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 157.3635,
+              "replay_ms": 66.3671,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 142.4023,
+              "replay_ms": 65.7104,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 251.8897,
+              "replay_ms": 92.7088,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 169.7691,
+              "replay_ms": 96.4235,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 164.8393,
+              "replay_ms": 76.172,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 151.4877,
+              "replay_ms": 72.696,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            },
+            {
+              "commit_ms": 163.171,
+              "replay_ms": 82.9336,
+              "state_sha256": "b19e34c2678ec833345baf7a7593891bca35cf0d8ecfe5fec033be3cf02215b3",
+              "state_bytes": 464412
+            }
+          ]
+        },
+        "summary": {
+          "baseline": {
+            "commit_ms": {
+              "median": 238.22455,
+              "p95": 313.58206000000007,
+              "max": 334.6238
+            },
+            "replay_ms": {
+              "median": 126.0821,
+              "p95": 143.13062,
+              "max": 180.2437
+            }
+          },
+          "candidate": {
+            "commit_ms": {
+              "median": 156.81214999999997,
+              "p95": 173.87513,
+              "max": 251.8897
+            },
+            "replay_ms": {
+              "median": 76.21255,
+              "p95": 92.894535,
+              "max": 96.4235
+            }
+          }
+        }
+      }
+    ]
+  },
+  "native_windows_openems": [
+    {
+      "scope": "candidate_journal_only",
+      "log": {
+        "file": "stage12x-windows-gui.log",
+        "bytes": 392,
+        "sha256": "b3629ce6542c42a41c690aca41f4084417c28640dd25c409c96b8ab405b72021"
+      },
+      "trace": {
+        "control": {
+          "button_enabled": false,
+          "elapsed_ms": 22.568,
+          "state": "cancel_requested"
+        },
+        "guest_worker_attached": true,
+        "job_id": "875d0401-fa41-4eaa-a2e3-5253fd5b2a85",
+        "phase_before": "analysis",
+        "receipt": {
+          "elapsed_ms": 199.295,
+          "events_cursor": 3,
+          "state": "cancel_requested"
+        },
+        "state_before": "running",
+        "terminal": {
+          "elapsed_ms": 1381.546,
+          "events_cursor": 4,
+          "outcome_unknown": false,
+          "state": "cancelled",
+          "termination_confirmed": true
+        }
+      },
+      "solver_checks": [
+        "circular_board_display",
+        "editing_enabled_during_solver",
+        "snapshot_fixed_and_stale_label",
+        "bounded_results_rendered",
+        "save_during_solver",
+        "cancel_preserves_previous_result",
+        "restart_restores_result"
+      ],
+      "revision_id": "369dd256-ab31-4269-953f-5b165eda6aad",
+      "saved_revision": "369dd256-ab31-4269-953f-5b165eda6aad",
+      "result_id": "7c100323-7705-4e47-961f-b88207677d81"
+    },
+    {
+      "scope": "journal_and_reaping_changes",
+      "log": {
+        "file": "stage12x-windows-gui-final.log",
+        "bytes": 392,
+        "sha256": "1032f60c4e83899380224730e1e21af5b70362c660b9c403af18bc31cfd4adfb"
+      },
+      "trace": {
+        "control": {
+          "button_enabled": false,
+          "elapsed_ms": 24.471,
+          "state": "cancel_requested"
+        },
+        "guest_worker_attached": true,
+        "job_id": "962c3730-d86c-40ee-a0f0-4ec70614d786",
+        "phase_before": "analysis",
+        "receipt": {
+          "elapsed_ms": 243.264,
+          "events_cursor": 3,
+          "state": "cancel_requested"
+        },
+        "state_before": "running",
+        "terminal": {
+          "elapsed_ms": 1551.166,
+          "events_cursor": 4,
+          "outcome_unknown": false,
+          "state": "cancelled",
+          "termination_confirmed": true
+        }
+      },
+      "solver_checks": [
+        "circular_board_display",
+        "editing_enabled_during_solver",
+        "snapshot_fixed_and_stale_label",
+        "bounded_results_rendered",
+        "save_during_solver",
+        "cancel_preserves_previous_result",
+        "restart_restores_result"
+      ],
+      "revision_id": "6633dda5-4f2f-4d61-8e6a-fc5b1d68bfe0",
+      "saved_revision": "6633dda5-4f2f-4d61-8e6a-fc5b1d68bfe0",
+      "result_id": "408666ba-eb29-48d8-a8c9-45aab3cba3a0"
+    }
+  ],
+  "wsl_worker_output_fixture": {
+    "approximate_log_lines_per_second": 1000,
+    "actual_backend": "Windows WSL2 TraceWave-Dev supervisor and native_process",
+    "em_solver_executed": false,
+    "initial_failure": "confirmed worker exit but inherited pipes caused native drain timeout",
+    "initial_log": {
+      "file": "stage12x-wsl-test-diagnostic.log",
+      "bytes": 1953,
+      "sha256": "d48def8eda6ddcd9b5f6c4ab906e48c34938abbea7ecfd191fde3c2867245b44"
+    },
+    "verified_log": {
+      "file": "stage12x-wsl-transport-fixed.log",
+      "bytes": 1043,
+      "sha256": "2af7c7917c54f3d47e58dc5e417ae2707527f5ca21b1fb95987df53f8a766404"
+    },
+    "samples": [
+      {
+        "control": [
+          {
+            "elapsed_ms": 142.8978,
+            "state": "active",
+            "termination_confirmed": false
+          },
+          {
+            "elapsed_ms": 144.8059,
+            "state": "cancelled",
+            "termination_confirmed": true
+          }
+        ],
+        "terminal": {
+          "state": "cancelled",
+          "cursor": 5,
+          "termination_confirmed": true,
+          "outcome_unknown": false,
+          "worker_pid": 398
+        },
+        "native": {
+          "stdout_bytes": 157920,
+          "stderr_bytes": 61,
+          "output_limit_reason": "",
+          "stdout_tail_bytes": 16384,
+          "rate": {
+            "lines": 2000,
+            "seconds": 2.0002863779999984,
+            "child": 410
+          }
+        }
+      },
+      {
+        "control": [
+          {
+            "elapsed_ms": 126.3962,
+            "state": "active",
+            "termination_confirmed": false
+          },
+          {
+            "elapsed_ms": 193.6871,
+            "state": "cancelled",
+            "termination_confirmed": true
+          }
+        ],
+        "terminal": {
+          "state": "cancelled",
+          "cursor": 5,
+          "termination_confirmed": true,
+          "outcome_unknown": false,
+          "worker_pid": 489
+        },
+        "native": {
+          "stdout_bytes": 153720,
+          "stderr_bytes": 61,
+          "output_limit_reason": "",
+          "stdout_tail_bytes": 16384,
+          "rate": {
+            "lines": 2000,
+            "seconds": 2.0002664549999736,
+            "child": 497
+          }
+        }
+      },
+      {
+        "control": [
+          {
+            "elapsed_ms": 155.3818,
+            "state": "active",
+            "termination_confirmed": false
+          },
+          {
+            "elapsed_ms": 165.408,
+            "state": "cancelled",
+            "termination_confirmed": true
+          }
+        ],
+        "terminal": {
+          "state": "cancelled",
+          "cursor": 5,
+          "termination_confirmed": true,
+          "outcome_unknown": false,
+          "worker_pid": 569
+        },
+        "native": {
+          "stdout_bytes": 149100,
+          "stderr_bytes": 61,
+          "output_limit_reason": "",
+          "stdout_tail_bytes": 16384,
+          "rate": {
+            "lines": 2000,
+            "seconds": 2.0000833409999927,
+            "child": 577
+          }
+        }
+      }
+    ]
+  },
+  "regression": {
+    "windows_focused": {
+      "count": 83,
+      "passed": 80,
+      "skipped": 3,
+      "seconds": 229.883,
+      "log": {
+        "file": "stage12x-targeted.log",
+        "bytes": 201,
+        "sha256": "4b6b827bad9270b9b8d8c6a729252f6c8dd251948c9009c116586fbd94bfe88b"
+      }
+    },
+    "wsl_guest": {
+      "count": 16,
+      "passed": 16,
+      "seconds": 93.025,
+      "log": {
+        "file": "stage12x-wsl-guest-regression.log",
+        "bytes": 121,
+        "sha256": "74f29d4ed93ee43433c9f7d2cfa8530262c6e487b6edaec7c1949bc87865cfa1"
+      }
+    },
+    "implementation_audit": {
+      "passed": 14
+    }
+  },
+  "same_gui_run_with_high_rate_solver_log": false,
+  "perf_f4_accepted": false
+}

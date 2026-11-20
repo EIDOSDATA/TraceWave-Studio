@@ -202,6 +202,55 @@ class WslLiveTransportTests(unittest.TestCase):
         self.assertTrue(result["termination_confirmed"])
         self.assertTrue(json.loads((self.stage / "output" / "result.json").read_text())["ok"])
 
+    def test_cancel_active_guest_while_worker_writes_one_thousand_log_lines_per_second(self):
+        """! @brief 같은 WSL 감독기의 고속 로그와 세션을 옮긴 시험 후손을 함께 회수한다."""
+        self.worker(
+            "import os\n"
+            "child = subprocess.Popen([sys.executable, '-c', 'import time;time.sleep(30)'], start_new_session=True)\n"
+            "batch = b'rfad log output row for transport fixture\\n' * 10\n"
+            "started = time.monotonic()\n"
+            "progress = Path('progress.tmp')\n"
+            "progress.write_text(json.dumps({'phase':'running'}), encoding='utf-8')\n"
+            "progress.replace('progress.json')\n"
+            "for index in range(1, 1001):\n"
+            "    os.write(1, batch)\n"
+            "    time.sleep(max(0, started + index / 100 - time.monotonic()))\n"
+            "    if index == 200:\n"
+            "        print(json.dumps({'lines':2000, 'seconds':time.monotonic()-started, 'child':child.pid}), file=sys.stderr, flush=True)\n"
+        )
+        cancel = threading.Event()
+        timer = threading.Timer(3.0, cancel.set)
+        observed = []
+
+        def on_state(value):
+            """! @brief 실제 guest 실행 단계가 확인된 뒤 취소 대기를 시작한다."""
+            if value.get("phase") == "running" and value.get("worker_pid") and not observed:
+                observed.append(value["worker_pid"])
+                timer.start()
+
+        try:
+            result = self.runtime.execute(self.stage, run_id=self.run_id, nonce=self.nonce,
+                                          cancel=cancel, timeout_seconds=15, on_state=on_state)
+        finally:
+            timer.cancel()
+        self.assertEqual(result["state"], "cancelled", result)
+        self.assertTrue(cancel.is_set() and result["termination_confirmed"])
+        self.assertFalse(result["outcome_unknown"])
+        self.assertEqual(len(observed), 1)
+        self.assertEqual(result["worker_pid"], observed[0])
+        native = result["native"]
+        rate = json.loads(native["stderr_tail"])
+        self.assertEqual(rate["lines"], 2000)
+        self.assertGreaterEqual(rate["lines"] / rate["seconds"], 950)
+        line = b"rfad log output row for transport fixture\n"
+        self.assertGreater(native["stdout_bytes"], rate["lines"] * len(line))
+        self.assertEqual(native["stdout_bytes"] % len(line), 0)
+        self.assertLessEqual(len(native["stdout_tail"].encode("utf-8")), 16 * 1024)
+        self.assertEqual(native["output_limit_reason"], "")
+        recovered = self.runtime.inspect(self.run_id, self.nonce)
+        self.assertEqual((recovered["state"], recovered["cursor"]), (result["state"], result["cursor"]))
+        self.assertFalse((self.stage / "output").exists())
+
     def test_killed_wsl_launcher_reconnects_and_cancels_guest(self):
         """! @brief Windows launcher를 강제 종료해도 실행 상태는 guest에서 독립 조회한다."""
         self.worker("child=subprocess.Popen([sys.executable,'-c','import time;time.sleep(30)'])\ntime.sleep(30)\n")

@@ -239,6 +239,7 @@ def run_native(
     on_started: Callable[[dict], None] | None = None,
     *, output_directory: Path | None = None, max_file_bytes: int = 64 * 1024 * 1024,
     max_directory_bytes: int = 128 * 1024 * 1024, max_files: int = 16,
+    reap_remaining_descendants: Callable[[int], None] | None = None,
 ) -> dict:
     """! @brief stdin 접수 전에 소유권을 확정하고 native 실행의 유한 결과를 반환한다.
 
@@ -256,6 +257,7 @@ def run_native(
     @param max_file_bytes 출력 파일 하나의 최대 크기.
     @param max_directory_bytes 모든 출력 파일 크기의 합계 상한.
     @param max_files 출력 파일 수와 별도 디렉터리 수의 상한.
+    @param reap_remaining_descendants 원래 실행 그룹 회수 뒤 출력 pipe를 닫기 전에 호출할 추가 소유권 회수 함수.
     @return 종료 코드, bounded tail, 읽은 byte 수, pid와 종료 원인.
     @warning 파일 상한은 0.1초 간격 관측이며 OS 디스크 quota가 아니므로 사이에 초과할 수 있다.
     """
@@ -335,6 +337,14 @@ def run_native(
         finally:
             process.stdin.close()
 
+    def reap_owned():
+        """! @brief 추가 소유 후손이 출력 pipe를 놓을 때까지 판독기에 종료를 요구하지 않는다."""
+        nonlocal reaped
+        _reap(process, job)
+        reaped = True
+        if reap_remaining_descendants is not None:
+            reap_remaining_descendants(process.pid)
+
     try:
         if os.name == "nt":
             job = _WindowsJob()
@@ -380,8 +390,7 @@ def run_native(
             if process.poll() is not None:
                 break
             time.sleep(0.01)
-        _reap(process, job)
-        reaped = True
+        reap_owned()
         for thread in threads:
             thread.join(timeout=1.0)
         if any(thread.is_alive() for thread in threads):
@@ -409,7 +418,7 @@ def run_native(
         try:
             if process is not None and not reaped:
                 if owned:
-                    _reap(process, job)
+                    reap_owned()
                 else:
                     # @brief 할당 전 worker는 stdin을 받지 않았으므로 native 후손이 없어야 한다.
                     try:
