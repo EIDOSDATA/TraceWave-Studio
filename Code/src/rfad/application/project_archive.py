@@ -98,6 +98,11 @@ def build(service, project_id, expected_revision, include_sources, review_hash):
     reviewed = prepare(service, project_id, expected_revision, include_sources)
     if reviewed["review_hash"] != review_hash:
         codec.fail("복원 묶음의 원본 또는 포함 범위가 달라졌습니다.", "E_CONFLICT")
+    return write_prepared(service, reviewed)
+
+
+def write_prepared(service, reviewed):
+    """! @brief 검토한 파일 집합의 실제 바이트와 원본 폐쇄를 다시 확인한다."""
 
     @contextmanager
     def source(uri):

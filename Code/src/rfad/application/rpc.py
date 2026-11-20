@@ -20,7 +20,7 @@ from rfad.application import exchange_service, exchange_contract
 from rfad.application import pcb_exchange_service
 from rfad.application import pcb_import_service
 from rfad.application import measurement_service, measurement_contract
-from rfad.application import archive_receiver, handoff_evidence, handoff_service
+from rfad.application import archive_export_service, archive_receiver, handoff_evidence, handoff_service
 from rfad.storage.journal import MAX_ARTIFACT_BYTES
 from rfad.application import design_rule_service, physical_setup_service, precision_service, network_service, design_sweep_service, result_service, rf_validation_records, sweep_selection
 
@@ -47,7 +47,7 @@ PROJECT_MUTATIONS.add("export.verify")
 PROJECT_MUTATIONS.add(pcb_exchange_service.MUTATION)
 PROJECT_MUTATIONS.update(pcb_import_service.MUTATIONS | archive_receiver.MUTATIONS)
 PROJECT_MUTATIONS.update(measurement_service.MUTATIONS)
-PROJECT_MUTATIONS.add(handoff_service.MUTATION)
+PROJECT_MUTATIONS.update({handoff_service.MUTATION, archive_export_service.MUTATION})
 PROJECT_MUTATIONS.update(PCB_SELECTION_MUTATIONS)
 PROJECT_MUTATIONS.update(STUDY_MUTATIONS)
 PROJECT_MUTATIONS.update(design_sweep_service.MUTATIONS)
@@ -116,6 +116,8 @@ def capabilities(service=None, catalog=None) -> dict:
         result["handoff_profile"] = {"profile": handoff_service.PROFILE, "snapshot_required": True,
             "preview_required": True, "max_package_bytes": 8 * 1024 * 1024, "max_files": 512,
             "read_only_handoff": True, "project_restore_supported": False, "physical_validation": False}
+        result["methods"].update({name: {"status": "implemented", "extension_profile": archive_export_service.PROFILE}
+                                  for name in archive_export_service.READS | {archive_export_service.MUTATION}})
         result["methods"].update({name: {"status": "implemented", "extension_profile": archive_receiver.PROFILE}
                                   for name in archive_receiver.READS | archive_receiver.MUTATIONS})
         result["archive_receive_profile"] = {"profile": archive_receiver.PROFILE, "zip_bytes": MAX_ARTIFACT_BYTES,
@@ -337,13 +339,15 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
         return _error(None, -32600, "Invalid Request")
     notification = "id" not in request
     method = request["method"]
-    if service is not None and method in PROJECT_MUTATIONS | archive_receiver.READS | handoff_service.READS | measurement_service.READS | pcb_import_service.READS | pcb_exchange_service.READS | exchange_contract.READS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | network_service.READS | design_sweep_service.READS | result_service.READS | rf_validation_records.READS | sweep_selection.READS | {handoff_evidence.METHOD, "target.editor.get", "job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
+    if service is not None and method in PROJECT_MUTATIONS | archive_receiver.READS | archive_export_service.READS | handoff_service.READS | measurement_service.READS | pcb_import_service.READS | pcb_exchange_service.READS | exchange_contract.READS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | network_service.READS | design_sweep_service.READS | result_service.READS | rf_validation_records.READS | sweep_selection.READS | {handoff_evidence.METHOD, "target.editor.get", "job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
         if notification and method in PROJECT_MUTATIONS | archive_receiver.READS:
             return None
         try:
             params = request.get("params")
             if method in archive_receiver.READS:
                 result = archive_receiver.read(service, method, params)
+            elif method in archive_export_service.READS:
+                result = archive_export_service.read(service, method, params)
             elif method == handoff_evidence.METHOD:
                 result = handoff_evidence.read(service, params)
             elif method in handoff_service.READS:

@@ -150,7 +150,8 @@ void OutputController::Reset()
 }
 
 void OutputController::Update(const std::string& project, const std::string& revision, const std::string& epoch,
-                              bool connected, bool supported, bool available, bool active, bool handoffSupported)
+                              bool connected, bool supported, bool available, bool active, bool handoffSupported,
+                              bool archiveSupported)
 {
     if (project != m_project || epoch != m_epoch || (m_connected && !connected))
     {
@@ -171,12 +172,18 @@ void OutputController::Update(const std::string& project, const std::string& rev
             }
         }
     }
+    if (revision != m_revision && m_view->Handoff()->ArchiveMode())
+    {
+        m_handoffInput = nullptr;
+        m_view->Handoff()->SetReview(nullptr);
+    }
     m_revision = revision;
     m_connected = connected;
     m_supported = supported;
     m_handoffSupported = handoffSupported;
     m_available = connected && supported && available && !project.empty();
     m_active = active;
+    m_view->Handoff()->SetArchiveSupported(archiveSupported);
     m_view->ConditionsView()->Show(active);
     if (active && m_available && m_refreshNeeded)
     {
@@ -372,7 +379,7 @@ void OutputController::Changed()
     m_view->ClearRecord("출력 입력이나 옵션이 바뀌었습니다. 다시 검토하세요.");
     if (m_view->Kind() == 3)
     {
-        if (m_view->Snapshot() != m_handoffSnapshot)
+        if (!m_view->Handoff()->ArchiveMode() && m_view->Snapshot() != m_handoffSnapshot)
         {
             m_view->Handoff()->ResetEvidence();
             m_handoffInput = nullptr;

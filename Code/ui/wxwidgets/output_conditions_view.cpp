@@ -87,23 +87,29 @@ void OutputConditionsView::SetRecord(const Json& record, const std::string& sour
     FitInside();
 }
 
-void OutputConditionsView::SetHandoff(const Json& snapshot, const Json& review)
+void OutputConditionsView::SetHandoff(const Json& snapshot, const Json& review, bool archive)
 {
-    std::string input = "고정 설계와 선택 근거";
+    std::string input = archive ? "현재 적용 개정과 저장 기준점" : "고정 설계와 선택 근거";
     if (review.is_object())
     {
         input += "\n개정: " + review.at("revision_id").get<std::string>();
     }
-    if (snapshot.is_object())
+    if (!archive && snapshot.is_object())
     {
         input += "\n고정 입력: " + snapshot.at("snapshot_id").get<std::string>();
     }
     m_input->ChangeValue(Display(input));
     m_limits->ChangeValue(Display(
-        "포함: 설계 사본, 보고서, 권한을 확인한 선택 파일\n제작/측정·물리 합격 미확립\n복원 및 작업 재개 범위 제외"));
-    m_verification->ChangeValue(
-        Display(review.is_object() ? "검토한 파일 " + std::to_string(review.at("files").size() + 1) + "개 / 기록 SHA256 표시"
-                                   : "인계 범위를 검토하면 파일과 해시를 확인할 수 있습니다."));
+        archive
+            ? "포함: 개정, 실행 취소 이력, 스냅샷, 공유 범위의 원문\n외부 결과와 작업 재개 제외\n제작/실측 합격 미확립"
+            : "포함: 설계 사본, 보고서, 권한을 확인한 선택 파일\n제작/측정·물리 합격 미확립\n복원 및 작업 재개 범위 "
+              "제외"));
+    m_verification->ChangeValue(Display(
+        review.is_object()
+            ? "검토한 파일 " +
+                  std::to_string(archive ? review.at("file_count").get<std::size_t>() : review.at("files").size() + 1) +
+                  "개 / 기록 SHA256 표시"
+            : "인계 범위를 검토하면 파일과 해시를 확인할 수 있습니다."));
     m_source->ChangeValue(Display(review.is_object() ? review.dump(2) : ""));
     Layout();
     FitInside();

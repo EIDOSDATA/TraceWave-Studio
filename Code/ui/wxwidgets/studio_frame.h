@@ -306,6 +306,7 @@ private:
     bool m_outputSupported = false;
     bool m_handoffSupported = false;
     bool m_archiveRestoreSupported = false;
+    bool m_archiveExportSupported = false;
     bool m_validationSupported = false;
     bool m_networkPending = false;
     bool m_networkRefreshQueued = false;

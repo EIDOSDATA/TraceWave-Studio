@@ -16,14 +16,20 @@ namespace
 constexpr std::size_t ChunkBytes = 128U * 1024U;
 constexpr std::size_t MaxZipBytes = 8U * 1024U * 1024U;
 constexpr int EvidencePageSize = 12;
-constexpr auto Profile = "rfad.project-handoff/0.1";
-
-bool ValidPackage(const Json& package, const std::string& project)
+constexpr auto ReadOnlyProfile = "rfad.project-handoff/0.1";
+constexpr auto ArchiveProfile = "rfad.project-archive/0.1";
+const char* Profile(bool archive)
 {
-    return package.is_object() && package.value("profile", "") == Profile && package.at("project_id") == project &&
-           package.at("package_id").is_string() && package.at("snapshot_id").is_string() &&
-           package.at("chunk_bytes") == ChunkBytes && package.at("file_name").is_string() &&
-           package.at("artifact").at("sha256").is_string() && package.at("artifact").at("bytes").is_number_unsigned() &&
+    return archive ? ArchiveProfile : ReadOnlyProfile;
+}
+
+bool ValidPackage(const Json& package, const std::string& project, bool archive)
+{
+    return package.is_object() && package.value("profile", "") == Profile(archive) &&
+           package.at("project_id") == project && package.at("package_id").is_string() &&
+           (archive || package.at("snapshot_id").is_string()) && package.at("chunk_bytes") == ChunkBytes &&
+           package.at("file_name").is_string() && package.at("artifact").at("sha256").is_string() &&
+           package.at("artifact").at("bytes").is_number_unsigned() &&
            package.at("artifact").at("bytes").get<std::size_t>() > 0 &&
            package.at("artifact").at("bytes").get<std::size_t>() <= MaxZipBytes;
 }
@@ -31,7 +37,8 @@ bool ValidPackage(const Json& package, const std::string& project)
 
 void OutputController::HandoffSync()
 {
-    const auto snapshot = m_view->Snapshot();
+    const bool archive = m_view->Handoff()->ArchiveMode();
+    const auto snapshot = archive ? Json(nullptr) : m_view->Snapshot();
     if (!m_handoffSupported || !m_available)
     {
         m_view->SetHandoffConditions(snapshot, nullptr);
@@ -53,6 +60,10 @@ void OutputController::HandoffSync()
     {
         Status("unresolved", "이전 출력 요청의 결과를 확인해야 합니다. 새 생성은 잠겼습니다.");
     }
+    else if (archive)
+    {
+        m_view->SetStatus("현재 개정과 저장 기준점의 편집 복원 범위를 검토하세요.");
+    }
     else if (snapshot.is_object())
     {
         HandoffEvidence(0);
@@ -66,7 +77,7 @@ void OutputController::HandoffSync()
 void OutputController::HandoffEvidence(int offset)
 {
     const auto snapshot = m_view->Snapshot();
-    if (!m_handoffSupported || !snapshot.is_object() || Active())
+    if (!m_handoffSupported || m_view->Handoff()->ArchiveMode() || !snapshot.is_object() || Active())
     {
         return;
     }
@@ -79,7 +90,8 @@ void OutputController::HandoffEvidence(int offset)
           {"limit", EvidencePageSize}},
          [this, snapshot, offset, generation](const Json& value)
          {
-             if (generation != m_handoffGeneration || snapshot != m_view->Snapshot() || m_view->Kind() != 3)
+             if (generation != m_handoffGeneration || snapshot != m_view->Snapshot() || m_view->Kind() != 3 ||
+                 m_view->Handoff()->ArchiveMode())
              {
                  return;
              }
@@ -97,21 +109,22 @@ void OutputController::HandoffEvidence(int offset)
 void OutputController::HandoffCatalog(const std::string& preferred)
 {
     const auto generation = ++m_handoffCatalogGeneration;
-    Read("package.list", Json::object(),
-         [this, preferred, generation](const Json& value)
+    const bool archive = m_view->Handoff()->ArchiveMode();
+    Read(archive ? "archive.export.list" : "package.list", Json::object(),
+         [this, preferred, generation, archive](const Json& value)
          {
-             if (generation != m_handoffCatalogGeneration)
+             if (generation != m_handoffCatalogGeneration || archive != m_view->Handoff()->ArchiveMode())
              {
                  return;
              }
-             if (value.value("profile", "") != Profile || value.at("project_id") != m_project ||
+             if (value.value("profile", "") != Profile(archive) || value.at("project_id") != m_project ||
                  !value.at("items").is_array() || value.at("items").size() > 32)
              {
                  throw std::runtime_error("인계 발행 기록의 형식 또는 프로젝트가 다릅니다.");
              }
              for (const auto& package : value.at("items"))
              {
-                 if (!ValidPackage(package, m_project))
+                 if (!ValidPackage(package, m_project, archive))
                  {
                      throw std::runtime_error("인계 발행 기록의 파일 식별자를 확인할 수 없습니다.");
                  }
@@ -120,35 +133,51 @@ void OutputController::HandoffCatalog(const std::string& preferred)
          });
 }
 
+Json OutputController::ArchiveOutputInput() const
+{
+    auto input = m_view->Handoff()->Input();
+    input["expected_revision"] = m_revision;
+    return input;
+}
+
 void OutputController::HandoffPreview()
 {
+    auto* handoff = m_view->Handoff();
+    const bool archive = handoff->ArchiveMode();
     const auto snapshot = m_view->Snapshot();
-    if (!m_available || !m_handoffSupported || Active() || m_reads != 0 || !snapshot.is_object())
+    if (!m_available || !m_handoffSupported || Active() || m_reads != 0 ||
+        (archive ? m_revision.empty() : !snapshot.is_object()))
     {
         return;
     }
-    auto* handoff = m_view->Handoff();
-    auto input = handoff->Input();
-    input["snapshot"] = snapshot;
+    auto input = archive ? ArchiveOutputInput() : handoff->Input();
+    if (!archive)
+    {
+        input["snapshot"] = snapshot;
+    }
     m_handoffInput = nullptr;
     handoff->SetReview(nullptr);
-    Read("package.preview", input,
-         [this, snapshot, input](const Json& value)
+    Read(archive ? "archive.export.preview" : "package.preview", input,
+         [this, snapshot, input, archive](const Json& value)
          {
-             if (m_view->Kind() != 3 || m_view->Snapshot() != snapshot)
+             if (m_view->Kind() != 3 || m_view->Handoff()->ArchiveMode() != archive ||
+                 (archive ? ArchiveOutputInput() != input : m_view->Snapshot() != snapshot))
              {
                  return;
              }
-             if (value.value("profile", "") != Profile || value.at("project_id") != m_project ||
-                 value.at("snapshot_id") != snapshot.at("snapshot_id") ||
-                 value.at("content_hash") != snapshot.at("content_hash") || !value.at("review_hash").is_string() ||
-                 !value.value("read_only_handoff", false))
+             const bool sameInput = archive ? value.at("revision_id") == input.at("expected_revision")
+                                            : value.at("snapshot_id") == snapshot.at("snapshot_id") &&
+                                                  value.at("content_hash") == snapshot.at("content_hash") &&
+                                                  value.value("read_only_handoff", false);
+             if (value.value("profile", "") != Profile(archive) || value.at("project_id") != m_project || !sameInput ||
+                 !value.at("review_hash").is_string())
              {
                  throw std::runtime_error("인계 검토 응답의 고정 입력이나 계약이 다릅니다.");
              }
              m_handoffInput = input;
              m_view->Handoff()->SetReview(value);
-             m_view->SetStatus("보고서와 파일 목록을 확인한 뒤 인계 묶음을 생성하세요.");
+             m_view->SetStatus(archive ? "보존 개정과 파일 범위를 확인한 뒤 편집 복원용 ZIP을 생성하세요."
+                                       : "보고서와 파일 목록을 확인한 뒤 인계 묶음을 생성하세요.");
          });
 }
 
@@ -159,20 +188,27 @@ void OutputController::HandoffBuild()
         return;
     }
     auto* handoff = m_view->Handoff();
-    auto input = handoff->Input();
-    input["snapshot"] = m_view->Snapshot();
+    const bool archive = handoff->ArchiveMode();
+    auto input = archive ? ArchiveOutputInput() : handoff->Input();
+    if (!archive)
+    {
+        input["snapshot"] = m_view->Snapshot();
+    }
     if (input != m_handoffInput || !handoff->Review().is_object())
     {
         return;
     }
     input["review_hash"] = handoff->Review().at("review_hash");
-    Start("package.build", input);
+    Start(archive ? "archive.export.build" : "package.build", input);
 }
 
 void OutputController::CompleteHandoff(const Json& package)
 {
     const auto& input = m_pending.at("input");
-    if (!ValidPackage(package, m_project) || package.at("snapshot_id") != input.at("snapshot").at("snapshot_id") ||
+    const bool archive = m_pending.at("method") == "archive.export.build";
+    if (!ValidPackage(package, m_project, archive) ||
+        (archive ? package.at("revision_id") != input.at("expected_revision")
+                 : package.at("snapshot_id") != input.at("snapshot").at("snapshot_id")) ||
         package.at("review_hash") != input.at("review_hash"))
     {
         throw std::runtime_error("인계 발행 결과가 검토한 고정 입력과 다릅니다.");
@@ -181,6 +217,7 @@ void OutputController::CompleteHandoff(const Json& package)
     OutputPendingStore::Clear(m_workspace, m_project);
     m_pending = nullptr;
     m_uncertain = false;
+    m_view->Handoff()->SetArchiveMode(archive);
     HandoffCatalog(packageId);
     Status("completed", "인계 묶음을 발행했습니다. ZIP 사본 저장에서 전달할 경로를 선택하세요.");
 }
@@ -192,7 +229,7 @@ void OutputController::HandoffSave()
         return;
     }
     const auto package = m_view->Handoff()->SelectedPackage();
-    if (!ValidPackage(package, m_project))
+    if (!ValidPackage(package, m_project, m_view->Handoff()->ArchiveMode()))
     {
         return;
     }
@@ -227,6 +264,7 @@ void OutputController::HandoffChunk()
     const auto offset = m_handoffBytes.size();
     const auto hash = artifact.at("sha256").get<std::string>();
     const auto id = m_handoffDownload.at("package_id").get<std::string>();
+    const bool archive = m_handoffDownload.at("profile") == ArchiveProfile;
     const auto finish = [this](const std::string& state, const std::string& message)
     {
         EndHandoffSave();
@@ -237,14 +275,14 @@ void OutputController::HandoffChunk()
         }
     };
     Read(
-        "package.read", {{"package_id", id}, {"sha256", hash}, {"offset", offset}},
-        [this, offset, size, hash, id, finish](const Json& value)
+        archive ? "archive.export.read" : "package.read", {{"package_id", id}, {"sha256", hash}, {"offset", offset}},
+        [this, offset, size, hash, id, finish, archive](const Json& value)
         {
             try
             {
                 const auto& encoded = value.at("content_base64").get_ref<const std::string&>();
                 const auto expected = std::min(size - offset, ChunkBytes);
-                if (value.value("profile", "") != Profile || value.at("project_id") != m_project ||
+                if (value.value("profile", "") != Profile(archive) || value.at("project_id") != m_project ||
                     value.at("package_id") != id || value.at("sha256") != hash || value.at("total") != size ||
                     value.at("offset") != offset || encoded.size() != ((expected + 2) / 3) * 4)
                 {

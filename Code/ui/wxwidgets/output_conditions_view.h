@@ -10,7 +10,7 @@ class OutputConditionsView final : public wxScrolledWindow
 public:
     explicit OutputConditionsView(wxWindow* parent);
     void SetRecord(const Json& record, const std::string& sourceName);
-    void SetHandoff(const Json& snapshot, const Json& review);
+    void SetHandoff(const Json& snapshot, const Json& review, bool archive);
     void Clear(const std::string& message);
 
 private:

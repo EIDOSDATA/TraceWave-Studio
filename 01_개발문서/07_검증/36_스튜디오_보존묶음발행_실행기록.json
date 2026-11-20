@@ -1,0 +1,106 @@
+{
+  "schema": "rfad.verification.studio-archive-export/0.1",
+  "date_kst": "2026-11-20",
+  "plan_step": 12,
+  "base_commit": "c69667a974f5ae904a4ec24e7ec666fb4399e1a4",
+  "windows_ui": {
+    "gui_zip_sha256": "6c247b34fb252979c2e4fbe0a2c1efe6075ba4523d4b866ba5375a44e6641531",
+    "bytes": 1503930,
+    "same_as_cli": true,
+    "project_id": "447c1708-bfac-4ea9-b3c2-79729b4368f3",
+    "issuing_package": "936ac494-31ab-5503-af57-012eb7bafb03",
+    "content_hash": "5faa2f15ad7f39fcf2127c12b7f1095a46dd653afb214ed3ad19f96e2ac31282",
+    "current_revision": "13c56ff1-21a7-42eb-a00f-44c0c3490044",
+    "omitted_count": 0,
+    "archive_restored_in_other_windows_workspace": true,
+    "source_and_unknowns_preserved": true,
+    "cross_profile_history_separated": true,
+    "new_solver_jobs": 0,
+    "files_excluding_manifest": 9,
+    "zip_entries": 10,
+    "archive_saved_and_reopened": true,
+    "gui_download_chunks": 12,
+    "unchecked_source_omission_count": 4,
+    "initial_executable_sha256": "bf319a6ad8979df4f0ac652b0ff4f3e1c5ddc6439fc3a1a2aebc082f4f08c067",
+    "final_executable_sha256": "af9b7039f8e5130e2f21436279bf968d6ecda0d3ff6b564aa3eb7fa8fbafd02d",
+    "captures": [
+      {
+        "path": "02_실행화면/84_편집복원용_묶음범위검토.jpg",
+        "bytes": 179544,
+        "sha256": "7869ddaca15335f461b47496e1202e1c518e14185911182f5b248089212c53d1",
+        "build": "initial"
+      },
+      {
+        "path": "02_실행화면/85_보존발행기록_사본저장.jpg",
+        "bytes": 174932,
+        "sha256": "d6216b736a3a9220b50127857399e8edc41e3656de6d54fc7f9d79e0bc704593",
+        "build": "final"
+      },
+      {
+        "path": "02_실행화면/86_형식전환_읽기전용기록보존.jpg",
+        "bytes": 170475,
+        "sha256": "cbc87fabcf7c56592240bd0203b49da7830487056199861277d79b5311a58ab5",
+        "build": "final"
+      },
+      {
+        "path": "02_실행화면/87_스튜디오발행본_수신검토.jpg",
+        "bytes": 152975,
+        "sha256": "c06392966f81649afde1be62284e6cfc547c4ac4cfb7c8f2126d2647a7ac8215",
+        "build": "final"
+      },
+      {
+        "path": "02_실행화면/88_스튜디오발행본_수신재열기.jpg",
+        "bytes": 149817,
+        "sha256": "440b455f2fc181fd5dad6f60fa5b74bad9bdb4fcd2cebe1d634e4d702230fca1",
+        "build": "final"
+      }
+    ]
+  },
+  "initial_failure": {
+    "stage": "desktop_download",
+    "reason": "편집 ZIP 사본 다운로드가 읽기 전용 조회를 사용했다.",
+    "created_invalid_file": false,
+    "final_result": "프로파일에 맞춘 조회로 기존 발행본을 정상 저장"
+  },
+  "runs": [
+    {
+      "scope": "기존 인계와 동일 저장소의 복원 회귀",
+      "log": "stage12d-export-regression.log",
+      "log_sha256": "88d7439eefdebf3eea24513176e0b10bd99a5fa496ac48969a5d820281ce1a13",
+      "collected": 8,
+      "passed": 8,
+      "seconds": 52.072
+    },
+    {
+      "scope": "편집용 발행, 형식별 목록·영수증·사본 및 기존 인계",
+      "log": "stage12d-export-focused.log",
+      "log_sha256": "760cccbc19d80b71259937ccc1a1476c97e87af26ec5175d79c2f9b722255912",
+      "collected": 4,
+      "passed": 4,
+      "seconds": 19.089
+    },
+    {
+      "scope": "최종 Windows 기존 출력 GUI",
+      "log": "stage12d-export-native-regression.log",
+      "log_sha256": "3b66b79c4698643d452f343b1c3e9bd3157a92c05ecba724f608b9b97384c5a2",
+      "collected": 1,
+      "passed": 1,
+      "seconds": 30.298
+    },
+    {
+      "scope": "최종 Windows CTest",
+      "log": "stage12d-export-ctest.log",
+      "log_sha256": "14df170cb33e385c1c24f8d900ed0fb6ab42df9071640da1641f46970e7233b7",
+      "collected": 13,
+      "passed": 13,
+      "seconds": 0.68
+    }
+  ],
+  "document_verification": {
+    "approved_baseline_files_verified": 27,
+    "documents": 159,
+    "links_checked": 8227,
+    "broken_links": [],
+    "implementation_audit_passed": 14
+  }
+}

@@ -60,7 +60,7 @@ void OutputController::Start(const std::string& method, const Json& input)
             m_mutating = false;
             try
             {
-                if (m_pending.at("method") == "package.build")
+                if (m_pending.at("method") == "package.build" || m_pending.at("method") == "archive.export.build")
                 {
                     CompleteHandoff(value);
                 }
@@ -278,8 +278,11 @@ void OutputController::Recover()
     {
         return;
     }
-    const bool handoff = m_pending.at("method") == "package.build";
-    Read(handoff ? "package.receipt" : "export.receipt",
+    const bool archive = m_pending.at("method") == "archive.export.build";
+    const bool handoff = archive || m_pending.at("method") == "package.build";
+    Read(archive   ? "archive.export.receipt"
+         : handoff ? "package.receipt"
+                   : "export.receipt",
          {{"request_key", m_pending.at("request_key")}, {"request_key_epoch", m_pending.at("request_key_epoch")}},
          [this, handoff](const Json& value)
          {

@@ -72,6 +72,9 @@ void StudioFrame::Connect()
              m_handoffSupported = methods.contains("evidence.query") && methods.contains("package.preview") &&
                                   methods.contains("package.build") && methods.contains("package.list") &&
                                   methods.contains("package.read") && methods.contains("package.receipt");
+             m_archiveExportSupported = methods.contains("archive.export.preview") &&
+                 methods.contains("archive.export.build") && methods.contains("archive.export.list") &&
+                 methods.contains("archive.export.read") && methods.contains("archive.export.receipt");
              m_archiveRestoreSupported = methods.contains("archive.receive.begin") &&
                  methods.contains("archive.receive.chunk") && methods.contains("archive.receive.review") &&
                  methods.contains("archive.receive.reserve") && methods.contains("archive.receive.apply") &&
@@ -147,7 +150,7 @@ void StudioFrame::Send(const std::string& method, const Json& input, bool mutati
         method.rfind("result.", 0) != 0 && method.rfind("export.", 0) != 0 && method.rfind("template.", 0) != 0 &&
         method.rfind("catalog.", 0) != 0 && method.rfind("pcb.selection.", 0) != 0 &&
         method.rfind("pcb.features.", 0) != 0 && method.rfind("pcb.import.", 0) != 0 &&
-        method.rfind("measurement.", 0) != 0 && method.rfind("archive.receive.", 0) != 0 && method.rfind("study.", 0) != 0 && method != "cad.latest" &&
+        method.rfind("measurement.", 0) != 0 && method.rfind("archive.", 0) != 0 && method.rfind("study.", 0) != 0 && method != "cad.latest" &&
         method != "solver.latest" && method != "solver.samples" && method != "result.open" && method != "job.cancel" &&
         method != "solver.plan" && method != "solver.prepare" && method != "job.submit" &&
         !(method == "snapshot.create" && input.value("description", "") == "GUI PCB 해석 입력") &&

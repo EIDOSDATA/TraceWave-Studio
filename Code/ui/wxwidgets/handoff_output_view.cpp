@@ -64,7 +64,15 @@ HandoffOutputView::HandoffOutputView(wxWindow* parent) : wxPanel(parent)
     auto* layout = new wxBoxSizer(wxVERTICAL);
     auto* title = new wxStaticText(this, wxID_ANY, Display("보고서와 인계 묶음"));
     StudioTheme::Title(*title);
-    layout->Add(title, 0, wxTOP | wxLEFT, FromDIP(12));
+    auto* heading = new wxBoxSizer(wxHORIZONTAL);
+    heading->Add(title, 1, wxALIGN_CENTER_VERTICAL);
+    m_format = new wxChoice(this, wxID_ANY);
+    m_format->SetName(Display("인계 묶음 형식"));
+    m_format->Append(Display("읽기 전용 보고서와 인계"));
+    m_format->Append(Display("편집 복원용 프로젝트 묶음"));
+    m_format->SetSelection(0);
+    heading->Add(m_format, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, FromDIP(8));
+    layout->Add(heading, 0, wxEXPAND | wxALL, FromDIP(12));
 
     m_list = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 150)),
                             wxLC_REPORT | wxLC_SINGLE_SEL | wxBORDER_SIMPLE);
@@ -103,6 +111,11 @@ HandoffOutputView::HandoffOutputView(wxWindow* parent) : wxPanel(parent)
     layout->Add(history, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(8));
     SetSizer(layout);
 
+    m_format->Bind(wxEVT_CHOICE,
+                   [this](wxCommandEvent&)
+                   {
+                       FormatChanged();
+                   });
     m_list->Bind(wxEVT_LIST_ITEM_SELECTED,
                  [this](wxListEvent&)
                  {
@@ -183,6 +196,73 @@ HandoffOutputView::HandoffOutputView(wxWindow* parent) : wxPanel(parent)
     ResetEvidence();
 }
 
+bool HandoffOutputView::ArchiveMode() const
+{
+    return m_archiveSupported && m_format->GetSelection() == 1;
+}
+
+void HandoffOutputView::SetArchiveSupported(bool supported)
+{
+    if (m_archiveSupported == supported)
+    {
+        return;
+    }
+    m_archiveSupported = supported;
+    if (!supported && m_format->GetSelection() == 1)
+    {
+        m_format->SetSelection(0);
+        FormatChanged();
+    }
+    UpdateActions();
+}
+
+void HandoffOutputView::SetArchiveMode(bool archive)
+{
+    const int target = archive && m_archiveSupported ? 1 : 0;
+    if (m_format->GetSelection() != target)
+    {
+        m_format->SetSelection(target);
+        FormatChanged();
+    }
+}
+
+void HandoffOutputView::FormatChanged()
+{
+    const bool archive = ArchiveMode();
+    m_previous->Show(!archive);
+    m_next->Show(!archive);
+    m_include->Show(!archive);
+    m_remove->Show(!archive);
+    m_rights->SetLabel(Display(archive ? "공유 권한을 확인한 등록 원문 포함" : "선택 파일 공유 권한 확인"));
+    m_report->SetLabel(Display(archive ? "포함 범위와 누락 검토" : "보고서 미리보기"));
+    m_review = nullptr;
+    ResetEvidence();
+    SetCatalog(nullptr);
+    Layout();
+    if (onModeChanged)
+    {
+        onModeChanged();
+    }
+}
+
+void HandoffOutputView::ShowArchiveRows()
+{
+    const auto add = [this](const char* item, const std::string& description, const char* state)
+    {
+        const auto index = m_list->InsertItem(m_list->GetItemCount(), Display(item));
+        m_list->SetItem(index, 1, Display(description));
+        m_list->SetItem(index, 2, Display(state));
+    };
+    m_list->DeleteAllItems();
+    const auto revision =
+        m_review.is_object() ? m_review.at("revision_id").get<std::string>() : "검토 시 현재 개정 확인";
+    add("설계와 저장본", revision, "보존");
+    add("명령과 스냅샷", "선택한 프로젝트의 등록 이력", "보존");
+    add("등록 원문", m_rights->GetValue() ? "공유 권한을 확인한 소유 자료" : "원래 참조 및 누락 기록",
+        m_rights->GetValue() ? "포함 요청" : "참조만");
+    add("작업 실행", "작업 대기열과 환경은 제외", "자동 실행 없음");
+}
+
 void HandoffOutputView::ResetEvidence()
 {
     m_selected = Json::array();
@@ -195,7 +275,11 @@ void HandoffOutputView::SetEvidence(const Json& value)
 {
     m_page = value;
     m_list->DeleteAllItems();
-    if (m_page.is_object())
+    if (ArchiveMode())
+    {
+        ShowArchiveRows();
+    }
+    else if (m_page.is_object())
     {
         for (const auto& row : m_page.at("items"))
         {
@@ -214,7 +298,7 @@ void HandoffOutputView::SetEvidence(const Json& value)
 void HandoffOutputView::Select(bool include)
 {
     const long index = m_list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-    if (index < 0 || !m_page.is_object())
+    if (index < 0 || !m_page.is_object() || static_cast<std::size_t>(index) >= m_page.at("items").size())
     {
         return;
     }
@@ -259,6 +343,10 @@ void HandoffOutputView::SetCatalog(const Json& value, const std::string& preferr
 void HandoffOutputView::SetReview(const Json& value)
 {
     m_review = value;
+    if (ArchiveMode())
+    {
+        ShowArchiveRows();
+    }
     UpdateActions();
     if (onReviewChanged)
     {
@@ -283,6 +371,10 @@ const Json& HandoffOutputView::Review() const
 
 Json HandoffOutputView::Input() const
 {
+    if (ArchiveMode())
+    {
+        return {{"include_sources", m_rights->GetValue()}};
+    }
     return {{"records", m_selected},
             {"inclusion", m_selected.empty() ? "design_and_report" : "include_selected_files"},
             {"rights_confirmed", m_rights->GetValue()}};
@@ -296,10 +388,12 @@ Json HandoffOutputView::SelectedPackage() const
 
 void HandoffOutputView::UpdateActions()
 {
-    const bool ready = m_available && m_snapshot && m_page.is_object();
+    const bool archive = ArchiveMode();
+    const bool ready = m_available && (archive || (m_snapshot && m_page.is_object()));
+    m_format->Enable(m_available && m_archiveSupported);
     const long index = m_list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
     bool file = false, included = false;
-    if (ready && index >= 0)
+    if (!archive && ready && index >= 0 && static_cast<std::size_t>(index) < m_page.at("items").size())
     {
         const auto& row = m_page.at("items").at(index);
         const auto selected = Selection(row);
@@ -309,10 +403,10 @@ void HandoffOutputView::UpdateActions()
     }
     m_include->Enable(ready && file && !included && m_selected.size() < 64);
     m_remove->Enable(ready && included);
-    m_rights->Enable(ready && !m_selected.empty());
-    m_previous->Enable(ready && m_page.value("offset", 0) > 0);
-    m_next->Enable(ready && !m_page.at("next_offset").is_null());
-    m_preview->Enable(ready && (m_selected.empty() || m_rights->GetValue()));
+    m_rights->Enable(ready && (archive || !m_selected.empty()));
+    m_previous->Enable(ready && !archive && m_page.value("offset", 0) > 0);
+    m_next->Enable(ready && !archive && !m_page.at("next_offset").is_null());
+    m_preview->Enable(ready && (archive || m_selected.empty() || m_rights->GetValue()));
     m_build->Enable(ready && m_review.is_object());
     m_report->Enable(m_review.is_object());
     m_files->Enable(m_review.is_object());
@@ -321,12 +415,23 @@ void HandoffOutputView::UpdateActions()
     std::string info =
         m_snapshot ? "고정 설계와 보고서를 포함합니다. 파일 포함 선택 " + std::to_string(m_selected.size()) + " / 64"
                    : "위 목록에서 고정 입력을 선택하세요. 발행 기록은 따로 열 수 있습니다.";
-    if (m_review.is_object())
+    if (archive)
+    {
+        info = "현재 적용 개정과 저장 기준점으로 편집 복원용 ZIP을 만듭니다.";
+        if (m_review.is_object())
+        {
+            info = "검토 완료 / 파일 " + std::to_string(m_review.at("file_count").get<int>()) + "개 / 제외 및 미확보 " +
+                   std::to_string(m_review.at("missing_count").get<int>()) + "개 / " +
+                   std::to_string(m_review.at("estimated_bytes").get<int>()) + " B";
+        }
+    }
+    else if (m_review.is_object())
     {
         info = "검토 완료 / 보고서 근거 " + std::to_string(m_review.at("evidence_count").get<int>()) + "건 / " +
                std::to_string(m_review.at("estimated_bytes").get<int>()) + " B";
     }
-    const auto label = Display(info + "\n제작/실측 합격 미확립 / 읽기 전용 인계");
+    const auto label = Display(
+        info + (archive ? "\n제작/실측 합격 미확립 / 편집 복원용" : "\n제작/실측 합격 미확립 / 읽기 전용 인계"));
     if (m_summary->GetLabel() != label)
     {
         m_summary->SetLabel(label);
@@ -340,8 +445,12 @@ void HandoffOutputView::ShowDetails(bool files)
     {
         return;
     }
-    wxDialog dialog(this, wxID_ANY, Display(files ? "인계 파일 목록" : "보고서 미리보기"), wxDefaultPosition,
-                    FromDIP(wxSize(760, 470)), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+    const bool archive = ArchiveMode();
+    wxDialog dialog(this, wxID_ANY,
+                    Display(files     ? "인계 파일 목록"
+                            : archive ? "포함 범위와 누락"
+                                      : "보고서 미리보기"),
+                    wxDefaultPosition, FromDIP(wxSize(760, 470)), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
     auto* layout = new wxBoxSizer(wxVERTICAL);
     std::string text;
     if (files)
@@ -352,6 +461,10 @@ void HandoffOutputView::ShowDetails(bool files)
             text += "\n" + row.at("uri").get<std::string>() + " / " + std::to_string(row.at("bytes").get<int>()) +
                     " B\n" + row.at("sha256").get<std::string>() + "\n";
         }
+        if (archive && m_review.at("file_count").get<std::size_t>() > m_review.at("files").size() + 1)
+        {
+            text += "\n미리보기에는 32개까지 표시합니다. 전체 파일은 manifest.json에서 확인하세요.";
+        }
     }
     else
     {
@@ -361,14 +474,29 @@ void HandoffOutputView::ShowDetails(bool files)
         {
             text += limit.get<std::string>() + "\n";
         }
-        for (const auto& row : m_review.at("preview_records"))
+        if (archive)
         {
-            text += "\n" + Kind(row.at("kind")) + " / " + row.at("name").get<std::string>() + " / " +
-                    CopyState(row.at("copy_state")) + "\n";
+            for (const auto& row : m_review.at("omitted_preview"))
+            {
+                text += "\n" + row.at("reason").get<std::string>() + " / " +
+                        row.at("reference").at("uri").get<std::string>() + "\n";
+            }
+            if (m_review.at("missing_count").get<std::size_t>() > m_review.at("omitted_preview").size())
+            {
+                text += "\n전체 누락 원문은 ZIP의 restore-index.json에서 확인하세요.\n";
+            }
         }
-        if (m_review.at("evidence_count").get<std::size_t>() > m_review.at("preview_records").size())
+        else
         {
-            text += "\n미리보기는 32건까지 표시합니다. 전체 목록은 ZIP의 report.json에서 확인하세요.\n";
+            for (const auto& row : m_review.at("preview_records"))
+            {
+                text += "\n" + Kind(row.at("kind")) + " / " + row.at("name").get<std::string>() + " / " +
+                        CopyState(row.at("copy_state")) + "\n";
+            }
+            if (m_review.at("evidence_count").get<std::size_t>() > m_review.at("preview_records").size())
+            {
+                text += "\n미리보기는 32건까지 표시합니다. 전체 목록은 ZIP의 report.json에서 확인하세요.\n";
+            }
         }
     }
     auto* content = new wxTextCtrl(&dialog, wxID_ANY, Display(text), wxDefaultPosition, wxDefaultSize,
@@ -377,5 +505,6 @@ void HandoffOutputView::ShowDetails(bool files)
     layout->Add(content, 1, wxEXPAND | wxALL, FromDIP(12));
     layout->Add(dialog.CreateSeparatedButtonSizer(wxOK), 0, wxEXPAND | wxALL, FromDIP(8));
     dialog.SetSizer(layout);
+    dialog.CentreOnParent();
     dialog.ShowModal();
 }

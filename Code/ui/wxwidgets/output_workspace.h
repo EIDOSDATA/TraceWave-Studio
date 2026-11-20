@@ -58,6 +58,7 @@ private:
     StepOutputView* m_step = nullptr;
     HandoffOutputView* m_handoff = nullptr;
     wxSizer* m_history = nullptr;
+    wxSizer* m_source = nullptr;
     PcbCamOutputView* m_pcb = nullptr;
     OutputConditionsView* m_conditions = nullptr;
     wxChoice* m_snapshots = nullptr;

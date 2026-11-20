@@ -55,7 +55,7 @@ void Validate(const Json& request)
     }
     const auto method = request.value("method", "");
     if (method != "snapshot.create" && method != "export.preview" && method != "export.build" &&
-        method != "export.verify" && method != "package.build")
+        method != "export.verify" && method != "package.build" && method != "archive.export.build")
     {
         throw std::runtime_error("보존한 출력 요청의 메서드를 지원하지 않습니다. 새 요청을 보내지 않습니다.");
     }

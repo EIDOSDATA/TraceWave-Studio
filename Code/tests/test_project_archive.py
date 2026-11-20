@@ -120,6 +120,42 @@ class ProjectArchiveTests(unittest.TestCase):
             recovered = project_archive.restore(dest, raw, candidate["review_hash"])
             self.assertEqual(recovered["status"], "restored")
 
+    def test_rpc_exports_restorable_bundle_without_mixing_report_history(self):
+        """! @brief 같은 작업 영역에서 읽기 전용과 편집용 발행 목록과 영수증을 분리한다."""
+        context = {"project_id": self.identity}
+        def call(method, input, mutation=False, error=None):
+            """! @brief 동일 로컬 RPC 소유자를 명시하고 확정 변경만 request_key를 보낸다."""
+            params = {"contract_version": "rfad.api/2.0", "context": context, "input": input}
+            if mutation:
+                params.update(request_key=str(uuid4()), request_key_epoch=self.source.policy()["request_key_epoch"])
+            response = rpc.handle_frame(canonical_bytes({"jsonrpc": "2.0", "id": 1, "method": method, "params": params}),
+                                        self.source)
+            if error is not None:
+                self.assertEqual(response.get("error", {}).get("data", {}).get("domain_code"), error, response)
+                return None
+            self.assertIn("result", response, response)
+            return response["result"], params
+
+        input = {"expected_revision": self.changed, "include_sources": False}
+        preview, _ = call("archive.export.preview", input)
+        package, params = call("archive.export.build", {**input, "review_hash": preview["review_hash"]}, True)
+        self.assertEqual(preview["estimated_bytes"], package["artifact"]["bytes"])
+        receipt = {key: params[key] for key in ("request_key", "request_key_epoch")}
+        found, _ = call("archive.export.receipt", receipt)
+        self.assertEqual(found["response"], package)
+        call("package.receipt", receipt, error="E_CONFLICT")
+        self.assertEqual(call("package.list", {})[0]["items"], [])
+        self.assertEqual(call("archive.export.list", {})[0]["items"], [package])
+        decoded = bytearray()
+        query = {"package_id": package["package_id"], "sha256": package["artifact"]["sha256"], "offset": 0}
+        call("package.read", query, error="E_CONFLICT")
+        while query["offset"] is not None:
+            chunk, _ = call("archive.export.read", query)
+            decoded.extend(base64.b64decode(chunk["content_base64"]))
+            query["offset"] = chunk["next_offset"]
+        with project_archive.read_verified(bytes(decoded)) as (_, manifest, _):
+            self.assertEqual(manifest["revision_id"], self.changed)
+
     def test_rpc_receives_chunks_reserves_and_recovers_project_after_reopen(self):
         """! @brief 실제 RPC의 원문 전송, 검토, 영수증과 프로세스 재열기를 연결한다."""
         data = {"expected_revision": self.changed, "operation": "import", "parameters": import_parameters(declared=False)}

@@ -41,6 +41,7 @@ OutputWorkspace::OutputWorkspace(wxWindow* parent, wxWindow* conditions) : wxPan
     StudioTheme::BindSurface(*this);
     auto* layout = new wxBoxSizer(wxVERTICAL);
     auto* source = new wxWrapSizer(wxHORIZONTAL);
+    m_source = source;
     source->Add(new wxStaticText(this, wxID_ANY, Display("고정 입력 / 적용된 개정")), 0,
                 wxALIGN_CENTER_VERTICAL | wxALL, FromDIP(4));
     m_snapshots = new wxChoice(this, wxID_ANY);
@@ -62,6 +63,15 @@ OutputWorkspace::OutputWorkspace(wxWindow* parent, wxWindow* conditions) : wxPan
     m_tabs->AddPage(m_pcb, Display("PCB / CAM"));
     m_handoff = new HandoffOutputView(m_tabs);
     m_tabs->AddPage(m_handoff, Display("보고서 / 인계"));
+    m_handoff->onModeChanged = [this]()
+    {
+        m_source->ShowItems(Kind() != 3 || !m_handoff->ArchiveMode());
+        Layout();
+        if (!m_refreshing && onChanged)
+        {
+            onChanged();
+        }
+    };
     layout->Add(m_tabs, 1, wxEXPAND);
     auto* history = new wxWrapSizer(wxHORIZONTAL);
     m_history = history;
@@ -104,6 +114,7 @@ OutputWorkspace::OutputWorkspace(wxWindow* parent, wxWindow* conditions) : wxPan
     m_tabs->onSelectionChanged = [this](int page)
     {
         m_history->ShowItems(page != 3);
+        m_source->ShowItems(page != 3 || !m_handoff->ArchiveMode());
         Layout();
         if (!m_refreshing && onChanged)
         {
@@ -368,7 +379,7 @@ void OutputWorkspace::SetHandoffConditions(const Json& input, const Json& review
 {
     if (Kind() == 3)
     {
-        m_conditions->SetHandoff(input, review);
+        m_conditions->SetHandoff(input, review, m_handoff->ArchiveMode());
     }
 }
 

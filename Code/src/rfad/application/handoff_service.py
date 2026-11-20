@@ -1,25 +1,22 @@
 """! @brief 검토한 스냅샷, 보고서와 선택 원문을 읽기 전용 인계 묶음으로 게시한다."""
 
-import base64
 from contextlib import contextmanager
 from copy import deepcopy
 from io import BytesIO
-from uuid import UUID, uuid5
 
 from rfad.application import handoff_archive as archive, handoff_evidence as evidence
 from rfad.application.canonical import canonical_bytes, canonical_hash
+from rfad.application import package_publication as publication
 from rfad.application.network_records import reference
 from rfad.application.project_contract import _fields, _uuid
 from rfad.application.result_sources import owned_reference
 from rfad.domain.network_library import digest
-from rfad.storage.journal import MAX_ARTIFACT_BYTES, MAX_STATE_BYTES
+from rfad.storage.journal import MAX_ARTIFACT_BYTES
 
 
 PROFILE = archive.PROFILE
 MUTATION = "package.build"
 READS = {"package.preview", "package.list", "package.read", "package.receipt"}
-MAX_PACKAGES = 32
-CHUNK_BYTES = 128 * 1024
 POLICIES = ("design_and_report", "include_selected_files")
 BUILD_FIELDS = {"snapshot", "records", "inclusion", "rights_confirmed"}
 
@@ -48,23 +45,8 @@ def validate_input(method, context, data):
             if type(kind) is not str or kind not in evidence.KINDS or (kind, identity) in used:
                 archive.fail("인계 원문의 종류 또는 중복 선택을 확인하십시오.")
             used.add((kind, identity))
-    elif method == "package.read":
-        _fields(data, {"package_id", "sha256", "offset"})
-        _uuid(data["package_id"])
-        digest(data["sha256"], "sha256")
-        offset = data["offset"]
-        if type(offset) is not int or offset < 0 or offset % CHUNK_BYTES:
-            archive.fail("인계 파일 읽기는 청크 시작 위치를 사용하십시오.", "E_RESOURCE")
-    elif method == "package.list":
-        _fields(data, set())
-    elif method == "package.receipt":
-        _fields(data, {"request_key", "request_key_epoch"})
-        _uuid(data["request_key_epoch"])
-        key = data["request_key"]
-        if type(key) is not str or not 1 <= len(key) <= 128 or any(ord(char) < 32 for char in key):
-            archive.fail("원래 인계 요청의 영수증 키를 사용하십시오.")
     else:
-        archive.fail("지원하지 않는 인계 메서드입니다.", "E_UNSUPPORTED")
+        publication.validate(method.rsplit(".", 1)[-1], data)
 
 
 def _label(value):
@@ -167,15 +149,6 @@ def admit(service, state, context, data):
     review = candidate["review_hash"]
     if review != data["review_hash"]:
         archive.fail("인계 검토 이후 원본 또는 포함 범위가 변경됐습니다. 다시 검토하세요.", "E_CONFLICT")
-    identity = str(uuid5(UUID(context["project_id"]), "handoff:" + review))
-    stored = state.get("handoff_packages", {})
-    if identity in stored:
-        existing = stored[identity]
-        service.journal.verify_file(existing["artifact"])
-        return deepcopy(existing)
-    if len(stored) >= MAX_PACKAGES:
-        archive.fail("인계 묶음 보존 상한 32개에 도달했습니다.", "E_RESOURCE")
-
     @contextmanager
     def source(name):
         """! @brief 새 보고서나 검증한 소유 프로젝트 파일만 읽는다."""
@@ -187,24 +160,14 @@ def admit(service, state, context, data):
             with service.journal._safe_path(reference_item["uri"]).open("rb") as stream:
                 yield stream
 
-    stream = BytesIO()
-    archive.write_archive(stream, plan, source)
-    with archive.read_archive(stream):
-        pass
-    raw = stream.getvalue()
-    if len(raw) > MAX_ARTIFACT_BYTES:
-        archive.fail("인계 ZIP의 실제 크기가 8 MiB를 초과했습니다.", "E_RESOURCE")
-    path = plan["project_path"] + "/handoff/" + identity + ".rfad.zip"
-    result = {"profile": PROFILE, "project_id": plan["project_id"], "package_id": identity,
-              "snapshot_id": plan["snapshot_id"], "revision_id": plan["revision_id"], "artifact": reference(path, raw),
-              "review_hash": review, "file_name": "TraceWave-" + plan["revision_id"][:8] + ".rfad.zip", "chunk_bytes": CHUNK_BYTES}
-    staged = {**state, "handoff_packages": {**stored, identity: result}}
-    if len(canonical_bytes(staged)) + len(canonical_bytes(result)) + 4096 > MAX_STATE_BYTES:
-        archive.fail("인계 파일의 확정 기록과 영수증 공간이 부족합니다.", "E_RESOURCE")
-    if service.journal.put_immutable(path, raw) != result["artifact"]:
-        archive.fail("인계 파일 해시가 게시 직전에 달라졌습니다.", "E_HASH")
-    state["handoff_packages"] = staged["handoff_packages"]
-    return deepcopy(result)
+    def pack():
+        """! @brief 봉인한 ZIP을 다시 읽고 구조 검증 결과만 게시 저장부에 넘긴다."""
+        stream = BytesIO()
+        archive.write_archive(stream, plan, source)
+        with archive.read_archive(stream):
+            return stream.getvalue()
+
+    return publication.publish(service, state, plan, review, "handoff", "TraceWave-" + plan["revision_id"][:8] + ".rfad.zip", pack)
 
 
 def read(service, method, params):
@@ -218,29 +181,4 @@ def read(service, method, params):
     project = service._project(state, context)
     if method == "package.preview":
         return prepare(service, state, context, data)[0]
-    if method == "package.receipt":
-        receipt = state["receipts"].get(canonical_hash([data["request_key_epoch"], data["request_key"]]))
-        if receipt is not None and (receipt["scope"] != context or receipt["method"] != MUTATION):
-            archive.fail("다른 프로젝트 또는 기능의 인계 영수증입니다.", "E_CONFLICT")
-        found = receipt is not None and receipt["expires_at"] > service._now()
-        return {"status": "found" if found else "expired" if receipt else "unresolved", "authoritative": True,
-                "may_resubmit": False, "response": deepcopy(receipt["response"]) if found else None}
-    items = state.get("handoff_packages", {})
-    if method == "package.list":
-        return {"profile": PROFILE, "project_id": context["project_id"],
-                "items": [deepcopy(row) for _, row in sorted(items.items()) if row["project_id"] == context["project_id"]]}
-    stored = items.get(data["package_id"])
-    if stored is None or stored["project_id"] != context["project_id"]:
-        archive.fail("이 프로젝트에서 보존한 인계 묶음이 없습니다.", "E_CONFLICT")
-    artifact = owned_reference(project, stored["artifact"])
-    if artifact["sha256"] != data["sha256"]:
-        archive.fail("선택한 인계 묶음의 고정 해시가 다릅니다.", "E_HASH")
-    offset = data["offset"]
-    if offset >= artifact["bytes"]:
-        archive.fail("인계 파일의 실제 크기 밖을 읽을 수 없습니다.", "E_RESOURCE")
-    raw = service.journal.read_artifact(artifact)
-    chunk = raw[offset:offset + CHUNK_BYTES]
-    end = offset + len(chunk)
-    return {"profile": PROFILE, "project_id": context["project_id"], "package_id": stored["package_id"],
-            "sha256": artifact["sha256"], "total": len(raw), "offset": offset, "next_offset": end if end < len(raw) else None,
-            "content_base64": base64.b64encode(chunk).decode("ascii")}
+    return publication.read(service, state, context, project, method.rsplit(".", 1)[-1], data, PROFILE, MUTATION)

@@ -32,7 +32,7 @@ from rfad.application import target_editor
 from rfad.application import design_rule_service, physical_setup_service, precision_service, network_service, design_sweep_service, rf_validation_records, sweep_selection
 from rfad.application import pcb_exchange_service
 from rfad.application import pcb_import_service
-from rfad.application import archive_receiver, handoff_service
+from rfad.application import archive_export_service, archive_receiver, handoff_service
 from rfad.domain.physical_setup import COMMAND as PHYSICAL_COMMAND
 from rfad.application.template_candidates import TemplateCandidateCoordinator
 from rfad.domain.errors import ProjectError
@@ -43,7 +43,7 @@ ASYNC_METHODS = {
 } | CAD_METHODS | SOLVER_METHODS
 MUTATION_METHODS = ASYNC_METHODS | {
     "project.apply_command", "editor.apply", "canvas.apply", "project.undo", "project.redo", "job.cancel",
-} | archive_receiver.MUTATIONS | HOST_MUTATIONS | PCB_SELECTION_MUTATIONS | STUDY_MUTATIONS | design_sweep_service.MUTATIONS | rf_validation_records.MUTATIONS | sweep_selection.MUTATIONS | pcb_import_service.MUTATIONS | {"target.editor.apply", "template.apply", "design.rules.apply", physical_setup_service.MUTATION, precision_service.MUTATION, network_service.MUTATION, pcb_exchange_service.MUTATION, handoff_service.MUTATION}
+} | {archive_export_service.MUTATION} | archive_receiver.MUTATIONS | HOST_MUTATIONS | PCB_SELECTION_MUTATIONS | STUDY_MUTATIONS | design_sweep_service.MUTATIONS | rf_validation_records.MUTATIONS | sweep_selection.MUTATIONS | pcb_import_service.MUTATIONS | {"target.editor.apply", "template.apply", "design.rules.apply", physical_setup_service.MUTATION, precision_service.MUTATION, network_service.MUTATION, pcb_exchange_service.MUTATION, handoff_service.MUTATION}
 
 
 class ProjectService:
@@ -197,6 +197,8 @@ class ProjectService:
         """! @brief 기능별 요청 계약에 따라 접수 가능 여부를 검사한다."""
         if method in archive_receiver.MUTATIONS:
             archive_receiver.validate_input(method, context, data)
+        elif method == archive_export_service.MUTATION:
+            archive_export_service.validate_input(method, context, data)
         elif method == handoff_service.MUTATION:
             handoff_service.validate_input(method, context, data)
         elif method in pcb_import_service.MUTATIONS:
@@ -254,6 +256,8 @@ class ProjectService:
         self._preflight(method, context, data)
         if method in archive_receiver.MUTATIONS:
             return archive_receiver.admit(self, state, method, data)
+        elif method == archive_export_service.MUTATION:
+            return archive_export_service.admit(self, state, context, data)
         elif method == handoff_service.MUTATION:
             return handoff_service.admit(self, state, context, data)
         elif method in pcb_import_service.MUTATIONS:

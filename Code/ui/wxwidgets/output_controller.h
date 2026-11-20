@@ -16,7 +16,8 @@ public:
     ~OutputController();
     OutputWorkspace* View() const;
     void Update(const std::string& project, const std::string& revision, const std::string& epoch, bool connected,
-                bool supported, bool available, bool active, bool handoffSupported = false);
+                bool supported, bool available, bool active, bool handoffSupported = false,
+                bool archiveSupported = false);
     void Poll(Clock::time_point now);
     bool Active() const;
     bool OwnsJob(const std::string& job) const;
@@ -47,6 +48,7 @@ private:
     void Cancel();
     void OpenFolder();
     void HandoffSync();
+    Json ArchiveOutputInput() const;
     void HandoffEvidence(int offset);
     void HandoffCatalog(const std::string& preferred = "");
     void HandoffPreview();
