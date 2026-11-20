@@ -44,7 +44,7 @@ def manifest(value):
 def document_from(raw):
     """! @brief 자산을 읽기 전에 문서 검증과 정규 바이트를 검사한다."""
     if not 0 < len(raw) <= MAX_DOCUMENT_BYTES:
-        codec.fail("복원할 설계 개정은 512 KiB 이내입니다.", "E_RESOURCE")
+        codec.fail(f"복원할 설계 개정이 {MAX_DOCUMENT_BYTES} bytes 한도를 초과했습니다.", "E_RESOURCE")
     result = json.loads(raw)
     validate_project(result)
     if canonical_bytes(result) != raw:

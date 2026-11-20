@@ -6,6 +6,7 @@ from uuid import UUID
 from rfad.domain.errors import ProjectError
 from rfad.domain.expressions import ENGINE_VERSION, RESERVED_NAMES, dependencies, evaluate_expression
 from rfad.domain.units import Quantity
+from rfad.domain.resource_limits import MAX_PARAMETERS
 
 
 def _fail(code: str, message: str, parameter_id: str) -> None:
@@ -38,8 +39,8 @@ def evaluate_parameters(parameters: dict, *, update: bool = False) -> list[str]:
     @return 재계산으로 값이나 출처 상태가 바뀐 매개변수 UUID 목록.
     @throws ProjectError 순환, 누락 참조, 단위 오류 또는 잘못된 저장 캐시.
     """
-    if len(parameters) > 128:
-        _fail("E_RESOURCE", "표현식 그래프는 최대 128개 매개변수를 지원합니다.", "input")
+    if len(parameters) > MAX_PARAMETERS:
+        _fail("E_RESOURCE", f"표현식 그래프는 최대 {MAX_PARAMETERS}개 매개변수를 지원합니다.", "input")
     records = {}
     for parameter_id, parameter in parameters.items():
         if "expression" not in parameter:
@@ -60,18 +61,13 @@ def evaluate_parameters(parameters: dict, *, update: bool = False) -> list[str]:
     values = {}
     changed = []
 
-    def visit(parameter_id: str) -> Quantity:
-        """! @brief 계산 중 표시를 사용하여 순환을 차단하고 각 노드를 한 번 평가한다."""
-        if state.get(parameter_id) == "visiting":
-            _fail("E_EXPR_CYCLE", "매개변수 표현식에 순환 참조가 있습니다.", parameter_id)
-        if parameter_id in values:
-            return values[parameter_id]
-        state[parameter_id] = "visiting"
+    def evaluate(parameter_id: str) -> None:
+        """! @brief 참조한 값이 준비된 노드의 원문과 계산 캐시를 대조한다."""
         parameter = parameters[parameter_id]
         stored = Quantity(**parameter["quantity"])
         if parameter_id in records:
             record = records[parameter_id]
-            variables = {name: visit(target) for name, target in record["bindings"].items()}
+            variables = {name: values[target] for name, target in record["bindings"].items()}
             value = evaluate_expression(record["text"], variables, expected_dimension=stored.dimension, display_unit=stored.display_unit)
             if value.to_dict() != parameter["quantity"]:
                 if not update:
@@ -82,10 +78,23 @@ def evaluate_parameters(parameters: dict, *, update: bool = False) -> list[str]:
             value = stored
         values[parameter_id] = value
         state[parameter_id] = "done"
-        return value
 
-    for parameter_id in sorted(parameters):
-        visit(parameter_id)
+    for root in sorted(parameters):
+        if root in values:
+            continue
+        state[root] = "visiting"
+        stack = [(root, iter(records.get(root, {}).get("bindings", {}).values()))]
+        while stack:
+            parameter_id, bindings = stack[-1]
+            target = next(bindings, None)
+            if target is None:
+                evaluate(parameter_id)
+                stack.pop()
+            elif state.get(target) == "visiting":
+                _fail("E_EXPR_CYCLE", "매개변수 표현식에 순환 참조가 있습니다.", target)
+            elif target not in values:
+                state[target] = "visiting"
+                stack.append((target, iter(records.get(target, {}).get("bindings", {}).values())))
     return changed
 
 

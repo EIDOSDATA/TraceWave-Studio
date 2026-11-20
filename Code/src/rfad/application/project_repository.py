@@ -21,7 +21,7 @@ class ProjectRepository:
 
     def read(self, reference: dict) -> tuple[bytes, dict]:
         """! @brief 실제 소비할 바이트와 정규 문서를 함께 반환한다."""
-        raw = self.journal.read_artifact(reference)
+        raw = self.journal.read_document(reference)
         try:
             document = json.loads(raw.decode("utf-8"))
             validate_project(document)
@@ -40,8 +40,8 @@ class ProjectRepository:
         validate_project(document)
         payload = canonical_bytes(document)
         if len(payload) > self.max_document_bytes:
-            raise ProjectError("E_RESOURCE", "초기 profile의 프로젝트 크기 512 KiB를 초과했습니다.")
-        return self.journal.put_immutable(f"{path}/revisions/{document['revision_id']}/project.json", payload)
+            raise ProjectError("E_RESOURCE", f"프로젝트 크기 한도 {self.max_document_bytes} bytes를 초과했습니다.")
+        return self.journal.put_document(f"{path}/revisions/{document['revision_id']}/project.json", payload)
 
     @staticmethod
     def project(state: dict, context: dict) -> dict:

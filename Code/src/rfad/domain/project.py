@@ -6,6 +6,7 @@ import math
 from uuid import UUID, uuid4
 
 from rfad.domain.errors import ProjectError
+from rfad.domain.resource_limits import MAX_PARAMETERS
 from rfad.domain.units import Quantity, QuantityError
 from rfad.domain.parameter_graph import evaluate_parameters, expression_record, restore_parameter_command
 from rfad.domain.design import apply_design_command, validate_design
@@ -27,7 +28,6 @@ from rfad.domain.pcb_features import (COMMAND as PCB_COMMAND, REPLAY_COMMAND as 
 SCHEMA_VERSION = "rfad.project/0.6"
 LEGACY_SCHEMA_VERSION = "rfad.project/0.1"
 READABLE_SCHEMA_VERSIONS = (LEGACY_SCHEMA_VERSION, "rfad.project/0.2", "rfad.project/0.3", "rfad.project/0.4", "rfad.project/0.5", SCHEMA_VERSION)
-MAX_PARAMETERS = 128
 _EMPTY_COLLECTIONS = (
     "geometry", "materials", "ports", "stackup", "nets", "connections", "targets",
     "networks", "environment", "analysis_definitions", "optimization_studies",
@@ -236,7 +236,7 @@ def validate_project(document: dict) -> None:
             _fail("E_UNSUPPORTED", "초기 profile은 항등 좌표계만 지원합니다.", field)
     parameters = document["parameters"]
     if type(parameters) is not dict or len(parameters) > MAX_PARAMETERS:
-        _fail("E_RESOURCE", "매개변수는 최대 128개의 object여야 합니다.", "parameters")
+        _fail("E_RESOURCE", f"매개변수는 최대 {MAX_PARAMETERS}개의 object여야 합니다.", "parameters")
     names = set()
     for parameter_id, parameter in parameters.items():
         _uuid(parameter_id, "parameters")

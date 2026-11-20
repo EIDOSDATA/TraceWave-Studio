@@ -7644,13 +7644,16 @@
         "em_prepare",
         "em_analysis"
       ],
-      "max_document_bytes": 524288,
+      "max_document_bytes": 25165824,
       "mutating_batch": false,
       "mutating_notification": false,
       "open_modes": [
         "create",
         "open",
         "recover"
+      ],
+      "open_result_modes": [
+        "summary"
       ],
       "readable_schema_versions": [
         "rfad.project/0.1",
@@ -14790,13 +14793,13 @@
     },
     {
       "path": "Code/src/rfad/application/project_archive_model.py",
-      "text_sha256": "12051d56622ed502033ef628ef0bc5942646f6a480373652ed6749d57526632a",
-      "utf8_bytes": 11284
+      "text_sha256": "88ce94b7e46b6de506678199d6225c2d8a724e5d008f5b4abb25560d88acda7b",
+      "utf8_bytes": 11317
     },
     {
       "path": "Code/src/rfad/application/project_contract.py",
-      "text_sha256": "86f26c1d85e8bbd5bbabf16e86639ef254a3246b925ff2786de12e94fedbb6ed",
-      "utf8_bytes": 5026
+      "text_sha256": "4f75965574daa4c7af69c8d8521d90a318a16a0f4ea777cf4ed6468ca96553eb",
+      "utf8_bytes": 5247
     },
     {
       "path": "Code/src/rfad/application/project_history.py",
@@ -14805,13 +14808,13 @@
     },
     {
       "path": "Code/src/rfad/application/project_operations.py",
-      "text_sha256": "0483f8c600c698a538d5efcd88e39b59d368f6bda83edbd588179b2c2070f32e",
-      "utf8_bytes": 7845
+      "text_sha256": "f1cc09ff1bfce5b3a7da4481dc6d8daf43e6309d083054f65e65133664624c9f",
+      "utf8_bytes": 8304
     },
     {
       "path": "Code/src/rfad/application/project_repository.py",
-      "text_sha256": "f70a2541e1519c56fa93d8f1d43dfab2d41e75081df7cfcbbbe382325ac7e179",
-      "utf8_bytes": 2864
+      "text_sha256": "dab9c6361af3bc8b78cec6df018a4b73663f61415608a332cf6428757f23863b",
+      "utf8_bytes": 2877
     },
     {
       "path": "Code/src/rfad/application/project_studies.py",
@@ -14920,8 +14923,8 @@
     },
     {
       "path": "Code/src/rfad/application/rpc.py",
-      "text_sha256": "3411c9ad2df926356c894cb9c1357b7f16215fb4d5ab5d70ef70165fc84175f2",
-      "utf8_bytes": 36489
+      "text_sha256": "5c69bc799444dc4855dd87be6c128d7d01242e5c0520aa09cfa1b41b1df196e9",
+      "utf8_bytes": 36523
     },
     {
       "path": "Code/src/rfad/application/solver.py",
@@ -15050,8 +15053,8 @@
     },
     {
       "path": "Code/src/rfad/domain/design.py",
-      "text_sha256": "07a02d71925d064aa5f6a33021e2df74bb0db51134e353a2a9154f125c94427a",
-      "utf8_bytes": 38599
+      "text_sha256": "eae43a92cac5f846cd7148628a91c896ee868c178f5fb61eb34f075c439683fa",
+      "utf8_bytes": 38876
     },
     {
       "path": "Code/src/rfad/domain/design_checks.py",
@@ -15130,8 +15133,8 @@
     },
     {
       "path": "Code/src/rfad/domain/parameter_graph.py",
-      "text_sha256": "3afa704b61fe6cce2f64d175df455e227604223eab90c71166f957d5f24e4b36",
-      "utf8_bytes": 5343
+      "text_sha256": "d9be658e488be1b5fb34c5fb987f893def63fd161c5b49df61bfc870b2abe11b",
+      "utf8_bytes": 5786
     },
     {
       "path": "Code/src/rfad/domain/pcb_features.py",
@@ -15175,8 +15178,8 @@
     },
     {
       "path": "Code/src/rfad/domain/project.py",
-      "text_sha256": "67fdd1eecf4a7f1ae83d1dbd5ad6685a3047a447e44ddb86cf16e5ac45825843",
-      "utf8_bytes": 24874
+      "text_sha256": "a4f2c9bccee1aa604cf428c858a256b6eb4c3dda7f0a6df72d9fbaed21adb4bf",
+      "utf8_bytes": 24922
     },
     {
       "path": "Code/src/rfad/domain/radiation_polarization.py",
@@ -15245,8 +15248,8 @@
     },
     {
       "path": "Code/src/rfad/storage/journal.py",
-      "text_sha256": "9b04c446302753d99ee90b0d7aa177a7934b9a593b4d235aba51820a43398215",
-      "utf8_bytes": 25727
+      "text_sha256": "80d611461045bed41a98910624357109e3955da49dff720fe8ef51ec0adb5bdc",
+      "utf8_bytes": 26604
     },
     {
       "path": "Code/src/rfad/storage/sealed_files.py",

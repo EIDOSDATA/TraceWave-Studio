@@ -24,6 +24,7 @@ from uuid import UUID, uuid4
 
 from rfad.application.canonical import CanonicalEncodingError, canonical_bytes
 from rfad.domain.errors import ProjectError
+from rfad.domain.resource_limits import MAX_DOCUMENT_BYTES
 
 MAX_STATE_BYTES = 8 * 1024 * 1024
 MAX_ARTIFACT_BYTES = MAX_STATE_BYTES
@@ -333,13 +334,21 @@ class Journal:
 
     def put_immutable(self, relative_path: str, payload: bytes) -> dict:
         """! @brief 새 불변 artifact를 기록하고 실제 파일 hash 참조를 반환한다."""
+        return self._put_immutable(relative_path, payload, MAX_ARTIFACT_BYTES)
+
+    def put_document(self, relative_path: str, payload: bytes) -> dict:
+        """! @brief 정규 프로젝트 개정과 스냅샷에만 확장 문서 예산을 사용한다."""
+        return self._put_immutable(relative_path, payload, MAX_DOCUMENT_BYTES)
+
+    def _put_immutable(self, relative_path: str, payload: bytes, limit: int) -> dict:
+        """! @brief 각 호출 범위의 예산에 같은 불변 쓰기와 동기화를 적용한다."""
         with self._mutex:
             self._ensure_open()
-            if type(payload) is not bytes or len(payload) > MAX_ARTIFACT_BYTES:
-                raise ProjectError("E_RESOURCE", "불변 파일은 최대 8 MiB의 bytes여야 합니다.")
+            if type(payload) is not bytes or len(payload) > limit:
+                raise ProjectError("E_RESOURCE", f"불변 파일은 최대 {limit} bytes여야 합니다.")
             path = self._safe_path(relative_path)
             if path.exists():
-                if self._read_bytes(path, MAX_ARTIFACT_BYTES) != payload:
+                if self._read_bytes(path, limit) != payload:
                     raise ProjectError("E_HASH", "기존 불변 파일에 다른 내용을 기록할 수 없습니다.")
                 try:
                     with path.open("r+b") as stream:
@@ -360,13 +369,13 @@ class Journal:
                     raise ProjectError("E_DISK", "불변 파일을 기록하지 못했습니다.") from error
             return {"uri": relative_path, "sha256": _digest(payload), "bytes": len(payload)}
 
-    def _read_artifact(self, reference: dict, *, internal: bool = False) -> bytes:
+    def _read_artifact(self, reference: dict, *, internal: bool = False, limit: int = MAX_ARTIFACT_BYTES) -> bytes:
         """! @brief 참조의 URI/크기/hash와 실제 바이트를 대조한다."""
         if type(reference) is not dict or not {"uri", "sha256", "bytes"}.issubset(reference):
             raise ProjectError("E_HASH", "불변 파일 참조에 필수 필드가 없습니다.")
         size = reference["bytes"]
         digest = reference["sha256"]
-        if type(size) is not int or not 0 <= size <= MAX_ARTIFACT_BYTES or type(digest) is not str or _HASH.fullmatch(digest) is None:
+        if type(size) is not int or not 0 <= size <= limit or type(digest) is not str or _HASH.fullmatch(digest) is None:
             raise ProjectError("E_HASH", "불변 파일 참조의 크기 또는 hash가 유효하지 않습니다.")
         payload = self._read_bytes(self._safe_path(reference["uri"], internal=internal), size)
         if len(payload) != size or _digest(payload) != digest:
@@ -427,6 +436,12 @@ class Journal:
         with self._mutex:
             self._ensure_open()
             return self._read_artifact(reference)
+
+    def read_document(self, reference: dict) -> bytes:
+        """! @brief 프로젝트 개정 또는 스냅샷의 파일과 원래 SHA256을 검사한다."""
+        with self._mutex:
+            self._ensure_open()
+            return self._read_artifact(reference, limit=MAX_DOCUMENT_BYTES)
 
     def verify_file(self, reference: dict) -> None:
         """! @brief 메타데이터 읽기 상한은 유지하며 큰 봉인 파일의 전체 바이트를 스트리밍 확인한다."""

@@ -100,7 +100,7 @@ def capabilities(service=None, catalog=None) -> dict:
             "schema_version": SCHEMA_VERSION, "readable_schema_versions": list(READABLE_SCHEMA_VERSIONS),
             "expression_engine": ENGINE_VERSION, "open_modes": ["create", "open", "recover"],
             "commands": [name for name in COMMANDS if name != "pcb_stackup.apply" and not name.startswith("template_instance.")],
-            "max_document_bytes": MAX_DOCUMENT_BYTES, "mutating_batch": False, "mutating_notification": False,
+            "max_document_bytes": MAX_DOCUMENT_BYTES, "open_result_modes": ["summary"], "mutating_batch": False, "mutating_notification": False,
             "scope": "workspace-local versioned projects and optional isolated host CAD worker",
             "design_validation": {"profile": "rfad.design/0.1", "purposes": ["geometry", "step", "em"], "source": "draft_revision", "max_returned_diagnostics": 64},
             "target_input": {"profile": TARGET_PROFILE, "max_targets": MAX_TARGETS, "max_samples_per_target": MAX_SAMPLES,

@@ -10,6 +10,7 @@ from rfad.application.project_contract import MAX_PROJECTS, MAX_SNAPSHOTS, _path
 from rfad.application.project_repository import ProjectRepository
 from rfad.domain.design import preflight_design
 from rfad.domain.errors import ProjectError
+from rfad.domain.resource_limits import MAX_INLINE_DOCUMENT_BYTES
 from rfad.domain.project import new_project
 from rfad.domain.targets import target_input_status
 
@@ -63,13 +64,16 @@ class ProjectOperations:
             if registered is None or registered != path:
                 raise ProjectError("E_SCHEMA", "등록된 정확한 프로젝트 경로가 필요합니다.")
             project = state["projects"][state["paths"][path]]
+            if data.get("result_mode") != "summary" and project["current"]["bytes"] > MAX_INLINE_DOCUMENT_BYTES:
+                raise ProjectError("E_RESOURCE", "큰 프로젝트는 summary 열기와 페이지 표시 조회를 사용하십시오.")
             document = self.repository.load(project)
+        current = project["current"]
         return {
             "project_id": document["project_id"],
             "revision_id": document["revision_id"],
-            "revision_hash": canonical_hash(document),
-            "document": document,
-            "saved_revision": self.repository.saved_revision(project),
+            "revision_hash": current["sha256"],
+            **({} if data.get("result_mode") == "summary" else {"document": document}),
+            "saved_revision": document["revision_id"] if current == project["saved"] else self.repository.saved_revision(project),
             "diagnostics": [],
             "target_input_statuses": [target_input_status(item) for item in document["targets"]],
         }
@@ -137,7 +141,7 @@ class ProjectOperations:
             raise ProjectError("E_HASH", "게시할 스냅샷과 검토한 원본 바이트가 다릅니다.")
         if snapshot["snapshot_id"] in state["snapshots"]:
             raise ProjectError("E_CONFLICT", "이미 게시된 스냅샷 식별자입니다.")
-        if self.repository.journal.put_immutable(reference["uri"], raw) != reference:
+        if self.repository.journal.put_document(reference["uri"], raw) != reference:
             raise ProjectError("E_HASH", "게시한 스냅샷 참조가 검토한 참조와 다릅니다.")
         state["snapshots"][snapshot["snapshot_id"]] = deepcopy(snapshot)
         return deepcopy(snapshot)

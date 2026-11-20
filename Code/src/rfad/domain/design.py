@@ -14,6 +14,7 @@ from rfad.domain.material_models import (LEGACY_MODEL, TOTAL_TAN_DELTA_MODEL,
 from rfad.domain.planar import MAX_REGION_HOLES, MAX_REGION_POINTS, validate_region
 from rfad.domain.units import Quantity, QuantityError
 from rfad.domain.object_names import NAMED_SCHEMAS, validate_name
+from rfad.domain.resource_limits import MAX_GEOMETRY
 
 
 DESIGN_COLLECTIONS = ("materials", "stackup", "nets", "geometry", "ports")
@@ -147,9 +148,13 @@ def _indexes(document: dict) -> dict[str, dict]:
         values = document.get(name)
         if type(values) is not list:
             _fail("E_SCHEMA", "설계 collection은 목록이어야 합니다.", name)
-        total += len(values)
-        if total > MAX_ENTITIES:
-            _fail("E_RESOURCE", "초기 설계 객체 수 상한 256개를 초과했습니다.", name)
+        if name == "geometry":
+            if len(values) > MAX_GEOMETRY:
+                _fail("E_RESOURCE", f"2D 형상 수 상한 {MAX_GEOMETRY}개를 초과했습니다.", name)
+        else:
+            total += len(values)
+            if total > MAX_ENTITIES:
+                _fail("E_RESOURCE", f"형상 외 설계 객체 수 상한 {MAX_ENTITIES}개를 초과했습니다.", name)
         mapping = {}
         names = set()
         for value in values:

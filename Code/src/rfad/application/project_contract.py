@@ -63,7 +63,9 @@ def validate_project_request(method: str, context: dict, data: dict) -> None:
     """! @brief 접수 전에 지원 필드와 선택지를 검사한다."""
     if method == "project.open":
         _fields(context, set())
-        _fields(data, {"path", "open_mode"}, {"name"})
+        _fields(data, {"path", "open_mode"}, {"name", "result_mode"})
+        if "result_mode" in data and data["result_mode"] != "summary":
+            raise ProjectError("E_UNSUPPORTED", "프로젝트 열기 결과 형식은 summary를 지정하거나 생략하십시오.")
         _path(data["path"])
         if data["open_mode"] not in {"create", "open", "recover"}:
             raise ProjectError("E_UNSUPPORTED", "현재 open/create/recover만 지원합니다.")
