@@ -24,6 +24,8 @@ private:
     wxWindow& m_window;
     wxDC& m_dc;
     CanvasViewport m_viewport;
+    /** @brief 선택 강조와 안티앨리어싱을 포함하며 한 paint의 DPI에서 고정한다. */
+    int m_pathPadding;
     std::unique_ptr<wxGraphicsContext> m_graphics;
     wxGraphicsPen m_linePen;
     wxColour m_lineColour;

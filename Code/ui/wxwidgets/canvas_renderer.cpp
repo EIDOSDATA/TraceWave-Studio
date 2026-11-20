@@ -8,7 +8,7 @@ using Point = CanvasGeometry::Point;
 }
 
 CanvasRenderer::CanvasRenderer(wxWindow& window, wxDC& dc, CanvasViewport viewport)
-    : m_window(window), m_dc(dc), m_viewport(viewport)
+    : m_window(window), m_dc(dc), m_viewport(viewport), m_pathPadding(window.FromDIP(8))
 {
 }
 
@@ -116,16 +116,42 @@ void CanvasRenderer::DrawBoard(const CanvasScene::Model& scene)
 bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, const wxColour& suppliedColour,
                                bool highlight)
 {
-    const bool removal = shape.selectionKind == "cutout" || shape.selectionKind == "hole";
-    const bool outline = shape.selectionKind == "keepout" || shape.selectionKind == "footprint";
-    const wxColour colour = removal                             ? wxColour(248, 251, 255)
-                            : outline                           ? wxColour(178, 66, 112)
-                            : shape.selectionKind == "aperture" ? wxColour(95, 158, 183)
-                                                                : suppliedColour;
     if (!m_viewport.Renderable(shape, offset))
     {
         return false;
     }
+    const bool removal = shape.selectionKind == "cutout" || shape.selectionKind == "hole";
+    const bool outline = shape.selectionKind == "keepout" || shape.selectionKind == "footprint";
+    const bool line = shape.kind == "line_path";
+    const bool arc = shape.kind == "arc_path";
+    Point start{}, end{}, arcCenter{};
+    const double width = std::max(shape.width * m_viewport.pixelsPerMm, 1.0);
+    const double padding = width / 2.0 + m_pathPadding;
+    // @brief native 범위 진단은 유지하고 창에 닿지 않는 경로에는 native path를 만들지 않는다.
+    if (line)
+    {
+        start = m_viewport.Project(shape.start, offset);
+        end = m_viewport.Project(shape.end, offset);
+        if (!outline && !CanvasGeometry::ClipSegment(start, end, -padding, -padding, m_viewport.width + padding,
+                                                     m_viewport.height + padding))
+        {
+            return true;
+        }
+    }
+    else if (arc)
+    {
+        arcCenter = m_viewport.Project(shape.center, offset);
+        const double extent = shape.radius * m_viewport.pixelsPerMm + padding;
+        if (arcCenter.x + extent < 0.0 || arcCenter.x - extent > m_viewport.width ||
+            arcCenter.y + extent < 0.0 || arcCenter.y - extent > m_viewport.height)
+        {
+            return true;
+        }
+    }
+    const wxColour colour = removal                             ? wxColour(248, 251, 255)
+                            : outline                           ? wxColour(178, 66, 112)
+                            : shape.selectionKind == "aperture" ? wxColour(95, 158, 183)
+                                                                : suppliedColour;
     if (!m_graphics)
     {
         m_graphics.reset(wxGraphicsContext::CreateFromUnknownDC(m_dc));
@@ -140,10 +166,8 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
         return false;
     }
     wxGraphicsPath path = graphics->CreatePath();
-    if (shape.kind == "line_path" && outline)
+    if (line && outline)
     {
-        const auto start = m_viewport.Project(shape.start, offset);
-        const auto end = m_viewport.Project(shape.end, offset);
         const double angle = std::atan2(end.y - start.y, end.x - start.x);
         const double radius = shape.width * m_viewport.pixelsPerMm / 2;
         for (int side = 0; side < 2; ++side)
@@ -167,23 +191,14 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
         }
         path.CloseSubpath();
     }
-    else if (shape.kind == "line_path")
+    else if (line)
     {
-        CanvasGeometry::Point start = m_viewport.Project(shape.start, offset);
-        CanvasGeometry::Point end = m_viewport.Project(shape.end, offset);
-        const double padding = std::max(1.0, shape.width * m_viewport.pixelsPerMm) / 2.0 + FromDIP(8);
-        if (!CanvasGeometry::ClipSegment(start, end, -padding, -padding, m_viewport.width + padding,
-                                         m_viewport.height + padding))
-        {
-            return true;
-        }
         path.MoveToPoint(start.x, start.y);
         path.AddLineToPoint(end.x, end.y);
     }
-    else if (shape.kind == "arc_path")
+    else if (arc)
     {
-        const Point center = m_viewport.Project(shape.center, offset);
-        path.AddArc(center.x, center.y, shape.radius * m_viewport.pixelsPerMm,
+        path.AddArc(arcCenter.x, arcCenter.y, shape.radius * m_viewport.pixelsPerMm,
                     -shape.startAngle * CanvasGeometry::Pi / 180.0,
                     -(shape.startAngle + shape.sweepAngle) * CanvasGeometry::Pi / 180.0, shape.sweepAngle < 0.0);
     }
@@ -227,7 +242,7 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
             graphics->StrokePath(marker);
         }
     }
-    if (outline || (shape.kind != "line_path" && shape.kind != "arc_path"))
+    if (outline || (!line && !arc))
     {
         Flush();
         if (highlight)
@@ -256,7 +271,6 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
         }
         return true;
     }
-    const double width = std::max(shape.width * m_viewport.pixelsPerMm, 1.0);
     if (removal)
     {
         wxGraphicsPenInfo boundary(wxColour(92, 107, 122), width + FromDIP(highlight ? 5 : 2));
