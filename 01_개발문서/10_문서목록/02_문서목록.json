@@ -28,7 +28,7 @@
     "current_traceability": 4,
     "document_catalog": 4,
     "document_navigation": 6,
-    "documentation_asset": 147,
+    "documentation_asset": 148,
     "documentation_validation_record": 1,
     "historical_proposal": 2,
     "historical_verification": 41,
@@ -28609,9 +28609,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 13381,
-      "working_tree_sha256": "ca125d42e12d3ac018cee446e4a03745de14fe0c2e18b8f43e4a50886481af7f",
-      "text_lines": 97,
+      "bytes": 13553,
+      "working_tree_sha256": "a1807cb1b112a3b470a590707728dcc43bd9c0b1286a7b22dfb70b899eec5e25",
+      "text_lines": 98,
       "text_status": "utf8_read"
     },
     {
@@ -28672,9 +28672,9 @@
       "path": "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 143082,
-      "working_tree_sha256": "c9b712aa9d5316c55e8c9561a5ff053c9b85b92729742a303abf42b16ac7892f",
-      "text_lines": 789,
+      "bytes": 143512,
+      "working_tree_sha256": "b99f1a04eca415659031705d28ccf12d8755ad21a86bc36c30b2fccc69d6f8fc",
+      "text_lines": 791,
       "text_status": "utf8_read"
     },
     {
@@ -30990,6 +30990,13 @@
       "review_scope": "문서/시안 자산 보존",
       "bytes": 19426,
       "working_tree_sha256": "c40f31ab4ae9b3334fa54d69041a6e25129cb310cdc7bcefbe51132740fc79cb"
+    },
+    {
+      "path": "01_개발문서/07_검증/81_윈도우_재현빌드_수신실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 3906,
+      "working_tree_sha256": "f8cb0c5d307347c4efc70aecb25ad5c08e0551c990bf734404f7984020ac8687"
     }
   ],
   "identical_byte_groups": [
@@ -31146,18 +31153,15 @@
   ],
   "incremental_refresh": {
     "date_kst": "2026-11-20",
-    "mode": "step13_windows_independent_path_rebuild",
-    "previous_inventory_sha256": "7041dae8f827dd326baae594fc345c7d956461cf06d0e5a3d2b513185a385b06",
+    "mode": "step13_windows_reproducible_bundle_receiver",
+    "previous_inventory_sha256": "052430339ee03699b169178fc87474449a51e4a4ee2a2e6983282d67b9ed31ee",
     "refreshed_paths": [
-      "01_개발문서/07_검증/79_윈도우_독립경로_재빌드검증.md",
-      "01_개발문서/07_검증/80_윈도우_독립경로_재빌드실행기록.json",
+      "01_개발문서/07_검증/81_윈도우_재현빌드_수신실행기록.json",
       "01_개발문서/07_검증/README.md",
-      "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
-      "Code/ui/wxwidgets/README.md"
+      "01_개발문서/09_개발계획/02_개발착수와_현재상태.md"
     ],
     "added_paths": [
-      "01_개발문서/07_검증/79_윈도우_독립경로_재빌드검증.md",
-      "01_개발문서/07_검증/80_윈도우_독립경로_재빌드실행기록.json"
+      "01_개발문서/07_검증/81_윈도우_재현빌드_수신실행기록.json"
     ],
     "removed_paths": [],
     "preserved_reference_records": 3336,
