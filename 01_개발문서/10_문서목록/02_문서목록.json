@@ -19,16 +19,16 @@
     "current_02_시스템명세": 11,
     "current_03_아키텍처": 7,
     "current_04_화면설계": 24,
-    "current_05_기능설계": 43,
+    "current_05_기능설계": 44,
     "current_06_분석연구": 13,
-    "current_07_검증": 22,
+    "current_07_검증": 23,
     "current_08_운영환경": 5,
     "current_09_개발계획": 4,
     "current_11_검토기록": 6,
     "current_traceability": 4,
     "document_catalog": 4,
     "document_navigation": 6,
-    "documentation_asset": 96,
+    "documentation_asset": 100,
     "documentation_validation_record": 1,
     "historical_proposal": 2,
     "historical_verification": 41,
@@ -25726,8 +25726,8 @@
       "path": "01_개발문서/02_시스템명세/03_데이터_모델과_파일_형식.md",
       "category": "current_02_시스템명세",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 29197,
-      "working_tree_sha256": "9a59a8c7c5d7729f6b4eff1ebe3aa9aed7aaff7daa29389ada0f4d95abea4e6b",
+      "bytes": 29423,
+      "working_tree_sha256": "8e2372852ce283fb7781def90a02b52683b79a69031c4fdd7234d610af493aec",
       "text_lines": 222,
       "text_status": "utf8_read"
     },
@@ -28053,8 +28053,8 @@
       "path": "01_개발문서/05_기능설계/01_프로젝트/01_프로젝트_명령과_저장.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 19070,
-      "working_tree_sha256": "a50e4f45ae2bcaf3cf75c49f8874d9120e87e953d21c37147b379ec7b5a5c39b",
+      "bytes": 19326,
+      "working_tree_sha256": "c0be871b666e1d104a2954fbae49d7430cb54e2e94a07f0e7d15a46c9fcdedca",
       "text_lines": 136,
       "text_status": "utf8_read"
     },
@@ -28062,9 +28062,9 @@
       "path": "01_개발문서/05_기능설계/01_프로젝트/README.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 312,
-      "working_tree_sha256": "ffe2322c546b4a7f31ee0e4f28a94bdee4b203e9a79d665f6f469eeeca3aa4e8",
-      "text_lines": 9,
+      "bytes": 463,
+      "working_tree_sha256": "da1bcc9db2ed2554919a32db5610d77415f9cc9b03d1fab54ff5865b163202d0",
+      "text_lines": 10,
       "text_status": "utf8_read"
     },
     {
@@ -28458,8 +28458,8 @@
       "path": "01_개발문서/07_검증/01_구현감사/01_설계기능.json",
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
-      "bytes": 58919,
-      "working_tree_sha256": "ffcf2667ac0f0102a2def1ea7540ef7608ed6cc9d7b9dd882379e77e63a0f4bd"
+      "bytes": 59536,
+      "working_tree_sha256": "42e72884dd5a883bc072130c1f02cae54e985bea04e3a2261c04cb3dce49fcfa"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
@@ -28472,16 +28472,16 @@
       "path": "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
-      "bytes": 612063,
-      "working_tree_sha256": "e1be83824ff34abf9f6b8ad3994c87fc649e128b2c3f17d14933d2df5ad94985"
+      "bytes": 613909,
+      "working_tree_sha256": "b86f788512b39f7c8119a5c882f20f373acd34cb62cd54e5f2934901f6fe9098"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
-      "bytes": 160300,
-      "working_tree_sha256": "207d31ec27ce5f95ff65315a495dc7689962eca14e471f471a3138f10869c325",
-      "text_lines": 2021,
+      "bytes": 161229,
+      "working_tree_sha256": "bb8167f5312dbcb410ade2d90c9cb2858f79e6a6f1a3ae6007ba13f9b6104211",
+      "text_lines": 2027,
       "text_status": "utf8_read"
     },
     {
@@ -28609,9 +28609,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 5560,
-      "working_tree_sha256": "60cbb8a15fe9c53e5545de5436397e714cc2fcf28897bbbb84675041e219bd0a",
-      "text_lines": 47,
+      "bytes": 5850,
+      "working_tree_sha256": "22444498e8ef1abba56cb46308c6d310507150097e6783712883446862a3b044",
+      "text_lines": 49,
       "text_status": "utf8_read"
     },
     {
@@ -28672,18 +28672,18 @@
       "path": "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 131225,
-      "working_tree_sha256": "1eca64ba04e44d266904dfce5454db9d3326e4d4c4022c6d3373e8a6feeb15f7",
-      "text_lines": 691,
+      "bytes": 131886,
+      "working_tree_sha256": "306bab7eb3f073ef6c5f081a44ebfb1bd6fceb719d53342aa35f7123b94d32bd",
+      "text_lines": 697,
       "text_status": "utf8_read"
     },
     {
       "path": "01_개발문서/09_개발계획/03_개발완료_계획.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 31595,
-      "working_tree_sha256": "9557d6106382a24ced44e1220b5345ce8bbabb82718c9f355e1e79bb5c2f23b8",
-      "text_lines": 160,
+      "bytes": 31819,
+      "working_tree_sha256": "01068e081084a0d7aec37ce8fc453cce802ce90c699a83af7ed799c77fce7e26",
+      "text_lines": 161,
       "text_status": "utf8_read"
     },
     {
@@ -30303,8 +30303,8 @@
       "path": "01_개발문서/05_기능설계/05_출력교환/06_고정설계_보고서와_인계.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 3360,
-      "working_tree_sha256": "d2d9053d68360e5a0da6ddfe1b88dd42b14c1cbabe9d7a9ce4a726948a370f81",
+      "bytes": 3459,
+      "working_tree_sha256": "7ff2806b82cd95cb8646b918f8608c32cef56bc7bf7e78a2eec08e953211c00b",
       "text_lines": 24,
       "text_status": "utf8_read"
     },
@@ -30365,6 +30365,52 @@
       "review_scope": "문서/시안 자산 보존",
       "bytes": 5384,
       "working_tree_sha256": "822e2e241c4fd44137359487119c1f2461876224d25fe797bb37ccffa48752ca"
+    },
+    {
+      "path": "01_개발문서/05_기능설계/01_프로젝트/02_프로젝트_보존묶음과_편집복원.md",
+      "category": "current_05_기능설계",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 3441,
+      "working_tree_sha256": "601847a17880fcb6c2cc7f3cc118c65ae9203bb2ef62a2c0af3cf50c88f93909",
+      "text_lines": 25,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/76_복원프로젝트_스튜디오열기.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 149865,
+      "working_tree_sha256": "8ff4eab3a0ee5dde7608c6bd5648a9e6e2a3d70a6007ee0a05af391acbf98082"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/77_복원프로젝트_편집저장.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 150092,
+      "working_tree_sha256": "116e457171fcbf97e29e4d3ebe34d0176b4e4dcbfc0207b49f310d6c766e7de4"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/78_복원프로젝트_편집후재열기.jpg",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 151095,
+      "working_tree_sha256": "0fe2ad5aa2f4e9bd10d4592894c90cc2faa62645bf4c891e7cb3b5d422f5783d"
+    },
+    {
+      "path": "01_개발문서/07_검증/31_프로젝트_편집복원_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2352,
+      "working_tree_sha256": "7e7d04478fdf6ebf89fee12ee1fb45c64b1cec96ec939eedc30810dddbfa85ab",
+      "text_lines": 16,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/32_프로젝트_편집복원_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 4017,
+      "working_tree_sha256": "9ce1e87338407848ffe5e386aa256c9593426d0aba9951efa1b269bac27628a0"
     }
   ],
   "identical_byte_groups": [
@@ -30517,41 +30563,33 @@
   ],
   "incremental_refresh": {
     "date_kst": "2026-11-20",
-    "mode": "step12_read_only_handoff_documents_only",
-    "previous_inventory_sha256": "d26953f7ccabbd5353c5cefc95896d7cbd8b5c9ad73f511720d77da6ef8d0c86",
+    "mode": "step12_cli_restore_documents_only",
+    "previous_inventory_sha256": "bba7b5fd51d0c20c70980f5981ad5c08ed0801b3828b1c5df14e691c41e21438",
     "refreshed_paths": [
       "01_개발문서/02_시스템명세/03_데이터_모델과_파일_형식.md",
-      "01_개발문서/04_화면설계/27_보고서와_인계_화면.md",
-      "01_개발문서/04_화면설계/README.md",
+      "01_개발문서/05_기능설계/01_프로젝트/01_프로젝트_명령과_저장.md",
+      "01_개발문서/05_기능설계/01_프로젝트/02_프로젝트_보존묶음과_편집복원.md",
+      "01_개발문서/05_기능설계/01_프로젝트/README.md",
       "01_개발문서/05_기능설계/05_출력교환/06_고정설계_보고서와_인계.md",
-      "01_개발문서/05_기능설계/05_출력교환/README.md",
       "01_개발문서/07_검증/01_구현감사/01_설계기능.json",
       "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
       "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
-      "01_개발문서/07_검증/02_실행화면/70_고정설계_인계범위_검토.jpg",
-      "01_개발문서/07_검증/02_실행화면/71_인계_보고서_미리보기.jpg",
-      "01_개발문서/07_검증/02_실행화면/72_인계_목록과_원문해시.jpg",
-      "01_개발문서/07_검증/02_실행화면/73_인계_검증사본_저장완료.jpg",
-      "01_개발문서/07_검증/02_실행화면/74_재열기_인계발행기록.jpg",
-      "01_개발문서/07_검증/02_실행화면/75_재열기_인계사본_해시확인.jpg",
-      "01_개발문서/07_검증/29_고정설계_보고서와_인계_검증.md",
-      "01_개발문서/07_검증/30_고정설계_보고서와_인계_실행기록.json",
+      "01_개발문서/07_검증/02_실행화면/76_복원프로젝트_스튜디오열기.jpg",
+      "01_개발문서/07_검증/02_실행화면/77_복원프로젝트_편집저장.jpg",
+      "01_개발문서/07_검증/02_실행화면/78_복원프로젝트_편집후재열기.jpg",
+      "01_개발문서/07_검증/31_프로젝트_편집복원_검증.md",
+      "01_개발문서/07_검증/32_프로젝트_편집복원_실행기록.json",
       "01_개발문서/07_검증/README.md",
       "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
-      "01_개발문서/09_개발계획/03_개발완료_계획.md",
-      "Code/ui/wxwidgets/README.md"
+      "01_개발문서/09_개발계획/03_개발완료_계획.md"
     ],
     "added_paths": [
-      "01_개발문서/04_화면설계/27_보고서와_인계_화면.md",
-      "01_개발문서/05_기능설계/05_출력교환/06_고정설계_보고서와_인계.md",
-      "01_개발문서/07_검증/02_실행화면/70_고정설계_인계범위_검토.jpg",
-      "01_개발문서/07_검증/02_실행화면/71_인계_보고서_미리보기.jpg",
-      "01_개발문서/07_검증/02_실행화면/72_인계_목록과_원문해시.jpg",
-      "01_개발문서/07_검증/02_실행화면/73_인계_검증사본_저장완료.jpg",
-      "01_개발문서/07_검증/02_실행화면/74_재열기_인계발행기록.jpg",
-      "01_개발문서/07_검증/02_실행화면/75_재열기_인계사본_해시확인.jpg",
-      "01_개발문서/07_검증/29_고정설계_보고서와_인계_검증.md",
-      "01_개발문서/07_검증/30_고정설계_보고서와_인계_실행기록.json"
+      "01_개발문서/05_기능설계/01_프로젝트/02_프로젝트_보존묶음과_편집복원.md",
+      "01_개발문서/07_검증/02_실행화면/76_복원프로젝트_스튜디오열기.jpg",
+      "01_개발문서/07_검증/02_실행화면/77_복원프로젝트_편집저장.jpg",
+      "01_개발문서/07_검증/02_실행화면/78_복원프로젝트_편집후재열기.jpg",
+      "01_개발문서/07_검증/31_프로젝트_편집복원_검증.md",
+      "01_개발문서/07_검증/32_프로젝트_편집복원_실행기록.json"
     ],
     "removed_paths": [],
     "preserved_reference_records": 3336,

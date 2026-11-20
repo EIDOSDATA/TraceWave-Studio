@@ -970,10 +970,10 @@
   {
     "id": "FN-045",
     "implementation_status": "partial",
-    "implemented": "선택 스냅샷의 고정 설계, 모든 등록 근거와 명시 선택한 소유 파일을 검토 hash로 발행한다. 원래 스냅샷과 원문을 SHA256으로 검사하는 읽기 전용 ZIP과 GUI 수령, 발행 기록의 재열기를 지원한다.",
+    "implemented": "선택 스냅샷의 고정 설계, 모든 등록 근거와 명시 선택한 소유 파일을 검토 hash로 발행한다. 원래 스냅샷과 원문을 SHA256으로 검사하는 읽기 전용 ZIP과 GUI 수령, 발행 기록의 재열기를 지원한다. 별도 편집 복원 프로파일은 등록 개정과 속성/이력, 스냅샷, 선택 등록 원문을 CLI에서 검토·발행하고 새로운 작업 영역에 등록한다. 복원 뒤 Windows Studio의 편집·저장·재열기와 중단 뒤 재시도를 확인했다.",
     "gaps": [
-      "편집 가능한 프로젝트 복구용 snapshot과 개정/이력의 참조 closure 및 외부 원문 누락/재확보를 구현해야 한다.",
-      "새 workspace의 안전한 원자 적용과 실패/중단 후 재열기를 검수해야 한다."
+      "Studio 내부 파일 검토와 복원·진행 연결, 외부 worker 결과와 기존 자료의 단계별 재확보를 보강해야 한다.",
+      "전체 UX/성능/R1과 다른 수신 환경을 별도로 수용해야 한다."
     ],
     "code": [
       "src/rfad/storage/journal.py",
@@ -982,17 +982,23 @@
       "tools/build_internal_bundle.py",
       "src/rfad/application/handoff_archive.py",
       "src/rfad/application/handoff_service.py",
-      "ui/wxwidgets/handoff_output_controller.cpp"
+      "ui/wxwidgets/handoff_output_controller.cpp",
+      "src/rfad/application/project_archive.py",
+      "src/rfad/application/project_archive_model.py",
+      "src/rfad/cli/archive.py"
     ],
     "tests": [
-      "tests/test_handoff_service.py"
+      "tests/test_handoff_service.py",
+      "tests/test_project_archive.py"
     ],
     "evidence": [
       "runtime_profiles/internal-validation-bundle.json",
       "../01_개발문서/05_기능설계/01_프로젝트/01_프로젝트_명령과_저장.md",
       "../01_개발문서/05_기능설계/05_출력교환/06_고정설계_보고서와_인계.md",
       "../01_개발문서/04_화면설계/27_보고서와_인계_화면.md",
-      "../01_개발문서/07_검증/29_고정설계_보고서와_인계_검증.md"
+      "../01_개발문서/07_검증/29_고정설계_보고서와_인계_검증.md",
+      "../01_개발문서/05_기능설계/01_프로젝트/02_프로젝트_보존묶음과_편집복원.md",
+      "../01_개발문서/07_검증/31_프로젝트_편집복원_검증.md"
     ],
     "next_steps": [
       12,

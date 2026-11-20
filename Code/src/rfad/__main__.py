@@ -1,6 +1,7 @@
 """! @brief 환경 진단, 프로젝트 서비스와 오프라인 카탈로그 진입점을 제공한다."""
 
 import argparse
+import sys
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -8,9 +9,14 @@ def main(argv: list[str] | None = None) -> int:
     @param argv 명령행 인수이며 생략하면 현재 프로세스 인수를 사용한다.
     @return 명령 실행 종료 코드.
     """
+    arguments = sys.argv[1:] if argv is None else argv
+    if arguments[:1] == ["archive"]:
+        from rfad.cli.archive import main as archive_main
+
+        return archive_main(arguments[1:])
     parser = argparse.ArgumentParser(prog="rfad")
-    parser.add_argument("command", choices=("doctor", "serve", "catalog"))
-    args, remainder = parser.parse_known_args(argv)
+    parser.add_argument("command", choices=("doctor", "serve", "catalog", "archive"))
+    args, remainder = parser.parse_known_args(arguments)
     if args.command == "doctor":
         from rfad.cli.doctor import main as doctor_main
 
@@ -28,7 +34,6 @@ def main(argv: list[str] | None = None) -> int:
     serve_parser.add_argument("--openems-wsl", action="store_true", help="TraceWave-Dev의 검증된 openEMS 참조 worker 사용")
     options = serve_parser.parse_args(remainder)
     from rfad.application.rpc import serve
-    import sys
 
     catalog = None
     if options.catalog is not None:

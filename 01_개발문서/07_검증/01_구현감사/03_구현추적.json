@@ -10142,7 +10142,10 @@
         "tools/build_internal_bundle.py",
         "src/rfad/application/handoff_archive.py",
         "src/rfad/application/handoff_service.py",
-        "ui/wxwidgets/handoff_output_controller.cpp"
+        "ui/wxwidgets/handoff_output_controller.cpp",
+        "src/rfad/application/project_archive.py",
+        "src/rfad/application/project_archive_model.py",
+        "src/rfad/cli/archive.py"
       ],
       "contract_notes": [
         "build_internal_bundle은 src/tools/ui/tests 등 개발 배포 묶음이며 사용자 프로젝트를 명시적으로 제외한다. 이를 FN-045 프로젝트 archive 완료로 계산하지 않는다.",
@@ -10153,21 +10156,24 @@
         "../01_개발문서/05_기능설계/01_프로젝트/01_프로젝트_명령과_저장.md",
         "../01_개발문서/05_기능설계/05_출력교환/06_고정설계_보고서와_인계.md",
         "../01_개발문서/04_화면설계/27_보고서와_인계_화면.md",
-        "../01_개발문서/07_검증/29_고정설계_보고서와_인계_검증.md"
+        "../01_개발문서/07_검증/29_고정설계_보고서와_인계_검증.md",
+        "../01_개발문서/05_기능설계/01_프로젝트/02_프로젝트_보존묶음과_편집복원.md",
+        "../01_개발문서/07_검증/31_프로젝트_편집복원_검증.md"
       ],
       "gaps": [
-        "편집 가능한 프로젝트 복구용 snapshot과 개정/이력의 참조 closure 및 외부 원문 누락/재확보를 구현해야 한다.",
-        "새 workspace의 안전한 원자 적용과 실패/중단 후 재열기를 검수해야 한다."
+        "Studio 내부 파일 검토와 복원·진행 연결, 외부 worker 결과와 기존 자료의 단계별 재확보를 보강해야 한다.",
+        "전체 UX/성능/R1과 다른 수신 환경을 별도로 수용해야 한다."
       ],
       "id": "FN-045",
       "implementation_status": "partial",
-      "implemented": "선택 스냅샷의 고정 설계, 모든 등록 근거와 명시 선택한 소유 파일을 검토 hash로 발행한다. 원래 스냅샷과 원문을 SHA256으로 검사하는 읽기 전용 ZIP과 GUI 수령, 발행 기록의 재열기를 지원한다.",
+      "implemented": "선택 스냅샷의 고정 설계, 모든 등록 근거와 명시 선택한 소유 파일을 검토 hash로 발행한다. 원래 스냅샷과 원문을 SHA256으로 검사하는 읽기 전용 ZIP과 GUI 수령, 발행 기록의 재열기를 지원한다. 별도 편집 복원 프로파일은 등록 개정과 속성/이력, 스냅샷, 선택 등록 원문을 CLI에서 검토·발행하고 새로운 작업 영역에 등록한다. 복원 뒤 Windows Studio의 편집·저장·재열기와 중단 뒤 재시도를 확인했다.",
       "next_steps": [
         12,
         13
       ],
       "tests": [
-        "tests/test_handoff_service.py"
+        "tests/test_handoff_service.py",
+        "tests/test_project_archive.py"
       ]
     },
     {
@@ -13931,8 +13937,8 @@
   "review_inputs": [
     {
       "path": "01_개발문서/07_검증/01_구현감사/01_설계기능.json",
-      "text_sha256": "472302a4093a59cea8cdce42789d30904ad7c4aa6cbe4e9eabd4642069df3b2d",
-      "utf8_bytes": 57913
+      "text_sha256": "0ac43b50570ec348afbac7ca4dfd91e50afcc471501f8018b91436a84e01e9cd",
+      "utf8_bytes": 58524
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
@@ -13986,8 +13992,13 @@
     },
     {
       "path": "01_개발문서/05_기능설계/01_프로젝트/01_프로젝트_명령과_저장.md",
-      "text_sha256": "a50e4f45ae2bcaf3cf75c49f8874d9120e87e953d21c37147b379ec7b5a5c39b",
-      "utf8_bytes": 19070
+      "text_sha256": "2a359b5b85deb5f72a15eeaf9bb6b90de1c0f04de66184b671f956adbe8e0edb",
+      "utf8_bytes": 19190
+    },
+    {
+      "path": "01_개발문서/05_기능설계/01_프로젝트/02_프로젝트_보존묶음과_편집복원.md",
+      "text_sha256": "3ce5ef9932e088e34032fffee6c5b1cb615df241a2cf55115681b3e38d93ec6a",
+      "utf8_bytes": 3416
     },
     {
       "path": "01_개발문서/05_기능설계/02_설계편집/02_속성편집과_실행취소.md",
@@ -14091,8 +14102,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/05_출력교환/06_고정설계_보고서와_인계.md",
-      "text_sha256": "84f1caf5dd8108a0aca3238ec9adec2184ca77db59445b81f015070feacbd50d",
-      "utf8_bytes": 3359
+      "text_sha256": "0a5a6d7f38882201e0718dedf5176f1b43660a1c9753123aea8fbe3da65dd3e3",
+      "utf8_bytes": 3435
     },
     {
       "path": "01_개발문서/05_기능설계/06_연구/01_명시적스윕과_실행계약.md",
@@ -14158,6 +14169,11 @@
       "path": "01_개발문서/07_검증/29_고정설계_보고서와_인계_검증.md",
       "text_sha256": "404ba3b4060a9a4ff7c93e3d58690dc63cbb65ab14ad176e5b87a4ee8cd8fe95",
       "utf8_bytes": 3370
+    },
+    {
+      "path": "01_개발문서/07_검증/31_프로젝트_편집복원_검증.md",
+      "text_sha256": "e5004ffc7c0f27a6186b4e8ec2ff1c26f7dff3c84b726d579bdf985ddd325e20",
+      "utf8_bytes": 2351
     },
     {
       "path": "Code/runtime_profiles/cad-worker-windows-x64.json",
@@ -14496,8 +14512,8 @@
     },
     {
       "path": "Code/src/rfad/application/handoff_archive.py",
-      "text_sha256": "627fce7a780f041a0082a9415e0fe2c4909a69a996f1576152d6d9c3bcb11922",
-      "utf8_bytes": 10929
+      "text_sha256": "230793fbcb7590c588f83a03bf0649fa98df102def31eaee328e0c14d6a47b88",
+      "utf8_bytes": 11234
     },
     {
       "path": "Code/src/rfad/application/handoff_evidence.py",
@@ -14653,6 +14669,16 @@
       "path": "Code/src/rfad/application/precision_service.py",
       "text_sha256": "e24fcb56676b3c8aafa5b252f7af1c772d8c18ce9a5b48221b1f76b5f69a00ec",
       "utf8_bytes": 12535
+    },
+    {
+      "path": "Code/src/rfad/application/project_archive.py",
+      "text_sha256": "bf6e931bbc07cf1e76b98d911378ed414d55ba4ba0349bca19b7bd6cd40c379c",
+      "utf8_bytes": 16266
+    },
+    {
+      "path": "Code/src/rfad/application/project_archive_model.py",
+      "text_sha256": "c58ef169fe98dc66679c90ba6dfddb9375283da3d4509c16dd6944b5de68c2b3",
+      "utf8_bytes": 11253
     },
     {
       "path": "Code/src/rfad/application/project_contract.py",
@@ -14880,6 +14906,11 @@
       "utf8_bytes": 4080
     },
     {
+      "path": "Code/src/rfad/cli/archive.py",
+      "text_sha256": "7bdf8cc94b6b9f851bc33de3ef5657e9e49b9001d39d30f656cdfa1b28d182d6",
+      "utf8_bytes": 5115
+    },
+    {
       "path": "Code/src/rfad/cli/doctor.py",
       "text_sha256": "80be1ab1fc4d387178f6b70cc4a1241b21c793d33648660c443ce9a3946139fb",
       "utf8_bytes": 11085
@@ -15101,8 +15132,8 @@
     },
     {
       "path": "Code/src/rfad/storage/journal.py",
-      "text_sha256": "62f2f3a28dae5796baf71249078bca57b485647ed2fe0e261f18a7a27d134c03",
-      "utf8_bytes": 25360
+      "text_sha256": "6b2bd6f4e2706ef6448faee8ad0eb7b880e12ade8fcf7ed4866885207bc7994b",
+      "utf8_bytes": 25672
     },
     {
       "path": "Code/src/rfad/storage/sealed_files.py",
@@ -15533,6 +15564,11 @@
       "path": "Code/tests/test_printed_seeds.py",
       "text_sha256": "802cf8059140e79bf6363a5f92faf1ee4224809c213c09804ea45f5461b2d11c",
       "utf8_bytes": 13221
+    },
+    {
+      "path": "Code/tests/test_project_archive.py",
+      "text_sha256": "76221d603e154da00f55838d16863a6b3668f48ce714f1b2fe2994518a4361bb",
+      "utf8_bytes": 8646
     },
     {
       "path": "Code/tests/test_project_service.py",

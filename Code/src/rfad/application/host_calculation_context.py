@@ -15,7 +15,7 @@ from rfad.application.project_studies import StudyCoordinator
 from rfad.application.request_ledger import RequestLedger
 from rfad.application.solver_jobs import SolverCoordinator
 from rfad.domain.errors import ProjectError
-from rfad.storage.journal import Journal
+from rfad.storage.journal import Journal, new_workspace_state
 
 MUTATIONS = design_sweep_service.MUTATIONS | {network_service.MUTATION} | measurement_service.MUTATIONS
 
@@ -30,8 +30,7 @@ class HostCalculationContext:
             self.calculation_runtime.establish()
         except ProjectError as error:
             self._calculation_error = error
-        self.journal = Journal(self.workspace, {"schema_version": "rfad.workspace/0.1", "epochs": {}, "projects": {},
-            "paths": {}, "receipts": {}, "jobs": {}, "snapshots": {}, "commands": {}}, fault_hook=fault_hook)
+        self.journal = Journal(self.workspace, new_workspace_state(), fault_hook=fault_hook)
         self.repository = ProjectRepository(self.workspace, self.journal, max_document_bytes=MAX_DOCUMENT_BYTES)
         self.history = ProjectHistory(self.repository)
         self.operations = ProjectOperations(self.repository, self._now)

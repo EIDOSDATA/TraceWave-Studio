@@ -34,6 +34,12 @@ _LOCAL_LOCK_GUARD = threading.Lock()
 _HASH = re.compile(r"[0-9a-f]{64}\Z")
 
 
+def new_workspace_state() -> dict:
+    """! @brief 실행 환경 없이 열 수 있는 현재 작업 영역의 빈 상태를 반환한다."""
+    return {"schema_version": "rfad.workspace/0.1", "epochs": {}, "projects": {}, "paths": {},
+            "receipts": {}, "jobs": {}, "snapshots": {}, "commands": {}}
+
+
 def _digest(payload: bytes) -> str:
     """! @brief canonical prefix 없이 실제 파일 바이트의 SHA256을 구한다."""
     return hashlib.sha256(payload).hexdigest()

@@ -1,0 +1,105 @@
+{
+  "schema": "rfad.verification.project-archive/0.1",
+  "date_kst": "2026-11-20",
+  "plan_step": 12,
+  "base_commit": "3c046d63c27e2fb283d9ab5b84164204d069efab",
+  "status": "cli_and_native_reopen_verified",
+  "windows_ui": {
+    "profile": "rfad.project-archive/0.1",
+    "project_id": "447c1708-bfac-4ea9-b3c2-79729b4368f3",
+    "path": "projects/CAD 한글 교환 검증",
+    "revision_id": "13c56ff1-21a7-42eb-a00f-44c0c3490044",
+    "saved_revision": "13c56ff1-21a7-42eb-a00f-44c0c3490044",
+    "content_hash": "5faa2f15ad7f39fcf2127c12b7f1095a46dd653afb214ed3ad19f96e2ac31282",
+    "archive_sha256": "6c247b34fb252979c2e4fbe0a2c1efe6075ba4523d4b866ba5375a44e6641531",
+    "review_hash": "7efa7c623cefc8325914d0d6830af57578a8aa45b569bddc74aec4dcf5d661b0",
+    "files": 8,
+    "commands": 1,
+    "snapshots": 2,
+    "missing_count": 0,
+    "unavailable_parent_count": 1,
+    "scope": {
+      "active_workspace_identity": "original",
+      "execution_on_restore": false,
+      "external_worker_results": "omitted",
+      "fabrication_and_measurement_acceptance": "not_established",
+      "project_revisions": "preserved",
+      "sessions_and_jobs": "omitted"
+    },
+    "status": "restored",
+    "omitted": [],
+    "windows_gui_opened": true,
+    "windows_gui_edit_saved_and_reopened": true,
+    "saved_new_revision": "0c121a04-65e2-4e6d-ab6a-3d07608cda4d",
+    "source_unchanged": true,
+    "restored_snapshots_unchanged": true,
+    "raw_sha256": "f44a585b3a3281c850e1d35653dc6d8ebf2feba48896089ed6e474c4d91ea3d0",
+    "original_fields_and_unknowns_preserved": true,
+    "zip_bytes": 1503930,
+    "gui_executable_sha256": "b0d862be3e030e4732dda66c6d6e95e96bb95783eba5e45d49dceb71ff58ff08",
+    "captures": [
+      {
+        "path": "02_실행화면/76_복원프로젝트_스튜디오열기.jpg",
+        "bytes": 149865,
+        "sha256": "8ff4eab3a0ee5dde7608c6bd5648a9e6e2a3d70a6007ee0a05af391acbf98082"
+      },
+      {
+        "path": "02_실행화면/77_복원프로젝트_편집저장.jpg",
+        "bytes": 150092,
+        "sha256": "116e457171fcbf97e29e4d3ebe34d0176b4e4dcbfc0207b49f310d6c766e7de4"
+      },
+      {
+        "path": "02_실행화면/78_복원프로젝트_편집후재열기.jpg",
+        "bytes": 151095,
+        "sha256": "0fe2ad5aa2f4e9bd10d4592894c90cc2faa62645bf4c891e7cb3b5d422f5783d"
+      }
+    ],
+    "existing_archive_not_overwritten": true,
+    "original_receipt_after_new_edit": true
+  },
+  "runs": [
+    {
+      "scope": "정정 전 복원 시험. 지원하지 않는 이름 변경 명령 사용",
+      "log": "stage12b-archive-service.log",
+      "log_sha256": "db24585ca34989ef44f67bc43a17bde04a26e96b926ead0dc98aa25a0371b0ff",
+      "collected": 6,
+      "passed": 3,
+      "failed": 3,
+      "final_focused": false
+    },
+    {
+      "scope": "명령 정정 후 새 workspace와 디스크 오류 시험",
+      "log": "stage12b-archive-service-2.log",
+      "log_sha256": "89fb18d24bc02f1621b991cf25ea1df4c1ac64daa8a7e2a407c22068dd9c068b",
+      "collected": 6,
+      "passed": 6,
+      "failed": 0,
+      "final_focused": false
+    },
+    {
+      "scope": "최종 ZIP과 선택 원문 누락, 기존 인계 회귀",
+      "log": "stage12b-archive-service-final.log",
+      "log_sha256": "8f9ea0e0048a26b2d348b702442d50877e084d80c93106b1ca24911b58225c8c",
+      "collected": 7,
+      "passed": 7,
+      "failed": 0,
+      "final_focused": true
+    },
+    {
+      "scope": "journal, 소스 묶음 경계, host calculation 및 MCP stdio",
+      "log": "stage12b-archive-regression.log",
+      "log_sha256": "1b66cbb1e091bf7312ecded0851e25f3e9c8adb5bec16548e58b7839ad8a2057",
+      "collected": 49,
+      "passed": 49,
+      "failed": 0,
+      "final_focused": false
+    }
+  ],
+  "document_verification": {
+    "approved_baseline_files_verified": 27,
+    "documents": 156,
+    "links_checked": 8186,
+    "broken_links": [],
+    "implementation_audit_passed": 14
+  }
+}
