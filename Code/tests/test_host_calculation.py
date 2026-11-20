@@ -8,6 +8,8 @@ import shutil
 import subprocess
 import sys
 from tempfile import TemporaryDirectory
+from threading import Event, Thread
+import time
 import unittest
 from unittest.mock import patch
 from uuid import uuid4
@@ -118,6 +120,79 @@ class HostCalculationBoundaryTests(unittest.TestCase):
                         service.host_calculation_context.calculation_identity()
                 with ProjectService(Path(temporary), auto_run=False) as service:
                     self.assertEqual(service._load(service.journal.read()["projects"][identity]), original)
+
+    def test_background_source_preparation_allows_project_save_and_gates_calculation(self):
+        """! @brief 원본 저장은 배경 준비를 기다리지 않고 계산 요청과 종료는 준비를 기다린다."""
+        started, permitted, waiting, done = Event(), Event(), Event(), Event()
+        capture = runtime.capture
+        results, errors = [], []
+
+        def delayed_capture():
+            """! @brief 실제 소스 봉인 직전에 순서를 고정하는 시험 장벽이다."""
+            started.set()
+            if not permitted.wait(20):
+                raise RuntimeError("시험이 계산 source 준비를 해제하지 않았습니다.")
+            return capture()
+
+        def query_identity(context):
+            """! @brief 준비와 계산 확인이 서로 다른 호출인 실제 대기 상태를 연다."""
+            waiting.set()
+            try:
+                results.append(context.calculation_identity())
+            except Exception as error:
+                errors.append(error)
+            finally:
+                done.set()
+
+        with TemporaryDirectory() as temporary, patch.object(runtime, "capture", side_effect=delayed_capture):
+            with ProjectService(Path(temporary)) as service:
+                reader = None
+                try:
+                    self.assertTrue(started.wait(5))
+                    policy = service.policy()
+                    self.assertTrue(policy["mutations_enabled"])
+
+                    def complete(method, data, context):
+                        """! @brief 실제 writer의 원본 열기와 저장 완료를 기다린다."""
+                        task = service.mutate(method, {"contract_version": "rfad.api/2.0",
+                            "context": context, "input": data, "request_key": str(uuid4()),
+                            "request_key_epoch": policy["request_key_epoch"]})
+                        deadline = time.monotonic() + 8
+                        while time.monotonic() < deadline:
+                            job = service.journal.read()["jobs"][task["job_id"]]
+                            if job["state"] == "completed":
+                                return job["events"][-1]["operation_result"]
+                            self.assertIn(job["state"], ("queued", "running"))
+                            time.sleep(0.02)
+                        self.fail("소스 준비 중 프로젝트 명령이 완료되지 않았습니다.")
+
+                    opened = complete("project.open", {"path": "projects/async", "name": "준비 중 편집", "open_mode": "create"}, {})
+                    current = service._load(service.journal.read()["projects"][opened["project_id"]])
+                    complete("project.save", {"expected_revision": current["revision_id"]}, {"project_id": opened["project_id"]})
+                    self.assertFalse(permitted.is_set())
+                    reader = Thread(target=query_identity, args=(service.host_calculation_context,))
+                    reader.start()
+                    self.assertTrue(waiting.wait(5))
+                    self.assertFalse(done.is_set())
+                finally:
+                    permitted.set()
+                    if reader is not None:
+                        reader.join(30)
+                self.assertFalse(errors)
+                self.assertEqual(len(results), 1)
+                self.assertTrue(results[0]["application_source"]["code_files"])
+            self.assertIsNone(service.host_calculation_context._source_worker)
+
+    def test_failed_background_source_preparation_keeps_service_readable(self):
+        """! @brief 준비 실패는 기존 원본 조회 가능 상태를 유지하고 새 계산을 차단한다."""
+        with TemporaryDirectory() as temporary, patch.object(runtime, "capture", side_effect=ProjectError("E_VERSION", "시험")):
+            with ProjectService(Path(temporary)) as service:
+                self.assertTrue(service.policy()["mutations_enabled"])
+                self.assertEqual(service.journal.read()["projects"], {})
+                with self.assertRaises(ProjectError) as failure:
+                    service.host_calculation_context.calculation_identity()
+                self.assertEqual(failure.exception.code, "E_VERSION")
+            self.assertIsNone(service.host_calculation_context._source_worker)
 
     def _copied_process(self, body):
         """! @brief 변경 시험은 제품 원문 대신 별도 source 복사본에서만 실행한다."""

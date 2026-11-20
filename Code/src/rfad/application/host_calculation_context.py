@@ -1,7 +1,9 @@
 """! @brief 계산 서비스에 실제 저장/이력/영수증 capability만 제공하는 단일 writer 경계다."""
+from concurrent.futures import Future
 import math
 import hashlib
 from pathlib import Path
+import threading
 import time
 
 from rfad.application import design_sweep_service, network_service, measurement_service
@@ -22,14 +24,14 @@ MUTATIONS = design_sweep_service.MUTATIONS | {network_service.MUTATION} | measur
 
 class HostCalculationContext:
     """! @brief Projects facade/callback 없이 구체 저장 객체와 계산/solver 수명을 연결한다."""
-    def __init__(self, workspace, *, clock=time.time, fault_hook=None, solver_runtime=None):
+    def __init__(self, workspace, *, clock=time.time, fault_hook=None, solver_runtime=None, prepare_async=False):
         self.workspace, self.clock = Path(workspace), clock
         self.calculation_runtime = HostCalculationRuntime()
         self._calculation_error = None
-        try:
-            self.calculation_runtime.establish()
-        except ProjectError as error:
-            self._calculation_error = error
+        self._source_worker = None
+        self._source_preparation = Future() if prepare_async else None
+        if not prepare_async:
+            self._prepare_source()
         self.journal = Journal(self.workspace, new_workspace_state(), fault_hook=fault_hook)
         self.repository = ProjectRepository(self.workspace, self.journal, max_document_bytes=MAX_DOCUMENT_BYTES)
         self.history = ProjectHistory(self.repository)
@@ -37,6 +39,36 @@ class HostCalculationContext:
         self.requests = RequestLedger(self.journal, self._now)
         self.solver = SolverCoordinator(self, solver_runtime)
         self.studies = StudyCoordinator(self)
+
+    def _prepare_source(self):
+        """! @brief 실행 환경을 최초 한 번 봉인하고 일반 열기와 계산 오류를 분리한다."""
+        try:
+            self.calculation_runtime.establish()
+        except ProjectError as error:
+            self._calculation_error = error
+
+    def start_source_preparation(self):
+        """! @brief 일반 프로젝트 복구와 병행하되 같은 세션의 계산은 봉인 완료를 기다린다."""
+        if self._source_preparation is None:
+            return
+        worker = threading.Thread(target=self._prepare_source_in_background, name="rfad-source-preparation")
+        worker.start()
+        self._source_worker = worker
+
+    def _prepare_source_in_background(self):
+        """! @brief 준비 중 예외가 있어도 대기 중인 요청의 완료 상태를 전달한다."""
+        try:
+            self._prepare_source()
+        except BaseException as error:
+            self._source_preparation.set_exception(error)
+        else:
+            self._source_preparation.set_result(None)
+
+    def wait_for_source_preparation(self):
+        """! @brief 저장소를 닫기 전에 준비 thread를 회수한다."""
+        if self._source_worker is not None:
+            self._source_worker.join()
+            self._source_worker = None
 
     def _now(self):
         """! @brief 구체 clock에서 유한 UTC epoch 초만 허용한다."""
@@ -69,6 +101,11 @@ class HostCalculationContext:
 
     def calculation_identity(self):
         """! @brief 최초 고정한 제어/수학/설치 identity를 반환한다."""
+        if self._source_preparation is not None:
+            try:
+                self._source_preparation.result()
+            except Exception as error:
+                raise ProjectError("E_VERSION", "새 계산 source를 고정하지 못했습니다.") from error
         if self._calculation_error is not None:
             raise ProjectError(self._calculation_error.code, "과거 자료는 읽을 수 있으나 새 계산 source를 고정하지 못했습니다.",
                                details={"cause": self._calculation_error.diagnostic()})

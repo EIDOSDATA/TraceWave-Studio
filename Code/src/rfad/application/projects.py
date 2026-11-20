@@ -73,7 +73,7 @@ class ProjectService:
         self.cad = CadCoordinator(self, cad_runtime)
         self.exchange = ExchangeCoordinator(self, exchange_runtime)
         self.physical_setup = physical_setup_service.PhysicalSetupService(self)
-        self.host_calculation_context = HostCalculationContext(self.workspace, clock=clock, fault_hook=fault_hook, solver_runtime=solver_runtime)
+        self.host_calculation_context = HostCalculationContext(self.workspace, clock=clock, fault_hook=fault_hook, solver_runtime=solver_runtime, prepare_async=auto_run)
         context = self.host_calculation_context
         self.journal, self.repository, self.history = context.journal, context.repository, context.history
         self.operations, self.requests = context.operations, context.requests
@@ -81,6 +81,7 @@ class ProjectService:
         self.pcb_selection = PcbSelectionCoordinator(self, catalog_database)
         self.templates = TemplateCandidateCoordinator(self)
         try:
+            context.start_source_preparation()
             self._initialize()
             if auto_run:
                 self._thread = threading.Thread(target=self._worker, name="rfad-project-io", daemon=False)
@@ -115,6 +116,7 @@ class ProjectService:
             if self._thread.ident is not None:
                 self._thread.join()
             self._thread = None
+        self.host_calculation_context.wait_for_source_preparation()
         self.journal.close()
 
     def _now(self) -> float:

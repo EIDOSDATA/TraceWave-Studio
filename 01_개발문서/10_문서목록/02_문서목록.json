@@ -21,14 +21,14 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 44,
     "current_06_분석연구": 13,
-    "current_07_검증": 57,
+    "current_07_검증": 58,
     "current_08_운영환경": 7,
     "current_09_개발계획": 4,
     "current_11_검토기록": 6,
     "current_traceability": 4,
     "document_catalog": 4,
     "document_navigation": 6,
-    "documentation_asset": 158,
+    "documentation_asset": 159,
     "documentation_validation_record": 1,
     "historical_proposal": 2,
     "historical_verification": 41,
@@ -28609,9 +28609,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 16872,
-      "working_tree_sha256": "fd21e5939fb8e8ac34ff67a44c9665ad8b5d80a7282620a4f212ef0381a6495d",
-      "text_lines": 118,
+      "bytes": 17203,
+      "working_tree_sha256": "81cb42b838ed95014301877161149303abebb75e3dce2cca7e71e385e7a8e23e",
+      "text_lines": 120,
       "text_status": "utf8_read"
     },
     {
@@ -28672,9 +28672,9 @@
       "path": "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 147648,
-      "working_tree_sha256": "5bcc06a870fd9ec6975109dae2e6749faaa2c1358eaace26264936fcde9ed693",
-      "text_lines": 829,
+      "bytes": 148196,
+      "working_tree_sha256": "fc0f01be64f8764fad64735e57e940af9b17c0bc60ac10a8326b778d5f1664d5",
+      "text_lines": 833,
       "text_status": "utf8_read"
     },
     {
@@ -31157,6 +31157,22 @@
       "review_scope": "문서/시안 자산 보존",
       "bytes": 4144,
       "working_tree_sha256": "5440f335ef252d0b9c5f8a99569b5d99fded6eeb589464a3182ef84467ee1db5"
+    },
+    {
+      "path": "01_개발문서/07_검증/102_윈도우_시작과_계산준비_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2465,
+      "working_tree_sha256": "474bfeeabb02474f22cf543c317fec3eb7893f0adc84a4dc46b84186a1884ce2",
+      "text_lines": 18,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/103_윈도우_시작과_계산준비_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 76592,
+      "working_tree_sha256": "10ba0f904f4d02e30a6faf23e29017699f5db95b572cda270caa77c6be9dfe1a"
     }
   ],
   "identical_byte_groups": [
@@ -31313,18 +31329,17 @@
   ],
   "incremental_refresh": {
     "date_kst": "2026-11-21",
-    "mode": "step12_windows_legacy_object_label_display",
-    "previous_inventory_sha256": "29269d7db08c72b330dcd8033612842d23d12d6c0b0f1e13a5480b59871762e5",
+    "mode": "step12_windows_parallel_source_preparation",
+    "previous_inventory_sha256": "cdfbbe5947a6a135cfca82083bef660f143cc23f8b297c52386815faa7318962",
     "refreshed_paths": [
-      "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
-      "01_개발문서/07_검증/100_윈도우_구버전_객체이름_표시검증.md",
-      "01_개발문서/07_검증/101_윈도우_구버전_객체이름_실행기록.json",
+      "01_개발문서/07_검증/102_윈도우_시작과_계산준비_검증.md",
+      "01_개발문서/07_검증/103_윈도우_시작과_계산준비_실행기록.json",
       "01_개발문서/07_검증/README.md",
       "01_개발문서/09_개발계획/02_개발착수와_현재상태.md"
     ],
     "added_paths": [
-      "01_개발문서/07_검증/100_윈도우_구버전_객체이름_표시검증.md",
-      "01_개발문서/07_검증/101_윈도우_구버전_객체이름_실행기록.json"
+      "01_개발문서/07_검증/102_윈도우_시작과_계산준비_검증.md",
+      "01_개발문서/07_검증/103_윈도우_시작과_계산준비_실행기록.json"
     ],
     "removed_paths": [],
     "preserved_reference_records": 3336,
