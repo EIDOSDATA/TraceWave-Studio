@@ -18,7 +18,11 @@ def solver_dataset(service, state, document, identity):
     if record is None or record["project_id"] != document["project_id"]:
         fail("현재 프로젝트의 봉인된 계산 결과가 없습니다.", "artifact_id", "E_MISSING_ARTIFACT")
     raw = service.journal.read_artifact(record["normalized"])
-    original = json.loads(raw)
+    return project_solver_dataset(document, identity, record, json.loads(raw)), raw
+
+
+def project_solver_dataset(document, identity, record, original):
+    """! @brief 같은 봉인 바이트를 읽은 호출자가 해당 결과를 검증하고 복소 자료로 투영한다."""
     reference = original.get("schema") == "rfad.openems-reference-result/0.1"
     if original.get("schema") != "rfad.openems-pcb-result/0.1" and not reference:
         fail("이 투영 profile은 보존된 단일 포트 PCB와 고정 RF 참조 결과를 지원합니다.", "artifact_id", "E_UNSUPPORTED")
@@ -57,7 +61,7 @@ def solver_dataset(service, state, document, identity):
                     "solver_assessment_original": deepcopy(original["assessment"]),
                     "basis_mapping": "실수 lumped Z0의 전압파 반사 비와 exp(-jwt) Fourier 계수를 exp(+jwt) phasor로 표현"},
         conditions=conditions)
-    return dataset, raw
+    return dataset
 
 
 def radiation_metrics(service, project, entry, dataset):

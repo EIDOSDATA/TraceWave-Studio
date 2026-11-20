@@ -164,7 +164,7 @@ def revision_document(service, state, project, project_id, revision_id, snapshot
 
 def _solver(service, state, project, project_id, identity):
     """! @brief 실제 normalized와 snapshot 및 복소 투영을 한 번에 검증한다."""
-    from rfad.application.network_solver_import import solver_dataset
+    from rfad.application.network_solver_import import project_solver_dataset
 
     record = state["solver_results"].get(identity)
     if record is None:
@@ -186,7 +186,7 @@ def _solver(service, state, project, project_id, identity):
     document = snapshot_document(service, project, project_id, snapshot)
     if plan.get("source_semantics") != document:
         fail("해석 계획의 원본 사본이 봉인 스냅샷과 다릅니다.", "E_HASH")
-    dataset, _ = solver_dataset(service, state, document, identity)
+    dataset = project_solver_dataset(document, identity, record, original)
     return {"source_document": document, "source_document_role": "calculation_snapshot", "source_snapshot": deepcopy(snapshot), "dataset": dataset,
             "solver_result_id": identity, "solver_record": deepcopy(record), "normalized": original}
 

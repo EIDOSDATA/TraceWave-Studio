@@ -341,7 +341,9 @@ class ActualRecordedFieldTests(unittest.TestCase):
             normalized = service.journal.read_artifact(record["normalized"])
             raw_refs = [item["artifact"] for item in record["raw_files"] if "pcb_loss_" in item["role"]]
             raw_before = {ref["uri"]: reference(workspace/ref["uri"]) for ref in raw_refs}
-            fields = rpc("result.field.describe", {"source": source, "pin": pin})
+            with patch.object(service.journal, "read_artifact", wraps=service.journal.read_artifact) as read_artifact:
+                fields = rpc("result.field.describe", {"source": source, "pin": pin})
+            self.assertEqual(sum(call.args[0] == record["normalized"] for call in read_artifact.call_args_list), 1)
             self.assertEqual(fields["status"], "available")
             self.assertEqual(len(fields["monitors"]), 3)
             checked = []
