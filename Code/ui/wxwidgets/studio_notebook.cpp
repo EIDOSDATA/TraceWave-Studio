@@ -143,12 +143,28 @@ void StudioNotebook::OnPageChanged(wxAuiNotebookEvent& event)
 
 bool StudioNotebook::AddPage(wxWindow* page, const wxString& label, bool select)
 {
+    const std::size_t index = m_pages.size();
+    const int group = m_groups.empty() ? 0 : m_groups.at(index);
     page->Reparent(m_book);
-    m_pages.push_back({page, label, 0});
-    m_order.push_back(m_pages.size() - 1);
+    m_pages.push_back({page, label, group});
+    if (m_groups.empty())
+    {
+        m_order.push_back(index);
+    }
+    if (group != m_group)
+    {
+        page->Hide();
+        return true;
+    }
+    const auto order = std::find(m_order.begin(), m_order.end(), index);
+    const auto position = std::find_if(m_visible.begin(), m_visible.end(), [this, order](std::size_t item)
+    {
+        return std::find(m_order.begin(), m_order.end(), item) > order;
+    });
+    const auto offset = static_cast<std::size_t>(position - m_visible.begin());
     m_switching = true;
-    m_visible.push_back(m_pages.size() - 1);
-    const bool result = m_book->AddPage(page, label, select || m_selection == wxNOT_FOUND);
+    m_visible.insert(position, index);
+    const bool result = m_book->InsertPage(offset, page, label, select || m_selection == wxNOT_FOUND);
     if (m_selection == wxNOT_FOUND || select)
     {
         m_selection = static_cast<int>(m_pages.size() - 1);
@@ -177,17 +193,23 @@ std::size_t StudioNotebook::VisiblePageCount() const
     return m_visible.size();
 }
 
-void StudioNotebook::SetGroups(const std::vector<int>& groups)
+void StudioNotebook::ConfigurePages(const std::vector<int>& groups, const std::vector<std::size_t>& order)
 {
-    if (groups.size() != m_pages.size())
+    if (!m_pages.empty() || groups.empty() || groups.front() != 0 || groups.size() != order.size())
     {
-        throw std::invalid_argument("Studio page group count does not match pages.");
+        throw std::invalid_argument("Studio page layout must precede the pages.");
     }
-    for (std::size_t index = 0; index < groups.size(); ++index)
+    std::vector<std::size_t> sorted = order;
+    std::sort(sorted.begin(), sorted.end());
+    for (std::size_t index = 0; index < sorted.size(); ++index)
     {
-        m_pages[index].group = groups[index];
+        if (sorted[index] != index)
+        {
+            throw std::invalid_argument("Studio tab order does not cover each page exactly once.");
+        }
     }
-    ShowGroup(m_pages.at(static_cast<std::size_t>(std::max(0, m_selection))).group);
+    m_groups = groups;
+    m_order = order;
 }
 
 void StudioNotebook::ShowGroup(int group)
@@ -204,7 +226,7 @@ void StudioNotebook::ShowGroup(int group)
     m_group = group;
     for (const auto index : m_order)
     {
-        if (m_pages[index].group == group)
+        if (index < m_pages.size() && m_pages[index].group == group)
         {
             m_visible.push_back(index);
             m_book->AddPage(m_pages[index].window, m_pages[index].label, static_cast<int>(index) == m_selection);

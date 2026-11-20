@@ -7,6 +7,7 @@
 #include <wx/frame.h>
 #include <wx/timer.h>
 #include <functional>
+#include <future>
 #include <map>
 #include <memory>
 #include <string>
@@ -246,6 +247,7 @@ private:
     void Failure(const std::string& message, bool disconnected = false);
     /** @brief 별도 서비스 프로세스와 공개 capability 계약으로 연결한다. */
     void Connect();
+    std::string StartServiceConnection();
     /** @brief 요청 관리 객체를 통해 명령을 전달한다. */
     void Send(const std::string& method, const Json& input, bool mutation, const Json& context,
               std::function<void(const Json&)> success, std::function<void(const Json&)> failure = {},
@@ -409,6 +411,7 @@ private:
     Json m_arcDraft = Json::object();
     std::string m_polygonDraft;
     ServiceClient m_client;
+    std::future<std::string> m_initialService;
     std::thread m_shutdown;
     wxTimer m_timer;
     wxTreeCtrl* m_tree = nullptr;

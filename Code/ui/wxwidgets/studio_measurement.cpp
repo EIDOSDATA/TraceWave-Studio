@@ -29,8 +29,6 @@ void StudioFrame::BuildMeasurementInterface()
     {
         OpenMeasurementTool(operation, record, selection);
     };
-    m_views->SetGroups({0, 0, 2, 1, 3, 4, 2, 2, 1, 2, 2, 2, 2, 2, 3, 3, 3});
-    m_views->SetDisplayOrder({0, 1, 9, 10, 11, 12, 13, 7, 6, 2, 3, 8, 14, 16, 4, 15, 5});
 }
 
 void StudioFrame::ReadMeasurementRecovery()

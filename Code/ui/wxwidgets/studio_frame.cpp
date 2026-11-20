@@ -11,6 +11,14 @@ StudioFrame::StudioFrame(Options options)
     : wxFrame(nullptr, wxID_ANY, Display("TraceWave Studio"), wxDefaultPosition, wxSize(1360, 860)),
       m_options(std::move(options)), m_timer(this, IdTimer), m_started(Clock::now())
 {
+    try
+    {
+        m_initialService = std::async(std::launch::async, [this]() { return StartServiceConnection(); });
+    }
+    catch (const std::system_error&)
+    {
+        // @brief 시작 스레드를 만들 수 없으면 기존 UI 준비 후 연결 경로를 사용한다.
+    }
     StudioTheme::ApplyTypography(*this);
     m_smoke = std::make_unique<StudioSmokeDriver>(*this);
     BuildInterface();
@@ -20,9 +28,12 @@ StudioFrame::StudioFrame(Options options)
     Bind(wxEVT_THREAD, &StudioFrame::OnShutdown, this, IdShutdown);
     m_timer.Start(50);
     CallAfter(
-        [this]()
+        [this, parallel = m_initialService.valid()]()
         {
-            Connect();
+            if (!parallel || m_initialService.valid())
+            {
+                Connect();
+            }
         });
 }
 

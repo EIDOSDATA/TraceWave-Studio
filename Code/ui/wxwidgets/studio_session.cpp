@@ -10,20 +10,40 @@ constexpr int ActivePollMs = 50;
 constexpr int EmptyWorkspacePollMs = 250;
 }
 
-void StudioFrame::Connect()
+/** @brief wx 화면을 준비하는 동안 독립 서비스 프로세스를 시작할 수 있다. */
+std::string StudioFrame::StartServiceConnection()
 {
-    if (m_closing || m_finishing)
-    {
-        return;
-    }
-    m_busy = true;
-    UpdateControls();
     std::string error;
     if (!m_client.Start(m_options.python.ToStdWstring(), m_options.source.ToStdWstring(),
                         m_options.workspace.ToStdWstring(), error, m_options.cadPython.ToStdWstring(),
                         m_options.openEmsWsl, m_options.catalog.ToStdWstring(),
                         m_options.exchangePython.ToStdWstring(),
                         [this]() { wxQueueEvent(this, new wxThreadEvent(wxEVT_THREAD, IdProtocolReady)); }))
+    {
+        return error.empty() ? "프로젝트 서비스에 연결하지 못했습니다." : error;
+    }
+    return {};
+}
+
+void StudioFrame::Connect()
+{
+    if (m_closing || m_finishing || (m_initialService.valid() &&
+                                    m_initialService.wait_for(std::chrono::seconds(0)) != std::future_status::ready))
+    {
+        return;
+    }
+    m_busy = true;
+    UpdateControls();
+    std::string error;
+    try
+    {
+        error = m_initialService.valid() ? m_initialService.get() : StartServiceConnection();
+    }
+    catch (const std::exception& failure)
+    {
+        error = failure.what();
+    }
+    if (!error.empty())
     {
         Failure(error, true);
         return;
@@ -231,6 +251,11 @@ void StudioFrame::PollService()
     }
     try
     {
+        if (m_initialService.valid())
+        {
+            Connect();
+            return;
+        }
         for (auto& incoming : m_client.Drain())
         {
             if (!incoming.protocol)

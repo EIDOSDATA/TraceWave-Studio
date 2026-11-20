@@ -155,12 +155,20 @@ void StudioFrame::BeginShutdown()
         m_shutdown = std::thread(
             [this]()
             {
+                if (m_initialService.valid())
+                {
+                    m_initialService.wait();
+                }
                 m_client.Stop();
                 wxQueueEvent(this, new wxThreadEvent(wxEVT_THREAD, IdShutdown));
             });
     }
     catch (const std::exception& error)
     {
+        if (m_initialService.valid())
+        {
+            m_initialService.wait();
+        }
         m_client.Stop();
         if (m_closing)
         {

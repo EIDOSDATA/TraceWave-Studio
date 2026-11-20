@@ -219,6 +219,8 @@ void StudioFrame::BuildInterface()
     m_manager->GetPane("navigation").dock_proportion = 2;
 
     m_views = new StudioNotebook(this);
+    m_views->ConfigurePages({0, 0, 2, 1, 3, 4, 2, 2, 1, 2, 2, 2, 2, 2, 3, 3, 3},
+                            {0, 1, 9, 10, 11, 12, 13, 7, 6, 2, 3, 8, 14, 16, 4, 15, 5});
     auto* center = new wxPanel(m_views);
     StudioTheme::BindSurface(*center);
     auto* centerSizer = new wxBoxSizer(wxVERTICAL);

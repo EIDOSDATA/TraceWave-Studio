@@ -22,8 +22,8 @@ public:
     void SetPageText(std::size_t index, const wxString& label);
     /** @brief 내부 업무 탭이 있는 단일 호스트 페이지는 중복 탭 행을 접는다. */
     void SetTabRowVisible(bool visible);
-    /** @brief 같은 업무 번호의 페이지만 탭으로 표시하며 원래 인덱스는 유지한다. */
-    void SetGroups(const std::vector<int>& groups);
+    /** @brief 업무별 그룹과 표시 순서를 첫 페이지 추가 전에 정한다. */
+    void ConfigurePages(const std::vector<int>& groups, const std::vector<std::size_t>& order);
     /** @brief 서비스 연결 인덱스를 바꾸지 않고 화면의 탭 순서만 지정한다. */
     void SetDisplayOrder(const std::vector<std::size_t>& order);
     std::size_t VisiblePageCount() const;
@@ -42,6 +42,7 @@ private:
     std::vector<Page> m_pages;
     std::vector<std::size_t> m_visible;
     std::vector<std::size_t> m_order;
+    std::vector<int> m_groups;
     int m_selection = wxNOT_FOUND;
     int m_group = 0;
     bool m_switching = false;

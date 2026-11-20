@@ -98,8 +98,6 @@ void StudioFrame::BuildResultInterface()
             });
     };
     m_views->SetPageText(6, Display("자료 / 정합"));
-    m_views->SetGroups({0, 0, 2, 1, 3, 4, 2, 2, 1, 2, 2, 2, 2, 2, 3});
-    m_views->SetDisplayOrder({0, 1, 9, 10, 11, 12, 13, 7, 6, 2, 3, 8, 14, 4, 5});
 }
 void StudioFrame::UpdateResultViews()
 {

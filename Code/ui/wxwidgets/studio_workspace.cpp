@@ -76,7 +76,6 @@ void StudioFrame::BuildWorkspacePages()
     m_bottom->AddPage(m_workspaceJobs, Display("작업"));
     m_bottom->SetSelection(3);
     m_bottom->SetDisplayOrder({0, 3, 1, 2});
-    m_views->SetGroups({0, 0, 2, 1, 3, 4});
     m_views->SetPageText(2, Display("해석 결과"));
     m_views->onSelectionChanged = [this](int page)
     {

@@ -14,8 +14,6 @@ void StudioFrame::BuildSweepInterface()
     m_sweepPanel->NavigationView()->Hide();
     m_sweepPanel->ConditionsView()->Hide();
     m_views->AddPage(m_sweepPanel, Display("연구"));
-    m_views->SetGroups({0, 0, 2, 1, 3, 4, 2, 2, 1});
-    m_views->SetDisplayOrder({0, 1, 6, 7, 2, 3, 8, 4, 5});
     m_workspaceJobs->InsertItem(2, Display("설계 연구"));
     ShowWorkspaceJob(2, "idle", "저장된 연구를 선택하고 실행합니다.");
     m_sweepPanel->onRefresh = [this]()

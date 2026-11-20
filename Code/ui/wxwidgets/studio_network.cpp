@@ -23,8 +23,6 @@ void StudioFrame::BuildNetworkInterface()
     m_networkPanel->ConditionsView()->Hide();
     m_views->AddPage(m_networkPanel, Display("네트워크"));
     BuildNetworkAssessmentInterface(navigation);
-    m_views->SetGroups({0, 0, 2, 1, 3, 4, 2, 2});
-    m_views->SetDisplayOrder({0, 1, 6, 7, 2, 3, 4, 5});
     m_networkPanel->onRefresh = [this]()
     {
         RefreshNetwork();
