@@ -47,6 +47,8 @@ class McpSession:
             return None
         if type(params) is not dict:
             return error(-32602, "params must be an object")
+        if "_meta" in params and type(params["_meta"]) is not dict:
+            return error(-32602, "_meta must be an object")
         if method == "initialize":
             if type(params.get("protocolVersion")) is not str:
                 return error(-32602, "protocolVersion required")
@@ -59,14 +61,14 @@ class McpSession:
         elif not self.initialized:
             return error(-32000, "Session not initialized")
         elif method == "tools/list":
-            if params:
+            if set(params) - {"_meta"}:
                 return error(-32602, "No cursor is required")
             result = {"tools": self.tools()}
         elif method == "tools/call":
-            if (set(params) != {"name", "arguments"} or type(params["name"]) is not str
+            if (set(params) - {"name", "arguments", "_meta"} or type(params.get("name")) is not str
                     or params["name"] not in {item["name"] for item in self.tools()}):
                 return error(-32602, "Unknown tool")
-            arguments = params["arguments"]
+            arguments = params.get("arguments")
             if type(arguments) is not dict or set(arguments) - {"context", "input", "request_key", "request_key_epoch"}:
                 return error(-32602, "Invalid tool arguments")
             envelope = {"contract_version": "rfad.api/2.0", **arguments}

@@ -21,14 +21,14 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 44,
     "current_06_분석연구": 13,
-    "current_07_검증": 26,
+    "current_07_검증": 27,
     "current_08_운영환경": 5,
     "current_09_개발계획": 4,
     "current_11_검토기록": 6,
     "current_traceability": 4,
     "document_catalog": 4,
     "document_navigation": 6,
-    "documentation_asset": 116,
+    "documentation_asset": 117,
     "documentation_validation_record": 1,
     "historical_proposal": 2,
     "historical_verification": 41,
@@ -28053,8 +28053,8 @@
       "path": "01_개발문서/05_기능설계/01_프로젝트/01_프로젝트_명령과_저장.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 19326,
-      "working_tree_sha256": "c0be871b666e1d104a2954fbae49d7430cb54e2e94a07f0e7d15a46c9fcdedca",
+      "bytes": 19454,
+      "working_tree_sha256": "dd9433e0f338eed739798660ac7d494421c0486c37b73d88676cb0218abf6af6",
       "text_lines": 136,
       "text_status": "utf8_read"
     },
@@ -28465,23 +28465,23 @@
       "path": "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
-      "bytes": 64429,
-      "working_tree_sha256": "e225a569deae21c06d5f74afb04c7ded1c0702c0ed7bc778c94310cdb8b417ba"
+      "bytes": 63903,
+      "working_tree_sha256": "8b13353a8c474567b977a71bb2feb07d5c89321b825b27f0be73608c72dbf8e4"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
-      "bytes": 618031,
-      "working_tree_sha256": "6bbcdbe3819b5467812ab84c5f96487cf7bd15efdb27179d19d1a24b7cd10a22"
+      "bytes": 618808,
+      "working_tree_sha256": "603dcbf0382f85130a9752e74d047f1ed8234fdf7eac0ec5132aa96f02e7b9c7"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
-      "bytes": 162373,
-      "working_tree_sha256": "a8e600ad3b103b343c0e8a69bc18d36136ea59c9c0c51f4be3608dd15b9827b5",
-      "text_lines": 2035,
+      "bytes": 162830,
+      "working_tree_sha256": "45a2e8dc1dd6edb003fbaa64d95b71a24378d47500eef8eaeb5f01291c6ae638",
+      "text_lines": 2037,
       "text_status": "utf8_read"
     },
     {
@@ -28609,9 +28609,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 6758,
-      "working_tree_sha256": "069884e2329000a6b8cb25e740e1457f012a77729dd6db4e86a609ec8083b42d",
-      "text_lines": 55,
+      "bytes": 7046,
+      "working_tree_sha256": "2b6018142f63ec83cc58006b4ccd354cc611020e21938f8ddb94c2d6d26198af",
+      "text_lines": 57,
       "text_status": "utf8_read"
     },
     {
@@ -28672,9 +28672,9 @@
       "path": "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 132552,
-      "working_tree_sha256": "339fc9fd2f2c67cad901f1512a2c8c717e42030c8be6fea10362e172c8e953bd",
-      "text_lines": 709,
+      "bytes": 133020,
+      "working_tree_sha256": "7a9b303ec274238b4b5d222fd03529f376828938f710f16fe19d981ccbcbea27",
+      "text_lines": 713,
       "text_status": "utf8_read"
     },
     {
@@ -30559,6 +30559,22 @@
       "review_scope": "문서/시안 자산 보존",
       "bytes": 52423,
       "working_tree_sha256": "1e705c9d69904e6b614560ce815604360041847a8777b65053d623f2017918f3"
+    },
+    {
+      "path": "01_개발문서/07_검증/39_엠시피와_키캐드_교환_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 3716,
+      "working_tree_sha256": "98f36bae0be28238fbe664b6b45e5e2ebab35571ec60fdd95aee5be75dadf410",
+      "text_lines": 29,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/40_엠시피와_키캐드_교환_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 2504,
+      "working_tree_sha256": "94e763da9fbed732a76a520039dfa5a53dacf0513393ef665ff915235ff39d15"
     }
   ],
   "identical_byte_groups": [
@@ -30715,25 +30731,21 @@
   ],
   "incremental_refresh": {
     "date_kst": "2026-11-20",
-    "mode": "step12_windows_editor_idle_evidence",
-    "previous_inventory_sha256": "a6848c7ba18bac962d3f7da3c72179ba81485867c9a3e56a944307f1356dbfa6",
+    "mode": "step12_mcp_kicad_exchange_evidence",
+    "previous_inventory_sha256": "465b3e9076e311c6e7df2f6cc86160bf04181d2ccefa7466446948cab7d07f7f",
     "refreshed_paths": [
-      "01_개발문서/04_화면설계/08_스튜디오_화면계약.md",
+      "01_개발문서/05_기능설계/01_프로젝트/01_프로젝트_명령과_저장.md",
+      "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
       "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
-      "01_개발문서/07_검증/02_실행화면/89_빈스튜디오_색갱신진단화면.jpg",
-      "01_개발문서/07_검증/02_실행화면/90_스튜디오_빈화면_유휴계측.jpg",
-      "01_개발문서/07_검증/02_실행화면/91_스튜디오_복원프로젝트_준비완료.jpg",
-      "01_개발문서/07_검증/37_스튜디오_재열기와_유휴성능_검증.md",
-      "01_개발문서/07_검증/38_스튜디오_재열기와_유휴성능_실행기록.json",
+      "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
+      "01_개발문서/07_검증/39_엠시피와_키캐드_교환_검증.md",
+      "01_개발문서/07_검증/40_엠시피와_키캐드_교환_실행기록.json",
       "01_개발문서/07_검증/README.md",
       "01_개발문서/09_개발계획/02_개발착수와_현재상태.md"
     ],
     "added_paths": [
-      "01_개발문서/07_검증/02_실행화면/89_빈스튜디오_색갱신진단화면.jpg",
-      "01_개발문서/07_검증/02_실행화면/90_스튜디오_빈화면_유휴계측.jpg",
-      "01_개발문서/07_검증/02_실행화면/91_스튜디오_복원프로젝트_준비완료.jpg",
-      "01_개발문서/07_검증/37_스튜디오_재열기와_유휴성능_검증.md",
-      "01_개발문서/07_검증/38_스튜디오_재열기와_유휴성능_실행기록.json"
+      "01_개발문서/07_검증/39_엠시피와_키캐드_교환_검증.md",
+      "01_개발문서/07_검증/40_엠시피와_키캐드_교환_실행기록.json"
     ],
     "removed_paths": [],
     "preserved_reference_records": 3336,

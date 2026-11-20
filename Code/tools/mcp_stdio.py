@@ -20,12 +20,15 @@ def main():
     parser.add_argument("--workspace", type=Path, required=True)
     parser.add_argument("--catalog", type=Path)
     parser.add_argument("--cad-python", type=Path)
+    parser.add_argument("--exchange-python", type=Path, help="격리 출력/PCB 교환 worker의 고정 Python 실행 파일")
     parser.add_argument("--openems-wsl", action="store_true")
     options = parser.parse_args()
     from rfad.application.cad_runtime import CadRuntime
+    from rfad.application.exchange_runtime import ExchangeRuntime
     from rfad.application.solver_runtime import SolverRuntime
     with ProjectService(options.workspace, catalog_database=options.catalog,
                         cad_runtime=CadRuntime(options.cad_python) if options.cad_python else None,
+                        exchange_runtime=ExchangeRuntime(options.exchange_python) if options.exchange_python else None,
                         solver_runtime=SolverRuntime() if options.openems_wsl else None) as service:
         session = McpSession(service, CatalogService(options.catalog))
         while True:

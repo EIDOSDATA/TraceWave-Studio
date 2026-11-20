@@ -10256,16 +10256,17 @@
         "runtime_profiles/capacity-and-followup.json",
         "runtime_profiles/pcb-radiation.json",
         "runtime_profiles/project-studies.json",
-        "runtime_profiles/internal-validation-bundle.json"
+        "runtime_profiles/internal-validation-bundle.json",
+        "../01_개발문서/07_검증/39_엠시피와_키캐드_교환_검증.md"
       ],
       "gaps": [
         "실제 F1/F2 조작에서 60/30 fps, 전체 프로세스 메모리/입력 지연과 DPI/도킹/GPU/WSL 복구의 R1 수용이 남는다.",
         "명시적 지원표/설치 진단, 새 PC 오프라인 설치/패키지/라이선스, 전체 GUI-CLI workflow와 접근성 검증이 필요하다.",
-        "특정 EDA의 단위/좌표/net/port 의미 변환과 실제 MCP 상호 운용은 미완료다. Linux GUI와 remote/HPC는 후속이다."
+        "MCP를 통한 수입/대응 적용, 여러 외부 host와 다른 EDA의 단위/좌표/net/port 의미 변환은 추가 검증이 필요하다. Linux GUI와 remote/HPC는 후속이다."
       ],
       "id": "FN-046",
       "implementation_status": "partial",
-      "implemented": "C++ wxWidgets GUI와 stdio CLI/MCP가 같은 ProjectService, 명령/영수증/worker를 사용한다. host CAD와 local WSL2 solver를 격리하고 한국어/공백 경로 및 결과 재열기/취소를 개별 시험했다. Qt 없는 native build와 내부 검증 묶음 도구가 있다.",
+      "implemented": "C++ wxWidgets GUI와 stdio CLI/MCP가 같은 ProjectService, 명령/영수증/worker를 사용한다. host CAD와 local WSL2 solver를 격리하고 한국어/공백 경로 및 결과 재열기/취소를 개별 시험했다. Qt 없는 native build와 내부 검증 묶음 도구가 있다. 공식 MCP SDK에서 고정 KiCad 보드의 검토/발행/재검수와 실제 KiCad 수신을 확인했다.",
       "next_steps": [
         4,
         6,
@@ -10278,6 +10279,7 @@
       "tests": [
         "tests/test_mcp.py::McpTests.test_real_stdio_discovery_emits_only_protocol",
         "tests/test_mcp.py::McpTests.test_discovery_and_mutation_replay_use_the_same_receipt",
+        "tests/test_mcp_pcb_exchange_process.py::McpPcbExchangeTests.test_review_export_replay_reopen_and_native_kicad_load",
         "tests/test_gui_solver_process.py::GuiSolverProcessTests.test_circle_arc_native_results_save_cancel_and_restart",
         "tests/test_wsl_readiness.py::WslReadinessTests.test_control_can_cancel_a_real_silent_launcher"
       ]
@@ -14005,8 +14007,8 @@
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
-      "text_sha256": "e3ee9b0cbd02f5ed92f42625b5750c66ba1243333cc06f0392046070d403bc4a",
-      "utf8_bytes": 63543
+      "text_sha256": "8b13353a8c474567b977a71bb2feb07d5c89321b825b27f0be73608c72dbf8e4",
+      "utf8_bytes": 63903
     }
   ],
   "reviewed_commit": "de8b5ac8ca5cfc47d955e557bc76b07e12919e23",
@@ -14060,8 +14062,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/01_프로젝트/01_프로젝트_명령과_저장.md",
-      "text_sha256": "2a359b5b85deb5f72a15eeaf9bb6b90de1c0f04de66184b671f956adbe8e0edb",
-      "utf8_bytes": 19190
+      "text_sha256": "dd9433e0f338eed739798660ac7d494421c0486c37b73d88676cb0218abf6af6",
+      "utf8_bytes": 19454
     },
     {
       "path": "01_개발문서/05_기능설계/01_프로젝트/02_프로젝트_보존묶음과_편집복원.md",
@@ -14252,6 +14254,11 @@
       "path": "01_개발문서/07_검증/35_스튜디오_보존묶음발행_검증.md",
       "text_sha256": "76d8673008d8060cc013fc8418640b43df880a85ff51d1bfba7137d3de1476af",
       "utf8_bytes": 2656
+    },
+    {
+      "path": "01_개발문서/07_검증/39_엠시피와_키캐드_교환_검증.md",
+      "text_sha256": "98f36bae0be28238fbe664b6b45e5e2ebab35571ec60fdd95aee5be75dadf410",
+      "utf8_bytes": 3716
     },
     {
       "path": "Code/runtime_profiles/cad-worker-windows-x64.json",
@@ -14620,8 +14627,8 @@
     },
     {
       "path": "Code/src/rfad/application/mcp.py",
-      "text_sha256": "9042a72767d7395af9f51b0d9452d34bd85e8f1e6650c5288e187dd6ef78d920",
-      "utf8_bytes": 4965
+      "text_sha256": "dcce162968872b68a96523783cfb9b6d7cb83dfce46649bfcd22f86692ea084b",
+      "utf8_bytes": 5126
     },
     {
       "path": "Code/src/rfad/application/measurement_candidates.py",
@@ -15495,8 +15502,13 @@
     },
     {
       "path": "Code/tests/test_mcp.py",
-      "text_sha256": "6a55f73f6bc4d347a3b07e42f7056c974677fa9ba5141fb4e55c2e71e9a62df5",
-      "utf8_bytes": 3326
+      "text_sha256": "48c76799b767a5ed7cbe9f9be943d4b41f2a39361c7ef8ab0bc753c498198e32",
+      "utf8_bytes": 3592
+    },
+    {
+      "path": "Code/tests/test_mcp_pcb_exchange_process.py",
+      "text_sha256": "732e5b336e9625c01c975bc751b1e57ac612198a78bb3beeec4ecc6be445f9f7",
+      "utf8_bytes": 8198
     },
     {
       "path": "Code/tests/test_measurement_alignment.py",
@@ -15800,8 +15812,8 @@
     },
     {
       "path": "Code/tools/mcp_stdio.py",
-      "text_sha256": "90af380aa6b7a066b336bee696afc716e541ec196c84751ac77042b309be8f2f",
-      "utf8_bytes": 2159
+      "text_sha256": "0c584f22f2d05cf25ab2f4f4baa4307181dddad93ce1ff9c8e08ff04f2a3560e",
+      "utf8_bytes": 2472
     },
     {
       "path": "Code/tools/verify_ifa_convergence.py",

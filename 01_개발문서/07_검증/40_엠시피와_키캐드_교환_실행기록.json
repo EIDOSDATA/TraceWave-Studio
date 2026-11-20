@@ -1,0 +1,87 @@
+{
+  "schema": "rfad.mcp-pcb-exchange-verification/0.1",
+  "date_kst": "2026-11-20",
+  "baseline": "3722efdb3c2a6bb25e1385e6282ddc2861a8f417",
+  "tests": {
+    "official_client_and_stdio": {
+      "passed": 3,
+      "seconds": 32.506,
+      "log": {
+        "file": "stage12f-official-client-final.log",
+        "bytes": 1269,
+        "sha256": "322369f2fe8e11b30e62e5d38c4fd47ecccd4fc168f96b466ca3a09fe4502c89"
+      }
+    },
+    "actual_pcb_and_native_receiver": {
+      "passed": 35,
+      "seconds": 96.923,
+      "log": {
+        "file": "stage12f-pcb-regression.log",
+        "bytes": 8175,
+        "sha256": "0aec4c40aeaf405c92ca8b63567ef7ad69b36131c3798f43fefa74f3d5410e51"
+      }
+    },
+    "separate_windows_gui": {
+      "passed": 1,
+      "seconds": 46.801,
+      "log": {
+        "file": "stage12f-gui-pcb-regression.log",
+        "bytes": 273,
+        "sha256": "bbd08a0ab33f299e7215aeb7d69222edb0a73df665f30e57843a4547c2749560"
+      }
+    }
+  },
+  "clients": {
+    "mcp_python_sdk": {
+      "version": "1.26.0",
+      "negotiated_protocol": "2025-11-25",
+      "install_log": {
+        "file": "stage12f-mcp-sdk-install.log",
+        "bytes": 6702,
+        "sha256": "90694be536d6adf301c7b4199b80a5e61b5fe73e552ce3a293c07903dacf97aa"
+      }
+    },
+    "kicad_native": {
+      "version": "10.0.8",
+      "cli": {
+        "file": "kicad-cli.exe",
+        "bytes": 2705760,
+        "sha256": "852a4dea194f72a2293a7f8ea000c386074939efe61d8dcd2c25bfb32bf228d9"
+      },
+      "pcbnew_interpreter": {
+        "file": "python.exe",
+        "bytes": 103264,
+        "sha256": "3d4273ea26278fd4c35ae20ed64929bbe4dbd646e80ad789f73cecfbf9aaac31"
+      }
+    },
+    "studio_windows": {
+      "file": "tracewave_gui.exe",
+      "bytes": 30400915,
+      "sha256": "a4c4940b5a37a980f7983993bda164e0e53da445293c3591bcf3cf25221e76f0"
+    }
+  },
+  "native_receipt_semantics": {
+    "conductor_layers": 2,
+    "tracks": 2,
+    "finished_hole_mm": [
+      1.0,
+      1.0
+    ],
+    "board_copy_bytes_preserved": true
+  },
+  "provenance": {
+    "current_and_saved_document_equal": true,
+    "frozen_source_copy_equal": true,
+    "tool_diameter_unknown": true,
+    "source_refs_preserved": true
+  },
+  "scope": {
+    "fixed_kicad_board_export_and_fresh_verification": true,
+    "repeat_request_reuses_job": true,
+    "without_runtime_reopen": true,
+    "other_project_rejected": true,
+    "mcp_import_apply_exercised": false,
+    "manufacturing_or_rf_verified": false,
+    "performance_measured": false
+  }
+}

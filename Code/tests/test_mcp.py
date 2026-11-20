@@ -40,12 +40,15 @@ class McpTests(unittest.TestCase):
             self.assertIn("error", send("tools/list", {}))
             self.assertEqual(send("initialize", {"protocolVersion": "2025-11-25"})["result"]["protocolVersion"], "2025-11-25")
             self.assertIsNone(session.handle({"jsonrpc": "2.0", "method": "notifications/initialized"}))
-            names = {item["name"] for item in send("tools/list", {})["result"]["tools"]}
+            listing = send("tools/list", {})
+            self.assertEqual(send("tools/list", {"_meta": {"progressToken": "조회"}}), listing)
+            self.assertEqual(send("tools/list", {"_meta": "invalid"})["error"]["code"], -32602)
+            names = {item["name"] for item in listing["result"]["tools"]}
             self.assertTrue({"catalog.stackup_suggestions", "pcb.selection.preview", "pcb.selection.apply"} <= names)
             params = {"name": "project.open", "arguments": {"context": {}, "input": {
                 "path": "projects/mcp", "open_mode": "create", "name": "MCP 시험"},
                 "request_key": str(uuid4()), "request_key_epoch": service.policy()["request_key_epoch"]}}
-            first = send("tools/call", params)
+            first = send("tools/call", {**params, "_meta": {"progressToken": "접수"}})
             second = send("tools/call", params)
             self.assertFalse(first["result"]["isError"])
             self.assertEqual(first, second)
