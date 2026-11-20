@@ -282,6 +282,14 @@ target_include_directories(tracewave_model_vertex_buffer_probe PRIVATE ui/wxwidg
 target_compile_definitions(tracewave_model_vertex_buffer_probe PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN NOMINMAX)
 target_link_libraries(tracewave_model_vertex_buffer_probe PRIVATE ${RFAD_WX_LIBRARIES} opengl32 bcrypt)
 set_target_properties(tracewave_model_vertex_buffer_probe PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
+add_executable(tracewave_model_lifetime_probe EXCLUDE_FROM_ALL
+    tools/model_lifetime_probe.cpp
+    ui/wxwidgets/model_view.cpp ui/wxwidgets/model_vertex_buffer.cpp ui/wxwidgets/display_mesh_picking.cpp ${RFAD_RESOURCE})
+target_include_directories(tracewave_model_lifetime_probe PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
+target_compile_definitions(tracewave_model_lifetime_probe PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN NOMINMAX)
+target_link_libraries(tracewave_model_lifetime_probe PRIVATE ${RFAD_WX_LIBRARIES} dxgi dxguid opengl32 bcrypt psapi)
+set_target_properties(tracewave_model_lifetime_probe PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
+
 add_executable(tracewave_model_pick_probe EXCLUDE_FROM_ALL
     tools/model_pick_probe.cpp ui/wxwidgets/display_mesh_picking.cpp)
 target_include_directories(tracewave_model_pick_probe PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")

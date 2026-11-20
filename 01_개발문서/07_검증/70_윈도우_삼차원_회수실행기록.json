@@ -1,0 +1,1532 @@
+{
+  "schema": "rfad.windows-large-model-lifetime-verification/0.1",
+  "date_kst": "2026-11-20",
+  "source_parent": "2bd851a8b0d982673c5bd04d0e364f124515513d",
+  "binary": {
+    "file": "tracewave_model_lifetime_probe.exe",
+    "bytes": 13075676,
+    "sha256": "a12837c115b4cd7b20f2c1bf8732e5650752cc0f99e4df0c3d6970a5e7752770"
+  },
+  "smoke": {
+    "trace": {
+      "file": "stage12u-model-lifetime-smoke.jsonl",
+      "bytes": 1817,
+      "sha256": "ef002b629f16ba855017970a3b197883c136a5cdf9b7ca80abe32f95c31fadc7"
+    },
+    "events": [
+      {
+        "artifact": {
+          "bytes": 37489347,
+          "role": "display_mesh",
+          "run_id": "00000000-0000-0000-0000-000000000003",
+          "sha256": "89db886307ca72cf5ca2f43a8c97254a899d596ffea184d880c9a8667bc710d4",
+          "snapshot_id": "00000000-0000-0000-0000-000000000001",
+          "uri": "mesh.json"
+        },
+        "canvas": [
+          1920,
+          1080
+        ],
+        "elapsed_ms": 52.824,
+        "event": "start",
+        "expected_cycles": 2,
+        "minimum_closed_ms": 300
+      },
+      {
+        "cycle": 0,
+        "elapsed_ms": 65.644,
+        "event": "baseline",
+        "gpu_usage": [
+          {
+            "local_bytes": 0,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 244,
+        "peak_working_set_bytes": 26513408,
+        "private_commit_bytes": 4358144,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 0
+        },
+        "working_set_bytes": 26513408
+      },
+      {
+        "cycle": 1,
+        "elapsed_ms": 1814.027,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 186716160,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 323,
+        "peak_working_set_bytes": 315052032,
+        "private_commit_bytes": 201027584,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 1
+        },
+        "working_set_bytes": 315052032
+      },
+      {
+        "cycle": 1,
+        "elapsed_ms": 2177.114,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 150671360,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 320,
+        "peak_working_set_bytes": 324284416,
+        "private_commit_bytes": 120057856,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 1
+        },
+        "working_set_bytes": 207503360
+      },
+      {
+        "cycle": 2,
+        "elapsed_ms": 3757.641,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 232329216,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 330,
+        "peak_working_set_bytes": 477958144,
+        "private_commit_bytes": 210325504,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 2
+        },
+        "working_set_bytes": 359145472
+      },
+      {
+        "cycle": 2,
+        "elapsed_ms": 4086.301,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 159191040,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 320,
+        "peak_working_set_bytes": 477958144,
+        "private_commit_bytes": 129286144,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 2
+        },
+        "working_set_bytes": 216080384
+      },
+      {
+        "cycles": 2,
+        "elapsed_ms": 4098.003,
+        "event": "complete"
+      }
+    ]
+  },
+  "warm_model_view": {
+    "trace": {
+      "file": "stage12u-model-lifetime-30.jsonl",
+      "bytes": 18003,
+      "sha256": "25f1e317e21f7e37afd38613987903e40f72d89a58df4d1d5a3fe9fb104200a5"
+    },
+    "summary": {
+      "schema": "rfad.windows-model-lifetime-summary/0.1",
+      "cycles": 30,
+      "elapsed_ms": 953653.61,
+      "closed_resources": {
+        "private_commit_bytes": {
+          "first_5_median": 129171456,
+          "last_10_median": 131469312.0,
+          "delta": 2297856.0,
+          "maximum": 185368576
+        },
+        "working_set_bytes": {
+          "first_5_median": 205303808,
+          "last_10_median": 206874624.0,
+          "delta": 1570816.0,
+          "maximum": 258473984
+        },
+        "peak_working_set_bytes": {
+          "first_5_median": 475672576,
+          "last_10_median": 512540672.0,
+          "delta": 36868096.0,
+          "maximum": 512540672
+        },
+        "handles": {
+          "first_5_median": 320,
+          "last_10_median": 316.0,
+          "delta": -4.0,
+          "maximum": 325
+        }
+      },
+      "gpu_usage": [
+        {
+          "ordinal": 0,
+          "node": 0,
+          "local_bytes": {
+            "first_5_median": 159191040,
+            "last_10_median": 159191040.0,
+            "delta": 0.0,
+            "maximum": 195235840
+          },
+          "nonlocal_bytes": {
+            "first_5_median": 0,
+            "last_10_median": 0.0,
+            "delta": 0.0,
+            "maximum": 0
+          }
+        }
+      ],
+      "peak_open": {
+        "private_commit_bytes": 274874368,
+        "working_set_bytes": 410058752,
+        "peak_working_set_bytes": 512540672,
+        "handles": 330
+      },
+      "minimum_open_to_closed_ms": 30013.729000000007,
+      "private_commit_delta_limit_bytes": 33554432,
+      "model_private_commit_delta_within_limit": true,
+      "f5_full_acceptance_measured": false
+    },
+    "events": [
+      {
+        "artifact": {
+          "bytes": 37489347,
+          "role": "display_mesh",
+          "run_id": "00000000-0000-0000-0000-000000000003",
+          "sha256": "89db886307ca72cf5ca2f43a8c97254a899d596ffea184d880c9a8667bc710d4",
+          "snapshot_id": "00000000-0000-0000-0000-000000000001",
+          "uri": "mesh.json"
+        },
+        "canvas": [
+          1920,
+          1080
+        ],
+        "elapsed_ms": 49.223,
+        "event": "start",
+        "expected_cycles": 30,
+        "minimum_closed_ms": 30000
+      },
+      {
+        "cycle": 0,
+        "elapsed_ms": 55.45,
+        "event": "baseline",
+        "gpu_usage": [
+          {
+            "local_bytes": 0,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 244,
+        "peak_working_set_bytes": 26521600,
+        "private_commit_bytes": 4378624,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 0
+        },
+        "working_set_bytes": 26521600
+      },
+      {
+        "cycle": 1,
+        "elapsed_ms": 1778.718,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 186716160,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 323,
+        "peak_working_set_bytes": 301899776,
+        "private_commit_bytes": 200585216,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 1
+        },
+        "working_set_bytes": 301899776
+      },
+      {
+        "cycle": 1,
+        "elapsed_ms": 31827.595,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 150671360,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 320,
+        "peak_working_set_bytes": 312713216,
+        "private_commit_bytes": 119648256,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 1
+        },
+        "working_set_bytes": 195981312
+      },
+      {
+        "cycle": 2,
+        "elapsed_ms": 33425.011,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 232329216,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 330,
+        "peak_working_set_bytes": 467030016,
+        "private_commit_bytes": 210317312,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 2
+        },
+        "working_set_bytes": 348200960
+      },
+      {
+        "cycle": 2,
+        "elapsed_ms": 63462.231,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 159191040,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 320,
+        "peak_working_set_bytes": 467030016,
+        "private_commit_bytes": 129171456,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 2
+        },
+        "working_set_bytes": 205070336
+      },
+      {
+        "cycle": 3,
+        "elapsed_ms": 65306.752,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 232329216,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 330,
+        "peak_working_set_bytes": 475672576,
+        "private_commit_bytes": 218042368,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 3
+        },
+        "working_set_bytes": 349417472
+      },
+      {
+        "cycle": 3,
+        "elapsed_ms": 95360.93,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 159191040,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 320,
+        "peak_working_set_bytes": 475672576,
+        "private_commit_bytes": 128667648,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 3
+        },
+        "working_set_bytes": 205303808
+      },
+      {
+        "cycle": 4,
+        "elapsed_ms": 96905.779,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 232329216,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 330,
+        "peak_working_set_bytes": 475672576,
+        "private_commit_bytes": 218554368,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 4
+        },
+        "working_set_bytes": 353857536
+      },
+      {
+        "cycle": 4,
+        "elapsed_ms": 126919.508,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 195235840,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 325,
+        "peak_working_set_bytes": 475672576,
+        "private_commit_bytes": 129257472,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 4
+        },
+        "working_set_bytes": 241594368
+      },
+      {
+        "cycle": 5,
+        "elapsed_ms": 128791.526,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 195235840,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 325,
+        "peak_working_set_bytes": 511389696,
+        "private_commit_bytes": 210591744,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 5
+        },
+        "working_set_bytes": 322379776
+      },
+      {
+        "cycle": 5,
+        "elapsed_ms": 158825.979,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 159191040,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 318,
+        "peak_working_set_bytes": 511389696,
+        "private_commit_bytes": 129708032,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 5
+        },
+        "working_set_bytes": 205578240
+      },
+      {
+        "cycle": 6,
+        "elapsed_ms": 160781.728,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 232329216,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 328,
+        "peak_working_set_bytes": 511389696,
+        "private_commit_bytes": 218726400,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 6
+        },
+        "working_set_bytes": 357134336
+      },
+      {
+        "cycle": 6,
+        "elapsed_ms": 190800.287,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 159191040,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 318,
+        "peak_working_set_bytes": 511389696,
+        "private_commit_bytes": 129122304,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 6
+        },
+        "working_set_bytes": 205602816
+      },
+      {
+        "cycle": 7,
+        "elapsed_ms": 193822.864,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 232329216,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 328,
+        "peak_working_set_bytes": 511389696,
+        "private_commit_bytes": 218886144,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 7
+        },
+        "working_set_bytes": 357163008
+      },
+      {
+        "cycle": 7,
+        "elapsed_ms": 223850.506,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 195235840,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 323,
+        "peak_working_set_bytes": 511389696,
+        "private_commit_bytes": 129572864,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 7
+        },
+        "working_set_bytes": 241754112
+      },
+      {
+        "cycle": 8,
+        "elapsed_ms": 225653.462,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 232329216,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 328,
+        "peak_working_set_bytes": 511799296,
+        "private_commit_bytes": 210989056,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 8
+        },
+        "working_set_bytes": 344711168
+      },
+      {
+        "cycle": 8,
+        "elapsed_ms": 255700.602,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 159191040,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 318,
+        "peak_working_set_bytes": 511799296,
+        "private_commit_bytes": 129949696,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 8
+        },
+        "working_set_bytes": 205643776
+      },
+      {
+        "cycle": 9,
+        "elapsed_ms": 257579.714,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 232329216,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 328,
+        "peak_working_set_bytes": 511799296,
+        "private_commit_bytes": 218624000,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 9
+        },
+        "working_set_bytes": 357113856
+      },
+      {
+        "cycle": 9,
+        "elapsed_ms": 287618.227,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 159191040,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 318,
+        "peak_working_set_bytes": 511799296,
+        "private_commit_bytes": 129257472,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 9
+        },
+        "working_set_bytes": 205660160
+      },
+      {
+        "cycle": 10,
+        "elapsed_ms": 289214.582,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 195235840,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 323,
+        "peak_working_set_bytes": 511799296,
+        "private_commit_bytes": 218820608,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 10
+        },
+        "working_set_bytes": 330702848
+      },
+      {
+        "cycle": 10,
+        "elapsed_ms": 319242.811,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 159191040,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 318,
+        "peak_working_set_bytes": 511799296,
+        "private_commit_bytes": 129556480,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 10
+        },
+        "working_set_bytes": 205844480
+      },
+      {
+        "cycle": 11,
+        "elapsed_ms": 320845.485,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 232329216,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 328,
+        "peak_working_set_bytes": 511799296,
+        "private_commit_bytes": 219865088,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 11
+        },
+        "working_set_bytes": 357724160
+      },
+      {
+        "cycle": 11,
+        "elapsed_ms": 350881.577,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 159191040,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 318,
+        "peak_working_set_bytes": 511799296,
+        "private_commit_bytes": 130502656,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 11
+        },
+        "working_set_bytes": 206270464
+      },
+      {
+        "cycle": 12,
+        "elapsed_ms": 352445.995,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 232329216,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 328,
+        "peak_working_set_bytes": 511799296,
+        "private_commit_bytes": 219889664,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 12
+        },
+        "working_set_bytes": 357408768
+      },
+      {
+        "cycle": 12,
+        "elapsed_ms": 382490.689,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 159191040,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 318,
+        "peak_working_set_bytes": 511799296,
+        "private_commit_bytes": 130519040,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 12
+        },
+        "working_set_bytes": 205959168
+      },
+      {
+        "cycle": 13,
+        "elapsed_ms": 384039.994,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 232329216,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 328,
+        "peak_working_set_bytes": 511799296,
+        "private_commit_bytes": 218996736,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 13
+        },
+        "working_set_bytes": 357322752
+      },
+      {
+        "cycle": 13,
+        "elapsed_ms": 414066.885,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 159191040,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 318,
+        "peak_working_set_bytes": 511799296,
+        "private_commit_bytes": 129589248,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 13
+        },
+        "working_set_bytes": 205848576
+      },
+      {
+        "cycle": 14,
+        "elapsed_ms": 415756.925,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 195235840,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 323,
+        "peak_working_set_bytes": 511799296,
+        "private_commit_bytes": 218337280,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 14
+        },
+        "working_set_bytes": 331026432
+      },
+      {
+        "cycle": 14,
+        "elapsed_ms": 445784.642,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 159191040,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 318,
+        "peak_working_set_bytes": 511799296,
+        "private_commit_bytes": 129036288,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 14
+        },
+        "working_set_bytes": 205918208
+      },
+      {
+        "cycle": 15,
+        "elapsed_ms": 447543.083,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 232329216,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 328,
+        "peak_working_set_bytes": 511799296,
+        "private_commit_bytes": 218320896,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 15
+        },
+        "working_set_bytes": 357380096
+      },
+      {
+        "cycle": 15,
+        "elapsed_ms": 477569.704,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 195235840,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 323,
+        "peak_working_set_bytes": 511799296,
+        "private_commit_bytes": 128962560,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 15
+        },
+        "working_set_bytes": 241905664
+      },
+      {
+        "cycle": 16,
+        "elapsed_ms": 479138.194,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 232329216,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 328,
+        "peak_working_set_bytes": 512270336,
+        "private_commit_bytes": 211435520,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 16
+        },
+        "working_set_bytes": 349601792
+      },
+      {
+        "cycle": 16,
+        "elapsed_ms": 509156.837,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 159191040,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 318,
+        "peak_working_set_bytes": 512270336,
+        "private_commit_bytes": 130387968,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 16
+        },
+        "working_set_bytes": 206471168
+      },
+      {
+        "cycle": 17,
+        "elapsed_ms": 510736.71,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 232329216,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 328,
+        "peak_working_set_bytes": 512270336,
+        "private_commit_bytes": 218910720,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 17
+        },
+        "working_set_bytes": 357924864
+      },
+      {
+        "cycle": 17,
+        "elapsed_ms": 540755.179,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 195235840,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 323,
+        "peak_working_set_bytes": 512270336,
+        "private_commit_bytes": 129609728,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 17
+        },
+        "working_set_bytes": 242515968
+      },
+      {
+        "cycle": 18,
+        "elapsed_ms": 542301.938,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 232329216,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 328,
+        "peak_working_set_bytes": 512430080,
+        "private_commit_bytes": 211591168,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 18
+        },
+        "working_set_bytes": 348532736
+      },
+      {
+        "cycle": 18,
+        "elapsed_ms": 572322.607,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 159191040,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 318,
+        "peak_working_set_bytes": 512430080,
+        "private_commit_bytes": 130555904,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 18
+        },
+        "working_set_bytes": 206450688
+      },
+      {
+        "cycle": 19,
+        "elapsed_ms": 573921.694,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 195235840,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 323,
+        "peak_working_set_bytes": 512430080,
+        "private_commit_bytes": 220139520,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 19
+        },
+        "working_set_bytes": 331821056
+      },
+      {
+        "cycle": 19,
+        "elapsed_ms": 603987.461,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 159191040,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 318,
+        "peak_working_set_bytes": 512430080,
+        "private_commit_bytes": 131158016,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 19
+        },
+        "working_set_bytes": 206737408
+      },
+      {
+        "cycle": 20,
+        "elapsed_ms": 605634.531,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 232329216,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 328,
+        "peak_working_set_bytes": 512430080,
+        "private_commit_bytes": 218853376,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 20
+        },
+        "working_set_bytes": 357752832
+      },
+      {
+        "cycle": 20,
+        "elapsed_ms": 635663.692,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 159191040,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 318,
+        "peak_working_set_bytes": 512430080,
+        "private_commit_bytes": 129417216,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 20
+        },
+        "working_set_bytes": 206233600
+      },
+      {
+        "cycle": 21,
+        "elapsed_ms": 637469.191,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 232329216,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 328,
+        "peak_working_set_bytes": 512430080,
+        "private_commit_bytes": 219398144,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 21
+        },
+        "working_set_bytes": 357523456
+      },
+      {
+        "cycle": 21,
+        "elapsed_ms": 667487.288,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 195235840,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 323,
+        "peak_working_set_bytes": 512430080,
+        "private_commit_bytes": 130101248,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 21
+        },
+        "working_set_bytes": 242114560
+      },
+      {
+        "cycle": 22,
+        "elapsed_ms": 669055.384,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 195235840,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 323,
+        "peak_working_set_bytes": 512540672,
+        "private_commit_bytes": 212299776,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 22
+        },
+        "working_set_bytes": 323551232
+      },
+      {
+        "cycle": 22,
+        "elapsed_ms": 699098.33,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 159191040,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 316,
+        "peak_working_set_bytes": 512540672,
+        "private_commit_bytes": 131305472,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 22
+        },
+        "working_set_bytes": 206745600
+      },
+      {
+        "cycle": 23,
+        "elapsed_ms": 701060.267,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 232329216,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 326,
+        "peak_working_set_bytes": 512540672,
+        "private_commit_bytes": 219537408,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 23
+        },
+        "working_set_bytes": 358072320
+      },
+      {
+        "cycle": 23,
+        "elapsed_ms": 731081.439,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 159191040,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 316,
+        "peak_working_set_bytes": 512540672,
+        "private_commit_bytes": 129978368,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 23
+        },
+        "working_set_bytes": 206422016
+      },
+      {
+        "cycle": 24,
+        "elapsed_ms": 732774.465,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 232329216,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 326,
+        "peak_working_set_bytes": 512540672,
+        "private_commit_bytes": 221003776,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 24
+        },
+        "working_set_bytes": 358371328
+      },
+      {
+        "cycle": 24,
+        "elapsed_ms": 762793.987,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 159191040,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 316,
+        "peak_working_set_bytes": 512540672,
+        "private_commit_bytes": 131633152,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 24
+        },
+        "working_set_bytes": 206917632
+      },
+      {
+        "cycle": 25,
+        "elapsed_ms": 764660.498,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 232329216,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 326,
+        "peak_working_set_bytes": 512540672,
+        "private_commit_bytes": 219729920,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 25
+        },
+        "working_set_bytes": 357212160
+      },
+      {
+        "cycle": 25,
+        "elapsed_ms": 794693.798,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 159191040,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 316,
+        "peak_working_set_bytes": 512540672,
+        "private_commit_bytes": 130359296,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 25
+        },
+        "working_set_bytes": 206807040
+      },
+      {
+        "cycle": 26,
+        "elapsed_ms": 796268.931,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 195235840,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 321,
+        "peak_working_set_bytes": 512540672,
+        "private_commit_bytes": 220012544,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 26
+        },
+        "working_set_bytes": 331939840
+      },
+      {
+        "cycle": 26,
+        "elapsed_ms": 826319.941,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 159191040,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 316,
+        "peak_working_set_bytes": 512540672,
+        "private_commit_bytes": 130707456,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 26
+        },
+        "working_set_bytes": 206831616
+      },
+      {
+        "cycle": 27,
+        "elapsed_ms": 828211.132,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 195235840,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 321,
+        "peak_working_set_bytes": 512540672,
+        "private_commit_bytes": 267608064,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 27
+        },
+        "working_set_bytes": 377110528
+      },
+      {
+        "cycle": 27,
+        "elapsed_ms": 858259.589,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 159191040,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 316,
+        "peak_working_set_bytes": 512540672,
+        "private_commit_bytes": 178307072,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 27
+        },
+        "working_set_bytes": 252002304
+      },
+      {
+        "cycle": 28,
+        "elapsed_ms": 860249.459,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 232329216,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 326,
+        "peak_working_set_bytes": 512540672,
+        "private_commit_bytes": 212828160,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 28
+        },
+        "working_set_bytes": 360529920
+      },
+      {
+        "cycle": 28,
+        "elapsed_ms": 890285.033,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 159191040,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 316,
+        "peak_working_set_bytes": 512540672,
+        "private_commit_bytes": 131801088,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 28
+        },
+        "working_set_bytes": 206655488
+      },
+      {
+        "cycle": 29,
+        "elapsed_ms": 892068.488,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 195235840,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 321,
+        "peak_working_set_bytes": 512540672,
+        "private_commit_bytes": 221118464,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 29
+        },
+        "working_set_bytes": 332128256
+      },
+      {
+        "cycle": 29,
+        "elapsed_ms": 922108.148,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 159191040,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 316,
+        "peak_working_set_bytes": 512540672,
+        "private_commit_bytes": 131821568,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 29
+        },
+        "working_set_bytes": 207020032
+      },
+      {
+        "cycle": 30,
+        "elapsed_ms": 923667.929,
+        "event": "open",
+        "gpu_usage": [
+          {
+            "local_bytes": 232329216,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 326,
+        "peak_working_set_bytes": 512540672,
+        "private_commit_bytes": 274874368,
+        "vertex_buffer": {
+          "bytes": 72000000,
+          "uploads": 30
+        },
+        "working_set_bytes": 410058752
+      },
+      {
+        "cycle": 30,
+        "elapsed_ms": 953691.106,
+        "event": "closed",
+        "gpu_usage": [
+          {
+            "local_bytes": 159191040,
+            "node": 0,
+            "nonlocal_bytes": 0,
+            "ordinal": 0
+          }
+        ],
+        "handles": 316,
+        "peak_working_set_bytes": 512540672,
+        "private_commit_bytes": 185368576,
+        "vertex_buffer": {
+          "bytes": 0,
+          "uploads": 30
+        },
+        "working_set_bytes": 258473984
+      },
+      {
+        "cycles": 30,
+        "elapsed_ms": 953702.833,
+        "event": "complete"
+      }
+    ]
+  },
+  "ctest": {
+    "passed": 13,
+    "log": {
+      "file": "stage12u-ctest.log",
+      "bytes": 1526,
+      "sha256": "1325dff9451304d3fed726f9da86b29d9db7dee5c0928e5ef5e1ba2f5c79337b"
+    }
+  },
+  "windows_trace_tests_passed": 2,
+  "f1_f3_complete_fixtures_used": false,
+  "full_application_workers_sampled": false,
+  "default_idle_policy_measured": false,
+  "f5_full_acceptance_measured": false
+}
