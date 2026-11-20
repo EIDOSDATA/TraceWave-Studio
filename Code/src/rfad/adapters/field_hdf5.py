@@ -13,13 +13,14 @@ import stat
 
 from rfad.adapters.network_hdf5 import _runtime
 from rfad.domain.errors import ProjectError
-from rfad.storage.sealed_files import validate_reference, CHUNK_BYTES
+from rfad.storage.sealed_files import validate_reference, CHUNK_BYTES, MAX_FILE_BYTES
 
 
 PROFILE = "rfad.primary-yee-field-hdf5/0.1"
 AXES = "xyz"
-MAX_POINTS = 1500000
-MAX_FIELD_BYTES = 48 * 1024 * 1024
+MAX_POINTS = 3_000_000
+MAX_AXIS_LENGTH = 100_000
+MAX_ROI_POINTS = 4096
 
 
 def fail(message, code="E_UNSUPPORTED"):
@@ -119,9 +120,9 @@ def inspect(handle, h5py, np, expected):
     """! @brief 배열 본문을 읽기 전에 계획/축/shape/dtype/속성/저장방식을 대조한다."""
     shape = expected["shape"]
     frequencies = expected["frequency_hz"]
-    if (len(shape) != 3 or any(type(n) is not int or n < 1 for n in shape)
+    if (len(shape) != 3 or any(type(n) is not int or not 1 <= n <= MAX_AXIS_LENGTH for n in shape)
             or math.prod(shape) > MAX_POINTS or not 1 <= len(frequencies) <= 3
-            or math.prod(shape) * 3 * 8 * len(frequencies) > MAX_FIELD_BYTES):
+            or math.prod(shape) * 3 * 8 * len(frequencies) > MAX_FILE_BYTES):
         fail("필드 배열의 명시 크기/주파수 예산을 초과했습니다.", "E_RESOURCE")
     if len(handle) != 2 or set(handle.keys()) != {"Mesh", "FieldData"}:
         fail("필드 HDF5 root 객체가 지원 profile과 다릅니다.")
@@ -173,15 +174,44 @@ def inspect(handle, h5py, np, expected):
     return datasets, primary
 
 
+def _hyperslab(selection, expected):
+    """! @brief 직접 호출에서도 정확히 두 축의 제한된 단면만 읽는다."""
+    axes = set(AXES)
+    if type(selection) is not dict or set(selection) != axes | {"component_index", "frequency_index"}:
+        fail("필드 단면의 축 또는 성분 요청이 올바르지 않습니다.", "E_SCHEMA")
+    component, frequency = selection["component_index"], selection["frequency_index"]
+    if (type(component) is not int or not 0 <= component < 3
+            or type(frequency) is not int or not 0 <= frequency < len(expected["frequency_hz"])):
+        fail("필드 단면의 성분 또는 주파수 인덱스가 올바르지 않습니다.", "E_SCHEMA")
+    indices, planes, points = [component], 0, 1
+    for axis, length in zip(AXES, expected["shape"]):
+        index = selection[axis]
+        if type(index) is int and 0 <= index < length:
+            indices.append(index)
+            planes += 1
+        elif type(index) is slice:
+            if (any(value is not None and type(value) is not int for value in (index.start, index.stop, index.step))
+                    or index.step is not None and index.step < 1):
+                fail("필드 단면의 축 범위가 올바르지 않습니다.", "E_SCHEMA")
+            start, stop, step = index.indices(length)
+            if not 0 <= start < stop <= length or step < 1:
+                fail("필드 단면의 축 범위가 올바르지 않습니다.", "E_SCHEMA")
+            points *= len(range(start, stop, step))
+            indices.append(slice(start, stop, step))
+        else:
+            fail("필드 단면에 지원하지 않는 축 인덱스가 있습니다.", "E_SCHEMA")
+    if planes != 1 or points > MAX_ROI_POINTS:
+        fail("필드 단면은 평면 하나와 최대 4096개 표본을 지원합니다.", "E_RESOURCE")
+    return frequency, tuple(indices)
+
+
 def read(path, reference, expected, selection=None):
     """! @brief 설명 조회는 배열 본문을 읽지 않고 단면 조회만 해당 hyperslab을 읽는다."""
     with opened(path, reference) as (handle, h5py, np):
         datasets, primary = inspect(handle, h5py, np, expected)
         if selection is None:
             return {"primary_coordinates_mm": primary, "values": None}
-        slices = [selection["component_index"]]
-        for axis in AXES:
-            slices.append(selection[axis])
+        frequency, slices = _hyperslab(selection, expected)
         # @brief 남은 축은 항상 x/y/z 순서의 u,v이므로 반환 행/열은 v,u로 전치한다.
-        data = datasets[selection["frequency_index"]][tuple(slices)]
+        data = datasets[frequency][slices]
         return {"primary_coordinates_mm": primary, "values": data.T}

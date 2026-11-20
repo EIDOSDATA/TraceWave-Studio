@@ -157,24 +157,28 @@ class FieldHdf5Tests(unittest.TestCase):
                 with self.assertRaises(ProjectError): field_hdf5.read(self.path, reference(self.path), expected())
 
     def test_large_raw_file_uses_slice_without_metadata_read_limit(self):
-        """! @brief 8MiB가 넘는 실제 파일도 전체 bytes 복사 없이 작은 단면으로 읽는다."""
+        """! @brief 48 MiB를 넘는 실제 파일은 작은 단면만 읽고 과대 ROI는 차단한다."""
         import h5py
         import numpy as np
-        declaration = {"shape": [1024, 256, 2], "frequency_hz": [1e9], "dump_type": 0,
-            "primary_coordinates_mm": {"x": list(range(1024)), "y": list(range(256)), "z": [0, 1]}}
+        declaration = {"shape": [512, 192, 28], "frequency_hz": [1e9], "dump_type": 0,
+            "primary_coordinates_mm": {axis: list(range(count)) for axis, count in zip("xyz", (512, 192, 28))}}
         with h5py.File(self.path, "r+") as f:
             for axis in "xyz":
                 del f["Mesh/"+axis]
                 f["Mesh"].create_dataset(axis, data=np.array(declaration["primary_coordinates_mm"][axis], dtype="<f8")*.001)
             del f["FieldData/FD/f0"]; del f["FieldData/FD/f1"]
             f["FieldData/FD"].attrs["frequency"] = [1e9]
-            ds = f["FieldData/FD"].create_dataset("f0", data=np.full((3,1024,256,2), 3+4j, dtype="<c8"))
+            ds = f["FieldData/FD"].create_dataset("f0", data=np.full((3, *declaration["shape"]), 3+4j, dtype="<c8"))
             ds.attrs["d_order"] = "NXYZ"; ds.attrs["frequency"] = 1e9
         ref = reference(self.path)
-        self.assertGreater(ref["bytes"], 8*1024*1024)
+        self.assertGreater(ref["bytes"], 48 * 1024 * 1024)
         selection = {"component_index": 0, "frequency_index": 0, "x": slice(0, 2), "y": slice(10, 12), "z": 1}
         result = field_hdf5.read(self.path, ref, declaration, selection)
         self.assertEqual(result["values"].tolist(), [[3+4j,3+4j],[3+4j,3+4j]])
+        oversized = selection | {"x": slice(0, 512), "y": slice(0, 192)}
+        with self.assertRaises(ProjectError) as error:
+            field_hdf5.read(self.path, ref, declaration, oversized)
+        self.assertEqual(error.exception.code, "E_RESOURCE")
 
 
 @unittest.skipUnless(importlib.util.find_spec("h5py"), "고정 h5py 환경이 필요합니다.")

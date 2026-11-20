@@ -12,7 +12,7 @@ from rfad.domain.errors import ProjectError
 
 PROFILE = "rfad.result-field/0.1"
 MAX_RESPONSE = 256 * 1024
-MAX_PAGE = 4096
+MAX_PAGE = field_hdf5.MAX_ROI_POINTS
 MONITORS = {
     "electric": ("pcb_loss_E.h5", "전기장 E / 기록 성분", "E", 0, "V*s/m"),
     "material_current": ("pcb_loss_J.h5", "재료 전류 J / 기록 성분", "J", 2, "A*s/m^2"),
