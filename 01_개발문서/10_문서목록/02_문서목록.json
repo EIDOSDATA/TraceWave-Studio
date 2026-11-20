@@ -28681,9 +28681,9 @@
       "path": "01_개발문서/09_개발계획/03_개발완료_계획.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 31843,
-      "working_tree_sha256": "ef66c5e50dea0f0c8eaf6437e5f0d3e416c66970a9dcf4adc718e87b01337d46",
-      "text_lines": 161,
+      "bytes": 33931,
+      "working_tree_sha256": "bfce8f9a2d29f13344880182a31a1a41df2f0cf5a6d4db48257abf279f1f5563",
+      "text_lines": 171,
       "text_status": "utf8_read"
     },
     {
@@ -30865,22 +30865,12 @@
   ],
   "incremental_refresh": {
     "date_kst": "2026-11-20",
-    "mode": "step12_mcp_kicad_roundtrip_evidence",
-    "previous_inventory_sha256": "ca359c221db34cd13526942c34236c7ac0d20a1d480272fc50784bba6cdbd9da",
+    "mode": "step12_current_acceptance_map",
+    "previous_inventory_sha256": "535a8efefbe5f041370f29a19712baf601d99e291721eebbe7c13a2925a16e48",
     "refreshed_paths": [
-      "01_개발문서/05_기능설계/01_프로젝트/01_프로젝트_명령과_저장.md",
-      "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
-      "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
-      "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
-      "01_개발문서/07_검증/47_키캐드재저장본_엠시피왕복_검증.md",
-      "01_개발문서/07_검증/48_키캐드재저장본_엠시피왕복_실행기록.json",
-      "01_개발문서/07_검증/README.md",
-      "01_개발문서/09_개발계획/02_개발착수와_현재상태.md"
+      "01_개발문서/09_개발계획/03_개발완료_계획.md"
     ],
-    "added_paths": [
-      "01_개발문서/07_검증/47_키캐드재저장본_엠시피왕복_검증.md",
-      "01_개발문서/07_검증/48_키캐드재저장본_엠시피왕복_실행기록.json"
-    ],
+    "added_paths": [],
     "removed_paths": [],
     "preserved_reference_records": 3336,
     "preserved_existing_runtime_records": 43,
