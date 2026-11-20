@@ -21,14 +21,14 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 44,
     "current_06_분석연구": 13,
-    "current_07_검증": 54,
+    "current_07_검증": 55,
     "current_08_운영환경": 7,
     "current_09_개발계획": 4,
     "current_11_검토기록": 6,
     "current_traceability": 4,
     "document_catalog": 4,
     "document_navigation": 6,
-    "documentation_asset": 155,
+    "documentation_asset": 156,
     "documentation_validation_record": 1,
     "historical_proposal": 2,
     "historical_verification": 41,
@@ -28609,9 +28609,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 15933,
-      "working_tree_sha256": "9c6c4391ed43679c74bef6d0f6cb1e77d62d364b9dbe3f089d153de8e6f8abda",
-      "text_lines": 112,
+      "bytes": 16294,
+      "working_tree_sha256": "fe9e008bf1d051a218462c80596e2e94a19c0749a55c3853ef1ac27559116b0d",
+      "text_lines": 114,
       "text_status": "utf8_read"
     },
     {
@@ -28672,9 +28672,9 @@
       "path": "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 146955,
-      "working_tree_sha256": "b55f52425ecc0aacbc1d15b5c076f4a9b5f26057ee214306e8b8f6f64516e849",
-      "text_lines": 817,
+      "bytes": 147436,
+      "working_tree_sha256": "678d431e2a0e2bb179055da7028506370c815e7477bdc44f3e7c9908554b400e",
+      "text_lines": 821,
       "text_status": "utf8_read"
     },
     {
@@ -31109,6 +31109,22 @@
       "review_scope": "문서/시안 자산 보존",
       "bytes": 3725,
       "working_tree_sha256": "d364866956e6fa4a19105d78cd6033cef5d6535c80a70defe18d3d5bc5ad0691"
+    },
+    {
+      "path": "01_개발문서/07_검증/96_윈도우_실해석과_고속로그_취소시험.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2729,
+      "working_tree_sha256": "19617ef61a2d834208dc9de6e16c53945c7c02a75f3d0d1e49fc0bf4741a01e0",
+      "text_lines": 31,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/97_윈도우_실해석과_고속로그_취소실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 2993,
+      "working_tree_sha256": "1936b3ac928ef0c8f5104a99e90ceab804b98fbfb2bc465e7c133cc6d18b06f2"
     }
   ],
   "identical_byte_groups": [
@@ -31265,17 +31281,17 @@
   ],
   "incremental_refresh": {
     "date_kst": "2026-11-21",
-    "mode": "step13_integrated_windows_service_regression",
-    "previous_inventory_sha256": "b18c8026d61d32323d869e09af5887f07a6907b53b99ccaa9cfadd3470d7c711",
+    "mode": "step12_windows_concurrent_openems_and_log_probe",
+    "previous_inventory_sha256": "efc67ed1fe10bc943f46a96255fd4903aa068dc753161551f403aa7ee0cc2c4a",
     "refreshed_paths": [
-      "01_개발문서/07_검증/94_윈도우_통합묶음_서비스회귀검증.md",
-      "01_개발문서/07_검증/95_윈도우_통합묶음_서비스회귀_실행기록.json",
+      "01_개발문서/07_검증/96_윈도우_실해석과_고속로그_취소시험.md",
+      "01_개발문서/07_검증/97_윈도우_실해석과_고속로그_취소실행기록.json",
       "01_개발문서/07_검증/README.md",
       "01_개발문서/09_개발계획/02_개발착수와_현재상태.md"
     ],
     "added_paths": [
-      "01_개발문서/07_검증/94_윈도우_통합묶음_서비스회귀검증.md",
-      "01_개발문서/07_검증/95_윈도우_통합묶음_서비스회귀_실행기록.json"
+      "01_개발문서/07_검증/96_윈도우_실해석과_고속로그_취소시험.md",
+      "01_개발문서/07_검증/97_윈도우_실해석과_고속로그_취소실행기록.json"
     ],
     "removed_paths": [],
     "preserved_reference_records": 3336,

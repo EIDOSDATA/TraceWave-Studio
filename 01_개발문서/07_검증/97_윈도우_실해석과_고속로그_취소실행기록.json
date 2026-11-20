@@ -1,0 +1,89 @@
+{
+  "schema": "rfad.windows-live-openems-cancel-log-probe/0.1",
+  "date_kst": "2026-11-21",
+  "source_revision": "22decf6e83153e894f455f5a6d45d9a714f544c3",
+  "isolated_fixture_sources_sha256": {
+    "src/rfad/adapters/solvers/openems/native.py": "ba2b4141ad4b8b2cb325062d11e13fb9be1df91922d2cbca9c4e4d20687f28e7",
+    "src/rfad/adapters/solvers/openems/pcb.py": "eff917ccec02d3374609341158acdc7abd449414959ab67e99d02217408763a0",
+    "src/rfad/application/solver_jobs.py": "8dc549edfc52f05f3efb5df12298bec39f475a4a4b3850c5dea861f58857d1bd",
+    "src/rfad/application/rpc.py": "0859b934d7bb7e5f4f45d9e3dd5710bc2c455f29d14f2fec2ab1f0d8b80d65be"
+  },
+  "fixture_settings": {
+    "frequency_hz": {
+      "start": 8000000000.0,
+      "stop": 12000000000.0,
+      "count": 31
+    },
+    "grid_mm": 0.5,
+    "air_padding_mm": 12.0,
+    "curve_tolerance_mm": 0.025,
+    "max_timesteps": 55000,
+    "end_criterion": 1e-09
+  },
+  "confirmed_sample": {
+    "index": 2,
+    "wall_seconds": 78.59299999999348,
+    "studio_trace": {
+      "control": {
+        "button_enabled": false,
+        "elapsed_ms": 28.936,
+        "state": "cancel_requested"
+      },
+      "guest_worker_attached": true,
+      "job_id": "3c768ddf-b65a-4115-92ff-bf9cb4032cd4",
+      "phase_before": "analysis",
+      "receipt": {
+        "elapsed_ms": 246.368,
+        "events_cursor": 3,
+        "state": "cancel_requested"
+      },
+      "state_before": "running",
+      "terminal": {
+        "elapsed_ms": 1618.872,
+        "events_cursor": 4,
+        "outcome_unknown": false,
+        "state": "cancelled",
+        "termination_confirmed": true
+      }
+    },
+    "rpc_timing": {
+      "job_id": "3c768ddf-b65a-4115-92ff-bf9cb4032cd4",
+      "received_ns": 707025443997600,
+      "sent_ns": 707025613792700,
+      "elapsed_ms": 169.7951
+    },
+    "native_activity": {
+      "f4_probe": true,
+      "lines": 2000,
+      "row_bytes": 28,
+      "elapsed_seconds": 2.0000998060000086,
+      "native_pid": 638,
+      "native_mapped": true,
+      "stdout_lines_before_termination": 3720,
+      "guest_cursor": 5
+    },
+    "previous_result_preserved": true,
+    "saved_revision": "c4061ad8-4f69-48d4-b52f-6f684bd9c9f2",
+    "executable_sha256": "4b48e0e25006c9f0518788efb77b95f323f030daa488340c6e491fd8d36a9223"
+  },
+  "attempt_logs": {
+    "stage12z-pilot.log": {
+      "bytes": 606,
+      "sha256": "ba2bec47d55be22d3c0f2d30c767c5a3e9da2d988d1c1fa09aaa40b2c90add91"
+    },
+    "stage12z-pilot-2.log": {
+      "bytes": 1058,
+      "sha256": "57da1cdeec1a72b7447152b72cf497c86f6df27719ef71819fb07e236de1e1e8"
+    }
+  },
+  "initial_attempt": {
+    "instrumentation_failure": "libopenEMS membership check on a pathlib.Path",
+    "cancelSample": false
+  },
+  "scope": {
+    "actual_openems_and_synthetic_log_concurrent": true,
+    "production_log_payload_changed": false,
+    "latency_p95_qualified": false,
+    "physics_qualified": false
+  }
+}
