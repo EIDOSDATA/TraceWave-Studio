@@ -22,17 +22,20 @@ class GuiProcessTests(unittest.TestCase):
     """! @brief 실제 wx 이벤트 루프에서 저장 복구와 비정상 pipe 응답을 확인한다."""
 
     def run_gui(self, directory: Path, *, source: Path = _SOURCE, python: Path | None = None,
-                editor: bool = False, canvas: bool = False, environment=None) -> tuple[int, dict]:
+                editor: bool = False, canvas: bool = False, environment=None,
+                project_path: str | None = None) -> tuple[int, dict]:
         """! @brief 공백과 한글이 포함된 작업 영역으로 smoke를 실행하고 결과를 읽는다."""
         report = directory / "한글 결과 smoke.json"
         startup = subprocess.STARTUPINFO()
         startup.dwFlags |= subprocess.STARTF_USESHOWWINDOW
         startup.wShowWindow = 0
         started = time.monotonic()
+        project_args = ["--open-project", project_path] if project_path is not None else []
         process = subprocess.run(
             [str(Path(_GUI).resolve()), "--python", str(python or Path(sys.executable)),
              "--source", str(source), "--workspace", str(directory / "한글 작업 영역"),
-             "--canvas-smoke-test" if canvas else ("--editor-smoke-test" if editor else "--smoke-test"), "--smoke-report", str(report)],
+             "--canvas-smoke-test" if canvas else ("--editor-smoke-test" if editor else "--smoke-test"),
+             "--smoke-report", str(report), *project_args],
             stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
             timeout=90, startupinfo=startup, env=environment, check=False,
         )
@@ -40,6 +43,49 @@ class GuiProcessTests(unittest.TestCase):
         result = json.loads(report.read_text(encoding="utf-8"))
         result["process_elapsed_seconds"] = time.monotonic() - started
         return process.returncode, result
+
+    def test_windows_rejects_damaged_project_without_overwriting_and_reopens_restored_source(self):
+        """! @brief GUI에서 손상된 원문을 차단하고 봉인 사본 복구 뒤 같은 프로젝트를 연다."""
+        from rfad.application.projects import ProjectService
+        from rfad.storage.journal import Journal
+        from test_cad_worker_process import register_fixture
+
+        with TemporaryDirectory(prefix="TraceWave 손상 복구 ") as temporary:
+            directory = Path(temporary)
+            workspace = directory / "한글 작업 영역"
+            with ProjectService(workspace, auto_run=False) as service:
+                original, snapshot = register_fixture(service)
+                identity = original["project_id"]
+                project = service.journal.read()["projects"][identity]
+            artifact = workspace / project["current"]["uri"]
+            preserved = artifact.read_bytes()
+            damaged = b'{"damaged":true}'
+            artifact.write_bytes(damaged)
+            code, rejected = self.run_gui(directory, project_path=project["path"])
+            self.assertEqual(code, 2, rejected)
+            self.assertFalse(rejected["passed"])
+            self.assertTrue(rejected["error"], rejected)
+            self.assertEqual(rejected["canvas_shapes"], 0)
+            self.assertEqual(artifact.read_bytes(), damaged)
+            with Journal(workspace, {}) as journal:
+                self.assertEqual(journal.read()["projects"][identity], project)
+
+            artifact.write_bytes(preserved)
+            code, recovered = self.run_gui(directory, project_path=project["path"])
+            self.assertEqual(code, 0, recovered)
+            self.assertTrue(recovered["passed"])
+            self.assertEqual(recovered["project_id"], identity)
+            self.assertEqual(recovered["revision_id"], recovered["saved_revision"])
+            with ProjectService(workspace, auto_run=False) as service:
+                state = service.journal.read()
+                reopened = service.repository.load(state["projects"][identity])
+                for field in ("materials", "geometry", "stackup", "ports", "extensions"):
+                    self.assertEqual(reopened[field], original[field], field)
+                self.assertEqual(state["snapshots"][snapshot["snapshot_id"]], snapshot)
+            if output := os.environ.get("RFAD_GUI_TEST_ARTIFACT_DIR"):
+                evidence = {"rejected": rejected, "recovered": recovered, "snapshot_preserved": True}
+                (Path(output) / "recovery-corruption.json").write_text(
+                    json.dumps(evidence, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     def source_stub(self, directory: Path, program: str) -> Path:
         """! @brief 실제 Python 프로세스에서 pipe 장애를 만드는 작은 rfad 진입점을 준비한다."""

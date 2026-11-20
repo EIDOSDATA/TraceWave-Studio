@@ -224,7 +224,9 @@ void StudioFrame::Send(const std::string& method, const Json& input, bool mutati
     }
     else if (submitted == Studio::RequestDispatcher::SubmitResult::TransportClosed)
     {
-        Failure("Cannot queue service request. No automatic retry is performed.", true);
+        const auto transportError = m_client.Error();
+        Failure(transportError.empty() ? "Cannot queue service request. No automatic retry is performed."
+                                       : transportError, true);
     }
 }
 
