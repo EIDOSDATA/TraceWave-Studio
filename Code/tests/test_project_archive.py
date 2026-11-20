@@ -1,12 +1,15 @@
 """! @brief 편집 복원, 임시 발행 실패와 원래 이력의 리플레이를 확인한다."""
 
+import base64
+from hashlib import sha256
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
 from unittest.mock import patch
 from uuid import uuid4
 
-from rfad.application import project_archive
+from rfad.application import project_archive, rpc
+from rfad.application.canonical import canonical_bytes
 from rfad.application.projects import ProjectService
 from rfad.domain.errors import ProjectError
 from test_cad_worker_process import register_fixture, request
@@ -116,6 +119,58 @@ class ProjectArchiveTests(unittest.TestCase):
         with ProjectService(self.target, auto_run=False) as dest:
             recovered = project_archive.restore(dest, raw, candidate["review_hash"])
             self.assertEqual(recovered["status"], "restored")
+
+    def test_rpc_receives_chunks_reserves_and_recovers_project_after_reopen(self):
+        """! @brief 실제 RPC의 원문 전송, 검토, 영수증과 프로세스 재열기를 연결한다."""
+        data = {"expected_revision": self.changed, "operation": "import", "parameters": import_parameters(declared=False)}
+        params = {"contract_version": "rfad.api/2.0", "context": {"project_id": self.identity}, "input": data}
+        preview = self.source.host_calculation_context.read("network.preview", params)
+        applied = self.source.mutate("network.apply", request(self.source, self.identity, {
+            **data, "review_hash": preview["review_hash"], "command_id": str(uuid4())}))
+        self.changed = applied["new_revision"]
+        raw = self.build()
+        actual = sha256(raw).hexdigest()
+
+        def call(service, method, data, *, key=None, error=None):
+            """! @brief 유한 청크까지 실제 stdio parser의 공통 RPC 진입점으로 보낸다."""
+            params = {"contract_version": "rfad.api/2.0", "context": {}, "input": data}
+            if key is not None:
+                params.update(request_key=key, request_key_epoch=service.policy()["request_key_epoch"])
+            message = {"jsonrpc": "2.0", "id": 1, "method": "archive.receive." + method, "params": params}
+            response = rpc.handle_frame(canonical_bytes(message), service)
+            if error is not None:
+                self.assertEqual(response.get("error", {}).get("data", {}).get("domain_code"), error, response)
+                return None
+            self.assertIn("result", response, response)
+            return response["result"]
+
+        with ProjectService(self.target, auto_run=False) as dest:
+            start = call(dest, "begin", {"archive_sha256": actual, "bytes": len(raw)})
+            transfer = {"upload_id": start["upload_id"]}
+            call(dest, "review", transfer, error="E_CONFLICT")
+            self.assertGreater(len(raw), start["chunk_bytes"])
+            for offset in range(0, len(raw), start["chunk_bytes"]):
+                chunk = raw[offset:offset + start["chunk_bytes"]]
+                payload = {**transfer, "offset": offset, "content_base64": base64.b64encode(chunk).decode("ascii")}
+                received = call(dest, "chunk", payload)
+                self.assertEqual(received["received"], offset + len(chunk))
+                if offset == 0:
+                    self.assertEqual(call(dest, "chunk", payload), received)
+            review = call(dest, "review", transfer)
+            restored_input = {**transfer, "archive_sha256": actual, "review_hash": review["review_hash"]}
+            call(dest, "apply", restored_input, key=str(uuid4()), error="E_CONFLICT")
+            first = call(dest, "reserve", restored_input, key=str(uuid4()))
+            self.assertEqual(first["status"], "reserved")
+            self.assertNotIn(self.identity, dest.journal.read()["projects"])
+            key = str(uuid4())
+            restored = call(dest, "apply", restored_input, key=key)
+            self.assertEqual(restored["status"], "restored")
+            call(dest, "drop", transfer)
+            self.assertEqual(call(dest, "apply", restored_input, key=key), restored)
+        with ProjectService(self.target, auto_run=False) as dest:
+            status = call(dest, "status", {"archive_sha256": actual})
+            self.assertEqual(status["result"], restored)
+            self.assertEqual(dest.journal.read()["jobs"], {})
 
     def test_existing_destination_and_review_for_other_workspace_are_rejected(self):
         """! @brief 기존 파일과 검토하지 않은 다른 복원 위치를 변경하지 않는다."""

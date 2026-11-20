@@ -32,7 +32,7 @@ from rfad.application import target_editor
 from rfad.application import design_rule_service, physical_setup_service, precision_service, network_service, design_sweep_service, rf_validation_records, sweep_selection
 from rfad.application import pcb_exchange_service
 from rfad.application import pcb_import_service
-from rfad.application import handoff_service
+from rfad.application import archive_receiver, handoff_service
 from rfad.domain.physical_setup import COMMAND as PHYSICAL_COMMAND
 from rfad.application.template_candidates import TemplateCandidateCoordinator
 from rfad.domain.errors import ProjectError
@@ -43,7 +43,7 @@ ASYNC_METHODS = {
 } | CAD_METHODS | SOLVER_METHODS
 MUTATION_METHODS = ASYNC_METHODS | {
     "project.apply_command", "editor.apply", "canvas.apply", "project.undo", "project.redo", "job.cancel",
-} | HOST_MUTATIONS | PCB_SELECTION_MUTATIONS | STUDY_MUTATIONS | design_sweep_service.MUTATIONS | rf_validation_records.MUTATIONS | sweep_selection.MUTATIONS | pcb_import_service.MUTATIONS | {"target.editor.apply", "template.apply", "design.rules.apply", physical_setup_service.MUTATION, precision_service.MUTATION, network_service.MUTATION, pcb_exchange_service.MUTATION, handoff_service.MUTATION}
+} | archive_receiver.MUTATIONS | HOST_MUTATIONS | PCB_SELECTION_MUTATIONS | STUDY_MUTATIONS | design_sweep_service.MUTATIONS | rf_validation_records.MUTATIONS | sweep_selection.MUTATIONS | pcb_import_service.MUTATIONS | {"target.editor.apply", "template.apply", "design.rules.apply", physical_setup_service.MUTATION, precision_service.MUTATION, network_service.MUTATION, pcb_exchange_service.MUTATION, handoff_service.MUTATION}
 
 
 class ProjectService:
@@ -64,6 +64,7 @@ class ProjectService:
         """! @brief 저장소를 열고 이전에 실행 중이던 작업을 명시적으로 중단 처리한다."""
         self.workspace = Path(os.path.abspath(workspace))
         self.clock = clock
+        self.archive_receiver = archive_receiver.ArchiveReceiver(self._now)
         self._wake = threading.Event()
         self._stop = threading.Event()
         self._thread = None
@@ -194,7 +195,9 @@ class ProjectService:
 
     def _preflight(self, method: str, context: dict, data: dict) -> None:
         """! @brief 기능별 요청 계약에 따라 접수 가능 여부를 검사한다."""
-        if method == handoff_service.MUTATION:
+        if method in archive_receiver.MUTATIONS:
+            archive_receiver.validate_input(method, context, data)
+        elif method == handoff_service.MUTATION:
             handoff_service.validate_input(method, context, data)
         elif method in pcb_import_service.MUTATIONS:
             pcb_import_service.validate_input(method, context, data)
@@ -249,7 +252,9 @@ class ProjectService:
     def _dispatch_mutation(self, state: dict, method: str, context: dict, data: dict) -> dict:
         """! @brief 영수증과 동일한 transaction에서 기능별 명령을 실행한다."""
         self._preflight(method, context, data)
-        if method == handoff_service.MUTATION:
+        if method in archive_receiver.MUTATIONS:
+            return archive_receiver.admit(self, state, method, data)
+        elif method == handoff_service.MUTATION:
             return handoff_service.admit(self, state, context, data)
         elif method in pcb_import_service.MUTATIONS:
             return pcb_import_service.admit(self, state, method, context, data)

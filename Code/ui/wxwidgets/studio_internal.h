@@ -43,6 +43,7 @@ enum
 {
     IdCreate = wxID_HIGHEST + 1,
     IdOpen,
+    IdArchiveRestore,
     IdSave,
     IdSnapshot,
     IdApply,

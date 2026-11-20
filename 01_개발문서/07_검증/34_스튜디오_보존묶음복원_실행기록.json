@@ -1,0 +1,121 @@
+{
+  "schema": "rfad.verification.archive-receive/0.1",
+  "date_kst": "2026-11-20",
+  "plan_step": 12,
+  "base_commit": "8b4d3efd8657971f1f7f14cfa667ecae2eb2e5d4",
+  "windows_ui": {
+    "archive_sha256": "6c247b34fb252979c2e4fbe0a2c1efe6075ba4523d4b866ba5375a44e6641531",
+    "commands": 1,
+    "content_hash": "5faa2f15ad7f39fcf2127c12b7f1095a46dd653afb214ed3ad19f96e2ac31282",
+    "files": 8,
+    "missing_count": 0,
+    "omitted": [],
+    "path": "projects/CAD 한글 교환 검증",
+    "profile": "rfad.project-archive/0.1",
+    "project_id": "447c1708-bfac-4ea9-b3c2-79729b4368f3",
+    "review_hash": "c3e4786bc024d8fd83ccfedeab10ac137d8ca3e7fe0179caf56d862959a84d8e",
+    "revision_id": "13c56ff1-21a7-42eb-a00f-44c0c3490044",
+    "saved_revision": "13c56ff1-21a7-42eb-a00f-44c0c3490044",
+    "scope": {
+      "active_workspace_identity": "original",
+      "execution_on_restore": false,
+      "external_worker_results": "omitted",
+      "fabrication_and_measurement_acceptance": "not_established",
+      "project_revisions": "preserved",
+      "sessions_and_jobs": "omitted"
+    },
+    "snapshots": 2,
+    "status": "restored",
+    "unavailable_parent_count": 1,
+    "archive_bytes": 1503930,
+    "transfer_chunks": 12,
+    "gui_direct_restore": true,
+    "edit_and_reopen": true,
+    "non_editable_zip_rejected": true,
+    "source_and_unknowns_preserved": true,
+    "original_raw_sha256": "f44a585b3a3281c850e1d35653dc6d8ebf2feba48896089ed6e474c4d91ea3d0",
+    "final_saved_revision": "fc81a13f-7864-447e-a1fa-24cdee0518bc",
+    "executable_sha256": "675f5d556db4eba15ec803fa5e116e8b53cfcb8e35e56302268d002e405d50b5",
+    "captures": [
+      {
+        "path": "02_실행화면/79_읽기전용_묶음복원차단.jpg",
+        "bytes": 136486,
+        "sha256": "76680a09e1e2949192df9422c167bc886faa0a13ca01be01c2e092d03b26740b"
+      },
+      {
+        "path": "02_실행화면/80_복원_보존개정과_누락검토.jpg",
+        "bytes": 152842,
+        "sha256": "c31913215c42320ba25e544b9bb02f1c3692657f2e2331ba0e394c700962cd12"
+      },
+      {
+        "path": "02_실행화면/81_스튜디오_복원등록완료.jpg",
+        "bytes": 153405,
+        "sha256": "d07bd6a895ca7771302326a97177545d583584d461f9833decb56f9845fe8a30"
+      },
+      {
+        "path": "02_실행화면/82_직접복원_프로젝트편집저장.jpg",
+        "bytes": 149199,
+        "sha256": "e87a820b452d997ea4a4213cb042fc0f08fa86424eb4fe5317ea2330cb579830"
+      },
+      {
+        "path": "02_실행화면/83_직접복원_저장개정재열기.jpg",
+        "bytes": 150112,
+        "sha256": "5634a76682ecb614842b0b870e0cff16e16fe0fa7cd8a551764b6bb99879fe17"
+      }
+    ]
+  },
+  "runs": [
+    {
+      "scope": "초기 RPC 전달: 기능 공지와 변경 라우팅 연결 전",
+      "log": "stage12c-restore-service.log",
+      "log_sha256": "3d14c8453e676d5ff7d7e4ce8a723c9f8d7242d9152dec1e72ffcc051f323303",
+      "collected": 10,
+      "passed": 9,
+      "failed": 1,
+      "seconds": 71.451
+    },
+    {
+      "scope": "RPC 변경 목록 정정 후 수신/영수증과 MCP",
+      "log": "stage12c-restore-rpc-final.log",
+      "log_sha256": "fe73b7aef6fd745ac01b49bbe45a23e0d7aa35ea151c3401750d7778eb02e4c3",
+      "collected": 3,
+      "passed": 3,
+      "failed": 0,
+      "seconds": 20.958
+    },
+    {
+      "scope": "최종 복원, 읽기 전용 인계, MCP 회귀",
+      "log": "stage12c-restore-all-final.log",
+      "log_sha256": "146fe661b1fc5e5cd2401f9b6aa516333fa2068c503d7538704e1511720fee7d",
+      "collected": 10,
+      "passed": 10,
+      "failed": 0,
+      "seconds": 76.808
+    },
+    {
+      "scope": "Windows 기존 출력 화면 회귀",
+      "log": "stage12c-restore-gui-regression.log",
+      "log_sha256": "e71dcd6ba061f4dae5d99e057e9d70705f5121067cff1787e1a54c1d32d64d4f",
+      "collected": 1,
+      "passed": 1,
+      "failed": 0,
+      "seconds": 32.376
+    },
+    {
+      "scope": "Windows CTest",
+      "log": "stage12c-restore-ctest.log",
+      "log_sha256": "b082d6374d4fa827cf85e93f679dab4843b1c647e588c72cacc025f78bfa9bda",
+      "collected": 13,
+      "passed": 13,
+      "failed": 0,
+      "seconds": 0.74
+    }
+  ],
+  "document_verification": {
+    "approved_baseline_files_verified": 27,
+    "documents": 158,
+    "links_checked": 8210,
+    "broken_links": [],
+    "implementation_audit_passed": 14
+  }
+}

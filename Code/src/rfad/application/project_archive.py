@@ -227,64 +227,74 @@ def preview_restore(service, raw):
         return {**details, "omitted": deepcopy(index["omitted"])}
 
 
-def restore(service, raw, review_hash):
-    """! @brief 명시 적용과 같은 묶음의 재시도만 허용하며 worker 작업을 접수하지 않는다."""
+def reserve_state(service, state, details, index):
+    """! @brief 복원 중단 뒤 같은 원본만 새 경로의 미게시 파일에 접근할 수 있게 한다."""
+    previous = _destination(service, state, details, index)
+    if previous is not None:
+        return deepcopy(previous)
+    archive_hash, identity, path = (details[key] for key in ("archive_sha256", "project_id", "path"))
+    intent = {**details, "status": "reserved"}
+    state.setdefault("archive_restores", {})[archive_hash] = intent
+    staged = _merged(state, identity, path, index)
+    if len(canonical_bytes(staged)) > MAX_STATE_BYTES:
+        codec.fail("복원을 등록할 journal의 여유 공간이 부족합니다.", "E_RESOURCE")
+    return intent
+
+
+def publish_state(service, state, raw, archive, plan, index, details):
+    """! @brief 모든 실제 파일이 일치한 뒤 단일 journal commit으로 활성화한다."""
+    intent = _destination(service, state, details, index)
+    if intent is None:
+        codec.fail("복원 대상으로 확정한 검토부터 접수해야 합니다.", "E_CONFLICT")
+    if intent["status"] == "restored":
+        return deepcopy(intent)
+    archive_hash, identity, path = (details[key] for key in ("archive_sha256", "project_id", "path"))
+    staged = _merged(state, identity, path, index)
+    result = {**details, "status": "restored", "omitted": deepcopy(index["omitted"])}
+    staged["archive_restores"][archive_hash] = result
+    state_bytes = len(canonical_bytes(staged))
+    if state_bytes > MAX_STATE_BYTES:
+        codec.fail("현재 상태에 복원 기록을 추가할 공간이 부족합니다.", "E_RESOURCE")
+    service.journal._check_space(len(raw) + state_bytes)
+    with TemporaryDirectory(prefix=".tracewave-restore-", dir=service.workspace) as folder:
+        temp = Path(folder) / "blob"
+        for row in plan["files"]:
+            if row["uri"] == model.INDEX_FILE:
+                continue
+            item = {**row, "uri": row["uri"].removeprefix("workspace/")}
+            target = service.journal._safe_path(item["uri"])
+            if target.exists():
+                service.journal.verify_file(item)
+            elif item["bytes"] == 0:
+                service.journal.put_immutable(item["uri"], b"")
+            else:
+                temp.write_bytes(archive.read(row["uri"]))
+                sealed = service.journal.seal_file(item["uri"], temp, expected_sha256=item["sha256"],
+                                                   expected_bytes=item["bytes"])
+                if sealed != item:
+                    codec.fail("복원한 원문의 소유 경로 또는 해시가 달라졌습니다.", "E_HASH")
+    state.update(staged)
+    return deepcopy(result)
+
+
+@contextmanager
+def verified_review(service, raw, review_hash):
+    """! @brief 검토한 묶음과 받는 작업 영역이 그대로인지 대조한다."""
     digest(review_hash, "review_hash")
     with read_verified(raw) as (archive, plan, index):
         details = _details(service, raw, plan, index)
         if details["review_hash"] != review_hash:
             codec.fail("검토한 복원 묶음과 실제 바이트가 다릅니다.", "E_CONFLICT")
-        archive_hash = details["archive_sha256"]
-        identity, path = details["project_id"], details["path"]
+        yield archive, plan, index, details
 
-        def reserve(state):
-            """! @brief 복원 중단 뒤 같은 원본만 새 경로의 미게시 파일에 접근할 수 있게 한다."""
-            previous = _destination(service, state, details, index)
-            if previous is not None:
-                return deepcopy(previous)
-            intent = {**details, "status": "reserved"}
-            state.setdefault("archive_restores", {})[archive_hash] = intent
-            staged = _merged(state, identity, path, index)
-            if len(canonical_bytes(staged)) > MAX_STATE_BYTES:
-                codec.fail("복원을 등록할 journal의 여유 공간이 부족합니다.", "E_RESOURCE")
-            return intent
 
-        previous = service.journal.transaction(reserve)
+def restore(service, raw, review_hash):
+    """! @brief 명시 적용과 같은 묶음의 재시도만 허용하며 worker 작업을 접수하지 않는다."""
+    with verified_review(service, raw, review_hash) as (archive, plan, index, details):
+        previous = service.journal.transaction(lambda state: reserve_state(service, state, details, index))
         if previous["status"] == "restored":
             return previous
-
-        def publish(state):
-            """! @brief 모든 실제 파일이 일치한 뒤 단일 journal commit으로 활성화한다."""
-            intent = _destination(service, state, details, index)
-            if intent["status"] == "restored":
-                return deepcopy(intent)
-            staged = _merged(state, identity, path, index)
-            result = {**details, "status": "restored", "omitted": deepcopy(index["omitted"])}
-            staged["archive_restores"][archive_hash] = result
-            if len(canonical_bytes(staged)) > MAX_STATE_BYTES:
-                codec.fail("현재 상태에 복원 기록을 추가할 공간이 부족합니다.", "E_RESOURCE")
-            service.journal._check_space(len(raw) + len(canonical_bytes(staged)))
-            with TemporaryDirectory(prefix=".tracewave-restore-", dir=service.workspace) as folder:
-                temp = Path(folder) / "blob"
-                for row in plan["files"]:
-                    if row["uri"] == model.INDEX_FILE:
-                        continue
-                    item = {**row, "uri": row["uri"].removeprefix("workspace/")}
-                    target = service.journal._safe_path(item["uri"])
-                    if target.exists():
-                        service.journal.verify_file(item)
-                    elif item["bytes"] == 0:
-                        service.journal.put_immutable(item["uri"], b"")
-                    else:
-                        temp.write_bytes(archive.read(row["uri"]))
-                        sealed = service.journal.seal_file(item["uri"], temp, expected_sha256=item["sha256"],
-                                                           expected_bytes=item["bytes"])
-                        if sealed != item:
-                            codec.fail("복원한 원문의 소유 경로 또는 해시가 달라졌습니다.", "E_HASH")
-            state.update(staged)
-            return deepcopy(result)
-
-        return service.journal.transaction(publish)
+        return service.journal.transaction(lambda state: publish_state(service, state, raw, archive, plan, index, details))
 
 
 def _merged(state, identity, path, index):

@@ -14,6 +14,7 @@ void StudioFrame::BuildInterface()
     auto* menu = new wxMenu;
     menu->Append(IdCreate, Display("새 프로젝트(&N)\tCtrl+N"));
     menu->Append(IdOpen, Display("프로젝트 열기(&O)\tCtrl+O"));
+    menu->Append(IdArchiveRestore, Display("프로젝트 보존 묶음 복원..."));
     menu->AppendSeparator();
     menu->Append(IdSave, Display("저장(&S)\tCtrl+S"));
     menu->Append(IdSnapshot, Display("스냅샷 만들기"));
@@ -429,6 +430,7 @@ void StudioFrame::BuildInterface()
             }
         },
         IdOpen);
+    Bind(wxEVT_MENU, [this](wxCommandEvent&) { OpenArchiveRestore(); }, IdArchiveRestore);
     Bind(
         wxEVT_MENU,
         [this](wxCommandEvent&)

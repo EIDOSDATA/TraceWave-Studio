@@ -30,9 +30,9 @@ ARTIFACT_FIELDS = {"uri", "bytes", "sha256"}
 
 def manifest(value):
     """! @brief 활성 복원 프로파일을 읽기 전용 보고서 묶음과 구분한다."""
-    _fields(value, {"schema", "project_id", "project_path", "revision_id", "content_hash", "files", "limitations"})
-    if value["schema"] != PROFILE:
+    if type(value) is not dict or value.get("schema") != PROFILE:
         codec.fail("편집 복원용 TraceWave 묶음을 선택하십시오.", "E_VERSION")
+    _fields(value, {"schema", "project_id", "project_path", "revision_id", "content_hash", "files", "limitations"})
     _uuid(value["project_id"])
     _uuid(value["revision_id"])
     digest(value["content_hash"], "content_hash")

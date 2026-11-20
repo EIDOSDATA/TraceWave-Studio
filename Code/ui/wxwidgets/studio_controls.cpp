@@ -17,6 +17,7 @@ void StudioFrame::UpdateControls()
                            !m_solverRestoring && !m_cadRestoring && !m_modelView->IsLoading();
     GetMenuBar()->Enable(IdCreate, canSwitch);
     GetMenuBar()->Enable(IdOpen, canSwitch);
+    GetMenuBar()->Enable(IdArchiveRestore, canSwitch && m_archiveRestoreSupported);
     GetMenuBar()->Enable(IdSave, opened);
     GetMenuBar()->Enable(IdSnapshot, opened);
     GetMenuBar()->Enable(IdRefresh,

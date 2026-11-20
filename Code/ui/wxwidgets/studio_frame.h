@@ -151,6 +151,7 @@ private:
     void ShowPcbFeatures(const Json& context);
     void ReadPcbFeatureRecovery();
     void OpenPcbImport();
+    void OpenArchiveRestore();
     void ShowPcbImport(const Json& context);
     void ReadPcbImportRecovery();
     /** @brief 메뉴와 도구 버튼이 같은 명령 처리기를 사용하도록 연결한다. */
@@ -304,6 +305,7 @@ private:
     std::unique_ptr<OutputController> m_output;
     bool m_outputSupported = false;
     bool m_handoffSupported = false;
+    bool m_archiveRestoreSupported = false;
     bool m_validationSupported = false;
     bool m_networkPending = false;
     bool m_networkRefreshQueued = false;
