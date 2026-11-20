@@ -410,6 +410,10 @@ void DesignCanvas::OnPaint(wxPaintEvent&)
     {
         wxAutoBufferedPaintDC dc(this);
         PaintScene(dc);
+        if (onDrawDisplayMarker)
+        {
+            onDrawDisplayMarker(dc);
+        }
     }
     if (!onFirstVisiblePaint || !IsShownOnScreen())
     {

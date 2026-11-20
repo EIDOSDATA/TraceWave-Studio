@@ -58,6 +58,8 @@ public:
     std::function<void(const std::string&)> onStatus;
     /** @brief 화면이 보이는 상태의 첫 그리기 후 한 번만 호출한다. */
     std::function<void()> onFirstVisiblePaint;
+    /** @brief 계측 창에서만 장면과 같은 버퍼에 진단 표식을 그린다. */
+    std::function<void(wxDC&)> onDrawDisplayMarker;
 
 private:
     using Shape = CanvasScene::Shape;
