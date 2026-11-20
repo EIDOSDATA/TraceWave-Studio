@@ -237,6 +237,8 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/studio_validation.cpp
     ui/wxwidgets/studio_cad.cpp
     ui/wxwidgets/studio_solver.cpp
+    ui/wxwidgets/studio_solver_view.cpp
+    ui/wxwidgets/solver_chart.cpp
     ui/wxwidgets/radiation_dialog.cpp
     ui/wxwidgets/studio_controls.cpp
     ui/wxwidgets/studio_session.cpp

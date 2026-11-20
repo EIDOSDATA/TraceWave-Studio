@@ -1,43 +1,48 @@
 /** @file @brief 주 창의 solver 책임을 구현한다. */
 #include "studio_internal.h"
 #include "radiation_dialog.h"
-#include "studio_theme.h"
-#include <wx/wrapsizer.h>
 
-/** @brief 해석 작업 상태와 결과 그래프를 기존 설계 탭과 분리하여 구성한다. */
-void StudioFrame::BuildSolverInterface()
+namespace
 {
-    auto* panel = new wxPanel(m_views);
-    StudioTheme::BindSurface(*panel);
-    auto* layout = new wxBoxSizer(wxVERTICAL);
-    auto* tools = new wxWrapSizer(wxHORIZONTAL);
-    AddTool(panel, tools, IdRunSolver, "설정 및 해석 실행");
-    AddTool(panel, tools, IdCancelSolver, "해석 취소");
-    m_recordRadiation = new wxCheckBox(panel, wxID_ANY, Display("NF2FF 기록"));
-    tools->Add(m_recordRadiation, 0, wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(StudioTheme::Space));
-    AddTool(panel, tools, IdRadiation, "방사 패턴 조회");
-    AddTool(panel, tools, IdProjectStudy, "프로젝트 연구");
-    layout->Add(tools, 0, wxEXPAND | wxALL, FromDIP(StudioTheme::Space));
-    m_solverMetric = new wxChoice(panel, wxID_ANY);
-    for (const auto* name : {"S11 (dB)", "VSWR", "Z (ohm): Re / Im"})
+/** @brief 서비스의 내부 단계 이름을 긴 작업 설명과 분리한다. */
+std::string PhaseLabel(const std::string& phase)
+{
+    if (phase == "snapshot")
     {
-        m_solverMetric->Append(name);
+        return "설계 스냅샷";
     }
-    m_solverMetric->SetSelection(0);
-    layout->Add(m_solverMetric, 0, wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::InputGap));
-    m_solverStatus = new wxStaticText(panel, wxID_ANY, Display("해석 환경 연결을 확인하고 있습니다."));
-    layout->Add(m_solverStatus, 0, wxEXPAND | wxALL, FromDIP(StudioTheme::InputGap));
-    m_solverViewState =
-        new wxStaticText(panel, wxID_ANY, Display("결과 없음 / 단일 포트 PCB 계산 / IFA 및 방사 정확도 검증 전"));
-    StudioTheme::BindSecondary(*m_solverViewState);
-    layout->Add(m_solverViewState, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(StudioTheme::InputGap));
-    m_solverChart = new SolverChart(panel);
-    layout->Add(m_solverChart, 1, wxEXPAND | wxALL, FromDIP(StudioTheme::Space));
-    m_solverDetails = new wxTextCtrl(panel, wxID_ANY, wxEmptyString, wxDefaultPosition, FromDIP(wxSize(-1, 110)),
-                                     wxTE_MULTILINE | wxTE_READONLY);
-    layout->Add(m_solverDetails, 0, wxEXPAND | wxALL, FromDIP(StudioTheme::InputGap));
-    panel->SetSizer(layout);
-    m_views->AddPage(panel, Display("해석 결과"));
+    if (phase == "plan")
+    {
+        return "해석 계획";
+    }
+    if (phase == "prepare")
+    {
+        return "계산 입력 준비";
+    }
+    return "해석";
+}
+
+/** @brief 승인을 기다리는 상태와 실제 계산, 저장 가능한 상태를 구분해 표시한다. */
+std::string ProgressLabel(const std::string& phase, const std::string& state)
+{
+    if (state == "postprocessing")
+    {
+        return "해석 결과를 정리 중입니다. 편집과 저장을 계속할 수 있습니다.";
+    }
+    if (state == "cancel_requested")
+    {
+        return "취소를 요청했습니다. 작업 종료를 확인하고 있습니다.";
+    }
+    if (state == "preparing")
+    {
+        return PhaseLabel(phase) + " 작업을 준비 중입니다.";
+    }
+    if (state == "running")
+    {
+        return PhaseLabel(phase) + " 중입니다. 편집과 저장을 계속할 수 있습니다.";
+    }
+    return PhaseLabel(phase) + " 작업 상태를 확인하고 있습니다.";
+}
 }
 
 void StudioFrame::BindSolver()
@@ -155,19 +160,6 @@ void StudioFrame::OpenRadiation()
     dialog->Show();
 }
 
-void StudioFrame::SolverStatus(const std::string& state, const std::string& message)
-{
-    ShowWorkspaceJob(1, state, message);
-    m_solverState = state;
-    m_solverStatus->SetLabel(Display(message));
-    m_solverStatus->GetParent()->Layout();
-    m_solverDetails->AppendText(Display(state + ": " + message + "\n"));
-    if (m_solverDetails->GetLastPosition() > 24000)
-    {
-        m_solverDetails->Remove(0, m_solverDetails->GetLastPosition() - 16000);
-    }
-}
-
 /** @brief 스냅샷부터 해석까지 별도 작업으로 추적하여 편집과 저장을 계속 허용한다. */
 void StudioFrame::StartSolver()
 {
@@ -193,14 +185,14 @@ void StudioFrame::StartSolver()
 void StudioFrame::SubmitSolverPhase(const Studio::ServiceCommand& command)
 {
     const std::string phase = m_solverWorkflow.PhaseName();
-    SolverStatus("accepting", phase + " 작업을 접수하고 있습니다. 입력은 스냅샷으로 고정됩니다.");
+    SolverStatus("accepting", PhaseLabel(phase) + " 작업을 접수 중입니다.");
     UpdateControls();
     Send(
         command.method, command.input, true, Context(),
         [this](const Json& accepted)
         {
             m_solverTask.Assign(accepted.at("job_id").get<std::string>());
-            SolverStatus("queued", m_solverWorkflow.PhaseName() + " 대기 중. 편집과 저장을 계속할 수 있습니다.");
+            SolverStatus("queued", PhaseLabel(m_solverWorkflow.PhaseName()) + " 작업이 대기 중입니다.");
             UpdateControls();
             if (m_solverWorkflow.CancellationRequested())
             {
@@ -316,13 +308,13 @@ void StudioFrame::PollSolver(Clock::time_point now)
                 SolverStatus(state, state == "cancelled" ? "해석이 취소되었습니다. 기존 결과는 보존했습니다."
                                                          : "해석 중단: " + reason +
                                                                (terminal.value("outcome_unknown", false)
-                                                                    ? " / guest 종료 확인 필요, 자동 재실행하지 않음"
+                                                                    ? " WSL 작업 종료를 확인해 주세요."
                                                                     : ""));
                 UpdateControls();
             }
             else if (state != m_solverState)
             {
-                SolverStatus(state, m_solverWorkflow.PhaseName() + " / " + state + " / 편집 및 저장 가능");
+                SolverStatus(state, ProgressLabel(m_solverWorkflow.PhaseName(), state));
             }
         },
         [this, job](const Json& error)
@@ -342,8 +334,7 @@ void StudioFrame::SolverPhaseComplete(const Json& result)
     {
         if (result.contains("analysis_plan"))
         {
-            m_solverDetails->AppendText(
-                Display("계획: " + result.at("analysis_plan").at("plan_id").get<std::string>() + "\n"));
+            Log("해석 계획 ID: " + result.at("analysis_plan").at("plan_id").get<std::string>());
         }
         SubmitSolverPhase(*next);
     }
@@ -380,10 +371,10 @@ void StudioFrame::AcceptSolver(const Json& result, bool show)
                     m_solverChart->SetResult(samples);
                     m_solverSamples = samples;
                     m_solverResult = result;
-                    SolverStatus("completed", "계산 결과를 열었습니다. 사용자 안테나의 물리 정확도 검증과 구분합니다.");
+                    SolverStatus("completed", "해석 결과를 열었습니다.");
                     for (const auto& file : view.at("files"))
                     {
-                        m_solverDetails->AppendText(Display(file.at("uri").get<std::string>() + "\n"));
+                        Log("해석 결과 파일: " + file.at("uri").get<std::string>());
                     }
                     if (show)
                     {
@@ -425,19 +416,4 @@ void StudioFrame::RestoreSolver()
             Log("이전 해석 결과 조회 실패: " + DiagnosticMessage(error));
             UpdateControls();
         });
-}
-
-void StudioFrame::UpdateSolverView()
-{
-    if (m_solverSamples.empty())
-    {
-        return;
-    }
-    const bool stale = m_solverSamples.at("snapshot").at("revision_id") != m_revision;
-    const std::string label = (stale ? "이전 설계의 결과 / " : "현재 적용 설계의 결과 / ") +
-                              std::to_string(m_solverChart->SampleCount()) + "개 주파수 / IFA 및 NF2FF 정확도 검증 전";
-    if (m_solverViewState->GetLabel() != Display(label))
-    {
-        m_solverViewState->SetLabel(Display(label));
-    }
 }

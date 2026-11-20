@@ -262,6 +262,11 @@ void StudioSmokeDriver::SolverSmokeTick()
                          m_frame.m_editor.at("saved_revision") == m_frame.m_revision,
                      "Solver snapshot changed or concurrent save failed.");
         CanvasAssert(m_frame.m_solverChart->SampleCount() >= 3, "No solver samples displayed.");
+        CanvasAssert(m_frame.m_solverViewState->GetLabel().Contains(Display("이전 설계 결과")) &&
+                         m_frame.m_solverViewState->GetLabel().Contains(Display("정확도 검증 전")) &&
+                         !m_frame.m_solverDetails->GetValue().Contains("running:") &&
+                         !m_frame.m_solverDetails->GetValue().Contains("analysis /"),
+                     "해석 탭이 이전 개정, 검증 상태 또는 사람이 읽는 작업 기록을 표시하지 않았습니다.");
         m_solverChecks.push_back("snapshot_fixed_and_stale_label");
         m_solverChecks.push_back("bounded_results_rendered");
         m_solverChecks.push_back("save_during_solver");
@@ -281,6 +286,9 @@ void StudioSmokeDriver::SolverSmokeTick()
             {
                 return;
             }
+            CanvasAssert(m_frame.m_solverStatus->GetLabel().Contains(Display("해석 중입니다.")) &&
+                             m_frame.m_solverStatus->GetLabel().Contains(Display("편집과 저장")),
+                         "진행 중 상태 또는 편집 안내가 읽을 수 있는 문장으로 표시되지 않았습니다.");
         }
         if (m_frame.m_solverTask.Id().empty())
         {

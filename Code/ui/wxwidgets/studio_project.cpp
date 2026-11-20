@@ -67,7 +67,7 @@ void StudioFrame::OpenProject(const std::string& mode, const std::string& path, 
                          m_solverResult = Json::object();
                          m_solverSamples = Json::object();
                          m_solverViewState->SetLabel(
-                             Display("결과 없음 / 단일 포트 PCB 계산 / IFA 및 방사 정확도 검증 전"));
+                             Display("표시할 해석 결과가 없습니다."));
                          SolverStatus("idle", "선택한 프로젝트의 완료 결과를 조회합니다.");
                          m_problemRevision.clear();
                          m_diagnostics = Json::array();

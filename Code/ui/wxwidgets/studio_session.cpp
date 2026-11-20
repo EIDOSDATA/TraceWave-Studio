@@ -59,7 +59,11 @@ void StudioFrame::Connect()
              m_solverConfigured = result.value("solver_profile", Json::object()).value("runtime_configured", false);
              SolverStatus("idle", m_solverConfigured
                                       ? "WSL openEMS 준비됨. 물성 및 급전 위치를 명시한 설계를 사용합니다."
-                                      : "해석 환경 미연결. launch_gui.ps1 -OpenEmsWsl로 실행하세요.");
+                                      : "해석 환경이 연결되지 않았습니다. 저장된 결과는 조회할 수 있습니다.");
+             if (!m_solverConfigured)
+             {
+                 Log("해석 환경 연결: launch_gui.ps1 -OpenEmsWsl");
+             }
              CadStatus(
                  "idle",
                  m_cadConfigured
