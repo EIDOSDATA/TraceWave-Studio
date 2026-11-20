@@ -21,14 +21,14 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 44,
     "current_06_분석연구": 13,
-    "current_07_검증": 63,
+    "current_07_검증": 64,
     "current_08_운영환경": 7,
     "current_09_개발계획": 4,
     "current_11_검토기록": 6,
     "current_traceability": 4,
     "document_catalog": 4,
     "document_navigation": 6,
-    "documentation_asset": 163,
+    "documentation_asset": 164,
     "documentation_validation_record": 1,
     "historical_proposal": 2,
     "historical_verification": 41,
@@ -28609,9 +28609,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 18620,
-      "working_tree_sha256": "61a209f6a22e3de9c5ae7c35dfa729512d6fa364a5cd2fe9690a53380276a976",
-      "text_lines": 129,
+      "bytes": 18913,
+      "working_tree_sha256": "5f755925ad7ce786a2b460eb606cc1b6e2184d8a27edaa19fa304be41db78b8a",
+      "text_lines": 131,
       "text_status": "utf8_read"
     },
     {
@@ -28672,9 +28672,9 @@
       "path": "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 149683,
-      "working_tree_sha256": "df4a4f0b4abcff58f9e051218a0f80a0083a3b708a2fb299165fddfbf665aa66",
-      "text_lines": 845,
+      "bytes": 150046,
+      "working_tree_sha256": "3b4b4ced1ee6a259dab423521766039b2b8b67dab95df82af461e826e21efdd7",
+      "text_lines": 849,
       "text_status": "utf8_read"
     },
     {
@@ -31246,6 +31246,22 @@
       "review_scope": "문서/시안 자산 보존",
       "bytes": 884443,
       "working_tree_sha256": "1568c7a98c2d18bbe8ca1daa5cbb828718f1c59c87907098218fa2e824359cc1"
+    },
+    {
+      "path": "01_개발문서/07_검증/113_대형설계_편집메모리_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1165,
+      "working_tree_sha256": "1b20103ab0ddb2ed00aa84aa7008bfe0aeee8f3705b190302632ba968ed7136d",
+      "text_lines": 7,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/114_대형설계_편집메모리_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 64747,
+      "working_tree_sha256": "3e177ec560db2a9c01bfb841b60193eb2ad95dd16be3e4e6d5d99dae2e77cef1"
     }
   ],
   "identical_byte_groups": [
@@ -31402,18 +31418,17 @@
   ],
   "incremental_refresh": {
     "date_kst": "2026-11-21",
-    "mode": "step12_f1_windows_pan_drag_general_3d",
-    "previous_inventory_sha256": "29fd4a275b037add871d30289bb212cde879e9a719a469178d08b3c1d1c7407e",
+    "mode": "step12_f1_windows_save_reopen_memory",
+    "previous_inventory_sha256": "88d45537b2522ab73c813839951c77b32f96d9e99e56b1ba40f17bd0c9bfca8d",
     "refreshed_paths": [
-      "01_개발문서/07_검증/111_대형설계_이동과_삼차원_검증.md",
-      "01_개발문서/07_검증/112_대형설계_이동과_삼차원_실행기록.json",
+      "01_개발문서/07_검증/113_대형설계_편집메모리_검증.md",
+      "01_개발문서/07_검증/114_대형설계_편집메모리_실행기록.json",
       "01_개발문서/07_검증/README.md",
-      "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
-      "01_개발문서/09_개발계획/03_개발완료_계획.md"
+      "01_개발문서/09_개발계획/02_개발착수와_현재상태.md"
     ],
     "added_paths": [
-      "01_개발문서/07_검증/111_대형설계_이동과_삼차원_검증.md",
-      "01_개발문서/07_검증/112_대형설계_이동과_삼차원_실행기록.json"
+      "01_개발문서/07_검증/113_대형설계_편집메모리_검증.md",
+      "01_개발문서/07_검증/114_대형설계_편집메모리_실행기록.json"
     ],
     "removed_paths": [],
     "preserved_reference_records": 3336,

@@ -1,0 +1,2611 @@
+{
+  "schema": "rfad.windows-f1-editor-memory/0.1",
+  "studio_executable_sha256": "dd175fae2f1eef71948dcc425b95170f8becdcc2a1f94ed209c788ca1c1cc53e",
+  "count": 114,
+  "maximum_combined_private_commit_bytes": 308310016,
+  "median_sample_interval_seconds": 0.29724960000000067,
+  "maximum_sample_interval_seconds": 0.3546849000000005,
+  "last_sample_elapsed_seconds": 34.0935123,
+  "samples_with_service": 102,
+  "source_revision": "eec6ab6bf6431a486facab29ee4e2b63908b27d4",
+  "date_kst": "2026-11-21",
+  "original_capture_sha256": "134e774cdc3258f973ce85fc771a8f81d2207cc8b69f6afd683af35718f649b0",
+  "studio": {
+    "project_id": "e085b88a-7182-4878-9ab7-0a1fcbb4bc3c",
+    "saved_revision": "07fe26d7-96f9-47c8-8b8f-65c8ff8e07eb",
+    "snapshot_id": "af07aa8a-3cc0-498f-9f5a-0a4d949ad96e",
+    "canvas_shapes": 10000,
+    "canvas_omissions": 0,
+    "editor_parameters": 1000,
+    "service_sessions": 2
+  },
+  "samples": [
+    {
+      "seconds": 0.2577077,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 7573504,
+          "working_set_bytes": 26333184
+        }
+      ],
+      "combined_private_commit_bytes": 7573504
+    },
+    {
+      "seconds": 0.5473922,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 8355840,
+          "working_set_bytes": 27729920
+        }
+      ],
+      "combined_private_commit_bytes": 8355840
+    },
+    {
+      "seconds": 0.8170693,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 33574912,
+          "working_set_bytes": 66748416
+        }
+      ],
+      "combined_private_commit_bytes": 33574912
+    },
+    {
+      "seconds": 1.1048933,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 33705984,
+          "working_set_bytes": 67104768
+        }
+      ],
+      "combined_private_commit_bytes": 33705984
+    },
+    {
+      "seconds": 1.3928916,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 41250816,
+          "working_set_bytes": 78270464
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        }
+      ],
+      "combined_private_commit_bytes": 42209280
+    },
+    {
+      "seconds": 1.6870429,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 41250816,
+          "working_set_bytes": 78274560
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 17948672,
+          "working_set_bytes": 25882624
+        }
+      ],
+      "combined_private_commit_bytes": 60157952
+    },
+    {
+      "seconds": 1.9846891,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 41250816,
+          "working_set_bytes": 78274560
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 21942272,
+          "working_set_bytes": 30113792
+        }
+      ],
+      "combined_private_commit_bytes": 64151552
+    },
+    {
+      "seconds": 2.2706749,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 41250816,
+          "working_set_bytes": 78274560
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 27615232,
+          "working_set_bytes": 36016128
+        }
+      ],
+      "combined_private_commit_bytes": 69824512
+    },
+    {
+      "seconds": 2.5590475,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 41250816,
+          "working_set_bytes": 78274560
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 76431360,
+          "working_set_bytes": 84393984
+        }
+      ],
+      "combined_private_commit_bytes": 118640640
+    },
+    {
+      "seconds": 2.8330675,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 41250816,
+          "working_set_bytes": 78274560
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 76435456,
+          "working_set_bytes": 84496384
+        }
+      ],
+      "combined_private_commit_bytes": 118644736
+    },
+    {
+      "seconds": 3.0912662,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 41250816,
+          "working_set_bytes": 78274560
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 91099136,
+          "working_set_bytes": 99012608
+        }
+      ],
+      "combined_private_commit_bytes": 133308416
+    },
+    {
+      "seconds": 3.3753097,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 41844736,
+          "working_set_bytes": 79052800
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 38379520,
+          "working_set_bytes": 46379008
+        }
+      ],
+      "combined_private_commit_bytes": 81182720
+    },
+    {
+      "seconds": 3.6357386,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 41844736,
+          "working_set_bytes": 79097856
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 105009152,
+          "working_set_bytes": 113491968
+        }
+      ],
+      "combined_private_commit_bytes": 147812352
+    },
+    {
+      "seconds": 3.9207542,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 41844736,
+          "working_set_bytes": 79097856
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 93708288,
+          "working_set_bytes": 101937152
+        }
+      ],
+      "combined_private_commit_bytes": 136511488
+    },
+    {
+      "seconds": 4.2240876,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 41844736,
+          "working_set_bytes": 79097856
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 110944256,
+          "working_set_bytes": 118968320
+        }
+      ],
+      "combined_private_commit_bytes": 153747456
+    },
+    {
+      "seconds": 4.5379217,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 41844736,
+          "working_set_bytes": 79101952
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 58183680,
+          "working_set_bytes": 67018752
+        }
+      ],
+      "combined_private_commit_bytes": 100986880
+    },
+    {
+      "seconds": 4.8377069,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 41844736,
+          "working_set_bytes": 79446016
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 104738816,
+          "working_set_bytes": 113164288
+        }
+      ],
+      "combined_private_commit_bytes": 147542016
+    },
+    {
+      "seconds": 5.0925531,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 41844736,
+          "working_set_bytes": 79446016
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 106184704,
+          "working_set_bytes": 114335744
+        }
+      ],
+      "combined_private_commit_bytes": 148987904
+    },
+    {
+      "seconds": 5.3463603,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 41844736,
+          "working_set_bytes": 79446016
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 121073664,
+          "working_set_bytes": 129191936
+        }
+      ],
+      "combined_private_commit_bytes": 163876864
+    },
+    {
+      "seconds": 5.6436099,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 43356160,
+          "working_set_bytes": 80928768
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 108277760,
+          "working_set_bytes": 115941376
+        }
+      ],
+      "combined_private_commit_bytes": 152592384
+    },
+    {
+      "seconds": 5.9122562,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 45240320,
+          "working_set_bytes": 82690048
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 107274240,
+          "working_set_bytes": 118136832
+        }
+      ],
+      "combined_private_commit_bytes": 153473024
+    },
+    {
+      "seconds": 6.2361066,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 47439872,
+          "working_set_bytes": 84811776
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 102395904,
+          "working_set_bytes": 113889280
+        }
+      ],
+      "combined_private_commit_bytes": 150794240
+    },
+    {
+      "seconds": 6.5812572,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 49766400,
+          "working_set_bytes": 86990848
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 102465536,
+          "working_set_bytes": 113971200
+        }
+      ],
+      "combined_private_commit_bytes": 153190400
+    },
+    {
+      "seconds": 6.9039402,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 50929664,
+          "working_set_bytes": 88289280
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 103006208,
+          "working_set_bytes": 114458624
+        }
+      ],
+      "combined_private_commit_bytes": 154894336
+    },
+    {
+      "seconds": 7.2157625,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 53747712,
+          "working_set_bytes": 90910720
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 103985152,
+          "working_set_bytes": 115195904
+        }
+      ],
+      "combined_private_commit_bytes": 158691328
+    },
+    {
+      "seconds": 7.5690982,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 58851328,
+          "working_set_bytes": 95784960
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 102547456,
+          "working_set_bytes": 113926144
+        }
+      ],
+      "combined_private_commit_bytes": 162357248
+    },
+    {
+      "seconds": 7.9115054,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 64507904,
+          "working_set_bytes": 101175296
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 102694912,
+          "working_set_bytes": 114089984
+        }
+      ],
+      "combined_private_commit_bytes": 168161280
+    },
+    {
+      "seconds": 8.2410787,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 69857280,
+          "working_set_bytes": 106180608
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 102821888,
+          "working_set_bytes": 114155520
+        }
+      ],
+      "combined_private_commit_bytes": 173637632
+    },
+    {
+      "seconds": 8.5017239,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 83718144,
+          "working_set_bytes": 117563392
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 103084032,
+          "working_set_bytes": 114270208
+        }
+      ],
+      "combined_private_commit_bytes": 187760640
+    },
+    {
+      "seconds": 8.8049247,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 88088576,
+          "working_set_bytes": 121761792
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 103084032,
+          "working_set_bytes": 114270208
+        }
+      ],
+      "combined_private_commit_bytes": 192131072
+    },
+    {
+      "seconds": 9.0790723,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 88088576,
+          "working_set_bytes": 121827328
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 103084032,
+          "working_set_bytes": 114270208
+        }
+      ],
+      "combined_private_commit_bytes": 192131072
+    },
+    {
+      "seconds": 9.3902599,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 88313856,
+          "working_set_bytes": 122736640
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 127979520,
+          "working_set_bytes": 139866112
+        }
+      ],
+      "combined_private_commit_bytes": 217251840
+    },
+    {
+      "seconds": 9.6987786,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 88313856,
+          "working_set_bytes": 122736640
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 132415488,
+          "working_set_bytes": 142737408
+        }
+      ],
+      "combined_private_commit_bytes": 221687808
+    },
+    {
+      "seconds": 9.9910528,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 88313856,
+          "working_set_bytes": 122736640
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 157413376,
+          "working_set_bytes": 168755200
+        }
+      ],
+      "combined_private_commit_bytes": 246685696
+    },
+    {
+      "seconds": 10.3147702,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 88313856,
+          "working_set_bytes": 122736640
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 164409344,
+          "working_set_bytes": 176009216
+        }
+      ],
+      "combined_private_commit_bytes": 253681664
+    },
+    {
+      "seconds": 10.6100484,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 88313856,
+          "working_set_bytes": 122736640
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 164896768,
+          "working_set_bytes": 176455680
+        }
+      ],
+      "combined_private_commit_bytes": 254169088
+    },
+    {
+      "seconds": 10.8916818,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 88313856,
+          "working_set_bytes": 122736640
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 219037696,
+          "working_set_bytes": 216055808
+        }
+      ],
+      "combined_private_commit_bytes": 308310016
+    },
+    {
+      "seconds": 11.1846446,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 88313856,
+          "working_set_bytes": 122736640
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 159485952,
+          "working_set_bytes": 170237952
+        }
+      ],
+      "combined_private_commit_bytes": 248758272
+    },
+    {
+      "seconds": 11.491382,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 88313856,
+          "working_set_bytes": 122736640
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 186511360,
+          "working_set_bytes": 197738496
+        }
+      ],
+      "combined_private_commit_bytes": 275783680
+    },
+    {
+      "seconds": 11.8102982,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 88313856,
+          "working_set_bytes": 122736640
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 183517184,
+          "working_set_bytes": 195407872
+        }
+      ],
+      "combined_private_commit_bytes": 272789504
+    },
+    {
+      "seconds": 12.1028487,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 88313856,
+          "working_set_bytes": 122736640
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 184619008,
+          "working_set_bytes": 196546560
+        }
+      ],
+      "combined_private_commit_bytes": 273891328
+    },
+    {
+      "seconds": 12.4113828,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 88313856,
+          "working_set_bytes": 122736640
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 182759424,
+          "working_set_bytes": 192577536
+        }
+      ],
+      "combined_private_commit_bytes": 272031744
+    },
+    {
+      "seconds": 12.7197807,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 88313856,
+          "working_set_bytes": 122736640
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 107589632,
+          "working_set_bytes": 118972416
+        }
+      ],
+      "combined_private_commit_bytes": 196861952
+    },
+    {
+      "seconds": 13.0342584,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 88313856,
+          "working_set_bytes": 122736640
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 128061440,
+          "working_set_bytes": 140099584
+        }
+      ],
+      "combined_private_commit_bytes": 217333760
+    },
+    {
+      "seconds": 13.3440632,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 88313856,
+          "working_set_bytes": 122736640
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 135716864,
+          "working_set_bytes": 146665472
+        }
+      ],
+      "combined_private_commit_bytes": 224989184
+    },
+    {
+      "seconds": 13.6341595,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 88313856,
+          "working_set_bytes": 122736640
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 116367360,
+          "working_set_bytes": 127799296
+        }
+      ],
+      "combined_private_commit_bytes": 205639680
+    },
+    {
+      "seconds": 13.9308518,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 88313856,
+          "working_set_bytes": 122736640
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 119472128,
+          "working_set_bytes": 130138112
+        }
+      ],
+      "combined_private_commit_bytes": 208744448
+    },
+    {
+      "seconds": 14.2348369,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 88313856,
+          "working_set_bytes": 122736640
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 87539712,
+          "working_set_bytes": 98689024
+        }
+      ],
+      "combined_private_commit_bytes": 176812032
+    },
+    {
+      "seconds": 14.5583232,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 89976832,
+          "working_set_bytes": 124219392
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 87875584,
+          "working_set_bytes": 98918400
+        }
+      ],
+      "combined_private_commit_bytes": 178810880
+    },
+    {
+      "seconds": 14.9039813,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92172288,
+          "working_set_bytes": 126308352
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 87773184,
+          "working_set_bytes": 98828288
+        }
+      ],
+      "combined_private_commit_bytes": 180903936
+    },
+    {
+      "seconds": 15.2422562,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 94863360,
+          "working_set_bytes": 128860160
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 87773184,
+          "working_set_bytes": 98828288
+        }
+      ],
+      "combined_private_commit_bytes": 183595008
+    },
+    {
+      "seconds": 15.5969411,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 89731072,
+          "working_set_bytes": 123260928
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 87990272,
+          "working_set_bytes": 99094528
+        }
+      ],
+      "combined_private_commit_bytes": 178679808
+    },
+    {
+      "seconds": 15.8971213,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 90730496,
+          "working_set_bytes": 124325888
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 88801280,
+          "working_set_bytes": 100278272
+        }
+      ],
+      "combined_private_commit_bytes": 180490240
+    },
+    {
+      "seconds": 16.2369231,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 95637504,
+          "working_set_bytes": 129576960
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 86732800,
+          "working_set_bytes": 98996224
+        }
+      ],
+      "combined_private_commit_bytes": 183328768
+    },
+    {
+      "seconds": 16.567539,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 100630528,
+          "working_set_bytes": 134176768
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 86732800,
+          "working_set_bytes": 99037184
+        }
+      ],
+      "combined_private_commit_bytes": 188321792
+    },
+    {
+      "seconds": 16.9104233,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 106299392,
+          "working_set_bytes": 139489280
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 86732800,
+          "working_set_bytes": 99041280
+        }
+      ],
+      "combined_private_commit_bytes": 193990656
+    },
+    {
+      "seconds": 17.1805449,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 93876224,
+          "working_set_bytes": 126943232
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 86732800,
+          "working_set_bytes": 99041280
+        }
+      ],
+      "combined_private_commit_bytes": 181567488
+    },
+    {
+      "seconds": 17.4559338,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 89931776,
+          "working_set_bytes": 123662336
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 86732800,
+          "working_set_bytes": 99041280
+        }
+      ],
+      "combined_private_commit_bytes": 177623040
+    },
+    {
+      "seconds": 17.7428114,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 87613440,
+          "working_set_bytes": 121831424
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 86732800,
+          "working_set_bytes": 99041280
+        }
+      ],
+      "combined_private_commit_bytes": 175304704
+    },
+    {
+      "seconds": 18.0300825,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 85839872,
+          "working_set_bytes": 120336384
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 86732800,
+          "working_set_bytes": 99041280
+        }
+      ],
+      "combined_private_commit_bytes": 173531136
+    },
+    {
+      "seconds": 18.3037303,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 88276992,
+          "working_set_bytes": 120205312
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 86732800,
+          "working_set_bytes": 99041280
+        }
+      ],
+      "combined_private_commit_bytes": 175968256
+    },
+    {
+      "seconds": 18.5909659,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92291072,
+          "working_set_bytes": 123387904
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 86732800,
+          "working_set_bytes": 99041280
+        }
+      ],
+      "combined_private_commit_bytes": 179982336
+    },
+    {
+      "seconds": 18.8654444,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92291072,
+          "working_set_bytes": 124141568
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 86732800,
+          "working_set_bytes": 99041280
+        }
+      ],
+      "combined_private_commit_bytes": 179982336
+    },
+    {
+      "seconds": 19.1321812,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92291072,
+          "working_set_bytes": 124157952
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 86732800,
+          "working_set_bytes": 99041280
+        }
+      ],
+      "combined_private_commit_bytes": 179982336
+    },
+    {
+      "seconds": 19.4158707,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92286976,
+          "working_set_bytes": 124153856
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 129638400,
+          "working_set_bytes": 141602816
+        }
+      ],
+      "combined_private_commit_bytes": 222883840
+    },
+    {
+      "seconds": 19.6855747,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92286976,
+          "working_set_bytes": 124153856
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 138412032,
+          "working_set_bytes": 149336064
+        }
+      ],
+      "combined_private_commit_bytes": 231657472
+    },
+    {
+      "seconds": 20.0009053,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92286976,
+          "working_set_bytes": 124153856
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 87703552,
+          "working_set_bytes": 99151872
+        }
+      ],
+      "combined_private_commit_bytes": 180948992
+    },
+    {
+      "seconds": 20.2884583,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92286976,
+          "working_set_bytes": 124153856
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 128733184,
+          "working_set_bytes": 140496896
+        }
+      ],
+      "combined_private_commit_bytes": 221978624
+    },
+    {
+      "seconds": 20.5943905,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92286976,
+          "working_set_bytes": 124153856
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 145625088,
+          "working_set_bytes": 156016640
+        }
+      ],
+      "combined_private_commit_bytes": 238870528
+    },
+    {
+      "seconds": 20.8842502,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92286976,
+          "working_set_bytes": 124153856
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 173690880,
+          "working_set_bytes": 185556992
+        }
+      ],
+      "combined_private_commit_bytes": 266936320
+    },
+    {
+      "seconds": 21.1863377,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92286976,
+          "working_set_bytes": 124153856
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 183652352,
+          "working_set_bytes": 194560000
+        }
+      ],
+      "combined_private_commit_bytes": 276897792
+    },
+    {
+      "seconds": 21.5056956,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92286976,
+          "working_set_bytes": 124153856
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 92495872,
+          "working_set_bytes": 103579648
+        }
+      ],
+      "combined_private_commit_bytes": 185741312
+    },
+    {
+      "seconds": 21.8133472,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92286976,
+          "working_set_bytes": 124157952
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 129777664,
+          "working_set_bytes": 141426688
+        }
+      ],
+      "combined_private_commit_bytes": 223023104
+    },
+    {
+      "seconds": 22.1126347,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92286976,
+          "working_set_bytes": 124157952
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 132034560,
+          "working_set_bytes": 143589376
+        }
+      ],
+      "combined_private_commit_bytes": 225280000
+    },
+    {
+      "seconds": 22.4183134,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92286976,
+          "working_set_bytes": 124157952
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 94052352,
+          "working_set_bytes": 105226240
+        }
+      ],
+      "combined_private_commit_bytes": 187297792
+    },
+    {
+      "seconds": 22.7341307,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92286976,
+          "working_set_bytes": 124157952
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 129351680,
+          "working_set_bytes": 141156352
+        }
+      ],
+      "combined_private_commit_bytes": 222597120
+    },
+    {
+      "seconds": 23.0345622,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92286976,
+          "working_set_bytes": 124157952
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 131088384,
+          "working_set_bytes": 142761984
+        }
+      ],
+      "combined_private_commit_bytes": 224333824
+    },
+    {
+      "seconds": 23.3393001,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92286976,
+          "working_set_bytes": 124157952
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 129298432,
+          "working_set_bytes": 140460032
+        }
+      ],
+      "combined_private_commit_bytes": 222543872
+    },
+    {
+      "seconds": 23.6426123,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92286976,
+          "working_set_bytes": 124157952
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 147521536,
+          "working_set_bytes": 157843456
+        }
+      ],
+      "combined_private_commit_bytes": 240766976
+    },
+    {
+      "seconds": 23.9638954,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92286976,
+          "working_set_bytes": 124182528
+        },
+        {
+          "id": 11688,
+          "name": "python",
+          "private_commit_bytes": 958464,
+          "working_set_bytes": 5058560
+        },
+        {
+          "id": 11380,
+          "name": "python",
+          "private_commit_bytes": 97824768,
+          "working_set_bytes": 106962944
+        }
+      ],
+      "combined_private_commit_bytes": 191070208
+    },
+    {
+      "seconds": 24.2473265,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92311552,
+          "working_set_bytes": 124223488
+        }
+      ],
+      "combined_private_commit_bytes": 92311552
+    },
+    {
+      "seconds": 24.5417374,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92311552,
+          "working_set_bytes": 124223488
+        },
+        {
+          "id": 16256,
+          "name": "python",
+          "private_commit_bytes": 942080,
+          "working_set_bytes": 5054464
+        },
+        {
+          "id": 23628,
+          "name": "python",
+          "private_commit_bytes": 18358272,
+          "working_set_bytes": 26066944
+        }
+      ],
+      "combined_private_commit_bytes": 111611904
+    },
+    {
+      "seconds": 24.8447795,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92311552,
+          "working_set_bytes": 124223488
+        },
+        {
+          "id": 16256,
+          "name": "python",
+          "private_commit_bytes": 942080,
+          "working_set_bytes": 5054464
+        },
+        {
+          "id": 23628,
+          "name": "python",
+          "private_commit_bytes": 23195648,
+          "working_set_bytes": 30760960
+        }
+      ],
+      "combined_private_commit_bytes": 116449280
+    },
+    {
+      "seconds": 25.1446371,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92311552,
+          "working_set_bytes": 124223488
+        },
+        {
+          "id": 16256,
+          "name": "python",
+          "private_commit_bytes": 942080,
+          "working_set_bytes": 5054464
+        },
+        {
+          "id": 23628,
+          "name": "python",
+          "private_commit_bytes": 60989440,
+          "working_set_bytes": 69435392
+        }
+      ],
+      "combined_private_commit_bytes": 154243072
+    },
+    {
+      "seconds": 25.4404024,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92311552,
+          "working_set_bytes": 124223488
+        },
+        {
+          "id": 16256,
+          "name": "python",
+          "private_commit_bytes": 942080,
+          "working_set_bytes": 5054464
+        },
+        {
+          "id": 23628,
+          "name": "python",
+          "private_commit_bytes": 76722176,
+          "working_set_bytes": 84090880
+        }
+      ],
+      "combined_private_commit_bytes": 169975808
+    },
+    {
+      "seconds": 25.728845,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92311552,
+          "working_set_bytes": 124223488
+        },
+        {
+          "id": 16256,
+          "name": "python",
+          "private_commit_bytes": 942080,
+          "working_set_bytes": 5054464
+        },
+        {
+          "id": 23628,
+          "name": "python",
+          "private_commit_bytes": 89653248,
+          "working_set_bytes": 97820672
+        }
+      ],
+      "combined_private_commit_bytes": 182906880
+    },
+    {
+      "seconds": 26.0094467,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92311552,
+          "working_set_bytes": 124227584
+        },
+        {
+          "id": 16256,
+          "name": "python",
+          "private_commit_bytes": 942080,
+          "working_set_bytes": 5054464
+        },
+        {
+          "id": 23628,
+          "name": "python",
+          "private_commit_bytes": 39956480,
+          "working_set_bytes": 48095232
+        }
+      ],
+      "combined_private_commit_bytes": 133210112
+    },
+    {
+      "seconds": 26.3101065,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92311552,
+          "working_set_bytes": 124227584
+        },
+        {
+          "id": 16256,
+          "name": "python",
+          "private_commit_bytes": 942080,
+          "working_set_bytes": 5054464
+        },
+        {
+          "id": 23628,
+          "name": "python",
+          "private_commit_bytes": 62230528,
+          "working_set_bytes": 70635520
+        }
+      ],
+      "combined_private_commit_bytes": 155484160
+    },
+    {
+      "seconds": 26.6058427,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92311552,
+          "working_set_bytes": 124227584
+        },
+        {
+          "id": 16256,
+          "name": "python",
+          "private_commit_bytes": 942080,
+          "working_set_bytes": 5054464
+        },
+        {
+          "id": 23628,
+          "name": "python",
+          "private_commit_bytes": 98480128,
+          "working_set_bytes": 107327488
+        }
+      ],
+      "combined_private_commit_bytes": 191733760
+    },
+    {
+      "seconds": 26.9069072,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 92311552,
+          "working_set_bytes": 124227584
+        },
+        {
+          "id": 16256,
+          "name": "python",
+          "private_commit_bytes": 942080,
+          "working_set_bytes": 5054464
+        },
+        {
+          "id": 23628,
+          "name": "python",
+          "private_commit_bytes": 114266112,
+          "working_set_bytes": 121769984
+        }
+      ],
+      "combined_private_commit_bytes": 207519744
+    },
+    {
+      "seconds": 27.1909626,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 76914688,
+          "working_set_bytes": 111501312
+        },
+        {
+          "id": 16256,
+          "name": "python",
+          "private_commit_bytes": 942080,
+          "working_set_bytes": 5054464
+        },
+        {
+          "id": 23628,
+          "name": "python",
+          "private_commit_bytes": 67764224,
+          "working_set_bytes": 74571776
+        }
+      ],
+      "combined_private_commit_bytes": 145620992
+    },
+    {
+      "seconds": 27.4933743,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 71868416,
+          "working_set_bytes": 106766336
+        },
+        {
+          "id": 16256,
+          "name": "python",
+          "private_commit_bytes": 942080,
+          "working_set_bytes": 5054464
+        },
+        {
+          "id": 23628,
+          "name": "python",
+          "private_commit_bytes": 109326336,
+          "working_set_bytes": 117645312
+        }
+      ],
+      "combined_private_commit_bytes": 182136832
+    },
+    {
+      "seconds": 27.8010647,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 71868416,
+          "working_set_bytes": 106766336
+        },
+        {
+          "id": 16256,
+          "name": "python",
+          "private_commit_bytes": 942080,
+          "working_set_bytes": 5054464
+        },
+        {
+          "id": 23628,
+          "name": "python",
+          "private_commit_bytes": 124342272,
+          "working_set_bytes": 133197824
+        }
+      ],
+      "combined_private_commit_bytes": 197152768
+    },
+    {
+      "seconds": 28.098168,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 71868416,
+          "working_set_bytes": 106766336
+        },
+        {
+          "id": 16256,
+          "name": "python",
+          "private_commit_bytes": 942080,
+          "working_set_bytes": 5054464
+        },
+        {
+          "id": 23628,
+          "name": "python",
+          "private_commit_bytes": 104955904,
+          "working_set_bytes": 113836032
+        }
+      ],
+      "combined_private_commit_bytes": 177766400
+    },
+    {
+      "seconds": 28.4105738,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 73449472,
+          "working_set_bytes": 108007424
+        },
+        {
+          "id": 16256,
+          "name": "python",
+          "private_commit_bytes": 942080,
+          "working_set_bytes": 5054464
+        },
+        {
+          "id": 23628,
+          "name": "python",
+          "private_commit_bytes": 118648832,
+          "working_set_bytes": 122822656
+        }
+      ],
+      "combined_private_commit_bytes": 193040384
+    },
+    {
+      "seconds": 28.7461392,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 77824000,
+          "working_set_bytes": 112197632
+        },
+        {
+          "id": 16256,
+          "name": "python",
+          "private_commit_bytes": 942080,
+          "working_set_bytes": 5054464
+        },
+        {
+          "id": 23628,
+          "name": "python",
+          "private_commit_bytes": 109965312,
+          "working_set_bytes": 121421824
+        }
+      ],
+      "combined_private_commit_bytes": 188731392
+    },
+    {
+      "seconds": 29.0830207,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 83488768,
+          "working_set_bytes": 117547008
+        },
+        {
+          "id": 16256,
+          "name": "python",
+          "private_commit_bytes": 942080,
+          "working_set_bytes": 5054464
+        },
+        {
+          "id": 23628,
+          "name": "python",
+          "private_commit_bytes": 110071808,
+          "working_set_bytes": 121548800
+        }
+      ],
+      "combined_private_commit_bytes": 194502656
+    },
+    {
+      "seconds": 29.4301192,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 88322048,
+          "working_set_bytes": 121880576
+        },
+        {
+          "id": 16256,
+          "name": "python",
+          "private_commit_bytes": 942080,
+          "working_set_bytes": 5054464
+        },
+        {
+          "id": 23628,
+          "name": "python",
+          "private_commit_bytes": 107614208,
+          "working_set_bytes": 119517184
+        }
+      ],
+      "combined_private_commit_bytes": 196878336
+    },
+    {
+      "seconds": 29.7247431,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 91680768,
+          "working_set_bytes": 125108224
+        },
+        {
+          "id": 16256,
+          "name": "python",
+          "private_commit_bytes": 942080,
+          "working_set_bytes": 5054464
+        },
+        {
+          "id": 23628,
+          "name": "python",
+          "private_commit_bytes": 107614208,
+          "working_set_bytes": 119517184
+        }
+      ],
+      "combined_private_commit_bytes": 200237056
+    },
+    {
+      "seconds": 30.0128227,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 91680768,
+          "working_set_bytes": 125108224
+        },
+        {
+          "id": 16256,
+          "name": "python",
+          "private_commit_bytes": 942080,
+          "working_set_bytes": 5054464
+        },
+        {
+          "id": 23628,
+          "name": "python",
+          "private_commit_bytes": 107614208,
+          "working_set_bytes": 119517184
+        }
+      ],
+      "combined_private_commit_bytes": 200237056
+    },
+    {
+      "seconds": 30.317518,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 91680768,
+          "working_set_bytes": 125108224
+        },
+        {
+          "id": 16256,
+          "name": "python",
+          "private_commit_bytes": 942080,
+          "working_set_bytes": 5054464
+        },
+        {
+          "id": 23628,
+          "name": "python",
+          "private_commit_bytes": 107614208,
+          "working_set_bytes": 119517184
+        }
+      ],
+      "combined_private_commit_bytes": 200237056
+    },
+    {
+      "seconds": 30.6128092,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 91680768,
+          "working_set_bytes": 125108224
+        },
+        {
+          "id": 16256,
+          "name": "python",
+          "private_commit_bytes": 942080,
+          "working_set_bytes": 5054464
+        },
+        {
+          "id": 23628,
+          "name": "python",
+          "private_commit_bytes": 107614208,
+          "working_set_bytes": 119517184
+        }
+      ],
+      "combined_private_commit_bytes": 200237056
+    },
+    {
+      "seconds": 30.9150974,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 87334912,
+          "working_set_bytes": 121405440
+        },
+        {
+          "id": 16256,
+          "name": "python",
+          "private_commit_bytes": 942080,
+          "working_set_bytes": 5054464
+        },
+        {
+          "id": 23628,
+          "name": "python",
+          "private_commit_bytes": 107614208,
+          "working_set_bytes": 119517184
+        }
+      ],
+      "combined_private_commit_bytes": 195891200
+    },
+    {
+      "seconds": 31.2011985,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 87584768,
+          "working_set_bytes": 121405440
+        },
+        {
+          "id": 16256,
+          "name": "python",
+          "private_commit_bytes": 942080,
+          "working_set_bytes": 5054464
+        },
+        {
+          "id": 23628,
+          "name": "python",
+          "private_commit_bytes": 107614208,
+          "working_set_bytes": 119517184
+        }
+      ],
+      "combined_private_commit_bytes": 196141056
+    },
+    {
+      "seconds": 31.5115279,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 89808896,
+          "working_set_bytes": 122974208
+        },
+        {
+          "id": 16256,
+          "name": "python",
+          "private_commit_bytes": 942080,
+          "working_set_bytes": 5054464
+        },
+        {
+          "id": 23628,
+          "name": "python",
+          "private_commit_bytes": 107614208,
+          "working_set_bytes": 119517184
+        }
+      ],
+      "combined_private_commit_bytes": 198365184
+    },
+    {
+      "seconds": 31.8230885,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 90234880,
+          "working_set_bytes": 123658240
+        },
+        {
+          "id": 16256,
+          "name": "python",
+          "private_commit_bytes": 942080,
+          "working_set_bytes": 5054464
+        },
+        {
+          "id": 23628,
+          "name": "python",
+          "private_commit_bytes": 107614208,
+          "working_set_bytes": 119517184
+        }
+      ],
+      "combined_private_commit_bytes": 198791168
+    },
+    {
+      "seconds": 32.1153164,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 90226688,
+          "working_set_bytes": 123752448
+        },
+        {
+          "id": 16256,
+          "name": "python",
+          "private_commit_bytes": 942080,
+          "working_set_bytes": 5054464
+        },
+        {
+          "id": 23628,
+          "name": "python",
+          "private_commit_bytes": 107687936,
+          "working_set_bytes": 119615488
+        }
+      ],
+      "combined_private_commit_bytes": 198856704
+    },
+    {
+      "seconds": 32.3928008,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 65462272,
+          "working_set_bytes": 100061184
+        }
+      ],
+      "combined_private_commit_bytes": 65462272
+    },
+    {
+      "seconds": 32.6816664,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 64733184,
+          "working_set_bytes": 98914304
+        }
+      ],
+      "combined_private_commit_bytes": 64733184
+    },
+    {
+      "seconds": 32.9577994,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 61677568,
+          "working_set_bytes": 97411072
+        }
+      ],
+      "combined_private_commit_bytes": 61677568
+    },
+    {
+      "seconds": 33.2325487,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 59609088,
+          "working_set_bytes": 94593024
+        }
+      ],
+      "combined_private_commit_bytes": 59609088
+    },
+    {
+      "seconds": 33.5241187,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 57696256,
+          "working_set_bytes": 93270016
+        }
+      ],
+      "combined_private_commit_bytes": 57696256
+    },
+    {
+      "seconds": 33.8183566,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 57982976,
+          "working_set_bytes": 92049408
+        }
+      ],
+      "combined_private_commit_bytes": 57982976
+    },
+    {
+      "seconds": 34.0935123,
+      "processes": [
+        {
+          "id": 32456,
+          "name": "tracewave_gui",
+          "private_commit_bytes": 42594304,
+          "working_set_bytes": 64704512
+        }
+      ],
+      "combined_private_commit_bytes": 42594304
+    }
+  ],
+  "full_f1_acceptance_measured": false
+}
