@@ -60,7 +60,14 @@ void OutputController::Start(const std::string& method, const Json& input)
             m_mutating = false;
             try
             {
-                AcceptTask(value);
+                if (m_pending.at("method") == "package.build")
+                {
+                    CompleteHandoff(value);
+                }
+                else
+                {
+                    AcceptTask(value);
+                }
             }
             catch (const std::exception& error)
             {
@@ -271,13 +278,21 @@ void OutputController::Recover()
     {
         return;
     }
-    Read("export.receipt",
+    const bool handoff = m_pending.at("method") == "package.build";
+    Read(handoff ? "package.receipt" : "export.receipt",
          {{"request_key", m_pending.at("request_key")}, {"request_key_epoch", m_pending.at("request_key_epoch")}},
-         [this](const Json& value)
+         [this, handoff](const Json& value)
          {
              if (value.value("status", "") == "found" && value.value("authoritative", false))
              {
-                 AcceptTask(value.at("response"));
+                 if (handoff)
+                 {
+                     CompleteHandoff(value.at("response"));
+                 }
+                 else
+                 {
+                     AcceptTask(value.at("response"));
+                 }
              }
              else
              {

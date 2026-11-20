@@ -16,7 +16,7 @@ public:
     ~OutputController();
     OutputWorkspace* View() const;
     void Update(const std::string& project, const std::string& revision, const std::string& epoch, bool connected,
-                bool supported, bool available, bool active);
+                bool supported, bool available, bool active, bool handoffSupported = false);
     void Poll(Clock::time_point now);
     bool Active() const;
     bool OwnsJob(const std::string& job) const;
@@ -46,13 +46,26 @@ private:
     void Recover();
     void Cancel();
     void OpenFolder();
+    void HandoffSync();
+    void HandoffEvidence(int offset);
+    void HandoffCatalog(const std::string& preferred = "");
+    void HandoffPreview();
+    void HandoffBuild();
+    void CompleteHandoff(const Json& package);
+    void HandoffSave();
+    void HandoffChunk();
+    void EndHandoffSave();
     OutputWorkspace* m_view = nullptr;
     OutputGateway m_gateway;
     std::shared_ptr<int> m_lifetime = std::make_shared<int>(0);
     std::string m_workspace, m_project, m_revision, m_epoch;
     bool m_connected = false, m_available = false, m_supported = false, m_active = false;
     bool m_refreshNeeded = true, m_uncertain = false, m_mutating = false, m_cancelRequested = false;
+    bool m_handoffSupported = false;
     int m_reads = 0;
+    std::uint64_t m_handoffGeneration = 0, m_handoffCatalogGeneration = 0;
+    Json m_handoffSnapshot = nullptr, m_handoffDownload = nullptr, m_handoffInput = nullptr;
+    std::string m_handoffPath, m_handoffBytes;
     std::uint64_t m_serial = 0, m_contextGeneration = 0, m_catalogGeneration = 0, m_recordGeneration = 0;
     Json m_pending = nullptr, m_previewInput = nullptr;
     Studio::JobTracker m_task;

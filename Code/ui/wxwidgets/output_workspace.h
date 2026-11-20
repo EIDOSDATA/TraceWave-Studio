@@ -6,6 +6,8 @@
 #include <vector>
 class StudioNotebook;
 class DrawingOutputView;
+class HandoffOutputView;
+class wxSizer;
 class StepOutputView;
 class PcbCamOutputView;
 class OutputConditionsView;
@@ -30,6 +32,9 @@ public:
     void SetImportAvailable(bool available);
     void SelectSnapshot(const Json& snapshot);
     Json Snapshot() const;
+    HandoffOutputView* Handoff() const;
+    void SetHandoffAvailable(bool available);
+    void SetHandoffConditions(const Json& input, const Json& review);
     Json Input() const;
     Json PreviewInput() const;
     std::string SelectedJob() const;
@@ -51,6 +56,8 @@ private:
     StudioNotebook* m_tabs = nullptr;
     DrawingOutputView* m_drawing = nullptr;
     StepOutputView* m_step = nullptr;
+    HandoffOutputView* m_handoff = nullptr;
+    wxSizer* m_history = nullptr;
     PcbCamOutputView* m_pcb = nullptr;
     OutputConditionsView* m_conditions = nullptr;
     wxChoice* m_snapshots = nullptr;

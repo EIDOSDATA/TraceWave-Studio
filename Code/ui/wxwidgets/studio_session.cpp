@@ -68,6 +68,10 @@ void StudioFrame::Connect()
                                      result.value("methods", Json::object()).contains("rf.validation.get");
              m_outputSupported = result.value("methods", Json::object()).contains("export.context") &&
                                  result.value("methods", Json::object()).contains("export.receipt");
+             const auto methods = result.value("methods", Json::object());
+             m_handoffSupported = methods.contains("evidence.query") && methods.contains("package.preview") &&
+                                  methods.contains("package.build") && methods.contains("package.list") &&
+                                  methods.contains("package.read") && methods.contains("package.receipt");
              m_pcbImportSupported = result.value("methods", Json::object()).contains("pcb.import.context") &&
                                     result.value("methods", Json::object()).contains("pcb.import.preview") &&
                                     result.value("methods", Json::object()).contains("pcb.import.apply") &&

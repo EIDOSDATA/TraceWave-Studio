@@ -1,0 +1,146 @@
+{
+  "schema": "rfad.verification.project-handoff/0.1",
+  "date_kst": "2026-11-20",
+  "plan_step": 12,
+  "slice": "read_only_handoff",
+  "base_commit": "2f77390a4ddce8a29b711222c65d33b2c954d8b4",
+  "profile": "rfad.project-handoff/0.1",
+  "initial_failures": [
+    {
+      "scope": "초기 서비스 실행에서 시험의 오류 도메인 필드명 보완 전",
+      "log": "stage12-handoff-first.log",
+      "collected": 5,
+      "passed": 4,
+      "failed": 1,
+      "log_sha256": "9ab7bd4a762de06768dd08245af3c3e01eb18e7a310381bce694c213751aba2a"
+    },
+    {
+      "scope": "스냅샷 내용 hash와 파일 SHA256 대조 계약 수정 전",
+      "log": "stage12-handoff-service.log",
+      "collected": 3,
+      "passed": 0,
+      "failed": 3,
+      "log_sha256": "1ab3863366bfd24b777b6151e9165f321081c87468810e5fde935db33fe22db5"
+    }
+  ],
+  "runs": [
+    {
+      "scope": "서비스와 주변 회귀. 실제 CAD/PCB 실행 환경은 별도 시험",
+      "log": "stage12-handoff-regression.log",
+      "log_sha256": "65c59a5aaf083401ddc7d52d364e1bd9e46ecf3a5734aed48f23d511b35990d7",
+      "collected": 30,
+      "passed": 28,
+      "skipped": 2,
+      "seconds": 211.949
+    },
+    {
+      "scope": "최종 Python. 2청크 원문 및 manifest 재작성 불일치, MCP stdio 포함",
+      "log": "stage12-handoff-final-focused.log",
+      "log_sha256": "23ea0e2489bb5ffcef098811792ef3539acda26ab9d3237ac7b0322c1d32a45a",
+      "collected": 5,
+      "passed": 5,
+      "skipped": 0,
+      "seconds": 19.103
+    },
+    {
+      "scope": "Windows 기존 출력 GUI, 실제 OCCT/PCB CAM",
+      "log": "stage12-handoff-native-regression.log",
+      "log_sha256": "2a5e60f31238ff210fe215e492185c1222d06ad85956187a280f7bd4a085793b",
+      "collected": 3,
+      "passed": 3,
+      "skipped": 0,
+      "seconds": 103.589
+    },
+    {
+      "scope": "Windows CTest",
+      "log": "stage12-handoff-ctest.log",
+      "log_sha256": "d2d6c994e85441eef3c6b08376a8133e0b5bf2d5c27d8363ea0c3d493c486399",
+      "collected": 13,
+      "passed": 13,
+      "skipped": 0,
+      "seconds": 2.56
+    },
+    {
+      "scope": "요구 추적 감사",
+      "collected": 14,
+      "passed": 14,
+      "skipped": 0,
+      "seconds": 4.068,
+      "log": "stage12-handoff-audit.log",
+      "log_sha256": "8d90d30ce7581e8571224f644cf1481cc464c0b7fb3b70a9160e47982002724a"
+    }
+  ],
+  "windows_ui": {
+    "zip_sha256": "4c4b23f5541c3ee9d9f0bd1f116b467c543b10904ba32d840c244966bb70b3c8",
+    "zip_bytes": 36625,
+    "manifest_files": 7,
+    "report_copy_states": {
+      "no_file_record": 3,
+      "included": 2
+    },
+    "scope": {
+      "manufacturing_acceptance": "not_established",
+      "measurement_acceptance": "not_established",
+      "physics_recomputed": false,
+      "solver_results": "same_snapshot_only",
+      "source": "explicit_snapshot"
+    },
+    "source_snapshot": "2b3bfc7c-cd45-4f2e-8c1b-228c0d53aa66",
+    "source_revision": "13c56ff1-21a7-42eb-a00f-44c0c3490044",
+    "source_content_hash": "5faa2f15ad7f39fcf2127c12b7f1095a46dd653afb214ed3ad19f96e2ac31282",
+    "snapshot_file_sha256": "274390c96bc816f3e02bce747dc18711de9f99b863f7d78f6f7b22ad4f4eca1a",
+    "original_selected_sha256": "f44a585b3a3281c850e1d35653dc6d8ebf2feba48896089ed6e474c4d91ea3d0",
+    "active_restore_supported": false,
+    "source_metadata_and_unknowns_preserved": true,
+    "published_package": "317ed10f-00a5-53d2-b43e-49d1be9a7e5f",
+    "checked_after_gui_restart": true,
+    "same_zip_bytes_after_restart": true,
+    "executable_sha256": "b0d862be3e030e4732dda66c6d6e95e96bb95783eba5e45d49dceb71ff58ff08",
+    "captures": [
+      {
+        "path": "02_실행화면/70_고정설계_인계범위_검토.jpg",
+        "bytes": 191924,
+        "sha256": "21d8b5b4cbac32d2211eae92c268b1584b58fc6caf8337c8c453e686f7e5c736"
+      },
+      {
+        "path": "02_실행화면/71_인계_보고서_미리보기.jpg",
+        "bytes": 190632,
+        "sha256": "520972e053c68bbef5be7d6af0f0819bfc0841d6bacae6fbb412f275285fad2e"
+      },
+      {
+        "path": "02_실행화면/72_인계_목록과_원문해시.jpg",
+        "bytes": 206877,
+        "sha256": "723060c4009f4bd9c8804e22d3cdd40f62a33a2e3381fc384056388e88979ca6"
+      },
+      {
+        "path": "02_실행화면/73_인계_검증사본_저장완료.jpg",
+        "bytes": 192689,
+        "sha256": "02d4f8293f8c5347ecc718295fa2c0f27f5c5115e46f419ba23c757d270bb076"
+      },
+      {
+        "path": "02_실행화면/74_재열기_인계발행기록.jpg",
+        "bytes": 170090,
+        "sha256": "8b9dae5ea6f3b712bfe9df1c155864c38ce728bcdbb502bba9a24abdb08dd326"
+      },
+      {
+        "path": "02_실행화면/75_재열기_인계사본_해시확인.jpg",
+        "bytes": 167561,
+        "sha256": "c15ac611b9ffbc1cc11772a81f5f121213af44b9efccad8de72a56e6d696cd83"
+      }
+    ]
+  },
+  "retained_limits": {
+    "solver_not_executed_for_this_work": true,
+    "physical_validation": "not_established",
+    "full_project_restore": "pending",
+    "performance_acceptance": "pending",
+    "r1_acceptance": "pending"
+  },
+  "document_verification": {
+    "approved_baseline_files_verified": 27,
+    "documents": 154,
+    "links_checked": 8164,
+    "broken_links": [],
+    "diagram_structure_checks": 12
+  }
+}

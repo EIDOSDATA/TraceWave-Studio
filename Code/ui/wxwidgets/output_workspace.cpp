@@ -1,6 +1,7 @@
 /** @file @brief 페이지 이동만으로 출력이나 스냅샷을 만들지 않는 작업 공간이다. */
 #include "output_workspace.h"
 #include "drawing_output_view.h"
+#include "handoff_output_view.h"
 #include "step_output_view.h"
 #include "pcb_cam_output_view.h"
 #include "output_conditions_view.h"
@@ -59,8 +60,11 @@ OutputWorkspace::OutputWorkspace(wxWindow* parent, wxWindow* conditions) : wxPan
     m_tabs->AddPage(m_step, Display("STEP"));
     m_pcb = new PcbCamOutputView(m_tabs);
     m_tabs->AddPage(m_pcb, Display("PCB / CAM"));
+    m_handoff = new HandoffOutputView(m_tabs);
+    m_tabs->AddPage(m_handoff, Display("보고서 / 인계"));
     layout->Add(m_tabs, 1, wxEXPAND);
     auto* history = new wxWrapSizer(wxHORIZONTAL);
+    m_history = history;
     history->Add(new wxStaticText(this, wxID_ANY, Display("출력 기록")), 0, wxALIGN_CENTER_VERTICAL | wxALL,
                  FromDIP(4));
     m_records = new wxChoice(this, wxID_ANY);
@@ -97,8 +101,10 @@ OutputWorkspace::OutputWorkspace(wxWindow* parent, wxWindow* conditions) : wxPan
             onImport();
         }
     };
-    m_tabs->onSelectionChanged = [this](int)
+    m_tabs->onSelectionChanged = [this](int page)
     {
+        m_history->ShowItems(page != 3);
+        Layout();
         if (!m_refreshing && onChanged)
         {
             onChanged();
@@ -348,8 +354,30 @@ Json OutputWorkspace::Snapshot() const
             {"content_hash", m_selectedSnapshot.at("content_hash")}};
 }
 
+HandoffOutputView* OutputWorkspace::Handoff() const
+{
+    return m_handoff;
+}
+
+void OutputWorkspace::SetHandoffAvailable(bool available)
+{
+    m_handoff->SetAvailable(available && Kind() == 3, Snapshot().is_object());
+}
+
+void OutputWorkspace::SetHandoffConditions(const Json& input, const Json& review)
+{
+    if (Kind() == 3)
+    {
+        m_conditions->SetHandoff(input, review);
+    }
+}
+
 Json OutputWorkspace::Input() const
 {
+    if (Kind() == 3)
+    {
+        return nullptr;
+    }
     if (Kind() == 2)
     {
         auto input = m_pcb->Input();
@@ -536,6 +564,7 @@ void OutputWorkspace::SetAvailable(bool available, bool busy, bool reviewed, boo
     const bool snapshot = m_selectedSnapshot.is_object();
     const bool canVerify = m_record.is_object() && m_record.value("can_verify", false);
     m_tabs->Enable(ready);
+    m_history->ShowItems(Kind() != 3);
     m_capture->Enable(ready);
     m_refresh->Enable(available && !busy);
     m_snapshots->Enable(ready && context && !m_snapshotValues.empty());

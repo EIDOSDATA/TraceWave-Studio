@@ -1,6 +1,7 @@
 /** @file @brief 출력 조회와 표시 상태를 프로젝트/선택 세대에 묶는다. */
 #include "output_controller.h"
 #include "output_workspace.h"
+#include "handoff_output_view.h"
 #include "output_model.h"
 #include "output_pending_store.h"
 #include "output_record_dialog.h"
@@ -17,7 +18,10 @@ OutputController::OutputController(wxWindow* parent, wxWindow* conditions, const
     m_view->onRefresh = [this]()
     {
         Context();
-        Catalog();
+        if (m_view->Kind() != 3)
+        {
+            Catalog();
+        }
     };
     m_view->onSnapshot = [this]()
     {
@@ -75,6 +79,27 @@ OutputController::OutputController(wxWindow* parent, wxWindow* conditions, const
     {
         Catalog(offset);
     };
+    auto* handoff = m_view->Handoff();
+    handoff->onPage = [this](int offset)
+    {
+        HandoffEvidence(offset);
+    };
+    handoff->onPreview = [this]()
+    {
+        HandoffPreview();
+    };
+    handoff->onBuild = [this]()
+    {
+        HandoffBuild();
+    };
+    handoff->onSave = [this]()
+    {
+        HandoffSave();
+    };
+    handoff->onReviewChanged = [this]()
+    {
+        m_view->SetHandoffConditions(m_view->Snapshot(), m_view->Handoff()->Review());
+    };
 }
 
 OutputController::~OutputController()
@@ -89,7 +114,7 @@ OutputWorkspace* OutputController::View() const
 
 bool OutputController::Active() const
 {
-    return m_mutating || !m_task.Empty() || m_uncertain;
+    return m_mutating || !m_task.Empty() || m_uncertain || m_handoffDownload.is_object();
 }
 
 bool OutputController::OwnsJob(const std::string& job) const
@@ -116,11 +141,16 @@ void OutputController::Reset()
     m_pending = nullptr;
     m_previewInput = nullptr;
     m_task.Reset();
+    m_handoffSnapshot = nullptr;
+    m_handoffInput = nullptr;
+    EndHandoffSave();
+    m_view->Handoff()->ResetEvidence();
+    m_view->Handoff()->SetCatalog(nullptr);
     m_view->Clear("현재 프로젝트의 출력 입력과 기록을 다시 읽어야 합니다.");
 }
 
 void OutputController::Update(const std::string& project, const std::string& revision, const std::string& epoch,
-                              bool connected, bool supported, bool available, bool active)
+                              bool connected, bool supported, bool available, bool active, bool handoffSupported)
 {
     if (project != m_project || epoch != m_epoch || (m_connected && !connected))
     {
@@ -144,6 +174,7 @@ void OutputController::Update(const std::string& project, const std::string& rev
     m_revision = revision;
     m_connected = connected;
     m_supported = supported;
+    m_handoffSupported = handoffSupported;
     m_available = connected && supported && available && !project.empty();
     m_active = active;
     m_view->ConditionsView()->Show(active);
@@ -151,7 +182,10 @@ void OutputController::Update(const std::string& project, const std::string& rev
     {
         m_refreshNeeded = false;
         Context(0, true);
-        Catalog();
+        if (m_view->Kind() != 3)
+        {
+            Catalog();
+        }
         if (m_uncertain)
         {
             Status("unresolved", "이전 출력 요청의 결과를 확인해야 합니다. 새 생성은 잠겼습니다.");
@@ -173,8 +207,9 @@ void OutputController::Actions()
     {
         reviewed = OutputUi::MatchesPreview(m_view->Preview(), m_previewInput);
     }
-    m_view->SetAvailable(m_available, m_reads > 0 || m_mutating || !m_task.Empty(), reviewed,
-                         !m_task.Empty() && !m_cancelRequested, m_uncertain);
+    m_view->SetAvailable(m_available, m_reads > 0 || m_mutating || !m_task.Empty() || m_handoffDownload.is_object(),
+                         reviewed, !m_task.Empty() && !m_cancelRequested, m_uncertain);
+    m_view->SetHandoffAvailable(m_available && m_handoffSupported && m_reads == 0 && !Active());
 }
 
 void OutputController::Status(const std::string& state, const std::string& message)
@@ -267,6 +302,11 @@ void OutputController::Context(int offset, bool resetOptions)
                  throw std::runtime_error("출력 입력 목록의 프로젝트 또는 페이지가 다릅니다.");
              }
              m_view->SetContext(result, resetOptions);
+             if (m_view->Kind() == 3)
+             {
+                 HandoffSync();
+                 return;
+             }
              if (!Active() && !m_view->Record().is_object() && !m_view->Preview().is_object())
              {
                  const std::string message =
@@ -330,6 +370,16 @@ void OutputController::Changed()
 {
     m_previewInput = nullptr;
     m_view->ClearRecord("출력 입력이나 옵션이 바뀌었습니다. 다시 검토하세요.");
+    if (m_view->Kind() == 3)
+    {
+        if (m_view->Snapshot() != m_handoffSnapshot)
+        {
+            m_view->Handoff()->ResetEvidence();
+            m_handoffInput = nullptr;
+        }
+        m_view->SetHandoffConditions(m_view->Snapshot(), m_view->Handoff()->Review());
+        HandoffSync();
+    }
     Actions();
 }
 

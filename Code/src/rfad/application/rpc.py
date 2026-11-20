@@ -20,6 +20,7 @@ from rfad.application import exchange_service, exchange_contract
 from rfad.application import pcb_exchange_service
 from rfad.application import pcb_import_service
 from rfad.application import measurement_service, measurement_contract
+from rfad.application import handoff_evidence, handoff_service
 from rfad.application import design_rule_service, physical_setup_service, precision_service, network_service, design_sweep_service, result_service, rf_validation_records, sweep_selection
 
 TEMPLATE_READS = {"template.list", "template.get", "template.context", "template.synthesize"}
@@ -45,6 +46,7 @@ PROJECT_MUTATIONS.add("export.verify")
 PROJECT_MUTATIONS.add(pcb_exchange_service.MUTATION)
 PROJECT_MUTATIONS.update(pcb_import_service.MUTATIONS)
 PROJECT_MUTATIONS.update(measurement_service.MUTATIONS)
+PROJECT_MUTATIONS.add(handoff_service.MUTATION)
 PROJECT_MUTATIONS.update(PCB_SELECTION_MUTATIONS)
 PROJECT_MUTATIONS.update(STUDY_MUTATIONS)
 PROJECT_MUTATIONS.update(design_sweep_service.MUTATIONS)
@@ -104,6 +106,15 @@ def capabilities(service=None, catalog=None) -> dict:
                              "evaluation_supported": False, "changes_solver_settings": False, "presets_supported": False},
         }
         result["features"][0]["status"] = "implemented"
+        result["methods"][handoff_evidence.METHOD] = {"status": "implemented", "api_id": "API-027",
+                                                    "extension_profile": handoff_evidence.PROFILE}
+        result["methods"][handoff_service.MUTATION] = {"status": "implemented", "api_id": "API-026",
+                                                       "extension_profile": handoff_service.PROFILE}
+        result["methods"].update({name: {"status": "implemented", "extension_profile": handoff_service.PROFILE}
+                                  for name in handoff_service.READS})
+        result["handoff_profile"] = {"profile": handoff_service.PROFILE, "snapshot_required": True,
+            "preview_required": True, "max_package_bytes": 8 * 1024 * 1024, "max_files": 512,
+            "read_only_handoff": True, "project_restore_supported": False, "physical_validation": False}
         result["methods"].update({name: {"status": "implemented", "extension_profile": pcb_exchange_service.PROFILE}
                                   for name in pcb_exchange_service.READS | {pcb_exchange_service.MUTATION}})
         result["methods"].update({name: {"status": "implemented", "extension_profile": pcb_import_service.PROFILE}
@@ -319,12 +330,16 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
         return _error(None, -32600, "Invalid Request")
     notification = "id" not in request
     method = request["method"]
-    if service is not None and method in PROJECT_MUTATIONS | measurement_service.READS | pcb_import_service.READS | pcb_exchange_service.READS | exchange_contract.READS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | network_service.READS | design_sweep_service.READS | result_service.READS | rf_validation_records.READS | sweep_selection.READS | {"target.editor.get", "job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
+    if service is not None and method in PROJECT_MUTATIONS | handoff_service.READS | measurement_service.READS | pcb_import_service.READS | pcb_exchange_service.READS | exchange_contract.READS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | network_service.READS | design_sweep_service.READS | result_service.READS | rf_validation_records.READS | sweep_selection.READS | {handoff_evidence.METHOD, "target.editor.get", "job.status", "editor.get", "canvas.get", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
         if notification and method in PROJECT_MUTATIONS:
             return None
         try:
             params = request.get("params")
-            if method in measurement_service.READS:
+            if method == handoff_evidence.METHOD:
+                result = handoff_evidence.read(service, params)
+            elif method in handoff_service.READS:
+                result = handoff_service.read(service, method, params)
+            elif method in measurement_service.READS:
                 result = measurement_service.read(service.host_calculation_context, method, params)
             elif method in pcb_import_service.READS:
                 result = pcb_import_service.read(service, method, params)

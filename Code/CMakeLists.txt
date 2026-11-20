@@ -146,6 +146,8 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/output_conditions_view.cpp
     ui/wxwidgets/output_record_dialog.cpp
     ui/wxwidgets/output_workspace.cpp
+    ui/wxwidgets/handoff_output_view.cpp
+    ui/wxwidgets/handoff_output_controller.cpp
     ui/wxwidgets/output_pending_store.cpp
     ui/wxwidgets/output_controller.cpp
     ui/wxwidgets/output_controller_jobs.cpp

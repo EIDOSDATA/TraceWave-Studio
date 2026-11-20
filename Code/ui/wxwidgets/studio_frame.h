@@ -303,6 +303,7 @@ private:
     std::unique_ptr<RfValidationController> m_validation;
     std::unique_ptr<OutputController> m_output;
     bool m_outputSupported = false;
+    bool m_handoffSupported = false;
     bool m_validationSupported = false;
     bool m_networkPending = false;
     bool m_networkRefreshQueued = false;

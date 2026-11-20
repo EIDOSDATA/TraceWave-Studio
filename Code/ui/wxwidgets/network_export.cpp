@@ -1,5 +1,6 @@
 /** @file @brief 기존 원본을 덮지 않고 두 임시 파일의 완성과 실패 복구를 보장한다. */
 #include "network_export.h"
+#include "file_delivery.h"
 #include "display_mesh.h"
 #include "studio_support.h"
 #include <wx/base64.h>
@@ -164,27 +165,10 @@ private:
     HANDLE m_handle = INVALID_HANDLE_VALUE;
     Path m_path;
 };
-}
 
-void WriteNetworkExportFiles(const Json& result, const wxString& path, const wxString& workspace)
+/** @brief 부모 경로를 검증하고 파일 생성 전에 디렉터리 항목의 handle을 확보한다. */
+Path Target(const wxString& path, const wxString& workspace, DisplayMesh::Handles& directories)
 {
-    Require(result.value("profile", "") == "rfad.network-workspace/0.1", "지원하지 않는 교환 응답입니다.");
-    Require(result.contains("bytes") && result.at("bytes").is_number_integer(), "교환 파일의 원문 크기가 없습니다.");
-    const auto expected = result.at("bytes").get<std::int64_t>();
-    Require(expected > 0 && expected <= static_cast<std::int64_t>(SourceLimit),
-            "교환 파일의 512 KiB 상한을 초과했습니다.");
-    const std::string encoded = result.at("content_base64");
-    Require(encoded.size() <= ((SourceLimit + 2) / 3) * 4, "교환 파일의 base64 상한을 초과했습니다.");
-    const wxMemoryBuffer decoded = wxBase64Decode(encoded.data(), encoded.size(), wxBase64DecodeMode_Strict);
-    Require(decoded.GetDataLen() == static_cast<std::size_t>(expected),
-            "교환 파일의 base64 또는 원문 크기가 다릅니다.");
-    const std::string raw(static_cast<const char*>(decoded.GetData()), decoded.GetDataLen());
-    Require(DisplayMesh::Sha256(raw) == result.at("sha256").get<std::string>(),
-            "교환 파일의 SHA256이 서비스 응답과 다릅니다.");
-    Require(result.at("sidecar").is_object() && result.at("sidecar").value("schema", "") == "rfad.network-export/0.1",
-            "조건 sidecar의 형식이 다릅니다.");
-    const std::string sidecar = result.at("sidecar").dump(2) + "\n";
-    Require(sidecar.size() <= 1024U * 1024U, "조건 sidecar의 1 MiB 표시/저장 상한을 초과했습니다.");
     const Path selected(path.ToStdWstring());
     Require(selected.is_absolute() && selected.has_filename(), "교환 파일은 절대 경로로 선택하세요.");
     const std::wstring fileName = selected.filename().native();
@@ -213,7 +197,6 @@ void WriteNetworkExportFiles(const Json& result, const wxString& path, const wxS
     Require(
         !Inside(parent, storage),
         "프로젝트 작업 영역 안에는 교환 파일을 저장하지 않습니다. 원본/과거 자료 보존을 위해 외부 폴더를 선택하세요.");
-    DisplayMesh::Handles directories;
     Path current = parent.root_path();
     directories.Open(current, true);
     for (const auto& part : parent.relative_path())
@@ -221,7 +204,57 @@ void WriteNetworkExportFiles(const Json& result, const wxString& path, const wxS
         current /= part;
         directories.Open(current, true);
     }
-    const Path target = parent / selected.filename();
+    return parent / selected.filename();
+}
+
+}
+
+void WriteExternalExportFile(const wxString& path, const wxString& workspace, const std::string& bytes)
+{
+    DisplayMesh::Handles directories;
+    const Path target = Target(path, workspace, directories);
+    Missing(target);
+    PreparedFile content;
+    try
+    {
+        content.Write(target.parent_path(), bytes);
+        content.Publish(target);
+        content.Commit();
+    }
+    catch (const std::exception& error)
+    {
+        if (!content.Rollback())
+        {
+            throw std::runtime_error(std::string(error.what()) +
+                                     "\n새 임시 파일을 회수하지 못했습니다: " + content.Location());
+        }
+        throw;
+    }
+}
+
+void WriteNetworkExportFiles(const Json& result, const wxString& path, const wxString& workspace)
+{
+    Require(result.value("profile", "") == "rfad.network-workspace/0.1", "지원하지 않는 교환 응답입니다.");
+    Require(result.contains("bytes") && result.at("bytes").is_number_integer(), "교환 파일의 원문 크기가 없습니다.");
+    const auto expected = result.at("bytes").get<std::int64_t>();
+    Require(expected > 0 && expected <= static_cast<std::int64_t>(SourceLimit),
+            "교환 파일의 512 KiB 상한을 초과했습니다.");
+    const std::string encoded = result.at("content_base64");
+    Require(encoded.size() <= ((SourceLimit + 2) / 3) * 4, "교환 파일의 base64 상한을 초과했습니다.");
+    const wxMemoryBuffer decoded = wxBase64Decode(encoded.data(), encoded.size(), wxBase64DecodeMode_Strict);
+    Require(decoded.GetDataLen() == static_cast<std::size_t>(expected),
+            "교환 파일의 base64 또는 원문 크기가 다릅니다.");
+    const std::string raw(static_cast<const char*>(decoded.GetData()), decoded.GetDataLen());
+    Require(DisplayMesh::Sha256(raw) == result.at("sha256").get<std::string>(),
+            "교환 파일의 SHA256이 서비스 응답과 다릅니다.");
+    Require(result.at("sidecar").is_object() && result.at("sidecar").value("schema", "") == "rfad.network-export/0.1",
+            "조건 sidecar의 형식이 다릅니다.");
+    const std::string sidecar = result.at("sidecar").dump(2) + "\n";
+    Require(sidecar.size() <= 1024U * 1024U, "조건 sidecar의 1 MiB 표시/저장 상한을 초과했습니다.");
+    DisplayMesh::Handles directories;
+    const Path target = Target(path, workspace, directories);
+    const Path parent = target.parent_path();
+    const auto fileName = target.filename().native();
     const Path metadata = parent / (fileName + L".conditions.json");
     Missing(target);
     Missing(metadata);

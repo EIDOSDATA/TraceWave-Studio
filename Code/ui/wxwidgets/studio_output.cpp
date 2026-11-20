@@ -59,7 +59,8 @@ void StudioFrame::UpdateOutputViews()
     const bool available = !m_closing && !m_busy && m_setupDialog == nullptr && m_pcbDialog == nullptr &&
                            !m_pcbFeatureUncertain && !m_pcbImportUncertain &&
                            Studio::EditableProject(m_editor, m_scene, m_project, m_revision);
-    m_output->Update(m_project, m_revision, m_epoch, m_connected, m_outputSupported, available, active);
+    m_output->Update(m_project, m_revision, m_epoch, m_connected, m_outputSupported, available, active,
+                     m_handoffSupported);
     m_output->View()->SetImportAvailable(available && m_connected && m_pcbImportSupported && !m_pcbFeatureUncertain &&
                                          !m_pcbImportUncertain && !m_output->Active());
     m_views->SetTabRowVisible(!active);
