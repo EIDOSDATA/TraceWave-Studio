@@ -10,6 +10,7 @@
 #include <charconv>
 #include <cstring>
 #include <filesystem>
+#include <fstream>
 #include <iostream>
 #include <optional>
 #include <string>
@@ -81,7 +82,7 @@ struct Stamp
 class ProbeFrame final : public wxFrame
 {
 public:
-    ProbeFrame(unsigned shapes, const std::filesystem::path& directory, HANDLE out, int& result)
+    ProbeFrame(unsigned shapes, const std::filesystem::path& directory, Json scene, HANDLE out, int& result)
         : wxFrame(nullptr, wxID_ANY, directory.empty() ? "TraceWave 2D display probe" : "TraceWave 3D display probe"),
           m_timer(this), m_shapes(shapes), m_out(out), m_result(result)
     {
@@ -123,7 +124,12 @@ public:
         Layout();
         if (m_canvas != nullptr)
         {
-            m_canvas->SetScene(Fixture(shapes));
+            if (scene.is_null())
+            {
+                scene = Fixture(shapes);
+            }
+            m_layers = scene.at("layers").size();
+            m_canvas->SetScene(scene);
             m_canvas->FitView();
         }
         Bind(wxEVT_TIMER, &ProbeFrame::OnTimer, this);
@@ -467,7 +473,7 @@ private:
                           {"error", problem}, {"qpc_frequency", m_frequency},
                           {"display", {display.cx, display.cy}}, {"refresh_hz", m_reader ? m_reader->RefreshRate() : 0},
                           {"canvas", {size.x, size.y}}, {"dpi", m_surface != nullptr ? m_surface->GetDPI().x : GetDPI().x},
-                          {"shapes", model ? 0 : m_shapes}, {"layers", model ? m_model->BodyCount() : 4},
+                          {"shapes", model ? 0 : m_shapes}, {"layers", model ? m_model->BodyCount() : m_layers},
                           {"model_clicks_after_navigation", m_modelClicks},
                           {"triangles", model ? m_model->TriangleCount() : 0}, {"target_fps", model ? 30 : 60},
                           {"workload", model ? "model-rotate-pan" : "canvas-wheel-zoom"},
@@ -487,6 +493,7 @@ private:
     wxTimer m_timer;
     DesignCanvas* m_canvas = nullptr;
     ModelView* m_model = nullptr;
+    std::size_t m_layers = 0;
     wxWindow* m_surface = nullptr;
     wxSize m_size;
     std::optional<int> m_swapInterval;
@@ -540,7 +547,8 @@ int main(int argc, char** argv)
             return 2;
         }
     }
-    if (argc != 2 && argc != 3 && !model)
+    const bool projectedScene = argc == 4 && std::string_view(argv[2]) == "--scene";
+    if (argc != 2 && argc != 3 && !model && !projectedScene)
     {
         return 2;
     }
@@ -561,7 +569,19 @@ int main(int argc, char** argv)
     {
         if (wxTheApp->CallOnInit())
         {
-            auto* window = new ProbeFrame(shapes, directory, out.get(), result);
+            Json scene;
+            if (projectedScene)
+            {
+                const std::filesystem::path source(argv[3]);
+                if (std::filesystem::file_size(source) > 24 * 1024 * 1024)
+                {
+                    throw std::runtime_error("표시 시험 입력이 24 MiB를 초과했습니다.");
+                }
+                std::ifstream stream(source, std::ios::binary);
+                scene = Json::parse(stream);
+                shapes = static_cast<unsigned>(scene.at("shapes").size());
+            }
+            auto* window = new ProbeFrame(shapes, directory, std::move(scene), out.get(), result);
             wxTheApp->SetTopWindow(window);
             window->Show();
             wxTheApp->OnRun();

@@ -14,9 +14,10 @@ CanvasRenderer::CanvasRenderer(wxWindow& window, wxDC& dc, CanvasViewport viewpo
 
 void CanvasRenderer::Flush()
 {
-    if (m_graphics)
+    if (m_unflushed)
     {
         m_graphics->Flush();
+        m_unflushed = false;
     }
 }
 
@@ -269,6 +270,7 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
             graphics->SetBrush(wxBrush(wxColour(250, 251, 253)));
             graphics->DrawEllipse(center.x - radius, center.y - radius, radius * 2.0, radius * 2.0);
         }
+        m_unflushed = true;
         return true;
     }
     if (removal)
@@ -301,5 +303,6 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
     }
     graphics->SetPen(m_linePen);
     graphics->StrokePath(path);
+    m_unflushed = true;
     return true;
 }
