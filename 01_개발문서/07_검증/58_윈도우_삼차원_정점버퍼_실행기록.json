@@ -1,0 +1,330 @@
+{
+  "schema": "rfad.windows-model-vertex-buffer-verification/0.1",
+  "date_kst": "2026-11-20",
+  "source_parent": "7d7d98603a2f36d0e32b2bb1d9b52ffccc670d2e",
+  "studio_binary": {
+    "file": "tracewave_gui.exe",
+    "bytes": 30450956,
+    "sha256": "3c38ef2595e60aac8790f3411d262bf15b6ff155b1cc2ee2b9bccc25c87ecf05"
+  },
+  "probe_binary": {
+    "file": "tracewave_model_vertex_buffer_probe.exe",
+    "bytes": 12580990,
+    "sha256": "619d7ee8977706a9a4d899af0245eaafe820d2caedd48d8ed2089b4dc1acf233"
+  },
+  "warmup_pairs_per_run": 8,
+  "tests": {
+    "windows_cad_gui": {
+      "passed": 2,
+      "seconds": 26.662,
+      "log": {
+        "file": "stage12o-cad-tests.log",
+        "bytes": 627,
+        "sha256": "47f61e0ba8ad68c3eab040eef81f82faab86d966119418330232a2bd4f334ae0"
+      }
+    },
+    "windows_gui_and_native_external_step": {
+      "passed": 11,
+      "seconds": 108.547,
+      "log": {
+        "file": "stage12o-gui-tests.log",
+        "bytes": 2824,
+        "sha256": "05bc12965ab501ca160301ce752f61537774a34490439ddff2442120cb68516c"
+      }
+    },
+    "ctest": {
+      "passed": 13,
+      "seconds": 0.62,
+      "log": {
+        "file": "stage12o-ctest.log",
+        "bytes": 1526,
+        "sha256": "a685e4e83f27c647bb5370cdeccdfa893ea1f48c170780c1f307b958e4143725"
+      }
+    }
+  },
+  "windows_cad_gui": {
+    "raw_file": {
+      "file": "stage12o-cad-report.json",
+      "bytes": 1087,
+      "sha256": "f7b1f8d1ec79ba4c5d2276352bea50a1890af488b5c6722f3e7de00c7714379f"
+    },
+    "record": [
+      {
+        "invalid_geometry": true,
+        "renderer": "",
+        "mesh_triangles": 0,
+        "mesh_bodies": 0,
+        "mesh_vertex_buffer": {
+          "bytes": 0,
+          "uploads": 0
+        },
+        "cad_checks": [
+          "invalid_input_not_published"
+        ],
+        "rendered_frames": 0,
+        "service_sessions": 1,
+        "frame_budget_tested": false
+      },
+      {
+        "invalid_geometry": false,
+        "renderer": "4.6.0 - Build 32.0.101.7088 / Intel(R) Iris(R) Xe Graphics",
+        "mesh_triangles": 1512,
+        "mesh_bodies": 3,
+        "mesh_vertex_buffer": {
+          "bytes": 108864,
+          "uploads": 2
+        },
+        "cad_checks": [
+          "draft_applied_before_snapshot",
+          "editing_enabled_during_cad",
+          "edit_error_does_not_drop_responses",
+          "snapshot_fixed_and_stale_label",
+          "save_during_cad",
+          "verified_mesh_rendered",
+          "step_package_accessible",
+          "camera_controls",
+          "cancel_preserves_previous_result",
+          "restart_restores_published_mesh"
+        ],
+        "rendered_frames": 5,
+        "service_sessions": 2,
+        "frame_budget_tested": false
+      }
+    ]
+  },
+  "native_opengl_probe": [
+    {
+      "raw_file": {
+        "file": "stage12o-gpu-final-1.json",
+        "bytes": 815,
+        "sha256": "95695b745739b31d5d609642498be3229c5bf81b388b2732818a7b61dd0d0b8d"
+      },
+      "record": {
+        "bodies": 2,
+        "buffered_gl_finish_ms": [
+          1.152,
+          0.798,
+          0.7,
+          0.621,
+          3.279,
+          0.696,
+          1.084,
+          3.207,
+          0.953,
+          0.933,
+          0.626,
+          0.559,
+          0.764,
+          0.599,
+          0.731,
+          0.698,
+          0.635,
+          0.575,
+          0.78,
+          0.538,
+          0.684,
+          3.13,
+          0.609,
+          0.553,
+          0.761,
+          0.535,
+          0.723,
+          0.555,
+          0.737,
+          3.11,
+          0.638,
+          0.595,
+          0.708,
+          0.632,
+          0.749,
+          0.564,
+          0.728,
+          0.791,
+          0.632,
+          0.627
+        ],
+        "cpu_fallback_after_bad_layout": true,
+        "cpu_gl_finish_ms": [
+          5.43,
+          2.308,
+          3.235,
+          1.426,
+          1.459,
+          1.436,
+          1.313,
+          1.772,
+          1.437,
+          3.427,
+          1.461,
+          1.459,
+          4.12,
+          1.398,
+          1.284,
+          3.407,
+          1.42,
+          1.398,
+          4.148,
+          1.333,
+          1.286,
+          1.729,
+          1.358,
+          4.181,
+          1.454,
+          1.311,
+          4.693,
+          1.38,
+          1.56,
+          1.473,
+          1.297,
+          4.342,
+          1.525,
+          1.461,
+          4.1,
+          1.393,
+          1.306,
+          3.003,
+          1.487,
+          1.53
+        ],
+        "gpu_bytes": 7200000,
+        "ok": true,
+        "pixel_equal": true,
+        "present_intervals_measured": false,
+        "renderer": "Intel(R) Iris(R) Xe Graphics",
+        "schema": "rfad.windows-vertex-buffer-probe/0.1",
+        "triangles": 100000,
+        "uploads_after_new_context": 3,
+        "uploads_after_rotation": 1
+      },
+      "summary": {
+        "cpu": {
+          "median_ms": 1.461,
+          "p95_ms": 4.342,
+          "maximum_ms": 5.43
+        },
+        "buffer": {
+          "median_ms": 0.699,
+          "p95_ms": 3.13,
+          "maximum_ms": 3.279
+        }
+      }
+    },
+    {
+      "raw_file": {
+        "file": "stage12o-gpu-final-2.json",
+        "bytes": 818,
+        "sha256": "d105ee56a891100fec011da9c3c0cfe369ece4cde30c6882ca087dc4f2bef27c"
+      },
+      "record": {
+        "bodies": 2,
+        "buffered_gl_finish_ms": [
+          4.91,
+          1.055,
+          1.178,
+          0.916,
+          1.387,
+          4.551,
+          1.178,
+          1.034,
+          1.912,
+          1.769,
+          1.543,
+          1.114,
+          1.353,
+          1.436,
+          1.421,
+          5.0,
+          1.383,
+          1.463,
+          4.648,
+          1.315,
+          4.633,
+          1.327,
+          1.345,
+          1.4,
+          1.266,
+          2.815,
+          1.578,
+          1.429,
+          1.34,
+          2.147,
+          1.314,
+          2.221,
+          1.152,
+          1.148,
+          1.698,
+          2.779,
+          2.767,
+          1.468,
+          1.456,
+          1.163
+        ],
+        "cpu_fallback_after_bad_layout": true,
+        "cpu_gl_finish_ms": [
+          1.943,
+          1.959,
+          4.972,
+          6.734,
+          2.142,
+          2.505,
+          6.045,
+          6.107,
+          2.771,
+          4.632,
+          2.394,
+          2.126,
+          6.978,
+          5.389,
+          2.578,
+          2.642,
+          5.121,
+          6.185,
+          3.569,
+          6.88,
+          3.314,
+          2.572,
+          4.845,
+          4.002,
+          2.984,
+          3.817,
+          6.18,
+          5.498,
+          2.085,
+          2.642,
+          1.942,
+          2.069,
+          1.91,
+          3.18,
+          3.768,
+          3.211,
+          4.084,
+          2.357,
+          2.268,
+          1.933
+        ],
+        "gpu_bytes": 7200000,
+        "ok": true,
+        "pixel_equal": true,
+        "present_intervals_measured": false,
+        "renderer": "Intel(R) Iris(R) Xe Graphics",
+        "schema": "rfad.windows-vertex-buffer-probe/0.1",
+        "triangles": 100000,
+        "uploads_after_new_context": 3,
+        "uploads_after_rotation": 1
+      },
+      "summary": {
+        "cpu": {
+          "median_ms": 3.1955,
+          "p95_ms": 6.734,
+          "maximum_ms": 6.978
+        },
+        "buffer": {
+          "median_ms": 1.425,
+          "p95_ms": 4.648,
+          "maximum_ms": 5.0
+        }
+      }
+    }
+  ],
+  "accepted_full_f1_or_f2": false
+}

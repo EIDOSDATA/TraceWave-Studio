@@ -21,14 +21,14 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 44,
     "current_06_분석연구": 13,
-    "current_07_검증": 35,
+    "current_07_검증": 36,
     "current_08_운영환경": 5,
     "current_09_개발계획": 4,
     "current_11_검토기록": 6,
     "current_traceability": 4,
     "document_catalog": 4,
     "document_navigation": 6,
-    "documentation_asset": 135,
+    "documentation_asset": 136,
     "documentation_validation_record": 1,
     "historical_proposal": 2,
     "historical_verification": 41,
@@ -28473,7 +28473,7 @@
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
       "bytes": 619557,
-      "working_tree_sha256": "54e0a71551efb045e1ac8f436622bc3bbf46b9e9b7d9f719cdaafe3d58720fa0"
+      "working_tree_sha256": "d82374074b903951883f28e73a58c14720610b5b32c8671aac29df25c2774668"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -28609,9 +28609,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 9545,
-      "working_tree_sha256": "9f74dacada3dae80b80e98d08ead273753d8206f6d893c49310a69693dfdf2a7",
-      "text_lines": 73,
+      "bytes": 9892,
+      "working_tree_sha256": "8df9f3321b70e81c680d50a465e6547cc5d319306fcd439742d8cddb3c1f0072",
+      "text_lines": 75,
       "text_status": "utf8_read"
     },
     {
@@ -28672,17 +28672,17 @@
       "path": "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 136962,
-      "working_tree_sha256": "0b08cd4f488fc36147104857427b95f7dd47f825e399e0811e3793718917fbf2",
-      "text_lines": 745,
+      "bytes": 137464,
+      "working_tree_sha256": "2ed4d0875403f3e4f241575c065e94b3e11e567edb0f01d1ba981fe7e7f518b3",
+      "text_lines": 749,
       "text_status": "utf8_read"
     },
     {
       "path": "01_개발문서/09_개발계획/03_개발완료_계획.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 34622,
-      "working_tree_sha256": "fbe23dbe56d1074dc4d6842b81272aa89e2b33662b43f3390b9bb7fbbf7d3297",
+      "bytes": 34786,
+      "working_tree_sha256": "cae47f3b6dcfce3974507fbfe721568135e2a55d75f6142d84d2f964c2407aa3",
       "text_lines": 171,
       "text_status": "utf8_read"
     },
@@ -30773,6 +30773,22 @@
       "review_scope": "문서/시안 자산 보존",
       "bytes": 639900,
       "working_tree_sha256": "453e07feab4f44951d293a097b28d1ef1fc289c98bc68175dd1781af14823172"
+    },
+    {
+      "path": "01_개발문서/07_검증/57_윈도우_삼차원_정점버퍼_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2661,
+      "working_tree_sha256": "0d7040c0690768f2961a13f072f3b0dfa30e390e32dcefb22fc639c64c13ef3b",
+      "text_lines": 29,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/58_윈도우_삼차원_정점버퍼_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 7765,
+      "working_tree_sha256": "493475c148aec5e8573720b3cc15e1877dcdd790216154c46e4108ff7676cdf4"
     }
   ],
   "identical_byte_groups": [
@@ -30929,18 +30945,19 @@
   ],
   "incremental_refresh": {
     "date_kst": "2026-11-20",
-    "mode": "step12_windows_canvas_composition_evidence",
-    "previous_inventory_sha256": "ad99e2db129290859e2465dabbcc3448cf59f9b182c35c030ba27534ff4593f2",
+    "mode": "step12_windows_vertex_buffer_evidence",
+    "previous_inventory_sha256": "d75a5104036c2236037b30e1d84c8ea711f2e4e7b226529f6f1a0fdde740828f",
     "refreshed_paths": [
-      "01_개발문서/07_검증/55_윈도우_합성화면_검증.md",
-      "01_개발문서/07_검증/56_윈도우_합성화면_실행기록.json",
+      "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
+      "01_개발문서/07_검증/57_윈도우_삼차원_정점버퍼_검증.md",
+      "01_개발문서/07_검증/58_윈도우_삼차원_정점버퍼_실행기록.json",
       "01_개발문서/07_검증/README.md",
       "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
       "01_개발문서/09_개발계획/03_개발완료_계획.md"
     ],
     "added_paths": [
-      "01_개발문서/07_검증/55_윈도우_합성화면_검증.md",
-      "01_개발문서/07_검증/56_윈도우_합성화면_실행기록.json"
+      "01_개발문서/07_검증/57_윈도우_삼차원_정점버퍼_검증.md",
+      "01_개발문서/07_검증/58_윈도우_삼차원_정점버퍼_실행기록.json"
     ],
     "removed_paths": [],
     "preserved_reference_records": 3336,

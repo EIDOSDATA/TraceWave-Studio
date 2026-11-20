@@ -74,6 +74,11 @@ class GuiCadProcessTests(unittest.TestCase):
             self.assertGreater(report["mesh_triangles"], 0)
             self.assertGreater(report["rendered_frames"], 0)
             self.assertTrue(report["renderer"])
+            vertex_buffer = report["mesh_vertex_buffer"]
+            self.assertLessEqual(vertex_buffer["uploads"], report["rendered_frames"])
+            if vertex_buffer["bytes"]:
+                self.assertEqual(vertex_buffer["bytes"], report["mesh_triangles"] * 3 * 6 * 4)
+                self.assertGreater(vertex_buffer["uploads"], 0)
             result = report["cad_result"]
             self.assertNotEqual(result["snapshot"]["revision_id"], report["revision_id"])
             self.assertFalse(result["physics_verified"])
@@ -91,6 +96,7 @@ class GuiCadProcessTests(unittest.TestCase):
             self.assertEqual(report["cad_checks"], ["invalid_input_not_published"])
             self.assertFalse(report["cad_result"])
             self.assertEqual(report["mesh_triangles"], 0)
+            self.assertEqual(report["mesh_vertex_buffer"], {"bytes": 0, "uploads": 0})
             self.assertEqual(list(workspace.rglob("model.step")), [])
 
 

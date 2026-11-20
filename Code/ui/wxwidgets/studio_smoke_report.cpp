@@ -66,6 +66,7 @@ void StudioSmokeDriver::FinishSmoke(bool passed, const std::string& error)
                 {"mesh_bodies", m_frame.m_modelView->BodyCount()},
                 {"rendered_frames", m_frame.m_modelView->RenderedFrameCount()},
                 {"renderer", m_frame.m_modelView->RendererDescription()},
+                {"mesh_vertex_buffer", m_frame.m_modelView->VertexBufferDiagnostics()},
                 {"ux_checks", m_uxChecks},
                 {"editor_ui_state", m_frame.m_editState},
                 {"apply_enabled", m_frame.m_apply->IsEnabled()},

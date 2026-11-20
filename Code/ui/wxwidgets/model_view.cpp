@@ -1,5 +1,6 @@
 #include "model_view.h"
 #include "display_mesh.h"
+#include "model_vertex_buffer.h"
 
 #include <wx/glcanvas.h>
 #include <wx/dcclient.h>
@@ -85,10 +86,39 @@ public:
         return m_context != nullptr && m_context->IsOK();
     }
 
+    bool EnsureContext()
+    {
+        if (!Ready())
+        {
+            RecreateContext();
+        }
+        return Ready();
+    }
+
     void SetScene(std::shared_ptr<const Scene> scene)
     {
+        if (m_scene != scene)
+        {
+            m_vertices.Invalidate();
+        }
         m_scene = std::move(scene);
+        if (m_scene == nullptr && m_vertices.Bytes() != 0)
+        {
+            if (IsShownOnScreen() && Ready() && SetCurrent(*m_context))
+            {
+                m_vertices.Release();
+            }
+            else
+            {
+                DropContext();
+            }
+        }
         Refresh(false);
+    }
+
+    ModelView::Json VertexBufferDiagnostics() const
+    {
+        return {{"bytes", m_vertices.Bytes()}, {"uploads", m_vertices.Uploads()}};
     }
 
     void Fit()
@@ -101,8 +131,8 @@ public:
 
     void RecreateContext()
     {
+        DropContext();
         m_context = std::make_unique<wxGLContext>(this);
-        renderer.clear();
         Refresh(false);
     }
 
@@ -141,6 +171,14 @@ public:
     std::uint64_t frames = 0;
 
 private:
+    /** @brief 숨겨진 뷰나 유실된 context에서도 파기와 함께 GPU 자원을 회수한다. */
+    void DropContext()
+    {
+        m_context.reset();
+        m_vertices.ContextDiscarded();
+        renderer.clear();
+    }
+
     void Fail(const std::string& error)
     {
         if (onError)
@@ -209,10 +247,12 @@ private:
         glTranslated(m_camera.panX, m_camera.panY, 0.0);
         glRotated(m_camera.pitch, 1.0, 0.0, 0.0);
         glRotated(m_camera.yaw, 0.0, 0.0, 1.0);
+        const bool buffered = m_vertices.Bind(*m_scene);
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_NORMAL_ARRAY);
-        for (const auto& body : m_scene->bodies)
+        for (std::size_t index = 0; index < m_scene->bodies.size(); ++index)
         {
+            const auto& body = m_scene->bodies[index];
             if (m_hiddenLayers.count(body.layer) != 0)
             {
                 continue;
@@ -239,12 +279,23 @@ private:
             {
                 glColor3f(0.25f, 0.55f, 0.39f);
             }
-            glVertexPointer(3, GL_FLOAT, 0, body.positions.data());
-            glNormalPointer(GL_FLOAT, 0, body.normals.data());
+            if (buffered)
+            {
+                m_vertices.BodyPointers(index);
+            }
+            else
+            {
+                glVertexPointer(3, GL_FLOAT, 0, body.positions.data());
+                glNormalPointer(GL_FLOAT, 0, body.normals.data());
+            }
             glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(body.positions.size() / 3));
         }
         glDisableClientState(GL_NORMAL_ARRAY);
         glDisableClientState(GL_VERTEX_ARRAY);
+        if (buffered)
+        {
+            m_vertices.Unbind();
+        }
         glDisable(GL_LIGHTING);
         glDisable(GL_COLOR_MATERIAL);
         const GLenum error = glGetError();
@@ -349,6 +400,7 @@ private:
     }
 
     std::unique_ptr<wxGLContext> m_context;
+    ModelVertexBuffer m_vertices;
     std::shared_ptr<const Scene> m_scene;
     Camera m_camera;
     std::set<std::string> m_hiddenLayers;
@@ -439,7 +491,7 @@ struct ModelView::Impl
     {
         if (canvas != nullptr)
         {
-            return canvas->Ready();
+            return canvas->EnsureContext();
         }
         const int attributes[] = {WX_GL_RGBA, WX_GL_DOUBLEBUFFER, WX_GL_DEPTH_SIZE, 24, 0};
         if (!wxGLCanvas::IsDisplaySupported(attributes))
@@ -681,6 +733,11 @@ std::string ModelView::Selection() const
 std::string ModelView::RendererDescription() const
 {
     return m_impl->canvas != nullptr ? m_impl->canvas->renderer : "";
+}
+
+ModelView::Json ModelView::VertexBufferDiagnostics() const
+{
+    return m_impl->canvas != nullptr ? m_impl->canvas->VertexBufferDiagnostics() : Json{{"bytes", 0}, {"uploads", 0}};
 }
 
 std::size_t ModelView::TriangleCount() const
