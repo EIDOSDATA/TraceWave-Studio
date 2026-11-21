@@ -1,0 +1,688 @@
+{
+  "schema": "rfad.stage12.f4-state-hash-comparison/0.1",
+  "date_kst": "2026-11-21",
+  "base_commit": "674750a",
+  "candidate_journal_sha256": "a7d2e24feb7058a88a0c1a7d33c375c80c1202b84746e819d72a11d6f72b6286",
+  "ordered_attempts": [
+    {
+      "exit": 0,
+      "group": "control",
+      "sample": 1
+    },
+    {
+      "exit": 0,
+      "group": "candidate",
+      "sample": 2
+    },
+    {
+      "exit": 0,
+      "group": "candidate",
+      "sample": 3
+    },
+    {
+      "exit": 0,
+      "group": "control",
+      "sample": 4
+    },
+    {
+      "exit": 0,
+      "group": "control",
+      "sample": 5
+    },
+    {
+      "exit": 0,
+      "group": "candidate",
+      "sample": 6
+    },
+    {
+      "exit": 0,
+      "group": "candidate",
+      "sample": 7
+    },
+    {
+      "exit": 0,
+      "group": "control",
+      "sample": 8
+    },
+    {
+      "exit": 0,
+      "group": "control",
+      "sample": 9
+    },
+    {
+      "exit": 0,
+      "group": "candidate",
+      "sample": 10
+    },
+    {
+      "exit": 0,
+      "group": "candidate",
+      "sample": 11
+    },
+    {
+      "exit": 0,
+      "group": "control",
+      "sample": 12
+    }
+  ],
+  "groups": {
+    "control": {
+      "count": 6,
+      "summary": {
+        "button_ms": {
+          "median": 119.969,
+          "p95": 1046.654,
+          "p99": 1046.654,
+          "maximum": 1046.654
+        },
+        "receipt_ms": {
+          "median": 316.4605,
+          "p95": 1235.591,
+          "p99": 1235.591,
+          "maximum": 1235.591
+        },
+        "service_rpc_ms": {
+          "median": 184.85399999999998,
+          "p95": 221.6837,
+          "p99": 221.6837,
+          "maximum": 221.6837
+        },
+        "terminal_ms": {
+          "median": 2179.9015,
+          "p95": 3536.792,
+          "p99": 3536.792,
+          "maximum": 3536.792
+        }
+      },
+      "samples": [
+        {
+          "index": 1,
+          "wall_seconds": 77.78099999995902,
+          "studio_trace": {
+            "control": {
+              "button_enabled": false,
+              "elapsed_ms": 30.282,
+              "state": "cancel_requested"
+            },
+            "guest_worker_attached": true,
+            "job_id": "5ded146c-8aec-4786-b61f-4c4eb86857ec",
+            "phase_before": "analysis",
+            "receipt": {
+              "elapsed_ms": 140.454,
+              "events_cursor": 3,
+              "state": "cancel_requested"
+            },
+            "state_before": "running",
+            "terminal": {
+              "elapsed_ms": 1466.894,
+              "events_cursor": 4,
+              "outcome_unknown": false,
+              "state": "cancelled",
+              "termination_confirmed": true
+            }
+          },
+          "rpc_timing": {
+            "job_id": "5ded146c-8aec-4786-b61f-4c4eb86857ec",
+            "received_ns": 742140806221000,
+            "sent_ns": 742140916299900,
+            "elapsed_ms": 110.0789
+          },
+          "native_activity": {
+            "f4_probe": true,
+            "lines": 2000,
+            "row_bytes": 28,
+            "elapsed_seconds": 2.0003639050000004,
+            "native_pid": 652,
+            "native_mapped": true,
+            "stdout_lines_before_termination": 3490,
+            "guest_cursor": 5
+          },
+          "previous_result_preserved": true,
+          "saved_revision": "5d7a2f8f-7cf9-4563-8e41-cdeb33d5b894",
+          "executable_sha256": "35ed8480de6ffc659a96c5448e9df6ff5040b5e3ba3df494221139ddcd14058e"
+        },
+        {
+          "index": 4,
+          "wall_seconds": 123.56199999991804,
+          "studio_trace": {
+            "control": {
+              "button_enabled": false,
+              "elapsed_ms": 91.541,
+              "state": "cancel_requested"
+            },
+            "guest_worker_attached": true,
+            "job_id": "ec83e4cc-5211-469c-b9b8-5b9a1f76ed4d",
+            "phase_before": "analysis",
+            "receipt": {
+              "elapsed_ms": 257.674,
+              "events_cursor": 3,
+              "state": "cancel_requested"
+            },
+            "state_before": "running",
+            "terminal": {
+              "elapsed_ms": 1928.209,
+              "events_cursor": 4,
+              "outcome_unknown": false,
+              "state": "cancelled",
+              "termination_confirmed": true
+            }
+          },
+          "rpc_timing": {
+            "job_id": "ec83e4cc-5211-469c-b9b8-5b9a1f76ed4d",
+            "received_ns": 742457744081500,
+            "sent_ns": 742457910490800,
+            "elapsed_ms": 166.4093
+          },
+          "native_activity": {
+            "f4_probe": true,
+            "lines": 2000,
+            "row_bytes": 28,
+            "elapsed_seconds": 2.000124215000028,
+            "native_pid": 676,
+            "native_mapped": true,
+            "stdout_lines_before_termination": 3940,
+            "guest_cursor": 5
+          },
+          "previous_result_preserved": true,
+          "saved_revision": "c090e48f-19c6-411f-b3ab-098e5f9c4953",
+          "executable_sha256": "35ed8480de6ffc659a96c5448e9df6ff5040b5e3ba3df494221139ddcd14058e"
+        },
+        {
+          "index": 5,
+          "wall_seconds": 126.32799999997951,
+          "studio_trace": {
+            "control": {
+              "button_enabled": false,
+              "elapsed_ms": 1046.654,
+              "state": "cancel_requested"
+            },
+            "guest_worker_attached": true,
+            "job_id": "076bf672-3244-46ca-bf4d-b7066b119997",
+            "phase_before": "analysis",
+            "receipt": {
+              "elapsed_ms": 1235.591,
+              "events_cursor": 3,
+              "state": "cancel_requested"
+            },
+            "state_before": "running",
+            "terminal": {
+              "elapsed_ms": 3536.792,
+              "events_cursor": 4,
+              "outcome_unknown": false,
+              "state": "cancelled",
+              "termination_confirmed": true
+            }
+          },
+          "rpc_timing": {
+            "job_id": "076bf672-3244-46ca-bf4d-b7066b119997",
+            "received_ns": 742581836534500,
+            "sent_ns": 742582024525600,
+            "elapsed_ms": 187.9911
+          },
+          "native_activity": {
+            "f4_probe": true,
+            "lines": 2000,
+            "row_bytes": 28,
+            "elapsed_seconds": 2.0002812019999965,
+            "native_pid": 705,
+            "native_mapped": true,
+            "stdout_lines_before_termination": 5600,
+            "guest_cursor": 5
+          },
+          "previous_result_preserved": true,
+          "saved_revision": "52a63451-6de4-4bc2-bd95-e955e2d63587",
+          "executable_sha256": "35ed8480de6ffc659a96c5448e9df6ff5040b5e3ba3df494221139ddcd14058e"
+        },
+        {
+          "index": 8,
+          "wall_seconds": 166.96899999992456,
+          "studio_trace": {
+            "control": {
+              "button_enabled": false,
+              "elapsed_ms": 78.983,
+              "state": "cancel_requested"
+            },
+            "guest_worker_attached": true,
+            "job_id": "121aed9f-827e-4ca9-b070-ec954e96ea54",
+            "phase_before": "analysis",
+            "receipt": {
+              "elapsed_ms": 302.782,
+              "events_cursor": 3,
+              "state": "cancel_requested"
+            },
+            "state_before": "running",
+            "terminal": {
+              "elapsed_ms": 2715.571,
+              "events_cursor": 4,
+              "outcome_unknown": false,
+              "state": "cancelled",
+              "termination_confirmed": true
+            }
+          },
+          "rpc_timing": {
+            "job_id": "121aed9f-827e-4ca9-b070-ec954e96ea54",
+            "received_ns": 743032665220400,
+            "sent_ns": 743032886904100,
+            "elapsed_ms": 221.6837
+          },
+          "native_activity": {
+            "f4_probe": true,
+            "lines": 2000,
+            "row_bytes": 28,
+            "elapsed_seconds": 2.0001356299999316,
+            "native_pid": 726,
+            "native_mapped": true,
+            "stdout_lines_before_termination": 5070,
+            "guest_cursor": 5
+          },
+          "previous_result_preserved": true,
+          "saved_revision": "453e21e8-7504-4485-b70e-510950b9726b",
+          "executable_sha256": "35ed8480de6ffc659a96c5448e9df6ff5040b5e3ba3df494221139ddcd14058e"
+        },
+        {
+          "index": 9,
+          "wall_seconds": 162.829000000027,
+          "studio_trace": {
+            "control": {
+              "button_enabled": false,
+              "elapsed_ms": 478.236,
+              "state": "cancel_requested"
+            },
+            "guest_worker_attached": true,
+            "job_id": "8710dc01-81eb-49b7-a8e0-9db3f1e0daa2",
+            "phase_before": "analysis",
+            "receipt": {
+              "elapsed_ms": 683.063,
+              "events_cursor": 3,
+              "state": "cancel_requested"
+            },
+            "state_before": "running",
+            "terminal": {
+              "elapsed_ms": 2431.594,
+              "events_cursor": 4,
+              "outcome_unknown": false,
+              "state": "cancelled",
+              "termination_confirmed": true
+            }
+          },
+          "rpc_timing": {
+            "job_id": "8710dc01-81eb-49b7-a8e0-9db3f1e0daa2",
+            "received_ns": 743199291746300,
+            "sent_ns": 743199495853300,
+            "elapsed_ms": 204.107
+          },
+          "native_activity": {
+            "f4_probe": true,
+            "lines": 2000,
+            "row_bytes": 28,
+            "elapsed_seconds": 2.0002528699999402,
+            "native_pid": 727,
+            "native_mapped": true,
+            "stdout_lines_before_termination": 4190,
+            "guest_cursor": 5
+          },
+          "previous_result_preserved": true,
+          "saved_revision": "1879ce94-d780-4157-a86c-0b5a61f61322",
+          "executable_sha256": "35ed8480de6ffc659a96c5448e9df6ff5040b5e3ba3df494221139ddcd14058e"
+        },
+        {
+          "index": 12,
+          "wall_seconds": 105.125,
+          "studio_trace": {
+            "control": {
+              "button_enabled": false,
+              "elapsed_ms": 148.397,
+              "state": "cancel_requested"
+            },
+            "guest_worker_attached": true,
+            "job_id": "06c157a3-bda5-4c67-aa55-e17ebe1095f2",
+            "phase_before": "analysis",
+            "receipt": {
+              "elapsed_ms": 330.139,
+              "events_cursor": 3,
+              "state": "cancel_requested"
+            },
+            "state_before": "running",
+            "terminal": {
+              "elapsed_ms": 1716.209,
+              "events_cursor": 4,
+              "outcome_unknown": false,
+              "state": "cancelled",
+              "termination_confirmed": true
+            }
+          },
+          "rpc_timing": {
+            "job_id": "06c157a3-bda5-4c67-aa55-e17ebe1095f2",
+            "received_ns": 743578265141200,
+            "sent_ns": 743578446858100,
+            "elapsed_ms": 181.7169
+          },
+          "native_activity": {
+            "f4_probe": true,
+            "lines": 2000,
+            "row_bytes": 28,
+            "elapsed_seconds": 2.0001816770000005,
+            "native_pid": 674,
+            "native_mapped": true,
+            "stdout_lines_before_termination": 3710,
+            "guest_cursor": 5
+          },
+          "previous_result_preserved": true,
+          "saved_revision": "6ad819e5-f9ab-4b4c-b380-c4492dcc41d5",
+          "executable_sha256": "35ed8480de6ffc659a96c5448e9df6ff5040b5e3ba3df494221139ddcd14058e"
+        }
+      ]
+    },
+    "candidate": {
+      "count": 6,
+      "summary": {
+        "button_ms": {
+          "median": 78.96549999999999,
+          "p95": 719.348,
+          "p99": 719.348,
+          "maximum": 719.348
+        },
+        "receipt_ms": {
+          "median": 186.58749999999998,
+          "p95": 876.051,
+          "p99": 876.051,
+          "maximum": 876.051
+        },
+        "service_rpc_ms": {
+          "median": 130.15055,
+          "p95": 156.2818,
+          "p99": 156.2818,
+          "maximum": 156.2818
+        },
+        "terminal_ms": {
+          "median": 1749.7314999999999,
+          "p95": 2325.39,
+          "p99": 2325.39,
+          "maximum": 2325.39
+        }
+      },
+      "samples": [
+        {
+          "index": 2,
+          "wall_seconds": 73.03100000007544,
+          "studio_trace": {
+            "control": {
+              "button_enabled": false,
+              "elapsed_ms": 107.637,
+              "state": "cancel_requested"
+            },
+            "guest_worker_attached": true,
+            "job_id": "52007bce-74d8-45c0-93ad-e9dd0789a816",
+            "phase_before": "analysis",
+            "receipt": {
+              "elapsed_ms": 192.73,
+              "events_cursor": 3,
+              "state": "cancel_requested"
+            },
+            "state_before": "running",
+            "terminal": {
+              "elapsed_ms": 1500.434,
+              "events_cursor": 4,
+              "outcome_unknown": false,
+              "state": "cancelled",
+              "termination_confirmed": true
+            }
+          },
+          "rpc_timing": {
+            "job_id": "52007bce-74d8-45c0-93ad-e9dd0789a816",
+            "received_ns": 742223446855000,
+            "sent_ns": 742223531782100,
+            "elapsed_ms": 84.9271
+          },
+          "native_activity": {
+            "f4_probe": true,
+            "lines": 2000,
+            "row_bytes": 28,
+            "elapsed_seconds": 2.0002719050000053,
+            "native_pid": 962,
+            "native_mapped": true,
+            "stdout_lines_before_termination": 3270,
+            "guest_cursor": 5
+          },
+          "previous_result_preserved": true,
+          "saved_revision": "ad5ce097-bf1b-4eec-894c-a2ef91b3d398",
+          "executable_sha256": "35ed8480de6ffc659a96c5448e9df6ff5040b5e3ba3df494221139ddcd14058e"
+        },
+        {
+          "index": 3,
+          "wall_seconds": 101.42200000002049,
+          "studio_trace": {
+            "control": {
+              "button_enabled": false,
+              "elapsed_ms": 171.207,
+              "state": "cancel_requested"
+            },
+            "guest_worker_attached": true,
+            "job_id": "60b05501-fc65-446d-93e5-32a1e6ceb821",
+            "phase_before": "analysis",
+            "receipt": {
+              "elapsed_ms": 301.434,
+              "events_cursor": 3,
+              "state": "cancel_requested"
+            },
+            "state_before": "running",
+            "terminal": {
+              "elapsed_ms": 1908.003,
+              "events_cursor": 4,
+              "outcome_unknown": false,
+              "state": "cancelled",
+              "termination_confirmed": true
+            }
+          },
+          "rpc_timing": {
+            "job_id": "60b05501-fc65-446d-93e5-32a1e6ceb821",
+            "received_ns": 742320934601100,
+            "sent_ns": 742321064746400,
+            "elapsed_ms": 130.1453
+          },
+          "native_activity": {
+            "f4_probe": true,
+            "lines": 2000,
+            "row_bytes": 28,
+            "elapsed_seconds": 2.000869609999995,
+            "native_pid": 1298,
+            "native_mapped": true,
+            "stdout_lines_before_termination": 3920,
+            "guest_cursor": 5
+          },
+          "previous_result_preserved": true,
+          "saved_revision": "4170b1e1-f644-49ea-9e63-e6c723c93147",
+          "executable_sha256": "35ed8480de6ffc659a96c5448e9df6ff5040b5e3ba3df494221139ddcd14058e"
+        },
+        {
+          "index": 6,
+          "wall_seconds": 117.59400000004098,
+          "studio_trace": {
+            "control": {
+              "button_enabled": false,
+              "elapsed_ms": 44.576,
+              "state": "cancel_requested"
+            },
+            "guest_worker_attached": true,
+            "job_id": "df4bcb1d-ad9a-4e6d-9fa4-f1683b904a8f",
+            "phase_before": "analysis",
+            "receipt": {
+              "elapsed_ms": 179.991,
+              "events_cursor": 3,
+              "state": "cancel_requested"
+            },
+            "state_before": "running",
+            "terminal": {
+              "elapsed_ms": 1810.132,
+              "events_cursor": 4,
+              "outcome_unknown": false,
+              "state": "cancelled",
+              "termination_confirmed": true
+            }
+          },
+          "rpc_timing": {
+            "job_id": "df4bcb1d-ad9a-4e6d-9fa4-f1683b904a8f",
+            "received_ns": 742719953400400,
+            "sent_ns": 742720089087700,
+            "elapsed_ms": 135.6873
+          },
+          "native_activity": {
+            "f4_probe": true,
+            "lines": 2000,
+            "row_bytes": 28,
+            "elapsed_seconds": 2.000132925999992,
+            "native_pid": 693,
+            "native_mapped": true,
+            "stdout_lines_before_termination": 3880,
+            "guest_cursor": 5
+          },
+          "previous_result_preserved": true,
+          "saved_revision": "0950c4f0-d0bb-4653-98ca-48a44e2e0f79",
+          "executable_sha256": "35ed8480de6ffc659a96c5448e9df6ff5040b5e3ba3df494221139ddcd14058e"
+        },
+        {
+          "index": 7,
+          "wall_seconds": 132.34400000004098,
+          "studio_trace": {
+            "control": {
+              "button_enabled": false,
+              "elapsed_ms": 719.348,
+              "state": "cancel_requested"
+            },
+            "guest_worker_attached": true,
+            "job_id": "73e5b3d7-7c5f-4d44-89ee-648699f04d16",
+            "phase_before": "analysis",
+            "receipt": {
+              "elapsed_ms": 876.051,
+              "events_cursor": 3,
+              "state": "cancel_requested"
+            },
+            "state_before": "running",
+            "terminal": {
+              "elapsed_ms": 2325.39,
+              "events_cursor": 4,
+              "outcome_unknown": false,
+              "state": "cancelled",
+              "termination_confirmed": true
+            }
+          },
+          "rpc_timing": {
+            "job_id": "73e5b3d7-7c5f-4d44-89ee-648699f04d16",
+            "received_ns": 742845054256200,
+            "sent_ns": 742845210538000,
+            "elapsed_ms": 156.2818
+          },
+          "native_activity": {
+            "f4_probe": true,
+            "lines": 2000,
+            "row_bytes": 28,
+            "elapsed_seconds": 2.000330952000013,
+            "native_pid": 716,
+            "native_mapped": true,
+            "stdout_lines_before_termination": 3850,
+            "guest_cursor": 5
+          },
+          "previous_result_preserved": true,
+          "saved_revision": "2196142c-7d1a-4d05-8103-89ea965fccfc",
+          "executable_sha256": "35ed8480de6ffc659a96c5448e9df6ff5040b5e3ba3df494221139ddcd14058e"
+        },
+        {
+          "index": 10,
+          "wall_seconds": 130.68700000003446,
+          "studio_trace": {
+            "control": {
+              "button_enabled": false,
+              "elapsed_ms": 46.009,
+              "state": "cancel_requested"
+            },
+            "guest_worker_attached": true,
+            "job_id": "b9a06dbc-e091-4b54-9927-943504986c98",
+            "phase_before": "analysis",
+            "receipt": {
+              "elapsed_ms": 174.663,
+              "events_cursor": 3,
+              "state": "cancel_requested"
+            },
+            "state_before": "running",
+            "terminal": {
+              "elapsed_ms": 1689.331,
+              "events_cursor": 4,
+              "outcome_unknown": false,
+              "state": "cancelled",
+              "termination_confirmed": true
+            }
+          },
+          "rpc_timing": {
+            "job_id": "b9a06dbc-e091-4b54-9927-943504986c98",
+            "received_ns": 743362605146000,
+            "sent_ns": 743362733848500,
+            "elapsed_ms": 128.7025
+          },
+          "native_activity": {
+            "f4_probe": true,
+            "lines": 2000,
+            "row_bytes": 28,
+            "elapsed_seconds": 2.000456940000049,
+            "native_pid": 685,
+            "native_mapped": true,
+            "stdout_lines_before_termination": 3570,
+            "guest_cursor": 5
+          },
+          "previous_result_preserved": true,
+          "saved_revision": "2c8c8b2d-6f0c-4df9-91da-f9c16bb95e6e",
+          "executable_sha256": "35ed8480de6ffc659a96c5448e9df6ff5040b5e3ba3df494221139ddcd14058e"
+        },
+        {
+          "index": 11,
+          "wall_seconds": 99.04700000002049,
+          "studio_trace": {
+            "control": {
+              "button_enabled": false,
+              "elapsed_ms": 50.294,
+              "state": "cancel_requested"
+            },
+            "guest_worker_attached": true,
+            "job_id": "d4a03149-f4c7-4593-ac10-be8092153ad7",
+            "phase_before": "analysis",
+            "receipt": {
+              "elapsed_ms": 180.445,
+              "events_cursor": 3,
+              "state": "cancel_requested"
+            },
+            "state_before": "running",
+            "terminal": {
+              "elapsed_ms": 1652.812,
+              "events_cursor": 4,
+              "outcome_unknown": false,
+              "state": "cancelled",
+              "termination_confirmed": true
+            }
+          },
+          "rpc_timing": {
+            "job_id": "d4a03149-f4c7-4593-ac10-be8092153ad7",
+            "received_ns": 743464760447500,
+            "sent_ns": 743464890603300,
+            "elapsed_ms": 130.1558
+          },
+          "native_activity": {
+            "f4_probe": true,
+            "lines": 2000,
+            "row_bytes": 28,
+            "elapsed_seconds": 2.0002236819998416,
+            "native_pid": 1031,
+            "native_mapped": true,
+            "stdout_lines_before_termination": 3830,
+            "guest_cursor": 5
+          },
+          "previous_result_preserved": true,
+          "saved_revision": "046b74e2-4e14-4ea4-b4c8-dffdc23269ee",
+          "executable_sha256": "35ed8480de6ffc659a96c5448e9df6ff5040b5e3ba3df494221139ddcd14058e"
+        }
+      ]
+    }
+  },
+  "candidate_service_tests": {
+    "count": 48,
+    "success": true
+  }
+}
