@@ -29,6 +29,14 @@ void StudioFrame::OpenDesignSetup(DesignSetup kind, const Json& selection)
     UpdateControls();
     const std::string project = m_project;
     const std::string revision = m_revision;
+    const bool modelSelection = physical && selection.is_object() && selection.contains("record_id");
+    const auto restoreModelSelection = [this, project, modelSelection]()
+    {
+        if (modelSelection && !m_closing && m_project == project)
+        {
+            m_modelView->SetSelection(m_selection.value("id", ""));
+        }
+    };
     Json input{{"expected_revision", revision}};
     if (physical)
     {
@@ -44,22 +52,25 @@ void StudioFrame::OpenDesignSetup(DesignSetup kind, const Json& selection)
     }
     Send(
         physical ? "physical.setup.get" : (rules ? "design.rules.get" : (templates ? "template.context" : "target.editor.get")), input, false, Context(),
-        [this, project, revision, kind](const Json& context)
+        [this, project, revision, kind, restoreModelSelection](const Json& context)
         {
             if (m_closing || project != m_project || revision != m_revision || context.at("project_id") != project ||
                 context.value("revision_id", context.value("expected_revision", std::string())) != revision)
             {
+                restoreModelSelection();
                 Failure("프로젝트 개정이 바뀌었습니다. 최신 상태를 다시 읽고 설정을 여세요.");
                 return;
             }
             CallAfter(
-                [this, context, kind]()
+                [this, context, kind, restoreModelSelection]()
                 {
                     ShowDesignSetup(context, kind);
+                    restoreModelSelection();
                 });
         },
-        [this](const Json& error)
+        [this, restoreModelSelection](const Json& error)
         {
+            restoreModelSelection();
             m_busy = false;
             Log("설정 화면을 열지 못했습니다: " + DiagnosticMessage(error));
             UpdateControls();
@@ -138,7 +149,8 @@ void StudioFrame::ShowDesignSetup(const Json& context, DesignSetup kind)
         else if (!result.is_null() && m_connected && !m_closing)
         {
             m_scene = Json::object();
-            RefreshEditor(Json{{"kind", "project"}, {"id", m_project}},
+            const Json selection = kind == DesignSetup::Physical ? m_selection : Json{{"kind", "project"}, {"id", m_project}};
+            RefreshEditor(selection,
                           [this]()
                           {
                               Ready("설정 변경을 적용했습니다. 저장으로 현재 개정을 확정할 수 있습니다.");

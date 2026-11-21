@@ -414,9 +414,45 @@ void StudioSmokeDriver::PhysicalSetupSmokeTick()
                 m_frame.m_modelView->LoadedSnapshotId() == m_frame.m_cadResult.at("snapshot").at("snapshot_id"))
             {
                 m_setupChecks.push_back("physical_setup_rebuild_from_embedded_step");
-                FinishSmoke(true, "");
+                for (const auto& item : m_frame.m_editor.at("items"))
+                {
+                    if (item.at("kind") == "geometry")
+                    {
+                        m_precisionId = item.at("id");
+                        break;
+                    }
+                }
+                CanvasAssert(!m_precisionId.empty(), "복귀를 확인할 원래 도체가 없습니다.");
+                m_setupStage = 21;
+                m_frame.SelectObject({{"kind", "geometry"}, {"id", m_precisionId}});
             }
             break;
+        case 21:
+            m_frame.m_modelView->SetView("top");
+            m_frame.m_modelView->FitView();
+            m_setupStage = 22;
+            CanvasAssert(m_frame.m_modelView->ClickTopPointForSmoke(6.5, 5), "3D 외부 고체를 클릭하지 못했습니다.");
+            break;
+        case 23:
+            CanvasAssert(m_frame.m_modelView->Selection() == m_precisionId && m_frame.m_canvas->Selection() == m_precisionId &&
+                             m_frame.m_selection.at("id") == m_precisionId,
+                         "외부 물체 설정을 닫은 뒤 기존 원본 선택으로 돌아오지 못했습니다.");
+            m_setupStage = 24;
+            CanvasAssert(m_frame.m_modelView->ClickTopPointForSmoke(20, 20), "3D 솔더마스크를 클릭하지 못했습니다.");
+            break;
+        case 25:
+        {
+            const auto node = m_frame.m_tree->GetSelection();
+            const auto* source = node.IsOk() ? dynamic_cast<const SelectionData*>(m_frame.m_tree->GetItemData(node)) : nullptr;
+            CanvasAssert(source && source->selection.at("id") == m_precisionId &&
+                             m_frame.m_editor.at("selection").at("id") == m_precisionId &&
+                             m_frame.m_modelView->Selection() == m_precisionId && m_frame.m_canvas->Selection() == m_precisionId &&
+                             m_frame.m_savedRevision == m_frame.m_revision,
+                         "표면층 설정을 닫은 뒤 원래 선택 또는 저장 개정이 바뀌었습니다.");
+            m_setupChecks.push_back("physical_setup_native_pick_and_return_to_edit_selection");
+            FinishSmoke(true, "");
+            break;
+        }
         default:
             break;
         }
@@ -520,5 +556,17 @@ void StudioSmokeDriver::PhysicalSetupSmokeTick()
         m_setupStage = 19;
         dialog->CloseDialog();
         break;
+    case 22:
+    case 24:
+    {
+        const bool surface = m_setupStage == 24;
+        CanvasAssert(dialog->m_context.at("section") == (surface ? "surface" : "part") &&
+                         dialog->m_context.at("exists") == true &&
+                         dialog->Value("name") == (surface ? "검증용 솔더마스크" : "읽어온 외부 금속 시험 고체"),
+                     "3D에서 고른 대상과 설정의 원본이 다릅니다.");
+        ++m_setupStage;
+        dialog->CloseDialog();
+        break;
+    }
     }
 }

@@ -66,6 +66,7 @@ class GuiPhysicalSetupTests(unittest.TestCase):
             self.assertIn("physical_setup_step_visibility_independent", report["setup_checks"])
             self.assertIn("physical_setup_saved_reopen_sources_and_missing", report["setup_checks"])
             self.assertIn("physical_setup_rebuild_from_embedded_step", report["setup_checks"])
+            self.assertIn("physical_setup_native_pick_and_return_to_edit_selection", report["setup_checks"])
             self.assertFalse(step.exists())
             with ProjectService(workspace, auto_run=False) as service:
                 stored = load(service, original)

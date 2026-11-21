@@ -21,7 +21,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 45,
     "current_06_분석연구": 13,
-    "current_07_검증": 147,
+    "current_07_검증": 148,
     "current_08_운영환경": 7,
     "current_09_개발계획": 8,
     "current_11_검토기록": 7,
@@ -27917,9 +27917,9 @@
       "path": "01_개발문서/04_화면설계/05_객체이름과_선택연동.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 21456,
-      "working_tree_sha256": "63683a5a6f813a83b3bb0d27498e7119d8c12196ca3e421658a9f1dd67fb7b6b",
-      "text_lines": 137,
+      "bytes": 21876,
+      "working_tree_sha256": "8716edd06268a3e4c160ad988d827839e6fb523bb8dd96b0b607272b7dfb1d83",
+      "text_lines": 139,
       "text_status": "utf8_read"
     },
     {
@@ -28609,9 +28609,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 24203,
-      "working_tree_sha256": "98bc9294a5e413fc51edd9af148bee3ed9a716d3f38d3e04c5a6872f9aaab697",
-      "text_lines": 163,
+      "bytes": 24385,
+      "working_tree_sha256": "43d1e11cbb513f6075950361aed9bc3c921fbf7440c1aaa3a5736d769ad63032",
+      "text_lines": 164,
       "text_status": "utf8_read"
     },
     {
@@ -32345,8 +32345,8 @@
       "path": "01_개발문서/09_개발계획/04_현행버전_남은작업.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 11821,
-      "working_tree_sha256": "cc02512a7c3af32487b5428158ec6aad61b405e337f7a8473921310b6b82a807",
+      "bytes": 11779,
+      "working_tree_sha256": "fb36351c56f5ac845b15eba41d3adf64a3938ddf2be3b6c69089a78e2bcfcec8",
       "text_lines": 42,
       "text_status": "utf8_read"
     },
@@ -32510,6 +32510,15 @@
       "bytes": 2178,
       "working_tree_sha256": "071cf3028851519ed6d39092d42ea8b58c22dcaf8d2041504b26e00896e15bd7",
       "text_lines": 16,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/260_윈도우_삼차원_설치설정_선택복귀_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1242,
+      "working_tree_sha256": "68457c981e8f77ed647ea063da8a28518919a4fb4bb552b92002a29e49ae5e2a",
+      "text_lines": 11,
       "text_status": "utf8_read"
     }
   ],
