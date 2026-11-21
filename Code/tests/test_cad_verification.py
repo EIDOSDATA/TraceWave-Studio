@@ -217,6 +217,24 @@ class StepVerificationProcessTests(unittest.TestCase):
                     if body["role"] == "environment":
                         self.assertAlmostEqual(body["metrics"]["volume_mm3"], 24.0)
                         self.assertLessEqual(checked[body["name"]]["volume_error_mm3"], checked[body["name"]]["volume_tolerance_mm3"])
+                if os.environ.get("RFAD_STEP_RECEIVER"):
+                    from test_windows_exchange_revision import assert_independent_bodies
+
+                    step_path = Path(directory) / refs["step"]["uri"]
+                    independent = assert_independent_bodies(self, step_path, expected["body_map"])
+                    barrel, = independent["via_barrel_" + via["id"]]
+                    self.assertEqual({round(face["radius"], 9) for face in barrel["cylinders"]}, {0.15, 0.175})
+                    for face in barrel["cylinders"]:
+                        self.assertAlmostEqual(abs(face["axis"][2]), 1.0)
+                        self.assertEqual(face["location"][:2], [20.0, 25.0])
+                        self.assertAlmostEqual(face["extent"]["maximum"][2] - face["extent"]["minimum"][2], 1.07)
+                    for name, solids in independent.items():
+                        if name.startswith(("surface_", "via_barrel_")) or len(solids) == 2:
+                            for solid in solids:
+                                caps = [face["holes"] for face in solid["planar_faces"]
+                                        if abs(face["extent"]["maximum"][2] - face["extent"]["minimum"][2]) < 1e-9]
+                                self.assertEqual(caps, [1, 1], name)
+                    self.assertEqual(hashlib.sha256(step_path.read_bytes()).hexdigest(), refs["step"]["sha256"])
                 self.assertIsNone(next(item for item in expected["source_semantics"]["geometry"] if item["kind"] == "via")["tool_hole_diameter"]["value_si"])
                 self.assertEqual(load(service, document), document)
 
