@@ -15645,8 +15645,8 @@
     },
     {
       "path": "Code/tests/test_gui_process.py",
-      "text_sha256": "81d937d7fa25c506cdf9ee36153cfd633e0a58b4d8fed1e018a8a8ebdb129ae4",
-      "utf8_bytes": 24332
+      "text_sha256": "4bbf0021bb0b20ede3bce31cf26600ec21d5cd4fcfb2e7f8393276ab71be1d06",
+      "utf8_bytes": 24370
     },
     {
       "path": "Code/tests/test_gui_results_process.py",
@@ -16320,8 +16320,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_layout.cpp",
-      "text_sha256": "60f581c4755275959ee1652684814ddbdc0d5a8e941d5a8d2cbd5a11cb0cd45c",
-      "utf8_bytes": 28566
+      "text_sha256": "0d2e1315221f605c1da063a8155938ff5026a532d84847aa1f72497401dbbdd9",
+      "utf8_bytes": 28986
     },
     {
       "path": "Code/ui/wxwidgets/studio_navigation.cpp",
