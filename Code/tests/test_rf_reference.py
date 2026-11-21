@@ -72,6 +72,40 @@ class RfReferenceTests(unittest.TestCase):
         self.assertFalse(report["physics_validated"])
         self.assertIn("requires_explicit", report["applicability"])
 
+    def test_symmetric_sheet_matches_independent_diffusion_and_joule_integral(self):
+        """! @brief 세 대역 표본에서 평면 근사식의 복소 임피던스와 손실을 검증한다."""
+        sigma, permeability = 58e6, 4e-7 * math.pi
+        for frequency in (2.4e9, 2.44175e9, 2.4835e9):
+            for thickness in (0.5e-6, 35e-6):
+                with self.subTest(frequency=frequency, thickness=thickness):
+                    coarse, _ = self.diffusion_slab(frequency, thickness, sigma, permeability, 512)
+                    fine, loss = self.diffusion_slab(frequency, thickness, sigma, permeability, 1024)
+                    analytic = symmetric_sheet_impedance(frequency, sigma, thickness, permeability)
+                    self.assertLess(abs(coarse / fine - 1), 0.001)
+                    self.assertLess(abs(fine / analytic - 1), 0.001)
+                    self.assertLess(abs(loss / (0.5 * analytic.real) - 1), 0.001)
+
+    @staticmethod
+    def diffusion_slab(frequency, thickness, conductivity, permeability, intervals):
+        """! @brief 양면 접선 전계 1에서 중앙차분으로 전계, 총 전류와 Joule 일을 구한다."""
+        step = thickness / intervals
+        wave = 2j * math.pi * frequency * permeability * conductivity
+        diagonal = 2 + wave * step**2
+        pivots = [diagonal] * (intervals - 1)
+        rhs = [0j] * (intervals - 1)
+        rhs[0] = rhs[-1] = 1 + 0j
+        for index in range(1, len(pivots)):
+            pivots[index] -= 1 / pivots[index - 1]
+            rhs[index] += rhs[index - 1] / pivots[index - 1]
+        interior = [0j] * len(rhs)
+        interior[-1] = rhs[-1] / pivots[-1]
+        for index in range(len(interior) - 2, -1, -1):
+            interior[index] = (rhs[index] + interior[index + 1]) / pivots[index]
+        # @brief 사다리꼴로 양쪽 경계 전계의 절반씩을 더하고 총 전류 1 A/m로 환산한다.
+        current = conductivity * step * (1 + sum(interior))
+        loss = 0.5 * conductivity * step * (1 + sum(abs(value)**2 for value in interior))
+        return 1 / current, loss / abs(current)**2
+
     def test_bad_or_unbounded_inputs_do_not_create_reference_values(self):
         """! @brief 미정/비유한/잘못된 단위 범위를 수치로 채우지 않는다."""
         for value in (None, True, 0, -1, float("nan"), float("inf"), 10 ** 400):
