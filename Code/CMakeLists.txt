@@ -47,6 +47,9 @@ else()
     set(RFAD_WX_LIBRARIES ${wxWidgets_LIBRARIES})
 endif()
 
+set(RFAD_STUDIO_RC "${CMAKE_CURRENT_BINARY_DIR}/studio-app.rc")
+set(RFAD_STUDIO_MANIFEST "${CMAKE_CURRENT_SOURCE_DIR}/ui/wxwidgets/app.manifest")
+configure_file(ui/wxwidgets/app.rc.in "${RFAD_STUDIO_RC}" @ONLY)
 if(MINGW)
     find_path(RFAD_WX_RESOURCE_INCLUDE wx/msw/wx.rc
         HINTS "${RFAD_WX_SOURCE_DIR}/include" ${wxWidgets_INCLUDE_DIRS} REQUIRED NO_CACHE)
@@ -54,15 +57,14 @@ if(MINGW)
     # @brief windres의 공백 include 경로 재해석을 피하도록 원본 include 폴더에서 실행한다.
     add_custom_command(OUTPUT "${RFAD_RESOURCE}"
         COMMAND "${CMAKE_RC_COMPILER}" -O coff -I .
-            "${CMAKE_CURRENT_SOURCE_DIR}/ui/wxwidgets/app.rc" "${RFAD_RESOURCE}"
+            "${RFAD_STUDIO_RC}" "${RFAD_RESOURCE}"
         WORKING_DIRECTORY "${RFAD_WX_RESOURCE_INCLUDE}"
-        DEPENDS ui/wxwidgets/app.rc
-            "${RFAD_WX_RESOURCE_INCLUDE}/wx/msw/wx.rc"
-            "${RFAD_WX_RESOURCE_INCLUDE}/wx/msw/wx_dpi_aware_pmv2.manifest"
+        DEPENDS "${RFAD_STUDIO_RC}" "${RFAD_STUDIO_MANIFEST}" "${RFAD_WX_RESOURCE_INCLUDE}/wx/msw/wx.rc"
         VERBATIM)
     set_source_files_properties("${RFAD_RESOURCE}" PROPERTIES EXTERNAL_OBJECT TRUE GENERATED TRUE)
 else()
-    set(RFAD_RESOURCE ui/wxwidgets/app.rc)
+    set(RFAD_RESOURCE "${RFAD_STUDIO_RC}")
+    set_property(SOURCE "${RFAD_RESOURCE}" APPEND PROPERTY OBJECT_DEPENDS "${RFAD_STUDIO_MANIFEST}")
 endif()
 
 add_executable(tracewave_gui WIN32

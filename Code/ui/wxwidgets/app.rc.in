@@ -1,0 +1,4 @@
+/** @brief wx 공용 리소스와 Studio의 명시적인 Windows 매니페스트를 포함한다. */
+#define wxUSE_RC_MANIFEST 0
+#include <wx/msw/wx.rc>
+1 24 "@RFAD_STUDIO_MANIFEST@"
