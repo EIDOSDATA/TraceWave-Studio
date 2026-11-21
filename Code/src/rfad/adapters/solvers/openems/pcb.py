@@ -17,6 +17,7 @@ from .native import (
     descriptor, file_identity, require, write_json,
 )
 from .pcb_mesh import audit_native_mesh
+from .pcb_surface import add_surfaces
 from .pcb_ports import spectra
 from rfad.application.pcb_radiation import raw_names
 
@@ -62,7 +63,8 @@ def prepare(stage, plan, runtime):
         else:
             prop = csx.AddMaterial(name, epsilon=part["epsilon_r"], kappa=part["kappa_s_per_m"])
         for start, stop in part["boxes_mm"]:
-            prop.AddBox(start=start, stop=stop, priority=1)
+            prop.AddBox(start=start, stop=stop, priority=4 if "metal_model" in part and "surface_layers" in case else 1)
+    mask_mappings = add_surfaces(csx, case)
     mappings = []
     for shape in case["shapes"]:
         prop = csx.AddConductingSheet("conductor_" + shape["id"], conductivity=shape["conductivity_s_per_m"], thickness=shape["thickness_m"])
@@ -114,6 +116,7 @@ def prepare(stage, plan, runtime):
                    "consumed_case": case, "project_geometry_consumed": True, "project_materials_consumed": True,
                    "source_mapping": mappings, "board_native_primitive": "cylinder" if board["kind"] == "circle" else "box",
                    "via_source_mapping": via_mappings, "native_connectivity": connectivity,
+                   **({"surface_source_mapping": mask_mappings} if mask_mappings else {}),
                    "approximations": plan["model_report"]["approximations"], "fdtd_executed": False, "physics_validated": False}
     normalization = plan["normalization"]
     files = [descriptor(stage, xml, "native_input")]

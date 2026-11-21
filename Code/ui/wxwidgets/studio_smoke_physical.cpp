@@ -71,11 +71,43 @@ void StudioSmokeDriver::InstallationSmokeTick()
         if (m_setupStage == 3)
         {
             m_setupStage = 4;
-            SetupSmoke::Choose(dialog->m_section, 4);
+            SetupSmoke::Choose(dialog->m_section, m_resultsFixture.value("kind", "") == "solder_mask" ? 1 : 4);
         }
         else if (m_setupStage == 4)
         {
             const auto kind = m_resultsFixture.value("kind", std::string("dielectric_case"));
+            if (kind == "solder_mask")
+            {
+                auto field = [dialog](const std::string& key, const std::string& value)
+                {
+                    static_cast<wxTextCtrl*>(dialog->m_inputs.at(key))->SetValue(Display(value));
+                };
+                if (m_resultsFixture.contains("fullArtifact"))
+                {
+                    if (!dialog->m_context.at("exists").get<bool>())
+                    {
+                        const int index = dialog->m_record->FindString(Display("시험 솔더마스크"));
+                        CanvasAssert(index != wxNOT_FOUND, "전체 피복 원본을 찾지 못했습니다.");
+                        SetupSmoke::Choose(dialog->m_record, index);
+                        return;
+                    }
+                    field("openings", "6 4 4 4");
+                }
+                else
+                {
+                    field("name", "시험 솔더마스크");
+                    field("offset", "0");
+                    field("thickness", "0.15");
+                    auto* material = static_cast<wxChoice*>(dialog->m_inputs.at("material_id"));
+                    const int index = material->FindString(Display("검증용 유전체 케이스 재료"));
+                    CanvasAssert(index != wxNOT_FOUND, "시험 마스크 재료를 찾지 못했습니다.");
+                    SetupSmoke::Choose(material, index);
+                    static_cast<wxCheckBox*>(dialog->m_inputs.at("include_in_em"))->SetValue(true);
+                }
+                m_setupStage = 5;
+                apply();
+                return;
+            }
             if (kind == "grounded_pec_box")
             {
                 if (!dialog->m_context.at("exists").get<bool>())
@@ -152,9 +184,25 @@ void StudioSmokeDriver::InstallationSmokeTick()
     {
         const std::string installed = m_frame.m_solverResult.at("artifact_id");
         CanvasAssert(installed != m_solverFirstResult, "케이스 해석이 별도 결과를 생성하지 않았습니다.");
+        if (m_resultsFixture.value("kind", "") == "solder_mask" && !m_resultsFixture.contains("fullArtifact"))
+        {
+            m_resultsFixture["fullArtifact"] = installed;
+            m_setupStage = 3;
+            m_frame.CallAfter([this]()
+            {
+                wxCommandEvent event(wxEVT_MENU, IdPhysicalSetup);
+                m_frame.GetEventHandler()->ProcessEvent(event);
+            });
+            return;
+        }
+        const auto full = m_resultsFixture.value("fullArtifact", "");
         m_resultsFixture = {{"bare", {{"kind", "solver"}, {"artifact_id", m_solverFirstResult}}},
                             {"installed", {{"kind", "solver"}, {"artifact_id", installed}}},
                             {"kind", m_resultsFixture.value("kind", std::string("dielectric_case"))}};
+        if (!full.empty())
+        {
+            m_resultsFixture["full"] = {{"kind", "solver"}, {"artifact_id", full}};
+        }
         m_setupStage = 11;
         m_frame.OpenProject("open", m_frame.m_path);
     }
@@ -174,6 +222,12 @@ void StudioSmokeDriver::InstallationSmokeTick()
         {
             CanvasAssert(view->Add(workspace.m_description), "기판 단독 결과를 다시 읽지 못했습니다.");
             m_setupStage = 13;
+            workspace.Select(m_resultsFixture.contains("full") ? m_resultsFixture.at("full") : m_resultsFixture.at("installed"));
+        }
+        else if (m_setupStage == 13 && m_resultsFixture.contains("full") && workspace.m_description.is_object() &&
+                 workspace.m_description.at("source") == m_resultsFixture.at("full"))
+        {
+            CanvasAssert(view->Add(workspace.m_description), "전체 피복 해석 결과를 다시 읽지 못했습니다.");
             workspace.Select(m_resultsFixture.at("installed"));
         }
         else if (m_setupStage == 13 && workspace.m_description.is_object() &&
@@ -188,9 +242,14 @@ void StudioSmokeDriver::InstallationSmokeTick()
             m_setupStage = 15;
             workspace.Compare(view, 1);
         }
-        else if (m_setupStage == 15 && view->m_comparisons.at(1).is_object())
+        else if (m_setupStage == 15 || m_setupStage == 17)
         {
-            const auto& comparison = view->m_comparisons.at(1);
+            const std::size_t index = m_setupStage == 17 ? 2 : 1;
+            const auto& comparison = view->m_comparisons.at(index);
+            if (!comparison.is_object())
+            {
+                return;
+            }
             CanvasAssert(comparison.at("points").size() == 31, "S11 공통 표본을 표시하지 못했습니다.");
             const auto& installation = comparison.at("installation_comparison");
             CanvasAssert(installation.contains("frequencies"), installation.dump());
@@ -199,12 +258,23 @@ void StudioSmokeDriver::InstallationSmokeTick()
             CanvasAssert(dialog != nullptr && dialog->IsShown(), "설치 방사 비교 창이 열리지 않았습니다.");
             auto* values = dynamic_cast<wxStaticText*>(wxWindow::FindWindowByName("installation-efficiencies", dialog));
             const auto kind = m_resultsFixture.at("kind");
-            const auto firstLabel = kind == "grounded_pec_box" ? "(비접촉)" : kind == "isolated_pec_box" ? "기준 결과" : "기판 단독";
+            const auto firstLabel = kind == "solder_mask" ? "마스크 없음" :
+                kind == "grounded_pec_box" ? "(비접촉)" : kind == "isolated_pec_box" ? "기준 결과" : "기판 단독";
             const auto secondLabel = kind == "grounded_pec_box" ? "(접지 연결)" :
-                kind == "isolated_pec_box" ? "검증용 금속 상자" : "유전체 케이스 시험";
+                kind == "isolated_pec_box" ? "검증용 금속 상자" :
+                kind == "solder_mask" ? (index == 1 ? "(개구 없음)" : "(개구 1개)") : "유전체 케이스 시험";
             CanvasAssert(values != nullptr && values->GetLabel().Contains(Display(firstLabel)) &&
                              values->GetLabel().Contains(Display(secondLabel)),
                          "설치 비교 창에 두 원본과 효율이 표시되지 않았습니다.");
+            if (kind == "solder_mask" && index == 1)
+            {
+                CanvasAssert(view->m_pages.size() == 3 && view->m_pages.at(2).is_object(), "S11 세 곡선을 읽지 못했습니다.");
+                m_setupStage = 17;
+                dialog->Destroy();
+                view->m_orders.at(2) = Json::array({0});
+                workspace.Compare(view, 2);
+                return;
+            }
             m_setupChecks.push_back("native_installation_reopen_s11_efficiency_radiation");
             m_setupStage = 16;
             dialog->Destroy();

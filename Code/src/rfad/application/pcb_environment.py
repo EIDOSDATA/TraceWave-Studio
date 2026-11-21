@@ -19,6 +19,8 @@ def scene_extents(case, *, sheet=False):
     for part in case.get("environment", {}).get("parts", []):
         bounds = [[min(a, lo), max(b, hi)] for (a, b), lo, hi in
                   zip(bounds, part["start_mm"], part["stop_mm"])]
+    for surface in case.get("surface_layers", []):
+        bounds = [[min(a, c), max(b, d)] for (a, b), (c, d) in zip(bounds, surface["bounds_mm"])]
     return bounds
 
 

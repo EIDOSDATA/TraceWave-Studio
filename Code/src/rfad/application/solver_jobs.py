@@ -323,9 +323,12 @@ class SolverCoordinator:
             if "radiation_summary" in result:
                 result_record["metadata"]["radiation_summary"] = deepcopy(result["radiation_summary"])
                 operation["radiation_summary"] = deepcopy(result["radiation_summary"])
-            environment = captured["analysis_plan"]["case"].get("environment")
-            if environment:
-                result_record["metadata"]["installation_name"] = environment["name"]
+            from rfad.application.pcb_surfaces import mask_label
+
+            case = captured["analysis_plan"]["case"]
+            name = " / ".join(filter(None, (case.get("environment", {}).get("name", ""), mask_label(case))))
+            if name:
+                result_record["metadata"]["installation_name"] = name
             if captured["analysis_plan"]["analysis_profile"] == REFERENCE_PROFILE:
                 result_record["metadata"]["reference_scope"] = deepcopy(result["reference_scope"])
                 result_record["metadata"]["reference_grid_mm"] = captured["analysis_plan"]["case"]["mesh"]["interior_grid_mm"]

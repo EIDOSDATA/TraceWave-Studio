@@ -123,7 +123,7 @@ def policy_report(case, lines):
                       "axis_max_adjacent_ratio": max(max(a / b, b / a) for a, b in zip(steps, steps[1:]))}
     highest_excitation = case["excitation"]["center_hz"] + case["excitation"]["width_hz"]
     report = {"schema": "rfad.pcb-mesh-policy/0.1", **policy,
-            "padding_reference": ("installed_scene_outer_face_to_outer_boundary" if "environment" in case
+            "padding_reference": ("installed_scene_outer_face_to_outer_boundary" if "environment" in case or "surface_layers" in case
                                   else "physical_board_outer_face_to_outer_boundary"),
             "pml_cells_per_end": 8, "pml_thickness_mm": 8 * policy["air_cell_mm"], "padding_extension_preserves_common_lines": True,
             "air_growth_postcondition_checked": True, "interior_critical_intervals_unchanged": True,
@@ -173,6 +173,12 @@ def mesh_lines(case):
         for start, stop in part["boxes_mm"]:
             for axis in range(3):
                 critical[axis].extend((start[axis], stop[axis]))
+    for surface in case.get("surface_layers", []):
+        for axis, bounds in enumerate(surface["bounds_mm"]):
+            critical[axis].extend(bounds)
+        for hole in surface["openings_mm"]:
+            for axis, (low, high) in enumerate(hole):
+                critical[axis].extend((low, (low + high) / 2, high))
     result = {}
     total = 1
     for axis, positions in enumerate(critical):

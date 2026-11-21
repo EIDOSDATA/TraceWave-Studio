@@ -83,6 +83,11 @@ def validate_preparation(plan, preparation):
                      "tool_hole_diameter_mm": via["tool_hole_diameter_mm"], "tool_hole_used_for_native_geometry": False, "native_drill_basis": "finished_hole_diameter"}
                     for via in plan["case"].get("vias", [])]
     connectivity = consumption.get("native_connectivity", {})
+    expected_surfaces = [{"id": row["id"], "native_property": "mask_" + row["id"], "profile": row["profile"],
+                          "covered_point_checked": True, "openings_checked": len(row["openings_mm"])}
+                         for row in plan["case"].get("surface_layers", [])]
+    if consumption.get("surface_source_mapping", []) != expected_surfaces:
+        fail("E_HASH", "준비 산출물의 솔더마스크 피복과 개구가 계획과 다릅니다.")
     expected_grounding = [(part["id"], part["ground_geometry_id"]) for part in plan["case"].get("environment", {}).get("parts", [])
                           if part["kind"] == "grounded_pec_box"]
     observed_grounding = connectivity.get("grounded_environment", [])

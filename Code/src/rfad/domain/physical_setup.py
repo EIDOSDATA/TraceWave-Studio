@@ -18,6 +18,7 @@ SURFACE_NUMBERS = ("offset", "thickness", "x", "y", "width", "height")
 PART_NUMBERS = ("x", "y", "z", "yaw", "width", "height", "depth")
 PART_KINDS = ("box", "step", "dielectric_case", "isolated_pec_box", "grounded_pec_box")
 EM_PART_KINDS = {"dielectric_case", "isolated_pec_box", "grounded_pec_box"}
+EM_SURFACE_KINDS = {"solder_mask"}
 ROW_FIELDS = {
     "surface": {"id", "name", "kind", "side", "coverage", "material_id", "openings", "source_refs", *FLAGS, *SURFACE_NUMBERS},
     "scenario": {"id", "name", "source_refs"},
@@ -247,5 +248,5 @@ def em_exclusions(document):
     """! @brief 지원하지 않는 해석 포함 요청은 모델에서 조용히 버리지 않는다."""
     surfaces, parts = candidates(document)
     return [{"id": row["id"], "section": section, "reason": "unsupported_in_profile" if row["include_in_em"] else "excluded_by_user"}
-            for section, rows in (("surface", surfaces), ("part", parts)) for row in rows
-            if not (row["include_in_em"] and section == "part" and row["kind"] in EM_PART_KINDS)]
+            for section, rows, supported in (("surface", surfaces, EM_SURFACE_KINDS), ("part", parts, EM_PART_KINDS))
+            for row in rows if not (row["include_in_em"] and row["kind"] in supported)]

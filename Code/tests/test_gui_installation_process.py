@@ -13,6 +13,7 @@ from rfad.application.projects import ProjectService
 from rfad.domain.physical_setup import setup
 from test_cad_worker_process import register_fixture
 from test_pcb_environment import ENV_SETTINGS, add_case, board_fixture, ground_fixture
+from test_pcb_surfaces import add_mask
 from test_physical_setup import load
 
 
@@ -34,6 +35,65 @@ class GuiInstallationTests(unittest.TestCase):
         """! @brief 같은 설치 물체를 급전 기준 패드에 연결하고 비접촉 스냅샷과 비교한다."""
         self.verify_installations(kind="grounded_pec_box")
 
+    def run_gui(self, directory, workspace):
+        """! @brief Windows 제품의 해석, 저장 및 비교 경로를 실제 worker와 실행한다."""
+        report = directory / "gui.json"
+        settings = directory / "settings.json"
+        settings.write_text(json.dumps(ENV_SETTINGS), encoding="utf-8")
+        result = subprocess.run([GUI, "--python", sys.executable, "--source", str(ROOT / "src"),
+                                 "--workspace", str(workspace), "--open-project", "projects/CAD 한글 교환 검증",
+                                 "--openems-wsl", "--installation-smoke-test", "--solver-settings", str(settings),
+                                 "--smoke-report", str(report)], capture_output=True, timeout=330)
+        self.assertTrue(report.is_file(), result.stderr)
+        verification = json.loads(report.read_bytes())
+        self.assertEqual(result.returncode, 0, verification)
+        self.assertIn("native_installation_reopen_s11_efficiency_radiation", verification["setup_checks"])
+        return verification
+
+    def test_mask_absent_full_and_open_reopen(self):
+        """! @brief 동일 급전으로 마스크 세 상태를 계산하고 창에서 비교한다."""
+        with TemporaryDirectory(prefix="TraceWave mask ") as temporary:
+            directory = Path(temporary)
+            workspace = directory / "work"
+            document = board_fixture()
+            unknown = add_mask(document)
+            unknown.update(name="납품 마스크 참조 (미정)", material_id=None, include_in_em=False)
+            (directory / "installation-part.json").write_text('{"kind":"solder_mask"}', encoding="utf-8")
+            with ProjectService(workspace, auto_run=False) as service:
+                original, _ = register_fixture(service, document)
+            evidence = self.run_gui(directory, workspace)
+            with ProjectService(workspace, auto_run=False) as service:
+                stored = load(service, original)
+                self.assertEqual(stored["revision_id"], evidence["saved_revision"])
+                self.assertIn(unknown, setup(stored)["surfaces"])
+                for key in ("board", "stackup", "geometry", "ports", "materials", "source_references", "measurement_sets"):
+                    self.assertEqual(original[key], stored[key])
+                state = service.journal.read()
+                verified = {}
+                for result in state["solver_results"].values():
+                    normalized = json.loads(service.journal.read_artifact(result["normalized"]))
+                    case = normalized["provenance"]["analysis_plan"]["case"]
+                    masks = case.get("surface_layers", [])
+                    key = len(masks[0]["openings_mm"]) if masks else -1
+                    self.assertNotIn(key, verified)
+                    verified[key] = {"s11_at_10_ghz": normalized["samples"][15]["s11"], "port": case["port"],
+                                     "radiation": normalized["radiation_summary"]}
+                    if masks:
+                        preparation = state["prepared_plans"][result["prepared_plan_id"]]
+                        reference = next(row["artifact"] for row in preparation["files"] if row["role"] == "consumption_report")
+                        mapping, = json.loads(service.journal.read_artifact(reference))["surface_source_mapping"]
+                        self.assertEqual(mapping["openings_checked"], key)
+                        self.assertTrue(mapping["covered_point_checked"])
+                self.assertEqual(set(verified), {-1, 0, 1})
+                self.assertTrue(all(row["port"] == verified[-1]["port"] for row in verified.values()))
+                self.assertEqual(len({tuple(row["s11_at_10_ghz"]) for row in verified.values()}), 3)
+                self.assertTrue(all(not row["radiation"]["physics_validated"] for row in verified.values()))
+                evidence["mask_evidence"] = verified
+            if output := os.environ.get("RFAD_GUI_TEST_ARTIFACT_DIR"):
+                path = Path(output)
+                path.mkdir(parents=True, exist_ok=True)
+                (path / "installation-mask-gui.json").write_text(json.dumps(evidence, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
     def verify_installations(self, *, kind):
         """! @brief 시나리오 편집과 실제 원본/XML/결과의 일치를 공통 흐름에서 검증한다."""
         metal = kind != "dielectric_case"
@@ -48,17 +108,7 @@ class GuiInstallationTests(unittest.TestCase):
                 (directory / "installation-part.json").write_text(json.dumps({"kind": kind}), encoding="utf-8")
             with ProjectService(workspace, auto_run=False) as service:
                 original, _ = register_fixture(service, document)
-            report = directory / "gui.json"
-            settings = directory / "settings.json"
-            settings.write_text(json.dumps(ENV_SETTINGS), encoding="utf-8")
-            result = subprocess.run([GUI, "--python", sys.executable, "--source", str(ROOT / "src"),
-                                     "--workspace", str(workspace), "--open-project", "projects/CAD 한글 교환 검증",
-                                     "--openems-wsl", "--installation-smoke-test", "--solver-settings", str(settings),
-                                     "--smoke-report", str(report)], capture_output=True, timeout=330)
-            self.assertTrue(report.is_file(), result.stderr)
-            verification = json.loads(report.read_bytes())
-            self.assertEqual(result.returncode, 0, verification)
-            self.assertIn("native_installation_reopen_s11_efficiency_radiation", verification["setup_checks"])
+            verification = self.run_gui(directory, workspace)
             with ProjectService(workspace, auto_run=False) as service:
                 stored = load(service, original)
                 self.assertEqual(stored["revision_id"], verification["saved_revision"])

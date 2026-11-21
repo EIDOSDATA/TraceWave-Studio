@@ -13,6 +13,7 @@ from rfad.application.pcb_geometry import (MAX_POLYGON_POINTS, fail, scalar, len
 from rfad.application.pcb_mesh import mesh_lines, policy_report
 from rfad.application.pcb_compute import limits as compute_limits
 from rfad.application.pcb_environment import project_environment
+from rfad.application.pcb_surfaces import project_surfaces
 from rfad.application.pcb_results import normalization_contract
 from rfad.domain.design import material_input_fields, resolve_scalar
 from rfad.domain.material_models import TOTAL_TAN_DELTA_MODEL
@@ -269,13 +270,21 @@ def project_pcb(document, settings):
             "port": port, "settings": deepcopy(settings), "frequency_hz": deepcopy(frequency), "excitation": excitation,
             "native_length_unit": "mm", "delta_unit_m": 0.001, "coordinate_round_decimals_mm": 12, "boundary_conditions": ["PML_8"] * 6, "num_threads": compute_limits(settings)["num_threads"],
             "stop_criteria": {"max_timesteps": settings["max_timesteps"], "energy_decay": settings["end_criterion"], "exact_end_criteria": True}}
-    environment = project_environment(document, case,
-                                      lambda material_id, field: dielectric_volume(materials, material_id, field, center_hz))
-    dielectric_regions = dielectrics
+    def volume(material_id, field):
+        """! @brief 설치와 표면층 물성을 같은 대역 기준으로 소비한다."""
+        return dielectric_volume(materials, material_id, field, center_hz)
+
+    environment = project_environment(document, case, volume)
+    dielectric_regions = list(dielectrics)
     if environment is not None:
         case["environment"] = environment
+        dielectric_regions.extend(part for part in environment["parts"] if part["kind"] == "dielectric_case")
+    surfaces = project_surfaces(document, case, volume)
+    if surfaces:
+        case["surface_layers"] = surfaces
+        dielectric_regions.extend(surfaces)
+    if environment is not None or surfaces:
         case["materials"] = list(materials.consumed.values())
-        dielectric_regions = [*dielectrics, *(part for part in environment["parts"] if part["kind"] == "dielectric_case")]
     shortest = 299792458.0 / (center_hz * 1.5 * math.sqrt(max(region["epsilon_r"] for region in dielectric_regions))) * 1000
     if settings["grid_mm"] > shortest / 10:
         fail("E_GEOMETRY", "최소 모델 파장당 10개 격자 초기 기준을 충족하지 못했습니다.", "settings.grid_mm")
@@ -306,7 +315,9 @@ def project_pcb(document, settings):
                                                + (["isolated metal boxes use ideal PEC with zero conductor loss"]
                                                   if environment and any(part["kind"] == "isolated_pec_box" for part in environment["parts"]) else [])
                                                + (["grounded metal uses ideal PEC joined to the reference copper sheet plane; contact impedance omitted"]
-                                                  if environment and any(part["kind"] == "grounded_pec_box" for part in environment["parts"]) else []),
+                                                  if environment and any(part["kind"] == "grounded_pec_box" for part in environment["parts"]) else [])
+                                               + (["solder mask uses uniform dielectric volumes referenced to the modeled outer copper interface; rectangular openings are void"]
+                                                  if surfaces else []),
                              "unsupported_observables": ["absolute_power", "full_s_matrix"] if radiation is not None else ["NF2FF", "gain", "efficiency", "absolute_power", "full_s_matrix"]},
             "resource_estimate": {"kind": "initial_estimate_not_measured", "estimated_grid_points": cells,
                                   "estimated_memory_bytes": 128 * 1024 * 1024 + cells * 160 + (losses["estimated_field_bytes"] * 2 if losses else 0), "max_wall_time_seconds": compute_limits(settings)["max_wall_time_seconds"],

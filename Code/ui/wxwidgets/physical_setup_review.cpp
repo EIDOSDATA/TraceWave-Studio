@@ -221,6 +221,10 @@ void PhysicalSetupDialog::RenderReview()
         text += "\n비접촉 금속 상자는 이상 도체(PEC)로 계산합니다. PCB·케이스·다른 금속과 간극이 필요합니다.";
         text += "\n접지 금속은 최상층의 사각 급전 기준 접지 패드 윗면에 놓으십시오.";
     }
+    if (m_context.at("section") == "surface")
+    {
+        text += "\n솔더마스크를 해석에 포함하려면 재료, 외면 간격과 두께를 입력하십시오. 개구가 비어 있으면 지정한 범위를 모두 피복합니다.";
+    }
     if (!m_stepReview.is_null())
     {
         const auto& box = m_stepReview.at("bbox_mm");

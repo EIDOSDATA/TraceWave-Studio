@@ -68,7 +68,7 @@ def recording(case, lines):
                       center_m=[(a + b) * 0.0005 for a, b in board_extents(case)],
                       actual_clearance_mm=[[a - lo, hi - b] for (a, b), lo, hi in zip(physical, low, high)],
                       pml_clearance_mm=[[lo - lines[axis][8], lines[axis][-9] - hi] for axis, lo, hi in zip("xyz", low, high)])
-    if "environment" in case:
+    if "environment" in case or "surface_layers" in case:
         result.update(phase_center_policy="physical_board_center",
                       center_m=[(a + b) * 0.0005 for a, b in board_extents(case)])
     return result
