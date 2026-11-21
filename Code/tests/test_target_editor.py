@@ -203,6 +203,26 @@ class TargetEditorTests(unittest.TestCase):
         self.assertIn("error", self.wire("target.editor.get", params))
         self.assertEqual(self.service.journal.read(), before)
 
+    def test_explicit_reference_plane_history_keeps_old_sources_and_missing_inputs(self):
+        """! @brief 명시 기준면만 추가하고 사유·원본과 워크스페이스 재열기를 보존한다."""
+        value = target_input()
+        value["port_id"] = None
+        identity = self.seed(value)
+        self.edit(identity, {"reference_plane": "안테나 급전 패드"}, reason="시험 기준면 명시")
+        expected = self.document()["targets"][0]
+        self.assertEqual(expected["reference_plane"], "안테나 급전 패드")
+        self.assertEqual(expected["source_refs"][:-1], value["source_refs"])
+        self.assertIsNone(expected["port_id"])
+        self.assertNotIn("reference_plane", self.get(identity)["input_status"]["missing_conditions"])
+        self.complete("project.save", {"expected_revision": self.revision})
+        opened = self.complete("project.open", {"path": "projects/target-editor", "open_mode": "open"}, {})
+        self.assertEqual(opened["document"]["targets"], [expected])
+        self.edit(identity, {"reference_plane": ""}, reason="기준면 확인 대기")
+        self.assertNotIn("reference_plane", self.document()["targets"][0])
+        self.assertIn("reference_plane", self.get(identity)["input_status"]["missing_conditions"])
+        self.move_history("project.undo")
+        self.assertEqual(self.document()["targets"][0]["reference_plane"], expected["reference_plane"])
+
     def test_renaming_preserves_all_quantity_status_source_and_explicit_rows(self):
         """! @brief 이름 변경으로 추정/자료 기본값이나 혼합 단위 명시 표본을 덮어쓰지 않는다."""
         value = target_input()
@@ -300,7 +320,7 @@ class TargetEditorTests(unittest.TestCase):
         self.assertIn("1-1001", fields["sampling.provenance"]["value"][0])
         self.assertEqual(dto["input_status"]["metrics"]["total_efficiency"], "missing_target")
         self.assertEqual(dto["input_status"]["evaluation_status"], "not_evaluated")
-        self.assertEqual(set(dto["input_status"]["missing_conditions"]), {"port_id", "reference_impedance", "band.reference"})
+        self.assertEqual(set(dto["input_status"]["missing_conditions"]), {"port_id", "reference_impedance", "reference_plane", "band.reference"})
         self.assertLess(len(json.dumps(dto, ensure_ascii=False).encode("utf-8")), target_editor.MAX_DTO_BYTES)
 
     def test_invalid_stale_readonly_and_noop_edits_leave_journal_unchanged(self):

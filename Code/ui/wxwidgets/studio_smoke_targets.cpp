@@ -72,6 +72,7 @@ void StudioSmokeDriver::SetupTargetSmoke(TargetEditorDialog& dialog)
         m_setupStage = 200;
         SetupSafetyChecks(dialog.m_context);
         FillTarget(*dialog.m_fields, "GUI 고대역", "5.8", "5.9");
+        dialog.m_fields->SetFieldValue("reference_plane", "GUI 명시 기준면");
         dialog.m_reason->SetValue(Display("GUI 시험용 목표 추가"));
         m_setupChecks.push_back("new_target_has_no_physical_defaults");
         m_setupStage = 3;
@@ -160,7 +161,9 @@ void StudioSmokeDriver::SetupTargetSmoke(TargetEditorDialog& dialog)
     }
     else if (m_setupStage == 81)
     {
-        CanvasAssert(dialog.m_targetId == m_setupAddedTarget, "삭제할 기존 목표를 선택하지 못했습니다.");
+        CanvasAssert(dialog.m_targetId == m_setupAddedTarget &&
+                         dialog.m_fields->FieldValue("reference_plane") == "GUI 명시 기준면",
+                     "다시 선택한 직접 입력 목표에서 기준면을 읽지 못했습니다.");
         dialog.m_reason->SetValue(Display("시험 목표 명시적 삭제"));
         m_setupStage = 9;
         SetupSmoke::Click(dialog.m_remove);

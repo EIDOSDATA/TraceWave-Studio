@@ -84,6 +84,8 @@ def fields_for(document, target):
         fields.extend(quantity_fields(target, key, label, dimension))
     ports = [("", "미정")] + [(row["id"], row["name"]) for row in document["ports"]]
     fields.append(field("port_id", "평가 포트", target["port_id"] or "", editor="choice", choices=ports))
+    fields.append(field("reference_plane", "목표 평가 기준면", target.get("reference_plane", ""),
+                        help_text="빈칸은 미정입니다. 입력하면 평가할 복소 자료의 기준면 이름과 정확히 일치해야 합니다."))
     sampling = target["band"]["sampling"]
     count = sampling.get("count")
     fields.extend([

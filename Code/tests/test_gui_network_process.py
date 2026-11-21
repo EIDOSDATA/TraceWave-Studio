@@ -51,6 +51,7 @@ class GuiNetworkTests(unittest.TestCase):
             }
             target["port_id"] = original["ports"][0]["id"]
             target["reference_impedance"] = Quantity.from_value(50, "ohm", source_refs=["시험 기준 Z0"]).to_dict()
+            target["reference_plane"] = "입력 기준면"
             original["extensions"]["test.reference"] = {
                 "source_refs": ["사용자 원문 출처"], "manufacturing_condition": None, "measurement_condition": None,
             }
@@ -164,6 +165,7 @@ class GuiNetworkTests(unittest.TestCase):
                 self.assertEqual(model["circuits"][0]["definition"]["elements"][0]["value"]["value_si"], 50)
                 assessment = json.loads(service.journal.read_artifact(model["assessments"][0]["artifact"]))
                 self.assertEqual(assessment["evidence"]["target_original"], target)
+                self.assertEqual(assessment["context"]["reference_plane"], target["reference_plane"])
                 self.assertFalse(assessment["continuous_band_verified"])
                 self.assertFalse(assessment["physics_validated"])
                 self.assertEqual(len(state["projects"][project]["history"]["undo"]), 7)

@@ -340,6 +340,20 @@ class NetworkAssessmentTests(unittest.TestCase):
         goal["criteria"][0]["limit"].update(value=None, status="missing")
         self.assertEqual(evaluate_target(goal, network([0j] * 3), CONTEXT)["status"], "not_evaluated")
 
+    def test_saved_target_plane_cannot_be_bypassed_by_matching_other_data(self):
+        """! @brief 자료와 요청이 일치해도 저장한 목표 기준면이 다르면 판정하지 않는다."""
+        data = network([0j] * 3)
+        goal = {**target(), "reference_plane": "칩 패드 기준면"}
+        before = deepcopy((data, goal))
+        result = evaluate_target(goal, data, CONTEXT)
+        self.assertEqual(result["status"], "not_evaluated")
+        self.assertTrue(all("설계 목표에 저장된 기준면" in row["reason"] for row in result["criteria"][0]["points"]))
+        self.assertEqual((data, goal), before)
+        same_plane = {**goal, "reference_plane": CONTEXT["reference_plane"]}
+        self.assertEqual(evaluate_target(same_plane, data, CONTEXT)["status"], "conditional")
+        renamed = {**CONTEXT, "reference_plane": goal["reference_plane"]}
+        self.assertEqual(evaluate_target(goal, data, renamed)["status"], "not_evaluated")
+
     def test_efficiency_requires_matching_dataset_hash_and_physical_range(self):
         """! @brief 방사 효율은 S11로 추정하지 않으며 다른 정합 결과에 복사하지 않는다."""
         data = network([0j] * 3)

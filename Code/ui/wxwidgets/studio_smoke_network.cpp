@@ -257,13 +257,15 @@ void StudioSmokeDriver::NetworkSmokeTick()
         if (m_setupStage == 15)
         {
             assessment->m_name->SetValue(Display("GUI 목표 평가"));
-            assessment->m_plane->SetValue(Display("입력 기준면"));
+            CanvasAssert(!assessment->m_plane->IsEditable() && assessment->m_plane->GetValue() == Display("입력 기준면"),
+                         "저장한 목표 기준면을 읽기 전용 평가 입력으로 연결하지 못했습니다.");
             m_setupStage = 16;
             SetupSmoke::Click(assessment->m_preview);
         }
         else if (m_setupStage == 16)
         {
             CanvasAssert(assessment->m_review.value("can_apply", false) &&
+                             assessment->m_review.at("assessment").at("context").at("reference_plane") == "입력 기준면" &&
                              !assessment->m_review.at("assessment").at("physics_validated").get<bool>() &&
                              !assessment->m_review.at("assessment").at("continuous_band_verified").get<bool>(),
                          "표본 평가를 연속 대역/실물 검증으로 확대했습니다.");

@@ -6,7 +6,7 @@ import math
 from rfad.application.canonical import canonical_hash
 from rfad.domain.design import _fields, _strings, _uuid
 from rfad.domain.network_data import complex_value, fail, finite, text, validate_dataset
-from rfad.domain.targets import _band, _criteria, _quantity
+from rfad.domain.targets import _band, _criteria, _quantity, validate_target_fields
 
 
 SCHEMA = "rfad.target-assessment/0.1"
@@ -28,9 +28,7 @@ def reflection_metrics(value):
 
 def _target(target):
     """! @brief 프로젝트에서 선택한 목표의 literal 입력과 개정만 재검사한다."""
-    required = {"id", "revision_id", "name", "physical_mode", "band", "port_id", "reference_impedance", "criteria", "source_refs"}
-    if type(target) is not dict or set(target) not in (required, required | {"constraints"}):
-        fail("평가할 목표의 필드가 다릅니다.", "target")
+    validate_target_fields(target, "target")
     for field in ("id", "revision_id"):
         _uuid(target[field], "target." + field)
     text(target["name"], "target.name", limit=256)
@@ -93,6 +91,9 @@ def _basis_reason(target, data, context, port, index):
     """! @brief 비교 조건이 다르면 자동 재정규화/기준면 이동 없이 미평가로 남긴다."""
     if target["port_id"] is None or context["target_port_id"] != target["port_id"]:
         return "목표 포트와 명시적 자료 포트 대응이 미정입니다."
+    expected_plane = target.get("reference_plane")
+    if expected_plane is not None and context["reference_plane"] != expected_plane:
+        return "평가 기준면이 설계 목표에 저장된 기준면과 다르거나 미정입니다."
     if context["reference_plane"] is None or data["reference_planes"][port] != context["reference_plane"]:
         return "목표 평가 기준면과 자료 기준면이 다르거나 미정입니다."
     if data["wave_definition"] == "unknown" or data["port_modes"][port] != "single_ended" or data["current_orientation"][port] != "into_dut":

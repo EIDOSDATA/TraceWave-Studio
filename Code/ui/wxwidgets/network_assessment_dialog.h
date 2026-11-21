@@ -19,6 +19,7 @@ private:
     void BuildInterface();
     void Changed();
     void LoadDataset();
+    void ShowTargetPlane();
     void RenderSelection();
     void Preview();
     void Apply();

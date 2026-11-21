@@ -5,7 +5,7 @@ import math
 
 from rfad.application.target_editor_fields import FREQUENCY_UNITS, QUANTITIES, explicit_lines, fields_for, quantity_at
 from rfad.domain.errors import ProjectError
-from rfad.domain.targets import METRICS, MAX_SAMPLES
+from rfad.domain.targets import METRICS, MAX_SAMPLES, validate_reference_plane
 from rfad.domain.units import Quantity, QuantityError
 
 
@@ -159,6 +159,11 @@ def edited_target(document, original, changes, reason):
         else:
             result[key] = converted
     result["port_id"] = values["port_id"] or None
+    if "reference_plane" in changed:
+        if values["reference_plane"]:
+            result["reference_plane"] = validate_reference_plane(values["reference_plane"], "reference_plane")
+        else:
+            result.pop("reference_plane", None)
     result["band"]["sampling"] = sampling(original["band"]["sampling"], values, changed, reason)
     old_criteria = {item["metric"]: item for item in original["criteria"]}
     replaced = {metric: criterion(old_criteria.get(metric), metric, values, changed, reason) for metric in METRICS}

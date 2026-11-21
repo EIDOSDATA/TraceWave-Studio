@@ -87,7 +87,8 @@ def overview(document):
     for row in model["circuits"]:
         row["display"] = circuit_display(row["definition"])
     targets = [{"id": row["id"], "name": row["name"], "revision_id": row["revision_id"],
-                "port_id": row["port_id"], "reference_impedance": deepcopy(row["reference_impedance"])} for row in document["targets"]]
+                "port_id": row["port_id"], "reference_impedance": deepcopy(row["reference_impedance"]),
+                "reference_plane": row.get("reference_plane")} for row in document["targets"]]
     return bounded({"profile": PROFILE, "project_id": document["project_id"], "revision_id": document["revision_id"],
                     **model, "targets": targets,
                     "ports": [{"id": row["id"], "name": row["name"], "reference_plane": row["reference_plane"]} for row in document["ports"]],

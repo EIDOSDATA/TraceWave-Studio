@@ -74,7 +74,7 @@ class TargetDomainTests(unittest.TestCase):
         self.assertEqual(status["metrics"]["total_efficiency"], "missing_target")
         self.assertEqual(status["metrics"]["radiation_efficiency"], "missing_target")
         self.assertEqual(status["evaluation_status"], "not_evaluated")
-        self.assertEqual(set(status["missing_conditions"]), {"port_id", "reference_impedance", "band.reference"})
+        self.assertEqual(set(status["missing_conditions"]), {"port_id", "reference_impedance", "reference_plane", "band.reference"})
         self.assertIsNone(by_id[first["id"]]["reference_impedance"]["value_si"])
         self.assertEqual(document["materials"], [])
         first["source_refs"].append("외부 변경")

@@ -22,8 +22,25 @@ METRICS = {
     "fractional_bandwidth": {"unit": "1", "operator": "ge", "minimum": 0.0, "maximum": 2.0},
 }
 _TARGET_FIELDS = {"id", "revision_id", "name", "physical_mode", "band", "port_id", "reference_impedance", "criteria", "source_refs"}
-_INPUT_FIELDS = _TARGET_FIELDS - {"revision_id"}
+_TARGET_OPTIONAL_FIELDS = {"constraints", "reference_plane"}
 _NUMERIC_STATUSES = {"user_entered", "source_default", "estimated"}
+
+
+def validate_reference_plane(value, field):
+    """! @brief 자료 기준면과 대조할 수 있는 한 줄 사용자 입력을 보존한다."""
+    _text(value, field, limit=256)
+    if any(ord(character) < 32 for character in value):
+        _fail("E_SCHEMA", "기준면 이름에 제어 문자를 사용할 수 없습니다.", field)
+    return value
+
+
+def validate_target_fields(target, field, *, stored=True):
+    """! @brief 원본과 명령이 공통 목표 필드 및 선택적 기준면 규칙을 사용하게 한다."""
+    required = _TARGET_FIELDS if stored else _TARGET_FIELDS - {"revision_id"}
+    optional = _TARGET_OPTIONAL_FIELDS.intersection(target) if type(target) is dict else set()
+    _fields(target, required | optional, field)
+    if "reference_plane" in target:
+        validate_reference_plane(target["reference_plane"], field + ".reference_plane")
 
 
 def _quantity(document: dict, value: object, dimension: str, field: str, *, missing: bool = False) -> float | None:
@@ -127,7 +144,7 @@ def validate_targets(document: dict) -> None:
         extended = type(target) is dict and "constraints" in target
         if extended and document["schema_version"] not in ("rfad.project/0.4", "rfad.project/0.5", "rfad.project/0.6"):
             _fail("E_VERSION", "목표 제약은 프로젝트 0.4가 필요합니다.", field + ".constraints")
-        _fields(target, _TARGET_FIELDS | ({"constraints"} if extended else set()), field)
+        validate_target_fields(target, field)
         for key in ("id", "revision_id"):
             identity = _uuid(target[key], field + "." + key)
             if identity in used:
@@ -162,6 +179,7 @@ def target_input_status(target: dict) -> dict:
         "missing_conditions": [name for name, missing in (
             ("port_id", target["port_id"] is None),
             ("reference_impedance", target["reference_impedance"]["value_si"] is None),
+            ("reference_plane", target.get("reference_plane") is None),
             ("band.reference", target["band"]["reference"]["value_si"] is None),
         ) if missing],
         "evaluation_status": "not_evaluated",
@@ -175,8 +193,7 @@ def apply_target_command(document: dict, command_type: str, payload: dict) -> tu
         return apply_constraints(document, payload)
     _fields(payload, {"target"} if command_type == "target.set" else {"id"}, "command.payload")
     if command_type == "target.set":
-        extended = type(payload["target"]) is dict and "constraints" in payload["target"]
-        _fields(payload["target"], _INPUT_FIELDS | ({"constraints"} if extended else set()), "command.payload.target")
+        validate_target_fields(payload["target"], "command.payload.target", stored=False)
         identity = _uuid(payload["target"]["id"], "command.payload.target.id")
     else:
         identity = _uuid(payload["id"], "command.payload.id")

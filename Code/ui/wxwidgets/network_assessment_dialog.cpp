@@ -74,6 +74,7 @@ NetworkAssessmentDialog::NetworkAssessmentDialog(wxWindow* parent, const Json& c
         m_history->Append(Display(row.at("name").get<std::string>() + " / " + Status(row.at("status"))));
     }
     m_history->SetSelection(0);
+    ShowTargetPlane();
     m_loading = false;
     RenderSelection();
     SetStatus("목표 개정과 자료의 포트, 기준면, Z0를 확인하세요. 결과 저장은 새 평가 기록을 만듭니다.");
@@ -196,6 +197,7 @@ void NetworkAssessmentDialog::BuildInterface()
                     [this](wxCommandEvent&)
                     {
                         Changed();
+                        ShowTargetPlane();
                         RenderSelection();
                     });
     m_ports->Bind(wxEVT_CHOICE,
@@ -302,6 +304,15 @@ void NetworkAssessmentDialog::LoadDataset()
             });
 }
 
+/** @brief 저장한 기준면을 평가의 고정 입력으로 표시한다. */
+void NetworkAssessmentDialog::ShowTargetPlane()
+{
+    const int selected = m_targets->GetSelection();
+    const Json expected = selected < 0 ? Json(nullptr) : m_context.at("targets").at(selected).value("reference_plane", Json(nullptr));
+    m_plane->ChangeValue(expected.is_null() ? wxString() : Display(expected.get<std::string>()));
+    m_plane->SetEditable(expected.is_null());
+}
+
 void NetworkAssessmentDialog::RenderSelection()
 {
     const bool loading = m_loading;
@@ -333,6 +344,7 @@ void NetworkAssessmentDialog::RenderSelection()
     {
         const auto& target = m_context.at("targets").at(selected);
         details += "목표: " + target.at("name").get<std::string>() + "\n";
+        details += "목표에 저장한 기준면: " + TextValue(target.value("reference_plane", Json(nullptr))) + "\n";
         details += "목표 Z0: " + TextValue(target.at("reference_impedance").at("value_si")) + " ohm\n";
         details += "목표 포트: " + std::string(target.at("port_id").is_null() ? "미정" : "원본 목표 포트와 명시 대응") +
                    "\n\n";
