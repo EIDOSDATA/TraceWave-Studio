@@ -20,6 +20,13 @@ void StudioSmokeDriver::SetupSmokeTick()
         {
             ++m_setupPendingTicks;
         }
+        if (m_setupStage == 1 && !m_frame.m_busy &&
+            (m_frame.m_options.pcbExchangeSmoke || m_frame.m_options.outputSmoke || m_frame.m_options.resultsSmoke ||
+             m_frame.m_options.validationSmoke || m_frame.m_options.networkSmoke || m_frame.m_options.selectionSmoke ||
+             m_frame.m_options.sweepSmoke))
+        {
+            m_frame.PrepareExtendedWorkspaces(2);
+        }
         if (m_frame.m_options.pcbExchangeSmoke)
         {
             PcbExchangeSmokeTick();

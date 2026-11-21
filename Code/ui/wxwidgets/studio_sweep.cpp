@@ -14,8 +14,6 @@ void StudioFrame::BuildSweepInterface()
     m_sweepPanel->NavigationView()->Hide();
     m_sweepPanel->ConditionsView()->Hide();
     m_views->AddPage(m_sweepPanel, Display("연구"));
-    m_workspaceJobs->InsertItem(2, Display("설계 연구"));
-    ShowWorkspaceJob(2, "idle", "저장된 연구를 선택하고 실행합니다.");
     m_sweepPanel->onRefresh = [this]()
     {
         RefreshSweeps(m_sweepPanel->StudyId());
@@ -44,15 +42,6 @@ void StudioFrame::BuildSweepInterface()
     {
         OpenSweepSelection(index);
     };
-    auto* analysis = GetMenuBar()->FindItem(IdProjectStudy)->GetMenu();
-    analysis->Append(IdSweep, Display("설계 스윕 / 다축 연구"));
-    Bind(
-        wxEVT_MENU,
-        [this](wxCommandEvent&)
-        {
-            m_views->SetSelection(8);
-        },
-        IdSweep);
     auto* prepare = m_views->GetPage(3);
     auto* button = new wxButton(prepare, wxID_ANY, Display("설계 스윕 / 다축 연구"));
     StudioTheme::Button(*button);
@@ -79,7 +68,6 @@ void StudioFrame::UpdateSweepViews()
     const bool busy = m_busy || m_sweepPending || m_setupDialog != nullptr;
     m_sweepPanel->SetEnabledState(available, busy, m_sweepUncertain);
     m_sweepPanel->SetSelectionSupported(m_sweepSelectionSupported);
-    GetMenuBar()->Enable(IdSweep, available);
     if (active && available && !busy && !m_sweepRefreshQueued && m_sweepAttemptedRevision != m_revision)
     {
         m_sweepRefreshQueued = true;

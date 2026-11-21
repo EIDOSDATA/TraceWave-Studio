@@ -42,7 +42,10 @@ void StudioFrame::BuildWorkspacePages()
     action(analysis, analysis->GetSizer(), IdValidate, "현재 설계 입력 검사");
     action(analysis, analysis->GetSizer(), IdRunSolver, "해석 조건 확인 및 실행");
     action(analysis, analysis->GetSizer(), IdProjectStudy, "수치 연구 설정");
-    m_analysisSummary = new wxStaticText(analysis, wxID_ANY, wxEmptyString);
+    const auto summary = m_solverConfigured ? "해석 환경 구성됨 / 입력 검사와 해석 실행은 별도입니다."
+                                            : "해석 환경이 구성되지 않았습니다. 편집/저장은 계속 사용할 수 있습니다.";
+    m_analysisSummary = new wxStaticText(analysis, wxID_ANY, Display(summary));
+    m_analysisSummary->Wrap(FromDIP(440));
     analysis->GetSizer()->Add(m_analysisSummary, 0, wxALL, FromDIP(StudioTheme::PanelPadding));
     m_views->AddPage(analysis, Display("해석 준비"));
     auto* comparison = page("수렴 연구", "저장된 수렴 연구 보고서의 조건과 판정을 확인합니다.\n여러 원본의 RF 곡선은 "
@@ -56,6 +59,10 @@ void StudioFrame::BuildWorkspacePages()
                });
     m_views->AddPage(comparison, Display("수렴 연구"));
     BuildOutputInterface();
+}
+
+void StudioFrame::BuildWorkspaceJobs()
+{
     m_workspaceJobs = new wxListCtrl(m_bottom, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_HRULES);
     StudioTheme::Table(*m_workspaceJobs);
     m_workspaceJobs->SetName("workspace.jobs");
@@ -64,6 +71,8 @@ void StudioFrame::BuildWorkspacePages()
     m_workspaceJobs->AppendColumn(Display("내용"), wxLIST_FORMAT_LEFT, FromDIP(500));
     m_workspaceJobs->InsertItem(0, Display("CAD / STEP"));
     m_workspaceJobs->InsertItem(1, Display("해석"));
+    m_workspaceJobs->InsertItem(2, Display("설계 연구"));
+    m_workspaceJobs->InsertItem(3, Display("도면 / 출력 검수"));
     m_workspaceJobs->Bind(wxEVT_SIZE,
                           [this](wxSizeEvent& event)
                           {
@@ -73,6 +82,8 @@ void StudioFrame::BuildWorkspacePages()
                           });
     ShowWorkspaceJob(0, "idle", "아직 작업을 실행하지 않았습니다.");
     ShowWorkspaceJob(1, "idle", "아직 작업을 실행하지 않았습니다.");
+    ShowWorkspaceJob(2, "idle", "저장된 연구를 선택하고 실행합니다.");
+    ShowWorkspaceJob(3, "idle", "고정 입력의 생성과 새 읽기 검수는 별도 단계입니다.");
     m_bottom->AddPage(m_workspaceJobs, Display("작업"));
     m_bottom->SetSelection(3);
     m_bottom->SetDisplayOrder({0, 3, 1, 2});
@@ -90,6 +101,34 @@ void StudioFrame::BuildWorkspacePages()
         UpdateValidationViews();
         UpdateOutputViews();
     };
+}
+
+void StudioFrame::PrepareExtendedWorkspaces(std::size_t page)
+{
+    if (page < 2 || m_analysisSummary != nullptr)
+    {
+        return;
+    }
+    auto* navigation = m_tree->GetParent();
+    const auto navigationChildren = navigation->GetChildren().GetCount();
+    const auto propertiesChildren = m_properties->GetChildren().GetCount();
+    const auto firstNewPage = m_views->GetPageCount();
+    BuildWorkspacePages();
+    BuildNetworkInterface();
+    BuildSweepInterface();
+    BuildResultInterface();
+    BuildValidationInterface();
+    BuildMeasurementInterface();
+    StudioTheme::BindNativeControls(*navigation, navigationChildren);
+    StudioTheme::BindNativeControls(*m_properties, propertiesChildren);
+    for (std::size_t index = firstNewPage; index < m_views->GetPageCount(); ++index)
+    {
+        StudioTheme::BindNativeControls(*m_views->GetPage(index));
+    }
+    for (const auto& item : m_workspaceCommands)
+    {
+        item.second->Enable(m_tools.at(item.first)->IsEnabled());
+    }
 }
 
 void StudioFrame::NavigateWorkspace(WorkspaceArea area)
@@ -224,10 +263,13 @@ void StudioFrame::UpdateWorkspace()
     }
     m_workspaceLayers->Enable(m_connected && !m_busy && !m_project.empty());
     m_workspaceBoard->Enable(m_connected && !m_busy && !m_project.empty());
-    m_analysisSummary->SetLabel(Display(m_solverConfigured
-                                            ? "해석 환경 구성됨 / 입력 검사와 해석 실행은 별도입니다."
-                                            : "해석 환경이 구성되지 않았습니다. 편집/저장은 계속 사용할 수 있습니다."));
-    m_analysisSummary->Wrap(FromDIP(440));
+    if (m_analysisSummary != nullptr)
+    {
+        const auto summary = m_solverConfigured ? "해석 환경 구성됨 / 입력 검사와 해석 실행은 별도입니다."
+                                                : "해석 환경이 구성되지 않았습니다. 편집/저장은 계속 사용할 수 있습니다.";
+        m_analysisSummary->SetLabel(Display(summary));
+        m_analysisSummary->Wrap(FromDIP(440));
+    }
     UpdateNetworkViews();
     UpdateSweepViews();
     UpdateResultViews();

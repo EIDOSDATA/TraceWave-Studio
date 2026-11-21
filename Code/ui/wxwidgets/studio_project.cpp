@@ -59,6 +59,7 @@ void StudioFrame::OpenProject(const std::string& mode, const std::string& path, 
                          ReadPcbFeatureRecovery();
                          ReadPcbImportRecovery();
                          ReadMeasurementRecovery();
+                         PrepareOutputRecovery();
                          m_scene = Json::object();
                          m_modelView->Clear();
                          m_cadResult = Json::object();

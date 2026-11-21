@@ -80,6 +80,8 @@ void StudioFrame::BuildInterface()
     const int largeResultsId = wxWindow::NewControlId();
     analysis->Append(largeResultsId, Display("대용량 결과 / 등록과 비교"));
     Bind(wxEVT_MENU, [this](wxCommandEvent&) { ShowLargeResultLibrary(); }, largeResultsId);
+    analysis->Append(IdSweep, Display("설계 스윕 / 다축 연구"));
+    Bind(wxEVT_MENU, [this](wxCommandEvent&) { m_views->SetSelection(8); }, IdSweep);
     bar->Append(analysis, Display("해석"));
     auto* view = new wxMenu;
     view->Append(IdResetLayout, Display("기본 패널 배치 복원"), Display("패널 이동: F6 / 이전 패널: Shift+F6"));
@@ -373,13 +375,12 @@ void StudioFrame::BuildInterface()
                                      .BestSize(FromDIP(wxSize(900, 192)))
                                      .MinSize(FromDIP(wxSize(300, 110)))
                                      .CloseButton(true));
-    BuildWorkspacePages();
-    BuildNetworkInterface();
-    BuildSweepInterface();
-    BuildResultInterface();
-    BuildValidationInterface();
-    BuildMeasurementInterface();
+    BuildWorkspaceJobs();
     BuildWorkspaceLayers();
+    m_views->onPrepareSelection = [this](std::size_t page)
+    {
+        PrepareExtendedWorkspaces(page);
+    };
     m_manager->Update();
     m_defaultLayout = m_manager->SavePerspective();
     m_shell = std::make_unique<StudioShell>(*this, *m_manager, *navigationTabs, *m_tree, *propertiesHost, *m_properties,

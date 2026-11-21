@@ -27,6 +27,8 @@ public:
     /** @brief 서비스 연결 인덱스를 바꾸지 않고 화면의 탭 순서만 지정한다. */
     void SetDisplayOrder(const std::vector<std::size_t>& order);
     std::size_t VisiblePageCount() const;
+    /** @brief 숨은 작업 영역은 처음 선택할 때 필요한 탭을 구성할 수 있다. */
+    std::function<void(std::size_t)> onPrepareSelection;
     std::function<void(int)> onSelectionChanged;
 
 private:

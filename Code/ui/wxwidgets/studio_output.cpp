@@ -1,6 +1,7 @@
 /** @file @brief 출력 작업 공간을 기존 프로젝트, 서비스 및 CAD View에 연결한다. */
 #include "studio_internal.h"
 #include "output_controller.h"
+#include "output_pending_store.h"
 #include "output_workspace.h"
 #include "editor_sync.h"
 
@@ -44,16 +45,33 @@ void StudioFrame::BuildOutputInterface()
     };
 }
 
+/** @brief 권위 영수증을 확인할 이전 출력이 있으면 편집 상태에서도 작업 전환 잠금을 복원한다. */
+void StudioFrame::PrepareOutputRecovery()
+{
+    if (m_output)
+    {
+        return;
+    }
+    bool pending = false;
+    try
+    {
+        pending = OutputPendingStore::Read(Utf8(m_options.workspace), m_project).is_object();
+    }
+    catch (const std::exception&)
+    {
+        pending = true;
+    }
+    if (pending)
+    {
+        PrepareExtendedWorkspaces(5);
+    }
+}
+
 void StudioFrame::UpdateOutputViews()
 {
     if (!m_output)
     {
         return;
-    }
-    if (m_workspaceJobs != nullptr && m_workspaceJobs->GetItemCount() == 3)
-    {
-        m_workspaceJobs->InsertItem(3, Display("도면 / 출력 검수"));
-        ShowWorkspaceJob(3, "idle", "고정 입력의 생성과 새 읽기 검수는 별도 단계입니다.");
     }
     const bool active = m_views->GetSelection() == 5;
     const bool available = !m_closing && !m_busy && m_setupDialog == nullptr && m_pcbDialog == nullptr &&
@@ -69,7 +87,7 @@ void StudioFrame::UpdateOutputViews()
 
 void StudioFrame::OpenOutputStep()
 {
-    if (!m_output || !m_outputSupported)
+    if (!m_outputSupported)
     {
         StartCad(true);
         return;

@@ -35,10 +35,15 @@ void ApplySurface(wxWindow& window, Surface surface)
 }
 
 /** @brief Studio가 관리하는 글자와 읽기 전용 본문의 시스템 대비 변경을 연결한다. */
-void BindNativeContrast(wxWindow& parent, bool initiallyHighContrast)
+void BindNativeContrast(wxWindow& parent, bool initiallyHighContrast, std::size_t firstChild = 0)
 {
+    std::size_t child = 0;
     for (auto* window : parent.GetChildren())
     {
+        if (child++ < firstChild)
+        {
+            continue;
+        }
         auto* edit = dynamic_cast<wxTextCtrl*>(window);
         const bool content = (edit != nullptr && !edit->IsEditable()) ||
                              dynamic_cast<wxTreeCtrl*>(window) != nullptr ||
@@ -263,6 +268,11 @@ wxBitmap Icon(wxWindow& window, const std::string& kind, int size, int rowHeight
     return bitmap;
 }
 
+void BindNativeControls(wxWindow& parent, std::size_t firstChild)
+{
+    BindNativeContrast(parent, StudioAppearance::HighContrast(), firstChild);
+}
+
 void BindSurface(wxWindow& window, Surface surface)
 {
     ApplySurface(window, surface);
@@ -271,7 +281,7 @@ void BindSurface(wxWindow& window, Surface surface)
         window.CallAfter(
             [&window]()
             {
-                BindNativeContrast(window, StudioAppearance::HighContrast());
+                BindNativeControls(window);
             });
     }
     window.Bind(wxEVT_SYS_COLOUR_CHANGED,

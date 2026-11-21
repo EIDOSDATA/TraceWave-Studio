@@ -55,7 +55,17 @@ void StudioSmokeDriver::CanvasSmokeNext()
                      "Docking shell missing.");
         CanvasAssert(m_frame.GetFont().GetFractionalPointSize() >= 11.0 && m_frame.m_views->VisiblePageCount() == 2,
                      "Studio typography or design-only secondary tabs are missing.");
+        CanvasAssert(m_frame.m_views->GetPageCount() == 3 && !m_frame.m_results && !m_frame.m_output,
+                     "편집 작업 전에 결과와 출력 화면이 생성됐습니다.");
         wxWindow* originalCanvasPage = m_frame.m_views->GetPage(0);
+        m_frame.m_views->SetSelection(2);
+        CanvasAssert(m_frame.m_views->GetPageCount() == 17 && m_frame.m_results && m_frame.m_output,
+                     "첫 해석 결과 선택에서 연계 페이지를 구성하지 못했습니다.");
+        wxWindow* originalOutputPage = m_frame.m_views->GetPage(5);
+        m_frame.m_views->SetSelection(5);
+        CanvasAssert(m_frame.m_views->GetPage(5) == originalOutputPage &&
+                         m_frame.m_views->GetPage(5)->IsShownOnScreen(),
+                     "첫 출력 선택이 페이지를 다시 만들거나 표시하지 못했습니다.");
         m_frame.m_views->SetSelection(2);
         CanvasAssert(m_frame.m_views->VisiblePageCount() >= 3 && m_frame.m_views->GetSelection() == 2 &&
                          m_frame.m_views->GetPage(2)->IsShown() && !m_frame.m_views->GetPage(0)->IsShown() &&

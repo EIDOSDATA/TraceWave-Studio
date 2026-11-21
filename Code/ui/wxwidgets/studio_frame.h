@@ -92,9 +92,13 @@ private:
     void RefreshDimensions();
     DialogGateway ObjectToolGateway();
     void ShowObjectTool(std::unique_ptr<ProjectSetupDialog> dialog, const Json& selection);
+    void BuildWorkspaceJobs();
     void BuildWorkspacePages();
+    /** @brief 첫 선택에서 분석과 출력 페이지를 기존 논리 탭 순서대로 구성한다. */
+    void PrepareExtendedWorkspaces(std::size_t page);
     /** @brief 고정 입력의 도면/STEP 생성과 새 읽기 검수를 출력 페이지에 연결한다. */
     void BuildOutputInterface();
+    void PrepareOutputRecovery();
     void UpdateOutputViews();
     void OpenOutputStep();
     void PollOutput(Clock::time_point now);

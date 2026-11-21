@@ -1,6 +1,8 @@
 /** @file @brief native 입력을 유지하는 주 작업 공간의 공통 표시 토큰이다. */
 #pragma once
 
+#include <cstddef>
+
 #include <wx/colour.h>
 #include <wx/window.h>
 #include <wx/bitmap.h>
@@ -55,6 +57,8 @@ void Table(wxListCtrl& list);
 wxBitmap Icon(wxWindow& window, const std::string& kind, int size = 20, int rowHeight = 20);
 /** @brief 패널 생성 시 표면을 적용하고 OS 색 변경도 반영한다. */
 void BindSurface(wxWindow& window, Surface surface = Surface::Panel);
+/** @brief 늦게 만든 패널의 native 컨트롤에도 시스템 색 변경을 연결한다. */
+void BindNativeControls(wxWindow& parent, std::size_t firstChild = 0);
 /** @brief OS 기본 글꼴을 유지하며 그룹 제목의 굵기를 구분한다. */
 void Heading(wxStaticText& label);
 /** @brief 동적 안내 문구의 대비를 유지하고 고대비 전환을 반영한다. */

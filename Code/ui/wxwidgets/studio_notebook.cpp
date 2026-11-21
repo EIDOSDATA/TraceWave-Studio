@@ -253,6 +253,10 @@ void StudioNotebook::SetDisplayOrder(const std::vector<std::size_t>& order)
 
 int StudioNotebook::SetSelection(std::size_t index)
 {
+    if (index < m_groups.size() && onPrepareSelection)
+    {
+        onPrepareSelection(index);
+    }
     if (index >= m_pages.size())
     {
         return wxNOT_FOUND;

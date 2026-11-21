@@ -27,6 +27,7 @@ void StudioFrame::UpdateControls()
     GetMenuBar()->Enable(IdNewParameter, opened);
     GetMenuBar()->Enable(IdPcbSelection, opened && m_pcbSelectionSupported);
     GetMenuBar()->Enable(IdProjectStudy, opened && m_studySupported);
+    GetMenuBar()->Enable(IdSweep, m_connected && m_sweepSupported && hasProject && !m_closing);
     GetMenuBar()->Enable(IdTargets, opened && m_targetsSupported);
     GetMenuBar()->Enable(IdTemplates, opened && m_templatesSupported);
     GetMenuBar()->Enable(IdDesignRules, opened && m_designRulesSupported);
