@@ -9757,6 +9757,9 @@
         "../01_개발문서/07_검증/292_입사전력과_기가헤르츠_관통홀_접합검증.md",
         "../01_개발문서/07_검증/301_급전격자와_관통홀_표면손실_독립대조.md",
         "tools/verify_pth_ghz_surface_loss.py",
+        "../01_개발문서/07_검증/305_급전구간_밖의_격자와_수용전력_대조.md",
+        "tools/verify_ro_grid_decomposition.py",
+        "tools/verify_ro_radiator_grid_loss.py",
         "tools/verify_pth_ghz_joint_reference.py",
         "tools/verify_ro_grid_ablation.py"
       ],
@@ -14139,8 +14142,8 @@
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
-      "text_sha256": "989d64eb61a8ea4906314db5b874fcbb8d7c7cef58c06b7fd2cca3939c9ce9b6",
-      "utf8_bytes": 66991
+      "text_sha256": "80ae2bdac149806c305223aadc10adfce9fa66ed60300e21dced3710a4413a7d",
+      "utf8_bytes": 67180
     }
   ],
   "reviewed_commit": "de8b5ac8ca5cfc47d955e557bc76b07e12919e23",
@@ -14521,6 +14524,11 @@
       "path": "01_개발문서/07_검증/303_설치후보_단일축_재실행과_정합대조.md",
       "text_sha256": "57ac8eb2d0c2959ebabf919ea6e1a46fca4a9775fdc1a6a0978fcf554b0e2cd7",
       "utf8_bytes": 3542
+    },
+    {
+      "path": "01_개발문서/07_검증/305_급전구간_밖의_격자와_수용전력_대조.md",
+      "text_sha256": "413bac01d0a580b1ccce35b5a9ec4ee9d85817325ea195beeffa929336cddbae",
+      "utf8_bytes": 4776
     },
     {
       "path": "01_개발문서/07_검증/31_프로젝트_편집복원_검증.md",
@@ -16218,6 +16226,11 @@
       "utf8_bytes": 13140
     },
     {
+      "path": "Code/tools/verify_ro_grid_decomposition.py",
+      "text_sha256": "74d318194531c423047c856709e3c9dd8966e9a8ae57c0a6b67bc4f961f05a97",
+      "utf8_bytes": 6014
+    },
+    {
       "path": "Code/tools/verify_ro_loss_followup.py",
       "text_sha256": "bfedd8665f464e6fa81dc254961cb42a9e5f21d6b8077cca2c962310dd7d7e80",
       "utf8_bytes": 9902
@@ -16226,6 +16239,11 @@
       "path": "Code/tools/verify_ro_port_sensitivity.py",
       "text_sha256": "475cbc6413c4eff626e895bd5cca22598896675b08ba265f9992d6b80da2039e",
       "utf8_bytes": 11460
+    },
+    {
+      "path": "Code/tools/verify_ro_radiator_grid_loss.py",
+      "text_sha256": "6088badbf71743e6d4873c1fe777afc8a917bdeffc383c683d40416915cf6d5c",
+      "utf8_bytes": 7439
     },
     {
       "path": "Code/tools/verify_ro_sheet_impedance.py",

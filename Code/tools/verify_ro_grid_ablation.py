@@ -19,6 +19,8 @@ PORT_NAMES = ("port_ut_1", "port_it_1")
 DURATION = 4.210e-9
 N7_DT = 1.593972486287773e-13
 N8_DT = 1.371922165243796e-13
+N8_RECORDED_STEPS = 30845
+LOSS_DUMPS = ("pcb_loss_E", "pcb_loss_J", "pcb_loss_rotH")
 WORKERS = 3
 THREADS = 2
 TIMEOUT = 4200
@@ -93,12 +95,15 @@ def physical_contract(tree):
         ET.tostring(tree.find("FDTD/" + name)) for name in ("Excitation", "BoundaryCond")]
 
 
-def case_xml(root, fine, changes):
+def case_xml(root, fine, changes, loss_dumps=()):
     """! @brief N7의 선택 구간만 N8의 선으로 교체하고 공통 시간 간격을 고정한다."""
     xml = deepcopy(root)
     selection = xml.find("ContinuousStructure/Properties")
     for dump in selection.findall("DumpBox"):
-        selection.remove(dump)
+        if dump.get("Name") not in loss_dumps:
+            selection.remove(dump)
+    if {dump.get("Name") for dump in selection.findall("DumpBox")} != set(loss_dumps):
+        raise ValueError("보완 대조의 원래 손실 기록 구간이 없습니다.")
     for axis, low, high in changes:
         tag, original = grid_tokens(xml, axis)
         _, reference = grid_tokens(fine, axis)
@@ -116,7 +121,8 @@ def case_xml(root, fine, changes):
     # @brief 진단은 동일한 물리 시간까지 기록하고 제품의 기존 종료 게이트에는 적용하지 않는다.
     fdtd = xml.find("FDTD")
     fdtd.set("TimeStep", format(N8_DT, ".17g"))
-    fdtd.set("NumberOfTimesteps", str(math.ceil((DURATION + 0.020e-9) / N8_DT)))
+    steps = N8_RECORDED_STEPS if loss_dumps else math.ceil((DURATION + 0.020e-9) / N8_DT)
+    fdtd.set("NumberOfTimesteps", str(steps))
     fdtd.set("endCriteria", "1e-12")
     return ET.tostring(xml, encoding="utf-8", xml_declaration=True)
 
@@ -124,7 +130,7 @@ def case_xml(root, fine, changes):
 def planned_xml(name, definition, roots):
     """! @brief 보완 대조는 N8의 세 국부 구간만 N7로 되돌린다."""
     base, replacement = reversed(roots) if name == COMPLEMENT else roots
-    return case_xml(base, replacement, definition)
+    return case_xml(base, replacement, definition, LOSS_DUMPS if name == COMPLEMENT else ())
 
 
 def read_trial(directory, expected_xml, definition):
@@ -136,7 +142,9 @@ def read_trial(directory, expected_xml, definition):
     numbers = [line.partition("%")[0].strip() for line in raw_stats]
     keys = ("cells", "timestep_s", "iterations", "numerical_duration_s", "wall_seconds", "cells_per_s")
     statistics = dict(zip(keys, (float(value) for value in numbers if value), strict=True))
-    expected_iterations = int(ET.fromstring(actual).find("FDTD").get("NumberOfTimesteps"))
+    root = ET.fromstring(actual)
+    expected_iterations = int(root.find("FDTD").get("NumberOfTimesteps"))
+    field_names = tuple(dump.get("Name") + ".h5" for dump in root.findall(".//Properties/DumpBox"))
     if (not all(math.isfinite(value) and value > 0 for value in statistics.values())
             or statistics["iterations"] != expected_iterations
             or not math.isclose(statistics["timestep_s"], N8_DT, rel_tol=1e-9)
@@ -147,7 +155,7 @@ def read_trial(directory, expected_xml, definition):
             "base_grid": "N8" if directory.name == COMPLEMENT else "N7",
             "status": "completed", "input_xml_sha256": hashlib.sha256(actual).hexdigest(),
             "stats": statistics, "points": port_points(directory, DURATION),
-            "raw_sha256": {name: sha(directory / name) for name in (*PORT_NAMES, "openEMS_stats.txt", "native.log")}}
+            "raw_sha256": {name: sha(directory / name) for name in (*PORT_NAMES, "openEMS_stats.txt", "native.log", *field_names)}}
 
 
 def replay_one(name, definition, roots, roots_with_runs):
@@ -200,8 +208,11 @@ def main():
             or not all(math.isclose(rec["native_statistics"]["timestep_seconds"], dt, rel_tol=1e-9)
                        for (_, rec), dt in zip(sources, (N7_DT, N8_DT), strict=True))):
         raise ValueError("7분할과 8분할의 같은 물리·여기 입력을 확인하지 못했습니다.")
+    if COMPLEMENT in selected and sources[1][1]["native_statistics"]["iterations"] != N8_RECORDED_STEPS:
+        raise ValueError("보완 대조는 봉인 N8과 동일한 실제 반복 수가 필요합니다.")
     args.destination.mkdir()
-    result = {"schema": "rfad.ro-grid-ablation/0.2", "scope": "native_port_sensitivity_only",
+    result = {"schema": "rfad.ro-grid-ablation/0.2", "scope": ("native_port_and_raw_loss_capture" if COMPLEMENT in selected
+                        else "native_port_sensitivity_only"),
               "mode": "replay" if args.replay_from else "execute",
               "physics_validated": False, "cutoff_seconds": DURATION, "fixed_dt_seconds": N8_DT,
               "native_executable_sha256": sha(args.executable), "settings": selected,
