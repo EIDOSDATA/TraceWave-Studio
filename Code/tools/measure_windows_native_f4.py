@@ -60,11 +60,14 @@ def prepare(source, root, revision):
     """! @brief 격리 복제본에서 이전 STEP 또는 PDF가 게시된 뒤 후속 작업에만 부하를 연결한다."""
     commit, code = archive_source(source, root, revision)
     application = code / "src/rfad/application"
-    for owner, operation in (("cad", "geometry.build"), ("exchange", "export.build")):
+    for owner, selection, previous in (
+        ("cad", 'job["operation_method"] == "geometry.build"', '"export.build"'),
+        ("exchange", 'job["operation_method"] in {"export.build", "export.verify"}', 'job["operation_method"]'),
+    ):
         patch(application / f"{owner}_jobs.py", "        def started(metadata):\n",
-              f'        if job["operation_method"] == {operation!r}:\n'
+              f'        if {selection}:\n'
               '            request["f4_probe"] = any(\n'
-              f'                {owner!r} in item and item["operation_method"] == "export.build" and item["state"] == "completed"\n'
+              f'                {owner!r} in item and item["operation_method"] == {previous} and item["state"] == "completed"\n'
               '                for item in self.service.journal.read()["jobs"].values())\n'
               "        def started(metadata):\n")
     patch(application / "projects.py",
@@ -84,6 +87,11 @@ def prepare(source, root, revision):
           '            if request.get("f4_probe"):\n'
           '                exercise_native_backend(lambda directory: generate(value, directory, font_path=font_path))\n'
           '            output.mkdir()\n            result["package"] = generate(value, output, font_path=font_path)')
+    patch(drawing, '            result["verification"] = verify(value, root / "original", json.loads(package_raw))',
+          '            manifest = json.loads(package_raw)\n'
+          '            if request.get("f4_probe"):\n'
+          '                exercise_native_backend(lambda _directory: verify(value, root / "original", manifest))\n'
+          '            result["verification"] = verify(value, root / "original", manifest)')
     patch(code / "tests/test_native_process.py", '    test.assertEqual(trace["terminal"]["events_cursor"], len(job["events"]))\n',
           '    test.assertEqual(trace["terminal"]["events_cursor"], len(job["events"]))\n'
           '    from os import environ\n'
@@ -117,6 +125,8 @@ def measure(code, executable, cad, exchange, owner, index):
         "cad": ("test_gui_cad_process.GuiCadProcessTests.test_step_mesh_edit_save_cancel_and_restart", "cad.json"),
         "pdf": ("test_gui_output_process.GuiOutputTests.test_native_pdf_generation_cancel_preserves_published_sources",
                 "output-build.json"),
+        "pdf-verify": ("test_gui_output_process.GuiOutputTests.test_native_snapshot_review_build_verify_save_restart_preserves_sources",
+                       "output.json"),
     }[owner]
     run = subprocess.run([sys.executable, "-m", "unittest", "-v", test], cwd=code, env=env,
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=270, check=False)
@@ -145,6 +155,7 @@ def main():
         parser.add_argument(name, type=Path)
     parser.add_argument("--revision", default="HEAD")
     parser.add_argument("--runs", type=int, default=3)
+    parser.add_argument("--group", choices=("cad", "pdf", "pdf-verify"), action="append")
     args = parser.parse_args()
     executable, cad, exchange = (path.resolve() for path in (args.executable, args.cad_python, args.exchange_python))
     if sys.platform != "win32" or args.runs < 1 or not all(path.is_file() for path in (executable, cad, exchange)):
@@ -155,8 +166,10 @@ def main():
                 "executable_sha256": hashlib.sha256(executable.read_bytes()).hexdigest(),
                 "measurement_tool_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                 "target_lines_per_second": 1000, "planned_runs_per_owner": args.runs, "runs": []}
+    groups = args.group or ("cad", "pdf", "pdf-verify")
+    evidence["groups"] = list(groups)
     for index in range(1, args.runs + 1):
-        for owner in ("cad", "pdf"):
+        for owner in groups:
             result = measure(code, executable, cad, exchange, owner, index)
             evidence["runs"].append(result)
             (root / "evidence.json").write_text(json.dumps(evidence, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

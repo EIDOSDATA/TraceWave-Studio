@@ -1,0 +1,136 @@
+{
+  "schema": "rfad.stage12.native-combined-log-cancellation/0.1",
+  "source_commit": "be8419e1ad59c8824516a3326281836681584ce1",
+  "executable_sha256": "e02bfb9d253f11b6f7686579903b1aff907d7f687d625fba809361511e9f4d46",
+  "measurement_tool_sha256": "2ad96d62c0ab49efdd1f9dbd9c087cde5c33dd7aed510f94770298fe0b75505f",
+  "target_lines_per_second": 1000,
+  "planned_runs_per_owner": 3,
+  "runs": [
+    {
+      "owner": "pdf-verify",
+      "index": 1,
+      "trace": {
+        "control": {
+          "button_enabled": false,
+          "elapsed_ms": 0.036
+        },
+        "job_id": "d3fcb598-2526-4f7c-aa75-6d601bab465a",
+        "native_worker_attached": true,
+        "operation": "export.verify",
+        "receipt": {
+          "elapsed_ms": 63.871,
+          "events_cursor": 3,
+          "job_id": "d3fcb598-2526-4f7c-aa75-6d601bab465a",
+          "state": "cancel_requested"
+        },
+        "state_before": "running",
+        "terminal": {
+          "elapsed_ms": 182.41,
+          "events_cursor": 4,
+          "native_reap_ms": 11.9281,
+          "outcome_unknown": false,
+          "state": "cancelled",
+          "termination_confirmed": true
+        }
+      },
+      "owned_pid": 15480,
+      "native_activity": {
+        "pid": 32040,
+        "parent_pid": 15480,
+        "lines": 2000,
+        "completed_backend_calls": 30,
+        "ready_perf_counter_ns": 770450334977800,
+        "elapsed_seconds": 2.006169
+      },
+      "measured_lines_per_second": 996.924984884125,
+      "drained_lines": 2040,
+      "previous_result_reopened": true,
+      "saved_revision": "2215a0c1-0adf-48cb-83f7-61a45c5417fb"
+    },
+    {
+      "owner": "pdf-verify",
+      "index": 2,
+      "trace": {
+        "control": {
+          "button_enabled": false,
+          "elapsed_ms": 0.4
+        },
+        "job_id": "b316be5e-da5b-4091-8ccc-93116b3c2432",
+        "native_worker_attached": true,
+        "operation": "export.verify",
+        "receipt": {
+          "elapsed_ms": 95.676,
+          "events_cursor": 3,
+          "job_id": "b316be5e-da5b-4091-8ccc-93116b3c2432",
+          "state": "cancel_requested"
+        },
+        "state_before": "running",
+        "terminal": {
+          "elapsed_ms": 219.395,
+          "events_cursor": 4,
+          "native_reap_ms": 8.7839,
+          "outcome_unknown": false,
+          "state": "cancelled",
+          "termination_confirmed": true
+        }
+      },
+      "owned_pid": 28584,
+      "native_activity": {
+        "pid": 17932,
+        "parent_pid": 28584,
+        "lines": 2000,
+        "completed_backend_calls": 25,
+        "ready_perf_counter_ns": 770475272703500,
+        "elapsed_seconds": 2.0102505
+      },
+      "measured_lines_per_second": 994.9008842430333,
+      "drained_lines": 2280,
+      "previous_result_reopened": true,
+      "saved_revision": "87bd1fa1-d6f0-4602-9588-596844ee5b59"
+    },
+    {
+      "owner": "pdf-verify",
+      "index": 3,
+      "trace": {
+        "control": {
+          "button_enabled": false,
+          "elapsed_ms": 0.119
+        },
+        "job_id": "229fdbfe-d132-4100-a786-66ce4d607cc3",
+        "native_worker_attached": true,
+        "operation": "export.verify",
+        "receipt": {
+          "elapsed_ms": 49.594,
+          "events_cursor": 3,
+          "job_id": "229fdbfe-d132-4100-a786-66ce4d607cc3",
+          "state": "cancel_requested"
+        },
+        "state_before": "running",
+        "terminal": {
+          "elapsed_ms": 153.562,
+          "events_cursor": 4,
+          "native_reap_ms": 7.9561,
+          "outcome_unknown": false,
+          "state": "cancelled",
+          "termination_confirmed": true
+        }
+      },
+      "owned_pid": 14956,
+      "native_activity": {
+        "pid": 10588,
+        "parent_pid": 14956,
+        "lines": 2000,
+        "completed_backend_calls": 33,
+        "ready_perf_counter_ns": 770497615432300,
+        "elapsed_seconds": 2.028339
+      },
+      "measured_lines_per_second": 986.0284696000028,
+      "drained_lines": 2040,
+      "previous_result_reopened": true,
+      "saved_revision": "d148e93d-3c24-4be2-81c6-074ac73775c2"
+    }
+  ],
+  "groups": [
+    "pdf-verify"
+  ]
+}
