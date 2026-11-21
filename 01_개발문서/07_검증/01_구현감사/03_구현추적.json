@@ -10380,6 +10380,7 @@
         "../01_개발문서/07_검증/283_윈도우_연속표시_유효표본_검증.md",
         "../01_개발문서/07_검증/288_대형_이차원과_표_스크롤_성능_대조.md",
         "../01_개발문서/07_검증/291_드래그_부분갱신과_표_지연_검증.md",
+        "../01_개발문서/07_검증/299_윈도우_서비스_종료와_복구_회귀.md",
         "../01_개발문서/08_운영환경/05_윈도우_내부검증_배포.md"
       ],
       "gaps": [
@@ -14133,8 +14134,8 @@
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
-      "text_sha256": "292d0eecc73384a2adc76a53ceebb7d872bfd650d4f8088ee228f518094d0e8f",
-      "utf8_bytes": 66529
+      "text_sha256": "138b493e137a5ac0726f9e3eb287b1f84880296e72a380c5a80ebdde36423db7",
+      "utf8_bytes": 66618
     }
   ],
   "reviewed_commit": "de8b5ac8ca5cfc47d955e557bc76b07e12919e23",
@@ -14490,6 +14491,11 @@
       "path": "01_개발문서/07_검증/298_선택형_측정_과거보고서_재열기.md",
       "text_sha256": "e2259794e435a0512c610f66480788d95ff34c8e144382e3d4efcd797bfd1d0e",
       "utf8_bytes": 1662
+    },
+    {
+      "path": "01_개발문서/07_검증/299_윈도우_서비스_종료와_복구_회귀.md",
+      "text_sha256": "4edb16888d9ecfcebb1c7fb39b88e97ff624bd916a66b87807f26de5bfcb2062",
+      "utf8_bytes": 2075
     },
     {
       "path": "01_개발문서/07_검증/29_고정설계_보고서와_인계_검증.md",
@@ -15738,8 +15744,8 @@
     },
     {
       "path": "Code/tests/test_gui_process.py",
-      "text_sha256": "4bbf0021bb0b20ede3bce31cf26600ec21d5cd4fcfb2e7f8393276ab71be1d06",
-      "utf8_bytes": 24370
+      "text_sha256": "4eeaa7bcacd9bfa77834e0eb40c925fbc58095e85a77c01200b9d65a9fb4eea0",
+      "utf8_bytes": 25733
     },
     {
       "path": "Code/tests/test_gui_results_process.py",
@@ -16483,8 +16489,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/service_client.cpp",
-      "text_sha256": "b2be4521d178fa0bb690b1955d48b8a98c6226ba920b2812cbb0660cb77835df",
-      "utf8_bytes": 14334
+      "text_sha256": "813336389b7a8b8c4ac5f8660af3f5d6faba5b6d6dc15bf60ee24c484d4aff56",
+      "utf8_bytes": 14798
     },
     {
       "path": "Code/ui/wxwidgets/smith_chart.cpp",

@@ -250,7 +250,19 @@ void ServiceClient::ReportPipeClosure(const std::string& message)
     }
     if (!m_stopping && m_error.empty())
     {
-        m_error = !m_receivedProtocol && !m_startupError.empty() ? m_startupError : message;
+        if (!m_receivedProtocol && !m_startupError.empty())
+        {
+            m_error = m_startupError;
+            return;
+        }
+        m_error = message;
+        // @brief 파이프 단절과 실제 프로세스 종료를 구분하고 확인된 코드만 진단에 남긴다.
+        DWORD exitCode = 0;
+        if (m_process != nullptr && WaitForSingleObject(m_process, 100) == WAIT_OBJECT_0 &&
+            GetExitCodeProcess(m_process, &exitCode))
+        {
+            m_error += " (종료 코드 " + std::to_string(exitCode) + ")";
+        }
     }
 }
 

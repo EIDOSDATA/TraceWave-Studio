@@ -408,6 +408,31 @@ Journal._check_space = reserve
         self.assertEqual(code, 2, result)
         self.assertFalse(result["passed"])
         self.assertIn("closed", result["error"])
+        self.assertIn("종료 코드 7", result["error"])
+
+    def test_exit_code_after_a_protocol_response_is_preserved(self):
+        """! @brief 첫 실제 프로토콜 응답 뒤 종료해도 프로세스의 확인된 코드를 표시한다."""
+        with TemporaryDirectory(prefix="rfad GUI service response ") as temporary:
+            directory = Path(temporary)
+            program = (
+                "import sys\n"
+                "from rfad.application.rpc import serve\n"
+                "from rfad.application.projects import ProjectService\n"
+                "class Output:\n"
+                "    def write(self, payload):\n"
+                "        return sys.stdout.buffer.write(payload)\n"
+                "    def flush(self):\n"
+                "        sys.stdout.buffer.flush()\n"
+                "        raise SystemExit(17)\n"
+                "workspace = sys.argv[sys.argv.index('--workspace') + 1]\n"
+                "with ProjectService(workspace) as service:\n"
+                "    serve(sys.stdin.buffer, Output(), sys.stderr, service)\n"
+            )
+            source = self.source_stub(directory, program)
+            code, result = self.run_gui(directory, source=source)
+        self.assertEqual(code, 2, result)
+        self.assertFalse(result["passed"])
+        self.assertIn("종료 코드 17", result["error"], result)
 
     def test_missing_python_executable_is_reported(self):
         """! @brief 잘못된 실행 경로를 오류 보고서와 실패 종료 코드로 반환한다."""
