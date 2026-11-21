@@ -10341,6 +10341,8 @@
         "src/rfad/application/mcp.py",
         "src/rfad/application/wsl_process.py",
         "ui/wxwidgets/service_client.cpp",
+        "ui/wxwidgets/canvas_renderer.cpp",
+        "ui/wxwidgets/pcb_catalog_table.h",
         "tools/mcp_stdio.py",
         "tools/build_internal_bundle.py",
         "tools/internal_bundle_inputs.py",
@@ -10359,6 +10361,7 @@
         "../01_개발문서/07_검증/47_키캐드재저장본_엠시피왕복_검증.md",
         "../01_개발문서/07_검증/49_윈도우_에프영_시작시간_검증.md",
         "../01_개발문서/07_검증/283_윈도우_연속표시_유효표본_검증.md",
+        "../01_개발문서/07_검증/288_대형_이차원과_표_스크롤_성능_대조.md",
         "../01_개발문서/08_운영환경/05_윈도우_내부검증_배포.md"
       ],
       "gaps": [
@@ -14112,8 +14115,8 @@
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
-      "text_sha256": "8cabb6c340112c4ef48648b183a10b3cef5c3c1cbbc5bf85cd53da1154e37d2f",
-      "utf8_bytes": 65329
+      "text_sha256": "bd5b78cf82fdd04d20af347a0e6b23c6f20b4213101adc50615ee362e48c44b7",
+      "utf8_bytes": 65506
     }
   ],
   "reviewed_commit": "de8b5ac8ca5cfc47d955e557bc76b07e12919e23",
@@ -14434,6 +14437,11 @@
       "path": "01_개발문서/07_검증/286_동박_면임피던스와_관통홀_귀환_대조.md",
       "text_sha256": "b8334cb5020a499b907dbb668e0e0b6783993654070ddf1b1e4f00170b963a6a",
       "utf8_bytes": 4836
+    },
+    {
+      "path": "01_개발문서/07_검증/288_대형_이차원과_표_스크롤_성능_대조.md",
+      "text_sha256": "2afb6de441e0d691dd9b05572b7bf26840b509273ea2f6502a7ea48fe17721cf",
+      "utf8_bytes": 3903
     },
     {
       "path": "01_개발문서/07_검증/29_고정설계_보고서와_인계_검증.md",
@@ -16106,6 +16114,11 @@
       "utf8_bytes": 6410
     },
     {
+      "path": "Code/ui/wxwidgets/canvas_renderer.cpp",
+      "text_sha256": "5b701855383b36f25e886464ab104ebf11fa39e08d2cd5f9fa1cb1b1d8d03d87",
+      "utf8_bytes": 12981
+    },
+    {
       "path": "Code/ui/wxwidgets/design_canvas_dimensions.cpp",
       "text_sha256": "54177c6f4e0098a83b8b0b01a26601b2db145e83427abe25da89386a8beaa4f6",
       "utf8_bytes": 3589
@@ -16234,6 +16247,11 @@
       "path": "Code/ui/wxwidgets/pcb_cam_output_view.cpp",
       "text_sha256": "29cb5812cad0b3c6e3580c2383aab8dc0caaa04e86e7793f892d3142bdac9c6f",
       "utf8_bytes": 10629
+    },
+    {
+      "path": "Code/ui/wxwidgets/pcb_catalog_table.h",
+      "text_sha256": "dc27f18bd7f0ee50d835ed15e465444d7f9b3821533126abc0da9ebd652c69c4",
+      "utf8_bytes": 1219
     },
     {
       "path": "Code/ui/wxwidgets/pcb_feature_dialog.cpp",

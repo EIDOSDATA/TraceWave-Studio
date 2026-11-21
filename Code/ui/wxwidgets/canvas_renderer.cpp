@@ -170,7 +170,15 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
     {
         return false;
     }
-    wxGraphicsPath path = graphics->CreatePath();
+    // @brief 일반 선분은 끝점을 직접 전달해 같은 native 펜과 겹침 순서를 유지한다.
+    const bool simpleLine = line && !outline && !removal && !highlight &&
+        (static_cast<float>(start.x) != static_cast<float>(end.x) ||
+         static_cast<float>(start.y) != static_cast<float>(end.y));
+    wxGraphicsPath path;
+    if (!simpleLine)
+    {
+        path = graphics->CreatePath();
+    }
     if (line && outline)
     {
         const double angle = std::atan2(end.y - start.y, end.x - start.x);
@@ -198,8 +206,11 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
     }
     else if (line)
     {
-        path.MoveToPoint(start.x, start.y);
-        path.AddLineToPoint(end.x, end.y);
+        if (!simpleLine)
+        {
+            path.MoveToPoint(start.x, start.y);
+            path.AddLineToPoint(end.x, end.y);
+        }
     }
     else if (arc)
     {
@@ -307,7 +318,15 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
         m_lineWidth = width;
     }
     graphics->SetPen(m_linePen);
-    graphics->StrokePath(path);
+    if (simpleLine)
+    {
+        const wxPoint2DDouble points[] = {{start.x, start.y}, {end.x, end.y}};
+        graphics->StrokeLines(2, points);
+    }
+    else
+    {
+        graphics->StrokePath(path);
+    }
     m_unflushed = true;
     return true;
 }

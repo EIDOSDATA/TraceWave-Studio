@@ -861,6 +861,8 @@
       "src/rfad/application/mcp.py",
       "src/rfad/application/wsl_process.py",
       "ui/wxwidgets/service_client.cpp",
+      "ui/wxwidgets/canvas_renderer.cpp",
+      "ui/wxwidgets/pcb_catalog_table.h",
       "tools/mcp_stdio.py",
       "tools/build_internal_bundle.py",
       "tools/internal_bundle_inputs.py",
@@ -885,6 +887,7 @@
       "../01_개발문서/07_검증/47_키캐드재저장본_엠시피왕복_검증.md",
       "../01_개발문서/07_검증/49_윈도우_에프영_시작시간_검증.md",
       "../01_개발문서/07_검증/283_윈도우_연속표시_유효표본_검증.md",
+      "../01_개발문서/07_검증/288_대형_이차원과_표_스크롤_성능_대조.md",
       "../01_개발문서/08_운영환경/05_윈도우_내부검증_배포.md"
     ],
     "next_steps": [

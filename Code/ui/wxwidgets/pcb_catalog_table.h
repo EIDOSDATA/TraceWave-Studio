@@ -11,7 +11,8 @@
 class PcbCatalogTable final : public wxListCtrl
 {
 public:
-    static constexpr long PageSize = 25;
+    /** @brief 보통 화면의 여러 줄을 한 요청에 묶고 긴 응답은 서비스의 바이트 한도에서 나눈다. */
+    static constexpr long PageSize = 64;
 
     PcbCatalogTable(wxWindow* parent, std::function<void(long)> requestRow);
     void Reset();
