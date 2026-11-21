@@ -272,9 +272,18 @@ void StudioSmokeDriver::InstallationSmokeTick()
                 kind == "isolated_pec_box" ? "검증용 금속 상자" :
                 kind == "solder_mask" ? (index == 1 ? "(개구 없음)" : "(개구 1개)") :
                 kind == "bondply" ? "시험 본드플라이" : "유전체 케이스 시험";
+            auto* basis = dynamic_cast<wxStaticText*>(wxWindow::FindWindowByName("installation-basis", dialog));
+            auto* observable = dynamic_cast<wxChoice*>(wxWindow::FindWindowByName("installation-observable", dialog));
             CanvasAssert(values != nullptr && values->GetLabel().Contains(Display(firstLabel)) &&
-                             values->GetLabel().Contains(Display(secondLabel)),
-                         "설치 비교 창에 두 원본과 효율이 표시되지 않았습니다.");
+                             values->GetLabel().Contains(Display(secondLabel)) &&
+                             values->GetLabel().Contains(Display("VSWR")) && values->GetLabel().Contains(Display("미기록")) &&
+                             basis != nullptr && basis->GetLabel().Contains(Display("수용 전력")) &&
+                             basis->GetLabel().Contains(Display("입사 전력")) && observable != nullptr,
+                         "설치 비교 창의 양쪽 표본, 전력 분모, 필드 기록 상태가 올바르지 않습니다.");
+            SetupSmoke::Choose(observable, 0);
+            CanvasAssert(values->GetLabel().Contains(Display("지향성 최대")) &&
+                             installation.at("frequencies").at(0).at("results").at(0).at("peaks_dbi").at("directivity").is_number(),
+                         "동일 각도에서 계산한 지향성의 표시를 전환하지 못했습니다.");
             if (kind == "solder_mask" && index == 1)
             {
                 CanvasAssert(view->m_pages.size() == 3 && view->m_pages.at(2).is_object(), "S11 세 곡선을 읽지 못했습니다.");

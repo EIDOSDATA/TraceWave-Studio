@@ -5,12 +5,36 @@ import math
 from rfad.application.result_radiation import load
 from rfad.application.pcb_surfaces import surface_label
 from rfad.domain.errors import ProjectError
+from rfad.domain.network_assessment import reflection_metrics
+from rfad.domain.radiation_polarization import CONVENTION
 
 
 def _part_label(part):
     """! @brief 같은 부품 이름을 유지한 경우에도 해석의 접지 상태를 알려 준다."""
     state = {"isolated": " (비접촉)", "grounded": " (접지 연결)"}.get(part.get("electrical_connection"), "")
     return part["name"] + state
+
+
+def _reflection(dataset, frequency):
+    """! @brief 방사 주파수에 복소 원본이 있을 때만 S11과 VSWR을 계산한다."""
+    result = {"status": "not_recorded", "z0_ohm": None, "s11_ri": None, "s11_db": None, "vswr": None}
+    grid = dataset["frequency_hz"]
+    if frequency not in grid:
+        return result
+    index = grid.index(frequency)
+    result["z0_ohm"] = None if dataset["z0_ohm"] is None else dataset["z0_ohm"][index][0]
+    if dataset["valid_mask"][index][0][0]:
+        pair = dataset["values_ri"][index][0][0]
+        result.update(status="recorded", s11_ri=pair, **reflection_metrics(complex(*pair)))
+    return result
+
+
+def _fields_at(source, case, frequency):
+    """! @brief 같은 주파수에서 원시 파일을 보존한 기록 성분을 식별한다."""
+    if frequency not in case.get("loss_recording", {}).get("frequency_hz", []):
+        return []
+    roles = {row["role"] for row in source["solver_record"].get("raw_files", [])}
+    return [field for field in ("E", "J", "rotH") if f"raw/pcb_loss_{field}.h5" in roles]
 
 
 def compare(service, left, right):
@@ -50,19 +74,31 @@ def compare(service, left, right):
         return {"reason": "선택한 결과의 방사 기록을 다시 열 수 없습니다."}
     recording = first["recording"]
     other = second["recording"]
-    if any(recording[key] != other[key] for key in ("frequency_hz", "theta_deg", "phi_deg", "radius_m")):
-        return {"reason": "같은 주파수와 각도에서 기록한 방사 결과를 선택하십시오."}
+    if any(recording[key] != other[key] for key in ("frequency_hz", "theta_deg", "phi_deg", "radius_m", "center_m", "surrounding_medium")):
+        return {"reason": "같은 주파수, 방사 중심, 반경과 각도에서 기록한 결과를 선택하십시오."}
+    if first["power_unit"] != second["power_unit"] or first["electric_field_unit"] != second["electric_field_unit"]:
+        return {"reason": "방사 전력 또는 전계의 원래 정규화 단위가 다릅니다."}
+    phi = [angle for angle in (0, 90) if angle in recording["phi_deg"]]
+    columns = [recording["phi_deg"].index(angle) for angle in phi]
+    observables = ("directivity", "gain", "realized_gain")
     frequencies = []
     for a, b in zip(first["frequencies"], second["frequencies"]):
         rows = []
-        for item in (a, b):
+        for item, source, case in zip((a, b), pair, cases):
             metric = item["metrics"]
-            peak = metric["realized_gain_dbi"]
-            cuts = [[None if ring[column] <= 0 or peak is None else peak + 10 * math.log10(ring[column])
-                     for ring in item["normalized_power"]] for column in (0, recording["phi_deg"].index(90))]
+            peaks = {kind: metric[kind + "_dbi"] for kind in observables}
+            cuts = {kind: [[None if ring[column] <= 0 or peak is None else peak + 10 * math.log10(ring[column])
+                            for ring in item["normalized_power"]] for column in columns] for kind, peak in peaks.items()}
             rows.append({"radiation_efficiency": metric["radiation_efficiency"],
                          "total_efficiency": metric["radiated_power_w_s2"] / metric["incident_power_w_s2"],
-                         "power_balance_status": metric["power_balance_status"], "realized_gain_cuts_dbi": cuts})
+                         "power_balance_status": metric["power_balance_status"], "realized_gain_cuts_dbi": cuts["realized_gain"],
+                         "cuts_dbi": cuts, "peaks_dbi": peaks,
+                         "power": {kind: metric[kind + "_power_w_s2"] for kind in ("radiated", "accepted", "incident")},
+                         "reflection": _reflection(source["dataset"], item["frequency_hz"]),
+                         "field_recordings": _fields_at(source, case, item["frequency_hz"]),
+                         "termination": source["numerical_details"]["status"]})
         frequencies.append({"frequency_hz": a["frequency_hz"], "results": rows})
-    return {"names": names, "theta_deg": recording["theta_deg"], "phi_deg": [0, 90], "frequencies": frequencies,
-            "physics_validated": False}
+    return {"names": names, "theta_deg": recording["theta_deg"], "phi_deg": phi, "frequencies": frequencies,
+            "center_m": recording["center_m"], "radius_m": recording["radius_m"], "power_unit": first["power_unit"],
+            "reference_plane": left["dataset"]["reference_planes"][0],
+            "polarization_basis": "theta_phi", "polarization_convention": CONVENTION, "physics_validated": False}

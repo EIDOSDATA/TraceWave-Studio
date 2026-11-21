@@ -10,11 +10,13 @@ from rfad.application.canonical import canonical_bytes
 from rfad.application.pcb_radiation import summary
 from rfad.application.radiation import spectral_power_metrics
 from rfad.application.result_radiation import radiation
+from rfad.application.result_installation import compare as compare_installation
 from rfad.application.result_metrics import metrics
 from rfad.domain.errors import ProjectError
 from rfad.domain.radiation_polarization import polarization, projection
 from rfad.domain.units import Quantity
 from test_pcb_radiation import radiation_plan, field_result
+from test_network_domain import network
 from test_pcb_power import power_plan, synthetic_result
 from test_targets import target_input
 
@@ -41,6 +43,35 @@ def fixture(*, step=30, power=False, negative_loss=False):
     params = {"contract_version": "rfad.api/2.0", "context": {"project_id": plan["snapshot"]["project_id"]},
               "input": {"source": deepcopy(resolved["source"]), "pin": deepcopy(resolved["pin"])}}
     return service, params, resolved, blobs, value
+
+
+class InstallationComparisonTests(unittest.TestCase):
+    """! @brief 설치 비교의 방사 좌표와 정확한 기록 표본을 검사한다."""
+
+    def test_center_mismatch_and_exact_reflection_fields(self):
+        """! @brief 다른 위상 중심을 거절하고 같은 주파수의 전력과 미기록을 구분한다."""
+        service, _, left, _, radiation_result = fixture()
+        right = deepcopy(left)
+        right["normalized"]["provenance"]["analysis_plan"]["case"]["environment"] = {"name": "시험 설치"}
+        frequency = radiation_result["frequencies"][0]["frequency_hz"]
+        for side, recorded_frequency in ((left, frequency), (right, frequency + 1)):
+            side["dataset"] = network([0.5 + 0j], frequencies=[recorded_frequency])
+            side["numerical_details"] = {"status": "not_assessed"}
+        different = deepcopy(radiation_result)
+        different["recording"]["center_m"][0] += 0.001
+        with patch("rfad.application.result_installation.load", side_effect=[(radiation_result, None), (different, None)]):
+            self.assertIn("방사 중심", compare_installation(service, left, right)["reason"])
+        with patch("rfad.application.result_installation.load", side_effect=[(radiation_result, None), (radiation_result, None)]):
+            comparison = compare_installation(service, left, right)
+        first, second = comparison["frequencies"][0]["results"]
+        self.assertEqual(first["reflection"]["vswr"], 3)
+        self.assertIsNone(second["reflection"]["s11_db"])
+        self.assertEqual(second["reflection"]["status"], "not_recorded")
+        self.assertEqual(first["field_recordings"], [])
+        self.assertEqual(first["radiation_efficiency"], first["power"]["radiated"] / first["power"]["accepted"])
+        self.assertEqual(first["total_efficiency"], first["power"]["radiated"] / first["power"]["incident"])
+        self.assertEqual(set(first["cuts_dbi"]), {"directivity", "gain", "realized_gain"})
+        self.assertEqual(comparison["center_m"], radiation_result["recording"]["center_m"])
 
 
 class PolarizationTests(unittest.TestCase):

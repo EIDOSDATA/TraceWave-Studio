@@ -661,6 +661,14 @@ void ResultCompareView::OpenInstallation(const Json& comparison)
     auto* controls = new wxBoxSizer(wxHORIZONTAL);
     auto* frequency = new wxChoice(dialog, wxID_ANY);
     auto* phi = new wxChoice(dialog, wxID_ANY);
+    auto* observable = new wxChoice(dialog, wxID_ANY);
+    observable->SetName("installation-observable");
+    const std::array<const char*, 3> identifiers{"directivity", "gain", "realized_gain"};
+    const std::array<const char*, 3> labels{"지향성", "이득", "실현 이득"};
+    for (const auto* label : labels)
+    {
+        observable->Append(Display(label));
+    }
     for (const auto& row : comparison.at("frequencies"))
     {
         const auto hz = row.at("frequency_hz").get<double>();
@@ -676,12 +684,20 @@ void ResultCompareView::OpenInstallation(const Json& comparison)
         choice->SetSelection(0);
         controls->Add(choice, 0, wxALL, FromDIP(6));
     }
+    observable->SetSelection(2);
+    controls->Add(observable, 0, wxALL, FromDIP(6));
     layout->Add(controls, 0, wxEXPAND);
+    auto* basis = new wxStaticText(dialog, wxID_ANY,
+        Display("급전 기준면 " + comparison.at("reference_plane").get<std::string>() +
+                " / 방사 중심 " + comparison.at("center_m").dump() + " m / 반경 " + comparison.at("radius_m").dump() +
+                " m\n기저 Etheta/Ephi / 방사 효율 분모는 수용 전력, 총 효율 분모는 입사 전력"));
+    basis->SetName("installation-basis");
+    basis->Wrap(FromDIP(725));
+    layout->Add(basis, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(8));
     auto* metrics = new wxStaticText(dialog, wxID_ANY, wxEmptyString);
     metrics->SetName("installation-efficiencies");
     layout->Add(metrics, 0, wxEXPAND | wxALL, FromDIP(8));
     auto* chart = new NetworkChart(dialog, true);
-    chart->SetMetric("gain_dbi", Display("실현 이득 / dBi"));
     layout->Add(chart, 1, wxEXPAND | wxALL, FromDIP(8));
     auto* close = new wxButton(dialog, wxID_CLOSE, Display("닫기"));
     layout->Add(close, 0, wxALIGN_RIGHT | wxALL, FromDIP(8));
@@ -690,8 +706,15 @@ void ResultCompareView::OpenInstallation(const Json& comparison)
         const auto& rows = comparison.at("frequencies").at(frequency->GetSelection()).at("results");
         const auto& theta = comparison.at("theta_deg");
         std::vector<Json> pages;
-        std::vector<wxString> labels;
-        std::string text = "계산 결과 / 물리 검증 전\n";
+        std::vector<wxString> seriesLabels;
+        const auto index = static_cast<std::size_t>(observable->GetSelection());
+        const std::string quantity = identifiers.at(index);
+        chart->SetMetric("gain_dbi", Display(std::string(labels.at(index)) + " / dBi"));
+        std::string text = "계산 결과 / 물리 정확도 미평가\n";
+        const auto number = [](const Json& value)
+        {
+            return value.is_number() ? Utf8(wxString::Format("%.6g", value.get<double>())) : std::string("미기록");
+        };
         for (std::size_t i = 0; i < rows.size(); ++i)
         {
             const auto& row = rows.at(i);
@@ -701,9 +724,22 @@ void ResultCompareView::OpenInstallation(const Json& comparison)
                 return value.is_number() ? Utf8(wxString::Format("%.2f%%", 100.0 * value.get<double>())) : std::string("미평가");
             };
             const auto name = comparison.at("names").at(i).get<std::string>();
-            text += name + "  |  방사 효율 " + percent("radiation_efficiency") + "  |  총 효율 " +
-                    percent("total_efficiency") + "  |  " + ResultUi::State(row.at("power_balance_status")) + "\n";
-            const auto& values = row.at("realized_gain_cuts_dbi").at(phi->GetSelection());
+            const auto& reflection = row.at("reflection");
+            const auto& power = row.at("power");
+            const auto& fields = row.at("field_recordings");
+            const std::string s11 = reflection.value("s11_state", "") == "negative_infinity" ? "-inf" : number(reflection.at("s11_db"));
+            const auto vswrState = reflection.value("vswr_state", "");
+            const std::string vswr = vswrState == "positive_infinity" ? "+inf" :
+                                     vswrState == "undefined_active" ? "정의 불가" : number(reflection.at("vswr"));
+            text += name + " / S11 " + s11 + " dB / VSWR " + vswr + " / Z0 " + reflection.at("z0_ohm").dump() + " ohm\n";
+            text += "  방사 효율 " + percent("radiation_efficiency") + " / 총 효율 " + percent("total_efficiency") +
+                    " / " + std::string(labels.at(index)) + " 최대 " + number(row.at("peaks_dbi").at(quantity)) + " dBi\n";
+            text += "  입사 " + number(power.at("incident")) + " / 수용 " + number(power.at("accepted")) +
+                    " / 방사 " + number(power.at("radiated")) + " " + comparison.at("power_unit").get<std::string>() +
+                    " / " + ResultUi::State(row.at("power_balance_status")) + "\n";
+            text += "  같은 주파수의 필드 " + (fields.empty() ? "미기록" : fields.dump()) +
+                    " / 종료 " + ResultUi::State(row.at("termination")) + "\n";
+            const auto& values = row.at("cuts_dbi").at(quantity).at(phi->GetSelection());
             Json samples = Json::array();
             for (std::size_t j = 0; j < theta.size(); ++j)
             {
@@ -711,13 +747,14 @@ void ResultCompareView::OpenInstallation(const Json& comparison)
                                    {"gain_dbi", values.at(j)}});
             }
             pages.push_back({{"samples", std::move(samples)}});
-            labels.push_back(Display(name));
+            seriesLabels.push_back(Display(name));
         }
         metrics->SetLabel(Display(text));
-        chart->SetSeries(pages, labels, false);
+        metrics->Wrap(std::max(FromDIP(400), dialog->GetClientSize().x - FromDIP(24)));
+        chart->SetSeries(pages, seriesLabels, false);
         dialog->Layout();
     };
-    for (auto* choice : {frequency, phi})
+    for (auto* choice : {frequency, phi, observable})
     {
         choice->Bind(wxEVT_CHOICE, [update](wxCommandEvent&) { update(); });
     }
