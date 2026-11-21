@@ -12,7 +12,7 @@ import xml.etree.ElementTree as ET
 from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.application.pcb_solver import build_pcb_plan, validate_result
 from rfad.application.solver import make_prepared_plan
-from test_pcb_solver import SETTINGS, fixture_document, snapshot_for
+from test_pcb_solver import SETTINGS, fixture_document, quantity, snapshot_for
 from test_pcb_ifa import IFA_SETTINGS, VIA_SETTINGS, ifa_document, via_document, vertical_feed_document
 import test_openems_adapter as reference_tests
 
@@ -164,6 +164,36 @@ class PcbNativeTests(unittest.TestCase):
         result = self.run_worker(stage, request)["result"]
         validate_result(plan, result, prepared)
         self.assertTrue(result["assessment"]["finite_samples"])
+
+    def test_lumped_gap_feeds_top_pad_and_connected_barrel(self):
+        """! @brief 실제 포트의 양단과 위 패드·도금 배럴·아래 패드 연결을 같은 native 실행에서 확인한다."""
+        document = via_document()
+        geometry = {shape["id"]: shape for shape in document["geometry"]}
+        via = next(shape for shape in geometry.values() if shape["kind"] == "via")
+        lower, upper = (geometry[identity] for identity in via["pad_ids"])
+        radiator = next(shape for shape in geometry.values() if shape["role"] == "radiator")
+        for shape in (via, lower, upper):
+            shape["center"] = [quantity(10, "mm"), quantity(6, "mm")]
+            shape["net_id"] = radiator["net_id"]
+        # @brief 두 포트 단자 중 하나를 곡선 근사와 무관한 패드의 직선 경계에 놓는다.
+        upper["pad_shape"] = "rectangle"
+        radiator["start"][0] = quantity(10.5, "mm")
+        document["ports"][0]["positive_geometry_id"] = upper["id"]
+        stage, _, plan, preparation, prepared = self.prepare_case(document=document, settings=VIA_SETTINGS)
+        connectivity = preparation["consumption_report"]["native_connectivity"]
+        expected = {via["id"], lower["id"], upper["id"], radiator["id"]}
+        self.assertIn(sorted(expected), connectivity["components"])
+        self.assertEqual(plan["case"]["port"]["positive_geometry_id"], upper["id"])
+        self.assertTrue(connectivity["port_terminals_connected"])
+        self.assertGreaterEqual(connectivity["port_gap_edge_count"], 2)
+        analysis, runtime = self.stage("fed-pth-analysis")
+        request = self.request("analysis", plan, runtime)
+        request.update(preparation=preparation, prepared_plan=prepared)
+        request["input_files"] = self.copy_inputs(stage, analysis, preparation["files"])
+        result = self.run_worker(analysis, request)["result"]
+        validate_result(plan, result, prepared)
+        self.assertTrue(result["assessment"]["finite_samples"])
+        self.assertFalse(result["assessment"]["physics_validated"])
 
     def test_reopened_native_pth_keeps_air_bore_and_finite_wall(self):
         """! @brief 저장 XML을 실제 CSXCAD로 다시 읽어 구멍 중심과 배럴 재료를 독립 확인한다."""

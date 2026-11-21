@@ -9,6 +9,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 from uuid import uuid4
@@ -17,6 +18,7 @@ from rfad.adapters.solvers.openems import native
 from rfad.adapters.solvers.openems.reference import compare_grids
 from rfad.application.canonical import CANONICAL_VERSION, canonical_bytes, canonical_hash
 from rfad.application.solver import build_analysis_plan, make_prepared_plan
+from rfad.application.solver_runtime import SolverRuntime
 from rfad.domain.errors import ProjectError
 from rfad.domain.project import new_project
 
@@ -124,12 +126,8 @@ class OpenemsNativeTests(unittest.TestCase):
         """! @brief native 실행을 ext4의 전용 임시 공간과 고정 감사 명세로 격리한다."""
         self.temporary = tempfile.TemporaryDirectory(prefix='adapter-test-', dir='/home/tracewave/rfad-runtime')
         self.base = Path(self.temporary.name)
-        self.audit = json.loads((ROOT / '.local' / 'wsl' / 'native-audit.json').read_bytes())
-        self.manifest = json.loads((ROOT / 'runtime_profiles' / 'python-openems-linux-x64.json').read_bytes())
-        self.source_dir = self.base / 'frozen-source'
-        shutil.copytree(ROOT / 'src', self.source_dir / 'src', ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
-        (self.source_dir / 'tools').mkdir()
-        shutil.copyfile(ROOT / 'tools' / 'openems_worker.py', self.source_dir / 'tools' / 'openems_worker.py')
+        # @brief 실제 제품과 같은 의존 소스만 봉인하며 시험 Python에서 직접 시작한다.
+        self.runtime = SolverRuntime(transport=SimpleNamespace(identity=lambda: {'native_test': True}))
 
     def tearDown(self):
         """! @brief 이 시험이 생성한 정확한 임시 디렉터리만 정리한다."""
@@ -139,14 +137,12 @@ class OpenemsNativeTests(unittest.TestCase):
         """! @brief 실행에 필요한 source만 복사하여 자체 해시를 고정한다."""
         stage = self.base / label
         stage.mkdir()
-        shutil.copytree(self.source_dir / 'src', stage / 'src')
-        (stage / 'tools').mkdir()
-        shutil.copyfile(self.source_dir / 'tools' / 'openems_worker.py', stage / 'tools' / 'openems_worker.py')
-        runtime = {'schema': 'rfad.openems-worker-runtime/0.1', 'python_manifest': self.manifest, 'native_audit': self.audit}
-        native.write_json(stage / 'runtime.json', runtime)
-        code = [{'path': path.relative_to(stage).as_posix(), **native.file_identity(path)} for path in sorted((stage / 'src').rglob('*.py'))]
-        code.append({'path': 'tools/openems_worker.py', **native.file_identity(stage / 'tools' / 'openems_worker.py')})
-        return stage, {'runtime_profile': 'openems-wsl-reference/0.1', 'manifest_sha256': native.file_identity(stage / 'runtime.json')['sha256'], 'code_files': code, 'transport': {'native_test': True}}
+        for relative, source in self.runtime.sources.items():
+            path = stage / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(source.encode('utf-8'))
+        (stage / 'runtime.json').write_bytes(self.runtime.manifest_bytes)
+        return stage, deepcopy(self.runtime.identity)
 
     def run_worker(self, stage: Path, request: dict, expected_code: int = 0) -> dict:
         """! @brief 실제 시작 gate와 worker 프로세스 경계를 통과시킨다."""
