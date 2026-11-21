@@ -275,7 +275,7 @@ def project_pcb(document, settings):
     if environment is not None:
         case["environment"] = environment
         case["materials"] = list(materials.consumed.values())
-        dielectric_regions = [*dielectrics, *environment["parts"]]
+        dielectric_regions = [*dielectrics, *(part for part in environment["parts"] if part["kind"] == "dielectric_case")]
     shortest = 299792458.0 / (center_hz * 1.5 * math.sqrt(max(region["epsilon_r"] for region in dielectric_regions))) * 1000
     if settings["grid_mm"] > shortest / 10:
         fail("E_GEOMETRY", "최소 모델 파장당 10개 격자 초기 기준을 충족하지 못했습니다.", "settings.grid_mm")
@@ -301,7 +301,10 @@ def project_pcb(document, settings):
                                                 "dielectric tan_delta converted to constant conductivity at evaluation band center",
                                                 "analytic line/arc/pad converted to bounded-error polygons before Cartesian Yee discretization",
                                                 "PTH uses explicit finite-kappa hollow volume; RF skin depth loss accuracy is unvalidated"]
-                                               + (["open-bottom dielectric case uses five axis-aligned uniform material volumes"] if environment else []),
+                                               + (["open-bottom dielectric case uses five axis-aligned uniform material volumes"]
+                                                  if environment and any(part["kind"] == "dielectric_case" for part in environment["parts"]) else [])
+                                               + (["isolated metal boxes use ideal PEC with zero conductor loss"]
+                                                  if environment and any(part["kind"] == "isolated_pec_box" for part in environment["parts"]) else []),
                              "unsupported_observables": ["absolute_power", "full_s_matrix"] if radiation is not None else ["NF2FF", "gain", "efficiency", "absolute_power", "full_s_matrix"]},
             "resource_estimate": {"kind": "initial_estimate_not_measured", "estimated_grid_points": cells,
                                   "estimated_memory_bytes": 128 * 1024 * 1024 + cells * 160 + (losses["estimated_field_bytes"] * 2 if losses else 0), "max_wall_time_seconds": compute_limits(settings)["max_wall_time_seconds"],

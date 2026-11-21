@@ -112,7 +112,7 @@ def part_bodies(cq, projection):
             outer = cq.Solid.makeBox(width, length, height)
             cavity = cq.Solid.makeBox(width - 2 * wall, length - 2 * wall, height - wall, (wall, wall, 0))
             shape = _positive_solid(outer.cut(cavity))
-        elif row["kind"] == "box":
+        elif row["kind"] in ("box", "isolated_pec_box"):
             shape = cq.Solid.makeBox(*row["size_mm"])
         else:
             shape = read_external(storage[row["id"]])

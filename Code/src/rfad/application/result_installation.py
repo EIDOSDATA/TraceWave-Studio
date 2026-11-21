@@ -15,6 +15,10 @@ def compare(service, left, right):
     if not any("environment" in case for case in cases):
         return None
     names = [case.get("environment", {}).get("name", "기판 단독") for case in cases]
+    if names[0] == names[1]:
+        names = [name + " / " + ("기준 결과" if index == 0 else "비교 결과") + " / " +
+                 ", ".join(part["name"] for part in case.get("environment", {}).get("parts", []))
+                 for index, (name, case) in enumerate(zip(names, cases))]
     identity = ("board", "layers", "shapes", "vias", "port", "settings", "frequency_hz", "excitation", "boundary_conditions")
     if (any(plan.get("analysis_profile") != "rfad.openems.pcb-single-port/0.1" for plan in plans)
             or any(cases[0].get(key) != cases[1].get(key) for key in identity)):

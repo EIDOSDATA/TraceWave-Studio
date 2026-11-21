@@ -53,6 +53,29 @@ def plan(document):
 
 
 class PcbEnvironmentTests(unittest.TestCase):
+    def test_metal_requires_clearance_and_leaves_reference_material_unconsumed(self):
+        """! @brief PEC의 계산 조건과 명시 재료 참조 및 간극을 구분한다."""
+        document = board_fixture()
+        case = add_case(document)
+        metal = {key: value for key, value in case.items() if key != "case_thickness"}
+        metal.update(id=str(uuid4()), kind="isolated_pec_box", name="시험 금속",
+                     x=quantity(19, "mm"), width=quantity(2, "mm"), depth=quantity(1, "mm"))
+        model = setup(document)
+        without_metal = plan(document)["case"]
+        model["parts"] = sorted([*model["parts"], metal], key=lambda row: row["id"])
+        installed = plan(document)["case"]
+        result = installed["environment"]["parts"][1]
+        self.assertEqual(result["electrical_connection"], "isolated")
+        self.assertFalse(result["material_values_consumed"])
+        self.assertEqual(result["material_id"], metal["material_id"])
+        self.assertEqual(result["minimum_axis_clearance_mm"], 1)
+        self.assertGreater(installed["radiation_recording"]["stop_mm"][0], 21)
+        metal["x"] = quantity(18, "mm")
+        with self.assertRaisesRegex(ProjectError, "간극"):
+            plan(document)
+        metal["include_in_em"] = False
+        self.assertEqual(plan(document)["case"], without_metal)
+
     def test_case_keeps_pcb_port_and_sources_and_moves_recording_outside(self):
         """! @brief 설치 경계와 방사 중심이 실제 모델에 일치하는지 대조한다."""
         document = board_fixture()

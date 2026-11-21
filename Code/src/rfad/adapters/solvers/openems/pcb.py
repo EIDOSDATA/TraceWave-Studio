@@ -56,7 +56,11 @@ def prepare(stage, plan, runtime):
         else:
             prop.AddBox(start=[0, 0, low], stop=[*board["dimensions_mm"], high], priority=1)
     for part in case.get("environment", {}).get("parts", []):
-        prop = csx.AddMaterial("environment_" + part["id"], epsilon=part["epsilon_r"], kappa=part["kappa_s_per_m"])
+        name = "environment_" + part["id"]
+        if part["kind"] == "isolated_pec_box":
+            prop = csx.AddMetal(name)
+        else:
+            prop = csx.AddMaterial(name, epsilon=part["epsilon_r"], kappa=part["kappa_s_per_m"])
         for start, stop in part["boxes_mm"]:
             prop.AddBox(start=start, stop=stop, priority=1)
     mappings = []

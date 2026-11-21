@@ -21,8 +21,14 @@ void StudioSmokeDriver::InstallationSmokeTick()
     }
     if (m_setupStage == 1)
     {
-        std::ifstream settings(std::filesystem::path(m_frame.m_options.solverSettings.ToStdWstring()), std::ios::binary);
+        const std::filesystem::path path(m_frame.m_options.solverSettings.ToStdWstring());
+        std::ifstream settings(path, std::ios::binary);
         m_frame.m_solverSettings = Json::parse(settings);
+        std::ifstream part(path.parent_path() / "installation-part.json", std::ios::binary);
+        if (part)
+        {
+            m_resultsFixture = Json::parse(part);
+        }
         m_setupStage = 2;
         m_frame.StartSolver();
     }
@@ -71,13 +77,17 @@ void StudioSmokeDriver::InstallationSmokeTick()
         {
             const auto& scenario = dialog->m_context.at("records").at("scenario").at(0);
             choose("scenario_id", scenario.at("id"));
-            choose("kind", "dielectric_case");
+            const bool metal = m_resultsFixture.value("kind", "") == "isolated_pec_box";
+            choose("kind", metal ? "isolated_pec_box" : "dielectric_case");
             auto* material = static_cast<wxChoice*>(dialog->m_inputs.at("material_id"));
-            const int index = material->FindString(Display("검증용 유전체 케이스 재료"));
-            CanvasAssert(index != wxNOT_FOUND, "케이스 재료를 찾지 못했습니다.");
+            const int index = material->FindString(Display(metal ? "Explicit test conductor" : "검증용 유전체 케이스 재료"));
+            CanvasAssert(index != wxNOT_FOUND, "시험 재료를 찾지 못했습니다.");
             SetupSmoke::Choose(material, index);
-            const Json fields{{"name", "검증용 케이스"}, {"x", "-2"}, {"y", "-2"}, {"z", "0"},
-                              {"yaw", "0"}, {"width", "20"}, {"height", "16"}, {"depth", "3.5"}, {"case_thickness", "1"}};
+            const Json fields = metal
+                ? Json{{"name", "검증용 금속 상자"}, {"x", "19"}, {"y", "4"}, {"z", "0.5"},
+                       {"yaw", "0"}, {"width", "2"}, {"height", "5"}, {"depth", "1"}}
+                : Json{{"name", "검증용 케이스"}, {"x", "-2"}, {"y", "-2"}, {"z", "0"},
+                       {"yaw", "0"}, {"width", "20"}, {"height", "16"}, {"depth", "3.5"}, {"case_thickness", "1"}};
             for (const auto& field : fields.items())
             {
                 static_cast<wxTextCtrl*>(dialog->m_inputs.at(field.key()))->SetValue(Display(field.value()));
@@ -88,8 +98,16 @@ void StudioSmokeDriver::InstallationSmokeTick()
         }
         else if (m_setupStage == 5)
         {
-            m_setupStage = 6;
-            SetupSmoke::Choose(dialog->m_section, 2);
+            if (m_resultsFixture.value("kind", "") == "isolated_pec_box")
+            {
+                m_setupStage = 8;
+                dialog->CloseDialog();
+            }
+            else
+            {
+                m_setupStage = 6;
+                SetupSmoke::Choose(dialog->m_section, 2);
+            }
         }
         else if (m_setupStage == 6)
         {
@@ -119,7 +137,8 @@ void StudioSmokeDriver::InstallationSmokeTick()
         const std::string installed = m_frame.m_solverResult.at("artifact_id");
         CanvasAssert(installed != m_solverFirstResult, "케이스 해석이 별도 결과를 생성하지 않았습니다.");
         m_resultsFixture = {{"bare", {{"kind", "solver"}, {"artifact_id", m_solverFirstResult}}},
-                            {"installed", {{"kind", "solver"}, {"artifact_id", installed}}}};
+                            {"installed", {{"kind", "solver"}, {"artifact_id", installed}}},
+                            {"metal", m_resultsFixture.value("kind", "") == "isolated_pec_box"}};
         m_setupStage = 11;
         m_frame.OpenProject("open", m_frame.m_path);
     }
@@ -163,8 +182,10 @@ void StudioSmokeDriver::InstallationSmokeTick()
             auto* dialog = wxWindow::FindWindowByName("installation-comparison", view);
             CanvasAssert(dialog != nullptr && dialog->IsShown(), "설치 방사 비교 창이 열리지 않았습니다.");
             auto* values = dynamic_cast<wxStaticText*>(wxWindow::FindWindowByName("installation-efficiencies", dialog));
-            CanvasAssert(values != nullptr && values->GetLabel().Contains(Display("기판 단독")) &&
-                             values->GetLabel().Contains(Display("유전체 케이스 시험")),
+            const auto firstLabel = m_resultsFixture.at("metal") == true ? "기준 결과" : "기판 단독";
+            const auto secondLabel = m_resultsFixture.at("metal") == true ? "검증용 금속 상자" : "유전체 케이스 시험";
+            CanvasAssert(values != nullptr && values->GetLabel().Contains(Display(firstLabel)) &&
+                             values->GetLabel().Contains(Display(secondLabel)),
                          "설치 비교 창에 두 원본과 효율이 표시되지 않았습니다.");
             m_setupChecks.push_back("native_installation_reopen_s11_efficiency_radiation");
             m_setupStage = 16;

@@ -12,7 +12,7 @@ import xml.etree.ElementTree as ET
 from rfad.application.projects import ProjectService
 from rfad.domain.physical_setup import setup
 from test_cad_worker_process import register_fixture
-from test_pcb_environment import ENV_SETTINGS, board_fixture
+from test_pcb_environment import ENV_SETTINGS, add_case, board_fixture
 from test_physical_setup import load
 
 
@@ -24,11 +24,23 @@ GUI = os.environ.get("RFAD_GUI_EXE")
 class GuiInstallationTests(unittest.TestCase):
     def test_bare_board_and_case_store_reopen_and_compare(self):
         """! @brief 두 개의 실제 계산과 GUI에서 저장한 설치 원본을 검증한다."""
+        self.verify_installations(metal=False)
+
+    def test_case_with_noncontact_pec_store_reopen_and_compare(self):
+        """! @brief 같은 케이스에 비접촉 도체를 추가해 실제 해석하고 다시 연다."""
+        self.verify_installations(metal=True)
+
+    def verify_installations(self, *, metal):
+        """! @brief 시나리오 편집과 실제 원본/XML/결과의 일치를 공통 흐름에서 검증한다."""
         with TemporaryDirectory(prefix="TraceWave installation ") as temporary:
             directory = Path(temporary)
             workspace = directory / "work"
+            document = board_fixture()
+            if metal:
+                add_case(document)
+                (directory / "installation-part.json").write_text('{"kind":"isolated_pec_box"}', encoding="utf-8")
             with ProjectService(workspace, auto_run=False) as service:
-                original, _ = register_fixture(service, board_fixture())
+                original, _ = register_fixture(service, document)
             report = directory / "gui.json"
             settings = directory / "settings.json"
             settings.write_text(json.dumps(ENV_SETTINGS), encoding="utf-8")
@@ -46,28 +58,37 @@ class GuiInstallationTests(unittest.TestCase):
                 for key in ("board", "stackup", "geometry", "ports", "materials", "source_references", "measurement_sets"):
                     self.assertEqual(stored[key], original[key])
                 model = setup(stored)
-                self.assertIn(setup(original)["parts"][0], model["parts"])
-                self.assertIsNone(setup(original)["parts"][0]["material_id"])
-                self.assertIsNone(setup(original)["parts"][0]["width"]["value_si"])
-                part = next(item for item in model["parts"] if item["kind"] == "dielectric_case")
+                for old in setup(original)["parts"]:
+                    self.assertIn(old, model["parts"])
+                unknown = next(item for item in model["parts"] if item["kind"] == "box")
+                self.assertIsNone(unknown["material_id"])
+                self.assertIsNone(unknown["width"]["value_si"])
+                kind = "isolated_pec_box" if metal else "dielectric_case"
+                part = next(item for item in model["parts"] if item["kind"] == kind)
                 self.assertIn("사용자 변경 사유: 내부 케이스 검증 출처", part["source_refs"])
                 state = service.journal.read()
                 records = list(state["solver_results"].values())
                 results = [json.loads(service.journal.read_artifact(item["normalized"])) for item in records]
                 self.assertEqual(len(results), 2)
-                results.sort(key=lambda value: "environment" in value["provenance"]["analysis_plan"]["case"])
+                results.sort(key=lambda value: len(value["provenance"]["analysis_plan"]["case"].get("environment", {}).get("parts", [])))
                 cases = [item["provenance"]["analysis_plan"]["case"] for item in results]
-                self.assertNotIn("environment", cases[0])
-                self.assertEqual(cases[1]["environment"]["parts"][0]["id"], part["id"])
+                if metal:
+                    self.assertEqual(cases[0]["environment"]["parts"], cases[1]["environment"]["parts"][:1])
+                    self.assertEqual(cases[1]["environment"]["parts"][1]["electrical_connection"], "isolated")
+                    self.assertFalse(cases[1]["environment"]["parts"][1]["material_values_consumed"])
+                else:
+                    self.assertNotIn("environment", cases[0])
+                self.assertEqual(cases[1]["environment"]["parts"][-1]["id"], part["id"])
                 self.assertEqual(cases[0]["port"], cases[1]["port"])
                 self.assertNotEqual([r["s11"] for r in results[0]["samples"]], [r["s11"] for r in results[1]["samples"]])
-                installed = next(r for r in records if r["metadata"].get("installation_name"))
+                installed = next(r for r in records if r["snapshot"]["revision_id"] == stored["revision_id"])
                 prepared = state["prepared_plans"][installed["prepared_plan_id"]]
                 native_file = next(item["artifact"] for item in prepared["files"] if item["role"] == "native_input")
                 xml = ET.fromstring(service.journal.read_artifact(native_file))
-                material = xml.find(f".//Material[@Name='environment_{part['id']}']")
+                tag = "Metal" if metal else "Material"
+                material = xml.find(f".//{tag}[@Name='environment_{part['id']}']")
                 self.assertIsNotNone(material)
-                self.assertEqual(len(material.findall("./Primitives/Box")), 5)
+                self.assertEqual(len(material.findall("./Primitives/Box")), 1 if metal else 5)
                 verification["solver_evidence"] = [{
                     "case": value["provenance"]["analysis_plan"]["case"].get("environment", {}).get("name", "기판 단독"),
                     "s11_at_10_ghz_ri": value["samples"][15]["s11"],
@@ -78,4 +99,5 @@ class GuiInstallationTests(unittest.TestCase):
             if output := os.environ.get("RFAD_GUI_TEST_ARTIFACT_DIR"):
                 path = Path(output)
                 path.mkdir(parents=True, exist_ok=True)
-                (path / "installation-gui.json").write_text(json.dumps(verification, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+                name = "installation-metal-gui.json" if metal else "installation-gui.json"
+                (path / name).write_text(json.dumps(verification, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
