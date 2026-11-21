@@ -45,5 +45,50 @@ class HollowShellIntegralReferenceTests(unittest.TestCase):
         self.assertLess(observations[-1], observations[0], observations)
 
 
+    def test_axial_shell_weighting_for_prescribed_ghz_boundary_skin_profile(self):
+        """! @brief 10 GHz 두께 방향 지수 감쇠의 해석 적분과 native PTH 분할을 비교한다."""
+        import CSXCAD
+        import numpy as np
+
+        frequency = 10e9
+        conductivity = 58e6
+        permeability = 4 * math.pi * 1e-7
+        depth = math.sqrt(2 / (2 * math.pi * frequency * permeability * conductivity))
+        inner, outer, length = 8 * depth, 13 * depth, 10 * depth
+        step_mm = depth * 1000 / 6
+        outer_mm, inner_mm, length_mm = (value * 1000 for value in (outer, inner, length))
+        csx = CSXCAD.ContinuousStructure()
+        csx.AddMaterial("via_v", epsilon=1, kappa=conductivity).AddCylindricalShell(
+            start=[0, 0, 0], stop=[0, 0, length_mm], radius=(outer_mm + inner_mm) / 2,
+            shell_width=outer_mm - inner_mm, priority=6)
+        case = {"layers": [], "vias": [{"id": "v", "conductivity_s_per_m": conductivity}]}
+        limit = math.ceil(outer_mm / step_mm) + 2
+        lateral = [i * step_mm for i in range(-limit, limit + 1)]
+        lines = {"x": lateral, "y": lateral, "z": [-length_mm / 4, 0.0, length_mm / 2, length_mm, 5 * length_mm / 4]}
+        indices = [list(range(1, len(lateral) - 1)) for _ in "xy"] + [[1, 2]]
+        shape = (3, *(len(axis) for axis in indices))
+        sheet = np.full(shape, -1)
+        partition = material_partition(csx, case, lines, indices, sheet)
+        electric = np.zeros(shape, dtype=complex)
+        transverse_m = np.asarray(lateral[1:-1]) * 0.001
+        radius_m = np.hypot(transverse_m[:, None], transverse_m)
+        electric[2] = np.exp(-(1 + 1j) * (outer - radius_m) / depth)[:, :, None]
+        conduction = electric * partition[0]
+        weights = [edge_weights(lines, indices, direction) for direction in range(3)]
+        recorded, audit = partition_work(electric, conduction, conduction, weights, sheet, frequency, 1e-15, [], partition)
+
+        #! r dr의 곡률을 포함한 원통 껍질의 독립 해석 적분이다.
+        decay = 2 / depth
+        thickness = outer - inner
+        endpoint = math.exp(-decay * thickness)
+        integral = outer * (1 - endpoint) / decay - (1 - (1 + decay * thickness) * endpoint) / decay**2
+        reference = math.pi * conductivity * length * integral
+        relative_error = abs(recorded["via_loss_w_s2"] / reference - 1)
+        self.assertLess(relative_error, 0.02, {"reference": reference, "actual": recorded["via_loss_w_s2"],
+                                             "relative_error": relative_error})
+        self.assertAlmostEqual(audit["volume_work_w_s2"] / audit["assigned_volume_work_w_s2"], 1)
+        self.assertEqual(recorded["sheet_loss_w_s2"], 0)
+
+
 if __name__ == "__main__":
     unittest.main()
