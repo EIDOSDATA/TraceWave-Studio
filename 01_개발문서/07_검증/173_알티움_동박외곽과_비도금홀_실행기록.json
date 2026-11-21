@@ -1,0 +1,246 @@
+{
+  "schema": "rfad.stage12.altium-drill-roundtrip/0.1",
+  "date_kst": "2026-11-21",
+  "observations": {
+    "layer-02.gbr": {
+      "stroke_count": 2,
+      "original_and_cam_reexport": [
+        [
+          [
+            [
+              "1.000000",
+              "1.000000"
+            ],
+            [
+              "10.000000",
+              "1.000000"
+            ],
+            "0.5"
+          ],
+          [
+            [
+              "1.000000",
+              "3.000000"
+            ],
+            [
+              "10.000000",
+              "3.000000"
+            ],
+            "0.5"
+          ]
+        ],
+        [
+          [
+            [
+              "0.999",
+              "0.999"
+            ],
+            [
+              "9.999",
+              "0.999"
+            ],
+            "0.499999"
+          ],
+          [
+            [
+              "0.999",
+              "2.999"
+            ],
+            [
+              "9.999",
+              "2.999"
+            ],
+            "0.499999"
+          ]
+        ]
+      ],
+      "max_coordinate_error_mm": "0.001000",
+      "max_stroke_width_error_mm": "0.000001"
+    },
+    "outline.gbr": {
+      "stroke_count": 4,
+      "original_and_cam_reexport": [
+        [
+          [
+            [
+              "0.000000",
+              "0.000000"
+            ],
+            [
+              "60.000000",
+              "0.000000"
+            ],
+            "0.05"
+          ],
+          [
+            [
+              "60.000000",
+              "0.000000"
+            ],
+            [
+              "60.000000",
+              "40.000000"
+            ],
+            "0.05"
+          ],
+          [
+            [
+              "60.000000",
+              "40.000000"
+            ],
+            [
+              "0.000000",
+              "40.000000"
+            ],
+            "0.05"
+          ],
+          [
+            [
+              "0.000000",
+              "40.000000"
+            ],
+            [
+              "0.000000",
+              "0.000000"
+            ],
+            "0.05"
+          ]
+        ],
+        [
+          [
+            [
+              "0.000",
+              "0.000"
+            ],
+            [
+              "59.999",
+              "0.000"
+            ],
+            "0.050000"
+          ],
+          [
+            [
+              "59.999",
+              "0.000"
+            ],
+            [
+              "59.999",
+              "39.999"
+            ],
+            "0.050000"
+          ],
+          [
+            [
+              "59.999",
+              "39.999"
+            ],
+            [
+              "0.000",
+              "39.999"
+            ],
+            "0.050000"
+          ],
+          [
+            [
+              "0.000",
+              "39.999"
+            ],
+            [
+              "0.000",
+              "0.000"
+            ],
+            "0.050000"
+          ]
+        ]
+      ],
+      "max_coordinate_error_mm": "0.001000",
+      "max_stroke_width_error_mm": "0.000000"
+    },
+    "drill": {
+      "source": {
+        "tools_mm": {
+          "1": "1.000000"
+        },
+        "hits_mm": [
+          [
+            "5.000000",
+            "5.000000"
+          ]
+        ]
+      },
+      "cam_reexport": {
+        "tools_mm": {
+          "1": "1.0000"
+        },
+        "hits_mm": []
+      }
+    },
+    "sha256": {
+      "altium-input\\layer-01.gbr": "6fe1470c39571165386d26ce1159bfab741a4fc9985f2e744389de72b01cec2c",
+      "altium-input\\layer-02.gbr": "1fe2ab625e9e5f0a13ef01136fcd99d465854d10918c242972a063af113fe543",
+      "altium-input\\nonplated.drl": "3737000f646e81dd46192546b6a5ee3ceaecb9487b43c0b9ab277ccc8f629c16",
+      "altium-input\\outline.gbr": "28e3e694ae77a1bda9e9b4d2f528020f892f8ecafe7d4caed96cf476d4ec2c12",
+      "altium-reexport\\cam.drl": "5bb6e5d4a00ec75caa49f8dfb3cb3b0a1e67c2a4050cea9057f77a6e239d7bbe",
+      "altium-reexport\\cam.rpt": "342ee6c2a3663fff50cc29d88feb397704d037858ddbfe22b91d8e0b4f45a64b",
+      "altium-reexport\\layer-02.gbr": "8e2eda2c5925fc816c5b4a42a24dfa65ef9f057755a748746191661e7b7a5924",
+      "altium-reexport\\nonplated.drl": "bfa829fe5326398609c72560b748da27281552facd5f2daca87ce4284ed5b0ea",
+      "altium-reexport\\outline.gbr": "01ec73774e54236de9596f9cb15d0477b90c83c49423611b3d60aa4ba7916cb1",
+      "received-altium.cam": "013eab9e9416dce852304759dfbf4346fc2db0a189e2b19e9477aac4854389c1",
+      "quantitative-review.cam": "013eab9e9416dce852304759dfbf4346fc2db0a189e2b19e9477aac4854389c1"
+    },
+    "windows_cam": {
+      "product": "Altium Designer Enterprise 26.9.1",
+      "stored_cam_reopened": true,
+      "baseline_cam_preserved": true,
+      "cli_copy_layer": "L5: from-studio.drl",
+      "origin_shift_applied": false,
+      "settings": {
+        "units": "mm",
+        "coordinate_type": "absolute",
+        "integer_digits": 2,
+        "fraction_digits": 3,
+        "zero_suppression": "none"
+      },
+      "import_log_errors": 0,
+      "import_log_warnings": 0,
+      "source_xy_mm": [
+        5.0,
+        5.0
+      ],
+      "reexport_xy_mm": [
+        4.999,
+        4.999
+      ],
+      "source_and_reexport_diameter_mm": 1.0,
+      "max_per_axis_error_mm": 0.001,
+      "cli": {
+        "use": "cam_review",
+        "holes": 1,
+        "coordinate_format": "MM/absolute/2.3/none",
+        "source_sha256": "3737000f646e81dd46192546b6a5ee3ceaecb9487b43c0b9ab277ccc8f629c16",
+        "copy_sha256": "43cd54ffa902b51f0606302ab72b5b52d1cd12d8ea3f1b3dc19c92acd5b31e67",
+        "actual_tool_diameter": null,
+        "manufacturing_verified": false
+      },
+      "reopened_cam_sha256": "f1424cb3d80b4906da942540e272716fbff7eaf78ee24a264686c12ced0866bd",
+      "reexport_sha256": "827bb4ce2110a6aac1bbda2d6a511a145b907e8207d62442ed29b1518fc00dcd",
+      "reexport_text": [
+        "G92",
+        "M48",
+        "METRIC",
+        "FMAT,2",
+        "T01C1.0000",
+        "DETECT,ON",
+        "%",
+        "G90",
+        "T01",
+        "X04999Y04999",
+        "M30"
+      ]
+    }
+  },
+  "regression": {
+    "passed": 18
+  },
+  "manufacturing_validated": false
+}

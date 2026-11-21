@@ -15,8 +15,12 @@ def main(argv: list[str] | None = None) -> int:
         from rfad.cli.archive import main as archive_main
 
         return archive_main(arguments[1:])
+    if arguments[:1] == ["altium-drill-copy"]:
+        from rfad.cli.altium_drill_copy import main as altium_drill_main
+
+        return altium_drill_main(arguments[1:])
     parser = argparse.ArgumentParser(prog="rfad")
-    parser.add_argument("command", choices=("doctor", "serve", "catalog", "archive"))
+    parser.add_argument("command", choices=("doctor", "serve", "catalog", "archive", "altium-drill-copy"))
     args, remainder = parser.parse_known_args(arguments)
     if args.command == "doctor":
         from rfad.cli.doctor import main as doctor_main
