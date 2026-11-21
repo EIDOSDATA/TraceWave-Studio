@@ -312,7 +312,12 @@ void StudioFrame::BuildInterface()
     m_description = new wxTextCtrl(m_metadataPanel, wxID_ANY, wxEmptyString, wxDefaultPosition,
                                    FromDIP(wxSize(-1, 100)), wxTE_MULTILINE);
     fields->Add(m_description, 1, wxEXPAND);
-    m_metadataPanel->SetSizer(fields);
+    auto* metadataForm = new wxBoxSizer(wxVERTICAL);
+    metadataForm->Add(fields, 0, wxEXPAND);
+    m_metadataDiagnostic = new wxStaticText(m_metadataPanel, wxID_ANY, wxEmptyString);
+    metadataForm->Add(m_metadataDiagnostic, 0, wxEXPAND | wxTOP, FromDIP(StudioTheme::InputGap));
+    m_metadataDiagnostic->Hide();
+    m_metadataPanel->SetSizer(metadataForm);
     form->Add(m_metadataPanel, 0, wxEXPAND | wxALL, FromDIP(StudioTheme::PanelPadding));
     m_editorPanel = new EditorPanel(m_properties);
     form->Add(m_editorPanel, 1, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(StudioTheme::Space));
@@ -389,16 +394,18 @@ void StudioFrame::BuildInterface()
     BindCanvas();
     BindCad();
     BindSolver();
-    m_name->Bind(wxEVT_TEXT,
-                 [this](wxCommandEvent&)
-                 {
-                     UpdateDraftState();
-                 });
-    m_description->Bind(wxEVT_TEXT,
-                        [this](wxCommandEvent&)
-                        {
-                            UpdateDraftState();
-                        });
+    /** @brief 사용자가 값을 다시 편집하면 직전 거절 안내를 지운다. */
+    const auto metadataChanged = [this](wxCommandEvent&)
+    {
+        if (m_metadataDiagnostic->IsShown())
+        {
+            m_metadataDiagnostic->Hide();
+            m_properties->Layout();
+        }
+        UpdateDraftState();
+    };
+    m_name->Bind(wxEVT_TEXT, metadataChanged);
+    m_description->Bind(wxEVT_TEXT, metadataChanged);
     m_editorPanel->Bind(wxEVT_RFAD_EDITOR_CHANGED,
                         [this](wxCommandEvent&)
                         {

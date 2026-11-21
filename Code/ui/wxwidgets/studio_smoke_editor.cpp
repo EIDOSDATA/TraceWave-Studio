@@ -35,6 +35,30 @@ void StudioSmokeDriver::EditorSmokeNext()
     };
     if (m_editorStage == 0)
     {
+        if (std::find(m_uxChecks.begin(), m_uxChecks.end(), "metadata_error_visible") == m_uxChecks.end())
+        {
+            const auto originalName = m_frame.m_name->GetValue();
+            const auto originalRevision = m_frame.m_revision;
+            m_frame.m_name->SetValue(wxEmptyString);
+            m_frame.ApplyCurrent(
+                []()
+                {
+                    throw std::runtime_error("빈 프로젝트 이름을 저장했습니다.");
+                },
+                [this, originalName, originalRevision](const Json&)
+                {
+                    CanvasAssert(m_frame.m_metadataPanel->IsShown() && m_frame.m_metadataDiagnostic->IsShown() &&
+                                     m_frame.m_metadataDiagnostic->GetLabel().Contains(Display("이름은 앞뒤 공백")) &&
+                                     m_frame.m_revision == originalRevision && m_frame.HasDraft(),
+                                 "프로젝트 입력 오류 또는 미적용 초안이 현재 폼에 표시되지 않았습니다.");
+                    m_frame.m_name->SetValue(originalName);
+                    CanvasAssert(!m_frame.m_metadataDiagnostic->IsShown() && !m_frame.HasDraft(),
+                                 "입력을 고친 뒤 과거 오류가 남았습니다.");
+                    m_uxChecks.push_back("metadata_error_visible");
+                    EditorSmokeNext();
+                });
+            return;
+        }
         CheckUxState("saved", false);
         m_uxChecks.push_back("saved_state");
         auto scene = std::move(m_frame.m_scene);

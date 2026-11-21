@@ -446,6 +446,7 @@ private:
     wxStaticText* m_selectionLabel = nullptr;
     wxTextCtrl* m_name = nullptr;
     wxTextCtrl* m_description = nullptr;
+    wxStaticText* m_metadataDiagnostic = nullptr;
     wxTextCtrl* m_log = nullptr;
     wxButton* m_apply = nullptr;
     wxStaticText* m_revisionLabel = nullptr;

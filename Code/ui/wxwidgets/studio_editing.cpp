@@ -203,6 +203,45 @@ void StudioFrame::ApplyCurrent(std::function<void()> completed, std::function<vo
         completed();
         return;
     }
+    if (m_selection.at("kind") == "project")
+    {
+        /** @brief 별도 프로젝트 폼의 검증 오류는 이 폼 안에 표시하고 초안을 남긴다. */
+        rejected = [this, rejected = std::move(rejected)](const Json& error)
+        {
+            const std::string message = DiagnosticMessage(error);
+            m_metadataDiagnostic->SetLabel(Display("프로젝트 속성 오류. " + message));
+            m_metadataDiagnostic->Wrap(std::max(FromDIP(180), m_metadataPanel->GetClientSize().GetWidth()));
+            m_metadataDiagnostic->Show();
+            m_properties->Layout();
+            wxTextCtrl* invalid = nullptr;
+            for (const auto& diagnostic : error.value("data", Json::object()).value("diagnostics", Json::array()))
+            {
+                const auto field = diagnostic.value("details", Json::object()).value("field_path", std::string());
+                if (field == "name" || field == "command.payload.name" || field == "metadata.name")
+                {
+                    invalid = m_name;
+                    break;
+                }
+                if (field == "description" || field == "command.payload.description" || field == "metadata.description")
+                {
+                    invalid = m_description;
+                    break;
+                }
+            }
+            if (invalid != nullptr && invalid->IsThisEnabled())
+            {
+                invalid->SetFocus();
+            }
+            if (rejected)
+            {
+                rejected(error);
+            }
+            else
+            {
+                Failure(message);
+            }
+        };
+    }
     m_busy = true;
     UpdateControls();
     Json target = m_selection;

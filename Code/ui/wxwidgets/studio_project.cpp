@@ -114,6 +114,7 @@ void StudioFrame::RefreshProject()
     }
     m_selectionLabel->SetLabel(Display(selectedLabel));
     const bool metadata = m_selection.at("kind") == "project";
+    m_metadataDiagnostic->Hide();
     m_metadataPanel->Show(metadata);
     m_editorPanel->Show(!metadata);
     m_editorPanel->SetFields(m_editor.at("selection").at("fields"), m_editor.at("selection"),
