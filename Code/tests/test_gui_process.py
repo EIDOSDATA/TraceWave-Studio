@@ -64,7 +64,8 @@ class GuiProcessTests(unittest.TestCase):
             code, rejected = self.run_gui(directory, project_path=project["path"])
             self.assertEqual(code, 2, rejected)
             self.assertFalse(rejected["passed"])
-            self.assertTrue(rejected["error"], rejected)
+            self.assertIn("E_HASH", rejected["error"], rejected)
+            self.assertIn("원본을 보존", rejected["error"], rejected)
             self.assertEqual(rejected["canvas_shapes"], 0)
             self.assertEqual(artifact.read_bytes(), damaged)
             with Journal(workspace, {}) as journal:
@@ -86,6 +87,23 @@ class GuiProcessTests(unittest.TestCase):
                 evidence = {"rejected": rejected, "recovered": recovered, "snapshot_preserved": True}
                 (Path(output) / "recovery-corruption.json").write_text(
                     json.dumps(evidence, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    def test_windows_distinguishes_workspace_writer_conflict(self):
+        """! @brief Windows의 실제 writer 잠금을 손상과 구분하고 기존 원본을 유지한다."""
+        from rfad.application.projects import ProjectService
+        from test_cad_worker_process import register_fixture
+
+        with TemporaryDirectory(prefix="TraceWave 작업 영역 잠금 ") as temporary:
+            directory = Path(temporary)
+            with ProjectService(directory / "한글 작업 영역", auto_run=False) as service:
+                original, _ = register_fixture(service)
+                project = service.journal.read()["projects"][original["project_id"]]
+                code, rejected = self.run_gui(directory, project_path=project["path"])
+                self.assertEqual(code, 2, rejected)
+                self.assertIn("E_CONFLICT", rejected["error"], rejected)
+                self.assertIn("같은 작업 영역", rejected["error"], rejected)
+                self.assertEqual(rejected["canvas_shapes"], 0)
+                self.assertEqual(service.repository.load(project), original)
 
     def source_stub(self, directory: Path, program: str) -> Path:
         """! @brief 실제 Python 프로세스에서 pipe 장애를 만드는 작은 rfad 진입점을 준비한다."""

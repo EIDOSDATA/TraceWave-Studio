@@ -54,15 +54,21 @@ def main(argv: list[str] | None = None) -> int:
     from rfad.application.cad_jobs import CadRuntime
     from rfad.application.solver_jobs import SolverRuntime
     from rfad.application.exchange_runtime import ExchangeRuntime
+    initialized = False
     try:
         runtime = None if options.cad_python is None else CadRuntime(options.cad_python)
         exchange_runtime = None if options.exchange_python is None else ExchangeRuntime(options.exchange_python)
         solver_runtime = SolverRuntime() if options.openems_wsl else None
         with ProjectService(options.workspace, cad_runtime=runtime, exchange_runtime=exchange_runtime, solver_runtime=solver_runtime,
                             catalog_database=options.catalog) as service:
+            initialized = True
             return serve(sys.stdin.buffer, sys.stdout.buffer, sys.stderr, service, catalog)
     except (ProjectError, OSError, ValueError) as error:
         print(f"{getattr(error, 'code', 'E_SCHEMA')}: {error}", file=sys.stderr)
+        if not initialized:
+            code = getattr(error, "code", "E_DISK" if isinstance(error, OSError) else "E_SCHEMA")
+            if code in ("E_HASH", "E_DISK", "E_CONFLICT", "E_SCHEMA"):
+                print(f"RFAD_WORKSPACE_START:{code}", file=sys.stderr)
         return 1
 
 

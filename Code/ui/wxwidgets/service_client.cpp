@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <array>
+#include <chrono>
 #include <exception>
 
 namespace
@@ -43,6 +44,28 @@ void CloseThread(std::atomic<HANDLE>& target)
 {
     HANDLE handle = target.exchange(nullptr);
     Close(handle);
+}
+
+/** @brief 초기화 코드에 해당하는 고정 안내만 사용자에게 전달한다. */
+const char* WorkspaceStartupError(const std::string& line)
+{
+    if (line == "RFAD_WORKSPACE_START:E_HASH")
+    {
+        return "E_HASH: 작업 영역의 저장 자료를 검증하지 못했습니다. 원본을 보존하고 보존 사본을 확인하세요.";
+    }
+    if (line == "RFAD_WORKSPACE_START:E_DISK")
+    {
+        return "E_DISK: 작업 영역을 읽거나 쓸 수 없습니다. 경로, 권한과 저장 공간을 확인하세요.";
+    }
+    if (line == "RFAD_WORKSPACE_START:E_CONFLICT")
+    {
+        return "E_CONFLICT: 작업 영역이 잠겨 있습니다. 같은 작업 영역을 사용하는 창을 확인하세요.";
+    }
+    if (line == "RFAD_WORKSPACE_START:E_SCHEMA")
+    {
+        return "E_SCHEMA: 작업 영역이나 실행 환경의 설정을 읽을 수 없습니다. 경로와 지원 형식을 확인하세요.";
+    }
+    return nullptr;
 }
 }
 
@@ -164,6 +187,9 @@ bool ServiceClient::Start(const std::wstring& python, const std::wstring& source
         m_incoming.clear();
         m_logs.clear();
         m_droppedLogs = 0;
+        m_logDrained = false;
+        m_receivedProtocol = false;
+        m_startupError.clear();
         m_protocolReady = std::move(protocolReady);
     }
     m_stopping = false;
@@ -211,12 +237,41 @@ void ServiceClient::Fail(const std::string& message)
     }
 }
 
+/** @brief 첫 응답 전 종료에서만, 독립 stderr 읽기가 초기화 진단을 받을 때까지 잠깐 기다린다. */
+void ServiceClient::ReportPipeClosure(const std::string& message)
+{
+    std::unique_lock<std::mutex> guard(m_mutex);
+    if (!m_receivedProtocol)
+    {
+        m_logClosed.wait_for(guard, std::chrono::milliseconds(250), [this]()
+        {
+            return m_stopping || m_logDrained;
+        });
+    }
+    if (!m_stopping && m_error.empty())
+    {
+        m_error = !m_receivedProtocol && !m_startupError.empty() ? m_startupError : message;
+    }
+}
+
 bool ServiceClient::Push(bool protocol, std::string text)
 {
     std::lock_guard<std::mutex> guard(m_mutex);
     if (m_stopping)
     {
         return false;
+    }
+    if (protocol)
+    {
+        m_receivedProtocol = true;
+    }
+    else if (!m_receivedProtocol)
+    {
+        if (const auto* startupError = WorkspaceStartupError(text))
+        {
+            m_startupError = startupError;
+            return true;
+        }
     }
     auto& queue = protocol ? m_incoming : m_logs;
     if (queue.size() >= MaxQueueMessages)
@@ -253,7 +308,7 @@ void ServiceClient::ReadLoop(HANDLE pipe, bool protocol)
         {
             if (protocol)
             {
-                Fail("Python service output closed.");
+                ReportPipeClosure("Python service output closed.");
             }
             break;
         }
@@ -292,9 +347,17 @@ void ServiceClient::ReadLoop(HANDLE pipe, bool protocol)
             }
         }
     }
-    if (!protocol && !line.empty())
+    if (!protocol)
     {
-        Push(false, std::move(line));
+        if (!line.empty())
+        {
+            Push(false, std::move(line));
+        }
+        {
+            std::lock_guard<std::mutex> guard(m_mutex);
+            m_logDrained = true;
+        }
+        m_logClosed.notify_all();
     }
 }
 
@@ -326,7 +389,7 @@ void ServiceClient::WriteLoop()
                            nullptr) ||
                 written == 0)
             {
-                Fail("Cannot write to Python service.");
+                ReportPipeClosure("Cannot write to Python service.");
                 return;
             }
             offset += written;
@@ -370,6 +433,7 @@ void ServiceClient::Stop()
         m_protocolReady = {};
     }
     m_ready.notify_all();
+    m_logClosed.notify_all();
     if (m_writer.joinable())
     {
         CancelThread(m_writerHandle);

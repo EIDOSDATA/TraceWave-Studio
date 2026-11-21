@@ -43,6 +43,7 @@ private:
     void ReadLoop(HANDLE pipe, bool protocol);
     void WriteLoop();
     void Fail(const std::string& message);
+    void ReportPipeClosure(const std::string& message);
     bool Push(bool protocol, std::string text);
     static std::wstring Quote(const std::wstring& argument);
 
@@ -60,10 +61,14 @@ private:
     std::atomic<bool> m_stopping{true};
     std::mutex m_mutex;
     std::condition_variable m_ready;
+    std::condition_variable m_logClosed;
     std::deque<std::string> m_outgoing;
     std::deque<Message> m_incoming;
     std::deque<Message> m_logs;
     std::function<void()> m_protocolReady;
     std::size_t m_droppedLogs = 0;
+    bool m_logDrained = false;
+    bool m_receivedProtocol = false;
+    std::string m_startupError;
     std::string m_error;
 };
