@@ -101,12 +101,12 @@ def shorten(traces, end):
     return tuple(Trace(tuple(term for term in trace.terms if -term[0] / math.tau <= end)) for trace in traces)
 
 
-def collapse(kind, cases):
+def collapse(kind, cases, route=None):
     """! @brief 기준 격자와 대조한 교환 조건의 복소 편차 및 관측 상한을 보고한다."""
     fine, coarse, boundary = (cases[key] for key in ("fine", "coarse", "boundary"))
     if any(other["physical"] != fine["physical"] for other in (coarse, boundary)):
         raise ValueError("격자나 경계 외의 고정 설치 물리 입력이 다릅니다.")
-    p, serial, value = ROUTES[kind]
+    p, serial, value = ROUTES[kind] if route is None else route
     circuit = Circuit(p * 1e-12, serial, value * (1e-12 if serial == "C" else 1e-9))
     curves = {name: sampled(circuit, case["traces"]) for name, case in cases.items()}
     cell = {name: max(abs(value) + radius for value, radius in curve) for name, curve in curves.items()}

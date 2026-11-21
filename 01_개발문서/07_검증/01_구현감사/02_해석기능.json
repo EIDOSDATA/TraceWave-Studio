@@ -574,6 +574,8 @@
       "../01_개발문서/07_검증/294_설치후보_격자와_경계_시간창_민감도.md",
       "tools/verify_installed_port_uncertainty.py",
       "tools/verify_installed_refinement.py",
+      "../01_개발문서/07_검증/303_설치후보_단일축_재실행과_정합대조.md",
+      "tools/verify_installed_retuning.py",
       "../01_개발문서/07_검증/286_동박_면임피던스와_관통홀_귀환_대조.md",
       "tools/verify_ro_sheet_impedance.py",
       "../01_개발문서/07_검증/289_수용전력_변화와_관통홀_접합_대조.md",

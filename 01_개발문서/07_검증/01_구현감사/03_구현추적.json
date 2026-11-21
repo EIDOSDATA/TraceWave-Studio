@@ -9747,6 +9747,8 @@
         "../01_개발문서/07_검증/294_설치후보_격자와_경계_시간창_민감도.md",
         "tools/verify_installed_port_uncertainty.py",
         "tools/verify_installed_refinement.py",
+        "../01_개발문서/07_검증/303_설치후보_단일축_재실행과_정합대조.md",
+        "tools/verify_installed_retuning.py",
         "../01_개발문서/07_검증/286_동박_면임피던스와_관통홀_귀환_대조.md",
         "tools/verify_ro_sheet_impedance.py",
         "../01_개발문서/07_검증/289_수용전력_변화와_관통홀_접합_대조.md",
@@ -14137,8 +14139,8 @@
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
-      "text_sha256": "36165c47a73ffaf132cb185052d405c9f103d2a7ed13e71b02134e026a38d9ef",
-      "utf8_bytes": 66853
+      "text_sha256": "989d64eb61a8ea4906314db5b874fcbb8d7c7cef58c06b7fd2cca3939c9ce9b6",
+      "utf8_bytes": 66991
     }
   ],
   "reviewed_commit": "de8b5ac8ca5cfc47d955e557bc76b07e12919e23",
@@ -14514,6 +14516,11 @@
       "path": "01_개발문서/07_검증/301_급전격자와_관통홀_표면손실_독립대조.md",
       "text_sha256": "b8e1105088d755b74468c1f4662085ea0632c5cac71b99c142a37786afea389b",
       "utf8_bytes": 4995
+    },
+    {
+      "path": "01_개발문서/07_검증/303_설치후보_단일축_재실행과_정합대조.md",
+      "text_sha256": "57ac8eb2d0c2959ebabf919ea6e1a46fca4a9775fdc1a6a0978fcf554b0e2cd7",
+      "utf8_bytes": 3542
     },
     {
       "path": "01_개발문서/07_검증/31_프로젝트_편집복원_검증.md",
@@ -16181,6 +16188,11 @@
       "utf8_bytes": 6341
     },
     {
+      "path": "Code/tools/verify_installed_retuning.py",
+      "text_sha256": "462c4c2c14bb22c048ecc1d12b21b43113b3e0af0016527898b2c1040840132d",
+      "utf8_bytes": 6293
+    },
+    {
       "path": "Code/tools/verify_nf2ff_reference.py",
       "text_sha256": "0c0bae5652323689e9a42ebf6b1a0d9e0c28d5246eaa8b382c76be5f1bd3e642",
       "utf8_bytes": 8951
@@ -16202,8 +16214,8 @@
     },
     {
       "path": "Code/tools/verify_ro_grid_ablation.py",
-      "text_sha256": "46b45aafb42649894d827827e82c48a76125122890bda59218e0f757cc8c518e",
-      "utf8_bytes": 12282
+      "text_sha256": "d11b511618387234372102da3fba289716ff3465206a0edd21648cec3c239c8c",
+      "utf8_bytes": 13140
     },
     {
       "path": "Code/tools/verify_ro_loss_followup.py",
