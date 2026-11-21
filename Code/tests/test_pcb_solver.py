@@ -136,6 +136,29 @@ class PcbPlanTests(unittest.TestCase):
         with self.assertRaises(ProjectError):
             build_pcb_plan(document, snapshot_for(document), runtime_identity(), {**SETTINGS, "grid_mm": 0.05})
 
+    def test_tuning_refinement_changes_only_the_explicit_compute_budget(self):
+        """! @brief 튜닝용 장시간 계산을 봉인하고 기본 및 손실 연구 조건을 보존한다."""
+        document = fixture_document()
+        snapshot = snapshot_for(document)
+        runtime = runtime_identity()
+        default = build_pcb_plan(document, snapshot, runtime, SETTINGS)
+        profile = {"kind": "tuning_refinement/0.1", "num_threads": 4}
+        settings = {**SETTINGS, "compute_profile": profile}
+        extended = build_pcb_plan(document, snapshot, runtime, settings)
+        validate_pcb_plan(extended)
+
+        self.assertEqual(extended["case"]["settings"]["compute_profile"], profile)
+        self.assertEqual(extended["case"]["num_threads"], 4)
+        self.assertEqual(default["case"]["num_threads"], 2)
+        self.assertEqual({k: v for k, v in extended["case"].items() if k not in {"settings", "num_threads"}},
+                         {k: v for k, v in default["case"].items() if k not in {"settings", "num_threads"}})
+        self.assertEqual(extended["resource_estimate"]["estimated_grid_points"], default["resource_estimate"]["estimated_grid_points"])
+        self.assertEqual(extended["resource_estimate"]["max_wall_time_seconds"], 900)
+        self.assertEqual(default["resource_estimate"]["max_wall_time_seconds"], 300)
+        for invalid in ({**profile, "num_threads": 9}, {"kind": "loss_refinement/0.1", "num_threads": 2}):
+            with self.assertRaises(ProjectError):
+                build_pcb_plan(document, snapshot, runtime, {**SETTINGS, "compute_profile": invalid})
+
     def test_full_ring_preserves_hole(self):
         """! @brief 전체 회전은 원판 하나로 바꾸지 않고 구멍이 있는 sector 합집합을 사용한다."""
         shape = {"kind": "arc_path", "center_mm": [0, 0], "radius_mm": 4, "width_mm": 1, "start_angle_deg": 17, "sweep_angle_deg": -360}

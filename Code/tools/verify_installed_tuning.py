@@ -8,6 +8,7 @@ from uuid import uuid4
 
 from verify_tuning_workflow import document, run_study, candidate_results
 from catalog_pcb_verification.common import VerificationError, call, wait, require, publish_report
+from rfad.application.pcb_compute import limits
 from rfad.application.projects import ProjectService
 from rfad.application.solver_runtime import SolverRuntime
 from verify_tuning_adoption import adopt, files
@@ -53,7 +54,7 @@ def add_installation(service, case):
                        context, mutation=True))
 
 
-def compare_case(service, kind, report, path):
+def compare_case(service, kind, report, path, compute_profile):
     """! @brief 미리 지정한 두 값과 거친 조건에서 선택한 뒤 더 작은 격자로 다시 실행한다."""
     case = create_case(service, kind)
     add_installation(service, case)
@@ -61,7 +62,10 @@ def compare_case(service, kind, report, path):
     specification["name"] += " / 합성 외함 후보"
     axes = specification["variables"][0]["values"]
     specification["variables"][0]["values"] = axes[:2] if kind == "ifa" else axes[1:]
-    specification["budget"].update(max_candidates=2, max_native_solves=2, wall_seconds=1200)
+    if compute_profile is not None:
+        specification["settings"]["compute_profile"] = compute_profile
+    budget_seconds = 2 * limits(specification["settings"])["max_wall_time_seconds"] + 600
+    specification["budget"].update(max_candidates=2, max_native_solves=2, wall_seconds=budget_seconds)
     specification["settings"]["radiation"]["box_clearance_mm"] = 1
     if kind == "arc":
         specification["settings"]["max_timesteps"] = ARC_TIMESTEPS
@@ -72,7 +76,7 @@ def compare_case(service, kind, report, path):
     print(kind + ": installed candidate matrix", flush=True)
 
     try:
-        study = run_study(service, case["context"], specification, timeout=1220, keep_incomplete=True)
+        study = run_study(service, case["context"], specification, timeout=budget_seconds + 20, keep_incomplete=True)
     except VerificationError as error:
         entry.update(status="not_evaluated", initial_error=str(error))
         publish_report(path, report)
@@ -89,7 +93,7 @@ def compare_case(service, kind, report, path):
     entry["copy"] = copied
     publish_report(path, report)
     verify_copy(service, entry)
-    if kind == "ifa" and entry["status"] != "computed":
+    if compute_profile is not None or (kind == "ifa" and entry["status"] != "computed"):
         verify_copy(service, entry, boundary=True)
     require(document(service, case["context"]) == case["document"] and files(service.workspace / case["path"]) == original_files,
             "채택과 재계산 뒤 원본 설계 또는 파일이 달라졌습니다.")
@@ -103,8 +107,9 @@ def verify_copy(service, entry, *, boundary=False):
     specification = deepcopy(entry["case"]["specification"])
     axis = specification["variables"][0]
     axis["values"] = [axis["values"][entry["selected_index"]]]
-    specification["budget"].update(max_candidates=1, max_native_solves=1, wall_seconds=700)
     settings = specification["settings"]
+    budget_seconds = limits(settings)["max_wall_time_seconds"] + 400
+    specification["budget"].update(max_candidates=1, max_native_solves=1, wall_seconds=budget_seconds)
     if boundary:
         prefix = "boundary"
         specification["name"] += " / 11.2 mm 공기 경계 대조"
@@ -113,12 +118,12 @@ def verify_copy(service, entry, *, boundary=False):
         prefix = "final"
         specification["name"] += " / 채택 사본의 최종 계산"
         settings["grid_mm"] = FINAL_GRID_MM
-        if entry["kind"] == "ifa":
+        if entry["kind"] == "ifa" and "compute_profile" not in settings:
             settings["max_timesteps"] = IFA_FINAL_TIMESTEPS
 
     print(entry["kind"] + ": selected copy, " + prefix, flush=True)
     try:
-        study = run_study(service, copied["context"], specification, timeout=720, keep_incomplete=True)
+        study = run_study(service, copied["context"], specification, timeout=budget_seconds + 20, keep_incomplete=True)
     except VerificationError as error:
         entry[prefix + "_error"] = str(error)
         if not boundary:
@@ -130,22 +135,25 @@ def verify_copy(service, entry, *, boundary=False):
             entry["status"] = "computed" if study["view"]["state"] == "completed" and found == 0 else "not_evaluated"
 
 
-def run(destination, kinds):
+def run(destination, kinds, refinement_threads=None):
     """! @brief 고정 예산과 선택 기준을 먼저 기록하고 단계별 결과를 보존한다."""
     destination.mkdir(parents=True)
     path = destination / "report.json"
     runtime = SolverRuntime()
     started = monotonic()
+    compute_profile = None if refinement_threads is None else {"kind": "tuning_refinement/0.1", "num_threads": refinement_threads}
     report = {"status": "running", "runtime_identity": runtime.identity, "frequency_hz": FREQUENCIES,
         "candidates_mm": {"ifa": [24, 26], "arc": [5, 5.5]}, "candidate_grid_mm": 0.5, "final_grid_mm": FINAL_GRID_MM,
-        "max_timesteps": {"ifa": [50000, IFA_FINAL_TIMESTEPS], "arc": [ARC_TIMESTEPS, ARC_TIMESTEPS]},
-        "native_solve_limit": 3 * len(kinds) + ("ifa" in kinds), "selection": "lowest_worst_valid_sample_s11_then_ordinal", "s11_limit_db": -10,
+        "max_timesteps": {"ifa": [50000, IFA_FINAL_TIMESTEPS if compute_profile is None else 50000],
+                          "arc": [ARC_TIMESTEPS, ARC_TIMESTEPS]},
+        "compute_profile": compute_profile,
+        "native_solve_limit": 4 * len(kinds) if compute_profile is not None else 3 * len(kinds) + ("ifa" in kinds), "selection": "lowest_worst_valid_sample_s11_then_ordinal", "s11_limit_db": -10,
         "manufacturing": None, "measurement": None, "sma_model": None, "formal_convergence": "not_established", "cases": []}
     publish_report(path, report)
     try:
         with ProjectService(destination / "workspace", solver_runtime=runtime) as service:
             for kind in kinds:
-                compare_case(service, kind, report, path)
+                compare_case(service, kind, report, path, compute_profile)
         with ProjectService(destination / "workspace", auto_run=False) as service:
             for entry in report["cases"]:
                 case = entry["case"]
@@ -175,6 +183,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--destination", type=Path, required=True)
     parser.add_argument("--case", action="append", choices=("ifa", "arc"))
+    parser.add_argument("--refinement-threads", type=int, choices=range(1, 9))
     options = parser.parse_args()
     kinds = list(dict.fromkeys(options.case)) if options.case else ("ifa", "arc")
-    run(options.destination.resolve(), kinds)
+    run(options.destination.resolve(), kinds, options.refinement_threads)
