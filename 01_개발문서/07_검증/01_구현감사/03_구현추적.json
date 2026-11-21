@@ -10176,7 +10176,9 @@
         "../01_개발문서/07_검증/25_기판교환과_원문수입_검증.md",
         "../01_개발문서/07_검증/26_기판교환과_원문수입_실행기록.json",
         "../01_개발문서/05_기능설계/05_출력교환/07_제조사_안테나_라이브러리.md",
-        "../01_개발문서/07_검증/263_코르보_초광대역_안테나_가져오기_검증.md"
+        "../01_개발문서/07_검증/263_코르보_초광대역_안테나_가져오기_검증.md",
+        "../01_개발문서/07_검증/296_엔씨_슬롯과_원본_대응_검증.md",
+        "tools/verify_altium_nc_reexport.py"
       ],
       "gaps": [
         "범용 KiCad/Gerber/XNC 문법과 모든 공정, 임의 zone thermal/clearance/연결 의미 및 제조 DRC 전체 수용은 남는다. 한정된 수신 도구 시험을 전체 EDA 상호 운용으로 확대하지 않는다.",
@@ -14125,8 +14127,8 @@
   "review_inputs": [
     {
       "path": "01_개발문서/07_검증/01_구현감사/01_설계기능.json",
-      "text_sha256": "b8fb70b5540ef1fe8129467d9474285ae0c91587e01e3eaa1956578a8f896099",
-      "utf8_bytes": 62880
+      "text_sha256": "0ddae29356b99c36acbb99d841015b3127277602fa2e5cf853237d85b6bbdcfa",
+      "utf8_bytes": 63007
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
@@ -14290,8 +14292,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/05_출력교환/05_기판형상과_제조파일_교환.md",
-      "text_sha256": "3cd69a831349ff28cf3699896d121c31853c7acae392df0bbe3462a8110fb3c9",
-      "utf8_bytes": 16011
+      "text_sha256": "122355c88e91fa3c4d2ee38cec1e78b2a3b0df3baf9ecbb506c3aaf47e6f0778",
+      "utf8_bytes": 16377
     },
     {
       "path": "01_개발문서/05_기능설계/05_출력교환/06_고정설계_보고서와_인계.md",
@@ -14477,6 +14479,11 @@
       "path": "01_개발문서/07_검증/294_설치후보_격자와_경계_시간창_민감도.md",
       "text_sha256": "b117abf240a0d17160064c6e76e8af1bf2088b75a2c6d3b58b2dfa5e790f2546",
       "utf8_bytes": 2822
+    },
+    {
+      "path": "01_개발문서/07_검증/296_엔씨_슬롯과_원본_대응_검증.md",
+      "text_sha256": "ecb346fe7a4fd15b27beea0e4ccd2e1d103cba575cde6eecac3734bc139419f8",
+      "utf8_bytes": 2788
     },
     {
       "path": "01_개발문서/07_검증/29_고정설계_보고서와_인계_검증.md",
@@ -14665,8 +14672,8 @@
     },
     {
       "path": "Code/src/rfad/adapters/exchange/cam_reader.py",
-      "text_sha256": "f11b6cf80f650bc33d6a542f2860a4246b0e8597c396958a013d137864afafb6",
-      "utf8_bytes": 19441
+      "text_sha256": "b8d02e5ca2ef2f0f41552dda8b339dba63862973f16a41f5f79afecbf9240177",
+      "utf8_bytes": 23234
     },
     {
       "path": "Code/src/rfad/adapters/exchange/cam_writer.py",
@@ -14955,8 +14962,8 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_import_mapping.py",
-      "text_sha256": "a4ca4aa3350dc365ee88e8d0ab3d3020853d390e5fc80621449292e5d9a4414f",
-      "utf8_bytes": 49121
+      "text_sha256": "282a5f1d721d65fa646f46bf41e89d43ddf082a41eed27bf7cc7314b8cf38319",
+      "utf8_bytes": 49954
     },
     {
       "path": "Code/src/rfad/application/pcb_import_service.py",
@@ -15865,8 +15872,8 @@
     },
     {
       "path": "Code/tests/test_pcb_exchange_formats.py",
-      "text_sha256": "04a872db57fa115f3232d692e4034fa5373b1bed263057dd282a347208c5a9ea",
-      "utf8_bytes": 22487
+      "text_sha256": "445632fdfc47087b87ad479760af32bfe03822efc3679367713c4c68a54b75ab",
+      "utf8_bytes": 24043
     },
     {
       "path": "Code/tests/test_pcb_exchange_service.py",
@@ -15890,8 +15897,8 @@
     },
     {
       "path": "Code/tests/test_pcb_import_service.py",
-      "text_sha256": "304f3495a21cb379d24e88e24bdb2e398bd34d4895c007d0ef73e3d93abdf136",
-      "utf8_bytes": 13952
+      "text_sha256": "841932a4b2b7bc8292230f54085dcbec3a96fc992323abd8cdf3a7462f44a779",
+      "utf8_bytes": 16990
     },
     {
       "path": "Code/tests/test_pcb_loss_convergence.py",
@@ -16127,6 +16134,11 @@
       "path": "Code/tools/summarize_windows_canvas_display.py",
       "text_sha256": "06b4997590b82858e6ff9093271492c09b3e2fc87477a1bc8ebeb77e26f06351",
       "utf8_bytes": 9302
+    },
+    {
+      "path": "Code/tools/verify_altium_nc_reexport.py",
+      "text_sha256": "f579fc613ff97547fc286053640a9bdd362212877cd586396d09f6180a6a4b65",
+      "utf8_bytes": 3794
     },
     {
       "path": "Code/tools/verify_ifa_convergence.py",

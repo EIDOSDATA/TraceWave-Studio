@@ -85,6 +85,30 @@ class CamSyntaxTests(unittest.TestCase):
         self.assertAlmostEqual(value["holes"][0]["finished_width_mm"],2.54)
         self.assertIsNone(value["holes"][0]["tool_diameter_mm"])
 
+    def test_xnc_decimal_g85_keeps_modal_end_axis_and_missing_classification(self):
+        """! @brief 절대 decimal G85와 명시되지 않은 도금/공구를 함께 보존한다."""
+        raw = b"M48\nMETRIC\nT01C1.2\n%\nG90\nT01\nX22.499Y9.999G85X27.499\nM30\n"
+        result = cam_reader.read_xnc(raw)
+        self.assertEqual(result["holes"][0]["end_mm"], [27.499, 9.999])
+        self.assertIsNone(result["holes"][0]["tool_diameter_mm"])
+        self.assertEqual(result["plating"], "unknown")
+        self.assertEqual({loss["code"] for loss in result["losses"]},
+                         {"cam_source_id_unspecified", "xnc_plating_unspecified"})
+        with self.assertRaises(ProjectError):
+            cam_reader.read_xnc(raw.replace(b"X27.499", b"X27499"))
+        with self.assertRaises(ProjectError):
+            cam_reader.read_xnc(raw.replace(b"X27.499", b"X22.499"))
+
+    def test_missing_gerber_net_attribute_is_distinct_from_explicit_empty_net(self):
+        """! @brief 명시 미연결과 사라진 동박 넷 속성의 안내를 구분한다."""
+        header = b"%FSLAX46Y46*%%MOMM*%%TF.FileFunction,Copper,L1,Top*%%ADD10C,0.1*%D10*"
+        body = b"X1000000Y2000000D03*M02*"
+        missing = cam_reader.read_gerber(header + body)
+        self.assertEqual({row["code"] for row in missing["losses"]},
+                         {"cam_source_id_unspecified", "cam_copper_net_unspecified"})
+        explicit = cam_reader.read_gerber(header + b"%TO.N,*%%TOTraceWaveId,track-1*%" + body)
+        self.assertFalse(explicit["losses"])
+
     def test_gerber_decimal_units_and_clear_polarity_are_not_file_polarity(self):
         """! @brief LP clear는 이미지 연산이고 FilePolarity Negative는 mask 개구 의미이다."""
         raw=b'%FSLAX24Y24*%%MOIN*%%TF.FileFunction,Soldermask,Top*%%TF.FilePolarity,Negative*%%ADD10C,0.1*%D10*X10000Y20000D03*%LPC*%X10000Y20000D03*M02*'

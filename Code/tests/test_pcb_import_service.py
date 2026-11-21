@@ -164,6 +164,52 @@ class PcbImportTransferTests(unittest.TestCase):
 @unittest.skipUnless(os.environ.get("RFAD_EXCHANGE_PYTHON"), "별도 PCB parser 환경을 명시합니다.")
 class PcbImportNativeTests(unittest.TestCase):
     """! @brief 실제 writer 출력의 원시 바이트를 별도 parser로 읽고 환경 없이 다시 연다."""
+    def test_g85_loss_acknowledgement_and_source_id_survive_reopen(self):
+        """! @brief G85를 실제 parser로 읽고 도금 미정 및 원본 ID를 저장한 뒤 다시 확인한다."""
+        raw = (b"M48\nMETRIC\nT01C1.2\n%\nG90\nT01\n"
+               b"; #@! TOTraceWaveId,finished-slot-1\nX12.0Y8.0G85X17.0\nM30\n")
+        name = "받은_슬롯.xnc"
+        f = ExchangeFixture(ExchangeRuntime(Path(os.environ["RFAD_EXCHANGE_PYTHON"])))
+        try:
+            prepare(f)
+            identity = begin(f, raw, name, "xnc")
+            upload(f, identity, raw, name)
+            f.service.mutate("pcb.import.parse", f.request({"upload_id": identity}))
+            f.service.exchange.run_next()
+            status = f.read("pcb.import.get", {"upload_id": identity})
+            self.assertEqual(status["parse_state"], "completed", status)
+            losses = status["parsed"]["losses"]
+            self.assertEqual([row["code"] for row in losses], ["xnc_plating_unspecified"])
+            source = status["result"]["source_files"][0]["artifact"]
+            inputs = {"upload_id": identity, "expected_revision": f.revision, "mapping": {
+                        "board_id": f.document["board"]["id"], "frame_id": f.document["board"]["frame_id"],
+                        "layers": [], "nets": [], "placement": None},
+                      "acknowledged_losses": [], "reason": "원문과 누락 속성 검토"}
+            blocked = f.read("pcb.import.preview", inputs)
+            self.assertFalse(blocked["can_apply"])
+            self.assertIn("도금 분류", blocked["losses"][0]["message"])
+            inputs["acknowledged_losses"] = [canonical_hash(row) for row in losses]
+            review = f.read("pcb.import.preview", inputs)
+            self.assertTrue(review["can_apply"], review)
+            applied = f.service.mutate("pcb.import.apply", f.request(
+                {**inputs, "command_id": str(uuid4()), "review_hash": review["review_hash"]}))
+            f.complete("project.save", {"expected_revision": applied["new_revision"]})
+            f.service.close()
+            f.service = ProjectService(f.workspace, auto_run=False)
+            state = f.service.journal.read()
+            updated = f.service._load(state["projects"][f.project])
+            imported = next(row for row in updated["pcb"]["imports"] if row["id"] == identity)
+            binding, = imported["bindings"]
+            slot = next(row for row in updated["pcb"]["holes"] if row["id"] == binding["id"])
+            self.assertTrue(binding["source_object_id"].endswith(":TraceWaveId:finished-slot-1"), binding)
+            self.assertEqual(slot["origin"]["source_object_id"], binding["source_object_id"])
+            self.assertAlmostEqual(slot["shape"]["finished_length"]["value_si"], 0.0062)
+            self.assertEqual(slot["plating"]["state"], "unknown")
+            self.assertIsNone(slot["tool_diameter"]["value_si"])
+            self.assertEqual(f.service.journal.read_artifact(source), raw)
+        finally:
+            f.close()
+
     def test_real_board_parse_preserves_raw_source_and_runtime_free_reopen(self):
         f = ExchangeFixture(ExchangeRuntime(Path(os.environ["RFAD_EXCHANGE_PYTHON"])))
         try:

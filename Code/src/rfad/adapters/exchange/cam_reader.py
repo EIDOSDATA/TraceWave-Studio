@@ -67,6 +67,19 @@ def _attribute(command,dictionaries):
     dictionaries[kind][fields[0]]=[_unescape(value) for value in fields[1:]]
 
 
+
+def _object_attribute_loss(objects, attribute, code, message):
+    """! @brief 태그가 없거나 값이 비어 있는 객체 수를 파일 단위 손실로 기록한다."""
+    missing = sum(not item["attributes"].get(attribute) for item in objects)
+    return [{"code": code, "message": message, "affected_objects": missing, "raw_preserved": True}] if missing else []
+
+
+def _source_id_losses(objects):
+    """! @brief Studio 원본 객체 ID가 없는 경우 형상 대응의 범위를 안내한다."""
+    return _object_attribute_loss(objects, "TraceWaveId", "cam_source_id_unspecified",
+                                  "원본 객체 ID 태그가 없는 항목은 파일 내 순서로 추적합니다.")
+
+
 def read_gerber(raw):
     """! @brief 절대좌표 line/arc/region/표준 flash와 X2 속성을 읽는다."""
     source=_text(raw)
@@ -236,17 +249,47 @@ def read_gerber(raw):
             _error("Gerber 기하 수가 상한을 초과했습니다.","E_RESOURCE")
     if not ended or scale is None or format_spec is None:
         _error("Gerber 단위/형식/종료가 누락되었습니다.","E_SCHEMA")
-    return {"schema":"rfad.gerber-read/0.1","unit":unit,"coordinate_format":list(format_spec),"file_attributes":attributes["TF"],"objects":objects,"losses":[]}
+    losses = []
+    if attributes["TF"].get(".FileFunction", [])[:1] == ["Copper"]:
+        losses.extend(_source_id_losses(objects))
+        losses.extend(_object_attribute_loss(objects, ".N", "cam_copper_net_unspecified",
+                                             "동박 원문에 넷 속성이 없는 항목은 연결을 추정할 수 없습니다."))
+    return {"schema":"rfad.gerber-read/0.1","unit":unit,"coordinate_format":list(format_spec),"file_attributes":attributes["TF"],"objects":objects,"losses":losses}
 
 
-def read_xnc(raw):
-    """! @brief 명시 decimal mm/inch와 직선 slot만 읽고 실제 공구 지름은 미정으로 둔다."""
+def read_xnc(raw, *, metric_fixed_digits=None):
+    """! @brief 명시 decimal과 G85 직선 슬롯을 읽고 고정 자릿수는 별도 검토에서만 적용한다."""
     lines=[line.strip() for line in _text(raw).splitlines() if line.strip()]
+    legacy = metric_fixed_digits is not None
+    if legacy:
+        if (type(metric_fixed_digits) is not tuple or len(metric_fixed_digits) != 2
+                or any(type(n) is not int or not 1 <= n <= 6 for n in metric_fixed_digits)):
+            _error("검토 NC에는 정수·소수 자릿수를 명시해야 합니다.", "E_SCHEMA")
+        if lines[:2] == ["G92", "M48"]:
+            lines = lines[1:]
     if not lines or lines[0]!="M48":
         _error("XNC M48 header가 없습니다.","E_SCHEMA")
     attributes={"TF":{},"TA":{},"TO":{}}
     tools,holes={},[]
     scale=None;unit=None;header=True;selected=None;mode=None;down=False;current=None;ended=False
+
+    def coordinate(token):
+        """! @brief 정수 NC 좌표는 지정한 전체 자릿수가 일치할 때만 환산한다."""
+        if not legacy:
+            return _decimal(token) * scale
+        integer, fraction = metric_fixed_digits
+        if not re.fullmatch(r"[-+]?\d{" + str(integer + fraction) + "}", token):
+            _error("검토 NC 좌표가 생략 없는 지정 자릿수와 다릅니다.", "E_SCHEMA")
+        return int(token) * 10**(-fraction)
+
+    def slot(start, stop):
+        """! @brief 라우팅과 G85를 같은 직선 슬롯 기하로 표현한다."""
+        if math.dist(start, stop) <= 0:
+            _error("XNC 슬롯은 서로 다른 두 끝점이 필요합니다.", "E_GEOMETRY")
+        holes.append({"kind": "slot", "start_mm": list(start), "end_mm": list(stop),
+                      "finished_width_mm": tools[selected], "tool_diameter_mm": None,
+                      "attributes": deepcopy(attributes["TO"])})
+
     for line in lines[1:]:
         if ended:
             _error("XNC M30 뒤 데이터가 있습니다.","E_SCHEMA")
@@ -258,10 +301,14 @@ def read_xnc(raw):
             if line in ("METRIC","INCH","METRIC,TZ","INCH,TZ","METRIC,LZ","INCH,LZ"):
                 if scale is not None:
                     _error("XNC 단위가 중복 선언되었습니다.")
+                if legacy and line != "METRIC":
+                    _error("검토 NC는 생략 없는 metric 절대좌표만 지원합니다.", "E_SCHEMA")
                 unit="mm" if line.startswith("METRIC") else "inch";scale=1 if unit=="mm" else 25.4
             elif line=="%":
                 header=False
-            elif line=="FMAT,2":
+                if legacy:
+                    mode = "drill"
+            elif line=="FMAT,2" or legacy and line == "DETECT,ON":
                 pass
             else:
                 match=re.fullmatch(r"T(\d{1,2})C(.+)",line)
@@ -299,10 +346,24 @@ def read_xnc(raw):
                 _error("XNC tool 선택이 유효하지 않습니다.","E_SCHEMA")
             selected=int(match[1])
             continue
+        if "G85" in line:
+            token = r"([-+]?\d+(?:\.\d*)?)" if legacy else r"([-+]?\d+\.\d*)"
+            cycle = re.fullmatch("X" + token + "Y" + token + "G85(?:X" + token + ")?(?:Y" + token + ")?", line)
+            if (not cycle or selected is None or down or mode == "rout"
+                    or all(value is None for value in cycle.groups()[2:])):
+                _error("G85 슬롯은 명시한 절대좌표, 공구 및 떨어진 끝점이 필요합니다.")
+            start = [coordinate(cycle[1]), coordinate(cycle[2])]
+            target = [coordinate(value) if value is not None else start[i]
+                      for i, value in enumerate(cycle.groups()[2:])]
+            slot(start, target)
+            current, mode = target, "drill"
+            if len(holes) > MAX_OPERATIONS:
+                _error("XNC 홀 수가 상한을 초과했습니다.", "E_RESOURCE")
+            continue
         match=re.fullmatch(r"(G00|G01)?X([-+]?\d+(?:\.\d*)?)Y([-+]?\d+(?:\.\d*)?)",line)
         if not match or selected is None:
             _error("XNC profile은 명시 decimal 좌표의 drill/직선 rout만 지원합니다.")
-        target=[_decimal(match[2])*scale,_decimal(match[3])*scale]
+        target=[coordinate(match[2]),coordinate(match[3])]
         if match[1]=="G00":
             if down:
                 _error("XNC tool이 내려간 채 급속 이동했습니다.","E_SCHEMA")
@@ -310,7 +371,7 @@ def read_xnc(raw):
         elif match[1]=="G01":
             if not down or mode!="rout" or current is None or math.dist(current,target)<=0:
                 _error("XNC 직선 rout 상태가 유효하지 않습니다.","E_SCHEMA")
-            holes.append({"kind":"slot","start_mm":list(current),"end_mm":target,"finished_width_mm":tools[selected],"tool_diameter_mm":None,"attributes":deepcopy(attributes["TO"])})
+            slot(current, target)
         elif mode=="drill":
             holes.append({"kind":"circle","center_mm":target,"finished_diameter_mm":tools[selected],"tool_diameter_mm":None,"attributes":deepcopy(attributes["TO"])})
         else:
@@ -322,7 +383,11 @@ def read_xnc(raw):
         _error("XNC 종료가 누락되었습니다.","E_SCHEMA")
     function=attributes["TF"].get(".FileFunction",[])
     plating="plated" if function and function[0]=="Plated" else "unplated" if function and function[0]=="NonPlated" else "unknown"
-    return {"schema":"rfad.xnc-read/0.1","unit":unit,"file_attributes":attributes["TF"],"plating":plating,"holes":holes,"losses":[]}
+    losses = _source_id_losses(holes)
+    if holes and plating == "unknown":
+        losses.append({"code": "xnc_plating_unspecified", "message": "NC 원문에 도금 분류가 없어 미정으로 유지합니다.",
+                       "affected_objects": len(holes), "raw_preserved": True})
+    return {"schema":"rfad.xnc-read/0.1","unit":unit,"file_attributes":attributes["TF"],"plating":plating,"holes":holes,"losses":losses}
 
 
 def read_job(raw,files=None):

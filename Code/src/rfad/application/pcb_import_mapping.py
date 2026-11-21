@@ -1,6 +1,7 @@
 """! @brief 봉인 PCB/CAM parser 원문을 명시 층/넷 대응과 원자 typed patch로 연결한다."""
 from copy import deepcopy
 import math
+import re
 from uuid import UUID, uuid5
 
 from rfad.application.canonical import canonical_bytes, canonical_hash
@@ -61,9 +62,9 @@ class _ImportCandidate:
             fail("읽은 좌표/치수는 유한 숫자여야 합니다.", self.source)
         return Quantity.from_value(value, unit, status="source_default", source_refs=(self.reference(),)).to_dict()
 
-    def reference(self):
+    def reference(self, source=None):
         """! @brief 원문 artifact를 보유한 수입 기록과 파일 객체를 함께 가리킨다."""
-        return "pcb-import:" + self.record["id"] + "#" + self.source
+        return "pcb-import:" + self.record["id"] + "#" + (source or self.source)
 
     def point(self, value):
         """! @brief reader가 이미 적용한 배치와 좌표 반전을 반복하지 않는다."""
@@ -98,7 +99,7 @@ class _ImportCandidate:
             fail("원본 넷의 명시 대응이 필요합니다. 미연결은 null을 지정하십시오.", "mapping.nets", "E_CONFLICT")
         return self.nets[source]
 
-    def append(self, section, row, suffix="", owner=None):
+    def append(self, section, row, suffix="", owner=None, *, native_source=None):
         """! @brief 수입 origin과 world 객체 소유권을 한 후보 안에서 함께 고정한다."""
         key = "geometry" if section == "geometry" else collection(section)
         rows = self.document["geometry"] if key == "geometry" else records(self.document, key)
@@ -110,11 +111,14 @@ class _ImportCandidate:
             name = base + f" {number:02d}"
             number += 1
         row["name"] = name
+        source = native_source or self.source
         if section != "geometry":
-            row["origin"] = {"import_id": self.record["id"], "source_object_id": self.source}
-            row["source_refs"] = [self.reference()]
+            row["origin"] = {"import_id": self.record["id"], "source_object_id": source}
+            row["source_refs"] = [self.reference(source)]
+        elif native_source is not None:
+            row["source_ref"] = self.reference(source)
         rows.append(row)
-        self.record["bindings"].append({"source_object_id": self.source, "collection": key, "id": row["id"]})
+        self.record["bindings"].append({"source_object_id": source, "collection": key, "id": row["id"]})
         if owner is not None:
             if owner in self.containers:
                 self.record["bindings"].append({"source_object_id": self.path + ":" + owner, "collection": key, "id": row["id"]})
@@ -129,12 +133,12 @@ class _ImportCandidate:
         return {"kind": kind, "role": "conductor", "frame_id": self.mapping["frame_id"], "layer_id": layer,
                 "net_id": net, "material_ref": None, "source_ref": self.reference(), "include_in_em": True, "include_in_export": True}
 
-    def hole(self, shape, plating, pads=(), net=None, owner=None, suffix=""):
+    def hole(self, shape, plating, pads=(), net=None, owner=None, suffix="", *, native_source=None):
         """! @brief 완성 구멍과 실제 도금 상태만 보존하고 공구/도금 두께를 추정하지 않는다."""
         row = new_record(self.document, "hole")
         row.update(shape=shape, frame_id=self.mapping["frame_id"], tool_diameter=self.quantity(None))
         row["plating"].update(state=plating, thickness=self.quantity(None), pad_ids=list(pads), net_id=net if plating == "plated" else None)
-        return self.append("hole", row, suffix, owner)
+        return self.append("hole", row, suffix, owner, native_source=native_source)
 
     def board(self, edges):
         """! @brief 기존 외곽을 대조하고 분리된 명시 내부 폐곡선만 새 절삭으로 보존한다."""
@@ -373,6 +377,13 @@ class _ImportCandidate:
             row.update(artwork_layer_id=layer["id"], definition={"mode": "explicit_shape", "shape": shape})
             self.append("aperture", row, owner=owner)
 
+    def cam_source(self, item):
+        """! @brief 현행 순번과 새 프로젝트 ID를 유지하면서 안전한 원본 태그를 대응에 추가한다."""
+        native = item.get("attributes", {}).get("TraceWaveId", [])
+        if len(native) == 1 and re.fullmatch(r"[A-Za-z0-9_.-]{1,64}", native[0]):
+            return self.source + ":TraceWaveId:" + native[0]
+        return None
+
     def cam(self, data):
         """! @brief 단일 극성의 명시 해석 형상만 가져오며 곡선 polygon 근사는 만들지 않는다."""
         import math
@@ -388,7 +399,7 @@ class _ImportCandidate:
                 else:
                     start, end, width = item["start_mm"], item["end_mm"], item["finished_width_mm"]
                     shape = {"kind": "capsule", "center": self.point([(start[i] + end[i]) / 2 for i in range(2)]), "finished_length": self.quantity(math.dist(start, end) + width), "finished_width": self.quantity(width), "rotation": self.quantity(math.degrees(math.atan2(end[1] - start[1], end[0] - start[0])), "deg")}
-                self.hole(shape, data["plating"])
+                self.hole(shape, data["plating"], native_source=self.cam_source(item))
             return
         if data["schema"] != "rfad.gerber-read/0.1":
             fail("지원하지 않는 parser 자료입니다.", "schema", "E_UNSUPPORTED")
@@ -436,7 +447,7 @@ class _ImportCandidate:
             self.source = self.path + ":object:" + str(index)
             if item["polarity"] != "dark":
                 fail("clear 극성 합성은 현재 편집 모델로 조용히 생략할 수 없습니다.", self.source, "E_UNSUPPORTED")
-            names = item["attributes"].get(".N", [""])
+            names = item["attributes"].get(".N") or [""]
             net = None if artwork else self.net(names[0])
             kind = item["kind"]
             if artwork:
@@ -459,7 +470,7 @@ class _ImportCandidate:
                     fail("제조 이미지는 명시 flash와 직선 닫힌 region만 수입합니다.", self.source, "E_UNSUPPORTED")
                 row = new_record(self.document, "aperture")
                 row.update(artwork_layer_id=image_layer["id"], definition={"mode": "explicit_shape", "shape": shape})
-                self.append("aperture", row)
+                self.append("aperture", row, native_source=self.cam_source(item))
                 continue
             if kind == "region":
                 if any(edge["kind"] != "line" for loop in item["loops"] for edge in loop):
@@ -488,14 +499,14 @@ class _ImportCandidate:
                         row = self.geometry("line_path", layer, net)
                         delta = [0, distance] if vertical else [distance, 0]
                         row.update(start=self.point([center[i] - delta[i] for i in range(2)]), end=self.point([center[i] + delta[i] for i in range(2)]), width=self.quantity(min(length, width)))
-                        self.append("geometry", row)
+                        self.append("geometry", row, native_source=self.cam_source(item))
                         continue
                 row = self.geometry("pad", layer, net)
                 size = aperture["size_mm"] * 2 if aperture["kind"] == "C" else aperture["size_mm"]
                 row.update(pad_shape="circle" if aperture["kind"] == "C" else "rectangle", center=self.point(item["center_mm"]), size=self.point(size), rotation=self.quantity(0, "deg"))
             else:
                 fail("지원하지 않는 Gerber 도형입니다.", self.source, "E_UNSUPPORTED")
-            self.append("geometry", row)
+            self.append("geometry", row, native_source=self.cam_source(item))
 
     def vendor(self, data):
         """! @brief 출처 동박을 사용자가 지정한 평면 배치와 기존 동박층에 연결한다."""
@@ -577,7 +588,7 @@ class _ImportCandidate:
 
 def _loss_message(row, prefix):
     """! @brief 업체 원문의 생략·근사 근거를 고정 보고서에 정의한 문구로 표시한다."""
-    if row.get("code", "").startswith("vendor_"):
+    if row.get("code", "").startswith(("vendor_", "cam_", "xnc_")) and row.get("message"):
         return row["message"]
     return prefix + str(row.get("code", "unknown"))
 
@@ -658,7 +669,7 @@ def import_sources(parsed):
             if function and function[0] == "Copper":
                 add_layer(record["path"])
                 for item in data["objects"]:
-                    names = item["attributes"].get(".N", [""])
+                    names = item["attributes"].get(".N") or [""]
                     add_net(names[0], names[0] or None)
             elif function and function[0] in ("Soldermask", "Paste"):
                 add_layer(record["path"], "solder_mask" if function[0] == "Soldermask" else "solder_paste", "top" if "Top" in function else "bottom" if "Bot" in function or "Bottom" in function else None)
