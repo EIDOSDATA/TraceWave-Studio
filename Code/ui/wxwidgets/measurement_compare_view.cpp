@@ -68,7 +68,7 @@ MeasurementCompareView::MeasurementCompareView(wxWindow* parent) : wxPanel(paren
                         }
                     });
     m_status = new wxStaticText(this, wxID_ANY,
-                                Display("보존 기록을 선택하세요. 기록의 미정은 실측 합격으로 바뀌지 않습니다."));
+                                Display("선택 기능입니다. 비교할 측정 자료가 있으면 가져오세요."));
     StudioTheme::BindSecondary(*m_status);
     layout->Add(m_status, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(8));
     m_compare = new ResultCompareView(this, true);
@@ -194,7 +194,7 @@ void MeasurementCompareView::SetRecords(const Json& context)
         }
     }
     SetStatus(m_records.empty()
-                  ? "보존된 측정 기록이 없습니다. 자료를 가져오거나 선택 원본에 기록을 추가하세요."
+                  ? "측정 기록이 없습니다. 비교할 자료가 있을 때 가져오거나 원본에 기록을 추가하세요."
                   : "시료 / 교정 기록을 명시 선택하세요. 과거 기록은 자동으로 최신 내용으로 바뀌지 않습니다.");
     Actions();
 }
@@ -227,7 +227,7 @@ void MeasurementCompareView::Clear()
     m_record->Clear();
     m_selectedSource = false;
     m_compare->Clear();
-    SetStatus("현재 프로젝트의 측정 기록을 조회하세요.");
+    SetStatus("측정 파일 비교는 선택 기능입니다. 현재 프로젝트의 기록을 조회할 수 있습니다.");
     Actions();
 }
 
