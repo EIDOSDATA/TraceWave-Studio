@@ -1,0 +1,302 @@
+{
+  "schema": "rfad.stage12.native-cancellation-polling-comparison/0.1",
+  "date_kst": "2026-11-21",
+  "executable_sha256": {
+    "control": "d905584aa7dd10b29cf97efe9b5ad89c4dcdcdb9ec003cb346952d204346ddd9",
+    "candidate": "512e678ebbb26eccb46fa499f72aa732583e036997939fe41e4f4bae200a5e70"
+  },
+  "cancel_pending_poll_interval_ms": {
+    "control": 200,
+    "candidate": 50
+  },
+  "samples": [
+    {
+      "number": 1,
+      "build": "control",
+      "cases": {
+        "cad": {
+          "control": {
+            "button_enabled": false,
+            "elapsed_ms": 0.736,
+            "menu_enabled": false
+          },
+          "job_id": "4448ffb9-7214-44b1-b993-6f17f3d58a8e",
+          "native_worker_attached": true,
+          "operation": "geometry.build",
+          "receipt": {
+            "elapsed_ms": 44.048,
+            "events_cursor": 3,
+            "job_id": "4448ffb9-7214-44b1-b993-6f17f3d58a8e",
+            "state": "cancel_requested"
+          },
+          "state_before": "running",
+          "terminal": {
+            "elapsed_ms": 204.768,
+            "events_cursor": 4,
+            "native_reap_ms": 9.3318,
+            "outcome_unknown": false,
+            "state": "cancelled",
+            "termination_confirmed": true
+          }
+        },
+        "output": {
+          "control": {
+            "button_enabled": false,
+            "elapsed_ms": 0.031
+          },
+          "job_id": "a6d56ed3-080c-48c8-a357-7c448bed3d49",
+          "native_worker_attached": true,
+          "operation": "export.verify",
+          "receipt": {
+            "elapsed_ms": 46.579,
+            "events_cursor": 3,
+            "job_id": "a6d56ed3-080c-48c8-a357-7c448bed3d49",
+            "state": "cancel_requested"
+          },
+          "state_before": "running",
+          "terminal": {
+            "elapsed_ms": 239.355,
+            "events_cursor": 4,
+            "native_reap_ms": 6.1627,
+            "outcome_unknown": false,
+            "state": "cancelled",
+            "termination_confirmed": true
+          }
+        }
+      }
+    },
+    {
+      "number": 2,
+      "build": "candidate",
+      "cases": {
+        "cad": {
+          "control": {
+            "button_enabled": false,
+            "elapsed_ms": 1.02,
+            "menu_enabled": false
+          },
+          "job_id": "a51916af-0282-4176-b1c2-e768a5f52bd3",
+          "native_worker_attached": true,
+          "operation": "geometry.build",
+          "receipt": {
+            "elapsed_ms": 41.189,
+            "events_cursor": 3,
+            "job_id": "a51916af-0282-4176-b1c2-e768a5f52bd3",
+            "state": "cancel_requested"
+          },
+          "state_before": "running",
+          "terminal": {
+            "elapsed_ms": 123.131,
+            "events_cursor": 4,
+            "native_reap_ms": 3.9885,
+            "outcome_unknown": false,
+            "state": "cancelled",
+            "termination_confirmed": true
+          }
+        },
+        "output": {
+          "control": {
+            "button_enabled": false,
+            "elapsed_ms": 0.141
+          },
+          "job_id": "993bb91d-c06f-4cc9-966d-49edaf811978",
+          "native_worker_attached": true,
+          "operation": "export.verify",
+          "receipt": {
+            "elapsed_ms": 50.738,
+            "events_cursor": 3,
+            "job_id": "993bb91d-c06f-4cc9-966d-49edaf811978",
+            "state": "cancel_requested"
+          },
+          "state_before": "running",
+          "terminal": {
+            "elapsed_ms": 165.538,
+            "events_cursor": 4,
+            "native_reap_ms": 6.2446,
+            "outcome_unknown": false,
+            "state": "cancelled",
+            "termination_confirmed": true
+          }
+        }
+      }
+    },
+    {
+      "number": 3,
+      "build": "candidate",
+      "cases": {
+        "cad": {
+          "control": {
+            "button_enabled": false,
+            "elapsed_ms": 0.938,
+            "menu_enabled": false
+          },
+          "job_id": "8c15d3e1-4928-4251-80d7-193c3ec35316",
+          "native_worker_attached": true,
+          "operation": "geometry.build",
+          "receipt": {
+            "elapsed_ms": 41.743,
+            "events_cursor": 3,
+            "job_id": "8c15d3e1-4928-4251-80d7-193c3ec35316",
+            "state": "cancel_requested"
+          },
+          "state_before": "running",
+          "terminal": {
+            "elapsed_ms": 120.708,
+            "events_cursor": 4,
+            "native_reap_ms": 2.8408,
+            "outcome_unknown": false,
+            "state": "cancelled",
+            "termination_confirmed": true
+          }
+        },
+        "output": {
+          "control": {
+            "button_enabled": false,
+            "elapsed_ms": 0.135
+          },
+          "job_id": "13dd3554-c8fb-4f0c-bb51-425ededb22ca",
+          "native_worker_attached": true,
+          "operation": "export.verify",
+          "receipt": {
+            "elapsed_ms": 47.112,
+            "events_cursor": 3,
+            "job_id": "13dd3554-c8fb-4f0c-bb51-425ededb22ca",
+            "state": "cancel_requested"
+          },
+          "state_before": "running",
+          "terminal": {
+            "elapsed_ms": 160.784,
+            "events_cursor": 4,
+            "native_reap_ms": 8.1254,
+            "outcome_unknown": false,
+            "state": "cancelled",
+            "termination_confirmed": true
+          }
+        }
+      }
+    },
+    {
+      "number": 4,
+      "build": "control",
+      "cases": {
+        "cad": {
+          "control": {
+            "button_enabled": false,
+            "elapsed_ms": 0.963,
+            "menu_enabled": false
+          },
+          "job_id": "b9e8d775-2b0f-4b34-9b0f-8e6fabbb2de2",
+          "native_worker_attached": true,
+          "operation": "geometry.build",
+          "receipt": {
+            "elapsed_ms": 54.782,
+            "events_cursor": 3,
+            "job_id": "b9e8d775-2b0f-4b34-9b0f-8e6fabbb2de2",
+            "state": "cancel_requested"
+          },
+          "state_before": "running",
+          "terminal": {
+            "elapsed_ms": 251.995,
+            "events_cursor": 4,
+            "native_reap_ms": 6.7305,
+            "outcome_unknown": false,
+            "state": "cancelled",
+            "termination_confirmed": true
+          }
+        },
+        "output": {
+          "control": {
+            "button_enabled": false,
+            "elapsed_ms": 0.082
+          },
+          "job_id": "21fdf98c-3d48-45ce-9dc3-085141faf3aa",
+          "native_worker_attached": true,
+          "operation": "export.verify",
+          "receipt": {
+            "elapsed_ms": 46.666,
+            "events_cursor": 3,
+            "job_id": "21fdf98c-3d48-45ce-9dc3-085141faf3aa",
+            "state": "cancel_requested"
+          },
+          "state_before": "running",
+          "terminal": {
+            "elapsed_ms": 246.235,
+            "events_cursor": 4,
+            "native_reap_ms": 7.448,
+            "outcome_unknown": false,
+            "state": "cancelled",
+            "termination_confirmed": true
+          }
+        }
+      }
+    }
+  ],
+  "summary": {
+    "cad": {
+      "control": {
+        "gui_terminal_ms": [
+          204.768,
+          251.995
+        ],
+        "gui_terminal_median_ms": 228.38150000000002,
+        "receipt_ms": [
+          44.048,
+          54.782
+        ],
+        "native_reap_ms": [
+          9.3318,
+          6.7305
+        ]
+      },
+      "candidate": {
+        "gui_terminal_ms": [
+          123.131,
+          120.708
+        ],
+        "gui_terminal_median_ms": 121.9195,
+        "receipt_ms": [
+          41.189,
+          41.743
+        ],
+        "native_reap_ms": [
+          3.9885,
+          2.8408
+        ]
+      }
+    },
+    "output": {
+      "control": {
+        "gui_terminal_ms": [
+          239.355,
+          246.235
+        ],
+        "gui_terminal_median_ms": 242.79500000000002,
+        "receipt_ms": [
+          46.579,
+          46.666
+        ],
+        "native_reap_ms": [
+          6.1627,
+          7.448
+        ]
+      },
+      "candidate": {
+        "gui_terminal_ms": [
+          165.538,
+          160.784
+        ],
+        "gui_terminal_median_ms": 163.161,
+        "receipt_ms": [
+          50.738,
+          47.112
+        ],
+        "native_reap_ms": [
+          6.2446,
+          8.1254
+        ]
+      }
+    }
+  },
+  "full_f4_acceptance_measured": false,
+  "release_ctest_passed": 13
+}

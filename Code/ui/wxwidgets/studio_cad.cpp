@@ -440,7 +440,9 @@ void StudioFrame::PollCad(Clock::time_point now)
         UpdateControls();
     }
     UpdateModelState();
-    if (!m_connected || !m_cadTask.BeginPoll(now, std::chrono::milliseconds(200)))
+    // @brief 취소 중 회수 상태를 빠르게 보여 주고 조회 오류는 기본 간격으로 다시 확인한다.
+    const auto interval = std::chrono::milliseconds(m_cadCancelRequested && m_cadState != "query_error" ? 50 : 200);
+    if (!m_connected || !m_cadTask.BeginPoll(now, interval))
     {
         return;
     }

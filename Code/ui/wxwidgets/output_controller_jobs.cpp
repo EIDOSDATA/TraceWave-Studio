@@ -129,7 +129,9 @@ void OutputController::AcceptTask(const Json& task)
 
 void OutputController::Poll(Clock::time_point now)
 {
-    if (!m_available || m_uncertain || !m_task.BeginPoll(now, std::chrono::milliseconds(200)))
+    // @brief 기존 단일 조회 제한을 유지하면서 취소 완료를 먼저 확인한다.
+    const auto interval = std::chrono::milliseconds(m_cancelRequested ? 50 : 200);
+    if (!m_available || m_uncertain || !m_task.BeginPoll(now, interval))
     {
         return;
     }
