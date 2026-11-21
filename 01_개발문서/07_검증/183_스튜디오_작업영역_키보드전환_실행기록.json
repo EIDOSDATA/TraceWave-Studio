@@ -1,0 +1,94 @@
+{
+  "schema": "rfad.stage12.workspace-keyboard/0.1",
+  "date_kst": "2026-11-21",
+  "platform": "Windows wxWidgets 150% DPI",
+  "controller": "native Windows key events",
+  "visual_workspaces": [
+    "2D 편집",
+    "해석 준비",
+    "네트워크",
+    "결과 / 후보 비교",
+    "기술 도면"
+  ],
+  "return_to_design_and_saved_name": true,
+  "ime_composition_verified": false,
+  "screen_reader_narration_verified": false,
+  "accessibility_trace": [
+    [
+      "F6",
+      null
+    ],
+    [
+      "Shift+F6",
+      "The focused UI element is 10 button (단추) 설계 ID: -31990."
+    ],
+    [
+      "Right",
+      null,
+      null
+    ],
+    [
+      "확인",
+      "The focused UI element is 11 button (단추) 해석 ID: -31989.",
+      [
+        "\t\t\t\t\t139 button (단추) 현재 설계 입력 검사 ID: -31918",
+        "\t\t\t\t\t141 button (단추) 수치 연구 설정 ID: -31916"
+      ]
+    ],
+    [
+      "Right",
+      null
+    ],
+    [
+      "확인",
+      null,
+      null
+    ],
+    [
+      "Right",
+      "The focused UI element is 13 button (단추) 비교 ID: -31987.",
+      [
+        "\t\t\t\t\t218 text (텍스트) 결과 / 후보 비교 ID: -31564"
+      ]
+    ],
+    [
+      "Right",
+      null,
+      null
+    ],
+    [
+      "Home",
+      "The focused UI element is 10 button (단추) 설계 ID: -31990.",
+      [
+        "\t\t\t\t\t418 text field (편집) (settable, string) 이름 Value: 한글 저장 확인 ID: -31937"
+      ]
+    ],
+    [
+      "F6",
+      "The focused UI element is 268 tree (트리) ID: -31975."
+    ],
+    [
+      "Shift+F6",
+      "The focused UI element is 10 button (단추) 설계 ID: -31990."
+    ],
+    [
+      "End",
+      "The focused UI element is 14 button (단추) 출력 ID: -31986."
+    ]
+  ],
+  "canvas_workflow": {
+    "passed": true,
+    "wall_seconds": 155.765,
+    "native_smoke_deadline_seconds": 180,
+    "previous_concurrent_attempts": [
+      {
+        "stage": 5,
+        "deadline_seconds": 60
+      },
+      {
+        "stage": 8,
+        "deadline_seconds": 60
+      }
+    ]
+  }
+}

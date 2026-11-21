@@ -56,7 +56,8 @@ WorkspaceBar::WorkspaceBar(wxWindow* parent) : wxPanel(parent)
                              onNavigate(static_cast<WorkspaceArea>(index));
                          }
                      });
-        button->Bind(wxEVT_KEY_DOWN,
+        // @brief Windows가 방향키를 기본 초점 탐색으로 소비하기 전에 작업 영역을 바꾼다.
+        button->Bind(wxEVT_CHAR_HOOK,
                      [this, index](wxKeyEvent& event)
                      {
                          const int key = event.GetKeyCode();
@@ -73,11 +74,11 @@ WorkspaceBar::WorkspaceBar(wxWindow* parent) : wxPanel(parent)
                                         : (index + m_tabs.size() + (key == WXK_LEFT ? -1 : 1)) % m_tabs.size());
                          const auto area = static_cast<WorkspaceArea>(next);
                          Select(area);
-                         m_tabs[next]->SetFocus();
                          if (onNavigate)
                          {
                              onNavigate(area);
                          }
+                         m_tabs[next]->SetFocus();
                      });
     }
     SetSizer(layout);
@@ -116,4 +117,9 @@ void WorkspaceBar::SetCommandState(bool save, bool run, bool step)
     m_save->Enable(save);
     m_run->Enable(run);
     m_step->Enable(step);
+}
+
+void WorkspaceBar::FocusSelected()
+{
+    m_tabs[static_cast<std::size_t>(m_selected)]->SetFocus();
 }

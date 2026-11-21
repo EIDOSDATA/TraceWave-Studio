@@ -2,6 +2,7 @@
 #include "studio_shell.h"
 #include "studio_support.h"
 #include "studio_theme.h"
+#include "workspace_bar.h"
 #include <wx/aui/aui.h>
 #include <wx/config.h>
 #include <wx/frame.h>
@@ -33,9 +34,10 @@ bool Contains(const wxWindow& parent, const wxWindow* child)
 
 StudioShell::StudioShell(wxFrame& frame, wxAuiManager& manager, wxNotebook& navigation, wxWindow& tree,
                          wxPanel& propertiesHost, wxPanel& properties, wxWindow& views, wxWindow& bottom,
-                         wxMenu& viewMenu, bool usePreferences)
+                         WorkspaceBar& workspaceBar, wxMenu& viewMenu, bool usePreferences)
     : m_frame(frame), m_manager(manager), m_navigation(navigation), m_tree(tree), m_propertiesHost(propertiesHost),
-      m_properties(properties), m_views(views), m_bottom(bottom), m_layersHost(manager.GetPane("layers").window),
+      m_properties(properties), m_views(views), m_bottom(bottom), m_workspaceBar(workspaceBar),
+      m_layersHost(manager.GetPane("layers").window),
       m_layers(wxWindow::FindWindowByName("workspace.layer-content", &frame)),
       m_defaultLayout(manager.SavePerspective()), m_usePreferences(usePreferences)
 {
@@ -288,7 +290,9 @@ void StudioShell::ShowNavigation(bool focus)
 void StudioShell::FocusNext(bool reverse)
 {
     auto* focused = wxWindow::FindFocus();
-    const std::array<wxWindow*, 5> regions{{&m_navigation, &m_views, &m_properties, &m_bottom, m_layers}};
+    const std::array<wxWindow*, 6> regions{{&m_navigation, &m_views, &m_properties, &m_bottom, m_layers,
+                                           &m_workspaceBar}};
+    const int count = static_cast<int>(regions.size());
     int current = -1;
     for (std::size_t index = 0; index < regions.size(); ++index)
     {
@@ -301,9 +305,9 @@ void StudioShell::FocusNext(bool reverse)
     {
         current = 0;
     }
-    for (int offset = 1; offset <= static_cast<int>(regions.size()); ++offset)
+    for (int offset = 1; offset <= count; ++offset)
     {
-        const int next = (current + (reverse ? -offset : offset) + 10) % 5;
+        const int next = (current + (reverse ? -offset : offset) + 2 * count) % count;
         auto* target = regions[next];
         const bool available = next == 0 || next == 2 ? m_visible[VisibilityIndex(next == 0 ? 0 : 1)]
                                                       : (target != nullptr && target->IsShownOnScreen());
@@ -318,6 +322,10 @@ void StudioShell::FocusNext(bool reverse)
         else if (next == 2)
         {
             ShowProperties(true);
+        }
+        else if (target == &m_workspaceBar)
+        {
+            m_workspaceBar.FocusSelected();
         }
         else
         {

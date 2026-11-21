@@ -12,13 +12,15 @@ class wxMenu;
 class wxNotebook;
 class wxPanel;
 class wxWindow;
+class WorkspaceBar;
 
 /** @brief 서비스 원본과 초안을 바꾸지 않고 같은 속성 폼을 작은 창의 탭으로 이동한다. */
 class StudioShell final : public wxEvtHandler
 {
 public:
     StudioShell(wxFrame& frame, wxAuiManager& manager, wxNotebook& navigation, wxWindow& tree, wxPanel& propertiesHost,
-                wxPanel& properties, wxWindow& views, wxWindow& bottom, wxMenu& viewMenu, bool usePreferences);
+                wxPanel& properties, wxWindow& views, wxWindow& bottom, WorkspaceBar& workspaceBar,
+                wxMenu& viewMenu, bool usePreferences);
     ~StudioShell() override;
     /** @brief 현재 창 폭에 맞는 기본 배치를 복원하고 숨긴 패널을 다시 보인다. */
     void RestoreLayout();
@@ -57,6 +59,7 @@ private:
     wxPanel& m_properties;
     wxWindow& m_views;
     wxWindow& m_bottom;
+    WorkspaceBar& m_workspaceBar;
     wxWindow* m_layersHost = nullptr;
     wxWindow* m_layers = nullptr;
     wxString m_defaultLayout;

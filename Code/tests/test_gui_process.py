@@ -37,7 +37,7 @@ class GuiProcessTests(unittest.TestCase):
              "--canvas-smoke-test" if canvas else ("--editor-smoke-test" if editor else "--smoke-test"),
              "--smoke-report", str(report), *project_args],
             stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-            timeout=90, startupinfo=startup, env=environment, check=False,
+            timeout=210 if canvas else 90, startupinfo=startup, env=environment, check=False,
         )
         self.assertTrue(report.is_file(), f"GUI did not write its report: exit={process.returncode}, stderr={process.stderr!r}")
         result = json.loads(report.read_text(encoding="utf-8"))

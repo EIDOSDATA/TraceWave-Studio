@@ -22,6 +22,8 @@ class WorkspaceBar final : public wxPanel
 public:
     explicit WorkspaceBar(wxWindow* parent);
     void Select(WorkspaceArea area);
+    /** @brief F6로 진입할 때 현재 작업 영역의 버튼에 초점을 둔다. */
+    void FocusSelected();
     void SetCommandState(bool save, bool run, bool step);
     std::function<void(WorkspaceArea)> onNavigate;
     std::function<void(int)> onCommand;

@@ -1,6 +1,7 @@
 /** @file @brief 주 창의 smoke_canvas 책임을 구현한다. */
 #include "studio_internal.h"
 #include "studio_shell.h"
+#include "workspace_bar.h"
 
 /** @brief 실제 캔버스 이벤트 처리기로 좌표 입력을 보내 서비스 저장까지 확인한다. */
 void StudioSmokeDriver::CanvasMouse(wxEventType type, double x, double y, bool left, bool middle)
@@ -116,6 +117,23 @@ void StudioSmokeDriver::CanvasSmokeNext()
                      "F6 does not enter the central work area.");
         pressF6(true);
         CanvasAssert(wxWindow::FindFocus() == m_frame.m_tree, "Shift+F6 does not return to navigation.");
+        pressF6(true);
+        CanvasAssert(m_frame.m_workspaceBar->IsDescendant(wxWindow::FindFocus()),
+                     "Shift+F6 does not focus the active workspace button.");
+        const auto pressWorkspace = [this](int code, int page)
+        {
+            auto* button = wxWindow::FindFocus();
+            wxKeyEvent key(wxEVT_CHAR_HOOK);
+            key.m_keyCode = code;
+            key.SetEventObject(button);
+            CanvasAssert(button->GetEventHandler()->ProcessEvent(key) && m_frame.m_views->GetSelection() == page &&
+                             m_frame.m_workspaceBar->IsDescendant(wxWindow::FindFocus()),
+                         "Workspace navigation did not update the page and keep the button focused.");
+        };
+        pressWorkspace(WXK_RIGHT, 3);
+        pressWorkspace(WXK_HOME, 0);
+        pressF6(false);
+        CanvasAssert(wxWindow::FindFocus() == m_frame.m_tree, "F6 does not return from the workspace bar to navigation.");
         m_frame.m_manager->GetPane("problems").Hide();
         m_frame.m_manager->Update();
         m_frame.m_shell->RestoreLayout();

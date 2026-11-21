@@ -383,7 +383,7 @@ void StudioFrame::BuildInterface()
     m_manager->Update();
     m_defaultLayout = m_manager->SavePerspective();
     m_shell = std::make_unique<StudioShell>(*this, *m_manager, *navigationTabs, *m_tree, *propertiesHost, *m_properties,
-                                            *m_views, *m_bottom, *view, !m_options.smoke);
+                                            *m_views, *m_bottom, *m_workspaceBar, *view, !m_options.smoke);
     BindCanvas();
     BindCad();
     BindSolver();
